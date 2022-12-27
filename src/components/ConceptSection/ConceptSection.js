@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styles from "./ConceptSection.module.css";
 import arrowDown from "../../assets/icons/arrow-down.png";
 import Chart from "../Chart/Chart";
@@ -6,26 +6,38 @@ import downloadImage from "../../assets/icons/download.png";
 import OwlCarousel from "react-owl-carousel";
 import "owl.carousel/dist/assets/owl.carousel.css";
 import "owl.carousel/dist/assets/owl.theme.default.css";
-import shivam from "./../../assets/images/tutors/shivam-shrivastab.png";
+import shivam from '../../assets/images/tutors/shivam-shrivastab.png'
+import { useLazyGetParentTutorsQuery } from "../../app/services/users";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
+
+const initData = [
+   {
+      firstName: 'Shivam',
+      lastName: 'Shrivastava',
+   }
+]
 const ConceptSection = () => {
    const [subject, setSubject] = useState("Maths");
    const [slot, setSlot] = useState("Jun 20, 2022 - Jul 30, 2022 ");
-
    const [leftOpacity, setLeftOpacityy] = useState(1);
    const [rightOpacity, setRightOpacity] = useState(1);
    const [subVisisbility, setSubVisisbility] = useState("hidden");
    const [dateVisibility, setDateVisibility] = useState("hidden");
+   const [tutors, setTutors] = useState([])
+   const tutorCarouselRef = useRef()
+   const { id } = useSelector(state => state.user)
 
-   // const rightOpacity = document
-   //     .getElementsByClassName("owl-next")[1]
-   //     ?.classList.contains("disabled")
-   //     ? 0.5
-   //     : 1;
+   const [fetchTutors, fetchTutorsResp] = useLazyGetParentTutorsQuery()
+   const navigate = useNavigate()
 
-   // useEffect(() => {
-   //     console.log(dateVisibility);
-   // }, [dateVisibility]);
+   useEffect(() => {
+      fetchTutors({ id })
+         .then(res => {
+            res.data.tutors.length > 0 && setTutors(res.data.tutors)
+         })
+   }, [])
 
    const goNext = () => {
       document.getElementsByClassName("owl-next")[1].click();
@@ -35,7 +47,6 @@ const ConceptSection = () => {
    };
 
    const buttons = document.getElementsByClassName("button")
-   // console.log(buttons);
    useEffect(() => {
       for (let i = 0; i < buttons.length; i++) {
          // console.log(buttons[i].innerText);
@@ -139,7 +150,7 @@ const ConceptSection = () => {
                      tabIndex={0}
                      htmlFor="dateVisisbility"
                   >
-                     {slot.length > 18 ? `${slot.substring(0,18)}...` : slot }
+                     {slot.length > 18 ? `${slot.substring(0, 18)}...` : slot}
                      <img
                         id={styles.arrowDown}
                         src={arrowDown}
@@ -230,41 +241,36 @@ const ConceptSection = () => {
 
                <div id={styles.tutor}>
                   <h2>Your Tutor</h2>
-                  <OwlCarousel className="owl-theme" loop margin={8} items={1}>
-                     <div class="item flex" style={{ width: "100%" }}>
-                        <div className="w-3/5">
-                           <h5 className={styles.tag}>
-                              WIZARD TUTOR | UNDERGRADUATE
-                           </h5>
-                           <h3>Shivam Srivastava</h3>
-                           <p>
-                              Lorem ipsum dolor sit amet, consectetur
-                              adipiscing elit.
-                           </p>
-                           <button className="btn-gold" style={{padding: '7px 9px'}}>View Profile</button>
-                        </div>
-                        <div className="w-2/5">
-                           <img src={shivam} className="mx-auto w-full object-contain	" alt="" />
-                        </div>
-                     </div>
-                     <div class="item flex" style={{ width: "100%" }}>
-                        <div className="w-3/5">
-                           <h5 className={styles.tag}>
-                              WIZARD TUTOR | UNDERGRADUATE
-                           </h5>
-                           <h3>Shivam Srivastava</h3>
-                           <p>
-                              Lorem ipsum dolor sit amet, consectetur
-                              adipiscing elit.
-                           </p>
-                           <button className="btn-gold" style={{padding: '7px 9px'}}>View Profile</button>
-                        </div>
-                        <div className="w-2/5">
-                           <img src={shivam} className="mx-auto w-full object-contain	" alt="" />
-                        </div>
-                     </div>
-                    
-                  </OwlCarousel>
+                  { tutors.length >= 1 &&
+                     <OwlCarousel ref={tutorCarouselRef} className="owl-theme" loop margin={8} items={1}>
+                        {
+                           tutors.map((tutor, idx) => {
+                              return (
+                                 <div keu={idx} className="item flex" style={{ width: "100%" }}>
+                                    <div className="w-3/5">
+                                       <h5 className={styles.tag}>
+                                          WIZARD TUTOR | UNDERGRADUATE
+                                       </h5>
+                                       <h3> {`${tutor.firstName} ${tutor.lastName}`} </h3>
+                                       <p>
+                                          Lorem ipsum dolor sit amet, consectetur
+                                          adipiscing elit.
+                                       </p>
+                                       <button className="btn-gold" style={{ padding: '7px 9px' }}
+                                          onClick={() => tutor._id && navigate(`/profile/tutor/${tutor._id}`)} >
+                                          View Profile
+                                       </button>
+                                    </div>
+                                    <div className="w-2/5">
+                                       <img src={shivam} className="mx-auto w-full object-contain	" alt="" />
+                                    </div>
+                                 </div>
+                              )
+                           })
+                        }
+
+                     </OwlCarousel>
+                  }
                </div>
 
             </div>
@@ -282,7 +288,7 @@ const ConceptSection = () => {
                               className="flex mr-2"
                               style={{ gap: "6px" }}
                            >
-                             <p className="text-xs font-semibold opacity-50">Due Date</p>
+                              <p className="text-xs font-semibold opacity-50">Due Date</p>
                               <h3 className="opacity-60 text-xs font-semibold">June 20, 2022</h3>
                            </div>
                         </div>
@@ -310,7 +316,7 @@ const ConceptSection = () => {
                               className="flex mr-2"
                               style={{ gap: "6px" }}
                            >
-                             <p className="text-xs font-semibold opacity-50">Due Date</p>
+                              <p className="text-xs font-semibold opacity-50">Due Date</p>
                               <h3 className="opacity-60 text-xs font-semibold">June 20, 2022</h3>
                            </div>
                         </div>
@@ -338,7 +344,7 @@ const ConceptSection = () => {
                               className="flex mr-2"
                               style={{ gap: "6px" }}
                            >
-                             <p className="text-xs font-semibold opacity-50">Due Date</p>
+                              <p className="text-xs font-semibold opacity-50">Due Date</p>
                               <h3 className="opacity-60 text-xs font-semibold">June 20, 2022</h3>
                            </div>
                         </div>
@@ -367,7 +373,7 @@ const ConceptSection = () => {
                               className="flex mr-2"
                               style={{ gap: "6px" }}
                            >
-                             <p className="text-xs font-semibold opacity-50">Due Date</p>
+                              <p className="text-xs font-semibold opacity-50">Due Date</p>
                               <h3 className="opacity-60 text-xs font-semibold">June 20, 2022</h3>
                            </div>
                         </div>
@@ -395,7 +401,7 @@ const ConceptSection = () => {
                               className="flex mr-2"
                               style={{ gap: "6px" }}
                            >
-                             <p className="text-xs font-semibold opacity-50">Due Date</p>
+                              <p className="text-xs font-semibold opacity-50">Due Date</p>
                               <h3 className="opacity-60 text-xs font-semibold">June 20, 2022</h3>
                            </div>
                         </div>
@@ -423,7 +429,7 @@ const ConceptSection = () => {
                               className="flex mr-2"
                               style={{ gap: "6px" }}
                            >
-                             <p className="text-xs font-semibold opacity-50">Due Date</p>
+                              <p className="text-xs font-semibold opacity-50">Due Date</p>
                               <h3 className="opacity-60 text-xs font-semibold">June 20, 2022</h3>
                            </div>
                         </div>

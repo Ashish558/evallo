@@ -6,25 +6,75 @@ import OwlCarousel from "react-owl-carousel";
 import "owl.carousel/dist/assets/owl.carousel.css";
 import "owl.carousel/dist/assets/owl.theme.default.css";
 import shivam from "./../../assets/images/tutors/shivam-shrivastab.png";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import josephBrown from "../../assets/images/joseph-brown.png";
 import rightArrow from "../../assets/icons/arrow-down.png";
 import { useLazyGetSettingsQuery } from "../../app/services/session";
 import ImageSlideshow from "../ImageSlideshow/ImageSlideshow";
+import { useLazyGetUserDetailQuery } from "../../app/services/users";
+import { useSelector } from "react-redux";
+import InputSelect from "../InputSelect/InputSelect";
 
 const ParentDashboardHeader = () => {
-   const navigate = useNavigate()
-   const [fetchSettings, fetchSettingsResp] = useLazyGetSettingsQuery()
    const [images, setImages] = useState([])
+   const [user, setUser] = useState({})
+   const [associatedStudents, setAssociatedStudents] = useState([])
+
+   const [getUserDetail, userDetailResp] = useLazyGetUserDetailQuery()
+   const [fetchSettings, fetchSettingsResp] = useLazyGetSettingsQuery()
+   const [selectedStudent, setSelectedStudent] = useState(null)
+
+   const navigate = useNavigate()
+
+   const { id } = useSelector(state => state.user)
 
    useEffect(() => {
       fetchSettings()
          .then(res => {
             setImages(res.data.data.setting.offerImages)
          })
+      getUserDetail({ id })
+         .then(res => {
+            // console.log('response', res.data.data);
+            setUser(res.data.data.user)
+            setAssociatedStudents([])
+            res.data.data.user.assiginedStudents.map((student, idx) => {
+               getUserDetail({ id: student })
+                  .then(res => {
+                     setAssociatedStudents(prev => [...prev, {
+                        _id: res.data.data.user._id,
+                        name: `${res.data.data.user.firstName} ${res.data.data.user.lastName}`
+                     }])
+                     idx === 0 && setSelectedStudent({
+                        _id: res.data.data.user._id,
+                        value: `${res.data.data.user.firstName} ${res.data.data.user.lastName}`
+                     })
+                  })
+            })
+
+
+         })
    }, [])
 
-   console.log(images)
+   useEffect(() => {
+      if (user.assiginedStudents === undefined) return
+      const fetch = async () => {
+         let studentsData = []
+         const students = await user.assiginedStudents.map(student => {
+            getUserDetail({ id: student })
+               .then(res => {
+                  studentsData.push({
+                     _id: res.data.data.user._id,
+                     name: `${res.data.data.user.firstName} ${res.data.data.user.lastName}`
+                  })
+               })
+         })
+         // setAssociatedStudents(studentsData)
+      }
+      fetch()
+   }, [user])
+
+
    return (
       <div
          className="flex 2xl:gap-[78px] xl:gap-[50px]"
@@ -39,7 +89,6 @@ const ParentDashboardHeader = () => {
                            This fall get help from our Admission
                            Experts.
                         </h2>
-
                         <button className="ml-[32px] text-sm 2xl:ml-[46px] bg-[#f3f5f7] rounded-[5px] py-[8px] px-[15px]">
                            Know More {">"}
                         </button>
@@ -67,7 +116,7 @@ const ParentDashboardHeader = () => {
 
                   <div id={styles.creditBalance}>
                      <p className="whitespace-nowrap text-3xl leading-none mb-1" >
-                     820 USD
+                        820 USD
                      </p>
                      <p className="text-[13.17px] font-bold cursor-pointer"
                         onClick={() => navigate('/ledger')}>
@@ -85,17 +134,30 @@ const ParentDashboardHeader = () => {
             className="w-1/3"
          >
             <div className="flex justify-between items-center px-[11px]">
-               <h2 className="text-[#4715D7] font-semibold text-[21px] mt-[16px] mb-[15px]">Your Student</h2>
-               <img src={rightArrow} className="h-[15px] w-[15px]" alt="" />
+               <h2 className="text-[#4715D7] font-semibold text-[21px] mt-[16px]">Your Student</h2>
+               {/* <img src={rightArrow} className="h-[15px] w-[15px]" alt="" /> */}
+               {associatedStudents.length > 0 &&
+                  <InputSelect optionType='object'
+                     parentClassName='mb-2'
+                     inputContainerClassName='pt-1 pb-1'
+                     optionData={associatedStudents.map(item => ({ _id: item._id, value: item.name }))}
+                     optionClassName='w-[130px] text-sm'
+                     value={selectedStudent === null ? '' : selectedStudent.value}
+                     onChange={val => setSelectedStudent(val)} />}
             </div>
             <div class={`item ${styles.student} w-100 px-[22px] 2xl:px-[32px] 2xl:py-[13px]`}>
                <div className="flex items-center">
                   <div className="w-1/2">
-                     <h2>Joseph Brown</h2>
+                     <h2>
+                        {/* {selectedStudent !== null && 'Joseph Brown'}  */}
+                        {selectedStudent === null ? 'Dummy name' :
+                           selectedStudent.value}
+                     </h2>
                      <h6 className="text-[10px]">SAT Tutoring <br />Subject Tutoring</h6>
-                     <a href="#" className="btn-gold">
+                     <Link className="btn-gold"
+                        to={selectedStudent !== null && `/profile/student/${selectedStudent._id}`}>
                         View Profile
-                     </a>
+                     </Link>
                   </div>
                   <div className="w-1/2 flex justify-end">
                      <img src={shivam} alt="" />

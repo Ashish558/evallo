@@ -5,7 +5,7 @@ export default function EditableText({ className, text, editable, imgClass, text
 
 
    return (
-      <div className={`text-primaryDark text-center font-bold flex ${className}`}>
+      <div className={`text-primaryDark ${text !== "Contact" && "text-center"} font-bold flex ${className}`}>
          <p className={`${textClassName ? textClassName : ''}`}>
             {text}
          </p>

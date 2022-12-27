@@ -27,9 +27,33 @@ export const userServicesApi = createApi({
             },
          }),
       }),
+      getParentTutors: builder.query({
+         query: (body) => ({
+            url: `api/user/parent/tutors/${body.id}`,
+            method: "GET",
+            headers: {
+               "Authorization": sessionStorage.getItem('token'),
+            },
+         }),
+      }),
+      getStudentTutors: builder.query({
+         query: (body) => ({
+            url: `api/user/student/tutors/${body.id}`,
+            method: "GET",
+            headers: {
+               "Authorization": sessionStorage.getItem('token'),
+            },
+         }),
+      }),
       getUserDetail: builder.query({
          query: (body) => ({
             url: `api/user/${body.id}`,
+            method: "GET",
+         }),
+      }),
+      getTutorDetails: builder.query({
+         query: (body) => ({
+            url: `api/user/tutordetails/${body.id}`,
             method: "GET",
          }),
       }),
@@ -53,6 +77,16 @@ export const userServicesApi = createApi({
             },
          })
       }),
+      updateTutorDetails: builder.mutation({
+         query: (body) => ({
+            url: `api/user/tutordetails/${body.id}`,
+            method: "PATCH",
+            body: body.fields,
+            headers: {
+               "Authorization": sessionStorage.getItem('token'),
+            },
+         })
+      }),
       addUser: builder.mutation({
          query: (body) => ({
             url: `/api/user/addtutor`,
@@ -69,9 +103,13 @@ export const userServicesApi = createApi({
 
 export const {
    useLazyGetAllUsersQuery,
+   useLazyGetParentTutorsQuery,
+   useLazyGetStudentTutorsQuery,
    useAddUserMutation,
    useLazyGetUserDetailQuery,
+   useLazyGetTutorDetailsQuery,
    useUpdateUserFieldsMutation,
    useUpdateUserDetailsMutation,
+   useUpdateTutorDetailsMutation,
    useLazyGetPersonalDetailQuery
 } = userServicesApi;

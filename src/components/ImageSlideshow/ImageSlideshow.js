@@ -19,7 +19,7 @@ export default function ImageSlideshow({ images }) {
    return (
       <div className={styles.images}>
          {images.map((src, i) => {
-            return <img src={src} className={`${styles.img} 
+            return <img key={i} src={src} className={`${styles.img} 
             ${current === i ? styles.active : i < current ? styles.prev : styles.next}`} />
          })}
       </div>

@@ -93,11 +93,43 @@ export const getLocalTimeZone = () => {
    let localTimeZone = []
    timezone.split(' ').map(item => localTimeZone.push(item.substring(0, 1)))
    let tz = localTimeZone.join('')
-   if(tz === 'IST') return 'Asia/Kolkata'
+   if (tz === 'IST') return 'Asia/Kolkata'
    return tz
 }
 
+export const convertDateToTimezone = (t, tType, date, timeZone) => {
+   const time = t;
+   const timeType = tType;
 
+   const startTime = convertTime12to24(
+      `${time} ${timeType}`
+   );
+
+   const startHours = parseInt(startTime.split(":")[0]);
+   const startMinutes = parseInt(startTime.split(":")[1]);
+
+   let startDate = new Date(date);
+   startHours !== NaN && startDate.setHours(startHours);
+   startMinutes !== NaN && startDate.setMinutes(startMinutes);
+
+   let updatedDate = new Date(new Date(
+      startDate.toLocaleString('en-US', {
+         timeZone,
+      }),
+   ))
+   return updatedDate
+}
+
+export function formatAMPM(date) {
+   var hours = date.getHours();
+   var minutes = date.getMinutes();
+   var ampm = hours >= 12 ? 'pm' : 'am';
+   hours = hours % 12;
+   hours = hours ? hours : 12; // the hour '0' should be '12'
+   minutes = minutes < 10 ? '0'+minutes : minutes;
+   var strTime = hours + ':' + minutes + ' ' + ampm;
+   return strTime;
+ }
 // // timezones
 // function getCurrentLocalDateTime() {
 //    return moment().format();

@@ -13,6 +13,7 @@ import { useAddUserMutation, useLazyGetAllUsersQuery } from '../../app/services/
 import { useSignupUserMutation } from '../../app/services/auth'
 import { useNavigate } from 'react-router-dom'
 import { roles } from '../../constants/constants'
+import { useBlockUserMutation, useUnblockUserMutation } from '../../app/services/admin'
 
 const optionData = [
    'option 1',
@@ -23,7 +24,7 @@ const optionData = [
 ]
 
 const tableHeaders = [
-   'Full Name', 'User Type', "Email", 'Phone', 'Assigned Tutor', 'Lead Status', 'Tutor Status',
+   'Full Name', 'User Type', "Email", 'Phone', 'Assigned Tutor', 'Lead Status', 'User Status',
    'Services'
 ]
 
@@ -49,6 +50,9 @@ export default function Users() {
 
    const [filterItems, setFilterItems] = useState([])
 
+   const [blockUser, blockUserResp] = useBlockUserMutation()
+   const [unblockUser, unblockUserResp] = useUnblockUserMutation()
+
    const [fetchUsers, fetchUsersResp] = useLazyGetAllUsersQuery()
    const [addUser, addUserResp] = useAddUserMutation()
    const [signupUser, signupUserResp] = useSignupUserMutation()
@@ -61,12 +65,13 @@ export default function Users() {
       tutor: ''
    })
 
-   useEffect(() => {
+   const fetch = () => {
       fetchUsers()
          .then(res => {
             let data = res.data.data.user.map(user => {
                return {
                   _id: user._id,
+                  block: user.block,
                   name: `${user.firstName} ${user.lastName}`,
                   email: user.email ? user.email : '-',
                   userType: user.role ? user.role : '-',
@@ -80,6 +85,9 @@ export default function Users() {
             setUsersData(data)
             setFilteredUsersData(data)
          })
+   }
+   useEffect(() => {
+      fetch()
    }, [])
 
    useEffect(() => {
@@ -164,9 +172,42 @@ export default function Users() {
    const handleClose = () => setModalActive(false)
 
    const redirect = item => {
-      console.log(item)
-      if (roles.includes(item.userType)) {
+      // console.log(item)
+      if (roles.includes(item.userType) && item.userType !== 'admin') {
          navigate(`/profile/${item.userType}/${item._id}`)
+      }
+   }
+
+   const handleTutorStatus = item => {
+      console.log(item)
+      if (item.block === false) {
+         blockUser({ id: item._id })
+            .then((res) => {
+               if (res.data.status === 'success') {
+                  let temp = usersData.map(user => {
+                     if (user._id === item._id) {
+                        return { ...user, block: true }
+                     } else {
+                        return { ...user }
+                     }
+                  })
+                  setUsersData(temp)
+                  setFilterData({...filterData})
+               }
+            })
+      } else if (item.block === true) {
+         unblockUser({ id: item._id })
+            .then((res) => {
+               let temp = usersData.map(user => {
+                  if (user._id === item._id) {
+                     return { ...user, block: false }
+                  } else {
+                     return { ...user }
+                  }
+               })
+               setUsersData(temp)
+               setFilterData({...filterData})
+            })
       }
    }
 
@@ -225,7 +266,7 @@ export default function Users() {
             <div className='mt-6'>
                <Table dataFor='allUsers'
                   data={filteredUsersData}
-                  onClick={{ redirect }}
+                  onClick={{ redirect, handleTutorStatus }}
                   tableHeaders={tableHeaders}
                   maxPageSize={10} />
             </div>

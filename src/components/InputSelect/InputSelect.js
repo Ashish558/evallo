@@ -15,12 +15,14 @@ export default function InputSelect({
    inputContainerClassName,
    onChange,
    radio,
-   checkbox
+   checkbox,
+   optionClassName,
+   optionType
 }) {
    const [selected, setSelected] = useState(false);
    const selectRef = useRef();
    useOutsideAlerter(selectRef, () => setSelected(false));
-
+ 
    useEffect(() => {
      if(!checkbox) setSelected(false)
    }, [value]);
@@ -44,12 +46,12 @@ export default function InputSelect({
             {
                <img
                   src={DownArrow}
-                  className={styles.downArrow}
+                  className={`w-[15px] ${styles.downArrow}`}
                   alt="down-arrow"
                   onClick={() => setSelected(!selected)}
                />
             }
-            <div className="outline-0 w-full relative" name={label}>
+            <div className={`outline-0 w-full relative ${optionClassName ? optionClassName : ''}`} name={label}>
                {value === "" ? (
                   <span className="text-primary-60"> {placeholder} </span>
                ) : (
@@ -57,7 +59,7 @@ export default function InputSelect({
                )}
             </div>
             {selected && (
-               <div className={`scrollbar-content scrollbar-vertical ${styles.options}`}>
+               <div className={`scrollbar-content scrollbar-vertical ${styles.options} $`}>
                   {optionData.map((option, idx) => {
                      return (
                         <div
@@ -68,7 +70,7 @@ export default function InputSelect({
                            }}
                         >
                            <p>
-                              {option}
+                               {optionType !== undefined && optionType === 'object' ? option.value : option}
                            </p>
                            {
                               radio && <input type='radio' name='name' checked={option === value ? true : false} />
@@ -79,12 +81,6 @@ export default function InputSelect({
                                  <CCheckbox
                                     checked={checkbox.match.includes(option) ? true : false}
                                     name='student'
-                                    
-                                 // onChange={() =>
-                                 //    setData({
-                                 //       ...data,
-                                 //       recurring: !data.recurring,
-                                 //    })}
                                  />
                               </div>
                            }

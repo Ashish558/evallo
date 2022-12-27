@@ -17,6 +17,7 @@ function App() {
       if (sessionStorage.getItem('token')) {
          fetchPersonalDetails()
             .then(res => {
+               console.log('personal Dedails', res.data )
                const { firstName, lastName, _id } = res.data.data.user
                setLoading(false);
                dispatch(updateIsLoggedIn(true));

@@ -56,7 +56,9 @@
     background-color: #fff;
     padding: 40px;
     border-radius: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 16px rgba(0, 0, 0, 0.2);
+    height: 91vh;
+    overflow-y: auto;
 }
 
 .fc .fc-timegrid-slot-minor{

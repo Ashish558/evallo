@@ -20,6 +20,8 @@ import Profile from "../../assets/Navbar/profile";
 import StudentTest from "../../assets/Navbar/studentTest";
 import Percentage from "../../assets/Navbar/percentage";
 import AssignedStudents from "../../assets/Navbar/assignedStudents";
+import Back from "../../assets/Navbar/Back";
+import logo from "../../assets/Navbar/logo";
 
 const tempnavdata = [
    {
@@ -37,7 +39,7 @@ const tempnavdata = [
    {
       icon: SettingsIcon,
       path: "/settings",
-      excludes : ['student', 'parent', 'tutor']
+      excludes: ['student', 'parent', 'tutor']
    },
    {
       icon: People,
@@ -72,13 +74,17 @@ const parentNav = [
       path: "/all-tests",
    },
    {
-      icon: Exit,
+      icon: Back,
       path: "/exit",
       parentClassName: "mt-auto",
    },
 ]
 
 const studentNav = [
+   {
+      icon: logo,
+      path: ""
+   },
    {
       icon: Dashboard,
       path: "/",
@@ -120,7 +126,7 @@ const tutorNav = [
    },
    {
       icon: StudentTest,
-      path: "/all-tests",
+      path: "/assigned-tests",
    },
    {
       icon: Exit,
@@ -138,13 +144,13 @@ export default function Navbar() {
    const persona = sessionStorage.getItem('role')
 
    useEffect(() => {
-      if(persona === 'student'){
+      if (persona === 'student') {
          setNavData(studentNav)
       }
-      if(persona === 'tutor'){
+      if (persona === 'tutor') {
          setNavData(tutorNav)
       }
-      if(persona === 'parent' ){
+      if (persona === 'parent') {
          setNavData(parentNav)
       }
    }, [persona])
@@ -152,7 +158,7 @@ export default function Navbar() {
    return (
       <div
          className={`
-         fixed bottom-0 lg:w-auto lg:top-0 lg:left-0 lg:h-screen z-50 w-full overflow-y-hidden lg:overflow-y-auto lg:p-4 
+         fixed bottom-0 lg:w-auto lg:top-0 lg:left-0 lg:h-screen z-50 w-full overflow-y-hidden lg:overflow-y-auto lg:p-4
           flex overflow-auto
       ${location.pathname === "/login" ||
                location.pathname === "/signup" ||
@@ -169,9 +175,7 @@ export default function Navbar() {
                   if (width < desktop) {
                      return (
                         idx < 4 && (
-                           <>
-                              <NavLink width={width} key={idx} {...item} />
-                           </>
+                           <NavLink width={width} key={idx} {...item} />
                         )
                      );
                   } else {

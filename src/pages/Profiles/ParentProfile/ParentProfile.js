@@ -32,19 +32,22 @@ const students = [
 
 export default function ParentProfile({ isOwn }) {
 
-   const navigate = useNavigate()
    const [editable, setEditable] = useState(false)
-   const persona = sessionStorage.getItem('role')
    const [activeIndex, setActiveIndex] = useState(0)
-   const [getUserDetail, userDetailResp] = useLazyGetUserDetailQuery()
-   const params = useParams()
+   const [associatedStudents, setAssociatedStudents] = useState([])
    const [user, setUser] = useState({})
    const [userDetail, setUserDetail] = useState({})
    const [settings, setSettings] = useState({})
-   const [fetchSettings, settingsResp] = useLazyGetSettingsQuery()
-   const [associatedStudents, setAssociatedStudents] = useState([])
+
    const { id } = useSelector(state => state.user)
 
+   const [fetchSettings, settingsResp] = useLazyGetSettingsQuery()
+   const [getUserDetail, userDetailResp] = useLazyGetUserDetailQuery()
+
+   const navigate = useNavigate()
+   const params = useParams()
+
+   const persona = sessionStorage.getItem('role')
    // console.log(id)
 
    useEffect(() => {
@@ -192,10 +195,9 @@ export default function ParentProfile({ isOwn }) {
 
    useEffect(() => {
       if (user.assiginedStudents === undefined) return
-
-      const fetch = () => {
+      const fetch = async () => {
          let studentsData = []
-         const students = user.assiginedStudents.map(student => {
+         const students = await user.assiginedStudents.map(student => {
             getUserDetail({ id: student })
                .then(res => {
                   studentsData.push({
@@ -214,6 +216,7 @@ export default function ParentProfile({ isOwn }) {
       fetchDetails()
    }, [params.id])
 
+   
    if (Object.keys(user).length < 1) return
    if (Object.keys(userDetail).length < 1) return
    // if (userDetail === undefined) return
@@ -221,9 +224,9 @@ export default function ParentProfile({ isOwn }) {
    return (
       <>
          <div className='lg:ml-pageLeft bg-lightWhite min-h-screen pb-[100px]'>
-            <div className='lg:px-5 lg:pt-10'>
-
-               <div className={styles.profileCard}  >
+            <div className='lg:px-[56px] lg:pt-10'>
+               <div className={styles.profileCard}>
+                  {/* <button className='absolute bg-[#D9BBFF] px-[14px] py-[12px] rounded-[8px] text-[#636363] text-[18px] font-medium top-[16px] left-[22px] flex gap-[12px] cursor-pointer'><img src={LeftIcon} alt="icon" /> Back</button> */}
                   <div className='rounded-t-40 bg-lightWhite lg:bg-transparent flex flex-col items-center relative'>
                      <div className={styles.imgContainer}>
                         <img src={ProfileImg} />
@@ -232,7 +235,7 @@ export default function ParentProfile({ isOwn }) {
                         <EditableText text={`${user.firstName} ${user.lastName}`}
                            editable={editable}
                            onClick={() => setToEdit({ ...toEdit, fullName: { ...toEdit.fullName, active: true } })}
-                           className='text-21 justify-center text-primary text-center font-bold text-21 lg:text-40 lg:text-white'
+                           className='justify-center text-primary text-center font-bold text-21 lg:text-40 lg:text-[#F3F5F7]'
                            textClassName='flex-1'
                            imgClass='ml-auto' />
                      </div>
@@ -245,21 +248,21 @@ export default function ParentProfile({ isOwn }) {
                      title={
                         <EditableText text='Contact' editable={editable}
                            onClick={() => setToEdit({ ...toEdit, contact: { ...toEdit.contact, active: true } })}
-                           className='text-21 justify-center'
+                           className='text-21 justify-center text-left'
                            textClassName='flex-1'
                            imgClass='ml-auto' />
                      }
                      body={
-                        <div className='flex justify-center mt-5 lg:mt-1'>
-                           <div className='flex flex-col items-center mr-8'>
-                              <img src={MailIcon} />
-                              <p className='mt-1 font-medium opacity-60 text-xs'>
+                        <div className='flex flex-col gap-[9px] justify-start mt-5 lg:mt-1'>
+                           <div className='flex items-center gap-[11px]'>
+                              <img src={MailIcon} className='w-[19px]' />
+                              <p className='mt-1 font-medium opacity-60 text-[14px]'>
                                  {user.email !== null ? user.email : '-'}
                               </p>
                            </div>
-                           <div className='flex flex-col items-center'>
-                              <img src={WhatsappIcon} />
-                              <p className='mt-1 font-medium.4 opacity-60 text-xs'>
+                           <div className='flex items-center gap-[11px]'>
+                              <img src={WhatsappIcon} className='w-[19px]' />
+                              <p className='mt-1 font-medium.4 opacity-60 text-[14px]'>
                                  {user.phone !== null ? user.phone : '-'}
                               </p>
                            </div>
@@ -278,9 +281,10 @@ export default function ParentProfile({ isOwn }) {
                                  onClick={() => setToEdit({ ...toEdit, birthYear: { ...toEdit.birthYear, active: true } })}
                                  text='Birth year'
                                  className='text-21 justify-start'
+                                 imgClass="w-[16px]"
                               />
-                              <p className='mt-1 font-medium text-sm lg:mt-6 lg:opacity-60'>
-                                 {userDetail.birthyear ? userDetail.birthyear : '-'}
+                              <p className='mt-1 text-[16px] font-semibold lg:mt-6 lg:opacity-60'>
+                                 {userDetail?.birthyear ? userDetail?.birthyear : '-'}
                               </p>
                            </div>
                            <div className='flex flex-1 flex-col'>
@@ -288,9 +292,10 @@ export default function ParentProfile({ isOwn }) {
                                  onClick={() => setToEdit({ ...toEdit, industry: { ...toEdit.industry, active: true } })}
                                  text='Industry'
                                  className='text-21 justify-start'
+                                 imgClass="w-[16px]"
                               />
-                              <p className='mt-1 font-medium text-sm lg:mt-6 lg:opacity-60'>
-                                 {userDetail.industry ? userDetail.industry : '-'}
+                              <p className='mt-1 font-semibold text-[16px] lg:mt-6 lg:opacity-60'>
+                                 {userDetail?.industry ? userDetail?.industry : '-'}
                               </p>
                            </div>
                         </div>
@@ -307,8 +312,8 @@ export default function ParentProfile({ isOwn }) {
                      }
                      body={
                         <div className='overflow-x-auto scrollbar-content pb-7'>
-                           <p className='mt-2 lg:mt-6 font-medium text-sm whitespace-nowrap	'>
-                              {userDetail.residentialAddress ? userDetail.residentialAddress : '-'}
+                           <p className='mt-2 lg:mt-6 font-medium text-[18px] whitespace-nowrap	'>
+                              {userDetail?.residentialAddress ? userDetail?.residentialAddress : '-'}
                            </p>
                         </div>
                      }
@@ -323,8 +328,8 @@ export default function ParentProfile({ isOwn }) {
                                  onClick={() => setToEdit({ ...toEdit, timeZone: { ...toEdit.timeZone, active: true } })}
                                  text='Time Zone'
                                  className='lg:text-21 whitespace-nowrap' />
-                              <p className='font-medium text-sm mt-2 lg:mt-6 lg:opacity-60'>
-                                 {userDetail.timeZone ? userDetail.timeZone : '-'}
+                              <p className='font-semibold text-[16px] mt-2 lg:mt-6 lg:opacity-60'>
+                                 {userDetail?.timeZone ? userDetail?.timeZone : '-'}
                               </p>
                            </div>
                            <div className='flex-1'>
@@ -334,8 +339,8 @@ export default function ParentProfile({ isOwn }) {
                                  className='text-21 justify-between'
                               />
                               {/* <p className='text-primary font-bold lg:text-21'>Subscription</p> */}
-                              <p className='text-sm font-medium mt-2 lg:mt-6 lg:opacity-60'>
-                                 {userDetail.subscribeType ? userDetail.subscribeType : '-'}
+                              <p className='text-[16px] font-semibold mt-2 lg:mt-6 lg:opacity-60'>
+                                 {userDetail?.subscribeType ? userDetail?.subscribeType : '-'}
                               </p>
                            </div>
                         </div>
@@ -361,19 +366,20 @@ export default function ParentProfile({ isOwn }) {
                                  onClick={() => activeIndex < associatedStudents.length - 1 &&
                                     setActiveIndex(activeIndex + 1)} />
 
-                              {associatedStudents !== undefined && associatedStudents.map((student, idx) => {
+                              {associatedStudents.map((student, idx) => {
                                  return (
-                                    <div className={`${styles.student} ${activeIndex === idx ? styles.activeStudent : idx < activeIndex ? styles.previousStudent : styles.nextStudent} flex flex-col items-center px-10 lg:mb-10`}>
+                                    <div key={idx} className={`${styles.student} ${activeIndex === idx ? styles.activeStudent : idx < activeIndex ? styles.previousStudent : styles.nextStudent} flex flex-col items-center px-10 lg:mb-10`}>
                                        <div className={styles.studentImageContainer}>
                                           <img src='/images/student-1.png' />
                                        </div>
                                        <div className='mt-6 opacity-60 font-inter text-center '
                                        // onClick={() => navigate('/profile/student/12')}
                                        >
-                                          <p className='font-bold text-lg whitespace-nowrap'>
+                                          <p className='font-bold text-[18px] whitespace-nowrap'>
                                              {student.name}
                                           </p>
-                                          <span className='underline cursor-pointer underline-offset-4 text-sm'> View Profile </span>
+                                          {/* <span className='cursor-pointer text-[12px] font-semibold flex items-center gap-[8px] justify-center'> View Profile <img src={RightIcon} width="8px" alt="rightIcon" /> </span> */}
+                                          <span className='cursor-pointer text-[12px] font-semibold flex items-center gap-[8px] justify-center' onClick={() => navigate(`/profile/student/${student._id}`)} > View Profile </span>
                                        </div>
                                     </div>
                                  )
@@ -395,10 +401,10 @@ export default function ParentProfile({ isOwn }) {
                                        text='Service'
                                        className='lg:text-21 whitespace-nowrap' />
                                     <div className='font-medium text-sm mt-2 lg:mt-6 flex flex-wrap lg:opacity-60'>
-                                       {/* {userDetail.subscribeType ? userDetail.subscribeType : '-'} */}
-                                       {userDetail.service ? userDetail.service.map((service, idx) => {
+                                       {/* {userDetail?.subscribeType ? userDetail?.subscribeType : '-'} */}
+                                       {userDetail?.service ? userDetail?.service.map((service, idx) => {
                                           return <p className='opacity-80 mb-1 mr-1'>
-                                             {service}{idx < userDetail.service.length - 1 ? ',' : ''}
+                                             {service}{idx < userDetail?.service.length - 1 ? ',' : ''}
                                           </p>
                                        }) : '-'}
                                     </div>
@@ -416,7 +422,7 @@ export default function ParentProfile({ isOwn }) {
                                        text='Notes'
                                        className='lg:text-21 whitespace-nowrap' />
                                     <p className='font-medium text-sm mt-2 lg:mt-6 lg:opacity-60'>
-                                       {userDetail.notes ? userDetail.notes : '-'}
+                                       {userDetail?.notes ? userDetail?.notes : '-'}
 
                                     </p>
                                  </div>
@@ -433,7 +439,7 @@ export default function ParentProfile({ isOwn }) {
                                        text='Lead Status'
                                        className='lg:text-21 whitespace-nowrap' />
                                     <p className='font-medium text-sm mt-2 lg:mt-6 lg:opacity-60'>
-                                       {userDetail.leadStatus ? userDetail.leadStatus : '-'}
+                                       {userDetail?.leadStatus ? userDetail?.leadStatus : '-'}
                                     </p>
                                  </div>
                               </div>
@@ -468,36 +474,36 @@ export default function ParentProfile({ isOwn }) {
                                        </div>
                                        <div className='mb-7 col-span-2'>
                                           <p className='font-semibold mb-2'>What service are you seeking?</p>
-                                          <div> {userDetail.serviceSeeking.map((service, idx) => {
+                                          <div> {userDetail?.serviceSeeking.map((service, idx) => {
                                              return <p className='opacity-80 inline-block mr-1'>
-                                                {service}{idx < userDetail.serviceSeeking.length - 1 ? ',' : ''} </p>
+                                                {service}{idx < userDetail?.serviceSeeking.length - 1 ? ',' : ''} </p>
                                           })}
                                           </div>
                                        </div>
 
                                        <div className='mb-7'>
                                           <p className='font-semibold mb-2'>Student First Name</p>
-                                          <p className='opacity-80'> {userDetail.FirstName} </p>
+                                          <p className='opacity-80'> {userDetail?.FirstName} </p>
                                        </div>
                                        <div className='mb-7'>
                                           <p className='font-semibold mb-2'>Student Last Name  </p>
-                                          <p className='opacity-80'> {userDetail.LastName} </p>
+                                          <p className='opacity-80'> {userDetail?.LastName} </p>
                                        </div>
                                        <div className='mb-7'>
                                           <p className='font-semibold mb-2'>Student Email</p>
-                                          <p className='opacity-80'> {userDetail.Email} </p>
+                                          <p className='opacity-80'> {userDetail?.Email} </p>
                                        </div>
                                        <div className='mb-7'>
                                           <p className='font-semibold mb-2'>Student Phone </p>
-                                          <p className='opacity-80'> {userDetail.Phone} </p>
+                                          <p className='opacity-80'> {userDetail?.Phone} </p>
                                        </div>
                                        <div className='mb-7'>
                                           <p className='font-semibold mb-2'>Student’s School Name</p>
-                                          <p className='opacity-80'> {userDetail.schoolName} </p>
+                                          <p className='opacity-80'> {userDetail?.schoolName} </p>
                                        </div>
                                        <div className='mb-7'>
                                           <p className='font-semibold mb-2'>Student Grade</p>
-                                          <p className='opacity-80'>{userDetail.grade}  </p>
+                                          <p className='opacity-80'>{userDetail?.grade}  </p>
                                        </div>
 
                                        <div className='mb-7 col-span-2'>
@@ -506,30 +512,30 @@ export default function ParentProfile({ isOwn }) {
                                        </div>
                                        <div className='mb-7 col-span-2'>
                                           <p className='font-semibold mb-2'> Is your child taking any AP courses in school? Please select all that apply.</p>
-                                          <div> {userDetail.apCourses.map((service, idx) => {
+                                          <div> {userDetail?.apCourses.map((service, idx) => {
                                              return <p className='opacity-80 inline-block mr-1'>
-                                                {service}{idx < userDetail.apCourses.length - 1 ? ',' : ''} </p>
+                                                {service}{idx < userDetail?.apCourses.length - 1 ? ',' : ''} </p>
                                           })}
                                           </div>
                                        </div>
                                        <div className='mb-7 col-span-2'>
                                           <p className='font-semibold mb-2'>Select if any of these apply to you </p>
-                                          <div> {userDetail.motive.map((service, idx) => {
+                                          <div> {userDetail?.motive.map((service, idx) => {
                                              return <p className='opacity-80 mb-1'>
-                                                {service}{idx < userDetail.motive.length - 1 ? ',' : ''}
+                                                {service}{idx < userDetail?.motive.length - 1 ? ',' : ''}
                                              </p>
                                           })}
                                           </div>
                                        </div>
                                        <div className='mb-7 col-span-2'>
                                           <p className='font-semibold mb-2'>Please enter the subscription code required to access Seven Square Learning and starting prep. </p>
-                                          <p className='opacity-80'> {userDetail.subscriptionCode} </p>
+                                          <p className='opacity-80'> {userDetail?.subscriptionCode} </p>
                                        </div>
                                        <div className='mb-7 col-span-2'>
                                           <p className='font-semibold mb-2'>How did you hear about us? </p>
-                                          <div> {userDetail.hearAboutUs.map((service, idx) => {
+                                          <div> {userDetail?.hearAboutUs.map((service, idx) => {
                                              return <p className='opacity-80 inline-block mr-1'>
-                                                {service}{idx < userDetail.hearAboutUs.length - 1 ? ',' : ''} </p>
+                                                {service}{idx < userDetail?.hearAboutUs.length - 1 ? ',' : ''} </p>
                                           })}
                                           </div>
                                        </div>

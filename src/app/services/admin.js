@@ -42,11 +42,36 @@ export const adminServicesApi = createApi({
             },
          })
       }),
+
+      blockUser: builder.mutation({
+         query: (body) => ({
+            url: `/api/user/block/${body.id}`,
+            method: "PATCH",
+            body: body,
+            headers: {
+               "Authorization": sessionStorage.getItem('token'),
+            },
+         })
+      }),
+
+      unblockUser: builder.mutation({
+         query: (body) => ({
+            url: `/api/user/unblock/${body.id}`,
+            method: "PATCH",
+            body: body,
+            headers: {
+               "Authorization": sessionStorage.getItem('token'),
+            },
+         })
+      }),
+
    }),
 });
 
 export const {
    useAddInvoiceMutation,
    useLazyGetParentsByNameQuery,
-   useLazyGetAllInvoiceQuery
+   useLazyGetAllInvoiceQuery,
+   useBlockUserMutation,
+   useUnblockUserMutation
 } = adminServicesApi;

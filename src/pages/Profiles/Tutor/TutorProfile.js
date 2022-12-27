@@ -28,7 +28,7 @@ import SubjectSlider from '../../../components/SubjectSlider/SubjectSlider'
 import BackBtn from '../../../components/Buttons/Back'
 import { useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { useLazyGetUserDetailQuery } from '../../../app/services/users'
+import { useLazyGetTutorDetailsQuery } from '../../../app/services/users'
 import { useLazyGetSettingsQuery } from '../../../app/services/session'
 import { useSelector } from 'react-redux'
 import ParentEditables from '../../Frames/Editables/ParentEditables/ParentEditables'
@@ -102,7 +102,7 @@ export default function TutorProfile({ isOwn }) {
    const [settings, setSettings] = useState({})
 
    const params = useParams()
-   const [getUserDetail, userDetailResp] = useLazyGetUserDetailQuery()
+   const [getUserDetail, userDetailResp] = useLazyGetTutorDetailsQuery()
    const [fetchSettings, settingsResp] = useLazyGetSettingsQuery()
 
    const { id } = useSelector(state => state.user)
@@ -113,35 +113,63 @@ export default function TutorProfile({ isOwn }) {
          firstName: '',
          lastName: '',
       },
-      timeZone: {
+      tagLine: {
          active: false,
-         timeZone: '',
+         tagLine: '',
       },
-      subscribeType: {
+      about: {
          active: false,
-         subscribeType: ''
+         about: '',
       },
-      birthYear: {
+      tutorLevel: {
          active: false,
-         birthyear: '',
+         tutorLevel: '',
       },
-      contact: {
+      education: {
+         active: false,
+         education: ''
+      },
+      rates: {
+         active: false,
+         testPrepRate: '',
+         otherRate: '',
+         subjectTutoringRate: '',
+      },
+      tutorAddress: {
+         active: false,
+         address: '',
+      },
+      pincode: {
+         active: false,
+         pincode: '',
+      },
+      paymentInfo: {
+         active: false,
+         bankName: '',
+         AccNo: '',
+         ifcsCode: ''
+      },
+      tutorRank: {
+         active: false,
+         tutorRank: '',
+      },
+      income: {
+         active: false,
+         income: '',
+      },
+      paymentStatus: {
+         active: false,
+         paymentStatus: '',
+      },
+      tutorContact: {
          active: false,
          email: '',
          phone: '',
-      },
-      address: {
-         active: false,
-         residentialAddress: '',
-      },
+         linkedIn: '',
+      }
    })
 
    const handleClose = () => {
-      let tempToEdit = {}
-      // Object.keys(toEdit).map(key => {
-      //    return tempToEdit[key] = { ...toEdit[key], active: false }
-      // })
-      // setToEdit(tempToEdit)
       setToEdit(prevToEdit => {
          let obj = {}
          Object.keys(prevToEdit).map(key => {
@@ -184,10 +212,11 @@ export default function TutorProfile({ isOwn }) {
                   timeZone: {
                      ...prevToEdit.timeZone,
                   },
-                  contact: {
-                     ...prevToEdit.contact,
+                  tutorContact: {
+                     ...prevToEdit.tutorContact,
                      email: email,
-                     phone: phone === null ? '' : phone
+                     phone: phone === null ? '' : phone,
+                     linkedIn: ''
                   },
                   notes: {
                      ...prevToEdit.notes,
@@ -224,7 +253,7 @@ export default function TutorProfile({ isOwn }) {
          <div className='lg:ml-pageLeft bg-lightWhite min-h-screen pb-120'>
             <div className='lg:px-5 lg:pt-0 lg:pr-0 relative'>
                <div className={styles.backBtn} >
-                  <BackBtn to='/dashboard' />
+                  <BackBtn to={-1} />
                </div>
                <div className='relative'>
                   <img src={TutorImg} style={{ transform: 'matrix(-1, 0, 0, 1, 0, 0)' }} />
@@ -236,11 +265,13 @@ export default function TutorProfile({ isOwn }) {
                         editable={editable}
                         onClick={() => setToEdit({ ...toEdit, fullName: { ...toEdit.fullName, active: true } })}
                         className='text-[#4F33BD] justify-center font-bold text-[50px] capitalize'
-                        // textClassName='flex-1'
                         imgClass='ml-auto' />
-                     <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                     </p>
+
+                     <EditableText text={`${'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'}`}
+                        editable={editable}
+                        onClick={() => setToEdit({ ...toEdit, tagLine: { ...toEdit.tagLine, active: true } })}
+                        className='text-black justify-center font-normal'
+                        imgClass='ml-auto' />
                   </div>
                </div>
 
@@ -254,7 +285,7 @@ export default function TutorProfile({ isOwn }) {
                         >
                            <EditableText text={`${user.firstName} ${user.lastName}`}
                               editable={editable}
-                              onClick={() => setToEdit({ ...toEdit, fullName: { ...toEdit.fullName, active: true } })}
+                              onClick={() => setToEdit({ ...toEdit, tutorLevel: { ...toEdit.tutorLevel, active: true } })}
                               className='text-primaryOrangeDark justify-center font-bold text-lg capitalize'
                               textClassName='flex-1'
                               imgClass='ml-auto' />
@@ -268,7 +299,8 @@ export default function TutorProfile({ isOwn }) {
                         hideShadow={true}
                         body={
                            <>
-                              <p className='text-primary font-bold lg:text-21 text-center mb-10'>Service Specializations</p>
+                              <p className='text-primary font-bold lg:text-21 text-center mb-10'>
+                                 Service Specializations</p>
                               <div className='flex flex-col row-span-2 overflow-x-auto scrollbar-content'>
                                  {values.map(val => {
                                     return (
@@ -289,6 +321,14 @@ export default function TutorProfile({ isOwn }) {
                      <ProfileCard hideShadow
                         titleClassName='text-left'
                         className='mt-53 lg:mt-0 flex-1'
+                        title={
+                           <EditableText text=''
+                              editable={editable}
+                              onClick={() => setToEdit({ ...toEdit, about: { ...toEdit.about, active: true } })}
+                              className='text-primary text-lg capitalize'
+                              textClassName='flex-1'
+                              imgClass='ml-auto' />
+                        }
                         body={
                            <>
                               <p className='mt-[90px]'>
@@ -300,8 +340,15 @@ export default function TutorProfile({ isOwn }) {
                            </>
                         } />
 
-                     <ProfileCard className='lg:mt-4'
-                        title='Contact' hideShadow
+                     <ProfileCard className='lg:mt-4' hideShadow
+                        title={
+                           <EditableText text='Contact'
+                              editable={editable}
+                              onClick={() => setToEdit({ ...toEdit, tutorContact: { ...toEdit.tutorContact, active: true } })}
+                              textClassName='flex-1 text-center'
+                              className='text-primary text-lg capitalize  '
+                              imgClass='ml-auto' />
+                        }
                         body={
                            <div className='flex justify-center mt-5 lg:mt-3'>
                               <div className='flex flex-col items-center mr-8'>
@@ -312,11 +359,15 @@ export default function TutorProfile({ isOwn }) {
                               </div>
                               <div className='flex flex-col items-center mr-8'>
                                  <img src={MailIcon} />
-                                 <p className='mt-1 font-medium opacity-60 text-xs'>ranasapna78@gmail.com</p>
+                                 <p className='mt-1 font-medium opacity-60 text-xs'>
+                                    {user.email ? user.email : ''}
+                                 </p>
                               </div>
                               <div className='flex flex-col items-center'>
                                  <img src={WhatsappIcon} />
-                                 <p className='mt-1 font-medium.4 opacity-60 text-xs'>+91 012-3456-789</p>
+                                 <p className='mt-1 font-medium.4 opacity-60 text-xs'>
+                                    {user.phone ? user.phone : ''}
+                                 </p>
                               </div>
                            </div>
                         } />
@@ -332,7 +383,7 @@ export default function TutorProfile({ isOwn }) {
                                  <div className='mb-2'>
                                     <EditableText text='Education'
                                        editable={editable}
-                                       // onClick={() => setToEdit({ ...toEdit, fullName: { ...toEdit.fullName, active: true } })}
+                                       onClick={() => setToEdit({ ...toEdit, education: { ...toEdit.education, active: true } })}
                                        className='text-primary text-lg capitalize'
                                        textClassName='flex-1'
                                        imgClass='ml-auto' />
@@ -373,19 +424,31 @@ export default function TutorProfile({ isOwn }) {
                      body={
                         <div className='overflow-x-auto scrollbar-content'>
                            <div className='mb-6'>
-                              <p className='text-primary font-bold text-lg'> Test Prep Rate </p>
+                              <EditableText text='Test Prep Rate'
+                                 editable={editable}
+                                 onClick={() => setToEdit({ ...toEdit, rates: { ...toEdit.rates, active: true } })}
+                                 className='text-primary justify-between text-lg capitalize'
+                                 imgClass='ml-auto' />
                               <p className='mt-1.5  font-medium text-sm whitespace-nowrap'>
                                  Add tutor’s rate
                               </p>
                            </div>
                            <div className='mb-6'>
-                              <p className='text-primary font-bold text-lg'> Subject Tutoring Rate </p>
+                              <EditableText text='Subject Tutoring Rate'
+                                 editable={editable}
+                                 onClick={() => setToEdit({ ...toEdit, rates: { ...toEdit.rates, active: true } })}
+                                 className='text-primary justify-between text-lg capitalize'
+                                 imgClass='ml-auto' />
                               <p className='mt-1.5 font-medium text-sm whitespace-nowrap'>
                                  Add tutor’s rate
                               </p>
                            </div>
                            <div>
-                              <p className='text-primary font-bold text-lg'> Other Rate </p>
+                              <EditableText text='Other Rate'
+                                 editable={editable}
+                                 onClick={() => setToEdit({ ...toEdit, rates: { ...toEdit.rates, active: true } })}
+                                 className='text-primary justify-between text-lg capitalize'
+                                 imgClass='ml-auto' />
                               <p className='mt-1.5 font-medium text-sm whitespace-nowrap'>
                                  Add tutor’s level
                               </p>
@@ -399,7 +462,7 @@ export default function TutorProfile({ isOwn }) {
                         <div className='overflow-x-auto scrollbar-content'>
                            <div className='mb-6'>
                               <EditableText editable={editable}
-                                 onClick={() => setToEdit({ ...toEdit, address: { ...toEdit.address, active: true } })}
+                                 onClick={() => setToEdit({ ...toEdit, tutorAddress: { ...toEdit.tutorAddress, active: true } })}
                                  text='Address'
                                  className='text-xl justify-between'
                               />
@@ -418,7 +481,11 @@ export default function TutorProfile({ isOwn }) {
                      body={
                         <div className='overflow-x-auto scrollbar-content'>
                            <div className='mb-6'>
-                              <p className='text-primary font-bold text-lg'> Payment Info </p>
+                              <EditableText editable={editable}
+                                 onClick={() => setToEdit({ ...toEdit, paymentInfo: { ...toEdit.paymentInfo, active: true } })}
+                                 text='Payment Info'
+                                 className='text-xl justify-between'
+                              />
                               <p className='mt-1.5  font-medium text-sm max-w-[100px]'>
                                  Bank Name
                                  Acc No.
@@ -435,19 +502,31 @@ export default function TutorProfile({ isOwn }) {
                      body={
                         <div className='overflow-x-auto scrollbar-content'>
                            <div className='mb-6'>
-                              <p className='text-primary font-bold text-lg'>  Tutor Rank </p>
+                              <EditableText editable={editable}
+                                 onClick={() => setToEdit({ ...toEdit, tutorRank: { ...toEdit.tutorRank, active: true } })}
+                                 text='Tutor Rank'
+                                 className='text-xl justify-between'
+                              />
                               <p className='mt-1.5  font-medium text-sm whitespace-nowrap'>
                                  #23
                               </p>
                            </div>
                            <div className='mb-6'>
-                              <p className='text-primary font-bold text-lg'> Income </p>
+                              <EditableText editable={editable}
+                                 onClick={() => setToEdit({ ...toEdit, income: { ...toEdit.income, active: true } })}
+                                 text='Income'
+                                 className='text-xl justify-between'
+                              />
                               <p className='mt-1.5 font-medium text-sm whitespace-nowrap'>
                                  Open
                               </p>
                            </div>
                            <div>
-                              <p className='text-primary font-bold text-lg'> Payment Status </p>
+                              <EditableText editable={editable}
+                                 onClick={() => setToEdit({ ...toEdit, paymentStatus: { ...toEdit.paymentStatus, active: true } })}
+                                 text='Payment Status'
+                                 className='text-xl justify-between'
+                              />
                               <p className='mt-1.5 font-medium text-sm whitespace-nowrap'>
                                  Unpaid
                               </p>

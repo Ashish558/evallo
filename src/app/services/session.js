@@ -63,7 +63,7 @@ export const sessionServicesApi = createApi({
             method: "POST",
             body: body,
             headers: {
-               "Content-type": "application/json; charset=UTF-8",
+               "Authorization": sessionStorage.getItem('token'),
             },
          })
       }),

@@ -55,7 +55,7 @@ export default function Modal({
                      >
                         {primaryBtn.text}
                      </button>
-                  )}
+                  )} 
                </div>
                <button className={styles.cancelBtn} 
                 style={cancelBtnStyle}

@@ -3,6 +3,7 @@
          #7152eb 10.45%,
          rgba(247, 125, 86, 0.99) 84.22%);
    padding-top: 139px;
+   position: relative;
 }
 
 .imgContainer {
@@ -66,8 +67,8 @@
    }
 
    .imgContainer img {
-      width: 165px;
-      height: 165px;
+      width: 195px;
+      height: 195px;
       border-radius: 50%;
    }
 

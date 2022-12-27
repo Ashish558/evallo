@@ -75,7 +75,7 @@ export default function AssignedStudents() {
                      onChange={val => setFilterData({ ...filterData, timeZone: val })}
                      optionData={optionData}
                      inputContainerClassName="pt-3.5 pb-3.5 border bg-white"
-                     placeholder="Time Zone"
+                     placeholder="Time ZoneSe"
                      parentClassName="w-full mr-4"
                      type="select"
                   />

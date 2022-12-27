@@ -24,7 +24,7 @@ import {
    useLazyGetTutorStudentsQuery,
    useLazyGetUsersByNameQuery,
 } from "../../app/services/session";
-import { convertTime12to24, getLocalTimeZone } from "../../utils/utils";
+import { convertDateToTimezone, convertTime12to24, formatAMPM, getFormattedDate, getLocalTimeZone } from "../../utils/utils";
 import InputSelect from "../../components/InputSelect/InputSelect";
 // import styles from "./calendar.css";
 import momentTimezonePlugin from '@fullcalendar/moment-timezone';
@@ -199,20 +199,20 @@ export default function Calendar() {
       let text = arg.text.split(" ");
       return (
          <div
-            className={`px-3 py-1 rounded-7 ${arg.isToday ? "bg-primary border" : ""
+            className={`p-[10px] rounded-7 ${arg.isToday ? "bg-primary border" : ""
                }  `}
          >
             <p
                className={`${arg.isToday ? "text-primaryWhite-900" : ""
                   } text-sm font-semibold
-                   ${arg.isPast ? "text-primaryWhite-100" : arg.isFuture ? 'text-primary-60' : ''} `}
+                   ${arg.isPast ? "text-[#BEC2CE]" : arg.isFuture ? 'text-primary-60' : ''} `}
             >
                {days[arg.date.getDay()]}
             </p>
             <p
                className={`${arg.isToday ? "text-primaryWhite-900" : ""
                   } text-2xl font-bold font-inter
-                   ${arg.isPast ? "text-primaryWhite-100" : arg.isFuture ? 'text-primary-dark' : ''
+                   ${arg.isPast ? "text-[#BEC2CE]" : arg.isFuture ? 'text-primary-dark' : ''
                   }`}
             >
                {text[1]}
@@ -385,42 +385,34 @@ export default function Calendar() {
          return prev.map(item => {
             // console.log('item.start :', item.start)
             const ev = eventDetails.find(ev => ev._id === item.id)
-            // // console.log('utc', new Date(ev.date).toUTCString())
-            // let startTime = item.start
-            // if (timeZone === 'IST' && ev.timeZone !== timeZone) {
-            //    startTime = moment.tz(`${item.start}`, 'Asia/Kolkata').format()
-            // } else {
-            //    startTime = moment.tz(`${item.start}`, timeZone).format()
-            // }
-            // if (ev.timeZone === timeZone) {
-            //    startTime = item.start
-            //    // console.log(ev)
-            //    // moment.tz(`${item.start}`, 'Indian').format()
-            // }
             const time = ev.time;
-            const startTime = convertTime12to24(
-               `${time.start.time} ${time.start.timeType}`
-            );
+            // const startTime = convertTime12to24(
+            //    `${time.start.time} ${time.start.timeType}`
+            // );
 
-            const startHours = parseInt(startTime.split(":")[0]);
-            const startMinutes = parseInt(startTime.split(":")[1]);
+            // const startHours = parseInt(startTime.split(":")[0]);
+            // const startMinutes = parseInt(startTime.split(":")[1]);
 
-            let startDate = new Date(ev.date);
-            startHours !== NaN && startDate.setHours(startHours);
-            startMinutes !== NaN && startDate.setMinutes(startMinutes);
+            // let startDate = new Date(ev.date);
+            // startHours !== NaN && startDate.setHours(startHours);
+            // startMinutes !== NaN && startDate.setMinutes(startMinutes);
 
-            let date = new Date(new Date(
-               startDate.toLocaleString('en-US', {
-                 timeZone,
-               }),
-             ))
+            // let date = new Date(new Date(
+            //    startDate.toLocaleString('en-US', {
+            //       timeZone,
+            //    }),
+            // ))
+            const startTimer = convertDateToTimezone(ev.time.start.time, ev.time.start.timeType, ev.date, timeZone)
+
+            const endTime = convertDateToTimezone(ev.time.end.time, ev.time.end.timeType, ev.date, timeZone)
+           
             // console.log('updated date', date);
             // console.log('item.start' ,item.start);
             // console.log(date);
             // console.log('startTime :', new Date(startTime).getHours())
             // console.log(moment.utc().format('YYYY-MM-DD hh:mm:ss A'));
             // console.log(moment.utc().format('YYYY-MM-DD hh:mm:ss A'));
-            return { ...item, start: date }
+            return { ...item, start: startTimer, description: `${formatAMPM(startTimer)} - ${formatAMPM(endTime)}` }
          })
       })
       // document.getElementById('calendarContainer').refetchEvents()
@@ -433,7 +425,7 @@ export default function Calendar() {
       <>
          <div className="lg:ml-pageLeft bg-lightWhite min-h-screen">
             <div className="py-14 pl-5 calendar flex">
-               <div className="p-10 pl-0 pr-3 w-1/5 w-[320px]">
+               <div className="p-10 pl-0 pr-0 w-[280px] mr-[10px]">
                   <div className="w-[280px]" >
                      <SimpleCalendar currentDate={currentDate} setCurrentDate={setCurrentDate} />
                   </div>
@@ -526,11 +518,12 @@ export default function Calendar() {
                         end: "",
                      }}
                      titleFormat={{
-                        month: "long",
+                        day: "numeric",
+                        month: "numeric",
                         year: "numeric",
                      }}
                      expandRows={true}
-                     contentHeight={1850}
+                     contentHeight={"100%"}
                      dayHeaderFormat={{
                         day: "2-digit",
                         month: "narrow",

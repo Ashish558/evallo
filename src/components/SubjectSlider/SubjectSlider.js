@@ -4,21 +4,24 @@ import OwlCarousel from "react-owl-carousel";
 import "owl.carousel/dist/assets/owl.carousel.css";
 import "owl.carousel/dist/assets/owl.theme.default.css";
 
-export default function SubjectSlider({className, title, totalMarks, outOf, subjects }) {
+export default function SubjectSlider({className, title, header, totalMarks, outOf, subjects }) {
 
 
    return (
       <div className={className ? className : ''} >
-         <OwlCarousel className="owl-theme" loop margin={30} items={1}>
+         <OwlCarousel className="owl-theme" nav loop dots margin={30} items={1}>
             <div className="item px-2 mt-3">
                <div className="flex items-center justify-between">
                   <div className="">
+                     <div className={`text-[#4715D7] font-bold text-[21px] mb-[20px]`}>
+                        {header}
+                     </div>
                      <div className={styles.circle} >
                         <div className={styles.circleInner} ></div>
                         <div className={`z-4 ${styles.circleContent}`}>
                            <div className='flex justify-center flex-col items-center'>
-                              <p className='font-bold text-4xl text-center text-primary'> {totalMarks} </p>
-                              <p className='text-xs font-bold' > Out of {outOf} </p>
+                              <p className='font-bold text-[42.84px] text-center text-primary'> {totalMarks} </p>
+                              <p className='text-[10.28px] font-bold' > Out of {outOf} </p>
                            </div>
                         </div>
                      </div>

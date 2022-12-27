@@ -43,7 +43,7 @@ export default function TableItem({ item, dataFor, onClick }) {
                <td className="font-semibold text-sm px-1  min-w-14 py-4 text-primaryBlue text-left">
                   <span
                      className="inline-block cursor-pointer pl-4"
-                     onClick={()=> onClick.redirect(item)}
+                     onClick={() => onClick.redirect(item)}
                   >
                      {item.name}
                   </span>
@@ -75,7 +75,12 @@ export default function TableItem({ item, dataFor, onClick }) {
                </td>
                <td className="font-medium text-sm px-1  min-w-14 py-4">
                   <div className="my-[6px]">
-                     {item.tutorStatus}
+                     {/* {item.userType === 'tutor' ? */}
+                     <span className="cursor-pointer inline-block px-1" onClick={() => onClick.handleTutorStatus(item,)}>
+                        {item.block === false ? 'Active' : 'Dormant'}
+                     </span>
+                     {/* : */}
+                     {/* item.tutorStatus} */}
                   </div>
                </td>
                <td className="font-medium text-sm px-1  min-w-14 py-4">
@@ -272,43 +277,43 @@ export default function TableItem({ item, dataFor, onClick }) {
 }
 
 const mapData = (data, dataFor, exclude = []) => {
-   
+
    return Object.keys(data).map((key, i) =>
       dataFor === 'invoice' && exclude.includes(key) ? <></> :
-      (
-         key === "Accuracy" ? (
-            <td className="font-medium px-1  min-w-14 py-4">
-               <div className="flex items-center justify-center">
-                  <img
-                     src={
-                        data[key] > 80
-                           ? SuccessIcon
-                           : FailIcon
-                     }
-                     className="flex"
-                  />
-               </div>
-            </td>
-         ) :
-            dataFor === 'invoice' && key === 'currentBalance' ? (
-               <td className='font-medium px-1 text-[#009262]  py-4'>
-                  <p className={`font-semibold ${data.status === 'Paid' && "text-[#E02B1D]"} ${data.status === 'Unpaid' && "text-[#009262]"} ${data.status === 'Cancelled' && "text-[#E48900]"}`}>
-                     {data[key] === "Paid" && "-"}{data[key]}
-                  </p>
+         (
+            key === "Accuracy" ? (
+               <td className="font-medium px-1  min-w-14 py-4">
+                  <div className="flex items-center justify-center">
+                     <img
+                        src={
+                           data[key] > 80
+                              ? SuccessIcon
+                              : FailIcon
+                        }
+                        className="flex"
+                     />
+                  </div>
                </td>
             ) :
-               dataFor === 'assignedStudents' && key === 'name' || key === 'parent' ? (
-                  <td className={`font-medium px-1 ${data[key] === "Unpaid" && 'text-[#E02B1D]'} ${data[key] === "Paid" && 'text-[#009262]'} ${data[key] === "Cancelled" && 'text-[#7C859C]'} min-w-14 py-4 ${key === "paidOn" && "text-[16px]"}`}>
-                     <p className={`pl-4 ${key === 'name' ? 'text-left' : ''} font-semibold`}>
-                        {data[key]}
+               dataFor === 'invoice' && key === 'currentBalance' ? (
+                  <td className='font-medium px-1 text-[#009262]  py-4'>
+                     <p className={`font-semibold ${data.status === 'Paid' && "text-[#E02B1D]"} ${data.status === 'Unpaid' && "text-[#009262]"} ${data.status === 'Cancelled' && "text-[#E48900]"}`}>
+                        {data[key] === "Paid" && "-"}{data[key]}
                      </p>
                   </td>
                ) :
-                  (
-                     <td className={`font-medium px-1 ${data[key] === "Unpaid" && "text-[#E02B1D]"} ${data[key] === 'Paid' && "text-[#009262]"} ${data[key] === 'Cancelled' && "text-[#7C859C]"} min-w-14 py-4`}>
-                        {data[key]}
+                  dataFor === 'assignedStudents' && key === 'name' || key === 'parent' ? (
+                     <td className={`font-medium px-1 ${data[key] === "Unpaid" && 'text-[#E02B1D]'} ${data[key] === "Paid" && 'text-[#009262]'} ${data[key] === "Cancelled" && 'text-[#7C859C]'} min-w-14 py-4 ${key === "paidOn" && "text-[16px]"}`}>
+                        <p className={`pl-4 ${key === 'name' ? 'text-left' : ''} font-semibold`}>
+                           {data[key]}
+                        </p>
                      </td>
-                  )
-      ))
+                  ) :
+                     (
+                        <td className={`font-medium px-1 ${data[key] === "Unpaid" && "text-[#E02B1D]"} ${data[key] === 'Paid' && "text-[#009262]"} ${data[key] === 'Cancelled' && "text-[#7C859C]"} min-w-14 py-4`}>
+                           {data[key]}
+                        </td>
+                     )
+         ))
 
 }
