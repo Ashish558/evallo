@@ -121,7 +121,7 @@ export default function Invoice() {
          //       <p className='font-bold text-[48px] mb-[30px] text-[#25335A]'> Invoices </p>
          //       <div className='flex'>
          //          <div className='grid grid-cols-2 flex-1 gap-x-[46px] gap-y-[16px] mr-[50px]'> */}
-         <div className='lg:ml-pageLeft bg-lightWhite min-h-screen pt-[30px] pb-[50px] pl-[20px] pr-[41px]'>
+         <div className='lg:ml-pageLeft bg-lightWhite min-h-screen pt-[30px] pb-[50px] pl-[61px] pr-[41px]'>
             <div className=''>
                <p className='font-bold text-[48px] mb-[30px] text-[#25335A]'> Invoice </p>
                <form className='flex' onSubmit={handleSubmit} >
@@ -165,7 +165,7 @@ export default function Invoice() {
                         labelClassname="ml-2 mb-1.2"
                         optionData={options}
                         placeholder="Select Test Type"
-                        inputContainerClassName="bg-white border pt-2.5 pb-2.5"
+                        inputContainerClassName="bg-white border py-2.5 px-[20px]"
                         parentClassName="w-full"
                         inputClassName='bg-transparent'
                         type="select"

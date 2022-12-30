@@ -58,7 +58,7 @@ const ConceptSection = () => {
 
    return (
       <div
-         className="flex justify-between "
+         className="flex justify-between ml-[35px]"
          id={styles.conceptSectionContainer}
       >
          <div className="w-2/3" id={styles.conceptChart}>

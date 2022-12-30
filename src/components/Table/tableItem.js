@@ -77,7 +77,7 @@ export default function TableItem({ item, dataFor, onClick }) {
                   <div className="my-[6px]">
                      {/* {item.userType === 'tutor' ? */}
                      <span className="cursor-pointer inline-block px-1" onClick={() => onClick.handleTutorStatus(item,)}>
-                        {item.block === false ? 'Active' : 'Dormant'}
+                        {item.block === false ? 'Active' : item.userType === 'parent' || item.userType ==='student' ? 'Blocked' : 'Dormant'}
                      </span>
                      {/* : */}
                      {/* item.tutorStatus} */}

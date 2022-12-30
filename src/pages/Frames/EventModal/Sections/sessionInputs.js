@@ -3,7 +3,7 @@ import CCheckbox from '../../../../components/CCheckbox/CCheckbox'
 import InputField from '../../../../components/InputField/inputField'
 import InputSelect from '../../../../components/InputSelect/InputSelect'
 
-export default function SessionInputs({ data, setData, status }) {
+export default function SessionInputs({ data, setData, status, isEditable }) {
 
    const persona = sessionStorage.getItem('role')
 
@@ -25,6 +25,7 @@ export default function SessionInputs({ data, setData, status }) {
                      session: e.target.value,
                   })
                }
+               disabled={!isEditable}
             />
             {persona === "student" ? (
                <div className="w-full flex flex-col items-start">
@@ -44,13 +45,15 @@ export default function SessionInputs({ data, setData, status }) {
                      placeholder="Session Status"
                      parentClassName="w-full mr-4"
                      type="select"
+                     disabled={!isEditable}
                   />
                   <div className="flex mb-3 mt-3 ml-3">
                      <CCheckbox checked={data.rescheduling} name='rescheduling' onChange={() =>
                         setData({
                            ...data,
                            rescheduling: !data.rescheduling,
-                        })} />
+                        })}
+                        disabled={!isEditable} />
                      <p className="font-medium text-primary-60 text-sm">
                         Rescheduling
                      </p>
@@ -66,6 +69,7 @@ export default function SessionInputs({ data, setData, status }) {
                            sessionStatus: val,
                         })
                      }
+                     disabled={!isEditable}
                      optionData={status}
                      inputContainerClassName="bg-lightWhite border-0 font-medium pr-3 pt-3.5 pb-3.5"
                      inputClassName="bg-transparent appearance-none font-medium"
@@ -78,7 +82,7 @@ export default function SessionInputs({ data, setData, status }) {
                         setData({
                            ...data,
                            rescheduling: !data.rescheduling,
-                        })} />
+                        })} disabled={!isEditable} />
                      <p className="font-medium text-primary-60 text-sm">
                         Rescheduling
                      </p>

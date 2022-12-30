@@ -49,109 +49,107 @@ export default function Questions({
    }, []);
 
    return (
-      <div className="mt-5 mb-7">
-         <div className="">
-            <div className="mb-5">
-               <p className="font-medium mb-1">
-                  Do you have any PSAT / P-ACT scores to share? How are
-                  your student's grades in school?
-               </p>
-               <textarea
-                  rows={3}
-                  className="border bg-transparent w-full outline-0 px-5 py-4 rounded"
-                  value={otherDetails.aboutScore}
-                  onChange={(e) =>
-                     setOtherDetails({
-                        ...otherDetails,
-                        aboutScore: e.target.value,
-                     })
-                  }
-               ></textarea>
-            </div>
-
-            <p className="font-medium mb-7">
-               Are you / your child taking any AP courses in school? Please
-               select all that apply.
+      <div className="mb-7">
+         <div className="mb-4">
+            <p className="font-medium text-[14px] mb-1">
+               Do you have any PSAT / P-ACT scores to share? How are
+               your student's grades in school?
             </p>
-            <div className="grid grid-cols-2 mb-10">
-               {apCourses.map((item, idx) => {
+            <textarea
+               rows={3}
+               className="border bg-transparent w-full outline-0 px-5 py-4 rounded"
+               value={otherDetails.aboutScore}
+               onChange={(e) =>
+                  setOtherDetails({
+                     ...otherDetails,
+                     aboutScore: e.target.value,
+                  })
+               }
+            ></textarea>
+         </div>
+
+         <p className="font-medium text-[14px] mb-3">
+            Are you / your child taking any AP courses in school? Please
+            select all that apply.
+         </p>
+         <div className="grid grid-cols-2 mb-4">
+            {apCourses.map((item, idx) => {
+               return (
+                  <div
+                     key={idx}
+                     className="flex items-center mb-4 mr-6 text-[12px]"
+                     onClick={() =>
+                        handleCheckboxChange(
+                           item.text,
+                           apCourses,
+                           setApCourses
+                        )
+                     }
+                  >
+                     <div className={`${styles.container}`}>
+                        <input
+                           checked={item.checked}
+                           type="checkbox"
+                           name="tests"
+                           value=""
+                        />
+                        <span class={styles.checkmark}></span>
+                     </div>
+                     <p className="font-medium text-md whitespace-nowrap opacity-90">
+                        {item.text}
+                     </p>
+                  </div>
+               );
+            })}
+         </div>
+
+         <div className="">
+            <p className="font-medium mb-3 text-[14px]">
+               Select if any of these apply to you
+            </p>
+            <div className="grid grid-cols-1 mb-4">
+               {motive.map((item, idx) => {
                   return (
                      <div
                         key={idx}
-                        className="flex items-center mb-6 mr-6"
+                        className="flex items-center text-[12px] mb-3 mr-6"
                         onClick={() =>
                            handleCheckboxChange(
                               item.text,
-                              apCourses,
-                              setApCourses
+                              motive,
+                              setMotive
                            )
                         }
                      >
-                        <div className={`${styles.container} `}>
+                        <div className={`${styles.container} text-[12px]`}>
                            <input
                               checked={item.checked}
                               type="checkbox"
-                              name="tests"
+                              name="questions"
                               value=""
                            />
                            <span class={styles.checkmark}></span>
                         </div>
-                        <p className="font-medium text-lg whitespace-nowrap opacity-90">
+                        <p className="font-medium text-[12px] opacity-90 leading-5">
                            {item.text}
                         </p>
                      </div>
                   );
                })}
             </div>
+         </div>
 
-            <div className="">
-               <p className="font-medium mb-6">
-                  Select if any of these apply to you
-               </p>
-               <div className="grid grid-cols-1 mb-6">
-                  {motive.map((item, idx) => {
-                     return (
-                        <div
-                           key={idx}
-                           className="flex items-center mb-7 mr-6"
-                           onClick={() =>
-                              handleCheckboxChange(
-                                 item.text,
-                                 motive,
-                                 setMotive
-                              )
-                           }
-                        >
-                           <div className={`${styles.container} `}>
-                              <input
-                                 checked={item.checked}
-                                 type="checkbox"
-                                 name="questions"
-                                 value=""
-                              />
-                              <span class={styles.checkmark}></span>
-                           </div>
-                           <p className="font-medium text-lg text-sm opacity-90 leading-5">
-                              {item.text}
-                           </p>
-                        </div>
-                     );
-                  })}
-               </div>
-            </div>
-
-            <div className="flex items-center mt-12">
-               <SecondaryButton
-                  children="Back"
-                  className="text-lg pt-3 pb-3 text-white mr-6 w-140"
-                  onClick={handleBack}
-               />
-               <PrimaryButton
-                  children="Next"
-                  className="text-lg pt-3 pb-3 font-semibold text-white mr-6 w-140"
-                  onClick={() => handleSubmit()}
-               />
-            </div>
+         <div className="flex items-center mt-0">
+            <SecondaryButton
+               children="Back"
+               className="text-md pt-3 pb-3 text-white mr-6 w-140"
+               onClick={handleBack}
+            />
+            <PrimaryButton
+               children="Next"
+               className="text-md pt-3 pb-3 font-semibold text-white mr-6 w-140"
+               onClick={() => handleSubmit()}
+            />
          </div>
       </div>
    );

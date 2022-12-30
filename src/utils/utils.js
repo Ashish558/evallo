@@ -47,14 +47,14 @@ export const getFormattedDate = argDate => {
    let year = date.getFullYear()
    let month = date.getMonth()
    let dateNum = date.getDate()
-
+   month = month + 1
    if (month < 10) {
       month = `0${month}`
    }
    if (dateNum < 10) {
       dateNum = `0${dateNum}`
    }
-   let dateFormatted = `${year}-${month + 1}-${dateNum}`
+   let dateFormatted = `${year}-${month}-${dateNum}`
    return dateFormatted
 }
 
@@ -97,7 +97,7 @@ export const getLocalTimeZone = () => {
    return tz
 }
 
-export const convertDateToTimezone = (t, tType, date, timeZone) => {
+export const convertDateToTimezone = (t, tType, date, timeZone, originalTimeZone) => {
    const time = t;
    const timeType = tType;
 
@@ -126,10 +126,28 @@ export function formatAMPM(date) {
    var ampm = hours >= 12 ? 'pm' : 'am';
    hours = hours % 12;
    hours = hours ? hours : 12; // the hour '0' should be '12'
-   minutes = minutes < 10 ? '0'+minutes : minutes;
+   minutes = minutes < 10 ? '0' + minutes : minutes;
    var strTime = hours + ':' + minutes + ' ' + ampm;
    return strTime;
- }
+}
+
+export const getStartDate = (startDate, userTimezoneOffset, timeZone) => {
+   if (timeZone === 'US/Central') {
+      return new Date(startDate.getTime() - userTimezoneOffset + 6 * 3600000);
+   } else if (timeZone === 'US/Alaska') {
+      return new Date(startDate.getTime() - userTimezoneOffset + 9 * 3600000);
+   } else if (timeZone === 'US/Eastern') {
+      return new Date(startDate.getTime() - userTimezoneOffset + 5 * 3600000);
+   } else if (timeZone === 'US/Hawaii') {
+      return new Date(startDate.getTime() - userTimezoneOffset + 10 * 3600000);
+   } else if (timeZone === 'US/Mountain') {
+      return new Date(startDate.getTime() - userTimezoneOffset + 7 * 3600000);
+   } else if (timeZone === 'US/Pacific') {
+      return new Date(startDate.getTime() - userTimezoneOffset + 8 * 3600000);
+   } else {
+      return new Date(startDate.getTime() - userTimezoneOffset - 5.5 * 3600000);
+   }
+}
 // // timezones
 // function getCurrentLocalDateTime() {
 //    return moment().format();

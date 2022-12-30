@@ -66,7 +66,7 @@ export default function AssignedStudents() {
                      onChange={e => setFilterData({ ...filterData, studentName: e.target.value })}
                      optionData={optionData}
                      placeholder="Student Name"
-                     inputContainerClassName="border bg-white pt-3.5 pb-3.5"
+                     inputContainerClassName="border bg-white py-[16px] px-[20px]"
                      parentClassName="w-full mr-4"
                      type="text"
                   />
@@ -74,7 +74,7 @@ export default function AssignedStudents() {
                      value={filterData.timeZone}
                      onChange={val => setFilterData({ ...filterData, timeZone: val })}
                      optionData={optionData}
-                     inputContainerClassName="pt-3.5 pb-3.5 border bg-white"
+                     inputContainerClassName="py-[16px] px-[20px] border bg-white"
                      placeholder="Time ZoneSe"
                      parentClassName="w-full mr-4"
                      type="select"
@@ -83,7 +83,7 @@ export default function AssignedStudents() {
                      value={filterData.service}
                      onChange={val => setFilterData({ ...filterData, service: val })}
                      optionData={optionData}
-                     inputContainerClassName="pt-3.5 pb-3.5 border bg-white"
+                     inputContainerClassName="py-[16px] px-[20px] border bg-white"
                      placeholder="Service"
                      parentClassName="w-full mr-4"
                      type="select"
@@ -92,7 +92,7 @@ export default function AssignedStudents() {
                      value={filterData.date}
                      onChange={val => setFilterData({ ...filterData, date: val })}
                      optionData={optionData}
-                     inputContainerClassName="pt-3.5 pb-3.5 border bg-white"
+                     inputContainerClassName="py-[16px] px-[20px] border bg-white"
                      placeholder="Start Date"
                      parentClassName="w-full mr-4"
                      type="select"
@@ -101,7 +101,7 @@ export default function AssignedStudents() {
                      value={filterData.status}
                      onChange={val => setFilterData({...filterData, status: val})}
                      optionData={optionData}
-                     inputContainerClassName="pt-3.5 pb-3.5 border bg-white"
+                     inputContainerClassName="py-[16px] px-[20px] border bg-white"
                      placeholder="Status"
                      parentClassName="w-full mr-4"
                      type="select"

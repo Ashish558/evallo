@@ -17,7 +17,8 @@ export default function InputSelect({
    radio,
    checkbox,
    optionClassName,
-   optionType
+   optionType,
+   disabled
 }) {
    const [selected, setSelected] = useState(false);
    const selectRef = useRef();
@@ -31,7 +32,7 @@ export default function InputSelect({
       <div
          ref={selectRef}
          className={`${selected && "relative z-5000"} ${parentClassName ? parentClassName : ""
-            }`}
+            } ${disabled === true ? 'pointer-events-none' : ''} ` }
          onClick={() => setSelected(true)}
       >
          <label className={`font-semibold inline-block ${labelClassname}`}>
@@ -40,7 +41,7 @@ export default function InputSelect({
 
          <div
             className={`py-[16px] px-[21px] flex items-center rounded-10 relative cursor-pointer z-50 ${inputContainerClassName ? inputContainerClassName : ""
-               }`}
+               } `}
          >
             {Icon && <img src={Icon} className="mr-6" alt="icon" />}
             {

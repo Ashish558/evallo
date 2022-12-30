@@ -116,18 +116,22 @@ export default function TutorProfile({ isOwn }) {
       tagLine: {
          active: false,
          tagLine: '',
+         isPresent: false,
       },
       about: {
          active: false,
          about: '',
+         isPresent: false,
       },
       tutorLevel: {
          active: false,
          tutorLevel: '',
+         isPresent: false,
       },
       education: {
          active: false,
-         education: ''
+         education: '',
+         isPresent: false,
       },
       rates: {
          active: false,
@@ -138,44 +142,61 @@ export default function TutorProfile({ isOwn }) {
       tutorAddress: {
          active: false,
          address: '',
+         isPresent: false,
       },
       pincode: {
          active: false,
          pincode: '',
+         isPresent: false,
       },
       paymentInfo: {
          active: false,
-         bankName: '',
-         AccNo: '',
-         ifcsCode: ''
+         isPresent: false,
+         paymentInfo: {
+            bankName: '',
+            AccNo: '',
+            ifcsCode: '',
+         }
       },
       tutorRank: {
          active: false,
          tutorRank: '',
+         isPresent: false,
       },
       income: {
          active: false,
          income: '',
+         isPresent: false,
       },
       paymentStatus: {
          active: false,
          paymentStatus: '',
+         isPresent: false,
       },
       tutorContact: {
          active: false,
          email: '',
          phone: '',
          linkedIn: '',
-      }
+         isPresent: false,
+      },
+      interest: {
+         active: false,
+         interest: []
+      },
+      serviceSpecializations: {
+         active: false,
+         serviceSpecializations: []
+      },
    })
 
    const handleClose = () => {
-      setToEdit(prevToEdit => {
-         let obj = {}
-         Object.keys(prevToEdit).map(key => {
-            obj[key] = { ...toEdit[key], active: false }
+      setToEdit(prev => {
+         let tempToEdit = {}
+         Object.keys(prev).map(key => {
+            tempToEdit[key] = { ...prev[key], active: false }
          })
-         return obj
+         return tempToEdit
       })
    }
 
@@ -195,37 +216,96 @@ export default function TutorProfile({ isOwn }) {
       getUserDetail({ id: userId })
          .then(res => {
             console.log('response', res.data.data);
-            const { firstName, lastName } = res.data.data.user
+            const { firstName, lastName, phone, email } = res.data.data.user
             setUser(res.data.data.user)
+            let details = res.data.data.details
 
-            const { phone, email } = res.data.data.user
+            // const { } = res.data.data.user
             // const { service } = res.data.data.userdetails
-
-            setToEdit(prevToEdit => {
-               return {
-                  ...prevToEdit,
-                  fullName: {
-                     ...prevToEdit.fullName,
-                     firstName,
-                     lastName,
-                  },
-                  timeZone: {
-                     ...prevToEdit.timeZone,
-                  },
-                  tutorContact: {
-                     ...prevToEdit.tutorContact,
-                     email: email,
-                     phone: phone === null ? '' : phone,
-                     linkedIn: ''
-                  },
-                  notes: {
-                     ...prevToEdit.notes,
-                  },
-               }
+            const promiseState = async state => new Promise(resolve => {
+               resolve(setToEdit(prevToEdit => {
+                  return {
+                     ...prevToEdit,
+                     fullName: {
+                        ...prevToEdit.fullName,
+                        firstName,
+                        lastName,
+                     },
+                     tutorContact: {
+                        ...prevToEdit.tutorContact,
+                        email: email,
+                        phone: phone === null ? '' : phone,
+                        linkedIn: '',
+                        isPresent: details === null ? false : true
+                     },
+                     tagLine: {
+                        ...prevToEdit.tagLine,
+                        isPresent: details === null ? false : true
+                     },
+                     tutorLevel: {
+                        ...prevToEdit.tutorLevel,
+                        isPresent: details === null ? false : true
+                     },
+                     about: {
+                        ...prevToEdit.about,
+                        isPresent: details === null ? false : true
+                     },
+                     education: {
+                        ...prevToEdit.education,
+                        isPresent: details === null ? false : true
+                     },
+                     rates: {
+                        ...prevToEdit.rates,
+                        isPresent: details === null ? false : true
+                     },
+                     tutorAddress: {
+                        ...prevToEdit.tutorAddress,
+                        isPresent: details === null ? false : true
+                     },
+                     pincode: {
+                        ...prevToEdit.pincode,
+                        isPresent: details === null ? false : true
+                     },
+                     paymentInfo: {
+                        ...prevToEdit.paymentInfo,
+                        isPresent: details === null ? false : true
+                     },
+                     tutorRank: {
+                        ...prevToEdit.tutorRank,
+                        isPresent: details === null ? false : true
+                     },
+                     income: {
+                        ...prevToEdit.income,
+                        isPresent: details === null ? false : true
+                     },
+                     paymentStatus: {
+                        ...prevToEdit.paymentStatus,
+                        isPresent: details === null ? false : true
+                     },
+                     interest: {
+                        ...prevToEdit.interest,
+                        interest: details !== null ? details.interest : [],
+                        isPresent: details === null ? false : true
+                     },
+                     serviceSpecializations: {
+                        ...prevToEdit.serviceSpecializations,
+                        serviceSpecializations: details !== null ? details.serviceSpecializations : [],
+                        isPresent: details === null ? false : true
+                     },
+                  }
+               }))
             })
-            closeModal && handleClose()
 
-            // setUserDetail(res.data.data.userdetails)
+            promiseState()
+               .then(() => {
+                  closeModal && handleClose()
+               })
+
+            if (res.data.data.details == null) {
+               setUserDetail({})
+            } else {
+               setUserDetail(res.data.data.details)
+            }
          })
    }
 
@@ -242,9 +322,12 @@ export default function TutorProfile({ isOwn }) {
 
    // console.log('user', user)
    // console.log('To-edit', toEdit)
-   // console.log(userDetail)
+   // console.log('userdetail', userDetail)
+   // console.log('settings', settings.serviceSpecialisation)
+   const { about, education, tagLine, tutorLevel, testPrepRate, otherRate, subjectTutoringRate, address, pincode, paymentInfo, tutorRank, income, paymentStatus, linkedIn } = userDetail
 
    if (Object.keys(user).length < 1) return
+   if (Object.keys(settings).length < 1) return
    // if (Object.keys(userDetail).length < 1) return
 
 
@@ -267,7 +350,7 @@ export default function TutorProfile({ isOwn }) {
                         className='text-[#4F33BD] justify-center font-bold text-[50px] capitalize'
                         imgClass='ml-auto' />
 
-                     <EditableText text={`${'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'}`}
+                     <EditableText text={`${tagLine ? tagLine : 'Your tag line'}`}
                         editable={editable}
                         onClick={() => setToEdit({ ...toEdit, tagLine: { ...toEdit.tagLine, active: true } })}
                         className='text-black justify-center font-normal'
@@ -277,7 +360,7 @@ export default function TutorProfile({ isOwn }) {
 
                <div className='lg:grid mt-12 px-2 grid-cols-12 grid-ros-6 lg:mt-[60px] gap-5 lg:pl-3'>
 
-                  <div className='col-span-3 mt-53 lg:mt-0'>
+                  <div className='col-span-3 mt-53 lg:mt-0 flex flex-col'>
                      {
                         !isOwn &&
                         <div className={` mb-5 px-4 py-4 lg:bg-textGray-30 rounded-2xl`}
@@ -295,20 +378,26 @@ export default function TutorProfile({ isOwn }) {
                         </div>
 
                      }
-                     <ProfileCard className=''
+                     <ProfileCard className='flex-1'
                         hideShadow={true}
                         body={
                            <>
-                              <p className='text-primary font-bold lg:text-21 text-center mb-10'>
-                                 Service Specializations</p>
-                              <div className='flex flex-col row-span-2 overflow-x-auto scrollbar-content'>
-                                 {values.map(val => {
+                            <EditableText editable={editable}
+                                 onClick={() => setToEdit({ ...toEdit, serviceSpecializations: { ...toEdit.serviceSpecializations, active: true } })}
+                                 text='Service Specializations'
+                                 className='text-lg mb-2' textClassName="flex-1 text-center text-[21px]" />
+                              
+                              <div className='flex flex-col row-span-2 overflow-x-auto scrollbar-content max-h-[500px] scrollbar-vertical'>
+                                 {settings && settings.serviceSpecialisation.length > 0 && userDetail.serviceSpecializations && userDetail.serviceSpecializations.map((id, idx) => {
                                     return (
-                                       <div className='flex flex-col items-center mb-10'>
-                                          <div className='flex h-90 w-90 rounded-full  items-center justify-center mb-3' style={{ backgroundColor: val.bg }}>
-                                             <img src={val.icon} />
+                                       <div key={idx} className='flex flex-col items-center mb-10'>
+                                          <div className='flex h-90 w-90 rounded-full  items-center justify-center mb-3' >
+                                             <img className='max-w-[90px] max-h-[90px]' src={settings.serviceSpecialisation.find(item => item._id === id).image}
+                                             />
                                           </div>
-                                          <p className='opacity-70 font-semibold text-lg'> {val.text} </p>
+                                          <p className='opacity-70 font-semibold text-lg'>
+                                             {settings.serviceSpecialisation.find(item => item._id === id).text}
+                                          </p>
                                        </div>
                                     )
                                  })}
@@ -332,7 +421,7 @@ export default function TutorProfile({ isOwn }) {
                         body={
                            <>
                               <p className='mt-[90px]'>
-                                 Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim praesent elementum facilisis leo, vel fringilla est ullamcorper eget nulla facilisi etiam dignissim diam quis enim lobortis scelerisque fermentum dui faucibus in ornare quam viverra orci sagittis eu volutpat odio facilisis mauris sit amet massa vitae tortor condimentum lacinia quis vel eros donec ac odio tempor orci dapibus ultrices in iaculis nunc sed augue lacus, viverra vitae congue eu, consequat ac felis donec et odio pellentesque diam volutpat commodo sed egestas egestas fringilla phasellus faucibus. Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non enim praesent elementum facilisis leo, vel fringilla est ullamcorper eget nulla facilisi etiam dignissim diam quis enim lobortis scelerisque fermentum dui faucibus in ornare quam viverra
+                                 {about ? about : 'Your bio'}
                               </p>
                               <div>
                                  <img src={TutorSmallImg} className={styles.profileIcon} />
@@ -354,7 +443,7 @@ export default function TutorProfile({ isOwn }) {
                               <div className='flex flex-col items-center mr-8'>
                                  <img src={LinkedIn} />
                                  <p className='mt-1 font-medium opacity-60 text-xs'>
-                                    linkedin.com/in/sha-shanks/
+                                    {userDetail.linkedIn ? userDetail.linkedIn : 'Your linkedIn'}
                                  </p>
                               </div>
                               <div className='flex flex-col items-center mr-8'>
@@ -373,7 +462,7 @@ export default function TutorProfile({ isOwn }) {
                         } />
                   </div>
 
-                  <div className='mt-53 pb-0 col-span-3 lg:mt-0'>
+                  <div className='mt-53 pb-0 col-span-3 lg:mt-0 flex flex-col'>
                      {
                         !isOwn &&
                         <ProfileCard hideShadow
@@ -391,7 +480,7 @@ export default function TutorProfile({ isOwn }) {
                                        <img src={EducationIcon} alt='education' />
                                     </div>
                                     <p className='mt-5 text-center font-medium text-sm'>
-                                       Bachelores in Science (Physics)
+                                       {education ? education : 'Your Education'}
                                     </p>
                                  </div>
 
@@ -402,15 +491,21 @@ export default function TutorProfile({ isOwn }) {
                      <ProfileCard className='flex-1' hideShadow
                         body={
                            <>
-                              <p className='text-primary font-bold lg:text-21 text-center mb-10'>Interest</p>
-                              <div className='flex flex-col overflow-x-auto scrollbar-content'>
-                                 {interests.map(val => {
+                              <EditableText editable={editable}
+                                 onClick={() => setToEdit({ ...toEdit, interest: { ...toEdit.interest, active: true } })}
+                                 text='Interest'
+                                 className='text-lg mb-2' textClassName="flex-1 text-center text-[21px]" />
+                              <div className='flex flex-col overflow-x-auto scrollbar-content max-h-[500px] scrollbar-vertical'>
+                                 {settings && settings.interest.length > 0 && userDetail.interest && userDetail.interest.map((id, idx) => {
                                     return (
-                                       <div className='flex flex-col items-center mb-10 last:mb-9'>
-                                          <div className='flex h-90 w-90 rounded-full  items-center justify-center mb-3' style={{ backgroundColor: val.bg }}>
-                                             <img src={val.icon} />
+                                       <div key={idx} className='flex flex-col items-center mb-10'>
+                                          <div className='flex h-90 w-90 rounded-full  items-center justify-center mb-3' >
+                                             <img className='max-w-[90px] max-h-[90px]' src={settings.interest.find(item => item._id === id).image}
+                                             />
                                           </div>
-                                          <p className='opacity-70 font-semibold text-sm whitespace-nowrap'> {val.text} </p>
+                                          <p className='opacity-70 font-semibold text-lg'>
+                                             {settings.interest.find(item => item._id === id).text}
+                                          </p>
                                        </div>
                                     )
                                  })}
@@ -430,7 +525,7 @@ export default function TutorProfile({ isOwn }) {
                                  className='text-primary justify-between text-lg capitalize'
                                  imgClass='ml-auto' />
                               <p className='mt-1.5  font-medium text-sm whitespace-nowrap'>
-                                 Add tutor’s rate
+                                 {testPrepRate ? `$${testPrepRate}` : '-'}
                               </p>
                            </div>
                            <div className='mb-6'>
@@ -440,7 +535,7 @@ export default function TutorProfile({ isOwn }) {
                                  className='text-primary justify-between text-lg capitalize'
                                  imgClass='ml-auto' />
                               <p className='mt-1.5 font-medium text-sm whitespace-nowrap'>
-                                 Add tutor’s rate
+                                 {subjectTutoringRate ? `$${subjectTutoringRate}` : '-'}
                               </p>
                            </div>
                            <div>
@@ -450,7 +545,7 @@ export default function TutorProfile({ isOwn }) {
                                  className='text-primary justify-between text-lg capitalize'
                                  imgClass='ml-auto' />
                               <p className='mt-1.5 font-medium text-sm whitespace-nowrap'>
-                                 Add tutor’s level
+                                 {otherRate ? `$${otherRate}` : '-'}
                               </p>
                            </div>
                         </div>
@@ -467,8 +562,7 @@ export default function TutorProfile({ isOwn }) {
                                  className='text-xl justify-between'
                               />
                               <p className='mt-5  font-medium text-sm'>
-                                 1315 N State St, Ukiah, California, USA
-                                 Postal Code- 95482
+                                 {address ? address : '-'}
                               </p>
                            </div>
 
@@ -486,11 +580,32 @@ export default function TutorProfile({ isOwn }) {
                                  text='Payment Info'
                                  className='text-xl justify-between'
                               />
-                              <p className='mt-1.5  font-medium text-sm max-w-[100px]'>
-                                 Bank Name
-                                 Acc No.
-                                 IFCS Code
-                              </p>
+                              <div className='mt-5  font-medium text-sm ma-w-[100px]'>
+                                 <p className='flex items-center mb-3.5'>
+                                    <span>
+                                       Bank Name
+                                    </span>
+                                    <span className='inline-block pl-2'>
+                                       {paymentInfo === undefined ? ' -' : paymentInfo.bankName ? paymentInfo.bankName : '-'}
+                                    </span>
+                                 </p>
+                                 <p className='flex items-center mb-3.5'>
+                                    <span>
+                                       Acc No.
+                                    </span>
+                                    <span className='inline-block pl-2'>
+                                       {paymentInfo === undefined ? ' -' : paymentInfo.AccNo ? paymentInfo.AccNo : '-'}
+                                    </span>
+                                 </p>
+                                 <p className='flex items-center mb-3.5'>
+                                    <span>
+                                       IFCS Code
+                                    </span>
+                                    <span className='inline-block pl-2'>
+                                       {paymentInfo === undefined ? ' -' : paymentInfo.ifcsCode ? paymentInfo.ifcsCode : '-'}
+                                    </span>
+                                 </p>
+                              </div>
                            </div>
 
                         </div>
@@ -508,7 +623,7 @@ export default function TutorProfile({ isOwn }) {
                                  className='text-xl justify-between'
                               />
                               <p className='mt-1.5  font-medium text-sm whitespace-nowrap'>
-                                 #23
+                                 {tutorRank ? tutorRank : '-'}
                               </p>
                            </div>
                            <div className='mb-6'>
@@ -518,7 +633,7 @@ export default function TutorProfile({ isOwn }) {
                                  className='text-xl justify-between'
                               />
                               <p className='mt-1.5 font-medium text-sm whitespace-nowrap'>
-                                 Open
+                                 {income ? income : '-'}
                               </p>
                            </div>
                            <div>
@@ -528,7 +643,7 @@ export default function TutorProfile({ isOwn }) {
                                  className='text-xl justify-between'
                               />
                               <p className='mt-1.5 font-medium text-sm whitespace-nowrap'>
-                                 Unpaid
+                                 {paymentStatus ? paymentStatus : '-'}
                               </p>
                            </div>
                         </div>
@@ -540,7 +655,10 @@ export default function TutorProfile({ isOwn }) {
             </div>
          </div>
          <ParentEditables settings={settings} fetchDetails={fetchDetails}
-            userId={isOwn ? id : params.id} toEdit={toEdit} setToEdit={setToEdit} />
+            userId={isOwn ? id : params.id}
+            toEdit={toEdit}
+            setToEdit={setToEdit}
+            persona={user.role} />
       </>
    )
 }

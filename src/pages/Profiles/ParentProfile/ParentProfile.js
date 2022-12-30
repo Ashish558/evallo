@@ -117,11 +117,13 @@ export default function ParentProfile({ isOwn }) {
    }, [])
 
    const handleClose = () => {
-      let tempToEdit = {}
-      Object.keys(toEdit).map(key => {
-         return tempToEdit[key] = { ...toEdit[key], active: false }
+      setToEdit(prev => {
+         let tempToEdit = {}
+         Object.keys(prev).map(key => {
+            tempToEdit[key] = { ...prev[key], active: false }
+         })
+         return tempToEdit
       })
-      setToEdit(tempToEdit)
    }
 
    const fetchDetails = (closeModal) => {
@@ -135,9 +137,9 @@ export default function ParentProfile({ isOwn }) {
       getUserDetail({ id: userId })
          .then(res => {
             console.log('response', res.data.data);
-            const { firstName, lastName } = res.data.data.user
+            const { firstName, lastName, phone, email, assiginedStudents } = res.data.data.user
             setUser(res.data.data.user)
-            const { phone, email, assiginedStudents } = res.data.data.user
+            const { birthyear, industry, leadStatus, notes, residentialAddress, service, timeZone, subscribeType } = res.data.data.userdetails
 
             let studentsData = []
             if (assiginedStudents === undefined || assiginedStudents.length === 0) setAssociatedStudents(students)
@@ -159,12 +161,15 @@ export default function ParentProfile({ isOwn }) {
                },
                timeZone: {
                   ...toEdit.timeZone,
+                  timeZone
                },
                birthYear: {
                   ...toEdit.birthYear,
+                  birthyear
                },
                industry: {
                   ...toEdit.industry,
+                  industry
                },
                contact: {
                   ...toEdit.contact,
@@ -173,14 +178,28 @@ export default function ParentProfile({ isOwn }) {
                },
                address: {
                   ...toEdit.address,
+                  residentialAddress
                },
                notes: {
                   ...toEdit.notes,
+                  notes
+               },
+               service: {
+                  ...toEdit.service,
+                  service,
+               },
+               subscriptionType: {
+                  ...toEdit.subscriptionType,
+                  subscribeType,
                },
                associatedStudents: {
                   ...toEdit.associatedStudents,
                   assiginedStudents: res.data.data.user.assiginedStudents,
                   studentsData: studentsData
+               },
+               leadStatus: {
+                  ...toEdit.leadStatus,
+                  leadStatus
                }
             })
             setUserDetail(res.data.data.userdetails)
@@ -552,7 +571,8 @@ export default function ParentProfile({ isOwn }) {
             </div>
          </div>
          <ParentEditables settings={settings} fetchDetails={fetchDetails}
-            userId={isOwn ? id : params.id} toEdit={toEdit} setToEdit={setToEdit} />
+            userId={isOwn ? id : params.id} toEdit={toEdit} setToEdit={setToEdit}
+            persona={user.role} />
       </>
    )
 }

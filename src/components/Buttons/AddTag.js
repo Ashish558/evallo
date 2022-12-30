@@ -2,7 +2,7 @@ import React, { useRef } from 'react'
 import { useState } from 'react'
 import AddIcon from '../../assets/Settings/add.svg'
 
-export default function AddTag({ keyName, onAddTag, isFile }) {
+export default function AddTag({ keyName, onAddTag, isFile, openModal }) {
 
   const [isClicked, setIsClicked] = useState(false)
   const [size, setSize] = useState(1)
@@ -26,6 +26,7 @@ export default function AddTag({ keyName, onAddTag, isFile }) {
   }
 
   const handleClick = () => {
+    if(openModal === true) return onAddTag()
     isFile ? onAddTag() : setIsClicked(true)
   }
 

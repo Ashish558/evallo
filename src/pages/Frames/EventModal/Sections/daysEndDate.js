@@ -3,9 +3,10 @@ import Checkbox from '../../../../components/Checkbox/Checkbox';
 import InputField from '../../../../components/InputField/inputField';
 
 
-export default function DaysEndDate({ days, setDays, data, setData }) {
+export default function DaysEndDate({ days, setDays, data, setData, isEditable }) {
 
    const handleDayChange = id => {
+      if(isEditable === false) return
       let tempdays = days.map(day => {
          return day.id === id
             ? { ...day, checked: !day.checked }
@@ -39,7 +40,7 @@ export default function DaysEndDate({ days, setDays, data, setData }) {
          <InputField
             label="End Date"
             labelClassname="ml-3"
-            parentClassName="w-full self-end"
+            parentClassName={`w-full self-end ${!data.recurring ? 'opacity-50 pointer-events-none' : ''}} `}
             type="date"
             inputContainerClassName="bg-lightWhite border-0 font-medium pr-3 pt-3.5 pb-3.5"
             inputClassName="bg-transparent appearance-none font-medium"
@@ -50,6 +51,7 @@ export default function DaysEndDate({ days, setDays, data, setData }) {
                   endDate: e.target.value,
                })
             }
+            disabled={!isEditable}
          />
       </div>
    )

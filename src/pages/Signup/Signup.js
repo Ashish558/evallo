@@ -25,6 +25,8 @@ import { apQuestions, hearAboutUslist, motivesList } from "./data";
 import { getCheckedString } from "../../utils/utils";
 import InputSelect from "../../components/InputSelect/InputSelect";
 import useOutsideAlerter from "../../hooks/useOutsideAlerter";
+import { useLazyGetSettingsQuery } from "../../app/services/session";
+import { validateOtherDetails, validateSignup } from "./utils/util";
 
 export default function Signup() {
    const [frames, setFrames] = useState({
@@ -36,6 +38,29 @@ export default function Signup() {
       signupLast: false,
       signupSuccessful: false,
    });
+
+   const [settings, setSettings] = useState({})
+   const [getSettings, getSettingsResp] = useLazyGetSettingsQuery()
+
+   const fetchSettings = () => {
+      getSettings()
+         .then(res => {
+            // console.log(res);
+            setSettings(res.data.data.setting)
+         })
+   }
+   useEffect(() => {
+      fetchSettings()
+   }, [])
+
+ 
+   const [error, setError] = useState({
+      firstName: "",
+      lastName: "",
+      email: "",
+      phone: "",
+      subscriptionCode: "",
+   })
 
    const [values, setValues] = useState({
       firstName: "",
@@ -57,6 +82,13 @@ export default function Signup() {
       aboutScore: "",
    });
 
+   const [detailsError, setDetailsError] = useState({
+      FirstName: "",
+      LastName: "",
+      Email: "",
+      Phone: "",
+   });
+
    useEffect(() => {
       window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
    }, [frames])
@@ -75,22 +107,81 @@ export default function Signup() {
    const [redirectLink, setRedirectLink] = useState("");
    const [numberPrefix, setNumberPrefix] = useState('+91')
 
+   const resetErrors = () => {
+      setError(prev => {
+         return {
+            firstName: "",
+            lastName: "",
+            email: "",
+            phone: "",
+            subscriptionCode: "",
+         }
+      })
+   }
+
+   const resetDetailsErrors = () => {
+      setDetailsError(prev => {
+         return {
+            FirstName: "",
+            LastName: "",
+            Email: "",
+            Phone: "",
+         }
+      })
+   }
+
    const handleClick = () => {
-      let reqBody = {
-         firstName: values.firstName,
-         lastName: values.lastName,
-         email: values.email,
-      };
-      signupUser(reqBody).then((res) => {
-         console.log(res.data);
-         setRedirectLink(res.data.link);
-         setValues({ ...values, userId: res.data.userId });
-         setFrames({
-            ...frames,
-            signupActive: false,
-            selectPersona: true,
-         });
-      });
+
+      const promiseState = async state => new Promise(resolve => {
+         resolve(resetErrors())
+      })
+
+      promiseState()
+         .then(() => {
+            let reqBody = {
+               firstName: values.firstName,
+               lastName: values.lastName,
+               email: values.email,
+               subscriptionCode: values.subscriptionCode,
+               phone: values.phone,
+            };
+            if (values.subscriptionCode.trim().length > 0 && values.checked === false) {
+               console.log(settings.subscriptionCode.includes(values.subscriptionCode));
+               if (!settings.subscriptionCode.includes(values.subscriptionCode)) {
+                  return alert('invalid subscription code')
+               }
+            }
+            const result = validateSignup(reqBody)
+            console.log(result);
+            if (result.data !== true) {
+               setError(prev => {
+                  return {
+                     ...prev,
+                     [result.data]: result.message
+                  }
+               })
+            } else {
+               // console.log(reqBody)
+               signupUser(reqBody).then((res) => {
+                  if (res.error) {
+                     if (res.error.data.message) {
+                        alert(res.error.data.message)
+                     }
+                  }
+                  console.log(res);
+                  setRedirectLink(res.data.link);
+                  setValues({ ...values, userId: res.data.userId });
+                  setFrames({
+                     ...frames,
+                     signupActive: false,
+                     selectPersona: true,
+                  });
+               })
+            }
+
+
+         })
+
    };
 
    const addDetails = () => {
@@ -104,11 +195,11 @@ export default function Signup() {
          userType: persona,
       };
       addUserDetails({ userId: values.userId, body: reqBody }).then((res) => {
-         console.log(res);
+         // console.log(res);
          window.open(redirectLink);
       });
    };
-
+   // console.log(error)
 
    const [selected, setSelected] = useState(false);
    const selectRef = useRef();
@@ -119,14 +210,14 @@ export default function Signup() {
 
    const props = { persona, setFrames, setcurrentStep };
    const valueProps = { values, setValues };
-   const otherDetailsProps = { otherDetails, setOtherDetails };
+   const otherDetailsProps = { otherDetails, setOtherDetails, detailsError, setDetailsError, resetDetailsErrors };
 
    return (
       <div className="min-h-screen" id={styles.signUp}>
          <div className="grid grid-cols-2 min-h-screen">
             <div className="bg-primary"></div>
             <div className="flex items-center">
-               <div className="w-full px-[120px] py-8">
+               <div className="w-full px-[80px] py-6">
                   <h1>
                      {frames.signupActive
                         ? "Sign Up"
@@ -177,6 +268,7 @@ export default function Signup() {
                         </div>
 
                         <InputField
+                           labelClassname="ml-2 mb-0.5 text-sm"
                            placeholder="email@example.com"
                            parentClassName="mb-6"
                            label="Email Address"
@@ -188,7 +280,7 @@ export default function Signup() {
                                  email: e.target.value,
                               })
                            }
-                           labelClassname="ml-2 mb-0.5 text-sm"
+                           error={error.email}
                         />
                         <InputField
                            placeholder="Phone Number"
@@ -198,7 +290,7 @@ export default function Signup() {
                            inputContainerClassName="relative border pt-3 pb-3"
                            inputClassName="ml-80"
                            inputLeftField={
-                              <div ref={selectRef}
+                              <div ref={selectRef} 
                                  className={`${selected && "relative z-5000"} ${styles.phoneNumberField} `}
                                  onClick={() => setSelected(true)}
                               >
@@ -209,7 +301,7 @@ export default function Signup() {
                                        <img
                                           src={DownArrow}
                                           className={selectStyles.downArrow}
-                                          style={{right: '16px'}}
+                                          style={{ right: '16px' }}
                                           alt="down-arrow"
                                           onClick={() => setSelected(!selected)}
                                        />
@@ -218,13 +310,13 @@ export default function Signup() {
                                        {numberPrefix}
                                     </div>
                                     {selected && (
-                                       <div className={`scrollbar-content scrollbar-vertical ${selectStyles.options}`} style={{top : '100%' }} >
+                                       <div className={`scrollbar-content scrollbar-vertical ${selectStyles.options}`} style={{ top: '100%' }} >
                                           {['+91', '+1'].map((option, idx) => {
                                              return (
                                                 <div
                                                    className="outline-0 border-0 py-2 px-4"
                                                    key={idx}
-                                                   onClick={() => setNumberPrefix(option) }
+                                                   onClick={() => setNumberPrefix(option)}
                                                 >
                                                    {" "}
                                                    {option}{" "}
@@ -240,6 +332,7 @@ export default function Signup() {
                            value={values.phone}
                            onChange={(e) =>
                               setValues({ ...values, phone: e.target.value, })}
+                           error={error.phone}
                         />
 
                         <InputField

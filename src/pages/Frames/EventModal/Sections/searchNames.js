@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useLazyGetStudentsByNameQuery, useLazyGetTutorsByNameQuery, useLazyGetTutorStudentsByNameQuery } from '../../../../app/services/session';
 import InputSearch from '../../../../components/InputSearch/InputSearch';
 
-export default function SearchNames({ setStudent, setData, student, tutor, data, setTutor }) {
+export default function SearchNames({ setStudent, setData, student, tutor, data, setTutor, isEditable }) {
 
    const [fetchTutors, tutorResponse] = useLazyGetTutorsByNameQuery();
    const [tutors, setTutors] = useState([]);
@@ -70,6 +70,7 @@ export default function SearchNames({ setStudent, setData, student, tutor, data,
             value={student}
             onChange={(e) => setStudent(e.target.value)}
             optionData={students}
+            disabled={!isEditable}
             onOptionClick={(item) => {
                setStudent(item.value);
                setData({ ...data, studentId: item._id });
@@ -85,6 +86,7 @@ export default function SearchNames({ setStudent, setData, student, tutor, data,
             type="text"
             optionPrefix='t'
             value={tutor}
+            disabled={!isEditable}
             onChange={(e) => setTutor(e.target.value)}
             optionData={tutors}
             onOptionClick={(item) => {

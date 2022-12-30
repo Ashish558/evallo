@@ -14,7 +14,7 @@ const timeZones = [
    'US/Pacific',
 ]
 
-export default function DateAndTimeInput({ data, setData }) {
+export default function DateAndTimeInput({ data, setData, isEditable }) {
 
 
    return (
@@ -30,6 +30,7 @@ export default function DateAndTimeInput({ data, setData }) {
             onChange={(e) =>
                setData({ ...data, date: e.target.value })
             }
+            disabled={!isEditable}
          />
 
          <InputField
@@ -42,6 +43,7 @@ export default function DateAndTimeInput({ data, setData }) {
             value={convertTime12to24(
                `${data.time.start.time} ${data.time.start.timeType}`
             )}
+            disabled={!isEditable}
             onChange={(e) =>
                setData({
                   ...data,
@@ -65,6 +67,7 @@ export default function DateAndTimeInput({ data, setData }) {
                   ...data, time: { ...data.time, end: tConvert(e.target.value) },
                });
             }}
+            disabled={!isEditable}
          />
          <InputSelect
             value={data.timeZone}
@@ -77,6 +80,7 @@ export default function DateAndTimeInput({ data, setData }) {
             placeholder="Time Zone"
             parentClassName="w-full mr-4 ml-8  max-w-[140px]"
             type="select"
+            disabled={!isEditable}
          />
       </div>
    )

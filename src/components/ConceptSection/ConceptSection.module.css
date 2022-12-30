@@ -40,7 +40,7 @@
 
 @media only screen and (min-width: 1300px) {
     #conceptChart {
-        padding: 0 78px;
+        padding: 0 76px;
         padding-left: 0;
     }
 }
@@ -181,7 +181,7 @@
     padding: 19px 23px;
     border-radius: 20px;
     color: white;
-    padding-bottom: 0px;
+    /* padding-bottom: 0px; */
 }
 
 #tutor h2 {

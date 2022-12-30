@@ -85,6 +85,14 @@ const AppRoutes = () => {
                   </RequireAuth>
                }
             />
+            <Route
+               path="/calendar/edit/:id"
+               element={
+                  <RequireAuth isLoggedIn={isLoggedIn}>
+                     <Calendar />
+                  </RequireAuth>
+               }
+            />
 
             {/* <Route path="/calendar" element={<Calendar />} /> */}
             {/* <Route path="/calendar/:persona" element={<Calendar />} /> */}

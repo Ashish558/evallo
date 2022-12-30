@@ -22,7 +22,8 @@ export default function InputSearch({
    optionData,
    onOptionClick,
    optionPrefix,
-   checkbox
+   checkbox,
+   disabled
 }) {
 
    const [optionsVisible, setOptionsVisible] = useState(false)
@@ -46,7 +47,7 @@ export default function InputSearch({
          >
             {Icon && <img src={Icon} className="mr-6" />}
             {inputLeftField && inputLeftField}
-            <input
+            <input disabled={disabled}
                className={`outline-0 w-full ${inputClassName ? inputClassName : ""}`}
                placeholder={placeholder}
                value={value}

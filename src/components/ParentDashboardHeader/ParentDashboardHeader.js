@@ -77,7 +77,7 @@ const ParentDashboardHeader = () => {
 
    return (
       <div
-         className="flex 2xl:gap-[78px] xl:gap-[50px]"
+         className="flex 2xl:gap-[78px] xl:gap-[50px] ml-[55px]"
          id={styles.parentDashboardHeader}
       >
          <div className="w-2/3 flex">

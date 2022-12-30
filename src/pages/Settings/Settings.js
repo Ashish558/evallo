@@ -79,31 +79,48 @@ const initialState = {
 export default function Settings() {
 
    const [modalActive, setModalActive] = useState(false)
+   const [tagModalActive, setTagModalActive] = useState(false)
+
    const [settingsData, setSettingsData] = useState({})
    const inputRef = useRef()
    const [image, setImage] = useState(null)
    const [getSettings, getSettingsResp] = useLazyGetSettingsQuery()
    const [updateSetting, updateSettingResp] = useUpdateSettingMutation()
-   const [updateImage, updateImageResp] = useUpdateOfferImageMutation()
+   // const [updateImage, updateImageResp] = useUpdateOfferImageMutation()
+   const [selectedImageTag, setSelectedImageTag] = useState('')
 
+   const imageUploadRef = useRef()
+   const [tagImage, setTagImage] = useState(null)
+   const [imageName, setImageName] = useState('')
+   const [tagText, setTagText] = useState('')
    const [modalData, setModalData] = useState(initialState)
 
    const handleClose = () => setModalActive(false)
 
+   const handleTagModal = text => {
+      setTagModalActive(true)
+      setSelectedImageTag(text)
+   }
+
    const handleSubmit = e => {
       e.preventDefault()
-      console.log(modalData);
    }
 
    const fetchSettings = () => {
       getSettings()
          .then(res => {
+            // console.log(res);
             setSettingsData(res.data.data.setting)
          })
    }
 
-   const onRemoveFilter = (item, key, idx) => {
+   const onRemoveTextImageTag = (item, key, idx) => {
+      console.log(item)
+      console.log(key)
+      console.log(idx)
+   }
 
+   const onRemoveFilter = (item, key, idx) => {
       if (key === undefined || item === undefined) return
       // let updatedField = settingsData[key].filter(text => text !== item)
       let updatedField = settingsData[key].filter((text, i) => i !== idx)
@@ -112,7 +129,6 @@ export default function Settings() {
       }
       updateAndFetchsettings(updatedSetting)
    }
-
 
    const onRemoveSessionTag = (item, key, idx) => {
       let updatedSessionTag = { ...settingsData.sessionTags }
@@ -133,6 +149,15 @@ export default function Settings() {
       updateAndFetchsettings(updatedSetting)
    }
 
+   // const handleAddImage = (text, key) => {
+   //    let tempSettings = { ...settingsData }
+   //    let updatedSetting = {
+   //       [key]: [...tempSettings[key], text]
+   //    }
+   //    updateAndFetchsettings(updatedSetting)
+   // }
+
+
    const handleSessionAddTag = (text, key) => {
       let tempSettings = { ...settingsData }
       let updatedSessionTag = {
@@ -147,6 +172,40 @@ export default function Settings() {
       updateSetting(updatedSetting)
          .then(res => {
             setSettingsData(res.data.data.setting)
+         })
+   }
+
+   const submitImageModal = e => {
+      e.preventDefault()
+      // console.log(tagText)
+      // console.log(tagImage)
+      // console.log(selectedImageTag)
+
+      const formData = new FormData();
+      formData.append('text', tagText)
+      formData.append("image", tagImage)
+
+      let append = ''
+      if (selectedImageTag === 'serviceSpecialisation') {
+         append = 'addservicespecialisation'
+      } else if (selectedImageTag === 'personality') {
+         append = 'addpersonality'
+      } else if (selectedImageTag === 'interest') {
+         append = 'addinterest'
+      }
+
+      console.log(append)
+
+      if (append === '') return
+      axios.patch(`${BASE_URL}api/user/setting/${append}`, formData)
+         .then((res) => {
+            console.log(res)
+            setTagImage(null)
+            setTagText('')
+            setSelectedImageTag('')
+            setImageName('')
+            setTagModalActive(false)
+            fetchSettings()
          })
    }
 
@@ -173,13 +232,13 @@ export default function Settings() {
    }
 
    const onRemoveImage = (item, i) => {
-     console.log(item, i)
-     let updatedField = settingsData.offerImages.filter(text => text !== item)
-     let updatedSetting = {
-      offerImages: updatedField
-     }
-   //   console.log(updatedSetting)
-     updateAndFetchsettings(updatedSetting)
+      // console.log(item, i)
+      let updatedField = settingsData.offerImages.filter(text => text !== item)
+      let updatedSetting = {
+         offerImages: updatedField
+      }
+      //   console.log(updatedSetting)
+      updateAndFetchsettings(updatedSetting)
    }
 
    useEffect(() => {
@@ -188,7 +247,7 @@ export default function Settings() {
 
 
    if (Object.keys(settingsData).length === 0) return <></>
-   const { classes, serviceSpecialisation, sessionTags, leadStatus, tutorStatus, offerImages } = settingsData
+   const { classes, serviceSpecialisation, sessionTags, leadStatus, tutorStatus, offerImages, subscriptionCode, personality, interest } = settingsData
 
    // console.log(settingsData)
 
@@ -254,6 +313,18 @@ export default function Settings() {
                            className='pt-1 pb-1 mr-15' />
                      </div>
                   } />
+               <SettingsCard title='Subscription Code'
+                  body={
+                     <div className='flex items-center [&>*]:mb-[10px]'>
+                        <AddTag onAddTag={handleAddTag} keyName='subscriptionCode' />
+                        <FilterItems onlyItems={true}
+                           isString={true}
+                           items={subscriptionCode}
+                           keyName='subscriptionCode'
+                           onRemoveFilter={onRemoveFilter}
+                           className='pt-1 pb-1 mr-15' />
+                     </div>
+                  } />
 
                <SettingsCard title='Session Tags'
                   titleClassName='text-[21px] mb-[15px]'
@@ -281,11 +352,38 @@ export default function Settings() {
                <SettingsCard title='Service Specialisation'
                   body={
                      <div className='flex items-center [&>*]:mb-[10px]'>
-                        <AddTag keyName='serviceSpecialisation' onAddTag={handleAddTag} />
+                        <AddTag keyName='serviceSpecialisation' openModal={true}
+                           onAddTag={() => handleTagModal('serviceSpecialisation')} />
                         <FilterItems isString={true} onlyItems={true}
-                           items={serviceSpecialisation}
+                           items={serviceSpecialisation.map(item => item.text)}
                            keyName='serviceSpecialisation'
-                           onRemoveFilter={onRemoveFilter}
+                           onRemoveFilter={onRemoveTextImageTag}
+                           className='pt-1 pb-1 mr-15' />
+                     </div>
+                  } />
+
+               <SettingsCard title='Personality'
+                  body={
+                     <div className='flex items-center [&>*]:mb-[10px]'>
+                        <AddTag keyName='personality' openModal={true}
+                           onAddTag={() => handleTagModal('personality')} />
+                        <FilterItems isString={true} onlyItems={true}
+                           items={personality.map(item => item.text)}
+                           keyName='personality'
+                           onRemoveFilter={onRemoveTextImageTag}
+                           className='pt-1 pb-1 mr-15' />
+                     </div>
+                  } />
+
+               <SettingsCard title='Interest'
+                  body={
+                     <div className='flex items-center [&>*]:mb-[10px]'>
+                        <AddTag keyName='interest' openModal={true}
+                           onAddTag={() => handleTagModal('interest')} />
+                        <FilterItems isString={true} onlyItems={true}
+                           items={interest.map(item => item.text)}
+                           keyName='interest'
+                           onRemoveFilter={onRemoveTextImageTag}
                            className='pt-1 pb-1 mr-15' />
                      </div>
                   } />
@@ -372,6 +470,54 @@ export default function Settings() {
                               onChange={e => setModalData({ ...modalData, email: e.target.value })} />
                         </div>
 
+                     </div>
+                  </form>
+               }
+            />
+         }
+         {
+            tagModalActive &&
+            <Modal
+               classname={'max-w-[540px] mx-auto'}
+               title=''
+               titleClassName='mb-[18px]'
+               cancelBtn={true}
+               cancelBtnClassName='w-140 hidden'
+               primaryBtn={{
+                  text: "Save",
+                  className: `w-140 ml-0 bg-primaryOrange mt-2 ${tagText.trim().length < 1 || tagImage === null ? 'pointer-events-none opacity-60' : ''} `,
+                  form: 'settings-form',
+                  type: 'submit',
+               }}
+               handleClose={() => setTagModalActive(false)}
+               body={
+                  <form id='settings-form' onSubmit={submitImageModal}>
+                     <div className='flex flex-col items-start mb-5'>
+                        <InputField label='Text'
+                           labelClassname='ml-4 mb-0.5'
+                           placeholder='Text'
+                           inputContainerClassName='px-5 pt-3 pb-3 bg-primary-50 border-0'
+                           inputClassName='bg-transparent'
+                           parentClassName='w-full mr-4 mb-3' type='text'
+                           value={tagText}
+                           isRequired={true}
+                           onChange={e => setTagText(e.target.value)} />
+                        <input type='file'
+                           accept='/image'
+                           onChange={e => {
+                              setTagImage(e.target.files[0]);
+                              setImageName(e.target.files[0].name)
+                           }}
+                           className='hidden '
+                           ref={imageUploadRef} />
+
+                        <PrimaryButton children='Upload image'
+                           className='mx-auto pt-2.5 pb-2.5 pl-4 pr-4'
+                           // disabled={`${tagImage === null ? true : false}`}
+                           onClick={() => imageUploadRef.current.click()} />
+                        <p className='text-center w-full'>
+                           {imageName !== '' ? imageName : ''}
+                        </p>
                      </div>
                   </form>
                }

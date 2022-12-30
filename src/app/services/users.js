@@ -77,6 +77,16 @@ export const userServicesApi = createApi({
             },
          })
       }),
+      postTutorDetails: builder.mutation({
+         query: (body) => ({
+            url: `api/user/tutordetails/${body.id}`,
+            method: "POST",
+            body: body.fields,
+            headers: {
+               "Authorization": sessionStorage.getItem('token'),
+            },
+         })
+      }),
       updateTutorDetails: builder.mutation({
          query: (body) => ({
             url: `api/user/tutordetails/${body.id}`,
@@ -111,5 +121,6 @@ export const {
    useUpdateUserFieldsMutation,
    useUpdateUserDetailsMutation,
    useUpdateTutorDetailsMutation,
+   usePostTutorDetailsMutation,
    useLazyGetPersonalDetailQuery
 } = userServicesApi;

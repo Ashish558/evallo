@@ -174,15 +174,25 @@ export default function StudentProfile({ isOwn }) {
       subjects: {
          active: false,
          subjects: []
-      }
+      },
+      personality: {
+         active: false,
+         personality: []
+      },
+      interest: {
+         active: false,
+         interest: []
+      },
    })
 
    const handleClose = () => {
-      let tempToEdit = {}
-      Object.keys(toEdit).map(key => {
-         return tempToEdit[key] = { ...toEdit[key], active: false }
+      setToEdit(prev => {
+         let tempToEdit = {}
+         Object.keys(prev).map(key => {
+            tempToEdit[key] = { ...prev[key], active: false }
+         })
+         return tempToEdit
       })
-      setToEdit(tempToEdit)
    }
 
    useEffect(() => {
@@ -200,9 +210,9 @@ export default function StudentProfile({ isOwn }) {
       }
       getUserDetail({ id: userId })
          .then(res => {
-            // console.log('response', res.data.data);
+            console.log('response', res.data.data);
             const { firstName, lastName, phone, email } = res.data.data.user
-            const { service, accomodations, timeZone, birthyear, associatedParent } = res.data.data.userdetails
+            const { service, accomodations, timeZone, birthyear, associatedParent, personality, interest } = res.data.data.userdetails
             associatedParent && getUserDetail({ id: associatedParent })
                .then(res => {
                   const { firstName, lastName, _id, } = res.data.data.user
@@ -211,40 +221,57 @@ export default function StudentProfile({ isOwn }) {
                   })
                })
             setUser(res.data.data.user)
-            setToEdit({
-               ...toEdit,
-               fullName: {
-                  ...toEdit.fullName,
-                  firstName,
-                  lastName,
-               },
-               timeZone: {
-                  ...toEdit.timeZone,
-                  timeZone: timeZone ? timeZone : ''
-               },
-               contact: {
-                  ...toEdit.contact,
-                  email: email,
-                  phone: phone === null ? '' : phone
-               },
-               birthYear: {
-                  ...toEdit.birthYear,
-                  birthyear,
-               },
-               notes: {
-                  ...toEdit.notes,
-               },
-               service: {
-                  ...toEdit.service,
-                  service: service ? [...service] : []
-               },
-               accomodations: {
-                  ...toEdit.accomodations,
-                  accomodations: accomodations
-               }
+            const promiseState = async state => new Promise(resolve => {
+               resolve(
+                  setToEdit(prev => {
+                     return {
+                        ...prev,
+                        fullName: {
+                           ...prev.fullName,
+                           firstName,
+                           lastName,
+                        },
+                        timeZone: {
+                           ...prev.timeZone,
+                           timeZone: timeZone ? timeZone : ''
+                        },
+                        contact: {
+                           ...prev.contact,
+                           email: email,
+                           phone: phone === null ? '' : phone
+                        },
+                        birthYear: {
+                           ...prev.birthYear,
+                           birthyear,
+                        },
+                        notes: {
+                           ...prev.notes,
+                        },
+                        service: {
+                           ...prev.service,
+                           service: service ? [...service] : []
+                        },
+                        accomodations: {
+                           ...prev.accomodations,
+                           accomodations: accomodations
+                        },
+                        personality: {
+                           ...prev.personality,
+                           personality: personality
+                        },
+                        interest: {
+                           ...prev.interest,
+                           interest,
+                        },
+                     }
+                  })
+               )
             })
+            promiseState()
+               .then(() => {
+                  closeModal && handleClose()
+               })
             setUserDetail(res.data.data.userdetails)
-            closeModal && handleClose()
          })
    }
 
@@ -260,8 +287,9 @@ export default function StudentProfile({ isOwn }) {
    }, [])
 
    // console.log(user)
-   // console.log(userDetail)
+   // console.log(userDetail.interest)
    // console.log(associatedParent)
+   // console.log(settings)
 
    if (Object.keys(user).length < 1) return
    if (Object.keys(userDetail).length < 1) return
@@ -343,7 +371,7 @@ export default function StudentProfile({ isOwn }) {
 
                         <div className='flex items-center'>
                            <span className='text-xs font-semibold opacity-60 inline-block mr-1'
-                           onClick={() => Object.keys(associatedParent).length > 1  && navigate(`/profile/parent/${associatedParent._id}`) } >
+                              onClick={() => Object.keys(associatedParent).length > 1 && navigate(`/profile/parent/${associatedParent._id}`)} >
                               View Profile
                            </span>
                            <img src={RightIcon} />
@@ -437,15 +465,21 @@ export default function StudentProfile({ isOwn }) {
                   <ProfileCard className='mt-53 col-span-3 lg:mt-0'
                      body={
                         <>
-                           <p className='text-primary font-bold lg:text-21 text-center mb-10'>Personality</p>
-                           <div className='flex flex-col row-span-2 overflow-x-auto scrollbar-content h-[450px]'>
-                              {values.map((val, idx) => {
+                           <EditableText editable={editable}
+                              onClick={() => setToEdit({ ...toEdit, personality: { ...toEdit.personality, active: true } })}
+                              text='Personality'
+                              className='text-lg mb-2' textClassName="flex-1 text-center text-[21px]" />
+                           <div className='flex scrollbar-content max-h-[500px]  scrollbar-vertical flex-col row-span-2 overflow-x-auto scrollbar-content h-[450px]'>
+                              {settings && settings.personality.length > 0 && userDetail.personality.map((id, idx) => {
                                  return (
                                     <div key={idx} className='flex flex-col items-center mb-10'>
-                                       <div className='flex h-90 w-90 rounded-full  items-center justify-center mb-3' style={{ backgroundColor: val.bg }}>
-                                          <img src={val.icon} />
+                                       <div className='flex h-90 w-90 rounded-full  items-center justify-center mb-3' >
+                                          <img className='max-w-[90px] max-h-[90px]' src={settings.personality.find(item => item._id === id).image}
+                                          />
                                        </div>
-                                       <p className='opacity-70 font-semibold text-lg'> {val.text} </p>
+                                       <p className='opacity-70 font-semibold text-lg'>
+                                          {settings.personality.find(item => item._id === id).text}
+                                       </p>
                                     </div>
                                  )
                               })}
@@ -477,18 +511,24 @@ export default function StudentProfile({ isOwn }) {
                            </>
                         } />
                   </div>
-                  <ProfileCard className='mt-53 pb-0 col-span-3 lg:mt-0'
+                  <ProfileCard className='mt-53 pb-0 col-span-3 lg:mt-0 overflow-auto '
                      body={
                         <>
-                           <p className='text-[#4715D7] font-bold lg:text-21 text-center mb-10'>Interest</p>
-                           <div className='flex flex-col overflow-x-auto scrollbar-content'>
-                              {interests.map((val, idx) => {
+                           <EditableText editable={editable}
+                              onClick={() => setToEdit({ ...toEdit, interest: { ...toEdit.interest, active: true } })}
+                              text='Interest'
+                              className='text-lg mb-2' textClassName="flex-1 text-center text-[21px]" />
+                           <div className='flex scrollbar-content max-h-[500px]  scrollbar-vertical flex-col overflow-x-auto'>
+                              {settings && settings.interest.length > 0 && userDetail.interest.map((id, idx) => {
                                  return (
-                                    <div key={idx} className='flex flex-col items-center mb-10 last:mb-0'>
-                                       <div className='flex h-90 w-90 rounded-full  items-center justify-center mb-3' style={{ backgroundColor: val.bg }}>
-                                          <img src={val.icon} />
+                                    <div key={idx} className='flex flex-col items-center mb-10'>
+                                       <div className='flex h-90 w-90 rounded-full  items-center justify-center mb-3' >
+                                          <img className='max-w-[90px] max-h-[90px]' src={settings.interest.find(item => item._id === id).image}
+                                          />
                                        </div>
-                                       <p className='opacity-70 font-semibold text-[18px] whitespace-nowrap'> {val.text} </p>
+                                       <p className='opacity-70 font-semibold text-lg'>
+                                          {settings.interest.find(item => item._id === id).text}
+                                       </p>
                                     </div>
                                  )
                               })}
@@ -663,7 +703,8 @@ export default function StudentProfile({ isOwn }) {
          </div>
 
          <ParentEditables settings={settings} fetchDetails={fetchDetails}
-            userId={isOwn ? id : params.id} toEdit={toEdit} setToEdit={setToEdit} />
+            userId={isOwn ? id : params.id} toEdit={toEdit} setToEdit={setToEdit}
+            persona={user.role} />
       </>
 
    )

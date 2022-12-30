@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import StudentImg from '../../assets/images/tutor-student.png'
 import OwlCarousel from 'react-owl-carousel';
 import 'owl.carousel/dist/assets/owl.carousel.css';
@@ -10,6 +10,9 @@ import DashboardCard from '../../components/DashboardCard/DashboardCard';
 import { scheduleData } from './tempData';
 import TutorSchedule from '../../components/TutorSchedule/TutorSchedule';
 import HatIcon from '../../assets/images/hat.svg'
+import { useLazyGetSessionsQuery } from '../../app/services/session';
+import { useSelector } from 'react-redux';
+import Message from '../../components/Message/Message';
 
 const students = [
    {
@@ -53,15 +56,44 @@ const studentsData = [
 ]
 export default function TutorDashboard() {
 
+   const [fetchUserSessions, fetchUserSessionsResponse] =
+      useLazyGetSessionsQuery();
+
+   const [sessions, setSessions] = useState([])
+   const [isOpen, setIsOpen] = useState(false)
+   const { id } = useSelector(state => state.user)
+
+   useEffect(() => {
+      const url = `/api/session/tutor/${id}`;
+      fetchUserSessions(url)
+         .then(res => {
+            console.log(res.data.data.session)
+            let temp = res.data.data.session.filter(session => {
+               let date = new Date(session.date).getDate()
+               let now = new Date().getDate()
+               return date === now
+               // console.log('d -- ', now);
+               // console.log('sd -- ', date);
+            })
+            setSessions(temp)
+         })
+   }, [])
+
+   const handleLinkClick = (text) => {
+      setIsOpen(true)
+      navigator.clipboard.writeText(text)
+      setTimeout(() => {
+         setIsOpen(false)
+      }, 5000);
+   }
 
    return (
-      <div className="lg:ml-pageLeft bg-lightWhite min-h-screen">
+      <div className="lg:ml-pageLeft bg-lightWhite min-h-screen overflow-x-hidden">
          <div className="py-8 px-5">
 
             <div className='flex items-start'>
 
                <div className='flex flex-col items-start flex-[7]' >
-
                   <div className='px-4 mb-[50px]'>
                      <p className='text-primary-dark font-semibold text-[21px] mb-8'>Latest Students</p>
                      <div className={styles.studentImages} >
@@ -92,15 +124,14 @@ export default function TutorDashboard() {
                   <div className='w-full pl-6 mt-10'>
                      <p className='text-primary-dark font-semibold text-[21px] mb-4'>Today’s Schedule</p>
                      <div className='px-[29px] py-[31px] bg-white  rounded-[20px] scrollbar-content scrollbar-vertical max-h-[600px] overflow-auto'>
-                        {scheduleData.map((item, idx) => {
-                           return <TutorSchedule {...item} />
+                        {sessions.map((item, idx) => {
+                           return <TutorSchedule {...item} setIsOpen={setIsOpen} handleLinkClick={handleLinkClick} />
                         })}
                      </div>
                   </div>
 
 
                </div>
-
                <div className='flex-1 flex-[6] px-4 pl-6 bg-[#D9D9D9]/10 mt-[20px] rounded-[20px] pt-[65px]'>
 
                   <div className='px-4'>
@@ -166,10 +197,10 @@ export default function TutorDashboard() {
 
 
                </div>
-
             </div>
 
          </div>
+         <Message text='Session link has been copied to your clipboard' isOpen={isOpen} />
       </div>
    )
 }

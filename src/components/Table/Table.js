@@ -9,20 +9,25 @@ export default function Table({
    tableHeaders,
    maxPageSize,
    onClick,
-   hidePagination
+   hidePagination,
+   setMaxPageSize
 }) {
-   const [tableData, setTableData] = useState(data);
+   const [tableData, setTableData] = useState(data.sort((a,b) => a.name?.slice(0,1).toLowerCase() > b.name?.slice(0,1).toLowerCase()));
    const [currentPage, setCurrentPage] = useState(1);
+   const dataLength = data.length > 30 ? 30 : data.length;
+
+   // console.log();
    
    useEffect(() => {
       if (hidePagination === true) {
          setTableData(data)
       } else {
-         const temp = tableData.slice(0, maxPageSize);
+         const temp = data.slice(0, maxPageSize);
+         // const temp = tableData.slice(0, maxPageSize); ***  it Was the Previous one  ***
          setTableData(temp);
          setCurrentPage(1);
       }
-   }, [data]);
+   }, [data, maxPageSize, data.length]);
 
 
    //change tabledata if current page changes
@@ -56,11 +61,18 @@ export default function Table({
             </tbody>
          </table>
 
-         {!hidePagination && <Pagination
-            totalPages={Math.ceil(data.length / maxPageSize)}
-            currentPage={currentPage}
-            setCurrentPage={setCurrentPage}
-         />}
+         <div className="grid grid-cols-3 items-center">
+            <aside></aside>
+            {!hidePagination && <Pagination
+               totalPages={Math.ceil(data.length / maxPageSize)}
+               currentPage={currentPage}
+               setCurrentPage={setCurrentPage}
+            />}
+            <aside className="ml-auto">
+               <button className="mx-3 px-6 py-3 bg-primary disabled:bg-primary-300 text-white rounded" onClick={() => setMaxPageSize(10)} disabled={maxPageSize === 10}>Show 10 Entries</button>
+               <button className="mx-3 px-6 py-3 bg-primary text-white rounded disabled:bg-primary-300" onClick={() => setMaxPageSize(data.length > 30 ? 30 : data.length)} disabled={maxPageSize >= dataLength}>Show {data.length > 30 ? "30" : `all ${data.length}`} Entries</button>
+            </aside>
+         </div>
 
       </div>
    );
