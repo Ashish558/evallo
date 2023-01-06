@@ -30,7 +30,10 @@ const ConceptSection = () => {
    const { id } = useSelector(state => state.user)
 
    const [fetchTutors, fetchTutorsResp] = useLazyGetParentTutorsQuery()
-   const navigate = useNavigate()
+   const navigate = useNavigate();
+   const [startDate, setStartDate] = useState("");
+   const [endDate, setEndDate] = useState("");
+
 
    useEffect(() => {
       fetchTutors({ id })
@@ -102,7 +105,7 @@ const ConceptSection = () => {
                         }}
                         className="py-2 cursor-pointer"
                      >
-                        Math
+                        Maths
                      </li>
                      <li
                         onClick={(e) => {
@@ -114,7 +117,7 @@ const ConceptSection = () => {
                         }}
                         className="py-2 cursor-pointer"
                      >
-                        Physic
+                        Grammar
                      </li>
                      <li
                         onClick={(e) => {
@@ -126,7 +129,7 @@ const ConceptSection = () => {
                         }}
                         className="py-2 cursor-pointer"
                      >
-                        Biology
+                        Reading
                      </li>
                      <li
                         onClick={(e) => {
@@ -138,13 +141,13 @@ const ConceptSection = () => {
                         }}
                         className="py-2 cursor-pointer"
                      >
-                        Chemistry
+                        Science
                      </li>
                   </ul>
                </div>
 
                <div className="dropdown" id={styles.data}>
-                  <label
+                  {/* <label
                      className="flex items-center text-sm"
                      id={styles.dropdownHeading}
                      tabIndex={0}
@@ -222,8 +225,18 @@ const ConceptSection = () => {
                      >
                         Apr 20, 2022 - May 30, 2022
                      </li>
-                  </ul>
-               </div>
+                  </ul> */}
+                  <div className="flex gap-[21px]">
+                     <div className="relative">
+                           <label htmlFor="startDate" className="bg-[#D9D9D980] px-[12px] py-[10px] rounded-[10px] cursor-pointer">{startDate ? startDate : "Start Date"}</label>
+                           <input type="date" placeholder="Start Date" name="" onChange={e => setStartDate(e.target.value)} id="startDate" className="absolute invisible bottom-0" />
+                        </div>
+                        <div className="relative">
+                           <label htmlFor="endDate" className="bg-[#D9D9D980] px-[12px] py-[10px] rounded-[10px] cursor-pointer">{endDate ? endDate : "End Date"}</label>
+                           <input type="date" placeholder="Start Date" name="" onChange={e => setEndDate(e.target.value)} id="endDate" className="absolute invisible bottom-0" />
+                        </div>
+                     </div>
+                  </div>
 
             </div>
 
@@ -275,7 +288,7 @@ const ConceptSection = () => {
 
             </div>
             <div id={styles.practiceTestContainer}>
-               <h2 className="mb-[6px]" id={styles.practiceTestHeader}>Practice Test</h2>
+               <h2 className="mb-[6px]" id={styles.practiceTestHeader}>Assigned Tests</h2>
                <div id={styles.listedData}>
                   {/* <div
                      className="flex items-center justify-between"

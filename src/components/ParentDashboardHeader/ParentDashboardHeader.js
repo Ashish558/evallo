@@ -132,9 +132,9 @@ const ParentDashboardHeader = () => {
                      </div>
                   </div>
 
-                  <div className="w-1/3" id={styles.availableCredit}>
-                     <div className="flex justify-between">
-                        <h3 className="2xl:text-[19.6px] font-semibold">Available Credit</h3>
+                  <div className={`w-1/3 ${credits > 0 ? "bg-[#4BBD94]" : "bg-[#F36262]"}`} id={styles.availableCredit}>
+                     <div className="flex justify-between mb-2">
+                        <h3 className="2xl:text-[19.6px] font-semibold">{credits > 0 ? "Available Credit" : "Amount Due"}</h3>
                         <img src={i} alt="" title="Give Value List" />
                      </div>
 
@@ -147,7 +147,7 @@ const ParentDashboardHeader = () => {
                            View details
                         </p>
                      </div>
-                     <button className={styles.btnDark} disabled={amountToPay === 0} onClick={handlePay} >
+                     <button className={`${styles.btnDark} ${credits > 0 ? 'bg-[#095740]' : 'bg-[#BB2F2F]'}`} disabled={amountToPay === 0} onClick={handlePay} >
                         {amountToPay !== 0 ? <>Pay Now: $ {amountToPay}</> : <>No invoice Due</>}
                      </button>
                   </div>
