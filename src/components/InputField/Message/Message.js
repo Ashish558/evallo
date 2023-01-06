@@ -3,7 +3,8 @@ import React from 'react'
 export default function Message({ error, type }) {
 
    return (
-      <div className='px-3 absolute right-0 text-[13px] rounded-md ml-auto max-w-[310px] mt-5 py-2 bg-[#FFCDC9] border border-[#FF2626] '>
+      <div className='px-3 absolute right-0 text-[13px] rounded-md ml-auto max-w-[310px] mt-5 py-2 bg-[#FFCDC9] border border-[#FF2626] '
+      style={{zIndex: '8000'}}>
          <p>
             {error}
          </p>

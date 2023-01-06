@@ -8,6 +8,7 @@ import InputSelect from '../../../../components/InputSelect/InputSelect'
 import Modal from '../../../../components/Modal/Modal'
 import SimpleCalendar from '../../../../components/SimpleCalendar/SimpleCalendar'
 import Slider from '../../../../components/Slider/Slider'
+import { subjects, timeZones } from '../../../../constants/constants'
 import styles from './style.module.css'
 
 // 637b9df1e9beff25e9c2aa83
@@ -543,7 +544,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                                     onChange={val =>
                                        setCurrentToEdit({ ...currentToEdit, timeZone: val })
                                     }
-                                    optionData={['IST', 'EST', 'PTD']}
+                                    optionData={timeZones}
                                     radio={true}
                                     inputContainerClassName="pt-3 pb-3 border bg-[#D9D9D999]"
                                     placeholder="Select"
@@ -626,7 +627,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                                        name: 'subjects',
                                        match: currentToEdit.subjects
                                     }}
-                                    optionData={['Maths', 'English']}
+                                    optionData={subjects}
                                     inputContainerClassName="pt-3 pb-3 border bg-white"
                                     placeholder="Subjects"
                                     parentClassName="w-full mr-4"

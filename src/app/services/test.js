@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { BASE_URL } from "../constants/constants";
+import { BASE_URL, getAuthHeader } from "../constants/constants";
 
 
 export const testServicesApi = createApi({
@@ -16,6 +16,7 @@ export const testServicesApi = createApi({
                search: name
             },
             method: "GET",
+            headers: getAuthHeader()
          }),
       }),
 
@@ -24,19 +25,14 @@ export const testServicesApi = createApi({
             url: `/api/test`,
             method: "POST",
             body: body,
-            headers: {
-               "Content-type": "application/json; charset=UTF-8",
-               // "Authorization": localStorage.getItem('token'),
-            },
+            headers: getAuthHeader()
          })
       }),
       getTestDetails: builder.query({
          query: (id) => ({
             url: `/api/test/${id}`,
             method: "GET",
-            headers: {
-               "Authorization": localStorage.getItem('token'),
-            },
+            headers: getAuthHeader()
          })
       }),
       assignTest: builder.mutation({
@@ -44,10 +40,7 @@ export const testServicesApi = createApi({
             url: `/api/test/assigntest`,
             method: "POST",
             body: body,
-            headers: {
-               "Content-type": "application/json; charset=UTF-8",
-               // "Authorization": localStorage.getItem('token'),
-            },
+            headers: getAuthHeader()
          })
       }),
       addPdf: builder.mutation({
@@ -55,10 +48,7 @@ export const testServicesApi = createApi({
             url: `/api/test/addpdf/${body.id}`,
             method: "POST",
             body: body.formData,
-            headers: {
-               "Content-type": "multipart/form-data",
-               // "Authorization": localStorage.getItem('token'),
-            },
+            headers: getAuthHeader()
          })
       }),
       attendTest: builder.mutation({
@@ -66,9 +56,7 @@ export const testServicesApi = createApi({
             url: `/api/test/attendtest/${body.id}`,
             method: "POST",
             body: body.reqbody,
-            headers: {
-               "Authorization": localStorage.getItem('token'),
-            },
+            headers: getAuthHeader()
          })
       }),
       updateTime: builder.mutation({
@@ -76,27 +64,21 @@ export const testServicesApi = createApi({
             url: `/api/test/updatetime/${body.id}`,
             method: "POST",
             body: body.reqbody,
-            headers: {
-               "Authorization": localStorage.getItem('token'),
-            },
+            headers: getAuthHeader()
          })
       }),
       getSections: builder.query({
          query: (body) => ({
             url: `/api/test/getsections/${body.id}`,
             method: "GET",
-            headers: {
-               "Authorization": localStorage.getItem('token'),
-            },
+            headers: getAuthHeader()
          })
       }),
       getAssignedTest: builder.query({
          query: (id) => ({
             url: `/api/test/assigntest`,
             method: "GET",
-            headers: {
-               "Authorization": localStorage.getItem('token'),
-            },
+            headers: getAuthHeader()
          })
       }),
 
@@ -104,9 +86,7 @@ export const testServicesApi = createApi({
          query: (id) => ({
             url: `/api/test/gettime/${id}`,
             method: "GET",
-            headers: {
-               "Authorization": localStorage.getItem('token'),
-            },
+            headers: getAuthHeader()
          })
       }),
       startTest: builder.mutation({
@@ -114,27 +94,21 @@ export const testServicesApi = createApi({
             url: `/api/test/start/${body.id}`,
             method: "POST",
             body: body.reqbody,
-            headers: {
-               "Authorization": localStorage.getItem('token'),
-            },
+            headers: getAuthHeader()
          })
       }),
       continueTest: builder.query({
          query: (body) => ({
             url: `/api/test/continuetest/${body.id}`,
             method: "GET",
-            headers: {
-               "Authorization": localStorage.getItem('token'),
-            },
+            headers: getAuthHeader()
          })
       }),
       getTestResponse: builder.query({
          query: (body) => ({
             url: `/api/test/getresponse/${body.id}`,
             method: "GET",
-            headers: {
-               "Authorization": localStorage.getItem('token'),
-            },
+            headers: getAuthHeader()
          })
       }),
       submitTest: builder.mutation({
@@ -142,9 +116,7 @@ export const testServicesApi = createApi({
             url: `/api/test/submit/${body.submitId}`,
             method: "POST",
             body: body.reqbody,
-            headers: {
-               "Authorization": localStorage.getItem('token'),
-            },
+            headers: getAuthHeader()
          })
       }),
 

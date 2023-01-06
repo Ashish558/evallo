@@ -5,7 +5,7 @@ import InputSelect from '../../../../components/InputSelect/InputSelect'
 
 export default function SessionInputs({ data, setData, status, isEditable }) {
 
-   const persona = localStorage.getItem('role')
+   const persona = sessionStorage.getItem('role')
 
    return (
       <>

@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { BASE_URL } from "../constants/constants";
+import { BASE_URL, getAuthHeader } from "../constants/constants";
 
 // 
 export const userServicesApi = createApi({
@@ -17,45 +17,42 @@ export const userServicesApi = createApi({
                page: body.currentPage
             },
             method: "GET",
+            headers: getAuthHeader()
          }),
       }),
       getPersonalDetail: builder.query({
          query: (body) => ({
             url: `api/user/mydetails`,
             method: "GET",
-            headers: {
-               "Authorization": localStorage.getItem('token'),
-            },
+            headers: getAuthHeader()
          }),
       }),
       getParentTutors: builder.query({
          query: (body) => ({
             url: `api/user/parent/tutors/${body.id}`,
             method: "GET",
-            headers: {
-               "Authorization": localStorage.getItem('token'),
-            },
+            headers: getAuthHeader()
          }),
       }),
       getStudentTutors: builder.query({
          query: (body) => ({
             url: `api/user/student/tutors/${body.id}`,
             method: "GET",
-            headers: {
-               "Authorization": localStorage.getItem('token'),
-            },
+            headers: getAuthHeader()
          }),
       }),
       getUserDetail: builder.query({
          query: (body) => ({
             url: `api/user/${body.id}`,
             method: "GET",
+            headers: getAuthHeader()
          }),
       }),
       getTutorDetails: builder.query({
          query: (body) => ({
             url: `api/user/tutordetails/${body.id}`,
             method: "GET",
+            headers: getAuthHeader()
          }),
       }),
       updateUserFields: builder.mutation({
@@ -63,9 +60,7 @@ export const userServicesApi = createApi({
             url: `api/user/${body.id}`,
             method: "PATCH",
             body: body.fields,
-            headers: {
-               "Authorization": localStorage.getItem('token'),
-            },
+            headers: getAuthHeader()
          })
       }),
       updateUserDetails: builder.mutation({
@@ -73,9 +68,7 @@ export const userServicesApi = createApi({
             url: `api/user/updatedetails/${body.id}`,
             method: "PATCH",
             body: body.fields,
-            headers: {
-               "Authorization": localStorage.getItem('token'),
-            },
+            headers: getAuthHeader()
          })
       }),
       postTutorDetails: builder.mutation({
@@ -83,9 +76,7 @@ export const userServicesApi = createApi({
             url: `api/user/tutordetails/${body.id}`,
             method: "POST",
             body: body.fields,
-            headers: {
-               "Authorization": localStorage.getItem('token'),
-            },
+            headers: getAuthHeader()
          })
       }),
       updateTutorDetails: builder.mutation({
@@ -93,9 +84,15 @@ export const userServicesApi = createApi({
             url: `api/user/tutordetails/${body.id}`,
             method: "PATCH",
             body: body.fields,
-            headers: {
-               "Authorization": localStorage.getItem('token'),
-            },
+            headers: getAuthHeader()
+         })
+      }),
+      updateProfileImage: builder.mutation({
+         query: (body) => ({
+            url: `/api/user/addphoto`,
+            method: "PATCH",
+            body: body,
+            headers: getAuthHeader()
          })
       }),
       addUser: builder.mutation({
@@ -103,9 +100,7 @@ export const userServicesApi = createApi({
             url: `/api/user/addtutor`,
             method: "POST",
             body: body,
-            headers: {
-               "Content-type": "application/json; charset=UTF-8",
-            },
+            headers: getAuthHeader()
          })
       }),
       getInvoice: builder.query({
@@ -115,9 +110,7 @@ export const userServicesApi = createApi({
                _id: body.id
             },
             method: "GET",
-            headers: {
-               "Authorization": localStorage.getItem('token'),
-            },
+            headers: getAuthHeader()
          }),
       }),
 
@@ -136,5 +129,6 @@ export const {
    useUpdateTutorDetailsMutation,
    usePostTutorDetailsMutation,
    useLazyGetPersonalDetailQuery,
-   useLazyGetInvoiceQuery
+   useLazyGetInvoiceQuery,
+   useUpdateProfileImageMutation
 } = userServicesApi;

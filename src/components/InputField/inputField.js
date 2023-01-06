@@ -26,7 +26,7 @@ export default function InputField({
    const [inputType, setInputType] = useState(type)
 
    return (
-      <div className={` ${parentClassName && parentClassName}`}>
+      <div className={`relative ${parentClassName && parentClassName}`}>
          <label
             className={`inline-block font-semibold ${labelClassname} ml-3`}
          >

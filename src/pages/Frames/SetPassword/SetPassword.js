@@ -27,11 +27,8 @@ export default function SetPassword({ signup, setLoginFormActive, resetPassword 
    const resetErrors = () => {
       setError(prev => {
          return {
-            firstName: "",
-            lastName: "",
-            email: "",
-            phone: "",
-            subscriptionCode: "",
+            password: "",
+            confirmPassword: "",
          }
       })
    }
@@ -96,7 +93,7 @@ export default function SetPassword({ signup, setLoginFormActive, resetPassword 
                      </p>
 
                      <InputField Icon={Passwordicon}
-                        parentClassName='mb-6'
+                        parentClassName='mb-6 relative' 
                         type='password'
                         placeholder='minimum 8 characters'
                         inputContainerClassName='border pt-3 pb-3'
@@ -108,7 +105,7 @@ export default function SetPassword({ signup, setLoginFormActive, resetPassword 
                      />
 
                      <InputField Icon={Passwordicon}
-                        parentClassName='mb-2.5'
+                        parentClassName='mb-2.5 relative'
                         type='password'
                         placeholder='Confirm Password'
                         inputContainerClassName='border pt-3 pb-3'
@@ -119,7 +116,7 @@ export default function SetPassword({ signup, setLoginFormActive, resetPassword 
                         error={error.confirmPassword}
                      />
 
-                     <button disabled={(password === confirmPassword)}
+                     <button 
                         className='w-full bg-primaryDark font-medium disabled:bg-pink pt-3 pb-3 mt-12 rounded-10 text-white text-lg'
                         onClick={handleSubmit}
                      >

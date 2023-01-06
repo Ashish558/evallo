@@ -16,7 +16,6 @@ export default function SelectServices({
    setOtherDetails,
    otherDetails,
 }) {
-   const [minCheck, setMinCheck] = useState(false);
 
    const handleCheckboxChange = (text, arr, setValue) => {
       const temp = arr.map((topic) => {
@@ -26,10 +25,6 @@ export default function SelectServices({
       });
       setValue(temp);
    };
-   // console.log(services);
-   useEffect(() => {
-      setMinCheck(!services.find(service => service.checked));
-   }, [services])
    const [disabled, setDisabled] = useState(false)
    const [inputDisabled, setInputDisabled] = useState(false)
 
@@ -179,7 +174,6 @@ export default function SelectServices({
                   onClick={handleBack}
                />
                <PrimaryButton
-                  disabled={minCheck || !otherDetails.schoolName.length || !otherDetails.grade.length}
                   children="Next"
                   className="text-lg pt-3 pb-3 font-semibold text-white mr-6 w-140 disabled:opacity-70"
                   onClick={() => handleSubmit()}

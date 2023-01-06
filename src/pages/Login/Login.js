@@ -75,9 +75,9 @@ export default function Login({ setLoginFormActive }) {
                   }
                   return
                }
-               localStorage.setItem("token", res.data.data.token);
-               localStorage.setItem("role", res.data.data.role);
-               localStorage.setItem("userId", res.data.data.userId);
+               sessionStorage.setItem("token", res.data.data.token);
+               sessionStorage.setItem("role", res.data.data.role);
+               sessionStorage.setItem("userId", res.data.data.userId);
                dispatch(updateIsLoggedIn(true));
             });
          })

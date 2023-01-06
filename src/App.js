@@ -13,8 +13,8 @@ function App() {
 
    useEffect(() => {
       setLoading(true);
-      // console.log(localStorage.getItem('token'))
-      if (localStorage.getItem('token')) {
+     
+      if (sessionStorage.getItem('token')) {
          fetchPersonalDetails()
             .then(res => {
                console.log('personal Dedails', res.data )

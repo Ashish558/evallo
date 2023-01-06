@@ -196,7 +196,7 @@ export default function Settings() {
       } else if (selectedImageTag === 'offer'){
          append = 'addimage'
          formData.append('link', tagText)
-         formData.append("Offer", tagImage)
+         formData.append("offer", tagImage)
          formData.delete('text')
          formData.delete('image')
       }

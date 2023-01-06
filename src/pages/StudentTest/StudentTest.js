@@ -59,7 +59,7 @@ export default function StudentTest() {
    const [fetchPersonalDetails, personalDetailsResp] = useLazyGetPersonalDetailQuery()
    const [parentStudentsIds, setParentStudentsIdss] = useState([])
 
-   const persona = localStorage.getItem("role");
+   const persona = sessionStorage.getItem("role");
 
    useEffect(() => {
       // getUserDetail({id:})

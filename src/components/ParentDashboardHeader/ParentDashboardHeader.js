@@ -31,9 +31,9 @@ const ParentDashboardHeader = () => {
    const [selectedStudent, setSelectedStudent] = useState(null)
 
    const navigate = useNavigate()
-//  localStorage
+   //  sessionStorage
    const { id, amountToPay, credits } = useSelector(state => state.user)
- 
+
    useEffect(() => {
       fetchSettings()
          .then(res => {
@@ -62,6 +62,8 @@ const ParentDashboardHeader = () => {
          })
    }, [])
 
+   console.log(images)
+   
    useEffect(() => {
       if (user.assiginedStudents === undefined) return
       const fetch = async () => {
@@ -79,20 +81,20 @@ const ParentDashboardHeader = () => {
       }
       fetch()
    }, [user])
- 
-   const handlePay = ()=>{
+
+   const handlePay = () => {
       payBalance()
-      .then(res => {
-         if(res.error){
-            console.log(res.error)
-            if (res.error.data) alert(res.error.data.message)
-            return
-         }
-         console.log(res.data.data)
-         if(res.data.data){
-            if(res.data.data.link) window.open(res.data.data.link)
-         }
-      })
+         .then(res => {
+            if (res.error) {
+               console.log(res.error)
+               if (res.error.data) alert(res.error.data.message)
+               return
+            }
+            console.log(res.data.data)
+            if (res.data.data) {
+               if (res.data.data.link) window.open(res.data.data.link)
+            }
+         })
    }
 
    return (
@@ -138,7 +140,7 @@ const ParentDashboardHeader = () => {
 
                      <div id={styles.creditBalance}>
                         <p className="whitespace-nowrap text-3xl leading-none mb-1" >
-                        {credits} USD
+                           {credits} USD
                         </p>
                         <p className="text-[13.17px] font-bold cursor-pointer"
                            onClick={() => setLedgerVisible(true)}>
@@ -167,30 +169,41 @@ const ParentDashboardHeader = () => {
                         value={selectedStudent === null ? '' : selectedStudent.value}
                         onChange={val => setSelectedStudent(val)} />}
                </div>
-               <div className={`item ${styles.student} w-100 px-[22px] 2xl:px-[32px] 2xl:py-[13px]`}>
+               <div className={`item ${styles.student} w-100 min-h-[175px] px-[22px] 2xl:px-[32px] 2xl:py-[13px]`}>
                   <div className="flex items-center">
-                     <div className="w-1/2">
-                        <h2>
-                           {/* {selectedStudent !== null && 'Joseph Brown'}  */}
-                           {selectedStudent === null ? 'Dummy name' :
-                              selectedStudent.value}
-                        </h2>
-                        <h6 className="text-[10px]">SAT Tutoring <br />Subject Tutoring</h6>
-                        <Link className="btn-gold"
-                           to={selectedStudent !== null && `/profile/student/${selectedStudent._id}`}>
-                           View Profile
-                        </Link>
-                     </div>
-                     <div className="w-1/2 flex justify-end">
-                        <img src={shivam} alt="" />
-                     </div>
+                     {associatedStudents.length > 0 &&
+                        <>
+                           <div className="w-1/2">
+                              <h2>
+                                 {/* {selectedStudent !== null && 'Joseph Brown'}  */}
+                                 {selectedStudent === null ? 'No students associated' :
+                                    selectedStudent.value}
+                              </h2>
+
+                              <h6 className="text-[10px]">SAT Tutoring <br />Subject Tutoring</h6>
+                              <Link className="btn-gold"
+                                 to={selectedStudent !== null && `/profile/student/${selectedStudent._id}`}>
+                                 View Profile
+                              </Link>
+
+                           </div>
+                        </>
+                     }
+                     {associatedStudents.length === 0 &&
+                        <p>No students Associated</p>
+                     }
+                     {associatedStudents.length > 0 &&
+                        <div className="w-1/2 flex justify-end">
+                           <img src={shivam} alt="" />
+                        </div>
+                     }
                   </div>
                </div>
 
             </div>
 
          </div>
-      
+
       </>
    );
 };

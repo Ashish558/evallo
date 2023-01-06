@@ -27,7 +27,7 @@ export default function CompletedTest() {
    const navigate = useNavigate()
    const [subjects, setSubjects] = useState(tempsubjects)
 
-   const persona = localStorage.getItem('role')
+   const persona = sessionStorage.getItem('role')
 
    const getSelectedString = (arr) => {
       let strArr = []

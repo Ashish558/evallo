@@ -55,7 +55,7 @@ const PrivateRoutes = [
 
 const AppRoutes = () => {
    const { isLoggedIn } = useSelector((state) => state.user);
-   const persona = localStorage.getItem('role')
+   const persona = sessionStorage.getItem('role')
  
    return (
       <BrowserRouter>

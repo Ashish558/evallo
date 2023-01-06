@@ -4,6 +4,6 @@ export const BASE_URL = 'https://backend.sevensquarelearning.com/'
 
 export const getAuthHeader = ()=>{
  return  {
-      "Authorization": localStorage.getItem('token'),
+      "Authorization": sessionStorage.getItem('token'),
    }
 }

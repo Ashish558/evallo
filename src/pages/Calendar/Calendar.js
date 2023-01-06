@@ -87,7 +87,7 @@ export default function Calendar() {
    const calendarRef = useRef(null);
    // console.log(calendarRef.current)
    const [events, setEvents] = useState([]);
-   const [persona, setPersona] = useState(localStorage.getItem("role"));
+   const [persona, setPersona] = useState(sessionStorage.getItem("role"));
    // const [timeZones, setTimeZones] = useState(temptimeZones)
    const { id: sessionToEdit } = useParams()
    const [isEdited, setIsEdited] = useState(false)
@@ -148,7 +148,7 @@ export default function Calendar() {
       const url = `/api/session/${role}/${id}`;
       // console.log(url)
       fetchUserSessions(url).then((res) => {
-         console.log(res.data);
+         // console.log(res.data.data);
          const tempEvents = res.data.data.session.map(session => {
             const time = session.time;
             const strtTime12HFormat = `${time.start.time} ${time.start.timeType}`;
@@ -199,8 +199,8 @@ export default function Calendar() {
             let up = getStartDate(startDate, userTimezoneOffset, session.timeZone)
             const startUtc = up.toUTCString()
 
-            console.log('START DATE', startDate);
-            console.log('START DATE UTC --', startUtc);
+            // console.log('START DATE', startDate);
+            // console.log('START DATE UTC --', startUtc);
 
             const endTime12HFormat = `${time.end.time} ${time.end.timeType}`;
             const endTime = convertTime12to24(
@@ -248,9 +248,9 @@ export default function Calendar() {
 
    useEffect(() => {
       if (persona == "student") {
-         console.log(persona);
-         const userId = localStorage.getItem("userId");
-         const role = localStorage.getItem("role");
+         // console.log(persona);
+         const userId = sessionStorage.getItem("userId");
+         const role = sessionStorage.getItem("role");
          if (!userId) return;
          fetchSessions(userId, role);
       }
@@ -512,7 +512,7 @@ export default function Calendar() {
    }, [name]);
 
    useEffect(() => {
-      const userId = localStorage.getItem("userId");
+      const userId = sessionStorage.getItem("userId");
       if (persona === "tutor") {
          fetchStudents(userId).then((res) => {
             setEventDetails(res.data.data.session);
@@ -719,10 +719,10 @@ export default function Calendar() {
                      // timeZone='UTC'
                      // timeZone={timeZone === getLocalTimeZone() ? 'local' : timeZone}
                      // timeZone={timeZone === 'IST' ? 'local' : timeZone }
-                     businessHours= {{
-                        startTime: '06:00', // a start time (10am in this example)
-                        endTime: '05:00', // an end time (6pm in this example)
-                      }}
+                     // businessHours= {{
+                     //    startTime: '06:00', // a start time (10am in this example)
+                     //    endTime: '05:00', // an end time (6pm in this example)
+                     //  }}
                      eventClick={(info) => handleEventClick(info)}
                      ref={calendarRef}
                      plugins={[

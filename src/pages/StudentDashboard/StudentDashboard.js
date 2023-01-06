@@ -17,7 +17,7 @@ const StudentDashboard = () => {
       <div className={`${styles.studentDashboardContainer} ml-pageLeft`} id="container">
          <div className="flex" id={styles.studentDashboard}>
             <div className="w-7/12">
-               <StudentDashboardHeader></StudentDashboardHeader>
+               <StudentDashboardHeader />
                <div className="flex items-center justify-between" style={{ gap: "20px" }}>
                   <h1>Concept Chart</h1>
 

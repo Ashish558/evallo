@@ -155,7 +155,7 @@ export default function Navbar() {
    const { width } = useWindowDimensions()
    const { isLoggedIn } = useSelector((state) => state.user)
 
-   const persona = localStorage.getItem('role')
+   const persona = sessionStorage.getItem('role')
 
    useEffect(() => {
       if (persona === 'student') {

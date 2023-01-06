@@ -37,6 +37,9 @@ import { useSelector } from 'react-redux'
 import ParentEditables from '../../Frames/Editables/ParentEditables/ParentEditables'
 import { useLazyGetFeedbacksQuery } from '../../../app/services/dashboard'
 import FeedbackTable from './FeedbackTable/FeedbackTable'
+import { BASE_URL, getAuthHeader } from '../../../app/constants/constants'
+import axios from 'axios'
+import ProfilePhoto from '../../../components/ProfilePhoto/ProfilePhoto'
 
 
 const values = [
@@ -101,7 +104,7 @@ export default function TutorProfile({ isOwn }) {
 
    const navigate = useNavigate()
    const [editable, setEditable] = useState(false)
-   const persona = localStorage.getItem('role')
+   const persona = sessionStorage.getItem('role')
    const [user, setUser] = useState({})
    const [userDetail, setUserDetail] = useState({})
    const [settings, setSettings] = useState({})
@@ -412,15 +415,37 @@ export default function TutorProfile({ isOwn }) {
       tutorLevelBg = '#2d2c2c'
    }
 
+   const handleProfilePhotoChange = (file) => {
+      // console.log(file)
+      let url = ''
+      const formData = new FormData
+      formData.append('photo', file)
+      if (persona === 'admin') {
+         url = `${BASE_URL}api/user/admin/addphoto/${params.id} `
+      } else {
+         url = `${BASE_URL}api/user/addphoto`
+      }
+      axios.patch(url, formData, { headers: getAuthHeader() })
+         .then((res) => {
+            console.log(res)
+            fetchDetails()
+         })
+   }
+
    return (
       <>
-         <div className='lg:ml-pageLeft bg-lightWhite min-h-screen pb-120'>
+         <div className='lg:ml-pageLeft bg-lightWhite min-h-screen pb-120 pt-10'>
             <div className='lg:px-5 lg:pt-0 lg:pr-0 relative'>
                <div className={styles.backBtn} >
                   <BackBtn to={-1} />
                </div>
-               <div className='relative'>
-                  <img src={TutorImg} style={{ transform: 'matrix(-1, 0, 0, 1, 0, 0)' }} />
+               <div className='relative pt-10'>
+                  {/* <img src={TutorImg} style={{ transform: 'matrix(-1, 0, 0, 1, 0, 0)' }} />
+                   */}
+                  <div className='flex justify-center items-center'>
+                     <ProfilePhoto src={user.photo ? user.photo : '/images/default.jpeg'}
+                        handleChange={handleProfilePhotoChange} editable={editable} />
+                  </div>
                   <div className={styles.imgContent} >
                      {/* <p className='text-[#4F33BD] font-bold text-[50px]'>
                      Kalpana srivastava

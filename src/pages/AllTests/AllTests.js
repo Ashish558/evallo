@@ -53,7 +53,7 @@ export default function AllTests() {
    }
    const closeRemoveModal = () => setRemoveQuestionModal(false);
 
-   const persona = localStorage.getItem("role");
+   const persona = sessionStorage.getItem("role");
 
    const openRemoveTestModal = (item) => {
       setRemoveQuestionModal(true);

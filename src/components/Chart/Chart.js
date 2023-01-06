@@ -13,11 +13,12 @@ ChartJS.register(LinearScale, PointElement, Tooltip, Legend);
 export default function Chart() {
 
    const data1 = [
-      { x: 1, y: 1, r: 11 },
-      { x: 10, y: 2, r: 11 },
-      { x: 15, y: 20, r: 11 },
-      { x: 20, y: 10, r: 11 },
+      { x: 1, y: 1, r: 0 },
+      { x: 10, y: 2, r: 0 },
+      { x: 15, y: 20, r: 0 },
+      { x: 20, y: 10, r: 0 },
    ]
+   const subjects = [ 'Algebra', 'Adv. Maths', 'Geometry', 'Trigonometry']
    const options = {
 
       scales: {
@@ -26,31 +27,41 @@ export default function Chart() {
          },
          x: {
             grid: {
-              display: false
-            }, 
+               display: false
+            },
             title: {
                display: true,
-               text: 'Your Title'
-             }
-          },
-          y: {
+               text: 'Subjects'
+            },
+            ticks: {
+               stepSize: 5,
+               callback: function (value, index, ticks) {
+                  return subjects[index]
+               }
+            }
+         },
+         y: {
             // grid: {
             //   display: false
             // }
+            title: {
+               display: true,
+               text: 'Accuracy'
+            },
             ticks: {
                stepSize: 5,
-               callback: function(value, index, ticks) {
-                  return '$' + value;
-              }
+               callback: function (value, index, ticks) {
+                  return '' + value;
+               }
             }
-          }
+         }
       }
    };
 
    const data = {
       datasets: [
          {
-            label: 'Red dataset',
+            label: '',
             data: data1,
             backgroundColor: 'rgba(255, 99, 132, 0.5)',
          },

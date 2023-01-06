@@ -253,8 +253,8 @@ const ConceptSection = () => {
                                        </h5>
                                        <h3> {`${tutor.firstName} ${tutor.lastName}`} </h3>
                                        <p>
-                                          Lorem ipsum dolor sit amet, consectetur
-                                          adipiscing elit.
+                                          {/* Lorem ipsum dolor sit amet, consectetur
+                                          adipiscing elit. */}
                                        </p>
                                        <button className="btn-gold" style={{ padding: '7px 9px' }}
                                           onClick={() => tutor._id && navigate(`/profile/tutor/${tutor._id}`)} >
@@ -277,7 +277,7 @@ const ConceptSection = () => {
             <div id={styles.practiceTestContainer}>
                <h2 className="mb-[6px]" id={styles.practiceTestHeader}>Practice Test</h2>
                <div id={styles.listedData}>
-                  <div
+                  {/* <div
                      className="flex items-center justify-between"
                      style={{ padding: "10px 0" }}
                   >
@@ -445,7 +445,7 @@ const ConceptSection = () => {
                            </div>
                         </div>
                      </div>
-                  </div>
+                  </div> */}
 
                </div>
             </div>

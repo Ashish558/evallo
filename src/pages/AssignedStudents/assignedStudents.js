@@ -33,7 +33,7 @@ export default function AssignedStudents() {
    const [tableData, setTableData] = useState([])
    const [tableHeaders, setTableHeaders] = useState([])
    const navigate = useNavigate()
-   const persona = localStorage.getItem("role");
+   const persona = sessionStorage.getItem("role");
    const [getUserDetail, userDetailResp] = useLazyGetUserDetailQuery()
 
    const { id } = useSelector(state => state.user)

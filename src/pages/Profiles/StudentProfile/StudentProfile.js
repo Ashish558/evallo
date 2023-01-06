@@ -22,6 +22,9 @@ import { useLazyGetUserDetailQuery } from '../../../app/services/users'
 import { useSelector } from 'react-redux'
 import ParentEditables from '../../Frames/Editables/ParentEditables/ParentEditables'
 import { useLazyGetSettingsQuery } from '../../../app/services/session'
+import ProfilePhoto from '../../../components/ProfilePhoto/ProfilePhoto'
+import axios from 'axios'
+import { BASE_URL, getAuthHeader } from '../../../app/constants/constants'
 const students = [
    {
       id: 1,
@@ -80,12 +83,12 @@ const subjects = [
 ]
 const subjects1 = [
    {
-      marks: 200,
+      marks: '-',
       name: 'Verbal Score',
       bg: '#FEDCC3'
    },
    {
-      marks: 300,
+      marks: '-',
       name: 'Maths Score',
       bg: '#DACDFF'
    },
@@ -93,22 +96,22 @@ const subjects1 = [
 
 const subjects2 = [
    {
-      marks: 200,
+      marks: '-',
       name: 'Verbal',
       bg: '#FFCBCB'
    },
    {
-      marks: 300,
+      marks: '-',
       name: 'Maths',
       bg: '#A7EAF9'
    },
    {
-      marks: 200,
+      marks: '-',
       name: 'Verbal',
       bg: '#FFF38B'
    },
    {
-      marks: 300,
+      marks: '-',
       name: 'Maths',
       bg: '#A4FFA7'
    },
@@ -117,7 +120,7 @@ export default function StudentProfile({ isOwn }) {
 
    const navigate = useNavigate()
    const [editable, setEditable] = useState(false)
-   const persona = localStorage.getItem('role')
+   const persona = sessionStorage.getItem('role')
    const [user, setUser] = useState({})
    const [userDetail, setUserDetail] = useState({})
    const [settings, setSettings] = useState({})
@@ -286,13 +289,30 @@ export default function StudentProfile({ isOwn }) {
          })
    }, [])
 
+   const handleProfilePhotoChange = (file) => {
+      // console.log(file)
+      let url = ''
+      const formData = new FormData
+      formData.append('photo', file)
+      if (persona === 'admin') {
+         url = `${BASE_URL}api/user/admin/addphoto/${params.id} `
+      } else {
+         url = `${BASE_URL}api/user/addphoto`
+      }
+      axios.patch(url, formData, { headers: getAuthHeader() })
+         .then((res) => {
+            console.log(res)
+            fetchDetails()
+         })
+   }
    // console.log(user)
-   console.log(userDetail)
+   // console.log(userDetail)
    // console.log(associatedParent)
    // console.log(settings)
 
    if (Object.keys(user).length < 1) return
    if (Object.keys(userDetail).length < 1) return
+   if (Object.keys(settings).length < 1) return
 
    return (
       <>
@@ -301,9 +321,8 @@ export default function StudentProfile({ isOwn }) {
                <div className={`${styles.profileCard} relative`}>
                   <div className='rounded-t-40 bg-lightWhite lg:bg-transparent flex flex-col items-center'>
                      {/* <button className='absolute bg-[#D9BBFF] px-[14px] py-[12px] rounded-[8px] text-[#636363] text-[18px] font-medium top-[16px] left-[22px] flex gap-[12px] cursor-pointer' onClick={() => window.history.back()}><img src={LeftIcon} alt="icon" /> Back</button> */}
-                     <div className={styles.imgContainer}>
-                        <img src={`/images/student-1.png`} />
-                     </div>
+                     <ProfilePhoto src={user.photo ? user.photo : '/images/default.jpeg'}
+                        handleChange={handleProfilePhotoChange} editable={editable} />
                      <div className='flex items-center mt-67 lg:mt-4 text-[#F3F5F7]'>
                         <EditableText text={`${user.firstName} ${user.lastName}`}
                            editable={editable}
@@ -314,10 +333,10 @@ export default function StudentProfile({ isOwn }) {
                      </div>
                      <div className='flex items-center text-[#F3F5F7]'>
                         <p className='font-semibold text-[22px] mr-4'>
-                           11th Grade
+                           {/* 11th Grade */}
                         </p>
                         <p className='font-semibold text-[22px]'>
-                           Cambridge High School
+                           {/* Cambridge High School */}
                         </p>
                      </div>
                   </div>
@@ -346,9 +365,11 @@ export default function StudentProfile({ isOwn }) {
                                  text='Subjects'
                                  className='text-lg mb-2' textClassName='text-[21px]' />
                               <div className='grid grid-cols-2'>
-                                 {subjects.map((sub, idx) => {
-                                    return <p key={idx} className='mt-1 gap-1 font-medium text-[16px] lg:mt-2 lg:opacity-60'>{sub} </p>
-                                 })}
+                                 {userDetail.subjects ?
+                                    userDetail.subjects.map((sub, idx) => {
+                                       return <p key={idx} className='mt-1 gap-1 font-medium text-[16px] lg:mt-2 lg:opacity-60'>{sub} </p>
+                                    }) : '-'
+                                 }
                               </div>
                            </div>
                         </div>
@@ -357,13 +378,13 @@ export default function StudentProfile({ isOwn }) {
                   <div className='col-span-2 flex  justify-center items-center  scrollbar-content overflow-x-auto lg:py-5 bg-primary-light px-4 py-5 rounded-15'>
                      <div className='flex flex-col items-center mb-3'>
                         {/* <p className='text-lg text-center text-primary font-semibold mb-5 text-[21px]'>Associated Parent</p> */}
-                        <EditableText editable={editable}
+                        <EditableText editable={persona === 'admin' ? true : false}
                            onClick={() => setToEdit({ ...toEdit, associatedParent: { ...toEdit.associatedParent, active: true } })}
                            text='Associated Parent'
                            className='text-[21px] mb-2 flex justify-start text-center' />
 
                         <div>
-                           <img src={ProfileImg} width="98px" height="98px" />
+                           <img src='/images/default.jpeg' className='rounded-full' width="98px" height="98px" />
                         </div>
                         <p className='font-bold text-[18px] opacity-[68%] mb-1'>
                            {Object.keys(associatedParent).length > 1 ? `${associatedParent.firstName} ${associatedParent.lastName}` : `${userDetail.FirstName} ${userDetail.LastName}`}
@@ -413,7 +434,7 @@ export default function StudentProfile({ isOwn }) {
                         body={
                            <div className='flex mt-5 lg:mt-5'>
                               <p className=' font-semibold text-[18px]'>
-                                 V640 M660 | C1300
+                                 -
                               </p>
                            </div>
                         } />
@@ -470,7 +491,7 @@ export default function StudentProfile({ isOwn }) {
                               text='Personality'
                               className='text-lg mb-2' textClassName="flex-1 text-center text-[21px]" />
                            <div className='flex scrollbar-content max-h-[500px]  scrollbar-vertical flex-col row-span-2 overflow-x-auto scrollbar-content h-[450px]'>
-                              {settings && settings.personality && settings.personality.length > 0 &&  userDetail.personality &&  userDetail.personality.map((id, idx) => {
+                              {settings && settings.personality && settings.personality.length > 0 && userDetail.personality && userDetail.personality.map((id, idx) => {
                                  return (
                                     <div key={idx} className='flex flex-col items-center mb-10'>
                                        <div className='flex h-90 w-90 rounded-full  items-center justify-center mb-3' >
@@ -493,7 +514,7 @@ export default function StudentProfile({ isOwn }) {
                         className='mt-53 lg:mt-0'
                         body={
                            <>
-                              <SubjectSlider totalMarks={500} outOf={1600}
+                              <SubjectSlider totalMarks={'-'} outOf={'-'}
                                  header="Official SAT Scores"
                                  subjects={subjects1} title='Cumilative Score'
                               />
@@ -504,7 +525,7 @@ export default function StudentProfile({ isOwn }) {
                         className='mt-8'
                         body={
                            <>
-                              <SubjectSlider totalMarks={26} outOf={36}
+                              <SubjectSlider totalMarks={'-'} outOf={'-'}
                                  header="Official ACT Scores"
                                  subjects={subjects2} title='Cumilative Score'
                               />

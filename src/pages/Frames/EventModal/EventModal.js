@@ -16,6 +16,7 @@ import {
 } from "../../../utils/utils";
 import InputSearch from "../../../components/InputSearch/InputSearch";
 import {
+   useLazyGetSessionFeedbackQuery,
    useLazyGetSettingsQuery,
    useLazyUpdateSessionStatusQuery,
    useSubmitFeedbackMutation,
@@ -128,6 +129,8 @@ export default function EventModal({
    const [updateUserSession, updateUserSessionResp] = useUpdateSessionMutation();
    const [updateSessionStatus, updateSessionStatusResp] = useLazyUpdateSessionStatusQuery();
    const [submitFeedback, submitFeedbackResp] = useSubmitFeedbackMutation();
+   const [getSessionFeedback, getSessionFeedbackResp] = useLazyGetSessionFeedbackQuery();
+   const [inputFeedback, setInputFeedback] = useState(0)
 
    const [student, setStudent] = useState("");
 
@@ -391,14 +394,31 @@ export default function EventModal({
          rating: rating,
       }
       submitFeedback(body)
-      .then(res => {
-         if(res.error){
-           return console.log(res.error);
-         }
-         console.log(res.data);
-      })
+         .then(res => {
+            if (res.error) {
+               return console.log(res.error);
+            }
+            fetchFeedback()
+            // console.log(res.data);
+         })
    }
 
+   const fetchFeedback = () => {
+      getSessionFeedback(sessionToUpdate._id)
+         .then(res => {
+            if (res.error) {
+               setInputFeedback(0)
+               return console.log(res.error);
+            }
+            console.log('feedback', res.data);
+            setInputFeedback(res.data.data.feedback.rating)
+         })
+   }
+   useEffect(() => {
+      if(!sessionToUpdate) return
+      fetchFeedback()
+   }, [sessionToUpdate])
+   
    // console.log(convertTime12to24(`${data.time.end.time} ${data.time.end.timeType}`))
    // console.log(convertTime12to24('1:00 AM'))
    // console.log(data.feedbackStars);
@@ -461,10 +481,11 @@ export default function EventModal({
                            <div className="flex">
                               {[...Array(5)].map((x, i) => (
                                  <img
-                                    src={data.feedbackStars < i ? StarIcon : StarActiveIcon}
+                                    src={inputFeedback - 1 < i ? StarIcon : StarActiveIcon}
                                     className="mr-7 cursor-pointer"
                                     onClick={() => {
-                                       setData(prev => ({ ...prev, feedbackStars: i + 1 }));
+                                       // setData(prev => ({ ...prev, feedbackStars: i + 1 }));
+                                       // setInputFeedback(i + 1)
                                        handleFeedbackSubmit(i + 1)
                                     }}
                                  />

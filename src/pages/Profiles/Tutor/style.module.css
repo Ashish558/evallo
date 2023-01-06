@@ -8,12 +8,12 @@
 }
 .backBtn{
     position: absolute;
-    top: 50px;
+    top: 20px;
     left: 50px;
     z-index: 1000;
 }
 .imgContent{
-    position: absolute;
+    position: relative;
     z-index: 20;
     left: 0;
     bottom: 0;

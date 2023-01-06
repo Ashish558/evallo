@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { BASE_URL } from "../constants/constants";
+import { BASE_URL, getAuthHeader } from "../constants/constants";
 
 export const settingsServicesApi = createApi({
    reducerPath: "settingsApi",
@@ -14,9 +14,7 @@ export const settingsServicesApi = createApi({
             url: `/api/user/setting`,
             method: "PATCH",
             body: body,
-            headers: {
-               "Authorization": localStorage.getItem('token'),
-            },
+            headers: getAuthHeader()
          })
       }),
       updateOfferImage: builder.mutation({
@@ -24,9 +22,7 @@ export const settingsServicesApi = createApi({
             url: `/api/user/setting/addimage`,
             method: "PATCH",
             body: body,
-            headers: {
-               "Authorization": localStorage.getItem('token'),
-            },
+            headers: getAuthHeader()
          })
       }),
    
