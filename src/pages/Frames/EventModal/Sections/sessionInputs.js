@@ -55,7 +55,7 @@ export default function SessionInputs({ data, setData, status, isEditable }) {
                         })}
                         disabled={!isEditable} />
                      <p className="font-medium text-primary-60 text-sm">
-                        Rescheduling
+                        Rescheduled
                      </p>
                   </div>
                </div>
@@ -84,7 +84,7 @@ export default function SessionInputs({ data, setData, status, isEditable }) {
                            rescheduling: !data.rescheduling,
                         })} disabled={!isEditable} />
                      <p className="font-medium text-primary-60 text-sm">
-                        Rescheduling
+                        Rescheduled
                      </p>
                   </div>
                </div>

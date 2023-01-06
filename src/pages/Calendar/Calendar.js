@@ -103,7 +103,7 @@ export default function Calendar() {
    //  console.log(document.getElementsByClassName('fc-timegrid-slot-label-cushion fc-scrollgrid-shrink-cushion'));
    for (var i = 0; i < slides.length; i++) {
       const item = slides.item(i);
-      // console.log(item.innerHTML);
+      // console.log(item.innerHTML === exactTime);
       if (item.innerHTML === exactTime) {
          document.getElementById("calendarContainer").scrollTop = document.getElementById("calendarContainer").scrollHeight;
       }
@@ -148,7 +148,7 @@ export default function Calendar() {
       const url = `/api/session/${role}/${id}`;
       // console.log(url)
       fetchUserSessions(url).then((res) => {
-         console.log(res.data.data);
+         console.log(res.data);
          const tempEvents = res.data.data.session.map(session => {
             const time = session.time;
             const strtTime12HFormat = `${time.start.time} ${time.start.timeType}`;
@@ -659,7 +659,7 @@ export default function Calendar() {
    return (
       <>
          <div className="lg:ml-pageLeft bg-lightWhite min-h-screen">
-            <div className="py-14 pl-5 calendar flex">
+            <div className="py-[60px] pl-5 calendar flex">
                <div className="p-10 pl-0 pr-0 w-[280px] mr-[10px]">
                   <div className="w-[280px]" >
                      <SimpleCalendar currentDate={currentDate} setCurrentDate={setCurrentDate} />
@@ -760,6 +760,8 @@ export default function Calendar() {
                      }}
                      expandRows={true}
                      contentHeight={"100%"}
+                     slotMinTime={"06:00:00"}
+                     slotMaxTime={"30:00:00"}
                      dayHeaderFormat={{
                         day: "2-digit",
                         month: "narrow",
