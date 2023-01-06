@@ -395,13 +395,17 @@ export default function ParentProfile({ isOwn }) {
                                  className='lg:text-21 text-center' />
                            </p>
                            <div className={`${styles.studentsContainer} min-h-[200px] w-full`}>
-                              <img src={LeftIcon}
-                                 className={`${styles.sliderIcon} ${styles.sliderLeftIcon}`}
-                                 onClick={() => activeIndex !== 0 && setActiveIndex(activeIndex - 1)} />
-                              <img src={RightIcon}
-                                 className={`${styles.sliderIcon} ${styles.sliderRightIcon}`}
-                                 onClick={() => activeIndex < associatedStudents.length - 1 &&
-                                    setActiveIndex(activeIndex + 1)} />
+                              {
+                                 associatedStudents.length > 1 && <>
+                                    <img src={LeftIcon}
+                                       className={`${styles.sliderIcon} ${styles.sliderLeftIcon}`}
+                                       onClick={() => activeIndex !== 0 && setActiveIndex(activeIndex - 1)} />
+                                    <img src={RightIcon}
+                                       className={`${styles.sliderIcon} ${styles.sliderRightIcon}`}
+                                       onClick={() => activeIndex < associatedStudents.length - 1 &&
+                                       setActiveIndex(activeIndex + 1)} />
+                                 </>
+                              }
 
                               {associatedStudents.map((student, idx) => {
                                  return (
