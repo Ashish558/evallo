@@ -287,8 +287,8 @@ export default function StudentProfile({ isOwn }) {
    }, [])
 
    // console.log(user)
-   // console.log(userDetail.FirstName)
-   console.log(associatedParent)
+   console.log(userDetail)
+   // console.log(associatedParent)
    // console.log(settings)
 
    if (Object.keys(user).length < 1) return

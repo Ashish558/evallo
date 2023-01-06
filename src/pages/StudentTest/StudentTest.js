@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useLazyGetAssignedTestQuery, useLazyGetTestDetailsQuery, useLazyGetTestResponseQuery } from "../../app/services/test";
+import { useLazyGetPersonalDetailQuery, useLazyGetUserDetailQuery } from "../../app/services/users";
 import Modal from "../../components/Modal/Modal";
 import Table from "../../components/Table/Table";
 import { getFormattedDate } from "../../utils/utils";
@@ -31,14 +32,14 @@ const parentTestInfo = [
    },
 ]
 const parentStudents = [
-   {
-      name: 'Sarina Darper',
-      selected: true,
-   },
-   {
-      name: 'Joseph Brown',
-      selected: false,
-   },
+   // {
+   //    name: 'Sarina Darper',
+   //    selected: true,
+   // },
+   // {
+   //    name: 'Joseph Brown',
+   //    selected: false,
+   // },
 ]
 
 export default function StudentTest() {
@@ -52,9 +53,22 @@ export default function StudentTest() {
 
    const [assignedTestDetails, setassignedTestDetails] = useState([])
    const [allTests, setAllTests] = useState([])
-   const [testDetails, setTestDetails] = useState([])
+   const [testDetails, setTestDetails] = useState([]);
+   const [getUserDetail] = useLazyGetUserDetailQuery()
+   // const [parentStudents, setParentStudents] = useState([]);
+   const [fetchPersonalDetails, personalDetailsResp] = useLazyGetPersonalDetailQuery()
+   const [parentStudentsIds, setParentStudentsIdss] = useState([])
 
    const persona = localStorage.getItem("role");
+
+   useEffect(() => {
+      // getUserDetail({id:})
+      fetchPersonalDetails().then(res => setParentStudentsIdss(res.data.data.user.assiginedStudents))
+   }, [])
+
+   useEffect(() => {
+      // parentStudentsIds.map(id => getUserDetail({id: id})).then(res => console.log(res))
+   }, [parentStudentsIds])
 
    useEffect(() => {
       getResponse({id: '63b567682cbfe817fe551afb'})
@@ -127,11 +141,11 @@ export default function StudentTest() {
       <>
          <div className="lg:ml-pageLeft bg-lightWhite min-h-screen">
             <div className="py-14 px-5">
-               <div className="flex justify-between items-center">
-                  <p className={`font-bold text-[80px]`}
+               <div className="flex justify-end items-center">
+                  {/* <p className={`font-bold text-[80px]`}
                      style={{ color: "#25335A" }} >
                      Tests
-                  </p>
+                  </p> */}
                   {persona === "student" ? (
                      <div className="flex flex-col items-center">
                         {parentTestInfo.map(item => {
