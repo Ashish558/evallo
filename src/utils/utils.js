@@ -148,6 +148,21 @@ export const getStartDate = (startDate, userTimezoneOffset, timeZone) => {
       return new Date(startDate.getTime() - userTimezoneOffset - 5.5 * 3600000);
    }
 }
+
+export const getBackground = (totalLeangth, idx) => {
+   let index = idx
+   if (idx > totalLeangth - 1) {
+      index = index % totalLeangth
+   }
+   const backgrounds = [
+      '#51D294',
+      '#C56DEE',
+      '#6F7ADE',
+      '#7DE94A',
+      '#F6935A',
+   ]
+   return backgrounds[idx]
+}
 // // timezones
 // function getCurrentLocalDateTime() {
 //    return moment().format();

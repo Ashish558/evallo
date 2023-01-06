@@ -25,7 +25,7 @@ import {
    useLazyGetTutorStudentsQuery,
    useLazyGetUsersByNameQuery,
 } from "../../app/services/session";
-import { convertDateToTimezone, convertTime12to24, formatAMPM, getFormattedDate, getLocalTimeZone, getStartDate } from "../../utils/utils";
+import { convertDateToTimezone, convertTime12to24, formatAMPM, getBackground, getFormattedDate, getLocalTimeZone, getStartDate } from "../../utils/utils";
 import InputSelect from "../../components/InputSelect/InputSelect";
 // import styles from "./calendar.css";
 import momentTimezonePlugin from '@fullcalendar/moment-timezone';
@@ -55,6 +55,13 @@ const students = [
    },
 ];
 
+const backgrounds = [
+   '#51D294',
+   '#C56DEE',
+   '#6F7ADE',
+   '#7DE94A',
+   '#F6935A',
+]
 // CST - "America/Indiana/Indianapolis"
 //EST "America/New_York"
 //MST - "America/North_Dakota/Beulah"
@@ -255,14 +262,14 @@ export default function Calendar() {
          fetchSessions(userId, role);
       }
    }, [persona]);
- 
+
    useEffect(() => {
       if (persona == "parent") {
          getUserDetail({ id })
-            .then(resp => {
+            .then(async (resp) => {
                console.log('response', resp.data.data);
                setStudents([])
-               resp.data.data.user.assiginedStudents.map((student, idx) => {
+               await resp.data.data.user.assiginedStudents.map((student, idx) => {
                   getUserDetail({ id: student })
                      .then(res => {
                         setStudents(prev => [...prev, {
@@ -278,10 +285,10 @@ export default function Calendar() {
 
                const fetch = async (cb) => {
 
-                  await resp.data.data.user.assiginedStudents.map((student, idx) => {
+                  await resp.data.data.user.assiginedStudents.map(async (student, idx) => {
                      setSearchedUser({ id, role: 'student' })
                      const url = `/api/session/student/${student}`;
-                     fetchUserSessions(url).then((res) => {
+                     await fetchUserSessions(url).then((res) => {
                         const tempEvents = res.data.data.session.map(session => {
                            const time = session.time;
                            const strtTime12HFormat = `${time.start.time} ${time.start.timeType}`;
@@ -345,6 +352,8 @@ export default function Calendar() {
 
                            const endDateUtc = getStartDate(endDate, userTimezoneOffset, session.timeZone)
 
+                           // console.log(resp.data.data.user.assiginedStudents);
+
                            let eventObj = {
                               id: session._id,
                               title: session.tutorName,
@@ -353,11 +362,11 @@ export default function Calendar() {
                               updatedDate: startUtc,
                               updatedDateEnd: endDateUtc,
                               description: `${strtTime12HFormat} - ${endTime12HFormat}`,
+                              background: getBackground(resp.data.data.user.assiginedStudents.length, idx)
                            };
                            return eventObj;
                         });
                         allevents.push(...tempSession)
-                        console.log(idx, resp.data.data.user.assiginedStudents.length - 1);
                         if (idx === resp.data.data.user.assiginedStudents.length - 1) cb()
                         // parseEventDatesToTz()
                      });
@@ -434,18 +443,23 @@ export default function Calendar() {
       calendarAPI?.next();
    };
    const eventContent = (arg) => {
-      // console.log(arg)
+      console.log(arg.event)
       // console.log(new Date(arg.event._instance.range.start).getHours())
       let m = moment.tz(`${arg.event.start}`, "America/Los_Angeles").format();
       // console.log(new Date(m).getHours())
       // console.log(new Date(m).getMinutes())
       // console.log(moment.tz(`${arg.event.start}`, timeZone).format())
-
+      // console.log(arg);
       let title = ''
       const description = arg.event._def.extendedProps.description;
+
+      let background = '#ebe7ff'
+      // if (arg.event._def.extendedProps.background) {
+      //    background = arg.event._def.extendedProps.background
+      // }
       return (
          <div className="p-0.5 h-full">
-            <div className="bg-darkWhite h-full p-2 rounded-lg">
+            <div className="bg- h-full p-2 rounded-lg" style={{ background: background }} >
                <p className="text-primary font-semibold text-sm">
                   {" "}
                   {arg.event._def.title}{" "}
@@ -671,7 +685,7 @@ export default function Calendar() {
                            Student Name{" "}
                         </p>
                         <div>
-                           {students.map((student) => {
+                           {students.map((student, idx) => {
                               return (
                                  <div
                                     key={student.studentId}
@@ -683,8 +697,9 @@ export default function Calendar() {
                                     <div
                                        className="student-circle"
                                        style={{
-                                          backgroundColor:
-                                             '#51D294',
+                                          backgroundColor: '#ebe7ff'
+                                          //  getBackground(students.length, idx),
+                                          
                                        }}
                                     ></div>
                                  </div>
