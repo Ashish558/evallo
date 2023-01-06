@@ -102,6 +102,7 @@ export default function Calendar() {
    // console.log(sessionToEdit)
    const [associatedStudents, setAssociatedStudents] = useState([])
    const { id } = useSelector(state => state.user)
+   // const [timeZone, setTimeZone] = useState("");
 
    const time = formatAMPM(new Date)
 
@@ -655,6 +656,11 @@ export default function Calendar() {
          })
       })
    }
+
+   useEffect(() => {
+      getUserDetail({ id: localStorage.getItem("userId") })
+      .then(res => setTimeZone(res.data.data.userdetails.timeZone))
+   }, [])
 
    useEffect(() => {
       if (calendarRef.current === null) return
