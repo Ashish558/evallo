@@ -18,7 +18,8 @@ export default function InputSelect({
    checkbox,
    optionClassName,
    optionType,
-   disabled
+   disabled,
+   required
 }) {
    const [selected, setSelected] = useState(false);
    const selectRef = useRef();
@@ -37,6 +38,9 @@ export default function InputSelect({
       >
          <label className={`font-semibold inline-block ${labelClassname}`}>
             {label}
+            {required && (
+               <span className="text-primaryRed inline-block pl-1">*</span>
+            )}
          </label>
 
          <div

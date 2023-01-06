@@ -55,14 +55,8 @@ const PrivateRoutes = [
 
 const AppRoutes = () => {
    const { isLoggedIn } = useSelector((state) => state.user);
-   const [loginFormActive, setLoginFormActive] = useState(true);
    const persona = localStorage.getItem('role')
-
-   useEffect(() => {
-      if (sessionStorage.getItem('frames')) {
-         setLoginFormActive(false)
-      }
-   }, [])
+ 
    return (
       <BrowserRouter>
          <Navbar />
@@ -72,13 +66,18 @@ const AppRoutes = () => {
                element={
                   isLoggedIn ? (
                      <Home />
-                  ) : loginFormActive ? (
-                     <Login setLoginFormActive={setLoginFormActive} />
                   ) : (
-                     <Signup setLoginFormActive={setLoginFormActive} />
+                     <Login  />
                   )
                }
             />
+            <Route
+               path="/signup"
+               element={
+                  <Signup  />
+               }
+            />
+
             <Route
                path="/users"
                element={
@@ -132,13 +131,13 @@ const AppRoutes = () => {
             <Route
                path="/set-password"
                element={
-                  <SetPassword setLoginFormActive={setLoginFormActive} />
+                  <SetPassword  />
                }
             />
             <Route
                path="/reset-password"
                element={
-                  <SetPassword setLoginFormActive={setLoginFormActive} resetPassword={true} />
+                  <SetPassword resetPassword={true} />
                }
             />
             <Route

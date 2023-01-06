@@ -12,7 +12,15 @@ export const servicesSeeking = [
       checked: false
    },
    {
-      text: 'Career and College Advice',
+      text: 'Homework Help',
+      checked: false
+   },
+   {
+      text: 'Concept Drills',
+      checked: false
+   },
+   {
+      text: 'SAT / ACT Crash Course',
       checked: false
    },
    {

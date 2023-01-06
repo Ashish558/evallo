@@ -287,8 +287,8 @@ export default function StudentProfile({ isOwn }) {
    }, [])
 
    // console.log(user)
-   // console.log(userDetail.interest)
-   // console.log(associatedParent)
+   // console.log(userDetail.FirstName)
+   console.log(associatedParent)
    // console.log(settings)
 
    if (Object.keys(user).length < 1) return
@@ -366,7 +366,7 @@ export default function StudentProfile({ isOwn }) {
                            <img src={ProfileImg} width="98px" height="98px" />
                         </div>
                         <p className='font-bold text-[18px] opacity-[68%] mb-1'>
-                           {Object.keys(associatedParent).length > 1 ? `${associatedParent.firstName} ${associatedParent.lastName}` : 'Phil Brown'}
+                           {Object.keys(associatedParent).length > 1 ? `${associatedParent.firstName} ${associatedParent.lastName}` : `${userDetail.FirstName} ${userDetail.LastName}`}
                         </p>
 
                         <div className='flex items-center'>

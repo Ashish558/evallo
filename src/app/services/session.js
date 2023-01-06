@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { BASE_URL } from "../constants/constants";
+import {  BASE_URL, getAuthHeader } from "../constants/constants";
 
 
 export const sessionServicesApi = createApi({
@@ -55,6 +55,7 @@ export const sessionServicesApi = createApi({
                search: name
             },
             method: "GET",
+            headers: getAuthHeader()
          }),
       }),
       submitSession: builder.mutation({

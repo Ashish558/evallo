@@ -9,7 +9,7 @@ import Modal from '../../components/Modal/Modal'
 import { useLazyGetSettingsQuery } from '../../app/services/session'
 import { useUpdateOfferImageMutation, useUpdateSettingMutation } from '../../app/services/settings'
 import { getSessionTagName } from '../../utils/utils'
-import { BASE_URL } from '../../app/constants/constants'
+import { BASE_URL, getAuthHeader } from '../../app/constants/constants'
 import axios from 'axios'
 
 const testFilters = [
@@ -98,6 +98,7 @@ export default function Settings() {
    const handleClose = () => setModalActive(false)
 
    const handleTagModal = text => {
+      console.log(text);
       setTagModalActive(true)
       setSelectedImageTag(text)
    }
@@ -192,12 +193,18 @@ export default function Settings() {
          append = 'addpersonality'
       } else if (selectedImageTag === 'interest') {
          append = 'addinterest'
+      } else if (selectedImageTag === 'offer'){
+         append = 'addimage'
+         formData.append('link', tagText)
+         formData.append("Offer", tagImage)
+         formData.delete('text')
+         formData.delete('image')
       }
 
       console.log(append)
 
       if (append === '') return
-      axios.patch(`${BASE_URL}api/user/setting/${append}`, formData)
+      axios.patch(`${BASE_URL}api/user/setting/${append}`, formData, {headers: getAuthHeader()})
          .then((res) => {
             console.log(res)
             setTagImage(null)
@@ -249,7 +256,7 @@ export default function Settings() {
    if (Object.keys(settingsData).length === 0) return <></>
    const { classes, serviceSpecialisation, sessionTags, leadStatus, tutorStatus, offerImages, subscriptionCode, personality, interest } = settingsData
 
-   // console.log(settingsData)
+   console.log(settingsData)
 
    return (
       <>
@@ -404,17 +411,18 @@ export default function Settings() {
                <SettingsCard title='Images in Offer Slide'
                   body={
                      <div className='flex items-center [&>*]:mb-[10px]'>
-                        <input type='file' ref={inputRef} className='hidden' accept="image/*"
-                           onChange={e => onImageChange(e)} />
-                        <AddTag isFile={true} onAddTag={handleImageUpload} />
+                        <AddTag openModal={true} 
+                        onAddTag={() => handleTagModal('offer')} />
+                        {/* <input type='file' ref={inputRef} className='hidden' accept="image/*"
+                           onChange={e => onImageChange(e)} /> */}
                         <FilterItems isString={true}
                            onlyItems={true}
                            sliceText={true}
-                           items={offerImages}
+                           items={offerImages.map(item => item.image)}
                            onRemoveFilter={onRemoveImage}
                            className='pt-1 pb-1 mr-15' />
                      </div>
-                  } />
+                  } />  
             </div>
          </div >
          {

@@ -28,8 +28,9 @@ import useOutsideAlerter from "../../hooks/useOutsideAlerter";
 import { useLazyGetSettingsQuery } from "../../app/services/session";
 import { validateOtherDetails, validateSignup } from "./utils/util";
 import { useLazyGetTutorDetailsQuery } from "../../app/services/users";
+import { useNavigate } from "react-router-dom";
 
-export default function Signup({setLoginFormActive}) {
+export default function Signup() {
    const [frames, setFrames] = useState({
       signupActive: true,
       selectPersona: false,
@@ -42,6 +43,7 @@ export default function Signup({setLoginFormActive}) {
 
    const [settings, setSettings] = useState({})
    const [getSettings, getSettingsResp] = useLazyGetSettingsQuery()
+   const navigate = useNavigate();
 
    const fetchSettings = () => {
       getSettings()
@@ -75,6 +77,7 @@ export default function Signup({setLoginFormActive}) {
 
    const [otherDetails, setOtherDetails] = useState({
       schoolName: "",
+      tellUsMore: '',
       grade: "",
       FirstName: "",
       LastName: "",
@@ -108,7 +111,8 @@ export default function Signup({setLoginFormActive}) {
 
    //temparory
    const [redirectLink, setRedirectLink] = useState("");
-   const [numberPrefix, setNumberPrefix] = useState('+91')
+   const [numberPrefix, setNumberPrefix] = useState('+1')
+   const [studentNumberPrefix, setStudentNumberPrefix] = useState('+1')
 
    useEffect(() => {
       if (count === 0) return
@@ -119,7 +123,9 @@ export default function Signup({setLoginFormActive}) {
       sessionStorage.setItem('redirectLink', redirectLink)
       sessionStorage.setItem('numberPrefix', numberPrefix)
       sessionStorage.setItem('currentStep', currentStep)
-   }, [frames, values, otherDetails, persona, redirectLink, numberPrefix, currentStep])
+      sessionStorage.setItem('numberPrefix', numberPrefix)
+      sessionStorage.setItem('studentNumberPrefix', studentNumberPrefix)
+   }, [frames, values, otherDetails, persona, redirectLink, numberPrefix, currentStep, numberPrefix, studentNumberPrefix])
 
    useEffect(() => {
       setCount(1)
@@ -147,6 +153,12 @@ export default function Signup({setLoginFormActive}) {
       }
       if (sessionStorage.getItem('currentStep')) {
          setcurrentStep(sessionStorage.getItem('currentStep'))
+      }
+      if (sessionStorage.getItem('numberPrefix')) {
+         setNumberPrefix(sessionStorage.getItem('numberPrefix'))
+      }
+      if (sessionStorage.getItem('studentNumberPrefix')) {
+         setStudentNumberPrefix(sessionStorage.getItem('studentNumberPrefix'))
       }
    }, [])
 
@@ -252,7 +264,7 @@ export default function Signup({setLoginFormActive}) {
 
    const props = { persona, setFrames, setcurrentStep };
    const valueProps = { values, setValues };
-   const otherDetailsProps = { otherDetails, setOtherDetails, detailsError, setDetailsError, resetDetailsErrors };
+   const otherDetailsProps = { otherDetails, setOtherDetails, detailsError, setDetailsError, resetDetailsErrors, studentNumberPrefix, setStudentNumberPrefix };
 
    return (
       <div className="min-h-screen" id={styles.signUp}>
@@ -408,7 +420,7 @@ export default function Signup({setLoginFormActive}) {
                         </button>
                         <p
                            className="text-secondary text-xs font-semibold ml-2 mt-2 cursor-pointer inline-block"
-                           onClick={() => setLoginFormActive(true)}
+                           onClick={() => navigate('/')}
                         >
                            Login Instead?
                         </p>
@@ -437,6 +449,7 @@ export default function Signup({setLoginFormActive}) {
                   ) : frames.signupLast ? (
                      <SignupLast
                         {...props}
+                        {...otherDetailsProps}
                         hearAboutUs={hearAboutUs}
                         setHearAboutUs={setHearAboutUs}
                      />

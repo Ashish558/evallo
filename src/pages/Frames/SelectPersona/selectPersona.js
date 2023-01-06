@@ -16,6 +16,20 @@ export default function SelectPersona({
       student: false,
    });
 
+   useEffect(() => {
+      if (persona === 'student') {
+         setSelectedImg({
+            parent: false,
+            student: true,
+         });
+      } else if (persona === 'parent') {
+         setSelectedImg({
+            parent: true,
+            student: false,
+         });
+      }
+   }, [])
+
    const [nextDisabled, setNextDisabled] = useState(false);
 
    useEffect(() => {

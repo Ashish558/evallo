@@ -719,6 +719,10 @@ export default function Calendar() {
                      // timeZone='UTC'
                      // timeZone={timeZone === getLocalTimeZone() ? 'local' : timeZone}
                      // timeZone={timeZone === 'IST' ? 'local' : timeZone }
+                     businessHours= {{
+                        startTime: '06:00', // a start time (10am in this example)
+                        endTime: '05:00', // an end time (6pm in this example)
+                      }}
                      eventClick={(info) => handleEventClick(info)}
                      ref={calendarRef}
                      plugins={[

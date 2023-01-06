@@ -23,7 +23,7 @@ export default function SignupSuccessful({ setFrames, setcurrentStep, addDetails
                Sign-up successful!
             </p>
             <p>
-               Please visit your email inbox to verify account & set account password before you can log in.
+               Please visit your email inbox to verify your account & set account password before you can log in.
             </p>
          </div>
 

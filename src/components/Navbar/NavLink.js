@@ -25,86 +25,107 @@ export default function NavLink({ width, icon: Icon, path, parentClassName }) {
    const location = useLocation();
    console.log(path);
    return (
-     <>
-      {!path.includes("https") ? <>
-         <button
-            className={`${path !== "/exit" ? "lg:mb-12" : "lg:mt-32"
-               } z-20 relative ${styles.navLink} ${parentClassName ? parentClassName : ""
-               } 
-         ${location.pathname === path ? styles.selectedNavLink : ""}
-         ${location.pathname === path && width < desktop
-                  ? styles.translateUp
-                  : ""
-               }  `}
-            onClick={handleNavigate}
-         >
-            {/* <img src={icon} className={Selected ? styles.selectedNavLink : ''} /> */}
-            <Icon />
-            {location.pathname === path && (
-               <img 
-                  src={width > desktop ? Selected : SelectedMobile}
-                  className={`${styles.selectedIcon}`}
-               />
-            )}
-         </button>
+//      <>
+//       {!path.includes("https") ? <>
+//          <button
+//             className={`${path !== "/exit" ? "lg:mb-12" : "lg:mt-32"
+//                } z-20 relative ${styles.navLink} ${parentClassName ? parentClassName : ""
+//                } 
+//          ${location.pathname === path ? styles.selectedNavLink : ""}
+//          ${location.pathname === path && width < desktop
+//                   ? styles.translateUp
+//                   : ""
+//                }  `}
+//             onClick={handleNavigate}
+//          >
+//             {/* <img src={icon} className={Selected ? styles.selectedNavLink : ''} /> */}
+//             <Icon />
+//             {location.pathname === path && (
+//                <img 
+//                   src={width > desktop ? Selected : SelectedMobile}
+//                   className={`${styles.selectedIcon}`}
+//                />
+//             )}
+//          </button>
 
-            {modalActive && (
-               <Modal
-                  title="Are You Sure You Want to Log Out"
-                  classname={"max-w-[700px] mx-auto"}
-                  cancelBtn={true}
-                  handleClose={() => setModalActive(false)}
-                  primaryBtn={{
-                     text: "Log out",
-                     onClick: () => {
-                        localStorage.clear()
-                        navigate('/')
-                        dispatch(updateIsLoggedIn(false))
-                     }
-                  }}
+//             {modalActive && (
+//                <Modal
+//                   title="Are You Sure You Want to Log Out"
+//                   classname={"max-w-[700px] mx-auto"}
+//                   cancelBtn={true}
+//                   handleClose={() => setModalActive(false)}
+//                   primaryBtn={{
+//                      text: "Log out",
+//                      onClick: () => {
+//                         localStorage.clear()
+//                         navigate('/')
+//                         dispatch(updateIsLoggedIn(false))
+//                      }
+//                   }}
                   
-               />
-            )}
-      </> : <a href="https://sevensquarelearning.com/" target="_blank" rel="noreferrer">
-            <button
-               className={`${path !== "/exit" ? "lg:mb-12" : "lg:mt-32"
-                  } z-20 relative ${styles.navLink} ${parentClassName ? parentClassName : ""
-                  } 
-            ${location.pathname === path ? styles.selectedNavLink : ""}
-            ${location.pathname === path && width < desktop
-                     ? styles.translateUp
-                     : ""
-                  }  `}
-               // onClick={handleNavigate}
-            >
-               {/* <img src={icon} className={Selected ? styles.selectedNavLink : ''} /> */}
-               <Icon />
-               {location.pathname === path && (
-                  <img 
-                     src={width > desktop ? Selected : SelectedMobile}
-                     className={`${styles.selectedIcon}`}
-                  />
-               )}
-            </button>
+//                />
+//             )}
+//       </> : <a href="https://sevensquarelearning.com/" target="_blank" rel="noreferrer">
+//             <button
+//                className={`${path !== "/exit" ? "lg:mb-12" : "lg:mt-32"
+//                   } z-20 relative ${styles.navLink} ${parentClassName ? parentClassName : ""
+//                   } 
+//             ${location.pathname === path ? styles.selectedNavLink : ""}
+//             ${location.pathname === path && width < desktop
+//                      ? styles.translateUp
+//                      : ""
+//                   }  `}
+//                // onClick={handleNavigate}
+//             >
+//                {/* <img src={icon} className={Selected ? styles.selectedNavLink : ''} /> */}
+//                <Icon />
+//                {location.pathname === path && (
+//                   <img 
+//                      src={width > desktop ? Selected : SelectedMobile}
+//                      className={`${styles.selectedIcon}`}
+//                   />
+//                )}
+//             </button>
 
-               {modalActive && (
-                  <Modal
-                     title="Are You Sure You Want to Log Out"
-                     classname={"max-w-[700px] mx-auto"}
-                     cancelBtn={true}
-                     handleClose={() => setModalActive(false)}
-                     primaryBtn={{
-                        text: "Log out",
-                        onClick: () => {
-                           localStorage.clear()
-                           navigate('/')
-                           dispatch(updateIsLoggedIn(false))
-                        }
-                     }}
+//                {modalActive && (
+//                   <Modal
+//                      title="Are You Sure You Want to Log Out"
+//                      classname={"max-w-[700px] mx-auto"}
+//                      cancelBtn={true}
+//                      handleClose={() => setModalActive(false)}
+//                      primaryBtn={{
+//                         text: "Log out",
+//                         onClick: () => {
+//                            localStorage.clear()
+//                            navigate('/')
+//                            dispatch(updateIsLoggedIn(false))
+//                         }
+//                      }}
                      
-                  />
-               )}
-      </a>}
-     </>
+//                   />
+//                )}
+//       </a>}
+//      </>
+// =======
+      <button
+         className={`${path !== "/exit" ? "lg:mb-12" : "lg:mt-auto"
+            } z-20 relative ${styles.navLink} ${parentClassName ? parentClassName : ""
+            } 
+      ${location.pathname === path ? styles.selectedNavLink : ""}
+      ${location.pathname === path && width < desktop
+               ? styles.translateUp
+               : ""
+            }  `}
+         onClick={handleNavigate}
+      >
+         {/* <img src={icon} className={Selected ? styles.selectedNavLink : ''} /> */}
+         <Icon />
+         {location.pathname === path && (
+            <img 
+               src={width > desktop ? Selected : SelectedMobile}
+               className={`${styles.selectedIcon}`}
+            />
+         )}
+      </button>
    );
 }

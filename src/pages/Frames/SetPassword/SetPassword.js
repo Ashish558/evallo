@@ -62,14 +62,14 @@ export default function SetPassword({ signup, setLoginFormActive, resetPassword 
                            alert(res.error.data.message)
                         }
                         console.log(res.data);
-                        setLoginFormActive(true)
+                        // setLoginFormActive(true)
                         navigate('/')
                      })
                } else {
                   setUserPassword({ userId, body: reqBody })
                      .then(res => {
                         console.log(res)
-                        setLoginFormActive(true)
+                        // setLoginFormActive(true)
                         navigate('/')
                      })
                }

@@ -17,11 +17,12 @@ export default function UserDetails({
    setOtherDetails,
    detailsError,
    setDetailsError,
-   resetDetailsErrors
+   resetDetailsErrors,
+   studentNumberPrefix,
+   setStudentNumberPrefix
 }) {
 
    const [selected, setSelected] = useState(false);
-   const [numberPrefix, setNumberPrefix] = useState('+91')
 
    const selectRef = useRef();
    useOutsideAlerter(selectRef, () => setSelected(false));
@@ -157,7 +158,7 @@ export default function UserDetails({
                         />
                      }
                      <div className="outline-0 relative font-medium mr-4" name={'nm'}>
-                        {numberPrefix}
+                        {studentNumberPrefix}
                      </div>
                      {selected && (
                         <div className={`scrollbar-content scrollbar-vertical ${selectStyles.options}`} style={{ top: '100%' }} >
@@ -167,7 +168,7 @@ export default function UserDetails({
                                     className="outline-0 border-0 py-2 px-4"
                                     key={idx}
                                     onClick={() => {
-                                       setNumberPrefix(option)
+                                       setStudentNumberPrefix(option)
                                     }}
                                  >
                                     {" "}
