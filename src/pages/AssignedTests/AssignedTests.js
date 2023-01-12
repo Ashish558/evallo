@@ -50,6 +50,7 @@ export default function AssignedTests() {
 
    const [assignTestModalActive, setAssignTestModalActive] = useState(false);
    const [resendModalActive, setResendModalActive] = useState(false);
+   const [testToResend, setTestToResend] = useState({})
 
    const { role: persona, id } = useSelector(state => state.user)
    const handleClose = () => setAssignTestModalActive(false);
@@ -123,7 +124,7 @@ export default function AssignedTests() {
             if (res.error) return console.log(res.error)
             console.log('response', res.data)
             let data = res.data.data.test.map(item => {
-               const { createdAt, studentId, testId, timeLimit, isCompleted, isStarted } = item
+               const { createdAt, studentId, testId, dueDate, timeLimit, isCompleted, isStarted } = item
                return {
                   studentName: studentId ? `${studentId.firstName} ${studentId.lastName}` : '-',
                   studentId: studentId ? studentId._id : '-',
@@ -132,6 +133,7 @@ export default function AssignedTests() {
                   testId: testId ? testId._id : null,
                   scores: '-',
                   duration: timeLimit,
+                  dueDate,
                   status: isCompleted === true ? 'completed' : isStarted ? 'started' : 'notStarted',
                   createdAt,
                }
@@ -149,7 +151,7 @@ export default function AssignedTests() {
             if (res.error) return console.log('tutor assignedtest', res.error)
             console.log('tutor assignedtest', res.data)
             let data = res.data.data.test.map(item => {
-               const { createdAt, studentId, testId, timeLimit, isCompleted, isStarted } = item
+               const { createdAt, studentId, dueDate, testId, timeLimit, isCompleted, isStarted } = item
                return {
                   studentName: studentId ? `${studentId.firstName} ${studentId.lastName}` : '-',
                   studentId: studentId ? studentId._id : '-',
@@ -159,7 +161,8 @@ export default function AssignedTests() {
                   scores: '-',
                   duration: timeLimit,
                   status: isCompleted === true ? 'completed' : isStarted ? 'started' : 'notStarted',
-                  createdAt
+                  createdAt,
+                  dueDate
                }
             })
             let sortedArr = data.sort(function (a, b) {
@@ -182,13 +185,25 @@ export default function AssignedTests() {
    }, [])
 
    const handleResend = (item) => {
-      console.log(item);
+      setTestToResend(item)
       setResendModalActive(true);
    };
 
    const handleResendTestSubmit = (item) => {
-      console.log(item);
+      console.log(testToResend);
       setResendModalActive(false);
+      const body = {
+         studentId: testToResend.studentId,
+         testId: testToResend.testId,
+         dueDate: testToResend.dueDate,
+         timeLimit: testToResend.duration,
+      }
+      assignTest(body)
+         .then(res => {
+            console.log(res.data.data.assign)
+            setAssignTestModalActive(false)
+            fetch()
+         })
    };
 
    const handleAssignTestSubmit = () => {
@@ -307,7 +322,7 @@ export default function AssignedTests() {
                      onClick={{ handleResend }}
                      dataFor='assignedTests'
                      data={allAssignedTests}
-                     excludes={['createdAt']}
+                     excludes={['createdAt', 'dueDate']}
                      tableHeaders={tableHeaders}
                      maxPageSize={maxPageSize}
                      setMaxPageSize={setMaxPageSize}
