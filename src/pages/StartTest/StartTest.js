@@ -103,7 +103,7 @@ export default function StartTest() {
                   }
                })
             })
-            setAnswers(answer.map(item => ({ ...item, isMarked: true, ResponseAnswer: '', responseTime: 0 })))
+            setAnswers(answer.map(item => ({ ...item, isMarked: false, ResponseAnswer: '', responseTime: 0 })))
          })
    }
    // console.log(id)
@@ -177,7 +177,7 @@ export default function StartTest() {
                setActiveSection({ name: sectionName })
                setSubmitId(submitId)
                setAnswers(answer.map(item => ({
-                  ...item, isMarked: true, ResponseAnswer: '',
+                  ...item, isMarked: false, ResponseAnswer: '',
                   responseTime: 0
                })))
             } else {
