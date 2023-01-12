@@ -28,7 +28,7 @@ export const TestItem = ({ testName, dueDate, pdfLink, testId, studentId, isComp
             console.log('resp err', res.error)
             return
           }
-          console.log('Resp score', res.data.data.response);
+          // console.log('Resp score', res.data.data.response);
           let scr = getScore(res.data.data.response.testType, res.data.data.response.subjects)
           setScore(`${scr.cumulative} ${scr.right}`)
         })

@@ -174,8 +174,8 @@ export default function StudentReport() {
                })
 
                setDisplayScore({
-                  cumulative: `C${set1Score + set2Score}`,
-                  right: `V${set1Score} M${set2Score}`,
+                  cumulative: `V${set1Score + set2Score}`,
+                  right: `M${set1Score}|C${set2Score}`,
                   isSat: true
                })
             } else if (res.data.data.response.testType === 'SAT') {

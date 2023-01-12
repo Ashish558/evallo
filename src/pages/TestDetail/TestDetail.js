@@ -224,12 +224,12 @@ export default function TestDetail() {
                      accept="application/pdf"
                      onChange={e => handlePDFFile(e.target.files[0])}
                   />
-                  <PrimaryButton
+                  {/* <PrimaryButton
                      children={<div className="flex items-center justify-center">
                         Add new question
                         <img src={AddIcon} className='w-6 ml-2' /> </div>}
                      className={`py-3.5 pl-6 pr-6 mr-4 font-medium text-textGray" }`}
-                  />
+                  /> */}
                </div>
                <div className="mt-4">
 

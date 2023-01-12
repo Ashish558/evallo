@@ -25,6 +25,7 @@ import {
    useLazyUpdateSessionStatusQuery,
    useSubmitFeedbackMutation,
    useSubmitSessionMutation,
+   useUpdateAllSessionMutation,
    useUpdateSessionMutation,
 } from "../../../app/services/session";
 import SearchNames from "./Sections/searchNames";
@@ -135,6 +136,7 @@ export default function EventModal({
 
    const [submitSession, sessionResponse] = useSubmitSessionMutation();
    const [updateUserSession, updateUserSessionResp] = useUpdateSessionMutation();
+   const [updateAllUserSession, updateAllUserSessionResp] = useUpdateAllSessionMutation();
    const [updateSessionStatus, updateSessionStatusResp] = useLazyUpdateSessionStatusQuery();
    const [submitFeedback, submitFeedbackResp] = useSubmitFeedbackMutation();
    const [getSessionFeedback, getSessionFeedbackResp] = useLazyGetSessionFeedbackQuery();
@@ -383,41 +385,43 @@ export default function EventModal({
       return strArr;
    };
 
-   const updateSession = (reqBody, isMultiple) => {
+   const updateSession = (reqBody, isUpdaingAll) => {
       // console.log(sessionToUpdate)
       // console.log(reqBody)
       let body = { ...reqBody }
-      body.date = reqBody.date[0]
-      
-      // console.log(isMultiple);
+      if (isUpdaingAll !== true) {
+         body.date = reqBody.date[0]
+      }
+
+      console.log(reqBody);
       // return
       if (body.sessionStatus === "Completed") {
          updateSessionStatus(sessionToUpdate._id)
             .then(res => {
                if (res.error) return
-               updateUserSession({ id: sessionToUpdate._id, body: { sessionStatus: 'Completed', _id: sessionToUpdate._id } }).then(
-                  (res) => {
-                     console.log(res);
-                     refetchSessions()
-                     setEventModalActive(false);
-                  }
-               );
+               // updateUserSession({ id: sessionToUpdate._id, body: { sessionStatus: 'Completed', _id: sessionToUpdate._id } }).then(
+               //    (res) => {
+               //       console.log(res);
+               //       refetchSessions()
+               //       setEventModalActive(false);
+               //    }
+               // );
             })
       }
       if (body.sessionStatus === "Missed") {
          missSession(sessionToUpdate._id)
             .then(res => {
-               if (res.error){
+               if (res.error) {
                   alert(res.error.data.message)
                   console.log('miss session err', res.error);
                }
-               updateUserSession({ id: sessionToUpdate._id, body: { sessionStatus: 'Missed', _id: sessionToUpdate._id } }).then(
-                  (res) => {
-                     console.log(res);
-                     refetchSessions()
-                     setEventModalActive(false);
-                  }
-               );
+               // updateUserSession({ id: sessionToUpdate._id, body: { sessionStatus: 'Missed', _id: sessionToUpdate._id } }).then(
+               //    (res) => {
+               //       console.log(res);
+               //       refetchSessions()
+               //       setEventModalActive(false);
+               //    }
+               // );
                console.log(res.data)
             })
       }
@@ -431,23 +435,34 @@ export default function EventModal({
                   }
                   return
                }
-               updateUserSession({ id: sessionToUpdate._id, body: { sessionStatus: 'Cancelled', _id: sessionToUpdate._id } }).then(
-                  (res) => {
-                     console.log(res);
-                     refetchSessions()
-                     setEventModalActive(false);
-                  }
-               );
+               // updateUserSession({ id: sessionToUpdate._id, body: { sessionStatus: 'Cancelled', _id: sessionToUpdate._id } }).then(
+               //    (res) => {
+               //       console.log(res);
+               //       refetchSessions()
+               //       setEventModalActive(false);
+               //    }
+               // );
             })
       }
       delete body['sessionStatus']
-      updateUserSession({ id: sessionToUpdate._id, body: { ...body, _id: sessionToUpdate._id } }).then(
-         (res) => {
-            console.log(res);
-            refetchSessions()
-            setEventModalActive(false);
-         }
-      );
+      if (isUpdaingAll === true) {
+         updateAllUserSession({ id: sessionToUpdate._id, body: { ...body, } }).then(
+            (res) => {
+               console.log(res);
+               refetchSessions()
+               setEventModalActive(false);
+            }
+         );
+
+      } else {
+         updateUserSession({ id: sessionToUpdate._id, body: { ...body, _id: sessionToUpdate._id } }).then(
+            (res) => {
+               console.log(res);
+               refetchSessions()
+               setEventModalActive(false);
+            }
+         );
+      }
    };
 
    const handleSubmit = (isUpdatingAll) => {
@@ -526,7 +541,7 @@ export default function EventModal({
       }
       // console.log('reqBody', reqBody);
       // return
-      if(isUpdating && isUpdatingAll) return  updateSession(reqBody, isUpdatingAll);
+      if (isUpdating && isUpdatingAll) return updateSession(reqBody, isUpdatingAll);
       if (isUpdating) return updateSession(reqBody, isUpdatingAll);
 
       submitSession(reqBody).then((res) => {

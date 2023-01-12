@@ -133,9 +133,13 @@ export default function AssignedTests() {
                   scores: '-',
                   duration: timeLimit,
                   status: isCompleted === true ? 'completed' : isStarted ? 'started' : 'notStarted',
+                  createdAt,
                }
             })
-            setAllAssignedTests(data)
+            let sortedArr = data.sort(function (a, b) {
+               return new Date(b.createdAt) - new Date(a.createdAt);
+            });
+            setAllAssignedTests(sortedArr)
          })
    }
 
@@ -296,6 +300,7 @@ export default function AssignedTests() {
                      onClick={{ handleResend }}
                      dataFor='assignedTests'
                      data={allAssignedTests}
+                     excludes={['createdAt']}
                      tableHeaders={tableHeaders}
                      maxPageSize={maxPageSize}
                      setMaxPageSize={setMaxPageSize}

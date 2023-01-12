@@ -66,7 +66,7 @@ export default function StudentTest() {
    //          console.log(res.data);
    //       })
    // }, [])
- 
+
    useEffect(() => {
       if (persona === 'student') {
          getTest()
@@ -89,9 +89,13 @@ export default function StudentTest() {
                      testId: testId ? testId._id : '-',
                      isCompleted: test.isCompleted,
                      isStarted: test.isStarted,
+                     createdAt,
                   }
                })
-               setAllTests(tempAllTests)
+               let sortedArr = tempAllTests.sort(function (a, b) {
+                  return new Date(b.createdAt) - new Date(a.createdAt);
+               });
+               setAllTests(sortedArr)
             })
       }
    }, [persona])
@@ -235,7 +239,7 @@ export default function StudentTest() {
                      data={persona === 'parent' ? filteredTests : allTests}
                      tableHeaders={tableHeaders}
                      maxPageSize={10}
-                     excludes={['_id', 'studentId', 'testId', 'isCompleted', 'pdfLink', 'isStarted']}
+                     excludes={['_id', 'studentId', 'testId', 'isCompleted', 'pdfLink', 'isStarted', 'createdAt']}
                   />
                </div>
             </div>

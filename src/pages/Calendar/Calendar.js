@@ -157,7 +157,7 @@ export default function Calendar() {
       const url = `/api/session/${role}/${id}`;
       // console.log(url)
       fetchUserSessions(url).then((res) => {
-         // console.log(res.data.data);
+         console.log('sessions', res.data.data);
          const tempEvents = res.data.data.session.map(session => {
             const time = session.time;
             const strtTime12HFormat = `${time.start.time} ${time.start.timeType}`;
@@ -689,9 +689,6 @@ export default function Calendar() {
       }
    }, [persona, id])
 
-   // console.log(events);
-   // console.log(eventDetails);
-
    // console.log('events', events);
    // console.log('eventDetails', eventDetails);
 
@@ -767,6 +764,7 @@ export default function Calendar() {
                      // slotMaxTime='23:00:00'
                      // slotDuration='24:00:00'
                      eventClick={(info) => handleEventClick(info)}
+                     eventMaxStack={1}
                      ref={calendarRef}
                      plugins={[
                         timeGridPlugin,
