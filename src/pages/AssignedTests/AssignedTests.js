@@ -159,8 +159,13 @@ export default function AssignedTests() {
                   scores: '-',
                   duration: timeLimit,
                   status: isCompleted === true ? 'completed' : isStarted ? 'started' : 'notStarted',
+                  createdAt
                }
             })
+            let sortedArr = data.sort(function (a, b) {
+               return new Date(b.createdAt) - new Date(a.createdAt);
+            });
+            setAllAssignedTests(sortedArr)
             setAllAssignedTests(data)
          })
    }
@@ -182,17 +187,19 @@ export default function AssignedTests() {
    };
 
    const handleResendTestSubmit = (item) => {
+      console.log(item);
       setResendModalActive(false);
    };
 
    const handleAssignTestSubmit = () => {
-      // console.log(modalData)
       const body = {
          studentId: modalData.studentId,
          testId: modalData.testId,
          dueDate: modalData.date,
          timeLimit: modalData.limit,
       }
+      console.log(body)
+      // return
       assignTest(body)
          .then(res => {
             console.log(res.data.data.assign)
