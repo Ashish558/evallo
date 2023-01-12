@@ -9,12 +9,12 @@ import Calendar from "../../assets/Navbar/calendar";
 import People from "../../assets/Navbar/people";
 import Selected from "../../assets/Navbar/selected.svg";
 import NavLink from "./NavLink";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import styles from "./navbar.module.css";
 import useWindowDimensions from "../../hooks/useWindowDimensions";
 import { desktop } from "../../constants/constants";
 import Options from "../../assets/Navbar/options";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Dashboard from "../../assets/Navbar/dashboard";
 import Profile from "../../assets/Navbar/profile";
 import StudentTest from "../../assets/Navbar/studentTest";
@@ -22,8 +22,14 @@ import Percentage from "../../assets/Navbar/percentage";
 import AssignedStudents from "../../assets/Navbar/assignedStudents";
 import Back from "../../assets/Navbar/Back";
 import logo from "../../assets/Navbar/logo";
+import Modal from "../Modal/Modal";
+import { updateIsLoggedIn } from "../../app/slices/user";
 
 const tempnavdata = [
+   {
+      icon: logo,
+      path: "/logo"
+   },
    {
       icon: Calendar,
       path: "/calendar",
@@ -58,6 +64,10 @@ const tempnavdata = [
 
 const parentNav = [
    {
+      icon: logo,
+      path: "/logo"
+   },
+   {
       icon: Dashboard,
       path: "/",
    },
@@ -83,7 +93,7 @@ const parentNav = [
 const studentNav = [
    {
       icon: logo,
-      path: ""
+      path: "/logo"
    },
    {
       icon: Dashboard,
@@ -109,6 +119,10 @@ const studentNav = [
 ]
 const tutorNav = [
    {
+      icon: logo,
+      path: "/logo"
+   },
+   {
       icon: Dashboard,
       path: "/",
    },
@@ -124,10 +138,10 @@ const tutorNav = [
       icon: Calendar,
       path: "/calendar",
    },
-   {
-      icon: StudentTest,
-      path: "/assigned-tests",
-   },
+   // {
+   //    icon: TestsIcon,
+   //    path: "/assigned-tests",
+   // },
    {
       icon: Exit,
       path: "/exit",
@@ -136,26 +150,40 @@ const tutorNav = [
 ]
 export default function Navbar() {
    const [navData, setNavData] = useState(tempnavdata)
-   const location = useLocation()
+   const location = useLocation();
+   const [modalActive, setModalActive] = useState(false);
+   const [logoutModalActive, setLogoutModalActive] = useState(false)
+   const navigate = useNavigate();
+   const dispatch = useDispatch()
 
    const { width } = useWindowDimensions()
    const { isLoggedIn } = useSelector((state) => state.user)
 
-   const persona = sessionStorage.getItem('role')
+   const {role : persona} = useSelector(state => state.user)
+
+   const logoutUser = () => {
+      sessionStorage.clear()
+      navigate('/')
+      dispatch(updateIsLoggedIn(false))
+      window.location.reload()
+   }
 
    useEffect(() => {
       if (persona === 'student') {
          setNavData(studentNav)
-      }
-      if (persona === 'tutor') {
+      } else if (persona === 'tutor') {
          setNavData(tutorNav)
-      }
-      if (persona === 'parent') {
+      } else if (persona === 'parent') {
          setNavData(parentNav)
+      }else if(persona === 'admin'){
+         setNavData(tempnavdata)
+      }else{
+         setNavData(studentNav)
       }
    }, [persona])
 
    return (
+      <>
       <div
          className={`
          fixed bottom-0 lg:w-auto lg:top-0 lg:left-0 lg:h-screen z-50 w-full overflow-y-hidden lg:overflow-y-auto lg:p-4
@@ -169,26 +197,49 @@ export default function Navbar() {
             }`}
       // className={styles.navContainer}
       >
-         <div className="lg:min-h-full lg:w-[100px] w-full h-75 lg:h-auto bg-primary p-4 lg:rounded-20 rounded-30 overflow-x-hidden overflow-y-hidden lg:overflow-y-auto lg:pt-14">
-            <div className="h-ful flex lg:flex-col items-center self-stretch justify-around ">
+         <div className="lg:min-h-full lg:w-[100px] w-full h-75 lg:h-auto bg-primary p-4 lg:rounded-20 rounded-30 overflow-x-hidden overflow-y-hidden lg:overflow-y-auto lg:pt-10">
+            <div className="h-full flex lg:flex-col items-center self-stretch justify- ">
                {navData.map((item, idx) => {
                   if (width < desktop) {
                      return (
                         idx < 4 && (
-                           <NavLink width={width} key={idx} {...item} />
+                           <NavLink setLogoutModalActive={setLogoutModalActive} width={width} key={idx} {...item} />
                         )
                      );
                   } else {
                      return (
-                        <NavLink width={width} key={idx} {...item} />
+                        <NavLink setLogoutModalActive={setLogoutModalActive} width={width} key={idx} {...item} />
                      );
                   }
                })}
                {width < desktop && (
-                  <NavLink width={width} icon={Options} isOption={true} />
+                  <NavLink setLogoutModalActive={setLogoutModalActive} width={width} icon={Options} isOption={true} />
                )}
             </div>
          </div>
       </div>
+       {
+         logoutModalActive &&
+         <Modal
+            title={
+               <>
+                  Are you sure <br />
+                  you want to logout ?
+               </>
+            }
+            titleClassName="leading-9"
+            cancelBtn={true}
+            cancelBtnClassName="py-4"
+            primaryBtn={{
+               text: "Logout",
+               className: "bg-danger w-[123px] pl-4 pr-4",
+               onClick: logoutUser,
+            }}
+            handleClose={() => setLogoutModalActive(false)}
+            body={<div className="mb-10"></div>}
+            classname={"max-w-567 mx-auto"}
+         />
+      }
+      </>
    );
 }

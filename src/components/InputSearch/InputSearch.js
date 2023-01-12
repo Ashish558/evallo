@@ -62,10 +62,10 @@ export default function InputSearch({
             {right && right}
 
             {optionsVisible &&
-               <div className={`${styles.options} shadow-xl rounded-t-none`}>
+               <div className={`${styles.options} scrollbar-content scrollbar-vertical shadow-xl rounded-t-none`}>
                   {optionData.map((option, idx) => {
                      return (
-                        <div className='outline-0 border-0 py-2 px-4 flex justify-between' key={idx}
+                        <div className='outline-0  border-0 py-2 px-4 flex justify-between' key={idx}
                            onClick={() => {return checkbox ? onOptionClick(option) : (onOptionClick(option), handleClose()) }}
                         >
                            <p>

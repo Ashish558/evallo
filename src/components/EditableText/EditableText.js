@@ -6,9 +6,9 @@ export default function EditableText({ className, text, editable, imgClass, text
 
    return (
       <div className={`text-primaryDark ${text !== "Contact" && "text-center"} font-bold flex ${className}`}>
-         <p className={`${textClassName ? textClassName : ''}`}>
+         <div className={`${textClassName ? textClassName : ''}`}>
             {text}
-         </p>
+         </div>
          {editable &&
             <img src={EditIcon} className={`ml-4 ${imgClass ? imgClass : ''} cursor-pointer`}
                onClick={onClick} />

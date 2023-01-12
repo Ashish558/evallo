@@ -13,16 +13,26 @@ function App() {
 
    useEffect(() => {
       setLoading(true);
-      // console.log(sessionStorage.getItem('token'))
+
       if (sessionStorage.getItem('token')) {
          fetchPersonalDetails()
             .then(res => {
-               console.log('personal Dedails', res.data )
-               const { firstName, lastName, _id } = res.data.data.user
+               if (res.error) {
+                  return
+               }
+               console.log('personal Dedails', res.data)
+               const { firstName, lastName, _id, amountToPay, credits, role } = res.data.data.user
+               let timeZone = ''
+               if (res.data.data.userdetails) {
+                  timeZone = res.data.data.userdetails.timeZone
+               }
+               // if(!role) return
+               sessionStorage.setItem('role', role)
                setLoading(false);
                dispatch(updateIsLoggedIn(true));
                dispatch(updateUserDetails({
-                  firstName, lastName, id: _id
+                  firstName, lastName, id: _id, amountToPay, credits, role,
+                  timeZone: timeZone ? timeZone : ''
                }))
             })
       } else {

@@ -9,6 +9,7 @@ export default function Slider({ images }) {
 
    const [activeIndex, setActiveIndex] = useState(0)
 
+   // console.log(images);
    return (
       <div className={`${styles.studentsContainer} min-h-[200px] w-full`}>
          <img src={LeftIcon}
@@ -29,7 +30,7 @@ export default function Slider({ images }) {
                   // onClick={() => navigate('/profile/student/12')}
                   >
                      <div className='flex justify-center '>
-                        <img src={ProfileImg} />
+                     <img className='w-[100px] h-[100px] rounded-full' src={student.photo ? student.photo : '/images/default.jpeg'} />
                      </div>
                      <p className='font-bold text-sm opacity-60 mt-3 whitespace-nowrap'>
                         {student.value}

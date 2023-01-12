@@ -8,6 +8,7 @@ import { tableData } from './tempdata';
 import InputSearch from '../../components/InputSearch/InputSearch';
 import { useLazyGetParentsByNameQuery, useAddInvoiceMutation, useLazyGetAllInvoiceQuery } from '../../app/services/admin';
 import { getCurrentDate, getFormattedDate } from '../../utils/utils';
+import { useLazyGetUserDetailQuery } from '../../app/services/users';
 
 const options = ['package', 'hourly']
 
@@ -36,13 +37,14 @@ export default function Invoice() {
 
    const [addInvoice, addInvoiceResponse] = useAddInvoiceMutation()
    const [fetchParents, parentsResponse] = useLazyGetParentsByNameQuery()
+   const [getUserDetail, getUserDetailResp] = useLazyGetUserDetailQuery()
    const [fetchAllInvoice, allInvoiceResp] = useLazyGetAllInvoiceQuery()
 
    const [parents, setParents] = useState([])
    const [allInvoices, setAllInvoices] = useState([])
 
    useEffect(() => {
-      if (invoiceData.clientName.length > 2) {
+      if (invoiceData.clientName.length > 0) {
          fetchParents(invoiceData.clientName).then((res) => {
             // console.log(res.data)
             let tempData = res.data.data.parents.map((parent) => {
@@ -61,10 +63,11 @@ export default function Invoice() {
       const reqBody = {
          parentId: invoiceData.parentId,
          title: invoiceData.description,
+         description: invoiceData.description,
          Date: getCurrentDate(),
-         amountDue: invoiceData.amountDue,
+         amountDue: parseInt(invoiceData.amountDue),
          type: invoiceData.invoiceType,
-         balanceChange: invoiceData.balance,
+         balanceChange: parseInt(invoiceData.balance),
       }
       addInvoice(reqBody)
          .then(res => {
@@ -78,24 +81,36 @@ export default function Invoice() {
 
    const fetchInvoices = () => {
       fetchAllInvoice()
-         .then(res => {
-            console.log(res.data.data);
-            const tempinvoices = res.data.data.invoice.map(invoice => {
-               const { _id, createdAt, isPaid, amountDue, balanceChange, type } = invoice
-               return {
-                  _id,
-                  name: '-',
-                  currentBalance: '$230',
-                  invoiceId: _id.slice(-8),
-                  createDate: getFormattedDate(createdAt),
-                  status: isPaid ? 'Paid' : 'Unpaid',
-                  paidOn: '-',
-                  type: checkIfExist(type),
-                  amountDue: `$${amountDue}`,
-                  balanceCredit: `$${balanceChange}`,
-               }
+         .then(resp => {
+            setAllInvoices([])
+            console.log('all invoices', resp.data.data.invoice)
+            resp.data.data.invoice.map((invoice, idx) => {
+               const { _id, createdAt, isPaid, status, amountDue, balanceChange, type, parentId, updatedAt } = invoice
+
+               getUserDetail({ id: parentId }).then((res) => {
+                  const { firstName, lastName, credits } = res.data.data.user
+                  setAllInvoices(prev => {
+                     let obj = {
+                        _id,
+                        name: `${firstName} ${lastName}`,
+                        currentBalance: `$${credits}`,
+                        invoiceId: _id.slice(-8),
+                        createDate: getFormattedDate(createdAt),
+                        status: isPaid ? 'Paid' : 'Unpaid',
+                        paidOn: '-',
+                        type: checkIfExist(type),
+                        amountDue: `$${amountDue}`,
+                        balanceCredit: `$${balanceChange}`,
+                        updatedAt
+                     }
+                     let allinvs = [...prev, { ...obj }]
+                     return allinvs.sort(function (a, b) {
+                        return new Date(b.updatedAt) - new Date(a.updatedAt);
+                     });
+
+                  })
+               })
             })
-            setAllInvoices(tempinvoices)
          })
    }
 
@@ -112,6 +127,8 @@ export default function Invoice() {
    useEffect(() => {
       fetchInvoices()
    }, [])
+
+   // console.log(allInvoices);
 
    return (
       <>
@@ -225,6 +242,7 @@ export default function Invoice() {
                      data={allInvoices}
                      tableHeaders={tableHeaders}
                      maxPageSize={10}
+                     excludes={['_id', 'updatedAt']}
                   />
                </div>
             </div>

@@ -25,7 +25,7 @@ import {
    useLazyGetTutorStudentsQuery,
    useLazyGetUsersByNameQuery,
 } from "../../app/services/session";
-import { convertDateToTimezone, convertTime12to24, formatAMPM, getFormattedDate, getLocalTimeZone, getStartDate } from "../../utils/utils";
+import { convertDateToTimezone, convertTime12to24, formatAMPM, getBackground, getFormattedDate, getLocalTimeZone, getStartDate } from "../../utils/utils";
 import InputSelect from "../../components/InputSelect/InputSelect";
 // import styles from "./calendar.css";
 import momentTimezonePlugin from '@fullcalendar/moment-timezone';
@@ -55,6 +55,13 @@ const students = [
    },
 ];
 
+const backgrounds = [
+   '#51D294',
+   '#C56DEE',
+   '#6F7ADE',
+   '#7DE94A',
+   '#F6935A',
+]
 // CST - "America/Indiana/Indianapolis"
 //EST "America/New_York"
 //MST - "America/North_Dakota/Beulah"
@@ -87,15 +94,16 @@ export default function Calendar() {
    const calendarRef = useRef(null);
    // console.log(calendarRef.current)
    const [events, setEvents] = useState([]);
-   const [persona, setPersona] = useState(sessionStorage.getItem("role"));
+
+   const { role: persona } = useSelector(state => state.user)
+
    // const [timeZones, setTimeZones] = useState(temptimeZones)
    const { id: sessionToEdit } = useParams()
    const [isEdited, setIsEdited] = useState(false)
    const [isEditable, setIsEditable] = useState(false)
    // console.log(sessionToEdit)
    const [associatedStudents, setAssociatedStudents] = useState([])
-   const { id } = useSelector(state => state.user)
-
+   const { id, timeZone: currentUserTImeZone } = useSelector(state => state.user)
    const time = formatAMPM(new Date)
 
    const exactTime = time.slice(0, time.indexOf(":")) + time.slice(time.indexOf("p"), time.length);
@@ -118,6 +126,7 @@ export default function Calendar() {
       useLazyGetSessionsQuery();
    const [fetchStudents, fetchStudentsResp] = useLazyGetTutorStudentsQuery();
    const [getUserDetail, userDetailResp] = useLazyGetUserDetailQuery()
+   const { firstName, lastName, id: currentUserId } = useSelector(state => state.user)
 
    const [names, setNames] = useState([]);
    const [name, setName] = useState("");
@@ -148,6 +157,7 @@ export default function Calendar() {
       const url = `/api/session/${role}/${id}`;
       // console.log(url)
       fetchUserSessions(url).then((res) => {
+         // console.log(res.data.data);
          const tempEvents = res.data.data.session.map(session => {
             const time = session.time;
             const strtTime12HFormat = `${time.start.time} ${time.start.timeType}`;
@@ -198,8 +208,8 @@ export default function Calendar() {
             let up = getStartDate(startDate, userTimezoneOffset, session.timeZone)
             const startUtc = up.toUTCString()
 
-            console.log('START DATE', startDate);
-            console.log('START DATE UTC --', startUtc);
+            // console.log('START DATE', startDate);
+            // console.log('START DATE UTC --', startUtc);
 
             const endTime12HFormat = `${time.end.time} ${time.end.timeType}`;
             const endTime = convertTime12to24(
@@ -238,6 +248,13 @@ export default function Calendar() {
    };
 
    useEffect(() => {
+      // console.log(currentUserTImeZone);
+      if (timeZones.includes(currentUserTImeZone)) {
+         setTimeZone(currentUserTImeZone)
+      }
+   }, [currentUserTImeZone])
+
+   useEffect(() => {
       if (persona == "admin" || persona === 'tutor') {
          setIsEditable(true)
       } else {
@@ -247,21 +264,19 @@ export default function Calendar() {
 
    useEffect(() => {
       if (persona == "student") {
-         console.log(persona);
-         const userId = sessionStorage.getItem("userId");
-         const role = sessionStorage.getItem("role");
-         if (!userId) return;
-         fetchSessions(userId, role);
+         // console.log(persona);
+         if (!currentUserId) return;
+         fetchSessions(currentUserId, persona);
       }
    }, [persona]);
 
    useEffect(() => {
       if (persona == "parent") {
          getUserDetail({ id })
-            .then(resp => {
+            .then(async (resp) => {
                console.log('response', resp.data.data);
                setStudents([])
-               resp.data.data.user.assiginedStudents.map((student, idx) => {
+               await resp.data.data.user.assiginedStudents.map((student, idx) => {
                   getUserDetail({ id: student })
                      .then(res => {
                         setStudents(prev => [...prev, {
@@ -277,10 +292,10 @@ export default function Calendar() {
 
                const fetch = async (cb) => {
 
-                  await resp.data.data.user.assiginedStudents.map((student, idx) => {
+                  await resp.data.data.user.assiginedStudents.map(async (student, idx) => {
                      setSearchedUser({ id, role: 'student' })
                      const url = `/api/session/student/${student}`;
-                     fetchUserSessions(url).then((res) => {
+                     await fetchUserSessions(url).then((res) => {
                         const tempEvents = res.data.data.session.map(session => {
                            const time = session.time;
                            const strtTime12HFormat = `${time.start.time} ${time.start.timeType}`;
@@ -329,8 +344,8 @@ export default function Calendar() {
                            let up = getStartDate(startDate, userTimezoneOffset, session.timeZone)
                            const startUtc = up.toUTCString()
 
-                           console.log('START DATE', startDate);
-                           console.log('START DATE UTC --', startUtc);
+                           // console.log('START DATE', startDate);
+                           // console.log('START DATE UTC --', startUtc);
 
                            const endTime12HFormat = `${time.end.time} ${time.end.timeType}`;
                            const endTime = convertTime12to24(
@@ -344,6 +359,8 @@ export default function Calendar() {
 
                            const endDateUtc = getStartDate(endDate, userTimezoneOffset, session.timeZone)
 
+                           // console.log(resp.data.data.user.assiginedStudents);
+
                            let eventObj = {
                               id: session._id,
                               title: session.tutorName,
@@ -352,11 +369,11 @@ export default function Calendar() {
                               updatedDate: startUtc,
                               updatedDateEnd: endDateUtc,
                               description: `${strtTime12HFormat} - ${endTime12HFormat}`,
+                              background: getBackground(resp.data.data.user.assiginedStudents.length, idx)
                            };
                            return eventObj;
                         });
                         allevents.push(...tempSession)
-                        console.log(idx, resp.data.data.user.assiginedStudents.length - 1);
                         if (idx === resp.data.data.user.assiginedStudents.length - 1) cb()
                         // parseEventDatesToTz()
                      });
@@ -433,18 +450,23 @@ export default function Calendar() {
       calendarAPI?.next();
    };
    const eventContent = (arg) => {
-      // console.log(arg)
+      // console.log(arg.event)
       // console.log(new Date(arg.event._instance.range.start).getHours())
       let m = moment.tz(`${arg.event.start}`, "America/Los_Angeles").format();
       // console.log(new Date(m).getHours())
       // console.log(new Date(m).getMinutes())
       // console.log(moment.tz(`${arg.event.start}`, timeZone).format())
-
+      // console.log(arg);
       let title = ''
       const description = arg.event._def.extendedProps.description;
+
+      let background = '#ebe7ff'
+      // if (arg.event._def.extendedProps.background) {
+      //    background = arg.event._def.extendedProps.background
+      // }
       return (
          <div className="p-0.5 h-full">
-            <div className="bg-darkWhite h-full p-2 rounded-lg">
+            <div className="bg- h-full p-2 rounded-lg" style={{ background: background }} >
                <p className="text-primary font-semibold text-sm">
                   {" "}
                   {arg.event._def.title}{" "}
@@ -461,7 +483,15 @@ export default function Calendar() {
 
    const handleDateClick = (arg) => {
       // console.log(arg)
-      setDefaultEventData({ date: arg.date })
+      if (persona === 'tutor') {
+         setDefaultEventData({
+            date: arg.date,
+            tutorId: currentUserId,
+            tutorName: `${firstName} ${lastName}`
+         })
+      } else {
+         setDefaultEventData({ date: arg.date })
+      }
       if (persona === "admin" || persona === "tutor") {
          setEventModalActive(true);
       }
@@ -494,7 +524,7 @@ export default function Calendar() {
    };
 
    useEffect(() => {
-      if (name.length > 2) {
+      if (name.length > 0) {
          fetchNames(name).then((res) => {
             // console.log(res.data.data.user)
             let tempData = res.data.data.user.map((user) => {
@@ -511,7 +541,7 @@ export default function Calendar() {
    }, [name]);
 
    useEffect(() => {
-      const userId = sessionStorage.getItem("userId");
+      const userId = currentUserId
       if (persona === "tutor") {
          fetchStudents(userId).then((res) => {
             setEventDetails(res.data.data.session);
@@ -547,7 +577,7 @@ export default function Calendar() {
                const endDateUtc = getStartDate(endDate, userTimezoneOffset, session.timeZone)
                let eventObj = {
                   id: session._id,
-                  title: session.tutorName,
+                  title: session.studentName,
                   start: startUtc,
                   endDate: endDateUtc,
                   updatedDate: startUtc,
@@ -630,7 +660,7 @@ export default function Calendar() {
          return prev.map(item => {
             let updatedDate = new Date(item.updatedDate).toLocaleString('en-US', { timeZone })
             let updatedDateEnd = new Date(item.updatedDateEnd).toLocaleString('en-US', { timeZone })
-            console.log('DATE UPDATED ==', new Date(updatedDate))
+            // console.log('DATE UPDATED ==', new Date(updatedDate))
             return {
                ...item,
                start: new Date(updatedDate),
@@ -652,14 +682,24 @@ export default function Calendar() {
       // calendarRef.current.setOption('timeZone', timeZone)
    }, [timeZone, events.length])
 
+   useEffect(() => {
+      if (persona === 'tutor') {
+         // setTutor(`${firstName} ${lastName}`);
+         // setData({ ...data, tutorId: currentUserId });
+      }
+   }, [persona, id])
+
    // console.log(events);
    // console.log(eventDetails);
+
+   // console.log('events', events);
+   // console.log('eventDetails', eventDetails);
 
    return (
       <>
          <div className="lg:ml-pageLeft bg-lightWhite min-h-screen">
-            <div className="py-14 pl-5 calendar flex">
-               <div className="p-10 pl-0 pr-0 w-[280px] mr-[10px]">
+            <div className="py-14 pt-10 pl-5 calendar flex">
+               <div className="p-10 pt-10 pl-0 pr-0 w-[280px] mr-[10px]">
                   <div className="w-[280px]" >
                      <SimpleCalendar currentDate={currentDate} setCurrentDate={setCurrentDate} />
                   </div>
@@ -670,7 +710,7 @@ export default function Calendar() {
                            Student Name{" "}
                         </p>
                         <div>
-                           {students.map((student) => {
+                           {students.map((student, idx) => {
                               return (
                                  <div
                                     key={student.studentId}
@@ -682,8 +722,9 @@ export default function Calendar() {
                                     <div
                                        className="student-circle"
                                        style={{
-                                          backgroundColor:
-                                             '#51D294',
+                                          backgroundColor: '#ebe7ff'
+                                          //  getBackground(students.length, idx),
+
                                        }}
                                     ></div>
                                  </div>
@@ -718,6 +759,13 @@ export default function Calendar() {
                      // timeZone='UTC'
                      // timeZone={timeZone === getLocalTimeZone() ? 'local' : timeZone}
                      // timeZone={timeZone === 'IST' ? 'local' : timeZone }
+                     // businessHours= {{
+                     //    startTime: '06:00', // a start time (10am in this example)
+                     //    endTime: '05:00', // an end time (6pm in this example)
+                     //  }}
+                     // slotMinTime='06:00:00'
+                     // slotMaxTime='23:00:00'
+                     // slotDuration='24:00:00'
                      eventClick={(info) => handleEventClick(info)}
                      ref={calendarRef}
                      plugins={[

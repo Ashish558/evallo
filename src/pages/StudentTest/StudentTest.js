@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { useLazyGetAssignedTestQuery, useLazyGetTestDetailsQuery } from "../../app/services/test";
+import { useSelector } from "react-redux";
+import { useLazyGetAssignedTestQuery, useLazyGetParentsAssignedTestsQuery, useLazyGetTestDetailsQuery, useLazyGetTestResponseQuery } from "../../app/services/test";
+import { useLazyGetUserDetailQuery } from "../../app/services/users";
 import Modal from "../../components/Modal/Modal";
 import Table from "../../components/Table/Table";
+import { getFormattedDate } from "../../utils/utils";
 
 import { tempTableData, studentsDataTable } from "../AssignedTests/tempData";
 
@@ -29,64 +32,156 @@ const parentTestInfo = [
       text: 'Completed'
    },
 ]
-const parentStudents = [
-   {
-      name: 'Sarina Darper',
-      selected: true,
-   },
-   {
-      name: 'Joseph Brown',
-      selected: false,
-   },
-]
+
 
 export default function StudentTest() {
 
    const [tableData, setTableData] = useState(studentsDataTable)
    const [tableHeaders, setTableHeaders] = useState(studentTableHeaders)
+   const [user, setUser] = useState({})
+   const [associatedStudents, setAssociatedStudents] = useState([]);
+   const [selectedStudent, setSelectedStudent] = useState(null)
 
    const [getTest, getTestResp] = useLazyGetAssignedTestQuery()
    const [getTestDetails, getTestDetailsResp] = useLazyGetTestDetailsQuery()
+   const [getResponse, getResponseRes] = useLazyGetTestResponseQuery()
+   const [getUserDetail, userDetailResp] = useLazyGetUserDetailQuery()
+   const [fetchAssignedTests, fetchAssignedTestsResp] = useLazyGetParentsAssignedTestsQuery()
 
    const [assignedTestDetails, setassignedTestDetails] = useState([])
+
+   const [allTests, setAllTests] = useState([])
+   const [filteredTests, setfilteredTests] = useState([])
+
    const [testDetails, setTestDetails] = useState([])
 
-   const persona = sessionStorage.getItem("role");
+   const { role: persona, id } = useSelector(state => state.user)
+
+   // useEffect(() => {
+   //    getResponse({ id: '63b567682cbfe817fe551afb' })
+   //       .then(res => {
+   //          console.log(res.data);
+   //       })
+   // }, [])
 
    useEffect(() => {
-      getTest('637663fe90241bf60305bd36')
-         .then(res => {
-            console.log(res.data.data.test);
-            res.data.data.test.map(test => {
-               setassignedTestDetails([
-                  ...assignedTestDetails,
-                  {
-                     testName: 'test',
-                     assignedOn: '01-08-2022',
-                     dueDate: test.dueDate,
+      if (persona === 'student') {
+         getTest()
+            .then(res => {
+               console.log('all-assigned-tests', res.data.data.test);
+               let tempAllTests = res.data.data.test.map(test => {
+                  const { testId, studentId, dueDate, isCompleted, isStarted, createdAt } = test
+                  return {
+                     testName: testId ? testId.testName : '-',
+                     assignedOn: getFormattedDate(new Date(createdAt)),
+                     studentId: studentId ? studentId : '-',
+                     dueDate: getFormattedDate(new Date(test.dueDate)),
                      duration: test.timeLimit,
-                     status: 0,
-                     scores: 'V720 M650 | C1370	',
+                     status: isCompleted === true ? 'completed' : isStarted ? 'started' : 'notStarted',
+                     scores: '-',
                      _id: test._id,
-                     testId: test.testId,
+                     pdfLink: testId.pdf ? testId.pdf : null, 
+                     testId: testId ? testId._id : '-',
                      isCompleted: test.isCompleted
                   }
-               ])
+               })
+               setAllTests(tempAllTests)
             })
+      }
+   }, [persona])
 
-            if (res.data.data.test.length === 0) return
-            res.data.data.test.map(test => {
-               getTestDetails(test.testId)
-                  .then(resp => {
-                     console.log(resp.data.data)
-                  })
+   //fetch parents students
+   useEffect(() => {
+      if (persona === 'parent') {
+         getUserDetail({ id })
+            .then(res => {
+               // console.log('response', res.data.data);
+               setUser(res.data.data.user)
+               setAssociatedStudents([])
+               res.data.data.user.assiginedStudents.map((student, idx) => {
+                  getUserDetail({ id: student })
+                     .then(res => {
+                        setAssociatedStudents(prev => [...prev, {
+                           _id: res.data.data.user._id,
+                           name: `${res.data.data.user.firstName} ${res.data.data.user.lastName}`,
+                           photo: res.data.data.user.photo ? res.data.data.user.photo : '/images/default.jpeg',
+                           selected: idx === 0 ? true : false
+                        }])
+                     })
+               })
+
             })
-         })
-      // getTime('637663fe90241bf60305bd36')
-      // .then(res => {
-      //    console.log(res);
-      // })
+      }
+   }, [persona])
+
+   useEffect(() => {
+      if (persona === 'parent') {
+         fetchAssignedTests(id)
+            .then(res => {
+               if (res.error) return console.log('assigned test parent resp', res.error);
+               // console.log('assigned test parent resp', res.data);
+               let tempAllTests = res.data.data.test.map(test => {
+                  const { testId, studentId, isCompleted, isStarted, dueDate, createdAt } = test
+                  return {
+                     testName: testId ? testId.testName : '-',
+                     assignedOn: getFormattedDate(new Date(createdAt)),
+                     studentId: studentId ? studentId : '-',
+                     dueDate: getFormattedDate(new Date(test.dueDate)),
+                     duration: test.timeLimit,
+                     status: isCompleted === true ? 'completed' : isStarted ? 'started' : 'notStarted',
+                     scores: '-',
+                     _id: test._id,
+                     pdfLink: testId.pdf ? testId.pdf : null,
+                     testId: testId ? testId._id : '-',
+                     isCompleted: test.isCompleted
+                  }
+               })
+
+               setAllTests(tempAllTests)
+            })
+      }
    }, [])
+
+
+   useEffect(() => {
+      // console.log('associatedStudents', associatedStudents);
+      // console.log('allTests', allTests);
+      if (associatedStudents.length === 0) return
+      if (associatedStudents.length >= 1) {
+         setSelectedStudent(associatedStudents[0])
+      }
+   }, [associatedStudents])
+
+   useEffect(() => {
+      if (selectedStudent === null) return
+      if (Object.keys(selectedStudent).length === 0) return
+      let tempdata = allTests.filter(test => test.studentId._id === selectedStudent._id)
+      // console.log(tempdata);
+      setfilteredTests(tempdata)
+      // console.log('selectedStudent', selectedStudent);
+      // console.log('allTests', allTests);
+   }, [selectedStudent])
+
+   const handleStudentChange = item => {
+      let obj = {}
+      let tempdata = associatedStudents.map(student => {
+         if (student._id === item._id) {
+            obj = { ...student, selected: true }
+            return { ...student, selected: true }
+         } else {
+            return { ...student, selected: false }
+         }
+      })
+      setSelectedStudent(obj)
+      setAssociatedStudents(tempdata)
+   }
+
+   // useEffect(() => {
+   // }, [selectedStudent])
+   // console.log(selectedStudent);
+   // console.log(allTests);
+   // console.log(associatedStudents);
+ 
    return (
       <>
          <div className="lg:ml-pageLeft bg-lightWhite min-h-screen">
@@ -97,7 +192,7 @@ export default function StudentTest() {
                      Tests
                   </p>
                   {persona === "student" ? (
-                     <div className="flex flex-col items-center">
+                     <div className="flex flex-col items-center justify-end">
                         {parentTestInfo.map(item => {
                            return <div className="flex items-center mb-[20px]">
                               <div className="w-[20px] h-[20px] rounded-full mr-[20px]" style={{ backgroundColor: item.bg }}></div>
@@ -106,18 +201,18 @@ export default function StudentTest() {
                         })}
                      </div>
                   ) : persona === 'parent' &&
-                  <div>
-                     <div className="flex items-center">
-                        {parentTestInfo.map(item => {
+                  <div className="pl-4">
+                     <div className="flex items-center justify-end">
+                        {parentTestInfo.map((item, idx) => {
                            return <>
-                              <div className="w-[20px] h-[20px] rounded-full mr-[20px]" style={{ backgroundColor: item.bg }}></div>
+                              <div key={idx} className="w-[20px] h-[20px] rounded-full mr-[20px]" style={{ backgroundColor: item.bg }}></div>
                               <div className="mr-[20px] font-semibold"> {item.text} </div>
                            </>
                         })}
                      </div>
                      <div className="flex mt-[29px]">
-                        {parentStudents.map(student => {
-                           return <div key={student.name} className='border w-[230px] py-[7px] flex justify-center' >
+                        {associatedStudents.map((student, idx) => {
+                           return <div key={idx} className='border px-5 py-[7px] flex justify-center' onClick={() => handleStudentChange(student)} >
                               <p className={`text-lg ${student.selected ? 'font-bold underline underline-offset-3' : ''}`}> {student.name} </p>
                            </div>
                         })}
@@ -130,9 +225,10 @@ export default function StudentTest() {
                <div className="mt-6">
                   <Table
                      dataFor='assignedTestsStudents'
-                     data={assignedTestDetails}
+                     data={persona === 'parent' ? filteredTests : allTests}
                      tableHeaders={tableHeaders}
                      maxPageSize={10}
+                     excludes={['_id', 'studentId', 'testId', 'isCompleted', 'pdfLink']}
                   />
                </div>
             </div>

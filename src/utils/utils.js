@@ -148,6 +148,35 @@ export const getStartDate = (startDate, userTimezoneOffset, timeZone) => {
       return new Date(startDate.getTime() - userTimezoneOffset - 5.5 * 3600000);
    }
 }
+
+export const getBackground = (totalLeangth, idx) => {
+   let index = idx
+   if (idx > totalLeangth - 1) {
+      index = index % totalLeangth
+   }
+   const backgrounds = [
+      '#51D294',
+      '#C56DEE',
+      '#6F7ADE',
+      '#7DE94A',
+      '#F6935A',
+   ]
+   return backgrounds[idx]
+}
+
+export function millisToMinutesAndSeconds(millis) {
+   var minutes = Math.floor(millis / 60000);
+   var seconds = ((millis % 60000) / 1000).toFixed(0);
+   return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
+}
+
+export function getDate(arg) {
+   let date = new Date(arg)
+   const month = date.toLocaleString('default', { month: 'long' });
+
+   return `${month} ${date.getDate()}, ${date.getFullYear()}`
+}
+
 // // timezones
 // function getCurrentLocalDateTime() {
 //    return moment().format();

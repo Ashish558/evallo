@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { BASE_URL } from "../constants/constants";
+import { BASE_URL, getAuthHeader } from "../constants/constants";
 
 
 export const adminServicesApi = createApi({
@@ -17,18 +17,14 @@ export const adminServicesApi = createApi({
                search: name
             },
             method: "GET",
-            headers: {
-               "Authorization": sessionStorage.getItem('token'),
-            },
+            headers: getAuthHeader()
          }),
       }),
       getAllInvoice: builder.query({
          query: (name) => ({
             url: `api/invoice`,
             method: "GET",
-            headers: {
-               "Authorization": sessionStorage.getItem('token'),
-            },
+            headers: getAuthHeader()
          }),
       }),
 
@@ -37,9 +33,7 @@ export const adminServicesApi = createApi({
             url: `/api/invoice `,
             method: "POST",
             body: body,
-            headers: {
-               "Authorization": sessionStorage.getItem('token'),
-            },
+            headers: getAuthHeader()
          })
       }),
 
@@ -48,9 +42,7 @@ export const adminServicesApi = createApi({
             url: `/api/user/block/${body.id}`,
             method: "PATCH",
             body: body,
-            headers: {
-               "Authorization": sessionStorage.getItem('token'),
-            },
+            headers: getAuthHeader()
          })
       }),
 
@@ -59,9 +51,15 @@ export const adminServicesApi = createApi({
             url: `/api/user/unblock/${body.id}`,
             method: "PATCH",
             body: body,
-            headers: {
-               "Authorization": sessionStorage.getItem('token'),
-            },
+            headers: getAuthHeader()
+         })
+      }),
+      getAllSections: builder.query({
+         query: (body) => ({
+            url: `/api/test/getans/${body.id}`,
+            method: "GET",
+            params: {userId:sessionStorage.getItem('userId') },
+            headers: getAuthHeader()
          })
       }),
 
@@ -73,5 +71,6 @@ export const {
    useLazyGetParentsByNameQuery,
    useLazyGetAllInvoiceQuery,
    useBlockUserMutation,
-   useUnblockUserMutation
+   useUnblockUserMutation,
+   useLazyGetAllSectionsQuery       
 } = adminServicesApi;

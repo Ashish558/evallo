@@ -17,11 +17,12 @@ export default function UserDetails({
    setOtherDetails,
    detailsError,
    setDetailsError,
-   resetDetailsErrors
+   resetDetailsErrors,
+   studentNumberPrefix,
+   setStudentNumberPrefix
 }) {
 
    const [selected, setSelected] = useState(false);
-   const [numberPrefix, setNumberPrefix] = useState('+91')
 
    const selectRef = useRef();
    useOutsideAlerter(selectRef, () => setSelected(false));
@@ -86,7 +87,7 @@ export default function UserDetails({
             <InputField
                placeholder="First Name"
                inputContainerClassName='pt-3 pb-3 border'
-               parentClassName="mb-6 mr-5"
+               parentClassName="mb-6 mr-5 relative"
                required={persona === "student" ? true : false}
                label={`${personaText} First Name`}
                labelClassname="ml-2 mb-2"
@@ -101,7 +102,7 @@ export default function UserDetails({
             />
             <InputField
                placeholder="Last Name"
-               parentClassName="mb-6"
+               parentClassName="mb-6 relative"
                inputContainerClassName='pt-3 pb-3 border'
                label={`${personaText} Last Name`}
                required={persona === "student" ? true : false}
@@ -119,7 +120,7 @@ export default function UserDetails({
 
          <InputField
             placeholder="Email address"
-            parentClassName="mb-6"
+            parentClassName="mb-6 relative"
             label={`${personaText} Email Address`}
             inputContainerClassName='pt-3 pb-3 border'
             required={persona === "student" ? true : false}
@@ -157,17 +158,17 @@ export default function UserDetails({
                         />
                      }
                      <div className="outline-0 relative font-medium mr-4" name={'nm'}>
-                        {numberPrefix}
+                        {studentNumberPrefix}
                      </div>
                      {selected && (
                         <div className={`scrollbar-content scrollbar-vertical ${selectStyles.options}`} style={{ top: '100%' }} >
-                           {['+91s', '+1'].map((option, idx) => {
+                           {['+1'].map((option, idx) => {
                               return (
                                  <div
                                     className="outline-0 border-0 py-2 px-4"
                                     key={idx}
                                     onClick={() => {
-                                       setNumberPrefix(option)
+                                       setStudentNumberPrefix(option)
                                     }}
                                  >
                                     {" "}

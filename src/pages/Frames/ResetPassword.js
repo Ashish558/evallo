@@ -8,6 +8,9 @@ export default function ResetPassword({
     setFrames,
     signup,
 }) {
+    const [password, setPassword] = useState("")
+    const [confirmPassword, setConfirmPassword] = useState("")
+    const passwordValidate = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/gm
     return (
         <div className={`w-full ${signup ? "" : "px-148"} `}>
             <p className="font-bold text-5xl leading-snug mb-7">
@@ -26,6 +29,7 @@ export default function ResetPassword({
                 inputContainerClassName='border'
                 label="Set New Password"
                 labelClassname="ml-2 mb-2"
+                onChange={e => setPassword(e.target.value)}
             />
 
             <InputField
@@ -36,10 +40,11 @@ export default function ResetPassword({
                 inputContainerClassName='border'
                 label="Confirm Password"
                 labelClassname="ml-2 mb-2"
+                onChange={e => setConfirmPassword(e.target.value)}
             />
 
             <button
-                disabled={false}
+                disabled={!(passwordValidate.test(password) && password.length > 7 && confirmPassword.length > 7 && password === confirmPassword)}
                 className="w-full bg-primaryDark font-medium disabled:bg-pink  py-4 mt-12 rounded-10 text-white text-21"
                 onClick={() =>
                     signup
@@ -53,7 +58,7 @@ export default function ResetPassword({
                         : setActiveFrame(setLoginActive)
                 }
             >
-                Set New Password
+                Set New Passworf
             </button>
         </div>
     );

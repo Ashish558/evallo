@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { BASE_URL } from "../constants/constants";
+import { BASE_URL, getAuthHeader } from "../constants/constants";
 
 
 export const dashboardServicesApi = createApi({
@@ -13,9 +13,21 @@ export const dashboardServicesApi = createApi({
          query: () => ({
             url: `api/ledger`,
             method: "GET",
-            headers: {
-               "Authorization": sessionStorage.getItem('token'),
-            },
+            headers: getAuthHeader()
+         }),
+      }),
+      payBalance: builder.query({
+         query: () => ({
+            url: `api/payment/init`,
+            method: "GET",
+            headers: getAuthHeader()
+         }),
+      }),
+      getFeedbacks: builder.query({
+         query: () => ({
+            url: `/api/feedback/${sessionStorage.getItem('userId')}`,
+            method: "GET",
+            headers: getAuthHeader()
          }),
       })
 
@@ -44,5 +56,7 @@ export const dashboardServicesApi = createApi({
 });
 
 export const {
-   useLazyGetParentLedgerQuery
+   useLazyGetParentLedgerQuery,
+   useLazyPayBalanceQuery,
+   useLazyGetFeedbacksQuery
 } = dashboardServicesApi;

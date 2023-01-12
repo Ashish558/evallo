@@ -59,6 +59,7 @@ export default function Modal({
                </div>
                <button className={styles.cancelBtn} 
                 style={cancelBtnStyle}
+                onClick={handleClose}
                 >
                   <img src={CancelIcon} onClick={handleClose} />
                </button>

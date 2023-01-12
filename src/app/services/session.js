@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { BASE_URL } from "../constants/constants";
+import {  BASE_URL, getAuthHeader } from "../constants/constants";
 
 
 export const sessionServicesApi = createApi({
@@ -16,6 +16,7 @@ export const sessionServicesApi = createApi({
                search: name
             },
             method: "GET",
+            headers: getAuthHeader()
          }),
       }),
       getStudentsByName: builder.query({
@@ -25,6 +26,7 @@ export const sessionServicesApi = createApi({
                search: name
             },
             method: "GET",
+            headers: getAuthHeader()
          }),
       }),
       getTutorStudentsByName: builder.query({
@@ -34,9 +36,7 @@ export const sessionServicesApi = createApi({
             params: {
                search: name
             },
-            headers: {
-               "Authorization": sessionStorage.getItem('token'),
-            },
+            headers: getAuthHeader()
          }),
       }),
       getUsersByName: builder.query({
@@ -46,6 +46,7 @@ export const sessionServicesApi = createApi({
                search: name
             },
             method: "GET",
+            headers: getAuthHeader()
          }),
       }),
       getSettings: builder.query({
@@ -55,6 +56,7 @@ export const sessionServicesApi = createApi({
                search: name
             },
             method: "GET",
+            headers: getAuthHeader()
          }),
       }),
       submitSession: builder.mutation({
@@ -62,9 +64,7 @@ export const sessionServicesApi = createApi({
             url: `/api/session`,
             method: "POST",
             body: body,
-            headers: {
-               "Authorization": sessionStorage.getItem('token'),
-            },
+            headers: getAuthHeader()
          })
       }),
       updateSession: builder.mutation({
@@ -72,23 +72,87 @@ export const sessionServicesApi = createApi({
             url: `/api/session/${payload.id}`,
             method: "PATCH",
             body: payload.body,
-            headers: {
-               "Authorization": sessionStorage.getItem('token'),
-            },
+            headers: getAuthHeader()
+         })
+      }),
+      updateSessionStatus: builder.query({
+         query: (id) => ({
+            url: `/api/session/sessioncompleted/${id}`,
+            method: "GET",
+            headers: getAuthHeader()
          })
       }),
       getSessions: builder.query({
          query: (url) => ({
             url: url,
             method: "GET",
-
+            headers: getAuthHeader()
+         })
+      }),
+      getSingleSession: builder.query({
+         query: (id) => ({
+            url: `/api/session/${id}`,
+            method: "GET",
+            headers: getAuthHeader()
          })
       }),
       getTutorStudents: builder.query({
          query: (id) => ({
             url: `/api/session/tutor/${id}`,
             method: "GET",
+            headers: getAuthHeader()
          }),
+      }),
+      submitFeedback: builder.mutation({
+         query: (body) => ({
+            url: `/api/feedback`,
+            method: "POST",
+            body: body,
+            headers: getAuthHeader()
+         })
+      }),
+      getSessionFeedback: builder.query({
+         query: (id) => ({
+            url: `/api/feedback/session/${id}`,
+            method: "GET",
+            headers: getAuthHeader()
+         })
+      }),
+      
+      getStudentFeedback: builder.query({
+         query: (body) => ({
+            url: `/api/feedback/student/${body.id}`,
+            method: "GET",
+            headers: getAuthHeader()
+         })
+      }),
+      sessionMissed: builder.query({
+         query: (id) => ({
+            url: `/api/session/sessionmissed/${id}`,
+            method: "GET",
+            headers: getAuthHeader()
+         })
+      }),
+      cancelSession: builder.query({
+         query: (id) => ({
+            url: `/api/session/sessioncancel/${id}`,
+            method: "GET",
+            headers: getAuthHeader()
+         })
+      }),
+      deleteSession: builder.mutation({
+         query: (id) => ({
+            url: `/api/session/${id}`,
+            method: "DELETE",
+            headers: getAuthHeader()
+         })
+      }),
+      deleteAllRecurringSession: builder.mutation({
+         query: (id) => ({
+            url: `/api/session/all/${id}`,
+            method: "DELETE",
+            headers: getAuthHeader()
+         })
       }),
 
    }),
@@ -102,6 +166,15 @@ export const {
    useSubmitSessionMutation,
    useLazyGetUsersByNameQuery,
    useLazyGetSessionsQuery,
+   useLazyGetSingleSessionQuery,
    useUpdateSessionMutation,
-   useLazyGetTutorStudentsQuery
+   useLazyGetTutorStudentsQuery,
+   useLazyUpdateSessionStatusQuery,
+   useSubmitFeedbackMutation,
+   useLazyGetSessionFeedbackQuery,
+   useLazyGetStudentFeedbackQuery,
+   useLazyCancelSessionQuery,
+   useLazySessionMissedQuery,
+   useDeleteSessionMutation,
+   useDeleteAllRecurringSessionMutation
 } = sessionServicesApi;

@@ -1,11 +1,13 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
+import { useLazyCancelSessionQuery } from '../../../../app/services/session'
 import CCheckbox from '../../../../components/CCheckbox/CCheckbox'
 import InputField from '../../../../components/InputField/inputField'
 import InputSelect from '../../../../components/InputSelect/InputSelect'
 
 export default function SessionInputs({ data, setData, status, isEditable }) {
 
-   const persona = sessionStorage.getItem('role')
+   const { role: persona } = useSelector(state => state.user)
 
    return (
       <>
@@ -55,7 +57,7 @@ export default function SessionInputs({ data, setData, status, isEditable }) {
                         })}
                         disabled={!isEditable} />
                      <p className="font-medium text-primary-60 text-sm">
-                        Rescheduling
+                        Rescheduled
                      </p>
                   </div>
                </div>
@@ -84,7 +86,7 @@ export default function SessionInputs({ data, setData, status, isEditable }) {
                            rescheduling: !data.rescheduling,
                         })} disabled={!isEditable} />
                      <p className="font-medium text-primary-60 text-sm">
-                        Rescheduling
+                        Rescheduled
                      </p>
                   </div>
                </div>

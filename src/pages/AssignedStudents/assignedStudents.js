@@ -10,6 +10,11 @@ import { tempTableData } from "./tempData";
 import InputField from "../../components/InputField/inputField";
 import { BASE_URL } from "../../app/constants/constants";
 import InputSearch from "../../components/InputSearch/InputSearch";
+import { useLazyGetUserDetailQuery } from "../../app/services/users";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { timeZones } from "../../constants/constants";
+import FilterItems from "../../components/FilterItems/filterItems";
 
 const optionData = ["1", "2", "3", "4", "5"];
 const testData = ["SAT", "ACT"];
@@ -19,7 +24,7 @@ const tempTableHeaders = [
    "Time Zone",
    "Service(s)",
    "Parent",
-   "Start Date",
+   // "Start Date",
    "Diagnostic Score",
    "Status",
    "",
@@ -29,9 +34,16 @@ export default function AssignedStudents() {
 
    const [tableData, setTableData] = useState([])
    const [tableHeaders, setTableHeaders] = useState([])
+   const navigate = useNavigate()
+   const [filterItems, setFilterItems] = useState([])
 
-   const persona = sessionStorage.getItem("role");
+   const { role: persona } = useSelector(state => state.user)
 
+   const [getUserDetail, userDetailResp] = useLazyGetUserDetailQuery()
+
+   const { id } = useSelector(state => state.user)
+   const [students, setStudents] = useState([])
+   const [filteredStudents, setFilteredStudents] = useState([])
 
    const [filterData, setFilterData] = useState({
       studentName: '',
@@ -46,6 +58,86 @@ export default function AssignedStudents() {
       setTableHeaders(tempTableHeaders)
    }, [])
 
+   // console.log(students)
+
+   useEffect(() => {
+      getUserDetail({ id })
+         .then(resp => {
+            console.log(resp.data.data.user)
+            let studentsData = []
+            const fetch = (cb) => {
+               resp.data.data.user.assiginedStudents.map((studentId, idx) => {
+                  getUserDetail({ id: studentId })
+                     .then(res => {
+                        const { _id, firstName, lastName } = res.data.data.user
+                        const { serviceSeeking, FirstName, LastName, timeZone } = res.data.data.userdetails
+                        studentsData.push({
+                           _id,
+                           name: `${firstName} ${lastName}`,
+                           timeZone: timeZone ? timeZone : '-',
+                           services: serviceSeeking ? serviceSeeking.join() : '-',
+                           parentName: `${FirstName} ${LastName}`,
+                           score: '-',
+                           status: '-'
+                        })
+                        if (idx === resp.data.data.user.assiginedStudents.length - 1) cb()
+                     })
+               })
+            }
+            fetch(() => {
+               setStudents(studentsData)
+               setFilteredStudents(studentsData)
+            })
+         })
+   }, [])
+
+    useEffect(() => {
+      let tempdata = [...students]
+      // console.log(usersData)
+      if (filterData.timeZone !== '') {
+         tempdata = tempdata.filter(user => user.timeZone === filterData.timeZone)
+      } else {
+         tempdata = tempdata.filter(user => user.timeZone !== '')
+      }
+
+      if (filterData.name !== '') {
+         const regex2 = new RegExp(`${filterData.studentName.toLowerCase()}`, 'i')
+         tempdata = tempdata.filter(user => user.name.match(regex2))
+      } else {
+         tempdata = tempdata.filter(user => user.name !== '')
+      }
+      setFilteredStudents(tempdata)
+   }, [filterData])
+
+   const onRemoveFilter = (item) => item.removeFilter(item.type)
+
+   const removeFilter = key => {
+      let tempFilterData = { ...filterData }
+      tempFilterData[key] = ''
+      setFilterData(tempFilterData)
+   }
+
+   //change filter items to display if input data changes
+   useEffect(() => {
+      let arr = Object.keys(filterData).map(key => {
+         if (filterData[key] !== '') {
+            return {
+               text: filterData[key],
+               type: key,
+               removeFilter: (key) => removeFilter(key)
+            }
+         }
+      }).filter(item => item !== undefined)
+      setFilterItems(arr)
+   }, [filterData])
+
+   const handleNavigate = (role, id) => {
+      navigate(`/profile/${role}/${id}`)
+   }
+   
+   // console.log('filterData', filterData)
+   // console.log('filterItems', filterItems)
+
    return (
       <>
          <div className="lg:ml-pageLeft bg-lightWhite min-h-screen">
@@ -59,7 +151,7 @@ export default function AssignedStudents() {
 
                </div>
 
-               <div className="flex align-center mt-8">
+               <div className="flex align-center mt-8 max-w-[1200px]">
                   <InputField
                      value={filterData.studentName}
                      IconRight={SearchIcon}
@@ -73,9 +165,9 @@ export default function AssignedStudents() {
                   <InputSelect
                      value={filterData.timeZone}
                      onChange={val => setFilterData({ ...filterData, timeZone: val })}
-                     optionData={optionData}
+                     optionData={timeZones}
                      inputContainerClassName="py-[16px] px-[20px] border bg-white"
-                     placeholder="Time ZoneSe"
+                     placeholder="Time Zones"
                      parentClassName="w-full mr-4"
                      type="select"
                   />
@@ -88,7 +180,7 @@ export default function AssignedStudents() {
                      parentClassName="w-full mr-4"
                      type="select"
                   />
-                  <InputSelect
+                  {/* <InputSelect
                      value={filterData.date}
                      onChange={val => setFilterData({ ...filterData, date: val })}
                      optionData={optionData}
@@ -96,10 +188,10 @@ export default function AssignedStudents() {
                      placeholder="Start Date"
                      parentClassName="w-full mr-4"
                      type="select"
-                  />
-                   <InputSelect
+                  /> */}
+                  <InputSelect
                      value={filterData.status}
-                     onChange={val => setFilterData({...filterData, status: val})}
+                     onChange={val => setFilterData({ ...filterData, status: val })}
                      optionData={optionData}
                      inputContainerClassName="py-[16px] px-[20px] border bg-white"
                      placeholder="Status"
@@ -107,12 +199,17 @@ export default function AssignedStudents() {
                      type="select"
                   />
                </div>
+               <div className="pt-4 ">
+                  <FilterItems items={filterItems} setData={setFilterItems} 
+                  onRemoveFilter={onRemoveFilter} />
+               </div>
 
                <div className="mt-6">
                   <Table
-                     // onClick={{ handleResend }}
+                     onClick={{ handleNavigate }}
                      dataFor='assignedStudents'
-                     data={tableData}
+                     data={filteredStudents}
+                     excludes={['_id']}
                      tableHeaders={tableHeaders}
                      maxPageSize={10}
                   />

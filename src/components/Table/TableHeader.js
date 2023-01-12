@@ -1,7 +1,10 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { useLazyGetSettingsQuery } from '../../app/services/session';
+import InputSelect from '../InputSelect/InputSelect';
 
 export function TableHeader({ header, dataFor }) {
 
+  
 
    return (
       dataFor === 'assignedTestsStudents' || dataFor === 'invoice' ?
@@ -10,9 +13,7 @@ export function TableHeader({ header, dataFor }) {
          > {header}
          </th>
          :
-         <th className={`px-2 py-3 font-semibold opacity-60
-         ${header === 'Full Name' || header === 'Name' || header === 'Student Name'  ? 'text-left pl-7' : ''}
-         ${dataFor === 'allUsers' ? 'text-sm' : 'text-sm'}
+         <th className={`px-2 py-3 font-semibold opacity-60 ${header === 'Full Name' || header === 'Name' || header === 'Student Name' ? 'text-left pl-7' : ''} ${dataFor === 'allUsers' ? 'text-sm' : 'text-sm'}
        `}>
             {header}
          </th>

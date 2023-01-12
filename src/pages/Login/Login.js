@@ -13,16 +13,23 @@ import Passwordicon from "../../assets/form/password.svg";
 import EmailIcon from "../../assets/form/email.svg";
 import CarouselImg from "../../assets/form/image-1.png";
 import styles from './Login.module.css'
+import { useNavigate } from "react-router-dom";
 
 export default function Login({ setLoginFormActive }) {
-
+   const emailValidation = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
    const [isPasswordForgot, setIsPasswordForgot] = useState(false);
    const [resetPasswordActive, setResetPasswordActive] = useState(false);
    const [loginActive, setLoginActive] = useState(true);
    const [email, setEmail] = useState("");
    const [password, setPassword] = useState("");
+   const [error, setError] = useState({})
 
+   // const [error, setError] = useState({
+   //    password: '',
+   //    email: ''
+   // })
    const dispatch = useDispatch();
+   const navigate = useNavigate();
 
    const [loginUser, loginUserResp] = useLoginUserMutation();
 
@@ -31,16 +38,49 @@ export default function Login({ setLoginFormActive }) {
       setResetPasswordActive(false);
       setLoginActive(false);
       func(true);
-   };
+   }
+
+   const resetErrors = () => {
+      setError(prev => {
+         return {
+            password: '',
+            email: "",
+         }
+      })
+   }
 
    const handleSubmit = () => {
-      loginUser({ email, password }).then((res) => {
-         console.log(res);
-         sessionStorage.setItem("token", res.data.data.token);
-         sessionStorage.setItem("role", res.data.data.role);
-         sessionStorage.setItem("userId", res.data.data.userId);
-         dispatch(updateIsLoggedIn(true));
-      });
+      const promiseState = async state => new Promise(resolve => {
+         resolve(resetErrors())
+      })
+      promiseState()
+         .then(() => {
+            loginUser({ email, password }).then((res) => {
+               if (res.error) {
+                  console.log(res.error)
+                  if (res.error.data.message === "email not found") {
+                     setError(prev => {
+                        return { ...prev, email: 'Email not found' }
+                     })
+                  }
+                  if (res.error.data.message === "wrong password") {
+                     setError(prev => {
+                        return { ...prev, password: 'Wrong password' }
+                     })
+                  }
+                  if (res.error.data.message === "user not verified") {
+                     // setError(prev => {
+                     //    return { ...prev, password: 'Wrong password' }
+                     // })
+                  }
+                  return
+               }
+               sessionStorage.setItem("token", res.data.data.token);
+               sessionStorage.setItem("role", res.data.data.role);
+               sessionStorage.setItem("userId", res.data.data.userId);
+               dispatch(updateIsLoggedIn(true));
+            });
+         })
    };
 
    const props = { setActiveFrame, setResetPasswordActive };
@@ -49,7 +89,7 @@ export default function Login({ setLoginFormActive }) {
       <div className="min-h-screen">
          <div className="grid grid-cols-2 min-h-screen">
             <div className="bg-primary">
-               <ImageSlider className={styles.loginCarousel} images={[CarouselImg, CarouselImg ]} pagination={true} />
+               <ImageSlider className={styles.loginCarousel} images={[CarouselImg, CarouselImg]} pagination={true} />
             </div>
             <div className="flex items-center">
                {loginActive ? (
@@ -66,13 +106,14 @@ export default function Login({ setLoginFormActive }) {
                         Icon={EmailIcon}
                         iconSize='medium'
                         placeholder="Email address"
-                        parentClassName="mb-6"
+                        parentClassName="mb-6 relative"
                         label="Email Address"
                         labelClassname="ml-2 mb-2"
                         inputClassName="bg-transparent"
                         inputContainerClassName='border pt-3 pb-3'
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
+                        error={error.email}
                      />
 
                      <InputField
@@ -83,10 +124,11 @@ export default function Login({ setLoginFormActive }) {
                         label="Password"
                         type='password'
                         labelClassname="ml-2 mb-2"
-                        inputClassName="bg-transparent" 
+                        inputClassName="bg-transparent"
                         inputContainerClassName='border pt-3 pb-3'
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
+                        error={error.password}
                      />
                      <p
                         className="text-secondary text-xs inline-block cursor-pointer font-semibold ml-2"
@@ -98,7 +140,7 @@ export default function Login({ setLoginFormActive }) {
                      </p>
 
                      <button
-                        disabled={false}
+                        disabled={!(emailValidation.test(email) && password.length > 0)}
                         className="w-full bg-primaryDark disabled:bg-pink pt-3.5 pb-3.5 mt-12 rounded-10 text-white text-lg"
                         onClick={handleSubmit}
                      >
@@ -106,7 +148,7 @@ export default function Login({ setLoginFormActive }) {
                      </button>
                      <p
                         className="text-secondary text-xs font-semibold ml-2 mt-2 cursor-pointer inline-block"
-                        onClick={() => setLoginFormActive(false)}
+                        onClick={() => navigate('/signup')}
                      >
                         Sign-up Instead?
                      </p>

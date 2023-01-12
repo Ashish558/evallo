@@ -17,6 +17,8 @@ export default function Questions({
    motive,
    setMotive,
 }) {
+   const [disabled, setDisabled] = useState(false)
+
    const handleCheckboxChange = (text, arr, setValue) => {
       const temp = arr.map((topic) => {
          return topic.text === text
@@ -31,6 +33,26 @@ export default function Questions({
          return { ...prev, questions: false, signupLast: true };
       });
    };
+
+   useEffect(() => {
+      let coursesCheckCount = 0
+      let motiveCheckCount = 0
+      apCourses.map(item => {
+         if (item.checked === true) {
+            coursesCheckCount += 1
+         }
+      })
+      motive.map(item => {
+         if (item.checked === true) {
+            motiveCheckCount += 1
+         }
+      })
+      if (coursesCheckCount === 0 || motiveCheckCount === 0 || otherDetails.aboutScore.trim() === '') {
+         setDisabled(true)
+      } else {
+         setDisabled(false)
+      }
+   }, [apCourses, motive, otherDetails])
 
    const handleBack = () => {
       if (persona === "parent") {
@@ -147,8 +169,9 @@ export default function Questions({
             />
             <PrimaryButton
                children="Next"
-               className="text-md pt-3 pb-3 font-semibold text-white mr-6 w-140"
+               className="text-md pt-3 pb-3 disabled:opacity-70 font-semibold text-white mr-6 w-140"
                onClick={() => handleSubmit()}
+               disabled={disabled}
             />
          </div>
       </div>

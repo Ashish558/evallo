@@ -8,12 +8,12 @@
 }
 .backBtn{
     position: absolute;
-    top: 50px;
+    top: 20px;
     left: 50px;
     z-index: 1000;
 }
 .imgContent{
-    position: absolute;
+    position: relative;
     z-index: 20;
     left: 0;
     bottom: 0;
@@ -27,6 +27,9 @@
     top: -40px;
     left: 50%;
     transform: translateX(-50%);
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
 }
 @media only screen and (min-width: 1024px) {
    .profileCard {

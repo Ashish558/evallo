@@ -27,6 +27,8 @@ import InputSelect from "../../components/InputSelect/InputSelect";
 import useOutsideAlerter from "../../hooks/useOutsideAlerter";
 import { useLazyGetSettingsQuery } from "../../app/services/session";
 import { validateOtherDetails, validateSignup } from "./utils/util";
+import { useLazyGetTutorDetailsQuery, useLazyGetUserDetailQuery } from "../../app/services/users";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 export default function Signup() {
    const [frames, setFrames] = useState({
@@ -41,6 +43,8 @@ export default function Signup() {
 
    const [settings, setSettings] = useState({})
    const [getSettings, getSettingsResp] = useLazyGetSettingsQuery()
+   const navigate = useNavigate();
+   const [lastLoginDisabled, setLastLoginDisabled] = useState(false)
 
    const fetchSettings = () => {
       getSettings()
@@ -53,7 +57,7 @@ export default function Signup() {
       fetchSettings()
    }, [])
 
- 
+
    const [error, setError] = useState({
       firstName: "",
       lastName: "",
@@ -74,6 +78,7 @@ export default function Signup() {
 
    const [otherDetails, setOtherDetails] = useState({
       schoolName: "",
+      tellUsMore: '',
       grade: "",
       FirstName: "",
       LastName: "",
@@ -92,8 +97,17 @@ export default function Signup() {
    useEffect(() => {
       window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
    }, [frames])
+
    const [signupUser, signupUserResp] = useSignupUserMutation();
    const [addUserDetails, addUserDetailsResp] = useAddUserDetailsMutation();
+   const [getUserDetail, userDetailResp] = useLazyGetTutorDetailsQuery()
+   const [count, setCount] = useState(0);
+
+   const [isLinkedEmail, setIsLinkedEmail] = useState(false)
+   const [linkedUserId, setLinkedUserId] = useState('')
+
+   const [linkedEmailDetails, setLinkedEmailDetails] = useState({})
+   const [searchParams, setSearchParams] = useSearchParams()
 
    const [persona, setPersona] = useState("");
    const [currentStep, setcurrentStep] = useState(1);
@@ -102,10 +116,91 @@ export default function Signup() {
    const [apCourses, setApCourses] = useState(apQuestions);
    const [motive, setMotive] = useState(motivesList);
    const [hearAboutUs, setHearAboutUs] = useState(hearAboutUslist);
+   const [getDetails, getDetailsResp] = useLazyGetUserDetailQuery()
+
+   useEffect(() => {
+      const paramsUserId = searchParams.get('userId')
+      getDetails({ id: paramsUserId })
+         .then(res => {
+            if (res.error) {
+               return console.log(res.error)
+            }
+            setIsLinkedEmail(true)
+            const { user, userdetails } = res.data.data
+            let user_detail = { ...userdetails }
+            // let userDetails = res.data.data
+            console.log('user', user);
+            console.log('userdetails', userdetails);
+            user_detail.Email = user.email
+            user_detail.FirstName = user.firstName
+            user_detail.LastName = user.lastName
+            user_detail.userType = user.role === 'student' ? 'parent' : 'student'
+            console.log('updated', user_detail);
+
+            setValues({
+               ...values,
+               email: userdetails.Email,
+               firstName: userdetails.FirstName,
+               lastName: userdetails.LastName,
+            })
+            setLinkedEmailDetails(user_detail)
+         })
+   }, [])
+
+
 
    //temparory
    const [redirectLink, setRedirectLink] = useState("");
-   const [numberPrefix, setNumberPrefix] = useState('+91')
+   const [numberPrefix, setNumberPrefix] = useState('+1')
+   const [studentNumberPrefix, setStudentNumberPrefix] = useState('+1')
+
+   useEffect(() => {
+      if (count === 0) return
+      sessionStorage.setItem('frames', JSON.stringify(frames))
+      sessionStorage.setItem('values', JSON.stringify(values))
+      sessionStorage.setItem('otherDetails', JSON.stringify(otherDetails))
+      sessionStorage.setItem('persona', persona)
+      sessionStorage.setItem('redirectLink', redirectLink)
+      sessionStorage.setItem('numberPrefix', numberPrefix)
+      sessionStorage.setItem('currentStep', currentStep)
+      sessionStorage.setItem('numberPrefix', numberPrefix)
+      sessionStorage.setItem('studentNumberPrefix', studentNumberPrefix)
+   }, [frames, values, otherDetails, persona, redirectLink, numberPrefix, currentStep, numberPrefix, studentNumberPrefix])
+
+   useEffect(() => {
+      setCount(1)
+   }, [])
+
+   useEffect(() => {
+      if (sessionStorage.getItem('frames')) {
+         // console.log(sessionStorage.getItem('frames'));
+         setFrames(JSON.parse(sessionStorage.getItem('frames')))
+      }
+      if (sessionStorage.getItem('values')) {
+         setValues(JSON.parse(sessionStorage.getItem('values')))
+      }
+      if (sessionStorage.getItem('otherDetails')) {
+         setOtherDetails(JSON.parse(sessionStorage.getItem('otherDetails')))
+      }
+      if (sessionStorage.getItem('persona')) {
+         setPersona(sessionStorage.getItem('persona'))
+      }
+      if (sessionStorage.getItem('redirectLink')) {
+         setRedirectLink(sessionStorage.getItem('redirectLink'))
+      }
+      if (sessionStorage.getItem('numberPrefix')) {
+         setNumberPrefix(sessionStorage.getItem('numberPrefix'))
+      }
+      if (sessionStorage.getItem('currentStep')) {
+         setcurrentStep(sessionStorage.getItem('currentStep'))
+      }
+      if (sessionStorage.getItem('numberPrefix')) {
+         setNumberPrefix(sessionStorage.getItem('numberPrefix'))
+      }
+      if (sessionStorage.getItem('studentNumberPrefix')) {
+         setStudentNumberPrefix(sessionStorage.getItem('studentNumberPrefix'))
+      }
+   }, [])
 
    const resetErrors = () => {
       setError(prev => {
@@ -145,14 +240,13 @@ export default function Signup() {
                subscriptionCode: values.subscriptionCode,
                phone: values.phone,
             };
-            if (values.subscriptionCode.trim().length > 0 && values.checked === false) {
+            if (values.checked === false) {
                console.log(settings.subscriptionCode.includes(values.subscriptionCode));
                if (!settings.subscriptionCode.includes(values.subscriptionCode)) {
                   return alert('invalid subscription code')
                }
             }
             const result = validateSignup(reqBody)
-            console.log(result);
             if (result.data !== true) {
                setError(prev => {
                   return {
@@ -161,7 +255,6 @@ export default function Signup() {
                   }
                })
             } else {
-               // console.log(reqBody)
                signupUser(reqBody).then((res) => {
                   if (res.error) {
                      if (res.error.data.message) {
@@ -169,22 +262,55 @@ export default function Signup() {
                      }
                   }
                   console.log(res);
-                  setRedirectLink(res.data.link);
-                  setValues({ ...values, userId: res.data.userId });
-                  setFrames({
-                     ...frames,
-                     signupActive: false,
-                     selectPersona: true,
-                  });
+                  if (isLinkedEmail) {
+                     addLinkedEmailDetails()
+                     setLinkedUserId(res.data.userId)
+                     addLinkedEmailDetails(res.data.userId)
+                  }
+                  else {
+                     setRedirectLink(res.data.link);
+                     setValues({ ...values, userId: res.data.userId });
+                     setFrames({
+                        ...frames,
+                        signupActive: false,
+                        selectPersona: true,
+                     });
+                  }
                })
             }
 
 
          })
-
    };
 
+   // console.log(isLinkedEmail);
+   useEffect(() => {
+      addLinkedEmailDetails()
+   }, [])
+
+   const addLinkedEmailDetails = (user_id) => {
+      if (!user_id) return
+      console.log(user_id);
+      console.log(linkedEmailDetails)
+      let details = { ...linkedEmailDetails }
+      delete details['_id']
+      delete details['__v']
+      delete details['interest']
+      delete details['personality']
+      delete details['subjects']
+      addUserDetails({ userId: user_id, body: details }).then((res) => {
+         console.log(res);
+         if (res.error) {
+            alert('something went wrong')
+            return
+         }
+         alert('Signup successful! Set password link has been sent to yout email')
+         navigate('/')
+      });
+   }
+
    const addDetails = () => {
+      setLastLoginDisabled(true)
       const reqBody = {
          ...otherDetails,
          serviceSeeking: getCheckedString(services),
@@ -194,9 +320,18 @@ export default function Signup() {
          subscriptionCode: values.subscriptionCode,
          userType: persona,
       };
+      console.log(values.userId);
+
+      // console.log('session cleared');
       addUserDetails({ userId: values.userId, body: reqBody }).then((res) => {
-         // console.log(res);
-         window.open(redirectLink);
+         sessionStorage.clear()
+         setLastLoginDisabled(false)
+         console.log(res);
+         if (res.error) {
+            alert('something went wrong')
+            return
+         }
+         // window.open(redirectLink);
       });
    };
    // console.log(error)
@@ -210,7 +345,7 @@ export default function Signup() {
 
    const props = { persona, setFrames, setcurrentStep };
    const valueProps = { values, setValues };
-   const otherDetailsProps = { otherDetails, setOtherDetails, detailsError, setDetailsError, resetDetailsErrors };
+   const otherDetailsProps = { otherDetails, setOtherDetails, detailsError, setDetailsError, resetDetailsErrors, studentNumberPrefix, setStudentNumberPrefix };
 
    return (
       <div className="min-h-screen" id={styles.signUp}>
@@ -250,6 +385,7 @@ export default function Signup() {
                                     firstName: e.target.value,
                                  })
                               }
+                              error={error.firstName}
                            />
                            <InputField
                               placeholder="Last Name "
@@ -264,6 +400,7 @@ export default function Signup() {
                                     lastName: e.target.value,
                                  })
                               }
+                              error={error.lastName}
                            />
                         </div>
 
@@ -290,7 +427,7 @@ export default function Signup() {
                            inputContainerClassName="relative border pt-3 pb-3"
                            inputClassName="ml-80"
                            inputLeftField={
-                              <div ref={selectRef} 
+                              <div ref={selectRef}
                                  className={`${selected && "relative z-5000"} ${styles.phoneNumberField} `}
                                  onClick={() => setSelected(true)}
                               >
@@ -311,7 +448,7 @@ export default function Signup() {
                                     </div>
                                     {selected && (
                                        <div className={`scrollbar-content scrollbar-vertical ${selectStyles.options}`} style={{ top: '100%' }} >
-                                          {['+91', '+1'].map((option, idx) => {
+                                          {['+1'].map((option, idx) => {
                                              return (
                                                 <div
                                                    className="outline-0 border-0 py-2 px-4"
@@ -364,6 +501,12 @@ export default function Signup() {
                         >
                            Submit
                         </button>
+                        <p
+                           className="text-secondary text-xs font-semibold ml-2 mt-2 cursor-pointer inline-block"
+                           onClick={() => navigate('/')}
+                        >
+                           Login Instead?
+                        </p>
                      </>
                   ) : frames.selectPersona ? (
                      <SelectPersona {...props} setPersona={setPersona} />
@@ -389,6 +532,7 @@ export default function Signup() {
                   ) : frames.signupLast ? (
                      <SignupLast
                         {...props}
+                        {...otherDetailsProps}
                         hearAboutUs={hearAboutUs}
                         setHearAboutUs={setHearAboutUs}
                      />
@@ -396,6 +540,7 @@ export default function Signup() {
                      <SignupSuccessful
                         {...props}
                         addDetails={addDetails}
+                        lastLoginDisabled={lastLoginDisabled}
                      />
                   ) : (
                      ""

@@ -1,8 +1,8 @@
-.studentImages{
-
+.studentImages {
+   max-width: 700px;
 }
 
-.studentImages img{
+.studentImages img {
    width: 100px;
    max-width: 100px;
    height: 100px;

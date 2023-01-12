@@ -1,4 +1,5 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
 import ParentDashboard from '../ParentDashboard/ParentDashboard'
 import StudentDashboard from '../StudentDashboard/StudentDashboard'
 import TutorDashboard from '../TutorDashboard/TutorDashboard'
@@ -6,7 +7,7 @@ import Users from '../Users/users'
 
 export default function Home() {
 
-   const persona = sessionStorage.getItem('role')
+   const {role : persona } = useSelector(state => state.user)
 
    return (
       persona === 'parent' ?

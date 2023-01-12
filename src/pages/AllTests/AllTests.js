@@ -15,9 +15,11 @@ import axios from "axios";
 import { useAddPdfMutation, useAddTestMutation } from "../../app/services/test";
 import { BASE_URL } from "../../app/constants/constants";
 import StudentTest from "../StudentTest/StudentTest";
+import FilterItems from "../../components/FilterItems/filterItems";
+import { useSelector } from "react-redux";
 
 const optionData = ["option 1", "option 2", "option 3", "option 4", "option 5"];
-const testTypeOptions = ["SAT"];
+const testTypeOptions = ["SAT", "ACT"];
 const tableHeaders = ["Test Name", "Date Modified", "Test Type", "", ""];
 
 const initialState = {
@@ -30,11 +32,13 @@ export default function AllTests() {
    const [tableData, setTableData] = useState([]);
    const [modalActive, setModalActive] = useState(false);
    const [testName, setTestName] = useState("");
-   const [pdfFile, setPDFFile] = useState({});
-   const [csvFile, setCSVFile] = useState({});
+   const [pdfFile, setPDFFile] = useState(null);
+   const [csvFile, setCSVFile] = useState(null);
    const [csvError, setCSVError] = useState("");
    const [PDFError, setPDFError] = useState("");
    const [testForDelete, setTestForDelete] = useState("");
+   const [filteredTests, setFilteredTests] = useState([])
+   const [filterItems, setFilterItems] = useState([])
 
    const [removeQuestionModal, setRemoveQuestionModal] = useState(false);
    const [submitTest, submitTestResp] = useAddTestMutation();
@@ -42,10 +46,15 @@ export default function AllTests() {
 
    const [modalData, setModalData] = useState(initialState);
 
-   const handleClose = () => setModalActive(false);
+   const handleClose = () => {
+      setModalActive(false)
+      setModalData(initialState);
+      setPDFFile(null)
+      setCSVFile(null)
+   }
    const closeRemoveModal = () => setRemoveQuestionModal(false);
 
-   const persona = sessionStorage.getItem("role");
+   const { role: persona } = useSelector(state => state.user)
 
    const openRemoveTestModal = (item) => {
       setRemoveQuestionModal(true);
@@ -54,7 +63,7 @@ export default function AllTests() {
 
    const removeTest = (item) => {
       setRemoveQuestionModal(false);
-      console.log(testForDelete._id);
+      // console.log(testForDelete._id);
       axios
          .delete(
             `${BASE_URL}api/test/${testForDelete._id}`
@@ -65,12 +74,14 @@ export default function AllTests() {
          });
    };
 
+   useEffect(() => {
+      setFilteredTests(tableData)
+   }, [tableData])
+
    const handlePDFFile = (file) => {
-      console.log(file);
       // if (file.type.includes("pdf")) {
       setPDFError("");
       setPDFFile(file);
-
    };
 
    const handleCSVFile = (file) => {
@@ -78,7 +89,7 @@ export default function AllTests() {
          setCSVError("");
          setCSVFile(file);
       } else {
-         setCSVFile({});
+         setCSVFile(null);
          setCSVError("Not a CSV File");
       }
    };
@@ -90,8 +101,9 @@ export default function AllTests() {
          testName: modalData.testName,
          testType: modalData.testType,
       };
-      submitTest(body).then((res) => {
-         console.log(res);
+
+      submitTest(body).then(async (res) => {
+         // console.log(res);
          if (res.error) {
             alert(res.error.data.message);
             return;
@@ -99,27 +111,50 @@ export default function AllTests() {
          let testId = res.data.data.test._id;
          const formData = new FormData();
          formData.append("pdf", pdfFile);
-         axios
-            .post(
-               `${BASE_URL}api/test/addpdf/${testId}`,
-               formData
-            )
-            .then((res) => {
-               console.log(res);
-               setModalData(initialState);
-               setModalActive(false);
-               setPDFFile({});
-               // fetchTests()
-            });
-         // submitPdf({ id: testId, formData })
-         //    .then(res => {
-         //       console.log(res)
-         //       if (res.error) {
-         //          alert(res.error.data.message)
-         //       }
-         //    })
+         
+         if (pdfFile !== null) {
+            console.log(pdfFile);
+            await axios
+               .post(
+                  `${BASE_URL}api/test/addpdf/${testId}`,
+                  formData
+               )
+               .then((res) => {
+                  console.log('pdf post resp', res);
+                  setModalData(initialState);
+                  setModalActive(false);
+                  setPDFFile(null);
+                  // fetchTests()
+               });
+         }
+
+         if (csvFile !== null) {
+            const formData = new FormData();
+            formData.append("file", csvFile);
+            await axios.post(`${BASE_URL}api/test/addans/${testId}`, formData)
+               .then((res) => {
+                  console.log('csv post resp', res);
+                  setModalData(initialState);
+                  setModalActive(false);
+                  setCSVFile(null);
+                  // fetchTests()
+               });
+         }
+         fetchTests()
+         console.log('submitted');
       });
    };
+
+   useEffect(() => {
+      if (tableData.length === 0) return
+      const regex2 = new RegExp(`${testName.toLowerCase()}`, 'i')
+      let tempdata = tableData.filter(test => test.testName.match(regex2))
+      setFilteredTests(tempdata)
+   }, [testName])
+
+   // console.log(testName);
+   // console.log(tableData);
+   // console.log(filteredTests);
 
    const fetchTests = () => {
       axios
@@ -167,7 +202,7 @@ export default function AllTests() {
             <div className="mt-6">
                <Table
                   dataFor="allTests"
-                  data={tableData}
+                  data={filteredTests}
                   tableHeaders={tableHeaders}
                   maxPageSize={10}
                   onClick={{ openRemoveTestModal }}
@@ -241,7 +276,7 @@ export default function AllTests() {
                                  <label
                                     htmlFor="pdf"
                                     className={
-                                       pdfFile.name &&
+                                       pdfFile !== null &&
                                        styles.fileUploaded
                                     }
                                  >
@@ -257,11 +292,15 @@ export default function AllTests() {
                                     accept="application/pdf"
                                     onChange={e => handlePDFFile(e.target.files[0])}
                                  />
+                                 <div id={styles.filename}>
+                                    {pdfFile?.name || pdfFile?.name}
+                                 </div>
                               </div>
+
                               <div id={styles.csvUpload}>
                                  <label
                                     htmlFor="csv"
-                                    className={csvFile.name && styles.fileUploaded}>
+                                    className={csvFile !== null && styles.fileUploaded}>
                                     Upload CSV
                                     <img src={upload} alt="Upload" />
                                  </label>
@@ -270,29 +309,24 @@ export default function AllTests() {
                                  </div>
                                  <input id="csv"
                                     type="file"
-                                    onChange={e => {
-                                       // handleCSVFile(e.target.files[0]);
-                                       Papa.parse(e.target.files[0], {
-                                          complete: function (
-                                             results
-                                          ) {
-                                             setCSVFile(results)
-                                             console.log(results.data);
-                                          },
-                                       });
-                                    }}
+                                    accept=".xls,.xlsx"
+                                    // onChange={e => {    
+                                    onChange={e => setCSVFile(e.target.files[0])}
                                  />
+                                 <div id={styles.filename}>
+                                    {csvFile ? csvFile?.name : ''}
+                                 </div>
                               </div>
                            </div>
-
+                           {/* 
                            <div id={styles.filename}>
                               {pdfFile?.name || csvFile?.name}
-                           </div>
+                           </div> */}
                         </div>
                      </div>
                   </form>
                }
-           
+
             />
          )}
          {removeQuestionModal && (

@@ -9,7 +9,7 @@ import Modal from '../../components/Modal/Modal'
 import { useLazyGetSettingsQuery } from '../../app/services/session'
 import { useUpdateOfferImageMutation, useUpdateSettingMutation } from '../../app/services/settings'
 import { getSessionTagName } from '../../utils/utils'
-import { BASE_URL } from '../../app/constants/constants'
+import { BASE_URL, getAuthHeader } from '../../app/constants/constants'
 import axios from 'axios'
 
 const testFilters = [
@@ -98,6 +98,7 @@ export default function Settings() {
    const handleClose = () => setModalActive(false)
 
    const handleTagModal = text => {
+      console.log(text);
       setTagModalActive(true)
       setSelectedImageTag(text)
    }
@@ -109,15 +110,26 @@ export default function Settings() {
    const fetchSettings = () => {
       getSettings()
          .then(res => {
-            // console.log(res);
+            if (res.error) {
+               console.log('settings fetch err', res.error)
+               return
+            }
+            console.log('settings', res.data)
+            if(res.data.data.setting === null) return
             setSettingsData(res.data.data.setting)
          })
    }
 
    const onRemoveTextImageTag = (item, key, idx) => {
-      console.log(item)
-      console.log(key)
-      console.log(idx)
+      // console.log(item)
+      // console.log(key)
+      // console.log(idx)
+      let updatedField = settingsData[key].filter((item, i) => i !== idx)
+      let updatedSetting = {
+         [key]: updatedField
+      }
+      // console.log(updatedSetting)
+      updateAndFetchsettings(updatedSetting)
    }
 
    const onRemoveFilter = (item, key, idx) => {
@@ -148,14 +160,6 @@ export default function Settings() {
       }
       updateAndFetchsettings(updatedSetting)
    }
-
-   // const handleAddImage = (text, key) => {
-   //    let tempSettings = { ...settingsData }
-   //    let updatedSetting = {
-   //       [key]: [...tempSettings[key], text]
-   //    }
-   //    updateAndFetchsettings(updatedSetting)
-   // }
 
 
    const handleSessionAddTag = (text, key) => {
@@ -192,12 +196,18 @@ export default function Settings() {
          append = 'addpersonality'
       } else if (selectedImageTag === 'interest') {
          append = 'addinterest'
+      } else if (selectedImageTag === 'offer') {
+         append = 'addimage'
+         formData.append('link', tagText)
+         formData.append("offer", tagImage)
+         formData.delete('text')
+         formData.delete('image')
       }
 
       console.log(append)
 
       if (append === '') return
-      axios.patch(`${BASE_URL}api/user/setting/${append}`, formData)
+      axios.patch(`${BASE_URL}api/user/setting/${append}`, formData, { headers: getAuthHeader() })
          .then((res) => {
             console.log(res)
             setTagImage(null)
@@ -231,13 +241,12 @@ export default function Settings() {
          })
    }
 
-   const onRemoveImage = (item, i) => {
-      // console.log(item, i)
-      let updatedField = settingsData.offerImages.filter(text => text !== item)
+
+   const onRemoveImage = (link) => {
+      let updatedField = settingsData.offerImages.filter(item => item.image !== link)
       let updatedSetting = {
          offerImages: updatedField
       }
-      //   console.log(updatedSetting)
       updateAndFetchsettings(updatedSetting)
    }
 
@@ -246,7 +255,7 @@ export default function Settings() {
    }, [])
 
 
-   if (Object.keys(settingsData).length === 0) return <></>
+   // if (Object.keys(settingsData).length === 0) return <></>
    const { classes, serviceSpecialisation, sessionTags, leadStatus, tutorStatus, offerImages, subscriptionCode, personality, interest } = settingsData
 
    // console.log(settingsData)
@@ -290,11 +299,11 @@ export default function Settings() {
             <div>
                <SettingsCard title='Lead Status Items'
                   body={
-                     <div className='flex items-center [&>*]:mb-[10px]'>
+                     <div className='flex items-center flex-wrap [&>*]:mb-[10px]'>
                         <AddTag onAddTag={handleAddTag} keyName='leadStatus' />
                         <FilterItems onlyItems={true}
                            isString={true}
-                           items={leadStatus}
+                           items={leadStatus ? leadStatus : []}
                            keyName='leadStatus'
                            onRemoveFilter={onRemoveFilter}
                            className='pt-1 pb-1 mr-15' />
@@ -303,11 +312,11 @@ export default function Settings() {
 
                <SettingsCard title='Tutor Status Items'
                   body={
-                     <div className='flex items-center [&>*]:mb-[10px]'>
+                     <div className='flex items-center flex-wrap [&>*]:mb-[10px]'>
                         <AddTag onAddTag={handleAddTag} keyName='tutorStatus' />
                         <FilterItems onlyItems={true}
                            isString={true}
-                           items={tutorStatus}
+                           items={tutorStatus ? tutorStatus : []}
                            keyName='tutorStatus'
                            onRemoveFilter={onRemoveFilter}
                            className='pt-1 pb-1 mr-15' />
@@ -315,11 +324,11 @@ export default function Settings() {
                   } />
                <SettingsCard title='Subscription Code'
                   body={
-                     <div className='flex items-center [&>*]:mb-[10px]'>
+                     <div className='flex items-center flex-wrap [&>*]:mb-[10px]'>
                         <AddTag onAddTag={handleAddTag} keyName='subscriptionCode' />
                         <FilterItems onlyItems={true}
                            isString={true}
-                           items={subscriptionCode}
+                           items={subscriptionCode ? subscriptionCode : []}
                            keyName='subscriptionCode'
                            onRemoveFilter={onRemoveFilter}
                            className='pt-1 pb-1 mr-15' />
@@ -330,7 +339,7 @@ export default function Settings() {
                   titleClassName='text-[21px] mb-[15px]'
                   body={
                      <div>
-                        {Object.keys(sessionTags).map((tag, i) => {
+                        {sessionTags!== undefined && Object.keys(sessionTags).map((tag, i) => {
                            return <div>
                               <p className='font-bold text-primary-dark mb-[25px]'>
                                  {getSessionTagName(Object.keys(sessionTags)[i])}
@@ -351,11 +360,11 @@ export default function Settings() {
 
                <SettingsCard title='Service Specialisation'
                   body={
-                     <div className='flex items-center [&>*]:mb-[10px]'>
+                     <div className='flex items-center flex-wrap [&>*]:mb-[10px]'>
                         <AddTag keyName='serviceSpecialisation' openModal={true}
                            onAddTag={() => handleTagModal('serviceSpecialisation')} />
                         <FilterItems isString={true} onlyItems={true}
-                           items={serviceSpecialisation.map(item => item.text)}
+                           items={sessionTags !== undefined ? serviceSpecialisation.map(item => item.text) : []}
                            keyName='serviceSpecialisation'
                            onRemoveFilter={onRemoveTextImageTag}
                            className='pt-1 pb-1 mr-15' />
@@ -364,11 +373,11 @@ export default function Settings() {
 
                <SettingsCard title='Personality'
                   body={
-                     <div className='flex items-center [&>*]:mb-[10px]'>
+                     <div className='flex items-center flex-wrap [&>*]:mb-[10px]'>
                         <AddTag keyName='personality' openModal={true}
                            onAddTag={() => handleTagModal('personality')} />
                         <FilterItems isString={true} onlyItems={true}
-                           items={personality.map(item => item.text)}
+                           items={personality !== undefined ? personality.map(item => item.text) : []}
                            keyName='personality'
                            onRemoveFilter={onRemoveTextImageTag}
                            className='pt-1 pb-1 mr-15' />
@@ -377,11 +386,11 @@ export default function Settings() {
 
                <SettingsCard title='Interest'
                   body={
-                     <div className='flex items-center [&>*]:mb-[10px]'>
+                     <div className='flex items-center flex-wrap [&>*]:mb-[10px]'>
                         <AddTag keyName='interest' openModal={true}
                            onAddTag={() => handleTagModal('interest')} />
                         <FilterItems isString={true} onlyItems={true}
-                           items={interest.map(item => item.text)}
+                           items={interest !== undefined ? interest.map(item => item.text) : []}
                            keyName='interest'
                            onRemoveFilter={onRemoveTextImageTag}
                            className='pt-1 pb-1 mr-15' />
@@ -390,12 +399,12 @@ export default function Settings() {
 
                <SettingsCard title='Classes'
                   body={
-                     <div className='flex items-center [&>*]:mb-[10px]'>
+                     <div className='flex items-center flex-wrap [&>*]:mb-[10px]'>
                         <AddTag onAddTag={handleAddTag} keyName='classes' />
                         <FilterItems isString={true}
                            onlyItems={true}
                            keyName='classes'
-                           items={classes}
+                           items={classes ? classes : []}
                            onRemoveFilter={onRemoveFilter}
                            className='pt-1 pb-1 mr-15' />
                      </div>
@@ -403,15 +412,17 @@ export default function Settings() {
 
                <SettingsCard title='Images in Offer Slide'
                   body={
-                     <div className='flex items-center [&>*]:mb-[10px]'>
-                        <input type='file' ref={inputRef} className='hidden' accept="image/*"
-                           onChange={e => onImageChange(e)} />
-                        <AddTag isFile={true} onAddTag={handleImageUpload} />
+                     <div className='flex items-center flex-wrap [&>*]:mb-[10px]'>
+                        <AddTag openModal={true}
+                           onAddTag={() => handleTagModal('offer')} />
+                        {/* <input type='file' ref={inputRef} className='hidden' accept="image/*"
+                           onChange={e => onImageChange(e)} /> */}
                         <FilterItems isString={true}
                            onlyItems={true}
                            sliceText={true}
-                           items={offerImages}
+                           items={offerImages !== undefined ? offerImages.map(item => item.image) : []}
                            onRemoveFilter={onRemoveImage}
+                           // onRemoveFilter={onRemoveFilter}
                            className='pt-1 pb-1 mr-15' />
                      </div>
                   } />

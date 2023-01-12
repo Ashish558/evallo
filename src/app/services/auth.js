@@ -59,6 +59,26 @@ export const authServicesApi = createApi({
             },
          })
       }),
+      forgotPassword: builder.mutation({
+         query: (body) => ({
+            url: `/api/user/resetpassword`,
+            method: "POST",
+            body: body,
+            headers: {
+               "Content-type": "application/json; charset=UTF-8",
+            },
+         })
+      }),
+      changePassword: builder.mutation({
+         query: (payload) => ({
+            url: `/api/user/changepassword/${payload.userId}`,
+            method: "POST",
+            body: payload.body,
+            headers: {
+               "Content-type": "application/json; charset=UTF-8",
+            },
+         })
+      }),
 
    }),
 });
@@ -67,5 +87,7 @@ export const {
   useSignupUserMutation,
   useAddUserDetailsMutation,
   useSetPasswordMutation,
-  useLoginUserMutation
+  useLoginUserMutation,
+  useForgotPasswordMutation,
+  useChangePasswordMutation
 } = authServicesApi;

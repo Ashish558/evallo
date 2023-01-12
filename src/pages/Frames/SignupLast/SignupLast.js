@@ -9,7 +9,11 @@ export default function SignupLast({
    setcurrentStep,
    hearAboutUs,
    setHearAboutUs,
+   otherDetails
 }) {
+
+   const [disabled, setDisabled] = useState(false)
+
    const handleCheckboxChange = (text, arr, setValue) => {
       const temp = arr.map((topic) => {
          return topic.text === text
@@ -30,6 +34,20 @@ export default function SignupLast({
          return { ...prev, services: false, questions: true };
       });
    };
+
+   useEffect(() => {
+      let checkCount = 0
+      hearAboutUs.map(item => {
+         if (item.checked === true) {
+            checkCount += 1
+         }
+      })
+      if (checkCount === 0  || otherDetails.aboutScore.trim() === '') {
+         setDisabled(true)
+      } else {
+         setDisabled(false)
+      }
+   }, [hearAboutUs, otherDetails])
 
    useEffect(() => {
       setcurrentStep(6);
@@ -79,8 +97,9 @@ export default function SignupLast({
             />
             <PrimaryButton
                children="Next"
-               className="text-lg pt-3 pb-3 font-semibold text-white mr-6 w-140"
+               className="text-lg pt-3 pb-3 font-semibold text-white mr-6 w-140 disabled:opacity-70"
                onClick={() => handleSubmit()}
+               disabled={disabled}
             />
          </div>
       </div>
