@@ -62,11 +62,14 @@ export default function StartTest() {
 
 
    useEffect(() => {
-      getAssignedTest(id)
+      let params = {}
+      let url = `/api/test/myassigntest/${id}`
+    
+      getAssignedTest({url, params})
          .then(res => {
             if (res.error) return console.log('testerror', res.error);
             console.log('test', res.data.data.test);
-            const { testId, createdAt } = res.data.data.test
+            const { testId, createdAt, timeLimit } = res.data.data.test
             if (res.data.data.test.testId) {
                setTestHeaderDetails(prev => ({
                   ...prev,
@@ -74,6 +77,10 @@ export default function StartTest() {
                   dateAssigned: getFormattedDate(createdAt)
                }))
             }
+            setTestHeaderDetails(prev => ({
+               ...prev,
+               duration: timeLimit
+            }))
 
          })
    }, [])
@@ -123,7 +130,8 @@ export default function StartTest() {
             })
             console.log('date', new Date(res.data.data.subjects.createdAt));
             setTestHeaderDetails(prev => ({
-               ...prev, duration,
+               ...prev,
+               // duration,
                startedOn: getFormattedDate(new Date(res.data.data.subjects.createdAt))
             }))
             setSectionDetails(res.data.data)
@@ -300,6 +308,7 @@ export default function StartTest() {
    // console.log('answers', answers)
    // console.log('subjects', subjects)
    // console.log('activeSection', activeSection)
+   // console.log('testHeaderDetails', testHeaderDetails)
    // console.log('completedsections', completedSectionIds);
    // console.log('timer', timer);
    // console.log('initialSeconds', initialSeconds);
@@ -376,8 +385,8 @@ export default function StartTest() {
                      </div>
                      {!testStarted && Object.keys(activeSection).length > 1 &&
                         <div className='bg-white pt-[60px] pr-8 pl-12 pb-[50px] mt-4'>
-                           <TestDetail name={activeSection.name} desc={activeSection.description} 
-                           timer={activeSection.timer} />
+                           <TestDetail name={activeSection.name} desc={activeSection.description}
+                              timer={activeSection.timer} />
 
                            <div className='flex items-center flex-col mt-12'>
                               <p className='text-[#E02B1D] bg-[#FFBE9D] py-2 px-5 rounded-20 mb-[15px]' >
