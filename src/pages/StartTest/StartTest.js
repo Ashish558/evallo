@@ -376,7 +376,8 @@ export default function StartTest() {
                      </div>
                      {!testStarted && Object.keys(activeSection).length > 1 &&
                         <div className='bg-white pt-[60px] pr-8 pl-12 pb-[50px] mt-4'>
-                           <TestDetail name={activeSection.name} desc={activeSection.description} />
+                           <TestDetail name={activeSection.name} desc={activeSection.description} 
+                           timer={activeSection.timer} />
 
                            <div className='flex items-center flex-col mt-12'>
                               <p className='text-[#E02B1D] bg-[#FFBE9D] py-2 px-5 rounded-20 mb-[15px]' >
