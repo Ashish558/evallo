@@ -61,6 +61,7 @@ const ConceptSection = () => {
                   testId: testId ? testId._id : '-',
                   isCompleted: test.isCompleted,
                   isStarted: test.isStarted,
+                  assignedTestId: test._id
                }
             })
             let sortedArr = tempAllTests.sort(function (a, b) {

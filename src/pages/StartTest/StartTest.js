@@ -40,13 +40,14 @@ export default function StartTest() {
       completedOn: '',
       testName: ''
    })
+   const [isUnlimited, setIsUnlimited] = useState(false)
    const [sectionDetails, setSectionDetails] = useState({})
    const [subjects, setSubjects] = useState([])
    const [activeSection, setActiveSection] = useState({})
    const [timer, setTimer] = useState(10)
    const [answers, setAnswers] = useState([])
    const [submitId, setSubmitId] = useState('')
-   const { id } = useParams()
+   const { id, assignedTestId } = useParams()
 
    const [getSections, getSectionsResp] = useLazyGetSectionsQuery()
    const [getAssignedTest, getAssignedTestResp] = useLazyGetSingleAssignedTestQuery()
@@ -58,13 +59,18 @@ export default function StartTest() {
 
    useEffect(() => {
       let params = {}
-      let url = `/api/test/myassigntest/${id}`
-    
-      getAssignedTest({url, params})
+      let url = `/api/test/myassigntest/${assignedTestId}`
+
+      getAssignedTest({ url, params })
          .then(res => {
             if (res.error) return console.log('testerror', res.error);
             console.log('test', res.data.data.test);
             const { testId, createdAt, timeLimit, multiple } = res.data.data.test
+            if (multiple === 0) {
+               setIsUnlimited(true)
+            } else {
+               setIsUnlimited(false)
+            }
             if (res.data.data.test.testId) {
                setTestHeaderDetails(prev => ({
                   ...prev,
@@ -82,16 +88,31 @@ export default function StartTest() {
 
    const handleStartTest = () => {
       if (!activeSection) return
-      startTest({ id: id, reqbody: { sectionName: activeSection.name } })
+      startTest({ id: assignedTestId, reqbody: { sectionName: activeSection.name } })
          .then(res => {
             if (res.error) {
                console.log(res.error)
             }
             console.log('start test', res.data)
             const { startTime, endTime, sectionName, answer, submitId } = res.data.data
-            let timer = (new Date(endTime) - new Date()) / 1000
-            setTimer(Math.trunc(timer))
-            setInitialSeconds(Math.trunc(timer))
+
+            if (endTime === null) {
+               let date = new Date()
+
+               var nextDay = new Date(date);
+               nextDay.setDate(date.getDate() + 1);
+               // console.log(nextDay); //
+
+               let timer = (new Date(nextDay) - new Date()) / 1000
+               setTimer(Math.trunc(timer))
+               setInitialSeconds(Math.trunc(timer))
+            } else {
+               let timer = (new Date(endTime) - new Date()) / 1000
+               setTimer(Math.trunc(timer))
+               setInitialSeconds(Math.trunc(timer))
+            }
+
+            // setInitialSeconds(Math.trunc(timer))
             setTestStarted(true)
             setActiveSection({ name: sectionName })
             setSubmitId(submitId)
@@ -162,7 +183,7 @@ export default function StartTest() {
    }, [])
 
    const fetchContinueTest = () => {
-      continueTest({ id })
+      continueTest({ id: assignedTestId })
          .then(res => {
             if (res.error) {
                console.log(res.error)
@@ -237,8 +258,8 @@ export default function StartTest() {
    }, [completedSectionIds, subjects])
 
    const handleResponseChange = (id, option) => {
-      // console.log('initialSeconds', initialSeconds);
-      // console.log('countDown', countDown);
+      console.log('initialSeconds', initialSeconds);
+      console.log('countDown', countDown);
 
       const timeTaken = initialSeconds - countDown
       setInitialSeconds(countDown)
@@ -278,6 +299,7 @@ export default function StartTest() {
          }
       }
       console.log(body);
+      // return
       submitSection(body)
          .then(res => {
             if (res.error) {
@@ -306,6 +328,7 @@ export default function StartTest() {
    // console.log('testHeaderDetails', testHeaderDetails)
    // console.log('completedsections', completedSectionIds);
    // console.log('timer', timer);
+   // console.log('isUnlimited ', isUnlimited);
    // console.log('initialSeconds', initialSeconds);
    // console.log('countDown', countDown);
 
@@ -426,7 +449,7 @@ export default function StartTest() {
                   {
                      testStarted && <Timer handleSubmitSection={handleSubmitSection} timer={timer}
                         active={testStarted ? true : false}
-                        setCountDown={setCountDown} />
+                        setCountDown={setCountDown} isUnlimited={isUnlimited} />
                   }
                   {
                      testStarted && <CurrentSection answers={answers} submitSection={handleSubmitSection} />

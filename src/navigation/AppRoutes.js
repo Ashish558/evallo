@@ -143,8 +143,16 @@ const AppRoutes = () => {
                   <SetPassword resetPassword={true} />
                }
             />
+            {/* <Route
+               path="/assigned-tests/:id/:assignedTestId/report"
+               element={
+                  <RequireAuth isLoggedIn={isLoggedIn}>
+                     <StudentReport />
+                  </RequireAuth>
+               }
+            /> */}
             <Route
-               path="/assigned-tests/:id/report"
+               path="/assigned-tests/:id/:assignedTestId/report"
                element={
                   <RequireAuth isLoggedIn={isLoggedIn}>
                      <StudentReport />
@@ -152,7 +160,7 @@ const AppRoutes = () => {
                }
             />
             <Route
-               path="/assigned-tests/:id/report/:studentId"
+               path="/assigned-tests/:id/:assignedTestId/report/:studentId"
                element={
                   <RequireAuth isLoggedIn={isLoggedIn}>
                      <StudentReport />
@@ -243,7 +251,7 @@ const AppRoutes = () => {
                }
             />
             <Route
-               path="/all-tests/start-section/:id"
+               path="/all-tests/start-section/:id/:assignedTestId"
                element={
                   <RequireAuth isLoggedIn={isLoggedIn}>
                      <StartTest />

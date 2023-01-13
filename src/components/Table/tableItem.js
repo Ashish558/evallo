@@ -40,14 +40,14 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch }) {
       leadStatus: []
    })
 
-
+// console.log(item);
    useEffect(() => {
       if (dataFor === 'assignedTestsStudents') {
          let params = {}
-         let url = `/api/test/getresponse/${item.testId}`
+         let url = `/api/test/getresponse/${item.assignedTestId}`
          if (persona !== 'student') {
-            url = `/api/test/admin/getresponse/${item.testId}`
-            params = { userId: item.studentId._id }
+            url = `/api/test/admin/getresponse/${item.assignedTestId}`
+            // params = { userId: item.studentId._id }
          }
          if (item.isCompleted === true) {
             getTestResponse({ url, params: params })
@@ -67,7 +67,7 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch }) {
    useEffect(() => {
       if (dataFor === 'assignedTests') {
 
-         let url = `/api/test/admin/getresponse/${item.testId}`
+         let url = `/api/test/admin/getresponse/${item.assignedTestId}`
          let params = { userId: item.studentId }
          if (item.status === 'completed') {
             // console.log(item);
@@ -237,7 +237,7 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch }) {
                   <button
                      className={`px-2.5 py-1.8 rounded-md flex items-center leading-none bg-primary text-white ${item.status !== 'completed' ? 'opacity-50 pointer-events-none' : ''}`}
                      onClick={() =>
-                        navigate(`/assigned-tests/${item.testId}/report/${item.studentId}`)
+                        navigate(`/assigned-tests/${item.testId}/${item.assignedTestId}/report/${item.studentId}`)
                      }
                   >
                      Test details
@@ -327,7 +327,7 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch }) {
                                  {returnStatus(item.status)}
                               </div>
                               : key === 'scores' ? <div>
-                                 {score}
+                                 {item.isCompleted === true ? score : '-'}
                               </div> :
                                  item[key]
                            }
@@ -343,7 +343,7 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch }) {
                               <button
                                  className={`px-2.5 py-1.8 rounded-md flex items-center leading-none bg-primary text-white ml-4 ${item.isCompleted === false ? 'opacity-50 pointer-events-none' : ''}`}
                                  onClick={() =>
-                                    navigate(`/assigned-tests/${item.testId}/report/${item.studentId._id}`)
+                                    navigate(`/assigned-tests/${item.testId}/${item.assignedTestId}/report/${item.studentId._id}`)
                                  }
                               >
                                  View Report
@@ -355,7 +355,7 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch }) {
                                     <button
                                        className="px-2.5 py-1.8 rounded-md flex items-center leading-none bg-primary text-white ml-4"
                                        onClick={() =>
-                                          navigate(`/assigned-tests/${item.testId}/report`)
+                                          navigate(`/assigned-tests/${item.testId}/${item.assignedTestId}/report/`)
                                        }
                                     >
                                        View Report
@@ -364,7 +364,7 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch }) {
                                        <button
                                           className="px-2.5 py-1.8 rounded-md flex items-center leading-none bg-primary text-white ml-4"
                                           onClick={() =>
-                                             navigate(`/all-tests/start-section/${item.testId}`)
+                                             navigate(`/all-tests/start-section/${item.testId}/${item.assignedTestId}`)
                                           }
                                        >
                                           Continue
@@ -372,7 +372,7 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch }) {
                                        <button
                                           className="px-2.5 py-1.8 rounded-md flex items-center leading-none bg-primary text-white ml-4"
                                           onClick={() =>
-                                             navigate(`/all-tests/start-section/${item.testId}`)
+                                             navigate(`/all-tests/start-section/${item.testId}/${item.assignedTestId}`)
                                           }
                                        >
                                           Start Test

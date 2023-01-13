@@ -70,7 +70,11 @@ export default function StudentReport() {
       }
    }, [persona])
 
-   const { id, studentId } = useParams()
+   const { id, studentId, assignedTestId } = useParams()
+
+   console.log('params_id', id);
+   console.log('studentId', studentId);
+   console.log('assignedTestId', assignedTestId);
 
    const [testDetails, setTestDetails] = useState({
       testName: '-',
@@ -120,17 +124,17 @@ export default function StudentReport() {
 
    useEffect(() => {
       let params = {}
-      let url = `/api/test/myassigntest/${id}`
+      let url = `/api/test/myassigntest/${assignedTestId}`
       if (studentId) {
          params = {
             userId: studentId
          }
-         url = `/api/test/myassigntest/${id}`
+         url = `/api/test/myassigntest/${assignedTestId}`
       }
-      getAssignedTest({ url, params: params })
+      getAssignedTest({ url })
          .then(res => {
-            if (res.error) return console.log('testerror', res.error);
-            // console.log('test', res.data.data.test);
+            if (res.error) return console.log('TEST ERROR', res.error);
+            console.log('TEST RESP', res.data.data.test);
             const { testId, createdAt, timeLimit, multiple } = res.data.data.test
             setTestDetails(prev => {
                return {
@@ -146,21 +150,17 @@ export default function StudentReport() {
 
    useEffect(() => {
       let params = {}
-      let url = `/api/test/getresponse/${id}`
+      let url = `/api/test/getresponse/${assignedTestId}`
       if (studentId) {
-         params = {
-            userId: studentId
-         }
-         url = `/api/test/admin/getresponse/${id}`
+         url = `/api/test/admin/getresponse/${assignedTestId}`
       }
-
       getTestResponse({ url, params: params })
          .then(res => {
             if (res.error) {
-               console.log('test resp err', res.error)
+               console.log('RESPONSE ERR', res.error)
                return
             }
-            // console.log('RESPONSE', res.data.data.response);
+            console.log('RESPONSE', res.data.data.response);
             const { subjects, studentId, response, createdAt, updatedAt } = res.data.data.response
             if (res.data.data.response.testType === 'SAT') {
                let set1Score = 0
@@ -416,30 +416,34 @@ export default function StudentReport() {
    }
    
    const getSubjectSectionsScore = (c) => {
-      // let currSubject = answerKeySubjects.find(sub => sub.name === selectedSubject.name)
-      // let currentAnswerKeyIndex = 0
-      // answerKeySubjects.map((subj, idx) => {
-      //    if (subj.name === selectedSubject.name) {
-      //       currentAnswerKeyIndex = idx
-      //    }
-      // })
-      // // console.log('currSubject', currSubject);
-      // // console.log('answer key arr', answerKey[currentAnswerKeyIndex]);
-      // let arr = []
-      // Object.keys(currSubject).map(key => {
-      //    let IncorrectCount = 0
-      //    answerKey[currentAnswerKeyIndex].map((ans, idx) => {
-      //       let { QuestionNumber, CorrectAnswer, Concepts } = ans
-      //       if (key === Concepts){
-      //          const selected = responseData.response[selectedSubject.idx]
-      //          selected[idx]
-      //       }
-      //    })
-      // })
-      // const selected = responseData.response[selectedSubject.idx]
-      // // console.log('response answer', selected);
-      // if (currSubject) {
-      // }
+      let currSubject = answerKeySubjects.find(sub => sub.name === selectedSubject.name)
+      let currentAnswerKeyIndex = 0
+      answerKeySubjects.map((subj, idx) => {
+         if (subj.name === selectedSubject.name) {
+            currentAnswerKeyIndex = idx
+         }
+      })
+      console.log('currSubject', currSubject);
+      console.log('answer key arr', answerKey[currentAnswerKeyIndex]);
+      const selected = responseData.response[selectedSubject.idx]
+      console.log('response answer', selected);
+
+      let arr = []
+      Object.keys(currSubject).map(key => {
+         let IncorrectCount = 0
+         answerKey[currentAnswerKeyIndex].map((ans, idx) => {
+            let { QuestionNumber, CorrectAnswer, Concepts } = ans
+            if (key === Concepts){
+               const selected = responseData.response[selectedSubject.idx]
+               if(selected[idx].isCorrect===false){
+                  IncorrectCount+= 1
+               }
+            }
+         })
+      })
+   
+      if (currSubject) {
+      }
       return <>p</>
    }
 

@@ -6,7 +6,7 @@ import { useLazyGetTestResponseQuery } from '../../app/services/test';
 import { getScore } from '../../utils/utils';
 import { useNavigate } from 'react-router-dom';
 
-export const TestItem = ({ testName, dueDate, pdfLink, testId, studentId, isCompleted, isStarted }) => {
+export const TestItem = ({ testName, assignedTestId, dueDate, pdfLink, testId, studentId, isCompleted, isStarted }) => {
 
   const [score, setScore] = useState('-')
   const { role: persona } = useSelector(state => state.user)
@@ -16,16 +16,15 @@ export const TestItem = ({ testName, dueDate, pdfLink, testId, studentId, isComp
   useEffect(() => {
     if (isCompleted === true) {
       let params = {}
-      let url = `/api/test/getresponse/${testId}`
+      let url = `/api/test/getresponse/${assignedTestId}`
       if (persona !== 'student') {
-        url = `/api/test/admin/getresponse/${testId}`
-        params = { userId: studentId._id }
+        url = `/api/test/admin/getresponse/${assignedTestId}`
       }
 
       getTestResponse({ url, params: params })
         .then(res => {
           if (res.error) {
-            console.log('resp err', res.error)
+            console.log('resp err', testName,res.error)
             return
           }
           // console.log('Resp score', res.data.data.response);
@@ -36,11 +35,11 @@ export const TestItem = ({ testName, dueDate, pdfLink, testId, studentId, isComp
   }, [])
 
   const handleNavigate = () => {
-    navigate(`/all-tests/start-section/${testId}`)
+    navigate(`/all-tests/start-section/${testId}/${assignedTestId}`)
   }
 
   const handleReportNavigate = () => {
-    navigate(`/assigned-tests/${testId}/report`)
+    navigate(`/assigned-tests/${testId}/${assignedTestId}/report`)
   }
 
   return (

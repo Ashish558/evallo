@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import { useLazyGetTestResponseQuery } from '../../../app/services/test';
 import { useNavigate } from 'react-router-dom';
 
-export default function ParentTest({ styles, testId, testName, studentId, dueDate, isCompleted, isStarted }) {
+export default function ParentTest({ styles, assignedTestId, testId, testName, studentId, dueDate, isCompleted, isStarted }) {
 
 
    const [score, setScore] = useState('-')
@@ -16,10 +16,9 @@ export default function ParentTest({ styles, testId, testName, studentId, dueDat
    useEffect(() => {
       if (isCompleted === true) {
          let params = {}
-         let url = `/api/test/getresponse/${testId}`
+         let url = `/api/test/getresponse/${assignedTestId}`
          if (persona !== 'student') {
-            url = `/api/test/admin/getresponse/${testId}`
-            params = { userId: studentId._id }
+            url = `/api/test/admin/getresponse/${assignedTestId}`
          }
 
          getTestResponse({ url, params: params })
@@ -36,7 +35,7 @@ export default function ParentTest({ styles, testId, testName, studentId, dueDat
    }, [])
 
    const handleReportNavigate = () => {
-      navigate(`/assigned-tests/${testId}/report/${studentId._id}`)
+      navigate(`/assigned-tests/${testId}/${assignedTestId}/report/${studentId._id}`)
    }
 
    return (
@@ -77,7 +76,7 @@ export default function ParentTest({ styles, testId, testName, studentId, dueDat
                         className="flex items-center justify-end"
                         style={{ gap: "10px" }}
                      >
-                        <img src={downloadImage} alt=""  className='opacity-60'  />
+                        <img src={downloadImage} alt="" className='opacity-60' />
                         <div className="button bg-[#EFECF9] text-[#F6A429] p-[10px] rounded-[6px] w-[111px] text-sm font-semibold">
                            Started
                         </div>

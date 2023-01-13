@@ -74,7 +74,7 @@ export default function StudentTest() {
                console.log('all-assigned-tests', res.data.data.test);
 
                let tempAllTests = res.data.data.test.map(test => {
-                  const { testId, studentId, dueDate, multiple, isCompleted, isStarted, createdAt } = test
+                  const { testId, studentId, dueDate, multiple, isCompleted, isStarted, createdAt, } = test
                   if(testId === null) return
                   return {
                      testName: testId ? testId.testName : '-',
@@ -90,6 +90,7 @@ export default function StudentTest() {
                      isCompleted: test.isCompleted,
                      isStarted: test.isStarted,
                      createdAt,
+                     assignedTestId: test._id
                   }
                })
                let sortedArr = tempAllTests.sort(function (a, b) {
@@ -144,7 +145,8 @@ export default function StudentTest() {
                      _id: test._id,
                      pdfLink: testId ? testId.pdf : null,
                      testId: testId ? testId._id : '-',
-                     isCompleted: test.isCompleted
+                     isCompleted: test.isCompleted,
+                     assignedTestId: test._id
                   }
                })
                let sortedArr = tempAllTests.sort(function (a, b) {
@@ -243,7 +245,7 @@ export default function StudentTest() {
                      data={persona === 'parent' ? filteredTests : allTests}
                      tableHeaders={tableHeaders}
                      maxPageSize={10}
-                     excludes={['_id', 'studentId', 'testId', 'isCompleted', 'pdfLink', 'isStarted', 'createdAt']}
+                     excludes={['_id', 'studentId', 'testId', 'isCompleted', 'pdfLink', 'isStarted', 'createdAt', "assignedTestId"]}
                   />
                </div>
             </div>

@@ -144,7 +144,7 @@ export default function AssignedTests() {
       fetchAssignedTests()
          .then(res => {
             if (res.error) return console.log(res.error)
-            console.log('response', res.data)
+            console.log('response student', res.data)
             let data = res.data.data.test.map(item => {
                const { createdAt, studentId, testId, dueDate, multiple, timeLimit, isCompleted, isStarted } = item
                return {
@@ -158,6 +158,7 @@ export default function AssignedTests() {
                   dueDate,
                   status: isCompleted === true ? 'completed' : isStarted ? 'started' : 'notStarted',
                   createdAt,
+                  assignedTestId: item._id
                }
             })
             let sortedArr = data.sort(function (a, b) {
@@ -184,7 +185,8 @@ export default function AssignedTests() {
                   duration: multiple ? getDuration(multiple) : '-',
                   status: isCompleted === true ? 'completed' : isStarted ? 'started' : 'notStarted',
                   createdAt,
-                  dueDate
+                  dueDate,
+                  assignedTestId: item._id
                }
             })
             let sortedArr = data.sort(function (a, b) {
@@ -353,7 +355,7 @@ export default function AssignedTests() {
                      onClick={{ handleResend }}
                      dataFor='assignedTests'
                      data={allAssignedTests}
-                     excludes={['createdAt', 'dueDate']}
+                     excludes={['createdAt', 'dueDate', 'assignedTestId']}
                      tableHeaders={tableHeaders}
                      maxPageSize={maxPageSize}
                      setMaxPageSize={setMaxPageSize}
