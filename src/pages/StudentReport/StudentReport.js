@@ -8,7 +8,7 @@ import Table from '../../components/Table/Table'
 import { useNavigate, useParams } from 'react-router-dom'
 import BarGraph from '../../components/BarGraph/BarGraph'
 import { useLazyGetAnswersQuery, useLazyGetSingleAssignedTestQuery, useLazyGetTestDetailsQuery, useLazyGetTestResponseQuery } from '../../app/services/test'
-import { getDate, getFormattedDate, millisToMinutesAndSeconds } from '../../utils/utils'
+import { getDate, getDuration, getFormattedDate, millisToMinutesAndSeconds } from '../../utils/utils'
 import { useLazyGetTutorDetailsQuery } from '../../app/services/users'
 import { useSelector } from 'react-redux'
 
@@ -131,13 +131,13 @@ export default function StudentReport() {
          .then(res => {
             if (res.error) return console.log('testerror', res.error);
             // console.log('test', res.data.data.test);
-            const { testId, createdAt, timeLimit } = res.data.data.test
+            const { testId, createdAt, timeLimit, multiple } = res.data.data.test
             setTestDetails(prev => {
                return {
                   ...prev,
                   assignedOn: getFormattedDate(createdAt),
                   testName: testId.testName,
-                  duration: timeLimit
+                  duration: multiple ? getDuration(multiple) : '-',
                }
             })
          })

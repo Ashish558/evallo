@@ -207,6 +207,14 @@ export const getScore = (testType, subjects) => {
       }
    }
 }
+
+export const getDuration = val => {
+   if (val === 1) return 'Regular'
+   if (val === 1.5) return '1.5x'
+   if (val === 10) return 'Unlimited'
+   return '-'
+}
+
 // // timezones
 // function getCurrentLocalDateTime() {
 //    return moment().format();

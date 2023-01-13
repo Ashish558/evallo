@@ -66,12 +66,11 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch }) {
 
    useEffect(() => {
       if (dataFor === 'assignedTests') {
-
+         
          let url = `/api/test/admin/getresponse/${item.testId}`
          let params = { userId: item.studentId }
-
          if (item.status === 'completed') {
-
+            // console.log(item);
             getTestResponse({ url, params: params })
                .then(res => {
                   if (res.error) {
@@ -223,7 +222,8 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch }) {
                // style={{ padding: 0,}}
                >
                   <div className="text-center">
-                     {score}
+                     {item.status === 'completed' ? score : '-'}
+
                   </div>
                </td>
                <td className="font-medium px-1  min-w-14 py-4">

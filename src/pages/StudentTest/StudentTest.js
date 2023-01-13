@@ -5,7 +5,7 @@ import { useLazyGetAssignedTestQuery, useLazyGetParentsAssignedTestsQuery, useLa
 import { useLazyGetUserDetailQuery } from "../../app/services/users";
 import Modal from "../../components/Modal/Modal";
 import Table from "../../components/Table/Table";
-import { getFormattedDate } from "../../utils/utils";
+import { getDuration, getFormattedDate } from "../../utils/utils";
 
 import { tempTableData, studentsDataTable } from "../AssignedTests/tempData";
 
@@ -74,14 +74,13 @@ export default function StudentTest() {
                console.log('all-assigned-tests', res.data.data.test);
 
                let tempAllTests = res.data.data.test.map(test => {
-                  const { testId, studentId, dueDate, isCompleted, isStarted, createdAt } = test
-
+                  const { testId, studentId, dueDate, multiple, isCompleted, isStarted, createdAt } = test
                   return {
                      testName: testId ? testId.testName : '-',
                      assignedOn: getFormattedDate(new Date(createdAt)),
                      studentId: studentId ? studentId : '-',
                      dueDate: getFormattedDate(new Date(test.dueDate)),
-                     duration: test.timeLimit,
+                     duration: multiple ? getDuration(multiple) : '-',
                      status: isCompleted === true ? 'completed' : isStarted ? 'started' : 'notStarted',
                      scores: '-',
                      _id: test._id,
@@ -131,13 +130,13 @@ export default function StudentTest() {
                if (res.error) return console.log('assigned test parent resp', res.error);
                console.log('assigned test parent resp', res.data);
                let tempAllTests = res.data.data.test.map(test => {
-                  const { testId, studentId, isCompleted, isStarted, dueDate, createdAt } = test
+                  const { testId, studentId, isCompleted, multiple, isStarted, dueDate, createdAt } = test
                   return {
                      testName: testId ? testId.testName : '-',
                      assignedOn: getFormattedDate(new Date(createdAt)),
                      studentId: studentId ? studentId : '-',
                      dueDate: getFormattedDate(new Date(test.dueDate)),
-                     duration: test.timeLimit,
+                     duration: multiple ? getDuration(multiple) : '-',
                      status: isCompleted === true ? 'completed' : isStarted ? 'started' : 'notStarted',
                      scores: '-',
                      _id: test._id,
@@ -151,6 +150,7 @@ export default function StudentTest() {
             })
       }
    }, [])
+
 
 
    useEffect(() => {

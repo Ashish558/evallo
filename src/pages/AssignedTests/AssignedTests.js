@@ -16,7 +16,7 @@ import InputSearch from "../../components/InputSearch/InputSearch";
 import calendar from "./../../assets/calendar/calendar.svg"
 import AssignedTestIndicator from "../../components/AssignedTestIndicator/AssignedTestIndicator";
 import { useSelector } from "react-redux";
-import { getFormattedDate } from "../../utils/utils";
+import { getDuration, getFormattedDate } from "../../utils/utils";
 
 const optionData = ["1", "2", "3", "4", "5"];
 const timeLimits = ['Regular', '1.5x', 'Unlimited']
@@ -124,7 +124,7 @@ export default function AssignedTests() {
             if (res.error) return console.log(res.error)
             console.log('response', res.data)
             let data = res.data.data.test.map(item => {
-               const { createdAt, studentId, testId, dueDate, timeLimit, isCompleted, isStarted } = item
+               const { createdAt, studentId, testId, dueDate, multiple, timeLimit, isCompleted, isStarted } = item
                return {
                   studentName: studentId ? `${studentId.firstName} ${studentId.lastName}` : '-',
                   studentId: studentId ? studentId._id : '-',
@@ -132,7 +132,7 @@ export default function AssignedTests() {
                   testName: testId ? testId.testName : '-',
                   testId: testId ? testId._id : null,
                   scores: '-',
-                  duration: timeLimit,
+                  duration: multiple ? getDuration(multiple) : '-',
                   dueDate,
                   status: isCompleted === true ? 'completed' : isStarted ? 'started' : 'notStarted',
                   createdAt,
@@ -151,7 +151,7 @@ export default function AssignedTests() {
             if (res.error) return console.log('tutor assignedtest', res.error)
             console.log('tutor assignedtest', res.data)
             let data = res.data.data.test.map(item => {
-               const { createdAt, studentId, dueDate, testId, timeLimit, isCompleted, isStarted } = item
+               const { createdAt, studentId, dueDate, testId, multiple, timeLimit, isCompleted, isStarted } = item
                return {
                   studentName: studentId ? `${studentId.firstName} ${studentId.lastName}` : '-',
                   studentId: studentId ? studentId._id : '-',
@@ -159,7 +159,7 @@ export default function AssignedTests() {
                   testName: testId ? testId.testName : '-',
                   testId: testId ? testId._id : null,
                   scores: '-',
-                  duration: timeLimit,
+                  duration: multiple ? getDuration(multiple) : '-',
                   status: isCompleted === true ? 'completed' : isStarted ? 'started' : 'notStarted',
                   createdAt,
                   dueDate
@@ -171,6 +171,13 @@ export default function AssignedTests() {
             setAllAssignedTests(sortedArr)
             setAllAssignedTests(data)
          })
+   }
+
+   const getTimeLimit = val => {
+      if (val === 'Regular') return 1
+      if (val === '1.5x') return 1.5
+      if (val === 'Unlimited') return 10
+      return 1
    }
 
    const fetch = () => {
@@ -207,11 +214,12 @@ export default function AssignedTests() {
    };
 
    const handleAssignTestSubmit = () => {
+
       const body = {
          studentId: modalData.studentId,
          testId: modalData.testId,
          dueDate: modalData.date,
-         timeLimit: modalData.limit,
+         timeLimit: getTimeLimit(modalData.limit),
       }
       console.log(body)
       // return

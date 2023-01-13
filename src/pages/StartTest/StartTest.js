@@ -12,7 +12,7 @@ import BackBtn from '../../components/Buttons/Back'
 import Timer from '../../components/Timer/Timer'
 import CurrentSection from './CurrentSection/CurrentSection'
 import { useSelector } from 'react-redux'
-import { getFormattedDate } from '../../utils/utils'
+import { getDuration, getFormattedDate } from '../../utils/utils'
 const tempsubjects = [
    { text: 'Trigonometry', selected: true },
    { text: 'Mathematics', selected: false },
@@ -49,17 +49,12 @@ export default function StartTest() {
    const { id } = useParams()
 
    const [getSections, getSectionsResp] = useLazyGetSectionsQuery()
-   const [getTestResponse, getTestResponseResp] = useLazyGetTestResponseQuery()
    const [getAssignedTest, getAssignedTestResp] = useLazyGetSingleAssignedTestQuery()
 
-   const [attendTest, attendTestResp] = useAttendTestMutation()
-   const [updateTime, updateTimeResp] = useUpdateTimeMutation()
    const [startTest, startTestResp] = useStartTestMutation()
    const [submitSection, submitSectionResp] = useSubmitTestMutation()
-   const [getTime, getTimeResp] = useLazyGetTimeQuery()
    const [continueTest, continueTestResp] = useLazyContinueTestQuery()
    const [completedSectionIds, setCompletedSectionIds] = useState([])
-
 
    useEffect(() => {
       let params = {}
@@ -69,7 +64,7 @@ export default function StartTest() {
          .then(res => {
             if (res.error) return console.log('testerror', res.error);
             console.log('test', res.data.data.test);
-            const { testId, createdAt, timeLimit } = res.data.data.test
+            const { testId, createdAt, timeLimit, multiple } = res.data.data.test
             if (res.data.data.test.testId) {
                setTestHeaderDetails(prev => ({
                   ...prev,
@@ -79,7 +74,7 @@ export default function StartTest() {
             }
             setTestHeaderDetails(prev => ({
                ...prev,
-               duration: timeLimit
+               duration: multiple ? getDuration(multiple) : '-',
             }))
 
          })
