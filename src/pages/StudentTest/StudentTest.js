@@ -84,7 +84,7 @@ export default function StudentTest() {
                      status: isCompleted === true ? 'completed' : isStarted ? 'started' : 'notStarted',
                      scores: '-',
                      _id: test._id,
-                     pdfLink: testId.pdf ? testId.pdf : null,
+                     pdfLink: testId ? testId.pdf : null,
                      testId: testId ? testId._id : '-',
                      isCompleted: test.isCompleted,
                      isStarted: test.isStarted,
@@ -131,6 +131,7 @@ export default function StudentTest() {
                console.log('assigned test parent resp', res.data);
                let tempAllTests = res.data.data.test.map(test => {
                   const { testId, studentId, isCompleted, multiple, isStarted, dueDate, createdAt } = test
+                
                   return {
                      testName: testId ? testId.testName : '-',
                      assignedOn: getFormattedDate(new Date(createdAt)),
@@ -140,7 +141,7 @@ export default function StudentTest() {
                      status: isCompleted === true ? 'completed' : isStarted ? 'started' : 'notStarted',
                      scores: '-',
                      _id: test._id,
-                     pdfLink: testId.pdf ? testId.pdf : null,
+                     pdfLink: testId ? testId.pdf : null,
                      testId: testId ? testId._id : '-',
                      isCompleted: test.isCompleted
                   }

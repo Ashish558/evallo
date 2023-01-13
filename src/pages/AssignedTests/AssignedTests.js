@@ -176,7 +176,7 @@ export default function AssignedTests() {
    const getTimeLimit = val => {
       if (val === 'Regular') return 1
       if (val === '1.5x') return 1.5
-      if (val === 'Unlimited') return 10
+      if (val === 'Unlimited') return 0
       return 1
    }
 
