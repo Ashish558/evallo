@@ -75,6 +75,7 @@ export default function StudentTest() {
 
                let tempAllTests = res.data.data.test.map(test => {
                   const { testId, studentId, dueDate, multiple, isCompleted, isStarted, createdAt } = test
+                  if(testId === null) return
                   return {
                      testName: testId ? testId.testName : '-',
                      assignedOn: getFormattedDate(new Date(createdAt)),
@@ -94,7 +95,7 @@ export default function StudentTest() {
                let sortedArr = tempAllTests.sort(function (a, b) {
                   return new Date(b.createdAt) - new Date(a.createdAt);
                });
-               setAllTests(sortedArr)
+               setAllTests(sortedArr.filter(item => item !== undefined))
             })
       }
    }, [persona])

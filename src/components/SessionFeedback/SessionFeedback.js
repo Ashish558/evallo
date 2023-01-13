@@ -16,6 +16,7 @@ const SessionFeedback = () => {
             console.log('all-assigned-tests', res.data.data.test);
             let tempAllTests = res.data.data.test.map(test => {
                const { testId, studentId, dueDate, isCompleted, isStarted, createdAt } = test
+               if(testId === null) return
                return {
                   testName: testId ? testId.testName : '-',
                   assignedOn: getFormattedDate(new Date(createdAt)),
@@ -31,7 +32,10 @@ const SessionFeedback = () => {
                   isStarted: test.isStarted,
                }
             })
-            setAllTests(tempAllTests)
+            let sortedArr = tempAllTests.sort(function (a, b) {
+               return new Date(b.createdAt) - new Date(a.createdAt);
+            });
+            setAllTests(sortedArr.filter(item => item !== undefined))
          })
 
    }, [])
