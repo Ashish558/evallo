@@ -39,7 +39,7 @@ const SessionFeedback = () => {
          })
 
    }, [])
-   console.log('all-tests', allTests);
+   // console.log('all-tests', allTests);
 
    return (
       <div id={styles.sessionFeedbackContainer} className="h-[382px] bg-white w-10/12 py-[21px] mt-[33px] rounded-[20px]">

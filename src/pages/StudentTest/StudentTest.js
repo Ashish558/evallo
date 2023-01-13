@@ -132,7 +132,7 @@ export default function StudentTest() {
                console.log('assigned test parent resp', res.data);
                let tempAllTests = res.data.data.test.map(test => {
                   const { testId, studentId, isCompleted, multiple, isStarted, dueDate, createdAt } = test
-                
+                  if(testId === null) return
                   return {
                      testName: testId ? testId.testName : '-',
                      assignedOn: getFormattedDate(new Date(createdAt)),
@@ -147,8 +147,10 @@ export default function StudentTest() {
                      isCompleted: test.isCompleted
                   }
                })
-
-               setAllTests(tempAllTests)
+               let sortedArr = tempAllTests.sort(function (a, b) {
+                  return new Date(b.createdAt) - new Date(a.createdAt);
+               });
+               setAllTests(sortedArr.filter(item => item !== undefined))
             })
       }
    }, [])
