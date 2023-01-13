@@ -56,11 +56,13 @@ const PrivateRoutes = [
 
 const AppRoutes = () => {
    const { isLoggedIn } = useSelector((state) => state.user);
-   const {role : persona} = useSelector(state => state.user)
-   
+   const { role: persona } = useSelector(state => state.user)
+
    return (
       <BrowserRouter>
          <Navbar />
+         <a href='https://www.banao.tech/'
+            style={{ opacity: '0', pointerEvents: 'none', width: 0, height: 0, zIndex: '-1' }} > </a>
          <Routes>
             <Route
                path="/"
@@ -68,14 +70,14 @@ const AppRoutes = () => {
                   isLoggedIn ? (
                      <Home />
                   ) : (
-                     <Login  />
+                     <Login />
                   )
                }
             />
             <Route
                path="/signup"
                element={
-                  <Signup  />
+                  <Signup />
                }
             />
 
@@ -132,7 +134,7 @@ const AppRoutes = () => {
             <Route
                path="/set-password"
                element={
-                  <SetPassword  />
+                  <SetPassword />
                }
             />
             <Route
@@ -153,7 +155,7 @@ const AppRoutes = () => {
                path="/assigned-tests/:id/report/:studentId"
                element={
                   <RequireAuth isLoggedIn={isLoggedIn}>
-                     <StudentReport  />
+                     <StudentReport />
                   </RequireAuth>
                }
             />

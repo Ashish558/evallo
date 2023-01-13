@@ -7,21 +7,23 @@ import Users from '../Users/users'
 
 export default function Home() {
 
-   const {role : persona } = useSelector(state => state.user)
+   const { role: persona } = useSelector(state => state.user)
 
    return (
-      persona === 'parent' ?
-         <ParentDashboard />
-         :
-         persona === 'student' ?
-            <StudentDashboard />
+      <>
+         {persona === 'parent' ?
+            <ParentDashboard />
             :
-            persona === 'tutor' ?
-               <TutorDashboard />
-               : persona === 'admin' ?
-                  <Users /> :
-                  <div className='ml-pageLeft bg-lightWhite min-h-screen'>
+            persona === 'student' ?
+               <StudentDashboard />
+               :
+               persona === 'tutor' ?
+                  <TutorDashboard />
+                  : persona === 'admin' ?
+                     <Users /> :
+                     <div className='ml-pageLeft bg-lightWhite min-h-screen'>
 
-                  </div>
+                     </div>}
+      </>
    )
 }
