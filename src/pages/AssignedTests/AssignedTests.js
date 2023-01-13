@@ -203,7 +203,7 @@ export default function AssignedTests() {
          studentId: testToResend.studentId,
          testId: testToResend.testId,
          dueDate: testToResend.dueDate,
-         timeLimit: testToResend.duration,
+         timeLimit: getTimeLimit(testToResend.duration),
       }
       assignTest(body)
          .then(res => {
