@@ -11,6 +11,9 @@ import { useLazyGetParentTutorsQuery } from "../../app/services/users";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import InputSelect from "../InputSelect/InputSelect";
+import { useLazyGetParentsAssignedTestsQuery } from "../../app/services/test";
+import { getDate, getDuration, getFormattedDate } from "../../utils/utils";
+import ParentTest from "./ParentTest/ParentTest";
 
 
 const initData = [
@@ -31,8 +34,42 @@ const ConceptSection = () => {
    const { id } = useSelector(state => state.user)
    const [sub, setSub] = useState('Math')
 
+   const [allTests, setAllTests] = useState([])
+
    const [fetchTutors, fetchTutorsResp] = useLazyGetParentTutorsQuery()
    const navigate = useNavigate()
+   const [fetchAssignedTests, fetchAssignedTestsResp] = useLazyGetParentsAssignedTestsQuery()
+
+   useEffect(() => {
+      fetchAssignedTests(id)
+         .then(res => {
+            if (res.error) return console.log('assigned test parent resp', res.error);
+            console.log('assigned test parent resp', res.data);
+            let tempAllTests = res.data.data.test.map(test => {
+               const { testId, studentId, isCompleted, multiple, isStarted, dueDate, createdAt } = test
+               if (testId === null) return
+               return {
+                  testName: testId ? testId.testName : '-',
+                  assignedOn: getFormattedDate(new Date(createdAt)),
+                  studentId: studentId ? studentId : '-',
+                  dueDate: getFormattedDate(new Date(test.dueDate)),
+                  duration: multiple ? getDuration(multiple) : '-',
+                  status: isCompleted === true ? 'completed' : isStarted ? 'started' : 'notStarted',
+                  scores: '-',
+                  _id: test._id,
+                  pdfLink: testId ? testId.pdf : null,
+                  testId: testId ? testId._id : '-',
+                  isCompleted: test.isCompleted,
+                  isStarted: test.isStarted,
+               }
+            })
+            let sortedArr = tempAllTests.sort(function (a, b) {
+               return new Date(b.createdAt) - new Date(a.createdAt);
+            });
+            setAllTests(sortedArr.filter(item => item !== undefined))
+         })
+
+   }, [])
 
    useEffect(() => {
       fetchTutors({ id })
@@ -60,7 +97,8 @@ const ConceptSection = () => {
       }
    }, [buttons, buttons.length])
 
-   // console.log(tutors);
+   // console.log(allTests);
+
    return (
       <div
          className="flex justify-between ml-[35px]"
@@ -211,178 +249,13 @@ const ConceptSection = () => {
                </div>
 
             </div>
-            <div id={styles.practiceTestContainer}>
+            <div id={styles.practiceTestContainer} >
                <h2 className="mb-[6px]" id={styles.practiceTestHeader}>Practice Test</h2>
-               <div id={styles.listedData}>
-                  {/* <div
-                     className="flex items-center justify-between"
-                     style={{ padding: "10px 0" }}
-                  >
-                     <div className="w-1/2">
-                        <div className={styles.listedDataItem}>
-                           <h1>SAT B2</h1>
-                           <div
-                              className="flex mr-2"
-                              style={{ gap: "6px" }}
-                           >
-                              <p className="text-xs font-semibold opacity-50">Due Date</p>
-                              <h3 className="opacity-60 text-xs font-semibold">June 20, 2022</h3>
-                           </div>
-                        </div>
-                     </div>
-                     <div className="w-1/2">
-                        <div
-                           className="flex items-center justify-end"
-                           style={{ gap: "10px" }}
-                        >
-                           <img src={downloadImage} alt="" />
-                           <div className="button bg-[#EFECF9] p-[10px] rounded-[6px] w-[111px] text-sm font-semibold">
-                              Not Started
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-                  <div
-                     className="flex items-center justify-between"
-                     style={{ padding: "10px 0" }}
-                  >
-                     <div className="w-1/2">
-                        <div className={styles.listedDataItem}>
-                           <h1>SAT B2</h1>
-                           <div
-                              className="flex mr-2"
-                              style={{ gap: "6px" }}
-                           >
-                              <p className="text-xs font-semibold opacity-50">Due Date</p>
-                              <h3 className="opacity-60 text-xs font-semibold">June 20, 2022</h3>
-                           </div>
-                        </div>
-                     </div>
-                     <div className="w-1/2">
-                        <div
-                           className="flex items-center justify-end"
-                           style={{ gap: "10px" }}
-                        >
-                           <img src={downloadImage} alt="" />
-                           <div className="button bg-[#EFECF9] p-[10px] rounded-[6px] w-[111px] text-sm font-semibold">
-                              Started
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-                  <div
-                     className="flex items-center justify-between"
-                     style={{ padding: "10px 0" }}
-                  >
-                     <div className="w-1/2">
-                        <div className={styles.listedDataItem}>
-                           <h1>SAT B2</h1>
-                           <div
-                              className="flex mr-2"
-                              style={{ gap: "6px" }}
-                           >
-                              <p className="text-xs font-semibold opacity-50">Due Date</p>
-                              <h3 className="opacity-60 text-xs font-semibold">June 20, 2022</h3>
-                           </div>
-                        </div>
-                     </div>
-                     <div className="w-1/2">
-                        <div
-                           className="flex items-center justify-end"
-                           style={{ gap: "10px" }}
-                        >
-                           <img src={downloadImage} alt="" />
-                           <div className="button bg-[#EFECF9] p-[10px] rounded-[6px] w-[111px] text-sm font-semibold">
-                              1250 / 1250
-                           </div>
-                        </div>
-                     </div>
-                  </div>
+               <div id={styles.listedData} className='scrollbar-content scrollbar-vertical' >
 
-                  <div
-                     className="flex items-center justify-between"
-                     style={{ padding: "10px 0" }}
-                  >
-                     <div className="w-1/2">
-                        <div className={styles.listedDataItem}>
-                           <h1>SAT B2</h1>
-                           <div
-                              className="flex mr-2"
-                              style={{ gap: "6px" }}
-                           >
-                              <p className="text-xs font-semibold opacity-50">Due Date</p>
-                              <h3 className="opacity-60 text-xs font-semibold">June 20, 2022</h3>
-                           </div>
-                        </div>
-                     </div>
-                     <div className="w-1/2">
-                        <div
-                           className="flex items-center justify-end"
-                           style={{ gap: "10px" }}
-                        >
-                           <img src={downloadImage} alt="" />
-                           <div className="button bg-[#EFECF9] p-[10px] rounded-[6px] w-[111px] text-sm font-semibold">
-                              Not Started
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-                  <div
-                     className="flex items-center justify-between"
-                     style={{ padding: "10px 0" }}
-                  >
-                     <div className="w-1/2">
-                        <div className={styles.listedDataItem}>
-                           <h1>SAT B2</h1>
-                           <div
-                              className="flex mr-2"
-                              style={{ gap: "6px" }}
-                           >
-                              <p className="text-xs font-semibold opacity-50">Due Date</p>
-                              <h3 className="opacity-60 text-xs font-semibold">June 20, 2022</h3>
-                           </div>
-                        </div>
-                     </div>
-                     <div className="w-1/2">
-                        <div
-                           className="flex items-center justify-end"
-                           style={{ gap: "10px" }}
-                        >
-                           <img src={downloadImage} alt="" />
-                           <div className="button bg-[#EFECF9] p-[10px] rounded-[6px] w-[111px] text-sm font-semibold">
-                              Started
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-                  <div
-                     className="flex items-center justify-between"
-                     style={{ padding: "10px 0" }}
-                  >
-                     <div className="w-1/2">
-                        <div className={styles.listedDataItem}>
-                           <h1>SAT B2</h1>
-                           <div
-                              className="flex mr-2"
-                              style={{ gap: "6px" }}
-                           >
-                              <p className="text-xs font-semibold opacity-50">Due Date</p>
-                              <h3 className="opacity-60 text-xs font-semibold">June 20, 2022</h3>
-                           </div>
-                        </div>
-                     </div>
-                     <div className="w-1/2">
-                        <div
-                           className="flex items-center justify-end"
-                           style={{ gap: "10px" }}
-                        >
-                           <img src={downloadImage} alt="" />
-                           <div className="button bg-[#EFECF9] p-[10px] rounded-[6px] w-[111px] text-sm font-semibold">
-                              1250 / 1250
-                           </div>
-                        </div>
-                     </div>
-                  </div> */}
+                  {allTests.map(test => {
+                     return <ParentTest styles={styles} {...test} />
+                  })}
 
                </div>
             </div>
