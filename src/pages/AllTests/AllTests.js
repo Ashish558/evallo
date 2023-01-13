@@ -40,11 +40,21 @@ export default function AllTests() {
    const [filteredTests, setFilteredTests] = useState([])
    const [filterItems, setFilterItems] = useState([])
 
+   const [submitBtnDisabled, setSubmitBtnDisabled] = useState(true)
+
    const [removeQuestionModal, setRemoveQuestionModal] = useState(false);
    const [submitTest, submitTestResp] = useAddTestMutation();
    const [submitPdf, submitPdfResp] = useAddPdfMutation();
-
    const [modalData, setModalData] = useState(initialState);
+
+   useEffect(() => {
+      if(modalData.testName.trim() === '' || modalData.testType.trim() === ''){
+         setSubmitBtnDisabled(true)
+      }else{
+         setSubmitBtnDisabled(false)
+      }
+   }, [modalData])
+
 
    const handleClose = () => {
       setModalActive(false)
@@ -216,11 +226,12 @@ export default function AllTests() {
                classname={"max-w-[700px] mx-auto"}
                cancelBtn={true}
                primaryBtn={{
-                  text: "Assign",
+                  text: "Create",
                   form: "add-test-form",
                   onClick: handleSubmit,
                   type: "submit",
-                  className: 'w-[123px] pl-6 pr-6'
+                  className: 'w-[123px] pl-6 pr-6 disabled:opacity-70',
+                  disabled: submitBtnDisabled
                }}
                handleClose={handleClose}
                body={

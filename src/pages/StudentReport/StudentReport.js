@@ -255,6 +255,7 @@ export default function StudentReport() {
 
       if (persona === 'student' || persona === 'parent') {
          let temp = responseData.response[selectedSubject.idx].map((item, index) => {
+            // console.log(item);
             const { QuestionNumber, QuestionType, ResponseAnswer, isCorrect, responseTime, _id } = item
             let concept = '-'
             let strategy = '-'
@@ -385,8 +386,8 @@ export default function StudentReport() {
    }
 
    // console.log('tableData', tableData)
-   // console.log('responseData', responseData)
-   // console.log('selectedSubject', selectedSubject)
+   console.log('responseData', responseData)
+   console.log('selectedSubject', selectedSubject)
    // console.log('timeSeries', timeSeries)
    // console.log('answerKey', answerKey)
    if (Object.keys(responseData).length === 0) return <></>

@@ -43,6 +43,15 @@ const studentTableHeaders = [
    "",
 ];
 
+const initialState = {
+   name: "",
+   limit: "",
+   date: "",
+   test: "",
+   testId: '',
+   studentId: '',
+}
+
 export default function AssignedTests() {
 
    const [tableData, setTableData] = useState([])
@@ -64,12 +73,7 @@ export default function AssignedTests() {
 
    const [assignTest, assignTestResp] = useAssignTestMutation()
 
-   const [modalData, setModalData] = useState({
-      name: "",
-      limit: "",
-      date: "",
-      test: "",
-   });
+   const [modalData, setModalData] = useState(initialState);
 
    const [fetchStudents, studentResponse] = useLazyGetStudentsByNameQuery();
    const [fetchAssignedTests, assignedTestsResp] = useLazyGetAllAssignedTestQuery();
@@ -82,11 +86,29 @@ export default function AssignedTests() {
    const [testsData, setTestsData] = useState([]);
    const [maxPageSize, setMaxPageSize] = useState(10);
    const [validData, setValidData] = useState(true);
+   const [submitBtnDisabled, setSubmitBtnDisabled] = useState(false)
 
    useEffect(() => {
-      setValidData(modalData.name && modalData.limit && modalData.date && modalData.test);
+      setValidData(modalData.name && modalData.limit && modalData.date && modalData.test === '');
    }, [modalData.name, modalData.limit, modalData.date, modalData.test])
 
+   useEffect(() => {
+      if (modalData.name.trim() === '' || modalData.limit.trim() === '' || modalData.date === '' || modalData.testId === '' || modalData.studentId.trim() === '') {
+         setSubmitBtnDisabled(true)
+      } else {
+         let date = new Date(modalData.date)
+         let currentDate = new Date()
+         let dueDate = date.getDate()
+         console.log(date - currentDate);
+         if(date - currentDate < 0){
+            setSubmitBtnDisabled(true)
+         }else{
+            setSubmitBtnDisabled(false)
+         }
+      }
+   }, [modalData])
+
+   // console.log(modalData);
    useEffect(() => {
       if (modalData.name.length > 0) {
          fetchStudents(modalData.name).then((res) => {
@@ -225,6 +247,7 @@ export default function AssignedTests() {
       // return
       assignTest(body)
          .then(res => {
+            setModalData(initialState)
             console.log(res.data.data.assign)
             setAssignTestModalActive(false)
             fetch()
@@ -348,7 +371,7 @@ export default function AssignedTests() {
                   text: "Assign",
                   className: "max-w-140 pl-8 pr-8",
                   onClick: () => handleAssignTestSubmit(),
-                  disabled: !validData
+                  disabled: submitBtnDisabled
                }}
                handleClose={handleClose}
                body={
