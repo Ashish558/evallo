@@ -246,9 +246,9 @@ export default function StudentReport() {
       if (answerKey.length === 0) return
 
       let currentAnswerKeyIndex = 0
-      
+
       answerKeySubjects.map((subj, idx) => {
-         if(subj.name === selectedSubject.name){
+         if (subj.name === selectedSubject.name) {
             currentAnswerKeyIndex = idx
          }
       })
@@ -362,11 +362,12 @@ export default function StudentReport() {
 
    }, [selectedSubject])
 
+
    const getConceptScore = (correctTotal, key, returnIncorrectOnly) => {
       let currentAnswerKeyIndex = 0
-      
+
       answerKeySubjects.map((subj, idx) => {
-         if(subj.name === selectedSubject.name){
+         if (subj.name === selectedSubject.name) {
             currentAnswerKeyIndex = idx
          }
       })
@@ -385,11 +386,69 @@ export default function StudentReport() {
       }
    }
 
+   const getSubjectSections = (c) => {
+
+      let currSubject = answerKeySubjects.find(sub => sub.name === selectedSubject.name)
+      // console.log('answerKeySubjects', answerKeySubjects)
+      // console.log('currSubject', currSubject)
+      let currentAnswerKeyIndex = 0
+
+      answerKeySubjects.map((subj, idx) => {
+         if (subj.name === selectedSubject.name) {
+            currentAnswerKeyIndex = idx
+         }
+      })
+      // console.log('currSubject', currSubject);
+      // console.log('answer key arr', answerKey[currentAnswerKeyIndex]);
+      const selected = responseData.response[selectedSubject.idx]
+      // console.log('response answer', selected);
+      if (currSubject) {
+         return <div>
+            {Object.keys(currSubject.concepts).map((key, idx) => {
+               return <p key={idx} className='font-semibold mb-2'>
+                  {/* {selectedSubject.concepts[key]} */}
+                  {key}
+               </p>
+            })}
+         </div>
+      }
+      return <>p</>
+   }
+   
+   const getSubjectSectionsScore = (c) => {
+      // let currSubject = answerKeySubjects.find(sub => sub.name === selectedSubject.name)
+      // let currentAnswerKeyIndex = 0
+      // answerKeySubjects.map((subj, idx) => {
+      //    if (subj.name === selectedSubject.name) {
+      //       currentAnswerKeyIndex = idx
+      //    }
+      // })
+      // // console.log('currSubject', currSubject);
+      // // console.log('answer key arr', answerKey[currentAnswerKeyIndex]);
+      // let arr = []
+      // Object.keys(currSubject).map(key => {
+      //    let IncorrectCount = 0
+      //    answerKey[currentAnswerKeyIndex].map((ans, idx) => {
+      //       let { QuestionNumber, CorrectAnswer, Concepts } = ans
+      //       if (key === Concepts){
+      //          const selected = responseData.response[selectedSubject.idx]
+      //          selected[idx]
+      //       }
+      //    })
+      // })
+      // const selected = responseData.response[selectedSubject.idx]
+      // // console.log('response answer', selected);
+      // if (currSubject) {
+      // }
+      return <>p</>
+   }
+
    // console.log('tableData', tableData)
-   console.log('responseData', responseData)
-   console.log('selectedSubject', selectedSubject)
+   // console.log('responseData', responseData)
+   // console.log('selectedSubject', selectedSubject)
    // console.log('timeSeries', timeSeries)
    // console.log('answerKey', answerKey)
+
    if (Object.keys(responseData).length === 0) return <></>
    if (answerKey.length === 0) return <></>
    return (
@@ -467,6 +526,10 @@ export default function StudentReport() {
                      <div className='flex flex-col mr-[64px]'>
                         <p className='font-semibold text-primary mb-2.2'>Concepts</p>
                         {
+                        // selectedSubject.no_of_correct === 0 ?
+                        //    <>
+                        //       {getSubjectSections()}
+                        //    </> :
                            selectedSubject.concepts ?
                               Object.keys(selectedSubject.concepts).map((key, idx) => {
                                  return <p key={idx} className='font-semibold mb-2'>
@@ -481,6 +544,10 @@ export default function StudentReport() {
                      <div className='flex flex-col items-center'>
                         <p className='font-semibold text-primary mb-2.2'> Incorrect Answers</p>
                         {
+                        // selectedSubject.no_of_correct === 0 ?
+                        //    <>
+                        //       {getSubjectSectionsScore()}
+                        //    </> :
                            selectedSubject.concepts ?
                               Object.keys(selectedSubject.concepts).map((key, idx) => {
                                  return <p key={idx} className='font-semibold mb-2'>

@@ -66,7 +66,7 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch }) {
 
    useEffect(() => {
       if (dataFor === 'assignedTests') {
-         
+
          let url = `/api/test/admin/getresponse/${item.testId}`
          let params = { userId: item.studentId }
          if (item.status === 'completed') {
@@ -131,6 +131,13 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch }) {
          <></>
       );
    };
+   const handlePdfNavigate = () => {
+      if (item.pdfLink) {
+         window.open(item.pdfLink)
+      } else {
+         alert('PDF doesnt exist')
+      }
+   }
 
    return (
       <>
@@ -329,7 +336,7 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch }) {
                )}
                <td className="font-medium px-1  min-w-14 py-4">
                   <div className="flex items-center">
-                     <img src={DownloadIcon} className='w-[30px] cursor-pointer' onClick={() => item.pdfLink !== null && window.open(item.pdfLink)} />
+                     <img src={DownloadIcon} className='w-[30px] cursor-pointer' onClick={() => handlePdfNavigate()} />
                      {
                         persona === 'parent' ?
                            <>

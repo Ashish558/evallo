@@ -15,7 +15,7 @@ const SessionFeedback = () => {
          .then(res => {
             console.log('all-assigned-tests', res.data.data.test);
             let tempAllTests = res.data.data.test.map(test => {
-               const { testId, studentId, dueDate, isCompleted, isStarted, createdAt } = test
+               const { testId, studentId, dueDate, isCompleted, isStarted, createdAt, updatedAt } = test
                if(testId === null) return
                return {
                   testName: testId ? testId.testName : '-',
@@ -30,10 +30,11 @@ const SessionFeedback = () => {
                   testId: testId ? testId._id : '-',
                   isCompleted: test.isCompleted,
                   isStarted: test.isStarted,
+                  updatedAt,
                }
             })
             let sortedArr = tempAllTests.sort(function (a, b) {
-               return new Date(b.createdAt) - new Date(a.createdAt);
+               return new Date(b.updatedAt) - new Date(a.updatedAt);
             });
             setAllTests(sortedArr.filter(item => item !== undefined))
          })
