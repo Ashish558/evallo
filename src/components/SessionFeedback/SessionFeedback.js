@@ -25,7 +25,7 @@ const SessionFeedback = () => {
                   status: isCompleted === true ? 'completed' : isStarted ? 'started' : 'notStarted',
                   scores: '-',
                   _id: test._id,
-                  pdfLink: testId.pdf ? testId.pdf : null,
+                  pdfLink: testId ? testId.pdf : null,
                   testId: testId ? testId._id : '-',
                   isCompleted: test.isCompleted,
                   isStarted: test.isStarted,
