@@ -429,11 +429,11 @@ export default function StartTest() {
                                     {item.isMarked ?
                                        <button className='w-[180px] font-semibold py-3 rounded-lg pt-[8px] pb-[8px] border-2 border-[#D2D2D2] text-[#D2D2D2] ml-4'
                                           onClick={() => handleMark(item._id, false)} >
-                                          Mark for Review
+                                          Unmark
                                        </button> :
                                        <button className='w-[180px] font-semibold pt-2.5 pb-2.5 rounded-lg bg-primaryOrange text-white ml-4'
                                           onClick={() => handleMark(item._id, true)} >
-                                          Unmark
+                                           Mark for Review
                                        </button>
                                     }
                                  </div>

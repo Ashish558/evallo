@@ -100,9 +100,9 @@ export default function AssignedTests() {
          let currentDate = new Date()
          let dueDate = date.getDate()
          console.log(date - currentDate);
-         if(date - currentDate < 0){
+         if (date - currentDate < 0) {
             setSubmitBtnDisabled(true)
-         }else{
+         } else {
             setSubmitBtnDisabled(false)
          }
       }
@@ -249,6 +249,17 @@ export default function AssignedTests() {
       // return
       assignTest(body)
          .then(res => {
+            if (res.error) {
+               console.log(res.error);
+               if(res.error.data){
+                  if(res.error.data.message){
+                     alert(res.error.data.message)
+                     return
+                  }
+               }
+               alert('Something went wrong')
+               return
+            }
             setModalData(initialState)
             console.log(res.data.data.assign)
             setAssignTestModalActive(false)

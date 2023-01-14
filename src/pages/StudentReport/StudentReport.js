@@ -80,7 +80,6 @@ export default function StudentReport() {
       completedOn: '-',
       duration: '-',
    })
-
    const [subjects, setSubjects] = useState([])
    const [selectedSubject, setSelectedSubject] = useState({})
    const [getTestResponse, getTestResponseResp] = useLazyGetTestResponseQuery()
@@ -100,6 +99,11 @@ export default function StudentReport() {
       if (isSet === true) return
       console.log('response data', responseData);
       // let sortedSubjects = responseData.subjects.map(sub => sub.name)
+      if (responseData.subjects.length === 0) {
+         alert('No sections are submitted')
+         navigate(-1)
+         return
+      }
       let score = getScoreStr(responseData.testType, responseData.score, responseData.subjects)
       // console.log(score);
       console.log('score', score);
@@ -113,10 +117,9 @@ export default function StudentReport() {
             // console.log('answer key subjects', answerKeyData.answer.subjects);
             let subResponse = answerKeyData.answer.subjects.map(sub => {
                let currSub = responseData.subjects.find(item => item.name === sub.name)
-               // console.log('currSub', currSub);
-
+               if (currSub === undefined) return
+               console.log('currSub', currSub);
                let conceptsToInclude = {}
-
                if (currSub.concepts === undefined) {
                   Object.keys(sub.concepts).map(key => {
                      // console.log('sub.concepts[key]', sub.concepts[key]);

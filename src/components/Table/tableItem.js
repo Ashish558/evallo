@@ -240,7 +240,7 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch }) {
                </td>
                <td className="font-medium px-1  min-w-14 py-4">
                   <button
-                     className={`px-2.5 py-1.8 rounded-md flex items-center leading-none bg-primary text-white ${item.status !== 'completed' ? 'opacity-50 pointer-events-none' : ''}`}
+                     className={`px-2.5 py-1.8 rounded-md flex items-center leading-none bg-primary text-white ${item.status !== 'completed' && item.status !== 'started' ? 'opacity-50 pointer-events-none' : ''}`}
                      onClick={() =>
                         navigate(`/assigned-tests/${item.testId}/${item.assignedTestId}/report/${item.studentId}`)
                      }
