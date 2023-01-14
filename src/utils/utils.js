@@ -224,8 +224,8 @@ export const getScoreStr = (testType, score, subjects) => {
       Object.keys(score).map(key => {
          total2 += score[key]
       })
-      console.log('total', total2);
-      console.log('subjects.length', subjects.length);
+      // console.log('total', total2);
+      // console.log('subjects.length', subjects.length);
       return {
          cumulative: `C${total2 / subjects.length}`,
          right: `E${scoreArr[0]}|M${scoreArr[1]}|R${scoreArr[2]}|C${scoreArr[3]}`,
