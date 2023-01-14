@@ -79,10 +79,10 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch }) {
                      console.log('resp err', res.error)
                      return
                   }
-                  console.log('Resp score', res.data.data.response);
+                  // console.log('Resp score', res.data.data.response);
                   let responseData =  res.data.data.response
                   let score = getScoreStr(responseData.testType, responseData.score, responseData.subjects)
-                  console.log('SCORE', score);
+                  // console.log('SCORE', score);
                   // let scr = getScore(res.data.data.response.testType, res.data.data.response.subjects)
                   setScore(`${score.cumulative} ${score.right}`)
                })

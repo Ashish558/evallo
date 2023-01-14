@@ -107,7 +107,7 @@ export default function StudentReport() {
       getAnswers(id)
          .then(res => {
             if (res.error) return console.log(res.error);
-            // console.log('answer key', res.data.data);
+            console.log('ANSWER KEY', res.data.data);
 
             let answerKeyData = { ...res.data.data }
             // console.log('answer key subjects', answerKeyData.answer.subjects);
