@@ -185,7 +185,7 @@ export const getScoreStr = (testType, score, subjects) => {
    if (testType === 'SAT') {
       let verbalTotal = 0
       let MathsTotal = 0
-
+      let isMathsAdded = false
       subjects.map(sub => {
          if (sub.scoreScale === 'Scale1') {
             verbalTotal += score['Scale1']
@@ -194,7 +194,10 @@ export const getScoreStr = (testType, score, subjects) => {
             verbalTotal += score['Scale2']
          }
          if (sub.scoreScale === 'Scale3') {
-            MathsTotal += score['Scale3']
+            if(isMathsAdded === false){
+               MathsTotal += score['Scale3']
+               isMathsAdded = true
+            }
          }
       })
       return {
