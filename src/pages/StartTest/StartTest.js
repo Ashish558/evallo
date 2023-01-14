@@ -92,6 +92,8 @@ export default function StartTest() {
          .then(res => {
             if (res.error) {
                console.log(res.error)
+               alert('error starting test')
+               return
             }
             console.log('start test', res.data)
             const { startTime, endTime, sectionName, answer, submitId } = res.data.data
