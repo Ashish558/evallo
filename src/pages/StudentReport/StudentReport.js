@@ -101,12 +101,13 @@ export default function StudentReport() {
       console.log('response data', responseData);
       // let sortedSubjects = responseData.subjects.map(sub => sub.name)
       let score = getScoreStr(responseData.testType, responseData.score, responseData.subjects)
-      console.log(score);
+      // console.log(score);
+      console.log('score', score);
       setDisplayScore(score)
       getAnswers(id)
          .then(res => {
             if (res.error) return console.log(res.error);
-            console.log('answer key', res.data.data);
+            // console.log('answer key', res.data.data);
 
             let answerKeyData = { ...res.data.data }
             // console.log('answer key subjects', answerKeyData.answer.subjects);
@@ -152,7 +153,7 @@ export default function StudentReport() {
             })
 
             // console.log('subjects', subjects);
-            console.log('updated', updated);
+            // console.log('updated', updated);
             // console.log('responseData', responseData);
             // console.log('subResponse', subResponse);
 
@@ -573,7 +574,7 @@ export default function StudentReport() {
                            className={`py-2 px-0 mr-7 font-semibold w-160 ${item.selected ? '' : 'bg-secondaryLight text-textGray'}`} />
                      })}
                   </div>
-                  <button className={`py-4 ${displayScore.isSat ? 'px-6' : 'px-4'}  bg-primaryOrange text-white rounded-20 flex items-center shadow-md pr-7`}>
+                  <button className={`py-4 px-6 bg-primaryOrange text-white rounded-20 flex items-center shadow-md pr-7`}>
                      <span className='inline-block font-bold text-42'>
                         {displayScore.cumulative}
                      </span>

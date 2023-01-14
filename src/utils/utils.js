@@ -178,9 +178,9 @@ export function getDate(arg) {
 }
 
 export const getScoreStr = (testType, score, subjects) => {
-   if (!score) return ''
-   if (!testType) return ''
-   if (!subjects) return ''
+   // if (!score) return ''
+   // if (!testType) return ''
+   // if (!subjects) return ''
 
    if (testType === 'SAT') {
       let verbalTotal = 0
@@ -203,28 +203,31 @@ export const getScoreStr = (testType, score, subjects) => {
       }
    } else {
       let scoreArr = []
-      let total =
-         subjects.map((sub, idx) => {
-            total += sub.no_of_correct
-            if (sub.scoreScale === 'Scale1') {
-               total += score['Scale1']
-               scoreArr.push(score['Scale1'])
-            }
-            if (sub.scoreScale === 'Scale2') {
-               total += score['Scale2']
-               scoreArr.push(score['Scale2'])
-            }
-            if (sub.scoreScale === 'Scale3') {
-               total += score['Scale3']
-               scoreArr.push(score['Scale3'])
-            }
-            if (sub.scoreScale === 'Scale4') {
-               total += score['Scale4']
-               scoreArr.push(score['Scale4'])
-            }
-         })
+      let total = 0
+      subjects.map((sub, idx) => {
+         total += sub.no_of_correct
+         if (sub.scoreScale === 'Scale1') {
+            total += score['Scale1']
+            scoreArr.push(score['Scale1'])
+         } else if (sub.scoreScale === 'Scale2') {
+            total += score['Scale2']
+            scoreArr.push(score['Scale2'])
+         } else if (sub.scoreScale === 'Scale3') {
+            total += score['Scale3']
+            scoreArr.push(score['Scale3'])
+         } else if (sub.scoreScale === 'Scale4') {
+            total += score['Scale4']
+            scoreArr.push(score['Scale4'])
+         }
+      })
+      let total2 = 0
+      Object.keys(score).map(key => {
+         total2 += score[key]
+      })
+      console.log('total', total2);
+      console.log('subjects.length', subjects.length);
       return {
-         cumulative: `C${total / subjects.length}`,
+         cumulative: `C${total2 / subjects.length}`,
          right: `E${scoreArr[0]}|M${scoreArr[1]}|R${scoreArr[2]}|C${scoreArr[3]}`,
       }
    }
