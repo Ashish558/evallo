@@ -57,7 +57,11 @@ export default function Login({ setLoginFormActive }) {
          .then(() => {
             loginUser({ email, password }).then((res) => {
                if (res.error) {
-                  console.log(res.error)
+                  console.log('login err', res.error)
+                  if(res.error.status == 500){
+                     alert('Login failed')
+                     return
+                  }
                   if (res.error.data.message === "email not found") {
                      setError(prev => {
                         return { ...prev, email: 'Email not found' }
