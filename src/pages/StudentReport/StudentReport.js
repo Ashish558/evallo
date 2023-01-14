@@ -72,10 +72,6 @@ export default function StudentReport() {
 
    const { id, studentId, assignedTestId } = useParams()
 
-   console.log('params_id', id);
-   console.log('studentId', studentId);
-   console.log('assignedTestId', assignedTestId);
-
    const [testDetails, setTestDetails] = useState({
       testName: '-',
       assignedOn: '-',
@@ -91,7 +87,7 @@ export default function StudentReport() {
    const [getUserDetail, userDetailResp] = useLazyGetTutorDetailsQuery()
    const [getTestDetails, getTestDetailsResp] = useLazyGetTestDetailsQuery()
    const [getAssignedTest, getAssignedTestResp] = useLazyGetSingleAssignedTestQuery()
-
+   const [isSet, setIsSet] = useState(false)
    const [getAnswers, getAnswersResp] = useLazyGetAnswersQuery()
    const [answerKeySubjects, setAnswerKeySubjects] = useState([])
 
@@ -100,17 +96,77 @@ export default function StudentReport() {
    //get answer key
    useEffect(() => {
       if (Object.keys(responseData).length === 0) return
-      // console.log('response data', responseData);
+      if (isSet === true) return
+      console.log('response data', responseData);
       // let sortedSubjects = responseData.subjects.map(sub => sub.name)
 
       getAnswers(id)
          .then(res => {
             if (res.error) return console.log(res.error);
             // console.log('answer key', res.data.data);
+
             let answerKeyData = { ...res.data.data }
-            // let subjects = answerKeyData.answer.subjects
+            console.log('answer key subjects', answerKeyData.answer.subjects);
+            let subResponse = answerKeyData.answer.subjects.map(sub => {
+               let currSub = responseData.subjects.find(item => item.name === sub.name)
+               console.log('currSub', currSub);
+
+               let conceptsToInclude = {}
+
+               if (currSub.concepts === undefined) {
+                  Object.keys(sub.concepts).map(key => {
+                     // console.log('sub.concepts[key]', sub.concepts[key]);
+                     conceptsToInclude[key] = 0
+                  })
+                  return {
+                     ...currSub,
+                     concepts: conceptsToInclude
+                  }
+               } else {
+                  Object.keys(sub.concepts).map(key => {
+                     conceptsToInclude[key] = 0
+                  })
+                  return {
+                     ...currSub,
+                     concepts: {
+                        ...conceptsToInclude,
+                        ...currSub.concepts
+                     }
+                  }
+               }
+               // console.log('conceptsToInclude', conceptsToInclude);
+            })
+
+            let updated = subjects.map(subj => {
+               let updatedSubjWithConcepts = subResponse.find(item => item.name === subj.name)
+               return {
+                  ...subj,
+                  concepts: {
+                     ...updatedSubjWithConcepts.concepts
+                  }
+               }
+               // console.log('updatedSubjWithConcepts', updatedSubjWithConcepts);
+            })
+
+            // console.log('subjects', subjects);
+            console.log('updated', updated);
+            console.log('responseData', responseData);
+            // console.log('subResponse', subResponse);
+
+            setResponseData(prev => {
+               return {
+                  ...prev,
+                  subjects: updated
+               }
+            })
+            setSubjects(updated)
+            let selected = updated.find(item => item.selected === true)
+            setSelectedSubject(selected)
+
+            let subjects1 = answerKeyData.answer.subjects
             setAnswerKey(res.data.data.answer.answer)
             setAnswerKeySubjects(answerKeyData.answer.subjects)
+            setIsSet(true)
          })
    }, [responseData])
 
@@ -134,7 +190,7 @@ export default function StudentReport() {
       getAssignedTest({ url })
          .then(res => {
             if (res.error) return console.log('TEST ERROR', res.error);
-            console.log('TEST RESP', res.data.data.test);
+            // console.log('TEST RESP', res.data.data.test);
             const { testId, createdAt, timeLimit, multiple } = res.data.data.test
             setTestDetails(prev => {
                return {
@@ -160,7 +216,7 @@ export default function StudentReport() {
                console.log('RESPONSE ERR', res.error)
                return
             }
-            console.log('RESPONSE', res.data.data.response);
+            // console.log('RESPONSE', res.data.data.response);
             const { subjects, studentId, response, createdAt, updatedAt } = res.data.data.response
             if (res.data.data.response.testType === 'SAT') {
                let set1Score = 0
@@ -414,7 +470,7 @@ export default function StudentReport() {
       }
       return <>p</>
    }
-   
+
    const getSubjectSectionsScore = (c) => {
       let currSubject = answerKeySubjects.find(sub => sub.name === selectedSubject.name)
       let currentAnswerKeyIndex = 0
@@ -433,15 +489,15 @@ export default function StudentReport() {
          let IncorrectCount = 0
          answerKey[currentAnswerKeyIndex].map((ans, idx) => {
             let { QuestionNumber, CorrectAnswer, Concepts } = ans
-            if (key === Concepts){
+            if (key === Concepts) {
                const selected = responseData.response[selectedSubject.idx]
-               if(selected[idx].isCorrect===false){
-                  IncorrectCount+= 1
+               if (selected[idx].isCorrect === false) {
+                  IncorrectCount += 1
                }
             }
          })
       })
-   
+
       if (currSubject) {
       }
       return <>p</>
@@ -449,12 +505,15 @@ export default function StudentReport() {
 
    // console.log('tableData', tableData)
    // console.log('responseData', responseData)
+   // console.log('subjects', subjects)
    // console.log('selectedSubject', selectedSubject)
    // console.log('timeSeries', timeSeries)
+   // console.log('answerKey', answerKey)
    // console.log('answerKey', answerKey)
 
    if (Object.keys(responseData).length === 0) return <></>
    if (answerKey.length === 0) return <></>
+   if (selectedSubject.concepts === undefined) return <></>
    return (
       <div className='ml-pageLeft bg-lightWhite min-h-screen'>
          <div className='py-14 px-5'>
@@ -530,10 +589,10 @@ export default function StudentReport() {
                      <div className='flex flex-col mr-[64px]'>
                         <p className='font-semibold text-primary mb-2.2'>Concepts</p>
                         {
-                        // selectedSubject.no_of_correct === 0 ?
-                        //    <>
-                        //       {getSubjectSections()}
-                        //    </> :
+                           // selectedSubject.no_of_correct === 0 ?
+                           //    <>
+                           //       {getSubjectSections()}
+                           //    </> :
                            selectedSubject.concepts ?
                               Object.keys(selectedSubject.concepts).map((key, idx) => {
                                  return <p key={idx} className='font-semibold mb-2'>
@@ -548,10 +607,10 @@ export default function StudentReport() {
                      <div className='flex flex-col items-center'>
                         <p className='font-semibold text-primary mb-2.2'> Incorrect Answers</p>
                         {
-                        // selectedSubject.no_of_correct === 0 ?
-                        //    <>
-                        //       {getSubjectSectionsScore()}
-                        //    </> :
+                           // selectedSubject.no_of_correct === 0 ?
+                           //    <>
+                           //       {getSubjectSectionsScore()}
+                           //    </> :
                            selectedSubject.concepts ?
                               Object.keys(selectedSubject.concepts).map((key, idx) => {
                                  return <p key={idx} className='font-semibold mb-2'>

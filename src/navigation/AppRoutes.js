@@ -61,8 +61,8 @@ const AppRoutes = () => {
    return (
       <BrowserRouter>
          <Navbar />
-         <a href='https://www.banao.tech/'
-            style={{ opacity: '0', pointerEvents: 'none', width: 0, height: 0, zIndex: '-1' }} > </a>
+         {/* <a href='https://www.banao.tech/'
+            style={{ opacity: '0', pointerEvents: 'none', width: 0, height: 0, zIndex: '-1' }} > </a> */}
          <Routes>
             <Route
                path="/"
