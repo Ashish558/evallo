@@ -48,12 +48,12 @@ export default function AllTests() {
    const [modalData, setModalData] = useState(initialState);
 
    useEffect(() => {
-      if(modalData.testName.trim() === '' || modalData.testType.trim() === ''){
+      if(modalData.testName.trim() === '' || modalData.testType.trim() === '' || csvFile === null){
          setSubmitBtnDisabled(true)
       }else{
          setSubmitBtnDisabled(false)
       }
-   }, [modalData])
+   }, [modalData, csvFile])
 
 
    const handleClose = () => {
