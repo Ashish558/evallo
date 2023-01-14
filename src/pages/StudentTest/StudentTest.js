@@ -74,7 +74,7 @@ export default function StudentTest() {
                console.log('all-assigned-tests', res.data.data.test);
 
                let tempAllTests = res.data.data.test.map(test => {
-                  const { testId, studentId, dueDate, multiple, isCompleted, isStarted, createdAt, } = test
+                  const { testId, studentId, dueDate, multiple, isCompleted, isStarted, createdAt, updatedAt} = test
                   if(testId === null) return
                   return {
                      testName: testId ? testId.testName : '-',
@@ -90,11 +90,12 @@ export default function StudentTest() {
                      isCompleted: test.isCompleted,
                      isStarted: test.isStarted,
                      createdAt,
-                     assignedTestId: test._id
+                     assignedTestId: test._id,
+                     updatedAt
                   }
                })
                let sortedArr = tempAllTests.sort(function (a, b) {
-                  return new Date(b.createdAt) - new Date(a.createdAt);
+                  return new Date(b.updatedAt) - new Date(a.updatedAt);
                });
                setAllTests(sortedArr.filter(item => item !== undefined))
             })
@@ -132,7 +133,7 @@ export default function StudentTest() {
                if (res.error) return console.log('assigned test parent resp', res.error);
                console.log('assigned test parent resp', res.data);
                let tempAllTests = res.data.data.test.map(test => {
-                  const { testId, studentId, isCompleted, multiple, isStarted, dueDate, createdAt } = test
+                  const { testId, studentId, isCompleted, multiple, isStarted, dueDate, createdAt, updatedAt } = test
                   if(testId === null) return
                   return {
                      testName: testId ? testId.testName : '-',
@@ -146,11 +147,12 @@ export default function StudentTest() {
                      pdfLink: testId ? testId.pdf : null,
                      testId: testId ? testId._id : '-',
                      isCompleted: test.isCompleted,
-                     assignedTestId: test._id
+                     assignedTestId: test._id,
+                     updatedAt
                   }
                })
                let sortedArr = tempAllTests.sort(function (a, b) {
-                  return new Date(b.createdAt) - new Date(a.createdAt);
+                  return new Date(b.updatedAt) - new Date(a.updatedAt);
                });
                setAllTests(sortedArr.filter(item => item !== undefined))
             })
@@ -245,7 +247,7 @@ export default function StudentTest() {
                      data={persona === 'parent' ? filteredTests : allTests}
                      tableHeaders={tableHeaders}
                      maxPageSize={10}
-                     excludes={['_id', 'studentId', 'testId', 'isCompleted', 'pdfLink', 'isStarted', 'createdAt', "assignedTestId"]}
+                     excludes={['_id', 'studentId', 'testId', 'isCompleted', 'pdfLink', 'isStarted', 'createdAt', "assignedTestId", 'updatedAt']}
                   />
                </div>
             </div>

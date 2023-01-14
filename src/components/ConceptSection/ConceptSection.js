@@ -46,7 +46,7 @@ const ConceptSection = () => {
             if (res.error) return console.log('assigned test parent resp', res.error);
             console.log('assigned test parent resp', res.data);
             let tempAllTests = res.data.data.test.map(test => {
-               const { testId, studentId, isCompleted, multiple, isStarted, dueDate, createdAt } = test
+               const { testId, studentId, isCompleted, multiple, isStarted, dueDate, createdAt, updatedAt } = test
                if (testId === null) return
                return {
                   testName: testId ? testId.testName : '-',
@@ -61,11 +61,12 @@ const ConceptSection = () => {
                   testId: testId ? testId._id : '-',
                   isCompleted: test.isCompleted,
                   isStarted: test.isStarted,
-                  assignedTestId: test._id
+                  assignedTestId: test._id,
+                  updatedAt
                }
             })
             let sortedArr = tempAllTests.sort(function (a, b) {
-               return new Date(b.createdAt) - new Date(a.createdAt);
+               return new Date(b.updatedAt) - new Date(a.updatedAt);
             });
             setAllTests(sortedArr.filter(item => item !== undefined))
          })
