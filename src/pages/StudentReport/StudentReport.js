@@ -8,7 +8,7 @@ import Table from '../../components/Table/Table'
 import { useNavigate, useParams } from 'react-router-dom'
 import BarGraph from '../../components/BarGraph/BarGraph'
 import { useLazyGetAnswersQuery, useLazyGetSingleAssignedTestQuery, useLazyGetTestDetailsQuery, useLazyGetTestResponseQuery } from '../../app/services/test'
-import { getDate, getDuration, getFormattedDate, millisToMinutesAndSeconds } from '../../utils/utils'
+import { getDate, getDuration, getFormattedDate, getScoreStr, millisToMinutesAndSeconds } from '../../utils/utils'
 import { useLazyGetTutorDetailsQuery } from '../../app/services/users'
 import { useSelector } from 'react-redux'
 
@@ -91,6 +91,7 @@ export default function StudentReport() {
    const [getAnswers, getAnswersResp] = useLazyGetAnswersQuery()
    const [answerKeySubjects, setAnswerKeySubjects] = useState([])
 
+   const [scoreStr, setScoreStr] = useState('')
 
    // console.log('params studnt', studentId);
    //get answer key
@@ -99,17 +100,19 @@ export default function StudentReport() {
       if (isSet === true) return
       console.log('response data', responseData);
       // let sortedSubjects = responseData.subjects.map(sub => sub.name)
-
+      let score = getScoreStr(responseData.testType, responseData.score, responseData.subjects)
+      console.log(score);
+      setDisplayScore(score)
       getAnswers(id)
          .then(res => {
             if (res.error) return console.log(res.error);
-            // console.log('answer key', res.data.data);
+            console.log('answer key', res.data.data);
 
             let answerKeyData = { ...res.data.data }
-            console.log('answer key subjects', answerKeyData.answer.subjects);
+            // console.log('answer key subjects', answerKeyData.answer.subjects);
             let subResponse = answerKeyData.answer.subjects.map(sub => {
                let currSub = responseData.subjects.find(item => item.name === sub.name)
-               console.log('currSub', currSub);
+               // console.log('currSub', currSub);
 
                let conceptsToInclude = {}
 
@@ -150,7 +153,7 @@ export default function StudentReport() {
 
             // console.log('subjects', subjects);
             console.log('updated', updated);
-            console.log('responseData', responseData);
+            // console.log('responseData', responseData);
             // console.log('subResponse', subResponse);
 
             setResponseData(prev => {
@@ -229,11 +232,11 @@ export default function StudentReport() {
                   }
                })
 
-               setDisplayScore({
-                  cumulative: `C${set1Score + set2Score}`,
-                  right: `V${set1Score}|M${set2Score}`,
-                  isSat: true
-               })
+               // setDisplayScore({
+               //    cumulative: `C${set1Score + set2Score}`,
+               //    right: `V${set1Score}|M${set2Score}`,
+               //    isSat: true
+               // })
             } else if (res.data.data.response.testType === 'SAT') {
                let scoreArr = []
                let total = 0
@@ -241,11 +244,11 @@ export default function StudentReport() {
                   total += sub.no_of_correct
                   scoreArr.push(sub.no_of_correct)
                })
-               setDisplayScore({
-                  cumulative: `C${total / subjects.length}`,
-                  right: `E${scoreArr[0]} M${scoreArr[1]} R${scoreArr[2]} C${scoreArr[3]}`,
-                  isSat: false
-               })
+               // setDisplayScore({
+               //    cumulative: `C${total / subjects.length}`,
+               //    right: `E${scoreArr[0]} M${scoreArr[1]} R${scoreArr[2]} C${scoreArr[3]}`,
+               //    isSat: false
+               // })
             }
             setTestDetails(prev => {
                return {

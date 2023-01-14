@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { getDate, getScore } from '../../../utils/utils'
+import { getDate, getScore, getScoreStr } from '../../../utils/utils'
 import downloadImage from "../../../assets/icons/download.png";
 import { useSelector } from 'react-redux';
 import { useLazyGetTestResponseQuery } from '../../../app/services/test';
@@ -28,8 +28,10 @@ export default function ParentTest({ styles, assignedTestId, testId, testName, s
                   return
                }
                // console.log('Resp score', res.data.data.response);
-               let scr = getScore(res.data.data.response.testType, res.data.data.response.subjects)
-               setScore(`${scr.cumulative} ${scr.right}`)
+               let responseData = res.data.data.response
+               let score = getScoreStr(responseData.testType, responseData.score, responseData.subjects)
+               // let scr = getScore(res.data.data.response.testType, res.data.data.response.subjects)
+               setScore(`${score.cumulative} ${score.right}`)
             })
       }
    }, [])

@@ -3,7 +3,7 @@ import Stat from "./../../assets/icons/stat.svg"
 import Download from "./../../assets/icons/download.png"
 import { useSelector } from 'react-redux';
 import { useLazyGetTestResponseQuery } from '../../app/services/test';
-import { getScore } from '../../utils/utils';
+import { getScore, getScoreStr } from '../../utils/utils';
 import { useNavigate } from 'react-router-dom';
 
 export const TestItem = ({ testName, assignedTestId, dueDate, pdfLink, testId, studentId, isCompleted, isStarted }) => {
@@ -28,8 +28,10 @@ export const TestItem = ({ testName, assignedTestId, dueDate, pdfLink, testId, s
             return
           }
           // console.log('Resp score', res.data.data.response);
-          let scr = getScore(res.data.data.response.testType, res.data.data.response.subjects)
-          setScore(`${scr.cumulative} ${scr.right}`)
+          let responseData =  res.data.data.response
+          let score = getScoreStr(responseData.testType, responseData.score, responseData.subjects)
+          // let scr = getScore(res.data.data.response.testType, res.data.data.response.subjects)
+          setScore(`${score.cumulative} ${score.right}`)
         })
     }
   }, [])
@@ -67,7 +69,7 @@ export const TestItem = ({ testName, assignedTestId, dueDate, pdfLink, testId, s
 
           {/* {action === 'Start' && <div className="w-full font-bold bg-[#F6A429CC] px-2 py-2 text-center text-white rounded-[6px]">{action}</div>} */}
           {isCompleted === true ?
-            <div className="cursor-pointer w-full font-bold bg-[#CBC0F5]/50 px-2 py-2 text-center text-black rounded-[6px]">
+            <div className="cursor-pointer w-full text-sm font-bold bg-[#CBC0F5]/50 px-2 py-2 text-center text-black rounded-[6px]">
               {score}
             </div> :
             isStarted === true ?

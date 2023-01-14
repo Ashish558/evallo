@@ -16,7 +16,7 @@ import { useLazyGetSettingsQuery } from "../../app/services/session";
 import { useLazyGetTutorDetailsQuery, useLazyGetUserDetailQuery, usePostTutorDetailsMutation, useUpdateTutorDetailsMutation, useUpdateUserDetailsMutation } from "../../app/services/users";
 import { useSelector } from "react-redux";
 import { useLazyGetTestResponseQuery } from "../../app/services/test";
-import { getScore } from "../../utils/utils";
+import { getScore, getScoreStr } from "../../utils/utils";
 
 //can b made dynamic
 export default function TableItem({ item, dataFor, onClick, excludes, fetch }) {
@@ -57,8 +57,10 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch }) {
                      return
                   }
                   // console.log('Resp score', res.data.data.response);
-                  let scr = getScore(res.data.data.response.testType, res.data.data.response.subjects)
-                  setScore(`${scr.cumulative} ${scr.right}`)
+                  let responseData =  res.data.data.response
+                  let score = getScoreStr(responseData.testType, responseData.score, responseData.subjects)
+                  // let scr = getScore(res.data.data.response.testType, res.data.data.response.subjects)
+                  setScore(`${score.cumulative} ${score.right}`)
                })
          }
       }
@@ -77,9 +79,11 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch }) {
                      console.log('resp err', res.error)
                      return
                   }
-                  // console.log('Resp score', res.data.data.response);
-                  let scr = getScore(res.data.data.response.testType, res.data.data.response.subjects)
-                  setScore(`${scr.cumulative} ${scr.right}`)
+                  console.log('Resp score', res.data.data.response);
+                  let responseData =  res.data.data.response
+                  let score = getScoreStr(responseData.testType, responseData.score, responseData.subjects)
+                  // let scr = getScore(res.data.data.response.testType, res.data.data.response.subjects)
+                  setScore(`${score.cumulative} ${score.right}`)
                })
          }
       }

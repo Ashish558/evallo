@@ -177,6 +177,59 @@ export function getDate(arg) {
    return `${month} ${date.getDate()}, ${date.getFullYear()}`
 }
 
+export const getScoreStr = (testType, score, subjects) => {
+   if (!score) return ''
+   if (!testType) return ''
+   if (!subjects) return ''
+
+   if (testType === 'SAT') {
+      let verbalTotal = 0
+      let MathsTotal = 0
+
+      subjects.map(sub => {
+         if (sub.scoreScale === 'Scale1') {
+            verbalTotal += score['Scale1']
+         }
+         if (sub.scoreScale === 'Scale2') {
+            verbalTotal += score['Scale2']
+         }
+         if (sub.scoreScale === 'Scale3') {
+            MathsTotal += score['Scale3']
+         }
+      })
+      return {
+         cumulative: `C${verbalTotal + MathsTotal}`,
+         right: `V${verbalTotal}|M${MathsTotal}`
+      }
+   } else {
+      let scoreArr = []
+      let total =
+         subjects.map((sub, idx) => {
+            total += sub.no_of_correct
+            if (sub.scoreScale === 'Scale1') {
+               total += score['Scale1']
+               scoreArr.push(score['Scale1'])
+            }
+            if (sub.scoreScale === 'Scale2') {
+               total += score['Scale2']
+               scoreArr.push(score['Scale2'])
+            }
+            if (sub.scoreScale === 'Scale3') {
+               total += score['Scale3']
+               scoreArr.push(score['Scale3'])
+            }
+            if (sub.scoreScale === 'Scale4') {
+               total += score['Scale4']
+               scoreArr.push(score['Scale4'])
+            }
+         })
+      return {
+         cumulative: `C${total / subjects.length}`,
+         right: `E${scoreArr[0]}|M${scoreArr[1]}|R${scoreArr[2]}|C${scoreArr[3]}`,
+      }
+   }
+}
+
 export const getScore = (testType, subjects) => {
    if (testType === 'SAT') {
       let set1Score = 0
