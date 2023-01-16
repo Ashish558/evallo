@@ -98,6 +98,7 @@ export default function AssignedTests() {
       } else {
          let date = new Date(modalData.date)
          let currentDate = new Date()
+         currentDate.setHours(0,0,0,0);
          let dueDate = date.getDate()
          console.log(date - currentDate);
          if (date - currentDate < 0) {
