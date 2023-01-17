@@ -17,6 +17,7 @@ import calendar from "./../../assets/calendar/calendar.svg"
 import AssignedTestIndicator from "../../components/AssignedTestIndicator/AssignedTestIndicator";
 import { useSelector } from "react-redux";
 import { getDuration, getFormattedDate } from "../../utils/utils";
+import FilterItems from "../../components/FilterItems/filterItems";
 
 const optionData = ["1", "2", "3", "4", "5"];
 const timeLimits = ['Regular', '1.5x', 'Unlimited']
@@ -82,11 +83,14 @@ export default function AssignedTests() {
 
    const [students, setStudents] = useState([]);
    const [allAssignedTests, setAllAssignedTests] = useState([])
+   const [filteredTests, setFilteredTests] = useState([])
 
    const [testsData, setTestsData] = useState([]);
    const [maxPageSize, setMaxPageSize] = useState(10);
    const [validData, setValidData] = useState(true);
    const [submitBtnDisabled, setSubmitBtnDisabled] = useState(false)
+
+   const [filterItems, setFilterItems] = useState([])
 
    useEffect(() => {
       setValidData(modalData.name && modalData.limit && modalData.date && modalData.test === '');
@@ -98,7 +102,7 @@ export default function AssignedTests() {
       } else {
          let date = new Date(modalData.date)
          let currentDate = new Date()
-         currentDate.setHours(0,0,0,0);
+         currentDate.setHours(0, 0, 0, 0);
          let dueDate = date.getDate()
          console.log(date - currentDate);
          if (date - currentDate < 0) {
@@ -166,6 +170,7 @@ export default function AssignedTests() {
                return new Date(b.createdAt) - new Date(a.createdAt);
             });
             setAllAssignedTests(sortedArr)
+            setFilteredTests(sortedArr)
          })
    }
 
@@ -194,7 +199,7 @@ export default function AssignedTests() {
                return new Date(b.createdAt) - new Date(a.createdAt);
             });
             setAllAssignedTests(sortedArr)
-            setAllAssignedTests(data)
+            setFilteredTests(sortedArr)
          })
    }
 
@@ -252,8 +257,8 @@ export default function AssignedTests() {
          .then(res => {
             if (res.error) {
                console.log(res.error);
-               if(res.error.data){
-                  if(res.error.data.message){
+               if (res.error.data) {
+                  if (res.error.data.message) {
                      alert(res.error.data.message)
                      return
                   }
@@ -268,6 +273,62 @@ export default function AssignedTests() {
          })
 
    }
+
+   useEffect(() => {
+      let tempdata = [...allAssignedTests]
+      // console.log(usersData)
+
+      //NAME FILTER 
+      if (filterData.studentName !== '') {
+         const regex2 = new RegExp(`${filterData.studentName.toLowerCase()}`, 'i')
+         tempdata = tempdata.filter(test => test.studentName.match(regex2))
+      } else {
+         tempdata = tempdata.filter(test => test.studentName !== '')
+      }
+      //TEST NAME FILTER 
+      if (filterData.testName !== '') {
+         const regex2 = new RegExp(`${filterData.testName.toLowerCase()}`, 'i')
+         tempdata = tempdata.filter(test => test.testName.match(regex2))
+      } else {
+         tempdata = tempdata.filter(test => test.testName !== '')
+      }
+
+      if (filterData.status !== '') {
+         const selectedStatus = getStatus(filterData.status)
+         tempdata = tempdata.filter(user => user.status === selectedStatus)
+      } else {
+         tempdata = tempdata.filter(user => user.status !== '')
+      }
+
+      setFilteredTests(tempdata)
+   }, [filterData])
+
+   const removeFilter = key => {
+      let tempFilterData = { ...filterData }
+      tempFilterData[key] = ''
+      setFilterData(tempFilterData)
+   }
+
+   const getStatus = (status) => {
+      if(status === 'Completed') return 'completed'
+      if(status === 'Started') return 'started'
+      if(status === 'Not Started') return 'notStarted'
+   }
+   
+   useEffect(() => {
+      let arr = Object.keys(filterData).map(key => {
+         if (filterData[key] !== '') {
+            return {
+               text: filterData[key],
+               type: key,
+               removeFilter: (key) => removeFilter(key)
+            }
+         }
+      }).filter(item => item !== undefined)
+      setFilterItems(arr)
+   }, [filterData])
+
+   const onRemoveFilter = (item) => item.removeFilter(item.type)
 
    useEffect(() => {
       setTableData(tempTableData)
@@ -346,12 +407,15 @@ export default function AssignedTests() {
                   <InputSelect
                      value={filterData.status}
                      onChange={val => setFilterData({ ...filterData, status: val })}
-                     optionData={optionData}
+                     optionData={['Started', 'Not Started', 'Completed']}
                      inputContainerClassName="px-[20px] py-[16px] bg-white"
                      placeholder="Completion Status"
                      parentClassName="w-full mr-4 text-sm"
                      type="select"
                   />
+               </div>
+               <div className='mt-4' >
+                  <FilterItems items={filterItems} setData={setFilterItems} onRemoveFilter={onRemoveFilter} />
                </div>
 
                <div className="flex items-center justify-end gap-[20px] mt-[10px]">
@@ -366,7 +430,7 @@ export default function AssignedTests() {
                   <Table
                      onClick={{ handleResend }}
                      dataFor='assignedTests'
-                     data={allAssignedTests}
+                     data={filteredTests}
                      excludes={['createdAt', 'dueDate', 'assignedTestId']}
                      tableHeaders={tableHeaders}
                      maxPageSize={maxPageSize}
