@@ -163,6 +163,117 @@ export const getBackground = (totalLeangth, idx) => {
    ]
    return backgrounds[idx]
 }
+
+export function millisToMinutesAndSeconds(millis) {
+   var minutes = Math.floor(millis / 60000);
+   var seconds = ((millis % 60000) / 1000).toFixed(0);
+   return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
+}
+
+export function getDate(arg) {
+   let date = new Date(arg)
+   const month = date.toLocaleString('default', { month: 'long' });
+
+   return `${month} ${date.getDate()}, ${date.getFullYear()}`
+}
+
+export const getScoreStr = (testType, score, subjects) => {
+   // if (!score) return ''
+   // if (!testType) return ''
+   // if (!subjects) return ''
+
+   if (testType === 'SAT') {
+      let verbalTotal = 0
+      let MathsTotal = 0
+      let isMathsAdded = false
+      subjects.map(sub => {
+         if (sub.scoreScale === 'Scale1') {
+            verbalTotal += score['Scale1']
+         }
+         if (sub.scoreScale === 'Scale2') {
+            verbalTotal += score['Scale2']
+         }
+         if (sub.scoreScale === 'Scale3') {
+            if(isMathsAdded === false){
+               MathsTotal += score['Scale3']
+               isMathsAdded = true
+            }
+         }
+      })
+      return {
+         cumulative: `C${verbalTotal + MathsTotal}`,
+         right: `V${verbalTotal}|M${MathsTotal}`
+      }
+   } else {
+      let scoreArr = []
+      let total = 0
+      subjects.map((sub, idx) => {
+         total += sub.no_of_correct
+         if (sub.scoreScale === 'Scale1') {
+            total += score['Scale1']
+            scoreArr.push(score['Scale1'])
+         } else if (sub.scoreScale === 'Scale2') {
+            total += score['Scale2']
+            scoreArr.push(score['Scale2'])
+         } else if (sub.scoreScale === 'Scale3') {
+            total += score['Scale3']
+            scoreArr.push(score['Scale3'])
+         } else if (sub.scoreScale === 'Scale4') {
+            total += score['Scale4']
+            scoreArr.push(score['Scale4'])
+         }
+      })
+      let total2 = 0
+      Object.keys(score).map(key => {
+         total2 += score[key]
+      })
+      // console.log('total', total2);
+      // console.log('subjects.length', subjects.length);
+      return {
+         cumulative: `C${total2 / subjects.length}`,
+         right: `E${scoreArr[0]}|M${scoreArr[1]}|R${scoreArr[2]}|C${scoreArr[3]}`,
+      }
+   }
+}
+
+export const getScore = (testType, subjects) => {
+   if (testType === 'SAT') {
+      let set1Score = 0
+      let set2Score = 0
+      subjects.map((sub, idx) => {
+         if (idx === 0 || idx === 1) {
+            set1Score += sub.no_of_correct
+         } else {
+            set2Score += sub.no_of_correct
+         }
+      })
+
+      return {
+         cumulative: `C${set1Score + set2Score}`,
+         right: `V${set1Score}|M${set2Score}`,
+      }
+   } else if (testType === 'SAT') {
+      let scoreArr = []
+      let total = 0
+      subjects.map((sub, idx) => {
+         total += sub.no_of_correct
+         scoreArr.push(sub.no_of_correct)
+      })
+      return {
+         cumulative: `C${total / subjects.length}`,
+         right: `E${scoreArr[0]} M${scoreArr[1]} R${scoreArr[2]} C${scoreArr[3]}`,
+
+      }
+   }
+}
+
+export const getDuration = val => {
+   if (val === 1) return 'Regular'
+   if (val === 1.5) return '1.5x'
+   if (val === 10) return 'Unlimited'
+   return '-'
+}
+
 // // timezones
 // function getCurrentLocalDateTime() {
 //    return moment().format();

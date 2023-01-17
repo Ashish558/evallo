@@ -10,6 +10,10 @@ import shivam from '../../assets/images/tutors/shivam-shrivastab.png'
 import { useLazyGetParentTutorsQuery } from "../../app/services/users";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import InputSelect from "../InputSelect/InputSelect";
+import { useLazyGetParentsAssignedTestsQuery } from "../../app/services/test";
+import { getDate, getDuration, getFormattedDate } from "../../utils/utils";
+import ParentTest from "./ParentTest/ParentTest";
 
 
 const initData = [
@@ -28,16 +32,52 @@ const ConceptSection = () => {
    const [tutors, setTutors] = useState([])
    const tutorCarouselRef = useRef()
    const { id } = useSelector(state => state.user)
+   const [sub, setSub] = useState('Math')
+
+   const [allTests, setAllTests] = useState([])
 
    const [fetchTutors, fetchTutorsResp] = useLazyGetParentTutorsQuery()
-   const navigate = useNavigate();
-   const [startDate, setStartDate] = useState("");
-   const [endDate, setEndDate] = useState("");
+   const navigate = useNavigate()
+   const [fetchAssignedTests, fetchAssignedTestsResp] = useLazyGetParentsAssignedTestsQuery()
 
+   useEffect(() => {
+      fetchAssignedTests(id)
+         .then(res => {
+            if (res.error) return console.log('assigned test parent resp', res.error);
+            console.log('assigned test parent resp', res.data);
+            let tempAllTests = res.data.data.test.map(test => {
+               const { testId, studentId, isCompleted, multiple, isStarted, dueDate, createdAt, updatedAt } = test
+               if (testId === null) return
+               return {
+                  testName: testId ? testId.testName : '-',
+                  assignedOn: getFormattedDate(new Date(createdAt)),
+                  studentId: studentId ? studentId : '-',
+                  dueDate: getFormattedDate(new Date(test.dueDate)),
+                  duration: multiple ? getDuration(multiple) : '-',
+                  status: isCompleted === true ? 'completed' : isStarted ? 'started' : 'notStarted',
+                  scores: '-',
+                  _id: test._id,
+                  pdfLink: testId ? testId.pdf : null,
+                  testId: testId ? testId._id : '-',
+                  isCompleted: test.isCompleted,
+                  isStarted: test.isStarted,
+                  assignedTestId: test._id,
+                  updatedAt
+               }
+            })
+            let sortedArr = tempAllTests.sort(function (a, b) {
+               return new Date(b.updatedAt) - new Date(a.updatedAt);
+            });
+            setAllTests(sortedArr.filter(item => item !== undefined))
+         })
+
+   }, [])
 
    useEffect(() => {
       fetchTutors({ id })
          .then(res => {
+            if (res.error) return console.log(res.error);
+            // console.log(res.data);
             res.data.tutors.length > 0 && setTutors(res.data.tutors)
          })
    }, [])
@@ -59,6 +99,8 @@ const ConceptSection = () => {
       }
    }, [buttons, buttons.length])
 
+   // console.log(allTests);
+
    return (
       <div
          className="flex justify-between ml-[35px]"
@@ -68,86 +110,14 @@ const ConceptSection = () => {
             <div className="flex items-center" >
                <h1>Concept Chart</h1>
 
-               <div className="dropdown ml-auto" id={styles.subject}>
-                  <label
-                     className="flex items-center text-sm"
-                     id={styles.dropdownHeading}
-                     tabIndex={0}
-                     htmlFor="subVisisbility"
-                  >
-                     {subject}
-                     <img className="mr-2" id={styles.arrowDown}
-                        src={arrowDown}
-                        style={subVisisbility === "visible"
-                           ? { transform: "rotate(180deg)" }
-                           : { transform: "rotate(0)" }
-                        }
-                        alt=""
-                     />
-                  </label>
-                  <input
-                     type="checkbox"
-                     className="hidden"
-                     id="subVisisbility"
-                     onChange={(e) => setSubVisisbility(e.target.checked === true ? "visible" : "hidden")}
-                  />
-                  <ul
-                     tabIndex={0}
-                     className={`dropdown-content menu p-2 shadow bg-base-100 rounded-box absolute bg-white z-10 text-sm w-52 ${subVisisbility}`}
-                  >
-                     <li
-                        onClick={(e) => {
-                           setSubject(e.target.innerText);
-                           setSubVisisbility("hidden");
-                           document
-                              .getElementById("subVisisbility")
-                              .click();
-                        }}
-                        className="py-2 cursor-pointer"
-                     >
-                        Maths
-                     </li>
-                     <li
-                        onClick={(e) => {
-                           setSubject(e.target.innerText);
-                           setSubVisisbility("hidden");
-                           document
-                              .getElementById("subVisisbility")
-                              .click();
-                        }}
-                        className="py-2 cursor-pointer"
-                     >
-                        Grammar
-                     </li>
-                     <li
-                        onClick={(e) => {
-                           setSubject(e.target.innerText);
-                           setSubVisisbility("hidden");
-                           document
-                              .getElementById("subVisisbility")
-                              .click();
-                        }}
-                        className="py-2 cursor-pointer"
-                     >
-                        Reading
-                     </li>
-                     <li
-                        onClick={(e) => {
-                           setSubject(e.target.innerText);
-                           setSubVisisbility("hidden");
-                           document
-                              .getElementById("subVisisbility")
-                              .click();
-                        }}
-                        className="py-2 cursor-pointer"
-                     >
-                        Science
-                     </li>
-                  </ul>
-               </div>
+               <InputSelect value={sub} labelClassname='hidden'
+                  parentClassName='w-[200px] mr-5 ml-auto'
+                  inputContainerClassName='bg-[#d9d9d980] pt-2 pb-2'
+                  optionData={['Math', 'Grammar', 'Reading', 'Science']}
+                  onChange={val => setSub(val)} />
 
-               <div className="dropdown" id={styles.data}>
-                  {/* <label
+               {/* <div className="dropdown" id={styles.data}>
+                  <label
                      className="flex items-center text-sm"
                      id={styles.dropdownHeading}
                      tabIndex={0}
@@ -225,18 +195,8 @@ const ConceptSection = () => {
                      >
                         Apr 20, 2022 - May 30, 2022
                      </li>
-                  </ul> */}
-                  <div className="flex gap-[21px]">
-                     <div className="relative">
-                           <label htmlFor="startDate" className="bg-[#D9D9D980] px-[12px] py-[10px] rounded-[10px] cursor-pointer">{startDate ? startDate : "Start Date"}</label>
-                           <input type="date" placeholder="Start Date" name="" onChange={e => setStartDate(e.target.value)} id="startDate" className="absolute invisible bottom-0" />
-                        </div>
-                        <div className="relative">
-                           <label htmlFor="endDate" className="bg-[#D9D9D980] px-[12px] py-[10px] rounded-[10px] cursor-pointer">{endDate ? endDate : "End Date"}</label>
-                           <input type="date" placeholder="Start Date" name="" onChange={e => setEndDate(e.target.value)} id="endDate" className="absolute invisible bottom-0" />
-                        </div>
-                     </div>
-                  </div>
+                  </ul>
+               </div> */}
 
             </div>
 
@@ -254,28 +214,28 @@ const ConceptSection = () => {
 
                <div id={styles.tutor}>
                   <h2>Your Tutor</h2>
-                  { tutors.length >= 1 &&
+                  {tutors.length >= 1 ?
                      <OwlCarousel ref={tutorCarouselRef} className="owl-theme" loop margin={8} items={1}>
                         {
                            tutors.map((tutor, idx) => {
                               return (
                                  <div key={idx} className="item flex" style={{ width: "100%" }}>
-                                    <div className="w-3/5">
-                                       <h5 className={styles.tag}>
+                                    <div className="w-3/5 flex justify-center flex-col">
+                                       {/* <h5 className={styles.tag}>
                                           WIZARD TUTOR | UNDERGRADUATE
-                                       </h5>
-                                       <h3> {`${tutor.firstName} ${tutor.lastName}`} </h3>
+                                       </h5> */}
+                                       <h3 className="mt-0 mb-1"> {`${tutor.firstName} ${tutor.lastName}`} </h3>
                                        <p>
                                           {/* Lorem ipsum dolor sit amet, consectetur
                                           adipiscing elit. */}
                                        </p>
-                                       <button className="btn-gold" style={{ padding: '7px 9px' }}
+                                       <button className="btn-gold" style={{ padding: '7px 9px', maxWidth: '110px' }}
                                           onClick={() => tutor._id && navigate(`/profile/tutor/${tutor._id}`)} >
                                           View Profile
                                        </button>
                                     </div>
                                     <div className="w-2/5">
-                                       <img src={shivam} className="mx-auto w-full object-contain	" alt="" />
+                                       <img src={tutor.photo ? tutor.photo : '/images/default.jpeg'} className="mx-auto w-full object-contain w-[140px] h-[140px] rounded-full" alt="" />
                                     </div>
                                  </div>
                               )
@@ -283,182 +243,21 @@ const ConceptSection = () => {
                         }
 
                      </OwlCarousel>
+                     :
+                     <p className="text-white font-semibold pt-8 not-italic pb-8 text-lg" style={{ fontSize: '18px', fontStyle: 'normal', fontWeight: '500' }} >
+                        No tutors to display
+                     </p>
                   }
                </div>
 
             </div>
-            <div id={styles.practiceTestContainer}>
-               <h2 className="mb-[6px]" id={styles.practiceTestHeader}>Assigned Tests</h2>
-               <div id={styles.listedData}>
-                  {/* <div
-                     className="flex items-center justify-between"
-                     style={{ padding: "10px 0" }}
-                  >
-                     <div className="w-1/2">
-                        <div className={styles.listedDataItem}>
-                           <h1>SAT B2</h1>
-                           <div
-                              className="flex mr-2"
-                              style={{ gap: "6px" }}
-                           >
-                              <p className="text-xs font-semibold opacity-50">Due Date</p>
-                              <h3 className="opacity-60 text-xs font-semibold">June 20, 2022</h3>
-                           </div>
-                        </div>
-                     </div>
-                     <div className="w-1/2">
-                        <div
-                           className="flex items-center justify-end"
-                           style={{ gap: "10px" }}
-                        >
-                           <img src={downloadImage} alt="" />
-                           <div className="button bg-[#EFECF9] p-[10px] rounded-[6px] w-[111px] text-sm font-semibold">
-                              Not Started
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-                  <div
-                     className="flex items-center justify-between"
-                     style={{ padding: "10px 0" }}
-                  >
-                     <div className="w-1/2">
-                        <div className={styles.listedDataItem}>
-                           <h1>SAT B2</h1>
-                           <div
-                              className="flex mr-2"
-                              style={{ gap: "6px" }}
-                           >
-                              <p className="text-xs font-semibold opacity-50">Due Date</p>
-                              <h3 className="opacity-60 text-xs font-semibold">June 20, 2022</h3>
-                           </div>
-                        </div>
-                     </div>
-                     <div className="w-1/2">
-                        <div
-                           className="flex items-center justify-end"
-                           style={{ gap: "10px" }}
-                        >
-                           <img src={downloadImage} alt="" />
-                           <div className="button bg-[#EFECF9] p-[10px] rounded-[6px] w-[111px] text-sm font-semibold">
-                              Started
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-                  <div
-                     className="flex items-center justify-between"
-                     style={{ padding: "10px 0" }}
-                  >
-                     <div className="w-1/2">
-                        <div className={styles.listedDataItem}>
-                           <h1>SAT B2</h1>
-                           <div
-                              className="flex mr-2"
-                              style={{ gap: "6px" }}
-                           >
-                              <p className="text-xs font-semibold opacity-50">Due Date</p>
-                              <h3 className="opacity-60 text-xs font-semibold">June 20, 2022</h3>
-                           </div>
-                        </div>
-                     </div>
-                     <div className="w-1/2">
-                        <div
-                           className="flex items-center justify-end"
-                           style={{ gap: "10px" }}
-                        >
-                           <img src={downloadImage} alt="" />
-                           <div className="button bg-[#EFECF9] p-[10px] rounded-[6px] w-[111px] text-sm font-semibold">
-                              1250 / 1250
-                           </div>
-                        </div>
-                     </div>
-                  </div>
+            <div id={styles.practiceTestContainer} >
+               <h2 className="mb-[6px]" id={styles.practiceTestHeader}>Practice Test</h2>
+               <div id={styles.listedData} className='scrollbar-content scrollbar-vertical' >
 
-                  <div
-                     className="flex items-center justify-between"
-                     style={{ padding: "10px 0" }}
-                  >
-                     <div className="w-1/2">
-                        <div className={styles.listedDataItem}>
-                           <h1>SAT B2</h1>
-                           <div
-                              className="flex mr-2"
-                              style={{ gap: "6px" }}
-                           >
-                              <p className="text-xs font-semibold opacity-50">Due Date</p>
-                              <h3 className="opacity-60 text-xs font-semibold">June 20, 2022</h3>
-                           </div>
-                        </div>
-                     </div>
-                     <div className="w-1/2">
-                        <div
-                           className="flex items-center justify-end"
-                           style={{ gap: "10px" }}
-                        >
-                           <img src={downloadImage} alt="" />
-                           <div className="button bg-[#EFECF9] p-[10px] rounded-[6px] w-[111px] text-sm font-semibold">
-                              Not Started
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-                  <div
-                     className="flex items-center justify-between"
-                     style={{ padding: "10px 0" }}
-                  >
-                     <div className="w-1/2">
-                        <div className={styles.listedDataItem}>
-                           <h1>SAT B2</h1>
-                           <div
-                              className="flex mr-2"
-                              style={{ gap: "6px" }}
-                           >
-                              <p className="text-xs font-semibold opacity-50">Due Date</p>
-                              <h3 className="opacity-60 text-xs font-semibold">June 20, 2022</h3>
-                           </div>
-                        </div>
-                     </div>
-                     <div className="w-1/2">
-                        <div
-                           className="flex items-center justify-end"
-                           style={{ gap: "10px" }}
-                        >
-                           <img src={downloadImage} alt="" />
-                           <div className="button bg-[#EFECF9] p-[10px] rounded-[6px] w-[111px] text-sm font-semibold">
-                              Started
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-                  <div
-                     className="flex items-center justify-between"
-                     style={{ padding: "10px 0" }}
-                  >
-                     <div className="w-1/2">
-                        <div className={styles.listedDataItem}>
-                           <h1>SAT B2</h1>
-                           <div
-                              className="flex mr-2"
-                              style={{ gap: "6px" }}
-                           >
-                              <p className="text-xs font-semibold opacity-50">Due Date</p>
-                              <h3 className="opacity-60 text-xs font-semibold">June 20, 2022</h3>
-                           </div>
-                        </div>
-                     </div>
-                     <div className="w-1/2">
-                        <div
-                           className="flex items-center justify-end"
-                           style={{ gap: "10px" }}
-                        >
-                           <img src={downloadImage} alt="" />
-                           <div className="button bg-[#EFECF9] p-[10px] rounded-[6px] w-[111px] text-sm font-semibold">
-                              1250 / 1250
-                           </div>
-                        </div>
-                     </div>
-                  </div> */}
+                  {allTests.map(test => {
+                     return <ParentTest styles={styles} {...test} />
+                  })}
 
                </div>
             </div>

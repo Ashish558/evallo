@@ -16,6 +16,7 @@ import { useAddPdfMutation, useAddTestMutation } from "../../app/services/test";
 import { BASE_URL } from "../../app/constants/constants";
 import StudentTest from "../StudentTest/StudentTest";
 import FilterItems from "../../components/FilterItems/filterItems";
+import { useSelector } from "react-redux";
 
 const optionData = ["option 1", "option 2", "option 3", "option 4", "option 5"];
 const testTypeOptions = ["SAT", "ACT"];
@@ -31,29 +32,39 @@ export default function AllTests() {
    const [tableData, setTableData] = useState([]);
    const [modalActive, setModalActive] = useState(false);
    const [testName, setTestName] = useState("");
-   const [pdfFile, setPDFFile] = useState({});
-   const [csvFile, setCSVFile] = useState({});
+   const [pdfFile, setPDFFile] = useState(null);
+   const [csvFile, setCSVFile] = useState(null);
    const [csvError, setCSVError] = useState("");
    const [PDFError, setPDFError] = useState("");
    const [testForDelete, setTestForDelete] = useState("");
    const [filteredTests, setFilteredTests] = useState([])
    const [filterItems, setFilterItems] = useState([])
 
+   const [submitBtnDisabled, setSubmitBtnDisabled] = useState(true)
+
    const [removeQuestionModal, setRemoveQuestionModal] = useState(false);
    const [submitTest, submitTestResp] = useAddTestMutation();
    const [submitPdf, submitPdfResp] = useAddPdfMutation();
-
    const [modalData, setModalData] = useState(initialState);
 
-   const handleClose = () =>{ 
+   useEffect(() => {
+      if(modalData.testName.trim() === '' || modalData.testType.trim() === '' || csvFile === null){
+         setSubmitBtnDisabled(true)
+      }else{
+         setSubmitBtnDisabled(false)
+      }
+   }, [modalData, csvFile])
+
+
+   const handleClose = () => {
       setModalActive(false)
       setModalData(initialState);
-      setPDFFile({})
-      setCSVFile({})
+      setPDFFile(null)
+      setCSVFile(null)
    }
    const closeRemoveModal = () => setRemoveQuestionModal(false);
 
-   const persona = sessionStorage.getItem("role");
+   const { role: persona } = useSelector(state => state.user)
 
    const openRemoveTestModal = (item) => {
       setRemoveQuestionModal(true);
@@ -88,7 +99,7 @@ export default function AllTests() {
          setCSVError("");
          setCSVFile(file);
       } else {
-         setCSVFile({});
+         setCSVFile(null);
          setCSVError("Not a CSV File");
       }
    };
@@ -100,6 +111,7 @@ export default function AllTests() {
          testName: modalData.testName,
          testType: modalData.testType,
       };
+
       submitTest(body).then(async (res) => {
          // console.log(res);
          if (res.error) {
@@ -109,20 +121,24 @@ export default function AllTests() {
          let testId = res.data.data.test._id;
          const formData = new FormData();
          formData.append("pdf", pdfFile);
-         pdfFile && await axios
-            .post(
-               `${BASE_URL}api/test/addpdf/${testId}`,
-               formData
-            )
-            .then((res) => {
-               console.log('pdf post resp', res);
-               setModalData(initialState);
-               setModalActive(false);
-               setPDFFile({});
-               // fetchTests()
-            });
+         
+         if (pdfFile !== null) {
+            console.log(pdfFile);
+            await axios
+               .post(
+                  `${BASE_URL}api/test/addpdf/${testId}`,
+                  formData
+               )
+               .then((res) => {
+                  console.log('pdf post resp', res);
+                  setModalData(initialState);
+                  setModalActive(false);
+                  setPDFFile(null);
+                  // fetchTests()
+               });
+         }
 
-         if (csvFile) {
+         if (csvFile !== null) {
             const formData = new FormData();
             formData.append("file", csvFile);
             await axios.post(`${BASE_URL}api/test/addans/${testId}`, formData)
@@ -130,11 +146,11 @@ export default function AllTests() {
                   console.log('csv post resp', res);
                   setModalData(initialState);
                   setModalActive(false);
-                  setCSVFile({});
+                  setCSVFile(null);
                   // fetchTests()
                });
          }
-
+         fetchTests()
          console.log('submitted');
       });
    };
@@ -210,11 +226,12 @@ export default function AllTests() {
                classname={"max-w-[700px] mx-auto"}
                cancelBtn={true}
                primaryBtn={{
-                  text: "Assign",
+                  text: "Create",
                   form: "add-test-form",
                   onClick: handleSubmit,
                   type: "submit",
-                  className: 'w-[123px] pl-6 pr-6'
+                  className: 'w-[123px] pl-6 pr-6 disabled:opacity-70',
+                  disabled: submitBtnDisabled
                }}
                handleClose={handleClose}
                body={
@@ -270,7 +287,7 @@ export default function AllTests() {
                                  <label
                                     htmlFor="pdf"
                                     className={
-                                       pdfFile.name &&
+                                       pdfFile !== null &&
                                        styles.fileUploaded
                                     }
                                  >
@@ -294,7 +311,7 @@ export default function AllTests() {
                               <div id={styles.csvUpload}>
                                  <label
                                     htmlFor="csv"
-                                    className={csvFile.name && styles.fileUploaded}>
+                                    className={csvFile !== null && styles.fileUploaded}>
                                     Upload CSV
                                     <img src={upload} alt="Upload" />
                                  </label>

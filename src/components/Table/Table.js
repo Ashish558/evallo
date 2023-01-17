@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import ReactPaginate from "react-paginate";
 import ApiTable from "./ApiTAble";
 import Pagination from "./Pagination";
 import { TableHeader } from "./TableHeader";
@@ -71,11 +72,29 @@ export default function Table(props) {
 
          <div className="flex grid-cols- justify-center items-center">
             <aside></aside>
-            {!hidePagination && <Pagination
-               totalPages={isCallingApi ? total_pages : Math.ceil(data.length / maxPageSize)}
-               currentPage={currentPage}
-               setCurrentPage={setCurrentPage}
-            />}
+            {!hidePagination &&
+               // <Pagination
+               //    totalPages={isCallingApi ? total_pages : Math.ceil(data.length / maxPageSize)}
+               //    currentPage={currentPage}
+               //    setCurrentPage={setCurrentPage}
+               // />
+               <ReactPaginate
+                  className='table-pagination-container flex justify-center mt-5'
+                  pageClassName={`flex justify-center items-center w-[38.12px] h-[38.12px] border border-primary rounded-full mr-5 cursor-pointer
+            ${'text-primary'}`}
+                  activeClassName={`bg-primary text-white`}
+                  breakLabel="..."
+                  // nextLabel="next >"
+                  onPageChange={(val) => setCurrentPage(val.selected + 1)}
+                  pageRangeDisplayed={3}
+                  pageCount={isCallingApi ? total_pages : Math.ceil(data.length / maxPageSize)}
+                  // previousLabel="< previous"
+                  previousClassName='hidden'
+                  nextClassName='hidden'
+                  renderOnZeroPageCount={null}
+                  pageLinkClassName='w-full h-full flex justify-center items-center'
+               />
+            }
             {/* <aside className="ml-auto flex items-center whitespace-nowrap">
                <button className="mx-3 px-6 py-3 bg-primary disabled:bg-primary-300 text-white rounded" onClick={() => setMaxPageSize(10)} disabled={maxPageSize === 10}>Show 10 Entries</button>
                <button className="mx-3 px-6 py-3 bg-primary text-white rounded disabled:bg-primary-300" onClick={() => setMaxPageSize(data.length > 30 ? 30 : data.length)} disabled={maxPageSize >= dataLength}>Show {data.length > 30 ? "30" : `all ${data.length}`} Entries</button>

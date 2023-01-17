@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux';
 import { useLazyGetStudentsByNameQuery, useLazyGetTutorsByNameQuery, useLazyGetTutorStudentsByNameQuery } from '../../../../app/services/session';
 import InputSearch from '../../../../components/InputSearch/InputSearch';
 
@@ -9,9 +10,9 @@ export default function SearchNames({ setStudent, setData, student, tutor, data,
 
    const [fetchStudents, studentResponse] = useLazyGetStudentsByNameQuery();
    const [fetchTutorStudents, tutorStudentsResp] = useLazyGetTutorStudentsByNameQuery();
-   
    const [students, setStudents] = useState([]);
-   const persona = sessionStorage.getItem('role')
+   const {role : persona } = useSelector(state => state.user)
+   // console.log(user);
 
    useEffect(() => {
       if (tutor.length > 0) {
@@ -86,7 +87,7 @@ export default function SearchNames({ setStudent, setData, student, tutor, data,
             type="text"
             optionPrefix='t'
             value={tutor}
-            disabled={!isEditable}
+            disabled={persona === 'admin' ? false : true}
             onChange={(e) => setTutor(e.target.value)}
             optionData={tutors}
             onOptionClick={(item) => {

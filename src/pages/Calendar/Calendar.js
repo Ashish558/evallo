@@ -94,16 +94,16 @@ export default function Calendar() {
    const calendarRef = useRef(null);
    // console.log(calendarRef.current)
    const [events, setEvents] = useState([]);
-   const [persona, setPersona] = useState(sessionStorage.getItem("role"));
+
+   const { role: persona } = useSelector(state => state.user)
+
    // const [timeZones, setTimeZones] = useState(temptimeZones)
    const { id: sessionToEdit } = useParams()
    const [isEdited, setIsEdited] = useState(false)
    const [isEditable, setIsEditable] = useState(false)
    // console.log(sessionToEdit)
    const [associatedStudents, setAssociatedStudents] = useState([])
-   const { id } = useSelector(state => state.user)
-   // const [timeZone, setTimeZone] = useState("");
-
+   const { id, timeZone: currentUserTImeZone } = useSelector(state => state.user)
    const time = formatAMPM(new Date)
 
    const exactTime = time.slice(0, time.indexOf(":")) + time.slice(time.indexOf("p"), time.length);
@@ -126,6 +126,7 @@ export default function Calendar() {
       useLazyGetSessionsQuery();
    const [fetchStudents, fetchStudentsResp] = useLazyGetTutorStudentsQuery();
    const [getUserDetail, userDetailResp] = useLazyGetUserDetailQuery()
+   const { firstName, lastName, id: currentUserId } = useSelector(state => state.user)
 
    const [names, setNames] = useState([]);
    const [name, setName] = useState("");
@@ -156,7 +157,7 @@ export default function Calendar() {
       const url = `/api/session/${role}/${id}`;
       // console.log(url)
       fetchUserSessions(url).then((res) => {
-         // console.log(res.data.data);
+         console.log('sessions', res.data.data);
          const tempEvents = res.data.data.session.map(session => {
             const time = session.time;
             const strtTime12HFormat = `${time.start.time} ${time.start.timeType}`;
@@ -247,6 +248,13 @@ export default function Calendar() {
    };
 
    useEffect(() => {
+      // console.log(currentUserTImeZone);
+      if (timeZones.includes(currentUserTImeZone)) {
+         setTimeZone(currentUserTImeZone)
+      }
+   }, [currentUserTImeZone])
+
+   useEffect(() => {
       if (persona == "admin" || persona === 'tutor') {
          setIsEditable(true)
       } else {
@@ -257,10 +265,8 @@ export default function Calendar() {
    useEffect(() => {
       if (persona == "student") {
          // console.log(persona);
-         const userId = sessionStorage.getItem("userId");
-         const role = sessionStorage.getItem("role");
-         if (!userId) return;
-         fetchSessions(userId, role);
+         if (!currentUserId) return;
+         fetchSessions(currentUserId, persona);
       }
    }, [persona]);
 
@@ -444,7 +450,7 @@ export default function Calendar() {
       calendarAPI?.next();
    };
    const eventContent = (arg) => {
-      console.log(arg.event)
+      // console.log(arg.event)
       // console.log(new Date(arg.event._instance.range.start).getHours())
       let m = moment.tz(`${arg.event.start}`, "America/Los_Angeles").format();
       // console.log(new Date(m).getHours())
@@ -477,7 +483,15 @@ export default function Calendar() {
 
    const handleDateClick = (arg) => {
       // console.log(arg)
-      setDefaultEventData({ date: arg.date })
+      if (persona === 'tutor') {
+         setDefaultEventData({
+            date: arg.date,
+            tutorId: currentUserId,
+            tutorName: `${firstName} ${lastName}`
+         })
+      } else {
+         setDefaultEventData({ date: arg.date })
+      }
       if (persona === "admin" || persona === "tutor") {
          setEventModalActive(true);
       }
@@ -527,7 +541,7 @@ export default function Calendar() {
    }, [name]);
 
    useEffect(() => {
-      const userId = sessionStorage.getItem("userId");
+      const userId = currentUserId
       if (persona === "tutor") {
          fetchStudents(userId).then((res) => {
             setEventDetails(res.data.data.session);
@@ -673,14 +687,21 @@ export default function Calendar() {
       // calendarRef.current.setOption('timeZone', timeZone)
    }, [timeZone, events.length])
 
-   // console.log(events);
-   // console.log(eventDetails);
+   useEffect(() => {
+      if (persona === 'tutor') {
+         // setTutor(`${firstName} ${lastName}`);
+         // setData({ ...data, tutorId: currentUserId });
+      }
+   }, [persona, id])
+
+   // console.log('events', events);
+   // console.log('eventDetails', eventDetails);
 
    return (
       <>
          <div className="lg:ml-pageLeft bg-lightWhite min-h-screen">
-            <div className="py-[60px] pl-5 calendar flex">
-               <div className="p-10 pl-0 pr-0 w-[280px] mr-[10px]">
+            <div className="py-14 pt-10 pl-5 calendar flex">
+               <div className="p-10 pt-10 pl-0 pr-0 w-[280px] mr-[10px]">
                   <div className="w-[280px]" >
                      <SimpleCalendar currentDate={currentDate} setCurrentDate={setCurrentDate} />
                   </div>
@@ -705,7 +726,7 @@ export default function Calendar() {
                                        style={{
                                           backgroundColor: '#ebe7ff'
                                           //  getBackground(students.length, idx),
-                                          
+
                                        }}
                                     ></div>
                                  </div>
@@ -744,7 +765,11 @@ export default function Calendar() {
                      //    startTime: '06:00', // a start time (10am in this example)
                      //    endTime: '05:00', // an end time (6pm in this example)
                      //  }}
+                     // slotMinTime='06:00:00'
+                     // slotMaxTime='23:00:00'
+                     // slotDuration='24:00:00'
                      eventClick={(info) => handleEventClick(info)}
+                     eventMaxStack={1}
                      ref={calendarRef}
                      plugins={[
                         timeGridPlugin,

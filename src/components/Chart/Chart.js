@@ -7,6 +7,7 @@ import {
    Legend,
 } from 'chart.js';
 import { Bubble } from 'react-chartjs-2';
+import { useLazyGetTestResponseQuery } from '../../app/services/test';
 
 ChartJS.register(LinearScale, PointElement, Tooltip, Legend);
 
@@ -18,9 +19,10 @@ export default function Chart() {
       { x: 15, y: 20, r: 0 },
       { x: 20, y: 10, r: 0 },
    ]
+   const [getTestResponse, getTestResponseResp] = useLazyGetTestResponseQuery()
+
    const subjects = [ 'Algebra', 'Adv. Maths', 'Geometry', 'Trigonometry']
    const options = {
-
       scales: {
          y: {
             beginAtZero: true,
@@ -65,15 +67,6 @@ export default function Chart() {
             data: data1,
             backgroundColor: 'rgba(255, 99, 132, 0.5)',
          },
-         // {
-         //    label: 'Blue dataset',
-         //    data: Array.from({ length: 50 }, () => ({
-         //       x: 10,
-         //       y: 25,
-         //       r: 5,
-         //    })),
-         //    backgroundColor: 'rgba(53, 162, 235, 0.5)',
-         // },
       ],
    };
 

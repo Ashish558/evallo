@@ -6,6 +6,7 @@ import StudentDashboardHeader from "../../components/StudentDashboardHeader/Stud
 import TutorCarousel from "../../components/TutorCarousel/TutorCarousel";
 import CompleteProfile from "../../components/CompleteProfile/CompleteProfile";
 import SessionFeedback from "../../components/SessionFeedback/SessionFeedback";
+import InputSelect from "../../components/InputSelect/InputSelect";
 
 const StudentDashboard = () => {
    const [subject, setSubject] = useState("Maths");
@@ -13,6 +14,7 @@ const StudentDashboard = () => {
    const [showSub, setShowSub] = useState(false);
    const [showSlot, setShowSlot] = useState(false);
 
+   const [sub, setSub] = useState('Math')
    return (
       <div className={`${styles.studentDashboardContainer} ml-pageLeft`} id="container">
          <div className="flex" id={styles.studentDashboard}>
@@ -23,136 +25,16 @@ const StudentDashboard = () => {
 
                   <div className="flex">
 
-                     <div className="dropdown mr-5" id={styles.subject}>
-                        <label
-                           className="flex items-center"
-                           id={styles.dropdownHeading}
-                           tabIndex={0}
-                           htmlFor={styles.subjectCheck}
-                        >
-                           {subject}
-                           <img
-                              className={styles.arrowDown}
-                              src={arrowDown}
-                              alt=""
-                           />
-                        </label>
-                        <input
-                           type="checkbox"
-                           className="hidden"
-                           onChange={(e) => setShowSub(e.target.checked)}
-                           id={styles.subjectCheck}
-                        />
-                        <ul
-                           tabIndex={0}
-                           className={`menu p-2 shadow bg-base-100 rounded-box w-52 ${showSub ? "visible" : "hidden"
-                              }`}
-                           id={styles.subjectList}
-                        >
-                           <li
-                              onClick={(e) => {
-                                 setSubject(e.target.innerText);
-                                 setShowSub(false);
-                              }}
-                              className="py-2 cursor-pointer"
-                           >
-                              Math
-                           </li>
-
-                           <li
-                              onClick={(e) => {
-                                 setSubject(e.target.innerText);
-                                 setShowSub(false);
-                              }}
-                              className="py-2 cursor-pointer"
-                           >
-                              Physic
-                           </li>
-                           <li
-                              onClick={(e) => {
-                                 setSubject(e.target.innerText);
-                                 setShowSub(false);
-                              }}
-                              className="py-2 cursor-pointer"
-                           >
-                              Biology
-                           </li>
-                           <li
-                              onClick={(e) => {
-                                 setSubject(e.target.innerText);
-                                 setShowSub(false);
-                              }}
-                              className="py-2 cursor-pointer"
-                           >
-                              Chemistry
-                           </li>
-                        </ul>
-                     </div>
-
-                     <div className="dropdown" id={styles.data}>
-                        <label
-                           className="flex items-center"
-                           id={styles.dropdownHeading}
-                           tabIndex={0}
-                           htmlFor="slot"
-                        >
-                           {slot.length > 18 ? `${slot.substring(0, 18)}...` : slot}
-                           <img
-                              className={styles.arrowDown}
-                              src={arrowDown}
-                              alt=""
-                           />
-                        </label>
-                        <input
-                           type="checkbox"
-                           className="hidden"
-                           id="slot"
-                           onChange={(e) => setShowSlot(e.target.checked)}
-                        />
-                        <ul
-                           tabIndex={0}
-                           className={`dropdown-content menu p-2 shadow bg-base-100 rounded-box absolute bg-white z-50 ${showSlot ? "visible" : "hidden"
-                              }`}
-                        >
-                           <li
-                              onClick={(e) => {
-                                 setSlot(e.target.innerText);
-                                 setShowSlot(false);
-                              }}
-                              className="py-2 cursor-pointer"
-                           >
-                              Jan 20, 2022 - Fab 30, 2022
-                           </li>
-
-                           <li
-                              onClick={(e) => {
-                                 setSlot(e.target.innerText);
-                                 setShowSlot(false);
-                              }}
-                              className="py-2 cursor-pointer"
-                           >
-                              Feb 20, 2022 - Mar 30, 2022
-                           </li>
-                           <li
-                              onClick={(e) => {
-                                 setSlot(e.target.innerText);
-                                 setShowSlot(false);
-                              }}
-                              className="py-2 cursor-pointer"
-                           >
-                              Mar 20, 2022 - Apr 30, 2022
-                           </li>
-                           <li
-                              onClick={(e) => {
-                                 setSlot(e.target.innerText);
-                                 setShowSlot(false);
-                              }}
-                              className="py-2 cursor-pointer"
-                           >
-                              Apr 20, 2022 - May 30, 2022
-                           </li>
-                        </ul>
-                     </div>
+                     <InputSelect value={sub} labelClassname='hidden'
+                        parentClassName='w-[200px] mr-5'
+                        inputContainerClassName='bg-[#d9d9d980] pt-2 pb-2'
+                        optionData={['Math', 'Grammar', 'Reading', 'Science']}
+                        onChange={val => setSub(val)} />
+                     {/* <InputSelect value={sub} labelClassname='hidden'
+                        parentClassName='w-[200px] mr-5'
+                        inputContainerClassName='bg-[#d9d9d980] pt-2 pb-2'
+                        optionData={['Math', 'Grammar', 'Reading', 'Science']}
+                        onChange={val => setSub(val) } /> */}
                   </div>
                </div>
                <div id={styles.chartContainer} className='scrollbar-content'>

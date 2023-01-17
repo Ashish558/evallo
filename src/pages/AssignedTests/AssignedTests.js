@@ -10,14 +10,16 @@ import { tempTableData, studentsDataTable } from "./tempData";
 import InputField from "../../components/InputField/inputField";
 import axios from "axios";
 import { BASE_URL } from "../../app/constants/constants";
-import { useAssignTestMutation, useLazyGetTestsByNameQuery } from "../../app/services/test";
+import { useAssignTestMutation, useLazyGetAllAssignedTestQuery, useLazyGetAssignedTestQuery, useLazyGetTestsByNameQuery, useLazyGetTutorAssignedTestsQuery } from "../../app/services/test";
 import { useLazyGetStudentsByNameQuery } from "../../app/services/session";
 import InputSearch from "../../components/InputSearch/InputSearch";
 import calendar from "./../../assets/calendar/calendar.svg"
 import AssignedTestIndicator from "../../components/AssignedTestIndicator/AssignedTestIndicator";
+import { useSelector } from "react-redux";
+import { getDuration, getFormattedDate } from "../../utils/utils";
 
 const optionData = ["1", "2", "3", "4", "5"];
-const timeLimits = [30, 40, 50]
+const timeLimits = ['Regular', '1.5x', 'Unlimited']
 const testData = ["SAT", "ACT"];
 
 const tempTableHeaders = [
@@ -41,6 +43,15 @@ const studentTableHeaders = [
    "",
 ];
 
+const initialState = {
+   name: "",
+   limit: "",
+   date: "",
+   test: "",
+   testId: '',
+   studentId: '',
+}
+
 export default function AssignedTests() {
 
    const [tableData, setTableData] = useState([])
@@ -48,11 +59,11 @@ export default function AssignedTests() {
 
    const [assignTestModalActive, setAssignTestModalActive] = useState(false);
    const [resendModalActive, setResendModalActive] = useState(false);
+   const [testToResend, setTestToResend] = useState({})
 
-   const persona = sessionStorage.getItem("role");
-
+   const { role: persona, id } = useSelector(state => state.user)
    const handleClose = () => setAssignTestModalActive(false);
-   
+
    const [filterData, setFilterData] = useState({
       studentName: '',
       testName: '',
@@ -62,26 +73,44 @@ export default function AssignedTests() {
 
    const [assignTest, assignTestResp] = useAssignTestMutation()
 
-   const [modalData, setModalData] = useState({
-      name: "",
-      limit: "",
-      date: "",
-      test: "",
-   });
+   const [modalData, setModalData] = useState(initialState);
 
    const [fetchStudents, studentResponse] = useLazyGetStudentsByNameQuery();
-   const [students, setStudents] = useState([]);
-
+   const [fetchAssignedTests, assignedTestsResp] = useLazyGetAllAssignedTestQuery();
+   const [fetchTutorAssignedTests, fetchTutorAssignedTestsResp] = useLazyGetTutorAssignedTestsQuery();
    const [fetchTests, fetchTestsResp] = useLazyGetTestsByNameQuery()
+
+   const [students, setStudents] = useState([]);
+   const [allAssignedTests, setAllAssignedTests] = useState([])
+
    const [testsData, setTestsData] = useState([]);
    const [maxPageSize, setMaxPageSize] = useState(10);
    const [validData, setValidData] = useState(true);
+   const [submitBtnDisabled, setSubmitBtnDisabled] = useState(false)
+
    useEffect(() => {
-      setValidData(modalData.name && modalData.limit && modalData.date && modalData.test);
+      setValidData(modalData.name && modalData.limit && modalData.date && modalData.test === '');
    }, [modalData.name, modalData.limit, modalData.date, modalData.test])
 
    useEffect(() => {
-      if (modalData.name.length > 2) {
+      if (modalData.name.trim() === '' || modalData.limit.trim() === '' || modalData.date === '' || modalData.testId === '' || modalData.studentId.trim() === '') {
+         setSubmitBtnDisabled(true)
+      } else {
+         let date = new Date(modalData.date)
+         let currentDate = new Date()
+         let dueDate = date.getDate()
+         console.log(date - currentDate);
+         if (date - currentDate < 0) {
+            setSubmitBtnDisabled(true)
+         } else {
+            setSubmitBtnDisabled(false)
+         }
+      }
+   }, [modalData])
+
+   // console.log(modalData);
+   useEffect(() => {
+      if (modalData.name.length > 0) {
          fetchStudents(modalData.name).then((res) => {
             // console.log(res.data.data)
             let tempData = res.data.data.students.map((student) => {
@@ -96,7 +125,7 @@ export default function AssignedTests() {
    }, [modalData.name]);
 
    useEffect(() => {
-      if (modalData.test.length > 2) {
+      if (modalData.test.length > 0) {
          fetchTests(modalData.test).then((res) => {
             let tempData = res.data.data.test.map((test) => {
                return {
@@ -110,27 +139,131 @@ export default function AssignedTests() {
       }
    }, [modalData.test]);
 
+
+   const fetchAllAssignedTests = () => {
+      fetchAssignedTests()
+         .then(res => {
+            if (res.error) return console.log(res.error)
+            console.log('response student', res.data)
+            let data = res.data.data.test.map(item => {
+               const { createdAt, studentId, testId, dueDate, multiple, timeLimit, isCompleted, isStarted } = item
+               return {
+                  studentName: studentId ? `${studentId.firstName} ${studentId.lastName}` : '-',
+                  studentId: studentId ? studentId._id : '-',
+                  assignedOn: getFormattedDate(createdAt),
+                  testName: testId ? testId.testName : '-',
+                  testId: testId ? testId._id : null,
+                  scores: '-',
+                  duration: multiple ? getDuration(multiple) : '-',
+                  dueDate,
+                  status: isCompleted === true ? 'completed' : isStarted ? 'started' : 'notStarted',
+                  createdAt,
+                  assignedTestId: item._id
+               }
+            })
+            let sortedArr = data.sort(function (a, b) {
+               return new Date(b.createdAt) - new Date(a.createdAt);
+            });
+            setAllAssignedTests(sortedArr)
+         })
+   }
+
+   const fetchTutorTests = () => {
+      fetchTutorAssignedTests(id)
+         .then(res => {
+            if (res.error) return console.log('tutor assignedtest', res.error)
+            console.log('tutor assignedtest', res.data)
+            let data = res.data.data.test.map(item => {
+               const { createdAt, studentId, dueDate, testId, multiple, timeLimit, isCompleted, isStarted } = item
+               return {
+                  studentName: studentId ? `${studentId.firstName} ${studentId.lastName}` : '-',
+                  studentId: studentId ? studentId._id : '-',
+                  assignedOn: getFormattedDate(createdAt),
+                  testName: testId ? testId.testName : '-',
+                  testId: testId ? testId._id : null,
+                  scores: '-',
+                  duration: multiple ? getDuration(multiple) : '-',
+                  status: isCompleted === true ? 'completed' : isStarted ? 'started' : 'notStarted',
+                  createdAt,
+                  dueDate,
+                  assignedTestId: item._id
+               }
+            })
+            let sortedArr = data.sort(function (a, b) {
+               return new Date(b.createdAt) - new Date(a.createdAt);
+            });
+            setAllAssignedTests(sortedArr)
+            setAllAssignedTests(data)
+         })
+   }
+
+   const getTimeLimit = val => {
+      if (val === 'Regular') return 1
+      if (val === '1.5x') return 1.5
+      if (val === 'Unlimited') return 0
+      return 1
+   }
+
+   const fetch = () => {
+      if (persona === 'admin') {
+         fetchAllAssignedTests()
+      } else if (persona === 'tutor') {
+         fetchTutorTests()
+      }
+   }
+   useEffect(() => {
+      fetch()
+   }, [])
+
    const handleResend = (item) => {
-      console.log(item);
+      setTestToResend(item)
       setResendModalActive(true);
    };
 
    const handleResendTestSubmit = (item) => {
+      console.log(testToResend);
       setResendModalActive(false);
-   };
-
-   const handleAssignTestSubmit = () => {
-      console.log(modalData)
       const body = {
-         studentId: modalData.studentId,
-         testId: modalData.testId,
-         dueDate: modalData.date,
-         timeLimit: modalData.limit,
+         studentId: testToResend.studentId,
+         testId: testToResend.testId,
+         dueDate: testToResend.dueDate,
+         timeLimit: getTimeLimit(testToResend.duration),
       }
       assignTest(body)
          .then(res => {
             console.log(res.data.data.assign)
             setAssignTestModalActive(false)
+            fetch()
+         })
+   };
+
+   const handleAssignTestSubmit = () => {
+
+      const body = {
+         studentId: modalData.studentId,
+         testId: modalData.testId,
+         dueDate: modalData.date,
+         timeLimit: getTimeLimit(modalData.limit),
+      }
+      console.log(body)
+      // return
+      assignTest(body)
+         .then(res => {
+            if (res.error) {
+               console.log(res.error);
+               if(res.error.data){
+                  if(res.error.data.message){
+                     alert(res.error.data.message)
+                     return
+                  }
+               }
+               alert('Something went wrong')
+               return
+            }
+            setModalData(initialState)
+            console.log(res.data.data.assign)
+            setAssignTestModalActive(false)
+            fetch()
          })
 
    }
@@ -155,6 +288,7 @@ export default function AssignedTests() {
       },
    ]
 
+   // console.log('allAssignedTests', allAssignedTests);
    return (
       <>
          <div className="lg:ml-pageLeft bg-lightWhite min-h-screen">
@@ -169,7 +303,7 @@ export default function AssignedTests() {
                   <button
                      className="bg-primaryOrange text-lg flex pt-4 pb-4 px-5 items-center text-white font-semibold rounded-lg mr-55"
                      onClick={() => setAssignTestModalActive(true)}
-                    
+
                   >
                      Assign new test
                      <img src={AddIcon} className="ml-3" />
@@ -181,7 +315,7 @@ export default function AssignedTests() {
                   <InputField
                      value={filterData.studentName}
                      IconRight={SearchIcon}
-                     onChange={e => setFilterData({...filterData, studentName: e.target.value})}
+                     onChange={e => setFilterData({ ...filterData, studentName: e.target.value })}
                      optionData={optionData}
                      placeholder="Student Name"
                      inputContainerClassName="px-[20px] py-[16px] bg-white"
@@ -191,7 +325,7 @@ export default function AssignedTests() {
                   <InputField
                      value={filterData.testName}
                      IconRight={SearchIcon}
-                     onChange={e => setFilterData({...filterData, testName: e.target.value})}
+                     onChange={e => setFilterData({ ...filterData, testName: e.target.value })}
                      optionData={optionData}
                      placeholder="Test Name"
                      inputContainerClassName="px-[20px] py-[16px] bg-white"
@@ -200,7 +334,7 @@ export default function AssignedTests() {
                   />
                   <InputField
                      value={filterData.tutor}
-                     onChange={e => setFilterData({...filterData, tutor: e.target.value})}
+                     onChange={e => setFilterData({ ...filterData, tutor: e.target.value })}
                      IconRight={SearchIcon}
                      parentClassName="w-full mr-4 text-sm"
                      inputContainerClassName="px-[20px] py-[16px] bg-white"
@@ -210,7 +344,7 @@ export default function AssignedTests() {
                   />
                   <InputSelect
                      value={filterData.status}
-                     onChange={val => setFilterData({...filterData, status: val})}
+                     onChange={val => setFilterData({ ...filterData, status: val })}
                      optionData={optionData}
                      inputContainerClassName="px-[20px] py-[16px] bg-white"
                      placeholder="Completion Status"
@@ -221,7 +355,7 @@ export default function AssignedTests() {
 
                <div className="flex items-center justify-end gap-[20px] mt-[10px]">
                   {/* <AssignedTestIndicator /> */}
-                  {status.map(({text, color}) => <AssignedTestIndicator
+                  {status.map(({ text, color }) => <AssignedTestIndicator
                      text={text}
                      color={color}
                   />)}
@@ -231,7 +365,8 @@ export default function AssignedTests() {
                   <Table
                      onClick={{ handleResend }}
                      dataFor='assignedTests'
-                     data={tableData}
+                     data={allAssignedTests}
+                     excludes={['createdAt', 'dueDate', 'assignedTestId']}
                      tableHeaders={tableHeaders}
                      maxPageSize={maxPageSize}
                      setMaxPageSize={setMaxPageSize}
@@ -249,7 +384,7 @@ export default function AssignedTests() {
                   text: "Assign",
                   className: "max-w-140 pl-8 pr-8",
                   onClick: () => handleAssignTestSubmit(),
-                  disabled: !validData
+                  disabled: submitBtnDisabled
                }}
                handleClose={handleClose}
                body={
@@ -285,7 +420,7 @@ export default function AssignedTests() {
                         <InputSelect
                            label="Time Limit"
                            value={modalData.limit}
-                           onChange={(val) =>  setModalData({ ...modalData, limit: val,}) }
+                           onChange={(val) => setModalData({ ...modalData, limit: val, })}
                            optionData={timeLimits}
                            parentClassName="w-full mr-4 "
                            labelClassname="ml-2 mb-0.5"
@@ -359,7 +494,7 @@ export default function AssignedTests() {
                cancelBtnClassName="max-w-140"
                primaryBtn={{
                   text: "Assign",
-                  className: "max-w-140",
+                  className: "w-[140px] pl-4 px-4",
                   onClick: () => handleResendTestSubmit(),
                }}
                handleClose={() => setResendModalActive(false)}

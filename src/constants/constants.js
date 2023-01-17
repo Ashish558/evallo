@@ -16,3 +16,5 @@ export const timeZones = [
 export const subjects = [
    'American Literature', 'English', 'French', 'Latin', 'Writing / Composition', 'Algebra 1', 'Algebra 2', 'Geometry', 'Trigonometry', 'Statistics', 'Calculus', 'Biology', 'Chemistry', 'Physics', 'Economics', 'Geography',' US Government', 'US History', 'World History', 'Physical Education', 'Music', 'Drama', 'Photography', 'Comp Sci', 'Design', 'Business', 'Law', 'Psychology', 'Accounting'
 ]
+
+export const grades = [6, 7, 8, 9, 10, 11, 12, 'College'];

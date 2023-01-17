@@ -7,10 +7,12 @@ import PrimaryButton from '../../components/Buttons/PrimaryButton'
 import { TestDetail } from '../../components/TestDetail/TestDetail'
 import { testData } from './tempData'
 import TestOption from '../../components/TestOption/TestOption'
-import { useAttendTestMutation, useLazyContinueTestQuery, useLazyGetAssignedTestQuery, useLazyGetSectionsQuery, useLazyGetTestResponseQuery, useLazyGetTimeQuery, useStartTestMutation, useSubmitTestMutation, useUpdateTimeMutation } from '../../app/services/test'
+import { useAttendTestMutation, useLazyContinueTestQuery, useLazyGetAssignedTestQuery, useLazyGetSectionsQuery, useLazyGetSingleAssignedTestQuery, useLazyGetTestResponseQuery, useLazyGetTimeQuery, useStartTestMutation, useSubmitTestMutation, useUpdateTimeMutation } from '../../app/services/test'
 import BackBtn from '../../components/Buttons/Back'
 import Timer from '../../components/Timer/Timer'
 import CurrentSection from './CurrentSection/CurrentSection'
+import { useSelector } from 'react-redux'
+import { getDuration, getFormattedDate } from '../../utils/utils'
 const tempsubjects = [
    { text: 'Trigonometry', selected: true },
    { text: 'Mathematics', selected: false },
@@ -28,37 +30,91 @@ export default function StartTest() {
    const [initialSeconds, setInitialSeconds] = useState(0)
    const [countDown, setCountDown] = useState(0)
 
+   const { firstName, lastName } = useSelector(state => state.user)
+
+   const [testHeaderDetails, setTestHeaderDetails] = useState({
+      name: `${firstName} ${lastName}`,
+      duration: 0,
+      dateAssigned: '',
+      startedOn: '',
+      completedOn: '',
+      testName: ''
+   })
+   const [isUnlimited, setIsUnlimited] = useState(false)
    const [sectionDetails, setSectionDetails] = useState({})
    const [subjects, setSubjects] = useState([])
    const [activeSection, setActiveSection] = useState({})
    const [timer, setTimer] = useState(10)
    const [answers, setAnswers] = useState([])
    const [submitId, setSubmitId] = useState('')
-   const { id } = useParams()
+   const { id, assignedTestId } = useParams()
 
    const [getSections, getSectionsResp] = useLazyGetSectionsQuery()
-   const [getTestResponse, getTestResponseResp] = useLazyGetTestResponseQuery()
+   const [getAssignedTest, getAssignedTestResp] = useLazyGetSingleAssignedTestQuery()
 
-   const [attendTest, attendTestResp] = useAttendTestMutation()
-   const [updateTime, updateTimeResp] = useUpdateTimeMutation()
    const [startTest, startTestResp] = useStartTestMutation()
    const [submitSection, submitSectionResp] = useSubmitTestMutation()
-   const [getTime, getTimeResp] = useLazyGetTimeQuery()
    const [continueTest, continueTestResp] = useLazyContinueTestQuery()
    const [completedSectionIds, setCompletedSectionIds] = useState([])
 
+   useEffect(() => {
+      let params = {}
+      let url = `/api/test/myassigntest/${assignedTestId}`
+
+      getAssignedTest({ url, params })
+         .then(res => {
+            if (res.error) return console.log('testerror', res.error);
+            console.log('test', res.data.data.test);
+            const { testId, createdAt, timeLimit, multiple } = res.data.data.test
+            if (multiple === 0) {
+               setIsUnlimited(true)
+            } else {
+               setIsUnlimited(false)
+            }
+            if (res.data.data.test.testId) {
+               setTestHeaderDetails(prev => ({
+                  ...prev,
+                  testName: testId.testName,
+                  dateAssigned: getFormattedDate(createdAt)
+               }))
+            }
+            setTestHeaderDetails(prev => ({
+               ...prev,
+               duration: multiple ? getDuration(multiple) : '-',
+            }))
+
+         })
+   }, [])
+
    const handleStartTest = () => {
       if (!activeSection) return
-      startTest({ id: id, reqbody: { sectionName: activeSection.name } })
+      startTest({ id: assignedTestId, reqbody: { sectionName: activeSection.name } })
          .then(res => {
             if (res.error) {
                console.log(res.error)
+               alert('error starting test')
+               return
             }
             console.log('start test', res.data)
             const { startTime, endTime, sectionName, answer, submitId } = res.data.data
-            let timer = (new Date(endTime) - new Date()) / 1000
-            setTimer(Math.trunc(timer))
-            setInitialSeconds(Math.trunc(timer))
+
+            if (endTime === null) {
+               let date = new Date()
+
+               var nextDay = new Date(date);
+               nextDay.setDate(date.getDate() + 1);
+               // console.log(nextDay); //
+
+               let timer = (new Date(nextDay) - new Date()) / 1000
+               setTimer(Math.trunc(timer))
+               setInitialSeconds(Math.trunc(timer))
+            } else {
+               let timer = (new Date(endTime) - new Date()) / 1000
+               setTimer(Math.trunc(timer))
+               setInitialSeconds(Math.trunc(timer))
+            }
+
+            // setInitialSeconds(Math.trunc(timer))
             setTestStarted(true)
             setActiveSection({ name: sectionName })
             setSubmitId(submitId)
@@ -84,6 +140,18 @@ export default function StartTest() {
                return console.log(res.error);
             }
             console.log('sections response', res.data.data);
+            let duration = 0
+
+
+            res.data.data.subjects.subjects.map(item => {
+               duration += item.timer
+            })
+            console.log('date', new Date(res.data.data.subjects.createdAt));
+            setTestHeaderDetails(prev => ({
+               ...prev,
+               // duration,
+               startedOn: getFormattedDate(new Date(res.data.data.subjects.createdAt))
+            }))
             setSectionDetails(res.data.data)
             let tempsubs = res.data.data.subjects.subjects.map(item => {
                return {
@@ -117,7 +185,7 @@ export default function StartTest() {
    }, [])
 
    const fetchContinueTest = () => {
-      continueTest({ id })
+      continueTest({ id: assignedTestId })
          .then(res => {
             if (res.error) {
                console.log(res.error)
@@ -194,16 +262,16 @@ export default function StartTest() {
    const handleResponseChange = (id, option) => {
       console.log('initialSeconds', initialSeconds);
       console.log('countDown', countDown);
-    
+
       const timeTaken = initialSeconds - countDown
       setInitialSeconds(countDown)
       setAnswers(prev => {
          return prev.map(item => {
             let time = 0
-            if(item._id === id){
-               if(item.responseTime){
+            if (item._id === id) {
+               if (item.responseTime) {
                   time = item.responseTime + timeTaken
-               }else{
+               } else {
                   time = timeTaken
                }
             }
@@ -217,8 +285,13 @@ export default function StartTest() {
       // console.log(activeSection);
       // console.log(answers);
       const response = answers.map(item => {
-         const { QuestionType, QuestionNumber, ResponseAnswer } = item
-         return { QuestionType, QuestionNumber, ResponseAnswer: ResponseAnswer ? ResponseAnswer : '' }
+         const { QuestionType, QuestionNumber, ResponseAnswer, responseTime } = item
+         return {
+            QuestionType,
+            QuestionNumber,
+            ResponseAnswer: ResponseAnswer ? ResponseAnswer : '',
+            responseTime: responseTime ? responseTime : 0,
+         }
       })
       let body = {
          submitId,
@@ -228,6 +301,7 @@ export default function StartTest() {
          }
       }
       console.log(body);
+      // return
       submitSection(body)
          .then(res => {
             if (res.error) {
@@ -253,8 +327,10 @@ export default function StartTest() {
    // console.log('answers', answers)
    // console.log('subjects', subjects)
    // console.log('activeSection', activeSection)
+   // console.log('testHeaderDetails', testHeaderDetails)
    // console.log('completedsections', completedSectionIds);
    // console.log('timer', timer);
+   // console.log('isUnlimited ', isUnlimited);
    // console.log('initialSeconds', initialSeconds);
    // console.log('countDown', countDown);
 
@@ -271,33 +347,44 @@ export default function StartTest() {
 
                <div className='flex-1' >
                   <BackBtn to='/all-tests' />
-                  <p className='text-primary-dark font-bold text-3xl mb-8' >Test Name</p>
+                  <p className='text-primary-dark font-bold text-3xl mb-8' >
+                     {testHeaderDetails.testName}
+                  </p>
                   {!testStarted &&
                      <div className='grid grid-cols-2 grid-rows-3 max-w-840 text-sm gap-y-4 mt-2'>
                         <div>
                            <p className='inline-block w-138 font-semibold opacity-60'> Student’s Name</p>
                            <span className='inline-block mr-4'>:</span>
-                           <p className='inline-block w-138 font-semibold'> Joseph Brown</p>
+                           <p className='inline-block w-138 font-semibold'>
+                              {testHeaderDetails.name}
+                           </p>
                         </div>
                         <div>
                            <p className='inline-block w-138 font-semibold opacity-60'> Started on </p>
                            <span className='inline-block mr-4'>:</span>
-                           <p className='inline-block w-138 font-semibold'> Joseph Brown</p>
+                           <p className='inline-block w-138 font-semibold'>
+                              {testHeaderDetails.startedOn ? testHeaderDetails.startedOn : '-'}
+                           </p>
                         </div>
                         <div>
                            <p className='inline-block w-138 font-semibold opacity-60'>  Date Assigned </p>
                            <span className='inline-block mr-4'>:</span>
-                           <p className='inline-block w-138 font-semibold'> Joseph Brown</p>
+                           <p className='inline-block w-138 font-semibold'>
+                              {testHeaderDetails.dateAssigned}
+                           </p>
                         </div>
                         <div>
                            <p className='inline-block w-138 font-semibold opacity-60'> Completed on </p>
                            <span className='inline-block mr-4'>:</span>
-                           <p className='inline-block w-138 font-semibold'> Joseph Brown</p>
+                           <p className='inline-block w-138 font-semibold'>
+                              -
+                           </p>
                         </div>
                         <div>
                            <p className='inline-block w-138 font-semibold opacity-60'> Duration </p>
                            <span className='inline-block mr-4'>:</span>
-                           <p className='inline-block w-138 font-semibold'> Joseph Brown</p>
+                           <p className='inline-block w-138 font-semibold'>
+                              {testHeaderDetails.duration} </p>
                         </div>
                      </div>
                   }
@@ -318,7 +405,8 @@ export default function StartTest() {
                      </div>
                      {!testStarted && Object.keys(activeSection).length > 1 &&
                         <div className='bg-white pt-[60px] pr-8 pl-12 pb-[50px] mt-4'>
-                           <TestDetail name={activeSection.name} />
+                           <TestDetail name={activeSection.name} desc={activeSection.description}
+                              timer={activeSection.timer} />
 
                            <div className='flex items-center flex-col mt-12'>
                               <p className='text-[#E02B1D] bg-[#FFBE9D] py-2 px-5 rounded-20 mb-[15px]' >
@@ -339,13 +427,13 @@ export default function StartTest() {
                                        handleResponseChange={handleResponseChange}
                                        handleTimeTaken={handleTimeTaken} />
                                     {item.isMarked ?
-                                       <button className='w-[180px] font-semibold py-3 rounded-lg pt-[8px] pb-[8px]	 border-2 border-[#D2D2D2] text-[#D2D2D2] ml-4'
+                                       <button className='w-[180px] font-semibold py-3 rounded-lg pt-[8px] pb-[8px] border-2 border-[#D2D2D2] text-[#D2D2D2] ml-4'
                                           onClick={() => handleMark(item._id, false)} >
-                                          Mark for Review
+                                          Unmark
                                        </button> :
                                        <button className='w-[180px] font-semibold pt-2.5 pb-2.5 rounded-lg bg-primaryOrange text-white ml-4'
                                           onClick={() => handleMark(item._id, true)} >
-                                          Unmark
+                                           Mark for Review
                                        </button>
                                     }
                                  </div>
@@ -361,9 +449,9 @@ export default function StartTest() {
                <div className='flex-2 ml-8 flex flex-col' >
 
                   {
-                     testStarted && <Timer handleSubmitSection={handleSubmitSection} timer={timer} 
-                     active={testStarted ? true : false}
-                     setCountDown={setCountDown} />
+                     testStarted && <Timer handleSubmitSection={handleSubmitSection} timer={timer}
+                        active={testStarted ? true : false}
+                        setCountDown={setCountDown} isUnlimited={isUnlimited} />
                   }
                   {
                      testStarted && <CurrentSection answers={answers} submitSection={handleSubmitSection} />

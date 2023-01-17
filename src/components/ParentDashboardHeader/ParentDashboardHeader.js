@@ -16,6 +16,7 @@ import { useSelector } from "react-redux";
 import InputSelect from "../InputSelect/InputSelect";
 import Ledger from "./../../pages/Ledger/Ledger"
 import { useLazyPayBalanceQuery } from "../../app/services/dashboard";
+import { useDisableBodyScroll } from "../../hooks/useDisableBodyScroll";
 
 const ParentDashboardHeader = () => {
    const [images, setImages] = useState([])
@@ -33,7 +34,7 @@ const ParentDashboardHeader = () => {
    const navigate = useNavigate()
    //  sessionStorage
    const { id, amountToPay, credits } = useSelector(state => state.user)
-
+   useDisableBodyScroll(ledgerVisible)
    useEffect(() => {
       fetchSettings()
          .then(res => {
@@ -49,21 +50,20 @@ const ParentDashboardHeader = () => {
                   .then(res => {
                      setAssociatedStudents(prev => [...prev, {
                         _id: res.data.data.user._id,
-                        name: `${res.data.data.user.firstName} ${res.data.data.user.lastName}`
+                        name: `${res.data.data.user.firstName} ${res.data.data.user.lastName}`,
+                        photo: res.data.data.user.photo ? res.data.data.user.photo : '/images/default.jpeg'
                      }])
                      idx === 0 && setSelectedStudent({
                         _id: res.data.data.user._id,
-                        value: `${res.data.data.user.firstName} ${res.data.data.user.lastName}`
+                        value: `${res.data.data.user.firstName} ${res.data.data.user.lastName}`,
+                        photo: res.data.data.user.photo ? res.data.data.user.photo : '/images/default.jpeg'
                      })
                   })
             })
 
-
          })
    }, [])
-
-   console.log(images)
-   
+ 
    useEffect(() => {
       if (user.assiginedStudents === undefined) return
       const fetch = async () => {
@@ -97,6 +97,7 @@ const ParentDashboardHeader = () => {
          })
    }
 
+
    return (
       <>
          {ledgerVisible && <Ledger setLedgerVisible={setLedgerVisible} />}
@@ -108,7 +109,7 @@ const ParentDashboardHeader = () => {
                <div className="flex" style={{ gap: 16 }}>
                   <div className="w-2/3 flex items-center" id={styles.explore}>
                      <div className="flex mx-auto">
-                        <div className="w-1/2" id={styles.exploreLeft}>
+                        {/* <div className="w-1/2" id={styles.exploreLeft}>
                            <h2 className="">
                               This fall get help from our Admission
                               Experts.
@@ -116,8 +117,10 @@ const ParentDashboardHeader = () => {
                            <button className="ml-[32px] text-sm 2xl:ml-[46px] bg-[#f3f5f7] rounded-[5px] py-[8px] px-[15px]">
                               Know More {">"}
                            </button>
-                        </div>
-                        <div className="w-1/2 flex items-center px-2 pr-4" id={styles.exploreBgDisable}>
+                        </div>  */}
+                        <div className="w-full flex-1 h-full flex items-center"
+                           id={styles.exploreBgDisable}
+                           style={{ position: 'absolute', top: '0', left: '0' }} >
                            {/* <div className="relative w-full h-fll">
                               {
                                  images.length > 0 ? <img src={images[0]} alt="" />
@@ -126,7 +129,7 @@ const ParentDashboardHeader = () => {
                               }
                            </div> */}{
                               images.length >= 1 &&
-                              <ImageSlideshow images={images} />
+                              <ImageSlideshow images={images} text='text' />
                            }
                         </div>
                      </div>
@@ -164,13 +167,13 @@ const ParentDashboardHeader = () => {
                      <InputSelect optionType='object'
                         parentClassName='mb-2'
                         inputContainerClassName='pt-1 pb-1'
-                        optionData={associatedStudents.map(item => ({ _id: item._id, value: item.name }))}
+                        optionData={associatedStudents.map(item => ({ _id: item._id, value: item.name, photo: item.photo }))}
                         optionClassName='w-[130px] text-sm'
                         value={selectedStudent === null ? '' : selectedStudent.value}
                         onChange={val => setSelectedStudent(val)} />}
                </div>
                <div className={`item ${styles.student} w-100 min-h-[175px] px-[22px] 2xl:px-[32px] 2xl:py-[13px]`}>
-                  <div className="flex items-center">
+                  <div className="flex flex-1 items-center">
                      {associatedStudents.length > 0 &&
                         <>
                            <div className="w-1/2">
@@ -194,7 +197,9 @@ const ParentDashboardHeader = () => {
                      }
                      {associatedStudents.length > 0 &&
                         <div className="w-1/2 flex justify-end">
-                           <img src={shivam} alt="" />
+                           { selectedStudent!== null &&
+                              <img className="w-[40px] h-[40px] rounded-full" src={selectedStudent.photo ? selectedStudent.photo : ''} alt="" />
+                           }
                         </div>
                      }
                   </div>

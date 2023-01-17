@@ -9,11 +9,12 @@ import InputSelect from '../../components/InputSelect/InputSelect'
 import AddIcon from '../../assets/icons/add.svg'
 import SearchIcon from '../../assets/icons/search.svg'
 import { tableData, userTypesList } from './tempData'
-import { useAddUserMutation, useLazyGetAllUsersQuery } from '../../app/services/users'
+import { useAddUserMutation, useLazyGetAllUsersQuery, useLazyGetUserDetailQuery } from '../../app/services/users'
 import { useSignupUserMutation } from '../../app/services/auth'
 import { useNavigate } from 'react-router-dom'
 import { roles } from '../../constants/constants'
 import { useBlockUserMutation, useUnblockUserMutation } from '../../app/services/admin'
+import { useLazyGetSettingsQuery } from '../../app/services/session'
 
 const optionData = [
    'option 1',
@@ -39,23 +40,26 @@ const initialState = {
 }
 
 export default function Users() {
-   // const [filterItems, setFilterItems] = useState(['Student', 'Parent', 'Active'])
+
    const [modalActive, setModalActive] = useState(false)
-   // const [modalUserType, setModalUserType] = useState('')
    const navigate = useNavigate()
    const [modalData, setModalData] = useState(initialState)
    const [validData, setValidData] = useState(true);
    useEffect(() => {
       setValidData(modalData.email && modalData.firstName && modalData.lastName && modalData.userType);
    }, [modalData, modalData.email.length, modalData.firstName.length, modalData.lastName.length, modalData.phone.length, modalData.userType.length,])
- 
+
+   const [settings, setSettings] = useState({
+      leadStatus: []
+   })
    const [usersData, setUsersData] = useState([])
    const [filteredUsersData, setFilteredUsersData] = useState([])
-
+   const [getUserDetail, getUserDetailResp] = useLazyGetUserDetailQuery()
    const [filterItems, setFilterItems] = useState([])
 
    const [blockUser, blockUserResp] = useBlockUserMutation()
    const [unblockUser, unblockUserResp] = useUnblockUserMutation()
+   const [fetchSettings, settingsResp] = useLazyGetSettingsQuery()
 
    const [fetchUsers, fetchUsersResp] = useLazyGetAllUsersQuery()
    const [addUser, addUserResp] = useAddUserMutation()
@@ -73,29 +77,99 @@ export default function Users() {
       tutor: ''
    })
 
+   useEffect(() => {
+      fetchSettings()
+         .then(res => {
+            setSettings(res.data.data.setting)
+         })
+   }, [])
+
+   // console.log(settings)
+
    const fetch = () => {
-      fetchUsers({currentPage, maxPageSize})
+      setUsersData([])
+      setFilteredUsersData([])
+      fetchUsers({ currentPage, maxPageSize })
          .then(res => {
             console.log('all-users', res.data.data);
             setTotalPages(res.data.data.total_users)
-            let data = res.data.data.user.map(user => {
-               return {
-                  _id: user._id,
-                  block: user.block,
-                  name: `${user.firstName} ${user.lastName}`,
-                  email: user.email ? user.email : '-',
-                  userType: user.role ? user.role : '-',
-                  phone: user.phone ? user.phone : '-',
-                  assignedTutor: '-',
-                  leadStatus: '-',
-                  tutorStatus: '-',
-                  services: '-',
-               }
-            })
-            setUsersData(data)
-            setFilteredUsersData(data)
+
+            const fetchDetails = async () => {
+               await res.data.data.user.map(async (user) => {
+                  let obj = {
+                     _id: user._id,
+                     block: user.block,
+                     name: `${user.firstName} ${user.lastName}`,
+                     email: user.email ? user.email : '-',
+                     userType: user.role ? user.role : '-',
+                     phone: user.phone ? user.phone : '-',
+                     assignedTutor: '-',
+                     leadStatus: '-',
+                     tutorStatus: '-',
+                     services: '-',
+                  }
+                  if (user.role === 'tutor') {
+                     await getUserDetail({ id: user._id })
+                        .then(resp => {
+                           // console.log('TUTOR RESp', resp);
+                           setFilterItems(prev => [...prev])
+                           // console.log('tutor-details', resp.data.data);
+                           let status = '-'
+                           if (resp.data.data.details) {
+                              status = resp.data.data.details.leadStatus
+                              obj.leadStatus = status ? status : '-'
+                           }
+                           setUsersData(prev => [...prev, obj])
+                           setFilteredUsersData(prev => [...prev, obj])
+                        })
+                  } else {
+                     await getUserDetail({ id: user._id })
+                        .then(resp => {
+                           setFilterItems(prev => [...prev])
+                           // console.log('user-details', resp.data.data);
+                           let status = '-'
+                           if (resp.data.data.userdetails) {
+                              status = resp.data.data.userdetails.leadStatus
+                              obj.leadStatus = status ? status : '-'
+                           }
+                           setUsersData(prev => [...prev, obj])
+                           setFilteredUsersData(prev => [...prev, obj])
+                        })
+                  }
+
+               })
+            }
+
+            fetchDetails()
+            // setUsersData(data)
+            // setFilteredUsersData(data)
          })
    }
+
+   // console.log('ALL USERS DATA', usersData)
+   // console.log('filteredUsersData', filteredUsersData)
+
+   const changeUserField = (field, id) => {
+      let temp = filteredUsersData.map(item => {
+         // console.log(item[Object.keys(field)[0]]);
+         if (item._id === id) {
+            return { ...item, ...field }
+         } else {
+            return { ...item }
+         }
+      })
+      let tempAllusers = usersData.map(item => {
+         if (item._id === id) {
+            return { ...item, ...field }
+         } else {
+            return { ...item }
+         }
+      })
+      // console.log(temp);
+      setFilteredUsersData(temp)
+      setUsersData(tempAllusers)
+   }
+
    useEffect(() => {
       fetch()
    }, [maxPageSize, currentPage])
@@ -103,11 +177,21 @@ export default function Users() {
    useEffect(() => {
       let tempdata = [...usersData]
       // console.log(usersData)
+      //USER TYPE FILTER
       if (filterData.userType !== '') {
          tempdata = tempdata.filter(user => user.userType === filterData.userType)
       } else {
          tempdata = tempdata.filter(user => user.userType !== '')
       }
+
+      //LEAD STATUS FILTER
+      if (filterData.status !== '') {
+         tempdata = tempdata.filter(user => user.leadStatus === filterData.status)
+      } else {
+         tempdata = tempdata.filter(user => user.leadStatus !== '')
+      }
+
+      //NAME FILTER 
       if (filterData.typeName !== '') {
          const regex2 = new RegExp(`${filterData.typeName.toLowerCase()}`, 'i')
          tempdata = tempdata.filter(user => user.name.match(regex2))
@@ -120,8 +204,6 @@ export default function Users() {
    const removeFilter = key => {
       let tempFilterData = { ...filterData }
       tempFilterData[key] = ''
-      // console.log(key)
-      // console.log(tempFilterData)
       setFilterData(tempFilterData)
    }
 
@@ -135,7 +217,6 @@ export default function Users() {
             }
          }
       }).filter(item => item !== undefined)
-      // console.log(arr)
       setFilterItems(arr)
    }, [filterData])
 
@@ -247,7 +328,7 @@ export default function Users() {
                   type='select'
                   value={filterData.userType}
                   onChange={val => setFilterData({ ...filterData, userType: val })} />
-               <InputSelect optionData={optionData}
+               <InputSelect optionData={settings.leadStatus}
                   placeholder='Lead Status'
                   parentClassName='w-full'
                   inputContainerClassName='text-sm border bg-white px-[20px] py-[16px]'
@@ -283,7 +364,7 @@ export default function Users() {
                   setMaxPageSize={setMaxPageSize}
                   currentPage={currentPage}
                   setCurrentPage={setCurrentPage}
-                  fetch={fetch} />
+                  fetch={changeUserField} />
             </div>
          </div>
 

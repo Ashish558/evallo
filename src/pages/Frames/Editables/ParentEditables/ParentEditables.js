@@ -8,7 +8,7 @@ import InputSelect from '../../../../components/InputSelect/InputSelect'
 import Modal from '../../../../components/Modal/Modal'
 import SimpleCalendar from '../../../../components/SimpleCalendar/SimpleCalendar'
 import Slider from '../../../../components/Slider/Slider'
-import { subjects, timeZones } from '../../../../constants/constants'
+import { grades, subjects, timeZones } from '../../../../constants/constants'
 import styles from './style.module.css'
 
 // 637b9df1e9beff25e9c2aa83
@@ -40,6 +40,16 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
       {
          name: 'timeZone',
          title: 'Time Zone',
+         api: 'userDetail',
+      },
+      {
+         name: 'schoolName',
+         title: 'School Name',
+         api: 'userDetail',
+      },
+      {
+         name: 'grade',
+         title: 'Grade',
          api: 'userDetail',
       },
       {
@@ -115,7 +125,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
       {
          name: 'associatedParent',
          title: 'Associated Parent',
-         api: 'userDetail',
+         api: 'user',
       },
       {
          name: 'tutorLevel',
@@ -177,6 +187,21 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
          title: 'Contact',
          api: 'user',
       },
+      {
+         name: 'satScores',
+         title: 'SAT Scores',
+         api: 'userDetail',
+      },
+      {
+         name: 'actScores',
+         title: 'ACT Scores',
+         api: 'userDetail',
+      },
+      {
+         name: 'aboutScore',
+         title: 'PSAT / P-ACT Scores',
+         api: 'userDetail',
+      },
    ]
 
    // console.log(currentField)
@@ -214,11 +239,12 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
    useEffect(() => {
       if (student.length > 0) {
          fetchStudents(student).then((res) => {
-            // console.log(res.data.data.students);
+            console.log(res.data.data.students);
             let tempData = res.data.data.students.map((tutor) => {
                return {
                   _id: tutor._id,
                   value: `${tutor.firstName} ${tutor.lastName}`,
+                  photo: tutor.photo ? tutor.photo : '/images/default.jpeg'
                };
             });
             setStudents(tempData);
@@ -318,14 +344,27 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                // handleClose()
             })
       } else if (currentField.api === 'userDetail') {
+         if (reqBody.satScores) {
+            if (isNaN(reqBody.satScores.maths)) reqBody.satScores.maths = 0
+            if (isNaN(reqBody.satScores.verbal)) reqBody.satScores.verbal = 0
+         }
+         if (reqBody.actScores) {
+            if (isNaN(reqBody.actScores.maths)) reqBody.actScores.maths = 0
+            if (isNaN(reqBody.actScores.english)) reqBody.actScores.english = 0
+            if (isNaN(reqBody.actScores.reading)) reqBody.actScores.reading = 0
+            if (isNaN(reqBody.actScores.science)) reqBody.actScores.science = 0
+         }
+         // console.log(reqBody);
+         // return
          updateDetails({ id: userId, fields: reqBody })
             .then(res => {
                console.log(res)
                fetchDetails(true, true)
                // handleClose()
             })
+
       } else if (currentField.api === 'tutorDetail') {
-         if(reqBody.tutorLevel){
+         if (reqBody.tutorLevel) {
             const level = getLevel(reqBody.tutorLevel)
             reqBody.tutorLevel = level
          }
@@ -353,27 +392,39 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
 
    const getLevel = str => {
       const levels = ['ORANGE', 'PURPLE', 'BROWN', 'BLACK']
-      if(str === 'Level - 1'){
+      if (str === 'Level - 1') {
          return levels[0]
       }
-      if(str === 'Level - 2'){
+      if (str === 'Level - 2') {
          return levels[1]
       }
-      if(str === 'Level - 3'){
+      if (str === 'Level - 3') {
          return levels[2]
       }
-      if(str === 'Level - 4'){
+      if (str === 'Level - 4') {
          return levels[3]
-      }else{
+      } else {
          return ''
       }
    }
-   // console.log('toedit', currentToEdit)
+   console.log('toedit', currentToEdit)
    // console.log('setting', settings)
    // console.log('field', currentField)
    // console.log('sett', settings)
    // console.log('students', students)
    // console.log('parents', parents)
+
+   const checkNumber = (prevNum, num, limit) => {
+      // console.log(num);
+      if (limit) {
+         if (num > limit + 1) {
+            return prevNum
+         } else {
+            return num
+         }
+      }
+      return num
+   }
 
    const [startDate, setStartDate] = useState(new Date());
 
@@ -534,6 +585,37 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                                     parentClassName='flex-1 ' type='text'
                                     value={currentToEdit.residentialAddress}
                                     onChange={e => setCurrentToEdit({ ...currentToEdit, residentialAddress: e.target.value })} />
+                              </div>
+                           </div>
+                        }
+                        {currentField.name === 'grade' &&
+                           <div>
+                              <div className='flex items-center mb-5 pt-6'>
+                                 {/* <p className='font-medium mr-4 min-w-[60px]'>  </p> */}
+                                 <InputSelect
+                                    optionData={grades}
+                                    labelClassname='hidden'
+                                    placeholder='Enter your Grade'
+                                    inputContainerClassName='text-sm pt-3 pb-3 px-5 bg-primary-50 border-0'
+                                    inputClassName='bg-transparent'
+                                    parentClassName='flex-1 ' type='text'
+                                    value={currentToEdit.grade}
+                                    onChange={val => setCurrentToEdit({ ...currentToEdit, grade: val })} />
+                              </div>
+                           </div>
+                        }
+                        {currentField.name === 'schoolName' &&
+                           <div>
+                              <div className='flex items-center mb-5 pt-6'>
+                                 {/* <p className='font-medium mr-4 min-w-[60px]'>  </p> */}
+                                 <InputField
+                                    labelClassname='hidden'
+                                    placeholder='Enter your Schol Name'
+                                    inputContainerClassName='text-sm pt-3 pb-3 px-5 bg-primary-50 border-0'
+                                    inputClassName='bg-transparent'
+                                    parentClassName='flex-1 ' type='text'
+                                    value={currentToEdit.schoolName}
+                                    onChange={e => setCurrentToEdit({ ...currentToEdit, schoolName: e.target.value })} />
                               </div>
                            </div>
                         }
@@ -698,12 +780,12 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                                  // setStudent(item.value);
                                  console.log(val);
                                  setCurrentToEdit({
-                                     ...currentToEdit,
-                                      associatedParent: val._id,
-                                      FirstName: val.fname,
-                                      LastName: val.lname,
-                                      Email: val.email
-                                     })
+                                    ...currentToEdit,
+                                    associatedParent: val._id,
+                                    FirstName: val.fname,
+                                    LastName: val.lname,
+                                    Email: val.email
+                                 })
                                  // setCurrentToEdit({ ...currentToEdit, students: [... item._id] });
                               }} />
                         }
@@ -744,7 +826,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                               <div className='flex items-center mb-5'>
                                  <InputField
                                     labelClassname='hidden'
-                                    placeholder='Education'
+                                    placeholder='Address'
                                     inputContainerClassName='text-sm pt-3.5 pb-3 px-5 bg-primary-50 border-0'
                                     inputClassName='bg-transparent rounded-[4px]'
                                     parentClassName='flex-1' type='text'
@@ -1062,6 +1144,150 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                                     parentClassName='flex-1 ' type='text'
                                     value={currentToEdit.phone}
                                     onChange={e => setCurrentToEdit({ ...currentToEdit, phone: e.target.value })} />
+                              </div>
+                           </div>
+                        }
+                        {currentField.name === 'satScores' &&
+                           <div className='grid grid-cols-2'>
+                              <div className='flex flex-col items-center mb-4'>
+                                 <p className='font-medium mb-2'>
+                                    Verbal Score
+                                 </p>
+                                 <InputField
+                                    labelClassname='hidden'
+                                    placeholder=''
+                                    inputContainerClassName='text-sm pt-3 pb-3 px-5 bg-primary-50 border-0'
+                                    inputClassName='bg-transparent pl-4 rounded-[4px]'
+                                    parentClassName='flex-1 max-w-[140px]' type='number'
+                                    value={currentToEdit.satScores.verbal}
+                                    onChange={e => setCurrentToEdit({
+                                       ...currentToEdit,
+                                       satScores: {
+                                          ...currentToEdit.satScores,
+                                          verbal: checkNumber(currentToEdit.satScores.verbal, parseInt(e.target.value), 800)
+                                       }
+                                    })}
+                                 />
+                              </div>
+                              <div className='flex  flex-col  items-center mb-4'>
+                                 <p className='font-medium mb-2 '>
+                                    Maths Score
+                                 </p>
+                                 <InputField
+                                    labelClassname='hidden'
+                                    placeholder=''
+                                    inputContainerClassName='text-sm pt-3 pb-3 px-5 bg-primary-50 border-0'
+                                    inputClassName='bg-transparent pl-4 rounded-[4px]'
+                                    parentClassName='flex-1 max-w-[140px]' type='number'
+                                    value={currentToEdit.satScores.maths}
+                                    onChange={e => setCurrentToEdit({
+                                       ...currentToEdit,
+                                       satScores: {
+                                          ...currentToEdit.satScores,
+                                          maths: checkNumber(currentToEdit.satScores.maths, parseInt(e.target.value), 800)
+                                       }
+                                    })}
+                                 />
+                              </div>
+
+                           </div>
+                        }
+                        {currentField.name === 'actScores' &&
+                           <div className='grid grid-cols-2'>
+                              <div className='flex flex-col items-center mb-4'>
+                                 <p className='font-medium mb-2'>
+                                    Maths Score
+                                 </p>
+                                 <InputField
+                                    labelClassname='hidden'
+                                    placeholder=''
+                                    inputContainerClassName='text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0'
+                                    inputClassName='bg-transparent pl-4 rounded-[4px]'
+                                    parentClassName='flex-1 max-w-[140px]' type='number'
+                                    value={currentToEdit.actScores.maths}
+                                    onChange={e => setCurrentToEdit({
+                                       ...currentToEdit,
+                                       actScores: {
+                                          ...currentToEdit.actScores,
+                                          maths: checkNumber(currentToEdit.actScores.maths, parseInt(e.target.value), 36)
+                                       }
+                                    })}
+                                 />
+                              </div>
+                              <div className='flex  flex-col  items-center mb-4'>
+                                 <p className='font-medium mb-2 '>
+                                    English Score
+                                 </p>
+                                 <InputField
+                                    labelClassname='hidden'
+                                    placeholder=''
+                                    inputContainerClassName='text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0'
+                                    inputClassName='bg-transparent pl-4 rounded-[4px]'
+                                    parentClassName='flex-1 max-w-[140px]' type='number'
+                                    value={currentToEdit.actScores.english}
+                                    onChange={e => setCurrentToEdit({
+                                       ...currentToEdit,
+                                       actScores: {
+                                          ...currentToEdit.actScores,
+                                          english: checkNumber(currentToEdit.actScores.english, parseInt(e.target.value), 36)
+                                       }
+                                    })}
+                                 />
+                              </div>
+                              <div className='flex  flex-col  items-center mb-4'>
+                                 <p className='font-medium mb-2 '>
+                                    Reading Score
+                                 </p>
+                                 <InputField
+                                    labelClassname='hidden'
+                                    placeholder=''
+                                    inputContainerClassName='text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0'
+                                    inputClassName='bg-transparent pl-4 rounded-[4px]'
+                                    parentClassName='flex-1 max-w-[140px]' type='number'
+                                    value={currentToEdit.actScores.reading}
+                                    onChange={e => setCurrentToEdit({
+                                       ...currentToEdit,
+                                       actScores: {
+                                          ...currentToEdit.actScores,
+                                          reading: checkNumber(currentToEdit.actScores.reading, parseInt(e.target.value), 36)
+                                       }
+                                    })}
+                                 />
+                              </div>
+                              <div className='flex  flex-col  items-center mb-4'>
+                                 <p className='font-medium mb-2 '>
+                                    Science Score
+                                 </p>
+                                 <InputField
+                                    labelClassname='hidden'
+                                    placeholder=''
+                                    inputContainerClassName='text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0'
+                                    inputClassName='bg-transparent pl-4 rounded-[4px]'
+                                    parentClassName='flex-1 max-w-[140px]' type='number'
+                                    value={currentToEdit.actScores.science}
+                                    onChange={e => setCurrentToEdit({
+                                       ...currentToEdit,
+                                       actScores: {
+                                          ...currentToEdit.actScores,
+                                          science: checkNumber(currentToEdit.actScores.science, parseInt(e.target.value), 36)
+                                       }
+                                    })}
+                                 />
+                              </div>
+
+                           </div>
+                        }
+                        {currentField.name === 'aboutScore' &&
+                           <div>
+                              <div className='flex items-center mb-5'>
+                                 <InputField
+                                    labelClassname='hidden'
+                                    placeholder='PSAT / P-ACT Scores'
+                                    inputContainerClassName='text-sm pt-3.5 pb-3 px-5 bg-primary-50 border-0'
+                                    inputClassName='bg-transparent rounded-[4px]'
+                                    parentClassName='flex-1' type='text'
+                                    value={currentToEdit.aboutScore}
+                                    onChange={e => setCurrentToEdit({ ...currentToEdit, aboutScore: e.target.value })} />
                               </div>
                            </div>
                         }

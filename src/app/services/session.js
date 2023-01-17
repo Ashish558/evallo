@@ -75,6 +75,14 @@ export const sessionServicesApi = createApi({
             headers: getAuthHeader()
          })
       }),
+      updateAllSession: builder.mutation({
+         query: (payload) => ({
+            url: `/api/session/all/${payload.id}`,
+            method: "PATCH",
+            body: payload.body,
+            headers: getAuthHeader()
+         })
+      }),
       updateSessionStatus: builder.query({
          query: (id) => ({
             url: `/api/session/sessioncompleted/${id}`,
@@ -126,6 +134,34 @@ export const sessionServicesApi = createApi({
             headers: getAuthHeader()
          })
       }),
+      sessionMissed: builder.query({
+         query: (id) => ({
+            url: `/api/session/sessionmissed/${id}`,
+            method: "GET",
+            headers: getAuthHeader()
+         })
+      }),
+      cancelSession: builder.query({
+         query: (id) => ({
+            url: `/api/session/sessioncancel/${id}`,
+            method: "GET",
+            headers: getAuthHeader()
+         })
+      }),
+      deleteSession: builder.mutation({
+         query: (id) => ({
+            url: `/api/session/${id}`,
+            method: "DELETE",
+            headers: getAuthHeader()
+         })
+      }),
+      deleteAllRecurringSession: builder.mutation({
+         query: (id) => ({
+            url: `/api/session/all/${id}`,
+            method: "DELETE",
+            headers: getAuthHeader()
+         })
+      }),
 
    }),
 });
@@ -144,5 +180,10 @@ export const {
    useLazyUpdateSessionStatusQuery,
    useSubmitFeedbackMutation,
    useLazyGetSessionFeedbackQuery,
-   useLazyGetStudentFeedbackQuery
+   useLazyGetStudentFeedbackQuery,
+   useLazyCancelSessionQuery,
+   useLazySessionMissedQuery,
+   useDeleteSessionMutation,
+   useDeleteAllRecurringSessionMutation,
+   useUpdateAllSessionMutation
 } = sessionServicesApi;

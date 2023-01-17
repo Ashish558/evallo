@@ -35,7 +35,7 @@ export default function Ledger({setLedgerVisible}) {
    useEffect(() => {
       fetchLedgers()
          .then(res => {
-            console.log('all ledgers' ,res.data.data.ledger);
+            // console.log('all ledgers' ,res.data.data.ledger);
             let temp = res.data.data.ledger.map(item => ({ ...item, isOpen: false }))
             setLedgers(temp)
          })
@@ -59,14 +59,14 @@ export default function Ledger({setLedgerVisible}) {
       })
       setLedgers(temp)
    }
-   // console.log(ledgers);
+   console.log(ledgers);
 
    return (
-      <div className='bg-[#ffffffaf] w-screen h-full z-5000 absolute left-0'>
-         <div className='bg-lightWhite w-[60%] h-[90vh] m-auto my-10 overflow-y-auto rounded-7 z-5000'>
-            <div className='lg:px-5 lg:pt-5'>
+      <div className='bg-[#ffffffaf] w-[90%] rounded-lg ml-auto mr-auto h-full z-5000 absolute left-0 p-10' style={{position: 'absolute', left: '50%', transform: 'translateX(calc(-50% + 30px))'}} >
+         <div className='bg-lightWhite h-[90vh] scrollbar-content scrollbar-vertical overflow-y-auto rounded-lg z-5000'>
+            <div className='lg:px-5 lg:pt-10'>
                <div className="text-right mb-10">
-                  <button onClick={() => setLedgerVisible(false)}>&times;</button>
+                  <button className='scale-150	' onClick={() => setLedgerVisible(false)}>&times;</button>
                </div>
 
                <div className="flex justify-between items-center">

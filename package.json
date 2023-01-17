@@ -2,6 +2,7 @@
   "name": "my-app",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://app.sevensquarelearning.com",
   "dependencies": {
     "@fullcalendar/core": "^6.0.1",
     "@fullcalendar/daygrid": "^5.11.3",

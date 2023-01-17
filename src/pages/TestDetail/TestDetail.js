@@ -81,7 +81,7 @@ export default function TestDetail() {
             if (res.error) {
                return console.log(res.error);
             }
-            // console.log('sections data', res.data.data);
+            console.log('sections data', res.data.data);
             setSectionsData(res.data.data)
             let tempSubs = res.data.data.answer.subjects.map((item, idx) => ({ ...item, selected: idx === 0 ? true : false }))
             setSubjects(tempSubs)
@@ -173,8 +173,7 @@ export default function TestDetail() {
                                     {section.timer} mins
                                  </div>
                                  <p className="inline-block w-138 font-medium text-center">
-                                    {" "}
-                                    {/* {section.totalQuestions} {40} */}
+                                    {section.totalQuestion ? section.totalQuestion : '-'}
                                  </p>
                               </div>
                            ))
@@ -225,12 +224,12 @@ export default function TestDetail() {
                      accept="application/pdf"
                      onChange={e => handlePDFFile(e.target.files[0])}
                   />
-                  <PrimaryButton
+                  {/* <PrimaryButton
                      children={<div className="flex items-center justify-center">
                         Add new question
                         <img src={AddIcon} className='w-6 ml-2' /> </div>}
                      className={`py-3.5 pl-6 pr-6 mr-4 font-medium text-textGray" }`}
-                  />
+                  /> */}
                </div>
                <div className="mt-4">
 

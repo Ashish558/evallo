@@ -57,7 +57,11 @@ export default function Login({ setLoginFormActive }) {
          .then(() => {
             loginUser({ email, password }).then((res) => {
                if (res.error) {
-                  console.log(res.error)
+                  console.log('login err', res.error)
+                  if (res.error.status == 500) {
+                     alert('Login failed')
+                     return
+                  }
                   if (res.error.data.message === "email not found") {
                      setError(prev => {
                         return { ...prev, email: 'Email not found' }
@@ -87,71 +91,73 @@ export default function Login({ setLoginFormActive }) {
 
    return (
       <div className="min-h-screen">
-         <div className="grid grid-cols-2 min-h-screen">
-            <div className="bg-primary">
+         <div className="grid grid-cols-1 md:grid-cols-2 min-h-screen">
+            <div className="bg-primary hidden lg:block">
                <ImageSlider className={styles.loginCarousel} images={[CarouselImg, CarouselImg]} pagination={true} />
             </div>
-            <div className="flex items-center">
+            <div className="lg:flex lg:items-center">
                {loginActive ? (
-                  <div className="w-full px-[120px]">
-                     <p className="font-bold text-5xl leading-snug mb-7">
+                  <div className="w-full">
+                     <p className="font-bold text-[28px] lg:text-5xl leading-snug mb-7 bg-[#7152EB] lg:bg-transparent  px-[49px] lg:px-[120px] text-white lg:text-black pt-[90px] pb-[34px] lg:pt-0 lg:pb-0">
                         Login
                      </p>
 
-                     <p className="text-lg font-bold mb-12">
+                     <p className="text-lg font-bold mb-12 hidden lg:block px-[120px]">
                         Login with email address
                      </p>
+                     <div className="px-[49px] lg:px-[120px]">
+                        <InputField
+                           Icon={EmailIcon}
+                           iconSize='medium'
+                           placeholder="Email address"
+                           parentClassName="mb-[20px] lg:mb-6"
+                           label="Email Address"
+                           labelClassname="ml-2 mb-[4px] lg:mb-2 text-[12px] lg:text-[16px]"
+                           inputClassName="bg-transparent"
+                           inputContainerClassName='border'
+                           value={email}
+                           onChange={(e) => setEmail(e.target.value)}
+                           error={error.email}
+                        />
 
-                     <InputField
-                        Icon={EmailIcon}
-                        iconSize='medium'
-                        placeholder="Email address"
-                        parentClassName="mb-6 relative"
-                        label="Email Address"
-                        labelClassname="ml-2 mb-2"
-                        inputClassName="bg-transparent"
-                        inputContainerClassName='border pt-3 pb-3'
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        error={error.email}
-                     />
+                        <InputField
+                           Icon={Passwordicon}
+                           iconSize='medium'
+                           parentClassName="mb-[9px] lg:mb-6"
+                           placeholder="Password"
+                           label="Password"
+                           type='password'
+                           labelClassname="ml-2 mb-[4px] lg:mb-2 text-[12px] lg:text-[16px]"
+                           inputClassName="bg-transparent"
+                           inputContainerClassName='border'
+                           value={password}
+                           onChange={(e) => setPassword(e.target.value)}
+                           error={error.password}
+                        />
+                        <p
+                           className="text-secondary text-[10px] lg:text-xs inline-block cursor-pointer font-semibold ml-2"
+                           onClick={() =>
+                              setActiveFrame(setIsPasswordForgot)
+                           }
+                        >
+                           Forgot Password ?
+                        </p>
 
-                     <InputField
-                        Icon={Passwordicon}
-                        iconSize='medium'
-                        parentClassName="mb-1 relative"
-                        placeholder="Password"
-                        label="Password"
-                        type='password'
-                        labelClassname="ml-2 mb-2"
-                        inputClassName="bg-transparent"
-                        inputContainerClassName='border pt-3 pb-3'
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        error={error.password}
-                     />
-                     <p
-                        className="text-secondary text-xs inline-block cursor-pointer font-semibold ml-2"
-                        onClick={() =>
-                           setActiveFrame(setIsPasswordForgot)
-                        }
-                     >
-                        Forgot Password ?
-                     </p>
+                        <button
+                           disabled={!(emailValidation.test(email) && password.length > 0)}
+                           className="w-full bg-primaryDark disabled:bg-pink pt-3.5 pb-3.5 mt-[148px] lg:mt-12 rounded-10 text-white text-lg"
+                           onClick={handleSubmit}
+                        >
+                           Login
+                        </button>
+                        <p
+                           className="text-secondary text-xs font-semibold ml-2 mt-2 cursor-pointer lg:inline-block hidden"
+                           onClick={() => navigate('/signup')}
+                        >
+                           Sign-up Instead?
+                        </p>
+                     </div>
 
-                     <button
-                        disabled={!(emailValidation.test(email) && password.length > 0)}
-                        className="w-full bg-primaryDark disabled:bg-pink pt-3.5 pb-3.5 mt-12 rounded-10 text-white text-lg"
-                        onClick={handleSubmit}
-                     >
-                        Login
-                     </button>
-                     <p
-                        className="text-secondary text-xs font-semibold ml-2 mt-2 cursor-pointer inline-block"
-                        onClick={() => navigate('/signup')}
-                     >
-                        Sign-up Instead?
-                     </p>
                   </div>
                ) : isPasswordForgot ? (
                   <ForgotPassword {...props} />

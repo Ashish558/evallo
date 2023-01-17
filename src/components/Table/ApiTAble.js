@@ -89,6 +89,7 @@ export default function ApiTable({
                previousClassName='hidden'
                nextClassName='hidden'
                renderOnZeroPageCount={null}
+               pageLinkClassName='w-full h-full flex justify-center items-center'
             />
 
          </div>

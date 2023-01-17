@@ -22,7 +22,7 @@ export default function FeedbackTable({ feedbacks }) {
       setTableData(temp)
    }, [currentPage, feedbacks])
 
-   console.log(tableData);
+   // console.log(tableData);
    return (
       <>
          <ProfileCard hideShadow

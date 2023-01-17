@@ -4,6 +4,7 @@
    transform: translate(-50%, -50%);
    display: flex;
 }
+
 .cameraIcon {
    position: absolute;
    bottom: 11px;
@@ -12,7 +13,14 @@
    height: 40px;
    display: flex;
    align-items: center;
-} 
+}
+.tutorCamera{
+   bottom: -2px;
+   right: -5px;
+   width: 36px;
+   height: 36px;
+}
+
 @media only screen and (min-width: 1024px) {
 
    .imgContainer {
@@ -22,12 +30,20 @@
       display: flex;
    }
 
-   
+
    .imgContainer img {
       width: 165px;
       height: 165px;
       border-radius: 50%;
    }
 
+   .imgContainerTutor {
+      width: 100px;
+      height: 100px;
+   }
+   .imgContainerTutor img{
+      width: 100%;
+      height: 100%;
+   }
 
 }

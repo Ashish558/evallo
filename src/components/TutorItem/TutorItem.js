@@ -26,7 +26,7 @@ const TutorItem = ({ tutorName, rating, service, updatedAt }) => {
             {[...Array(5)].map((x, i) => (
                <img
                   src={rating - 1 < i ? starDark : starGold}
-                  className="mr-2 cursor-pointer w-[21px] "
+                  className="mr-1 cursor-pointer w-[21px] "
                // onClick={() => {
                //    // setData(prev => ({ ...prev, feedbackStars: i + 1 }));
                //    // setInputFeedback(i + 1)

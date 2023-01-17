@@ -19,12 +19,13 @@ import InterestThreeIcon from '../../../assets/images/int-3.svg'
 import SubjectSlider from '../../../components/SubjectSlider/SubjectSlider'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useLazyGetUserDetailQuery } from '../../../app/services/users'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import ParentEditables from '../../Frames/Editables/ParentEditables/ParentEditables'
 import { useLazyGetSettingsQuery } from '../../../app/services/session'
 import ProfilePhoto from '../../../components/ProfilePhoto/ProfilePhoto'
 import axios from 'axios'
 import { BASE_URL, getAuthHeader } from '../../../app/constants/constants'
+import { updateTimeZone } from '../../../app/slices/user'
 const students = [
    {
       id: 1,
@@ -120,7 +121,9 @@ export default function StudentProfile({ isOwn }) {
 
    const navigate = useNavigate()
    const [editable, setEditable] = useState(false)
-   const persona = sessionStorage.getItem('role')
+   const dispatch = useDispatch()
+   const { role: persona } = useSelector(state => state.user)
+
    const [user, setUser] = useState({})
    const [userDetail, setUserDetail] = useState({})
    const [settings, setSettings] = useState({})
@@ -148,6 +151,10 @@ export default function StudentProfile({ isOwn }) {
       birthYear: {
          active: false,
          birthyear: '',
+      },
+      aboutScore: {
+         active: false,
+         aboutScore: '',
       },
       contact: {
          active: false,
@@ -186,6 +193,30 @@ export default function StudentProfile({ isOwn }) {
          active: false,
          interest: []
       },
+      schoolName: {
+         active: false,
+         schoolName: []
+      },
+      grade: {
+         active: false,
+         grade: []
+      },
+      satScores: {
+         active: false,
+         satScores: {
+            verbal: 0,
+            maths: 0
+         }
+      },
+      actScores: {
+         active: false,
+         actScores: {
+            english: 0,
+            maths: 0,
+            reading: 0,
+            science: 0
+         }
+      },
    })
 
    const handleClose = () => {
@@ -214,16 +245,27 @@ export default function StudentProfile({ isOwn }) {
       getUserDetail({ id: userId })
          .then(res => {
             console.log('response', res.data.data);
-            const { firstName, lastName, phone, email } = res.data.data.user
-            const { service, accomodations, timeZone, birthyear, associatedParent, personality, interest } = res.data.data.userdetails
+            const { firstName, lastName, phone, email, associatedParent } = res.data.data.user
+            let { service, accomodations, timeZone, birthyear, personality, interest, schoolName, grade, satScores, actScores } = res.data.data.userdetails
             associatedParent && getUserDetail({ id: associatedParent })
                .then(res => {
                   const { firstName, lastName, _id, } = res.data.data.user
                   setAssociatedParent({
-                     firstName, lastName, _id
+                     firstName, lastName, _id,
+                     photo: res.data.data.user.photo ? res.data.data.user.photo : '/images/default.jpeg'
                   })
                })
             setUser(res.data.data.user)
+            if (!satScores) satScores = {
+               verbal: 0,
+               maths: 0
+            }
+            if (!actScores) actScores = {
+               english: 0,
+               maths: 0,
+               reading: 0,
+               science: 0
+            }
             const promiseState = async state => new Promise(resolve => {
                resolve(
                   setToEdit(prev => {
@@ -266,6 +308,30 @@ export default function StudentProfile({ isOwn }) {
                            ...prev.interest,
                            interest,
                         },
+                        schoolName: {
+                           ...prev.schoolName,
+                           schoolName
+                        },
+                        grade: {
+                           ...prev.grade,
+                           grade
+                        },
+                        satScores: {
+                           ...prev.satScores,
+                           satScores: {
+                              verbal: satScores.verbal,
+                              maths: satScores.maths
+                           }
+                        },
+                        actScores: {
+                           ...prev.actScores,
+                           actScores: {
+                              english: actScores.english,
+                              maths: actScores.maths,
+                              reading: actScores.reading,
+                              science: actScores.science
+                           }
+                        },
                      }
                   })
                )
@@ -285,6 +351,10 @@ export default function StudentProfile({ isOwn }) {
    useEffect(() => {
       fetchSettings()
          .then(res => {
+            if(res.error){
+               console.log('settings fetch err', res.error)
+               return
+            }
             setSettings(res.data.data.setting)
          })
    }, [])
@@ -305,9 +375,40 @@ export default function StudentProfile({ isOwn }) {
             fetchDetails()
          })
    }
+
+   const getSatMarks = () => {
+      // let scores = [
+      //    userDetail.satScores.verbal,
+      //    userDetail.satScores.maths
+      // ]
+      // scores =  scores.filter(score => !isNaN(score))
+      // console.log(scores);
+      if (typeof userDetail.satScores.verbal === 'number' && typeof userDetail.satScores.maths) {
+         return userDetail.satScores.verbal + userDetail.satScores.maths
+      }
+   }
+
+   const getActMarks = () => {
+      // let scores = [
+      //    userDetail.satScores.verbal,
+      //    userDetail.satScores.maths
+      // ]
+      // scores =  scores.filter(score => !isNaN(score))
+      // console.log(scores);
+      if (typeof userDetail.actScores.maths && typeof userDetail.actScores.english && typeof userDetail.actScores.reading && typeof userDetail.actScores.science) {
+         return (userDetail.actScores.english + userDetail.actScores.maths + userDetail.actScores.reading + userDetail.actScores.science) / 4
+      }
+   }
+
+   useEffect(() => {
+      console.log(userDetail.timeZone);
+      if (userDetail.timeZone === undefined) return
+      dispatch(updateTimeZone({ timeZone: userDetail.timeZone }))
+   }, [userDetail.timeZone])
+
    // console.log(user)
    // console.log(userDetail)
-   // console.log(associatedParent)
+   // console.log('associatedParent', associatedParent)
    // console.log(settings)
 
    if (Object.keys(user).length < 1) return
@@ -332,13 +433,28 @@ export default function StudentProfile({ isOwn }) {
                            imgClass='ml-auto' />
                      </div>
                      <div className='flex items-center text-[#F3F5F7]'>
-                        <p className='font-semibold text-[22px] mr-4'>
-                           {/* 11th Grade */}
-                        </p>
-                        <p className='font-semibold text-[22px]'>
-                           {/* Cambridge High School */}
-                        </p>
+
+                        <EditableText text={`${userDetail.grade}`}
+                           editable={editable}
+                           onClick={() => setToEdit({ ...toEdit, grade: { ...toEdit.grade, active: true } })}
+                           className='text-21 capitalize justify-center text-[#F3F5F7] text-center font-bold text-21 mr-6'
+                           textClassName='flex-1'
+                           imgClass='ml-auto' />
+                        {/* <p className='font-semibold text-[22px] mr-4'>
+                           {userDetail.grade}
+                        </p> */}
+                        <EditableText text={`${userDetail.schoolName}`}
+                           editable={editable}
+                           onClick={() => setToEdit({ ...toEdit, schoolName: { ...toEdit.schoolName, active: true } })}
+                           className='text-21 capitalize justify-center text-[#F3F5F7] text-center font-bold text-21 mr-6'
+                           textClassName='flex-1'
+                           imgClass='ml-auto' />
+                        {/* <p className='font-semibold text-[22px]'>
+                           {userDetail.schoolName}
+                        </p> */}
+
                      </div>
+
                   </div>
                </div>
 
@@ -378,19 +494,20 @@ export default function StudentProfile({ isOwn }) {
                   <div className='col-span-2 flex  justify-center items-center  scrollbar-content overflow-x-auto lg:py-5 bg-primary-light px-4 py-5 rounded-15'>
                      <div className='flex flex-col items-center mb-3'>
                         {/* <p className='text-lg text-center text-primary font-semibold mb-5 text-[21px]'>Associated Parent</p> */}
-                        <EditableText editable={persona === 'admin' ? true : false}
+                        <EditableText
+                           editable={persona === 'admin' ? true : false}
                            onClick={() => setToEdit({ ...toEdit, associatedParent: { ...toEdit.associatedParent, active: true } })}
                            text='Associated Parent'
                            className='text-[21px] mb-2 flex justify-start text-center' />
 
-                        <div>
-                           <img src='/images/default.jpeg' className='rounded-full' width="98px" height="98px" />
+                        <div className='w-[98px] h-[98px]'>
+                           <img src={associatedParent.photo ? associatedParent.photo : ''} className='rounded-full w-full h-full' width="98px" height="98px" />
                         </div>
                         <p className='font-bold text-[18px] opacity-[68%] mb-1'>
                            {Object.keys(associatedParent).length > 1 ? `${associatedParent.firstName} ${associatedParent.lastName}` : `${userDetail.FirstName} ${userDetail.LastName}`}
                         </p>
 
-                        <div className='flex items-center'>
+                        <div className='flex items-center cursor-pointer'>
                            <span className='text-xs font-semibold opacity-60 inline-block mr-1'
                               onClick={() => Object.keys(associatedParent).length > 1 && navigate(`/profile/parent/${associatedParent._id}`)} >
                               View Profile
@@ -429,12 +546,17 @@ export default function StudentProfile({ isOwn }) {
                         } />
 
                      <ProfileCard className='mt-5 mt-auto flex-1'
-                        title='PSAT / P-ACT Scores'
+                        title={
+                           <EditableText editable={editable}
+                              onClick={() => setToEdit({ ...toEdit, aboutScore: { ...toEdit.aboutScore, active: true } })}
+                              text='PSAT / P-ACT Scores'
+                              className='text-[21px] mb-2 flex justify-start' />
+                        }
                         titleClassName='text-left'
                         body={
                            <div className='flex mt-5 lg:mt-5'>
                               <p className=' font-semibold text-[18px]'>
-                                 -
+                                 {userDetail.aboutScore ? userDetail.aboutScore : '-'}
                               </p>
                            </div>
                         } />
@@ -457,7 +579,7 @@ export default function StudentProfile({ isOwn }) {
                               </p>
                            </div>
                            <div className='mb-6'>
-                              <EditableText editable={editable}
+                              <EditableText editable={persona === 'admin' ? true : false}
                                  onClick={() => setToEdit({ ...toEdit, subscribeType: { ...toEdit.subscribeType, active: true } })}
                                  text='Subscription'
                                  textClassName="text-[21px]"
@@ -493,15 +615,19 @@ export default function StudentProfile({ isOwn }) {
                            <div className='flex scrollbar-content max-h-[500px]  scrollbar-vertical flex-col row-span-2 overflow-x-auto scrollbar-content h-[450px]'>
                               {settings && settings.personality && settings.personality.length > 0 && userDetail.personality && userDetail.personality.map((id, idx) => {
                                  return (
-                                    <div key={idx} className='flex flex-col items-center mb-10'>
-                                       <div className='flex h-90 w-90 rounded-full  items-center justify-center mb-3' >
-                                          <img className='max-w-[90px] max-h-[90px]' src={settings.personality.find(item => item._id === id).image}
-                                          />
+                                    settings.personality.find(item => item._id === id) ?
+                                       <div key={idx} className='flex flex-col items-center mb-10'>
+                                          <div className='flex h-90 w-90 rounded-full  items-center justify-center mb-3' >
+                                             <img className='max-w-[90px] max-h-[90px]'
+                                                src={settings.personality.find(item => item._id === id) ? settings.personality.find(item => item._id === id).image :
+                                                   ''}
+                                             />
+                                          </div>
+                                          <p className='opacity-70 font-semibold text-lg'>
+                                             {settings.personality.find(item => item._id === id) ? settings.personality.find(item => item._id === id).text : <></>}
+                                          </p>
                                        </div>
-                                       <p className='opacity-70 font-semibold text-lg'>
-                                          {settings.personality.find(item => item._id === id).text}
-                                       </p>
-                                    </div>
+                                       : <></>
                                  )
                               })}
                            </div>
@@ -514,9 +640,23 @@ export default function StudentProfile({ isOwn }) {
                         className='mt-53 lg:mt-0'
                         body={
                            <>
-                              <SubjectSlider totalMarks={'-'} outOf={'-'}
-                                 header="Official SAT Scores"
-                                 subjects={subjects1} title='Cumilative Score'
+                              <SubjectSlider
+                                 score={userDetail.satScores ?
+                                    { verbal: userDetail.satScores.verbal, maths: userDetail.satScores.maths } : {}
+                                 }
+                                 totalMarks={
+                                    userDetail.satScores ?
+                                       getSatMarks() : '-'
+                                 }
+                                 outOf={'1600'}
+                                 isSat={true}
+                                 header={
+                                    <EditableText editable={editable}
+                                       onClick={() => setToEdit({ ...toEdit, satScores: { ...toEdit.satScores, active: true } })}
+                                       text='Official SAT Scores'
+                                       className='text-lg mb-2' textClassName="flex-1 text-center text-[21px]" />
+                                 }
+                                 subjects={subjects1} title='Composite Score'
                               />
                            </>
                         } />
@@ -525,9 +665,27 @@ export default function StudentProfile({ isOwn }) {
                         className='mt-8'
                         body={
                            <>
-                              <SubjectSlider totalMarks={'-'} outOf={'-'}
-                                 header="Official ACT Scores"
-                                 subjects={subjects2} title='Cumilative Score'
+                              <SubjectSlider
+                                 totalMarks={
+                                    userDetail.actScores ?
+                                       getActMarks() : '-'
+                                 }
+                                 outOf={'36'}
+                                 isAct={true}
+                                 score={userDetail.actScores ?
+                                    {
+                                       reading: userDetail.actScores.reading,
+                                       maths: userDetail.actScores.maths,
+                                       science: userDetail.actScores.science,
+                                       english: userDetail.actScores.english,
+                                    } : {}}
+                                 header={
+                                    <EditableText editable={editable}
+                                       onClick={() => setToEdit({ ...toEdit, actScores: { ...toEdit.actScores, active: true } })}
+                                       text='Official ACT Scores'
+                                       className='text-lg mb-2' textClassName="flex-1 text-center text-[21px]" />
+                                 }
+                                 subjects={subjects2} title='Composite Score'
                               />
                            </>
                         } />
@@ -537,20 +695,22 @@ export default function StudentProfile({ isOwn }) {
                         <>
                            <EditableText editable={editable}
                               onClick={() => setToEdit({ ...toEdit, interest: { ...toEdit.interest, active: true } })}
-                              text='Interest'
+                              text='Interests'
                               className='text-lg mb-2' textClassName="flex-1 text-center text-[21px]" />
                            <div className='flex scrollbar-content max-h-[500px]  scrollbar-vertical flex-col overflow-x-auto'>
                               {settings && settings.interest.length > 0 && userDetail.interest.map((id, idx) => {
                                  return (
-                                    <div key={idx} className='flex flex-col items-center mb-10'>
-                                       <div className='flex h-90 w-90 rounded-full  items-center justify-center mb-3' >
-                                          <img className='max-w-[90px] max-h-[90px]' src={settings.interest.find(item => item._id === id).image}
-                                          />
+                                    settings.interest.find(item => item._id === id) ?
+                                       <div key={idx} className='flex flex-col items-center mb-10'>
+                                          <div className='flex h-90 w-90 rounded-full  items-center justify-center mb-3' >
+                                             <img className='max-w-[90px] max-h-[90px]' src={settings.interest.find(item => item._id === id) ? settings.interest.find(item => item._id === id).image : ''}
+                                             />
+                                          </div>
+                                          <p className='opacity-70 font-semibold text-lg'>
+                                             {settings.interest.find(item => item._id === id) ? settings.interest.find(item => item._id === id).text : <></>}
+                                          </p>
                                        </div>
-                                       <p className='opacity-70 font-semibold text-lg'>
-                                          {settings.interest.find(item => item._id === id).text}
-                                       </p>
-                                    </div>
+                                       : <></>
                                  )
                               })}
                            </div>

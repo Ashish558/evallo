@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom'
 import StudentReport from '../StudentReport/StudentReport'
 import BarGraph from '../../components/BarGraph/BarGraph'
 import { accuracyOptions, accuracySeries, timeTakenSeries, ttOptions } from '../StudentReport/tempData'
+import { useSelector } from 'react-redux'
 
 const tempsubjects = [
    { text: 'Trigonometry', selected: true },
@@ -27,7 +28,7 @@ export default function CompletedTest() {
    const navigate = useNavigate()
    const [subjects, setSubjects] = useState(tempsubjects)
 
-   const persona = sessionStorage.getItem('role')
+   const {role : persona } = useSelector(state => state.user)
 
    const getSelectedString = (arr) => {
       let strArr = []

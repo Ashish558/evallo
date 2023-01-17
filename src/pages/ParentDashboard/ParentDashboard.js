@@ -7,7 +7,7 @@ const ParentDashboard = () => {
     return (
         <div
             id={styles.ParentDashboardContainer}
-            className="flex-auto lg:ml-pageLeft"
+            className="flex-auto overflow-x-hiden lg:ml-pageLeft"
         >
             <ParentDashboardHeader />
             <ConceptSection />

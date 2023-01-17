@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
-export default function Timer({ timer, active, handleSubmitSection, setCountDown }) {
+export default function Timer({ timer, active, handleSubmitSection, setCountDown, isUnlimited }) {
 
    var initMinutes = Math.floor(timer / 60);
    var initSec = timer - initMinutes * 60;
@@ -9,6 +9,7 @@ export default function Timer({ timer, active, handleSubmitSection, setCountDown
    const [seconds, setSeconds] = useState(initSec);
 
    useEffect(() => {
+      if (isUnlimited === true) return
       if (timer < 0) {
          handleSubmitSection()
       }
@@ -17,19 +18,20 @@ export default function Timer({ timer, active, handleSubmitSection, setCountDown
    useEffect(() => {
       let timer = 0
       timer = timer + seconds
-      if(minutes > 0){
-         timer = timer + minutes*60
+      if (minutes > 0) {
+         timer = timer + minutes * 60
       }
       setCountDown(timer)
    }, [seconds, minutes])
 
    useEffect(() => {
-      if(seconds === 0 && minutes === 0){
+      if (seconds === 0 && minutes === 0) {
          handleSubmitSection()
       }
    }, [seconds, minutes])
 
    useEffect(() => {
+      // if (isUnlimited === true) return
       let myInterval = setInterval(() => {
          if (seconds > 0) {
             setSeconds(seconds - 1);
@@ -54,9 +56,12 @@ export default function Timer({ timer, active, handleSubmitSection, setCountDown
          <p className='text-[28px]'> Timer </p>
          <p className='text-[70px] leading-none'>
             {/* 45:00 */}
-            {minutes === 0 && seconds === 0
-               ? null
-               : <> {minutes}:{seconds < 10 ? `0${seconds}` : seconds}</>
+            {isUnlimited  === true ?
+               '-'
+               :
+               minutes === 0 && seconds === 0
+                  ? null
+                  : <> {minutes}:{seconds < 10 ? `0${seconds}` : seconds}</>
             }
          </p>
       </div>

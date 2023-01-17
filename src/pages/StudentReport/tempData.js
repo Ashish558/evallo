@@ -200,22 +200,6 @@ export const timeTakenSeries = [
       name: 'Score',
       data: [44, 55, 57, 56, 61, 58, 63, 60, 66, 76, 85, 101, 98, 87, 105, 91, 114, 94, 76, 85, 101, 98, 87, 105, 91, 114, 94]
    },
-   //  {
-   //    name: '',
-   //    data: [76, 85, 101, 98, 87, 105, 91, 114, 94]
-   // },
-   // {
-   //    name: '',
-   //    data: [44, 55, 57, 56, 61, 58, 63, 60, 66]
-   // },
-   // {
-   //    name: '',
-   //    data: [76, 85, 101, 98, 87, 105, 91, 114, 94]
-   // },
-   // {
-   //    name: '',
-   //    data: [76, 85, 101, 98, 87, 105, 91, 114, 94]
-   // },
 ]
 export const ttOptions = {
 
@@ -267,7 +251,7 @@ export const ttOptions = {
       width: 1,
    },
    colors: ['#8E76ED', '#8ADCFF'],
-   
+
    yaxis: {
       tickAmount: 5,
       labels: {
@@ -275,42 +259,45 @@ export const ttOptions = {
             fontFamily: 'Inter',
             fontWeight: 500,
             fontSize: '16px'
+         },
+         formatter: function (val) {
+            return val.toFixed(0);
          }
       },
    },
    xaxis: {
-      categories : [''],
+      categories: [''],
       group: {
-         groups:  [{
+         groups: [{
             title: "5",
             cols: 5
-          }, 
-          {
+         },
+         {
             title: "10",
             cols: 5
-          },
-          {
+         },
+         {
             title: "15",
             cols: 5
-          },
-          {
+         },
+         {
             title: "20",
             cols: 5
-          },
-          {
+         },
+         {
             title: "25",
             cols: 5
-          },
+         },
          ],
          style: {
-           fontSize: '16px',
-           fontFamily: 'Inter',
-           fontWeight: 500,
-           color: '#8E76ED',
-           fontFamily: undefined,
-           cssClass: ''
+            fontSize: '16px',
+            fontFamily: 'Inter',
+            fontWeight: 500,
+            color: '#8E76ED',
+            fontFamily: undefined,
+            cssClass: ''
          }
-       },
+      },
       labels: {
          // show: false,
          style: {
@@ -386,18 +373,25 @@ export const accuracyOptions = {
    },
    colors: ['#8E76ED', '#8ADCFF'],
    yaxis: {
-      tickAmount: 5,
+      tickAmount: 4,
       labels: {
          style: {
             fontFamily: 'Inter',
             fontWeight: 500,
             fontSize: '16px'
-         }
+         },
+         formatter: function (val) {
+            return val.toFixed(0);
+         },
       },
+      title:{
+         text: 'No of incorrect'
+      }
    },
    xaxis: {
       categories: ['Algebra', 'Adv. Math', 'Geometry', 'Trigonometry', 'Statistics', 'Probability', 'Calculus'],
       labels: {
+         // rotate: 0,
          style: {
             fontFamily: 'Inter',
             fontWeight: 500,

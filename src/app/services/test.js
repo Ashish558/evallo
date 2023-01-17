@@ -81,6 +81,13 @@ export const testServicesApi = createApi({
             headers: getAuthHeader()
          })
       }),
+      getAllAssignedTest: builder.query({
+         query: (id) => ({
+            url: `/api/test/all/assigntest`,
+            method: "GET",
+            headers: getAuthHeader()
+         })
+      }),
 
       getTime: builder.query({
          query: (id) => ({
@@ -106,7 +113,8 @@ export const testServicesApi = createApi({
       }),
       getTestResponse: builder.query({
          query: (body) => ({
-            url: `/api/test/getresponse/${body.id}`,
+            url: body.url,
+            params: body.params,
             method: "GET",
             headers: getAuthHeader()
          })
@@ -116,6 +124,35 @@ export const testServicesApi = createApi({
             url: `/api/test/submit/${body.submitId}`,
             method: "POST",
             body: body.reqbody,
+            headers: getAuthHeader()
+         })
+      }),
+      getParentsAssignedTests: builder.query({
+         query: (id) => ({
+            url: `/api/test/parent/${id}`,
+            method: "GET",
+            headers: getAuthHeader()
+         })
+      }),
+      getTutorAssignedTests: builder.query({
+         query: (id) => ({
+            url: `/api/test/tutor/${id}`,
+            method: "GET",
+            headers: getAuthHeader()
+         })
+      }),
+      getSingleAssignedTest: builder.query({
+         query: (body) => ({
+            url: body.url,
+            params: body.params,
+            method: "GET",
+            headers: getAuthHeader()
+         })
+      }),
+      getAnswers: builder.query({
+         query: (id) => ({
+            url: `/api/test/getans/${id}`,
+            method: "GET",
             headers: getAuthHeader()
          })
       }),
@@ -137,5 +174,10 @@ export const {
    useStartTestMutation,
    useLazyContinueTestQuery,
    useSubmitTestMutation,
-   useLazyGetTestResponseQuery
+   useLazyGetTestResponseQuery,
+   useLazyGetAllAssignedTestQuery,
+   useLazyGetParentsAssignedTestsQuery,
+   useLazyGetTutorAssignedTestsQuery,
+   useLazyGetSingleAssignedTestQuery,
+   useLazyGetAnswersQuery
 } = testServicesApi;

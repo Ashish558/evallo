@@ -16,11 +16,16 @@ import {
 } from "../../../utils/utils";
 import InputSearch from "../../../components/InputSearch/InputSearch";
 import {
+   useDeleteAllRecurringSessionMutation,
+   useDeleteSessionMutation,
+   useLazyCancelSessionQuery,
    useLazyGetSessionFeedbackQuery,
    useLazyGetSettingsQuery,
+   useLazySessionMissedQuery,
    useLazyUpdateSessionStatusQuery,
    useSubmitFeedbackMutation,
    useSubmitSessionMutation,
+   useUpdateAllSessionMutation,
    useUpdateSessionMutation,
 } from "../../../app/services/session";
 import SearchNames from "./Sections/searchNames";
@@ -29,6 +34,7 @@ import CCheckbox from "../../../components/CCheckbox/CCheckbox";
 import DaysEndDate from "./Sections/daysEndDate";
 import SessionInputs from "./Sections/sessionInputs";
 import { sessionSchema } from "./schema/schema";
+import SecondaryButton from "../../../components/Buttons/SecondaryButton";
 
 const timeZones = ["IST"];
 const tempDays = [
@@ -48,7 +54,7 @@ const tempDays = [
       id: 3,
       text: "W",
       full: "Wed",
-      checked: true,
+      checked: false,
    },
    {
       id: 4,
@@ -69,13 +75,13 @@ const tempDays = [
       checked: false,
    },
    {
-      id: 7,
+      id: 0,
       text: "S",
       full: "Sun",
       checked: false,
    },
 ];
-const status = ["Scheduled", "Completed", "Missed", "Attended", "Cancelled"];
+const status = ["Scheduled", "Completed", "Missed", "Cancelled"];
 
 export default function EventModal({
    setEventModalActive,
@@ -116,6 +122,9 @@ export default function EventModal({
       sessionNotes: "",
       feedbackStars: 0
    });
+   const [submitDisabled, setSubmitDisabled] = useState(false)
+
+
 
    const [days, setDays] = useState(tempDays);
    const [topics, setTopics] = useState([]);
@@ -127,9 +136,15 @@ export default function EventModal({
 
    const [submitSession, sessionResponse] = useSubmitSessionMutation();
    const [updateUserSession, updateUserSessionResp] = useUpdateSessionMutation();
+   const [updateAllUserSession, updateAllUserSessionResp] = useUpdateAllSessionMutation();
    const [updateSessionStatus, updateSessionStatusResp] = useLazyUpdateSessionStatusQuery();
    const [submitFeedback, submitFeedbackResp] = useSubmitFeedbackMutation();
    const [getSessionFeedback, getSessionFeedbackResp] = useLazyGetSessionFeedbackQuery();
+   const [cancelSession, cancelSessionResp] = useLazyCancelSessionQuery()
+   const [missSession, missSessionResp] = useLazySessionMissedQuery()
+   const [deleteSession, deleteSessionResp] = useDeleteSessionMutation()
+   const [deleteAllSession, deleteAllSessionResp] = useDeleteAllRecurringSessionMutation()
+
    const [inputFeedback, setInputFeedback] = useState(0)
 
    const [student, setStudent] = useState("");
@@ -151,9 +166,49 @@ export default function EventModal({
    };
 
    useEffect(() => {
+      if (data.recurring === false) {
+         if (
+            data.time.start.time === '' ||
+            data.time.start.timeType === '' ||
+            data.time.end.time === '' ||
+            data.time.end.timeType === '' ||
+            data.timeZone === '' ||
+            data.date === '' ||
+            data.session === '' ||
+            data.service === ''
+         ) {
+            setSubmitDisabled(true)
+         } else {
+            setSubmitDisabled(false)
+         }
+      } else {
+         let day = []
+         days.map((d) => {
+            if (d.checked) day.push(d.full);
+         });
+         if (
+            data.time.start.time === '' ||
+            data.time.start.timeType === '' ||
+            data.time.end.time === '' ||
+            data.time.end.timeType === '' ||
+            data.timeZone === '' ||
+            data.date === '' ||
+            data.session === '' ||
+            data.service === '' ||
+            data.endDate === '' ||
+            day.length === 0
+         ) {
+            setSubmitDisabled(true)
+         } else {
+            setSubmitDisabled(false)
+         }
+      }
+   }, [data, days])
+
+   useEffect(() => {
       if (defaultEventData !== null && !isUpdating) {
-         console.log(defaultEventData)
-         const { date } = defaultEventData
+         // console.log(defaultEventData)
+         const { date, tutorId, tutorName } = defaultEventData
          let formattedDate = date.getDate()
          if (formattedDate < 10) {
             formattedDate = `0${formattedDate}`
@@ -177,6 +232,8 @@ export default function EventModal({
          setData({
             ...data,
             date: defDate,
+            tutorId: tutorId ? tutorId : '',
+            tutorName: tutorName ? tutorName : '',
             time: {
                ...data.time,
                start: {
@@ -187,6 +244,7 @@ export default function EventModal({
                }
             },
          })
+         setTutor(tutorName ? tutorName : '')
 
       }
    }, [defaultEventData])
@@ -327,24 +385,87 @@ export default function EventModal({
       return strArr;
    };
 
-   const updateSession = (reqBody) => {
+   const updateSession = (reqBody, isUpdaingAll) => {
       // console.log(sessionToUpdate)
-      if (reqBody.sessionStatus === "Completed") {
+      // console.log(reqBody)
+      let body = { ...reqBody }
+      if (isUpdaingAll !== true) {
+         body.date = reqBody.date[0]
+      }
+
+      console.log(reqBody);
+      // return
+      if (body.sessionStatus === "Completed") {
          updateSessionStatus(sessionToUpdate._id)
             .then(res => {
+               if (res.error) return
+               // updateUserSession({ id: sessionToUpdate._id, body: { sessionStatus: 'Completed', _id: sessionToUpdate._id } }).then(
+               //    (res) => {
+               //       console.log(res);
+               //       refetchSessions()
+               //       setEventModalActive(false);
+               //    }
+               // );
+            })
+      }
+      if (body.sessionStatus === "Missed") {
+         missSession(sessionToUpdate._id)
+            .then(res => {
+               if (res.error) {
+                  alert(res.error.data.message)
+                  console.log('miss session err', res.error);
+               }
+               // updateUserSession({ id: sessionToUpdate._id, body: { sessionStatus: 'Missed', _id: sessionToUpdate._id } }).then(
+               //    (res) => {
+               //       console.log(res);
+               //       refetchSessions()
+               //       setEventModalActive(false);
+               //    }
+               // );
                console.log(res.data)
             })
       }
-      updateUserSession({ id: sessionToUpdate._id, body: { ...reqBody, _id: sessionToUpdate._id } }).then(
-         (res) => {
-            console.log(res);
-            refetchSessions()
-            setEventModalActive(false);
-         }
-      );
+      if (body.sessionStatus === "Cancelled") {
+         cancelSession(sessionToUpdate._id)
+            .then(res => {
+               if (res.error) {
+                  if (res.error.data && res.error.data.message) {
+                     console.log(res.error.data.message);
+                     alert(res.error.data.message)
+                  }
+                  return
+               }
+               // updateUserSession({ id: sessionToUpdate._id, body: { sessionStatus: 'Cancelled', _id: sessionToUpdate._id } }).then(
+               //    (res) => {
+               //       console.log(res);
+               //       refetchSessions()
+               //       setEventModalActive(false);
+               //    }
+               // );
+            })
+      }
+      delete body['sessionStatus']
+      if (isUpdaingAll === true) {
+         updateAllUserSession({ id: sessionToUpdate._id, body: { ...body, } }).then(
+            (res) => {
+               console.log(res);
+               refetchSessions()
+               setEventModalActive(false);
+            }
+         );
+
+      } else {
+         updateUserSession({ id: sessionToUpdate._id, body: { ...body, _id: sessionToUpdate._id } }).then(
+            (res) => {
+               console.log(res);
+               refetchSessions()
+               setEventModalActive(false);
+            }
+         );
+      }
    };
 
-   const handleSubmit = () => {
+   const handleSubmit = (isUpdatingAll) => {
       //  sessionSchema.validate(data)
       // .then(valid => {
       //    console.log(valid)
@@ -371,10 +492,57 @@ export default function EventModal({
       let endT = moment(`2016-06-06T${endTime}:00`)
 
       var duration = endT.diff(startT, 'hours')
-      console.log(duration);
       reqBody.total_hours = duration
       if (reqBody.timeZone === '') reqBody.timeZone = 'Asia/Kolkata'
-      if (isUpdating) return updateSession(reqBody);
+      let date = moment(new Date(reqBody.date));
+      console.log(date);
+      // let rInterval = moment((date)).recur().every(["Saturday"]).daysOfWeek().every(2).week();
+      // console.log(rInterval);
+      let sDate = reqBody.date
+      if (reqBody.recurring === false) {
+         delete reqBody['date']
+         reqBody.date = [sDate]
+      } else {
+         let sDate = new Date(reqBody.date)
+         // sDate.setHours(0)
+         // sDate.setMinutes(0)
+         const dates = []
+         delete reqBody['date']
+         // console.log('sDate', sDate);
+         // console.log('day', sDate.getDay());
+         const currentDay = sDate.getDay()
+         const currentDate = sDate.getDate()
+
+         // console.log('days', tempDays);
+         const daysTORecur = tempDays.map(item => {
+            if (reqBody.day.includes(item.full)) return item.id
+         }).filter(it => it !== undefined)
+         // console.log('daysTORecur', daysTORecur);
+         // console.log('req body days', reqBody.day);
+         if (daysTORecur.length > 0) {
+            daysTORecur.map(recurDay => {
+               if (currentDay === recurDay) {
+                  dates.push(sDate)
+               } else if (recurDay > currentDay) {
+                  let d1 = sDate
+                  let up1 = new Date(d1).setDate(currentDate + recurDay - currentDay)
+                  dates.push(new Date(up1))
+               } else if (recurDay < currentDay) {
+                  let d2 = sDate
+                  let up2 = new Date(d2).setDate(currentDate + 7 + recurDay - currentDay)
+                  dates.push(new Date(up2))
+               }
+            })
+         } else {
+            dates.push(sDate)
+         }
+         reqBody.date = dates
+         console.log('dates', dates);
+      }
+      // console.log('reqBody', reqBody);
+      // return
+      if (isUpdating && isUpdatingAll) return updateSession(reqBody, isUpdatingAll);
+      if (isUpdating) return updateSession(reqBody, isUpdatingAll);
 
       submitSession(reqBody).then((res) => {
          console.log(res)
@@ -382,7 +550,7 @@ export default function EventModal({
          refetchSessions()
       })
    }
-
+   // console.log(data);
    const handleFeedbackSubmit = (rating) => {
       // console.log(rating)
       // console.log(sessionToUpdate)
@@ -415,13 +583,35 @@ export default function EventModal({
          })
    }
    useEffect(() => {
-      if(!sessionToUpdate) return
+      if (!sessionToUpdate) return
       fetchFeedback()
    }, [sessionToUpdate])
-   
+
+   const handleDeleteSession = () => {
+      deleteSession(sessionToUpdate._id)
+         .then(res => {
+            if (res.error) return console.log(res.error);
+            console.log(res.data);
+            refetchSessions()
+            setEventModalActive(false)
+         })
+   }
+
+   const handleDeleteAllSession = () => {
+      deleteAllSession(sessionToUpdate._id)
+         .then(res => {
+            if (res.error) return console.log(res.error);
+            console.log(res.data);
+            refetchSessions()
+            setEventModalActive(false)
+         })
+   }
    // console.log(convertTime12to24(`${data.time.end.time} ${data.time.end.timeType}`))
    // console.log(convertTime12to24('1:00 AM'))
-   // console.log(data.feedbackStars);
+   //console.log(data.feedbackStars);
+   // console.log('sessionToUpdate', sessionToUpdate)
+   // console.log('session data', data)
+
    const dataProps = { data, setData }
    return (
       <>
@@ -647,11 +837,64 @@ export default function EventModal({
                         </div>
 
                         <div className="flex justify-center">
-                           <PrimaryButton
+                           {isUpdating && sessionToUpdate.recurring === true ?
+                              <div className="flex flex-1 px-4 justify-between">
+                                 <div>
+                                    <SecondaryButton
+                                       children="Delete Current"
+                                       className="text-lg py-3 mr-3 pl-1 pr-1 font-medium px-7 h-[50px] w-[140px] disabled:opacity-60"
+                                       onClick={handleDeleteSession}
+                                    />
+                                    <SecondaryButton
+                                       children="Delete All"
+                                       className="text-lg py-3 mr-3 pl-2 pr-2 font-medium px-7 h-[50px] w-[140px] disabled:opacity-60"
+                                       onClick={handleDeleteAllSession}
+                                    />
+                                 </div>
+                                 <div>
+                                    <PrimaryButton
+                                       children="Update Current"
+                                       className="text-lg py-3 mr-3 pl-1 pr-1 whitespace-nowrap font-medium px-7 h-[50px] w-[140px] disabled:opacity-60"
+                                       onClick={() => handleSubmit()}
+                                       disabled={submitDisabled}
+                                    />
+                                    <PrimaryButton
+                                       children="Update All"
+                                       className="text-lg py-3 pl-2 pr-2 font-medium px-7 h-[50px] w-[140px] disabled:opacity-60"
+                                       onClick={() => handleSubmit(true)}
+                                       disabled={submitDisabled}
+                                    />
+                                 </div>
+                              </div>
+                              : isUpdating ?
+                                 <>
+                                    <SecondaryButton
+                                       children="Delete"
+                                       className="text-lg py-3 mr-3 pl-2 pr-2 font-medium px-7 h-[50px] w-[140px] disabled:opacity-60"
+                                       onClick={handleDeleteSession}
+                                    />
+                                    <PrimaryButton
+                                       children="Update"
+                                       className="text-lg py-3 pl-2 pr-2 font-medium px-7 h-[50px] w-[140px] disabled:opacity-60"
+                                       onClick={handleSubmit}
+                                       disabled={submitDisabled}
+                                    />
+                                 </> :
+                                 <PrimaryButton
+                                    children="Schedule"
+                                    className="text-lg py-3 pl-2 pr-2 font-medium px-7 h-[50px] w-[140px] disabled:opacity-60"
+                                    onClick={handleSubmit}
+                                    disabled={submitDisabled}
+                                 />
+                           }
+
+                           {/* <PrimaryButton
                               children="Schedule"
-                              className="text-lg py-3 pl-2 pr-2 font-medium px-7 h-[50px] w-[140px]"
+                              className="text-lg py-3 pl-2 pr-2 font-medium px-7 h-[50px] w-[140px] disabled:opacity-60"
                               onClick={handleSubmit}
-                           />
+                              disabled={submitDisabled}
+                           /> */}
+
                         </div>
                      </>
                   )}

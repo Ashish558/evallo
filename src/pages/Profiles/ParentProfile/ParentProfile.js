@@ -16,9 +16,10 @@ import { act } from 'react-dom/test-utils'
 import ParentEditables from '../../Frames/Editables/ParentEditables/ParentEditables'
 import { useLazyGetUserDetailQuery, useUpdateProfileImageMutation } from '../../../app/services/users'
 import { useLazyGetSettingsQuery } from '../../../app/services/session'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import ProfilePhoto from '../../../components/ProfilePhoto/ProfilePhoto'
 import { BASE_URL, getAuthHeader } from '../../../app/constants/constants'
+import { updateTimeZone } from '../../../app/slices/user'
 
 const students = [
    {
@@ -48,10 +49,11 @@ export default function ParentProfile({ isOwn }) {
    const [getUserDetail, userDetailResp] = useLazyGetUserDetailQuery()
    const [updatePhoto, updatePhotoResp] = useUpdateProfileImageMutation()
 
+   const dispatch = useDispatch()
    const navigate = useNavigate()
    const params = useParams()
 
-   const persona = sessionStorage.getItem('role')
+   const {role : persona } = useSelector(state => state.user)
    // console.log(id)
 
    useEffect(() => {
@@ -146,7 +148,7 @@ export default function ParentProfile({ isOwn }) {
             const { birthyear, industry, leadStatus, notes, residentialAddress, service, timeZone, subscribeType } = res.data.data.userdetails
 
             let studentsData = []
-            if (assiginedStudents === undefined || assiginedStudents.length === 0) setAssociatedStudents(students)
+            if (assiginedStudents === undefined || assiginedStudents.length === 0) setAssociatedStudents([])
 
             assiginedStudents !== undefined && assiginedStudents.map(student => {
                getUserDetail({ id: student })
@@ -211,6 +213,11 @@ export default function ParentProfile({ isOwn }) {
          })
    }
 
+   useEffect(() => {
+      if (userDetail.timeZone === undefined) return
+      dispatch(updateTimeZone({ timeZone: userDetail.timeZone }))
+   }, [userDetail.timeZone])
+
    // console.log('userdetail', userDetail)
    // console.log('user', user) 
    // console.log(toEdit)
@@ -218,29 +225,35 @@ export default function ParentProfile({ isOwn }) {
 
    useEffect(() => {
       if (user.assiginedStudents === undefined) return
-      const fetch = async () => {
-         let studentsData = []
-         const students = await user.assiginedStudents.map(student => {
-            getUserDetail({ id: student })
-               .then(res => {
-                  studentsData.push({
-                     _id: res.data.data.user._id,
-                     name: `${res.data.data.user.firstName} ${res.data.data.user.lastName}`
-                  })
+      let studentsData = []
+      user.assiginedStudents.map(student => {
+         getUserDetail({ id: student })
+            .then(res => {
+               setAssociatedStudents(prev => {
+                  return [
+                     ...prev,
+                     {
+                        _id: res.data.data.user._id,
+                        name: `${res.data.data.user.firstName} ${res.data.data.user.lastName}`,
+                        photo: res.data.data.user.photo ? res.data.data.user.photo : '/images/default.jpeg'
+                     }
+                  ]
                })
-         })
-         setAssociatedStudents(studentsData)
-         setActiveIndex(0)
-      }
-      fetch()
+            })
+      })
+      // setAssociatedStudents(studentsData)
+      setActiveIndex(0)
+
+
    }, [user])
 
    useEffect(() => {
       fetchDetails()
    }, [params.id])
+   // console.log('associatedStudents', associatedStudents);
 
    const handleProfilePhotoChange = (file) => {
-      console.log(file)
+      // console.log(file)
       let url = ''
       const formData = new FormData
       formData.append('photo', file)
@@ -251,7 +264,10 @@ export default function ParentProfile({ isOwn }) {
       }
       axios.patch(url, formData, { headers: getAuthHeader() })
          .then((res) => {
-            console.log(res)
+            // console.log(res)
+            fetchDetails()
+         }).catch(err => {
+            console.log(err);
          })
    }
 
@@ -267,7 +283,7 @@ export default function ParentProfile({ isOwn }) {
                   {/* <button className='absolute bg-[#D9BBFF] px-[14px] py-[12px] rounded-[8px] text-[#636363] text-[18px] font-medium top-[16px] left-[22px] flex gap-[12px] cursor-pointer'><img src={LeftIcon} alt="icon" /> Back</button> */}
                   <div className='rounded-t-40 bg-lightWhite lg:bg-transparent flex flex-col items-center relative'>
                      <ProfilePhoto src={user.photo ? user.photo : '/images/default.jpeg'}
-                      handleChange={handleProfilePhotoChange} editable={editable} />
+                        handleChange={handleProfilePhotoChange} editable={editable} />
                      <div className='flex items-center mt-67 lg:mt-4'>
                         <EditableText text={`${user.firstName} ${user.lastName}`}
                            editable={editable}
@@ -389,7 +405,8 @@ export default function ParentProfile({ isOwn }) {
                      body={
                         <div className='flex py-49 h-full lg:flex-col scrollbar-content overflow-x-hidden lg:py-0'>
                            <p className='hidden lg:block text-21 text-primaryDark font-bold text-center mb-10'>
-                              <EditableText editable={persona === 'admin' ? true : false}
+                              <EditableText
+                                 editable={persona === 'admin' ? true : false}
                                  onClick={() => setToEdit({ ...toEdit, associatedStudents: { ...toEdit.associatedStudents, active: true } })}
                                  text='Associated Students'
                                  className='lg:text-21 text-center' />
@@ -411,7 +428,8 @@ export default function ParentProfile({ isOwn }) {
                                  return (
                                     <div key={idx} className={`${styles.student} ${activeIndex === idx ? styles.activeStudent : idx < activeIndex ? styles.previousStudent : styles.nextStudent} flex flex-col items-center px-10 lg:mb-10`}>
                                        <div className={styles.studentImageContainer}>
-                                          <img src='/images/student-1.png' />
+                                          <img className='w-[110px] h-[110px] rounded-full'
+                                             src={student.photo ? student.photo : ''} />
                                        </div>
                                        <div className='mt-6 opacity-60 font-inter text-center '
                                        // onClick={() => navigate('/profile/student/12')}
