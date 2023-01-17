@@ -65,7 +65,7 @@ export default function SelectPersona({
       <div className="w-full">
          <p className="text-lg font-bold mb-6">Sign up as</p>
 
-         <div className="flex mb-120 justify-center text-center gap-[15px]">
+         <div className="flex flex-col lg:flex-row mb-120 justify-center text-center gap-[15px]">
             <div id={styles.student}>
                <img
                   src={StudentImg}

@@ -105,7 +105,7 @@ export default function Login({ setLoginFormActive }) {
                      <p className="text-lg font-bold mb-12 hidden lg:block px-[120px]">
                         Login with email address
                      </p>
-                     <div className="px-[49px] lg:px-[120px]">
+                     <div className="px-[49px] lg:px-[120px] mt-[105px] lg:mt-0">
                         <InputField
                            Icon={EmailIcon}
                            iconSize='medium'

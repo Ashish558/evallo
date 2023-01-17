@@ -93,7 +93,7 @@ export default function SelectServices({
                <span className="text-primaryRed inline-block pl-1">*</span>
             </p>
 
-            <div className="inline-grid grid-cols-2 mb-10">
+            <div className="inline-grid grid-cols-1 lg:grid-cols-2 mb-10">
                {services.map((item, idx) => {
                   return (
                      <div
