@@ -7,7 +7,7 @@ const CompleteProfile = () => {
     const [profileProgress, setProfileProgress] = useState("65%");
 
     return (
-        <div id={styles.completeProfile} className="w-10/12">
+        <div id={styles.completeProfile} className="lg:w-10/12">
             <div
                 className="flex items-center"
                 id={styles.completeProfileHeader}

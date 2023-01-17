@@ -52,7 +52,7 @@ export default function SignupSuccessful({ setFrames, setcurrentStep, addDetails
                Our team will soon reach out to you and help you in futher procedure.
             </h5>
 
-            <PrimaryButton className="w-full" children="Back to Login Page" />
+            <PrimaryButton className="w-full" children="Back to Login Page" onClick={() => navigate("/")} />
          </div>
       </>
    )

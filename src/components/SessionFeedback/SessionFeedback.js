@@ -44,7 +44,7 @@ const SessionFeedback = () => {
    // console.log('all-tests', allTests);
 
    return (
-      <div id={styles.sessionFeedbackContainer} className="h-[382px] bg-white w-10/12 py-[21px] mt-[33px] rounded-[20px]">
+      <div id={styles.sessionFeedbackContainer} className="h-[382px] bg-white lg:w-10/12 py-[21px] mt-[33px] rounded-[20px]">
          <div id={styles.sessionFeedback} className="bg-white px-[28px] rounded-[20px] h-full overflow-y-auto">
             {/* {/* <TestItem name="name" status="due date" date="june 20, 2022" action="Start" marks="1250/1250" /> */}
 
