@@ -103,10 +103,10 @@ const ConceptSection = () => {
 
    return (
       <div
-         className="flex justify-between ml-[35px]"
+         className="flex flex-col lg:flex-row justify-between lg:ml-[35px] lg:py-[20px] py-[10px] lg:px-[30px] px-[9px] lg:bg-[#d9d9d933]"
          id={styles.conceptSectionContainer}
       >
-         <div className="w-2/3" id={styles.conceptChart}>
+         <div className="w-full lg:w-2/3 lg:pl-[40px]" id={styles.conceptChart}>
             <div className="flex items-center" >
                <h1>Concept Chart</h1>
 
@@ -200,7 +200,7 @@ const ConceptSection = () => {
 
             </div>
 
-            <div id={styles.chartContainer} className='scrollbar-content' >
+            <div id={styles.chartContainer} className='scrollbar-content mb-4'>
                <div id={styles.chart} className='scrollbar-content' >
                   <div>
                      <Chart />
@@ -209,7 +209,7 @@ const ConceptSection = () => {
             </div>
          </div>
 
-         <div className="w-1/3">
+         <div className="w-full lg:w-1/3">
             <div className="concept" id={styles.studentCarousel}>
 
                <div id={styles.tutor}>

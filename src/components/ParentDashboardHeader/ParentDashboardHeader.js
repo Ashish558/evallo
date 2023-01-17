@@ -102,12 +102,12 @@ const ParentDashboardHeader = () => {
       <>
          {ledgerVisible && <Ledger setLedgerVisible={setLedgerVisible} />}
          <div
-            className="flex 2xl:gap-[78px] xl:gap-[50px] ml-[55px]"
+            className="flex flex-col lg:flex-row 2xl:gap-[78px] xl:gap-[50px] ml-[9px] pr-[9px] lg:pr-[40px] pt-[50px] pb-[30px] pl-0 lg:ml-[55px]"
             id={styles.parentDashboardHeader}
          >
-            <div className="w-2/3">
-               <div className="flex" style={{ gap: 16 }}>
-                  <div className="w-2/3 flex items-center" id={styles.explore}>
+            <div className="w-full lg:w-2/3">
+               <div className="flex flex-col lg:flex-row" style={{ gap: 16 }}>
+                  <div className="w-full lg:w-2/3 h-[206px] lg:h-auto flex items-center" id={styles.explore}>
                      <div className="flex mx-auto">
                         {/* <div className="w-1/2" id={styles.exploreLeft}>
                            <h2 className="">
@@ -135,7 +135,7 @@ const ParentDashboardHeader = () => {
                      </div>
                   </div>
 
-                  <div className={`w-1/3 ${credits > 0 ? "bg-[#4BBD94]" : "bg-[#F36262]"}`} id={styles.availableCredit}>
+                  <div className={`w-full lg:w-1/3 ${credits > 0 ? "bg-[#4BBD94]" : "bg-[#F36262]"}`} id={styles.availableCredit}>
                      <div className="flex justify-between mb-2">
                         <h3 className="2xl:text-[19.6px] font-semibold">{credits > 0 ? "Available Credit" : "Amount Due"}</h3>
                         <img src={i} alt="" title="Give Value List" />
@@ -158,7 +158,7 @@ const ParentDashboardHeader = () => {
             </div>
 
             <div
-               className="w-1/3"
+               className="w-full lg:w-1/3"
             >
                <div className="flex justify-between items-center px-[11px]">
                   <h2 className="text-[#4715D7] font-semibold text-[21px] mt-[16px]">Your Student</h2>
