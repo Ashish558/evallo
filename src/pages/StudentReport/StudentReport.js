@@ -115,6 +115,16 @@ export default function StudentReport() {
 
             let answerKeyData = { ...res.data.data }
             // console.log('answer key subjects', answerKeyData.answer.subjects);
+            let conceptsPresent = true
+            answerKeyData.answer.subjects.map(item => {
+               if(item.concepts === undefined){
+                  conceptsPresent = false
+               }
+            })
+            if(conceptsPresent === false){
+               alert('Concepts not present')
+               navigate(-1)
+            }
             let subResponse = answerKeyData.answer.subjects.map(sub => {
                let currSub = responseData.subjects.find(item => item.name === sub.name)
                if (currSub === undefined) return
@@ -142,8 +152,9 @@ export default function StudentReport() {
                   }
                }
                // console.log('conceptsToInclude', conceptsToInclude);
-            })
-
+            }).filter(item => item !== undefined)
+console.log('subResponse', subResponse);
+console.log('subjects', subjects);
             let updated = subjects.map(subj => {
                let updatedSubjWithConcepts = subResponse.find(item => item.name === subj.name)
                return {
