@@ -349,10 +349,10 @@ export default function Signup() {
 
    return (
       <div className="min-h-screen" id={styles.signUp}>
-         <div className="grid grid-cols-1 lg:grid-cols-2 min-h-screen">
+         <div className="grid grid-cols-1 lg:grid-cols-2 lg:min-h-screen">
             <div className="bg-primary hidden lg:block"></div>
             <>
-               <div className="lg:hidden bg-primary text-white pt-[79px] px-[49px]">
+               {!frames.signupSuccessful ? <div className="lg:hidden bg-primary text-white pt-[79px] px-[49px]">
                   <h1 className="text-[28px] mb-[13px]">
                      {frames.signupActive
                         ? "Sign Up"
@@ -362,8 +362,14 @@ export default function Signup() {
                   </h1>
 
                   <h6 className="mb-[10px]">Sign up with email address</h6>
-               </div>
-               <div className="flex items-center relative">
+               </div> : <div className="lg:hidden bg-primary h-fit text-white pt-[79px] px-[49px]">
+                  <h1 className="text-[28px] mb-[13px]">
+                     Congratulations
+                  </h1>
+
+                  <h6 className="mb-[10px]">Registration Completed.</h6>
+               </div>}
+               <div className="flex lg:items-center relative">
                   <div className="w-full px-[49px] lg:px-[80px] py-6">
                      <h1 className="hidden lg:block mb-[36px] text-[30px]">
                         {frames.signupActive
@@ -373,7 +379,7 @@ export default function Signup() {
                               : "Profile Details"}
                      </h1>
 
-                     {currentStep > 1 && (
+                     {currentStep > 1 && !frames.signupSuccessful && (
                         <NumericSteppers
                            totalSteps={6}
                            currentStep={currentStep}
