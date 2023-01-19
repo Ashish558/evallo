@@ -235,7 +235,7 @@ const ConceptSection = () => {
                                        </button>
                                     </div>
                                     <div className="w-2/5">
-                                       <img src={tutor.photo ? tutor.photo : '/images/default.jpeg'} className="mx-auto w-full object-contain w-[140px] h-[140px] rounded-full" alt="" />
+                                       <img src={tutor.photo ? tutor.photo : '/images/default.jpeg'} className="mx-auto w-full object-contain w-[140px] h-[140px] rounded-full" alt='profile-icon' />
                                     </div>
                                  </div>
                               )

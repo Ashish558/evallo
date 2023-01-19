@@ -340,7 +340,7 @@ export default function Settings() {
                   body={
                      <div>
                         {sessionTags!== undefined && Object.keys(sessionTags).map((tag, i) => {
-                           return <div>
+                           return <div key={i}>
                               <p className='font-bold text-primary-dark mb-[25px]'>
                                  {getSessionTagName(Object.keys(sessionTags)[i])}
                               </p>

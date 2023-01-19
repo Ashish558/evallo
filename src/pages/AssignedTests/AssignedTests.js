@@ -310,11 +310,11 @@ export default function AssignedTests() {
    }
 
    const getStatus = (status) => {
-      if(status === 'Completed') return 'completed'
-      if(status === 'Started') return 'started'
-      if(status === 'Not Started') return 'notStarted'
+      if (status === 'Completed') return 'completed'
+      if (status === 'Started') return 'started'
+      if (status === 'Not Started') return 'notStarted'
    }
-   
+
    useEffect(() => {
       let arr = Object.keys(filterData).map(key => {
          if (filterData[key] !== '') {
@@ -420,7 +420,8 @@ export default function AssignedTests() {
 
                <div className="flex items-center justify-end gap-[20px] mt-[10px]">
                   {/* <AssignedTestIndicator /> */}
-                  {status.map(({ text, color }) => <AssignedTestIndicator
+                  {status.map(({ text, color }, idx) => <AssignedTestIndicator
+                     key={idx}
                      text={text}
                      color={color}
                   />)}

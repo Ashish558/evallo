@@ -13,7 +13,7 @@ export default function FilterItems({ items, setData, onRemoveFilter, className,
                   <p className='text-lightGray text-[14px]'>
                      {sliceText ? item.slice(-23) : isString ? item : item.text}
                   </p>
-                  <img className={styles.icon} src={CrossIcon}
+                  <img  alt='cross-icon' className={styles.icon} src={CrossIcon}
                      onClick={() => keyName ? onRemoveFilter(item, keyName, idx) : onRemoveFilter(item)} />
                </div>
             )
@@ -25,7 +25,7 @@ export default function FilterItems({ items, setData, onRemoveFilter, className,
                         <p className='text-lightGray text-[16px]'>
                            {isString ? item : item.text}
                         </p>
-                        <img className={styles.icon} src={CrossIcon}
+                        <img className={styles.icon} src={CrossIcon} alt='cross-icon'
                            onClick={() => keyName ? onRemoveFilter(item, keyName, idx) : onRemoveFilter(item)} />
                      </div>
                   )

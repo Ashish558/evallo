@@ -23,7 +23,7 @@ const ConceptSectionRight = () => {
                         className="flex items-center justify-end"
                         style={{ gap: "12px" }}
                     >
-                        <img src={downloadImage} alt="" />
+                        <img src={downloadImage} alt='download-icon'/>
                         <button className={styles.btnGreen}>Start</button>
                     </div>
                 </div>
@@ -46,7 +46,7 @@ const ConceptSectionRight = () => {
                         className="flex items-center justify-end"
                         style={{ gap: "12px" }}
                     >
-                        <img src={downloadImage} alt="" />
+                        <img src={downloadImage} alt='download-icon' />
                         <button className={styles.btnGreen}>Start</button>
                     </div>
                 </div>
@@ -69,7 +69,7 @@ const ConceptSectionRight = () => {
                         className="flex items-center justify-end"
                         style={{ gap: "12px" }}
                     >
-                        <img src={downloadImage} alt="" />
+                        <img src={downloadImage}  alt='download-icon' />
                         <button className={styles.btnGreen}>Start</button>
                     </div>
                 </div>
@@ -92,7 +92,7 @@ const ConceptSectionRight = () => {
                         className="flex items-center justify-end"
                         style={{ gap: "12px" }}
                     >
-                        <img src={downloadImage} alt="" />
+                        <img src={downloadImage} alt='download-icon' />
                         <button className={styles.btnGreen}>Start</button>
                     </div>
                 </div>
@@ -115,7 +115,7 @@ const ConceptSectionRight = () => {
                         className="flex items-center justify-end"
                         style={{ gap: "12px" }}
                     >
-                        <img src={downloadImage} alt="" />
+                        <img src={downloadImage} alt='download-icon' />
                         <button className={styles.btnGreen}>Start</button>
                     </div>
                 </div>
@@ -138,7 +138,7 @@ const ConceptSectionRight = () => {
                         className="flex items-center justify-end"
                         style={{ gap: "12px" }}
                     >
-                        <img src={downloadImage} alt="" />
+                        <img src={downloadImage} alt='download-icon' />
                         <button className={styles.btnGreen}>Start</button>
                     </div>
                 </div>

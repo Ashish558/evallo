@@ -13,7 +13,7 @@ const CompleteProfile = () => {
                 id={styles.completeProfileHeader}
             >
                 <h1>Complete your Profile</h1>
-                <img src={arrow} id={styles.arrowRight} alt="" />
+                <img src={arrow} id={styles.arrowRight} alt='arrow-icon'/>
             </div>
 
             <div id={styles.profileHeader}>
