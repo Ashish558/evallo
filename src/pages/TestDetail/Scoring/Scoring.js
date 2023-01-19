@@ -87,7 +87,7 @@ export default function Scoring({ sectionsData }) {
             {
                [...Array(scale.score.length)].map((x, i) =>
                   <div className={`px-2 h-[40px] opacity-60 w-full pb-5 bg-[#7152EB4D]`}>
-                     {i + 1}
+                     {i}
                   </div>
                )
             }
