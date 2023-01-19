@@ -177,7 +177,7 @@ export function getDate(arg) {
    return `${month} ${date.getDate()}, ${date.getFullYear()}`
 }
 
-export const getScoreStr = (testType, score, subjects) => {
+export const getScoreStr = (testType, score, subjects, totalLength) => {
    // if (!score) return ''
    // if (!testType) return ''
    // if (!subjects) return ''
@@ -194,7 +194,7 @@ export const getScoreStr = (testType, score, subjects) => {
             verbalTotal += score['Scale2']
          }
          if (sub.scoreScale === 'Scale3') {
-            if(isMathsAdded === false){
+            if (isMathsAdded === false) {
                MathsTotal += score['Scale3']
                isMathsAdded = true
             }
@@ -221,6 +221,9 @@ export const getScoreStr = (testType, score, subjects) => {
          } else if (sub.scoreScale === 'Scale4') {
             total += score['Scale4']
             scoreArr.push(score['Scale4'])
+         }else{
+            total += 0
+            scoreArr.push(0)
          }
       })
       let total2 = 0
@@ -229,9 +232,11 @@ export const getScoreStr = (testType, score, subjects) => {
       })
       // console.log('total', total2);
       // console.log('subjects.length', subjects.length);
+      // let totalSubs = totalLength  ? totalLength : subjects.length
+      let totalSubs = 4
       return {
-         cumulative: `C${total2 / subjects.length}`,
-         right: `E${scoreArr[0]}|M${scoreArr[1]}|R${scoreArr[2]}|C${scoreArr[3]}`,
+         cumulative: `C${total2 / totalSubs}`,
+         right: `E${scoreArr[0] ? scoreArr[0] : 0}|M${scoreArr[1] ? scoreArr[1] : 0}|R${scoreArr[2] ? scoreArr[2] : 0}|C${scoreArr[3] ? scoreArr[3] : 0}`,
       }
    }
 }
@@ -282,3 +287,40 @@ export const getDuration = val => {
 // function convertLocalToUTC(dt, dtFormat) {
 //    return moment(dt, dtFormat).utc().format()
 // }
+
+// subjects.map((sub, idx) => {
+//    total += sub.no_of_correct
+//    if (sub.scoreScale === 'Scale1') {
+//       if (score['Scale1'] === undefined) {
+//          total += 0
+//          scoreArr.push(0)
+//       } else {
+//          total += score['Scale1']
+//          scoreArr.push(score['Scale1'])
+//       }
+//    } else if (sub.scoreScale === 'Scale2') {
+//       if (score['Scale2'] === undefined) {
+//          total += 0
+//          scoreArr.push(0)
+//       } else {
+//          total += score['Scale2']
+//          scoreArr.push(score['Scale2'])
+//       }
+//    } else if (sub.scoreScale === 'Scale3') {
+//       if (score['Scale3'] === undefined) {
+//          total += 0
+//          scoreArr.push(0)
+//       } else {
+//          total += score['Scale3']
+//          scoreArr.push(score['Scale3'])
+//       }
+//    } else if (sub.scoreScale === 'Scale4') {
+//       if (score['Scale4'] === undefined) {
+//          total += 0
+//          scoreArr.push(0)
+//       } else {
+//          total += score['Scale4']
+//          scoreArr.push(score['Scale4'])
+//       }
+//    }
+// })

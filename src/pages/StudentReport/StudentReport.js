@@ -104,24 +104,25 @@ export default function StudentReport() {
          navigate(-1)
          return
       }
-      let score = getScoreStr(responseData.testType, responseData.score, responseData.subjects)
-      // console.log(score);
-      console.log('score', score);
-      setDisplayScore(score)
+
       getAnswers(id)
          .then(res => {
             if (res.error) return console.log(res.error);
             console.log('ANSWER KEY', res.data.data);
 
             let answerKeyData = { ...res.data.data }
+            let score = getScoreStr(responseData.testType, responseData.score, responseData.subjects, answerKeyData.answer.subjects.length)
+            console.log('score', score);
+            setDisplayScore(score)
+
             // console.log('answer key subjects', answerKeyData.answer.subjects);
             let conceptsPresent = true
             answerKeyData.answer.subjects.map(item => {
-               if(item.concepts === undefined){
+               if (item.concepts === undefined) {
                   conceptsPresent = false
                }
             })
-            if(conceptsPresent === false){
+            if (conceptsPresent === false) {
                alert('Concepts not present')
                navigate(-1)
             }
@@ -153,8 +154,8 @@ export default function StudentReport() {
                }
                // console.log('conceptsToInclude', conceptsToInclude);
             }).filter(item => item !== undefined)
-console.log('subResponse', subResponse);
-console.log('subjects', subjects);
+            console.log('subResponse', subResponse);
+            console.log('subjects', subjects);
             let updated = subjects.map(subj => {
                let updatedSubjWithConcepts = subResponse.find(item => item.name === subj.name)
                return {
@@ -208,7 +209,7 @@ console.log('subjects', subjects);
       getAssignedTest({ url })
          .then(res => {
             if (res.error) return console.log('TEST ERROR', res.error);
-            // console.log('TEST RESP', res.data.data.test);
+            console.log('TEST RESP', res.data.data.test);
             const { testId, createdAt, timeLimit, multiple } = res.data.data.test
             setTestDetails(prev => {
                return {
