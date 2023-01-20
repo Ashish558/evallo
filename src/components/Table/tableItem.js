@@ -11,6 +11,7 @@ import RedIcon from "../../assets/assignedTests/red.svg";
 import GreenIcon from "../../assets/assignedTests/green.svg";
 import GrayIcon from "../../assets/assignedTests/gray.svg";
 import RemoveIcon from "../../assets/icons/remove.svg"
+import DeleteIcon from "../../assets/icons/cross.svg"
 import InputSelect from "../InputSelect/InputSelect";
 import { useLazyGetSettingsQuery } from "../../app/services/session";
 import { useLazyGetTutorDetailsQuery, useLazyGetUserDetailQuery, usePostTutorDetailsMutation, useUpdateTutorDetailsMutation, useUpdateUserDetailsMutation } from "../../app/services/users";
@@ -253,6 +254,13 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch }) {
                      src={ResendConfirmation}
                      className="cursor-pointer"
                      onClick={() => onClick.handleResend(item)}
+                  />
+               </td>
+               <td className="font-medium px-1 min-w-14 py-4">
+                  <img
+                     src={DeleteIcon}
+                     className="cursor-pointer w-5"
+                     onClick={() => onClick.handleDelete(item)}
                   />
                </td>
             </tr>

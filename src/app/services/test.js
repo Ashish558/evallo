@@ -156,7 +156,13 @@ export const testServicesApi = createApi({
             headers: getAuthHeader()
          })
       }),
-
+      deleteTest: builder.query({
+         query: (body) => ({
+            url: `/api/test/delete/${body.id}`,
+            method: "GET",
+            headers: getAuthHeader()
+         })
+      }),
    }),
 });
 
@@ -179,5 +185,6 @@ export const {
    useLazyGetParentsAssignedTestsQuery,
    useLazyGetTutorAssignedTestsQuery,
    useLazyGetSingleAssignedTestQuery,
-   useLazyGetAnswersQuery
+   useLazyGetAnswersQuery,
+   useLazyDeleteTestQuery
 } = testServicesApi;

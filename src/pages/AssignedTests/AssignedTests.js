@@ -10,7 +10,7 @@ import { tempTableData, studentsDataTable } from "./tempData";
 import InputField from "../../components/InputField/inputField";
 import axios from "axios";
 import { BASE_URL } from "../../app/constants/constants";
-import { useAssignTestMutation, useLazyGetAllAssignedTestQuery, useLazyGetAssignedTestQuery, useLazyGetTestsByNameQuery, useLazyGetTutorAssignedTestsQuery } from "../../app/services/test";
+import { useAssignTestMutation, useLazyDeleteTestQuery, useLazyGetAllAssignedTestQuery, useLazyGetAssignedTestQuery, useLazyGetTestsByNameQuery, useLazyGetTutorAssignedTestsQuery } from "../../app/services/test";
 import { useLazyGetStudentsByNameQuery } from "../../app/services/session";
 import InputSearch from "../../components/InputSearch/InputSearch";
 import calendar from "./../../assets/calendar/calendar.svg"
@@ -60,7 +60,10 @@ export default function AssignedTests() {
 
    const [assignTestModalActive, setAssignTestModalActive] = useState(false);
    const [resendModalActive, setResendModalActive] = useState(false);
+   const [deleteModalActive, setDeleteModalActive] = useState(false)
+
    const [testToResend, setTestToResend] = useState({})
+   const [testToDelete, setTestToDelete] = useState({})
 
    const { role: persona, id } = useSelector(state => state.user)
    const handleClose = () => setAssignTestModalActive(false);
@@ -80,6 +83,7 @@ export default function AssignedTests() {
    const [fetchAssignedTests, assignedTestsResp] = useLazyGetAllAssignedTestQuery();
    const [fetchTutorAssignedTests, fetchTutorAssignedTestsResp] = useLazyGetTutorAssignedTestsQuery();
    const [fetchTests, fetchTestsResp] = useLazyGetTestsByNameQuery()
+   const [deleteAssignedTest, deleteAssignedTestResp] = useLazyDeleteTestQuery()
 
    const [students, setStudents] = useState([]);
    const [allAssignedTests, setAllAssignedTests] = useState([])
@@ -335,6 +339,23 @@ export default function AssignedTests() {
       setTableHeaders(tempTableHeaders)
    }, []);
 
+   const deleteTest = () => {
+      console.log('deleteTest', testToDelete);
+      // deleteAssignedTest({id: testToDelete.assignedTestId})
+      //    .then(res => {
+      //       if (res.error) {
+      //          console.log(res.error)
+      //          return
+      //       }
+      //       console.log('delete test res', res.data);
+      //    })
+   }
+
+   const handleDelete = item => {
+      setTestToDelete(item)
+      setDeleteModalActive(true)
+   }
+
    const status = [
       {
          text: "Not Started",
@@ -429,7 +450,7 @@ export default function AssignedTests() {
 
                <div className="mt-6">
                   <Table
-                     onClick={{ handleResend }}
+                     onClick={{ handleResend, handleDelete }}
                      dataFor='assignedTests'
                      data={filteredTests}
                      excludes={['createdAt', 'dueDate', 'assignedTestId']}
@@ -564,6 +585,26 @@ export default function AssignedTests() {
                   onClick: () => handleResendTestSubmit(),
                }}
                handleClose={() => setResendModalActive(false)}
+               classname={"max-w-567 mx-auto"}
+            />
+         )}
+         {deleteModalActive && (
+            <Modal
+               title={
+                  <span className="leading-10">
+                     Are you sure <br />
+                     you want to delete the assigned test ?
+                  </span>
+               }
+               titleClassName="mb-12 leading-10"
+               cancelBtn={true}
+               cancelBtnClassName="max-w-140"
+               primaryBtn={{
+                  text: "Delete",
+                  className: "w-[140px] pl-4 px-4",
+                  onClick: () => deleteTest(),
+               }}
+               handleClose={() => setDeleteModalActive(false)}
                classname={"max-w-567 mx-auto"}
             />
          )}

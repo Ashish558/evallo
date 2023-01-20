@@ -124,7 +124,7 @@ export default function EventModal({
    });
    const [submitDisabled, setSubmitDisabled] = useState(false)
 
-
+   // console.log(sessionToUpdate);
 
    const [days, setDays] = useState(tempDays);
    const [topics, setTopics] = useState([]);
@@ -385,15 +385,18 @@ export default function EventModal({
       return strArr;
    };
 
-   const updateSession = (reqBody, isUpdaingAll) => {
+   const updateSession = (reqBody, isUpdaingAll, sDate) => {
       // console.log(sessionToUpdate)
       // console.log(reqBody)
       let body = { ...reqBody }
       if (isUpdaingAll !== true) {
-         body.date = reqBody.date[0]
+         delete body['date']
+         body.date = sDate
       }
 
-      console.log(reqBody);
+      console.log('isUpdaingAll', isUpdaingAll);
+      console.log('sDate', sDate);
+      console.log(body);
       // return
       if (body.sessionStatus === "Completed") {
          updateSessionStatus(sessionToUpdate._id)
@@ -541,8 +544,8 @@ export default function EventModal({
       }
       // console.log('reqBody', reqBody);
       // return
-      if (isUpdating && isUpdatingAll) return updateSession(reqBody, isUpdatingAll);
-      if (isUpdating) return updateSession(reqBody, isUpdatingAll);
+      if (isUpdating && isUpdatingAll) return updateSession(reqBody, isUpdatingAll, sDate);
+      if (isUpdating) return updateSession(reqBody, isUpdatingAll, sDate);
 
       submitSession(reqBody).then((res) => {
          console.log(res)
@@ -855,7 +858,7 @@ export default function EventModal({
                                     <PrimaryButton
                                        children="Update Current"
                                        className="text-lg py-3 mr-3 pl-1 pr-1 whitespace-nowrap font-medium px-7 h-[50px] w-[140px] disabled:opacity-60"
-                                       onClick={() => handleSubmit()}
+                                       onClick={() => handleSubmit(false)}
                                        disabled={submitDisabled}
                                     />
                                     <PrimaryButton
@@ -876,14 +879,14 @@ export default function EventModal({
                                     <PrimaryButton
                                        children="Update"
                                        className="text-lg py-3 pl-2 pr-2 font-medium px-7 h-[50px] w-[140px] disabled:opacity-60"
-                                       onClick={handleSubmit}
+                                       onClick={() => handleSubmit(false)}
                                        disabled={submitDisabled}
                                     />
                                  </> :
                                  <PrimaryButton
                                     children="Schedule"
                                     className="text-lg py-3 pl-2 pr-2 font-medium px-7 h-[50px] w-[140px] disabled:opacity-60"
-                                    onClick={handleSubmit}
+                                    onClick={() => handleSubmit()}
                                     disabled={submitDisabled}
                                  />
                            }

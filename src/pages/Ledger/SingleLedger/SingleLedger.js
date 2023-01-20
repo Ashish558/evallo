@@ -34,7 +34,7 @@ export default function SingleLedger({ _id, invoiceId, sessionId, title, Date: l
 
    }, [])
 
-   console.log('session', sessionDetails);
+   // console.log('session', sessionDetails);
    useEffect(() => {
       if (!invoiceId) return
       fetchInvoice({ id: invoiceId })
@@ -46,7 +46,7 @@ export default function SingleLedger({ _id, invoiceId, sessionId, title, Date: l
          })
    }, [])
 
-   const { service, total_hours, timeStr, sessionNotes } = sessionDetails
+   const { service, total_hours, timeStr, sessionNotes, hourlyCharge } = sessionDetails
    const { description } = invoiceDetail
 
    let discountLedgerDate = new Date(ledgerDate)
@@ -120,7 +120,7 @@ export default function SingleLedger({ _id, invoiceId, sessionId, title, Date: l
                               <div className='py-6 opacity-80'> {timeStr ? timeStr : '-'} </div>
 
                               <div className='font-bold mx-1 py-6' > Hourly Rate </div>
-                              <div className='py-6 opacity-80'> {service ? '-' : '-'} </div>
+                              <div className='py-6 opacity-80'> {hourlyCharge ? `$${hourlyCharge}` : '-'} </div>
 
 
                               <div className='font-bold mx-1 pt-3' > Session Notes </div>

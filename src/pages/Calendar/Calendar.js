@@ -556,6 +556,7 @@ export default function Calendar() {
                const startHours = parseInt(startTime.split(":")[0]);
                const startMinutes = parseInt(startTime.split(":")[1]);
                let startDate = new Date(session.date)
+               // let startDate = new Date(session.date).toLocaleString('en-US', { timeZone })
                // let startDate = new Date(session.date).toUTCString()
                startHours !== NaN && startDate.setHours(startHours);
                startMinutes !== NaN && startDate.setMinutes(startMinutes);
