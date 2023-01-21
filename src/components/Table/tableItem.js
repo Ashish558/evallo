@@ -11,6 +11,8 @@ import RedIcon from "../../assets/assignedTests/red.svg";
 import GreenIcon from "../../assets/assignedTests/green.svg";
 import GrayIcon from "../../assets/assignedTests/gray.svg";
 import RemoveIcon from "../../assets/icons/remove.svg"
+import EditTestIcon from "../../assets/icons/edit-test.svg";
+
 import DeleteIcon from "../../assets/icons/cross.svg"
 import InputSelect from "../InputSelect/InputSelect";
 import { useLazyGetSettingsQuery } from "../../app/services/session";
@@ -406,6 +408,13 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch }) {
          {dataFor === "testsDetailQuestions" && (
             <tr className="bg-white text-sm shadow-sm shadow-slate-200 rounded-2xl leading-7 mt-[10px]">
                {mapData(item, dataFor, excludes)}
+               <td className="font-medium px-1 min-w-14 py-4">
+                  <img
+                     src={EditTestIcon}
+                     className="cursor-pointer"
+                     onClick={() => onClick.handleEditTestClick(item)}
+                  />
+               </td>
             </tr>
          )}
          {dataFor === "allTests" && (

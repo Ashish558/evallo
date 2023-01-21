@@ -24,7 +24,7 @@ export const TestItem = ({ testName, assignedTestId, dueDate, pdfLink, testId, s
       getTestResponse({ url, params: params })
         .then(res => {
           if (res.error) {
-            console.log('resp err', testName,res.error)
+            // console.log('resp err', testName,res.error)
             return
           }
           // console.log('Resp score', res.data.data.response);
@@ -69,7 +69,7 @@ export const TestItem = ({ testName, assignedTestId, dueDate, pdfLink, testId, s
 
           {/* {action === 'Start' && <div className="w-full font-bold bg-[#F6A429CC] px-2 py-2 text-center text-white rounded-[6px]">{action}</div>} */}
           {isCompleted === true ?
-            <div className="cursor-pointer w-full text-sm font-bold bg-[#CBC0F5]/50 px-2 py-2 text-center text-black rounded-[6px]">
+            <div className="cursor-pointer text-sm break-al  w-full text-sm font-bold bg-[#CBC0F5]/50 px-2 py-2 text-center text-black rounded-[6px]">
               {score}
             </div> :
             isStarted === true ?

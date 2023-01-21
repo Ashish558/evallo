@@ -236,7 +236,7 @@ export const getScoreStr = (testType, score, subjects, totalLength) => {
       let totalSubs = 4
       return {
          cumulative: `C${total2 / totalSubs}`,
-         right: `E${scoreArr[0] ? scoreArr[0] : 0}|M${scoreArr[1] ? scoreArr[1] : 0}|R${scoreArr[2] ? scoreArr[2] : 0}|C${scoreArr[3] ? scoreArr[3] : 0}`,
+         right: `E${scoreArr[0] ? scoreArr[0] : 0} | M${scoreArr[1] ? scoreArr[1] : 0} | R${scoreArr[2] ? scoreArr[2] : 0} | C${scoreArr[3] ? scoreArr[3] : 0}`,
       }
    }
 }

@@ -60,7 +60,7 @@ const StudentDashboard = () => {
                   </div>
                </div>
                <div id={styles.chartContainer} className='scrollbar-content'>
-                  <Chart setSubjects={setSubjects} ></Chart>
+                  <Chart setSubjects={setSubjects} subjects={subjects} selectedSubject={selectedSubject} ></Chart>
                </div>
             </div>
             <div className="w-5/12" id={styles.studentDashboardRight}>

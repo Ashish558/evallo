@@ -75,7 +75,6 @@ export default function Scoring({ sectionsData }) {
       return max
    }
 
-   console.log(sectionsData);
    const width = `${100 / (subjects.length)}%`
 
    return (
