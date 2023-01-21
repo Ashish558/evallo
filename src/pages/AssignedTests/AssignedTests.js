@@ -153,7 +153,7 @@ export default function AssignedTests() {
       fetchAssignedTests()
          .then(res => {
             if (res.error) return console.log(res.error)
-            console.log('response student', res.data)
+            // console.log('response ', res.data)
             let data = res.data.data.test.map(item => {
                const { createdAt, studentId, testId, dueDate, multiple, timeLimit, isCompleted, isStarted } = item
                return {
@@ -341,14 +341,16 @@ export default function AssignedTests() {
 
    const deleteTest = () => {
       console.log('deleteTest', testToDelete);
-      // deleteAssignedTest({id: testToDelete.assignedTestId})
-      //    .then(res => {
-      //       if (res.error) {
-      //          console.log(res.error)
-      //          return
-      //       }
-      //       console.log('delete test res', res.data);
-      //    })
+      deleteAssignedTest({id: testToDelete.assignedTestId})
+         .then(res => {
+            if (res.error) {
+               console.log('delete err' ,res.error)
+               return
+            }
+            fetch()
+            setDeleteModalActive(false)
+            console.log('delete test res', res.data);
+         })
    }
 
    const handleDelete = item => {

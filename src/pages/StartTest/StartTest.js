@@ -260,8 +260,8 @@ export default function StartTest() {
    }, [completedSectionIds, subjects])
 
    const handleResponseChange = (id, option) => {
-      console.log('initialSeconds', initialSeconds);
-      console.log('countDown', countDown);
+      // console.log('initialSeconds', initialSeconds);
+      // console.log('countDown', countDown);
 
       const timeTaken = initialSeconds - countDown
       setInitialSeconds(countDown)

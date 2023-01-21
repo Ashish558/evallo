@@ -48,9 +48,9 @@ export default function AllTests() {
    const [modalData, setModalData] = useState(initialState);
 
    useEffect(() => {
-      if(modalData.testName.trim() === '' || modalData.testType.trim() === '' || csvFile === null){
+      if (modalData.testName.trim() === '' || modalData.testType.trim() === '' || csvFile === null) {
          setSubmitBtnDisabled(true)
-      }else{
+      } else {
          setSubmitBtnDisabled(false)
       }
    }, [modalData, csvFile])
@@ -121,7 +121,7 @@ export default function AllTests() {
          let testId = res.data.data.test._id;
          const formData = new FormData();
          formData.append("pdf", pdfFile);
-         
+
          if (pdfFile !== null) {
             console.log(pdfFile);
             await axios
@@ -131,9 +131,11 @@ export default function AllTests() {
                )
                .then((res) => {
                   console.log('pdf post resp', res);
-                  setModalData(initialState);
-                  setModalActive(false);
-                  setPDFFile(null);
+                  if (csvFile === null) {
+                     setModalData(initialState);
+                     setModalActive(false);
+                     setPDFFile(null);
+                  }
                   // fetchTests()
                });
          }

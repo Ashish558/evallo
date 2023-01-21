@@ -158,8 +158,8 @@ export const testServicesApi = createApi({
       }),
       deleteTest: builder.query({
          query: (body) => ({
-            url: `/api/test/delete/${body.id}`,
-            method: "GET",
+            url: `/api/test/assigntest/${body.id}`,
+            method: "Delete",
             headers: getAuthHeader()
          })
       }),
