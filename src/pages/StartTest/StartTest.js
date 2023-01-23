@@ -208,10 +208,12 @@ export default function StartTest() {
                })))
                if (setResponsesFromStorage === true) {
                   let savedAnswers = JSON.parse(localStorage.getItem('answers'))
+                  let savedAssignedTestId = localStorage.getItem('assignedTestId')
                   if (!savedAnswers) return
                   if (savedAnswers === null || savedAnswers === undefined) return
                   if (savedAnswers.length === 0) return
-                  console.log('savedAnswers', savedAnswers);
+                  if(savedAssignedTestId !== assignedTestId) return
+                  // console.log('savedAnswers', savedAnswers);
                   setAnswers(savedAnswers)
                   // console.log('savedAnswers2', localStorage.getItem('answers'));
                }
@@ -338,6 +340,8 @@ export default function StartTest() {
       if (answers === null || answers === undefined) return
       if (answers.length === 0) return
       // console.log('setans', answers);
+
+      localStorage.setItem('assignedTestId', assignedTestId)
       localStorage.setItem('answers', JSON.stringify(answers))
    }, [answers])
    // const { subjects, testQnId, testType } = sectionDetails.subjects

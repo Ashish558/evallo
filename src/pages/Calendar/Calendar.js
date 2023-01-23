@@ -147,6 +147,8 @@ export default function Calendar() {
    })
 
    const refetchSessions = () => {
+      // console.log(searchedUser);
+      if(searchedUser.id === '') return
       fetchSessions(searchedUser.id, searchedUser.role)
    }
 
@@ -216,7 +218,7 @@ export default function Calendar() {
             const startUtc = up.toUTCString()
 
             // console.log('START DATE', startDate);
-            console.log('START DATE UTC --', startUtc);
+            // console.log('START DATE UTC --', startUtc);
 
             const endTime12HFormat = `${time.end.time} ${time.end.timeType}`;
             const endTime = convertTime12to24(
@@ -495,6 +497,15 @@ export default function Calendar() {
 
    const handleDateClick = (arg) => {
       // console.log(arg)
+      let date = new Date(arg.date)
+      let currentDate = new Date()
+      currentDate.setHours(0, 0, 0, 0);
+      // console.log(date - currentDate);
+      if (date - currentDate < 0) {
+         alert('Cant set events on past date')
+         return
+      } 
+
       if (persona === 'tutor') {
          setDefaultEventData({
             date: arg.date,
