@@ -337,7 +337,7 @@ export default function StartTest() {
       if (!answers) return
       if (answers === null || answers === undefined) return
       if (answers.length === 0) return
-      // console.log('set ans', answers);
+      // console.log('setans', answers);
       localStorage.setItem('answers', JSON.stringify(answers))
    }, [answers])
    // const { subjects, testQnId, testType } = sectionDetails.subjects
