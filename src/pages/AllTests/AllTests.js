@@ -39,7 +39,6 @@ export default function AllTests() {
    const [testForDelete, setTestForDelete] = useState("");
    const [filteredTests, setFilteredTests] = useState([])
    const [filterItems, setFilterItems] = useState([])
-
    const [submitBtnDisabled, setSubmitBtnDisabled] = useState(true)
 
    const [removeQuestionModal, setRemoveQuestionModal] = useState(false);
@@ -106,6 +105,7 @@ export default function AllTests() {
 
    const handleSubmit = (e) => {
       e.preventDefault();
+      setSubmitBtnDisabled(true)
       // console.log(modalData)
       let body = {
          testName: modalData.testName,
@@ -153,6 +153,7 @@ export default function AllTests() {
                });
          }
          fetchTests()
+         setSubmitBtnDisabled(false)
          console.log('submitted');
       });
    };
@@ -233,7 +234,7 @@ export default function AllTests() {
                   onClick: handleSubmit,
                   type: "submit",
                   className: 'w-[123px] pl-6 pr-6 disabled:opacity-70',
-                  disabled: submitBtnDisabled
+                  disabled: submitBtnDisabled,
                }}
                handleClose={handleClose}
                body={
