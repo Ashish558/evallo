@@ -9,7 +9,7 @@ import Table from "../../components/Table/Table";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { BASE_URL } from "../../app/constants/constants";
-import { useLazyGetSectionsQuery } from "../../app/services/test";
+import { useEditQuestionMutation, useLazyGetSectionsQuery } from "../../app/services/test";
 import AllTestDetail from "../../components/AllTestDetail/AllTestDetail";
 import { useLazyGetAllSectionsQuery } from "../../app/services/admin";
 import Scoring from "./Scoring/Scoring";
@@ -71,6 +71,7 @@ export default function TestDetail() {
    // console.log(window.location.pathname.split("/")[2]);
    const [fetchSections, fetchSectionsResp] = useLazyGetAllSectionsQuery()
    const [getSections, getSectionsResp] = useLazyGetSectionsQuery()
+   const [editQuestion, editQuestionResp] = useEditQuestionMutation()
 
    const [allQuestions, setAllQuestions] = useState([])
    const [questionsTable, setQuestionsTable] = useState([])
@@ -89,8 +90,7 @@ export default function TestDetail() {
          });
    };
 
-
-   useEffect(() => {
+   const fetchData = () => {
       axios.get(`${BASE_URL}api/test/${id}`)
          .then((res) => {
             // console.log(res.data.data);
@@ -107,6 +107,10 @@ export default function TestDetail() {
             setSubjects(tempSubs)
             setAllQuestions(res.data.data.answer.answer)
          })
+   }
+
+   useEffect(() => {
+      fetchData()
    }, [])
 
    useEffect(() => {
@@ -117,13 +121,13 @@ export default function TestDetail() {
       let idx = subjects.findIndex(item => item.selected === true)
       // console.log(idx);
       let tempdata = allQuestions[idx].map(item => {
-         const { QuestionNumber, CorrectAnswer, Concepts, Strategies } = item
+         const { QuestionNumber, CorrectAnswer, Concepts, Strategies, QuestionType } = item
          if (!item.Strategies) {
             return {
-               QuestionNumber, CorrectAnswer, Concepts, Strategies: '-'
+               QuestionNumber, CorrectAnswer, Concepts, Strategies: '-', QuestionType
             }
          } else {
-            return { QuestionNumber, CorrectAnswer, Concepts, Strategies }
+            return { QuestionNumber, CorrectAnswer, Concepts, Strategies, QuestionType }
          }
       })
       setQuestionsTable(tempdata)
@@ -144,6 +148,27 @@ export default function TestDetail() {
       e.preventDefault()
       console.log('modalData', modalData);
       console.log('questionToEdit', questionToEdit);
+      const selectedSub = subjects.find(sub => sub.selected === true)
+      const body = {
+         subject: selectedSub.name,
+         Qno: questionToEdit.QuestionNumber,
+         update: {
+            CorrectAnswer: modalData.correctAnswer,
+            Concepts: modalData.concept,
+            QuestionType: modalData.questionType,
+            Strategies: modalData.strategy,
+            AnswerChoices: "A,B,C,D",
+         }
+      }
+      console.log(body);
+      editQuestion({ id, reqbody: body })
+         .then(res => {
+            setModalData(initialState)
+            setModalActive(false)
+            if (res.error) return console.log('edit err', res.error);
+            console.log('edit resp', res.data);
+            fetchData()
+         })
 
    }
    const handleEditTestClick = (item) => {
@@ -155,6 +180,7 @@ export default function TestDetail() {
             correctAnswer: item.CorrectAnswer ? item.CorrectAnswer : '',
             concept: item.Concepts ? item.Concepts : '',
             strategy: item.Strategies !== '-' ? item.Strategies : '',
+            questionType: item.QuestionType
          }
       })
       setModalActive(true)
@@ -275,7 +301,7 @@ export default function TestDetail() {
                      {questionsTable.length > 0 && <Table dataFor='testsDetailQuestions'
                         data={questionsTable}
                         tableHeaders={tableHeaders}
-                        excludes={['_id', 'AnswerChoices', '']}
+                        excludes={['_id', 'AnswerChoices', 'QuestionType']}
                         // maxPageSize={10}
                         onClick={{ handleEditTestClick }}
                         hidePagination />}
@@ -299,7 +325,7 @@ export default function TestDetail() {
                   type: 'submit',
                   disabled: btnDisabled
                }}
-               handleClose={() => setModalActive(false)}
+               handleClose={() => {setModalActive(false);setModalData(initialState)}}
                body={
                   <form id='add-user-form' onSubmit={handleSubmit} className='px-[3px] mb-0.5' >
                      <div className='grid grid-cols-1 md:grid-cols-2  gap-x-2 md:gap-x-3 gap-y-3 gap-y-4 mb-5'>
@@ -340,7 +366,7 @@ export default function TestDetail() {
                         <div>
                            <InputField label='Strategy'
                               labelClassname='ml-4 mb-0.5'
-                              isRequired={true}
+                              // isRequired={true}
                               placeholder='Strategy'
                               inputContainerClassName='text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0'
                               inputClassName='bg-transparent'
