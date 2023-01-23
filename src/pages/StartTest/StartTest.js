@@ -146,7 +146,7 @@ export default function StartTest() {
             res.data.data.subjects.subjects.map(item => {
                duration += item.timer
             })
-            console.log('date', new Date(res.data.data.subjects.createdAt));
+            // console.log('date', new Date(res.data.data.subjects.createdAt));
             setTestHeaderDetails(prev => ({
                ...prev,
                // duration,
@@ -164,7 +164,7 @@ export default function StartTest() {
             })
             promiseState()
                .then(() => {
-                  fetchContinueTest()
+                  fetchContinueTest(true)
                })
          })
    }
@@ -184,7 +184,7 @@ export default function StartTest() {
       //    })
    }, [])
 
-   const fetchContinueTest = () => {
+   const fetchContinueTest = (setResponsesFromStorage) => {
       continueTest({ id: assignedTestId })
          .then(res => {
             if (res.error) {
@@ -206,6 +206,15 @@ export default function StartTest() {
                   ...item, isMarked: false, ResponseAnswer: '',
                   responseTime: 0
                })))
+               if (setResponsesFromStorage === true) {
+                  let savedAnswers = JSON.parse(localStorage.getItem('answers'))
+                  if (!savedAnswers) return
+                  if (savedAnswers === null || savedAnswers === undefined) return
+                  if (savedAnswers.length === 0) return
+                  console.log('savedAnswers', savedAnswers);
+                  setAnswers(savedAnswers)
+                  // console.log('savedAnswers2', localStorage.getItem('answers'));
+               }
             } else {
                setTestStarted(false)
             }
@@ -309,6 +318,7 @@ export default function StartTest() {
             }
             console.log(res.data)
             setTestStarted(false)
+            localStorage.setItem('answers', null)
             fetchContinueTest()
             setActiveSection({})
          })
@@ -322,6 +332,14 @@ export default function StartTest() {
          })
       })
    }
+
+   useEffect(() => {
+      if (!answers) return
+      if (answers === null || answers === undefined) return
+      if (answers.length === 0) return
+      // console.log('set ans', answers);
+      localStorage.setItem('answers', JSON.stringify(answers))
+   }, [answers])
    // const { subjects, testQnId, testType } = sectionDetails.subjects
    // console.log('sectionDetails', sectionDetails)
    // console.log('answers', answers)
@@ -433,7 +451,7 @@ export default function StartTest() {
                                        </button> :
                                        <button className='w-[180px] font-semibold pt-2.5 pb-2.5 rounded-lg bg-primaryOrange text-white ml-4'
                                           onClick={() => handleMark(item._id, true)} >
-                                           Mark for Review
+                                          Mark for Review
                                        </button>
                                     }
                                  </div>
