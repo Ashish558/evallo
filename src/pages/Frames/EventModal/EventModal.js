@@ -449,7 +449,7 @@ export default function EventModal({
       }
       delete body['sessionStatus']
       if (isUpdaingAll === true) {
-         updateAllUserSession({ id: sessionToUpdate._id, body: { ...body, } }).then(
+         updateAllUserSession({ id: sessionToUpdate._id, body: { ...body, sessionStatus: 'Scheduled' } }).then(
             (res) => {
                console.log(res);
                refetchSessions()
