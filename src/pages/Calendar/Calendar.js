@@ -570,9 +570,9 @@ export default function Calendar() {
    }, [name]);
 
    const fetchTutorSessions = ()=>{
-      console.log('FETCHING');
       const userId = currentUserId
       if (persona === "tutor") {
+         console.log('FETCHING', userId);
          fetchStudents(userId).then((res) => {
             setEventDetails(res.data.data.session);
             // console.log(res.data.data);

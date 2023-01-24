@@ -385,7 +385,7 @@ export default function EventModal({
       return strArr;
    };
 
-   const updateSession = (reqBody, isUpdaingAll, sDate) => {
+   const updateSession = async (reqBody, isUpdaingAll, sDate) => {
       // console.log(sessionToUpdate)
       // console.log(reqBody)
       let body = { ...reqBody }
@@ -399,7 +399,7 @@ export default function EventModal({
       console.log(body);
       // return
       if (body.sessionStatus === "Completed") {
-         updateSessionStatus(sessionToUpdate._id)
+        await updateSessionStatus(sessionToUpdate._id)
             .then(res => {
                if (res.error) return
                // updateUserSession({ id: sessionToUpdate._id, body: { sessionStatus: 'Completed', _id: sessionToUpdate._id } }).then(
@@ -412,7 +412,7 @@ export default function EventModal({
             })
       }
       if (body.sessionStatus === "Missed") {
-         missSession(sessionToUpdate._id)
+         await  missSession(sessionToUpdate._id)
             .then(res => {
                if (res.error) {
                   alert(res.error.data.message)
@@ -429,7 +429,7 @@ export default function EventModal({
             })
       }
       if (body.sessionStatus === "Cancelled") {
-         cancelSession(sessionToUpdate._id)
+         await  cancelSession(sessionToUpdate._id)
             .then(res => {
                if (res.error) {
                   if (res.error.data && res.error.data.message) {
