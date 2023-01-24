@@ -458,6 +458,7 @@ export default function EventModal({
          );
 
       } else {
+         delete body['sessionStatus']
          updateUserSession({ id: sessionToUpdate._id, body: { ...body, _id: sessionToUpdate._id } }).then(
             (res) => {
                console.log(res);
@@ -498,7 +499,7 @@ export default function EventModal({
       reqBody.total_hours = duration
       if (reqBody.timeZone === '') reqBody.timeZone = 'Asia/Kolkata'
       let date = moment(new Date(reqBody.date));
-      console.log(date);
+      // console.log(date);
       // let rInterval = moment((date)).recur().every(["Saturday"]).daysOfWeek().every(2).week();
       // console.log(rInterval);
       let sDate = reqBody.date

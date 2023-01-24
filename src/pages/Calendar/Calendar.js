@@ -507,10 +507,10 @@ export default function Calendar() {
       let currentDate = new Date()
       currentDate.setHours(0, 0, 0, 0);
       // console.log(date - currentDate);
-      if (date - currentDate < 0) {
-         alert('Cant set events on past date')
-         return
-      } 
+      // if (date - currentDate < 0) {
+      //    alert('Cant set events on past date')
+      //    return
+      // } 
 
       if (persona === 'tutor') {
          setDefaultEventData({
