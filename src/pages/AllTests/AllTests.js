@@ -162,7 +162,7 @@ export default function AllTests() {
                      });
                   if (err.response.data) {
                      if (err.response.data.status === 'fail') {
-                        alert('Invalid excel file')
+                        alert('Concept field(s) missing.')
                      }
                   }
 
