@@ -148,8 +148,14 @@ export default function Calendar() {
 
    const refetchSessions = () => {
       // console.log(searchedUser);
-      if(searchedUser.id === '') return
-      fetchSessions(searchedUser.id, searchedUser.role)
+      console.log('persona', persona);
+      if (persona === 'tutor') {
+         console.log('sjf run');
+         fetchTutorSessions()
+      }else{
+         if(searchedUser.id === '') return
+         fetchSessions(searchedUser.id, searchedUser.role)
+      }
    }
 
 
@@ -563,7 +569,8 @@ export default function Calendar() {
       }
    }, [name]);
 
-   useEffect(() => {
+   const fetchTutorSessions = ()=>{
+      console.log('FETCHING');
       const userId = currentUserId
       if (persona === "tutor") {
          fetchStudents(userId).then((res) => {
@@ -645,6 +652,9 @@ export default function Calendar() {
             setStudents(tempstudents);
          });
       }
+   }
+   useEffect(() => {
+      fetchTutorSessions()
    }, [persona]);
 
    const handleEventClick = (info) => {
