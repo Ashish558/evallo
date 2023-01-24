@@ -73,10 +73,7 @@ export default function AllTests() {
    const removeTest = (item) => {
       setRemoveQuestionModal(false);
       // console.log(testForDelete._id);
-      axios
-         .delete(
-            `${BASE_URL}api/test/${testForDelete._id}`
-         )
+      axios.delete(`${BASE_URL}api/test/${testForDelete._id}`)
          .then((res) => {
             console.log(res);
             fetchTests();
@@ -137,8 +134,9 @@ export default function AllTests() {
                      setModalActive(false);
                      setPDFFile(null);
                   }
-                  // fetchTests()
-               });
+               }).catch(err => {
+                  console.log('pdf err', err.response);
+               })
          }
 
          if (csvFile !== null) {
@@ -151,8 +149,24 @@ export default function AllTests() {
                   setModalData(initialState);
                   setModalActive(false);
                   setCSVFile(null);
-                  // fetchTests()
-               });
+                  setPDFFile(null);
+               }).catch(err => {
+                  console.log('excel err', err.response);
+                  axios.delete(`${BASE_URL}api/test/${testId}`)
+                     .then((res) => {
+                        // console.log(res);
+                        setModalData(initialState);
+                        setModalActive(false);
+                        setCSVFile(null);
+                        setPDFFile(null);
+                     });
+                  if (err.response.data) {
+                     if (err.response.data.status === 'fail') {
+                        alert('Invalid excel file')
+                     }
+                  }
+
+               })
          }
          fetchTests()
          setSubmitBtnDisabled(false)
