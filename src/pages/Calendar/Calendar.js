@@ -150,7 +150,7 @@ export default function Calendar() {
       // console.log(searchedUser);
       console.log('persona', persona);
       if (persona === 'tutor') {
-         console.log('sjf run');
+         console.log('shd run');
          fetchTutorSessions()
       }else{
          if(searchedUser.id === '') return
