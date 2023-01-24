@@ -181,7 +181,7 @@ export const getScoreStr = (testType, score, subjects, totalLength) => {
    // if (!score) return ''
    // if (!testType) return ''
    // if (!subjects) return ''
-
+ 
    if (testType === 'SAT') {
       let verbalTotal = 0
       let MathsTotal = 0
