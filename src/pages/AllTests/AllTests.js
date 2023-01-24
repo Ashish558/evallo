@@ -131,6 +131,7 @@ export default function AllTests() {
                )
                .then((res) => {
                   console.log('pdf post resp', res);
+                  alert('PDF UPLOADED')
                   if (csvFile === null) {
                      setModalData(initialState);
                      setModalActive(false);
@@ -145,6 +146,7 @@ export default function AllTests() {
             formData.append("file", csvFile);
             await axios.post(`${BASE_URL}api/test/addans/${testId}`, formData)
                .then((res) => {
+                  alert('CSV UPLOADED')
                   console.log('csv post resp', res);
                   setModalData(initialState);
                   setModalActive(false);
