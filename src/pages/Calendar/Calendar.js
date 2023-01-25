@@ -178,6 +178,11 @@ export default function Calendar() {
             // const endHours = parseInt(endTime.split(":")[0]);
             // const endMinutes = parseInt(endTime.split(":")[1]);
             let startDate = new Date(session.date);
+            const offset = startDate.getTimezoneOffset() * 60000
+            if(offset > 0){
+               // startDate = startDate + offset
+               startDate =  new Date(startDate.getTime() +offset)
+            }
             //  let startDate = new Date(session.date).toLocaleString('en-US', { timeZone: "Asia/Kolkata" })
             // let startDate = new Date(session.date).toUTCString()
             startHours !== NaN && startDate.setHours(startHours);
@@ -362,12 +367,17 @@ export default function Calendar() {
                            const startHours = parseInt(startTime.split(":")[0]);
                            const startMinutes = parseInt(startTime.split(":")[1]);
 
-                           // let startDate = new Date(session.date)
-                           let startDate = new Date(new Date(
-                              session.date.toLocaleString('en-US', {
-                                 timeZone: "Asia/Kolkata"
-                              }),
-                           ))
+                           let startDate = new Date(session.date)
+                           // let startDate = new Date(new Date(
+                           //    session.date.toLocaleString('en-US', {
+                           //       timeZone: "Asia/Kolkata"
+                           //    }),
+                           // ))
+                           const offset = startDate.getTimezoneOffset() * 60000
+                           if(offset > 0){
+                              // startDate = startDate + offset
+                              startDate =  new Date(startDate.getTime() +offset)
+                           }
                            // let startDate = new Date(session.date).toUTCString()
                            startHours !== NaN && startDate.setHours(startHours);
                            startMinutes !== NaN && startDate.setMinutes(startMinutes);
