@@ -152,8 +152,8 @@ export default function Calendar() {
       if (persona === 'tutor') {
          console.log('shd run');
          fetchTutorSessions()
-      }else{
-         if(searchedUser.id === '') return
+      } else {
+         if (searchedUser.id === '') return
          fetchSessions(searchedUser.id, searchedUser.role)
       }
    }
@@ -207,18 +207,27 @@ export default function Calendar() {
             const startMinutes = parseInt(startTime.split(":")[1]);
 
             //previous start date below
-            // let startDate = new Date(session.date)
-            let startDate = new Date(new Date(
-               session.date.toLocaleString('en-US', {
-                  timeZone: "Asia/Kolkata"
-               }),
-            ))
+            // console.log('session date : ', session.date);
+            let startDate = new Date(session.date)
+            // let startDate = new Date(new Date(
+            //    session.date.toLocaleString('en-US', {
+            //       timeZone: "Asia/Kolkata"
+            //    }),
+            // ))
+            const offset = startDate.getTimezoneOffset() * 60000
+            if(offset > 0){
+               // startDate = startDate + offset
+               startDate =  new Date(startDate.getTime() +offset)
+            }
+            // console.log('userTimezoneOffset', offset );
+            console.log('START DATE PREV', startDate);
+            
             // let startDate = new Date(session.date).toUTCString()
             startHours !== NaN && startDate.setHours(startHours);
             startMinutes !== NaN && startDate.setMinutes(startMinutes);
-
+            // console.log('START DATE',  startDate);
             var userTimezoneOffset = startDate.getTimezoneOffset() * 60000;
-
+            // console.log('userTimezoneOffset', userTimezoneOffset);
             getStartDate(startDate, userTimezoneOffset, session.timeZone)
             let up = getStartDate(startDate, userTimezoneOffset, session.timeZone)
             const startUtc = up.toUTCString()
@@ -569,7 +578,7 @@ export default function Calendar() {
       }
    }, [name]);
 
-   const fetchTutorSessions = ()=>{
+   const fetchTutorSessions = () => {
       const userId = currentUserId
       if (persona === "tutor") {
          console.log('FETCHING', userId);
