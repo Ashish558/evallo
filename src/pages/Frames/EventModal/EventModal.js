@@ -532,7 +532,7 @@ export default function EventModal({
          sDate.setMinutes(0);
          const currentDay = sDate.getDay()
          const currentDate = sDate.getDate()
-         console.log('DTART DATE ', sDate);
+         // console.log('START DATE ', sDate);
         
          // console.log('days', tempDays);
          const daysTORecur = tempDays.map(item => {

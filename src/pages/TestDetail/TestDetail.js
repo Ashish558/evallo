@@ -58,6 +58,7 @@ export default function TestDetail() {
    const navigate = useNavigate();
    const [btnDisabled, setBtnDisabled] = useState(false)
    const [questionToEdit, setQuestionToEdit] = useState({})
+   const [pdfBtnDisabled, setPdfBtnDisabled] = useState(false)
 
    useEffect(() => {
       if (modalData.email === '' || modalData.firstName === '' || modalData.lastName === '' || modalData.userType === '') {
@@ -81,13 +82,17 @@ export default function TestDetail() {
       const formData = new FormData();
       formData.append("pdf", file);
       setPDFFile(file);
-      axios.post(
-         `${BASE_URL}api/test/addpdf/${id}`,
-         formData
-      )
+      setPdfBtnDisabled(true)
+      axios.post(`${BASE_URL}api/test/addpdf/${id}`, formData)
          .then((res) => {
+            setPdfBtnDisabled(false)
+            alert('PDF file uploaded successfully!')
             console.log('pdf post resp', res);
-         });
+         }).catch(err => {
+            setPdfBtnDisabled(false)
+            console.log('pdf err', err.response);
+            alert('Could not upload pdf')
+         })
    };
 
    const fetchData = () => {
@@ -279,7 +284,8 @@ export default function TestDetail() {
                         children={<div className="flex items-center justify-center">
                            Add Pdf
                            <img src={AddIcon} className='w-6 ml-2' /> </div>}
-                        className={`py-3.5 pl-6 pr-6 mr-4 font-medium text-textGray" }`}
+                        disabled={pdfBtnDisabled}
+                        className={`py-3.5 pl-6 pr-6 mr-4 font-medium text-textGra`}
                         onClick={() => PdfRef.current.click()}
                      />
                      <input ref={PdfRef}
@@ -325,7 +331,7 @@ export default function TestDetail() {
                   type: 'submit',
                   disabled: btnDisabled
                }}
-               handleClose={() => {setModalActive(false);setModalData(initialState)}}
+               handleClose={() => { setModalActive(false); setModalData(initialState) }}
                body={
                   <form id='add-user-form' onSubmit={handleSubmit} className='px-[3px] mb-0.5' >
                      <div className='grid grid-cols-1 md:grid-cols-2  gap-x-2 md:gap-x-3 gap-y-3 gap-y-4 mb-5'>
