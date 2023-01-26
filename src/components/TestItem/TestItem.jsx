@@ -29,7 +29,7 @@ export const TestItem = ({ testName, assignedTestId, dueDate, pdfLink, testId, s
           }
           // console.log('Resp score', res.data.data.response);
           let responseData =  res.data.data.response
-          let score = getScoreStr(responseData.testType, responseData.score, responseData.subjects)
+          let score = getScoreStr(responseData.testType, responseData.score, responseData.subjects,  responseData.subjects.length)
           // let scr = getScore(res.data.data.response.testType, res.data.data.response.subjects)
           setScore(`${score.cumulative} ${score.right}`)
         })

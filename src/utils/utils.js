@@ -182,7 +182,7 @@ export const getScoreStr = (testType, score, subjects, totalLength) => {
    // if (!score) return ''
    // if (!testType) return ''
    // if (!subjects) return ''
- 
+ console.log('totalLength', totalLength);
    if (testType === 'SAT') {
       let verbalTotal = 0
       let MathsTotal = 0
@@ -207,21 +207,25 @@ export const getScoreStr = (testType, score, subjects, totalLength) => {
       }
    } else {
       let scoreArr = []
+      let score1 = 0
+      let score2 = 0
+      let score3 = 0
+      let score4 = 0
       let total = 0
       subjects.map((sub, idx) => {
          total += sub.no_of_correct
          if (sub.scoreScale === 'Scale1') {
             total += score['Scale1']
-            scoreArr.push(score['Scale1'])
+            score1 = score['Scale1']
          } else if (sub.scoreScale === 'Scale2') {
             total += score['Scale2']
-            scoreArr.push(score['Scale2'])
+            score2 = score['Scale2']
          } else if (sub.scoreScale === 'Scale3') {
             total += score['Scale3']
-            scoreArr.push(score['Scale3'])
+            score3 = score['Scale3']
          } else if (sub.scoreScale === 'Scale4') {
             total += score['Scale4']
-            scoreArr.push(score['Scale4'])
+            score4 = score['Scale4']
          }else{
             total += 0
             scoreArr.push(0)
@@ -234,10 +238,10 @@ export const getScoreStr = (testType, score, subjects, totalLength) => {
       // console.log('total', total2);
       // console.log('subjects.length', subjects.length);
       // let totalSubs = totalLength  ? totalLength : subjects.length
-      let totalSubs = 4
+      let totalSubs = totalLength ? totalLength : 4
       return {
          cumulative: `C${total2 / totalSubs}`,
-         right: `E${scoreArr[0] ? scoreArr[0] : 0} | M${scoreArr[1] ? scoreArr[1] : 0} | R${scoreArr[2] ? scoreArr[2] : 0} | C${scoreArr[3] ? scoreArr[3] : 0}`,
+         right: `E${score1} | M${score2} | R${score3} | C${score4}`,
       }
    }
 }
