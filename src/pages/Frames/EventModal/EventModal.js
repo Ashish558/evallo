@@ -295,12 +295,21 @@ export default function EventModal({
             `${sessionToUpdate.time.start.time} ${sessionToUpdate.time.start.timeType}`
          );
          // console.log(startTime)
+         let startDate = new Date(sessionToUpdate.date)
+         const offset = startDate.getTimezoneOffset() * 60000
+         if (offset > 0) {
+            // startDate = startDate + offset
+            startDate = new Date(startDate.getTime() + offset)
+         }
+         startDate.setHours(0);
+        startDate.setMinutes(0);
          setData({
             ...data,
             studentName: sessionToUpdate.studentName,
             studentId: sessionToUpdate.studentId,
             tutorId: sessionToUpdate.tutorId,
-            date: getFormattedDate(sessionToUpdate.date),
+            // date: getFormattedDate(sessionToUpdate.date),
+            date: getFormattedDate(startDate),
             time: sessionToUpdate.time,
             timeZone: sessionToUpdate.timeZone,
             recurring: sessionToUpdate.recurring,
@@ -508,15 +517,23 @@ export default function EventModal({
          reqBody.date = [sDate]
       } else {
          let sDate = new Date(reqBody.date)
+         const offset = sDate.getTimezoneOffset() * 60000
+         if (offset > 0) {
+            // startDate = startDate + offset
+            sDate = new Date(sDate.getTime() + offset)
+         }
          // sDate.setHours(0)
          // sDate.setMinutes(0)
          const dates = []
          delete reqBody['date']
          // console.log('sDate', sDate);
          // console.log('day', sDate.getDay());
+         sDate.setHours(0);
+         sDate.setMinutes(0);
          const currentDay = sDate.getDay()
          const currentDate = sDate.getDate()
-
+         console.log('DTART DATE ', sDate);
+        
          // console.log('days', tempDays);
          const daysTORecur = tempDays.map(item => {
             if (reqBody.day.includes(item.full)) return item.id
