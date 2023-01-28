@@ -44,7 +44,7 @@ export const getCheckedString = (arr) => {
 
 export const getFormattedDate = argDate => {
    const date = new Date(argDate)
-   
+
    let year = date.getFullYear()
    let month = date.getMonth()
    let dateNum = date.getDate()
@@ -182,7 +182,7 @@ export const getScoreStr = (testType, score, subjects, totalLength) => {
    // if (!score) return ''
    // if (!testType) return ''
    // if (!subjects) return ''
-//  console.log('totalLength', totalLength);
+   //  console.log('totalLength', totalLength);
    if (testType === 'SAT') {
       let verbalTotal = 0
       let MathsTotal = 0
@@ -212,6 +212,18 @@ export const getScoreStr = (testType, score, subjects, totalLength) => {
       let score3 = 0
       let score4 = 0
       let total = 0
+      console.log(subjects);
+      let scoreStr = []
+      subjects.map((sub, idx) => {
+         let firstStr = sub.name.substring(0, 1)
+         if (subjects.length > idx + 1) {
+            scoreStr.push(` ${firstStr}${score[sub.scoreScale]} |`)
+         }else{
+            scoreStr.push(` ${firstStr}${score[sub.scoreScale]}`)
+         }
+      })
+      console.log(scoreStr);
+
       subjects.map((sub, idx) => {
          total += sub.no_of_correct
          if (sub.scoreScale === 'Scale1') {
@@ -226,7 +238,7 @@ export const getScoreStr = (testType, score, subjects, totalLength) => {
          } else if (sub.scoreScale === 'Scale4') {
             total += score['Scale4']
             score4 = score['Scale4']
-         }else{
+         } else {
             total += 0
             scoreArr.push(0)
          }
@@ -241,7 +253,7 @@ export const getScoreStr = (testType, score, subjects, totalLength) => {
       let totalSubs = totalLength ? totalLength : 4
       return {
          cumulative: `C${total2 / totalSubs}`,
-         right: `E${score1} | M${score2} | R${score3} | C${score4}`,
+         right: scoreStr.join(''),
       }
    }
 }

@@ -147,20 +147,33 @@ export default function Chart({ setSubjects, subjects, selectedSubject }) {
             let totalVal = curr.concepts.total[totalConcept]
             let getValue = curr.concepts.correct[totalConcept]
             const percent = Math.round(getValue * 100 / totalVal)
-
+            let radius = totalVal*2
+            // console.log(totalConcept, percent);
+            if(radius < 15){
+               radius = 15
+            }else if(radius > 40){
+               radius = 40
+            }
             datasets.push({
                label: '',
-               data: [{ x, y: percent, r: 20 }],
+               // data: [{ x, y: percent, r: 20 }],
+               data: [{ x, y: percent, r: radius }],
                backgroundColor: getColor(idx, concepts.length),
             })
          } else {
             let x = (idx + 1) * 5
             let totalVal = curr.concepts.total[totalConcept]
             let getValue = 0
+            let radius = totalVal*2
             const percent = Math.round(getValue * 100 / totalVal)
+            if(radius < 15){
+               radius = 15
+            }else if(radius > 40){
+               radius = 40
+            }
             datasets.push({
                label: '',
-               data: [{ x, y: percent, r: 15 }],
+               data: [{ x, y: percent, r: radius }],
                backgroundColor: getColor(idx, concepts.length),
             })
          }
