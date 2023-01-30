@@ -491,7 +491,7 @@ export default function TutorProfile({ isOwn }) {
                            <>
                               <EditableText editable={editable}
                                  onClick={() => setToEdit({ ...toEdit, serviceSpecializations: { ...toEdit.serviceSpecializations, active: true } })}
-                                 text='Service Specializations'
+                                 text='Expertise'
                                  className='text-lg mb-2' textClassName="flex-1 text-center text-[21px]" />
 
                               <div className='flex flex-col row-span-2 overflow-x-auto scrollbar-content max-h-[500px] scrollbar-vertical'>
