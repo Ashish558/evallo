@@ -434,7 +434,7 @@ export default function TutorProfile({ isOwn }) {
             fetchDetails()
          })
    }
-
+   // console.log(isOwn);
    return (
       <>
          <div className='lg:ml-pageLeft bg-lightWhite min-h-screen pb-120 pt-0'>
@@ -635,135 +635,93 @@ export default function TutorProfile({ isOwn }) {
                   </div>
 
 
-                  {
-                     persona === 'admin' &&
-                     <ProfileCard hideShadow
-                        className='col-span-3 mt-6 lg:mt-0'
-                        body={
-                           <div className='overflow-x-auto scrollbar-content'>
-                              <div className='mb-6'>
-                                 <EditableText text='Test Prep Rate'
-                                    editable={editable}
-                                    onClick={() => setToEdit({ ...toEdit, rates: { ...toEdit.rates, active: true } })}
-                                    className='text-primary justify-between text-lg capitalize'
-                                    imgClass='ml-auto' />
-                                 <p className='mt-1.5  font-medium text-sm whitespace-nowrap'>
-                                    {testPrepRate ? `$${testPrepRate}` : '-'}
-                                 </p>
-                              </div>
-                              <div className='mb-6'>
-                                 <EditableText text='Subject Tutoring Rate'
-                                    editable={editable}
-                                    onClick={() => setToEdit({ ...toEdit, rates: { ...toEdit.rates, active: true } })}
-                                    className='text-primary justify-between text-lg capitalize'
-                                    imgClass='ml-auto' />
-                                 <p className='mt-1.5 font-medium text-sm whitespace-nowrap'>
-                                    {subjectTutoringRate ? `$${subjectTutoringRate}` : '-'}
-                                 </p>
-                              </div>
-                              <div>
-                                 <EditableText text='Other Rate'
-                                    editable={editable}
-                                    onClick={() => setToEdit({ ...toEdit, rates: { ...toEdit.rates, active: true } })}
-                                    className='text-primary justify-between text-lg capitalize'
-                                    imgClass='ml-auto' />
-                                 <p className='mt-1.5 font-medium text-sm whitespace-nowrap'>
-                                    {otherRate ? `$${otherRate}` : '-'}
-                                 </p>
-                              </div>
-                           </div>
-                        }
-                     />
-
-                  }
 
 
                   {
-                     isOwn || persona === 'admin' &&
-                     <ProfileCard hideShadow
-                        className='col-span-3 mt-6 lg:mt-0 flex items-center'
-                        body={
-                           <div className='overflow-x-auto scrollbar-content'>
-                              <div className='mb-6'>
-                                 <EditableText editable={editable}
-                                    onClick={() => setToEdit({ ...toEdit, tutorAddress: { ...toEdit.tutorAddress, active: true } })}
-                                    text='Address'
-                                    className='text-xl justify-between'
-                                 />
-                                 <p className='mt-5  font-medium text-sm'>
-                                    {address ? address : '-'}
-                                 </p>
-                              </div>
-
-                           </div>
-                        }
-                     />
-                  }
-
-
-                  {
-                     isOwn || persona === 'admin' &&
-                     <ProfileCard hideShadow
-                        className='col-span-3 mt-6 lg:mt-0'
-                        body={
-                           <div className='overflow-x-auto scrollbar-content'>
-                              <div className='mb-6'>
-                                 <EditableText editable={editable}
-                                    onClick={() => setToEdit({ ...toEdit, paymentInfo: { ...toEdit.paymentInfo, active: true } })}
-                                    text='Payment Info'
-                                    className='text-xl justify-between'
-                                 />
-                                 <div className='mt-5  font-medium text-sm ma-w-[100px]'>
-                                    <p className='flex items-center mb-3.5'>
-                                       <span>
-                                          Bank Name
-                                       </span>
-                                       <span className='inline-block pl-2'>
-                                          {paymentInfo === undefined ? ' -' : paymentInfo.bankName ? paymentInfo.bankName : '-'}
-                                       </span>
-                                    </p>
-                                    <p className='flex items-center mb-3.5'>
-                                       <span>
-                                          Acc No.
-                                       </span>
-                                       <span className='inline-block pl-2'>
-                                          {paymentInfo === undefined ? ' -' : paymentInfo.AccNo ? paymentInfo.AccNo : '-'}
-                                       </span>
-                                    </p>
-                                    <p className='flex items-center mb-3.5'>
-                                       <span>
-                                          IFCS Code
-                                       </span>
-                                       <span className='inline-block pl-2'>
-                                          {paymentInfo === undefined ? ' -' : paymentInfo.ifcsCode ? paymentInfo.ifcsCode : '-'}
-                                       </span>
+                     (isOwn === true) || (persona === 'admin') ?
+                        <ProfileCard hideShadow
+                           className='col-span-3 mt-6 lg:mt-0 flex items-center'
+                           body={
+                              <div className='overflow-x-auto scrollbar-content'>
+                                 <div className='mb-6'>
+                                    <EditableText editable={editable}
+                                       onClick={() => setToEdit({ ...toEdit, tutorAddress: { ...toEdit.tutorAddress, active: true } })}
+                                       text='Address'
+                                       className='text-xl justify-between'
+                                    />
+                                    <p className='mt-5  font-medium text-sm'>
+                                       {address ? address : '-'}
                                     </p>
                                  </div>
-                              </div>
 
-                           </div>
-                        }
-                     />
+                              </div>
+                           }
+                        /> : <></>
+                  }
+
+
+                  {
+                     (isOwn === true) || (persona === 'admin') ?
+                        <ProfileCard hideShadow
+                           className='col-span-6 mt-6 lg:mt-0'
+                           body={
+                              <div className='overflow-x-auto scrollbar-content'>
+                                 <div className='mb-6'>
+                                    <EditableText editable={editable}
+                                       onClick={() => setToEdit({ ...toEdit, paymentInfo: { ...toEdit.paymentInfo, active: true } })}
+                                       text='Payment Info'
+                                       className='text-xl justify-between'
+                                    />
+                                    <div className='mt-5  font-medium text-sm ma-w-[100px]'>
+                                       <p className='flex items-center mb-3.5'>
+                                          <span>
+                                             Bank Name
+                                          </span>
+                                          <span className='inline-block pl-2'>
+                                             {paymentInfo === undefined ? ' -' : paymentInfo.bankName ? paymentInfo.bankName : '-'}
+                                          </span>
+                                       </p>
+                                       <p className='flex items-center mb-3.5'>
+                                          <span>
+                                             Acc No.
+                                          </span>
+                                          <span className='inline-block pl-2'>
+                                             {paymentInfo === undefined ? ' -' : paymentInfo.AccNo ? paymentInfo.AccNo : '-'}
+                                          </span>
+                                       </p>
+                                       <p className='flex items-center mb-3.5'>
+                                          <span>
+                                             IFCS Code
+                                          </span>
+                                          <span className='inline-block pl-2'>
+                                             {paymentInfo === undefined ? ' -' : paymentInfo.ifcsCode ? paymentInfo.ifcsCode : '-'}
+                                          </span>
+                                       </p>
+                                    </div>
+                                 </div>
+
+                              </div>
+                           }
+                        /> : <></>
                   }
 
                   {
-                     persona === 'admin' &&
-                     <ProfileCard hideShadow
-                        className='col-span-3 mt-6 lg:mt-0'
-
-                        body={
-                           <div className='overflow-x-auto scrollbar-content'>
-                              <div className='mb-6'>
-                                 <EditableText editable={editable}
-                                    onClick={() => setToEdit({ ...toEdit, tutorRank: { ...toEdit.tutorRank, active: true } })}
-                                    text='Tutor Rank'
-                                    className='text-xl justify-between'
-                                 />
-                                 <p className='mt-1.5  font-medium text-sm whitespace-nowrap'>
-                                    {tutorRank ? tutorRank : '-'}
-                                 </p>
-                              </div>
-                              <div className='mb-6'>
+                     (isOwn === true) || (persona === 'admin') ?
+                        <ProfileCard hideShadow
+                           className='col-span-3 mt-6 lg:mt-0'
+                           body={
+                              <div className='overflow-x-auto scrollbar-content'>
+                                 <div className='mb-6'>
+                                    <EditableText editable={persona === 'admin' ? true : false}
+                                       onClick={() => setToEdit({ ...toEdit, tutorRank: { ...toEdit.tutorRank, active: true } })}
+                                       text='Tutor Rank'
+                                       className='text-xl justify-between'
+                                    />
+                                    <p className='mt-1.5  font-medium text-sm whitespace-nowrap'>
+                                       {tutorRank ? tutorRank : '-'}
+                                    </p>
+                                 </div>
+                                 {/* <div className='mb-6'>
                                  <EditableText editable={editable}
                                     onClick={() => setToEdit({ ...toEdit, income: { ...toEdit.income, active: true } })}
                                     text='Income'
@@ -782,13 +740,60 @@ export default function TutorProfile({ isOwn }) {
                                  <p className='mt-1.5 font-medium text-sm whitespace-nowrap'>
                                     {paymentStatus ? paymentStatus : '-'}
                                  </p>
+                              </div> */}
+                              </div>
+                           }
+                        /> : <></>
+                  }
+
+                  {/* rates */}
+                  {
+                     persona === 'admin' &&
+                     <ProfileCard hideShadow
+                        className='col-span-3 mt-6 lg:mt-0'
+                        body={
+                           <div className='overflow-x-auto scrollbar-content'>
+                              <div className='mb-6'>
+                                 <EditableText
+                                    // text='Test Prep Rate'
+                                    text='Service 1'
+                                    editable={editable}
+                                    onClick={() => setToEdit({ ...toEdit, rates: { ...toEdit.rates, active: true } })}
+                                    className='text-primary justify-between text-lg capitalize'
+                                    imgClass='ml-auto' />
+                                 <p className='mt-1.5  font-medium text-sm whitespace-nowrap'>
+                                    {testPrepRate ? `$${testPrepRate}` : '-'}
+                                 </p>
+                              </div>
+                              <div className='mb-6'>
+                                 <EditableText
+                                    //  text='Subject Tutoring Rate'
+                                    text='Service 2'
+                                    editable={editable}
+                                    onClick={() => setToEdit({ ...toEdit, rates: { ...toEdit.rates, active: true } })}
+                                    className='text-primary justify-between text-lg capitalize'
+                                    imgClass='ml-auto' />
+                                 <p className='mt-1.5 font-medium text-sm whitespace-nowrap'>
+                                    {subjectTutoringRate ? `$${subjectTutoringRate}` : '-'}
+                                 </p>
+                              </div>
+                              <div>
+                                 <EditableText
+                                    //  text='Other Rate'
+                                    text='Service 3'
+                                    editable={editable}
+                                    onClick={() => setToEdit({ ...toEdit, rates: { ...toEdit.rates, active: true } })}
+                                    className='text-primary justify-between text-lg capitalize'
+                                    imgClass='ml-auto' />
+                                 <p className='mt-1.5 font-medium text-sm whitespace-nowrap'>
+                                    {otherRate ? `$${otherRate}` : '-'}
+                                 </p>
                               </div>
                            </div>
                         }
                      />
+
                   }
-
-
                   {
                      persona === 'admin' &&
                      <FeedbackTable feedbacks={feedbacks} />

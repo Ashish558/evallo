@@ -88,6 +88,11 @@ export default function Settings() {
    const [updateSetting, updateSettingResp] = useUpdateSettingMutation()
    // const [updateImage, updateImageResp] = useUpdateOfferImageMutation()
    const [selectedImageTag, setSelectedImageTag] = useState('')
+   const [toggleImage, setToggleImage] = useState({
+      personality: false,
+      interest: false,
+      offer: false
+   })
 
    const imageUploadRef = useRef()
    const [tagImage, setTagImage] = useState(null)
@@ -115,7 +120,7 @@ export default function Settings() {
                return
             }
             console.log('settings', res.data)
-            if(res.data.data.setting === null) return
+            if (res.data.data.setting === null) return
             setSettingsData(res.data.data.setting)
          })
    }
@@ -254,11 +259,20 @@ export default function Settings() {
       fetchSettings()
    }, [])
 
+   const onToggle = (key, value) => {
+      setToggleImage(prev => {
+         return {
+            ...prev,
+            [key]: value
+         }
+      })
+   }
 
    // if (Object.keys(settingsData).length === 0) return <></>
    const { classes, serviceSpecialisation, sessionTags, leadStatus, tutorStatus, offerImages, subscriptionCode, personality, interest } = settingsData
 
-   // console.log(settingsData)
+   // console.log(offerImages)
+   console.log(toggleImage)
 
    return (
       <>
@@ -339,7 +353,7 @@ export default function Settings() {
                   titleClassName='text-[21px] mb-[15px]'
                   body={
                      <div>
-                        {sessionTags!== undefined && Object.keys(sessionTags).map((tag, i) => {
+                        {sessionTags !== undefined && Object.keys(sessionTags).map((tag, i) => {
                            return <div key={i}>
                               <p className='font-bold text-primary-dark mb-[25px]'>
                                  {getSessionTagName(Object.keys(sessionTags)[i])}
@@ -358,7 +372,7 @@ export default function Settings() {
                      </div>
                   } />
 
-               <SettingsCard title='Service Specialisation'
+               <SettingsCard title='Expertise'
                   body={
                      <div className='flex items-center flex-wrap [&>*]:mb-[10px]'>
                         <AddTag keyName='serviceSpecialisation' openModal={true}
@@ -371,26 +385,26 @@ export default function Settings() {
                      </div>
                   } />
 
-               <SettingsCard title='Personality'
+               <SettingsCard title='Personality' toggle={{ value: toggleImage.personality, key: 'personality' }} onToggle={onToggle}
                   body={
                      <div className='flex items-center flex-wrap [&>*]:mb-[10px]'>
                         <AddTag keyName='personality' openModal={true}
                            onAddTag={() => handleTagModal('personality')} />
-                        <FilterItems isString={true} onlyItems={true}
-                           items={personality !== undefined ? personality.map(item => item.text) : []}
+                        <FilterItems isString={false} onlyItems={true} image={toggleImage.personality}
+                           items={personality !== undefined ? personality.map(item => item) : []}
                            keyName='personality'
                            onRemoveFilter={onRemoveTextImageTag}
                            className='pt-1 pb-1 mr-15' />
                      </div>
                   } />
 
-               <SettingsCard title='Interest'
+               <SettingsCard title='Interest'  toggle={{ value: toggleImage.interest, key: 'interest' }} onToggle={onToggle}
                   body={
                      <div className='flex items-center flex-wrap [&>*]:mb-[10px]'>
                         <AddTag keyName='interest' openModal={true}
                            onAddTag={() => handleTagModal('interest')} />
-                        <FilterItems isString={true} onlyItems={true}
-                           items={interest !== undefined ? interest.map(item => item.text) : []}
+                        <FilterItems isString={false} onlyItems={true} image={toggleImage.interest}
+                           items={interest !== undefined ? interest.map(item => item) : []}
                            keyName='interest'
                            onRemoveFilter={onRemoveTextImageTag}
                            className='pt-1 pb-1 mr-15' />
@@ -410,17 +424,18 @@ export default function Settings() {
                      </div>
                   } />
 
-               <SettingsCard title='Images in Offer Slide'
+               <SettingsCard title='Images in Offer Slide' toggle={{ value: toggleImage.offer, key: 'offer' }} onToggle={onToggle}
                   body={
                      <div className='flex items-center flex-wrap [&>*]:mb-[10px]'>
                         <AddTag openModal={true}
                            onAddTag={() => handleTagModal('offer')} />
                         {/* <input type='file' ref={inputRef} className='hidden' accept="image/*"
                            onChange={e => onImageChange(e)} /> */}
-                        <FilterItems isString={true}
+                        <FilterItems isString={false}
+                            image={toggleImage.offer}
                            onlyItems={true}
                            sliceText={true}
-                           items={offerImages !== undefined ? offerImages.map(item => item.image) : []}
+                           items={offerImages !== undefined ? offerImages.map(item => ({ ...item, text: item.image })) : []}
                            onRemoveFilter={onRemoveImage}
                            // onRemoveFilter={onRemoveFilter}
                            className='pt-1 pb-1 mr-15' />

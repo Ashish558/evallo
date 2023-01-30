@@ -26,7 +26,7 @@ export default function FeedbackTable({ feedbacks }) {
    return (
       <>
          <ProfileCard hideShadow
-            className='col-span-12 mt-6 lg:mt-0'
+            className='col-span-9 mt-6 lg:mt-0'
             body={
                <div className='overflow-x-auto scrollbar-content'>
                   <p className='text-primaryDark text-left font-bold text-lg capitalize pl-2 mb-5'> 
