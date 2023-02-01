@@ -156,6 +156,21 @@ export const testServicesApi = createApi({
             headers: getAuthHeader()
          })
       }),
+      deleteTest: builder.query({
+         query: (body) => ({
+            url: `/api/test/assigntest/${body.id}`,
+            method: "Delete",
+            headers: getAuthHeader()
+         })
+      }),
+      editQuestion: builder.mutation({
+         query: (body) => ({
+            url: `/api/test/question/${body.id}`,
+            method: "PATCH",
+            body: body.reqbody,
+            headers: getAuthHeader()
+         })
+      }),
 
    }),
 });
@@ -179,5 +194,7 @@ export const {
    useLazyGetParentsAssignedTestsQuery,
    useLazyGetTutorAssignedTestsQuery,
    useLazyGetSingleAssignedTestQuery,
-   useLazyGetAnswersQuery
+   useLazyGetAnswersQuery,
+   useLazyDeleteTestQuery,
+   useEditQuestionMutation
 } = testServicesApi;

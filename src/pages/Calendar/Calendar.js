@@ -109,13 +109,13 @@ export default function Calendar() {
    const exactTime = time.slice(0, time.indexOf(":")) + time.slice(time.indexOf("p"), time.length);
    const slides = document.getElementsByClassName('fc-timegrid-slot-label-cushion fc-scrollgrid-shrink-cushion')
    //  console.log(document.getElementsByClassName('fc-timegrid-slot-label-cushion fc-scrollgrid-shrink-cushion'));
-   for (var i = 0; i < slides.length; i++) {
-      const item = slides.item(i);
-      // console.log(item.innerHTML === exactTime);
-      if (item.innerHTML === exactTime) {
-         document.getElementById("calendarContainer").scrollTop = document.getElementById("calendarContainer").scrollHeight;
-      }
-   }
+   // for (var i = 0; i < slides.length; i++) {
+   //    const item = slides.item(i);
+   //    // console.log(item.innerHTML);
+   //    if (item.innerHTML === exactTime) {
+   //       document.getElementById("calendarContainer").scrollTop = document.getElementById("calendarContainer").scrollHeight;
+   //    }
+   // }
 
    const [eventModalActive, setEventModalActive] = useState(false);
    const [updateEventModalActive, setUpdateEventModalActive] = useState(false);
@@ -147,7 +147,15 @@ export default function Calendar() {
    })
 
    const refetchSessions = () => {
-      fetchSessions(searchedUser.id, searchedUser.role)
+      // console.log(searchedUser);
+      console.log('persona', persona);
+      if (persona === 'tutor') {
+         console.log('shd run');
+         fetchTutorSessions()
+      } else {
+         if (searchedUser.id === '') return
+         fetchSessions(searchedUser.id, searchedUser.role)
+      }
    }
 
 
@@ -170,6 +178,13 @@ export default function Calendar() {
             // const endHours = parseInt(endTime.split(":")[0]);
             // const endMinutes = parseInt(endTime.split(":")[1]);
             let startDate = new Date(session.date);
+            const offset = startDate.getTimezoneOffset() * 60000
+            if (offset > 0) {
+               // startDate = startDate + offset
+               startDate = new Date(startDate.getTime() + offset)
+            }
+
+            //  let startDate = new Date(session.date).toLocaleString('en-US', { timeZone: "Asia/Kolkata" })
             // let startDate = new Date(session.date).toUTCString()
             startHours !== NaN && startDate.setHours(startHours);
             startMinutes !== NaN && startDate.setMinutes(startMinutes);
@@ -197,13 +212,29 @@ export default function Calendar() {
             const startHours = parseInt(startTime.split(":")[0]);
             const startMinutes = parseInt(startTime.split(":")[1]);
 
+            //previous start date below
+            // console.log('session date : ', session.date);
             let startDate = new Date(session.date)
+            // let startDate = new Date(new Date(
+            //    session.date.toLocaleString('en-US', {
+            //       timeZone: "Asia/Kolkata"
+            //    }),
+            // ))
+            const offset = startDate.getTimezoneOffset() * 60000
+            if (offset > 0) {
+               // startDate = startDate + offset
+               startDate = new Date(startDate.getTime() + offset)
+            }
+
+            // console.log('userTimezoneOffset', offset );
+            // console.log('START DATE PREV', startDate);
+
             // let startDate = new Date(session.date).toUTCString()
             startHours !== NaN && startDate.setHours(startHours);
             startMinutes !== NaN && startDate.setMinutes(startMinutes);
-
+            // console.log('START DATE',  startDate);
             var userTimezoneOffset = startDate.getTimezoneOffset() * 60000;
-
+            // console.log('userTimezoneOffset', userTimezoneOffset);
             getStartDate(startDate, userTimezoneOffset, session.timeZone)
             let up = getStartDate(startDate, userTimezoneOffset, session.timeZone)
             const startUtc = up.toUTCString()
@@ -308,6 +339,11 @@ export default function Calendar() {
                            // const endHours = parseInt(endTime.split(":")[0]);
                            // const endMinutes = parseInt(endTime.split(":")[1]);
                            let startDate = new Date(session.date);
+                           const offset = startDate.getTimezoneOffset() * 60000
+                           if (offset > 0) {
+                              // startDate = startDate + offset
+                              startDate = new Date(startDate.getTime() + offset)
+                           }
                            // let startDate = new Date(session.date).toUTCString()
                            startHours !== NaN && startDate.setHours(startHours);
                            startMinutes !== NaN && startDate.setMinutes(startMinutes);
@@ -334,6 +370,16 @@ export default function Calendar() {
                            const startMinutes = parseInt(startTime.split(":")[1]);
 
                            let startDate = new Date(session.date)
+                           // let startDate = new Date(new Date(
+                           //    session.date.toLocaleString('en-US', {
+                           //       timeZone: "Asia/Kolkata"
+                           //    }),
+                           // ))
+                           const offset = startDate.getTimezoneOffset() * 60000
+                           if (offset > 0) {
+                              // startDate = startDate + offset
+                              startDate = new Date(startDate.getTime() + offset)
+                           }
                            // let startDate = new Date(session.date).toUTCString()
                            startHours !== NaN && startDate.setHours(startHours);
                            startMinutes !== NaN && startDate.setMinutes(startMinutes);
@@ -483,6 +529,15 @@ export default function Calendar() {
 
    const handleDateClick = (arg) => {
       // console.log(arg)
+      let date = new Date(arg.date)
+      let currentDate = new Date()
+      currentDate.setHours(0, 0, 0, 0);
+      // console.log(date - currentDate);
+      // if (date - currentDate < 0) {
+      //    alert('Cant set events on past date')
+      //    return
+      // } 
+
       if (persona === 'tutor') {
          setDefaultEventData({
             date: arg.date,
@@ -540,9 +595,10 @@ export default function Calendar() {
       }
    }, [name]);
 
-   useEffect(() => {
+   const fetchTutorSessions = () => {
       const userId = currentUserId
       if (persona === "tutor") {
+         console.log('FETCHING', userId);
          fetchStudents(userId).then((res) => {
             setEventDetails(res.data.data.session);
             // console.log(res.data.data);
@@ -556,6 +612,19 @@ export default function Calendar() {
                const startHours = parseInt(startTime.split(":")[0]);
                const startMinutes = parseInt(startTime.split(":")[1]);
                let startDate = new Date(session.date)
+               // let startDate = new Date(new Date(
+               //    session.date.toLocaleString('en-US', {
+               //       timeZone: "Asia/Kolkata"
+               //    }),
+               // ))
+               const offset = startDate.getTimezoneOffset() * 60000
+               if (offset > 0) {
+                  // startDate = startDate + offset
+                  startDate = new Date(startDate.getTime() + offset)
+               }
+               console.log('SESSION DATE', session.date);
+               console.log('START DATE', startDate);
+               // let startDate = new Date(session.date).toLocaleString('en-US', { timeZone })
                // let startDate = new Date(session.date).toUTCString()
                startHours !== NaN && startDate.setHours(startHours);
                startMinutes !== NaN && startDate.setMinutes(startMinutes);
@@ -616,6 +685,9 @@ export default function Calendar() {
             setStudents(tempstudents);
          });
       }
+   }
+   useEffect(() => {
+      fetchTutorSessions()
    }, [persona]);
 
    const handleEventClick = (info) => {
@@ -700,7 +772,7 @@ export default function Calendar() {
    return (
       <>
          <div className="lg:ml-pageLeft bg-lightWhite min-h-screen">
-            <div className="py-14 pt-10 pl-5 calendar flex">
+            <div className="py-14 pt-10 pb-2 pl-5 calendar flex">
                <div className="p-10 pt-10 pl-0 pr-0 w-[280px] mr-[10px]">
                   <div className="w-[280px]" >
                      <SimpleCalendar currentDate={currentDate} setCurrentDate={setCurrentDate} />
@@ -761,7 +833,7 @@ export default function Calendar() {
                      // timeZone='UTC'
                      // timeZone={timeZone === getLocalTimeZone() ? 'local' : timeZone}
                      // timeZone={timeZone === 'IST' ? 'local' : timeZone }
-                     // businessHours= {{
+                     // businessHours= {{          // for starting calendar from 06:00 am
                      //    startTime: '06:00', // a start time (10am in this example)
                      //    endTime: '05:00', // an end time (6pm in this example)
                      //  }}

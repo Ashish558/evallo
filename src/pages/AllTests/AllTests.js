@@ -39,7 +39,6 @@ export default function AllTests() {
    const [testForDelete, setTestForDelete] = useState("");
    const [filteredTests, setFilteredTests] = useState([])
    const [filterItems, setFilterItems] = useState([])
-
    const [submitBtnDisabled, setSubmitBtnDisabled] = useState(true)
 
    const [removeQuestionModal, setRemoveQuestionModal] = useState(false);
@@ -48,9 +47,9 @@ export default function AllTests() {
    const [modalData, setModalData] = useState(initialState);
 
    useEffect(() => {
-      if(modalData.testName.trim() === '' || modalData.testType.trim() === '' || csvFile === null){
+      if (modalData.testName.trim() === '' || modalData.testType.trim() === '' || csvFile === null) {
          setSubmitBtnDisabled(true)
-      }else{
+      } else {
          setSubmitBtnDisabled(false)
       }
    }, [modalData, csvFile])
@@ -74,10 +73,7 @@ export default function AllTests() {
    const removeTest = (item) => {
       setRemoveQuestionModal(false);
       // console.log(testForDelete._id);
-      axios
-         .delete(
-            `${BASE_URL}api/test/${testForDelete._id}`
-         )
+      axios.delete(`${BASE_URL}api/test/${testForDelete._id}`)
          .then((res) => {
             console.log(res);
             fetchTests();
@@ -106,6 +102,7 @@ export default function AllTests() {
 
    const handleSubmit = (e) => {
       e.preventDefault();
+      setSubmitBtnDisabled(true)
       // console.log(modalData)
       let body = {
          testName: modalData.testName,
@@ -121,7 +118,7 @@ export default function AllTests() {
          let testId = res.data.data.test._id;
          const formData = new FormData();
          formData.append("pdf", pdfFile);
-         
+
          if (pdfFile !== null) {
             console.log(pdfFile);
             await axios
@@ -131,11 +128,15 @@ export default function AllTests() {
                )
                .then((res) => {
                   console.log('pdf post resp', res);
-                  setModalData(initialState);
-                  setModalActive(false);
-                  setPDFFile(null);
-                  // fetchTests()
-               });
+                  alert('PDF UPLOADED')
+                  if (csvFile === null) {
+                     setModalData(initialState);
+                     setModalActive(false);
+                     setPDFFile(null);
+                  }
+               }).catch(err => {
+                  console.log('pdf err', err.response);
+               })
          }
 
          if (csvFile !== null) {
@@ -143,14 +144,32 @@ export default function AllTests() {
             formData.append("file", csvFile);
             await axios.post(`${BASE_URL}api/test/addans/${testId}`, formData)
                .then((res) => {
+                  alert('CSV UPLOADED')
                   console.log('csv post resp', res);
                   setModalData(initialState);
                   setModalActive(false);
                   setCSVFile(null);
-                  // fetchTests()
-               });
+                  setPDFFile(null);
+               }).catch(err => {
+                  console.log('excel err', err.response);
+                  axios.delete(`${BASE_URL}api/test/${testId}`)
+                     .then((res) => {
+                        // console.log(res);
+                        setModalData(initialState);
+                        setModalActive(false);
+                        setCSVFile(null);
+                        setPDFFile(null);
+                     });
+                  if (err.response.data) {
+                     if (err.response.data.status === 'fail') {
+                        alert('Concept field(s) missing.')
+                     }
+                  }
+
+               })
          }
          fetchTests()
+         setSubmitBtnDisabled(false)
          console.log('submitted');
       });
    };
@@ -231,7 +250,7 @@ export default function AllTests() {
                   onClick: handleSubmit,
                   type: "submit",
                   className: 'w-[123px] pl-6 pr-6 disabled:opacity-70',
-                  disabled: submitBtnDisabled
+                  disabled: submitBtnDisabled,
                }}
                handleClose={handleClose}
                body={

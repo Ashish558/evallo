@@ -124,7 +124,7 @@ export default function EventModal({
    });
    const [submitDisabled, setSubmitDisabled] = useState(false)
 
-
+   // console.log(sessionToUpdate);
 
    const [days, setDays] = useState(tempDays);
    const [topics, setTopics] = useState([]);
@@ -295,12 +295,21 @@ export default function EventModal({
             `${sessionToUpdate.time.start.time} ${sessionToUpdate.time.start.timeType}`
          );
          // console.log(startTime)
+         let startDate = new Date(sessionToUpdate.date)
+         const offset = startDate.getTimezoneOffset() * 60000
+         if (offset > 0) {
+            // startDate = startDate + offset
+            startDate = new Date(startDate.getTime() + offset)
+         }
+         startDate.setHours(0);
+        startDate.setMinutes(0);
          setData({
             ...data,
             studentName: sessionToUpdate.studentName,
             studentId: sessionToUpdate.studentId,
             tutorId: sessionToUpdate.tutorId,
-            date: getFormattedDate(sessionToUpdate.date),
+            // date: getFormattedDate(sessionToUpdate.date),
+            date: getFormattedDate(startDate),
             time: sessionToUpdate.time,
             timeZone: sessionToUpdate.timeZone,
             recurring: sessionToUpdate.recurring,
@@ -385,18 +394,21 @@ export default function EventModal({
       return strArr;
    };
 
-   const updateSession = (reqBody, isUpdaingAll) => {
+   const updateSession = async (reqBody, isUpdaingAll, sDate) => {
       // console.log(sessionToUpdate)
       // console.log(reqBody)
       let body = { ...reqBody }
       if (isUpdaingAll !== true) {
-         body.date = reqBody.date[0]
+         delete body['date']
+         body.date = sDate
       }
 
-      console.log(reqBody);
+      console.log('isUpdaingAll', isUpdaingAll);
+      console.log('sDate', sDate);
+      console.log(body);
       // return
       if (body.sessionStatus === "Completed") {
-         updateSessionStatus(sessionToUpdate._id)
+        await updateSessionStatus(sessionToUpdate._id)
             .then(res => {
                if (res.error) return
                // updateUserSession({ id: sessionToUpdate._id, body: { sessionStatus: 'Completed', _id: sessionToUpdate._id } }).then(
@@ -409,7 +421,7 @@ export default function EventModal({
             })
       }
       if (body.sessionStatus === "Missed") {
-         missSession(sessionToUpdate._id)
+         await  missSession(sessionToUpdate._id)
             .then(res => {
                if (res.error) {
                   alert(res.error.data.message)
@@ -426,7 +438,7 @@ export default function EventModal({
             })
       }
       if (body.sessionStatus === "Cancelled") {
-         cancelSession(sessionToUpdate._id)
+         await  cancelSession(sessionToUpdate._id)
             .then(res => {
                if (res.error) {
                   if (res.error.data && res.error.data.message) {
@@ -446,7 +458,7 @@ export default function EventModal({
       }
       delete body['sessionStatus']
       if (isUpdaingAll === true) {
-         updateAllUserSession({ id: sessionToUpdate._id, body: { ...body, } }).then(
+         updateAllUserSession({ id: sessionToUpdate._id, body: { ...body, sessionStatus: 'Scheduled' } }).then(
             (res) => {
                console.log(res);
                refetchSessions()
@@ -455,6 +467,7 @@ export default function EventModal({
          );
 
       } else {
+         delete body['sessionStatus']
          updateUserSession({ id: sessionToUpdate._id, body: { ...body, _id: sessionToUpdate._id } }).then(
             (res) => {
                console.log(res);
@@ -495,7 +508,7 @@ export default function EventModal({
       reqBody.total_hours = duration
       if (reqBody.timeZone === '') reqBody.timeZone = 'Asia/Kolkata'
       let date = moment(new Date(reqBody.date));
-      console.log(date);
+      // console.log(date);
       // let rInterval = moment((date)).recur().every(["Saturday"]).daysOfWeek().every(2).week();
       // console.log(rInterval);
       let sDate = reqBody.date
@@ -504,15 +517,23 @@ export default function EventModal({
          reqBody.date = [sDate]
       } else {
          let sDate = new Date(reqBody.date)
+         const offset = sDate.getTimezoneOffset() * 60000
+         if (offset > 0) {
+            // startDate = startDate + offset
+            sDate = new Date(sDate.getTime() + offset)
+         }
          // sDate.setHours(0)
          // sDate.setMinutes(0)
          const dates = []
          delete reqBody['date']
          // console.log('sDate', sDate);
          // console.log('day', sDate.getDay());
+         sDate.setHours(0);
+         sDate.setMinutes(0);
          const currentDay = sDate.getDay()
          const currentDate = sDate.getDate()
-
+         // console.log('START DATE ', sDate);
+        
          // console.log('days', tempDays);
          const daysTORecur = tempDays.map(item => {
             if (reqBody.day.includes(item.full)) return item.id
@@ -541,8 +562,8 @@ export default function EventModal({
       }
       // console.log('reqBody', reqBody);
       // return
-      if (isUpdating && isUpdatingAll) return updateSession(reqBody, isUpdatingAll);
-      if (isUpdating) return updateSession(reqBody, isUpdatingAll);
+      if (isUpdating && isUpdatingAll) return updateSession(reqBody, isUpdatingAll, sDate);
+      if (isUpdating) return updateSession(reqBody, isUpdatingAll, sDate);
 
       submitSession(reqBody).then((res) => {
          console.log(res)
@@ -855,7 +876,7 @@ export default function EventModal({
                                     <PrimaryButton
                                        children="Update Current"
                                        className="text-lg py-3 mr-3 pl-1 pr-1 whitespace-nowrap font-medium px-7 h-[50px] w-[140px] disabled:opacity-60"
-                                       onClick={() => handleSubmit()}
+                                       onClick={() => handleSubmit(false)}
                                        disabled={submitDisabled}
                                     />
                                     <PrimaryButton
@@ -876,14 +897,14 @@ export default function EventModal({
                                     <PrimaryButton
                                        children="Update"
                                        className="text-lg py-3 pl-2 pr-2 font-medium px-7 h-[50px] w-[140px] disabled:opacity-60"
-                                       onClick={handleSubmit}
+                                       onClick={() => handleSubmit(false)}
                                        disabled={submitDisabled}
                                     />
                                  </> :
                                  <PrimaryButton
                                     children="Schedule"
                                     className="text-lg py-3 pl-2 pr-2 font-medium px-7 h-[50px] w-[140px] disabled:opacity-60"
-                                    onClick={handleSubmit}
+                                    onClick={() => handleSubmit()}
                                     disabled={submitDisabled}
                                  />
                            }

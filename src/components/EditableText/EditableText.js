@@ -10,7 +10,7 @@ export default function EditableText({ className, text, editable, imgClass, text
             {text}
          </div>
          {editable &&
-            <img src={EditIcon} className={`ml-4 ${imgClass ? imgClass : ''} cursor-pointer`}
+            <img src={EditIcon}  alt='edit-icon' className={`ml-4 ${imgClass ? imgClass : ''} cursor-pointer`}
                onClick={onClick} />
          }
       </div>

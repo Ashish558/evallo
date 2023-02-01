@@ -37,7 +37,7 @@ export default function AddTag({ keyName, onAddTag, isFile, openModal }) {
         !isClicked ?
           <>
             <p className='mr-1'>Add Tag</p>
-            <img src={AddIcon} />
+            <img src={AddIcon} alt='tag-icon' />
           </>
           :
           <div className={`w-auto`} >
