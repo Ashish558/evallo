@@ -12,6 +12,12 @@
     left: 50px;
     z-index: 1000;
 }
+.editButton{
+    position: absolute;
+    top: 20px;
+    right: 50px;
+    z-index: 1000;
+}
 .imgContent{
     position: relative;
     z-index: 20;

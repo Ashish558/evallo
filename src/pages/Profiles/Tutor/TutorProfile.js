@@ -12,7 +12,7 @@ import MailIcon from '../../../assets/icons/mail.svg'
 import LinkedIn from '../../../assets/icons/linked-in.svg'
 import WhatsappIcon from '../../../assets/icons/whatsapp.svg'
 import RightIcon from '../../../assets/icons/chevron-right.svg'
-
+import SecondaryButton from '../../../components/Buttons/SecondaryButton'
 import ValueOneIcon from '../../../assets/images/val-1.svg'
 import ValueTwoIcon from '../../../assets/images/val-2.svg'
 import ValueThreeIcon from '../../../assets/images/val-3.svg'
@@ -41,6 +41,7 @@ import { BASE_URL, getAuthHeader } from '../../../app/constants/constants'
 import axios from 'axios'
 import ProfilePhoto from '../../../components/ProfilePhoto/ProfilePhoto'
 import YoutubeEmbed from './YoutubeEmbed/YoutubeEmbed'
+import CircleButton from '../../../components/CircleButton/CircleButton'
 
 
 const values = [
@@ -445,6 +446,15 @@ export default function TutorProfile({ isOwn }) {
                   <div className={`${styles.backBtn} mt-10`} >
                      <BackBtn to={-1} />
                   </div>
+                  <div className={`${styles.editButton} mt-10`} >
+                     {/* <BackBtn to={-1} /> */}
+                     <CircleButton
+                        className='flex items-center rounded-full'
+                        children={
+                           <EditableText editable={sessionStorage.getItem("role") === "tutor" || sessionStorage.getItem("role") === "admin"} />
+                        } />
+                     {/* <EditableText editable={true} className="right-0" /> */}
+                  </div>
                   <div className='relative pt-10 mt-auto flex-1'>
 
                      <div className={styles.imgContent} >
@@ -495,7 +505,7 @@ export default function TutorProfile({ isOwn }) {
                                  className='text-lg mb-2' textClassName="flex-1 text-center text-[21px]" />
 
                               <div className='flex flex-col row-span-2 overflow-x-auto scrollbar-content max-h-[500px] scrollbar-vertical'>
-                                 {settings && settings.serviceSpecialisation.length > 0 && userDetail.serviceSpecializations && userDetail.serviceSpecializations.map((id, idx) => {
+                                 {settings && settings.serviceSpecialisation?.length > 0 && userDetail.serviceSpecializations && userDetail.serviceSpecializations.map((id, idx) => {
                                     return (
                                        settings.serviceSpecialisation.find(item => item._id === id) ?
                                           <div key={idx} className='flex flex-col items-center mb-10'>

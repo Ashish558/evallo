@@ -44,13 +44,8 @@ const SessionFeedback = () => {
    // console.log('all-tests', allTests);
 
    return (
-<<<<<<< HEAD
-      <div id={styles.sessionFeedbackContainer} className="h-[382px] bg-white lg:w-10/12 py-[21px] mt-[33px] rounded-[20px]">
-         <div id={styles.sessionFeedback} className="bg-white px-[28px] rounded-[20px] h-full overflow-y-auto">
-=======
       <div id={styles.sessionFeedbackContainer} className="scrollbar-content h-[382px] bg-white w-10/12 py-[21px] mt-[33px] rounded-[20px]">
          <div id={styles.sessionFeedback} className="bg-white px-[28px] scrollbar-content rounded-[20px] h-full overflow-y-auto">
->>>>>>> c7ad05ff413fe4b77318b6285f3896be7680ca00
             {/* {/* <TestItem name="name" status="due date" date="june 20, 2022" action="Start" marks="1250/1250" /> */}
 
             {allTests.map(test => {
