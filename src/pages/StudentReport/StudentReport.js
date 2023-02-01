@@ -447,7 +447,15 @@ export default function StudentReport() {
          }
       })
 
-      const selected = answerKey[currentAnswerKeyIndex]
+      let selected = answerKey[currentAnswerKeyIndex]
+      selected = selected.map(item => {
+         if (!item.Concepts) {
+            return { ...item, Concepts: 'UNAVAILABLE' }
+         } else {
+            return { ...item }
+         }
+      })
+      // console.log('selected', selected);
       let total = 0
       selected.forEach(concept => {
          if (concept.Concepts === key) {
