@@ -2,7 +2,7 @@ import React, { useRef } from 'react'
 import { useState } from 'react'
 import AddIcon from '../../assets/Settings/add.svg'
 
-export default function AddTag({ keyName, onAddTag, isFile, openModal }) {
+export default function AddTag({ keyName, onAddTag, isFile, openModal, className, text, hideIcon }) {
 
   const [isClicked, setIsClicked] = useState(false)
   const [size, setSize] = useState(1)
@@ -26,18 +26,23 @@ export default function AddTag({ keyName, onAddTag, isFile, openModal }) {
   }
 
   const handleClick = () => {
-    if(openModal === true) return onAddTag()
+    if (openModal === true) return onAddTag()
     isFile ? onAddTag() : setIsClicked(true)
   }
 
   return (
-    <button className={`bg-primaryLight flex items-center text-primary font-bold text-sm py-1.4 px-3 rounded-7 mr-[15px] ${isClicked ? 'justify-center' : ''}`}
+    <button className={`${className ? className : ' bg-primaryLight'} flex items-center text-primary font-bold text-sm py-1.4 px-3 rounded-7 mr-[15px] ${isClicked ? 'justify-center' : ''}`}
       onClick={handleClick} >
       {
         !isClicked ?
           <>
-            <p className='mr-1'>Add Tag</p>
-            <img src={AddIcon} alt='tag-icon' />
+            <p className='mr-1'>
+              {text ? text : 'Add Tag'}
+            </p>
+            {
+              !hideIcon &&
+              <img src={AddIcon} alt='tag-icon' />
+            }
           </>
           :
           <div className={`w-auto`} >

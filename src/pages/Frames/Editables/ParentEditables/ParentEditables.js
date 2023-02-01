@@ -1084,7 +1084,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                         }
                         {currentField.name === 'serviceSpecializations' &&
                            <div className='flex flex-wrap'>
-                              {settings.serviceSpecialisation.map(item => {
+                              {settings.Expertise.map(item => {
                                  return (
                                     !currentToEdit.serviceSpecializations.includes(item._id) ?
                                        <div className={`px-3 mr-2 rounded rounded-md py-1.5 border border-primary text-primary cursor-pointer`}

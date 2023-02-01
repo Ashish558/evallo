@@ -91,7 +91,8 @@ export default function Settings() {
    const [toggleImage, setToggleImage] = useState({
       personality: false,
       interest: false,
-      offer: false
+      offer: false,
+      Expertise: false
    })
 
    const imageUploadRef = useRef()
@@ -195,7 +196,7 @@ export default function Settings() {
       formData.append("image", tagImage)
 
       let append = ''
-      if (selectedImageTag === 'serviceSpecialisation') {
+      if (selectedImageTag === 'Expertise') {
          append = 'addservicespecialisation'
       } else if (selectedImageTag === 'personality') {
          append = 'addpersonality'
@@ -259,6 +260,60 @@ export default function Settings() {
       fetchSettings()
    }, [])
 
+   const onAddService = val => {
+      console.log(val);
+      let tempSettings = { ...settingsData }
+      let updatedSetting = {
+         servicesAndSpecialization: [
+            ...tempSettings['servicesAndSpecialization'],
+            {
+               service: val,
+               specialization: []
+            }
+         ]
+      }
+
+      updateAndFetchsettings(updatedSetting)
+   }
+   const handleAddSpecialization = (text, key) => {
+
+      let tempSettings = { ...settingsData }
+
+      let updated = servicesAndSpecialization.map(serv => {
+         if (serv.service === key) {
+            return {
+               ...serv,
+               specialization: [...serv.specialization, text]
+            }
+         } else {
+            return { ...serv }
+         }
+      })
+
+      let updatedSetting = {
+         servicesAndSpecialization: updated
+      }
+      updateAndFetchsettings(updatedSetting)
+      // console.log('updatedSetting', updatedSetting)
+   }
+
+   const onRemoveSpecialization = (text, service) => {
+      // console.log(text);
+      // console.log(service);
+      let updated = servicesAndSpecialization.map(serv => {
+         if (serv.service === service) {
+            let updatedSpec = serv.specialization.filter(spec => spec !== text)
+            return { ...serv, specialization: updatedSpec }
+         }else{
+            return { ...serv }
+         }
+      })
+      let updatedSetting = {
+         servicesAndSpecialization: updated
+      }
+      updateAndFetchsettings(updatedSetting)
+   }
+
    const onToggle = (key, value) => {
       setToggleImage(prev => {
          return {
@@ -269,10 +324,11 @@ export default function Settings() {
    }
 
    // if (Object.keys(settingsData).length === 0) return <></>
-   const { classes, serviceSpecialisation, sessionTags, leadStatus, tutorStatus, offerImages, subscriptionCode, personality, interest } = settingsData
+   const { classes, servicesAndSpecialization, Expertise, sessionTags, leadStatus, tutorStatus, offerImages, subscriptionCode, personality, interest } = settingsData
 
+   // console.log('sessionTags', sessionTags);
+   // console.log('servicesAndSpecialization', servicesAndSpecialization);
    // console.log(offerImages)
-   console.log(toggleImage)
 
    return (
       <>
@@ -372,16 +428,46 @@ export default function Settings() {
                      </div>
                   } />
 
-               <SettingsCard title='Expertise'
+               <SettingsCard title='Expertise' toggle={{ value: toggleImage.Expertise, key: 'Expertise' }} onToggle={onToggle}
                   body={
                      <div className='flex items-center flex-wrap [&>*]:mb-[10px]'>
-                        <AddTag keyName='serviceSpecialisation' openModal={true}
-                           onAddTag={() => handleTagModal('serviceSpecialisation')} />
-                        <FilterItems isString={true} onlyItems={true}
-                           items={sessionTags !== undefined ? serviceSpecialisation.map(item => item.text) : []}
-                           keyName='serviceSpecialisation'
+                        <AddTag keyName='Expertise' openModal={true}
+                           onAddTag={() => handleTagModal('Expertise')} />
+                        <FilterItems isString={false} onlyItems={true} image={toggleImage.Expertise}
+                           items={sessionTags !== undefined ? Expertise.map(item => item) : []}
+                           keyName='Expertise'
                            onRemoveFilter={onRemoveTextImageTag}
                            className='pt-1 pb-1 mr-15' />
+                     </div>
+                  } />
+
+               <SettingsCard title='Service and specialization'
+                  titleClassName='text-[21px] mb-[15px]'
+                  body={
+                     <div>
+                        {servicesAndSpecialization !== undefined && servicesAndSpecialization.map((service, i) => {
+                           return <div key={i}>
+                              <p className='font-bold text-primary-dark mb-4'>
+                                 {service.service}
+                              </p>
+                              <div className='flex items-center flex-wrap [&>*]:mb-[18px]'>
+                                 <AddTag onAddTag={handleAddSpecialization}
+                                    keyName={service.service}
+                                    text='Add Specialization'
+                                 />
+                                 <FilterItems isString={true} onlyItems={true}
+                                    keyName={service.service}
+                                    items={service.specialization}
+                                    onRemoveFilter={onRemoveSpecialization}
+                                    className='pt-1 pb-1 mr-15'
+                                 />
+                              </div>
+                           </div>
+                        })}
+                        <AddTag children='Add service' className='pl-3 pr-3 pt-1.4 pb-1.5 mt-5 bg-primary text-white'
+                           text='Add service'
+                           hideIcon={true}
+                           onAddTag={onAddService} />
                      </div>
                   } />
 
@@ -398,7 +484,7 @@ export default function Settings() {
                      </div>
                   } />
 
-               <SettingsCard title='Interest'  toggle={{ value: toggleImage.interest, key: 'interest' }} onToggle={onToggle}
+               <SettingsCard title='Interest' toggle={{ value: toggleImage.interest, key: 'interest' }} onToggle={onToggle}
                   body={
                      <div className='flex items-center flex-wrap [&>*]:mb-[10px]'>
                         <AddTag keyName='interest' openModal={true}
@@ -432,7 +518,7 @@ export default function Settings() {
                         {/* <input type='file' ref={inputRef} className='hidden' accept="image/*"
                            onChange={e => onImageChange(e)} /> */}
                         <FilterItems isString={false}
-                            image={toggleImage.offer}
+                           image={toggleImage.offer}
                            onlyItems={true}
                            sliceText={true}
                            items={offerImages !== undefined ? offerImages.map(item => ({ ...item, text: item.image })) : []}

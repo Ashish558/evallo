@@ -150,7 +150,7 @@ export default function EventModal({
    const [student, setStudent] = useState("");
 
    const [fetchSettings, settingsResponse] = useLazyGetSettingsQuery();
-   const [services, setServices] = useState([]);
+   const [services, setServices] = useState([])
 
    const [isSettingsLoaded, setIsSettingsLoaded] = useState(false);
    const getCheckedItems = (strArr, array) => {
@@ -284,7 +284,7 @@ export default function EventModal({
          });
          setIsProductive(productive);
          // console.log(res.data.data.setting)
-         setServices(res.data.data.setting.serviceSpecialisation);
+         setServices(res.data.data.setting.Expertise);
          setIsSettingsLoaded(true);
       });
    }, []);

@@ -495,16 +495,16 @@ export default function TutorProfile({ isOwn }) {
                                  className='text-lg mb-2' textClassName="flex-1 text-center text-[21px]" />
 
                               <div className='flex flex-col row-span-2 overflow-x-auto scrollbar-content max-h-[500px] scrollbar-vertical'>
-                                 {settings && settings.serviceSpecialisation.length > 0 && userDetail.serviceSpecializations && userDetail.serviceSpecializations.map((id, idx) => {
+                                 {settings && settings.Expertise.length > 0 && userDetail.serviceSpecializations && userDetail.serviceSpecializations.map((id, idx) => {
                                     return (
-                                       settings.serviceSpecialisation.find(item => item._id === id) ?
+                                       settings.Expertise.find(item => item._id === id) ?
                                           <div key={idx} className='flex flex-col items-center mb-10'>
                                              <div className='flex h-90 w-90 rounded-full  items-center justify-center mb-3' >
-                                                <img className='max-w-[90px] max-h-[90px]' src={settings.serviceSpecialisation.find(item => item._id === id).image}
+                                                <img className='max-w-[90px] max-h-[90px]' src={settings.Expertise.find(item => item._id === id).image}
                                                 />
                                              </div>
                                              <p className='opacity-70 font-semibold text-lg'>
-                                                {settings.serviceSpecialisation.find(item => item._id === id).text}
+                                                {settings.Expertise.find(item => item._id === id).text}
                                              </p>
                                           </div>
                                           :
