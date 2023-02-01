@@ -465,13 +465,13 @@ export default function TutorProfile({ isOwn }) {
                            editable={persona === 'admin' ? true : false}
                            onClick={() => setToEdit({ ...toEdit, fullName: { ...toEdit.fullName, active: true } })}
                            className='text-[#4F33BD] justify-center font-bold text-[50px] capitalize'
-                           imgClass='ml-auto' />
+                           />
 
                         <EditableText text={`${tagLine ? tagLine : 'Your tag line'}`}
                            editable={editable}
                            onClick={() => setToEdit({ ...toEdit, tagLine: { ...toEdit.tagLine, active: true } })}
                            className='text-black justify-center font-normal'
-                           imgClass='ml-auto' />
+                           imgClass='ml-5' />
                      </div>
                   </div>
                </div>
@@ -581,7 +581,7 @@ export default function TutorProfile({ isOwn }) {
                               <div className='flex flex-col items-center'>
                                  <img src={WhatsappIcon} />
                                  <p className='mt-1 font-medium.4 opacity-60 text-xs cursor-pointer'
-                                    onClick={() => window.open(`https:://wa.me/${user.phone}`)}>
+                                    onClick={() => window.open(`https://wa.me/${user.phone}`)}>
                                     {user.phone ? user.phone : ''}
                                  </p>
                               </div>

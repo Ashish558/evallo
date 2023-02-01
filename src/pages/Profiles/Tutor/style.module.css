@@ -30,11 +30,11 @@
 }
 .profileIcon{
     position: absolute;
-    top: -40px;
+    top: -59px;
     left: 50%;
     transform: translateX(-50%);
-    width: 100px;
-    height: 100px;
+    width: 120px;
+    height: 120px;
     border-radius: 50%;
 }
 @media only screen and (min-width: 1024px) {
