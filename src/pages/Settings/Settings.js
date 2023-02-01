@@ -378,7 +378,7 @@ export default function Settings() {
                         <AddTag keyName='serviceSpecialisation' openModal={true}
                            onAddTag={() => handleTagModal('serviceSpecialisation')} />
                         <FilterItems isString={true} onlyItems={true}
-                           items={sessionTags !== undefined ? serviceSpecialisation.map(item => item.text) : []}
+                           items={sessionTags !== undefined ? serviceSpecialisation?.map(item => item.text) : []}
                            keyName='serviceSpecialisation'
                            onRemoveFilter={onRemoveTextImageTag}
                            className='pt-1 pb-1 mr-15' />

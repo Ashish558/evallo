@@ -483,11 +483,11 @@ export default function TutorProfile({ isOwn }) {
                         <div className={` mb-5 px-4 py-4 lg:bg-textGray-30 rounded-2xl`}
                            style={{ backgroundColor: tutorLevelBg }}
                         >
-                           <EditableText text={`${user.firstName} ${user.lastName}`}
+                           <EditableText text={`${tutorLevel.toLowerCase()} belt`}
                               editable={editable}
                               onClick={() => setToEdit({ ...toEdit, tutorLevel: { ...toEdit.tutorLevel, active: true } })}
                               className={` justify-center font-bold text-lg capitalize `}
-                              textClassName={`flex-1 ${tutorLevelTextColor}`}
+                              textClassName={`flex-1 capitalize ${tutorLevelTextColor}`}
                               imgClass='ml-auto' />
                            <div className='flex mt-4 mb-6 justify-center'>
                               <img src={tutorLevelIcon} />
