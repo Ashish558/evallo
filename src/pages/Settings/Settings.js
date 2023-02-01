@@ -71,10 +71,17 @@ const sessionTags = [
    },
 ]
 
+
+const admin = {
+   fullName: "Kartik Sarda",
+   email: ' kartik@sevensquarelearning.com',
+   phone: "+91 1234567890"
+}
+
 const initialState = {
-   name: '',
-   phone: '',
-   email: '',
+   name: admin.fullName,
+   phone: admin.phone,
+   email: admin.email,
 }
 export default function Settings() {
 
@@ -285,15 +292,15 @@ export default function Settings() {
                   <div className='text-base'>
                      <div className='flex items-center mb-4'>
                         <p className='opacity-60  mr-[15px]'> Full Name:</p>
-                        <p className='font-bold'> Kartik Sarda</p>
+                        <p className='font-bold'> {admin.fullName}</p>
                      </div>
                      <div className='flex items-center mb-4'>
                         <p className='opacity-60 mr-[23px]'>  Email:</p>
-                        <p className='font-bold'> kartik@sevensquarelearning.com</p>
+                        <p className='font-bold'> {admin.email}</p>
                      </div>
                      <div className='flex items-center mb-4'>
                         <p className='opacity-60 mr-[15px]'>Phone:</p>
-                        <p className='font-bold'> +91 1234567890</p>
+                        <p className='font-bold'> {admin.phone}</p>
                      </div>
                   </div>
                </div>
