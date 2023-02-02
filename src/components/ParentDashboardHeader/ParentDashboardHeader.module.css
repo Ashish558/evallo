@@ -1,5 +1,5 @@
 #parentDashboardHeader {
-    padding: 50px 40px 30px 0px;
+    /* padding: 50px 40px 30px 0px; */
     gap: 40px;
   
 }
@@ -36,7 +36,7 @@
 }
 
 #availableCredit {
-    background-color: #4BBD94;
+    /* background-color: #4BBD94; */
     padding: 23px;
     padding-bottom: 22px;
     border-radius: 16.4662px;
@@ -68,7 +68,7 @@
 
 .btnDark {
     display: inline-block;
-    background-color:  #095740;
+    /* background-color:  #095740; */
     width: 100%;
     padding: 8px 0;
     text-align: center;

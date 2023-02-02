@@ -744,6 +744,11 @@ export default function Calendar() {
    }
 
    useEffect(() => {
+      getUserDetail({ id: localStorage.getItem("userId") })
+      .then(res => setTimeZone(res.data.data.userdetails.timeZone))
+   }, [])
+
+   useEffect(() => {
       if (calendarRef.current === null) return
       if (calendarRef.current === undefined) return
       parseEventDatesToTz()
@@ -877,6 +882,8 @@ export default function Calendar() {
                      }}
                      expandRows={true}
                      contentHeight={"100%"}
+                     slotMinTime={"06:00:00"}
+                     slotMaxTime={"30:00:00"}
                      dayHeaderFormat={{
                         day: "2-digit",
                         month: "narrow",

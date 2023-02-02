@@ -684,7 +684,7 @@ export default function EventModal({
                         disabled={!isEditable}
                      />
 
-                     {persona === "student" && (
+                     {persona !== "parent" && (
                         <div className="ml-4 mt-5">
                            <p className="font-medium mb-4">
                               Session Feedback

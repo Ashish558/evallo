@@ -34,7 +34,6 @@ const parentTestInfo = [
    },
 ]
 
-
 export default function StudentTest() {
 
    const [tableData, setTableData] = useState(studentsDataTable)
@@ -205,11 +204,11 @@ export default function StudentTest() {
       <>
          <div className="lg:ml-pageLeft bg-lightWhite min-h-screen">
             <div className="py-14 px-5">
-               <div className="flex justify-between items-center">
-                  <p className={`font-bold text-[80px]`}
+               <div className="flex justify-end items-center">
+                  {/* <p className={`font-bold text-[80px]`}
                      style={{ color: "#25335A" }} >
                      Tests
-                  </p>
+                  </p> */}
                   {persona === "student" ? (
                      <div className="flex flex-col items-center justify-end">
                         {parentTestInfo.map(item => {

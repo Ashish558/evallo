@@ -7,7 +7,7 @@ export default function FilterItems({ items, setData, onRemoveFilter, className,
 
    return (
       onlyItems ?
-         items.map((item, idx) => {
+         items?.map((item, idx) => {
             return (
                <div key={idx} className={`mr-3 ${className ? className : ''} bg-primaryLight py-1 px-3 rounded-7 group ${styles.filterItem}`}>
                   {image && <div className='w-[85px] h-[85px] mx-auto flex justify-center'>

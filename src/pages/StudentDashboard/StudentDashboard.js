@@ -38,9 +38,9 @@ const StudentDashboard = () => {
    // console.log('selectedSubject', selectedSubject)
 
    return (
-      <div className={`${styles.studentDashboardContainer} ml-pageLeft`} id="container">
-         <div className="flex" id={styles.studentDashboard}>
-            <div className="w-7/12">
+      <div className={`lg:ml-pageLeft`} id="container">
+         <div className="flex flex-col lg:flex-row pt-[10px] pl-2 gap-[39px]">
+            <div className="w-full lg:w-7/12">
                <StudentDashboardHeader />
                <div className="flex items-center justify-between" style={{ gap: "20px" }}>
                   <h1>Concept Chart</h1>
@@ -63,7 +63,7 @@ const StudentDashboard = () => {
                   <Chart setSubjects={setSubjects} subjects={subjects} selectedSubject={selectedSubject} ></Chart>
                </div>
             </div>
-            <div className="w-5/12" id={styles.studentDashboardRight}>
+            <div className="w-full lg:w-5/12 lg:p-[30px] lg:bg-[#d9d9d966]" id={styles.studentDashboardRight}>
                <TutorCarousel></TutorCarousel>
                <CompleteProfile />
                <SessionFeedback />

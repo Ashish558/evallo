@@ -12,7 +12,7 @@ import MailIcon from '../../../assets/icons/mail.svg'
 import LinkedIn from '../../../assets/icons/linked-in.svg'
 import WhatsappIcon from '../../../assets/icons/whatsapp.svg'
 import RightIcon from '../../../assets/icons/chevron-right.svg'
-
+import SecondaryButton from '../../../components/Buttons/SecondaryButton'
 import ValueOneIcon from '../../../assets/images/val-1.svg'
 import ValueTwoIcon from '../../../assets/images/val-2.svg'
 import ValueThreeIcon from '../../../assets/images/val-3.svg'
@@ -41,6 +41,7 @@ import { BASE_URL, getAuthHeader } from '../../../app/constants/constants'
 import axios from 'axios'
 import ProfilePhoto from '../../../components/ProfilePhoto/ProfilePhoto'
 import YoutubeEmbed from './YoutubeEmbed/YoutubeEmbed'
+import CircleButton from '../../../components/CircleButton/CircleButton'
 
 
 const values = [
@@ -264,7 +265,7 @@ export default function TutorProfile({ isOwn }) {
             const { firstName, lastName, phone, email } = res.data.data.user
             setUser(res.data.data.user)
             let details = res.data.data.details
-
+            // console.log('det', details);
             // const { } = res.data.data.user
             // const { service } = res.data.data.userdetails
             const promiseState = async state => new Promise(resolve => {
@@ -293,6 +294,7 @@ export default function TutorProfile({ isOwn }) {
                      },
                      about: {
                         ...prevToEdit.about,
+                        // about: details === null ? '' : details.about ,
                         isPresent: details === null ? false : true
                      },
                      education: {
@@ -445,6 +447,15 @@ export default function TutorProfile({ isOwn }) {
                   <div className={`${styles.backBtn} mt-10`} >
                      <BackBtn to={-1} />
                   </div>
+                  <div className={`${styles.editButton} mt-10`} >
+                     {/* <BackBtn to={-1} /> */}
+                     <CircleButton
+                        className='flex items-center rounded-full'
+                        children={
+                           <EditableText editable={sessionStorage.getItem("role") === "tutor" || sessionStorage.getItem("role") === "admin"} />
+                        } />
+                     {/* <EditableText editable={true} className="right-0" /> */}
+                  </div>
                   <div className='relative pt-10 mt-auto flex-1'>
 
                      <div className={styles.imgContent} >
@@ -455,13 +466,13 @@ export default function TutorProfile({ isOwn }) {
                            editable={persona === 'admin' ? true : false}
                            onClick={() => setToEdit({ ...toEdit, fullName: { ...toEdit.fullName, active: true } })}
                            className='text-[#4F33BD] justify-center font-bold text-[50px] capitalize'
-                           imgClass='ml-auto' />
+                        />
 
                         <EditableText text={`${tagLine ? tagLine : 'Your tag line'}`}
                            editable={editable}
                            onClick={() => setToEdit({ ...toEdit, tagLine: { ...toEdit.tagLine, active: true } })}
                            className='text-black justify-center font-normal'
-                           imgClass='ml-auto' />
+                           imgClass='ml-5' />
                      </div>
                   </div>
                </div>
@@ -473,11 +484,11 @@ export default function TutorProfile({ isOwn }) {
                         <div className={` mb-5 px-4 py-4 lg:bg-textGray-30 rounded-2xl`}
                            style={{ backgroundColor: tutorLevelBg }}
                         >
-                           <EditableText text={`${user.firstName} ${user.lastName}`}
+                           <EditableText text={`${tutorLevel.toLowerCase()} belt`}
                               editable={editable}
                               onClick={() => setToEdit({ ...toEdit, tutorLevel: { ...toEdit.tutorLevel, active: true } })}
                               className={` justify-center font-bold text-lg capitalize `}
-                              textClassName={`flex-1 ${tutorLevelTextColor}`}
+                              textClassName={`flex-1 capitalize ${tutorLevelTextColor}`}
                               imgClass='ml-auto' />
                            <div className='flex mt-4 mb-6 justify-center'>
                               <img src={tutorLevelIcon} />
@@ -495,7 +506,7 @@ export default function TutorProfile({ isOwn }) {
                                  className='text-lg mb-2' textClassName="flex-1 text-center text-[21px]" />
 
                               <div className='flex flex-col row-span-2 overflow-x-auto scrollbar-content max-h-[500px] scrollbar-vertical'>
-                                 {settings && settings.Expertise.length > 0 && userDetail.serviceSpecializations && userDetail.serviceSpecializations.map((id, idx) => {
+                                 {settings && settings.serviceSpecialisation?.length > 0 && userDetail.serviceSpecializations && userDetail.serviceSpecializations.map((id, idx) => {
                                     return (
                                        settings.Expertise.find(item => item._id === id) ?
                                           <div key={idx} className='flex flex-col items-center mb-10'>
@@ -571,7 +582,7 @@ export default function TutorProfile({ isOwn }) {
                               <div className='flex flex-col items-center'>
                                  <img src={WhatsappIcon} />
                                  <p className='mt-1 font-medium.4 opacity-60 text-xs cursor-pointer'
-                                    onClick={() => window.open(`https:://wa.me/${user.phone}`)}>
+                                    onClick={() => window.open(`https://wa.me/${user.phone}`)}>
                                     {user.phone ? user.phone : ''}
                                  </p>
                               </div>
