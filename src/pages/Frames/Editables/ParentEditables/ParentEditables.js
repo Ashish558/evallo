@@ -392,16 +392,16 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
 
    const getLevel = str => {
       const levels = ['ORANGE', 'PURPLE', 'BROWN', 'BLACK']
-      if (str === 'Level - 1') {
+      if (str === 'ORANGE') {
          return levels[0]
       }
-      if (str === 'Level - 2') {
+      if (str === 'PURPLE') {
          return levels[1]
       }
-      if (str === 'Level - 3') {
+      if (str === 'BROWN') {
          return levels[2]
       }
-      if (str === 'Level - 4') {
+      if (str === 'BLACK') {
          return levels[3]
       } else {
          return ''
@@ -710,7 +710,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                                        name: 'subjects',
                                        match: currentToEdit.subjects
                                     }}
-                                    optionData={subjects}
+                                    optionData={settings.classes ? settings.classes : [] }
                                     inputContainerClassName="pt-3 pb-3 border bg-white"
                                     placeholder="Subjects"
                                     parentClassName="w-full mr-4"
@@ -797,7 +797,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                                     onChange={val =>
                                        setCurrentToEdit({ ...currentToEdit, tutorLevel: val })
                                     }
-                                    optionData={['Level - 1', 'Level - 2', 'Level - 3', 'Level - 4']}
+                                    optionData={['ORANGE', 'PURPLE', 'BROWN', 'BLACK']}
                                     radio={true}
                                     inputContainerClassName="pt-3 pb-3 border bg-white"
                                     placeholder="Tutor Level"

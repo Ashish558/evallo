@@ -442,9 +442,10 @@ export default function Settings() {
                   } />
 
                <SettingsCard title='Service and specialization'
+               className=''
                   titleClassName='text-[21px] mb-[15px]'
                   body={
-                     <div>
+                     <div className='max-h-[360px] overflow-auto scrollbar-content scrollbar-vertical'>
                         {servicesAndSpecialization !== undefined && servicesAndSpecialization.map((service, i) => {
                            return <div key={i}>
                               <p className='font-bold text-primary-dark mb-4'>
@@ -497,7 +498,7 @@ export default function Settings() {
                      </div>
                   } />
 
-               <SettingsCard title='Classes'
+               <SettingsCard title='Subjects'
                   body={
                      <div className='flex items-center flex-wrap [&>*]:mb-[10px]'>
                         <AddTag onAddTag={handleAddTag} keyName='classes' />
