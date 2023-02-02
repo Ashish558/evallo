@@ -265,7 +265,7 @@ export default function TutorProfile({ isOwn }) {
             const { firstName, lastName, phone, email } = res.data.data.user
             setUser(res.data.data.user)
             let details = res.data.data.details
-            // console.log('det', details);
+            // console.log('det', details); 
             // const { } = res.data.data.user
             // const { service } = res.data.data.userdetails
             const promiseState = async state => new Promise(resolve => {
@@ -294,7 +294,7 @@ export default function TutorProfile({ isOwn }) {
                      },
                      about: {
                         ...prevToEdit.about,
-                        // about: details === null ? '' : details.about ,
+                        about: details === null ? '' : details.about ,
                         isPresent: details === null ? false : true
                      },
                      education: {

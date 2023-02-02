@@ -407,7 +407,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
          return ''
       }
    }
-   // console.log('toedit', currentToEdit)
+   console.log('toedit', currentToEdit)
    // console.log('setting', settings)
    // console.log('field', currentField)
    // console.log('sett', settings)
@@ -1019,7 +1019,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                            <div>
                               <textarea
                                  placeholder=""
-                                 value={data.about}
+                                 value={currentToEdit.about}
                                  onChange={e =>
                                     setCurrentToEdit({ ...currentToEdit, about: e.target.value })
                                  }
