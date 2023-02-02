@@ -22,7 +22,8 @@ export default function Login({ setLoginFormActive }) {
    const [loginActive, setLoginActive] = useState(true);
    const [email, setEmail] = useState("");
    const [password, setPassword] = useState("");
-   const [error, setError] = useState({})
+   const [error, setError] = useState({});
+   const [wait, setWait] = useState(false);
 
    // const [error, setError] = useState({
    //    password: '',
@@ -50,12 +51,14 @@ export default function Login({ setLoginFormActive }) {
    }
 
    const handleSubmit = () => {
+      setWait(true)
       const promiseState = async state => new Promise(resolve => {
          resolve(resetErrors())
       })
       promiseState()
          .then(() => {
             loginUser({ email, password }).then((res) => {
+               setWait(false)
                if (res.error) {
                   console.log('login err', res.error)
                   if (res.error.status == 500) {
@@ -145,7 +148,7 @@ export default function Login({ setLoginFormActive }) {
 
                         <button
                            disabled={!(emailValidation.test(email) && password.length > 0)}
-                           className="w-full bg-primaryDark disabled:bg-pink pt-3.5 pb-3.5 mt-[148px] lg:mt-12 rounded-10 text-white text-lg"
+                           className={`w-full bg-primaryDark ${wait && "cursor-wait"} disabled:bg-pink pt-3.5 pb-3.5 mt-[148px] lg:mt-12 rounded-10 text-white text-lg`}
                            onClick={handleSubmit}
                         >
                            Login
