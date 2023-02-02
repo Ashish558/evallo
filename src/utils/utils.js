@@ -177,6 +177,9 @@ export function getDate(arg) {
 
    return `${month} ${date.getDate()}, ${date.getFullYear()}`
 }
+var formattedNumber = (x) => {
+   return (x * 1).toFixed(2).replace(/[.,]00$/, "");
+}
 
 export const getScoreStr = (testType, score, subjects, totalLength) => {
    // if (!score) return ''
@@ -189,14 +192,17 @@ export const getScoreStr = (testType, score, subjects, totalLength) => {
       let isMathsAdded = false
       subjects.map(sub => {
          if (sub.scoreScale === 'Scale1') {
-            verbalTotal += score['Scale1']
+            let src = score['Scale1'] !== null ? score['Scale1'] : 0
+            verbalTotal += src
          }
          if (sub.scoreScale === 'Scale2') {
-            verbalTotal += score['Scale2']
+            let src2 = score['Scale2'] !== null ? score['Scale2'] : 0
+            verbalTotal += src2
          }
          if (sub.scoreScale === 'Scale3') {
             if (isMathsAdded === false) {
-               MathsTotal += score['Scale3']
+               let src3 = score['Scale3'] !== null ? score['Scale3'] : 0
+               MathsTotal += src3
                isMathsAdded = true
             }
          }
@@ -212,32 +218,34 @@ export const getScoreStr = (testType, score, subjects, totalLength) => {
       let score3 = 0
       let score4 = 0
       let total = 0
-      console.log(subjects);
+      // console.log(subjects);
       let scoreStr = []
       subjects.map((sub, idx) => {
          let firstStr = sub.name.substring(0, 1)
          if (subjects.length > idx + 1) {
-            scoreStr.push(` ${firstStr}${score[sub.scoreScale]} |`)
-         }else{
-            scoreStr.push(` ${firstStr}${score[sub.scoreScale]}`)
+            let scr = score[sub.scoreScale] === null ? 0 : score[sub.scoreScale]
+            scoreStr.push(` ${firstStr}${scr} |`)
+         } else {
+            let scr = score[sub.scoreScale] === null ? 0 : score[sub.scoreScale]
+            scoreStr.push(` ${firstStr}${scr}`)
          }
       })
-      console.log(scoreStr);
+      // console.log(scoreStr);
 
       subjects.map((sub, idx) => {
          total += sub.no_of_correct
          if (sub.scoreScale === 'Scale1') {
             total += score['Scale1']
-            score1 = score['Scale1']
+            score1 = score['Scale1'] !== null ? score['Scale1'] : 0
          } else if (sub.scoreScale === 'Scale2') {
             total += score['Scale2']
-            score2 = score['Scale2']
+            score2 = score['Scale2'] !== null ? score['Scale2'] : 0
          } else if (sub.scoreScale === 'Scale3') {
             total += score['Scale3']
-            score3 = score['Scale3']
+            score3 = score['Scale3'] !== null ? score['Scale3'] : 0
          } else if (sub.scoreScale === 'Scale4') {
             total += score['Scale4']
-            score4 = score['Scale4']
+            score4 = score['Scale4'] !== null ? score['Scale4'] : 0
          } else {
             total += 0
             scoreArr.push(0)
@@ -252,7 +260,7 @@ export const getScoreStr = (testType, score, subjects, totalLength) => {
       // let totalSubs = totalLength  ? totalLength : subjects.length
       let totalSubs = totalLength ? totalLength : 4
       return {
-         cumulative: `C${total2 / totalSubs}`,
+         cumulative: `C${formattedNumber((total2 / totalSubs))}`,
          right: scoreStr.join(''),
       }
    }

@@ -201,6 +201,10 @@ export default function TutorProfile({ isOwn }) {
          active: false,
          serviceSpecializations: []
       },
+      tutorServices: {
+         active: false,
+         tutorServices: []
+      },
    })
 
    useEffect(() => {
@@ -265,7 +269,7 @@ export default function TutorProfile({ isOwn }) {
             const { firstName, lastName, phone, email } = res.data.data.user
             setUser(res.data.data.user)
             let details = res.data.data.details
-            // console.log('det', details); 
+            console.log('details', details);
             // const { } = res.data.data.user
             // const { service } = res.data.data.userdetails
             const promiseState = async state => new Promise(resolve => {
@@ -294,7 +298,7 @@ export default function TutorProfile({ isOwn }) {
                      },
                      about: {
                         ...prevToEdit.about,
-                        about: details === null ? '' : details.about ,
+                        about: details === null ? '' : details.about,
                         isPresent: details === null ? false : true
                      },
                      education: {
@@ -332,6 +336,11 @@ export default function TutorProfile({ isOwn }) {
                      interest: {
                         ...prevToEdit.interest,
                         interest: details !== null ? details.interest : [],
+                        isPresent: details === null ? false : true
+                     },
+                     tutorServices: {
+                        ...prevToEdit.tutorServices,
+                        tutorServices: details !== null ? details.tutorServices : [],
                         isPresent: details === null ? false : true
                      },
                      serviceSpecializations: {
@@ -375,7 +384,7 @@ export default function TutorProfile({ isOwn }) {
    // console.log('userdetail', tutorLevel)
 
    // console.log(user);
-   // console.log(settings);
+   // console.log('settings', settings.servicesAndSpecialization);
    if (Object.keys(user).length < 1) return
    if (Object.keys(settings).length < 1) return
    // if (Object.keys(userDetail).length < 1) return
@@ -761,15 +770,52 @@ export default function TutorProfile({ isOwn }) {
                   {
                      persona === 'admin' &&
                      <ProfileCard hideShadow
-                        className='col-span-3 mt-6 lg:mt-0'
+                        className='col-span-3 mt-6 lg:mt-0  max-h-[300px] overflow-y-auto scrollbar-content'
                         body={
-                           <div className='overflow-x-auto scrollbar-content'>
-                              <div className='mb-6'>
+                           <div className=''>
+                              {
+                                 settings.servicesAndSpecialization.map((service, idx) => {
+                                    let price = 0
+                                    let isPresent = false
+                                    if (userDetail !== undefined || userDetail !== null) {
+                                       let obj = userDetail.tutorServices.find(serv => serv.service === service.service)
+                                       // console.log('obj', obj);
+                                       if (obj !== undefined) {
+                                          price = obj.price
+                                          isPresent = true
+                                       }
+                                    }
+                                    return (
+                                       <div className='mb-6'>
+                                          <EditableText
+                                             // text='Test Prep Rate'
+                                             text={service.service}
+                                             editable={editable}
+                                             onClick={() => setToEdit({
+                                                ...toEdit,
+                                                tutorServices: {
+                                                   ...toEdit.tutorServices, active: true, selectedIdx: idx,
+                                                   servicePresent: isPresent
+                                                }
+                                             })}
+                                             className='text-primary justify-between text-lg capitalize'
+                                             imgClass='ml-auto' />
+                                          <p className='mt-1.5  font-medium text-sm whitespace-nowrap'>
+                                             {price}
+                                          </p>
+                                       </div>
+                                    )
+                                 })
+                              }
+                              {/* <div className='mb-6'>
                                  <EditableText
                                     // text='Test Prep Rate'
                                     text='Service 1'
                                     editable={editable}
-                                    onClick={() => setToEdit({ ...toEdit, rates: { ...toEdit.rates, active: true } })}
+                                    onClick={() => setToEdit({
+                                       ...toEdit,
+                                       tutorServices: { ...toEdit.tutorServices, active: true, selectedIdx: 0 }
+                                    })}
                                     className='text-primary justify-between text-lg capitalize'
                                     imgClass='ml-auto' />
                                  <p className='mt-1.5  font-medium text-sm whitespace-nowrap'>
@@ -799,7 +845,7 @@ export default function TutorProfile({ isOwn }) {
                                  <p className='mt-1.5 font-medium text-sm whitespace-nowrap'>
                                     {otherRate ? `$${otherRate}` : '-'}
                                  </p>
-                              </div>
+                              </div> */}
                            </div>
                         }
                      />

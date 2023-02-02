@@ -164,14 +164,14 @@ export default function StartTest() {
             })
             promiseState()
                .then(() => {
-                  fetchContinueTest(true)
+                  fetchContinueTest(true, tempsubs)
                })
          })
    }
    useEffect(() => {
       if (!id) return
       fetchSections()
-   }, [])
+   }, [id])
 
    useEffect(() => {
       // getTestResponse({ id })
@@ -184,7 +184,7 @@ export default function StartTest() {
       //    })
    }, [])
 
-   const fetchContinueTest = (setResponsesFromStorage) => {
+   const fetchContinueTest = (setResponsesFromStorage, subjectsRec) => {
       continueTest({ id: assignedTestId })
          .then(res => {
             if (res.error) {
@@ -192,6 +192,31 @@ export default function StartTest() {
                return
             }
             console.log('continue', res.data.data)
+            let completedIds = res.data.data.completed.map(item => item._id)
+            
+            let inComplete = subjects.filter(sub => !completedIds.includes(sub._id))
+            console.log('subjects', subjects)
+            console.log('subjectsRec', subjectsRec)
+            console.log('inComplete', inComplete)
+            // if (inComplete.length > 0) {
+            //    let tempdata = subjects.map(sub => {
+            //       console.log(sub);
+            //       if (sub._id === inComplete[0]._id) {
+            //          return { ...sub, selected: true }
+            //       } else {
+            //          return { ...sub, selected: false }
+            //       }
+            //    })
+            //    setSubjects(tempdata)
+            // }
+            // console.log('inComplete', inComplete);
+            // let tempdata = subjects.map(sub => {
+            //    if (sub._id === item._id) {
+            //       return { ...sub, selected: true }
+            //    } else {
+            //       return { ...sub, selected: false }
+            //    }
+            // })
 
             const { startTime, endTime, sectionName, completed, answer, submitId } = res.data.data
             if (endTime !== null && endTime) {
@@ -212,7 +237,7 @@ export default function StartTest() {
                   if (!savedAnswers) return
                   if (savedAnswers === null || savedAnswers === undefined) return
                   if (savedAnswers.length === 0) return
-                  if(savedAssignedTestId !== assignedTestId) return
+                  if (savedAssignedTestId !== assignedTestId) return
                   // console.log('savedAnswers', savedAnswers);
                   setAnswers(savedAnswers)
                   // console.log('savedAnswers2', localStorage.getItem('answers'));

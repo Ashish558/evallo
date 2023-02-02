@@ -131,7 +131,7 @@ export default function EventModal({
    const [studentMoods, setStudentMoods] = useState([]);
    const [homeworks, setHomeworks] = useState([]);
    const [isProductive, setIsProductive] = useState([]);
-
+   const [servicesAndSpecialization, setServicesAndSpecialization] = useState([])
    const [tutor, setTutor] = useState("");
 
    const [submitSession, sessionResponse] = useSubmitSessionMutation();
@@ -283,7 +283,8 @@ export default function EventModal({
             };
          });
          setIsProductive(productive);
-         // console.log(res.data.data.setting)
+         // console.log('setting', res.data.data.setting)
+         setServicesAndSpecialization(res.data.data.setting.servicesAndSpecialization)
          setServices(res.data.data.setting.Expertise);
          setIsSettingsLoaded(true);
       });
@@ -302,7 +303,7 @@ export default function EventModal({
             startDate = new Date(startDate.getTime() + offset)
          }
          startDate.setHours(0);
-        startDate.setMinutes(0);
+         startDate.setMinutes(0);
          setData({
             ...data,
             studentName: sessionToUpdate.studentName,
@@ -408,7 +409,7 @@ export default function EventModal({
       console.log(body);
       // return
       if (body.sessionStatus === "Completed") {
-        await updateSessionStatus(sessionToUpdate._id)
+         await updateSessionStatus(sessionToUpdate._id)
             .then(res => {
                if (res.error) return
                // updateUserSession({ id: sessionToUpdate._id, body: { sessionStatus: 'Completed', _id: sessionToUpdate._id } }).then(
@@ -421,7 +422,7 @@ export default function EventModal({
             })
       }
       if (body.sessionStatus === "Missed") {
-         await  missSession(sessionToUpdate._id)
+         await missSession(sessionToUpdate._id)
             .then(res => {
                if (res.error) {
                   alert(res.error.data.message)
@@ -438,7 +439,7 @@ export default function EventModal({
             })
       }
       if (body.sessionStatus === "Cancelled") {
-         await  cancelSession(sessionToUpdate._id)
+         await cancelSession(sessionToUpdate._id)
             .then(res => {
                if (res.error) {
                   if (res.error.data && res.error.data.message) {
@@ -533,7 +534,7 @@ export default function EventModal({
          const currentDay = sDate.getDay()
          const currentDate = sDate.getDate()
          // console.log('START DATE ', sDate);
-        
+
          // console.log('days', tempDays);
          const daysTORecur = tempDays.map(item => {
             if (reqBody.day.includes(item.full)) return item.id
@@ -632,6 +633,7 @@ export default function EventModal({
    //console.log(data.feedbackStars);
    // console.log('sessionToUpdate', sessionToUpdate)
    // console.log('session data', data)
+   console.log('servicesAndSpecialization', servicesAndSpecialization)
 
    const dataProps = { data, setData }
    return (
@@ -670,9 +672,11 @@ export default function EventModal({
                         labelClassname="ml-3"
                         value={data.service}
                         onChange={(val) =>
-                           setData({ ...data, service: val })
+                           console.log(val)
+                           // setData({ ...data, service: val })
                         }
-                        optionData={services.map(item => item.text)}
+                        optionType='object'
+                        optionData={servicesAndSpecialization.map(item => ({ ...item, value: item.service }))}
                         inputContainerClassName={`bg-lightWhite pt-3.5 pb-3.5 border-0 font-medium pr-3
                        `}
                         inputClassName="bg-transparent appearance-none font-medium pt-4 pb-4"
@@ -683,8 +687,28 @@ export default function EventModal({
                         type="select"
                         disabled={!isEditable}
                      />
-
-                     {persona !== "parent" && (
+                     {
+                        persona === 'admin' || persona === 'tutor' ?
+                           <></>
+                           // <InputSelect
+                           //    label="Services"
+                           //    labelClassname="ml-3"
+                           //    value={data.specialization}
+                           //    onChange={(val) =>
+                           //       setData({ ...data, specialization: val })
+                           //    }
+                           //    optionData={servicesAndSpecialization.filter(item => item.service)}
+                           //    inputContainerClassName={`bg-lightWhite pt-3.5 pb-3.5 border-0 font-medium pr-3
+                           //   `}
+                           //    inputClassName="bg-transparent appearance-none font-medium pt-4 pb-4"
+                           //    placeholder="Service"
+                           //    parentClassName={`w-full mr-4 max-w-373 self-end`}
+                           //    type="select"
+                           //    disabled={!isEditable}
+                           // />
+                           : <></>
+                     }
+                     {persona === "parent" || persona === 'student' ? (
                         <div className="ml-4 mt-5">
                            <p className="font-medium mb-4">
                               Session Feedback
@@ -703,7 +727,7 @@ export default function EventModal({
                               ))}
                            </div>
                         </div>
-                     )}
+                     ) : <></>}
                      {/* {persona === "parent" && (
                         <div className="mr-4 mt-5 order-1 flex-1">
                            <p className="font-medium mb-1">

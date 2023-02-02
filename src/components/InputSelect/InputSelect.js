@@ -28,7 +28,7 @@ export default function InputSelect({
    useEffect(() => {
      if(!checkbox) setSelected(false)
    }, [value]);
-
+console.log(optionData);
    return (
       <div
          ref={selectRef}
