@@ -50,8 +50,9 @@ export default function Login({ setLoginFormActive }) {
       })
    }
 
-   const handleSubmit = () => {
-      setWait(true)
+   const handleSubmit = (e) => {
+      e.preventDefault();
+      setWait(true);
       const promiseState = async state => new Promise(resolve => {
          resolve(resetErrors())
       })
@@ -108,7 +109,7 @@ export default function Login({ setLoginFormActive }) {
                      <p className="text-lg font-bold mb-12 hidden lg:block px-[120px]">
                         Login with email address
                      </p>
-                     <div className="px-[49px] lg:px-[120px] mt-[105px] lg:mt-0">
+                     <form onSubmit={handleSubmit} className={`px-[49px] lg:px-[120px] mt-[105px] lg:mt-0 ${wait ? 'cursor-wait' : 'cursor-default'}`}>
                         <InputField
                            Icon={EmailIcon}
                            iconSize='medium'
@@ -146,20 +147,20 @@ export default function Login({ setLoginFormActive }) {
                            Forgot Password ?
                         </p>
 
-                        <button
+                        <input
                            disabled={!(emailValidation.test(email) && password.length > 0)}
-                           className={`w-full bg-primaryDark ${wait && "cursor-wait"} disabled:bg-pink pt-3.5 pb-3.5 mt-[148px] lg:mt-12 rounded-10 text-white text-lg`}
-                           onClick={handleSubmit}
-                        >
-                           Login
-                        </button>
+                           className={`w-full bg-primaryDark ${wait ? "cursor-wait" : "cursor-pointer"} disabled:bg-pink pt-3.5 pb-3.5 mt-[148px] lg:mt-12 rounded-10 text-white text-lg`}
+                           // onClick={handleSubmit}
+                           type="submit"
+                           value="Login"
+                        />
                         <p
                            className="text-secondary text-xs font-semibold ml-2 mt-2 cursor-pointer lg:inline-block hidden"
                            onClick={() => navigate('/signup')}
                         >
                            Sign-up Instead?
                         </p>
-                     </div>
+                     </form>
 
                   </div>
                ) : isPasswordForgot ? (
