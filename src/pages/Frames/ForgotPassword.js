@@ -7,8 +7,8 @@ import { useForgotPasswordMutation } from "../../app/services/auth";
 export default function ForgotPassword({
    setActiveFrame,
    setResetPasswordActive,
+   setLoginActive
 }) {
-
    const emailValidate = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
    const [email, setEmail] = useState("");
    const [forgotPassword, forgotPasswordResp] = useForgotPasswordMutation()
@@ -28,7 +28,7 @@ export default function ForgotPassword({
    return (
       <div className="w-full">
          <p className="font-bold text-[28px] py-[90px] pb-[34px] lg:text-5xl leading-snug mb-7 px-[49px] lg:px-148 bg-[#7152EB] lg:bg-transparent text-white lg:text-black">
-            Forget Password
+            Password Reset
          </p>
 
          <div className="px-[49px] lg:px-148">
@@ -36,7 +36,8 @@ export default function ForgotPassword({
                className="text-normal font-bold mb-90"
                style={{ fontSize: "18px" }}
             >
-               Enter your email address linked to this account s
+               Enter the email that you used for your account. <br />
+               You wil receive a password reset link.
             </p>
 
             <InputField
@@ -56,8 +57,15 @@ export default function ForgotPassword({
                // onClick={() => setActiveFrame(setResetPasswordActive)}
                onClick={() => handleSubmit()}
             >
-               Submit
+               Send Link
             </button>
+
+            <p
+               className="text-secondary text-xs font-semibold ml-2 mt-2 cursor-pointer lg:inline-block hidden"
+               onClick={() => setLoginActive(true)}
+            >
+               Go Back to Login
+            </p>
          </div>
       </div>
    );

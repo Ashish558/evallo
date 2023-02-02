@@ -164,7 +164,7 @@ export default function Login({ setLoginFormActive }) {
 
                   </div>
                ) : isPasswordForgot ? (
-                  <ForgotPassword {...props} />
+                  <ForgotPassword setLoginActive={setLoginActive} {...props} />
                ) : resetPasswordActive ? (
                   <ResetPassword
                      setActiveFrame={setActiveFrame}
