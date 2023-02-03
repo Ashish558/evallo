@@ -378,8 +378,8 @@ export default function TutorProfile({ isOwn }) {
 
    // console.log('user', user)
    // console.log('To-edit', toEdit)
-   // console.log('userdetail', userDetail)
-   // console.log('settings', settings.serviceSpecialisation)
+   // console.log('userdetail', userDetail.serviceSpecializations)
+   // console.log('settings', settings.Expertise)
    const { about, education, tagLine, tutorLevel, testPrepRate, otherRate, subjectTutoringRate, address, pincode, paymentInfo, tutorRank, income, paymentStatus, linkedIn } = userDetail
    // console.log('userdetail', tutorLevel)
 
@@ -515,7 +515,7 @@ export default function TutorProfile({ isOwn }) {
                                  className='text-lg mb-2' textClassName="flex-1 text-center text-[21px]" />
 
                               <div className='flex flex-col row-span-2 overflow-x-auto scrollbar-content max-h-[500px] scrollbar-vertical'>
-                                 {settings && settings.serviceSpecialisation?.length > 0 && userDetail.serviceSpecializations && userDetail.serviceSpecializations.map((id, idx) => {
+                                 {settings && settings.Expertise?.length > 0 && userDetail.serviceSpecializations && userDetail.serviceSpecializations.map((id, idx) => {
                                     return (
                                        settings.Expertise.find(item => item._id === id) ?
                                           <div key={idx} className='flex flex-col items-center mb-10'>

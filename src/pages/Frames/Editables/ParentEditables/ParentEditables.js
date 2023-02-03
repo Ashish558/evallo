@@ -428,8 +428,8 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
          return ''
       }
    }
-   console.log('toedit', currentToEdit)
-   console.log('setting', settings.servicesAndSpecialization[currentToEdit.selectedIdx])
+   // console.log('toedit', currentToEdit)
+   // console.log('setting', settings.servicesAndSpecialization[currentToEdit.selectedIdx])
    // console.log('field', currentField)
    // console.log('sett', settings)
    // console.log('students', students)
@@ -951,7 +951,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                               </div>
                            </div>
                         }
-                        {toEdit.tutorServices &&
+                        {currentField.name === "tutorServices" &&
                            <div>
                               <div className='flex items-center mb-4'>
                                  <p className='font-medium mr-4 min-w-[150px]'>
