@@ -671,10 +671,10 @@ export default function EventModal({
                         label="Services"
                         labelClassname="ml-3"
                         value={data.service}
-                        onChange={(val) =>
-                           console.log(val)
-                           // setData({ ...data, service: val })
-                        }
+                        onChange={(val) =>{
+                           // console.log(val)
+                           setData({ ...data, service: val.value })
+                        }}
                         optionType='object'
                         optionData={servicesAndSpecialization.map(item => ({ ...item, value: item.service }))}
                         inputContainerClassName={`bg-lightWhite pt-3.5 pb-3.5 border-0 font-medium pr-3
