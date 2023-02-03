@@ -109,13 +109,13 @@ export default function Calendar() {
    const exactTime = time.slice(0, time.indexOf(":")) + time.slice(time.indexOf("p"), time.length);
    const slides = document.getElementsByClassName('fc-timegrid-slot-label-cushion fc-scrollgrid-shrink-cushion')
    //  console.log(document.getElementsByClassName('fc-timegrid-slot-label-cushion fc-scrollgrid-shrink-cushion'));
-   // for (var i = 0; i < slides.length; i++) {
-   //    const item = slides.item(i);
-   //    // console.log(item.innerHTML);
-   //    if (item.innerHTML === exactTime) {
-   //       document.getElementById("calendarContainer").scrollTop = document.getElementById("calendarContainer").scrollHeight;
-   //    }
-   // }
+   for (var i = 0; i < slides.length; i++) {
+      const item = slides.item(i);
+      // console.log(item.innerHTML);
+      if (item.innerHTML === exactTime) {
+         document.getElementById("calendarContainer").scrollTop = document.getElementById("calendarContainer").scrollHeight;
+      }
+   }
 
    const [eventModalActive, setEventModalActive] = useState(false);
    const [updateEventModalActive, setUpdateEventModalActive] = useState(false);
@@ -882,8 +882,8 @@ export default function Calendar() {
                      }}
                      expandRows={true}
                      contentHeight={"100%"}
-                     slotMinTime={"06:00:00"}
-                     slotMaxTime={"30:00:00"}
+                     // slotMinTime={"06:00:00"}
+                     // slotMaxTime={"30:00:00"}
                      dayHeaderFormat={{
                         day: "2-digit",
                         month: "narrow",
