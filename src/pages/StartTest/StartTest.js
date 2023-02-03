@@ -12,7 +12,7 @@ import BackBtn from '../../components/Buttons/Back'
 import Timer from '../../components/Timer/Timer'
 import CurrentSection from './CurrentSection/CurrentSection'
 import { useSelector } from 'react-redux'
-import { getDuration, getFormattedDate } from '../../utils/utils'
+import { getCheckedString, getDuration, getFormattedDate } from '../../utils/utils'
 const tempsubjects = [
    { text: 'Trigonometry', selected: true },
    { text: 'Mathematics', selected: false },
@@ -47,6 +47,8 @@ export default function StartTest() {
    const [timer, setTimer] = useState(10)
    const [answers, setAnswers] = useState([])
    const [submitId, setSubmitId] = useState('')
+   const [completedSubjects, setCompletedSubjects] = useState([])
+
    const { id, assignedTestId } = useParams()
 
    const [getSections, getSectionsResp] = useLazyGetSectionsQuery()
@@ -202,10 +204,14 @@ export default function StartTest() {
 
 
             const { startTime, endTime, sectionName, completed, answer, submitId, backupResponse } = res.data.data
+            if (completed !== undefined) {
+               setCompletedSubjects(completed)
+            }
             if (endTime !== null && endTime) {
                let timer = (new Date(endTime) - new Date()) / 1000
                setTimer(Math.trunc(timer))
                setInitialSeconds(Math.trunc(timer))
+
                // setTestStarted(true)
                setTestStarted(true)
                setActiveSection({ name: sectionName })
@@ -279,6 +285,33 @@ export default function StartTest() {
          setActiveSection(active)
       }
    }, [subjects])
+
+   useEffect(() => {
+      if (subjects.length === 0) return
+      const active = subjects.filter(item => item.selected === true)
+      let completedSubIds = completedSubjects.map(item => item._id)
+      // console.log('completedSubIds', completedSubIds);
+      // console.log('subjects', subjects);
+      if (active.length === 0) {
+         let issetActive = false
+         let temp = subjects.map(sub => {
+            if (issetActive === false) {
+               if (completedSubIds.includes(sub._id)) {
+                  return { ...sub, selected: false }
+               } else {
+                  issetActive = true
+                  return { ...sub, selected: true }
+               }
+            } else {
+               return { ...sub, selected: false }
+            }
+         })
+         setSubjects(temp)
+         // console.log('tempsubjects', temp);
+      }
+      // console.log('active subject', active);
+      // console.log('all subjects', subjects);
+   }, [subjects, completedSubjects])
 
    useEffect(() => {
       if (completedSectionIds.length === subjects.length) {
