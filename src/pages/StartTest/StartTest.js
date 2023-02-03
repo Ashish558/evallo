@@ -195,19 +195,19 @@ export default function StartTest() {
                return
             }
             console.log('CONTINUE', res.data.data)
-            let completedIds = res.data.data.completed.map(item => item._id)
+            // console.log('isUnlimited', isUnlimited);
+            // let completedIds = res.data.data.completed.map(item => item._id)
 
-            let inComplete = subjects.filter(sub => !completedIds.includes(sub._id))
+            // let inComplete = subjects.filter(sub => !completedIds.includes(sub._id))
             // console.log('subjects', subjects)
             // console.log('subjectsRec', subjectsRec)
             // console.log('inComplete', inComplete)
-
 
             const { startTime, endTime, sectionName, completed, answer, submitId, backupResponse } = res.data.data
             if (completed !== undefined) {
                setCompletedSubjects(completed)
             }
-            if (endTime !== null && endTime) {
+            if (endTime !== null && endTime || sectionName.length > 1) {
                let timer = (new Date(endTime) - new Date()) / 1000
                setTimer(Math.trunc(timer))
                setInitialSeconds(Math.trunc(timer))

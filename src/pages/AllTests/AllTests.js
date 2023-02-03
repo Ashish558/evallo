@@ -40,7 +40,7 @@ export default function AllTests() {
    const [filteredTests, setFilteredTests] = useState([])
    const [filterItems, setFilterItems] = useState([])
    const [submitBtnDisabled, setSubmitBtnDisabled] = useState(true)
-
+   const [loading, setLoading] = useState(false)
    const [removeQuestionModal, setRemoveQuestionModal] = useState(false);
    const [submitTest, submitTestResp] = useAddTestMutation();
    const [submitPdf, submitPdfResp] = useAddPdfMutation();
@@ -101,6 +101,7 @@ export default function AllTests() {
    };
 
    const handleSubmit = (e) => {
+      setLoading(true)
       e.preventDefault();
       setSubmitBtnDisabled(true)
       // console.log(modalData)
@@ -168,6 +169,7 @@ export default function AllTests() {
 
                })
          }
+         setLoading(false)
          fetchTests()
          setSubmitBtnDisabled(false)
          console.log('submitted');
@@ -251,6 +253,7 @@ export default function AllTests() {
                   type: "submit",
                   className: 'w-[123px] pl-6 pr-6 disabled:opacity-70',
                   disabled: submitBtnDisabled,
+                  loading: loading
                }}
                handleClose={handleClose}
                body={

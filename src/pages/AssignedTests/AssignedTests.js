@@ -61,6 +61,7 @@ export default function AssignedTests() {
    const [assignTestModalActive, setAssignTestModalActive] = useState(false);
    const [resendModalActive, setResendModalActive] = useState(false);
    const [deleteModalActive, setDeleteModalActive] = useState(false)
+   const [loading, setLoading] = useState(false)
 
    const [testToResend, setTestToResend] = useState({})
    const [testToDelete, setTestToDelete] = useState({})
@@ -248,7 +249,7 @@ export default function AssignedTests() {
    };
 
    const handleAssignTestSubmit = () => {
-
+      setLoading(true)
       const body = {
          studentId: modalData.studentId,
          testId: modalData.testId,
@@ -259,6 +260,7 @@ export default function AssignedTests() {
       // return
       assignTest(body)
          .then(res => {
+            setLoading(false)
             if (res.error) {
                console.log(res.error);
                if (res.error.data) {
@@ -473,7 +475,8 @@ export default function AssignedTests() {
                   text: "Assign",
                   className: "max-w-140 pl-8 pr-8",
                   onClick: () => handleAssignTestSubmit(),
-                  disabled: submitBtnDisabled
+                  disabled: submitBtnDisabled,
+                  loading: loading
                }}
                handleClose={handleClose}
                body={
