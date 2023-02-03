@@ -14,6 +14,8 @@ import EmailIcon from "../../assets/form/email.svg";
 import CarouselImg from "../../assets/form/image-1.png";
 import styles from './Login.module.css'
 import { useNavigate } from "react-router-dom";
+import PrimaryButton from "../../components/Buttons/PrimaryButton";
+import Loader from "../../components/Loader";
 
 export default function Login({ setLoginFormActive }) {
    const emailValidation = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
@@ -32,6 +34,7 @@ export default function Login({ setLoginFormActive }) {
    const navigate = useNavigate();
 
    const [loginUser, loginUserResp] = useLoginUserMutation();
+   const [loginLoading, setLoginLoading] = useState(false)
 
    const setActiveFrame = (func) => {
       setIsPasswordForgot(false);
@@ -50,12 +53,14 @@ export default function Login({ setLoginFormActive }) {
    }
 
    const handleSubmit = () => {
+      setLoginLoading(true)
       const promiseState = async state => new Promise(resolve => {
          resolve(resetErrors())
       })
       promiseState()
          .then(() => {
             loginUser({ email, password }).then((res) => {
+               setLoginLoading(false)
                if (res.error) {
                   console.log('login err', res.error)
                   if (res.error.status == 500) {
@@ -133,6 +138,11 @@ export default function Login({ setLoginFormActive }) {
                            value={password}
                            onChange={(e) => setPassword(e.target.value)}
                            error={error.password}
+                           onKeyDown={e => {
+                              if (e.key === 'Enter') {
+                                 handleSubmit();
+                               }
+                           }}
                         />
                         <p
                            className="text-secondary text-[10px] lg:text-xs inline-block cursor-pointer font-semibold ml-2"
@@ -144,14 +154,18 @@ export default function Login({ setLoginFormActive }) {
                         </p>
 
                         <button
-                           disabled={!(emailValidation.test(email) && password.length > 0)}
-                           className="w-full bg-primaryDark disabled:bg-pink pt-3.5 pb-3.5 mt-[148px] lg:mt-12 rounded-10 text-white text-lg"
+                           disabled={loginLoading === true ? true : !(emailValidation.test(email) && password.length > 0)}
+                           className={`w-full relative bg-primaryDark disabled:bg-pink pt-3.5 pb-3.5 mt-[148px] lg:mt-12 rounded-10 text-white text-lg ${loginLoading ? 'cursor-wait' : 'cursor-pointer'}`}
                            onClick={handleSubmit}
                         >
                            Login
+                           {
+                              loginLoading &&
+                              <Loader />
+                           }
                         </button>
                         <p
-                           className="text-secondary text-xs font-semibold ml-2 mt-2 cursor-pointer lg:inline-block hidden"
+                           className={`text-secondary cursor-pointer relative text-xs font-semibold ml-2 mt-2   lg:inline-block hidden`}
                            onClick={() => navigate('/signup')}
                         >
                            Sign-up Instead?
@@ -160,11 +174,12 @@ export default function Login({ setLoginFormActive }) {
 
                   </div>
                ) : isPasswordForgot ? (
-                  <ForgotPassword {...props} />
+                  <ForgotPassword {...props} setActiveFrame={setActiveFrame}
+                   setLoginActive={setLoginActive} />
                ) : resetPasswordActive ? (
                   <ResetPassword
                      setActiveFrame={setActiveFrame}
-                     setLoginActive={setLoginActive}
+                     setLoginActive={setLoginActive}     
                   />
                ) : (
                   ""
