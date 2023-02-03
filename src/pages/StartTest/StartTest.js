@@ -7,7 +7,7 @@ import PrimaryButton from '../../components/Buttons/PrimaryButton'
 import { TestDetail } from '../../components/TestDetail/TestDetail'
 import { testData } from './tempData'
 import TestOption from '../../components/TestOption/TestOption'
-import { useAttendTestMutation, useLazyContinueTestQuery, useLazyGetAssignedTestQuery, useLazyGetSectionsQuery, useLazyGetSingleAssignedTestQuery, useLazyGetTestResponseQuery, useLazyGetTimeQuery, useStartTestMutation, useSubmitTestMutation, useUpdateTimeMutation } from '../../app/services/test'
+import { useAddBackupResponseMutation, useAttendTestMutation, useLazyContinueTestQuery, useLazyGetAssignedTestQuery, useLazyGetSectionsQuery, useLazyGetSingleAssignedTestQuery, useLazyGetTestResponseQuery, useLazyGetTimeQuery, useStartTestMutation, useSubmitTestMutation, useUpdateTimeMutation } from '../../app/services/test'
 import BackBtn from '../../components/Buttons/Back'
 import Timer from '../../components/Timer/Timer'
 import CurrentSection from './CurrentSection/CurrentSection'
@@ -52,6 +52,7 @@ export default function StartTest() {
    const [getSections, getSectionsResp] = useLazyGetSectionsQuery()
    const [getAssignedTest, getAssignedTestResp] = useLazyGetSingleAssignedTestQuery()
 
+   const [addBackupResponse, addBackupResponseResp] = useAddBackupResponseMutation()
    const [startTest, startTestResp] = useStartTestMutation()
    const [submitSection, submitSectionResp] = useSubmitTestMutation()
    const [continueTest, continueTestResp] = useLazyContinueTestQuery()
@@ -191,34 +192,16 @@ export default function StartTest() {
                console.log(res.error)
                return
             }
-            console.log('continue', res.data.data)
+            console.log('CONTINUE', res.data.data)
             let completedIds = res.data.data.completed.map(item => item._id)
-            
-            let inComplete = subjects.filter(sub => !completedIds.includes(sub._id))
-            console.log('subjects', subjects)
-            console.log('subjectsRec', subjectsRec)
-            console.log('inComplete', inComplete)
-            // if (inComplete.length > 0) {
-            //    let tempdata = subjects.map(sub => {
-            //       console.log(sub);
-            //       if (sub._id === inComplete[0]._id) {
-            //          return { ...sub, selected: true }
-            //       } else {
-            //          return { ...sub, selected: false }
-            //       }
-            //    })
-            //    setSubjects(tempdata)
-            // }
-            // console.log('inComplete', inComplete);
-            // let tempdata = subjects.map(sub => {
-            //    if (sub._id === item._id) {
-            //       return { ...sub, selected: true }
-            //    } else {
-            //       return { ...sub, selected: false }
-            //    }
-            // })
 
-            const { startTime, endTime, sectionName, completed, answer, submitId } = res.data.data
+            let inComplete = subjects.filter(sub => !completedIds.includes(sub._id))
+            // console.log('subjects', subjects)
+            // console.log('subjectsRec', subjectsRec)
+            // console.log('inComplete', inComplete)
+
+
+            const { startTime, endTime, sectionName, completed, answer, submitId, backupResponse } = res.data.data
             if (endTime !== null && endTime) {
                let timer = (new Date(endTime) - new Date()) / 1000
                setTimer(Math.trunc(timer))
@@ -227,19 +210,30 @@ export default function StartTest() {
                setTestStarted(true)
                setActiveSection({ name: sectionName })
                setSubmitId(submitId)
-               setAnswers(answer.map(item => ({
-                  ...item, isMarked: false, ResponseAnswer: '',
-                  responseTime: 0
-               })))
+
+               setAnswers(answer.map((item, idx) => {
+                  if (backupResponse !== undefined && backupResponse.length > 0) {
+                     return {
+                        ...item, isMarked: false, responseTime: 0,
+                        ResponseAnswer: backupResponse[idx].ResponseAnswer
+                     }
+                  } else {
+                     return {
+                        ...item, isMarked: false, ResponseAnswer: '',
+                        responseTime: 0
+                     }
+                  }
+               }))
+
                if (setResponsesFromStorage === true) {
-                  let savedAnswers = JSON.parse(localStorage.getItem('answers'))
-                  let savedAssignedTestId = localStorage.getItem('assignedTestId')
-                  if (!savedAnswers) return
-                  if (savedAnswers === null || savedAnswers === undefined) return
-                  if (savedAnswers.length === 0) return
-                  if (savedAssignedTestId !== assignedTestId) return
+                  // let savedAnswers = JSON.parse(localStorage.getItem('answers'))
+                  // let savedAssignedTestId = localStorage.getItem('assignedTestId')
+                  // if (!savedAnswers) return
+                  // if (savedAnswers === null || savedAnswers === undefined) return
+                  // if (savedAnswers.length === 0) return
+                  // if (savedAssignedTestId !== assignedTestId) return
                   // console.log('savedAnswers', savedAnswers);
-                  setAnswers(savedAnswers)
+                  // setAnswers(savedAnswers)
                   // console.log('savedAnswers2', localStorage.getItem('answers'));
                }
             } else {
@@ -345,7 +339,7 @@ export default function StartTest() {
             }
             console.log(res.data)
             setTestStarted(false)
-            localStorage.setItem('answers', null)
+            // localStorage.setItem('answers', null)
             fetchContinueTest()
             setActiveSection({})
          })
@@ -365,9 +359,16 @@ export default function StartTest() {
       if (answers === null || answers === undefined) return
       if (answers.length === 0) return
       // console.log('setans', answers);
-
-      localStorage.setItem('assignedTestId', assignedTestId)
-      localStorage.setItem('answers', JSON.stringify(answers))
+      addBackupResponse({ id: assignedTestId, reqbody: { backupResponse: answers } })
+         .then(res => {
+            if (res.error) {
+               console.log(res.error);
+            } else {
+               // console.log(res.data);
+            }
+         })
+      // localStorage.setItem('assignedTestId', assignedTestId)
+      // localStorage.setItem('answers', JSON.stringify(answers))
    }, [answers])
    // const { subjects, testQnId, testType } = sectionDetails.subjects
    // console.log('sectionDetails', sectionDetails)
