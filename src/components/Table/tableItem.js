@@ -82,7 +82,7 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch }) {
                      console.log('resp err', res.error)
                      return
                   }
-                  console.log('Resp score', res.data.data.response);
+                  // console.log('Resp score', res.data.data.response);
                   let responseData =  res.data.data.response
                   let score = getScoreStr(responseData.testType, responseData.score, responseData.subjects, responseData.subjects.length)
                   // console.log('SCORE', score);

@@ -205,6 +205,10 @@ export default function TutorProfile({ isOwn }) {
          active: false,
          tutorServices: []
       },
+      youtubeLink: {
+         active: false,
+         youtubeLink: []
+      },
    })
 
    useEffect(() => {
@@ -461,8 +465,10 @@ export default function TutorProfile({ isOwn }) {
                      <CircleButton
                         className='flex items-center rounded-full'
                         children={
-                           <EditableText editable={sessionStorage.getItem("role") === "tutor" || sessionStorage.getItem("role") === "admin"} />
-                        } />
+                           <EditableText editable={persona === "tutor" || persona === "admin"} />
+                        }
+                        onClick={() => setToEdit({ ...toEdit, youtubeLink: { ...toEdit.youtubeLink, active: true } })}
+                         />
                      {/* <EditableText editable={true} className="right-0" /> */}
                   </div>
                   <div className='relative pt-10 mt-auto flex-1'>
@@ -493,7 +499,7 @@ export default function TutorProfile({ isOwn }) {
                         <div className={` mb-5 px-4 py-4 lg:bg-textGray-30 rounded-2xl`}
                            style={{ backgroundColor: tutorLevelBg }}
                         >
-                           <EditableText text={`${tutorLevel.toLowerCase()} belt`}
+                           <EditableText text={`${tutorLevel} belt`}
                               editable={editable}
                               onClick={() => setToEdit({ ...toEdit, tutorLevel: { ...toEdit.tutorLevel, active: true } })}
                               className={` justify-center font-bold text-lg capitalize `}
@@ -775,7 +781,7 @@ export default function TutorProfile({ isOwn }) {
                            <div className=''>
                               {
                                  settings.servicesAndSpecialization.map((service, idx) => {
-                                    let price = 0
+                                    let price = '-'
                                     let isPresent = false
                                     if (userDetail !== undefined || userDetail !== null) {
                                        let obj = userDetail.tutorServices.find(serv => serv.service === service.service)

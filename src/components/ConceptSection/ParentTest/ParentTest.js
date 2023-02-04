@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import { useLazyGetTestResponseQuery } from '../../../app/services/test';
 import { useNavigate } from 'react-router-dom';
 
-export default function ParentTest({ styles, assignedTestId, testId, testName, studentId, dueDate, isCompleted, isStarted }) {
+export default function ParentTest({ styles, assignedTestId, testId, testName, studentId, dueDate, isCompleted, isStarted, pdfLink }) {
 
 
    const [score, setScore] = useState('-')
@@ -37,7 +37,8 @@ export default function ParentTest({ styles, assignedTestId, testId, testName, s
    }, [])
 
    const handleReportNavigate = () => {
-      navigate(`/assigned-tests/${testId}/${assignedTestId}/report/${studentId._id}`)
+      // navigate(`/assigned-tests/${testId}/${assignedTestId}/report/${studentId._id}`)
+      window.open(`${pdfLink}`)
    }
 
    return (

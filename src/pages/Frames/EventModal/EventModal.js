@@ -35,6 +35,8 @@ import DaysEndDate from "./Sections/daysEndDate";
 import SessionInputs from "./Sections/sessionInputs";
 import { sessionSchema } from "./schema/schema";
 import SecondaryButton from "../../../components/Buttons/SecondaryButton";
+import { useLazyGetTutorDetailsQuery } from "../../../app/services/users";
+import { useSelector } from "react-redux";
 
 const timeZones = ["IST"];
 const tempDays = [
@@ -115,6 +117,7 @@ export default function EventModal({
       session: "",
       sessionStatus: "",
       service: "",
+      specialization: "",
       topicsCovered: "",
       rescheduling: false,
       studentMood: "",
@@ -132,6 +135,8 @@ export default function EventModal({
    const [homeworks, setHomeworks] = useState([]);
    const [isProductive, setIsProductive] = useState([]);
    const [servicesAndSpecialization, setServicesAndSpecialization] = useState([])
+   const [allServicesAndSpec, setAllServicesAndSpec] = useState([])
+   const [specializations, setSpecializations] = useState([])
    const [tutor, setTutor] = useState("");
 
    const [submitSession, sessionResponse] = useSubmitSessionMutation();
@@ -144,6 +149,7 @@ export default function EventModal({
    const [missSession, missSessionResp] = useLazySessionMissedQuery()
    const [deleteSession, deleteSessionResp] = useDeleteSessionMutation()
    const [deleteAllSession, deleteAllSessionResp] = useDeleteAllRecurringSessionMutation()
+   const [getUserDetail, userDetailResp] = useLazyGetTutorDetailsQuery()
 
    const [inputFeedback, setInputFeedback] = useState(0)
 
@@ -151,6 +157,7 @@ export default function EventModal({
 
    const [fetchSettings, settingsResponse] = useLazyGetSettingsQuery();
    const [services, setServices] = useState([])
+   const { id: currentUserId } = useSelector(state => state.user)
 
    const [isSettingsLoaded, setIsSettingsLoaded] = useState(false);
    const getCheckedItems = (strArr, array) => {
@@ -284,7 +291,7 @@ export default function EventModal({
          });
          setIsProductive(productive);
          // console.log('setting', res.data.data.setting)
-         setServicesAndSpecialization(res.data.data.setting.servicesAndSpecialization)
+         setAllServicesAndSpec(res.data.data.setting.servicesAndSpecialization)
          setServices(res.data.data.setting.Expertise);
          setIsSettingsLoaded(true);
       });
@@ -628,12 +635,47 @@ export default function EventModal({
             setEventModalActive(false)
          })
    }
+
+   useEffect(() => {
+      // if (persona === 'tutor') {
+      // console.log(data.tutorId);
+      if (!data.tutorId) return
+      getUserDetail({ id: data.tutorId })
+         .then(res => {
+            if (res.error) {
+               console.log('tutor err', res.error);
+               return
+            }
+            // console.log(res.data.data);
+            let details = res.data.data.details
+            if (details === null) return
+            if (details.tutorServices.length === 0) return alert('Tutor does not have any services')
+            let services = details.tutorServices.map(item => item.service)
+            setServicesAndSpecialization(services)
+         })
+      // }
+
+   }, [persona, data.tutorId])
+
+   useEffect(() => {
+      // console.log('all', allServicesAndSpec)
+      // console.log('servicesAndSpecialization', servicesAndSpecialization)
+
+      let specs = []
+      allServicesAndSpec.map(item => {
+         if (item.service === data.service) {
+            specs = item.specialization
+         }
+      })
+      console.log('spec', specs)
+      setSpecializations(specs)
+   }, [servicesAndSpecialization, data.service, allServicesAndSpec])
    // console.log(convertTime12to24(`${data.time.end.time} ${data.time.end.timeType}`))
    // console.log(convertTime12to24('1:00 AM'))
    //console.log(data.feedbackStars);
    // console.log('sessionToUpdate', sessionToUpdate)
    // console.log('session data', data)
-   console.log('servicesAndSpecialization', servicesAndSpecialization)
+   // console.log('servicesAndSpecialization', servicesAndSpecialization)
 
    const dataProps = { data, setData }
    return (
@@ -671,16 +713,36 @@ export default function EventModal({
                         label="Services"
                         labelClassname="ml-3"
                         value={data.service}
-                        onChange={(val) =>{
+                        onChange={(val) => {
                            // console.log(val)
-                           setData({ ...data, service: val.value })
+                           data.service !== val && setData({ ...data, service: val, specialization : '' })
                         }}
-                        optionType='object'
-                        optionData={servicesAndSpecialization.map(item => ({ ...item, value: item.service }))}
+                        // optionType='object'
+                        optionData={servicesAndSpecialization}
                         inputContainerClassName={`bg-lightWhite pt-3.5 pb-3.5 border-0 font-medium pr-3
                        `}
                         inputClassName="bg-transparent appearance-none font-medium pt-4 pb-4"
                         placeholder="Service"
+                        parentClassName={`w-full mr-4 max-w-373 self-end 
+                        ${persona === "student" ? "mr-4" : ""} ${persona === "parent" ? " order-2" : ""}
+                        `}
+                        type="select"
+                        disabled={!isEditable}
+                     />
+                     <InputSelect
+                        label="Specialization"
+                        labelClassname="ml-3"
+                        value={data.specialization}
+                        onChange={(val) => {
+                           // console.log(val)
+                           setData({ ...data, specialization: val })
+                        }}
+                        // optionType='object'
+                        optionData={specializations}
+                        inputContainerClassName={`bg-lightWhite pt-3.5 pb-3.5 border-0 font-medium pr-3
+                       `}
+                        inputClassName="bg-transparent appearance-none font-medium pt-4 pb-4"
+                        placeholder="Specialization"
                         parentClassName={`w-full mr-4 max-w-373 self-end 
                         ${persona === "student" ? "mr-4" : ""} ${persona === "parent" ? " order-2" : ""}
                         `}

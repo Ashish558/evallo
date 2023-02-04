@@ -207,6 +207,11 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
          title: 'Service',
          api: 'tutorDetail',
       },
+      {
+         name: 'youtubeLink',
+         title: 'Youtube Link',
+         api: 'tutorDetail',
+      },
    ]
 
    // console.log(currentField)
@@ -373,7 +378,6 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
             const level = getLevel(reqBody.tutorLevel)
             reqBody.tutorLevel = level
          }
-
          if (reqBody.tutorServices) {
             if (currentToEdit.servicePresent === false) {
                reqBody.tutorServices = [...reqBody.tutorServices, { ...updatedService }]
@@ -381,14 +385,13 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                reqBody.tutorServices = reqBody.tutorServices.map(serv => {
                   if (serv.service === updatedService.service) {
                      return { ...updatedService }
-                  }else{
+                  } else {
                      return { ...serv }
                   }
                })
             }
          }
-         console.log('reqBody', reqBody)
-         // console.log('updatedService', updatedService)
+         // console.log('reqBody', reqBody)
          // return
          if (currentToEdit.isPresent === false) {
             delete reqBody['isPresent']
@@ -430,7 +433,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
    }
    // console.log('toedit', currentToEdit)
    // console.log('setting', settings.servicesAndSpecialization[currentToEdit.selectedIdx])
-   // console.log('field', currentField)
+   console.log('field', currentField)
    // console.log('sett', settings)
    // console.log('students', students)
    // console.log('parents', parents)
@@ -1355,6 +1358,18 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                                     value={currentToEdit.aboutScore}
                                     onChange={e => setCurrentToEdit({ ...currentToEdit, aboutScore: e.target.value })} />
                               </div>
+                           </div>
+                        }
+                        {currentField.name === "youtubeLink" &&
+                           <div>
+                              <input
+                                 placeholder=""
+                                 value={currentToEdit.youtubeLink}
+                                 onChange={e =>
+                                    setCurrentToEdit({ ...currentToEdit, youtubeLink: e.target.value })
+                                 }
+                                 className="bg-lightWhite w-full outline-0 px-5 pt-3 pb-3 rounded"
+                              />
                            </div>
                         }
                         {/* <InputField label='First Name'
