@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import styles from "./modal.module.css";
 import CancelIcon from "../../assets/Modal/cancel.svg";
 import SecondaryButton from "../Buttons/SecondaryButton";
+import Loader from "../Loader";
 
 export default function Modal({
    title,
@@ -50,17 +51,22 @@ export default function Modal({
                         onClick={primaryBtn.onClick ? primaryBtn.onClick : null}
                         form={primaryBtn.form ? primaryBtn.form : null}
                         type={primaryBtn.type ? primaryBtn.type : "button"}
-                        className={`bg-primary disabled:bg-primary-300 rounded-md text-lg font-medium text-white py-3 px-12 ml-12 ${primaryBtn.className ? primaryBtn.className : ""}`}
-                        disabled={primaryBtn.disabled}
+                        className={`bg-primary relative disabled:bg-primary-300 rounded-md text-lg font-medium text-white py-3 px-12 ml-12 ${primaryBtn.className ? primaryBtn.className : ""}`}
+                        disabled={primaryBtn?.loading === true ? true : primaryBtn.disabled}
+                        loading={primaryBtn.loading}
                      >
                         {primaryBtn.text}
+                        {
+                           primaryBtn !== undefined && primaryBtn?.loading === true &&
+                           <Loader />
+                        }
                      </button>
-                  )} 
+                  )}
                </div>
-               <button className={styles.cancelBtn} 
-                style={cancelBtnStyle}
-                onClick={handleClose}
-                >
+               <button className={styles.cancelBtn}
+                  style={cancelBtnStyle}
+                  onClick={handleClose}
+               >
                   <img src={CancelIcon} onClick={handleClose} />
                </button>
             </div>

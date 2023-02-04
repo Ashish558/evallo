@@ -21,34 +21,36 @@ export default function InputField({
    isRequired,
    style,
    disabled,
-   error
+   error,
+   onKeyDown
 }) {
    const [inputType, setInputType] = useState(type)
 
    return (
       <div className={`relative ${parentClassName && parentClassName}`}>
-         <label
+         {label && <label
             className={`inline-block font-semibold ${labelClassname} ml-3`}
          >
             {label}
             {required && (
                <span className="text-primaryRed inline-block pl-1">*</span>
             )}
-         </label>
+         </label>}
          <div
             className={`py-[13px] px-[14px] lg:py-[16px] lg:px-[21px] flex items-center rounded-10 ${inputContainerClassName ? inputContainerClassName : ""} ${disabled === true ? 'cursor-not-allowed' : ''} `}
-               
+
          >
-            {Icon && <img src={Icon} className={`mr-5 ${iconSize === 'medium' ? 'w-[24px]' : 'w-[28px]'}`}  />}
+            {Icon && <img src={Icon} className={`mr-5 ${iconSize === 'medium' ? 'w-[24px]' : 'w-[28px]'}`} />}
             {inputLeftField && inputLeftField}
             <input
-               className={`outline-0 w-full ${inputClassName ? inputClassName : "" } ${disabled === true ? 'cursor-not-allowed' : ''} `}
+               className={`outline-0 w-full ${inputClassName ? inputClassName : ""} ${disabled === true ? 'cursor-not-allowed' : ''} `}
                placeholder={placeholder}
                type={inputType ? inputType : "text"}
-               onChange={(e) => onChange !== undefined ? onChange(e) : "" }
+               onChange={(e) => onChange !== undefined ? onChange(e) : ""}
                value={value}
                required={isRequired ? true : false}
                disabled={disabled !== undefined ? disabled : false}
+               onKeyDown={onKeyDown ? onKeyDown : () => { }}
             />
             {type === 'password' && <img src={EyeIcon} className="ml-4 w-[20px]"
                onClick={() => inputType === 'password' ? setInputType('text') : setInputType('password')}
@@ -56,9 +58,9 @@ export default function InputField({
             {IconRight && <img src={IconRight} className={`ml-4 cursor-pointer ${iconSize === "medium" && "w-[24px]"}`} />}
             {right && right}
          </div>
-            {error !== undefined && error !== '' &&
-               <Message error={error} type='danger' />
-            }
+         {error !== undefined && error !== '' &&
+            <Message error={error} type='danger' />
+         }
       </div>
    );
 }

@@ -171,6 +171,14 @@ export const testServicesApi = createApi({
             headers: getAuthHeader()
          })
       }),
+      addBackupResponse: builder.mutation({
+         query: (body) => ({
+            url: `/api/test/addbackupresponse/${body.id}`,
+            method: "POST",
+            body: body.reqbody,
+            headers: getAuthHeader()
+         })
+      }),
 
    }),
 });
@@ -196,5 +204,6 @@ export const {
    useLazyGetSingleAssignedTestQuery,
    useLazyGetAnswersQuery,
    useLazyDeleteTestQuery,
-   useEditQuestionMutation
+   useEditQuestionMutation,
+   useAddBackupResponseMutation
 } = testServicesApi;

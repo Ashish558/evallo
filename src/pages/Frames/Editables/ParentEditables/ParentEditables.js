@@ -29,7 +29,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
    const [updateDetails, updateDetailsResp] = useUpdateUserDetailsMutation()
    const [updateTutorDetails, updateTutorDetailsResp] = useUpdateTutorDetailsMutation()
    const [postTutorDetails, postTutorDetailsResp] = usePostTutorDetailsMutation()
-
+   const [updatedService, setUpdatedService] = useState({})
 
    const data = [
       {
@@ -202,6 +202,11 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
          title: 'PSAT / P-ACT Scores',
          api: 'userDetail',
       },
+      {
+         name: 'tutorServices',
+         title: 'Service',
+         api: 'tutorDetail',
+      },
    ]
 
    // console.log(currentField)
@@ -368,7 +373,23 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
             const level = getLevel(reqBody.tutorLevel)
             reqBody.tutorLevel = level
          }
-         console.log(reqBody)
+
+         if (reqBody.tutorServices) {
+            if (currentToEdit.servicePresent === false) {
+               reqBody.tutorServices = [...reqBody.tutorServices, { ...updatedService }]
+            } else {
+               reqBody.tutorServices = reqBody.tutorServices.map(serv => {
+                  if (serv.service === updatedService.service) {
+                     return { ...updatedService }
+                  }else{
+                     return { ...serv }
+                  }
+               })
+            }
+         }
+         console.log('reqBody', reqBody)
+         // console.log('updatedService', updatedService)
+         // return
          if (currentToEdit.isPresent === false) {
             delete reqBody['isPresent']
             postTutorDetails({ id: userId, fields: reqBody })
@@ -407,8 +428,8 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
          return ''
       }
    }
-   // console.log('toedit', currentToEdit)
-   // console.log('setting', settings)
+   console.log('toedit', currentToEdit)
+   console.log('setting', settings.servicesAndSpecialization[currentToEdit.selectedIdx])
    // console.log('field', currentField)
    // console.log('sett', settings)
    // console.log('students', students)
@@ -424,6 +445,29 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
          }
       }
       return num
+   }
+
+   const handlePriceChange = value => {
+      let updated = []
+      currentToEdit.tutorServices.map(serv => {
+         //if exists
+         if (serv.service === settings.servicesAndSpecialization[currentToEdit.selectedIdx].service) {
+            updated.push({ ...serv, price: value })
+            setUpdatedService({ ...serv, price: value })
+         } else {
+            let newserv = settings.servicesAndSpecialization[currentToEdit.selectedIdx]
+            updated.push({ ...newserv, price: value })
+            setUpdatedService({ ...newserv, price: value })
+         }
+      })
+
+      console.log(updated);
+      // setCurrentToEdit(prev => {
+      //    return {
+      //       ...prev,
+
+      //    }
+      // })
    }
 
    const [startDate, setStartDate] = useState(new Date());
@@ -448,7 +492,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                body={
                   <>
                      <div className={styles.titleContainer}>
-                        {currentField.title}
+                        {currentField.title ? currentField.title : toEdit.tutorServices ? 'Service' : ''}
                      </div>
                      <form className='mt-20 mb-4' id='editable-form' onSubmit={handleSubmit} >
                         {/* {currentField.fields && currentField.fields} */}
@@ -710,7 +754,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                                        name: 'subjects',
                                        match: currentToEdit.subjects
                                     }}
-                                    optionData={settings.classes ? settings.classes : [] }
+                                    optionData={settings.classes ? settings.classes : []}
                                     inputContainerClassName="pt-3 pb-3 border bg-white"
                                     placeholder="Subjects"
                                     parentClassName="w-full mr-4"
@@ -907,6 +951,28 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                               </div>
                            </div>
                         }
+                        {toEdit.tutorServices &&
+                           <div>
+                              <div className='flex items-center mb-4'>
+                                 <p className='font-medium mr-4 min-w-[150px]'>
+                                    {currentToEdit.selectedIdx !== undefined ? settings.servicesAndSpecialization[currentToEdit.selectedIdx].service : ''}
+                                 </p>
+                                 <InputField
+                                    labelClassname='hidden'
+                                    placeholder=''
+                                    inputContainerClassName='text-sm pt-3 pb-3 px-5 bg-primary-50 border-0'
+                                    inputLeftField={
+                                       <div>
+                                          $
+                                       </div>
+                                    }
+                                    inputClassName='bg-transparent pl-4 rounded-[4px]'
+                                    parentClassName='flex-1 ' type='text'
+                                    value={currentToEdit.testPrepRate}
+                                    onChange={e => handlePriceChange(e.target.value)} />
+                              </div>
+                           </div>
+                        }
                         {currentField.name === 'paymentInfo' &&
                            <div>
                               <div className='flex items-center mb-4'>
@@ -1019,7 +1085,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                            <div>
                               <textarea
                                  placeholder=""
-                                 value={data.about}
+                                 value={currentToEdit.about}
                                  onChange={e =>
                                     setCurrentToEdit({ ...currentToEdit, about: e.target.value })
                                  }

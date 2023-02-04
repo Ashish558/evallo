@@ -1,7 +1,7 @@
 //y
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { useLazyGetAssignedTestQuery, useLazyGetParentsAssignedTestsQuery, useLazyGetTestDetailsQuery, useLazyGetTestResponseQuery } from "../../app/services/test";
+import { useAddBackupResponseMutation, useLazyGetAssignedTestQuery, useLazyGetParentsAssignedTestsQuery, useLazyGetTestDetailsQuery, useLazyGetTestResponseQuery } from "../../app/services/test";
 import { useLazyGetUserDetailQuery } from "../../app/services/users";
 import Modal from "../../components/Modal/Modal";
 import Table from "../../components/Table/Table";
@@ -36,15 +36,13 @@ const parentTestInfo = [
 
 export default function StudentTest() {
 
-   const [tableData, setTableData] = useState(studentsDataTable)
    const [tableHeaders, setTableHeaders] = useState(studentTableHeaders)
    const [user, setUser] = useState({})
    const [associatedStudents, setAssociatedStudents] = useState([]);
    const [selectedStudent, setSelectedStudent] = useState(null)
 
    const [getTest, getTestResp] = useLazyGetAssignedTestQuery()
-   const [getTestDetails, getTestDetailsResp] = useLazyGetTestDetailsQuery()
-   const [getResponse, getResponseRes] = useLazyGetTestResponseQuery()
+  
    const [getUserDetail, userDetailResp] = useLazyGetUserDetailQuery()
    const [fetchAssignedTests, fetchAssignedTestsResp] = useLazyGetParentsAssignedTestsQuery()
 
@@ -204,11 +202,11 @@ export default function StudentTest() {
       <>
          <div className="lg:ml-pageLeft bg-lightWhite min-h-screen">
             <div className="py-14 px-5">
-               <div className="flex justify-end items-center">
-                  {/* <p className={`font-bold text-[80px]`}
+               <div className="flex justify-between items-center">
+                <p className={`font-bold text-[80px]`}
                      style={{ color: "#25335A" }} >
                      Tests
-                  </p> */}
+                  </p> 
                   {persona === "student" ? (
                      <div className="flex flex-col items-center justify-end">
                         {parentTestInfo.map(item => {

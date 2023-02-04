@@ -24,24 +24,24 @@ export default function InputSelect({
    const [selected, setSelected] = useState(false);
    const selectRef = useRef();
    useOutsideAlerter(selectRef, () => setSelected(false));
- 
+
    useEffect(() => {
-     if(!checkbox) setSelected(false)
+      if (!checkbox) setSelected(false)
    }, [value]);
 
    return (
       <div
          ref={selectRef}
          className={`${selected && "relative z-5000"} ${parentClassName ? parentClassName : ""
-            } ${disabled === true ? 'pointer-events-none' : ''} ` }
+            } ${disabled === true ? 'pointer-events-none' : ''} `}
          onClick={() => setSelected(true)}
       >
-         <label className={`font-semibold inline-block ${labelClassname}`}>
+         {label && <label className={`font-semibold inline-block ${labelClassname}`}>
             {label}
             {required && (
                <span className="text-primaryRed inline-block pl-1">*</span>
             )}
-         </label>
+         </label>}
 
          <div
             className={`py-[16px] px-[21px] flex items-center rounded-10 relative cursor-pointer z-50 ${inputContainerClassName ? inputContainerClassName : ""
@@ -75,7 +75,7 @@ export default function InputSelect({
                            }}
                         >
                            <p>
-                               {optionType !== undefined && optionType === 'object' ? option.value : option}
+                              {optionType !== undefined && optionType === 'object' ? option.value : option}
                            </p>
                            {
                               radio && <input type='radio' name='name' checked={option === value ? true : false} />
