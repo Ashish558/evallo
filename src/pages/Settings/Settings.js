@@ -11,6 +11,7 @@ import { useUpdateOfferImageMutation, useUpdateSettingMutation } from '../../app
 import { getSessionTagName } from '../../utils/utils'
 import { BASE_URL, getAuthHeader } from '../../app/constants/constants'
 import axios from 'axios'
+import DeleteIcon from '../../assets/icons/delete.svg'
 
 const testFilters = [
    {
@@ -248,10 +249,19 @@ export default function Settings() {
    }
 
 
-   const onRemoveImage = (link) => {
-      let updatedField = settingsData.offerImages.filter(item => item.image !== link)
+   const onRemoveImage = (itemToRemove) => {
+      console.log(itemToRemove);
+      let updatedField = settingsData.offerImages.filter(item => item._id !== itemToRemove._id)
       let updatedSetting = {
          offerImages: updatedField
+      }
+      console.log(updatedSetting);
+      updateAndFetchsettings(updatedSetting)
+   }
+   const onRemoveService = (itemToRemove) => {
+      let updated = settingsData.servicesAndSpecialization.filter(item => item._id !== itemToRemove._id)
+      let updatedSetting = {
+         servicesAndSpecialization: updated
       }
       updateAndFetchsettings(updatedSetting)
    }
@@ -304,7 +314,7 @@ export default function Settings() {
          if (serv.service === service) {
             let updatedSpec = serv.specialization.filter(spec => spec !== text)
             return { ...serv, specialization: updatedSpec }
-         }else{
+         } else {
             return { ...serv }
          }
       })
@@ -442,15 +452,21 @@ export default function Settings() {
                   } />
 
                <SettingsCard title='Service and specialization'
-               className=''
+                  className=''
                   titleClassName='text-[21px] mb-[15px]'
                   body={
                      <div className='max-h-[360px] overflow-auto scrollbar-content scrollbar-vertical'>
                         {servicesAndSpecialization !== undefined && servicesAndSpecialization.map((service, i) => {
                            return <div key={i}>
-                              <p className='font-bold text-primary-dark mb-4'>
-                                 {service.service}
-                              </p>
+                              <div className='flex items-center justify-between pr-8'>
+                                 <p className='font-bold text-primary-dark mb-4'>
+                                    {service.service}
+                                 </p>
+                                 <div className='w-5 h-5 flex items-center justify-center bg-[#E3E3E3] rounded-full cursor-pointer'
+                                    onClick={() => onRemoveService(service)} >
+                                    <img src={DeleteIcon} className='w-4' alt='delete' />
+                                 </div>
+                              </div>
                               <div className='flex items-center flex-wrap [&>*]:mb-[18px]'>
                                  <AddTag onAddTag={handleAddSpecialization}
                                     keyName={service.service}
