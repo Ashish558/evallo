@@ -26,6 +26,7 @@ const testData = ["SAT", "ACT"];
 const tempTableHeaders = [
    "Name",
    "Assigned on",
+   // "Assigned By",
    "Test Name",
    "Duration",
    "Status",
@@ -37,6 +38,7 @@ const tempTableHeaders = [
 const studentTableHeaders = [
    "Test Name",
    "Assigned on",
+   // 'Assigned by',
    "Due Date",
    "Duration",
    "Status",
@@ -102,6 +104,7 @@ export default function AssignedTests() {
    }, [modalData.name, modalData.limit, modalData.date, modalData.test])
 
    useEffect(() => {
+      // if (modalData.name.trim() === '' || modalData.limit.trim() === '' || modalData.date === '' || modalData.testId === '' || modalData.studentId.trim() === '') {
       if (modalData.name.trim() === '' || modalData.limit.trim() === '' || modalData.date === '' || modalData.testId === '' || modalData.studentId.trim() === '') {
          setSubmitBtnDisabled(true)
       } else {
@@ -116,7 +119,11 @@ export default function AssignedTests() {
             setSubmitBtnDisabled(false)
          }
       }
-   }, [modalData])
+   }, [modalData.name,
+   modalData.limit,
+   modalData.date,
+   modalData.testId,
+   modalData.studentId,])
 
    // console.log(modalData);
    useEffect(() => {
@@ -154,8 +161,9 @@ export default function AssignedTests() {
       fetchAssignedTests()
          .then(res => {
             if (res.error) return console.log(res.error)
-            // console.log('response ', res.data)
+            console.log(res);
             let data = res.data.data.test.map(item => {
+               // console.log('item', item);
                const { createdAt, studentId, testId, dueDate, multiple, timeLimit, isCompleted, isStarted } = item
                return {
                   studentName: studentId ? `${studentId.firstName} ${studentId.lastName}` : '-',
@@ -274,6 +282,7 @@ export default function AssignedTests() {
             }
             setModalData(initialState)
             console.log(res.data.data.assign)
+            alert("Test Assigned!")
             setAssignTestModalActive(false)
             fetch()
          })
@@ -343,10 +352,10 @@ export default function AssignedTests() {
 
    const deleteTest = () => {
       console.log('deleteTest', testToDelete);
-      deleteAssignedTest({id: testToDelete.assignedTestId})
+      deleteAssignedTest({ id: testToDelete.assignedTestId })
          .then(res => {
             if (res.error) {
-               console.log('delete err' ,res.error)
+               console.log('delete err', res.error)
                return
             }
             fetch()
@@ -380,25 +389,13 @@ export default function AssignedTests() {
       <>
          <div className="lg:ml-pageLeft bg-lightWhite min-h-screen">
             <div className="py-14 px-5">
-               <div className="flex justify-between items-center">
-                  <p className={`font-bold text-4xl text-primary-dark`}
+               <div className="flex gap-4 justify-between items-center">
+                  {localStorage.getItem('role') === "parent" || localStorage.getItem('role') === 'student' ? <p className={`font-bold text-4xl text-primary-dark`}
                   // style={{ color: "#25335A" }}
                   >
                      Assigned Tests
-                  </p>
+                  </p> : <></>}
 
-                  <button
-                     className="bg-primaryOrange text-lg flex pt-4 pb-4 px-5 items-center text-white font-semibold rounded-lg mr-55"
-                     onClick={() => setAssignTestModalActive(true)}
-
-                  >
-                     Assign new test
-                     <img src={AddIcon} className="ml-3" />
-                  </button>
-
-               </div>
-
-               <div className="flex align-center mt-8">
                   <InputField
                      value={filterData.studentName}
                      IconRight={SearchIcon}
@@ -406,7 +403,7 @@ export default function AssignedTests() {
                      optionData={optionData}
                      placeholder="Student Name"
                      inputContainerClassName="px-[20px] py-[16px] bg-white"
-                     parentClassName="w-full mr-4 text-sm"
+                     parentClassName="w-full text-sm"
                      type="text"
                   />
                   <InputField
@@ -416,14 +413,14 @@ export default function AssignedTests() {
                      optionData={optionData}
                      placeholder="Test Name"
                      inputContainerClassName="px-[20px] py-[16px] bg-white"
-                     parentClassName="w-full mr-4 text-sm"
+                     parentClassName="w-full text-sm"
                      type="text"
                   />
                   <InputField
                      value={filterData.tutor}
                      onChange={e => setFilterData({ ...filterData, tutor: e.target.value })}
                      IconRight={SearchIcon}
-                     parentClassName="w-full mr-4 text-sm"
+                     parentClassName="w-full text-sm"
                      inputContainerClassName="px-[20px] py-[16px] bg-white"
                      optionData={optionData}
                      placeholder="Tutor Name"
@@ -435,10 +432,62 @@ export default function AssignedTests() {
                      optionData={['Started', 'Not Started', 'Completed']}
                      inputContainerClassName="px-[20px] py-[16px] bg-white"
                      placeholder="Completion Status"
-                     parentClassName="w-full mr-4 text-sm"
+                     parentClassName="w-full text-sm"
                      type="select"
                   />
+
+                  <button
+                     className="bg-primaryOrange w-full text-lg justify-center flex pt-4 pb-4 px-5 items-center text-white font-semibold rounded-lg"
+                     onClick={() => setAssignTestModalActive(true)}
+
+                  >
+                     Assign new test
+                     <img src={AddIcon} className="ml-3" />
+                  </button>
+
                </div>
+
+               {/* <div className="flex align-center mt-8">
+                  <InputField
+                     value={filterData.studentName}
+                     IconRight={SearchIcon}
+                     onChange={e => setFilterData({ ...filterData, studentName: e.target.value })}
+                     optionData={optionData}
+                     placeholder="Student Name"
+                     inputContainerClassName="px-[20px] py-[16px] bg-white"
+                     parentClassName="w-full text-sm"
+                     type="text"
+                  />
+                  <InputField
+                     value={filterData.testName}
+                     IconRight={SearchIcon}
+                     onChange={e => setFilterData({ ...filterData, testName: e.target.value })}
+                     optionData={optionData}
+                     placeholder="Test Name"
+                     inputContainerClassName="px-[20px] py-[16px] bg-white"
+                     parentClassName="w-full text-sm"
+                     type="text"
+                  />
+                  <InputField
+                     value={filterData.tutor}
+                     onChange={e => setFilterData({ ...filterData, tutor: e.target.value })}
+                     IconRight={SearchIcon}
+                     parentClassName="w-full text-sm"
+                     inputContainerClassName="px-[20px] py-[16px] bg-white"
+                     optionData={optionData}
+                     placeholder="Tutor Name"
+                     type="text"
+                  />
+                  <InputSelect
+                     value={filterData.status}
+                     onChange={val => setFilterData({ ...filterData, status: val })}
+                     optionData={['Started', 'Not Started', 'Completed']}
+                     inputContainerClassName="px-[20px] py-[16px] bg-white"
+                     placeholder="Completion Status"
+                     parentClassName="w-full text-sm"
+                     type="select"
+                  />
+               </div> */}
                <div className='mt-4' >
                   <FilterItems items={filterItems} setData={setFilterItems} onRemoveFilter={onRemoveFilter} />
                </div>
@@ -475,12 +524,12 @@ export default function AssignedTests() {
                   text: "Assign",
                   className: "max-w-140 pl-8 pr-8",
                   onClick: () => handleAssignTestSubmit(),
-                  disabled: submitBtnDisabled,
+                  disabled: modalData.name.trim() === '' || modalData.limit.trim() === '' || modalData.date === '' || modalData.testId === '' || modalData.studentId.trim() === '',
                   loading: loading
                }}
                handleClose={handleClose}
                body={
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-x-2 md:gap-x-3 gap-y-2 gap-y-4 mb-5">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-x-2 md:gap-x-3 gap-y-4 mb-5">
                      <div>
                         <InputSearch
                            label="Student Name"

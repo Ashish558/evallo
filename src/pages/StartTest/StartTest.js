@@ -40,6 +40,8 @@ export default function StartTest() {
       completedOn: '',
       testName: ''
    })
+
+   console.log(testHeaderDetails);
    const [isUnlimited, setIsUnlimited] = useState(false)
    const [sectionDetails, setSectionDetails] = useState({})
    const [subjects, setSubjects] = useState([])
@@ -75,6 +77,7 @@ export default function StartTest() {
                setIsUnlimited(false)
             }
             if (res.data.data.test.testId) {
+               console.log(res.data.data.test.testId);
                setTestHeaderDetails(prev => ({
                   ...prev,
                   testName: testId.testName,

@@ -259,11 +259,14 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch }) {
                   />
                </td>
                <td className="font-medium px-1 min-w-14 py-4">
-                  <img
-                     src={DeleteIcon}
-                     className="cursor-pointer w-5"
+                  {/* <img
+                     src={RedIcon}
+                     className="cursor-pointer w-5 relative"
                      onClick={() => onClick.handleDelete(item)}
-                  />
+                  /> */}
+                  <div className="bg-[#FF5555] rounded-full relative w-5 h-5 text-white text-21 cursor-pointer" onClick={() => onClick.handleDelete(item)}>
+                     <span className="absolute top-[-7px] left-[3.5px]">×</span>
+                  </div>
                </td>
             </tr>
          )}
@@ -439,7 +442,7 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch }) {
                      className="flex"
                      onClick={() => onClick.openRemoveTestModal(item)}
                   >
-                     <button className="flex ml-6 bg-textGray-400 flex items-center items-center leading-none text-white py-1.8 px-5 rounded">
+                     <button className="flex ml-6 bg-textGray-400 items-center leading-none text-white py-1.8 px-5 rounded">
                         Remove
                      </button>
                   </div>

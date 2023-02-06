@@ -19,7 +19,7 @@ import FilterItems from "../../components/FilterItems/filterItems";
 import { useSelector } from "react-redux";
 
 const optionData = ["option 1", "option 2", "option 3", "option 4", "option 5"];
-const testTypeOptions = ["SAT", "ACT"];
+const testTypeOptions = ["SAT", "Other"];
 const tableHeaders = ["Test Name", "Date Modified", "Test Type", "", ""];
 
 const initialState = {
@@ -203,12 +203,22 @@ export default function AllTests() {
       <div className="lg:ml-pageLeft bg-lightWhite min-h-screen">
          <div className="py-14 px-5">
             <div className="flex justify-between items-center">
-               <p
+               {/* <p
                   className="font-bold text-4xl"
                   style={{ color: "#25335A" }}
                >
                   All Tests
-               </p>
+               </p>  */}
+                <InputField
+                  value={testName}
+                  IconRight={SearchIcon}
+                  onChange={(e) => setTestName(e.target.value)}
+                  optionData={optionData}
+                  placeholder="Test Name"
+                  parentClassName="w-290 mr-4"
+                  inputContainerClassName="bg-white border pt-3.5 pb-3.5"
+                  type="select"
+               />
                <button
                   className="bg-primaryOrange py-3.5 px-6 flex items-center text-white font-semibold rounded-lg mr-55"
                   onClick={() => setModalActive(true)}
@@ -217,7 +227,7 @@ export default function AllTests() {
                   <img src={AddIcon} className="ml-3" />
                </button>
             </div>
-            <div className="flex align-center mt-8">
+            {/* <div className="flex align-center mt-8">
                <InputField
                   value={testName}
                   IconRight={SearchIcon}
@@ -228,7 +238,7 @@ export default function AllTests() {
                   inputContainerClassName="bg-white border pt-3.5 pb-3.5"
                   type="select"
                />
-            </div>
+            </div> */}
 
             <div className="mt-6">
                <Table

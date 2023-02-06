@@ -20,7 +20,6 @@ function App() {
                if (res.error) {
                   return
                }
-               console.log('personal Dedails', res.data)
                const { firstName, lastName, _id, amountToPay, credits, role } = res.data.data.user
                let timeZone = ''
                if (res.data.data.userdetails) {

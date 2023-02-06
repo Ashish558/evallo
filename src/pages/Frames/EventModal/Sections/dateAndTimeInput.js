@@ -55,7 +55,7 @@ export default function DateAndTimeInput({ data, setData, isEditable }) {
             -
          </span>
          <InputField
-            parentClassName="w-full max-w-120"
+            parentClassName="w-full max-w-120 self-end"
             type="time"
             inputContainerClassName="bg-lightWhite border-0 font-medium pr-3 pt-3.5 pb-3.5"
             inputClassName="bg-transparent appearance-none font-medium"
@@ -78,7 +78,7 @@ export default function DateAndTimeInput({ data, setData, isEditable }) {
             inputContainerClassName="bg-lightWhite border-0 font-medium pl-4 pr-3 pt-3.5 pb-3.5"
             inputClassName="bg-transparent appearance-none font-medium"
             placeholder="Time Zone"
-            parentClassName="w-full mr-4 ml-8  max-w-[140px]"
+            parentClassName="w-full mr-4 ml-8  max-w-[140px] self-end"
             type="select"
             disabled={!isEditable}
          />

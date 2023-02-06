@@ -24,7 +24,8 @@ export default function Login({ setLoginFormActive }) {
    const [loginActive, setLoginActive] = useState(true);
    const [email, setEmail] = useState("");
    const [password, setPassword] = useState("");
-   const [error, setError] = useState({})
+   const [error, setError] = useState({});
+   const [wait, setWait] = useState(false);
 
    // const [error, setError] = useState({
    //    password: '',
@@ -110,7 +111,7 @@ export default function Login({ setLoginFormActive }) {
                      <p className="text-lg font-bold mb-12 hidden lg:block px-[120px]">
                         Login with email address
                      </p>
-                     <div className="px-[49px] lg:px-[120px] mt-[105px] lg:mt-0">
+                     <form onSubmit={handleSubmit} className={`px-[49px] lg:px-[120px] mt-[105px] lg:mt-0 ${wait ? 'cursor-wait' : 'cursor-default'}`}>
                         <InputField
                            Icon={EmailIcon}
                            iconSize='medium'
@@ -170,7 +171,7 @@ export default function Login({ setLoginFormActive }) {
                         >
                            Sign-up Instead?
                         </p>
-                     </div>
+                     </form>
 
                   </div>
                ) : isPasswordForgot ? (

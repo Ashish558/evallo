@@ -51,9 +51,10 @@ export default function Modal({
                         onClick={primaryBtn.onClick ? primaryBtn.onClick : null}
                         form={primaryBtn.form ? primaryBtn.form : null}
                         type={primaryBtn.type ? primaryBtn.type : "button"}
-                        className={`bg-primary relative disabled:bg-primary-300 rounded-md text-lg font-medium text-white py-3 px-12 ml-12 ${primaryBtn.className ? primaryBtn.className : ""}`}
+                        className={`bg-primaryRed relative disabled:opacity-75 rounded-md text-lg font-medium text-white py-3 px-12 ml-12 ${primaryBtn.className ? primaryBtn.className : ""}`}
                         disabled={primaryBtn?.loading === true ? true : primaryBtn.disabled}
                         loading={primaryBtn.loading}
+                        // disabled
                      >
                         {primaryBtn.text}
                         {

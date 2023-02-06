@@ -28,14 +28,14 @@ export default function InputField({
 
    return (
       <div className={`relative ${parentClassName && parentClassName}`}>
-         <label
+         {label && <label
             className={`inline-block font-semibold ${labelClassname} ml-3`}
          >
             {label}
             {required && (
                <span className="text-primaryRed inline-block pl-1">*</span>
             )}
-         </label>
+         </label>}
          <div
             className={`py-[13px] px-[14px] lg:py-[16px] lg:px-[21px] flex items-center rounded-10 ${inputContainerClassName ? inputContainerClassName : ""} ${disabled === true ? 'cursor-not-allowed' : ''} `}
 
