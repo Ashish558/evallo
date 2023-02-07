@@ -53,7 +53,8 @@ export default function Login({ setLoginFormActive }) {
       })
    }
 
-   const handleSubmit = () => {
+   const handleSubmit = (e) => {
+      e.preventDefault();
       setLoginLoading(true)
       const promiseState = async state => new Promise(resolve => {
          resolve(resetErrors())

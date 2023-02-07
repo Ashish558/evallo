@@ -222,7 +222,7 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch }) {
                   {item.testName}
                </td>
                <td className="font-medium px-1  min-w-14 py-4">
-                  {item.duration}
+                  {item.duration === "-"? "Unlimited" : item.duration}
                </td>
                <td className="font-medium px-1  min-w-14 py-4">
                   <div className={`flex items-center no-wrap justify-center`}>
