@@ -53,6 +53,7 @@ const initialState = {
    test: "",
    testId: '',
    studentId: '',
+   instruction: ''
 }
 
 export default function AssignedTests() {
@@ -100,7 +101,7 @@ export default function AssignedTests() {
    const [filterItems, setFilterItems] = useState([])
 
    useEffect(() => {
-      setValidData(modalData.name && modalData.limit && modalData.date && modalData.test === '');
+      setValidData(modalData.name && modalData.limit && modalData.date && modalData.test === '' && modalData.instruction === '');
    }, [modalData.name, modalData.limit, modalData.date, modalData.test])
 
    useEffect(() => {
@@ -514,6 +515,7 @@ export default function AssignedTests() {
                </div>
             </div>
          </div>
+         {console.log(!modalData.name)}
          {assignTestModalActive && (
             <Modal
                title="Assign New Test"
@@ -524,101 +526,123 @@ export default function AssignedTests() {
                   text: "Assign",
                   className: "max-w-140 pl-8 pr-8",
                   onClick: () => handleAssignTestSubmit(),
-                  disabled: modalData.name.trim() === '' || modalData.limit.trim() === '' || modalData.date === '' || modalData.testId === '' || modalData.studentId.trim() === '',
+                  disabled: !modalData.name || !modalData.limit || !modalData.date || !modalData.testId || !modalData.studentId,
+
                   loading: loading
                }}
                handleClose={handleClose}
                body={
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-x-2 md:gap-x-3 gap-y-4 mb-5">
-                     <div>
-                        <InputSearch
-                           label="Student Name"
-                           value={modalData.name}
-                           onChange={(val) =>
-                              setModalData({
-                                 ...modalData,
-                                 name: val.target.value,
-                              })
-                           }
-                           optionData={students}
-                           onOptionClick={(item) => {
-                              setModalData({
-                                 ...modalData,
-                                 name: item.value,
-                                 studentId: item._id
-                              })
-                           }}
-                           optionPrefix='s'
-                           parentClassName="w-full mr-4"
-                           labelClassname="ml-2 mb-0.5"
-                           inputContainerClassName="px-5 py-3.5 text-sm bg-primary-50 border-0"
-                           inputClassName="bg-transparent"
-                           placeholder="Student Name"
-                           type="select"
-                        />
+                  <>
+                     <div className="grid grid-cols-1 md:grid-cols-2 gap-x-2 md:gap-x-3 gap-y-4 mb-5">
+                        <div>
+                           <InputSearch
+                              label="Student Name"
+                              value={modalData.name}
+                              onChange={(val) =>
+                                 setModalData({
+                                    ...modalData,
+                                    name: val.target.value,
+                                 })
+                              }
+                              optionData={students}
+                              onOptionClick={(item) => {
+                                 setModalData({
+                                    ...modalData,
+                                    name: item.value,
+                                    studentId: item._id
+                                 })
+                              }}
+                              optionPrefix='s'
+                              parentClassName="w-full mr-4"
+                              labelClassname="ml-2 mb-0.5"
+                              inputContainerClassName="px-5 py-3.5 text-sm bg-primary-50 border-0"
+                              inputClassName="bg-transparent"
+                              placeholder="Student Name"
+                              type="select"
+                           />
+                        </div>
+                        <div>
+                           <InputSelect
+                              label="Time Limit"
+                              value={modalData.limit}
+                              onChange={(val) => setModalData({ ...modalData, limit: val, })}
+                              optionData={timeLimits}
+                              parentClassName="w-full mr-4 "
+                              labelClassname="ml-2 mb-0.5"
+                              inputContainerClassName="px-5 text-sm py-3.5 bg-primary-50 border-0"
+                              inputClassName="bg-transparent"
+                              placeholder="Select Time Limit"
+                              type="select"
+                           />
+                        </div>
+                        <div>
+                           <InputField
+                              label="Due Date"
+                              iconSize="medium"
+                              // IconRight={calendar}
+                              value={modalData.date}
+                              onChange={(val) =>
+                                 setModalData({
+                                    ...modalData,
+                                    date: val.target.value,
+                                 })
+                              }
+                              parentClassName="w-full mr-4"
+                              labelClassname="ml-2 mb-0.5"
+                              inputContainerClassName="px-5 py-3.5 bg-primary-50 border-0"
+                              inputClassName="bg-transparent text-sm"
+                              optionData={optionData}
+                              placeholder="Date"
+                              type="date"
+                           />
+                        </div>
+                        <div>
+                           <InputSearch
+                              optionData={testsData}
+                              value={modalData.test}
+                              onChange={(e) =>
+                                 setModalData({
+                                    ...modalData,
+                                    test: e.target.value,
+                                 })
+                              }
+                              onOptionClick={(item) => {
+                                 setModalData({
+                                    ...modalData,
+                                    test: item.value,
+                                    testId: item._id
+                                 })
+                              }}
+                              label="Test"
+                              placeholder="Type Test Name"
+                              parentClassName="w-full mr-4"
+                              labelClassname="ml-2 mb-0.5"
+                              inputContainerClassName="px-5 py-3.5 text-sm bg-primary-50 border-0"
+                              inputClassName="bg-transparent"
+                              type="select"
+                           />
+                        </div>
                      </div>
-                     <div>
-                        <InputSelect
-                           label="Time Limit"
-                           value={modalData.limit}
-                           onChange={(val) => setModalData({ ...modalData, limit: val, })}
-                           optionData={timeLimits}
-                           parentClassName="w-full mr-4 "
-                           labelClassname="ml-2 mb-0.5"
-                           inputContainerClassName="px-5 text-sm py-3.5 bg-primary-50 border-0"
-                           inputClassName="bg-transparent"
-                           placeholder="Select Time Limit"
-                           type="select"
-                        />
-                     </div>
-                     <div>
-                        <InputField
-                           label="Due Date"
-                           iconSize="medium"
-                           IconRight={calendar}
-                           value={modalData.date}
-                           onChange={(val) =>
-                              setModalData({
-                                 ...modalData,
-                                 date: val.target.value,
-                              })
-                           }
-                           parentClassName="w-full mr-4"
-                           labelClassname="ml-2 mb-0.5"
-                           inputContainerClassName="px-5 py-3.5 bg-primary-50 border-0"
-                           inputClassName="bg-transparent text-sm"
-                           optionData={optionData}
-                           placeholder="Date"
-                           type="date"
-                        />
-                     </div>
-                     <div>
-                        <InputSearch
-                           optionData={testsData}
-                           value={modalData.test}
-                           onChange={(e) =>
-                              setModalData({
-                                 ...modalData,
-                                 test: e.target.value,
-                              })
-                           }
-                           onOptionClick={(item) => {
-                              setModalData({
-                                 ...modalData,
-                                 test: item.value,
-                                 testId: item._id
-                              })
-                           }}
-                           label="Test"
-                           placeholder="Type Test Name"
-                           parentClassName="w-full mr-4"
-                           labelClassname="ml-2 mb-0.5"
-                           inputContainerClassName="px-5 py-3.5 text-sm bg-primary-50 border-0"
-                           inputClassName="bg-transparent"
-                           type="select"
-                        />
-                     </div>
-                  </div>
+                     <InputField
+                        label="Instruction From Tutor"
+                        type="text"
+                        iconSize="medium"
+                        // IconRight={calendar}
+                        value={modalData.instruction}
+                        onChange={(val) =>
+                           setModalData({
+                              ...modalData,
+                              instruction: val.target.value,
+                           })
+                        }
+                        parentClassName="w-full mr-4"
+                        labelClassname="ml-2 mb-0.5"
+                        inputContainerClassName="px-5 py-3.5 bg-primary-50 border-0 mb-5"
+                        inputClassName="bg-transparent text-sm"
+                        optionData={optionData}
+                        placeholder="Instruction"
+                     />
+                  </>
                }
             />
          )}

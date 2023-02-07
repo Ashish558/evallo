@@ -22,6 +22,14 @@ export default function Table(props) {
    const [tableData, setTableData] = useState(data);
    const [currentPage, setCurrentPage] = useState(1);
    const dataLength = data.length > 30 ? 30 : data.length;
+   const [sorted, setSorted] = useState(false)
+
+
+   useEffect(() => {
+      // console.log(tableData[0]?.dueDate?.split("-").join(""));
+      const newTeble = tableData.sort((a, b) => a.dueDate?.split("-").join("") - b.dueDate?.split("-").join(""));
+      console.log(newTeble);
+   }, [tableData])
 
    // console.log();
 
@@ -32,9 +40,15 @@ export default function Table(props) {
          const temp = data.slice(0, maxPageSize);
          // const temp = tableData.slice(0, maxPageSize); ***  it Was the Previous one  ***
          setTableData(temp);
+         setSorted(temp)
          setCurrentPage(1);
       }
    }, [data, maxPageSize, data.length]);
+
+   const sorting = () => {
+      // console.log("object");
+      setTableData(tableData.sort((a, b) => b.dueDate?.split("-").join("") - a.dueDate?.split("-").join("")))
+   }
 
 
    //change tabledata if current page changes
@@ -51,12 +65,12 @@ export default function Table(props) {
             <thead className="pb-2">
                <tr>
                   {tableHeaders.map((item, idx) => {
-                     return <TableHeader key={idx} header={item} dataFor={dataFor} />;
+                     return <TableHeader key={idx} header={item} onClick={sorting} setSorted={setSorted} dataFor={dataFor} />;
                   })}
                </tr>
             </thead>
             <tbody>
-               {tableData.map((item, idx) => {
+               {sorted ? tableData.sort((a, b) => a.dueDate?.split("-").join("") - b.dueDate?.split("-").join("")).map((item, idx) => {
                   return (
                      <TableItem
                         dataFor={dataFor}
@@ -66,7 +80,13 @@ export default function Table(props) {
                         onClick={onClick}
                      />
                   );
-               })}
+               }) : tableData.sort((a, b) => b.assignedOn?.split("-").join("") - a.assignedOn?.split("-").join("")).map((item, idx) => <TableItem
+                  dataFor={dataFor}
+                  item={item}
+                  key={idx}
+                  excludes={excludes}
+                  onClick={onClick}
+               />)}
             </tbody>
          </table>
 
