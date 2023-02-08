@@ -76,7 +76,7 @@ function Timer({ timer, active, handleSubmitSection, setCountDown, isUnlimited, 
             {isUnlimited === true ?
                '-'
                :
-               minutes === 0 && seconds === 0
+               minutes <= 0 && seconds <= 0
                   ? null
                   : <> {minutes}:{seconds < 10 ? `0${seconds}` : seconds}</>
             }
