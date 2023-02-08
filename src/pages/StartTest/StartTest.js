@@ -105,6 +105,7 @@ export default function StartTest() {
             }
             console.log('start test', res.data)
             const { startTime, endTime, sectionName, answer, submitId } = res.data.data
+            setPopUp(false)
 
             if (endTime === null) {
                let date = new Date()
@@ -434,7 +435,7 @@ export default function StartTest() {
             <div className='flex'>
 
                <div className='flex-1' >
-                  <BackBtn to='/all-tests' />
+                  {!testStarted && <BackBtn to='/all-tests' />}
                   <p className='text-primary-dark font-bold text-3xl mb-8' >
                      {testHeaderDetails.testName}
                   </p>
