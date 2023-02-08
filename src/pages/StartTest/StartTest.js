@@ -422,6 +422,8 @@ export default function StartTest() {
 
    }
 
+   console.log(testHeaderDetails);
+
    if (subjects.length === 0) return
    return (
       <div className='ml-pageLeft bg-lightWhite min-h-screen'>
@@ -441,6 +443,13 @@ export default function StartTest() {
                            <span className='inline-block mr-4'>:</span>
                            <p className='inline-block w-138 font-semibold'>
                               {testHeaderDetails.name}
+                           </p>
+                        </div>
+                        <div>
+                           <p className='inline-block w-138 font-semibold opacity-60'> Due on </p>
+                           <span className='inline-block mr-4'>:</span>
+                           <p className='inline-block w-138 font-semibold'>
+                              {testHeaderDetails.dueOn ? testHeaderDetails.dueOn : '-'}
                            </p>
                         </div>
                         <div>
@@ -469,6 +478,13 @@ export default function StartTest() {
                            <span className='inline-block mr-4'>:</span>
                            <p className='inline-block w-138 font-semibold'>
                               {testHeaderDetails.duration} </p>
+                        </div>
+
+                        <div>
+                           <p className='inline-block w-138 font-semibold opacity-60'> Instruction from Tutor </p>
+                           <span className='inline-block mr-4'>:</span>
+                           <p className='inline-block w-138 font-semibold'>
+                              {testHeaderDetails.instruction ? testHeaderDetails.instruction : "-"} </p>
                         </div>
                      </div>
                   }

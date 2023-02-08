@@ -208,7 +208,7 @@ export default function AllTests() {
                   style={{ color: "#25335A" }}
                >
                   All Tests
-               </p> */}
+               </p>  */}
                 <InputField
                   value={testName}
                   IconRight={SearchIcon}

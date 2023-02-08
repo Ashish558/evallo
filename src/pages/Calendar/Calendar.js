@@ -622,8 +622,8 @@ export default function Calendar() {
                   // startDate = startDate + offset
                   startDate = new Date(startDate.getTime() + offset)
                }
-               console.log('SESSION DATE', session.date);
-               console.log('START DATE', startDate);
+               // console.log('SESSION DATE', session.date);
+               // console.log('START DATE', startDate);
                // let startDate = new Date(session.date).toLocaleString('en-US', { timeZone })
                // let startDate = new Date(session.date).toUTCString()
                startHours !== NaN && startDate.setHours(startHours);

@@ -205,6 +205,10 @@ export default function TutorProfile({ isOwn }) {
          active: false,
          tutorServices: []
       },
+      youtubeLink: {
+         active: false,
+         youtubeLink: []
+      },
    })
 
    useEffect(() => {
@@ -378,8 +382,8 @@ export default function TutorProfile({ isOwn }) {
 
    // console.log('user', user)
    // console.log('To-edit', toEdit)
-   // console.log('userdetail', userDetail)
-   // console.log('settings', settings.serviceSpecialisation)
+   // console.log('userdetail', userDetail.serviceSpecializations)
+   // console.log('settings', settings.Expertise)
    const { about, education, tagLine, tutorLevel, testPrepRate, otherRate, subjectTutoringRate, address, pincode, paymentInfo, tutorRank, income, paymentStatus, linkedIn } = userDetail
    // console.log('userdetail', tutorLevel)
 
@@ -461,8 +465,10 @@ export default function TutorProfile({ isOwn }) {
                      <CircleButton
                         className='flex items-center rounded-full'
                         children={
-                           <EditableText editable={sessionStorage.getItem("role") === "tutor" || sessionStorage.getItem("role") === "admin"} />
-                        } />
+                           <EditableText editable={persona === "tutor" || persona === "admin"} />
+                        }
+                        onClick={() => setToEdit({ ...toEdit, youtubeLink: { ...toEdit.youtubeLink, active: true } })}
+                         />
                      {/* <EditableText editable={true} className="right-0" /> */}
                   </div>
                   <div className='relative pt-10 mt-auto flex-1'>
@@ -493,7 +499,7 @@ export default function TutorProfile({ isOwn }) {
                         <div className={` mb-5 px-4 py-4 lg:bg-textGray-30 rounded-2xl`}
                            style={{ backgroundColor: tutorLevelBg }}
                         >
-                           <EditableText text={`${tutorLevel.toLowerCase()} belt`}
+                           <EditableText text={`${tutorLevel} belt`}
                               editable={editable}
                               onClick={() => setToEdit({ ...toEdit, tutorLevel: { ...toEdit.tutorLevel, active: true } })}
                               className={` justify-center font-bold text-lg capitalize `}
@@ -515,7 +521,7 @@ export default function TutorProfile({ isOwn }) {
                                  className='text-lg mb-2' textClassName="flex-1 text-center text-[21px]" />
 
                               <div className='flex flex-col row-span-2 overflow-x-auto scrollbar-content max-h-[500px] scrollbar-vertical'>
-                                 {settings && settings.serviceSpecialisation?.length > 0 && userDetail.serviceSpecializations && userDetail.serviceSpecializations.map((id, idx) => {
+                                 {settings && settings.Expertise?.length > 0 && userDetail.serviceSpecializations && userDetail.serviceSpecializations.map((id, idx) => {
                                     return (
                                        settings.Expertise.find(item => item._id === id) ?
                                           <div key={idx} className='flex flex-col items-center mb-10'>
@@ -775,7 +781,7 @@ export default function TutorProfile({ isOwn }) {
                            <div className=''>
                               {
                                  settings.servicesAndSpecialization.map((service, idx) => {
-                                    let price = 0
+                                    let price = '-'
                                     let isPresent = false
                                     if (userDetail !== undefined || userDetail !== null) {
                                        let obj = userDetail.tutorServices.find(serv => serv.service === service.service)
