@@ -29,16 +29,20 @@ const ParentDashboardHeader = () => {
    const [fetchSettings, fetchSettingsResp] = useLazyGetSettingsQuery()
    const [payBalance, payBalanceResp] = useLazyPayBalanceQuery()
 
-   const [selectedStudent, setSelectedStudent] = useState(null)
+   const [selectedStudent, setSelectedStudent] = useState(null);
+   const [detailStudent, setDetailStudent] = useState(null)
+   console.log(detailStudent);
 
    const navigate = useNavigate()
    //  sessionStorage
    const { id, amountToPay, credits } = useSelector(state => state.user)
+
    useDisableBodyScroll(ledgerVisible)
    useEffect(() => {
       fetchSettings()
          .then(res => {
             setImages(res.data.data.setting.offerImages)
+            console.log(res.data.data.setting);
          })
       getUserDetail({ id })
          .then(res => {
@@ -51,13 +55,15 @@ const ParentDashboardHeader = () => {
                      setAssociatedStudents(prev => [...prev, {
                         _id: res.data.data.user._id,
                         name: `${res.data.data.user.firstName} ${res.data.data.user.lastName}`,
-                        photo: res.data.data.user.photo ? res.data.data.user.photo : '/images/default.jpeg'
+                        photo: res.data.data.user.photo ? res.data.data.user.photo : '/images/default.jpeg',
+                        serviceSeeking: res.data.data.user.serviceSeeking
                      }])
                      idx === 0 && setSelectedStudent({
                         _id: res.data.data.user._id,
                         value: `${res.data.data.user.firstName} ${res.data.data.user.lastName}`,
                         photo: res.data.data.user.photo ? res.data.data.user.photo : '/images/default.jpeg'
                      })
+                     idx === 0 && setDetailStudent(res.data.data.userdetails)
                   })
             })
 
@@ -105,7 +111,7 @@ const ParentDashboardHeader = () => {
             className="flex flex-col lg:flex-row 2xl:gap-[78px] xl:gap-[50px] ml-[9px] pr-[9px] lg:pr-[40px] pt-[50px] pb-[30px] pl-0 lg:ml-[55px]"
             id={styles.parentDashboardHeader}
          >
-            <div className="w-full lg:w-2/3">
+            <div className="w-full lg:w-2/3 pr-[40px]">
                <div className="flex flex-col lg:flex-row" style={{ gap: 16 }}>
                   <div className="w-full lg:w-2/3 h-[206px] lg:h-auto flex items-center" id={styles.explore}>
                      <div className="flex mx-auto">
@@ -135,22 +141,22 @@ const ParentDashboardHeader = () => {
                      </div>
                   </div>
 
-                  <div className={`w-full lg:w-1/3 ${credits > 0 ? "bg-[#4BBD94]" : "bg-[#F36262]"}`} id={styles.availableCredit}>
+                  <div className={`w-full lg:w-1/3 ${credits > 0 && credits < 250 ? "bg-primaryOrange" : credits >= 250 ? "bg-[#4BBD94]" : "bg-[#F36262]"}`} id={styles.availableCredit}>
                      <div className="flex justify-between mb-2">
-                        <h3 className="2xl:text-[19.6px] font-semibold">{credits > 0 ? "Available Credit" : "Amount Due"}</h3>
+                        <h3 className="2xl:text-[19.6px] font-semibold">{credits > 0 && credits < 250 ? "Available Credit" : credits >= 250 ? "Available Credit" : "Amount Due"}</h3>
                         <img src={i} alt="" title="Give Value List" />
                      </div>
 
                      <div id={styles.creditBalance}>
                         <p className="whitespace-nowrap text-3xl leading-none mb-1" >
-                           {credits} USD
+                           {credits < 0 ? -credits : credits} USD
                         </p>
                         <p className="text-[13.17px] font-bold cursor-pointer"
                            onClick={() => setLedgerVisible(true)}>
                            View details
                         </p>
                      </div>
-                     <button className={`${styles.btnDark} ${credits > 0 ? 'bg-[#095740]' : 'bg-[#BB2F2F]'}`} disabled={amountToPay === 0} onClick={handlePay} >
+                     <button className={`${styles.btnDark} ${credits > 0 && credits < 250 ? 'bg-primaryOrangeDark' : credits >= 250 ? "bg-[#095740]" : 'bg-[#BB2F2F]'}`} disabled={amountToPay === 0} onClick={handlePay} >
                         {amountToPay !== 0 ? <>Pay Now: $ {amountToPay}</> : <>No invoice Due</>}
                      </button>
                   </div>
@@ -169,6 +175,7 @@ const ParentDashboardHeader = () => {
                         inputContainerClassName='pt-1 pb-1'
                         optionData={associatedStudents.map(item => ({ _id: item._id, value: item.name, photo: item.photo }))}
                         optionClassName='w-[130px] text-sm'
+                        optionListClassName="text-sm"
                         value={selectedStudent === null ? '' : selectedStudent.value}
                         onChange={val => setSelectedStudent(val)} />}
                </div>
@@ -183,7 +190,12 @@ const ParentDashboardHeader = () => {
                                     selectedStudent.value}
                               </h2>
 
-                              <h6 className="text-[10px]">SAT Tutoring <br />Subject Tutoring</h6>
+                              {/* <h6 className="text-[10px]">SAT Tutoring <br />Subject Tutoring</h6> */}
+
+                              <ul className="text-[12px]">
+                                 {detailStudent?.serviceSeeking?.map(item => <li>{item}</li>)}
+                              </ul>
+
                               <Link className="btn-gold"
                                  to={selectedStudent !== null && `/profile/student/${selectedStudent._id}`}>
                                  View Profile

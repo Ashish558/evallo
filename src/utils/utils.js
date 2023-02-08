@@ -174,8 +174,7 @@ export function millisToMinutesAndSeconds(millis) {
 export function getDate(arg) {
    let date = new Date(arg)
    const month = date.toLocaleString('default', { month: 'long' });
-
-   return `${month} ${date.getDate()}, ${date.getFullYear()}`
+   return `${month.slice(0, 3)} ${date.getDate()}, ${date.getFullYear()}`
 }
 var formattedNumber = (x) => {
    return (x * 1).toFixed(2).replace(/[.,]00$/, "");
