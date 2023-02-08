@@ -1,6 +1,6 @@
 import React, { useEffect, useState, memo } from 'react'
 
-function Timer({ timer, active, handleSubmitSection, setCountDown, isUnlimited }) {
+function Timer({ timer, active, handleSubmitSection, setCountDown, isUnlimited, duration }) {
 
    var initMinutes = Math.floor(timer / 60);
    var initSec = timer - initMinutes * 60;
@@ -69,7 +69,7 @@ function Timer({ timer, active, handleSubmitSection, setCountDown, isUnlimited }
 
    return (
 
-      <div className='min-w-[300px] bg-primary rounded-20 text-white flex flex-col items-center px-9 py-6 font-bold mt-[100px]'>
+      <div className={`min-w-[300px] bg-primary rounded-20 text-white flex flex-col items-center px-9 py-6 font-bold mt-[100px] ${duration === "-" && 'invisible'}`}>
          <p className='text-[28px]'> Timer </p>
          <p className='text-[70px] leading-none'>
             {/* 45:00 */}
