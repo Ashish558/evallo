@@ -433,7 +433,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
    }
    // console.log('toedit', currentToEdit)
    // console.log('setting', settings.servicesAndSpecialization[currentToEdit.selectedIdx])
-   console.log('field', currentField)
+   // console.log('field', currentField)
    // console.log('sett', settings)
    // console.log('students', students)
    // console.log('parents', parents)
@@ -1031,18 +1031,24 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                         {currentField.name === 'tutorRank' &&
                            <div>
                               <div className='flex items-center mb-5  pb-5'>
-                                 <InputSelect
-                                    value={currentToEdit.tutorRank}
-                                    onChange={val =>
-                                       setCurrentToEdit({ ...currentToEdit, tutorRank: val })
-                                    }
+                                 {/* <InputSelect
                                     optionData={['Rank 1', 'Rank 2', 'Rank 3', 'Rank 4', 'Rank 5', 'Rank 6']}
                                     radio={true}
                                     inputContainerClassName="pt-3 pb-3 border bg-white"
                                     placeholder="Tutor Rank"
                                     parentClassName="w-full mr-4"
                                     type="select"
-                                 />
+                                 /> */}
+                                 <InputField
+                                    labelClassname='hidden'
+                                    placeholder='Tutor Rank'
+                                    inputContainerClassName='text-sm pt-3.5 pb-3 px-5 bg-primary-50 border-0'
+                                    inputClassName='bg-transparent rounded-[4px]'
+                                    parentClassName='flex-1' type='text'
+                                    value={currentToEdit.tutorRank}
+                                    onChange={e =>
+                                       setCurrentToEdit({ ...currentToEdit, tutorRank: e.target.value })
+                                    } />
                               </div>
                            </div>
                         }

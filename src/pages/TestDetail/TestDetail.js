@@ -39,6 +39,7 @@ const tableHeaders = [
    "Answer",
    "Concept",
    "Strategy",
+   "Choices",
    "Edit"
 ];
 
@@ -50,7 +51,7 @@ const initialState = {
 }
 export default function TestDetail() {
    const [testData, setTestData] = useState([]);
-   const [sectionsData, setSectionsData] = useState([])
+   const [sectionsData, setSectionsData] = useState({})
    const [pdfFile, setPDFFile] = useState({});
    const [modalActive, setModalActive] = useState(false)
    const PdfRef = useRef()
@@ -124,15 +125,27 @@ export default function TestDetail() {
       if (subjects.length === 0) return
       if (allQuestions.length === 0) return
       let idx = subjects.findIndex(item => item.selected === true)
-      // console.log(idx);
       let tempdata = allQuestions[idx].map(item => {
-         const { QuestionNumber, CorrectAnswer, Concepts, Strategies, QuestionType } = item
+         // console.log(item);
+         const { QuestionNumber, CorrectAnswer, Concepts, Strategies, QuestionType, AnswerChoices } = item
          if (!item.Strategies) {
             return {
-               QuestionNumber, CorrectAnswer, Concepts, Strategies: '-', QuestionType
+               QuestionNumber,
+               CorrectAnswer,
+               Concepts : Concepts === undefined ? 'Unavailable' : Concepts,
+               Strategies: 'Unavailable',
+               QuestionType,
+               AnswerChoices
             }
          } else {
-            return { QuestionNumber, CorrectAnswer, Concepts, Strategies, QuestionType }
+            return {
+               QuestionNumber,
+               CorrectAnswer,
+               Concepts : Concepts === undefined ? 'Unavailable' : Concepts,
+               Strategies,
+               QuestionType,
+               AnswerChoices
+            }
          }
       })
       setQuestionsTable(tempdata)
@@ -191,7 +204,8 @@ export default function TestDetail() {
       setModalActive(true)
       setQuestionToEdit(item)
    }
-   // console.log('questionsTable', questionsTable);
+   // console.log('sectionsData', sectionsData);
+   console.log('questionsTable', questionsTable);
 
    return (
       <>
@@ -209,9 +223,17 @@ export default function TestDetail() {
                            </>
                         }
                      />
-                     <p className="mt-6 text-textPrimaryDark text-4xl font-bold">
-                        {testData.testName}
-                     </p>
+                     <div className="flex flex-col justify-center mb-4">
+
+                        <p className="mt-6 text-textPrimaryDark text-4xl font-bold">
+                           {testData.testName}
+                        </p>
+                        {
+                           Object.keys(sectionsData).length > 1 &&
+                           <span className="text-[#0671E0] text-xs italic inline-block cursor-pointer"
+                              onClick={() => sectionsData.test.pdf !== null && window.open(sectionsData.test.pdf)} > {sectionsData.test.pdf !== null ? `${sectionsData.test.testName}.pdf` : ''} </span>
+                        }
+                     </div>
 
                      <AllTestDetail testData={testData} />
 
@@ -307,7 +329,7 @@ export default function TestDetail() {
                      {questionsTable.length > 0 && <Table dataFor='testsDetailQuestions'
                         data={questionsTable}
                         tableHeaders={tableHeaders}
-                        excludes={['_id', 'AnswerChoices', 'QuestionType']}
+                        excludes={['_id', 'QuestionType']}
                         // maxPageSize={10}
                         onClick={{ handleEditTestClick }}
                         hidePagination />}

@@ -7,7 +7,7 @@ export function TableHeader({ header, dataFor }) {
   
 
    return (
-      dataFor === 'assignedTestsStudents' || dataFor === 'invoice' ?
+      dataFor === 'assignedTestsStude' || dataFor === 'invoice' ?
          <th className={`px-2 py-[16px] text-[16px] font-[500] bg-[#7152EB] text-white ${header === 'Full Name' || header === 'Name' ? 'text-left pl-7' : ''}
       `}
          > {header}

@@ -328,6 +328,7 @@ export default function EventModal({
             rescheduling: sessionToUpdate.resheduling,
             service: sessionToUpdate.service,
             sessionNotes: sessionToUpdate.sessionNotes,
+            specialization: sessionToUpdate.specialization,
          });
 
          let checkedDays = days.map((day) => {

@@ -336,6 +336,7 @@ export default function Settings() {
    // if (Object.keys(settingsData).length === 0) return <></>
    const { classes, servicesAndSpecialization, Expertise, sessionTags, leadStatus, tutorStatus, offerImages, subscriptionCode, personality, interest } = settingsData
 
+   console.log('settingsData', settingsData);
    // console.log('sessionTags', sessionTags);
    // console.log('servicesAndSpecialization', servicesAndSpecialization);
    // console.log(offerImages)
@@ -402,7 +403,7 @@ export default function Settings() {
                            className='pt-1 pb-1 mr-15' />
                      </div>
                   } />
-               <SettingsCard title='Subscription Code'
+               {/* <SettingsCard title='Subscription Code'
                   body={
                      <div className='flex items-center flex-wrap [&>*]:mb-[10px]'>
                         <AddTag onAddTag={handleAddTag} keyName='subscriptionCode' />
@@ -413,7 +414,7 @@ export default function Settings() {
                            onRemoveFilter={onRemoveFilter}
                            className='pt-1 pb-1 mr-15' />
                      </div>
-                  } />
+                  } /> */}
 
                <SettingsCard title='Session Tags'
                   titleClassName='text-[21px] mb-[15px]'

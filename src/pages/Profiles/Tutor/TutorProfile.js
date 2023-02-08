@@ -289,15 +289,17 @@ export default function TutorProfile({ isOwn }) {
                         ...prevToEdit.tutorContact,
                         email: email,
                         phone: phone === null ? '' : phone,
-                        linkedIn: '',
+                        linkedIn: details === null ? '' : details.linkedIn,
                         isPresent: details === null ? false : true
                      },
                      tagLine: {
                         ...prevToEdit.tagLine,
+                        tagLine: details === null ? '' : details.tagLine,
                         isPresent: details === null ? false : true
                      },
                      tutorLevel: {
                         ...prevToEdit.tutorLevel,
+                        tutorLevel: details === null ? '' : details.tutorLevel,
                         isPresent: details === null ? false : true
                      },
                      about: {
@@ -307,6 +309,7 @@ export default function TutorProfile({ isOwn }) {
                      },
                      education: {
                         ...prevToEdit.education,
+                        education: details === null ? '' : details.education,
                         isPresent: details === null ? false : true
                      },
                      rates: {
@@ -315,10 +318,12 @@ export default function TutorProfile({ isOwn }) {
                      },
                      tutorAddress: {
                         ...prevToEdit.tutorAddress,
+                        address: details === null ? '' : details.address,
                         isPresent: details === null ? false : true
                      },
                      pincode: {
                         ...prevToEdit.pincode,
+                        pincode: details === null ? '' : details.pincode,
                         isPresent: details === null ? false : true
                      },
                      paymentInfo: {
@@ -327,10 +332,12 @@ export default function TutorProfile({ isOwn }) {
                      },
                      tutorRank: {
                         ...prevToEdit.tutorRank,
+                        tutorRank: details === null ? '' : details.tutorRank,
                         isPresent: details === null ? false : true
                      },
                      income: {
                         ...prevToEdit.income,
+                        income: details === null ? '' : details.income,
                         isPresent: details === null ? false : true
                      },
                      paymentStatus: {

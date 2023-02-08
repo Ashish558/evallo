@@ -26,7 +26,7 @@ const testData = ["SAT", "ACT"];
 const tempTableHeaders = [
    "Name",
    "Assigned on",
-   // "Assigned By",
+   "Due Date",
    "Test Name",
    "Duration",
    "Status",
@@ -163,7 +163,6 @@ export default function AssignedTests() {
             if (res.error) return console.log(res.error)
             console.log(res);
             let data = res.data.data.test.map(item => {
-               // console.log('item', item);
                const { createdAt, studentId, testId, dueDate, multiple, timeLimit, isCompleted, isStarted } = item
                return {
                   studentName: studentId ? `${studentId.firstName} ${studentId.lastName}` : '-',
@@ -172,8 +171,8 @@ export default function AssignedTests() {
                   testName: testId ? testId.testName : '-',
                   testId: testId ? testId._id : null,
                   scores: '-',
-                  duration: multiple ? getDuration(multiple) : '-',
-                  dueDate,
+                  duration: multiple ? getDuration(multiple) : 'Unlimited',
+                  dueDate : getFormattedDate(dueDate),
                   status: isCompleted === true ? 'completed' : isStarted ? 'started' : 'notStarted',
                   createdAt,
                   assignedTestId: item._id
@@ -201,10 +200,10 @@ export default function AssignedTests() {
                   testName: testId ? testId.testName : '-',
                   testId: testId ? testId._id : null,
                   scores: '-',
-                  duration: multiple ? getDuration(multiple) : '-',
+                  duration: multiple ? getDuration(multiple) : 'Unlimited',
                   status: isCompleted === true ? 'completed' : isStarted ? 'started' : 'notStarted',
                   createdAt,
-                  dueDate,
+                  dueDate : getFormattedDate(dueDate) ,
                   assignedTestId: item._id
                }
             })
@@ -506,7 +505,7 @@ export default function AssignedTests() {
                      onClick={{ handleResend, handleDelete }}
                      dataFor='assignedTests'
                      data={filteredTests}
-                     excludes={['createdAt', 'dueDate', 'assignedTestId']}
+                     excludes={['createdAt', 'assignedTestId']}
                      tableHeaders={tableHeaders}
                      maxPageSize={maxPageSize}
                      setMaxPageSize={setMaxPageSize}
