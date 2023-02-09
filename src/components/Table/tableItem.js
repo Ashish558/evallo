@@ -23,7 +23,6 @@ import { getScore, getScoreStr } from "../../utils/utils";
 
 //can b made dynamic
 export default function TableItem({ item, dataFor, onClick, excludes, fetch }) {
-
    const [score, setScore] = useState('-')
    // console.log(onClick)
    const [fetchSettings, settingsResp] = useLazyGetSettingsQuery()
@@ -43,7 +42,7 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch }) {
       leadStatus: []
    })
 
-// console.log(item);
+   // console.log(item);
    useEffect(() => {
       if (dataFor === 'assignedTestsStudents') {
          let params = {}
@@ -60,7 +59,7 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch }) {
                      return
                   }
                   // console.log('Resp score', res.data.data.response);
-                  let responseData =  res.data.data.response
+                  let responseData = res.data.data.response
                   let score = getScoreStr(responseData.testType, responseData.score, responseData.subjects, responseData.subjects.length)
                   // let scr = getScore(res.data.data.response.testType, res.data.data.response.subjects)
                   setScore(`${score.cumulative} ${score.right}`)
@@ -227,7 +226,7 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch }) {
                   {item.testName}
                </td>
                <td className="font-medium px-1  min-w-14 py-4">
-                  {item.duration}
+                  {item.duration === "-"? "Unlimited" : item.duration}
                </td>
                <td className="font-medium px-1  min-w-14 py-4">
                   <div className={`flex items-center no-wrap justify-center`}>
@@ -426,8 +425,9 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch }) {
          {dataFor === "allTests" && (
             <tr className="odd:bg-white font-medium text-sm shadow-sm shadow-slate-200 even:bg-primaryWhite-300 rounded-2xl lead">
                <td>{item.testName}</td>
-               <td>{item.updatedAt.split("T")[0]}</td>
                <td>{item.testType}</td>
+               <td>{item.createdAt.split("T")[0]}</td>
+               <td>{item.updatedAt.split("T")[0]}</td>
                <td className="font-medium px-1 py-4 text-right w-240">
                   <div className="flex justify-end">
                      <button

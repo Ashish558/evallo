@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import PrimaryButton from '../../../components/Buttons/PrimaryButton'
+import Modal from '../../../components/Modal/Modal'
 
 export default function CurrentSection({ answers, submitSection }) {
 
    const [details, setDetails] = useState(answers)
    const [totalQues, setTotalQues] = useState(0)
    const [attempted, setAttempted] = useState(0)
-   const [marked, setMarked] = useState(0)
+   const [marked, setMarked] = useState(0);
+   const [popUp, setPopUp] = useState(false);
 
    useEffect(() => {
       let tempAttempted = 0
@@ -38,8 +40,18 @@ export default function CurrentSection({ answers, submitSection }) {
             Marked for Review: {marked}
          </p>
          <PrimaryButton children='Submit Section' className='mt-auto mb-4 w-[300px] h-[60px] text-[21px]'
-          onClick={submitSection} 
-          />
+            onClick={() => setPopUp(true)}
+         />
+
+         {popUp && <Modal
+            classname="w-1/2 mx-auto"
+            handleClose={() => setPopUp(false)}
+            title="Are you sure, you want to Submit the Section?"
+            primaryBtn={{
+               onClick: submitSection,
+               text: "Submit",
+               className: "bg-primaryDark"
+            }} />}
 
       </div>
    )

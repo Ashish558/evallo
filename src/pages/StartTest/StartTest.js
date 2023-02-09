@@ -13,6 +13,7 @@ import Timer from '../../components/Timer/Timer'
 import CurrentSection from './CurrentSection/CurrentSection'
 import { useSelector } from 'react-redux'
 import { getCheckedString, getDuration, getFormattedDate } from '../../utils/utils'
+import Modal from '../../components/Modal/Modal'
 const tempsubjects = [
    { text: 'Trigonometry', selected: true },
    { text: 'Mathematics', selected: false },
@@ -61,6 +62,7 @@ export default function StartTest() {
    const [submitSection, submitSectionResp] = useSubmitTestMutation()
    const [continueTest, continueTestResp] = useLazyContinueTestQuery()
    const [completedSectionIds, setCompletedSectionIds] = useState([])
+   const [popUp, setPopUp] = useState(false)
 
    useEffect(() => {
       let params = {}
@@ -103,6 +105,7 @@ export default function StartTest() {
             }
             console.log('start test', res.data)
             const { startTime, endTime, sectionName, answer, submitId } = res.data.data
+            setPopUp(false)
 
             if (endTime === null) {
                let date = new Date()
@@ -422,6 +425,8 @@ export default function StartTest() {
 
    }
 
+   console.log(testHeaderDetails.duration);
+
    if (subjects.length === 0) return
    return (
       <div className='ml-pageLeft bg-lightWhite min-h-screen'>
@@ -430,7 +435,7 @@ export default function StartTest() {
             <div className='flex'>
 
                <div className='flex-1' >
-                  <BackBtn to='/all-tests' />
+                  {!testStarted && <BackBtn to='/all-tests' />}
                   <p className='text-primary-dark font-bold text-3xl mb-8' >
                      {testHeaderDetails.testName}
                   </p>
@@ -441,6 +446,13 @@ export default function StartTest() {
                            <span className='inline-block mr-4'>:</span>
                            <p className='inline-block w-138 font-semibold'>
                               {testHeaderDetails.name}
+                           </p>
+                        </div>
+                        <div>
+                           <p className='inline-block w-138 font-semibold opacity-60'> Due on </p>
+                           <span className='inline-block mr-4'>:</span>
+                           <p className='inline-block w-138 font-semibold'>
+                              {testHeaderDetails.dueOn ? testHeaderDetails.dueOn : '-'}
                            </p>
                         </div>
                         <div>
@@ -470,6 +482,13 @@ export default function StartTest() {
                            <p className='inline-block w-138 font-semibold'>
                               {testHeaderDetails.duration} </p>
                         </div>
+
+                        <div>
+                           <p className='inline-block w-138 font-semibold opacity-60'> Instruction from Tutor </p>
+                           <span className='inline-block mr-4'>:</span>
+                           <p className='inline-block w-138 font-semibold'>
+                              {testHeaderDetails.instruction ? testHeaderDetails.instruction : "-"} </p>
+                        </div>
                      </div>
                   }
 
@@ -494,9 +513,10 @@ export default function StartTest() {
 
                            <div className='flex items-center flex-col mt-12'>
                               <p className='text-[#E02B1D] bg-[#FFBE9D] py-2 px-5 rounded-20 mb-[15px]' >
-                                 Warning: Once Started, you wont be able to pause the timer.
+                                 Warning: Once Started, you will not be able to pause the timer.
                               </p>
-                              <PrimaryButton children='Start Section' className='w-[300px] h-[60px] text-[21px]' onClick={handleStartTest} />
+                              <PrimaryButton children='Start Section' className='w-[300px] h-[60px] text-[21px]' onClick={() => setPopUp(true)} />
+                              {/* <PrimaryButton children='Start Section' className='w-[300px] h-[60px] text-[21px]' onClick={handleStartTest} /> */}
                            </div>
                         </div>
                      }
@@ -535,7 +555,9 @@ export default function StartTest() {
                   {
                      testStarted && <Timer handleSubmitSection={handleSubmitSection} timer={timer}
                         active={testStarted ? true : false}
-                        setCountDown={setCountDown} isUnlimited={isUnlimited} />
+                        setCountDown={setCountDown} isUnlimited={isUnlimited}
+                        duration={testHeaderDetails.duration}
+                     />
                   }
                   {
                      testStarted && <CurrentSection answers={answers} submitSection={handleSubmitSection} />
@@ -544,6 +566,15 @@ export default function StartTest() {
             </div>
 
          </div>
+
+         {popUp && <Modal 
+            classname="w-1/2 mx-auto"
+            title="Are you sure, you want to start the section?"
+            primaryBtn={
+               {text: "Start", className: "bg-primaryDark", onClick: handleStartTest}
+            }
+            handleClose={() => setPopUp(false)}
+         />}
       </div>
    )
 }

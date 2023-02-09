@@ -19,7 +19,8 @@ export default function InputSelect({
    optionClassName,
    optionType,
    disabled,
-   required
+   required,
+   optionListClassName
 }) {
    const [selected, setSelected] = useState(false);
    const selectRef = useRef();
@@ -74,7 +75,7 @@ export default function InputSelect({
                               onChange(option);
                            }}
                         >
-                           <p>
+                           <p className={optionListClassName}>
                               {optionType !== undefined && optionType === 'object' ? option.value : option}
                            </p>
                            {

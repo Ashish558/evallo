@@ -45,6 +45,12 @@
     }
 }
 
+#tutorImage {
+    background-image: url(./../../assets/Dashboard/tutor-design.png);
+    background-size: 100% !important;
+    background-position: center center;
+}
+
 #chart {
     background-color: #fff;
     width: 100%;

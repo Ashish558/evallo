@@ -38,7 +38,8 @@ const ConceptSection = () => {
 
    const [fetchTutors, fetchTutorsResp] = useLazyGetParentTutorsQuery()
    const navigate = useNavigate()
-   const [fetchAssignedTests, fetchAssignedTestsResp] = useLazyGetParentsAssignedTestsQuery()
+   const [fetchAssignedTests, fetchAssignedTestsResp] = useLazyGetParentsAssignedTestsQuery();
+   const percentageCount = 64
 
    useEffect(() => {
       fetchAssignedTests(id)
@@ -249,10 +250,20 @@ const ConceptSection = () => {
                      </p>
                   }
                </div>
-
+            </div>
+            <div className="flex mt-[64px] justify-between pr-4 items-center">
+               <h1 className="text-[#4715D7] text-[21px] font-semibold">Complete Your Profile</h1>
+               <img src={arrowDown} className="cursor-pointer" onClick={() => navigate("/profile")} style={{ width: "15px", height: "15px", transform: 'rotate(-90deg)' }} alt="" />
+            </div>
+            <div className="flex mt-[10px] mb-[10px] justify-between px-5 items-center text-black">
+               <h2 className="text-[18px] font-medium">Profile Status</h2>
+               <h2 className="text-[18px] font-medium">{percentageCount}%</h2>
+            </div>
+            <div className="w-full bg-[#D9D9D9] h-[9px] rounded-full mt-[10px] overflow-auto">
+               <div className="rounded-full" style={{width: percentageCount+"%", height: "100%", background: "#62DD43"}}></div>
             </div>
             <div id={styles.practiceTestContainer} >
-               <h2 className="mb-[6px]" id={styles.practiceTestHeader}>Practice Test</h2>
+               <h2 className="mb-[6px]" id={styles.practiceTestHeader}>Practice Tests</h2>
                <div id={styles.listedData} className='scrollbar-content scrollbar-vertical' >
 
                   {allTests.map(test => {

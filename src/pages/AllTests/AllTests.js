@@ -20,7 +20,7 @@ import { useSelector } from "react-redux";
 
 const optionData = ["option 1", "option 2", "option 3", "option 4", "option 5"];
 const testTypeOptions = ["SAT", "Other"];
-const tableHeaders = ["Test Name", "Date Modified", "Test Type", "", ""];
+const tableHeaders = ["Test Name", "Test Type", "Created On", "Date Modified", "", ""];
 
 const initialState = {
    testName: "",

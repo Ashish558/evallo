@@ -1,7 +1,7 @@
 import React from 'react'
 
 export default function AllTestDetail({ testData }) {
-
+   console.log(testData);
 
    return (
       <div className="grid max-w-840 gap-y-2 mt-2">
@@ -15,6 +15,18 @@ export default function AllTestDetail({ testData }) {
                {testData.createdAt?.split("T")[0]}
             </p>
          </div>
+
+         <div>
+            <p className="inline-block w-138 font-semibold opacity-60">
+               {" "}
+               Created by
+            </p>
+            <span className="inline-block mr-4">:</span>
+            <p className="inline-block w-138 font-semibold ml-7">
+               {/* {testData.createdAt?.split("T")[0]} */}
+            </p>
+         </div>
+
          <div>
             <p className="inline-block w-138 font-semibold opacity-60">
                {" "}
@@ -26,6 +38,19 @@ export default function AllTestDetail({ testData }) {
                {testData.updatedAt?.split("T")[0]}
             </p>
          </div>
+
+         <div>
+            <p className="inline-block w-138 font-semibold opacity-60">
+               {" "}
+               Updated By{" "}
+            </p>
+            <span className="inline-block mr-4">:</span>
+            <p className="inline-block w-138 font-semibold ml-7">
+               {" "}
+               {/* {testData.updatedAt?.split("T")[0]} */}
+            </p>
+         </div>
+
          <div>
             <p className="inline-block w-138 font-semibold opacity-60">
                {" "}

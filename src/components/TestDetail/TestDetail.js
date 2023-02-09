@@ -14,7 +14,7 @@ export function TestDetail({ name, desc, timer }) {
             {desc ? desc : '-'}
          </p>
          <p className='font-medium mt-2'>
-          Duration:  {timer ? `${timer} minutes` : '-'}
+          Section Time Limit:  {timer ? `${timer} minutes` : 'Unlimited'}
          </p>
       </>
    )
