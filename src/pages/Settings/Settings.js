@@ -12,6 +12,8 @@ import { getSessionTagName } from '../../utils/utils'
 import { BASE_URL, getAuthHeader } from '../../app/constants/constants'
 import axios from 'axios'
 import DeleteIcon from '../../assets/icons/delete.svg'
+import EditBlueIcon from '../../assets/icons/edit-blue.svg'
+import InputSearch from '../../components/InputSearch/InputSearch'
 
 const testFilters = [
    {
@@ -77,10 +79,31 @@ const initialState = {
    phone: '',
    email: '',
 }
+const subModalInitialState = {
+   code: '',
+   expiry: '',
+   editing: false
+}
 export default function Settings() {
 
    const [modalActive, setModalActive] = useState(false)
    const [tagModalActive, setTagModalActive] = useState(false)
+   const [addCodeModalActive, setAddCodeModalActive] = useState(false)
+   const [subModalData, setSubModalData] = useState(subModalInitialState)
+   const [addTestModalActive, setAddTestModalActive] = useState(false)
+   const [selectedSubscriptionData, setSelectedSubscriptionData] = useState({
+      code: '',
+      expiry: '',
+      tests: [],
+   })
+   const [updatedSubscriptionData, setUpdatedSubscriptionData] = useState({
+      code: '',
+      expiry: '',
+      tests: [],
+   })
+   const [searchedTest, setSearchedTest] = useState('')
+   const [allTestData, setAllTestData] = useState([])
+   const [filteredTests, setFilteredTests] = useState([])
 
    const [settingsData, setSettingsData] = useState({})
    const inputRef = useRef()
@@ -333,10 +356,144 @@ export default function Settings() {
       })
    }
 
+   const onAddCode = () => {
+      setAddCodeModalActive(true)
+      setSubModalData({ ...subModalData, editing: false })
+   }
+   const handleCodeSubmit = (e) => {
+      e.preventDefault()
+     
+      if (subModalData.editing === true) {
+         let updated = subscriptionCode.map(subscription => {
+            if (subscription._id === subModalData._id){
+               return {...subModalData}
+            }else{
+               return {...subscription}
+            }
+        })
+         let updatedSetting = {
+            subscriptionCode: updated
+         }
+         // console.log('updatedSetting', updatedSetting);
+         updateAndFetchsettings(updatedSetting)
+         setAddCodeModalActive(false)
+         setSubModalData(subModalInitialState)
+      } else {
+         let updated = [
+            ...subscriptionCode,
+            {
+               code: subModalData.code,
+               expiry: subModalData.expiry,
+               tests: [],
+            }
+         ]
+         let updatedSetting = {
+            subscriptionCode: updated
+         }
+         // console.log('updatedSetting', updatedSetting);
+         updateAndFetchsettings(updatedSetting)
+         setAddCodeModalActive(false)
+         setSubModalData(subModalInitialState)
+      }
+   }
+
+   useEffect(() => {
+      setUpdatedSubscriptionData(selectedSubscriptionData)
+   }, [selectedSubscriptionData])
+
+   useEffect(() => {
+      if (allTestData.length === 0) return
+      const regex2 = new RegExp(`${searchedTest.toLowerCase()}`, 'i')
+      let tempdata = allTestData.filter(test => test.value.match(regex2))
+      setFilteredTests(tempdata)
+   }, [searchedTest, allTestData])
+
+   const fetchTests = () => {
+      axios.get(`${BASE_URL}api/test`)
+         .then((res) => {
+            if (res.data.data.test) {
+               let arr = res.data.data.test.map(item => {
+                  return {
+                     _id: item._id,
+                     value: item.testName,
+                  }
+               })
+               setAllTestData(arr)
+               setFilteredTests(arr)
+            }
+         });
+   };
+
+   useEffect(() => {
+      fetchTests();
+   }, []);
+   const handleAddTest = (code) => {
+      console.log(code);
+      setSelectedSubscriptionData(code)
+      setAddTestModalActive(true)
+   }
+
+   const handleADdTestSubmit = (e) => {
+      e.preventDefault()
+      console.log(updatedSubscriptionData);
+      let updated = subscriptionCode.map(sub => {
+         if (sub._id === updatedSubscriptionData._id) {
+            return { ...updatedSubscriptionData }
+         } else {
+            return { ...sub }
+         }
+      })
+      let updatedSetting = {
+         subscriptionCode: updated
+      }
+      console.log('updatedSetting', updatedSetting);
+      updateAndFetchsettings(updatedSetting)
+      setAddTestModalActive(false)
+      setSelectedSubscriptionData({
+         code: '',
+         expiry: '',
+         tests: [],
+      })
+   }
+   const onRemoveCodeTest = (text, code) => {
+
+      let updated = subscriptionCode.map(subscription => {
+         if (subscription.code === code) {
+            let updatedSub = subscription.tests.filter(test => test !== text)
+            return { ...subscription, tests: updatedSub }
+         } else {
+            return { ...subscription }
+         }
+      })
+      let updatedSetting = {
+         subscriptionCode: updated
+      }
+      console.log(updatedSetting);
+      updateAndFetchsettings(updatedSetting)
+   }
+   const onRemoveCode = (code) => {
+      let updated = settingsData.subscriptionCode.filter(item => item._id !== code._id)
+      let updatedSetting = {
+         subscriptionCode: updated
+      }
+      // console.log(updatedSetting);
+      updateAndFetchsettings(updatedSetting)
+   }
+   const onEditCode = (code) => {
+      setSubModalData({
+         ...code,
+         editing: true
+      })
+      setAddCodeModalActive(true)
+   }
    // if (Object.keys(settingsData).length === 0) return <></>
    const { classes, servicesAndSpecialization, Expertise, sessionTags, leadStatus, tutorStatus, offerImages, subscriptionCode, personality, interest } = settingsData
 
-   console.log('settingsData', settingsData);
+   console.log('subscriptionCode', settingsData.subscriptionCode);
+   // console.log('updatedSubscriptionData', updatedSubscriptionData);
+   // console.log('allTestData', allTestData);
+   // console.log('allTestData', allTestData);
+   // console.log('settingsData', settingsData);
    // console.log('sessionTags', sessionTags);
    // console.log('servicesAndSpecialization', servicesAndSpecialization);
    // console.log(offerImages)
@@ -403,18 +560,56 @@ export default function Settings() {
                            className='pt-1 pb-1 mr-15' />
                      </div>
                   } />
-               {/* <SettingsCard title='Subscription Code'
+               <SettingsCard title='Manage Subscription Codes'
                   body={
-                     <div className='flex items-center flex-wrap [&>*]:mb-[10px]'>
-                        <AddTag onAddTag={handleAddTag} keyName='subscriptionCode' />
-                        <FilterItems onlyItems={true}
-                           isString={true}
-                           items={subscriptionCode ? subscriptionCode : []}
-                           keyName='subscriptionCode'
-                           onRemoveFilter={onRemoveFilter}
-                           className='pt-1 pb-1 mr-15' />
+                     <div className='max-h-[360px] overflow-auto scrollbar-content scrollbar-vertical'>
+                        {subscriptionCode !== undefined && subscriptionCode.map((subscription, i) => {
+                           return <div key={i}>
+                              <div className='flex items-center justify-between pr-8'>
+                                 <p className='font-bold text-primary-dark mb-4'>
+                                    {subscription.code}
+                                    <span className='inline-block ml-4 font-normal'>
+                                       {subscription.expiry} Weeks
+                                    </span>
+                                 </p>
+                                 <div className='flex items-center gap-x-4'>
+                                    <div className='w-5 h-5 flex items-center justify-center bg-[#E3E3E3] rounded-full cursor-pointer'
+                                       onClick={() => onEditCode(subscription)}
+                                    >
+                                       <img src={EditBlueIcon} className='w-4' alt='edit' />
+                                    </div>
+                                    <div className='w-5 h-5 flex items-center justify-center bg-[#E3E3E3] rounded-full cursor-pointer'
+                                       onClick={() => onRemoveCode(subscription)}
+                                    >
+                                       <img src={DeleteIcon} className='w-4' alt='delete' />
+                                    </div>
+                                 </div>
+                              </div>
+                              <div className='flex items-center flex-wrap [&>*]:mb-[18px]'>
+                                 <AddTag openModal={true}
+                                    onAddTag={(code) => handleAddTest(subscription)}
+                                    keyName={subscription.code}
+                                    text='Add Tests'
+                                 />
+                                 <FilterItems isString={true} onlyItems={true}
+                                    keyName={subscription.code}
+                                    items={subscription.tests}
+                                    fetchData={true}
+                                    api='test'
+                                    onRemoveFilter={onRemoveCodeTest}
+                                    className='pt-1 pb-1 mr-15'
+                                 />
+                              </div>
+                           </div>
+                        })}
+                        <AddTag children='Add Code' className='pl-3 pr-3 pt-1.4 pb-1.5 mt-5 bg-primary text-white'
+                           text='Add Code'
+                           hideIcon={true}
+                           openModal={true}
+                           onAddTag={onAddCode} />
                      </div>
-                  } /> */}
+
+                  } />
 
                <SettingsCard title='Session Tags'
                   titleClassName='text-[21px] mb-[15px]'
@@ -598,6 +793,104 @@ export default function Settings() {
                               parentClassName='w-full mr-4'
                               value={modalData.email}
                               onChange={e => setModalData({ ...modalData, email: e.target.value })} />
+                        </div>
+
+                     </div>
+                  </form>
+               }
+            />
+         }
+         {
+            addCodeModalActive &&
+            <Modal
+               classname={'max-w-[700px] mx-auto'}
+               title='Add / Edit Subscription Code'
+               titleClassName='mb-[18px]'
+               cancelBtn={false}
+               cancelBtnClassName='w-0'
+               primaryBtn={{
+                  text: "Submit",
+                  className: 'w-140 pl-3 pr-3 ml-0 my-4',
+                  form: 'settings-form',
+                  type: 'submit',
+               }}
+               handleClose={() =>{ setAddCodeModalActive(false); setSubModalData(subModalInitialState) }}
+               body={
+                  <form id='settings-form' onSubmit={handleCodeSubmit}>
+                     <div className='grid grid-cols-1 md:grid-cols-2  gap-x-2 md:gap-x-3 gap-y-2 gap-y-4 mb-5'>
+                        <div>
+                           <InputField label='Subscription Code'
+                              labelClassname='ml-4 mb-0.5'
+                              placeholder='Sample Code'
+                              inputContainerClassName='px-5 bg-primary-50 border-0'
+                              inputClassName='bg-transparent'
+                              parentClassName='w-full mr-4' type='text'
+                              value={subModalData.code}
+                              isRequired={true}
+                              onChange={e => setSubModalData({ ...subModalData, code: e.target.value })} />
+                        </div>
+                        <div>
+                           <InputField label='Duration (in weeks)'
+                              labelClassname='ml-4 mb-0.5'
+                              isRequired={true}
+                              placeholder=''
+                              inputContainerClassName='px-5 bg-primary-50 border-0'
+                              inputClassName='bg-transparent'
+                              parentClassName='w-full mr-4' type='text'
+                              value={subModalData.expiry}
+                              onChange={e => setSubModalData({ ...subModalData, expiry: e.target.value })} />
+                        </div>
+                     </div>
+                  </form>
+               }
+            />
+         }
+         {
+            addTestModalActive &&
+            <Modal
+               classname={'max-w-[700px] mx-auto'}
+               title='Add Tests'
+               titleClassName='mb-[18px]'
+               cancelBtn={false}
+               cancelBtnClassName='w-0'
+               primaryBtn={{
+                  text: "Submit",
+                  className: 'w-140 pl-3 pr-3 ml-0 my-4',
+                  form: 'settings-form',
+                  type: 'submit',
+               }}
+               handleClose={() => {setAddTestModalActive(false) }}
+               body={
+                  <form id='settings-form' onSubmit={handleADdTestSubmit}>
+                     <div className='grid grid-cols-1 md:grid-cols-2  gap-x-2 md:gap-x-3 gap-y-2 gap-y-4 mb-5'>
+                        <div>
+                           <InputSearch
+                              labelClassname='hidden'
+                              placeholder="Type Test Name"
+                              parentClassName="w-full  mb-10"
+                              inputContainerClassName="bg-[#F3F5F7] border-0 pt-3.5 pb-3.5"
+                              inputClassName="bg-[#F3F5F7]"
+                              type="text"
+                              value={searchedTest}
+                              checkbox={{
+                                 visible: true,
+                                 name: 'test',
+                                 match: updatedSubscriptionData.tests
+                              }}
+                              onChange={(e) => setSearchedTest(e.target.value)}
+                              optionData={filteredTests}
+                              onOptionClick={(item) => {
+                                 console.log(item);
+                                 setUpdatedSubscriptionData(prev => ({
+                                    ...prev,
+                                    tests: [...updatedSubscriptionData.tests, item._id]
+                                 }
+                                 ))
+                                 // setStudent(item.value);
+                                 // handleStudentsChange(item)
+                                 // setCurrentToEdit({ ...currentToEdit, students: [... item._id] });
+                              }}
+                           />
                         </div>
 
                      </div>
