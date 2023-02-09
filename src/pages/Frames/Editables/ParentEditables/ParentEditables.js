@@ -208,7 +208,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
          api: 'tutorDetail',
       },
       {
-         name: 'youtubeLink',
+         name: 'videoLink',
          title: 'Youtube Link',
          api: 'tutorDetail',
       },
@@ -431,7 +431,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
          return ''
       }
    }
-   // console.log('toedit', currentToEdit)
+   console.log('toedit', currentToEdit)
    // console.log('setting', settings.servicesAndSpecialization[currentToEdit.selectedIdx])
    // console.log('field', currentField)
    // console.log('sett', settings)
@@ -1366,13 +1366,13 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                               </div>
                            </div>
                         }
-                        {currentField.name === "youtubeLink" &&
+                        {currentField.name === "videoLink" &&
                            <div>
                               <input
                                  placeholder=""
-                                 value={currentToEdit.youtubeLink}
+                                 value={currentToEdit.videoLink}
                                  onChange={e =>
-                                    setCurrentToEdit({ ...currentToEdit, youtubeLink: e.target.value })
+                                    setCurrentToEdit({ ...currentToEdit, videoLink: e.target.value })
                                  }
                                  className="bg-lightWhite w-full outline-0 px-5 pt-3 pb-3 rounded"
                               />

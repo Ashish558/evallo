@@ -27,6 +27,10 @@
     width: 100%;
     text-align: center;
     background-image: linear-gradient(to bottom, transparent, #F3F5F7, #F3F5F7);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    height: 203px;
 }
 .profileIcon{
     position: absolute;

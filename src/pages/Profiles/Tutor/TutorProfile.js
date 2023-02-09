@@ -205,9 +205,9 @@ export default function TutorProfile({ isOwn }) {
          active: false,
          tutorServices: []
       },
-      youtubeLink: {
+      videoLink: {
          active: false,
-         youtubeLink: []
+         videoLink: ''
       },
    })
 
@@ -359,6 +359,11 @@ export default function TutorProfile({ isOwn }) {
                         serviceSpecializations: details !== null ? details.serviceSpecializations : [],
                         isPresent: details === null ? false : true
                      },
+                     videoLink: {
+                        ...prevToEdit.videoLink,
+                        videoLink: details !== null ? details.videoLink : [],
+                        isPresent: details === null ? false : true
+                     },
                   }
                }))
             })
@@ -474,7 +479,7 @@ export default function TutorProfile({ isOwn }) {
                         children={
                            <EditableText editable={persona === "tutor" || persona === "admin"} />
                         }
-                        onClick={() => setToEdit({ ...toEdit, youtubeLink: { ...toEdit.youtubeLink, active: true } })}
+                        onClick={() => setToEdit({ ...toEdit, videoLink: { ...toEdit.videoLink, active: true } })}
                          />
                      {/* <EditableText editable={true} className="right-0" /> */}
                   </div>
