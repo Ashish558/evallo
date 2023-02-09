@@ -396,7 +396,7 @@ export default function TutorProfile({ isOwn }) {
    // console.log('To-edit', toEdit)
    // console.log('userdetail', userDetail.serviceSpecializations)
    // console.log('settings', settings.Expertise)
-   const { about, education, tagLine, tutorLevel, testPrepRate, otherRate, subjectTutoringRate, address, pincode, paymentInfo, tutorRank, income, paymentStatus, linkedIn } = userDetail
+   const { about, education, tagLine, tutorLevel, testPrepRate, otherRate, subjectTutoringRate, address, pincode, paymentInfo, tutorRank, income, paymentStatus, linkedIn, videoLink } = userDetail
    // console.log('userdetail', tutorLevel)
 
    // console.log(user);
@@ -468,7 +468,7 @@ export default function TutorProfile({ isOwn }) {
 
             <div className='lg:px-5 lg:pt-0 lg:pr-0 relative'>
                <div className='pt-10 min-h-[600px] relative z-10 flex items-end'>
-                  <YoutubeEmbed embedId='uWczQkOc5a8' />
+                  <YoutubeEmbed embedId={videoLink} />
                   <div className={`${styles.backBtn} mt-10`} >
                      <BackBtn to={-1} />
                   </div>
