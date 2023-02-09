@@ -362,15 +362,15 @@ export default function Settings() {
    }
    const handleCodeSubmit = (e) => {
       e.preventDefault()
-     
+
       if (subModalData.editing === true) {
          let updated = subscriptionCode.map(subscription => {
-            if (subscription._id === subModalData._id){
-               return {...subModalData}
-            }else{
-               return {...subscription}
+            if (subscription._id === subModalData._id) {
+               return { ...subModalData }
+            } else {
+               return { ...subscription }
             }
-        })
+         })
          let updatedSetting = {
             subscriptionCode: updated
          }
@@ -485,6 +485,21 @@ export default function Settings() {
          editing: true
       })
       setAddCodeModalActive(true)
+   }
+
+   const handleTestChange = (item) => {
+      if (updatedSubscriptionData.tests.includes(item._id)) {
+         let updated = updatedSubscriptionData.tests.filter(test => test !== item._id)
+         setUpdatedSubscriptionData(prev => ({
+            ...prev,
+            tests: updated
+         }))
+      } else {
+         setUpdatedSubscriptionData(prev => ({
+            ...prev,
+            tests: [...updatedSubscriptionData.tests, item._id]
+         }))
+      }
    }
    // if (Object.keys(settingsData).length === 0) return <></>
    const { classes, servicesAndSpecialization, Expertise, sessionTags, leadStatus, tutorStatus, offerImages, subscriptionCode, personality, interest } = settingsData
@@ -815,7 +830,7 @@ export default function Settings() {
                   form: 'settings-form',
                   type: 'submit',
                }}
-               handleClose={() =>{ setAddCodeModalActive(false); setSubModalData(subModalInitialState) }}
+               handleClose={() => { setAddCodeModalActive(false); setSubModalData(subModalInitialState) }}
                body={
                   <form id='settings-form' onSubmit={handleCodeSubmit}>
                      <div className='grid grid-cols-1 md:grid-cols-2  gap-x-2 md:gap-x-3 gap-y-2 gap-y-4 mb-5'>
@@ -860,7 +875,7 @@ export default function Settings() {
                   form: 'settings-form',
                   type: 'submit',
                }}
-               handleClose={() => {setAddTestModalActive(false) }}
+               handleClose={() => { setAddTestModalActive(false) }}
                body={
                   <form id='settings-form' onSubmit={handleADdTestSubmit}>
                      <div className='grid grid-cols-1 md:grid-cols-2  gap-x-2 md:gap-x-3 gap-y-2 gap-y-4 mb-5'>
@@ -881,12 +896,7 @@ export default function Settings() {
                               onChange={(e) => setSearchedTest(e.target.value)}
                               optionData={filteredTests}
                               onOptionClick={(item) => {
-                                 console.log(item);
-                                 setUpdatedSubscriptionData(prev => ({
-                                    ...prev,
-                                    tests: [...updatedSubscriptionData.tests, item._id]
-                                 }
-                                 ))
+                                 handleTestChange(item)
                                  // setStudent(item.value);
                                  // handleStudentsChange(item)
                                  // setCurrentToEdit({ ...currentToEdit, students: [... item._id] });

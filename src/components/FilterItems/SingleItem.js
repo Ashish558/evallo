@@ -18,6 +18,7 @@ export default function SingleItem({ item, image, idx, className, onRemoveFilter
          });
    };
    useEffect(() => {
+      if(!fetchData) return
       fetchTestName(item)
    }, [item])
    return (
