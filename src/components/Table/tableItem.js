@@ -346,7 +346,8 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch }) {
                               <div className="flex justify-center">
                                  {returnStatus(item.status)}
                               </div>
-                              : key === 'scores' ? <div>
+                              : key === 'scores' ? <div className="cursor-pointer"
+                              onClick={()=>item.isCompleted === true &&  navigate(`/assigned-tests/${item.testId}/${item.assignedTestId}/report/${item.studentId._id}`) } >
                                  {item.isCompleted === true ? score : '-'}
                               </div> :
                                  item[key]

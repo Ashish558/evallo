@@ -54,7 +54,7 @@ export default function Chart({ setSubjects, subjects, selectedSubject }) {
             if (res.error) {
                return
             }
-            console.log('Resp', res.data.data.user.chart)
+            console.log('Resp', res.data.data.user)
             let data = res.data.data.user.chart
             if(!data) return
             let fData = data.filter(item => Object.keys(item.concepts).includes('correct'))
