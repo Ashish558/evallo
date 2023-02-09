@@ -489,13 +489,14 @@ export default function Settings() {
    // if (Object.keys(settingsData).length === 0) return <></>
    const { classes, servicesAndSpecialization, Expertise, sessionTags, leadStatus, tutorStatus, offerImages, subscriptionCode, personality, interest } = settingsData
 
-   console.log('subscriptionCode', settingsData.subscriptionCode);
+   // console.log('subscriptionCode', settingsData.subscriptionCode);
    // console.log('updatedSubscriptionData', updatedSubscriptionData);
    // console.log('allTestData', allTestData);
    // console.log('allTestData', allTestData);
    // console.log('settingsData', settingsData);
    // console.log('sessionTags', sessionTags);
    // console.log('servicesAndSpecialization', servicesAndSpecialization);
+   console.log('toggleImage', toggleImage);
    // console.log(offerImages)
 
    return (

@@ -11,7 +11,7 @@ export default function FilterItems({ items, setData, onRemoveFilter, className,
       onlyItems ?
          items?.map((item, idx) => {
             return (
-             <SingleItem idx={idx} item={item} keyName={keyName} onRemoveFilter={onRemoveFilter} className={className} sliceText={sliceText} isString={isString} fetchData={fetchData} />
+             <SingleItem idx={idx} image={image} item={item} keyName={keyName} onRemoveFilter={onRemoveFilter} className={className} sliceText={sliceText} isString={isString} fetchData={fetchData} />
             )
          }) : (
             <div className='flex items-center flex-wrap'>
