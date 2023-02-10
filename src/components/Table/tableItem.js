@@ -37,7 +37,7 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch }) {
 
    const [userDetail, setUserDetail] = useState({})
 
-   console.log(dataFor);
+   // console.log(dataFor);
    const [settings, setSettings] = useState({
       leadStatus: []
    })
