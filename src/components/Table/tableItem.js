@@ -490,7 +490,8 @@ const mapData = (data, dataFor, exclude = [], onClick) => {
                   ) :
                      (
                         <td key={i} className={`font-medium px-1 ${data[key] === "Unpaid" && "text-[#E02B1D]"} ${data[key] === 'Paid' && "text-[#009262]"} ${data[key] === 'Cancelled' && "text-[#7C859C]"} min-w-14 py-4`}>
-                           {data[key]}
+                           {key !== 'status' && data[key]}
+                           {console.log(key)}
                         </td>
                      )
          ))

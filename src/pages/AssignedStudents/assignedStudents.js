@@ -26,7 +26,7 @@ const tempTableHeaders = [
    "Parent",
    // "Start Date",
    "Diagnostic Score",
-   "Status",
+   // "Status",
    "",
 ];
 
@@ -189,7 +189,7 @@ export default function AssignedStudents() {
                      parentClassName="w-full mr-4"
                      type="select"
                   /> */}
-                  <InputSelect
+                  {/* <InputSelect
                      value={filterData.status}
                      onChange={val => setFilterData({ ...filterData, status: val })}
                      optionData={optionData}
@@ -197,7 +197,7 @@ export default function AssignedStudents() {
                      placeholder="Status"
                      parentClassName="w-full mr-4"
                      type="select"
-                  />
+                  /> */}
                </div>
                <div className="pt-4 ">
                   <FilterItems items={filterItems} setData={setFilterItems} 
