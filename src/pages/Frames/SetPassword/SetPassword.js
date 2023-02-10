@@ -5,12 +5,14 @@ import styles from '../../Signup/signup.module.css'
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useChangePasswordMutation, useSetPasswordMutation } from '../../../app/services/auth';
 import { validatePassword } from './utils';
+import Loader from '../../../components/Loader';
 
 export default function SetPassword({ signup, setLoginFormActive, resetPassword }) {
 
    const [searchParams, setSearchParams] = useSearchParams();
    const userId = searchParams.get("userid")
    const token = searchParams.get("token")
+   const [loading, setLoading] = useState(true)
 
    const [password, setPassword] = useState('')
    const [confirmPassword, setConfirmPassword] = useState('')
@@ -37,9 +39,10 @@ export default function SetPassword({ signup, setLoginFormActive, resetPassword 
       const promiseState = async state => new Promise(resolve => {
          resolve(resetErrors())
       })
-
+      setLoading(true)
       promiseState()
          .then(() => {
+            setLoading(false)
             const reqBody = { password, token }
             const result = validatePassword({ password, confirmPassword })
             // console.log(result);
@@ -93,7 +96,7 @@ export default function SetPassword({ signup, setLoginFormActive, resetPassword 
                      </p>
 
                      <InputField Icon={Passwordicon}
-                        parentClassName='mb-6 relative' 
+                        parentClassName='mb-6 relative'
                         type='password'
                         placeholder='minimum 8 characters'
                         inputContainerClassName='border pt-3 pb-3'
@@ -116,11 +119,15 @@ export default function SetPassword({ signup, setLoginFormActive, resetPassword 
                         error={error.confirmPassword}
                      />
 
-                     <button 
-                        className='w-full bg-primaryDark font-medium disabled:bg-pink pt-3 pb-3 mt-12 rounded-10 text-white text-lg'
+                     <button
+                        className={`w-full relative bg-primaryDark font-medium disabled:bg-pink pt-3 pb-3 mt-12 rounded-10 text-white text-lg  ${loading ? 'cursor-wait opacity-60' : 'cursor-pointer'}`}
                         onClick={handleSubmit}
                      >
                         Set New Password
+                        {
+                           loading &&
+                           <Loader />
+                        }
                      </button>
 
                   </div>

@@ -29,6 +29,7 @@ import { useLazyGetSettingsQuery } from "../../app/services/session";
 import { validateOtherDetails, validateSignup } from "./utils/util";
 import { useLazyGetTutorDetailsQuery, useLazyGetUserDetailQuery } from "../../app/services/users";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import Loader from "../../components/Loader";
 
 export default function Signup() {
    const [frames, setFrames] = useState({
@@ -43,6 +44,7 @@ export default function Signup() {
 
    const [settings, setSettings] = useState({})
    const [getSettings, getSettingsResp] = useLazyGetSettingsQuery()
+   const [loading, setLoading] = useState(false)
    const navigate = useNavigate();
    const [lastLoginDisabled, setLastLoginDisabled] = useState(false)
 
@@ -226,7 +228,6 @@ export default function Signup() {
    }
 
    const handleClick = () => {
-
       const promiseState = async state => new Promise(resolve => {
          resolve(resetErrors())
       })
@@ -255,7 +256,9 @@ export default function Signup() {
                   }
                })
             } else {
+               setLoading(true)
                signupUser(reqBody).then((res) => {
+                  setLoading(false)
                   if (res.error) {
                      if (res.error.data.message) {
                         alert(res.error.data.message)
@@ -515,10 +518,14 @@ export default function Signup() {
                               disabled={
                                  values.email === "" ? true : false
                               }
-                              className="w-full bg-primaryDark disabled:bg-pink py-3 mt-[99px] lg:mt-12 rounded-10 text-white text-lg font-medium"
+                              className={`w-full bg-primaryDark disabled:bg-pink py-3 mt-[99px] lg:mt-12 rounded-10 text-white text-lg font-medium relative ${loading ? 'cursor-wait' : 'cursor-pointer'}`}
                               onClick={handleClick}
                            >
                               Submit
+                              {
+                                 loading &&
+                                 <Loader />
+                              }
                            </button>
                            <p
                               className="text-secondary text-xs font-semibold ml-2 mt-2 cursor-pointer inline-block"

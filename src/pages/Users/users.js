@@ -15,6 +15,7 @@ import { useNavigate } from 'react-router-dom'
 import { roles } from '../../constants/constants'
 import { useBlockUserMutation, useUnblockUserMutation } from '../../app/services/admin'
 import { useLazyGetSettingsQuery } from '../../app/services/session'
+import PrimaryButton from '../../components/Buttons/PrimaryButton'
 
 const optionData = [
    'option 1',
@@ -66,6 +67,7 @@ export default function Users() {
    const [addUser, addUserResp] = useAddUserMutation()
    const [signupUser, signupUserResp] = useSignupUserMutation();
    const [maxPageSize, setMaxPageSize] = useState(10)
+   const [loading, setLoading] = useState(false)
 
    const [totalPages, setTotalPages] = useState(0)
    const [currentPage, setCurrentPage] = useState(1)
@@ -232,11 +234,13 @@ export default function Users() {
          lastName: modalData.lastName,
          email: modalData.email,
       }
+      setLoading(true)
       if (modalData.userType === 'tutor') {
          console.log(body)
          addUser(body)
             .then(res => {
                console.log(res)
+               setLoading(false)
                if (res.error) {
                   alert(res.error.data.message)
                   return
@@ -250,6 +254,7 @@ export default function Users() {
          console.log(body)
          signupUser(body)
             .then(res => {
+               setLoading(false)
                console.log(res)
                if (res.error) {
                   alert(res.error.data.message)
@@ -342,11 +347,20 @@ export default function Users() {
                   inputContainerClassName='text-sm border bg-white px-[20px] py-[16px]'
                   value={filterData.tutor}
                   onChange={val => setFilterData({ ...filterData, tutor: val })} />
-               <button className='bg-primary py-3.5 text-lg px-[21px] flex justify-center items-center text-white font-semibold rounded-lg w-1/6'
+               {/* <button className='bg-primary py-3.5 text-lg px-[21px] flex justify-center items-center text-white font-semibold rounded-lg w-1/6'
                   onClick={() => setModalActive(true)}>
-                  Add new User
+
                   <img src={AddIcon} className='ml-3' />
-               </button>
+               </button> */}
+               <PrimaryButton type='submit'
+                  children={
+                     <>
+                        Add new User
+                        <img src={AddIcon} className='ml-3' />
+                     </>
+                  }
+                  onClick={() => setModalActive(true)}
+                  className='pt-[14px] flex items-center text-lg font-semibold pb-[14px] pl-[21px] pr-[21px]' />
             </div>
             <div className='flex align-center mt-8 gap-[20px]'>
                {/* <InputField
@@ -416,6 +430,7 @@ export default function Users() {
                   // className: 'w-140',
                   form: 'add-user-form',
                   // onClick: handleSubmit,
+                  loading: loading,
                   type: 'submit',
                   disabled: !validData
                }}

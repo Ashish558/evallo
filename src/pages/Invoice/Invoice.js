@@ -37,6 +37,7 @@ export default function Invoice() {
    const [invoiceData, setInvoiceData] = useState(initialState)
 
    const [addInvoice, addInvoiceResponse] = useAddInvoiceMutation()
+   const [loading, setLoading] = useState(false)
    const [fetchParents, parentsResponse] = useLazyGetParentsByNameQuery()
    const [getUserDetail, getUserDetailResp] = useLazyGetUserDetailQuery()
    const [fetchAllInvoice, allInvoiceResp] = useLazyGetAllInvoiceQuery()
@@ -61,6 +62,7 @@ export default function Invoice() {
 
    const handleSubmit = e => {
       e.preventDefault()
+      setLoading(true)
       const reqBody = {
          parentId: invoiceData.parentId,
          title: invoiceData.description,
@@ -72,6 +74,7 @@ export default function Invoice() {
       }
       addInvoice(reqBody)
          .then(res => {
+            setLoading(false)
             console.log(res)
             setInvoiceData(initialState)
             fetchInvoices()
@@ -233,7 +236,7 @@ export default function Invoice() {
                      {/* <div className='ml-[36px] mt-[30px]'>
                         <PrimaryButton children='Create' className='py-[13.5px] px-[43px]' /> */}
                      <div className='ml-[36px] mt-[30px]'>
-                        <PrimaryButton type='submit' children='Create' className='py-[13.5px] px-[43px]' />
+                        <PrimaryButton type='submit' children='Create' className='py-[13.5px] px-[43px]' loading={loading} />
                      </div>
                   </div>
                </form>
