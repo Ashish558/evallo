@@ -22,7 +22,10 @@ export default function InputField({
    style,
    disabled,
    error,
-   onKeyDown
+   onKeyDown,
+   maxLength,
+   minLength,
+   prefix
 }) {
    const [inputType, setInputType] = useState(type)
 
@@ -42,6 +45,8 @@ export default function InputField({
          >
             {Icon && <img src={Icon} className={`mr-5 ${iconSize === 'medium' ? 'w-[24px]' : 'w-[28px]'}`} />}
             {inputLeftField && inputLeftField}
+            {prefix &&
+               <span className="mr-3">{prefix}</span>}
             <input
                className={`outline-0 w-full ${inputClassName ? inputClassName : ""} ${disabled === true ? 'cursor-not-allowed' : ''} `}
                placeholder={placeholder}
@@ -51,6 +56,8 @@ export default function InputField({
                required={isRequired ? true : false}
                disabled={disabled !== undefined ? disabled : false}
                onKeyDown={onKeyDown ? onKeyDown : () => { }}
+               minLength={minLength && minLength}
+               maxLength={maxLength && maxLength}
             />
             {type === 'password' && <img src={EyeIcon} className="ml-4 w-[20px]"
                onClick={() => inputType === 'password' ? setInputType('text') : setInputType('password')}

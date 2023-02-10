@@ -159,17 +159,18 @@ export default function TutorDashboard() {
                         header='Completed'
                         subHeader='this month'
                         className='bg-[#7E82F0]' />
-                     <DashboardCard data={{ title: '-', subtitle: 'INR', titleClassName: 'text-[30px]' }}
+                     {/* <DashboardCard data={{ title: '-', subtitle: 'INR', titleClassName: 'text-[30px]' }}
                         header='Earned'
                         subHeader='this month'
-                        className='bg-[#4BBD94]' />
+                        className='bg-[#4BBD94]' /> */}
                   </div>
 
 
                   <div className='w-full pl-6 mt-10'>
                      <p className='text-primary-dark font-semibold text-[21px] mb-4'>Today’s Schedule</p>
-                     <div className='px-[29px] py-[31px] bg-white  rounded-[20px] scrollbar-content scrollbar-vertical max-h-[600px] overflow-auto'>
+                     <div className='px-[29px] py-[31px] bg-white mr-5 rounded-[20px] scrollbar-content scrollbar-vertical max-h-[600px] overflow-auto'>
                         {sessions.map((item, idx) => {
+                           console.log(item)
                            return <TutorSchedule {...item} setIsOpen={setIsOpen} handleLinkClick={handleLinkClick} />
                         })}
                      </div>
@@ -191,11 +192,11 @@ export default function TutorDashboard() {
                      <ProgressBar num={65} />
                   </div>
 
-                  <div className='px-8 mt-8'>
+                  <div className='pl-8 pr-4 mt-8'>
                      <p className='text-primary font-semibold text-[21px] mb-4'>
                         Rank
                      </p>
-                     <div className={`max-w-[500px] py-[17px] px-[19px] flex flex-1 text-white rounded-20  first:mr-[30px] bg-primary`}>
+                     <div className={`py-[17px] px-[19px] flex flex-1 text-white rounded-20  first:mr-[30px] bg-primary`}>
                         <div className='self-stretch w-[80px] h-[80px] my-auto text-center bg-black/20 rounded-[15px] flex flex-col justify-center'>
                            <img src={HatIcon} className='objects-contain' />
                         </div>

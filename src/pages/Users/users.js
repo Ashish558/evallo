@@ -25,8 +25,9 @@ const optionData = [
 ]
 
 const tableHeaders = [
-   'Full Name', 'User Type', "Email", 'Phone', 'Assigned Tutor', 'Lead Status', 'User Status',
-   'Services'
+   'Full Name', 'User Type', "Email", 'Phone', 'Tutor', 'Lead Status', 'User Status',
+   'Specialization'
+   // , 'Created On'
 ]
 
 const userTypeOptions = ['tutor', 'parent', 'student']
@@ -268,7 +269,7 @@ export default function Users() {
          navigate(`/profile/${item.userType}/${item._id}`)
       }
    }
- 
+
    const handleTutorStatus = item => {
       console.log(item)
       if (item.block === false) {
@@ -304,16 +305,51 @@ export default function Users() {
    return (
       <div className='lg:ml-pageLeft bg-lightWhite min-h-screen'>
          <div className='py-14 px-5'>
-            <div className='flex justify-between items-center'>
-               <p className='font-bold text-4xl text-primary-dark'>All Users</p>
-               <button className='bg-primary py-3.5 text-lg px-[21px] flex items-center text-white font-semibold rounded-lg mr-55'
+            <div className='flex justify-between items-center gap-4'>
+               <InputField
+                  IconRight={SearchIcon}
+                  placeholder='Type Name'
+                  parentClassName='w-full w-1/6'
+                  inputContainerClassName='text-sm text-sm bg-white  px-[20px] py-[16px] border'
+                  type='text'
+                  value={filterData.typeName}
+                  onChange={e => setFilterData({ ...filterData, typeName: e.target.value })} />
+               <InputSelect optionData={userTypesList}
+                  inputContainerClassName='text-sm border bg-white px-[20px] py-[16px]'
+                  placeholder='User Type'
+                  parentClassName='w-full w-1/6'
+                  type='select'
+                  value={filterData.userType}
+                  onChange={val => setFilterData({ ...filterData, userType: val })} />
+               <InputSelect optionData={settings.leadStatus}
+                  placeholder='Lead Status'
+                  parentClassName='w-full w-1/6'
+                  inputContainerClassName='text-sm border bg-white px-[20px] py-[16px]'
+                  type='select'
+                  value={filterData.status}
+                  onChange={val => setFilterData({ ...filterData, status: val })} />
+               <InputSelect optionData={optionData}
+                  placeholder='Services'
+                  parentClassName='w-full w-1/6'
+                  type='select'
+                  inputContainerClassName='text-sm border bg-white px-[20px] py-[16px]'
+                  value={filterData.services}
+                  onChange={val => setFilterData({ ...filterData, services: val })} />
+               <InputSelect optionData={optionData}
+                  placeholder='Tutor'
+                  parentClassName='w-full w-1/6'
+                  type='select'
+                  inputContainerClassName='text-sm border bg-white px-[20px] py-[16px]'
+                  value={filterData.tutor}
+                  onChange={val => setFilterData({ ...filterData, tutor: val })} />
+               <button className='bg-primary py-3.5 text-lg px-[21px] flex justify-center items-center text-white font-semibold rounded-lg w-1/6'
                   onClick={() => setModalActive(true)}>
                   Add new User
                   <img src={AddIcon} className='ml-3' />
                </button>
             </div>
             <div className='flex align-center mt-8 gap-[20px]'>
-               <InputField
+               {/* <InputField
                   IconRight={SearchIcon}
                   placeholder='Type Name'
                   parentClassName='w-full'
@@ -348,7 +384,7 @@ export default function Users() {
                   type='select'
                   inputContainerClassName='text-sm border bg-white px-[20px] py-[16px]'
                   value={filterData.tutor}
-                  onChange={val => setFilterData({ ...filterData, tutor: val })} />
+                  onChange={val => setFilterData({ ...filterData, tutor: val })} /> */}
             </div>
             <div className='mt-4' >
                <FilterItems items={filterItems} setData={setFilterItems} onRemoveFilter={onRemoveFilter} />
@@ -376,8 +412,8 @@ export default function Users() {
                cancelBtn={true}
                cancelBtnClassName='w-140'
                primaryBtn={{
-                  text: "Add",
-                  className: 'w-140',
+                  text: "Send Invite",
+                  // className: 'w-140',
                   form: 'add-user-form',
                   // onClick: handleSubmit,
                   type: 'submit',
@@ -431,6 +467,18 @@ export default function Users() {
                               optionData={userTypeOptions}
                               inputContainerClassName='text-sm pt-3.5 pb-3.5 bg-primary-50 px-5 border-0'
                               parentClassName='w-full' />
+                        </div>
+
+                        <div>
+                           <InputField label='Phone Number'
+                              labelClassname='ml-4 mb-0.5'
+                              isRequired={true}
+                              placeholder='Phone Number'
+                              inputContainerClassName='text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0'
+                              inputClassName='bg-transparent'
+                              parentClassName='w-full' type='text'
+                              value={modalData.phone}
+                              onChange={e => setModalData({ ...modalData, phone: e.target.value })} />
                         </div>
                      </div>
                   </form>

@@ -280,7 +280,7 @@ export default function ParentProfile({ isOwn }) {
          <div className='lg:ml-pageLeft bg-lightWhite min-h-screen pb-[100px]'>
             <div className='lg:px-[56px] lg:pt-10'>
                <div className={styles.profileCard}>
-                  {/* <button className='absolute bg-[#D9BBFF] px-[14px] py-[12px] rounded-[8px] text-[#636363] text-[18px] font-medium top-[16px] left-[22px] flex gap-[12px] cursor-pointer'><img src={LeftIcon} alt="icon" /> Back</button> */}
+                  <button className='absolute bg-[#D9BBFF] px-[14px] py-[12px] rounded-[8px] text-[#636363] text-[18px] font-medium top-[16px] left-[22px] flex gap-[12px] cursor-pointer' onClick={() => window.history.back()}><img src={LeftIcon} alt="icon" /> Back</button>
                   <div className='rounded-t-40 bg-lightWhite lg:bg-transparent flex flex-col items-center relative'>
                      <ProfilePhoto src={user.photo ? user.photo : '/images/default.jpeg'}
                         handleChange={handleProfilePhotoChange} editable={editable} />
@@ -359,7 +359,7 @@ export default function ParentProfile({ isOwn }) {
                      title={
                         <EditableText editable={editable}
                            onClick={() => setToEdit({ ...toEdit, address: { ...toEdit.address, active: true } })}
-                           text='Residential Address'
+                           text='Billing Address'
                            className='text-21 justify-between'
                         />
                      }

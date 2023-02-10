@@ -70,7 +70,23 @@ export default function Table(props) {
                </tr>
             </thead>
             <tbody>
-               {sorted ? tableData.sort((a, b) => a.dueDate?.split("-").join("") - b.dueDate?.split("-").join("")).map((item, idx) => {
+               {dataFor === "invoice" ? sorted ? tableData.sort((a, b) => a.createDate?.split("-").join("") - b.createDate?.split("-").join("")).map((item, idx) => {
+                  return (
+                     <TableItem
+                        dataFor={dataFor}
+                        item={item}
+                        key={idx}
+                        excludes={excludes}
+                        onClick={onClick}
+                     />
+                  );
+               }) : tableData.sort((a, b) => b.assignedOn?.split("-").join("") - a.assignedOn?.split("-").join("")).map((item, idx) => <TableItem
+                  dataFor={dataFor}
+                  item={item}
+                  key={idx}
+                  excludes={excludes}
+                  onClick={onClick}
+               />) : sorted ? tableData.sort((a, b) => a.dueDate?.split("-").join("") - b.dueDate?.split("-").join("")).map((item, idx) => {
                   return (
                      <TableItem
                         dataFor={dataFor}
