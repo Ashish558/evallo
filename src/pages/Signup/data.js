@@ -31,6 +31,14 @@ export const apQuestions = [
       text: 'AP World Language',
       checked: false
    },
+   {
+      text: 'Other',
+      checked: false
+   },
+   {
+      text: 'Not Applicable',
+      checked: false
+   },
 ]
 
 
