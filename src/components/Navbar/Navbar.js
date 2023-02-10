@@ -33,32 +33,39 @@ const tempnavdata = [
    {
       icon: Calendar,
       path: "/calendar",
+      tooltip: 'Calendar'
    },
    {
       icon: TestsIcon,
       path: "/assigned-tests",
+      tooltip: 'Assigned Tests'
    },
    {
       icon: Document,
       path: "/all-tests",
+      tooltip: 'All Tests'
    },
    {
       icon: SettingsIcon,
       path: "/settings",
-      excludes: ['student', 'parent', 'tutor']
+      excludes: ['student', 'parent', 'tutor'],
+      tooltip: 'Settings'
    },
    {
       icon: People,
       path: "/",
+      tooltip: 'All Users'
    },
    {
       icon: DollarIcon,
       path: "/invoice",
+      tooltip: 'All Invoices'
    },
    {
       icon: Exit,
       path: "/exit",
       parentClassName: "mt-auto",
+      tooltip: 'Logout'
    },
 ];
 
@@ -70,23 +77,28 @@ const parentNav = [
    {
       icon: Dashboard,
       path: "/",
+      tooltip: 'Dashboard'
    },
    {
       icon: Profile,
       path: "/profile",
+      tooltip: 'Profile'
    },
    {
       icon: Calendar,
       path: "/calendar",
+      tooltip: 'Calendar'
    },
    {
       icon: StudentTest,
       path: "/all-tests",
+      tooltip: 'All Tests'
    },
    {
       icon: Back,
       path: "/exit",
       parentClassName: "mt-auto",
+      tooltip: 'Logout'
    },
 ]
 
@@ -98,23 +110,28 @@ const studentNav = [
    {
       icon: Dashboard,
       path: "/",
+      tooltip: 'Dashboard'
    },
    {
       icon: Profile,
       path: "/profile",
+      tooltip: 'Profile'
    },
    {
       icon: Calendar,
       path: "/calendar",
+      tooltip: 'Calendar'
    },
    {
       icon: StudentTest,
       path: "/all-tests",
+      tooltip: 'All Tests'
    },
    {
       icon: Exit,
       path: "/exit",
       parentClassName: "mt-auto",
+      tooltip: 'Logout'
    },
 ]
 const tutorNav = [
@@ -125,27 +142,33 @@ const tutorNav = [
    {
       icon: Dashboard,
       path: "/",
+      tooltip: 'Dashboard'
    },
    {
       icon: Profile,
       path: "/profile",
+      tooltip: 'Profile'
    },
    {
       icon: AssignedStudents,
       path: "/assigned-students",
+      tooltip: 'Assigned Students'
    },
    {
       icon: Calendar,
       path: "/calendar",
+      tooltip: 'Assigned Tests'
    },
    {
       icon: TestsIcon,
       path: "/assigned-tests",
+      tooltip: 'Assigned Tests'
    },
    {
       icon: Exit,
       path: "/exit",
       parentClassName: "mt-auto",
+      tooltip: 'Logout'
    },
 ]
 export default function Navbar() {

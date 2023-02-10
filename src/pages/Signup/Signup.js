@@ -238,7 +238,7 @@ export default function Signup() {
                lastName: values.lastName,
                email: values.email,
                subscriptionCode: values.subscriptionCode,
-               phone: values.phone,
+               phone: `${numberPrefix}${values.phone}`,
             };
             if (values.checked === false) {
                console.log(settings.subscriptionCode.includes(values.subscriptionCode));
@@ -313,6 +313,7 @@ export default function Signup() {
       setLastLoginDisabled(true)
       const reqBody = {
          ...otherDetails,
+         Phone: `${studentNumberPrefix}${otherDetails.Phone}`,
          serviceSeeking: getCheckedString(services),
          apCourses: getCheckedString(apCourses),
          motive: getCheckedString(motive),
@@ -320,8 +321,8 @@ export default function Signup() {
          subscriptionCode: values.subscriptionCode,
          userType: persona,
       };
-      console.log(values.userId);
-
+      // console.log(reqBody);
+      // return
       // console.log('session cleared');
       addUserDetails({ userId: values.userId, body: reqBody }).then((res) => {
          sessionStorage.clear()

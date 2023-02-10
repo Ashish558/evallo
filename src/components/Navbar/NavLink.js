@@ -8,7 +8,7 @@ import { useDispatch } from "react-redux";
 import { updateIsLoggedIn } from "../../app/slices/user";
 import Modal from "../Modal/Modal";
 
-export default function NavLink({ width, icon: Icon, path, parentClassName, setLogoutModalActive }) {
+export default function NavLink({ width, icon: Icon, path, parentClassName, setLogoutModalActive, tooltip }) {
    const navigate = useNavigate();
    const dispatch = useDispatch()
 
@@ -31,14 +31,7 @@ export default function NavLink({ width, icon: Icon, path, parentClassName, setL
    return (
       <>
          <button
-            className={`${path !== "/exit" ? "lg:mb-12" : "lg:mt-auto"
-               } z-20 relative ${styles.navLink} ${parentClassName ? parentClassName : ""
-               } 
-      ${location.pathname === path ? styles.selectedNavLink : ""}
-      ${location.pathname === path && width < desktop
-                  ? styles.translateUp
-                  : ""
-               }  `}
+            className={`${path !== "/exit" ? "lg:mb-12" : "lg:mt-auto"} z-20 relative ${styles.navLink} ${parentClassName ? parentClassName : ""} ${location.pathname === path ? styles.selectedNavLink : ""} ${location.pathname === path && width < desktop ? styles.translateUp : "" }  `}
             onClick={handleNavigate}
          >
             {/* <img src={icon} className={Selected ? styles.selectedNavLink : ''} /> */}
@@ -49,6 +42,14 @@ export default function NavLink({ width, icon: Icon, path, parentClassName, setL
                   className={`${styles.selectedIcon}`}
                />
             )}
+            {
+               tooltip &&
+
+               <div className={styles.tooltiptext}>
+                  {tooltip}
+               </div>
+
+            }
          </button>
 
       </>

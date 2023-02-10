@@ -31,11 +31,12 @@ export default function SelectServices({
    const handleSubmit = () => {
       if (persona === "parent") {
          setFrames((prev) => {
-            return { ...prev, services: false, userDetails: true };
+            return { ...prev, services: false, questions: false, userDetails: true };
          });
       } else {
          setFrames((prev) => {
-            return { ...prev, services: false, questions: true };
+            console.log(prev);
+            return { ...prev, services: false, userDetails: false, questions: true };
          });
       }
    };
@@ -59,13 +60,13 @@ export default function SelectServices({
          });
       }
    };
- 
+
    useEffect(() => {
-      const selected  = services.filter(item => item.checked === true)
+      const selected = services.filter(item => item.checked === true)
       const selectedNames = selected.map(item => item.text)
-      if(selectedNames.includes("Others")){
+      if (selectedNames.includes("Others")) {
          setInputDisabled(false)
-      }else{
+      } else {
          setInputDisabled(true)
       }
    }, [services])
@@ -177,7 +178,7 @@ export default function SelectServices({
                   children="Next"
                   className="text-lg pt-3 pb-3 font-semibold text-white mr-6 w-140 disabled:opacity-70"
                   onClick={() => handleSubmit()}
-                  // disabled={disabled}
+               // disabled={disabled}
                />
             </div>
          </div>

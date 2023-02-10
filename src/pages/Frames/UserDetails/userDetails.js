@@ -47,11 +47,11 @@ export default function UserDetails({
                // return
                if (persona === "parent") {
                   setFrames((prev) => {
-                     return { ...prev, userDetails: false, questions: true };
+                     return { ...prev, userDetails: false, services: false, questions: true };
                   });
                } else {
                   setFrames((prev) => {
-                     return { ...prev, userDetails: false, services: true };
+                     return { ...prev, userDetails: false, questions: false, services: true };
                   });
                }
             }
