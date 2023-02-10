@@ -22,6 +22,7 @@ const tableHeaders = [
    "Type",
    "Amt. Due",
    "Bal. Credit(ed)",
+   "Status Remark"
 ];
 
 const initialState = {

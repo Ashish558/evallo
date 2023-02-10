@@ -7,6 +7,7 @@ import InputSearch from '../../../../components/InputSearch/InputSearch'
 import InputSelect from '../../../../components/InputSelect/InputSelect'
 import Modal from '../../../../components/Modal/Modal'
 import SimpleCalendar from '../../../../components/SimpleCalendar/SimpleCalendar'
+import demoUser from "../../../../assets/icons/demo-user.png"
 import Slider from '../../../../components/Slider/Slider'
 import { grades, subjects, timeZones } from '../../../../constants/constants'
 import styles from './style.module.css'
@@ -575,6 +576,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                               <div className='flex items-center'>
                                  <p className='font-medium mr-4 min-w-[80px] text-[20px]'> Phone </p>
                                  <InputField
+                                    prefix="+91"
                                     labelClassname='hidden'
                                     placeholder='Phone'
                                     inputContainerClassName='text-sm pt-3 pb-3 px-5 bg-primary-50 border-0'
@@ -596,7 +598,9 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                                  inputClassName='bg-transparent'
                                  parentClassName='flex-1 ' type='text'
                                  value={currentToEdit.birthyear}
-                                 onChange={e => setCurrentToEdit({ ...currentToEdit, birthyear: e.target.value })} />
+                                 onChange={e => setCurrentToEdit({ ...currentToEdit, birthyear: e.target.value })}
+                                 minLength={4}
+                                 maxLength={4} />
                               {/* <DatePicker selected={startDate} onChange={(date) => setStartDate(date)} /> 
                                  <SimpleCalendar setCurrentDate={setCurrentToEdit} /> */}
                               {/* </div> */}

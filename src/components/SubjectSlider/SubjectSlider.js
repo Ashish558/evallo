@@ -47,7 +47,7 @@ export default function SubjectSlider({ score, className, title, header, totalMa
                            </div>
                            <div className='py-2.5 px-8 rounded-10' style={{ backgroundColor: '#DACDFF' }} >
                               <p className='font-bold text-[32px] text-center mb-1 '> {score.maths ? score.maths : '-'} </p>
-                              <p className='text-sm font-bold text-center mb-1' > Maths  </p>
+                              <p className='text-sm font-bold text-center mb-1' > Math  </p>
                            </div>
                         </>
                      }
@@ -56,7 +56,7 @@ export default function SubjectSlider({ score, className, title, header, totalMa
                            <div className='py-2.5 px-8 rounded-10'
                               style={{ backgroundColor: '#FEDCC3' }} >
                               <p className='font-bold text-[32px] text-center mb-1 '> {score.maths ? score.maths : '-'} </p>
-                              <p className='text-sm font-bold text-center mb-1' > Maths </p>
+                              <p className='text-sm font-bold text-center mb-1' > Math </p>
                            </div>
                            <div className='py-2.5 px-8 rounded-10' style={{ backgroundColor: '#DACDFF' }} >
                               <p className='font-bold text-[32px] text-center mb-1 '> {score.english ? score.english : '-'} </p>

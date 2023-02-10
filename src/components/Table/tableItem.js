@@ -37,7 +37,7 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch }) {
 
    const [userDetail, setUserDetail] = useState({})
 
-   // console.log(item);
+   console.log(dataFor);
    const [settings, setSettings] = useState({
       leadStatus: []
    })
@@ -175,7 +175,7 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch }) {
                </td>
                <td className="font-medium text-sm px-1  min-w-14 py-4">
                   <div className="my-[6px]">
-                     {item.assignedTutor}
+                     {item.assignedTutor.length > 1 ? item.assignedTutor.map(i => i + ',') : item.assignedTutor}
                   </div>
                </td>
                <td className="font-medium text-sm px-1  min-w-14 py-4">
@@ -485,16 +485,17 @@ const mapData = (data, dataFor, exclude = [], onClick) => {
                ) :
                   dataFor === 'assignedStudents' && key === 'name' || key === 'parent' ? (
                      <td key={i} className={`font-medium px-1 `}>
-                        <p className={`pl-4 ${key === 'name' ? 'text-left' : ''} font-semibold`}
+                        <p className={`pl-4 ${key === 'name' ? 'text-left cursor-pointer' : ''} font-semibold`}
                            onClick={() => key === 'name' && onClick.handleNavigate('student', data._id)}
                         >
                            {data[key]}
+                           {console.log(data)}
                         </p>
                      </td>
                   ) :
                      (
                         <td key={i} className={`font-medium px-1 ${data[key] === "Unpaid" && "text-[#E02B1D]"} ${data[key] === 'Paid' && "text-[#009262]"} ${data[key] === 'Cancelled' && "text-[#7C859C]"} min-w-14 py-4`}>
-                           {data[key]}
+                           {key !== 'status' && data[key]}
                         </td>
                      )
          ))
