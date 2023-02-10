@@ -722,7 +722,7 @@ export default function EventModal({
                         inputContainerClassName={`bg-lightWhite pt-3.5 pb-3.5 border-0 font-medium pr-3
                        `}
                         inputClassName="bg-transparent appearance-none font-medium pt-4 pb-4"
-                        placeholder="Service"
+                        placeholder="Select Service"
                         parentClassName={`w-full mr-4 max-w-373 self-end 
                         ${persona === "student" ? "mr-4" : ""} ${persona === "parent" ? " order-2" : ""}
                         `}

@@ -20,6 +20,7 @@ const optionData = ["1", "2", "3", "4", "5"];
 const testData = ["SAT", "ACT"];
 
 const tempTableHeaders = [
+   "Tutor Name",
    "Student Name",
    "Time Zone",
    "Service(s)",
@@ -29,6 +30,13 @@ const tempTableHeaders = [
    // "Status",
    "",
 ];
+const initialState = {
+   email: '',
+   firstName: '',
+   lastName: '',
+   phone: '',
+   userType: '',
+}
 
 export default function AssignedStudents() {
 
@@ -36,6 +44,8 @@ export default function AssignedStudents() {
    const [tableHeaders, setTableHeaders] = useState([])
    const navigate = useNavigate()
    const [filterItems, setFilterItems] = useState([])
+   const [modalActive, setModalActive] = useState(false)
+   const [modalData, setModalData] = useState(initialState)
 
    const { role: persona } = useSelector(state => state.user)
 
@@ -46,6 +56,7 @@ export default function AssignedStudents() {
    const [filteredStudents, setFilteredStudents] = useState([])
 
    const [filterData, setFilterData] = useState({
+      tutorName: '',
       studentName: '',
       timeZone: '',
       service: '',
@@ -59,6 +70,10 @@ export default function AssignedStudents() {
    }, [])
 
    // console.log(students)
+
+   const handleSubmit = () => {
+
+   }
 
    useEffect(() => {
       getUserDetail({ id })
@@ -91,7 +106,7 @@ export default function AssignedStudents() {
          })
    }, [])
 
-    useEffect(() => {
+   useEffect(() => {
       let tempdata = [...students]
       // console.log(usersData)
       if (filterData.timeZone !== '') {
@@ -134,9 +149,16 @@ export default function AssignedStudents() {
    const handleNavigate = (role, id) => {
       navigate(`/profile/${role}/${id}`)
    }
-   
+
+
    // console.log('filterData', filterData)
    // console.log('filterItems', filterItems)
+
+   const handleClose = () => setModalActive(false);
+   const [validData, setValidData] = useState(true);
+   useEffect(() => {
+      setValidData(modalData.email && modalData.firstName && modalData.lastName && modalData.userType);
+   }, [modalData, modalData.email.length, modalData.firstName.length, modalData.lastName.length, modalData.phone.length, modalData.userType.length,])
 
    return (
       <>
@@ -151,7 +173,17 @@ export default function AssignedStudents() {
 
                </div>
 
-               <div className="flex align-center mt-8 max-w-[1200px]">
+               <div className="flex align-center mt-8">
+                  <InputField
+                     value={filterData.tutorName}
+                     IconRight={SearchIcon}
+                     onChange={e => setFilterData({ ...filterData, tutorName: e.target.value })}
+                     optionData={optionData}
+                     placeholder="Tutor Name"
+                     inputContainerClassName="border bg-white py-[16px] px-[20px]"
+                     parentClassName="w-full mr-4"
+                     type="text"
+                  />
                   <InputField
                      value={filterData.studentName}
                      IconRight={SearchIcon}
@@ -180,6 +212,11 @@ export default function AssignedStudents() {
                      parentClassName="w-full mr-4"
                      type="select"
                   />
+                  <button className='bg-primary py-3.5 w-full text-lg px-[21px] flex justify-center items-center text-white font-semibold rounded-lg'
+                     onClick={() => setModalActive(true)}>
+                     Assign Tutor
+                     <img src={AddIcon} className='ml-3' />
+                  </button>
                   {/* <InputSelect
                      value={filterData.date}
                      onChange={val => setFilterData({ ...filterData, date: val })}
@@ -200,8 +237,8 @@ export default function AssignedStudents() {
                   /> */}
                </div>
                <div className="pt-4 ">
-                  <FilterItems items={filterItems} setData={setFilterItems} 
-                  onRemoveFilter={onRemoveFilter} />
+                  <FilterItems items={filterItems} setData={setFilterItems}
+                     onRemoveFilter={onRemoveFilter} />
                </div>
 
                <div className="mt-6">
@@ -217,6 +254,44 @@ export default function AssignedStudents() {
             </div>
          </div>
 
+         {
+            modalActive &&
+            <Modal
+               classname={'max-w-[780px] mx-auto'}
+               title='Assign Tutor'
+               cancelBtn={true}
+               cancelBtnClassName='w-140'
+               primaryBtn={{
+                  text: "Assign Tutor",
+                  // className: 'w-140',
+                  form: 'add-user-form',
+                  // onClick: handleSubmit,
+                  type: 'submit',
+                  disabled: !validData
+               }}
+               handleClose={handleClose}
+               body={
+                  <form id='add-user-form' onSubmit={handleSubmit} className='px-[3px] mb-0.5' >
+                     <div className='grid grid-cols-1 md:grid-cols-2  gap-x-2 md:gap-x-3 gap-y-4 mb-5'>
+                        <InputSelect optionData={optionData}
+                           placeholder='Select Tutor'
+                           parentClassName='w-full'
+                           type='select'
+                           inputContainerClassName='text-sm border bg-lightWhite px-[20px] py-[16px]'
+                           value={filterData.tutor}
+                           onChange={val => setFilterData({ ...filterData, tutor: val })} />
+                        <InputSelect optionData={optionData}
+                           placeholder='Select Student'
+                           parentClassName='w-full'
+                           type='select'
+                           inputContainerClassName='text-sm border bg-lightWhite px-[20px] py-[16px]'
+                           value={filterData.tutor}
+                           onChange={val => setFilterData({ ...filterData, tutor: val })} />
+                     </div>
+                  </form>
+               }
+            />
+         }
       </>
    );
 }
