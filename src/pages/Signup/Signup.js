@@ -242,8 +242,13 @@ export default function Signup() {
                phone: `${numberPrefix}${values.phone}`,
             };
             if (values.checked === false) {
-               console.log(settings.subscriptionCode.includes(values.subscriptionCode));
-               if (!settings.subscriptionCode.includes(values.subscriptionCode)) {
+               // console.log(settings.subscriptionCode.includes(values.subscriptionCode));
+               let allCodes = []
+               settings.subscriptionCode.forEach(item => {
+                  allCodes.push(item.code)
+               });
+               // console.log(settings.subscriptionCode);
+               if (!allCodes.includes(values.subscriptionCode)) {
                   return alert('invalid subscription code')
                }
             }
@@ -518,7 +523,7 @@ export default function Signup() {
                               disabled={
                                  values.email === "" ? true : false
                               }
-                              className={`w-full bg-primaryDark disabled:bg-pink py-3 mt-[99px] lg:mt-12 rounded-10 text-white text-lg font-medium relative ${loading ? 'cursor-wait' : 'cursor-pointer'}`}
+                              className={`w-full bg-primaryDark disabled:bg-pink py-3 mt-[99px] lg:mt-12 rounded-10 text-white text-lg font-medium relative ${loading ? 'cursor-wait opacity-60 pointer-events-none' : 'cursor-pointer'}`}
                               onClick={handleClick}
                            >
                               Submit
