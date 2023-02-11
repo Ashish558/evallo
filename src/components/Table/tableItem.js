@@ -489,7 +489,6 @@ const mapData = (data, dataFor, exclude = [], onClick) => {
                            onClick={() => key === 'name' && onClick.handleNavigate('student', data._id)}
                         >
                            {data[key]}
-                           {console.log(data)}
                         </p>
                      </td>
                   ) :

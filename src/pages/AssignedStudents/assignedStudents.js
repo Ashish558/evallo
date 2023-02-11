@@ -20,7 +20,6 @@ const optionData = ["1", "2", "3", "4", "5"];
 const testData = ["SAT", "ACT"];
 
 const tempTableHeaders = [
-   "Tutor Name",
    "Student Name",
    "Time Zone",
    "Service(s)",
@@ -173,7 +172,7 @@ export default function AssignedStudents() {
 
                </div>
 
-               <div className="flex align-center mt-8">
+               <div className="flex align-center mt-8 max-w-[750px]">
                   <InputField
                      value={filterData.tutorName}
                      IconRight={SearchIcon}
@@ -203,7 +202,7 @@ export default function AssignedStudents() {
                      parentClassName="w-full mr-4"
                      type="select"
                   />
-                  <InputSelect
+                  {/* <InputSelect
                      value={filterData.service}
                      onChange={val => setFilterData({ ...filterData, service: val })}
                      optionData={optionData}
@@ -211,12 +210,12 @@ export default function AssignedStudents() {
                      placeholder="Service"
                      parentClassName="w-full mr-4"
                      type="select"
-                  />
-                  <button className='bg-primary py-3.5 w-full text-lg px-[21px] flex justify-center items-center text-white font-semibold rounded-lg'
+                  /> */}
+                  {/* <button className='bg-primary py-3.5 w-full text-lg px-[21px] flex justify-center items-center text-white font-semibold rounded-lg'
                      onClick={() => setModalActive(true)}>
                      Assign Tutor
                      <img src={AddIcon} className='ml-3' />
-                  </button>
+                  </button> */}
                   {/* <InputSelect
                      value={filterData.date}
                      onChange={val => setFilterData({ ...filterData, date: val })}
