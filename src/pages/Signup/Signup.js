@@ -542,25 +542,27 @@ export default function Signup() {
                      ) : frames.selectPersona ? (
                         <SelectPersona {...props} setPersona={setPersona} />
                      ) : frames.services ? (
-                        persona !== 'parent'
-                           ? <SelectServices
+                        // persona !== 'parent'
+                        //    ?
+                            <SelectServices
                               {...props}
                               services={services}
                               setServices={setServices}
                               {...otherDetailsProps}
                               {...valueProps}
                            />
-                           : <UserDetails {...props} {...otherDetailsProps} />
+                           // : <UserDetails {...props} {...otherDetailsProps} />
                      ) : frames.userDetails ? (
-                        persona === 'parent'
-                           ? <UserDetails {...props} {...otherDetailsProps} />
-                           : <SelectServices
-                              {...props}
-                              services={services}
-                              setServices={setServices}
-                              {...otherDetailsProps}
-                              {...valueProps}
-                           />
+                        // persona === 'parent'
+                           // ?
+                            <UserDetails {...props} {...otherDetailsProps} />
+                           // : <SelectServices
+                           //    {...props}
+                           //    services={services}
+                           //    setServices={setServices}
+                           //    {...otherDetailsProps}
+                           //    {...valueProps}
+                           // />
                      ) : frames.questions ? (
                         <Questions
                            {...props}
