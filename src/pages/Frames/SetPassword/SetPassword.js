@@ -12,7 +12,7 @@ export default function SetPassword({ signup, setLoginFormActive, resetPassword 
    const [searchParams, setSearchParams] = useSearchParams();
    const userId = searchParams.get("userid")
    const token = searchParams.get("token")
-   const [loading, setLoading] = useState(true)
+   const [loading, setLoading] = useState(false)
 
    const [password, setPassword] = useState('')
    const [confirmPassword, setConfirmPassword] = useState('')
