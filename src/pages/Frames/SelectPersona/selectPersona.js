@@ -41,7 +41,7 @@ export default function SelectPersona({
    const handleClick = () => {
       if (persona == "parent") {
          setFrames((prev) => {
-            return { ...prev, selectPersona: false, services: true };
+            return { ...prev, selectPersona: false, userDetails: true };
          });
       } else {
          setFrames((prev) => {

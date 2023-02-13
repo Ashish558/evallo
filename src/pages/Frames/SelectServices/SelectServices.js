@@ -31,7 +31,7 @@ export default function SelectServices({
    const handleSubmit = () => {
       if (persona === "parent") {
          setFrames((prev) => {
-            return { ...prev, services: false, questions: false, userDetails: true };
+            return { ...prev, services: false, userDetails: false, questions: true };
          });
       } else {
          setFrames((prev) => {
@@ -43,7 +43,7 @@ export default function SelectServices({
 
    useEffect(() => {
       if (persona === "parent") {
-         setcurrentStep(3);
+         setcurrentStep(4);
       } else {
          setcurrentStep(4);
       }
@@ -52,7 +52,7 @@ export default function SelectServices({
    const handleBack = () => {
       if (persona === "parent") {
          setFrames((prev) => {
-            return { ...prev, services: false, selectPersona: true };
+            return { ...prev, services: false, userDetails: true };
          });
       } else {
          setFrames((prev) => {
