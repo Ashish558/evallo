@@ -184,7 +184,7 @@ export default function AllTests() {
    }, [testName])
 
    // console.log(testName);
-   console.log(tableData);
+   // console.log(tableData);
    // console.log(filteredTests);
 
    const fetchTests = () => {
