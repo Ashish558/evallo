@@ -307,6 +307,10 @@ export default function Users() {
             })
       }
    }
+
+   const handleDelete = item => {
+      console.log(item);
+   }
    return (
       <div className='lg:ml-pageLeft bg-lightWhite min-h-screen'>
          <div className='py-14 px-5'>
@@ -406,7 +410,7 @@ export default function Users() {
             <div className='mt-6'>
                <Table dataFor='allUsers'
                   data={filteredUsersData}
-                  onClick={{ redirect, handleTutorStatus }}
+                  onClick={{ redirect, handleTutorStatus, handleDelete }}
                   tableHeaders={tableHeaders}
                   maxPageSize={maxPageSize}
                   isCallingApi={true}

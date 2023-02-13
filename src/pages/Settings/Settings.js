@@ -12,6 +12,8 @@ import { getSessionTagName } from '../../utils/utils'
 import { BASE_URL, getAuthHeader } from '../../app/constants/constants'
 import axios from 'axios'
 import DeleteIcon from '../../assets/icons/delete.svg'
+import PauseIcon from '../../assets/icons/pause.svg'
+import PlayIcon from '../../assets/icons/play.svg'
 import EditBlueIcon from '../../assets/icons/edit-blue.svg'
 import InputSearch from '../../components/InputSearch/InputSearch'
 
@@ -589,6 +591,7 @@ export default function Settings() {
                                     </span>
                                  </p>
                                  <div className='flex items-center gap-x-4'>
+                                    <img src={PlayIcon} className='w-4 cursor-pointer' alt='play' />
                                     <div className='w-5 h-5 flex items-center justify-center bg-[#E3E3E3] rounded-full cursor-pointer'
                                        onClick={() => onEditCode(subscription)}
                                     >

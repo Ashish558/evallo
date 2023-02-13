@@ -52,9 +52,10 @@ export default function StudentReport() {
       name: 'Time Taken',
       data: []
    })
+   const [timeSeriesOptions, setTimeSeriesOptions] = useState(ttOptions)
 
    const [accuracySeries, setAccuracySeries] = useState({
-      name: 'Incorrect Answers',
+      name: 'Correct Answers',
       data: []
    })
    const [accuracyGraphOptions, setAccuracyGraphOptions] = useState(accuracyOptions)
@@ -388,7 +389,33 @@ export default function StudentReport() {
             data.push(0)
          }
       })
-      // console.log('data', data);
+      console.log('data', data);
+      // console.log('length', Math.ceil(data.length / 5));
+      const len = Math.round(data.length / 5)
+      let groups = []
+      {
+         [...Array(len)].map((x, i) => {
+            groups.push({title : (i+1) *5, cols: 5})
+         })
+      }
+      console.log('groups', groups);
+      // console.log('timeSeriesOptions', timeSeriesOptions);
+      setTimeSeriesOptions(prev => ({...prev, 
+         xaxis: {
+            ...prev.xaxis,
+            group: {
+               ...prev.xaxis.group,
+               groups
+            }
+         },
+         // tooltip: {
+         //    custom: function({series, seriesIndex, dataPointIndex, w}) {
+         //      return '<div class="arrow_box">' +
+         //        '<span>' + series[seriesIndex][dataPointIndex] + '</span>' +
+         //        '</div>'
+         //    }
+         //  }
+      }))
       setTimeSeries(prev => {
          return {
             ...prev,
@@ -417,11 +444,16 @@ export default function StudentReport() {
          }
       })
       let totalIncorrectList = []
-      const conceptsAnswer = Object.keys(selectedSubject.concepts).map(key => {
-         const incorrectScore = getConceptScore(selectedSubject.concepts[key], key, true)
+      // console.log(selectedSubject.concepts);
+      // const conceptsAnswer = Object.keys(selectedSubject.concepts).map(key => {
+      //    const incorrectScore = getConceptScore(selectedSubject.concepts[key], key, true)
+      //    totalIncorrectList.push(incorrectScore)
+      // })
+      Object.keys(selectedSubject.concepts).forEach(key => {
+         const incorrectScore = selectedSubject.concepts[key]
          totalIncorrectList.push(incorrectScore)
       })
-      // console.log('totalIncorrectList', totalIncorrectList);
+      // console.log('CorrectList', totalIncorrectList);
       // console.log('conceptsAnswer', conceptsAnswer)
       setAccuracySeries(prev => {
          return {
@@ -559,9 +591,9 @@ export default function StudentReport() {
 
       let total = 0
       tableData.forEach(item => {
-         if(item.responseTime !== undefined || item.responseTime !== "-"){
+         if (item.responseTime !== undefined || item.responseTime !== "-") {
             let num = item.responseTime.split(" ")[0]
-            if(num === '-') return
+            if (num === '-') return
             total += parseInt(num)
          }
       })
@@ -749,7 +781,7 @@ export default function StudentReport() {
 
                <div className='bg-white mt-6 rounded-20 py-5 px-5 '>
                   <p className='text-primary-dark font-bold text-3xl text-center mb-6 mt-2'>Time Taken</p>
-                  <BarGraph series={[timeSeries]} options={ttOptions} height='600px' />
+                  <BarGraph series={[timeSeries]} options={timeSeriesOptions} height='600px' />
                </div>
                <div className='bg-white mt-6 rounded-20 py-5 px-5 max-w-[1100px]'>
                   <p className='text-primary-dark font-bold text-3xl text-center mb-6 mt-2'>

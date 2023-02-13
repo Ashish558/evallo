@@ -570,7 +570,7 @@ export default function StartTest() {
 
          {popUp && <Modal 
             classname="w-1/2 mx-auto"
-            title="Are you sure, you want to start the section?"
+            title="Are you sure you want to start the section?"
             titleClassName='mr-4  mb-4'
             primaryBtn={
                {text: "Start", className: "bg-primaryDark ml-0", onClick: handleStartTest}

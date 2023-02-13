@@ -12,6 +12,7 @@ import GreenIcon from "../../assets/assignedTests/green.svg";
 import GrayIcon from "../../assets/assignedTests/gray.svg";
 import RemoveIcon from "../../assets/icons/remove.svg"
 import EditTestIcon from "../../assets/icons/edit-test.svg";
+import TrashIcon from '../../assets/icons/delete.svg'
 
 import DeleteIcon from "../../assets/icons/cross.svg"
 import InputSelect from "../InputSelect/InputSelect";
@@ -203,6 +204,15 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch }) {
                      {item.services}
                   </div>
                </td>
+               <td className="font-medium px-1 min-w-14 py-4">
+                  <div className="w-4 h-4 rounded-full bg-[#E3E3E3] flex items-center justify-center">
+                  <img
+                     src={TrashIcon}
+                     className="cursor-pointer"
+                     onClick={() => onClick.handleDelete(item)}
+                     />
+                     </div>
+               </td>
             </tr>
          )}
 
@@ -270,6 +280,7 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch }) {
                      <span className="absolute top-[-7px] left-[3.5px]">×</span>
                   </div>
                </td>
+
             </tr>
          )}
 
