@@ -28,7 +28,7 @@ export default function Table(props) {
    useEffect(() => {
       // console.log(tableData[0]?.dueDate?.split("-").join(""));
       const newTeble = tableData.sort((a, b) => a.dueDate?.split("-").join("") - b.dueDate?.split("-").join(""));
-      console.log(newTeble);
+      // console.log(newTeble);
    }, [tableData])
 
    // console.log();

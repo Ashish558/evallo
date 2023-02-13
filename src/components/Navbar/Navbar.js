@@ -62,6 +62,11 @@ const tempnavdata = [
       tooltip: 'All Invoices'
    },
    {
+      icon: AssignedStudents,
+      path: "/assigned-tutors",
+      tooltip: 'Assigned Tutors'
+   },
+   {
       icon: Exit,
       path: "/exit",
       parentClassName: "mt-auto",

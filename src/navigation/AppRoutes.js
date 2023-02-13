@@ -26,6 +26,7 @@ import TutorProfile from "../pages/Profiles/Tutor/TutorProfile";
 import Invoice from "../pages/Invoice/Invoice";
 import { useEffect } from "react";
 import StudentReport from "../pages/StudentReport/StudentReport";
+import AssignedTutors from "../pages/AssignedTutors/AssignedTutors";
 
 const PrivateRoutes = [
    {
@@ -94,6 +95,14 @@ const AppRoutes = () => {
                element={
                   <RequireAuth isLoggedIn={isLoggedIn}>
                      <Invoice />
+                  </RequireAuth>
+               }
+            />
+            <Route
+               path="/assigned-tutors"
+               element={
+                  <RequireAuth isLoggedIn={isLoggedIn}>
+                     <AssignedTutors />
                   </RequireAuth>
                }
             />

@@ -520,6 +520,7 @@ export default function StartTest() {
                            </div>
                         </div>
                      }
+''
 
                      {testStarted &&
                         <div className='mt-[15px] overflow-auto' style={{ maxHeight: 'calc(100vh - 240px)' }}>
@@ -531,11 +532,11 @@ export default function StartTest() {
                                        handleResponseChange={handleResponseChange}
                                        handleTimeTaken={handleTimeTaken} />
                                     {item.isMarked ?
-                                       <button className='w-[180px] font-semibold py-3 rounded-lg pt-[8px] pb-[8px] border-2 border-[#D2D2D2] text-[#D2D2D2] ml-4'
+                                       <button className='w-[180px] font-semibold pt-2.5 pb-2.5 rounded-lg bg-primaryOrange text-white ml-4'
                                           onClick={() => handleMark(item._id, false)} >
                                           Unmark
                                        </button> :
-                                       <button className='w-[180px] font-semibold pt-2.5 pb-2.5 rounded-lg bg-primaryOrange text-white ml-4'
+                                       <button className='w-[180px] font-semibold py-3 rounded-lg pt-[8px] pb-[8px] border-2 border-[#D2D2D2] text-[#D2D2D2] ml-4'
                                           onClick={() => handleMark(item._id, true)} >
                                           Mark for Review
                                        </button>
@@ -570,8 +571,9 @@ export default function StartTest() {
          {popUp && <Modal 
             classname="w-1/2 mx-auto"
             title="Are you sure, you want to start the section?"
+            titleClassName='mr-4  mb-4'
             primaryBtn={
-               {text: "Start", className: "bg-primaryDark", onClick: handleStartTest}
+               {text: "Start", className: "bg-primaryDark ml-0", onClick: handleStartTest}
             }
             handleClose={() => setPopUp(false)}
          />}

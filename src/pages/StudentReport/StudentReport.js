@@ -89,6 +89,8 @@ export default function StudentReport() {
    const [isSet, setIsSet] = useState(false)
    const [getAnswers, getAnswersResp] = useLazyGetAnswersQuery()
    const [answerKeySubjects, setAnswerKeySubjects] = useState([])
+   const [sectionDuration, setSectionDuration] = useState('')
+   const [totalTimeTaken, setTotalTimeTaken] = useState(0)
 
    const [scoreStr, setScoreStr] = useState('')
 
@@ -112,7 +114,7 @@ export default function StudentReport() {
 
             let answerKeyData = { ...res.data.data }
             let score = getScoreStr(responseData.testType, responseData.score, responseData.subjects, answerKeyData.answer.subjects.length)
-            console.log('score', score);
+            // console.log('score', score);
             setDisplayScore(score)
 
             // console.log('answer key subjects', answerKeyData.answer.subjects);
@@ -129,7 +131,7 @@ export default function StudentReport() {
             let subResponse = answerKeyData.answer.subjects.map(sub => {
                let currSub = responseData.subjects.find(item => item.name === sub.name)
                if (currSub === undefined) return
-               console.log('currSub', currSub);
+               // console.log('currSub', currSub);
                let conceptsToInclude = {}
                if (currSub.concepts === undefined) {
                   Object.keys(sub.concepts).map(key => {
@@ -210,7 +212,10 @@ export default function StudentReport() {
          .then(res => {
             if (res.error) return console.log('TEST ERROR', res.error);
             console.log('TEST RESP', res.data.data.test);
-            const { testId, createdAt, timeLimit, multiple } = res.data.data.test
+            let { testId, createdAt, timeLimit, multiple } = res.data.data.test
+            if (testId === null) {
+               testId = {}
+            }
             setTestDetails(prev => {
                return {
                   ...prev,
@@ -530,13 +535,48 @@ export default function StudentReport() {
       return <>p</>
    }
 
+   useEffect(() => {
+      if (!answerKeySubjects) return
+      if (!selectedSubject) return
+
+      if (answerKeySubjects.length === 0) return
+      if (Object.keys(selectedSubject).length === 0) return
+      // console.log('selectedSubject', selectedSubject)
+      // console.log('answerKeySubjects', answerKeySubjects)
+      const ansKeySubject = answerKeySubjects.find(item => item.name === selectedSubject.name)
+      // console.log('ansKeySubject', ansKeySubject);
+      if (!ansKeySubject) return
+      setSectionDuration(`${ansKeySubject.timer}:00`)
+   }, [answerKeySubjects, selectedSubject])
+
+   useEffect(() => {
+      if (!tableData) return
+      if (!selectedSubject) return
+
+      if (tableData.length === 0) return
+      // console.log('selectedSubject', selectedSubject)
+      // console.log('tableData', tableData)
+
+      let total = 0
+      tableData.forEach(item => {
+         if(item.responseTime !== undefined || item.responseTime !== "-"){
+            let num = item.responseTime.split(" ")[0]
+            if(num === '-') return
+            total += parseInt(num)
+         }
+      })
+      setTotalTimeTaken(`${total} sec`)
+      setTotalTimeTaken(millisToMinutesAndSeconds(total * 1000))
+   }, [tableData, selectedSubject])
+
    // console.log('tableData', tableData)
    // console.log('responseData', responseData)
    // console.log('subjects', subjects)
    // console.log('selectedSubject', selectedSubject)
    // console.log('timeSeries', timeSeries)
    // console.log('answerKey', answerKey)
-   // console.log('answerKey', answerKey)
+   // console.log('answerKeySubjects', answerKeySubjects)
+   // console.log('testDetails', testDetails)
 
    if (Object.keys(responseData).length === 0) return <></>
    if (answerKey.length === 0) return <></>
@@ -657,7 +697,8 @@ export default function StudentReport() {
                            {/* {selectedSubject.timeTaken/1000} */}
                            {selectedSubject.timeTaken ?
                               // moment.duration(selectedSubject.timeTaken).format('HH:mm')
-                              millisToMinutesAndSeconds(selectedSubject.timeTaken)
+                              sectionDuration ? sectionDuration : ''
+                              // millisToMinutesAndSeconds(selectedSubject.timeTaken)
                               : <></>
                            }
                         </p>
@@ -674,9 +715,17 @@ export default function StudentReport() {
                                  {responseData.response[selectedSubject.idx].length}
                               </>
                            }
-
                         </p>
-
+                        <p className='font-semibold text-primary mb-2.2 mt-6'> Total Time Taken </p>
+                        <p className='font-semibold mb-2'>
+                           {/* {selectedSubject.timeTaken/1000} */}
+                           {selectedSubject.timeTaken ?
+                              // moment.duration(selectedSubject.timeTaken).format('HH:mm')
+                              totalTimeTaken
+                              // millisToMinutesAndSeconds(selectedSubject.timeTaken)
+                              : <></>
+                           }
+                        </p>
                      </div>
 
                   </div>
