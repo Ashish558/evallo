@@ -16,6 +16,9 @@ import PauseIcon from '../../assets/icons/pause.svg'
 import PlayIcon from '../../assets/icons/play.svg'
 import EditBlueIcon from '../../assets/icons/edit-blue.svg'
 import InputSearch from '../../components/InputSearch/InputSearch'
+import { useSelector, useDispatch } from 'react-redux'
+import { useUpdateUserFieldsMutation } from '../../app/services/users'
+import { updateUserDetails } from '../../app/slices/user'
 
 const testFilters = [
    {
@@ -98,11 +101,28 @@ export default function Settings() {
       expiry: '',
       tests: [],
    })
+   const [adminModalDetails, setAdminModalDetails] = useState({
+      firstName: '',
+      lastName: '',
+      email: '',
+      phone: '',
+   })
    const [updatedSubscriptionData, setUpdatedSubscriptionData] = useState({
       code: '',
       expiry: '',
       tests: [],
    })
+   const user = useSelector(state => state.user)
+
+   useEffect(() => {
+      setAdminModalDetails({
+         firstName: user.firstName,
+         lastName: user.lastName,
+         email: user.email,
+         phone: user.phone,
+      })
+   }, [user])
+
    const [searchedTest, setSearchedTest] = useState('')
    const [allTestData, setAllTestData] = useState([])
    const [filteredTests, setFilteredTests] = useState([])
@@ -112,6 +132,8 @@ export default function Settings() {
    const [image, setImage] = useState(null)
    const [getSettings, getSettingsResp] = useLazyGetSettingsQuery()
    const [updateSetting, updateSettingResp] = useUpdateSettingMutation()
+
+   const [updateFields, updateFieldsResp] = useUpdateUserFieldsMutation()
    // const [updateImage, updateImageResp] = useUpdateOfferImageMutation()
    const [selectedImageTag, setSelectedImageTag] = useState('')
    const [toggleImage, setToggleImage] = useState({
@@ -126,9 +148,9 @@ export default function Settings() {
    const [imageName, setImageName] = useState('')
    const [tagText, setTagText] = useState('')
    const [modalData, setModalData] = useState(initialState)
+   const dispatch = useDispatch()
 
    const handleClose = () => setModalActive(false)
-
    const handleTagModal = text => {
       console.log(text);
       setTagModalActive(true)
@@ -137,6 +159,24 @@ export default function Settings() {
 
    const handleSubmit = e => {
       e.preventDefault()
+      const reqBody = { ...adminModalDetails }
+      updateFields({ id: user.id, fields: reqBody })
+         .then(res => {
+            handleClose()
+            if (res.error) {
+               return console.log(res.error);
+            }
+            const { firstName, lastName, _id, amountToPay, credits, role, email, phone } = res.data.data.user
+            let timeZone = ''
+            if (res.data.data.userdetails) {
+               timeZone = res.data.data.userdetails.timeZone
+            }
+            dispatch(updateUserDetails({
+               firstName, lastName, id: _id, amountToPay, credits, role,
+               timeZone: timeZone ? timeZone : '', email, phone
+            }))
+
+         })
    }
 
    const fetchSettings = () => {
@@ -513,7 +553,8 @@ export default function Settings() {
    // console.log('settingsData', settingsData);
    // console.log('sessionTags', sessionTags);
    // console.log('servicesAndSpecialization', servicesAndSpecialization);
-   console.log('toggleImage', toggleImage);
+   // console.log('toggleImage', toggleImage);
+   console.log('adminModalDetails', adminModalDetails);
    // console.log(offerImages)
 
    return (
@@ -527,15 +568,15 @@ export default function Settings() {
                   <div className='text-base'>
                      <div className='flex items-center mb-4'>
                         <p className='opacity-60  mr-[15px]'> Full Name:</p>
-                        <p className='font-bold'> Kartik Sarda</p>
+                        <p className='font-bold'> {user.firstName} {user.lastName} </p>
                      </div>
                      <div className='flex items-center mb-4'>
                         <p className='opacity-60 mr-[23px]'>  Email:</p>
-                        <p className='font-bold'> kartik@sevensquarelearning.com</p>
+                        <p className='font-bold'> {user.email} </p>
                      </div>
                      <div className='flex items-center mb-4'>
                         <p className='opacity-60 mr-[15px]'>Phone:</p>
-                        <p className='font-bold'> +91 1234567890</p>
+                        <p className='font-bold'> {user.phone} </p>
                      </div>
                   </div>
                </div>
@@ -780,15 +821,26 @@ export default function Settings() {
                   <form id='settings-form' onSubmit={handleSubmit}>
                      <div className='grid grid-cols-1 md:grid-cols-2  gap-x-2 md:gap-x-3 gap-y-2 gap-y-4 mb-5'>
                         <div>
-                           <InputField label='Admin Name'
+                           <InputField label='Admin First Name'
                               labelClassname='ml-4 mb-0.5'
                               placeholder='Admin Name'
                               inputContainerClassName='px-5 bg-primary-50 border-0'
                               inputClassName='bg-transparent'
                               parentClassName='w-full mr-4' type='text'
-                              value={modalData.name}
+                              value={adminModalDetails.firstName}
                               isRequired={true}
-                              onChange={e => setModalData({ ...modalData, name: e.target.value })} />
+                              onChange={e => setAdminModalDetails({ ...adminModalDetails, firstName: e.target.value })} />
+                        </div>
+                        <div>
+                           <InputField label='Admin Last Name'
+                              labelClassname='ml-4 mb-0.5'
+                              placeholder='Admin Name'
+                              inputContainerClassName='px-5 bg-primary-50 border-0'
+                              inputClassName='bg-transparent'
+                              parentClassName='w-full mr-4' type='text'
+                              value={adminModalDetails.lastName}
+                              isRequired={true}
+                              onChange={e => setAdminModalDetails({ ...adminModalDetails, lastName: e.target.value })} />
                         </div>
                         <div>
                            <InputField label='Phone No.'
@@ -798,8 +850,8 @@ export default function Settings() {
                               inputContainerClassName='px-5 bg-primary-50 border-0'
                               inputClassName='bg-transparent'
                               parentClassName='w-full mr-4' type='text'
-                              value={modalData.phone}
-                              onChange={e => setModalData({ ...modalData, phone: e.target.value })} />
+                              value={adminModalDetails.phone}
+                              onChange={e => setAdminModalDetails({ ...adminModalDetails, phone: e.target.value })} />
                         </div>
                         <div>
                            <InputField label='Email Address'
@@ -810,8 +862,8 @@ export default function Settings() {
                               inputContainerClassName='px-5 bg-primary-50 border-0'
                               inputClassName='bg-transparent'
                               parentClassName='w-full mr-4'
-                              value={modalData.email}
-                              onChange={e => setModalData({ ...modalData, email: e.target.value })} />
+                              value={adminModalDetails.email}
+                              onChange={e => setAdminModalDetails({ ...adminModalDetails, email: e.target.value })} />
                         </div>
 
                      </div>

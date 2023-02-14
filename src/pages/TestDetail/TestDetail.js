@@ -60,6 +60,7 @@ export default function TestDetail() {
    const [btnDisabled, setBtnDisabled] = useState(false)
    const [questionToEdit, setQuestionToEdit] = useState({})
    const [pdfBtnDisabled, setPdfBtnDisabled] = useState(false)
+   const [pdfModalActive, setPdfModalActive] = useState(false)
 
    useEffect(() => {
       if (modalData.email === '' || modalData.firstName === '' || modalData.lastName === '' || modalData.userType === '') {
@@ -89,10 +90,14 @@ export default function TestDetail() {
             setPdfBtnDisabled(false)
             alert('PDF file uploaded successfully!')
             console.log('pdf post resp', res);
+            setPdfModalActive(false) 
+            fetchData()
          }).catch(err => {
             setPdfBtnDisabled(false)
             console.log('pdf err', err.response);
             alert('Could not upload pdf')
+            setPdfModalActive(false) 
+            fetchData()
          })
    };
 
@@ -132,7 +137,7 @@ export default function TestDetail() {
             return {
                QuestionNumber,
                CorrectAnswer,
-               Concepts : Concepts === undefined ? 'Unavailable' : Concepts,
+               Concepts: Concepts === undefined ? 'Unavailable' : Concepts,
                Strategies: 'Unavailable',
                QuestionType,
                AnswerChoices
@@ -141,7 +146,7 @@ export default function TestDetail() {
             return {
                QuestionNumber,
                CorrectAnswer,
-               Concepts : Concepts === undefined ? 'Unavailable' : Concepts,
+               Concepts: Concepts === undefined ? 'Unavailable' : Concepts,
                Strategies,
                QuestionType,
                AnswerChoices
@@ -195,6 +200,7 @@ export default function TestDetail() {
       setModalData(prev => {
          return {
             ...prev,
+            QuestionNumber: item.QuestionNumber,
             correctAnswer: item.CorrectAnswer ? item.CorrectAnswer : '',
             concept: item.Concepts ? item.Concepts : '',
             strategy: item.Strategies !== '-' ? item.Strategies : '',
@@ -223,7 +229,7 @@ export default function TestDetail() {
                            </>
                         }
                      />
-                     <div className="flex flex-col justify-center mb-4">
+                     <div className="flex flex-col justify-center mb-7">
 
                         <p className="mt-6 text-textPrimaryDark text-4xl font-bold">
                            {testData.testName}
@@ -233,6 +239,20 @@ export default function TestDetail() {
                            <span className="text-[#0671E0] text-xs italic inline-block cursor-pointer"
                               onClick={() => sectionsData.test.pdf !== null && window.open(sectionsData.test.pdf)} > {sectionsData.test.pdf !== null ? `${sectionsData.test.testName}.pdf` : ''} </span>
                         }
+                        <PrimaryButton
+                           children='Reupload pdf'
+
+                           disabled={pdfBtnDisabled}
+                           className={`py-3.5 text-sm mt-5 w-[120px] pl-2 pr-2 mr-4 font-medium text-textGra`}
+                           onClick={() => setPdfModalActive(true)}
+                        />
+                        {/* <input ref={PdfRef}
+                           id="pdf"
+                           type="file"
+                           className="hidden"
+                           accept="application/pdf"
+                           onChange={e => handlePDFFile(e.target.files[0])}
+                        /> */}
                      </div>
 
                      <AllTestDetail testData={testData} />
@@ -302,21 +322,8 @@ export default function TestDetail() {
                   </div>
 
                   <div className="flex justify-between mt-7">
-                     <PrimaryButton
-                        children={<div className="flex items-center justify-center">
-                           Add Pdf
-                           <img src={AddIcon} className='w-6 ml-2' /> </div>}
-                        disabled={pdfBtnDisabled}
-                        className={`py-3.5 pl-6 pr-6 mr-4 font-medium text-textGra`}
-                        onClick={() => PdfRef.current.click()}
-                     />
-                     <input ref={PdfRef}
-                        id="pdf"
-                        type="file"
-                        className="hidden"
-                        accept="application/pdf"
-                        onChange={e => handlePDFFile(e.target.files[0])}
-                     />
+
+
                      {/* <PrimaryButton
                      children={<div className="flex items-center justify-center">
                         Add new question
@@ -357,6 +364,19 @@ export default function TestDetail() {
                body={
                   <form id='add-user-form' onSubmit={handleSubmit} className='px-[3px] mb-0.5' >
                      <div className='grid grid-cols-1 md:grid-cols-2  gap-x-2 md:gap-x-3 gap-y-3 gap-y-4 mb-5'>
+                     <div>
+                           <InputField label='Question No.'
+                              labelClassname='ml-4 mb-0.5'
+                              isRequired={false}
+                              placeholder='Question No.'
+                              inputContainerClassName='text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0'
+                              inputClassName='bg-transparent'
+                              parentClassName='w-full' type='text'
+                              value={modalData.QuestionNumber}
+                              disabled={true}
+                              onChange={e => e.target.value }
+                               />
+                        </div>
                         <div>
                            <InputSelect label='Question Type'
                               labelClassname='ml-4 mb-0.5'
@@ -407,7 +427,36 @@ export default function TestDetail() {
                }
             />
          }
-
+         {
+            pdfModalActive &&
+            <Modal
+               classname={'max-w-[580px] mx-auto'}
+               title='Uploading PDF will replace the current PDF'
+               titleClassName='pr-4'
+               cancelBtn={true}
+               cancelBtnClassName='w-140'
+               primaryBtn={{
+                  text: "Upload",
+                  className: 'w-140 pl-4 pr-4',
+                  form: 'add-user-form',
+                  onClick: () => PdfRef.current.click(),
+                  type: 'submit',
+                  disabled: pdfBtnDisabled
+               }}
+               handleClose={() => setPdfModalActive(false) }
+               body={
+                  <div className="py-4">
+                     <input ref={PdfRef}
+                        id="pdf"
+                        type="file"
+                        className="hidden"
+                        accept="application/pdf"
+                        onChange={e => handlePDFFile(e.target.files[0])}
+                     />
+                  </div>
+               }
+            />
+         }
       </>
    );
 }

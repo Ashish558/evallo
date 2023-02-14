@@ -5,6 +5,7 @@ import Passwordicon from "../../assets/form/password.svg";
 import { useForgotPasswordMutation } from "../../app/services/auth";
 import Loader from "../../components/Loader";
 import { useNavigate } from "react-router-dom";
+import PrimaryButton from "../../components/Buttons/PrimaryButton";
 
 export default function ForgotPassword({
    setActiveFrame,
@@ -17,7 +18,8 @@ export default function ForgotPassword({
    const navigate = useNavigate();
 
 
-   const handleSubmit = () => {
+   const handleSubmit = (e) => {
+      e.preventDefault()
       setLoading(true)
       forgotPassword({ email: email })
          .then(res => {
@@ -25,8 +27,11 @@ export default function ForgotPassword({
             if (res.error) {
                console.log(res.error)
                alert(res.error.data.message)
+               return
             }
             console.log(res.data);
+            alert('Password reset link sent to your email!')
+            setLoginActive(true)
             // window.open(res.data.link)
          })
    }
@@ -57,25 +62,31 @@ export default function ForgotPassword({
                onChange={(e) => setEmail(e.target.value)}
             />
 
-            <input
-               disabled={loading === true ? true : !emailValidate.test(email)}
-               className="w-full relative bg-primaryDark disabled:bg-pink py-2 lg:py-4 rounded-10 text-white text-21"
-               // onClick={() => setActiveFrame(setResetPasswordActive)}
-               // onClick={() => handleSubmit()}
-               type="submit"
-               value="Send Link"
-            />
-
-            <p
-               className="text-secondary text-xs font-semibold ml-2 mt-2 cursor-pointer lg:inline-block hidden"
-               onClick={() => setLoginActive(true)}
-            >
-               Send Link
+            <div className="relative">
+               <input
+                  disabled={loading === true ? true : !emailValidate.test(email)}
+                  className={`w-full relative bg-primaryDark disabled:bg-pink py-2 lg:py-4 rounded-10 text-white text-21 ${loading ? 'opacity-60 pointer-events-none' : ''} `}
+                  // onClick={() => setActiveFrame(setResetPasswordActive)}
+                  // onClick={() => handleSubmit()}
+                  type="submit"
+                  value="Send Link"
+               />
                {
                   loading &&
                   <Loader />
                }
-            </p>
+            </div>
+
+            {/* <p
+               className="text-secondary text-xs relative font-semibold ml-2 mt-2 cursor-pointer lg:inline-block hidden"
+               onClick={() => setLoginActive(true)}
+            >
+               Send Link
+               {
+                  true &&
+                  <Loader />
+               }
+            </p> */}
             <p
                className={`text-secondary cursor-pointer relative text-xs font-semibold ml-2 mt-2   lg:inline-block hidden`}
                onClick={() => setActiveFrame && setActiveFrame(setLoginActive)}

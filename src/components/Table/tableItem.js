@@ -264,6 +264,10 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch }) {
                   </button>
                </td>
                <td className="font-medium px-1 min-w-14 py-4">
+               <img src={DownloadIcon} className='w-[30px] cursor-pointer' 
+               onClick={() => handlePdfNavigate()} />
+               </td>
+               <td className="font-medium px-1 min-w-14 py-4">
                   <img
                      src={ResendConfirmation}
                      className="cursor-pointer"

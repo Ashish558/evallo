@@ -20,7 +20,7 @@ function App() {
                if (res.error) {
                   return
                }
-               const { firstName, lastName, _id, amountToPay, credits, role } = res.data.data.user
+               const { firstName, lastName, _id, amountToPay, credits, role, email, phone } = res.data.data.user
                let timeZone = ''
                if (res.data.data.userdetails) {
                   timeZone = res.data.data.userdetails.timeZone
@@ -31,7 +31,7 @@ function App() {
                dispatch(updateIsLoggedIn(true));
                dispatch(updateUserDetails({
                   firstName, lastName, id: _id, amountToPay, credits, role,
-                  timeZone: timeZone ? timeZone : ''
+                  timeZone: timeZone ? timeZone : '', email, phone
                }))
             })
       } else {

@@ -13,7 +13,7 @@ export default function SearchNames({ setStudent, setData, student, tutor, data,
    const [students, setStudents] = useState([]);
    const {role : persona } = useSelector(state => state.user)
    // console.log(user);
-
+ 
    useEffect(() => {
       if (tutor.length > 0) {
          fetchTutors(tutor).then((res) => {

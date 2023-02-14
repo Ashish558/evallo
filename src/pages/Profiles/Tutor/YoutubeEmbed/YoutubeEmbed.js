@@ -19,7 +19,7 @@ export default function YoutubeEmbed({ embedId }) {
          let id = youtube_parser(embedId)
          setYoutubeId(id)
       }
-   }, [])
+   }, [embedId])
 
    return (
       <div className="video-responsive" style={{

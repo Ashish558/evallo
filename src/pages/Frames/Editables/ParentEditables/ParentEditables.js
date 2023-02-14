@@ -576,7 +576,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                               <div className='flex items-center'>
                                  <p className='font-medium mr-4 min-w-[80px] text-[20px]'> Phone </p>
                                  <InputField
-                                    prefix="+91"
+                                    prefix=""
                                     labelClassname='hidden'
                                     placeholder='Phone'
                                     inputContainerClassName='text-sm pt-3 pb-3 px-5 bg-primary-50 border-0'
