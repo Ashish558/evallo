@@ -39,10 +39,11 @@ export default function StartTest() {
       dateAssigned: '',
       startedOn: '',
       completedOn: '',
-      testName: ''
+      testName: '',
+      dueDate: '',
    })
 
-   console.log(testHeaderDetails);
+   // console.log(testHeaderDetails);
    const [isUnlimited, setIsUnlimited] = useState(false)
    const [sectionDetails, setSectionDetails] = useState({})
    const [subjects, setSubjects] = useState([])
@@ -72,7 +73,7 @@ export default function StartTest() {
          .then(res => {
             if (res.error) return console.log('testerror', res.error);
             console.log('test', res.data.data.test);
-            const { testId, createdAt, timeLimit, multiple } = res.data.data.test
+            const { testId, createdAt, timeLimit, multiple, dueDate } = res.data.data.test
             if (multiple === 0) {
                setIsUnlimited(true)
             } else {
@@ -83,12 +84,13 @@ export default function StartTest() {
                setTestHeaderDetails(prev => ({
                   ...prev,
                   testName: testId.testName,
-                  dateAssigned: getFormattedDate(createdAt)
+                  dateAssigned: getFormattedDate(createdAt),
+                  dueDate: getFormattedDate(dueDate),
                }))
             }
             setTestHeaderDetails(prev => ({
                ...prev,
-               duration: multiple ? getDuration(multiple) : '-',
+               duration: multiple ? getDuration(multiple) : 'Unlimited',
             }))
 
          })
@@ -414,7 +416,7 @@ export default function StartTest() {
    // console.log('answers', answers)
    // console.log('subjects', subjects)
    // console.log('activeSection', activeSection)
-   // console.log('testHeaderDetails', testHeaderDetails)
+   console.log('testHeaderDetails', testHeaderDetails)
    // console.log('completedsections', completedSectionIds);
    // console.log('timer', timer);
    // console.log('isUnlimited ', isUnlimited);
@@ -425,7 +427,7 @@ export default function StartTest() {
 
    }
 
-   console.log(testHeaderDetails.duration);
+   // console.log(testHeaderDetails.duration);
 
    if (subjects.length === 0) return
    return (
@@ -452,7 +454,7 @@ export default function StartTest() {
                            <p className='inline-block w-138 font-semibold opacity-60'> Due on </p>
                            <span className='inline-block mr-4'>:</span>
                            <p className='inline-block w-138 font-semibold'>
-                              {testHeaderDetails.dueOn ? testHeaderDetails.dueOn : '-'}
+                              {testHeaderDetails.dueDate ? testHeaderDetails.dueDate : '-'}
                            </p>
                         </div>
                         <div>
