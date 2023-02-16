@@ -17,7 +17,7 @@ import { useLazyGetTutorDetailsQuery, useLazyGetUserDetailQuery } from '../../ap
 import { useLazyGetFeedbacksQuery } from '../../app/services/dashboard';
 import { useNavigate } from 'react-router-dom';
 import { useLazyGetTutorAssignedTestsQuery } from '../../app/services/test';
-import { getDuration, getFormattedDate } from '../../utils/utils';
+import { getDate, getDuration, getFormattedDate } from '../../utils/utils';
 
 const studentsArr = [
    {
@@ -98,6 +98,7 @@ export default function TutorDashboard() {
             // console.log(resp.data.data.user.assiginedStudents)
             console.log(resp.data.data);
             const { details } = resp.data.data
+            console.log('tutor details', details);
             if (details !== null || details !== undefined) {
                setTutorRank(details.tutorRank ? details.tutorRank : '-')
             }
@@ -135,7 +136,7 @@ export default function TutorDashboard() {
       fetchTutorAssignedTests(id)
          .then(res => {
             if (res.error) return console.log('tutor assignedtest', res.error)
-            console.log('tutor assignedtest', res.data)
+            // console.log('tutor assignedtest', res.data)
             let data = res.data.data.test.map(item => {
                const { createdAt, studentId, dueDate, photo, testId, multiple, timeLimit, isCompleted, isStarted } = item
                // console.log(photo);
@@ -166,7 +167,8 @@ export default function TutorDashboard() {
       fetchTutorTests()
    }, [])
    // console.log(students);
-   console.log('allAssignedTests', allAssignedTests);
+   // console.log(tutorRank);
+   // console.log('allAssignedTests', allAssignedTests);
 
    return (
       <div className="lg:ml-pageLeft bg-lightWhite min-h-screen overflow-x-hidden">
@@ -285,7 +287,7 @@ export default function TutorDashboard() {
                                     <p className='font-semibold text-lg mb-1'> {item.testName} </p>
                                     <div className='text-xs font-semibold flex opacity-50'>
                                        <p>Due Date</p>
-                                       <p className='ml-3'> {item.dueDate} </p>
+                                       <p className='ml-3'> {getDate(item.dueDate)} </p>
                                     </div>
                                  </div>
                                  <button className={`bg-primaryOrange font-semibold text-sm rounded-[6px] px-8 py-3 text-white ${item.status !== 'completed' && item.status !== 'started' ? 'opacity-50 pointer-events-none' : ''}`}

@@ -30,7 +30,7 @@ export default function ForgotPassword({
                return
             }
             console.log(res.data);
-            alert('Password reset link sent to your email!')
+            alert('Link sent successfully, You will be now redirected to login.')
             setLoginActive(true)
             // window.open(res.data.link)
          })

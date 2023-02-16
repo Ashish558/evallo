@@ -22,13 +22,8 @@ const initData = [
       lastName: 'Shrivastava',
    }
 ]
-const ConceptSection = () => {
-   const [subject, setSubject] = useState("Maths");
-   const [slot, setSlot] = useState("Jun 20, 2022 - Jul 30, 2022 ");
-   const [leftOpacity, setLeftOpacityy] = useState(1);
-   const [rightOpacity, setRightOpacity] = useState(1);
-   const [subVisisbility, setSubVisisbility] = useState("hidden");
-   const [dateVisibility, setDateVisibility] = useState("hidden");
+const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
+
    const [tutors, setTutors] = useState([])
    const tutorCarouselRef = useRef()
    const { id } = useSelector(state => state.user)
@@ -39,13 +34,14 @@ const ConceptSection = () => {
    const [fetchTutors, fetchTutorsResp] = useLazyGetParentTutorsQuery()
    const navigate = useNavigate()
    const [fetchAssignedTests, fetchAssignedTestsResp] = useLazyGetParentsAssignedTestsQuery();
+   const [filteredAssignedTests, setFilteredAssignedTests] = useState([])
    const percentageCount = 64
 
    useEffect(() => {
       fetchAssignedTests(id)
          .then(res => {
             if (res.error) return console.log('assigned test parent resp', res.error);
-            console.log('assigned test parent resp', res.data);
+            // console.log('assigned test parent resp', res.data);
             let tempAllTests = res.data.data.test.map(test => {
                const { testId, studentId, isCompleted, multiple, isStarted, dueDate, createdAt, updatedAt } = test
                if (testId === null) return
@@ -78,17 +74,19 @@ const ConceptSection = () => {
       fetchTutors({ id })
          .then(res => {
             if (res.error) return console.log(res.error);
-            // console.log(res.data);
+            // console.log('parent tutors', res.data);
             res.data.tutors.length > 0 && setTutors(res.data.tutors)
          })
    }, [])
 
-   const goNext = () => {
-      document.getElementsByClassName("owl-next")[1].click();
-   };
-   const goPrev = () => {
-      document.getElementsByClassName("owl-prev")[1].click();
-   };
+   useEffect(() => {
+      if (selectedStudent === null) return
+      if (allTests.length === 0) return
+      let filtered = allTests.filter(item => item.studentId._id === selectedStudent._id)
+      // console.log('filtered', filtered);
+      // console.log('selectedStudent', selectedStudent._id);
+      setFilteredAssignedTests(filtered)
+   }, [selectedStudent, allTests])
 
    const buttons = document.getElementsByClassName("button")
    useEffect(() => {
@@ -100,7 +98,7 @@ const ConceptSection = () => {
       }
    }, [buttons, buttons.length])
 
-   // console.log(allTests);
+   console.log('filteredTests', filteredAssignedTests);
 
    return (
       <div
@@ -116,88 +114,6 @@ const ConceptSection = () => {
                   inputContainerClassName='bg-[#d9d9d980] pt-2 pb-2'
                   optionData={['Math', 'Grammar', 'Reading', 'Science']}
                   onChange={val => setSub(val)} />
-
-               {/* <div className="dropdown" id={styles.data}>
-                  <label
-                     className="flex items-center text-sm"
-                     id={styles.dropdownHeading}
-                     tabIndex={0}
-                     htmlFor="dateVisisbility"
-                  >
-                     {slot.length > 18 ? `${slot.substring(0, 18)}...` : slot}
-                     <img
-                        id={styles.arrowDown}
-                        src={arrowDown}
-                        style={dateVisibility === "visible"
-                           ? { transform: "rotate(180deg)" }
-                           : { transform: "rotate(0)" }
-                        }
-                        alt=""
-                     />
-                  </label>
-                  <input
-                     type="checkbox"
-                     className="hidden"
-                     id="dateVisisbility"
-                     onChange={(e) =>
-                        setDateVisibility(e.target.checked === true ? "visible" : "hidden")
-                     }
-                  />
-                  <ul
-                     tabIndex={0}
-                     className={`dropdown-content menu p-2 shadow bg-base-100 rounded-box absolute bg-white w-60 z-10 text-sm  ${dateVisibility}`}
-                  >
-                     <li
-                        onClick={(e) => {
-                           setSlot(e.target.innerText);
-                           setDateVisibility("hidden");
-                           document
-                              .getElementById("dateVisisbility")
-                              .click();
-                        }}
-                        className="py-2 cursor-pointer"
-                     >
-                        Jan 20, 2022 - Fab 30, 2022
-                     </li>
-
-                     <li
-                        onClick={(e) => {
-                           setSlot(e.target.innerText);
-                           setDateVisibility("hidden");
-                           document
-                              .getElementById("dateVisisbility")
-                              .click();
-                        }}
-                        className="py-2 cursor-pointer"
-                     >
-                        Feb 20, 2022 - Mar 30, 2022
-                     </li>
-                     <li
-                        onClick={(e) => {
-                           setSlot(e.target.innerText);
-                           setDateVisibility("hidden");
-                           document
-                              .getElementById("dateVisisbility")
-                              .click();
-                        }}
-                        className="py-2 cursor-pointer"
-                     >
-                        Mar 20, 2022 - Apr 30, 2022
-                     </li>
-                     <li
-                        onClick={(e) => {
-                           setSlot(e.target.innerText);
-                           setDateVisibility("hidden");
-                           document
-                              .getElementById("dateVisisbility")
-                              .click();
-                        }}
-                        className="py-2 cursor-pointer"
-                     >
-                        Apr 20, 2022 - May 30, 2022
-                     </li>
-                  </ul>
-               </div> */}
 
             </div>
 
@@ -253,20 +169,20 @@ const ConceptSection = () => {
             </div>
             <div className="flex mt-[64px] justify-between pr-4 items-center">
                <h1 className="text-[#4715D7] text-[21px] font-semibold">Complete Your Profile</h1>
-               <img src={arrowDown} className="cursor-pointer" onClick={() => navigate("/profile")} style={{ width: "15px", height: "15px", transform: 'rotate(-90deg)' }} alt="" />
+               <img src={arrowDown} className="cursor-pointer p-1 w-[25px]" onClick={() => navigate("/profile")} style={{ transform: 'rotate(-90deg)' }} alt="" />
             </div>
             <div className="flex mt-[10px] mb-[10px] justify-between px-5 items-center text-black">
                <h2 className="text-[18px] font-medium">Profile Status</h2>
                <h2 className="text-[18px] font-medium">{percentageCount}%</h2>
             </div>
             <div className="w-full bg-[#D9D9D9] h-[9px] rounded-full mt-[10px] overflow-auto">
-               <div className="rounded-full" style={{width: percentageCount+"%", height: "100%", background: "#62DD43"}}></div>
+               <div className="rounded-full" style={{ width: percentageCount + "%", height: "100%", background: "#62DD43" }}></div>
             </div>
             <div id={styles.practiceTestContainer} >
-               <h2 className="mb-[6px]" id={styles.practiceTestHeader}>Practice Tests</h2>
+               <h2 className="mb-[16px]" id={styles.practiceTestHeader}>Practice Tests</h2>
                <div id={styles.listedData} className='scrollbar-content scrollbar-vertical' >
 
-                  {allTests.map(test => {
+                  {filteredAssignedTests.map(test => {
                      return <ParentTest styles={styles} {...test} />
                   })}
 

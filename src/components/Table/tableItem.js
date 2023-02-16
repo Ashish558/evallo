@@ -43,7 +43,8 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch }) {
       leadStatus: []
    })
 
-   // console.log(item);
+   // console.log('item', item);
+
    useEffect(() => {
       if (dataFor === 'assignedTestsStudents') {
          let params = {}
@@ -329,12 +330,12 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch }) {
             </tr>
          )}
          {dataFor === "studentTestsReport" && (
-            <tr className="odd:bg-white text-sm shadow-sm shadow-slate-200 even:bg-primaryWhite-300 rounded-2xl leading-7">
+            <tr className={`text-sm shadow-sm shadow-slate-200 rounded-2xl leading-7 ${!item.isCorrect ? 'bg-[#e02b1d]/5' : 'odd:bg-white  even:bg-primaryWhite-300'} `}>
                {mapData(item)}
             </tr>
          )}
          {dataFor === "studentTestsReportSmall" && (
-            <tr className="odd:bg-white text-sm shadow-sm shadow-slate-200 even:bg-primaryWhite-300 rounded-2xl leading-7">
+            <tr className={`text-sm shadow-sm shadow-slate-200  rounded-2xl leading-7 ${!item.isCorrect ? 'bg-[#e02b1d]/5' : 'odd:bg-white  even:bg-primaryWhite-300'} `}>
                {mapData(item)}
             </tr>
          )}

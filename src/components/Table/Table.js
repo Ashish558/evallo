@@ -31,7 +31,6 @@ export default function Table(props) {
       // console.log(newTeble);
    }, [tableData])
 
-   // console.log();
 
    useEffect(() => {
       if (hidePagination === true) {

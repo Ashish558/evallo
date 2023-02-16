@@ -18,6 +18,16 @@
     overflow: auto;
 }
 
+#practiceTestHeader {
+    color: #4715d7;
+    font-family: "Inter", sans-serif;
+    font-size: 21px;
+    font-weight: 600;
+    margin-top: 36px;
+    margin-left: 20px;
+    line-height: 25px;
+}
+
 .feedback {
     margin-top: 26px;
 }

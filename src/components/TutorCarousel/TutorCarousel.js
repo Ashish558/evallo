@@ -14,6 +14,7 @@ const initData = [
       lastName: 'Shrivastava',
    }
 ]
+//for student
 const TutorCarousel = () => {
 
    const { id } = useSelector(state => state.user)

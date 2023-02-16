@@ -421,11 +421,12 @@ export default function StudentProfile({ isOwn }) {
             <div className='lg:px-5 lg:pt-10'>
                <div className={`${styles.profileCard} relative`}>
                   <div className='rounded-t-40 bg-lightWhite lg:bg-transparent flex flex-col items-center'>
-                     {sessionStorage.getItem('role') === 'parent' || sessionStorage.getItem('role') === 'tutor'
+                     {!isOwn
                         ?
-                        <button className='absolute bg-[#D9BBFF] px-[14px] py-[12px] rounded-[8px] text-[#636363] text-[18px] font-medium top-[16px] left-[22px] flex gap-[12px] cursor-pointer' onClick={() => window.history.back()}><img src={LeftIcon} alt="icon" /> Back</button>
+                        <button className='absolute bg-[#D9BBFF] px-[14px] py-[8px] rounded-[8px] text-[#636363] text-[18px] font-medium top-[16px] left-[22px] flex gap-[12px] cursor-pointer flex justify-center items-center' onClick={() => window.history.back()}><img src={LeftIcon} alt="icon" /> Back</button>
                         :
-                        <></>}
+                        <></>
+                        }
                      <ProfilePhoto src={user.photo ? user.photo : '/images/default.jpeg'}
                         handleChange={handleProfilePhotoChange} editable={editable} />
                      <div className='flex items-center mt-67 lg:mt-4 text-[#F3F5F7]'>
@@ -502,7 +503,7 @@ export default function StudentProfile({ isOwn }) {
                            editable={persona === 'admin' ? true : false}
                            onClick={() => setToEdit({ ...toEdit, associatedParent: { ...toEdit.associatedParent, active: true } })}
                            text='Parent'
-                           className='text-[21px] mb-2 flex justify-start text-center' />
+                           className='text-[21px] mb-2 flex justify-start text-left self-stretch' />
 
                         <div className='w-[98px] h-[98px]'>
                            <img src={associatedParent.photo ? associatedParent.photo : ''} className='rounded-full w-full h-full' width="98px" height="98px" />

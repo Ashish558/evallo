@@ -54,6 +54,13 @@ export const adminServicesApi = createApi({
             headers: getAuthHeader()
          })
       }),
+      deleteUser: builder.mutation({
+         query: (id) => ({
+            url: `/api/user/${id}`,
+            method: "DELETE",
+            headers: getAuthHeader()
+         })
+      }),
       getAllSections: builder.query({
          query: (body) => ({
             url: `/api/test/getans/${body.id}`,
@@ -72,5 +79,6 @@ export const {
    useLazyGetAllInvoiceQuery,
    useBlockUserMutation,
    useUnblockUserMutation,
-   useLazyGetAllSectionsQuery       
+   useLazyGetAllSectionsQuery,
+   useDeleteUserMutation     
 } = adminServicesApi;

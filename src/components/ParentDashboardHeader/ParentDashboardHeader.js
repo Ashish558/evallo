@@ -18,7 +18,7 @@ import Ledger from "./../../pages/Ledger/Ledger"
 import { useLazyPayBalanceQuery } from "../../app/services/dashboard";
 import { useDisableBodyScroll } from "../../hooks/useDisableBodyScroll";
 
-const ParentDashboardHeader = () => {
+const ParentDashboardHeader = ({ selectedStudent, setSelectedStudent }) => {
    const [images, setImages] = useState([])
    const [user, setUser] = useState({})
    const [associatedStudents, setAssociatedStudents] = useState([]);
@@ -29,9 +29,7 @@ const ParentDashboardHeader = () => {
    const [fetchSettings, fetchSettingsResp] = useLazyGetSettingsQuery()
    const [payBalance, payBalanceResp] = useLazyPayBalanceQuery()
 
-   const [selectedStudent, setSelectedStudent] = useState(null);
    const [detailStudent, setDetailStudent] = useState(null)
-   console.log(detailStudent);
 
    const navigate = useNavigate()
    //  sessionStorage
@@ -52,16 +50,18 @@ const ParentDashboardHeader = () => {
             res.data.data.user.assiginedStudents.map((student, idx) => {
                getUserDetail({ id: student })
                   .then(res => {
+                     // console.log('detail', res.data.data.userdetails.serviceSeeking);
                      setAssociatedStudents(prev => [...prev, {
                         _id: res.data.data.user._id,
                         name: `${res.data.data.user.firstName} ${res.data.data.user.lastName}`,
                         photo: res.data.data.user.photo ? res.data.data.user.photo : '/images/default.jpeg',
-                        serviceSeeking: res.data.data.user.serviceSeeking
+                        serviceSeeking: res.data.data.userdetails?.serviceSeeking
                      }])
                      idx === 0 && setSelectedStudent({
                         _id: res.data.data.user._id,
                         value: `${res.data.data.user.firstName} ${res.data.data.user.lastName}`,
-                        photo: res.data.data.user.photo ? res.data.data.user.photo : '/images/default.jpeg'
+                        photo: res.data.data.user.photo ? res.data.data.user.photo : '/images/default.jpeg',
+                        serviceSeeking: res.data.data.userdetails?.serviceSeeking
                      })
                      idx === 0 && setDetailStudent(res.data.data.userdetails)
                   })
@@ -69,7 +69,7 @@ const ParentDashboardHeader = () => {
 
          })
    }, [])
- 
+
    useEffect(() => {
       if (user.assiginedStudents === undefined) return
       const fetch = async () => {
@@ -103,6 +103,8 @@ const ParentDashboardHeader = () => {
          })
    }
 
+   // console.log('associatedStudents', associatedStudents);
+   // console.log('selectedStudent', selectedStudent);
 
    return (
       <>
@@ -115,25 +117,10 @@ const ParentDashboardHeader = () => {
                <div className="flex flex-col lg:flex-row" style={{ gap: 16 }}>
                   <div className="w-full lg:w-2/3 h-[206px] lg:h-auto flex items-center" id={styles.explore}>
                      <div className="flex mx-auto">
-                        {/* <div className="w-1/2" id={styles.exploreLeft}>
-                           <h2 className="">
-                              This fall get help from our Admission
-                              Experts.
-                           </h2>
-                           <button className="ml-[32px] text-sm 2xl:ml-[46px] bg-[#f3f5f7] rounded-[5px] py-[8px] px-[15px]">
-                              Know More {">"}
-                           </button>
-                        </div>  */}
                         <div className="w-full flex-1 h-full flex items-center"
                            id={styles.exploreBgDisable}
                            style={{ position: 'absolute', top: '0', left: '0' }} >
-                           {/* <div className="relative w-full h-fll">
-                              {
-                                 images.length > 0 ? <img src={images[0]} alt="" />
-                                    :
-                                    <img src={explore} alt="" />
-                              }
-                           </div> */}{
+                           {
                               images.length >= 1 &&
                               <ImageSlideshow images={images} text='text' />
                            }
@@ -141,6 +128,7 @@ const ParentDashboardHeader = () => {
                      </div>
                   </div>
 
+                  {/* PAY btn widget */}
                   <div className={`w-full lg:w-1/3 ${credits > 0 && credits < 250 ? "bg-primaryOrange" : credits >= 250 ? "bg-[#4BBD94]" : "bg-[#F36262]"}`} id={styles.availableCredit}>
                      <div className="flex justify-between mb-2">
                         <h3 className="2xl:text-[19.6px] font-semibold">{credits > 0 && credits < 250 ? "Available Credit" : credits >= 250 ? "Available Credit" : "Amount Due"}</h3>
@@ -173,7 +161,7 @@ const ParentDashboardHeader = () => {
                      <InputSelect optionType='object'
                         parentClassName='mb-2'
                         inputContainerClassName='pt-1 pb-1'
-                        optionData={associatedStudents.map(item => ({ _id: item._id, value: item.name, photo: item.photo }))}
+                        optionData={associatedStudents.map(item => ({ _id: item._id, value: item.name, photo: item.photo, serviceSeeking: item.serviceSeeking }))}
                         optionClassName='w-[130px] text-sm'
                         optionListClassName="text-sm"
                         value={selectedStudent === null ? '' : selectedStudent.value}
@@ -193,7 +181,8 @@ const ParentDashboardHeader = () => {
                               {/* <h6 className="text-[10px]">SAT Tutoring <br />Subject Tutoring</h6> */}
 
                               <ul className="text-[12px]">
-                                 {detailStudent?.serviceSeeking?.map(item => <li>{item}</li>)}
+                                 {selectedStudent?.serviceSeeking?.map((item, idx) => <li>{item}
+                                    {idx < selectedStudent?.serviceSeeking?.length - 1 ? ',' : ''} </li>)}
                               </ul>
 
                               <Link className="btn-gold"
@@ -209,7 +198,7 @@ const ParentDashboardHeader = () => {
                      }
                      {associatedStudents.length > 0 &&
                         <div className="w-1/2 flex justify-end">
-                           { selectedStudent!== null &&
+                           {selectedStudent !== null &&
                               <img className="w-[40px] h-[40px] rounded-full" src={selectedStudent.photo ? selectedStudent.photo : ''} alt="" />
                            }
                         </div>

@@ -157,8 +157,8 @@ export default function StudentReport() {
                }
                // console.log('conceptsToInclude', conceptsToInclude);
             }).filter(item => item !== undefined)
-            console.log('subResponse', subResponse);
-            console.log('subjects', subjects);
+            // console.log('subResponse', subResponse);
+            // console.log('subjects', subjects);
             let updated = subjects.map(subj => {
                let updatedSubjWithConcepts = subResponse.find(item => item.name === subj.name)
                return {
@@ -169,20 +169,37 @@ export default function StudentReport() {
                }
                // console.log('updatedSubjWithConcepts', updatedSubjWithConcepts);
             })
-
+            let updated2 = subResponse.map(subj => {
+               let updatedSubj = subjects.find(item => item.name === subj.name)
+               return {
+                  ...subj,
+                  timeTaken: updatedSubj.timeTaken,
+                  selected: updatedSubj.selected
+               }
+               // console.log('updatedSubjWithConcepts', updatedSubjWithConcepts);
+            })
             // console.log('subjects', subjects);
-            // console.log('updated', updated);
+            console.log('updated', updated);
             // console.log('responseData', responseData);
             // console.log('subResponse', subResponse);
+            let upSubArr = []
+            updated2.forEach(responseSub => {
+               updated.forEach(sub => {
+                  if (responseSub.name === sub.name){
+                     upSubArr.push(sub)
+                  }
+               })
+            })
+            console.log('upSubArr', upSubArr);
 
             setResponseData(prev => {
                return {
                   ...prev,
-                  subjects: updated
+                  subjects: upSubArr
                }
             })
-            setSubjects(updated)
-            let selected = updated.find(item => item.selected === true)
+            setSubjects(upSubArr)
+            let selected = upSubArr.find(item => item.selected === true)
             setSelectedSubject(selected)
 
             let subjects1 = answerKeyData.answer.subjects
@@ -389,18 +406,19 @@ export default function StudentReport() {
             data.push(0)
          }
       })
-      console.log('data', data);
+      // console.log('data', data);
       // console.log('length', Math.ceil(data.length / 5));
       const len = Math.round(data.length / 5)
       let groups = []
       {
          [...Array(len)].map((x, i) => {
-            groups.push({title : (i+1) *5, cols: 5})
+            groups.push({ title: (i + 1) * 5, cols: 5 })
          })
       }
-      console.log('groups', groups);
+      // console.log('groups', groups);
       // console.log('timeSeriesOptions', timeSeriesOptions);
-      setTimeSeriesOptions(prev => ({...prev, 
+      setTimeSeriesOptions(prev => ({
+         ...prev,
          xaxis: {
             ...prev.xaxis,
             group: {
@@ -694,10 +712,10 @@ export default function StudentReport() {
                            //    </> :
                            selectedSubject.concepts ?
                               Object.keys(selectedSubject.concepts).map((key, idx) => {
-                                 return <p key={idx} className='font-semibold mb-2'>
+                                 return  idx < 5 ? <p key={idx} className='font-semibold mb-2'>
                                     {/* {selectedSubject.concepts[key]} */}
                                     {key}
-                                 </p>
+                                 </p> : <></>
                               })
                               : <></>
                         }
@@ -712,10 +730,10 @@ export default function StudentReport() {
                            //    </> :
                            selectedSubject.concepts ?
                               Object.keys(selectedSubject.concepts).map((key, idx) => {
-                                 return <p key={idx} className='font-semibold mb-2'>
+                                 return  idx < 5 ? <p key={idx} className='font-semibold mb-2'>
                                     {/* correct {selectedSubject.concepts[key]} */}
                                     {getConceptScore(selectedSubject.concepts[key], key)}
-                                 </p>
+                                 </p> : <></>
                               })
                               : <></>
                         }
@@ -724,7 +742,7 @@ export default function StudentReport() {
                         <p className='font-semibold text-primary mb-2.2'> Section Started</p>
                         <p className='font-semibold mb-2'> {getDate(responseData.createdAt)} </p>
                         {/* <p className='font-semibold mb-2 opacity-0'>04:25 PM EST</p> */}
-                        <p className='font-semibold text-primary mb-2.2 mt-6'> Section Duration</p>
+                        <p className='font-semibold text-primary mb-2.2 mt-6'> Section Time Limit</p>
                         <p className='font-semibold mb-2'>
                            {/* {selectedSubject.timeTaken/1000} */}
                            {selectedSubject.timeTaken ?

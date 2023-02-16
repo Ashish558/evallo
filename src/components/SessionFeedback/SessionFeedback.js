@@ -6,7 +6,7 @@ import starLight from "./../../assets/icons/star-light.png";
 import { TestItem } from "../TestItem/TestItem";
 import { useLazyGetAssignedTestQuery } from "../../app/services/test";
 import { getFormattedDate } from "../../utils/utils";
- 
+
 const SessionFeedback = () => {
    const [getTest, getTestResp] = useLazyGetAssignedTestQuery()
    const [allTests, setAllTests] = useState([])
@@ -16,7 +16,7 @@ const SessionFeedback = () => {
             console.log('all-assigned-tests', res.data.data.test);
             let tempAllTests = res.data.data.test.map(test => {
                const { testId, studentId, dueDate, isCompleted, isStarted, createdAt, updatedAt } = test
-               if(testId === null) return
+               if (testId === null) return
                return {
                   testName: testId ? testId.testName : '-',
                   assignedOn: getFormattedDate(new Date(createdAt)),
@@ -44,18 +44,21 @@ const SessionFeedback = () => {
    // console.log('all-tests', allTests);
 
    return (
-      <div id={styles.sessionFeedbackContainer} className="scrollbar-content h-[382px] bg-white w-10/12 py-[21px] mt-[33px] rounded-[20px]">
-         <div id={styles.sessionFeedback} className="bg-white px-[28px] scrollbar-content rounded-[20px] h-full overflow-y-auto">
-            {/* {/* <TestItem name="name" status="due date" date="june 20, 2022" action="Start" marks="1250/1250" /> */}
+      <div>
+      <h2 className="mb-[0px]" id={styles.practiceTestHeader}>Practice Tests</h2>
+         <div id={styles.sessionFeedbackContainer} className="scrollbar-content h-[382px] bg-white w-10/12 py-[21px] mt-[20px] rounded-[20px]">
+            <div id={styles.sessionFeedback} className="bg-white px-[28px] scrollbar-content rounded-[20px] h-full overflow-y-auto">
+               {/* {/* <TestItem name="name" status="due date" date="june 20, 2022" action="Start" marks="1250/1250" /> */}
 
-            {allTests.map(test => {
-               return <TestItem key={test._id} {...test} />
-            })}
-            {/* <TestItem name="SAT Series #01" status="due date" date="june 20, 2022" action="Continue" />
+               {allTests.map(test => {
+                  return <TestItem key={test._id} {...test} />
+               })}
+               {/* <TestItem name="SAT Series #01" status="due date" date="june 20, 2022" action="Continue" />
             <TestItem name="Ex. Starte" status="due date" date="june 20, 2022" action="Start" marks="1250/1250" />
             <TestItem name="SAT B2" status="Completed" date="june 20, 2022" /> */}
 
 
+            </div>
          </div>
       </div>
    );

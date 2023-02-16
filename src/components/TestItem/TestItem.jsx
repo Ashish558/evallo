@@ -3,7 +3,7 @@ import Stat from "./../../assets/icons/stat.svg"
 import Download from "./../../assets/icons/download.png"
 import { useSelector } from 'react-redux';
 import { useLazyGetTestResponseQuery } from '../../app/services/test';
-import { getScore, getScoreStr } from '../../utils/utils';
+import { getDate, getScore, getScoreStr } from '../../utils/utils';
 import { useNavigate } from 'react-router-dom';
 
 export const TestItem = ({ testName, assignedTestId, dueDate, pdfLink, testId, studentId, isCompleted, isStarted }) => {
@@ -28,8 +28,8 @@ export const TestItem = ({ testName, assignedTestId, dueDate, pdfLink, testId, s
             return
           }
           // console.log('Resp score', res.data.data.response);
-          let responseData =  res.data.data.response
-          let score = getScoreStr(responseData.testType, responseData.score, responseData.subjects,  responseData.subjects.length)
+          let responseData = res.data.data.response
+          let score = getScoreStr(responseData.testType, responseData.score, responseData.subjects, responseData.subjects.length)
           // let scr = getScore(res.data.data.response.testType, res.data.data.response.subjects)
           setScore(`${score.cumulative} ${score.right}`)
         })
@@ -52,24 +52,29 @@ export const TestItem = ({ testName, assignedTestId, dueDate, pdfLink, testId, s
           <h5 className="text-xs opacity-60 font-semibold">
             due date
           </h5>
-          <h6 className="text-xs opacity-60 font-medium">{dueDate}</h6>
+          <h6 className="text-xs opacity-60 font-medium">  {getDate(dueDate)}</h6>
         </div>
       </div>
       <div className='flex-1 ml-5'>
         <div className="flex gap-[12px]">
           <div className='flex items-center'>
-            <div className='w-[24px]'>
+            {/* <div className='w-[24px]'>
               {isCompleted === false ?
                 <img className='cursor-pointer' src={Download} onClick={() => window.open(pdfLink)} width="34px" alt="download" />
                 :
                 <img className='cursor-pointer' src={Stat} width='34px' alt="Stat" onClick={handleReportNavigate} />
               }
+            </div> */}
+            <div className='w-[24px]'>
+
+              <img className='cursor-pointer' src={Download} onClick={() => window.open(pdfLink)} width="34px" alt="download" />
+
             </div>
           </div>
 
           {/* {action === 'Start' && <div className="w-full font-bold bg-[#F6A429CC] px-2 py-2 text-center text-white rounded-[6px]">{action}</div>} */}
           {isCompleted === true ?
-            <div className="cursor-pointer text-sm break-al  w-full text-sm font-bold bg-[#CBC0F5]/50 px-2 py-2 text-center text-black rounded-[6px]">
+            <div className="cursor-pointer text-sm break-al  w-full text-sm font-bold bg-[#CBC0F5]/50 px-2 py-2 text-center text-black rounded-[6px]" onClick={handleReportNavigate} >
               {score}
             </div> :
             isStarted === true ?

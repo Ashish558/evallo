@@ -41,6 +41,10 @@ export default function ParentTest({ styles, assignedTestId, testId, testName, s
       window.open(`${pdfLink}`)
    }
 
+   const handleNavigate = () => {
+      navigate(`/assigned-tests/${testId}/${assignedTestId}/report/${studentId._id}`)
+   }
+
    return (
       <div
          className="flex items-center justify-between"
@@ -68,7 +72,7 @@ export default function ParentTest({ styles, assignedTestId, testId, testName, s
                      style={{ gap: "10px" }}
                   >
                      <img src={downloadImage} onClick={handleReportNavigate} alt='download-icon' className='cursor-pointer' />
-                     <div className="button bg-[#EFECF9] text-[#0671E0] p-[10px] rounded-[6px] w-[190px] text-center text-sm font-semibold">
+                     <div className="button bg-[#EFECF9] text-[#0671E0] p-[10px] rounded-[6px] w-[190px] text-center text-sm font-semibold cursor-pointer" onClick={handleNavigate} >
                         {score}
                      </div>
                   </div>

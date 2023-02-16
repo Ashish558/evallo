@@ -13,7 +13,7 @@ import { useAddUserMutation, useLazyGetAllUsersQuery, useLazyGetUserDetailQuery 
 import { useSignupUserMutation } from '../../app/services/auth'
 import { useNavigate } from 'react-router-dom'
 import { roles } from '../../constants/constants'
-import { useBlockUserMutation, useUnblockUserMutation } from '../../app/services/admin'
+import { useBlockUserMutation, useDeleteUserMutation, useUnblockUserMutation } from '../../app/services/admin'
 import { useLazyGetSettingsQuery } from '../../app/services/session'
 import PrimaryButton from '../../components/Buttons/PrimaryButton'
 
@@ -66,6 +66,8 @@ export default function Users() {
    const [fetchUsers, fetchUsersResp] = useLazyGetAllUsersQuery()
    const [addUser, addUserResp] = useAddUserMutation()
    const [signupUser, signupUserResp] = useSignupUserMutation();
+   const [deleteUser, deleteUserResp] = useDeleteUserMutation();
+
    const [maxPageSize, setMaxPageSize] = useState(10)
    const [loading, setLoading] = useState(false)
 
@@ -310,6 +312,14 @@ export default function Users() {
 
    const handleDelete = item => {
       console.log(item);
+      deleteUser(item._id)
+         .then(res => {
+            if(res.error){
+               return console.log(res.error);
+            }
+           console.log(res.data);
+           fetch()
+         })
    }
    return (
       <div className='lg:ml-pageLeft bg-lightWhite min-h-screen'>
