@@ -41,6 +41,7 @@ export default function StartTest() {
       completedOn: '',
       testName: '',
       dueDate: '',
+      instruction: '',
    })
 
    // console.log(testHeaderDetails);
@@ -72,8 +73,8 @@ export default function StartTest() {
       getAssignedTest({ url, params })
          .then(res => {
             if (res.error) return console.log('testerror', res.error);
-            console.log('test', res.data.data.test);
-            const { testId, createdAt, timeLimit, multiple, dueDate } = res.data.data.test
+            console.log('assigntest', res.data.data);
+            const { testId, createdAt, timeLimit, multiple, dueDate, instruction } = res.data.data.test
             if (multiple === 0) {
                setIsUnlimited(true)
             } else {
@@ -84,6 +85,7 @@ export default function StartTest() {
                setTestHeaderDetails(prev => ({
                   ...prev,
                   testName: testId.testName,
+                  instruction: instruction,
                   dateAssigned: getFormattedDate(createdAt),
                   dueDate: getFormattedDate(dueDate),
                }))
@@ -416,7 +418,7 @@ export default function StartTest() {
    // console.log('answers', answers)
    // console.log('subjects', subjects)
    // console.log('activeSection', activeSection)
-   console.log('testHeaderDetails', testHeaderDetails)
+   // console.log('testHeaderDetails', testHeaderDetails)
    // console.log('completedsections', completedSectionIds);
    // console.log('timer', timer);
    // console.log('isUnlimited ', isUnlimited);

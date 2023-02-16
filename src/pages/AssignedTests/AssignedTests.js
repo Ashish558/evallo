@@ -285,6 +285,7 @@ export default function AssignedTests() {
          studentId: modalData.studentId,
          testId: modalData.testId,
          dueDate: modalData.date,
+         instruction: modalData.instruction,
          timeLimit: getTimeLimit(modalData.limit),
       }
       console.log(body)
@@ -477,48 +478,7 @@ export default function AssignedTests() {
                   </button>
 
                </div>
-
-               {/* <div className="flex align-center mt-8">
-                  <InputField
-                     value={filterData.studentName}
-                     IconRight={SearchIcon}
-                     onChange={e => setFilterData({ ...filterData, studentName: e.target.value })}
-                     optionData={optionData}
-                     placeholder="Student Name"
-                     inputContainerClassName="px-[20px] py-[16px] bg-white"
-                     parentClassName="w-full text-sm"
-                     type="text"
-                  />
-                  <InputField
-                     value={filterData.testName}
-                     IconRight={SearchIcon}
-                     onChange={e => setFilterData({ ...filterData, testName: e.target.value })}
-                     optionData={optionData}
-                     placeholder="Test Name"
-                     inputContainerClassName="px-[20px] py-[16px] bg-white"
-                     parentClassName="w-full text-sm"
-                     type="text"
-                  />
-                  <InputField
-                     value={filterData.tutor}
-                     onChange={e => setFilterData({ ...filterData, tutor: e.target.value })}
-                     IconRight={SearchIcon}
-                     parentClassName="w-full text-sm"
-                     inputContainerClassName="px-[20px] py-[16px] bg-white"
-                     optionData={optionData}
-                     placeholder="Tutor Name"
-                     type="text"
-                  />
-                  <InputSelect
-                     value={filterData.status}
-                     onChange={val => setFilterData({ ...filterData, status: val })}
-                     optionData={['Started', 'Not Started', 'Completed']}
-                     inputContainerClassName="px-[20px] py-[16px] bg-white"
-                     placeholder="Completion Status"
-                     parentClassName="w-full text-sm"
-                     type="select"
-                  />
-               </div> */}
+               
                <div className='mt-4' >
                   <FilterItems items={filterItems} setData={setFilterItems} onRemoveFilter={onRemoveFilter} />
                </div>
@@ -555,7 +515,7 @@ export default function AssignedTests() {
                   text: "Assign",
                   className: "max-w-140 pl-8 pr-8",
                   onClick: () => handleAssignTestSubmit(),
-                  disabled: !modalData.name || !modalData.limit || !modalData.date || !modalData.testId || !modalData.studentId,
+                  disabled: submitBtnDisabled,
 
                   loading: loading
                }}

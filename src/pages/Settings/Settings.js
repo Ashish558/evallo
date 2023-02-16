@@ -247,6 +247,7 @@ export default function Settings() {
    const updateAndFetchsettings = updatedSetting => {
       updateSetting(updatedSetting)
          .then(res => {
+            // console.log('updated', res.data);
             setSettingsData(res.data.data.setting)
          })
    }
@@ -546,6 +547,20 @@ export default function Settings() {
    // if (Object.keys(settingsData).length === 0) return <></>
    const { classes, servicesAndSpecialization, Expertise, sessionTags, leadStatus, tutorStatus, offerImages, subscriptionCode, personality, interest } = settingsData
 
+   const handlePause = item => {
+      let updated = settingsData.subscriptionCode.map(subscription => {
+         if (item._id === subscription._id) {
+            return { ...item, pause: !item.pause }
+         } else {
+            return { ...subscription }
+         }
+      })
+      let updatedSetting = {
+         subscriptionCode: updated
+      }
+      // console.log(updatedSetting);
+      updateAndFetchsettings(updatedSetting)
+   }
    // console.log('subscriptionCode', settingsData.subscriptionCode);
    // console.log('updatedSubscriptionData', updatedSubscriptionData);
    // console.log('allTestData', allTestData);
@@ -554,7 +569,7 @@ export default function Settings() {
    // console.log('sessionTags', sessionTags);
    // console.log('servicesAndSpecialization', servicesAndSpecialization);
    // console.log('toggleImage', toggleImage);
-   console.log('adminModalDetails', adminModalDetails);
+   // console.log('adminModalDetails', adminModalDetails);
    // console.log(offerImages)
 
    return (
@@ -632,7 +647,12 @@ export default function Settings() {
                                     </span>
                                  </p>
                                  <div className='flex items-center gap-x-4'>
-                                    <img src={PlayIcon} className='w-4 cursor-pointer' alt='play' />
+                                    {
+                                       subscription.pause === false ?
+                                          <img src={PlayIcon} className='w-4 cursor-pointer' alt='play' onClick={() => handlePause(subscription)} /> :
+                                          <img src={PauseIcon} className='w-4 cursor-pointer' alt='play'
+                                             onClick={() => handlePause(subscription)} />
+                                    }
                                     <div className='w-5 h-5 flex items-center justify-center bg-[#E3E3E3] rounded-full cursor-pointer'
                                        onClick={() => onEditCode(subscription)}
                                     >

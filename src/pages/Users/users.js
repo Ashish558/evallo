@@ -402,7 +402,7 @@ export default function Users() {
                   onClick={() => setModalActive(true)}
                   className='pt-[14px] flex items-center text-lg font-semibold pb-[14px] pl-[21px] pr-[21px]' />
             </div>
-            <div className='flex align-center mt-8 gap-[20px]'>
+            <div className='flex align-center mt-0 gap-[20px]'>
                {/* <InputField
                   IconRight={SearchIcon}
                   placeholder='Type Name'

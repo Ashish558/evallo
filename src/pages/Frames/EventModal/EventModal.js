@@ -716,7 +716,7 @@ export default function EventModal({
                         value={data.service}
                         onChange={(val) => {
                            // console.log(val)
-                           data.service !== val && setData({ ...data, service: val, specialization : '' })
+                           data.service !== val && setData({ ...data, service: val, specialization: '' })
                         }}
                         // optionType='object'
                         optionData={servicesAndSpecialization}
@@ -771,6 +771,9 @@ export default function EventModal({
                            // />
                            : <></>
                      }
+
+                  </div>
+                  <div>
                      {persona === "parent" || persona === 'student' ? (
                         <div className="ml-4 mt-5">
                            <p className="font-medium mb-4">
@@ -791,25 +794,7 @@ export default function EventModal({
                            </div>
                         </div>
                      ) : <></>}
-                     {/* {persona === "parent" && (
-                        <div className="mr-4 mt-5 order-1 flex-1">
-                           <p className="font-medium mb-1">
-                              Session Feedback
-                           </p>
-                           <div className="flex py-3 px-4 bg-lightWhite rounded-10">
-                              {[...Array(5)].map((x, i) => (
-                                 <img
-                                    src={data.feedbackStars - 1 < i ? StarIcon : StarActiveIcon}
-                                    className="mr-7 cursor-pointer"
-                                    onClick={() => {
-                                       setData(prev => ({ ...prev, feedbackStars: i + 1 }));
-                                       handleFeedbackSubmit(i + 1)
-                                    }}
-                                 />
-                              ))}
-                           </div>
-                        </div>
-                     )} */}
+
                   </div>
                   {persona !== "student" && persona !== "parent" && (
                      <>

@@ -27,7 +27,7 @@ export default function Table(props) {
 
    useEffect(() => {
       // console.log(tableData[0]?.dueDate?.split("-").join(""));
-      const newTeble = tableData.sort((a, b) => a.dueDate?.split("-").join("") - b.dueDate?.split("-").join(""));
+      // const newTeble = tableData.sort((a, b) => a.dueDate?.split("-").join("") - b.dueDate?.split("-").join(""));
       // console.log(newTeble);
    }, [tableData])
 
@@ -46,7 +46,7 @@ export default function Table(props) {
 
    const sorting = () => {
       // console.log("object");
-      setTableData(tableData.sort((a, b) => b.dueDate?.split("-").join("") - a.dueDate?.split("-").join("")))
+      // setTableData(tableData.sort((a, b) => b.dueDate?.split("-").join("") - a.dueDate?.split("-").join("")))
    }
 
 
@@ -69,7 +69,9 @@ export default function Table(props) {
                </tr>
             </thead>
             <tbody>
-               {dataFor === "invoice" ? sorted ? tableData.sort((a, b) => a.createDate?.split("-").join("") - b.createDate?.split("-").join("")).map((item, idx) => {
+               {/* {dataFor === "invoice" ? sorted ? tableData.sort((a, b) => a.createDate?.split("-").join("") - b.createDate?.split("-").join("")).map((item, idx) => { */}
+                  {/* return ( */}
+                  {tableData.map((item, idx) => {
                   return (
                      <TableItem
                         dataFor={dataFor}
@@ -79,29 +81,31 @@ export default function Table(props) {
                         onClick={onClick}
                      />
                   );
-               }) : tableData.sort((a, b) => b.assignedOn?.split("-").join("") - a.assignedOn?.split("-").join("")).map((item, idx) => <TableItem
-                  dataFor={dataFor}
-                  item={item}
-                  key={idx}
-                  excludes={excludes}
-                  onClick={onClick}
-               />) : sorted ? tableData.sort((a, b) => a.dueDate?.split("-").join("") - b.dueDate?.split("-").join("")).map((item, idx) => {
-                  return (
-                     <TableItem
-                        dataFor={dataFor}
-                        item={item}
-                        key={idx}
-                        excludes={excludes}
-                        onClick={onClick}
-                     />
-                  );
-               }) : tableData.sort((a, b) => b.assignedOn?.split("-").join("") - a.assignedOn?.split("-").join("")).map((item, idx) => <TableItem
-                  dataFor={dataFor}
-                  item={item}
-                  key={idx}
-                  excludes={excludes}
-                  onClick={onClick}
-               />)}
+               })}
+                {/*}  );
+                }) : tableData.sort((a, b) => b.assignedOn?.split("-").join("") - a.assignedOn?.split("-").join("")).map((item, idx) => <TableItem
+               //    dataFor={dataFor}
+               //    item={item}
+               //    key={idx}
+               //    excludes={excludes}
+               //    onClick={onClick}
+               // />) : sorted ? tableData.sort((a, b) => a.dueDate?.split("-").join("") - b.dueDate?.split("-").join("")).map((item, idx) => {
+               //    return (
+               //       <TableItem
+               //          dataFor={dataFor}
+               //          item={item}
+               //          key={idx}
+               //          excludes={excludes}
+               //          onClick={onClick}
+               //       />
+               //    );
+               // }) : tableData.sort((a, b) => b.assignedOn?.split("-").join("") - a.assignedOn?.split("-").join("")).map((item, idx) => <TableItem
+               //    dataFor={dataFor}
+               //    item={item}
+               //    key={idx}
+               //    excludes={excludes}
+               //    onClick={onClick}
+               // />)} */}
             </tbody>
          </table>
 

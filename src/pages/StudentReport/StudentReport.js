@@ -80,6 +80,7 @@ export default function StudentReport() {
       startedOn: '-',
       completedOn: '-',
       duration: '-',
+      instruction: '-',
    })
    const [subjects, setSubjects] = useState([])
    const [selectedSubject, setSelectedSubject] = useState({})
@@ -230,7 +231,7 @@ export default function StudentReport() {
          .then(res => {
             if (res.error) return console.log('TEST ERROR', res.error);
             console.log('TEST RESP', res.data.data.test);
-            let { testId, createdAt, timeLimit, multiple } = res.data.data.test
+            let { testId, createdAt, timeLimit, multiple, instruction } = res.data.data.test
             if (testId === null) {
                testId = {}
             }
@@ -239,6 +240,7 @@ export default function StudentReport() {
                   ...prev,
                   assignedOn: getFormattedDate(createdAt),
                   testName: testId.testName,
+                  instruction: instruction,
                   duration: multiple ? getDuration(multiple) : '-',
                }
             })
@@ -671,10 +673,15 @@ export default function StudentReport() {
                      <span className='inline-block mr-4'>:</span>
                      <p className='inline-block w-138 font-semibold'> {testDetails.completedOn} </p>
                   </div>
-                  <div>
+                  <div className='col-span-2'>
                      <p className='inline-block w-138 font-semibold opacity-60'> Duration </p>
                      <span className='inline-block mr-4'>:</span>
                      <p className='inline-block w-138 font-semibold'> {testDetails.duration} </p>
+                  </div>
+                  <div  className='col-span-2'>
+                     <p className='inline-block w-138 font-semibold opacity-60'> Instruction from tutor </p>
+                     <span className='inline-block mr-4'>:</span>
+                     <p className='inline-block w-138 font-semibold'> {testDetails.instruction} </p>
                   </div>
                </div>
 
