@@ -12,7 +12,7 @@ import MailIcon from '../../../assets/icons/mail.svg'
 import LinkedIn from '../../../assets/icons/linked-in.svg'
 import WhatsappIcon from '../../../assets/icons/whatsapp.svg'
 import RightIcon from '../../../assets/icons/chevron-right.svg'
-
+import SecondaryButton from '../../../components/Buttons/SecondaryButton'
 import ValueOneIcon from '../../../assets/images/val-1.svg'
 import ValueTwoIcon from '../../../assets/images/val-2.svg'
 import ValueThreeIcon from '../../../assets/images/val-3.svg'
@@ -41,6 +41,7 @@ import { BASE_URL, getAuthHeader } from '../../../app/constants/constants'
 import axios from 'axios'
 import ProfilePhoto from '../../../components/ProfilePhoto/ProfilePhoto'
 import YoutubeEmbed from './YoutubeEmbed/YoutubeEmbed'
+import CircleButton from '../../../components/CircleButton/CircleButton'
 
 
 const values = [
@@ -200,6 +201,14 @@ export default function TutorProfile({ isOwn }) {
          active: false,
          serviceSpecializations: []
       },
+      tutorServices: {
+         active: false,
+         tutorServices: []
+      },
+      videoLink: {
+         active: false,
+         videoLink: ''
+      },
    })
 
    useEffect(() => {
@@ -264,7 +273,7 @@ export default function TutorProfile({ isOwn }) {
             const { firstName, lastName, phone, email } = res.data.data.user
             setUser(res.data.data.user)
             let details = res.data.data.details
-
+            console.log('details', details);
             // const { } = res.data.data.user
             // const { service } = res.data.data.userdetails
             const promiseState = async state => new Promise(resolve => {
@@ -280,23 +289,27 @@ export default function TutorProfile({ isOwn }) {
                         ...prevToEdit.tutorContact,
                         email: email,
                         phone: phone === null ? '' : phone,
-                        linkedIn: '',
+                        linkedIn: details === null ? '' : details.linkedIn,
                         isPresent: details === null ? false : true
                      },
                      tagLine: {
                         ...prevToEdit.tagLine,
+                        tagLine: details === null ? '' : details.tagLine,
                         isPresent: details === null ? false : true
                      },
                      tutorLevel: {
                         ...prevToEdit.tutorLevel,
+                        tutorLevel: details === null ? '' : details.tutorLevel,
                         isPresent: details === null ? false : true
                      },
                      about: {
                         ...prevToEdit.about,
+                        about: details === null ? '' : details.about,
                         isPresent: details === null ? false : true
                      },
                      education: {
                         ...prevToEdit.education,
+                        education: details === null ? '' : details.education,
                         isPresent: details === null ? false : true
                      },
                      rates: {
@@ -305,10 +318,12 @@ export default function TutorProfile({ isOwn }) {
                      },
                      tutorAddress: {
                         ...prevToEdit.tutorAddress,
+                        address: details === null ? '' : details.address,
                         isPresent: details === null ? false : true
                      },
                      pincode: {
                         ...prevToEdit.pincode,
+                        pincode: details === null ? '' : details.pincode,
                         isPresent: details === null ? false : true
                      },
                      paymentInfo: {
@@ -317,10 +332,12 @@ export default function TutorProfile({ isOwn }) {
                      },
                      tutorRank: {
                         ...prevToEdit.tutorRank,
+                        tutorRank: details === null ? '' : details.tutorRank,
                         isPresent: details === null ? false : true
                      },
                      income: {
                         ...prevToEdit.income,
+                        income: details === null ? '' : details.income,
                         isPresent: details === null ? false : true
                      },
                      paymentStatus: {
@@ -332,9 +349,19 @@ export default function TutorProfile({ isOwn }) {
                         interest: details !== null ? details.interest : [],
                         isPresent: details === null ? false : true
                      },
+                     tutorServices: {
+                        ...prevToEdit.tutorServices,
+                        tutorServices: details !== null ? details.tutorServices : [],
+                        isPresent: details === null ? false : true
+                     },
                      serviceSpecializations: {
                         ...prevToEdit.serviceSpecializations,
                         serviceSpecializations: details !== null ? details.serviceSpecializations : [],
+                        isPresent: details === null ? false : true
+                     },
+                     videoLink: {
+                        ...prevToEdit.videoLink,
+                        videoLink: details !== null ? details.videoLink : [],
                         isPresent: details === null ? false : true
                      },
                   }
@@ -367,13 +394,13 @@ export default function TutorProfile({ isOwn }) {
 
    // console.log('user', user)
    // console.log('To-edit', toEdit)
-   // console.log('userdetail', userDetail)
-   // console.log('settings', settings.serviceSpecialisation)
-   const { about, education, tagLine, tutorLevel, testPrepRate, otherRate, subjectTutoringRate, address, pincode, paymentInfo, tutorRank, income, paymentStatus, linkedIn } = userDetail
+   // console.log('userdetail', userDetail.serviceSpecializations)
+   // console.log('settings', settings.Expertise)
+   const { about, education, tagLine, tutorLevel, testPrepRate, otherRate, subjectTutoringRate, address, pincode, paymentInfo, tutorRank, income, paymentStatus, linkedIn, videoLink } = userDetail
    // console.log('userdetail', tutorLevel)
 
    // console.log(user);
-   // console.log(settings);
+   // console.log('settings', settings.servicesAndSpecialization);
    if (Object.keys(user).length < 1) return
    if (Object.keys(settings).length < 1) return
    // if (Object.keys(userDetail).length < 1) return
@@ -434,16 +461,27 @@ export default function TutorProfile({ isOwn }) {
             fetchDetails()
          })
    }
-
+   // console.log(isOwn);
    return (
       <>
          <div className='lg:ml-pageLeft bg-lightWhite min-h-screen pb-120 pt-0'>
 
             <div className='lg:px-5 lg:pt-0 lg:pr-0 relative'>
                <div className='pt-10 min-h-[600px] relative z-10 flex items-end'>
-                  <YoutubeEmbed embedId='uWczQkOc5a8' />
+                  <YoutubeEmbed embedId={videoLink} />
                   <div className={`${styles.backBtn} mt-10`} >
                      <BackBtn to={-1} />
+                  </div>
+                  <div className={`${styles.editButton} mt-10`} >
+                     {/* <BackBtn to={-1} /> */}
+                     <CircleButton
+                        className='flex items-center rounded-full'
+                        children={
+                           <EditableText editable={persona === "tutor" || persona === "admin"} />
+                        }
+                        onClick={() => setToEdit({ ...toEdit, videoLink: { ...toEdit.videoLink, active: true } })}
+                         />
+                     {/* <EditableText editable={true} className="right-0" /> */}
                   </div>
                   <div className='relative pt-10 mt-auto flex-1'>
 
@@ -455,13 +493,13 @@ export default function TutorProfile({ isOwn }) {
                            editable={persona === 'admin' ? true : false}
                            onClick={() => setToEdit({ ...toEdit, fullName: { ...toEdit.fullName, active: true } })}
                            className='text-[#4F33BD] justify-center font-bold text-[50px] capitalize'
-                           imgClass='ml-auto' />
+                        />
 
                         <EditableText text={`${tagLine ? tagLine : 'Your tag line'}`}
                            editable={editable}
                            onClick={() => setToEdit({ ...toEdit, tagLine: { ...toEdit.tagLine, active: true } })}
                            className='text-black justify-center font-normal'
-                           imgClass='ml-auto' />
+                           imgClass='ml-5' />
                      </div>
                   </div>
                </div>
@@ -473,11 +511,11 @@ export default function TutorProfile({ isOwn }) {
                         <div className={` mb-5 px-4 py-4 lg:bg-textGray-30 rounded-2xl`}
                            style={{ backgroundColor: tutorLevelBg }}
                         >
-                           <EditableText text={`${user.firstName} ${user.lastName}`}
+                           <EditableText text={`${tutorLevel} belt`}
                               editable={editable}
                               onClick={() => setToEdit({ ...toEdit, tutorLevel: { ...toEdit.tutorLevel, active: true } })}
                               className={` justify-center font-bold text-lg capitalize `}
-                              textClassName={`flex-1 ${tutorLevelTextColor}`}
+                              textClassName={`flex-1 capitalize ${tutorLevelTextColor}`}
                               imgClass='ml-auto' />
                            <div className='flex mt-4 mb-6 justify-center'>
                               <img src={tutorLevelIcon} />
@@ -491,20 +529,20 @@ export default function TutorProfile({ isOwn }) {
                            <>
                               <EditableText editable={editable}
                                  onClick={() => setToEdit({ ...toEdit, serviceSpecializations: { ...toEdit.serviceSpecializations, active: true } })}
-                                 text='Service Specializations'
+                                 text='Expertise'
                                  className='text-lg mb-2' textClassName="flex-1 text-center text-[21px]" />
 
                               <div className='flex flex-col row-span-2 overflow-x-auto scrollbar-content max-h-[500px] scrollbar-vertical'>
-                                 {settings && settings.serviceSpecialisation.length > 0 && userDetail.serviceSpecializations && userDetail.serviceSpecializations.map((id, idx) => {
+                                 {settings && settings.Expertise?.length > 0 && userDetail.serviceSpecializations && userDetail.serviceSpecializations.map((id, idx) => {
                                     return (
-                                       settings.serviceSpecialisation.find(item => item._id === id) ?
+                                       settings.Expertise.find(item => item._id === id) ?
                                           <div key={idx} className='flex flex-col items-center mb-10'>
                                              <div className='flex h-90 w-90 rounded-full  items-center justify-center mb-3' >
-                                                <img className='max-w-[90px] max-h-[90px]' src={settings.serviceSpecialisation.find(item => item._id === id).image}
+                                                <img className='max-w-[90px] max-h-[90px]' src={settings.Expertise.find(item => item._id === id).image}
                                                 />
                                              </div>
                                              <p className='opacity-70 font-semibold text-lg'>
-                                                {settings.serviceSpecialisation.find(item => item._id === id).text}
+                                                {settings.Expertise.find(item => item._id === id).text}
                                              </p>
                                           </div>
                                           :
@@ -571,7 +609,7 @@ export default function TutorProfile({ isOwn }) {
                               <div className='flex flex-col items-center'>
                                  <img src={WhatsappIcon} />
                                  <p className='mt-1 font-medium.4 opacity-60 text-xs cursor-pointer'
-                                    onClick={() => window.open(`https:://wa.me/${user.phone}`)}>
+                                    onClick={() => window.open(`https://wa.me/${user.phone}`)}>
                                     {user.phone ? user.phone : ''}
                                  </p>
                               </div>
@@ -635,135 +673,93 @@ export default function TutorProfile({ isOwn }) {
                   </div>
 
 
-                  {
-                     persona === 'admin' &&
-                     <ProfileCard hideShadow
-                        className='col-span-3 mt-6 lg:mt-0'
-                        body={
-                           <div className='overflow-x-auto scrollbar-content'>
-                              <div className='mb-6'>
-                                 <EditableText text='Test Prep Rate'
-                                    editable={editable}
-                                    onClick={() => setToEdit({ ...toEdit, rates: { ...toEdit.rates, active: true } })}
-                                    className='text-primary justify-between text-lg capitalize'
-                                    imgClass='ml-auto' />
-                                 <p className='mt-1.5  font-medium text-sm whitespace-nowrap'>
-                                    {testPrepRate ? `$${testPrepRate}` : '-'}
-                                 </p>
-                              </div>
-                              <div className='mb-6'>
-                                 <EditableText text='Subject Tutoring Rate'
-                                    editable={editable}
-                                    onClick={() => setToEdit({ ...toEdit, rates: { ...toEdit.rates, active: true } })}
-                                    className='text-primary justify-between text-lg capitalize'
-                                    imgClass='ml-auto' />
-                                 <p className='mt-1.5 font-medium text-sm whitespace-nowrap'>
-                                    {subjectTutoringRate ? `$${subjectTutoringRate}` : '-'}
-                                 </p>
-                              </div>
-                              <div>
-                                 <EditableText text='Other Rate'
-                                    editable={editable}
-                                    onClick={() => setToEdit({ ...toEdit, rates: { ...toEdit.rates, active: true } })}
-                                    className='text-primary justify-between text-lg capitalize'
-                                    imgClass='ml-auto' />
-                                 <p className='mt-1.5 font-medium text-sm whitespace-nowrap'>
-                                    {otherRate ? `$${otherRate}` : '-'}
-                                 </p>
-                              </div>
-                           </div>
-                        }
-                     />
-
-                  }
 
 
                   {
-                     isOwn || persona === 'admin' &&
-                     <ProfileCard hideShadow
-                        className='col-span-3 mt-6 lg:mt-0 flex items-center'
-                        body={
-                           <div className='overflow-x-auto scrollbar-content'>
-                              <div className='mb-6'>
-                                 <EditableText editable={editable}
-                                    onClick={() => setToEdit({ ...toEdit, tutorAddress: { ...toEdit.tutorAddress, active: true } })}
-                                    text='Address'
-                                    className='text-xl justify-between'
-                                 />
-                                 <p className='mt-5  font-medium text-sm'>
-                                    {address ? address : '-'}
-                                 </p>
-                              </div>
-
-                           </div>
-                        }
-                     />
-                  }
-
-
-                  {
-                     isOwn || persona === 'admin' &&
-                     <ProfileCard hideShadow
-                        className='col-span-3 mt-6 lg:mt-0'
-                        body={
-                           <div className='overflow-x-auto scrollbar-content'>
-                              <div className='mb-6'>
-                                 <EditableText editable={editable}
-                                    onClick={() => setToEdit({ ...toEdit, paymentInfo: { ...toEdit.paymentInfo, active: true } })}
-                                    text='Payment Info'
-                                    className='text-xl justify-between'
-                                 />
-                                 <div className='mt-5  font-medium text-sm ma-w-[100px]'>
-                                    <p className='flex items-center mb-3.5'>
-                                       <span>
-                                          Bank Name
-                                       </span>
-                                       <span className='inline-block pl-2'>
-                                          {paymentInfo === undefined ? ' -' : paymentInfo.bankName ? paymentInfo.bankName : '-'}
-                                       </span>
-                                    </p>
-                                    <p className='flex items-center mb-3.5'>
-                                       <span>
-                                          Acc No.
-                                       </span>
-                                       <span className='inline-block pl-2'>
-                                          {paymentInfo === undefined ? ' -' : paymentInfo.AccNo ? paymentInfo.AccNo : '-'}
-                                       </span>
-                                    </p>
-                                    <p className='flex items-center mb-3.5'>
-                                       <span>
-                                          IFCS Code
-                                       </span>
-                                       <span className='inline-block pl-2'>
-                                          {paymentInfo === undefined ? ' -' : paymentInfo.ifcsCode ? paymentInfo.ifcsCode : '-'}
-                                       </span>
+                     (isOwn === true) || (persona === 'admin') ?
+                        <ProfileCard hideShadow
+                           className='col-span-3 mt-6 lg:mt-0 flex items-center'
+                           body={
+                              <div className='overflow-x-auto scrollbar-content'>
+                                 <div className='mb-6'>
+                                    <EditableText editable={editable}
+                                       onClick={() => setToEdit({ ...toEdit, tutorAddress: { ...toEdit.tutorAddress, active: true } })}
+                                       text='Address'
+                                       className='text-xl justify-between'
+                                    />
+                                    <p className='mt-5  font-medium text-sm'>
+                                       {address ? address : '-'}
                                     </p>
                                  </div>
-                              </div>
 
-                           </div>
-                        }
-                     />
+                              </div>
+                           }
+                        /> : <></>
+                  }
+
+
+                  {
+                     (isOwn === true) || (persona === 'admin') ?
+                        <ProfileCard hideShadow
+                           className='col-span-6 mt-6 lg:mt-0'
+                           body={
+                              <div className='overflow-x-auto scrollbar-content'>
+                                 <div className='mb-6'>
+                                    <EditableText editable={editable}
+                                       onClick={() => setToEdit({ ...toEdit, paymentInfo: { ...toEdit.paymentInfo, active: true } })}
+                                       text='Payment Info'
+                                       className='text-xl justify-between'
+                                    />
+                                    <div className='mt-5  font-medium text-sm ma-w-[100px]'>
+                                       <p className='flex items-center mb-3.5'>
+                                          <span>
+                                             Bank Name
+                                          </span>
+                                          <span className='inline-block pl-2'>
+                                             {paymentInfo === undefined ? ' -' : paymentInfo.bankName ? paymentInfo.bankName : '-'}
+                                          </span>
+                                       </p>
+                                       <p className='flex items-center mb-3.5'>
+                                          <span>
+                                             Acc No.
+                                          </span>
+                                          <span className='inline-block pl-2'>
+                                             {paymentInfo === undefined ? ' -' : paymentInfo.AccNo ? paymentInfo.AccNo : '-'}
+                                          </span>
+                                       </p>
+                                       <p className='flex items-center mb-3.5'>
+                                          <span>
+                                             IFCS Code
+                                          </span>
+                                          <span className='inline-block pl-2'>
+                                             {paymentInfo === undefined ? ' -' : paymentInfo.ifcsCode ? paymentInfo.ifcsCode : '-'}
+                                          </span>
+                                       </p>
+                                    </div>
+                                 </div>
+
+                              </div>
+                           }
+                        /> : <></>
                   }
 
                   {
-                     persona === 'admin' &&
-                     <ProfileCard hideShadow
-                        className='col-span-3 mt-6 lg:mt-0'
-
-                        body={
-                           <div className='overflow-x-auto scrollbar-content'>
-                              <div className='mb-6'>
-                                 <EditableText editable={editable}
-                                    onClick={() => setToEdit({ ...toEdit, tutorRank: { ...toEdit.tutorRank, active: true } })}
-                                    text='Tutor Rank'
-                                    className='text-xl justify-between'
-                                 />
-                                 <p className='mt-1.5  font-medium text-sm whitespace-nowrap'>
-                                    {tutorRank ? tutorRank : '-'}
-                                 </p>
-                              </div>
-                              <div className='mb-6'>
+                     (isOwn === true) || (persona === 'admin') ?
+                        <ProfileCard hideShadow
+                           className='col-span-3 mt-6 lg:mt-0'
+                           body={
+                              <div className='overflow-x-auto scrollbar-content'>
+                                 <div className='mb-6'>
+                                    <EditableText editable={persona === 'admin' ? true : false}
+                                       onClick={() => setToEdit({ ...toEdit, tutorRank: { ...toEdit.tutorRank, active: true } })}
+                                       text='Tutor Rank'
+                                       className='text-xl justify-between'
+                                    />
+                                    <p className='mt-1.5  font-medium text-sm whitespace-nowrap'>
+                                       {tutorRank ? tutorRank : '-'}
+                                    </p>
+                                 </div>
+                                 {/* <div className='mb-6'>
                                  <EditableText editable={editable}
                                     onClick={() => setToEdit({ ...toEdit, income: { ...toEdit.income, active: true } })}
                                     text='Income'
@@ -782,13 +778,97 @@ export default function TutorProfile({ isOwn }) {
                                  <p className='mt-1.5 font-medium text-sm whitespace-nowrap'>
                                     {paymentStatus ? paymentStatus : '-'}
                                  </p>
+                              </div> */}
                               </div>
+                           }
+                        /> : <></>
+                  }
+
+                  {/* rates */}
+                  {
+                     persona === 'admin' &&
+                     <ProfileCard hideShadow
+                        className='col-span-3 mt-6 lg:mt-0  max-h-[300px] overflow-y-auto scrollbar-content'
+                        body={
+                           <div className=''>
+                              {
+                                 settings.servicesAndSpecialization.map((service, idx) => {
+                                    let price = '-'
+                                    let isPresent = false
+                                    if (userDetail !== undefined || userDetail !== null) {
+                                       let obj = userDetail.tutorServices.find(serv => serv.service === service.service)
+                                       // console.log('obj', obj);
+                                       if (obj !== undefined) {
+                                          price = obj.price
+                                          isPresent = true
+                                       }
+                                    }
+                                    return (
+                                       <div className='mb-6'>
+                                          <EditableText
+                                             // text='Test Prep Rate'
+                                             text={service.service}
+                                             editable={editable}
+                                             onClick={() => setToEdit({
+                                                ...toEdit,
+                                                tutorServices: {
+                                                   ...toEdit.tutorServices, active: true, selectedIdx: idx,
+                                                   servicePresent: isPresent
+                                                }
+                                             })}
+                                             className='text-primary justify-between text-lg capitalize'
+                                             imgClass='ml-auto' />
+                                          <p className='mt-1.5  font-medium text-sm whitespace-nowrap'>
+                                             {price}
+                                          </p>
+                                       </div>
+                                    )
+                                 })
+                              }
+                              {/* <div className='mb-6'>
+                                 <EditableText
+                                    // text='Test Prep Rate'
+                                    text='Service 1'
+                                    editable={editable}
+                                    onClick={() => setToEdit({
+                                       ...toEdit,
+                                       tutorServices: { ...toEdit.tutorServices, active: true, selectedIdx: 0 }
+                                    })}
+                                    className='text-primary justify-between text-lg capitalize'
+                                    imgClass='ml-auto' />
+                                 <p className='mt-1.5  font-medium text-sm whitespace-nowrap'>
+                                    {testPrepRate ? `$${testPrepRate}` : '-'}
+                                 </p>
+                              </div>
+                              <div className='mb-6'>
+                                 <EditableText
+                                    //  text='Subject Tutoring Rate'
+                                    text='Service 2'
+                                    editable={editable}
+                                    onClick={() => setToEdit({ ...toEdit, rates: { ...toEdit.rates, active: true } })}
+                                    className='text-primary justify-between text-lg capitalize'
+                                    imgClass='ml-auto' />
+                                 <p className='mt-1.5 font-medium text-sm whitespace-nowrap'>
+                                    {subjectTutoringRate ? `$${subjectTutoringRate}` : '-'}
+                                 </p>
+                              </div>
+                              <div>
+                                 <EditableText
+                                    //  text='Other Rate'
+                                    text='Service 3'
+                                    editable={editable}
+                                    onClick={() => setToEdit({ ...toEdit, rates: { ...toEdit.rates, active: true } })}
+                                    className='text-primary justify-between text-lg capitalize'
+                                    imgClass='ml-auto' />
+                                 <p className='mt-1.5 font-medium text-sm whitespace-nowrap'>
+                                    {otherRate ? `$${otherRate}` : '-'}
+                                 </p>
+                              </div> */}
                            </div>
                         }
                      />
+
                   }
-
-
                   {
                      persona === 'admin' &&
                      <FeedbackTable feedbacks={feedbacks} />

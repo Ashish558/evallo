@@ -9,6 +9,8 @@ const initialState = {
   amountToPay: 0,
   timeZone: '',
   role: '',
+  email: '',
+  phone: '',
 };
 
 const user = createSlice({
@@ -29,6 +31,8 @@ const user = createSlice({
       state.credits = payload.credits;
       state.timeZone = payload.timeZone ? payload.timeZone : '';
       state.role = payload.role;
+      state.email = payload.email;
+      state.phone = payload.phone;
     },
   },
 });

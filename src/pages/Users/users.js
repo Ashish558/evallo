@@ -13,8 +13,9 @@ import { useAddUserMutation, useLazyGetAllUsersQuery, useLazyGetUserDetailQuery 
 import { useSignupUserMutation } from '../../app/services/auth'
 import { useNavigate } from 'react-router-dom'
 import { roles } from '../../constants/constants'
-import { useBlockUserMutation, useUnblockUserMutation } from '../../app/services/admin'
+import { useBlockUserMutation, useDeleteUserMutation, useUnblockUserMutation } from '../../app/services/admin'
 import { useLazyGetSettingsQuery } from '../../app/services/session'
+import PrimaryButton from '../../components/Buttons/PrimaryButton'
 
 const optionData = [
    'option 1',
@@ -25,8 +26,8 @@ const optionData = [
 ]
 
 const tableHeaders = [
-   'Full Name', 'User Type', "Email", 'Phone', 'Assigned Tutor', 'Lead Status', 'User Status',
-   'Services'
+   'Full Name', 'User Type', "Email", 'Phone', 'Tutor', 'Lead Status', 'User Status',
+   'Specialization', 'Created On'
 ]
 
 const userTypeOptions = ['tutor', 'parent', 'student']
@@ -45,8 +46,11 @@ export default function Users() {
    const navigate = useNavigate()
    const [modalData, setModalData] = useState(initialState)
    const [validData, setValidData] = useState(true);
+   const [deleteModalActive, setDeleteModalActive] = useState(false)
+   const [deleteLoading, setDeleteLoading] = useState(false)
+
    useEffect(() => {
-      setValidData(modalData.email && modalData.firstName && modalData.lastName && modalData.userType);
+      setValidData(isEmail(modalData.email) && modalData.firstName && modalData.lastName && modalData.userType && modalData.phone)
    }, [modalData, modalData.email.length, modalData.firstName.length, modalData.lastName.length, modalData.phone.length, modalData.userType.length,])
 
    const [settings, setSettings] = useState({
@@ -60,11 +64,15 @@ export default function Users() {
    const [blockUser, blockUserResp] = useBlockUserMutation()
    const [unblockUser, unblockUserResp] = useUnblockUserMutation()
    const [fetchSettings, settingsResp] = useLazyGetSettingsQuery()
+   const [userToDelete, setUserToDelete] = useState({})
 
    const [fetchUsers, fetchUsersResp] = useLazyGetAllUsersQuery()
    const [addUser, addUserResp] = useAddUserMutation()
    const [signupUser, signupUserResp] = useSignupUserMutation();
+   const [deleteUser, deleteUserResp] = useDeleteUserMutation();
+
    const [maxPageSize, setMaxPageSize] = useState(10)
+   const [loading, setLoading] = useState(false)
 
    const [totalPages, setTotalPages] = useState(0)
    const [currentPage, setCurrentPage] = useState(1)
@@ -96,6 +104,7 @@ export default function Users() {
 
             const fetchDetails = async () => {
                await res.data.data.user.map(async (user) => {
+
                   let obj = {
                      _id: user._id,
                      block: user.block,
@@ -103,6 +112,7 @@ export default function Users() {
                      email: user.email ? user.email : '-',
                      userType: user.role ? user.role : '-',
                      phone: user.phone ? user.phone : '-',
+                     createdAt: user.createdAt,
                      assignedTutor: '-',
                      leadStatus: '-',
                      tutorStatus: '-',
@@ -231,15 +241,18 @@ export default function Users() {
          lastName: modalData.lastName,
          email: modalData.email,
       }
+      setLoading(true)
       if (modalData.userType === 'tutor') {
          console.log(body)
          addUser(body)
             .then(res => {
                console.log(res)
+               setLoading(false)
                if (res.error) {
                   alert(res.error.data.message)
                   return
                }
+               alert('Invitation sent!')
                setModalData(initialState)
                handleClose()
             })
@@ -249,11 +262,13 @@ export default function Users() {
          console.log(body)
          signupUser(body)
             .then(res => {
+               setLoading(false)
                console.log(res)
                if (res.error) {
                   alert(res.error.data.message)
                   return
                }
+               alert('Invitation sent!')
                setModalData(initialState)
                handleClose()
             })
@@ -301,19 +316,94 @@ export default function Users() {
             })
       }
    }
+
+   const handleDelete = item => {
+      console.log(item);
+      setUserToDelete(item)
+      setDeleteModalActive(true)
+   }
+
+   const onDelete = () => {
+      setDeleteLoading(true)
+      deleteUser(userToDelete._id)
+         .then(res => {
+            setDeleteLoading(false)
+            setDeleteModalActive(false)
+            if (res.error) {
+               return console.log(res.error);
+            }
+            console.log(res.data);
+            fetch()
+         })
+   }
+
+   function isEmail(val) {
+      let regEmail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      if (!regEmail.test(val)) {
+         return false
+      } else {
+         return true
+      }
+   }
+
+   // console.log('users', filteredUsersData);
    return (
       <div className='lg:ml-pageLeft bg-lightWhite min-h-screen'>
          <div className='py-14 px-5'>
-            <div className='flex justify-between items-center'>
-               <p className='font-bold text-4xl text-primary-dark'>All Users</p>
-               <button className='bg-primary py-3.5 text-lg px-[21px] flex items-center text-white font-semibold rounded-lg mr-55'
-                  onClick={() => setModalActive(true)}>
-                  Add new User
-                  <img src={AddIcon} className='ml-3' />
-               </button>
-            </div>
-            <div className='flex align-center mt-8 gap-[20px]'>
+            <div className='flex justify-between items-center gap-4'>
                <InputField
+                  IconRight={SearchIcon}
+                  placeholder='Type Name'
+                  parentClassName='w-full w-1/6'
+                  inputContainerClassName='text-sm text-sm bg-white  px-[20px] py-[16px] border'
+                  type='text'
+                  value={filterData.typeName}
+                  onChange={e => setFilterData({ ...filterData, typeName: e.target.value })} />
+               <InputSelect optionData={userTypesList}
+                  inputContainerClassName='text-sm border bg-white px-[20px] py-[16px]'
+                  placeholder='User Type'
+                  parentClassName='w-full w-1/6'
+                  type='select'
+                  value={filterData.userType}
+                  onChange={val => setFilterData({ ...filterData, userType: val })} />
+               <InputSelect optionData={settings.leadStatus}
+                  placeholder='Lead Status'
+                  parentClassName='w-full w-1/6'
+                  inputContainerClassName='text-sm border bg-white px-[20px] py-[16px]'
+                  type='select'
+                  value={filterData.status}
+                  onChange={val => setFilterData({ ...filterData, status: val })} />
+               <InputSelect optionData={optionData}
+                  placeholder='Services'
+                  parentClassName='w-full w-1/6'
+                  type='select'
+                  inputContainerClassName='text-sm border bg-white px-[20px] py-[16px]'
+                  value={filterData.services}
+                  onChange={val => setFilterData({ ...filterData, services: val })} />
+               <InputSelect optionData={optionData}
+                  placeholder='Tutor'
+                  parentClassName='w-full w-1/6'
+                  type='select'
+                  inputContainerClassName='text-sm border bg-white px-[20px] py-[16px]'
+                  value={filterData.tutor}
+                  onChange={val => setFilterData({ ...filterData, tutor: val })} />
+               {/* <button className='bg-primary py-3.5 text-lg px-[21px] flex justify-center items-center text-white font-semibold rounded-lg w-1/6'
+                  onClick={() => setModalActive(true)}>
+
+                  <img src={AddIcon} className='ml-3' />
+               </button> */}
+               <PrimaryButton type='submit'
+                  children={
+                     <>
+                        Add new User
+                        <img src={AddIcon} className='ml-3' />
+                     </>
+                  }
+                  onClick={() => setModalActive(true)}
+                  className='pt-[14px] flex items-center text-lg font-semibold pb-[14px] pl-[21px] pr-[21px]' />
+            </div>
+            <div className='flex align-center mt-0 gap-[20px]'>
+               {/* <InputField
                   IconRight={SearchIcon}
                   placeholder='Type Name'
                   parentClassName='w-full'
@@ -348,7 +438,7 @@ export default function Users() {
                   type='select'
                   inputContainerClassName='text-sm border bg-white px-[20px] py-[16px]'
                   value={filterData.tutor}
-                  onChange={val => setFilterData({ ...filterData, tutor: val })} />
+                  onChange={val => setFilterData({ ...filterData, tutor: val })} /> */}
             </div>
             <div className='mt-4' >
                <FilterItems items={filterItems} setData={setFilterItems} onRemoveFilter={onRemoveFilter} />
@@ -356,7 +446,7 @@ export default function Users() {
             <div className='mt-6'>
                <Table dataFor='allUsers'
                   data={filteredUsersData}
-                  onClick={{ redirect, handleTutorStatus }}
+                  onClick={{ redirect, handleTutorStatus, handleDelete }}
                   tableHeaders={tableHeaders}
                   maxPageSize={maxPageSize}
                   isCallingApi={true}
@@ -376,10 +466,11 @@ export default function Users() {
                cancelBtn={true}
                cancelBtnClassName='w-140'
                primaryBtn={{
-                  text: "Add",
-                  className: 'w-140',
+                  text: "Send Invite",
+                  // className: 'w-140',
                   form: 'add-user-form',
                   // onClick: handleSubmit,
+                  loading: loading,
                   type: 'submit',
                   disabled: !validData
                }}
@@ -432,12 +523,45 @@ export default function Users() {
                               inputContainerClassName='text-sm pt-3.5 pb-3.5 bg-primary-50 px-5 border-0'
                               parentClassName='w-full' />
                         </div>
+
+                        <div>
+                           <InputField label='Phone Number'
+                              labelClassname='ml-4 mb-0.5'
+                              isRequired={true}
+                              placeholder='Phone Number'
+                              inputContainerClassName='text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0'
+                              inputClassName='bg-transparent'
+                              parentClassName='w-full' type='text'
+                              value={modalData.phone}
+                              onChange={e => setModalData({ ...modalData, phone: e.target.value })} />
+                        </div>
                      </div>
                   </form>
                }
             />
          }
-
+         {deleteModalActive && (
+            <Modal
+               title={
+                  <span className="leading-10">
+                     Are you sure <br />
+                     you want to delete user {`${userToDelete.name} ${userToDelete._id}`} and all associated data ?
+                  </span>
+               }
+               titleClassName="mb-12 leading-10"
+               cancelBtn={true}
+               cancelBtnClassName="max-w-140"
+               primaryBtn={{
+                  text: "Delete",
+                  className: "w-[140px] pl-4 px-4",
+                  onClick: () => onDelete(),
+                  bgDanger: true,
+                  loading: deleteLoading
+               }}
+               handleClose={() => setDeleteModalActive(false)}
+               classname={"max-w-567 mx-auto"}
+            />
+         )}
       </div>
    )
 }

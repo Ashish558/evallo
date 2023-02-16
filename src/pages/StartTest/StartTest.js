@@ -7,12 +7,13 @@ import PrimaryButton from '../../components/Buttons/PrimaryButton'
 import { TestDetail } from '../../components/TestDetail/TestDetail'
 import { testData } from './tempData'
 import TestOption from '../../components/TestOption/TestOption'
-import { useAttendTestMutation, useLazyContinueTestQuery, useLazyGetAssignedTestQuery, useLazyGetSectionsQuery, useLazyGetTestResponseQuery, useLazyGetTimeQuery, useStartTestMutation, useSubmitTestMutation, useUpdateTimeMutation } from '../../app/services/test'
+import { useAddBackupResponseMutation, useAttendTestMutation, useLazyContinueTestQuery, useLazyGetAssignedTestQuery, useLazyGetSectionsQuery, useLazyGetSingleAssignedTestQuery, useLazyGetTestResponseQuery, useLazyGetTimeQuery, useStartTestMutation, useSubmitTestMutation, useUpdateTimeMutation } from '../../app/services/test'
 import BackBtn from '../../components/Buttons/Back'
 import Timer from '../../components/Timer/Timer'
 import CurrentSection from './CurrentSection/CurrentSection'
 import { useSelector } from 'react-redux'
-import { getFormattedDate } from '../../utils/utils'
+import { getCheckedString, getDuration, getFormattedDate } from '../../utils/utils'
+import Modal from '../../components/Modal/Modal'
 const tempsubjects = [
    { text: 'Trigonometry', selected: true },
    { text: 'Mathematics', selected: false },
@@ -37,39 +38,96 @@ export default function StartTest() {
       duration: 0,
       dateAssigned: '',
       startedOn: '',
-      completedOn: ''
+      completedOn: '',
+      testName: '',
+      dueDate: '',
+      instruction: '',
    })
+
+   // console.log(testHeaderDetails);
+   const [isUnlimited, setIsUnlimited] = useState(false)
    const [sectionDetails, setSectionDetails] = useState({})
    const [subjects, setSubjects] = useState([])
    const [activeSection, setActiveSection] = useState({})
    const [timer, setTimer] = useState(10)
    const [answers, setAnswers] = useState([])
    const [submitId, setSubmitId] = useState('')
-   const { id } = useParams()
+   const [completedSubjects, setCompletedSubjects] = useState([])
+
+   const { id, assignedTestId } = useParams()
 
    const [getSections, getSectionsResp] = useLazyGetSectionsQuery()
-   const [getTestResponse, getTestResponseResp] = useLazyGetTestResponseQuery()
+   const [getAssignedTest, getAssignedTestResp] = useLazyGetSingleAssignedTestQuery()
 
-   const [attendTest, attendTestResp] = useAttendTestMutation()
-   const [updateTime, updateTimeResp] = useUpdateTimeMutation()
+   const [addBackupResponse, addBackupResponseResp] = useAddBackupResponseMutation()
    const [startTest, startTestResp] = useStartTestMutation()
    const [submitSection, submitSectionResp] = useSubmitTestMutation()
-   const [getTime, getTimeResp] = useLazyGetTimeQuery()
    const [continueTest, continueTestResp] = useLazyContinueTestQuery()
    const [completedSectionIds, setCompletedSectionIds] = useState([])
+   const [popUp, setPopUp] = useState(false)
+
+   useEffect(() => {
+      let params = {}
+      let url = `/api/test/myassigntest/${assignedTestId}`
+
+      getAssignedTest({ url, params })
+         .then(res => {
+            if (res.error) return console.log('testerror', res.error);
+            console.log('assigntest', res.data.data);
+            const { testId, createdAt, timeLimit, multiple, dueDate, instruction } = res.data.data.test
+            if (multiple === 0) {
+               setIsUnlimited(true)
+            } else {
+               setIsUnlimited(false)
+            }
+            if (res.data.data.test.testId) {
+               console.log(res.data.data.test.testId);
+               setTestHeaderDetails(prev => ({
+                  ...prev,
+                  testName: testId.testName,
+                  instruction: instruction,
+                  dateAssigned: getFormattedDate(createdAt),
+                  dueDate: getFormattedDate(dueDate),
+               }))
+            }
+            setTestHeaderDetails(prev => ({
+               ...prev,
+               duration: multiple ? getDuration(multiple) : 'Unlimited',
+            }))
+
+         })
+   }, [])
 
    const handleStartTest = () => {
       if (!activeSection) return
-      startTest({ id: id, reqbody: { sectionName: activeSection.name } })
+      startTest({ id: assignedTestId, reqbody: { sectionName: activeSection.name } })
          .then(res => {
             if (res.error) {
                console.log(res.error)
+               alert('error starting test')
+               return
             }
             console.log('start test', res.data)
             const { startTime, endTime, sectionName, answer, submitId } = res.data.data
-            let timer = (new Date(endTime) - new Date()) / 1000
-            setTimer(Math.trunc(timer))
-            setInitialSeconds(Math.trunc(timer))
+            setPopUp(false)
+
+            if (endTime === null) {
+               let date = new Date()
+
+               var nextDay = new Date(date);
+               nextDay.setDate(date.getDate() + 1);
+               // console.log(nextDay); //
+
+               let timer = (new Date(nextDay) - new Date()) / 1000
+               setTimer(Math.trunc(timer))
+               setInitialSeconds(Math.trunc(timer))
+            } else {
+               let timer = (new Date(endTime) - new Date()) / 1000
+               setTimer(Math.trunc(timer))
+               setInitialSeconds(Math.trunc(timer))
+            }
+
+            // setInitialSeconds(Math.trunc(timer))
             setTestStarted(true)
             setActiveSection({ name: sectionName })
             setSubmitId(submitId)
@@ -83,7 +141,7 @@ export default function StartTest() {
                   }
                })
             })
-            setAnswers(answer.map(item => ({ ...item, isMarked: false, ResponseAnswer: 'C', responseTime: 0 })))
+            setAnswers(answer.map(item => ({ ...item, isMarked: false, ResponseAnswer: '', responseTime: 0 })))
          })
    }
    // console.log(id)
@@ -101,9 +159,10 @@ export default function StartTest() {
             res.data.data.subjects.subjects.map(item => {
                duration += item.timer
             })
-            console.log('date', new Date(res.data.data.subjects.createdAt));
+            // console.log('date', new Date(res.data.data.subjects.createdAt));
             setTestHeaderDetails(prev => ({
-               ...prev, duration,
+               ...prev,
+               // duration,
                startedOn: getFormattedDate(new Date(res.data.data.subjects.createdAt))
             }))
             setSectionDetails(res.data.data)
@@ -118,14 +177,14 @@ export default function StartTest() {
             })
             promiseState()
                .then(() => {
-                  fetchContinueTest()
+                  fetchContinueTest(true, tempsubs)
                })
          })
    }
    useEffect(() => {
       if (!id) return
       fetchSections()
-   }, [])
+   }, [id])
 
    useEffect(() => {
       // getTestResponse({ id })
@@ -138,28 +197,61 @@ export default function StartTest() {
       //    })
    }, [])
 
-   const fetchContinueTest = () => {
-      continueTest({ id })
+   const fetchContinueTest = (setResponsesFromStorage, subjectsRec) => {
+      continueTest({ id: assignedTestId })
          .then(res => {
             if (res.error) {
                console.log(res.error)
                return
             }
-            console.log('continue', res.data.data)
+            console.log('CONTINUE', res.data.data)
+            // console.log('isUnlimited', isUnlimited);
+            // let completedIds = res.data.data.completed.map(item => item._id)
 
-            const { startTime, endTime, sectionName, completed, answer, submitId } = res.data.data
-            if (endTime !== null && endTime) {
+            // let inComplete = subjects.filter(sub => !completedIds.includes(sub._id))
+            // console.log('subjects', subjects)
+            // console.log('subjectsRec', subjectsRec)
+            // console.log('inComplete', inComplete)
+
+            const { startTime, endTime, sectionName, completed, answer, submitId, backupResponse } = res.data.data
+            if (completed !== undefined) {
+               setCompletedSubjects(completed)
+            }
+            if (endTime !== null && endTime || sectionName.length > 1) {
                let timer = (new Date(endTime) - new Date()) / 1000
                setTimer(Math.trunc(timer))
                setInitialSeconds(Math.trunc(timer))
+
                // setTestStarted(true)
                setTestStarted(true)
                setActiveSection({ name: sectionName })
                setSubmitId(submitId)
-               setAnswers(answer.map(item => ({
-                  ...item, isMarked: false, ResponseAnswer: 'C',
-                  responseTime: 0
-               })))
+
+               setAnswers(answer.map((item, idx) => {
+                  if (backupResponse !== undefined && backupResponse.length > 0) {
+                     return {
+                        ...item, isMarked: false, responseTime: 0,
+                        ResponseAnswer: backupResponse[idx].ResponseAnswer
+                     }
+                  } else {
+                     return {
+                        ...item, isMarked: false, ResponseAnswer: '',
+                        responseTime: 0
+                     }
+                  }
+               }))
+
+               if (setResponsesFromStorage === true) {
+                  // let savedAnswers = JSON.parse(localStorage.getItem('answers'))
+                  // let savedAssignedTestId = localStorage.getItem('assignedTestId')
+                  // if (!savedAnswers) return
+                  // if (savedAnswers === null || savedAnswers === undefined) return
+                  // if (savedAnswers.length === 0) return
+                  // if (savedAssignedTestId !== assignedTestId) return
+                  // console.log('savedAnswers', savedAnswers);
+                  // setAnswers(savedAnswers)
+                  // console.log('savedAnswers2', localStorage.getItem('answers'));
+               }
             } else {
                setTestStarted(false)
             }
@@ -203,6 +295,33 @@ export default function StartTest() {
          setActiveSection(active)
       }
    }, [subjects])
+
+   useEffect(() => {
+      if (subjects.length === 0) return
+      const active = subjects.filter(item => item.selected === true)
+      let completedSubIds = completedSubjects.map(item => item._id)
+      // console.log('completedSubIds', completedSubIds);
+      // console.log('subjects', subjects);
+      if (active.length === 0) {
+         let issetActive = false
+         let temp = subjects.map(sub => {
+            if (issetActive === false) {
+               if (completedSubIds.includes(sub._id)) {
+                  return { ...sub, selected: false }
+               } else {
+                  issetActive = true
+                  return { ...sub, selected: true }
+               }
+            } else {
+               return { ...sub, selected: false }
+            }
+         })
+         setSubjects(temp)
+         // console.log('tempsubjects', temp);
+      }
+      // console.log('active subject', active);
+      // console.log('all subjects', subjects);
+   }, [subjects, completedSubjects])
 
    useEffect(() => {
       if (completedSectionIds.length === subjects.length) {
@@ -255,6 +374,7 @@ export default function StartTest() {
          }
       }
       console.log(body);
+      // return
       submitSection(body)
          .then(res => {
             if (res.error) {
@@ -262,6 +382,7 @@ export default function StartTest() {
             }
             console.log(res.data)
             setTestStarted(false)
+            // localStorage.setItem('answers', null)
             fetchContinueTest()
             setActiveSection({})
          })
@@ -275,19 +396,40 @@ export default function StartTest() {
          })
       })
    }
+
+   useEffect(() => {
+      if (!answers) return
+      if (answers === null || answers === undefined) return
+      if (answers.length === 0) return
+      // console.log('setans', answers);
+      addBackupResponse({ id: assignedTestId, reqbody: { backupResponse: answers } })
+         .then(res => {
+            if (res.error) {
+               console.log(res.error);
+            } else {
+               // console.log(res.data);
+            }
+         })
+      // localStorage.setItem('assignedTestId', assignedTestId)
+      // localStorage.setItem('answers', JSON.stringify(answers))
+   }, [answers])
    // const { subjects, testQnId, testType } = sectionDetails.subjects
    // console.log('sectionDetails', sectionDetails)
    // console.log('answers', answers)
    // console.log('subjects', subjects)
    // console.log('activeSection', activeSection)
+   // console.log('testHeaderDetails', testHeaderDetails)
    // console.log('completedsections', completedSectionIds);
    // console.log('timer', timer);
+   // console.log('isUnlimited ', isUnlimited);
    // console.log('initialSeconds', initialSeconds);
    // console.log('countDown', countDown);
 
    const handleTimeTaken = (id, sec) => {
 
    }
+
+   // console.log(testHeaderDetails.duration);
 
    if (subjects.length === 0) return
    return (
@@ -297,8 +439,10 @@ export default function StartTest() {
             <div className='flex'>
 
                <div className='flex-1' >
-                  <BackBtn to='/all-tests' />
-                  <p className='text-primary-dark font-bold text-3xl mb-8' >Test Name</p>
+                  {!testStarted && <BackBtn to='/all-tests' />}
+                  <p className='text-primary-dark font-bold text-3xl mb-8' >
+                     {testHeaderDetails.testName}
+                  </p>
                   {!testStarted &&
                      <div className='grid grid-cols-2 grid-rows-3 max-w-840 text-sm gap-y-4 mt-2'>
                         <div>
@@ -306,6 +450,13 @@ export default function StartTest() {
                            <span className='inline-block mr-4'>:</span>
                            <p className='inline-block w-138 font-semibold'>
                               {testHeaderDetails.name}
+                           </p>
+                        </div>
+                        <div>
+                           <p className='inline-block w-138 font-semibold opacity-60'> Due on </p>
+                           <span className='inline-block mr-4'>:</span>
+                           <p className='inline-block w-138 font-semibold'>
+                              {testHeaderDetails.dueDate ? testHeaderDetails.dueDate : '-'}
                            </p>
                         </div>
                         <div>
@@ -335,6 +486,13 @@ export default function StartTest() {
                            <p className='inline-block w-138 font-semibold'>
                               {testHeaderDetails.duration} </p>
                         </div>
+
+                        <div>
+                           <p className='inline-block w-138 font-semibold opacity-60'> Instruction from Tutor </p>
+                           <span className='inline-block mr-4'>:</span>
+                           <p className='inline-block w-138 font-semibold'>
+                              {testHeaderDetails.instruction ? testHeaderDetails.instruction : "-"} </p>
+                        </div>
                      </div>
                   }
 
@@ -354,16 +512,19 @@ export default function StartTest() {
                      </div>
                      {!testStarted && Object.keys(activeSection).length > 1 &&
                         <div className='bg-white pt-[60px] pr-8 pl-12 pb-[50px] mt-4'>
-                           <TestDetail name={activeSection.name} desc={activeSection.description} />
+                           <TestDetail name={activeSection.name} desc={activeSection.description}
+                              timer={activeSection.timer} />
 
                            <div className='flex items-center flex-col mt-12'>
                               <p className='text-[#E02B1D] bg-[#FFBE9D] py-2 px-5 rounded-20 mb-[15px]' >
-                                 Warning: Once Started, you wont be able to pause the timer.
+                                 Warning: Once Started, you will not be able to pause the timer.
                               </p>
-                              <PrimaryButton children='Start Section' className='w-[300px] h-[60px] text-[21px]' onClick={handleStartTest} />
+                              <PrimaryButton children='Start Section' className='w-[300px] h-[60px] text-[21px]' onClick={() => setPopUp(true)} />
+                              {/* <PrimaryButton children='Start Section' className='w-[300px] h-[60px] text-[21px]' onClick={handleStartTest} /> */}
                            </div>
                         </div>
                      }
+''
 
                      {testStarted &&
                         <div className='mt-[15px] overflow-auto' style={{ maxHeight: 'calc(100vh - 240px)' }}>
@@ -375,13 +536,13 @@ export default function StartTest() {
                                        handleResponseChange={handleResponseChange}
                                        handleTimeTaken={handleTimeTaken} />
                                     {item.isMarked ?
-                                       <button className='w-[180px] font-semibold py-3 rounded-lg pt-[8px] pb-[8px]	 border-2 border-[#D2D2D2] text-[#D2D2D2] ml-4'
-                                          onClick={() => handleMark(item._id, false)} >
-                                          Mark for Review
-                                       </button> :
                                        <button className='w-[180px] font-semibold pt-2.5 pb-2.5 rounded-lg bg-primaryOrange text-white ml-4'
-                                          onClick={() => handleMark(item._id, true)} >
+                                          onClick={() => handleMark(item._id, false)} >
                                           Unmark
+                                       </button> :
+                                       <button className='w-[180px] font-semibold py-3 rounded-lg pt-[8px] pb-[8px] border-2 border-[#D2D2D2] text-[#D2D2D2] ml-4'
+                                          onClick={() => handleMark(item._id, true)} >
+                                          Mark for Review
                                        </button>
                                     }
                                  </div>
@@ -399,7 +560,9 @@ export default function StartTest() {
                   {
                      testStarted && <Timer handleSubmitSection={handleSubmitSection} timer={timer}
                         active={testStarted ? true : false}
-                        setCountDown={setCountDown} />
+                        setCountDown={setCountDown} isUnlimited={isUnlimited}
+                        duration={testHeaderDetails.duration}
+                     />
                   }
                   {
                      testStarted && <CurrentSection answers={answers} submitSection={handleSubmitSection} />
@@ -408,6 +571,16 @@ export default function StartTest() {
             </div>
 
          </div>
+
+         {popUp && <Modal 
+            classname="w-1/2 mx-auto"
+            title="Are you sure you want to start the section?"
+            titleClassName='mr-4  mb-4'
+            primaryBtn={
+               {text: "Start", className: "bg-primaryDark ml-0", onClick: handleStartTest}
+            }
+            handleClose={() => setPopUp(false)}
+         />}
       </div>
    )
 }

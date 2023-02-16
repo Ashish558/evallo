@@ -52,10 +52,13 @@
 }
 
 #studentDashboardRight {
-    background-color: rgba(217, 217, 217, 40%);
-    padding: 37px;
+    /* background-color: #d9d9d966; */
+    /* padding: 37px; */
     border-radius: 20px 0 0 0;
 }
+
+
+
 
 .arrowDown {
     width: 16px;

@@ -47,11 +47,11 @@ export default function UserDetails({
                // return
                if (persona === "parent") {
                   setFrames((prev) => {
-                     return { ...prev, userDetails: false, questions: true };
+                     return { ...prev, userDetails: false, services: false, services: true };
                   });
                } else {
                   setFrames((prev) => {
-                     return { ...prev, userDetails: false, services: true };
+                     return { ...prev, userDetails: false, questions: false, services: true };
                   });
                }
             }
@@ -61,7 +61,7 @@ export default function UserDetails({
 
    useEffect(() => {
       if (persona === "parent") {
-         setcurrentStep(4);
+         setcurrentStep(3);
       } else {
          setcurrentStep(3);
       }
@@ -70,7 +70,7 @@ export default function UserDetails({
    const handleBack = () => {
       if (persona === "parent") {
          setFrames((prev) => {
-            return { ...prev, userDetails: false, services: true };
+            return { ...prev, userDetails: false, selectPersona: true };
          });
       } else {
          setFrames((prev) => {

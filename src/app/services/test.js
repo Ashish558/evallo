@@ -113,7 +113,8 @@ export const testServicesApi = createApi({
       }),
       getTestResponse: builder.query({
          query: (body) => ({
-            url: `/api/test/getresponse/${body.id}`,
+            url: body.url,
+            params: body.params,
             method: "GET",
             headers: getAuthHeader()
          })
@@ -141,8 +142,9 @@ export const testServicesApi = createApi({
          })
       }),
       getSingleAssignedTest: builder.query({
-         query: (id) => ({
-            url: `/api/test/myassigntest/${id}`,
+         query: (body) => ({
+            url: body.url,
+            params: body.params,
             method: "GET",
             headers: getAuthHeader()
          })
@@ -151,6 +153,29 @@ export const testServicesApi = createApi({
          query: (id) => ({
             url: `/api/test/getans/${id}`,
             method: "GET",
+            headers: getAuthHeader()
+         })
+      }),
+      deleteTest: builder.query({
+         query: (body) => ({
+            url: `/api/test/assigntest/${body.id}`,
+            method: "Delete",
+            headers: getAuthHeader()
+         })
+      }),
+      editQuestion: builder.mutation({
+         query: (body) => ({
+            url: `/api/test/question/${body.id}`,
+            method: "PATCH",
+            body: body.reqbody,
+            headers: getAuthHeader()
+         })
+      }),
+      addBackupResponse: builder.mutation({
+         query: (body) => ({
+            url: `/api/test/addbackupresponse/${body.id}`,
+            method: "POST",
+            body: body.reqbody,
             headers: getAuthHeader()
          })
       }),
@@ -177,5 +202,8 @@ export const {
    useLazyGetParentsAssignedTestsQuery,
    useLazyGetTutorAssignedTestsQuery,
    useLazyGetSingleAssignedTestQuery,
-   useLazyGetAnswersQuery
+   useLazyGetAnswersQuery,
+   useLazyDeleteTestQuery,
+   useEditQuestionMutation,
+   useAddBackupResponseMutation
 } = testServicesApi;

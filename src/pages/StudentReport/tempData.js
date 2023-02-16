@@ -311,7 +311,21 @@ export const ttOptions = {
       opacity: 1
    },
    tooltip: {
-      show: false
+      show: false,
+   //    x: {
+   //       formatter: (seriesName, data) => {
+   //          console.log(seriesName); 
+   //          console.log(data); 
+   //          return seriesName
+   //       },
+   //       title: {
+   //           formatter: (seriesName, data) => {
+   //             console.log(seriesName); 
+   //             console.log(data); 
+   //             return seriesName
+   //          },
+   //       },
+   //   }
    },
    legend: {
       show: false
@@ -385,7 +399,7 @@ export const accuracyOptions = {
          },
       },
       title:{
-         text: 'No of incorrect'
+         text: 'No of Correct'
       }
    },
    xaxis: {
@@ -401,9 +415,6 @@ export const accuracyOptions = {
    },
    fill: {
       opacity: 1
-   },
-   tooltip: {
-      show: false
    },
    legend: {
       show: false

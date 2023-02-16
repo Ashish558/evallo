@@ -8,7 +8,7 @@ import Table from '../../components/Table/Table'
 import { useNavigate, useParams } from 'react-router-dom'
 import BarGraph from '../../components/BarGraph/BarGraph'
 import { useLazyGetAnswersQuery, useLazyGetSingleAssignedTestQuery, useLazyGetTestDetailsQuery, useLazyGetTestResponseQuery } from '../../app/services/test'
-import { getDate, getFormattedDate, millisToMinutesAndSeconds } from '../../utils/utils'
+import { getDate, getDuration, getFormattedDate, getScoreStr, millisToMinutesAndSeconds } from '../../utils/utils'
 import { useLazyGetTutorDetailsQuery } from '../../app/services/users'
 import { useSelector } from 'react-redux'
 
@@ -38,6 +38,11 @@ export default function StudentReport() {
    const [testData, setTestData] = useState(tableData)
    const [answersData, setAnswersData] = useState(answerTableData)
    const [responseData, setResponseData] = useState({})
+   const [displayScore, setDisplayScore] = useState({
+      cumulative: '',
+      right: '',
+      isSat: false,
+   })
    const { role: persona, id: currentUserId } = useSelector(state => state.user)
    const [sectionScore, setSectionScore] = useState({
       correct: 0,
@@ -47,9 +52,10 @@ export default function StudentReport() {
       name: 'Time Taken',
       data: []
    })
+   const [timeSeriesOptions, setTimeSeriesOptions] = useState(ttOptions)
 
    const [accuracySeries, setAccuracySeries] = useState({
-      name: 'No. of Incorrect',
+      name: 'Correct Answers',
       data: []
    })
    const [accuracyGraphOptions, setAccuracyGraphOptions] = useState(accuracyOptions)
@@ -65,6 +71,8 @@ export default function StudentReport() {
       }
    }, [persona])
 
+   const { id, studentId, assignedTestId } = useParams()
+
    const [testDetails, setTestDetails] = useState({
       testName: '-',
       assignedOn: '-',
@@ -72,6 +80,7 @@ export default function StudentReport() {
       startedOn: '-',
       completedOn: '-',
       duration: '-',
+      instruction: '-',
    })
    const [subjects, setSubjects] = useState([])
    const [selectedSubject, setSelectedSubject] = useState({})
@@ -79,19 +88,127 @@ export default function StudentReport() {
    const [getUserDetail, userDetailResp] = useLazyGetTutorDetailsQuery()
    const [getTestDetails, getTestDetailsResp] = useLazyGetTestDetailsQuery()
    const [getAssignedTest, getAssignedTestResp] = useLazyGetSingleAssignedTestQuery()
+   const [isSet, setIsSet] = useState(false)
    const [getAnswers, getAnswersResp] = useLazyGetAnswersQuery()
+   const [answerKeySubjects, setAnswerKeySubjects] = useState([])
+   const [sectionDuration, setSectionDuration] = useState('')
+   const [totalTimeTaken, setTotalTimeTaken] = useState(0)
 
-   const { id } = useParams()
+   const [scoreStr, setScoreStr] = useState('')
 
+   // console.log('params studnt', studentId);
    //get answer key
    useEffect(() => {
+      if (Object.keys(responseData).length === 0) return
+      if (isSet === true) return
+      console.log('response data', responseData);
+      // let sortedSubjects = responseData.subjects.map(sub => sub.name)
+      if (responseData.subjects.length === 0) {
+         alert('No sections are submitted')
+         navigate(-1)
+         return
+      }
+
       getAnswers(id)
          .then(res => {
             if (res.error) return console.log(res.error);
-            // console.log('answers', res.data.data);
+            console.log('ANSWER KEY', res.data.data);
+
+            let answerKeyData = { ...res.data.data }
+            let score = getScoreStr(responseData.testType, responseData.score, responseData.subjects, answerKeyData.answer.subjects.length)
+            // console.log('score', score);
+            setDisplayScore(score)
+
+            // console.log('answer key subjects', answerKeyData.answer.subjects);
+            let conceptsPresent = true
+            answerKeyData.answer.subjects.map(item => {
+               if (item.concepts === undefined) {
+                  conceptsPresent = false
+               }
+            })
+            if (conceptsPresent === false) {
+               alert('Concepts not present')
+               navigate(-1)
+            }
+            let subResponse = answerKeyData.answer.subjects.map(sub => {
+               let currSub = responseData.subjects.find(item => item.name === sub.name)
+               if (currSub === undefined) return
+               // console.log('currSub', currSub);
+               let conceptsToInclude = {}
+               if (currSub.concepts === undefined) {
+                  Object.keys(sub.concepts).map(key => {
+                     // console.log('sub.concepts[key]', sub.concepts[key]);
+                     conceptsToInclude[key] = 0
+                  })
+                  return {
+                     ...currSub,
+                     concepts: conceptsToInclude
+                  }
+               } else {
+                  Object.keys(sub.concepts).map(key => {
+                     conceptsToInclude[key] = 0
+                  })
+                  return {
+                     ...currSub,
+                     concepts: {
+                        ...conceptsToInclude,
+                        ...currSub.concepts
+                     }
+                  }
+               }
+               // console.log('conceptsToInclude', conceptsToInclude);
+            }).filter(item => item !== undefined)
+            // console.log('subResponse', subResponse);
+            // console.log('subjects', subjects);
+            let updated = subjects.map(subj => {
+               let updatedSubjWithConcepts = subResponse.find(item => item.name === subj.name)
+               return {
+                  ...subj,
+                  concepts: {
+                     ...updatedSubjWithConcepts.concepts
+                  }
+               }
+               // console.log('updatedSubjWithConcepts', updatedSubjWithConcepts);
+            })
+            let updated2 = subResponse.map(subj => {
+               let updatedSubj = subjects.find(item => item.name === subj.name)
+               return {
+                  ...subj,
+                  timeTaken: updatedSubj.timeTaken,
+                  selected: updatedSubj.selected
+               }
+               // console.log('updatedSubjWithConcepts', updatedSubjWithConcepts);
+            })
+            // console.log('subjects', subjects);
+            console.log('updated', updated);
+            // console.log('responseData', responseData);
+            // console.log('subResponse', subResponse);
+            let upSubArr = []
+            updated2.forEach(responseSub => {
+               updated.forEach(sub => {
+                  if (responseSub.name === sub.name){
+                     upSubArr.push(sub)
+                  }
+               })
+            })
+            console.log('upSubArr', upSubArr);
+
+            setResponseData(prev => {
+               return {
+                  ...prev,
+                  subjects: upSubArr
+               }
+            })
+            setSubjects(upSubArr)
+            let selected = upSubArr.find(item => item.selected === true)
+            setSelectedSubject(selected)
+
+            let subjects1 = answerKeyData.answer.subjects
             setAnswerKey(res.data.data.answer.answer)
+            setAnswerKeySubjects(answerKeyData.answer.subjects)
+            setIsSet(true)
          })
-   }, [])
+   }, [responseData])
 
    const getSelectedString = (arr) => {
       let strArr = []
@@ -102,31 +219,78 @@ export default function StudentReport() {
    }
 
    useEffect(() => {
-      getAssignedTest(id)
+      let params = {}
+      let url = `/api/test/myassigntest/${assignedTestId}`
+      if (studentId) {
+         params = {
+            userId: studentId
+         }
+         url = `/api/test/myassigntest/${assignedTestId}`
+      }
+      getAssignedTest({ url })
          .then(res => {
-            if (res.error) return console.log(res.error);
-            // console.log('test', res.data.data.test);
-            const { testId, createdAt, timeLimit } = res.data.data.test
+            if (res.error) return console.log('TEST ERROR', res.error);
+            console.log('TEST RESP', res.data.data.test);
+            let { testId, createdAt, timeLimit, multiple, instruction } = res.data.data.test
+            if (testId === null) {
+               testId = {}
+            }
             setTestDetails(prev => {
                return {
                   ...prev,
                   assignedOn: getFormattedDate(createdAt),
                   testName: testId.testName,
-                  duration: timeLimit
+                  instruction: instruction,
+                  duration: multiple ? getDuration(multiple) : '-',
                }
             })
          })
+
    }, [])
 
    useEffect(() => {
-      getTestResponse({ id })
+      let params = {}
+      let url = `/api/test/getresponse/${assignedTestId}`
+      if (studentId) {
+         url = `/api/test/admin/getresponse/${assignedTestId}`
+      }
+      getTestResponse({ url, params: params })
          .then(res => {
             if (res.error) {
-               console.log(res.error)
+               console.log('RESPONSE ERR', res.error)
                return
             }
-            console.log('RESPONSE', res.data.data.response);
+            // console.log('RESPONSE', res.data.data.response);
             const { subjects, studentId, response, createdAt, updatedAt } = res.data.data.response
+            if (res.data.data.response.testType === 'SAT') {
+               let set1Score = 0
+               let set2Score = 0
+               subjects.map((sub, idx) => {
+                  if (idx === 0 || idx === 1) {
+                     set1Score += sub.no_of_correct
+                  } else {
+                     set2Score += sub.no_of_correct
+                  }
+               })
+
+               // setDisplayScore({
+               //    cumulative: `C${set1Score + set2Score}`,
+               //    right: `V${set1Score}|M${set2Score}`,
+               //    isSat: true
+               // })
+            } else if (res.data.data.response.testType === 'SAT') {
+               let scoreArr = []
+               let total = 0
+               subjects.map((sub, idx) => {
+                  total += sub.no_of_correct
+                  scoreArr.push(sub.no_of_correct)
+               })
+               // setDisplayScore({
+               //    cumulative: `C${total / subjects.length}`,
+               //    right: `E${scoreArr[0]} M${scoreArr[1]} R${scoreArr[2]} C${scoreArr[3]}`,
+               //    isSat: false
+               // })
+            }
             setTestDetails(prev => {
                return {
                   ...prev,
@@ -149,8 +313,8 @@ export default function StudentReport() {
                      }
                   })
                })
-
          })
+
    }, [])
 
    const handleChange = (item) => {
@@ -181,20 +345,53 @@ export default function StudentReport() {
       if (Object.keys(selectedSubject).length === 0) return
       if (answerKey.length === 0) return
 
-      // let selectedIndex = selectedSubject.idx
-      // console.log(responseData.response[selectedSubject.idx])
-      // console.log(answerKey[selectedSubject.idx]);
-      let temp = responseData.response[selectedSubject.idx].map((item, index) => {
-         const { QuestionNumber, QuestionType, ResponseAnswer, isCorrect, responseTime, _id } = item
-         return {
-            QuestionNumber,
-            isCorrect,
-            Concept: answerKey[selectedSubject.idx][index].Concepts ? answerKey[selectedSubject.idx][index].Concepts : '-',
-            Strategy: answerKey[selectedSubject.idx][index].Strategy ? answerKey[selectedSubject.idx][index].Strategy : '-',
-            responseTime: responseTime >= 0 ? `${responseTime} sec` : '-'
+      let currentAnswerKeyIndex = 0
+
+      answerKeySubjects.map((subj, idx) => {
+         if (subj.name === selectedSubject.name) {
+            currentAnswerKeyIndex = idx
          }
       })
-      setTableData(temp)
+
+      if (persona === 'student' || persona === 'parent') {
+         let temp = responseData.response[selectedSubject.idx].map((item, index) => {
+            // console.log(item);
+            const { QuestionNumber, QuestionType, ResponseAnswer, isCorrect, responseTime, _id } = item
+            let concept = '-'
+            let strategy = '-'
+            if (answerKey[currentAnswerKeyIndex][index]) {
+               concept = answerKey[currentAnswerKeyIndex][index].Concepts ? answerKey[currentAnswerKeyIndex][index].Concepts : '-'
+            }
+            if (answerKey[currentAnswerKeyIndex][index]) {
+               strategy = answerKey[currentAnswerKeyIndex][index].Strategy ? answerKey[currentAnswerKeyIndex][index].Strategy : '-'
+            }
+            if (answerKey[currentAnswerKeyIndex][index])
+               return {
+                  QuestionNumber,
+                  isCorrect,
+                  Concept: concept,
+                  Strategy: strategy,
+                  responseTime: responseTime >= 0 ? `${responseTime} sec` : '-'
+               }
+         })
+         setTableData(temp)
+      } else {
+         // console.log('answerKey', answerKey[selectedSubject.idx]);
+         let temp = responseData.response[selectedSubject.idx].map((item, index) => {
+            const { QuestionNumber, QuestionType, ResponseAnswer, isCorrect, responseTime, _id } = item
+            return {
+               QuestionNumber,
+               CorrectAnswer: answerKey[currentAnswerKeyIndex][index].CorrectAnswer,
+               ResponseAnswer,
+               isCorrect,
+               Concept: answerKey[currentAnswerKeyIndex][index].Concepts ? answerKey[currentAnswerKeyIndex][index].Concepts : '-',
+               Strategy: answerKey[currentAnswerKeyIndex][index].Strategy ? answerKey[currentAnswerKeyIndex][index].Strategy : '-',
+               responseTime: responseTime >= 0 ? `${responseTime} sec` : '-'
+            }
+         })
+         setTableData(temp)
+      }
+
 
    }, [selectedSubject, answerKey])
 
@@ -212,6 +409,33 @@ export default function StudentReport() {
          }
       })
       // console.log('data', data);
+      // console.log('length', Math.ceil(data.length / 5));
+      const len = Math.round(data.length / 5)
+      let groups = []
+      {
+         [...Array(len)].map((x, i) => {
+            groups.push({ title: (i + 1) * 5, cols: 5 })
+         })
+      }
+      // console.log('groups', groups);
+      // console.log('timeSeriesOptions', timeSeriesOptions);
+      setTimeSeriesOptions(prev => ({
+         ...prev,
+         xaxis: {
+            ...prev.xaxis,
+            group: {
+               ...prev.xaxis.group,
+               groups
+            }
+         },
+         // tooltip: {
+         //    custom: function({series, seriesIndex, dataPointIndex, w}) {
+         //      return '<div class="arrow_box">' +
+         //        '<span>' + series[seriesIndex][dataPointIndex] + '</span>' +
+         //        '</div>'
+         //    }
+         //  }
+      }))
       setTimeSeries(prev => {
          return {
             ...prev,
@@ -240,11 +464,16 @@ export default function StudentReport() {
          }
       })
       let totalIncorrectList = []
-      const conceptsAnswer = Object.keys(selectedSubject.concepts).map(key => {
-         const incorrectScore = getConceptScore(selectedSubject.concepts[key], key, true)
+      // console.log(selectedSubject.concepts);
+      // const conceptsAnswer = Object.keys(selectedSubject.concepts).map(key => {
+      //    const incorrectScore = getConceptScore(selectedSubject.concepts[key], key, true)
+      //    totalIncorrectList.push(incorrectScore)
+      // })
+      Object.keys(selectedSubject.concepts).forEach(key => {
+         const incorrectScore = selectedSubject.concepts[key]
          totalIncorrectList.push(incorrectScore)
       })
-      // console.log('totalIncorrectList', totalIncorrectList);
+      // console.log('CorrectList', totalIncorrectList);
       // console.log('conceptsAnswer', conceptsAnswer)
       setAccuracySeries(prev => {
          return {
@@ -265,8 +494,25 @@ export default function StudentReport() {
 
    }, [selectedSubject])
 
+
    const getConceptScore = (correctTotal, key, returnIncorrectOnly) => {
-      const selected = answerKey[selectedSubject.idx]
+      let currentAnswerKeyIndex = 0
+
+      answerKeySubjects.map((subj, idx) => {
+         if (subj.name === selectedSubject.name) {
+            currentAnswerKeyIndex = idx
+         }
+      })
+
+      let selected = answerKey[currentAnswerKeyIndex]
+      selected = selected.map(item => {
+         if (!item.Concepts) {
+            return { ...item, Concepts: 'UNAVAILABLE' }
+         } else {
+            return { ...item }
+         }
+      })
+      // console.log('selected', selected);
       let total = 0
       selected.forEach(concept => {
          if (concept.Concepts === key) {
@@ -280,13 +526,113 @@ export default function StudentReport() {
       }
    }
 
+   const getSubjectSections = (c) => {
+
+      let currSubject = answerKeySubjects.find(sub => sub.name === selectedSubject.name)
+      // console.log('answerKeySubjects', answerKeySubjects)
+      // console.log('currSubject', currSubject)
+      let currentAnswerKeyIndex = 0
+
+      answerKeySubjects.map((subj, idx) => {
+         if (subj.name === selectedSubject.name) {
+            currentAnswerKeyIndex = idx
+         }
+      })
+      // console.log('currSubject', currSubject);
+      // console.log('answer key arr', answerKey[currentAnswerKeyIndex]);
+      const selected = responseData.response[selectedSubject.idx]
+      // console.log('response answer', selected);
+      if (currSubject) {
+         return <div>
+            {Object.keys(currSubject.concepts).map((key, idx) => {
+               return <p key={idx} className='font-semibold mb-2'>
+                  {/* {selectedSubject.concepts[key]} */}
+                  {key}
+               </p>
+            })}
+         </div>
+      }
+      return <>p</>
+   }
+
+   const getSubjectSectionsScore = (c) => {
+      let currSubject = answerKeySubjects.find(sub => sub.name === selectedSubject.name)
+      let currentAnswerKeyIndex = 0
+      answerKeySubjects.map((subj, idx) => {
+         if (subj.name === selectedSubject.name) {
+            currentAnswerKeyIndex = idx
+         }
+      })
+      console.log('currSubject', currSubject);
+      console.log('answer key arr', answerKey[currentAnswerKeyIndex]);
+      const selected = responseData.response[selectedSubject.idx]
+      console.log('response answer', selected);
+
+      let arr = []
+      Object.keys(currSubject).map(key => {
+         let IncorrectCount = 0
+         answerKey[currentAnswerKeyIndex].map((ans, idx) => {
+            let { QuestionNumber, CorrectAnswer, Concepts } = ans
+            if (key === Concepts) {
+               const selected = responseData.response[selectedSubject.idx]
+               if (selected[idx].isCorrect === false) {
+                  IncorrectCount += 1
+               }
+            }
+         })
+      })
+
+      if (currSubject) {
+      }
+      return <>p</>
+   }
+
+   useEffect(() => {
+      if (!answerKeySubjects) return
+      if (!selectedSubject) return
+
+      if (answerKeySubjects.length === 0) return
+      if (Object.keys(selectedSubject).length === 0) return
+      // console.log('selectedSubject', selectedSubject)
+      // console.log('answerKeySubjects', answerKeySubjects)
+      const ansKeySubject = answerKeySubjects.find(item => item.name === selectedSubject.name)
+      // console.log('ansKeySubject', ansKeySubject);
+      if (!ansKeySubject) return
+      setSectionDuration(`${ansKeySubject.timer}:00`)
+   }, [answerKeySubjects, selectedSubject])
+
+   useEffect(() => {
+      if (!tableData) return
+      if (!selectedSubject) return
+
+      if (tableData.length === 0) return
+      // console.log('selectedSubject', selectedSubject)
+      // console.log('tableData', tableData)
+
+      let total = 0
+      tableData.forEach(item => {
+         if (item.responseTime !== undefined || item.responseTime !== "-") {
+            let num = item.responseTime.split(" ")[0]
+            if (num === '-') return
+            total += parseInt(num)
+         }
+      })
+      setTotalTimeTaken(`${total} sec`)
+      setTotalTimeTaken(millisToMinutesAndSeconds(total * 1000))
+   }, [tableData, selectedSubject])
+
    // console.log('tableData', tableData)
    // console.log('responseData', responseData)
+   // console.log('subjects', subjects)
    // console.log('selectedSubject', selectedSubject)
    // console.log('timeSeries', timeSeries)
    // console.log('answerKey', answerKey)
+   // console.log('answerKeySubjects', answerKeySubjects)
+   // console.log('testDetails', testDetails)
+
    if (Object.keys(responseData).length === 0) return <></>
    if (answerKey.length === 0) return <></>
+   if (selectedSubject.concepts === undefined) return <></>
    return (
       <div className='ml-pageLeft bg-lightWhite min-h-screen'>
          <div className='py-14 px-5'>
@@ -327,10 +673,15 @@ export default function StudentReport() {
                      <span className='inline-block mr-4'>:</span>
                      <p className='inline-block w-138 font-semibold'> {testDetails.completedOn} </p>
                   </div>
-                  <div>
+                  <div className='col-span-2'>
                      <p className='inline-block w-138 font-semibold opacity-60'> Duration </p>
                      <span className='inline-block mr-4'>:</span>
                      <p className='inline-block w-138 font-semibold'> {testDetails.duration} </p>
+                  </div>
+                  <div  className='col-span-2'>
+                     <p className='inline-block w-138 font-semibold opacity-60'> Instruction from tutor </p>
+                     <span className='inline-block mr-4'>:</span>
+                     <p className='inline-block w-138 font-semibold'> {testDetails.instruction} </p>
                   </div>
                </div>
 
@@ -343,10 +694,14 @@ export default function StudentReport() {
                            className={`py-2 px-0 mr-7 font-semibold w-160 ${item.selected ? '' : 'bg-secondaryLight text-textGray'}`} />
                      })}
                   </div>
-                  <button className='py-4 px-4 bg-primaryOrange text-white rounded-20 flex items-center shadow-md pr-7'>
-                     <span className='inline-block font-bold text-42'>C26</span>
+                  <button className={`py-4 px-6 bg-primaryOrange text-white rounded-20 flex items-center shadow-md pr-7`}>
+                     <span className='inline-block font-bold text-42'>
+                        {displayScore.cumulative}
+                     </span>
                      <div className={styles.line}></div>
-                     <span className='inline-block font-bold text-xl' >E20 M26 R22 S30</span>
+                     <span className='inline-block font-bold text-xl' >
+                        {displayScore.right}
+                     </span>
                   </button>
                </div>
 
@@ -358,12 +713,16 @@ export default function StudentReport() {
                      <div className='flex flex-col mr-[64px]'>
                         <p className='font-semibold text-primary mb-2.2'>Concepts</p>
                         {
+                           // selectedSubject.no_of_correct === 0 ?
+                           //    <>
+                           //       {getSubjectSections()}
+                           //    </> :
                            selectedSubject.concepts ?
                               Object.keys(selectedSubject.concepts).map((key, idx) => {
-                                 return <p key={idx} className='font-semibold mb-2'>
+                                 return  idx < 5 ? <p key={idx} className='font-semibold mb-2'>
                                     {/* {selectedSubject.concepts[key]} */}
                                     {key}
-                                 </p>
+                                 </p> : <></>
                               })
                               : <></>
                         }
@@ -372,12 +731,16 @@ export default function StudentReport() {
                      <div className='flex flex-col items-center'>
                         <p className='font-semibold text-primary mb-2.2'> Incorrect Answers</p>
                         {
+                           // selectedSubject.no_of_correct === 0 ?
+                           //    <>
+                           //       {getSubjectSectionsScore()}
+                           //    </> :
                            selectedSubject.concepts ?
                               Object.keys(selectedSubject.concepts).map((key, idx) => {
-                                 return <p key={idx} className='font-semibold mb-2'>
+                                 return  idx < 5 ? <p key={idx} className='font-semibold mb-2'>
                                     {/* correct {selectedSubject.concepts[key]} */}
                                     {getConceptScore(selectedSubject.concepts[key], key)}
-                                 </p>
+                                 </p> : <></>
                               })
                               : <></>
                         }
@@ -386,12 +749,13 @@ export default function StudentReport() {
                         <p className='font-semibold text-primary mb-2.2'> Section Started</p>
                         <p className='font-semibold mb-2'> {getDate(responseData.createdAt)} </p>
                         {/* <p className='font-semibold mb-2 opacity-0'>04:25 PM EST</p> */}
-                        <p className='font-semibold text-primary mb-2.2 mt-6'> Section Duration</p>
+                        <p className='font-semibold text-primary mb-2.2 mt-6'> Section Time Limit</p>
                         <p className='font-semibold mb-2'>
                            {/* {selectedSubject.timeTaken/1000} */}
                            {selectedSubject.timeTaken ?
                               // moment.duration(selectedSubject.timeTaken).format('HH:mm')
-                              millisToMinutesAndSeconds(selectedSubject.timeTaken)
+                              sectionDuration ? sectionDuration : ''
+                              // millisToMinutesAndSeconds(selectedSubject.timeTaken)
                               : <></>
                            }
                         </p>
@@ -408,9 +772,17 @@ export default function StudentReport() {
                                  {responseData.response[selectedSubject.idx].length}
                               </>
                            }
-
                         </p>
-
+                        <p className='font-semibold text-primary mb-2.2 mt-6'> Total Time Taken </p>
+                        <p className='font-semibold mb-2'>
+                           {/* {selectedSubject.timeTaken/1000} */}
+                           {selectedSubject.timeTaken ?
+                              // moment.duration(selectedSubject.timeTaken).format('HH:mm')
+                              totalTimeTaken
+                              // millisToMinutesAndSeconds(selectedSubject.timeTaken)
+                              : <></>
+                           }
+                        </p>
                      </div>
 
                   </div>
@@ -434,7 +806,7 @@ export default function StudentReport() {
 
                <div className='bg-white mt-6 rounded-20 py-5 px-5 '>
                   <p className='text-primary-dark font-bold text-3xl text-center mb-6 mt-2'>Time Taken</p>
-                  <BarGraph series={[timeSeries]} options={ttOptions} height='600px' />
+                  <BarGraph series={[timeSeries]} options={timeSeriesOptions} height='600px' />
                </div>
                <div className='bg-white mt-6 rounded-20 py-5 px-5 max-w-[1100px]'>
                   <p className='text-primary-dark font-bold text-3xl text-center mb-6 mt-2'>

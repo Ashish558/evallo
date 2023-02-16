@@ -26,6 +26,7 @@ import TutorProfile from "../pages/Profiles/Tutor/TutorProfile";
 import Invoice from "../pages/Invoice/Invoice";
 import { useEffect } from "react";
 import StudentReport from "../pages/StudentReport/StudentReport";
+import AssignedTutors from "../pages/AssignedTutors/AssignedTutors";
 
 const PrivateRoutes = [
    {
@@ -56,11 +57,13 @@ const PrivateRoutes = [
 
 const AppRoutes = () => {
    const { isLoggedIn } = useSelector((state) => state.user);
-   const {role : persona} = useSelector(state => state.user)
-   
+   const { role: persona } = useSelector(state => state.user)
+
    return (
       <BrowserRouter>
          <Navbar />
+         {/* <a href='https://www.banao.tech/'
+            style={{ opacity: '0', pointerEvents: 'none', width: 0, height: 0, zIndex: '-1' }} > </a> */}
          <Routes>
             <Route
                path="/"
@@ -68,14 +71,14 @@ const AppRoutes = () => {
                   isLoggedIn ? (
                      <Home />
                   ) : (
-                     <Login  />
+                     <Login />
                   )
                }
             />
             <Route
                path="/signup"
                element={
-                  <Signup  />
+                  <Signup />
                }
             />
 
@@ -92,6 +95,14 @@ const AppRoutes = () => {
                element={
                   <RequireAuth isLoggedIn={isLoggedIn}>
                      <Invoice />
+                  </RequireAuth>
+               }
+            />
+            <Route
+               path="/assigned-tutors"
+               element={
+                  <RequireAuth isLoggedIn={isLoggedIn}>
+                     <AssignedTutors />
                   </RequireAuth>
                }
             />
@@ -132,7 +143,7 @@ const AppRoutes = () => {
             <Route
                path="/set-password"
                element={
-                  <SetPassword  />
+                  <SetPassword />
                }
             />
             <Route
@@ -141,8 +152,24 @@ const AppRoutes = () => {
                   <SetPassword resetPassword={true} />
                }
             />
+            {/* <Route
+               path="/assigned-tests/:id/:assignedTestId/report"
+               element={
+                  <RequireAuth isLoggedIn={isLoggedIn}>
+                     <StudentReport />
+                  </RequireAuth>
+               }
+            /> */}
             <Route
-               path="/assigned-tests/:id/report"
+               path="/assigned-tests/:id/:assignedTestId/report"
+               element={
+                  <RequireAuth isLoggedIn={isLoggedIn}>
+                     <StudentReport />
+                  </RequireAuth>
+               }
+            />
+            <Route
+               path="/assigned-tests/:id/:assignedTestId/report/:studentId"
                element={
                   <RequireAuth isLoggedIn={isLoggedIn}>
                      <StudentReport />
@@ -233,7 +260,7 @@ const AppRoutes = () => {
                }
             />
             <Route
-               path="/all-tests/start-section/:id"
+               path="/all-tests/start-section/:id/:assignedTestId"
                element={
                   <RequireAuth isLoggedIn={isLoggedIn}>
                      <StartTest />

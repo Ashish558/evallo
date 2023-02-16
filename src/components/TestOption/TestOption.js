@@ -30,7 +30,9 @@ export default function TestOption({_id, QuestionType, AnswerChoices, ResponseAn
                parentClassName='bg-primary-50 w-full rounded-md'
                inputContainerClassName='pt-3 pb-3'
                inputClassName='bg-transparent'
-               labelClassname='hidden' />
+               labelClassname='hidden'
+               onChange={(e) =>  handleResponseChange(_id, e.target.value)}
+                />
          </div>
 
    )

@@ -29,6 +29,7 @@ import { useLazyGetSettingsQuery } from "../../app/services/session";
 import { validateOtherDetails, validateSignup } from "./utils/util";
 import { useLazyGetTutorDetailsQuery, useLazyGetUserDetailQuery } from "../../app/services/users";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import Loader from "../../components/Loader";
 
 export default function Signup() {
    const [frames, setFrames] = useState({
@@ -43,6 +44,7 @@ export default function Signup() {
 
    const [settings, setSettings] = useState({})
    const [getSettings, getSettingsResp] = useLazyGetSettingsQuery()
+   const [loading, setLoading] = useState(false)
    const navigate = useNavigate();
    const [lastLoginDisabled, setLastLoginDisabled] = useState(false)
 
@@ -226,7 +228,6 @@ export default function Signup() {
    }
 
    const handleClick = () => {
-
       const promiseState = async state => new Promise(resolve => {
          resolve(resetErrors())
       })
@@ -238,11 +239,16 @@ export default function Signup() {
                lastName: values.lastName,
                email: values.email,
                subscriptionCode: values.subscriptionCode,
-               phone: values.phone,
+               phone: `${numberPrefix}${values.phone}`,
             };
             if (values.checked === false) {
-               console.log(settings.subscriptionCode.includes(values.subscriptionCode));
-               if (!settings.subscriptionCode.includes(values.subscriptionCode)) {
+               // console.log(settings.subscriptionCode.includes(values.subscriptionCode));
+               let allCodes = []
+               settings.subscriptionCode.forEach(item => {
+                  allCodes.push(item.code)
+               });
+               // console.log(settings.subscriptionCode);
+               if (!allCodes.includes(values.subscriptionCode)) {
                   return alert('invalid subscription code')
                }
             }
@@ -255,7 +261,9 @@ export default function Signup() {
                   }
                })
             } else {
+               setLoading(true)
                signupUser(reqBody).then((res) => {
+                  setLoading(false)
                   if (res.error) {
                      if (res.error.data.message) {
                         alert(res.error.data.message)
@@ -313,6 +321,7 @@ export default function Signup() {
       setLastLoginDisabled(true)
       const reqBody = {
          ...otherDetails,
+         Phone: `${studentNumberPrefix}${otherDetails.Phone}`,
          serviceSeeking: getCheckedString(services),
          apCourses: getCheckedString(apCourses),
          motive: getCheckedString(motive),
@@ -320,8 +329,8 @@ export default function Signup() {
          subscriptionCode: values.subscriptionCode,
          userType: persona,
       };
-      console.log(values.userId);
-
+      // console.log(reqBody);
+      // return
       // console.log('session cleared');
       addUserDetails({ userId: values.userId, body: reqBody }).then((res) => {
          sessionStorage.clear()
@@ -349,11 +358,11 @@ export default function Signup() {
 
    return (
       <div className="min-h-screen" id={styles.signUp}>
-         <div className="grid grid-cols-2 min-h-screen">
-            <div className="bg-primary"></div>
-            <div className="flex items-center">
-               <div className="w-full px-[80px] py-6">
-                  <h1>
+         <div className="grid grid-cols-1 lg:grid-cols-2 lg:min-h-screen">
+            <div className="bg-primary hidden lg:block"></div>
+            <>
+               {!frames.signupSuccessful ? <div className="lg:hidden bg-primary text-white pt-[79px] px-[49px]">
+                  <h1 className="text-[28px] mb-[13px]">
                      {frames.signupActive
                         ? "Sign Up"
                         : frames.setPassword
@@ -361,192 +370,227 @@ export default function Signup() {
                            : "Profile Details"}
                   </h1>
 
-                  {currentStep > 1 && (
-                     <NumericSteppers
-                        totalSteps={6}
-                        currentStep={currentStep}
-                     />
-                  )}
+                  <h6 className="mb-[10px]">Sign up with email address</h6>
+               </div> : <div className="lg:hidden bg-primary h-fit text-white pt-[79px] px-[49px]">
+                  <h1 className="text-[28px] mb-[13px]">
+                     Congratulations
+                  </h1>
 
-                  {frames.signupActive ? (
-                     <>
-                        <h6>Sign up with email address</h6>
-                        <div className="flex">
+                  <h6 className="mb-[10px]">Registration Completed.</h6>
+               </div>}
+               <div className="flex lg:items-center relative">
+                  <div className="w-full px-[49px] lg:px-[80px] py-6">
+                     <h1 className="hidden lg:block mb-[36px] text-[30px]">
+                        {frames.signupActive
+                           ? "Sign Up"
+                           : frames.setPassword
+                              ? ""
+                              : "Profile Details"}
+                     </h1>
+
+                     {currentStep > 1 && !frames.signupSuccessful && (
+                        <NumericSteppers
+                           totalSteps={6}
+                           currentStep={currentStep}
+                        />
+                     )}
+
+                     {frames.signupActive ? (
+                        <div>
+                           <h6 className="hidden lg:block mb-[26px]">Sign up with email address</h6>
+                           <div className="flex mt-[59px] lg:mt-0">
+                              <InputField
+                                 placeholder="First Name"
+                                 parentClassName="mb-6 mr-5"
+                                 label="First Name"
+                                 inputContainerClassName='border pt-3 pb-3'
+                                 labelClassname="ml-2 mb-0.5 text-sm"
+                                 value={values.firstName}
+                                 onChange={(e) =>
+                                    setValues({
+                                       ...values,
+                                       firstName: e.target.value,
+                                    })
+                                 }
+                                 error={error.firstName}
+                              />
+                              <InputField
+                                 placeholder="Last Name "
+                                 parentClassName="mb-6"
+                                 label="Last Name"
+                                 labelClassname="ml-2 mb-0.5 text-sm"
+                                 inputContainerClassName='border pt-3 pb-3'
+                                 value={values.lastName}
+                                 onChange={(e) =>
+                                    setValues({
+                                       ...values,
+                                       lastName: e.target.value,
+                                    })
+                                 }
+                                 error={error.lastName}
+                              />
+                           </div>
+
                            <InputField
-                              placeholder="First Name"
-                              parentClassName="mb-6 mr-5"
-                              label="First Name"
-                              inputContainerClassName='border pt-3 pb-3'
                               labelClassname="ml-2 mb-0.5 text-sm"
-                              value={values.firstName}
-                              onChange={(e) =>
-                                 setValues({
-                                    ...values,
-                                    firstName: e.target.value,
-                                 })
-                              }
-                              error={error.firstName}
-                           />
-                           <InputField
-                              placeholder="Last Name "
+                              placeholder="email@example.com"
                               parentClassName="mb-6"
-                              label="Last Name"
-                              labelClassname="ml-2 mb-0.5 text-sm"
+                              label="Email Address"
                               inputContainerClassName='border pt-3 pb-3'
-                              value={values.lastName}
+                              value={values.email}
                               onChange={(e) =>
                                  setValues({
                                     ...values,
-                                    lastName: e.target.value,
+                                    email: e.target.value,
                                  })
                               }
-                              error={error.lastName}
+                              error={error.email}
                            />
-                        </div>
-
-                        <InputField
-                           labelClassname="ml-2 mb-0.5 text-sm"
-                           placeholder="email@example.com"
-                           parentClassName="mb-6"
-                           label="Email Address"
-                           inputContainerClassName='border pt-3 pb-3'
-                           value={values.email}
-                           onChange={(e) =>
-                              setValues({
-                                 ...values,
-                                 email: e.target.value,
-                              })
-                           }
-                           error={error.email}
-                        />
-                        <InputField
-                           placeholder="Phone Number"
-                           parentClassName="mb-6 relative"
-                           label="Phone Number (For tutor correspondence)"
-                           labelClassname="ml-2 mb-0.5 text-sm"
-                           inputContainerClassName="relative border pt-3 pb-3"
-                           inputClassName="ml-80"
-                           inputLeftField={
-                              <div ref={selectRef}
-                                 className={`${selected && "relative z-5000"} ${styles.phoneNumberField} `}
-                                 onClick={() => setSelected(true)}
-                              >
-                                 <div
-                                    className={`py-[16px] w-full px-2 pl-3 flex justify-center items-center rounded-10 relative cursor-pointer z-50`}
+                           <InputField
+                              placeholder="Phone Number"
+                              parentClassName="mb-6 relative"
+                              label="Phone Number (For tutor correspondence)"
+                              labelClassname="ml-2 mb-0.5 text-sm"
+                              inputContainerClassName="relative border pt-3 pb-3"
+                              inputClassName="ml-80"
+                              inputLeftField={
+                                 <div ref={selectRef}
+                                    className={`${selected && "relative z-5000"} ${styles.phoneNumberField} `}
+                                    onClick={() => setSelected(true)}
                                  >
-                                    {
-                                       <img
-                                          src={DownArrow}
-                                          className={selectStyles.downArrow}
-                                          style={{ right: '16px' }}
-                                          alt="down-arrow"
-                                          onClick={() => setSelected(!selected)}
-                                       />
-                                    }
-                                    <div className="outline-0 relative font-medium mr-4" name={'nm'}>
-                                       {numberPrefix}
-                                    </div>
-                                    {selected && (
-                                       <div className={`scrollbar-content scrollbar-vertical ${selectStyles.options}`} style={{ top: '100%' }} >
-                                          {['+1'].map((option, idx) => {
-                                             return (
-                                                <div
-                                                   className="outline-0 border-0 py-2 px-4"
-                                                   key={idx}
-                                                   onClick={() => setNumberPrefix(option)}
-                                                >
-                                                   {" "}
-                                                   {option}{" "}
-                                                </div>
-                                             );
-                                          })}
+                                    <div
+                                       className={`py-[16px] w-full px-2 pl-3 flex justify-center items-center rounded-10 relative cursor-pointer z-50`}
+                                    >
+                                       {
+                                          <img
+                                             src={DownArrow}
+                                             className={selectStyles.downArrow}
+                                             style={{ right: '16px' }}
+                                             alt="down-arrow"
+                                             onClick={() => setSelected(!selected)}
+                                          />
+                                       }
+                                       <div className="outline-0 relative font-medium mr-4" name={'nm'}>
+                                          {numberPrefix}
                                        </div>
-                                    )}
+                                       {selected && (
+                                          <div className={`scrollbar-content scrollbar-vertical ${selectStyles.options}`} style={{ top: '100%' }} >
+                                             {['+1'].map((option, idx) => {
+                                                return (
+                                                   <div
+                                                      className="outline-0 border-0 py-2 px-4"
+                                                      key={idx}
+                                                      onClick={() => setNumberPrefix(option)}
+                                                   >
+                                                      {" "}
+                                                      {option}{" "}
+                                                   </div>
+                                                );
+                                             })}
+                                          </div>
+                                       )}
+                                    </div>
                                  </div>
-                              </div>
 
-                           }
-                           value={values.phone}
-                           onChange={(e) =>
-                              setValues({ ...values, phone: e.target.value, })}
-                           error={error.phone}
-                        />
-
-                        <InputField
-                           placeholder=""
-                           parentClassName="mb-6"
-                           label="Please enter the subscription code required to access Seven Square Learning and starting prep."
-                           inputContainerClassName='border pt-3 pb-3'
-                           value={values.subscriptionCode}
-                           onChange={(e) => setValues({ ...values, subscriptionCode: e.target.value })}
-                           labelClassname="ml-2 mb-0.5 text-sm11px] pr-5"
-                        />
-
-                        <div className="flex items-center">
-                           <CCheckbox
-                              checked={values.checked}
-                              onChange={() => setValues({ ...values, checked: !values.checked })}
+                              }
+                              value={values.phone}
+                              onChange={(e) =>
+                                 setValues({ ...values, phone: e.target.value, })}
+                              error={error.phone}
                            />
-                           <label htmlFor="check">
-                              I don't have one.
-                           </label>
-                        </div>
 
-                        <button
-                           disabled={
-                              values.email === "" ? true : false
-                           }
-                           className="w-full bg-primaryDark disabled:bg-pink py-3 mt-12 rounded-10 text-white text-lg font-medium"
-                           onClick={handleClick}
-                        >
-                           Submit
-                        </button>
-                        <p
-                           className="text-secondary text-xs font-semibold ml-2 mt-2 cursor-pointer inline-block"
-                           onClick={() => navigate('/')}
-                        >
-                           Login Instead?
-                        </p>
-                     </>
-                  ) : frames.selectPersona ? (
-                     <SelectPersona {...props} setPersona={setPersona} />
-                  ) : frames.services ? (
-                     <SelectServices
-                        {...props}
-                        services={services}
-                        setServices={setServices}
-                        {...otherDetailsProps}
-                        {...valueProps}
-                     />
-                  ) : frames.userDetails ? (
-                     <UserDetails {...props} {...otherDetailsProps} />
-                  ) : frames.questions ? (
-                     <Questions
-                        {...props}
-                        {...otherDetailsProps}
-                        apCourses={apCourses}
-                        motive={motive}
-                        setApCourses={setApCourses}
-                        setMotive={setMotive}
-                     />
-                  ) : frames.signupLast ? (
-                     <SignupLast
-                        {...props}
-                        {...otherDetailsProps}
-                        hearAboutUs={hearAboutUs}
-                        setHearAboutUs={setHearAboutUs}
-                     />
-                  ) : frames.signupSuccessful ? (
-                     <SignupSuccessful
-                        {...props}
-                        addDetails={addDetails}
-                        lastLoginDisabled={lastLoginDisabled}
-                     />
-                  ) : (
-                     ""
-                  )}
+                           <InputField
+                              placeholder=""
+                              parentClassName="mb-6"
+                              label="Please enter the subscription code required to access Seven Square Learning and starting prep."
+                              inputContainerClassName='border pt-3 pb-3'
+                              value={values.subscriptionCode}
+                              onChange={(e) => setValues({ ...values, subscriptionCode: e.target.value })}
+                              labelClassname="ml-2 mb-0.5 text-sm11px] pr-5"
+                           />
+
+                           <div className="flex items-center">
+                              <CCheckbox
+                                 checked={values.checked}
+                                 onChange={() => setValues({ ...values, checked: !values.checked })}
+                              />
+                              <label htmlFor="check">
+                                 I don't have one.
+                              </label>
+                           </div>
+
+                           <button
+                              disabled={
+                                 values.email === "" ? true : false
+                              }
+                              className={`w-full bg-primaryDark disabled:bg-pink py-3 mt-[99px] lg:mt-12 rounded-10 text-white text-lg font-medium relative ${loading ? 'cursor-wait opacity-60 pointer-events-none' : 'cursor-pointer'}`}
+                              onClick={handleClick}
+                           >
+                              Submit
+                              {
+                                 loading &&
+                                 <Loader />
+                              }
+                           </button>
+                           <p
+                              className="text-secondary text-xs font-semibold ml-2 mt-2 cursor-pointer inline-block"
+                              onClick={() => navigate('/')}
+                           >
+                              Login Instead?
+                           </p>
+                        </div>
+                     ) : frames.selectPersona ? (
+                        <SelectPersona {...props} setPersona={setPersona} />
+                     ) : frames.services ? (
+                        // persona !== 'parent'
+                        //    ?
+                            <SelectServices
+                              {...props}
+                              services={services}
+                              setServices={setServices}
+                              {...otherDetailsProps}
+                              {...valueProps}
+                           />
+                           // : <UserDetails {...props} {...otherDetailsProps} />
+                     ) : frames.userDetails ? (
+                        // persona === 'parent'
+                           // ?
+                            <UserDetails {...props} {...otherDetailsProps} />
+                           // : <SelectServices
+                           //    {...props}
+                           //    services={services}
+                           //    setServices={setServices}
+                           //    {...otherDetailsProps}
+                           //    {...valueProps}
+                           // />
+                     ) : frames.questions ? (
+                        <Questions
+                           {...props}
+                           {...otherDetailsProps}
+                           apCourses={apCourses}
+                           motive={motive}
+                           setApCourses={setApCourses}
+                           setMotive={setMotive}
+                        />
+                     ) : frames.signupLast ? (
+                        <SignupLast
+                           {...props}
+                           {...otherDetailsProps}
+                           hearAboutUs={hearAboutUs}
+                           setHearAboutUs={setHearAboutUs}
+                        />
+                     ) : frames.signupSuccessful ? (
+                        <SignupSuccessful
+                           {...props}
+                           addDetails={addDetails}
+                           lastLoginDisabled={lastLoginDisabled}
+                        />
+                     ) : (
+                        ""
+                     )}
+                  </div>
                </div>
-            </div>
+            </>
          </div>
       </div>
    );

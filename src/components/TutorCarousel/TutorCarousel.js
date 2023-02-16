@@ -14,6 +14,7 @@ const initData = [
       lastName: 'Shrivastava',
    }
 ]
+//for student
 const TutorCarousel = () => {
 
    const { id } = useSelector(state => state.user)
@@ -31,7 +32,7 @@ const TutorCarousel = () => {
    // console.log(tutors)
 
    return (
-      <div id={styles.tutorCarousel}>
+      <div id={styles.tutorCarousel} className="mr-[0px] lg:mr-[60px]">
          <h2 className="pl-5 pt-4">Your Tutor</h2>
          {tutors.length >= 1 ?
             <OwlCarousel className="owl-theme pt-3"  margin={30} items={1}>

@@ -5,7 +5,9 @@
     z-index: -1;
     min-width: 105.32px;
 }
-
+.navLink{
+    overflow: visible;
+}
 .selectedNavLink {
     fill: black;
 }
@@ -14,9 +16,11 @@
     fill: black;
     filter: invert(0.55) sepia(1) hue-rotate(200deg) saturate(5) brightness(1);
 }
+
 .translateUp svg {
     transform: translateY(-15px);
 }
+
 .navLink svg {
     transition: 0.2s;
 }
@@ -24,6 +28,47 @@
 .navLink svg {
     max-width: 30px;
 }
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black;
+    /* If you want dots under the hoverable text */
+}
+
+/* Tooltip text */
+.tooltiptext {
+    position: absolute;
+    left: 50%;
+    top: calc(100% + 10px);
+    transform: translateX(-50%);
+
+    visibility: hidden;
+    width: 80px;
+    background-color: black;
+
+    color: #fff;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+    /* Position the tooltip text - see examples below! */
+    z-index: 90000;
+}
+ .tooltiptext::after {
+    content: " ";
+    position: absolute;
+    bottom: 100%;  /* At the top of the tooltip */
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent black transparent;
+  }
+/* Show the tooltip text when you mouse over the tooltip container */
+.navLink:hover .tooltiptext {
+    visibility: visible;
+}
+
 @media only screen and (max-width: 1024px) {
 
     .selectedIcon {

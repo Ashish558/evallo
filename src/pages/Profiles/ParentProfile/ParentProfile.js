@@ -53,7 +53,7 @@ export default function ParentProfile({ isOwn }) {
    const navigate = useNavigate()
    const params = useParams()
 
-   const {role : persona } = useSelector(state => state.user)
+   const { role: persona } = useSelector(state => state.user)
    // console.log(id)
 
    useEffect(() => {
@@ -76,6 +76,10 @@ export default function ParentProfile({ isOwn }) {
       subscriptionType: {
          active: false,
          text: '',
+      },
+      subscriptionCode: {
+         active: false,
+         subscriptionCode: ''
       },
       birthYear: {
          active: false,
@@ -145,7 +149,7 @@ export default function ParentProfile({ isOwn }) {
             console.log('response', res.data.data);
             const { firstName, lastName, phone, email, assiginedStudents } = res.data.data.user
             setUser(res.data.data.user)
-            const { birthyear, industry, leadStatus, notes, residentialAddress, service, timeZone, subscribeType } = res.data.data.userdetails
+            const { birthyear, industry, leadStatus, notes, residentialAddress, service, timeZone, subscribeType, subscriptionCode } = res.data.data.userdetails
 
             let studentsData = []
             if (assiginedStudents === undefined || assiginedStudents.length === 0) setAssociatedStudents([])
@@ -197,6 +201,10 @@ export default function ParentProfile({ isOwn }) {
                subscriptionType: {
                   ...toEdit.subscriptionType,
                   subscribeType,
+               },
+               subscriptionCode: {
+                  ...toEdit.subscriptionCode,
+                  subscriptionCode: subscriptionCode ? subscriptionCode : ''
                },
                associatedStudents: {
                   ...toEdit.associatedStudents,
@@ -280,7 +288,12 @@ export default function ParentProfile({ isOwn }) {
          <div className='lg:ml-pageLeft bg-lightWhite min-h-screen pb-[100px]'>
             <div className='lg:px-[56px] lg:pt-10'>
                <div className={styles.profileCard}>
-                  {/* <button className='absolute bg-[#D9BBFF] px-[14px] py-[12px] rounded-[8px] text-[#636363] text-[18px] font-medium top-[16px] left-[22px] flex gap-[12px] cursor-pointer'><img src={LeftIcon} alt="icon" /> Back</button> */}
+
+                  {!isOwn
+                     &&
+                     <button className='absolute bg-[#D9BBFF] px-[14px] py-[8px] rounded-[8px] text-[#636363] text-[18px] font-medium top-[16px] left-[22px] flex gap-[12px] cursor-pointer flex justify-center items-center' onClick={() => window.history.back()}><img src={LeftIcon} alt="icon" /> Back</button>
+                  }
+
                   <div className='rounded-t-40 bg-lightWhite lg:bg-transparent flex flex-col items-center relative'>
                      <ProfilePhoto src={user.photo ? user.photo : '/images/default.jpeg'}
                         handleChange={handleProfilePhotoChange} editable={editable} />
@@ -359,7 +372,7 @@ export default function ParentProfile({ isOwn }) {
                      title={
                         <EditableText editable={editable}
                            onClick={() => setToEdit({ ...toEdit, address: { ...toEdit.address, active: true } })}
-                           text='Residential Address'
+                           text='Billing Address'
                            className='text-21 justify-between'
                         />
                      }
@@ -387,13 +400,13 @@ export default function ParentProfile({ isOwn }) {
                            </div>
                            <div className='flex-1'>
                               <EditableText editable={persona === 'admin' ? true : false}
-                                 onClick={() => setToEdit({ ...toEdit, subscribeType: { ...toEdit.subscribeType, active: true } })}
+                                 onClick={() => setToEdit({ ...toEdit, subscriptionCode: { ...toEdit.subscriptionCode, active: true } })}
                                  text='Subscription'
                                  className='text-21 justify-between'
                               />
                               {/* <p className='text-primary font-bold lg:text-21'>Subscription</p> */}
                               <p className='text-[16px] font-semibold mt-2 lg:mt-6 lg:opacity-60'>
-                                 {userDetail?.subscribeType ? userDetail?.subscribeType : '-'}
+                                 {userDetail?.subscriptionCode ? userDetail?.subscriptionCode : '-'}
                               </p>
                            </div>
                         </div>
@@ -412,13 +425,17 @@ export default function ParentProfile({ isOwn }) {
                                  className='lg:text-21 text-center' />
                            </p>
                            <div className={`${styles.studentsContainer} min-h-[200px] w-full`}>
-                              <img src={LeftIcon}
-                                 className={`${styles.sliderIcon} ${styles.sliderLeftIcon}`}
-                                 onClick={() => activeIndex !== 0 && setActiveIndex(activeIndex - 1)} />
-                              <img src={RightIcon}
-                                 className={`${styles.sliderIcon} ${styles.sliderRightIcon}`}
-                                 onClick={() => activeIndex < associatedStudents.length - 1 &&
-                                    setActiveIndex(activeIndex + 1)} />
+                              {
+                                 associatedStudents.length > 1 && <>
+                                    <img src={LeftIcon}
+                                       className={`${styles.sliderIcon} ${styles.sliderLeftIcon}`}
+                                       onClick={() => activeIndex !== 0 && setActiveIndex(activeIndex - 1)} />
+                                    <img src={RightIcon}
+                                       className={`${styles.sliderIcon} ${styles.sliderRightIcon}`}
+                                       onClick={() => activeIndex < associatedStudents.length - 1 &&
+                                          setActiveIndex(activeIndex + 1)} />
+                                 </>
+                              }
 
                               {associatedStudents.map((student, idx) => {
                                  return (

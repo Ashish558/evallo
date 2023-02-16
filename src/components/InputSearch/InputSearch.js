@@ -32,7 +32,7 @@ export default function InputSearch({
       setOptionsVisible(false)
    }
    useOutsideAlerter(inputRef, handleClose)
-
+ 
    return (
       <div className={` ${parentClassName && parentClassName}`} ref={inputRef} >
          <label
@@ -64,9 +64,10 @@ export default function InputSearch({
             {optionsVisible &&
                <div className={`${styles.options} scrollbar-content scrollbar-vertical shadow-xl rounded-t-none`}>
                   {optionData.map((option, idx) => {
+               
                      return (
                         <div className='outline-0  border-0 py-2 px-4 flex justify-between' key={idx}
-                           onClick={() => {return checkbox ? onOptionClick(option) : (onOptionClick(option), handleClose()) }}
+                           onClick={() => { return checkbox ? onOptionClick(option) : (onOptionClick(option), handleClose()) }}
                         >
                            <p>
                               {option.value}
@@ -77,14 +78,14 @@ export default function InputSearch({
                            {
                               checkbox &&
                               <div className="flex mb-3">
-                                 <CCheckbox 
-                                 checked={checkbox.match.includes(option._id) ? true : false}
-                                  name='student'
-                                    // onChange={() =>
-                                    //    setData({
-                                    //       ...data,
-                                    //       recurring: !data.recurring,
-                                    //    })}
+                                 <CCheckbox
+                                    checked={checkbox.match.includes(option._id) ? true : false}
+                                    name='student'
+                                 // onChange={() =>
+                                 //    setData({
+                                 //       ...data,
+                                 //       recurring: !data.recurring,
+                                 //    })}
                                  />
                               </div>
                            }

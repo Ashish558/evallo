@@ -103,8 +103,8 @@ const StudentDashboardHeader = () => {
             </div>
          </div> */}
 
-         <div className="flex h-[250px] max-w-[840px] relative" id={styles.StudentDashboardHeader}>
-            <div className="w-full  flex- relative h-full flex rounded-lg items-center px-2 pr-4 overflow-hidden"
+         <div className="flex flex-col lg:flex-row h-[500px] lg:h-[250px] max-w-[840px] relative gap-[16px] mb-[42px] mt-[37px] mr-[9px]">
+            <div className="w-full relative h-full flex rounded-lg items-center overflow-hidden"
                id={styles.exploreBgDisable}
             // style={{ position: 'static', top: '0', left: '0' }} 
             >
@@ -113,7 +113,7 @@ const StudentDashboardHeader = () => {
                   <ImageSlideshow images={images} text='text' />
                }
             </div>
-            <div className="w-2/5 bg-white rounded-[20px] p-[22px] pr-0 h-[100%]">
+            <div className="w-full lg:w-2/5 bg-white rounded-[20px] p-[22px] pr-0 h-[100%]">
                <div className="overflow-y-auto h-[100%] pr-[22px]" id={styles.tutorList}>
                   {
                      allFeedbacks.length >= 1 ?

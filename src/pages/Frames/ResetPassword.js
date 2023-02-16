@@ -49,16 +49,16 @@ export default function ResetPassword({
                 onClick={() =>
                     signup
                         ? setFrames((prev) => {
-                              return {
-                                  ...prev,
-                                  setPassword: false,
-                                  selectPersona: true,
-                              };
-                          })
+                            return {
+                                ...prev,
+                                setPassword: false,
+                                selectPersona: true,
+                            };
+                        })
                         : setActiveFrame(setLoginActive)
                 }
             >
-                Set New Passworf
+                Set New Password
             </button>
         </div>
     );

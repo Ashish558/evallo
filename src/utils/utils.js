@@ -44,6 +44,7 @@ export const getCheckedString = (arr) => {
 
 export const getFormattedDate = argDate => {
    const date = new Date(argDate)
+   if (argDate === undefined) return "-"
    let year = date.getFullYear()
    let month = date.getMonth()
    let dateNum = date.getDate()
@@ -173,8 +174,133 @@ export function millisToMinutesAndSeconds(millis) {
 export function getDate(arg) {
    let date = new Date(arg)
    const month = date.toLocaleString('default', { month: 'long' });
+   return `${month.slice(0, 3)} ${date.getDate()}, ${date.getFullYear()}`
+}
+var formattedNumber = (x) => {
+   return (x * 1).toFixed(2).replace(/[.,]00$/, "");
+}
 
-   return `${month} ${date.getDate()}, ${date.getFullYear()}`
+export const getScoreStr = (testType, score, subjects, totalLength) => {
+   // if (!score) return ''
+   // if (!testType) return ''
+   // if (!subjects) return ''
+   //  console.log('totalLength', totalLength);
+   if (testType === 'SAT') {
+      let verbalTotal = 0
+      let MathsTotal = 0
+      let isMathsAdded = false
+      subjects.map(sub => {
+         if (sub.scoreScale === 'Scale1') {
+            let src = score['Scale1'] !== null ? score['Scale1'] : 0
+            verbalTotal += src
+         }
+         if (sub.scoreScale === 'Scale2') {
+            let src2 = score['Scale2'] !== null ? score['Scale2'] : 0
+            verbalTotal += src2
+         }
+         if (sub.scoreScale === 'Scale3') {
+            if (isMathsAdded === false) {
+               let src3 = score['Scale3'] !== null ? score['Scale3'] : 0
+               MathsTotal += src3
+               isMathsAdded = true
+            }
+         }
+      })
+      return {
+         cumulative: `C${verbalTotal + MathsTotal}`,
+         right: `V${verbalTotal}|M${MathsTotal}`
+      }
+   } else {
+      let scoreArr = []
+      let score1 = 0
+      let score2 = 0
+      let score3 = 0
+      let score4 = 0
+      let total = 0
+      // console.log(subjects);
+      let scoreStr = []
+      subjects.map((sub, idx) => {
+         let firstStr = sub.name.substring(0, 1)
+         if (subjects.length > idx + 1) {
+            let scr = score[sub.scoreScale] === null ? 0 : score[sub.scoreScale]
+            scoreStr.push(` ${firstStr}${scr} |`)
+         } else {
+            let scr = score[sub.scoreScale] === null ? 0 : score[sub.scoreScale]
+            scoreStr.push(` ${firstStr}${scr}`)
+         }
+      })
+      // console.log(scoreStr);
+
+      subjects.map((sub, idx) => {
+         total += sub.no_of_correct
+         if (sub.scoreScale === 'Scale1') {
+            total += score['Scale1']
+            score1 = score['Scale1'] !== null ? score['Scale1'] : 0
+         } else if (sub.scoreScale === 'Scale2') {
+            total += score['Scale2']
+            score2 = score['Scale2'] !== null ? score['Scale2'] : 0
+         } else if (sub.scoreScale === 'Scale3') {
+            total += score['Scale3']
+            score3 = score['Scale3'] !== null ? score['Scale3'] : 0
+         } else if (sub.scoreScale === 'Scale4') {
+            total += score['Scale4']
+            score4 = score['Scale4'] !== null ? score['Scale4'] : 0
+         } else {
+            total += 0
+            scoreArr.push(0)
+         }
+      })
+      let total2 = 0
+      Object.keys(score).map(key => {
+         total2 += score[key]
+      })
+      // console.log('total', total2);
+      // console.log('subjects.length', subjects.length);
+      // let totalSubs = totalLength  ? totalLength : subjects.length
+      let totalSubs = totalLength ? totalLength : 4
+      return {
+         cumulative: `C${formattedNumber((total2 / totalSubs))}`,
+         right: scoreStr.join(''),
+      }
+   }
+}
+
+export const getScore = (testType, subjects) => {
+   if (testType === 'SAT') {
+      let set1Score = 0
+      let set2Score = 0
+      subjects.map((sub, idx) => {
+         if (idx === 0 || idx === 1) {
+            set1Score += sub.no_of_correct
+         } else {
+            set2Score += sub.no_of_correct
+         }
+      })
+
+      return {
+         cumulative: `C${set1Score + set2Score}`,
+         right: `V${set1Score}|M${set2Score}`,
+      }
+   } else if (testType === 'SAT') {
+      let scoreArr = []
+      let total = 0
+      subjects.map((sub, idx) => {
+         total += sub.no_of_correct
+         scoreArr.push(sub.no_of_correct)
+      })
+      return {
+         cumulative: `C${total / subjects.length}`,
+         right: `E${scoreArr[0]} M${scoreArr[1]} R${scoreArr[2]} C${scoreArr[3]}`,
+
+      }
+   }
+}
+
+export const getDuration = val => {
+   if (val === 1) return 'Regular'
+   if (val === 1.5) return '1.5x'
+   if (val === 10) return 'Unlimited'
+   return '-'
 }
 
 // // timezones
@@ -185,3 +311,40 @@ export function getDate(arg) {
 // function convertLocalToUTC(dt, dtFormat) {
 //    return moment(dt, dtFormat).utc().format()
 // }
+
+// subjects.map((sub, idx) => {
+//    total += sub.no_of_correct
+//    if (sub.scoreScale === 'Scale1') {
+//       if (score['Scale1'] === undefined) {
+//          total += 0
+//          scoreArr.push(0)
+//       } else {
+//          total += score['Scale1']
+//          scoreArr.push(score['Scale1'])
+//       }
+//    } else if (sub.scoreScale === 'Scale2') {
+//       if (score['Scale2'] === undefined) {
+//          total += 0
+//          scoreArr.push(0)
+//       } else {
+//          total += score['Scale2']
+//          scoreArr.push(score['Scale2'])
+//       }
+//    } else if (sub.scoreScale === 'Scale3') {
+//       if (score['Scale3'] === undefined) {
+//          total += 0
+//          scoreArr.push(0)
+//       } else {
+//          total += score['Scale3']
+//          scoreArr.push(score['Scale3'])
+//       }
+//    } else if (sub.scoreScale === 'Scale4') {
+//       if (score['Scale4'] === undefined) {
+//          total += 0
+//          scoreArr.push(0)
+//       } else {
+//          total += score['Scale4']
+//          scoreArr.push(score['Scale4'])
+//       }
+//    }
+// })

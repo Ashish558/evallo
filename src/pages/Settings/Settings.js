@@ -11,6 +11,14 @@ import { useUpdateOfferImageMutation, useUpdateSettingMutation } from '../../app
 import { getSessionTagName } from '../../utils/utils'
 import { BASE_URL, getAuthHeader } from '../../app/constants/constants'
 import axios from 'axios'
+import DeleteIcon from '../../assets/icons/delete.svg'
+import PauseIcon from '../../assets/icons/pause.svg'
+import PlayIcon from '../../assets/icons/play.svg'
+import EditBlueIcon from '../../assets/icons/edit-blue.svg'
+import InputSearch from '../../components/InputSearch/InputSearch'
+import { useSelector, useDispatch } from 'react-redux'
+import { useUpdateUserFieldsMutation } from '../../app/services/users'
+import { updateUserDetails } from '../../app/slices/user'
 
 const testFilters = [
    {
@@ -76,27 +84,73 @@ const initialState = {
    phone: '',
    email: '',
 }
+const subModalInitialState = {
+   code: '',
+   expiry: '',
+   editing: false
+}
 export default function Settings() {
 
    const [modalActive, setModalActive] = useState(false)
    const [tagModalActive, setTagModalActive] = useState(false)
+   const [addCodeModalActive, setAddCodeModalActive] = useState(false)
+   const [subModalData, setSubModalData] = useState(subModalInitialState)
+   const [addTestModalActive, setAddTestModalActive] = useState(false)
+   const [selectedSubscriptionData, setSelectedSubscriptionData] = useState({
+      code: '',
+      expiry: '',
+      tests: [],
+   })
+   const [adminModalDetails, setAdminModalDetails] = useState({
+      firstName: '',
+      lastName: '',
+      email: '',
+      phone: '',
+   })
+   const [updatedSubscriptionData, setUpdatedSubscriptionData] = useState({
+      code: '',
+      expiry: '',
+      tests: [],
+   })
+   const user = useSelector(state => state.user)
+
+   useEffect(() => {
+      setAdminModalDetails({
+         firstName: user.firstName,
+         lastName: user.lastName,
+         email: user.email,
+         phone: user.phone,
+      })
+   }, [user])
+
+   const [searchedTest, setSearchedTest] = useState('')
+   const [allTestData, setAllTestData] = useState([])
+   const [filteredTests, setFilteredTests] = useState([])
 
    const [settingsData, setSettingsData] = useState({})
    const inputRef = useRef()
    const [image, setImage] = useState(null)
    const [getSettings, getSettingsResp] = useLazyGetSettingsQuery()
    const [updateSetting, updateSettingResp] = useUpdateSettingMutation()
+
+   const [updateFields, updateFieldsResp] = useUpdateUserFieldsMutation()
    // const [updateImage, updateImageResp] = useUpdateOfferImageMutation()
    const [selectedImageTag, setSelectedImageTag] = useState('')
+   const [toggleImage, setToggleImage] = useState({
+      personality: false,
+      interest: false,
+      offer: false,
+      Expertise: false
+   })
 
    const imageUploadRef = useRef()
    const [tagImage, setTagImage] = useState(null)
    const [imageName, setImageName] = useState('')
    const [tagText, setTagText] = useState('')
    const [modalData, setModalData] = useState(initialState)
+   const dispatch = useDispatch()
 
    const handleClose = () => setModalActive(false)
-
    const handleTagModal = text => {
       console.log(text);
       setTagModalActive(true)
@@ -105,6 +159,24 @@ export default function Settings() {
 
    const handleSubmit = e => {
       e.preventDefault()
+      const reqBody = { ...adminModalDetails }
+      updateFields({ id: user.id, fields: reqBody })
+         .then(res => {
+            handleClose()
+            if (res.error) {
+               return console.log(res.error);
+            }
+            const { firstName, lastName, _id, amountToPay, credits, role, email, phone } = res.data.data.user
+            let timeZone = ''
+            if (res.data.data.userdetails) {
+               timeZone = res.data.data.userdetails.timeZone
+            }
+            dispatch(updateUserDetails({
+               firstName, lastName, id: _id, amountToPay, credits, role,
+               timeZone: timeZone ? timeZone : '', email, phone
+            }))
+
+         })
    }
 
    const fetchSettings = () => {
@@ -115,7 +187,7 @@ export default function Settings() {
                return
             }
             console.log('settings', res.data)
-            if(res.data.data.setting === null) return
+            if (res.data.data.setting === null) return
             setSettingsData(res.data.data.setting)
          })
    }
@@ -175,6 +247,7 @@ export default function Settings() {
    const updateAndFetchsettings = updatedSetting => {
       updateSetting(updatedSetting)
          .then(res => {
+            // console.log('updated', res.data);
             setSettingsData(res.data.data.setting)
          })
    }
@@ -190,7 +263,7 @@ export default function Settings() {
       formData.append("image", tagImage)
 
       let append = ''
-      if (selectedImageTag === 'serviceSpecialisation') {
+      if (selectedImageTag === 'Expertise') {
          append = 'addservicespecialisation'
       } else if (selectedImageTag === 'personality') {
          append = 'addpersonality'
@@ -242,10 +315,19 @@ export default function Settings() {
    }
 
 
-   const onRemoveImage = (link) => {
-      let updatedField = settingsData.offerImages.filter(item => item.image !== link)
+   const onRemoveImage = (itemToRemove) => {
+      console.log(itemToRemove);
+      let updatedField = settingsData.offerImages.filter(item => item._id !== itemToRemove._id)
       let updatedSetting = {
          offerImages: updatedField
+      }
+      console.log(updatedSetting);
+      updateAndFetchsettings(updatedSetting)
+   }
+   const onRemoveService = (itemToRemove) => {
+      let updated = settingsData.servicesAndSpecialization.filter(item => item._id !== itemToRemove._id)
+      let updatedSetting = {
+         servicesAndSpecialization: updated
       }
       updateAndFetchsettings(updatedSetting)
    }
@@ -254,11 +336,241 @@ export default function Settings() {
       fetchSettings()
    }, [])
 
+   const onAddService = val => {
+      console.log(val);
+      let tempSettings = { ...settingsData }
+      let updatedSetting = {
+         servicesAndSpecialization: [
+            ...tempSettings['servicesAndSpecialization'],
+            {
+               service: val,
+               specialization: []
+            }
+         ]
+      }
 
+      updateAndFetchsettings(updatedSetting)
+   }
+   const handleAddSpecialization = (text, key) => {
+
+      let tempSettings = { ...settingsData }
+
+      let updated = servicesAndSpecialization.map(serv => {
+         if (serv.service === key) {
+            return {
+               ...serv,
+               specialization: [...serv.specialization, text]
+            }
+         } else {
+            return { ...serv }
+         }
+      })
+
+      let updatedSetting = {
+         servicesAndSpecialization: updated
+      }
+      updateAndFetchsettings(updatedSetting)
+      // console.log('updatedSetting', updatedSetting)
+   }
+
+   const onRemoveSpecialization = (text, service) => {
+      // console.log(text);
+      // console.log(service);
+      let updated = servicesAndSpecialization.map(serv => {
+         if (serv.service === service) {
+            let updatedSpec = serv.specialization.filter(spec => spec !== text)
+            return { ...serv, specialization: updatedSpec }
+         } else {
+            return { ...serv }
+         }
+      })
+      let updatedSetting = {
+         servicesAndSpecialization: updated
+      }
+      updateAndFetchsettings(updatedSetting)
+   }
+
+   const onToggle = (key, value) => {
+      setToggleImage(prev => {
+         return {
+            ...prev,
+            [key]: value
+         }
+      })
+   }
+
+   const onAddCode = () => {
+      setAddCodeModalActive(true)
+      setSubModalData({ ...subModalData, editing: false })
+   }
+   const handleCodeSubmit = (e) => {
+      e.preventDefault()
+
+      if (subModalData.editing === true) {
+         let updated = subscriptionCode.map(subscription => {
+            if (subscription._id === subModalData._id) {
+               return { ...subModalData }
+            } else {
+               return { ...subscription }
+            }
+         })
+         let updatedSetting = {
+            subscriptionCode: updated
+         }
+         // console.log('updatedSetting', updatedSetting);
+         updateAndFetchsettings(updatedSetting)
+         setAddCodeModalActive(false)
+         setSubModalData(subModalInitialState)
+      } else {
+         let updated = [
+            ...subscriptionCode,
+            {
+               code: subModalData.code,
+               expiry: subModalData.expiry,
+               tests: [],
+            }
+         ]
+         let updatedSetting = {
+            subscriptionCode: updated
+         }
+         // console.log('updatedSetting', updatedSetting);
+         updateAndFetchsettings(updatedSetting)
+         setAddCodeModalActive(false)
+         setSubModalData(subModalInitialState)
+      }
+   }
+
+   useEffect(() => {
+      setUpdatedSubscriptionData(selectedSubscriptionData)
+   }, [selectedSubscriptionData])
+
+   useEffect(() => {
+      if (allTestData.length === 0) return
+      const regex2 = new RegExp(`${searchedTest.toLowerCase()}`, 'i')
+      let tempdata = allTestData.filter(test => test.value.match(regex2))
+      setFilteredTests(tempdata)
+   }, [searchedTest, allTestData])
+
+   const fetchTests = () => {
+      axios.get(`${BASE_URL}api/test`)
+         .then((res) => {
+            if (res.data.data.test) {
+               let arr = res.data.data.test.map(item => {
+                  return {
+                     _id: item._id,
+                     value: item.testName,
+                  }
+               })
+               setAllTestData(arr)
+               setFilteredTests(arr)
+            }
+         });
+   };
+
+   useEffect(() => {
+      fetchTests();
+   }, []);
+   const handleAddTest = (code) => {
+      console.log(code);
+      setSelectedSubscriptionData(code)
+      setAddTestModalActive(true)
+   }
+
+   const handleADdTestSubmit = (e) => {
+      e.preventDefault()
+      console.log(updatedSubscriptionData);
+      let updated = subscriptionCode.map(sub => {
+         if (sub._id === updatedSubscriptionData._id) {
+            return { ...updatedSubscriptionData }
+         } else {
+            return { ...sub }
+         }
+      })
+      let updatedSetting = {
+         subscriptionCode: updated
+      }
+      console.log('updatedSetting', updatedSetting);
+      updateAndFetchsettings(updatedSetting)
+      setAddTestModalActive(false)
+      setSelectedSubscriptionData({
+         code: '',
+         expiry: '',
+         tests: [],
+      })
+   }
+   const onRemoveCodeTest = (text, code) => {
+
+      let updated = subscriptionCode.map(subscription => {
+         if (subscription.code === code) {
+            let updatedSub = subscription.tests.filter(test => test !== text)
+            return { ...subscription, tests: updatedSub }
+         } else {
+            return { ...subscription }
+         }
+      })
+      let updatedSetting = {
+         subscriptionCode: updated
+      }
+      console.log(updatedSetting);
+      updateAndFetchsettings(updatedSetting)
+   }
+   const onRemoveCode = (code) => {
+      let updated = settingsData.subscriptionCode.filter(item => item._id !== code._id)
+      let updatedSetting = {
+         subscriptionCode: updated
+      }
+      // console.log(updatedSetting);
+      updateAndFetchsettings(updatedSetting)
+   }
+   const onEditCode = (code) => {
+      setSubModalData({
+         ...code,
+         editing: true
+      })
+      setAddCodeModalActive(true)
+   }
+
+   const handleTestChange = (item) => {
+      if (updatedSubscriptionData.tests.includes(item._id)) {
+         let updated = updatedSubscriptionData.tests.filter(test => test !== item._id)
+         setUpdatedSubscriptionData(prev => ({
+            ...prev,
+            tests: updated
+         }))
+      } else {
+         setUpdatedSubscriptionData(prev => ({
+            ...prev,
+            tests: [...updatedSubscriptionData.tests, item._id]
+         }))
+      }
+   }
    // if (Object.keys(settingsData).length === 0) return <></>
-   const { classes, serviceSpecialisation, sessionTags, leadStatus, tutorStatus, offerImages, subscriptionCode, personality, interest } = settingsData
+   const { classes, servicesAndSpecialization, Expertise, sessionTags, leadStatus, tutorStatus, offerImages, subscriptionCode, personality, interest } = settingsData
 
-   // console.log(settingsData)
+   const handlePause = item => {
+      let updated = settingsData.subscriptionCode.map(subscription => {
+         if (item._id === subscription._id) {
+            return { ...item, pause: !item.pause }
+         } else {
+            return { ...subscription }
+         }
+      })
+      let updatedSetting = {
+         subscriptionCode: updated
+      }
+      // console.log(updatedSetting);
+      updateAndFetchsettings(updatedSetting)
+   }
+   // console.log('subscriptionCode', settingsData.subscriptionCode);
+   // console.log('updatedSubscriptionData', updatedSubscriptionData);
+   // console.log('allTestData', allTestData);
+   // console.log('allTestData', allTestData);
+   // console.log('settingsData', settingsData);
+   // console.log('sessionTags', sessionTags);
+   // console.log('servicesAndSpecialization', servicesAndSpecialization);
+   // console.log('toggleImage', toggleImage);
+   // console.log('adminModalDetails', adminModalDetails);
+   // console.log(offerImages)
 
    return (
       <>
@@ -271,15 +583,15 @@ export default function Settings() {
                   <div className='text-base'>
                      <div className='flex items-center mb-4'>
                         <p className='opacity-60  mr-[15px]'> Full Name:</p>
-                        <p className='font-bold'> Kartik Sarda</p>
+                        <p className='font-bold'> {user.firstName} {user.lastName} </p>
                      </div>
                      <div className='flex items-center mb-4'>
                         <p className='opacity-60 mr-[23px]'>  Email:</p>
-                        <p className='font-bold'> kartik@sevensquarelearning.com</p>
+                        <p className='font-bold'> {user.email} </p>
                      </div>
                      <div className='flex items-center mb-4'>
                         <p className='opacity-60 mr-[15px]'>Phone:</p>
-                        <p className='font-bold'> +91 1234567890</p>
+                        <p className='font-bold'> {user.phone} </p>
                      </div>
                   </div>
                </div>
@@ -322,25 +634,69 @@ export default function Settings() {
                            className='pt-1 pb-1 mr-15' />
                      </div>
                   } />
-               <SettingsCard title='Subscription Code'
+               <SettingsCard title='Manage Subscription Codes'
                   body={
-                     <div className='flex items-center flex-wrap [&>*]:mb-[10px]'>
-                        <AddTag onAddTag={handleAddTag} keyName='subscriptionCode' />
-                        <FilterItems onlyItems={true}
-                           isString={true}
-                           items={subscriptionCode ? subscriptionCode : []}
-                           keyName='subscriptionCode'
-                           onRemoveFilter={onRemoveFilter}
-                           className='pt-1 pb-1 mr-15' />
+                     <div className='max-h-[360px] overflow-auto scrollbar-content scrollbar-vertical'>
+                        {subscriptionCode !== undefined && subscriptionCode.map((subscription, i) => {
+                           return <div key={i}>
+                              <div className='flex items-center justify-between pr-8'>
+                                 <p className='font-bold text-primary-dark mb-4'>
+                                    {subscription.code}
+                                    <span className='inline-block ml-4 font-normal'>
+                                       {subscription.expiry} Weeks
+                                    </span>
+                                 </p>
+                                 <div className='flex items-center gap-x-4'>
+                                    {
+                                       subscription.pause === false ?
+                                          <img src={PlayIcon} className='w-4 cursor-pointer' alt='play' onClick={() => handlePause(subscription)} /> :
+                                          <img src={PauseIcon} className='w-4 cursor-pointer' alt='play'
+                                             onClick={() => handlePause(subscription)} />
+                                    }
+                                    <div className='w-5 h-5 flex items-center justify-center bg-[#E3E3E3] rounded-full cursor-pointer'
+                                       onClick={() => onEditCode(subscription)}
+                                    >
+                                       <img src={EditBlueIcon} className='w-4' alt='edit' />
+                                    </div>
+                                    <div className='w-5 h-5 flex items-center justify-center bg-[#E3E3E3] rounded-full cursor-pointer'
+                                       onClick={() => onRemoveCode(subscription)}
+                                    >
+                                       <img src={DeleteIcon} className='w-4' alt='delete' />
+                                    </div>
+                                 </div>
+                              </div>
+                              <div className='flex items-center flex-wrap [&>*]:mb-[18px]'>
+                                 <AddTag openModal={true}
+                                    onAddTag={(code) => handleAddTest(subscription)}
+                                    keyName={subscription.code}
+                                    text='Add Tests'
+                                 />
+                                 <FilterItems isString={true} onlyItems={true}
+                                    keyName={subscription.code}
+                                    items={subscription.tests}
+                                    fetchData={true}
+                                    api='test'
+                                    onRemoveFilter={onRemoveCodeTest}
+                                    className='pt-1 pb-1 mr-15'
+                                 />
+                              </div>
+                           </div>
+                        })}
+                        <AddTag children='Add Code' className='pl-3 pr-3 pt-1.4 pb-1.5 mt-5 bg-primary text-white'
+                           text='Add Code'
+                           hideIcon={true}
+                           openModal={true}
+                           onAddTag={onAddCode} />
                      </div>
+
                   } />
 
                <SettingsCard title='Session Tags'
                   titleClassName='text-[21px] mb-[15px]'
                   body={
                      <div>
-                        {sessionTags!== undefined && Object.keys(sessionTags).map((tag, i) => {
-                           return <div>
+                        {sessionTags !== undefined && Object.keys(sessionTags).map((tag, i) => {
+                           return <div key={i}>
                               <p className='font-bold text-primary-dark mb-[25px]'>
                                  {getSessionTagName(Object.keys(sessionTags)[i])}
                               </p>
@@ -358,46 +714,83 @@ export default function Settings() {
                      </div>
                   } />
 
-               <SettingsCard title='Service Specialisation'
+               <SettingsCard title='Expertise' toggle={{ value: toggleImage.Expertise, key: 'Expertise' }} onToggle={onToggle}
                   body={
                      <div className='flex items-center flex-wrap [&>*]:mb-[10px]'>
-                        <AddTag keyName='serviceSpecialisation' openModal={true}
-                           onAddTag={() => handleTagModal('serviceSpecialisation')} />
-                        <FilterItems isString={true} onlyItems={true}
-                           items={sessionTags !== undefined ? serviceSpecialisation.map(item => item.text) : []}
-                           keyName='serviceSpecialisation'
+                        <AddTag keyName='Expertise' openModal={true}
+                           onAddTag={() => handleTagModal('Expertise')} />
+                        <FilterItems isString={false} onlyItems={true} image={toggleImage.Expertise}
+                           items={sessionTags !== undefined ? Expertise.map(item => item) : []}
+                           keyName='Expertise'
                            onRemoveFilter={onRemoveTextImageTag}
                            className='pt-1 pb-1 mr-15' />
                      </div>
                   } />
 
-               <SettingsCard title='Personality'
+               <SettingsCard title='Service and specialization'
+                  className=''
+                  titleClassName='text-[21px] mb-[15px]'
+                  body={
+                     <div className='max-h-[360px] overflow-auto scrollbar-content scrollbar-vertical'>
+                        {servicesAndSpecialization !== undefined && servicesAndSpecialization.map((service, i) => {
+                           return <div key={i}>
+                              <div className='flex items-center justify-between pr-8'>
+                                 <p className='font-bold text-primary-dark mb-4'>
+                                    {service.service}
+                                 </p>
+                                 <div className='w-5 h-5 flex items-center justify-center bg-[#E3E3E3] rounded-full cursor-pointer'
+                                    onClick={() => onRemoveService(service)} >
+                                    <img src={DeleteIcon} className='w-4' alt='delete' />
+                                 </div>
+                              </div>
+                              <div className='flex items-center flex-wrap [&>*]:mb-[18px]'>
+                                 <AddTag onAddTag={handleAddSpecialization}
+                                    keyName={service.service}
+                                    text='Add Specialization'
+                                 />
+                                 <FilterItems isString={true} onlyItems={true}
+                                    keyName={service.service}
+                                    items={service.specialization}
+                                    onRemoveFilter={onRemoveSpecialization}
+                                    className='pt-1 pb-1 mr-15'
+                                 />
+                              </div>
+                           </div>
+                        })}
+                        <AddTag children='Add service' className='pl-3 pr-3 pt-1.4 pb-1.5 mt-5 bg-primary text-white'
+                           text='Add service'
+                           hideIcon={true}
+                           onAddTag={onAddService} />
+                     </div>
+                  } />
+
+               <SettingsCard title='Personality' toggle={{ value: toggleImage.personality, key: 'personality' }} onToggle={onToggle}
                   body={
                      <div className='flex items-center flex-wrap [&>*]:mb-[10px]'>
                         <AddTag keyName='personality' openModal={true}
                            onAddTag={() => handleTagModal('personality')} />
-                        <FilterItems isString={true} onlyItems={true}
-                           items={personality !== undefined ? personality.map(item => item.text) : []}
+                        <FilterItems isString={false} onlyItems={true} image={toggleImage.personality}
+                           items={personality !== undefined ? personality.map(item => item) : []}
                            keyName='personality'
                            onRemoveFilter={onRemoveTextImageTag}
                            className='pt-1 pb-1 mr-15' />
                      </div>
                   } />
 
-               <SettingsCard title='Interest'
+               <SettingsCard title='Interest' toggle={{ value: toggleImage.interest, key: 'interest' }} onToggle={onToggle}
                   body={
                      <div className='flex items-center flex-wrap [&>*]:mb-[10px]'>
                         <AddTag keyName='interest' openModal={true}
                            onAddTag={() => handleTagModal('interest')} />
-                        <FilterItems isString={true} onlyItems={true}
-                           items={interest !== undefined ? interest.map(item => item.text) : []}
+                        <FilterItems isString={false} onlyItems={true} image={toggleImage.interest}
+                           items={interest !== undefined ? interest.map(item => item) : []}
                            keyName='interest'
                            onRemoveFilter={onRemoveTextImageTag}
                            className='pt-1 pb-1 mr-15' />
                      </div>
                   } />
 
-               <SettingsCard title='Classes'
+               <SettingsCard title='Subjects'
                   body={
                      <div className='flex items-center flex-wrap [&>*]:mb-[10px]'>
                         <AddTag onAddTag={handleAddTag} keyName='classes' />
@@ -410,17 +803,18 @@ export default function Settings() {
                      </div>
                   } />
 
-               <SettingsCard title='Images in Offer Slide'
+               <SettingsCard title='Images in Offer Slide' toggle={{ value: toggleImage.offer, key: 'offer' }} onToggle={onToggle}
                   body={
                      <div className='flex items-center flex-wrap [&>*]:mb-[10px]'>
                         <AddTag openModal={true}
                            onAddTag={() => handleTagModal('offer')} />
                         {/* <input type='file' ref={inputRef} className='hidden' accept="image/*"
                            onChange={e => onImageChange(e)} /> */}
-                        <FilterItems isString={true}
+                        <FilterItems isString={false}
+                           image={toggleImage.offer}
                            onlyItems={true}
                            sliceText={true}
-                           items={offerImages !== undefined ? offerImages.map(item => item.image) : []}
+                           items={offerImages !== undefined ? offerImages.map(item => ({ ...item, text: item.image })) : []}
                            onRemoveFilter={onRemoveImage}
                            // onRemoveFilter={onRemoveFilter}
                            className='pt-1 pb-1 mr-15' />
@@ -447,15 +841,26 @@ export default function Settings() {
                   <form id='settings-form' onSubmit={handleSubmit}>
                      <div className='grid grid-cols-1 md:grid-cols-2  gap-x-2 md:gap-x-3 gap-y-2 gap-y-4 mb-5'>
                         <div>
-                           <InputField label='Admin Name'
+                           <InputField label='Admin First Name'
                               labelClassname='ml-4 mb-0.5'
                               placeholder='Admin Name'
                               inputContainerClassName='px-5 bg-primary-50 border-0'
                               inputClassName='bg-transparent'
                               parentClassName='w-full mr-4' type='text'
-                              value={modalData.name}
+                              value={adminModalDetails.firstName}
                               isRequired={true}
-                              onChange={e => setModalData({ ...modalData, name: e.target.value })} />
+                              onChange={e => setAdminModalDetails({ ...adminModalDetails, firstName: e.target.value })} />
+                        </div>
+                        <div>
+                           <InputField label='Admin Last Name'
+                              labelClassname='ml-4 mb-0.5'
+                              placeholder='Admin Name'
+                              inputContainerClassName='px-5 bg-primary-50 border-0'
+                              inputClassName='bg-transparent'
+                              parentClassName='w-full mr-4' type='text'
+                              value={adminModalDetails.lastName}
+                              isRequired={true}
+                              onChange={e => setAdminModalDetails({ ...adminModalDetails, lastName: e.target.value })} />
                         </div>
                         <div>
                            <InputField label='Phone No.'
@@ -465,8 +870,8 @@ export default function Settings() {
                               inputContainerClassName='px-5 bg-primary-50 border-0'
                               inputClassName='bg-transparent'
                               parentClassName='w-full mr-4' type='text'
-                              value={modalData.phone}
-                              onChange={e => setModalData({ ...modalData, phone: e.target.value })} />
+                              value={adminModalDetails.phone}
+                              onChange={e => setAdminModalDetails({ ...adminModalDetails, phone: e.target.value })} />
                         </div>
                         <div>
                            <InputField label='Email Address'
@@ -477,8 +882,101 @@ export default function Settings() {
                               inputContainerClassName='px-5 bg-primary-50 border-0'
                               inputClassName='bg-transparent'
                               parentClassName='w-full mr-4'
-                              value={modalData.email}
-                              onChange={e => setModalData({ ...modalData, email: e.target.value })} />
+                              value={adminModalDetails.email}
+                              onChange={e => setAdminModalDetails({ ...adminModalDetails, email: e.target.value })} />
+                        </div>
+
+                     </div>
+                  </form>
+               }
+            />
+         }
+         {
+            addCodeModalActive &&
+            <Modal
+               classname={'max-w-[700px] mx-auto'}
+               title='Add / Edit Subscription Code'
+               titleClassName='mb-[18px]'
+               cancelBtn={false}
+               cancelBtnClassName='w-0'
+               primaryBtn={{
+                  text: "Submit",
+                  className: 'w-140 pl-3 pr-3 ml-0 my-4',
+                  form: 'settings-form',
+                  type: 'submit',
+               }}
+               handleClose={() => { setAddCodeModalActive(false); setSubModalData(subModalInitialState) }}
+               body={
+                  <form id='settings-form' onSubmit={handleCodeSubmit}>
+                     <div className='grid grid-cols-1 md:grid-cols-2  gap-x-2 md:gap-x-3 gap-y-2 gap-y-4 mb-5'>
+                        <div>
+                           <InputField label='Subscription Code'
+                              labelClassname='ml-4 mb-0.5'
+                              placeholder='Sample Code'
+                              inputContainerClassName='px-5 bg-primary-50 border-0'
+                              inputClassName='bg-transparent'
+                              parentClassName='w-full mr-4' type='text'
+                              value={subModalData.code}
+                              isRequired={true}
+                              onChange={e => setSubModalData({ ...subModalData, code: e.target.value })} />
+                        </div>
+                        <div>
+                           <InputField label='Duration (in weeks)'
+                              labelClassname='ml-4 mb-0.5'
+                              isRequired={true}
+                              placeholder=''
+                              inputContainerClassName='px-5 bg-primary-50 border-0'
+                              inputClassName='bg-transparent'
+                              parentClassName='w-full mr-4' type='text'
+                              value={subModalData.expiry}
+                              onChange={e => setSubModalData({ ...subModalData, expiry: e.target.value })} />
+                        </div>
+                     </div>
+                  </form>
+               }
+            />
+         }
+         {
+            addTestModalActive &&
+            <Modal
+               classname={'max-w-[700px] mx-auto'}
+               title='Add Tests'
+               titleClassName='mb-[18px]'
+               cancelBtn={false}
+               cancelBtnClassName='w-0'
+               primaryBtn={{
+                  text: "Submit",
+                  className: 'w-140 pl-3 pr-3 ml-0 my-4',
+                  form: 'settings-form',
+                  type: 'submit',
+               }}
+               handleClose={() => { setAddTestModalActive(false) }}
+               body={
+                  <form id='settings-form' onSubmit={handleADdTestSubmit}>
+                     <div className='grid grid-cols-1 md:grid-cols-2  gap-x-2 md:gap-x-3 gap-y-2 gap-y-4 mb-5'>
+                        <div>
+                           <InputSearch
+                              labelClassname='hidden'
+                              placeholder="Type Test Name"
+                              parentClassName="w-full  mb-10"
+                              inputContainerClassName="bg-[#F3F5F7] border-0 pt-3.5 pb-3.5"
+                              inputClassName="bg-[#F3F5F7]"
+                              type="text"
+                              value={searchedTest}
+                              checkbox={{
+                                 visible: true,
+                                 name: 'test',
+                                 match: updatedSubscriptionData.tests
+                              }}
+                              onChange={(e) => setSearchedTest(e.target.value)}
+                              optionData={filteredTests}
+                              onOptionClick={(item) => {
+                                 handleTestChange(item)
+                                 // setStudent(item.value);
+                                 // handleStudentsChange(item)
+                                 // setCurrentToEdit({ ...currentToEdit, students: [... item._id] });
+                              }}
+                           />
                         </div>
 
                      </div>

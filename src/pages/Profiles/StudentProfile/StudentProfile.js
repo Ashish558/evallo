@@ -148,6 +148,10 @@ export default function StudentProfile({ isOwn }) {
          active: false,
          subscribeType: ''
       },
+      subscriptionCode: {
+         active: false,
+         subscriptionCode: ''
+      },
       birthYear: {
          active: false,
          birthyear: '',
@@ -230,7 +234,7 @@ export default function StudentProfile({ isOwn }) {
    }
 
    useEffect(() => {
-      if (persona === 'admin' || isOwn) {
+      if (persona === 'admin' || persona === "parent" || isOwn) {
          setEditable(true)
       }
    }, [])
@@ -244,9 +248,9 @@ export default function StudentProfile({ isOwn }) {
       }
       getUserDetail({ id: userId })
          .then(res => {
-            console.log('response', res.data.data);
+            console.log('details -- ', res.data.data);
             const { firstName, lastName, phone, email, associatedParent } = res.data.data.user
-            let { service, accomodations, timeZone, birthyear, personality, interest, schoolName, grade, satScores, actScores } = res.data.data.userdetails
+            let { service, accomodations, timeZone, birthyear, personality, interest, schoolName, grade, satScores, actScores, subscriptionCode } = res.data.data.userdetails
             associatedParent && getUserDetail({ id: associatedParent })
                .then(res => {
                   const { firstName, lastName, _id, } = res.data.data.user
@@ -279,6 +283,10 @@ export default function StudentProfile({ isOwn }) {
                         timeZone: {
                            ...prev.timeZone,
                            timeZone: timeZone ? timeZone : ''
+                        },
+                        subscriptionCode: {
+                           ...prev.subscriptionCode,
+                           subscriptionCode: subscriptionCode ? subscriptionCode : ''
                         },
                         contact: {
                            ...prev.contact,
@@ -351,7 +359,7 @@ export default function StudentProfile({ isOwn }) {
    useEffect(() => {
       fetchSettings()
          .then(res => {
-            if(res.error){
+            if (res.error) {
                console.log('settings fetch err', res.error)
                return
             }
@@ -421,14 +429,19 @@ export default function StudentProfile({ isOwn }) {
             <div className='lg:px-5 lg:pt-10'>
                <div className={`${styles.profileCard} relative`}>
                   <div className='rounded-t-40 bg-lightWhite lg:bg-transparent flex flex-col items-center'>
-                     {/* <button className='absolute bg-[#D9BBFF] px-[14px] py-[12px] rounded-[8px] text-[#636363] text-[18px] font-medium top-[16px] left-[22px] flex gap-[12px] cursor-pointer' onClick={() => window.history.back()}><img src={LeftIcon} alt="icon" /> Back</button> */}
+                     {!isOwn
+                        ?
+                        <button className='absolute bg-[#D9BBFF] px-[14px] py-[8px] rounded-[8px] text-[#636363] text-[18px] font-medium top-[16px] left-[22px] flex gap-[12px] cursor-pointer flex justify-center items-center' onClick={() => window.history.back()}><img src={LeftIcon} alt="icon" /> Back</button>
+                        :
+                        <></>
+                        }
                      <ProfilePhoto src={user.photo ? user.photo : '/images/default.jpeg'}
                         handleChange={handleProfilePhotoChange} editable={editable} />
                      <div className='flex items-center mt-67 lg:mt-4 text-[#F3F5F7]'>
                         <EditableText text={`${user.firstName} ${user.lastName}`}
                            editable={editable}
                            onClick={() => setToEdit({ ...toEdit, fullName: { ...toEdit.fullName, active: true } })}
-                           className='text-21 capitalize justify-center text-[#F3F5F7] text-center font-bold text-21 lg:text-40 lg:text-[#F3F5F7]'
+                           className='text-21 capitalize justify-center text-[#F3F5F7] text-center font-bold lg:text-40 lg:text-[#F3F5F7]'
                            textClassName='flex-1'
                            imgClass='ml-auto' />
                      </div>
@@ -497,8 +510,8 @@ export default function StudentProfile({ isOwn }) {
                         <EditableText
                            editable={persona === 'admin' ? true : false}
                            onClick={() => setToEdit({ ...toEdit, associatedParent: { ...toEdit.associatedParent, active: true } })}
-                           text='Associated Parent'
-                           className='text-[21px] mb-2 flex justify-start text-center' />
+                           text='Parent'
+                           className='text-[21px] mb-2 flex justify-start text-left self-stretch' />
 
                         <div className='w-[98px] h-[98px]'>
                            <img src={associatedParent.photo ? associatedParent.photo : ''} className='rounded-full w-full h-full' width="98px" height="98px" />
@@ -580,12 +593,12 @@ export default function StudentProfile({ isOwn }) {
                            </div>
                            <div className='mb-6'>
                               <EditableText editable={persona === 'admin' ? true : false}
-                                 onClick={() => setToEdit({ ...toEdit, subscribeType: { ...toEdit.subscribeType, active: true } })}
+                                 onClick={() => setToEdit({ ...toEdit, subscriptionCode: { ...toEdit.subscriptionCode, active: true } })}
                                  text='Subscription'
                                  textClassName="text-[21px]"
                                  className='text-lg mb-2' />
                               <p className='mt-1.5 font-medium text-[18px] text-[#00000099] whitespace-nowrap'>
-                                 {userDetail.subscribeType ? userDetail.subscribeType : '-'}
+                                 {userDetail.subscriptionCode ? userDetail.subscriptionCode : '-'}
                               </p>
                            </div>
                            <div>

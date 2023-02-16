@@ -19,8 +19,8 @@ import FilterItems from "../../components/FilterItems/filterItems";
 import { useSelector } from "react-redux";
 
 const optionData = ["option 1", "option 2", "option 3", "option 4", "option 5"];
-const testTypeOptions = ["SAT", "ACT"];
-const tableHeaders = ["Test Name", "Date Modified", "Test Type", "", ""];
+const testTypeOptions = ["SAT", "Other"];
+const tableHeaders = ["Test Name", "Test Type", "Created On", "Date Modified", "", ""];
 
 const initialState = {
    testName: "",
@@ -39,12 +39,21 @@ export default function AllTests() {
    const [testForDelete, setTestForDelete] = useState("");
    const [filteredTests, setFilteredTests] = useState([])
    const [filterItems, setFilterItems] = useState([])
-
+   const [submitBtnDisabled, setSubmitBtnDisabled] = useState(true)
+   const [loading, setLoading] = useState(false)
    const [removeQuestionModal, setRemoveQuestionModal] = useState(false);
    const [submitTest, submitTestResp] = useAddTestMutation();
    const [submitPdf, submitPdfResp] = useAddPdfMutation();
-
    const [modalData, setModalData] = useState(initialState);
+
+   useEffect(() => {
+      if (modalData.testName.trim() === '' || modalData.testType.trim() === '' || csvFile === null) {
+         setSubmitBtnDisabled(true)
+      } else {
+         setSubmitBtnDisabled(false)
+      }
+   }, [modalData, csvFile])
+
 
    const handleClose = () => {
       setModalActive(false)
@@ -64,10 +73,7 @@ export default function AllTests() {
    const removeTest = (item) => {
       setRemoveQuestionModal(false);
       // console.log(testForDelete._id);
-      axios
-         .delete(
-            `${BASE_URL}api/test/${testForDelete._id}`
-         )
+      axios.delete(`${BASE_URL}api/test/${testForDelete._id}`)
          .then((res) => {
             console.log(res);
             fetchTests();
@@ -95,7 +101,9 @@ export default function AllTests() {
    };
 
    const handleSubmit = (e) => {
+      setLoading(true)
       e.preventDefault();
+      setSubmitBtnDisabled(true)
       // console.log(modalData)
       let body = {
          testName: modalData.testName,
@@ -111,7 +119,7 @@ export default function AllTests() {
          let testId = res.data.data.test._id;
          const formData = new FormData();
          formData.append("pdf", pdfFile);
-         
+
          if (pdfFile !== null) {
             console.log(pdfFile);
             await axios
@@ -121,11 +129,15 @@ export default function AllTests() {
                )
                .then((res) => {
                   console.log('pdf post resp', res);
-                  setModalData(initialState);
-                  setModalActive(false);
-                  setPDFFile(null);
-                  // fetchTests()
-               });
+                  alert('PDF UPLOADED')
+                  if (csvFile === null) {
+                     setModalData(initialState);
+                     setModalActive(false);
+                     setPDFFile(null);
+                  }
+               }).catch(err => {
+                  console.log('pdf err', err.response);
+               })
          }
 
          if (csvFile !== null) {
@@ -133,14 +145,33 @@ export default function AllTests() {
             formData.append("file", csvFile);
             await axios.post(`${BASE_URL}api/test/addans/${testId}`, formData)
                .then((res) => {
+                  alert('CSV UPLOADED')
                   console.log('csv post resp', res);
                   setModalData(initialState);
                   setModalActive(false);
                   setCSVFile(null);
-                  // fetchTests()
-               });
+                  setPDFFile(null);
+               }).catch(err => {
+                  console.log('excel err', err.response);
+                  axios.delete(`${BASE_URL}api/test/${testId}`)
+                     .then((res) => {
+                        // console.log(res);
+                        setModalData(initialState);
+                        setModalActive(false);
+                        setCSVFile(null);
+                        setPDFFile(null);
+                     });
+                  if (err.response.data) {
+                     if (err.response.data.status === 'fail') {
+                        alert('Concept field(s) missing.')
+                     }
+                  }
+
+               })
          }
+         setLoading(false)
          fetchTests()
+         setSubmitBtnDisabled(false)
          console.log('submitted');
       });
    };
@@ -172,12 +203,22 @@ export default function AllTests() {
       <div className="lg:ml-pageLeft bg-lightWhite min-h-screen">
          <div className="py-14 px-5">
             <div className="flex justify-between items-center">
-               <p
+               {/* <p
                   className="font-bold text-4xl"
                   style={{ color: "#25335A" }}
                >
                   All Tests
-               </p>
+               </p>  */}
+                <InputField
+                  value={testName}
+                  IconRight={SearchIcon}
+                  onChange={(e) => setTestName(e.target.value)}
+                  optionData={optionData}
+                  placeholder="Test Name"
+                  parentClassName="w-290 mr-4"
+                  inputContainerClassName="bg-white border pt-3.5 pb-3.5"
+                  type="select"
+               />
                <button
                   className="bg-primaryOrange py-3.5 px-6 flex items-center text-white font-semibold rounded-lg mr-55"
                   onClick={() => setModalActive(true)}
@@ -186,7 +227,7 @@ export default function AllTests() {
                   <img src={AddIcon} className="ml-3" />
                </button>
             </div>
-            <div className="flex align-center mt-8">
+            {/* <div className="flex align-center mt-8">
                <InputField
                   value={testName}
                   IconRight={SearchIcon}
@@ -197,7 +238,7 @@ export default function AllTests() {
                   inputContainerClassName="bg-white border pt-3.5 pb-3.5"
                   type="select"
                />
-            </div>
+            </div> */}
 
             <div className="mt-6">
                <Table
@@ -216,11 +257,13 @@ export default function AllTests() {
                classname={"max-w-[700px] mx-auto"}
                cancelBtn={true}
                primaryBtn={{
-                  text: "Assign",
+                  text: "Create",
                   form: "add-test-form",
                   onClick: handleSubmit,
                   type: "submit",
-                  className: 'w-[123px] pl-6 pr-6'
+                  className: 'w-[123px] pl-6 pr-6 disabled:opacity-70',
+                  disabled: submitBtnDisabled,
+                  loading: loading
                }}
                handleClose={handleClose}
                body={

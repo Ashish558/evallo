@@ -1,0 +1,19 @@
+.toggleContainer {
+   position: relative;
+   cursor: pointer;
+}
+
+.toggleCircle {
+   position: absolute;
+   top: 0;
+   left: 0;
+   transition: 0.2s;
+}
+
+.toggleCircleActive {
+   position: absolute;
+   top: 0;
+   left: 100%;
+   transform: translateX(-100%);
+   transition: 0.2s;
+}

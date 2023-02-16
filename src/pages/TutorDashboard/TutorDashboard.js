@@ -16,6 +16,8 @@ import Message from '../../components/Message/Message';
 import { useLazyGetTutorDetailsQuery, useLazyGetUserDetailQuery } from '../../app/services/users';
 import { useLazyGetFeedbacksQuery } from '../../app/services/dashboard';
 import { useNavigate } from 'react-router-dom';
+import { useLazyGetTutorAssignedTestsQuery } from '../../app/services/test';
+import { getDate, getDuration, getFormattedDate } from '../../utils/utils';
 
 const studentsArr = [
    {
@@ -63,6 +65,9 @@ export default function TutorDashboard() {
       useLazyGetSessionsQuery();
    // const [getUserDetail, userDetailResp] = useLazyGetUserDetailQuery()
    const [getUserDetail, userDetailResp] = useLazyGetTutorDetailsQuery()
+   const [fetchTutorAssignedTests, fetchTutorAssignedTestsResp] = useLazyGetTutorAssignedTestsQuery();
+   const [allAssignedTests, setAllAssignedTests] = useState([])
+
    const navigate = useNavigate()
 
    const [sessions, setSessions] = useState([])
@@ -93,6 +98,7 @@ export default function TutorDashboard() {
             // console.log(resp.data.data.user.assiginedStudents)
             console.log(resp.data.data);
             const { details } = resp.data.data
+            console.log('tutor details', details);
             if (details !== null || details !== undefined) {
                setTutorRank(details.tutorRank ? details.tutorRank : '-')
             }
@@ -126,8 +132,44 @@ export default function TutorDashboard() {
       }, 5000);
    }
 
+   const fetchTutorTests = () => {
+      fetchTutorAssignedTests(id)
+         .then(res => {
+            if (res.error) return console.log('tutor assignedtest', res.error)
+            // console.log('tutor assignedtest', res.data)
+            let data = res.data.data.test.map(item => {
+               const { createdAt, studentId, dueDate, photo, testId, multiple, timeLimit, isCompleted, isStarted } = item
+               // console.log(photo);
+               let profile = studentId.photo ? studentId.photo : '/images/default.jpeg'
+               return {
+                  studentName: studentId ? `${studentId.firstName} ${studentId.lastName}` : '-',
+                  studentId: studentId ? studentId._id : '-',
+                  assignedOn: getFormattedDate(createdAt),
+                  testName: testId ? testId.testName : '-',
+                  testId: testId ? testId._id : null,
+                  scores: '-',
+                  duration: multiple ? getDuration(multiple) : 'Unlimited',
+                  status: isCompleted === true ? 'completed' : isStarted ? 'started' : 'notStarted',
+                  createdAt,
+                  photo: profile,
+                  dueDate: getFormattedDate(dueDate),
+                  assignedTestId: item._id
+               }
+            })
+            let sortedArr = data.sort(function (a, b) {
+               return new Date(b.createdAt) - new Date(a.createdAt);
+            });
+            setAllAssignedTests(sortedArr)
+         })
+   }
+
+   useEffect(() => {
+      fetchTutorTests()
+   }, [])
    // console.log(students);
-   // console.log();
+   // console.log(tutorRank);
+   // console.log('allAssignedTests', allAssignedTests);
+
    return (
       <div className="lg:ml-pageLeft bg-lightWhite min-h-screen overflow-x-hidden">
          <div className="py-8 px-5">
@@ -159,17 +201,18 @@ export default function TutorDashboard() {
                         header='Completed'
                         subHeader='this month'
                         className='bg-[#7E82F0]' />
-                     <DashboardCard data={{ title: '-', subtitle: 'INR', titleClassName: 'text-[30px]' }}
+                     {/* <DashboardCard data={{ title: '-', subtitle: 'INR', titleClassName: 'text-[30px]' }}
                         header='Earned'
                         subHeader='this month'
-                        className='bg-[#4BBD94]' />
+                        className='bg-[#4BBD94]' /> */}
                   </div>
 
 
                   <div className='w-full pl-6 mt-10'>
                      <p className='text-primary-dark font-semibold text-[21px] mb-4'>Today’s Schedule</p>
-                     <div className='px-[29px] py-[31px] bg-white  rounded-[20px] scrollbar-content scrollbar-vertical max-h-[600px] overflow-auto'>
+                     <div className='px-[29px] py-[31px] bg-white mr-5 rounded-[20px] scrollbar-content scrollbar-vertical max-h-[600px] overflow-auto'>
                         {sessions.map((item, idx) => {
+                           console.log(item)
                            return <TutorSchedule {...item} setIsOpen={setIsOpen} handleLinkClick={handleLinkClick} />
                         })}
                      </div>
@@ -182,20 +225,20 @@ export default function TutorDashboard() {
                   <div className='px-4'>
                      <div className='flex justify-between items-center px-4 mb-3'>
                         <p className='text-primary font-semibold text-[21px] cursor-pointer'
-                        onClick={()=>navigate('/profile')}>
+                           onClick={() => navigate('/profile')}>
                            Complete your Profile
                         </p>
-                        <img src={RightIcon} className='cursor-pointer' onClick={()=>navigate('/profile')} />
+                        <img src={RightIcon} className='cursor-pointer' onClick={() => navigate('/profile')} />
                      </div>
                      <p className='text-lg font-semibold px-4 mb-[10px]'>Profile Status</p>
                      <ProgressBar num={65} />
                   </div>
 
-                  <div className='px-8 mt-8'>
+                  <div className='pl-8 pr-4 mt-8'>
                      <p className='text-primary font-semibold text-[21px] mb-4'>
                         Rank
                      </p>
-                     <div className={`max-w-[500px] py-[17px] px-[19px] flex flex-1 text-white rounded-20  first:mr-[30px] bg-primary`}>
+                     <div className={`py-[17px] px-[19px] flex flex-1 text-white rounded-20  first:mr-[30px] bg-primary`}>
                         <div className='self-stretch w-[80px] h-[80px] my-auto text-center bg-black/20 rounded-[15px] flex flex-col justify-center'>
                            <img src={HatIcon} className='objects-contain' />
                         </div>
@@ -209,13 +252,13 @@ export default function TutorDashboard() {
                               </div>
                               <p className='text-xs font-semibold'>
                                  <p>
-                                 Total Tutoring Hours: -
+                                    Total Tutoring Hours: -
                                  </p>
                                  <p>
-                                 Avg Session Feedback: -
+                                    Avg Session Feedback: -
                                  </p>
                                  <p>
-                                 Total Client Referrals: -
+                                    Total Client Referrals: -
                                  </p>
                               </p>
                            </div>
@@ -234,25 +277,26 @@ export default function TutorDashboard() {
                         Latest Practice Test
                      </p>
                      <div className='px-[25px] h-[331px] overflow-auto py-[25px] bg-white rounded-20'>
-                        {/* {studentsData.map(item => {
+                        {allAssignedTests.map(item => {
                            return (
-                              <div className='flex items-center mb-8'>
+                              <div className='flex items-center mb-8' key={item._id} >
                                  <div>
-                                    <img src={item.img} className='w-[62px] h-[62px] rounded-full' />
+                                   <img src={item.photo} className='w-[62px] h-[62px] rounded-full' /> 
                                  </div>
                                  <div className='ml-[21px] mr-[8px] flex-1'>
-                                    <p className='font-semibold text-lg mb-1'> SAT B2 </p>
+                                    <p className='font-semibold text-lg mb-1'> {item.testName} </p>
                                     <div className='text-xs font-semibold flex opacity-50'>
                                        <p>Due Date</p>
-                                       <p className='ml-3'> {item.dueDate} </p>
+                                       <p className='ml-3'> {getDate(item.dueDate)} </p>
                                     </div>
                                  </div>
-                                 <button className='bg-primaryOrange font-semibold text-sm rounded-[6px] px-8 py-3 text-white'>
+                                 <button className={`bg-primaryOrange font-semibold text-sm rounded-[6px] px-8 py-3 text-white ${item.status !== 'completed' && item.status !== 'started' ? 'opacity-50 pointer-events-none' : ''}`}
+                                 onClick={()=> navigate(`/assigned-tests/${item.testId}/${item.assignedTestId}/report/${item.studentId}`)} >
                                     View
                                  </button>
                               </div>
                            )
-                        })} */}
+                        })}
                      </div>
                   </div>
 

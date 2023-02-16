@@ -1,6 +1,6 @@
 .container{
    position: fixed;
-   right: 0px;
+   right: 40vw;
    bottom: 0px;
    background-color: white;
    display: inline-block;
@@ -14,7 +14,7 @@
 }
 
 .active{
-   right: 20px;
+   right: 40vw;
    bottom: 20px;
    opacity: 1;
    pointer-events: all;

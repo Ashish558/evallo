@@ -138,3 +138,18 @@ nav .active {
 .fc-timegrid.fc-timeGridWeek-view.fc-view {
     height: 100% !important;
 }
+
+.react-calendar__tile--active {
+    position: relative !important;
+}
+
+.react-calendar__tile--active::after{
+    content: "";
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: #fff;
+    bottom: 2px;
+    z-index: 1050;
+    border-radius: 50%;
+}

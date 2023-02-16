@@ -75,6 +75,14 @@ export const sessionServicesApi = createApi({
             headers: getAuthHeader()
          })
       }),
+      updateAllSession: builder.mutation({
+         query: (payload) => ({
+            url: `/api/session/all/${payload.id}`,
+            method: "PATCH",
+            body: payload.body,
+            headers: getAuthHeader()
+         })
+      }),
       updateSessionStatus: builder.query({
          query: (id) => ({
             url: `/api/session/sessioncompleted/${id}`,
@@ -176,5 +184,6 @@ export const {
    useLazyCancelSessionQuery,
    useLazySessionMissedQuery,
    useDeleteSessionMutation,
-   useDeleteAllRecurringSessionMutation
+   useDeleteAllRecurringSessionMutation,
+   useUpdateAllSessionMutation
 } = sessionServicesApi;

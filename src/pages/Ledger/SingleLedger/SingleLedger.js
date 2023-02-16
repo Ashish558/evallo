@@ -34,7 +34,7 @@ export default function SingleLedger({ _id, invoiceId, sessionId, title, Date: l
 
    }, [])
 
-   console.log('session', sessionDetails);
+   // console.log('session', sessionDetails);
    useEffect(() => {
       if (!invoiceId) return
       fetchInvoice({ id: invoiceId })
@@ -46,7 +46,7 @@ export default function SingleLedger({ _id, invoiceId, sessionId, title, Date: l
          })
    }, [])
 
-   const { service, total_hours, timeStr, sessionNotes } = sessionDetails
+   const { service, total_hours, timeStr, sessionNotes, hourlyCharge, specialization } = sessionDetails
    const { description } = invoiceDetail
 
    let discountLedgerDate = new Date(ledgerDate)
@@ -64,7 +64,7 @@ export default function SingleLedger({ _id, invoiceId, sessionId, title, Date: l
       minutes = `${minutes}`
    }
    const discountPackageTime = tConvert(`${hours}:${minutes}`)
-   // console.log(invoiceDetail)
+   // console.log('sessionDetails', sessionDetails)
 
    return (
       <>
@@ -120,11 +120,14 @@ export default function SingleLedger({ _id, invoiceId, sessionId, title, Date: l
                               <div className='py-6 opacity-80'> {timeStr ? timeStr : '-'} </div>
 
                               <div className='font-bold mx-1 py-6' > Hourly Rate </div>
-                              <div className='py-6 opacity-80'> {service ? '-' : '-'} </div>
+                              <div className='py-6 opacity-80'> {hourlyCharge ? `$${hourlyCharge}` : '-'} </div>
 
-
+                              <div className='font-bold mx-1 pt-3' > Specialization </div>
+                              <div className='col-span-1 pl-4 pt-3 opacity-80'>
+                                 {specialization ? specialization : '-'}
+                              </div>
                               <div className='font-bold mx-1 pt-3' > Session Notes </div>
-                              <div className='col-span-5 pl-4 pt-3 opacity-80'>
+                              <div className='col-span-3 pl-4 pt-3 opacity-80'>
                                  {sessionNotes ? sessionNotes : '-'}
                               </div>
                            </> :

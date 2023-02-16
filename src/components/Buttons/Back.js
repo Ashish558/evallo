@@ -13,7 +13,7 @@ export default function BackBtn({ to }) {
          onClick={() => navigate(to)}
          children={
             <>
-               <img src={BackIcon} className='mr-2' />
+               <img src={BackIcon} className='mr-2' alt='back-icon' />
                <span>
                   Back
                </span>

@@ -99,7 +99,7 @@ export default function SignupLast({
                children="Next"
                className="text-lg pt-3 pb-3 font-semibold text-white mr-6 w-140 disabled:opacity-70"
                onClick={() => handleSubmit()}
-               disabled={disabled}
+               // disabled={disabled}
             />
          </div>
       </div>

@@ -47,27 +47,27 @@ export default function SubjectSlider({ score, className, title, header, totalMa
                            </div>
                            <div className='py-2.5 px-8 rounded-10' style={{ backgroundColor: '#DACDFF' }} >
                               <p className='font-bold text-[32px] text-center mb-1 '> {score.maths ? score.maths : '-'} </p>
-                              <p className='text-sm font-bold text-center mb-1' > Maths  </p>
+                              <p className='text-sm font-bold text-center mb-1' > Math  </p>
                            </div>
                         </>
                      }
                      {
                         isAct && <>
                            <div className='py-2.5 px-8 rounded-10'
-                              style={{ backgroundColor: '#FEDCC3' }} >
+                              style={{ backgroundColor: '#FFCBCB' }} >
                               <p className='font-bold text-[32px] text-center mb-1 '> {score.maths ? score.maths : '-'} </p>
-                              <p className='text-sm font-bold text-center mb-1' > Maths </p>
+                              <p className='text-sm font-bold text-center mb-1' > Math </p>
                            </div>
-                           <div className='py-2.5 px-8 rounded-10' style={{ backgroundColor: '#DACDFF' }} >
+                           <div className='py-2.5 px-8 rounded-10' style={{ backgroundColor: '#A7EAF9' }} >
                               <p className='font-bold text-[32px] text-center mb-1 '> {score.english ? score.english : '-'} </p>
                               <p className='text-sm font-bold text-center mb-1' > English  </p>
                            </div>
                            <div className='py-2.5 px-8 rounded-10'
-                              style={{ backgroundColor: '#DACDFF' }} >
+                              style={{ backgroundColor: '#FFF38B' }} >
                               <p className='font-bold text-[32px] text-center mb-1 '> {score.reading ? score.reading : '-'} </p>
                               <p className='text-sm font-bold text-center mb-1' > Reading  </p>
                            </div>
-                           <div className='py-2.5 px-8 rounded-10' style={{ backgroundColor: '#DACDFF' }} >
+                           <div className='py-2.5 px-8 rounded-10' style={{ backgroundColor: '#A4FFA7' }} >
                               <p className='font-bold text-[32px] text-center mb-1 '> {score.science ? score.science : '-'} </p>
                               <p className='text-sm font-bold text-center mb-1' > Science  </p>
                            </div>

@@ -7,6 +7,7 @@ import InputSearch from '../../../../components/InputSearch/InputSearch'
 import InputSelect from '../../../../components/InputSelect/InputSelect'
 import Modal from '../../../../components/Modal/Modal'
 import SimpleCalendar from '../../../../components/SimpleCalendar/SimpleCalendar'
+import demoUser from "../../../../assets/icons/demo-user.png"
 import Slider from '../../../../components/Slider/Slider'
 import { grades, subjects, timeZones } from '../../../../constants/constants'
 import styles from './style.module.css'
@@ -29,7 +30,8 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
    const [updateDetails, updateDetailsResp] = useUpdateUserDetailsMutation()
    const [updateTutorDetails, updateTutorDetailsResp] = useUpdateTutorDetailsMutation()
    const [postTutorDetails, postTutorDetailsResp] = usePostTutorDetailsMutation()
-
+   const [updatedService, setUpdatedService] = useState({})
+   const [loading, setLoading] = useState(false)
 
    const data = [
       {
@@ -54,6 +56,11 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
       },
       {
          name: 'subscribeType',
+         title: 'Subscription',
+         api: 'userDetail',
+      },
+      {
+         name: 'subscriptionCode',
          title: 'Subscription',
          api: 'userDetail',
       },
@@ -202,6 +209,16 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
          title: 'PSAT / P-ACT Scores',
          api: 'userDetail',
       },
+      {
+         name: 'tutorServices',
+         title: 'Service',
+         api: 'tutorDetail',
+      },
+      {
+         name: 'videoLink',
+         title: 'Youtube Link',
+         api: 'tutorDetail',
+      },
    ]
 
    // console.log(currentField)
@@ -315,6 +332,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
 
    const handleSubmit = e => {
       e.preventDefault()
+      setLoading(true)
       let reqBody = { ...currentToEdit }
       delete reqBody['active']
       // console.log(reqBody);
@@ -328,6 +346,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                      delete reqBody['isPresent']
                      postTutorDetails({ id: userId, fields: { linkedIn: reqBody.linkedIn } })
                         .then(res => {
+                           setLoading(false)
                            fetchDetails(true, true)
                            // handleClose()
                         })
@@ -335,6 +354,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                      delete reqBody['isPresent']
                      updateTutorDetails({ id: userId, fields: { linkedIn: reqBody.linkedIn } })
                         .then(res => {
+                           setLoading(false)
                            fetchDetails(true, true)
                            // handleClose()
                         })
@@ -359,6 +379,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
          updateDetails({ id: userId, fields: reqBody })
             .then(res => {
                console.log(res)
+               setLoading(false)
                fetchDetails(true, true)
                // handleClose()
             })
@@ -368,12 +389,27 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
             const level = getLevel(reqBody.tutorLevel)
             reqBody.tutorLevel = level
          }
-         console.log(reqBody)
+         if (reqBody.tutorServices) {
+            if (currentToEdit.servicePresent === false) {
+               reqBody.tutorServices = [...reqBody.tutorServices, { ...updatedService }]
+            } else {
+               reqBody.tutorServices = reqBody.tutorServices.map(serv => {
+                  if (serv.service === updatedService.service) {
+                     return { ...updatedService }
+                  } else {
+                     return { ...serv }
+                  }
+               })
+            }
+         }
+         // console.log('reqBody', reqBody)
+         // return
          if (currentToEdit.isPresent === false) {
             delete reqBody['isPresent']
             postTutorDetails({ id: userId, fields: reqBody })
                .then(res => {
                   console.log('posted', res)
+                  setLoading(false)
                   fetchDetails(true, true)
                   // handleClose()
                })
@@ -382,6 +418,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
             updateTutorDetails({ id: userId, fields: reqBody })
                .then(res => {
                   console.log('patched', res)
+                  setLoading(false)
                   fetchDetails(true, true)
                   // handleClose()
                })
@@ -392,23 +429,24 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
 
    const getLevel = str => {
       const levels = ['ORANGE', 'PURPLE', 'BROWN', 'BLACK']
-      if (str === 'Level - 1') {
+      if (str === 'ORANGE') {
          return levels[0]
       }
-      if (str === 'Level - 2') {
+      if (str === 'PURPLE') {
          return levels[1]
       }
-      if (str === 'Level - 3') {
+      if (str === 'BROWN') {
          return levels[2]
       }
-      if (str === 'Level - 4') {
+      if (str === 'BLACK') {
          return levels[3]
       } else {
          return ''
       }
    }
-   console.log('toedit', currentToEdit)
-   // console.log('setting', settings)
+
+   // console.log('toedit', currentToEdit)
+   // console.log('setting', settings.servicesAndSpecialization[currentToEdit.selectedIdx])
    // console.log('field', currentField)
    // console.log('sett', settings)
    // console.log('students', students)
@@ -426,6 +464,30 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
       return num
    }
 
+   const handlePriceChange = value => {
+      let updated = []
+      currentToEdit.tutorServices.map(serv => {
+         //if exists
+         if (serv.service === settings.servicesAndSpecialization[currentToEdit.selectedIdx].service) {
+            updated.push({ ...serv, price: value })
+            setUpdatedService({ ...serv, price: value })
+         } else {
+            let newserv = settings.servicesAndSpecialization[currentToEdit.selectedIdx]
+            updated.push({ ...newserv, price: value })
+            setUpdatedService({ ...newserv, price: value })
+         }
+      })
+
+      console.log(updated);
+      // setCurrentToEdit(prev => {
+      //    return {
+      //       ...prev,
+
+      //    }
+      // })
+   }
+   // console.log(settings);
+
    const [startDate, setStartDate] = useState(new Date());
 
    return (
@@ -442,13 +504,14 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                   form: 'editable-form',
                   // onClick: handleSubmit,
                   type: 'submit',
+                  loading,
                }}
                cancelBtnStyle={{ top: '18px' }}
                handleClose={handleClose}
                body={
                   <>
                      <div className={styles.titleContainer}>
-                        {currentField.title}
+                        {currentField.title ? currentField.title : toEdit.tutorServices ? 'Service' : ''}
                      </div>
                      <form className='mt-20 mb-4' id='editable-form' onSubmit={handleSubmit} >
                         {/* {currentField.fields && currentField.fields} */}
@@ -528,6 +591,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                               <div className='flex items-center'>
                                  <p className='font-medium mr-4 min-w-[80px] text-[20px]'> Phone </p>
                                  <InputField
+                                    prefix=""
                                     labelClassname='hidden'
                                     placeholder='Phone'
                                     inputContainerClassName='text-sm pt-3 pb-3 px-5 bg-primary-50 border-0'
@@ -549,7 +613,9 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                                  inputClassName='bg-transparent'
                                  parentClassName='flex-1 ' type='text'
                                  value={currentToEdit.birthyear}
-                                 onChange={e => setCurrentToEdit({ ...currentToEdit, birthyear: e.target.value })} />
+                                 onChange={e => setCurrentToEdit({ ...currentToEdit, birthyear: e.target.value })}
+                                 minLength={4}
+                                 maxLength={4} />
                               {/* <DatePicker selected={startDate} onChange={(date) => setStartDate(date)} /> 
                                  <SimpleCalendar setCurrentDate={setCurrentToEdit} /> */}
                               {/* </div> */}
@@ -670,6 +736,24 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                               </div>
                            </div>
                         }
+                        {currentField.name === 'subscriptionCode' &&
+                           <div>
+                              <div className='flex items-center mb-5 pt-1 pb-5'>
+                                 <InputSelect
+                                    value={currentToEdit.subscriptionCode}
+                                    onChange={val =>
+                                       setCurrentToEdit({ ...currentToEdit, subscriptionCode: val })
+                                    }
+                                    optionData={settings.subscriptionCode.map(item => item.code)}
+                                    radio={true}
+                                    inputContainerClassName="pt-3 pb-3 border bg-white"
+                                    placeholder="Subscription Type"
+                                    parentClassName="w-full mr-4"
+                                    type="select"
+                                 />
+                              </div>
+                           </div>
+                        }
                         {currentField.name === 'service' &&
                            <div>
                               <div className='flex items-center mb-5 pt-1 pb-5'>
@@ -680,7 +764,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                                        name: 'services',
                                        match: currentToEdit.service
                                     }}
-                                    optionData={settings.serviceSpecialisation.map(item => item.text)}
+                                    optionData={settings.servicesAndSpecialization.map(item => item.service)}
                                     inputContainerClassName="pt-3 pb-3 border bg-white"
                                     placeholder="Service"
                                     parentClassName="w-full mr-4"
@@ -710,7 +794,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                                        name: 'subjects',
                                        match: currentToEdit.subjects
                                     }}
-                                    optionData={subjects}
+                                    optionData={settings.classes ? settings.classes : []}
                                     inputContainerClassName="pt-3 pb-3 border bg-white"
                                     placeholder="Subjects"
                                     parentClassName="w-full mr-4"
@@ -797,7 +881,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                                     onChange={val =>
                                        setCurrentToEdit({ ...currentToEdit, tutorLevel: val })
                                     }
-                                    optionData={['Level - 1', 'Level - 2', 'Level - 3', 'Level - 4']}
+                                    optionData={['ORANGE', 'PURPLE', 'BROWN', 'BLACK']}
                                     radio={true}
                                     inputContainerClassName="pt-3 pb-3 border bg-white"
                                     placeholder="Tutor Level"
@@ -907,6 +991,28 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                               </div>
                            </div>
                         }
+                        {currentField.name === "tutorServices" &&
+                           <div>
+                              <div className='flex items-center mb-4'>
+                                 <p className='font-medium mr-4 min-w-[150px]'>
+                                    {currentToEdit.selectedIdx !== undefined ? settings.servicesAndSpecialization[currentToEdit.selectedIdx].service : ''}
+                                 </p>
+                                 <InputField
+                                    labelClassname='hidden'
+                                    placeholder=''
+                                    inputContainerClassName='text-sm pt-3 pb-3 px-5 bg-primary-50 border-0'
+                                    inputLeftField={
+                                       <div>
+                                          $
+                                       </div>
+                                    }
+                                    inputClassName='bg-transparent pl-4 rounded-[4px]'
+                                    parentClassName='flex-1 ' type='text'
+                                    value={currentToEdit.testPrepRate}
+                                    onChange={e => handlePriceChange(e.target.value)} />
+                              </div>
+                           </div>
+                        }
                         {currentField.name === 'paymentInfo' &&
                            <div>
                               <div className='flex items-center mb-4'>
@@ -962,18 +1068,24 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                         {currentField.name === 'tutorRank' &&
                            <div>
                               <div className='flex items-center mb-5  pb-5'>
-                                 <InputSelect
-                                    value={currentToEdit.tutorRank}
-                                    onChange={val =>
-                                       setCurrentToEdit({ ...currentToEdit, tutorRank: val })
-                                    }
+                                 {/* <InputSelect
                                     optionData={['Rank 1', 'Rank 2', 'Rank 3', 'Rank 4', 'Rank 5', 'Rank 6']}
                                     radio={true}
                                     inputContainerClassName="pt-3 pb-3 border bg-white"
                                     placeholder="Tutor Rank"
                                     parentClassName="w-full mr-4"
                                     type="select"
-                                 />
+                                 /> */}
+                                 <InputField
+                                    labelClassname='hidden'
+                                    placeholder='Tutor Rank'
+                                    inputContainerClassName='text-sm pt-3.5 pb-3 px-5 bg-primary-50 border-0'
+                                    inputClassName='bg-transparent rounded-[4px]'
+                                    parentClassName='flex-1' type='text'
+                                    value={currentToEdit.tutorRank}
+                                    onChange={e =>
+                                       setCurrentToEdit({ ...currentToEdit, tutorRank: e.target.value })
+                                    } />
                               </div>
                            </div>
                         }
@@ -1019,7 +1131,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                            <div>
                               <textarea
                                  placeholder=""
-                                 value={data.about}
+                                 value={currentToEdit.about}
                                  onChange={e =>
                                     setCurrentToEdit({ ...currentToEdit, about: e.target.value })
                                  }
@@ -1084,7 +1196,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                         }
                         {currentField.name === 'serviceSpecializations' &&
                            <div className='flex flex-wrap'>
-                              {settings.serviceSpecialisation.map(item => {
+                              {settings.Expertise.map(item => {
                                  return (
                                     !currentToEdit.serviceSpecializations.includes(item._id) ?
                                        <div className={`px-3 mr-2 rounded rounded-md py-1.5 border border-primary text-primary cursor-pointer`}
@@ -1289,6 +1401,18 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                                     value={currentToEdit.aboutScore}
                                     onChange={e => setCurrentToEdit({ ...currentToEdit, aboutScore: e.target.value })} />
                               </div>
+                           </div>
+                        }
+                        {currentField.name === "videoLink" &&
+                           <div>
+                              <input
+                                 placeholder=""
+                                 value={currentToEdit.videoLink}
+                                 onChange={e =>
+                                    setCurrentToEdit({ ...currentToEdit, videoLink: e.target.value })
+                                 }
+                                 className="bg-lightWhite w-full outline-0 px-5 pt-3 pb-3 rounded"
+                              />
                            </div>
                         }
                         {/* <InputField label='First Name'

@@ -17,6 +17,8 @@ export default function Questions({
    motive,
    setMotive,
 }) {
+   const [minCheckMotive, setMinCheckMotive] = useState(false)
+   const [minCheckApCourses, setMinCheckApCourses] = useState(false)
    const [disabled, setDisabled] = useState(false)
 
    const handleCheckboxChange = (text, arr, setValue) => {
@@ -57,7 +59,7 @@ export default function Questions({
    const handleBack = () => {
       if (persona === "parent") {
          setFrames((prev) => {
-            return { ...prev, questions: false, userDetails: true };
+            return { ...prev, questions: false, services: true };
          });
       } else {
          setFrames((prev) => {
@@ -171,7 +173,7 @@ export default function Questions({
                children="Next"
                className="text-md pt-3 pb-3 disabled:opacity-70 font-semibold text-white mr-6 w-140"
                onClick={() => handleSubmit()}
-               disabled={disabled}
+               // disabled={disabled}
             />
          </div>
       </div>

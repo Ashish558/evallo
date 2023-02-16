@@ -31,18 +31,19 @@ export default function SelectServices({
    const handleSubmit = () => {
       if (persona === "parent") {
          setFrames((prev) => {
-            return { ...prev, services: false, userDetails: true };
+            return { ...prev, services: false, userDetails: false, questions: true };
          });
       } else {
          setFrames((prev) => {
-            return { ...prev, services: false, questions: true };
+            console.log(prev);
+            return { ...prev, services: false, userDetails: false, questions: true };
          });
       }
    };
 
    useEffect(() => {
       if (persona === "parent") {
-         setcurrentStep(3);
+         setcurrentStep(4);
       } else {
          setcurrentStep(4);
       }
@@ -51,7 +52,7 @@ export default function SelectServices({
    const handleBack = () => {
       if (persona === "parent") {
          setFrames((prev) => {
-            return { ...prev, services: false, selectPersona: true };
+            return { ...prev, services: false, userDetails: true };
          });
       } else {
          setFrames((prev) => {
@@ -59,13 +60,13 @@ export default function SelectServices({
          });
       }
    };
- 
+
    useEffect(() => {
-      const selected  = services.filter(item => item.checked === true)
+      const selected = services.filter(item => item.checked === true)
       const selectedNames = selected.map(item => item.text)
-      if(selectedNames.includes("Others")){
+      if (selectedNames.includes("Others")) {
          setInputDisabled(false)
-      }else{
+      } else {
          setInputDisabled(true)
       }
    }, [services])
@@ -93,7 +94,7 @@ export default function SelectServices({
                <span className="text-primaryRed inline-block pl-1">*</span>
             </p>
 
-            <div className="inline-grid grid-cols-2 mb-10">
+            <div className="inline-grid grid-cols-1 lg:grid-cols-2 mb-10">
                {services.map((item, idx) => {
                   return (
                      <div
@@ -177,7 +178,7 @@ export default function SelectServices({
                   children="Next"
                   className="text-lg pt-3 pb-3 font-semibold text-white mr-6 w-140 disabled:opacity-70"
                   onClick={() => handleSubmit()}
-                  disabled={disabled}
+               // disabled={disabled}
                />
             </div>
          </div>
