@@ -473,6 +473,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
       //    }
       // })
    }
+   console.log(settings);
 
    const [startDate, setStartDate] = useState(new Date());
 
@@ -731,7 +732,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                                        name: 'services',
                                        match: currentToEdit.service
                                     }}
-                                    optionData={settings.serviceSpecialisation.map(item => item.text)}
+                                    optionData={settings.servicesAndSpecialization.map(item => item.service)}
                                     inputContainerClassName="pt-3 pb-3 border bg-white"
                                     placeholder="Service"
                                     parentClassName="w-full mr-4"
