@@ -148,6 +148,10 @@ export default function StudentProfile({ isOwn }) {
          active: false,
          subscribeType: ''
       },
+      subscriptionCode: {
+         active: false,
+         subscriptionCode: ''
+      },
       birthYear: {
          active: false,
          birthyear: '',
@@ -244,9 +248,9 @@ export default function StudentProfile({ isOwn }) {
       }
       getUserDetail({ id: userId })
          .then(res => {
-            console.log('response', res.data.data);
+            console.log('details -- ', res.data.data);
             const { firstName, lastName, phone, email, associatedParent } = res.data.data.user
-            let { service, accomodations, timeZone, birthyear, personality, interest, schoolName, grade, satScores, actScores } = res.data.data.userdetails
+            let { service, accomodations, timeZone, birthyear, personality, interest, schoolName, grade, satScores, actScores, subscriptionCode } = res.data.data.userdetails
             associatedParent && getUserDetail({ id: associatedParent })
                .then(res => {
                   const { firstName, lastName, _id, } = res.data.data.user
@@ -279,6 +283,10 @@ export default function StudentProfile({ isOwn }) {
                         timeZone: {
                            ...prev.timeZone,
                            timeZone: timeZone ? timeZone : ''
+                        },
+                        subscriptionCode: {
+                           ...prev.subscriptionCode,
+                           subscriptionCode: subscriptionCode ? subscriptionCode : ''
                         },
                         contact: {
                            ...prev.contact,
@@ -585,12 +593,12 @@ export default function StudentProfile({ isOwn }) {
                            </div>
                            <div className='mb-6'>
                               <EditableText editable={persona === 'admin' ? true : false}
-                                 onClick={() => setToEdit({ ...toEdit, subscribeType: { ...toEdit.subscribeType, active: true } })}
+                                 onClick={() => setToEdit({ ...toEdit, subscriptionCode: { ...toEdit.subscriptionCode, active: true } })}
                                  text='Subscription'
                                  textClassName="text-[21px]"
                                  className='text-lg mb-2' />
                               <p className='mt-1.5 font-medium text-[18px] text-[#00000099] whitespace-nowrap'>
-                                 {userDetail.subscribeType ? userDetail.subscribeType : '-'}
+                                 {userDetail.subscriptionCode ? userDetail.subscriptionCode : '-'}
                               </p>
                            </div>
                            <div>

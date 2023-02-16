@@ -20,7 +20,7 @@ import { useLazyGetSettingsQuery } from "../../app/services/session";
 import { useLazyGetTutorDetailsQuery, useLazyGetUserDetailQuery, usePostTutorDetailsMutation, useUpdateTutorDetailsMutation, useUpdateUserDetailsMutation } from "../../app/services/users";
 import { useSelector } from "react-redux";
 import { useLazyGetTestResponseQuery } from "../../app/services/test";
-import { getScore, getScoreStr } from "../../utils/utils";
+import { getFormattedDate, getScore, getScoreStr } from "../../utils/utils";
 
 //can b made dynamic
 export default function TableItem({ item, dataFor, onClick, excludes, fetch }) {
@@ -203,6 +203,11 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch }) {
                <td className="font-medium text-sm px-1  min-w-14 py-4">
                   <div className="my-[6px]">
                      {item.services}
+                  </div>
+               </td>
+               <td className="font-medium text-sm px-1  min-w-14 py-4">
+                  <div className="my-[6px]">
+                     {getFormattedDate(item.createdAt)}
                   </div>
                </td>
                <td className="font-medium px-1 min-w-14 py-4">

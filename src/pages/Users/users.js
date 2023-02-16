@@ -27,8 +27,7 @@ const optionData = [
 
 const tableHeaders = [
    'Full Name', 'User Type', "Email", 'Phone', 'Tutor', 'Lead Status', 'User Status',
-   'Specialization'
-   // , 'Created On'
+   'Specialization', 'Created On'
 ]
 
 const userTypeOptions = ['tutor', 'parent', 'student']
@@ -47,8 +46,11 @@ export default function Users() {
    const navigate = useNavigate()
    const [modalData, setModalData] = useState(initialState)
    const [validData, setValidData] = useState(true);
+   const [deleteModalActive, setDeleteModalActive] = useState(false)
+   const [deleteLoading, setDeleteLoading] = useState(false)
+
    useEffect(() => {
-      setValidData(modalData.email && modalData.firstName && modalData.lastName && modalData.userType);
+      setValidData(isEmail(modalData.email) && modalData.firstName && modalData.lastName && modalData.userType && modalData.phone)
    }, [modalData, modalData.email.length, modalData.firstName.length, modalData.lastName.length, modalData.phone.length, modalData.userType.length,])
 
    const [settings, setSettings] = useState({
@@ -62,6 +64,7 @@ export default function Users() {
    const [blockUser, blockUserResp] = useBlockUserMutation()
    const [unblockUser, unblockUserResp] = useUnblockUserMutation()
    const [fetchSettings, settingsResp] = useLazyGetSettingsQuery()
+   const [userToDelete, setUserToDelete] = useState({})
 
    const [fetchUsers, fetchUsersResp] = useLazyGetAllUsersQuery()
    const [addUser, addUserResp] = useAddUserMutation()
@@ -101,6 +104,7 @@ export default function Users() {
 
             const fetchDetails = async () => {
                await res.data.data.user.map(async (user) => {
+
                   let obj = {
                      _id: user._id,
                      block: user.block,
@@ -108,6 +112,7 @@ export default function Users() {
                      email: user.email ? user.email : '-',
                      userType: user.role ? user.role : '-',
                      phone: user.phone ? user.phone : '-',
+                     createdAt: user.createdAt,
                      assignedTutor: '-',
                      leadStatus: '-',
                      tutorStatus: '-',
@@ -247,6 +252,7 @@ export default function Users() {
                   alert(res.error.data.message)
                   return
                }
+               alert('Invitation sent!')
                setModalData(initialState)
                handleClose()
             })
@@ -262,6 +268,7 @@ export default function Users() {
                   alert(res.error.data.message)
                   return
                }
+               alert('Invitation sent!')
                setModalData(initialState)
                handleClose()
             })
@@ -312,15 +319,34 @@ export default function Users() {
 
    const handleDelete = item => {
       console.log(item);
-      deleteUser(item._id)
+      setUserToDelete(item)
+      setDeleteModalActive(true)
+   }
+
+   const onDelete = () => {
+      setDeleteLoading(true)
+      deleteUser(userToDelete._id)
          .then(res => {
-            if(res.error){
+            setDeleteLoading(false)
+            setDeleteModalActive(false)
+            if (res.error) {
                return console.log(res.error);
             }
-           console.log(res.data);
-           fetch()
+            console.log(res.data);
+            fetch()
          })
    }
+
+   function isEmail(val) {
+      let regEmail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      if (!regEmail.test(val)) {
+         return false
+      } else {
+         return true
+      }
+   }
+
+   // console.log('users', filteredUsersData);
    return (
       <div className='lg:ml-pageLeft bg-lightWhite min-h-screen'>
          <div className='py-14 px-5'>
@@ -514,7 +540,28 @@ export default function Users() {
                }
             />
          }
-
+         {deleteModalActive && (
+            <Modal
+               title={
+                  <span className="leading-10">
+                     Are you sure <br />
+                     you want to delete user {`${userToDelete.name} ${userToDelete._id}`} and all associated data ?
+                  </span>
+               }
+               titleClassName="mb-12 leading-10"
+               cancelBtn={true}
+               cancelBtnClassName="max-w-140"
+               primaryBtn={{
+                  text: "Delete",
+                  className: "w-[140px] pl-4 px-4",
+                  onClick: () => onDelete(),
+                  bgDanger: true,
+                  loading: deleteLoading
+               }}
+               handleClose={() => setDeleteModalActive(false)}
+               classname={"max-w-567 mx-auto"}
+            />
+         )}
       </div>
    )
 }

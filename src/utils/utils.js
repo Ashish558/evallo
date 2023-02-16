@@ -44,7 +44,7 @@ export const getCheckedString = (arr) => {
 
 export const getFormattedDate = argDate => {
    const date = new Date(argDate)
-
+   if (argDate === undefined) return "-"
    let year = date.getFullYear()
    let month = date.getMonth()
    let dateNum = date.getDate()

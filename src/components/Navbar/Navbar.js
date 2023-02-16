@@ -31,9 +31,25 @@ const tempnavdata = [
       path: "/logo"
    },
    {
+      icon: People,
+      path: "/",
+      tooltip: 'All Users'
+   },
+   {
       icon: Calendar,
       path: "/calendar",
       tooltip: 'Calendar'
+   },
+   {
+      icon: Document,
+      path: "/all-tests",
+      tooltip: 'All Tests'
+   },
+   
+   {
+      icon: DollarIcon,
+      path: "/invoice",
+      tooltip: 'All Invoices'
    },
    {
       icon: TestsIcon,
@@ -41,31 +57,16 @@ const tempnavdata = [
       tooltip: 'Assigned Tests'
    },
    {
-      icon: Document,
-      path: "/all-tests",
-      tooltip: 'All Tests'
-   },
-   {
       icon: SettingsIcon,
       path: "/settings",
       excludes: ['student', 'parent', 'tutor'],
       tooltip: 'Settings'
    },
-   {
-      icon: People,
-      path: "/",
-      tooltip: 'All Users'
-   },
-   {
-      icon: DollarIcon,
-      path: "/invoice",
-      tooltip: 'All Invoices'
-   },
-   {
-      icon: AssignedStudents,
-      path: "/assigned-tutors",
-      tooltip: 'Assigned Tutors'
-   },
+   // {
+   //    icon: AssignedStudents,
+   //    path: "/assigned-tutors",
+   //    tooltip: 'Assigned Tutors'
+   // },
    {
       icon: Exit,
       path: "/exit",
@@ -130,7 +131,7 @@ const studentNav = [
    {
       icon: StudentTest,
       path: "/all-tests",
-      tooltip: 'All Tests'
+      tooltip: 'Assigned Tests'
    },
    {
       icon: Exit,
@@ -162,7 +163,7 @@ const tutorNav = [
    {
       icon: Calendar,
       path: "/calendar",
-      tooltip: 'Assigned Tests'
+      tooltip: 'Calendar'
    },
    {
       icon: TestsIcon,

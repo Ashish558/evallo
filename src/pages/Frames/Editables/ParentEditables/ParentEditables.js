@@ -31,6 +31,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
    const [updateTutorDetails, updateTutorDetailsResp] = useUpdateTutorDetailsMutation()
    const [postTutorDetails, postTutorDetailsResp] = usePostTutorDetailsMutation()
    const [updatedService, setUpdatedService] = useState({})
+   const [loading, setLoading] = useState(false)
 
    const data = [
       {
@@ -55,6 +56,11 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
       },
       {
          name: 'subscribeType',
+         title: 'Subscription',
+         api: 'userDetail',
+      },
+      {
+         name: 'subscriptionCode',
          title: 'Subscription',
          api: 'userDetail',
       },
@@ -326,6 +332,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
 
    const handleSubmit = e => {
       e.preventDefault()
+      setLoading(true)
       let reqBody = { ...currentToEdit }
       delete reqBody['active']
       // console.log(reqBody);
@@ -339,6 +346,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                      delete reqBody['isPresent']
                      postTutorDetails({ id: userId, fields: { linkedIn: reqBody.linkedIn } })
                         .then(res => {
+                           setLoading(false)
                            fetchDetails(true, true)
                            // handleClose()
                         })
@@ -346,6 +354,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                      delete reqBody['isPresent']
                      updateTutorDetails({ id: userId, fields: { linkedIn: reqBody.linkedIn } })
                         .then(res => {
+                           setLoading(false)
                            fetchDetails(true, true)
                            // handleClose()
                         })
@@ -370,6 +379,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
          updateDetails({ id: userId, fields: reqBody })
             .then(res => {
                console.log(res)
+               setLoading(false)
                fetchDetails(true, true)
                // handleClose()
             })
@@ -399,6 +409,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
             postTutorDetails({ id: userId, fields: reqBody })
                .then(res => {
                   console.log('posted', res)
+                  setLoading(false)
                   fetchDetails(true, true)
                   // handleClose()
                })
@@ -407,6 +418,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
             updateTutorDetails({ id: userId, fields: reqBody })
                .then(res => {
                   console.log('patched', res)
+                  setLoading(false)
                   fetchDetails(true, true)
                   // handleClose()
                })
@@ -432,7 +444,8 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
          return ''
       }
    }
-   console.log('toedit', currentToEdit)
+
+   // console.log('toedit', currentToEdit)
    // console.log('setting', settings.servicesAndSpecialization[currentToEdit.selectedIdx])
    // console.log('field', currentField)
    // console.log('sett', settings)
@@ -473,7 +486,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
       //    }
       // })
    }
-   console.log(settings);
+   // console.log(settings);
 
    const [startDate, setStartDate] = useState(new Date());
 
@@ -491,6 +504,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                   form: 'editable-form',
                   // onClick: handleSubmit,
                   type: 'submit',
+                  loading,
                }}
                cancelBtnStyle={{ top: '18px' }}
                handleClose={handleClose}
@@ -713,6 +727,24 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                                        setCurrentToEdit({ ...currentToEdit, subscribeType: val })
                                     }
                                     optionData={['Unsubscribed', '3 Months Trial', '6 Months Trial', 'Subscribed']}
+                                    radio={true}
+                                    inputContainerClassName="pt-3 pb-3 border bg-white"
+                                    placeholder="Subscription Type"
+                                    parentClassName="w-full mr-4"
+                                    type="select"
+                                 />
+                              </div>
+                           </div>
+                        }
+                        {currentField.name === 'subscriptionCode' &&
+                           <div>
+                              <div className='flex items-center mb-5 pt-1 pb-5'>
+                                 <InputSelect
+                                    value={currentToEdit.subscriptionCode}
+                                    onChange={val =>
+                                       setCurrentToEdit({ ...currentToEdit, subscriptionCode: val })
+                                    }
+                                    optionData={settings.subscriptionCode.map(item => item.code)}
                                     radio={true}
                                     inputContainerClassName="pt-3 pb-3 border bg-white"
                                     placeholder="Subscription Type"

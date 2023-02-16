@@ -77,6 +77,10 @@ export default function ParentProfile({ isOwn }) {
          active: false,
          text: '',
       },
+      subscriptionCode: {
+         active: false,
+         subscriptionCode: ''
+      },
       birthYear: {
          active: false,
          birthyear: '',
@@ -145,7 +149,7 @@ export default function ParentProfile({ isOwn }) {
             console.log('response', res.data.data);
             const { firstName, lastName, phone, email, assiginedStudents } = res.data.data.user
             setUser(res.data.data.user)
-            const { birthyear, industry, leadStatus, notes, residentialAddress, service, timeZone, subscribeType } = res.data.data.userdetails
+            const { birthyear, industry, leadStatus, notes, residentialAddress, service, timeZone, subscribeType, subscriptionCode } = res.data.data.userdetails
 
             let studentsData = []
             if (assiginedStudents === undefined || assiginedStudents.length === 0) setAssociatedStudents([])
@@ -197,6 +201,10 @@ export default function ParentProfile({ isOwn }) {
                subscriptionType: {
                   ...toEdit.subscriptionType,
                   subscribeType,
+               },
+               subscriptionCode: {
+                  ...toEdit.subscriptionCode,
+                  subscriptionCode: subscriptionCode ? subscriptionCode : ''
                },
                associatedStudents: {
                   ...toEdit.associatedStudents,
@@ -392,13 +400,13 @@ export default function ParentProfile({ isOwn }) {
                            </div>
                            <div className='flex-1'>
                               <EditableText editable={persona === 'admin' ? true : false}
-                                 onClick={() => setToEdit({ ...toEdit, subscribeType: { ...toEdit.subscribeType, active: true } })}
+                                 onClick={() => setToEdit({ ...toEdit, subscriptionCode: { ...toEdit.subscriptionCode, active: true } })}
                                  text='Subscription'
                                  className='text-21 justify-between'
                               />
                               {/* <p className='text-primary font-bold lg:text-21'>Subscription</p> */}
                               <p className='text-[16px] font-semibold mt-2 lg:mt-6 lg:opacity-60'>
-                                 {userDetail?.subscribeType ? userDetail?.subscribeType : '-'}
+                                 {userDetail?.subscriptionCode ? userDetail?.subscriptionCode : '-'}
                               </p>
                            </div>
                         </div>
