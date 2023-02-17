@@ -108,6 +108,7 @@ export default function Users() {
                   let obj = {
                      _id: user._id,
                      block: user.block,
+                     userStatus: user.userStatus,
                      name: `${user.firstName} ${user.lastName}`,
                      email: user.email ? user.email : '-',
                      userType: user.role ? user.role : '-',

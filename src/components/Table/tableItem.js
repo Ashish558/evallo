@@ -17,7 +17,7 @@ import TrashIcon from '../../assets/icons/delete.svg'
 import DeleteIcon from "../../assets/icons/cross.svg"
 import InputSelect from "../InputSelect/InputSelect";
 import { useLazyGetSettingsQuery } from "../../app/services/session";
-import { useLazyGetTutorDetailsQuery, useLazyGetUserDetailQuery, usePostTutorDetailsMutation, useUpdateTutorDetailsMutation, useUpdateUserDetailsMutation } from "../../app/services/users";
+import { useLazyGetTutorDetailsQuery, useLazyGetUserDetailQuery, usePostTutorDetailsMutation, useUpdateTutorDetailsMutation, useUpdateUserDetailsMutation, useUpdateUserFieldsMutation } from "../../app/services/users";
 import { useSelector } from "react-redux";
 import { useLazyGetTestResponseQuery } from "../../app/services/test";
 import { getFormattedDate, getScore, getScoreStr } from "../../utils/utils";
@@ -27,6 +27,7 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch }) {
    const [score, setScore] = useState('-')
    // console.log(onClick)
    const [fetchSettings, settingsResp] = useLazyGetSettingsQuery()
+   const [updateFields, updateFieldsResp] = useUpdateUserFieldsMutation()
    const [getUserDetail, getUserDetailResp] = useLazyGetUserDetailQuery()
    const [getTutorDetail, getTutorDetailResp] = useLazyGetTutorDetailsQuery()
    const [updateUserDetail, updateUserDetailResp] = useUpdateUserDetailsMutation()
@@ -84,7 +85,7 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch }) {
                      return
                   }
                   // console.log('Resp score', res.data.data.response);
-                  let responseData =  res.data.data.response
+                  let responseData = res.data.data.response
                   let score = getScoreStr(responseData.testType, responseData.score, responseData.subjects, responseData.subjects.length)
                   // console.log('SCORE', score);
                   // let scr = getScore(res.data.data.response.testType, res.data.data.response.subjects)
@@ -103,6 +104,20 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch }) {
 
    const navigate = useNavigate();
 
+   const handlestatusChange = (field) => {
+      // console.log(field)
+      // console.log(item)
+      // return
+      updateFields({ id: item._id, fields: field })
+      .then(res=>{
+         if(res.error){
+           return console.log('error updating');
+         }
+         fetch && fetch(field, item._id)
+         console.log('update res', res.data);
+      })
+     
+   }
    const handleChange = (field) => {
       // console.log(field)
       // console.log(item._id)
@@ -191,15 +206,22 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch }) {
                   </div>
                </td>
                <td className="font-medium text-sm px-1  min-w-14 py-4">
+                  <InputSelect value={item.userStatus ? item.userStatus : '-'}
+                     optionData={['active', 'blocked', 'dormant']}
+                     inputContainerClassName='min-w-[100px] pt-0 pb-0 pr-2 pl-0 text-center'
+                     optionClassName='font-semibold opacity-60 text-sm'
+                     labelClassname='hidden'
+                     onChange={val => handlestatusChange({ userStatus: val })} />
+               </td>
+               {/* <td className="font-medium text-sm px-1  min-w-14 py-4">
                   <div className="my-[6px]">
-                     {/* {item.userType === 'tutor' ? */}
+                  
                      <span className="cursor-pointer inline-block px-1" onClick={() => onClick.handleTutorStatus(item,)}>
                         {item.block === false ? 'Active' : item.userType === 'parent' || item.userType === 'student' ? 'Blocked' : 'Dormant'}
                      </span>
-                     {/* : */}
-                     {/* item.tutorStatus} */}
+
                   </div>
-               </td>
+               </td> */}
                <td className="font-medium text-sm px-1  min-w-14 py-4">
                   <div className="my-[6px]">
                      {item.services}
@@ -212,12 +234,12 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch }) {
                </td>
                <td className="font-medium px-1 min-w-14 py-4">
                   <div className="w-4 h-4 rounded-full bg-[#E3E3E3] flex items-center justify-center">
-                  <img
-                     src={TrashIcon}
-                     className="cursor-pointer"
-                     onClick={() => onClick.handleDelete(item)}
+                     <img
+                        src={TrashIcon}
+                        className="cursor-pointer"
+                        onClick={() => onClick.handleDelete(item)}
                      />
-                     </div>
+                  </div>
                </td>
             </tr>
          )}
@@ -242,7 +264,7 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch }) {
                   {item.testName}
                </td>
                <td className="font-medium px-1  min-w-14 py-4">
-                  {item.duration === "-"? "Unlimited" : item.duration}
+                  {item.duration === "-" ? "Unlimited" : item.duration}
                </td>
                <td className="font-medium px-1  min-w-14 py-4">
                   <div className={`flex items-center no-wrap justify-center`}>
@@ -270,8 +292,8 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch }) {
                   </button>
                </td>
                <td className="font-medium px-1 min-w-14 py-4">
-               <img src={DownloadIcon} className='w-[30px] cursor-pointer' 
-               onClick={() => handlePdfNavigate()} />
+                  <img src={DownloadIcon} className='w-[30px] cursor-pointer'
+                     onClick={() => handlePdfNavigate()} />
                </td>
                <td className="font-medium px-1 min-w-14 py-4">
                   <img
@@ -368,7 +390,7 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch }) {
                                  {returnStatus(item.status)}
                               </div>
                               : key === 'scores' ? <div className="cursor-pointer"
-                              onClick={()=>item.isCompleted === true &&  navigate(`/assigned-tests/${item.testId}/${item.assignedTestId}/report/${item.studentId._id}`) } >
+                                 onClick={() => item.isCompleted === true && navigate(`/assigned-tests/${item.testId}/${item.assignedTestId}/report/${item.studentId._id}`)} >
                                  {item.isCompleted === true ? score : '-'}
                               </div> :
                                  item[key]
