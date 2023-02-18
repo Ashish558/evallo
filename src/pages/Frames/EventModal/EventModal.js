@@ -652,16 +652,23 @@ export default function EventModal({
             if (details === null) return
             if (details.tutorServices.length === 0) return alert('Tutor does not have any services')
             let services = details.tutorServices.map(item => item.service)
-            setServicesAndSpecialization(services)
+            let tutorServs = []
+            allServicesAndSpec.forEach(item => {
+               if(services.includes(item.service)){
+                  tutorServs.push(item.service)
+               }
+            })
+            console.log('allServicesAndSpec', allServicesAndSpec);
+            console.log('services', services);
+            setServicesAndSpecialization(tutorServs)
          })
       // }
 
-   }, [persona, data.tutorId])
+   }, [persona, data.tutorId, allServicesAndSpec])
 
    useEffect(() => {
       // console.log('all', allServicesAndSpec)
       // console.log('servicesAndSpecialization', servicesAndSpecialization)
-
       let specs = []
       allServicesAndSpec.map(item => {
          if (item.service === data.service) {
