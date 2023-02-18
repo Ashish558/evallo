@@ -472,17 +472,21 @@ export default function TutorProfile({ isOwn }) {
                   <div className={`${styles.backBtn} mt-10`} >
                      <BackBtn to={-1} />
                   </div>
-                  <div className={`${styles.editButton} mt-10`} >
-                     {/* <BackBtn to={-1} /> */}
-                     <CircleButton
-                        className='flex items-center rounded-full'
-                        children={
-                           <EditableText editable={persona === "tutor" || persona === "admin"} />
-                        }
-                        onClick={() => setToEdit({ ...toEdit, videoLink: { ...toEdit.videoLink, active: true } })}
-                         />
-                     {/* <EditableText editable={true} className="right-0" /> */}
-                  </div>
+                  {
+                     (isOwn === true) || (persona === 'admin') ?
+                        <div className={`${styles.editButton} mt-10`} >
+                           {/* <BackBtn to={-1} /> */}
+                           <CircleButton
+                              className='flex items-center rounded-full'
+                              children={
+                                 <EditableText editable={persona === "tutor" || persona === "admin"} />
+                              }
+                              onClick={() => setToEdit({ ...toEdit, videoLink: { ...toEdit.videoLink, active: true } })}
+                           />
+                           {/* <EditableText editable={true} className="right-0" /> */}
+                        </div> : <></>
+                  }
+
                   <div className='relative pt-10 mt-auto flex-1'>
 
                      <div className={styles.imgContent} >
