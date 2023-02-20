@@ -535,7 +535,7 @@ export default function TutorProfile({ isOwn }) {
                               <div className='flex flex-col row-span-2 overflow-x-auto scrollbar-content max-h-[500px] scrollbar-vertical'>
                                  {settings && settings.Expertise?.length > 0 && userDetail.serviceSpecializations && userDetail.serviceSpecializations.map((id, idx) => {
                                     return (
-                                       settings.Expertise.find(item => item._id === id) ?
+                                       settings.Expertise?.find(item => item._id === id) ?
                                           <div key={idx} className='flex flex-col items-center mb-10'>
                                              <div className='flex h-90 w-90 rounded-full  items-center justify-center mb-3' >
                                                 <img className='max-w-[90px] max-h-[90px]' src={settings.Expertise.find(item => item._id === id).image}
@@ -799,7 +799,7 @@ export default function TutorProfile({ isOwn }) {
                                     let price = '-'
                                     let isPresent = false
                                     if (userDetail !== undefined || userDetail !== null) {
-                                       let obj = userDetail.tutorServices.find(serv => serv.service === service.service)
+                                       let obj = userDetail?.tutorServices?.find(serv => serv.service === service.service)
                                        // console.log('obj', obj);
                                        if (obj !== undefined) {
                                           price = obj.price
