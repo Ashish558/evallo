@@ -88,6 +88,7 @@ export default function Users() {
       userType: [],
       status: [],
       specialization: [],
+      userStatus: [],
       tutor: [],
    })
 
@@ -211,6 +212,11 @@ export default function Users() {
          tempdata = tempdata.filter(user => checkIfExistInNestedArray(user.specialization, filterData.specialization))
       } else {
          tempdata = tempdata.filter(user => user.specialization !== '')
+      }
+      if (filterData.userStatus.length > 0) {
+         tempdata = tempdata.filter(user => filterData.userStatus.includes(user.userStatus))
+      } else {
+         tempdata = tempdata.filter(user => user.userStatus !== '')
       }
 
       //NAME FILTER 
@@ -464,6 +470,24 @@ export default function Users() {
                         : [...filterData.specialization, val]
                   })}
                />
+                 <InputSelect optionData={['active', 'blocked', 'dormant']}
+                  placeholder='User Status'
+                  parentClassName='w-full w-1/6'
+                  type='select'
+                  inputContainerClassName='text-sm border bg-white px-[20px] py-[16px]'
+                  value={filterData.userStatus.length > 0 ? filterData.userStatus[0] : ''}
+                  checkbox={{
+                     visible: true,
+                     name: 'test',
+                     match: filterData.userStatus
+                  }}
+                  onChange={val => setFilterData({
+                     ...filterData,
+                     userStatus: filterData.userStatus.includes(val) ?
+                        filterData.userStatus.filter(item => item !== val)
+                        : [...filterData.userStatus, val]
+                  })}
+               />
                <InputSelect optionData={[]}
                   placeholder='Tutor'
                   parentClassName='w-full w-1/6'
@@ -471,6 +495,7 @@ export default function Users() {
                   inputContainerClassName='text-sm border bg-white px-[20px] py-[16px]'
                   value={filterData.tutor.length > 0 ? filterData.tutor[0] : ''}
                   onChange={val => setFilterData({ ...filterData, tutor: val })} />
+              
                <PrimaryButton type='submit'
                   children={
                      <>
