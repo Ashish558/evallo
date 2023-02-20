@@ -9,7 +9,7 @@ import InputSelect from '../../components/InputSelect/InputSelect'
 import AddIcon from '../../assets/icons/add.svg'
 import SearchIcon from '../../assets/icons/search.svg'
 import { tableData, userTypesList } from './tempData'
-import { useAddUserMutation, useLazyGetAllUsersQuery, useLazyGetUserDetailQuery } from '../../app/services/users'
+import { useAddUserMutation, useLazyGetAllUsersQuery, useLazyGetTutorDetailsQuery, useLazyGetUserDetailQuery } from '../../app/services/users'
 import { useSignupUserMutation } from '../../app/services/auth'
 import { useNavigate } from 'react-router-dom'
 import { roles } from '../../constants/constants'
@@ -64,6 +64,8 @@ export default function Users() {
    const [usersData, setUsersData] = useState([])
    const [filteredUsersData, setFilteredUsersData] = useState([])
    const [getUserDetail, getUserDetailResp] = useLazyGetUserDetailQuery()
+   const [getTutorDetail, userDetailResp] = useLazyGetTutorDetailsQuery()
+
    const [filterItems, setFilterItems] = useState([])
    const [addUserBtnDisabled, setAddUserBtnDisabled] = useState(false)
 
@@ -111,7 +113,6 @@ export default function Users() {
 
             const fetchDetails = async () => {
                await res.data.data.user.map(async (user) => {
-
                   let obj = {
                      _id: user._id,
                      block: user.block,
@@ -127,9 +128,11 @@ export default function Users() {
                      specialization: user.specialization ? user.specialization : [],
                   }
                   if (user.role === 'tutor') {
-                     await getUserDetail({ id: user._id })
+                     // console.log('tutor', user._id);
+                     await getTutorDetail({ id: user._id })
                         .then(resp => {
-                           // console.log('TUTOR RESp', resp);
+                           console.log('TUTOR RESp', resp);
+                           
                            setFilterItems(prev => [...prev])
                            // console.log('tutor-details', resp.data.data);
                            let status = '-'
@@ -192,8 +195,8 @@ export default function Users() {
 
    useEffect(() => {
       let tempdata = [...usersData]
-      console.log('all users data', usersData)
-      console.log('filterData.specialization', filterData.specialization)
+      // console.log('all users data', usersData)
+      // console.log('filterData.specialization', filterData.specialization)
       //USER TYPE FILTER
       if (filterData.userType.length > 0) {
          tempdata = tempdata.filter(user => filterData.userType.includes(user.userType))
@@ -401,7 +404,7 @@ export default function Users() {
    // console.log('users', filteredUsersData);
    // console.log('settings', settings);
    // console.log('filterItems', filterItems);
-   console.log('filterData', filterData);
+   // console.log('filterData', filterData);
    // console.log('ALL USERS DATA', usersData)
 
    return (
@@ -470,9 +473,9 @@ export default function Users() {
                         : [...filterData.specialization, val]
                   })}
                />
-                 <InputSelect optionData={['active', 'blocked', 'dormant']}
+               <InputSelect optionData={['active', 'blocked', 'dormant']}
                   placeholder='User Status'
-                  parentClassName='w-full w-1/6'
+                  parentClassName='w-full w-1/6 capitalize'
                   type='select'
                   inputContainerClassName='text-sm border bg-white px-[20px] py-[16px]'
                   value={filterData.userStatus.length > 0 ? filterData.userStatus[0] : ''}
@@ -493,9 +496,10 @@ export default function Users() {
                   parentClassName='w-full w-1/6'
                   type='select'
                   inputContainerClassName='text-sm border bg-white px-[20px] py-[16px]'
+
                   value={filterData.tutor.length > 0 ? filterData.tutor[0] : ''}
                   onChange={val => setFilterData({ ...filterData, tutor: val })} />
-              
+
                <PrimaryButton type='submit'
                   children={
                      <>
