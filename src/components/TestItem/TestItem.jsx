@@ -50,7 +50,7 @@ export const TestItem = ({ testName, assignedTestId, dueDate, pdfLink, testId, s
         <h2 className='text-[18px] font-medium'>{testName}</h2>
         <div className="flex gap-[12px]">
           <h5 className="text-xs opacity-60 font-semibold">
-            due date
+            Due date:
           </h5>
           <h6 className="text-xs opacity-60 font-medium">  {getDate(dueDate)}</h6>
         </div>

@@ -16,6 +16,8 @@ import { roles } from '../../constants/constants'
 import { useBlockUserMutation, useDeleteUserMutation, useUnblockUserMutation } from '../../app/services/admin'
 import { useLazyGetSettingsQuery } from '../../app/services/session'
 import PrimaryButton from '../../components/Buttons/PrimaryButton'
+import CountryCode from '../../components/CountryCode/CountryCode'
+import { isPhoneNumber } from '../Signup/utils/util'
 
 const optionData = [
    'option 1',
@@ -49,6 +51,7 @@ export default function Users() {
    const [deleteModalActive, setDeleteModalActive] = useState(false)
    const [deleteLoading, setDeleteLoading] = useState(false)
    const [specializations, setSpecializations] = useState([])
+   const [numberPrefix, setNumberPrefix] = useState("+1")
 
    useEffect(() => {
       setValidData(isEmail(modalData.email) && modalData.firstName && modalData.lastName && modalData.userType && modalData.phone)
@@ -61,6 +64,7 @@ export default function Users() {
    const [filteredUsersData, setFilteredUsersData] = useState([])
    const [getUserDetail, getUserDetailResp] = useLazyGetUserDetailQuery()
    const [filterItems, setFilterItems] = useState([])
+   const [addUserBtnDisabled, setAddUserBtnDisabled] = useState(false)
 
    const [blockUser, blockUserResp] = useBlockUserMutation()
    const [unblockUser, unblockUserResp] = useUnblockUserMutation()
@@ -248,6 +252,7 @@ export default function Users() {
          firstName: modalData.firstName,
          lastName: modalData.lastName,
          email: modalData.email,
+         phone: `${numberPrefix}${modalData.phone}`,
       }
       setLoading(true)
       if (modalData.userType === 'tutor') {
@@ -355,7 +360,19 @@ export default function Users() {
    }
 
    useEffect(() => {
-      if(!settings.servicesAndSpecialization) return
+      if (modalData.email.trim() === '' || modalData.firstName.trim() === '' || modalData.lastName.trim() === '' || modalData.phone.trim() === '' || modalData.userType.trim() === '') {
+         setAddUserBtnDisabled(true)
+      } else {
+         if (modalData.phone.length < 10 || !isEmail(modalData.email) || !isPhoneNumber(modalData.phone)) {
+            setAddUserBtnDisabled(true)
+         }else{
+            setAddUserBtnDisabled(false)
+         }
+      }
+   }, [modalData.email, modalData.firstName, modalData.lastName, modalData.phone, modalData.userType])
+
+   useEffect(() => {
+      if (!settings.servicesAndSpecialization) return
       let specs = []
       settings.servicesAndSpecialization.map(service => {
          specs.push(...service.specialization)
@@ -491,7 +508,7 @@ export default function Users() {
                   // onClick: handleSubmit,
                   loading: loading,
                   type: 'submit',
-                  disabled: !validData
+                  disabled: addUserBtnDisabled
                }}
                handleClose={handleClose}
                body={
@@ -548,10 +565,13 @@ export default function Users() {
                               labelClassname='ml-4 mb-0.5'
                               isRequired={true}
                               placeholder='Phone Number'
-                              inputContainerClassName='text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0'
-                              inputClassName='bg-transparent'
+                              inputContainerClassName='text-sm pt-3.5 pb-3.5 px-5  bg-primary-50 border-0'
+                              inputClassName='bg-transparent pl-[60px]'
                               parentClassName='w-full' type='text'
                               value={modalData.phone}
+                              inputLeftField={
+                                 <CountryCode numberPrefix={numberPrefix} setNumberPrefix={setNumberPrefix} />
+                              }
                               onChange={e => setModalData({ ...modalData, phone: e.target.value })} />
                         </div>
                      </div>

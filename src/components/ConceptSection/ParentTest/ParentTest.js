@@ -57,7 +57,7 @@ export default function ParentTest({ styles, assignedTestId, testId, testName, s
                   className="flex mr-2"
                   style={{ gap: "6px" }}
                >
-                  <p className="text-xs font-semibold opacity-50">Due Date</p>
+                  <p className="text-xs font-semibold opacity-50">Due Date: </p>
                   <h3 className="opacity-60 text-xs font-semibold">
                      {getDate(dueDate)}
                   </h3>
