@@ -261,6 +261,7 @@ export default function Calendar() {
                endDate: endDateUtc,
                updatedDate: startUtc,
                updatedDateEnd: endDateUtc,
+               sessionStatus: session.sessionStatus,
                description: `${strtTime12HFormat} - ${endTime12HFormat}`,
             };
             return eventObj;
@@ -415,6 +416,7 @@ export default function Calendar() {
                               updatedDate: startUtc,
                               updatedDateEnd: endDateUtc,
                               description: `${strtTime12HFormat} - ${endTime12HFormat}`,
+                              sessionStatus: session.sessionStatus,
                               background: getBackground(resp.data.data.user.assiginedStudents.length, idx)
                            };
                            return eventObj;
@@ -496,7 +498,7 @@ export default function Calendar() {
       calendarAPI?.next();
    };
    const eventContent = (arg) => {
-      // console.log(arg.event)
+      // console.log(arg.event._def.extendedProps.sessionStatus)
       // console.log(new Date(arg.event._instance.range.start).getHours())
       let m = moment.tz(`${arg.event.start}`, "America/Los_Angeles").format();
       // console.log(new Date(m).getHours())
@@ -651,6 +653,7 @@ export default function Calendar() {
                   endDate: endDateUtc,
                   updatedDate: startUtc,
                   updatedDateEnd: endDateUtc,
+                  sessionStatus: session.sessionStatus,
                   description: `${strtTime12HFormat} - ${endTime12HFormat}`,
                };
                return eventObj;
