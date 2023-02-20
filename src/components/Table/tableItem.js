@@ -44,7 +44,6 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch }) {
       leadStatus: []
    })
 
-   // console.log('item', item);
 
    useEffect(() => {
       if (dataFor === 'assignedTestsStudents') {
@@ -109,14 +108,14 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch }) {
       // console.log(item)
       // return
       updateFields({ id: item._id, fields: field })
-      .then(res=>{
-         if(res.error){
-           return console.log('error updating');
-         }
-         fetch && fetch(field, item._id)
-         console.log('update res', res.data);
-      })
-     
+         .then(res => {
+            if (res.error) {
+               return console.log('error updating');
+            }
+            fetch && fetch(field, item._id)
+            console.log('update res', res.data);
+         })
+
    }
    const handleChange = (field) => {
       // console.log(field)
@@ -162,6 +161,7 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch }) {
          alert('PDF doesnt exist')
       }
    }
+   // console.log('item', item.specialization );
 
    return (
       <>
@@ -224,7 +224,9 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch }) {
                </td> */}
                <td className="font-medium text-sm px-1  min-w-14 py-4">
                   <div className="my-[6px]">
-                     {item.services}
+                     {item.specialization?.map((specialization, idx) => {
+                       return `${specialization}${idx + 1 === item.specialization.length ? '' : ','}`
+                     })}
                   </div>
                </td>
                <td className="font-medium text-sm px-1  min-w-14 py-4">

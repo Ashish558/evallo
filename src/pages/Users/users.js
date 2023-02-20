@@ -48,6 +48,7 @@ export default function Users() {
    const [validData, setValidData] = useState(true);
    const [deleteModalActive, setDeleteModalActive] = useState(false)
    const [deleteLoading, setDeleteLoading] = useState(false)
+   const [specializations, setSpecializations] = useState([])
 
    useEffect(() => {
       setValidData(isEmail(modalData.email) && modalData.firstName && modalData.lastName && modalData.userType && modalData.phone)
@@ -81,7 +82,7 @@ export default function Users() {
       typeName: '',
       userType: '',
       status: '',
-      services: '',
+      specialization: '',
       tutor: ''
    })
 
@@ -117,7 +118,7 @@ export default function Users() {
                      assignedTutor: '-',
                      leadStatus: '-',
                      tutorStatus: '-',
-                     services: '-',
+                     specialization: user.specialization ? user.specialization : [],
                   }
                   if (user.role === 'tutor') {
                      await getUserDetail({ id: user._id })
@@ -187,7 +188,7 @@ export default function Users() {
 
    useEffect(() => {
       let tempdata = [...usersData]
-      // console.log(usersData)
+      console.log('all users data', usersData)
       //USER TYPE FILTER
       if (filterData.userType !== '') {
          tempdata = tempdata.filter(user => user.userType === filterData.userType)
@@ -200,6 +201,12 @@ export default function Users() {
          tempdata = tempdata.filter(user => user.leadStatus === filterData.status)
       } else {
          tempdata = tempdata.filter(user => user.leadStatus !== '')
+      }
+
+      if (filterData.specialization !== '') {
+         tempdata = tempdata.filter(user => user.specialization === filterData.specialization)
+      } else {
+         tempdata = tempdata.filter(user => user.specialization !== '')
       }
 
       //NAME FILTER 
@@ -347,7 +354,18 @@ export default function Users() {
       }
    }
 
+   useEffect(() => {
+      if(!settings.servicesAndSpecialization) return
+      let specs = []
+      settings.servicesAndSpecialization.map(service => {
+         specs.push(...service.specialization)
+      })
+      setSpecializations(specs)
+      console.log('specs', specs);
+
+   }, [settings])
    // console.log('users', filteredUsersData);
+   // console.log('settings', settings);
    return (
       <div className='lg:ml-pageLeft bg-lightWhite min-h-screen'>
          <div className='py-14 px-5'>
@@ -374,14 +392,14 @@ export default function Users() {
                   type='select'
                   value={filterData.status}
                   onChange={val => setFilterData({ ...filterData, status: val })} />
-               <InputSelect optionData={optionData}
-                  placeholder='Services'
+               <InputSelect optionData={specializations}
+                  placeholder='Specializations'
                   parentClassName='w-full w-1/6'
                   type='select'
                   inputContainerClassName='text-sm border bg-white px-[20px] py-[16px]'
-                  value={filterData.services}
-                  onChange={val => setFilterData({ ...filterData, services: val })} />
-               <InputSelect optionData={optionData}
+                  value={filterData.specialization}
+                  onChange={val => setFilterData({ ...filterData, specialization: val })} />
+               <InputSelect optionData={[]}
                   placeholder='Tutor'
                   parentClassName='w-full w-1/6'
                   type='select'
