@@ -303,6 +303,21 @@ export const getDuration = val => {
    return '-'
 }
 
+export const checkIfExistInNestedArray = (arr1, mainArray) => {
+   if(!arr1) return false
+   if(!mainArray) return false
+   let exist = false
+   mainArray.forEach(mainArrItem => {
+      arr1.forEach(arrItem => {
+         if(mainArrItem === arrItem){
+            exist = true
+         }
+      })
+   })
+   return exist
+}
+
+
 // // timezones
 // function getCurrentLocalDateTime() {
 //    return moment().format();

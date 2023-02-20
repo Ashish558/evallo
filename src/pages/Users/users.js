@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
 import Table from '../../components/Table/Table'
-import FilterItems from '../../components/FilterItems/filterItems'
+import FilterItems from '../../components/FilterItemsNew/filterItems'
 import Modal from '../../components/Modal/Modal'
 import InputField from '../../components/InputField/inputField'
 import InputSelect from '../../components/InputSelect/InputSelect'
@@ -18,6 +18,7 @@ import { useLazyGetSettingsQuery } from '../../app/services/session'
 import PrimaryButton from '../../components/Buttons/PrimaryButton'
 import CountryCode from '../../components/CountryCode/CountryCode'
 import { isPhoneNumber } from '../Signup/utils/util'
+import { checkIfExistInNestedArray } from '../../utils/utils'
 
 const optionData = [
    'option 1',
@@ -84,10 +85,10 @@ export default function Users() {
 
    const [filterData, setFilterData] = useState({
       typeName: '',
-      userType: '',
-      status: '',
-      specialization: '',
-      tutor: ''
+      userType: [],
+      status: [],
+      specialization: [],
+      tutor: [],
    })
 
    useEffect(() => {
@@ -162,8 +163,6 @@ export default function Users() {
          })
    }
 
-   // console.log('ALL USERS DATA', usersData)
-   // console.log('filteredUsersData', filteredUsersData)
 
    const changeUserField = (field, id) => {
       let temp = filteredUsersData.map(item => {
@@ -193,22 +192,23 @@ export default function Users() {
    useEffect(() => {
       let tempdata = [...usersData]
       console.log('all users data', usersData)
+      console.log('filterData.specialization', filterData.specialization)
       //USER TYPE FILTER
-      if (filterData.userType !== '') {
-         tempdata = tempdata.filter(user => user.userType === filterData.userType)
+      if (filterData.userType.length > 0) {
+         tempdata = tempdata.filter(user => filterData.userType.includes(user.userType))
       } else {
          tempdata = tempdata.filter(user => user.userType !== '')
       }
 
       //LEAD STATUS FILTER
-      if (filterData.status !== '') {
-         tempdata = tempdata.filter(user => user.leadStatus === filterData.status)
+      if (filterData.status.length > 0) {
+         tempdata = tempdata.filter(user => filterData.status.includes(user.leadStatus))
       } else {
          tempdata = tempdata.filter(user => user.leadStatus !== '')
       }
 
-      if (filterData.specialization !== '') {
-         tempdata = tempdata.filter(user => user.specialization === filterData.specialization)
+      if (filterData.specialization.length > 0) {
+         tempdata = tempdata.filter(user => checkIfExistInNestedArray(user.specialization, filterData.specialization))
       } else {
          tempdata = tempdata.filter(user => user.specialization !== '')
       }
@@ -223,10 +223,18 @@ export default function Users() {
       setFilteredUsersData(tempdata)
    }, [filterData])
 
-   const removeFilter = key => {
-      let tempFilterData = { ...filterData }
-      tempFilterData[key] = ''
-      setFilterData(tempFilterData)
+   const removeFilter = (key, text, isArray) => {
+      if (isArray) {
+         let tempFilterData = { ...filterData }
+         tempFilterData[key] = tempFilterData[key].filter(item => item !== text)
+         // tempFilterData[key] = [ tempFilterData[key].filter(text => text !==)]
+         setFilterData(tempFilterData)
+      } else {
+         let tempFilterData = { ...filterData }
+         tempFilterData[key] = ''
+         console.log('tempFilterData', tempFilterData);
+         setFilterData(tempFilterData)
+      }
    }
 
    useEffect(() => {
@@ -235,7 +243,7 @@ export default function Users() {
             return {
                text: filterData[key],
                type: key,
-               removeFilter: (key) => removeFilter(key)
+               removeFilter: (key, text, isArray) => removeFilter(key, text, isArray)
             }
          }
       }).filter(item => item !== undefined)
@@ -243,7 +251,10 @@ export default function Users() {
    }, [filterData])
 
 
-   const onRemoveFilter = (item) => item.removeFilter(item.type)
+   const onRemoveFilter = (item, text, isArray) => {
+      // console.log(item, text, isArray);
+      item.removeFilter(item.type, text, isArray)
+   }
 
    const handleSubmit = e => {
       e.preventDefault()
@@ -365,7 +376,7 @@ export default function Users() {
       } else {
          if (modalData.phone.length < 10 || !isEmail(modalData.email) || !isPhoneNumber(modalData.phone)) {
             setAddUserBtnDisabled(true)
-         }else{
+         } else {
             setAddUserBtnDisabled(false)
          }
       }
@@ -383,6 +394,10 @@ export default function Users() {
    }, [settings])
    // console.log('users', filteredUsersData);
    // console.log('settings', settings);
+   // console.log('filterItems', filterItems);
+   console.log('filterData', filterData);
+   // console.log('ALL USERS DATA', usersData)
+
    return (
       <div className='lg:ml-pageLeft bg-lightWhite min-h-screen'>
          <div className='py-14 px-5'>
@@ -400,34 +415,62 @@ export default function Users() {
                   placeholder='User Type'
                   parentClassName='w-full w-1/6'
                   type='select'
-                  value={filterData.userType}
-                  onChange={val => setFilterData({ ...filterData, userType: val })} />
+                  value={filterData.userType.length > 0 ? filterData.userType[0] : ''}
+                  checkbox={{
+                     visible: true,
+                     name: 'test',
+                     match: filterData.userType
+                  }}
+                  onChange={val => setFilterData({
+                     ...filterData,
+                     userType: filterData.userType.includes(val) ?
+                        filterData.userType.filter(item => item !== val)
+                        : [...filterData.userType, val]
+                  })}
+               />
                <InputSelect optionData={settings.leadStatus}
                   placeholder='Lead Status'
                   parentClassName='w-full w-1/6'
                   inputContainerClassName='text-sm border bg-white px-[20px] py-[16px]'
                   type='select'
-                  value={filterData.status}
-                  onChange={val => setFilterData({ ...filterData, status: val })} />
+                  checkbox={{
+                     visible: true,
+                     name: 'test',
+                     match: filterData.status
+                  }}
+                  onChange={val => setFilterData({
+                     ...filterData,
+                     status: filterData.status.includes(val) ?
+                        filterData.status.filter(item => item !== val)
+                        : [...filterData.status, val]
+                  })}
+                  value={filterData.status.length > 0 ? filterData.status[0] : ''}
+               />
                <InputSelect optionData={specializations}
                   placeholder='Specializations'
                   parentClassName='w-full w-1/6'
                   type='select'
                   inputContainerClassName='text-sm border bg-white px-[20px] py-[16px]'
-                  value={filterData.specialization}
-                  onChange={val => setFilterData({ ...filterData, specialization: val })} />
+                  value={filterData.specialization.length > 0 ? filterData.specialization[0] : ''}
+                  checkbox={{
+                     visible: true,
+                     name: 'test',
+                     match: filterData.specialization
+                  }}
+                  onChange={val => setFilterData({
+                     ...filterData,
+                     specialization: filterData.specialization.includes(val) ?
+                        filterData.specialization.filter(item => item !== val)
+                        : [...filterData.specialization, val]
+                  })}
+               />
                <InputSelect optionData={[]}
                   placeholder='Tutor'
                   parentClassName='w-full w-1/6'
                   type='select'
                   inputContainerClassName='text-sm border bg-white px-[20px] py-[16px]'
-                  value={filterData.tutor}
+                  value={filterData.tutor.length > 0 ? filterData.tutor[0] : ''}
                   onChange={val => setFilterData({ ...filterData, tutor: val })} />
-               {/* <button className='bg-primary py-3.5 text-lg px-[21px] flex justify-center items-center text-white font-semibold rounded-lg w-1/6'
-                  onClick={() => setModalActive(true)}>
-
-                  <img src={AddIcon} className='ml-3' />
-               </button> */}
                <PrimaryButton type='submit'
                   children={
                      <>
@@ -439,42 +482,7 @@ export default function Users() {
                   className='pt-[14px] flex items-center text-lg font-semibold pb-[14px] pl-[21px] pr-[21px]' />
             </div>
             <div className='flex align-center mt-0 gap-[20px]'>
-               {/* <InputField
-                  IconRight={SearchIcon}
-                  placeholder='Type Name'
-                  parentClassName='w-full'
-                  inputContainerClassName='text-sm text-sm bg-white  px-[20px] py-[16px] border'
-                  type='text'
-                  value={filterData.typeName}
-                  onChange={e => setFilterData({ ...filterData, typeName: e.target.value })} />
-               <InputSelect optionData={userTypesList}
-                  inputContainerClassName='text-sm border bg-white px-[20px] py-[16px]'
-                  placeholder='User Type'
-                  parentClassName='w-full'
-                  type='select'
-                  value={filterData.userType}
-                  onChange={val => setFilterData({ ...filterData, userType: val })} />
-               <InputSelect optionData={settings.leadStatus}
-                  placeholder='Lead Status'
-                  parentClassName='w-full'
-                  inputContainerClassName='text-sm border bg-white px-[20px] py-[16px]'
-                  type='select'
-                  value={filterData.status}
-                  onChange={val => setFilterData({ ...filterData, status: val })} />
-               <InputSelect optionData={optionData}
-                  placeholder='Services'
-                  parentClassName='w-full'
-                  type='select'
-                  inputContainerClassName='text-sm border bg-white px-[20px] py-[16px]'
-                  value={filterData.services}
-                  onChange={val => setFilterData({ ...filterData, services: val })} />
-               <InputSelect optionData={optionData}
-                  placeholder='Tutor'
-                  parentClassName='w-full'
-                  type='select'
-                  inputContainerClassName='text-sm border bg-white px-[20px] py-[16px]'
-                  value={filterData.tutor}
-                  onChange={val => setFilterData({ ...filterData, tutor: val })} /> */}
+
             </div>
             <div className='mt-4' >
                <FilterItems items={filterItems} setData={setFilterItems} onRemoveFilter={onRemoveFilter} />
