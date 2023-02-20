@@ -7,7 +7,7 @@ import OwlCarousel from "react-owl-carousel";
 import "owl.carousel/dist/assets/owl.carousel.css";
 import "owl.carousel/dist/assets/owl.theme.default.css";
 import shivam from '../../assets/images/tutors/shivam-shrivastab.png'
-import { useLazyGetParentTutorsQuery } from "../../app/services/users";
+import { useLazyGetParentTutorsQuery, useLazyGetUserDetailQuery } from "../../app/services/users";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import InputSelect from "../InputSelect/InputSelect";
@@ -28,6 +28,7 @@ const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
    const tutorCarouselRef = useRef()
    const { id } = useSelector(state => state.user)
    const [sub, setSub] = useState('Math')
+   const [profileProgress, setProfileProgress] = useState("0%");
 
    const [allTests, setAllTests] = useState([])
 
@@ -35,7 +36,6 @@ const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
    const navigate = useNavigate()
    const [fetchAssignedTests, fetchAssignedTestsResp] = useLazyGetParentsAssignedTestsQuery();
    const [filteredAssignedTests, setFilteredAssignedTests] = useState([])
-   const percentageCount = 64
 
    useEffect(() => {
       fetchAssignedTests(id)
@@ -97,8 +97,40 @@ const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
          buttons[i].innerText === "1250 / 1250" && buttons[i].classList.add("text-[#0671E0]");
       }
    }, [buttons, buttons.length])
+   const [getUserDetail, userDetailResp] = useLazyGetUserDetailQuery()
 
-   console.log('filteredTests', filteredAssignedTests);
+   const checkIfFilled = (value) => {
+      let filled = false
+      if (value !== '' && value !== undefined && value !== null) {
+         filled = true
+      }
+      return filled
+   }
+   useEffect(() => {
+      getUserDetail({ id })
+         .then(res => {
+            // console.log('details -- ', res.data.data.userdetails);
+            let { industry, residentialAddress, timeZone, birthyear,} = res.data.data.userdetails
+            let total = 4
+            let filled = 0
+            if (checkIfFilled(birthyear)) {
+               filled += 1
+            } 
+             if (checkIfFilled(industry)) {
+               filled += 1
+            } 
+             if (checkIfFilled(residentialAddress)) {
+               filled += 1
+            } 
+             if (checkIfFilled(timeZone)) {
+               filled += 1
+            }
+            let percent = filled*100/total
+            // console.log('filled', Math.round(percent));
+            setProfileProgress(`${Math.round(percent)}%`)
+         })
+   }, [id])
+
 
    return (
       <div
@@ -173,10 +205,12 @@ const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
             </div>
             <div className="flex mt-[10px] mb-[10px] justify-between px-5 items-center text-black">
                <h2 className="text-[18px] font-medium">Profile Status</h2>
-               <h2 className="text-[18px] font-medium">{percentageCount}%</h2>
+               <h2 className="text-[18px] font-medium">
+                  {profileProgress}
+                  </h2>
             </div>
             <div className="w-full bg-[#D9D9D9] h-[9px] rounded-full mt-[10px] overflow-auto">
-               <div className="rounded-full" style={{ width: percentageCount + "%", height: "100%", background: "#62DD43" }}></div>
+               <div className="rounded-full" style={{ width: profileProgress, height: "100%", background: "#62DD43" }}></div>
             </div>
             <div id={styles.practiceTestContainer} >
                <h2 className="mb-[16px]" id={styles.practiceTestHeader}>Practice Tests</h2>

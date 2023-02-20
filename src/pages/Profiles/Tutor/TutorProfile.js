@@ -164,12 +164,7 @@ export default function TutorProfile({ isOwn }) {
       },
       paymentInfo: {
          active: false,
-         isPresent: false,
-         paymentInfo: {
-            bankName: '',
-            AccNo: '',
-            ifcsCode: '',
-         }
+         paymentInfo: ''
       },
       tutorRank: {
          active: false,
@@ -328,6 +323,7 @@ export default function TutorProfile({ isOwn }) {
                      },
                      paymentInfo: {
                         ...prevToEdit.paymentInfo,
+                        paymentInfo: details === null ? '' : details.paymentInfo,
                         isPresent: details === null ? false : true
                      },
                      tutorRank: {
@@ -715,7 +711,10 @@ export default function TutorProfile({ isOwn }) {
                                        className='text-xl justify-between'
                                     />
                                     <div className='mt-5  font-medium text-sm ma-w-[100px]'>
-                                       <p className='flex items-center mb-3.5'>
+                                       <span className='inline-block pl-2'>
+                                          {paymentInfo === undefined ? ' -' : paymentInfo ? paymentInfo : '-'}
+                                       </span>
+                                       {/* <p className='flex items-center mb-3.5'>
                                           <span>
                                              Bank Name
                                           </span>
@@ -723,7 +722,7 @@ export default function TutorProfile({ isOwn }) {
                                              {paymentInfo === undefined ? ' -' : paymentInfo.bankName ? paymentInfo.bankName : '-'}
                                           </span>
                                        </p>
-                                       <p className='flex items-center mb-3.5'>
+                                        <p className='flex items-center mb-3.5'>
                                           <span>
                                              Acc No.
                                           </span>
@@ -738,7 +737,7 @@ export default function TutorProfile({ isOwn }) {
                                           <span className='inline-block pl-2'>
                                              {paymentInfo === undefined ? ' -' : paymentInfo.ifcsCode ? paymentInfo.ifcsCode : '-'}
                                           </span>
-                                       </p>
+                                       </p> */}
                                     </div>
                                  </div>
 
@@ -796,7 +795,7 @@ export default function TutorProfile({ isOwn }) {
                         body={
                            <div className=''>
                               {
-                                 settings.servicesAndSpecialization.map((service, idx) => {
+                                 settings?.servicesAndSpecialization?.map((service, idx) => {
                                     let price = '-'
                                     let isPresent = false
                                     if (userDetail !== undefined || userDetail !== null) {

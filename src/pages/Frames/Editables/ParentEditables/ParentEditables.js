@@ -1015,7 +1015,18 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                         }
                         {currentField.name === 'paymentInfo' &&
                            <div>
-                              <div className='flex items-center mb-4'>
+                               <div className='flex items-center mb-5'>
+                                 <InputField
+                                    labelClassname='hidden'
+                                    placeholder='Payment Info'
+                                    inputContainerClassName='text-sm pt-3.5 pb-3 px-5 bg-primary-50 border-0'
+                                    inputClassName='bg-transparent rounded-[4px]'
+                                    parentClassName='flex-1' type='text'
+                                    value={currentToEdit.paymentInfo}
+                                    onChange={e => setCurrentToEdit({ ...currentToEdit, paymentInfo: e.target.value })} />
+                              </div>
+                           
+                              {/* <div className='flex items-center mb-4'>
                                  <p className='font-medium mr-4 min-w-[100px]'>
                                     Bank Name
                                  </p>
@@ -1030,8 +1041,8 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                                        ...currentToEdit,
                                        paymentInfo: { ...currentToEdit.paymentInfo, bankName: e.target.value }
                                     })} />
-                              </div>
-                              <div className='flex items-center mb-4'>
+                              </div> */}
+                              {/* <div className='flex items-center mb-4'>
                                  <p className='font-medium mr-4 min-w-[100px] '>
                                     Acc No.
                                  </p>
@@ -1046,8 +1057,8 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                                        ...currentToEdit,
                                        paymentInfo: { ...currentToEdit.paymentInfo, AccNo: e.target.value }
                                     })} />
-                              </div>
-                              <div className='flex items-center'>
+                              </div> */}
+                              {/* <div className='flex items-center'>
                                  <p className='font-medium mr-4 min-w-[100px] '>
                                     IFSC Code
                                  </p>
@@ -1062,7 +1073,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                                        ...currentToEdit,
                                        paymentInfo: { ...currentToEdit.paymentInfo, ifcsCode: e.target.value }
                                     })} />
-                              </div>
+                              </div> */}
                            </div>
                         }
                         {currentField.name === 'tutorRank' &&

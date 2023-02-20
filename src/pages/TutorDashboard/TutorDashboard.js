@@ -60,7 +60,7 @@ const studentsArr = [
 //    },
 // ]
 export default function TutorDashboard() {
-
+   const [profileProgress, setProfileProgress] = useState(0);
    const [fetchUserSessions, fetchUserSessionsResponse] =
       useLazyGetSessionsQuery();
    // const [getUserDetail, userDetailResp] = useLazyGetUserDetailQuery()
@@ -91,16 +91,50 @@ export default function TutorDashboard() {
             setSessions(temp)
          })
    }, [])
-
+   const checkIfFilled = (value) => {
+      let filled = false
+      if (value !== '' && value !== undefined && value !== null) {
+         filled = true
+      }
+      return filled
+   }
    useEffect(() => {
       getUserDetail({ id })
          .then(resp => {
             // console.log(resp.data.data.user.assiginedStudents)
             console.log(resp.data.data);
             const { details } = resp.data.data
-            console.log('tutor details', details);
+            // console.log('tutor details', details);
             if (details !== null || details !== undefined) {
                setTutorRank(details.tutorRank ? details.tutorRank : '-')
+            }
+            if (details !== null) {
+               const { about, address, interest, paymentInfo, videoLink, tagLine, serviceSpecializations } = details
+               let total = 7
+               let filled = 0
+               if (checkIfFilled(about)) {
+                  filled += 1
+               }
+               if (checkIfFilled(tagLine)) {
+                  filled += 1
+               }
+               if (checkIfFilled(address)) {
+                  filled += 1
+               }
+               if (checkIfFilled(paymentInfo)) {
+                  filled += 1
+               }
+               if (serviceSpecializations !== undefined && serviceSpecializations?.length >= 1) {
+                  filled += 1
+               }
+               if (interest !== undefined && interest?.length >= 1) {
+                  filled += 1
+               }
+               if (checkIfFilled(videoLink)) {
+                  filled += 1
+               }
+               let percent = filled * 100 / total
+               setProfileProgress(Math.round(percent))
             }
             let studentsData = []
             const fetch = (cb) => {
@@ -169,6 +203,7 @@ export default function TutorDashboard() {
    // console.log(students);
    // console.log(tutorRank);
    // console.log('allAssignedTests', allAssignedTests);
+   // console.log('prof', profileProgress);
 
    return (
       <div className="lg:ml-pageLeft bg-lightWhite min-h-screen overflow-x-hidden">
@@ -230,8 +265,13 @@ export default function TutorDashboard() {
                         </p>
                         <img src={RightIcon} className='cursor-pointer' onClick={() => navigate('/profile')} />
                      </div>
-                     <p className='text-lg font-semibold px-4 mb-[10px]'>Profile Status</p>
-                     <ProgressBar num={65} />
+                     <div className='px-4 mb-[10px] text-lg font-semibold  flex justify-between'>
+                        <p className=''>Profile Status</p>
+                        <p>
+                           {`${profileProgress}%`}
+                        </p>
+                     </div>
+                     <ProgressBar num={profileProgress} />
                   </div>
 
                   <div className='pl-8 pr-4 mt-8'>
@@ -281,7 +321,7 @@ export default function TutorDashboard() {
                            return (
                               <div className='flex items-center mb-8' key={item._id} >
                                  <div>
-                                   <img src={item.photo} className='w-[62px] h-[62px] rounded-full' /> 
+                                    <img src={item.photo} className='w-[62px] h-[62px] rounded-full' />
                                  </div>
                                  <div className='ml-[21px] mr-[8px] flex-1'>
                                     <p className='font-semibold text-lg mb-1'> {item.testName} </p>
@@ -291,7 +331,7 @@ export default function TutorDashboard() {
                                     </div>
                                  </div>
                                  <button className={`bg-primaryOrange font-semibold text-sm rounded-[6px] px-8 py-3 text-white ${item.status !== 'completed' && item.status !== 'started' ? 'opacity-50 pointer-events-none' : ''}`}
-                                 onClick={()=> navigate(`/assigned-tests/${item.testId}/${item.assignedTestId}/report/${item.studentId}`)} >
+                                    onClick={() => navigate(`/assigned-tests/${item.testId}/${item.assignedTestId}/report/${item.studentId}`)} >
                                     View
                                  </button>
                               </div>
