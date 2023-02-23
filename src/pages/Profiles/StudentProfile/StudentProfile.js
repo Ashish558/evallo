@@ -1,7 +1,15 @@
 import React, { useEffect, useState } from 'react'
-import ProfileCard from '../../../components/ProfileCard/ProfileCard'
 import styles from './style.module.css'
+import { useNavigate, useParams } from 'react-router-dom'
+import axios from 'axios'
+import { useDispatch, useSelector } from 'react-redux'
+import OwlCarousel from "react-owl-carousel";
+
+import ProfileCard from '../../../components/ProfileCard/ProfileCard'
 import EditableText from '../../../components/EditableText/EditableText'
+import SubjectSlider from '../../../components/SubjectSlider/SubjectSlider'
+import ProfilePhoto from '../../../components/ProfilePhoto/ProfilePhoto'
+import ParentEditables from '../../Frames/Editables/ParentEditables/ParentEditables'
 
 import ProfileImg from '../../../assets/images/profile.png'
 import EditIcon from '../../../assets/icons/edit.svg'
@@ -12,20 +20,18 @@ import LeftIcon from '../../../assets/profile/left.svg'
 import ValueOneIcon from '../../../assets/images/val-1.svg'
 import ValueTwoIcon from '../../../assets/images/val-2.svg'
 import ValueThreeIcon from '../../../assets/images/val-3.svg'
-
 import InterestOneIcon from '../../../assets/images/int-1.svg'
 import InterestTwoIcon from '../../../assets/images/int-2.svg'
 import InterestThreeIcon from '../../../assets/images/int-3.svg'
-import SubjectSlider from '../../../components/SubjectSlider/SubjectSlider'
-import { useNavigate, useParams } from 'react-router-dom'
+
 import { useLazyGetUserDetailQuery } from '../../../app/services/users'
-import { useDispatch, useSelector } from 'react-redux'
-import ParentEditables from '../../Frames/Editables/ParentEditables/ParentEditables'
 import { useLazyGetSettingsQuery } from '../../../app/services/session'
-import ProfilePhoto from '../../../components/ProfilePhoto/ProfilePhoto'
-import axios from 'axios'
 import { BASE_URL, getAuthHeader } from '../../../app/constants/constants'
 import { updateTimeZone } from '../../../app/slices/user'
+
+import "owl.carousel/dist/assets/owl.carousel.css";
+import "owl.carousel/dist/assets/owl.theme.default.css"
+
 const students = [
    {
       id: 1,
@@ -434,7 +440,7 @@ export default function StudentProfile({ isOwn }) {
                         <button className='absolute bg-[#D9BBFF] px-[14px] py-[8px] rounded-[8px] text-[#636363] text-[18px] font-medium top-[16px] left-[22px] flex gap-[12px] cursor-pointer flex justify-center items-center' onClick={() => window.history.back()}><img src={LeftIcon} alt="icon" /> Back</button>
                         :
                         <></>
-                        }
+                     }
                      <ProfilePhoto src={user.photo ? user.photo : '/images/default.jpeg'}
                         handleChange={handleProfilePhotoChange} editable={editable} />
                      <div className='flex items-center mt-67 lg:mt-4 text-[#F3F5F7]'>
@@ -653,24 +659,47 @@ export default function StudentProfile({ isOwn }) {
                         className='mt-53 lg:mt-0'
                         body={
                            <>
-                              <SubjectSlider
-                                 score={userDetail.satScores ?
-                                    { verbal: userDetail.satScores.verbal, maths: userDetail.satScores.maths } : {}
-                                 }
-                                 totalMarks={
-                                    userDetail.satScores ?
-                                       getSatMarks() : '-'
-                                 }
-                                 outOf={'1600'}
-                                 isSat={true}
-                                 header={
-                                    <EditableText editable={editable}
-                                       onClick={() => setToEdit({ ...toEdit, satScores: { ...toEdit.satScores, active: true } })}
-                                       text='Official SAT Scores'
-                                       className='text-lg mb-2' textClassName="flex-1 text-center text-[21px]" />
-                                 }
-                                 subjects={subjects1} title='Composite Score'
-                              />
+                              <OwlCarousel className={`owl-carousel owl-theme ${styles.scoreCarousel}`}  margin={30} items={1}>
+                                 <SubjectSlider
+                                    score={userDetail.satScores ?
+                                       { verbal: userDetail.satScores.verbal, maths: userDetail.satScores.maths } : {}
+                                    }
+                                    totalMarks={
+                                       userDetail.satScores ?
+                                          getSatMarks() : '-'
+                                    }
+                                    outOf={'1600'}
+                                    isSat={true}
+                                    header={
+                                       <EditableText editable={editable}
+                                          onClick={() => setToEdit({ ...toEdit, satScores: { ...toEdit.satScores, active: true } })}
+                                          text='Official SAT Scores'
+                                          className='text-lg mb-2' 
+                                          imgClass={styles.editIcon}
+                                          textClassName="flex-1 text-center text-[21px]" />
+                                    }
+                                    subjects={subjects1} title='Composite Score'
+                                 />
+                                 <SubjectSlider
+                                    score={userDetail.satScores ?
+                                       { verbal: userDetail.satScores.verbal, maths: userDetail.satScores.maths } : {}
+                                    }
+                                    totalMarks={
+                                       userDetail.satScores ?
+                                          getSatMarks() : '-'
+                                    }
+                                    outOf={'1600'}
+                                    isSat={true}
+                                    header={
+                                       <EditableText editable={editable}
+                                          onClick={() => setToEdit({ ...toEdit, satScores: { ...toEdit.satScores, active: true } })}
+                                          text='Official SAT Scores'
+                                          imgClass={styles.editIcon}
+                                          className='text-lg mb-2' textClassName="flex-1 text-center text-[21px]" />
+                                    }
+                                    subjects={subjects1} title='Composite Score'
+                                 />
+                              </OwlCarousel>
                            </>
                         } />
                      <ProfileCard

@@ -1,9 +1,7 @@
 .profileCard {
-    background-image: linear-gradient(
-        94.33deg,
-        #7152eb 10.45%,
-        rgba(247, 125, 86, 0.99) 84.22%
-    );
+    background-image: linear-gradient(94.33deg,
+            #7152eb 10.45%,
+            rgba(247, 125, 86, 0.99) 84.22%);
     padding-top: 139px;
 }
 
@@ -13,14 +11,17 @@
     transform: translate(-50%, -50%);
     display: flex;
 }
+
+.editIcon {
+    width: auto !important;
+}
+
 @media only screen and (min-width: 1024px) {
     .profileCard {
         border-radius: 20px;
-        background-image: linear-gradient(
-            94.33deg,
-            #7152eb 10.45%,
-            rgba(247, 125, 86, 0.99) 84.22%
-        );
+        background-image: linear-gradient(94.33deg,
+                #7152eb 10.45%,
+                rgba(247, 125, 86, 0.99) 84.22%);
     }
 
     .imgContainer {

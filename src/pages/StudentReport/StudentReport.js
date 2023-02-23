@@ -186,7 +186,7 @@ export default function StudentReport() {
             let upSubArr = []
             updated2.forEach(responseSub => {
                updated.forEach(sub => {
-                  if (responseSub.name === sub.name){
+                  if (responseSub.name === sub.name) {
                      upSubArr.push(sub)
                   }
                })
@@ -397,32 +397,52 @@ export default function StudentReport() {
 
    //change time taken series data
    useEffect(() => {
+      const oddcolors = ['#8ADCFF', '#FF4D00']
+      const evencolors = ['#8E76ED', '#E02B1D']
       if (Object.keys(selectedSubject).length === 0) return
       const selected = responseData.response[selectedSubject.idx]
       // console.log('timetaken', selected)
       let data = []
-      selected.map(subj => {
+      let colors = []
+      selected.map((subj, idx) => {
          if (subj.responseTime) {
+            if (subj.isCorrect) {
+               (idx % 2 === 0) ? colors.push(evencolors[0]) : colors.push(oddcolors[0])
+            } else {
+               (idx % 2 === 0) ? colors.push(evencolors[1]) : colors.push(oddcolors[1])
+            }
             data.push(subj.responseTime)
          } else {
+            if (subj.isCorrect) {
+               (idx % 2 === 0) ? colors.push(evencolors[0]) : colors.push(oddcolors[0])
+            } else {
+               (idx % 2 === 0) ? colors.push(evencolors[1]) : colors.push(oddcolors[1])
+            }
             data.push(0)
          }
       })
       // console.log('data', data);
+      // console.log('colors', colors);
       // console.log('length', Math.ceil(data.length / 5));
-      const len = Math.round(data.length / 5)
+      const len = Math.round(data.length / 1)
       let groups = []
       {
          [...Array(len)].map((x, i) => {
-            groups.push({ title: (i + 1) * 5, cols: 5 })
+            groups.push({ title: (i + 1) * 1, cols: 1 })
          })
       }
-      // console.log('groups', groups);
+      // groups = groups.map(item => {
+      //    return item.title % 5 === 0 ? item.title : '-'
+      // })
+      console.log('groups', groups);
       // console.log('timeSeriesOptions', timeSeriesOptions);
       setTimeSeriesOptions(prev => ({
          ...prev,
+         colors,
          xaxis: {
             ...prev.xaxis,
+            // tickAmount: 'dataPoints',
+            range: 5,
             group: {
                ...prev.xaxis.group,
                groups
@@ -678,7 +698,7 @@ export default function StudentReport() {
                      <span className='inline-block mr-4'>:</span>
                      <p className='inline-block w-138 font-semibold'> {testDetails.duration} </p>
                   </div>
-                  <div  className='col-span-2'>
+                  <div className='col-span-2'>
                      <p className='inline-block w-138 font-semibold opacity-60'> Instruction from tutor </p>
                      <span className='inline-block mr-4'>:</span>
                      <p className='inline-block w-138 font-semibold'> {testDetails.instruction} </p>
@@ -719,7 +739,7 @@ export default function StudentReport() {
                            //    </> :
                            selectedSubject.concepts ?
                               Object.keys(selectedSubject.concepts).map((key, idx) => {
-                                 return  idx < 5 ? <p key={idx} className='font-semibold mb-2'>
+                                 return idx < 5 ? <p key={idx} className='font-semibold mb-2'>
                                     {/* {selectedSubject.concepts[key]} */}
                                     {key}
                                  </p> : <></>
@@ -737,7 +757,7 @@ export default function StudentReport() {
                            //    </> :
                            selectedSubject.concepts ?
                               Object.keys(selectedSubject.concepts).map((key, idx) => {
-                                 return  idx < 5 ? <p key={idx} className='font-semibold mb-2'>
+                                 return idx < 5 ? <p key={idx} className='font-semibold mb-2'>
                                     {/* correct {selectedSubject.concepts[key]} */}
                                     {getConceptScore(selectedSubject.concepts[key], key)}
                                  </p> : <></>

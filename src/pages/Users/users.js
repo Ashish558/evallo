@@ -79,7 +79,7 @@ export default function Users() {
    const [signupUser, signupUserResp] = useSignupUserMutation();
    const [deleteUser, deleteUserResp] = useDeleteUserMutation();
 
-   const [maxPageSize, setMaxPageSize] = useState(10)
+   const [maxPageSize, setMaxPageSize] = useState(15)
    const [loading, setLoading] = useState(false)
 
    const [totalPages, setTotalPages] = useState(0)
