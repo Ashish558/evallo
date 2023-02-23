@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import PrimaryButton from '../../../components/Buttons/PrimaryButton'
 import Modal from '../../../components/Modal/Modal'
 
-export default function CurrentSection({ answers, submitSection }) {
+export default function CurrentSection({ answers, submitSection, submitBtnLoading }) {
 
    const [details, setDetails] = useState(answers)
    const [totalQues, setTotalQues] = useState(0)
@@ -50,7 +50,8 @@ export default function CurrentSection({ answers, submitSection }) {
             primaryBtn={{
                onClick: submitSection,
                text: "Submit",
-               className: "bg-primaryDark"
+               className: "bg-primaryDark",
+               loading: submitBtnLoading
             }} />}
 
       </div>

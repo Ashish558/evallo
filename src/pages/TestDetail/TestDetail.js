@@ -48,6 +48,7 @@ const initialState = {
    correctAnswer: '',
    concept: '',
    strategy: '',
+   AnswerChoices: '',
 }
 export default function TestDetail() {
    const [testData, setTestData] = useState([]);
@@ -61,6 +62,7 @@ export default function TestDetail() {
    const [questionToEdit, setQuestionToEdit] = useState({})
    const [pdfBtnDisabled, setPdfBtnDisabled] = useState(false)
    const [pdfModalActive, setPdfModalActive] = useState(false)
+   const [editLoading, setEditLoading] = useState(false)
 
    useEffect(() => {
       if (modalData.email === '' || modalData.firstName === '' || modalData.lastName === '' || modalData.userType === '') {
@@ -90,13 +92,13 @@ export default function TestDetail() {
             setPdfBtnDisabled(false)
             alert('PDF file uploaded successfully!')
             console.log('pdf post resp', res);
-            setPdfModalActive(false) 
+            setPdfModalActive(false)
             fetchData()
          }).catch(err => {
             setPdfBtnDisabled(false)
             console.log('pdf err', err.response);
             alert('Could not upload pdf')
-            setPdfModalActive(false) 
+            setPdfModalActive(false)
             fetchData()
          })
    };
@@ -169,8 +171,8 @@ export default function TestDetail() {
 
    const handleSubmit = (e) => {
       e.preventDefault()
-      console.log('modalData', modalData);
-      console.log('questionToEdit', questionToEdit);
+      // console.log('modalData', modalData);
+      // console.log('questionToEdit', questionToEdit);
       const selectedSub = subjects.find(sub => sub.selected === true)
       const body = {
          subject: selectedSub.name,
@@ -180,12 +182,14 @@ export default function TestDetail() {
             Concepts: modalData.concept,
             QuestionType: modalData.questionType,
             Strategies: modalData.strategy,
-            AnswerChoices: "A,B,C,D",
+            AnswerChoices: modalData.AnswerChoices,
          }
       }
-      console.log(body);
+      console.log('body', body);
+      setEditLoading(true)
       editQuestion({ id, reqbody: body })
          .then(res => {
+            setEditLoading(false)
             setModalData(initialState)
             setModalActive(false)
             if (res.error) return console.log('edit err', res.error);
@@ -195,8 +199,8 @@ export default function TestDetail() {
 
    }
    const handleEditTestClick = (item) => {
-      console.log('modalData', modalData);
-      console.log('item', item);
+      // console.log('modalData', modalData);
+      // console.log('item', item);
       setModalData(prev => {
          return {
             ...prev,
@@ -204,14 +208,15 @@ export default function TestDetail() {
             correctAnswer: item.CorrectAnswer ? item.CorrectAnswer : '',
             concept: item.Concepts ? item.Concepts : '',
             strategy: item.Strategies !== '-' ? item.Strategies : '',
-            questionType: item.QuestionType
+            questionType: item.QuestionType,
+            AnswerChoices: item.AnswerChoices,
          }
       })
       setModalActive(true)
       setQuestionToEdit(item)
    }
    // console.log('sectionsData', sectionsData);
-   console.log('questionsTable', questionsTable);
+   // console.log('questionsTable', questionsTable);
 
    return (
       <>
@@ -358,13 +363,14 @@ export default function TestDetail() {
                   form: 'add-user-form',
                   // onClick: handleSubmit,
                   type: 'submit',
-                  disabled: btnDisabled
+                  disabled: btnDisabled,
+                  loading: editLoading
                }}
                handleClose={() => { setModalActive(false); setModalData(initialState) }}
                body={
                   <form id='add-user-form' onSubmit={handleSubmit} className='px-[3px] mb-0.5' >
                      <div className='grid grid-cols-1 md:grid-cols-2  gap-x-2 md:gap-x-3 gap-y-3 gap-y-4 mb-5'>
-                     <div>
+                        <div>
                            <InputField label='Question No.'
                               labelClassname='ml-4 mb-0.5'
                               isRequired={false}
@@ -374,8 +380,8 @@ export default function TestDetail() {
                               parentClassName='w-full' type='text'
                               value={modalData.QuestionNumber}
                               disabled={true}
-                              onChange={e => e.target.value }
-                               />
+                              onChange={e => e.target.value}
+                           />
                         </div>
                         <div>
                            <InputSelect label='Question Type'
@@ -422,6 +428,17 @@ export default function TestDetail() {
                               value={modalData.strategy}
                               onChange={e => setModalData({ ...modalData, strategy: e.target.value })} />
                         </div>
+                        <div>
+                           <InputField label='Answer Choices'
+                              labelClassname='ml-4 mb-0.5'
+                              // isRequired={true}
+                              placeholder='Answer Choices'
+                              inputContainerClassName='text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0'
+                              inputClassName='bg-transparent'
+                              parentClassName='w-full' type='text'
+                              value={modalData.AnswerChoices}
+                              onChange={e => setModalData({ ...modalData, AnswerChoices: e.target.value })} />
+                        </div>
                      </div>
                   </form>
                }
@@ -443,7 +460,7 @@ export default function TestDetail() {
                   type: 'submit',
                   disabled: pdfBtnDisabled
                }}
-               handleClose={() => setPdfModalActive(false) }
+               handleClose={() => setPdfModalActive(false)}
                body={
                   <div className="py-4">
                      <input ref={PdfRef}

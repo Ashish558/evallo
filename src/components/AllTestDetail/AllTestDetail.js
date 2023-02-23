@@ -1,7 +1,7 @@
 import React from 'react'
 
 export default function AllTestDetail({ testData }) {
-   console.log(testData);
+   // console.log(testData);
 
    return (
       <div className="grid max-w-840 gap-y-2 mt-2">

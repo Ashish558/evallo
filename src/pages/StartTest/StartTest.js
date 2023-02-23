@@ -53,6 +53,8 @@ export default function StartTest() {
    const [answers, setAnswers] = useState([])
    const [submitId, setSubmitId] = useState('')
    const [completedSubjects, setCompletedSubjects] = useState([])
+   const [startBtnLoading, setStartBtnLoading] = useState(false)
+   const [submitBtnLoading, setSubmitBtnLoading] = useState(false)
 
    const { id, assignedTestId } = useParams()
 
@@ -100,8 +102,10 @@ export default function StartTest() {
 
    const handleStartTest = () => {
       if (!activeSection) return
+      setStartBtnLoading(true)
       startTest({ id: assignedTestId, reqbody: { sectionName: activeSection.name } })
          .then(res => {
+            setStartBtnLoading(false)
             if (res.error) {
                console.log(res.error)
                alert('error starting test')
@@ -375,8 +379,10 @@ export default function StartTest() {
       }
       console.log(body);
       // return
+      setSubmitBtnLoading(true)
       submitSection(body)
          .then(res => {
+            setSubmitBtnLoading(false)
             if (res.error) {
                return console.log(res.error)
             }
@@ -524,7 +530,7 @@ export default function StartTest() {
                            </div>
                         </div>
                      }
-''
+                     ''
 
                      {testStarted &&
                         <div className='mt-[15px] overflow-auto' style={{ maxHeight: 'calc(100vh - 240px)' }}>
@@ -565,19 +571,20 @@ export default function StartTest() {
                      />
                   }
                   {
-                     testStarted && <CurrentSection answers={answers} submitSection={handleSubmitSection} />
+                     testStarted && <CurrentSection answers={answers} submitSection={handleSubmitSection}
+                     submitBtnLoading={submitBtnLoading} />
                   }
                </div>
             </div>
 
          </div>
 
-         {popUp && <Modal 
+         {popUp && <Modal
             classname="w-1/2 mx-auto"
             title="Are you sure you want to start the section?"
             titleClassName='mr-4  mb-4'
             primaryBtn={
-               {text: "Start", className: "bg-primaryDark ml-0", onClick: handleStartTest}
+               { text: "Start", className: "bg-primaryDark ml-0", onClick: handleStartTest, loading: startBtnLoading }
             }
             handleClose={() => setPopUp(false)}
          />}
