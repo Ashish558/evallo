@@ -61,6 +61,9 @@ export default function AssignedTests() {
    const [tableData, setTableData] = useState([])
    const [tableHeaders, setTableHeaders] = useState([])
 
+   const [testNameOptions, setTestNameOptions] = useState([])
+   const [studentNameOptions, setStudentNameOptions] = useState([])
+
    const [assignTestModalActive, setAssignTestModalActive] = useState(false);
    const [resendModalActive, setResendModalActive] = useState(false);
    const [deleteModalActive, setDeleteModalActive] = useState(false)
@@ -267,7 +270,7 @@ export default function AssignedTests() {
       }
       assignTest(body)
          .then(res => {
-            if(res.error){
+            if (res.error) {
                return alert('Something went wrong')
             }
             alert('Assignment Resent')
@@ -382,7 +385,7 @@ export default function AssignedTests() {
             setDeleteLoading(false)
             if (res.error) {
                console.log('delete err', res.error.data)
-               if(res.error.data.message){
+               if (res.error.data.message) {
                   alert(res?.error?.data?.message)
                   setDeleteModalActive(false)
                }
@@ -416,6 +419,22 @@ export default function AssignedTests() {
       },
    ]
 
+   useEffect(() => {
+      if (!allAssignedTests) return
+      let testNames = []
+      let studentNames = []
+      allAssignedTests.forEach(item => {
+         if (!testNames.includes(item.testName)) {
+            testNames.push(item.testName)
+         }
+         if (!studentNames.includes(item.studentName)) {
+            studentNames.push(item.studentName)
+         }
+      })
+      setTestNameOptions(testNames)
+      setStudentNameOptions(studentNames)
+   }, [allAssignedTests])
+   
    // console.log('filteredTests', filteredTests);
    return (
       <>
@@ -428,17 +447,16 @@ export default function AssignedTests() {
                      Assigned Tests
                   </p> : <></>}
 
-                  <InputField
+                   <InputSelect
                      value={filterData.studentName}
-                     IconRight={SearchIcon}
-                     onChange={e => setFilterData({ ...filterData, studentName: e.target.value })}
-                     optionData={optionData}
-                     placeholder="Student Name"
+                     onChange={val => setFilterData({ ...filterData, studentName: val })}
+                     optionData={studentNameOptions}
                      inputContainerClassName="px-[20px] py-[16px] bg-white"
+                     placeholder="Student Name"
                      parentClassName="w-full text-sm"
-                     type="text"
+                     type="select"
                   />
-                  <InputField
+                  {/* <InputField
                      value={filterData.testName}
                      IconRight={SearchIcon}
                      onChange={e => setFilterData({ ...filterData, testName: e.target.value })}
@@ -447,6 +465,15 @@ export default function AssignedTests() {
                      inputContainerClassName="px-[20px] py-[16px] bg-white"
                      parentClassName="w-full text-sm"
                      type="text"
+                  /> */}
+                  <InputSelect
+                     value={filterData.testName}
+                     onChange={val => setFilterData({ ...filterData, testName: val })}
+                     optionData={testNameOptions}
+                     inputContainerClassName="px-[20px] py-[16px] bg-white"
+                     placeholder="Test Name"
+                     parentClassName="w-full text-sm"
+                     type="select"
                   />
                   <InputField
                      value={filterData.tutor}
@@ -478,7 +505,7 @@ export default function AssignedTests() {
                   </button>
 
                </div>
-               
+
                <div className='mt-4' >
                   <FilterItems items={filterItems} setData={setFilterItems} onRemoveFilter={onRemoveFilter} />
                </div>
