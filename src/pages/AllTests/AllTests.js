@@ -20,7 +20,7 @@ import { useSelector } from "react-redux";
 
 const optionData = ["option 1", "option 2", "option 3", "option 4", "option 5"];
 const testTypeOptions = ["SAT", "Other"];
-const tableHeaders = ["Test Name", "Test Type", "Created On", "Date Modified", "", ""];
+const tableHeaders = ["Test Name", "Test Type", "Created On", "Last Modified", "Total Assignments" , "", ""];
 
 const initialState = {
    testName: "",
@@ -185,7 +185,7 @@ export default function AllTests() {
 
    // console.log(testName);
    // console.log(tableData);
-   // console.log(filteredTests);
+   console.log('filteredTests', filteredTests);
 
    const fetchTests = () => {
       axios

@@ -474,6 +474,7 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch }) {
                <td>{item.testType}</td>
                <td>{item.createdAt.split("T")[0]}</td>
                <td>{item.updatedAt.split("T")[0]}</td>
+               <td> {item.no_of_assign ? item.no_of_assign : '-'} </td>
                <td className="font-medium px-1 py-4 text-right w-240">
                   <div className="flex justify-end">
                      <button
