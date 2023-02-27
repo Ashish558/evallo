@@ -106,7 +106,7 @@ export default function TestDetail() {
    const fetchData = () => {
       axios.get(`${BASE_URL}api/test/${id}`)
          .then((res) => {
-            // console.log(res.data.data);
+            console.log('test data' ,res.data.data);
             setTestData(res.data.data.test);
          });
       fetchSections({ id })

@@ -434,7 +434,7 @@ export default function StudentReport() {
       // groups = groups.map(item => {
       //    return item.title % 5 === 0 ? item.title : '-'
       // })
-      console.log('groups', groups);
+      // console.log('groups', groups);
       // console.log('timeSeriesOptions', timeSeriesOptions);
       setTimeSeriesOptions(prev => ({
          ...prev,
@@ -701,7 +701,7 @@ export default function StudentReport() {
                   <div className='col-span-2'>
                      <p className='inline-block w-138 font-semibold opacity-60'> Instruction from tutor </p>
                      <span className='inline-block mr-4'>:</span>
-                     <p className='inline-block w-138 font-semibold'> {testDetails.instruction} </p>
+                     <p className='inline-block w138 font-semibold'> {testDetails.instruction} </p>
                   </div>
                </div>
 

@@ -13,7 +13,7 @@ import upload from "./../../assets/icons/upload.png";
 import Papa from "papaparse";
 import axios from "axios";
 import { useAddPdfMutation, useAddTestMutation } from "../../app/services/test";
-import { BASE_URL } from "../../app/constants/constants";
+import { BASE_URL, getAuthHeader } from "../../app/constants/constants";
 import StudentTest from "../StudentTest/StudentTest";
 import FilterItems from "../../components/FilterItems/filterItems";
 import { useSelector } from "react-redux";
@@ -143,7 +143,7 @@ export default function AllTests() {
          if (csvFile !== null) {
             const formData = new FormData();
             formData.append("file", csvFile);
-            await axios.post(`${BASE_URL}api/test/addans/${testId}`, formData)
+            await axios.post(`${BASE_URL}api/test/addans/${testId}`, formData, {headers: getAuthHeader()} )
                .then((res) => {
                   alert('CSV UPLOADED')
                   console.log('csv post resp', res);
@@ -185,7 +185,7 @@ export default function AllTests() {
 
    // console.log(testName);
    // console.log(tableData);
-   console.log('filteredTests', filteredTests);
+   // console.log('filteredTests', filteredTests);
 
    const fetchTests = () => {
       axios

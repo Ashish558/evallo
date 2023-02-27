@@ -94,7 +94,7 @@ export default function Calendar() {
    const calendarRef = useRef(null);
    // console.log(calendarRef.current)
    const [events, setEvents] = useState([]);
-
+   const [filteredEvents, setFilteredEvents] = useState([])
    const { role: persona } = useSelector(state => state.user)
 
    // const [timeZones, setTimeZones] = useState(temptimeZones)
@@ -313,7 +313,8 @@ export default function Calendar() {
                      .then(res => {
                         setStudents(prev => [...prev, {
                            _id: res.data.data.user._id,
-                           studentName: `${res.data.data.user.firstName} ${res.data.data.user.lastName}`
+                           studentName: `${res.data.data.user.firstName} ${res.data.data.user.lastName}`,
+                           selected: true
                         }])
 
                      })
@@ -417,7 +418,8 @@ export default function Calendar() {
                               updatedDateEnd: endDateUtc,
                               description: `${strtTime12HFormat} - ${endTime12HFormat}`,
                               sessionStatus: session.sessionStatus,
-                              background: getBackground(resp.data.data.user.assiginedStudents.length, idx)
+                              studentId: session.studentId,
+                              background: getBackground(resp.data.data.user.assiginedStudents.length, idx),
                            };
                            return eventObj;
                         });
@@ -654,6 +656,7 @@ export default function Calendar() {
                   updatedDate: startUtc,
                   updatedDateEnd: endDateUtc,
                   sessionStatus: session.sessionStatus,
+                  studentId: session.studentId,
                   description: `${strtTime12HFormat} - ${endTime12HFormat}`,
                };
                return eventObj;
@@ -681,8 +684,9 @@ export default function Calendar() {
 
             let tempstudents = arrayUniqueByKey.map((item) => {
                return {
-                  studentId: item.studentId,
+                  _id: item.studentId,
                   studentName: item.studentName,
+                  selected: true
                };
             });
             setStudents(tempstudents);
@@ -748,7 +752,7 @@ export default function Calendar() {
 
    useEffect(() => {
       getUserDetail({ id: localStorage.getItem("userId") })
-      .then(res => setTimeZone(res.data.data.userdetails.timeZone))
+         .then(res => setTimeZone(res.data.data.userdetails.timeZone))
    }, [])
 
    useEffect(() => {
@@ -769,8 +773,30 @@ export default function Calendar() {
       }
    }, [persona, id])
 
+   const handleStudentChange = student => {
+      let tempStudents = students.map(item => {
+         if (item._id === student._id) {
+            return { ...item, selected: true }
+         } else {
+            return { ...item, selected: false }
+         }
+      })
+      setStudents(tempStudents)
+   }
+
+   useEffect(() => {
+      if (students.length === 0) return
+      if (events.length === 0) return
+      let selectedStudents = students.filter(item => item.selected === true).map(item => item._id)
+      let filtered = events.filter(event => selectedStudents.includes(event.studentId))
+      // console.log('filtered', filtered);
+      setFilteredEvents(filtered)
+   }, [events, students])
+
+   // console.log('filteredEvents', filteredEvents);
    // console.log('events', events);
    // console.log('eventDetails', eventDetails);
+   // console.log('students', students);
 
    return (
       <>
@@ -791,9 +817,10 @@ export default function Calendar() {
                               return (
                                  <div
                                     key={student.studentId}
-                                    className="p-4 mb-4 rounded-10 flex justify-between items-center border bg-white"
+                                    className={`p-4 mb-4 rounded-10 flex justify-between items-center  bg-white ${student.selected ? 'border border-[#c6c6c6] shadow-md' : 'border'} `}
+                                    onClick={() => handleStudentChange(student)}
                                  >
-                                    <p className="font-medium">
+                                    <p className={` ${student.selected ? 'font-medium' : '' } `}>
                                        {student.studentName}
                                     </p>
                                     <div
@@ -832,7 +859,7 @@ export default function Calendar() {
                </div>
                <div className="flex-1 w-4/5 relative" id="calendarContainer">
                   <FullCalendar
-                     events={events}
+                     events={persona === 'parent' || persona === 'tutor' ? filteredEvents : events}
                      // timeZone='UTC'
                      // timeZone={timeZone === getLocalTimeZone() ? 'local' : timeZone}
                      // timeZone={timeZone === 'IST' ? 'local' : timeZone }
