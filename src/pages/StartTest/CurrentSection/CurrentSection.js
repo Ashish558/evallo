@@ -46,7 +46,7 @@ export default function CurrentSection({ answers, submitSection, submitBtnLoadin
          {popUp && <Modal
             classname="w-1/2 mx-auto"
             handleClose={() => setPopUp(false)}
-            title="Are you sure, you want to Submit the Section?"
+            title="Are you sure you want to Submit the Section?"
             primaryBtn={{
                onClick: submitSection,
                text: "Submit",

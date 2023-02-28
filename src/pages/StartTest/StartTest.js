@@ -530,7 +530,6 @@ export default function StartTest() {
                            </div>
                         </div>
                      }
-                     ''
 
                      {testStarted &&
                         <div className='mt-[15px] overflow-auto' style={{ maxHeight: 'calc(100vh - 240px)' }}>
