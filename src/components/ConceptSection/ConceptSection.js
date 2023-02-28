@@ -25,6 +25,8 @@ const initData = [
 const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
 
    const [tutors, setTutors] = useState([])
+   const [filteredTutors, setFilteredTutors] = useState([])
+
    const tutorCarouselRef = useRef()
    const { id } = useSelector(state => state.user)
    const [sub, setSub] = useState('Math')
@@ -110,27 +112,41 @@ const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
       getUserDetail({ id })
          .then(res => {
             // console.log('details -- ', res.data.data.userdetails);
-            let { industry, residentialAddress, timeZone, birthyear,} = res.data.data.userdetails
+            let { industry, residentialAddress, timeZone, birthyear, } = res.data.data.userdetails
             let total = 4
             let filled = 0
             if (checkIfFilled(birthyear)) {
                filled += 1
-            } 
-             if (checkIfFilled(industry)) {
-               filled += 1
-            } 
-             if (checkIfFilled(residentialAddress)) {
-               filled += 1
-            } 
-             if (checkIfFilled(timeZone)) {
+            }
+            if (checkIfFilled(industry)) {
                filled += 1
             }
-            let percent = filled*100/total
+            if (checkIfFilled(residentialAddress)) {
+               filled += 1
+            }
+            if (checkIfFilled(timeZone)) {
+               filled += 1
+            }
+            let percent = filled * 100 / total
             // console.log('filled', Math.round(percent));
             setProfileProgress(`${Math.round(percent)}%`)
          })
    }, [id])
 
+   useEffect(() => {
+      if (selectedStudent === null) return
+      if (tutors.length === 0) return
+      // console.log('tutors', tutors);
+      let filtered = tutors.filter(tutor => tutor.assiginedStudents?.includes(selectedStudent._id))
+      setFilteredTutors([])
+      setTimeout(() => {
+         setFilteredTutors(filtered)
+      }, 0);
+      // tutorCarouselRef.current.trigger('refresh.owl.carousel'); 
+   }, [selectedStudent, tutors])
+   
+   // console.log('filteredTutors', filteredTutors);
+   // console.log('tutorCarouselRef', tutorCarouselRef.current);
 
    return (
       <div
@@ -163,10 +179,10 @@ const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
 
                <div id={styles.tutor}>
                   <h2>Your Tutor</h2>
-                  {tutors.length >= 1 ?
+                  {filteredTutors.length >= 1 ?
                      <OwlCarousel ref={tutorCarouselRef} className="owl-theme" loop margin={8} items={1}>
                         {
-                           tutors.map((tutor, idx) => {
+                           filteredTutors.map((tutor, idx) => {
                               return (
                                  <div key={idx} className="item flex" style={{ width: "100%" }}>
                                     <div className="w-3/5 flex justify-center flex-col">
@@ -207,7 +223,7 @@ const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
                <h2 className="text-[18px] font-medium">Profile Status</h2>
                <h2 className="text-[18px] font-medium">
                   {profileProgress}
-                  </h2>
+               </h2>
             </div>
             <div className="w-full bg-[#D9D9D9] h-[9px] rounded-full mt-[10px] overflow-auto">
                <div className="rounded-full" style={{ width: profileProgress, height: "100%", background: "#62DD43" }}></div>
