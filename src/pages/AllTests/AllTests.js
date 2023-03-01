@@ -114,6 +114,7 @@ export default function AllTests() {
          // console.log(res);
          if (res.error) {
             alert(res.error.data.message);
+            setLoading(false)
             return;
          }
          let testId = res.data.data.test._id;
