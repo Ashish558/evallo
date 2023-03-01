@@ -96,6 +96,7 @@ export default function Settings() {
    const [addCodeModalActive, setAddCodeModalActive] = useState(false)
    const [subModalData, setSubModalData] = useState(subModalInitialState)
    const [addTestModalActive, setAddTestModalActive] = useState(false)
+   const [saveLoading, setSaveLoading] = useState(false)
    const [selectedSubscriptionData, setSelectedSubscriptionData] = useState({
       code: '',
       expiry: '',
@@ -245,10 +246,15 @@ export default function Settings() {
    }
 
    const updateAndFetchsettings = updatedSetting => {
+      setSaveLoading(true)
       updateSetting(updatedSetting)
          .then(res => {
+            setSaveLoading(false)
             // console.log('updated', res.data);
             setSettingsData(res.data.data.setting)
+         }).catch(err => {
+            setSaveLoading(false)
+            console.log('err', err);
          })
    }
 
@@ -277,9 +283,10 @@ export default function Settings() {
          formData.delete('image')
       }
 
-      console.log(append)
+      // console.log(append)
 
       if (append === '') return
+      setSaveLoading(true)
       axios.patch(`${BASE_URL}api/user/setting/${append}`, formData, { headers: getAuthHeader() })
          .then((res) => {
             console.log(res)
@@ -289,6 +296,11 @@ export default function Settings() {
             setImageName('')
             setTagModalActive(false)
             fetchSettings()
+            setSaveLoading(false)
+         }).catch(err => {
+            console.log('err', err);
+            alert("Could not upload image")
+            setSaveLoading(false)
          })
    }
 
@@ -904,6 +916,7 @@ export default function Settings() {
                   className: 'w-140 pl-3 pr-3 ml-0 my-4',
                   form: 'settings-form',
                   type: 'submit',
+                  loading: saveLoading
                }}
                handleClose={() => { setAddCodeModalActive(false); setSubModalData(subModalInitialState) }}
                body={
@@ -949,6 +962,7 @@ export default function Settings() {
                   className: 'w-140 pl-3 pr-3 ml-0 my-4',
                   form: 'settings-form',
                   type: 'submit',
+                  loading: saveLoading
                }}
                handleClose={() => { setAddTestModalActive(false) }}
                body={
@@ -997,6 +1011,7 @@ export default function Settings() {
                   className: `w-140 ml-0 bg-primaryOrange mt-2 ${tagText.trim().length < 1 || tagImage === null ? 'pointer-events-none opacity-60' : ''} `,
                   form: 'settings-form',
                   type: 'submit',
+                  loading: saveLoading
                }}
                handleClose={() => setTagModalActive(false)}
                body={
