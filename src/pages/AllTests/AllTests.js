@@ -125,7 +125,7 @@ export default function AllTests() {
             await axios
                .post(
                   `${BASE_URL}api/test/addpdf/${testId}`,
-                  formData
+                  formData, {headers: getAuthHeader()}
                )
                .then((res) => {
                   console.log('pdf post resp', res);

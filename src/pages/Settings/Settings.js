@@ -287,7 +287,8 @@ export default function Settings() {
 
       if (append === '') return
       setSaveLoading(true)
-      axios.patch(`${BASE_URL}api/user/setting/${append}`, formData, { headers: getAuthHeader() })
+      axios.patch(`${BASE_URL}api/user/setting/${append}`, formData, { headers: getAuthHeader(),maxBodyLength: Infinity,
+         maxContentLength: Infinity, })
          .then((res) => {
             console.log(res)
             setTagImage(null)
