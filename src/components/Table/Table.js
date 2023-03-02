@@ -3,6 +3,7 @@ import ReactPaginate from "react-paginate";
 import ApiTable from "./ApiTAble";
 import Pagination from "./Pagination";
 import { TableHeader } from "./TableHeader";
+import { TableHeaderNew } from "./tableHeaderObj";
 import TableItem from "./tableItem";
 
 export default function Table(props) {
@@ -16,7 +17,8 @@ export default function Table(props) {
       setMaxPageSize,
       excludes,
       total_pages,
-      isCallingApi
+      isCallingApi,
+      headerObject
    } = props
 
    const [tableData, setTableData] = useState(data);
@@ -64,14 +66,14 @@ export default function Table(props) {
             <thead className="pb-2">
                <tr>
                   {tableHeaders.map((item, idx) => {
-                     return <TableHeader key={idx} header={item} onClick={sorting} setSorted={setSorted} dataFor={dataFor} />;
+                     return headerObject === true ? <TableHeaderNew header={item} /> : <TableHeader key={idx} header={item} onClick={sorting} setSorted={setSorted} dataFor={dataFor} />;
                   })}
                </tr>
             </thead>
             <tbody>
                {/* {dataFor === "invoice" ? sorted ? tableData.sort((a, b) => a.createDate?.split("-").join("") - b.createDate?.split("-").join("")).map((item, idx) => { */}
-                  {/* return ( */}
-                  {tableData.map((item, idx) => {
+               {/* return ( */}
+               {tableData.map((item, idx) => {
                   return (
                      <TableItem
                         dataFor={dataFor}
@@ -82,7 +84,7 @@ export default function Table(props) {
                      />
                   );
                })}
-                {/*}  );
+               {/*}  );
                 }) : tableData.sort((a, b) => b.assignedOn?.split("-").join("") - a.assignedOn?.split("-").join("")).map((item, idx) => <TableItem
                //    dataFor={dataFor}
                //    item={item}

@@ -23,28 +23,9 @@ const optionData = ["1", "2", "3", "4", "5"];
 const timeLimits = ['Regular', '1.5x', 'Unlimited']
 const testData = ["SAT", "ACT"];
 
-const tempTableHeaders = [
-   "Name",
-   "Assigned on",
-   "Due Date",
-   "Test Name",
-   "Duration",
-   "Status",
-   "Scores",
-   "",
-   "",
-];
 
-const studentTableHeaders = [
-   "Test Name",
-   "Assigned on",
-   // 'Assigned by',
-   "Due Date",
-   "Duration",
-   "Status",
-   "Scores",
-   "",
-];
+
+
 
 const initialState = {
    name: "",
@@ -63,6 +44,84 @@ export default function AssignedTests() {
 
    const [testNameOptions, setTestNameOptions] = useState([])
    const [studentNameOptions, setStudentNameOptions] = useState([])
+   const [allAssignedTests, setAllAssignedTests] = useState([])
+   const [filteredTests, setFilteredTests] = useState([])
+
+   const sortByDueDate = () => {
+      setAllAssignedTests(prev => {
+         let arr = [...prev]
+         arr = arr.sort(function (a, b) {
+            return new Date(b.dueDate) - new Date(a.dueDate);
+         });
+         return arr
+      })
+      setFilteredTests(prev => {
+         let arr = [...prev]
+         arr = arr.sort(function (a, b) {
+            return new Date(b.dueDate) - new Date(a.dueDate);
+         });
+         return arr
+      })
+   }
+
+   const sortByAssignedDate = () => {
+      setAllAssignedTests(prev => {
+         let arr = [...prev]
+         arr = arr.sort(function (a, b) {
+            return new Date(b.assignedOn) - new Date(a.assignedOn);
+         });
+         return arr
+      })
+      setFilteredTests(prev => {
+         let arr = [...prev]
+         arr = arr.sort(function (a, b) {
+            return new Date(b.assignedOn) - new Date(a.assignedOn);
+         });
+         return arr
+      })
+   }
+
+   const tempTableHeaders = [
+      {
+         id: 1,
+         text: 'Name',
+         className: 'text-left pl-6'
+      },
+      {
+         id: 2,
+         text: 'Assigned on',
+         onCick: sortByAssignedDate
+      },
+      {
+         id: 3,
+         text: 'Due Date',
+         onCick: sortByDueDate
+      },
+      {
+         id: 4,
+         text: 'Test Name',
+      },
+      {
+         id: 5,
+         text: 'Duration',
+      },
+      {
+         id: 1,
+         text: 'Status',
+      },
+      {
+         id: 6,
+         text: 'Scores',
+      },
+      {
+         id: 7,
+         text: '',
+      },
+      {
+         id: 8,
+         text: '',
+      },
+   ];
 
    const [assignTestModalActive, setAssignTestModalActive] = useState(false);
    const [resendModalActive, setResendModalActive] = useState(false);
@@ -94,8 +153,7 @@ export default function AssignedTests() {
    const [fetchTutorStudents, tutorStudentsResp] = useLazyGetTutorStudentsByNameQuery();
 
    const [students, setStudents] = useState([]);
-   const [allAssignedTests, setAllAssignedTests] = useState([])
-   const [filteredTests, setFilteredTests] = useState([])
+
 
    const [testsData, setTestsData] = useState([]);
    const [maxPageSize, setMaxPageSize] = useState(10);
@@ -175,6 +233,7 @@ export default function AssignedTests() {
          });
       }
    }, [modalData.test]);
+
 
 
    const fetchAllAssignedTests = () => {
@@ -434,8 +493,8 @@ export default function AssignedTests() {
       setTestNameOptions(testNames)
       setStudentNameOptions(studentNames)
    }, [allAssignedTests])
-   
-   // console.log('filteredTests', filteredTests);
+
+   console.log('filteredTests', filteredTests);
    return (
       <>
          <div className="lg:ml-pageLeft bg-lightWhite min-h-screen">
@@ -447,7 +506,7 @@ export default function AssignedTests() {
                      Assigned Tests
                   </p> : <></>}
 
-                   <InputSelect
+                  <InputSelect
                      value={filterData.studentName}
                      onChange={val => setFilterData({ ...filterData, studentName: val })}
                      optionData={studentNameOptions}
@@ -524,6 +583,7 @@ export default function AssignedTests() {
                      onClick={{ handleResend, handleDelete }}
                      dataFor='assignedTests'
                      data={filteredTests}
+                     headerObject={true}
                      excludes={['createdAt', 'assignedTestId', 'pdf']}
                      tableHeaders={tableHeaders}
                      maxPageSize={maxPageSize}
