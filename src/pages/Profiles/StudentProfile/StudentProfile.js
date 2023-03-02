@@ -768,7 +768,7 @@ export default function StudentProfile({ isOwn }) {
                                  <div className='flex-1 lg:mr-12'>
                                     <EditableText editable={editable}
                                        onClick={() => setToEdit({ ...toEdit, service: { ...toEdit.service, active: true } })}
-                                       text='Service'
+                                       text='Service and Specialization'
                                        className='lg:text-21 whitespace-nowrap' />
                                     <div className='font-medium text-sm mt-2 lg:mt-6 flex flex-wrap lg:opacity-60'>
                                        {/* {userDetail.subscribeType ? userDetail.subscribeType : '-'} */}

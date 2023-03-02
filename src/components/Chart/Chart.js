@@ -8,8 +8,9 @@ import {
 } from 'chart.js';
 import { Bubble } from 'react-chartjs-2';
 import { useLazyGetTestResponseQuery } from '../../app/services/test';
-import { useLazyGetPersonalDetailQuery } from '../../app/services/users';
+import { useLazyGetPersonalDetailQuery, useLazyGetUserDetailQuery } from '../../app/services/users';
 import { backgroundColors, iniOptions } from './data';
+import { useSelector } from 'react-redux';
 
 ChartJS.register(LinearScale, PointElement, Tooltip, Legend);
 
@@ -32,9 +33,8 @@ const data1 = {
       },
    ],
 };
-export default function Chart({ setSubjects, subjects, selectedSubject }) {
+export default function Chart({ setSubjects, subjects, selectedSubject, selectedStudent }) {
 
-   const [getTestResponse, getTestResponseResp] = useLazyGetTestResponseQuery()
    const [fetchPersonalDetails, personalDetailsResp] = useLazyGetPersonalDetailQuery()
    const [options, setOptions] = useState(iniOptions)
    const [chartData, setChartData] = useState([])
@@ -43,12 +43,61 @@ export default function Chart({ setSubjects, subjects, selectedSubject }) {
    const [data, setData] = useState(data1)
    const [show, setShow] = useState(true)
    const chartRef = useRef(null)
+   const [getUserDetail, userDetailResp] = useLazyGetUserDetailQuery()
+   const { role: persona, id } = useSelector(state => state.user)
 
    // const checkIfKeyExists = (concepts) => {
    //    concepts
    // }
 
    useEffect(() => {
+      if(persona == 'student') return
+      if (selectedStudent?._id === undefined || selectedStudent?._id === null) return
+      getUserDetail({ id: selectedStudent._id })
+         .then(res => {
+            if (res.error) {
+               return
+            }
+            console.log('Resp', res.data.data.user)
+            let data = res.data.data.user.chart
+            if (!data) return
+            let fData = data.filter(item => Object.keys(item.concepts).includes('correct'))
+            console.log('fdata', fData)
+            let filtered = fData.filter(item => !Object.keys(item.concepts.correct).includes('undefined'))
+            console.log('filter undefined', filtered)
+            setChartData(filtered)
+            const subjectsNames = []
+            let chartData = [
+
+            ]
+            filtered.forEach(item => {
+               if (!subjectsNames.includes(item.subject)) {
+                  subjectsNames.push(item.subject)
+               }
+            })
+            const subjects = subjectsNames.map((item, idx) => {
+               return {
+                  name: item,
+                  selected: idx === 0 ? true : false
+               }
+            })
+            // console.log('subjects', subjects)
+            setSubjects(subjects)
+
+            subjects.forEach(sub => {
+               filtered.forEach(item => {
+                  if (item.subject === sub.name) {
+
+                  }
+               })
+            })
+            //temp
+
+         })
+   }, [selectedStudent])
+
+   useEffect(() => {
+      if (persona === 'parent') return
       fetchPersonalDetails()
          .then(res => {
             if (res.error) {
@@ -56,10 +105,10 @@ export default function Chart({ setSubjects, subjects, selectedSubject }) {
             }
             console.log('Resp', res.data.data.user)
             let data = res.data.data.user.chart
-            if(!data) return
+            if (!data) return
             let fData = data.filter(item => Object.keys(item.concepts).includes('correct'))
             console.log('fdata', fData)
-            let filtered = fData.filter(item =>  !Object.keys(item.concepts.correct).includes('undefined'))
+            let filtered = fData.filter(item => !Object.keys(item.concepts.correct).includes('undefined'))
             console.log('filter undefined', filtered)
             setChartData(filtered)
             const subjectsNames = []
@@ -147,11 +196,11 @@ export default function Chart({ setSubjects, subjects, selectedSubject }) {
             let totalVal = curr.concepts.total[totalConcept]
             let getValue = curr.concepts.correct[totalConcept]
             const percent = Math.round(getValue * 100 / totalVal)
-            let radius = totalVal*2
+            let radius = totalVal * 2
             // console.log(totalConcept, percent);
-            if(radius < 15){
+            if (radius < 15) {
                radius = 15
-            }else if(radius > 40){
+            } else if (radius > 40) {
                radius = 40
             }
             datasets.push({
@@ -164,11 +213,11 @@ export default function Chart({ setSubjects, subjects, selectedSubject }) {
             let x = (idx + 1) * 5
             let totalVal = curr.concepts.total[totalConcept]
             let getValue = 0
-            let radius = totalVal*2
+            let radius = totalVal * 2
             const percent = Math.round(getValue * 100 / totalVal)
-            if(radius < 15){
+            if (radius < 15) {
                radius = 15
-            }else if(radius > 40){
+            } else if (radius > 40) {
                radius = 40
             }
             datasets.push({

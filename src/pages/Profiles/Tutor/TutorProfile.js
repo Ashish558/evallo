@@ -458,6 +458,7 @@ export default function TutorProfile({ isOwn }) {
          })
    }
    // console.log(isOwn);
+   // console.log(tutorRank);
    return (
       <>
          <div className='lg:ml-pageLeft bg-lightWhite min-h-screen pb-120 pt-0'>
@@ -511,7 +512,7 @@ export default function TutorProfile({ isOwn }) {
                         <div className={` mb-5 px-4 py-4 lg:bg-textGray-30 rounded-2xl`}
                            style={{ backgroundColor: tutorLevelBg }}
                         >
-                           <EditableText text={`${tutorLevel} belt`}
+                           <EditableText text={tutorLevel === undefined ? '' : `${tutorLevel} belt`}
                               editable={editable}
                               onClick={() => setToEdit({ ...toEdit, tutorLevel: { ...toEdit.tutorLevel, active: true } })}
                               className={` justify-center font-bold text-lg capitalize `}

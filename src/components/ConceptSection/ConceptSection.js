@@ -7,7 +7,7 @@ import OwlCarousel from "react-owl-carousel";
 import "owl.carousel/dist/assets/owl.carousel.css";
 import "owl.carousel/dist/assets/owl.theme.default.css";
 import shivam from '../../assets/images/tutors/shivam-shrivastab.png'
-import { useLazyGetParentTutorsQuery, useLazyGetUserDetailQuery } from "../../app/services/users";
+import { useLazyGetParentTutorsQuery, useLazyGetTutorDetailsQuery, useLazyGetUserDetailQuery } from "../../app/services/users";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import InputSelect from "../InputSelect/InputSelect";
@@ -38,6 +38,8 @@ const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
    const navigate = useNavigate()
    const [fetchAssignedTests, fetchAssignedTestsResp] = useLazyGetParentsAssignedTestsQuery();
    const [filteredAssignedTests, setFilteredAssignedTests] = useState([])
+   const [getTutorDetail, getTutorDetailResp] = useLazyGetTutorDetailsQuery()
+   const [totalTutors, setTotalTutors] = useState(0)
 
    useEffect(() => {
       fetchAssignedTests(id)
@@ -73,11 +75,23 @@ const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
    }, [])
 
    useEffect(() => {
+      setTutors([])
       fetchTutors({ id })
          .then(res => {
-            if (res.error) return console.log(res.error);
-            // console.log('parent tutors', res.data);
-            res.data.tutors.length > 0 && setTutors(res.data.tutors)
+            // console.log('tutors resp', res.data);
+            setTotalTutors(res.data.tutors.length)
+            res.data.tutors.map(tutor => {
+               getTutorDetail({ id: tutor._id })
+                  .then(response => {
+                     // console.log('tutors response', response.data);
+                     let details = response.data.data.details
+                     if (details === null || details === undefined) {
+                        details = {}
+                     }
+                     setTutors(prev => [...prev, { ...tutor, ...details }])
+                  })
+
+            })
          })
    }, [])
 
@@ -144,7 +158,8 @@ const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
       }, 0);
       // tutorCarouselRef.current.trigger('refresh.owl.carousel'); 
    }, [selectedStudent, tutors])
-   
+
+   // console.log('tutors', tutors);
    // console.log('filteredTutors', filteredTutors);
    // console.log('tutorCarouselRef', tutorCarouselRef.current);
 
@@ -168,7 +183,7 @@ const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
             <div id={styles.chartContainer} className='scrollbar-content mb-4'>
                <div id={styles.chart} className='scrollbar-content' >
                   <div>
-                     <Chart />
+                     <Chart selectedStudent={selectedStudent} />
                   </div>
                </div>
             </div>
@@ -179,20 +194,22 @@ const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
 
                <div id={styles.tutor}>
                   <h2>Your Tutor</h2>
-                  {filteredTutors.length >= 1 ?
+                  {filteredTutors.length >= totalTutors ?
                      <OwlCarousel ref={tutorCarouselRef} className="owl-theme" loop margin={8} items={1}>
                         {
                            filteredTutors.map((tutor, idx) => {
                               return (
                                  <div key={idx} className="item flex" style={{ width: "100%" }}>
                                     <div className="w-3/5 flex justify-center flex-col">
-                                       {/* <h5 className={styles.tag}>
-                                          WIZARD TUTOR | UNDERGRADUATE
-                                       </h5> */}
-                                       <h3 className="mt-0 mb-1"> {`${tutor.firstName} ${tutor.lastName}`} </h3>
+                                       <h5 className={`${styles.tag}`}>
+                                          {tutor.tutorLevel && `${tutor.tutorLevel} Belt`} 
+                                       </h5>
                                        <p>
-                                          {/* Lorem ipsum dolor sit amet, consectetur
-                                          adipiscing elit. */}
+                                          {tutor?.education}
+                                       </p>
+                                       <h3 className="mt-0 mb-1 mt-2.5"> {`${tutor.firstName} ${tutor.lastName}`} </h3>
+                                       <p>
+                                          {tutor?.tagLine}
                                        </p>
                                        <button className="btn-gold" style={{ padding: '7px 9px', maxWidth: '110px' }}
                                           onClick={() => tutor._id && navigate(`/profile/tutor/${tutor._id}`)} >

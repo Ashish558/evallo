@@ -8,7 +8,7 @@ import Table from '../../components/Table/Table'
 import { useNavigate, useParams } from 'react-router-dom'
 import BarGraph from '../../components/BarGraph/BarGraph'
 import { useLazyGetAnswersQuery, useLazyGetSingleAssignedTestQuery, useLazyGetTestDetailsQuery, useLazyGetTestResponseQuery } from '../../app/services/test'
-import { getDate, getDuration, getFormattedDate, getScoreStr, millisToMinutesAndSeconds } from '../../utils/utils'
+import { getDate, getDuration, getFormattedDate, getScoreStr, millisToMinutesAndSeconds, getFormattedDateTime } from '../../utils/utils'
 import { useLazyGetTutorDetailsQuery } from '../../app/services/users'
 import { useSelector } from 'react-redux'
 
@@ -53,6 +53,7 @@ export default function StudentReport() {
       data: []
    })
    const [timeSeriesOptions, setTimeSeriesOptions] = useState(ttOptions)
+   const [sortedConcepts, setSortedConcepts] = useState([])
 
    const [accuracySeries, setAccuracySeries] = useState({
       name: 'Correct Answers',
@@ -238,7 +239,7 @@ export default function StudentReport() {
             setTestDetails(prev => {
                return {
                   ...prev,
-                  assignedOn: getFormattedDate(createdAt),
+                  assignedOn: getFormattedDateTime(createdAt),
                   testName: testId.testName,
                   instruction: instruction,
                   duration: multiple ? getDuration(multiple) : '-',
@@ -294,8 +295,8 @@ export default function StudentReport() {
             setTestDetails(prev => {
                return {
                   ...prev,
-                  startedOn: getFormattedDate(createdAt),
-                  completedOn: getFormattedDate(updatedAt),
+                  startedOn: getFormattedDateTime(createdAt),
+                  completedOn: getFormattedDateTime(updatedAt),
                }
             })
             setSubjects(subjects.map((sub, idx) => ({ ...sub, idx, selected: idx === 0 ? true : false })))
@@ -525,16 +526,16 @@ export default function StudentReport() {
       })
 
       let selected = answerKey[currentAnswerKeyIndex]
-      selected = selected.map(item => {
+      selected = selected?.map(item => {
          if (!item.Concepts) {
             return { ...item, Concepts: 'UNAVAILABLE' }
          } else {
             return { ...item }
          }
       })
-      // console.log('selected', selected);
+
       let total = 0
-      selected.forEach(concept => {
+      selected?.forEach(concept => {
          if (concept.Concepts === key) {
             total += 1
          }
@@ -649,6 +650,59 @@ export default function StudentReport() {
    // console.log('answerKey', answerKey)
    // console.log('answerKeySubjects', answerKeySubjects)
    // console.log('testDetails', testDetails)
+   const getTotalAndIncorrect = (correctTotal, key, returnIncorrectOnly) => {
+      let currentAnswerKeyIndex = 0
+
+      answerKeySubjects.map((subj, idx) => {
+         if (subj.name === selectedSubject.name) {
+            currentAnswerKeyIndex = idx
+         }
+      })
+
+      let selected = answerKey[currentAnswerKeyIndex]
+      selected = selected.map(item => {
+         if (!item.Concepts) {
+            return { ...item, Concepts: 'UNAVAILABLE' }
+         } else {
+            return { ...item }
+         }
+      })
+      // console.log('selected', selected);
+      let total = 0
+      selected.forEach(concept => {
+         if (concept.Concepts === key) {
+            total += 1
+         }
+      })
+      if (returnIncorrectOnly) {
+         return total - correctTotal
+      } else {
+         return `${total - correctTotal} / ${total}`
+      }
+   }
+   const getSortedConcepts = () => {
+      let arr = []
+      Object.keys(selectedSubject.concepts).map((key, idx) => {
+         let inc = getConceptScore(selectedSubject.concepts[key], key, true)
+         // console.log('incorrect', inc, selectedSubject.concepts[key], key)
+         arr.push({ incorrect: inc, name: key, correct: selectedSubject.concepts[key] })
+      })
+      // console.log('arr', arr)
+      arr = arr.sort((a, b) => {
+         return parseFloat(b.incorrect) - parseFloat(a.incorrect);
+      });
+      // console.log('arr', arr)
+      setSortedConcepts(arr.slice(0, 5))
+      return arr.slice(0, 5)
+   }
+
+   useEffect(() => {
+      if (selectedSubject.concepts === undefined) return
+      getSortedConcepts()
+   }, [selectedSubject, answerKey, answerKeySubjects])
+
+   // console.log('concepts', selectedSubject.concepts)
+   // console.log('sortedConcepts', sortedConcepts)
 
    if (Object.keys(responseData).length === 0) return <></>
    if (answerKey.length === 0) return <></>
@@ -676,27 +730,27 @@ export default function StudentReport() {
                   <div>
                      <p className='inline-block w-138 font-semibold opacity-60'> Student’s Name</p>
                      <span className='inline-block mr-4'>:</span>
-                     <p className='inline-block w-138 font-semibold'> {testDetails.name} </p>
+                     <p className='inline-block font-semibold'> {testDetails.name} </p>
                   </div>
                   <div>
                      <p className='inline-block w-138 font-semibold opacity-60'> Started on </p>
                      <span className='inline-block mr-4'>:</span>
-                     <p className='inline-block w-138 font-semibold'> {testDetails.startedOn} </p>
+                     <p className='inline-block  font-semibold'> {testDetails.startedOn} </p>
                   </div>
                   <div>
                      <p className='inline-block w-138 font-semibold opacity-60'>  Date Assigned </p>
                      <span className='inline-block mr-4'>:</span>
-                     <p className='inline-block w-138 font-semibold'> {testDetails.assignedOn} </p>
+                     <p className='inline-block  font-semibold'> {testDetails.assignedOn} </p>
                   </div>
                   <div>
                      <p className='inline-block w-138 font-semibold opacity-60'> Completed on </p>
                      <span className='inline-block mr-4'>:</span>
-                     <p className='inline-block w-138 font-semibold'> {testDetails.completedOn} </p>
+                     <p className='inline-block  font-semibold'> {testDetails.completedOn} </p>
                   </div>
                   <div className='col-span-2'>
                      <p className='inline-block w-138 font-semibold opacity-60'> Duration </p>
                      <span className='inline-block mr-4'>:</span>
-                     <p className='inline-block w-138 font-semibold'> {testDetails.duration} </p>
+                     <p className='inline-block  font-semibold'> {testDetails.duration} </p>
                   </div>
                   <div className='col-span-2'>
                      <p className='inline-block w-138 font-semibold opacity-60'> Instruction from tutor </p>
@@ -731,18 +785,23 @@ export default function StudentReport() {
                   </p> */}
                   <div className='flex bg-[#EBEDEE] py-4 px-4 rounded-10' >
                      <div className='flex flex-col mr-[64px]'>
-                        <p className='font-semibold text-primary mb-2.2'>Concepts</p>
+                        <p className='font-semibold text-primary mb-2.2' onClick={getSortedConcepts} >Concepts</p>
                         {
                            // selectedSubject.no_of_correct === 0 ?
                            //    <>
                            //       {getSubjectSections()}
                            //    </> :
                            selectedSubject.concepts ?
-                              Object.keys(selectedSubject.concepts).map((key, idx) => {
-                                 return idx < 5 ? <p key={idx} className='font-semibold mb-2'>
-                                    {/* {selectedSubject.concepts[key]} */}
-                                    {key}
-                                 </p> : <></>
+                              // Object.keys(selectedSubject.concepts).map((key, idx) => {
+                              //    return idx < 5 ? <p key={idx} className='font-semibold mb-2'>
+                              //       {/* {selectedSubject.concepts[key]} */}
+                              //       {key}
+                              //    </p> : <></>
+                              // })
+                              sortedConcepts.map((item, idx) => {
+                                 return <p key={idx} className='font-semibold mb-2'>
+                                    {item.name}
+                                 </p>
                               })
                               : <></>
                         }
@@ -756,11 +815,10 @@ export default function StudentReport() {
                            //       {getSubjectSectionsScore()}
                            //    </> :
                            selectedSubject.concepts ?
-                              Object.keys(selectedSubject.concepts).map((key, idx) => {
-                                 return idx < 5 ? <p key={idx} className='font-semibold mb-2'>
-                                    {/* correct {selectedSubject.concepts[key]} */}
-                                    {getConceptScore(selectedSubject.concepts[key], key)}
-                                 </p> : <></>
+                              sortedConcepts.map((item, idx) => {
+                                 return <p key={idx} className='font-semibold mb-2'>
+                                    {item.incorrect}/{item.correct + item.incorrect}
+                                 </p>
                               })
                               : <></>
                         }

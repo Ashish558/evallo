@@ -247,7 +247,6 @@ export default function TutorDashboard() {
                      <p className='text-primary-dark font-semibold text-[21px] mb-4'>Today’s Schedule</p>
                      <div className='px-[29px] py-[31px] bg-white mr-5 rounded-[20px] scrollbar-content scrollbar-vertical max-h-[600px] overflow-auto'>
                         {sessions.map((item, idx) => {
-                           console.log(item)
                            return <TutorSchedule {...item} setIsOpen={setIsOpen} handleLinkClick={handleLinkClick} />
                         })}
                      </div>
@@ -304,7 +303,7 @@ export default function TutorDashboard() {
                            </div>
                            <div className='flex items-center justify-center px-4 pr-0'>
                               <p className='inline-block pr-4 text-[#392976] font-bold text-[30px]'>
-                                 {tutorRank === '-' ? '-' : `#${tutorRank.slice(4)}`}
+                                 {tutorRank === '-' ? '-' : tutorRank}
                               </p>
                            </div>
                         </div>

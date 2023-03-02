@@ -81,6 +81,7 @@ export default function TestDetail() {
    const [allQuestions, setAllQuestions] = useState([])
    const [questionsTable, setQuestionsTable] = useState([])
    const [subjects, setSubjects] = useState([])
+   const [awsLink, setAwsLink] = useState('')
 
    const handlePDFFile = (file) => {
       const formData = new FormData();
@@ -106,7 +107,8 @@ export default function TestDetail() {
    const fetchData = () => {
       axios.get(`${BASE_URL}api/test/${id}`)
          .then((res) => {
-            console.log('test data' ,res.data.data);
+            console.log('test data', res.data.data);
+            setAwsLink(res.data.data.baseLink)
             setTestData(res.data.data.test);
          });
       fetchSections({ id })
@@ -241,8 +243,13 @@ export default function TestDetail() {
                         </p>
                         {
                            Object.keys(sectionsData).length > 1 &&
-                           <span className="text-[#0671E0] text-xs italic inline-block cursor-pointer"
-                              onClick={() => sectionsData.test.pdf !== null && window.open(sectionsData.test.pdf)} > {sectionsData.test.pdf !== null ? `${sectionsData.test.testName}.pdf` : ''} </span>
+
+                           <a className="text-[#0671E0] text-xs italic inline-block cursor-pointer"
+                              href={sectionsData.test.pdf !== null && `${awsLink}${sectionsData.test.pdf}`} target="_blank"
+                           // onClick={() => sectionsData.test.pdf !== null && window.open(sectionsData.test.pdf)} 
+                           >
+                              {sectionsData.test.pdf !== null ? `${sectionsData.test.testName}.pdf` : ''}
+                           </a>
                         }
                         <PrimaryButton
                            children='Reupload pdf'

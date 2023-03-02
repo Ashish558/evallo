@@ -80,7 +80,7 @@ export default function SingleLedger({ _id, invoiceId, sessionId, title, Date: l
          <div className='text-center  py-[16px] px-3'>
             $ {amountPaid}
          </div>
-         <div className='text-center  py-[16px] px-3'>
+         <div className={`text-center  py-[16px] px-3 ${balanceChange < 0 ? 'text-[#FF0D0D]' : balanceChange > 0 ? 'text-[#54C012]' : ''} `}>
             $ {balanceChange}
          </div>
          <div className='text-left flex justify-center items-center py-[16px] px-3'>

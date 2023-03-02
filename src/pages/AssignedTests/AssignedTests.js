@@ -181,7 +181,7 @@ export default function AssignedTests() {
       fetchAssignedTests()
          .then(res => {
             if (res.error) return console.log(res.error)
-            console.log('res', res.data.data);
+            console.log('assigned res', res.data.data);
             let data = res.data.data.test.map(item => {
                const { createdAt, studentId, testId, dueDate, multiple, timeLimit, isCompleted, isStarted } = item
                return {
@@ -441,7 +441,7 @@ export default function AssignedTests() {
          <div className="lg:ml-pageLeft bg-lightWhite min-h-screen">
             <div className="py-14 px-5">
                <div className="flex gap-4 justify-between items-center">
-                  {localStorage.getItem('role') === "parent" || localStorage.getItem('role') === 'student' ? <p className={`font-bold text-4xl text-primary-dark`}
+                  {persona === "parent" || persona === 'student' ? <p className={`font-bold text-4xl text-primary-dark`}
                   // style={{ color: "#25335A" }}
                   >
                      Assigned Tests

@@ -22,7 +22,7 @@ const testData = ["SAT", "ACT"];
 const tempTableHeaders = [
    "Student Name",
    "Time Zone",
-   "Service(s)",
+   "Specialization(s)",
    "Parent",
    // "Start Date",
    "Diagnostic Score",
@@ -77,19 +77,20 @@ export default function AssignedStudents() {
    useEffect(() => {
       getUserDetail({ id })
          .then(resp => {
-            console.log(resp.data.data.user)
+            console.log('res', resp.data.data.user)
             let studentsData = []
             const fetch = (cb) => {
                resp.data.data.user.assiginedStudents.map((studentId, idx) => {
                   getUserDetail({ id: studentId })
                      .then(res => {
+                        console.log('res', resp.data.data)
                         const { _id, firstName, lastName } = res.data.data.user
-                        const { serviceSeeking, FirstName, LastName, timeZone } = res.data.data.userdetails
+                        const { specialization, FirstName, LastName, timeZone } = res.data.data.userdetails
                         studentsData.push({
                            _id,
                            name: `${firstName} ${lastName}`,
                            timeZone: timeZone ? timeZone : '-',
-                           services: serviceSeeking ? serviceSeeking.join() : '-',
+                           specialization: specialization ? specialization.join() : '-',
                            parentName: `${FirstName} ${LastName}`,
                            score: '-',
                            status: '-'
