@@ -870,6 +870,8 @@ export default function Calendar() {
                      // slotMinTime='06:00:00'
                      // slotMaxTime='23:00:00'
                      // slotDuration='24:00:00'
+                     stickyHeaderDates={true}
+                     stickyHeaderToolbar={true}
                      eventClick={(info) => handleEventClick(info)}
                      eventMaxStack={1}
                      ref={calendarRef}

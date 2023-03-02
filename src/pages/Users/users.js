@@ -28,10 +28,6 @@ const optionData = [
    'option 5',
 ]
 
-const tableHeaders = [
-   'Full Name', 'User Type', "Email", 'Phone', 'Tutor', 'Lead Status', 'User Status',
-   'Specialization', 'Created On'
-]
 
 const userTypeOptions = ['tutor', 'parent', 'student']
 
@@ -53,7 +49,8 @@ export default function Users() {
    const [deleteLoading, setDeleteLoading] = useState(false)
    const [specializations, setSpecializations] = useState([])
    const [numberPrefix, setNumberPrefix] = useState("+1")
-
+   const [usersData, setUsersData] = useState([])
+   const [filteredUsersData, setFilteredUsersData] = useState([])
    useEffect(() => {
       setValidData(isEmail(modalData.email) && modalData.firstName && modalData.lastName && modalData.userType && modalData.phone)
    }, [modalData, modalData.email.length, modalData.firstName.length, modalData.lastName.length, modalData.phone.length, modalData.userType.length,])
@@ -61,8 +58,71 @@ export default function Users() {
    const [settings, setSettings] = useState({
       leadStatus: []
    })
-   const [usersData, setUsersData] = useState([])
-   const [filteredUsersData, setFilteredUsersData] = useState([])
+   const sortByName = () => {
+      setUsersData(prev => {
+         let arr = [...prev]
+         arr = arr.sort(function (a, b) {
+            if(a.name < b.name) { return -1; }
+            if(a.name > b.name) { return 1; }
+            return 0;
+         });
+         return arr
+      })
+      
+      setFilteredUsersData(prev => {
+         let arr = [...prev]
+         console.log('arr', arr);
+         arr = arr.sort(function (a, b) {
+            if(a.name < b.name) { return -1; }
+            if(a.name > b.name) { return 1; }
+            return 0;
+         });
+         return arr
+      })
+   }
+   const tableHeaders = [
+      {
+         id: 1,
+         text: 'Full Name',
+         className: 'text-left pl-6',
+         onCick: sortByName
+      },
+      {
+         id: 2,
+         text: 'User Type',
+      },
+      {
+         id: 3,
+         text: 'Email',
+      },
+      {
+         id: 4,
+         text: 'Phone',
+      },
+      {
+         id: 5,
+         text: 'Tutor',
+      },
+      {
+         id: 1,
+         text: 'Lead Status',
+      },
+      {
+         id: 6,
+         text: 'User Status',
+      },
+      {
+         id: 7,
+         text: 'Specialization',
+      },
+      {
+         id: 8,
+         text: 'Created On',
+      },
+   ];
+
+
+
    const [getUserDetail, getUserDetailResp] = useLazyGetUserDetailQuery()
    const [getTutorDetail, userDetailResp] = useLazyGetTutorDetailsQuery()
 
@@ -132,7 +192,7 @@ export default function Users() {
                      await getTutorDetail({ id: user._id })
                         .then(resp => {
                            console.log('TUTOR RESp', resp);
-                           
+
                            setFilterItems(prev => [...prev])
                            // console.log('tutor-details', resp.data.data);
                            let status = '-'
@@ -521,6 +581,7 @@ export default function Users() {
                   data={filteredUsersData}
                   onClick={{ redirect, handleTutorStatus, handleDelete }}
                   tableHeaders={tableHeaders}
+                  headerObject={true}
                   maxPageSize={maxPageSize}
                   isCallingApi={true}
                   total_pages={Math.ceil(totalPages / maxPageSize)}

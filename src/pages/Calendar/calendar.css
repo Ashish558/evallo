@@ -55,13 +55,16 @@
 #calendarContainer {
     background-color: #fff;
     padding: 40px;
+    padding-top: 0;
     border-radius: 20px;
     box-shadow: 0 0 16px rgba(0, 0, 0, 0.2);
     height: 91vh;
     overflow-y: auto;
     scroll-behavior: smooth;
 }
-
+#calendarContainer .fc-direction-ltr.fc-theme-standard{
+    padding-top: 2rem;
+}
 .fc .fc-timegrid-slot-minor{
     border-top-style: none !important;
 }
