@@ -3,7 +3,7 @@ import CrossIcon from '../../assets/icons/cross.svg'
 import SingleItem from './SingleItem';
 import styles from './style.module.css'
 
-export default function FilterItems({ items, setData, onRemoveFilter, className, isString, keyName, onlyItems, sliceText, image, fetchData, api }) {
+export default function FilterItems({ items, setData, onRemoveFilter, className, isString, keyName, onlyItems, sliceText, image, fetchData, api, baseLink }) {
 
 
 
@@ -11,7 +11,7 @@ export default function FilterItems({ items, setData, onRemoveFilter, className,
       onlyItems ?
          items?.map((item, idx) => {
             return (
-             <SingleItem idx={idx} image={image} item={item} keyName={keyName} onRemoveFilter={onRemoveFilter} className={className} sliceText={sliceText} isString={isString} fetchData={fetchData} />
+             <SingleItem idx={idx} image={image} item={item} keyName={keyName} onRemoveFilter={onRemoveFilter} className={className} sliceText={sliceText} isString={isString} fetchData={fetchData} baseLink={baseLink} />
             )
          }) : (
             <div className='flex items-center flex-wrap'>

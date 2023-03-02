@@ -13,7 +13,7 @@ import { grades, subjects, timeZones } from '../../../../constants/constants'
 import styles from './style.module.css'
 
 // 637b9df1e9beff25e9c2aa83
-export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetails, settings, persona }) {
+export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetails, settings, persona, awsLink }) {
    const [title, setTitle] = useState('')
    const [currentField, setCurrentField] = useState({})
    const [currentToEdit, setCurrentToEdit] = useState({})
@@ -445,6 +445,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
       }
    }
 
+   // console.log('awsLink', awsLink)
    // console.log('toedit', currentToEdit)
    // console.log('setting', settings.servicesAndSpecialization[currentToEdit.selectedIdx])
    // console.log('field', currentField)
@@ -546,7 +547,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                               <div className=' mb-5'>
                                  {/* <p className='font-medium mr-4'> Associated Students </p> */}
                                  <div className='max-w-[250px] mx-auto'>
-                                    <Slider images={currentToEdit.studentsData} />
+                                    <Slider images={currentToEdit.studentsData} awsLink={awsLink} />
                                  </div>
 
                                  <InputSearch

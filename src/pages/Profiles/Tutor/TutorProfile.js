@@ -117,6 +117,7 @@ export default function TutorProfile({ isOwn }) {
    const [getFeedbacks, getFeedbacksResp] = useLazyGetFeedbacksQuery()
    const [getSession, getSessionResp] = useLazyGetSingleSessionQuery()
    const [feedbacks, setFeedbacks] = useState([])
+   const [awsLink, setAwsLink] = useState('')
 
    const { id } = useSelector(state => state.user)
 
@@ -264,7 +265,8 @@ export default function TutorProfile({ isOwn }) {
       }
       getUserDetail({ id: userId })
          .then(res => {
-            // console.log('response', res.data.data);
+            console.log('response', res.data.data);
+            setAwsLink(res.data.data.baseLink)
             const { firstName, lastName, phone, email } = res.data.data.user
             setUser(res.data.data.user)
             let details = res.data.data.details
@@ -573,7 +575,8 @@ export default function TutorProfile({ isOwn }) {
                                  {about ? about : 'Your bio'}
                               </p>
                               <div className={`flex justify-center items-center ${styles.profileIcon}`}>
-                                 <ProfilePhoto isTutor={true} src={user.photo ? user.photo : '/images/default.jpeg'}
+                                 <ProfilePhoto isTutor={true}
+                                   src={user.photo ? `${awsLink}${user.photo}` : '/images/default.jpeg'}
                                     handleChange={handleProfilePhotoChange} editable={editable} />
                               </div>
                               {/* <div>
@@ -887,7 +890,8 @@ export default function TutorProfile({ isOwn }) {
             userId={isOwn ? id : params.id}
             toEdit={toEdit}
             setToEdit={setToEdit}
-            persona={user.role} />
+            persona={user.role}
+            awsLink={awsLink} />
       </>
    )
 }

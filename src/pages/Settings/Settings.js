@@ -133,6 +133,7 @@ export default function Settings() {
    const [image, setImage] = useState(null)
    const [getSettings, getSettingsResp] = useLazyGetSettingsQuery()
    const [updateSetting, updateSettingResp] = useUpdateSettingMutation()
+   const [baseLink, setBaseLink] = useState('')
 
    const [updateFields, updateFieldsResp] = useUpdateUserFieldsMutation()
    // const [updateImage, updateImageResp] = useUpdateOfferImageMutation()
@@ -188,6 +189,7 @@ export default function Settings() {
                return
             }
             console.log('settings', res.data)
+            setBaseLink(res.data.data.baseLink)
             if (res.data.data.setting === null) return
             setSettingsData(res.data.data.setting)
          })
@@ -287,8 +289,10 @@ export default function Settings() {
 
       if (append === '') return
       setSaveLoading(true)
-      axios.patch(`${BASE_URL}api/user/setting/${append}`, formData, { headers: getAuthHeader(),maxBodyLength: Infinity,
-         maxContentLength: Infinity, })
+      axios.patch(`${BASE_URL}api/user/setting/${append}`, formData, {
+         headers: getAuthHeader(), maxBodyLength: Infinity,
+         maxContentLength: Infinity,
+      })
          .then((res) => {
             console.log(res)
             setTagImage(null)
@@ -583,7 +587,7 @@ export default function Settings() {
    // console.log('servicesAndSpecialization', servicesAndSpecialization);
    // console.log('toggleImage', toggleImage);
    // console.log('adminModalDetails', adminModalDetails);
-   // console.log(offerImages)
+   console.log('baseLink', baseLink)
 
    return (
       <>
@@ -735,6 +739,7 @@ export default function Settings() {
                         <FilterItems isString={false} onlyItems={true} image={toggleImage.Expertise}
                            items={sessionTags !== undefined ? Expertise.map(item => item) : []}
                            keyName='Expertise'
+                           baseLink={baseLink}
                            onRemoveFilter={onRemoveTextImageTag}
                            className='pt-1 pb-1 mr-15' />
                      </div>
@@ -785,6 +790,7 @@ export default function Settings() {
                         <FilterItems isString={false} onlyItems={true} image={toggleImage.personality}
                            items={personality !== undefined ? personality.map(item => item) : []}
                            keyName='personality'
+                           baseLink={baseLink}
                            onRemoveFilter={onRemoveTextImageTag}
                            className='pt-1 pb-1 mr-15' />
                      </div>
@@ -798,6 +804,7 @@ export default function Settings() {
                         <FilterItems isString={false} onlyItems={true} image={toggleImage.interest}
                            items={interest !== undefined ? interest.map(item => item) : []}
                            keyName='interest'
+                           baseLink={baseLink}
                            onRemoveFilter={onRemoveTextImageTag}
                            className='pt-1 pb-1 mr-15' />
                      </div>
@@ -811,6 +818,7 @@ export default function Settings() {
                            onlyItems={true}
                            keyName='classes'
                            items={classes ? classes : []}
+                           baseLink={baseLink}
                            onRemoveFilter={onRemoveFilter}
                            className='pt-1 pb-1 mr-15' />
                      </div>
@@ -828,6 +836,7 @@ export default function Settings() {
                            onlyItems={true}
                            sliceText={true}
                            items={offerImages !== undefined ? offerImages.map(item => ({ ...item, text: item.image })) : []}
+                           baseLink={baseLink}
                            onRemoveFilter={onRemoveImage}
                            // onRemoveFilter={onRemoveFilter}
                            className='pt-1 pb-1 mr-15' />

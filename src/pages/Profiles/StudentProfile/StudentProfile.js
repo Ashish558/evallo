@@ -137,6 +137,7 @@ export default function StudentProfile({ isOwn }) {
    const params = useParams()
    const [getUserDetail, userDetailResp] = useLazyGetUserDetailQuery()
    const [fetchSettings, settingsResp] = useLazyGetSettingsQuery()
+   const [awsLink, setAwsLink] = useState('')
 
    const { id } = useSelector(state => state.user)
 
@@ -255,6 +256,7 @@ export default function StudentProfile({ isOwn }) {
       getUserDetail({ id: userId })
          .then(res => {
             console.log('details -- ', res.data.data);
+            setAwsLink(res.data.data.baseLink)
             const { firstName, lastName, phone, email, associatedParent } = res.data.data.user
             let { service, accomodations, timeZone, birthyear, personality, interest, schoolName, grade, satScores, actScores, subscriptionCode } = res.data.data.userdetails
             associatedParent && getUserDetail({ id: associatedParent })
@@ -441,7 +443,7 @@ export default function StudentProfile({ isOwn }) {
                         :
                         <></>
                      }
-                     <ProfilePhoto src={user.photo ? user.photo : '/images/default.jpeg'}
+                     <ProfilePhoto src={user.photo ? `${awsLink}${user.photo}` : '/images/default.jpeg'}
                         handleChange={handleProfilePhotoChange} editable={editable} />
                      <div className='flex items-center mt-67 lg:mt-4 text-[#F3F5F7]'>
                         <EditableText text={`${user.firstName} ${user.lastName}`}
@@ -768,7 +770,7 @@ export default function StudentProfile({ isOwn }) {
                                  <div className='flex-1 lg:mr-12'>
                                     <EditableText editable={editable}
                                        onClick={() => setToEdit({ ...toEdit, service: { ...toEdit.service, active: true } })}
-                                       text='Service and Specialization'
+                                       text='Service'
                                        className='lg:text-21 whitespace-nowrap' />
                                     <div className='font-medium text-sm mt-2 lg:mt-6 flex flex-wrap lg:opacity-60'>
                                        {/* {userDetail.subscribeType ? userDetail.subscribeType : '-'} */}
@@ -927,7 +929,8 @@ export default function StudentProfile({ isOwn }) {
 
          <ParentEditables settings={settings} fetchDetails={fetchDetails}
             userId={isOwn ? id : params.id} toEdit={toEdit} setToEdit={setToEdit}
-            persona={user.role} />
+            persona={user.role}
+            awsLink={awsLink} />
       </>
 
    )

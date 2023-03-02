@@ -48,6 +48,7 @@ export default function ParentProfile({ isOwn }) {
    const [fetchSettings, settingsResp] = useLazyGetSettingsQuery()
    const [getUserDetail, userDetailResp] = useLazyGetUserDetailQuery()
    const [updatePhoto, updatePhotoResp] = useUpdateProfileImageMutation()
+   const [awsLink, setAwsLink] = useState('')
 
    const dispatch = useDispatch()
    const navigate = useNavigate()
@@ -147,6 +148,7 @@ export default function ParentProfile({ isOwn }) {
       getUserDetail({ id: userId })
          .then(res => {
             console.log('response', res.data.data);
+            setAwsLink(res.data.data.baseLink)
             const { firstName, lastName, phone, email, assiginedStudents } = res.data.data.user
             setUser(res.data.data.user)
             const { birthyear, industry, leadStatus, notes, residentialAddress, service, timeZone, subscribeType, subscriptionCode } = res.data.data.userdetails
@@ -295,7 +297,7 @@ export default function ParentProfile({ isOwn }) {
                   }
 
                   <div className='rounded-t-40 bg-lightWhite lg:bg-transparent flex flex-col items-center relative'>
-                     <ProfilePhoto src={user.photo ? user.photo : '/images/default.jpeg'}
+                     <ProfilePhoto src={user.photo ? `${awsLink}${user.photo}` : '/images/default.jpeg'}
                         handleChange={handleProfilePhotoChange} editable={editable} />
                      <div className='flex items-center mt-67 lg:mt-4'>
                         <EditableText text={`${user.firstName} ${user.lastName}`}
@@ -442,7 +444,7 @@ export default function ParentProfile({ isOwn }) {
                                     <div key={idx} className={`${styles.student} ${activeIndex === idx ? styles.activeStudent : idx < activeIndex ? styles.previousStudent : styles.nextStudent} flex flex-col items-center px-10 lg:mb-10`}>
                                        <div className={styles.studentImageContainer}>
                                           <img className='w-[110px] h-[110px] rounded-full'
-                                             src={student.photo ? student.photo : ''} />
+                                            src={student.photo ? `${awsLink}${student.photo}` : ''} />
                                        </div>
                                        <div className='mt-6 opacity-60 font-inter text-center '
                                        // onClick={() => navigate('/profile/student/12')}
@@ -625,7 +627,7 @@ export default function ParentProfile({ isOwn }) {
          </div>
          <ParentEditables settings={settings} fetchDetails={fetchDetails}
             userId={isOwn ? id : params.id} toEdit={toEdit} setToEdit={setToEdit}
-            persona={user.role} />
+            persona={user.role}  awsLink={awsLink}  />
       </>
    )
 }
