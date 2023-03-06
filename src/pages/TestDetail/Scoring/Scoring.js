@@ -76,7 +76,8 @@ export default function Scoring({ sectionsData }) {
    }
    // console.log('subjects.length', subjects.length);
    const width = `${100 / (subjects.length)}%`
-   // console.log('width', width);
+   console.log('width', width);
+   // console.log('scale.score', scale.score);
 
    return (
       <div className='flex flex-cl text-center'>
@@ -99,8 +100,7 @@ export default function Scoring({ sectionsData }) {
             </div> */}
             {subjects.map(sub => {
                return (
-                  <div className={`px-2 opacity-60 h-[60px] 
-                  ${width === '100%' ? 'w-full' : `w-[${width}]`} pb-5`}>
+                  <div className={`px-2 opacity-60 h-[60px]  ${width === '100%' ? 'w-full' : `w-[${width}]`} pb-5`}>
                      {sub.name}
                   </div>
                )
@@ -108,7 +108,7 @@ export default function Scoring({ sectionsData }) {
             {scale.score.map((score, idx) => {
                return (
                   subjects.map((subj, idx) => {
-                     return <div className={`px-2 h-[40px] opacity-60 ${width === '100%' ? 'w-full' : `w-[${width}]`} pb-3`}>
+                     return <div className={`px-2 h-[40px] opacity-60 ${width === '100%' ? 'w-full' : `w-[${width}]`} pb-3`} style={{width}} >
                         {getScore1(subj, score, idx)}
                      </div>
                   })
