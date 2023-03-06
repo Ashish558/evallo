@@ -76,7 +76,7 @@ export default function Scoring({ sectionsData }) {
    }
    // console.log('subjects.length', subjects.length);
    const width = `${100 / (subjects.length)}%`
-   console.log('width', width);
+   // console.log('width', width);
    // console.log('scale.score', scale.score);
 
    return (

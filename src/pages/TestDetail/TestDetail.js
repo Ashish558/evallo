@@ -129,7 +129,7 @@ export default function TestDetail() {
    }, [])
 
    useEffect(() => {
-      // console.log(allQuestions);
+      console.log('allQuestions', allQuestions);
       // console.log(subjects);
       if (subjects.length === 0) return
       if (allQuestions.length === 0) return

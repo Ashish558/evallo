@@ -260,6 +260,9 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch }) {
                   {item.assignedOn}
                </td>
                <td className="font-medium px-1  min-w-14 py-4">
+                  {item.assignedBy}
+               </td>
+               <td className="font-medium px-1  min-w-14 py-4">
                   {item.dueDate}
                </td>
                <td className="font-medium px-1  min-w-14 py-4">

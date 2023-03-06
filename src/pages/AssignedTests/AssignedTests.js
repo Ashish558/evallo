@@ -24,9 +24,6 @@ const timeLimits = ['Regular', '1.5x', 'Unlimited']
 const testData = ["SAT", "ACT"];
 
 
-
-
-
 const initialState = {
    name: "",
    limit: "",
@@ -90,6 +87,11 @@ export default function AssignedTests() {
       {
          id: 2,
          text: 'Assigned on',
+         onCick: sortByAssignedDate
+      },
+      {
+         id: 2,
+         text: 'Assigned By',
          onCick: sortByAssignedDate
       },
       {
@@ -242,11 +244,12 @@ export default function AssignedTests() {
             if (res.error) return console.log(res.error)
             console.log('assigned res', res.data.data);
             let data = res.data.data.test.map(item => {
-               const { createdAt, studentId, testId, dueDate, multiple, timeLimit, isCompleted, isStarted } = item
+               const { createdAt, studentId, testId, dueDate, multiple, timeLimit, isCompleted, isStarted, assignedBy } = item
                return {
                   studentName: studentId ? `${studentId.firstName} ${studentId.lastName}` : '-',
                   studentId: studentId ? studentId._id : '-',
                   assignedOn: getFormattedDate(createdAt),
+                  assignedBy: assignedBy ? `${assignedBy?.firstName} ${assignedBy?.lastName}` : '-',
                   testName: testId ? testId.testName : '-',
                   testId: testId ? testId._id : null,
                   pdfLink: testId ? testId.pdf : null,
@@ -272,11 +275,13 @@ export default function AssignedTests() {
             if (res.error) return console.log('tutor assignedtest', res.error)
             console.log('tutor assignedtest', res.data)
             let data = res.data.data.test.map(item => {
-               const { createdAt, studentId, dueDate, testId, multiple, timeLimit, isCompleted, isStarted } = item
+               const { createdAt, studentId, dueDate, testId, multiple, timeLimit, isCompleted, isStarted, assignedBy } = item
+              
                return {
                   studentName: studentId ? `${studentId.firstName} ${studentId.lastName}` : '-',
                   studentId: studentId ? studentId._id : '-',
                   assignedOn: getFormattedDate(createdAt),
+                  assignedBy: assignedBy ? `${assignedBy?.firstName ? assignedBy?.firstName : '-'} ${assignedBy?.lastName ? assignedBy?.lastName : ''}` : '-',
                   testName: testId ? testId.testName : '-',
                   testId: testId ? testId._id : null,
                   pdfLink: testId ? testId.pdf : null,

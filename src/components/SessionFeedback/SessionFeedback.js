@@ -10,10 +10,12 @@ import { getFormattedDate } from "../../utils/utils";
 const SessionFeedback = () => {
    const [getTest, getTestResp] = useLazyGetAssignedTestQuery()
    const [allTests, setAllTests] = useState([])
+   const [awsLink, setAwsLink] = useState('')
    useEffect(() => {
       getTest()
          .then(res => {
-            console.log('all-assigned-tests', res.data.data);
+            console.log('all-assigned-tests', res.data);
+            setAwsLink(res.data.data.baseLink)
             let tempAllTests = res.data.data.test.map(test => {
                const { testId, studentId, dueDate, isCompleted, isStarted, createdAt, updatedAt } = test
                if (testId === null) return
@@ -51,7 +53,7 @@ const SessionFeedback = () => {
                {/* {/* <TestItem name="name" status="due date" date="june 20, 2022" action="Start" marks="1250/1250" /> */}
 
                {allTests.map(test => {
-                  return <TestItem key={test._id} {...test} />
+                  return <TestItem key={test._id} {...test} awsLink={awsLink} />
                })}
                {/* <TestItem name="SAT Series #01" status="due date" date="june 20, 2022" action="Continue" />
             <TestItem name="Ex. Starte" status="due date" date="june 20, 2022" action="Start" marks="1250/1250" />
