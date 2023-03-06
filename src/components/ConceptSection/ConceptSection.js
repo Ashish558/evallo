@@ -88,7 +88,7 @@ const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
                      if (details === null || details === undefined) {
                         details = {}
                      }
-                     setTutors(prev => [...prev, { ...tutor, ...details }])
+                     setTutors(prev => [...prev, { ...tutor, ...details,  _id: tutor._id }])
                   })
 
             })
