@@ -11,6 +11,7 @@ import demoUser from "../../../../assets/icons/demo-user.png"
 import Slider from '../../../../components/Slider/Slider'
 import { grades, subjects, timeZones } from '../../../../constants/constants'
 import styles from './style.module.css'
+import CountryCode from '../../../../components/CountryCode/CountryCode'
 
 // 637b9df1e9beff25e9c2aa83
 export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetails, settings, persona, awsLink }) {
@@ -341,6 +342,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
          updateFields({ id: userId, fields: reqBody })
             .then(res => {
                console.log(res)
+               setLoading(false)
                if (reqBody.linkedIn) {
                   if (currentToEdit.isPresent === false) {
                      delete reqBody['isPresent']
@@ -446,7 +448,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
    }
 
    // console.log('awsLink', awsLink)
-   // console.log('toedit', currentToEdit)
+   console.log('toedit', currentToEdit)
    // console.log('setting', settings.servicesAndSpecialization[currentToEdit.selectedIdx])
    // console.log('field', currentField)
    // console.log('sett', settings)
@@ -596,9 +598,15 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                                     labelClassname='hidden'
                                     placeholder='Phone'
                                     inputContainerClassName='text-sm pt-3 pb-3 px-5 bg-primary-50 border-0'
-                                    inputClassName='bg-transparent rounded-[4px]'
+                                    inputClassName='bg-transparent rounded-[4px]  ml-[70px]'
                                     parentClassName='flex-1 ' type='text'
                                     value={currentToEdit.phone}
+                                    inputLeftField={
+                                       <CountryCode className={styles.phoneNumber} numberPrefix={currentToEdit.phoneCode}
+                                          setNumberPrefix={val => {
+                                             setCurrentToEdit({ ...currentToEdit, phoneCode: val })
+                                          }} />
+                                    }
                                     onChange={e => setCurrentToEdit({ ...currentToEdit, phone: e.target.value })} />
                               </div>
                            </div>
@@ -1016,7 +1024,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                         }
                         {currentField.name === 'paymentInfo' &&
                            <div>
-                               <div className='flex items-center mb-5'>
+                              <div className='flex items-center mb-5'>
                                  <InputField
                                     labelClassname='hidden'
                                     placeholder='Payment Info'
@@ -1026,7 +1034,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                                     value={currentToEdit.paymentInfo}
                                     onChange={e => setCurrentToEdit({ ...currentToEdit, paymentInfo: e.target.value })} />
                               </div>
-                           
+
                               {/* <div className='flex items-center mb-4'>
                                  <p className='font-medium mr-4 min-w-[100px]'>
                                     Bank Name
@@ -1264,9 +1272,15 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                                     labelClassname='hidden'
                                     placeholder='Phone'
                                     inputContainerClassName='text-sm pt-3 pb-3 px-5 bg-primary-50 border-0'
-                                    inputClassName='bg-transparent rounded-[4px]'
+                                    inputClassName='bg-transparent rounded-[4px] ml-[70px]'
                                     parentClassName='flex-1 ' type='text'
                                     value={currentToEdit.phone}
+                                    inputLeftField={
+                                       <CountryCode className={styles.phoneNumber} numberPrefix={currentToEdit.phoneCode}
+                                          setNumberPrefix={val => {
+                                             setCurrentToEdit({ ...currentToEdit, phoneCode: val })
+                                          }} />
+                                    }
                                     onChange={e => setCurrentToEdit({ ...currentToEdit, phone: e.target.value })} />
                               </div>
                            </div>

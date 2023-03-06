@@ -5,11 +5,13 @@ import "./simpleCalendar.css";
 import LeftIcon from '../../assets/calendar/left.svg'
 import RightIcon from '../../assets/calendar/right.svg'
 
-export default function SimpleCalendar({ currentDate, setCurrentDate }) {
+export default function SimpleCalendar({ currentDate, setCurrentDate, events }) {
 
    const changeDate = (e) => {
       setCurrentDate(e);
    };
+
+   console.log('events', events);
    return (
       <>
          <Calendar value={currentDate} onChange={changeDate}

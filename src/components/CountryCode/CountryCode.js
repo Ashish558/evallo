@@ -6,7 +6,7 @@ import DownArrow from "../../assets/icons/down-chevron.svg";
 import { useState } from 'react';
 import useOutsideAlerter from '../../hooks/useOutsideAlerter';
 
-export default function CountryCode({ numberPrefix, setNumberPrefix }) {
+export default function CountryCode({ numberPrefix, setNumberPrefix, className }) {
 
    const [selected, setSelected] = useState(false)
    const selectRef = useRef()
@@ -14,12 +14,12 @@ export default function CountryCode({ numberPrefix, setNumberPrefix }) {
 
    return (
       <div ref={selectRef}
-         className={`${selected && "relative z-5000"} ${styles.phoneNumberField} `}
+         className={`${selected && "relative z-5000"} ${styles.phoneNumberField} ${className ? className : ''} `}
          onClick={() => setSelected(true)}
       >
          <div
             className={`py-[16px] w-full px-2 pl-3 flex justify-center items-center rounded-10 relative cursor-pointer z-50`}
-            style={{justifyContent: 'spa'}}
+            style={{ justifyContent: 'spa' }}
          >
             {
                <img
@@ -35,12 +35,12 @@ export default function CountryCode({ numberPrefix, setNumberPrefix }) {
             </div>
             {selected && (
                <div className={`scrollbar-content scrollbar-vertical ${selectStyles.options}`} style={{ top: '100%' }} >
-                  {['+1'].map((option, idx) => {
+                  {['+1', '+91'].map((option, idx) => {
                      return (
                         <div
                            className="outline-0 border-0 py-2 px-4"
                            key={idx}
-                           onClick={() => setNumberPrefix(option)}
+                           onClick={() => {setNumberPrefix(option) }}
                         >
                            {" "}
                            {option}{" "}

@@ -187,6 +187,7 @@ export default function TutorProfile({ isOwn }) {
          email: '',
          phone: '',
          linkedIn: '',
+         phoneCode: '',
          isPresent: false,
       },
       interest: {
@@ -267,7 +268,7 @@ export default function TutorProfile({ isOwn }) {
          .then(res => {
             console.log('response', res.data.data);
             setAwsLink(res.data.data.baseLink)
-            const { firstName, lastName, phone, email } = res.data.data.user
+            const { firstName, lastName, phone, email, phoneCode } = res.data.data.user
             setUser(res.data.data.user)
             let details = res.data.data.details
             console.log('details', details);
@@ -286,6 +287,7 @@ export default function TutorProfile({ isOwn }) {
                         ...prevToEdit.tutorContact,
                         email: email,
                         phone: phone === null ? '' : phone,
+                        phoneCode: phoneCode === null ? '' : phoneCode,
                         linkedIn: details === null ? '' : details.linkedIn,
                         isPresent: details === null ? false : true
                      },
@@ -614,7 +616,11 @@ export default function TutorProfile({ isOwn }) {
                                  <img src={WhatsappIcon} />
                                  <p className='mt-1 font-medium.4 opacity-60 text-xs cursor-pointer'
                                     onClick={() => window.open(`https://wa.me/${user.phone}`)}>
-                                    {user.phone ? user.phone : ''}
+                                    {user.phone ?
+                                    <>
+                                     {`${user.phoneCode ? user.phoneCode : ''} ${user.phone}`}
+                                    </>
+                                     : ''}
                                  </p>
                               </div>
                            </div>

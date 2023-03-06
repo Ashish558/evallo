@@ -94,6 +94,7 @@ export default function ParentProfile({ isOwn }) {
          active: false,
          email: '',
          phone: '',
+         phoneCode: '',
       },
       address: {
          active: false,
@@ -149,7 +150,7 @@ export default function ParentProfile({ isOwn }) {
          .then(res => {
             console.log('response', res.data.data);
             setAwsLink(res.data.data.baseLink)
-            const { firstName, lastName, phone, email, assiginedStudents } = res.data.data.user
+            const { firstName, lastName, phone, email, assiginedStudents, phoneCode } = res.data.data.user
             setUser(res.data.data.user)
             const { birthyear, industry, leadStatus, notes, residentialAddress, service, timeZone, subscribeType, subscriptionCode } = res.data.data.userdetails
 
@@ -186,7 +187,8 @@ export default function ParentProfile({ isOwn }) {
                contact: {
                   ...toEdit.contact,
                   email: email,
-                  phone: phone === null ? '' : phone
+                  phone: phone === null ? '' : phone,
+                  phoneCode: phoneCode === null ? '' : phoneCode,
                },
                address: {
                   ...toEdit.address,

@@ -12,10 +12,7 @@ export const userServicesApi = createApi({
       getAllUsers: builder.query({
          query: (body) => ({
             url: `api/user`,
-            params: {
-               limit: body.maxPageSize,
-               page: body.currentPage
-            },
+            params: body,
             method: "GET",
             headers: getAuthHeader()
          }),

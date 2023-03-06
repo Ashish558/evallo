@@ -494,7 +494,7 @@ export default function AssignedTests() {
       setStudentNameOptions(studentNames)
    }, [allAssignedTests])
 
-   console.log('filteredTests', filteredTests);
+   // console.log('filteredTests', filteredTests);
    return (
       <>
          <div className="lg:ml-pageLeft bg-lightWhite min-h-screen">

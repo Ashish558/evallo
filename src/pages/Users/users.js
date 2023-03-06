@@ -166,7 +166,19 @@ export default function Users() {
    const fetch = () => {
       setUsersData([])
       setFilteredUsersData([])
-      fetchUsers({ currentPage, maxPageSize })
+      let params = {
+         limit: maxPageSize,
+         page: currentPage,
+         // role: 'parent',
+         // role: 'student',
+      }
+      // if(filterData.userType.length > 0){
+      //    filterData.userType.forEach(item => {
+      //       params.role = item
+      //    })
+      // }
+      console.log('params', params);
+      fetchUsers(params)
          .then(res => {
             console.log('all-users', res.data.data);
             setTotalPages(res.data.data.total_users)
@@ -191,7 +203,7 @@ export default function Users() {
                      // console.log('tutor', user._id);
                      await getTutorDetail({ id: user._id })
                         .then(resp => {
-                           console.log('TUTOR RESp', resp);
+                           // console.log('TUTOR RESp', resp);
 
                            setFilterItems(prev => [...prev])
                            // console.log('tutor-details', resp.data.data);
@@ -257,6 +269,7 @@ export default function Users() {
       let tempdata = [...usersData]
       // console.log('all users data', usersData)
       // console.log('filterData.specialization', filterData.specialization)
+      // fetch()
       //USER TYPE FILTER
       if (filterData.userType.length > 0) {
          tempdata = tempdata.filter(user => filterData.userType.includes(user.userType))

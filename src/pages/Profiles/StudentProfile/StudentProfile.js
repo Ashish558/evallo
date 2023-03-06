@@ -171,6 +171,7 @@ export default function StudentProfile({ isOwn }) {
          active: false,
          email: '',
          phone: '',
+         phoneCode: ''
       },
       address: {
          active: false,
@@ -257,7 +258,7 @@ export default function StudentProfile({ isOwn }) {
          .then(res => {
             console.log('details -- ', res.data.data);
             setAwsLink(res.data.data.baseLink)
-            const { firstName, lastName, phone, email, associatedParent } = res.data.data.user
+            const { firstName, lastName, phone, phoneCode, email, associatedParent } = res.data.data.user
             let { service, accomodations, timeZone, birthyear, personality, interest, schoolName, grade, satScores, actScores, subscriptionCode } = res.data.data.userdetails
             associatedParent && getUserDetail({ id: associatedParent })
                .then(res => {
@@ -299,7 +300,8 @@ export default function StudentProfile({ isOwn }) {
                         contact: {
                            ...prev.contact,
                            email: email,
-                           phone: phone === null ? '' : phone
+                           phone: phone === null ? '' : phone,
+                           phoneCode: phoneCode === null ? '' : phoneCode,
                         },
                         birthYear: {
                            ...prev.birthYear,
@@ -661,7 +663,7 @@ export default function StudentProfile({ isOwn }) {
                         className='mt-53 lg:mt-0'
                         body={
                            <>
-                              <OwlCarousel className={`owl-carousel owl-theme ${styles.scoreCarousel}`}  margin={30} items={1}>
+                              <OwlCarousel className={`owl-carousel owl-theme ${styles.scoreCarousel}`} margin={30} items={1}>
                                  <SubjectSlider
                                     score={userDetail.satScores ?
                                        { verbal: userDetail.satScores.verbal, maths: userDetail.satScores.maths } : {}
@@ -676,7 +678,7 @@ export default function StudentProfile({ isOwn }) {
                                        <EditableText editable={editable}
                                           onClick={() => setToEdit({ ...toEdit, satScores: { ...toEdit.satScores, active: true } })}
                                           text='Official SAT Scores'
-                                          className='text-lg mb-2' 
+                                          className='text-lg mb-2'
                                           imgClass={styles.editIcon}
                                           textClassName="flex-1 text-center text-[21px]" />
                                     }

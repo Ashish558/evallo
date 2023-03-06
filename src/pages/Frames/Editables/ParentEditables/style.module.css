@@ -12,3 +12,7 @@
    border-top-left-radius: 20px;
    border-top-right-radius: 20px;
 }
+.phoneNumber {
+   top: 0;
+   height: 100%;
+}
