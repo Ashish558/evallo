@@ -100,7 +100,7 @@ export default function Scoring({ sectionsData }) {
             </div> */}
             {subjects.map(sub => {
                return (
-                  <div className={`px-2 opacity-60 h-[60px]  ${width === '100%' ? 'w-full' : `w-[${width}]`} pb-5`}>
+                  <div className={`px-2 opacity-60 h-[60px]  ${width === '100%' ? 'w-full' : `w-[${width}]`} pb-5`} style={{width}}>
                      {sub.name}
                   </div>
                )
