@@ -11,7 +11,6 @@ export default function SimpleCalendar({ currentDate, setCurrentDate, events }) 
       setCurrentDate(e);
    };
 
-   console.log('events', events);
    return (
       <>
          <Calendar value={currentDate} onChange={changeDate}
