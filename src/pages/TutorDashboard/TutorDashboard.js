@@ -75,6 +75,7 @@ export default function TutorDashboard() {
    const { id } = useSelector(state => state.user)
    const [students, setStudents] = useState([])
    const [tutorRank, setTutorRank] = useState('-')
+   const [awsLink, setAwsLink] = useState('')
 
    useEffect(() => {
       const url = `/api/session/tutor/${id}`;
@@ -103,6 +104,7 @@ export default function TutorDashboard() {
          .then(resp => {
             // console.log(resp.data.data.user.assiginedStudents)
             console.log(resp.data.data);
+            setAwsLink(resp.data.data.baseLink)
             const { details } = resp.data.data
             // console.log('tutor details', details);
             if (details !== null || details !== undefined) {
@@ -220,7 +222,7 @@ export default function TutorDashboard() {
                            <OwlCarousel items={5} autoWidth margin={20} >
                               {students.map(student => {
                                  return <div className='flex flex-col items-center text-center w-[110px]'>
-                                    <img src={student.photo} className='w-[100px]' />
+                                    <img src={`${awsLink}${student.photo}`} className='w-[100px]' />
                                     <p className='text-lg font-semibold mt-4 cursor-pointer'
                                        onClick={() => navigate(`/profile/student/${student._id}`)} >
                                        {student.name.split(" ")[0]} <br /> {student.name.split(" ")[1]} </p>
@@ -320,7 +322,7 @@ export default function TutorDashboard() {
                            return (
                               <div className='flex items-center mb-8' key={item._id} >
                                  <div>
-                                    <img src={item.photo} className='w-[62px] h-[62px] rounded-full' />
+                                    <img src={`${awsLink}${item.photo}`} className='w-[62px] h-[62px] rounded-full' />
                                  </div>
                                  <div className='ml-[21px] mr-[8px] flex-1'>
                                     <p className='font-semibold text-lg mb-1'> {item.testName} </p>

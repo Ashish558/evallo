@@ -11,6 +11,7 @@ const initialState = {
   role: '',
   email: '',
   phone: '',
+  awsLink: ''
 };
 
 const user = createSlice({
@@ -22,6 +23,9 @@ const user = createSlice({
     },
     updateTimeZone: (state, { payload }) => {
       state.timeZone = payload.timeZone;
+    },
+    updateAwsLink: (state, { payload }) => {
+      state.awsLink = payload;
     },
     updateUserDetails: (state, { payload }) => {
       state.firstName = payload.firstName;
@@ -37,5 +41,5 @@ const user = createSlice({
   },
 });
 
-export const { updateIsLoggedIn, updateUserDetails, updateTimeZone } = user.actions;
+export const { updateIsLoggedIn, updateUserDetails, updateTimeZone, updateAwsLink } = user.actions;
 export default user.reducer;

@@ -43,6 +43,7 @@ const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
    const [filteredAssignedTests, setFilteredAssignedTests] = useState([])
    const [getTutorDetail, getTutorDetailResp] = useLazyGetTutorDetailsQuery()
    const [totalTutors, setTotalTutors] = useState(0)
+   const { awsLink } = useSelector(state => state.user)
 
    useEffect(() => {
       fetchAssignedTests(id)
@@ -240,7 +241,7 @@ const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
                                        </button>
                                     </div>
                                     <div className="w-2/5">
-                                       <img src={tutor.photo ? tutor.photo : '/images/default.jpeg'} className="mx-auto w-full object-contain w-[140px] h-[140px] rounded-full" alt='profile-icon' />
+                                       <img src={tutor.photo ? `${awsLink}${tutor.photo}` : '/images/default.jpeg'} className="mx-auto w-full object-contain w-[140px] h-[140px] rounded-full" alt='profile-icon' />
                                     </div>
                                  </div>
                               )

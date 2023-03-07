@@ -2,7 +2,7 @@ import AppRoutes from "./navigation/AppRoutes";
 import "./App.css";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import { updateIsLoggedIn, updateUserDetails } from "./app/slices/user";
+import { updateAwsLink, updateIsLoggedIn, updateUserDetails } from "./app/slices/user";
 import { useLazyGetPersonalDetailQuery } from "./app/services/users";
 
 function App() {
@@ -21,6 +21,7 @@ function App() {
                   return
                }
                const { firstName, lastName, _id, amountToPay, credits, role, email, phone } = res.data.data.user
+               dispatch(updateAwsLink(res.data.data.baseLink))
                let timeZone = ''
                if (res.data.data.userdetails) {
                   timeZone = res.data.data.userdetails.timeZone

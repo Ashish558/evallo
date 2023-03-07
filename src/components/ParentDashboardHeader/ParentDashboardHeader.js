@@ -30,6 +30,7 @@ const ParentDashboardHeader = ({ selectedStudent, setSelectedStudent }) => {
    const [payBalance, payBalanceResp] = useLazyPayBalanceQuery()
 
    const [detailStudent, setDetailStudent] = useState(null)
+   const { awsLink } = useSelector(state => state.user)
 
    const navigate = useNavigate()
    //  sessionStorage
@@ -199,7 +200,7 @@ const ParentDashboardHeader = ({ selectedStudent, setSelectedStudent }) => {
                      {associatedStudents.length > 0 &&
                         <div className="w-1/2 flex justify-end">
                            {selectedStudent !== null &&
-                              <img className="w-[40px] h-[40px] rounded-full" src={selectedStudent.photo ? selectedStudent.photo : ''} alt="" />
+                              <img className="w-[40px] h-[40px] rounded-full" src={selectedStudent.photo ? `${awsLink}${selectedStudent.photo}` : ''} alt="" />
                            }
                         </div>
                      }
