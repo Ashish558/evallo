@@ -19,6 +19,7 @@ import PrimaryButton from '../../components/Buttons/PrimaryButton'
 import CountryCode from '../../components/CountryCode/CountryCode'
 import { isPhoneNumber } from '../Signup/utils/util'
 import { checkIfExistInNestedArray } from '../../utils/utils'
+import InputSelectNew from '../../components/InputSelectNew/InputSelectNew'
 
 const optionData = [
    'option 1',
@@ -62,19 +63,19 @@ export default function Users() {
       setUsersData(prev => {
          let arr = [...prev]
          arr = arr.sort(function (a, b) {
-            if(a.name < b.name) { return -1; }
-            if(a.name > b.name) { return 1; }
+            if (a.name < b.name) { return -1; }
+            if (a.name > b.name) { return 1; }
             return 0;
          });
          return arr
       })
-      
+
       setFilteredUsersData(prev => {
          let arr = [...prev]
          console.log('arr', arr);
          arr = arr.sort(function (a, b) {
-            if(a.name < b.name) { return -1; }
-            if(a.name > b.name) { return 1; }
+            if (a.name < b.name) { return -1; }
+            if (a.name > b.name) { return 1; }
             return 0;
          });
          return arr
@@ -144,6 +145,7 @@ export default function Users() {
 
    const [totalPages, setTotalPages] = useState(0)
    const [currentPage, setCurrentPage] = useState(1)
+   const [allTutors, setAllTutors] = useState([])
 
    const [filterData, setFilterData] = useState({
       typeName: '',
@@ -166,19 +168,40 @@ export default function Users() {
    const fetch = () => {
       setUsersData([])
       setFilteredUsersData([])
-      let params = {
-         limit: maxPageSize,
-         page: currentPage,
-         // role: 'parent',
-         // role: 'student',
+
+      let urlParams = `?limit=${maxPageSize}&page=${currentPage}`
+      if (filterData.userType.length > 0) {
+         filterData.userType.forEach(item => {
+            urlParams = urlParams + `&role=${item}`
+         })
       }
-      // if(filterData.userType.length > 0){
-      //    filterData.userType.forEach(item => {
-      //       params.role = item
-      //    })
-      // }
-      console.log('params', params);
-      fetchUsers(params)
+      if (filterData.userStatus.length > 0) {
+         filterData.userStatus.forEach(item => {
+            urlParams = urlParams + `&userStatus=${item}`
+         })
+      }
+      if (filterData.specialization.length > 0) {
+         filterData.specialization.forEach(item => {
+            urlParams = urlParams + `&specialization=${item}`
+         })
+      }
+      if (filterData.tutor.length > 0) {
+         let ids = []
+         filterData.tutor.forEach(selectedTutorName => {
+            let tutor = allTutors.find(item => item.value === selectedTutorName)
+            if(tutor === undefined) return
+            ids.push(tutor._id)
+         })
+         ids.map(tutorId => {
+            urlParams = urlParams + `&assiginedTutors=${tutorId}`
+         })
+      }
+      if (filterData.typeName.length > 0) {
+         urlParams = urlParams + `&name=${filterData.typeName}`
+      }
+
+      // console.log('urlParams', urlParams);
+      fetchUsers(urlParams)
          .then(res => {
             console.log('all-users', res.data.data);
             setTotalPages(res.data.data.total_users)
@@ -239,7 +262,28 @@ export default function Users() {
          })
    }
 
+   const fetchTutors = () => {
+      let urlParams = `?role=tutor`
 
+      fetchUsers(urlParams)
+         .then(res => {
+            // console.log('tutors', res.data.data);
+            if (!res.data.data.user) return
+            let data = res.data.data.user.map(item => {
+               const { firstName, lastName } = item
+               return {
+                  _id: item._id,
+                  value: `${firstName} ${lastName}`
+               }
+            })
+            setAllTutors(data)
+
+         })
+   }
+
+   useEffect(() => {
+      fetchTutors()
+   }, [])
    const changeUserField = (field, id) => {
       let temp = filteredUsersData.map(item => {
          // console.log(item[Object.keys(field)[0]]);
@@ -269,7 +313,7 @@ export default function Users() {
       let tempdata = [...usersData]
       // console.log('all users data', usersData)
       // console.log('filterData.specialization', filterData.specialization)
-      // fetch()
+      fetch()
       //USER TYPE FILTER
       if (filterData.userType.length > 0) {
          tempdata = tempdata.filter(user => filterData.userType.includes(user.userType))
@@ -302,7 +346,7 @@ export default function Users() {
       } else {
          tempdata = tempdata.filter(user => user.name !== '')
       }
-      setFilteredUsersData(tempdata)
+      // setFilteredUsersData(tempdata)
    }, [filterData])
 
    const removeFilter = (key, text, isArray) => {
@@ -474,11 +518,44 @@ export default function Users() {
       console.log('specs', specs);
 
    }, [settings])
+
+
+   const handleTutorChange = (item) => {
+      // console.log(item);
+      // console.log('filterData tutor', filterData.tutor);
+      if (filterData.tutor.includes(item.value)) {
+         let updated = filterData.tutor.filter(tutor => tutor !== item.value)
+         // setUpdatedSubscriptionData(prev => ({
+         //    ...prev,
+         //    tests: updated
+         // }))
+         setFilterData({
+            ...filterData,
+            tutor:updated
+         })
+      } else {
+         
+         setFilterData({
+            ...filterData,
+            tutor: [
+               ...filterData.tutor,
+               item.value
+            ]
+         })
+         // setUpdatedSubscriptionData(prev => ({
+         //    ...prev,
+         //    tests: [...updatedSubscriptionData.tests, item._id]
+         // }))
+      }
+   }
+
    // console.log('users', filteredUsersData);
    // console.log('settings', settings);
    // console.log('filterItems', filterItems);
-   // console.log('filterData', filterData);
+   // console.log('filterData tutor', filterData.tutor);
    // console.log('ALL USERS DATA', usersData)
+   // console.log('tutors', allTutors)
+
 
    return (
       <div className='lg:ml-pageLeft bg-lightWhite min-h-screen'>
@@ -564,14 +641,24 @@ export default function Users() {
                         : [...filterData.userStatus, val]
                   })}
                />
-               <InputSelect optionData={[]}
+               <InputSelectNew optionData={allTutors}
                   placeholder='Tutor'
                   parentClassName='w-full w-1/6'
                   type='select'
                   inputContainerClassName='text-sm border bg-white px-[20px] py-[16px]'
-
+                  optionType='object'
                   value={filterData.tutor.length > 0 ? filterData.tutor[0] : ''}
-                  onChange={val => setFilterData({ ...filterData, tutor: val })} />
+                  checkbox={{
+                     visible: true,
+                     name: 'test',
+                     match: filterData.tutor,
+                     matchKey: 'value'
+                  }}
+                  onChange={val => {
+                     handleTutorChange(val)
+                     // setFilterData({ ...filterData, tutor: val })
+                  }}
+               />
 
                <PrimaryButton type='submit'
                   children={

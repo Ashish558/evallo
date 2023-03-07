@@ -10,9 +10,8 @@ export const userServicesApi = createApi({
 
    endpoints: (builder) => ({
       getAllUsers: builder.query({
-         query: (body) => ({
-            url: `api/user`,
-            params: body,
+         query: (params) => ({
+            url: `api/user${params}`,
             method: "GET",
             headers: getAuthHeader()
          }),
