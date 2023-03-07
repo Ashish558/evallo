@@ -270,7 +270,6 @@ export default function AssignedTests() {
                   assignedTestId: item._id
                }
             })
-            console.log('allAssignedBys', allAssignedBys)
             setAssignedBys(allAssignedBys)
             let sortedArr = data.sort(function (a, b) {
                return new Date(b.createdAt) - new Date(a.createdAt);
@@ -537,14 +536,13 @@ export default function AssignedTests() {
                      Assigned Tests
                   </p> : <></>}
 
-                  <InputSelect
+                  <InputField
                      value={filterData.studentName}
-                     onChange={val => setFilterData({ ...filterData, studentName: val })}
-                     optionData={studentNameOptions}
+                     onChange={e => setFilterData({ ...filterData, studentName: e.target.value })}
                      inputContainerClassName="px-[20px] py-[16px] bg-white"
                      placeholder="Student Name"
                      parentClassName="w-full text-sm"
-                     type="select"
+                     type="text"
                   />
                   {/* <InputField
                      value={filterData.testName}
