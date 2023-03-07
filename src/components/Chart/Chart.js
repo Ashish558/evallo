@@ -68,9 +68,7 @@ export default function Chart({ setSubjects, subjects, selectedSubject, selected
             console.log('filter undefined', filtered)
             setChartData(filtered)
             const subjectsNames = []
-            let chartData = [
-
-            ]
+          
             filtered.forEach(item => {
                if (!subjectsNames.includes(item.subject)) {
                   subjectsNames.push(item.subject)
@@ -109,13 +107,12 @@ export default function Chart({ setSubjects, subjects, selectedSubject, selected
             if (!data) return
             let fData = data.filter(item => Object.keys(item.concepts).includes('correct'))
             console.log('fdata', fData)
+            fData = data.filter(item => item.concepts.correct !== null )
             let filtered = fData.filter(item => !Object.keys(item.concepts.correct).includes('undefined'))
             console.log('filter undefined', filtered)
             setChartData(filtered)
             const subjectsNames = []
-            let chartData = [
-
-            ]
+          
             filtered.forEach(item => {
                if (!subjectsNames.includes(item.subject)) {
                   subjectsNames.push(item.subject)
@@ -152,6 +149,7 @@ export default function Chart({ setSubjects, subjects, selectedSubject, selected
    }
    useEffect(() => {
       if (chartData.length === 0) return
+
       const curr = chartData.find(item => item.subject === selectedSubject)
       if (curr === undefined) return
       console.log('curr', curr)
@@ -237,6 +235,7 @@ export default function Chart({ setSubjects, subjects, selectedSubject, selected
 
    // console.log('chartData', chartData)
    // console.log('currentConcepts', currentConcepts)
+   // console.log('selectedSubject', selectedSubject)
 
    useEffect(() => {
       // if (currentConcepts.length < 10) {

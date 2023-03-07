@@ -183,6 +183,7 @@ const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
    }
 
    // console.log('tutors', tutors);
+   console.log('selectedSubject', selectedSubject);
    // console.log('subjects', subjects);
    // console.log('filteredTutors', filteredTutors);
    // console.log('tutorCarouselRef', tutorCarouselRef.current);
@@ -207,7 +208,7 @@ const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
             <div id={styles.chartContainer} className='scrollbar-content mb-4'>
                <div id={styles.chart} className='scrollbar-content' >
                   <div>
-                     <Chart selectedStudent={selectedStudent} setSubjects={setSubjects} />
+                     <Chart selectedStudent={selectedStudent} selectedSubject={selectedSubject} setSubjects={setSubjects} />
                   </div>
                </div>
             </div>
