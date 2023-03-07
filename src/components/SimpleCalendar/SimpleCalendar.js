@@ -17,7 +17,6 @@ export default function SimpleCalendar({ currentDate, setCurrentDate, events }) 
          const date = new Date(event.start);  // 2009-11-10
          const month = date.toLocaleString('default', { month: 'long' });
          let str = `${month} ${date.getDate()}, ${date.getFullYear()}`
-         console.log(str);
          var element = document.querySelector(`[aria-label="${str}"]`);
          // console.log('element', element);
          if(element !== null){
@@ -25,7 +24,7 @@ export default function SimpleCalendar({ currentDate, setCurrentDate, events }) 
          }
       })
    }, [events])
-   
+
    return (
       <>
          <Calendar value={currentDate} onChange={changeDate}
