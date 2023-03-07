@@ -200,7 +200,7 @@ export default function Users() {
          urlParams = urlParams + `&name=${filterData.typeName}`
       }
 
-      // console.log('urlParams', urlParams);
+      console.log('urlParams', urlParams);
       fetchUsers(urlParams)
          .then(res => {
             console.log('all-users', res.data.data);
@@ -555,6 +555,7 @@ export default function Users() {
    // console.log('filterData tutor', filterData.tutor);
    // console.log('ALL USERS DATA', usersData)
    // console.log('tutors', allTutors)
+   // console.log('totalPages', totalPages)
 
 
    return (

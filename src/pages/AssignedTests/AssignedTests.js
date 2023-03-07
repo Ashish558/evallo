@@ -139,7 +139,7 @@ export default function AssignedTests() {
    const [filterData, setFilterData] = useState({
       studentName: '',
       testName: '',
-      tutor: '',
+      assignedBy: '',
       status: '',
    })
 
@@ -153,6 +153,7 @@ export default function AssignedTests() {
    const [fetchTests, fetchTestsResp] = useLazyGetTestsByNameQuery()
    const [deleteAssignedTest, deleteAssignedTestResp] = useLazyDeleteTestQuery()
    const [fetchTutorStudents, tutorStudentsResp] = useLazyGetTutorStudentsByNameQuery();
+   const [assignedBys, setAssignedBys] = useState([])
 
    const [students, setStudents] = useState([]);
 
@@ -243,8 +244,16 @@ export default function AssignedTests() {
          .then(res => {
             if (res.error) return console.log(res.error)
             console.log('assigned res', res.data.data);
+
+            let allAssignedBys = []
             let data = res.data.data.test.map(item => {
                const { createdAt, studentId, testId, dueDate, multiple, timeLimit, isCompleted, isStarted, assignedBy } = item
+               const assignedByName = `${assignedBy?.firstName ? assignedBy?.firstName : '-'} ${assignedBy?.lastName ? assignedBy?.lastName : ''}`
+               if (assignedBy) {
+                  if (!allAssignedBys.includes(assignedByName)) {
+                     allAssignedBys.push(assignedByName)
+                  }
+               }
                return {
                   studentName: studentId ? `${studentId.firstName} ${studentId.lastName}` : '-',
                   studentId: studentId ? studentId._id : '-',
@@ -261,6 +270,8 @@ export default function AssignedTests() {
                   assignedTestId: item._id
                }
             })
+            console.log('allAssignedBys', allAssignedBys)
+            setAssignedBys(allAssignedBys)
             let sortedArr = data.sort(function (a, b) {
                return new Date(b.createdAt) - new Date(a.createdAt);
             });
@@ -274,9 +285,16 @@ export default function AssignedTests() {
          .then(res => {
             if (res.error) return console.log('tutor assignedtest', res.error)
             console.log('tutor assignedtest', res.data)
+            let allAssignedBys = []
+
             let data = res.data.data.test.map(item => {
                const { createdAt, studentId, dueDate, testId, multiple, timeLimit, isCompleted, isStarted, assignedBy } = item
-              
+               const assignedByName = `${assignedBy?.firstName ? assignedBy?.firstName : '-'} ${assignedBy?.lastName ? assignedBy?.lastName : ''}`
+               if (assignedBy) {
+                  if (!allAssignedBys.includes(assignedByName)) {
+                     allAssignedBys.push(assignedByName)
+                  }
+               }
                return {
                   studentName: studentId ? `${studentId.firstName} ${studentId.lastName}` : '-',
                   studentId: studentId ? studentId._id : '-',
@@ -293,6 +311,8 @@ export default function AssignedTests() {
                   assignedTestId: item._id
                }
             })
+            console.log('allAssignedBys', allAssignedBys)
+            setAssignedBys(allAssignedBys)
             let sortedArr = data.sort(function (a, b) {
                return new Date(b.createdAt) - new Date(a.createdAt);
             });
@@ -404,6 +424,12 @@ export default function AssignedTests() {
          tempdata = tempdata.filter(user => user.status === selectedStatus)
       } else {
          tempdata = tempdata.filter(user => user.status !== '')
+      }
+
+      if (filterData.assignedBy !== '') {
+         tempdata = tempdata.filter(user => user.assignedBy === filterData.assignedBy)
+      } else {
+         tempdata = tempdata.filter(user => user.assignedBy !== '')
       }
 
       setFilteredTests(tempdata)
@@ -539,14 +565,13 @@ export default function AssignedTests() {
                      parentClassName="w-full text-sm"
                      type="select"
                   />
-                  <InputField
-                     value={filterData.tutor}
-                     onChange={e => setFilterData({ ...filterData, tutor: e.target.value })}
-                     IconRight={SearchIcon}
+                  <InputSelect
+                     value={filterData.assignedBy}
+                     onChange={val => setFilterData({ ...filterData, assignedBy: val })}
                      parentClassName="w-full text-sm"
                      inputContainerClassName="px-[20px] py-[16px] bg-white"
-                     optionData={optionData}
-                     placeholder="Tutor Name"
+                     optionData={assignedBys}
+                     placeholder="Assigned By"
                      type="text"
                   />
                   <InputSelect
