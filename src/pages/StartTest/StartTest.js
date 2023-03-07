@@ -108,7 +108,11 @@ export default function StartTest() {
             setStartBtnLoading(false)
             if (res.error) {
                console.log(res.error)
-               alert('error starting test')
+               if(res.error.data.message === "user blocked"){
+                  alert('Account temporarily deactivated')
+               }else{
+                  alert('Error starting test')
+               }
                return
             }
             console.log('start test', res.data)
