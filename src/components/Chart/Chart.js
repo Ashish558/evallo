@@ -62,10 +62,10 @@ export default function Chart({ setSubjects, subjects, selectedSubject, selected
             let data = res.data.data.user.chart
             if (!data) return
             let fData = data.filter(item => Object.keys(item.concepts).includes('correct'))
-            console.log('fdata', fData)
+            // console.log('fdata', fData)
             fData = data.filter(item => item.concepts.correct !== null )
             let filtered = fData.filter(item => !Object.keys(item.concepts.correct).includes('undefined'))
-            console.log('filter undefined', filtered)
+            // console.log('filter undefined', filtered)
             setChartData(filtered)
             const subjectsNames = []
           
@@ -106,10 +106,10 @@ export default function Chart({ setSubjects, subjects, selectedSubject, selected
             let data = res.data.data.user.chart
             if (!data) return
             let fData = data.filter(item => Object.keys(item.concepts).includes('correct'))
-            console.log('fdata', fData)
+            // console.log('fdata', fData)
             fData = data.filter(item => item.concepts.correct !== null )
             let filtered = fData.filter(item => !Object.keys(item.concepts.correct).includes('undefined'))
-            console.log('filter undefined', filtered)
+            // console.log('filter undefined', filtered)
             setChartData(filtered)
             const subjectsNames = []
           
@@ -148,11 +148,14 @@ export default function Chart({ setSubjects, subjects, selectedSubject, selected
       return backgroundColors[index] !== undefined ? backgroundColors[index] : backgroundColors[0]
    }
    useEffect(() => {
-      if (chartData.length === 0) return
+      if (chartData.length === 0){
+         setData({datasets: []})
+         return
+      }
 
       const curr = chartData.find(item => item.subject === selectedSubject)
       if (curr === undefined) return
-      console.log('curr', curr)
+      // console.log('curr', curr)
       const concepts = Object.keys(curr.concepts.total).map(key => {
          return key
       })
@@ -234,6 +237,7 @@ export default function Chart({ setSubjects, subjects, selectedSubject, selected
 
 
    // console.log('chartData', chartData)
+   // console.log('data', data)
    // console.log('currentConcepts', currentConcepts)
    // console.log('selectedSubject', selectedSubject)
 
