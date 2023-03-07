@@ -32,6 +32,9 @@ const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
    const [sub, setSub] = useState('Math')
    const [profileProgress, setProfileProgress] = useState("0%");
 
+   const [subjects, setSubjects] = useState([])
+   const [selectedSubject, setSelectedSubject] = useState('')
+
    const [allTests, setAllTests] = useState([])
 
    const [fetchTutors, fetchTutorsResp] = useLazyGetParentTutorsQuery()
@@ -88,7 +91,7 @@ const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
                      if (details === null || details === undefined) {
                         details = {}
                      }
-                     setTutors(prev => [...prev, { ...tutor, ...details,  _id: tutor._id }])
+                     setTutors(prev => [...prev, { ...tutor, ...details, _id: tutor._id }])
                   })
 
             })
@@ -159,7 +162,27 @@ const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
       // tutorCarouselRef.current.trigger('refresh.owl.carousel'); 
    }, [selectedStudent, tutors])
 
+   useEffect(() => {
+      subjects.map(sub => {
+         if (sub.selected === true) {
+            setSelectedSubject(sub.name)
+         }
+      })
+   }, [subjects])
+
+   const handleSubjectChange = name => {
+      let updated = subjects.map(sub => {
+         if (sub.name === name) {
+            return { ...sub, selected: true }
+         } else {
+            return { ...sub, selected: false }
+         }
+      })
+      setSubjects(updated)
+   }
+
    // console.log('tutors', tutors);
+   // console.log('subjects', subjects);
    // console.log('filteredTutors', filteredTutors);
    // console.log('tutorCarouselRef', tutorCarouselRef.current);
 
@@ -172,18 +195,18 @@ const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
             <div className="flex items-center" >
                <h1>Concept Chart</h1>
 
-               <InputSelect value={sub} labelClassname='hidden'
+               <InputSelect value={selectedSubject} labelClassname='hidden'
                   parentClassName='w-[200px] mr-5 ml-auto'
                   inputContainerClassName='bg-[#d9d9d980] pt-2 pb-2'
-                  optionData={['Math', 'Grammar', 'Reading', 'Science']}
-                  onChange={val => setSub(val)} />
+                  optionData={subjects.map(item => item.name)}
+                  onChange={val => handleSubjectChange(val)} />
 
             </div>
 
             <div id={styles.chartContainer} className='scrollbar-content mb-4'>
                <div id={styles.chart} className='scrollbar-content' >
                   <div>
-                     <Chart selectedStudent={selectedStudent} />
+                     <Chart selectedStudent={selectedStudent} setSubjects={setSubjects} />
                   </div>
                </div>
             </div>
@@ -202,7 +225,7 @@ const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
                                  <div key={idx} className="item flex" style={{ width: "100%" }}>
                                     <div className="w-3/5 flex justify-center flex-col">
                                        <h5 className={`${styles.tag}`}>
-                                          {tutor.tutorLevel && `${tutor.tutorLevel} Belt`} 
+                                          {tutor.tutorLevel && `${tutor.tutorLevel} Belt`}
                                        </h5>
                                        <p>
                                           {tutor?.education}

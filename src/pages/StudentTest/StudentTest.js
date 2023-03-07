@@ -55,6 +55,7 @@ export default function StudentTest() {
 
    const { role: persona, id } = useSelector(state => state.user)
    const [getTestResponse, getTestResponseResp] = useLazyGetTestResponseQuery()
+   const [awsLink, setAwsLink] = useState('')
 
 
    // useEffect(() => {
@@ -68,8 +69,8 @@ export default function StudentTest() {
       if (persona === 'student') {
          getTest()
             .then(res => {
-               console.log('all-assigned-tests', res.data.data.test);
-
+               console.log('all-assigned-tests', res.data.data);
+               setAwsLink(res.data.data.baseLink)
                let tempAllTests = res.data.data.test.map(test => {
                   const { testId, studentId, dueDate, multiple, isCompleted, isStarted, createdAt, updatedAt} = test
                   if(testId === null) return
@@ -82,7 +83,7 @@ export default function StudentTest() {
                      status: isCompleted === true ? 'completed' : isStarted ? 'started' : 'notStarted',
                      scores: '-',
                      _id: test._id,
-                     pdfLink: testId ? testId.pdf : null,
+                     pdfLink: testId ? `${res.data.data.baseLink}${testId.pdf}` : null,
                      testId: testId ? testId._id : '-',
                      isCompleted: test.isCompleted,
                      isStarted: test.isStarted,

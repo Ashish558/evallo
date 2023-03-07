@@ -322,7 +322,8 @@ export default function Signup() {
       setLastLoginDisabled(true)
       const reqBody = {
          ...otherDetails,
-         Phone: `${studentNumberPrefix}${otherDetails.Phone}`,
+         Phone: `${otherDetails.Phone}`,
+         PhoneCode: `${studentNumberPrefix}`,
          serviceSeeking: getCheckedString(services),
          apCourses: getCheckedString(apCourses),
          motive: getCheckedString(motive),

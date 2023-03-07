@@ -14,7 +14,7 @@ import styles from './style.module.css'
 import CountryCode from '../../../../components/CountryCode/CountryCode'
 
 // 637b9df1e9beff25e9c2aa83
-export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetails, settings, persona, awsLink }) {
+export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetails, settings, persona, awsLink, selectedScoreIndex }) {
    const [title, setTitle] = useState('')
    const [currentField, setCurrentField] = useState({})
    const [currentToEdit, setCurrentToEdit] = useState({})
@@ -448,7 +448,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
    }
 
    // console.log('awsLink', awsLink)
-   console.log('toedit', currentToEdit)
+   // console.log('toedit', currentToEdit)
    // console.log('setting', settings.servicesAndSpecialization[currentToEdit.selectedIdx])
    // console.log('field', currentField)
    // console.log('sett', settings)
@@ -1297,14 +1297,28 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                                     inputContainerClassName='text-sm pt-3 pb-3 px-5 bg-primary-50 border-0'
                                     inputClassName='bg-transparent pl-4 rounded-[4px]'
                                     parentClassName='flex-1 max-w-[140px]' type='number'
-                                    value={currentToEdit.satScores.verbal}
-                                    onChange={e => setCurrentToEdit({
-                                       ...currentToEdit,
-                                       satScores: {
-                                          ...currentToEdit.satScores,
-                                          verbal: checkNumber(currentToEdit.satScores.verbal, parseInt(e.target.value), 800)
+                                    value={currentToEdit.satScores[selectedScoreIndex]?.verbal}
+                                    onChange={e => {
+                                       let tempScores = [...currentToEdit.satScores]
+                                       if (tempScores.length <= selectedScoreIndex) {
+                                          tempScores.push({
+                                             maths: 0,
+                                             verbal: 0,
+                                          })
                                        }
-                                    })}
+                                       tempScores = tempScores.map((item, idx) => {
+                                          if (selectedScoreIndex === idx) {
+                                             return { ...item, verbal: checkNumber(currentToEdit.satScores.verbal, parseInt(e.target.value), 800) }
+                                          } else {
+                                             return { ...item }
+                                          }
+                                       })
+                                       setCurrentToEdit({
+                                          ...currentToEdit,
+                                          satScores: tempScores
+                                       })
+                                    }
+                                    }
                                  />
                               </div>
                               <div className='flex  flex-col  items-center mb-4'>
@@ -1317,14 +1331,30 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                                     inputContainerClassName='text-sm pt-3 pb-3 px-5 bg-primary-50 border-0'
                                     inputClassName='bg-transparent pl-4 rounded-[4px]'
                                     parentClassName='flex-1 max-w-[140px]' type='number'
-                                    value={currentToEdit.satScores.maths}
-                                    onChange={e => setCurrentToEdit({
-                                       ...currentToEdit,
-                                       satScores: {
-                                          ...currentToEdit.satScores,
-                                          maths: checkNumber(currentToEdit.satScores.maths, parseInt(e.target.value), 800)
+                                    value={currentToEdit.satScores[selectedScoreIndex]?.maths}
+                                    onChange={e => {
+                                       let tempScores = [...currentToEdit.satScores]
+                                       if (tempScores.length <= selectedScoreIndex) {
+                                          tempScores.push({
+                                             maths: 0,
+                                             verbal: 0,
+                                          })
                                        }
-                                    })}
+                                       tempScores = tempScores.map((item, idx) => {
+                                          if (selectedScoreIndex === idx) {
+                                             return { ...item, maths: checkNumber(currentToEdit.satScores.maths, parseInt(e.target.value), 800) }
+                                          } else {
+                                             return { ...item }
+                                          }
+                                       })
+                                       // tempScores[selectedScoreIndex].maths = checkNumber(currentToEdit.satScores.maths, parseInt(e.target.value), 800)
+                                       // console.log('tempScores', tempScores);
+                                       setCurrentToEdit({
+                                          ...currentToEdit,
+                                          satScores: tempScores
+                                       })
+                                    }
+                                    }
                                  />
                               </div>
 
@@ -1342,14 +1372,29 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                                     inputContainerClassName='text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0'
                                     inputClassName='bg-transparent pl-4 rounded-[4px]'
                                     parentClassName='flex-1 max-w-[140px]' type='number'
-                                    value={currentToEdit.actScores.maths}
-                                    onChange={e => setCurrentToEdit({
-                                       ...currentToEdit,
-                                       actScores: {
-                                          ...currentToEdit.actScores,
-                                          maths: checkNumber(currentToEdit.actScores.maths, parseInt(e.target.value), 36)
+                                    value={currentToEdit.actScores[selectedScoreIndex]?.maths}
+                                    onChange={e => {
+                                       let tempScores = [...currentToEdit.actScores]
+                                       if (tempScores.length <= selectedScoreIndex) {
+                                          tempScores.push({
+                                             maths: 0,
+                                             english: 0,
+                                             reading: 0,
+                                             science: 0,
+                                          })
                                        }
-                                    })}
+                                       tempScores = tempScores.map((item, idx) => {
+                                          if (selectedScoreIndex === idx) {
+                                             return { ...item, maths: checkNumber(currentToEdit.actScores.maths, parseInt(e.target.value), 36)}
+                                          } else {
+                                             return { ...item }
+                                          }
+                                       })
+                                       setCurrentToEdit({
+                                          ...currentToEdit,
+                                          actScores: tempScores
+                                       })
+                                    }}
                                  />
                               </div>
                               <div className='flex  flex-col  items-center mb-4'>
@@ -1362,14 +1407,29 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                                     inputContainerClassName='text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0'
                                     inputClassName='bg-transparent pl-4 rounded-[4px]'
                                     parentClassName='flex-1 max-w-[140px]' type='number'
-                                    value={currentToEdit.actScores.english}
-                                    onChange={e => setCurrentToEdit({
-                                       ...currentToEdit,
-                                       actScores: {
-                                          ...currentToEdit.actScores,
-                                          english: checkNumber(currentToEdit.actScores.english, parseInt(e.target.value), 36)
+                                    value={currentToEdit.actScores[selectedScoreIndex]?.english}
+                                    onChange={e => {
+                                       let tempScores = [...currentToEdit.actScores]
+                                       if (tempScores.length <= selectedScoreIndex) {
+                                          tempScores.push({
+                                             maths: 0,
+                                             english: 0,
+                                             reading: 0,
+                                             science: 0,
+                                          })
                                        }
-                                    })}
+                                       tempScores = tempScores.map((item, idx) => {
+                                          if (selectedScoreIndex === idx) {
+                                             return { ...item, english: checkNumber(currentToEdit.actScores.english, parseInt(e.target.value), 36)}
+                                          } else {
+                                             return { ...item }
+                                          }
+                                       })
+                                       setCurrentToEdit({
+                                          ...currentToEdit,
+                                          actScores: tempScores
+                                       })
+                                    }}
                                  />
                               </div>
                               <div className='flex  flex-col  items-center mb-4'>
@@ -1382,14 +1442,30 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                                     inputContainerClassName='text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0'
                                     inputClassName='bg-transparent pl-4 rounded-[4px]'
                                     parentClassName='flex-1 max-w-[140px]' type='number'
-                                    value={currentToEdit.actScores.reading}
-                                    onChange={e => setCurrentToEdit({
-                                       ...currentToEdit,
-                                       actScores: {
-                                          ...currentToEdit.actScores,
-                                          reading: checkNumber(currentToEdit.actScores.reading, parseInt(e.target.value), 36)
+                                    value={currentToEdit.actScores[selectedScoreIndex]?.reading}
+                                   
+                                    onChange={e => {
+                                       let tempScores = [...currentToEdit.actScores]
+                                       if (tempScores.length <= selectedScoreIndex) {
+                                          tempScores.push({
+                                             maths: 0,
+                                             english: 0,
+                                             reading: 0,
+                                             science: 0,
+                                          })
                                        }
-                                    })}
+                                       tempScores = tempScores.map((item, idx) => {
+                                          if (selectedScoreIndex === idx) {
+                                             return { ...item, reading: checkNumber(currentToEdit.actScores.reading, parseInt(e.target.value), 36)}
+                                          } else {
+                                             return { ...item }
+                                          }
+                                       })
+                                       setCurrentToEdit({
+                                          ...currentToEdit,
+                                          actScores: tempScores
+                                       })
+                                    }}
                                  />
                               </div>
                               <div className='flex  flex-col  items-center mb-4'>
@@ -1402,14 +1478,29 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                                     inputContainerClassName='text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0'
                                     inputClassName='bg-transparent pl-4 rounded-[4px]'
                                     parentClassName='flex-1 max-w-[140px]' type='number'
-                                    value={currentToEdit.actScores.science}
-                                    onChange={e => setCurrentToEdit({
-                                       ...currentToEdit,
-                                       actScores: {
-                                          ...currentToEdit.actScores,
-                                          science: checkNumber(currentToEdit.actScores.science, parseInt(e.target.value), 36)
+                                    value={currentToEdit.actScores[selectedScoreIndex]?.science}
+                                    onChange={e => {
+                                       let tempScores = [...currentToEdit.actScores]
+                                       if (tempScores.length <= selectedScoreIndex) {
+                                          tempScores.push({
+                                             maths: 0,
+                                             english: 0,
+                                             reading: 0,
+                                             science: 0,
+                                          })
                                        }
-                                    })}
+                                       tempScores = tempScores.map((item, idx) => {
+                                          if (selectedScoreIndex === idx) {
+                                             return { ...item, science: checkNumber(currentToEdit.actScores.science, parseInt(e.target.value), 36)}
+                                          } else {
+                                             return { ...item }
+                                          }
+                                       })
+                                       setCurrentToEdit({
+                                          ...currentToEdit,
+                                          actScores: tempScores
+                                       })
+                                    }}
                                  />
                               </div>
 

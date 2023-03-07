@@ -69,6 +69,12 @@ export default function Login({ setLoginFormActive }) {
                      alert('Login failed')
                      return
                   }
+                  if (res.error.data.message === "user is blocked") {
+                     alert('User is blocked!')
+                     setError(prev => {
+                        return { ...prev, email: 'User is blocked' }
+                     })
+                  }
                   if (res.error.data.message === "email not found") {
                      setError(prev => {
                         return { ...prev, email: 'Email not found' }
@@ -143,7 +149,7 @@ export default function Login({ setLoginFormActive }) {
                            onKeyDown={e => {
                               if (e.key === 'Enter') {
                                  handleSubmit();
-                               }
+                              }
                            }}
                         />
                         <p
@@ -177,11 +183,11 @@ export default function Login({ setLoginFormActive }) {
                   </div>
                ) : isPasswordForgot ? (
                   <ForgotPassword {...props} setActiveFrame={setActiveFrame}
-                   setLoginActive={setLoginActive} />
+                     setLoginActive={setLoginActive} />
                ) : resetPasswordActive ? (
                   <ResetPassword
                      setActiveFrame={setActiveFrame}
-                     setLoginActive={setLoginActive}     
+                     setLoginActive={setLoginActive}
                   />
                ) : (
                   ""
