@@ -105,8 +105,8 @@ export default function StudentReport() {
       console.log('response data', responseData);
       // let sortedSubjects = responseData.subjects.map(sub => sub.name)
       if (responseData.subjects.length === 0) {
-         alert('No sections are submitted')
-         navigate(-1)
+         // alert('No sections are submitted')
+         // navigate(-1)
          return
       }
 
@@ -122,15 +122,26 @@ export default function StudentReport() {
 
             // console.log('answer key subjects', answerKeyData.answer.subjects);
             let conceptsPresent = true
-            answerKeyData.answer.subjects.map(item => {
+            let updatedSubs = answerKeyData.answer.subjects.map(item => {
                if (item.concepts === undefined) {
                   conceptsPresent = false
+                  return { ...item, concepts: { UNAVAILABLE: 0 } }
+               } else {
+                  return item
                }
             })
-            if (conceptsPresent === false) {
-               alert('Concepts not present')
-               navigate(-1)
+            answerKeyData = {
+               ...answerKeyData,
+               answer: {
+                  ...answerKeyData.answer,
+                  subjects: updatedSubs
+               }
             }
+            // if (conceptsPresent === false) {
+            //    // alert('Concepts not present')
+            //    // navigate(-1)
+            //    return
+            // }
             let subResponse = answerKeyData.answer.subjects.map(sub => {
                let currSub = responseData.subjects.find(item => item.name === sub.name)
                if (currSub === undefined) return
@@ -181,7 +192,7 @@ export default function StudentReport() {
                // console.log('updatedSubjWithConcepts', updatedSubjWithConcepts);
             })
             // console.log('subjects', subjects);
-            console.log('updated', updated);
+            // console.log('updated', updated);
             // console.log('responseData', responseData);
             // console.log('subResponse', subResponse);
             let upSubArr = []
@@ -192,7 +203,6 @@ export default function StudentReport() {
                   }
                })
             })
-            console.log('upSubArr', upSubArr);
 
             setResponseData(prev => {
                return {
@@ -206,6 +216,7 @@ export default function StudentReport() {
 
             let subjects1 = answerKeyData.answer.subjects
             setAnswerKey(res.data.data.answer.answer)
+            // console.log('answerKeyData.answer.subjects', answerKeyData.answer.subjects);
             setAnswerKeySubjects(answerKeyData.answer.subjects)
             setIsSet(true)
          })
@@ -261,7 +272,7 @@ export default function StudentReport() {
                console.log('RESPONSE ERR', res.error)
                return
             }
-            // console.log('RESPONSE', res.data.data.response);
+            console.log('RESPONSE', res.data.data.response);
             const { subjects, studentId, response, createdAt, updatedAt } = res.data.data.response
             if (res.data.data.response.testType === 'SAT') {
                let set1Score = 0
@@ -382,11 +393,11 @@ export default function StudentReport() {
             const { QuestionNumber, QuestionType, ResponseAnswer, isCorrect, responseTime, _id } = item
             return {
                QuestionNumber,
-               CorrectAnswer: answerKey[currentAnswerKeyIndex][index].CorrectAnswer,
+               CorrectAnswer: answerKey[currentAnswerKeyIndex][index]?.CorrectAnswer,
                ResponseAnswer,
                isCorrect,
-               Concept: answerKey[currentAnswerKeyIndex][index].Concepts ? answerKey[currentAnswerKeyIndex][index].Concepts : '-',
-               Strategy: answerKey[currentAnswerKeyIndex][index].Strategy ? answerKey[currentAnswerKeyIndex][index].Strategy : '-',
+               Concept: answerKey[currentAnswerKeyIndex][index]?.Concepts ? answerKey[currentAnswerKeyIndex][index]?.Concepts : '-',
+               Strategy: answerKey[currentAnswerKeyIndex][index]?.Strategy ? answerKey[currentAnswerKeyIndex][index]?.Strategy : '-',
                responseTime: responseTime >= 0 ? `${responseTime} sec` : '-'
             }
          })
@@ -524,8 +535,9 @@ export default function StudentReport() {
             currentAnswerKeyIndex = idx
          }
       })
-
+      // console.log('currentAnswerKeyIndex', currentAnswerKeyIndex);
       let selected = answerKey[currentAnswerKeyIndex]
+      // console.log('selected', selected);
       selected = selected?.map(item => {
          if (!item.Concepts) {
             return { ...item, Concepts: 'UNAVAILABLE' }
@@ -533,6 +545,7 @@ export default function StudentReport() {
             return { ...item }
          }
       })
+      // console.log('selected', selected);
 
       let total = 0
       selected?.forEach(concept => {
@@ -545,67 +558,6 @@ export default function StudentReport() {
       } else {
          return `${total - correctTotal} / ${total}`
       }
-   }
-
-   const getSubjectSections = (c) => {
-
-      let currSubject = answerKeySubjects.find(sub => sub.name === selectedSubject.name)
-      // console.log('answerKeySubjects', answerKeySubjects)
-      // console.log('currSubject', currSubject)
-      let currentAnswerKeyIndex = 0
-
-      answerKeySubjects.map((subj, idx) => {
-         if (subj.name === selectedSubject.name) {
-            currentAnswerKeyIndex = idx
-         }
-      })
-      // console.log('currSubject', currSubject);
-      // console.log('answer key arr', answerKey[currentAnswerKeyIndex]);
-      const selected = responseData.response[selectedSubject.idx]
-      // console.log('response answer', selected);
-      if (currSubject) {
-         return <div>
-            {Object.keys(currSubject.concepts).map((key, idx) => {
-               return <p key={idx} className='font-semibold mb-2'>
-                  {/* {selectedSubject.concepts[key]} */}
-                  {key}
-               </p>
-            })}
-         </div>
-      }
-      return <>p</>
-   }
-
-   const getSubjectSectionsScore = (c) => {
-      let currSubject = answerKeySubjects.find(sub => sub.name === selectedSubject.name)
-      let currentAnswerKeyIndex = 0
-      answerKeySubjects.map((subj, idx) => {
-         if (subj.name === selectedSubject.name) {
-            currentAnswerKeyIndex = idx
-         }
-      })
-      console.log('currSubject', currSubject);
-      console.log('answer key arr', answerKey[currentAnswerKeyIndex]);
-      const selected = responseData.response[selectedSubject.idx]
-      console.log('response answer', selected);
-
-      let arr = []
-      Object.keys(currSubject).map(key => {
-         let IncorrectCount = 0
-         answerKey[currentAnswerKeyIndex].map((ans, idx) => {
-            let { QuestionNumber, CorrectAnswer, Concepts } = ans
-            if (key === Concepts) {
-               const selected = responseData.response[selectedSubject.idx]
-               if (selected[idx].isCorrect === false) {
-                  IncorrectCount += 1
-               }
-            }
-         })
-      })
-
-      if (currSubject) {
-      }
-      return <>p</>
    }
 
    useEffect(() => {
@@ -682,6 +634,8 @@ export default function StudentReport() {
    }
    const getSortedConcepts = () => {
       let arr = []
+      // console.log('selectedSubject.concepts', selectedSubject.concepts);
+      if (selectedSubject.concepts === null || selectedSubject.concepts === undefined) return
       Object.keys(selectedSubject.concepts).map((key, idx) => {
          let inc = getConceptScore(selectedSubject.concepts[key], key, true)
          // console.log('incorrect', inc, selectedSubject.concepts[key], key)
@@ -698,11 +652,16 @@ export default function StudentReport() {
 
    useEffect(() => {
       if (selectedSubject.concepts === undefined) return
+      // return
       getSortedConcepts()
    }, [selectedSubject, answerKey, answerKeySubjects])
 
    // console.log('concepts', selectedSubject.concepts)
    // console.log('sortedConcepts', sortedConcepts)
+   // console.log('selectedSubject', selectedSubject)
+   // console.log('selectedSubject', responseData.response)
+   // console.log('responseData', responseData)
+   // console.log('answerKey', answerKey)
 
    if (Object.keys(responseData).length === 0) return <></>
    if (answerKey.length === 0) return <></>
@@ -817,7 +776,7 @@ export default function StudentReport() {
                            selectedSubject.concepts ?
                               sortedConcepts.map((item, idx) => {
                                  return <p key={idx} className='font-semibold mb-2'>
-                                    {item.incorrect}/{item.correct + item.incorrect}
+                                    {item.incorrect >= 0 ? item.incorrect : 0}/{item.correct + item.incorrect}
                                  </p>
                               })
                               : <></>
