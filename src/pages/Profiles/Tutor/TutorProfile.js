@@ -468,7 +468,7 @@ export default function TutorProfile({ isOwn }) {
          <div className='lg:ml-pageLeft bg-lightWhite min-h-screen pb-120 pt-0'>
 
             <div className='lg:px-5 lg:pt-0 lg:pr-0 relative'>
-               <div className='pt-10 min-h-[600px] relative z-10 flex items-end'>
+               <div className='pt-10 min-h-[780px] mb-10 relative z-10 flex items-end'>
                   <YoutubeEmbed embedId={videoLink} />
                   <div className={`${styles.backBtn} mt-10`} >
                      <BackBtn to={-1} />
@@ -488,7 +488,7 @@ export default function TutorProfile({ isOwn }) {
                         </div> : <></>
                   }
 
-                  <div className='relative pt-10 mt-auto flex-1'>
+                  <div className='relative pt-1 mt-auto flex-1'>
 
                      <div className={styles.imgContent} >
                         {/* <p className='text-[#4F33BD] font-bold text-[50px]'>

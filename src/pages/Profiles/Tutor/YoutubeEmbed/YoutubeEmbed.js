@@ -27,8 +27,9 @@ export default function YoutubeEmbed({ embedId }) {
          left: '0',
          top: '0',
          width: '100%',
-         height: '600px',
-         zIndex: '-1'
+         height: '800px',
+         zIndex: '-1',
+         paddingBottom: '157px'
       }} >
          {
             embedId !== undefined && youtubeId !== false ?
@@ -36,9 +37,9 @@ export default function YoutubeEmbed({ embedId }) {
                   <iframe
                      width="100%"
                      height="100%"
-                     src={`https://www.youtube.com/embed/${youtubeId}`}
+                     src={`https://www.youtube.com/embed/${youtubeId}?autoplay=0&showinfo=0&controls=0`}
                      frameBorder="0"
-                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                     allow="autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                      allowFullScreen
                      title="Embedded youtube"
                   />

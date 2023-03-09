@@ -138,6 +138,7 @@ export default function EventModal({
    const [allServicesAndSpec, setAllServicesAndSpec] = useState([])
    const [specializations, setSpecializations] = useState([])
    const [tutor, setTutor] = useState("");
+   const [loading, setLoading] = useState(false)
 
    const [submitSession, sessionResponse] = useSubmitSessionMutation();
    const [updateUserSession, updateUserSessionResp] = useUpdateSessionMutation();
@@ -412,9 +413,9 @@ export default function EventModal({
          body.date = sDate
       }
 
-      console.log('isUpdaingAll', isUpdaingAll);
+      // console.log('isUpdaingAll', isUpdaingAll);
       console.log('sDate', sDate);
-      console.log(body);
+      console.log('body', body);
       // return
       if (body.sessionStatus === "Completed") {
          await updateSessionStatus(sessionToUpdate._id)
@@ -470,6 +471,7 @@ export default function EventModal({
          updateAllUserSession({ id: sessionToUpdate._id, body: { ...body, sessionStatus: 'Scheduled' } }).then(
             (res) => {
                console.log(res);
+               setLoading(false)
                refetchSessions()
                setEventModalActive(false);
             }
@@ -494,6 +496,7 @@ export default function EventModal({
       // }).catch(err => {
       //    console.log(err)
       // })
+      setLoading(true)
       let reqBody = { ...data }
       reqBody.studentName = student
       reqBody.tutorName = tutor
@@ -576,6 +579,7 @@ export default function EventModal({
 
       submitSession(reqBody).then((res) => {
          console.log(res)
+         setLoading(false)
          setEventModalActive(false)
          refetchSessions()
       })
@@ -618,8 +622,10 @@ export default function EventModal({
    }, [sessionToUpdate])
 
    const handleDeleteSession = () => {
+      setLoading(true)
       deleteSession(sessionToUpdate._id)
          .then(res => {
+            setLoading(false)
             if (res.error) return console.log(res.error);
             console.log(res.data);
             refetchSessions()
@@ -628,8 +634,10 @@ export default function EventModal({
    }
 
    const handleDeleteAllSession = () => {
+      setLoading(true)
       deleteAllSession(sessionToUpdate._id)
          .then(res => {
+            setLoading(false)
             if (res.error) return console.log(res.error);
             console.log(res.data);
             refetchSessions()
@@ -658,8 +666,8 @@ export default function EventModal({
                   tutorServs.push(item.service)
                }
             })
-            console.log('allServicesAndSpec', allServicesAndSpec);
-            console.log('services', services);
+            // console.log('allServicesAndSpec', allServicesAndSpec);
+            // console.log('services', services);
             setServicesAndSpecialization(tutorServs)
          })
       // }
@@ -675,7 +683,7 @@ export default function EventModal({
             specs = item.specialization
          }
       })
-      console.log('spec', specs)
+      // console.log('spec', specs)
       setSpecializations(specs)
    }, [servicesAndSpecialization, data.service, allServicesAndSpec])
    // console.log(convertTime12to24(`${data.time.end.time} ${data.time.end.timeType}`))
@@ -944,11 +952,13 @@ export default function EventModal({
                                        children="Delete Current"
                                        className="text-lg py-3 mr-3 pl-1 pr-1 font-medium px-7 h-[50px] w-[140px] disabled:opacity-60"
                                        onClick={handleDeleteSession}
+                                       loading={loading}
                                     />
                                     <SecondaryButton
                                        children="Delete All"
                                        className="text-lg py-3 mr-3 pl-2 pr-2 font-medium px-7 h-[50px] w-[140px] disabled:opacity-60"
                                        onClick={handleDeleteAllSession}
+                                       loading={loading}
                                     />
                                  </div>
                                  <div>
@@ -957,12 +967,14 @@ export default function EventModal({
                                        className="text-lg py-3 mr-3 pl-1 pr-1 whitespace-nowrap font-medium px-7 h-[50px] w-[140px] disabled:opacity-60"
                                        onClick={() => handleSubmit(false)}
                                        disabled={submitDisabled}
+                                       loading={loading}
                                     />
                                     <PrimaryButton
                                        children="Update All"
                                        className="text-lg py-3 pl-2 pr-2 font-medium px-7 h-[50px] w-[140px] disabled:opacity-60"
                                        onClick={() => handleSubmit(true)}
                                        disabled={submitDisabled}
+                                       loading={loading}
                                     />
                                  </div>
                               </div>
@@ -972,12 +984,14 @@ export default function EventModal({
                                        children="Delete"
                                        className="text-lg py-3 mr-3 pl-2 pr-2 font-medium px-7 h-[50px] w-[140px] disabled:opacity-60"
                                        onClick={handleDeleteSession}
+                                       loading={loading}
                                     />
                                     <PrimaryButton
                                        children="Update"
                                        className="text-lg py-3 pl-2 pr-2 font-medium px-7 h-[50px] w-[140px] disabled:opacity-60"
                                        onClick={() => handleSubmit(false)}
                                        disabled={submitDisabled}
+                                       loading={loading}
                                     />
                                  </> :
                                  <PrimaryButton
@@ -985,6 +999,7 @@ export default function EventModal({
                                     className="text-lg py-3 pl-2 pr-2 font-medium px-7 h-[50px] w-[140px] disabled:opacity-60"
                                     onClick={() => handleSubmit()}
                                     disabled={submitDisabled}
+                                    loading={loading}
                                  />
                            }
 
