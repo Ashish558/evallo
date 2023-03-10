@@ -913,8 +913,8 @@ export default function StudentProfile({ isOwn }) {
                                     <div className='flex-1 lg:mr-12'>
                                        <EditableText editable={editable}
                                           onClick={() => setToEdit({ ...toEdit, service: { ...toEdit.service, active: true } })}
-                                          text='Service'
-                                          className='lg:text-21 whitespace-nowrap' />
+                                          text='Service and Specialization'
+                                          className='lg:text-21 text-left' />
                                        <div className='font-medium text-sm mt-2 lg:mt-6 flex flex-wrap lg:opacity-60'>
                                           {/* {userDetail.subscribeType ? userDetail.subscribeType : '-'} */}
                                           {userDetail.service ? userDetail.service.map((service, idx) => {
@@ -927,27 +927,27 @@ export default function StudentProfile({ isOwn }) {
                                  </div>
                               }
                            />
+                           <ProfileCard
+                              className='mt-4 lg:order-7 lg:mt-0 lg:col-span-9'
+                              body={
+                                 <div className='flex' >
+                                    <div className='flex-1 lg:mr-12'>
+                                       <EditableText editable={editable}
+                                          onClick={() => setToEdit({ ...toEdit, notes: { ...toEdit.notes, active: true } })}
+                                          text='Additional Note'
+                                          className='lg:text-21 whitespace-nowrap' />
+                                       <p className='font-medium text-sm mt-2 lg:mt-6 lg:opacity-60'>
+                                          {userDetail.notes ? userDetail.notes : '-'}
+                                       </p>
+                                    </div>
+                                 </div>
+                              }
+                           />
                         </> : ''
                   }
                   {
                      persona === 'admin' &&
                      <>
-                        <ProfileCard
-                           className='mt-4 lg:order-7 lg:mt-0 lg:col-span-9'
-                           body={
-                              <div className='flex' >
-                                 <div className='flex-1 lg:mr-12'>
-                                    <EditableText editable={editable}
-                                       onClick={() => setToEdit({ ...toEdit, notes: { ...toEdit.notes, active: true } })}
-                                       text='Additional Note'
-                                       className='lg:text-21 whitespace-nowrap' />
-                                    <p className='font-medium text-sm mt-2 lg:mt-6 lg:opacity-60'>
-                                       {userDetail.notes ? userDetail.notes : '-'}
-                                    </p>
-                                 </div>
-                              </div>
-                           }
-                        />
                         <ProfileCard
                            className='mt-4 lg:order-8 lg:mt-5 lg:col-span-3'
                            body={
