@@ -189,7 +189,7 @@ export default function Users() {
          let ids = []
          filterData.tutor.forEach(selectedTutorName => {
             let tutor = allTutors.find(item => item.value === selectedTutorName)
-            if(tutor === undefined) return
+            if (tutor === undefined) return
             ids.push(tutor._id)
          })
          ids.map(tutorId => {
@@ -204,11 +204,11 @@ export default function Users() {
       fetchUsers(urlParams)
          .then(res => {
             console.log('all-users', res.data.data);
-            if(res.data.data.no_of_users < maxPageSize){
-               setTotalPages(15)
-            }else{
-               setTotalPages(res.data.data.total_users)
-            }
+            // if(res.data.data.no_of_users < maxPageSize){
+            //    setTotalPages(15)
+            // }else{
+            setTotalPages(res.data.data.total_users)
+            // }
 
             const fetchDetails = async () => {
                await res.data.data.user.map(async (user) => {
@@ -535,10 +535,10 @@ export default function Users() {
          // }))
          setFilterData({
             ...filterData,
-            tutor:updated
+            tutor: updated
          })
       } else {
-         
+
          setFilterData({
             ...filterData,
             tutor: [
