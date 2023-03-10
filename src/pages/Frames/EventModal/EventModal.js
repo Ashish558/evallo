@@ -509,7 +509,9 @@ export default function EventModal({
       reqBody.homeworkAssigned = getCheckedString(homeworks)
       reqBody.studentMood = getCheckedString(studentMoods)
       reqBody.sessionProductive = getCheckedString(isProductive)[0]
-
+      if(reqBody.sessionProductive === undefined){
+         reqBody.sessionProductive = ''
+      }
       const { start, end } = reqBody.time
       let startTime = convertTime12to24(`${start.time} ${start.timeType}`)
       let endTime = convertTime12to24(`${end.time} ${end.timeType}`)

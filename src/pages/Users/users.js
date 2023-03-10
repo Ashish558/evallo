@@ -204,7 +204,11 @@ export default function Users() {
       fetchUsers(urlParams)
          .then(res => {
             console.log('all-users', res.data.data);
-            setTotalPages(res.data.data.total_users)
+            if(res.data.data.no_of_users < maxPageSize){
+               setTotalPages(15)
+            }else{
+               setTotalPages(res.data.data.total_users)
+            }
 
             const fetchDetails = async () => {
                await res.data.data.user.map(async (user) => {
