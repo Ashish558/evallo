@@ -314,7 +314,7 @@ export default function Users() {
    useEffect(() => {
       fetch()
    }, [maxPageSize, currentPage])
-   console.log('currentPage', currentPage);
+   // console.log('currentPage', currentPage);
 
    useEffect(() => {
       let tempdata = [...usersData]

@@ -160,6 +160,7 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch, ext
          alert('PDF doesnt exist')
       }
    }
+   
    // console.log('item', item);
    // console.log('extraData', extraData );
 
@@ -540,9 +541,9 @@ const mapData = (data, dataFor, exclude = [], onClick) => {
                </td>
             ) :
                dataFor === 'invoice' && key === 'currentBalance' ? (
-                  <td key={i} className='font-medium px-1 text-[#009262]  py-4'>
-                     <p className={`font-semibold ${data.status === 'Paid' && "text-[#009262]"} ${data.status === 'Unpaid' && "text-[#E02B1D]"} ${data.status === 'Cancelled' && "text-[#E48900]"}`}>
-                        {data[key] === "Paid" && "-"}{data[key]}
+                  <td key={i} className='font-medium px-1 text-[#009262] py-4'>
+                     <p className={`font-semibold`}>
+                        {data[key]}
                      </p>
                   </td>
                ) :
@@ -557,7 +558,7 @@ const mapData = (data, dataFor, exclude = [], onClick) => {
                   ) :
                      (
                         <td key={i} className={`font-medium px-1 ${data[key] === "Unpaid" && "text-[#E02B1D]"} ${data[key] === 'Paid' && "text-[#009262]"} ${data[key] === 'Cancelled' && "text-[#7C859C]"} min-w-14 py-4`}>
-                           {key !== 'status' && data[key]}
+                           {data[key]}
                         </td>
                      )
          ))
