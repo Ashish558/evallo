@@ -321,7 +321,7 @@ export default function Users() {
       // console.log('all users data', usersData)
       // console.log('filterData.specialization', filterData.specialization)
       fetch()
-      // setCurrentPage(1)
+      setCurrentPage(1)
       // setTotalPages(0)
       //USER TYPE FILTER
       if (filterData.userType.length > 0) {

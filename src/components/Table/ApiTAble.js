@@ -92,6 +92,7 @@ export default function ApiTable({
                previousClassName='hidden'
                nextClassName='hidden'
                renderOnZeroPageCount={null}
+               forcePage={currentPage - 1}
                pageLinkClassName='w-full h-full flex justify-center items-center'
             />
 

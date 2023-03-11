@@ -87,7 +87,7 @@ export default function SingleLedger({ _id, invoiceId, sessionId, title, Date: l
             $ {newBalance}
             <img src={ArrowIcon}
                onClick={() => toggleOpen(_id)}
-               className={`ml-[41px] inline-block ease-out duration-100 ${!isOpen ? '' : 'rotate-180'}`} />
+               className={`ml-[41px] inline-block ease-out duration-100 ${isOpen ? '' : 'rotate-180'}`} />
          </div>
 
          {isOpen &&
