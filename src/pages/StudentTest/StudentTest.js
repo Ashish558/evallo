@@ -9,7 +9,7 @@ import { getDuration, getFormattedDate } from "../../utils/utils";
 
 import { tempTableData, studentsDataTable } from "../AssignedTests/tempData";
 
-const studentTableHeaders = [
+const studentTableHeaders2 = [
    "Test Name",
    "Assigned on",
    "Due Date",
@@ -18,6 +18,7 @@ const studentTableHeaders = [
    "Scores",
    " ",
 ];
+
 
 const parentTestInfo = [
    {
@@ -36,7 +37,6 @@ const parentTestInfo = [
 
 export default function StudentTest() {
 
-   const [tableHeaders, setTableHeaders] = useState(studentTableHeaders)
    const [user, setUser] = useState({})
    const [associatedStudents, setAssociatedStudents] = useState([]);
    const [selectedStudent, setSelectedStudent] = useState(null)
@@ -57,6 +57,75 @@ export default function StudentTest() {
    const [getTestResponse, getTestResponseResp] = useLazyGetTestResponseQuery()
    const [awsLink, setAwsLink] = useState('')
 
+
+   const sortByDueDate = () => {
+      setAllTests(prev => {
+         let arr = [...prev]
+         arr = arr.sort(function (a, b) {
+            return new Date(b.dueDate) - new Date(a.dueDate);
+         });
+         return arr
+      })
+      setfilteredTests(prev => {
+         let arr = [...prev]
+         arr = arr.sort(function (a, b) {
+            return new Date(b.dueDate) - new Date(a.dueDate);
+         });
+         return arr
+      })
+   }
+   
+   const sortByAssignedDate = () => {
+      setAllTests(prev => {
+         let arr = [...prev]
+         arr = arr.sort(function (a, b) {
+            return new Date(b.assignedOn) - new Date(a.assignedOn);
+         });
+         return arr
+      })
+      setfilteredTests(prev => {
+         let arr = [...prev]
+         arr = arr.sort(function (a, b) {
+            return new Date(b.assignedOn) - new Date(a.assignedOn);
+         });
+         return arr
+      })
+   }
+   
+   const studentTableHeaders = [
+      {
+         id: 1,
+         text: 'Test Name',
+         className: 'text-left pl-6'
+      },
+      {
+         id: 2,
+         text: 'Assigned on',
+         onCick: sortByAssignedDate
+      },
+      {
+         id: 3,
+         text: 'Due Date',
+         onCick: sortByDueDate
+      },
+      {
+         id: 5,
+         text: 'Duration',
+      },
+      {
+         id: 1,
+         text: 'Status',
+      },
+      {
+         id: 6,
+         text: 'Scores',
+      },
+      {
+         id: 7,
+         text: '',
+      },
+   ];
+   const [tableHeaders, setTableHeaders] = useState(studentTableHeaders)
 
    // useEffect(() => {
    //    getResponse({ id: '63b567682cbfe817fe551afb' })
@@ -242,6 +311,7 @@ export default function StudentTest() {
                <div className="mt-6">
                   <Table
                      dataFor='assignedTestsStudents'
+                     headerObject={true}
                      data={persona === 'parent' ? filteredTests : allTests}
                      tableHeaders={tableHeaders}
                      maxPageSize={10}

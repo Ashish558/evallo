@@ -81,7 +81,7 @@ export default function AssignedStudents() {
                resp.data.data.user.assiginedStudents.map((studentId, idx) => {
                   getUserDetail({ id: studentId })
                      .then(res => {
-                        console.log('res', resp.data.data)
+                        console.log('detail res', resp.data.data)
                         const { _id, firstName, lastName } = res.data.data.user
                         const { specialization, FirstName, LastName, timeZone } = res.data.data.userdetails
                         studentsData.push({
