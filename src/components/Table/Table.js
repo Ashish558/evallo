@@ -18,7 +18,8 @@ export default function Table(props) {
       excludes,
       total_pages,
       isCallingApi,
-      headerObject
+      headerObject,
+      extraData
    } = props
 
    const [tableData, setTableData] = useState(data);

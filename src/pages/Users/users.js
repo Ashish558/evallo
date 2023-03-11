@@ -52,6 +52,7 @@ export default function Users() {
    const [numberPrefix, setNumberPrefix] = useState("+1")
    const [usersData, setUsersData] = useState([])
    const [filteredUsersData, setFilteredUsersData] = useState([])
+   
    useEffect(() => {
       setValidData(isEmail(modalData.email) && modalData.firstName && modalData.lastName && modalData.userType && modalData.phone)
    }, [modalData, modalData.email.length, modalData.firstName.length, modalData.lastName.length, modalData.phone.length, modalData.userType.length,])
@@ -209,6 +210,7 @@ export default function Users() {
             // }else{
             setTotalPages(res.data.data.total_users)
             // }
+            console.log('total users', res.data.data.total_users);
 
             const fetchDetails = async () => {
                await res.data.data.user.map(async (user) => {
@@ -221,7 +223,7 @@ export default function Users() {
                      userType: user.role ? user.role : '-',
                      phone: user.phone ? user.phone : '-',
                      createdAt: user.createdAt,
-                     assignedTutor: '-',
+                     assignedTutor: user.assiginedTutors ? user.assiginedTutors : '' ,
                      leadStatus: '-',
                      tutorStatus: '-',
                      specialization: user.specialization ? user.specialization : [],
@@ -312,12 +314,15 @@ export default function Users() {
    useEffect(() => {
       fetch()
    }, [maxPageSize, currentPage])
+   console.log('currentPage', currentPage);
 
    useEffect(() => {
       let tempdata = [...usersData]
       // console.log('all users data', usersData)
       // console.log('filterData.specialization', filterData.specialization)
       fetch()
+      // setCurrentPage(1)
+      // setTotalPages(0)
       //USER TYPE FILTER
       if (filterData.userType.length > 0) {
          tempdata = tempdata.filter(user => filterData.userType.includes(user.userType))
@@ -693,7 +698,8 @@ export default function Users() {
                   setMaxPageSize={setMaxPageSize}
                   currentPage={currentPage}
                   setCurrentPage={setCurrentPage}
-                  fetch={changeUserField} />
+                  fetch={changeUserField}
+                  extraData={allTutors} />
             </div>
          </div>
 

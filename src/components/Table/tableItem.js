@@ -23,9 +23,8 @@ import { useLazyGetTestResponseQuery } from "../../app/services/test";
 import { getFormattedDate, getScore, getScoreStr } from "../../utils/utils";
 
 //can b made dynamic
-export default function TableItem({ item, dataFor, onClick, excludes, fetch }) {
+export default function TableItem({ item, dataFor, onClick, excludes, fetch, extraData }) {
    const [score, setScore] = useState('-')
-   // console.log(onClick)
    const [fetchSettings, settingsResp] = useLazyGetSettingsQuery()
    const [updateFields, updateFieldsResp] = useUpdateUserFieldsMutation()
    const [getUserDetail, getUserDetailResp] = useLazyGetUserDetailQuery()
@@ -161,7 +160,8 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch }) {
          alert('PDF doesnt exist')
       }
    }
-   // console.log('item', item.specialization );
+   // console.log('item', item);
+   // console.log('extraData', extraData );
 
    return (
       <>
@@ -192,7 +192,21 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch }) {
                </td>
                <td className="font-medium text-sm px-1  min-w-14 py-4">
                   <div className="my-[6px]">
-                     {item.assignedTutor.length > 1 ? item.assignedTutor.map(i => i + ',') : item.assignedTutor}
+                     { item.assignedTutor?.length > 0 ?
+                        item.assignedTutor?.map((id, idx) => {
+                           const name = extraData.find(item => item._id === id)
+                           if (name === undefined) return 'l'
+                           return `${name.value} ${idx +1 < item.assignedTutor.length ? ',' : ''} `
+                        }) : '-'
+                     }
+                     {/* {item.assignedTutor.length > 1 ?
+                        item.assignedTutor.map(id => {
+                           const name = extraData.find(item => item._id === id)
+                           if (name === undefined) return 'l'
+                           return name.value
+                        })
+                        :
+                        item.assignedTutor} */}
                   </div>
                </td>
                <td className="font-medium text-sm px-1  min-w-14 py-4">
@@ -225,7 +239,7 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch }) {
                <td className="font-medium text-sm px-1  min-w-14 py-4">
                   <div className="my-[6px]">
                      {item.specialization?.map((specialization, idx) => {
-                       return `${specialization}${idx + 1 === item.specialization.length ? '' : ','}`
+                        return `${specialization}${idx + 1 === item.specialization.length ? '' : ','}`
                      })}
                   </div>
                </td>

@@ -18,7 +18,8 @@ export default function ApiTable({
    isCallingApi,
    currentPage,
    setCurrentPage,
-   fetch,headerObject
+   fetch,headerObject,
+   extraData
 }) {
    const [tableData, setTableData] = useState(data.sort((a, b) => a.name?.slice(0, 1).toLowerCase() > b.name?.slice(0, 1).toLowerCase()));
    const dataLength = data.length > 30 ? 30 : data.length;
@@ -64,6 +65,7 @@ export default function ApiTable({
                         excludes={excludes}
                         onClick={onClick}
                         fetch={fetch}
+                        extraData={extraData}
                      />
                   );
                })}
