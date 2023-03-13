@@ -67,7 +67,7 @@ export default function TutorDashboard() {
    const [getUserDetail, userDetailResp] = useLazyGetTutorDetailsQuery()
    const [fetchTutorAssignedTests, fetchTutorAssignedTestsResp] = useLazyGetTutorAssignedTestsQuery();
    const [allAssignedTests, setAllAssignedTests] = useState([])
-
+   const [tutorHours, setTutorHours] = useState(0)
    const navigate = useNavigate()
 
    const [sessions, setSessions] = useState([])
@@ -107,6 +107,17 @@ export default function TutorDashboard() {
             setAwsLink(resp.data.data.baseLink)
             const { details } = resp.data.data
             // console.log('tutor details', details);
+            if (resp.data.data.user.tutorHours) {
+               let currMonth = new Date().getMonth()
+               let currYear = new Date().getFullYear()
+               console.log('currMonth', currMonth);
+               console.log('currYear', currYear);
+               resp.data.data.user.tutorHours?.forEach(item => {
+                  if (item.month === currMonth + 1 && item.year === currYear) {
+                     setTutorHours(item.hours)
+                  }
+               })
+            }
             if (details !== null || details !== undefined) {
                setTutorRank(details.tutorRank ? details.tutorRank : '-')
             }
@@ -234,7 +245,10 @@ export default function TutorDashboard() {
                   </div>
 
                   <div className='flex w-full pl-6'>
-                     <DashboardCard data={{ title: '-', subtitle: 'Hours', }}
+                     <DashboardCard data={{
+                        title: tutorHours,
+                        subtitle: `${tutorHours > 1 ? 'Hours' : 'Hour'}`
+                     }}
                         header='Completed'
                         subHeader='this month'
                         className='bg-[#7E82F0]' />
