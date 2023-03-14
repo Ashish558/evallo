@@ -186,6 +186,11 @@ export default function Users() {
             urlParams = urlParams + `&specialization=${item}`
          })
       }
+      if (filterData.status.length > 0) {
+         filterData.status.forEach(item => {
+            urlParams = urlParams + `&leadStatus=${item}`
+         })
+      }
       if (filterData.tutor.length > 0) {
          let ids = []
          filterData.tutor.forEach(selectedTutorName => {
