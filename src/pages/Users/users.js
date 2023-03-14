@@ -52,7 +52,7 @@ export default function Users() {
    const [numberPrefix, setNumberPrefix] = useState("+1")
    const [usersData, setUsersData] = useState([])
    const [filteredUsersData, setFilteredUsersData] = useState([])
-   
+
    useEffect(() => {
       setValidData(isEmail(modalData.email) && modalData.firstName && modalData.lastName && modalData.userType && modalData.phone)
    }, [modalData, modalData.email.length, modalData.firstName.length, modalData.lastName.length, modalData.phone.length, modalData.userType.length,])
@@ -209,15 +209,16 @@ export default function Users() {
       console.log('urlParams', urlParams);
       fetchUsers(urlParams)
          .then(res => {
-            console.log('all-users', res.data.data);
+            console.log('all-users', res.data.data.user);
             // if(res.data.data.no_of_users < maxPageSize){
             //    setTotalPages(15)
             // }else{
             setTotalPages(res.data.data.total_users)
             // }
-            console.log('total users', res.data.data.total_users);
+            // console.log('total users', res.data.data.total_users);
 
             const fetchDetails = async () => {
+
                await res.data.data.user.map(async (user) => {
                   let obj = {
                      _id: user._id,
@@ -233,36 +234,38 @@ export default function Users() {
                      tutorStatus: '-',
                      specialization: user.specialization ? user.specialization : [],
                   }
-                  if (user.role === 'tutor') {
-                     // console.log('tutor', user._id);
-                     await getTutorDetail({ id: user._id })
-                        .then(resp => {
-                           // console.log('TUTOR RESp', resp);
+                  setUsersData(prev => [...prev, obj])
+                  setFilteredUsersData(prev => [...prev, obj])
+                  // if (user.role === 'tutor') {
+                  //    // console.log('tutor', user._id);
+                  //    await getTutorDetail({ id: user._id })
+                  //       .then(resp => {
+                  //          // console.log('TUTOR RESp', resp);
 
-                           setFilterItems(prev => [...prev])
-                           // console.log('tutor-details', resp.data.data);
-                           let status = '-'
-                           if (resp.data.data.details) {
-                              status = resp.data.data.details.leadStatus
-                              obj.leadStatus = status ? status : '-'
-                           }
-                           setUsersData(prev => [...prev, obj])
-                           setFilteredUsersData(prev => [...prev, obj])
-                        })
-                  } else {
-                     await getUserDetail({ id: user._id })
-                        .then(resp => {
-                           setFilterItems(prev => [...prev])
-                           // console.log('user-details', resp.data.data);
-                           let status = '-'
-                           if (resp.data.data.userdetails) {
-                              status = resp.data.data.userdetails.leadStatus
-                              obj.leadStatus = status ? status : '-'
-                           }
-                           setUsersData(prev => [...prev, obj])
-                           setFilteredUsersData(prev => [...prev, obj])
-                        })
-                  }
+                  //          setFilterItems(prev => [...prev])
+                  //          // console.log('tutor-details', resp.data.data);
+                  //          let status = '-'
+                  //          if (resp.data.data.details) {
+                  //             status = resp.data.data.details.leadStatus
+                  //             obj.leadStatus = status ? status : '-'
+                  //          }
+                  //          setUsersData(prev => [...prev, obj])
+                  //          setFilteredUsersData(prev => [...prev, obj])
+                  //       })
+                  // } else {
+                  //    await getUserDetail({ id: user._id })
+                  //       .then(resp => {
+                  //          setFilterItems(prev => [...prev])
+                  //          // console.log('user-details', resp.data.data);
+                  //          let status = '-'
+                  //          if (resp.data.data.userdetails) {
+                  //             status = resp.data.data.userdetails.leadStatus
+                  //             obj.leadStatus = status ? status : '-'
+                  //          }
+                  //          setUsersData(prev => [...prev, obj])
+                  //          setFilteredUsersData(prev => [...prev, obj])
+                  //       })
+                  // }
 
                })
             }

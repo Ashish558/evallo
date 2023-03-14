@@ -37,6 +37,7 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch, ext
    const { role: persona } = useSelector(state => state.user)
 
    const [userDetail, setUserDetail] = useState({})
+   const [leadStatus, setLeadStatus] = useState('')
 
    // console.log(dataFor);
    const [settings, setSettings] = useState({
@@ -160,7 +161,35 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch, ext
          alert('PDF doesnt exist')
       }
    }
-   
+
+   useEffect(() => {
+      if (dataFor === 'allUsers') {
+         if (item.role === 'tutor') {
+            // console.log('tutor', user._id);
+            getTutorDetail({ id: item._id })
+               .then(resp => {
+                  // console.log('TUTOR RESp', resp);
+                  // console.log('tutor-details', resp.data.data);
+                  let status = '-'
+                  if (resp.data.data.details) {
+                     status = resp.data.data.details.leadStatus
+                     setLeadStatus(status)
+                  }
+               })
+         } else {
+            getUserDetail({ id: item._id })
+               .then(resp => {
+                  // console.log('user-details', resp.data.data);
+                  let status = '-'
+                  if (resp.data.data.userdetails) {
+                     status = resp.data.data.userdetails.leadStatus   
+                     setLeadStatus(status)
+                  }
+               })
+         }
+      }
+
+   }, [item])
    // console.log('item', item);
    // console.log('extraData', extraData );
 
@@ -193,11 +222,11 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch, ext
                </td>
                <td className="font-medium text-sm px-1  min-w-14 py-4">
                   <div className="my-[6px]">
-                     { item.assignedTutor?.length > 0 ?
+                     {item.assignedTutor?.length > 0 ?
                         item.assignedTutor?.map((id, idx) => {
                            const name = extraData.find(item => item._id === id)
                            if (name === undefined) return 'l'
-                           return `${name.value} ${idx +1 < item.assignedTutor.length ? ',' : ''} `
+                           return `${name.value} ${idx + 1 < item.assignedTutor.length ? ',' : ''} `
                         }) : '-'
                      }
                      {/* {item.assignedTutor.length > 1 ?
@@ -212,7 +241,7 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch, ext
                </td>
                <td className="font-medium text-sm px-1  min-w-14 py-4">
                   <div className="my-[6px]">
-                     <InputSelect value={item.leadStatus ? item.leadStatus : '-'}
+                     <InputSelect value={leadStatus ? leadStatus : '-'}
                         optionData={settings.leadStatus}
                         inputContainerClassName='min-w-[100px] pt-0 pb-0 pr-2 pl-0 text-center'
                         optionClassName='font-semibold opacity-60 text-sm'
