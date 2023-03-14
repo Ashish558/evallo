@@ -188,7 +188,7 @@ export default function Users() {
       }
       if (filterData.status.length > 0) {
          filterData.status.forEach(item => {
-            urlParams = urlParams + `&leadStatus=${item}`
+            urlParams = urlParams + `&leadstatus=${item}`
          })
       }
       if (filterData.tutor.length > 0) {
