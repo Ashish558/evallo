@@ -8,7 +8,7 @@ import PrimaryButton from "../../components/Buttons/PrimaryButton";
 import Table from "../../components/Table/Table";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-import { BASE_URL } from "../../app/constants/constants";
+import { BASE_URL, getAuthHeader } from "../../app/constants/constants";
 import { useEditQuestionMutation, useLazyGetSectionsQuery } from "../../app/services/test";
 import AllTestDetail from "../../components/AllTestDetail/AllTestDetail";
 import { useLazyGetAllSectionsQuery } from "../../app/services/admin";
@@ -88,7 +88,7 @@ export default function TestDetail() {
       formData.append("pdf", file);
       setPDFFile(file);
       setPdfBtnDisabled(true)
-      axios.post(`${BASE_URL}api/test/addpdf/${id}`, formData)
+      axios.post(`${BASE_URL}api/test/addpdf/${id}`, formData,  {headers: getAuthHeader()})
          .then((res) => {
             setPdfBtnDisabled(false)
             alert('PDF file uploaded successfully!')
