@@ -344,13 +344,13 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch, ext
                   <img src={DownloadIcon} className='w-[30px] cursor-pointer'
                      onClick={() => handlePdfNavigate()} />
                </td>
-               <td className="font-medium px-1 min-w-14 py-4">
+               {/* <td className="font-medium px-1 min-w-14 py-4">
                   <img
                      src={ResendConfirmation}
                      className="cursor-pointer"
                      onClick={() => onClick.handleResend(item)}
                   />
-               </td>
+               </td> */}
                <td className="font-medium px-1 min-w-14 py-4">
                   {/* <img
                      src={RedIcon}
