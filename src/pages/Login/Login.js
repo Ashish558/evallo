@@ -69,8 +69,8 @@ export default function Login({ setLoginFormActive }) {
                      alert('Login failed')
                      return
                   }
-                  if (res.error.status == 401) {
-                     alert('User not signed up')
+                  if (res.error.data.message == 'user not verified') {
+                     alert('Please finish the signup flow to login!')
                      return
                   }
                   if (res.error.data.message === "user is blocked") {
