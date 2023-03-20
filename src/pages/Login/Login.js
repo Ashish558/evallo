@@ -69,6 +69,10 @@ export default function Login({ setLoginFormActive }) {
                      alert('Login failed')
                      return
                   }
+                  if (res.error.status == 401) {
+                     alert('User not signed up')
+                     return
+                  }
                   if (res.error.data.message === "user is blocked") {
                      alert('User is blocked!')
                      setError(prev => {

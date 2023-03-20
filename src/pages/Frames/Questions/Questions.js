@@ -173,7 +173,7 @@ export default function Questions({
                children="Next"
                className="text-md pt-3 pb-3 disabled:opacity-70 font-semibold text-white mr-6 w-140"
                onClick={() => handleSubmit()}
-               // disabled={disabled}
+               disabled={disabled}
             />
          </div>
       </div>

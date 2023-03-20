@@ -23,6 +23,15 @@ export default function UserDetails({
 }) {
 
    const [selected, setSelected] = useState(false);
+   const [disabled, setDisabled] = useState(false)
+
+   useEffect(() => {
+      if (otherDetails.FirstName !== '' && otherDetails.LastName !== '' && otherDetails.Email !== '' && otherDetails.Phone !== '') {
+         setDisabled(false)
+      } else {
+         setDisabled(true)
+      }
+   }, [otherDetails])
 
    const selectRef = useRef();
    useOutsideAlerter(selectRef, () => setSelected(false));
@@ -199,6 +208,7 @@ export default function UserDetails({
                children="Next"
                className="text-lg pt-3 pb-3 font-semibold text-white mr-6 w-140"
                onClick={() => handleClick()}
+               disabled={disabled}
             />
          </div>
       </div>
