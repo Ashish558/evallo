@@ -203,7 +203,7 @@ export default function Users() {
          })
       }
       if (filterData.typeName.length > 0) {
-         urlParams = urlParams + `&name=${filterData.typeName}`
+         urlParams = urlParams + `&search=${filterData.typeName}`
       }
 
       console.log('urlParams', urlParams);
