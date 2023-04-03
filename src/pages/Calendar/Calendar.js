@@ -165,7 +165,7 @@ export default function Calendar() {
       const url = `/api/session/${role}/${id}`;
       // console.log(url)
       fetchUserSessions(url).then((res) => {
-         console.log('sessions', res.data.data);
+         // console.log('sessions', res.data.data);
          const tempEvents = res.data.data.session.map(session => {
             const time = session.time;
             const strtTime12HFormat = `${time.start.time} ${time.start.timeType}`;
@@ -239,7 +239,16 @@ export default function Calendar() {
             let up = getStartDate(startDate, userTimezoneOffset, session.timeZone)
             const startUtc = up.toUTCString()
 
-            // console.log('START DATE', startDate);
+            // console.log('START DATE', startDate.toDateString());
+            // console.log('startDate', new Date(startDate.getTime() - userTimezoneOffset + 9 * 3600000))
+            // console.log('startUtc', startUtc);
+            // console.log('startUtc', startUtc);
+            const dsttz = moment.tz(startDate, session.timeZone).format('zz')
+            const dstdate = moment.tz(startDate, session.timeZone).format('YYYY-MM-DD HH:mm ZZ')
+            // const dstdate = moment.tz(startDate, session.timeZone).format(moment.defaultFormat)
+          
+            console.log('dsttz', dsttz)
+            console.log('dstdate', moment().utcOffset(dstdate)._offset)
             // console.log('START DATE UTC --', startUtc);
 
             const endTime12HFormat = `${time.end.time} ${time.end.timeType}`;
@@ -739,7 +748,16 @@ export default function Calendar() {
          return prev.map(item => {
             let updatedDate = new Date(item.updatedDate).toLocaleString('en-US', { timeZone })
             let updatedDateEnd = new Date(item.updatedDateEnd).toLocaleString('en-US', { timeZone })
-            // console.log('DATE UPDATED ==', new Date(updatedDate))
+            // console.log('item', item)
+            // console.log('updatedDate', updatedDate)
+            // console.log('DATE UPDATED ==', updatedDate)
+            // console.log('timeZone', timeZone)
+            let fmt = 'DD/MM/YYYY, h:mm:ss a'
+            var m = moment.tz(updatedDate, fmt, timeZone);
+            m.utc();
+            var s = m.format(fmt)  // result:
+            // console.log('moment', moment(s).tz(timeZone).format(fmt));
+
             return {
                ...item,
                start: new Date(updatedDate),
@@ -820,7 +838,7 @@ export default function Calendar() {
                                     className={`p-4 mb-4 rounded-10 flex justify-between items-center  bg-white ${student.selected ? 'border border-[#c6c6c6] shadow-md' : 'border'} `}
                                     onClick={() => handleStudentChange(student)}
                                  >
-                                    <p className={` ${student.selected ? 'font-medium' : '' } `}>
+                                    <p className={` ${student.selected ? 'font-medium' : ''} `}>
                                        {student.studentName}
                                     </p>
                                     <div

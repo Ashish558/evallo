@@ -1,5 +1,4 @@
-
-
+import moment from "moment-timezone";
 
 export function tConvert(time) {
    // Check correct time format and split into components
@@ -74,7 +73,7 @@ export const getFormattedDateTime = argDate => {
    }
    let dateFormatted = `${year}-${month}-${dateNum} ${date.getHours()}:${date.getMinutes()} `
    // return dateFormatted
-   return date.toLocaleString().replace(",","").replace(/:.. /," ");
+   return date.toLocaleString().replace(",", "").replace(/:.. /, " ");
 }
 
 export function capitalize(str) {
@@ -150,18 +149,53 @@ export function formatAMPM(date) {
    return strTime;
 }
 
+const checkIfDaylight = () => {
+   Date.prototype.stdTimezoneOffset = function () {
+      var jan = new Date(this.getFullYear(), 0, 1);
+      var jul = new Date(this.getFullYear(), 6, 1);
+      return Math.max(jan.getTimezoneOffset(), jul.getTimezoneOffset());
+   }
+   Date.prototype.isDstObserved = function () {
+      return this.getTimezoneOffset() < this.stdTimezoneOffset();
+   }
+   var today = new Date();
+
+   if (today.isDstObserved()) {
+      // alert("Daylight saving time!");
+   }
+}
 export const getStartDate = (startDate, userTimezoneOffset, timeZone) => {
+   checkIfDaylight()
+
+   const dstdate = moment.tz(startDate, timeZone).format('YYYY-MM-DD HH:mm ZZ')
+   let offset = moment().utcOffset(dstdate)._offset
+
    if (timeZone === 'US/Central') {
+      if (offset === -300) {
+         return new Date(startDate.getTime() - userTimezoneOffset + 5 * 3600000);
+      }
       return new Date(startDate.getTime() - userTimezoneOffset + 6 * 3600000);
    } else if (timeZone === 'US/Alaska') {
+      if (offset === -480) {
+         return new Date(startDate.getTime() - userTimezoneOffset + 8 * 3600000);
+      }
       return new Date(startDate.getTime() - userTimezoneOffset + 9 * 3600000);
    } else if (timeZone === 'US/Eastern') {
+      if (offset === -240) {
+         return new Date(startDate.getTime() - userTimezoneOffset + 4 * 3600000);
+      }
       return new Date(startDate.getTime() - userTimezoneOffset + 5 * 3600000);
    } else if (timeZone === 'US/Hawaii') {
       return new Date(startDate.getTime() - userTimezoneOffset + 10 * 3600000);
    } else if (timeZone === 'US/Mountain') {
+      if (offset === -360) {
+         return new Date(startDate.getTime() - userTimezoneOffset + 6 * 3600000);
+      }
       return new Date(startDate.getTime() - userTimezoneOffset + 7 * 3600000);
    } else if (timeZone === 'US/Pacific') {
+      if (offset === -420) {
+         return new Date(startDate.getTime() - userTimezoneOffset + 7 * 3600000);
+      }
       return new Date(startDate.getTime() - userTimezoneOffset + 8 * 3600000);
    } else {
       return new Date(startDate.getTime() - userTimezoneOffset - 5.5 * 3600000);
@@ -322,12 +356,12 @@ export const getDuration = val => {
 }
 
 export const checkIfExistInNestedArray = (arr1, mainArray) => {
-   if(!arr1) return false
-   if(!mainArray) return false
+   if (!arr1) return false
+   if (!mainArray) return false
    let exist = false
    mainArray.forEach(mainArrItem => {
       arr1.forEach(arrItem => {
-         if(mainArrItem === arrItem){
+         if (mainArrItem === arrItem) {
             exist = true
          }
       })
