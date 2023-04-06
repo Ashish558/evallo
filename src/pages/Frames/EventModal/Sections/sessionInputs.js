@@ -62,7 +62,7 @@ export default function SessionInputs({ data, setData, status, isEditable }) {
                   </div>
                </div>
             ) : (
-               <div className="w-full flex flex-col items-center">
+               <div className="w-full flex flex-col items-center pt-[0px]">
                   <InputSelect
                      value={data.sessionStatus}
                      onChange={(val) =>
@@ -73,9 +73,11 @@ export default function SessionInputs({ data, setData, status, isEditable }) {
                      }
                      disabled={!isEditable}
                      optionData={status}
-                     inputContainerClassName="bg-lightWhite border-0 font-medium pr-3 pt-3.5 pb-3.5"
+                     inputContainerClassName="bg-lightWhite border-0 font-medium pr-3 pt-4 pb-4"
                      inputClassName="bg-transparent appearance-none font-medium"
                      placeholder="Session Status"
+                     label="Session Status"
+                     labelClassname="ml-2"
                      parentClassName="w-full mr-4"
                      type="select"
                   />

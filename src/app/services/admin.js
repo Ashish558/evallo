@@ -36,6 +36,14 @@ export const adminServicesApi = createApi({
             headers: getAuthHeader()
          })
       }),
+      editInvoice: builder.mutation({
+         query: (body) => ({
+            url: `/api/invoice/${body._id}`,
+            method: "PATCH",
+            body: body,
+            headers: getAuthHeader()
+         })
+      }),
 
       blockUser: builder.mutation({
          query: (body) => ({
@@ -69,7 +77,29 @@ export const adminServicesApi = createApi({
             headers: getAuthHeader()
          })
       }),
-
+      getAllAssignedtutors: builder.query({
+         query: (body) => ({
+            url: `/api/user/tutors/all`,
+            method: "GET",
+            headers: getAuthHeader()
+         })
+      }),
+      addAssignedTutor: builder.mutation({
+         query: (body) => ({
+            url: `/api/user/add/AssignedTutors`,
+            method: "PATCH",
+            body: body,
+            headers: getAuthHeader()
+         })
+      }),
+      deleteAssignedTutor: builder.mutation({
+         query: (body) => ({
+            url: `/api/user/removeTutor/${body.studentId}/${body.tutorId}`,
+            method: "PATCH",
+            body: body,
+            headers: getAuthHeader()
+         })
+      }),
    }),
 });
 
@@ -80,5 +110,9 @@ export const {
    useBlockUserMutation,
    useUnblockUserMutation,
    useLazyGetAllSectionsQuery,
-   useDeleteUserMutation     
+   useDeleteUserMutation,
+   useEditInvoiceMutation,
+   useLazyGetAllAssignedtutorsQuery,
+   useAddAssignedTutorMutation,
+   useDeleteAssignedTutorMutation
 } = adminServicesApi;

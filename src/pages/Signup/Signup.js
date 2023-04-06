@@ -249,6 +249,9 @@ export default function Signup() {
                   allCodes.push(item.code)
                });
                // console.log(settings.subscriptionCode);
+               if(values.subscriptionCode === ''){
+                  return alert('Please enter a subscription code or select the checkbox below confirming that you dont have one')
+               }
                if (!allCodes.includes(values.subscriptionCode)) {
                   return alert('invalid subscription code')
                }

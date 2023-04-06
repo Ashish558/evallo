@@ -15,12 +15,14 @@ import EditTestIcon from "../../assets/icons/edit-test.svg";
 import TrashIcon from '../../assets/icons/delete.svg'
 
 import DeleteIcon from "../../assets/icons/cross.svg"
+import DeleteTutorIcon from "../../assets/icons/delete-tutor.svg"
 import InputSelect from "../InputSelect/InputSelect";
 import { useLazyGetSettingsQuery } from "../../app/services/session";
 import { useLazyGetTutorDetailsQuery, useLazyGetUserDetailQuery, usePostTutorDetailsMutation, useUpdateTutorDetailsMutation, useUpdateUserDetailsMutation, useUpdateUserFieldsMutation } from "../../app/services/users";
 import { useSelector } from "react-redux";
 import { useLazyGetTestResponseQuery } from "../../app/services/test";
 import { getFormattedDate, getScore, getScoreStr } from "../../utils/utils";
+import InputField from "../InputField/inputField";
 
 //can b made dynamic
 export default function TableItem({ item, dataFor, onClick, excludes, fetch, extraData }) {
@@ -182,7 +184,7 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch, ext
                   // console.log('user-details', resp.data.data);
                   let status = '-'
                   if (resp.data.data.userdetails) {
-                     status = resp.data.data.userdetails.leadStatus   
+                     status = resp.data.data.userdetails.leadStatus
                      setLeadStatus(status)
                   }
                })
@@ -192,6 +194,7 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch, ext
    }, [item])
    // console.log('item', item);
    // console.log('extraData', extraData );
+   // console.log('onClick', onClick );
 
    return (
       <>
@@ -399,7 +402,7 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch, ext
          )}
          {dataFor === "assignedStudents" && (
             <tr className="odd:bg-white text-sm shadow-sm shadow-slate-200 even:bg-primaryWhite-300 rounded-2xl leading-7">
-               {mapData(item, 'assignedStudents', excludes, onClick)}
+               {MapData(item, 'assignedStudents', excludes, onClick)}
                {/* <td>
                   <img src={RemoveIcon} />
                </td> */}
@@ -407,17 +410,17 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch, ext
          )}
          {dataFor === "studentTestsReport" && (
             <tr className={`text-sm shadow-sm shadow-slate-200 rounded-2xl leading-7 ${!item.isCorrect ? 'bg-[#e02b1d]/5' : 'odd:bg-white  even:bg-primaryWhite-300'} `}>
-               {mapData(item)}
+               {MapData(item)}
             </tr>
          )}
          {dataFor === "studentTestsReportSmall" && (
             <tr className={`text-sm shadow-sm shadow-slate-200  rounded-2xl leading-7 ${!item.isCorrect ? 'bg-[#e02b1d]/5' : 'odd:bg-white  even:bg-primaryWhite-300'} `}>
-               {mapData(item)}
+               {MapData(item)}
             </tr>
          )}
          {dataFor === "studentTestsAnswers" && (
             <tr className="odd:bg-white text-sm shadow-sm shadow-slate-200 even:bg-primaryWhite-300 rounded-2xl leading-7">
-               {mapData(item)}
+               {MapData(item)}
                <td className="font-medium px-1 min-w-14 py-4 flex justify-center items-center">
                   <button className="flex items-center">
                      <span className="inline-block mr-3 text-textBlue">
@@ -500,12 +503,12 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch, ext
          )}
          {dataFor === "invoice" && (
             <tr className="bg-white text-sm shadow-sm shadow-slate-200 rounded-2xl leading-7 mt-[10px]">
-               {mapData(item, dataFor, excludes)}
+               {MapData(item, dataFor, excludes, onClick)}
             </tr>
          )}
          {dataFor === "testsDetailQuestions" && (
             <tr className="bg-white text-sm shadow-sm shadow-slate-200 rounded-2xl leading-7 mt-[10px]">
-               {mapData(item, dataFor, excludes)}
+               {MapData(item, dataFor, excludes)}
                <td className="font-medium px-1 min-w-14 py-4">
                   <img
                      src={EditTestIcon}
@@ -546,12 +549,26 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch, ext
                </td>
             </tr>
          )}
+         {dataFor === "assignedTutors" && (
+            <tr className="bg-white text-sm shadow-sm shadow-slate-200 rounded-2xl leading-7 mt-[10px]">
+               {MapData(item, dataFor, excludes, onClick)}
+               <td className="font-medium flex justify-center px-1 min-w-14 py-4">
+                  <img
+                     src={DeleteTutorIcon}
+                     className="cursor-pointer"
+                     onClick={() => onClick.handleDelete(item)}
+                  />
+               </td>
+            </tr>
+         )}
       </>
    );
 }
 
-const mapData = (data, dataFor, exclude = [], onClick) => {
+const MapData = (data, dataFor, exclude = [], onClick) => {
    // console.log(data);
+   const [remarkText, setRemarkText] = useState(data.remark)
+   const [disabled, setDisabled] = useState(true)
    return Object.keys(data).map((key, i) =>
       exclude.includes(key) ? <></> :
          (
@@ -584,12 +601,47 @@ const mapData = (data, dataFor, exclude = [], onClick) => {
                            {data[key]}
                         </p>
                      </td>
-                  ) :
-                     (
-                        <td key={i} className={`font-medium px-1 ${data[key] === "Unpaid" && "text-[#E02B1D]"} ${data[key] === 'Paid' && "text-[#009262]"} ${data[key] === 'Cancelled' && "text-[#7C859C]"} min-w-14 py-4`}>
-                           {data[key]}
-                        </td>
-                     )
+                  ) : dataFor === 'invoice' && key === 'invoiceType' ?
+                     <td key={i} className='font-medium px-1 text-[#009262] py-4'>
+                        <p className={`font-semibold`}>
+                           <InputSelect value={data[key] ? data[key] : '-'}
+                              optionData={['paid', 'draft', 'cancelled', 'unpaid']}
+                              inputContainerClassName='min-w-[100px] pt-0 pb-0 pr-2 pl-0 text-center'
+                              optionClassName='font-semibold opacity-60 text-sm'
+                              labelClassname='hidden'
+                              onChange={val => onClick.handleEdit({
+                                 ...data,
+                                 invoiceType: val
+                              })} />
+                        </p>
+                     </td> : dataFor === 'invoice' && key === 'remark' ?
+                        <td key={i} className='font-medium px-1 py-4'>
+                           <InputField value={remarkText}
+                              onChange={e => setRemarkText(e.target.value)}
+                              onClick={() => setDisabled(false)}
+                              parentClassName="mr-4 w-full"
+                              onFocus={() => setDisabled(false)}
+                              onBlur={() => {
+                                 setDisabled(true);
+                                 data.remark !== remarkText && onClick.handleEdit({
+                                    ...data,
+                                    remark: remarkText
+                                 })
+                              }}
+                              inputContainerClassName={`bg-white ${disabled ? 'border-0' : 'border'} pt-1.5 pb-1.5 lg:pt-1.5 lg:pb-1.5 disabled:border-0`} />
+                        </td> :
+                        dataFor === 'assignedTutors' && key === 'tutorName' ||  dataFor === 'assignedTutors' && key === 'studentName' ? (
+                           <td key={i} className='font-medium px-1 text-[#2A6CFB] py-4'>
+                              <p className={`font-semibold cursor-pointer`}>
+                                 {data[key]}
+                              </p>
+                           </td>
+                        ) :
+                           (
+                              <td key={i} className={`font-medium px-1 ${data[key] === "Unpaid" && "text-[#E02B1D]"} ${data[key] === 'Paid' && "text-[#009262]"} ${data[key] === 'Cancelled' && "text-[#7C859C]"} min-w-14 py-4`}>
+                                 {data[key]}
+                              </td>
+                           )
          ))
 
 }

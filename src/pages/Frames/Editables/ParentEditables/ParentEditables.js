@@ -456,9 +456,8 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
    // console.log('parents', parents)
 
    const checkNumber = (prevNum, num, limit) => {
-      // console.log(num);
       if (limit) {
-         if (num > limit + 1) {
+         if (num > limit) {
             return prevNum
          } else {
             return num
@@ -633,17 +632,15 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                         {currentField.name === 'industry' &&
                            <div>
                               <div className='flex items-center mb-5 pt-2'>
-                                 <InputSelect
+                                 <InputField
                                     value={currentToEdit.industry}
-                                    onChange={val =>
-                                       setCurrentToEdit({ ...currentToEdit, industry: val })
+                                    onChange={e =>
+                                       setCurrentToEdit({ ...currentToEdit, industry: e.target.value })
                                     }
-                                    optionData={['Medical', 'Law', 'Teaching']}
-                                    radio={true}
-                                    inputContainerClassName="pt-3 pb-3 border bg-[#D9D9D999]"
-                                    placeholder="Select"
+                                    inputContainerClassName='text-sm pt-3 pb-3 rounded-sm bg-primary-50 border-0'
+                                    inputClassName='bg-transparent'
+                                    placeholder="Industry"
                                     parentClassName="w-full mr-4"
-                                    type="select"
                                  />
                               </div>
                            </div>
@@ -1308,7 +1305,8 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                                        }
                                        tempScores = tempScores.map((item, idx) => {
                                           if (selectedScoreIndex === idx) {
-                                             return { ...item, verbal: checkNumber(currentToEdit.satScores.verbal, parseInt(e.target.value), 800) }
+                                             let num = checkNumber(currentToEdit.satScores[selectedScoreIndex]?.verbal, parseInt(e.target.value), 800)
+                                             return { ...item, verbal: num }
                                           } else {
                                              return { ...item }
                                           }
@@ -1342,7 +1340,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                                        }
                                        tempScores = tempScores.map((item, idx) => {
                                           if (selectedScoreIndex === idx) {
-                                             return { ...item, maths: checkNumber(currentToEdit.satScores.maths, parseInt(e.target.value), 800) }
+                                             return { ...item, maths: checkNumber(currentToEdit.satScores[selectedScoreIndex]?.maths, parseInt(e.target.value), 800) }
                                           } else {
                                              return { ...item }
                                           }
@@ -1385,7 +1383,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                                        }
                                        tempScores = tempScores.map((item, idx) => {
                                           if (selectedScoreIndex === idx) {
-                                             return { ...item, maths: checkNumber(currentToEdit.actScores.maths, parseInt(e.target.value), 36)}
+                                             return { ...item, maths: checkNumber(currentToEdit.actScores[selectedScoreIndex]?.maths, parseInt(e.target.value), 36)}
                                           } else {
                                              return { ...item }
                                           }
@@ -1420,7 +1418,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                                        }
                                        tempScores = tempScores.map((item, idx) => {
                                           if (selectedScoreIndex === idx) {
-                                             return { ...item, english: checkNumber(currentToEdit.actScores.english, parseInt(e.target.value), 36)}
+                                             return { ...item, english: checkNumber(currentToEdit.actScores[selectedScoreIndex]?.english, parseInt(e.target.value), 36)}
                                           } else {
                                              return { ...item }
                                           }
@@ -1456,7 +1454,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                                        }
                                        tempScores = tempScores.map((item, idx) => {
                                           if (selectedScoreIndex === idx) {
-                                             return { ...item, reading: checkNumber(currentToEdit.actScores.reading, parseInt(e.target.value), 36)}
+                                             return { ...item, reading: checkNumber(currentToEdit.actScores[selectedScoreIndex]?.reading, parseInt(e.target.value), 36)}
                                           } else {
                                              return { ...item }
                                           }
@@ -1491,7 +1489,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                                        }
                                        tempScores = tempScores.map((item, idx) => {
                                           if (selectedScoreIndex === idx) {
-                                             return { ...item, science: checkNumber(currentToEdit.actScores.science, parseInt(e.target.value), 36)}
+                                             return { ...item, science: checkNumber(currentToEdit.actScores[selectedScoreIndex]?.science, parseInt(e.target.value), 36)}
                                           } else {
                                              return { ...item }
                                           }

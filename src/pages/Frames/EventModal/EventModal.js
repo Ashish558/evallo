@@ -711,7 +711,7 @@ export default function EventModal({
 
                   <DateAndTimeInput {...dataProps} isEditable={isEditable} />
 
-                  <div className="flex mb-3">
+                  <div className={`flex mb-3 ${isUpdating && !data.recurring ? 'pointer-events-none opacity-60' : ''} `}>
                      <CCheckbox checked={data.recurring} name='recurring' onChange={() =>
                         setData({
                            ...data,

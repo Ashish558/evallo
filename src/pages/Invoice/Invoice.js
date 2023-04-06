@@ -6,7 +6,7 @@ import inputStyle from "../Signup/signup.module.css";
 import Table from '../../components/Table/Table';
 import { tableData } from './tempdata';
 import InputSearch from '../../components/InputSearch/InputSearch';
-import { useLazyGetParentsByNameQuery, useAddInvoiceMutation, useLazyGetAllInvoiceQuery } from '../../app/services/admin';
+import { useLazyGetParentsByNameQuery, useAddInvoiceMutation, useLazyGetAllInvoiceQuery, useEditInvoiceMutation } from '../../app/services/admin';
 import { getCurrentDate, getFormattedDate } from '../../utils/utils';
 import { useLazyGetUserDetailQuery } from '../../app/services/users';
 
@@ -19,10 +19,10 @@ const tableHeaders = [
    "Create Date",
    "Status",
    "Paid On",
+   "Remark",
    "Type",
    "Amt. Due",
    "Bal. Credit(ed)",
-   "Status Remark"
 ];
 
 const initialState = {
@@ -37,6 +37,7 @@ export default function Invoice() {
    const [invoiceData, setInvoiceData] = useState(initialState)
 
    const [addInvoice, addInvoiceResponse] = useAddInvoiceMutation()
+   const [editInvoice, editInvoiceResponse] = useEditInvoiceMutation()
    const [loading, setLoading] = useState(false)
    const [fetchParents, parentsResponse] = useLazyGetParentsByNameQuery()
    const [getUserDetail, getUserDetailResp] = useLazyGetUserDetailQuery()
@@ -80,8 +81,42 @@ export default function Invoice() {
             fetchInvoices()
          })
    }
-
    const checkIfExist = val => val ? val : '-'
+
+   const handleEdit = updatedInvoice => {
+      console.log(updatedInvoice);
+      editInvoice(updatedInvoice)
+         .then(res => {
+            console.log(res)
+            if (res.error) {
+               console.log(res.error.data);
+               return
+            }
+            if (res.data?.invoice) {
+               setAllInvoices(prev => {
+                  return prev.map(invoice => {
+                     if (invoice._id === updatedInvoice._id) {
+                        let obj = {
+                           ...updatedInvoice,
+                           invoiceType: res.data.invoice?.invoiceType,
+                           remark: res.data.invoice?.remark,
+                        }
+                        return obj
+                     } else {
+                        return invoice
+                     }
+                  }).sort(function (a, b) {
+                     return new Date(b.updatedAt) - new Date(a.updatedAt);
+                  });
+               })
+            }
+            // setInvoiceData(initialState)
+            // fetchInvoices()
+         }).catch(err => {
+            console.log(err)
+
+         })
+   }
 
    const fetchInvoices = () => {
       fetchAllInvoice()
@@ -89,7 +124,7 @@ export default function Invoice() {
             setAllInvoices([])
             console.log('all invoices', resp.data.data.invoice)
             resp.data.data.invoice.map((invoice, idx) => {
-               const { _id, createdAt, isPaid, status, amountDue, balanceChange, type, parentId, updatedAt } = invoice
+               const { _id, createdAt, isPaid, status, invoiceType, amountDue, balanceChange, type, parentId, updatedAt, remark } = invoice
 
                getUserDetail({ id: parentId }).then((res) => {
                   const { firstName, lastName, credits } = res.data.data.user
@@ -100,11 +135,14 @@ export default function Invoice() {
                         currentBalance: `$${credits}`,
                         invoiceId: _id.slice(-8),
                         createDate: getFormattedDate(createdAt),
-                        status: isPaid ? 'Paid' : 'Unpaid',
+                        // status: isPaid ? 'Paid' : 'Unpaid',
+                        invoiceType: invoiceType,
                         paidOn: '-',
+                        remark: remark,
                         type: checkIfExist(type),
                         amountDue: `$${amountDue}`,
                         balanceCredit: `$${balanceChange}`,
+                        parentId,
                         updatedAt
                      }
                      let allinvs = [...prev, { ...obj }]
@@ -142,7 +180,7 @@ export default function Invoice() {
          //       <p className='font-bold text-[48px] mb-[30px] text-[#25335A]'> Invoices </p>
          //       <div className='flex'>
          //          <div className='grid grid-cols-2 flex-1 gap-x-[46px] gap-y-[16px] mr-[50px]'> */}
-         <div className='lg:ml-pageLeft bg-lightWhite min-h-screen pt-[30px] pb-[50px] pl-[61px] pr-[41px]'>
+         <div className='lg:ml-pageLeft bg-lightWhite min-h-screen pt-[30px] pb-[50px] pl-[41px] pr-[41px]'>
             <div className=''>
                <p className='font-bold text-[48px] mb-[30px] text-[#25335A]'> Invoice </p>
                <form className='flex' onSubmit={handleSubmit} >
@@ -246,7 +284,9 @@ export default function Invoice() {
                      data={allInvoices}
                      tableHeaders={tableHeaders}
                      maxPageSize={10}
-                     excludes={['_id', 'updatedAt']}
+                     changePageAfterUpdate={false}
+                     excludes={['_id', 'updatedAt', 'parentId']}
+                     onClick={{ handleEdit }}
                   />
                </div>
             </div>

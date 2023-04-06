@@ -13,17 +13,25 @@ export default function SimpleCalendar({ currentDate, setCurrentDate, events }) 
 
 
    useEffect(() => {
+      const els =  document.querySelectorAll('.calendar-dot')
+      // console.log(els);
+      if(els){
+         els.forEach(el => {
+            el.classList.remove('calendar-dot')
+         })
+      }
       events.map(event => {
          const date = new Date(event.start);  // 2009-11-10
          const month = date.toLocaleString('default', { month: 'long' });
          let str = `${month} ${date.getDate()}, ${date.getFullYear()}`
+         // console.log(str);
          var element = document.querySelector(`[aria-label="${str}"]`);
          // console.log('element', element);
          if(element !== null){
             element.classList.add('calendar-dot')
          }
       })
-   }, [events])
+   }, [events.length])
 
    return (
       <>

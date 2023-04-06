@@ -138,9 +138,9 @@ export default function StudentProfile({ isOwn }) {
    const [getUserDetail, userDetailResp] = useLazyGetUserDetailQuery()
    const [fetchSettings, settingsResp] = useLazyGetSettingsQuery()
    const [editableByTutor, setEditableByTutor] = useState(false)
+   const { awsLink } = useSelector(state => state.user)
 
    const { id } = useSelector(state => state.user)
-   const [awsLink, setAwsLink] = useState('')
    const [selectedScoreIndex, setSelectedScoreIndex] = useState(0)
 
    const [toEdit, setToEdit] = useState({
@@ -290,7 +290,6 @@ export default function StudentProfile({ isOwn }) {
                   setEditableByTutor(true)
                }
             }
-            setAwsLink(res.data.data.baseLink)
             const { firstName, lastName, phone, phoneCode, email, associatedParent } = res.data.data.user
             let { service, accomodations, timeZone, birthyear, personality, interest, schoolName, grade, satScores, actScores, subscriptionCode } = res.data.data.userdetails
             associatedParent && getUserDetail({ id: associatedParent })
@@ -409,14 +408,14 @@ export default function StudentProfile({ isOwn }) {
       let url = ''
       const formData = new FormData
       formData.append('photo', file)
-      if (persona === 'admin') {
+      if (persona === 'admin' || persona === 'parent') {
          url = `${BASE_URL}api/user/admin/addphoto/${params.id} `
       } else {
          url = `${BASE_URL}api/user/addphoto`
       }
       axios.patch(url, formData, { headers: getAuthHeader() })
          .then((res) => {
-            console.log(res)
+            console.log('photo res', res)
             fetchDetails()
          })
    }
@@ -558,7 +557,7 @@ export default function StudentProfile({ isOwn }) {
                            className='text-[21px] mb-2 flex justify-start text-left self-stretch' />
 
                         <div className='w-[98px] h-[98px]'>
-                           <img src={associatedParent.photo ? associatedParent.photo : ''} className='rounded-full w-full h-full' width="98px" height="98px" />
+                           <img src={associatedParent.photo ? `${awsLink}${associatedParent.photo}` : ''} className='rounded-full w-full h-full' width="98px" height="98px" />
                         </div>
                         <p className='font-bold text-[18px] opacity-[68%] mb-1'>
                            {Object.keys(associatedParent).length > 1 ? `${associatedParent.firstName} ${associatedParent.lastName}` : `${userDetail.FirstName} ${userDetail.LastName}`}
@@ -676,7 +675,8 @@ export default function StudentProfile({ isOwn }) {
                                        <div key={idx} className='flex flex-col items-center mb-10'>
                                           <div className='flex h-90 w-90 rounded-full  items-center justify-center mb-3' >
                                              <img className='max-w-[90px] max-h-[90px]'
-                                                src={settings.personality.find(item => item._id === id) ? settings.personality.find(item => item._id === id).image :
+                                                src={settings.personality.find(item => item._id === id) ? 
+                                                   `${awsLink}${settings.personality.find(item => item._id === id)?.image}` :
                                                    ''}
                                              />
                                           </div>
@@ -889,7 +889,8 @@ export default function StudentProfile({ isOwn }) {
                                     settings.interest.find(item => item._id === id) ?
                                        <div key={idx} className='flex flex-col items-center mb-10'>
                                           <div className='flex h-90 w-90 rounded-full  items-center justify-center mb-3' >
-                                             <img className='max-w-[90px] max-h-[90px]' src={settings.interest.find(item => item._id === id) ? settings.interest.find(item => item._id === id).image : ''}
+                                             <img className='max-w-[90px] max-h-[90px]' src={settings.interest.find(item => item._id === id) ? 
+                                             `${awsLink}${settings.interest.find(item => item._id === id).image}` : ''}
                                              />
                                           </div>
                                           <p className='opacity-70 font-semibold text-lg'>

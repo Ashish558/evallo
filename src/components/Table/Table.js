@@ -19,7 +19,8 @@ export default function Table(props) {
       total_pages,
       isCallingApi,
       headerObject,
-      extraData
+      extraData,
+      changePageAfterUpdate
    } = props
 
    const [tableData, setTableData] = useState(data);
@@ -36,6 +37,7 @@ export default function Table(props) {
 
 
    useEffect(() => {
+      if(changePageAfterUpdate === false) return
       if (hidePagination === true) {
          setTableData(data)
       } else {

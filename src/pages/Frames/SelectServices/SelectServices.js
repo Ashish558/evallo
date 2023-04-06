@@ -126,7 +126,7 @@ export default function SelectServices({
                <div className="row-span-2">
                   <InputField
                      labelClassname="hidden"
-                     placeholder="Tell us more (char limit)"
+                     placeholder="Tell us more"
                      inputContainerClassName="pt-1.8 pb-1.8 px-2.5 border"
                      value={otherDetails.tellUsMore}
                      disabled={inputDisabled}

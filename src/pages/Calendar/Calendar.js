@@ -247,8 +247,8 @@ export default function Calendar() {
             const dstdate = moment.tz(startDate, session.timeZone).format('YYYY-MM-DD HH:mm ZZ')
             // const dstdate = moment.tz(startDate, session.timeZone).format(moment.defaultFormat)
           
-            console.log('dsttz', dsttz)
-            console.log('dstdate', moment().utcOffset(dstdate)._offset)
+            // console.log('dsttz', dsttz)
+            // console.log('dstdate', moment().utcOffset(dstdate)._offset)
             // console.log('START DATE UTC --', startUtc);
 
             const endTime12HFormat = `${time.end.time} ${time.end.timeType}`;
@@ -698,6 +698,7 @@ export default function Calendar() {
                   selected: true
                };
             });
+            console.log('uniq', arrayUniqueByKey);
             setStudents(tempstudents);
          });
       }
@@ -784,12 +785,6 @@ export default function Calendar() {
       // calendarRef.current.setOption('timeZone', timeZone)
    }, [timeZone, events.length])
 
-   useEffect(() => {
-      if (persona === 'tutor') {
-         // setTutor(`${firstName} ${lastName}`);
-         // setData({ ...data, tutorId: currentUserId });
-      }
-   }, [persona, id])
 
    const handleStudentChange = student => {
       let tempStudents = students.map(item => {
@@ -805,8 +800,10 @@ export default function Calendar() {
    useEffect(() => {
       if (students.length === 0) return
       if (events.length === 0) return
+      console.log('students', students);
       let selectedStudents = students.filter(item => item.selected === true).map(item => item._id)
       let filtered = events.filter(event => selectedStudents.includes(event.studentId))
+      // console.log('filtered', filtered);
       // console.log('filtered', filtered);
       setFilteredEvents(filtered)
    }, [events, students])
