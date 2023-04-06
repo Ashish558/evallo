@@ -566,8 +566,16 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch, ext
 }
 
 const MapData = (data, dataFor, exclude = [], onClick) => {
-   // console.log(data);
-   const [remarkText, setRemarkText] = useState(data.remark)
+   // console.log(data.remark);
+   const [remarkText, setRemarkText] = useState('')
+   useEffect(() => {
+      if(data.remark){
+         setRemarkText(data.remark)
+      }else{
+         setRemarkText('')
+      }
+   }, [data.remark])
+
    const [disabled, setDisabled] = useState(true)
    return Object.keys(data).map((key, i) =>
       exclude.includes(key) ? <></> :
