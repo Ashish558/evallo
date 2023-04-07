@@ -75,7 +75,8 @@ export default function TutorDashboard() {
    const { id } = useSelector(state => state.user)
    const [students, setStudents] = useState([])
    const [tutorRank, setTutorRank] = useState('-')
-   const [awsLink, setAwsLink] = useState('')
+   // const [awsLink, setAwsLink] = useState('')
+   const { awsLink } = useSelector(state => state.user)
 
    useEffect(() => {
       const url = `/api/session/tutor/${id}`;
@@ -104,7 +105,7 @@ export default function TutorDashboard() {
          .then(resp => {
             // console.log(resp.data.data.user.assiginedStudents)
             console.log(resp.data.data);
-            setAwsLink(resp.data.data.baseLink)
+            let awsLink =resp.data.data.baseLink
             const { details } = resp.data.data
             // console.log('tutor details', details);
             if (resp.data.data.user.tutorHours) {
@@ -158,7 +159,7 @@ export default function TutorDashboard() {
                         studentsData.push({
                            _id,
                            name: `${firstName} ${lastName}`,
-                           photo: res.data.data.user.photo ? res.data.data.user.photo : '/images/default.jpeg'
+                           photo: res.data.data.user.photo ? `${res.data.data.user.photo}` : null
                         })
                         if (idx === resp.data.data.user.assiginedStudents.length - 1) cb()
                      })
@@ -187,7 +188,7 @@ export default function TutorDashboard() {
             let data = res.data.data.test.map(item => {
                const { createdAt, studentId, dueDate, photo, testId, multiple, timeLimit, isCompleted, isStarted } = item
                // console.log(photo);
-               let profile = studentId.photo ? studentId.photo : '/images/default.jpeg'
+               let profile = studentId.photo ? studentId.photo : null
                return {
                   studentName: studentId ? `${studentId.firstName} ${studentId.lastName}` : '-',
                   studentId: studentId ? studentId._id : '-',
@@ -233,7 +234,7 @@ export default function TutorDashboard() {
                            <OwlCarousel items={5} autoWidth margin={20} >
                               {students.map(student => {
                                  return <div className='flex flex-col items-center text-center w-[110px]'>
-                                    <img src={`${awsLink}${student.photo}`} className='w-[100px]' />
+                                    <img src={`${student.photo ? `${awsLink}${student.photo}` : '/images/default.jpeg'} `} className='w-[100px]' />
                                     <p className='text-lg font-semibold mt-4 cursor-pointer'
                                        onClick={() => navigate(`/profile/student/${student._id}`)} >
                                        {student.name.split(" ")[0]} <br /> {student.name.split(" ")[1]} </p>
@@ -336,7 +337,7 @@ export default function TutorDashboard() {
                            return (
                               <div className='flex items-center mb-8' key={item._id} >
                                  <div>
-                                    <img src={`${awsLink}${item.photo}`} className='w-[62px] h-[62px] rounded-full' />
+                                    <img src={`${item.photo ? `${awsLink}${item.photo}` : '/images/default.jpeg'} `} className='w-[62px] h-[62px] rounded-full' />
                                  </div>
                                  <div className='ml-[21px] mr-[8px] flex-1'>
                                     <p className='font-semibold text-lg mb-1'> {item.testName} </p>

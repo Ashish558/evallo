@@ -249,7 +249,7 @@ export default function Signup() {
                   allCodes.push(item.code)
                });
                // console.log(settings.subscriptionCode);
-               if(values.subscriptionCode === ''){
+               if (values.subscriptionCode === '') {
                   return alert('Please enter a subscription code or select the checkbox below confirming that you dont have one')
                }
                if (!allCodes.includes(values.subscriptionCode)) {
@@ -342,7 +342,17 @@ export default function Signup() {
          setLastLoginDisabled(false)
          console.log(res);
          if (res.error) {
-            alert('something went wrong')
+            if (res.error.data.message) {
+               alert(res.error.data.message)
+               setFrames((prev) => {
+                  return { ...prev, signupSuccessful: false, signupLast: false, userDetails: true };
+               });
+            } else {
+               alert('Something went wrong')
+               setFrames((prev) => {
+                  return { ...prev, signupSuccessful: false, signupLast: false, userDetails: true };
+               });
+            }
             return
          }
          // window.open(redirectLink);
@@ -549,25 +559,25 @@ export default function Signup() {
                      ) : frames.services ? (
                         // persona !== 'parent'
                         //    ?
-                            <SelectServices
-                              {...props}
-                              services={services}
-                              setServices={setServices}
-                              {...otherDetailsProps}
-                              {...valueProps}
-                           />
-                           // : <UserDetails {...props} {...otherDetailsProps} />
+                        <SelectServices
+                           {...props}
+                           services={services}
+                           setServices={setServices}
+                           {...otherDetailsProps}
+                           {...valueProps}
+                        />
+                        // : <UserDetails {...props} {...otherDetailsProps} />
                      ) : frames.userDetails ? (
                         // persona === 'parent'
-                           // ?
-                            <UserDetails {...props} {...otherDetailsProps} />
-                           // : <SelectServices
-                           //    {...props}
-                           //    services={services}
-                           //    setServices={setServices}
-                           //    {...otherDetailsProps}
-                           //    {...valueProps}
-                           // />
+                        // ?
+                        <UserDetails {...props} {...otherDetailsProps} />
+                        // : <SelectServices
+                        //    {...props}
+                        //    services={services}
+                        //    setServices={setServices}
+                        //    {...otherDetailsProps}
+                        //    {...valueProps}
+                        // />
                      ) : frames.questions ? (
                         <Questions
                            {...props}
