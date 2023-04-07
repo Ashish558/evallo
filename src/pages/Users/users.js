@@ -427,7 +427,7 @@ export default function Users() {
       } else {
          body.role = modalData.userType
          console.log(body)
-         signupUser(body)
+         addUser(body)
             .then(res => {
                setLoading(false)
                console.log(res)

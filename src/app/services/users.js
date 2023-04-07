@@ -93,7 +93,7 @@ export const userServicesApi = createApi({
       }),
       addUser: builder.mutation({
          query: (body) => ({
-            url: `/api/user/addtutor`,
+            url: `/api/user/adduser`,
             method: "POST",
             body: body,
             headers: getAuthHeader()
