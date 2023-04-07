@@ -51,18 +51,19 @@ const ParentDashboardHeader = ({ selectedStudent, setSelectedStudent }) => {
             res.data.data.user.assiginedStudents.map((student, idx) => {
                getUserDetail({ id: student })
                   .then(res => {
-                     // console.log('detail', res.data.data.userdetails.serviceSeeking);
+                     console.log('res detail', res);
+                     if(res.error) return
                      setAssociatedStudents(prev => [...prev, {
-                        _id: res.data.data.user._id,
-                        name: `${res.data.data.user.firstName} ${res.data.data.user.lastName}`,
-                        photo: res.data.data.user.photo ? res.data.data.user.photo : '/images/default.jpeg',
-                        serviceSeeking: res.data.data.userdetails?.serviceSeeking
+                        _id: res.data?.data?.user._id,
+                        name: `${res.data?.data?.user.firstName} ${res.data?.data?.user.lastName}`,
+                        photo: res.data.data?.user.photo ? res.data.data.user.photo : '/images/default.jpeg',
+                        serviceSeeking: res.data?.data?.userdetails?.serviceSeeking
                      }])
                      idx === 0 && setSelectedStudent({
-                        _id: res.data.data.user._id,
-                        value: `${res.data.data.user.firstName} ${res.data.data.user.lastName}`,
-                        photo: res.data.data.user.photo ? res.data.data.user.photo : '/images/default.jpeg',
-                        serviceSeeking: res.data.data.userdetails?.serviceSeeking
+                        _id: res.data.data?.user._id,
+                        value: `${res.data.data?.user.firstName} ${res.data.data?.user.lastName}`,
+                        photo: res.data.data?.user.photo ? res.data.data?.user.photo : '/images/default.jpeg',
+                        serviceSeeking: res.data.data?.userdetails?.serviceSeeking
                      })
                      idx === 0 && setDetailStudent(res.data.data.userdetails)
                   })
