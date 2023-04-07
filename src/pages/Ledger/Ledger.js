@@ -59,7 +59,7 @@ export default function Ledger({setLedgerVisible}) {
       })
       setLedgers(temp)
    }
-   // console.log('ledgers', ledgers);
+   console.log('ledgers', ledgers);
 
    return (
       <div className='bg-[#ffffffaf] w-[90%] rounded-lg ml-auto mr-auto h-full z-5000 absolute left-0 p-10' style={{position: 'absolute', left: '50%', transform: 'translateX(calc(-50% + 30px))'}} >

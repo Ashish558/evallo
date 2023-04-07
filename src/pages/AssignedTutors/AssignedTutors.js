@@ -176,6 +176,9 @@ export default function AssignedTutors(props) {
                console.log(res.error);
                return
             }
+            if(res.data.status === 'Tutor already assigned'){
+               return alert('Tutor already assigned')
+            }
             fetch()
             setModalData(initialState)
             setAssignStudentModalActive(false)
@@ -218,8 +221,8 @@ export default function AssignedTutors(props) {
                console.log(res.error);
                return
             }
-            console.log(res.data.assiginedTutors);
-            let data = res.data.assiginedTutors.assiginedTutors.map(item => {
+            console.log(res.data);
+            let data = res.data.assiginedTutors.map(item => {
                const { assiginedTutor, associatedParent, firstName, lastName, specialization, student_id, timeZone, tutorFirstName, tutorLastName } = item
                return {
                   tutorName: `${tutorFirstName} ${tutorLastName}`,

@@ -18,8 +18,8 @@ export default function SingleLedger({ _id, invoiceId, sessionId, title, Date: l
    const [fetchInvoice, fetchInvoiceResp] = useLazyGetInvoiceQuery()
 
    useEffect(() => {
-      let names = title.split('<>')
-      if (names.length > 1) {
+      let names = title?.split('<>')
+      if (names?.length > 1) {
          setTutorName(names[0])
          setStudentName(names[1])
       }
@@ -34,10 +34,9 @@ export default function SingleLedger({ _id, invoiceId, sessionId, title, Date: l
 
    }, [])
 
-   // console.log('session', sessionDetails);
    useEffect(() => {
       if (!invoiceId) return
-      fetchInvoice({ id: invoiceId })
+      fetchInvoice({ id: invoiceId?._id })
          .then(res => {
             const invoice = res.data.data.invoice[0]
             invoice && setInvoiceDetail(invoice)
