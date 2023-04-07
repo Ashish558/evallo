@@ -496,6 +496,11 @@ export default function EventModal({
       // }).catch(err => {
       //    console.log(err)
       // })
+      if(!isUpdating && data.recurring === true){
+         if(new Date(data.endDate) < new Date()){
+            return alert('End date should be a future date')
+         }
+      }
       setLoading(true)
       let reqBody = { ...data }
       reqBody.studentName = student
