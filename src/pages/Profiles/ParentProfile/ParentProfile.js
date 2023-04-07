@@ -241,6 +241,7 @@ export default function ParentProfile({ isOwn }) {
       user.assiginedStudents.map(student => {
          getUserDetail({ id: student })
             .then(res => {
+               if(res.error) return
                setAssociatedStudents(prev => {
                   return [
                      ...prev,
