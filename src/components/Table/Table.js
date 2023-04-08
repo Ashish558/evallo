@@ -5,6 +5,7 @@ import Pagination from "./Pagination";
 import { TableHeader } from "./TableHeader";
 import { TableHeaderNew } from "./tableHeaderObj";
 import TableItem from "./tableItem";
+import Loader from "../Loader";
 
 export default function Table(props) {
    const {
@@ -20,7 +21,8 @@ export default function Table(props) {
       isCallingApi,
       headerObject,
       extraData,
-      changePageAfterUpdate
+      changePageAfterUpdate,
+      loading
    } = props
 
    const [tableData, setTableData] = useState(data);
@@ -37,7 +39,7 @@ export default function Table(props) {
 
 
    useEffect(() => {
-      if(changePageAfterUpdate === false) return
+      if (changePageAfterUpdate === false) return
       if (hidePagination === true) {
          setTableData(data)
       } else {
@@ -65,7 +67,7 @@ export default function Table(props) {
    if (isCallingApi) return <ApiTable {...props} />
    return (
       <div>
-         <table className="table-auto mb-3 text-center w-full">
+         <table className="table-auto mb-3 text-center w-full min-h-[300px]">
             <thead className="pb-2">
                <tr>
                   {tableHeaders.map((item, idx) => {
@@ -73,44 +75,27 @@ export default function Table(props) {
                   })}
                </tr>
             </thead>
-            <tbody>
-               {/* {dataFor === "invoice" ? sorted ? tableData.sort((a, b) => a.createDate?.split("-").join("") - b.createDate?.split("-").join("")).map((item, idx) => { */}
-               {/* return ( */}
-               {tableData.map((item, idx) => {
-                  return (
-                     <TableItem
-                        dataFor={dataFor}
-                        item={item}
-                        key={idx}
-                        excludes={excludes}
-                        onClick={onClick}
-                     />
-                  );
-               })}
-               {/*}  );
-                }) : tableData.sort((a, b) => b.assignedOn?.split("-").join("") - a.assignedOn?.split("-").join("")).map((item, idx) => <TableItem
-               //    dataFor={dataFor}
-               //    item={item}
-               //    key={idx}
-               //    excludes={excludes}
-               //    onClick={onClick}
-               // />) : sorted ? tableData.sort((a, b) => a.dueDate?.split("-").join("") - b.dueDate?.split("-").join("")).map((item, idx) => {
-               //    return (
-               //       <TableItem
-               //          dataFor={dataFor}
-               //          item={item}
-               //          key={idx}
-               //          excludes={excludes}
-               //          onClick={onClick}
-               //       />
-               //    );
-               // }) : tableData.sort((a, b) => b.assignedOn?.split("-").join("") - a.assignedOn?.split("-").join("")).map((item, idx) => <TableItem
-               //    dataFor={dataFor}
-               //    item={item}
-               //    key={idx}
-               //    excludes={excludes}
-               //    onClick={onClick}
-               // />)} */}
+            <tbody className="relative">
+               {
+                  true ?
+                     <div className={`absolute w-full min-h-[100px] flex justify-center items-center`}>
+                        <div>
+                           <Loader size='medium' />
+                        </div>
+                     </div> :
+                     tableData.map((item, idx) => {
+                        return (
+                           <TableItem
+                              dataFor={dataFor}
+                              item={item}
+                              key={idx}
+                              excludes={excludes}
+                              onClick={onClick}
+                           />
+                        );
+                     })
+               }
+
             </tbody>
          </table>
 

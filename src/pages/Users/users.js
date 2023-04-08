@@ -411,6 +411,7 @@ export default function Users() {
       setLoading(true)
       if (modalData.userType === 'tutor') {
          console.log(body)
+          body.role = modalData.userType
          addUser(body)
             .then(res => {
                console.log(res)
@@ -419,6 +420,7 @@ export default function Users() {
                   alert(res.error.data.message)
                   return
                }
+               fetch()
                alert('Invitation sent!')
                setModalData(initialState)
                handleClose()
@@ -435,6 +437,7 @@ export default function Users() {
                   alert(res.error.data.message)
                   return
                }
+               fetch()
                alert('Invitation sent!')
                setModalData(initialState)
                handleClose()

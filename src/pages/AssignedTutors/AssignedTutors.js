@@ -92,7 +92,7 @@ export default function AssignedTutors(props) {
    const [assignStudentModalActive, setAssignStudentModalActive] = useState(false)
    const [fetchTutors, tutorResponse] = useLazyGetTutorsByNameQuery();
    const [tutors, setTutors] = useState([]);
-
+   const [tableLoading, setTableLoading] = useState(false)
    const handleClose = () => setAssignStudentModalActive(false);
 
    const [filterData, setFilterData] = useState({
@@ -109,7 +109,6 @@ export default function AssignedTutors(props) {
    const [deleteAssignedTutor, deleteAssignedTutorResp] = useDeleteAssignedTutorMutation();
    const [fetchSettings, settingsResp] = useLazyGetSettingsQuery()
    const [settings, setSettings] = useState({})
-
 
    const [students, setStudents] = useState([]);
    const [maxPageSize, setMaxPageSize] = useState(10);
@@ -176,7 +175,7 @@ export default function AssignedTutors(props) {
                console.log(res.error);
                return
             }
-            if(res.data.status === 'Tutor already assigned'){
+            if (res.data.status === 'Tutor already assigned') {
                return alert('Tutor already assigned')
             }
             fetch()
@@ -215,8 +214,10 @@ export default function AssignedTutors(props) {
    }
 
    const fetch = () => {
+      setTableLoading(true)
       fetchAssignedTutors()
          .then(res => {
+            setTableLoading(false)
             if (res.error) {
                console.log(res.error);
                return
@@ -392,6 +393,7 @@ export default function AssignedTutors(props) {
                      headerObject={true}
                      maxPageSize={maxPageSize}
                      setMaxPageSize={setMaxPageSize}
+                     loading={tableLoading}
                   />
                </div>
             </div>

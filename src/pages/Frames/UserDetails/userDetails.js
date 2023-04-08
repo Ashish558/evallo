@@ -19,7 +19,8 @@ export default function UserDetails({
    setDetailsError,
    resetDetailsErrors,
    studentNumberPrefix,
-   setStudentNumberPrefix
+   setStudentNumberPrefix,
+   isAddedByAdmin
 }) {
 
    const [selected, setSelected] = useState(false);
@@ -199,11 +200,14 @@ export default function UserDetails({
          />
 
          <div className="flex items-center mt-120">
-            <SecondaryButton
-               children="Back"
-               className="text-lg pt-3 pb-3 text-white mr-6 w-140"
-               onClick={handleBack}
-            />
+            {
+               !isAddedByAdmin &&
+               <SecondaryButton
+                  children="Back"
+                  className="text-lg pt-3 pb-3 text-white mr-6 w-140"
+                  onClick={handleBack}
+               />
+            }
             <PrimaryButton
                children="Next"
                className="text-lg pt-3 pb-3 font-semibold text-white mr-6 w-140"

@@ -23,6 +23,7 @@ export const validateSignup = (values) => {
    if (email.trim() === '') return { data: 'email', message: 'Fill email' }
    if (!isEmail(email)) return { data: 'email', message: 'Please enter valid email' }
    if (phone.trim() === '') return { data: 'phone', message: 'Fill Phone number' }
+   if(!isPhoneNumber(phone))  return { data: 'phone', message: 'Please enter a valid phone number' }
    if (phone.length < 10 ) return { data: 'phone', message: 'Phone number must be greater than 9 digits' }
 
    return { data: true, message: 'none' }
