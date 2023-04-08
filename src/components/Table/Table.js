@@ -77,7 +77,7 @@ export default function Table(props) {
             </thead>
             <tbody className="relative">
                {
-                  true ?
+                  loading ?
                      <div className={`absolute w-full min-h-[100px] flex justify-center items-center`}>
                         <div>
                            <Loader size='medium' />
