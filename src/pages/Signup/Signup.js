@@ -123,8 +123,10 @@ export default function Signup() {
    }, [])
 
    const paramUserId = searchParams.get("userid")
+   const paramUserRole = searchParams.get("role")
    useEffect(() => {
       if (!paramUserId) return
+      if (!paramUserRole) return
       console.log('paramUserId', paramUserId);
       setFrames({
          signupActive: false,
@@ -141,6 +143,7 @@ export default function Signup() {
             userId: paramUserId
          }
       })
+      setPersona(paramUserRole)
       setIsAddedByAdmin(true)
       // setFrames((prev) => {
       //    return { ...prev, signupActive: false, userDetails: true };
@@ -158,7 +161,7 @@ export default function Signup() {
       //       console.log('userdetails', userdetails);
 
       //    })
-   }, [paramUserId])
+   }, [paramUserId, paramUserRole])
 
    useEffect(() => {
       const paramsUserId = searchParams.get('userId')

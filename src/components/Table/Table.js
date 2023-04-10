@@ -30,14 +30,6 @@ export default function Table(props) {
    const dataLength = data.length > 30 ? 30 : data.length;
    const [sorted, setSorted] = useState(false)
 
-
-   useEffect(() => {
-      // console.log(tableData[0]?.dueDate?.split("-").join(""));
-      // const newTeble = tableData.sort((a, b) => a.dueDate?.split("-").join("") - b.dueDate?.split("-").join(""));
-      // console.log(newTeble);
-   }, [tableData])
-
-
    useEffect(() => {
       if (changePageAfterUpdate === false) return
       if (hidePagination === true) {
