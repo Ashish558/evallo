@@ -569,9 +569,9 @@ const MapData = (data, dataFor, exclude = [], onClick) => {
    // console.log(data.remark);
    const [remarkText, setRemarkText] = useState('')
    useEffect(() => {
-      if(data.remark){
+      if (data.remark) {
          setRemarkText(data.remark)
-      }else{
+      } else {
          setRemarkText('')
       }
    }, [data.remark])
@@ -638,13 +638,21 @@ const MapData = (data, dataFor, exclude = [], onClick) => {
                               }}
                               inputContainerClassName={`bg-white ${disabled ? 'border-0' : 'border'} pt-1.5 pb-1.5 lg:pt-1.5 lg:pb-1.5 disabled:border-0`} />
                         </td> :
-                        dataFor === 'assignedTutors' && key === 'tutorName' ||  dataFor === 'assignedTutors' && key === 'studentName' ? (
+                        dataFor === 'assignedTutors' && key === 'tutorName' || dataFor === 'assignedTutors' && key === 'studentName' ? (
                            <td key={i} className='font-medium px-1 text-[#2A6CFB] py-4'>
-                              <p className={`font-semibold cursor-pointer`}>
+                              <p className={`font-semibold cursor-pointer`}
+                                 onClick={() => key === 'tutorName' ? onClick.handleNavigate(`/profile/tutor/${data.assiginedTutor}`) : onClick.handleNavigate(`/profile/student/${data.student_id}`)} >
                                  {data[key]}
                               </p>
                            </td>
-                        ) :
+                        ) : dataFor === 'assignedTutors' && key === 'associatedParent' ?
+                           <td key={i} className='font-medium px-1 text-[#2A6CFB] py-4'>
+                              <p className={`font-semibold cursor-pointer`}
+                                 onClick={() => onClick.handleNavigate(`/profile/parent/${data.associatedParent}`)}>
+                                 {`${data.parentFirstName ? data.parentFirstName : ''} ${data.parentLast ? data.parentLast : ''}`}
+
+                              </p>
+                           </td> :
                            (
                               <td key={i} className={`font-medium px-1 ${data[key] === "Unpaid" && "text-[#E02B1D]"} ${data[key] === 'Paid' && "text-[#009262]"} ${data[key] === 'Cancelled' && "text-[#7C859C]"} min-w-14 py-4`}>
                                  {data[key]}

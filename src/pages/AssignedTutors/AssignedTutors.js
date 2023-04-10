@@ -18,6 +18,7 @@ import { useSelector } from "react-redux";
 import { getDuration, getFormattedDate } from "../../utils/utils";
 import FilterItems from "../../components/FilterItems/filterItems";
 import { useAddAssignedTutorMutation, useDeleteAssignedTutorMutation, useLazyGetAllAssignedtutorsQuery } from "../../app/services/admin";
+import { useNavigate } from "react-router-dom";
 
 const optionData = []
 const tempTableHeaders = [
@@ -94,7 +95,7 @@ export default function AssignedTutors(props) {
    const [tutors, setTutors] = useState([]);
    const [tableLoading, setTableLoading] = useState(false)
    const handleClose = () => setAssignStudentModalActive(false);
-
+const navigate = useNavigate()
    const [filterData, setFilterData] = useState({
       tutorName: '',
       studentName: '',
@@ -224,7 +225,7 @@ export default function AssignedTutors(props) {
             }
             console.log(res.data);
             let data = res.data.assiginedTutors.map(item => {
-               const { assiginedTutor, associatedParent, firstName, lastName, specialization, student_id, timeZone, tutorFirstName, tutorLastName } = item
+               const { assiginedTutor, associatedParent, firstName, lastName, specialization, student_id, timeZone, tutorFirstName, tutorLastName, parentFirstName, parentLast } = item
                return {
                   tutorName: `${tutorFirstName} ${tutorLastName}`,
                   assiginedTutor: assiginedTutor,
@@ -233,6 +234,8 @@ export default function AssignedTutors(props) {
                   student_id,
                   specialization: specialization ? specialization : '-',
                   associatedParent,
+                  parentFirstName,
+                  parentLast,
                   startDate: '-',
                   score: '-',
                }
@@ -314,6 +317,10 @@ export default function AssignedTutors(props) {
       setTableHeaders(tempTableHeaders)
    }, []);
 
+   const handleNavigate = (item) => {
+      console.log(item);
+      navigate(item)
+   }
 
 
 
@@ -385,10 +392,10 @@ export default function AssignedTutors(props) {
 
                <div className="mt-6">
                   <Table
-                     onClick={{ handleDelete }}
+                     onClick={{ handleDelete, handleNavigate }}
                      dataFor='assignedTutors'
                      data={filteredData}
-                     excludes={['assiginedTutor', 'student_id']}
+                     excludes={['assiginedTutor', 'student_id', 'parentFirstName', 'parentLast']}
                      tableHeaders={tableHeaders}
                      headerObject={true}
                      maxPageSize={maxPageSize}
