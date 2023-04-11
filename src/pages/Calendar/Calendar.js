@@ -246,7 +246,7 @@ export default function Calendar() {
             const dsttz = moment.tz(startDate, session.timeZone).format('zz')
             const dstdate = moment.tz(startDate, session.timeZone).format('YYYY-MM-DD HH:mm ZZ')
             // const dstdate = moment.tz(startDate, session.timeZone).format(moment.defaultFormat)
-          
+
             // console.log('dsttz', dsttz)
             // console.log('dstdate', moment().utcOffset(dstdate)._offset)
             // console.log('START DATE UTC --', startUtc);
@@ -819,7 +819,9 @@ export default function Calendar() {
             <div className="py-14 pt-10 pb-2 pl-5 calendar flex">
                <div className="p-10 pt-10 pl-0 pr-0 w-[280px] mr-[10px]">
                   <div className="w-[280px]" >
-                     <SimpleCalendar events={events} currentDate={currentDate} setCurrentDate={setCurrentDate} />
+                     <SimpleCalendar
+                        events={persona === 'parent' || persona === 'tutor' ? filteredEvents : events}
+                        currentDate={currentDate} setCurrentDate={setCurrentDate} />
                   </div>
                   {persona === "parent" || persona === "tutor" ? (
                      <div className="mt-10 pr-4">
