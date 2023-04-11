@@ -162,7 +162,8 @@ export default function ParentProfile({ isOwn }) {
                   .then(res => {
                      studentsData.push({
                         _id: res.data.data.user._id,
-                        value: `${res.data.data.user.firstName} ${res.data.data.user.lastName}`
+                        value: `${res.data.data.user.firstName} ${res.data.data.user.lastName}`,
+                        photo: res.data.data.user.photo ? res.data.data.user.photo : null
                      })
                   })
             })
@@ -248,7 +249,7 @@ export default function ParentProfile({ isOwn }) {
                      {
                         _id: res.data.data.user._id,
                         name: `${res.data.data.user.firstName} ${res.data.data.user.lastName}`,
-                        photo: res.data.data.user.photo ? res.data.data.user.photo : '/images/default.jpeg'
+                        photo: res.data.data.user.photo ? res.data.data.user.photo : null
                      }
                   ]
                })
@@ -447,7 +448,7 @@ export default function ParentProfile({ isOwn }) {
                                     <div key={idx} className={`${styles.student} ${activeIndex === idx ? styles.activeStudent : idx < activeIndex ? styles.previousStudent : styles.nextStudent} flex flex-col items-center px-10 lg:mb-10`}>
                                        <div className={styles.studentImageContainer}>
                                           <img className='w-[110px] h-[110px] rounded-full'
-                                            src={student.photo ? `${awsLink}${student.photo}` : ''} />
+                                            src={student.photo ? `${awsLink}${student.photo}` : '/images/default.jpeg'} />
                                        </div>
                                        <div className='mt-6 opacity-60 font-inter text-center '
                                        // onClick={() => navigate('/profile/student/12')}

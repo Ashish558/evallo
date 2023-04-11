@@ -9,8 +9,8 @@ export default function Slider({ images, awsLink }) {
 
    const [activeIndex, setActiveIndex] = useState(0)
 
-   // console.log(images);
-   // console.log('awsLink', awsLink)
+   console.log(images);
+   console.log('awsLink', awsLink)
 
    return (
       <div className={`${styles.studentsContainer} min-h-[200px] w-full`}>
@@ -28,7 +28,7 @@ export default function Slider({ images, awsLink }) {
                   <div className={styles.studentImageContainer}>
                      <img src={student.image} />
                   </div>
-                  <div className='mt-6 font-inter text-center '
+                  <div className='mt-6 font-inter text-center'
                   // onClick={() => navigate('/profile/student/12')}
                   >
                      <div className='flex justify-center '>

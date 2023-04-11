@@ -257,12 +257,12 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
    useEffect(() => {
       if (student.length > 0) {
          fetchStudents(student).then((res) => {
-            console.log(res.data.data.students);
+            console.log('students' ,res.data.data.students);
             let tempData = res.data.data.students.map((tutor) => {
                return {
                   _id: tutor._id,
                   value: `${tutor.firstName} ${tutor.lastName}`,
-                  photo: tutor.photo ? tutor.photo : '/images/default.jpeg'
+                  photo: tutor.photo ? tutor.photo : null
                };
             });
             setStudents(tempData);
