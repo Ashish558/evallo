@@ -99,8 +99,8 @@ export default function Invoice() {
                      if (invoice._id === updatedInvoice._id) {
                         let obj = {
                            ...updatedInvoice,
-                           invoiceType: res.data.invoice?.invoiceType,
-                           remark: res.data.invoice?.remark,
+                           invoiceType: res.data.invoice?.invoiceData?.invoiceType,
+                           remark: res.data.invoice?.invoiceData?.remark,
                         }
                         return obj
                      } else {
