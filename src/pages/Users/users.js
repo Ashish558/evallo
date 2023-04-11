@@ -182,9 +182,9 @@ export default function Users() {
          })
       }
       if (filterData.specialization.length > 0) {
-         filterData.specialization.forEach(item => {
-            urlParams = urlParams + `&specialization=${item}`
-         })
+         let specArr = []
+         specArr = `&specialization=${filterData.specialization.join(',')}`
+         urlParams = urlParams + specArr
       }
       if (filterData.status.length > 0) {
          filterData.status.forEach(item => {
@@ -229,7 +229,7 @@ export default function Users() {
                      userType: user.role ? user.role : '-',
                      phone: user.phone ? user.phone : '-',
                      createdAt: user.createdAt,
-                     assignedTutor: user.assiginedTutors ? user.assiginedTutors : '' ,
+                     assignedTutor: user.assiginedTutors ? user.assiginedTutors : '',
                      leadStatus: '-',
                      tutorStatus: '-',
                      specialization: user.specialization ? user.specialization : [],
@@ -411,7 +411,7 @@ export default function Users() {
       setLoading(true)
       if (modalData.userType === 'tutor') {
          console.log(body)
-          body.role = modalData.userType
+         body.role = modalData.userType
          addUser(body)
             .then(res => {
                console.log(res)
