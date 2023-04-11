@@ -496,13 +496,20 @@ export default function EventModal({
       // }).catch(err => {
       //    console.log(err)
       // })
-      if(!isUpdating && data.recurring === true){
-         if(new Date(data.endDate) < new Date()){
+
+      
+      if (!isUpdating && data.recurring === true) {
+         if (new Date(data.endDate) < new Date()) {
             return alert('End date should be a future date')
          }
       }
       setLoading(true)
       let reqBody = { ...data }
+      const offset = new Date(reqBody.endDate).getTimezoneOffset() * 60000
+      if (offset > 0) {
+        const  endDateUpdated = new Date(new Date(reqBody.endDate).getTime() + offset)
+         reqBody.endDate = endDateUpdated
+      }
       reqBody.studentName = student
       reqBody.tutorName = tutor
       let day = []
@@ -514,7 +521,7 @@ export default function EventModal({
       reqBody.homeworkAssigned = getCheckedString(homeworks)
       reqBody.studentMood = getCheckedString(studentMoods)
       reqBody.sessionProductive = getCheckedString(isProductive)[0]
-      if(reqBody.sessionProductive === undefined){
+      if (reqBody.sessionProductive === undefined) {
          reqBody.sessionProductive = ''
       }
       const { start, end } = reqBody.time
@@ -669,7 +676,7 @@ export default function EventModal({
             let services = details.tutorServices.map(item => item.service)
             let tutorServs = []
             allServicesAndSpec.forEach(item => {
-               if(services.includes(item.service)){
+               if (services.includes(item.service)) {
                   tutorServs.push(item.service)
                }
             })
