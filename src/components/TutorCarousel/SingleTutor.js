@@ -26,8 +26,8 @@ export default function SingleTutor({ idx, tutor }) {
                <button className="btn-gold" style={{ marginTop: '20px' }}
                   onClick={() => tutor._id && navigate(`/profile/tutor/${tutor._id}`)} >View Profile</button>
             </div>
-            <div className="w-1/3">
-               <img src={tutor.photo ? `${awsLink}${tutor.photo}` : '/images/default.jpeg'} className="mx-auto rounded-full" alt="" />
+            <div className="w-1/3 shrink-0">
+               <img src={tutor.photo ? `${awsLink}${tutor.photo}` : '/images/default.jpeg'} className="mx-auto rounded-full w-[115px] h-[115px] object-cover shrink-0" alt="" />
             </div>
          </div>
       </div>
