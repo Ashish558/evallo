@@ -84,10 +84,10 @@ export default function Invoice() {
    const checkIfExist = val => val ? val : '-'
 
    const handleEdit = updatedInvoice => {
-      console.log(updatedInvoice);
+      console.log('payload' ,updatedInvoice);
       editInvoice(updatedInvoice)
          .then(res => {
-            console.log('res' ,res)
+            console.log('response' ,res)
             if (res.error) {
                if(res.error?.data?.states){
                   alert(res.error?.data?.states)
@@ -99,7 +99,7 @@ export default function Invoice() {
                }
                return
             }
-            console.log('invoiceData', res.invoiceData)
+            // console.log('invoiceData', res.invoiceData)
             if (res.data?.invoiceData) {
                setAllInvoices(prev => {
                   return prev.map(invoice => {
