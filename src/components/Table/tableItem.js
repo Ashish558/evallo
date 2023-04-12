@@ -613,7 +613,7 @@ const MapData = (data, dataFor, exclude = [], onClick) => {
                      <td key={i} className='font-medium px-1 text-[#009262] py-4'>
                         <p className={`font-semibold`}>
                            <InputSelect value={data[key] ? data[key] : '-'}
-                              optionData={data[key] === 'paid' ?  ['paid', 'unpaid'] : ['paid', 'draft', 'cancelled', 'unpaid']}
+                              optionData={data[key] === 'paid' ?  ['paid', 'cancelled'] : ['paid', 'draft', 'cancelled', 'unpaid']}
                               inputContainerClassName='min-w-[100px] pt-0 pb-0 pr-2 pl-0 text-center'
                               optionClassName='font-semibold opacity-60 text-sm'
                               labelClassname='hidden'
