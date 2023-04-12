@@ -87,24 +87,27 @@ export default function Invoice() {
       console.log(updatedInvoice);
       editInvoice(updatedInvoice)
          .then(res => {
-            console.log(res)
+            console.log('res' ,res)
             if (res.error) {
-               console.log(res.error?.data);
                if(res.error?.data?.states){
                   alert(res.error?.data?.states)
-               }else{
+               }else if(res.error?.data?.status){
+                  alert(res.error?.data?.status)
+               }
+               else{
                   alert(res.error?.data?.message)
                }
                return
             }
-            if (res.data?.invoice) {
+            console.log('invoiceData', res.invoiceData)
+            if (res.data?.invoiceData) {
                setAllInvoices(prev => {
                   return prev.map(invoice => {
                      if (invoice._id === updatedInvoice._id) {
                         let obj = {
                            ...updatedInvoice,
-                           invoiceType: res.data.invoice?.invoiceData?.invoiceType,
-                           remark: res.data.invoice?.invoiceData?.remark,
+                           invoiceType: res.data?.invoiceData?.invoiceType,
+                           remark: res.data?.invoiceData?.remark,
                         }
                         return obj
                      } else {
