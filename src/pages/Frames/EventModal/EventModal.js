@@ -127,8 +127,6 @@ export default function EventModal({
    });
    const [submitDisabled, setSubmitDisabled] = useState(false)
 
-   // console.log(sessionToUpdate);
-
    const [days, setDays] = useState(tempDays);
    const [topics, setTopics] = useState([]);
    const [studentMoods, setStudentMoods] = useState([]);
@@ -497,7 +495,7 @@ export default function EventModal({
       //    console.log(err)
       // })
 
-      
+
       if (!isUpdating && data.recurring === true) {
          if (new Date(data.endDate) < new Date()) {
             return alert('End date should be a future date')
@@ -507,7 +505,7 @@ export default function EventModal({
       let reqBody = { ...data }
       const offset = new Date(reqBody.endDate).getTimezoneOffset() * 60000
       if (offset > 0) {
-        const  endDateUpdated = new Date(new Date(reqBody.endDate).getTime() + offset)
+         const endDateUpdated = new Date(new Date(reqBody.endDate).getTime() + offset)
          reqBody.endDate = endDateUpdated
       }
       reqBody.studentName = student
@@ -700,13 +698,34 @@ export default function EventModal({
       // console.log('spec', specs)
       setSpecializations(specs)
    }, [servicesAndSpecialization, data.service, allServicesAndSpec])
-   // console.log(convertTime12to24(`${data.time.end.time} ${data.time.end.timeType}`))
-   // console.log(convertTime12to24('1:00 AM'))
-   //console.log(data.feedbackStars);
-   // console.log('sessionToUpdate', sessionToUpdate)
-   // console.log('session data', data)
-   // console.log('servicesAndSpecialization', servicesAndSpecialization)
 
+   useEffect(() => {
+      if (isUpdating) {
+         const { time: initialTime } = sessionToUpdate
+         const { time: changedTime } = data
+
+         let startDate = new Date(sessionToUpdate.date)
+         const offset = startDate.getTimezoneOffset() * 60000
+         if (offset > 0) {
+            startDate = new Date(startDate.getTime() + offset)
+         }
+         startDate.setHours(0);
+         startDate.setMinutes(0);
+
+         if (initialTime.start.time === changedTime.start.time &&
+            initialTime.start.timeType === changedTime.start.timeType &&
+            initialTime.end.time === changedTime.end.time &&
+            initialTime.end.timeType === changedTime.end.timeType &&
+            sessionToUpdate.timeZone === data.timeZone &&
+            getFormattedDate(startDate) === data.date
+         ) {
+            setData(prev => ({...prev, rescheduling: false}))
+         } else {
+            setData(prev => ({...prev, rescheduling: true}))
+         }
+      }
+   }, [isUpdating, sessionToUpdate.time, data.time, sessionToUpdate.date, data.date])
+  
    const dataProps = { data, setData }
    return (
       <>

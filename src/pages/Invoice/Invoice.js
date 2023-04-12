@@ -90,7 +90,11 @@ export default function Invoice() {
             console.log(res)
             if (res.error) {
                console.log(res.error?.data);
-               alert(res.error?.data?.message)
+               if(res.error?.data?.states){
+                  alert(res.error?.data?.states)
+               }else{
+                  alert(res.error?.data?.message)
+               }
                return
             }
             if (res.data?.invoice) {

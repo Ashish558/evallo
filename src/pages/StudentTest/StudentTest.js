@@ -180,6 +180,7 @@ export default function StudentTest() {
                res.data.data.user.assiginedStudents.map((student, idx) => {
                   getUserDetail({ id: student })
                      .then(res => {
+                        if(res.error) return
                         setAssociatedStudents(prev => [...prev, {
                            _id: res.data.data.user._id,
                            name: `${res.data.data.user.firstName} ${res.data.data.user.lastName}`,
