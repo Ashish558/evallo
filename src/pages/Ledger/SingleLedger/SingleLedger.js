@@ -4,8 +4,10 @@ import { useLazyGetInvoiceQuery } from '../../../app/services/users'
 import ArrowIcon from '../../../assets/Dashboard/arrow.svg'
 import DownloadIcon from '../../../assets/icons/download-ledger.svg'
 import { getFormattedDate, tConvert } from '../../../utils/utils'
+import { getFormattedDateTime } from '../../../utils/utils'
+import { formatAMPM } from '../../../utils/utils'
 
-export default function SingleLedger({ _id, invoiceId, sessionId, title, Date: ledgerDate, amountPaid, balanceChange, newBalance, isOpen, toggleOpen }) {
+export default function SingleLedger({ _id, invoiceId, sessionId, title, Date: ledgerDate, amountPaid, balanceChange, newBalance, isOpen, toggleOpen, time, createdAt }) {
 
 
    const [tutorName, setTutorName] = useState('')
@@ -133,7 +135,7 @@ export default function SingleLedger({ _id, invoiceId, sessionId, title, Date: l
                            <>
                               <div className='font-bold mx-1 py-6' > Time </div>
                               <div className='py-6 opacity-80'>
-                                 {discountPackageTime ? `${discountPackageTime.time} ${discountPackageTime.timeType}` : '-'}
+                                 {formatAMPM(new Date(createdAt))}
                               </div>
 
 
