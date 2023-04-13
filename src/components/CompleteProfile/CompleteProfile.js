@@ -54,7 +54,6 @@ const CompleteProfile = () => {
                filled += 1
             }
             let percent = filled*100/total
-            console.log('filled', Math.round(percent));
             setProfileProgress(`${Math.round(percent)}%`)
          })
    }, [id])

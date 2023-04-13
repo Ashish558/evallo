@@ -36,13 +36,13 @@ export default function SingleLedger({ _id, invoiceId, sessionId, title, Date: l
 
    useEffect(() => {
       if (!invoiceId) return
-      fetchInvoice({ id: invoiceId?._id })
-         .then(res => {
-            const invoice = res.data.data.invoice[0]
-            invoice && setInvoiceDetail(invoice)
-            // const { start, end } = res.data.data.session.time
-
-         })
+      setInvoiceDetail(invoiceId)
+      // fetchInvoice({ id: invoiceId?._id })
+      //    .then(res => {
+      //       const invoice = res.data.data.invoice[0]
+      //       invoice && setInvoiceDetail(invoice)
+      //       // const { start, end } = res.data.data.session.time
+      //    })
    }, [])
 
    const { service, total_hours, timeStr, sessionNotes, hourlyCharge, specialization } = sessionDetails
@@ -96,7 +96,7 @@ export default function SingleLedger({ _id, invoiceId, sessionId, title, Date: l
                   <div className='grid grid-cols-6 px-[200px] grid-flow'>
                      {/* <div className='flex items-center'> */}
                      {
-                        title !== "Discount Package" ?
+                        title !== "Discounted Package" ?
                            <>
                               <div className='font-bold mx-1 py-6' > Student </div>
                               <div className='py-6 opacity-80'> {studentName !== '' ? studentName : '-'} </div>
@@ -131,7 +131,6 @@ export default function SingleLedger({ _id, invoiceId, sessionId, title, Date: l
                               </div>
                            </> :
                            <>
-
                               <div className='font-bold mx-1 py-6' > Time </div>
                               <div className='py-6 opacity-80'>
                                  {discountPackageTime ? `${discountPackageTime.time} ${discountPackageTime.timeType}` : '-'}

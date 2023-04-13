@@ -12,7 +12,7 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import InputSelect from "../InputSelect/InputSelect";
 import { useLazyGetParentsAssignedTestsQuery } from "../../app/services/test";
-import { getDate, getDuration, getFormattedDate } from "../../utils/utils";
+import { getDate, getDuration, getFormattedDate, getMonthName } from "../../utils/utils";
 import ParentTest from "./ParentTest/ParentTest";
 
 
@@ -43,7 +43,44 @@ const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
    const [filteredAssignedTests, setFilteredAssignedTests] = useState([])
    const [getTutorDetail, getTutorDetailResp] = useLazyGetTutorDetailsQuery()
    const [totalTutors, setTotalTutors] = useState(0)
+
+   const [selectedConceptIdx, setSelectedConceptIdx] = useState(0)
+   const [currentSubData, setCurrentSubData] = useState({})
+   const [dates, setDates] = useState([])
+   const [currentDate, setCurrentDate] = useState('')
+
    const { awsLink } = useSelector(state => state.user)
+
+   useEffect(() => {
+      // console.log('currentSubData', currentSubData)
+      if (currentSubData.concepts === undefined) return
+      console.log('currentConcept', currentSubData.concepts)
+
+      let currentConcept = currentSubData.concepts[selectedConceptIdx]
+      if (currentConcept === undefined) return
+      let month = parseInt(currentConcept.month)
+      let year = parseInt(currentConcept.year)
+
+      let monthName = getMonthName(month)
+      let nextMonthName = getMonthName(month + 1)
+      const currdate = `${1}st ${monthName} ${year} - ${1}st ${nextMonthName} ${year}`
+      setCurrentDate(currdate)
+   }, [currentSubData, selectedConceptIdx])
+
+
+   useEffect(() => {
+      let concepts = currentSubData.concepts
+      if (concepts === undefined) return
+      const listData = concepts.map(concept => {
+         let month = parseInt(concept.month)
+         let year = parseInt(concept.year)
+         let monthName = getMonthName(month)
+         let nextMonthName = getMonthName(month + 1)
+         return `${1}st ${monthName} ${year} - ${1}st ${nextMonthName} ${year}`
+      })
+      setDates(listData)
+
+   }, [currentSubData])
 
    useEffect(() => {
       fetchAssignedTests(id)
@@ -196,7 +233,12 @@ const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
          <div className="w-full lg:w-2/3 lg:pl-[40px]" id={styles.conceptChart}>
             <div className="flex items-center" >
                <h1>Concept Chart</h1>
-
+               <InputSelect value={currentDate} labelClassname='hidden'
+                  parentClassName='w-[200px] mr-5'
+                  inputContainerClassName='bg-[#d9d9d980] pt-2 pb-2'
+                  optionData={dates}
+                  onChange={(val, idx) => setSelectedConceptIdx(idx)}
+               />
                <InputSelect value={selectedSubject} labelClassname='hidden'
                   parentClassName='w-[200px] mr-5 ml-auto'
                   inputContainerClassName='bg-[#d9d9d980] pt-2 pb-2'
@@ -208,7 +250,11 @@ const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
             <div id={styles.chartContainer} className='scrollbar-content mb-4'>
                <div id={styles.chart} className='scrollbar-content' >
                   <div>
-                     <Chart selectedStudent={selectedStudent} selectedSubject={selectedSubject} setSubjects={setSubjects} />
+                     <Chart selectedStudent={selectedStudent} selectedSubject={selectedSubject} setSubjects={setSubjects}
+                        selectedConceptIdx={selectedConceptIdx}
+                        setSelectedConceptIdx={setSelectedConceptIdx}
+                        currentSubData={currentSubData}
+                        setCurrentSubData={setCurrentSubData} />
                   </div>
                </div>
             </div>

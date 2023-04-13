@@ -369,6 +369,13 @@ export const checkIfExistInNestedArray = (arr1, mainArray) => {
    return exist
 }
 
+export const getMonthName = idx => {
+   const monthNames = ["January", "February", "March", "April", "May", "June",
+      "July", "August", "September", "October", "November", "December"
+   ]
+   if(idx > 11) return monthNames[0]
+   return monthNames[idx]
+}
 
 // // timezones
 // function getCurrentLocalDateTime() {
