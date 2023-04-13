@@ -724,7 +724,7 @@ export default function EventModal({
             setData(prev => ({...prev, rescheduling: true}))
          }
       }
-   }, [isUpdating, sessionToUpdate.time, data.time, sessionToUpdate.date, data.date])
+   }, [isUpdating, sessionToUpdate?.time, data?.time, sessionToUpdate?.date, data?.date])
   
    const dataProps = { data, setData }
    return (
