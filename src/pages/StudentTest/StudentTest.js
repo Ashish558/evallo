@@ -42,7 +42,7 @@ export default function StudentTest() {
    const [selectedStudent, setSelectedStudent] = useState(null)
 
    const [getTest, getTestResp] = useLazyGetAssignedTestQuery()
-  
+
    const [getUserDetail, userDetailResp] = useLazyGetUserDetailQuery()
    const [fetchAssignedTests, fetchAssignedTestsResp] = useLazyGetParentsAssignedTestsQuery()
 
@@ -74,7 +74,7 @@ export default function StudentTest() {
          return arr
       })
    }
-   
+
    const sortByAssignedDate = () => {
       setAllTests(prev => {
          let arr = [...prev]
@@ -91,7 +91,7 @@ export default function StudentTest() {
          return arr
       })
    }
-   
+
    const studentTableHeaders = [
       {
          id: 1,
@@ -141,8 +141,8 @@ export default function StudentTest() {
                console.log('all-assigned-tests', res.data.data);
                setAwsLink(res.data.data.baseLink)
                let tempAllTests = res.data.data.test.map(test => {
-                  const { testId, studentId, dueDate, multiple, isCompleted, isStarted, createdAt, updatedAt} = test
-                  if(testId === null) return
+                  const { testId, studentId, dueDate, multiple, isCompleted, isStarted, createdAt, updatedAt } = test
+                  if (testId === null) return
                   return {
                      testName: testId ? testId.testName : '-',
                      assignedOn: getFormattedDate(new Date(createdAt)),
@@ -180,7 +180,7 @@ export default function StudentTest() {
                res.data.data.user.assiginedStudents.map((student, idx) => {
                   getUserDetail({ id: student })
                      .then(res => {
-                        if(res.error) return
+                        if (res.error) return
                         setAssociatedStudents(prev => [...prev, {
                            _id: res.data.data.user._id,
                            name: `${res.data.data.user.firstName} ${res.data.data.user.lastName}`,
@@ -202,7 +202,7 @@ export default function StudentTest() {
                console.log('assigned test parent resp', res.data);
                let tempAllTests = res.data.data.test.map(test => {
                   const { testId, studentId, isCompleted, multiple, isStarted, dueDate, createdAt, updatedAt } = test
-                  if(testId === null) return
+                  if (testId === null) return
                   return {
                      testName: testId ? testId.testName : '-',
                      assignedOn: getFormattedDate(new Date(createdAt)),
@@ -263,41 +263,36 @@ export default function StudentTest() {
       setAssociatedStudents(tempdata)
    }
 
-   // useEffect(() => {
-   // }, [selectedStudent])
-   // console.log(selectedStudent);
-   // console.log(allTests);
-   // console.log(associatedStudents);
-
    return (
       <>
          <div className="lg:ml-pageLeft bg-lightWhite min-h-screen">
             <div className="py-14 px-5">
-               <div className="flex justify-between items-center">
-                <p className={`font-bold text-[80px]`}
+               <div className="flex justify-end items-center">
+                  {/* <p className={`font-bold text-[80px]`}
                      style={{ color: "#25335A" }} >
                      Tests
-                  </p> 
+                  </p> */}
                   {persona === "student" ? (
-                     <div className="flex flex-col items-center justify-end">
-                        {parentTestInfo.map(item => {
-                           return <div className="flex items-center mb-[20px]">
-                              <div className="w-[20px] h-[20px] rounded-full mr-[20px]" style={{ backgroundColor: item.bg }}></div>
-                              <div className="font-semibold w-[90px]"> {item.text} </div>
-                           </div>
-                        })}
-                     </div>
+                     <></>
+                     // <div className="flex flex-col items-center justify-end">
+                     //    {parentTestInfo.map(item => {
+                     //       return <div className="flex items-center mb-[20px]">
+                     //          <div className="w-[20px] h-[20px] rounded-full mr-[20px]" style={{ backgroundColor: item.bg }}></div>
+                     //          <div className="font-semibold w-[90px]"> {item.text} </div>
+                     //       </div>
+                     //    })}
+                     // </div>
                   ) : persona === 'parent' &&
                   <div className="pl-4">
-                     <div className="flex items-center justify-end">
+                     {/* <div className="flex items-center justify-end">
                         {parentTestInfo.map((item, idx) => {
                            return <>
                               <div key={idx} className="w-[20px] h-[20px] rounded-full mr-[20px]" style={{ backgroundColor: item.bg }}></div>
                               <div className="mr-[20px] font-semibold"> {item.text} </div>
                            </>
                         })}
-                     </div>
-                     <div className="flex mt-[29px]">
+                     </div> */}
+                     <div className="flex">
                         {associatedStudents.map((student, idx) => {
                            return <div key={idx} className='border cursor-pointer px-5 py-[7px] flex justify-center' onClick={() => handleStudentChange(student)} >
                               <p className={`text-lg ${student.selected ? 'font-bold underline underline-offset-3' : ''}`}> {student.name} </p>

@@ -831,7 +831,7 @@ export default function EventModal({
                               {[...Array(5)].map((x, i) => (
                                  <img
                                     src={inputFeedback - 1 < i ? StarIcon : StarActiveIcon}
-                                    className="mr-7 cursor-pointer"
+                                    className={`mr-7 cursor-pointer ${data.sessionStatus?.toLowerCase() !== 'completed' ? 'pointer-events-none' : ''} `}
                                     onClick={() => {
                                        // setData(prev => ({ ...prev, feedbackStars: i + 1 }));
                                        // setInputFeedback(i + 1)

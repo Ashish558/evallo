@@ -10,7 +10,7 @@ import { useLazyGetParentsByNameQuery, useAddInvoiceMutation, useLazyGetAllInvoi
 import { getCurrentDate, getFormattedDate } from '../../utils/utils';
 import { useLazyGetUserDetailQuery } from '../../app/services/users';
 
-const options = ['Discounted Package', 'hourly']
+const options = ['Discounted Package']
 
 const tableHeaders = [
    "Client Name",

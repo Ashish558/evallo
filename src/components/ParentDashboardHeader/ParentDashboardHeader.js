@@ -46,6 +46,7 @@ const ParentDashboardHeader = ({ selectedStudent, setSelectedStudent }) => {
       getUserDetail({ id })
          .then(res => {
             // console.log('response', res.data.data);
+            const baseLink = res.data.data.baseLink
             setUser(res.data.data.user)
             setAssociatedStudents([])
             res.data.data.user.assiginedStudents.map((student, idx) => {
@@ -55,13 +56,13 @@ const ParentDashboardHeader = ({ selectedStudent, setSelectedStudent }) => {
                      setAssociatedStudents(prev => [...prev, {
                         _id: res.data?.data?.user._id,
                         name: `${res.data?.data?.user.firstName} ${res.data?.data?.user.lastName}`,
-                        photo: res.data.data?.user.photo ? res.data.data.user.photo : '/images/default.jpeg',
+                        photo: res.data.data?.user.photo ?`${baseLink}${res.data.data.user.photo}` : '/images/default.jpeg',
                         serviceSeeking: res.data?.data?.userdetails?.serviceSeeking
                      }])
                       setSelectedStudent({
                         _id: res.data.data?.user._id,
                         value: `${res.data.data?.user.firstName} ${res.data.data?.user.lastName}`,
-                        photo: res.data.data?.user.photo ? res.data.data?.user.photo : '/images/default.jpeg',
+                        photo: res.data.data?.user.photo ? `${baseLink}${res.data.data?.user.photo}` : '/images/default.jpeg',
                         serviceSeeking: res.data.data?.userdetails?.serviceSeeking
                      })
                       setDetailStudent(res.data.data.userdetails)
@@ -200,7 +201,7 @@ const ParentDashboardHeader = ({ selectedStudent, setSelectedStudent }) => {
                      {associatedStudents.length > 0 &&
                         <div className="w-1/2 flex justify-end">
                            {selectedStudent !== null &&
-                              <img className="w-[40px] h-[40px] rounded-full" src={selectedStudent.photo ? `${awsLink}${selectedStudent.photo}` : ''} alt="" />
+                              <img className="w-[40px] h-[40px] rounded-full" src={selectedStudent.photo ? `${selectedStudent.photo}` : ''} alt="" />
                            }
                         </div>
                      }

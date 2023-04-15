@@ -32,28 +32,6 @@ import momentTimezonePlugin from '@fullcalendar/moment-timezone';
 import { useLazyGetUserDetailQuery } from "../../app/services/users";
 
 const days = ["S", "M", "T", "W", "T", "F", "S"];
-const students = [
-   {
-      name: "Joseph Brown",
-      bg: "#51D294",
-   },
-   {
-      name: "Joseph Brown",
-      bg: "#C56DEE",
-   },
-   {
-      name: "Joseph Brown",
-      bg: "#6F7ADE",
-   },
-   {
-      name: "Joseph Brown",
-      bg: "#7DE94A",
-   },
-   {
-      name: "Joseph Brown",
-      bg: "#F6935A",
-   },
-];
 
 const backgrounds = [
    '#51D294',
@@ -265,7 +243,7 @@ export default function Calendar() {
 
             let eventObj = {
                id: session._id,
-               title: session.tutorName,
+               title: role === 'tutor' ? session.studentName : session.tutorName,
                start: startUtc,
                endDate: endDateUtc,
                updatedDate: startUtc,
@@ -516,7 +494,6 @@ export default function Calendar() {
       // console.log(new Date(m).getHours())
       // console.log(new Date(m).getMinutes())
       // console.log(moment.tz(`${arg.event.start}`, timeZone).format())
-      // console.log(arg);
       let title = ''
       const description = arg.event._def.extendedProps.description;
 
