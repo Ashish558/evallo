@@ -66,7 +66,5 @@ export const times = [
    '10:30 PM',
    '11:00 PM',
    '11:30 PM',
-
-   
 ]
 export const grades = [6, 7, 8, 9, 10, 11, 12, 'College'];

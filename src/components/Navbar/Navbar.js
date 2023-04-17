@@ -98,7 +98,7 @@ const parentNav = [
    {
       icon: StudentTest,
       path: "/all-tests",
-      tooltip: 'All Tests'
+      tooltip: 'Assigned Tests'
    },
    {
       icon: Back,
