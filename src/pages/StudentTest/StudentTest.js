@@ -230,11 +230,24 @@ export default function StudentTest() {
 
 
    useEffect(() => {
-      // console.log('associatedStudents', associatedStudents);
-      // console.log('allTests', allTests);
       if (associatedStudents.length === 0) return
+      let selectedCount = 0
+      associatedStudents.map(student => {
+         if (student.selected === true) {
+            selectedCount += 1
+         }
+      })
+      if (selectedCount > 0) return
       if (associatedStudents.length >= 1) {
-         setSelectedStudent(associatedStudents[0])
+         setAssociatedStudents(prev => {
+            return prev.map((student, idx) => {
+               if (idx === 0) {
+                  setSelectedStudent({ ...student, selected: true })
+                  return { ...student, selected: true }
+               }
+               return { ...student, selected: false }
+            })
+         })
       }
    }, [associatedStudents])
 
@@ -246,15 +259,13 @@ export default function StudentTest() {
       const selected = associatedStudents.find(student => student.selected === true)
       if (!selected) return
       let tempdata = allTests.filter(test => test.studentId._id === selected._id)
-      // console.log('filtered', tempdata);
-      // console.log('selected', selected);
       setfilteredTests(tempdata)
    }, [associatedStudents, allTests])
 
    const handleStudentChange = item => {
-      let obj = {}
       let tempdata = associatedStudents.map(student => {
          if (student._id === item._id) {
+            setSelectedStudent({ ...student, selected: true })
             return { ...student, selected: true }
          } else {
             return { ...student, selected: false }

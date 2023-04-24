@@ -44,64 +44,6 @@ import YoutubeEmbed from './YoutubeEmbed/YoutubeEmbed'
 import CircleButton from '../../../components/CircleButton/CircleButton'
 
 
-const values = [
-   {
-      icon: ValueOneIcon,
-      text: 'SAT Subject Test',
-      bg: '#A5A3F6'
-   },
-   {
-      icon: ValueTwoIcon,
-      text: 'AP Biology',
-      bg: '#85C396'
-   },
-   {
-      icon: ValueThreeIcon,
-      text: 'Physics',
-      bg: '#FFA7C1'
-   },
-]
-const interests = [
-   {
-      icon: InterestOneIcon,
-      text: 'Video Game',
-      bg: '#F6D0A3'
-   },
-   {
-      icon: InterestTwoIcon,
-      text: 'Cooking',
-      bg: '#7BEA9A'
-   },
-   {
-      icon: InterestThreeIcon,
-      text: 'Yoga',
-      bg: '#AADFEB'
-   },
-]
-
-const levels = {
-   one: {
-      bg: '#FBDB89',
-      icon: TutorLevelOne,
-      text: '#FF4300'
-   },
-   two: {
-      bg: '#7152EB',
-      icon: TutorLevelTwo,
-      text: '#472D70'
-   },
-   three: {
-      bg: '#DC8553',
-      icon: TutorLevelThree,
-      text: '#FFFFFF'
-   },
-   four: {
-      bg: '#2D2C2C',
-      icon: TutorLevelFour,
-      text: '#FFFFFF'
-   }
-}
-
 export default function TutorProfile({ isOwn }) {
 
    const navigate = useNavigate()
@@ -207,14 +149,16 @@ export default function TutorProfile({ isOwn }) {
          videoLink: ''
       },
    })
+   console.log('params.id', params.id)
 
    useEffect(() => {
-      getFeedbacks()
+      getFeedbacks({ id: params.id })
          .then(({ error, data }) => {
             if (error) {
-               console.log(error)
+               console.log('feedback error', error)
                return
             }
+            console.log('feedback', data)
             data.data.feedback.map(feedback => {
                getUserDetail({ id: feedback.studentId })
                   .then(res => {
@@ -578,7 +522,7 @@ export default function TutorProfile({ isOwn }) {
                               </p>
                               <div className={`flex justify-center items-center ${styles.profileIcon}`}>
                                  <ProfilePhoto isTutor={true}
-                                   src={user.photo ? `${awsLink}${user.photo}` : '/images/default.jpeg'}
+                                    src={user.photo ? `${awsLink}${user.photo}` : '/images/default.jpeg'}
                                     handleChange={handleProfilePhotoChange} editable={editable} />
                               </div>
                               {/* <div>
@@ -617,10 +561,10 @@ export default function TutorProfile({ isOwn }) {
                                  <p className='mt-1 font-medium.4 opacity-60 text-xs cursor-pointer'
                                     onClick={() => window.open(`https://wa.me/${user.phone}`)}>
                                     {user.phone ?
-                                    <>
-                                     {`${user.phoneCode ? user.phoneCode : ''} ${user.phone}`}
-                                    </>
-                                     : ''}
+                                       <>
+                                          {`${user.phoneCode ? user.phoneCode : ''} ${user.phone}`}
+                                       </>
+                                       : ''}
                                  </p>
                               </div>
                            </div>

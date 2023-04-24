@@ -134,6 +134,14 @@ export const sessionServicesApi = createApi({
             headers: getAuthHeader()
          })
       }),
+      updateFeedback: builder.mutation({
+         query: (body) => ({
+            url: `/api/feedback/update/${body.id}`,
+            body,
+            method: "PATCH",
+            headers: getAuthHeader()
+         })
+      }),
       sessionMissed: builder.query({
          query: (id) => ({
             url: `/api/session/sessionmissed/${id}`,
@@ -185,5 +193,6 @@ export const {
    useLazySessionMissedQuery,
    useDeleteSessionMutation,
    useDeleteAllRecurringSessionMutation,
-   useUpdateAllSessionMutation
+   useUpdateAllSessionMutation,
+   useUpdateFeedbackMutation
 } = sessionServicesApi;
