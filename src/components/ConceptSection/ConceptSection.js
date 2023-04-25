@@ -220,10 +220,6 @@ const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
    }
 
    // console.log('tutors', tutors);
-   // console.log('selectedSubject', selectedSubject);
-   // console.log('subjects', subjects);
-   // console.log('filteredTutors', filteredTutors);
-   // console.log('tutorCarouselRef', tutorCarouselRef.current);
 
    return (
       <div

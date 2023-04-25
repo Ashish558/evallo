@@ -298,7 +298,7 @@ export default function Calendar() {
                await resp.data.data.user.assiginedStudents.map((student, idx) => {
                   getUserDetail({ id: student })
                      .then(res => {
-                        if(res.error) return
+                        if (res.error) return
                         setStudents(prev => [...prev, {
                            _id: res.data.data?.user._id,
                            studentName: `${res.data.data?.user.firstName} ${res.data.data?.user.lastName}`,
@@ -488,23 +488,18 @@ export default function Calendar() {
       calendarAPI?.next();
    };
    const eventContent = (arg) => {
-      // console.log(arg.event._def.extendedProps.sessionStatus)
-      // console.log(new Date(arg.event._instance.range.start).getHours())
-      let m = moment.tz(`${arg.event.start}`, "America/Los_Angeles").format();
-      // console.log(new Date(m).getHours())
-      // console.log(new Date(m).getMinutes())
-      // console.log(moment.tz(`${arg.event.start}`, timeZone).format())
-      let title = ''
-      const description = arg.event._def.extendedProps.description;
 
+      const description = arg.event._def.extendedProps.description;
       let background = '#ebe7ff'
-      // if (arg.event._def.extendedProps.background) {
-      //    background = arg.event._def.extendedProps.background
-      // }
+      let isCompleted = false
+      if(arg.event._def.extendedProps.sessionStatus === 'Completed' ){
+         isCompleted = true
+      }
+
       return (
          <div className="p-0.5 h-full">
             <div className="bg- h-full p-2 rounded-lg" style={{ background: background }} >
-               <p className="text-primary font-semibold text-sm">
+               <p className={`text-primary font-semibold text-sm ${isCompleted ? 'line-through' : ''} `}>
                   {" "}
                   {arg.event._def.title}{" "}
                </p>
