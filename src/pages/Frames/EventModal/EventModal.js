@@ -616,7 +616,7 @@ export default function EventModal({
             // console.log(res.data);
          })
    }
-
+ 
    const fetchFeedback = () => {
       getSessionFeedback(sessionToUpdate._id)
          .then(res => {

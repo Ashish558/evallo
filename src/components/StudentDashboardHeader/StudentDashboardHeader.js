@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import explore from "./../../assets/images/explore-bg.png";
 import styles from "./StudentDashboardHeader.module.css";
 import TutorItem from "../TutorItem/TutorItem";
-import { useLazyGetSettingsQuery, useLazyGetSingleSessionQuery, useLazyGetStudentFeedbackQuery, useUpdateFeedbackMutation } from "../../app/services/session";
+import { useLazyGetSessionsQuery, useLazyGetSettingsQuery, useLazyGetSingleSessionQuery, useLazyGetStudentFeedbackQuery, useUpdateFeedbackMutation } from "../../app/services/session";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useLazyGetTutorDetailsQuery } from "../../app/services/users";
@@ -16,7 +16,8 @@ const StudentDashboardHeader = () => {
    const { id } = useSelector(state => state.user)
    const [images, setImages] = useState([])
    const [fetchSettings, fetchSettingsResp] = useLazyGetSettingsQuery()
-
+   const [fetchUserSessions, fetchUserSessionsResponse] = useLazyGetSessionsQuery();
+   const [feedbackSessions, setFeedbackSessions] = useState([])
    const [getUserDetail, userDetailResp] = useLazyGetTutorDetailsQuery()
    const [getSession, getSessionResp] = useLazyGetSingleSessionQuery()
    const [updateFeedback, updateFeedbackResp] = useUpdateFeedbackMutation()
@@ -55,6 +56,19 @@ const StudentDashboardHeader = () => {
          })
    }, [])
 
+   const fetchSessions = () => {
+      const url = `/api/session/student/${id}`;
+      fetchUserSessions(url).then((res) => {
+         if (res.error) return console.log(res.error)
+         console.log('sessions', res.data);
+         if (!res.data.data.session) return
+         const completedSessions = res.data.data.session.filter(session => session.sessionStatus === 'Completed')
+         setFeedbackSessions(completedSessions)
+      })
+   }
+   useEffect(() => {
+      fetchSessions()
+   }, [])
    useEffect(() => {
       feedbacks.map(feedback => {
          updateFeedback({ id: feedback._id, viewed: true })
@@ -120,8 +134,8 @@ const StudentDashboardHeader = () => {
             <div className="w-full lg:w-2/5 bg-white rounded-[20px] p-[22px] pr-0 h-[100%]">
                <div className="overflow-y-auto h-[100%] pr-[22px]" id={styles.tutorList}>
                   {
-                     allFeedbacks.length >= 1 ?
-                        allFeedbacks.map((item, idx) => <TutorItem key={idx} {...item} />)
+                     feedbackSessions.length >= 1 ?
+                        feedbackSessions.map((item, idx) => <TutorItem key={idx} {...item} setFeedbackSessions={setFeedbackSessions} />)
                         :
                         <p className="font-medium pt-6">No feedbacks given</p>
                   }

@@ -100,8 +100,7 @@ export default function Calendar() {
    const [defaultEventData, setDefaultEventData] = useState(null)
 
    const [fetchNames, namesResponse] = useLazyGetUsersByNameQuery();
-   const [fetchUserSessions, fetchUserSessionsResponse] =
-      useLazyGetSessionsQuery();
+   const [fetchUserSessions, fetchUserSessionsResponse] = useLazyGetSessionsQuery();
    const [fetchStudents, fetchStudentsResp] = useLazyGetTutorStudentsQuery();
    const [getUserDetail, userDetailResp] = useLazyGetUserDetailQuery()
    const { firstName, lastName, id: currentUserId } = useSelector(state => state.user)
