@@ -104,6 +104,13 @@ export const sessionServicesApi = createApi({
             headers: getAuthHeader()
          })
       }),
+      getCompletedSessions: builder.query({
+         query: (id) => ({
+            url: `/api/session/completedSessions/${id}`,
+            method: "GET",
+            headers: getAuthHeader()
+         })
+      }),
       getTutorStudents: builder.query({
          query: (id) => ({
             url: `/api/session/tutor/${id}`,
@@ -181,6 +188,7 @@ export const {
    useLazyGetSettingsQuery,
    useSubmitSessionMutation,
    useLazyGetUsersByNameQuery,
+   useLazyGetCompletedSessionsQuery,
    useLazyGetSessionsQuery,
    useLazyGetSingleSessionQuery,
    useUpdateSessionMutation,

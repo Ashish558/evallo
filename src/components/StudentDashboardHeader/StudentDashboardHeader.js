@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import explore from "./../../assets/images/explore-bg.png";
 import styles from "./StudentDashboardHeader.module.css";
 import TutorItem from "../TutorItem/TutorItem";
-import { useLazyGetSessionsQuery, useLazyGetSettingsQuery, useLazyGetSingleSessionQuery, useLazyGetStudentFeedbackQuery, useUpdateFeedbackMutation } from "../../app/services/session";
+import { useLazyGetCompletedSessionsQuery, useLazyGetSessionsQuery, useLazyGetSettingsQuery, useLazyGetSingleSessionQuery, useLazyGetStudentFeedbackQuery, useUpdateFeedbackMutation } from "../../app/services/session";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useLazyGetTutorDetailsQuery } from "../../app/services/users";
@@ -16,7 +16,8 @@ const StudentDashboardHeader = () => {
    const { id } = useSelector(state => state.user)
    const [images, setImages] = useState([])
    const [fetchSettings, fetchSettingsResp] = useLazyGetSettingsQuery()
-   const [fetchUserSessions, fetchUserSessionsResponse] = useLazyGetSessionsQuery();
+   // const [fetchUserSessions, fetchUserSessionsResponse] = useLazyGetSessionsQuery();
+   const [fetchUserSessions, fetchUserSessionsResponse] = useLazyGetCompletedSessionsQuery();
    const [feedbackSessions, setFeedbackSessions] = useState([])
    const [getUserDetail, userDetailResp] = useLazyGetTutorDetailsQuery()
    const [getSession, getSessionResp] = useLazyGetSingleSessionQuery()
@@ -57,14 +58,13 @@ const StudentDashboardHeader = () => {
    }, [])
 
    const fetchSessions = () => {
-      const url = `/api/session/student/${id}`;
-      fetchUserSessions(url).then((res) => {
+      fetchUserSessions(id).then((res) => {
          if (res.error) return console.log(res.error)
-         console.log('sessions', res.data);
-         if (!res.data.data.session) return
-         const completedSessions = res.data.data.session.filter(session => session.sessionStatus === 'Completed')
-         setFeedbackSessions(completedSessions)
+         console.log('sessions', res.data.data.sessions);
+         if (!res.data.data.sessions) return
+         setFeedbackSessions(res.data.data.sessions)
       })
+
    }
    useEffect(() => {
       fetchSessions()
