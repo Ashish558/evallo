@@ -126,7 +126,7 @@ export default function SelectServices({
                <div className="row-span-2">
                   <InputField
                      labelClassname="hidden"
-                     placeholder="Tell us more (char limit)"
+                     placeholder="Tell us more"
                      inputContainerClassName="pt-1.8 pb-1.8 px-2.5 border"
                      value={otherDetails.tellUsMore}
                      disabled={inputDisabled}
@@ -178,7 +178,7 @@ export default function SelectServices({
                   children="Next"
                   className="text-lg pt-3 pb-3 font-semibold text-white mr-6 w-140 disabled:opacity-70"
                   onClick={() => handleSubmit()}
-               // disabled={disabled}
+                  disabled={disabled}
                />
             </div>
          </div>

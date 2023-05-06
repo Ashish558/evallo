@@ -31,6 +31,9 @@ export default function InputSearch({
    const handleClose = () => {
       setOptionsVisible(false)
    }
+   // console.log('checkbox', checkbox);
+   // console.log('value', value);
+   // console.log('optionData', optionData);
    useOutsideAlerter(inputRef, handleClose)
  
    return (

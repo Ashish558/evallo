@@ -3,6 +3,7 @@ import Pagination from "./Pagination";
 import { TableHeader } from "./TableHeader";
 import TableItem from "./tableItem";
 import ReactPaginate from 'react-paginate';
+import { TableHeaderNew } from "./tableHeaderObj";
 
 export default function ApiTable({
    dataFor,
@@ -17,7 +18,8 @@ export default function ApiTable({
    isCallingApi,
    currentPage,
    setCurrentPage,
-   fetch
+   fetch,headerObject,
+   extraData
 }) {
    const [tableData, setTableData] = useState(data.sort((a, b) => a.name?.slice(0, 1).toLowerCase() > b.name?.slice(0, 1).toLowerCase()));
    const dataLength = data.length > 30 ? 30 : data.length;
@@ -48,8 +50,8 @@ export default function ApiTable({
          <table className="table-auto mb-3 text-center w-full">
             <thead className="pb-2">
                <tr>
-                  {tableHeaders.map((item, idx) => {
-                     return <TableHeader key={idx} header={item} dataFor={dataFor} />;
+               {tableHeaders.map((item, idx) => {
+                     return headerObject === true ? <TableHeaderNew header={item} /> : <TableHeader key={idx} header={item}  dataFor={dataFor} />;
                   })}
                </tr>
             </thead>
@@ -63,6 +65,7 @@ export default function ApiTable({
                         excludes={excludes}
                         onClick={onClick}
                         fetch={fetch}
+                        extraData={extraData}
                      />
                   );
                })}
@@ -89,6 +92,7 @@ export default function ApiTable({
                previousClassName='hidden'
                nextClassName='hidden'
                renderOnZeroPageCount={null}
+               forcePage={currentPage - 1}
                pageLinkClassName='w-full h-full flex justify-center items-center'
             />
 

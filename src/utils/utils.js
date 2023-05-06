@@ -1,5 +1,4 @@
-
-
+import moment from "moment-timezone";
 
 export function tConvert(time) {
    // Check correct time format and split into components
@@ -57,6 +56,24 @@ export const getFormattedDate = argDate => {
    }
    let dateFormatted = `${year}-${month}-${dateNum}`
    return dateFormatted
+}
+
+export const getFormattedDateTime = argDate => {
+   const date = new Date(argDate)
+   if (argDate === undefined) return "-"
+   let year = date.getFullYear()
+   let month = date.getMonth()
+   let dateNum = date.getDate()
+   month = month + 1
+   if (month < 10) {
+      month = `0${month}`
+   }
+   if (dateNum < 10) {
+      dateNum = `0${dateNum}`
+   }
+   let dateFormatted = `${year}-${month}-${dateNum} ${date.getHours()}:${date.getMinutes()} `
+   // return dateFormatted
+   return date.toLocaleString().replace(",", "").replace(/:.. /, " ");
 }
 
 export function capitalize(str) {
@@ -132,18 +149,53 @@ export function formatAMPM(date) {
    return strTime;
 }
 
+const checkIfDaylight = () => {
+   Date.prototype.stdTimezoneOffset = function () {
+      var jan = new Date(this.getFullYear(), 0, 1);
+      var jul = new Date(this.getFullYear(), 6, 1);
+      return Math.max(jan.getTimezoneOffset(), jul.getTimezoneOffset());
+   }
+   Date.prototype.isDstObserved = function () {
+      return this.getTimezoneOffset() < this.stdTimezoneOffset();
+   }
+   var today = new Date();
+
+   if (today.isDstObserved()) {
+      // alert("Daylight saving time!");
+   }
+}
 export const getStartDate = (startDate, userTimezoneOffset, timeZone) => {
+   checkIfDaylight()
+
+   const dstdate = moment.tz(startDate, timeZone).format('YYYY-MM-DD HH:mm ZZ')
+   let offset = moment().utcOffset(dstdate)._offset
+
    if (timeZone === 'US/Central') {
+      if (offset === -300) {
+         return new Date(startDate.getTime() - userTimezoneOffset + 5 * 3600000);
+      }
       return new Date(startDate.getTime() - userTimezoneOffset + 6 * 3600000);
    } else if (timeZone === 'US/Alaska') {
+      if (offset === -480) {
+         return new Date(startDate.getTime() - userTimezoneOffset + 8 * 3600000);
+      }
       return new Date(startDate.getTime() - userTimezoneOffset + 9 * 3600000);
    } else if (timeZone === 'US/Eastern') {
+      if (offset === -240) {
+         return new Date(startDate.getTime() - userTimezoneOffset + 4 * 3600000);
+      }
       return new Date(startDate.getTime() - userTimezoneOffset + 5 * 3600000);
    } else if (timeZone === 'US/Hawaii') {
       return new Date(startDate.getTime() - userTimezoneOffset + 10 * 3600000);
    } else if (timeZone === 'US/Mountain') {
+      if (offset === -360) {
+         return new Date(startDate.getTime() - userTimezoneOffset + 6 * 3600000);
+      }
       return new Date(startDate.getTime() - userTimezoneOffset + 7 * 3600000);
    } else if (timeZone === 'US/Pacific') {
+      if (offset === -420) {
+         return new Date(startDate.getTime() - userTimezoneOffset + 7 * 3600000);
+      }
       return new Date(startDate.getTime() - userTimezoneOffset + 8 * 3600000);
    } else {
       return new Date(startDate.getTime() - userTimezoneOffset - 5.5 * 3600000);
@@ -301,6 +353,28 @@ export const getDuration = val => {
    if (val === 1.5) return '1.5x'
    if (val === 10) return 'Unlimited'
    return '-'
+}
+
+export const checkIfExistInNestedArray = (arr1, mainArray) => {
+   if (!arr1) return false
+   if (!mainArray) return false
+   let exist = false
+   mainArray.forEach(mainArrItem => {
+      arr1.forEach(arrItem => {
+         if (mainArrItem === arrItem) {
+            exist = true
+         }
+      })
+   })
+   return exist
+}
+
+export const getMonthName = idx => {
+   const monthNames = ["January", "February", "March", "April", "May", "June",
+      "July", "August", "September", "October", "November", "December"
+   ]
+   if(idx > 11) return monthNames[0]
+   return monthNames[idx]
 }
 
 // // timezones

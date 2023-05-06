@@ -96,6 +96,7 @@ export default function Settings() {
    const [addCodeModalActive, setAddCodeModalActive] = useState(false)
    const [subModalData, setSubModalData] = useState(subModalInitialState)
    const [addTestModalActive, setAddTestModalActive] = useState(false)
+   const [saveLoading, setSaveLoading] = useState(false)
    const [selectedSubscriptionData, setSelectedSubscriptionData] = useState({
       code: '',
       expiry: '',
@@ -132,6 +133,7 @@ export default function Settings() {
    const [image, setImage] = useState(null)
    const [getSettings, getSettingsResp] = useLazyGetSettingsQuery()
    const [updateSetting, updateSettingResp] = useUpdateSettingMutation()
+   const [baseLink, setBaseLink] = useState('')
 
    const [updateFields, updateFieldsResp] = useUpdateUserFieldsMutation()
    // const [updateImage, updateImageResp] = useUpdateOfferImageMutation()
@@ -187,6 +189,7 @@ export default function Settings() {
                return
             }
             console.log('settings', res.data)
+            setBaseLink(res.data.data.baseLink)
             if (res.data.data.setting === null) return
             setSettingsData(res.data.data.setting)
          })
@@ -245,10 +248,15 @@ export default function Settings() {
    }
 
    const updateAndFetchsettings = updatedSetting => {
+      setSaveLoading(true)
       updateSetting(updatedSetting)
          .then(res => {
+            setSaveLoading(false)
             // console.log('updated', res.data);
             setSettingsData(res.data.data.setting)
+         }).catch(err => {
+            setSaveLoading(false)
+            console.log('err', err);
          })
    }
 
@@ -277,10 +285,14 @@ export default function Settings() {
          formData.delete('image')
       }
 
-      console.log(append)
+      // console.log(append)
 
       if (append === '') return
-      axios.patch(`${BASE_URL}api/user/setting/${append}`, formData, { headers: getAuthHeader() })
+      setSaveLoading(true)
+      axios.patch(`${BASE_URL}api/user/setting/${append}`, formData, {
+         headers: getAuthHeader(), maxBodyLength: Infinity,
+         maxContentLength: Infinity,
+      })
          .then((res) => {
             console.log(res)
             setTagImage(null)
@@ -289,6 +301,11 @@ export default function Settings() {
             setImageName('')
             setTagModalActive(false)
             fetchSettings()
+            setSaveLoading(false)
+         }).catch(err => {
+            console.log('err', err);
+            alert("Could not upload image")
+            setSaveLoading(false)
          })
    }
 
@@ -570,7 +587,7 @@ export default function Settings() {
    // console.log('servicesAndSpecialization', servicesAndSpecialization);
    // console.log('toggleImage', toggleImage);
    // console.log('adminModalDetails', adminModalDetails);
-   // console.log(offerImages)
+   console.log('baseLink', baseLink)
 
    return (
       <>
@@ -722,6 +739,7 @@ export default function Settings() {
                         <FilterItems isString={false} onlyItems={true} image={toggleImage.Expertise}
                            items={sessionTags !== undefined ? Expertise.map(item => item) : []}
                            keyName='Expertise'
+                           baseLink={baseLink}
                            onRemoveFilter={onRemoveTextImageTag}
                            className='pt-1 pb-1 mr-15' />
                      </div>
@@ -772,6 +790,7 @@ export default function Settings() {
                         <FilterItems isString={false} onlyItems={true} image={toggleImage.personality}
                            items={personality !== undefined ? personality.map(item => item) : []}
                            keyName='personality'
+                           baseLink={baseLink}
                            onRemoveFilter={onRemoveTextImageTag}
                            className='pt-1 pb-1 mr-15' />
                      </div>
@@ -785,6 +804,7 @@ export default function Settings() {
                         <FilterItems isString={false} onlyItems={true} image={toggleImage.interest}
                            items={interest !== undefined ? interest.map(item => item) : []}
                            keyName='interest'
+                           baseLink={baseLink}
                            onRemoveFilter={onRemoveTextImageTag}
                            className='pt-1 pb-1 mr-15' />
                      </div>
@@ -798,6 +818,7 @@ export default function Settings() {
                            onlyItems={true}
                            keyName='classes'
                            items={classes ? classes : []}
+                           baseLink={baseLink}
                            onRemoveFilter={onRemoveFilter}
                            className='pt-1 pb-1 mr-15' />
                      </div>
@@ -815,6 +836,7 @@ export default function Settings() {
                            onlyItems={true}
                            sliceText={true}
                            items={offerImages !== undefined ? offerImages.map(item => ({ ...item, text: item.image })) : []}
+                           baseLink={baseLink}
                            onRemoveFilter={onRemoveImage}
                            // onRemoveFilter={onRemoveFilter}
                            className='pt-1 pb-1 mr-15' />
@@ -904,6 +926,7 @@ export default function Settings() {
                   className: 'w-140 pl-3 pr-3 ml-0 my-4',
                   form: 'settings-form',
                   type: 'submit',
+                  loading: saveLoading
                }}
                handleClose={() => { setAddCodeModalActive(false); setSubModalData(subModalInitialState) }}
                body={
@@ -949,6 +972,7 @@ export default function Settings() {
                   className: 'w-140 pl-3 pr-3 ml-0 my-4',
                   form: 'settings-form',
                   type: 'submit',
+                  loading: saveLoading
                }}
                handleClose={() => { setAddTestModalActive(false) }}
                body={
@@ -997,6 +1021,7 @@ export default function Settings() {
                   className: `w-140 ml-0 bg-primaryOrange mt-2 ${tagText.trim().length < 1 || tagImage === null ? 'pointer-events-none opacity-60' : ''} `,
                   form: 'settings-form',
                   type: 'submit',
+                  loading: saveLoading
                }}
                handleClose={() => setTagModalActive(false)}
                body={

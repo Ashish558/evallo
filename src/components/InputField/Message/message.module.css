@@ -1,0 +1,23 @@
+.container{
+   z-index: 8000;
+}
+.outer {
+   position: absolute;
+   top: -16px;
+   right: 19px;
+   width: 0;
+   height: 0;
+   border-left: 8px solid transparent;
+   border-right: 8px solid transparent;
+   border-bottom: 15px solid #FF2626;
+}
+.inner {
+   position: absolute;
+   top: -15px;
+   right: 20px;
+   width: 0;
+   height: 0;
+   border-left: 7px solid transparent;
+   border-right: 7px solid transparent;
+   border-bottom: 15px solid #FFCDC9;
+}

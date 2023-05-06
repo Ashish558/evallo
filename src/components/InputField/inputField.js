@@ -25,7 +25,9 @@ export default function InputField({
    onKeyDown,
    maxLength,
    minLength,
-   prefix
+   prefix,
+   onFocus,
+   onBlur
 }) {
    const [inputType, setInputType] = useState(type)
 
@@ -58,6 +60,8 @@ export default function InputField({
                onKeyDown={onKeyDown ? onKeyDown : () => { }}
                minLength={minLength && minLength}
                maxLength={maxLength && maxLength}
+               onFocus={onFocus}
+               onBlur={onBlur}
             />
             {type === 'password' && <img src={EyeIcon} className="ml-4 w-[20px]"
                onClick={() => inputType === 'password' ? setInputType('text') : setInputType('password')}

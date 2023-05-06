@@ -77,7 +77,7 @@ export default function Questions({
          <div className="mb-4">
             <p className="font-medium text-[14px] mb-1">
                Do you have any PSAT / P-ACT scores to share? How are
-               your student's grades in school?
+               your student's grades in school?  <span className="text-primaryRed inline-block pl-1">*</span>
             </p>
             <textarea
                rows={3}
@@ -94,7 +94,7 @@ export default function Questions({
 
          <p className="font-medium text-[14px] mb-3">
             Are you / your child taking any AP courses in school? Please
-            select all that apply.
+            select all that apply. <span className="text-primaryRed inline-block pl-1">*</span>
          </p>
          <div className="grid grid-cols-2 mb-4">
             {apCourses.map((item, idx) => {
@@ -129,7 +129,7 @@ export default function Questions({
 
          <div className="">
             <p className="font-medium mb-3 text-[14px]">
-               Select if any of these apply to you
+               Select if any of these apply to you <span className="text-primaryRed inline-block pl-1">*</span>
             </p>
             <div className="grid grid-cols-1 mb-4">
                {motive.map((item, idx) => {
@@ -173,7 +173,7 @@ export default function Questions({
                children="Next"
                className="text-md pt-3 pb-3 disabled:opacity-70 font-semibold text-white mr-6 w-140"
                onClick={() => handleSubmit()}
-               // disabled={disabled}
+               disabled={disabled}
             />
          </div>
       </div>

@@ -127,8 +127,6 @@ export default function EventModal({
    });
    const [submitDisabled, setSubmitDisabled] = useState(false)
 
-   // console.log(sessionToUpdate);
-
    const [days, setDays] = useState(tempDays);
    const [topics, setTopics] = useState([]);
    const [studentMoods, setStudentMoods] = useState([]);
@@ -138,6 +136,7 @@ export default function EventModal({
    const [allServicesAndSpec, setAllServicesAndSpec] = useState([])
    const [specializations, setSpecializations] = useState([])
    const [tutor, setTutor] = useState("");
+   const [loading, setLoading] = useState(false)
 
    const [submitSession, sessionResponse] = useSubmitSessionMutation();
    const [updateUserSession, updateUserSessionResp] = useUpdateSessionMutation();
@@ -412,9 +411,9 @@ export default function EventModal({
          body.date = sDate
       }
 
-      console.log('isUpdaingAll', isUpdaingAll);
+      // console.log('isUpdaingAll', isUpdaingAll);
       console.log('sDate', sDate);
-      console.log(body);
+      console.log('body', body);
       // return
       if (body.sessionStatus === "Completed") {
          await updateSessionStatus(sessionToUpdate._id)
@@ -470,6 +469,7 @@ export default function EventModal({
          updateAllUserSession({ id: sessionToUpdate._id, body: { ...body, sessionStatus: 'Scheduled' } }).then(
             (res) => {
                console.log(res);
+               setLoading(false)
                refetchSessions()
                setEventModalActive(false);
             }
@@ -494,7 +494,20 @@ export default function EventModal({
       // }).catch(err => {
       //    console.log(err)
       // })
+
+
+      if (!isUpdating && data.recurring === true) {
+         if (new Date(data.endDate) < new Date()) {
+            return alert('End date should be a future date')
+         }
+      }
+      setLoading(true)
       let reqBody = { ...data }
+      const offset = new Date(reqBody.endDate).getTimezoneOffset() * 60000
+      if (offset > 0) {
+         const endDateUpdated = new Date(new Date(reqBody.endDate).getTime() + offset)
+         reqBody.endDate = endDateUpdated
+      }
       reqBody.studentName = student
       reqBody.tutorName = tutor
       let day = []
@@ -506,7 +519,9 @@ export default function EventModal({
       reqBody.homeworkAssigned = getCheckedString(homeworks)
       reqBody.studentMood = getCheckedString(studentMoods)
       reqBody.sessionProductive = getCheckedString(isProductive)[0]
-
+      if (reqBody.sessionProductive === undefined) {
+         reqBody.sessionProductive = ''
+      }
       const { start, end } = reqBody.time
       let startTime = convertTime12to24(`${start.time} ${start.timeType}`)
       let endTime = convertTime12to24(`${end.time} ${end.timeType}`)
@@ -576,6 +591,7 @@ export default function EventModal({
 
       submitSession(reqBody).then((res) => {
          console.log(res)
+         setLoading(false)
          setEventModalActive(false)
          refetchSessions()
       })
@@ -600,7 +616,7 @@ export default function EventModal({
             // console.log(res.data);
          })
    }
-
+ 
    const fetchFeedback = () => {
       getSessionFeedback(sessionToUpdate._id)
          .then(res => {
@@ -618,8 +634,10 @@ export default function EventModal({
    }, [sessionToUpdate])
 
    const handleDeleteSession = () => {
+      setLoading(true)
       deleteSession(sessionToUpdate._id)
          .then(res => {
+            setLoading(false)
             if (res.error) return console.log(res.error);
             console.log(res.data);
             refetchSessions()
@@ -628,8 +646,10 @@ export default function EventModal({
    }
 
    const handleDeleteAllSession = () => {
+      setLoading(true)
       deleteAllSession(sessionToUpdate._id)
          .then(res => {
+            setLoading(false)
             if (res.error) return console.log(res.error);
             console.log(res.data);
             refetchSessions()
@@ -652,32 +672,60 @@ export default function EventModal({
             if (details === null) return
             if (details.tutorServices.length === 0) return alert('Tutor does not have any services')
             let services = details.tutorServices.map(item => item.service)
-            setServicesAndSpecialization(services)
+            let tutorServs = []
+            allServicesAndSpec.forEach(item => {
+               if (services.includes(item.service)) {
+                  tutorServs.push(item.service)
+               }
+            })
+            // console.log('allServicesAndSpec', allServicesAndSpec);
+            // console.log('services', services);
+            setServicesAndSpecialization(tutorServs)
          })
       // }
 
-   }, [persona, data.tutorId])
+   }, [persona, data.tutorId, allServicesAndSpec])
 
    useEffect(() => {
       // console.log('all', allServicesAndSpec)
       // console.log('servicesAndSpecialization', servicesAndSpecialization)
-
       let specs = []
       allServicesAndSpec.map(item => {
          if (item.service === data.service) {
             specs = item.specialization
          }
       })
-      console.log('spec', specs)
+      // console.log('spec', specs)
       setSpecializations(specs)
    }, [servicesAndSpecialization, data.service, allServicesAndSpec])
-   // console.log(convertTime12to24(`${data.time.end.time} ${data.time.end.timeType}`))
-   // console.log(convertTime12to24('1:00 AM'))
-   //console.log(data.feedbackStars);
-   // console.log('sessionToUpdate', sessionToUpdate)
-   // console.log('session data', data)
-   // console.log('servicesAndSpecialization', servicesAndSpecialization)
 
+   useEffect(() => {
+      if (isUpdating) {
+         const { time: initialTime } = sessionToUpdate
+         const { time: changedTime } = data
+
+         let startDate = new Date(sessionToUpdate.date)
+         const offset = startDate.getTimezoneOffset() * 60000
+         if (offset > 0) {
+            startDate = new Date(startDate.getTime() + offset)
+         }
+         startDate.setHours(0);
+         startDate.setMinutes(0);
+
+         if (initialTime.start.time === changedTime.start.time &&
+            initialTime.start.timeType === changedTime.start.timeType &&
+            initialTime.end.time === changedTime.end.time &&
+            initialTime.end.timeType === changedTime.end.timeType &&
+            sessionToUpdate.timeZone === data.timeZone &&
+            getFormattedDate(startDate) === data.date
+         ) {
+            setData(prev => ({...prev, rescheduling: false}))
+         } else {
+            setData(prev => ({...prev, rescheduling: true}))
+         }
+      }
+   }, [isUpdating, sessionToUpdate?.time, data?.time, sessionToUpdate?.date, data?.date])
+  
    const dataProps = { data, setData }
    return (
       <>
@@ -694,7 +742,7 @@ export default function EventModal({
 
                   <DateAndTimeInput {...dataProps} isEditable={isEditable} />
 
-                  <div className="flex mb-3">
+                  <div className={`flex mb-3 ${isUpdating && !data.recurring ? 'pointer-events-none opacity-60' : ''} `}>
                      <CCheckbox checked={data.recurring} name='recurring' onChange={() =>
                         setData({
                            ...data,
@@ -783,7 +831,7 @@ export default function EventModal({
                               {[...Array(5)].map((x, i) => (
                                  <img
                                     src={inputFeedback - 1 < i ? StarIcon : StarActiveIcon}
-                                    className="mr-7 cursor-pointer"
+                                    className={`mr-7 cursor-pointer ${data.sessionStatus?.toLowerCase() !== 'completed' ? 'pointer-events-none' : ''} `}
                                     onClick={() => {
                                        // setData(prev => ({ ...prev, feedbackStars: i + 1 }));
                                        // setInputFeedback(i + 1)
@@ -937,11 +985,13 @@ export default function EventModal({
                                        children="Delete Current"
                                        className="text-lg py-3 mr-3 pl-1 pr-1 font-medium px-7 h-[50px] w-[140px] disabled:opacity-60"
                                        onClick={handleDeleteSession}
+                                       loading={loading}
                                     />
                                     <SecondaryButton
                                        children="Delete All"
                                        className="text-lg py-3 mr-3 pl-2 pr-2 font-medium px-7 h-[50px] w-[140px] disabled:opacity-60"
                                        onClick={handleDeleteAllSession}
+                                       loading={loading}
                                     />
                                  </div>
                                  <div>
@@ -950,12 +1000,14 @@ export default function EventModal({
                                        className="text-lg py-3 mr-3 pl-1 pr-1 whitespace-nowrap font-medium px-7 h-[50px] w-[140px] disabled:opacity-60"
                                        onClick={() => handleSubmit(false)}
                                        disabled={submitDisabled}
+                                       loading={loading}
                                     />
                                     <PrimaryButton
                                        children="Update All"
                                        className="text-lg py-3 pl-2 pr-2 font-medium px-7 h-[50px] w-[140px] disabled:opacity-60"
                                        onClick={() => handleSubmit(true)}
                                        disabled={submitDisabled}
+                                       loading={loading}
                                     />
                                  </div>
                               </div>
@@ -965,12 +1017,14 @@ export default function EventModal({
                                        children="Delete"
                                        className="text-lg py-3 mr-3 pl-2 pr-2 font-medium px-7 h-[50px] w-[140px] disabled:opacity-60"
                                        onClick={handleDeleteSession}
+                                       loading={loading}
                                     />
                                     <PrimaryButton
                                        children="Update"
                                        className="text-lg py-3 pl-2 pr-2 font-medium px-7 h-[50px] w-[140px] disabled:opacity-60"
                                        onClick={() => handleSubmit(false)}
                                        disabled={submitDisabled}
+                                       loading={loading}
                                     />
                                  </> :
                                  <PrimaryButton
@@ -978,6 +1032,7 @@ export default function EventModal({
                                     className="text-lg py-3 pl-2 pr-2 font-medium px-7 h-[50px] w-[140px] disabled:opacity-60"
                                     onClick={() => handleSubmit()}
                                     disabled={submitDisabled}
+                                    loading={loading}
                                  />
                            }
 

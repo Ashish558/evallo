@@ -22,7 +22,7 @@ const testData = ["SAT", "ACT"];
 const tempTableHeaders = [
    "Student Name",
    "Time Zone",
-   "Service(s)",
+   "Specialization(s)",
    "Parent",
    // "Start Date",
    "Diagnostic Score",
@@ -58,9 +58,7 @@ export default function AssignedStudents() {
       tutorName: '',
       studentName: '',
       timeZone: '',
-      service: '',
-      date: '',
-      status: '',
+      specialization: '',
    })
 
    useEffect(() => {
@@ -77,19 +75,21 @@ export default function AssignedStudents() {
    useEffect(() => {
       getUserDetail({ id })
          .then(resp => {
-            console.log(resp.data.data.user)
+            console.log('res', resp.data.data.user)
             let studentsData = []
             const fetch = (cb) => {
                resp.data.data.user.assiginedStudents.map((studentId, idx) => {
                   getUserDetail({ id: studentId })
                      .then(res => {
+                        console.log('detail res', resp.data.data)
                         const { _id, firstName, lastName } = res.data.data.user
-                        const { serviceSeeking, FirstName, LastName, timeZone } = res.data.data.userdetails
+                        const { specialization, FirstName, LastName, timeZone } = res.data.data.userdetails
                         studentsData.push({
                            _id,
                            name: `${firstName} ${lastName}`,
                            timeZone: timeZone ? timeZone : '-',
-                           services: serviceSeeking ? serviceSeeking.join() : '-',
+                           specialization: specialization ? specialization.join(',') : '-',
+                           // specialization: ['we', 'ew'].join(','),
                            parentName: `${FirstName} ${LastName}`,
                            score: '-',
                            status: '-'
@@ -110,6 +110,23 @@ export default function AssignedStudents() {
       // console.log(usersData)
       if (filterData.timeZone !== '') {
          tempdata = tempdata.filter(user => user.timeZone === filterData.timeZone)
+      } else {
+         tempdata = tempdata.filter(user => user.timeZone !== '')
+      }
+      if (filterData.specialization !== '') {
+         tempdata = tempdata.filter(user => {
+            let userSpecs = user.specialization.split(',')
+            const regex2 = new RegExp(`${filterData.specialization.toLowerCase()}`, 'i')
+            let isMatch = false
+            // console.log('userSpecs', userSpecs);
+            userSpecs.forEach(item => {
+               if (item.match(regex2)) {
+                  isMatch = true
+               }
+            })
+            // console.log('isMatch', isMatch);
+            if(isMatch) return user
+         })
       } else {
          tempdata = tempdata.filter(user => user.timeZone !== '')
       }
@@ -152,6 +169,7 @@ export default function AssignedStudents() {
 
    // console.log('filterData', filterData)
    // console.log('filterItems', filterItems)
+   // console.log('filteredStudents', filteredStudents)
 
    const handleClose = () => setModalActive(false);
    const [validData, setValidData] = useState(true);
@@ -202,15 +220,15 @@ export default function AssignedStudents() {
                      parentClassName="w-full mr-4"
                      type="select"
                   />
-                  {/* <InputSelect
-                     value={filterData.service}
-                     onChange={val => setFilterData({ ...filterData, service: val })}
-                     optionData={optionData}
-                     inputContainerClassName="py-[16px] px-[20px] border bg-white"
-                     placeholder="Service"
+                  <InputField
+                     value={filterData.specialization}
+                     IconRight={SearchIcon}
+                     onChange={e => setFilterData({ ...filterData, specialization: e.target.value })}
+                     placeholder="Specialization"
+                     inputContainerClassName="border bg-white py-[16px] px-[20px]"
                      parentClassName="w-full mr-4"
-                     type="select"
-                  /> */}
+                     type="text"
+                  />
                   {/* <button className='bg-primary py-3.5 w-full text-lg px-[21px] flex justify-center items-center text-white font-semibold rounded-lg'
                      onClick={() => setModalActive(true)}>
                      Assign Tutor

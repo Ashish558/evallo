@@ -47,26 +47,8 @@ export default function Signup() {
    const [loading, setLoading] = useState(false)
    const navigate = useNavigate();
    const [lastLoginDisabled, setLastLoginDisabled] = useState(false)
-
-   const fetchSettings = () => {
-      getSettings()
-         .then(res => {
-            // console.log(res);
-            setSettings(res.data.data.setting)
-         })
-   }
-   useEffect(() => {
-      fetchSettings()
-   }, [])
-
-
-   const [error, setError] = useState({
-      firstName: "",
-      lastName: "",
-      email: "",
-      phone: "",
-      subscriptionCode: "",
-   })
+   const [searchParams, setSearchParams] = useSearchParams()
+   const [isAddedByAdmin, setIsAddedByAdmin] = useState(false)
 
    const [values, setValues] = useState({
       firstName: "",
@@ -77,6 +59,16 @@ export default function Signup() {
       checked: false,
       userId: "",
    });
+
+
+   const [error, setError] = useState({
+      firstName: "",
+      lastName: "",
+      email: "",
+      phone: "",
+      subscriptionCode: "",
+   })
+
 
    const [otherDetails, setOtherDetails] = useState({
       schoolName: "",
@@ -109,7 +101,6 @@ export default function Signup() {
    const [linkedUserId, setLinkedUserId] = useState('')
 
    const [linkedEmailDetails, setLinkedEmailDetails] = useState({})
-   const [searchParams, setSearchParams] = useSearchParams()
 
    const [persona, setPersona] = useState("");
    const [currentStep, setcurrentStep] = useState(1);
@@ -120,8 +111,61 @@ export default function Signup() {
    const [hearAboutUs, setHearAboutUs] = useState(hearAboutUslist);
    const [getDetails, getDetailsResp] = useLazyGetUserDetailQuery()
 
+   const fetchSettings = () => {
+      getSettings()
+         .then(res => {
+            // console.log(res);
+            setSettings(res.data.data.setting)
+         })
+   }
+   useEffect(() => {
+      fetchSettings()
+   }, [])
+
+   const paramUserId = searchParams.get("userid")
+   const paramUserRole = searchParams.get("role")
+   useEffect(() => {
+      if (!paramUserId) return
+      if (!paramUserRole) return
+      console.log('paramUserId', paramUserId);
+      setFrames({
+         signupActive: false,
+         selectPersona: false,
+         services: false,
+         userDetails: true,
+         questions: false,
+         signupLast: false,
+         signupSuccessful: false,
+      })
+      setValues(prev => {
+         return {
+            ...prev,
+            userId: paramUserId
+         }
+      })
+      setPersona(paramUserRole)
+      setIsAddedByAdmin(true)
+      // setFrames((prev) => {
+      //    return { ...prev, signupActive: false, userDetails: true };
+      // })
+
+      // getDetails({ id: paramUserId })
+      //    .then(res => {
+      //       if (res.error) {
+      //          return console.log(res.error)
+      //       }
+      //       console.log('param res', res.data);
+      //       const { user, userdetails } = res.data.data
+      //       let user_detail = { ...userdetails }
+      //       console.log('user', user);
+      //       console.log('userdetails', userdetails);
+
+      //    })
+   }, [paramUserId, paramUserRole])
+
    useEffect(() => {
       const paramsUserId = searchParams.get('userId')
+      return
       getDetails({ id: paramsUserId })
          .then(res => {
             if (res.error) {
@@ -148,8 +192,6 @@ export default function Signup() {
             setLinkedEmailDetails(user_detail)
          })
    }, [])
-
-
 
    //temparory
    const [redirectLink, setRedirectLink] = useState("");
@@ -239,7 +281,8 @@ export default function Signup() {
                lastName: values.lastName,
                email: values.email,
                subscriptionCode: values.subscriptionCode,
-               phone: `${numberPrefix}${values.phone}`,
+               phone: `${values.phone}`,
+               phoneCode: `${numberPrefix}`,
             };
             if (values.checked === false) {
                // console.log(settings.subscriptionCode.includes(values.subscriptionCode));
@@ -248,6 +291,9 @@ export default function Signup() {
                   allCodes.push(item.code)
                });
                // console.log(settings.subscriptionCode);
+               if (values.subscriptionCode === '') {
+                  return alert('Please enter a subscription code or select the checkbox below confirming that you dont have one')
+               }
                if (!allCodes.includes(values.subscriptionCode)) {
                   return alert('invalid subscription code')
                }
@@ -321,7 +367,8 @@ export default function Signup() {
       setLastLoginDisabled(true)
       const reqBody = {
          ...otherDetails,
-         Phone: `${studentNumberPrefix}${otherDetails.Phone}`,
+         Phone: `${otherDetails.Phone}`,
+         PhoneCode: `${studentNumberPrefix}`,
          serviceSeeking: getCheckedString(services),
          apCourses: getCheckedString(apCourses),
          motive: getCheckedString(motive),
@@ -337,13 +384,22 @@ export default function Signup() {
          setLastLoginDisabled(false)
          console.log(res);
          if (res.error) {
-            alert('something went wrong')
+            if (res.error.data.message) {
+               alert(res.error.data.message)
+               setFrames((prev) => {
+                  return { ...prev, signupSuccessful: false, signupLast: false, userDetails: true };
+               });
+            } else {
+               alert('Something went wrong')
+               setFrames((prev) => {
+                  return { ...prev, signupSuccessful: false, signupLast: false, userDetails: true };
+               });
+            }
             return
          }
          // window.open(redirectLink);
       });
    };
-   // console.log(error)
 
    const [selected, setSelected] = useState(false);
    const selectRef = useRef();
@@ -475,7 +531,7 @@ export default function Signup() {
                                        </div>
                                        {selected && (
                                           <div className={`scrollbar-content scrollbar-vertical ${selectStyles.options}`} style={{ top: '100%' }} >
-                                             {['+1'].map((option, idx) => {
+                                             {['+1', '+91'].map((option, idx) => {
                                                 return (
                                                    <div
                                                       className="outline-0 border-0 py-2 px-4"
@@ -544,25 +600,25 @@ export default function Signup() {
                      ) : frames.services ? (
                         // persona !== 'parent'
                         //    ?
-                            <SelectServices
-                              {...props}
-                              services={services}
-                              setServices={setServices}
-                              {...otherDetailsProps}
-                              {...valueProps}
-                           />
-                           // : <UserDetails {...props} {...otherDetailsProps} />
+                        <SelectServices
+                           {...props}
+                           services={services}
+                           setServices={setServices}
+                           {...otherDetailsProps}
+                           {...valueProps}
+                        />
+                        // : <UserDetails {...props} {...otherDetailsProps} />
                      ) : frames.userDetails ? (
                         // persona === 'parent'
-                           // ?
-                            <UserDetails {...props} {...otherDetailsProps} />
-                           // : <SelectServices
-                           //    {...props}
-                           //    services={services}
-                           //    setServices={setServices}
-                           //    {...otherDetailsProps}
-                           //    {...valueProps}
-                           // />
+                        // ?
+                        <UserDetails {...props} {...otherDetailsProps}  isAddedByAdmin={isAddedByAdmin} />
+                        // : <SelectServices
+                        //    {...props}
+                        //    services={services}
+                        //    setServices={setServices}
+                        //    {...otherDetailsProps}
+                        //    {...valueProps}
+                        // />
                      ) : frames.questions ? (
                         <Questions
                            {...props}

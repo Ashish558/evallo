@@ -7,9 +7,9 @@ import {
    Legend,
 } from 'chart.js';
 import { Bubble } from 'react-chartjs-2';
-import { useLazyGetTestResponseQuery } from '../../app/services/test';
-import { useLazyGetPersonalDetailQuery } from '../../app/services/users';
+import { useLazyGetPersonalDetailQuery, useLazyGetUserDetailQuery } from '../../app/services/users';
 import { backgroundColors, iniOptions } from './data';
+import { useSelector } from 'react-redux';
 
 ChartJS.register(LinearScale, PointElement, Tooltip, Legend);
 
@@ -32,9 +32,8 @@ const data1 = {
       },
    ],
 };
-export default function Chart({ setSubjects, subjects, selectedSubject }) {
+export default function Chart({ setSubjects, subjects, selectedSubject, selectedStudent, currentSubData, setCurrentSubData, selectedConceptIdx }) {
 
-   const [getTestResponse, getTestResponseResp] = useLazyGetTestResponseQuery()
    const [fetchPersonalDetails, personalDetailsResp] = useLazyGetPersonalDetailQuery()
    const [options, setOptions] = useState(iniOptions)
    const [chartData, setChartData] = useState([])
@@ -43,29 +42,71 @@ export default function Chart({ setSubjects, subjects, selectedSubject }) {
    const [data, setData] = useState(data1)
    const [show, setShow] = useState(true)
    const chartRef = useRef(null)
+   const [getUserDetail, userDetailResp] = useLazyGetUserDetailQuery()
+   const { role: persona, id } = useSelector(state => state.user)
 
    // const checkIfKeyExists = (concepts) => {
    //    concepts
    // }
 
    useEffect(() => {
-      fetchPersonalDetails()
+      if (persona == 'student') return
+      if (selectedStudent?._id === undefined || selectedStudent?._id === null) return
+      getUserDetail({ id: selectedStudent._id })
          .then(res => {
             if (res.error) {
                return
             }
             console.log('Resp', res.data.data.user)
             let data = res.data.data.user.chart
-            if(!data) return
-            let fData = data.filter(item => Object.keys(item.concepts).includes('correct'))
-            console.log('fdata', fData)
-            let filtered = fData.filter(item =>  !Object.keys(item.concepts.correct).includes('undefined'))
-            console.log('filter undefined', filtered)
+            if (!data) return
+            let fData = data.filter(item => item.concepts.length > 0)
+         
+            let filtered = fData
+            console.log('filtered', filtered)
             setChartData(filtered)
             const subjectsNames = []
-            let chartData = [
+            filtered.forEach(item => {
+               if (!subjectsNames.includes(item.subject)) {
+                  subjectsNames.push(item.subject)
+               }
+            })
+            const subjects = subjectsNames.map((item, idx) => {
+               return {
+                  name: item,
+                  selected: idx === 0 ? true : false
+               }
+            })
+            setSubjects(subjects)
 
-            ]
+            subjects.forEach(sub => {
+               filtered.forEach(item => {
+                  if (item.subject === sub.name) {
+
+                  }
+               })
+            })
+
+         })
+   }, [selectedStudent])
+
+   useEffect(() => {
+      if (persona === 'parent') return
+      fetchPersonalDetails()
+         .then(res => {
+            if (res.error) return
+            let data = res.data.data.user.chart
+            console.log('chart', data)
+            if (!data) return
+            let fData = data.filter(item => item.concepts.length > 0)
+            // console.log('fdata', fData)
+            // fData = data.filter(item => item.concepts[selectedConceptIdx].correct !== null )
+            // let filtered = fData.filter(item => !Object.keys(item.concepts[selectedConceptIdx].correct).includes('undefined'))
+            let filtered = fData
+            console.log('filtered', filtered)
+            setChartData(filtered)
+            const subjectsNames = []
+
             filtered.forEach(item => {
                if (!subjectsNames.includes(item.subject)) {
                   subjectsNames.push(item.subject)
@@ -87,7 +128,6 @@ export default function Chart({ setSubjects, subjects, selectedSubject }) {
                   }
                })
             })
-            //temp
 
          })
    }, [])
@@ -101,13 +141,31 @@ export default function Chart({ setSubjects, subjects, selectedSubject }) {
       return backgroundColors[index] !== undefined ? backgroundColors[index] : backgroundColors[0]
    }
    useEffect(() => {
-      if (chartData.length === 0) return
+      if (chartData.length === 0) {
+         setData({ datasets: [] })
+         return
+      }
       const curr = chartData.find(item => item.subject === selectedSubject)
       if (curr === undefined) return
-      console.log('curr', curr)
-      const concepts = Object.keys(curr.concepts.total).map(key => {
+      // console.log('curr', curr)
+      setCurrentSubData(curr)
+      let currentConceptTotal = {}
+      let currentConceptCorrect = {}
+
+      if(curr.concepts[selectedConceptIdx]?.total){
+         currentConceptTotal = curr.concepts[selectedConceptIdx]?.total
+      }else{
+         currentConceptTotal = {}
+      }
+      if(curr.concepts[selectedConceptIdx]?.correct){
+         currentConceptCorrect = curr.concepts[selectedConceptIdx]?.correct
+      }else{
+         currentConceptCorrect = {}
+      }
+      const concepts = Object.keys(currentConceptTotal).map(key => {
          return key
       })
+      // console.log('concepts', concepts)
       setCurrentConcepts(concepts)
       setOptions(prev => ({
          ...prev,
@@ -140,18 +198,19 @@ export default function Chart({ setSubjects, subjects, selectedSubject }) {
          },
       }))
       const datasets = [{ ...dummy },]
-      if (!curr.concepts.total) return
-      Object.keys(curr.concepts.total).forEach((totalConcept, idx) => {
-         if (Object.keys(curr.concepts.correct).includes(totalConcept)) {
+   
+      if (!curr.concepts[selectedConceptIdx]?.total) return
+      Object.keys(currentConceptTotal).forEach((totalConcept, idx) => {
+         if (Object.keys(currentConceptCorrect).includes(totalConcept)) {
             let x = (idx + 1) * 5
-            let totalVal = curr.concepts.total[totalConcept]
-            let getValue = curr.concepts.correct[totalConcept]
+            let totalVal = currentConceptTotal[totalConcept]
+            let getValue = currentConceptCorrect[totalConcept]
             const percent = Math.round(getValue * 100 / totalVal)
-            let radius = totalVal*2
+            let radius = totalVal * 2
             // console.log(totalConcept, percent);
-            if(radius < 15){
+            if (radius < 15) {
                radius = 15
-            }else if(radius > 40){
+            } else if (radius > 40) {
                radius = 40
             }
             datasets.push({
@@ -162,13 +221,13 @@ export default function Chart({ setSubjects, subjects, selectedSubject }) {
             })
          } else {
             let x = (idx + 1) * 5
-            let totalVal = curr.concepts.total[totalConcept]
+            let totalVal = curr.concepts[selectedConceptIdx].total[totalConcept]
             let getValue = 0
-            let radius = totalVal*2
+            let radius = totalVal * 2
             const percent = Math.round(getValue * 100 / totalVal)
-            if(radius < 15){
+            if (radius < 15) {
                radius = 15
-            }else if(radius > 40){
+            } else if (radius > 40) {
                radius = 40
             }
             datasets.push({
@@ -182,11 +241,15 @@ export default function Chart({ setSubjects, subjects, selectedSubject }) {
       setData({
          datasets: datasets
       })
-   }, [selectedSubject, chartData])
+   }, [selectedSubject, chartData, selectedConceptIdx])
 
 
-   // console.log('chartData', chartData)
-   // console.log('currentConcepts', currentConcepts)
+   useEffect(() => {
+
+   }, [currentSubData])
+   // console.log('data', data)
+   // console.log('currentSubData', currentSubData)
+   // console.log('selectedConceptIdx', selectedConceptIdx)
 
    useEffect(() => {
       // if (currentConcepts.length < 10) {

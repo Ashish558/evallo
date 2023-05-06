@@ -2,10 +2,10 @@ import React from 'react'
 import InputField from '../../../../components/InputField/inputField';
 import InputSelect from '../../../../components/InputSelect/InputSelect';
 import { convertTime12to24, tConvert } from '../../../../utils/utils';
+import { times } from '../../../../constants/constants';
 
 const timeZones = [
    'Asia/Kolkata',
-   // 'America/New_York',
    'US/Alaska',
    'US/Central',
    'US/Eastern',
@@ -33,39 +33,53 @@ export default function DateAndTimeInput({ data, setData, isEditable }) {
             disabled={!isEditable}
          />
 
-         <InputField
+         <InputSelect
             label="Time"
             labelClassname="ml-3"
             parentClassName="w-full max-w-120"
             type="time"
+            optionData={times}
             inputContainerClassName="bg-lightWhite border-0 font-medium pr-3 pt-3.5 pb-3.5"
             inputClassName="bg-transparent appearance-none font-medium"
-            value={convertTime12to24(
-               `${data.time.start.time} ${data.time.start.timeType}`
-            )}
+            value={`${data.time.start.time} ${data.time.start.timeType}`}
             disabled={!isEditable}
-            onChange={(e) =>
+            onChange={(val) => {
+               const time = val.split(' ')
                setData({
                   ...data,
-                  time: { ...data.time, start: tConvert(e.target.value) }
+                  time: {
+                     ...data.time, start: {
+                        time: time[0],
+                        timeType: time[1],
+                     }
+                  }
                })
-            }
+            }}
          />
          <span className="self-end mb-4 mx-4 font-medium">
             -
          </span>
-         <InputField
+         <InputSelect
             parentClassName="w-full max-w-120 self-end"
             type="time"
             inputContainerClassName="bg-lightWhite border-0 font-medium pr-3 pt-3.5 pb-3.5"
             inputClassName="bg-transparent appearance-none font-medium"
-            value={convertTime12to24(
-               `${data.time.end.time} ${data.time.end.timeType}`
-            )}
-            onChange={(e) => {
+            // value={convertTime12to24(
+            //    `${data.time.end.time} ${data.time.end.timeType}`
+            // )}
+            optionData={times}
+            value={ `${data.time.end.time} ${data.time.end.timeType}`}
+            onChange={(val) => {
+               const time = val.split(' ')
                setData({
-                  ...data, time: { ...data.time, end: tConvert(e.target.value) },
-               });
+                  ...data,
+                  time: {
+                     ...data.time, end: {
+                        time: time[0],
+                        timeType: time[1],
+                     }
+                  }
+               })
             }}
             disabled={!isEditable}
          />

@@ -267,6 +267,7 @@ export const ttOptions = {
    },
    xaxis: {
       categories: [''],
+      tickAmount: 3,
       group: {
          groups: [{
             title: "5",
@@ -312,20 +313,11 @@ export const ttOptions = {
    },
    tooltip: {
       show: false,
-   //    x: {
-   //       formatter: (seriesName, data) => {
-   //          console.log(seriesName); 
-   //          console.log(data); 
-   //          return seriesName
-   //       },
-   //       title: {
-   //           formatter: (seriesName, data) => {
-   //             console.log(seriesName); 
-   //             console.log(data); 
-   //             return seriesName
-   //          },
-   //       },
-   //   }
+      y: {
+         formatter: function (value, { series, seriesIndex, dataPointIndex, w }) {
+            return `${value} seconds`
+         }
+      }
    },
    legend: {
       show: false
@@ -398,7 +390,7 @@ export const accuracyOptions = {
             return val.toFixed(0);
          },
       },
-      title:{
+      title: {
          text: 'No of Correct'
       }
    },

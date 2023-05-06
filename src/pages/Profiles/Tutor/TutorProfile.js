@@ -44,64 +44,6 @@ import YoutubeEmbed from './YoutubeEmbed/YoutubeEmbed'
 import CircleButton from '../../../components/CircleButton/CircleButton'
 
 
-const values = [
-   {
-      icon: ValueOneIcon,
-      text: 'SAT Subject Test',
-      bg: '#A5A3F6'
-   },
-   {
-      icon: ValueTwoIcon,
-      text: 'AP Biology',
-      bg: '#85C396'
-   },
-   {
-      icon: ValueThreeIcon,
-      text: 'Physics',
-      bg: '#FFA7C1'
-   },
-]
-const interests = [
-   {
-      icon: InterestOneIcon,
-      text: 'Video Game',
-      bg: '#F6D0A3'
-   },
-   {
-      icon: InterestTwoIcon,
-      text: 'Cooking',
-      bg: '#7BEA9A'
-   },
-   {
-      icon: InterestThreeIcon,
-      text: 'Yoga',
-      bg: '#AADFEB'
-   },
-]
-
-const levels = {
-   one: {
-      bg: '#FBDB89',
-      icon: TutorLevelOne,
-      text: '#FF4300'
-   },
-   two: {
-      bg: '#7152EB',
-      icon: TutorLevelTwo,
-      text: '#472D70'
-   },
-   three: {
-      bg: '#DC8553',
-      icon: TutorLevelThree,
-      text: '#FFFFFF'
-   },
-   four: {
-      bg: '#2D2C2C',
-      icon: TutorLevelFour,
-      text: '#FFFFFF'
-   }
-}
-
 export default function TutorProfile({ isOwn }) {
 
    const navigate = useNavigate()
@@ -117,6 +59,7 @@ export default function TutorProfile({ isOwn }) {
    const [getFeedbacks, getFeedbacksResp] = useLazyGetFeedbacksQuery()
    const [getSession, getSessionResp] = useLazyGetSingleSessionQuery()
    const [feedbacks, setFeedbacks] = useState([])
+   const [awsLink, setAwsLink] = useState('')
 
    const { id } = useSelector(state => state.user)
 
@@ -164,12 +107,7 @@ export default function TutorProfile({ isOwn }) {
       },
       paymentInfo: {
          active: false,
-         isPresent: false,
-         paymentInfo: {
-            bankName: '',
-            AccNo: '',
-            ifcsCode: '',
-         }
+         paymentInfo: ''
       },
       tutorRank: {
          active: false,
@@ -191,6 +129,7 @@ export default function TutorProfile({ isOwn }) {
          email: '',
          phone: '',
          linkedIn: '',
+         phoneCode: '',
          isPresent: false,
       },
       interest: {
@@ -210,14 +149,16 @@ export default function TutorProfile({ isOwn }) {
          videoLink: ''
       },
    })
+   console.log('params.id', params.id)
 
    useEffect(() => {
-      getFeedbacks()
+      getFeedbacks({ id: params.id })
          .then(({ error, data }) => {
             if (error) {
-               console.log(error)
+               console.log('feedback error', error)
                return
             }
+            console.log('feedback', data)
             data.data.feedback.map(feedback => {
                getUserDetail({ id: feedback.studentId })
                   .then(res => {
@@ -269,8 +210,9 @@ export default function TutorProfile({ isOwn }) {
       }
       getUserDetail({ id: userId })
          .then(res => {
-            // console.log('response', res.data.data);
-            const { firstName, lastName, phone, email } = res.data.data.user
+            console.log('response', res.data.data);
+            setAwsLink(res.data.data.baseLink)
+            const { firstName, lastName, phone, email, phoneCode } = res.data.data.user
             setUser(res.data.data.user)
             let details = res.data.data.details
             console.log('details', details);
@@ -289,6 +231,7 @@ export default function TutorProfile({ isOwn }) {
                         ...prevToEdit.tutorContact,
                         email: email,
                         phone: phone === null ? '' : phone,
+                        phoneCode: phoneCode === null ? '' : phoneCode,
                         linkedIn: details === null ? '' : details.linkedIn,
                         isPresent: details === null ? false : true
                      },
@@ -328,6 +271,7 @@ export default function TutorProfile({ isOwn }) {
                      },
                      paymentInfo: {
                         ...prevToEdit.paymentInfo,
+                        paymentInfo: details === null ? '' : details.paymentInfo,
                         isPresent: details === null ? false : true
                      },
                      tutorRank: {
@@ -462,28 +406,33 @@ export default function TutorProfile({ isOwn }) {
          })
    }
    // console.log(isOwn);
+   // console.log(tutorRank);
    return (
       <>
          <div className='lg:ml-pageLeft bg-lightWhite min-h-screen pb-120 pt-0'>
 
             <div className='lg:px-5 lg:pt-0 lg:pr-0 relative'>
-               <div className='pt-10 min-h-[600px] relative z-10 flex items-end'>
+               <div className='pt-10 min-h-[780px] mb-10 relative z-10 flex items-end'>
                   <YoutubeEmbed embedId={videoLink} />
                   <div className={`${styles.backBtn} mt-10`} >
                      <BackBtn to={-1} />
                   </div>
-                  <div className={`${styles.editButton} mt-10`} >
-                     {/* <BackBtn to={-1} /> */}
-                     <CircleButton
-                        className='flex items-center rounded-full'
-                        children={
-                           <EditableText editable={persona === "tutor" || persona === "admin"} />
-                        }
-                        onClick={() => setToEdit({ ...toEdit, videoLink: { ...toEdit.videoLink, active: true } })}
-                         />
-                     {/* <EditableText editable={true} className="right-0" /> */}
-                  </div>
-                  <div className='relative pt-10 mt-auto flex-1'>
+                  {
+                     (isOwn === true) || (persona === 'admin') ?
+                        <div className={`${styles.editButton} mt-10`} >
+                           {/* <BackBtn to={-1} /> */}
+                           <CircleButton
+                              className='flex items-center rounded-full'
+                              children={
+                                 <EditableText editable={persona === "tutor" || persona === "admin"} />
+                              }
+                              onClick={() => setToEdit({ ...toEdit, videoLink: { ...toEdit.videoLink, active: true } })}
+                           />
+                           {/* <EditableText editable={true} className="right-0" /> */}
+                        </div> : <></>
+                  }
+
+                  <div className='relative pt-1 mt-auto flex-1'>
 
                      <div className={styles.imgContent} >
                         {/* <p className='text-[#4F33BD] font-bold text-[50px]'>
@@ -511,7 +460,7 @@ export default function TutorProfile({ isOwn }) {
                         <div className={` mb-5 px-4 py-4 lg:bg-textGray-30 rounded-2xl`}
                            style={{ backgroundColor: tutorLevelBg }}
                         >
-                           <EditableText text={`${tutorLevel} belt`}
+                           <EditableText text={tutorLevel === undefined ? '' : `${tutorLevel} belt`}
                               editable={editable}
                               onClick={() => setToEdit({ ...toEdit, tutorLevel: { ...toEdit.tutorLevel, active: true } })}
                               className={` justify-center font-bold text-lg capitalize `}
@@ -535,7 +484,7 @@ export default function TutorProfile({ isOwn }) {
                               <div className='flex flex-col row-span-2 overflow-x-auto scrollbar-content max-h-[500px] scrollbar-vertical'>
                                  {settings && settings.Expertise?.length > 0 && userDetail.serviceSpecializations && userDetail.serviceSpecializations.map((id, idx) => {
                                     return (
-                                       settings.Expertise.find(item => item._id === id) ?
+                                       settings.Expertise?.find(item => item._id === id) ?
                                           <div key={idx} className='flex flex-col items-center mb-10'>
                                              <div className='flex h-90 w-90 rounded-full  items-center justify-center mb-3' >
                                                 <img className='max-w-[90px] max-h-[90px]' src={settings.Expertise.find(item => item._id === id).image}
@@ -572,7 +521,8 @@ export default function TutorProfile({ isOwn }) {
                                  {about ? about : 'Your bio'}
                               </p>
                               <div className={`flex justify-center items-center ${styles.profileIcon}`}>
-                                 <ProfilePhoto isTutor={true} src={user.photo ? user.photo : '/images/default.jpeg'}
+                                 <ProfilePhoto isTutor={true}
+                                    src={user.photo ? `${awsLink}${user.photo}` : '/images/default.jpeg'}
                                     handleChange={handleProfilePhotoChange} editable={editable} />
                               </div>
                               {/* <div>
@@ -610,7 +560,11 @@ export default function TutorProfile({ isOwn }) {
                                  <img src={WhatsappIcon} />
                                  <p className='mt-1 font-medium.4 opacity-60 text-xs cursor-pointer'
                                     onClick={() => window.open(`https://wa.me/${user.phone}`)}>
-                                    {user.phone ? user.phone : ''}
+                                    {user.phone ?
+                                       <>
+                                          {`${user.phoneCode ? user.phoneCode : ''} ${user.phone}`}
+                                       </>
+                                       : ''}
                                  </p>
                               </div>
                            </div>
@@ -711,7 +665,10 @@ export default function TutorProfile({ isOwn }) {
                                        className='text-xl justify-between'
                                     />
                                     <div className='mt-5  font-medium text-sm ma-w-[100px]'>
-                                       <p className='flex items-center mb-3.5'>
+                                       <span className='inline-block pl-2'>
+                                          {paymentInfo === undefined ? ' -' : paymentInfo ? paymentInfo : '-'}
+                                       </span>
+                                       {/* <p className='flex items-center mb-3.5'>
                                           <span>
                                              Bank Name
                                           </span>
@@ -719,7 +676,7 @@ export default function TutorProfile({ isOwn }) {
                                              {paymentInfo === undefined ? ' -' : paymentInfo.bankName ? paymentInfo.bankName : '-'}
                                           </span>
                                        </p>
-                                       <p className='flex items-center mb-3.5'>
+                                        <p className='flex items-center mb-3.5'>
                                           <span>
                                              Acc No.
                                           </span>
@@ -734,7 +691,7 @@ export default function TutorProfile({ isOwn }) {
                                           <span className='inline-block pl-2'>
                                              {paymentInfo === undefined ? ' -' : paymentInfo.ifcsCode ? paymentInfo.ifcsCode : '-'}
                                           </span>
-                                       </p>
+                                       </p> */}
                                     </div>
                                  </div>
 
@@ -792,11 +749,11 @@ export default function TutorProfile({ isOwn }) {
                         body={
                            <div className=''>
                               {
-                                 settings.servicesAndSpecialization.map((service, idx) => {
+                                 settings?.servicesAndSpecialization?.map((service, idx) => {
                                     let price = '-'
                                     let isPresent = false
                                     if (userDetail !== undefined || userDetail !== null) {
-                                       let obj = userDetail.tutorServices.find(serv => serv.service === service.service)
+                                       let obj = userDetail?.tutorServices?.find(serv => serv.service === service.service)
                                        // console.log('obj', obj);
                                        if (obj !== undefined) {
                                           price = obj.price
@@ -883,7 +840,8 @@ export default function TutorProfile({ isOwn }) {
             userId={isOwn ? id : params.id}
             toEdit={toEdit}
             setToEdit={setToEdit}
-            persona={user.role} />
+            persona={user.role}
+            awsLink={awsLink} />
       </>
    )
 }

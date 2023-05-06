@@ -5,11 +5,13 @@ import LeftIcon from '../../assets/profile/left.svg'
 import RightIcon from '../../assets/profile/right.svg'
 import ProfileImg from '../../assets/images/profile.png'
 
-export default function Slider({ images }) {
+export default function Slider({ images, awsLink }) {
 
    const [activeIndex, setActiveIndex] = useState(0)
 
-   // console.log(images);
+   console.log(images);
+   console.log('awsLink', awsLink)
+
    return (
       <div className={`${styles.studentsContainer} min-h-[200px] w-full`}>
          <img src={LeftIcon}
@@ -26,11 +28,11 @@ export default function Slider({ images }) {
                   <div className={styles.studentImageContainer}>
                      <img src={student.image} />
                   </div>
-                  <div className='mt-6 font-inter text-center '
+                  <div className='mt-6 font-inter text-center'
                   // onClick={() => navigate('/profile/student/12')}
                   >
                      <div className='flex justify-center '>
-                     <img className='w-[100px] h-[100px] rounded-full' src={student.photo ? student.photo : '/images/default.jpeg'} />
+                        <img className='w-[100px] h-[100px] rounded-full' src={student.photo ? `${awsLink}${student.photo}` : '/images/default.jpeg'} />
                      </div>
                      <p className='font-bold text-sm opacity-60 mt-3 whitespace-nowrap'>
                         {student.value}

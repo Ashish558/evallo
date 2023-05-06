@@ -10,12 +10,8 @@ export const userServicesApi = createApi({
 
    endpoints: (builder) => ({
       getAllUsers: builder.query({
-         query: (body) => ({
-            url: `api/user`,
-            params: {
-               limit: body.maxPageSize,
-               page: body.currentPage
-            },
+         query: (params) => ({
+            url: `api/user${params}`,
             method: "GET",
             headers: getAuthHeader()
          }),
@@ -97,7 +93,7 @@ export const userServicesApi = createApi({
       }),
       addUser: builder.mutation({
          query: (body) => ({
-            url: `/api/user/addtutor`,
+            url: `/api/user/adduser`,
             method: "POST",
             body: body,
             headers: getAuthHeader()

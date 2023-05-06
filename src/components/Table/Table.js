@@ -3,7 +3,9 @@ import ReactPaginate from "react-paginate";
 import ApiTable from "./ApiTAble";
 import Pagination from "./Pagination";
 import { TableHeader } from "./TableHeader";
+import { TableHeaderNew } from "./tableHeaderObj";
 import TableItem from "./tableItem";
+import Loader from "../Loader";
 
 export default function Table(props) {
    const {
@@ -16,7 +18,11 @@ export default function Table(props) {
       setMaxPageSize,
       excludes,
       total_pages,
-      isCallingApi
+      isCallingApi,
+      headerObject,
+      extraData,
+      changePageAfterUpdate,
+      loading
    } = props
 
    const [tableData, setTableData] = useState(data);
@@ -24,15 +30,8 @@ export default function Table(props) {
    const dataLength = data.length > 30 ? 30 : data.length;
    const [sorted, setSorted] = useState(false)
 
-
    useEffect(() => {
-      // console.log(tableData[0]?.dueDate?.split("-").join(""));
-      // const newTeble = tableData.sort((a, b) => a.dueDate?.split("-").join("") - b.dueDate?.split("-").join(""));
-      // console.log(newTeble);
-   }, [tableData])
-
-
-   useEffect(() => {
+      if (changePageAfterUpdate === false) return
       if (hidePagination === true) {
          setTableData(data)
       } else {
@@ -60,52 +59,35 @@ export default function Table(props) {
    if (isCallingApi) return <ApiTable {...props} />
    return (
       <div>
-         <table className="table-auto mb-3 text-center w-full">
+         <table className="table-auto mb-3 text-center w-full min-h-[300px]">
             <thead className="pb-2">
                <tr>
                   {tableHeaders.map((item, idx) => {
-                     return <TableHeader key={idx} header={item} onClick={sorting} setSorted={setSorted} dataFor={dataFor} />;
+                     return headerObject === true ? <TableHeaderNew header={item} /> : <TableHeader key={idx} header={item} onClick={sorting} setSorted={setSorted} dataFor={dataFor} />;
                   })}
                </tr>
             </thead>
-            <tbody>
-               {/* {dataFor === "invoice" ? sorted ? tableData.sort((a, b) => a.createDate?.split("-").join("") - b.createDate?.split("-").join("")).map((item, idx) => { */}
-                  {/* return ( */}
-                  {tableData.map((item, idx) => {
-                  return (
-                     <TableItem
-                        dataFor={dataFor}
-                        item={item}
-                        key={idx}
-                        excludes={excludes}
-                        onClick={onClick}
-                     />
-                  );
-               })}
-                {/*}  );
-                }) : tableData.sort((a, b) => b.assignedOn?.split("-").join("") - a.assignedOn?.split("-").join("")).map((item, idx) => <TableItem
-               //    dataFor={dataFor}
-               //    item={item}
-               //    key={idx}
-               //    excludes={excludes}
-               //    onClick={onClick}
-               // />) : sorted ? tableData.sort((a, b) => a.dueDate?.split("-").join("") - b.dueDate?.split("-").join("")).map((item, idx) => {
-               //    return (
-               //       <TableItem
-               //          dataFor={dataFor}
-               //          item={item}
-               //          key={idx}
-               //          excludes={excludes}
-               //          onClick={onClick}
-               //       />
-               //    );
-               // }) : tableData.sort((a, b) => b.assignedOn?.split("-").join("") - a.assignedOn?.split("-").join("")).map((item, idx) => <TableItem
-               //    dataFor={dataFor}
-               //    item={item}
-               //    key={idx}
-               //    excludes={excludes}
-               //    onClick={onClick}
-               // />)} */}
+            <tbody className="relative">
+               {
+                  loading ?
+                     <div className={`absolute w-full min-h-[100px] flex justify-center items-center`}>
+                        <div>
+                           <Loader size='medium' />
+                        </div>
+                     </div> :
+                     tableData.map((item, idx) => {
+                        return (
+                           <TableItem
+                              dataFor={dataFor}
+                              item={item}
+                              key={idx}
+                              excludes={excludes}
+                              onClick={onClick}
+                           />
+                        );
+                     })
+               }
+
             </tbody>
          </table>
 

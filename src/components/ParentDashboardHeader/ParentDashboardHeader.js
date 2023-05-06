@@ -30,6 +30,7 @@ const ParentDashboardHeader = ({ selectedStudent, setSelectedStudent }) => {
    const [payBalance, payBalanceResp] = useLazyPayBalanceQuery()
 
    const [detailStudent, setDetailStudent] = useState(null)
+   const { awsLink } = useSelector(state => state.user)
 
    const navigate = useNavigate()
    //  sessionStorage
@@ -45,25 +46,26 @@ const ParentDashboardHeader = ({ selectedStudent, setSelectedStudent }) => {
       getUserDetail({ id })
          .then(res => {
             // console.log('response', res.data.data);
+            const baseLink = res.data.data.baseLink
             setUser(res.data.data.user)
             setAssociatedStudents([])
             res.data.data.user.assiginedStudents.map((student, idx) => {
                getUserDetail({ id: student })
                   .then(res => {
-                     // console.log('detail', res.data.data.userdetails.serviceSeeking);
+                     if(res.error) return
                      setAssociatedStudents(prev => [...prev, {
-                        _id: res.data.data.user._id,
-                        name: `${res.data.data.user.firstName} ${res.data.data.user.lastName}`,
-                        photo: res.data.data.user.photo ? res.data.data.user.photo : '/images/default.jpeg',
-                        serviceSeeking: res.data.data.userdetails?.serviceSeeking
+                        _id: res.data?.data?.user._id,
+                        name: `${res.data?.data?.user.firstName} ${res.data?.data?.user.lastName}`,
+                        photo: res.data.data?.user.photo ?`${baseLink}${res.data.data.user.photo}` : '/images/default.jpeg',
+                        serviceSeeking: res.data?.data?.userdetails?.serviceSeeking
                      }])
-                     idx === 0 && setSelectedStudent({
-                        _id: res.data.data.user._id,
-                        value: `${res.data.data.user.firstName} ${res.data.data.user.lastName}`,
-                        photo: res.data.data.user.photo ? res.data.data.user.photo : '/images/default.jpeg',
-                        serviceSeeking: res.data.data.userdetails?.serviceSeeking
+                      setSelectedStudent({
+                        _id: res.data.data?.user._id,
+                        value: `${res.data.data?.user.firstName} ${res.data.data?.user.lastName}`,
+                        photo: res.data.data?.user.photo ? `${baseLink}${res.data.data?.user.photo}` : '/images/default.jpeg',
+                        serviceSeeking: res.data.data?.userdetails?.serviceSeeking
                      })
-                     idx === 0 && setDetailStudent(res.data.data.userdetails)
+                      setDetailStudent(res.data.data.userdetails)
                   })
             })
 
@@ -199,7 +201,7 @@ const ParentDashboardHeader = ({ selectedStudent, setSelectedStudent }) => {
                      {associatedStudents.length > 0 &&
                         <div className="w-1/2 flex justify-end">
                            {selectedStudent !== null &&
-                              <img className="w-[40px] h-[40px] rounded-full" src={selectedStudent.photo ? selectedStudent.photo : ''} alt="" />
+                              <img className="w-[40px] h-[40px] rounded-full" src={selectedStudent.photo ? `${selectedStudent.photo}` : ''} alt="" />
                            }
                         </div>
                      }

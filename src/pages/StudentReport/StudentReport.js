@@ -8,7 +8,7 @@ import Table from '../../components/Table/Table'
 import { useNavigate, useParams } from 'react-router-dom'
 import BarGraph from '../../components/BarGraph/BarGraph'
 import { useLazyGetAnswersQuery, useLazyGetSingleAssignedTestQuery, useLazyGetTestDetailsQuery, useLazyGetTestResponseQuery } from '../../app/services/test'
-import { getDate, getDuration, getFormattedDate, getScoreStr, millisToMinutesAndSeconds } from '../../utils/utils'
+import { getDate, getDuration, getFormattedDate, getScoreStr, millisToMinutesAndSeconds, getFormattedDateTime } from '../../utils/utils'
 import { useLazyGetTutorDetailsQuery } from '../../app/services/users'
 import { useSelector } from 'react-redux'
 
@@ -53,6 +53,7 @@ export default function StudentReport() {
       data: []
    })
    const [timeSeriesOptions, setTimeSeriesOptions] = useState(ttOptions)
+   const [sortedConcepts, setSortedConcepts] = useState([])
 
    const [accuracySeries, setAccuracySeries] = useState({
       name: 'Correct Answers',
@@ -104,8 +105,8 @@ export default function StudentReport() {
       console.log('response data', responseData);
       // let sortedSubjects = responseData.subjects.map(sub => sub.name)
       if (responseData.subjects.length === 0) {
-         alert('No sections are submitted')
-         navigate(-1)
+         // alert('No sections are submitted')
+         // navigate(-1)
          return
       }
 
@@ -121,15 +122,26 @@ export default function StudentReport() {
 
             // console.log('answer key subjects', answerKeyData.answer.subjects);
             let conceptsPresent = true
-            answerKeyData.answer.subjects.map(item => {
+            let updatedSubs = answerKeyData.answer.subjects.map(item => {
                if (item.concepts === undefined) {
                   conceptsPresent = false
+                  return { ...item, concepts: { UNAVAILABLE: 0 } }
+               } else {
+                  return item
                }
             })
-            if (conceptsPresent === false) {
-               alert('Concepts not present')
-               navigate(-1)
+            answerKeyData = {
+               ...answerKeyData,
+               answer: {
+                  ...answerKeyData.answer,
+                  subjects: updatedSubs
+               }
             }
+            // if (conceptsPresent === false) {
+            //    // alert('Concepts not present')
+            //    // navigate(-1)
+            //    return
+            // }
             let subResponse = answerKeyData.answer.subjects.map(sub => {
                let currSub = responseData.subjects.find(item => item.name === sub.name)
                if (currSub === undefined) return
@@ -180,18 +192,17 @@ export default function StudentReport() {
                // console.log('updatedSubjWithConcepts', updatedSubjWithConcepts);
             })
             // console.log('subjects', subjects);
-            console.log('updated', updated);
+            // console.log('updated', updated);
             // console.log('responseData', responseData);
             // console.log('subResponse', subResponse);
             let upSubArr = []
             updated2.forEach(responseSub => {
                updated.forEach(sub => {
-                  if (responseSub.name === sub.name){
+                  if (responseSub.name === sub.name) {
                      upSubArr.push(sub)
                   }
                })
             })
-            console.log('upSubArr', upSubArr);
 
             setResponseData(prev => {
                return {
@@ -205,6 +216,7 @@ export default function StudentReport() {
 
             let subjects1 = answerKeyData.answer.subjects
             setAnswerKey(res.data.data.answer.answer)
+            // console.log('answerKeyData.answer.subjects', answerKeyData.answer.subjects);
             setAnswerKeySubjects(answerKeyData.answer.subjects)
             setIsSet(true)
          })
@@ -238,7 +250,7 @@ export default function StudentReport() {
             setTestDetails(prev => {
                return {
                   ...prev,
-                  assignedOn: getFormattedDate(createdAt),
+                  assignedOn: getFormattedDateTime(createdAt),
                   testName: testId.testName,
                   instruction: instruction,
                   duration: multiple ? getDuration(multiple) : '-',
@@ -260,7 +272,7 @@ export default function StudentReport() {
                console.log('RESPONSE ERR', res.error)
                return
             }
-            // console.log('RESPONSE', res.data.data.response);
+            console.log('RESPONSE', res.data.data.response);
             const { subjects, studentId, response, createdAt, updatedAt } = res.data.data.response
             if (res.data.data.response.testType === 'SAT') {
                let set1Score = 0
@@ -294,8 +306,8 @@ export default function StudentReport() {
             setTestDetails(prev => {
                return {
                   ...prev,
-                  startedOn: getFormattedDate(createdAt),
-                  completedOn: getFormattedDate(updatedAt),
+                  startedOn: getFormattedDateTime(createdAt),
+                  completedOn: getFormattedDateTime(updatedAt),
                }
             })
             setSubjects(subjects.map((sub, idx) => ({ ...sub, idx, selected: idx === 0 ? true : false })))
@@ -381,11 +393,11 @@ export default function StudentReport() {
             const { QuestionNumber, QuestionType, ResponseAnswer, isCorrect, responseTime, _id } = item
             return {
                QuestionNumber,
-               CorrectAnswer: answerKey[currentAnswerKeyIndex][index].CorrectAnswer,
+               CorrectAnswer: answerKey[currentAnswerKeyIndex][index]?.CorrectAnswer,
                ResponseAnswer,
                isCorrect,
-               Concept: answerKey[currentAnswerKeyIndex][index].Concepts ? answerKey[currentAnswerKeyIndex][index].Concepts : '-',
-               Strategy: answerKey[currentAnswerKeyIndex][index].Strategy ? answerKey[currentAnswerKeyIndex][index].Strategy : '-',
+               Concept: answerKey[currentAnswerKeyIndex][index]?.Concepts ? answerKey[currentAnswerKeyIndex][index]?.Concepts : '-',
+               Strategy: answerKey[currentAnswerKeyIndex][index]?.Strategy ? answerKey[currentAnswerKeyIndex][index]?.Strategy : '-',
                responseTime: responseTime >= 0 ? `${responseTime} sec` : '-'
             }
          })
@@ -397,32 +409,52 @@ export default function StudentReport() {
 
    //change time taken series data
    useEffect(() => {
+      const oddcolors = ['#8ADCFF', '#FF4D00']
+      const evencolors = ['#8E76ED', '#E02B1D']
       if (Object.keys(selectedSubject).length === 0) return
       const selected = responseData.response[selectedSubject.idx]
       // console.log('timetaken', selected)
       let data = []
-      selected.map(subj => {
+      let colors = []
+      selected.map((subj, idx) => {
          if (subj.responseTime) {
+            if (subj.isCorrect) {
+               (idx % 2 === 0) ? colors.push(evencolors[0]) : colors.push(oddcolors[0])
+            } else {
+               (idx % 2 === 0) ? colors.push(evencolors[1]) : colors.push(oddcolors[1])
+            }
             data.push(subj.responseTime)
          } else {
+            if (subj.isCorrect) {
+               (idx % 2 === 0) ? colors.push(evencolors[0]) : colors.push(oddcolors[0])
+            } else {
+               (idx % 2 === 0) ? colors.push(evencolors[1]) : colors.push(oddcolors[1])
+            }
             data.push(0)
          }
       })
       // console.log('data', data);
+      // console.log('colors', colors);
       // console.log('length', Math.ceil(data.length / 5));
-      const len = Math.round(data.length / 5)
+      const len = Math.round(data.length / 1)
       let groups = []
       {
          [...Array(len)].map((x, i) => {
-            groups.push({ title: (i + 1) * 5, cols: 5 })
+            groups.push({ title: (i + 1) * 1, cols: 1 })
          })
       }
+      // groups = groups.map(item => {
+      //    return item.title % 5 === 0 ? item.title : '-'
+      // })
       // console.log('groups', groups);
       // console.log('timeSeriesOptions', timeSeriesOptions);
       setTimeSeriesOptions(prev => ({
          ...prev,
+         colors,
          xaxis: {
             ...prev.xaxis,
+            // tickAmount: 'dataPoints',
+            range: 5,
             group: {
                ...prev.xaxis.group,
                groups
@@ -503,9 +535,10 @@ export default function StudentReport() {
             currentAnswerKeyIndex = idx
          }
       })
-
+      // console.log('currentAnswerKeyIndex', currentAnswerKeyIndex);
       let selected = answerKey[currentAnswerKeyIndex]
-      selected = selected.map(item => {
+      // console.log('selected', selected);
+      selected = selected?.map(item => {
          if (!item.Concepts) {
             return { ...item, Concepts: 'UNAVAILABLE' }
          } else {
@@ -513,8 +546,9 @@ export default function StudentReport() {
          }
       })
       // console.log('selected', selected);
+
       let total = 0
-      selected.forEach(concept => {
+      selected?.forEach(concept => {
          if (concept.Concepts === key) {
             total += 1
          }
@@ -524,67 +558,6 @@ export default function StudentReport() {
       } else {
          return `${total - correctTotal} / ${total}`
       }
-   }
-
-   const getSubjectSections = (c) => {
-
-      let currSubject = answerKeySubjects.find(sub => sub.name === selectedSubject.name)
-      // console.log('answerKeySubjects', answerKeySubjects)
-      // console.log('currSubject', currSubject)
-      let currentAnswerKeyIndex = 0
-
-      answerKeySubjects.map((subj, idx) => {
-         if (subj.name === selectedSubject.name) {
-            currentAnswerKeyIndex = idx
-         }
-      })
-      // console.log('currSubject', currSubject);
-      // console.log('answer key arr', answerKey[currentAnswerKeyIndex]);
-      const selected = responseData.response[selectedSubject.idx]
-      // console.log('response answer', selected);
-      if (currSubject) {
-         return <div>
-            {Object.keys(currSubject.concepts).map((key, idx) => {
-               return <p key={idx} className='font-semibold mb-2'>
-                  {/* {selectedSubject.concepts[key]} */}
-                  {key}
-               </p>
-            })}
-         </div>
-      }
-      return <>p</>
-   }
-
-   const getSubjectSectionsScore = (c) => {
-      let currSubject = answerKeySubjects.find(sub => sub.name === selectedSubject.name)
-      let currentAnswerKeyIndex = 0
-      answerKeySubjects.map((subj, idx) => {
-         if (subj.name === selectedSubject.name) {
-            currentAnswerKeyIndex = idx
-         }
-      })
-      console.log('currSubject', currSubject);
-      console.log('answer key arr', answerKey[currentAnswerKeyIndex]);
-      const selected = responseData.response[selectedSubject.idx]
-      console.log('response answer', selected);
-
-      let arr = []
-      Object.keys(currSubject).map(key => {
-         let IncorrectCount = 0
-         answerKey[currentAnswerKeyIndex].map((ans, idx) => {
-            let { QuestionNumber, CorrectAnswer, Concepts } = ans
-            if (key === Concepts) {
-               const selected = responseData.response[selectedSubject.idx]
-               if (selected[idx].isCorrect === false) {
-                  IncorrectCount += 1
-               }
-            }
-         })
-      })
-
-      if (currSubject) {
-      }
-      return <>p</>
    }
 
    useEffect(() => {
@@ -629,6 +602,66 @@ export default function StudentReport() {
    // console.log('answerKey', answerKey)
    // console.log('answerKeySubjects', answerKeySubjects)
    // console.log('testDetails', testDetails)
+   const getTotalAndIncorrect = (correctTotal, key, returnIncorrectOnly) => {
+      let currentAnswerKeyIndex = 0
+
+      answerKeySubjects.map((subj, idx) => {
+         if (subj.name === selectedSubject.name) {
+            currentAnswerKeyIndex = idx
+         }
+      })
+
+      let selected = answerKey[currentAnswerKeyIndex]
+      selected = selected.map(item => {
+         if (!item.Concepts) {
+            return { ...item, Concepts: 'UNAVAILABLE' }
+         } else {
+            return { ...item }
+         }
+      })
+      // console.log('selected', selected);
+      let total = 0
+      selected.forEach(concept => {
+         if (concept.Concepts === key) {
+            total += 1
+         }
+      })
+      if (returnIncorrectOnly) {
+         return total - correctTotal
+      } else {
+         return `${total - correctTotal} / ${total}`
+      }
+   }
+   const getSortedConcepts = () => {
+      let arr = []
+      // console.log('selectedSubject.concepts', selectedSubject.concepts);
+      if (selectedSubject.concepts === null || selectedSubject.concepts === undefined) return
+      Object.keys(selectedSubject.concepts).map((key, idx) => {
+         let inc = getConceptScore(selectedSubject.concepts[key], key, true)
+         // console.log('incorrect', inc, selectedSubject.concepts[key], key)
+         arr.push({ incorrect: inc, name: key, correct: selectedSubject.concepts[key] })
+      })
+      // console.log('arr', arr)
+      arr = arr.sort((a, b) => {
+         return parseFloat(b.incorrect) - parseFloat(a.incorrect);
+      });
+      // console.log('arr', arr)
+      setSortedConcepts(arr.slice(0, 5))
+      return arr.slice(0, 5)
+   }
+
+   useEffect(() => {
+      if (selectedSubject.concepts === undefined) return
+      // return
+      getSortedConcepts()
+   }, [selectedSubject, answerKey, answerKeySubjects])
+
+   // console.log('concepts', selectedSubject.concepts)
+   // console.log('sortedConcepts', sortedConcepts)
+   // console.log('selectedSubject', selectedSubject)
+   // console.log('selectedSubject', responseData.response)
+   // console.log('responseData', responseData)
+   // console.log('answerKey', answerKey)
 
    if (Object.keys(responseData).length === 0) return <></>
    if (answerKey.length === 0) return <></>
@@ -656,32 +689,32 @@ export default function StudentReport() {
                   <div>
                      <p className='inline-block w-138 font-semibold opacity-60'> Student’s Name</p>
                      <span className='inline-block mr-4'>:</span>
-                     <p className='inline-block w-138 font-semibold'> {testDetails.name} </p>
+                     <p className='inline-block font-semibold'> {testDetails.name} </p>
                   </div>
                   <div>
                      <p className='inline-block w-138 font-semibold opacity-60'> Started on </p>
                      <span className='inline-block mr-4'>:</span>
-                     <p className='inline-block w-138 font-semibold'> {testDetails.startedOn} </p>
+                     <p className='inline-block  font-semibold'> {testDetails.startedOn} </p>
                   </div>
                   <div>
                      <p className='inline-block w-138 font-semibold opacity-60'>  Date Assigned </p>
                      <span className='inline-block mr-4'>:</span>
-                     <p className='inline-block w-138 font-semibold'> {testDetails.assignedOn} </p>
+                     <p className='inline-block  font-semibold'> {testDetails.assignedOn} </p>
                   </div>
                   <div>
                      <p className='inline-block w-138 font-semibold opacity-60'> Completed on </p>
                      <span className='inline-block mr-4'>:</span>
-                     <p className='inline-block w-138 font-semibold'> {testDetails.completedOn} </p>
+                     <p className='inline-block  font-semibold'> {testDetails.completedOn} </p>
                   </div>
                   <div className='col-span-2'>
                      <p className='inline-block w-138 font-semibold opacity-60'> Duration </p>
                      <span className='inline-block mr-4'>:</span>
-                     <p className='inline-block w-138 font-semibold'> {testDetails.duration} </p>
+                     <p className='inline-block  font-semibold'> {testDetails.duration} </p>
                   </div>
-                  <div  className='col-span-2'>
+                  <div className='col-span-2'>
                      <p className='inline-block w-138 font-semibold opacity-60'> Instruction from tutor </p>
                      <span className='inline-block mr-4'>:</span>
-                     <p className='inline-block w-138 font-semibold'> {testDetails.instruction} </p>
+                     <p className='inline-block w138 font-semibold'> {testDetails.instruction} </p>
                   </div>
                </div>
 
@@ -711,18 +744,23 @@ export default function StudentReport() {
                   </p> */}
                   <div className='flex bg-[#EBEDEE] py-4 px-4 rounded-10' >
                      <div className='flex flex-col mr-[64px]'>
-                        <p className='font-semibold text-primary mb-2.2'>Concepts</p>
+                        <p className='font-semibold text-primary mb-2.2' onClick={getSortedConcepts} >Concepts</p>
                         {
                            // selectedSubject.no_of_correct === 0 ?
                            //    <>
                            //       {getSubjectSections()}
                            //    </> :
                            selectedSubject.concepts ?
-                              Object.keys(selectedSubject.concepts).map((key, idx) => {
-                                 return  idx < 5 ? <p key={idx} className='font-semibold mb-2'>
-                                    {/* {selectedSubject.concepts[key]} */}
-                                    {key}
-                                 </p> : <></>
+                              // Object.keys(selectedSubject.concepts).map((key, idx) => {
+                              //    return idx < 5 ? <p key={idx} className='font-semibold mb-2'>
+                              //       {/* {selectedSubject.concepts[key]} */}
+                              //       {key}
+                              //    </p> : <></>
+                              // })
+                              sortedConcepts.map((item, idx) => {
+                                 return <p key={idx} className='font-semibold mb-2'>
+                                    {item.name}
+                                 </p>
                               })
                               : <></>
                         }
@@ -736,11 +774,10 @@ export default function StudentReport() {
                            //       {getSubjectSectionsScore()}
                            //    </> :
                            selectedSubject.concepts ?
-                              Object.keys(selectedSubject.concepts).map((key, idx) => {
-                                 return  idx < 5 ? <p key={idx} className='font-semibold mb-2'>
-                                    {/* correct {selectedSubject.concepts[key]} */}
-                                    {getConceptScore(selectedSubject.concepts[key], key)}
-                                 </p> : <></>
+                              sortedConcepts.map((item, idx) => {
+                                 return <p key={idx} className='font-semibold mb-2'>
+                                    {item.incorrect >= 0 ? item.incorrect : 0}/{item.correct + item.incorrect}
+                                 </p>
                               })
                               : <></>
                         }

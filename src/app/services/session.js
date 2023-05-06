@@ -104,6 +104,13 @@ export const sessionServicesApi = createApi({
             headers: getAuthHeader()
          })
       }),
+      getCompletedSessions: builder.query({
+         query: (id) => ({
+            url: `/api/session/completedSessions/${id}`,
+            method: "GET",
+            headers: getAuthHeader()
+         })
+      }),
       getTutorStudents: builder.query({
          query: (id) => ({
             url: `/api/session/tutor/${id}`,
@@ -131,6 +138,14 @@ export const sessionServicesApi = createApi({
          query: (body) => ({
             url: `/api/feedback/student/${body.id}`,
             method: "GET",
+            headers: getAuthHeader()
+         })
+      }),
+      updateFeedback: builder.mutation({
+         query: (body) => ({
+            url: `/api/feedback/update/${body.id}`,
+            body,
+            method: "PATCH",
             headers: getAuthHeader()
          })
       }),
@@ -173,6 +188,7 @@ export const {
    useLazyGetSettingsQuery,
    useSubmitSessionMutation,
    useLazyGetUsersByNameQuery,
+   useLazyGetCompletedSessionsQuery,
    useLazyGetSessionsQuery,
    useLazyGetSingleSessionQuery,
    useUpdateSessionMutation,
@@ -185,5 +201,6 @@ export const {
    useLazySessionMissedQuery,
    useDeleteSessionMutation,
    useDeleteAllRecurringSessionMutation,
-   useUpdateAllSessionMutation
+   useUpdateAllSessionMutation,
+   useUpdateFeedbackMutation
 } = sessionServicesApi;

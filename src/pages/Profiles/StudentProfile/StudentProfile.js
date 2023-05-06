@@ -1,7 +1,15 @@
 import React, { useEffect, useState } from 'react'
-import ProfileCard from '../../../components/ProfileCard/ProfileCard'
 import styles from './style.module.css'
+import { useNavigate, useParams } from 'react-router-dom'
+import axios from 'axios'
+import { useDispatch, useSelector } from 'react-redux'
+import OwlCarousel from "react-owl-carousel";
+
+import ProfileCard from '../../../components/ProfileCard/ProfileCard'
 import EditableText from '../../../components/EditableText/EditableText'
+import SubjectSlider from '../../../components/SubjectSlider/SubjectSlider'
+import ProfilePhoto from '../../../components/ProfilePhoto/ProfilePhoto'
+import ParentEditables from '../../Frames/Editables/ParentEditables/ParentEditables'
 
 import ProfileImg from '../../../assets/images/profile.png'
 import EditIcon from '../../../assets/icons/edit.svg'
@@ -12,20 +20,18 @@ import LeftIcon from '../../../assets/profile/left.svg'
 import ValueOneIcon from '../../../assets/images/val-1.svg'
 import ValueTwoIcon from '../../../assets/images/val-2.svg'
 import ValueThreeIcon from '../../../assets/images/val-3.svg'
-
 import InterestOneIcon from '../../../assets/images/int-1.svg'
 import InterestTwoIcon from '../../../assets/images/int-2.svg'
 import InterestThreeIcon from '../../../assets/images/int-3.svg'
-import SubjectSlider from '../../../components/SubjectSlider/SubjectSlider'
-import { useNavigate, useParams } from 'react-router-dom'
+
 import { useLazyGetUserDetailQuery } from '../../../app/services/users'
-import { useDispatch, useSelector } from 'react-redux'
-import ParentEditables from '../../Frames/Editables/ParentEditables/ParentEditables'
 import { useLazyGetSettingsQuery } from '../../../app/services/session'
-import ProfilePhoto from '../../../components/ProfilePhoto/ProfilePhoto'
-import axios from 'axios'
 import { BASE_URL, getAuthHeader } from '../../../app/constants/constants'
 import { updateTimeZone } from '../../../app/slices/user'
+
+import "owl.carousel/dist/assets/owl.carousel.css";
+import "owl.carousel/dist/assets/owl.theme.default.css"
+
 const students = [
    {
       id: 1,
@@ -131,8 +137,11 @@ export default function StudentProfile({ isOwn }) {
    const params = useParams()
    const [getUserDetail, userDetailResp] = useLazyGetUserDetailQuery()
    const [fetchSettings, settingsResp] = useLazyGetSettingsQuery()
+   const [editableByTutor, setEditableByTutor] = useState(false)
+   const { awsLink } = useSelector(state => state.user)
 
    const { id } = useSelector(state => state.user)
+   const [selectedScoreIndex, setSelectedScoreIndex] = useState(0)
 
    const [toEdit, setToEdit] = useState({
       fullName: {
@@ -164,6 +173,7 @@ export default function StudentProfile({ isOwn }) {
          active: false,
          email: '',
          phone: '',
+         phoneCode: ''
       },
       address: {
          active: false,
@@ -207,19 +217,43 @@ export default function StudentProfile({ isOwn }) {
       },
       satScores: {
          active: false,
-         satScores: {
-            verbal: 0,
-            maths: 0
-         }
+         satScores: [
+            {
+               verbal: 0,
+               maths: 0
+            },
+            {
+               verbal: 0,
+               maths: 0
+            },
+            {
+               verbal: 0,
+               maths: 0
+            },
+         ]
       },
       actScores: {
          active: false,
-         actScores: {
-            english: 0,
-            maths: 0,
-            reading: 0,
-            science: 0
-         }
+         actScores: [
+            {
+               english: 0,
+               maths: 0,
+               reading: 0,
+               science: 0
+            },
+            {
+               english: 0,
+               maths: 0,
+               reading: 0,
+               science: 0
+            },
+            {
+               english: 0,
+               maths: 0,
+               reading: 0,
+               science: 0
+            },
+         ]
       },
    })
 
@@ -249,7 +283,14 @@ export default function StudentProfile({ isOwn }) {
       getUserDetail({ id: userId })
          .then(res => {
             console.log('details -- ', res.data.data);
-            const { firstName, lastName, phone, email, associatedParent } = res.data.data.user
+            // console.log('tut id', id);
+            if (res.data.data.user.assiginedTutors) {
+               if (res.data.data.user.assiginedTutors?.includes(id)) {
+                  setEditable(true)
+                  setEditableByTutor(true)
+               }
+            }
+            const { firstName, lastName, phone, phoneCode, email, associatedParent } = res.data.data.user
             let { service, accomodations, timeZone, birthyear, personality, interest, schoolName, grade, satScores, actScores, subscriptionCode } = res.data.data.userdetails
             associatedParent && getUserDetail({ id: associatedParent })
                .then(res => {
@@ -260,16 +301,18 @@ export default function StudentProfile({ isOwn }) {
                   })
                })
             setUser(res.data.data.user)
-            if (!satScores) satScores = {
-               verbal: 0,
-               maths: 0
-            }
-            if (!actScores) actScores = {
-               english: 0,
-               maths: 0,
-               reading: 0,
-               science: 0
-            }
+            if (!satScores) satScores = []
+            if (!actScores) actScores = []
+            // if (!satScores) satScores = [{
+            //    verbal: 0,
+            //    maths: 0
+            // }]
+            // if (!actScores) actScores = {
+            //    english: 0,
+            //    maths: 0,
+            //    reading: 0,
+            //    science: 0
+            // }
             const promiseState = async state => new Promise(resolve => {
                resolve(
                   setToEdit(prev => {
@@ -291,7 +334,8 @@ export default function StudentProfile({ isOwn }) {
                         contact: {
                            ...prev.contact,
                            email: email,
-                           phone: phone === null ? '' : phone
+                           phone: phone === null ? '' : phone,
+                           phoneCode: phoneCode === null ? '' : phoneCode,
                         },
                         birthYear: {
                            ...prev.birthYear,
@@ -326,19 +370,11 @@ export default function StudentProfile({ isOwn }) {
                         },
                         satScores: {
                            ...prev.satScores,
-                           satScores: {
-                              verbal: satScores.verbal,
-                              maths: satScores.maths
-                           }
+                           satScores: satScores
                         },
                         actScores: {
                            ...prev.actScores,
-                           actScores: {
-                              english: actScores.english,
-                              maths: actScores.maths,
-                              reading: actScores.reading,
-                              science: actScores.science
-                           }
+                           actScores: actScores
                         },
                      }
                   })
@@ -372,44 +408,50 @@ export default function StudentProfile({ isOwn }) {
       let url = ''
       const formData = new FormData
       formData.append('photo', file)
-      if (persona === 'admin') {
+      if (persona === 'admin' || persona === 'parent') {
          url = `${BASE_URL}api/user/admin/addphoto/${params.id} `
       } else {
          url = `${BASE_URL}api/user/addphoto`
       }
       axios.patch(url, formData, { headers: getAuthHeader() })
          .then((res) => {
-            console.log(res)
+            console.log('photo res', res)
             fetchDetails()
          })
    }
 
-   const getSatMarks = () => {
+   const getSatMarks = (idx) => {
       // let scores = [
       //    userDetail.satScores.verbal,
       //    userDetail.satScores.maths
       // ]
       // scores =  scores.filter(score => !isNaN(score))
       // console.log(scores);
-      if (typeof userDetail.satScores.verbal === 'number' && typeof userDetail.satScores.maths) {
-         return userDetail.satScores.verbal + userDetail.satScores.maths
+      let res = 0
+      if (typeof userDetail.satScores[idx]?.verbal === 'number' && typeof userDetail.satScores[idx]?.maths) {
+         res = userDetail.satScores[idx]?.verbal + userDetail.satScores[idx]?.maths
       }
+      if (isNaN(res)) return 0
+      return res
    }
 
-   const getActMarks = () => {
+   const getActMarks = (idx) => {
       // let scores = [
       //    userDetail.satScores.verbal,
       //    userDetail.satScores.maths
       // ]
       // scores =  scores.filter(score => !isNaN(score))
       // console.log(scores);
-      if (typeof userDetail.actScores.maths && typeof userDetail.actScores.english && typeof userDetail.actScores.reading && typeof userDetail.actScores.science) {
-         return (userDetail.actScores.english + userDetail.actScores.maths + userDetail.actScores.reading + userDetail.actScores.science) / 4
+      let res = 0
+      if (typeof userDetail.actScores[idx]?.maths && typeof userDetail.actScores[idx]?.english && typeof userDetail.actScores[idx]?.reading && typeof userDetail.actScores[idx]?.science) {
+         res = (userDetail.actScores[idx]?.english + userDetail.actScores[idx]?.maths + userDetail.actScores[idx]?.reading + userDetail.actScores[idx]?.science) / 4
       }
+      if (isNaN(res)) return 0
+      return res
    }
 
    useEffect(() => {
-      console.log(userDetail.timeZone);
+      // console.log(userDetail.timeZone);
       if (userDetail.timeZone === undefined) return
       dispatch(updateTimeZone({ timeZone: userDetail.timeZone }))
    }, [userDetail.timeZone])
@@ -417,6 +459,7 @@ export default function StudentProfile({ isOwn }) {
    // console.log(user)
    // console.log(userDetail)
    // console.log('associatedParent', associatedParent)
+   // console.log('isEditable', editable)
    // console.log(settings)
 
    if (Object.keys(user).length < 1) return
@@ -434,8 +477,8 @@ export default function StudentProfile({ isOwn }) {
                         <button className='absolute bg-[#D9BBFF] px-[14px] py-[8px] rounded-[8px] text-[#636363] text-[18px] font-medium top-[16px] left-[22px] flex gap-[12px] cursor-pointer flex justify-center items-center' onClick={() => window.history.back()}><img src={LeftIcon} alt="icon" /> Back</button>
                         :
                         <></>
-                        }
-                     <ProfilePhoto src={user.photo ? user.photo : '/images/default.jpeg'}
+                     }
+                     <ProfilePhoto src={user.photo ? `${awsLink}${user.photo}` : '/images/default.jpeg'}
                         handleChange={handleProfilePhotoChange} editable={editable} />
                      <div className='flex items-center mt-67 lg:mt-4 text-[#F3F5F7]'>
                         <EditableText text={`${user.firstName} ${user.lastName}`}
@@ -514,7 +557,7 @@ export default function StudentProfile({ isOwn }) {
                            className='text-[21px] mb-2 flex justify-start text-left self-stretch' />
 
                         <div className='w-[98px] h-[98px]'>
-                           <img src={associatedParent.photo ? associatedParent.photo : ''} className='rounded-full w-full h-full' width="98px" height="98px" />
+                           <img src={associatedParent.photo ? `${awsLink}${associatedParent.photo}` : ''} className='rounded-full w-full h-full' width="98px" height="98px" />
                         </div>
                         <p className='font-bold text-[18px] opacity-[68%] mb-1'>
                            {Object.keys(associatedParent).length > 1 ? `${associatedParent.firstName} ${associatedParent.lastName}` : `${userDetail.FirstName} ${userDetail.LastName}`}
@@ -632,7 +675,8 @@ export default function StudentProfile({ isOwn }) {
                                        <div key={idx} className='flex flex-col items-center mb-10'>
                                           <div className='flex h-90 w-90 rounded-full  items-center justify-center mb-3' >
                                              <img className='max-w-[90px] max-h-[90px]'
-                                                src={settings.personality.find(item => item._id === id) ? settings.personality.find(item => item._id === id).image :
+                                                src={settings.personality.find(item => item._id === id) ? 
+                                                   `${awsLink}${settings.personality.find(item => item._id === id)?.image}` :
                                                    ''}
                                              />
                                           </div>
@@ -653,24 +697,90 @@ export default function StudentProfile({ isOwn }) {
                         className='mt-53 lg:mt-0'
                         body={
                            <>
-                              <SubjectSlider
-                                 score={userDetail.satScores ?
-                                    { verbal: userDetail.satScores.verbal, maths: userDetail.satScores.maths } : {}
+                              <OwlCarousel className={`owl-carousel owl-theme ${styles.scoreCarousel}`} margin={30} items={1}>
+                                 <SubjectSlider
+                                    score={userDetail.satScores ?
+                                       {
+                                          verbal: userDetail.satScores[0]?.verbal,
+                                          maths: userDetail.satScores[0]?.maths
+                                       } : {}
+                                    }
+                                    totalMarks={
+                                       userDetail.satScores ?
+                                          getSatMarks(0) : '-'
+                                    }
+                                    outOf={'1600'}
+                                    isSat={true}
+                                    header={
+                                       <EditableText editable={editable}
+                                          onClick={() => {
+                                             setSelectedScoreIndex(0)
+                                             setToEdit({ ...toEdit, satScores: { ...toEdit.satScores, active: true } })
+                                          }}
+                                          text='Official SAT Scores'
+                                          className='text-lg mb-2'
+                                          imgClass={styles.editIcon}
+                                          textClassName="flex-1 text-center text-[21px]" />
+                                    }
+                                    subjects={subjects1} title='Composite Score'
+                                 />
+                                 <SubjectSlider
+                                    score={userDetail.satScores ?
+                                       {
+                                          verbal: userDetail.satScores[1]?.verbal,
+                                          maths: userDetail.satScores[1]?.maths
+                                       } : {}
+                                    }
+                                    totalMarks={
+                                       userDetail.satScores ?
+                                          getSatMarks(1) : '-'
+                                    }
+                                    outOf={'1600'}
+                                    isSat={true}
+                                    header={
+                                       <EditableText editable={editable}
+                                          onClick={() => {
+                                             setSelectedScoreIndex(1)
+                                             setToEdit({ ...toEdit, satScores: { ...toEdit.satScores, active: true } })
+                                          }}
+                                          text='Official SAT Scores'
+                                          className='text-lg mb-2'
+                                          imgClass={styles.editIcon}
+                                          textClassName="flex-1 text-center text-[21px]" />
+                                    }
+                                    subjects={subjects1} title='Composite Score'
+                                 />
+                                 {
+                                    userDetail.satScores?.length >= 2 &&
+                                    <SubjectSlider
+                                       score={userDetail.satScores ?
+                                          {
+                                             verbal: userDetail.satScores[2]?.verbal,
+                                             maths: userDetail.satScores[2]?.maths
+                                          } : {}
+                                       }
+                                       totalMarks={
+                                          userDetail.satScores ?
+                                             getSatMarks(2) : '-'
+                                       }
+                                       outOf={'1600'}
+                                       isSat={true}
+                                       header={
+                                          <EditableText editable={editable}
+                                             onClick={() => {
+                                                setSelectedScoreIndex(2)
+                                                setToEdit({ ...toEdit, satScores: { ...toEdit.satScores, active: true } })
+                                             }}
+                                             text='Official SAT Scores'
+                                             className='text-lg mb-2'
+                                             imgClass={styles.editIcon}
+                                             textClassName="flex-1 text-center text-[21px]" />
+                                       }
+                                       subjects={subjects1} title='Composite Score'
+                                    />
                                  }
-                                 totalMarks={
-                                    userDetail.satScores ?
-                                       getSatMarks() : '-'
-                                 }
-                                 outOf={'1600'}
-                                 isSat={true}
-                                 header={
-                                    <EditableText editable={editable}
-                                       onClick={() => setToEdit({ ...toEdit, satScores: { ...toEdit.satScores, active: true } })}
-                                       text='Official SAT Scores'
-                                       className='text-lg mb-2' textClassName="flex-1 text-center text-[21px]" />
-                                 }
-                                 subjects={subjects1} title='Composite Score'
-                              />
+
+                              </OwlCarousel>
                            </>
                         } />
                      <ProfileCard
@@ -678,28 +788,91 @@ export default function StudentProfile({ isOwn }) {
                         className='mt-8'
                         body={
                            <>
-                              <SubjectSlider
-                                 totalMarks={
-                                    userDetail.actScores ?
-                                       getActMarks() : '-'
+                              <OwlCarousel className={`owl-carousel owl-theme ${styles.scoreCarousel}`} margin={30} items={1}>
+
+                                 <SubjectSlider
+                                    totalMarks={
+                                       userDetail.actScores ?
+                                          getActMarks(0) : '-'
+                                    }
+                                    outOf={'36'}
+                                    isAct={true}
+                                    score={userDetail.actScores ?
+                                       {
+                                          reading: userDetail.actScores[0]?.reading,
+                                          maths: userDetail.actScores[0]?.maths,
+                                          science: userDetail.actScores[0]?.science,
+                                          english: userDetail.actScores[0]?.english,
+                                       } : {}}
+                                    header={
+                                       <EditableText editable={editable}
+                                          onClick={() => {
+                                             setSelectedScoreIndex(0)
+                                             setToEdit({ ...toEdit, actScores: { ...toEdit.actScores, active: true } })
+                                          }}
+                                          text='Official ACT Scores'
+                                          imgClass={styles.editIcon}
+                                          className='text-lg mb-2' textClassName="flex-1 text-center text-[21px]" />
+                                    }
+                                    subjects={subjects2} title='Composite Score'
+                                 />
+
+                                 <SubjectSlider
+                                    totalMarks={
+                                       userDetail.actScores ?
+                                          getActMarks(1) : '-'
+                                    }
+                                    outOf={'36'}
+                                    isAct={true}
+                                    score={userDetail.actScores ?
+                                       {
+                                          reading: userDetail.actScores[1]?.reading,
+                                          maths: userDetail.actScores[1]?.maths,
+                                          science: userDetail.actScores[1]?.science,
+                                          english: userDetail.actScores[1]?.english,
+                                       } : {}}
+                                    header={
+                                       <EditableText editable={editable}
+                                          onClick={() => {
+                                             setSelectedScoreIndex(1)
+                                             setToEdit({ ...toEdit, actScores: { ...toEdit.actScores, active: true } })
+                                          }}
+                                          text='Official ACT Scores'
+                                          imgClass={styles.editIcon}
+                                          className='text-lg mb-2' textClassName="flex-1 text-center text-[21px]" />
+                                    }
+                                    subjects={subjects2} title='Composite Score'
+                                 />
+                                 {
+                                    userDetail.actScores?.length >= 2 &&
+                                    <SubjectSlider
+                                       totalMarks={
+                                          userDetail.actScores ?
+                                             getActMarks(2) : '-'
+                                       }
+                                       outOf={'36'}
+                                       isAct={true}
+                                       score={userDetail.actScores ?
+                                          {
+                                             reading: userDetail.actScores[2]?.reading,
+                                             maths: userDetail.actScores[2]?.maths,
+                                             science: userDetail.actScores[2]?.science,
+                                             english: userDetail.actScores[2]?.english,
+                                          } : {}}
+                                       header={
+                                          <EditableText editable={editable}
+                                             onClick={() => {
+                                                setSelectedScoreIndex(2)
+                                                setToEdit({ ...toEdit, actScores: { ...toEdit.actScores, active: true } })
+                                             }}
+                                             text='Official ACT Scores'
+                                             imgClass={styles.editIcon}
+                                             className='text-lg mb-2' textClassName="flex-1 text-center text-[21px]" />
+                                       }
+                                       subjects={subjects2} title='Composite Score'
+                                    />
                                  }
-                                 outOf={'36'}
-                                 isAct={true}
-                                 score={userDetail.actScores ?
-                                    {
-                                       reading: userDetail.actScores.reading,
-                                       maths: userDetail.actScores.maths,
-                                       science: userDetail.actScores.science,
-                                       english: userDetail.actScores.english,
-                                    } : {}}
-                                 header={
-                                    <EditableText editable={editable}
-                                       onClick={() => setToEdit({ ...toEdit, actScores: { ...toEdit.actScores, active: true } })}
-                                       text='Official ACT Scores'
-                                       className='text-lg mb-2' textClassName="flex-1 text-center text-[21px]" />
-                                 }
-                                 subjects={subjects2} title='Composite Score'
-                              />
+                              </OwlCarousel>
                            </>
                         } />
                   </div>
@@ -716,7 +889,8 @@ export default function StudentProfile({ isOwn }) {
                                     settings.interest.find(item => item._id === id) ?
                                        <div key={idx} className='flex flex-col items-center mb-10'>
                                           <div className='flex h-90 w-90 rounded-full  items-center justify-center mb-3' >
-                                             <img className='max-w-[90px] max-h-[90px]' src={settings.interest.find(item => item._id === id) ? settings.interest.find(item => item._id === id).image : ''}
+                                             <img className='max-w-[90px] max-h-[90px]' src={settings.interest.find(item => item._id === id) ? 
+                                             `${awsLink}${settings.interest.find(item => item._id === id).image}` : ''}
                                              />
                                           </div>
                                           <p className='opacity-70 font-semibold text-lg'>
@@ -729,47 +903,52 @@ export default function StudentProfile({ isOwn }) {
                            </div>
                         </>
                      } />
+
+                  {
+                     persona === 'admin' || editableByTutor ?
+                        <>
+                           <ProfileCard
+                              className='mt-4 lg:order-6 lg:mt-0 lg:col-span-3'
+                              body={
+                                 <div className='flex' >
+                                    <div className='flex-1 lg:mr-12'>
+                                       <EditableText editable={editable}
+                                          onClick={() => setToEdit({ ...toEdit, service: { ...toEdit.service, active: true } })}
+                                          text='Service and Specialization'
+                                          className='lg:text-21 text-left' />
+                                       <div className='font-medium text-sm mt-2 lg:mt-6 flex flex-wrap lg:opacity-60'>
+                                          {/* {userDetail.subscribeType ? userDetail.subscribeType : '-'} */}
+                                          {userDetail.service ? userDetail.service.map((service, idx) => {
+                                             return <p key={idx} className='opacity-80 mb-1 mr-1'>
+                                                {service}{idx < userDetail.service.length - 1 ? ',' : ''}
+                                             </p>
+                                          }) : '-'}
+                                       </div>
+                                    </div>
+                                 </div>
+                              }
+                           />
+                           <ProfileCard
+                              className='mt-4 lg:order-7 lg:mt-0 lg:col-span-9'
+                              body={
+                                 <div className='flex' >
+                                    <div className='flex-1 lg:mr-12'>
+                                       <EditableText editable={editable}
+                                          onClick={() => setToEdit({ ...toEdit, notes: { ...toEdit.notes, active: true } })}
+                                          text='Additional Note'
+                                          className='lg:text-21 whitespace-nowrap' />
+                                       <p className='font-medium text-sm mt-2 lg:mt-6 lg:opacity-60'>
+                                          {userDetail.notes ? userDetail.notes : '-'}
+                                       </p>
+                                    </div>
+                                 </div>
+                              }
+                           />
+                        </> : ''
+                  }
                   {
                      persona === 'admin' &&
                      <>
-                        <ProfileCard
-                           className='mt-4 lg:order-6 lg:mt-0 lg:col-span-3'
-                           body={
-                              <div className='flex' >
-                                 <div className='flex-1 lg:mr-12'>
-                                    <EditableText editable={editable}
-                                       onClick={() => setToEdit({ ...toEdit, service: { ...toEdit.service, active: true } })}
-                                       text='Service'
-                                       className='lg:text-21 whitespace-nowrap' />
-                                    <div className='font-medium text-sm mt-2 lg:mt-6 flex flex-wrap lg:opacity-60'>
-                                       {/* {userDetail.subscribeType ? userDetail.subscribeType : '-'} */}
-                                       {userDetail.service ? userDetail.service.map((service, idx) => {
-                                          return <p key={idx} className='opacity-80 mb-1 mr-1'>
-                                             {service}{idx < userDetail.service.length - 1 ? ',' : ''}
-                                          </p>
-                                       }) : '-'}
-                                    </div>
-                                 </div>
-                              </div>
-                           }
-                        />
-                        <ProfileCard
-                           className='mt-4 lg:order-7 lg:mt-0 lg:col-span-9'
-                           body={
-                              <div className='flex' >
-                                 <div className='flex-1 lg:mr-12'>
-                                    <EditableText editable={editable}
-                                       onClick={() => setToEdit({ ...toEdit, notes: { ...toEdit.notes, active: true } })}
-                                       text='Additional Note'
-                                       className='lg:text-21 whitespace-nowrap' />
-                                    <p className='font-medium text-sm mt-2 lg:mt-6 lg:opacity-60'>
-                                       {userDetail.notes ? userDetail.notes : '-'}
-
-                                    </p>
-                                 </div>
-                              </div>
-                           }
-                        />
                         <ProfileCard
                            className='mt-4 lg:order-8 lg:mt-5 lg:col-span-3'
                            body={
@@ -898,7 +1077,9 @@ export default function StudentProfile({ isOwn }) {
 
          <ParentEditables settings={settings} fetchDetails={fetchDetails}
             userId={isOwn ? id : params.id} toEdit={toEdit} setToEdit={setToEdit}
-            persona={user.role} />
+            persona={user.role}
+            awsLink={awsLink}
+            selectedScoreIndex={selectedScoreIndex} />
       </>
 
    )

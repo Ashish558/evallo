@@ -72,7 +72,7 @@ export default function InputSelect({
                            className="outline-0 border-0 py-2.5 px-4 flex items-center justify-between"
                            key={idx}
                            onClick={() => {
-                              onChange(option);
+                              onChange(option, idx);
                            }}
                         >
                            <p className={optionListClassName}>

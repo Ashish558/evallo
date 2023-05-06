@@ -7,12 +7,12 @@ import OwlCarousel from "react-owl-carousel";
 import "owl.carousel/dist/assets/owl.carousel.css";
 import "owl.carousel/dist/assets/owl.theme.default.css";
 import shivam from '../../assets/images/tutors/shivam-shrivastab.png'
-import { useLazyGetParentTutorsQuery } from "../../app/services/users";
+import { useLazyGetParentTutorsQuery, useLazyGetTutorDetailsQuery, useLazyGetUserDetailQuery } from "../../app/services/users";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import InputSelect from "../InputSelect/InputSelect";
 import { useLazyGetParentsAssignedTestsQuery } from "../../app/services/test";
-import { getDate, getDuration, getFormattedDate } from "../../utils/utils";
+import { getDate, getDuration, getFormattedDate, getMonthName } from "../../utils/utils";
 import ParentTest from "./ParentTest/ParentTest";
 
 
@@ -25,9 +25,15 @@ const initData = [
 const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
 
    const [tutors, setTutors] = useState([])
+   const [filteredTutors, setFilteredTutors] = useState([])
+
    const tutorCarouselRef = useRef()
    const { id } = useSelector(state => state.user)
    const [sub, setSub] = useState('Math')
+   const [profileProgress, setProfileProgress] = useState("0%");
+
+   const [subjects, setSubjects] = useState([])
+   const [selectedSubject, setSelectedSubject] = useState('')
 
    const [allTests, setAllTests] = useState([])
 
@@ -35,7 +41,46 @@ const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
    const navigate = useNavigate()
    const [fetchAssignedTests, fetchAssignedTestsResp] = useLazyGetParentsAssignedTestsQuery();
    const [filteredAssignedTests, setFilteredAssignedTests] = useState([])
-   const percentageCount = 64
+   const [getTutorDetail, getTutorDetailResp] = useLazyGetTutorDetailsQuery()
+   const [totalTutors, setTotalTutors] = useState(0)
+
+   const [selectedConceptIdx, setSelectedConceptIdx] = useState(0)
+   const [currentSubData, setCurrentSubData] = useState({})
+   const [dates, setDates] = useState([])
+   const [currentDate, setCurrentDate] = useState('')
+
+   const { awsLink } = useSelector(state => state.user)
+
+   useEffect(() => {
+      // console.log('currentSubData', currentSubData)
+      if (currentSubData.concepts === undefined) return
+      console.log('currentConcept', currentSubData.concepts)
+
+      let currentConcept = currentSubData.concepts[selectedConceptIdx]
+      if (currentConcept === undefined) return
+      let month = parseInt(currentConcept.month)
+      let year = parseInt(currentConcept.year)
+
+      let monthName = getMonthName(month)
+      let nextMonthName = getMonthName(month + 1)
+      const currdate = `${1}st ${monthName} ${year} - ${1}st ${nextMonthName} ${year}`
+      setCurrentDate(currdate)
+   }, [currentSubData, selectedConceptIdx])
+
+
+   useEffect(() => {
+      let concepts = currentSubData.concepts
+      if (concepts === undefined) return
+      const listData = concepts.map(concept => {
+         let month = parseInt(concept.month)
+         let year = parseInt(concept.year)
+         let monthName = getMonthName(month)
+         let nextMonthName = getMonthName(month + 1)
+         return `${1}st ${monthName} ${year} - ${1}st ${nextMonthName} ${year}`
+      })
+      setDates(listData)
+
+   }, [currentSubData])
 
    useEffect(() => {
       fetchAssignedTests(id)
@@ -71,11 +116,23 @@ const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
    }, [])
 
    useEffect(() => {
+      setTutors([])
       fetchTutors({ id })
          .then(res => {
-            if (res.error) return console.log(res.error);
-            // console.log('parent tutors', res.data);
-            res.data.tutors.length > 0 && setTutors(res.data.tutors)
+            // console.log('tutors resp', res.data);
+            setTotalTutors(res.data.tutors.length)
+            res.data.tutors.map(tutor => {
+               getTutorDetail({ id: tutor._id })
+                  .then(response => {
+                     // console.log('tutors response', response.data);
+                     let details = response.data.data.details
+                     if (details === null || details === undefined) {
+                        details = {}
+                     }
+                     setTutors(prev => [...prev, { ...tutor, ...details, _id: tutor._id }])
+                  })
+
+            })
          })
    }, [])
 
@@ -97,8 +154,72 @@ const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
          buttons[i].innerText === "1250 / 1250" && buttons[i].classList.add("text-[#0671E0]");
       }
    }, [buttons, buttons.length])
+   const [getUserDetail, userDetailResp] = useLazyGetUserDetailQuery()
 
-   console.log('filteredTests', filteredAssignedTests);
+   const checkIfFilled = (value) => {
+      let filled = false
+      if (value !== '' && value !== undefined && value !== null) {
+         filled = true
+      }
+      return filled
+   }
+   useEffect(() => {
+      getUserDetail({ id })
+         .then(res => {
+            // console.log('details -- ', res.data.data.userdetails);
+            let { industry, residentialAddress, timeZone, birthyear, } = res.data.data.userdetails
+            let total = 4
+            let filled = 0
+            if (checkIfFilled(birthyear)) {
+               filled += 1
+            }
+            if (checkIfFilled(industry)) {
+               filled += 1
+            }
+            if (checkIfFilled(residentialAddress)) {
+               filled += 1
+            }
+            if (checkIfFilled(timeZone)) {
+               filled += 1
+            }
+            let percent = filled * 100 / total
+            // console.log('filled', Math.round(percent));
+            setProfileProgress(`${Math.round(percent)}%`)
+         })
+   }, [id])
+
+   useEffect(() => {
+      if (selectedStudent === null) return
+      if (tutors.length === 0) return
+      // console.log('tutors', tutors);
+      let filtered = tutors.filter(tutor => tutor.assiginedStudents?.includes(selectedStudent._id))
+      setFilteredTutors([])
+      setTimeout(() => {
+         setFilteredTutors(filtered)
+      }, 0);
+      // tutorCarouselRef.current.trigger('refresh.owl.carousel'); 
+   }, [selectedStudent, tutors])
+
+   useEffect(() => {
+      subjects.map(sub => {
+         if (sub.selected === true) {
+            setSelectedSubject(sub.name)
+         }
+      })
+   }, [subjects])
+
+   const handleSubjectChange = name => {
+      let updated = subjects.map(sub => {
+         if (sub.name === name) {
+            return { ...sub, selected: true }
+         } else {
+            return { ...sub, selected: false }
+         }
+      })
+      setSubjects(updated)
+   }
+
+   // console.log('tutors', tutors);
 
    return (
       <div
@@ -108,19 +229,28 @@ const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
          <div className="w-full lg:w-2/3 lg:pl-[40px]" id={styles.conceptChart}>
             <div className="flex items-center" >
                <h1>Concept Chart</h1>
-
-               <InputSelect value={sub} labelClassname='hidden'
+               <InputSelect value={currentDate} labelClassname='hidden'
+                  parentClassName='w-[200px] mr-5'
+                  inputContainerClassName='bg-[#d9d9d980] pt-2 pb-2'
+                  optionData={dates}
+                  onChange={(val, idx) => setSelectedConceptIdx(idx)}
+               />
+               <InputSelect value={selectedSubject} labelClassname='hidden'
                   parentClassName='w-[200px] mr-5 ml-auto'
                   inputContainerClassName='bg-[#d9d9d980] pt-2 pb-2'
-                  optionData={['Math', 'Grammar', 'Reading', 'Science']}
-                  onChange={val => setSub(val)} />
+                  optionData={subjects.map(item => item.name)}
+                  onChange={val => handleSubjectChange(val)} />
 
             </div>
 
             <div id={styles.chartContainer} className='scrollbar-content mb-4'>
                <div id={styles.chart} className='scrollbar-content' >
                   <div>
-                     <Chart />
+                     <Chart selectedStudent={selectedStudent} selectedSubject={selectedSubject} setSubjects={setSubjects}
+                        selectedConceptIdx={selectedConceptIdx}
+                        setSelectedConceptIdx={setSelectedConceptIdx}
+                        currentSubData={currentSubData}
+                        setCurrentSubData={setCurrentSubData} />
                   </div>
                </div>
             </div>
@@ -131,20 +261,22 @@ const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
 
                <div id={styles.tutor}>
                   <h2>Your Tutor</h2>
-                  {tutors.length >= 1 ?
+                  {filteredTutors.length >= totalTutors ?
                      <OwlCarousel ref={tutorCarouselRef} className="owl-theme" loop margin={8} items={1}>
                         {
-                           tutors.map((tutor, idx) => {
+                           filteredTutors.map((tutor, idx) => {
                               return (
                                  <div key={idx} className="item flex" style={{ width: "100%" }}>
                                     <div className="w-3/5 flex justify-center flex-col">
-                                       {/* <h5 className={styles.tag}>
-                                          WIZARD TUTOR | UNDERGRADUATE
-                                       </h5> */}
-                                       <h3 className="mt-0 mb-1"> {`${tutor.firstName} ${tutor.lastName}`} </h3>
+                                       <h5 className={`${styles.tag}`}>
+                                          {tutor.tutorLevel && `${tutor.tutorLevel} Belt`}
+                                       </h5>
                                        <p>
-                                          {/* Lorem ipsum dolor sit amet, consectetur
-                                          adipiscing elit. */}
+                                          {tutor?.education}
+                                       </p>
+                                       <h3 className="mt-0 mb-1 mt-2.5"> {`${tutor.firstName} ${tutor.lastName}`} </h3>
+                                       <p>
+                                          {tutor?.tagLine}
                                        </p>
                                        <button className="btn-gold" style={{ padding: '7px 9px', maxWidth: '110px' }}
                                           onClick={() => tutor._id && navigate(`/profile/tutor/${tutor._id}`)} >
@@ -152,7 +284,7 @@ const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
                                        </button>
                                     </div>
                                     <div className="w-2/5">
-                                       <img src={tutor.photo ? tutor.photo : '/images/default.jpeg'} className="mx-auto w-full object-contain w-[140px] h-[140px] rounded-full" alt='profile-icon' />
+                                       <img src={tutor.photo ? `${awsLink}${tutor.photo}` : '/images/default.jpeg'} className="mx-auto w-full object-cover w-[120px] h-[120px] rounded-full" alt='profile-icon' />
                                     </div>
                                  </div>
                               )
@@ -173,10 +305,12 @@ const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
             </div>
             <div className="flex mt-[10px] mb-[10px] justify-between px-5 items-center text-black">
                <h2 className="text-[18px] font-medium">Profile Status</h2>
-               <h2 className="text-[18px] font-medium">{percentageCount}%</h2>
+               <h2 className="text-[18px] font-medium">
+                  {profileProgress}
+               </h2>
             </div>
             <div className="w-full bg-[#D9D9D9] h-[9px] rounded-full mt-[10px] overflow-auto">
-               <div className="rounded-full" style={{ width: percentageCount + "%", height: "100%", background: "#62DD43" }}></div>
+               <div className="rounded-full" style={{ width: profileProgress, height: "100%", background: "#62DD43" }}></div>
             </div>
             <div id={styles.practiceTestContainer} >
                <h2 className="mb-[16px]" id={styles.practiceTestHeader}>Practice Tests</h2>

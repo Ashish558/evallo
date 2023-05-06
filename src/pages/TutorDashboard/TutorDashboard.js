@@ -60,14 +60,14 @@ const studentsArr = [
 //    },
 // ]
 export default function TutorDashboard() {
-
+   const [profileProgress, setProfileProgress] = useState(0);
    const [fetchUserSessions, fetchUserSessionsResponse] =
       useLazyGetSessionsQuery();
    // const [getUserDetail, userDetailResp] = useLazyGetUserDetailQuery()
    const [getUserDetail, userDetailResp] = useLazyGetTutorDetailsQuery()
    const [fetchTutorAssignedTests, fetchTutorAssignedTestsResp] = useLazyGetTutorAssignedTestsQuery();
    const [allAssignedTests, setAllAssignedTests] = useState([])
-
+   const [tutorHours, setTutorHours] = useState(0)
    const navigate = useNavigate()
 
    const [sessions, setSessions] = useState([])
@@ -75,6 +75,8 @@ export default function TutorDashboard() {
    const { id } = useSelector(state => state.user)
    const [students, setStudents] = useState([])
    const [tutorRank, setTutorRank] = useState('-')
+   // const [awsLink, setAwsLink] = useState('')
+   const { awsLink } = useSelector(state => state.user)
 
    useEffect(() => {
       const url = `/api/session/tutor/${id}`;
@@ -91,16 +93,62 @@ export default function TutorDashboard() {
             setSessions(temp)
          })
    }, [])
-
+   const checkIfFilled = (value) => {
+      let filled = false
+      if (value !== '' && value !== undefined && value !== null) {
+         filled = true
+      }
+      return filled
+   }
    useEffect(() => {
       getUserDetail({ id })
          .then(resp => {
             // console.log(resp.data.data.user.assiginedStudents)
             console.log(resp.data.data);
+            let awsLink =resp.data.data.baseLink
             const { details } = resp.data.data
-            console.log('tutor details', details);
+            // console.log('tutor details', details);
+            if (resp.data.data.user.tutorHours) {
+               let currMonth = new Date().getMonth()
+               let currYear = new Date().getFullYear()
+               console.log('currMonth', currMonth);
+               console.log('currYear', currYear);
+               resp.data.data.user.tutorHours?.forEach(item => {
+                  if (item.month === currMonth + 1 && item.year === currYear) {
+                     setTutorHours(item.hours)
+                  }
+               })
+            }
             if (details !== null || details !== undefined) {
                setTutorRank(details.tutorRank ? details.tutorRank : '-')
+            }
+            if (details !== null) {
+               const { about, address, interest, paymentInfo, videoLink, tagLine, serviceSpecializations } = details
+               let total = 7
+               let filled = 0
+               if (checkIfFilled(about)) {
+                  filled += 1
+               }
+               if (checkIfFilled(tagLine)) {
+                  filled += 1
+               }
+               if (checkIfFilled(address)) {
+                  filled += 1
+               }
+               if (checkIfFilled(paymentInfo)) {
+                  filled += 1
+               }
+               if (serviceSpecializations !== undefined && serviceSpecializations?.length >= 1) {
+                  filled += 1
+               }
+               if (interest !== undefined && interest?.length >= 1) {
+                  filled += 1
+               }
+               if (checkIfFilled(videoLink)) {
+                  filled += 1
+               }
+               let percent = filled * 100 / total
+               setProfileProgress(Math.round(percent))
             }
             let studentsData = []
             const fetch = (cb) => {
@@ -111,7 +159,7 @@ export default function TutorDashboard() {
                         studentsData.push({
                            _id,
                            name: `${firstName} ${lastName}`,
-                           photo: res.data.data.user.photo ? res.data.data.user.photo : '/images/default.jpeg'
+                           photo: res.data.data.user.photo ? `${res.data.data.user.photo}` : null
                         })
                         if (idx === resp.data.data.user.assiginedStudents.length - 1) cb()
                      })
@@ -140,7 +188,7 @@ export default function TutorDashboard() {
             let data = res.data.data.test.map(item => {
                const { createdAt, studentId, dueDate, photo, testId, multiple, timeLimit, isCompleted, isStarted } = item
                // console.log(photo);
-               let profile = studentId.photo ? studentId.photo : '/images/default.jpeg'
+               let profile = studentId.photo ? studentId.photo : null
                return {
                   studentName: studentId ? `${studentId.firstName} ${studentId.lastName}` : '-',
                   studentId: studentId ? studentId._id : '-',
@@ -169,6 +217,7 @@ export default function TutorDashboard() {
    // console.log(students);
    // console.log(tutorRank);
    // console.log('allAssignedTests', allAssignedTests);
+   // console.log('prof', profileProgress);
 
    return (
       <div className="lg:ml-pageLeft bg-lightWhite min-h-screen overflow-x-hidden">
@@ -185,7 +234,7 @@ export default function TutorDashboard() {
                            <OwlCarousel items={5} autoWidth margin={20} >
                               {students.map(student => {
                                  return <div className='flex flex-col items-center text-center w-[110px]'>
-                                    <img src={student.photo} className='w-[100px]' />
+                                    <img src={`${student.photo ? `${awsLink}${student.photo}` : '/images/default.jpeg'} `} className='w-[100px]' />
                                     <p className='text-lg font-semibold mt-4 cursor-pointer'
                                        onClick={() => navigate(`/profile/student/${student._id}`)} >
                                        {student.name.split(" ")[0]} <br /> {student.name.split(" ")[1]} </p>
@@ -197,7 +246,10 @@ export default function TutorDashboard() {
                   </div>
 
                   <div className='flex w-full pl-6'>
-                     <DashboardCard data={{ title: '-', subtitle: 'Hours', }}
+                     <DashboardCard data={{
+                        title: tutorHours,
+                        subtitle: `${tutorHours > 1 ? 'Hours' : 'Hour'}`
+                     }}
                         header='Completed'
                         subHeader='this month'
                         className='bg-[#7E82F0]' />
@@ -212,7 +264,6 @@ export default function TutorDashboard() {
                      <p className='text-primary-dark font-semibold text-[21px] mb-4'>Today’s Schedule</p>
                      <div className='px-[29px] py-[31px] bg-white mr-5 rounded-[20px] scrollbar-content scrollbar-vertical max-h-[600px] overflow-auto'>
                         {sessions.map((item, idx) => {
-                           console.log(item)
                            return <TutorSchedule {...item} setIsOpen={setIsOpen} handleLinkClick={handleLinkClick} />
                         })}
                      </div>
@@ -230,8 +281,13 @@ export default function TutorDashboard() {
                         </p>
                         <img src={RightIcon} className='cursor-pointer' onClick={() => navigate('/profile')} />
                      </div>
-                     <p className='text-lg font-semibold px-4 mb-[10px]'>Profile Status</p>
-                     <ProgressBar num={65} />
+                     <div className='px-4 mb-[10px] text-lg font-semibold  flex justify-between'>
+                        <p className=''>Profile Status</p>
+                        <p>
+                           {`${profileProgress}%`}
+                        </p>
+                     </div>
+                     <ProgressBar num={profileProgress} />
                   </div>
 
                   <div className='pl-8 pr-4 mt-8'>
@@ -264,7 +320,7 @@ export default function TutorDashboard() {
                            </div>
                            <div className='flex items-center justify-center px-4 pr-0'>
                               <p className='inline-block pr-4 text-[#392976] font-bold text-[30px]'>
-                                 {tutorRank === '-' ? '-' : `#${tutorRank.slice(4)}`}
+                                 {tutorRank === '-' ? '-' : tutorRank}
                               </p>
                            </div>
                         </div>
@@ -281,7 +337,7 @@ export default function TutorDashboard() {
                            return (
                               <div className='flex items-center mb-8' key={item._id} >
                                  <div>
-                                   <img src={item.photo} className='w-[62px] h-[62px] rounded-full' /> 
+                                    <img src={`${item.photo ? `${awsLink}${item.photo}` : '/images/default.jpeg'} `} className='w-[62px] h-[62px] rounded-full' />
                                  </div>
                                  <div className='ml-[21px] mr-[8px] flex-1'>
                                     <p className='font-semibold text-lg mb-1'> {item.testName} </p>
@@ -291,7 +347,7 @@ export default function TutorDashboard() {
                                     </div>
                                  </div>
                                  <button className={`bg-primaryOrange font-semibold text-sm rounded-[6px] px-8 py-3 text-white ${item.status !== 'completed' && item.status !== 'started' ? 'opacity-50 pointer-events-none' : ''}`}
-                                 onClick={()=> navigate(`/assigned-tests/${item.testId}/${item.assignedTestId}/report/${item.studentId}`)} >
+                                    onClick={() => navigate(`/assigned-tests/${item.testId}/${item.assignedTestId}/report/${item.studentId}`)} >
                                     View
                                  </button>
                               </div>

@@ -62,11 +62,11 @@ const tempnavdata = [
       excludes: ['student', 'parent', 'tutor'],
       tooltip: 'Settings'
    },
-   // {
-   //    icon: AssignedStudents,
-   //    path: "/assigned-tutors",
-   //    tooltip: 'Assigned Tutors'
-   // },
+   {
+      icon: AssignedStudents,
+      path: "/assigned-tutors",
+      tooltip: 'Assigned Tutors'
+   },
    {
       icon: Exit,
       path: "/exit",
@@ -98,7 +98,7 @@ const parentNav = [
    {
       icon: StudentTest,
       path: "/all-tests",
-      tooltip: 'All Tests'
+      tooltip: 'Assigned Tests'
    },
    {
       icon: Back,

@@ -4,8 +4,10 @@ import { useLazyGetInvoiceQuery } from '../../../app/services/users'
 import ArrowIcon from '../../../assets/Dashboard/arrow.svg'
 import DownloadIcon from '../../../assets/icons/download-ledger.svg'
 import { getFormattedDate, tConvert } from '../../../utils/utils'
+import { getFormattedDateTime } from '../../../utils/utils'
+import { formatAMPM } from '../../../utils/utils'
 
-export default function SingleLedger({ _id, invoiceId, sessionId, title, Date: ledgerDate, amountPaid, balanceChange, newBalance, isOpen, toggleOpen }) {
+export default function SingleLedger({ _id, invoiceId, sessionId, title, Date: ledgerDate, amountPaid, balanceChange, newBalance, isOpen, toggleOpen, time, createdAt }) {
 
 
    const [tutorName, setTutorName] = useState('')
@@ -18,8 +20,8 @@ export default function SingleLedger({ _id, invoiceId, sessionId, title, Date: l
    const [fetchInvoice, fetchInvoiceResp] = useLazyGetInvoiceQuery()
 
    useEffect(() => {
-      let names = title.split('<>')
-      if (names.length > 1) {
+      let names = title?.split('<>')
+      if (names?.length > 1) {
          setTutorName(names[0])
          setStudentName(names[1])
       }
@@ -34,16 +36,15 @@ export default function SingleLedger({ _id, invoiceId, sessionId, title, Date: l
 
    }, [])
 
-   // console.log('session', sessionDetails);
    useEffect(() => {
       if (!invoiceId) return
-      fetchInvoice({ id: invoiceId })
-         .then(res => {
-            const invoice = res.data.data.invoice[0]
-            invoice && setInvoiceDetail(invoice)
-            // const { start, end } = res.data.data.session.time
-
-         })
+      setInvoiceDetail(invoiceId)
+      // fetchInvoice({ id: invoiceId?._id })
+      //    .then(res => {
+      //       const invoice = res.data.data.invoice[0]
+      //       invoice && setInvoiceDetail(invoice)
+      //       // const { start, end } = res.data.data.session.time
+      //    })
    }, [])
 
    const { service, total_hours, timeStr, sessionNotes, hourlyCharge, specialization } = sessionDetails
@@ -80,14 +81,14 @@ export default function SingleLedger({ _id, invoiceId, sessionId, title, Date: l
          <div className='text-center  py-[16px] px-3'>
             $ {amountPaid}
          </div>
-         <div className='text-center  py-[16px] px-3'>
+         <div className={`text-center  py-[16px] px-3 ${balanceChange < 0 ? 'text-[#FF0D0D]' : balanceChange > 0 ? 'text-[#54C012]' : ''} `}>
             $ {balanceChange}
          </div>
          <div className='text-left flex justify-center items-center py-[16px] px-3'>
             $ {newBalance}
             <img src={ArrowIcon}
                onClick={() => toggleOpen(_id)}
-               className={`ml-[41px] inline-block ease-out duration-100 ${isOpen ? 'rotate-180' : ''}`} />
+               className={`ml-[41px] inline-block ease-out duration-100 ${isOpen ? '' : 'rotate-180'}`} />
          </div>
 
          {isOpen &&
@@ -97,7 +98,7 @@ export default function SingleLedger({ _id, invoiceId, sessionId, title, Date: l
                   <div className='grid grid-cols-6 px-[200px] grid-flow'>
                      {/* <div className='flex items-center'> */}
                      {
-                        title !== "Discount Package" ?
+                        title !== "Discounted Package" ?
                            <>
                               <div className='font-bold mx-1 py-6' > Student </div>
                               <div className='py-6 opacity-80'> {studentName !== '' ? studentName : '-'} </div>
@@ -132,10 +133,9 @@ export default function SingleLedger({ _id, invoiceId, sessionId, title, Date: l
                               </div>
                            </> :
                            <>
-
                               <div className='font-bold mx-1 py-6' > Time </div>
                               <div className='py-6 opacity-80'>
-                                 {discountPackageTime ? `${discountPackageTime.time} ${discountPackageTime.timeType}` : '-'}
+                                 {formatAMPM(new Date(createdAt))}
                               </div>
 
 

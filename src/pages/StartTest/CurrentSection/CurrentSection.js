@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import PrimaryButton from '../../../components/Buttons/PrimaryButton'
 import Modal from '../../../components/Modal/Modal'
 
-export default function CurrentSection({ answers, submitSection }) {
+export default function CurrentSection({ answers, submitSection, submitBtnLoading }) {
 
    const [details, setDetails] = useState(answers)
    const [totalQues, setTotalQues] = useState(0)
@@ -46,11 +46,12 @@ export default function CurrentSection({ answers, submitSection }) {
          {popUp && <Modal
             classname="w-1/2 mx-auto"
             handleClose={() => setPopUp(false)}
-            title="Are you sure, you want to Submit the Section?"
+            title="Are you sure you want to Submit the Section?"
             primaryBtn={{
                onClick: submitSection,
                text: "Submit",
-               className: "bg-primaryDark"
+               className: "bg-primaryDark",
+               loading: submitBtnLoading
             }} />}
 
       </div>

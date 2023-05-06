@@ -11,9 +11,10 @@ import demoUser from "../../../../assets/icons/demo-user.png"
 import Slider from '../../../../components/Slider/Slider'
 import { grades, subjects, timeZones } from '../../../../constants/constants'
 import styles from './style.module.css'
+import CountryCode from '../../../../components/CountryCode/CountryCode'
 
 // 637b9df1e9beff25e9c2aa83
-export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetails, settings, persona }) {
+export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetails, settings, persona, awsLink, selectedScoreIndex }) {
    const [title, setTitle] = useState('')
    const [currentField, setCurrentField] = useState({})
    const [currentToEdit, setCurrentToEdit] = useState({})
@@ -256,12 +257,12 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
    useEffect(() => {
       if (student.length > 0) {
          fetchStudents(student).then((res) => {
-            console.log(res.data.data.students);
+            console.log('students' ,res.data.data.students);
             let tempData = res.data.data.students.map((tutor) => {
                return {
                   _id: tutor._id,
                   value: `${tutor.firstName} ${tutor.lastName}`,
-                  photo: tutor.photo ? tutor.photo : '/images/default.jpeg'
+                  photo: tutor.photo ? tutor.photo : null
                };
             });
             setStudents(tempData);
@@ -341,6 +342,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
          updateFields({ id: userId, fields: reqBody })
             .then(res => {
                console.log(res)
+               setLoading(false)
                if (reqBody.linkedIn) {
                   if (currentToEdit.isPresent === false) {
                      delete reqBody['isPresent']
@@ -445,6 +447,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
       }
    }
 
+   // console.log('awsLink', awsLink)
    // console.log('toedit', currentToEdit)
    // console.log('setting', settings.servicesAndSpecialization[currentToEdit.selectedIdx])
    // console.log('field', currentField)
@@ -453,9 +456,8 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
    // console.log('parents', parents)
 
    const checkNumber = (prevNum, num, limit) => {
-      // console.log(num);
       if (limit) {
-         if (num > limit + 1) {
+         if (num > limit) {
             return prevNum
          } else {
             return num
@@ -546,7 +548,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                               <div className=' mb-5'>
                                  {/* <p className='font-medium mr-4'> Associated Students </p> */}
                                  <div className='max-w-[250px] mx-auto'>
-                                    <Slider images={currentToEdit.studentsData} />
+                                    <Slider images={currentToEdit.studentsData} awsLink={awsLink} />
                                  </div>
 
                                  <InputSearch
@@ -595,9 +597,15 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                                     labelClassname='hidden'
                                     placeholder='Phone'
                                     inputContainerClassName='text-sm pt-3 pb-3 px-5 bg-primary-50 border-0'
-                                    inputClassName='bg-transparent rounded-[4px]'
+                                    inputClassName='bg-transparent rounded-[4px]  ml-[70px]'
                                     parentClassName='flex-1 ' type='text'
                                     value={currentToEdit.phone}
+                                    inputLeftField={
+                                       <CountryCode className={styles.phoneNumber} numberPrefix={currentToEdit.phoneCode}
+                                          setNumberPrefix={val => {
+                                             setCurrentToEdit({ ...currentToEdit, phoneCode: val })
+                                          }} />
+                                    }
                                     onChange={e => setCurrentToEdit({ ...currentToEdit, phone: e.target.value })} />
                               </div>
                            </div>
@@ -624,17 +632,15 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                         {currentField.name === 'industry' &&
                            <div>
                               <div className='flex items-center mb-5 pt-2'>
-                                 <InputSelect
+                                 <InputField
                                     value={currentToEdit.industry}
-                                    onChange={val =>
-                                       setCurrentToEdit({ ...currentToEdit, industry: val })
+                                    onChange={e =>
+                                       setCurrentToEdit({ ...currentToEdit, industry: e.target.value })
                                     }
-                                    optionData={['Medical', 'Law', 'Teaching']}
-                                    radio={true}
-                                    inputContainerClassName="pt-3 pb-3 border bg-[#D9D9D999]"
-                                    placeholder="Select"
+                                    inputContainerClassName='text-sm pt-3 pb-3 rounded-sm bg-primary-50 border-0'
+                                    inputClassName='bg-transparent'
+                                    placeholder="Industry"
                                     parentClassName="w-full mr-4"
-                                    type="select"
                                  />
                               </div>
                            </div>
@@ -1015,7 +1021,18 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                         }
                         {currentField.name === 'paymentInfo' &&
                            <div>
-                              <div className='flex items-center mb-4'>
+                              <div className='flex items-center mb-5'>
+                                 <InputField
+                                    labelClassname='hidden'
+                                    placeholder='Payment Info'
+                                    inputContainerClassName='text-sm pt-3.5 pb-3 px-5 bg-primary-50 border-0'
+                                    inputClassName='bg-transparent rounded-[4px]'
+                                    parentClassName='flex-1' type='text'
+                                    value={currentToEdit.paymentInfo}
+                                    onChange={e => setCurrentToEdit({ ...currentToEdit, paymentInfo: e.target.value })} />
+                              </div>
+
+                              {/* <div className='flex items-center mb-4'>
                                  <p className='font-medium mr-4 min-w-[100px]'>
                                     Bank Name
                                  </p>
@@ -1030,8 +1047,8 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                                        ...currentToEdit,
                                        paymentInfo: { ...currentToEdit.paymentInfo, bankName: e.target.value }
                                     })} />
-                              </div>
-                              <div className='flex items-center mb-4'>
+                              </div> */}
+                              {/* <div className='flex items-center mb-4'>
                                  <p className='font-medium mr-4 min-w-[100px] '>
                                     Acc No.
                                  </p>
@@ -1046,8 +1063,8 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                                        ...currentToEdit,
                                        paymentInfo: { ...currentToEdit.paymentInfo, AccNo: e.target.value }
                                     })} />
-                              </div>
-                              <div className='flex items-center'>
+                              </div> */}
+                              {/* <div className='flex items-center'>
                                  <p className='font-medium mr-4 min-w-[100px] '>
                                     IFSC Code
                                  </p>
@@ -1062,7 +1079,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                                        ...currentToEdit,
                                        paymentInfo: { ...currentToEdit.paymentInfo, ifcsCode: e.target.value }
                                     })} />
-                              </div>
+                              </div> */}
                            </div>
                         }
                         {currentField.name === 'tutorRank' &&
@@ -1252,9 +1269,15 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                                     labelClassname='hidden'
                                     placeholder='Phone'
                                     inputContainerClassName='text-sm pt-3 pb-3 px-5 bg-primary-50 border-0'
-                                    inputClassName='bg-transparent rounded-[4px]'
+                                    inputClassName='bg-transparent rounded-[4px] ml-[70px]'
                                     parentClassName='flex-1 ' type='text'
                                     value={currentToEdit.phone}
+                                    inputLeftField={
+                                       <CountryCode className={styles.phoneNumber} numberPrefix={currentToEdit.phoneCode}
+                                          setNumberPrefix={val => {
+                                             setCurrentToEdit({ ...currentToEdit, phoneCode: val })
+                                          }} />
+                                    }
                                     onChange={e => setCurrentToEdit({ ...currentToEdit, phone: e.target.value })} />
                               </div>
                            </div>
@@ -1271,14 +1294,29 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                                     inputContainerClassName='text-sm pt-3 pb-3 px-5 bg-primary-50 border-0'
                                     inputClassName='bg-transparent pl-4 rounded-[4px]'
                                     parentClassName='flex-1 max-w-[140px]' type='number'
-                                    value={currentToEdit.satScores.verbal}
-                                    onChange={e => setCurrentToEdit({
-                                       ...currentToEdit,
-                                       satScores: {
-                                          ...currentToEdit.satScores,
-                                          verbal: checkNumber(currentToEdit.satScores.verbal, parseInt(e.target.value), 800)
+                                    value={currentToEdit.satScores[selectedScoreIndex]?.verbal}
+                                    onChange={e => {
+                                       let tempScores = [...currentToEdit.satScores]
+                                       if (tempScores.length <= selectedScoreIndex) {
+                                          tempScores.push({
+                                             maths: 0,
+                                             verbal: 0,
+                                          })
                                        }
-                                    })}
+                                       tempScores = tempScores.map((item, idx) => {
+                                          if (selectedScoreIndex === idx) {
+                                             let num = checkNumber(currentToEdit.satScores[selectedScoreIndex]?.verbal, parseInt(e.target.value), 800)
+                                             return { ...item, verbal: num }
+                                          } else {
+                                             return { ...item }
+                                          }
+                                       })
+                                       setCurrentToEdit({
+                                          ...currentToEdit,
+                                          satScores: tempScores
+                                       })
+                                    }
+                                    }
                                  />
                               </div>
                               <div className='flex  flex-col  items-center mb-4'>
@@ -1291,14 +1329,30 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                                     inputContainerClassName='text-sm pt-3 pb-3 px-5 bg-primary-50 border-0'
                                     inputClassName='bg-transparent pl-4 rounded-[4px]'
                                     parentClassName='flex-1 max-w-[140px]' type='number'
-                                    value={currentToEdit.satScores.maths}
-                                    onChange={e => setCurrentToEdit({
-                                       ...currentToEdit,
-                                       satScores: {
-                                          ...currentToEdit.satScores,
-                                          maths: checkNumber(currentToEdit.satScores.maths, parseInt(e.target.value), 800)
+                                    value={currentToEdit.satScores[selectedScoreIndex]?.maths}
+                                    onChange={e => {
+                                       let tempScores = [...currentToEdit.satScores]
+                                       if (tempScores.length <= selectedScoreIndex) {
+                                          tempScores.push({
+                                             maths: 0,
+                                             verbal: 0,
+                                          })
                                        }
-                                    })}
+                                       tempScores = tempScores.map((item, idx) => {
+                                          if (selectedScoreIndex === idx) {
+                                             return { ...item, maths: checkNumber(currentToEdit.satScores[selectedScoreIndex]?.maths, parseInt(e.target.value), 800) }
+                                          } else {
+                                             return { ...item }
+                                          }
+                                       })
+                                       // tempScores[selectedScoreIndex].maths = checkNumber(currentToEdit.satScores.maths, parseInt(e.target.value), 800)
+                                       // console.log('tempScores', tempScores);
+                                       setCurrentToEdit({
+                                          ...currentToEdit,
+                                          satScores: tempScores
+                                       })
+                                    }
+                                    }
                                  />
                               </div>
 
@@ -1316,14 +1370,29 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                                     inputContainerClassName='text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0'
                                     inputClassName='bg-transparent pl-4 rounded-[4px]'
                                     parentClassName='flex-1 max-w-[140px]' type='number'
-                                    value={currentToEdit.actScores.maths}
-                                    onChange={e => setCurrentToEdit({
-                                       ...currentToEdit,
-                                       actScores: {
-                                          ...currentToEdit.actScores,
-                                          maths: checkNumber(currentToEdit.actScores.maths, parseInt(e.target.value), 36)
+                                    value={currentToEdit.actScores[selectedScoreIndex]?.maths}
+                                    onChange={e => {
+                                       let tempScores = [...currentToEdit.actScores]
+                                       if (tempScores.length <= selectedScoreIndex) {
+                                          tempScores.push({
+                                             maths: 0,
+                                             english: 0,
+                                             reading: 0,
+                                             science: 0,
+                                          })
                                        }
-                                    })}
+                                       tempScores = tempScores.map((item, idx) => {
+                                          if (selectedScoreIndex === idx) {
+                                             return { ...item, maths: checkNumber(currentToEdit.actScores[selectedScoreIndex]?.maths, parseInt(e.target.value), 36)}
+                                          } else {
+                                             return { ...item }
+                                          }
+                                       })
+                                       setCurrentToEdit({
+                                          ...currentToEdit,
+                                          actScores: tempScores
+                                       })
+                                    }}
                                  />
                               </div>
                               <div className='flex  flex-col  items-center mb-4'>
@@ -1336,14 +1405,29 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                                     inputContainerClassName='text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0'
                                     inputClassName='bg-transparent pl-4 rounded-[4px]'
                                     parentClassName='flex-1 max-w-[140px]' type='number'
-                                    value={currentToEdit.actScores.english}
-                                    onChange={e => setCurrentToEdit({
-                                       ...currentToEdit,
-                                       actScores: {
-                                          ...currentToEdit.actScores,
-                                          english: checkNumber(currentToEdit.actScores.english, parseInt(e.target.value), 36)
+                                    value={currentToEdit.actScores[selectedScoreIndex]?.english}
+                                    onChange={e => {
+                                       let tempScores = [...currentToEdit.actScores]
+                                       if (tempScores.length <= selectedScoreIndex) {
+                                          tempScores.push({
+                                             maths: 0,
+                                             english: 0,
+                                             reading: 0,
+                                             science: 0,
+                                          })
                                        }
-                                    })}
+                                       tempScores = tempScores.map((item, idx) => {
+                                          if (selectedScoreIndex === idx) {
+                                             return { ...item, english: checkNumber(currentToEdit.actScores[selectedScoreIndex]?.english, parseInt(e.target.value), 36)}
+                                          } else {
+                                             return { ...item }
+                                          }
+                                       })
+                                       setCurrentToEdit({
+                                          ...currentToEdit,
+                                          actScores: tempScores
+                                       })
+                                    }}
                                  />
                               </div>
                               <div className='flex  flex-col  items-center mb-4'>
@@ -1356,14 +1440,30 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                                     inputContainerClassName='text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0'
                                     inputClassName='bg-transparent pl-4 rounded-[4px]'
                                     parentClassName='flex-1 max-w-[140px]' type='number'
-                                    value={currentToEdit.actScores.reading}
-                                    onChange={e => setCurrentToEdit({
-                                       ...currentToEdit,
-                                       actScores: {
-                                          ...currentToEdit.actScores,
-                                          reading: checkNumber(currentToEdit.actScores.reading, parseInt(e.target.value), 36)
+                                    value={currentToEdit.actScores[selectedScoreIndex]?.reading}
+                                   
+                                    onChange={e => {
+                                       let tempScores = [...currentToEdit.actScores]
+                                       if (tempScores.length <= selectedScoreIndex) {
+                                          tempScores.push({
+                                             maths: 0,
+                                             english: 0,
+                                             reading: 0,
+                                             science: 0,
+                                          })
                                        }
-                                    })}
+                                       tempScores = tempScores.map((item, idx) => {
+                                          if (selectedScoreIndex === idx) {
+                                             return { ...item, reading: checkNumber(currentToEdit.actScores[selectedScoreIndex]?.reading, parseInt(e.target.value), 36)}
+                                          } else {
+                                             return { ...item }
+                                          }
+                                       })
+                                       setCurrentToEdit({
+                                          ...currentToEdit,
+                                          actScores: tempScores
+                                       })
+                                    }}
                                  />
                               </div>
                               <div className='flex  flex-col  items-center mb-4'>
@@ -1376,14 +1476,29 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                                     inputContainerClassName='text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0'
                                     inputClassName='bg-transparent pl-4 rounded-[4px]'
                                     parentClassName='flex-1 max-w-[140px]' type='number'
-                                    value={currentToEdit.actScores.science}
-                                    onChange={e => setCurrentToEdit({
-                                       ...currentToEdit,
-                                       actScores: {
-                                          ...currentToEdit.actScores,
-                                          science: checkNumber(currentToEdit.actScores.science, parseInt(e.target.value), 36)
+                                    value={currentToEdit.actScores[selectedScoreIndex]?.science}
+                                    onChange={e => {
+                                       let tempScores = [...currentToEdit.actScores]
+                                       if (tempScores.length <= selectedScoreIndex) {
+                                          tempScores.push({
+                                             maths: 0,
+                                             english: 0,
+                                             reading: 0,
+                                             science: 0,
+                                          })
                                        }
-                                    })}
+                                       tempScores = tempScores.map((item, idx) => {
+                                          if (selectedScoreIndex === idx) {
+                                             return { ...item, science: checkNumber(currentToEdit.actScores[selectedScoreIndex]?.science, parseInt(e.target.value), 36)}
+                                          } else {
+                                             return { ...item }
+                                          }
+                                       })
+                                       setCurrentToEdit({
+                                          ...currentToEdit,
+                                          actScores: tempScores
+                                       })
+                                    }}
                                  />
                               </div>
 

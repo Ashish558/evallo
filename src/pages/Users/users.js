@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
 import Table from '../../components/Table/Table'
-import FilterItems from '../../components/FilterItems/filterItems'
+import FilterItems from '../../components/FilterItemsNew/filterItems'
 import Modal from '../../components/Modal/Modal'
 import InputField from '../../components/InputField/inputField'
 import InputSelect from '../../components/InputSelect/InputSelect'
@@ -9,13 +9,17 @@ import InputSelect from '../../components/InputSelect/InputSelect'
 import AddIcon from '../../assets/icons/add.svg'
 import SearchIcon from '../../assets/icons/search.svg'
 import { tableData, userTypesList } from './tempData'
-import { useAddUserMutation, useLazyGetAllUsersQuery, useLazyGetUserDetailQuery } from '../../app/services/users'
+import { useAddUserMutation, useLazyGetAllUsersQuery, useLazyGetTutorDetailsQuery, useLazyGetUserDetailQuery } from '../../app/services/users'
 import { useSignupUserMutation } from '../../app/services/auth'
 import { useNavigate } from 'react-router-dom'
 import { roles } from '../../constants/constants'
 import { useBlockUserMutation, useDeleteUserMutation, useUnblockUserMutation } from '../../app/services/admin'
 import { useLazyGetSettingsQuery } from '../../app/services/session'
 import PrimaryButton from '../../components/Buttons/PrimaryButton'
+import CountryCode from '../../components/CountryCode/CountryCode'
+import { isPhoneNumber } from '../Signup/utils/util'
+import { checkIfExistInNestedArray } from '../../utils/utils'
+import InputSelectNew from '../../components/InputSelectNew/InputSelectNew'
 
 const optionData = [
    'option 1',
@@ -25,10 +29,6 @@ const optionData = [
    'option 5',
 ]
 
-const tableHeaders = [
-   'Full Name', 'User Type', "Email", 'Phone', 'Tutor', 'Lead Status', 'User Status',
-   'Specialization', 'Created On'
-]
 
 const userTypeOptions = ['tutor', 'parent', 'student']
 
@@ -48,6 +48,10 @@ export default function Users() {
    const [validData, setValidData] = useState(true);
    const [deleteModalActive, setDeleteModalActive] = useState(false)
    const [deleteLoading, setDeleteLoading] = useState(false)
+   const [specializations, setSpecializations] = useState([])
+   const [numberPrefix, setNumberPrefix] = useState("+1")
+   const [usersData, setUsersData] = useState([])
+   const [filteredUsersData, setFilteredUsersData] = useState([])
 
    useEffect(() => {
       setValidData(isEmail(modalData.email) && modalData.firstName && modalData.lastName && modalData.userType && modalData.phone)
@@ -56,10 +60,76 @@ export default function Users() {
    const [settings, setSettings] = useState({
       leadStatus: []
    })
-   const [usersData, setUsersData] = useState([])
-   const [filteredUsersData, setFilteredUsersData] = useState([])
+   const sortByName = () => {
+      setUsersData(prev => {
+         let arr = [...prev]
+         arr = arr.sort(function (a, b) {
+            if (a.name < b.name) { return -1; }
+            if (a.name > b.name) { return 1; }
+            return 0;
+         });
+         return arr
+      })
+
+      setFilteredUsersData(prev => {
+         let arr = [...prev]
+         console.log('arr', arr);
+         arr = arr.sort(function (a, b) {
+            if (a.name < b.name) { return -1; }
+            if (a.name > b.name) { return 1; }
+            return 0;
+         });
+         return arr
+      })
+   }
+   const tableHeaders = [
+      {
+         id: 1,
+         text: 'Full Name',
+         className: 'text-left pl-6',
+         onCick: sortByName
+      },
+      {
+         id: 2,
+         text: 'User Type',
+      },
+      {
+         id: 3,
+         text: 'Email',
+      },
+      {
+         id: 4,
+         text: 'Phone',
+      },
+      {
+         id: 5,
+         text: 'Tutor',
+      },
+      {
+         id: 1,
+         text: 'Lead Status',
+      },
+      {
+         id: 6,
+         text: 'User Status',
+      },
+      {
+         id: 7,
+         text: 'Specialization',
+      },
+      {
+         id: 8,
+         text: 'Created On',
+      },
+   ];
+
+
+
    const [getUserDetail, getUserDetailResp] = useLazyGetUserDetailQuery()
+   const [getTutorDetail, userDetailResp] = useLazyGetTutorDetailsQuery()
+
    const [filterItems, setFilterItems] = useState([])
+   const [addUserBtnDisabled, setAddUserBtnDisabled] = useState(false)
 
    const [blockUser, blockUserResp] = useBlockUserMutation()
    const [unblockUser, unblockUserResp] = useUnblockUserMutation()
@@ -71,18 +141,20 @@ export default function Users() {
    const [signupUser, signupUserResp] = useSignupUserMutation();
    const [deleteUser, deleteUserResp] = useDeleteUserMutation();
 
-   const [maxPageSize, setMaxPageSize] = useState(10)
+   const [maxPageSize, setMaxPageSize] = useState(15)
    const [loading, setLoading] = useState(false)
 
    const [totalPages, setTotalPages] = useState(0)
    const [currentPage, setCurrentPage] = useState(1)
+   const [allTutors, setAllTutors] = useState([])
 
    const [filterData, setFilterData] = useState({
       typeName: '',
-      userType: '',
-      status: '',
-      services: '',
-      tutor: ''
+      userType: [],
+      status: [],
+      specialization: [],
+      userStatus: [],
+      tutor: [],
    })
 
    useEffect(() => {
@@ -97,55 +169,103 @@ export default function Users() {
    const fetch = () => {
       setUsersData([])
       setFilteredUsersData([])
-      fetchUsers({ currentPage, maxPageSize })
+
+      let urlParams = `?limit=${maxPageSize}&page=${currentPage}`
+      if (filterData.userType.length > 0) {
+         filterData.userType.forEach(item => {
+            urlParams = urlParams + `&role=${item}`
+         })
+      }
+      if (filterData.userStatus.length > 0) {
+         filterData.userStatus.forEach(item => {
+            urlParams = urlParams + `&userStatus=${item}`
+         })
+      }
+      if (filterData.specialization.length > 0) {
+         let specArr = []
+         specArr = `&specialization=${filterData.specialization.join(',')}`
+         urlParams = urlParams + specArr
+      }
+      if (filterData.status.length > 0) {
+         filterData.status.forEach(item => {
+            urlParams = urlParams + `&leadstatus=${item}`
+         })
+      }
+      if (filterData.tutor.length > 0) {
+         let ids = []
+         filterData.tutor.forEach(selectedTutorName => {
+            let tutor = allTutors.find(item => item.value === selectedTutorName)
+            if (tutor === undefined) return
+            ids.push(tutor._id)
+         })
+         ids.map(tutorId => {
+            urlParams = urlParams + `&assiginedTutors=${tutorId}`
+         })
+      }
+      if (filterData.typeName.length > 0) {
+         urlParams = urlParams + `&search=${filterData.typeName}`
+      }
+
+      console.log('urlParams', urlParams);
+      fetchUsers(urlParams)
          .then(res => {
-            console.log('all-users', res.data.data);
+            console.log('all-users', res.data.data.user);
+            // if(res.data.data.no_of_users < maxPageSize){
+            //    setTotalPages(15)
+            // }else{
             setTotalPages(res.data.data.total_users)
+            // }
+            // console.log('total users', res.data.data.total_users);
 
             const fetchDetails = async () => {
-               await res.data.data.user.map(async (user) => {
 
+               await res.data.data.user.map(async (user) => {
                   let obj = {
                      _id: user._id,
                      block: user.block,
+                     userStatus: user.userStatus,
                      name: `${user.firstName} ${user.lastName}`,
                      email: user.email ? user.email : '-',
                      userType: user.role ? user.role : '-',
                      phone: user.phone ? user.phone : '-',
                      createdAt: user.createdAt,
-                     assignedTutor: '-',
+                     assignedTutor: user.assiginedTutors ? user.assiginedTutors : '',
                      leadStatus: '-',
                      tutorStatus: '-',
-                     services: '-',
+                     specialization: user.specialization ? user.specialization : [],
                   }
-                  if (user.role === 'tutor') {
-                     await getUserDetail({ id: user._id })
-                        .then(resp => {
-                           // console.log('TUTOR RESp', resp);
-                           setFilterItems(prev => [...prev])
-                           // console.log('tutor-details', resp.data.data);
-                           let status = '-'
-                           if (resp.data.data.details) {
-                              status = resp.data.data.details.leadStatus
-                              obj.leadStatus = status ? status : '-'
-                           }
-                           setUsersData(prev => [...prev, obj])
-                           setFilteredUsersData(prev => [...prev, obj])
-                        })
-                  } else {
-                     await getUserDetail({ id: user._id })
-                        .then(resp => {
-                           setFilterItems(prev => [...prev])
-                           // console.log('user-details', resp.data.data);
-                           let status = '-'
-                           if (resp.data.data.userdetails) {
-                              status = resp.data.data.userdetails.leadStatus
-                              obj.leadStatus = status ? status : '-'
-                           }
-                           setUsersData(prev => [...prev, obj])
-                           setFilteredUsersData(prev => [...prev, obj])
-                        })
-                  }
+                  setUsersData(prev => [...prev, obj])
+                  setFilteredUsersData(prev => [...prev, obj])
+                  // if (user.role === 'tutor') {
+                  //    // console.log('tutor', user._id);
+                  //    await getTutorDetail({ id: user._id })
+                  //       .then(resp => {
+                  //          // console.log('TUTOR RESp', resp);
+
+                  //          setFilterItems(prev => [...prev])
+                  //          // console.log('tutor-details', resp.data.data);
+                  //          let status = '-'
+                  //          if (resp.data.data.details) {
+                  //             status = resp.data.data.details.leadStatus
+                  //             obj.leadStatus = status ? status : '-'
+                  //          }
+                  //          setUsersData(prev => [...prev, obj])
+                  //          setFilteredUsersData(prev => [...prev, obj])
+                  //       })
+                  // } else {
+                  //    await getUserDetail({ id: user._id })
+                  //       .then(resp => {
+                  //          setFilterItems(prev => [...prev])
+                  //          // console.log('user-details', resp.data.data);
+                  //          let status = '-'
+                  //          if (resp.data.data.userdetails) {
+                  //             status = resp.data.data.userdetails.leadStatus
+                  //             obj.leadStatus = status ? status : '-'
+                  //          }
+                  //          setUsersData(prev => [...prev, obj])
+                  //          setFilteredUsersData(prev => [...prev, obj])
+                  //       })
+                  // }
 
                })
             }
@@ -156,9 +276,28 @@ export default function Users() {
          })
    }
 
-   // console.log('ALL USERS DATA', usersData)
-   // console.log('filteredUsersData', filteredUsersData)
+   const fetchTutors = () => {
+      let urlParams = `?role=tutor`
 
+      fetchUsers(urlParams)
+         .then(res => {
+            // console.log('tutors', res.data.data);
+            if (!res.data.data.user) return
+            let data = res.data.data.user.map(item => {
+               const { firstName, lastName } = item
+               return {
+                  _id: item._id,
+                  value: `${firstName} ${lastName}`
+               }
+            })
+            setAllTutors(data)
+
+         })
+   }
+
+   useEffect(() => {
+      fetchTutors()
+   }, [])
    const changeUserField = (field, id) => {
       let temp = filteredUsersData.map(item => {
          // console.log(item[Object.keys(field)[0]]);
@@ -183,22 +322,38 @@ export default function Users() {
    useEffect(() => {
       fetch()
    }, [maxPageSize, currentPage])
+   // console.log('currentPage', currentPage);
 
    useEffect(() => {
       let tempdata = [...usersData]
-      // console.log(usersData)
+      // console.log('all users data', usersData)
+      // console.log('filterData.specialization', filterData.specialization)
+      fetch()
+      setCurrentPage(1)
+      // setTotalPages(0)
       //USER TYPE FILTER
-      if (filterData.userType !== '') {
-         tempdata = tempdata.filter(user => user.userType === filterData.userType)
+      if (filterData.userType.length > 0) {
+         tempdata = tempdata.filter(user => filterData.userType.includes(user.userType))
       } else {
          tempdata = tempdata.filter(user => user.userType !== '')
       }
 
       //LEAD STATUS FILTER
-      if (filterData.status !== '') {
-         tempdata = tempdata.filter(user => user.leadStatus === filterData.status)
+      if (filterData.status.length > 0) {
+         tempdata = tempdata.filter(user => filterData.status.includes(user.leadStatus))
       } else {
          tempdata = tempdata.filter(user => user.leadStatus !== '')
+      }
+
+      if (filterData.specialization.length > 0) {
+         tempdata = tempdata.filter(user => checkIfExistInNestedArray(user.specialization, filterData.specialization))
+      } else {
+         tempdata = tempdata.filter(user => user.specialization !== '')
+      }
+      if (filterData.userStatus.length > 0) {
+         tempdata = tempdata.filter(user => filterData.userStatus.includes(user.userStatus))
+      } else {
+         tempdata = tempdata.filter(user => user.userStatus !== '')
       }
 
       //NAME FILTER 
@@ -208,13 +363,21 @@ export default function Users() {
       } else {
          tempdata = tempdata.filter(user => user.name !== '')
       }
-      setFilteredUsersData(tempdata)
+      // setFilteredUsersData(tempdata)
    }, [filterData])
 
-   const removeFilter = key => {
-      let tempFilterData = { ...filterData }
-      tempFilterData[key] = ''
-      setFilterData(tempFilterData)
+   const removeFilter = (key, text, isArray) => {
+      if (isArray) {
+         let tempFilterData = { ...filterData }
+         tempFilterData[key] = tempFilterData[key].filter(item => item !== text)
+         // tempFilterData[key] = [ tempFilterData[key].filter(text => text !==)]
+         setFilterData(tempFilterData)
+      } else {
+         let tempFilterData = { ...filterData }
+         tempFilterData[key] = ''
+         console.log('tempFilterData', tempFilterData);
+         setFilterData(tempFilterData)
+      }
    }
 
    useEffect(() => {
@@ -223,7 +386,7 @@ export default function Users() {
             return {
                text: filterData[key],
                type: key,
-               removeFilter: (key) => removeFilter(key)
+               removeFilter: (key, text, isArray) => removeFilter(key, text, isArray)
             }
          }
       }).filter(item => item !== undefined)
@@ -231,7 +394,10 @@ export default function Users() {
    }, [filterData])
 
 
-   const onRemoveFilter = (item) => item.removeFilter(item.type)
+   const onRemoveFilter = (item, text, isArray) => {
+      // console.log(item, text, isArray);
+      item.removeFilter(item.type, text, isArray)
+   }
 
    const handleSubmit = e => {
       e.preventDefault()
@@ -240,10 +406,12 @@ export default function Users() {
          firstName: modalData.firstName,
          lastName: modalData.lastName,
          email: modalData.email,
+         phone: `${numberPrefix}${modalData.phone}`,
       }
       setLoading(true)
       if (modalData.userType === 'tutor') {
          console.log(body)
+         body.role = modalData.userType
          addUser(body)
             .then(res => {
                console.log(res)
@@ -252,6 +420,7 @@ export default function Users() {
                   alert(res.error.data.message)
                   return
                }
+               fetch()
                alert('Invitation sent!')
                setModalData(initialState)
                handleClose()
@@ -260,7 +429,7 @@ export default function Users() {
       } else {
          body.role = modalData.userType
          console.log(body)
-         signupUser(body)
+         addUser(body)
             .then(res => {
                setLoading(false)
                console.log(res)
@@ -268,6 +437,7 @@ export default function Users() {
                   alert(res.error.data.message)
                   return
                }
+               fetch()
                alert('Invitation sent!')
                setModalData(initialState)
                handleClose()
@@ -346,7 +516,68 @@ export default function Users() {
       }
    }
 
+   useEffect(() => {
+      if (modalData.email.trim() === '' || modalData.firstName.trim() === '' || modalData.lastName.trim() === '' || modalData.phone.trim() === '' || modalData.userType.trim() === '') {
+         setAddUserBtnDisabled(true)
+      } else {
+         if (modalData.phone.length < 10 || !isEmail(modalData.email) || !isPhoneNumber(modalData.phone)) {
+            setAddUserBtnDisabled(true)
+         } else {
+            setAddUserBtnDisabled(false)
+         }
+      }
+   }, [modalData.email, modalData.firstName, modalData.lastName, modalData.phone, modalData.userType])
+
+   useEffect(() => {
+      if (!settings.servicesAndSpecialization) return
+      let specs = []
+      settings.servicesAndSpecialization.map(service => {
+         specs.push(...service.specialization)
+      })
+      setSpecializations(specs)
+      console.log('specs', specs);
+
+   }, [settings])
+
+
+   const handleTutorChange = (item) => {
+      // console.log(item);
+      // console.log('filterData tutor', filterData.tutor);
+      if (filterData.tutor.includes(item.value)) {
+         let updated = filterData.tutor.filter(tutor => tutor !== item.value)
+         // setUpdatedSubscriptionData(prev => ({
+         //    ...prev,
+         //    tests: updated
+         // }))
+         setFilterData({
+            ...filterData,
+            tutor: updated
+         })
+      } else {
+
+         setFilterData({
+            ...filterData,
+            tutor: [
+               ...filterData.tutor,
+               item.value
+            ]
+         })
+         // setUpdatedSubscriptionData(prev => ({
+         //    ...prev,
+         //    tests: [...updatedSubscriptionData.tests, item._id]
+         // }))
+      }
+   }
+
    // console.log('users', filteredUsersData);
+   // console.log('settings', settings);
+   // console.log('filterItems', filterItems);
+   // console.log('filterData tutor', filterData.tutor);
+   // console.log('ALL USERS DATA', usersData)
+   // console.log('tutors', allTutors)
+   // console.log('totalPages', totalPages)
+
+
    return (
       <div className='lg:ml-pageLeft bg-lightWhite min-h-screen'>
          <div className='py-14 px-5'>
@@ -364,34 +595,92 @@ export default function Users() {
                   placeholder='User Type'
                   parentClassName='w-full w-1/6'
                   type='select'
-                  value={filterData.userType}
-                  onChange={val => setFilterData({ ...filterData, userType: val })} />
+                  value={filterData.userType.length > 0 ? filterData.userType[0] : ''}
+                  checkbox={{
+                     visible: true,
+                     name: 'test',
+                     match: filterData.userType
+                  }}
+                  onChange={val => setFilterData({
+                     ...filterData,
+                     userType: filterData.userType.includes(val) ?
+                        filterData.userType.filter(item => item !== val)
+                        : [...filterData.userType, val]
+                  })}
+               />
                <InputSelect optionData={settings.leadStatus}
                   placeholder='Lead Status'
                   parentClassName='w-full w-1/6'
                   inputContainerClassName='text-sm border bg-white px-[20px] py-[16px]'
                   type='select'
-                  value={filterData.status}
-                  onChange={val => setFilterData({ ...filterData, status: val })} />
-               <InputSelect optionData={optionData}
-                  placeholder='Services'
+                  checkbox={{
+                     visible: true,
+                     name: 'test',
+                     match: filterData.status
+                  }}
+                  onChange={val => setFilterData({
+                     ...filterData,
+                     status: filterData.status.includes(val) ?
+                        filterData.status.filter(item => item !== val)
+                        : [...filterData.status, val]
+                  })}
+                  value={filterData.status.length > 0 ? filterData.status[0] : ''}
+               />
+               <InputSelect optionData={specializations}
+                  placeholder='Specializations'
                   parentClassName='w-full w-1/6'
                   type='select'
                   inputContainerClassName='text-sm border bg-white px-[20px] py-[16px]'
-                  value={filterData.services}
-                  onChange={val => setFilterData({ ...filterData, services: val })} />
-               <InputSelect optionData={optionData}
+                  value={filterData.specialization.length > 0 ? filterData.specialization[0] : ''}
+                  checkbox={{
+                     visible: true,
+                     name: 'test',
+                     match: filterData.specialization
+                  }}
+                  onChange={val => setFilterData({
+                     ...filterData,
+                     specialization: filterData.specialization.includes(val) ?
+                        filterData.specialization.filter(item => item !== val)
+                        : [...filterData.specialization, val]
+                  })}
+               />
+               <InputSelect optionData={['active', 'blocked', 'dormant']}
+                  placeholder='User Status'
+                  parentClassName='w-full w-1/6 capitalize'
+                  type='select'
+                  inputContainerClassName='text-sm border bg-white px-[20px] py-[16px]'
+                  value={filterData.userStatus.length > 0 ? filterData.userStatus[0] : ''}
+                  checkbox={{
+                     visible: true,
+                     name: 'test',
+                     match: filterData.userStatus
+                  }}
+                  onChange={val => setFilterData({
+                     ...filterData,
+                     userStatus: filterData.userStatus.includes(val) ?
+                        filterData.userStatus.filter(item => item !== val)
+                        : [...filterData.userStatus, val]
+                  })}
+               />
+               <InputSelectNew optionData={allTutors}
                   placeholder='Tutor'
                   parentClassName='w-full w-1/6'
                   type='select'
                   inputContainerClassName='text-sm border bg-white px-[20px] py-[16px]'
-                  value={filterData.tutor}
-                  onChange={val => setFilterData({ ...filterData, tutor: val })} />
-               {/* <button className='bg-primary py-3.5 text-lg px-[21px] flex justify-center items-center text-white font-semibold rounded-lg w-1/6'
-                  onClick={() => setModalActive(true)}>
+                  optionType='object'
+                  value={filterData.tutor.length > 0 ? filterData.tutor[0] : ''}
+                  checkbox={{
+                     visible: true,
+                     name: 'test',
+                     match: filterData.tutor,
+                     matchKey: 'value'
+                  }}
+                  onChange={val => {
+                     handleTutorChange(val)
+                     // setFilterData({ ...filterData, tutor: val })
+                  }}
+               />
 
-                  <img src={AddIcon} className='ml-3' />
-               </button> */}
                <PrimaryButton type='submit'
                   children={
                      <>
@@ -403,42 +692,7 @@ export default function Users() {
                   className='pt-[14px] flex items-center text-lg font-semibold pb-[14px] pl-[21px] pr-[21px]' />
             </div>
             <div className='flex align-center mt-0 gap-[20px]'>
-               {/* <InputField
-                  IconRight={SearchIcon}
-                  placeholder='Type Name'
-                  parentClassName='w-full'
-                  inputContainerClassName='text-sm text-sm bg-white  px-[20px] py-[16px] border'
-                  type='text'
-                  value={filterData.typeName}
-                  onChange={e => setFilterData({ ...filterData, typeName: e.target.value })} />
-               <InputSelect optionData={userTypesList}
-                  inputContainerClassName='text-sm border bg-white px-[20px] py-[16px]'
-                  placeholder='User Type'
-                  parentClassName='w-full'
-                  type='select'
-                  value={filterData.userType}
-                  onChange={val => setFilterData({ ...filterData, userType: val })} />
-               <InputSelect optionData={settings.leadStatus}
-                  placeholder='Lead Status'
-                  parentClassName='w-full'
-                  inputContainerClassName='text-sm border bg-white px-[20px] py-[16px]'
-                  type='select'
-                  value={filterData.status}
-                  onChange={val => setFilterData({ ...filterData, status: val })} />
-               <InputSelect optionData={optionData}
-                  placeholder='Services'
-                  parentClassName='w-full'
-                  type='select'
-                  inputContainerClassName='text-sm border bg-white px-[20px] py-[16px]'
-                  value={filterData.services}
-                  onChange={val => setFilterData({ ...filterData, services: val })} />
-               <InputSelect optionData={optionData}
-                  placeholder='Tutor'
-                  parentClassName='w-full'
-                  type='select'
-                  inputContainerClassName='text-sm border bg-white px-[20px] py-[16px]'
-                  value={filterData.tutor}
-                  onChange={val => setFilterData({ ...filterData, tutor: val })} /> */}
+
             </div>
             <div className='mt-4' >
                <FilterItems items={filterItems} setData={setFilterItems} onRemoveFilter={onRemoveFilter} />
@@ -448,13 +702,15 @@ export default function Users() {
                   data={filteredUsersData}
                   onClick={{ redirect, handleTutorStatus, handleDelete }}
                   tableHeaders={tableHeaders}
+                  headerObject={true}
                   maxPageSize={maxPageSize}
                   isCallingApi={true}
                   total_pages={Math.ceil(totalPages / maxPageSize)}
                   setMaxPageSize={setMaxPageSize}
                   currentPage={currentPage}
                   setCurrentPage={setCurrentPage}
-                  fetch={changeUserField} />
+                  fetch={changeUserField}
+                  extraData={allTutors} />
             </div>
          </div>
 
@@ -472,7 +728,7 @@ export default function Users() {
                   // onClick: handleSubmit,
                   loading: loading,
                   type: 'submit',
-                  disabled: !validData
+                  disabled: addUserBtnDisabled
                }}
                handleClose={handleClose}
                body={
@@ -529,10 +785,13 @@ export default function Users() {
                               labelClassname='ml-4 mb-0.5'
                               isRequired={true}
                               placeholder='Phone Number'
-                              inputContainerClassName='text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0'
-                              inputClassName='bg-transparent'
+                              inputContainerClassName='text-sm pt-3.5 pb-3.5 px-5  bg-primary-50 border-0'
+                              inputClassName='bg-transparent pl-[60px]'
                               parentClassName='w-full' type='text'
                               value={modalData.phone}
+                              inputLeftField={
+                                 <CountryCode numberPrefix={numberPrefix} setNumberPrefix={setNumberPrefix} />
+                              }
                               onChange={e => setModalData({ ...modalData, phone: e.target.value })} />
                         </div>
                      </div>

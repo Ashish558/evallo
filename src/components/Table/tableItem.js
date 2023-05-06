@@ -15,18 +15,20 @@ import EditTestIcon from "../../assets/icons/edit-test.svg";
 import TrashIcon from '../../assets/icons/delete.svg'
 
 import DeleteIcon from "../../assets/icons/cross.svg"
+import DeleteTutorIcon from "../../assets/icons/delete-tutor.svg"
 import InputSelect from "../InputSelect/InputSelect";
 import { useLazyGetSettingsQuery } from "../../app/services/session";
-import { useLazyGetTutorDetailsQuery, useLazyGetUserDetailQuery, usePostTutorDetailsMutation, useUpdateTutorDetailsMutation, useUpdateUserDetailsMutation } from "../../app/services/users";
+import { useLazyGetTutorDetailsQuery, useLazyGetUserDetailQuery, usePostTutorDetailsMutation, useUpdateTutorDetailsMutation, useUpdateUserDetailsMutation, useUpdateUserFieldsMutation } from "../../app/services/users";
 import { useSelector } from "react-redux";
 import { useLazyGetTestResponseQuery } from "../../app/services/test";
 import { getFormattedDate, getScore, getScoreStr } from "../../utils/utils";
+import InputField from "../InputField/inputField";
 
 //can b made dynamic
-export default function TableItem({ item, dataFor, onClick, excludes, fetch }) {
+export default function TableItem({ item, dataFor, onClick, excludes, fetch, extraData }) {
    const [score, setScore] = useState('-')
-   // console.log(onClick)
    const [fetchSettings, settingsResp] = useLazyGetSettingsQuery()
+   const [updateFields, updateFieldsResp] = useUpdateUserFieldsMutation()
    const [getUserDetail, getUserDetailResp] = useLazyGetUserDetailQuery()
    const [getTutorDetail, getTutorDetailResp] = useLazyGetTutorDetailsQuery()
    const [updateUserDetail, updateUserDetailResp] = useUpdateUserDetailsMutation()
@@ -37,13 +39,13 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch }) {
    const { role: persona } = useSelector(state => state.user)
 
    const [userDetail, setUserDetail] = useState({})
+   const [leadStatus, setLeadStatus] = useState('')
 
    // console.log(dataFor);
    const [settings, setSettings] = useState({
       leadStatus: []
    })
 
-   // console.log('item', item);
 
    useEffect(() => {
       if (dataFor === 'assignedTestsStudents') {
@@ -84,7 +86,7 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch }) {
                      return
                   }
                   // console.log('Resp score', res.data.data.response);
-                  let responseData =  res.data.data.response
+                  let responseData = res.data.data.response
                   let score = getScoreStr(responseData.testType, responseData.score, responseData.subjects, responseData.subjects.length)
                   // console.log('SCORE', score);
                   // let scr = getScore(res.data.data.response.testType, res.data.data.response.subjects)
@@ -103,6 +105,20 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch }) {
 
    const navigate = useNavigate();
 
+   const handlestatusChange = (field) => {
+      // console.log(field)
+      // console.log(item)
+      // return
+      updateFields({ id: item._id, fields: field })
+         .then(res => {
+            if (res.error) {
+               return console.log('error updating');
+            }
+            fetch && fetch(field, item._id)
+            console.log('update res', res.data);
+         })
+
+   }
    const handleChange = (field) => {
       // console.log(field)
       // console.log(item._id)
@@ -148,6 +164,38 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch }) {
       }
    }
 
+   useEffect(() => {
+      if (dataFor === 'allUsers') {
+         if (item.role === 'tutor') {
+            // console.log('tutor', user._id);
+            getTutorDetail({ id: item._id })
+               .then(resp => {
+                  // console.log('TUTOR RESp', resp);
+                  // console.log('tutor-details', resp.data.data);
+                  let status = '-'
+                  if (resp.data.data.details) {
+                     status = resp.data.data.details.leadStatus
+                     setLeadStatus(status)
+                  }
+               })
+         } else {
+            getUserDetail({ id: item._id })
+               .then(resp => {
+                  // console.log('user-details', resp.data.data);
+                  let status = '-'
+                  if (resp.data.data.userdetails) {
+                     status = resp.data.data.userdetails.leadStatus
+                     setLeadStatus(status)
+                  }
+               })
+         }
+      }
+
+   }, [item])
+   // console.log('item', item);
+   // console.log('extraData', extraData );
+   // console.log('onClick', onClick );
+
    return (
       <>
          {dataFor === "allUsers" && (
@@ -177,12 +225,26 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch }) {
                </td>
                <td className="font-medium text-sm px-1  min-w-14 py-4">
                   <div className="my-[6px]">
-                     {item.assignedTutor.length > 1 ? item.assignedTutor.map(i => i + ',') : item.assignedTutor}
+                     {item.assignedTutor?.length > 0 ?
+                        item.assignedTutor?.map((id, idx) => {
+                           const name = extraData.find(item => item._id === id)
+                           if (name === undefined) return 'l'
+                           return `${name.value} ${idx + 1 < item.assignedTutor.length ? ',' : ''} `
+                        }) : '-'
+                     }
+                     {/* {item.assignedTutor.length > 1 ?
+                        item.assignedTutor.map(id => {
+                           const name = extraData.find(item => item._id === id)
+                           if (name === undefined) return 'l'
+                           return name.value
+                        })
+                        :
+                        item.assignedTutor} */}
                   </div>
                </td>
                <td className="font-medium text-sm px-1  min-w-14 py-4">
                   <div className="my-[6px]">
-                     <InputSelect value={item.leadStatus ? item.leadStatus : '-'}
+                     <InputSelect value={leadStatus ? leadStatus : '-'}
                         optionData={settings.leadStatus}
                         inputContainerClassName='min-w-[100px] pt-0 pb-0 pr-2 pl-0 text-center'
                         optionClassName='font-semibold opacity-60 text-sm'
@@ -191,18 +253,27 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch }) {
                   </div>
                </td>
                <td className="font-medium text-sm px-1  min-w-14 py-4">
+                  <InputSelect value={item.userStatus ? item.userStatus : '-'}
+                     optionData={['active', 'blocked', 'dormant']}
+                     inputContainerClassName='min-w-[100px] pt-0 pb-0 pr-2 pl-0 text-center'
+                     optionClassName='font-semibold opacity-60 text-sm'
+                     labelClassname='hidden'
+                     onChange={val => handlestatusChange({ userStatus: val })} />
+               </td>
+               {/* <td className="font-medium text-sm px-1  min-w-14 py-4">
                   <div className="my-[6px]">
-                     {/* {item.userType === 'tutor' ? */}
+                  
                      <span className="cursor-pointer inline-block px-1" onClick={() => onClick.handleTutorStatus(item,)}>
                         {item.block === false ? 'Active' : item.userType === 'parent' || item.userType === 'student' ? 'Blocked' : 'Dormant'}
                      </span>
-                     {/* : */}
-                     {/* item.tutorStatus} */}
+
                   </div>
-               </td>
+               </td> */}
                <td className="font-medium text-sm px-1  min-w-14 py-4">
                   <div className="my-[6px]">
-                     {item.services}
+                     {item.specialization?.map((specialization, idx) => {
+                        return `${specialization}${idx + 1 === item.specialization.length ? '' : ','}`
+                     })}
                   </div>
                </td>
                <td className="font-medium text-sm px-1  min-w-14 py-4">
@@ -212,12 +283,12 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch }) {
                </td>
                <td className="font-medium px-1 min-w-14 py-4">
                   <div className="w-4 h-4 rounded-full bg-[#E3E3E3] flex items-center justify-center">
-                  <img
-                     src={TrashIcon}
-                     className="cursor-pointer"
-                     onClick={() => onClick.handleDelete(item)}
+                     <img
+                        src={TrashIcon}
+                        className="cursor-pointer"
+                        onClick={() => onClick.handleDelete(item)}
                      />
-                     </div>
+                  </div>
                </td>
             </tr>
          )}
@@ -236,13 +307,16 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch }) {
                   {item.assignedOn}
                </td>
                <td className="font-medium px-1  min-w-14 py-4">
+                  {item.assignedBy}
+               </td>
+               <td className="font-medium px-1  min-w-14 py-4">
                   {item.dueDate}
                </td>
                <td className="font-medium px-1  min-w-14 py-4">
                   {item.testName}
                </td>
                <td className="font-medium px-1  min-w-14 py-4">
-                  {item.duration === "-"? "Unlimited" : item.duration}
+                  {item.duration === "-" ? "Unlimited" : item.duration}
                </td>
                <td className="font-medium px-1  min-w-14 py-4">
                   <div className={`flex items-center no-wrap justify-center`}>
@@ -270,16 +344,16 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch }) {
                   </button>
                </td>
                <td className="font-medium px-1 min-w-14 py-4">
-               <img src={DownloadIcon} className='w-[30px] cursor-pointer' 
-               onClick={() => handlePdfNavigate()} />
+                  <img src={DownloadIcon} className='w-[30px] cursor-pointer'
+                     onClick={() => handlePdfNavigate()} />
                </td>
-               <td className="font-medium px-1 min-w-14 py-4">
+               {/* <td className="font-medium px-1 min-w-14 py-4">
                   <img
                      src={ResendConfirmation}
                      className="cursor-pointer"
                      onClick={() => onClick.handleResend(item)}
                   />
-               </td>
+               </td> */}
                <td className="font-medium px-1 min-w-14 py-4">
                   {/* <img
                      src={RedIcon}
@@ -328,7 +402,7 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch }) {
          )}
          {dataFor === "assignedStudents" && (
             <tr className="odd:bg-white text-sm shadow-sm shadow-slate-200 even:bg-primaryWhite-300 rounded-2xl leading-7">
-               {mapData(item, 'assignedStudents', excludes, onClick)}
+               {MapData(item, 'assignedStudents', excludes, onClick)}
                {/* <td>
                   <img src={RemoveIcon} />
                </td> */}
@@ -336,17 +410,17 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch }) {
          )}
          {dataFor === "studentTestsReport" && (
             <tr className={`text-sm shadow-sm shadow-slate-200 rounded-2xl leading-7 ${!item.isCorrect ? 'bg-[#e02b1d]/5' : 'odd:bg-white  even:bg-primaryWhite-300'} `}>
-               {mapData(item)}
+               {MapData(item)}
             </tr>
          )}
          {dataFor === "studentTestsReportSmall" && (
             <tr className={`text-sm shadow-sm shadow-slate-200  rounded-2xl leading-7 ${!item.isCorrect ? 'bg-[#e02b1d]/5' : 'odd:bg-white  even:bg-primaryWhite-300'} `}>
-               {mapData(item)}
+               {MapData(item)}
             </tr>
          )}
          {dataFor === "studentTestsAnswers" && (
             <tr className="odd:bg-white text-sm shadow-sm shadow-slate-200 even:bg-primaryWhite-300 rounded-2xl leading-7">
-               {mapData(item)}
+               {MapData(item)}
                <td className="font-medium px-1 min-w-14 py-4 flex justify-center items-center">
                   <button className="flex items-center">
                      <span className="inline-block mr-3 text-textBlue">
@@ -368,7 +442,7 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch }) {
                                  {returnStatus(item.status)}
                               </div>
                               : key === 'scores' ? <div className="cursor-pointer"
-                              onClick={()=>item.isCompleted === true &&  navigate(`/assigned-tests/${item.testId}/${item.assignedTestId}/report/${item.studentId._id}`) } >
+                                 onClick={() => item.isCompleted === true && navigate(`/assigned-tests/${item.testId}/${item.assignedTestId}/report/${item.studentId._id}`)} >
                                  {item.isCompleted === true ? score : '-'}
                               </div> :
                                  item[key]
@@ -429,12 +503,12 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch }) {
          )}
          {dataFor === "invoice" && (
             <tr className="bg-white text-sm shadow-sm shadow-slate-200 rounded-2xl leading-7 mt-[10px]">
-               {mapData(item, dataFor, excludes)}
+               {MapData(item, dataFor, excludes, onClick)}
             </tr>
          )}
          {dataFor === "testsDetailQuestions" && (
             <tr className="bg-white text-sm shadow-sm shadow-slate-200 rounded-2xl leading-7 mt-[10px]">
-               {mapData(item, dataFor, excludes)}
+               {MapData(item, dataFor, excludes)}
                <td className="font-medium px-1 min-w-14 py-4">
                   <img
                      src={EditTestIcon}
@@ -450,6 +524,7 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch }) {
                <td>{item.testType}</td>
                <td>{item.createdAt.split("T")[0]}</td>
                <td>{item.updatedAt.split("T")[0]}</td>
+               <td> {item.no_of_assign ? item.no_of_assign : '-'} </td>
                <td className="font-medium px-1 py-4 text-right w-240">
                   <div className="flex justify-end">
                      <button
@@ -474,12 +549,34 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch }) {
                </td>
             </tr>
          )}
+         {dataFor === "assignedTutors" && (
+            <tr className="bg-white text-sm shadow-sm shadow-slate-200 rounded-2xl leading-7 mt-[10px]">
+               {MapData(item, dataFor, excludes, onClick)}
+               <td className="font-medium flex justify-center px-1 min-w-14 py-4">
+                  <img
+                     src={DeleteTutorIcon}
+                     className="cursor-pointer"
+                     onClick={() => onClick.handleDelete(item)}
+                  />
+               </td>
+            </tr>
+         )}
       </>
    );
 }
 
-const mapData = (data, dataFor, exclude = [], onClick) => {
-   // console.log(data);
+const MapData = (data, dataFor, exclude = [], onClick) => {
+   // console.log(data.remark);
+   const [remarkText, setRemarkText] = useState('')
+   useEffect(() => {
+      if (data.remark) {
+         setRemarkText(data.remark)
+      } else {
+         setRemarkText('')
+      }
+   }, [data.remark])
+
+   const [disabled, setDisabled] = useState(true)
    return Object.keys(data).map((key, i) =>
       exclude.includes(key) ? <></> :
          (
@@ -498,9 +595,9 @@ const mapData = (data, dataFor, exclude = [], onClick) => {
                </td>
             ) :
                dataFor === 'invoice' && key === 'currentBalance' ? (
-                  <td key={i} className='font-medium px-1 text-[#009262]  py-4'>
-                     <p className={`font-semibold ${data.status === 'Paid' && "text-[#009262]"} ${data.status === 'Unpaid' && "text-[#E02B1D]"} ${data.status === 'Cancelled' && "text-[#E48900]"}`}>
-                        {data[key] === "Paid" && "-"}{data[key]}
+                  <td key={i} className='font-medium px-1 text-[#009262] py-4'>
+                     <p className={`font-semibold`}>
+                        {data[key]}
                      </p>
                   </td>
                ) :
@@ -512,12 +609,55 @@ const mapData = (data, dataFor, exclude = [], onClick) => {
                            {data[key]}
                         </p>
                      </td>
-                  ) :
-                     (
-                        <td key={i} className={`font-medium px-1 ${data[key] === "Unpaid" && "text-[#E02B1D]"} ${data[key] === 'Paid' && "text-[#009262]"} ${data[key] === 'Cancelled' && "text-[#7C859C]"} min-w-14 py-4`}>
-                           {key !== 'status' && data[key]}
-                        </td>
-                     )
+                  ) : dataFor === 'invoice' && key === 'invoiceType' ?
+                     <td key={i} className='font-medium px-1 text-[#009262] py-4'>
+                        <p className={`font-semibold`}>
+                           <InputSelect value={data[key] ? data[key] : '-'}
+                              optionData={data[key] === 'paid' ?  ['paid', 'cancelled'] : ['paid', 'draft', 'cancelled', 'unpaid']}
+                              inputContainerClassName='min-w-[100px] pt-0 pb-0 pr-2 pl-0 text-center'
+                              optionClassName='font-semibold opacity-60 text-sm'
+                              labelClassname='hidden'
+                              onChange={val => onClick.handleEdit({
+                                 ...data,
+                                 invoiceType: val
+                              })} />
+                        </p>
+                     </td> : dataFor === 'invoice' && key === 'remark' ?
+                        <td key={i} className='font-medium px-1 py-4'>
+                           <InputField value={remarkText}
+                              onChange={e => setRemarkText(e.target.value)}
+                              onClick={() => setDisabled(false)}
+                              parentClassName="mr-4 w-full"
+                              onFocus={() => setDisabled(false)}
+                              onBlur={() => {
+                                 setDisabled(true);
+                                 data.remark !== remarkText && onClick.handleEdit({
+                                    _id: data._id,
+                                    remark: remarkText
+                                 })
+                              }}
+                              inputContainerClassName={`bg-white ${disabled ? 'border-0' : 'border'} pt-1.5 pb-1.5 lg:pt-1.5 lg:pb-1.5 disabled:border-0`} />
+                        </td> :
+                        dataFor === 'assignedTutors' && key === 'tutorName' || dataFor === 'assignedTutors' && key === 'studentName' ? (
+                           <td key={i} className='font-medium px-1 text-[#2A6CFB] py-4'>
+                              <p className={`font-semibold cursor-pointer`}
+                                 onClick={() => key === 'tutorName' ? onClick.handleNavigate(`/profile/tutor/${data.assiginedTutor}`) : onClick.handleNavigate(`/profile/student/${data.student_id}`)} >
+                                 {data[key]}
+                              </p>
+                           </td>
+                        ) : dataFor === 'assignedTutors' && key === 'associatedParent' ?
+                           <td key={i} className='font-medium px-1 text-[#2A6CFB] py-4'>
+                              <p className={`font-semibold cursor-pointer`}
+                                 onClick={() => onClick.handleNavigate(`/profile/parent/${data.associatedParent}`)}>
+                                 {`${data.parentFirstName ? data.parentFirstName : ''} ${data.parentLast ? data.parentLast : ''}`}
+
+                              </p>
+                           </td> :
+                           (
+                              <td key={i} className={`font-medium px-1 ${data[key] === "Unpaid" && "text-[#E02B1D]"} ${data[key] === 'Paid' && "text-[#009262]"} ${data[key] === 'Cancelled' && "text-[#7C859C]"} min-w-14 py-4`}>
+                                 {data[key]}
+                              </td>
+                           )
          ))
 
 }
