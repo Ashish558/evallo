@@ -16,7 +16,6 @@ const StudentDashboardHeader = () => {
    const { id } = useSelector(state => state.user)
    const [images, setImages] = useState([])
    const [fetchSettings, fetchSettingsResp] = useLazyGetSettingsQuery()
-   // const [fetchUserSessions, fetchUserSessionsResponse] = useLazyGetSessionsQuery();
    const [fetchUserSessions, fetchUserSessionsResponse] = useLazyGetCompletedSessionsQuery();
    const [feedbackSessions, setFeedbackSessions] = useState([])
    const [getUserDetail, userDetailResp] = useLazyGetTutorDetailsQuery()
@@ -24,38 +23,6 @@ const StudentDashboardHeader = () => {
    const [updateFeedback, updateFeedbackResp] = useUpdateFeedbackMutation()
 
    // console.log(id);
-   useEffect(() => {
-      fetchFeedbacks({ id })
-         .then(({ error, data }) => {
-            if (error) {
-               console.log(error)
-               return
-            }
-            data.data.feedback.map(feedback => {
-               getUserDetail({ id: feedback.tutorId })
-                  .then(res => {
-                     const tutor = res.data.data.user
-                     getSession(feedback.sessionId)
-                        .then(res => {
-                           const session = res.data.data.session
-                           setFeedbacks(prev => {
-                              let obj = {
-                                 ...feedback,
-                                 tutorName: `${tutor.firstName} ${tutor.lastName}`,
-                                 service: session.service
-                              }
-                              let allFeedbacks = [...prev,
-                              { ...obj }
-                              ]
-                              return allFeedbacks.sort(function (a, b) {
-                                 return new Date(b.updatedAt) - new Date(a.updatedAt);
-                              });
-                           })
-                        })
-                  })
-            })
-         })
-   }, [])
 
    const fetchSessions = () => {
       fetchUserSessions(id).then((res) => {
@@ -88,22 +55,6 @@ const StudentDashboardHeader = () => {
             setImages(res.data.data.setting.offerImages)
          })
    }, [])
-
-   useEffect(() => {
-      let tempdata = []
-      let tempsessions = []
-      feedbacks.map(feedback => {
-         if (tempsessions.includes(feedback.sessionId)) {
-            return
-         } else {
-            tempdata.push(feedback)
-            tempsessions.push(feedback.sessionId)
-         }
-      })
-      tempdata = tempdata.filter(item => item.viewed === false)
-      setAllFeedbacks(tempdata)
-   }, [feedbacks])
-
 
    return (
       <>
