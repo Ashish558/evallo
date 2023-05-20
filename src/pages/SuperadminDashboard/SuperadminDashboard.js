@@ -2,6 +2,8 @@ import React from 'react'
 import SAdminNavbar from '../../components/sAdminNavbar/sAdminNavbar'
 import styles from './styles.module.css'
 import OrgCard from './orgCard/orgCard'
+import Table from './Table/table'
+import { orgData, tableHeaders } from './temp'
 
 const orgContents = [
    {
@@ -92,14 +94,14 @@ export default function SuperadminDashboard() {
                               </div>
                            </div>
                            <div className='w-2/5'>
-
                            </div>
                         </div>
                      </div>
                   </div>
                </section>
-               <section className='flex-1'>
-                  d
+               <section className='flex-1 px-5 bg-[#eeeeee] mx-6 py-4'>
+                  <p className={styles.subheading}>  Latest org signup </p>
+                  <Table data={orgData} tableHeaders={tableHeaders} maxPageSize={5} />
                </section>
             </div>
          </div>
