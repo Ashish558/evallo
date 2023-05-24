@@ -46,7 +46,11 @@ const StudentDashboard = () => {
          let year = parseInt(concept.year)
          let monthName = getMonthName(month)
          let nextMonthName = getMonthName(month + 1)
-         return `${1}st ${monthName} ${year} - ${1}st ${nextMonthName} ${year}`
+         if (!month && !year) {
+            return 'prev'
+         } else {
+            return `${1}st ${monthName} ${year} - ${1}st ${nextMonthName} ${year}`
+         }
       })
       setDates(listData)
 

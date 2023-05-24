@@ -2,80 +2,8 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap");
 
 @font-face {
-    font-family: GilroyBlack;
-    src: url(./assets/fonts/Gilroy-Black.ttf);
-}
-@font-face {
-    font-family: GilroyBlackItalic;
-    src: url(./assets/fonts/Gilroy-BlackItalic.ttf);
-}
-@font-face {
-    font-family: GilroyBold;
-    src: url(./assets/fonts/Gilroy-Bold.ttf);
-}
-@font-face {
-    font-family: GilroyBolditalic;
-    src: url(./assets/fonts/Gilroy-BoldItalic.ttf);
-}
-@font-face {
-    font-family: GilroyExtraBold;
-    src: url(./assets/fonts/Gilroy-ExtraBold.ttf);
-}
-@font-face {
-    font-family: GilroyExtraBolditalic;
-    src: url(./assets/fonts/Gilroy-Black.ttf);
-}
-@font-face {
-    font-family: GilroyHeavy;
-    src: url(./assets/fonts/Gilroy-Heavy.ttf);
-}
-@font-face {
-    font-family: GilroyHeavyItalic;
-    src: url(./assets/fonts/Gilroy-HeavyItalic.ttf);
-}
-@font-face {
-    font-family: GilroyLight;
-    src: url(./assets/fonts/Gilroy-Light.ttf);
-}
-@font-face {
-    font-family: GilroyLightItalic;
-    src: url(./assets/fonts/Gilroy-LightItalic.ttf);
-}
-@font-face {
-    font-family: GilroyMedium;
-    src: url(./assets/fonts/Gilroy-Medium.ttf);
-}
-@font-face {
-    font-family: GilroyMediumItalic;
-    src: url(./assets/fonts/Gilroy-MediumItalic.ttf);
-}
-@font-face {
-    font-family: GilroyRegular;
-    src: url(./assets/fonts/Gilroy-Regular.ttf);
-}
-@font-face {
     font-family: GilroySemiBold;
     src: url(./assets/fonts/Gilroy-SemiBold.ttf);
-}
-@font-face {
-    font-family: GilroySemiBoldItalic;
-    src: url(./assets/fonts/Gilroy-SemiBoldItalic.ttf);
-}
-@font-face {
-    font-family: GilroyThin;
-    src: url(./assets/fonts/Gilroy-Thin.ttf);
-}
-@font-face {
-    font-family: GilroyThinItalic;
-    src: url(./assets/fonts/Gilroy-ThinItalic.ttf);
-}
-@font-face {
-    font-family: GilroyUltralight;
-    src: url(./assets/fonts/Gilroy-UltraLight.ttf);
-}
-@font-face {
-    font-family: GilroyUltralightItalic;
-    src: url(./assets/fonts/Gilroy-UltraLightItalic.ttf);
 }
 
 body {

@@ -1,0 +1,46 @@
+.subheading {
+   /* font-family: 'Roboto'; */
+   font-style: normal;
+   font-weight: 600;
+   font-size: 14px;
+   line-height: 120%;
+   text-transform: uppercase;
+   color: #828282;
+   margin-bottom: 8px;
+}
+
+.userStatsContainer {
+   background: #EEEEEE;
+   border-radius: 4px;
+   overflow: hidden;
+}
+.userStat{
+   border-right: 1px solid  rgba(76, 61, 61, 0.15);
+   border-top: 1px solid  rgba(76, 61, 61, 0.15);
+   flex: 1;
+   text-align: center;
+   padding: 11px 5px;
+   font-size: 12px;
+}
+.userStat:first-child{
+   border-left: 1px solid  rgba(76, 61, 61, 0.15);
+}
+.selected{
+   background: #4C3D3D;
+   color: white;
+}
+
+
+.statHead {
+   color: #737373;
+   font-size: 12px;
+   padding-right: 6px;
+}
+
+.text {
+   font-family: 'Inter';
+   font-style: normal;
+   font-weight: 600;
+   font-size: 20px;
+   color: #4C3D3D;
+}

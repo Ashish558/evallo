@@ -1,0 +1,19 @@
+.container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 220px;
+    background-color: #EEEEEE;
+    height: 100vh;
+    display: flex;
+}
+
+.wrapper {
+    flex: 1;
+    align-self: stretch;
+}
+
+.selected {
+    background: rgba(126, 126, 126, 0.15);
+    border-left: 3px solid #4C3D3D;
+}

@@ -27,6 +27,7 @@ import Invoice from "../pages/Invoice/Invoice";
 import { useEffect } from "react";
 import StudentReport from "../pages/StudentReport/StudentReport";
 import AssignedTutors from "../pages/AssignedTutors/AssignedTutors";
+import SuperadminDashboard from "../pages/SuperadminDashboard/SuperadminDashboard";
 
 const PrivateRoutes = [
    {
@@ -79,6 +80,12 @@ const AppRoutes = () => {
                path="/signup"
                element={
                   <Signup />
+               }
+            />
+            <Route
+               path="/dashboard"
+               element={
+                  <SuperadminDashboard />
                }
             />
 
