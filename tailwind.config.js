@@ -43,7 +43,7 @@ module.exports = {
             // primary: '',
             dark: "#A9A6B6",
             primary: {
-               DEFAULT: "#7152EB",
+               DEFAULT: "#22BEF5",
                300: "rgba(113, 82, 235, 0.3)",
                dark: "#25335A",
                light: "rgba(151, 102, 255, 0.3)",
@@ -91,6 +91,7 @@ module.exports = {
             40: "40px",
          },
          fontSize: {
+            'small': '10.5px',
             21: "21px",
             40: "40px",
             42: "42px",

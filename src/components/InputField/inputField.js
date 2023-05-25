@@ -34,7 +34,7 @@ export default function InputField({
    return (
       <div className={`relative ${parentClassName && parentClassName}`}>
          {label && <label
-            className={`inline-block font-semibold ${labelClassname} ml-3`}
+            className={`inline-block font-semibold ${labelClassname} ml-0`}
          >
             {label}
             {required && (
@@ -42,7 +42,7 @@ export default function InputField({
             )}
          </label>}
          <div
-            className={`py-[13px] px-[14px] lg:py-[16px] lg:px-[21px] flex items-center rounded-10 ${inputContainerClassName ? inputContainerClassName : ""} ${disabled === true ? 'cursor-not-allowed' : ''} `}
+            className={`py-[13px] px-[14px] lg:py-[9px] lg:px-[16px] flex items-center rounded border border-[#D0D5DD] ${inputContainerClassName ? inputContainerClassName : ""} ${disabled === true ? 'cursor-not-allowed' : ''} `}
 
          >
             {Icon && <img src={Icon} className={`mr-5 ${iconSize === 'medium' ? 'w-[24px]' : 'w-[28px]'}`} />}

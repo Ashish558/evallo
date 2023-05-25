@@ -16,6 +16,8 @@ import styles from './Login.module.css'
 import { useNavigate } from "react-router-dom";
 import PrimaryButton from "../../components/Buttons/PrimaryButton";
 import Loader from "../../components/Loader";
+import CCheckbox from "../../components/CCheckbox/CCheckbox";
+import EvalloLogo from '../../assets/icons/evallo.svg'
 
 export default function Login({ setLoginFormActive }) {
    const emailValidation = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
@@ -107,46 +109,44 @@ export default function Login({ setLoginFormActive }) {
    const props = { setActiveFrame, setResetPasswordActive };
 
    return (
-      <div className="min-h-screen">
-         <div className="grid grid-cols-1 md:grid-cols-2 min-h-screen">
+      <div className="min-h-screen bg-[#22BEF5]">
+         <div className="flex justify-center items-center md:grid-cols-2 min-h-screen">
             <div className="bg-primary hidden lg:block">
                <ImageSlider className={styles.loginCarousel} images={[CarouselImg, CarouselImg]} pagination={true} />
             </div>
-            <div className="lg:flex lg:items-center">
+            <div className="lg:flex lg:items-center bg-white rounded-md py-6 px-5 md:px-[66px]">
                {loginActive ? (
                   <div className="w-full">
-                     <p className="font-bold text-[28px] lg:text-5xl leading-snug mb-7 bg-[#7152EB] lg:bg-transparent  px-[49px] lg:px-[120px] text-white lg:text-black pt-[90px] pb-[34px] lg:pt-0 lg:pb-0">
+                     <img src={EvalloLogo} alt='logo' className="mb-4" />
+                     <p className={`font-bold text-[28px] lg:text-5xl mb-1.5 bg-transparent lg:text-black pt-[90px] pb-[34px] lg:pt-0 lg:pb-0 ${styles.title}`}>
                         Login
                      </p>
-
-                     <p className="text-lg font-bold mb-12 hidden lg:block px-[120px]">
-                        Login with email address
+                     <p className={`text-lg font-bold mb-9 ${styles.textGrayed} `}>
+                        Please fill your detail to access your account.
                      </p>
-                     <form onSubmit={handleSubmit} className={`px-[49px] lg:px-[120px] mt-[105px] lg:mt-0 ${wait ? 'cursor-wait' : 'cursor-default'}`}>
+                     <form onSubmit={handleSubmit} className={` mt-[105px] lg:mt-0 ${wait ? 'cursor-wait' : 'cursor-default'}`}>
                         <InputField
-                           Icon={EmailIcon}
+                           // Icon={EmailIcon}
                            iconSize='medium'
                            placeholder="Email address"
-                           parentClassName="mb-[20px] lg:mb-6"
+                           parentClassName="mb-[20px] lg:mb-6 md:w-[269px]"
                            label="Email Address"
-                           labelClassname="ml-2 mb-[4px] lg:mb-2 text-[12px] lg:text-[16px]"
+                           labelClassname="ml-2 mb-[4px] lg:mb-2 text-[12px] lg:text-[14px]"
                            inputClassName="bg-transparent"
-                           inputContainerClassName='border'
                            value={email}
                            onChange={(e) => setEmail(e.target.value)}
                            error={error.email}
                         />
 
                         <InputField
-                           Icon={Passwordicon}
+                           // Icon={Passwordicon}
                            iconSize='medium'
                            parentClassName="mb-[9px] lg:mb-6"
                            placeholder="Password"
                            label="Password"
                            type='password'
-                           labelClassname="ml-2 mb-[4px] lg:mb-2 text-[12px] lg:text-[16px]"
+                           labelClassname="ml-2 mb-[4px] lg:mb-2 text-[12px] lg:text-[14px]"
                            inputClassName="bg-transparent"
-                           inputContainerClassName='border'
                            value={password}
                            onChange={(e) => setPassword(e.target.value)}
                            error={error.password}
@@ -156,18 +156,23 @@ export default function Login({ setLoginFormActive }) {
                               }
                            }}
                         />
-                        <p
-                           className="text-secondary text-[10px] lg:text-xs inline-block cursor-pointer font-semibold ml-2"
-                           onClick={() =>
-                              setActiveFrame(setIsPasswordForgot)
-                           }
-                        >
-                           Forgot Password ?
-                        </p>
+                        <div className="flex justify-between items-center">
+                           <div className="flex items-center">
+                              <CCheckbox /> <span className="text-small font-semibold"> Remember me </span>
+                           </div>
+                           <p
+                              className="text-secondary text-[10px] lg:text-xs inline-block cursor-pointer font-semibold ml-auto"
+                              onClick={() =>
+                                 setActiveFrame(setIsPasswordForgot)
+                              }
+                           >
+                              Forgot Password ?
+                           </p>
+                        </div>
 
                         <button
                            disabled={loginLoading === true ? true : !(emailValidation.test(email) && password.length > 0)}
-                           className={`w-full relative bg-primaryDark disabled:bg-pink pt-3.5 pb-3.5 mt-[148px] lg:mt-12 rounded-10 text-white text-lg ${loginLoading ? 'cursor-wait' : 'cursor-pointer'}`}
+                           className={`w-full relative bg-[#22BEF5] disabled:opacity-60 pt-3.5 pb-3.5 lg:pt-[9px] lg:pb-[9px] mt-[148px] lg:mt-5 rounded-10 text-white text-lg ${loginLoading ? 'cursor-wait' : 'cursor-pointer'}`}
                            onClick={handleSubmit}
                         >
                            Login
@@ -177,11 +182,17 @@ export default function Login({ setLoginFormActive }) {
                            }
                         </button>
                         <p
+                           className={`cursor-pointer relative text-xs font-semibold ml-2 mt-2 lg:inline-block hidden`}
+                           onClick={() => navigate('/signup')}
+                        >
+                           Don’t have an account?
+                        </p>
+                        <span
                            className={`text-secondary cursor-pointer relative text-xs font-semibold ml-2 mt-2   lg:inline-block hidden`}
                            onClick={() => navigate('/signup')}
                         >
                            Sign-up Instead?
-                        </p>
+                        </span>
                      </form>
 
                   </div>

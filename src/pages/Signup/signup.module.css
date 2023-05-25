@@ -43,8 +43,31 @@
 }
 
 #signUp label {
-    margin-left: 10px;
-    font-size: 14px;
+    margin-left: 2px;
+    margin-bottom: 5.87px;
+    font-size: 12px;
     font-weight: 500;
     color: rgba(0, 0, 0, 0.9);
+}
+.inputs{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+.inputs > div {
+    flex-basis: calc(50% - 16px);
+}
+.textGrayed {
+    font-weight: 400;
+    font-size: 11.7354px;
+    line-height: 18px;
+    color: #667085;
+}
+
+.title {
+    font-weight: 700;
+    font-size: 29.9448px;
+    line-height: 36px;
+    letter-spacing: 0.01em;
+    text-transform: capitalize;
 }
