@@ -1,15 +1,15 @@
 .container {
     display: block;
     position: relative;
-    padding-left: 32px;
+    padding-left: 22px;
     cursor: pointer;
-    font-size: 22px;
+    font-size: 14px;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
-    width: 22px;
-    height: 22px;
+    width: 14px;
+    height: 14px;
 }
 
 .container input {
@@ -24,10 +24,10 @@
     position: absolute;
     top: 0;
     left: 0;
-    height: 22px;
-    width: 22px;
+    height: 14px;
+    width: 14px;
     border: 1.5px solid rgba(0, 0, 0, 0.2);
-    border-radius: 6px;
+    border-radius: 2px;
 }
 
 .container input:checked ~ .checkmark {
@@ -45,13 +45,13 @@
 }
 
 .container .checkmark:after {
-    left: 8px;
-    top: 4px;
-    width: 4px;
-    height: 10px;
+    left: 50%;
+    top: 50%;
+    width: 3px;
+    height: 8px;
     border: solid white;
-    border-width: 0 3px 3px 0;
+    border-width: 0 2px 2px 0;
     -webkit-transform: rotate(45deg);
     -ms-transform: rotate(45deg);
-    transform: rotate(45deg);
+    transform: translateX(-50%) translateY(-50%) rotate(45deg);
 }

@@ -32,7 +32,7 @@ export default function InputField({
    const [inputType, setInputType] = useState(type)
 
    return (
-      <div className={`relative ${parentClassName && parentClassName}`}>
+      <div className={`relative text-sm ${parentClassName && parentClassName}`}>
          {label && <label
             className={`inline-block font-semibold ${labelClassname} ml-0`}
          >
@@ -50,7 +50,7 @@ export default function InputField({
             {prefix &&
                <span className="mr-3">{prefix}</span>}
             <input
-               className={`outline-0 w-full ${inputClassName ? inputClassName : ""} ${disabled === true ? 'cursor-not-allowed' : ''} `}
+               className={`outline-0 w-full text-sm ${inputClassName ? inputClassName : ""} ${disabled === true ? 'cursor-not-allowed' : ''} `}
                placeholder={placeholder}
                type={inputType ? inputType : "text"}
                onChange={(e) => onChange !== undefined ? onChange(e) : ""}
