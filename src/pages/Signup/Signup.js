@@ -368,12 +368,12 @@ export default function Signup() {
         signupUser(reqBody)
         .then(res => {
           console.log(res);
+          setFrames({
+            ...frames,
+            signupActive: false,
+            orgDetails: true,
+          });
         })
-        setFrames({
-          ...frames,
-          signupActive: false,
-          orgDetails: true,
-        });
       }
     });
   };
@@ -433,7 +433,7 @@ export default function Signup() {
   console.log("vaues", values);
 
   return (
-    <div className="min-h-screen bg-primary" id={styles.signUp}>
+    <div className="min-h-screen overflow-y-auto pb-6 bg-primary" id={styles.signUp}>
       <div className="flex justify-center flex-col items-center md:grid-cols-2 min-h-screen ">
       <img src={cuate} alt="rocket" class="h-10vh mb-10" />
         <>
