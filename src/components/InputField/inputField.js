@@ -63,7 +63,7 @@ export default function InputField({
                onFocus={onFocus}
                onBlur={onBlur}
             />
-            {type === 'password' && <img src={EyeIcon} className="ml-4 w-[20px]"
+            {type === 'password' && <img src={EyeIcon}  className="ml-4 w-[20px] cursor-pointer"
                onClick={() => inputType === 'password' ? setInputType('text') : setInputType('password')}
             />}
             {IconRight && <img src={IconRight} className={`ml-4 cursor-pointer ${iconSize === "medium" && "w-[24px]"}`} />}
