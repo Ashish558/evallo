@@ -2,11 +2,10 @@ import React, { useEffect, useRef, useState } from "react";
 import InputField from "../../components/InputField/inputField";
 import styles from "./signup.module.css";
 
-import SelectPersona from "../Frames/SelectPersona/selectPersona";
-import SelectServices from "../Frames/SelectServices/SelectServices";
+import OrgDetails from "../Frames/OrgDetails/OrgDetails";
 import UserDetails from "../Frames/UserDetails/userDetails";
-import Questions from "../Frames/Questions/Questions";
 import SignupLast from "../Frames/SignupLast/SignupLast";
+import FurtherDetails from "../Frames/FurtherDetails/FurtherDetails";
 import SignupSuccessful from "../Frames/SignupSuccessful/SignupSuccessful";
 
 import NumericSteppers from "../../components/NumericSteppers/NumericSteppers";
@@ -20,8 +19,17 @@ import {
   useAddUserDetailsMutation,
   useSignupUserMutation,
 } from "../../app/services/auth";
-import { servicesSeeking } from "../Frames/SelectServices/data";
-import { apQuestions, hearAboutUslist, motivesList } from "./data";
+import {
+  apQuestions,
+  furtherDetailsData,
+  motivesList,
+  instructionFormat,
+  hearAboutUsData,
+  solutionsData,
+  testPreparationsData,
+  tutoringData,
+  coachingData,
+} from "./data";
 import { getCheckedString } from "../../utils/utils";
 import InputSelect from "../../components/InputSelect/InputSelect";
 import useOutsideAlerter from "../../hooks/useOutsideAlerter";
@@ -40,12 +48,9 @@ import RadioSelected from "../../assets/icons/radio-selected.svg";
 export default function Signup() {
   const [frames, setFrames] = useState({
     signupActive: true,
-    selectPersona: false,
-    services: false,
-    userDetails: false,
-    questions: false,
-    signupLast: false,
-    signupSuccessful: false,
+    orgDetails: false,
+    furtherDetails: false,
+    requirements: false,
   });
 
   const [settings, setSettings] = useState({});
@@ -65,6 +70,19 @@ export default function Signup() {
     role: false,
     userId: "",
     registrationAs: "Individual",
+
+    orgName: "",
+    companyType: "",
+    website: "",
+    address: "",
+    country: "",
+    state: "",
+    zip: "",
+    city: "",
+
+    activeStudents: 0,
+    activeTutors: 0,
+    services: [],
   });
 
   const [error, setError] = useState({
@@ -110,10 +128,16 @@ export default function Signup() {
   const [persona, setPersona] = useState("");
   const [currentStep, setcurrentStep] = useState(1);
 
-  const [services, setServices] = useState(servicesSeeking);
-  const [apCourses, setApCourses] = useState(apQuestions);
-  const [motive, setMotive] = useState(motivesList);
-  const [hearAboutUs, setHearAboutUs] = useState(hearAboutUslist);
+  const [testPreparations, setTestPreparations] =
+    useState(testPreparationsData);
+  const [tutoring, setTutoring] = useState(tutoringData);
+  const [coaching, setCoaching] = useState(coachingData);
+
+  const [hearAboutUs, setHearAboutUs] = useState(hearAboutUsData);
+  const [solutions, setSolutions] = useState(solutionsData);
+
+  const [instructions, setInstructions] = useState(instructionFormat);
+
   const [getDetails, getDetailsResp] = useLazyGetUserDetailQuery();
 
   const fetchSettings = () => {
@@ -282,7 +306,7 @@ export default function Signup() {
     });
   };
 
-  const handleClick = () => {
+  const handleSignup = () => {
     const promiseState = async (state) =>
       new Promise((resolve) => {
         resolve(resetErrors());
@@ -290,15 +314,33 @@ export default function Signup() {
 
     promiseState().then(() => {
       let reqBody = {
-        firstName: values.firstName,
-        lastName: values.lastName,
-        email: values.email,
-        subscriptionCode: values.subscriptionCode,
-        phone: `${values.phone}`,
-        phoneCode: `${numberPrefix}`,
+        firstname: values.firstName,
+        lastname: values.firstName,
+        workemail: values.email,
+        password: values.firstName,
+        phone: values.phone,
+        company: values.company,
+        orgRole: values.role,
+        registrationas: values.registrationAs,
+        orgofloream: values.company,
+        companytype: values.companyType,
+        address: values.address,
+        country: values.country,
+        state: values.state,
+        city: values.city,
+        zip: values.zip,
+        activestudents: values.activeStudents,
+        numberoftutors: values.activeTutors,
+
+        testpreparation: getCheckedString(testPreparations),
+        subjecttutoring: getCheckedString(tutoring),
+        coaching: getCheckedString(coaching),
+        formatofinstruction: getCheckedString(instructions),
+        studentserved: getCheckedString(hearAboutUs),
+        solutionyouarelookingfor: getCheckedString(solutions),
       };
+      console.log({ reqBody });
       if (values.checked === false) {
-        // console.log(settings.subscriptionCode.includes(values.subscriptionCode));
         let allCodes = [];
         settings.subscriptionCode.forEach((item) => {
           allCodes.push(item.code);
@@ -313,7 +355,7 @@ export default function Signup() {
           return alert("invalid subscription code");
         }
       }
-      const result = validateSignup(reqBody);
+      const result = validateSignup(values);
       if (result.data !== true) {
         setError((prev) => {
           return {
@@ -322,30 +364,24 @@ export default function Signup() {
           };
         });
       } else {
-        setLoading(true);
-        signupUser(reqBody).then((res) => {
-          setLoading(false);
-          if (res.error) {
-            if (res.error.data.message) {
-              alert(res.error.data.message);
-            }
-          }
+        signupUser(reqBody)
+        .then(res => {
           console.log(res);
-          if (isLinkedEmail) {
-            addLinkedEmailDetails();
-            setLinkedUserId(res.data.userId);
-            addLinkedEmailDetails(res.data.userId);
-          } else {
-            setRedirectLink(res.data.link);
-            setValues({ ...values, userId: res.data.userId });
-            setFrames({
-              ...frames,
-              signupActive: false,
-              selectPersona: true,
-            });
-          }
+        })
+        setFrames({
+          ...frames,
+          signupActive: false,
+          orgDetails: true,
         });
       }
+    });
+  };
+
+  const handleClick = () => {
+    setFrames({
+      ...frames,
+      signupActive: false,
+      orgDetails: true,
     });
   };
 
@@ -375,54 +411,6 @@ export default function Signup() {
     });
   };
 
-  const addDetails = () => {
-    setLastLoginDisabled(true);
-    const reqBody = {
-      ...otherDetails,
-      Phone: `${otherDetails.Phone}`,
-      PhoneCode: `${studentNumberPrefix}`,
-      serviceSeeking: getCheckedString(services),
-      apCourses: getCheckedString(apCourses),
-      motive: getCheckedString(motive),
-      hearAboutUs: getCheckedString(hearAboutUs),
-      subscriptionCode: values.subscriptionCode,
-      userType: persona,
-    };
-    // console.log(reqBody);
-    // return
-    // console.log('session cleared');
-    addUserDetails({ userId: values.userId, body: reqBody }).then((res) => {
-      sessionStorage.clear();
-      setLastLoginDisabled(false);
-      console.log(res);
-      if (res.error) {
-        if (res.error.data.message) {
-          alert(res.error.data.message);
-          setFrames((prev) => {
-            return {
-              ...prev,
-              signupSuccessful: false,
-              signupLast: false,
-              userDetails: true,
-            };
-          });
-        } else {
-          alert("Something went wrong");
-          setFrames((prev) => {
-            return {
-              ...prev,
-              signupSuccessful: false,
-              signupLast: false,
-              userDetails: true,
-            };
-          });
-        }
-        return;
-      }
-      // window.open(redirectLink);
-    });
-  };
-
   const [selected, setSelected] = useState(false);
   const selectRef = useRef();
   useOutsideAlerter(selectRef, () => setSelected(false));
@@ -440,6 +428,8 @@ export default function Signup() {
     studentNumberPrefix,
     setStudentNumberPrefix,
   };
+
+  console.log("vaues", values);
 
   return (
     <div className="min-h-screen bg-primary" id={styles.signUp}>
@@ -473,7 +463,7 @@ export default function Signup() {
               </h1>
 
               {currentStep > 1 && !frames.signupSuccessful && (
-                <NumericSteppers totalSteps={6} currentStep={currentStep} />
+                <NumericSteppers totalSteps={4} currentStep={currentStep} />
               )}
 
               {frames.signupActive ? (
@@ -562,12 +552,44 @@ export default function Signup() {
                   </div>
                   <p className="text-xs mb-4"> Registration as </p>
                   <div className="flex items-center text-xs">
-                    <div className="flex items-center mr-6">
-                      <img src={RadioUnselected} alt="radio" className="mr-1.5" />
+                    <div
+                      className="flex items-center mr-6 cursor-pointer"
+                      onClick={() =>
+                        setValues((prev) => ({
+                          ...prev,
+                          registrationAs: "Company",
+                        }))
+                      }
+                    >
+                      <img
+                        src={
+                          values.registrationAs === "Company"
+                            ? RadioSelected
+                            : RadioUnselected
+                        }
+                        alt="radio"
+                        className="mr-1.5"
+                      />
                       <p> Company </p>
                     </div>
-                    <div className="flex items-center">
-                      <img src={RadioSelected} alt="radio" className="mr-1.5" />
+                    <div
+                      className="flex items-center cursor-pointer"
+                      onClick={() =>
+                        setValues((prev) => ({
+                          ...prev,
+                          registrationAs: "Individual",
+                        }))
+                      }
+                    >
+                      <img
+                        src={
+                          values.registrationAs === "Individual"
+                            ? RadioSelected
+                            : RadioUnselected
+                        }
+                        alt="radio"
+                        className="mr-1.5"
+                      />
                       <p> Individual </p>
                     </div>
                   </div>
@@ -588,58 +610,39 @@ export default function Signup() {
                     Login Instead?
                   </p>
                 </div>
-              ) : frames.selectPersona ? (
-                <SelectPersona {...props} setPersona={setPersona} />
-              ) : frames.services ? (
-                // persona !== 'parent'
-                //    ?
-                <SelectServices
+              ) : frames.orgDetails ? (
+                <OrgDetails
                   {...props}
-                  services={services}
-                  setServices={setServices}
+                  setPersona={setPersona}
+                  values={values}
+                  setValues={setValues}
+                />
+              ) : frames.furtherDetails ? (
+                <FurtherDetails
+                  {...props}
+                  testPreparations={testPreparations}
+                  setTestPreparations={setTestPreparations}
+                  coaching={coaching}
+                  setCoaching={setCoaching}
+                  tutoring={tutoring}
+                  setTutoring={setTutoring}
+                  instructions={instructions}
+                  setInstructions={setInstructions}
                   {...otherDetailsProps}
                   {...valueProps}
                 />
-              ) : // : <UserDetails {...props} {...otherDetailsProps} />
-              frames.userDetails ? (
-                // persona === 'parent'
-                // ?
-                <UserDetails
-                  {...props}
-                  {...otherDetailsProps}
-                  isAddedByAdmin={isAddedByAdmin}
-                />
-              ) : // : <SelectServices
-              //    {...props}
-              //    services={services}
-              //    setServices={setServices}
-              //    {...otherDetailsProps}
-              //    {...valueProps}
-              // />
-              frames.questions ? (
-                <Questions
-                  {...props}
-                  {...otherDetailsProps}
-                  apCourses={apCourses}
-                  motive={motive}
-                  setApCourses={setApCourses}
-                  setMotive={setMotive}
-                />
-              ) : frames.signupLast ? (
+              ): frames.requirements ? (
                 <SignupLast
                   {...props}
                   {...otherDetailsProps}
                   hearAboutUs={hearAboutUs}
                   setHearAboutUs={setHearAboutUs}
-                />
-              ) : frames.signupSuccessful ? (
-                <SignupSuccessful
-                  {...props}
-                  addDetails={addDetails}
-                  lastLoginDisabled={lastLoginDisabled}
+                  solutions={solutions}
+                  setSolutions={setSolutions}
+                  handleSignup={handleSignup}
                 />
               ) : (
-                ""
+                <></>
               )}
             </div>
           </div>
