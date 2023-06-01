@@ -111,7 +111,7 @@ export default function Login({ setLoginFormActive }) {
    return (
 <div className={styles.bg}>
         <div className="flex justify-center flex-col items-center md:grid-cols-2 min-h-screen ">
-<img src={cuate} alt ="rocket" className={styles.svg}/>
+        <img src={cuate} alt="rocket" class="h-10vh mb-10" />
             <div className="bg-primary hidden lg:block">
                <ImageSlider className={styles.loginCarousel} images={[CarouselImg, CarouselImg]} pagination={true} />
             </div>

@@ -8,6 +8,7 @@ import SignupLast from "../Frames/SignupLast/SignupLast";
 import FurtherDetails from "../Frames/FurtherDetails/FurtherDetails";
 import SignupSuccessful from "../Frames/SignupSuccessful/SignupSuccessful";
 
+import cuate from '../../assets/signup/cuate.png'
 import NumericSteppers from "../../components/NumericSteppers/NumericSteppers";
 import CCheckbox from "../../components/CCheckbox/CCheckbox";
 
@@ -433,7 +434,8 @@ export default function Signup() {
 
   return (
     <div className="min-h-screen bg-primary" id={styles.signUp}>
-      <div className="flex items-center flex-col justify-center lg:min-h-screen">
+      <div className="flex justify-center flex-col items-center md:grid-cols-2 min-h-screen ">
+      <img src={cuate} alt="rocket" class="h-10vh mb-10" />
         <>
           {!frames.signupSuccessful ? (
             <div className="lg:hidden bg-primary text-white pt-[79px] px-[49px]">

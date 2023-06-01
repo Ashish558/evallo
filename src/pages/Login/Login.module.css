@@ -24,15 +24,6 @@
     background-size: cover;
     background-position: center;
   }
-  .svg{
-    height: 10vh;
-    z-index: 5;
-    background-color: transparent;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 5%;
-  }
 
 /* 
 .loginCarousel {
