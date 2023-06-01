@@ -18,7 +18,7 @@ import PrimaryButton from "../../components/Buttons/PrimaryButton";
 import Loader from "../../components/Loader";
 import CCheckbox from "../../components/CCheckbox/CCheckbox";
 import EvalloLogo from '../../assets/icons/evallo.svg'
-
+import cuate from '../../assets/signup/cuate.png'
 export default function Login({ setLoginFormActive }) {
    const emailValidation = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
    const [isPasswordForgot, setIsPasswordForgot] = useState(false);
@@ -109,8 +109,9 @@ export default function Login({ setLoginFormActive }) {
    const props = { setActiveFrame, setResetPasswordActive };
 
    return (
-      <div className="min-h-screen bg-[#22BEF5]">
-         <div className="flex justify-center items-center md:grid-cols-2 min-h-screen">
+<div className={styles.bg}>
+        <div className="flex justify-center flex-col items-center md:grid-cols-2 min-h-screen ">
+<img src={cuate} alt ="rocket" className={styles.svg}/>
             <div className="bg-primary hidden lg:block">
                <ImageSlider className={styles.loginCarousel} images={[CarouselImg, CarouselImg]} pagination={true} />
             </div>
