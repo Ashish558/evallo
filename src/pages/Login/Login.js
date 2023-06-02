@@ -130,7 +130,7 @@ export default function Login({ setLoginFormActive }) {
                            // Icon={EmailIcon}
                            iconSize='medium'
                            placeholder="Email address"
-                           parentClassName="mb-[20px] lg:mb-6 md:w-[269px]"
+                           parentClassName="mb-[20px] lg:mb-6"
                            label="Email Address"
                            labelClassname="ml-2 mb-[4px] lg:mb-2 text-[12px] lg:text-[14px]"
                            inputClassName="bg-transparent"

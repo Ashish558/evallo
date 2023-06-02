@@ -8,7 +8,7 @@ import SignupLast from "../Frames/SignupLast/SignupLast";
 import FurtherDetails from "../Frames/FurtherDetails/FurtherDetails";
 import SignupSuccessful from "../Frames/SignupSuccessful/SignupSuccessful";
 
-import cuate from '../../assets/signup/cuate.png'
+import cuate from "../../assets/signup/cuate.png";
 import NumericSteppers from "../../components/NumericSteppers/NumericSteppers";
 import CCheckbox from "../../components/CCheckbox/CCheckbox";
 
@@ -357,6 +357,7 @@ export default function Signup() {
         }
       }
       const result = validateSignup(values);
+      console.log({ result });
       if (result.data !== true) {
         setError((prev) => {
           return {
@@ -365,14 +366,17 @@ export default function Signup() {
           };
         });
       } else {
-        signupUser(reqBody)
-        .then(res => {
+        signupUser(reqBody).then((res) => {
           console.log(res);
           setFrames({
             ...frames,
             signupActive: false,
             orgDetails: true,
           });
+          alert('Signup successfully')
+          navigate('/login')
+        }).catch(err => {
+          console.log(err);
         })
       }
     });
@@ -430,12 +434,15 @@ export default function Signup() {
     setStudentNumberPrefix,
   };
 
-  console.log("vaues", values);
+  // console.log("vaues", values);
 
   return (
-    <div className="min-h-screen overflow-y-auto pb-6 bg-primary" id={styles.signUp}>
+    <div
+      className="min-h-screen overflow-y-auto pb-6 bg-primary"
+      id={styles.signUp}
+    >
       <div className="flex justify-center flex-col items-center md:grid-cols-2 min-h-screen ">
-      <img src={cuate} alt="rocket" class="h-10vh mb-10" />
+        <img src={cuate} alt="rocket" class="h-10vh mb-10" />
         <>
           {!frames.signupSuccessful ? (
             <div className="lg:hidden bg-primary text-white pt-[79px] px-[49px]">
@@ -633,7 +640,7 @@ export default function Signup() {
                   {...otherDetailsProps}
                   {...valueProps}
                 />
-              ): frames.requirements ? (
+              ) : frames.requirements ? (
                 <SignupLast
                   {...props}
                   {...otherDetailsProps}
