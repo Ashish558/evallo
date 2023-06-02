@@ -4,6 +4,7 @@ import styles from "./styles.module.css";
 import OrgCard from "./orgCard/orgCard";
 import Table from "./Table/table";
 import { orgData, tableHeaders } from "./temp";
+import Chart from "./DataChart/Chart";
 
 const orgContents = [
   {
@@ -125,6 +126,7 @@ export default function SuperadminDashboard() {
             <Table data={orgData} tableHeaders={tableHeaders} maxPageSize={5} />
           </section>
         </div>
+      <Chart/>
       </div>
     </div>
   );
