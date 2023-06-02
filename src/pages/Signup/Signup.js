@@ -365,6 +365,13 @@ export default function Signup() {
             [result.data]: result.message,
           };
         });
+        setFrames({
+          ...frames,
+          signupActive: true,
+          orgDetails: false,
+          furtherDetails: false,
+          requirements: false,
+        });
       } else {
         setLoading(true);
         signupUser(reqBody)
@@ -373,7 +380,7 @@ export default function Signup() {
             setFrames({
               ...frames,
               signupActive: true,
-              requirements: false
+              requirements: false,
             });
             setLoading(false);
             alert("Signup successful");
