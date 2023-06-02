@@ -1,24 +1,21 @@
 import React from 'react'
 import styles from './style.module.css'
-import Logo from '../../assets/Navbar/evallo-logo.svg'
-import Dashboard from '../../assets/Navbar/sAdmin-dashboard.svg'
-import Organization from '../../assets/Navbar/sAdmin-org.svg'
-import Settings from '../../assets/Navbar/sAdmin-settings.svg'
+import Logo from '../../assets/Dashboard/logo.svg'
+import Dashboard from '../../assets/Dashboard/dashboard.svg'
+import Organization from '../../assets/Dashboard/bank (1).png'
+import Settings from '../../assets/Dashboard/settings.png'
 
 const arr = [
    {
       Icon: Dashboard,
-      text: 'Dashboard',
       selected: true
    },
    {
       Icon: Organization,
-      text: 'All Organization',
       selected: false
    },
    {
       Icon: Settings,
-      text: 'Settings',
       selected: false
    },
 ]
@@ -26,16 +23,17 @@ const arr = [
 export default function SAdminNavbar(props) {
 
    return (
-      <div className={styles.container}>
+      <div id={styles.container} className='bg-#007EF1 h-screen"'>
          <div className={styles.wrapper}>
             <div className='py-2.5 px-7 mb-2'>
-               <img src={Logo} />
+            <img src={Logo} className="w-full py-4 " alt="Logo" />
+
             </div>
             {
                arr.map((item, idx) => {
-                  return <div className={`py-4 px-7 flex ${item.selected ? styles.selected : ''} `}>
-                     <img src={item.Icon} />
-                     <p className='pl-5'> {item.text} </p>
+                  return <div className={`py-4 px-7 flex  text-white ${item.selected ? styles.selected : ''} `}>
+                     <img src={item.Icon} alt='icon' />
+                     
                   </div>
                })
             }

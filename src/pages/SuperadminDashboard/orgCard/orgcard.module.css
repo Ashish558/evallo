@@ -1,12 +1,12 @@
 .container {
-    background: #EEEEEE;
+    background: #ffff;
     border-radius: 4px;
     margin-right: 7px;
     padding: 13px 13px 13px 13px;
 }
 
 .heading {
-    color: #737373;
+    color: blue;
     margin-bottom: 1rem;
     font-size: 12px;
     padding-right: 6px;
