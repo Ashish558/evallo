@@ -366,18 +366,23 @@ export default function Signup() {
           };
         });
       } else {
-        signupUser(reqBody).then((res) => {
-          console.log(res);
-          setFrames({
-            ...frames,
-            signupActive: false,
-            orgDetails: true,
+        setLoading(true);
+        signupUser(reqBody)
+          .then((res) => {
+            console.log(res);
+            setFrames({
+              ...frames,
+              signupActive: true,
+              requirements: false
+            });
+            setLoading(false);
+            alert("Signup successful");
+            navigate("/");
+          })
+          .catch((err) => {
+            setLoading(false);
+            console.log(err);
           });
-          alert('Signup successfully')
-          navigate('/login')
-        }).catch(err => {
-          console.log(err);
-        })
       }
     });
   };
@@ -649,6 +654,7 @@ export default function Signup() {
                   solutions={solutions}
                   setSolutions={setSolutions}
                   handleSignup={handleSignup}
+                  loading={loading}
                 />
               ) : (
                 <></>
