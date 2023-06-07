@@ -129,6 +129,7 @@ export default function SuperadminDashboard() {
         </div>
       <Chart/>
      <Index/>
+     <Chart/>
       </div>
     </div>
   );
