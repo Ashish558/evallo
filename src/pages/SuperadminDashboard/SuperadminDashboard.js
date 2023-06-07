@@ -5,6 +5,7 @@ import OrgCard from "./orgCard/orgCard";
 import Table from "./Table/table";
 import { orgData, tableHeaders } from "./temp";
 import Chart from "./DataChart/Chart";
+import Index from "./FinancialStats/Index";
 
 const orgContents = [
   {
@@ -127,6 +128,7 @@ export default function SuperadminDashboard() {
           </section>
         </div>
       <Chart/>
+     <Index/>
       </div>
     </div>
   );
