@@ -47,7 +47,7 @@ export default function Table(props) {
    return (
       <div>
          <table className="table-auto mb-3 text-center w-full min-h-[300px]">
-            <thead className="pb-2">
+            <thead className="pb-2 bg-gradient-to-r from-[#6009EF] to-[#007EF1] text-white rounded-2xl">
                <tr>
                   {tableHeaders.map((item, idx) => {
                      return <TableHeader key={idx} header={item} dataFor={dataFor} />;
@@ -69,6 +69,7 @@ export default function Table(props) {
                               key={idx}
                               excludes={excludes}
                               onClick={onClick}
+                              
                            />
                         );
                      })
