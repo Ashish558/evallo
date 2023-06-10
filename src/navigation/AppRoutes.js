@@ -28,6 +28,7 @@ import { useEffect } from "react";
 import StudentReport from "../pages/StudentReport/StudentReport";
 import AssignedTutors from "../pages/AssignedTutors/AssignedTutors";
 import SuperadminDashboard from "../pages/SuperadminDashboard/SuperadminDashboard";
+import Dashboard from "../pages/AdminDashboard/Dashboard";
 
 const PrivateRoutes = [
    {
@@ -274,7 +275,7 @@ const AppRoutes = () => {
                   </RequireAuth>
                }
             />
-
+            <Route path="/adminDashboard" element={<Dashboard></Dashboard>}></Route>
             {/* <Route
                   path="/profile"
                   element={

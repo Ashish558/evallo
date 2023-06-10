@@ -1,0 +1,71 @@
+.container {
+    font-family: 'Rajdhani', sans-serif;
+}
+
+.mainBox {
+    margin-top: 30px;
+    margin-right: 20px;
+    border-radius: 4px;
+    background-color: #F6F6F6;
+    box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.25);
+}
+
+.gridBorder {
+    border-right: 1px solid #00000033;
+}
+
+.boxBorder1 {
+    border-right: 5px solid #77DD77;
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+}
+
+.boxBorder2 {
+    border-right: 5px solid #FF6961;
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+}
+
+.boxBorder3 {
+    border-right: 5px solid #95BDFF;
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+}
+
+.smallBoxBorder {
+    border-left: 2.5px solid black;
+    border-radius: 4px;
+
+}
+
+.actionBox {
+    background-color: #FFFFFF;
+    border: 1px solid #FFFFFF;
+    box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.25);
+    border-radius: 4px;
+    margin-right: 20px;
+}
+
+.actionBorder {
+    border-left: 1px solid rgba(0, 0, 0, 0.15);
+    margin: 0 20px;
+    display: flex;
+}
+
+.circle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.2);
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    margin-left: -13px;
+}
+
+.circle2 {
+    background-color: #000000;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}

@@ -7,7 +7,7 @@
 }
 
 body {
-    background-color: #f3f5f7;
+    /* background-color: #f3f5f7; */
     height: 100vh;
     padding-right: 0;
     padding-bottom: 0;
@@ -44,7 +44,7 @@ nav .active {
 
 ::-webkit-scrollbar-thumb:hover {
     background: #555;
-} 
+}
 
 .concept {
     position: relative;
@@ -70,6 +70,7 @@ nav .active {
 .react-calendar__tile--active {
     position: relative !important;
 }
+
 /* 
 .react-calendar__tile--active::after{
     content: "";
