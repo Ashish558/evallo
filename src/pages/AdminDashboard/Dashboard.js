@@ -1,7 +1,7 @@
 import React from 'react';
 import SAdminNavbar2 from '../../components/sAdminNavbar/sAdminNavbar2';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowRightFromBracket, faCaretDown, faDollar } from '@fortawesome/free-solid-svg-icons';
+import { faArrowDown, faArrowDown19, faArrowDown91, faArrowRightFromBracket, faCaretDown, faDollar } from '@fortawesome/free-solid-svg-icons';
 import { faQuestionCircle } from '@fortawesome/free-regular-svg-icons';
 import styles from './style.module.css'
 
@@ -10,7 +10,7 @@ const Dashboard = () => {
     return (
         <div class={styles.container}>
             <SAdminNavbar2></SAdminNavbar2>
-            <div className="ml-[124px] mt-[28px] bg-#2E2E2E">
+            <div className="ml-[124px] mt-[28px] bg-#2E2E2E mr-[24px]" >
                 <div className="flex justify-between items-center">
                     <div>
                         <p className='font-semibold'>Dashboard</p>
@@ -219,39 +219,342 @@ const Dashboard = () => {
                     <p className='font-semibold uppercase '>Latest Sign-ups</p>
 
 
-                    <table className='table-auto w-full'>
-                        <thead>
-                            <tr>
-                                <th>Full Name</th>
-                                <th>User Type</th>
-                                <th>Email</th>
-                                <th>Phone</th>
-                                <th>Assigned Tutor</th>
-                                <th>Lead Status</th>
-                                <th>Tutor Status</th>
-                                <th>Services</th>
-                                <th>Date Added</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td className='font-bold'>Lorem</td>
-                                <td className='font-bold'>Lorem</td>
-                                <td className='font-bold'>Lorem</td>
-                                <td className='font-bold'>Lorem</td>
-                                <td className='font-bold'>Lorem</td>
-                                <td className='font-bold'>Lorem</td>
-                                <td className='font-bold'>Lorem</td>
-                                <td className='font-bold'>Lorem</td>
-                                <td className='font-bold'>Lorem</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <div className='mr-[20px]'>
+                        <table className='table-auto w-full' >
+                            <thead>
+                                <tr>
+                                    <th>Full Name <FontAwesomeIcon className='pl-1 w-[10px]' icon={faArrowDown}></FontAwesomeIcon></th>
+                                    <th>User Type <FontAwesomeIcon className='pl-1 w-[10px]' icon={faArrowDown}></FontAwesomeIcon></th>
+                                    <th>Email <FontAwesomeIcon className='pl-1 w-[10px]' icon={faArrowDown}></FontAwesomeIcon></th>
+                                    <th>Phone <FontAwesomeIcon className='pl-1 w-[10px]' icon={faArrowDown}></FontAwesomeIcon></th>
+                                    <th>Assigned Tutor <FontAwesomeIcon className='pl-1 w-[10px]' icon={faArrowDown}></FontAwesomeIcon></th>
+                                    <th>Lead Status <FontAwesomeIcon className='pl-1 w-[10px]' icon={faArrowDown}></FontAwesomeIcon></th>
+                                    <th>Tutor Status <FontAwesomeIcon className='pl-1 w-[10px]' icon={faArrowDown}></FontAwesomeIcon></th>
+                                    <th>Services <FontAwesomeIcon className='pl-1 w-[10px]' icon={faArrowDown}></FontAwesomeIcon></th>
+                                    <th>Date Added <FontAwesomeIcon className='pl-1 w-[10px]' icon={faArrowDown}></FontAwesomeIcon></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td className='font-bold'>Lorem</td>
+                                    <td className='font-bold'>Student</td>
+                                    <td className='font-bold'>Loream123@gmail.com </td>
+                                    <td className='font-bold'>99930350xx</td>
+                                    <td className='font-bold'>Lorem</td>
+                                    <td className='font-bold'>Lorem</td>
+                                    <td className='font-bold'>Lorem</td>
+                                    <td className='font-bold'>Lorem</td>
+                                    <td className='font-bold'>May. 12, 2023</td>
+                                </tr>
+                                <tr>
+                                    <td className='font-bold'>Lorem</td>
+                                    <td className='font-bold'>Student</td>
+                                    <td className='font-bold'>Loream123@gmail.com </td>
+                                    <td className='font-bold'>99930350xx</td>
+                                    <td className='font-bold'>Lorem</td>
+                                    <td className='font-bold'>Lorem</td>
+                                    <td className='font-bold'>Lorem</td>
+                                    <td className='font-bold'>Lorem</td>
+                                    <td className='font-bold'>May. 12, 2023</td>
+                                </tr>
+                                <tr>
+                                    <td className='font-bold'>Lorem</td>
+                                    <td className='font-bold'>Student</td>
+                                    <td className='font-bold'>Loream123@gmail.com </td>
+                                    <td className='font-bold'>99930350xx</td>
+                                    <td className='font-bold'>Lorem</td>
+                                    <td className='font-bold'>Lorem</td>
+                                    <td className='font-bold'>Lorem</td>
+                                    <td className='font-bold'>Lorem</td>
+                                    <td className='font-bold'>May. 12, 2023</td>
+                                </tr>
+                                <tr>
+                                    <td className='font-bold'>Lorem</td>
+                                    <td className='font-bold'>Student</td>
+                                    <td className='font-bold'>Loream123@gmail.com </td>
+                                    <td className='font-bold'>99930350xx</td>
+                                    <td className='font-bold'>Lorem</td>
+                                    <td className='font-bold'>Lorem</td>
+                                    <td className='font-bold'>Lorem</td>
+                                    <td className='font-bold'>Lorem</td>
+                                    <td className='font-bold'>May. 12, 2023</td>
+                                </tr>
+                                <tr>
+                                    <td className='font-bold'>Lorem</td>
+                                    <td className='font-bold'>Student</td>
+                                    <td className='font-bold'>Loream123@gmail.com </td>
+                                    <td className='font-bold'>99930350xx</td>
+                                    <td className='font-bold'>Lorem</td>
+                                    <td className='font-bold'>Lorem</td>
+                                    <td className='font-bold'>Lorem</td>
+                                    <td className='font-bold'>Lorem</td>
+                                    <td className='font-bold'>May. 12, 2023</td>
+                                </tr>
+                                <tr>
+                                    <td className='font-bold'>Lorem</td>
+                                    <td className='font-bold'>Student</td>
+                                    <td className='font-bold'>Loream123@gmail.com </td>
+                                    <td className='font-bold'>99930350xx</td>
+                                    <td className='font-bold'>Lorem</td>
+                                    <td className='font-bold'>Lorem</td>
+                                    <td className='font-bold'>Lorem</td>
+                                    <td className='font-bold'>Lorem</td>
+                                    <td className='font-bold'>May. 12, 2023</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+
+
+                </section>
+                <div className='mt-[30px] mr-[20px]'>
+                    <div className='flex justify-between items-center '>
+                        <p className='font-bold'>CLIENT SUCCESS OVERVIEW </p>
+
+                        <div className='flex'>
+                            <p className='font-bold '> 1 May - May 12, 2023 </p>
+                            <p><FontAwesomeIcon className='pl-3' icon={faCaretDown}></FontAwesomeIcon></p>
+                        </div>
+                    </div>
+                    <div className='mt-2 ' style={{ height: '1px', backgroundColor: '#00000033' }}>
+                    </div>
+                </div>
+
+                <section className='mt-[50px] mr-5'>
+
+                    <div className='grid grid-cols-3 gap-12'>
+                        <div className='col-span-2'>
+                            <p className='font-semibold uppercase '>Latest Sign-ups</p>
+                            <table className='table-auto w-full' >
+                                <thead>
+                                    <tr>
+                                        <th>Service <FontAwesomeIcon className='pl-1 w-[10px]' icon={faArrowDown}></FontAwesomeIcon></th>
+                                        <th>Actively Using <FontAwesomeIcon className='pl-1 w-[10px]' icon={faArrowDown}></FontAwesomeIcon></th>
+                                        <th>Total Users <FontAwesomeIcon className='pl-1 w-[10px]' icon={faArrowDown}></FontAwesomeIcon></th>
+                                        <th>Scheduled Hours<FontAwesomeIcon className='pl-1 w-[10px]' icon={faArrowDown}></FontAwesomeIcon></th>
+                                        <th>Completed Hours <FontAwesomeIcon className='pl-1 w-[10px]' icon={faArrowDown}></FontAwesomeIcon></th>
+                                        <th>% of Business <FontAwesomeIcon className='pl-1 w-[10px]' icon={faArrowDown}></FontAwesomeIcon></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td className='font-bold'>Lorem</td>
+                                        <td className='font-bold'>Lorem</td>
+                                        <td className='font-bold'>Lorem</td>
+                                        <td className='font-bold'>Lorem</td>
+                                        <td className='font-bold'>Lorem</td>
+                                        <td className='font-bold'>Lorem</td>
+
+                                    </tr>
+                                    <tr>
+                                        <td className='font-bold'>Lorem</td>
+                                        <td className='font-bold'>Lorem</td>
+                                        <td className='font-bold'>Lorem</td>
+                                        <td className='font-bold'>Lorem</td>
+                                        <td className='font-bold'>Lorem</td>
+                                        <td className='font-bold'>Lorem</td>
+
+                                    </tr>
+                                    <tr>
+                                        <td className='font-bold'>Lorem</td>
+                                        <td className='font-bold'>Lorem</td>
+                                        <td className='font-bold'>Lorem</td>
+                                        <td className='font-bold'>Lorem</td>
+                                        <td className='font-bold'>Lorem</td>
+                                        <td className='font-bold'>Lorem</td>
+
+                                    </tr>
+                                    <tr>
+                                        <td className='font-bold'>Lorem</td>
+                                        <td className='font-bold'>Lorem</td>
+                                        <td className='font-bold'>Lorem</td>
+                                        <td className='font-bold'>Lorem</td>
+                                        <td className='font-bold'>Lorem</td>
+                                        <td className='font-bold'>Lorem</td>
+
+                                    </tr>
+                                    <tr>
+                                        <td className='font-bold'>Lorem</td>
+                                        <td className='font-bold'>Lorem</td>
+                                        <td className='font-bold'>Lorem</td>
+                                        <td className='font-bold'>Lorem</td>
+                                        <td className='font-bold'>Lorem</td>
+                                        <td className='font-bold'>Lorem</td>
+
+                                    </tr>
+                                    <tr>
+                                        <td className='font-bold'>Lorem</td>
+                                        <td className='font-bold'>Lorem</td>
+                                        <td className='font-bold'>Lorem</td>
+                                        <td className='font-bold'>Lorem</td>
+                                        <td className='font-bold'>Lorem</td>
+                                        <td className='font-bold'>Lorem</td>
+
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div>
+
+                            <p className='font-semibold uppercase '>Star Clients</p>
+                            <div>
+                                <table className={`table-auto w-full ${styles.sTable}`} >
+                                    <thead>
+                                        <tr>
+                                            <th>Client Name </th>
+                                            <th>Code </th>
+                                            <th>Referrals </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td className='font-bold'>Lorem</td>
+                                            <td className='font-bold'>$XDR$#</td>
+                                            <td className='font-bold'>45</td>
+                                        </tr>
+                                        <tr>
+                                            <td className='font-bold'>Lorem</td>
+                                            <td className='font-bold'>$XDR$#</td>
+                                            <td className='font-bold'>45</td>
+                                        </tr>
+                                        <tr>
+                                            <td className='font-bold'>Lorem</td>
+                                            <td className='font-bold'>$XDR$#</td>
+                                            <td className='font-bold'>45</td>
+                                        </tr>
+                                        <tr>
+                                            <td className='font-bold'>Lorem</td>
+                                            <td className='font-bold'>$XDR$#</td>
+                                            <td className='font-bold'>45</td>
+                                        </tr>
+                                        <tr>
+                                            <td className='font-bold'>Lorem</td>
+                                            <td className='font-bold'>$XDR$#</td>
+                                            <td className='font-bold'>45</td>
+                                        </tr>
+                                        <tr>
+                                            <td className='font-bold'>Lorem</td>
+                                            <td className='font-bold'>$XDR$#</td>
+                                            <td className='font-bold'>45</td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
 
 
 
                 </section>
 
+                <section className='mt-[30px] mr-5'>
+                    <div className='grid grid-cols-2 gap-x-80'>
+                        <div className='flex justify-between text-sm uppercase'>
+                            <div>
+                                <p className='font-semibold'>Total # Of referrals</p>
+                                <div className={`w-[174px] h-[58px] ${styles.smallBox}`} ></div>
+                            </div>
+                            <div>
+                                <p className='font-semibold'>Average SAT improvement</p>
+                                <div className={`w-[190px] h-[58px] ${styles.smallBox}`} ></div>
+                            </div>
+                            <div>
+                                <p className='font-semibold'>Average ACT improvement</p>
+                                <div className={`w-[190px] h-[58px] ${styles.smallBox}`} ></div>
+                            </div>
+                        </div>
+                        <div className='flex justify-between text-sm '>
+                            <div>
+                                <p className='uppercase'>Average GRE improvement</p>
+                                <div className={`w-[174px] h-[58px] ${styles.smallBox2} flex items-center justify-center`} ><p >Coming Soon</p></div>
+                            </div>
+                            <div>
+                                <p className='uppercase'>Average GMAT improvement</p>
+                                <div className={`w-[174px] h-[58px] ${styles.smallBox2} flex items-center justify-center`} ><p >Coming Soon</p></div>
+                            </div>
+                            <div>
+                                <p className='uppercase'>Average IELTS improvement</p>
+                                <div className={`w-[174px] h-[58px] ${styles.smallBox2} flex items-center justify-center`} ><p >Coming Soon</p></div>
+                            </div>
+                        </div>
+                        <div>
+                        </div>
+                    </div>
+                </section>
+                <div className='mt-[30px] mr-[20px]'>
+                    <div className='flex justify-between items-center '>
+                        <p className='font-bold uppercase'>Tutor performance Overview </p>
+
+                        <div className='flex'>
+                            <p className='font-bold '> 1 May - May 12, 2023 </p>
+                            <p><FontAwesomeIcon className='pl-3' icon={faCaretDown}></FontAwesomeIcon></p>
+                        </div>
+                    </div>
+                    <div className='mt-2 ' style={{ height: '1px', backgroundColor: '#00000033' }}>
+
+                    </div>
+                </div>
+                <section className='mr-[20px]'>
+                    <div >
+                        <table className='table-auto w-full' >
+                            <thead>
+                                <tr>
+                                    <th>Tutor Name <FontAwesomeIcon className='pl-1 w-[10px]' icon={faArrowDown}></FontAwesomeIcon></th>
+                                    <th>Tutor Status <FontAwesomeIcon className='pl-1 w-[10px]' icon={faArrowDown}></FontAwesomeIcon></th>
+                                    <th>Rating <FontAwesomeIcon className='pl-1 w-[10px]' icon={faArrowDown}></FontAwesomeIcon></th>
+                                    <th>Referrals <FontAwesomeIcon className='pl-1 w-[10px]' icon={faArrowDown}></FontAwesomeIcon></th>
+                                    <th>Hours Completed <FontAwesomeIcon className='pl-1 w-[10px]' icon={faArrowDown}></FontAwesomeIcon></th>
+                                    <th>Hours Scheduled <FontAwesomeIcon className='pl-1 w-[10px]' icon={faArrowDown}></FontAwesomeIcon></th>
+                                    <th>Hours Cancelled<FontAwesomeIcon className='pl-1 w-[10px]' icon={faArrowDown}></FontAwesomeIcon></th>
+                                    <th>Hours Missed <FontAwesomeIcon className='pl-1 w-[10px]' icon={faArrowDown}></FontAwesomeIcon></th>
+                                    <th>Avg SAT improvement  <FontAwesomeIcon className='pl-1 w-[10px]' icon={faArrowDown}></FontAwesomeIcon></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td className='font-bold'>Lorem</td>
+                                    <td className='font-bold'>Lorem</td>
+                                    <td className='font-bold'>Lorem </td>
+                                    <td className='font-bold'>Lorem</td>
+                                    <td className='font-bold'>Lorem</td>
+                                    <td className='font-bold'>Lorem</td>
+                                    <td className='font-bold'>Lorem</td>
+                                    <td className='font-bold'>Lorem</td>
+                                    <td className='font-bold'>Lorem</td>
+                                </tr>
+                                <tr>
+                                    <td className='font-bold'>Lorem</td>
+                                    <td className='font-bold'>Lorem</td>
+                                    <td className='font-bold'>Lorem </td>
+                                    <td className='font-bold'>Lorem</td>
+                                    <td className='font-bold'>Lorem</td>
+                                    <td className='font-bold'>Lorem</td>
+                                    <td className='font-bold'>Lorem</td>
+                                    <td className='font-bold'>Lorem</td>
+                                    <td className='font-bold'>Lorem</td>
+                                </tr>
+                                <tr>
+                                    <td className='font-bold'>Lorem</td>
+                                    <td className='font-bold'>Lorem</td>
+                                    <td className='font-bold'>Lorem </td>
+                                    <td className='font-bold'>Lorem</td>
+                                    <td className='font-bold'>Lorem</td>
+                                    <td className='font-bold'>Lorem</td>
+                                    <td className='font-bold'>Lorem</td>
+                                    <td className='font-bold'>Lorem</td>
+                                    <td className='font-bold'>Lorem</td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                    <div className='mt-2 ' style={{ height: '1px', backgroundColor: '#00000033' }}>
+
+                    </div>
+                </section>
             </div>
         </div>
 
