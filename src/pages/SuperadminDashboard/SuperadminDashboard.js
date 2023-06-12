@@ -74,9 +74,9 @@ export default function SuperadminDashboard() {
                   {userTypes.map((item) => {
                     return (
                       <div
-                        className={` bg-white border-b border-blue-500 ${styles.userStat} ${
-                          item.selected ? styles.selected : ""
-                        } `}
+                        className={` bg-white border-b border-blue-500 ${
+                          styles.userStat
+                        } ${item.selected ? styles.selected : ""} `}
                       >
                         {item.text}
                       </div>
@@ -113,7 +113,9 @@ export default function SuperadminDashboard() {
                       <p className={`${styles.statHead} text-lg font-bold`}>
                         190
                       </p>
-                      <p className="text-xs text-blue-700">Avg. Session duration</p>
+                      <p className="text-xs text-blue-700">
+                        Avg. Session duration
+                      </p>
                     </div>
                   </div>
 
@@ -127,9 +129,9 @@ export default function SuperadminDashboard() {
             <Table data={orgData} tableHeaders={tableHeaders} maxPageSize={5} />
           </section>
         </div>
-      <Chart/>
-     <Index/>
-     <Chart/>
+        <Chart />
+        <Index />
+        <Chart />
       </div>
     </div>
   );

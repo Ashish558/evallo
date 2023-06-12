@@ -10,10 +10,12 @@ import { settingsServicesApi } from "./services/settings";
 import { adminServicesApi } from "./services/admin";
 
 import userReducer from './slices/user'
+import organizationReducer from './slices/organization'
 
 export const store = configureStore({
   reducer: {
     user: userReducer,
+    organization: organizationReducer,
     [sessionServicesApi.reducerPath]: sessionServicesApi.reducer,
     [authServicesApi.reducerPath]: authServicesApi.reducer,
     [userServicesApi.reducerPath]: userServicesApi.reducer,
