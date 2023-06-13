@@ -75,10 +75,10 @@ const Dashboard = () => {
                 <div className='mt-[42px] flex justify-center'>
                     <div className='w-full mx-[80px]'>
                         <div className='flex justify-between items-center '>
-                            <p className='font-bold'>BUSINESS OVERVIEW </p>
+                            <p className='font-bold text-[#26435F]'>BUSINESS OVERVIEW </p>
 
                             <div className='flex text-xs '>
-                                <p className='font-semibold '> 1 May - May 12, 2023 </p>
+                                <p className='font-semibold text-[#26435F]'> 1 May - May 12, 2023 </p>
                                 <p><FontAwesomeIcon className='pl-3' icon={faCaretDown}></FontAwesomeIcon></p>
                             </div>
                         </div>
