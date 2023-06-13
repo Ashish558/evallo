@@ -162,7 +162,7 @@ const Dashboard = () => {
 
                     <div className='flex justify-center'>
                         <div className='mt-[30px] w-screen mx-[120px]'>
-                            <div className='mt-2 ' style={{ height: '1px', backgroundColor: '#00000033' }}>
+                            <div className='mt-2 h-[1px] bg-[#00000033]'>
                             </div>
 
                         </div>
@@ -205,7 +205,7 @@ const Dashboard = () => {
                                 <div className='mr-5'>
                                     <p className='uppercase  pl-[56px] pt-[12px] pb-[14px] text-[#26435F]'>May. 1, 2023</p>
                                 </div>
-                                <div style={{ height: '1px', backgroundColor: '#CBD6E2' }} />
+                                <div className='h-[1px] bg-[#CBD6E2]' />
 
                                 <div >
 
@@ -347,7 +347,7 @@ const Dashboard = () => {
                 </section>
                 <div className='flex justify-center'>
                     <div className='mt-[30px] w-screen mx-[120px]'>
-                        <div className='mt-2 ' style={{ height: '1px', backgroundColor: '#00000033' }}>
+                        <div className='mt-2 h-[1px] bg-[#00000033]' >
                         </div>
 
                     </div>
@@ -440,9 +440,9 @@ const Dashboard = () => {
 
                         <div>
 
-                            <p className='font-semibold text-[#26435F] text-[14px] '>Star Clients</p>
+                            <p className='mt-1 mb-[10px] font-semibold text-[#26435F] text-[14px] '>Star Clients</p>
                             <div>
-                                <table className={`table-auto w-full ${styles.sTable}`} >
+                                <table className={` w-full ${styles.sTable} `} >
                                     <thead>
                                         <tr>
                                             <th>Client Name </th>
@@ -451,32 +451,32 @@ const Dashboard = () => {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
+                                        <tr className='h-[45px]'>
                                             <td className=''>Lorem</td>
                                             <td className=''>$XDR$#</td>
                                             <td className=''>45</td>
                                         </tr>
-                                        <tr>
+                                        <tr className='h-[45px]'>
                                             <td className=''>Lorem</td>
                                             <td className=''>$XDR$#</td>
                                             <td className=''>45</td>
                                         </tr>
-                                        <tr>
+                                        <tr className='h-[45px]'>
                                             <td className=''>Lorem</td>
                                             <td className=''>$XDR$#</td>
                                             <td className=''>45</td>
                                         </tr>
-                                        <tr>
+                                        <tr className='h-[45px]'>
                                             <td className=''>Lorem</td>
                                             <td className=''>$XDR$#</td>
                                             <td className=''>45</td>
                                         </tr>
-                                        <tr>
+                                        <tr className='h-[45px]'>
                                             <td className=''>Lorem</td>
                                             <td className=''>$XDR$#</td>
                                             <td className=''>45</td>
                                         </tr>
-                                        <tr>
+                                        <tr className='h-[45px]'>
                                             <td className=''>Lorem</td>
                                             <td className=''>$XDR$#</td>
                                             <td className=''>45</td>
@@ -528,7 +528,7 @@ const Dashboard = () => {
                 </section>
                 <div className='flex justify-center'>
                     <div className='mt-[41px] w-screen mx-[120px]'>
-                        <div className='mt-2 ' style={{ height: '1px', backgroundColor: '#00000033' }}>
+                        <div className='mt-2 h-[1px] bg-[#00000033]' >
                         </div>
 
                     </div>
