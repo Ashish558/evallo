@@ -70,8 +70,6 @@ const Dashboard = () => {
                 </div>
             </div>
             <div className=" mt-[28px] bg-#2E2E2E " >
-
-
                 <div className='mt-[42px] flex justify-center'>
                     <div className='w-full mx-[80px]'>
                         <div className='flex justify-between items-center '>
@@ -604,7 +602,7 @@ const Dashboard = () => {
                     </div>
                 </section>
 
-                <footer className='bg-[#26435F] text-[#FFFFFF] py-[18px]'>
+                <footer className='bg-[#26435F] text-[#FFFFFF] py-[18px] w-full'>
                     <div className='flex  text-xs font-medium justify-between'>
                         <p className='ml-[74px]'>Copyright © Sevenimagine Education Private Limited</p>
                         <div className='flex mr-[45px]'>

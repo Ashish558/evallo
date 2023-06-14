@@ -1,0 +1,31 @@
+.container {
+    font-family: 'Lexend Deca', sans-serif;
+}
+
+.customSearch {
+    background: url('../../../src/assets/icons/Search.png');
+    background-repeat: no-repeat;
+    background-color: white;
+    background-position: 8% 50%;
+    background-size: 18px 18px;
+    border-radius: 6px;
+    width: 300px;
+}
+
+.customTable {
+    border-collapse: separate;
+    border-spacing: 0 4px;
+    margin-top: 10px;
+}
+
+.customTable td {
+    padding: 5px 0px;
+    font-size: 14px;
+    color: #517CA8;
+
+}
+
+.customTable tr {
+    border-radius: 4px;
+
+}
