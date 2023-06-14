@@ -99,9 +99,7 @@ export default function Settings() {
     tests: [],
   });
   const user = useSelector((state) => state.user);
-  const { organization } = useSelector((state) => state.organization);
 
-  console.log("organization", organization);
   useEffect(() => {
     setAdminModalDetails({
       firstName: user.firstName,

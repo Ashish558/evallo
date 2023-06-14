@@ -1,12 +1,21 @@
 import React from "react";
-import InputField from "../../../../components/InputField/inputField";
+import { useSelector } from "react-redux";
 import styles from "./style.module.css";
+import InputField from "../../../../components/InputField/inputField";
 import PrimaryButton from "../../../../components/Buttons/PrimaryButton";
 import CCheckbox from "../../../../components/CCheckbox/CCheckbox";
+import InputSelect from "../../../../components/InputSelect/InputSelect";
+import CheckboxIcon from "../../../../assets/icons/square.svg";
 
 export default function SignupTab({ setAddNewQuestionModalActive }) {
+  const { organization } = useSelector((state) => state.organization);
+
+  console.log("organization", organization);
+
+  const { customFields } = organization;
+
   return (
-    <div>
+    <div className="">
       <div className="grid grid-cols-2 gap-x-5">
         <div className={styles.colContainer}>
           <p className={`hidden lg:block mb-[26px] ${styles.textGrayed} `}>
@@ -102,10 +111,45 @@ export default function SignupTab({ setAddNewQuestionModalActive }) {
         </div>
       </div>
 
-      <PrimaryButton
-        children={"Add new question"}
-        onClick={() => setAddNewQuestionModalActive(true)}
-      />
+      <div className={styles.customContainer}>
+        <p className={styles.title}>
+          Page 3: Custom Fields (Add a maximum of 5 items)
+        </p>
+        <div className="mb-10">
+          {customFields?.map((item, idx) => {
+            return (
+              <div key={item._id} className={styles.customField}>
+                <p>
+                  {" "}
+                  <span>{idx + 1}. </span> {item.name}{" "}
+                </p>
+                <InputSelect
+                  value={item.dataType}
+                  labelClassname="hidden"
+                  parentClassName="w-[200px] mr-5 my-4 text-sm pointer-events-none"
+                  optionData={["String", "Dropdown"]}
+                />
+                {item.dataType === "Dropdown" && (
+                  <div className="grid grid-cols-2 gap-x-6 gap-y-4 mt-4 mb-7">
+                    {item.Values?.map((value) => {
+                      return (
+                        <div key={value} className="flex items-center">
+                          <img src={CheckboxIcon} alt="checkbox" />
+                          <p className="ml-2 text-[#507CA8]"> {value} </p>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+        <PrimaryButton
+          children={"Add new question"}
+          onClick={() => setAddNewQuestionModalActive(true)}
+        />
+      </div>
     </div>
   );
 }

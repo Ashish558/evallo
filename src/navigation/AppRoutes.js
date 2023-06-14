@@ -28,6 +28,7 @@ import { useEffect } from "react";
 import StudentReport from "../pages/StudentReport/StudentReport";
 import AssignedTutors from "../pages/AssignedTutors/AssignedTutors";
 import SuperadminDashboard from "../pages/SuperadminDashboard/SuperadminDashboard";
+import UserSignup from "../pages/UserSignup/Signup";
 
 const PrivateRoutes = [
    {
@@ -80,6 +81,12 @@ const AppRoutes = () => {
                path="/signup"
                element={
                   <Signup />
+               }
+            />
+            <Route
+               path="/signup/user"
+               element={
+                  <UserSignup />
                }
             />
             <Route

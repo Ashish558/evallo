@@ -111,7 +111,7 @@ export const userServicesApi = createApi({
       }),
       getOrganization: builder.query({
          query: (id) => ({
-            url: `api/user/org/${id}`,
+            url: `api/user/org/details/${id}`,
             method: "GET",
             headers: getAuthHeader()
          }),

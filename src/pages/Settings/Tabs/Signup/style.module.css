@@ -90,3 +90,27 @@
   line-height: 17px;
   color: #667085;
 }
+.customContainer {
+  border: 2px dashed #26435f;
+  border-radius: 8px;
+  margin-top: 16px;
+  padding: 1rem;
+}
+.title {
+  margin-bottom: 2rem;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 20px;
+  color: #26435f;
+}
+.customField {
+  margin-bottom: 1rem;
+}
+.customField p {
+  font-style: normal;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 18px;
+  color: #26435f;
+}
