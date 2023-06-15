@@ -100,6 +100,14 @@ export const adminServicesApi = createApi({
             headers: getAuthHeader()
          })
       }),
+      addNewQuestion: builder.mutation({
+         query: (body) => ({
+            url: `/api/user/addNewField/org/${body.orgId}`,
+            method: "POST",
+            body: body,
+            headers: getAuthHeader()
+         })
+      }),
    }),
 });
 
@@ -114,5 +122,6 @@ export const {
    useEditInvoiceMutation,
    useLazyGetAllAssignedtutorsQuery,
    useAddAssignedTutorMutation,
-   useDeleteAssignedTutorMutation
+   useDeleteAssignedTutorMutation,
+   useAddNewQuestionMutation
 } = adminServicesApi;

@@ -8,12 +8,15 @@ import { testServicesApi } from "./services/test";
 import { dashboardServicesApi } from "./services/dashboard";
 import { settingsServicesApi } from "./services/settings";
 import { adminServicesApi } from "./services/admin";
+import { orgServicesApi } from "./services/organization";
 
 import userReducer from './slices/user'
+import organizationReducer from './slices/organization'
 
 export const store = configureStore({
   reducer: {
     user: userReducer,
+    organization: organizationReducer,
     [sessionServicesApi.reducerPath]: sessionServicesApi.reducer,
     [authServicesApi.reducerPath]: authServicesApi.reducer,
     [userServicesApi.reducerPath]: userServicesApi.reducer,
@@ -21,6 +24,7 @@ export const store = configureStore({
     [dashboardServicesApi.reducerPath]: dashboardServicesApi.reducer,
     [settingsServicesApi.reducerPath]: settingsServicesApi.reducer,
     [adminServicesApi.reducerPath]: adminServicesApi.reducer,
+    [orgServicesApi.reducerPath]: orgServicesApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
@@ -31,6 +35,7 @@ export const store = configureStore({
       dashboardServicesApi.middleware,
       settingsServicesApi.middleware,
       adminServicesApi.middleware,
+      orgServicesApi.middleware,
     ),
 });
 

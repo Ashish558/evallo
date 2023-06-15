@@ -23,6 +23,7 @@
     background: linear-gradient(180deg, rgba(43, 73, 240, 0) 0%, rgba(42, 108, 251, 0.2) 100%), url('../../assets/signup//2312.svg');
     background-size: cover;
     background-position: center;
+    overflow-y: auto;
   }
 
 /* 

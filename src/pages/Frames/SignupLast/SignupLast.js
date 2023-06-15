@@ -12,6 +12,7 @@ export default function SignupLast({
   handleSignup,
   setSolutions,
   solutions,
+  loading
 }) {
   const [disabled, setDisabled] = useState(false);
 
@@ -122,6 +123,7 @@ export default function SignupLast({
           children="Finish"
           className="text-sm "
           onClick={() => handleSubmit()}
+          loading={loading}
           // disabled={disabled}
         />
       </div>

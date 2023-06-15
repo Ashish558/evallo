@@ -1,0 +1,32 @@
+.tabsContainer{
+   display: flex;
+   align-items: center;
+   background-color: black;
+   padding: 6px 12px;
+   border-radius: 4px;
+   color: white;
+   padding-left: 2rem;
+}
+.tab{
+   display: flex;
+   align-items: center;
+   margin-right: 1rem;
+   padding: 8px 4px;
+   z-index: 10;
+   position: relative;
+}
+.tab img{
+   display: inline-block;
+   margin-right: 8px;
+}
+.selectedTab{
+   color: black;
+}
+.activeBgIcon{
+   position: absolute;
+   top: 6px;
+   left: 2px;
+   transform: scaleX(1.25);
+   width: calc(100%);
+   z-index: -1;
+}
