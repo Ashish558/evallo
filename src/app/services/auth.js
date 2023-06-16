@@ -9,19 +9,20 @@ export const authServicesApi = createApi({
    }),
 
    endpoints: (builder) => ({
-      // getTutorsByName: builder.query({
-      //    query: (name) => ({
-      //       url: `api/user/tutor`,
-      //       params: {
-      //          search: name
-      //       },
-      //       method: "GET",
-      //    }),
-      // }),
-   
+
       signupUser: builder.mutation({
          query: (body) => ({
             url: `/api/user/orgSignup`,
+            method: "POST",
+            body: body,
+            headers: {
+               "Content-type": "application/json; charset=UTF-8",
+            },
+         })
+      }),
+      signup: builder.mutation({
+         query: (body) => ({
+            url: `/api/user/signup`,
             method: "POST",
             body: body,
             headers: {
@@ -89,5 +90,6 @@ export const {
   useSetPasswordMutation,
   useLoginUserMutation,
   useForgotPasswordMutation,
-  useChangePasswordMutation
+  useChangePasswordMutation,
+  useSignupMutation
 } = authServicesApi;
