@@ -3,6 +3,7 @@ import ReactPaginate from "react-paginate";
 import Pagination from "./Pagination";
 import TableItem from "./TableItem";
 import TableHeader from "./TableHeader";
+import styles from './styles.module.css'
 
 export default function Table(props) {
    const {
@@ -46,8 +47,8 @@ export default function Table(props) {
    console.log('cp', currentPage)
    return (
       <div>
-         <table className="table-auto mb-3 text-center w-full min-h-[300px]">
-            <thead className="pb-2 bg-gradient-to-r from-[#6009EF] to-[#007EF1] text-white rounded-2xl">
+         <table className={`${styles.customTable} mb-3 text-center w-full min-h-[300px]`}>
+            <thead className="bg-[#26435F]">
                <tr>
                   {tableHeaders.map((item, idx) => {
                      return <TableHeader key={idx} header={item} dataFor={dataFor} />;
@@ -69,7 +70,7 @@ export default function Table(props) {
                               key={idx}
                               excludes={excludes}
                               onClick={onClick}
-                              
+
                            />
                         );
                      })
@@ -77,14 +78,18 @@ export default function Table(props) {
 
             </tbody>
          </table>
-
+         <div className="flex justify-between items-center mt-[17px]">
+            <p className="text-left text-[#517CA8] text-sm">Showing 5 out of 10</p>
+            <p className='text-[10px]  text-right'><span className='text-[#26435F ]  font-medium '>Prev</span><span className='pl-2 text-[#FFA28D] font-bold'>01</span><span className='pl-2 text-[#B7C2CB] '>02</span><span className='pl-2'>...</span><span className='pl-2 text-[#B7C2CB] '>06</span><span className='text-[#26435F ] font-medium pl-2'>Next</span></p>
+         </div>
+         <div className="flex grid-cols- justify-center items-center">
+         </div>
          <div className="flex grid-cols- justify-center items-center">
             <Pagination totalPages={Math.ceil(data.length / maxPageSize)}
                currentPage={currentPage}
                setCurrentPage={setCurrentPage} />
 
          </div>
-
       </div>
    );
 }

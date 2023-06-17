@@ -1,11 +1,13 @@
+.container {
+   font-family: 'Lexend Deca', sans-serif;
+}
+
 .subheading {
-   font-style: normal;
-   font-weight: 600;
-   font-size: 14px;
+   font-weight: 500;
+   font-size: 16px;
    line-height: 120%;
-   text-transform: uppercase;
-   color: black;
-   margin-bottom: 8px;
+   color: #26435F;
+   margin-bottom: 6px;
 }
 
 .userStatsContainer {
@@ -14,34 +16,36 @@
    overflow: hidden;
    /* background-color: red; */
 }
-.userStat{
-   border-right: 1px solid  rgba(76, 61, 61, 0.15);
-   border-top: 1px solid  rgba(76, 61, 61, 0.15);
+
+.userStat {
+   /* border-right: 1px solid rgba(76, 61, 61, 0.15); */
+   border-top: 1px solid rgba(76, 61, 61, 0.15);
    flex: 1;
    text-align: center;
    padding: 11px 5px;
-   font-size: 12px;
-   color: #09232766;
+   font-size: 14px;
+   color: #26435F;
    font-weight: 500;
-   ;
+
 }
-.userStat:first-child{
-   border-left: 1px solid  rgba(76, 61, 61, 0.15);
+
+.userStat:first-child {
+   border-left: 1px solid rgba(76, 61, 61, 0.15);
+   border-radius: 3px 3px 0px 0px
 }
-.selected{
+
+.selected {
    background: white;
-   color: black;
-   font-weight: 600;
-   border-bottom: 4px solid blue;
+   color: #FFA28D;
+   font-weight: 400;
+   font-size: 14px;
+   border-bottom: 4px solid #FFA28D;
 }
 
 
 .statHead {
-   color: black;
-   font: inter;
-   font-weight: 500;
-line-height: 24x;
-   font-size: 20px;
+   color: #26435F;
+   line-height: 24x;
    padding-right: 6px;
 }
 
@@ -51,4 +55,25 @@ line-height: 24x;
    font-weight: 600;
    font-size: 20px;
    color: #4C3D3D;
+}
+
+
+.orgCard div:first-child {
+   border-left: 3px solid #26435F;
+   padding: 13px 20px;
+}
+
+.orgCard div:nth-child(2),
+.orgCard div:nth-child(3),
+.orgCard div:nth-child(4) {
+   padding: 13px 13px 13px 18px;
+}
+
+.orgCard div {
+   box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.25);
+}
+
+.customBorder {
+   box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.25);
+   border-radius: 4px;
 }

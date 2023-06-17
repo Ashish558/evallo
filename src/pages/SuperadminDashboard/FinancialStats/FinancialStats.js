@@ -14,7 +14,7 @@ export default function FinancialStats() {
 
   return (
     <div className="h-1/2 w-1/2">
-      <h2 className="text-2xl font-bold mb-4">FinancialStats</h2>
+      <h2 className="font-semibold mb-4 text-[#26435F]">Financial Stats</h2>
       <div className="grid grid-cols-2 gap-4 w-150 border border-solid border-grey-200 p-5">
         <div className="bg-blue-700 rounded p-4 shadow w-150 h-150">
           <h3 className="text-lg font-bold text-white">
