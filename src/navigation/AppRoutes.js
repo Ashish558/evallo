@@ -28,6 +28,7 @@ import { useEffect } from "react";
 import StudentReport from "../pages/StudentReport/StudentReport";
 import AssignedTutors from "../pages/AssignedTutors/AssignedTutors";
 import SuperadminDashboard from "../pages/SuperadminDashboard/SuperadminDashboard";
+import UserSignup from "../pages/UserSignup/Signup";
 import Dashboard from "../pages/AdminDashboard/Dashboard";
 import AdminContent from "../pages/AdminContent/AdminContent";
 
@@ -82,6 +83,12 @@ const AppRoutes = () => {
                path="/signup"
                element={
                   <Signup />
+               }
+            />
+            <Route
+               path="/signup/user"
+               element={
+                  <UserSignup />
                }
             />
             <Route

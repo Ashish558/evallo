@@ -109,6 +109,13 @@ export const userServicesApi = createApi({
             headers: getAuthHeader()
          }),
       }),
+      getOrganization: builder.query({
+         query: (id) => ({
+            url: `api/user/org/details/${id}`,
+            method: "GET",
+            headers: getAuthHeader()
+         }),
+      }),
 
    }),
 });
@@ -126,5 +133,6 @@ export const {
    usePostTutorDetailsMutation,
    useLazyGetPersonalDetailQuery,
    useLazyGetInvoiceQuery,
-   useUpdateProfileImageMutation
+   useUpdateProfileImageMutation,
+   useLazyGetOrganizationQuery
 } = userServicesApi;

@@ -11,7 +11,8 @@ const initialState = {
   role: '',
   email: '',
   phone: '',
-  awsLink: ''
+  awsLink: '',
+  associatedOrg: ''
 };
 
 const user = createSlice({
@@ -37,6 +38,7 @@ const user = createSlice({
       state.role = payload.role;
       state.email = payload.email;
       state.phone = payload.phone;
+      state.associatedOrg = payload.associatedOrg;
     },
   },
 });

@@ -1,0 +1,80 @@
+.phoneNumberField {
+    position: absolute;
+    left: 0;
+    width: 87px;
+    top: 0;
+    height: 100%;
+    background: rgba(113, 82, 235, 0.27);
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: stretch;
+}
+
+.phoneNumberShort {
+    position: absolute;
+    left: 0;
+    width: 69px;
+    top: 0;
+    height: 100%;
+    background: rgba(113, 82, 235, 0.27);
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: stretch;
+}
+
+#signUp{
+    height: 100vh;
+    background: linear-gradient(180deg, rgba(43, 73, 240, 0) 0%, rgba(42, 108, 251, 0.2) 100%), url('../../assets/signup//2312.svg');
+    background-size: cover;
+    background-position: center;
+  }
+
+#signUp input {
+    background-color: transparent;
+}
+
+#signUp h1 {
+    /* font-size: 30px; */
+    font-weight: 700;
+    /* margin-bottom: 36px; */
+}
+
+#signUp h6 {
+    font-size: 18px;
+    font-weight: 700;
+    /* margin-bottom: 26px; */
+}
+
+#signUp label {
+    margin-left: 2px;
+    margin-bottom: 5.87px;
+    font-size: 12px;
+    font-weight: 500;
+    color: rgba(0, 0, 0, 0.9);
+}
+.inputs{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+.inputs > div {
+    flex-basis: calc(50% - 16px);
+}
+.textGrayed {
+    font-weight: 400;
+    font-size: 11.7354px;
+    line-height: 18px;
+    color: #667085;
+}
+
+.title {
+    font-weight: 700;
+    font-size: 29.9448px;
+    line-height: 36px;
+    letter-spacing: 0.01em;
+    text-transform: capitalize;
+}
