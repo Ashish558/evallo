@@ -5,7 +5,7 @@ import OrgCard from "./orgCard/orgCard";
 import Table from "./Table/table";
 import { orgData, tableHeaders } from "./temp";
 import Chart from "./DataChart/Chart";
-import Index from "./FinancialStats/Index";
+import Index from "./FinancialStats/Index1";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowDown, faArrowDown19, faArrowDown91, faArrowRightFromBracket, faCaretDown, faDollar, faPlus, faUpload } from '@fortawesome/free-solid-svg-icons';
 import { faQuestionCircle } from '@fortawesome/free-regular-svg-icons';
@@ -175,6 +175,15 @@ export default function SuperadminDashboard() {
         <Index />
         <Chart />
       </div>
+      <footer className='bg-[#26435F] text-[#FFFFFF] py-[18px] w-full'>
+        <div className='flex  text-xs font-medium justify-between'>
+          <p className='ml-[74px]'>Copyright © Sevenimagine Education Private Limited</p>
+          <div className='flex mr-[45px]'>
+            <p>Terms of Usage</p>
+            <p className='ml-6'>Privacy Policy</p>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }
