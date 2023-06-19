@@ -173,9 +173,15 @@ export default function SuperadminDashboard() {
         <p className="text-[#26435F] font-medium mt-9">Daily active users</p>
         <Chart />
         <Index />
+        <div className="flex items-center mt-[50px]">
+          <p className="text-[#26435F] font-semibold ">Financial Stats chart </p>
+          <p className="text-[#26435F] pl-[15px] pt-1"><FontAwesomeIcon icon={faQuestionCircle}></FontAwesomeIcon></p>
+        </div>
         <Chart />
+        <p className="text-[#26435F] font-semibold mt-[50px]">User demography</p>
       </div>
-      <footer className='bg-[#26435F] text-[#FFFFFF] py-[18px] w-full'>
+
+      <footer className='bg-[#26435F] text-[#FFFFFF] py-[18px] w-full mt-6'>
         <div className='flex  text-xs font-medium justify-between'>
           <p className='ml-[74px]'>Copyright © Sevenimagine Education Private Limited</p>
           <div className='flex mr-[45px]'>
