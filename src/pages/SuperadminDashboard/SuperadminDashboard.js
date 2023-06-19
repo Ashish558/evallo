@@ -5,6 +5,7 @@ import OrgCard from "./orgCard/orgCard";
 import Table from "./Table/table";
 import { orgData, tableHeaders } from "./temp";
 import Chart from "./DataChart/Chart";
+import Chart2 from "./DataChart/Chart2";
 import Index from "./FinancialStats/Index1";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowDown, faArrowDown19, faArrowDown91, faArrowRightFromBracket, faCaretDown, faDollar, faPlus, faUpload } from '@fortawesome/free-solid-svg-icons';
@@ -17,6 +18,7 @@ import image3 from '../../assets/images/Vector (3).png';
 import image4 from '../../assets/images/Vector (4).png';
 import image5 from '../../assets/images/Vector (5).png';
 import image6 from '../../assets/images/Vector (6).png';
+import Demography from "./Demographies/Demography1";
 
 const orgContents = [
   {
@@ -177,8 +179,9 @@ export default function SuperadminDashboard() {
           <p className="text-[#26435F] font-semibold ">Financial Stats chart </p>
           <p className="text-[#26435F] pl-[15px] pt-1"><FontAwesomeIcon icon={faQuestionCircle}></FontAwesomeIcon></p>
         </div>
-        <Chart />
+        <Chart2 />
         <p className="text-[#26435F] font-semibold mt-[50px]">User demography</p>
+        <Demography></Demography>
       </div>
 
       <footer className='bg-[#26435F] text-[#FFFFFF] py-[18px] w-full mt-6'>
