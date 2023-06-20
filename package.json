@@ -4,6 +4,10 @@
   "private": true,
   "homepage": "https://app.sevensquarelearning.com",
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.4.0",
+    "@fortawesome/free-regular-svg-icons": "^6.4.0",
+    "@fortawesome/free-solid-svg-icons": "^6.4.0",
+    "@fortawesome/react-fontawesome": "^0.2.0",
     "@fullcalendar/core": "^6.0.1",
     "@fullcalendar/daygrid": "^5.11.3",
     "@fullcalendar/interaction": "^5.11.3",
@@ -33,6 +37,7 @@
     "react-redux": "^8.0.5",
     "react-router-dom": "^6.4.2",
     "react-scripts": "5.0.1",
+    "recharts": "^2.7.1",
     "web-vitals": "^2.1.4",
     "yup": "^0.32.11"
   },

@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import InputField from "../../components/InputField/inputField";
 import styles from "./signup.module.css";
-
+import axios from "axios";
 import OrgDetails from "../Frames/OrgDetails/OrgDetails";
 import UserDetails from "../Frames/UserDetails/userDetails";
 import SignupLast from "../Frames/SignupLast/SignupLast";
@@ -92,6 +92,7 @@ export default function Signup() {
     email: "",
     phone: "",
     subscriptionCode: "",
+    company:""
   });
 
   const [otherDetails, setOtherDetails] = useState({
@@ -395,11 +396,63 @@ export default function Signup() {
   };
 
   const handleClick = () => {
-    setFrames({
-      ...frames,
-      signupActive: false,
-      orgDetails: true,
-    });
+    const emailAlreadyExists = async () => {
+      let checked=false;
+       try{
+        let data={
+          workemail: values.email
+        }
+     //   alert(data.workemail)
+        let result = await axios.post(
+          "https://testbackend.sevensquarelearning.com/api/user/CheckEmail",
+         data,{
+            headers: {
+              'content-Type': 'application/json'
+            }
+          }
+        )
+      if(result)
+      checked=true;
+       
+      }
+      catch (e) {
+        console.error(e.response.data.message);
+        setError({
+          ...error,
+          email:e.response.data.message
+        })
+      }
+    try{
+      let data={
+        company: values.company
+      }
+   //   alert(data.workemail)
+      let result = await axios.post(
+        "https://testbackend.sevensquarelearning.com/api/user/CheckCompany",
+       data,{
+          headers: {
+            'content-Type': 'application/json'
+          }
+        }
+      )
+    }
+      catch(e) {
+        checked=false;
+        setError({
+          ...error,
+          company:e.response.data.message
+        })
+      }
+      if(checked===true){
+        setFrames({
+          ...frames,
+          signupActive: false,
+          orgDetails: true,
+        });
+      }
+    };
+    emailAlreadyExists();
+    
   };
 
   // console.log(isLinkedEmail);
@@ -454,7 +507,7 @@ export default function Signup() {
       id={styles.signUp}
     >
       <div className="flex justify-center flex-col items-center md:grid-cols-2 min-h-screen ">
-        <img src={cuate} alt="rocket" class="h-10vh mb-10" />
+        <img src={cuate} alt="rocket" className="h-10vh mb-10" />
         <>
           {!frames.signupSuccessful ? (
             <div className="lg:hidden bg-primary text-white pt-[79px] px-[49px]">

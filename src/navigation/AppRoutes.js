@@ -29,6 +29,8 @@ import StudentReport from "../pages/StudentReport/StudentReport";
 import AssignedTutors from "../pages/AssignedTutors/AssignedTutors";
 import SuperadminDashboard from "../pages/SuperadminDashboard/SuperadminDashboard";
 import UserSignup from "../pages/UserSignup/Signup";
+import Dashboard from "../pages/AdminDashboard/Dashboard";
+import AdminContent from "../pages/AdminContent/AdminContent";
 
 const PrivateRoutes = [
    {
@@ -281,7 +283,8 @@ const AppRoutes = () => {
                   </RequireAuth>
                }
             />
-
+            <Route path="/adminDashboard" element={<Dashboard></Dashboard>}></Route>
+            <Route path="/adminContent" element={<AdminContent></AdminContent>}></Route>
             {/* <Route
                   path="/profile"
                   element={
