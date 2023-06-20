@@ -92,6 +92,7 @@ export default function Signup() {
     email: "",
     phone: "",
     subscriptionCode: "",
+    company:""
   });
 
   const [otherDetails, setOtherDetails] = useState({
@@ -396,40 +397,22 @@ export default function Signup() {
 
   const handleClick = () => {
     const emailAlreadyExists = async () => {
-        const  {
-        firstName,
-        lastName,
-        email,
-        phone,
-        company,
-        role,
-        userId,
-        registrationAs,
-      } = values;
-      try{
-        let data= {
-          firstname:firstName,
-          lastname: lastName,
-          workemail: email,
-          phone:phone,
-          company: company,
-          registrationas:registrationAs,
-          
-         
+      let checked=false;
+       try{
+        let data={
+          workemail: values.email
         }
+     //   alert(data.workemail)
         let result = await axios.post(
-          "https://testbackend.sevensquarelearning.com/api/user/orgSignup",
+          "https://testbackend.sevensquarelearning.com/api/user/CheckEmail",
          data,{
             headers: {
               'content-Type': 'application/json'
             }
           }
         )
-        setFrames({
-          ...frames,
-          signupActive: false,
-          orgDetails: true,
-        });
+      if(result)
+      checked=true;
        
       }
       catch (e) {
@@ -439,11 +422,37 @@ export default function Signup() {
           email:e.response.data.message
         })
       }
-    
-      
+    try{
+      let data={
+        company: values.company
+      }
+   //   alert(data.workemail)
+      let result = await axios.post(
+        "https://testbackend.sevensquarelearning.com/api/user/CheckCompany",
+       data,{
+          headers: {
+            'content-Type': 'application/json'
+          }
+        }
+      )
+    }
+      catch(e) {
+        checked=false;
+        setError({
+          ...error,
+          company:e.response.data.message
+        })
+      }
+      if(checked===true){
+        setFrames({
+          ...frames,
+          signupActive: false,
+          orgDetails: true,
+        });
+      }
     };
     emailAlreadyExists();
-   
+    
   };
 
   // console.log(isLinkedEmail);

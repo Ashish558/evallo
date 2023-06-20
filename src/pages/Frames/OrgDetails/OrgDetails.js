@@ -50,18 +50,13 @@ export default function OrgDetails({
     <div className="mt-5 mb-3">
       <div className="">
         <InputField
-          required={true}
+          disabled={true}
           placeholder="Org name"
           parentClassName="w-full max-w-[118px] mb-6"
-          inputClassName="bg-transparent text-xs"
+          inputClassName="bg-transparent text-sm font-bold"
           type="text"
-          value={values.orgName}
-          onChange={(e) =>
-            setValues({
-              ...values,
-              orgName: e.target.value,
-            })
-          }
+          value={values.company}
+         
         />
         <div className="flex items-center">
           <InputField
