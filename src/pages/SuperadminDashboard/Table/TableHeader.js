@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
+import styles from './styles.module.css'
 
 export default function TableHeader({ header, dataFor, onClick, setSorted }) {
 
    return (
 
-      <th className={`px-2 py-3 font-semibold opacity-60  text-sm`}>
+      <th className={`${styles.customHeader} py-3   text-sm`}>
          {header}
       </th>
    )
