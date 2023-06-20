@@ -2,10 +2,10 @@ import React from "react";
 import { Bubble } from "react-chartjs-2";
 import { bubbleChartData } from "./ChartData";
 
-const BubbleChart = () => {
+const BubbleChart2 = () => {
   return (
     <div className="bg-[#FFFFFF] flex justify-center items-center border border-gray-200 p-4 mt-[6px] rounded-md">
-      <div className="w-full max-w-screen-lg">
+      < div className="w-full max-w-screen-lg " >
         <div className="flex justify-center w-full">
           <Bubble
             data={bubbleChartData}
@@ -35,19 +35,19 @@ const BubbleChart = () => {
                   display: true,
                   title: {
                     display: true,
-                    text: 'Hours',
+                    text: 'DAY',
                     padding: { bottom: 40 },
-                    color: '#507CA8',
+                    color: '#24A3D9',
                     font: {
                       weight: 500,
-                      size: 12,
+                      size: 14,
                     },
                   },
                   ticks: {
                     color: '#507CA8',
                     font: {
                       weight: 500,
-                      size: 12,
+                      size: 14,
                     },
                   },
                 },
@@ -66,9 +66,9 @@ const BubbleChart = () => {
             }}
           />
         </div>
-      </div>
-    </div>
+      </div >
+    </div >
   );
 };
 
-export default BubbleChart;
+export default BubbleChart2;

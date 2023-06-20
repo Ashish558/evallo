@@ -1,0 +1,14 @@
+.customTable {
+    border-collapse: separate;
+    border-spacing: 0 4px;
+    margin-top: 6px;
+}
+
+.customTable thead {
+    background-color: #26435F;
+}
+
+.customHeader:first-child {
+    text-align: left;
+    padding-left: 19px;
+}
