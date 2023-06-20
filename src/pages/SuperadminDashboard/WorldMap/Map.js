@@ -7,7 +7,7 @@ import { colorScale, countries, missingCountries } from './Countries';
 
 const Map = () => {
     return (
-        <div style={{ margin: "auto", width: "100%", height: "300px" }}>
+        <div className='m-auto w-full h-[300px]' >
             <VectorMap
                 map={worldMill}
                 containerStyle={{
