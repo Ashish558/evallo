@@ -52,10 +52,10 @@ export default function UserSignup() {
   const navigate = useNavigate();
 
   const [values, setValues] = useState({
-    firstName: "w",
-    lastName: "w",
-    email: "wewew@gmail.com",
-    phone: "1232132132",
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
     userId: "",
     registrationAs: "Parent",
     role: "Parent",
@@ -144,7 +144,7 @@ export default function UserSignup() {
 
   useEffect(() => {
     const name = searchParams.get("orgName");
-    getOrgDetails({ orgOfName: name }).then((res) => {
+    getOrgDetails({ company: name }).then((res) => {
       if (res.error) {
         console.log(res.error);
         return;
@@ -359,7 +359,7 @@ export default function UserSignup() {
                   </p>
                   <div className={`flex mt-[59px] lg:mt-0 ${styles.inputs}`}>
                     <InputField
-                      placeholder="Vishesh"
+                     placeholder=""
                       parentClassName="text-xs"
                       label="First Name"
                       value={values.firstName}
@@ -372,7 +372,7 @@ export default function UserSignup() {
                       error={error.firstName}
                     />
                     <InputField
-                      placeholder="Patel"
+                    placeholder=""
                       parentClassName="text-xs"
                       label="Last Name"
                       value={values.lastName}
@@ -388,7 +388,7 @@ export default function UserSignup() {
                   <div className="mt-3 mb-4">
                     <InputField
                       label="Email"
-                      placeholder=" Lorem123@gmail.com"
+                      placeholder=""
                       parentClassName="text-xs mb-3"
                       value={values.email}
                       onChange={(e) =>
@@ -400,7 +400,7 @@ export default function UserSignup() {
                       error={error.email}
                     />
                     <InputField
-                      placeholder="99999994532"
+                     placeholder=""
                       parentClassName="text-xs"
                       label="Phone"
                       value={values.phone}
@@ -478,6 +478,7 @@ export default function UserSignup() {
                   {...props}
                   setPersona={setPersona}
                   {...valueProps}
+                  customFields={customFields}
                   {...otherDetailsProps}
                 />
               ) : frames.customFields ? (

@@ -62,7 +62,7 @@ export default function FurtherDetails({
           <InputField
             label="No of active students"
             required={true}
-            placeholder="Org name"
+            placeholder=""
             parentClassName="w-full max-w-[248px] mr-4"
             inputClassName="bg-transparent text-xs"
             type="text"
@@ -77,7 +77,7 @@ export default function FurtherDetails({
           <InputField
             label="No of tutors"
             required={true}
-            placeholder="Org name"
+            placeholder=""
             parentClassName="w-full max-w-[248px]"
             inputClassName="bg-transparent text-xs"
             type="text"

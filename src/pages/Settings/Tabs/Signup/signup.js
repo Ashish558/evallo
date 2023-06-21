@@ -7,13 +7,15 @@ import CCheckbox from "../../../../components/CCheckbox/CCheckbox";
 import InputSelect from "../../../../components/InputSelect/InputSelect";
 import CheckboxIcon from "../../../../assets/icons/square.svg";
 
+
 export default function SignupTab({ setAddNewQuestionModalActive }) {
   const { organization } = useSelector((state) => state.organization);
 
   console.log("organization", organization);
 
   const { customFields } = organization;
-
+  console.log("customFields", organization);
+ 
   return (
     <div className="">
       <p className="text-sm underline w-500">
@@ -26,33 +28,33 @@ export default function SignupTab({ setAddNewQuestionModalActive }) {
           </p>
           <div className={`flex mt-[59px] lg:mt-0 ${styles.inputs}`}>
             <InputField
-              placeholder="Vishesh"
+              placeholder=""
               parentClassName="text-xs"
               label="First Name"
             />
             <InputField
-              placeholder="Patel"
+              placeholder=""
               parentClassName="text-xs"
               label="Last Name"
             />
             <InputField
               label="Work Email"
-              placeholder=" Lorem123@gmail.com"
+              placeholder=""
               parentClassName="text-xs"
             />
             <InputField
-              placeholder="99999994532"
+              placeholder=""
               parentClassName="text-xs"
               label="Phone"
             />
 
             <InputField
-              placeholder="Lorem"
+              placeholder=""
               parentClassName="text-xs mb-6"
               label="Company"
             />
             <InputField
-              placeholder="Lorem"
+              placeholder=""
               parentClassName="text-xs mb-6"
               label="Role"
             />
@@ -80,33 +82,33 @@ export default function SignupTab({ setAddNewQuestionModalActive }) {
           </p>
           <div className={`flex mt-[59px] lg:mt-0 ${styles.inputs}`}>
             <InputField
-              placeholder="Vishesh"
+              placeholder=""
               parentClassName="text-xs"
               label="Student / Parent First Name"
             />
             <InputField
-              placeholder="Patel"
+              placeholder=""
               parentClassName="text-xs"
               label="Student / Parent Last Name"
             />
             <InputField
               label="Student / Parent Email"
-              placeholder=" Lorem123@gmail.com"
+              placeholder=" "
               parentClassName="text-xs"
             />
             <InputField
-              placeholder="99999994532"
+              placeholder=""
               parentClassName="text-xs"
               label="Phone"
             />
 
             <InputField
-              placeholder="Lorem"
+              placeholder=""
               parentClassName="text-xs mb-6"
               label="Company"
             />
             <InputField
-              placeholder="Lorem"
+              placeholder=""
               parentClassName="text-xs mb-6"
               label="Role"
             />
@@ -129,8 +131,9 @@ export default function SignupTab({ setAddNewQuestionModalActive }) {
                 <InputSelect
                   value={item.dataType}
                   labelClassname="hidden"
-                  parentClassName="w-[200px] mr-5 my-4 text-sm pointer-events-none"
+                  parentClassName="w-[200px] mr-5 my-4 text-sm "
                   optionData={["String", "Dropdown"]}
+                 
                 />
                 {item.dataType === "Dropdown" && (
                   <div className="grid grid-cols-2 gap-x-6 gap-y-4 mt-4 mb-7">

@@ -8,6 +8,7 @@ import useOutsideAlerter from "../../../hooks/useOutsideAlerter";
 import styles from "../../Signup/signup.module.css";
 import { validateOtherDetails } from "../../Signup/utils/util";
 import selectStyles from "../../../components/InputSelect/style.module.css";
+import CustomFields from "../CustomFields/CustomFields";
 
 export default function UserDetails({
   setFrames,
@@ -21,6 +22,7 @@ export default function UserDetails({
   studentNumberPrefix,
   setStudentNumberPrefix,
   isAddedByAdmin,
+  customFields
 }) {
   const [selected, setSelected] = useState(false);
   const [disabled, setDisabled] = useState(false);
@@ -57,7 +59,11 @@ export default function UserDetails({
             [result.data]: result.message,
           };
         });
-      } else {
+      } 
+      else if(customFields.length===0){
+        alert('CustomFields are empty ,please fill those ')
+      }
+      else if(customFields.length > 0) {
         // return
         setFrames((prev) => {
           return {
@@ -92,7 +98,7 @@ export default function UserDetails({
     <div className="w-full">
       <div className="flex">
         <InputField
-          placeholder="First Name"
+        
           inputContainerClassName="pt-3 pb-3 border"
           parentClassName="mb-6 mr-5 relative"
           required={persona === "student" ? true : false}
@@ -108,7 +114,7 @@ export default function UserDetails({
           error={detailsError.FirstName}
         />
         <InputField
-          placeholder="Last Name"
+         
           parentClassName="mb-6 relative"
           inputContainerClassName="pt-3 pb-3 border"
           label={`${personaText} Last Name`}
@@ -126,7 +132,7 @@ export default function UserDetails({
       </div>
 
       <InputField
-        placeholder="Email address"
+      
         parentClassName="mb-6 relative"
         label={`${personaText} Email Address`}
         inputContainerClassName="pt-3 pb-3 border"
@@ -139,7 +145,7 @@ export default function UserDetails({
         error={detailsError.Email}
       />
       <InputField
-        placeholder="Phone Number"
+       
         parentClassName="mb-6"
         label={`${personaText} Phone Number ${
           persona !== "parent" ? "(For tutor correspondence)" : ""
