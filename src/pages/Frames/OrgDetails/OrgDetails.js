@@ -4,9 +4,9 @@ import SecondaryButton from "../../../components/Buttons/SecondaryButton";
 import InputField from "../../../components/InputField/inputField";
 import InputSelect from "../../../components/InputSelect/InputSelect";
 import styles from "../EventModal/style.module.css";
-import { Country, State } from 'country-state-city';
-import Dropdown from './Commons/Dropdown';
-import style from './styles.module.css';
+import { Country, State } from "country-state-city";
+import Dropdown from "./Commons/Dropdown";
+import style from "./styles.module.css";
 
 const grades = [6, 7, 8, 9, 10, 11, 12, "College"];
 
@@ -28,15 +28,10 @@ export default function OrgDetails({
   const [disabled, setDisabled] = useState(false);
   const [inputDisabled, setInputDisabled] = useState(false);
 
-  const countryData = Country.getAllCountries().map(city => ({
+  const countryData = Country.getAllCountries().map((city) => ({
     value: city.name,
-    displayValue: city.name
-  
-}))
-
-
-
-
+    displayValue: city.name,
+  }));
 
   const handleSubmit = () => {
     setFrames((prev) => {
@@ -49,24 +44,25 @@ export default function OrgDetails({
     });
   };
 
-const [country,setCountry] =useState([])
-const [states,setStates] =useState([])
+  const [country, setCountry] = useState([]);
+  const [states, setStates] = useState([]);
 
-const handleState=(c)=>{
-console.log(c)
-const state=country.filter(x=>x.name===c)
-
-const currentState = state.map(s=>s.states)
-setStates(currentState)
-console.log(currentState)
-// console.log(country)
-}
+  const handleState = (c) => {
+    console.log(c);
+    const state = country.filter((x) => x.name === c);
+    const currentState = state.map((s) => s.states);
+    setStates(currentState);
+    setValues({
+      ...values,
+      country: c,
+    });
+  };
 
   useEffect(() => {
     setcurrentStep(2);
-    fetch('countryData.json')
-    .then((res) => res.json())
-    .then((data) => setCountry(data));
+    fetch("countryData.json")
+      .then((res) => res.json())
+      .then((data) => setCountry(data));
   }, []);
 
   const handleBack = () => {
@@ -85,7 +81,6 @@ console.log(currentState)
           inputClassName="bg-transparent text-sm font-bold"
           type="text"
           value={values.company}
-         
         />
         <div className="flex items-center">
           <InputField
@@ -135,51 +130,53 @@ console.log(currentState)
               })
             }
           />
-         
 
-      <div className={style.changeOption }>
-        
-      <select className="form-control mt-5 text-xs" onChange={(e)=>handleState(e.target.value)}>
-          <option value="0">Select Country</option>
-{
-  country.map((c,index)=>{
-    return(
-      <option key={index} value={c?.name}>{c?.name}</option>
-
-    )
-  })
-}
-
-         </select>
-      </div>
-   
+          <div className={style.changeOption}>
+            <select
+              className="form-control mt-5 text-xs"
+              onChange={(e) => handleState(e.target.value)}
+              value={values.country}
+            >
+              <option value="0">Select Country</option>
+              {country.map((c, index) => {
+                return (
+                  <option key={index} value={c?.name}>
+                    {c?.name}
+                  </option>
+                );
+              })}
+            </select>
+          </div>
         </div>
         <div className="flex items-center gap-x-5">
-         
-                <div className={style.changeOption }>
-        
-        <select className="form-control mt-7 text-xs">
-            <option value="0">Select State</option>
-            {
-  states.map((s,id)=>{
-    return(
-     <>
-     {
-      s.map((state,id)=>{
-        return(
-          <option key={id} value={state?.name}>{state?.name}</option>
-        )
-      })
-     }
-     </>
+          <div className={style.changeOption}>
+            <select
+              className="form-control mt-7 text-xs"
+              value={values.state}
+              onChange={(e) =>
+                setValues({
+                  ...values,
+                  state: e.target.value,
+                })
+              }
+            >
+              <option value="0">Select State</option>
+              {states.map((s, id) => {
+                return (
+                  <>
+                    {s.map((state, id) => {
+                      return (
+                        <option key={id} value={state?.name}>
+                          {state?.name}
+                        </option>
+                      );
+                    })}
+                  </>
+                );
+              })}
+            </select>
+          </div>
 
-    )
-  })
-}
-  
-           </select>
-        </div>
-      
           <InputField
             label="zip"
             required={true}
