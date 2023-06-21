@@ -546,7 +546,7 @@ export default function Signup() {
                   </p>
                   <div className={`flex mt-[59px] lg:mt-0 ${styles.inputs}`}>
                     <InputField
-                      placeholder="Vishesh"
+                      placeholder=""
                       parentClassName="text-xs"
                       label="First Name"
                       value={values.firstName}
@@ -559,7 +559,7 @@ export default function Signup() {
                       error={error.firstName}
                     />
                     <InputField
-                      placeholder="Patel"
+                      placeholder=""
                       parentClassName="text-xs"
                       label="Last Name"
                       value={values.lastName}
@@ -573,7 +573,7 @@ export default function Signup() {
                     />
                     <InputField
                       label="Work Email"
-                      placeholder=" Lorem123@gmail.com"
+                      placeholder=""
                       parentClassName="text-xs"
                       value={values.email}
                       onChange={(e) =>
@@ -585,7 +585,7 @@ export default function Signup() {
                       error={error.email}
                     />
                     <InputField
-                      placeholder="99999994532"
+                      placeholder=""
                       parentClassName="text-xs"
                       label="Phone"
                       value={values.phone}
@@ -599,7 +599,7 @@ export default function Signup() {
                     />
 
                     <InputField
-                      placeholder="Lorem"
+                      placeholder=""
                       parentClassName="text-xs mb-6"
                       label="Company"
                       value={values.company}
@@ -612,7 +612,7 @@ export default function Signup() {
                       error={error.company}
                     />
                     <InputField
-                      placeholder="Lorem"
+                     
                       parentClassName="text-xs mb-6"
                       label="Role"
                       value={values.role}
