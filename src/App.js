@@ -76,7 +76,7 @@ function App() {
             associatedOrg,
           })
         );
-        getOrganizationDetail(associatedOrg[0]);
+        getOrganizationDetail(associatedOrg);
       });
     } else {
       setLoading(false);

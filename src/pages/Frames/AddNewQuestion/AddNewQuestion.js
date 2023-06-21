@@ -13,12 +13,12 @@ export default function AddNewQuestion({ newQuestion, setNewQuestion }) {
             placeholder="Question"
             parentClassName="w-full mr-4"
             type="text"
-            value={newQuestion.question}
+            value={newQuestion.text}
             isRequired={true}
             onChange={(e) =>
               setNewQuestion({
                 ...newQuestion,
-                question: e.target.value,
+                text: e.target.value,
               })
             }
           />
