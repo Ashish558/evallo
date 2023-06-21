@@ -7,13 +7,14 @@ import CCheckbox from "../../../../components/CCheckbox/CCheckbox";
 import InputSelect from "../../../../components/InputSelect/InputSelect";
 import CheckboxIcon from "../../../../assets/icons/square.svg";
 
+
 export default function SignupTab({ setAddNewQuestionModalActive }) {
   const { organization } = useSelector((state) => state.organization);
 
   console.log("organization", organization);
 
   const { customFields } = organization;
-
+  //console.log("customFields", organization);
   return (
     <div className="">
       <p className="text-sm underline w-500">
