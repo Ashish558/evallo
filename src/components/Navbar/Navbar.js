@@ -46,11 +46,11 @@ const tempnavdata = [
       tooltip: 'All Tests'
    },
    
-   {
-      icon: DollarIcon,
-      path: "/invoice",
-      tooltip: 'All Invoices'
-   },
+   // {
+   //    icon: DollarIcon,
+   //    path: "/invoice",
+   //    tooltip: 'All Invoices'
+   // },
    {
       icon: TestsIcon,
       path: "/assigned-tests",
