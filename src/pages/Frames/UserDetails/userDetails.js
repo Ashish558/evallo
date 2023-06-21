@@ -95,7 +95,7 @@ export default function UserDetails({
       <div className="w-full">
          <div className="flex">
             <InputField
-               placeholder="First Name"
+               placeholder=""
                inputContainerClassName='pt-3 pb-3 border'
                parentClassName="mb-6 mr-5 relative"
                required={persona === "student" ? true : false}
@@ -111,7 +111,7 @@ export default function UserDetails({
                error={detailsError.FirstName}
             />
             <InputField
-               placeholder="Last Name"
+               placeholder=""
                parentClassName="mb-6 relative"
                inputContainerClassName='pt-3 pb-3 border'
                label={`${personaText} Last Name`}
@@ -129,7 +129,7 @@ export default function UserDetails({
          </div>
 
          <InputField
-            placeholder="Email address"
+            placeholder=""
             parentClassName="mb-6 relative"
             label={`${personaText} Email Address`}
             inputContainerClassName='pt-3 pb-3 border'
@@ -142,7 +142,7 @@ export default function UserDetails({
             error={detailsError.Email}
          />
          <InputField
-            placeholder="Phone Number"
+            placeholder=""
             parentClassName="mb-6"
             label={`${personaText} Phone Number ${persona !== "parent" ? "(For tutor correspondence)" : ""
                } `}

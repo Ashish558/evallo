@@ -583,7 +583,7 @@ export default function Settings() {
     e.preventDefault();
     const { option1, option2, option3, option4 } = newQuestion.values;
     const body = {
-      orgId: user.associatedOrg[0],
+      orgId: user.associatedOrg,
       name: newQuestion.text,
       dataType: newQuestion.type,
       values: [option1, option2, option3, option4],

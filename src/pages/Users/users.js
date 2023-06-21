@@ -162,6 +162,7 @@ export default function Users() {
          .then(res => {
             setSettings(res.data.data.setting)
          })
+        
    }, [])
 
    // console.log(settings)
@@ -169,7 +170,7 @@ export default function Users() {
    const fetch = () => {
       setUsersData([])
       setFilteredUsersData([])
-
+     // console.log('shi',filteredUsersData)
       let urlParams = `?limit=${maxPageSize}&page=${currentPage}`
       if (filterData.userType.length > 0) {
          filterData.userType.forEach(item => {
@@ -235,7 +236,9 @@ export default function Users() {
                      specialization: user.specialization ? user.specialization : [],
                   }
                   setUsersData(prev => [...prev, obj])
+
                   setFilteredUsersData(prev => [...prev, obj])
+                 
                   // if (user.role === 'tutor') {
                   //    // console.log('tutor', user._id);
                   //    await getTutorDetail({ id: user._id })
@@ -269,8 +272,9 @@ export default function Users() {
 
                })
             }
-
+           
             fetchDetails()
+          //  console.log('shivam',filteredUsersData)
             // setUsersData(data)
             // setFilteredUsersData(data)
          })
@@ -314,13 +318,14 @@ export default function Users() {
             return { ...item }
          }
       })
-      // console.log(temp);
+      // console.log('shivam',temp);
       setFilteredUsersData(temp)
       setUsersData(tempAllusers)
    }
 
    useEffect(() => {
-      fetch()
+     // fetch()
+      //console.log('shivam yadav 1',filteredUsersData)
    }, [maxPageSize, currentPage])
    // console.log('currentPage', currentPage);
 
@@ -329,6 +334,7 @@ export default function Users() {
       // console.log('all users data', usersData)
       // console.log('filterData.specialization', filterData.specialization)
       fetch()
+      
       setCurrentPage(1)
       // setTotalPages(0)
       //USER TYPE FILTER
@@ -364,6 +370,7 @@ export default function Users() {
          tempdata = tempdata.filter(user => user.name !== '')
       }
       // setFilteredUsersData(tempdata)
+     
    }, [filterData])
 
    const removeFilter = (key, text, isArray) => {
@@ -391,6 +398,7 @@ export default function Users() {
          }
       }).filter(item => item !== undefined)
       setFilterItems(arr)
+      
    }, [filterData])
 
 
@@ -577,7 +585,7 @@ export default function Users() {
    // console.log('tutors', allTutors)
    // console.log('totalPages', totalPages)
 
-
+  // console.log('shivam',filteredUsersData)
    return (
       <div className='lg:ml-pageLeft bg-lightWhite min-h-screen'>
          <div className='py-14 px-5'>

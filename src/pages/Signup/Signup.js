@@ -92,7 +92,7 @@ export default function Signup() {
     email: "",
     phone: "",
     subscriptionCode: "",
-    company:""
+    company: "",
   });
 
   const [otherDetails, setOtherDetails] = useState({
@@ -397,53 +397,51 @@ export default function Signup() {
 
   const handleClick = () => {
     const emailAlreadyExists = async () => {
-      let checked=false;
-       try{
-        let data={
-          workemail: values.email
-        }
-     //   alert(data.workemail)
+      let checked = false;
+      try {
+        let data = {
+          workemail: values.email,
+        };
+        //   alert(data.workemail)
         let result = await axios.post(
           "https://testbackend.sevensquarelearning.com/api/user/CheckEmail",
-         data,{
+          data,
+          {
             headers: {
-              'content-Type': 'application/json'
-            }
+              "content-Type": "application/json",
+            },
           }
-        )
-      if(result)
-      checked=true;
-       
-      }
-      catch (e) {
+        );
+        if (result) checked = true;
+      } catch (e) {
         console.error(e.response.data.message);
         setError({
           ...error,
-          email:e.response.data.message
-        })
+          email: e.response.data.message,
+        });
       }
-    try{
-      let data={
-        company: values.company
-      }
-   //   alert(data.workemail)
-      let result = await axios.post(
-        "https://testbackend.sevensquarelearning.com/api/user/CheckCompany",
-       data,{
-          headers: {
-            'content-Type': 'application/json'
+      try {
+        let data = {
+          company: values.company,
+        };
+        //   alert(data.workemail)
+        let result = await axios.post(
+          "https://testbackend.sevensquarelearning.com/api/user/CheckCompany",
+          data,
+          {
+            headers: {
+              "content-Type": "application/json",
+            },
           }
-        }
-      )
-    }
-      catch(e) {
-        checked=false;
+        );
+      } catch (e) {
+        checked = false;
         setError({
           ...error,
-          company:e.response.data.message
-        })
+          company: e.response.data.message,
+        });
       }
-      if(checked===true){
+      if (checked === true) {
         setFrames({
           ...frames,
           signupActive: false,
@@ -452,7 +450,6 @@ export default function Signup() {
       }
     };
     emailAlreadyExists();
-    
   };
 
   // console.log(isLinkedEmail);
@@ -549,7 +546,7 @@ export default function Signup() {
                   </p>
                   <div className={`flex mt-[59px] lg:mt-0 ${styles.inputs}`}>
                     <InputField
-                      placeholder="Vishesh"
+                      placeholder=""
                       parentClassName="text-xs"
                       label="First Name"
                       value={values.firstName}
@@ -562,7 +559,7 @@ export default function Signup() {
                       error={error.firstName}
                     />
                     <InputField
-                      placeholder="Patel"
+                      placeholder=""
                       parentClassName="text-xs"
                       label="Last Name"
                       value={values.lastName}
@@ -576,7 +573,7 @@ export default function Signup() {
                     />
                     <InputField
                       label="Work Email"
-                      placeholder=" Lorem123@gmail.com"
+                      placeholder=""
                       parentClassName="text-xs"
                       value={values.email}
                       onChange={(e) =>
@@ -588,7 +585,7 @@ export default function Signup() {
                       error={error.email}
                     />
                     <InputField
-                      placeholder="99999994532"
+                      placeholder=""
                       parentClassName="text-xs"
                       label="Phone"
                       value={values.phone}
@@ -602,7 +599,7 @@ export default function Signup() {
                     />
 
                     <InputField
-                      placeholder="Lorem"
+                      placeholder=""
                       parentClassName="text-xs mb-6"
                       label="Company"
                       value={values.company}
@@ -615,7 +612,7 @@ export default function Signup() {
                       error={error.company}
                     />
                     <InputField
-                      placeholder="Lorem"
+                     
                       parentClassName="text-xs mb-6"
                       label="Role"
                       value={values.role}

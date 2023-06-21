@@ -51,7 +51,7 @@ export default function OrgDetails({
       <div className="">
         <InputField
           disabled={true}
-          placeholder="Org name"
+          placeholder=""
           parentClassName="w-full max-w-[118px] mb-6"
           inputClassName="bg-transparent text-sm font-bold"
           type="text"
@@ -62,7 +62,7 @@ export default function OrgDetails({
           <InputField
             label="Company Type"
             required={true}
-            placeholder="Company Type"
+            placeholder=""
             parentClassName="w-full max-w-[248px]"
             inputClassName="bg-transparent text-xs"
             type="text"
@@ -77,7 +77,7 @@ export default function OrgDetails({
           <InputField
             label="Website"
             required={true}
-            placeholder="website"
+            placeholder=""
             parentClassName="w-full max-w-[248px] ml-4"
             inputClassName="bg-transparent text-xs"
             type="text"
@@ -94,7 +94,7 @@ export default function OrgDetails({
           <InputField
             label="address"
             required={true}
-            placeholder="address"
+            placeholder=""
             parentClassName="w-full max-w-[248px]"
             inputClassName="bg-transparent text-xs"
             type="text"
@@ -115,7 +115,7 @@ export default function OrgDetails({
             optionData={grades}
             inputContainerClassName="border text-xs"
             inputClassName="appearance-none font-medium"
-            placeholder="Select"
+            placeholder=""
             parentClassName="w-full max-w-150"
             type="select"
           />
@@ -130,14 +130,14 @@ export default function OrgDetails({
             optionData={grades}
             inputContainerClassName="border text-xs"
             inputClassName="appearance-none font-medium"
-            placeholder="Select"
+            placeholder=""
             parentClassName="w-full max-w-150"
             type="select"
           />
           <InputField
             label="zip"
             required={true}
-            placeholder="zip"
+            placeholder=""
             parentClassName="w-full max-w-[248px]"
             inputClassName="bg-transparent text-xs"
             type="text"
@@ -152,7 +152,7 @@ export default function OrgDetails({
           <InputField
             label="city"
             required={true}
-            placeholder="city"
+            placeholder=""
             parentClassName="w-full max-w-[248px]"
             inputClassName="bg-transparent text-xs"
             type="text"

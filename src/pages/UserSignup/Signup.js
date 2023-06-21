@@ -11,7 +11,7 @@ import NumericSteppers from "../../components/NumericSteppers/NumericSteppers";
 
 import {
   useAddUserDetailsMutation,
-  useSignupUserMutation,
+  useSignupMutation,
 } from "../../app/services/auth";
 import {
   instructionFormat,
@@ -52,25 +52,13 @@ export default function UserSignup() {
   const navigate = useNavigate();
 
   const [values, setValues] = useState({
-    firstName: "w",
-    lastName: "w",
-    email: "wewew@gmail.com",
-    phone: "1232132132",
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
     userId: "",
     registrationAs: "Parent",
     role: "Parent",
-    orgName: "",
-    companyType: "",
-    website: "",
-    address: "",
-    country: "",
-    state: "",
-    zip: "",
-    city: "",
-
-    activeStudents: 0,
-    activeTutors: 0,
-    services: [],
   });
 
   const [error, setError] = useState({
@@ -103,33 +91,18 @@ export default function UserSignup() {
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
   }, [frames]);
 
-  const [signupUser, signupUserResp] = useSignupUserMutation();
+  const [signupUser, signupUserResp] = useSignupMutation();
   const [addUserDetails, addUserDetailsResp] = useAddUserDetailsMutation();
   const [getUserDetail, userDetailResp] = useLazyGetTutorDetailsQuery();
   const [count, setCount] = useState(0);
   const [organisation, setOrganisation] = useState({});
-  const [isLinkedEmail, setIsLinkedEmail] = useState(false);
-  const [linkedUserId, setLinkedUserId] = useState("");
-
-  const [linkedEmailDetails, setLinkedEmailDetails] = useState({});
 
   const [persona, setPersona] = useState("");
   const [currentStep, setcurrentStep] = useState(1);
 
-  const [testPreparations, setTestPreparations] =
-    useState(testPreparationsData);
-  const [tutoring, setTutoring] = useState(tutoringData);
-  const [coaching, setCoaching] = useState(coachingData);
-
-  const [hearAboutUs, setHearAboutUs] = useState(hearAboutUsData);
-  const [solutions, setSolutions] = useState(solutionsData);
-
-  const [instructions, setInstructions] = useState(instructionFormat);
-
-  const [getDetails, getDetailsResp] = useLazyGetUserDetailQuery();
   const [getOrgDetails, getOrgDetailsResp] = useGetUserByOrgNameMutation();
   const [searchParams, setSearchParams] = useSearchParams();
-const [customFields, setCustomFields] = useState([])
+  const [customFields, setCustomFields] = useState([]);
 
   const fetchSettings = () => {
     getSettings().then((res) => {
@@ -171,7 +144,7 @@ const [customFields, setCustomFields] = useState([])
 
   useEffect(() => {
     const name = searchParams.get("orgName");
-    getOrgDetails({ orgOfName: name }).then((res) => {
+    getOrgDetails({ company: name }).then((res) => {
       if (res.error) {
         console.log(res.error);
         return;
@@ -180,8 +153,8 @@ const [customFields, setCustomFields] = useState([])
       if (!res.data.organisation) return;
       if (res.data.organisation.length === 0) return;
       if (res.data.organisation[0]) {
-        setOrganisation(res.data.organisation[0])
-        setCustomFields(res.data.organisation[0].customFields)
+        setOrganisation(res.data.organisation[0]);
+        setCustomFields(res.data.organisation[0].customFields);
       }
     });
   }, [searchParams.get("orgName")]);
@@ -251,30 +224,12 @@ const [customFields, setCustomFields] = useState([])
 
     promiseState().then(() => {
       let reqBody = {
-        firstname: values.firstName,
-        lastname: values.firstName,
-        workemail: values.email,
-        password: values.firstName,
+        firstName: values.firstName,
+        lastName: values.lastName,
+        email: values.email,
         phone: values.phone,
-        company: values.company,
-        orgRole: values.role,
-        registrationas: values.registrationAs,
-        orgOfName: values.orgName,
-        companytype: values.companyType,
-        address: values.address,
-        country: values.country,
-        state: values.state,
-        city: values.city,
-        zip: values.zip,
-        activestudents: values.activeStudents,
-        numberoftutors: values.activeTutors,
-
-        testpreparation: getCheckedString(testPreparations),
-        subjecttutoring: getCheckedString(tutoring),
-        coaching: getCheckedString(coaching),
-        formatofinstruction: getCheckedString(instructions),
-        studentserved: getCheckedString(hearAboutUs),
-        solutionyouarelookingfor: getCheckedString(solutions),
+        role: values.role.toLowerCase(),
+        customFields
       };
       console.log({ reqBody });
       if (values.checked === false) {
@@ -292,7 +247,6 @@ const [customFields, setCustomFields] = useState([])
         }
       }
       const result = validateSignup(values);
-      console.log({ result });
       if (result.data !== true) {
         setError((prev) => {
           return {
@@ -312,14 +266,14 @@ const [customFields, setCustomFields] = useState([])
         signupUser(reqBody)
           .then((res) => {
             console.log(res);
-            setFrames({
-              ...frames,
-              signupActive: true,
-              requirements: false,
-            });
+            // setFrames({
+            //   ...frames,
+            //   signupActive: true,
+            //   requirements: false,
+            // });
             setLoading(false);
             alert("Signup successful");
-            navigate("/");
+            // navigate("/");
           })
           .catch((err) => {
             setLoading(false);
@@ -405,7 +359,7 @@ const [customFields, setCustomFields] = useState([])
                   </p>
                   <div className={`flex mt-[59px] lg:mt-0 ${styles.inputs}`}>
                     <InputField
-                      placeholder="Vishesh"
+                     placeholder=""
                       parentClassName="text-xs"
                       label="First Name"
                       value={values.firstName}
@@ -418,7 +372,7 @@ const [customFields, setCustomFields] = useState([])
                       error={error.firstName}
                     />
                     <InputField
-                      placeholder="Patel"
+                    placeholder=""
                       parentClassName="text-xs"
                       label="Last Name"
                       value={values.lastName}
@@ -434,7 +388,7 @@ const [customFields, setCustomFields] = useState([])
                   <div className="mt-3 mb-4">
                     <InputField
                       label="Email"
-                      placeholder=" Lorem123@gmail.com"
+                      placeholder=""
                       parentClassName="text-xs mb-3"
                       value={values.email}
                       onChange={(e) =>
@@ -446,7 +400,7 @@ const [customFields, setCustomFields] = useState([])
                       error={error.email}
                     />
                     <InputField
-                      placeholder="99999994532"
+                     placeholder=""
                       parentClassName="text-xs"
                       label="Phone"
                       value={values.phone}
@@ -466,13 +420,13 @@ const [customFields, setCustomFields] = useState([])
                       onClick={() =>
                         setValues((prev) => ({
                           ...prev,
-                          registrationAs: "Parent",
+                          role: "Parent",
                         }))
                       }
                     >
                       <img
                         src={
-                          values.registrationAs === "Parent"
+                          values.role === "Parent"
                             ? RadioSelected
                             : RadioUnselected
                         }
@@ -486,13 +440,13 @@ const [customFields, setCustomFields] = useState([])
                       onClick={() =>
                         setValues((prev) => ({
                           ...prev,
-                          registrationAs: "Student",
+                          role: "Student",
                         }))
                       }
                     >
                       <img
                         src={
-                          values.registrationAs === "Student"
+                          values.role === "Student"
                             ? RadioSelected
                             : RadioUnselected
                         }
@@ -524,10 +478,17 @@ const [customFields, setCustomFields] = useState([])
                   {...props}
                   setPersona={setPersona}
                   {...valueProps}
+                  customFields={customFields}
                   {...otherDetailsProps}
                 />
               ) : frames.customFields ? (
-                <CustomFields {...props} {...valueProps} customFields={customFields} setCustomFields={setCustomFields} />
+                <CustomFields
+                  {...props}
+                  {...valueProps}
+                  customFields={customFields}
+                  setCustomFields={setCustomFields}
+                  handleSignup={handleSignup}
+                />
               ) : (
                 <></>
               )}
