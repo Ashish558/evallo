@@ -92,7 +92,7 @@ export default function Signup() {
     email: "",
     phone: "",
     subscriptionCode: "",
-    company:""
+    company: "",
   });
 
   const [otherDetails, setOtherDetails] = useState({
@@ -397,53 +397,51 @@ export default function Signup() {
 
   const handleClick = () => {
     const emailAlreadyExists = async () => {
-      let checked=false;
-       try{
-        let data={
-          workemail: values.email
-        }
-     //   alert(data.workemail)
+      let checked = false;
+      try {
+        let data = {
+          workemail: values.email,
+        };
+        //   alert(data.workemail)
         let result = await axios.post(
           "https://testbackend.sevensquarelearning.com/api/user/CheckEmail",
-         data,{
+          data,
+          {
             headers: {
-              'content-Type': 'application/json'
-            }
+              "content-Type": "application/json",
+            },
           }
-        )
-      if(result)
-      checked=true;
-       
-      }
-      catch (e) {
+        );
+        if (result) checked = true;
+      } catch (e) {
         console.error(e.response.data.message);
         setError({
           ...error,
-          email:e.response.data.message
-        })
+          email: e.response.data.message,
+        });
       }
-    try{
-      let data={
-        company: values.company
-      }
-   //   alert(data.workemail)
-      let result = await axios.post(
-        "https://testbackend.sevensquarelearning.com/api/user/CheckCompany",
-       data,{
-          headers: {
-            'content-Type': 'application/json'
+      try {
+        let data = {
+          company: values.company,
+        };
+        //   alert(data.workemail)
+        let result = await axios.post(
+          "https://testbackend.sevensquarelearning.com/api/user/CheckCompany",
+          data,
+          {
+            headers: {
+              "content-Type": "application/json",
+            },
           }
-        }
-      )
-    }
-      catch(e) {
-        checked=false;
+        );
+      } catch (e) {
+        checked = false;
         setError({
           ...error,
-          company:e.response.data.message
-        })
+          company: e.response.data.message,
+        });
       }
-      if(checked===true){
+      if (checked === true) {
         setFrames({
           ...frames,
           signupActive: false,
@@ -452,7 +450,6 @@ export default function Signup() {
       }
     };
     emailAlreadyExists();
-    
   };
 
   // console.log(isLinkedEmail);

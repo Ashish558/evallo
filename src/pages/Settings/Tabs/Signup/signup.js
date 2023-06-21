@@ -17,7 +17,7 @@ export default function SignupTab({ setAddNewQuestionModalActive }) {
   return (
     <div className="">
       <p className="text-sm underline w-500">
-        {`${process.env.REACT_APP_FE_URL}/signup/user?orgName=${organization.orgOfName}`}
+        {`${process.env.REACT_APP_FE_URL}/signup/user?orgName=${organization.company}`}
       </p>
       <div className="grid grid-cols-2 gap-x-5">
         <div className={styles.colContainer}>
