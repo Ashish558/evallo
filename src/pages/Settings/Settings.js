@@ -79,6 +79,8 @@ export default function Settings() {
       option4: "",
     },
   });
+  const { organization } = useSelector((state) => state.organization);
+
   const [searchParams, setSearchParams] = useSearchParams();
   const [tabs, setTabs] = useState(initialTabs);
   const [activeTab, setActiveTab] = useState("1");
@@ -581,6 +583,7 @@ export default function Settings() {
 
   const submitNewQuestion = (e) => {
     e.preventDefault();
+    if(organization?.customFields?.length === 5) return alert('Only 5 fields are allowed')
     const { option1, option2, option3, option4 } = newQuestion.values;
     const body = {
       orgId: user.associatedOrg,
@@ -593,6 +596,7 @@ export default function Settings() {
         console.log(res.error);
         return;
       }
+      window.location.reload()
       console.log("res", res);
     });
   };
