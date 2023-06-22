@@ -81,7 +81,7 @@ console.log(currentState)
         <InputField
           disabled={true}
           placeholder=""
-          parentClassName="w-full max-w-[118px] mb-6"
+          parentClassName=" min-w-[118px] w-max mb-6"
           inputClassName="bg-transparent text-sm font-bold"
           type="text"
           value={values.company}
@@ -121,7 +121,7 @@ console.log(currentState)
         </div>
         <div className="flex items-center gap-x-5">
           <InputField
-            label="address"
+            label="Address"
             required={true}
             placeholder=""
             parentClassName="w-full max-w-[248px]"
@@ -179,24 +179,8 @@ console.log(currentState)
   
            </select>
         </div>
-      
-          <InputField
-            label="zip"
-            required={true}
-            placeholder=""
-            parentClassName="w-full max-w-[248px]"
-            inputClassName="bg-transparent text-xs"
-            type="text"
-            value={values.zip}
-            onChange={(e) =>
-              setValues({
-                ...values,
-                zip: e.target.value,
-              })
-            }
-          />
-          <InputField
-            label="city"
+        <InputField
+            label="City"
             required={true}
             placeholder=""
             parentClassName="w-full max-w-[248px]"
@@ -210,6 +194,22 @@ console.log(currentState)
               })
             }
           />
+          <InputField
+            label="Zip"
+            required={true}
+            placeholder=""
+            parentClassName="w-full max-w-[248px]"
+            inputClassName="bg-transparent text-xs"
+            type="text"
+            value={values.zip}
+            onChange={(e) =>
+              setValues({
+                ...values,
+                zip: e.target.value,
+              })
+            }
+          />
+         
         </div>
 
         <div className="flex items-center mt-12">

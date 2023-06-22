@@ -273,7 +273,7 @@ export default function UserSignup() {
             // });
             setLoading(false);
             alert("Signup successful");
-            // navigate("/");
+             navigate("/");
           })
           .catch((err) => {
             setLoading(false);
