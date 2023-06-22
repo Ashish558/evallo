@@ -142,7 +142,7 @@ export default function SignupLast({
           </div>
 
           <p className="text-xs font-medium   leading-5 ml-1">
-            Selecting this would confirm that you have carefully read through and agree to our <span className="text-[#22BEF5]">Terms of Use</span> and <span className="text-[#22BEF5]">Privacy Policy</span>.
+            Selecting this would confirm that you have carefully read through and agree to our <span className="text-[#22BEF5]"><a href="http://evallo.org/tou">Terms of Use</a></span> and <span className="text-[#22BEF5]"><a href="http://evallo.org/privacy-policy">Privacy Policy</a></span>.
           </p>
 
         </div>
