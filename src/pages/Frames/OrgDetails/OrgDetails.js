@@ -81,7 +81,7 @@ console.log(currentState)
         <InputField
           disabled={true}
           placeholder=""
-          parentClassName=" min-w-[118px] w-max mb-6"
+          parentClassName=" min-w-[118px] w-full mb-6"
           inputClassName="bg-transparent text-sm font-bold"
           type="text"
           value={values.company}

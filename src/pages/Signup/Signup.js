@@ -544,7 +544,7 @@ export default function Signup() {
                   >
                     Please fill your detail to create your account.
                   </p>
-                  <div className={`flex mt-[59px] lg:mt-0 ${styles.inputs}`}>
+                  <div className={`flex mt-[59px] justify-between lg:mt-0 ${styles.inputs}`}>
                     <InputField
                       placeholder=""
                       parentClassName="text-xs"
@@ -619,7 +619,7 @@ export default function Signup() {
                       onChange={(e) =>
                         setValues({ ...values, role: e.target.value })
                       }
-                    />
+                    /> 
                   </div>
                   <p className="text-xs mb-4"> Registration as </p>
                   <div className="flex items-center text-xs">
@@ -632,6 +632,9 @@ export default function Signup() {
                         }))
                       }
                     >
+                      {/* <input type="radio"  defaultChecked={values.registrationAs === "Company"
+                            ? true
+                            : false}  className="w-3 h-3"/> */}
                       <img
                         src={
                           values.registrationAs === "Company"
@@ -652,6 +655,9 @@ export default function Signup() {
                         }))
                       }
                     >
+                      {/* <input type="radio" defaultChecked={values.registrationAs === "Individual"
+                            ? true
+                            : false} className="w-3 h-3"/> */}
                       <img
                         src={
                           values.registrationAs === "Individual"
