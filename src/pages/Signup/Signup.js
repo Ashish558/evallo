@@ -81,8 +81,8 @@ export default function Signup() {
     zip: "",
     city: "",
 
-    activeStudents: 0,
-    activeTutors: 0,
+    activeStudents: '',
+    activeTutors: '',
     services: [],
   });
 
