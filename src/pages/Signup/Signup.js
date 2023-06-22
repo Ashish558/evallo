@@ -68,9 +68,9 @@ export default function Signup() {
     email: "",
     phone: "",
     company: "",
-    role: false,
+    role: '',
     userId: "",
-    registrationAs: "Individual",
+    registrationAs: "Company",
 
     orgName: "",
     companyType: "",

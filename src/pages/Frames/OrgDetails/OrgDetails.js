@@ -52,7 +52,7 @@ export default function OrgDetails({
         <InputField
           disabled={true}
           placeholder=""
-          parentClassName="w-full max-w-[118px] mb-6"
+          parentClassName="w-full min-w-[118px] mb-6"
           inputClassName="bg-transparent text-sm font-bold"
           type="text"
           value={values.company}
@@ -92,7 +92,7 @@ export default function OrgDetails({
         </div>
         <div className="flex items-center gap-x-5">
           <InputField
-            label="address"
+            label="Address"
             required={true}
             placeholder=""
             parentClassName="w-full max-w-[248px]"
