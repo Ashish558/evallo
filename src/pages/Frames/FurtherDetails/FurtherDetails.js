@@ -60,7 +60,7 @@ export default function FurtherDetails({
       <div className="mb-5">
         <div className="flex items-center mb-6 ">
           <InputField
-            label="No of active students"
+            label="No. Of Active Students"
             required={true}
             placeholder=""
             parentClassName="w-full max-w-[248px] mr-4"
@@ -75,7 +75,7 @@ export default function FurtherDetails({
             }
           />
           <InputField
-            label="No of tutors"
+            label="No. Of Tutors"
             required={true}
             placeholder=""
             parentClassName="w-full max-w-[248px]"

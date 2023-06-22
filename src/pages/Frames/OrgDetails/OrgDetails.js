@@ -77,7 +77,7 @@ export default function OrgDetails({
         <InputField
           disabled={true}
           placeholder=""
-          parentClassName="w-full max-w-[118px] mb-6"
+          parentClassName=" min-w-[118px] w-max mb-6"
           inputClassName="bg-transparent text-sm font-bold"
           type="text"
           value={values.company}
@@ -116,7 +116,7 @@ export default function OrgDetails({
         </div>
         <div className="flex items-center gap-x-5">
           <InputField
-            label="address"
+            label="Address"
             required={true}
             placeholder=""
             parentClassName="w-full max-w-[248px]"
@@ -178,7 +178,7 @@ export default function OrgDetails({
           </div>
 
           <InputField
-            label="zip"
+            label="Zip"
             required={true}
             placeholder=""
             parentClassName="w-full max-w-[248px]"
@@ -193,7 +193,7 @@ export default function OrgDetails({
             }
           />
           <InputField
-            label="city"
+            label="City"
             required={true}
             placeholder=""
             parentClassName="w-full max-w-[248px]"
@@ -204,6 +204,21 @@ export default function OrgDetails({
               setValues({
                 ...values,
                 city: e.target.value,
+              })
+            }
+          />
+          <InputField
+            label="Zip"
+            required={true}
+            placeholder=""
+            parentClassName="w-full max-w-[248px]"
+            inputClassName="bg-transparent text-xs"
+            type="text"
+            value={values.zip}
+            onChange={(e) =>
+              setValues({
+                ...values,
+                zip: e.target.value,
               })
             }
           />

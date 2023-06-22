@@ -68,9 +68,9 @@ export default function Signup() {
     email: "",
     phone: "",
     company: "",
-    role: false,
+    role: '',
     userId: "",
-    registrationAs: "Individual",
+    registrationAs: "Company",
 
     orgName: "",
     companyType: "",
@@ -81,8 +81,8 @@ export default function Signup() {
     zip: "",
     city: "",
 
-    activeStudents: 0,
-    activeTutors: 0,
+    activeStudents: '',
+    activeTutors: '',
     services: [],
   });
 
