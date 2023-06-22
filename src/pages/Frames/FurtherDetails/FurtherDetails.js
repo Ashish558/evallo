@@ -94,9 +94,10 @@ export default function FurtherDetails({
         <p className="font-medium mb-2 text-xs">
           What services do you provide?
         </p>
-        <div className="grid grid-cols-3 mb-6">
-          <div className="grid grid cols-1">
+        <div className="flex flex-col mb-6">
+          <div className="">
             <p className="text-xs mb-[7px]">Test preparation</p>
+            <div className="grid grid-cols-3">
             {testPreparations?.map((item, idx) => {
               return (
                 <div
@@ -121,9 +122,11 @@ export default function FurtherDetails({
                 </div>
               );
             })}
+            </div>
           </div>
-          <div className="grid grid cols-1">
+          <div className="">
             <p className="text-xs mb-[7px]">Subject Tutoring</p>
+            <div className="grid grid-cols-3">
             {tutoring?.map((item, idx) => {
               return (
                 <div
@@ -148,9 +151,11 @@ export default function FurtherDetails({
                 </div>
               );
             })}
+            </div>
           </div>
-          <div className="grid grid cols-1">
+          <div className="">
             <p className="text-xs mb-[7px]">Coaching</p>
+            <div className="grid grid-cols-3">
             {coaching?.map((item, idx) => {
               return (
                 <div
@@ -175,6 +180,7 @@ export default function FurtherDetails({
                 </div>
               );
             })}
+            </div>
           </div>
         
         </div>

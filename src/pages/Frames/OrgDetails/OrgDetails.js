@@ -9,7 +9,19 @@ import Dropdown from "./Commons/Dropdown";
 import style from "./styles.module.css";
 
 const grades = [6, 7, 8, 9, 10, 11, 12, "College"];
-
+const companyType = [
+  "Sole proprietorship",
+  "Partnership",
+  " Limited liability company (LLC)",
+  " C Corporation",
+  "S Corporation",
+  "B Corporation",
+  " Close corporation",
+  " Nonprofit corporation",
+  "Cooperative",
+  "Private Limited Company",
+  "Public",
+];
 export default function OrgDetails({
   setFrames,
   persona,
@@ -77,13 +89,37 @@ export default function OrgDetails({
         <InputField
           disabled={true}
           placeholder=""
-          parentClassName=" min-w-[118px] w-max mb-6"
+          parentClassName=" min-w-[118px] w-full mb-6"
           inputClassName="bg-transparent text-sm font-bold"
           type="text"
           value={values.company}
         />
-        <div className="flex items-center">
-          <InputField
+       
+        <div className="flex items-center mb-1">
+          {/* <label>Company Type</label> */}
+          <div className="flex flex-col h-min ">
+          <label className="">Company Type</label>
+          <div className={style.changeOption}>
+            
+            <select className="form-control  text-xs">
+              <option value="0">Select Company Type</option>
+              {companyType.map((c, id) => {
+                return (
+                  <>
+                   
+                      
+                        <option key={id} value={c}>
+                          {c}
+                        </option>
+                  
+                    
+                  </>
+                );
+              })}
+            </select>
+          </div>
+          </div>
+          {/* <InputField
             label="Company Type"
             required={true}
             placeholder=""
@@ -97,7 +133,7 @@ export default function OrgDetails({
                 companyType: e.target.value,
               })
             }
-          />
+          /> */}
           <InputField
             label="Website"
             required={true}
