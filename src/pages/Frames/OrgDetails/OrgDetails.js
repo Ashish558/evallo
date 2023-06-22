@@ -212,22 +212,6 @@ export default function OrgDetails({
               })}
             </select>
           </div>
-
-          <InputField
-            label="Zip"
-            required={true}
-            placeholder=""
-            parentClassName="w-full max-w-[248px]"
-            inputClassName="bg-transparent text-xs"
-            type="text"
-            value={values.zip}
-            onChange={(e) =>
-              setValues({
-                ...values,
-                zip: e.target.value,
-              })
-            }
-          />
           <InputField
             label="City"
             required={true}
