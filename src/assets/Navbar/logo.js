@@ -1,9 +1,9 @@
 import React from 'react';
-import icon from "./logo.svg"
+import icon from "./mainLogo.png"
 
 const logo = () => {
     return (
-        <img src={icon} width={32} height={32} alt="logo" />
+        <img src={icon} alt="logo" />
     );
 };
 

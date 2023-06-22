@@ -4,6 +4,7 @@ import SecondaryButton from "../../../components/Buttons/SecondaryButton";
 import InputField from "../../../components/InputField/inputField";
 import styles from "../EventModal/style.module.css";
 
+
 export default function SignupLast({
   setFrames,
   setcurrentStep,
@@ -15,6 +16,13 @@ export default function SignupLast({
   loading
 }) {
   const [disabled, setDisabled] = useState(false);
+
+
+  const [isChecked, setIsChecked] = useState(false);
+
+  const handleCheckboxChange1 = () => {
+    setIsChecked(!isChecked);
+  };
 
   const handleCheckboxChange = (text, arr, setValue) => {
     const temp = arr.map((topic) => {
@@ -84,6 +92,8 @@ export default function SignupLast({
             );
           })}
         </div>
+
+
         <p className="font-medium mb-2 text-xs">How did you hear about us?</p>
         <div className="grid grid-cols-3 mb-6">
           {hearAboutUs?.map((item, idx) => {
@@ -111,6 +121,31 @@ export default function SignupLast({
             );
           })}
         </div>
+        <div>
+          <div className="h-[1px] bg-[#EBEBEB] w-[320px] ">
+
+          </div>
+
+        </div>
+        <div className="mt-[15px] flex">
+          <div className="mt-1">
+
+            <label className={styles.container}>
+
+              <input
+                type="checkbox"
+                checked={isChecked}
+                onChange={handleCheckboxChange1}
+              />
+              <span class={styles.checkmark}></span>
+            </label>
+          </div>
+
+          <p className="text-xs font-medium   leading-5 ml-1">
+            Selecting this would confirm that you have carefully read through and agree to our <span className="text-[#22BEF5]">Terms of Use</span> and <span className="text-[#22BEF5]">Privacy Policy</span>.
+          </p>
+
+        </div>
       </div>
 
       <div className="flex items-center mt-5">
@@ -124,7 +159,7 @@ export default function SignupLast({
           className="text-sm "
           onClick={() => handleSubmit()}
           loading={loading}
-          // disabled={disabled}
+        // disabled={disabled}
         />
       </div>
     </div>
