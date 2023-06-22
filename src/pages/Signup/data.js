@@ -175,7 +175,51 @@ export const tutoringData = [
     checked: false,
   },
   {
-    text: "Math",
+    text: "General Math",
+    checked: false,
+  },
+  {
+    text: "Algebra",
+    checked: false,
+  },
+  {
+    text: "Geometry",
+    checked: false,
+  },
+  {
+    text: "Calculus",
+    checked: false,
+  },
+  {
+    text: "Computer Science ",
+    checked: false,
+  },
+  {
+    text: "English Reading",
+    checked: false,
+  },
+  {
+    text: "English Writing",
+    checked: false,
+  },
+  {
+    text: "World Language",
+    checked: false,
+  },
+  {
+    text: "History",
+    checked: false,
+  },
+  {
+    text: "Geography",
+    checked: false,
+  },
+  {
+    text: "Economics ",
+    checked: false,
+  },
+  {
+    text: "Political Science",
     checked: false,
   },
 ];
@@ -191,6 +235,10 @@ export const coachingData = [
   },
   {
     text: "Academic  Counseling",
+    checked: false,
+  },
+  {
+    text: "Career  Counseling",
     checked: false,
   },
 ];
@@ -210,6 +258,41 @@ export const instructionFormat = [
   },
   {
     text: "1-on-1",
+    checked: false,
+  },
+];
+
+export const studentServed = [
+  {
+    text: "Early Childhood Education",
+    checked: false,
+  },
+  {
+    text: "Elementary / Primary School",
+    checked: false,
+  },
+  {
+    text: "Classroom",
+    checked: false,
+  },
+  {
+    text: "Middle School",
+    checked: false,
+  },
+  {
+    text: "Secondary /High School",
+    checked: false,
+  },
+  {
+    text: "Under Graduate Students",
+    checked: false,
+  },
+  {
+    text: "Graduate Student",
+    checked: false,
+  },
+  {
+    text: "Ph.D.  Students",
     checked: false,
   },
 ];

@@ -30,6 +30,7 @@ import {
   testPreparationsData,
   tutoringData,
   coachingData,
+  studentServed
 } from "./data";
 import { getCheckedString } from "../../utils/utils";
 import InputSelect from "../../components/InputSelect/InputSelect";
@@ -134,7 +135,7 @@ export default function Signup() {
     useState(testPreparationsData);
   const [tutoring, setTutoring] = useState(tutoringData);
   const [coaching, setCoaching] = useState(coachingData);
-
+  const [studentServedData, setStudentServedData] = useState(studentServed);
   const [hearAboutUs, setHearAboutUs] = useState(hearAboutUsData);
   const [solutions, setSolutions] = useState(solutionsData);
 
