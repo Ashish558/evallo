@@ -62,11 +62,12 @@ export default function OrgDetails({
   const handleState = (c) => {
     console.log(c);
     const state = country.filter((x) => x.name === c);
-
     const currentState = state.map((s) => s.states);
     setStates(currentState);
-    console.log(currentState);
-    // console.log(country)
+    setValues({
+      ...values,
+      country: c,
+    });
   };
 
   useEffect(() => {
@@ -170,6 +171,7 @@ export default function OrgDetails({
             <select
               className="form-control mt-5 text-xs"
               onChange={(e) => handleState(e.target.value)}
+              value={values.country}
             >
               <option value="0">Select Country</option>
               {country.map((c, index) => {
@@ -184,7 +186,16 @@ export default function OrgDetails({
         </div>
         <div className="flex items-center gap-x-5">
           <div className={style.changeOption}>
-            <select className="form-control mt-7 text-xs">
+            <select
+              className="form-control mt-7 text-xs"
+              value={values.state}
+              onChange={(e) =>
+                setValues({
+                  ...values,
+                  state: e.target.value,
+                })
+              }
+            >
               <option value="0">Select State</option>
               {states.map((s, id) => {
                 return (

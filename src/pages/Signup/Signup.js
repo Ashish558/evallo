@@ -405,7 +405,7 @@ export default function Signup() {
         };
         //   alert(data.workemail)
         let result = await axios.post(
-          "https://testbackend.sevensquarelearning.com/api/user/CheckEmail",
+          `${process.env.REACT_APP_BASE_URL}api/user/CheckEmail`,
           data,
           {
             headers: {
@@ -427,7 +427,7 @@ export default function Signup() {
         };
         //   alert(data.workemail)
         let result = await axios.post(
-          "https://testbackend.sevensquarelearning.com/api/user/CheckCompany",
+          `${process.env.REACT_APP_BASE_URL}api/user/CheckCompany`,
           data,
           {
             headers: {
