@@ -584,7 +584,7 @@ export default function Settings() {
 
   const submitNewQuestion = (e) => {
     e.preventDefault();
-    //if(organization?.customFields?.length === 5) return alert('Only 5 fields are allowed')
+    if(organization?.customFields?.length === 5) return alert('Only 5 fields are allowed')
     const { option1, option2, option3, option4 } = newQuestion.values;
     const body = {
       orgId: user.associatedOrg,
@@ -592,6 +592,7 @@ export default function Settings() {
       dataType: newQuestion.type,
       values: [option1, option2, option3, option4],
     };
+    setAddNewQuestionModalActive(false);
     addNewQuestion(body).then((res) => {
       if (res.error) {
         console.log(res.error);
@@ -599,7 +600,7 @@ export default function Settings() {
       }
       //window.location.reload()
       // console.log("reshi", res);
-      setAddNewQuestionModalActive(false);
+     
       setFetchS(res);
     });
   };
