@@ -15,7 +15,7 @@ export default function SignupTab({ setAddNewQuestionModalActive }) {
 
   const { customFields } = organization;
   console.log("customFields", organization);
- 
+
   return (
     <div className="">
       <p className="text-sm underline w-500">
@@ -152,6 +152,7 @@ export default function SignupTab({ setAddNewQuestionModalActive }) {
           })}
         </div>
         <PrimaryButton
+           disabled={customFields.length <5?false:true}
           children={"Add new question"}
           onClick={() => setAddNewQuestionModalActive(true)}
         />
