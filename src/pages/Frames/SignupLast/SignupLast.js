@@ -13,7 +13,9 @@ export default function SignupLast({
   handleSignup,
   setSolutions,
   solutions,
-  loading
+  loading,
+  rateUs,
+  setRateUs,
 }) {
   const [disabled, setDisabled] = useState(false);
 
@@ -121,6 +123,19 @@ export default function SignupLast({
             );
           })}
         </div>
+        <p className="font-medium mb-2 text-xs">On a scale of 1-10 (Bad to Great), how would you rate your sign up experience?</p>
+        <div className="w-full max-w-[248px] ml-4 " >
+        <input 
+           
+            className="bg-transparent text-xs p-1 outline-none"
+            type="number"
+            value={rateUs}
+            onChange={(e) =>{
+              if(e.target.value>=0 && e.target.value <=10)
+             setRateUs(e.target.value)}
+            }
+          />
+          </div>
         <div>
           <div className="h-[1px] bg-[#EBEBEB] w-[320px] ">
 

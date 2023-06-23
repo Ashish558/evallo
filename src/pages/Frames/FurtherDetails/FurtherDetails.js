@@ -3,6 +3,7 @@ import PrimaryButton from "../../../components/Buttons/PrimaryButton";
 import SecondaryButton from "../../../components/Buttons/SecondaryButton";
 import InputField from "../../../components/InputField/inputField";
 import styles from "../EventModal/style.module.css";
+import style from "./styles.module.css";
 
 export default function FurtherDetails({
   setFrames,
@@ -16,8 +17,12 @@ export default function FurtherDetails({
   setTutoring,
   setValues,
   values,
+  studentserved,
+  setStudentserved,
   setInstructions,
   instructions,
+  paymentOptions,
+  setPaymentOptions,
 }) {
   const [disabled, setDisabled] = useState(false);
 
@@ -91,100 +96,111 @@ export default function FurtherDetails({
           />
         </div>
 
-        <p className="font-medium mb-2 text-xs">
+        <p className="font-medium mb-2 text-xs font-bold">
           What services do you provide?
         </p>
         <div className="flex flex-col mb-6">
           <div className="">
-            <p className="text-xs mb-[7px]">Test preparation</p>
+            <p className="text-xs mb-[7px] text-[#24A3D9] font-bold">
+              Test preparation
+            </p>
             <div className="grid grid-cols-3">
-            {testPreparations?.map((item, idx) => {
-              return (
-                <div
-                  key={idx}
-                  className="flex items-center mb-3 mr-6"
-                  onClick={() =>
-                    handleCheckboxChange(item.text, testPreparations, setTestPreparations)
-                  }
-                >
-                  <div className={`${styles.container} `}>
-                    <input
-                      checked={item.checked}
-                      type="checkbox"
-                      name="hearAboutUs"
-                      value=""
-                    />
-                    <span class={styles.checkmark}></span>
+              {testPreparations?.map((item, idx) => {
+                return (
+                  <div
+                    key={idx}
+                    className="flex items-center mb-3 mr-6"
+                    onClick={() =>
+                      handleCheckboxChange(
+                        item.text,
+                        testPreparations,
+                        setTestPreparations
+                      )
+                    }
+                  >
+                    <div className={`${styles.container} `}>
+                      <input
+                        checked={item.checked}
+                        type="checkbox"
+                        name="hearAboutUs"
+                        value=""
+                      />
+                      <span class={styles.checkmark}></span>
+                    </div>
+                    <p className="font-medium text-xs text-sm opacity-90 leading-5">
+                      {item.text}
+                    </p>
                   </div>
-                  <p className="font-medium text-xs text-sm opacity-90 leading-5">
-                    {item.text}
-                  </p>
-                </div>
-              );
-            })}
+                );
+              })}
             </div>
           </div>
           <div className="">
-            <p className="text-xs mb-[7px]">Subject Tutoring</p>
+            <p className="text-xs mb-[7px] text-[#24A3D9] font-bold">
+              Subject Tutoring
+            </p>
             <div className="grid grid-cols-3">
-            {tutoring?.map((item, idx) => {
-              return (
-                <div
-                  key={idx}
-                  className="flex items-center mb-3 mr-6"
-                  onClick={() =>
-                    handleCheckboxChange(item.text, tutoring, setTutoring)
-                  }
-                >
-                  <div className={`${styles.container} `}>
-                    <input
-                      checked={item.checked}
-                      type="checkbox"
-                      name="hearAboutUs"
-                      value=""
-                    />
-                    <span class={styles.checkmark}></span>
+              {tutoring?.map((item, idx) => {
+                return (
+                  <div
+                    key={idx}
+                    className="flex items-center mb-3 mr-6"
+                    onClick={() =>
+                      handleCheckboxChange(item.text, tutoring, setTutoring)
+                    }
+                  >
+                    <div className={`${styles.container} `}>
+                      <input
+                        checked={item.checked}
+                        type="checkbox"
+                        name="hearAboutUs"
+                        value=""
+                      />
+                      <span class={styles.checkmark}></span>
+                    </div>
+                    <p className="font-medium text-xs text-sm opacity-90 leading-5">
+                      {item.text}
+                    </p>
                   </div>
-                  <p className="font-medium text-xs text-sm opacity-90 leading-5">
-                    {item.text}
-                  </p>
-                </div>
-              );
-            })}
+                );
+              })}
             </div>
           </div>
           <div className="">
-            <p className="text-xs mb-[7px]">Coaching</p>
+            <p className="text-xs mb-[7px] text-[#24A3D9] font-bold">
+              Coaching
+            </p>
             <div className="grid grid-cols-3">
-            {coaching?.map((item, idx) => {
-              return (
-                <div
-                  key={idx}
-                  className="flex items-center mb-3 mr-6"
-                  onClick={() =>
-                    handleCheckboxChange(item.text, coaching, setCoaching)
-                  }
-                >
-                  <div className={`${styles.container} `}>
-                    <input
-                      checked={item.checked}
-                      type="checkbox"
-                      name="hearAboutUs"
-                      value=""
-                    />
-                    <span class={styles.checkmark}></span>
+              {coaching?.map((item, idx) => {
+                return (
+                  <div
+                    key={idx}
+                    className="flex items-center mb-3 mr-6"
+                    onClick={() =>
+                      handleCheckboxChange(item.text, coaching, setCoaching)
+                    }
+                  >
+                    <div className={`${styles.container} `}>
+                      <input
+                        checked={item.checked}
+                        type="checkbox"
+                        name="hearAboutUs"
+                        value=""
+                      />
+                      <span class={styles.checkmark}></span>
+                    </div>
+                    <p className="font-medium text-xs text-sm opacity-90 leading-5">
+                      {item.text}
+                    </p>
                   </div>
-                  <p className="font-medium text-xs text-sm opacity-90 leading-5">
-                    {item.text}
-                  </p>
-                </div>
-              );
-            })}
+                );
+              })}
             </div>
           </div>
-        
         </div>
-        <p className="font-medium mb-2 text-xs">Format of instruction</p>
+        <p className="border-t-[1.2px] mt-[-10px] border-gray-300 pt-2 mb-2 text-xs font-bold">
+          Format of instruction
+        </p>
         <div className="grid grid-cols-3 mb-6">
           {instructions?.map((item, idx) => {
             return (
@@ -210,6 +226,59 @@ export default function FurtherDetails({
               </div>
             );
           })}
+        </div>
+
+        <p className="border-t-[1.2px] mt-[-10px] border-gray-300 pt-2 text-xs mb-[7px] font-bold">
+          Student Served
+        </p>
+        <div className="grid grid-cols-3">
+          {studentserved?.map((item, idx) => {
+            return (
+              <div
+                key={idx}
+                className="flex items-center mb-3 mr-6"
+                onClick={() =>
+                  handleCheckboxChange(
+                    item.text,
+                    studentserved,
+                    setStudentserved
+                  )
+                }
+              >
+                <div className={`${styles.container} `}>
+                  <input
+                    checked={item.checked}
+                    type="checkbox"
+                    name="studentserved"
+                    value=""
+                  />
+                  <span class={styles.checkmark}></span>
+                </div>
+                <p className="font-medium text-xs text-sm opacity-90 leading-5">
+                  {item.text}
+                </p>
+              </div>
+            );
+          })}
+        </div>
+        <p className="border-t-[1.2px] mt-[-10px] border-gray-300 pt-2 text-xs mb-[7px] font-bold">
+          How do you currently process your payments?
+        </p>
+        <div className="flex flex-col h-min ">
+          <div className={style.changeOption}>
+            <select className="form-control  text-xs">
+              <option value="0">Select Payment Type</option>
+              {paymentOptions.map((c, id) => {
+                return (
+                  <>
+                    <option key={id} value={c}>
+                      {c}
+                    </option>
+                  </>
+                );
+              })}
+            </select>
+          </div>
         </div>
       </div>
 

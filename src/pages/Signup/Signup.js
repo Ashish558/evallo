@@ -30,7 +30,9 @@ import {
   testPreparationsData,
   tutoringData,
   coachingData,
-  studentServed
+  studentServedData,
+  rateUsData,
+  paymentOptionsData
 } from "./data";
 import { getCheckedString } from "../../utils/utils";
 import InputSelect from "../../components/InputSelect/InputSelect";
@@ -135,8 +137,10 @@ export default function Signup() {
     useState(testPreparationsData);
   const [tutoring, setTutoring] = useState(tutoringData);
   const [coaching, setCoaching] = useState(coachingData);
-  const [studentServedData, setStudentServedData] = useState(studentServed);
+  const [studentserved, setStudentserved] = useState(studentServedData);
   const [hearAboutUs, setHearAboutUs] = useState(hearAboutUsData);
+  const [rateUs,setRateUs]=useState(rateUsData);
+  const [paymentOptions,setPaymentOptions]=useState(paymentOptionsData);
   const [solutions, setSolutions] = useState(solutionsData);
 
   const [instructions, setInstructions] = useState(instructionFormat);
@@ -702,6 +706,10 @@ export default function Signup() {
                   setTestPreparations={setTestPreparations}
                   coaching={coaching}
                   setCoaching={setCoaching}
+                  studentserved={studentserved}
+                  setStudentserved={ setStudentserved}
+                  paymentOptions={paymentOptions}
+                  setPaymentOptions={ setPaymentOptions}
                   tutoring={tutoring}
                   setTutoring={setTutoring}
                   instructions={instructions}
@@ -714,6 +722,8 @@ export default function Signup() {
                   {...props}
                   {...otherDetailsProps}
                   hearAboutUs={hearAboutUs}
+                  rateUs={rateUs}
+                  setRateUs={setRateUs}
                   setHearAboutUs={setHearAboutUs}
                   solutions={solutions}
                   setSolutions={setSolutions}
