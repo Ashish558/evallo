@@ -17,7 +17,7 @@ import { useNavigate } from "react-router-dom";
 import PrimaryButton from "../../components/Buttons/PrimaryButton";
 import Loader from "../../components/Loader";
 import CCheckbox from "../../components/CCheckbox/CCheckbox";
-import EvalloLogo from "../../assets/icons/evallo.svg";
+import EvalloLogo from "../../assets/icons/evallo_new.svg";
 import cuate from "../../assets/signup/cuate.png";
 export default function Login({ setLoginFormActive }) {
   const emailValidation = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
@@ -111,7 +111,7 @@ export default function Login({ setLoginFormActive }) {
   return (
     <div className={styles.bg}>
       <div className="flex justify-center flex-col items-center md:grid-cols-2 min-h-screen ">
-        <img src={cuate} alt="rocket" class="h-10vh mb-10" />
+        <img src={cuate} alt="rocket" className="h-10vh mb-10" />
         <div className="bg-primary hidden lg:block">
           <ImageSlider
             className={styles.loginCarousel}
@@ -122,7 +122,9 @@ export default function Login({ setLoginFormActive }) {
         <div className="lg:flex lg:items-center bg-white rounded-md py-6 px-5 md:px-[66px]">
           {loginActive ? (
             <div className="w-full">
-              <img src={EvalloLogo} alt="logo" className="mb-4" />
+              <div className="flex justify-center" >
+              <img src={EvalloLogo} alt="logo" className="mb-4 scale-[.93] " />
+              </div>
               <p
                 className={`font-bold text-[28px] lg:text-5xl mb-1.5 bg-transparent lg:text-black pt-[90px] pb-[34px] lg:pt-0 lg:pb-0 ${styles.title}`}
               >
@@ -193,12 +195,12 @@ export default function Login({ setLoginFormActive }) {
                       ? true
                       : !(emailValidation.test(email) && password.length > 0)
                   }
-                  className={`w-full relative bg-[#22BEF5] disabled:opacity-60 pt-3.5 pb-3.5 lg:pt-[9px] lg:pb-[9px] mt-[148px] lg:mt-5 rounded-10 text-white text-lg ${
+                  className={`w-full relative bg-[#FFA28D] disabled:opacity-70 pt-3.5 pb-3.5 lg:pt-[9px] lg:pb-[9px] mt-[148px] lg:mt-5 rounded-7 text-white text-lg ${
                     loginLoading ? "cursor-wait" : "cursor-pointer"
                   }`}
                   onClick={handleSubmit}
                 >
-                  Login
+                  Sign In
                   {loginLoading && <Loader />}
                 </button>
                 <p

@@ -81,6 +81,7 @@ export default function OrgDetails({
     setFrames((prev) => {
       return { ...prev, orgDetails: false, signupActive: true };
     });
+    setcurrentStep(1)
   };
 
   return (
@@ -94,30 +95,25 @@ export default function OrgDetails({
           type="text"
           value={values.company}
         />
-       
+
         <div className="flex items-center mb-1">
           {/* <label>Company Type</label> */}
           <div className="flex flex-col h-min ">
-          <label className="">Company Type</label>
-          <div className={style.changeOption}>
-            
-            <select className="form-control  text-xs">
-              <option value="0">Select Company Type</option>
-              {companyType.map((c, id) => {
-                return (
-                  <>
-                   
-                      
-                        <option key={id} value={c}>
-                          {c}
-                        </option>
-                  
-                    
-                  </>
-                );
-              })}
-            </select>
-          </div>
+            <label className="">Company Type</label>
+            <div className={style.changeOption}>
+              <select className="form-control  text-xs">
+                <option value="0">Select Company Type</option>
+                {companyType.map((c, id) => {
+                  return (
+                    <>
+                      <option key={id} value={c}>
+                        {c}
+                      </option>
+                    </>
+                  );
+                })}
+              </select>
+            </div>
           </div>
           {/* <InputField
             label="Company Type"
@@ -150,7 +146,7 @@ export default function OrgDetails({
             }
           />
         </div>
-        <div className="flex items-center gap-x-5">
+        <div className="flex items-center mt-3 gap-5">
           <InputField
             label="Address"
             required={true}
@@ -166,10 +162,12 @@ export default function OrgDetails({
               })
             }
           />
-
+          
           <div className={style.changeOption}>
+          <div className="flex flex-col h-min ">
+            <label className="">Country</label>
             <select
-              className="form-control mt-5 text-xs"
+              className="form-control text-xs"
               onChange={(e) => handleState(e.target.value)}
               value={values.country}
             >
@@ -182,12 +180,16 @@ export default function OrgDetails({
                 );
               })}
             </select>
+            </div>
           </div>
         </div>
-        <div className="flex items-center gap-x-5">
+        <div className="flex items-center mt-3 gap-5">
+
           <div className={style.changeOption}>
+          <div className="flex flex-col h-min ">
+            <label className="">State</label>
             <select
-              className="form-control mt-7 text-xs"
+              className="form-control  text-xs"
               value={values.state}
               onChange={(e) =>
                 setValues({
@@ -211,6 +213,7 @@ export default function OrgDetails({
                 );
               })}
             </select>
+            </div>
           </div>
           <InputField
             label="City"
@@ -228,7 +231,7 @@ export default function OrgDetails({
             }
           />
           <InputField
-            label="Zip"
+            label="Zip Code"
             required={true}
             placeholder=""
             parentClassName="w-full max-w-[248px]"
@@ -244,15 +247,17 @@ export default function OrgDetails({
           />
         </div>
 
-        <div className="flex items-center mt-12">
+        <div className="flex items-center mt-12 justify-between">
           <SecondaryButton
-            children="Back"
-            className="text-sm mr-6"
+            children="Go Back"
+            className="text-xs mr-6 bg-white text-[#a3aDC7] border-[1.5px] border-[#D0D5DD] "
             onClick={handleBack}
           />
           <PrimaryButton
             children="Next"
-            className="text-sm disabled:opacity-70"
+            className={` w-full bg-[#FFA28D] disabled:opacity-70 max-w-[110px]   rounded text-white text-xs font-medium relative 
+           
+            `}
             onClick={() => handleSubmit()}
             disabled={disabled}
           />

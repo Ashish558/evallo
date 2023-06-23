@@ -4,7 +4,6 @@ import SecondaryButton from "../../../components/Buttons/SecondaryButton";
 import InputField from "../../../components/InputField/inputField";
 import styles from "../EventModal/style.module.css";
 
-
 export default function SignupLast({
   setFrames,
   setcurrentStep,
@@ -13,10 +12,11 @@ export default function SignupLast({
   handleSignup,
   setSolutions,
   solutions,
-  loading
+  loading,
+  rateUs,
+  setRateUs,
 }) {
   const [disabled, setDisabled] = useState(false);
-
 
   const [isChecked, setIsChecked] = useState(false);
 
@@ -34,7 +34,7 @@ export default function SignupLast({
   };
 
   const handleSubmit = () => {
-    handleSignup()
+    handleSignup();
     // setFrames((prev) => {
     //   return { ...prev, signupLast: false, signupSuccessful: true };
     // });
@@ -93,7 +93,6 @@ export default function SignupLast({
           })}
         </div>
 
-
         <p className="font-medium mb-2 text-xs">How did you hear about us?</p>
         <div className="grid grid-cols-3 mb-6">
           {hearAboutUs?.map((item, idx) => {
@@ -121,17 +120,27 @@ export default function SignupLast({
             );
           })}
         </div>
+        <p className="font-medium mb-2 text-xs">
+          On a scale of 1-10 (Bad to Great), how would you rate your sign up
+          experience?
+        </p>
+        <div className="w-full max-w-[248px] ml-4 ">
+          <input
+            className="bg-transparent text-xs p-1 outline-none"
+            type="number"
+            value={rateUs}
+            onChange={(e) => {
+              if (e.target.value >= 0 && e.target.value <= 10)
+                setRateUs(e.target.value);
+            }}
+          />
+        </div>
         <div>
-          <div className="h-[1px] bg-[#EBEBEB] w-[320px] ">
-
-          </div>
-
+          <div className="h-[1px] bg-[#EBEBEB] w-[320px] "></div>
         </div>
         <div className="mt-[15px] flex">
           <div className="mt-1">
-
             <label className={styles.container}>
-
               <input
                 type="checkbox"
                 checked={isChecked}
@@ -142,24 +151,34 @@ export default function SignupLast({
           </div>
 
           <p className="text-xs font-medium   leading-5 ml-1">
-            Selecting this would confirm that you have carefully read through and agree to our <span className="text-[#22BEF5]"><a href="http://evallo.org/tou">Terms of Use</a></span> and <span className="text-[#22BEF5]"><a href="http://evallo.org/privacy-policy">Privacy Policy</a></span>.
+            Selecting this would confirm that you have carefully read through
+            and agree to our{" "}
+            <span className="text-[#22BEF5]">
+              <a href="http://evallo.org/tou">Terms of Use</a>
+            </span>{" "}
+            and{" "}
+            <span className="text-[#22BEF5]">
+              <a href="http://evallo.org/privacy-policy">Privacy Policy</a>
+            </span>
+            .
           </p>
-
         </div>
       </div>
 
-      <div className="flex items-center mt-5">
+      <div className="flex items-center mt-5 justify-between">
         <SecondaryButton
-          children="Back"
-          className="text-sm mr-6"
+          children="Go Back"
+          className="text-xs mr-6 bg-white text-[#a3aDC7] border-[1.5px] border-[#D0D5DD] "
           onClick={handleBack}
         />
         <PrimaryButton
-          children="Finish"
-          className="text-sm "
+          children="Submit"
+          className={` w-full bg-[#FFA28D] disabled:opacity-60 max-w-[110px]    rounded text-white text-xs font-medium relative 
+           
+          `}
           onClick={() => handleSubmit()}
           loading={loading}
-        // disabled={disabled}
+          // disabled={disabled}
         />
       </div>
     </div>

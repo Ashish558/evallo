@@ -1,28 +1,27 @@
-
 .line {
-   position: relative;
-   z-index: 10;
-   font-style: normal;
+  position: relative;
+  z-index: 10;
+  font-style: normal;
 }
 
 .line::before {
-   content: '';
-   position: absolute;
-   right: -35px;
- top: 50%;
- transform: translateY(-50%);
-   width: 35px;
-   height: 1px;
-   background-color: #7152EB;
-   z-index: -1;
+  content: "";
+  position: absolute;
+  right: -35px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 35px;
+  height: 1px;
+  background-color: #7152eb;
+  z-index: -1;
 }
-.line:nth-last-child(1){
-   margin-right: 0;
+.line:nth-last-child(1) {
+  margin-right: 0;
 }
-.line:nth-last-child(1)::before{
-   display: none;
+.line:nth-last-child(1)::before {
+  display: none;
 }
 
-.line.disabledSteps:nth-last-child(1)::before{
-   display: none;
+.line.disabledSteps:nth-last-child(1)::before {
+  display: none;
 }

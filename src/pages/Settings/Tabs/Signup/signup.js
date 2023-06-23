@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import styles from "./style.module.css";
 import InputField from "../../../../components/InputField/inputField";
@@ -7,15 +7,17 @@ import CCheckbox from "../../../../components/CCheckbox/CCheckbox";
 import InputSelect from "../../../../components/InputSelect/InputSelect";
 import CheckboxIcon from "../../../../assets/icons/square.svg";
 
-
-export default function SignupTab({ setAddNewQuestionModalActive }) {
+export default function SignupTab({ setAddNewQuestionModalActive, fetchS }) {
   const { organization } = useSelector((state) => state.organization);
 
-  console.log("organization", organization);
+  // console.log("organization", organization);
+  const [customFields, setCustomFields] = useState(organization.customFields);
 
-  const { customFields } = organization;
-  console.log("customFields", organization);
- 
+  useEffect(() => {
+    if (fetchS && fetchS.data && fetchS.data.updatedOrg) {
+      setCustomFields(fetchS.data.updatedOrg.customFields);
+    }
+  }, [fetchS]);
   return (
     <div className="">
       <p className="text-sm underline w-500">
@@ -133,7 +135,6 @@ export default function SignupTab({ setAddNewQuestionModalActive }) {
                   labelClassname="hidden"
                   parentClassName="w-[200px] mr-5 my-4 text-sm "
                   optionData={["String", "Dropdown"]}
-                 
                 />
                 {item.dataType === "Dropdown" && (
                   <div className="grid grid-cols-2 gap-x-6 gap-y-4 mt-4 mb-7">
@@ -152,6 +153,7 @@ export default function SignupTab({ setAddNewQuestionModalActive }) {
           })}
         </div>
         <PrimaryButton
+          disabled={customFields.length < 5 ? false : true}
           children={"Add new question"}
           onClick={() => setAddNewQuestionModalActive(true)}
         />

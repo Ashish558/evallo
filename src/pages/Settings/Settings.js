@@ -69,6 +69,7 @@ export default function Settings() {
   const [subModalData, setSubModalData] = useState(subModalInitialState);
   const [addTestModalActive, setAddTestModalActive] = useState(false);
   const [saveLoading, setSaveLoading] = useState(false);
+  const [fetchS, setFetchS] = useState(false);
   const [newQuestion, setNewQuestion] = useState({
     type: "String",
     text: "Add",
@@ -591,13 +592,16 @@ export default function Settings() {
       dataType: newQuestion.type,
       values: [option1, option2, option3, option4],
     };
+    setAddNewQuestionModalActive(false);
     addNewQuestion(body).then((res) => {
       if (res.error) {
         console.log(res.error);
         return;
       }
-      window.location.reload()
-      console.log("res", res);
+      //window.location.reload()
+      // console.log("reshi", res);
+     
+      setFetchS(res);
     });
   };
 
@@ -1037,6 +1041,7 @@ export default function Settings() {
         {activeTab === 3 && (
           <SignupTab
             setAddNewQuestionModalActive={setAddNewQuestionModalActive}
+            fetchS={fetchS}
           />
         )}
       </div>

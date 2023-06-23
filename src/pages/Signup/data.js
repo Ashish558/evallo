@@ -262,7 +262,7 @@ export const instructionFormat = [
   },
 ];
 
-export const studentServed = [
+export const studentServedData = [
   {
     text: "Early Childhood Education",
     checked: false,
@@ -295,4 +295,11 @@ export const studentServed = [
     text: "Ph.D.  Students",
     checked: false,
   },
+];
+
+export const rateUsData='';
+
+export const paymentOptionsData = [
+ "Through UPI",
+ "Through Bank Account"
 ];
