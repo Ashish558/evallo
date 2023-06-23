@@ -69,6 +69,7 @@ export default function Settings() {
   const [subModalData, setSubModalData] = useState(subModalInitialState);
   const [addTestModalActive, setAddTestModalActive] = useState(false);
   const [saveLoading, setSaveLoading] = useState(false);
+  const [fetchS, setFetchS] = useState(false);
   const [newQuestion, setNewQuestion] = useState({
     type: "String",
     text: "Add",
@@ -583,7 +584,7 @@ export default function Settings() {
 
   const submitNewQuestion = (e) => {
     e.preventDefault();
-    if(organization?.customFields?.length === 5) return alert('Only 5 fields are allowed')
+    //if(organization?.customFields?.length === 5) return alert('Only 5 fields are allowed')
     const { option1, option2, option3, option4 } = newQuestion.values;
     const body = {
       orgId: user.associatedOrg,
@@ -596,8 +597,10 @@ export default function Settings() {
         console.log(res.error);
         return;
       }
-      window.location.reload()
-      console.log("res", res);
+      //window.location.reload()
+      // console.log("reshi", res);
+      setAddNewQuestionModalActive(false);
+      setFetchS(res);
     });
   };
 
@@ -1037,6 +1040,7 @@ export default function Settings() {
         {activeTab === 3 && (
           <SignupTab
             setAddNewQuestionModalActive={setAddNewQuestionModalActive}
+            fetchS={fetchS}
           />
         )}
       </div>
