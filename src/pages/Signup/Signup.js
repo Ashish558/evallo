@@ -32,7 +32,7 @@ import {
   coachingData,
   studentServedData,
   rateUsData,
-  paymentOptionsData
+  paymentOptionsData,
 } from "./data";
 import { getCheckedString } from "../../utils/utils";
 import InputSelect from "../../components/InputSelect/InputSelect";
@@ -48,6 +48,7 @@ import Loader from "../../components/Loader";
 import PrimaryButton from "../../components/Buttons/PrimaryButton";
 import RadioUnselected from "../../assets/icons/radio-unselected.svg";
 import RadioSelected from "../../assets/icons/radio-selected.svg";
+import SecondaryButton from "../../components/Buttons/SecondaryButton";
 
 export default function Signup() {
   const [frames, setFrames] = useState({
@@ -71,7 +72,7 @@ export default function Signup() {
     email: "",
     phone: "",
     company: "",
-    role: '',
+    role: "",
     userId: "",
     registrationAs: "Company",
 
@@ -84,8 +85,8 @@ export default function Signup() {
     zip: "",
     city: "",
 
-    activeStudents: '',
-    activeTutors: '',
+    activeStudents: "",
+    activeTutors: "",
     services: [],
   });
 
@@ -139,8 +140,8 @@ export default function Signup() {
   const [coaching, setCoaching] = useState(coachingData);
   const [studentserved, setStudentserved] = useState(studentServedData);
   const [hearAboutUs, setHearAboutUs] = useState(hearAboutUsData);
-  const [rateUs,setRateUs]=useState(rateUsData);
-  const [paymentOptions,setPaymentOptions]=useState(paymentOptionsData);
+  const [rateUs, setRateUs] = useState(rateUsData);
+  const [paymentOptions, setPaymentOptions] = useState(paymentOptionsData);
   const [solutions, setSolutions] = useState(solutionsData);
 
   const [instructions, setInstructions] = useState(instructionFormat);
@@ -257,6 +258,8 @@ export default function Signup() {
 
   useEffect(() => {
     setCount(1);
+    
+    
   }, []);
 
   useEffect(() => {
@@ -279,9 +282,9 @@ export default function Signup() {
     if (sessionStorage.getItem("numberPrefix")) {
       setNumberPrefix(sessionStorage.getItem("numberPrefix"));
     }
-    if (sessionStorage.getItem("currentStep")) {
-      setcurrentStep(sessionStorage.getItem("currentStep"));
-    }
+     if (sessionStorage.getItem("currentStep")) {
+       setcurrentStep(sessionStorage.getItem("currentStep"));
+     }
     if (sessionStorage.getItem("numberPrefix")) {
       setNumberPrefix(sessionStorage.getItem("numberPrefix"));
     }
@@ -502,7 +505,9 @@ export default function Signup() {
   };
 
   // console.log("vaues", values);
-
+  const handleBack = () => {
+    navigate("/");
+  };
   return (
     <div
       className="min-h-screen overflow-y-auto pb-6 bg-primary"
@@ -538,7 +543,7 @@ export default function Signup() {
                   : "Profile Details"}
               </h1>
 
-              {currentStep > 1 && !frames.signupSuccessful && (
+              {currentStep > 0 && !frames.signupSuccessful && (
                 <NumericSteppers totalSteps={4} currentStep={currentStep} />
               )}
 
@@ -549,7 +554,9 @@ export default function Signup() {
                   >
                     Please fill your detail to create your account.
                   </p>
-                  <div className={`flex mt-[59px] justify-between lg:mt-0 ${styles.inputs}`}>
+                  <div
+                    className={`flex mt-[59px] justify-between lg:mt-0 ${styles.inputs}`}
+                  >
                     <InputField
                       placeholder=""
                       parentClassName="text-xs"
@@ -602,30 +609,20 @@ export default function Signup() {
                       }
                       error={error.phone}
                     />
-
-                    <InputField
-                      placeholder=""
-                      parentClassName="text-xs mb-6"
-                      label="Company"
-                      value={values.company}
-                      onChange={(e) =>
-                        setValues({
-                          ...values,
-                          company: e.target.value,
-                        })
-                      }
-                      error={error.company}
-                    />
-                    <InputField
-                     
-                      parentClassName="text-xs mb-6"
-                      label="Role"
-                      value={values.role}
-                      onChange={(e) =>
-                        setValues({ ...values, role: e.target.value })
-                      }
-                    /> 
                   </div>
+                  <InputField
+                    placeholder=""
+                    parentClassName="text-xs mt-5 mb-6 w-full"
+                    label="Name Of Business"
+                    value={values.company}
+                    onChange={(e) =>
+                      setValues({
+                        ...values,
+                        company: e.target.value,
+                      })
+                    }
+                    error={error.company}
+                  />
                   <p className="text-xs mb-4"> Registration as </p>
                   <div className="flex items-center text-xs">
                     <div
@@ -675,22 +672,23 @@ export default function Signup() {
                       <p> Individual </p>
                     </div>
                   </div>
-                  <PrimaryButton
-                    className={`w-full bg-primary disabled:opacity-60 max-w-[110px] mt-[99px] lg:mt-12 rounded text-white text-xs font-medium relative ${
-                      loading
-                        ? "cursor-wait opacity-60 pointer-events-none"
-                        : "cursor-pointer"
-                    }`}
-                    disabled={values.email === "" ? true : false}
-                    onClick={handleClick}
-                    children={`Next`}
-                  />
-                  <p
-                    className="text-secondary text-xs font-semibold ml-2 mt-2 cursor-pointer inline-block"
-                    onClick={() => navigate("/")}
-                  >
-                    Login Instead?
-                  </p>
+                  <div className="flex items-center mt-7 justify-between">
+                    <SecondaryButton
+                      children="Go Back"
+                      className="text-xs mr-6 bg-white text-[#a3aDC7] border-[1.5px] border-[#D0D5DD] "
+                      onClick={handleBack}
+                    />
+                    <PrimaryButton
+                      className={`w-full bg-[#FFA28D] disabled:opacity-60 max-w-[110px]  rounded text-white text-xs font-medium relative ${
+                        loading
+                          ? "cursor-wait opacity-60 pointer-events-none"
+                          : "cursor-pointer"
+                      }`}
+                      disabled={values.email === "" ? true : false}
+                      onClick={handleClick}
+                      children={`Next`}
+                    />
+                  </div>
                 </div>
               ) : frames.orgDetails ? (
                 <OrgDetails
@@ -707,9 +705,9 @@ export default function Signup() {
                   coaching={coaching}
                   setCoaching={setCoaching}
                   studentserved={studentserved}
-                  setStudentserved={ setStudentserved}
+                  setStudentserved={setStudentserved}
                   paymentOptions={paymentOptions}
-                  setPaymentOptions={ setPaymentOptions}
+                  setPaymentOptions={setPaymentOptions}
                   tutoring={tutoring}
                   setTutoring={setTutoring}
                   instructions={instructions}

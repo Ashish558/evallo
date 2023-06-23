@@ -282,15 +282,17 @@ export default function FurtherDetails({
         </div>
       </div>
 
-      <div className="flex items-center mt-7">
+      <div className="flex items-center mt-7 justify-between">
         <SecondaryButton
-          children="Back"
-          className="text-sm mr-6"
+          children="Go Back"
+          className="text-xs mr-6 bg-white text-[#a3aDC7] border-[1.5px] border-[#D0D5DD] "
           onClick={handleBack}
         />
         <PrimaryButton
           children="Next"
-          className="text-sm"
+          className={` w-full bg-[#FFA28D] disabled:opacity-60 max-w-[110px]   rounded text-white text-xs font-medium relative 
+           
+          `}
           onClick={() => handleSubmit()}
           // disabled={disabled}
         />

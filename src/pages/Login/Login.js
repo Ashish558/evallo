@@ -195,12 +195,12 @@ export default function Login({ setLoginFormActive }) {
                       ? true
                       : !(emailValidation.test(email) && password.length > 0)
                   }
-                  className={`w-full relative bg-[#22BEF5] disabled:opacity-60 pt-3.5 pb-3.5 lg:pt-[9px] lg:pb-[9px] mt-[148px] lg:mt-5 rounded-10 text-white text-lg ${
+                  className={`w-full relative bg-[#FFA28D] disabled:opacity-70 pt-3.5 pb-3.5 lg:pt-[9px] lg:pb-[9px] mt-[148px] lg:mt-5 rounded-7 text-white text-lg ${
                     loginLoading ? "cursor-wait" : "cursor-pointer"
                   }`}
                   onClick={handleSubmit}
                 >
-                  Login
+                  Sign In
                   {loginLoading && <Loader />}
                 </button>
                 <p
