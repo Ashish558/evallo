@@ -23,7 +23,8 @@ export default function UserDetails({
   studentNumberPrefix,
   setStudentNumberPrefix,
   isAddedByAdmin,
-  customFields
+  customFields,
+  values
 }) {
   const [selected, setSelected] = useState(false);
   const [disabled, setDisabled] = useState(false);
@@ -95,7 +96,7 @@ export default function UserDetails({
     }
   };
 
-  let personaText = persona === "student" ? "Student" : "Parent";
+  let personaText = values.role === "student" ? "Student" : "Parent";
  // alert(personaText)
   return (
     <div className="w-full">

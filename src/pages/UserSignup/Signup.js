@@ -229,6 +229,7 @@ export default function UserSignup() {
         email: values.email,
         phone: values.phone,
         role: values.role.toLowerCase(),
+        ...otherDetails,
         customFields
       };
       console.log({ reqBody });
