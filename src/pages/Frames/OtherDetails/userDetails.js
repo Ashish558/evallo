@@ -13,6 +13,7 @@ import CustomFields from "../CustomFields/CustomFields";
 export default function UserDetails({
   setFrames,
   persona,
+  values,
   setcurrentStep,
   otherDetails,
   setOtherDetails,
@@ -95,8 +96,9 @@ export default function UserDetails({
     }
   };
 
-  let personaText = persona === "student" ? "Student" : "Parent";
+  let personaText = values?.role === "Student" ? "Student" : "Parent";
  // alert(personaText)
+ console.log(values?.role);
   return (
     <div className="w-full">
       <div className="flex">
