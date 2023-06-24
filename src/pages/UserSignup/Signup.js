@@ -97,7 +97,7 @@ export default function UserSignup() {
   const [count, setCount] = useState(0);
   const [organisation, setOrganisation] = useState({});
 
-  const [persona, setPersona] = useState("");
+  const [persona, setPersona] = useState("parent");
   const [currentStep, setcurrentStep] = useState(1);
 
   const [getOrgDetails, getOrgDetailsResp] = useGetUserByOrgNameMutation();
@@ -417,12 +417,14 @@ export default function UserSignup() {
                   <div className="flex items-center text-xs">
                     <div
                       className="flex items-center mr-6 cursor-pointer"
-                      onClick={() =>
+                      onClick={() =>{
+                        setPersona('parent')
                         setValues((prev) => ({
                           ...prev,
                           role: "Parent",
                         }))
                       }
+                    }
                     >
                       <img
                         src={
@@ -437,11 +439,13 @@ export default function UserSignup() {
                     </div>
                     <div
                       className="flex items-center cursor-pointer"
-                      onClick={() =>
+                      onClick={() =>{
+                        setPersona('student')
                         setValues((prev) => ({
                           ...prev,
                           role: "Student",
                         }))
+                      }
                       }
                     >
                       <img
@@ -480,8 +484,10 @@ export default function UserSignup() {
                   {...valueProps}
                   customFields={customFields}
                   {...otherDetailsProps}
+                  handleSignup={handleSignup}
                 />
               ) : frames.customFields ? (
+
                 <CustomFields
                   {...props}
                   {...valueProps}
