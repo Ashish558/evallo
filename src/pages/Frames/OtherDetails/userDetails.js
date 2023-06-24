@@ -96,7 +96,7 @@ export default function UserDetails({
     }
   };
 
-  let personaText = values.role === "student" ? "Student" : "Parent";
+  let personaText = values.role === "Parent" ? "Student" : "Parent";
  // alert(personaText)
   return (
     <div className="w-full">

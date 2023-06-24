@@ -342,7 +342,7 @@ export default function UserSignup() {
     setStudentNumberPrefix,
   };
 
-  console.log("customFields", customFields);
+  // console.log("customFields", customFields);
 
   return (
     <div
