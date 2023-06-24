@@ -17,6 +17,7 @@ export default function UserDetails({
   otherDetails,
   setOtherDetails,
   detailsError,
+  handleSignup,
   setDetailsError,
   resetDetailsErrors,
   studentNumberPrefix,
@@ -51,6 +52,7 @@ export default function UserDetails({
         resolve(resetDetailsErrors());
       });
 
+
     promiseState().then(() => {
       if (result.data !== true) {
         setDetailsError((prev) => {
@@ -61,7 +63,8 @@ export default function UserDetails({
         });
       } 
       else if(customFields.length===0){
-        alert('CustomFields are empty ,please fill those ')
+        //alert('CustomFields are empty ,please fill those ')
+        handleSignup();
       }
       else if(customFields.length > 0) {
         // return
@@ -79,7 +82,7 @@ export default function UserDetails({
   useEffect(() => {
     setcurrentStep(2);
   }, []);
-
+ 
   const handleBack = () => {
     if (persona === "parent") {
       setFrames((prev) => {
@@ -92,8 +95,8 @@ export default function UserDetails({
     }
   };
 
-  let personaText = persona === "parent" ? "Student" : "Parent";
-
+  let personaText = persona === "student" ? "Student" : "Parent";
+ // alert(personaText)
   return (
     <div className="w-full">
       <div className="flex">

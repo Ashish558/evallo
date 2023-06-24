@@ -142,6 +142,7 @@ export default function SignupLast({
           <div className="mt-1">
             <label className={styles.container}>
               <input
+                required={true}
                 type="checkbox"
                 checked={isChecked}
                 onChange={handleCheckboxChange1}
@@ -173,6 +174,7 @@ export default function SignupLast({
         />
         <PrimaryButton
           children="Submit"
+          disabled={isChecked?false:true}
           className={` w-full bg-[#FFA28D] disabled:opacity-60 max-w-[110px]    rounded text-white text-xs font-medium relative 
            
           `}
