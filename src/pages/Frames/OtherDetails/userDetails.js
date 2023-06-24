@@ -13,7 +13,6 @@ import CustomFields from "../CustomFields/CustomFields";
 export default function UserDetails({
   setFrames,
   persona,
-  values,
   setcurrentStep,
   otherDetails,
   setOtherDetails,
