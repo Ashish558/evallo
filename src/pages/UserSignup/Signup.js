@@ -298,15 +298,23 @@ export default function UserSignup() {
         setLoading(true);
         signupUser(reqBody)
           .then((res) => {
-            console.log(res);
+            console.log('shy',res?.data?.status);
             // setFrames({
             //   ...frames,
             //   signupActive: true,
             //   requirements: false,
             // });
-            setLoading(false);
-            alert("Signup successful");
+            if(res?.data?.status==='success'){
+              setLoading(false);
+             alert("Signup successful");
              navigate("/");
+              
+              return
+            }
+            alert('something went wrong , please try again')
+           // setLoading(false);
+           // alert("Signup successful");
+           //  navigate("/");
           })
           .catch((err) => {
             setLoading(false);

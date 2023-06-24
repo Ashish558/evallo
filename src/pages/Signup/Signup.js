@@ -392,6 +392,7 @@ export default function Signup() {
               requirements: false,
             });
             setLoading(false);
+            
             alert("Signup successful");
             navigate("/");
           })
