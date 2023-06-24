@@ -103,6 +103,7 @@ export default function UserSignup() {
   const [getOrgDetails, getOrgDetailsResp] = useGetUserByOrgNameMutation();
   const [searchParams, setSearchParams] = useSearchParams();
   const [customFields, setCustomFields] = useState([]);
+  const [getDetails, getDetailsResp] = useLazyGetUserDetailQuery();
 
   const fetchSettings = () => {
     getSettings().then((res) => {
@@ -158,6 +159,37 @@ export default function UserSignup() {
       }
     });
   }, [searchParams.get("orgName")]);
+
+  const paramUserId = searchParams.get("userid");
+  const paramUserRole = searchParams.get("role");
+  useEffect(() => {
+    if (!paramUserId) return;
+    if (!paramUserRole) return;
+    console.log("paramUserId", paramUserId);
+    setValues((prev) => {
+      return {
+        ...prev,
+        userId: paramUserId,
+      };
+    });
+    setPersona(paramUserRole);
+    // setIsAddedByAdmin(true);
+    setFrames((prev) => {
+       return { ...prev, signupActive: false, userDetails: true };
+    })
+
+    getDetails({ id: paramUserId })
+       .then(res => {
+          if (res.error) {
+             return console.log(res.error)
+          }
+          console.log('param res', res.data);
+          const { user, userdetails } = res.data.data
+          let user_detail = { ...userdetails }
+          console.log('user', user);
+
+       })
+  }, [paramUserId, paramUserRole]);
 
   useEffect(() => {
     setCount(1);
@@ -229,6 +261,7 @@ export default function UserSignup() {
         email: values.email,
         phone: values.phone,
         role: values.role.toLowerCase(),
+        ...otherDetails,
         customFields
       };
       console.log({ reqBody });
@@ -309,7 +342,7 @@ export default function UserSignup() {
     setStudentNumberPrefix,
   };
 
-  console.log("customFields", customFields);
+  // console.log("customFields", customFields);
 
   return (
     <div
