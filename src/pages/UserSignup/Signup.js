@@ -29,7 +29,8 @@ import { useLazyGetSettingsQuery } from "../../app/services/session";
 import { validateOtherDetails, validateSignup } from "./utils/util";
 import {
   useLazyGetTutorDetailsQuery,
-  useLazyGetUserDetailQuery,
+  useLazyGetSingleUserQuery,
+  useUpdateUserMutation,
 } from "../../app/services/users";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import Loader from "../../components/Loader";
@@ -58,8 +59,7 @@ export default function UserSignup() {
     email: "",
     phone: "",
     userId: "",
-    registrationAs: "Parent",
-    role: "Parent",
+    role: "parent",
   });
 
   const [error, setError] = useState({
@@ -98,13 +98,14 @@ export default function UserSignup() {
   const [count, setCount] = useState(0);
   const [organisation, setOrganisation] = useState({});
 
-  const [persona, setPersona] = useState("parent");
   const [currentStep, setcurrentStep] = useState(1);
 
   const [getOrgDetails, getOrgDetailsResp] = useGetUserByOrgNameMutation();
   const [searchParams, setSearchParams] = useSearchParams();
   const [customFields, setCustomFields] = useState([]);
-  const [getDetails, getDetailsResp] = useLazyGetUserDetailQuery();
+  const [getDetails, getDetailsResp] = useLazyGetSingleUserQuery();
+  const [updateUser, updateUserRes] = useUpdateUserMutation();
+  const [isAddedByAdmin, setIsAddedByAdmin] = useState(false);
 
   const fetchSettings = () => {
     getSettings().then((res) => {
@@ -126,7 +127,6 @@ export default function UserSignup() {
     sessionStorage.setItem("frames", JSON.stringify(frames));
     sessionStorage.setItem("values", JSON.stringify(values));
     sessionStorage.setItem("otherDetails", JSON.stringify(otherDetails));
-    sessionStorage.setItem("persona", persona);
     sessionStorage.setItem("redirectLink", redirectLink);
     sessionStorage.setItem("numberPrefix", numberPrefix);
     sessionStorage.setItem("currentStep", currentStep);
@@ -136,7 +136,6 @@ export default function UserSignup() {
     frames,
     values,
     otherDetails,
-    persona,
     redirectLink,
     numberPrefix,
     currentStep,
@@ -167,23 +166,31 @@ export default function UserSignup() {
     if (!paramUserId) return;
     if (!paramUserRole) return;
     console.log("paramUserId", paramUserId);
-    setValues((prev) => {
-      return {
-        ...prev,
-        userId: paramUserId,
-      };
-    });
-    setPersona(paramUserRole);
-    // setIsAddedByAdmin(true);
+
+    setIsAddedByAdmin(true);
     setFrames((prev) => {
       return { ...prev, signupActive: false, userDetails: true };
     });
 
-    getDetails({ id: paramUserId }).then((res) => {
+    getDetails(paramUserId).then((res) => {
       if (res.error) {
         return console.log(res.error);
       }
       console.log("param res", res.data);
+      if (res.data?.user) {
+        const { firstName, lastName, phone, email, role } = res.data.user;
+        setValues((prev) => {
+          return {
+            ...prev,
+            userId: paramUserId,
+            firstName,
+            lastName,
+            phone,
+            email,
+            role,
+          };
+        });
+      }
       const { user, userdetails } = res.data.data;
       let user_detail = { ...userdetails };
       console.log("user", user);
@@ -203,9 +210,6 @@ export default function UserSignup() {
     }
     if (sessionStorage.getItem("otherDetails")) {
       setOtherDetails(JSON.parse(sessionStorage.getItem("otherDetails")));
-    }
-    if (sessionStorage.getItem("persona")) {
-      setPersona(sessionStorage.getItem("persona"));
     }
     if (sessionStorage.getItem("redirectLink")) {
       setRedirectLink(sessionStorage.getItem("redirectLink"));
@@ -249,6 +253,14 @@ export default function UserSignup() {
 
   const handleClick = async () => {
     let checked = false;
+    if (isAddedByAdmin) {
+      setFrames({
+        ...frames,
+        signupActive: false,
+        userDetails: true,
+      });
+      return;
+    }
     try {
       let data = {
         workemail: values.email,
@@ -327,21 +339,45 @@ export default function UserSignup() {
         });
       } else {
         setLoading(true);
-        signupUser(reqBody)
-          .then((res) => {
-            console.log(res);
-            setLoading(false);
-            alert("Signup successful");
-            navigate("/");
-          })
-          .catch((err) => {
-            setLoading(false);
-            console.log(err);
-          });
+        if (isAddedByAdmin) {
+          reqBody.userId = values.userId
+          updateUser(reqBody)
+            .then((res) => {
+              console.log(res);
+              if(res.error){
+                alert('Something went wrong')
+                return
+              }
+              setLoading(false);
+              alert("Signup successful");
+              navigate("/");
+              sessionStorage.clear()
+            })
+            .catch((err) => {
+              setLoading(false);
+              console.log(err);
+            });
+        } else {
+          signupUser(reqBody)
+            .then((res) => {
+              console.log(res);
+              setLoading(false);
+              if(res.error){
+                alert('Something went wrong')
+                return
+              }
+              alert("Signup successful");
+              navigate("/");
+              sessionStorage.clear()
+            })
+            .catch((err) => {
+              setLoading(false);
+              console.log(err);
+            });
+        }
       }
     });
   };
-
 
   const [selected, setSelected] = useState(false);
   const selectRef = useRef();
@@ -349,7 +385,7 @@ export default function UserSignup() {
 
   useEffect(() => setSelected(false), [numberPrefix]);
 
-  const props = { persona, setFrames, setcurrentStep };
+  const props = { setFrames, setcurrentStep };
   const valueProps = { values, setValues };
   const otherDetailsProps = {
     otherDetails,
@@ -360,7 +396,6 @@ export default function UserSignup() {
     studentNumberPrefix,
     setStudentNumberPrefix,
   };
-
   // console.log("customFields", customFields);
 
   return (
@@ -399,7 +434,7 @@ export default function UserSignup() {
               </h1>
 
               {currentStep > 1 && !frames.signupSuccessful && (
-                <NumericSteppers totalSteps={3} currentStep={currentStep} />
+                <NumericSteppers totalSteps={customFields.length === 0 ? 2 : 3} currentStep={currentStep} />
               )}
 
               {frames.signupActive ? (
@@ -470,16 +505,15 @@ export default function UserSignup() {
                     <div
                       className="flex items-center mr-6 cursor-pointer"
                       onClick={() => {
-                        setPersona("parent");
                         setValues((prev) => ({
                           ...prev,
-                          role: "Parent",
+                          role: "parent",
                         }));
                       }}
                     >
                       <img
                         src={
-                          values.role === "Parent"
+                          values.role === "parent"
                             ? RadioSelected
                             : RadioUnselected
                         }
@@ -491,16 +525,15 @@ export default function UserSignup() {
                     <div
                       className="flex items-center cursor-pointer"
                       onClick={() => {
-                        setPersona("student");
                         setValues((prev) => ({
                           ...prev,
-                          role: "Student",
+                          role: "student",
                         }));
                       }}
                     >
                       <img
                         src={
-                          values.role === "Student"
+                          values.role === "student"
                             ? RadioSelected
                             : RadioUnselected
                         }
@@ -530,7 +563,6 @@ export default function UserSignup() {
               ) : frames.userDetails ? (
                 <OtherDetails
                   {...props}
-                  setPersona={setPersona}
                   {...valueProps}
                   customFields={customFields}
                   {...otherDetailsProps}
