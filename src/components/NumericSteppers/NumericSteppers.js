@@ -1,11 +1,12 @@
 import React from 'react'
 import styles from './style.module.css'
 
-export default function NumericSteppers({ totalSteps, currentStep }) {
+export default function NumericSteppers({ totalSteps, currentStep,customFields }) {
 
    return (
       <div className={`lg:mt-6 relative ${currentStep === 5 ? "mb-[30px]" : "mb-[30px]"} flex`}>
          {[...Array(totalSteps)].map((x, i) =>
+             (customFields?.length===0&&i==2&&totalSteps===3)?'':
             <button key={i} className={`w-[36px] hidden lg:block h-[36px] bg-primary border rounded-full mr-7 font-bold
              ${i + 1 < currentStep ? 'bg-[#FFA28D] text-[#F3F5F7]' : ''} 
              ${i + 1 === currentStep ? 'before:hidden bg-primary border-3 border-primary text-white' : ''} 

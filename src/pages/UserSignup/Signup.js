@@ -388,7 +388,7 @@ export default function UserSignup() {
               </h1>
 
               {currentStep > 1 && !frames.signupSuccessful && (
-                <NumericSteppers totalSteps={3} currentStep={currentStep} />
+                <NumericSteppers totalSteps={3} currentStep={currentStep} customFields={customFields}/>
               )}
 
               {frames.signupActive ? (
