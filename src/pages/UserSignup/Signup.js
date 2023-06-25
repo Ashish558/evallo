@@ -340,18 +340,18 @@ export default function UserSignup() {
       } else {
         setLoading(true);
         if (isAddedByAdmin) {
-          reqBody.userId = values.userId
+          reqBody.userId = values.userId;
           updateUser(reqBody)
             .then((res) => {
               console.log(res);
-              if(res.error){
-                alert('Something went wrong')
-                return
+              if (res.error) {
+                alert("Something went wrong");
+                return;
               }
               setLoading(false);
               alert("Signup successful");
               navigate("/");
-              sessionStorage.clear()
+              sessionStorage.clear();
             })
             .catch((err) => {
               setLoading(false);
@@ -362,13 +362,13 @@ export default function UserSignup() {
             .then((res) => {
               console.log(res);
               setLoading(false);
-              if(res.error){
-                alert('Something went wrong')
-                return
+              if (res?.data?.status === "success") {
+                alert("Signup successful");
+                navigate("/");
+                sessionStorage.clear();
+                return;
               }
-              alert("Signup successful");
-              navigate("/");
-              sessionStorage.clear()
+              alert("something went wrong , please try again");
             })
             .catch((err) => {
               setLoading(false);
@@ -434,7 +434,10 @@ export default function UserSignup() {
               </h1>
 
               {currentStep > 1 && !frames.signupSuccessful && (
-                <NumericSteppers totalSteps={customFields.length === 0 ? 2 : 3} currentStep={currentStep} />
+                <NumericSteppers
+                  totalSteps={customFields.length === 0 ? 2 : 3}
+                  currentStep={currentStep}
+                />
               )}
 
               {frames.signupActive ? (
