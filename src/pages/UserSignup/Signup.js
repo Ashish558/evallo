@@ -5,6 +5,7 @@ import styles from "./signup.module.css";
 import OrgDetails from "../Frames/OrgDetails/OrgDetails";
 import SignupLast from "../Frames/SignupLast/SignupLast";
 import FurtherDetails from "../Frames/FurtherDetails/FurtherDetails";
+import axios from "axios";
 
 import cuate from "../../assets/signup/cuate.png";
 import NumericSteppers from "../../components/NumericSteppers/NumericSteppers";
@@ -175,20 +176,18 @@ export default function UserSignup() {
     setPersona(paramUserRole);
     // setIsAddedByAdmin(true);
     setFrames((prev) => {
-       return { ...prev, signupActive: false, userDetails: true };
-    })
+      return { ...prev, signupActive: false, userDetails: true };
+    });
 
-    getDetails({ id: paramUserId })
-       .then(res => {
-          if (res.error) {
-             return console.log(res.error)
-          }
-          console.log('param res', res.data);
-          const { user, userdetails } = res.data.data
-          let user_detail = { ...userdetails }
-          console.log('user', user);
-
-       })
+    getDetails({ id: paramUserId }).then((res) => {
+      if (res.error) {
+        return console.log(res.error);
+      }
+      console.log("param res", res.data);
+      const { user, userdetails } = res.data.data;
+      let user_detail = { ...userdetails };
+      console.log("user", user);
+    });
   }, [paramUserId, paramUserRole]);
 
   useEffect(() => {
@@ -248,12 +247,44 @@ export default function UserSignup() {
     });
   };
 
+  const handleClick = async () => {
+    let checked = false;
+    try {
+      let data = {
+        workemail: values.email,
+      };
+      let result = await axios.post(
+        `${process.env.REACT_APP_BASE_URL}api/user/CheckEmail`,
+        data,
+        {
+          headers: {
+            "content-Type": "application/json",
+          },
+        }
+      );
+      console.log(result);
+      if (result) checked = true;
+    } catch (e) {
+      console.error(e.response.data.message);
+      setError({
+        ...error,
+        email: e.response.data.message,
+      });
+    }
+    if (checked === true) {
+      setFrames({
+        ...frames,
+        signupActive: false,
+        userDetails: true,
+      });
+    }
+  };
+
   const handleSignup = () => {
     const promiseState = async (state) =>
       new Promise((resolve) => {
         resolve(resetErrors());
       });
-
     promiseState().then(() => {
       let reqBody = {
         firstName: values.firstName,
@@ -262,7 +293,8 @@ export default function UserSignup() {
         phone: values.phone,
         role: values.role.toLowerCase(),
         ...otherDetails,
-        customFields
+        customFields,
+        associatedOrg: organisation._id,
       };
       console.log({ reqBody });
       if (values.checked === false) {
@@ -290,23 +322,17 @@ export default function UserSignup() {
         setFrames({
           ...frames,
           signupActive: true,
-          orgDetails: false,
-          furtherDetails: false,
-          requirements: false,
+          userDetails: false,
+          customFields: false,
         });
       } else {
         setLoading(true);
         signupUser(reqBody)
           .then((res) => {
             console.log(res);
-            // setFrames({
-            //   ...frames,
-            //   signupActive: true,
-            //   requirements: false,
-            // });
             setLoading(false);
             alert("Signup successful");
-             navigate("/");
+            navigate("/");
           })
           .catch((err) => {
             setLoading(false);
@@ -316,13 +342,6 @@ export default function UserSignup() {
     });
   };
 
-  const handleClick = () => {
-    setFrames({
-      ...frames,
-      signupActive: false,
-      userDetails: true,
-    });
-  };
 
   const [selected, setSelected] = useState(false);
   const selectRef = useRef();
@@ -392,7 +411,7 @@ export default function UserSignup() {
                   </p>
                   <div className={`flex mt-[59px] lg:mt-0 ${styles.inputs}`}>
                     <InputField
-                     placeholder=""
+                      placeholder=""
                       parentClassName="text-xs"
                       label="First Name"
                       value={values.firstName}
@@ -405,7 +424,7 @@ export default function UserSignup() {
                       error={error.firstName}
                     />
                     <InputField
-                    placeholder=""
+                      placeholder=""
                       parentClassName="text-xs"
                       label="Last Name"
                       value={values.lastName}
@@ -433,7 +452,7 @@ export default function UserSignup() {
                       error={error.email}
                     />
                     <InputField
-                     placeholder=""
+                      placeholder=""
                       parentClassName="text-xs"
                       label="Phone"
                       value={values.phone}
@@ -450,14 +469,13 @@ export default function UserSignup() {
                   <div className="flex items-center text-xs">
                     <div
                       className="flex items-center mr-6 cursor-pointer"
-                      onClick={() =>{
-                        setPersona('parent')
+                      onClick={() => {
+                        setPersona("parent");
                         setValues((prev) => ({
                           ...prev,
                           role: "Parent",
-                        }))
-                      }
-                    }
+                        }));
+                      }}
                     >
                       <img
                         src={
@@ -472,14 +490,13 @@ export default function UserSignup() {
                     </div>
                     <div
                       className="flex items-center cursor-pointer"
-                      onClick={() =>{
-                        setPersona('student')
+                      onClick={() => {
+                        setPersona("student");
                         setValues((prev) => ({
                           ...prev,
                           role: "Student",
-                        }))
-                      }
-                      }
+                        }));
+                      }}
                     >
                       <img
                         src={
@@ -520,7 +537,6 @@ export default function UserSignup() {
                   handleSignup={handleSignup}
                 />
               ) : frames.customFields ? (
-
                 <CustomFields
                   {...props}
                   {...valueProps}
