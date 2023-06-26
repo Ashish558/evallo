@@ -159,6 +159,10 @@ export const testPreparationsData = [
     text: "LSAT/MCAT",
     checked: false,
   },
+  {
+    text: "Others",
+    checked: false,
+  },
 ];
 
 export const tutoringData = [
@@ -222,6 +226,10 @@ export const tutoringData = [
     text: "Political Science",
     checked: false,
   },
+  {
+    text: "Others",
+    checked: false,
+  },
 ];
 
 export const coachingData = [
@@ -230,15 +238,19 @@ export const coachingData = [
     checked: false,
   },
   {
-    text: "Life Counseling",
+    text: "Life Coaching",
     checked: false,
   },
   {
-    text: "Academic  Counseling",
+    text: "Academic  Coaching",
     checked: false,
   },
   {
-    text: "Career  Counseling",
+    text: "Career  Coaching",
+    checked: false,
+  },
+  {
+    text: "Others",
     checked: false,
   },
 ];
@@ -297,9 +309,22 @@ export const studentServedData = [
   },
 ];
 
-export const rateUsData='';
+export const rateUsData = "";
 
-export const paymentOptionsData = [
- "Through UPI",
- "Through Bank Account"
+export const paymentOptionsData = ['Cash',
+"Quickbooks",
+'Stripe',
+"Paypal",
+'Venmo',
+'Other Payment Apps (like PayPal,Venmo, Zelle ,etc.)',
+'Other Online Payment Gateway (like Stripe, Square ,Razorpay , 2Checkout , etc.)'
+
 ];
+
+export const successfulSignUpMessage = {
+  head: `Welcome aboard, and thank you for choosing Evallo!`,
+  mid: `You've just taken a significant leap towards optimizing your tutoring operations, and we're thrilled to be part of your journey. A verification email is on its way to your inbox as we speak. It includes a link for verifying your account and setting up your password. `,
+  last: `If it seems to be taking longer than usual, you might want to check your spam folder just in case. If there's still no sign of it, don't worry. You can simply click here to request a new verification email. 
+  `,
+  bottom: `Welcome to a smoother, more efficient way of tutoring!`,
+};

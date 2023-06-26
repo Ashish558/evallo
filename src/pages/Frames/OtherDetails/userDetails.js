@@ -98,6 +98,7 @@ export default function UserDetails({
 
   let personaText = values.role === "Parent" ? "Student" : "Parent";
  // alert(personaText)
+ console.log(values?.role);
   return (
     <div className="w-full">
       <div className="flex">

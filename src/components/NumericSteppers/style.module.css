@@ -7,13 +7,13 @@
 .line::before {
   content: "";
   position: absolute;
-  right: -35px;
+  right: -95px;
   top: 50%;
   transform: translateY(-50%);
-  width: 35px;
+  width: 95px;
   height: 1px;
   background-color: #7152eb;
-  z-index: -1;
+  z-index: -99;
 }
 .line:nth-last-child(1) {
   margin-right: 0;

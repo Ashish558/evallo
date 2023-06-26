@@ -137,7 +137,7 @@ export default function SignupTab({ setAddNewQuestionModalActive, fetchS }) {
           })}
         </div>
         <PrimaryButton
-          disabled={customFields.length < 5 ? false : true}
+          disabled={customFields?.length >= 5 ? true :false}
           children={"Add new question"}
           onClick={() => setAddNewQuestionModalActive(true)}
         />

@@ -33,6 +33,7 @@ import {
   studentServedData,
   rateUsData,
   paymentOptionsData,
+  successfulSignUpMessage,
 } from "./data";
 import { getCheckedString } from "../../utils/utils";
 import InputSelect from "../../components/InputSelect/InputSelect";
@@ -46,8 +47,8 @@ import {
 import { useNavigate, useSearchParams } from "react-router-dom";
 import Loader from "../../components/Loader";
 import PrimaryButton from "../../components/Buttons/PrimaryButton";
-import RadioUnselected from "../../assets/icons/radio-unselected.svg";
-import RadioSelected from "../../assets/icons/radio-selected.svg";
+import RadioUnselected from "../../assets/icons/radioUnChecked2.svg";
+import RadioSelected from "../../assets/icons/radioChecked2.svg";
 import SecondaryButton from "../../components/Buttons/SecondaryButton";
 
 export default function Signup() {
@@ -258,8 +259,6 @@ export default function Signup() {
 
   useEffect(() => {
     setCount(1);
-    
-    
   }, []);
 
   useEffect(() => {
@@ -282,9 +281,9 @@ export default function Signup() {
     if (sessionStorage.getItem("numberPrefix")) {
       setNumberPrefix(sessionStorage.getItem("numberPrefix"));
     }
-     if (sessionStorage.getItem("currentStep")) {
-       setcurrentStep(sessionStorage.getItem("currentStep"));
-     }
+    if (sessionStorage.getItem("currentStep")) {
+      setcurrentStep(sessionStorage.getItem("currentStep"));
+    }
     if (sessionStorage.getItem("numberPrefix")) {
       setNumberPrefix(sessionStorage.getItem("numberPrefix"));
     }
@@ -388,12 +387,14 @@ export default function Signup() {
             console.log(res);
             setFrames({
               ...frames,
-              signupActive: true,
+              signupSuccessful: true,
               requirements: false,
             });
             setLoading(false);
-            alert("Signup successful");
-            navigate("/");
+
+           // alert("Signup successful");
+
+            // navigate("/");
           })
           .catch((err) => {
             setLoading(false);
@@ -422,10 +423,10 @@ export default function Signup() {
         );
         if (result) checked = true;
       } catch (e) {
-        console.error(e.response.data.message);
+        console.error(e.response?.data?.message);
         setError({
           ...error,
-          email: e.response.data.message,
+          email: e.response?.data?.message,
         });
       }
       try {
@@ -492,7 +493,7 @@ export default function Signup() {
 
   useEffect(() => setSelected(false), [numberPrefix]);
 
-  const props = { persona, setFrames, setcurrentStep };
+  const props = { persona, setFrames, setcurrentStep, frames };
   const valueProps = { values, setValues };
   const otherDetailsProps = {
     otherDetails,
@@ -506,6 +507,28 @@ export default function Signup() {
 
   // console.log("vaues", values);
   const handleBack = () => {
+    navigate("/");
+  };
+  const [isChecked, setIsChecked] = useState(false);
+
+  const handleCheckboxChange1 = () => {
+    setIsChecked(!isChecked);
+  };
+  const handleSuccessfullBack = () => {
+    const obj = {
+      ...frames,
+      signupActive: true,
+      signupSuccessful: false,
+    };
+
+    setFrames((prev) => ({
+      ...prev,
+      signupActive: true,
+      signupSuccessful: false,
+    }));
+    sessionStorage.clear();
+    console.log("shy", frames);
+    //setcurrentStep(1);
     navigate("/");
   };
   return (
@@ -540,10 +563,10 @@ export default function Signup() {
                   ? "Sign Up"
                   : frames.setPassword
                   ? ""
-                  : "Profile Details"}
+                  : ""}
               </h1>
 
-              {currentStep > 0 && !frames.signupSuccessful && (
+              {currentStep > 0 && (
                 <NumericSteppers totalSteps={4} currentStep={currentStep} />
               )}
 
@@ -637,16 +660,18 @@ export default function Signup() {
                       {/* <input type="radio"  defaultChecked={values.registrationAs === "Company"
                             ? true
                             : false}  className="w-3 h-3"/> */}
-                      <img
-                        src={
-                          values.registrationAs === "Company"
-                            ? RadioSelected
-                            : RadioUnselected
-                        }
-                        alt="radio"
-                        className="mr-1.5"
-                      />
-                      <p> Company </p>
+                      <div className="w-[30px] flex justify-center">
+                        <img
+                          src={
+                            values.registrationAs === "Company"
+                              ? RadioSelected
+                              : RadioUnselected
+                          }
+                          alt="radio"
+                          className="mr-3 p-0"
+                        />
+                      </div>
+                      <p className={`${values.registrationAs === "Company"?'text-[#FFA28D]  ':''} text-[14px] `}> Company </p>
                     </div>
                     <div
                       className="flex items-center cursor-pointer"
@@ -660,17 +685,48 @@ export default function Signup() {
                       {/* <input type="radio" defaultChecked={values.registrationAs === "Individual"
                             ? true
                             : false} className="w-3 h-3"/> */}
-                      <img
-                        src={
-                          values.registrationAs === "Individual"
-                            ? RadioSelected
-                            : RadioUnselected
-                        }
-                        alt="radio"
-                        className="mr-1.5"
-                      />
-                      <p> Individual </p>
+                      <div className="w-[30px] flex justify-center">
+                        <img
+                          src={
+                            values.registrationAs === "Individual"
+                              ? RadioSelected
+                              : RadioUnselected
+                          }
+                          alt="radio"
+                          className=" mr-3"
+                        />
+                      </div>
+
+                      <p className={`${values.registrationAs === "Individual"?'text-[#FFA28D]  ':''} text-[14px] `}> Individual </p>
                     </div>
+                  </div>
+                  <div className="mt-[15px] flex">
+                    <div className="mt-1">
+                      <label className={styles.container}>
+                        <input
+                          required={true}
+                          type="checkbox"
+                          checked={isChecked}
+                          onChange={handleCheckboxChange1}
+                        />
+                        <span class={styles.checkmark}></span>
+                      </label>
+                    </div>
+
+                    <p className="text-xs font-medium   leading-5 ml-1">
+                      Selecting this would confirm that you have carefully read
+                      through and agree to our{" "}
+                      <span className="text-[#FFA28D]">
+                        <a href="http://evallo.org/tou">Terms of Use</a>
+                      </span>{" "}
+                      and{" "}
+                      <span className="text-[#FFA28D]">
+                        <a href="http://evallo.org/privacy-policy">
+                          Privacy Policy
+                        </a>
+                      </span>
+                      .
+                    </p>
                   </div>
                   <div className="flex items-center mt-7 justify-between">
                     <SecondaryButton
@@ -684,7 +740,9 @@ export default function Signup() {
                           ? "cursor-wait opacity-60 pointer-events-none"
                           : "cursor-pointer"
                       }`}
-                      disabled={values.email === "" ? true : false}
+                      disabled={
+                        values.email === "" || !isChecked ? true : false
+                      }
                       onClick={handleClick}
                       children={`Next`}
                     />
@@ -726,6 +784,15 @@ export default function Signup() {
                   solutions={solutions}
                   setSolutions={setSolutions}
                   handleSignup={handleSignup}
+                  loading={loading}
+                />
+              ) : frames.signupSuccessful ? (
+                <SignupSuccessful
+                  {...props}
+                  {...otherDetailsProps}
+                  successfulSignUpMessage={successfulSignUpMessage}
+                  handleSignup={handleSignup}
+                  handleSuccessfullBack={handleSuccessfullBack}
                   loading={loading}
                 />
               ) : (

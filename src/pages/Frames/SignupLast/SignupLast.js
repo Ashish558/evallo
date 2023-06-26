@@ -18,12 +18,6 @@ export default function SignupLast({
 }) {
   const [disabled, setDisabled] = useState(false);
 
-  const [isChecked, setIsChecked] = useState(false);
-
-  const handleCheckboxChange1 = () => {
-    setIsChecked(!isChecked);
-  };
-
   const handleCheckboxChange = (text, arr, setValue) => {
     const temp = arr.map((topic) => {
       return topic.text === text
@@ -138,32 +132,6 @@ export default function SignupLast({
         <div>
           <div className="h-[1px] bg-[#EBEBEB] w-[320px] "></div>
         </div>
-        <div className="mt-[15px] flex">
-          <div className="mt-1">
-            <label className={styles.container}>
-              <input
-                required={true}
-                type="checkbox"
-                checked={isChecked}
-                onChange={handleCheckboxChange1}
-              />
-              <span class={styles.checkmark}></span>
-            </label>
-          </div>
-
-          <p className="text-xs font-medium   leading-5 ml-1">
-            Selecting this would confirm that you have carefully read through
-            and agree to our{" "}
-            <span className="text-[#22BEF5]">
-              <a href="http://evallo.org/tou">Terms of Use</a>
-            </span>{" "}
-            and{" "}
-            <span className="text-[#22BEF5]">
-              <a href="http://evallo.org/privacy-policy">Privacy Policy</a>
-            </span>
-            .
-          </p>
-        </div>
       </div>
 
       <div className="flex items-center mt-5 justify-between">
@@ -174,7 +142,6 @@ export default function SignupLast({
         />
         <PrimaryButton
           children="Submit"
-          disabled={isChecked?false:true}
           className={` w-full bg-[#FFA28D] disabled:opacity-60 max-w-[110px]    rounded text-white text-xs font-medium relative 
            
           `}
