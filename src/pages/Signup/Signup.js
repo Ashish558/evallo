@@ -47,8 +47,8 @@ import {
 import { useNavigate, useSearchParams } from "react-router-dom";
 import Loader from "../../components/Loader";
 import PrimaryButton from "../../components/Buttons/PrimaryButton";
-import RadioUnselected from "../../assets/icons/radio-unselected.svg";
-import RadioSelected from "../../assets/icons/radio-selected.svg";
+import RadioUnselected from "../../assets/icons/radioUnChecked2.svg";
+import RadioSelected from "../../assets/icons/radioChecked2.svg";
 import SecondaryButton from "../../components/Buttons/SecondaryButton";
 
 export default function Signup() {
@@ -394,7 +394,7 @@ export default function Signup() {
 
             alert("Signup successful");
 
-           // navigate("/");
+            // navigate("/");
           })
           .catch((err) => {
             setLoading(false);
@@ -526,6 +526,7 @@ export default function Signup() {
       signupActive: true,
       signupSuccessful: false,
     }));
+    sessionStorage.clear();
     console.log("shy", frames);
     //setcurrentStep(1);
     navigate("/");
@@ -659,16 +660,18 @@ export default function Signup() {
                       {/* <input type="radio"  defaultChecked={values.registrationAs === "Company"
                             ? true
                             : false}  className="w-3 h-3"/> */}
-                      <img
-                        src={
-                          values.registrationAs === "Company"
-                            ? RadioSelected
-                            : RadioUnselected
-                        }
-                        alt="radio"
-                        className="mr-1.5"
-                      />
-                      <p> Company </p>
+                      <div className="w-[30px] flex justify-center">
+                        <img
+                          src={
+                            values.registrationAs === "Company"
+                              ? RadioSelected
+                              : RadioUnselected
+                          }
+                          alt="radio"
+                          className="mr-3 p-0"
+                        />
+                      </div>
+                      <p className={`${values.registrationAs === "Company"?'text-[#FFA28D]  ':''} text-[14px] `}> Company </p>
                     </div>
                     <div
                       className="flex items-center cursor-pointer"
@@ -682,16 +685,19 @@ export default function Signup() {
                       {/* <input type="radio" defaultChecked={values.registrationAs === "Individual"
                             ? true
                             : false} className="w-3 h-3"/> */}
-                      <img
-                        src={
-                          values.registrationAs === "Individual"
-                            ? RadioSelected
-                            : RadioUnselected
-                        }
-                        alt="radio"
-                        className="mr-1.5"
-                      />
-                      <p> Individual </p>
+                      <div className="w-[30px] flex justify-center">
+                        <img
+                          src={
+                            values.registrationAs === "Individual"
+                              ? RadioSelected
+                              : RadioUnselected
+                          }
+                          alt="radio"
+                          className=" mr-3"
+                        />
+                      </div>
+
+                      <p className={`${values.registrationAs === "Individual"?'text-[#FFA28D]  ':''} text-[14px] `}> Individual </p>
                     </div>
                   </div>
                   <div className="mt-[15px] flex">

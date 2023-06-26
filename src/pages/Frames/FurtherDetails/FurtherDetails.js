@@ -141,7 +141,7 @@ export default function FurtherDetails({
                     {item.text === "Others" && item.checked ? (
                       <input
                         autoFocus
-                        className="ml-3 text-[#7E7E7E] outline-[#DCDCDD] border-2 border-[#DCDCDD] rounded-md bg-[#DCDCDD]  w-48"
+                        className="ml-3 text-sm text-[#7E7E7E] outline-[#DCDCDD] border-2 border-[#DCDCDD] rounded-md bg-[#DCDCDD]  w-48"
                         type="text"
                       />
                     ) : (
@@ -185,7 +185,7 @@ export default function FurtherDetails({
                     {item.text === "Others" && item.checked ? (
                       <input
                         autoFocus
-                        className="ml-3 text-[#7E7E7E] outline-[#DCDCDD] border-2 border-[#DCDCDD] rounded-md bg-[#DCDCDD]  w-48"
+                        className="ml-3 text-sm text-[#7E7E7E] outline-[#DCDCDD] border-2 border-[#DCDCDD] rounded-md bg-[#DCDCDD]  w-48"
                         type="text"
                       />
                     ) : (
@@ -229,7 +229,7 @@ export default function FurtherDetails({
                     {item.text === "Others" && item.checked ? (
                       <input
                         autoFocus
-                        className="ml-3 text-[#7E7E7E] outline-[#DCDCDD] border-2 border-[#DCDCDD] rounded-md bg-[#DCDCDD]  w-48"
+                        className="ml-3 text-sm text-[#7E7E7E] outline-[#DCDCDD] border-2 border-[#DCDCDD] rounded-md bg-[#DCDCDD]  w-48"
                         type="text"
                       />
                     ) : (
