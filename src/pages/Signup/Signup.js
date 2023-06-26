@@ -392,7 +392,7 @@ export default function Signup() {
             });
             setLoading(false);
 
-            alert("Signup successful");
+           // alert("Signup successful");
 
             // navigate("/");
           })
