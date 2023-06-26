@@ -304,10 +304,10 @@ export default function FurtherDetails({
             );
           })}
         </div>
-        <p className="border-t-[1.2px] mt-[-10px] border-gray-300 pt-2 text-xs mb-[7px] font-bold">
+        <p className="border-t-[1.2px] mt-[0px] border-gray-300 pt-3  text-xs mb-[7px] font-bold">
           How do you currently process your payments?
         </p>
-        <div className="flex flex-col h-min ">
+        <div className="flex flex-col h-min mt-3">
           <div className={style.changeOption}>
             <select className="form-control  text-xs">
               <option value="0">Options</option>

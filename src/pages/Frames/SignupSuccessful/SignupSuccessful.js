@@ -34,7 +34,7 @@ export default function SignupSuccessful({
         <div>
           <p className="font-medium mb-6">Sign-up successful!</p>
           <div className="text-center flex flex-col gap-3 text-md w-fit">
-            <h3>{successfulSignUpMessage.head}</h3>
+            <h3 className="font-[500]">{successfulSignUpMessage.head}</h3>
             <h4>{successfulSignUpMessage.mid}</h4>
             <h4>{successfulSignUpMessage.last}</h4>
             <h2 className="font-bold">{successfulSignUpMessage.bottom}</h2>
@@ -44,7 +44,7 @@ export default function SignupSuccessful({
         <div className="flex items-center mt-16">
           <SecondaryButton
             children="Back To Sign In"
-            className="text-21 py-3.2 bg-[#FFA28D] text-gray-50 mx-auto w-150"
+            className="text-19 py-3 font-[600] px-6 bg-[#FFA28D] text-gray-50 mx-auto w-[250px]"
             onClick={handleSuccessfullBack}
             lastLoginDisabled={lastLoginDisabled}
           />
