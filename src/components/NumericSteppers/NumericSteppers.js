@@ -4,7 +4,7 @@ import styles from './style.module.css'
 export default function NumericSteppers({ totalSteps, currentStep,customFields }) {
 
    return (
-      <div className={`lg:mt-6 relative ${currentStep === 5 ? "mb-[30px]" : "mb-[30px]"} flex`}>
+      <div className={`lg:mt-6 relative ${currentStep === 5 ? "mb-[30px]" : "mb-[30px]"} flex justify-between`}>
          {[...Array(totalSteps)].map((x, i) =>
              (customFields?.length===0&&i===2&&totalSteps===3)?'':
             <button key={i} className={`w-[36px] hidden lg:block h-[36px] bg-primary border rounded-full mr-7 font-bold

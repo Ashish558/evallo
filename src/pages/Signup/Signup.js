@@ -563,7 +563,7 @@ export default function Signup() {
                   ? "Sign Up"
                   : frames.setPassword
                   ? ""
-                  : "Profile Details"}
+                  : ""}
               </h1>
 
               {currentStep > 0 && (
