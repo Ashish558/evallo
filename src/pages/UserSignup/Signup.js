@@ -5,6 +5,7 @@ import styles from "./signup.module.css";
 import OrgDetails from "../Frames/OrgDetails/OrgDetails";
 import SignupLast from "../Frames/SignupLast/SignupLast";
 import FurtherDetails from "../Frames/FurtherDetails/FurtherDetails";
+import axios from "axios";
 
 import cuate from "../../assets/signup/cuate.png";
 import NumericSteppers from "../../components/NumericSteppers/NumericSteppers";
@@ -28,7 +29,8 @@ import { useLazyGetSettingsQuery } from "../../app/services/session";
 import { validateOtherDetails, validateSignup } from "./utils/util";
 import {
   useLazyGetTutorDetailsQuery,
-  useLazyGetUserDetailQuery,
+  useLazyGetSingleUserQuery,
+  useUpdateUserMutation,
 } from "../../app/services/users";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import Loader from "../../components/Loader";
@@ -57,8 +59,7 @@ export default function UserSignup() {
     email: "",
     phone: "",
     userId: "",
-    registrationAs: "Parent",
-    role: "Parent",
+    role: "parent",
   });
 
   const [error, setError] = useState({
@@ -97,13 +98,14 @@ export default function UserSignup() {
   const [count, setCount] = useState(0);
   const [organisation, setOrganisation] = useState({});
 
-  const [persona, setPersona] = useState("");
   const [currentStep, setcurrentStep] = useState(1);
 
   const [getOrgDetails, getOrgDetailsResp] = useGetUserByOrgNameMutation();
   const [searchParams, setSearchParams] = useSearchParams();
   const [customFields, setCustomFields] = useState([]);
-  const [getDetails, getDetailsResp] = useLazyGetUserDetailQuery();
+  const [getDetails, getDetailsResp] = useLazyGetSingleUserQuery();
+  const [updateUser, updateUserRes] = useUpdateUserMutation();
+  const [isAddedByAdmin, setIsAddedByAdmin] = useState(false);
 
   const fetchSettings = () => {
     getSettings().then((res) => {
@@ -125,7 +127,6 @@ export default function UserSignup() {
     sessionStorage.setItem("frames", JSON.stringify(frames));
     sessionStorage.setItem("values", JSON.stringify(values));
     sessionStorage.setItem("otherDetails", JSON.stringify(otherDetails));
-    sessionStorage.setItem("persona", persona);
     sessionStorage.setItem("redirectLink", redirectLink);
     sessionStorage.setItem("numberPrefix", numberPrefix);
     sessionStorage.setItem("currentStep", currentStep);
@@ -135,7 +136,6 @@ export default function UserSignup() {
     frames,
     values,
     otherDetails,
-    persona,
     redirectLink,
     numberPrefix,
     currentStep,
@@ -166,29 +166,35 @@ export default function UserSignup() {
     if (!paramUserId) return;
     if (!paramUserRole) return;
     console.log("paramUserId", paramUserId);
-    setValues((prev) => {
-      return {
-        ...prev,
-        userId: paramUserId,
-      };
-    });
-    setPersona(paramUserRole);
-    // setIsAddedByAdmin(true);
+
+    setIsAddedByAdmin(true);
     setFrames((prev) => {
-       return { ...prev, signupActive: false, userDetails: true };
-    })
+      return { ...prev, signupActive: false, userDetails: true };
+    });
 
-    getDetails({ id: paramUserId })
-       .then(res => {
-          if (res.error) {
-             return console.log(res.error)
-          }
-          console.log('param res', res.data);
-          const { user, userdetails } = res.data.data
-          let user_detail = { ...userdetails }
-          console.log('user', user);
-
-       })
+    getDetails(paramUserId).then((res) => {
+      if (res.error) {
+        return console.log(res.error);
+      }
+      console.log("param res", res.data);
+      if (res.data?.user) {
+        const { firstName, lastName, phone, email, role } = res.data.user;
+        setValues((prev) => {
+          return {
+            ...prev,
+            userId: paramUserId,
+            firstName,
+            lastName,
+            phone,
+            email,
+            role,
+          };
+        });
+      }
+      const { user, userdetails } = res.data.data;
+      let user_detail = { ...userdetails };
+      console.log("user", user);
+    });
   }, [paramUserId, paramUserRole]);
 
   useEffect(() => {
@@ -204,9 +210,6 @@ export default function UserSignup() {
     }
     if (sessionStorage.getItem("otherDetails")) {
       setOtherDetails(JSON.parse(sessionStorage.getItem("otherDetails")));
-    }
-    if (sessionStorage.getItem("persona")) {
-      setPersona(sessionStorage.getItem("persona"));
     }
     if (sessionStorage.getItem("redirectLink")) {
       setRedirectLink(sessionStorage.getItem("redirectLink"));
@@ -248,12 +251,52 @@ export default function UserSignup() {
     });
   };
 
+  const handleClick = async () => {
+    let checked = false;
+    if (isAddedByAdmin) {
+      setFrames({
+        ...frames,
+        signupActive: false,
+        userDetails: true,
+      });
+      return;
+    }
+    try {
+      let data = {
+        workemail: values.email,
+      };
+      let result = await axios.post(
+        `${process.env.REACT_APP_BASE_URL}api/user/CheckEmail`,
+        data,
+        {
+          headers: {
+            "content-Type": "application/json",
+          },
+        }
+      );
+      console.log(result);
+      if (result) checked = true;
+    } catch (e) {
+      console.error(e.response.data.message);
+      setError({
+        ...error,
+        email: e.response.data.message,
+      });
+    }
+    if (checked === true) {
+      setFrames({
+        ...frames,
+        signupActive: false,
+        userDetails: true,
+      });
+    }
+  };
+
   const handleSignup = () => {
     const promiseState = async (state) =>
       new Promise((resolve) => {
         resolve(resetErrors());
       });
-
     promiseState().then(() => {
       let reqBody = {
         firstName: values.firstName,
@@ -262,7 +305,8 @@ export default function UserSignup() {
         phone: values.phone,
         role: values.role.toLowerCase(),
         ...otherDetails,
-        customFields
+        customFields,
+        associatedOrg: organisation._id,
       };
       console.log({ reqBody });
       if (values.checked === false) {
@@ -290,45 +334,48 @@ export default function UserSignup() {
         setFrames({
           ...frames,
           signupActive: true,
-          orgDetails: false,
-          furtherDetails: false,
-          requirements: false,
+          userDetails: false,
+          customFields: false,
         });
       } else {
         setLoading(true);
-        signupUser(reqBody)
-          .then((res) => {
-            console.log('shy',res?.data?.status);
-            // setFrames({
-            //   ...frames,
-            //   signupActive: true,
-            //   requirements: false,
-            // });
-            if(res?.data?.status==='success'){
+        if (isAddedByAdmin) {
+          reqBody.userId = values.userId;
+          updateUser(reqBody)
+            .then((res) => {
+              console.log(res);
+              if (res.error) {
+                alert("Something went wrong");
+                return;
+              }
               setLoading(false);
-             alert("Signup successful");
-             navigate("/");
-              
-              return
-            }
-            alert('something went wrong , please try again')
-           // setLoading(false);
-           // alert("Signup successful");
-           //  navigate("/");
-          })
-          .catch((err) => {
-            setLoading(false);
-            console.log(err);
-          });
+              alert("Signup successful");
+              navigate("/");
+              sessionStorage.clear();
+            })
+            .catch((err) => {
+              setLoading(false);
+              console.log(err);
+            });
+        } else {
+          signupUser(reqBody)
+            .then((res) => {
+              console.log(res);
+              setLoading(false);
+              if (res?.data?.status === "success") {
+                alert("Signup successful");
+                navigate("/");
+                sessionStorage.clear();
+                return;
+              }
+              alert("something went wrong , please try again");
+            })
+            .catch((err) => {
+              setLoading(false);
+              console.log(err);
+            });
+        }
       }
-    });
-  };
-
-  const handleClick = () => {
-    setFrames({
-      ...frames,
-      signupActive: false,
-      userDetails: true,
     });
   };
 
@@ -338,7 +385,7 @@ export default function UserSignup() {
 
   useEffect(() => setSelected(false), [numberPrefix]);
 
-  const props = { persona, setFrames, setcurrentStep };
+  const props = { setFrames, setcurrentStep };
   const valueProps = { values, setValues };
   const otherDetailsProps = {
     otherDetails,
@@ -349,7 +396,6 @@ export default function UserSignup() {
     studentNumberPrefix,
     setStudentNumberPrefix,
   };
-
   // console.log("customFields", customFields);
 
   return (
@@ -388,7 +434,10 @@ export default function UserSignup() {
               </h1>
 
               {currentStep > 1 && !frames.signupSuccessful && (
-                <NumericSteppers totalSteps={3} currentStep={currentStep} customFields={customFields}/>
+                <NumericSteppers
+                  totalSteps={customFields.length === 0 ? 2 : 3}
+                  currentStep={currentStep}
+                />
               )}
 
               {frames.signupActive ? (
@@ -400,7 +449,7 @@ export default function UserSignup() {
                   </p>
                   <div className={`flex mt-[59px] lg:mt-0 ${styles.inputs}`}>
                     <InputField
-                     placeholder=""
+                      placeholder=""
                       parentClassName="text-xs"
                       label="First Name"
                       value={values.firstName}
@@ -413,7 +462,7 @@ export default function UserSignup() {
                       error={error.firstName}
                     />
                     <InputField
-                    placeholder=""
+                      placeholder=""
                       parentClassName="text-xs"
                       label="Last Name"
                       value={values.lastName}
@@ -441,7 +490,7 @@ export default function UserSignup() {
                       error={error.email}
                     />
                     <InputField
-                     placeholder=""
+                      placeholder=""
                       parentClassName="text-xs"
                       label="Phone"
                       value={values.phone}
@@ -458,17 +507,16 @@ export default function UserSignup() {
                   <div className="flex items-center text-xs">
                     <div
                       className="flex items-center mr-6 cursor-pointer"
-                      onClick={() =>
+                      onClick={() => {
                         setValues((prev) => ({
                           ...prev,
-                          role: "Parent",
-                        }))
-                      
-                    }
+                          role: "parent",
+                        }));
+                      }}
                     >
                       <img
                         src={
-                          values.role === "Parent"
+                          values.role === "parent"
                             ? RadioSelected
                             : RadioUnselected
                         }
@@ -479,18 +527,16 @@ export default function UserSignup() {
                     </div>
                     <div
                       className="flex items-center cursor-pointer"
-                      onClick={() =>
-                       
+                      onClick={() => {
                         setValues((prev) => ({
                           ...prev,
-                          role: "Student",
-                        }))
-                      
-                      }
+                          role: "student",
+                        }));
+                      }}
                     >
                       <img
                         src={
-                          values.role === "Student"
+                          values.role === "student"
                             ? RadioSelected
                             : RadioUnselected
                         }
@@ -520,14 +566,12 @@ export default function UserSignup() {
               ) : frames.userDetails ? (
                 <OtherDetails
                   {...props}
-                  setPersona={setPersona}
                   {...valueProps}
                   customFields={customFields}
                   {...otherDetailsProps}
                   handleSignup={handleSignup}
                 />
               ) : frames.customFields ? (
-
                 <CustomFields
                   {...props}
                   {...valueProps}
