@@ -107,18 +107,17 @@ export default function FurtherDetails({
             <div className="grid grid-cols-3">
               {testPreparations?.map((item, idx) => {
                 return (
-                  <div
-                    key={idx}
-                    className="flex items-center mb-3 mr-6"
-                    onClick={() =>
-                      handleCheckboxChange(
-                        item.text,
-                        testPreparations,
-                        setTestPreparations
-                      )
-                    }
-                  >
-                    <div className={`${styles.container} `}>
+                  <div key={idx} className="flex items-center mb-3 mr-6">
+                    <div
+                      onClick={() =>
+                        handleCheckboxChange(
+                          item.text,
+                          testPreparations,
+                          setTestPreparations
+                        )
+                      }
+                      className={`${styles.container} `}
+                    >
                       <input
                         checked={item.checked}
                         type="checkbox"
@@ -127,9 +126,27 @@ export default function FurtherDetails({
                       />
                       <span class={styles.checkmark}></span>
                     </div>
-                    <p className="font-medium text-xs text-sm opacity-90 leading-5">
+                    <p
+                      onClick={() =>
+                        handleCheckboxChange(
+                          item.text,
+                          testPreparations,
+                          setTestPreparations
+                        )
+                      }
+                      className="font-medium text-xs text-sm opacity-90 leading-5"
+                    >
                       {item.text}
                     </p>
+                    {item.text === "Others" && item.checked ? (
+                      <input
+                        autoFocus
+                        className="ml-3 text-[#7E7E7E] outline-[#DCDCDD] border-2 border-[#DCDCDD] rounded-md bg-[#DCDCDD]  w-48"
+                        type="text"
+                      />
+                    ) : (
+                      ""
+                    )}
                   </div>
                 );
               })}
@@ -142,14 +159,13 @@ export default function FurtherDetails({
             <div className="grid grid-cols-3">
               {tutoring?.map((item, idx) => {
                 return (
-                  <div
-                    key={idx}
-                    className="flex items-center mb-3 mr-6"
-                    onClick={() =>
-                      handleCheckboxChange(item.text, tutoring, setTutoring)
-                    }
-                  >
-                    <div className={`${styles.container} `}>
+                  <div key={idx} className="flex items-center mb-3 mr-6">
+                    <div
+                      onClick={() =>
+                        handleCheckboxChange(item.text, tutoring, setTutoring)
+                      }
+                      className={`${styles.container} `}
+                    >
                       <input
                         checked={item.checked}
                         type="checkbox"
@@ -158,9 +174,23 @@ export default function FurtherDetails({
                       />
                       <span class={styles.checkmark}></span>
                     </div>
-                    <p className="font-medium text-xs text-sm opacity-90 leading-5">
+                    <p
+                      onClick={() =>
+                        handleCheckboxChange(item.text, tutoring, setTutoring)
+                      }
+                      className="font-medium text-xs text-sm opacity-90 leading-5"
+                    >
                       {item.text}
                     </p>
+                    {item.text === "Others" && item.checked ? (
+                      <input
+                        autoFocus
+                        className="ml-3 text-[#7E7E7E] outline-[#DCDCDD] border-2 border-[#DCDCDD] rounded-md bg-[#DCDCDD]  w-48"
+                        type="text"
+                      />
+                    ) : (
+                      ""
+                    )}
                   </div>
                 );
               })}
@@ -173,14 +203,13 @@ export default function FurtherDetails({
             <div className="grid grid-cols-3">
               {coaching?.map((item, idx) => {
                 return (
-                  <div
-                    key={idx}
-                    className="flex items-center mb-3 mr-6"
-                    onClick={() =>
-                      handleCheckboxChange(item.text, coaching, setCoaching)
-                    }
-                  >
-                    <div className={`${styles.container} `}>
+                  <div key={idx} className="flex items-center mb-3 mr-6">
+                    <div
+                      className={`${styles.container} `}
+                      onClick={() =>
+                        handleCheckboxChange(item.text, coaching, setCoaching)
+                      }
+                    >
                       <input
                         checked={item.checked}
                         type="checkbox"
@@ -189,9 +218,23 @@ export default function FurtherDetails({
                       />
                       <span class={styles.checkmark}></span>
                     </div>
-                    <p className="font-medium text-xs text-sm opacity-90 leading-5">
+                    <p
+                      onClick={() =>
+                        handleCheckboxChange(item.text, coaching, setCoaching)
+                      }
+                      className="font-medium text-xs text-sm opacity-90 leading-5"
+                    >
                       {item.text}
                     </p>
+                    {item.text === "Others" && item.checked ? (
+                      <input
+                        autoFocus
+                        className="ml-3 text-[#7E7E7E] outline-[#DCDCDD] border-2 border-[#DCDCDD] rounded-md bg-[#DCDCDD]  w-48"
+                        type="text"
+                      />
+                    ) : (
+                      ""
+                    )}
                   </div>
                 );
               })}
@@ -267,7 +310,7 @@ export default function FurtherDetails({
         <div className="flex flex-col h-min ">
           <div className={style.changeOption}>
             <select className="form-control  text-xs">
-              <option value="0">Select Payment Type</option>
+              <option value="0">Options</option>
               {paymentOptions.map((c, id) => {
                 return (
                   <>

@@ -33,6 +33,7 @@ import {
   studentServedData,
   rateUsData,
   paymentOptionsData,
+  successfulSignUpMessage,
 } from "./data";
 import { getCheckedString } from "../../utils/utils";
 import InputSelect from "../../components/InputSelect/InputSelect";
@@ -258,8 +259,6 @@ export default function Signup() {
 
   useEffect(() => {
     setCount(1);
-    
-    
   }, []);
 
   useEffect(() => {
@@ -282,9 +281,9 @@ export default function Signup() {
     if (sessionStorage.getItem("numberPrefix")) {
       setNumberPrefix(sessionStorage.getItem("numberPrefix"));
     }
-     if (sessionStorage.getItem("currentStep")) {
-       setcurrentStep(sessionStorage.getItem("currentStep"));
-     }
+    if (sessionStorage.getItem("currentStep")) {
+      setcurrentStep(sessionStorage.getItem("currentStep"));
+    }
     if (sessionStorage.getItem("numberPrefix")) {
       setNumberPrefix(sessionStorage.getItem("numberPrefix"));
     }
@@ -388,13 +387,14 @@ export default function Signup() {
             console.log(res);
             setFrames({
               ...frames,
-              signupActive: true,
+              signupSuccessful: true,
               requirements: false,
             });
             setLoading(false);
-            
+
             alert("Signup successful");
-            navigate("/");
+
+           // navigate("/");
           })
           .catch((err) => {
             setLoading(false);
@@ -423,10 +423,10 @@ export default function Signup() {
         );
         if (result) checked = true;
       } catch (e) {
-        console.error(e.response.data.message);
+        console.error(e.response?.data?.message);
         setError({
           ...error,
-          email: e.response.data.message,
+          email: e.response?.data?.message,
         });
       }
       try {
@@ -493,7 +493,7 @@ export default function Signup() {
 
   useEffect(() => setSelected(false), [numberPrefix]);
 
-  const props = { persona, setFrames, setcurrentStep };
+  const props = { persona, setFrames, setcurrentStep, frames };
   const valueProps = { values, setValues };
   const otherDetailsProps = {
     otherDetails,
@@ -507,6 +507,27 @@ export default function Signup() {
 
   // console.log("vaues", values);
   const handleBack = () => {
+    navigate("/");
+  };
+  const [isChecked, setIsChecked] = useState(false);
+
+  const handleCheckboxChange1 = () => {
+    setIsChecked(!isChecked);
+  };
+  const handleSuccessfullBack = () => {
+    const obj = {
+      ...frames,
+      signupActive: true,
+      signupSuccessful: false,
+    };
+
+    setFrames((prev) => ({
+      ...prev,
+      signupActive: true,
+      signupSuccessful: false,
+    }));
+    console.log("shy", frames);
+    //setcurrentStep(1);
     navigate("/");
   };
   return (
@@ -544,7 +565,7 @@ export default function Signup() {
                   : "Profile Details"}
               </h1>
 
-              {currentStep > 0 && !frames.signupSuccessful && (
+              {currentStep > 0 && (
                 <NumericSteppers totalSteps={4} currentStep={currentStep} />
               )}
 
@@ -673,6 +694,34 @@ export default function Signup() {
                       <p> Individual </p>
                     </div>
                   </div>
+                  <div className="mt-[15px] flex">
+                    <div className="mt-1">
+                      <label className={styles.container}>
+                        <input
+                          required={true}
+                          type="checkbox"
+                          checked={isChecked}
+                          onChange={handleCheckboxChange1}
+                        />
+                        <span class={styles.checkmark}></span>
+                      </label>
+                    </div>
+
+                    <p className="text-xs font-medium   leading-5 ml-1">
+                      Selecting this would confirm that you have carefully read
+                      through and agree to our{" "}
+                      <span className="text-[#FFA28D]">
+                        <a href="http://evallo.org/tou">Terms of Use</a>
+                      </span>{" "}
+                      and{" "}
+                      <span className="text-[#FFA28D]">
+                        <a href="http://evallo.org/privacy-policy">
+                          Privacy Policy
+                        </a>
+                      </span>
+                      .
+                    </p>
+                  </div>
                   <div className="flex items-center mt-7 justify-between">
                     <SecondaryButton
                       children="Go Back"
@@ -685,7 +734,9 @@ export default function Signup() {
                           ? "cursor-wait opacity-60 pointer-events-none"
                           : "cursor-pointer"
                       }`}
-                      disabled={values.email === "" ? true : false}
+                      disabled={
+                        values.email === "" || !isChecked ? true : false
+                      }
                       onClick={handleClick}
                       children={`Next`}
                     />
@@ -727,6 +778,15 @@ export default function Signup() {
                   solutions={solutions}
                   setSolutions={setSolutions}
                   handleSignup={handleSignup}
+                  loading={loading}
+                />
+              ) : frames.signupSuccessful ? (
+                <SignupSuccessful
+                  {...props}
+                  {...otherDetailsProps}
+                  successfulSignUpMessage={successfulSignUpMessage}
+                  handleSignup={handleSignup}
+                  handleSuccessfullBack={handleSuccessfullBack}
                   loading={loading}
                 />
               ) : (
