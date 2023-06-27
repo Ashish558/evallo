@@ -50,6 +50,8 @@ import PrimaryButton from "../../components/Buttons/PrimaryButton";
 import RadioUnselected from "../../assets/icons/radioUnChecked2.svg";
 import RadioSelected from "../../assets/icons/radioChecked2.svg";
 import SecondaryButton from "../../components/Buttons/SecondaryButton";
+import InputFieldDropdown from "../../components/InputField/inputFieldDropdown";
+import AdminNavbar from "../AdminDashboard/AdminNavbar";
 
 export default function Signup() {
   const [frames, setFrames] = useState({
@@ -392,7 +394,7 @@ export default function Signup() {
             });
             setLoading(false);
 
-           // alert("Signup successful");
+            // alert("Signup successful");
 
             // navigate("/");
           })
@@ -533,10 +535,11 @@ export default function Signup() {
   };
   return (
     <div
-      className="min-h-screen overflow-y-auto pb-6 bg-primary"
+      className="min-h-screen overflow-y-auto pb-6 bg-primary relative"
       id={styles.signUp}
     >
-      <div className="flex justify-center flex-col items-center md:grid-cols-2 min-h-screen ">
+      <AdminNavbar></AdminNavbar>
+      <div className="flex justify-center flex-col items-center md:grid-cols-2 min-h-screen mb-[100px]">
         <img src={cuate} alt="rocket" className="h-10vh mb-10" />
         <>
           {!frames.signupSuccessful ? (
@@ -545,8 +548,8 @@ export default function Signup() {
                 {frames.signupActive
                   ? "Sign Up"
                   : frames.setPassword
-                  ? ""
-                  : "Profile Details"}
+                    ? ""
+                    : "Profile Details"}
               </h1>
 
               <h6 className="mb-[10px]">Sign up with email address</h6>
@@ -554,29 +557,28 @@ export default function Signup() {
           ) : (
             <></>
           )}
-          <div className="flex lg:items-center relative bg-white rounded-md py-6 px-5 md:px-[48px] lg:w-[520px]">
+          <div className="flex lg:items-center relative bg-white rounded-md py-6 px-5 md:px-[48px] lg:w-[800px]">
             <div className="w-full py-6">
-              <h1
+              {/* <h1
                 className={`hidden lg:block mb-1.5 text-[30px] ${styles.title} `}
               >
                 {frames.signupActive
                   ? "Sign Up"
                   : frames.setPassword
-                  ? ""
-                  : ""}
-              </h1>
+                    ? ""
+                    : ""}
+              </h1> */}
 
               {currentStep > 0 && (
                 <NumericSteppers totalSteps={4} currentStep={currentStep} />
               )}
-
               {frames.signupActive ? (
                 <div>
-                  <p
+                  {/* <p
                     className={`hidden lg:block mb-[26px] ${styles.textGrayed} `}
                   >
                     Please fill your detail to create your account.
-                  </p>
+                  </p> */}
                   <div
                     className={`flex mt-[59px] justify-between lg:mt-0 ${styles.inputs}`}
                   >
@@ -606,10 +608,12 @@ export default function Signup() {
                       }
                       error={error.lastName}
                     />
+                  </div>
+                  <div className={`flex mt-[20px] justify-between  `}>
                     <InputField
                       label="Work Email"
                       placeholder=""
-                      parentClassName="text-xs"
+                      parentClassName="text-xs w-full "
                       value={values.email}
                       onChange={(e) =>
                         setValues({
@@ -619,9 +623,11 @@ export default function Signup() {
                       }
                       error={error.email}
                     />
-                    <InputField
+
+
+                    <InputFieldDropdown
                       placeholder=""
-                      parentClassName="text-xs"
+                      parentClassName="text-xs w-3/4 ml-12"
                       label="Phone"
                       value={values.phone}
                       onChange={(e) =>
@@ -633,6 +639,7 @@ export default function Signup() {
                       error={error.phone}
                     />
                   </div>
+
                   <InputField
                     placeholder=""
                     parentClassName="text-xs mt-5 mb-6 w-full"
@@ -646,7 +653,7 @@ export default function Signup() {
                     }
                     error={error.company}
                   />
-                  <p className="text-xs mb-4"> Registration as </p>
+                  <p className="text-lg mb-4 text-[#26435F]"> Registration as </p>
                   <div className="flex items-center text-xs">
                     <div
                       className="flex items-center mr-6 cursor-pointer"
@@ -671,7 +678,7 @@ export default function Signup() {
                           className="mr-3 p-0"
                         />
                       </div>
-                      <p className={`${values.registrationAs === "Company"?'text-[#FFA28D]  ':''} text-[14px] `}> Company </p>
+                      <p className={`${values.registrationAs === "Company" ? 'text-[#FFA28D]  ' : ''} text-[18px] `}> Company </p>
                     </div>
                     <div
                       className="flex items-center cursor-pointer"
@@ -697,10 +704,10 @@ export default function Signup() {
                         />
                       </div>
 
-                      <p className={`${values.registrationAs === "Individual"?'text-[#FFA28D]  ':''} text-[14px] `}> Individual </p>
+                      <p className={`${values.registrationAs === "Individual" ? 'text-[#FFA28D]  ' : ''} text-[18px] `}> Individual </p>
                     </div>
                   </div>
-                  <div className="mt-[15px] flex">
+                  <div className="mt-[40px] flex">
                     <div className="mt-1">
                       <label className={styles.container}>
                         <input
@@ -713,7 +720,7 @@ export default function Signup() {
                       </label>
                     </div>
 
-                    <p className="text-xs font-medium   leading-5 ml-1">
+                    <p className="text-lg font-medium   leading-5 ml-1 pl-2">
                       Selecting this would confirm that you have carefully read
                       through and agree to our{" "}
                       <span className="text-[#FFA28D]">
@@ -728,18 +735,17 @@ export default function Signup() {
                       .
                     </p>
                   </div>
-                  <div className="flex items-center mt-7 justify-between">
+                  <div className="flex items-center mt-[60px] justify-between">
                     <SecondaryButton
                       children="Go Back"
-                      className="text-xs mr-6 bg-white text-[#a3aDC7] border-[1.5px] border-[#D0D5DD] "
+                      className="text-lg mr-6 bg-white text-[#a3aDC7] border-[1.5px] border-[#D0D5DD] "
                       onClick={handleBack}
                     />
                     <PrimaryButton
-                      className={`w-full bg-[#FFA28D] disabled:opacity-60 max-w-[110px]  rounded text-white text-xs font-medium relative ${
-                        loading
-                          ? "cursor-wait opacity-60 pointer-events-none"
-                          : "cursor-pointer"
-                      }`}
+                      className={`w-full bg-[#FFA28D] disabled:opacity-60 max-w-[110px]  rounded text-white text-lg font-medium relative ${loading
+                        ? "cursor-wait opacity-60 pointer-events-none"
+                        : "cursor-pointer"
+                        }`}
                       disabled={
                         values.email === "" || !isChecked ? true : false
                       }
@@ -802,6 +808,15 @@ export default function Signup() {
           </div>
         </>
       </div>
+      <footer className='bg-[#26435F] text-[#FFFFFF] py-[18px] w-full  bottom-5%  absolute'>
+        <div className='flex  text-xs font-medium justify-between'>
+          <p className='ml-[74px]'>Copyright © Sevenimagine Education Private Limited</p>
+          <div className='flex mr-[45px]'>
+            <p>Terms of Usage</p>
+            <p className='ml-6'>Privacy Policy</p>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }
