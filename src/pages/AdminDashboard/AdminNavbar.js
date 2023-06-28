@@ -155,7 +155,7 @@ const AdminNavbar = () => {
     } else if (persona === "admin") {
       setNavData(tempnavdata);
     } else {
-      setNavData(studentNav);
+      setNavData([]);
     }
   }, [persona]);
 
@@ -217,22 +217,24 @@ const AdminNavbar = () => {
               ></FontAwesomeIcon>
             </p>
           </div>
-          <div
-            className="flex text-xs cursor-pointer"
-            onClick={() => setLogoutModalActive(true)}
-          >
-            <div>
-              <p className="text-[#24A3D9]">Logout</p>
+          {isLoggedIn && (
+            <div
+              className="flex text-xs cursor-pointer"
+              onClick={() => setLogoutModalActive(true)}
+            >
+              <div>
+                <p className="text-[#24A3D9]">Logout</p>
+              </div>
+              <div>
+                <p>
+                  <FontAwesomeIcon
+                    className="pl-2 text-[#24A3D9]"
+                    icon={faArrowRightFromBracket}
+                  ></FontAwesomeIcon>
+                </p>
+              </div>
             </div>
-            <div>
-              <p>
-                <FontAwesomeIcon
-                  className="pl-2 text-[#24A3D9]"
-                  icon={faArrowRightFromBracket}
-                ></FontAwesomeIcon>
-              </p>
-            </div>
-          </div>
+          )}
         </div>
       </div>
       {logoutModalActive && (
