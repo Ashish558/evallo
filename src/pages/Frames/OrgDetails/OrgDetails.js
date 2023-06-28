@@ -134,7 +134,7 @@ export default function OrgDetails({
             label="Website"
             required={true}
             placeholder=""
-            parentClassName="w-full max-w-[248px] ml-4"
+            parentClassName="w-full max-w-[full] ml-[50px] mt-2"
             inputClassName="bg-transparent text-xs"
             type="text"
             value={values.website}
@@ -151,7 +151,7 @@ export default function OrgDetails({
             label="Address"
             required={true}
             placeholder=""
-            parentClassName="w-full max-w-[248px]"
+            parentClassName="w-full max-w-[350px] mt-2"
             inputClassName="bg-transparent text-xs"
             type="text"
             value={values.address}
@@ -162,64 +162,64 @@ export default function OrgDetails({
               })
             }
           />
-          
+
           <div className={style.changeOption}>
-          <div className="flex flex-col h-min ">
-            <label className="">Country</label>
-            <select
-              className="form-control text-xs"
-              onChange={(e) => handleState(e.target.value)}
-              value={values.country}
-            >
-              <option value="0">Select Country</option>
-              {country.map((c, index) => {
-                return (
-                  <option key={index} value={c?.name}>
-                    {c?.name}
-                  </option>
-                );
-              })}
-            </select>
+            <div className="flex flex-col h-min ml-[40px]">
+              <label className="">Country</label>
+              <select
+                className="form-control text-xs pl-3"
+                onChange={(e) => handleState(e.target.value)}
+                value={values.country}
+              >
+                <option value="0">Select Country</option>
+                {country.map((c, index) => {
+                  return (
+                    <option key={index} value={c?.name}>
+                      {c?.name}
+                    </option>
+                  );
+                })}
+              </select>
             </div>
           </div>
         </div>
-        <div className="flex items-center mt-3 gap-5">
+        <div className="flex items-center mt-3 gap-12">
 
           <div className={style.changeOption}>
-          <div className="flex flex-col h-min ">
-            <label className="">State</label>
-            <select
-              className="form-control  text-xs"
-              value={values.state}
-              onChange={(e) =>
-                setValues({
-                  ...values,
-                  state: e.target.value,
-                })
-              }
-            >
-              <option value="0">Select State</option>
-              {states.map((s, id) => {
-                return (
-                  <>
-                    {s.map((state, id) => {
-                      return (
-                        <option key={id} value={state?.name}>
-                          {state?.name}
-                        </option>
-                      );
-                    })}
-                  </>
-                );
-              })}
-            </select>
+            <div className="flex flex-col h-min ">
+              <label className="">State</label>
+              <select
+                className="form-control  text-xs"
+                value={values.state}
+                onChange={(e) =>
+                  setValues({
+                    ...values,
+                    state: e.target.value,
+                  })
+                }
+              >
+                <option value="0">Select State</option>
+                {states.map((s, id) => {
+                  return (
+                    <>
+                      {s.map((state, id) => {
+                        return (
+                          <option key={id} value={state?.name}>
+                            {state?.name}
+                          </option>
+                        );
+                      })}
+                    </>
+                  );
+                })}
+              </select>
             </div>
           </div>
           <InputField
             label="City"
             required={true}
             placeholder=""
-            parentClassName="w-full max-w-[248px]"
+            parentClassName="w-full max-w-[248px] mt-2"
             inputClassName="bg-transparent text-xs"
             type="text"
             value={values.city}
@@ -234,7 +234,7 @@ export default function OrgDetails({
             label="Zip Code"
             required={true}
             placeholder=""
-            parentClassName="w-full max-w-[248px]"
+            parentClassName="w-full max-w-[248px] mt-2"
             inputClassName="bg-transparent text-xs"
             type="text"
             value={values.zip}
@@ -250,12 +250,12 @@ export default function OrgDetails({
         <div className="flex items-center mt-12 justify-between">
           <SecondaryButton
             children="Go Back"
-            className="text-xs mr-6 bg-white text-[#a3aDC7] border-[1.5px] border-[#D0D5DD] "
+            className="text-lg mr-6 bg-white text-[#a3aDC7] border-[1.5px] border-[#D0D5DD] "
             onClick={handleBack}
           />
           <PrimaryButton
             children="Next"
-            className={` w-full bg-[#FFA28D] disabled:opacity-70 max-w-[110px]   rounded text-white text-xs font-medium relative 
+            className={` w-full bg-[#FFA28D] disabled:opacity-70 max-w-[110px]   rounded text-white text-lg font-medium relative 
            
             `}
             onClick={() => handleSubmit()}
