@@ -67,44 +67,44 @@ export default function FinancialStats() {
         </div>
       </div> */}
 
-      <div className="grid grid-cols-4 gap-x-4 gap-y-[10px]">
-        <div className={`text-[#00ADD3] w-[110px] h-[145px] ${styles.card} flex flex-col justify-center items-center`}>
+      <div className="grid grid-cols-4 gap-x-12 gap-y-[10px]">
+        <div className={`text-[#00ADD3] w-[95px] h-[145px] ${styles.card} flex flex-col justify-center items-center`}>
           <p className="p-3 bg-[#FFFFFF] rounded"><img src={image} alt="" /></p>
           <p className="text-sm mt-4">Scheduled</p>
           <p className="font-semibold text-2xl">51</p>
         </div>
-        <div className={`text-[#42CD00] w-[110px] h-[145px] ${styles.card} flex flex-col justify-center items-center`}>
+        <div className={`text-[#42CD00] w-[95px] h-[145px] ${styles.card} flex flex-col justify-center items-center`}>
           <p className="p-3 bg-[#FFFFFF] rounded"><img src={image1} alt="" /></p>
           <p className="text-sm mt-4">Completed</p>
           <p className="font-semibold text-2xl">51</p>
         </div>
-        <div className={`text-[#FF4D4D] w-[110px] h-[145px] ${styles.card} flex flex-col justify-center items-center`}>
+        <div className={`text-[#FF4D4D] w-[95px] h-[145px] ${styles.card} flex flex-col justify-center items-center`}>
           <p className="p-3 bg-[#FFFFFF] rounded"><img src={image2} alt="" /></p>
           <p className="text-sm mt-4">Missed</p>
           <p className="font-semibold text-2xl">51</p>
         </div>
-        <div className={`text-[#969696] w-[110px] h-[145px] ${styles.card} flex flex-col justify-center items-center`}>
+        <div className={`text-[#969696] w-[95px] h-[145px] ${styles.card} flex flex-col justify-center items-center`}>
           <p className="p-3 bg-[#FFFFFF] rounded"><img src={image3} alt="" /></p>
           <p className="text-sm mt-4">Cancelled</p>
           <p className="font-semibold text-2xl">51</p>
         </div>
-        <div className={`text-[#26435F] w-[110px] h-[180px] ${styles.card2} `}>
+        <div className={`text-[#26435F] w-[95px] h-[180px] ${styles.card2} `}>
           <p className="bg-[#26435F] rounded p-3 w-[40px] h-[40px] mx-auto mt-[21px]"><p><img src={image9} alt="" /></p></p>
           <p className="text-sm text-center mt-4">Invoice</p>
           <p className="font-semibold text-2xl text-center mt-[27px]">51</p>
         </div>
-        <div className={`text-[#26435F] w-[110px] h-[180px] ${styles.card2} `}>
+        <div className={`text-[#26435F] w-[95px] h-[180px] ${styles.card2} `}>
           <p className="bg-[#26435F] rounded p-3 w-[40px] h-[40px] mx-auto mt-[21px]"><p><img src={image7} alt="" /></p></p>
           <p className="text-sm text-center mt-4"># of Transaction</p>
           <p className="font-semibold text-2xl text-center mt-[11px]">51</p>
         </div>
-        <div className={`text-[#26435F] w-[110px] h-[180px] ${styles.card2}`}>
+        <div className={`text-[#26435F] w-[95px] h-[180px] ${styles.card2}`}>
           <p className="bg-[#26435F] rounded p-3 w-[40px] h-[40px] mx-auto mt-[21px]"><img src={image4} alt="" /></p>
           <p className="text-sm text-center mt-4">Transaction
             Amount Total</p>
           <p className="font-semibold text-2xl text-center mt-[11px]">51</p>
         </div>
-        <div className={`text-[#26435F] w-[110px] h-[180px] ${styles.card2} `}>
+        <div className={`text-[#26435F] w-[95px] h-[180px] ${styles.card2} `}>
           <p className="bg-[#26435F] rounded p-3 w-[40px] h-[40px] mx-auto mt-[21px]"><img src={image11} alt="" /></p>
           <p className="text-sm text-center mt-4 px-1">Avg transaction</p>
           <p className="font-semibold text-2xl text-center mt-[11px]">51</p>

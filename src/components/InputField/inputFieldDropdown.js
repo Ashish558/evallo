@@ -56,8 +56,8 @@ export default function InputFieldDropdown({
                 className={`py-[13px] px-[14px] lg:py-[9px] lg:px-[16px] flex items-center rounded border border-[#D0D5DD] ${inputContainerClassName ? inputContainerClassName : ""} ${disabled === true ? 'cursor-not-allowed' : ''} `}
             >
                 <div >
-                    <select className="bg-[#EAF5FA] text-[black] focus:outline-none rounded-sm text-sm" name="country_code" >
-                        <option value="0"></option>
+                    <select className="bg-[#EAF5FA] min-w-[20px] text-[black] focus:outline-none rounded-sm text-sm" name="country_code" >
+                        <option  value="0"></option>
                         {
                             dialCode.map(code => {
                                 return (

@@ -2,7 +2,7 @@ import { faCaretDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 import Map from '../WorldMap/Map';
-
+import indianFlag from '../../../assets/icons/emojione-v1_flag-for-india.svg'
 const Demography1 = () => {
     return (
         <div className='bg-[#FFFFFF] flex justify-center items-center border border-gray-200 p-4 mt-[6px] rounded-md'>
@@ -14,7 +14,10 @@ const Demography1 = () => {
                     <Map></Map>
                 </div>
                 <div>
-                    <p className='text-[#26435F] text-xs font-semibold mt-4'>INDIA <FontAwesomeIcon icon={faCaretDown}></FontAwesomeIcon></p>
+                    
+                    <p className='text-[#26435F] text-xs font-semibold mt-4 '>
+                    <img className='inline mr-2' src={indianFlag} />
+                        INDIA <FontAwesomeIcon icon={faCaretDown}></FontAwesomeIcon></p>
                     <table className='table-auto w-full' >
                         <thead>
                             <tr>
