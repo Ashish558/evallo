@@ -69,11 +69,11 @@ const Map = () => {
                 <span>
                     100
                 </span>
-                <span style={{background:'linear-gradient(to right, #FFA28D 100%, #FFA28D 13%)'}} className='w-24 h-4'>
+                <span style={{background:'linear-gradient(to right, #FFA28D , #FEE )'}} className='w-32 h-4'>
                   
                 </span>
                 <span>
-                    100
+                    10
                 </span>
              </div>
             </div>
