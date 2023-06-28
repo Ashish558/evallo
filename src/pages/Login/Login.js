@@ -113,7 +113,6 @@ export default function Login({ setLoginFormActive }) {
 
   return (
     <div className={styles.bg}>
-      <AdminNavbar/>
       <div className="flex justify-center flex-col items-center md:grid-cols-2 min-h-screen ">
         <img src={cuate} alt="rocket" className="h-10vh mb-10" />
         <div className="bg-primary hidden lg:block">
