@@ -538,7 +538,7 @@ export default function Signup() {
       className="min-h-screen overflow-y-auto pb-6 bg-primary relative"
       id={styles.signUp}
     >
-      <AdminNavbar></AdminNavbar>
+      {/* <AdminNavbar></AdminNavbar> */}
       <div className="flex justify-center flex-col items-center md:grid-cols-2 min-h-screen mb-[100px]">
         <img src={cuate} alt="rocket" className="h-10vh mb-10" />
         <>
