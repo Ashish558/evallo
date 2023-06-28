@@ -580,7 +580,7 @@ export default function Signup() {
                     Please fill your detail to create your account.
                   </p> */}
                   <div
-                    className={`flex mt-[59px] justify-between lg:mt-0 ${styles.inputs}`}
+                    className={`flex mt-[59px] justify-between lg:mt-1 ${styles.inputs}`}
                   >
                     <InputField
                       placeholder=""
@@ -627,7 +627,7 @@ export default function Signup() {
 
                     <InputFieldDropdown
                       placeholder=""
-                      parentClassName="text-xs w-4/5 ml-12"
+                      parentClassName="text-xs w-4/5 ml-8 mt-1"
                       label="Phone"
                       value={values.phone}
                       onChange={(e) =>
@@ -812,8 +812,9 @@ export default function Signup() {
         <div className='flex  text-xs font-medium justify-between'>
           <p className='ml-[74px]'>Copyright © Sevenimagine Education Private Limited</p>
           <div className='flex mr-[45px]'>
-            <p>Terms of Usage</p>
-            <p className='ml-6'>Privacy Policy</p>
+          <a href='http://evallo.org/tou'>Terms of Usage</a>
+            <a  href='http://evallo.org/privacy-policy' className='ml-6'>Privacy Policy</a>
+       
           </div>
         </div>
       </footer>
