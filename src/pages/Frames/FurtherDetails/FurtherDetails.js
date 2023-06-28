@@ -96,12 +96,12 @@ export default function FurtherDetails({
           />
         </div>
 
-        <p className="font-medium mb-4 text-lg">
+        <p className="font-medium mb-4 text-sm">
           What services do you provide?
         </p>
         <div className="flex flex-col mb-6">
           <div className="">
-            <p className="text-lg mb-[7px] text-[#24A3D9] font-bold">
+            <p className="text-sm mb-[7px] text-[#24A3D9] font-bold">
               Test preparation
             </p>
             <div className="grid grid-cols-3">
@@ -134,14 +134,14 @@ export default function FurtherDetails({
                           setTestPreparations
                         )
                       }
-                      className="font-medium  text-sm opacity-90 leading-5"
+                      className="font-medium  text-[13px] opacity-90 leading-5"
                     >
                       {item.text}
                     </p>
                     {item.text === "Others" && item.checked ? (
                       <input
                         autoFocus
-                        className="ml-3 text-sm text-[#7E7E7E] outline-[#DCDCDD] border-2 border-[#DCDCDD] rounded-md bg-[#DCDCDD]  w-48"
+                        className="ml-3 text-[13px] text-[#7E7E7E] outline-[#DCDCDD] border-2 border-[#DCDCDD] rounded-md bg-[#DCDCDD]  w-48"
                         type="text"
                       />
                     ) : (
@@ -153,7 +153,7 @@ export default function FurtherDetails({
             </div>
           </div>
           <div className="">
-            <p className="text-lg mt-[30px] mb-[7px] text-[#24A3D9] font-bold">
+            <p className="text-sm mt-[30px] mb-[7px] text-[#24A3D9] font-bold">
               Subject Tutoring
             </p>
             <div className="grid grid-cols-3">
@@ -178,14 +178,14 @@ export default function FurtherDetails({
                       onClick={() =>
                         handleCheckboxChange(item.text, tutoring, setTutoring)
                       }
-                      className="font-medium  text-sm opacity-90 leading-5"
+                      className="font-medium  text-[13px] opacity-90 leading-5"
                     >
                       {item.text}
                     </p>
                     {item.text === "Others" && item.checked ? (
                       <input
                         autoFocus
-                        className="ml-3 text-sm text-[#7E7E7E] outline-[#DCDCDD] border-2 border-[#DCDCDD] rounded-md bg-[#DCDCDD]  w-48"
+                        className="ml-3 text-[13px] text-[#7E7E7E] outline-[#DCDCDD] border-2 border-[#DCDCDD] rounded-md bg-[#DCDCDD]  w-48"
                         type="text"
                       />
                     ) : (
@@ -197,7 +197,7 @@ export default function FurtherDetails({
             </div>
           </div>
           <div className="">
-            <p className="text-lg mb-[7px] text-[#24A3D9] font-bold">
+            <p className="text-sm mb-[7px] text-[#24A3D9] font-bold">
               Coaching
             </p>
             <div className="grid grid-cols-3">
@@ -222,14 +222,14 @@ export default function FurtherDetails({
                       onClick={() =>
                         handleCheckboxChange(item.text, coaching, setCoaching)
                       }
-                      className="font-medium  text-sm opacity-90 leading-5"
+                      className="font-medium  text-[13px] opacity-90 leading-5"
                     >
                       {item.text}
                     </p>
                     {item.text === "Others" && item.checked ? (
                       <input
                         autoFocus
-                        className="ml-3 text-sm text-[#7E7E7E] outline-[#DCDCDD] border-2 border-[#DCDCDD] rounded-md bg-[#DCDCDD]  w-48"
+                        className="ml-3 text-[13px] text-[#7E7E7E] outline-[#DCDCDD] border-2 border-[#DCDCDD] rounded-md bg-[#DCDCDD]  w-48"
                         type="text"
                       />
                     ) : (
@@ -241,7 +241,7 @@ export default function FurtherDetails({
             </div>
           </div>
         </div>
-        <p className="border-t-[1.2px] mt-[-10px] text-[#26435F] pt-2 mb-2 text-lg font-medium">
+        <p className="border-t-[1.2px] mt-[-10px] text-[#26435F] pt-2 mb-2 text-sm font-medium">
           Format of instruction
         </p>
         <div className="grid grid-cols-3 mb-6">
@@ -263,7 +263,7 @@ export default function FurtherDetails({
                   />
                   <span class={styles.checkmark}></span>
                 </div>
-                <p className="font-medium  text-sm opacity-90 leading-5">
+                <p className="font-medium  text-[13px] opacity-90 leading-5">
                   {item.text}
                 </p>
               </div>
@@ -271,7 +271,7 @@ export default function FurtherDetails({
           })}
         </div>
 
-        <p className="border-t-[1.2px] mt-[-10px] border-gray-300 text-[#26435F] pt-2 text-lg mb-[7px] font-medium">
+        <p className="border-t-[1.2px] mt-[-10px] border-gray-300 text-[#26435F] pt-2 text-sm mb-[7px] font-medium">
           Student Served
         </p>
         <div className="grid grid-cols-3">
@@ -297,19 +297,19 @@ export default function FurtherDetails({
                   />
                   <span class={styles.checkmark}></span>
                 </div>
-                <p className="font-medium  text-sm opacity-90 leading-5">
+                <p className="font-medium  text-[13px] opacity-90 leading-5">
                   {item.text}
                 </p>
               </div>
             );
           })}
         </div>
-        <p className="border-t-[1.2px] text-[#26435F] mt-[0px] border-gray-300 pt-3  text-lg mb-[7px] font-medium">
+        <p className="border-t-[1.2px] text-[#26435F] mt-[0px] border-gray-300 pt-3  text-sm mb-[7px] font-medium">
           How do you currently process your payments?
         </p>
         <div className="flex flex-col h-min mt-3 text-[#667085]">
           <div className={style.changeOption}>
-            <select className="form-control  text-sm pl-2">
+            <select className="form-control  text-xs pl-2">
               <option value="0">Options</option>
               {paymentOptions.map((c, id) => {
                 return (
@@ -328,12 +328,12 @@ export default function FurtherDetails({
       <div className="flex items-center mt-7 justify-between">
         <SecondaryButton
           children="Go Back"
-          className="text-lg mr-6 bg-white text-[#a3aDC7] border-[1.5px] border-[#D0D5DD] "
+          className="text-sm mr-6 bg-white text-[#a3aDC7] border-[1.5px] border-[#D0D5DD] "
           onClick={handleBack}
         />
         <PrimaryButton
           children="Next"
-          className={` w-full bg-[#FFA28D] disabled:opacity-60 max-w-[110px]   rounded text-white text-lg font-medium relative 
+          className={` w-full bg-[#FFA28D] disabled:opacity-60 max-w-[110px]   rounded text-white text-sm font-medium relative 
            
           `}
           onClick={() => handleSubmit()}
