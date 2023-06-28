@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   organization: {
-
+    settings: {}
   }
 };
 
@@ -13,8 +13,11 @@ const organization = createSlice({
     updateOrganization: (state, { payload }) => {
       state.organization = payload;
     },
+    updateOrganizationSettings: (state, { payload }) => {
+      state.organization.settings = payload;
+    },
   },
 });
 
-export const { updateOrganization } = organization.actions;
+export const { updateOrganization, updateOrganizationSettings } = organization.actions;
 export default organization.reducer;
