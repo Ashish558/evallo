@@ -19,6 +19,9 @@ import Loader from "../../components/Loader";
 import CCheckbox from "../../components/CCheckbox/CCheckbox";
 import EvalloLogo from "../../assets/icons/evallo_new.svg";
 import cuate from "../../assets/signup/cuate.png";
+import AdminNavbar from "../AdminDashboard/AdminNavbar";
+
+
 export default function Login({ setLoginFormActive }) {
   const emailValidation = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
   const [isPasswordForgot, setIsPasswordForgot] = useState(false);
@@ -110,6 +113,7 @@ export default function Login({ setLoginFormActive }) {
 
   return (
     <div className={styles.bg}>
+      <AdminNavbar/>
       <div className="flex justify-center flex-col items-center md:grid-cols-2 min-h-screen ">
         <img src={cuate} alt="rocket" className="h-10vh mb-10" />
         <div className="bg-primary hidden lg:block">
@@ -232,7 +236,17 @@ export default function Login({ setLoginFormActive }) {
             ""
           )}
         </div>
+      
       </div>
+      <footer className='bg-[#26435F] text-[#FFFFFF] py-[20px] mt-20 w-full '>
+        <div className='flex  text-xs font-medium justify-between'>
+          <p className='ml-[74px]'>Copyright © Sevenimagine Education Private Limited</p>
+          <div className='flex mr-[45px]'>
+            <a href='http://evallo.org/tou'>Terms of Usage</a>
+            <a  href='http://evallo.org/privacy-policy' className='ml-6'>Privacy Policy</a>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }
