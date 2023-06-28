@@ -98,7 +98,7 @@ export default function OrgDetails({
 
         <div className="flex items-center mb-1">
           {/* <label>Company Type</label> */}
-          <div className="flex flex-col h-min ">
+          <div className="flex flex-col h-min mt-2">
             <label className="">Company Type</label>
             <div className={style.changeOption}>
               <select className="form-control  text-[13px]">
@@ -151,7 +151,7 @@ export default function OrgDetails({
             label="Address"
             required={true}
             placeholder=""
-            parentClassName="w-full max-w-[350px] mt-2"
+            parentClassName="w-full max-w-[350px] "
             inputClassName="bg-transparent text-xs"
             type="text"
             value={values.address}
