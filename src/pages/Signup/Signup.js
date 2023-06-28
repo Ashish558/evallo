@@ -557,7 +557,7 @@ export default function Signup() {
           ) : (
             <></>
           )}
-          <div className="flex lg:items-center relative bg-white rounded-md py-6 px-5 md:px-[48px] lg:w-[800px]">
+          <div className="flex lg:items-center relative bg-white rounded-md py-6 px-5 md:px-[48px] lg:w-[560px]">
             <div className="w-full py-6">
               {/* <h1
                 className={`hidden lg:block mb-1.5 text-[30px] ${styles.title} `}
@@ -627,7 +627,7 @@ export default function Signup() {
 
                     <InputFieldDropdown
                       placeholder=""
-                      parentClassName="text-xs w-3/4 ml-12"
+                      parentClassName="text-xs w-4/5 ml-12"
                       label="Phone"
                       value={values.phone}
                       onChange={(e) =>
@@ -653,7 +653,7 @@ export default function Signup() {
                     }
                     error={error.company}
                   />
-                  <p className="text-lg mb-4 text-[#26435F]"> Registration as </p>
+                  <p className="text-[15px] mb-4 text-[#26435F]"> Registration as </p>
                   <div className="flex items-center text-xs">
                     <div
                       className="flex items-center mr-6 cursor-pointer"
@@ -678,7 +678,7 @@ export default function Signup() {
                           className="mr-3 p-0"
                         />
                       </div>
-                      <p className={`${values.registrationAs === "Company" ? 'text-[#FFA28D]  ' : ''} text-[18px] `}> Company </p>
+                      <p className={`${values.registrationAs === "Company" ? 'text-[#FFA28D]  ' : ''} text-[14px] `}> Company </p>
                     </div>
                     <div
                       className="flex items-center cursor-pointer"
@@ -704,7 +704,7 @@ export default function Signup() {
                         />
                       </div>
 
-                      <p className={`${values.registrationAs === "Individual" ? 'text-[#FFA28D]  ' : ''} text-[18px] `}> Individual </p>
+                      <p className={`${values.registrationAs === "Individual" ? 'text-[#FFA28D]  ' : ''} text-[14px] `}> Individual </p>
                     </div>
                   </div>
                   <div className="mt-[40px] flex">
@@ -720,7 +720,7 @@ export default function Signup() {
                       </label>
                     </div>
 
-                    <p className="text-lg font-medium   leading-5 ml-1 pl-2">
+                    <p className="text-sm font-medium   leading-5 ml-1 pl-2">
                       Selecting this would confirm that you have carefully read
                       through and agree to our{" "}
                       <span className="text-[#FFA28D]">
@@ -738,11 +738,11 @@ export default function Signup() {
                   <div className="flex items-center mt-[60px] justify-between">
                     <SecondaryButton
                       children="Go Back"
-                      className="text-lg mr-6 bg-white text-[#a3aDC7] border-[1.5px] border-[#D0D5DD] "
+                      className="text-sm mr-6 bg-white text-[#a3aDC7] border-[1.5px] border-[#D0D5DD] "
                       onClick={handleBack}
                     />
                     <PrimaryButton
-                      className={`w-full bg-[#FFA28D] disabled:opacity-60 max-w-[110px]  rounded text-white text-lg font-medium relative ${loading
+                      className={`w-full bg-[#FFA28D] disabled:opacity-60 max-w-[110px]  rounded text-white text-sm font-medium relative ${loading
                         ? "cursor-wait opacity-60 pointer-events-none"
                         : "cursor-pointer"
                         }`}
@@ -820,3 +820,8 @@ export default function Signup() {
     </div>
   );
 }
+
+
+/*
+
+*/

@@ -13,12 +13,20 @@ const Map = () => {
                 containerStyle={{
                     // width: "700px",
                     height: "700px",
+                    backgroundColor:'#EBEBEB'
                 }}
-                backgroundColor="#282c34"
+                backgroundColor="white"
                 markers={missingCountries}
                 markerStyle={{
                     initial: {
                         fill: "red",
+                    },
+                }}
+               
+                regionStyle={ {
+                    initial: {
+                      fill: '#EBEBEB', // Set the color for unused regions
+                     
                     },
                 }}
                 series={{
@@ -33,7 +41,7 @@ const Map = () => {
                 }}
                 onRegionTipShow={function reginalTip(event, label, code) {
                     return label.html(`
-                    <div style="background-color: black; border-radius: 6px; min-height: 50px; width: 125px; color: white"; padding-left: 10px>
+                    <div style="background-color: white;outline:none;  border-color:white; border-radius: 6px;  min-height: 50px; width: 125px; color: black"; padding: 5px>
                       <p>
                       <b>
                       ${label.html()}
@@ -55,6 +63,20 @@ const Map = () => {
                       </div>`);
                 }}
             />
+            <div className='flex justify-between px-8' >
+             <p>Last 11 days</p>
+             <div className='flex items-center gap-4'>
+                <span>
+                    100
+                </span>
+                <span style={{background:'linear-gradient(to right, #FFA28D , #FEE )'}} className='w-32 h-4'>
+                  
+                </span>
+                <span>
+                    10
+                </span>
+             </div>
+            </div>
         </div>
     );
 }
