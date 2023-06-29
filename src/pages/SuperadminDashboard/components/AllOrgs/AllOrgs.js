@@ -1,5 +1,5 @@
 import React from "react";
-import Header from "./Header";
+
 import InputField from "../../../../components/InputField/inputField";
 import { useState } from "react";
 import searchIcon from "../../../../assets/icons/Search.png";
@@ -7,7 +7,11 @@ import uploadIcon from "../../../../assets/icons/upload.png";
 import { frameHeaderNames, framesData } from "./staticData";
 import FramesScreen from "./FramesScreen";
 import arrowDown from "../../../../assets/icons/arrowdown.svg"
+import { useEffect } from "react";
+import Table from "../../Table/table";
+import axios from 'axios'
 const AllOrgs = () => {
+  const [adminData,setAdminData]=useState([])
   const [values, setValues] = useState({
     search: "",
     joinDate: "",
@@ -24,9 +28,36 @@ const AllOrgs = () => {
     subscription: "",
     numberOfStudent: "",
   });
+  useEffect(()=>{
+    const fetchAllOrgs = async () => {
+     
+      try {
+        
+        //   alert(data.workemail)
+        let result = await axios.get(
+          `${process.env.REACT_APP_BASE_URL}api/user/superadmin/getAllOrg`,
+          {
+            headers: {
+              "content-Type": "application/json",
+            },
+          }
+        );
+        console.log(result.data.admins);
+        setAdminData(result.data.admins)
+      } catch (e) {
+        console.error(e.response?.data?.message);
+        setError({
+          ...error,
+          email: e.response?.data?.message,
+        });
+      }
+     
+    };
+    fetchAllOrgs()
+  },[])
   return (
     <>
-      <Header />
+      
 
       <div className="pl-16 pt-7">
         <h4 className="text-[#24A3D9]">All Orgs</h4>
@@ -115,31 +146,7 @@ const AllOrgs = () => {
             </button>
           </div>
         </div>
-        <div className="flex flex-col overflow-x-auto">
-          <div className="sm:-mx-6 lg:-mx-8">
-            <div className="inline-block min-w-full py-2 sm:px-6 lg:px-8">
-              <div className="overflow-x-auto">
-                <table className="min-w-full text-left text-sm font-light">
-                  <thead className="border-b font-medium dark:border-neutral-500 ">
-                    <tr className="px-3">
-                      {frameHeaderNames.map((name, id) => {
-                        return (
-                          <th scope="col" className="px-3 min-w-[140px] py-4 text-center" key={id}>
-                            {name}
-                            <img src={arrowDown} alt={'down'} className="ml-1 inline" />
-                          </th>
-                        );
-                      })}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <FramesScreen data={framesData} />
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
+        <Table data={adminData} tableHeaders={frameHeaderNames} maxPageSize={5} />
       </div>
     </>
   );
