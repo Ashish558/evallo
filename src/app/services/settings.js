@@ -17,6 +17,14 @@ export const settingsServicesApi = createApi({
             headers: getAuthHeader()
          })
       }),
+      updateOrgSetting: builder.mutation({
+         query: (body) => ({
+            url: `/api/user/orgSettings`,
+            method: "PATCH",
+            body: body,
+            headers: getAuthHeader()
+         })
+      }),
       updateOfferImage: builder.mutation({
          query: (body) => ({
             url: `/api/user/setting/addimage`,
@@ -32,5 +40,6 @@ export const settingsServicesApi = createApi({
 
 export const {
    useUpdateSettingMutation,
-   useUpdateOfferImageMutation
+   useUpdateOfferImageMutation,
+   useUpdateOrgSettingMutation
 } = settingsServicesApi;

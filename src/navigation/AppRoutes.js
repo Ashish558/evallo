@@ -31,6 +31,8 @@ import SuperadminDashboard from "../pages/SuperadminDashboard/SuperadminDashboar
 import UserSignup from "../pages/UserSignup/Signup";
 import Dashboard from "../pages/AdminDashboard/Dashboard";
 import AdminContent from "../pages/AdminContent/AdminContent";
+import AdminNavbar from "../pages/AdminDashboard/AdminNavbar";
+import Footer from "../components/Footer/Footer";
 
 const PrivateRoutes = [
    {
@@ -65,7 +67,7 @@ const AppRoutes = () => {
 
    return (
       <BrowserRouter>
-         <Navbar />
+         <AdminNavbar />
          {/* <a href='https://www.banao.tech/'
             style={{ opacity: '0', pointerEvents: 'none', width: 0, height: 0, zIndex: '-1' }} > </a> */}
          <Routes>
@@ -294,6 +296,7 @@ const AppRoutes = () => {
                   }
                /> */}
          </Routes>
+         <Footer />
       </BrowserRouter>
    );
 };

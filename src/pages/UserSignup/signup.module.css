@@ -78,3 +78,11 @@
     letter-spacing: 0.01em;
     text-transform: capitalize;
 }
+
+.steppers{
+    justify-content: flex-start;
+}
+.steppers button::before{
+    width: 50px;
+    right: -50px;
+}
