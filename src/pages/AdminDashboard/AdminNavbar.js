@@ -2,7 +2,7 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowDown, faArrowDown19, faArrowDown91, faArrowRightFromBracket, faCaretDown, faDollar, faPlus, faUpload } from '@fortawesome/free-solid-svg-icons';
 import { faQuestionCircle } from '@fortawesome/free-regular-svg-icons';
-import icon from '../../assets/images/Evallo.png';
+import icon from "../../assets/icons/FIGMA 3.svg";
 import image from '../../assets/images/Vector.png';
 import image1 from '../../assets/images/Vector (1).png';
 import image2 from '../../assets/images/Vector (2).png';
