@@ -32,6 +32,7 @@ import UserSignup from "../pages/UserSignup/Signup";
 import Dashboard from "../pages/AdminDashboard/Dashboard";
 import AdminContent from "../pages/AdminContent/AdminContent";
 import AdminNavbar from "../pages/AdminDashboard/AdminNavbar";
+import Footer from "../components/Footer/Footer";
 
 const PrivateRoutes = [
    {
@@ -295,6 +296,7 @@ const AppRoutes = () => {
                   }
                /> */}
          </Routes>
+         <Footer />
       </BrowserRouter>
    );
 };
