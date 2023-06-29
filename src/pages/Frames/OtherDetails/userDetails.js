@@ -85,6 +85,7 @@ export default function UserDetails({
   }, []);
  
   const handleBack = () => {
+    setcurrentStep(1)
     if (persona === "parent") {
       setFrames((prev) => {
         return { ...prev, userDetails: false, signupActive: true };

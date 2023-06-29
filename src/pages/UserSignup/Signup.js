@@ -437,6 +437,7 @@ export default function UserSignup() {
                 <NumericSteppers
                   totalSteps={customFields.length === 0 ? 2 : 3}
                   currentStep={currentStep}
+                  className={styles['steppers']}
                 />
               )}
 

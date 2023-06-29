@@ -32,6 +32,9 @@ import UserSignup from "../pages/UserSignup/Signup";
 import Dashboard from "../pages/AdminDashboard/Dashboard";
 import AdminContent from "../pages/AdminContent/AdminContent";
 import AllOrgs from "../pages/SuperadminDashboard/components/AllOrgs/AllOrgs"
+import AdminNavbar from "../pages/AdminDashboard/AdminNavbar";
+import Footer from "../components/Footer/Footer";
+
 const PrivateRoutes = [
   {
     el: Calendar,
@@ -63,10 +66,10 @@ const AppRoutes = () => {
   const { isLoggedIn } = useSelector((state) => state.user);
   const { role: persona } = useSelector((state) => state.user);
 
-  return (
-    <BrowserRouter>
-      <Navbar />
-      {/* <a href='https://www.banao.tech/'
+   return (
+      <BrowserRouter>
+         <AdminNavbar />
+         {/* <a href='https://www.banao.tech/'
             style={{ opacity: '0', pointerEvents: 'none', width: 0, height: 0, zIndex: '-1' }} > </a> */}
       <Routes>
         <Route path="/" element={isLoggedIn ? <Home /> : <Login />} />
@@ -268,9 +271,10 @@ const AppRoutes = () => {
                      </RequireAuth>
                   }
                /> */}
-      </Routes>
-    </BrowserRouter>
-  );
+         </Routes>
+         <Footer />
+      </BrowserRouter>
+   );
 };
 
 export default AppRoutes;
