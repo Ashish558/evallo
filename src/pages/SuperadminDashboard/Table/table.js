@@ -78,12 +78,12 @@ export default function Table(props) {
 
             </tbody>
          </table>
-         <div className="flex justify-between items-center mt-[17px]">
+         {/* <div className="flex justify-between items-center mt-[17px]">
             <p className="text-left text-[#517CA8] text-sm">Showing 5 out of 10</p>
             <p className='text-[10px]  text-right'><span className='text-[#26435F ]  font-medium '>Prev</span><span className='pl-2 text-[#FFA28D] font-bold'>01</span><span className='pl-2 text-[#B7C2CB] '>02</span><span className='pl-2'>...</span><span className='pl-2 text-[#B7C2CB] '>06</span><span className='text-[#26435F ] font-medium pl-2'>Next</span></p>
          </div>
          <div className="flex grid-cols- justify-center items-center">
-         </div>
+         </div> */}
          <div className="flex grid-cols- justify-center items-center">
             <Pagination totalPages={Math.ceil(data.length / maxPageSize)}
                currentPage={currentPage}
