@@ -46,22 +46,20 @@ const AllOrgs = () => {
         setAdminData(result.data.admins)
       } catch (e) {
         console.error(e.response?.data?.message);
-        setError({
-          ...error,
-          email: e.response?.data?.message,
-        });
+        
       }
      
     };
     fetchAllOrgs()
   },[])
+  console.log('shivam',adminData)
   return (
     <>
       
 
-      <div className="pl-16 pt-7">
+      <div className="pl-16 pt-7 mb-12">
         <h4 className="text-[#24A3D9]">All Orgs</h4>
-        <div className="flex justify-between py-5">
+        <div className="flex justify-between py-5 ">
           <div className="w-full flex gap-5 ">
             <InputField
               placeholder="search"
