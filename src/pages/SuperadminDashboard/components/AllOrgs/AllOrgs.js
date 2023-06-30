@@ -10,6 +10,7 @@ import arrowDown from "../../../../assets/icons/arrowdown.svg"
 import { useEffect } from "react";
 import Table from "../../Table/table";
 import axios from 'axios'
+import InputSelect from "../../../../components/InputSelect/InputSelect";
 const AllOrgs = () => {
   const [adminData,setAdminData]=useState([])
   const [values, setValues] = useState({
@@ -63,7 +64,8 @@ const AllOrgs = () => {
           <div className="w-full flex gap-5 ">
             <InputField
               placeholder="search"
-              parentClassName="text-xs bg-white"
+              parentClassName="text-xs "
+              inputContainerClassName='bg-white'
               Icon={searchIcon}
               value={values.search}
               onChange={(e) =>
@@ -74,21 +76,24 @@ const AllOrgs = () => {
               }
               error={error.search}
             />
-            <InputField
+            <InputSelect
               placeholder="Org type"
-              parentClassName="text-xs bg-white"
+              parentClassName="text-xs"
               value={values.orgType}
+              inputContainerClassName="bg-white "
+              optionClassName="min-w-[90px] py-[1.5px]"
               onChange={(e) =>
                 setValues({
                   ...values,
-                  orgType: e.target.value,
+                  orgType: e,
                 })
               }
               error={error.orgType}
             />
             <InputField
               placeholder="Join Date"
-              parentClassName="text-xs bg-white"
+              parentClassName="text-xs "
+              inputContainerClassName='bg-white'
               value={values.joinDate}
               onChange={(e) =>
                 setValues({
@@ -98,33 +103,39 @@ const AllOrgs = () => {
               }
               error={error.joinDate}
             />
-            <InputField
+            <InputSelect
               placeholder="Region"
-              parentClassName="text-xs bg-white"
+              parentClassName="text-xs "
+              inputContainerClassName='bg-white'
+              optionData={['a','b','c','d','e','f','g','h','i']}
+              optionClassName="min-w-[90px] py-[1.5px]"
               value={values.region}
               onChange={(e) =>
                 setValues({
                   ...values,
-                  region: e.target.value,
+                  region: e,
                 })
               }
               error={error.region}
             />
-            <InputField
+            <InputSelect
               placeholder="Subscription"
-              parentClassName="text-xs bg-white"
+              parentClassName="text-xs "
+              inputContainerClassName='bg-white'
+              optionClassName="min-w-[90px] py-[1.5px]"
               value={values.subscription}
               onChange={(e) =>
                 setValues({
                   ...values,
-                  subscription: e.target.value,
+                  subscription: e,
                 })
               }
               error={error.subscription}
             />
             <InputField
               placeholder="# of student"
-              parentClassName="text-xs bg-white"
+              parentClassName="text-xs "
+              inputContainerClassName='bg-white'
               value={values.numberOfStudent}
               onChange={(e) =>
                 setValues({

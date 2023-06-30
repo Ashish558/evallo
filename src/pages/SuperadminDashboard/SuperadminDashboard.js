@@ -65,7 +65,7 @@ const userTypes = [
 export default function SuperadminDashboard() {
   return (
     <div className={styles.container}>
-      <div className='flex justify-between px-[80px] bg-[#26435F] h-[54px] items-center w-full'>
+      {/* <div className='flex justify-between px-[80px] bg-[#26435F] h-[54px] items-center w-full'>
         <div><img src={icon} alt="" /></div>
 
         <div className='flex font-bold'>
@@ -86,8 +86,8 @@ export default function SuperadminDashboard() {
             </div>
           </div>
         </div>
-      </div>
-      <div className=" mt-[60px] bg-#2E2E2E mx-[80px]">
+      </div> */}
+      <div className=" mt-[60px] bg-#2E2E2E mx-[80px] pb-7">
         <p className="text-[#24A3D9]">Dashboard</p>
         <div className="flex mt-7">
           <section className="flex flex-col">
@@ -184,7 +184,7 @@ export default function SuperadminDashboard() {
         <Demography></Demography>
       </div>
 
-      <footer className='bg-[#26435F] text-[#FFFFFF] py-[18px] w-full mt-6'>
+      {/* <footer className='bg-[#26435F] text-[#FFFFFF] py-[18px] w-full mt-6'>
         <div className='flex  text-xs font-medium justify-between'>
           <p className='ml-[74px]'>Copyright © Sevenimagine Education Private Limited</p>
           <div className='flex mr-[45px]'>
@@ -192,7 +192,7 @@ export default function SuperadminDashboard() {
             <p className='ml-6'>Privacy Policy</p>
           </div>
         </div>
-      </footer>
+      </footer> */}
     </div>
   );
 }
