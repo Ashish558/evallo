@@ -50,6 +50,8 @@ export default function InputSelect({
       )}
 
       <div
+       onClick={handleOption}
+      
         className={`py-[9px] px-[14px] lg:py-[9px] lg:px-[16px] border border-[#D0D5DD] flex items-center rounded relative cursor-pointer z-50 ${
           inputContainerClassName ? inputContainerClassName : ""
         } `}
@@ -60,14 +62,14 @@ export default function InputSelect({
             src={UpArrow}
             className={`w-[15px]  ${styles.downArrow}`}
             alt="down-arrow"
-            onClick={handleOption}
+           
           />
         ) : (
           <img
             src={DownArrow}
             className={`w-[15px]  ${styles.downArrow}`}
             alt="down-arrow"
-            onClick={handleOption}
+           
           />
         )}
 
@@ -83,7 +85,11 @@ export default function InputSelect({
               {placeholder}{" "}
             </span>
           ) : (
-            value
+            <span className="text-xs mr-10 whitespace-nowrap">
+            { value}
+          
+          </span>
+           
           )}
         </div>
         {selected && (

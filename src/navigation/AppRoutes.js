@@ -34,6 +34,7 @@ import AdminContent from "../pages/AdminContent/AdminContent";
 import AllOrgs from "../pages/SuperadminDashboard/components/AllOrgs/AllOrgs"
 import AdminNavbar from "../pages/AdminDashboard/AdminNavbar";
 import Footer from "../components/Footer/Footer";
+import SuperAdminProfile from "../pages/SuperadminDashboard/components/About/About";
 
 const PrivateRoutes = [
   {
@@ -77,6 +78,7 @@ const AppRoutes = () => {
         <Route path="/signup/user" element={<UserSignup />} />
         <Route path="/dashboard" element={<SuperadminDashboard />} />
         <Route path="/all-orgs" element={<AllOrgs />} />
+        <Route path="/superadmin-profile" element={<SuperAdminProfile/>} />
         <Route
           path="/users"
           element={
