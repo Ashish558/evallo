@@ -568,33 +568,33 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch, ext
                     className="inline-block cursor-pointer pl-4"
                     onClick={() => onClick.redirect(item)}
                  >
-                    Org name
+                    {item.associatedOrg?.company}
                  </span>
               </td>
               <td className="font-medium text-sm px-1 min-w-14 py-4">
                  <div className="my-[6px]">
-                    type
+                 {item.associatedOrg?.companyType}
                  </div>
               </td>
               <td className="font-medium text-sm px-1  min-w-14 py-4">
                  <div className="my-[6px]">
-                    address
+                 {item.associatedOrg?.address}
                  </div>
               </td>
               <td className="font-medium text-sm px-1  min-w-14 py-4">
                  <div className="my-[6px]">
-                  city
+                 {item.associatedOrg?.city}
                  </div>
               </td>
    
               <td className="font-medium text-sm px-1  min-w-14 py-4">
                  <div className="my-[6px]">
-                   state
+                 {item.associatedOrg?.state}
                  </div>
               </td>
               <td className="font-medium text-sm px-1  min-w-14 py-4">
                  <div className="my-[6px]">
-                   country
+                 {item.associatedOrg?.country}
                  </div>
               </td>
    
@@ -618,17 +618,23 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch, ext
    
               <td className="font-medium text-sm px-1  min-w-14 py-4">
                  <div className="my-[6px]">
-                    {/* {item.firstName} */}
+                  active
                  </div>
               </td>
               <td className="font-medium text-sm px-1  min-w-14 py-4">
                  <div className="my-[6px]">
-                    {/* {item.firstName} */}
+                 {item.associatedOrg?.numberOfTutors}
                  </div>
               </td>
               <td className="font-medium text-sm px-1  min-w-14 py-4">
                  <div className="my-[6px]">
-                    {/* {item.firstName} */}
+                 {item.associatedOrg?.numberOfActiveStudent}
+                 </div>
+              </td>
+   
+              <td className="font-medium text-sm px-1  min-w-14 py-4">
+                 <div className="my-[6px]">
+                     contributors
                  </div>
               </td>
    
