@@ -12,6 +12,7 @@ import Slider from '../../../../components/Slider/Slider'
 import { grades, subjects, timeZones } from '../../../../constants/constants'
 import styles from './style.module.css'
 import CountryCode from '../../../../components/CountryCode/CountryCode'
+import { useSelector } from 'react-redux'
 
 // 637b9df1e9beff25e9c2aa83
 export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetails, settings, persona, awsLink, selectedScoreIndex }) {
@@ -33,6 +34,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
    const [postTutorDetails, postTutorDetailsResp] = usePostTutorDetailsMutation()
    const [updatedService, setUpdatedService] = useState({})
    const [loading, setLoading] = useState(false)
+   const { organization } = useSelector((state) => state.organization);
 
    const data = [
       {
@@ -470,11 +472,11 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
       let updated = []
       currentToEdit.tutorServices.map(serv => {
          //if exists
-         if (serv.service === settings.servicesAndSpecialization[currentToEdit.selectedIdx].service) {
+         if (serv.service === organization.settings?.servicesAndSpecialization[currentToEdit.selectedIdx].service) {
             updated.push({ ...serv, price: value })
             setUpdatedService({ ...serv, price: value })
          } else {
-            let newserv = settings.servicesAndSpecialization[currentToEdit.selectedIdx]
+            let newserv = organization.settings?.servicesAndSpecialization[currentToEdit.selectedIdx]
             updated.push({ ...newserv, price: value })
             setUpdatedService({ ...newserv, price: value })
          }
@@ -489,7 +491,6 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
       // })
    }
    // console.log(settings);
-
    const [startDate, setStartDate] = useState(new Date());
 
    return (
@@ -770,7 +771,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                                        name: 'services',
                                        match: currentToEdit.service
                                     }}
-                                    optionData={settings.servicesAndSpecialization.map(item => item.service)}
+                                    optionData={organization?.settings?.servicesAndSpecialization.map(item => item.service)}
                                     inputContainerClassName="pt-3 pb-3 border bg-white"
                                     placeholder="Service"
                                     parentClassName="w-full mr-4"
@@ -1001,7 +1002,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                            <div>
                               <div className='flex items-center mb-4'>
                                  <p className='font-medium mr-4 min-w-[150px]'>
-                                    {currentToEdit.selectedIdx !== undefined ? settings.servicesAndSpecialization[currentToEdit.selectedIdx].service : ''}
+                                    {currentToEdit.selectedIdx !== undefined ? organization.settings.servicesAndSpecialization[currentToEdit.selectedIdx].service : ''}
                                  </p>
                                  <InputField
                                     labelClassname='hidden'
