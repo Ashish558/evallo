@@ -59,7 +59,7 @@ export default function Table(props) {
    if (isCallingApi) return <ApiTable {...props} />
    return (
       <div>
-         <table className="table-auto mb-3 text-center w-full min-h-[300px]">
+         <table className="table-auto mb-3 text-center w-full">
             <thead className="pb-2">
                <tr>
                   {tableHeaders.map((item, idx) => {
@@ -91,7 +91,7 @@ export default function Table(props) {
             </tbody>
          </table>
 
-         <div className="flex grid-cols- justify-center items-center">
+         <div className={`flex grid-cols- justify-center items-center ${loading ? 'mt-7' : ''} `}>
             <aside></aside>
             {!hidePagination &&
                // <Pagination
