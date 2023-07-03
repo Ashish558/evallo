@@ -82,8 +82,8 @@ const ProfileRight = () => {
     <>
       <div className="flex flex-col gap-3 p-3 w-[790px] bg-white shadow-xs rounded-md border border-gray-300">
         <div className="flex justify-between border-b-[1.5px] border-b-gray-300">
-          <span className="flex gap-5 items-center text-[15px]">
-            <a className="">About </a>
+          <span className="flex cursor-pointer gap-5 items-end py-0 translate-y-[1px] text-[15px] font-semibold">
+            <a className="border-b-2 px-2 border-b-[#FFA28D] rounded-sm text-[#FFA28D] ">About </a>
 
             <a className="">Org Settings </a>
             <a className="">Action Log </a>
