@@ -3,9 +3,9 @@ import icon from "../../../../assets/icons/VectorchevronRight.svg";
 import whatsapp from "../../../../assets/icons/ri_whatsapp-fill.svg";
 import linkedin from "../../../../assets/icons/mdi_linkedin.svg";
 import Profile from "../../../../assets/icons/Ellipse 445staticpfp.svg";
-import { aboutCardContents } from "../AllOrgs/staticData";
-import AboutCard from "../AboutCard/AboutCard";
-import InputSelect from "../../../../components/InputSelect/InputSelect";
+import { useState } from "react";
+import SubFrame0 from "../AboutCard/SubFrame0";
+import SubFrame2 from "../AboutCard/SubFrame1";
 const About = () => {
   return (
     <>
@@ -78,16 +78,29 @@ const ProfileLeft = () => {
 };
 
 const ProfileRight = () => {
+  const [subFrame, setSubFrame] = useState(0);
   return (
     <>
       <div className="flex flex-col gap-3 p-3 w-[790px] bg-white shadow-xs rounded-md border border-gray-300">
-        <div className="flex justify-between border-b-[1.5px] border-b-gray-300">
-          <span className="flex cursor-pointer gap-5 items-end py-0 translate-y-[1px] text-[15px] font-semibold">
-            <a className="border-b-2 px-2 border-b-[#FFA28D] rounded-sm text-[#FFA28D] ">About </a>
+        <div className="flex rounded-sm justify-between border-b-[1.5px] border-b-gray-300">
+          <span className="flex cursor-pointer gap-5 items-end py-0 relative z-20 translate-y-[2.4px] text-[15px] font-semibold">
+            <a
+              onClick={() => setSubFrame(0)}
+              className={`px-2 py-1 rounded-sm ${subFrame===0?'border-b-[3px]  border-b-[#FFA28D]  text-[#FFA28D] ':''}`}
+            >
+              About{" "}
+            </a>
 
-            <a className="">Org Settings </a>
-            <a className="">Action Log </a>
-            <a className=""> Signup Details</a>
+            <a onClick={() => setSubFrame(1)} className={`px-2 py-1 rounded-sm ${subFrame===1?'border-b-[3px]  border-b-[#FFA28D]  text-[#FFA28D] ':''}`}>
+              Org Settings{" "}
+            </a>
+            <a onClick={() => setSubFrame(2)} className={`px-2 py-1 rounded-sm ${subFrame===2?'border-b-[3px]  border-b-[#FFA28D]  text-[#FFA28D] ':''}`}>
+              Action Log{" "}
+            </a>
+            <a onClick={() => setSubFrame(3)} className={`px-2 py-1 rounded-sm ${subFrame===3?'border-b-[3px]  border-b-[#FFA28D]  text-[#FFA28D] ':''}`}>
+              {" "}
+              Signup Details
+            </a>
           </span>
           <span className="flex flex-col justify-end items-end gap-1">
             <button className="bg-[#FFA28D] p-1 px-3   rounded-md text-xs text-white">
@@ -96,91 +109,17 @@ const ProfileRight = () => {
             <p className="text-[#FFA28D] text-xs">1 May - May 12, 2023</p>
           </span>
         </div>
-        <div className="flex flex-col gap-4 border-b-[1.5px] border-b-gray-300">
-          <div className="flex  justify-between  p-2 px-3 text-sm  text-[#517CA8]">
-            <div className="">
-              <span className="w-[100px] mr-5">Org Type:</span>
-              <span className="font-semibold">Private</span>
-            </div>
-            <div className="">
-              <span className="w-[100px] mr-5">Location:</span>
-              <span className="font-semibold">
-                Bangalore, Karnataka , India
-              </span>
-            </div>
-            <div className="">
-              <span className="w-[100px] mr-5">Address:</span>
-              <span className="font-semibold">B-21 New mall</span>
-            </div>
-          </div>
-          <div className="flex gap-10  p-2 px-3 text-sm  text-[#517CA8]">
-            <div className="">
-              <span className="w-[100px] break-words mr-5">Year founded:</span>
-              <span className="font-semibold">2002</span>
-            </div>
-            <div className="">
-              <span className="w-[100px] mr-5">Services provides:</span>
-              <span className="font-semibold">It service</span>
-            </div>
-          </div>
-          <div className="flex gap-10  p-2 px-3 text-sm  text-[#517CA8]">
-            <div className="">
-              <span className="w-[100px] break-words mr-5">Website:</span>
-              <span className="font-semibold">www.sevensquare.com</span>
-            </div>
-          </div>
-        </div>
-        <div className="flex flex-col gap-4 border-b-[1.5px] border-b-gray-300">
-          <div className="flex  justify-between  p-2 px-3 text-sm  text-[#517CA8]">
-            <div className="">
-              <span className="w-[100px] mr-5">Subscription:</span>
-              <span className="font-semibold">Taken</span>
-            </div>
-          </div>
-          <div className="flex gap-10  p-2 px-3 text-sm  text-[#517CA8]">
-            <div className="">
-              <span className="w-[100px] mr-5">Status:</span>
-              <span className="font-semibold">Loream isum</span>
-            </div>
-          </div>
-        </div>
-        <div className="flex gap-3">
-          <div className="flex flex-col p-2 px-3 gap-2">
-            <span className=" ">
-              <p className="text-xs "># Tutor</p>
-              <p className="font-bold">206</p>
-            </span>
-            <span className=" ">
-              <p className="text-xs "># Tutor</p>
-              <p className="font-bold">206</p>
-            </span>
-          </div>
-          <div className="flex gap-2 ">
-            {aboutCardContents.map((item, idx) => {
-              return <AboutCard {...item} />;
-            })}
-          </div>
-          <div className="bg-[#26435F] flex-1 flex flex-col rounded-md p-2 text-white ">
-            <span className="flex text-xs justify-between">
-              <p className="text-xs w-[50px]">Revenue Generated</p>
-              <InputSelect
-                placeholder="weekly"
-                parentClassName="text-xs p-0 rounded-lg m-0"
-                  value={""}
-                inputContainerClassName="bg-[#26435F]  p-0 m-0 rounded-lg"
-                optionClassName="w-[50px] text-xs px-0 mr-0 py-[1.5px]"
-                //   onChange={(e) =>
-                //     setValues({
-                //       ...values,
-                //       orgType: e,
-                //     })
-                //   }
-                //   error={error.orgType}
-              />
-            </span>
-            <span className="mt-3 text-center font-semibold text-lg">Week: $2000</span>
-          </div>
-        </div>
+        {subFrame === 0 ? (
+          <SubFrame0 />
+        ) : subFrame === 1 ? (
+          <></>
+        ) : subFrame === 2 ? (
+          <SubFrame2 />
+        ) : subFrame === 3 ? (
+          <></>
+        ) : (
+          <></>
+        )}
       </div>
     </>
   );
