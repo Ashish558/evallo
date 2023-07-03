@@ -6,7 +6,7 @@ import OrgDetails from "../Frames/OrgDetails/OrgDetails";
 import SignupLast from "../Frames/SignupLast/SignupLast";
 import FurtherDetails from "../Frames/FurtherDetails/FurtherDetails";
 import axios from "axios";
-
+import SetPassword from "../Frames/SetPassword/SetPasswordInvited";
 import cuate from "../../assets/signup/cuate.png";
 import NumericSteppers from "../../components/NumericSteppers/NumericSteppers";
 
@@ -46,6 +46,7 @@ export default function UserSignup() {
     signupActive: true,
     userDetails: false,
     customFields: false,
+    setPasswordFields: false,
   });
 
   const [settings, setSettings] = useState({});
@@ -349,8 +350,16 @@ export default function UserSignup() {
                 return;
               }
               setLoading(false);
-              alert("Signup successful");
-              navigate("/");
+               alert("Signup successful");
+              //navigate("/");
+              
+              setFrames({
+                ...frames,
+                setPasswordFields:true,
+                userDetails:false,
+                customFields: false,
+              });
+              
               sessionStorage.clear();
             })
             .catch((err) => {
@@ -411,8 +420,8 @@ export default function UserSignup() {
               <h1 className="text-[28px] mb-[13px]">
                 {frames.signupActive
                   ? "Sign Up"
-                  : frames.setPassword
-                  ? ""
+                  : frames.setPasswordFields
+                  ? "Set Password"
                   : "Profile Details"}
               </h1>
 
@@ -428,16 +437,19 @@ export default function UserSignup() {
               >
                 {frames.signupActive
                   ? "Sign Up"
-                  : frames.setPassword
-                  ? ""
-                  : "Profile Details"}
+                  : frames.setPasswordFields
+                  ? "Set Password"
+                  : "Profile Details"
+                  
+                  }
               </h1>
 
               {currentStep > 1 && !frames.signupSuccessful && (
                 <NumericSteppers
-                  totalSteps={customFields.length === 0 ? 2 : 3}
+                  totalSteps={customFields.length === 0 ? 2+isAddedByAdmin : 3+isAddedByAdmin}
                   currentStep={currentStep}
-                  className={styles['steppers']}
+                
+                  customFieldsPresents={true}
                 />
               )}
 
@@ -579,6 +591,12 @@ export default function UserSignup() {
                   customFields={customFields}
                   setCustomFields={setCustomFields}
                   handleSignup={handleSignup}
+                />
+              ) : frames.setPasswordFields ? (
+                <SetPassword 
+                {...props}
+                  {...valueProps}
+                  currentStep={currentStep}
                 />
               ) : (
                 <></>
