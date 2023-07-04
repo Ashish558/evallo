@@ -19,7 +19,7 @@ const SubFrame2 = () => {
           //   <span>{item.slice(12)}</span>
           // </li>
           <div key={index} className="flex ml-2 h-[57px] pl-5">
-            <p className="text-[#4A556C] pt-5 font-medium text-xs mr-6 w-[100px]">
+            <p className="text-[#4A556C] pt-5 font-medium text-xs mr-2 w-[150px]">
               May 1 ,2023
             </p>
             <div className={`pt-5 ${styles.actionBorder}`}>

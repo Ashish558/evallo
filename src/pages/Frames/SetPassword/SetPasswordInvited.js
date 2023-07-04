@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import InputField from "../../../components/InputField/inputField";
 import Passwordicon from "../../../assets/form/password.svg";
 import styles from "../../Signup/signup.module.css";
@@ -17,6 +17,8 @@ export default function SetPassword({
   signup,
   setLoginFormActive,
   resetPassword,
+  setcurrentStep,
+  currentStep
 }) {
   const [searchParams, setSearchParams] = useSearchParams();
   const userId = searchParams.get("userid");
@@ -43,7 +45,9 @@ export default function SetPassword({
       };
     });
   };
-
+  useEffect(()=>{
+  setcurrentStep(currentStep+1)
+  },[])
   const handleSubmit = () => {
     const promiseState = async (state) =>
       new Promise((resolve) => {
@@ -94,17 +98,10 @@ export default function SetPassword({
 
   return (
     <>
-      <div className="min-h-screen overflow-auto pb-[80px]" id={styles.signUp}>
-        <div className="flex justify-center min-h-screen">
-          {/* <div className="bg-primary"></div> */}
-          <div className="flex flex-col justify-center items-center">
-          <img src={EvalloLogo} alt="logo" className="mb-4 scale-[.93] " />
-
-            <div className={`w-full bg-white py-6 ${signup ? "" : "px-148"} `}>
-              <p className="font-bold text-4xl leading-snug mb-7">
-                Set New Password
-              </p>
-
+      <div className="pb-[10px] w-full" >
+       
+            <div className={`w-full bg-white py-6 ${signup ? "" : "px-5"} `}>
+              
               <p className="mb-12 text-black-900">
                 The password must contain 8 characters
               </p>
@@ -152,8 +149,7 @@ export default function SetPassword({
                         }
                      </button> */}
             </div>
-          </div>
-        </div>
+      
       </div>
     </>
   );

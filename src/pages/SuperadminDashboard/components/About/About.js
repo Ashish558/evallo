@@ -9,13 +9,13 @@ import SubFrame2 from "../AboutCard/SubFrame1";
 const About = () => {
   return (
     <>
-      <div className="pl-16 pt-7 mb-12">
+      <div className="px-16 pt-7 mb-12">
         <div className="flex gap-2 text-sm mb-10">
           <span>All Orgs</span>
           <img src={icon} alt="" />
           <span className="text-[#24A3D9]">About</span>
         </div>
-        <div className="flex gap-2">
+        <div className="flex gap-7">
           <ProfileLeft />
           <ProfileRight />
         </div>
