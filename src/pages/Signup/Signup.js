@@ -535,7 +535,7 @@ export default function Signup() {
   };
   return (
     <div
-      className="min-h-screen overflow-y-auto pb-6 bg-primary relative"
+      className="min-h-screen   pb-6 bg-primary relative"
       id={styles.signUp}
     >
       {/* <AdminNavbar></AdminNavbar> */}
@@ -557,8 +557,8 @@ export default function Signup() {
           ) : (
             <></>
           )}
-          <div className="flex lg:items-center relative bg-white rounded-md py-6 px-5 md:px-[48px] lg:w-[560px]">
-            <div className="w-full py-6">
+          <div className="flex lg:items-center relative bg-white rounded-md py-4 px-5 md:px-[48px] lg:w-[540px]">
+            <div className="w-full py-4">
               {/* <h1
                 className={`hidden lg:block mb-1.5 text-[30px] ${styles.title} `}
               >
