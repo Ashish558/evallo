@@ -223,12 +223,12 @@ const navigate = useNavigate()
                console.log(res.error);
                return
             }
-            console.log(res.data);
-            let data = res.data.assiginedTutors.map(item => {
-               const { assiginedTutor, associatedParent, firstName, lastName, specialization, student_id, timeZone, tutorFirstName, tutorLastName, parentFirstName, parentLast } = item
+            console.log('assignedtutors-' ,res.data);
+            let data = res.data.assignedTutors.map(item => {
+               const { assignedTutor, associatedParent, firstName, lastName, specialization, student_id, timeZone, tutorFirstName, tutorLastName, parentFirstName, parentLast } = item
                return {
                   tutorName: `${tutorFirstName} ${tutorLastName}`,
-                  assiginedTutor: assiginedTutor,
+                  assiginedTutor: assignedTutor,
                   studentName: `${firstName} ${lastName}`,
                   timeZone: timeZone ? timeZone : '-',
                   student_id,
@@ -290,6 +290,7 @@ const navigate = useNavigate()
       setFilteredData(tempdata)
    }, [filterData, tableData])
 
+   // console.log('f', filteredData);
 
    const removeFilter = key => {
       let tempFilterData = { ...filterData }

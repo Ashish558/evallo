@@ -561,6 +561,85 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch, ext
                </td>
             </tr>
          )}
+         {dataFor === "allOrgs" && (
+              <tr className="odd:bg-white shadow-sm shadow-slate-200 even:bg-primaryWhite-300 rounded-2xl leading-8">
+              <td className="font-semibold text-sm px-1  min-w-14 py-4 text-primaryBlue text-left">
+                 <span
+                    className="inline-block cursor-pointer pl-4"
+                    onClick={() => onClick.redirect(item)}
+                 >
+                    {item.associatedOrg?.company}
+                 </span>
+              </td>
+              <td className="font-medium text-sm px-1 min-w-14 py-4">
+                 <div className="my-[6px]">
+                 {item.associatedOrg?.companyType}
+                 </div>
+              </td>
+              <td className="font-medium text-sm px-1  min-w-14 py-4">
+                 <div className="my-[6px]">
+                 {item.associatedOrg?.address}
+                 </div>
+              </td>
+              <td className="font-medium text-sm px-1  min-w-14 py-4">
+                 <div className="my-[6px]">
+                 {item.associatedOrg?.city}
+                 </div>
+              </td>
+   
+              <td className="font-medium text-sm px-1  min-w-14 py-4">
+                 <div className="my-[6px]">
+                 {item.associatedOrg?.state}
+                 </div>
+              </td>
+              <td className="font-medium text-sm px-1  min-w-14 py-4">
+                 <div className="my-[6px]">
+                 {item.associatedOrg?.country}
+                 </div>
+              </td>
+   
+              <td className="font-medium text-sm px-1  min-w-14 py-4">
+                 <div className="my-[6px]">
+                    {item.firstName}
+                 </div>
+              </td>
+   
+              <td className="font-medium text-sm px-1  min-w-14 py-4">
+                 <div className="my-[6px]">
+                    {item.email}
+                 </div>
+              </td>
+   
+              <td className="font-medium text-sm px-1  min-w-14 py-4">
+                 <div className="my-[6px]">
+                    {item.phone}
+                 </div>
+              </td>
+   
+              <td className="font-medium text-sm px-1  min-w-14 py-4">
+                 <div className="my-[6px]">
+                  active
+                 </div>
+              </td>
+              <td className="font-medium text-sm px-1  min-w-14 py-4">
+                 <div className="my-[6px]">
+                 {item.associatedOrg?.numberOfTutors}
+                 </div>
+              </td>
+              <td className="font-medium text-sm px-1  min-w-14 py-4">
+                 <div className="my-[6px]">
+                 {item.associatedOrg?.numberOfActiveStudent}
+                 </div>
+              </td>
+   
+              <td className="font-medium text-sm px-1  min-w-14 py-4">
+                 <div className="my-[6px]">
+                     contributors
+                 </div>
+              </td>
+   
+           </tr>
+         )}
       </>
    );
 }

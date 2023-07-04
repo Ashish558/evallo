@@ -8,8 +8,9 @@ import { frameHeaderNames, framesData } from "./staticData";
 import FramesScreen from "./FramesScreen";
 import arrowDown from "../../../../assets/icons/arrowdown.svg"
 import { useEffect } from "react";
-import Table from "../../Table/table";
 import axios from 'axios'
+import Table from "../../../../components/Table/Table";
+
 import InputSelect from "../../../../components/InputSelect/InputSelect";
 const AllOrgs = () => {
   const [adminData,setAdminData]=useState([])
@@ -53,11 +54,9 @@ const AllOrgs = () => {
     };
     fetchAllOrgs()
   },[])
-  console.log('shivam',adminData)
+
   return (
     <>
-      
-
       <div className="pl-16 pt-7 mb-12">
         <h4 className="text-[#24A3D9]">All Orgs</h4>
         <div className="flex justify-between py-5 ">
@@ -155,7 +154,7 @@ const AllOrgs = () => {
             </button>
           </div>
         </div>
-        <Table data={adminData} tableHeaders={frameHeaderNames} maxPageSize={5} />
+        <Table data={adminData} tableHeaders={frameHeaderNames} maxPageSize={10} dataFor='allOrgs' excludes={['_id']} />
       </div>
     </>
   );

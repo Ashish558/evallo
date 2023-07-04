@@ -10,7 +10,7 @@ import Modal from "../../components/Modal/Modal";
 import { useLazyGetSettingsQuery } from "../../app/services/session";
 import {
   useUpdateOfferImageMutation,
-  useUpdateOrgSettingMutation,
+  useUpdateSettingMutation,
 } from "../../app/services/settings";
 import { getSessionTagName } from "../../utils/utils";
 import { BASE_URL, getAuthHeader } from "../../app/constants/constants";
@@ -29,6 +29,9 @@ import SignupTab from "./Tabs/Signup/signup";
 import AddNewQuestion from "../Frames/AddNewQuestion/AddNewQuestion";
 import { useAddNewQuestionMutation } from "../../app/services/admin";
 import { updateOrganizationSettings } from "../../app/slices/organization";
+import AccountOverview from "./Tabs/AccountOverview/AccountOverview";
+import UserManagement from "./Tabs/UserManagement/UserManagement";
+import OrgDefaultContent from "./Tabs/OrgDefaultContent/OrgDefaultContent";
 
 const initialState = {
   name: "",
@@ -44,26 +47,26 @@ const subModalInitialState = {
 const initialTabs = [
   {
     Icon: PlayIcon,
-    name: "Organization Defaults",
+    name: "Account Overview",
     selected: true,
   },
   {
     Icon: PlayIcon,
-    name: "Company and Brand",
+    name: "User Management",
     selected: false,
   },
   {
     Icon: PlayIcon,
-    name: "signup form detail",
+    name: "Org Default",
     selected: false,
   },
   {
     Icon: PlayIcon,
-    name: "Account  Overview",
+    name: "Org Default Content",
     selected: false,
   },
 ];
-export default function Settings() {
+export default function SuperAdminSettings() {
   const [modalActive, setModalActive] = useState(false);
   const [tagModalActive, setTagModalActive] = useState(false);
   const [addCodeModalActive, setAddCodeModalActive] = useState(false);
@@ -121,8 +124,8 @@ export default function Settings() {
   const inputRef = useRef();
   const [image, setImage] = useState(null);
   const [getSettings, getSettingsResp] = useLazyGetSettingsQuery();
-  const [updateSetting, updateSettingResp] = useUpdateOrgSettingMutation();
-  const { awsLink } = useSelector(state => state.user)
+  const [updateSetting, updateSettingResp] = useUpdateSettingMutation();
+  const { awsLink } = useSelector((state) => state.user);
 
   const [addNewQuestionModalActive, setAddNewQuestionModalActive] =
     useState(false);
@@ -191,20 +194,16 @@ export default function Settings() {
   };
 
   const fetchSettings = () => {
-    // getSettings().then((res) => {
-    //   if (res.error) {
-    //     console.log("settings fetch err", res.error);
-    //     return;
-    //   }
-    //   console.log("settings", res.data);
-    //   setBaseLink(res.data.data.baseLink);
-    //   if (res.data.data.setting === null) return;
-    //   setSettingsData(res.data.data.setting);
-    // });
-    console.log("organization", organization);
-    if (organization.settings) {
-      setSettingsData(organization.settings);
-    }
+    getSettings().then((res) => {
+      if (res.error) {
+        console.log("settings fetch err", res.error);
+        return;
+      }
+      console.log("settings", res.data);
+      // setBaseLink(res.data.data.baseLink);
+      if (res.data.data.setting === null) return;
+      setSettingsData(res.data.data.setting);
+    });
   };
 
   // console.log("organization", organization);
@@ -260,19 +259,20 @@ export default function Settings() {
   const updateAndFetchsettings = (updatedSetting) => {
     const settings = {
       ...settingsData,
-      ...updatedSetting
-    }
+      ...updatedSetting,
+    };
     const body = {
-      settings
-    }
+      settings,
+    };
     console.log("body", body);
     // return;
     setSaveLoading(true);
-    updateSetting(body)
+    updateSetting(updatedSetting)
       .then((res) => {
         setSaveLoading(false);
-        setSettingsData(res.data.data.setting.settings);
-        dispatch(updateOrganizationSettings(res.data.data.setting.settings))
+        console.log("res", res.data);
+        setSettingsData(res.data.data.setting);
+        dispatch(updateOrganizationSettings(res.data.data.setting));
         // console.log('updated', res.data.data.setting.settings);
       })
       .catch((err) => {
@@ -311,14 +311,13 @@ export default function Settings() {
     if (append === "") return;
     setSaveLoading(true);
     axios
-      .patch(`${BASE_URL}api/user/Orgsettings/${append}`, formData, {
+      .patch(`${BASE_URL}api/user/setting/${append}`, formData, {
         headers: getAuthHeader(),
         maxBodyLength: Infinity,
         maxContentLength: Infinity,
       })
       .then((res) => {
         // console.log('resp--' ,res.data.data.updatedSetting.settings);
-        dispatch(updateOrganizationSettings(res.data.data.updatedSetting.settings))
         setTagImage(null);
         setTagText("");
         setSelectedImageTag("");
@@ -380,7 +379,7 @@ export default function Settings() {
 
   useEffect(() => {
     fetchSettings();
-  }, [organization]);
+  }, []);
 
   const onAddService = (val) => {
     console.log(val);
@@ -623,12 +622,12 @@ export default function Settings() {
 
   useEffect(() => {
     const activeTab = searchParams.get("tab");
-    if(activeTab){
-      setActiveTab(parseInt(activeTab))
+    if (activeTab) {
+      setActiveTab(parseInt(activeTab));
     }
   }, [searchParams.get("tab")]);
-
-  // if (Object.keys(settingsData).length === 0) return <></>
+  if (!settingsData) return <></>;
+  if (Object.keys(settingsData).length === 0) return <></>;
   const {
     classes,
     servicesAndSpecialization,
@@ -658,7 +657,6 @@ export default function Settings() {
   };
 
   // console.log('subscriptionCode', settingsData.subscriptionCode);
-
   return (
     <>
       <div className="lg:ml-pageLeft bg-lightWhite min-h-screen px-8 pt-[50px] pb-[50px]">
@@ -710,7 +708,8 @@ export default function Settings() {
                         <img src={EditIcon} />
                      </div>} /> */}
         </div>
-        {activeTab === 1 || !activeTab ? (
+        {activeTab === 1 || !activeTab ? <AccountOverview /> : <></>}
+        {activeTab === 3 ? (
           <div>
             <SettingsCard
               title="Lead Status Items"
@@ -1058,12 +1057,14 @@ export default function Settings() {
         ) : (
           <></>
         )}
-        {activeTab === 3 && (
-          <SignupTab
-            setAddNewQuestionModalActive={setAddNewQuestionModalActive}
-            fetchS={fetchS}
-          />
-        )}
+       {
+         activeTab === 2 &&
+         <UserManagement />
+       }
+       {
+         activeTab === 4 &&
+         <OrgDefaultContent />
+       }
       </div>
       {modalActive && (
         <Modal

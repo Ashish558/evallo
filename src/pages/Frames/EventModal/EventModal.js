@@ -157,6 +157,7 @@ export default function EventModal({
    const [fetchSettings, settingsResponse] = useLazyGetSettingsQuery();
    const [services, setServices] = useState([])
    const { id: currentUserId } = useSelector(state => state.user)
+   const { organization } = useSelector((state) => state.organization);
 
    const [isSettingsLoaded, setIsSettingsLoaded] = useState(false);
    const getCheckedItems = (strArr, array) => {
@@ -256,45 +257,84 @@ export default function EventModal({
    }, [defaultEventData])
 
    useEffect(() => {
-      fetchSettings().then((res) => {
-         let sessionTags = res.data.data.setting.sessionTags;
-         // console.log(sessionTags)
-         let homeworks = sessionTags.homeworkAssigned.map((item) => {
-            return {
-               text: item,
-               checked: false,
-            };
-         });
-         setHomeworks(homeworks);
-         let topics = sessionTags.topicsCovered.map((item) => {
-            return {
-               text: item,
-               checked: false,
-            };
-         });
-         setTopics(topics);
+      if(organization?.settings){
+         if(Object.keys(organization?.settings).length > 0){
+            console.log('organization', organization.settings);
+            let sessionTags = organization.settings.sessionTags;
+            let homeworks = sessionTags.homeworkAssigned.map((item) => {
+               return {
+                  text: item,
+                  checked: false,
+               };
+            });
+            setHomeworks(homeworks);
+            let topics = sessionTags.topicsCovered.map((item) => {
+               return {
+                  text: item,
+                  checked: false,
+               };
+            });
+            setTopics(topics);
+   
+            let moods = sessionTags.studentMode.map((item) => {
+               return {
+                  text: item,
+                  checked: false,
+               };
+            });
+            setStudentMoods(moods);
+            let productive = sessionTags.wasProductive.map((item) => {
+               return {
+                  text: item,
+                  checked: false,
+               };
+            });
+            setIsProductive(productive);
+            setAllServicesAndSpec(organization.settings.servicesAndSpecialization)
+            setServices(organization.settings.Expertise);
+            setIsSettingsLoaded(true);
+         }
+      }
 
-         let moods = sessionTags.studentMode.map((item) => {
-            return {
-               text: item,
-               checked: false,
-            };
-         });
-         setStudentMoods(moods);
+      // fetchSettings().then((res) => {
+      //    let sessionTags = res.data.data.setting.sessionTags;
+      //    // console.log(sessionTags)
+      //    let homeworks = sessionTags.homeworkAssigned.map((item) => {
+      //       return {
+      //          text: item,
+      //          checked: false,
+      //       };
+      //    });
+      //    setHomeworks(homeworks);
+      //    let topics = sessionTags.topicsCovered.map((item) => {
+      //       return {
+      //          text: item,
+      //          checked: false,
+      //       };
+      //    });
+      //    setTopics(topics);
 
-         let productive = sessionTags.wasProductive.map((item) => {
-            return {
-               text: item,
-               checked: false,
-            };
-         });
-         setIsProductive(productive);
-         // console.log('setting', res.data.data.setting)
-         setAllServicesAndSpec(res.data.data.setting.servicesAndSpecialization)
-         setServices(res.data.data.setting.Expertise);
-         setIsSettingsLoaded(true);
-      });
-   }, []);
+      //    let moods = sessionTags.studentMode.map((item) => {
+      //       return {
+      //          text: item,
+      //          checked: false,
+      //       };
+      //    });
+      //    setStudentMoods(moods);
+
+      //    let productive = sessionTags.wasProductive.map((item) => {
+      //       return {
+      //          text: item,
+      //          checked: false,
+      //       };
+      //    });
+      //    setIsProductive(productive);
+      //    // console.log('setting', res.data.data.setting)
+      //    setAllServicesAndSpec(res.data.data.setting.servicesAndSpecialization)
+      //    setServices(res.data.data.setting.Expertise);
+      //    setIsSettingsLoaded(true);
+      // });
+   }, [organization]);
 
    useEffect(() => {
       if (isUpdating) {

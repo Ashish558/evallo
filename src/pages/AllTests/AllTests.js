@@ -189,8 +189,9 @@ export default function AllTests() {
    // console.log('filteredTests', filteredTests);
 
    const fetchTests = () => {
+      const headers = getAuthHeader()
       axios
-         .get(`${BASE_URL}api/test`)
+         .get(`${BASE_URL}api/test`, {headers})
          .then((res) => setTableData(res.data.data.test));
    };
 
