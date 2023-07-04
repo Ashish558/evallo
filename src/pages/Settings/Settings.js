@@ -85,7 +85,7 @@ export default function Settings() {
 
   const [searchParams, setSearchParams] = useSearchParams();
   const [tabs, setTabs] = useState(initialTabs);
-  const [activeTab, setActiveTab] = useState("1");
+  const [activeTab, setActiveTab] = useState(1);
   const [selectedSubscriptionData, setSelectedSubscriptionData] = useState({
     code: "",
     expiry: "",
@@ -623,7 +623,11 @@ export default function Settings() {
 
   useEffect(() => {
     const activeTab = searchParams.get("tab");
+    if(activeTab){
+      setActiveTab(parseInt(activeTab))
+    }
   }, [searchParams.get("tab")]);
+
   // if (Object.keys(settingsData).length === 0) return <></>
   const {
     classes,
@@ -665,7 +669,7 @@ export default function Settings() {
                 <div
                   className={`${styles.tab} ${
                     activeTab === idx + 1 ? styles.selectedTab : ""
-                  }`}
+                  } cursor-pointer`}
                   onClick={() => changeTab(idx + 1)}
                 >
                   <img src={item.Icon} />

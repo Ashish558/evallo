@@ -18,7 +18,6 @@ import ParentDashboard from "./../pages/ParentDashboard/ParentDashboard";
 import SetPassword from "../pages/Frames/SetPassword/SetPassword";
 import StudentDashboard from "../pages/StudentDashboard/StudentDashboard";
 import Ledger from "../pages/Ledger/Ledger";
-import Settings from "../pages/Settings/Settings";
 import StartTest from "../pages/StartTest/StartTest";
 import AssignedStudents from "../pages/AssignedStudents/assignedStudents";
 import ParentProfile from "../pages/Profiles/ParentProfile/ParentProfile";
@@ -31,9 +30,11 @@ import SuperadminDashboard from "../pages/SuperadminDashboard/SuperadminDashboar
 import UserSignup from "../pages/UserSignup/Signup";
 import Dashboard from "../pages/AdminDashboard/Dashboard";
 import AdminContent from "../pages/AdminContent/AdminContent";
-import AllOrgs from "../pages/SuperadminDashboard/components/AllOrgs/AllOrgs"
+import AllOrgs from "../pages/SuperadminDashboard/components/AllOrgs/AllOrgs";
 import AdminNavbar from "../pages/AdminDashboard/AdminNavbar";
 import Footer from "../components/Footer/Footer";
+import Settings from "../pages/Settings/Settings";
+import SuperAdminSettings from "../pages/Settings/SuperAdminSettings";
 
 const PrivateRoutes = [
   {
@@ -65,11 +66,11 @@ const PrivateRoutes = [
 const AppRoutes = () => {
   const { isLoggedIn } = useSelector((state) => state.user);
   const { role: persona } = useSelector((state) => state.user);
-
-   return (
-      <BrowserRouter>
-         <AdminNavbar />
-         {/* <a href='https://www.banao.tech/'
+console.log({persona});
+  return (
+    <BrowserRouter>
+      <AdminNavbar />
+      {/* <a href='https://www.banao.tech/'
             style={{ opacity: '0', pointerEvents: 'none', width: 0, height: 0, zIndex: '-1' }} > </a> */}
       <Routes>
         <Route path="/" element={isLoggedIn ? <Home /> : <Login />} />
@@ -238,7 +239,7 @@ const AppRoutes = () => {
           path="/settings"
           element={
             <RequireAuth isLoggedIn={isLoggedIn}>
-              <Settings />
+              {persona === "superAdmin" ? <SuperAdminSettings /> : <Settings />}
             </RequireAuth>
           }
         />
@@ -271,10 +272,10 @@ const AppRoutes = () => {
                      </RequireAuth>
                   }
                /> */}
-         </Routes>
-         <Footer />
-      </BrowserRouter>
-   );
+      </Routes>
+      <Footer />
+    </BrowserRouter>
+  );
 };
 
 export default AppRoutes;
