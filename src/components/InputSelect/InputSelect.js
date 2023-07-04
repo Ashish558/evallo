@@ -41,7 +41,7 @@ export default function InputSelect({
       } ${disabled === true ? "pointer-events-none" : ""} `}
     >
       {label && (
-        <label className={`font-semibold inline-block ${labelClassname}`}>
+        <label className={`font-semibold inline-block mb-1 ${labelClassname}`}>
           {label}
           {required && (
             <span className="text-primaryRed inline-block pl-1">*</span>
@@ -52,7 +52,7 @@ export default function InputSelect({
       <div
        onClick={handleOption}
       
-        className={`py-[9px] px-[14px] lg:py-[9px] lg:px-[16px] border border-[#D0D5DD] flex items-center rounded relative cursor-pointer z-50 ${
+        className={`py-[9px] px-[14px] lg:py-[10px] lg:px-[16px] border border-[#D0D5DD] flex items-center rounded relative cursor-pointer z-50 ${
           inputContainerClassName ? inputContainerClassName : ""
         } `}
       >
@@ -79,7 +79,7 @@ export default function InputSelect({
           }`}
           name={label}
         >
-          {value === "" ? (
+          {value === "" || !value ? (
             <span className="text-primary-60 mr-10 whitespace-nowrap">
               {" "}
               {placeholder}{" "}
