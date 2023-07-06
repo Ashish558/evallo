@@ -220,10 +220,15 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch, ext
                </td>
                <td className="font-medium text-sm px-1  min-w-14 py-4">
                   <div className="my-[6px]">
+                     {item.lastLogin ? item.lastLogin : '-'}
+                  </div>
+               </td>
+               {/*  <td className="font-medium text-sm px-1  min-w-14 py-4">
+                  <div className="my-[6px]">
                      {item.phone}
                   </div>
                </td>
-               <td className="font-medium text-sm px-1  min-w-14 py-4">
+              <td className="font-medium text-sm px-1  min-w-14 py-4">
                   <div className="my-[6px]">
                      {item.assignedTutor?.length > 0 ?
                         item.assignedTutor?.map((id, idx) => {
@@ -232,14 +237,6 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch, ext
                            return `${name.value} ${idx + 1 < item.assignedTutor.length ? ',' : ''} `
                         }) : '-'
                      }
-                     {/* {item.assignedTutor.length > 1 ?
-                        item.assignedTutor.map(id => {
-                           const name = extraData.find(item => item._id === id)
-                           if (name === undefined) return 'l'
-                           return name.value
-                        })
-                        :
-                        item.assignedTutor} */}
                   </div>
                </td>
                <td className="font-medium text-sm px-1  min-w-14 py-4">
@@ -260,7 +257,8 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch, ext
                      labelClassname='hidden'
                      onChange={val => handlestatusChange({ userStatus: val })} />
                </td>
-               {/* <td className="font-medium text-sm px-1  min-w-14 py-4">
+               
+               <td className="font-medium text-sm px-1  min-w-14 py-4">
                   <div className="my-[6px]">
                   
                      <span className="cursor-pointer inline-block px-1" onClick={() => onClick.handleTutorStatus(item,)}>
@@ -268,19 +266,19 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch, ext
                      </span>
 
                   </div>
-               </td> */}
+               </td> 
                <td className="font-medium text-sm px-1  min-w-14 py-4">
                   <div className="my-[6px]">
                      {item.specialization?.map((specialization, idx) => {
                         return `${specialization}${idx + 1 === item.specialization.length ? '' : ','}`
                      })}
                   </div>
-               </td>
-               <td className="font-medium text-sm px-1  min-w-14 py-4">
+               </td> */}
+               {/* <td className="font-medium text-sm px-1  min-w-14 py-4">
                   <div className="my-[6px]">
                      {getFormattedDate(item.createdAt)}
                   </div>
-               </td>
+               </td> */}
                <td className="font-medium px-1 min-w-14 py-4">
                   <div className="w-4 h-4 rounded-full bg-[#E3E3E3] flex items-center justify-center">
                      <img
