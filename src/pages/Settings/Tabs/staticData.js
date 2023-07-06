@@ -52,3 +52,17 @@ export const studentServedData = [
       checked: false,
     },
   ];
+
+  export const companyType = [
+    "Sole proprietorship",
+    "Partnership",
+    " Limited liability company (LLC)",
+    " C Corporation",
+    "S Corporation",
+    "B Corporation",
+    " Close corporation",
+    " Nonprofit corporation",
+    "Cooperative",
+    "Private Limited Company",
+    "Public",
+  ];

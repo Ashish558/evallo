@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import InputField from "../../../../components/InputField/inputField";
 import PrimaryButton from "../../../../components/Buttons/PrimaryButton";
 import { CheckboxNew } from "../../../../components/Checkbox/CheckboxNew";
@@ -9,12 +9,70 @@ import resetSendIcon from "../../../../assets/icons/teenyicons_shield-tick-solid
 import tooltipIcon from "../../../../assets/icons/octicon_stop-16.svg";
 import { useState } from "react";
 import Modal from "../../../../components/Modal/Modal";
+import { useSelector } from "react-redux";
+import axios from 'axios'
 const AccountOverview = () => {
-  const [studentServed, setStudentServed] = useState(studentServedData);
-  const [instructions, setInstructions] = useState(instructionFormat);
+  
   const [modalOpen, setModalOpen] = useState(false);
   const [reset, setReset] = useState(false);
+  const [error, setError] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    subscriptionCode: "",
+    company: "",
+  });
+  const [values, setValues] = useState({
+   firstName: "",
+   lastName: "",
+   email: "",
+   phone: "",
+   company: "",
+   role: "",
+   userId: "",
+   registrationAs: "Company",
 
+   orgName: "",
+   companyType: "",
+   website: "",
+   address: "",
+   country: "",
+   state: "",
+   zip: "",
+   city: "",
+
+   activeStudents: "",
+   activeTutors: "",
+   services: [],
+ });
+ useEffect(() => {
+  getUserDetails()
+ }, []);
+ useEffect(() => {
+  // setValues(organization);
+  const updateUserAccount = async () => {
+    try {
+      //   alert(data.workemail)
+      let result = await axios.patch(
+        `${process.env.REACT_APP_BASE_URL}api/user`,
+        values,
+        {
+          headers: {
+            "Content-type": "application/json; charset=UTF-8",
+            Authorization: sessionStorage.getItem("token"),
+          },
+        }
+      );
+      
+     
+      console.log("updated", values);
+    } catch (e) {
+      console.error(e?.response?.data?.message);
+    }
+  };
+  updateUserAccount();
+}, [values]);
   const showResetConfirmation = () => {
     setReset(true);
     handleClose();
@@ -32,6 +90,29 @@ const AccountOverview = () => {
   const handleClose = () => {
     setModalOpen(!modalOpen);
   };
+  const getUserDetails = async () => {
+    try {
+      //   alert(data.workemail)
+      let result = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}api/user`,
+        {
+          headers: {
+            "Content-type": "application/json; charset=UTF-8",
+            Authorization: sessionStorage.getItem("token"),
+          },
+        }
+      );
+
+      setValues({
+        
+        ...result.data.data.user[0],
+      });
+
+      console.log("account overview", values);
+    } catch (e) {
+      console.error(e);
+    }
+  };
   return (
     <div>
       <div className="flex flex-col gap-10 w-[900px] ">
@@ -42,13 +123,30 @@ const AccountOverview = () => {
             inputContainerClassName=" bg-white"
             inputClassName="bg-transparent"
             label="First Name"
+            value={values.firstName}
+            onChange={(e) =>
+              setValues({
+                ...values,
+                firstName: e.target.value,
+              })
+            }
+            error={error.firstName}
           />
+
           <InputField
             placeholder=""
             parentClassName="text-xs text-[#26435F]"
             inputContainerClassName=" bg-white"
             inputClassName="bg-transparent"
             label="Last Name"
+            value={values.lastName}
+            onChange={(e) =>
+              setValues({
+                ...values,
+                lastName: e.target.value,
+              })
+            }
+            error={error.lastName}
           />
           <div className="group relative">
             <div className="">
@@ -59,6 +157,14 @@ const AccountOverview = () => {
                 inputClassName="bg-transparent"
                 label="Email"
                 IconRight={tooltipIcon}
+                value={values.email}
+                onChange={(e) =>
+                  setValues({
+                    ...values,
+                    email: e.target.value,
+                  })
+                }
+                error={error.email}
               />
             </div>
             <span class="absolute top-20  scale-0 rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100">
@@ -79,6 +185,14 @@ const AccountOverview = () => {
             inputContainerClassName=" bg-white"
             inputClassName="bg-transparent"
             label="Phone"
+            value={values.phone}
+            onChange={(e) =>
+              setValues({
+                ...values,
+                phone: e.target.value,
+              })
+            }
+            error={error.phone}
           />
         </div>
         <div className="flex gap-7 flex-1">

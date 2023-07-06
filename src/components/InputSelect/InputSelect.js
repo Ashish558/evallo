@@ -80,12 +80,12 @@ export default function InputSelect({
           name={label}
         >
           {value === "" || !value ? (
-            <span className="text-primary-60 mr-10 whitespace-nowrap">
+            <span className="text-primary-60  mr-10 whitespace-nowrap">
               {" "}
               {placeholder}{" "}
             </span>
           ) : (
-            <span className="text-xs mr-10 whitespace-nowrap">
+            <span className="mr-10 whitespace-nowrap">
             { value}
           
           </span>
@@ -102,12 +102,12 @@ export default function InputSelect({
                   className="outline-0 border-0 py-2.5 px-4 flex items-center justify-between"
                   key={idx}
                   onClick={() => {
-                    onChange(option, idx);
+                    onChange(optionType === "object"?option.name:option, idx);
                   }}
                 >
                   <p className={optionListClassName}>
                     {optionType !== undefined && optionType === "object"
-                      ? option.value
+                      ? option.name
                       : option}
                   </p>
                   {radio && (
