@@ -107,7 +107,6 @@ const CompanyAndBround = () => {
       }
     });
   }, [values.country]);
- console.log('organization', organization);
 
   const handleLogoChange = async (e) => {
     const formData = new FormData();
