@@ -112,6 +112,7 @@ const CompanyAndBround = () => {
     const formData = new FormData();
     const file = e.target.files[0];
     formData.append('photos', file)
+    formData.append('updatefieldName', 'orgBussinessLogo')
     console.log(file);
     await axios
       .patch(`${BASE_URL}api/user/org/addOrgLogos/${organization._id}`, formData, {

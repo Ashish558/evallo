@@ -609,9 +609,9 @@ export default function UserManagement() {
   // console.log('users', filteredUsersData);
 
   return (
-    <div className="lg:ml-pageLeft bg-lightWhite min-h-screen">
-      <div className="py-14 px-5">
-        <div className="flex justify-between items-center gap-4">
+    <div className=" bg-lightWhite min-h-screen">
+      <div className="py-14 pt-0 px-5">
+        {/* <div className="flex justify-between items-center gap-4">
           <InputField
             IconRight={SearchIcon}
             placeholder="Type Name"
@@ -752,7 +752,7 @@ export default function UserManagement() {
             setData={setFilterItems}
             onRemoveFilter={onRemoveFilter}
           />
-        </div>
+        </div> */}
         <div className="mt-6">
           <Table
             dataFor="allUsers"
