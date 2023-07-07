@@ -41,7 +41,7 @@ export default function InputSelect({
       } ${disabled === true ? "pointer-events-none" : ""} `}
     >
       {label && (
-        <label className={`font-semibold inline-block ${labelClassname}`}>
+        <label className={`font-semibold inline-block mb-1 ${labelClassname}`}>
           {label}
           {required && (
             <span className="text-primaryRed inline-block pl-1">*</span>
@@ -52,7 +52,7 @@ export default function InputSelect({
       <div
        onClick={handleOption}
       
-        className={`py-[9px] px-[14px] lg:py-[9px] lg:px-[16px] border border-[#D0D5DD] flex items-center rounded relative cursor-pointer z-50 ${
+        className={`py-[9px] px-[14px] lg:py-[10px] lg:px-[16px] border border-[#D0D5DD] flex items-center rounded relative cursor-pointer z-50 ${
           inputContainerClassName ? inputContainerClassName : ""
         } `}
       >
@@ -79,13 +79,13 @@ export default function InputSelect({
           }`}
           name={label}
         >
-          {value === "" ? (
-            <span className="text-primary-60 mr-10 whitespace-nowrap">
+          {value === "" || !value ? (
+            <span className="text-primary-60  mr-10 whitespace-nowrap">
               {" "}
               {placeholder}{" "}
             </span>
           ) : (
-            <span className="text-xs mr-10 whitespace-nowrap">
+            <span className="mr-10 whitespace-nowrap">
             { value}
           
           </span>
@@ -102,12 +102,12 @@ export default function InputSelect({
                   className="outline-0 border-0 py-2.5 px-4 flex items-center justify-between"
                   key={idx}
                   onClick={() => {
-                    onChange(option, idx);
+                    onChange(optionType === "object"?option.name:option, idx);
                   }}
                 >
                   <p className={optionListClassName}>
                     {optionType !== undefined && optionType === "object"
-                      ? option.value
+                      ? option.name
                       : option}
                   </p>
                   {radio && (

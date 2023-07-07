@@ -26,6 +26,8 @@ import { updateUserDetails } from "../../app/slices/user";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import styles from "./styles.module.css";
 import SignupTab from "./Tabs/Signup/signup";
+import CompanyAndBround from "./Tabs/CompanyAndBrand/CompanyAndBround";
+import AccountOverview from "./Tabs/AccountOverview/AccountOverview";
 import AddNewQuestion from "../Frames/AddNewQuestion/AddNewQuestion";
 import { useAddNewQuestionMutation } from "../../app/services/admin";
 import { updateOrganizationSettings } from "../../app/slices/organization";
@@ -1058,12 +1060,22 @@ export default function Settings() {
         ) : (
           <></>
         )}
+        {
+          activeTab === 2 &&(
+           <CompanyAndBround/>
+          )
+        }
         {activeTab === 3 && (
           <SignupTab
             setAddNewQuestionModalActive={setAddNewQuestionModalActive}
             fetchS={fetchS}
           />
         )}
+        {
+          activeTab === 4 &&(
+          <AccountOverview/>
+          )
+        }
       </div>
       {modalActive && (
         <Modal

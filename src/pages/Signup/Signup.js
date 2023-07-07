@@ -347,7 +347,8 @@ export default function Signup() {
         subjecttutoring: getCheckedString(tutoring),
         coaching: getCheckedString(coaching),
         formatofinstruction: getCheckedString(instructions),
-        studentserved: getCheckedString(hearAboutUs),
+        studentserved: getCheckedString(studentserved),
+        hearaboutus: getCheckedString(hearAboutUs),
         solutionyouarelookingfor: getCheckedString(solutions),
       };
       console.log({ reqBody });
