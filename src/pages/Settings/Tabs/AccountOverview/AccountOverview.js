@@ -10,11 +10,13 @@ import tooltipIcon from "../../../../assets/icons/octicon_stop-16.svg";
 import { useState } from "react";
 import Modal from "../../../../components/Modal/Modal";
 import { useSelector } from "react-redux";
-import axios from 'axios'
+import axios from "axios";
+import { useForgotPasswordMutation } from "../../../../app/services/auth";
+import { BASE_URL, getAuthHeader } from "../../../../app/constants/constants";
 const AccountOverview = () => {
-  
   const [modalOpen, setModalOpen] = useState(false);
   const [reset, setReset] = useState(false);
+  const [forgotPassword, forgotPasswordResp] = useForgotPasswordMutation();
   const [error, setError] = useState({
     firstName: "",
     lastName: "",
@@ -24,59 +26,66 @@ const AccountOverview = () => {
     company: "",
   });
   const [values, setValues] = useState({
-   firstName: "",
-   lastName: "",
-   email: "",
-   phone: "",
-   company: "",
-   role: "",
-   userId: "",
-   registrationAs: "Company",
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    company: "",
+    role: "",
+    userId: "",
+    registrationAs: "Company",
 
-   orgName: "",
-   companyType: "",
-   website: "",
-   address: "",
-   country: "",
-   state: "",
-   zip: "",
-   city: "",
+    orgName: "",
+    companyType: "",
+    website: "",
+    address: "",
+    country: "",
+    state: "",
+    zip: "",
+    city: "",
 
-   activeStudents: "",
-   activeTutors: "",
-   services: [],
- });
- useEffect(() => {
-  getUserDetails()
- }, []);
- useEffect(() => {
-  // setValues(organization);
-  const updateUserAccount = async () => {
-    try {
-      //   alert(data.workemail)
-      let result = await axios.patch(
-        `${process.env.REACT_APP_BASE_URL}api/user`,
-        values,
-        {
-          headers: {
-            "Content-type": "application/json; charset=UTF-8",
-            Authorization: sessionStorage.getItem("token"),
-          },
-        }
-      );
-      
-     
-      console.log("updated", values);
-    } catch (e) {
-      console.error(e?.response?.data?.message);
-    }
-  };
-  updateUserAccount();
-}, [values]);
+    activeStudents: "",
+    activeTutors: "",
+    services: [],
+  });
+
+  useEffect(() => {
+    getUserDetails();
+  }, []);
+
+  useEffect(() => {
+    // setValues(organization);
+    const updateUserAccount = async () => {
+      try {
+        //   alert(data.workemail)
+        let reqBody = { ...values };
+        delete reqBody["_id"];
+        delete reqBody["email"];
+        let result = await axios.patch(
+          `${process.env.REACT_APP_BASE_URL}api/user`,
+          reqBody,
+          {
+            headers: {
+              "Content-type": "application/json; charset=UTF-8",
+              Authorization: sessionStorage.getItem("token"),
+            },
+          }
+        );
+
+        console.log("updated", values);
+      } catch (e) {
+        console.error(e?.response?.data?.message);
+      }
+    };
+    updateUserAccount();
+  }, [values]);
+
   const showResetConfirmation = () => {
     setReset(true);
+    handlePasswordReset();
     handleClose();
   };
+
   const handleCheckboxChange = (text, arr, setValue) => {
     console.log(arr);
     const temp = arr.map((topic) => {
@@ -90,11 +99,12 @@ const AccountOverview = () => {
   const handleClose = () => {
     setModalOpen(!modalOpen);
   };
+
   const getUserDetails = async () => {
     try {
       //   alert(data.workemail)
       let result = await axios.get(
-        `${process.env.REACT_APP_BASE_URL}api/user`,
+        `${process.env.REACT_APP_BASE_URL}api/user/mydetails`,
         {
           headers: {
             "Content-type": "application/json; charset=UTF-8",
@@ -104,8 +114,7 @@ const AccountOverview = () => {
       );
 
       setValues({
-        
-        ...result.data.data.user[0],
+        ...result.data.data.user,
       });
 
       console.log("account overview", values);
@@ -113,6 +122,21 @@ const AccountOverview = () => {
       console.error(e);
     }
   };
+
+  const handlePasswordReset = () => {
+    forgotPassword({ email: values.email }).then((res) => {
+      if (res.error) {
+        console.log(res.error);
+        alert(res.error.data.message);
+        return;
+      }
+      console.log(res.data);
+      alert("Password reset link sent to your email.");
+      // window.open(res.data.link)
+    });
+  };
+
+
   return (
     <div>
       <div className="flex flex-col gap-10 w-[900px] ">
@@ -168,7 +192,9 @@ const AccountOverview = () => {
               />
             </div>
             <span class="absolute top-20  scale-0 rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100">
-              <h3 className="text-[#24A3D9] font-semibold mb-1">Email Confirmation Sent</h3>
+              <h3 className="text-[#24A3D9] font-semibold mb-1">
+                Email Confirmation Sent
+              </h3>
               You need to verify your email if
               <ul className="list-disc pl-3 mb-2">
                 <li>you created a new account.</li>
@@ -197,7 +223,9 @@ const AccountOverview = () => {
         </div>
         <div className="flex gap-7 flex-1">
           <div>
-            <h1 className="my-1 text-[#26435F] font-semibold text-sm">Send Link</h1>
+            <h1 className="my-1 text-[#26435F] font-semibold text-sm">
+              Send Link
+            </h1>
             <button
               onClick={handleClose}
               className="bg-[#517CA8] text-white rounded-md px-3 py-2 text-sm"
@@ -206,7 +234,9 @@ const AccountOverview = () => {
             </button>
           </div>
           <div>
-            <h1 className="my-1 text-[#26435F] font-semibold text-sm">2FA Codes / key</h1>
+            <h1 className="my-1 text-[#26435F] font-semibold text-sm">
+              2FA Codes / key
+            </h1>
             <button className="bg-[#517CA8] text-white rounded-md px-5 py-2 text-sm">
               Download
             </button>

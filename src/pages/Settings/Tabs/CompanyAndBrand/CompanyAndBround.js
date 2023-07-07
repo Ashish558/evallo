@@ -3,20 +3,28 @@ import InputField from "../../../../components/InputField/inputField";
 import PrimaryButton from "../../../../components/Buttons/PrimaryButton";
 import { CheckboxNew } from "../../../../components/Checkbox/CheckboxNew";
 import InputSelect from "../../../../components/InputSelect/InputSelect";
-import { studentServedData, instructionFormat,companyType } from "../staticData";
+import {
+  studentServedData,
+  instructionFormat,
+  companyType,
+} from "../staticData";
 import logo from "../../../../assets/icons/Frame 31070.svg";
+import orgDefaultLogo from "../../../../assets/images/org-default.png";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
 import { Country, State } from "country-state-city";
-
+import UploadIcon from "../../../../assets/icons/upload-colored.svg";
+import styles from "./styles.module.css";
 import axios from "axios";
+import { useRef } from "react";
+import { BASE_URL, getAuthHeader } from "../../../../app/constants/constants";
 const CompanyAndBround = () => {
-  
   const { organization } = useSelector((state) => state.organization);
 
   const [studentServed, setStudentServed] = useState(studentServedData);
   const [instructions, setInstructions] = useState(instructionFormat);
+  const inpuRef = useRef();
   const [values, setValues] = useState({ api: "hii" });
   const [error, setError] = useState({
     firstName: "",
@@ -60,9 +68,9 @@ const CompanyAndBround = () => {
     console.log("updated", values);
     updateUserAccount();
   }, [values]);
+
   useEffect(() => {
     setValues(organization);
-
     let arr = instructions;
     organization?.formatOfInstruction?.forEach((element) => {
       arr = arr.map((topic) => {
@@ -88,16 +96,37 @@ const CompanyAndBround = () => {
 
     setStudentServed(arr);
   }, [organization]);
-  const [countryCode, setCountryCode] = useState('ac')
-  useEffect(()=>{
-     Country.getAllCountries().forEach((country)=>{
-         if(country.name==values.country){
-          setCountryCode(country.isoCode)
-          return
-         }
-     })
-  },[values.country])
-console.log(State.getStateByCode(countryCode))
+
+  const [countryCode, setCountryCode] = useState("ac");
+
+  useEffect(() => {
+    Country.getAllCountries().forEach((country) => {
+      if (country.name == values.country) {
+        setCountryCode(country.isoCode);
+        return;
+      }
+    });
+  }, [values.country]);
+ console.log('organization', organization);
+
+  const handleLogoChange = async (e) => {
+    const formData = new FormData();
+    const file = e.target.files[0];
+    formData.append('photos', file)
+    console.log(file);
+    await axios
+      .patch(`${BASE_URL}api/user/org/addOrgLogos/${organization._id}`, formData, {
+        headers: getAuthHeader(),
+      })
+      .then((res) => {
+        if (res.error) {
+          console.log("logo err", res.error);
+        }
+        console.log("logo res", res.data);
+        window.location.reload()
+        alert("PDF UPLOADED");
+      })
+  };
   return (
     <div>
       <div className="flex flex-col gap-10 w-[900px] ">
@@ -165,8 +194,16 @@ console.log(State.getStateByCode(countryCode))
           />
         </div>
         <div className="flex gap-5 flex-1">
-          <div>
-            <img src={logo} className="ml-[-25px]" />
+          <div className="">
+            <label className="inline-block text-sm font-semibold undefined ml-0"> Business Logo </label>
+            <div className="w-[312px] h-[250px] relative p-10">
+              <img src={organization.orgBussinessLogo ? organization.orgBussinessLogo : orgDefaultLogo} className="w-full h-full object-contain" />
+              <div className={styles["upload-container"]} onClick={()=>inpuRef.current.click()} >
+                <p className="text-[#24A3D9] text-xs"> Upload </p>
+                <img src={UploadIcon} />
+                <input className="hidden" type="file" ref={inpuRef} onChange={handleLogoChange} />
+              </div>
+            </div>
           </div>
           <div className="flex flex-col  gap-2 flex-1 py-auto">
             <div className="flex gap-5 items-center justify-between">
@@ -197,7 +234,7 @@ console.log(State.getStateByCode(countryCode))
                 onChange={(e) =>
                   setValues({
                     ...values,
-                    companyType: e
+                    companyType: e,
                   })
                 }
                 error={error.companyType}
@@ -210,14 +247,14 @@ console.log(State.getStateByCode(countryCode))
                 inputContainerClassName=" bg-white "
                 inputClassName="bg-transparent"
                 label="Street Address"
-                value={values.company}
+                value={values.address}
                 onChange={(e) =>
                   setValues({
                     ...values,
-                    company: e.target.value,
+                    address: e.target.value,
                   })
                 }
-                error={error.company}
+                error={error.address}
               />
               <InputSelect
                 placeholder="Select"
@@ -228,11 +265,11 @@ console.log(State.getStateByCode(countryCode))
                 label="Country"
                 value={values.country}
                 optionData={Country.getAllCountries()}
-                optionType ={"object"}
+                optionType={"object"}
                 onChange={(e) =>
                   setValues({
                     ...values,
-                    country: e
+                    country: e,
                   })
                 }
                 error={error.country}
@@ -248,12 +285,11 @@ console.log(State.getStateByCode(countryCode))
                 label="State / Region "
                 value={values.state}
                 optionData={State.getAllStates()}
-               
-                optionType ={"object"}
+                optionType={"object"}
                 onChange={(e) =>
                   setValues({
                     ...values,
-                    state: e
+                    state: e,
                   })
                 }
                 error={error.state}

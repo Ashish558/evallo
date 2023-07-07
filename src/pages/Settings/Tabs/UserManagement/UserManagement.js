@@ -15,7 +15,7 @@ import {
   useLazyGetTutorDetailsQuery,
   useLazyGetUserDetailQuery,
 } from "../../../../app/services/users";
-import { useSignupUserMutation } from "../../../../app/services/auth";
+import { useForgotPasswordMutation, useSignupUserMutation } from "../../../../app/services/auth";
 import { useNavigate } from "react-router-dom";
 import { roles } from "../../../../constants/constants";
 import {
@@ -53,6 +53,7 @@ export default function UserManagement() {
   const [numberPrefix, setNumberPrefix] = useState("+1");
   const [usersData, setUsersData] = useState([]);
   const [filteredUsersData, setFilteredUsersData] = useState([]);
+  const [forgotPassword, forgotPasswordResp] = useForgotPasswordMutation();
 
   useEffect(() => {
     setValidData(
@@ -125,10 +126,27 @@ export default function UserManagement() {
       text: "Last Login",
     },
     {
-      id: 7,
+      id: 8,
+      text: "Password",
+    },
+    {
+      id: 9,
       text: "",
     },
   ];
+
+  const handleResetPassword = (email) => {
+    forgotPassword({ email: email }).then((res) => {
+      if (res.error) {
+        console.log(res.error);
+        alert(res.error.data.message);
+        return;
+      }
+      console.log(res.data);
+      alert("Password reset link sent to the email.");
+      // window.open(res.data.link)
+    });
+  };
 
   const [getUserDetail, getUserDetailResp] = useLazyGetUserDetailQuery();
   const [getTutorDetail, userDetailResp] = useLazyGetTutorDetailsQuery();
@@ -739,7 +757,7 @@ export default function UserManagement() {
           <Table
             dataFor="allUsers"
             data={filteredUsersData}
-            onClick={{ redirect, handleTutorStatus, handleDelete }}
+            onClick={{ redirect, handleTutorStatus, handleDelete, handleResetPassword }}
             tableHeaders={tableHeaders}
             headerObject={true}
             maxPageSize={maxPageSize}
