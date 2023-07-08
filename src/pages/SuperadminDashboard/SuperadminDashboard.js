@@ -74,15 +74,7 @@ const userTypes = [
 ];
 
 export default function SuperadminDashboard() {
-  const [orgSignUpData, setOrgSignUpData] = useState([
-    {
-      name: "name",
-      admin: "admin",
-      status: "status",
-      type: "type",
-      date: "May 1, 2023",
-    },
-  ]);
+  const [orgSignUpData, setOrgSignUpData] = useState([]);
   const updateUserAccount = async () => {
     try {
       //   alert(data.workemail)
@@ -95,22 +87,23 @@ export default function SuperadminDashboard() {
           },
         }
       );
-      if (result.status === 200) {
-        let arr = [];
-        for (let i = 0; i < result.length; i++) {
-          let temp = {
-            date: result.data.data.users[i].createdAt,
-            name: result.data.data.users[i].company,
-            status: result.data.data.users[i].userStatus,
-            type: result.data.data.users[i].role,
-            admin: result.data.data.users[i].associatedOrg,
-          };
-          arr.push(temp);
-          console.log(temp)
-        }
 
-        setOrgSignUpData([...orgSignUpData, ...result.data.data.user]);
+      let arr = [];
+      for (let i = 0; i < result?.data?.data?.user?.length; i++) {
+        let date= new Date(result.data.data.user[i].createdAt).toDateString()
+        console.log('date',date)
+        let temp = {
+          date:date,
+          name: result.data.data.user[i].company,
+          status: result.data.data.user[i].userStatus,
+          type: result.data.data.user[i].role,
+          admin: result.data.data.user[i].firstName+  result.data.data.user[i].lastName,
+        };
+        arr.push(temp);
       }
+      console.log('shy',result,arr);
+      if(arr.length>0)
+      setOrgSignUpData(arr);
       //console.log(result.data.data.user)
     } catch (e) {
       console.error(e);
@@ -119,9 +112,7 @@ export default function SuperadminDashboard() {
   useEffect(() => {
     updateUserAccount();
   }, []);
-  useEffect(() => {
-    console.log(orgSignUpData);
-  }, [orgSignUpData]);
+
   return (
     <div className={styles.container}>
       {/* <div className='flex justify-between px-[80px] bg-[#26435F] h-[54px] items-center w-full'>
