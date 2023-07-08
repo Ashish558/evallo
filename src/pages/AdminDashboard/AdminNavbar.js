@@ -134,6 +134,14 @@ const tutorNav = [
     tooltip: "Assigned Tests",
   },
 ];
+const supAdminNavData = [
+  {
+    icon: Settings,
+    path: "/settings",
+    excludes: ["student", "parent", "tutor"],
+    tooltip: "Settings",
+  },
+];
 const AdminNavbar = () => {
   const [navData, setNavData] = useState(tempnavdata);
   const location = useLocation();
@@ -154,7 +162,9 @@ const AdminNavbar = () => {
       setNavData(parentNav);
     } else if (persona === "admin") {
       setNavData(tempnavdata);
-    } else {
+    }else if(persona === 'superAdmin'){
+      setNavData(supAdminNavData)
+   } else {
       setNavData([]);
     }
   }, [persona]);
