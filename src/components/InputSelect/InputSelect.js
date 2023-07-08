@@ -82,12 +82,12 @@ export default function InputSelect({
           name={label}
         >
           {value === "" || !value ? (
-            <span className="text-primary-60  mr-10 whitespace-nowrap">
+            <span className="text-primary-60 text-[13px]  mr-10 whitespace-nowrap">
               {" "}
               {placeholder}{" "}
             </span>
           ) : (
-            <span className="mr-10 whitespace-nowrap">
+            <span className="mr-10 text-[13px] whitespace-nowrap">
             { value}
           
           </span>

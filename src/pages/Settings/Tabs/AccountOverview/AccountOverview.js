@@ -81,7 +81,7 @@ const AccountOverview = () => {
           }
         );
 
-        console.log("updated", values);
+     //   console.log("updated", values);
       } catch (e) {
         console.error(e?.response?.data?.message);
       }
