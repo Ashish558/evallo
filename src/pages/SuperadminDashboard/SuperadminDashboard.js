@@ -90,23 +90,24 @@ export default function SuperadminDashboard() {
 
       let arr = [];
       for (let i = 0; i < result?.data?.data?.user?.length; i++) {
-        let date= new Date(result.data.data.user[i].createdAt).toDateString()
-        console.log('date',date)
+        let date = new Date(result.data.data.user[i].createdAt).toDateString();
+        //console.log("date", date);
         let temp = {
-          date:date,
+          date: date,
           name: result.data.data.user[i].company,
           status: result.data.data.user[i].userStatus,
           type: result.data.data.user[i].role,
-          admin: result.data.data.user[i].firstName+  result.data.data.user[i].lastName,
+          admin:
+            result.data.data.user[i].firstName +
+            result.data.data.user[i].lastName,
         };
         arr.push(temp);
       }
-      console.log('shy',result,arr);
-      if(arr.length>0)
-      setOrgSignUpData(arr);
-      //console.log(result.data.data.user)
+      //console.log("shy", result, arr);
+      if (arr.length > 0) setOrgSignUpData(arr);
+      ////console.log(result.data.data.user)
     } catch (e) {
-      console.error(e);
+      //console.error(e);
     }
   };
   useEffect(() => {
