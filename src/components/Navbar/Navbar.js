@@ -177,6 +177,24 @@ const tutorNav = [
       tooltip: 'Logout'
    },
 ]
+const supAdminNavData = [
+   {
+      icon: logo,
+      path: "/logo"
+   },
+   {
+      icon: SettingsIcon,
+      path: "/settings",
+      excludes: ['student', 'parent', 'tutor'],
+      tooltip: 'Settings'
+   },
+   {
+      icon: Exit,
+      path: "/exit",
+      parentClassName: "mt-auto",
+      tooltip: 'Logout'
+   },
+];
 export default function Navbar() {
    const [navData, setNavData] = useState(tempnavdata)
    const location = useLocation();
@@ -206,7 +224,10 @@ export default function Navbar() {
          setNavData(parentNav)
       }else if(persona === 'admin'){
          setNavData(tempnavdata)
-      }else{
+      }else if(persona === 'superAdmin'){
+         setNavData(supAdminNavData)
+      }
+      else{
          setNavData(studentNav)
       }
    }, [persona])
