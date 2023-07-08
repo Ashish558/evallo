@@ -14,7 +14,9 @@ import RemoveIcon from "../../assets/icons/remove.svg"
 import EditTestIcon from "../../assets/icons/edit-test.svg";
 import TrashIcon from '../../assets/icons/delete.svg'
 
-import DeleteIcon from "../../assets/icons/cross.svg"
+import AddIcon from "../../assets/icons/plus.svg"
+import EditIcon from "../../assets/icons/test-edit.svg"
+import DeleteIcon from "../../assets/icons/trash-icon.svg"
 import DeleteTutorIcon from "../../assets/icons/delete-tutor.svg"
 import InputSelect from "../InputSelect/InputSelect";
 import { useLazyGetSettingsQuery } from "../../app/services/session";
@@ -531,26 +533,32 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch, ext
                <td>{item.createdAt.split("T")[0]}</td>
                <td>{item.updatedAt.split("T")[0]}</td>
                <td> {item.no_of_assign ? item.no_of_assign : '-'} </td>
-               <td className="font-medium px-1 py-4 text-right w-240">
-                  <div className="flex justify-end">
-                     <button
-                        className="flex bg-primaryOrange items-center leading-none text-white py-1.8 px-5 rounded"
+               <td className="font-medium px-1 py-4 text-right">
+                  <div className="flex justify-center">
+                     <p
+                        className="flex leading-none text-[#517CA8] underline py-1.8 px-0 underline-offset-1 cursor-pointer rounded"
                         onClick={() =>
                            navigate(`/all-tests/${item._id}`)
                         }
                      >
-                        View Test
-                     </button>
+                        View
+                     </p>
                   </div>
                </td>
-               <td className="font-medium px-1 text-right w-240 py-4">
-                  <div
-                     className="flex"
-                     onClick={() => onClick.openRemoveTestModal(item)}
-                  >
-                     <button className="flex ml-6 bg-textGray-400 items-center leading-none text-white py-1.8 px-5 rounded">
-                        Remove
-                     </button>
+               <td className="font-medium px-1 justify-center flex gap-x-2">
+                  <img src={EditIcon} className="cursor-pointer p-1" 
+                   onClick={() =>
+                     navigate(`/all-tests/${item._id}`)
+                   }
+                   alt='edit' />
+                  <img src={DeleteIcon} className="cursor-pointer p-1" alt='delete'  onClick={() => onClick.openRemoveTestModal(item)} />
+               </td>
+               <td className=" gap-x-2 ">
+                  <div className="flex items-center gap-x-2 justify-center pr-3">
+                  <button className="px-4 py-1 text-[#517CA8] bg-[#517CA81A] ">
+                     Beta
+                  </button>
+                  <img src={AddIcon} alt='add' className="" />
                   </div>
                </td>
             </tr>
