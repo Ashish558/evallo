@@ -12,6 +12,7 @@ import Modal from "../../../../components/Modal/Modal";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import { useForgotPasswordMutation } from "../../../../app/services/auth";
+import { useLazyGetPersonalDetailQuery, } from "../../../../app/services/users";
 import { BASE_URL, getAuthHeader } from "../../../../app/constants/constants";
 const AccountOverview = () => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -48,9 +49,17 @@ const AccountOverview = () => {
     activeTutors: "",
     services: [],
   });
-
+  const [userDetails, userDetailsStatus] = useLazyGetPersonalDetailQuery();
   useEffect(() => {
-    getUserDetails();
+    userDetails()
+      .then((res) => {
+        setValues({
+          ...res?.data.data.user,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, []);
 
   useEffect(() => {
@@ -100,28 +109,7 @@ const AccountOverview = () => {
     setModalOpen(!modalOpen);
   };
 
-  const getUserDetails = async () => {
-    try {
-      //   alert(data.workemail)
-      let result = await axios.get(
-        `${process.env.REACT_APP_BASE_URL}api/user/mydetails`,
-        {
-          headers: {
-            "Content-type": "application/json; charset=UTF-8",
-            Authorization: sessionStorage.getItem("token"),
-          },
-        }
-      );
-
-      setValues({
-        ...result.data.data.user,
-      });
-
-      console.log("account overview", values);
-    } catch (e) {
-      console.error(e);
-    }
-  };
+ 
 
   const handlePasswordReset = () => {
     forgotPassword({ email: values.email }).then((res) => {
@@ -135,7 +123,6 @@ const AccountOverview = () => {
       // window.open(res.data.link)
     });
   };
-
 
   return (
     <div>

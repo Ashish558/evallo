@@ -22,7 +22,9 @@ export default function InputSelect({
   disabled,
   required,
   optionListClassName,
+
 }) {
+ 
   const [selected, setSelected] = useState(false);
   const selectRef = useRef();
   useOutsideAlerter(selectRef, () => setSelected(false));
@@ -106,7 +108,7 @@ export default function InputSelect({
                   }}
                 >
                   <p className={optionListClassName}>
-                    {optionType !== undefined && optionType === "object"
+                    { optionType === "object"
                       ? option.name
                       : option}
                   </p>

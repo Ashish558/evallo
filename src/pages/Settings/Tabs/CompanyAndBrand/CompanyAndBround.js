@@ -19,13 +19,19 @@ import styles from "./styles.module.css";
 import axios from "axios";
 import { useRef } from "react";
 import { BASE_URL, getAuthHeader } from "../../../../app/constants/constants";
+import { useUpdateUserMutation } from "../../../../app/services/users";
 const CompanyAndBround = () => {
   const { organization } = useSelector((state) => state.organization);
-
+  const userData = useSelector((state) => state.user);
+  const [updateRole, setRole] = useUpdateUserMutation();
+  
   const [studentServed, setStudentServed] = useState(studentServedData);
   const [instructions, setInstructions] = useState(instructionFormat);
   const inpuRef = useRef();
-  const [values, setValues] = useState({ api: "hii" });
+  const [country, setCountry] = useState([]);
+  const [states, setStates] = useState([]);
+  const [values, setValues] = useState({ role: userData.role, email: "" });
+
   const [error, setError] = useState({
     firstName: "",
     lastName: "",
@@ -34,13 +40,38 @@ const CompanyAndBround = () => {
     subscriptionCode: "",
     company: "",
   });
+  const handleState = (c) => {
+    if (!c) return;
+    console.log("country", c);
+    const state = country.filter((x) => x.name === c);
+    const currentState = state.map((s) => s.states);
+    //console.log(currentState);
+    setStates([...currentState[0]]);
 
-  const handleCheckboxChange = (text, arr, setBoxValue) => {
+    setValues({
+      ...values,
+      country: c,
+      state: "",
+    });
+  };
+  const countryData = Country.getAllCountries().map((city) => ({
+    value: city.name,
+    displayValue: city.name,
+  }));
+  const handleCheckboxChange = (text, arr, setBoxValue, name) => {
     console.log(arr);
     const temp = arr.map((topic) => {
       return topic.text === text
         ? { ...topic, checked: !topic.checked }
         : { ...topic };
+    });
+    let nameData = [];
+    temp.map((topic) => {
+      if (topic.checked) nameData.push(topic.text);
+    });
+    setValues({
+      ...values,
+      [name]: nameData,
     });
     setBoxValue(temp);
   };
@@ -58,6 +89,12 @@ const CompanyAndBround = () => {
           },
         }
       );
+
+      updateRole({ userId: userData.id, ...userData, role: values.role }).then(
+        () => {
+        //  console.log("role changed");
+        }
+      );
     } catch (e) {
       console.error(e);
     }
@@ -65,12 +102,25 @@ const CompanyAndBround = () => {
 
   useEffect(() => {
     // setValues(organization);
-    console.log("updated", values);
+    if (country.length === 0) {
+      fetch("countryData.json")
+        .then((res) => res.json())
+        .then((data) => setCountry(data));
+    }
+    const c = values.country;
+    if (c) {
+      const state = country.filter((x) => x.name === c);
+      const currentState = state.map((s) => s.states);
+      if (currentState.length > 0) setStates([...currentState[0]]);
+    }
+
+    // console.log("updated", values);
     updateUserAccount();
   }, [values]);
 
   useEffect(() => {
-    setValues(organization);
+    setValues({ ...organization, ...values });
+
     let arr = instructions;
     organization?.formatOfInstruction?.forEach((element) => {
       arr = arr.map((topic) => {
@@ -97,36 +147,30 @@ const CompanyAndBround = () => {
     setStudentServed(arr);
   }, [organization]);
 
-  const [countryCode, setCountryCode] = useState("ac");
-
-  useEffect(() => {
-    Country.getAllCountries().forEach((country) => {
-      if (country.name == values.country) {
-        setCountryCode(country.isoCode);
-        return;
-      }
-    });
-  }, [values.country]);
-
   const handleLogoChange = async (e) => {
     const formData = new FormData();
     const file = e.target.files[0];
-    formData.append('photos', file)
-    formData.append('updatefieldName', 'orgBussinessLogo')
+    formData.append("photos", file);
+    formData.append("updatefieldName", "orgBussinessLogo");
     console.log(file);
     await axios
-      .patch(`${BASE_URL}api/user/org/addOrgLogos/${organization._id}`, formData, {
-        headers: getAuthHeader(),
-      })
+      .patch(
+        `${BASE_URL}api/user/org/addOrgLogos/${organization._id}`,
+        formData,
+        {
+          headers: getAuthHeader(),
+        }
+      )
       .then((res) => {
         if (res.error) {
           console.log("logo err", res.error);
         }
         console.log("logo res", res.data);
-        window.location.reload()
+        window.location.reload();
         alert("PDF UPLOADED");
-      })
+      });
   };
+
   return (
     <div>
       <div className="flex flex-col gap-10 w-[900px] ">
@@ -137,13 +181,8 @@ const CompanyAndBround = () => {
             inputContainerClassName=" bg-white"
             inputClassName="bg-transparent"
             label="Account Type"
-            value={values.accountType}
-            onChange={(e) =>
-              setValues({
-                ...values,
-                accountType: e.target.value,
-              })
-            }
+            disabled={true}
+            value={"Company"}
             error={error.accountType}
           />
 
@@ -168,14 +207,14 @@ const CompanyAndBround = () => {
             inputContainerClassName=" bg-white"
             inputClassName="bg-transparent"
             label="Support Email"
-            value={values.email}
+            value={values.supportEmail}
             onChange={(e) =>
               setValues({
                 ...values,
-                email: e.target.value,
+                supportEmail: e.target.value,
               })
             }
-            error={error.email}
+            error={error.supportEmail}
           />
           <InputField
             placeholder=""
@@ -195,13 +234,31 @@ const CompanyAndBround = () => {
         </div>
         <div className="flex gap-5 flex-1">
           <div className="">
-            <label className="inline-block text-sm font-semibold undefined ml-0"> Business Logo </label>
+            <label className="inline-block text-sm font-semibold undefined ml-0">
+              {" "}
+              Business Logo{" "}
+            </label>
             <div className="w-[312px] h-[250px] relative p-10">
-              <img src={organization.orgBussinessLogo ? organization.orgBussinessLogo : orgDefaultLogo} className="w-full h-full object-contain" />
-              <div className={styles["upload-container"]} onClick={()=>inpuRef.current.click()} >
+              <img
+                src={
+                  organization.orgBussinessLogo
+                    ? organization.orgBussinessLogo
+                    : orgDefaultLogo
+                }
+                className="w-full h-full object-contain"
+              />
+              <div
+                className={styles["upload-container"]}
+                onClick={() => inpuRef.current.click()}
+              >
                 <p className="text-[#24A3D9] text-xs"> Upload </p>
                 <img src={UploadIcon} />
-                <input className="hidden" type="file" ref={inpuRef} onChange={handleLogoChange} />
+                <input
+                  className="hidden"
+                  type="file"
+                  ref={inpuRef}
+                  onChange={handleLogoChange}
+                />
               </div>
             </div>
           </div>
@@ -264,14 +321,9 @@ const CompanyAndBround = () => {
                 inputClassName="bg-transparent"
                 label="Country"
                 value={values.country}
-                optionData={Country.getAllCountries()}
+                optionData={country}
                 optionType={"object"}
-                onChange={(e) =>
-                  setValues({
-                    ...values,
-                    country: e,
-                  })
-                }
+                onChange={(e) => handleState(e)}
                 error={error.country}
               />
             </div>
@@ -284,7 +336,7 @@ const CompanyAndBround = () => {
                 inputClassName="bg-transparent"
                 label="State / Region "
                 value={values.state}
-                optionData={State.getAllStates()}
+                optionData={states}
                 optionType={"object"}
                 onChange={(e) =>
                   setValues({
@@ -338,6 +390,7 @@ const CompanyAndBround = () => {
                 key={id}
                 boxData={instructions}
                 setBoxData={setInstructions}
+                Dname={"formatOfInstruction"}
                 handleCheckboxChange={handleCheckboxChange}
               />
             ))}
@@ -351,6 +404,7 @@ const CompanyAndBround = () => {
                 item={item}
                 key={id}
                 boxData={studentServed}
+                Dname={"studentServed"}
                 setBoxData={setStudentServed}
                 handleCheckboxChange={handleCheckboxChange}
               />

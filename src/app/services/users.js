@@ -146,6 +146,7 @@ export const {
   useUpdateTutorDetailsMutation,
   usePostTutorDetailsMutation,
   useLazyGetPersonalDetailQuery,
+  
   useLazyGetInvoiceQuery,
   useUpdateProfileImageMutation,
   useLazyGetOrganizationQuery,
