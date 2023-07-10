@@ -1,14 +1,14 @@
 import React from 'react'
 import styles from "./style.module.css";
 
-export  const CheckboxNew = ({item, handleCheckboxChange,boxData,setBoxData}) => {
+export  const CheckboxNew = ({item, handleCheckboxChange,boxData,setBoxData,Dname}) => {
     return (
      
           <div  className="flex items-center mb-3 mr-6 ">
             <div
               onClick={() =>
                 
-                handleCheckboxChange(item.text,boxData,setBoxData)
+                handleCheckboxChange(item.text,boxData,setBoxData,Dname)
               }
               className={`${styles.container} `}
             >
@@ -23,7 +23,7 @@ export  const CheckboxNew = ({item, handleCheckboxChange,boxData,setBoxData}) =>
             <p
               onClick={() =>
                     
-                handleCheckboxChange(item.text,boxData,setBoxData)
+                handleCheckboxChange(item.text,boxData,setBoxData,Dname)
               }
               className="font-medium text-[#507CA8]  text-[13px] opacity-90 leading-5"
             >

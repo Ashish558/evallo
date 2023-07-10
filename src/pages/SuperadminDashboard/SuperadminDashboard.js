@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import SAdminNavbar from "../../components/sAdminNavbar/sAdminNavbar";
 import styles from "./styles.module.css";
 import OrgCard from "./orgCard/orgCard";
@@ -7,18 +7,29 @@ import { orgData, tableHeaders } from "./temp";
 import Chart from "./DataChart/Chart";
 import Chart2 from "./DataChart/Chart2";
 import Index from "./FinancialStats/Index1";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowDown, faArrowDown19, faArrowDown91, faArrowRightFromBracket, faCaretDown, faDollar, faPlus, faUpload } from '@fortawesome/free-solid-svg-icons';
-import { faQuestionCircle } from '@fortawesome/free-regular-svg-icons';
-import icon from '../../assets/images/Evallo.png';
-import image from '../../assets/images/Vector.png';
-import image1 from '../../assets/images/Vector (1).png';
-import image2 from '../../assets/images/Vector (2).png';
-import image3 from '../../assets/images/Vector (3).png';
-import image4 from '../../assets/images/Vector (4).png';
-import image5 from '../../assets/images/Vector (5).png';
-import image6 from '../../assets/images/Vector (6).png';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faArrowDown,
+  faArrowDown19,
+  faArrowDown91,
+  faArrowRightFromBracket,
+  faCaretDown,
+  faDollar,
+  faPlus,
+  faUpload,
+} from "@fortawesome/free-solid-svg-icons";
+import { faQuestionCircle } from "@fortawesome/free-regular-svg-icons";
+import icon from "../../assets/images/Evallo.png";
+import image from "../../assets/images/Vector.png";
+import image1 from "../../assets/images/Vector (1).png";
+import image2 from "../../assets/images/Vector (2).png";
+import image3 from "../../assets/images/Vector (3).png";
+import image4 from "../../assets/images/Vector (4).png";
+import image5 from "../../assets/images/Vector (5).png";
+import image6 from "../../assets/images/Vector (6).png";
 import Demography from "./Demographies/Demography1";
+import axios from "axios";
+import { useState } from "react";
 
 const orgContents = [
   {
@@ -63,6 +74,46 @@ const userTypes = [
 ];
 
 export default function SuperadminDashboard() {
+  const [orgSignUpData, setOrgSignUpData] = useState([]);
+  const updateUserAccount = async () => {
+    try {
+      //   alert(data.workemail)
+      let result = await axios.get(
+        `https://testbackend.sevensquarelearning.com/api/user`,
+
+        {
+          headers: {
+            Authorization: sessionStorage.getItem("token"),
+          },
+        }
+      );
+
+      let arr = [];
+      for (let i = 0; i < result?.data?.data?.user?.length; i++) {
+        let date = new Date(result.data.data.user[i].createdAt).toDateString();
+        //console.log("date", date);
+        let temp = {
+          date: date,
+          name: result.data.data.user[i].company,
+          status: result.data.data.user[i].userStatus,
+          type: result.data.data.user[i].role,
+          admin:
+            result.data.data.user[i].firstName +
+            result.data.data.user[i].lastName,
+        };
+        arr.push(temp);
+      }
+      //console.log("shy", result, arr);
+      if (arr.length > 0) setOrgSignUpData(arr);
+      ////console.log(result.data.data.user)
+    } catch (e) {
+      //console.error(e);
+    }
+  };
+  useEffect(() => {
+    updateUserAccount();
+  }, []);
+
   return (
     <div className={styles.container}>
       {/* <div className='flex justify-between px-[80px] bg-[#26435F] h-[54px] items-center w-full'>
@@ -100,7 +151,7 @@ export default function SuperadminDashboard() {
               </div>
             </div>
             <div className="w-full">
-              <p className='mt-[20px] mb-2.5 font-medium text-[#26435F]' >
+              <p className="mt-[20px] mb-2.5 font-medium text-[#26435F]">
                 {" "}
                 User Stats{" "}
               </p>
@@ -109,8 +160,9 @@ export default function SuperadminDashboard() {
                   {userTypes.map((item) => {
                     return (
                       <div
-                        className={` bg-white border-b border-[#000000] ${styles.userStat
-                          } ${item.selected ? styles.selected : ""} `}
+                        className={` bg-white border-b border-[#000000] ${
+                          styles.userStat
+                        } ${item.selected ? styles.selected : ""} `}
                       >
                         {item.text}
                       </div>
@@ -118,7 +170,9 @@ export default function SuperadminDashboard() {
                   })}
                 </div>
                 <div className="bg-[#F5F8FA]">
-                  <div className={`flex w-full bg-white ${styles.customBorder}`}>
+                  <div
+                    className={`flex w-full bg-white ${styles.customBorder}`}
+                  >
                     <div className="w-1/5 flex flex-col items-center pt-3 pb-2">
                       <p className={`${styles.statHead} text-xl font-semibold`}>
                         190
@@ -153,7 +207,9 @@ export default function SuperadminDashboard() {
                     </div>
                   </div>
 
-                  <div className={`flex items-center  justify-around pt-3 pb-2 text-[#26435F] bg-[#FFFFFF] mt-4 ${styles.customBorder}`}>
+                  <div
+                    className={`flex items-center  justify-around pt-3 pb-2 text-[#26435F] bg-[#FFFFFF] mt-4 ${styles.customBorder}`}
+                  >
                     <div>
                       <p className="font-medium text-xl">202</p>
                       <p className="text-xs"># of Tests Assigned</p>
@@ -168,19 +224,32 @@ export default function SuperadminDashboard() {
             </div>
           </section>
           <section className="flex-1 px-5 mx-6 ">
-            <p className='text-[#26435F] font-medium text-sm'> Latest Org Signup </p>
-            <Table data={orgData} tableHeaders={tableHeaders} maxPageSize={5} />
+            <p className="text-[#26435F] font-medium text-sm">
+              {" "}
+              Latest Org Signup{" "}
+            </p>
+            <Table
+              data={orgSignUpData}
+              tableHeaders={tableHeaders}
+              maxPageSize={5}
+            />
           </section>
         </div>
         <p className="text-[#26435F] font-medium mt-9">Daily active users</p>
         <Chart />
         <Index />
         <div className="flex items-center mt-[50px]">
-          <p className="text-[#26435F] font-semibold ">Financial Stats chart </p>
-          <p className="text-[#26435F] pl-[15px] pt-1"><FontAwesomeIcon icon={faQuestionCircle}></FontAwesomeIcon></p>
+          <p className="text-[#26435F] font-semibold ">
+            Financial Stats chart{" "}
+          </p>
+          <p className="text-[#26435F] pl-[15px] pt-1">
+            <FontAwesomeIcon icon={faQuestionCircle}></FontAwesomeIcon>
+          </p>
         </div>
         <Chart2 />
-        <p className="text-[#26435F] font-semibold mt-[50px]">User demography</p>
+        <p className="text-[#26435F] font-semibold mt-[50px]">
+          User demography
+        </p>
         <Demography></Demography>
       </div>
 

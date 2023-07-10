@@ -44,7 +44,7 @@ export default function Table(props) {
    }, [currentPage, data])
 
    const totalPages = Math.ceil(data.length / maxPageSize)
-   console.log('cp', currentPage)
+   console.log('cp', data)
    return (
       <div>
          <table className={`${styles.customTable} mb-3 text-center w-full min-h-[300px]`}>
@@ -55,7 +55,7 @@ export default function Table(props) {
                   })}
                </tr>
             </thead>
-            <tbody className="relative">
+            <tbody className="">
                {
                   loading ?
                      <div className={`absolute w-full min-h-[100px] flex justify-center items-center`}>
