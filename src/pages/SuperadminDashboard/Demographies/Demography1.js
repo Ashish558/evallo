@@ -3,7 +3,23 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 import Map from '../WorldMap/Map';
 import indianFlag from '../../../assets/icons/emojione-v1_flag-for-india.svg'
+import {
+    useAddUserDemographyMutation,
+    
+  } from "../../../app/services/superAdmin";
+import { useState } from 'react';
+import { useEffect } from 'react';
+
 const Demography1 = () => {
+    const [currentDemographicArea, setCurrentDemographicArea] =useState([])
+    const [fetchDemography, setDemography] = useAddUserDemographyMutation();
+    useEffect(()=>{
+        fetchDemography({country:'India'}).then((res) => {
+    
+            setCurrentDemographicArea(res?.data?.aggregatedStates)
+            console.log("fetchDemography", currentDemographicArea);
+         });
+    },[fetchDemography])
     return (
         <div className='bg-[#FFFFFF] flex justify-center items-center border border-gray-200 p-4 mt-[6px] rounded-md'>
             <div className='grid grid-cols-2 gap-x-5'>

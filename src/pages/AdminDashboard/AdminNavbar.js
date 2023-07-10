@@ -141,6 +141,16 @@ const supAdminNavData = [
     excludes: ["student", "parent", "tutor"],
     tooltip: "Settings",
   },
+  {icon:Profile,
+    path: "/all-orgs",
+    excludes: ["student", "parent", "tutor"],
+    tooltip: "All Orgs",
+  },
+  {icon:Dashboard,
+    path: "/dashboard",
+    excludes: ["student", "parent", "tutor"],
+    tooltip: "Dashboard",
+  },
 ];
 const AdminNavbar = () => {
   const [navData, setNavData] = useState(tempnavdata);
@@ -148,6 +158,7 @@ const AdminNavbar = () => {
   const [logoutModalActive, setLogoutModalActive] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [showDashboard,setShowDashboard] = useState((location.pathname.includes("all-orgs")||location.pathname.includes("dashboard"))?true:false);
   const { width } = useWindowDimensions();
   const { isLoggedIn } = useSelector((state) => state.user);
 
@@ -176,6 +187,9 @@ const AdminNavbar = () => {
       // window.open("https://sevensquarelearning.com/");
     } else {
       if (path === "") return;
+      if(path==="/all-orgs"){
+        setShowDashboard(true)
+      }
       navigate(path);
     }
   };
@@ -194,7 +208,9 @@ const AdminNavbar = () => {
         </div>
         <div className="flex  text-[#FFFFFF] font-semibold text-[13px]">
           {navData.map((item, idx) => {
-            return (
+            if(location.pathname.includes(item.path)|| (item.tooltip=='Dashboard' && !showDashboard))
+            return <></>
+            return  (
               <div
                 key={idx}
                 className="flex items-center mr-6 cursor-pointer"

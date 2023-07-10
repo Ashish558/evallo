@@ -2,8 +2,10 @@ import React, { useEffect } from "react";
 import SAdminNavbar from "../../components/sAdminNavbar/sAdminNavbar";
 import styles from "./styles.module.css";
 import OrgCard from "./orgCard/orgCard";
+import orgStyles from "./orgCard/orgcard.module.css";
 import Table from "./Table/table";
 import { orgData, tableHeaders } from "./temp";
+import { useLazyGetAllOrgUsersQuery } from "../../app/services/users";
 import Chart from "./DataChart/Chart";
 import Chart2 from "./DataChart/Chart2";
 import Index from "./FinancialStats/Index1";
@@ -30,7 +32,13 @@ import image6 from "../../assets/images/Vector (6).png";
 import Demography from "./Demographies/Demography1";
 import axios from "axios";
 import { useState } from "react";
-
+import {
+  useAddUserDemographyMutation,
+  useGetAllOrgStatsQuery,
+  useGetUserStatsByRoleQuery,
+  useGetUserDailyActivityQuery,
+  useGetAllTestQuery,
+} from "../../app/services/superAdmin";
 const orgContents = [
   {
     heading: "Total # of Orgs",
@@ -75,44 +83,94 @@ const userTypes = [
 
 export default function SuperadminDashboard() {
   const [orgSignUpData, setOrgSignUpData] = useState([]);
-  const updateUserAccount = async () => {
-    try {
-      //   alert(data.workemail)
-      let result = await axios.get(
-        `https://testbackend.sevensquarelearning.com/api/user`,
-
-        {
-          headers: {
-            Authorization: sessionStorage.getItem("token"),
-          },
+  const [fetchUserData, setUserData] = useLazyGetAllOrgUsersQuery();
+  const { data: OrgStats } = useGetAllOrgStatsQuery();
+  const [currentUser, setCurrentUser] = useState();
+  const [totalUsers, setTotalUsers] = useState({
+    admin: null,
+    parent: null,
+    tutor: null,
+    student: null,
+    contributor: null,
+  });
+  const { data: userAdminStats } = useGetUserStatsByRoleQuery({
+    role: "admin",
+  });
+  const { data: userParentStats } = useGetUserStatsByRoleQuery({
+    role: "parent",
+  });
+  const { data: userTutorStats } = useGetUserStatsByRoleQuery({
+    role: "tutor",
+  });
+  const { data: userContributorStats } = useGetUserStatsByRoleQuery({
+    role: "contributor",
+  });
+  const { data: userStudentStats } = useGetUserStatsByRoleQuery({
+    role: "student",
+  });
+  const { data: userDailyActivity } = useGetUserDailyActivityQuery();
+  //console.log(userDailyActivity);
+  const [currentDemographicArea, setCurrentDemographicArea] =useState([])
+  const [fetchDemography, setDemography] = useAddUserDemographyMutation();
+  const getLatestOrgs = async () => {
+    //   alert(data.workemail)
+    fetchUserData().then((result) => {
+      try {
+        let arr = [];
+        for (let i = 0; i < result?.data?.data?.user?.length; i++) {
+          if (result?.data?.data?.user[i].role === "admin") {
+            let date = new Date(
+              result.data.data.user[i].createdAt
+            ).toDateString();
+            //console.log("date", date);
+            let temp = {
+              date: date,
+              name: result.data.data.user[i].company
+                ? result.data.data.user[i].company
+                : "Not Available",
+              status: result.data.data.user[i].userStatus,
+              type: result.data.data.user[i].subscription
+                ? result.data.data.user[i].subscription
+                : "none",
+              admin:
+                result.data.data.user[i].firstName +
+                " " +
+                result.data.data.user[i].lastName,
+            };
+            arr.push(temp);
+          }
         }
-      );
-
-      let arr = [];
-      for (let i = 0; i < result?.data?.data?.user?.length; i++) {
-        let date = new Date(result.data.data.user[i].createdAt).toDateString();
-        //console.log("date", date);
-        let temp = {
-          date: date,
-          name: result.data.data.user[i].company,
-          status: result.data.data.user[i].userStatus,
-          type: result.data.data.user[i].role,
-          admin:
-            result.data.data.user[i].firstName +
-            result.data.data.user[i].lastName,
-        };
-        arr.push(temp);
+        //console.log("shy", result, arr);
+        if (arr.length > 0) setOrgSignUpData(arr);
+        ////console.log(result.data.data.user)
+      } catch (e) {
+        //console.error(e);
       }
-      //console.log("shy", result, arr);
-      if (arr.length > 0) setOrgSignUpData(arr);
-      ////console.log(result.data.data.user)
-    } catch (e) {
-      //console.error(e);
-    }
+    });
   };
   useEffect(() => {
-    updateUserAccount();
-  }, []);
+    setTotalUsers({
+      admin: userAdminStats,
+      parent: userParentStats,
+      tutor: userTutorStats,
+      student: userStudentStats,
+      contributor: userContributorStats,
+    });
+    // console.log("admin", totalUsers["admin"]);
+    setCurrentUser({
+      name: "admin",
+
+      ...userAdminStats,
+    });
+    getLatestOrgs();
+   
+  }, [
+    userAdminStats,
+    userParentStats,
+    userTutorStats,
+    userStudentStats,
+    userContributorStats,
+  ]);
 
   return (
     <div className={styles.container}>
@@ -145,9 +203,26 @@ export default function SuperadminDashboard() {
             <div>
               <p className={styles.subheading}> Organizations </p>
               <div className={`flex ${styles.orgCard}`}>
-                {orgContents.map((item, idx) => {
-                  return <OrgCard {...item} />;
-                })}
+                <div className={`${orgStyles.container}`}>
+                  <p className={orgStyles.heading}> Total # of Orgs</p>
+                  <p className={orgStyles.text}>
+                    {" "}
+                    {OrgStats?.total_no_of_orgs}{" "}
+                  </p>
+                </div>
+
+                <div className={`${orgStyles.container}`}>
+                  <p className={orgStyles.heading}> C:I Ratio</p>
+                  <p className={orgStyles.text}> {OrgStats?.ci_ratio} </p>
+                </div>
+                <div className={`${orgStyles.container}`}>
+                  <p className={orgStyles.heading}> 12 Days</p>
+                  <p className={orgStyles.text}> {OrgStats?.days_12} </p>
+                </div>
+                <div className={`${orgStyles.container}`}>
+                  <p className={orgStyles.heading}> Inactive</p>
+                  <p className={orgStyles.text}>{OrgStats?.inactive} </p>
+                </div>
               </div>
             </div>
             <div className="w-full">
@@ -160,9 +235,19 @@ export default function SuperadminDashboard() {
                   {userTypes.map((item) => {
                     return (
                       <div
-                        className={` bg-white border-b border-[#000000] ${
+                        onClick={() => {
+                          setCurrentUser({
+                            name: item.text.toLowerCase(),
+                            ...totalUsers[`${item.text.toLowerCase()}`],
+                          });
+                        }}
+                        className={` bg-white border-b cursor-pointer border-[#000000] ${
                           styles.userStat
-                        } ${item.selected ? styles.selected : ""} `}
+                        } ${
+                          currentUser?.name === item.text.toLowerCase()
+                            ? styles.selected
+                            : ""
+                        } `}
                       >
                         {item.text}
                       </div>
@@ -175,34 +260,36 @@ export default function SuperadminDashboard() {
                   >
                     <div className="w-1/5 flex flex-col items-center pt-3 pb-2">
                       <p className={`${styles.statHead} text-xl font-semibold`}>
-                        190
+                        {currentUser?.name
+                          ? currentUser[`${currentUser.name}`]
+                          : ""}
                       </p>
                       <p className="text-xs text-[#26435F]">Total</p>
                     </div>
                     <div className="w-1/5 flex flex-col items-center pt-3 pb-2">
                       <p className={`${styles.statHead} text-xl font-semibold`}>
-                        190
+                        {currentUser?.no_of_active_users}
                       </p>
                       <p className="text-xs text-[#26435F]">Active</p>
                     </div>
                     <div className="w-1/5 flex flex-col items-center pt-3 pb-2">
                       <p className={`${styles.statHead} text-xl font-semibold`}>
-                        190
+                        {currentUser?.no_of_new_users}
                       </p>
                       <p className="text-xs text-[#26435F]">New</p>
                     </div>
                     <div className="w-1/5 flex flex-col items-center pt-3 pb-2">
                       <p className={`${styles.statHead} text-xl font-semibold`}>
-                        190
+                        {currentUser?.no_of_avg_logins}
                       </p>
-                      <p className="text-xs text-[#26435F] ">Avg. # of Tests</p>
+                      <p className="text-xs text-[#26435F] "># Avg. Logins</p>
                     </div>
                     <div className="w-1/5 flex flex-col items-center pt-3 pb-2">
                       <p className={`${styles.statHead} text-xl font-semibold`}>
-                        190
+                        {currentUser?.no_of_avg_session_duration}
                       </p>
                       <p className="text-xs text-[#26435F] text-center">
-                        Avg. Session duration
+                        # Avg. Session duration
                       </p>
                     </div>
                   </div>
@@ -211,11 +298,15 @@ export default function SuperadminDashboard() {
                     className={`flex items-center  justify-around pt-3 pb-2 text-[#26435F] bg-[#FFFFFF] mt-4 ${styles.customBorder}`}
                   >
                     <div>
-                      <p className="font-medium text-xl">202</p>
+                      <p className="font-medium text-xl">
+                        {currentUser?.no_of_test_assigned}
+                      </p>
                       <p className="text-xs"># of Tests Assigned</p>
                     </div>
                     <div>
-                      <p className="font-medium text-xl">202</p>
+                      <p className="font-medium text-xl">
+                        {currentUser?.no_of_test_created}
+                      </p>
                       <p className="text-xs"># of Tests Created</p>
                     </div>
                   </div>

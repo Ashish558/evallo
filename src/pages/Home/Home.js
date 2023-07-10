@@ -5,6 +5,7 @@ import StudentDashboard from "../StudentDashboard/StudentDashboard";
 import TutorDashboard from "../TutorDashboard/TutorDashboard";
 import Users from "../Users/users";
 import AllOrgs from "../SuperadminDashboard/components/AllOrgs/AllOrgs";
+import SuperadminDashboard from "../SuperadminDashboard/SuperadminDashboard";
 
 export default function Home() {
   const { role: persona } = useSelector((state) => state.user);
@@ -20,7 +21,7 @@ export default function Home() {
       ) : persona === "admin" ? (
         <Users />
       ) : persona === "superAdmin" ? (
-        <AllOrgs />
+        <SuperadminDashboard />
       ) : (
         <div className="ml-pageLeft bg-lightWhite min-h-screen"></div>
       )}
