@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import EyeIcon from '../../assets/form/eye-open.svg'
 import Message from "./Message/Message";
+import { useRef } from "react";
+import { useEffect } from "react";
 
 export default function InputField({
    parentClassName,
@@ -27,10 +29,26 @@ export default function InputField({
    minLength,
    prefix,
    onFocus,
-   onBlur
+   onBlur,
 }) {
    const [inputType, setInputType] = useState(type)
+   const [showDiv, setShowDiv] = useState(true);
+   const divRef = useRef();
 
+
+
+   useEffect(() => {
+      function handleClickOutside(event) {
+         if (divRef.current && !divRef.current.contains(event.target)) {
+            setShowDiv(false);
+         }
+      }
+
+      document.addEventListener('click', handleClickOutside);
+      return () => {
+         document.removeEventListener('click', handleClickOutside);
+      };
+   }, []);
    return (
       <div className={`relative text-sm ${parentClassName && parentClassName}`}>
          {label && <label
@@ -63,14 +81,20 @@ export default function InputField({
                onFocus={onFocus}
                onBlur={onBlur}
             />
-            {type === 'password' && <img src={EyeIcon}  className="ml-4 w-[20px] cursor-pointer"
+            {type === 'password' && <img src={EyeIcon} className="ml-4 w-[20px] cursor-pointer"
                onClick={() => inputType === 'password' ? setInputType('text') : setInputType('password')}
             />}
             {IconRight && <img src={IconRight} className={`ml-4 cursor-pointer ${iconSize === "medium" && "w-[24px]"}`} />}
             {right && right}
          </div>
          {error !== undefined && error !== '' &&
-            <Message error={error} type='danger' />
+            <div>
+               {showDiv && (
+                  <div ref={divRef}>
+                     <Message error={error} type='danger' />
+                  </div>
+               )}
+            </div>
          }
       </div>
    );

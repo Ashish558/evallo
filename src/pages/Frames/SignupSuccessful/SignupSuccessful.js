@@ -11,8 +11,14 @@ export default function SignupSuccessful({
   setcurrentStep,
   addDetails,
   lastLoginDisabled,
-  handleSuccessfullBack
+  handleSuccessfullBack,
+  handleSignup
 }) {
+
+  const handleSubmit = () => {
+
+    // console.log('Failed')
+  };
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -21,7 +27,7 @@ export default function SignupSuccessful({
 
   const handleClick = () => {
     // addDetails()
-    
+
   };
 
   useEffect(() => {
@@ -36,7 +42,7 @@ export default function SignupSuccessful({
           <div className="text-center flex flex-col gap-3 text-md w-fit">
             <h3 className="font-[500]">{successfulSignUpMessage.head}</h3>
             <h4>{successfulSignUpMessage.mid}</h4>
-            <h4>{successfulSignUpMessage.last}</h4>
+            <h4>{successfulSignUpMessage.last} <span onClick={() => handleSubmit()} className="text-[#24A3D9] cursor-pointer">{successfulSignUpMessage.verify}</span></h4>
             <h2 className="font-bold">{successfulSignUpMessage.bottom}</h2>
           </div>
         </div>
