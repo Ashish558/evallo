@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import PrimaryButton from "../../../components/Buttons/PrimaryButton";
 import SecondaryButton from "../../../components/Buttons/SecondaryButton";
 import image from "./../../../assets/signup/image.svg";
+import axios from "axios";
 
 export default function SignupSuccessful({
   frames,
@@ -12,13 +13,24 @@ export default function SignupSuccessful({
   addDetails,
   lastLoginDisabled,
   handleSuccessfullBack,
-  handleSignup
+  handleSignup,
+  email
 }) {
 
-  const handleSubmit = () => {
-
-    // console.log('Failed')
-  };
+  
+    const handleSubmit = () => {
+      // console.log('Failed')
+      const url= `${process.env.REACT_APP_BASE_URL}api/user/resent/mail`
+          axios.post(url,{email})
+          .then(function (response) {
+              console.log(response);
+          })
+          .catch(function (error) {
+              console.log(error);
+          });
+        };
+    
+  
   const navigate = useNavigate();
 
   useEffect(() => {
