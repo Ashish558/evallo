@@ -208,8 +208,6 @@ const AdminNavbar = () => {
         </div>
         <div className="flex  text-[#FFFFFF] font-semibold text-[13px]">
           {navData.map((item, idx) => {
-            if(location.pathname.includes(item.path)|| (item.tooltip=='Dashboard' && !showDashboard))
-            return <></>
             return  (
               <div
                 key={idx}
