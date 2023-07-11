@@ -67,7 +67,7 @@ const PrivateRoutes = [
 const AppRoutes = () => {
   const { isLoggedIn } = useSelector((state) => state.user);
   const { role: persona } = useSelector((state) => state.user);
-console.log({persona});
+
   return (
     <BrowserRouter>
       <AdminNavbar />
