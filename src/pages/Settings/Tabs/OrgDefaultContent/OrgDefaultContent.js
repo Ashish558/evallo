@@ -245,7 +245,7 @@ export default function AllTests() {
 
         <div className="mt-6">
           <Table
-            dataFor="allTests"
+            dataFor="allTestsSuperAdmin"
             data={filteredTests}
             tableHeaders={tableHeaders}
             maxPageSize={10}

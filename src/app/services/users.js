@@ -23,6 +23,13 @@ export const userServicesApi = createApi({
         headers: getAuthHeader(),
       }),
     }),
+    getAllOrgUsers: builder.query({
+      query: () => ({
+        url: `api/user`,
+        method: "GET",
+        headers: getAuthHeader(),
+      }),
+    }),
     getSingleUser: builder.query({
       query: (id) => ({
         url: `api/user/one/${id}`,
@@ -44,6 +51,7 @@ export const userServicesApi = createApi({
         headers: getAuthHeader(),
       }),
     }),
+
     getUserDetail: builder.query({
       query: (body) => ({
         url: `api/user/${body.id}`,
@@ -139,6 +147,7 @@ export const {
   useLazyGetParentTutorsQuery,
   useLazyGetStudentTutorsQuery,
   useAddUserMutation,
+  useLazyGetAllOrgUsersQuery,
   useLazyGetUserDetailQuery,
   useLazyGetTutorDetailsQuery,
   useUpdateUserFieldsMutation,
