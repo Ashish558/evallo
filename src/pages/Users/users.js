@@ -121,6 +121,14 @@ export default function Users() {
          id: 8,
          text: 'Created On',
       },
+      {
+         id: 9,
+         text: '',
+      },
+      {
+         id: 10,
+         text: '',
+      },
    ];
 
 

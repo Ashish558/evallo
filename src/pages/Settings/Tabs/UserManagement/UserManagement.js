@@ -755,7 +755,7 @@ export default function UserManagement() {
         </div> */}
         <div className="mt-6">
           <Table
-            dataFor="allUsers"
+            dataFor="allUsersSuperAdmin"
             data={filteredUsersData}
             onClick={{ redirect, handleTutorStatus, handleDelete, handleResetPassword }}
             tableHeaders={tableHeaders}

@@ -220,6 +220,94 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch, ext
                      {item.email}
                   </div>
                </td>
+              
+                <td className="font-medium text-sm px-1  min-w-14 py-4">
+                  <div className="my-[6px]">
+                     {item.phone}
+                  </div>
+               </td>
+              <td className="font-medium text-sm px-1  min-w-14 py-4">
+                  <div className="my-[6px]">
+                     {item.assignedTutor?.length > 0 ?
+                        item.assignedTutor?.map((id, idx) => {
+                           const name = extraData.find(item => item._id === id)
+                           if (name === undefined) return 'l'
+                           return `${name.value} ${idx + 1 < item.assignedTutor.length ? ',' : ''} `
+                        }) : '-'
+                     }
+                  </div>
+               </td>
+               <td className="font-medium text-sm px-1  min-w-14 py-4">
+                  <div className="my-[6px]">
+                     <InputSelect value={leadStatus ? leadStatus : '-'}
+                        optionData={settings.leadStatus}
+                        inputContainerClassName='min-w-[100px] pt-0 pb-0 pr-2 pl-0 text-center'
+                        optionClassName='font-semibold opacity-60 text-sm'
+                        labelClassname='hidden'
+                        onChange={val => handleChange({ leadStatus: val })} />
+                  </div>
+               </td>
+               <td className="font-medium text-sm px-1  min-w-14 py-4">
+                  <InputSelect value={item.userStatus ? item.userStatus : '-'}
+                     optionData={['active', 'blocked', 'dormant']}
+                     inputContainerClassName='min-w-[100px] pt-0 pb-0 pr-2 pl-0 text-center'
+                     optionClassName='font-semibold opacity-60 text-sm'
+                     labelClassname='hidden'
+                     onChange={val => handlestatusChange({ userStatus: val })} />
+               </td>
+               
+               {/* <td className="font-medium text-sm px-1  min-w-14 py-4">
+                  <div className="my-[6px]">
+                  
+                     <span className="cursor-pointer inline-block px-1" onClick={() => onClick.handleTutorStatus(item,)}>
+                        {item.block === false ? 'Active' : item.userType === 'parent' || item.userType === 'student' ? 'Blocked' : 'Dormant'}
+                     </span>
+
+                  </div>
+               </td>  */}
+               <td className="font-medium text-sm px-1  min-w-14 py-4">
+                  <div className="my-[6px]">
+                     {item.specialization?.map((specialization, idx) => {
+                        return `${specialization}${idx + 1 === item.specialization.length ? '' : ','}`
+                     })}
+                  </div>
+               </td> 
+               <td className="font-medium text-sm px-1  min-w-14 py-4">
+                  <div className="my-[6px]">
+                     {getFormattedDate(item.createdAt)}
+                  </div>
+               </td> 
+               <td className="font-medium px-1 min-w-14 py-4">
+                  <div className="w-4 h-4 rounded-full bg-[#E3E3E3] flex items-center justify-center">
+                     <img
+                        src={TrashIcon}
+                        className="cursor-pointer"
+                        onClick={() => onClick.handleDelete(item)}
+                     />
+                  </div>
+               </td>
+            </tr>
+         )}
+          {dataFor === "allUsersSuperAdmin" && (
+            <tr className="odd:bg-white shadow-sm shadow-slate-200 even:bg-primaryWhite-300 rounded-2xl leading-8">
+               <td className="font-semibold text-sm px-1  min-w-14 py-4 text-primaryBlue text-left">
+                  <span
+                     className="inline-block cursor-pointer pl-4"
+                     onClick={() => onClick.redirect(item)}
+                  >
+                     {item.name}
+                  </span>
+               </td>
+               <td className="font-medium text-sm px-1 min-w-14 py-4">
+                  <div className="my-[6px]">
+                     {item.userType}
+                  </div>
+               </td>
+               <td className="font-medium text-sm px-1  min-w-14 py-4">
+                  <div className="my-[6px]">
+                     {item.email}
+                  </div>
+               </td>
                <td className="font-medium text-sm px-1  min-w-14 py-4">
                   <div className="my-[6px]">
                      {item.lastLogin ? item.lastLogin : '-'}
@@ -300,7 +388,6 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch, ext
                </td>
             </tr>
          )}
-
          {dataFor === "assignedTests" && (
             <tr className="odd:bg-white text-sm shadow-sm shadow-slate-200 even:bg-primaryWhite-300 rounded-2xl leading-8">
                <td className="px-1 font-medium  min-w-14 py-4 text-left">
@@ -527,6 +614,36 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch, ext
             </tr>
          )}
          {dataFor === "allTests" && (
+            <tr className="odd:bg-white font-medium text-sm shadow-sm shadow-slate-200 even:bg-primaryWhite-300 rounded-2xl lead">
+               <td>{item.testName}</td>
+               <td>{item.testType}</td>
+               <td>{item.createdAt.split("T")[0]}</td>
+               <td>{item.updatedAt.split("T")[0]}</td>
+               <td> {item.no_of_assign ? item.no_of_assign : '-'} </td>
+               <td className="font-medium px-1 py-4 text-right">
+                  <div className="flex justify-end">
+                     <button
+                        className="flex leading-none bg-[#FFA28D] text-white py-1.5 px-5 cursor-pointer rounded"
+                        onClick={() =>
+                           navigate(`/all-tests/${item._id}`)
+                        }
+                     >
+                        View
+                     </button>
+                  </div>
+               </td>
+               <td className="font-medium px-1 justify-center flex gap-x-2">
+                    <button
+                        className="flex leading-none bg-[#FFA28D] text-white py-1.5 px-5 cursor-pointer rounded"
+                        onClick={() => onClick.openRemoveTestModal(item)}
+                     >
+                        Remove
+                     </button>
+               </td>
+               
+            </tr>
+         )}
+          {dataFor === "allTestsSuperAdmin" && (
             <tr className="odd:bg-white font-medium text-sm shadow-sm shadow-slate-200 even:bg-primaryWhite-300 rounded-2xl lead">
                <td>{item.testName}</td>
                <td>{item.testType}</td>
