@@ -30,7 +30,7 @@ function App() {
         return;
       }
       dispatch(updateOrganization(res.data.organisation))
-      console.log("res", res.data.organisation);
+     // console.log("res", res.data.organisation);
     });
   };
 
