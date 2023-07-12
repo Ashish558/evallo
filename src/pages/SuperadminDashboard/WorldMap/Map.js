@@ -151,17 +151,7 @@ const Map = ({ markings, countryMarking }) => {
           }}
         />
       )}
-      <div className="flex justify-between px-8">
-        <p>Last 11 days</p>
-        <div className="flex items-center gap-4">
-          <span>100</span>
-          <span
-            style={{ background: "linear-gradient(to right, #FFA28D , #FEE )" }}
-            className="w-32 h-4"
-          ></span>
-          <span>10</span>
-        </div>
-      </div>
+     
     </div>
   );
 };
