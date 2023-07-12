@@ -1,99 +1,136 @@
-import { faCaretDown } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React from 'react';
-import Map from '../WorldMap/Map';
-import indianFlag from '../../../assets/icons/emojione-v1_flag-for-india.svg'
-import {
-    useAddUserDemographyMutation,
-    
-  } from "../../../app/services/superAdmin";
-import { useState } from 'react';
-import { useEffect } from 'react';
-
+import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React from "react";
+import WMap from "../WorldMap/Map";
+import indianFlag from "../../../assets/icons/emojione-v1_flag-for-india.svg";
+import { useAddUserDemographyMutation } from "../../../app/services/superAdmin";
+import { useState } from "react";
+import { useEffect } from "react";
+import { Country, State } from "country-state-city";
+import InputSelect from "../../../components/InputSelect/InputSelect";
+import InputSelectNew from "../../../components/InputSelectNew/InputSelectNew";
 const Demography1 = () => {
-    const [currentDemographicArea, setCurrentDemographicArea] =useState([])
-    const [fetchDemography, setDemography] = useAddUserDemographyMutation();
-    useEffect(()=>{
-        fetchDemography({country:'India'}).then((res) => {
-    
-            setCurrentDemographicArea(res?.data?.aggregatedStates)
-            console.log("fetchDemography", currentDemographicArea);
-         });
-    },[fetchDemography])
-    return (
-        <div className='bg-[#FFFFFF] flex justify-center items-center border border-gray-200 p-4 mt-[6px] rounded-md'>
-            <div className='grid grid-cols-2 gap-x-5'>
-                <div>
-                    <button className='text-[#FFA28D] border px-6 py-3 border-[#FFA28D] text-[10px] font-medium rounded-full mb-1'>User <FontAwesomeIcon className='pl-2' icon={faCaretDown}></FontAwesomeIcon></button>
-                    <button className='ml-4 text-[#FFA28D] border px-6 py-3 border-[#FFA28D] rounded-full text-[10px] font-medium'>Country <FontAwesomeIcon className='pl-2' icon={faCaretDown}></FontAwesomeIcon></button>
+  const [currentDemographicArea, setCurrentDemographicArea] = useState([]);
+  const [fetchDemography, setDemography] = useAddUserDemographyMutation();
+  const [country, setCountry] = useState([]);
+  const [states, setStates] = useState([]);
+  const [countryName, setCountryName] = useState("India");
+  const [userName,setUserName]= useState('')
+  const countryData = Country.getAllCountries().map((city) => ({
+    value: city.name,
+    displayValue: city.name,
+  }));
+  const [countryMarking, setCountryMarking] = useState({});
+  const handleState = async (c, stateData) => {
+    if (!c) return;
+    //  console.log("country", c);
+    const state1 = country.filter((x) => x.name === c);
+    let requiredStates = [];
+    // console.log('shyy',state1[0])
+    const currentState = state1[0]?.states?.map((s) => {
+      stateData.map((a) => {
+        if (s.name.toLowerCase() === a.state_name.toLowerCase())
+          requiredStates.push(s);
+      });
+    });
 
-                    <Map></Map>
-                </div>
-                <div>
-                    
-                    <p className='text-[#26435F] text-xs font-semibold mt-4 '>
-                    <img className='inline mr-2' src={indianFlag} />
-                        INDIA <FontAwesomeIcon icon={faCaretDown}></FontAwesomeIcon></p>
-                    <table className='table-auto w-full' >
-                        <thead>
-                            <tr>
-                                <th className='px-10'>State </th>
-                                <th className='px-10'># of orgs </th>
-                                <th className='px-10'>Avg. # of S / O </th>
-                                <th className='px-10'>Avg. # of T / O</th>
+    setStates([...requiredStates]);
+    setCountryMarking(state1);
+  };
+  useEffect(() => {
+    // setValues(organization);
 
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td className=''>Delhi</td>
-                                <td className=''>25</td>
-                                <td className=''>Ipsum</td>
-                                <td className=''>Lorem</td>
+    //console.log(State.get)
+    if (country.length === 0) {
+      fetch("countryData.json")
+        .then((res) => res.json())
+        .then((data) => setCountry(data));
+    }
+  }, []);
+  //console.log("countryData",country)
 
-                            </tr>
-                            <tr>
-                                <td className=''>Delhi</td>
-                                <td className=''>25</td>
-                                <td className=''>Ipsum</td>
-                                <td className=''>Lorem</td>
+  useEffect(() => {
+    fetchDemography({ country: countryName }).then((res) => {
+    //  console.log('res',res.data)
+      setCurrentDemographicArea(res?.data?.aggregatedData);
+    });
+  }, [fetchDemography, countryName]);
+  useEffect(() => {
+    handleState(countryName, currentDemographicArea);
+  }, [currentDemographicArea, countryName]);
+ // console.log("fetchDemography", currentDemographicArea, countryName);
+ // console.log("req", states);
 
-                            </tr>
-                            <tr>
-                                <td className=''>Delhi</td>
-                                <td className=''>25</td>
-                                <td className=''>Ipsum</td>
-                                <td className=''>Lorem</td>
+  return (
+    <div className="bg-[#FFFFFF] flex justify-center items-center border border-gray-200 p-4 mt-[6px] rounded-md">
+      <div className="grid grid-cols-2 gap-x-5">
+        <div>
+          <button className="">
+            {/* User{" "}
+            <FontAwesomeIcon
+              className="pl-2"
+              icon={faCaretDown}
+            ></FontAwesomeIcon> */}
+             <InputSelectNew
+              placeholder={"User"}
+              parentClassName="ml-4  scale-[0.8] items-center flex text-[#FFA28D] text-xs border px-1 py-2 border-[#FFA28D] rounded-full  "
+              inputContainerClassName=" bg-white "
+              labelClassname="text-sm"
+              inputClassName="bg-transparent"
+              value={userName}
+              optionData={[{name:"Admin"},{name:"Tutor"},{name:"Parent"},{name:"Student"}]}
+              optionType={"object"}
+              onChange={(e) => setUserName(e)}
+            />
+          </button>
+          <button className="">
+            <InputSelectNew
+              placeholder={"Country"}
+              parentClassName="ml-4  scale-[0.8] items-center flex text-[#FFA28D] text-xs border px-1 py-2 border-[#FFA28D] rounded-full  "
+              inputContainerClassName=" bg-white "
+              labelClassname="text-sm"
+              inputClassName="bg-transparent"
+              value={countryName}
+              optionData={country}
+              optionType={"object"}
+              onChange={(e) => setCountryName(e)}
+            />
+          </button>
 
-                            </tr>
-                            <tr>
-                                <td className=''>Delhi</td>
-                                <td className=''>25</td>
-                                <td className=''>Ipsum</td>
-                                <td className=''>Lorem</td>
-
-                            </tr>
-                            <tr>
-                                <td className=''>Delhi</td>
-                                <td className=''>25</td>
-                                <td className=''>Ipsum</td>
-                                <td className=''>Lorem</td>
-
-                            </tr>
-                            <tr>
-                                <td className=''>Delhi</td>
-                                <td className=''>25</td>
-                                <td className=''>Ipsum</td>
-                                <td className=''>Lorem</td>
-
-                            </tr>
-
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div >
-    );
+          <WMap markings={states} countryMarking={countryMarking} />
+        </div>
+        <div>
+          <p className="text-[#26435F] text-sm font-semibold mt-4 ">
+            {/* <img className="inline mr-2" src={indianFlag} /> */}
+            {countryName}
+            {/* <FontAwesomeIcon icon={faCaretDown}></FontAwesomeIcon> */}
+          </p>
+          <table className="table-auto w-full">
+            <thead>
+              <tr>
+                <th className="px-7">State </th>
+                <th className="px-7"># of orgs </th>
+                <th className="px-7">Avg. # of S / O </th>
+                <th className="px-7">Avg. # of T / O</th>
+              </tr>
+            </thead>
+            <tbody>
+              {currentDemographicArea?.map((state, id) => {
+                return (
+                  <tr key={id}>
+                    <td className="">{state.state_name}</td>
+                    <td className="">{state.no_of_orgs}</td>
+                    <td className="">{Math.round(state.average_students)}</td>
+                    <td className="">{Math.round(state.average_tutors)}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default Demography1;

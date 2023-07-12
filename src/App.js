@@ -12,6 +12,7 @@ import {
   useLazyGetPersonalDetailQuery,
 } from "./app/services/users";
 import { updateOrganization } from "./app/slices/organization";
+import { useLazyGetLogoutQuery } from "./app/services/superAdmin";
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -20,6 +21,7 @@ function App() {
   const [fetchOrganization, fetchOrganizationResp] =
     useLazyGetOrganizationQuery();
   const dispatch = useDispatch();
+  const [logOutApi, setLogOutApi] = useLazyGetLogoutQuery();
   const { isLoggedIn } = useSelector((state) => state.user);
 
   const getOrganizationDetail = (id) => {
@@ -29,8 +31,8 @@ function App() {
         console.log(res.error);
         return;
       }
-      dispatch(updateOrganization(res.data.organisation))
-     // console.log("res", res.data.organisation);
+      dispatch(updateOrganization(res.data.organisation));
+      // console.log("res", res.data.organisation);
     });
   };
 
@@ -83,6 +85,25 @@ function App() {
     }
   }, [isLoggedIn]);
 
+  useEffect(() => {
+    const handleTabClose = (event) => {
+      event.preventDefault();
+
+      console.log("beforeunload event triggered");
+
+      // return (event.returnValue =
+      //   'Are you sure you want to exit?');
+    };
+
+    window.addEventListener("beforeunload", handleTabClose);
+
+    return () => {
+      logOutApi().then(() => {
+        console.log("Successfully logged out");
+      });
+      window.removeEventListener("beforeunload", handleTabClose);
+    };
+  }, []);
   if (loading) return <></>;
 
   return (

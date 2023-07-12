@@ -17,6 +17,7 @@ export default function InputSelectNew({
    radio,
    checkbox,
    optionClassName,
+   optionContainerClassName,
    optionType,
    disabled,
    required,
@@ -37,7 +38,7 @@ export default function InputSelectNew({
             } ${disabled === true ? 'pointer-events-none' : ''} `}
          onClick={() => setSelected(true)}
       >
-         {label && <label className={`font-semibold inline-block ${labelClassname}`}>
+         {label && <label className={`font-semibold  inline-block ${labelClassname}`}>
             {label}
             {required && (
                <span className="text-primaryRed inline-block pl-1">*</span>
@@ -45,7 +46,7 @@ export default function InputSelectNew({
          </label>}
 
          <div
-            className={`py-[16px] px-[21px] flex items-center rounded-10 relative cursor-pointer z-50 ${inputContainerClassName ? inputContainerClassName : ""
+            className={`py-[10px] px-[21px] flex items-center rounded-10 relative cursor-pointer  z-50 ${inputContainerClassName ? inputContainerClassName : ""
                } `}
          >
             {Icon && <img src={Icon} className="mr-6" alt="icon" />}
@@ -57,7 +58,7 @@ export default function InputSelectNew({
                   onClick={() => setSelected(!selected)}
                />
             }
-            <div className={`outline-0 w-full relative ${optionClassName ? optionClassName : ''}`} name={label}>
+            <div className={`outline-0 w-full mr-3 relative ${optionClassName ? optionClassName : ''}`} name={label}>
                {value === "" ? (
                   <span className="text-primary-60"> {placeholder} </span>
                ) : (
@@ -65,20 +66,21 @@ export default function InputSelectNew({
                )}
             </div>
             {selected && (
-               <div className={`scrollbar-content scrollbar-vertical ${styles.options} $`}>
+               <div className={`scrollbar-content scrollbar-vertical shadow-md ${styles.options} ${optionContainerClassName}`}>
                   {optionData.map((option, idx) => {
                      // console.log('option', option);
                      // console.log('checkbox.match', checkbox.match);
                      return (
                         <div
-                           className="outline-0 border-0 py-2.5 px-4 flex items-center justify-between"
+                           className="outline-0 border-0 py-2.5  px-4 flex items-center justify-between"
                            key={idx}
                            onClick={() => {
-                              onChange(option);
-                           }}
+                              onChange(optionType === "object"?option.name:option, idx);
+                            }}
                         >
                            <p className={optionListClassName}>
-                              {optionType !== undefined && optionType === 'object' ? option.value : option}
+                         
+                              {optionType !== undefined && optionType === 'object' ? option.value?option.value:option.name : option}
                            </p>
                            {
                               radio && <input type='radio' name='name' checked={option === value ? true : false} />
