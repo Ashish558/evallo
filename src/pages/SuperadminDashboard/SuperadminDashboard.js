@@ -33,11 +33,8 @@ import Demography from "./Demographies/Demography1";
 import axios from "axios";
 import { useState } from "react";
 import {
-  useAddUserDemographyMutation,
   useGetAllOrgStatsQuery,
   useGetUserStatsByRoleQuery,
-  useGetUserDailyActivityQuery,
-  useGetAllTestQuery,
 } from "../../app/services/superAdmin";
 const orgContents = [
   {
@@ -108,10 +105,7 @@ export default function SuperadminDashboard() {
   const { data: userStudentStats } = useGetUserStatsByRoleQuery({
     role: "student",
   });
-  const { data: userDailyActivity } = useGetUserDailyActivityQuery();
-  //console.log(userDailyActivity);
-  const [currentDemographicArea, setCurrentDemographicArea] =useState([])
-  const [fetchDemography, setDemography] = useAddUserDemographyMutation();
+
   const getLatestOrgs = async () => {
     //   alert(data.workemail)
     fetchUserData().then((result) => {
@@ -137,7 +131,7 @@ export default function SuperadminDashboard() {
                 " " +
                 result.data.data.user[i].lastName,
             };
-            arr.sort(function(a,b){
+            arr.sort(function (a, b) {
               // Turn your strings into dates, and then subtract them
               // to get a value that is either negative, positive, or zero.
               return new Date(b.date) - new Date(a.date);
@@ -168,7 +162,6 @@ export default function SuperadminDashboard() {
       ...userAdminStats,
     });
     getLatestOrgs();
-   
   }, [
     userAdminStats,
     userParentStats,
@@ -176,7 +169,7 @@ export default function SuperadminDashboard() {
     userStudentStats,
     userContributorStats,
   ]);
-
+// console.log(orgSignUpData)
   return (
     <div className={styles.container}>
       {/* <div className='flex justify-between px-[80px] bg-[#26435F] h-[54px] items-center w-full'>

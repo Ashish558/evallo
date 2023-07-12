@@ -15,7 +15,13 @@ export const superAdminServicesApi = createApi({
         headers: getAuthHeader(),
       }),
     }),
-
+    getLogout: builder.query({
+      query: (name) => ({
+        url: `api/user/org/logOut`,
+        method: "GET",
+        headers: getAuthHeader(),
+      }),
+    }),
     getUserStatsByRole: builder.query({
       query: (body) => ({
         url: `api/user/superadmin/dashboard/userstats?role=${body.role}`,
@@ -37,7 +43,13 @@ export const superAdminServicesApi = createApi({
         headers: getAuthHeader(),
       }),
     }),
-
+    getActionLog: builder.query({
+      query: (name) => ({
+        url: `/api/user/superadmin/actionlog`,
+        method: "GET",
+        headers: getAuthHeader(),
+      }),
+    }),
     addUserDemography: builder.mutation({
       query: (body) => ({
         url: `/api/user/superadmin/dashboard/userdemography`,
@@ -63,4 +75,6 @@ export const {
   useGetUserStatsByRoleQuery,
   useGetUserDailyActivityQuery,
   useAddUserDemographyMutation,
+  useGetActionLogQuery,
+  useLazyGetLogoutQuery,
 } = superAdminServicesApi;

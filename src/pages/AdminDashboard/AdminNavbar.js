@@ -27,6 +27,7 @@ import useWindowDimensions from "../../hooks/useWindowDimensions";
 import { useEffect } from "react";
 import Modal from "../../components/Modal/Modal";
 import { updateIsLoggedIn } from "../../app/slices/user";
+import { useLazyGetLogoutQuery } from "../../app/services/superAdmin";
 
 const tempnavdata = [
   {
@@ -161,7 +162,7 @@ const AdminNavbar = () => {
   const [showDashboard,setShowDashboard] = useState((location.pathname.includes("all-orgs")||location.pathname.includes("dashboard"))?true:false);
   const { width } = useWindowDimensions();
   const { isLoggedIn } = useSelector((state) => state.user);
-
+  const [logOutApi, setLogOutApi] = useLazyGetLogoutQuery();
   const { role: persona } = useSelector((state) => state.user);
 
   useEffect(() => {
@@ -195,6 +196,9 @@ const AdminNavbar = () => {
   };
 
   const logoutUser = () => {
+    logOutApi().then(() => {
+      console.log("Successfully logged out");
+    });
     sessionStorage.clear();
     navigate("/");
     dispatch(updateIsLoggedIn(false));
