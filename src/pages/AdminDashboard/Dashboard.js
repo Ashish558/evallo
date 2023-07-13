@@ -517,7 +517,7 @@ const Dashboard = () => {
           </div>
         </div>
         <section>
-          <div className="mx-[80px] w-[90vw] scroll-m-3 overflow-x-auto">
+          <div className="mx-[80px] w-[93vw] scroll-m-3 overflow-x-auto">
             <Table
               data={[]}
               Icon={
