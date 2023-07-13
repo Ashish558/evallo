@@ -3,7 +3,7 @@ import { useLazyGetSettingsQuery } from '../../app/services/session';
 import InputSelect from '../InputSelect/InputSelect';
 import sort from './../../assets/icons/sort.webp'
 
-export function TableHeader({ header, dataFor, onClick, setSorted }) {
+export function TableHeader({ header, dataFor, onClick, setSorted ,Icon}) {
 
 
 

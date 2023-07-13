@@ -79,7 +79,7 @@ const AppRoutes = () => {
         <Route path="/signup/user" element={<UserSignup />} />
         <Route path="/dashboard" element={<SuperadminDashboard />} />
         <Route path="/all-orgs" element={<AllOrgs />} />
-        <Route path="/superadmin-profile" element={<SuperAdminProfile/>} />
+        <Route path="/superadmin-profile" element={<SuperAdminProfile />} />
         <Route
           path="/users"
           element={

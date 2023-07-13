@@ -16,6 +16,8 @@ export default function Table(props) {
     excludes,
     changePageAfterUpdate,
     loading,
+    Icon,
+    AdminLatestSignUp
   } = props;
 
   const [tableData, setTableData] = useState(data);
@@ -56,7 +58,7 @@ export default function Table(props) {
         <thead className="bg-[#26435F]">
           <tr>
             {tableHeaders.map((item, idx) => {
-              return <TableHeader key={idx} header={item} dataFor={dataFor} />;
+              return <TableHeader key={idx} Icon={Icon} header={item} dataFor={dataFor} />;
             })}
           </tr>
         </thead>
@@ -72,6 +74,7 @@ export default function Table(props) {
               return (
                 <TableItem
                   dataFor={dataFor}
+                  AdminLatestSignUp={AdminLatestSignUp}
                   item={item}
                   key={idx}
                   excludes={excludes}
