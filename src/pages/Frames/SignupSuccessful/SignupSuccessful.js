@@ -4,6 +4,7 @@ import PrimaryButton from "../../../components/Buttons/PrimaryButton";
 import SecondaryButton from "../../../components/Buttons/SecondaryButton";
 import image from "./../../../assets/signup/image.svg";
 import axios from "axios";
+import { useLazyPostResentEmailMutation } from '../../../app/services/users';
 
 export default function SignupSuccessful({
   frames,
@@ -16,21 +17,29 @@ export default function SignupSuccessful({
   handleSignup,
   email
 }) {
+  const [resentEmailApi, setResentEmailApi] = useLazyPostResentEmailMutation();
 
-  
-    const handleSubmit = () => {
-      // console.log('Failed')
-      const url= `${process.env.REACT_APP_BASE_URL}api/user/resent/mail`
-          axios.post(url,{email})
-          .then(function (response) {
-              console.log(response);
-          })
-          .catch(function (error) {
-              console.log(error);
-          });
-        };
-    
-  
+  const handleSubmit = () => {
+    // console.log('Failed')
+    // const url = `${process.env.REACT_APP_BASE_URL}api/user/resent/mail`
+    // axios.post(url, { email })
+    //   .then(function (response) {
+    //     console.log(response);
+    //   })
+    //   .catch(function (error) {
+    //     console.log(error);
+    //   });
+
+    return () => {
+      resentEmailApi().then(() => {
+        console.log("Successfully resent email");
+      });
+      // window.removeEventListener("beforeunload", handleTabClose);
+    };
+  }
+
+
+
   const navigate = useNavigate();
 
   useEffect(() => {
