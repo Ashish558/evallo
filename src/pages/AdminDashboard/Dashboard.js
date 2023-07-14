@@ -1,4 +1,5 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import SAdminNavbar2 from "../../components/sAdminNavbar/sAdminNavbar2";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -23,29 +24,25 @@ import AdminNavbar from "./AdminNavbar";
 import Table from "../SuperadminDashboard/Table/table";
 import ActionLog from "./ActionLog";
 import { useGetLatestSignUpQuery } from "../../app/services/adminDashboard";
-const tableHeaders = [
-  "Tutor Name",
-  "Tutor Status",
-  "Rating",
-  "Referrals",
-  "Hours Completed",
-  "Hours Scheduled",
-  "Hours Cancelled",
-  "Hours Missed",
-  "Avg SAT improvement",
-];
+import { latestSignUpHeaders, tutorTableHeaders } from "./staticData";
+
 const Dashboard = () => {
   const { data: latestSignUp } = useGetLatestSignUpQuery();
-  // console.log(latestSignUp?.data);
+  const { organization } = useSelector((state) => state.organization);
+  const { firstName, lastName } = useSelector((state) => state.user);
+
   return (
     <div className={styles.container}>
-      {/* <SAdminNavbar2></SAdminNavbar2> */}
-
       <div className=" mt-[28px] bg-#2E2E2E ">
         <div className="mt-[42px] flex justify-center">
           <div className="w-full mx-[80px]">
             <p className="text-[#24A3D9] mb-3">
-              {"Company Name > Admin Full Name > Dashboard"}
+              {organization?.company +
+                "  >  " +
+                firstName +
+                "  " +
+                lastName +
+                "  >  Dashboard"}
             </p>
 
             <div className="flex justify-between items-center ">
@@ -240,17 +237,7 @@ const Dashboard = () => {
                   icon={faArrowDown}
                 ></FontAwesomeIcon>
               }
-              tableHeaders={[
-                "FullName",
-                "User Type",
-                "Email",
-                "Phone",
-                "Assigned Tutor",
-                "Lead Status",
-                "Tutor Status",
-                "Services",
-                "Date Added",
-              ]}
+              tableHeaders={latestSignUpHeaders}
               maxPageSize={5}
             />
           </div>
@@ -526,7 +513,7 @@ const Dashboard = () => {
                   icon={faArrowDown}
                 ></FontAwesomeIcon>
               }
-              tableHeaders={tableHeaders}
+              tableHeaders={tutorTableHeaders}
               maxPageSize={5}
             />
           </div>
