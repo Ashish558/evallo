@@ -30,6 +30,11 @@ import { updateIsLoggedIn } from "../../app/slices/user";
 import { useLazyGetLogoutQuery } from "../../app/services/superAdmin";
 
 const tempnavdata = [
+  {icon:Dashboard,
+    path: "/adminDashboard",
+    excludes: ["student", "parent", "tutor"],
+    tooltip: "Dashboard",
+  },
   {
     icon: UsersIcon,
     path: "/",
