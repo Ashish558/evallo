@@ -207,13 +207,13 @@ export default function Login({ setLoginFormActive }) {
                   {loginLoading && <Loader />}
                 </button>
                 <p
-                  className={`cursor-pointer relative text-xs font-semibold ml-2 mt-2 lg:inline-block hidden`}
+                  className={`cursor-pointer relative text-xs font-semibold ml-2 mt-2 inline-block `}
                   onClick={() => navigate("/signup")}
                 >
                   Don’t have an account?
                 </p>
                 <span
-                  className={`text-secondary cursor-pointer relative text-xs font-semibold ml-2 mt-2   lg:inline-block hidden`}
+                  className={`text-secondary cursor-pointer relative text-xs font-semibold ml-2 mt-2   inline-block `}
                   onClick={() => navigate("/signup")}
                 >
                   Sign-up Instead?
