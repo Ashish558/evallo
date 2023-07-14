@@ -273,8 +273,8 @@ export default function Settings() {
     updateSetting(body)
       .then((res) => {
         setSaveLoading(false);
-        setSettingsData(res.data.data.setting.settings);
-        dispatch(updateOrganizationSettings(res.data.data.setting.settings))
+        setSettingsData(res.data.data.setting);
+        dispatch(updateOrganizationSettings(res.data.data.setting))
         // console.log('updated', res.data.data.setting.settings);
       })
       .catch((err) => {
