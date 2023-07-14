@@ -4,7 +4,7 @@ import PrimaryButton from "../../../components/Buttons/PrimaryButton";
 import SecondaryButton from "../../../components/Buttons/SecondaryButton";
 import image from "./../../../assets/signup/image.svg";
 import axios from "axios";
-import { useLazyPostResentEmailMutation } from '../../../app/services/users';
+import { useResentEmailMutation } from '../../../app/services/users';
 
 export default function SignupSuccessful({
   frames,
@@ -17,7 +17,7 @@ export default function SignupSuccessful({
   handleSignup,
   email
 }) {
-  const [resentEmailApi, setResentEmailApi] = useLazyPostResentEmailMutation();
+  const [resentEmailApi, setResentEmailApi] = useResentEmailMutation();
 
   const handleSubmit = () => {
     // console.log('Failed')
@@ -30,12 +30,12 @@ export default function SignupSuccessful({
     //     console.log(error);
     //   });
 
-    return () => {
-      resentEmailApi().then(() => {
-        console.log("Successfully resent email");
-      });
-      // window.removeEventListener("beforeunload", handleTabClose);
-    };
+
+    resentEmailApi({ email }).then((res) => {
+      console.log("Successfully resent email", res);
+    });
+    // window.removeEventListener("beforeunload", handleTabClose);
+
   }
 
 

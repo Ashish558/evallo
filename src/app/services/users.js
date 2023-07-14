@@ -140,10 +140,10 @@ export const userServicesApi = createApi({
       }),
     }),
     resentEmail: builder.mutation({
-      query: (payload) => ({
-        url: `${process.env.REACT_APP_BASE_URL}api/user/resent/mail`,
+      query: (body) => ({
+        url: `api/user/resent/mail`,
         method: "POST",
-        body: payload.body,
+        body: body,
         headers: {
           "Content-type": "application/json; charset=UTF-8",
         },
@@ -165,7 +165,7 @@ export const {
   useUpdateTutorDetailsMutation,
   usePostTutorDetailsMutation,
   useLazyGetPersonalDetailQuery,
-  useLazyPostResentEmailMutation,
+  useResentEmailMutation,
   useLazyGetInvoiceQuery,
   useUpdateProfileImageMutation,
   useLazyGetOrganizationQuery,
