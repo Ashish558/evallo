@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import PrimaryButton from "../../../components/Buttons/PrimaryButton";
 import SecondaryButton from "../../../components/Buttons/SecondaryButton";
 import image from "./../../../assets/signup/image.svg";
-import axios from "axios";
 import { useResentEmailMutation } from '../../../app/services/users';
 
 export default function SignupSuccessful({
@@ -20,21 +19,12 @@ export default function SignupSuccessful({
   const [resentEmailApi, setResentEmailApi] = useResentEmailMutation();
 
   const handleSubmit = () => {
-    // console.log('Failed')
-    // const url = `${process.env.REACT_APP_BASE_URL}api/user/resent/mail`
-    // axios.post(url, { email })
-    //   .then(function (response) {
-    //     console.log(response);
-    //   })
-    //   .catch(function (error) {
-    //     console.log(error);
-    //   });
+
 
 
     resentEmailApi({ email }).then((res) => {
       console.log("Successfully resent email", res);
     });
-    // window.removeEventListener("beforeunload", handleTabClose);
 
   }
 
@@ -43,13 +33,10 @@ export default function SignupSuccessful({
   const navigate = useNavigate();
 
   useEffect(() => {
-    // addDetails()
+
   }, []);
 
-  const handleClick = () => {
-    // addDetails()
 
-  };
 
   useEffect(() => {
     setcurrentStep(5);
