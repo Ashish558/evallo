@@ -108,18 +108,17 @@ const userTypes = [
   });
 
   const getLatestOrgs = async () => {
-    //   alert(data.workemail)
+  
     fetchUserData().then((result) => {
       try {
-       // console.log("res",result);
+      
         let arr = [];
         for (let i = 0; i < result?.data?.data?.length; i++) {
           if (result?.data?.data[i].role === "admin") {
             let date = new Date(
               result.data.data[i].createdAt
             ).toDateString();
-          //  console.log("first",result?.data?.data[i])
-            //console.log("date", date);
+          
             let temp = {
               date: date,
               name: result.data.data[i].company
@@ -135,18 +134,17 @@ const userTypes = [
                 result.data.data[i].lastName,
             };
             arr.sort(function (a, b) {
-              // Turn your strings into dates, and then subtract them
-              // to get a value that is either negative, positive, or zero.
+              
               return new Date(b.date) - new Date(a.date);
             });
             arr.push(temp);
           }
         }
-        //console.log("shy", result, arr);
+        
         if (arr.length > 0) setOrgSignUpData(arr);
-        ////console.log(result.data.data.user)
+     
       } catch (e) {
-        //console.error(e);
+      
       }
     });
   };
@@ -158,7 +156,7 @@ const userTypes = [
       student: userStudentStats,
       contributor: userContributorStats,
     });
-    // console.log("admin", totalUsers["admin"]);
+  
     setCurrentUser({
       name: "admin",
 
@@ -172,31 +170,10 @@ const userTypes = [
     userStudentStats,
     userContributorStats,
   ]);
- //console.log(orgSignUpData)
+ 
   return (
     <div className={styles.container}>
-      {/* <div className='flex justify-between px-[80px] bg-[#26435F] h-[54px] items-center w-full'>
-        <div><img src={icon} alt="" /></div>
-
-        <div className='flex font-bold'>
-          <div className='flex mr-[24px] text-[#24A3D9] text-xs '>
-            <p className=' '>Pricing </p>
-            <p><FontAwesomeIcon className='pl-2' icon={faDollar}></FontAwesomeIcon></p>
-          </div>
-          <div className='flex mr-[24px] text-[#24A3D9] text-xs'>
-            <p className=' '>Help</p>
-            <p><FontAwesomeIcon className='pl-2' icon={faQuestionCircle}></FontAwesomeIcon></p>
-          </div>
-          <div className='flex text-xs'>
-            <div>
-              <p className='text-[#24A3D9]'>Logout</p>
-            </div>
-            <div>
-              <p><FontAwesomeIcon className='pl-2 text-[#24A3D9]' icon={faArrowRightFromBracket}></FontAwesomeIcon></p>
-            </div>
-          </div>
-        </div>
-      </div> */}
+     
       <div className=" mt-[60px] bg-#2E2E2E mx-[80px] pb-7">
         <p className="text-[#24A3D9]">Dashboard</p>
         <div className="flex mt-7">
@@ -346,15 +323,7 @@ const userTypes = [
         <Demography></Demography>
       </div>
 
-      {/* <footer className='bg-[#26435F] text-[#FFFFFF] py-[18px] w-full mt-6'>
-        <div className='flex  text-xs font-medium justify-between'>
-          <p className='ml-[74px]'>Copyright © Sevenimagine Education Private Limited</p>
-          <div className='flex mr-[45px]'>
-            <p>Terms of Usage</p>
-            <p className='ml-6'>Privacy Policy</p>
-          </div>
-        </div>
-      </footer> */}
+    
     </div>
   );
 }
