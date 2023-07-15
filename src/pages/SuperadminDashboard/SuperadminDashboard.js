@@ -6,6 +6,7 @@ import orgStyles from "./orgCard/orgcard.module.css";
 import Table from "./Table/table";
 import { orgData, tableHeaders } from "./temp";
 import { useLazyGetAllOrgUsersQuery } from "../../app/services/users";
+import { useLazyGetLatestOrgQuery } from "../../app/services/superAdmin";
 import Chart from "./DataChart/Chart";
 import Chart2 from "./DataChart/Chart2";
 import Index from "./FinancialStats/Index1";
@@ -78,9 +79,9 @@ const userTypes = [
   },
 ];
 
-export default function SuperadminDashboard() {
+ function SuperadminDashboard() {
   const [orgSignUpData, setOrgSignUpData] = useState([]);
-  const [fetchUserData, setUserData] = useLazyGetAllOrgUsersQuery();
+  const [fetchUserData, setUserData] = useLazyGetLatestOrgQuery();
   const { data: OrgStats } = useGetAllOrgStatsQuery();
   const [currentUser, setCurrentUser] = useState();
   const [totalUsers, setTotalUsers] = useState({
@@ -110,26 +111,28 @@ export default function SuperadminDashboard() {
     //   alert(data.workemail)
     fetchUserData().then((result) => {
       try {
+       // console.log("res",result);
         let arr = [];
-        for (let i = 0; i < result?.data?.data?.user?.length; i++) {
-          if (result?.data?.data?.user[i].role === "admin") {
+        for (let i = 0; i < result?.data?.data?.length; i++) {
+          if (result?.data?.data[i].role === "admin") {
             let date = new Date(
-              result.data.data.user[i].createdAt
+              result.data.data[i].createdAt
             ).toDateString();
+          //  console.log("first",result?.data?.data[i])
             //console.log("date", date);
             let temp = {
               date: date,
-              name: result.data.data.user[i].company
-                ? result.data.data.user[i].company
+              name: result.data.data[i].company
+                ? result.data.data[i].company
                 : "Not Available",
-              status: result.data.data.user[i].userStatus,
-              type: result.data.data.user[i].subscription
-                ? result.data.data.user[i].subscription
+              status: result.data.data[i].userStatus,
+              type: result.data.data[i].subscription
+                ? result.data.data[i].subscription
                 : "none",
               admin:
-                result.data.data.user[i].firstName +
+                result.data.data[i].firstName +
                 " " +
-                result.data.data.user[i].lastName,
+                result.data.data[i].lastName,
             };
             arr.sort(function (a, b) {
               // Turn your strings into dates, and then subtract them
@@ -169,7 +172,7 @@ export default function SuperadminDashboard() {
     userStudentStats,
     userContributorStats,
   ]);
-// console.log(orgSignUpData)
+ //console.log(orgSignUpData)
   return (
     <div className={styles.container}>
       {/* <div className='flex justify-between px-[80px] bg-[#26435F] h-[54px] items-center w-full'>
@@ -354,3 +357,5 @@ export default function SuperadminDashboard() {
     </div>
   );
 }
+
+export default React.memo(SuperadminDashboard);
