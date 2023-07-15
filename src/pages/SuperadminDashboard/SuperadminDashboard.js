@@ -233,9 +233,10 @@ const userTypes = [
               </p>
               <div className={styles.userStatsContainer}>
                 <div className="flex">
-                  {userTypes.map((item) => {
+                  {userTypes.map((item,id) => {
                     return (
                       <div
+                      key={id}
                         onClick={() => {
                           setCurrentUser({
                             name: item.text.toLowerCase(),
