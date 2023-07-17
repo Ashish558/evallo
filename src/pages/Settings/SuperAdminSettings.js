@@ -226,18 +226,6 @@ export default function SuperAdminSettings() {
     updateAndFetchsettings(updatedSetting);
   };
 
-  const onRemoveSessionTag = (item, key, idx) => {
-    let updatedSessionTag = { ...settingsData.sessionTags };
-    // let updatedField = settingsData.sessionTags[key].filter(text => text !== item)
-    let updatedField = settingsData.sessionTags[key].filter(
-      (text, i) => i !== idx
-    );
-    updatedSessionTag[key] = updatedField;
-
-    const updatedSetting = { sessionTags: updatedSessionTag };
-    updateAndFetchsettings(updatedSetting);
-  };
-
   const handleAddTag = (text, key) => {
     let tempSettings = { ...settingsData };
     let updatedSetting = {
@@ -656,6 +644,84 @@ export default function SuperAdminSettings() {
     updateAndFetchsettings(updatedSetting);
   };
 
+  const onRemoveSessionTag = (itemToRemove) => {
+    let updated = settingsData.sessionTags.filter(
+      (item) => item._id !== itemToRemove._id
+    );
+    let updatedSetting = {
+      sessionTags: updated,
+    };
+    updateAndFetchsettings(updatedSetting);
+  };
+
+  const handleAddSessionTag = (text, key) => {
+    let tempSettings = { ...settingsData };
+
+    let updated = sessionTags.map((serv) => {
+      if (serv.heading === key) {
+        return {
+          ...serv,
+          items: [...serv.items, text],
+        };
+      } else {
+        return { ...serv };
+      }
+    });
+
+    let updatedSetting = {
+      sessionTags: updated,
+    };
+    updateAndFetchsettings(updatedSetting);
+    // console.log('updatedSetting', updatedSetting)
+  };
+
+  
+  const handleOfferChange = (offer, key, value) => {
+    let updatedField = settingsData.offerImages.map((item) => {
+      if (item._id === offer._id) {
+        return { ...item, [key]: value };
+      } else {
+        return item;
+      }
+    });
+    let updatedSetting = {
+      offerImages: updatedField,
+    };
+    console.log("updatedSetting", updatedSetting);
+    updateAndFetchsettings(updatedSetting);
+  };
+
+  const onRemoveSessionTagItem = (text, heading) => {
+    // console.log(text);
+    // console.log(service);
+    let updated = sessionTags.map((serv) => {
+      if (serv.heading === heading) {
+        let updatedSpec = serv.items.filter((spec) => spec !== text);
+        return { ...serv, items: updatedSpec };
+      } else {
+        return { ...serv };
+      }
+    });
+    let updatedSetting = {
+      sessionTags: updated,
+    };
+    updateAndFetchsettings(updatedSetting);
+  };
+
+  const onAddSessionTag = (val) => {
+    let tempSettings = { ...settingsData };
+    let updatedSetting = {
+      sessionTags: [
+        ...tempSettings["sessionTags"],
+        {
+          heading: val,
+          items: [],
+        },
+      ],
+    };
+
+    updateAndFetchsettings(updatedSetting);
+  };
   // console.log('subscriptionCode', settingsData.subscriptionCode);
   return (
     <>
@@ -714,7 +780,7 @@ export default function SuperAdminSettings() {
             <SettingsCard
               title="Lead Status Items"
               body={
-                <div className="flex items-center flex-wrap [&>*]:mb-[10px]">
+                <div className="flex items-center flex-wrap [&>*]:mb-[10px] bg-white shadow-small p-4 rounded-5">
                   <AddTag onAddTag={handleAddTag} keyName="leadStatus" />
                   <FilterItems
                     onlyItems={true}
@@ -731,7 +797,7 @@ export default function SuperAdminSettings() {
             <SettingsCard
               title="Tutor Status Items"
               body={
-                <div className="flex items-center flex-wrap [&>*]:mb-[10px]">
+                <div className="flex items-center flex-wrap [&>*]:mb-[10px] bg-white shadow-small p-4 rounded-5">
                   <AddTag onAddTag={handleAddTag} keyName="tutorStatus" />
                   <FilterItems
                     onlyItems={true}
@@ -744,18 +810,20 @@ export default function SuperAdminSettings() {
                 </div>
               }
             />
+
             <SettingsCard
-              title="Manage Subscription Codes"
+              title="Manage Referral Codes"
+              className={styles["bordered-settings-container"]}
               body={
-                <div className="max-h-[360px] overflow-auto scrollbar-content scrollbar-vertical">
+                <div className="max-h-[360px] overflow-auto scrollbar-content scrollbar-vertical ">
                   {subscriptionCode !== undefined &&
                     subscriptionCode.map((subscription, i) => {
                       return (
-                        <div key={i}>
-                          <div className="flex items-center justify-between pr-8">
-                            <p className="font-bold text-primary-dark mb-4">
+                        <div key={i} className="bg-white shadow-small p-4 ">
+                          <div className="flex items-center justify-between pr-8 ">
+                            <p className="font-bold text-[#24A3D9] mb-4">
                               {subscription.code}
-                              <span className="inline-block ml-4 font-normal">
+                              <span className="inline-block ml-4 font-normal text-[#517CA8]">
                                 {subscription.expiry} Weeks
                               </span>
                             </p>
@@ -797,7 +865,7 @@ export default function SuperAdminSettings() {
                               </div>
                             </div>
                           </div>
-                          <div className="flex items-center flex-wrap [&>*]:mb-[18px]">
+                          <div className="flex items-center flex-wrap [&>*]:mb-[18px] ">
                             <AddTag
                               openModal={true}
                               onAddTag={(code) => handleAddTest(subscription)}
@@ -831,84 +899,78 @@ export default function SuperAdminSettings() {
             />
 
             <SettingsCard
-              title="Session Tags"
-              titleClassName="text-[21px] mb-[15px]"
+              title="Manage Services and Topics"
+              className={styles["bordered-settings-container"]}
               body={
                 <div>
-                  {sessionTags !== undefined &&
-                    Object.keys(sessionTags).map((tag, i) => {
-                      return (
-                        <div key={i}>
-                          <p className="font-bold text-primary-dark mb-[25px]">
-                            {getSessionTagName(Object.keys(sessionTags)[i])}
-                          </p>
-                          <div className="flex items-center flex-wrap [&>*]:mb-[10px]">
-                            <AddTag
-                              onAddTag={handleSessionAddTag}
-                              keyName={Object.keys(sessionTags)[i]}
-                            />
-                            <FilterItems
-                              isString={true}
-                              onlyItems={true}
-                              keyName={Object.keys(sessionTags)[i]}
-                              items={sessionTags[tag]}
-                              onRemoveFilter={onRemoveSessionTag}
-                              className="pt-1 pb-1 mr-15"
-                            />
+                  <div className="max-h-[360px] overflow-auto scrollbar-content scrollbar-vertical">
+                    {servicesAndSpecialization !== undefined &&
+                      servicesAndSpecialization.map((service, i) => {
+                        return (
+                          <div
+                            key={i}
+                            className="bg-white shadow-small p-4 mb-3"
+                          >
+                            <div className="flex items-center justify-between pr-8">
+                              <p className="font-bold text-[#24A3D9] mb-4">
+                                {service.service}
+                              </p>
+                              <div
+                                className="w-5 h-5 flex items-center justify-center bg-[#E3E3E3] rounded-full cursor-pointer"
+                                onClick={() => onRemoveService(service)}
+                              >
+                                <img
+                                  src={DeleteIcon}
+                                  className="w-4"
+                                  alt="delete"
+                                />
+                              </div>
+                            </div>
+                            <div className="flex items-center flex-wrap [&>*]:mb-[18px]">
+                              <AddTag
+                                onAddTag={handleAddSpecialization}
+                                keyName={service.service}
+                                text="Add Specialization"
+                              />
+                              <FilterItems
+                                isString={true}
+                                onlyItems={true}
+                                keyName={service.service}
+                                items={service.specialization}
+                                onRemoveFilter={onRemoveSpecialization}
+                                className="pt-1 pb-1 mr-15"
+                              />
+                            </div>
                           </div>
-                        </div>
-                      );
-                    })}
-                </div>
-              }
-            />
-
-            <SettingsCard
-              title="Expertise"
-              toggle={{ value: toggleImage.Expertise, key: "Expertise" }}
-              onToggle={onToggle}
-              body={
-                <div className="flex items-center flex-wrap [&>*]:mb-[10px]">
+                        );
+                      })}
+                  </div>
                   <AddTag
-                    keyName="Expertise"
-                    openModal={true}
-                    onAddTag={() => handleTagModal("Expertise")}
-                  />
-                  <FilterItems
-                    isString={false}
-                    onlyItems={true}
-                    image={toggleImage.Expertise}
-                    items={
-                      sessionTags !== undefined
-                        ? Expertise.map((item) => item)
-                        : []
-                    }
-                    keyName="Expertise"
-                    baseLink={awsLink}
-                    onRemoveFilter={onRemoveTextImageTag}
-                    className="pt-1 pb-1 mr-15"
+                    children="Add service"
+                    className="pl-3 pr-3 pt-1.4 pb-1.5 mt-5 bg-primary text-white"
+                    text="Add service"
+                    onAddTag={onAddService}
                   />
                 </div>
               }
             />
 
             <SettingsCard
-              title="Service and specialization"
-              className=""
-              titleClassName="text-[21px] mb-[15px]"
+              title="Session Tags & Reconciliation"
+              className={styles["bordered-settings-container"]}
               body={
                 <div className="max-h-[360px] overflow-auto scrollbar-content scrollbar-vertical">
-                  {servicesAndSpecialization !== undefined &&
-                    servicesAndSpecialization.map((service, i) => {
+                  {sessionTags !== undefined &&
+                    sessionTags.map((service, i) => {
                       return (
-                        <div key={i}>
+                        <div key={i} className="bg-white shadow-small p-4 mb-3">
                           <div className="flex items-center justify-between pr-8">
-                            <p className="font-bold text-primary-dark mb-4">
-                              {service.service}
+                            <p className="font-bold text-[#24A3D9] mb-4">
+                              {service.heading}
                             </p>
                             <div
                               className="w-5 h-5 flex items-center justify-center bg-[#E3E3E3] rounded-full cursor-pointer"
-                              onClick={() => onRemoveService(service)}
+                              onClick={() => onRemoveSessionTag(service)}
                             >
                               <img
                                 src={DeleteIcon}
@@ -919,16 +981,16 @@ export default function SuperAdminSettings() {
                           </div>
                           <div className="flex items-center flex-wrap [&>*]:mb-[18px]">
                             <AddTag
-                              onAddTag={handleAddSpecialization}
-                              keyName={service.service}
-                              text="Add Specialization"
+                              onAddTag={handleAddSessionTag}
+                              keyName={service.heading}
+                              text="Add Items"
                             />
                             <FilterItems
                               isString={true}
                               onlyItems={true}
-                              keyName={service.service}
-                              items={service.specialization}
-                              onRemoveFilter={onRemoveSpecialization}
+                              keyName={service.heading}
+                              items={service.items}
+                              onRemoveFilter={onRemoveSessionTagItem}
                               className="pt-1 pb-1 mr-15"
                             />
                           </div>
@@ -936,105 +998,30 @@ export default function SuperAdminSettings() {
                       );
                     })}
                   <AddTag
-                    children="Add service"
+                    children="Add Session Tag"
                     className="pl-3 pr-3 pt-1.4 pb-1.5 mt-5 bg-primary text-white"
                     text="Add service"
                     hideIcon={true}
-                    onAddTag={onAddService}
+                    onAddTag={onAddSessionTag}
                   />
                 </div>
               }
             />
 
             <SettingsCard
-              title="Personality"
-              toggle={{ value: toggleImage.personality, key: "personality" }}
-              onToggle={onToggle}
-              body={
-                <div className="flex items-center flex-wrap [&>*]:mb-[10px]">
-                  <AddTag
-                    keyName="personality"
-                    openModal={true}
-                    onAddTag={() => handleTagModal("personality")}
-                  />
-                  <FilterItems
-                    isString={false}
-                    onlyItems={true}
-                    image={toggleImage.personality}
-                    items={
-                      personality !== undefined
-                        ? personality.map((item) => item)
-                        : []
-                    }
-                    keyName="personality"
-                    baseLink={awsLink}
-                    onRemoveFilter={onRemoveTextImageTag}
-                    className="pt-1 pb-1 mr-15"
-                  />
-                </div>
-              }
-            />
-
-            <SettingsCard
-              title="Interest"
-              toggle={{ value: toggleImage.interest, key: "interest" }}
-              onToggle={onToggle}
-              body={
-                <div className="flex items-center flex-wrap [&>*]:mb-[10px]">
-                  <AddTag
-                    keyName="interest"
-                    openModal={true}
-                    onAddTag={() => handleTagModal("interest")}
-                  />
-                  <FilterItems
-                    isString={false}
-                    onlyItems={true}
-                    image={toggleImage.interest}
-                    items={
-                      interest !== undefined ? interest.map((item) => item) : []
-                    }
-                    keyName="interest"
-                    baseLink={awsLink}
-                    onRemoveFilter={onRemoveTextImageTag}
-                    className="pt-1 pb-1 mr-15"
-                  />
-                </div>
-              }
-            />
-
-            <SettingsCard
-              title="Subjects"
-              body={
-                <div className="flex items-center flex-wrap [&>*]:mb-[10px]">
-                  <AddTag onAddTag={handleAddTag} keyName="classes" />
-                  <FilterItems
-                    isString={true}
-                    onlyItems={true}
-                    keyName="classes"
-                    items={classes ? classes : []}
-                    baseLink={awsLink}
-                    onRemoveFilter={onRemoveFilter}
-                    className="pt-1 pb-1 mr-15"
-                  />
-                </div>
-              }
-            />
-
-            <SettingsCard
-              title="Images in Offer Slide"
+              title="Edit Announcements"
               toggle={{ value: toggleImage.offer, key: "offer" }}
               onToggle={onToggle}
               body={
-                <div className="flex items-center flex-wrap [&>*]:mb-[10px]">
-                  <AddTag
-                    openModal={true}
-                    onAddTag={() => handleTagModal("offer")}
-                  />
-                  {/* <input type='file' ref={inputRef} className='hidden' accept="image/*"
+                <div>
+                  <div className="flex items-center flex-wrap [&>*]:mb-[10px] bg-white shadow-small gap-x-4 p-4 rounded-5 mb-3">
+                    {/* <input type='file' ref={inputRef} className='hidden' accept="image/*"
                            onChange={e => onImageChange(e)} /> */}
-                  <FilterItems
+
+                    {/* <FilterItems
                     isString={false}
-                    image={toggleImage.offer}
+                    // image={toggleImage.offer}
+                    offerImage={toggleImage.offer}
                     onlyItems={true}
                     sliceText={true}
                     items={
@@ -1049,6 +1036,55 @@ export default function SuperAdminSettings() {
                     onRemoveFilter={onRemoveImage}
                     // onRemoveFilter={onRemoveFilter}
                     className="pt-1 pb-1 mr-15"
+                  /> */}
+                    {offerImages?.map((offer) => {
+                      return (
+                        <div key={offer._id}>
+                          <div>
+                            {toggleImage.offer && (
+                              <div className="w-[300px] h-[150px] overflow-hidden mb-5">
+                                <img
+                                  src={`${awsLink}${offer.image}`}
+                                  alt="offer-image"
+                                  className="w-full h-full object-cover rounded-7"
+                                />
+                              </div>
+                            )}
+                            <div>
+                              <InputField
+                                defaultValue={offer.link}
+                                parentClassName={"mb-3"}
+                                onBlur={(e) =>
+                                  handleOfferChange(
+                                    offer,
+                                    "link",
+                                    e.target.value
+                                  )
+                                }
+                              />
+                              <InputField
+                                value={offer.buttonText}
+                                placeholder={
+                                  "Button (eg. Register, Enroll, View)"
+                                }
+                                onBlur={(e) =>
+                                  handleOfferChange(
+                                    offer,
+                                    "buttonText",
+                                    e.target.value
+                                  )
+                                }
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                  <AddTag
+                    openModal={true}
+                    text="Add Announcement"
+                    onAddTag={() => handleTagModal("offer")}
                   />
                 </div>
               }
@@ -1057,14 +1093,8 @@ export default function SuperAdminSettings() {
         ) : (
           <></>
         )}
-       {
-         activeTab === 2 &&
-         <UserManagement />
-       }
-       {
-         activeTab === 4 &&
-         <OrgDefaultContent />
-       }
+        {activeTab === 2 && <UserManagement />}
+        {activeTab === 4 && <OrgDefaultContent />}
       </div>
       {modalActive && (
         <Modal

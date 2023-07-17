@@ -52,6 +52,7 @@ export default function InputField({
         {Icon && (
           <img
             src={Icon}
+            alt='field-icon'
             className={`mr-5 ${
               iconSize === "medium" ? "w-[24px]" : "w-[28px]"
             }`}
@@ -80,6 +81,7 @@ export default function InputField({
           <img
             src={EyeIcon}
             className="ml-4 w-[20px] cursor-pointer"
+            alt='eye-active'
             onClick={() =>
               inputType === "password"
                 ? setInputType("text")
@@ -90,6 +92,7 @@ export default function InputField({
         {IconRight && (
           <img
             src={IconRight}
+            alt='icon-right'
             className={`ml-4 cursor-pointer ${
               iconSize === "medium" && "w-[24px]"
             }`}
