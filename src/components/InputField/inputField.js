@@ -28,6 +28,7 @@ export default function InputField({
   prefix,
   onFocus,
   onBlur,
+  defaultValue
 }) {
   const [inputType, setInputType] = useState(type);
 
@@ -66,6 +67,7 @@ export default function InputField({
           type={inputType ? inputType : "text"}
           onChange={(e) => (onChange !== undefined ? onChange(e) : "")}
           value={value}
+          defaultValue={defaultValue}
           required={isRequired ? true : false}
           disabled={disabled !== undefined ? disabled : false}
           onKeyDown={onKeyDown ? onKeyDown : () => {}}
