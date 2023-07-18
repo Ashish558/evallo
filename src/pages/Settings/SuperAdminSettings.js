@@ -29,7 +29,7 @@ import SignupTab from "./Tabs/Signup/signup";
 import AddNewQuestion from "../Frames/AddNewQuestion/AddNewQuestion";
 import { useAddNewQuestionMutation } from "../../app/services/admin";
 import { updateOrganizationSettings } from "../../app/slices/organization";
-import AccountOverview from "./Tabs/AccountOverview/AccountOverview";
+import AccountOverview from "./Tabs/SuperAdminAccountOverview/SuperAdminAccountOverview";
 import UserManagement from "./Tabs/UserManagement/UserManagement";
 import OrgDefaultContent from "./Tabs/OrgDefaultContent/OrgDefaultContent";
 

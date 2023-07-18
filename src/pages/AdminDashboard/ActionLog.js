@@ -9,12 +9,12 @@ export default function ActionLog() {
       <div className="flex flex-col border border-solid border-gray-200 bg-[#FFFFFF]">
         <div className="  border border-solid border-gray-200">
           <p className="uppercase  pl-[29px] pt-[16px] pb-3 text-[#26435F]">
-            {new Date(actionLog?.actions[0].createdAt).toDateString()}
+            {new Date(actionLog?.actions[0]?.createdAt).toDateString()}
           </p>
         </div>
         <ul className="list-disc overflow-y-scroll min-w-[600px] max-h-[17.6rem]">
           <div className="h-[1px] bg-[#CBD6E2]" />
-          {actionLog?.actions.map((item, index) => (
+          {actionLog?.actions?.map((item, index) => (
             <div key={index} className="flex ml-2 h-[57px] pl-5">
               <p className="text-[#4A556C] pt-5 font-medium text-xs mr-6 w-[80px]">
                 {new Date(item.createdAt).toLocaleTimeString()}
