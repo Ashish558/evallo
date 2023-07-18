@@ -22,9 +22,9 @@ export default function InputSelect({
   disabled,
   required,
   optionListClassName,
-
+  IconRight,
+  DateSelect,
 }) {
- 
   const [selected, setSelected] = useState(false);
   const selectRef = useRef();
   useOutsideAlerter(selectRef, () => setSelected(false));
@@ -34,6 +34,9 @@ export default function InputSelect({
   useEffect(() => {
     if (!checkbox) setSelected(false);
   }, [value]);
+  const handleChange = (optionType, option, idx) => {
+    onChange(optionType === "object" ? option.name : option, idx);
+  };
 
   return (
     <div
@@ -52,26 +55,29 @@ export default function InputSelect({
       )}
 
       <div
-       onClick={handleOption}
-      
+        onClick={() => setSelected(true)}
         className={`py-[10px] px-[14px]  lg:py-[10px] lg:px-[16px] border border-[#D0D5DD] flex items-center rounded relative cursor-pointer z-50 ${
           inputContainerClassName ? inputContainerClassName : ""
         } `}
       >
-        {Icon && <img src={Icon} className={`mr-5  w-[28px]}`} />}
+        {Icon && <img src={Icon} className={`mr-5  w-[28px]}`} alt="icon" />}
         {selected ? (
-          <img
-            src={UpArrow}
-            className={`w-[15px]  ${styles.downArrow}`}
-            alt="down-arrow"
-           
-          />
+          IconRight ? (
+            IconRight
+          ) : (
+            <img
+              src={UpArrow}
+              className={`w-[15px]  ${styles.downArrow}`}
+              alt="down-arrow"
+            />
+          )
+        ) : IconRight ? (
+          IconRight
         ) : (
           <img
             src={DownArrow}
             className={`w-[15px]  ${styles.downArrow}`}
             alt="down-arrow"
-           
           />
         )}
 
@@ -87,30 +93,24 @@ export default function InputSelect({
               {placeholder}{" "}
             </span>
           ) : (
-            <span className="mr-10 text-[13px] whitespace-nowrap">
-            { value}
-          
-          </span>
-           
+            <span className="mr-10 text-[13px] whitespace-nowrap">{value}</span>
           )}
         </div>
         {selected && (
           <div
+            onClick={handleOption}
             className={`scrollbar-content scrollbar-vertical  shadow-sm ${styles.options} $`}
           >
+            {DateSelect && DateSelect}
             {optionData?.map((option, idx) => {
               return (
                 <div
                   className="outline-0 border-0 py-2.5 px-4 flex items-center justify-between"
                   key={idx}
-                  onClick={() => {
-                    onChange(optionType === "object"?option.name:option, idx);
-                  }}
+                  onClick={() => handleChange(optionType, option, idx)}
                 >
                   <p className={optionListClassName}>
-                    { optionType === "object"
-                      ? option.name
-                      : option}
+                    {optionType === "object" ? option.name : option}
                   </p>
                   {radio && (
                     <input

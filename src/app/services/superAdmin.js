@@ -66,6 +66,13 @@ export const superAdminServicesApi = createApi({
         headers: getAuthHeader(),
       }),
     }),
+    getLatestOrg: builder.query({
+      query: () => ({
+        url: `/api/user/superadmin/getlastSignUpdetails`,
+        method: "GET",
+        headers: getAuthHeader(),
+      }),
+    }),
   }),
 });
 
@@ -76,5 +83,6 @@ export const {
   useGetUserDailyActivityQuery,
   useAddUserDemographyMutation,
   useGetActionLogQuery,
+  useLazyGetLatestOrgQuery,
   useLazyGetLogoutQuery,
 } = superAdminServicesApi;

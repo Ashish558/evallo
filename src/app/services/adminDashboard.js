@@ -22,8 +22,46 @@ export const adminDashboardServicesApi = createApi({
         headers: getAuthHeader(),
       }),
     }),
+    getUserStats: builder.query({
+      query: () => ({
+        url: `api/user/admin/dashboard/userstats`,
+        method: "GET",
+        headers: getAuthHeader(),
+      }),
+    }),
+    getAllRevenue: builder.mutation({
+      query: (body) => ({
+        url: `api/session/org/allRevenuesessions`,
+        method: "POST",
+        body: body,
+
+        headers: getAuthHeader(),
+      }),
+    }),
+    getLeakedRevenue: builder.mutation({
+      query: (body) => ({
+        url: `api/session/org/leakedRevenuesessions`,
+        method: "POST",
+        body: body,
+        headers: getAuthHeader(),
+      }),
+    }),
+    getImpendingRevenue: builder.mutation({
+      query: (body) => ({
+        url: `api/session/org/impendingRevenuesessions`,
+        method: "POST",
+        body: body,
+        headers: getAuthHeader(),
+      }),
+    }),
   }),
 });
 
-export const { useGetSpecificActionLogQuery, useGetLatestSignUpQuery } =
-  adminDashboardServicesApi;
+export const {
+  useGetSpecificActionLogQuery,
+  useGetLatestSignUpQuery,
+  useGetUserStatsQuery,
+  useGetImpendingRevenueMutation,
+  useGetLeakedRevenueMutation,
+  useGetAllRevenueMutation,
+} = adminDashboardServicesApi;
