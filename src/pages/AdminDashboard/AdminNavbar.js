@@ -30,14 +30,15 @@ import { updateIsLoggedIn } from "../../app/slices/user";
 import { useLazyGetLogoutQuery } from "../../app/services/superAdmin";
 
 const tempnavdata = [
-  {icon:Dashboard,
-    path: "/adminDashboard",
+  {
+    icon: Dashboard,
+    path: "/",
     excludes: ["student", "parent", "tutor"],
     tooltip: "Dashboard",
   },
   {
     icon: UsersIcon,
-    path: "/",
+    path: "/users",
     tooltip: "All Users",
   },
   {
@@ -147,12 +148,14 @@ const supAdminNavData = [
     excludes: ["student", "parent", "tutor"],
     tooltip: "Settings",
   },
-  {icon:Profile,
+  {
+    icon: Profile,
     path: "/all-orgs",
     excludes: ["student", "parent", "tutor"],
     tooltip: "All Orgs",
   },
-  {icon:Dashboard,
+  {
+    icon: Dashboard,
     path: "/dashboard",
     excludes: ["student", "parent", "tutor"],
     tooltip: "Dashboard",
@@ -164,7 +167,12 @@ const AdminNavbar = () => {
   const [logoutModalActive, setLogoutModalActive] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [showDashboard,setShowDashboard] = useState((location.pathname.includes("all-orgs")||location.pathname.includes("dashboard"))?true:false);
+  const [showDashboard, setShowDashboard] = useState(
+    location.pathname.includes("all-orgs") ||
+      location.pathname.includes("dashboard")
+      ? true
+      : false
+  );
   const { width } = useWindowDimensions();
   const { isLoggedIn } = useSelector((state) => state.user);
   const [logOutApi, setLogOutApi] = useLazyGetLogoutQuery();
@@ -179,9 +187,9 @@ const AdminNavbar = () => {
       setNavData(parentNav);
     } else if (persona === "admin") {
       setNavData(tempnavdata);
-    }else if(persona === 'superAdmin'){
-      setNavData(supAdminNavData)
-   } else {
+    } else if (persona === "superAdmin") {
+      setNavData(supAdminNavData);
+    } else {
       setNavData([]);
     }
   }, [persona]);
@@ -193,8 +201,8 @@ const AdminNavbar = () => {
       // window.open("https://sevensquarelearning.com/");
     } else {
       if (path === "") return;
-      if(path==="/all-orgs"){
-        setShowDashboard(true)
+      if (path === "/all-orgs") {
+        setShowDashboard(true);
       }
       navigate(path);
     }
@@ -217,7 +225,7 @@ const AdminNavbar = () => {
         </div>
         <div className="flex  text-[#FFFFFF] font-semibold text-[13px]">
           {navData.map((item, idx) => {
-            return  (
+            return (
               <div
                 key={idx}
                 className="flex items-center mr-6 cursor-pointer"

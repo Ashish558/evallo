@@ -31,6 +31,7 @@ export default function InputField({
   onFocus,
   Tooltip,
   onBlur,
+  defaultValue
 }) {
   const [inputType, setInputType] = useState(type);
   const [showDiv, setShowDiv] = useState(true);
@@ -68,6 +69,7 @@ export default function InputField({
         {Icon && (
           <img
             src={Icon}
+            alt='field-icon'
             className={`mr-5 ${
               iconSize === "medium" ? "w-[24px]" : "w-[28px]"
             }`}
@@ -84,6 +86,7 @@ export default function InputField({
           type={inputType ? inputType : "text"}
           onChange={(e) => (onChange !== undefined ? onChange(e) : "")}
           value={value}
+          defaultValue={defaultValue}
           required={isRequired ? true : false}
           disabled={disabled !== undefined ? disabled : false}
           onKeyDown={onKeyDown ? onKeyDown : () => {}}
@@ -96,6 +99,7 @@ export default function InputField({
           <img
             src={EyeIcon}
             className="ml-4 w-[20px] cursor-pointer"
+            alt='eye-active'
             onClick={() =>
               inputType === "password"
                 ? setInputType("text")
@@ -108,6 +112,7 @@ export default function InputField({
             <div className="group relative w-fit">
           <img
             src={IconRight}
+            alt='icon-right'
             className={`ml-4 cursor-pointer ${
               iconSize === "medium" && "w-[24px]"
             }`}
