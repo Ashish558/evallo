@@ -1,6 +1,6 @@
 import React, { useRef } from 'react'
 import { useState } from 'react'
-import AddIcon from '../../assets/Settings/add.svg'
+import AddIcon from '../../assets/Settings/add-white.svg'
 
 export default function AddTag({ keyName, onAddTag, isFile, openModal, className, text, hideIcon }) {
 
@@ -31,7 +31,7 @@ export default function AddTag({ keyName, onAddTag, isFile, openModal, className
   }
 
   return (
-    <button className={`${className ? className : ' bg-primaryLight'} flex items-center text-primary font-bold text-sm py-1.4 px-3 rounded-7 mr-[15px] ${isClicked ? 'justify-center' : ''}`}
+    <button className={`${className ? className : ' bg-primary'} flex items-center text-white font-bold text-sm py-1.4 px-3 rounded-7 mr-[15px] ${isClicked ? 'justify-center' : ''}`}
       onClick={handleClick} >
       {
         !isClicked ?
@@ -41,7 +41,7 @@ export default function AddTag({ keyName, onAddTag, isFile, openModal, className
             </p>
             {
               !hideIcon &&
-              <img src={AddIcon} alt='tag-icon' />
+              <img src={AddIcon} alt='tag-icon' className='w-4 ml-1' />
             }
           </>
           :

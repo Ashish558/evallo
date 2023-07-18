@@ -13,6 +13,7 @@ import {
 } from "./app/services/users";
 import { updateOrganization } from "./app/slices/organization";
 import { useLazyGetLogoutQuery } from "./app/services/superAdmin";
+import Loader from "./components/Loader";
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -104,7 +105,7 @@ function App() {
       window.removeEventListener("beforeunload", handleTabClose);
     };
   }, []);
-  if (loading) return <></>;
+  if (loading) return <Loader /> ;
 
   return (
     <>

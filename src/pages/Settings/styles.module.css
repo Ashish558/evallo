@@ -30,3 +30,7 @@
    width: calc(100%);
    z-index: -1;
 }
+.bordered-settings-container{
+   border: 2.5px dashed #CBD6E2;
+   padding: 24px;
+}
