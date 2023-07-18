@@ -9,10 +9,11 @@ import resetSendIcon from "../../../../assets/icons/teenyicons_shield-tick-solid
 import tooltipIcon from "../../../../assets/icons/octicon_stop-16.svg";
 import { useState } from "react";
 import Modal from "../../../../components/Modal/Modal";
-import { useSelector } from "react-redux";
-import axios from "axios";
 import { useForgotPasswordMutation } from "../../../../app/services/auth";
-import { useLazyGetPersonalDetailQuery } from "../../../../app/services/users";
+import {
+  useLazyGetPersonalDetailQuery,
+  useUpdateUserAccountMutation,
+} from "../../../../app/services/users";
 import { BASE_URL, getAuthHeader } from "../../../../app/constants/constants";
 const AccountOverview = () => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -50,6 +51,7 @@ const AccountOverview = () => {
     services: [],
   });
   const [userDetails, userDetailsStatus] = useLazyGetPersonalDetailQuery();
+  const [updateAccount, updateAccountStatus] = useUpdateUserAccountMutation();
   useEffect(() => {
     userDetails()
       .then((res) => {
@@ -63,25 +65,18 @@ const AccountOverview = () => {
   }, []);
 
   useEffect(() => {
-    // setValues(organization);
     const updateUserAccount = async () => {
       try {
-        //   alert(data.workemail)
         let reqBody = { ...values };
         delete reqBody["_id"];
         delete reqBody["email"];
-        let result = await axios.patch(
-          `${process.env.REACT_APP_BASE_URL}api/user`,
-          reqBody,
-          {
-            headers: {
-              "Content-type": "application/json; charset=UTF-8",
-              Authorization: sessionStorage.getItem("token"),
-            },
-          }
-        );
-
-        //   console.log("updated", values);
+        updateAccount(reqBody)
+          .then((res) => {
+            console.log(res);
+          })
+          .catch((err) => {
+            console.log(err?.message);
+          });
       } catch (e) {
         console.error(e?.response?.data?.message);
       }
@@ -118,7 +113,7 @@ const AccountOverview = () => {
       }
       console.log(res.data);
       alert("Password reset link sent to your email.");
-      // window.open(res.data.link)
+    
     });
   };
 

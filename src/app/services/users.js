@@ -139,6 +139,14 @@ export const userServicesApi = createApi({
         headers: getAuthHeader(),
       }),
     }),
+    updateUserAccount: builder.mutation({
+      query: (body) => ({
+        url: `/api/user`,
+        method: "PATCH",
+        body: body,
+        headers: getAuthHeader(),
+      }),
+    }),
   }),
 });
 
@@ -147,6 +155,7 @@ export const {
   useLazyGetParentTutorsQuery,
   useLazyGetStudentTutorsQuery,
   useAddUserMutation,
+  useUpdateUserAccountMutation,
   useLazyGetAllOrgUsersQuery,
   useLazyGetUserDetailQuery,
   useLazyGetTutorDetailsQuery,

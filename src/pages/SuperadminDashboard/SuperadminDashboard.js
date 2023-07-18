@@ -79,7 +79,7 @@ const userTypes = [
   },
 ];
 
- function SuperadminDashboard() {
+function SuperadminDashboard() {
   const [orgSignUpData, setOrgSignUpData] = useState([]);
   const [fetchUserData, setUserData] = useLazyGetLatestOrgQuery();
   const { data: OrgStats } = useGetAllOrgStatsQuery();
@@ -108,17 +108,13 @@ const userTypes = [
   });
 
   const getLatestOrgs = async () => {
-  
     fetchUserData().then((result) => {
       try {
-      
         let arr = [];
         for (let i = 0; i < result?.data?.data?.length; i++) {
           if (result?.data?.data[i].role === "admin") {
-            let date = new Date(
-              result.data.data[i].createdAt
-            ).toDateString();
-          
+            let date = new Date(result.data.data[i].createdAt).toDateString();
+
             let temp = {
               date: date,
               name: result.data.data[i].company
@@ -134,18 +130,14 @@ const userTypes = [
                 result.data.data[i].lastName,
             };
             arr.sort(function (a, b) {
-              
               return new Date(b.date) - new Date(a.date);
             });
             arr.push(temp);
           }
         }
-        
+
         if (arr.length > 0) setOrgSignUpData(arr);
-     
-      } catch (e) {
-      
-      }
+      } catch (e) {}
     });
   };
   useEffect(() => {
@@ -156,7 +148,7 @@ const userTypes = [
       student: userStudentStats,
       contributor: userContributorStats,
     });
-  
+
     setCurrentUser({
       name: "admin",
 
@@ -170,10 +162,14 @@ const userTypes = [
     userStudentStats,
     userContributorStats,
   ]);
- 
+  const handleCurrentUser = (item) => {
+    setCurrentUser({
+      name: item.text.toLowerCase(),
+      ...totalUsers[`${item.text.toLowerCase()}`],
+    });
+  };
   return (
     <div className={styles.container}>
-     
       <div className=" mt-[60px] bg-#2E2E2E mx-[80px] pb-7">
         <p className="text-[#24A3D9]">Dashboard</p>
         <div className="flex mt-7">
@@ -210,16 +206,11 @@ const userTypes = [
               </p>
               <div className={styles.userStatsContainer}>
                 <div className="flex">
-                  {userTypes.map((item,id) => {
+                  {userTypes.map((item, id) => {
                     return (
                       <div
-                      key={id}
-                        onClick={() => {
-                          setCurrentUser({
-                            name: item.text.toLowerCase(),
-                            ...totalUsers[`${item.text.toLowerCase()}`],
-                          });
-                        }}
+                        key={id}
+                        onClick={() => handleCurrentUser(item)}
                         className={` bg-white border-b cursor-pointer border-[#000000] ${
                           styles.userStat
                         } ${
@@ -322,8 +313,6 @@ const userTypes = [
         </p>
         <Demography></Demography>
       </div>
-
-    
     </div>
   );
 }
