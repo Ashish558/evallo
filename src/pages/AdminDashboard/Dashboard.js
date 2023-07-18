@@ -55,9 +55,11 @@ const Dashboard = () => {
       setValue(res.data);
     });
   };
+
   const handleStartDate = (e) => {
     setStartDate(e);
   };
+
   useEffect(() => {
     if (startDate) {
       let startD = startDate.split("-")[0];
@@ -71,6 +73,7 @@ const Dashboard = () => {
     }
   }, [startDate]);
  
+  return <></>
   return (
     <div className={styles.container}>
       <div className=" mt-[28px] bg-#2E2E2E ">

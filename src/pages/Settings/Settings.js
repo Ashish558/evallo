@@ -31,6 +31,8 @@ import AccountOverview from "./Tabs/AccountOverview/AccountOverview";
 import AddNewQuestion from "../Frames/AddNewQuestion/AddNewQuestion";
 import { useAddNewQuestionMutation } from "../../app/services/admin";
 import { updateOrganizationSettings } from "../../app/slices/organization";
+import InputSelect from "../../components/InputSelect/InputSelect";
+import { timeZones } from "../../constants/constants";
 
 const initialState = {
   name: "",
@@ -728,6 +730,13 @@ export default function Settings() {
     updateAndFetchsettings(updatedSetting);
   };
 
+  const handleChange = (key, value) => {
+    const body = {
+      [key]: value,
+    };
+    updateAndFetchsettings(body);
+  };
+
   return (
     <>
       <div className=" bg-lightWhite min-h-screen px-8 pt-[50px] pb-[50px] lg:px-[100px] ">
@@ -781,6 +790,23 @@ export default function Settings() {
         </div>
         {activeTab === 1 || !activeTab ? (
           <div>
+            <div className="flex items-center gap-x-5 mb-4">
+              <InputSelect
+                optionData={timeZones}
+                parentClassName="min-w-[200px]"
+                label="Default Timezone"
+                value={settingsData.timeZone}
+                onChange={(val) => handleChange("timeZone", val)}
+              />
+              <InputSelect
+                optionData={["dd/mm/yy", "mm/dd/yy"]}
+                parentClassName="min-w-[200px]"
+                label="Default Timezone"
+                value={settingsData.dateFormat}
+                onChange={(val) => handleChange("dateFormat", val)}
+                
+              />
+            </div>
             <SettingsCard
               title="Lead Status Items"
               body={
@@ -1222,7 +1248,7 @@ export default function Settings() {
                   </div>
                   <AddTag
                     openModal={true}
-                    text='Add Announcement'
+                    text="Add Announcement"
                     onAddTag={() => handleTagModal("offer")}
                   />
                 </div>

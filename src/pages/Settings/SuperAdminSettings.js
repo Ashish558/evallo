@@ -32,6 +32,8 @@ import { updateOrganizationSettings } from "../../app/slices/organization";
 import AccountOverview from "./Tabs/SuperAdminAccountOverview/SuperAdminAccountOverview";
 import UserManagement from "./Tabs/UserManagement/UserManagement";
 import OrgDefaultContent from "./Tabs/OrgDefaultContent/OrgDefaultContent";
+import { timeZones } from "../../constants/constants";
+import InputSelect from "../../components/InputSelect/InputSelect";
 
 const initialState = {
   name: "",
@@ -675,7 +677,6 @@ export default function SuperAdminSettings() {
     // console.log('updatedSetting', updatedSetting)
   };
 
-  
   const handleOfferChange = (offer, key, value) => {
     let updatedField = settingsData.offerImages.map((item) => {
       if (item._id === offer._id) {
@@ -722,6 +723,14 @@ export default function SuperAdminSettings() {
 
     updateAndFetchsettings(updatedSetting);
   };
+
+  const handleChange = (key, value) => {
+    const body = {
+      [key]: value,
+    };
+    updateAndFetchsettings(body);
+  };
+
   // console.log('subscriptionCode', settingsData.subscriptionCode);
   return (
     <>
@@ -777,6 +786,22 @@ export default function SuperAdminSettings() {
         {activeTab === 1 || !activeTab ? <AccountOverview /> : <></>}
         {activeTab === 3 ? (
           <div>
+            <div className="flex items-center gap-x-5 mb-4">
+              <InputSelect
+                optionData={timeZones}
+                parentClassName="min-w-[200px]"
+                label="Default Timezone"
+                value={settingsData.timeZone}
+                onChange={(val) => handleChange("timeZone", val)}
+              />
+              <InputSelect
+                optionData={["dd/mm/yy", "mm/dd/yy"]}
+                parentClassName="min-w-[200px]"
+                label="Default Timezone"
+                value={settingsData.dateFormat}
+                onChange={(val) => handleChange("dateFormat", val)}
+              />
+            </div>
             <SettingsCard
               title="Lead Status Items"
               body={
