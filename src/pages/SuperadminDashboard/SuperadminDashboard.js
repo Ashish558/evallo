@@ -6,6 +6,7 @@ import orgStyles from "./orgCard/orgcard.module.css";
 import Table from "./Table/table";
 import { orgData, tableHeaders } from "./temp";
 import { useLazyGetAllOrgUsersQuery } from "../../app/services/users";
+import { useLazyGetLatestOrgQuery } from "../../app/services/superAdmin";
 import Chart from "./DataChart/Chart";
 import Chart2 from "./DataChart/Chart2";
 import Index from "./FinancialStats/Index1";
@@ -78,9 +79,9 @@ const userTypes = [
   },
 ];
 
-export default function SuperadminDashboard() {
+function SuperadminDashboard() {
   const [orgSignUpData, setOrgSignUpData] = useState([]);
-  const [fetchUserData, setUserData] = useLazyGetAllOrgUsersQuery();
+  const [fetchUserData, setUserData] = useLazyGetLatestOrgQuery();
   const { data: OrgStats } = useGetAllOrgStatsQuery();
   const [currentUser, setCurrentUser] = useState();
   const [totalUsers, setTotalUsers] = useState({
@@ -107,44 +108,36 @@ export default function SuperadminDashboard() {
   });
 
   const getLatestOrgs = async () => {
-    //   alert(data.workemail)
     fetchUserData().then((result) => {
       try {
         let arr = [];
-        for (let i = 0; i < result?.data?.data?.user?.length; i++) {
-          if (result?.data?.data?.user[i].role === "admin") {
-            let date = new Date(
-              result.data.data.user[i].createdAt
-            ).toDateString();
-            //console.log("date", date);
+        for (let i = 0; i < result?.data?.data?.length; i++) {
+          if (result?.data?.data[i].role === "admin") {
+            let date = new Date(result.data.data[i].createdAt).toDateString();
+
             let temp = {
               date: date,
-              name: result.data.data.user[i].company
-                ? result.data.data.user[i].company
+              name: result.data.data[i].company
+                ? result.data.data[i].company
                 : "Not Available",
-              status: result.data.data.user[i].userStatus,
-              type: result.data.data.user[i].subscription
-                ? result.data.data.user[i].subscription
+              status: result.data.data[i].userStatus,
+              type: result.data.data[i].subscription
+                ? result.data.data[i].subscription
                 : "none",
               admin:
-                result.data.data.user[i].firstName +
+                result.data.data[i].firstName +
                 " " +
-                result.data.data.user[i].lastName,
+                result.data.data[i].lastName,
             };
             arr.sort(function (a, b) {
-              // Turn your strings into dates, and then subtract them
-              // to get a value that is either negative, positive, or zero.
               return new Date(b.date) - new Date(a.date);
             });
             arr.push(temp);
           }
         }
-        //console.log("shy", result, arr);
+
         if (arr.length > 0) setOrgSignUpData(arr);
-        ////console.log(result.data.data.user)
-      } catch (e) {
-        //console.error(e);
-      }
+      } catch (e) {}
     });
   };
   useEffect(() => {
@@ -155,7 +148,7 @@ export default function SuperadminDashboard() {
       student: userStudentStats,
       contributor: userContributorStats,
     });
-    // console.log("admin", totalUsers["admin"]);
+
     setCurrentUser({
       name: "admin",
 
@@ -169,31 +162,14 @@ export default function SuperadminDashboard() {
     userStudentStats,
     userContributorStats,
   ]);
-// console.log(orgSignUpData)
+  const handleCurrentUser = (item) => {
+    setCurrentUser({
+      name: item.text.toLowerCase(),
+      ...totalUsers[`${item.text.toLowerCase()}`],
+    });
+  };
   return (
     <div className={styles.container}>
-      {/* <div className='flex justify-between px-[80px] bg-[#26435F] h-[54px] items-center w-full'>
-        <div><img src={icon} alt="" /></div>
-
-        <div className='flex font-bold'>
-          <div className='flex mr-[24px] text-[#24A3D9] text-xs '>
-            <p className=' '>Pricing </p>
-            <p><FontAwesomeIcon className='pl-2' icon={faDollar}></FontAwesomeIcon></p>
-          </div>
-          <div className='flex mr-[24px] text-[#24A3D9] text-xs'>
-            <p className=' '>Help</p>
-            <p><FontAwesomeIcon className='pl-2' icon={faQuestionCircle}></FontAwesomeIcon></p>
-          </div>
-          <div className='flex text-xs'>
-            <div>
-              <p className='text-[#24A3D9]'>Logout</p>
-            </div>
-            <div>
-              <p><FontAwesomeIcon className='pl-2 text-[#24A3D9]' icon={faArrowRightFromBracket}></FontAwesomeIcon></p>
-            </div>
-          </div>
-        </div>
-      </div> */}
       <div className=" mt-[60px] bg-#2E2E2E mx-[80px] pb-7">
         <p className="text-[#24A3D9]">Dashboard</p>
         <div className="flex mt-7">
@@ -230,15 +206,11 @@ export default function SuperadminDashboard() {
               </p>
               <div className={styles.userStatsContainer}>
                 <div className="flex">
-                  {userTypes.map((item) => {
+                  {userTypes.map((item, id) => {
                     return (
                       <div
-                        onClick={() => {
-                          setCurrentUser({
-                            name: item.text.toLowerCase(),
-                            ...totalUsers[`${item.text.toLowerCase()}`],
-                          });
-                        }}
+                        key={id}
+                        onClick={() => handleCurrentUser(item)}
                         className={` bg-white border-b cursor-pointer border-[#000000] ${
                           styles.userStat
                         } ${
@@ -341,16 +313,8 @@ export default function SuperadminDashboard() {
         </p>
         <Demography></Demography>
       </div>
-
-      {/* <footer className='bg-[#26435F] text-[#FFFFFF] py-[18px] w-full mt-6'>
-        <div className='flex  text-xs font-medium justify-between'>
-          <p className='ml-[74px]'>Copyright © Sevenimagine Education Private Limited</p>
-          <div className='flex mr-[45px]'>
-            <p>Terms of Usage</p>
-            <p className='ml-6'>Privacy Policy</p>
-          </div>
-        </div>
-      </footer> */}
     </div>
   );
 }
+
+export default React.memo(SuperadminDashboard);

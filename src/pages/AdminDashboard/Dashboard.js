@@ -23,14 +23,54 @@ import image6 from "../../assets/images/Vector (6).png";
 import AdminNavbar from "./AdminNavbar";
 import Table from "../SuperadminDashboard/Table/table";
 import ActionLog from "./ActionLog";
-import { useGetLatestSignUpQuery } from "../../app/services/adminDashboard";
+import { calculateDateRange } from "../../components/RangeDate/utils";
+import {
+  useGetAllRevenueMutation,
+  useGetImpendingRevenueMutation,
+  useGetLatestSignUpQuery,
+  useGetLeakedRevenueMutation,
+  useGetUserStatsQuery,
+} from "../../app/services/adminDashboard";
 import { latestSignUpHeaders, tutorTableHeaders } from "./staticData";
+import { useState } from "react";
+import RangeDate from "../../components/RangeDate/RangeDate";
+import { useEffect } from "react";
 
 const Dashboard = () => {
   const { data: latestSignUp } = useGetLatestSignUpQuery();
   const { organization } = useSelector((state) => state.organization);
   const { firstName, lastName } = useSelector((state) => state.user);
+  const { data: userStats } = useGetUserStatsQuery();
+  const [startDate, setStartDate] = useState("");
+  const [completedRevenue, completedRevenueStatus] = useGetAllRevenueMutation();
+  const [leakedRevenue, leakedRevenueStatus] = useGetLeakedRevenueMutation();
+  const [impendingRevenue, impendingRevenueStatus] =
+    useGetImpendingRevenueMutation();
+  const [cRevenue, setCRevenue] = useState("");
+  const [lRevenue, setLRevenue] = useState("");
+  const [iRevenue, setIRevenue] = useState("");
 
+  const handleFetchRevenue = (fetchMutation, body, setValue) => {
+    fetchMutation(body).then((res) => {
+      setValue(res.data);
+    });
+  };
+  const handleStartDate = (e) => {
+    setStartDate(e);
+  };
+  useEffect(() => {
+    if (startDate) {
+      let startD = startDate.split("-")[0];
+      startD = new Date(startD).toISOString().split("T")[0];
+      let endD = startDate.split("-")[1];
+      endD = new Date(endD).toISOString().split("T")[0];
+      const body = { startDate: startD, endDate: endD };
+      handleFetchRevenue(completedRevenue, body, setCRevenue);
+      handleFetchRevenue(leakedRevenue, body, setLRevenue);
+      handleFetchRevenue(impendingRevenue, body, setIRevenue);
+    }
+  }, [startDate]);
+ 
   return (
     <div className={styles.container}>
       <div className=" mt-[28px] bg-#2E2E2E ">
@@ -47,19 +87,13 @@ const Dashboard = () => {
 
             <div className="flex justify-between items-center ">
               <p className="font-bold text-[#26435F]">BUSINESS OVERVIEW </p>
-
-              <div className="flex text-xs ">
-                <p className="font-semibold text-[#FFA28D]">
-                  {" "}
-                  1 May - May 12, 2023{" "}
-                </p>
-                <p>
-                  <FontAwesomeIcon
-                    className="pl-3"
-                    icon={faCaretDown}
-                  ></FontAwesomeIcon>
-                </p>
-              </div>
+              {organization?.createdAt && (
+                <RangeDate
+                  createdDate={organization?.createdAt}
+                  startDate={startDate}
+                  handleStartDate={handleStartDate}
+                />
+              )}
             </div>
           </div>
         </div>
@@ -72,46 +106,93 @@ const Dashboard = () => {
                   <div className="w-[170px]">
                     <div className="flex justify-between items-center mb-1 text-[#26435F] text-sm">
                       <p className="   font-medium">Completed Revenue</p>
-                      <p>
-                        <FontAwesomeIcon
-                          icon={faQuestionCircle}
-                        ></FontAwesomeIcon>
-                      </p>
+                      <div className="group relative">
+                        <p>
+                          <FontAwesomeIcon
+                            icon={faQuestionCircle}
+                          ></FontAwesomeIcon>
+                        </p>
+                        <span className="absolute  -top-10 left-10  w-[300px] scale-0 rounded-lg bg-[rgba(31,41,55,0.9)] p-2 text-xs text-white group-hover:scale-100">
+                          <h3 className="text-[#22A699] text-[16px] py-1 font-semibold mb-1">
+                            Completed Revenue
+                          </h3>
+                          This value is calculated by adding up all the revenue
+                          generated from sessions that have been marked as
+                          “Completed” for the selected date range.
+                          <br /> Note that the revenue is calculated by
+                          multiplying a Tutor’s Service Rate by the Session
+                          Duration and adding all those values up.
+                        </span>
+                      </div>
                     </div>
                     <div
                       className={`h-[85px] flex justify-center rounded-md items-center text-2xl font-bold bg-[#22A69933] box-border ${styles.boxBorder1}`}
                     >
-                      <p className="text-[#38C980]">$90,850</p>
+                      <p className="text-[#38C980]">
+                        ${cRevenue.completedRevenue}
+                      </p>
                     </div>
                   </div>
                   <div className="w-[170px] ">
                     <div className="flex justify-between rounded-md items-center mb-1 text-[#26435F] text-sm">
                       <p className="font-medium">Leaked Revenue</p>
-                      <p>
-                        <FontAwesomeIcon
-                          icon={faQuestionCircle}
-                        ></FontAwesomeIcon>
-                      </p>
+                      <div className="group relative">
+                        <p>
+                          <FontAwesomeIcon
+                            icon={faQuestionCircle}
+                          ></FontAwesomeIcon>
+                        </p>
+                        <span className="absolute  -top-10 left-10  w-[300px] scale-0 rounded-lg bg-[rgba(31,41,55,0.9)] p-2 text-xs text-white group-hover:scale-100">
+                          <h3 className="text-[#FF5175] text-[16px] py-1 font-semibold mb-1">
+                            Leaked Revenue
+                          </h3>
+                          This value is calculated by adding up all the revenue
+                          lost from sessions that have been marked as “Canceled”
+                          or “Partial” for the selected date range.
+                          <br />
+                          Note that the revenue is calculated by multiplying a
+                          Tutor’s Service Rate by the Session Duration and
+                          adding all those values up.
+                        </span>
+                      </div>
                     </div>
                     <div
                       className={`h-[85px] flex rounded-md justify-center items-center text-2xl font-semibold bg-[#FF517533] box-border ${styles.boxBorder2}`}
                     >
-                      <p className="text-[#FF7979]">$2560</p>
+                      <p className="text-[#FF7979]">
+                        ${lRevenue.canceledRevenue}
+                      </p>
                     </div>
                   </div>
                   <div className="w-[170px]">
                     <div className="flex justify-between items-center mb-1 text-[#26435F] text-sm">
                       <p className="   font-medium">Impending Revenue</p>
-                      <p>
-                        <FontAwesomeIcon
-                          icon={faQuestionCircle}
-                        ></FontAwesomeIcon>
-                      </p>
+                      <div className="group relative">
+                        <p>
+                          <FontAwesomeIcon
+                            icon={faQuestionCircle}
+                          ></FontAwesomeIcon>
+                        </p>
+                        <span className="absolute  -top-10 left-10  w-[300px] scale-0 rounded-lg bg-[rgba(31,41,55,0.9)] p-2 text-xs text-white group-hover:scale-100">
+                          <h3 className="text-[#7152EB] text-[16px] py-1 font-semibold mb-1">
+                            Impending Revenue
+                          </h3>
+                          This value is calculated by adding up all the revenue
+                          lost from sessions that have been marked as
+                          “Scheduled” for the selected date range.
+                          <br />
+                          Note that the revenue is calculated by multiplying a
+                          Tutor’s Service Rate by the Session Duration and
+                          adding all those values up.
+                        </span>
+                      </div>
                     </div>
                     <div
                       className={`h-[85px] flex rounded-md justify-center items-center text-2xl font-semibold bg-[#7152EB33] box-border ${styles.boxBorder3}`}
                     >
-                      <p className="text-[#7152EB]">$9870</p>
+                      <p className="text-[#7152EB]">
+                        ${iRevenue.impendingRevenue}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -191,27 +272,48 @@ const Dashboard = () => {
                   <p className="text-[#26435F]">Active / Total Students</p>
                   <p className="text-xl">
                     <span className="font-bold text-[#FFA28D] text-3xl">
-                      59
+                      {userStats?.student.activeUsers.count}
                     </span>{" "}
-                    / <span className="text-[#24A3D9]">267</span>
+                    /{" "}
+                    <span className="text-[#24A3D9]">
+                      {" "}
+                      {userStats
+                        ? userStats?.student.activeUsers.count +
+                          userStats?.student.inactiveUsers.count
+                        : "Loading.."}
+                    </span>
                   </p>
                 </div>
                 <div className={`  pl-[19px] pt-7 rounded `}>
-                  <p className="text-[#26435F]">Active / Total Students</p>
+                  <p className="text-[#26435F]">Active / Total Tutors</p>
                   <p className="text-xl">
                     <span className="font-bold text-[#FFA28D] text-3xl">
-                      59
+                      {userStats?.tutor.activeUsers.count}
                     </span>{" "}
-                    / <span className="text-[#24A3D9]">267</span>
+                    /{" "}
+                    <span className="text-[#24A3D9]">
+                      {" "}
+                      {userStats
+                        ? userStats?.tutor.activeUsers.count +
+                          userStats?.tutor.inactiveUsers.count
+                        : "Loading..."}
+                    </span>
                   </p>
                 </div>
                 <div className={`  pl-[19px] pt-7 rounded pb-6`}>
-                  <p className="text-[#26435F]">Active / Total Students</p>
+                  <p className="text-[#26435F]">Active / Total Parents</p>
                   <p className="text-xl">
                     <span className="font-bold text-[#FFA28D] text-3xl">
-                      59
+                      {userStats?.parent.activeUsers.count}
                     </span>{" "}
-                    / <span className="text-[#24A3D9]">267</span>
+                    /{" "}
+                    <span className="text-[#24A3D9]">
+                      {" "}
+                      {userStats
+                        ? userStats?.parent.activeUsers.count +
+                          userStats?.parent.inactiveUsers.count
+                        : "Loading..."}
+                    </span>
                   </p>
                 </div>
               </div>
