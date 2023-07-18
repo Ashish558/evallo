@@ -89,12 +89,12 @@ export default function FinancialStats() {
           <p className="font-semibold text-2xl">51</p>
         </div>
         <div className={`text-[#26435F] w-[95px] h-[180px] ${styles.card2} `}>
-          <p className="bg-[#26435F] rounded p-3 w-[40px] h-[40px] mx-auto mt-[21px]"><p><img src={image9} alt="" /></p></p>
+          <p className="bg-[#26435F] rounded p-3 w-[40px] h-[40px] mx-auto mt-[21px]"><span><img src={image9} alt="" /></span></p>
           <p className="text-sm text-center mt-4">Invoice</p>
           <p className="font-semibold text-2xl text-center mt-[27px]">51</p>
         </div>
         <div className={`text-[#26435F] w-[95px] h-[180px] ${styles.card2} `}>
-          <p className="bg-[#26435F] rounded p-3 w-[40px] h-[40px] mx-auto mt-[21px]"><p><img src={image7} alt="" /></p></p>
+          <p className="bg-[#26435F] rounded p-3 w-[40px] h-[40px] mx-auto mt-[21px]"><span><img src={image7} alt="" /></span></p>
           <p className="text-sm text-center mt-4"># of Transaction</p>
           <p className="font-semibold text-2xl text-center mt-[11px]">51</p>
         </div>

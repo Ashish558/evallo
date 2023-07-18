@@ -699,7 +699,7 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch, ext
                     className="inline-block cursor-pointer pl-4"
                     onClick={() => onClick.redirect(item)}
                  >
-                    {item.associatedOrg?.company}
+                    {item.associatedOrg?.company?item.associatedOrg?.company:item.company}
                  </span>
               </td>
               <td className="font-medium text-sm px-1 min-w-14 py-4">
