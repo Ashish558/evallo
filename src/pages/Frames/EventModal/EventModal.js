@@ -258,82 +258,44 @@ export default function EventModal({
 
    useEffect(() => {
       if(organization?.settings){
+         
          if(Object.keys(organization?.settings).length > 0){
             console.log('organization', organization.settings);
             let sessionTags = organization.settings.sessionTags;
-            let homeworks = sessionTags.homeworkAssigned.map((item) => {
-               return {
-                  text: item,
-                  checked: false,
-               };
-            });
-            setHomeworks(homeworks);
-            let topics = sessionTags.topicsCovered.map((item) => {
-               return {
-                  text: item,
-                  checked: false,
-               };
-            });
-            setTopics(topics);
+            // let homeworks = sessionTags.homeworkAssigned.map((item) => {
+            //    return {
+            //       text: item,
+            //       checked: false,
+            //    };
+            // });
+            // setHomeworks(homeworks);
+            // let topics = sessionTags.topicsCovered.map((item) => {
+            //    return {
+            //       text: item,
+            //       checked: false,
+            //    };
+            // });
+            // setTopics(topics);
    
-            let moods = sessionTags.studentMode.map((item) => {
-               return {
-                  text: item,
-                  checked: false,
-               };
-            });
-            setStudentMoods(moods);
-            let productive = sessionTags.wasProductive.map((item) => {
-               return {
-                  text: item,
-                  checked: false,
-               };
-            });
-            setIsProductive(productive);
+            // let moods = sessionTags.studentMode.map((item) => {
+            //    return {
+            //       text: item,
+            //       checked: false,
+            //    };
+            // });
+            // setStudentMoods(moods);
+            // let productive = sessionTags.wasProductive.map((item) => {
+            //    return {
+            //       text: item,
+            //       checked: false,
+            //    };
+            // });
+            // setIsProductive(productive);
             setAllServicesAndSpec(organization.settings.servicesAndSpecialization)
             setServices(organization.settings.Expertise);
             setIsSettingsLoaded(true);
          }
       }
-
-      // fetchSettings().then((res) => {
-      //    let sessionTags = res.data.data.setting.sessionTags;
-      //    // console.log(sessionTags)
-      //    let homeworks = sessionTags.homeworkAssigned.map((item) => {
-      //       return {
-      //          text: item,
-      //          checked: false,
-      //       };
-      //    });
-      //    setHomeworks(homeworks);
-      //    let topics = sessionTags.topicsCovered.map((item) => {
-      //       return {
-      //          text: item,
-      //          checked: false,
-      //       };
-      //    });
-      //    setTopics(topics);
-
-      //    let moods = sessionTags.studentMode.map((item) => {
-      //       return {
-      //          text: item,
-      //          checked: false,
-      //       };
-      //    });
-      //    setStudentMoods(moods);
-
-      //    let productive = sessionTags.wasProductive.map((item) => {
-      //       return {
-      //          text: item,
-      //          checked: false,
-      //       };
-      //    });
-      //    setIsProductive(productive);
-      //    // console.log('setting', res.data.data.setting)
-      //    setAllServicesAndSpec(res.data.data.setting.servicesAndSpecialization)
-      //    setServices(res.data.data.setting.Expertise);
-      //    setIsSettingsLoaded(true);
-      // });
    }, [organization]);
 
    useEffect(() => {
@@ -555,10 +517,10 @@ export default function EventModal({
          if (d.checked) day.push(d.full);
       });
       reqBody.day = day;
-      reqBody.topicsCovered = getCheckedString(topics)
-      reqBody.homeworkAssigned = getCheckedString(homeworks)
-      reqBody.studentMood = getCheckedString(studentMoods)
-      reqBody.sessionProductive = getCheckedString(isProductive)[0]
+      // reqBody.topicsCovered = getCheckedString(topics)
+      // reqBody.homeworkAssigned = getCheckedString(homeworks)
+      // reqBody.studentMood = getCheckedString(studentMoods)
+      // reqBody.sessionProductive = getCheckedString(isProductive)[0]
       if (reqBody.sessionProductive === undefined) {
          reqBody.sessionProductive = ''
       }
