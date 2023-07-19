@@ -147,6 +147,7 @@ export const userServicesApi = createApi({
         headers: getAuthHeader(),
       }),
     }),
+  
   }),
 });
 
@@ -164,7 +165,6 @@ export const {
   useUpdateTutorDetailsMutation,
   usePostTutorDetailsMutation,
   useLazyGetPersonalDetailQuery,
-  
   useLazyGetInvoiceQuery,
   useUpdateProfileImageMutation,
   useLazyGetOrganizationQuery,

@@ -1,32 +1,12 @@
 export function calculateDateRange(startD) {
-  var startDate = startD || new Date(2022, 0, 1); 
-  var endDate = new Date(); 
-  var currentDate = new Date(startDate); 
+  var currentDate = new Date(); // Current date
+  var startDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1); // Start of the current month
   var dateRanges = [];
 
-  while (currentDate <= endDate) {
-    var rangeStart = new Date(currentDate); 
-    var rangeEnd = new Date(currentDate); 
+  var rangeStart = new Date(startDate); // Start of the range
+  var rangeEnd = new Date(currentDate); // End of the range
 
-    rangeEnd.setDate(rangeStart.getDate() + 11); 
-    var formattedStartDate = rangeStart.toDateString().split(" ");
-    formattedStartDate =
-      formattedStartDate[0] +
-      " " +
-      formattedStartDate[1] +
-      " " +
-      formattedStartDate[2];
-    formattedStartDate = rangeStart.toDateString();
-    if (endDate < rangeEnd) {
-      rangeEnd = endDate; 
-      dateRanges.unshift(formattedStartDate + " - " + rangeEnd.toDateString());
-      break;
-    }
-
-    dateRanges.unshift(formattedStartDate + " - " + rangeEnd.toDateString());
-
-    currentDate.setDate(rangeEnd.getDate() + 1); 
-  }
+  dateRanges.push(formatDate(rangeStart) + " - " + formatDate(rangeEnd));
   return dateRanges.slice(0,100);
  
 }
@@ -36,4 +16,11 @@ export const getModifiedDate = (date) => {
   let endDate = new Date(date.eDate).toDateString()
   return startDate + " - " + endDate;
 
+}
+
+
+
+function formatDate(date) {
+  var options = { year: "numeric", month: "long", day: "numeric" };
+  return date.toLocaleDateString(undefined, options);
 }

@@ -1228,7 +1228,7 @@ export default function Settings() {
                                 }
                               />
                               <InputField
-                                value={offer.buttonText}
+                                defaultValue={offer.buttonText}
                                 placeholder={
                                   "Button (eg. Register, Enroll, View)"
                                 }
