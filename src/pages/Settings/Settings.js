@@ -9,13 +9,15 @@ import FilterItems from "../../components/FilterItems/filterItems";
 import InputField from "../../components/InputField/inputField";
 import Modal from "../../components/Modal/Modal";
 import { useLazyGetSettingsQuery } from "../../app/services/session";
-import questionMark from '../../assets/images/Vector (6).svg';
+import questionMark from "../../assets/images/Vector (6).svg";
 import toggleRectIcon from "../../assets/icons/toggle-rect.svg";
 import toggleRectActiveIcon from "../../assets/icons/toggle-rect-active.svg";
 import toggleCircleIcon from "../../assets/icons/toggle-circle.svg";
 import {
+  useGetAllPermissionQuery,
   useUpdateOfferImageMutation,
   useUpdateOrgSettingMutation,
+  useUpdatePermissionMutation,
 } from "../../app/services/settings";
 import { getSessionTagName } from "../../utils/utils";
 import { BASE_URL, getAuthHeader } from "../../app/constants/constants";
@@ -145,7 +147,7 @@ export default function Settings() {
     Expertise: false,
     Answer: false,
     Sessions: false,
-    Scheduled: false
+    Scheduled: false,
   });
 
   const imageUploadRef = useRef();
@@ -154,6 +156,101 @@ export default function Settings() {
   const [tagText, setTagText] = useState("");
   const [modalData, setModalData] = useState(initialState);
   const dispatch = useDispatch();
+
+  const { data: getAllPermission, isFetched } = useGetAllPermissionQuery();
+  const [setPermission, setPermissionStatus] = useUpdatePermissionMutation();
+
+  const [fetchedPermissions, setThePermission] = useState([]);
+
+  useEffect(() => {
+    if (getAllPermission?.permissions)
+      setThePermission(getAllPermission?.permissions);
+  }, [getAllPermission, isFetched]);
+
+  const handlePermissionOption = (value, key) => {
+    let nvalue = value;
+    if (!isNaN(Number(value))) {
+      nvalue = Number(value);
+    }
+    const arr = fetchedPermissions?.map((per) => {
+      if (per._id === key) {
+        return { ...per, choosedValue: nvalue };
+      }
+      return { ...per };
+    });
+    const body = {
+      orgId: organization._id,
+      permissionId: key,
+      choosedValue: nvalue,
+    };
+    setPermission(body)
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    setThePermission(arr);
+  };
+  const togglePermissions = (key, value) => {
+    const arr = fetchedPermissions?.map((per) => {
+      if (per._id === key) {
+        return { ...per, choosedValue: !per.choosedValue };
+      }
+      return { ...per };
+    });
+    const body = {
+      orgId: organization._id,
+      permissionId: key,
+      choosedValue: value,
+    };
+    setPermission(body)
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    setThePermission(arr);
+  };
+  const renderColoredText = (text) => {
+    const keywords = [
+      "students",
+      "parents",
+      "admins",
+      "tutors",
+      "parent",
+      "student",
+      "tutor",
+      "admin",
+      "&",
+      "/",
+      "tutors / parents",
+      "tutors & parents",
+      "parents / students",
+      "parents & students",
+      "students / parents",
+      "students or parents",
+      "students and parents",
+      "students & parents",
+    ];
+    const parts = text.split(new RegExp(`(${keywords.join("|")})`, "i"));
+
+    return (
+      <>
+        {parts.map((part, index) => {
+          if (keywords.includes(part.toLowerCase())) {
+            return (
+              <span key={index} style={{ color: "#FFA28D" }}>
+                {part}
+              </span>
+            );
+          }
+          return <span style={{ color: "#24A3D9" }}>{part}</span>;
+        })}
+      </>
+    );
+  };
 
   const handleClose = () => setModalActive(false);
   const handleTagModal = (text) => {
@@ -216,7 +313,6 @@ export default function Settings() {
     }
   };
 
-  // console.log("organization", organization);
   const onRemoveTextImageTag = (item, key, idx) => {
     let updatedField = settingsData[key].filter((item, i) => i !== idx);
     let updatedSetting = {
@@ -744,8 +840,9 @@ export default function Settings() {
             {tabs.map((item, idx) => {
               return (
                 <div
-                  className={`${styles.tab} ${activeTab === idx + 1 ? styles.selectedTab : ""
-                    } cursor-pointer`}
+                  className={`${styles.tab} ${
+                    activeTab === idx + 1 ? styles.selectedTab : ""
+                  } cursor-pointer`}
                   onClick={() => changeTab(idx + 1)}
                 >
                   <img src={item.Icon} />
@@ -785,7 +882,7 @@ export default function Settings() {
                         </p>
                         <img src={EditIcon} />
                      </div>} /> */}
-        </div >
+        </div>
         {activeTab === 1 || !activeTab ? (
           <div>
             <SettingsCard
@@ -1191,8 +1288,8 @@ export default function Settings() {
                               <div className="w-[300px] h-[150px] overflow-hidden mb-5">
                                 <img
                                   src={`${awsLink}${offer.image}`}
-                                  alt="offer-image"
                                   className="w-full h-full object-cover rounded-7"
+                                  alt="offer-image2"
                                 />
                               </div>
                             )}
@@ -1229,7 +1326,7 @@ export default function Settings() {
                   </div>
                   <AddTag
                     openModal={true}
-                    text='Add Announcement'
+                    text="Add Announcement"
                     onAddTag={() => handleTagModal("offer")}
                   />
                 </div>
@@ -1238,108 +1335,85 @@ export default function Settings() {
           </div>
         ) : (
           <></>
-        )
-        }
+        )}
         {activeTab === 2 && <CompanyAndBround />}
-        {
-          activeTab === 3 && (
-            <SignupTab
-              setAddNewQuestionModalActive={setAddNewQuestionModalActive}
-              fetchS={fetchS}
-            />
-          )
-        }
+        {activeTab === 3 && (
+          <SignupTab
+            setAddNewQuestionModalActive={setAddNewQuestionModalActive}
+            fetchS={fetchS}
+          />
+        )}
         {activeTab === 4 && <AccountOverview />}
         <div className="flex items-center pb-2 text-[#26435F] font-medium text-xl">
           <p className="pr-2">Set Permissions </p>
-          <p><img src={questionMark} alt="" /></p>
+          <p>
+            <img src={questionMark} alt="" />
+          </p>
         </div>
-
-
 
         <div className="bg-[#FFFFFF] border-[2.5px] px-[82px] border-dotted border-[#CBD6E2] mb-[316px]">
-          <div className="pt-[34px] pb-[30px] border-b-2 border-[#CBD6E2] text-[#24A3D9] font-medium text-[17.5px] flex items-center justify-between">
-            <p>Let <span className="text-[#FFA28D]">Tutors</span> delete a test after assigning it? </p>
+          {fetchedPermissions?.map((item, id) => {
+            return (
+              <>
+                {item.choosedValue === true || item.choosedValue === false ? (
+                  <div
+                    key={id}
+                    className="pt-[34px] pb-[30px] border-b-2 border-[#CBD6E2] text-[#24A3D9] font-medium text-[17.5px] flex items-center justify-between"
+                  >
+                    <p>
+                      {/* Let <span className="text-[#FFA28D]">Tutors</span> delete a test
+              after assigning it?{" "} */}
+                      {renderColoredText(item.name)}
+                    </p>
 
-            <ToggleBar
-              toggle={{ value: toggleImage.interest, key: "interest" }}
-              onToggle={onToggle}></ToggleBar>
+                    <ToggleBar
+                      toggle={{ value: item.choosedValue, key: item._id }}
+                      onToggle={togglePermissions}
+                    ></ToggleBar>
+                  </div>
+                ) : (
+                  <div className="pt-[34px] pb-[30px] border-b-2 border-[#CBD6E2] text-[#24A3D9] font-medium text-[17.5px] flex justify-between">
+                    <p>{renderColoredText(item.name)}</p>
 
-          </div>
-          <div className="pt-[34px] pb-[30px] border-b-2 border-[#CBD6E2] text-[#24A3D9] font-medium text-[17.5px] flex items-center justify-between"> <p>Allow <span className="text-[#FFA28D]">Tutors</span> to view <span className="text-[#FFA28D]">Parent & Student</span> contact details?</p>
-
-            <ToggleBar
-              toggle={{ value: toggleImage.offer, key: "offer" }}
-              onToggle={onToggle}></ToggleBar>
-
-          </div>
-
-          <div className="pt-[34px] pb-[30px] border-b-2 border-[#CBD6E2] text-[#24A3D9] font-medium text-[17.5px] flex items-center justify-between">
-            <p>Allow <span className="text-[#FFA28D]">Parent & Students</span> to view Tutor contact details?</p>
-            <ToggleBar
-              toggle={{ value: toggleImage.personality, key: "personality" }}
-              onToggle={onToggle}></ToggleBar>
-          </div>
-          <div className="pt-[34px] pb-[30px] border-b-2 border-[#CBD6E2] text-[#24A3D9] font-medium text-[17.5px] flex items-center justify-between">
-            <p>Allow multiple <span className="text-[#FFA28D]">Admins</span>? Enabling this will let you invite additional Admins.</p>
-            <ToggleBar
-              toggle={{ value: toggleImage.expertise, key: "expertise" }}
-              onToggle={onToggle}></ToggleBar>
-          </div>
-          <div className="pt-[34px] pb-[30px] border-b-2 border-[#CBD6E2] text-[#24A3D9] font-medium text-[17.5px] flex justify-between">
-            <p>Allow <span className="text-[#FFA28D]">Parent & Students</span> to view correct answers?</p>
-            <ToggleBar
-              toggle={{ value: toggleImage.Answer, key: "Answer" }}
-              onToggle={onToggle}></ToggleBar>
-          </div>
-          <div className="pt-[34px] pb-[30px] border-b-2 border-[#CBD6E2] text-[#24A3D9] font-medium text-[17.5px] flex justify-between">
-            <div className="flex items-center">
-              <p>Allow <span className="text-[#FFA28D]">Tutors</span> to manage calendar and reconcile sessions? </p>
-              <p className="pl-3"><img src={questionMark} alt="" /></p>
-            </div>
-
-            <ToggleBar
-              toggle={{ value: toggleImage.Sessions, key: "Sessions" }}
-              onToggle={onToggle}></ToggleBar>
-
-
-          </div>
-          <div className="pt-[34px] pb-[30px] border-b-2 border-[#CBD6E2] text-[#24A3D9] font-medium text-[17.5px] flex justify-between">
-            <p>Send <span className="text-[#FFA28D]">Parents</span> a reminder email before a scheduled session?</p>
-
-            <p><select
-              id="option"
-              className="border border-gray-300 px-2  rounded-md text-[#26435F] bg-[#E9ECEF]"
-            >
-              <option value="12 hours before">12 hours before</option>
-              <option value="option1">6 hours before</option>
-
-            </select></p>
-
-          </div>
-
-
-          <div className="pt-[34px] pb-[30px] text-[17.5px] text-[#24A3D9] font-medium flex items-center justify-between">
-
-            <div className="flex items-center">
-              <p>Send <span className="text-[#FFA28D]">Students / Parents</span> email notification when an <span className="text-[#FFA28D]">Admin or Tutor</span> assigns an assignment?</p>
-              <p className="pl-3"><img src={questionMark} alt="" /></p>
-            </div>
-
-
-            <p><select
-              id="option"
-              className="border border-gray-300 px-2 w-[172px]  rounded-md text-[#26435F] bg-[#E9ECEF]"
-            >
-              <option value="12 hours before">Both</option>
-              <option value="option1">Single</option>
-
-            </select></p>
-
-          </div>
-
+                    <p>
+                      <select
+                        onChange={(e) =>
+                          handlePermissionOption(e.target.value, item._id)
+                        }
+                        id="option"
+                        className="border border-gray-300 px-2  rounded-md text-[#26435F] bg-[#E9ECEF]"
+                      >
+                        <option value={item.choosedValue}>
+                          {`${item.choosedValue}   ${
+                            item.permissionActionName ===
+                            "notifyParentBefSession"
+                              ? " hours before"
+                              : ""
+                          }`}
+                        </option>
+                        {item.values.map((values, i) => {
+                          return (
+                            item.choosedValue !== values && (
+                              <option key={i} value={values}>
+                                {`${values}  ${
+                                  item.permissionActionName ===
+                                  "notifyParentBefSession"
+                                    ? " hours before"
+                                    : ""
+                                }`}
+                              </option>
+                            )
+                          );
+                        })}
+                      </select>
+                    </p>
+                  </div>
+                )}
+              </>
+            );
+          })}
         </div>
-      </div >
+      </div>
       {modalActive && (
         <Modal
           classname={"max-w-840 mx-auto"}
@@ -1437,208 +1511,200 @@ export default function Settings() {
             </form>
           }
         />
-      )
-      }
-      {
-        addCodeModalActive && (
-          <Modal
-            classname={"max-w-[700px] mx-auto"}
-            title="Add / Edit Subscription Code"
-            titleClassName="mb-[18px]"
-            cancelBtn={false}
-            cancelBtnClassName="w-0"
-            primaryBtn={{
-              text: "Submit",
-              className: "w-140 pl-3 pr-3 ml-0 my-4",
-              form: "settings-form",
-              type: "submit",
-              loading: saveLoading,
-            }}
-            handleClose={() => {
-              setAddCodeModalActive(false);
-              setSubModalData(subModalInitialState);
-            }}
-            body={
-              <form id="settings-form" onSubmit={handleCodeSubmit}>
-                <div className="grid grid-cols-1 md:grid-cols-2  gap-x-2 md:gap-x-3 gap-y-2 gap-y-4 mb-5">
-                  <div>
-                    <InputField
-                      label="Subscription Code"
-                      labelClassname="ml-4 mb-0.5"
-                      placeholder="Sample Code"
-                      inputContainerClassName="px-5 bg-primary-50 border-0"
-                      inputClassName="bg-transparent"
-                      parentClassName="w-full mr-4"
-                      type="text"
-                      value={subModalData.code}
-                      isRequired={true}
-                      onChange={(e) =>
-                        setSubModalData({ ...subModalData, code: e.target.value })
-                      }
-                    />
-                  </div>
-                  <div>
-                    <InputField
-                      label="Duration (in weeks)"
-                      labelClassname="ml-4 mb-0.5"
-                      isRequired={true}
-                      placeholder=""
-                      inputContainerClassName="px-5 bg-primary-50 border-0"
-                      inputClassName="bg-transparent"
-                      parentClassName="w-full mr-4"
-                      type="text"
-                      value={subModalData.expiry}
-                      onChange={(e) =>
-                        setSubModalData({
-                          ...subModalData,
-                          expiry: e.target.value,
-                        })
-                      }
-                    />
-                  </div>
+      )}
+      {addCodeModalActive && (
+        <Modal
+          classname={"max-w-[700px] mx-auto"}
+          title="Add / Edit Subscription Code"
+          titleClassName="mb-[18px]"
+          cancelBtn={false}
+          cancelBtnClassName="w-0"
+          primaryBtn={{
+            text: "Submit",
+            className: "w-140 pl-3 pr-3 ml-0 my-4",
+            form: "settings-form",
+            type: "submit",
+            loading: saveLoading,
+          }}
+          handleClose={() => {
+            setAddCodeModalActive(false);
+            setSubModalData(subModalInitialState);
+          }}
+          body={
+            <form id="settings-form" onSubmit={handleCodeSubmit}>
+              <div className="grid grid-cols-1 md:grid-cols-2  gap-x-2 md:gap-x-3 gap-y-2 gap-y-4 mb-5">
+                <div>
+                  <InputField
+                    label="Subscription Code"
+                    labelClassname="ml-4 mb-0.5"
+                    placeholder="Sample Code"
+                    inputContainerClassName="px-5 bg-primary-50 border-0"
+                    inputClassName="bg-transparent"
+                    parentClassName="w-full mr-4"
+                    type="text"
+                    value={subModalData.code}
+                    isRequired={true}
+                    onChange={(e) =>
+                      setSubModalData({ ...subModalData, code: e.target.value })
+                    }
+                  />
                 </div>
-              </form>
-            }
-          />
-        )
-      }
-      {
-        addTestModalActive && (
-          <Modal
-            classname={"max-w-[700px] mx-auto"}
-            title="Add Tests"
-            titleClassName="mb-[18px]"
-            cancelBtn={false}
-            cancelBtnClassName="w-0"
-            primaryBtn={{
-              text: "Submit",
-              className: "w-140 pl-3 pr-3 ml-0 my-4",
-              form: "settings-form",
-              type: "submit",
-              loading: saveLoading,
-            }}
-            handleClose={() => {
-              setAddTestModalActive(false);
-            }}
-            body={
-              <form id="settings-form" onSubmit={handleADdTestSubmit}>
-                <div className="grid grid-cols-1 md:grid-cols-2  gap-x-2 md:gap-x-3 gap-y-2 gap-y-4 mb-5">
-                  <div>
-                    <InputSearch
-                      labelClassname="hidden"
-                      placeholder="Type Test Name"
-                      parentClassName="w-full  mb-10"
-                      inputContainerClassName="bg-[#F3F5F7] border-0 pt-3.5 pb-3.5"
-                      inputClassName="bg-[#F3F5F7]"
-                      type="text"
-                      value={searchedTest}
-                      checkbox={{
-                        visible: true,
-                        name: "test",
-                        match: updatedSubscriptionData.tests,
-                      }}
-                      onChange={(e) => setSearchedTest(e.target.value)}
-                      optionData={filteredTests}
-                      onOptionClick={(item) => {
-                        handleTestChange(item);
-                        // setStudent(item.value);
-                        // handleStudentsChange(item)
-                        // setCurrentToEdit({ ...currentToEdit, students: [... item._id] });
-                      }}
-                    />
-                  </div>
+                <div>
+                  <InputField
+                    label="Duration (in weeks)"
+                    labelClassname="ml-4 mb-0.5"
+                    isRequired={true}
+                    placeholder=""
+                    inputContainerClassName="px-5 bg-primary-50 border-0"
+                    inputClassName="bg-transparent"
+                    parentClassName="w-full mr-4"
+                    type="text"
+                    value={subModalData.expiry}
+                    onChange={(e) =>
+                      setSubModalData({
+                        ...subModalData,
+                        expiry: e.target.value,
+                      })
+                    }
+                  />
                 </div>
-              </form>
-            }
-          />
-        )
-      }
-      {
-        tagModalActive && (
-          <Modal
-            classname={"max-w-[540px] mx-auto"}
-            title=""
-            titleClassName="mb-[18px]"
-            cancelBtn={true}
-            cancelBtnClassName="w-140 hidden"
-            primaryBtn={{
-              text: "Save",
-              className: `w-140 ml-0 bg-primaryOrange mt-2 ${tagText.trim().length < 1 || tagImage === null
+              </div>
+            </form>
+          }
+        />
+      )}
+      {addTestModalActive && (
+        <Modal
+          classname={"max-w-[700px] mx-auto"}
+          title="Add Tests"
+          titleClassName="mb-[18px]"
+          cancelBtn={false}
+          cancelBtnClassName="w-0"
+          primaryBtn={{
+            text: "Submit",
+            className: "w-140 pl-3 pr-3 ml-0 my-4",
+            form: "settings-form",
+            type: "submit",
+            loading: saveLoading,
+          }}
+          handleClose={() => {
+            setAddTestModalActive(false);
+          }}
+          body={
+            <form id="settings-form" onSubmit={handleADdTestSubmit}>
+              <div className="grid grid-cols-1 md:grid-cols-2  gap-x-2 md:gap-x-3 gap-y-2 gap-y-4 mb-5">
+                <div>
+                  <InputSearch
+                    labelClassname="hidden"
+                    placeholder="Type Test Name"
+                    parentClassName="w-full  mb-10"
+                    inputContainerClassName="bg-[#F3F5F7] border-0 pt-3.5 pb-3.5"
+                    inputClassName="bg-[#F3F5F7]"
+                    type="text"
+                    value={searchedTest}
+                    checkbox={{
+                      visible: true,
+                      name: "test",
+                      match: updatedSubscriptionData.tests,
+                    }}
+                    onChange={(e) => setSearchedTest(e.target.value)}
+                    optionData={filteredTests}
+                    onOptionClick={(item) => {
+                      handleTestChange(item);
+                      // setStudent(item.value);
+                      // handleStudentsChange(item)
+                      // setCurrentToEdit({ ...currentToEdit, students: [... item._id] });
+                    }}
+                  />
+                </div>
+              </div>
+            </form>
+          }
+        />
+      )}
+      {tagModalActive && (
+        <Modal
+          classname={"max-w-[540px] mx-auto"}
+          title=""
+          titleClassName="mb-[18px]"
+          cancelBtn={true}
+          cancelBtnClassName="w-140 hidden"
+          primaryBtn={{
+            text: "Save",
+            className: `w-140 ml-0 bg-primaryOrange mt-2 ${
+              tagText.trim().length < 1 || tagImage === null
                 ? "pointer-events-none opacity-60"
                 : ""
-                } `,
-              form: "settings-form",
-              type: "submit",
-              loading: saveLoading,
-            }}
-            handleClose={() => setTagModalActive(false)}
-            body={
-              <form id="settings-form" onSubmit={submitImageModal}>
-                <div className="flex flex-col items-start mb-5">
-                  <InputField
-                    label="Text"
-                    labelClassname="ml-4 mb-0.5"
-                    placeholder="Text"
-                    inputContainerClassName="px-5 pt-3 pb-3 bg-primary-50 border-0"
-                    inputClassName="bg-transparent"
-                    parentClassName="w-full mr-4 mb-3"
-                    type="text"
-                    value={tagText}
-                    isRequired={true}
-                    onChange={(e) => setTagText(e.target.value)}
-                  />
-                  <input
-                    type="file"
-                    accept="/image"
-                    onChange={(e) => {
-                      setTagImage(e.target.files[0]);
-                      setImageName(e.target.files[0].name);
-                    }}
-                    className="hidden "
-                    ref={imageUploadRef}
-                  />
-
-                  <PrimaryButton
-                    children="Upload image"
-                    className="mx-auto pt-2.5 pb-2.5 pl-4 pr-4"
-                    // disabled={`${tagImage === null ? true : false}`}
-                    onClick={() => imageUploadRef.current.click()}
-                  />
-                  <p className="text-center w-full">
-                    {imageName !== "" ? imageName : ""}
-                  </p>
-                </div>
-              </form>
-            }
-          />
-        )
-      }
-      {
-        addNewQuestionModalActive && (
-          <Modal
-            classname={"max-w-[700px] mx-auto"}
-            title="Add Question"
-            titleClassName="mb-[18px]"
-            cancelBtn={true}
-            cancelBtnClassName="w-140"
-            primaryBtn={{
-              text: "Add",
-              className: "w-140",
-              form: "add-question-form",
-              type: "submit",
-            }}
-            handleClose={() => setAddNewQuestionModalActive(false)}
-            body={
-              <form id="add-question-form" onSubmit={submitNewQuestion}>
-                <AddNewQuestion
-                  setNewQuestion={setNewQuestion}
-                  newQuestion={newQuestion}
+            } `,
+            form: "settings-form",
+            type: "submit",
+            loading: saveLoading,
+          }}
+          handleClose={() => setTagModalActive(false)}
+          body={
+            <form id="settings-form" onSubmit={submitImageModal}>
+              <div className="flex flex-col items-start mb-5">
+                <InputField
+                  label="Text"
+                  labelClassname="ml-4 mb-0.5"
+                  placeholder="Text"
+                  inputContainerClassName="px-5 pt-3 pb-3 bg-primary-50 border-0"
+                  inputClassName="bg-transparent"
+                  parentClassName="w-full mr-4 mb-3"
+                  type="text"
+                  value={tagText}
+                  isRequired={true}
+                  onChange={(e) => setTagText(e.target.value)}
                 />
-              </form>
-            }
-          />
-        )
-      }
+                <input
+                  type="file"
+                  accept="/image"
+                  onChange={(e) => {
+                    setTagImage(e.target.files[0]);
+                    setImageName(e.target.files[0].name);
+                  }}
+                  className="hidden "
+                  ref={imageUploadRef}
+                />
+
+                <PrimaryButton
+                  children="Upload image"
+                  className="mx-auto pt-2.5 pb-2.5 pl-4 pr-4"
+                  // disabled={`${tagImage === null ? true : false}`}
+                  onClick={() => imageUploadRef.current.click()}
+                />
+                <p className="text-center w-full">
+                  {imageName !== "" ? imageName : ""}
+                </p>
+              </div>
+            </form>
+          }
+        />
+      )}
+      {addNewQuestionModalActive && (
+        <Modal
+          classname={"max-w-[700px] mx-auto"}
+          title="Add Question"
+          titleClassName="mb-[18px]"
+          cancelBtn={true}
+          cancelBtnClassName="w-140"
+          primaryBtn={{
+            text: "Add",
+            className: "w-140",
+            form: "add-question-form",
+            type: "submit",
+          }}
+          handleClose={() => setAddNewQuestionModalActive(false)}
+          body={
+            <form id="add-question-form" onSubmit={submitNewQuestion}>
+              <AddNewQuestion
+                setNewQuestion={setNewQuestion}
+                newQuestion={newQuestion}
+              />
+            </form>
+          }
+        />
+      )}
     </>
   );
 }
