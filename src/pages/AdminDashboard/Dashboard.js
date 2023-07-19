@@ -1,26 +1,12 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import SAdminNavbar2 from "../../components/sAdminNavbar/sAdminNavbar2";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faArrowDown,
-  faArrowDown19,
-  faArrowDown91,
-  faArrowRightFromBracket,
-  faCaretDown,
-  faDollar,
-} from "@fortawesome/free-solid-svg-icons";
+import { faArrowDown, faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import { faQuestionCircle } from "@fortawesome/free-regular-svg-icons";
 import icon from "../../assets/images/Evallo.png";
 import styles from "./style.module.css";
-import image from "../../assets/images/Vector.png";
-import image1 from "../../assets/images/Vector (1).png";
-import image2 from "../../assets/images/Vector (2).png";
-import image3 from "../../assets/images/Vector (3).png";
-import image4 from "../../assets/images/Vector (4).png";
-import image5 from "../../assets/images/Vector (5).png";
-import image6 from "../../assets/images/Vector (6).png";
-import AdminNavbar from "./AdminNavbar";
+
 import Table from "../SuperadminDashboard/Table/table";
 import ActionLog from "./ActionLog";
 import { calculateDateRange } from "../../components/RangeDate/utils";
@@ -41,7 +27,7 @@ const Dashboard = () => {
   const { organization } = useSelector((state) => state.organization);
   const { firstName, lastName } = useSelector((state) => state.user);
   const { data: userStats } = useGetUserStatsQuery();
-  const [startDate, setStartDate] = useState("");
+  const [startDate, setStartDate] = useState(() => calculateDateRange()[0]);
   const [completedRevenue, completedRevenueStatus] = useGetAllRevenueMutation();
   const [leakedRevenue, leakedRevenueStatus] = useGetLeakedRevenueMutation();
   const [impendingRevenue, impendingRevenueStatus] =

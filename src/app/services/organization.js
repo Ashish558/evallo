@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { BASE_URL } from "../constants/constants";
+import { BASE_URL, getAuthHeader } from "../constants/constants";
 
 
 export const orgServicesApi = createApi({
@@ -20,10 +20,27 @@ export const orgServicesApi = createApi({
             },
          })
       }),
-
+      updateUserOrganization: builder.mutation({
+         query: (body) => ({
+           url: `/api/user/update/org`,
+           method: "PATCH",
+           body: body,
+           headers: getAuthHeader(),
+         }),
+       }),
+       updateOrgLogo: builder.mutation({
+         query: (body) => ({
+            url: `api/user/org/addOrgLogos/${body.id}`,
+            method: "PATCH",
+            body: body.formData,
+            headers: getAuthHeader(),
+          }),
+        }),
    }),
 });
 
 export const {
-  useGetUserByOrgNameMutation
+  useGetUserByOrgNameMutation,
+  useUpdateUserOrganizationMutation,
+  useUpdateOrgLogoMutation,
 } = orgServicesApi;

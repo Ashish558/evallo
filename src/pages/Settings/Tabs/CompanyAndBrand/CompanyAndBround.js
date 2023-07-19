@@ -13,24 +13,31 @@ import orgDefaultLogo from "../../../../assets/images/org-default.png";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
-import { Country, State } from "country-state-city";
+import { Country } from "country-state-city";
 import UploadIcon from "../../../../assets/icons/upload-colored.svg";
 import styles from "./styles.module.css";
-import axios from "axios";
+
 import { useRef } from "react";
-import { BASE_URL, getAuthHeader } from "../../../../app/constants/constants";
+
 import { useUpdateUserMutation } from "../../../../app/services/users";
+import {
+  useUpdateOrgLogoMutation,
+  useUpdateUserOrganizationMutation,
+} from "../../../../app/services/organization";
 const CompanyAndBround = () => {
   const { organization } = useSelector((state) => state.organization);
   const userData = useSelector((state) => state.user);
-  const [updateRole, setRole] = useUpdateUserMutation();
-  
+  const [updateRole, updateRoleStatus] = useUpdateUserMutation();
+  const [updateUserOrg, updateUserOrgStatus] =
+    useUpdateUserOrganizationMutation();
+  const [updateOrgLogo, updateOrgLogoStatus] = useUpdateOrgLogoMutation();
+
   const [studentServed, setStudentServed] = useState(studentServedData);
   const [instructions, setInstructions] = useState(instructionFormat);
   const inpuRef = useRef();
   const [country, setCountry] = useState([]);
   const [states, setStates] = useState([]);
-  const [values, setValues] = useState({ role: userData.role, email: "" });
+  const [values, setValues] = useState({ role: userData.role });
 
   const [error, setError] = useState({
     firstName: "",
@@ -45,7 +52,7 @@ const CompanyAndBround = () => {
     console.log("country", c);
     const state = country.filter((x) => x.name === c);
     const currentState = state.map((s) => s.states);
-    //console.log(currentState);
+
     setStates([...currentState[0]]);
 
     setValues({
@@ -59,7 +66,6 @@ const CompanyAndBround = () => {
     displayValue: city.name,
   }));
   const handleCheckboxChange = (text, arr, setBoxValue, name) => {
-    console.log(arr);
     const temp = arr.map((topic) => {
       return topic.text === text
         ? { ...topic, checked: !topic.checked }
@@ -78,21 +84,16 @@ const CompanyAndBround = () => {
 
   const updateUserAccount = async () => {
     try {
-      //   alert(data.workemail)
-      let result = await axios.patch(
-        `${process.env.REACT_APP_BASE_URL}api/user/update/org`,
-        values,
-        {
-          headers: {
-            "Content-type": "application/json; charset=UTF-8",
-            Authorization: sessionStorage.getItem("token"),
-          },
-        }
-      );
-
+      updateUserOrg(values)
+        .then(() => {
+          console.log("org updated", values);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
       updateRole({ userId: userData.id, ...userData, role: values.role }).then(
         () => {
-        //  console.log("role changed");
+          console.log("role changed");
         }
       );
     } catch (e) {
@@ -101,7 +102,6 @@ const CompanyAndBround = () => {
   };
 
   useEffect(() => {
-    // setValues(organization);
     if (country.length === 0) {
       fetch("countryData.json")
         .then((res) => res.json())
@@ -113,8 +113,6 @@ const CompanyAndBround = () => {
       const currentState = state.map((s) => s.states);
       if (currentState.length > 0) setStates([...currentState[0]]);
     }
-
-    // console.log("updated", values);
     updateUserAccount();
   }, [values]);
 
@@ -128,8 +126,6 @@ const CompanyAndBround = () => {
           ? { ...topic, checked: true }
           : { ...topic };
       });
-
-      // handleCheckboxChange(element,instructions,setInstructions)
     });
 
     setInstructions(arr);
@@ -140,8 +136,6 @@ const CompanyAndBround = () => {
           ? { ...topic, checked: true }
           : { ...topic };
       });
-
-      // handleCheckboxChange(element,instructions,setInstructions)
     });
 
     setStudentServed(arr);
@@ -152,23 +146,15 @@ const CompanyAndBround = () => {
     const file = e.target.files[0];
     formData.append("photos", file);
     formData.append("updatefieldName", "orgBussinessLogo");
-    console.log(file);
-    await axios
-      .patch(
-        `${BASE_URL}api/user/org/addOrgLogos/${organization._id}`,
-        formData,
-        {
-          headers: getAuthHeader(),
-        }
-      )
-      .then((res) => {
-        if (res.error) {
-          console.log("logo err", res.error);
-        }
-        console.log("logo res", res.data);
-        window.location.reload();
-        alert("PDF UPLOADED");
-      });
+   
+    updateOrgLogo({ formData: formData, id: organization._id }).then((res) => {
+      if (res.error) {
+        console.log("logo err", res.error);
+        return;
+      }
+      console.log("logo res", res.data);
+      window.location.reload();
+    });
   };
 
   return (
@@ -238,7 +224,7 @@ const CompanyAndBround = () => {
               {" "}
               Business Logo{" "}
             </label>
-            <div className="w-[312px] h-[250px] relative p-10">
+            <div className="w-[312px] h-[200px]  relative p-2">
               <img
                 src={
                   organization.orgBussinessLogo
@@ -246,13 +232,14 @@ const CompanyAndBround = () => {
                     : orgDefaultLogo
                 }
                 className="w-full h-full object-contain"
+                alt="orgDefaultLogo"
               />
               <div
                 className={styles["upload-container"]}
                 onClick={() => inpuRef.current.click()}
               >
                 <p className="text-[#24A3D9] text-xs"> Upload </p>
-                <img src={UploadIcon} />
+                <img src={UploadIcon} alt="logo" />
                 <input
                   className="hidden"
                   type="file"
@@ -262,7 +249,7 @@ const CompanyAndBround = () => {
               </div>
             </div>
           </div>
-          <div className="flex flex-col  gap-2 flex-1 py-auto">
+          <div className="flex flex-col  gap-4 flex-1 py-auto">
             <div className="flex gap-5 items-center justify-between">
               <InputField
                 placeholder=""
