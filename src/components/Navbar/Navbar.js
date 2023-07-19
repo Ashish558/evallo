@@ -45,7 +45,7 @@ const tempnavdata = [
       path: "/all-tests",
       tooltip: 'All Tests'
    },
-   
+
    // {
    //    icon: DollarIcon,
    //    path: "/invoice",
@@ -206,7 +206,7 @@ export default function Navbar() {
    const { width } = useWindowDimensions()
    const { isLoggedIn } = useSelector((state) => state.user)
 
-   const {role : persona} = useSelector(state => state.user)
+   const { role: persona } = useSelector(state => state.user)
 
    const logoutUser = () => {
       sessionStorage.clear()
@@ -222,74 +222,73 @@ export default function Navbar() {
          setNavData(tutorNav)
       } else if (persona === 'parent') {
          setNavData(parentNav)
-      }else if(persona === 'admin'){
+      } else if (persona === 'admin') {
          setNavData(tempnavdata)
-      }else if(persona === 'superAdmin'){
+      } else if (persona === 'superAdmin') {
          setNavData(supAdminNavData)
       }
-      else{
+      else {
          setNavData(studentNav)
       }
    }, [persona])
 
    return (
       <>
-      <div
-         className={`
+         <div
+            className={`
          fixed bottom-0 lg:w-auto lg:top-0 lg:left-0 lg:h-screen z-50 w-full overflow-y-hidden lg:overflow-y-auto lg:p-4
           flex overflow-auto
       ${location.pathname === "/login" ||
-               location.pathname === "/signup" ||
-               location.pathname === "/set-password" ||
-               !isLoggedIn
-               ? "hidden"
-               : "bg-lightWhite"
-            }`}
-      // className={styles.navContainer}
-      >
-         <div className="lg:min-h-full lg:w-[100px] w-full h-75 lg:h-auto bg-primary p-4 lg:rounded-20 rounded-30 overflow-x-hidden overflow-y-hidden lg:overflow-y-auto lg:pt-10">
-            <div className="h-full flex lg:flex-col items-center self-stretch justify- ">
-               {navData.map((item, idx) => {
-                  if (width < desktop) {
-                     return (
-                        idx < 4 && (
+                  location.pathname === "/signup" ||
+                  location.pathname === "/set-password" ||
+                  !isLoggedIn
+                  ? "hidden"
+                  : "bg-lightWhite"
+               }`}
+         >
+            <div className="lg:min-h-full lg:w-[100px] w-full h-75 lg:h-auto bg-primary p-4 lg:rounded-20 rounded-30 overflow-x-hidden overflow-y-hidden lg:overflow-y-auto lg:pt-10">
+               <div className="h-full flex lg:flex-col items-center self-stretch justify- ">
+                  {navData.map((item, idx) => {
+                     if (width < desktop) {
+                        return (
+                           idx < 4 && (
+                              <NavLink setLogoutModalActive={setLogoutModalActive} width={width} key={idx} {...item} />
+                           )
+                        );
+                     } else {
+                        return (
                            <NavLink setLogoutModalActive={setLogoutModalActive} width={width} key={idx} {...item} />
-                        )
-                     );
-                  } else {
-                     return (
-                        <NavLink setLogoutModalActive={setLogoutModalActive} width={width} key={idx} {...item} />
-                     );
-                  }
-               })}
-               {width < desktop && (
-                  <NavLink setLogoutModalActive={setLogoutModalActive} width={width} icon={Options} isOption={true} />
-               )}
+                        );
+                     }
+                  })}
+                  {width < desktop && (
+                     <NavLink setLogoutModalActive={setLogoutModalActive} width={width} icon={Options} isOption={true} />
+                  )}
+               </div>
             </div>
          </div>
-      </div>
-       {
-         logoutModalActive &&
-         <Modal
-            title={
-               <>
-                  Are you sure <br />
-                  you want to logout ?
-               </>
-            }
-            titleClassName="leading-9"
-            cancelBtn={true}
-            cancelBtnClassName="py-4"
-            primaryBtn={{
-               text: "Logout",
-               className: "bg-danger w-[123px] pl-4 pr-4",
-               onClick: logoutUser,
-            }}
-            handleClose={() => setLogoutModalActive(false)}
-            body={<div className="mb-10"></div>}
-            classname={"max-w-567 mx-auto"}
-         />
-      }
+         {
+            logoutModalActive &&
+            <Modal
+               title={
+                  <>
+                     Are you sure <br />
+                     you want to logout ?
+                  </>
+               }
+               titleClassName="leading-9"
+               cancelBtn={true}
+               cancelBtnClassName="py-4"
+               primaryBtn={{
+                  text: "Logout",
+                  className: "bg-danger w-[123px] pl-4 pr-4",
+                  onClick: logoutUser,
+               }}
+               handleClose={() => setLogoutModalActive(false)}
+               body={<div className="mb-10"></div>}
+               classname={"max-w-567 mx-auto"}
+            />
+         }
       </>
    );
 }

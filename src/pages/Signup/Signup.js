@@ -795,6 +795,7 @@ export default function Signup() {
                 />
               ) : frames.signupSuccessful ? (
                 <SignupSuccessful
+                  email={values.email}
                   {...props}
                   {...otherDetailsProps}
                   successfulSignUpMessage={successfulSignUpMessage}
