@@ -194,7 +194,6 @@ const AdminNavbar = () => {
   const [navData, setNavData] = useState(tempnavdata);
   const location = useLocation();
   const [activeRoute, setActiveRoute] = useState(location.pathname);
-  console.log(activeRoute)
 
   const [logoutModalActive, setLogoutModalActive] = useState(false);
   const navigate = useNavigate();
