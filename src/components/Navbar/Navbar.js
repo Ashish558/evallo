@@ -245,7 +245,6 @@ export default function Navbar() {
                   ? "hidden"
                   : "bg-lightWhite"
                }`}
-         // className={styles.navContainer}
          >
             <div className="lg:min-h-full lg:w-[100px] w-full h-75 lg:h-auto bg-primary p-4 lg:rounded-20 rounded-30 overflow-x-hidden overflow-y-hidden lg:overflow-y-auto lg:pt-10">
                <div className="h-full flex lg:flex-col items-center self-stretch justify- ">

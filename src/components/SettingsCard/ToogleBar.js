@@ -24,7 +24,6 @@ const ToogleBar = ({
                 <p className="">{title}</p>
                 {toggle !== undefined && (
                     <div className="flex items-center">
-                        {/* <p className="text-[#AAAAAA] text-xs mr-2">Show icons / images</p> */}
                         <div
                             className={styles.toggleContainer}
                             onClick={() => onToggle(toggle.key, !toggle.value)}
