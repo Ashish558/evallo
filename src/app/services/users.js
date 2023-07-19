@@ -147,7 +147,16 @@ export const userServicesApi = createApi({
         headers: getAuthHeader(),
       }),
     }),
-  
+    resentEmail: builder.mutation({
+      query: (body) => ({
+        url: `api/user/resent/mail`,
+        method: "POST",
+        body: body,
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+      }),
+    }),
   }),
 });
 
@@ -165,6 +174,7 @@ export const {
   useUpdateTutorDetailsMutation,
   usePostTutorDetailsMutation,
   useLazyGetPersonalDetailQuery,
+  useResentEmailMutation,
   useLazyGetInvoiceQuery,
   useUpdateProfileImageMutation,
   useLazyGetOrganizationQuery,

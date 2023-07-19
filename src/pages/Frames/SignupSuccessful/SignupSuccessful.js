@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import PrimaryButton from "../../../components/Buttons/PrimaryButton";
 import SecondaryButton from "../../../components/Buttons/SecondaryButton";
 import image from "./../../../assets/signup/image.svg";
+import { useResentEmailMutation } from '../../../app/services/users';
 
 export default function SignupSuccessful({
   frames,
@@ -11,18 +12,31 @@ export default function SignupSuccessful({
   setcurrentStep,
   addDetails,
   lastLoginDisabled,
-  handleSuccessfullBack
+  handleSuccessfullBack,
+  handleSignup,
+  email
 }) {
+  const [resentEmailApi, setResentEmailApi] = useResentEmailMutation();
+
+  const handleSubmit = () => {
+
+
+
+    resentEmailApi({ email }).then((res) => {
+      console.log("Successfully resent email", res);
+    });
+
+  }
+
+
+
   const navigate = useNavigate();
 
   useEffect(() => {
-    // addDetails()
+
   }, []);
 
-  const handleClick = () => {
-    // addDetails()
-    
-  };
+
 
   useEffect(() => {
     setcurrentStep(5);
@@ -36,7 +50,7 @@ export default function SignupSuccessful({
           <div className="text-center flex flex-col gap-3 text-md w-fit">
             <h3 className="font-[500]">{successfulSignUpMessage.head}</h3>
             <h4>{successfulSignUpMessage.mid}</h4>
-            <h4>{successfulSignUpMessage.last}</h4>
+            <h4>{successfulSignUpMessage.last} <span onClick={() => handleSubmit()} className="text-[#24A3D9] cursor-pointer">{successfulSignUpMessage.verify}</span></h4>
             <h2 className="font-bold">{successfulSignUpMessage.bottom}</h2>
           </div>
         </div>
