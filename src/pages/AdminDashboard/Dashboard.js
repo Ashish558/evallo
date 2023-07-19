@@ -9,7 +9,7 @@ import styles from "./style.module.css";
 
 import Table from "../SuperadminDashboard/Table/table";
 import ActionLog from "./ActionLog";
-import { calculateDateRange } from "../../components/RangeDate/utils";
+
 import {
   useGetAllRevenueMutation,
   useGetImpendingRevenueMutation,
@@ -20,14 +20,13 @@ import {
 import { latestSignUpHeaders, tutorTableHeaders } from "./staticData";
 import { useState } from "react";
 import RangeDate from "../../components/RangeDate/RangeDate";
-import { useEffect } from "react";
 
 const Dashboard = () => {
   const { data: latestSignUp } = useGetLatestSignUpQuery();
   const { organization } = useSelector((state) => state.organization);
   const { firstName, lastName } = useSelector((state) => state.user);
   const { data: userStats } = useGetUserStatsQuery();
-  const [startDate, setStartDate] = useState(() => calculateDateRange()[0]);
+
   const [completedRevenue, completedRevenueStatus] = useGetAllRevenueMutation();
   const [leakedRevenue, leakedRevenueStatus] = useGetLeakedRevenueMutation();
   const [impendingRevenue, impendingRevenueStatus] =
@@ -37,25 +36,25 @@ const Dashboard = () => {
   const [iRevenue, setIRevenue] = useState("");
 
   const handleFetchRevenue = (fetchMutation, body, setValue) => {
-    fetchMutation(body).then((res) => {
-      setValue(res.data);
-    });
+    fetchMutation(body)
+      .then((res) => {
+        setValue(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
-  const handleStartDate = (e) => {
-    setStartDate(e);
+
+  const handleRevenue = (startDate) => {
+    let startD = startDate.split("-")[0];
+    startD = new Date(startD).toISOString().split("T")[0];
+    let endD = startDate.split("-")[1];
+    endD = new Date(endD).toISOString().split("T")[0];
+    const body = { startDate: startD, endDate: endD };
+    handleFetchRevenue(completedRevenue, body, setCRevenue);
+    handleFetchRevenue(leakedRevenue, body, setLRevenue);
+    handleFetchRevenue(impendingRevenue, body, setIRevenue);
   };
-  useEffect(() => {
-    if (startDate) {
-      let startD = startDate.split("-")[0];
-      startD = new Date(startD).toISOString().split("T")[0];
-      let endD = startDate.split("-")[1];
-      endD = new Date(endD).toISOString().split("T")[0];
-      const body = { startDate: startD, endDate: endD };
-      handleFetchRevenue(completedRevenue, body, setCRevenue);
-      handleFetchRevenue(leakedRevenue, body, setLRevenue);
-      handleFetchRevenue(impendingRevenue, body, setIRevenue);
-    }
-  }, [startDate]);
 
   return (
     <div className={styles.container}>
@@ -73,13 +72,8 @@ const Dashboard = () => {
 
             <div className="flex justify-between items-center ">
               <p className="font-bold text-[#26435F]">BUSINESS OVERVIEW </p>
-              {organization?.createdAt && (
-                <RangeDate
-                  createdDate={organization?.createdAt}
-                  startDate={startDate}
-                  handleStartDate={handleStartDate}
-                />
-              )}
+
+              <RangeDate handleRangeData={handleRevenue} />
             </div>
           </div>
         </div>
@@ -614,4 +608,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default React.memo(Dashboard);

@@ -57,7 +57,7 @@ export default function InputField({
             className={`mr-5 ${
               iconSize === "medium" ? "w-[24px]" : "w-[28px]"
             }`}
-            alt="icon"
+           
           />
         )}
         {inputLeftField && inputLeftField}
@@ -89,7 +89,7 @@ export default function InputField({
                 ? setInputType("text")
                 : setInputType("password")
             }
-            alt="icon"
+           
           />
         )}
         {IconRight && (
@@ -100,7 +100,7 @@ export default function InputField({
             className={`ml-4 cursor-pointer ${
               iconSize === "medium" && "w-[24px]"
             }`}
-            alt="icon"
+           
           />
           {Tooltip}
           </div>
