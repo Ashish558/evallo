@@ -57,6 +57,7 @@ const Dashboard = () => {
   };
 
   return (
+
     <div className={styles.container}>
       <div className=" mt-[28px] bg-#2E2E2E ">
         <div className="mt-[42px] flex justify-center">
@@ -259,7 +260,7 @@ const Dashboard = () => {
                       {" "}
                       {userStats
                         ? userStats?.student.activeUsers.count +
-                          userStats?.student.inactiveUsers.count
+                        userStats?.student.inactiveUsers.count
                         : "Loading.."}
                     </span>
                   </p>
@@ -275,7 +276,7 @@ const Dashboard = () => {
                       {" "}
                       {userStats
                         ? userStats?.tutor.activeUsers.count +
-                          userStats?.tutor.inactiveUsers.count
+                        userStats?.tutor.inactiveUsers.count
                         : "Loading..."}
                     </span>
                   </p>
@@ -291,7 +292,7 @@ const Dashboard = () => {
                       {" "}
                       {userStats
                         ? userStats?.parent.activeUsers.count +
-                          userStats?.parent.inactiveUsers.count
+                        userStats?.parent.inactiveUsers.count
                         : "Loading..."}
                     </span>
                   </p>

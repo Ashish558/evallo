@@ -12,14 +12,20 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { faQuestionCircle } from "@fortawesome/free-regular-svg-icons";
 import icon from "../../assets/icons/FIGMA 3.svg";
-import Dashboard from "../../assets/images/Vector.png";
+import Dashboard1 from "../../assets/images/Vector.png";
+import Dashboard from "../../assets/images/Dashboard 1.svg";
 import UsersIcon from "../../assets/images/Vector (1).png";
+import UsersIcon1 from "../../assets/images/Vector (3).svg";
 import Schedule from "../../assets/images/Vector (2).png";
+import Schedule1 from "../../assets/images/Calendar 1.svg";
 import Assignment from "../../assets/images/Vector (3).png";
+import Assignment1 from "../../assets/images/Vector (4).svg";
 import Content from "../../assets/images/Vector (4).png";
 import Invoice from "../../assets/images/Vector (5).png";
 import Settings from "../../assets/images/Vector (6).png";
+import Settings1 from "../../assets/images/Settings 1.svg";
 import Profile from "../../assets/Navbar/profile.svg";
+import Profile1 from "../../assets/images/Vector (5).svg";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -32,38 +38,45 @@ import { useLazyGetLogoutQuery } from "../../app/services/superAdmin";
 const tempnavdata = [
   {
     icon: Dashboard,
+    activeIcon: Dashboard1,
     path: "/",
     excludes: ["student", "parent", "tutor"],
     tooltip: "Dashboard",
   },
   {
     icon: UsersIcon,
+    activeIcon: UsersIcon1,
     path: "/users",
     tooltip: "All Users",
   },
   {
     icon: Schedule,
+    activeIcon: Schedule1,
     path: "/calendar",
     tooltip: "Calendar",
   },
   {
     icon: Assignment,
+    activeIcon: Assignment1,
     path: "/all-tests",
     tooltip: "All Tests",
   },
   {
     icon: Assignment,
+    activeIcon: Assignment1,
     path: "/assigned-tests",
     tooltip: "Assigned Tests",
   },
   {
     icon: Settings,
+    activeIcon: Settings1,
     path: "/settings",
     excludes: ["student", "parent", "tutor"],
     tooltip: "Settings",
   },
   {
     icon: Assignment,
+    activeIcon: Assignment1,
     path: "/assigned-tutors",
     tooltip: "Assigned Tutors",
   },
@@ -72,21 +85,25 @@ const tempnavdata = [
 const parentNav = [
   {
     icon: Dashboard,
+    activeIcon: Dashboard1,
     path: "/",
     tooltip: "Dashboard",
   },
   {
     icon: Profile,
+    activeIcon: Profile1,
     path: "/profile",
     tooltip: "Profile",
   },
   {
     icon: Schedule,
+    activeIcon: Schedule1,
     path: "/calendar",
     tooltip: "Calendar",
   },
   {
     icon: Assignment,
+    activeIcon: Assignment1,
     path: "/all-tests",
     tooltip: "Assigned Tests",
   },
@@ -95,21 +112,25 @@ const parentNav = [
 const studentNav = [
   {
     icon: Dashboard,
+    activeIcon: Dashboard1,
     path: "/",
     tooltip: "Dashboard",
   },
   {
     icon: Profile,
+    activeIcon: Profile1,
     path: "/profile",
     tooltip: "Profile",
   },
   {
     icon: Schedule,
+    activeIcon: Schedule1,
     path: "/calendar",
     tooltip: "Calendar",
   },
   {
     icon: Assignment,
+    activeIcon: Assignment1,
     path: "/all-tests",
     tooltip: "Assigned Tests",
   },
@@ -117,26 +138,31 @@ const studentNav = [
 const tutorNav = [
   {
     icon: Dashboard,
+    activeIcon: Dashboard1,
     path: "/",
     tooltip: "Dashboard",
   },
   {
     icon: Profile,
+    activeIcon: Profile1,
     path: "/profile",
     tooltip: "Profile",
   },
   {
     icon: UsersIcon,
+    activeIcon: UsersIcon1,
     path: "/assigned-students",
     tooltip: "Assigned Students",
   },
   {
     icon: Schedule,
+    activeIcon: Schedule1,
     path: "/calendar",
     tooltip: "Calendar",
   },
   {
     icon: Assignment,
+    activeIcon: Assignment1,
     path: "/assigned-tests",
     tooltip: "Assigned Tests",
   },
@@ -144,18 +170,21 @@ const tutorNav = [
 const supAdminNavData = [
   {
     icon: Settings,
+    activeIcon: Settings1,
     path: "/settings",
     excludes: ["student", "parent", "tutor"],
     tooltip: "Settings",
   },
   {
     icon: Profile,
+    activeIcon: Profile1,
     path: "/all-orgs",
     excludes: ["student", "parent", "tutor"],
     tooltip: "All Orgs",
   },
   {
     icon: Dashboard,
+    activeIcon: Dashboard1,
     path: "/dashboard",
     excludes: ["student", "parent", "tutor"],
     tooltip: "Dashboard",
@@ -164,6 +193,9 @@ const supAdminNavData = [
 const AdminNavbar = () => {
   const [navData, setNavData] = useState(tempnavdata);
   const location = useLocation();
+  const [activeRoute, setActiveRoute] = useState(location.pathname);
+  console.log(activeRoute)
+
   const [logoutModalActive, setLogoutModalActive] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -217,6 +249,9 @@ const AdminNavbar = () => {
     dispatch(updateIsLoggedIn(false));
     window.location.reload();
   };
+  useEffect(() => {
+    setActiveRoute(location.pathname);
+  }, [location.pathname]);
   return (
     <>
       <div className="flex justify-around bg-[#26435F] h-[54px] items-center w-full">
@@ -231,10 +266,23 @@ const AdminNavbar = () => {
                 className="flex items-center mr-6 cursor-pointer"
                 onClick={() => handleNavigate(item.path)}
               >
-                <p>
-                  <img src={item.icon} alt="" />
-                </p>
-                <p className="pl-[10px]"> {item.tooltip} </p>
+
+                {
+                  item?.path === activeRoute ? <>
+                    <p >
+                      <img width="16px" src={item.activeIcon} alt="" />
+                    </p>
+                    <p className="pl-[10px] text-[#FFA28D]"> {item.tooltip} </p>
+                  </>
+                    :
+                    <>
+                      <p>
+                        <img width="16px" src={item.icon} alt="" />
+                      </p>
+                      <p className="pl-[10px]"> {item.tooltip} </p>
+                    </>
+                }
+
               </div>
             );
           })}

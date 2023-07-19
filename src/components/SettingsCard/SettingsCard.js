@@ -18,9 +18,8 @@ export default function SettingsCard({
       `}
     >
       <div
-        className={`text-primary-dark font-bold flex justify-between mb-5 ${
-          titleClassName ? titleClassName : ""
-        }`}
+        className={`text-primary-dark font-bold flex justify-between mb-5 ${titleClassName ? titleClassName : ""
+          }`}
       >
         <p className="">{title}</p>
         {toggle !== undefined && (
@@ -38,11 +37,10 @@ export default function SettingsCard({
               />
               <img
                 src={toggleCircleIcon}
-                className={`${
-                  toggle.value === false
+                className={`${toggle.value === false
                     ? styles.toggleCircle
                     : styles.toggleCircleActive
-                }`}
+                  }`}
                 alt="toggle"
               />
             </div>

@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import EyeIcon from "../../assets/form/eye-open.svg";
 import Message from "./Message/Message";
+import { useRef } from "react";
+import { useEffect } from "react";
 
 export default function InputField({
   parentClassName,
@@ -32,6 +34,20 @@ export default function InputField({
   defaultValue
 }) {
   const [inputType, setInputType] = useState(type);
+  const [showDiv, setShowDiv] = useState(true);
+  const divRef = useRef();
+  useEffect(() => {
+     function handleClickOutside(event) {
+        if (divRef.current && !divRef.current.contains(event.target)) {
+           setShowDiv(false);
+        }
+     }
+
+     document.addEventListener('click', handleClickOutside);
+     return () => {
+        document.removeEventListener('click', handleClickOutside);
+     };
+  }, []);
 
   return (
     <div className={`relative text-sm ${parentClassName && parentClassName}`}>
@@ -107,9 +123,16 @@ export default function InputField({
         )}
         {right && right}
       </div>
-      {error !== undefined && error !== "" && (
-        <Message error={error} type="danger" />
-      )}
+      {error !== undefined && error !== '' &&
+            <div>
+               {showDiv && (
+                  <div ref={divRef}>
+                     <Message error={error} type='danger' />
+                  </div>
+               )}
+            </div>
+         }
+
     </div>
   );
 }
