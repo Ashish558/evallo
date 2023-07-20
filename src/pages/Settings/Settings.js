@@ -181,16 +181,20 @@ export default function Settings() {
     const body = {
       orgId: organization._id,
       permissionId: key,
-      choosedValue: nvalue,
+      choosedValue: value,
     };
     setPermission(body)
-      .then((response) => {
-        console.log(response);
+      .then((res) => {
+        console.log(res);
       })
-      .catch((error) => {
-        console.log(error);
+      .catch((err) => {
+        console.log(err);
       });
     setThePermission(arr);
+    let updatedSetting = {
+      permissions: arr,
+    };
+    updateAndFetchsettings(updatedSetting);
   };
   const togglePermissions = (key, value) => {
     const arr = fetchedPermissions?.map((per) => {
@@ -205,13 +209,17 @@ export default function Settings() {
       choosedValue: value,
     };
     setPermission(body)
-      .then((response) => {
-        console.log(response);
+      .then((res) => {
+        console.log(res);
       })
-      .catch((error) => {
-        console.log(error);
+      .catch((err) => {
+        console.log(err);
       });
     setThePermission(arr);
+    let updatedSetting = {
+      permissions: arr,
+    };
+    updateAndFetchsettings(updatedSetting);
   };
   const renderColoredText = (text) => {
     const keywords = [
@@ -296,18 +304,9 @@ export default function Settings() {
       );
     });
   };
-
+ 
   const fetchSettings = () => {
-    // getSettings().then((res) => {
-    //   if (res.error) {
-    //     console.log("settings fetch err", res.error);
-    //     return;
-    //   }
-    //   console.log("settings", res.data);
-    //   setBaseLink(res.data.data.baseLink);
-    //   if (res.data.data.setting === null) return;
-    //   setSettingsData(res.data.data.setting);
-    // });
+   
     if (organization.settings) {
       setSettingsData(organization.settings);
     }
@@ -358,8 +357,8 @@ export default function Settings() {
     const body = {
       settings,
     };
-    console.log("body", body);
-    // return;
+    console.log("body", body, updatedSetting);
+   
     setSaveLoading(true);
     updateSetting(body)
       .then((res) => {
@@ -1332,6 +1331,75 @@ export default function Settings() {
                 </div>
               }
             />
+            <div className="flex items-center pb-2 text-[#26435F] font-medium text-xl">
+              <p className="pr-2">Set Permissions </p>
+              <p>
+                <img src={questionMark} alt="" />
+              </p>
+            </div>
+
+            <div className="bg-[#FFFFFF] border-[2.5px] px-[82px] border-dotted border-[#CBD6E2] mb-[316px]">
+              {fetchedPermissions?.map((item, id) => {
+                return (
+                  <>
+                    {item.choosedValue === true ||
+                    item.choosedValue === false ? (
+                      <div
+                        key={id}
+                        className="pt-[34px] pb-[30px] border-b-2 border-[#CBD6E2] text-[#24A3D9] font-medium text-[17.5px] flex items-center justify-between"
+                      >
+                        <p>
+                         
+                          {renderColoredText(item.name)}
+                        </p>
+
+                        <ToggleBar
+                          toggle={{ value: item.choosedValue, key: item._id }}
+                          onToggle={togglePermissions}
+                        ></ToggleBar>
+                      </div>
+                    ) : (
+                      <div className="pt-[34px] pb-[30px] border-b-2 border-[#CBD6E2] text-[#24A3D9] font-medium text-[17.5px] flex justify-between">
+                        <p>{renderColoredText(item.name)}</p>
+
+                        <p>
+                          <select
+                            onChange={(e) =>
+                              handlePermissionOption(e.target.value, item._id)
+                            }
+                            id="option"
+                            className="border border-gray-300 px-2  rounded-md text-[#26435F] bg-[#E9ECEF]"
+                          >
+                            <option value={item.choosedValue}>
+                              {`${item.choosedValue}   ${
+                                item.permissionActionName ===
+                                "notifyParentBefSession"
+                                  ? " hours before"
+                                  : ""
+                              }`}
+                            </option>
+                            {item.values.map((values, i) => {
+                              return (
+                                item.choosedValue !== values && (
+                                  <option key={i} value={values}>
+                                    {`${values}  ${
+                                      item.permissionActionName ===
+                                      "notifyParentBefSession"
+                                        ? " hours before"
+                                        : ""
+                                    }`}
+                                  </option>
+                                )
+                              );
+                            })}
+                          </select>
+                        </p>
+                      </div>
+                    )}
+                  </>
+                );
+              })}
+            </div>
           </div>
         ) : (
           <></>
@@ -1344,75 +1412,6 @@ export default function Settings() {
           />
         )}
         {activeTab === 4 && <AccountOverview />}
-        <div className="flex items-center pb-2 text-[#26435F] font-medium text-xl">
-          <p className="pr-2">Set Permissions </p>
-          <p>
-            <img src={questionMark} alt="" />
-          </p>
-        </div>
-
-        <div className="bg-[#FFFFFF] border-[2.5px] px-[82px] border-dotted border-[#CBD6E2] mb-[316px]">
-          {fetchedPermissions?.map((item, id) => {
-            return (
-              <>
-                {item.choosedValue === true || item.choosedValue === false ? (
-                  <div
-                    key={id}
-                    className="pt-[34px] pb-[30px] border-b-2 border-[#CBD6E2] text-[#24A3D9] font-medium text-[17.5px] flex items-center justify-between"
-                  >
-                    <p>
-                      {/* Let <span className="text-[#FFA28D]">Tutors</span> delete a test
-              after assigning it?{" "} */}
-                      {renderColoredText(item.name)}
-                    </p>
-
-                    <ToggleBar
-                      toggle={{ value: item.choosedValue, key: item._id }}
-                      onToggle={togglePermissions}
-                    ></ToggleBar>
-                  </div>
-                ) : (
-                  <div className="pt-[34px] pb-[30px] border-b-2 border-[#CBD6E2] text-[#24A3D9] font-medium text-[17.5px] flex justify-between">
-                    <p>{renderColoredText(item.name)}</p>
-
-                    <p>
-                      <select
-                        onChange={(e) =>
-                          handlePermissionOption(e.target.value, item._id)
-                        }
-                        id="option"
-                        className="border border-gray-300 px-2  rounded-md text-[#26435F] bg-[#E9ECEF]"
-                      >
-                        <option value={item.choosedValue}>
-                          {`${item.choosedValue}   ${
-                            item.permissionActionName ===
-                            "notifyParentBefSession"
-                              ? " hours before"
-                              : ""
-                          }`}
-                        </option>
-                        {item.values.map((values, i) => {
-                          return (
-                            item.choosedValue !== values && (
-                              <option key={i} value={values}>
-                                {`${values}  ${
-                                  item.permissionActionName ===
-                                  "notifyParentBefSession"
-                                    ? " hours before"
-                                    : ""
-                                }`}
-                              </option>
-                            )
-                          );
-                        })}
-                      </select>
-                    </p>
-                  </div>
-                )}
-              </>
-            );
-          })}
-        </div>
       </div>
       {modalActive && (
         <Modal

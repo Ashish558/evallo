@@ -7,11 +7,17 @@ import AddTag from "../../components/Buttons/AddTag";
 import FilterItems from "../../components/FilterItems/filterItems";
 import InputField from "../../components/InputField/inputField";
 import Modal from "../../components/Modal/Modal";
+import questionMark from "../../assets/images/Vector (6).svg";
+import ToggleBar from "../../components/SettingsCard/ToogleBar";
 import { useLazyGetSettingsQuery } from "../../app/services/session";
 import {
+  useGetAllPermissionQuery,
+  useUpdateOrgSettingMutation,
+  useUpdatePermissionMutation,
   useUpdateOfferImageMutation,
   useUpdateSettingMutation,
 } from "../../app/services/settings";
+import { permissionsStaticData } from "./Tabs/staticData";
 import { getSessionTagName } from "../../utils/utils";
 import { BASE_URL, getAuthHeader } from "../../app/constants/constants";
 import axios from "axios";
@@ -147,6 +153,108 @@ export default function SuperAdminSettings() {
   const [tagText, setTagText] = useState("");
   const [modalData, setModalData] = useState(initialState);
   const dispatch = useDispatch();
+  const { data: getAllPermission, isFetched } = useGetAllPermissionQuery();
+  const [setPermission, setPermissionStatus] = useUpdatePermissionMutation();
+
+  const [fetchedPermissions, setThePermission] = useState(permissionsStaticData);
+
+  useEffect(() => {
+    if (getAllPermission?.permissions)
+      setThePermission(getAllPermission?.permissions);
+  }, [getAllPermission, isFetched]);
+
+  const handlePermissionOption = (value, key) => {
+    let nvalue = value;
+    if (!isNaN(Number(value))) {
+      nvalue = Number(value);
+    }
+    const arr = fetchedPermissions?.map((per) => {
+      if (per._id === key) {
+        return { ...per, choosedValue: nvalue };
+      }
+      return { ...per };
+    });
+    const body = {
+      orgId: organization._id,
+      permissionId: key,
+      choosedValue: value,
+    };
+    setPermission(body)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    setThePermission(arr);
+    let updatedSetting = {
+      permissions: arr,
+    };
+    updateAndFetchsettings(updatedSetting);
+  };
+  const togglePermissions = (key, value) => {
+    const arr = fetchedPermissions?.map((per) => {
+      if (per._id === key) {
+        return { ...per, choosedValue: !per.choosedValue };
+      }
+      return { ...per };
+    });
+    const body = {
+      orgId: organization._id,
+      permissionId: key,
+      choosedValue: value,
+    };
+    setPermission(body)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    setThePermission(arr);
+    let updatedSetting = {
+      permissions: arr,
+    };
+    updateAndFetchsettings(updatedSetting);
+  };
+  const renderColoredText = (text) => {
+    const keywords = [
+      "students",
+      "parents",
+      "admins",
+      "tutors",
+      "parent",
+      "student",
+      "tutor",
+      "admin",
+      "&",
+      "/",
+      "tutors / parents",
+      "tutors & parents",
+      "parents / students",
+      "parents & students",
+      "students / parents",
+      "students or parents",
+      "students and parents",
+      "students & parents",
+    ];
+    const parts = text.split(new RegExp(`(${keywords.join("|")})`, "i"));
+
+    return (
+      <>
+        {parts.map((part, index) => {
+          if (keywords.includes(part.toLowerCase())) {
+            return (
+              <span key={index} style={{ color: "#FFA28D" }}>
+                {part}
+              </span>
+            );
+          }
+          return <span style={{ color: "#24A3D9" }}>{part}</span>;
+        })}
+      </>
+    );
+  };
 
   const handleClose = () => setModalActive(false);
   const handleTagModal = (text) => {
@@ -1089,6 +1197,75 @@ export default function SuperAdminSettings() {
                 </div>
               }
             />
+              <div className="flex items-center pb-2 text-[#26435F] font-medium text-xl">
+              <p className="pr-2">Set Permissions </p>
+              <p>
+                <img src={questionMark} alt="" />
+              </p>
+            </div>
+
+            <div className="bg-[#FFFFFF] border-[2.5px] px-[82px] border-dotted border-[#CBD6E2] mb-[316px]">
+              {fetchedPermissions?.map((item, id) => {
+                return (
+                  <>
+                    {item.choosedValue === true ||
+                    item.choosedValue === false ? (
+                      <div
+                        key={id}
+                        className="pt-[34px] pb-[30px] border-b-2 border-[#CBD6E2] text-[#24A3D9] font-medium text-[17.5px] flex items-center justify-between"
+                      >
+                        <p>
+                         
+                          {renderColoredText(item.name)}
+                        </p>
+
+                        <ToggleBar
+                          toggle={{ value: item.choosedValue, key: item._id }}
+                          onToggle={togglePermissions}
+                        ></ToggleBar>
+                      </div>
+                    ) : (
+                      <div className="pt-[34px] pb-[30px] border-b-2 border-[#CBD6E2] text-[#24A3D9] font-medium text-[17.5px] flex justify-between">
+                        <p>{renderColoredText(item.name)}</p>
+
+                        <p>
+                          <select
+                            onChange={(e) =>
+                              handlePermissionOption(e.target.value, item._id)
+                            }
+                            id="option"
+                            className="border border-gray-300 px-2  rounded-md text-[#26435F] bg-[#E9ECEF]"
+                          >
+                            <option value={item.choosedValue}>
+                              {`${item.choosedValue}   ${
+                                item.permissionActionName ===
+                                "notifyParentBefSession"
+                                  ? " hours before"
+                                  : ""
+                              }`}
+                            </option>
+                            {item.values.map((values, i) => {
+                              return (
+                                item.choosedValue !== values && (
+                                  <option key={i} value={values}>
+                                    {`${values}  ${
+                                      item.permissionActionName ===
+                                      "notifyParentBefSession"
+                                        ? " hours before"
+                                        : ""
+                                    }`}
+                                  </option>
+                                )
+                              );
+                            })}
+                          </select>
+                        </p>
+                      </div>
+                    )}
+                  </>
+                );
+              })}
+            </div>
           </div>
         ) : (
           <></>
