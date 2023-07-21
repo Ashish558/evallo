@@ -26,6 +26,7 @@ const AccountOverview = () => {
     phone: "",
     subscriptionCode: "",
     company: "",
+    
   });
   const [values, setValues] = useState({
     firstName: "",
@@ -49,6 +50,9 @@ const AccountOverview = () => {
     activeStudents: "",
     activeTutors: "",
     services: [],
+    currentPassword:"",
+    newPassword:"",
+    confirmPassword:"",
   });
   const [userDetails, userDetailsStatus] = useLazyGetPersonalDetailQuery();
   const [updateAccount, updateAccountStatus] = useUpdateUserAccountMutation();
@@ -202,25 +206,61 @@ const AccountOverview = () => {
           />
         </div>
         <div className="flex gap-7 flex-1">
+        <InputField
+            placeholder=""
+            parentClassName="text-xs text-[#26435F]"
+            inputContainerClassName=" bg-white"
+            inputClassName="bg-transparent"
+            label="Current Password"
+            value={values.currentPassword}
+            onChange={(e) =>
+              setValues({
+                ...values,
+                currentPassword: e.target.value,
+              })
+            }
+            error={error.currentPassword}
+          />
+            <InputField
+            placeholder=""
+            parentClassName="text-xs text-[#26435F]"
+            inputContainerClassName=" bg-white"
+            inputClassName="bg-transparent"
+            label="New Password"
+            value={values.newPassword}
+            onChange={(e) =>
+              setValues({
+                ...values,
+                newPassword: e.target.value,
+              })
+            }
+            error={error.newPassword}
+          />
+            <InputField
+            placeholder=""
+            parentClassName="text-xs text-[#26435F]"
+            inputContainerClassName=" bg-white"
+            inputClassName="bg-transparent"
+            label="Confirm Password"
+            value={values.confirmPassword}
+            onChange={(e) =>
+              setValues({
+                ...values,
+                confirmPassword: e.target.value,
+              })
+            }
+            error={error.confirmPassword}
+          />
           <div>
-            <h1 className="my-1 text-[#26435F] font-semibold text-sm">
-              Send Link
-            </h1>
+          
             <button
               onClick={handleClose}
-              className="bg-[#517CA8] text-white rounded-md px-3 py-2 text-sm"
+              className="bg-[#FFA28D] text-white rounded-md my-5 px-3 py-2 text-sm"
             >
-              Reset Password
+              Update
             </button>
           </div>
-          <div>
-            <h1 className="my-1 text-[#26435F] font-semibold text-sm">
-              2FA Codes / key
-            </h1>
-            <button className="bg-[#517CA8] text-white rounded-md px-5 py-2 text-sm">
-              Download
-            </button>
-          </div>
+         
         </div>
         <div>
           {reset && (

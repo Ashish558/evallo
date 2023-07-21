@@ -114,6 +114,7 @@ export default function InputField({
             className={`ml-4 cursor-pointer ${
               iconSize === "medium" && "w-[24px]"
             }`}
+           
           />
           {Tooltip}
           </div>
