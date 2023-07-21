@@ -9,25 +9,26 @@ import styles from "./style.module.css";
 
 import Table from "../SuperadminDashboard/Table/table";
 import ActionLog from "./ActionLog";
-import { calculateDateRange } from "../../components/RangeDate/utils";
+
 import {
   useGetAllRevenueMutation,
   useGetImpendingRevenueMutation,
   useGetLatestSignUpQuery,
   useGetLeakedRevenueMutation,
   useGetUserStatsQuery,
+  useLazyGetTutorPerformanceQuery,
+  useLazyGetPopularServicesQuery,
 } from "../../app/services/adminDashboard";
 import { latestSignUpHeaders, tutorTableHeaders } from "./staticData";
 import { useState } from "react";
 import RangeDate from "../../components/RangeDate/RangeDate";
-import { useEffect } from "react";
 
 const Dashboard = () => {
   const { data: latestSignUp } = useGetLatestSignUpQuery();
   const { organization } = useSelector((state) => state.organization);
   const { firstName, lastName } = useSelector((state) => state.user);
   const { data: userStats } = useGetUserStatsQuery();
-  const [startDate, setStartDate] = useState(() => calculateDateRange()[0]);
+
   const [completedRevenue, completedRevenueStatus] = useGetAllRevenueMutation();
   const [leakedRevenue, leakedRevenueStatus] = useGetLeakedRevenueMutation();
   const [impendingRevenue, impendingRevenueStatus] =
@@ -35,30 +36,59 @@ const Dashboard = () => {
   const [cRevenue, setCRevenue] = useState("");
   const [lRevenue, setLRevenue] = useState("");
   const [iRevenue, setIRevenue] = useState("");
+  const [fetchTutorPerformanceData, fechedTutorPerformanceStatus] =
+    useLazyGetTutorPerformanceQuery();
+  const [tutorPerformanceData, setTutorPerformance] = useState([]);
+  const [fetchPopularServicesData, fechedPopularServicesStatus] =
+    useLazyGetPopularServicesQuery();
+  const [popularServices, setPopularServices] = useState([]);
 
   const handleFetchRevenue = (fetchMutation, body, setValue) => {
-    fetchMutation(body).then((res) => {
-      setValue(res.data);
-    });
+    fetchMutation(body)
+      .then((res) => {
+        setValue(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
-  const handleStartDate = (e) => {
-    setStartDate(e);
+
+  const convertDateToRange = (startDate) => {
+    let startD = startDate.split("-")[0];
+    startD = new Date(startD).toISOString().split("T")[0];
+    let endD = startDate.split("-")[1];
+    endD = new Date(endD).toISOString().split("T")[0];
+    const body = { startDate: startD, endDate: endD };
+    return body;
   };
-  useEffect(() => {
-    if (startDate) {
-      let startD = startDate.split("-")[0];
-      startD = new Date(startD).toISOString().split("T")[0];
-      let endD = startDate.split("-")[1];
-      endD = new Date(endD).toISOString().split("T")[0];
-      const body = { startDate: startD, endDate: endD };
-      handleFetchRevenue(completedRevenue, body, setCRevenue);
-      handleFetchRevenue(leakedRevenue, body, setLRevenue);
-      handleFetchRevenue(impendingRevenue, body, setIRevenue);
-    }
-  }, [startDate]);
+  const handleRevenue = (startDate) => {
+    const body = convertDateToRange(startDate);
+    handleFetchRevenue(completedRevenue, body, setCRevenue);
+    handleFetchRevenue(leakedRevenue, body, setLRevenue);
+    handleFetchRevenue(impendingRevenue, body, setIRevenue);
+  };
+  const handleTutorPerformance = () => {
+    fetchTutorPerformanceData()
+      .then((res) => {
+        console.log(res?.data);
+        setTutorPerformance(res?.data?.all_tutors);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  const handlePopularServices = () => {
+    fetchPopularServicesData()
+      .then((res) => {
+        console.log(res?.data);
+        setPopularServices(res?.data?.all_services);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   return (
-
     <div className={styles.container}>
       <div className=" mt-[28px] bg-#2E2E2E ">
         <div className="mt-[42px] flex justify-center">
@@ -74,13 +104,8 @@ const Dashboard = () => {
 
             <div className="flex justify-between items-center ">
               <p className="font-bold text-[#26435F]">BUSINESS OVERVIEW </p>
-              {organization?.createdAt && (
-                <RangeDate
-                  createdDate={organization?.createdAt}
-                  startDate={startDate}
-                  handleStartDate={handleStartDate}
-                />
-              )}
+
+              <RangeDate handleRangeData={handleRevenue} />
             </div>
           </div>
         </div>
@@ -266,7 +291,7 @@ const Dashboard = () => {
                       {" "}
                       {userStats
                         ? userStats?.student.activeUsers.count +
-                        userStats?.student.inactiveUsers.count
+                          userStats?.student.inactiveUsers.count
                         : "Loading.."}
                     </span>
                   </p>
@@ -282,7 +307,7 @@ const Dashboard = () => {
                       {" "}
                       {userStats
                         ? userStats?.tutor.activeUsers.count +
-                        userStats?.tutor.inactiveUsers.count
+                          userStats?.tutor.inactiveUsers.count
                         : "Loading..."}
                     </span>
                   </p>
@@ -298,7 +323,7 @@ const Dashboard = () => {
                       {" "}
                       {userStats
                         ? userStats?.parent.activeUsers.count +
-                        userStats?.parent.inactiveUsers.count
+                          userStats?.parent.inactiveUsers.count
                         : "Loading..."}
                     </span>
                   </p>
@@ -340,15 +365,7 @@ const Dashboard = () => {
           <div className="flex justify-between items-center ">
             <p className="font-bold uppercase">Client Success Overview </p>
 
-            <div className="flex font-semibold text-[#FFA28D] text-xs">
-              <p> 1 May - May 12, 2023 </p>
-              <p>
-                <FontAwesomeIcon
-                  className="pl-3"
-                  icon={faCaretDown}
-                ></FontAwesomeIcon>
-              </p>
-            </div>
+            <RangeDate handleRangeData={handlePopularServices} />
           </div>
         </div>
 
@@ -358,104 +375,24 @@ const Dashboard = () => {
               <p className="font-semibold text-[#26435F] text-[14px]">
                 Popular services
               </p>
-              <table className="table-auto w-full">
-                <thead>
-                  <tr>
-                    <th>
-                      Service{" "}
-                      <FontAwesomeIcon
-                        className="pl-1 w-[10px]"
-                        icon={faArrowDown}
-                      ></FontAwesomeIcon>
-                    </th>
-                    <th>
-                      Actively Using{" "}
-                      <FontAwesomeIcon
-                        className="pl-1 w-[10px]"
-                        icon={faArrowDown}
-                      ></FontAwesomeIcon>
-                    </th>
-                    <th>
-                      Total Users{" "}
-                      <FontAwesomeIcon
-                        className="pl-1 w-[10px]"
-                        icon={faArrowDown}
-                      ></FontAwesomeIcon>
-                    </th>
-                    <th>
-                      Scheduled Hours
-                      <FontAwesomeIcon
-                        className="pl-1 w-[10px]"
-                        icon={faArrowDown}
-                      ></FontAwesomeIcon>
-                    </th>
-                    <th>
-                      Completed Hours{" "}
-                      <FontAwesomeIcon
-                        className="pl-1 w-[10px]"
-                        icon={faArrowDown}
-                      ></FontAwesomeIcon>
-                    </th>
-                    <th>
-                      % of Business{" "}
-                      <FontAwesomeIcon
-                        className="pl-1 w-[10px]"
-                        icon={faArrowDown}
-                      ></FontAwesomeIcon>
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td className="">Lorem</td>
-                    <td className="">Lorem</td>
-                    <td className="">Lorem</td>
-                    <td className="">Lorem</td>
-                    <td className="">Lorem</td>
-                    <td className="">Lorem</td>
-                  </tr>
-                  <tr>
-                    <td className="">Lorem</td>
-                    <td className="">Lorem</td>
-                    <td className="">Lorem</td>
-                    <td className="">Lorem</td>
-                    <td className="">Lorem</td>
-                    <td className="">Lorem</td>
-                  </tr>
-                  <tr>
-                    <td className="">Lorem</td>
-                    <td className="">Lorem</td>
-                    <td className="">Lorem</td>
-                    <td className="">Lorem</td>
-                    <td className="">Lorem</td>
-                    <td className="">Lorem</td>
-                  </tr>
-                  <tr>
-                    <td className="">Lorem</td>
-                    <td className="">Lorem</td>
-                    <td className="">Lorem</td>
-                    <td className="">Lorem</td>
-                    <td className="">Lorem</td>
-                    <td className="">Lorem</td>
-                  </tr>
-                  <tr>
-                    <td className="">Lorem</td>
-                    <td className="">Lorem</td>
-                    <td className="">Lorem</td>
-                    <td className="">Lorem</td>
-                    <td className="">Lorem</td>
-                    <td className="">Lorem</td>
-                  </tr>
-                  <tr>
-                    <td className="">Lorem</td>
-                    <td className="">Lorem</td>
-                    <td className="">Lorem</td>
-                    <td className="">Lorem</td>
-                    <td className="">Lorem</td>
-                    <td className="">Lorem</td>
-                  </tr>
-                </tbody>
-              </table>
+              <Table
+                data={popularServices}
+                Icon={
+                  <FontAwesomeIcon
+                    className="pl-1 w-[10px]"
+                    icon={faArrowDown}
+                  ></FontAwesomeIcon>
+                }
+                tableHeaders={[
+                  "Service",
+                  "Actively Using",
+                  "Total Users",
+                  "Scheduled Hours",
+                  "Completed Hours",
+                  "% of Business",
+                ]}
+                maxPageSize={5}
+              />
             </div>
 
             <div>
@@ -463,47 +400,11 @@ const Dashboard = () => {
                 Star Clients
               </p>
               <div>
-                <table className={` w-full ${styles.sTable} `}>
-                  <thead>
-                    <tr>
-                      <th>Client Name </th>
-                      <th>Code </th>
-                      <th>Referrals </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr className="h-[45px]">
-                      <td className="">Lorem</td>
-                      <td className="">$XDR$#</td>
-                      <td className="">45</td>
-                    </tr>
-                    <tr className="h-[45px]">
-                      <td className="">Lorem</td>
-                      <td className="">$XDR$#</td>
-                      <td className="">45</td>
-                    </tr>
-                    <tr className="h-[45px]">
-                      <td className="">Lorem</td>
-                      <td className="">$XDR$#</td>
-                      <td className="">45</td>
-                    </tr>
-                    <tr className="h-[45px]">
-                      <td className="">Lorem</td>
-                      <td className="">$XDR$#</td>
-                      <td className="">45</td>
-                    </tr>
-                    <tr className="h-[45px]">
-                      <td className="">Lorem</td>
-                      <td className="">$XDR$#</td>
-                      <td className="">45</td>
-                    </tr>
-                    <tr className="h-[45px]">
-                      <td className="">Lorem</td>
-                      <td className="">$XDR$#</td>
-                      <td className="">45</td>
-                    </tr>
-                  </tbody>
-                </table>
+                <div
+                  className={`h-[85px] flex justify-center items-center text-sm text-[#667085] bg-[#E5E8EA]`}
+                >
+                  <p>Coming soon</p>
+                </div>
               </div>
             </div>
           </div>
@@ -543,7 +444,7 @@ const Dashboard = () => {
                 </div>
               </div>
             </div>
-            <div className="flex mt-4  text-xs justify-between text-[#667085]">
+            <div className="flex mt-2  text-xs justify-between text-[#667085]">
               <div>
                 <p>Average GRE improvement</p>
                 <div
@@ -581,21 +482,13 @@ const Dashboard = () => {
           <div className="flex justify-between items-center ">
             <p className="font-bold uppercase">Tutor Performence Overview </p>
 
-            <div className="flex font-semibold text-[#FFA28D] text-xs">
-              <p> 1 May - May 12, 2023 </p>
-              <p>
-                <FontAwesomeIcon
-                  className="pl-3"
-                  icon={faCaretDown}
-                ></FontAwesomeIcon>
-              </p>
-            </div>
+            <RangeDate handleRangeData={handleTutorPerformance} />
           </div>
         </div>
         <section>
           <div className="mx-[80px] w-[93vw] scroll-m-3 overflow-x-auto">
             <Table
-              data={[]}
+              data={tutorPerformanceData}
               Icon={
                 <FontAwesomeIcon
                   className="pl-1 w-[10px]"
@@ -615,4 +508,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default React.memo(Dashboard);

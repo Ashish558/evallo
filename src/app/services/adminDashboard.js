@@ -22,6 +22,20 @@ export const adminDashboardServicesApi = createApi({
         headers: getAuthHeader(),
       }),
     }),
+    getTutorPerformance: builder.query({
+      query: () => ({
+        url: `/api/user/admin/getTutorPerformance`,
+        method: "GET",
+        headers: getAuthHeader(),
+      }),
+    }),
+    getPopularServices: builder.query({
+      query: () => ({
+        url: `api/user/admin/getPopularServices`,
+        method: "GET",
+        headers: getAuthHeader(),
+      }),
+    }),
     getUserStats: builder.query({
       query: () => ({
         url: `api/user/admin/dashboard/userstats`,
@@ -64,4 +78,6 @@ export const {
   useGetImpendingRevenueMutation,
   useGetLeakedRevenueMutation,
   useGetAllRevenueMutation,
+  useLazyGetTutorPerformanceQuery,
+  useLazyGetPopularServicesQuery,
 } = adminDashboardServicesApi;

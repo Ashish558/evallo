@@ -12,8 +12,10 @@ export function calculateDateRange(startD) {
 }
 
 export const getModifiedDate = (date) => {
-  let startDate = new Date(date.sDate).toDateString()
-  let endDate = new Date(date.eDate).toDateString()
+  let startDate = new Date(date.sDate).toDateString().split(' ')
+  startDate = startDate[2]+' '+startDate[1]+ ' '+startDate[3]
+  let endDate = new Date(date.eDate).toDateString().split(' ')
+  endDate = endDate[1]+' '+endDate[2]+ ' '+endDate[3]
   return startDate + " - " + endDate;
 
 }
