@@ -36,6 +36,13 @@ export const superAdminServicesApi = createApi({
         headers: getAuthHeader(),
       }),
     }),
+    getFinancialStats: builder.query({
+      query: (name) => ({
+        url: `api/user/superadmin/financialStats`,
+        method: "GET",
+        headers: getAuthHeader(),
+      }),
+    }),
     getUserDailyActivity: builder.query({
       query: (name) => ({
         url: `api/user/superAdmin/userDailyActivity`,
@@ -85,4 +92,6 @@ export const {
   useGetActionLogQuery,
   useLazyGetLatestOrgQuery,
   useLazyGetLogoutQuery,
+  useGetFinancialStatsQuery,
+  
 } = superAdminServicesApi;
