@@ -22,7 +22,7 @@ export default function Table(props) {
 
   const [tableData, setTableData] = useState(data);
   const [currentPage, setCurrentPage] = useState(1);
-  const dataLength = data.length > 30 ? 30 : data.length;
+  const dataLength = data?.length > 30 ? 30 : data?.length;
   const [sorted, setSorted] = useState(false);
 
   useEffect(() => {
@@ -36,7 +36,7 @@ export default function Table(props) {
       setSorted(temp);
       setCurrentPage(1);
     }
-  }, [data, maxPageSize, data.length]);
+  }, [data, maxPageSize, data?.length]);
 
   useEffect(() => {
     if (hidePagination === true) return;

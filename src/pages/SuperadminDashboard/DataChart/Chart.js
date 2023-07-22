@@ -10,7 +10,7 @@ const BubbleChart = () => {
     useGetUserDailyActivityQuery();
   const [dailyuserData, setDailyUserData] = useState("");
   const [chartData, setChartData] =useState("");
- //console.log(userDailyActivity);
+ 
   useEffect(() => {
     if (dailyActivityAccess) {
       let rolesData = {

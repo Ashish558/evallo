@@ -14,8 +14,10 @@ import image10 from '../../../assets/stats/Vector (10).png';
 import image11 from '../../../assets/stats/Vector (11).svg';
 import rectangle from '../../../assets/stats/Rectangle 2061.png';
 
-
+import {useGetFinancialStatsQuery} from "../../../app/services/superAdmin"
 export default function FinancialStats() {
+  const {data:financialStats} = useGetFinancialStatsQuery()
+  
   const financialData = [
     { title: "Card 1", value: "$100" },
     { title: "Card 2", value: "$200" },
@@ -71,22 +73,22 @@ export default function FinancialStats() {
         <div className={`text-[#00ADD3] w-[95px] h-[145px] ${styles.card} flex flex-col justify-center items-center`}>
           <p className="p-3 bg-[#FFFFFF] rounded"><img src={image} alt="" /></p>
           <p className="text-sm mt-4">Scheduled</p>
-          <p className="font-semibold text-2xl">51</p>
+          <p className="font-semibold text-2xl">{financialStats?.scheduledSessions}</p>
         </div>
         <div className={`text-[#42CD00] w-[95px] h-[145px] ${styles.card} flex flex-col justify-center items-center`}>
           <p className="p-3 bg-[#FFFFFF] rounded"><img src={image1} alt="" /></p>
           <p className="text-sm mt-4">Completed</p>
-          <p className="font-semibold text-2xl">51</p>
+          <p className="font-semibold text-2xl">{financialStats?.completeSessions}</p>
         </div>
         <div className={`text-[#FF4D4D] w-[95px] h-[145px] ${styles.card} flex flex-col justify-center items-center`}>
           <p className="p-3 bg-[#FFFFFF] rounded"><img src={image2} alt="" /></p>
           <p className="text-sm mt-4">Missed</p>
-          <p className="font-semibold text-2xl">51</p>
+          <p className="font-semibold text-2xl">{financialStats?.missedSessions}</p>
         </div>
         <div className={`text-[#969696] w-[95px] h-[145px] ${styles.card} flex flex-col justify-center items-center`}>
           <p className="p-3 bg-[#FFFFFF] rounded"><img src={image3} alt="" /></p>
           <p className="text-sm mt-4">Cancelled</p>
-          <p className="font-semibold text-2xl">51</p>
+          <p className="font-semibold text-2xl">{financialStats?.canceledSessions}</p>
         </div>
         <div className={`text-[#26435F] w-[95px] h-[180px] ${styles.card2} `}>
           <p className="bg-[#26435F] rounded p-3 w-[40px] h-[40px] mx-auto mt-[21px]"><span><img src={image9} alt="" /></span></p>

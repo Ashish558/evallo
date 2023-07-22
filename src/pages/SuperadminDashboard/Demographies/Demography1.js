@@ -30,7 +30,7 @@ const Demography1 = () => {
     const currentState = state1[0]?.states?.map((s) => {
       stateData.map((a) => {
         if (s.name.toLowerCase() === a.state_name.toLowerCase())
-          requiredStates.push(s);
+        requiredStates.push({...s,...a});
       });
     });
 

@@ -153,65 +153,37 @@ export default function SuperAdminSettings() {
   const [tagText, setTagText] = useState("");
   const [modalData, setModalData] = useState(initialState);
   const dispatch = useDispatch();
-  const { data: getAllPermission, isFetched } = useGetAllPermissionQuery();
-  const [setPermission, setPermissionStatus] = useUpdatePermissionMutation();
-
-  const [fetchedPermissions, setThePermission] = useState(permissionsStaticData);
-
-  useEffect(() => {
-    if (getAllPermission?.permissions)
-      setThePermission(getAllPermission?.permissions);
-  }, [getAllPermission, isFetched]);
+  
 
   const handlePermissionOption = (value, key) => {
     let nvalue = value;
     if (!isNaN(Number(value))) {
       nvalue = Number(value);
     }
-    const arr = fetchedPermissions?.map((per) => {
+    const arr = settingsData?.permissions?.map((per) => {
       if (per._id === key) {
         return { ...per, choosedValue: nvalue };
       }
       return { ...per };
     });
-    const body = {
-      orgId: organization._id,
-      permissionId: key,
-      choosedValue: value,
-    };
-    setPermission(body)
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-    setThePermission(arr);
+   
+   
     let updatedSetting = {
       permissions: arr,
     };
+   
     updateAndFetchsettings(updatedSetting);
   };
   const togglePermissions = (key, value) => {
-    const arr = fetchedPermissions?.map((per) => {
+    const arr = settingsData?.permissions?.map((per) => {
       if (per._id === key) {
         return { ...per, choosedValue: !per.choosedValue };
       }
       return { ...per };
     });
-    const body = {
-      orgId: organization._id,
-      permissionId: key,
-      choosedValue: value,
-    };
-    setPermission(body)
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-    setThePermission(arr);
+    
+   
+  
     let updatedSetting = {
       permissions: arr,
     };
@@ -353,20 +325,20 @@ export default function SuperAdminSettings() {
   };
 
   const updateAndFetchsettings = (updatedSetting) => {
-    const settings = {
+    const setting = {
       ...settingsData,
       ...updatedSetting,
     };
     const body = {
-      settings,
+      setting,
     };
-    console.log("body", body);
+    console.log("body set", body);
     // return;
     setSaveLoading(true);
     updateSetting(updatedSetting)
       .then((res) => {
         setSaveLoading(false);
-        console.log("res", res.data);
+        console.log("res", res);
         setSettingsData(res.data.data.setting);
         dispatch(updateOrganizationSettings(res.data.data.setting));
         // console.log('updated', res.data.data.setting.settings);
@@ -1153,7 +1125,7 @@ export default function SuperAdminSettings() {
                               <div className="w-[300px] h-[150px] overflow-hidden mb-5">
                                 <img
                                   src={`${awsLink}${offer.image}`}
-                                  alt="offer-image"
+                                  alt="offer-image3"
                                   className="w-full h-full object-cover rounded-7"
                                 />
                               </div>
@@ -1205,7 +1177,7 @@ export default function SuperAdminSettings() {
             </div>
 
             <div className="bg-[#FFFFFF] border-[2.5px] px-[82px] border-dotted border-[#CBD6E2] mb-[316px]">
-              {fetchedPermissions?.map((item, id) => {
+              {settingsData?.permissions?.map((item, id) => {
                 return (
                   <>
                     {item.choosedValue === true ||
@@ -1237,22 +1209,22 @@ export default function SuperAdminSettings() {
                             className="border border-gray-300 px-2  rounded-md text-[#26435F] bg-[#E9ECEF]"
                           >
                             <option value={item.choosedValue}>
-                              {`${item.choosedValue}   ${
+                              {`   ${
                                 item.permissionActionName ===
                                 "notifyParentBefSession"
-                                  ? " hours before"
-                                  : ""
+                                  ?item.choosedValue===0?"OFF":item.choosedValue + " hours before"
+                                  :item.choosedValue
                               }`}
                             </option>
                             {item.values.map((values, i) => {
                               return (
                                 item.choosedValue !== values && (
                                   <option key={i} value={values}>
-                                    {`${values}  ${
+                                    {` ${
                                       item.permissionActionName ===
                                       "notifyParentBefSession"
-                                        ? " hours before"
-                                        : ""
+                                        ? values===0?"OFF":values + " hours before"
+                                        : values 
                                     }`}
                                   </option>
                                 )

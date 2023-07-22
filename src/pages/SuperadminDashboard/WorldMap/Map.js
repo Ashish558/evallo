@@ -3,12 +3,13 @@ import { worldMill } from "@react-jvectormap/world";
 import { VectorMap } from "@react-jvectormap/core";
 import React, { useEffect, useState } from "react";
 import { colorScale, countries, missingCountries } from "./Countries";
-
+import styles from "./styles.module.css";
 const Map = ({ markings, countryMarking }) => {
- // console.log(markings);
+  // console.log(markings);
   const [locate, setLocation] = useState([]);
   const [loading, setLoading] = useState(true);
   const ct = { [countryMarking[0]?.iso2]: 90 };
+
   useEffect(() => {
     let pointedLocation = [];
     if (markings.length > 0) {
@@ -16,6 +17,7 @@ const Map = ({ markings, countryMarking }) => {
         pointedLocation.push({
           name: m.name,
           latLng: [Number(m.latitude), Number(m.longitude)],
+          ...m,
         });
       });
     }
@@ -60,29 +62,11 @@ const Map = ({ markings, countryMarking }) => {
             ],
           }}
           onRegionTipShow={function reginalTip(event, label, code) {
+            label.css('opacity',0)
             return label.html(`
-                    <div style="background-color: white;outline:none;  border-color:white; border-radius: 6px;  min-height: 50px; width: 125px; color: black"; padding: 5px>
-                      <p>
-                      <b>
-                      ${label.html()}
-                      </b>
-                      </p>
-                      <p>
-                      ${countries[code]} 
-                      </p>
-                      </div>`);
+                    `);
           }}
-          onMarkerTipShow={function markerTip(event, label, code) {
-            return label.html(`
-                    <div style="background-color: white; border-radius: 6px; min-height: 50px; width: 125px; color: black !important; padding-left: 10px>
-                      <p style="color: black !important;">
-                      <b>
-                      ${label.html()}
-                      </b>
-                     
-                      </p>
-                      </div>`);
-          }}
+         
         />
       )}
       {locate.length > 0 && loading === false && (
@@ -116,6 +100,14 @@ const Map = ({ markings, countryMarking }) => {
             ],
           }}
           onRegionTipShow={function reginalTip(event, label, code) {
+            label.css({
+              border: "white",
+              background: "white",
+              boxShadow: "0 2px 4px rgba(0, 0, 0, 0.3)",
+              padding: "3px",
+              marginLeft: "130px",
+              marginTop: "-10px",
+            });
             return label.html(`
                     <div style="background-color: white;outline:none;  border-color:white; border-radius: 6px;  min-height: 50px; width: 125px; color: black"; padding: 5px>
                       <p>
@@ -124,20 +116,32 @@ const Map = ({ markings, countryMarking }) => {
                       </b>
                       </p>
                       <p>
-                      ${countries[code]} 
+                       
                       </p>
                       </div>`);
           }}
           onMarkerTipShow={function markerTip(event, label, code) {
+            label.css({
+              border: "white",
+              background: "white",
+              boxShadow: "0 2px 4px rgba(0, 0, 0, 0.3)",
+              padding: "3px",
+              marginLeft: "130px",
+              marginTop: "-10px",
+            });
             return label.html(`
-                    <div style="background-color: white; border-radius: 6px; border-color:white; min-height: 50px; width: 125px; color: black !important; padding-left: 10px>
+                    <div style="background-color:display:block;position:relative; white; border-radius: 6px; border-color:white; min-height: 50px; width: 125px; color: black !important; padding-left: 10px>
                       <p style="color: black !important;">
                       <b>
                       ${label.html()}
                       </b>
-                   
+                      </br/>
+                      ${locate[code].no_of_orgs} ${ locate[code].no_of_orgs>1?' Users':' User'}  
                       </p>
-                      </div>`);
+                      <div class='${styles.point}'></div>
+                      </div>
+                     
+                      `);
           }}
           getTooltipContent={function (event, tip, code) {
             // Customize the tooltip content based on the region code
@@ -151,7 +155,6 @@ const Map = ({ markings, countryMarking }) => {
           }}
         />
       )}
-     
     </div>
   );
 };
