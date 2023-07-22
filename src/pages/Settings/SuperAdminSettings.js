@@ -152,6 +152,7 @@ export default function SuperAdminSettings() {
   const [imageName, setImageName] = useState("");
   const [tagText, setTagText] = useState("");
   const [modalData, setModalData] = useState(initialState);
+  const [fetchedPermissions, setThePermission] = useState([]);
   const dispatch = useDispatch();
   
 
@@ -160,14 +161,14 @@ export default function SuperAdminSettings() {
     if (!isNaN(Number(value))) {
       nvalue = Number(value);
     }
-    const arr = settingsData?.permissions?.map((per) => {
+    const arr = fetchedPermissions.map((per) => {
       if (per._id === key) {
         return { ...per, choosedValue: nvalue };
       }
       return { ...per };
     });
    
-   
+    setThePermission(arr)
     let updatedSetting = {
       permissions: arr,
     };
@@ -175,7 +176,7 @@ export default function SuperAdminSettings() {
     updateAndFetchsettings(updatedSetting);
   };
   const togglePermissions = (key, value) => {
-    const arr = settingsData?.permissions?.map((per) => {
+    const arr = fetchedPermissions.map((per) => {
       if (per._id === key) {
         return { ...per, choosedValue: !per.choosedValue };
       }
@@ -183,7 +184,8 @@ export default function SuperAdminSettings() {
     });
     
    
-  
+    setThePermission(arr)
+
     let updatedSetting = {
       permissions: arr,
     };
@@ -279,10 +281,11 @@ export default function SuperAdminSettings() {
         console.log("settings fetch err", res.error);
         return;
       }
-      console.log("settings", res.data);
+      console.log("settings  new", res.data);
       // setBaseLink(res.data.data.baseLink);
       if (res.data.data.setting === null) return;
       setSettingsData(res.data.data.setting);
+      setThePermission(res.data.data.setting.permissions);
     });
   };
 
@@ -1177,7 +1180,7 @@ export default function SuperAdminSettings() {
             </div>
 
             <div className="bg-[#FFFFFF] border-[2.5px] px-[82px] border-dotted border-[#CBD6E2] mb-[316px]">
-              {settingsData?.permissions?.map((item, id) => {
+              {fetchedPermissions?.map((item, id) => {
                 return (
                   <>
                     {item.choosedValue === true ||
