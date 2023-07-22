@@ -6,7 +6,15 @@ import Profile from "../../../../assets/icons/Ellipse 445staticpfp.svg";
 import { useState } from "react";
 import SubFrame0 from "../AboutCard/SubFrame0";
 import SubFrame2 from "../AboutCard/SubFrame1";
+import { useLocation, useMatch, useParams } from "react-router-dom";
+import { useGetOrganizationQuery, useGetUserDetailQuery } from "../../../../app/services/users";
 const About = () => {
+ 
+  const params = useParams()
+ 
+  const {data:orgData} =useGetUserDetailQuery({id:params.id})
+
+  
   return (
     <>
       <div className="px-16 pt-7 mb-12">
@@ -16,7 +24,7 @@ const About = () => {
           <span className="text-[#24A3D9]">About</span>
         </div>
         <div className="flex gap-7">
-          <ProfileLeft />
+          <ProfileLeft orgData={orgData?.data?.user}/>
           <ProfileRight />
         </div>
       </div>
@@ -26,7 +34,8 @@ const About = () => {
 
 export default About;
 
-const ProfileLeft = () => {
+const ProfileLeft = ({orgData}) => {
+  console.log(orgData)
   return (
     <>
       <div className="flex flex-col gap-3 p-3 w-[400px] bg-white shadow-xs rounded-md border border-gray-300">
@@ -35,15 +44,15 @@ const ProfileLeft = () => {
           <span className="flex flex-col text-sm text-[#517CA8]">
             <span className="flex  ">
               <p className="mr-6 w-[90px]">First name : </p>
-              <p className="font-semibold"> Vishesh </p>
+              <p className="font-semibold"> {orgData?.firstName}</p>
             </span>
             <span className="flex ">
               <p className="mr-6 w-[90px]">last name : </p>{" "}
-              <p className="font-semibold"> Patel </p>
+              <p className="font-semibold"> {orgData?.lastName} </p>
             </span>
             <span className="flex ">
               <p className="mr-6 w-[90px]">Role : </p>
-              <p className="font-semibold"> CEO</p>
+              <p className="font-semibold"> {orgData?.role}</p>
             </span>
           </span>
           <span className="flex gap-3 items-start">
@@ -53,11 +62,11 @@ const ProfileLeft = () => {
         </div>
         <div className="flex bg-[#FBF9FF] rounded-md p-2 px-3 text-sm  text-[#517CA8]">
           <span className="w-[100px]">Email:</span>
-          <span className="font-semibold">AdminVisheshpatel@123gmail.com</span>
+          <span className="font-semibold">{orgData?.email}</span>
         </div>
         <div className="flex  bg-[#FBF9FF] rounded-md p-2 px-3 text-sm text-[#517CA8]">
           <span className="w-[100px]">Phone:</span>
-          <span className="font-semibold">999303601X</span>
+          <span className="font-semibold">{orgData?.phone}</span>
         </div>
         <div className="flex  bg-[#FBF9FF] rounded-md p-2 px-3 text-sm  text-[#517CA8]">
           <span className="w-[130px]">Bio:</span>

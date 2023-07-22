@@ -1396,23 +1396,23 @@ export default function Settings() {
                             id="option"
                             className="border border-gray-300 px-2  rounded-md text-[#26435F] bg-[#E9ECEF]"
                           >
-                            <option value={item.choosedValue}>
-                              {`${item.choosedValue}   ${
+                             <option value={item.choosedValue}>
+                              {`   ${
                                 item.permissionActionName ===
                                 "notifyParentBefSession"
-                                  ? " hours before"
-                                  : ""
+                                  ?item.choosedValue===0?"OFF":item.choosedValue + " hours before"
+                                  :item.choosedValue
                               }`}
                             </option>
                             {item.values.map((values, i) => {
                               return (
                                 item.choosedValue !== values && (
                                   <option key={i} value={values}>
-                                    {`${values}  ${
+                                    {` ${
                                       item.permissionActionName ===
                                       "notifyParentBefSession"
-                                        ? " hours before"
-                                        : ""
+                                        ? values===0?"OFF":values + " hours before"
+                                        : values 
                                     }`}
                                   </option>
                                 )

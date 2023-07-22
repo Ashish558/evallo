@@ -18,6 +18,7 @@ import {
   useGetUserStatsQuery,
   useLazyGetTutorPerformanceQuery,
   useLazyGetPopularServicesQuery,
+  useLazyGetImprovementStatsQuery,
 } from "../../app/services/adminDashboard";
 import { latestSignUpHeaders, tutorTableHeaders } from "./staticData";
 import { useState } from "react";
@@ -42,7 +43,9 @@ const Dashboard = () => {
   const [fetchPopularServicesData, fechedPopularServicesStatus] =
     useLazyGetPopularServicesQuery();
   const [popularServices, setPopularServices] = useState([]);
-
+  const [fetchImprovementStats, fetchImprovementStatsStatus] =
+    useLazyGetImprovementStatsQuery();
+  const [improvementStats, setImprovementStats] = useState([]);
   const handleFetchRevenue = (fetchMutation, body, setValue) => {
     fetchMutation(body)
       .then((res) => {
@@ -59,6 +62,7 @@ const Dashboard = () => {
     let endD = startDate.split("-")[1];
     endD = new Date(endD).toISOString().split("T")[0];
     const body = { startDate: startD, endDate: endD };
+
     return body;
   };
   const handleRevenue = (startDate) => {
@@ -67,27 +71,43 @@ const Dashboard = () => {
     handleFetchRevenue(leakedRevenue, body, setLRevenue);
     handleFetchRevenue(impendingRevenue, body, setIRevenue);
   };
-  const handleTutorPerformance = () => {
-    fetchTutorPerformanceData()
-      .then((res) => {
-        console.log(res?.data);
-        setTutorPerformance(res?.data?.all_tutors);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-  const handlePopularServices = () => {
-    fetchPopularServicesData()
-      .then((res) => {
-        console.log(res?.data);
-        setPopularServices(res?.data?.all_services);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+  const handleTutorPerformance = (startDate) => {
+    const body = convertDateToRange(startDate);
 
+    fetchTutorPerformanceData(body)
+      .then((res) => {
+        console.log(res?.data);
+       // setTutorPerformance(res?.data?.all_tutors);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  const handlePopularServices = (startDate) => {
+    const body = convertDateToRange(startDate);
+
+    fetchPopularServicesData(body)
+      .then((res) => {
+        console.log(res?.data);
+       // setPopularServices(res?.data?.all_services);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+      handleImprovementStats(startDate) 
+     };
+  const handleImprovementStats = (startDate) => {
+    const body = convertDateToRange(startDate);
+
+    fetchImprovementStats(body)
+      .then((res) => {
+        console.log(res?.data);
+       // setImprovementStats(res?.data?.all_tutors);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   return (
     <div className={styles.container}>
       <div className=" mt-[28px] bg-#2E2E2E ">

@@ -23,16 +23,24 @@ export const adminDashboardServicesApi = createApi({
       }),
     }),
     getTutorPerformance: builder.query({
-      query: () => ({
-        url: `/api/user/admin/getTutorPerformance`,
+      query: (body) => ({
+        url: `/api/user/admin/getTutorPerformance?startDate=${body.startDate}&endDate=${body.endDate}`,
         method: "GET",
         headers: getAuthHeader(),
       }),
     }),
     getPopularServices: builder.query({
-      query: () => ({
-        url: `api/user/admin/getPopularServices`,
+      query: (body) => ({
+        url: `api/user/admin/getPopularServices?startDate=${body.startDate}&endDate=${body.endDate}`,
         method: "GET",
+        headers: getAuthHeader(),
+      }),
+    }),
+    getImprovementStats: builder.query({
+      query: (body) => ({
+        url: `api/user/admin/getImprovementStats?startDate=${body.startDate}&endDate=${body.endDate}`,
+        method: "GET",
+ 
         headers: getAuthHeader(),
       }),
     }),
@@ -80,4 +88,5 @@ export const {
   useGetAllRevenueMutation,
   useLazyGetTutorPerformanceQuery,
   useLazyGetPopularServicesQuery,
+  useLazyGetImprovementStatsQuery,
 } = adminDashboardServicesApi;

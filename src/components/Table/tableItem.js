@@ -29,6 +29,7 @@ import InputField from "../InputField/inputField";
 //can b made dynamic
 export default function TableItem({ item, dataFor, onClick, excludes, fetch, extraData }) {
    const [score, setScore] = useState('-')
+   const navigate = useNavigate();
    const [fetchSettings, settingsResp] = useLazyGetSettingsQuery()
    const [updateFields, updateFieldsResp] = useUpdateUserFieldsMutation()
    const [getUserDetail, getUserDetailResp] = useLazyGetUserDetailQuery()
@@ -105,7 +106,7 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch, ext
          })
    }, [])
 
-   const navigate = useNavigate();
+   
 
    const handlestatusChange = (field) => {
       // console.log(field)
@@ -697,7 +698,7 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch, ext
               <td className="font-semibold text-sm px-1  min-w-14 py-4 text-primaryBlue text-left">
                  <span
                     className="inline-block cursor-pointer pl-4"
-                    onClick={() => onClick.redirect(item)}
+                    onClick={() => navigate(`/orgadmin-profile/${item._id}`)}
                  >
                     {item.associatedOrg?.company?item.associatedOrg?.company:item.company}
                  </span>
