@@ -17,8 +17,8 @@ const About = () => {
   
   return (
     <>
-      <div className="px-16 pt-7 mb-12">
-        <div className="flex gap-2 text-sm mb-10">
+      <div className="px-16 pt-4 mb-12">
+        <div className="flex gap-2 text-sm mb-7">
           <span>All Orgs</span>
           <img src={icon} alt="" />
           <span className="text-[#24A3D9]">About</span>
@@ -38,7 +38,7 @@ const ProfileLeft = ({orgData}) => {
   console.log(orgData)
   return (
     <>
-      <div className="flex flex-col gap-3 p-3 w-[400px] bg-white shadow-xs rounded-md border border-gray-300">
+      <div className="flex flex-col gap-3 p-3 min-w-[400px] w-[38%] bg-white shadow-xs rounded-md border border-gray-300">
         <div className="flex gap-3 items-center">
           <img src={Profile} alt="" />
           <span className="flex flex-col text-sm text-[#517CA8]">
@@ -90,7 +90,7 @@ const ProfileRight = () => {
   const [subFrame, setSubFrame] = useState(0);
   return (
     <>
-      <div className="flex flex-col gap-3 p-3 w-[790px] bg-white shadow-xs rounded-md border border-gray-300">
+      <div className="flex flex-col gap-3 p-3 min-w-[740px] w-[62%] bg-white shadow-xs rounded-md border border-gray-300">
         <div className="flex rounded-sm justify-between border-b-[1.5px] border-b-gray-300">
           <span className="flex cursor-pointer gap-5 items-end py-0 relative z-20 translate-y-[2.4px] text-[15px] font-semibold">
             <a
