@@ -123,7 +123,8 @@ export default function EventModal({
       studentMood: "",
       homeworkAssigned: "",
       sessionNotes: "",
-      feedbackStars: 0
+      feedbackStars: 0,
+      sessionTags:[]
    });
    const [submitDisabled, setSubmitDisabled] = useState(false)
 
@@ -149,6 +150,7 @@ export default function EventModal({
    const [deleteSession, deleteSessionResp] = useDeleteSessionMutation()
    const [deleteAllSession, deleteAllSessionResp] = useDeleteAllRecurringSessionMutation()
    const [getUserDetail, userDetailResp] = useLazyGetTutorDetailsQuery()
+   const [allSessionTags, setAllSessionTags] = useState([])
 
    const [inputFeedback, setInputFeedback] = useState(0)
 
@@ -260,8 +262,16 @@ export default function EventModal({
       if(organization?.settings){
          
          if(Object.keys(organization?.settings).length > 0){
-            console.log('organization', organization.settings);
+            // console.log('organization', organization.settings);
             let sessionTags = organization.settings.sessionTags;
+            setAllSessionTags(sessionTags)
+            let tempSessionTags = sessionTags.map(item => {
+               return {
+                  ...item,
+                  items: []
+               }
+            })
+            setData({...data, sessionTags: tempSessionTags})
             // let homeworks = sessionTags.homeworkAssigned.map((item) => {
             //    return {
             //       text: item,
@@ -728,7 +738,24 @@ export default function EventModal({
       }
    }, [isUpdating, sessionToUpdate?.time, data?.time, sessionToUpdate?.date, data?.date])
   
+   const handleSessiontagChange = (item, tagId) => {
+      const tempSessionTag = data.sessionTags.map(tag => {
+         if(tag._id === tagId){
+            let items = [...tag.items]
+            if(tag.items.includes(item)){
+               items = items.filter(text => text !== item)
+            }else{
+               items.push(item)
+            }
+            return {...tag, items}
+         }else{
+            return {...tag}
+         }
+      })
+      setData({...data, sessionTags: tempSessionTag})
+   }
    const dataProps = { data, setData }
+
    return (
       <>
          <Modal
@@ -849,113 +876,45 @@ export default function EventModal({
                   {persona !== "student" && persona !== "parent" && (
                      <>
                         <div className="mt-7 mb-5">
-                           <p className="font-medium mb-2.5">
-                              Topics Covered
-                           </p>
-                           <div className="flex">
-                              {topics.length > 0 &&
-                                 topics.map((topic, idx) => {
-                                    return (
-                                       <div
-                                          key={idx}
-                                          className="flex mb-3 mr-3"
-                                          onClick={() =>
-                                             handleCheckboxChange(topic.text, topics,
-                                                setTopics
-                                             )
+                           {
+                              allSessionTags.map(tag => {
+                                return <div key={tag._id} >
+                                   <p className="font-medium mb-2.5">
+                                     {tag.heading}
+                                   </p>
+                                   <div className="flex">
+                                     {tag.items.length > 0 &&
+                                       tag.items.map((item, idx) => {
+                                          const currentUserSession = data.sessionTags.find(dataSessionTag => dataSessionTag._id === tag._id)
+                                          let checked = false
+                                          if(currentUserSession?.items.includes(item)){
+                                             checked = true
                                           }
-                                       >
-                                          <CCheckbox checked={topic.checked}
-                                             name='topic'
-                                          />
-                                          <p className="font-medium text-primary-60 text-sm">
-                                             {topic.text}
-                                          </p>
-                                       </div>
-                                    );
-                                 })}
-                           </div>
-                        </div>
-
-                        <div className="mt-5 mb-5">
-                           <p className="font-medium mb-2.5">
-                              Student Mood
-                           </p>
-                           <div className="flex">
-                              {studentMoods.length > 0 &&
-                                 studentMoods.map((item, idx) => {
-                                    return (
-                                       <div
-                                          key={idx}
-                                          className="flex mb-3 mr-3"
-                                          onClick={() => handleCheckboxChange(item.text, studentMoods, setStudentMoods)}
-                                       >
-                                          <CCheckbox checked={item.checked}
-                                             name='moods'
-                                          />
-                                          <p className="font-medium text-primary-60 text-sm">
-                                             {item.text}
-                                          </p>
-                                       </div>
-                                    );
-                                 })}
-                           </div>
-                        </div>
-
-                        <div className="mt-5 mb-7">
-                           <p className="font-medium  mb-2.5">
-                              Homework Assigned
-                           </p>
-                           <div className="flex flex-wrap	">
-                              {homeworks.length > 0 &&
-                                 homeworks.map((item, idx) => {
-                                    return (
-                                       <div
-                                          key={idx}
-                                          className="flex mb-3 mr-6"
-                                          onClick={() =>
-                                             handleCheckboxChange(
-                                                item.text,
-                                                homeworks,
-                                                setHomeworks
-                                             )
-                                          }
-                                       >
-                                          <CCheckbox checked={item.checked}
-                                             name='homeworks'
-                                          />
-                                          <p className="font-medium text-primary-60 text-sm">
-                                             {item.text}
-                                          </p>
-                                       </div>
-                                    );
-                                 })}
-                           </div>
-                        </div>
-
-                        <div className="mt-5 mb-7">
-                           <p className="font-medium mb-2.5">
-                              Was the session Productive?
-                           </p>
-                           <div className="flex flex-wrap	">
-                              {isProductive.map((item, idx) => {
-                                 return (
-                                    <div
-                                       key={idx}
-                                       className="flex mb-3 mr-6"
-                                       onClick={() =>
-                                          handleCheckboxChange(item.text, isProductive, setIsProductive, true)}
-                                    >
-                                       <CCheckbox checked={item.checked}
-                                          name='productive'
-                                       />
-                                       <p className="font-medium text-primary-60 text-sm">
-                                          {item.text}
-                                       </p>
-                                    </div>
-                                 );
-                              })}
-                           </div>
+                                         return (
+                                           <div
+                                             key={idx}
+                                             className="flex mb-3 mr-3"
+                                             onClick={() =>
+                                               handleSessiontagChange(
+                                                item,
+                                                tag._id,
+                                               )
+                                             }
+                                           >
+                                             <CCheckbox
+                                               checked={checked}
+                                               name="topic"
+                                             />
+                                             <p className="font-medium text-primary-60 text-sm">
+                                               {item}
+                                             </p>
+                                           </div>
+                                         );
+                                       })}
+                                   </div>
+                                 </div>;
+                              })
+                           }
                         </div>
 
                         <div className="mb-8">
