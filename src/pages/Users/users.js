@@ -5,8 +5,12 @@ import FilterItems from '../../components/FilterItemsNew/filterItems'
 import Modal from '../../components/Modal/Modal'
 import InputField from '../../components/InputField/inputField'
 import InputSelect from '../../components/InputSelect/InputSelect'
-
+import styles from './styles.module.css'
 import AddIcon from '../../assets/icons/add.svg'
+import PlusIcon from '../../assets/icons/plus.svg'
+import ExportIcon from '../../assets/icons/Export Data.png'
+import UploadIcon from '../../assets/icons/upload.svg'
+import XIcon from '../../assets/icons/x.png'
 import SearchIcon from '../../assets/icons/search.svg'
 import { tableData, userTypesList } from './tempData'
 import { useAddUserMutation, useLazyGetAllUsersQuery, useLazyGetTutorDetailsQuery, useLazyGetUserDetailQuery } from '../../app/services/users'
@@ -20,6 +24,7 @@ import CountryCode from '../../components/CountryCode/CountryCode'
 import { isPhoneNumber } from '../Signup/utils/util'
 import { checkIfExistInNestedArray } from '../../utils/utils'
 import InputSelectNew from '../../components/InputSelectNew/InputSelectNew'
+import InputSearch from '../../components/InputSearch/InputSearch'
 
 const optionData = [
    'option 1',
@@ -132,10 +137,11 @@ export default function Users() {
    ];
 
 
-
+   const [assignStudentModalActive, setAssignStudentModalActive] = useState(false)
+   const handleClose2 = () => setAssignStudentModalActive(false);
    const [getUserDetail, getUserDetailResp] = useLazyGetUserDetailQuery()
    const [getTutorDetail, userDetailResp] = useLazyGetTutorDetailsQuery()
-
+   const [submitBtnDisabled, setSubmitBtnDisabled] = useState(false)
    const [filterItems, setFilterItems] = useState([])
    const [addUserBtnDisabled, setAddUserBtnDisabled] = useState(false)
 
@@ -155,7 +161,7 @@ export default function Users() {
    const [totalPages, setTotalPages] = useState(0)
    const [currentPage, setCurrentPage] = useState(1)
    const [allTutors, setAllTutors] = useState([])
-
+   const [tutors, setTutors] = useState([]);
    const [filterData, setFilterData] = useState({
       typeName: '',
       userType: [],
@@ -170,7 +176,7 @@ export default function Users() {
          .then(res => {
             setSettings(res.data.data.setting)
          })
-        
+
    }, [])
 
    // console.log(settings)
@@ -178,7 +184,7 @@ export default function Users() {
    const fetch = () => {
       setUsersData([])
       setFilteredUsersData([])
-     // console.log('shi',filteredUsersData)
+      // console.log('shi',filteredUsersData)
       let urlParams = `?limit=${maxPageSize}&page=${currentPage}`
       if (filterData.userType.length > 0) {
          filterData.userType.forEach(item => {
@@ -246,7 +252,7 @@ export default function Users() {
                   setUsersData(prev => [...prev, obj])
 
                   setFilteredUsersData(prev => [...prev, obj])
-                 
+
                   // if (user.role === 'tutor') {
                   //    // console.log('tutor', user._id);
                   //    await getTutorDetail({ id: user._id })
@@ -280,9 +286,9 @@ export default function Users() {
 
                })
             }
-           
+
             fetchDetails()
-          //  console.log('shivam',filteredUsersData)
+            //  console.log('shivam',filteredUsersData)
             // setUsersData(data)
             // setFilteredUsersData(data)
          })
@@ -332,7 +338,7 @@ export default function Users() {
    }
 
    useEffect(() => {
-     // fetch()
+      // fetch()
       //console.log('shivam yadav 1',filteredUsersData)
    }, [maxPageSize, currentPage])
    // console.log('currentPage', currentPage);
@@ -342,7 +348,7 @@ export default function Users() {
       // console.log('all users data', usersData)
       // console.log('filterData.specialization', filterData.specialization)
       fetch()
-      
+
       setCurrentPage(1)
       // setTotalPages(0)
       //USER TYPE FILTER
@@ -378,7 +384,7 @@ export default function Users() {
          tempdata = tempdata.filter(user => user.name !== '')
       }
       // setFilteredUsersData(tempdata)
-     
+
    }, [filterData])
 
    const removeFilter = (key, text, isArray) => {
@@ -406,7 +412,7 @@ export default function Users() {
          }
       }).filter(item => item !== undefined)
       setFilterItems(arr)
-      
+
    }, [filterData])
 
 
@@ -460,7 +466,11 @@ export default function Users() {
             })
       }
    }
+   const [isChecked, setIsChecked] = useState(false);
 
+   const handleCheckboxChange = () => {
+      setIsChecked(!isChecked);
+   };
    const handleClose = () => setModalActive(false)
 
    const redirect = item => {
@@ -593,11 +603,42 @@ export default function Users() {
    // console.log('tutors', allTutors)
    // console.log('totalPages', totalPages)
 
-  // console.log('shivam',filteredUsersData)
+   // console.log('shivam',filteredUsersData)
+
+   const [students, setStudents] = useState([]);
    return (
       <div className='lg:ml-pageLeft bg-lightWhite min-h-screen'>
          <div className='py-14 px-5'>
-            <div className='flex justify-between items-center gap-4'>
+            <div className='flex justify-between items-center'>
+               <p className='text-[#24A3D9] text-xl font-semibold'>{`{Company Name} > {Admin Full Name} > CRM`}</p>
+               <button
+                  className="bg-[#24A3D9] w-[188px] text-sm justify-center flex pt-4 pb-4 px-5 items-center text-white font-semibold rounded-lg"
+                  onClick={() => setAssignStudentModalActive(true)}
+               >
+                  Tutor Mapping
+                  <img src={PlusIcon} className="ml-3" />
+               </button>
+            </div>
+            <div>
+               <div className='flex mb-[50px]'>
+                  <button className="bg-[#517CA8] w-[158px] text-sm justify-center flex py-3 px-2 items-center text-white font-semibold rounded-lg mr-5"
+
+                  >Export Data   <img src={ExportIcon} className="ml-3" /></button>
+                  <button className="bg-[#517CA8] w-[158px] text-sm justify-center flex py-3 px-2 items-center text-white font-semibold rounded-lg mr-5"
+
+                  >Bulk Upload   <img src={UploadIcon} className="ml-3" /></button>
+                  <PrimaryButton type='submit'
+                     children={
+                        <>
+                           Add new User
+                           <img src={PlusIcon} className='ml-3' alt='add-icon' />
+                        </>
+                     }
+                     onClick={() => setModalActive(true)}
+                     className=' flex items-center text-sm font-semibold py-3 px-3' />
+               </div>
+            </div>
+            <div className='flex justify-between items-center gap-4 mb-6'>
                <InputField
                   IconRight={SearchIcon}
                   placeholder='Type Name'
@@ -697,15 +738,30 @@ export default function Users() {
                   }}
                />
 
-               <PrimaryButton type='submit'
-                  children={
-                     <>
-                        Add new User
-                        <img src={AddIcon} className='ml-3' />
-                     </>
-                  }
-                  onClick={() => setModalActive(true)}
-                  className='pt-[14px] flex items-center text-lg font-semibold pb-[14px] pl-[21px] pr-[21px]' />
+
+            </div>
+            <div className='flex mb-6'>
+               <button className='bg-[#26435f80] px-3 py-2 rounded-md text-sm text-[#FFFFFF] mr-2'>Student</button>
+               <button className='relative bg-[#26435f80] px-3 py-2 rounded-md text-sm text-[#FFFFFF]'>Parent
+                  <img className='absolute top-[-10px] left-[55px]' src={XIcon} alt="" />
+               </button>
+            </div>
+            <div>
+               <div className='flex'>
+
+                  <label className={`${styles['checkbox-label']} block text-[#26435F] font-medium`}>
+                     <input
+                        type="checkbox"
+                        checked={isChecked}
+                        onChange={handleCheckboxChange}
+                     />
+                     <span className={`${styles['custom-checkbox']} ${isChecked ? 'checked' : ''}`}></span>
+                     <span className="ml-6">2 Selected</span>
+                  </label>
+                  <div>
+
+                  </div>
+               </div>
             </div>
             <div className='flex align-center mt-0 gap-[20px]'>
 
@@ -714,6 +770,7 @@ export default function Users() {
                <FilterItems items={filterItems} setData={setFilterItems} onRemoveFilter={onRemoveFilter} />
             </div>
             <div className='mt-6'>
+
                <Table dataFor='allUsers'
                   data={filteredUsersData}
                   onClick={{ redirect, handleTutorStatus, handleDelete }}
@@ -835,6 +892,83 @@ export default function Users() {
                }}
                handleClose={() => setDeleteModalActive(false)}
                classname={"max-w-567 mx-auto"}
+            />
+         )}
+         {assignStudentModalActive && (
+            <Modal
+               title="Assign Tutor"
+               classname={"max-w-[760px] mx-auto"}
+               cancelBtn={true}
+               cancelBtnClassName="max-w-140"
+
+               primaryBtn={{
+                  text: "Assign",
+                  className: "max-w-140 pl-8 pr-8",
+                  onClick: () => handleSubmit(),
+                  disabled: submitBtnDisabled,
+                  loading: loading
+               }}
+               handleClose={handleClose2}
+               body={
+                  <>
+                     <div className="grid grid-cols-1 md:grid-cols-2 gap-x-2 md:gap-x-3 gap-y-4 mb-5">
+                        <div>
+                           <InputSearch
+                              label="Student Name"
+                              value={modalData.studentName}
+                              onChange={e =>
+                                 setModalData({
+                                    ...modalData,
+                                    studentName: e.target.value,
+                                 })
+                              }
+                              optionData={students}
+                              onOptionClick={(item) => {
+                                 setModalData({
+                                    ...modalData,
+                                    studentName: item.value,
+                                    studentId: item._id
+                                 })
+                              }}
+                              optionPrefix='s'
+                              parentClassName="w-full mr-4"
+                              labelClassname="ml-2 mb-0.5"
+                              inputContainerClassName="px-5 py-3.5 text-sm bg-primary-50 border-0"
+                              inputClassName="bg-transparent"
+                              placeholder="Student Name"
+                              type="select"
+                           />
+                        </div>
+                        <div>
+                           <InputSearch
+                              label="Tutor Name"
+                              value={modalData.tutorName}
+                              onChange={e =>
+                                 setModalData({
+                                    ...modalData,
+                                    tutorName: e.target.value,
+                                 })
+                              }
+                              optionData={tutors}
+                              onOptionClick={(item) => {
+                                 setModalData({
+                                    ...modalData,
+                                    tutorName: item.value,
+                                    tutorId: item._id
+                                 })
+                              }}
+                              optionPrefix='t'
+                              parentClassName="w-full mr-4"
+                              labelClassname="ml-2 mb-0.5"
+                              inputContainerClassName="px-5 py-3.5 text-sm bg-primary-50 border-0"
+                              inputClassName="bg-transparent"
+                              placeholder="Student Name"
+                              type="select"
+                           />
+                        </div>
+                     </div>
+                  </>
+               }
             />
          )}
       </div>

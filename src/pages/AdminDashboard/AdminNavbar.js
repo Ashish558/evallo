@@ -22,6 +22,7 @@ import Assignment from "../../assets/images/Vector (3).png";
 import Assignment1 from "../../assets/images/Vector (4).svg";
 import Content from "../../assets/images/Vector (4).png";
 import Invoice from "../../assets/images/Vector (5).png";
+import Invoice2 from "../../assets/images/invoicing.png";
 import Settings from "../../assets/images/Vector (6).png";
 import Settings1 from "../../assets/images/Settings 1.svg";
 import Profile from "../../assets/Navbar/profile.svg";
@@ -47,25 +48,31 @@ const tempnavdata = [
     icon: UsersIcon,
     activeIcon: UsersIcon1,
     path: "/users",
-    tooltip: "All Users",
+    tooltip: "CRM",
   },
   {
     icon: Schedule,
     activeIcon: Schedule1,
     path: "/calendar",
-    tooltip: "Calendar",
+    tooltip: "Schedule",
   },
   {
     icon: Assignment,
     activeIcon: Assignment1,
     path: "/all-tests",
-    tooltip: "All Tests",
+    tooltip: "Assignments",
   },
   {
     icon: Assignment,
     activeIcon: Assignment1,
     path: "/assigned-tests",
-    tooltip: "Assigned Tests",
+    tooltip: "Content",
+  },
+  {
+    icon: Invoice,
+    activeIcon: Invoice2,
+    path: "/invoicing",
+    tooltip: "Invoicing",
   },
   {
     icon: Settings,
@@ -74,12 +81,7 @@ const tempnavdata = [
     excludes: ["student", "parent", "tutor"],
     tooltip: "Settings",
   },
-  {
-    icon: Assignment,
-    activeIcon: Assignment1,
-    path: "/assigned-tutors",
-    tooltip: "Assigned Tutors",
-  },
+
 ];
 
 const parentNav = [
@@ -269,14 +271,14 @@ const AdminNavbar = () => {
                 {
                   item?.path === activeRoute ? <>
                     <p >
-                      <img width="16px" src={item.activeIcon} alt="" />
+                      <img className="w-[16px] h-[16px]" style={{ height: '16px' }} src={item.activeIcon} alt="" />
                     </p>
                     <p className="pl-[10px] text-[#FFA28D]"> {item.tooltip} </p>
                   </>
                     :
                     <>
                       <p>
-                        <img width="16px" src={item.icon} alt="" />
+                        <img className="w-[16px] h-[16px]" src={item.icon} alt="" />
                       </p>
                       <p className="pl-[10px]"> {item.tooltip} </p>
                     </>
