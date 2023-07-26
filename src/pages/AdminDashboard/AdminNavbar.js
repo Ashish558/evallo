@@ -98,17 +98,24 @@ const parentNav = [
     tooltip: "Profile",
   },
   {
-    icon: Schedule,
-    activeIcon: Schedule1,
-    path: "/calendar",
-    tooltip: "Calendar",
-  },
-  {
     icon: Assignment,
     activeIcon: Assignment1,
     path: "/all-tests",
-    tooltip: "Assigned Tests",
+    tooltip: "Assignments",
   },
+  {
+    icon: Schedule,
+    activeIcon: Schedule1,
+    path: "/calendar",
+    tooltip: "Schedule",
+  },
+  {
+    icon: Settings,
+    activeIcon: Settings1,
+    path: "/settings",
+    excludes: ["student", "tutor", 'admin', 'superAdmin'],
+    tooltip: "Settings",
+  }
 ];
 
 const studentNav = [
@@ -125,17 +132,24 @@ const studentNav = [
     tooltip: "Profile",
   },
   {
-    icon: Schedule,
-    activeIcon: Schedule1,
-    path: "/calendar",
-    tooltip: "Calendar",
-  },
-  {
     icon: Assignment,
     activeIcon: Assignment1,
     path: "/all-tests",
-    tooltip: "Assigned Tests",
+    tooltip: "Assignments",
   },
+  {
+    icon: Schedule,
+    activeIcon: Schedule1,
+    path: "/calendar",
+    tooltip: "Schedule",
+  },
+  {
+    icon: Settings,
+    activeIcon: Settings1,
+    path: "/settings",
+    excludes: ["parent", "tutor", 'admin', 'superAdmin'],
+    tooltip: "Settings",
+  }
 ];
 const tutorNav = [
   {
@@ -151,31 +165,39 @@ const tutorNav = [
     tooltip: "Profile",
   },
   {
-    icon: UsersIcon,
-    activeIcon: UsersIcon1,
-    path: "/assigned-students",
-    tooltip: "Assigned Students",
-  },
-  {
     icon: Schedule,
     activeIcon: Schedule1,
     path: "/calendar",
-    tooltip: "Calendar",
+    tooltip: "Schedule",
   },
   {
     icon: Assignment,
     activeIcon: Assignment1,
     path: "/assigned-tests",
-    tooltip: "Assigned Tests",
+    tooltip: "Assignments",
   },
-];
-const supAdminNavData = [
+  {
+    icon: UsersIcon,
+    activeIcon: UsersIcon1,
+    path: "/assigned-students",
+    tooltip: "Students",
+  },
   {
     icon: Settings,
     activeIcon: Settings1,
     path: "/settings",
-    excludes: ["student", "parent", "tutor"],
+    excludes: ["parent", "student", 'admin', 'superAdmin'],
     tooltip: "Settings",
+  }
+];
+const supAdminNavData = [
+
+  {
+    icon: Dashboard,
+    activeIcon: Dashboard1,
+    path: "/dashboard",
+    excludes: ["student", "parent", "tutor"],
+    tooltip: "Dashboard",
   },
   {
     icon: Profile,
@@ -185,12 +207,12 @@ const supAdminNavData = [
     tooltip: "All Orgs",
   },
   {
-    icon: Dashboard,
-    activeIcon: Dashboard1,
-    path: "/dashboard",
+    icon: Settings,
+    activeIcon: Settings1,
+    path: "/settings",
     excludes: ["student", "parent", "tutor"],
-    tooltip: "Dashboard",
-  },
+    tooltip: "Settings",
+  }
 ];
 const AdminNavbar = () => {
   const [navData, setNavData] = useState(tempnavdata);
