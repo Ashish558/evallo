@@ -3,7 +3,7 @@ import { useGetSpecificActionLogQuery } from "../../app/services/adminDashboard"
 export default function ActionLog() {
   let { data: actionLog, isSuccess: fetchStatus } =
     useGetSpecificActionLogQuery();
-  console.log(actionLog);
+
   return (
     <div className="ml-3">
       <div className="flex flex-col border border-solid border-gray-200 bg-[#FFFFFF]">

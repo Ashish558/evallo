@@ -6,14 +6,15 @@ import searchIcon from "../../../../assets/icons/Search.png";
 import uploadIcon from "../../../../assets/icons/upload.png";
 import { frameHeaderNames, framesData } from "./staticData";
 import FramesScreen from "./FramesScreen";
-import arrowDown from "../../../../assets/icons/arrowdown.svg"
+import arrowDown from "../../../../assets/icons/arrowdown.svg";
 import { useEffect } from "react";
-import axios from 'axios'
 import Table from "../../../../components/Table/Table";
 
 import InputSelect from "../../../../components/InputSelect/InputSelect";
+import { useLazyGetAllOrgQuery } from "../../../../app/services/superAdmin";
 const AllOrgs = () => {
-  const [adminData,setAdminData]=useState([])
+  const [adminData, setAdminData] = useState([]);
+  const [fetchAllOrgQuery, fetchAllOrgQueryStatus] = useLazyGetAllOrgQuery();
   const [values, setValues] = useState({
     search: "",
     joinDate: "",
@@ -30,30 +31,15 @@ const AllOrgs = () => {
     subscription: "",
     numberOfStudent: "",
   });
-  useEffect(()=>{
-    const fetchAllOrgs = async () => {
-     
-      try {
-        
-        //   alert(data.workemail)
-        let result = await axios.get(
-          `${process.env.REACT_APP_BASE_URL}api/user/superadmin/getAllOrg`,
-          {
-            headers: {
-              "content-Type": "application/json",
-            },
-          }
-        );
-        console.log(result.data.admins);
-        setAdminData(result.data.admins)
-      } catch (e) {
+  useEffect(() => {
+    fetchAllOrgQuery()
+      .then((result) => {
+        setAdminData(result.data.admins);
+      })
+      .catch((e) => {
         console.error(e.response?.data?.message);
-        
-      }
-     
-    };
-    fetchAllOrgs()
-  },[])
+      });
+  }, []);
 
   return (
     <>
@@ -64,7 +50,7 @@ const AllOrgs = () => {
             <InputField
               placeholder="search"
               parentClassName="text-xs "
-              inputContainerClassName='bg-white'
+              inputContainerClassName="bg-white"
               Icon={searchIcon}
               value={values.search}
               onChange={(e) =>
@@ -92,7 +78,7 @@ const AllOrgs = () => {
             <InputField
               placeholder="Join Date"
               parentClassName="text-xs "
-              inputContainerClassName='bg-white'
+              inputContainerClassName="bg-white"
               value={values.joinDate}
               onChange={(e) =>
                 setValues({
@@ -105,8 +91,8 @@ const AllOrgs = () => {
             <InputSelect
               placeholder="Region"
               parentClassName="text-xs "
-              inputContainerClassName='bg-white'
-              optionData={['a','b','c','d','e','f','g','h','i']}
+              inputContainerClassName="bg-white"
+              optionData={["a", "b", "c", "d", "e", "f", "g", "h", "i"]}
               optionClassName="min-w-[90px] py-[1.5px]"
               value={values.region}
               onChange={(e) =>
@@ -120,7 +106,7 @@ const AllOrgs = () => {
             <InputSelect
               placeholder="Subscription"
               parentClassName="text-xs "
-              inputContainerClassName='bg-white'
+              inputContainerClassName="bg-white"
               optionClassName="min-w-[90px] py-[1.5px]"
               value={values.subscription}
               onChange={(e) =>
@@ -134,7 +120,7 @@ const AllOrgs = () => {
             <InputField
               placeholder="# of student"
               parentClassName="text-xs "
-              inputContainerClassName='bg-white'
+              inputContainerClassName="bg-white"
               value={values.numberOfStudent}
               onChange={(e) =>
                 setValues({
@@ -154,7 +140,13 @@ const AllOrgs = () => {
             </button>
           </div>
         </div>
-        <Table data={adminData} tableHeaders={frameHeaderNames} maxPageSize={10} dataFor='allOrgs' excludes={['_id']} />
+        <Table
+          data={adminData}
+          tableHeaders={frameHeaderNames}
+          maxPageSize={10}
+          dataFor="allOrgs"
+          excludes={["_id"]}
+        />
       </div>
     </>
   );

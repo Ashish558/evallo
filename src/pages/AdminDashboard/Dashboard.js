@@ -77,7 +77,7 @@ const Dashboard = () => {
     fetchTutorPerformanceData(body)
       .then((res) => {
         console.log(res?.data);
-       // setTutorPerformance(res?.data?.all_tutors);
+        // setTutorPerformance(res?.data?.all_tutors);
       })
       .catch((err) => {
         console.log(err);
@@ -89,20 +89,20 @@ const Dashboard = () => {
     fetchPopularServicesData(body)
       .then((res) => {
         console.log(res?.data);
-       // setPopularServices(res?.data?.all_services);
+        // setPopularServices(res?.data?.all_services);
       })
       .catch((err) => {
         console.log(err);
       });
-      handleImprovementStats(startDate) 
-     };
+    handleImprovementStats(startDate);
+  };
   const handleImprovementStats = (startDate) => {
     const body = convertDateToRange(startDate);
 
     fetchImprovementStats(body)
       .then((res) => {
         console.log(res?.data);
-       // setImprovementStats(res?.data?.all_tutors);
+        setImprovementStats(res?.data);
       })
       .catch((err) => {
         console.log(err);
@@ -439,7 +439,7 @@ const Dashboard = () => {
                   className={`w-[150px] mt-2  h-[67px] bg-[rgba(255,162,141,0.2)] ${styles.smallBox}`}
                 >
                   <p className="text-[#FFA28D] h-full w-full justify-center font-semibold text-3xl flex items-center text-center">
-                    76
+                    {improvementStats.no_of_referrals}
                   </p>
                 </div>
               </div>
@@ -449,7 +449,7 @@ const Dashboard = () => {
                   className={`w-[190px] mt-2 h-[67px] bg-[rgba(36,163,217,0.2)]  ${styles.smallBox}`}
                 >
                   <p className="text-[#24A3D9] h-full w-full justify-center font-semibold text-3xl flex items-center text-center">
-                    677
+                    {improvementStats.avg_sat_improvement}
                   </p>
                 </div>
               </div>
@@ -459,7 +459,7 @@ const Dashboard = () => {
                   className={`w-[190px] mt-2 h-[67px] bg-[rgba(36,163,217,0.2)]  ${styles.smallBox}`}
                 >
                   <p className="text-[#24A3D9] h-full w-full justify-center font-semibold text-3xl flex items-center text-center">
-                    677
+                    {improvementStats.avg_act_improvement}
                   </p>
                 </div>
               </div>

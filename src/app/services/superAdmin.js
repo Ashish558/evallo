@@ -80,6 +80,13 @@ export const superAdminServicesApi = createApi({
         headers: getAuthHeader(),
       }),
     }),
+    getAllOrg: builder.query({
+      query: () => ({
+        url: `/api/user/superadmin/getAllOrg`,
+        method: "GET",
+        headers: getAuthHeader(),
+      }),
+    }),
   }),
 });
 
@@ -90,6 +97,7 @@ export const {
   useGetUserDailyActivityQuery,
   useAddUserDemographyMutation,
   useGetActionLogQuery,
+  useLazyGetAllOrgQuery,
   useLazyGetLatestOrgQuery,
   useLazyGetLogoutQuery,
   useGetFinancialStatsQuery,
