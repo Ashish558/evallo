@@ -57,7 +57,7 @@ export default function InputFieldDropdown({
             >
                 <div >
                     <select className="bg-[#EAF5FA] min-w-[20px] text-[black] focus:outline-none rounded-sm text-sm" name="country_code" >
-                        <option  value="0"></option>
+                        <option value="0"></option>
                         {
                             dialCode.map(code => {
                                 return (
@@ -67,7 +67,7 @@ export default function InputFieldDropdown({
                         }
                     </select>
                 </div>
-                {Icon && <img src={Icon} className={`mr-5 ${iconSize === 'medium' ? 'w-[24px]' : 'w-[28px]'}`} />}
+                {Icon && <img src={Icon} className={`mr-5 ${iconSize === 'medium' ? 'w-[24px]' : 'w-[28px]'}`} alt="Icon" />}
                 {inputLeftField && inputLeftField}
                 {prefix &&
                     <span className="mr-3">{prefix}</span>}
@@ -86,9 +86,9 @@ export default function InputFieldDropdown({
                     onBlur={onBlur}
                 />
                 {type === 'password' && <img src={EyeIcon} className="ml-4 w-[20px] cursor-pointer"
-                    onClick={() => inputType === 'password' ? setInputType('text') : setInputType('password')}
+                    onClick={() => inputType === 'password' ? setInputType('text') : setInputType('password')} alt="Eye-icon"
                 />}
-                {IconRight && <img src={IconRight} className={`ml-4 cursor-pointer ${iconSize === "medium" && "w-[24px]"}`} />}
+                {IconRight && <img src={IconRight} className={`ml-4 cursor-pointer ${iconSize === "medium" && "w-[24px]"}`} alt="Icon-right" />}
                 {right && right}
             </div>
             {error !== undefined && error !== '' &&
