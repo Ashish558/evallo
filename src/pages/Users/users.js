@@ -162,6 +162,7 @@ export default function Users() {
    const [currentPage, setCurrentPage] = useState(1)
    const [allTutors, setAllTutors] = useState([])
    const [tutors, setTutors] = useState([]);
+   console.log('allTutors', allTutors);
    const [filterData, setFilterData] = useState({
       typeName: '',
       userType: [],
@@ -350,6 +351,7 @@ export default function Users() {
       fetch()
 
       setCurrentPage(1)
+      return
       // setTotalPages(0)
       //USER TYPE FILTER
       if (filterData.userType.length > 0) {
@@ -567,7 +569,7 @@ export default function Users() {
 
 
    const handleTutorChange = (item) => {
-      // console.log(item);
+      console.log('item', item);
       // console.log('filterData tutor', filterData.tutor);
       if (filterData.tutor.includes(item.value)) {
          let updated = filterData.tutor.filter(tutor => tutor !== item.value)
@@ -595,13 +597,7 @@ export default function Users() {
       }
    }
 
-   // console.log('users', filteredUsersData);
-   // console.log('settings', settings);
-   // console.log('filterItems', filterItems);
-   // console.log('filterData tutor', filterData.tutor);
-   // console.log('ALL USERS DATA', usersData)
-   // console.log('tutors', allTutors)
-   // console.log('totalPages', totalPages)
+   console.log(filterData);
 
    // console.log('shivam',filteredUsersData)
 
@@ -684,7 +680,7 @@ export default function Users() {
                   value={filterData.status.length > 0 ? filterData.status[0] : ''}
                />
                <InputSelect optionData={specializations}
-                  placeholder='Specializations'
+                  placeholder='Services'
                   parentClassName='w-full w-1/6'
                   type='select'
                   inputContainerClassName='text-sm border bg-white px-[20px] py-[16px]'
@@ -701,7 +697,7 @@ export default function Users() {
                         : [...filterData.specialization, val]
                   })}
                />
-               <InputSelect optionData={['active', 'blocked', 'dormant']}
+               {/* <InputSelect optionData={['active', 'blocked', 'dormant']}
                   placeholder='User Status'
                   parentClassName='w-full w-1/6 capitalize'
                   type='select'
@@ -718,7 +714,7 @@ export default function Users() {
                         filterData.userStatus.filter(item => item !== val)
                         : [...filterData.userStatus, val]
                   })}
-               />
+               /> */}
                <InputSelectNew optionData={allTutors}
                   placeholder='Tutor'
                   parentClassName='w-full w-1/6'
@@ -762,6 +758,15 @@ export default function Users() {
 
                   </div>
                </div>
+               <PrimaryButton type='submit'
+                  children={
+                     <>
+                        Add new User
+                        <img src={AddIcon} className='ml-3' />
+                     </>
+                  }
+                  onClick={() => setModalActive(true)}
+                  className='pt-[14px] flex items-center text-md font-semibold pb-[14px] pl-[21px] pr-[21px]' />
             </div>
             <div className='flex align-center mt-0 gap-[20px]'>
 

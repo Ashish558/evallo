@@ -73,7 +73,6 @@ export default function InputField({
             className={`mr-5 ${
               iconSize === "medium" ? "w-[24px]" : "w-[28px]"
             }`}
-           
           />
         )}
         {inputLeftField && inputLeftField}
@@ -105,7 +104,6 @@ export default function InputField({
                 ? setInputType("text")
                 : setInputType("password")
             }
-           
           />
         )}
         {IconRight && (
