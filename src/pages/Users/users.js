@@ -758,15 +758,7 @@ export default function Users() {
 
                   </div>
                </div>
-               <PrimaryButton type='submit'
-                  children={
-                     <>
-                        Add new User
-                        <img src={AddIcon} className='ml-3' />
-                     </>
-                  }
-                  onClick={() => setModalActive(true)}
-                  className='pt-[14px] flex items-center text-md font-semibold pb-[14px] pl-[21px] pr-[21px]' />
+
             </div>
             <div className='flex align-center mt-0 gap-[20px]'>
 
