@@ -7,6 +7,7 @@ import InputField from '../../components/InputField/inputField'
 import InputSelect from '../../components/InputSelect/InputSelect'
 import styles from './styles.module.css'
 import AddIcon from '../../assets/icons/add.svg'
+import Dropdown from '../../assets/icons/Polygon 2.png'
 import PlusIcon from '../../assets/icons/plus.svg'
 import ExportIcon from '../../assets/icons/Export Data.png'
 import UploadIcon from '../../assets/icons/upload.svg'
@@ -612,17 +613,17 @@ export default function Users() {
                   onClick={() => setAssignStudentModalActive(true)}
                >
                   Tutor Mapping
-                  <img src={PlusIcon} className="ml-3" />
+                  <img src={PlusIcon} className="ml-3" alt="PlusIcon" />
                </button>
             </div>
             <div>
                <div className='flex mb-[50px]'>
                   <button className="bg-[#517CA8] w-[158px] text-sm justify-center flex py-3 px-2 items-center text-white font-semibold rounded-lg mr-5"
 
-                  >Export Data   <img src={ExportIcon} className="ml-3" /></button>
+                  >Export Data   <img src={ExportIcon} className="ml-3" alt="ExportIcon" /></button>
                   <button className="bg-[#517CA8] w-[158px] text-sm justify-center flex py-3 px-2 items-center text-white font-semibold rounded-lg mr-5"
 
-                  >Bulk Upload   <img src={UploadIcon} className="ml-3" /></button>
+                  >Bulk Upload   <img src={UploadIcon} className="ml-3" alt="UploadIcon" /></button>
                   <PrimaryButton type='submit'
                      children={
                         <>
@@ -754,7 +755,7 @@ export default function Users() {
                      <span className={`${styles['custom-checkbox']} ${isChecked ? 'checked' : ''}`}></span>
                      <span className="ml-6">2 Selected</span>
                   </label>
-                  <div>
+                  <div >
 
                   </div>
                </div>
