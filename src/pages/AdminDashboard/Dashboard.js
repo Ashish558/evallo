@@ -161,7 +161,7 @@ const Dashboard = () => {
                       className={`h-[85px] flex justify-center rounded-md items-center text-2xl font-bold bg-[#22A69933] box-border ${styles.boxBorder1}`}
                     >
                       <p className="text-[#38C980]">
-                        ${cRevenue.completedRevenue}
+                        ${cRevenue?.completedRevenue}
                       </p>
                     </div>
                   </div>
@@ -192,7 +192,7 @@ const Dashboard = () => {
                       className={`h-[85px] flex rounded-md justify-center items-center text-2xl font-semibold bg-[#FF517533] box-border ${styles.boxBorder2}`}
                     >
                       <p className="text-[#FF7979]">
-                        ${lRevenue.canceledRevenue}
+                        ${lRevenue?.canceledRevenue}
                       </p>
                     </div>
                   </div>
@@ -223,7 +223,7 @@ const Dashboard = () => {
                       className={`h-[85px] flex rounded-md justify-center items-center text-2xl font-semibold bg-[#7152EB33] box-border ${styles.boxBorder3}`}
                     >
                       <p className="text-[#7152EB]">
-                        ${iRevenue.impendingRevenue}
+                        ${iRevenue?.impendingRevenue}
                       </p>
                     </div>
                   </div>

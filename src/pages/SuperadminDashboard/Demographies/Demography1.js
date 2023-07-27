@@ -80,7 +80,7 @@ const Demography1 = () => {
               value={userName}
               optionData={[{name:"Admin"},{name:"Tutor"},{name:"Parent"},{name:"Student"}]}
               optionType={"object"}
-              onChange={(e) => setUserName(e)}
+              onChange={(e) => setUserName(e.name)}
             />
           </button>
           <button className="">
@@ -93,7 +93,7 @@ const Demography1 = () => {
               value={countryName}
               optionData={country}
               optionType={"object"}
-              onChange={(e) => setCountryName(e)}
+              onChange={(e) => setCountryName(e.name)}
             />
           </button>
 

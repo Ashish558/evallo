@@ -40,24 +40,7 @@ const backgrounds = [
    '#7DE94A',
    '#F6935A',
 ]
-// CST - "America/Indiana/Indianapolis"
-//EST "America/New_York"
-//MST - "America/North_Dakota/Beulah"
 
-// const timeZones = [
-//    'local',
-//    'UTC-05:00',
-//    'UTC-06:00',
-//    'UTC-07:00',
-//    'UTC-08:00',
-//    'AST',
-//    'EST',
-//    'CST',
-//    'MST',
-//    'PST',
-//    'AKST',
-//    'HST',
-// ]
 const timeZones = [
    'Asia/Kolkata',
    // 'America/New_York',
