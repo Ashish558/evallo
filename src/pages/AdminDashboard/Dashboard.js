@@ -108,6 +108,18 @@ const Dashboard = () => {
         console.log(err);
       });
   };
+  const handleUserStats=(startDate)=>{
+    const body = convertDateToRange(startDate);
+
+    fetchImprovementStats(body)
+      .then((res) => {
+        console.log(res?.data);
+        setImprovementStats(res?.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
   return (
     <div className={styles.container}>
       <div className=" mt-[28px] bg-#2E2E2E ">
@@ -285,13 +297,7 @@ const Dashboard = () => {
               <p className="font-bold">USER OVERVIEW </p>
 
               <div className="flex font-semibold text-[#FFA28D] text-xs">
-                <p> 1 May - May 12, 2023 </p>
-                <p>
-                  <FontAwesomeIcon
-                    className="pl-3"
-                    icon={faCaretDown}
-                  ></FontAwesomeIcon>
-                </p>
+              <RangeDate handleRangeData={handleUserStats} />
               </div>
             </div>
           </div>

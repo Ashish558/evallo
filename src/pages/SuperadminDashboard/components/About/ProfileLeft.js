@@ -7,7 +7,7 @@ const ProfileLeft = ({ userData }) => {
     <>
       <div className="flex flex-col gap-3 p-3 min-w-[400px] w-[38%] bg-white shadow-xs rounded-md border border-gray-300">
         <div className="flex gap-3 items-center">
-          <img src={Profile} alt="" />
+          <img src={Profile} alt="profile" />
           <span className="flex flex-col text-sm text-[#517CA8]">
             <span className="flex  ">
               <p className="mr-6 w-[90px]">First name : </p>
@@ -23,8 +23,8 @@ const ProfileLeft = ({ userData }) => {
             </span>
           </span>
           <span className="flex gap-3 items-start">
-            <img src={whatsapp} alt="" />
-            <img src={linkedin} alt="" />
+            <img src={whatsapp} alt="whatsapp" />
+            <img src={linkedin} alt="linkedin" />
           </span>
         </div>
         <div className="flex bg-[#FBF9FF] rounded-md p-2 px-3 text-sm  text-[#517CA8]">

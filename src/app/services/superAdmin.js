@@ -87,6 +87,14 @@ export const superAdminServicesApi = createApi({
         headers: getAuthHeader(),
       }),
     }),
+    getSpecificActionLog: builder.mutation({
+      query: (body) => ({
+        url: `/api/user/superadmin/getSpecificActionLog`,
+        method: "POST",
+        body: body,
+        headers: getAuthHeader(),
+      }),
+    }),
   }),
 });
 
@@ -101,5 +109,6 @@ export const {
   useLazyGetLatestOrgQuery,
   useLazyGetLogoutQuery,
   useGetFinancialStatsQuery,
+  useGetSpecificActionLogMutation
   
 } = superAdminServicesApi;

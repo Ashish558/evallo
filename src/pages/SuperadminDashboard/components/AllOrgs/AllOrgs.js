@@ -140,6 +140,7 @@ const AllOrgs = () => {
             </button>
           </div>
         </div>
+        <div className="overflow-x-auto scrollbar-content scroll-mt-3 pr-7" >
         <Table
           data={adminData}
           tableHeaders={frameHeaderNames}
@@ -147,6 +148,8 @@ const AllOrgs = () => {
           dataFor="allOrgs"
           excludes={["_id"]}
         />
+        </div>
+       
       </div>
     </>
   );

@@ -28,7 +28,7 @@ const About = () => {
       <div className="px-16 pt-4 mb-12">
         <div className="flex gap-2 text-sm mb-7">
           <span>All Orgs</span>
-          <img src={icon} alt="" />
+          <img src={icon} alt="right-arrow" />
           <span className="text-[#24A3D9]">About</span>
         </div>
         <div className="flex gap-7">

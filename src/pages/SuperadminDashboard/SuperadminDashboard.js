@@ -79,6 +79,7 @@ const userTypes = [
   },
 ];
 
+
 function SuperadminDashboard() {
   const [orgSignUpData, setOrgSignUpData] = useState([]);
   const [fetchUserData, setUserData] = useLazyGetLatestOrgQuery();

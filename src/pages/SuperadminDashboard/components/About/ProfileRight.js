@@ -65,7 +65,8 @@ const ProfileRight = ({ userData }) => {
         ) : subFrame === 1 ? (
           <></>
         ) : subFrame === 2 ? (
-          <SubFrame2 userData={userData} />
+          <SubFrame2 id={userData._id
+          } />
         ) : subFrame === 3 ? (
           <></>
         ) : (
