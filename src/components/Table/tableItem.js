@@ -203,7 +203,7 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch, ext
       <>
          {dataFor === "allUsers" && (
             <tr className="odd:bg-white shadow-sm shadow-slate-200 even:bg-primaryWhite-300 rounded-2xl leading-8">
-               <td className="font-semibold text-sm px-1  min-w-14 py-4 text-primaryBlue text-left">
+               <td className="font-medium text-sm px-1  min-w-14 py-4  text-left">
                   <span
                      className="inline-block cursor-pointer pl-4"
                      onClick={() => onClick.redirect(item)}
@@ -291,7 +291,7 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch, ext
          )}
          {dataFor === "allUsersSuperAdmin" && (
             <tr className="odd:bg-white shadow-sm shadow-slate-200 even:bg-primaryWhite-300 rounded-2xl leading-8">
-               <td className="font-semibold text-sm px-1  min-w-14 py-4 text-primaryBlue text-left">
+               <td className="font-medium text-sm px-1  min-w-14 py-4  text-left">
                   <span
                      className="inline-block cursor-pointer pl-4"
                      onClick={() => onClick.redirect(item)}
@@ -695,7 +695,7 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch, ext
          )}
          {dataFor === "allOrgs" && (
             <tr className="odd:bg-white shadow-sm shadow-slate-200 even:bg-primaryWhite-300 rounded-2xl leading-8">
-               <td className="font-semibold text-sm px-1  min-w-14 py-4 text-primaryBlue text-left">
+               <td className="font-medium text-sm px-1  min-w-14 py-4  text-left">
                   <span
                      className="inline-block cursor-pointer pl-4"
                      onClick={() => navigate(`/orgadmin-profile/${item._id}`)}

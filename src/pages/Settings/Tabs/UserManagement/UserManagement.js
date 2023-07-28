@@ -58,10 +58,10 @@ export default function UserManagement() {
   useEffect(() => {
     setValidData(
       isEmail(modalData.email) &&
-        modalData.firstName &&
-        modalData.lastName &&
-        modalData.userType &&
-        modalData.phone
+      modalData.firstName &&
+      modalData.lastName &&
+      modalData.userType &&
+      modalData.phone
     );
   }, [
     modalData,
@@ -114,25 +114,25 @@ export default function UserManagement() {
     },
     {
       id: 2,
-      text: "User Type",
+      text: "Email",
     },
     {
       id: 3,
-      text: "Email",
+      text: "User Type",
     },
-
     {
       id: 7,
       text: "Last Login",
     },
     {
       id: 8,
-      text: "Password",
+      text: 'Profile'
     },
     {
-      id: 9,
-      text: "",
-    },
+      id: 8,
+      text: "Password",
+    }
+
   ];
 
   const handleResetPassword = (email) => {

@@ -24,6 +24,12 @@ import axios from "axios";
 import DeleteIcon from "../../assets/icons/delete.svg";
 import PauseIcon from "../../assets/icons/pause.svg";
 import PlayIcon from "../../assets/icons/play.svg";
+import AccountOverviewLogo from "../../assets/icons/account-overview.png";
+import AccountOverviewLogo2 from "../../assets/icons/account overview2.png";
+import OrgDefaultLogo from "../../assets/icons/org-default.png";
+import OrgDefaultLogo2 from "../../assets/icons/org default2.png";
+import OrgDefaultContentLogo2 from "../../assets/icons/org default content.png";
+import OrgDefaultContentLogo from "../../assets/icons/org default content(2).png";
 import EditBlueIcon from "../../assets/icons/edit-blue.svg";
 import InputSearch from "../../components/InputSearch/InputSearch";
 import { useSelector, useDispatch } from "react-redux";
@@ -54,27 +60,32 @@ const subModalInitialState = {
 
 const initialTabs = [
   {
-    Icon: PlayIcon,
+    Icon: AccountOverviewLogo2,
+    Icon2: AccountOverviewLogo,
     name: "Account Overview",
     selected: true,
   },
   {
-    Icon: PlayIcon,
+    Icon: AccountOverviewLogo2,
+    Icon2: AccountOverviewLogo,
     name: "User Management",
     selected: false,
   },
   {
-    Icon: PlayIcon,
+    Icon: OrgDefaultLogo2,
+    Icon2: OrgDefaultLogo,
     name: "Org Default",
     selected: false,
   },
   {
-    Icon: PlayIcon,
+    Icon: OrgDefaultContentLogo2,
+    Icon2: OrgDefaultContentLogo,
     name: "Org Default Content",
     selected: false,
   },
 ];
 export default function SuperAdminSettings() {
+
   const [modalActive, setModalActive] = useState(false);
   const [tagModalActive, setTagModalActive] = useState(false);
   const [addCodeModalActive, setAddCodeModalActive] = useState(false);
@@ -818,6 +829,12 @@ export default function SuperAdminSettings() {
   return (
     <>
       <div className="lg:ml-pageLeft bg-lightWhite min-h-screen px-8 pt-[50px] pb-[50px]">
+        <p className="text-[#24A3D9]  mb-9 ">
+          {organization?.company +
+
+            "  >  "}
+          <span className="font-semibold">Settings</span>
+        </p>
         <div className="flex justify-between items-center mb-[45px]">
           <div className={styles.tabsContainer}>
             {tabs.map((item, idx) => {
@@ -827,7 +844,12 @@ export default function SuperAdminSettings() {
                     } cursor-pointer`}
                   onClick={() => changeTab(idx + 1)}
                 >
-                  <img src={item.Icon} />
+                  {activeTab === idx + 1 && (
+                    <img src={item.Icon} />
+                  )}
+                  {activeTab === idx + 1 || (
+                    <img src={item.Icon2} />
+                  )}
                   <p> {item.name} </p>
                   {activeTab === idx + 1 && (
                     <img src={ActiveTab} className={styles.activeBgIcon} />
@@ -877,15 +899,15 @@ export default function SuperAdminSettings() {
                 onChange={(val) => handleChange("timeZone", val)}
               />
               <InputSelect
-                optionData={["dd/mm/yy", "mm/dd/yy"]}
+                optionData={["dd/mm/yy", "mm/dd/yy", "yy/mm/dd"]}
                 parentClassName="min-w-[200px]"
-                label="Default Timezone"
+                label="Default Date Format"
                 value={settingsData.dateFormat}
                 onChange={(val) => handleChange("dateFormat", val)}
               />
             </div>
             <SettingsCard
-              title="Lead Status Items"
+              title="Lead Status Items (Parent / Student)"
               body={
                 <div className="flex items-center flex-wrap [&>*]:mb-[10px] bg-white shadow-small p-4 rounded-5">
                   <AddTag onAddTag={handleAddTag} keyName="leadStatus" />
@@ -928,7 +950,7 @@ export default function SuperAdminSettings() {
                       return (
                         <div key={i} className="bg-white shadow-small p-4 ">
                           <div className="flex items-center justify-between pr-8 ">
-                            <p className="font-bold text-[#24A3D9] mb-4">
+                            <p className="font-medium text-[#24A3D9] mb-4">
                               {subscription.code}
                               <span className="inline-block ml-4 font-normal text-[#517CA8]">
                                 {subscription.expiry} Weeks
@@ -973,12 +995,12 @@ export default function SuperAdminSettings() {
                             </div>
                           </div>
                           <div className="flex items-center flex-wrap [&>*]:mb-[18px] ">
-                            <AddTag
+                            {/* <AddTag
                               openModal={true}
                               onAddTag={(code) => handleAddTest(subscription)}
                               keyName={subscription.code}
                               text="Add Tests"
-                            />
+                            /> */}
                             <FilterItems
                               isString={true}
                               onlyItems={true}
@@ -994,10 +1016,10 @@ export default function SuperAdminSettings() {
                       );
                     })}
                   <AddTag
-                    children="Add Code"
+                    children="Add New Code"
                     className="pl-3 pr-3 pt-1.4 pb-1.5 mt-5 bg-primary text-white"
-                    text="Add Code"
-                    hideIcon={true}
+                    text="Add New Code"
+                    hideIcon={false}
                     openModal={true}
                     onAddTag={onAddCode}
                   />
@@ -1019,7 +1041,7 @@ export default function SuperAdminSettings() {
                             className="bg-white shadow-small p-4 mb-3"
                           >
                             <div className="flex items-center justify-between pr-8">
-                              <p className="font-bold text-[#24A3D9] mb-4">
+                              <p className="font-medium text-[#24A3D9] mb-4">
                                 {service.service}
                               </p>
                               <div
@@ -1034,11 +1056,11 @@ export default function SuperAdminSettings() {
                               </div>
                             </div>
                             <div className="flex items-center flex-wrap [&>*]:mb-[18px]">
-                              <AddTag
+                              {/* <AddTag
                                 onAddTag={handleAddSpecialization}
                                 keyName={service.service}
                                 text="Add Service"
-                              />
+                              /> */}
                               <FilterItems
                                 isString={true}
                                 onlyItems={true}
@@ -1072,7 +1094,7 @@ export default function SuperAdminSettings() {
                       return (
                         <div key={i} className="bg-white shadow-small p-4 mb-3">
                           <div className="flex items-center justify-between pr-8">
-                            <p className="font-bold text-[#24A3D9] mb-4">
+                            <p className="font-medium text-[#24A3D9] mb-4">
                               {service.heading}
                             </p>
                             <div
@@ -1087,11 +1109,11 @@ export default function SuperAdminSettings() {
                             </div>
                           </div>
                           <div className="flex items-center flex-wrap [&>*]:mb-[18px]">
-                            <AddTag
+                            {/* <AddTag
                               onAddTag={handleAddSessionTag}
                               keyName={service.heading}
                               text="Add Items"
-                            />
+                            /> */}
                             <FilterItems
                               isString={true}
                               onlyItems={true}
@@ -1107,8 +1129,8 @@ export default function SuperAdminSettings() {
                   <AddTag
                     children="Add Session Tag"
                     className="pl-3 pr-3 pt-1.4 pb-1.5 mt-5 bg-primary text-white"
-                    text="Add service"
-                    hideIcon={true}
+                    text="Add Heading"
+                    hideIcon={false}
                     onAddTag={onAddSessionTag}
                   />
                 </div>

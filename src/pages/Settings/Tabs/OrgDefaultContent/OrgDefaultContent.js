@@ -4,7 +4,7 @@ import Table from "../../../../components/Table/Table";
 import Modal from "../../../../components/Modal/Modal";
 import InputField from "../../../../components/InputField/inputField";
 
-import AddIcon from "../../../../assets/icons/add.svg";
+import AddIcon from "../../../../assets/icons/plus.png";
 import SearchIcon from "../../../../assets/icons/search.svg";
 import styles from "./style.module.css";
 
@@ -22,11 +22,11 @@ import { useSelector } from "react-redux";
 const optionData = ["option 1", "option 2", "option 3", "option 4", "option 5"];
 const testTypeOptions = ["SAT", "Other"];
 const tableHeaders = [
-  "Test Name",
-  "Test Type",
+  "Assignment",
+  "Type",
   "Created On",
   "Last Modified",
-  "Total Assignments",
+  "Total Assigned",
   "View",
   "",
   "Available For",
@@ -207,8 +207,8 @@ export default function AllTests() {
     axios
       .get(`${BASE_URL}api/test/superAdmin/getAllTest`, { headers })
       .then((res) => {
-         console.log('res', res.data.data);
-         setTableData(res.data.data)
+        console.log('res', res.data.data);
+        setTableData(res.data.data)
       });
   };
 
@@ -223,10 +223,10 @@ export default function AllTests() {
       <div className="py-14 px-5 pt-0">
         <div className="flex justify-end items-center">
           <button
-            className="bg-primaryOrange py-3.5 px-6 flex items-center text-white font-semibold rounded-lg mr-55"
+            className="bg-[#FFA28D] py-3.5 px-6 flex items-center text-white  rounded-lg mr-55"
             onClick={() => setModalActive(true)}
           >
-            Add new Test
+            New Test
             <img src={AddIcon} className="ml-3" />
           </button>
         </div>
