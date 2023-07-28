@@ -42,17 +42,21 @@ export const aboutCardContents = [
   {
     heading: "#  hours scheduled",
     text: "100",
+    key:"scheduledSessions"
   },
   {
     heading: "#  hours Cancelled",
     text: "20",
+    key:"canceledSessions"
   },
   {
     heading: "#  hours missed",
     text: "10",
+    key:"missedSessions"
   },
   {
     heading: "#  hours Generated",
     text: "70",
+    key:"completeSessions"
   },
 ];

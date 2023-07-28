@@ -15,6 +15,14 @@ export const adminDashboardServicesApi = createApi({
         headers: getAuthHeader(),
       }),
     }),
+    getFilteredActionLog: builder.mutation({
+      query: (body) => ({
+        url: `/api/user/admin/getFilterAction`,
+        method: "POST",
+        body: body,
+        headers: getAuthHeader(),
+      }),
+    }),
     getLatestSignUp: builder.query({
       query: () => ({
         url: `/api/user/superadmin/getlastSignUpdetails`,
@@ -89,4 +97,5 @@ export const {
   useLazyGetTutorPerformanceQuery,
   useLazyGetPopularServicesQuery,
   useLazyGetImprovementStatsQuery,
+  useGetFilteredActionLogMutation,
 } = adminDashboardServicesApi;

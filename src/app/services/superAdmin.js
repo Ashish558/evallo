@@ -95,6 +95,14 @@ export const superAdminServicesApi = createApi({
         headers: getAuthHeader(),
       }),
     }),
+    getTotalHours: builder.mutation({
+      query: (body) => ({
+        url: `api/user/superadmin/totalHours`,
+        method: "POST",
+        body: body,
+        headers: getAuthHeader(),
+      }),
+    }),
   }),
 });
 
@@ -106,6 +114,7 @@ export const {
   useAddUserDemographyMutation,
   useGetActionLogQuery,
   useLazyGetAllOrgQuery,
+  useGetTotalHoursMutation,
   useLazyGetLatestOrgQuery,
   useLazyGetLogoutQuery,
   useGetFinancialStatsQuery,

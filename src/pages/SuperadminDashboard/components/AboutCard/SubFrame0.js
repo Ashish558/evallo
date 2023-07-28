@@ -2,9 +2,22 @@ import React from "react";
 import { aboutCardContents } from "../AllOrgs/staticData";
 import AboutCard from "../AboutCard/AboutCard";
 import InputSelect from "../../../../components/InputSelect/InputSelect";
+import { useGetTotalHoursMutation } from "../../../../app/services/superAdmin";
+import { useEffect } from "react";
+import { useState } from "react";
 
 const SubFrame0 = ({ userData }) => {
+  const [fetchTotalhours, status]= useGetTotalHoursMutation()
+  const [totalHours,setTotalHours]= useState({})
   console.log("first", userData);
+  useEffect(()=>{
+  fetchTotalhours({orgId:userData.associatedOrg  }).then((res)=>{
+    console.log(res)
+    setTotalHours(res?.data)
+  }).catch(err =>{
+ console.log(err)
+  })
+  },[])
   return (
     <div className="flex flex-col gap-5">
       <div className="flex flex-col gap-4 border-b-[1.5px] border-b-gray-300">
@@ -61,16 +74,16 @@ const SubFrame0 = ({ userData }) => {
         <div className="flex flex-col p-2 px-3 gap-2">
           <span className=" ">
             <p className="text-xs "># Tutors</p>
-            <p className="font-bold">{userData?.numberOfTutors}</p>
+            <p className="font-bold">{totalHours?.totalTutor}</p>
           </span>
           <span className=" ">
             <p className="text-xs "># Students</p>
-            <p className="font-bold">{userData?.numberOfActiveStudent}</p>
+            <p className="font-bold">{totalHours?.totalStudent}</p>
           </span>
         </div>
         <div className="flex gap-2 ">
           {aboutCardContents.map((item, idx) => {
-            return <AboutCard {...item} />;
+            return <AboutCard   heading={item.heading} text={totalHours?totalHours[item.key]:''}/>;
           })}
         </div>
         <div className="bg-[#26435F] flex-1 flex flex-col rounded-md p-2 text-white ">
@@ -92,7 +105,8 @@ const SubFrame0 = ({ userData }) => {
             />
           </span>
           <span className="mt-3 text-center font-semibold text-lg">
-            Week: $2000
+          {totalHours?.totalPrice}
+
           </span>
         </div>
       </div>

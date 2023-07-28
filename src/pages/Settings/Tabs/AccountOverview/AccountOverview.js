@@ -15,6 +15,7 @@ import {
   useUpdateUserAccountMutation,
 } from "../../../../app/services/users";
 import { BASE_URL, getAuthHeader } from "../../../../app/constants/constants";
+import InputFieldDropdown from "../../../../components/InputField/inputFieldDropdown";
 const AccountOverview = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [reset, setReset] = useState(false);
@@ -113,10 +114,9 @@ const AccountOverview = () => {
       }
       console.log(res.data);
       alert("Password reset link sent to your email.");
-    
     });
   };
-
+  console.log(values);
   return (
     <div>
       <div className="flex flex-col gap-10 w-[900px] ">
@@ -184,8 +184,7 @@ const AccountOverview = () => {
               </span>
             }
           />
-
-          <InputField
+          <InputFieldDropdown
             placeholder=""
             parentClassName="text-xs text-[#26435F]"
             inputContainerClassName=" bg-white"
