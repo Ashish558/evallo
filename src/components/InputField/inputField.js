@@ -37,16 +37,16 @@ export default function InputField({
   const [showDiv, setShowDiv] = useState(true);
   const divRef = useRef();
   useEffect(() => {
-     function handleClickOutside(event) {
-        if (divRef.current && !divRef.current.contains(event.target)) {
-           setShowDiv(false);
-        }
-     }
+    function handleClickOutside(event) {
+      if (divRef.current && !divRef.current.contains(event.target)) {
+        setShowDiv(false);
+      }
+    }
 
-     document.addEventListener('click', handleClickOutside);
-     return () => {
-        document.removeEventListener('click', handleClickOutside);
-     };
+    document.addEventListener('click', handleClickOutside);
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    };
   }, []);
 
   return (
@@ -62,25 +62,34 @@ export default function InputField({
         </label>
       )}
       <div
-        className={`py-[13px] px-[14px] lg:py-[9px] lg:px-[16px] flex items-center rounded border border-[#D0D5DD] ${
-          inputContainerClassName ? inputContainerClassName : ""
-        } ${disabled === true ? "cursor-not-allowed" : ""} `}
+        className={`py-[13px] px-[14px] lg:py-[9px] lg:px-[16px] flex items-center rounded border border-[#D0D5DD] ${inputContainerClassName ? inputContainerClassName : ""
+          } ${disabled === true ? "cursor-not-allowed" : ""} `}
       >
         {Icon && (
           <img
             src={Icon}
             alt='field-icon'
-            className={`mr-5 ${
-              iconSize === "medium" ? "w-[24px]" : "w-[28px]"
-            }`}
+            className={`mr-5 ${iconSize === "medium" ? "w-[24px]" : "w-[28px]"
+              }`}
           />
         )}
         {inputLeftField && inputLeftField}
         {prefix && <span className="mr-3">{prefix}</span>}
+        {IconRight && (
+          <div className="group relative w-fit">
+            <img
+              src={IconRight}
+              alt='icon-right'
+              className={` cursor-pointer ${iconSize === "medium" && "w-[24px]"
+                }`}
+
+            />
+            {Tooltip}
+          </div>
+        )}
         <input
-          className={`outline-0 w-full text-sm ${
-            inputClassName ? inputClassName : ""
-          } ${disabled === true ? "cursor-not-allowed" : ""} `}
+          className={`outline-0 w-full text-sm pl-3 ${inputClassName ? inputClassName : ""
+            } ${disabled === true ? "cursor-not-allowed" : ""} `}
           placeholder={placeholder}
           type={inputType ? inputType : "text"}
           onChange={(e) => (onChange !== undefined ? onChange(e) : "")}
@@ -88,7 +97,7 @@ export default function InputField({
           defaultValue={defaultValue}
           required={isRequired ? true : false}
           disabled={disabled !== undefined ? disabled : false}
-          onKeyDown={onKeyDown ? onKeyDown : () => {}}
+          onKeyDown={onKeyDown ? onKeyDown : () => { }}
           minLength={minLength && minLength}
           maxLength={maxLength && maxLength}
           onFocus={onFocus}
@@ -106,30 +115,18 @@ export default function InputField({
             }
           />
         )}
-        {IconRight && (
-            <div className="group relative w-fit">
-          <img
-            src={IconRight}
-            alt='icon-right'
-            className={`ml-4 cursor-pointer ${
-              iconSize === "medium" && "w-[24px]"
-            }`}
-           
-          />
-          {Tooltip}
-          </div>
-        )}
+
         {right && right}
       </div>
       {error !== undefined && error !== '' &&
-            <div>
-               {showDiv && (
-                  <div ref={divRef}>
-                     <Message error={error} type='danger' />
-                  </div>
-               )}
+        <div>
+          {showDiv && (
+            <div ref={divRef}>
+              <Message error={error} type='danger' />
             </div>
-         }
+          )}
+        </div>
+      }
 
     </div>
   );

@@ -6,7 +6,7 @@ import { TableHeader } from "./TableHeader";
 import { TableHeaderNew } from "./tableHeaderObj";
 import TableItem from "./tableItem";
 import Loader from "../Loader";
-
+import styles from './styles.module.css'
 export default function Table(props) {
    const {
       dataFor,

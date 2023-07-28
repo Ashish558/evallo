@@ -3,7 +3,7 @@ import { useLazyGetSettingsQuery } from '../../app/services/session';
 import InputSelect from '../InputSelect/InputSelect';
 import sort from './../../assets/icons/sort.webp'
 
-export function TableHeader({ header, dataFor, onClick, setSorted ,Icon}) {
+export function TableHeader({ header, dataFor, onClick, setSorted, Icon }) {
 
 
 
@@ -19,9 +19,10 @@ export function TableHeader({ header, dataFor, onClick, setSorted ,Icon}) {
             <input type="checkbox" id='check' className='absolute invisible' onChange={e => setSorted(e.target.checked)} />
          </th>
          :
-         <th className={`px-2 py-3 font-semibold opacity-60 ${header === 'Full Name' || header === 'Name' || header === 'Student Name' ? 'text-left pl-7' : ''} ${dataFor === 'allUsers' ? 'text-sm' : 'text-sm'}
+         <th className={`px-2 py-3 font-semibold  ${header === 'Full Name' || header === 'Name' || header === 'Student Name' ? 'text-left pl-7' : ''} ${dataFor === 'allUsers' ? 'text-sm' : 'text-sm'}
        `}>
-            {header}
+            <div className={`flex items-center justify-center font-semibold  ${header === 'Full Name' || header === 'Name' || header === 'Student Name' ? 'text-left pl-7' : ''} ${dataFor === 'allUsers' ? 'text-sm' : 'text-sm'}
+       `}> {header}</div>
          </th>
    )
 }
