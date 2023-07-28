@@ -56,7 +56,7 @@ export default function InputSelect({
 
       <div
         onClick={() => setSelected(true)}
-        className={`py-[10px] px-[14px]  lg:py-[8px] lg:px-[16px] border border-[#D0D5DD] flex items-center rounded relative cursor-pointer z-50 ${
+        className={`py-[10px] px-[14px]  lg:py-[8px] lg:px-[16px] border-[#D0D5DD] flex items-center rounded-[7.5px] relative cursor-pointer z-50 ${
           inputContainerClassName ? inputContainerClassName : ""
         } `}
       >

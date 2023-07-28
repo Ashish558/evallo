@@ -115,6 +115,9 @@ module.exports = {
          zIndex: {
             5000: 5000,
          },
+         dropShadow:{
+            'small': '0px 0px 2.4999988079071045px rgba(0, 0, 0, 0.25)'
+         },
          boxShadow: {
             white: "0px 8px 16px rgba(0, 0, 0, 0.05)",
             light: "0px 6px 20px rgba(0, 10, 255, 0.14)",
