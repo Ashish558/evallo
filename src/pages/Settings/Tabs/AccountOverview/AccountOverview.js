@@ -116,7 +116,7 @@ const AccountOverview = () => {
       alert("Password reset link sent to your email.");
     });
   };
-  console.log(values);
+  
   return (
     <div>
       <div className="flex flex-col gap-10 w-[900px] ">
@@ -191,6 +191,12 @@ const AccountOverview = () => {
             inputClassName="bg-transparent"
             label="Phone"
             value={values.phone}
+            codeValue={values.phoneCode}
+            handleCodeChange={(e) =>
+              setValues({
+                ...values,
+                phoneCode:e.target.value
+              })}
             onChange={(e) =>
               setValues({
                 ...values,
