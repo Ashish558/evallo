@@ -129,7 +129,7 @@ export default function UserManagement() {
       text: 'Profile'
     },
     {
-      id: 8,
+      id: 9,
       text: "Password",
     }
 
