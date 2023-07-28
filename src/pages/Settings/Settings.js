@@ -25,6 +25,14 @@ import axios from "axios";
 import DeleteIcon from "../../assets/icons/delete.svg";
 import PauseIcon from "../../assets/icons/pause.svg";
 import PlayIcon from "../../assets/icons/play.svg";
+import OrgDefaultLogo from "../../assets/icons/org-default.png";
+import OrgDefaultLogo2 from "../../assets/icons/org default2.png";
+import CAndBLogo from "../../assets/icons/company & brand.svg";
+import CAndBLogo2 from "../../assets/icons/company & brand2.png";
+import AccOverviewLogo from "../../assets/icons/account-overview.png";
+import AccOverviewLogo2 from "../../assets/icons/account overview2.png";
+import ClientsSignupLogo from "../../assets/icons/Client sign up 1.png";
+import ClientsSignupLogo2 from "../../assets/icons/Client sign up 2.png";
 import EditBlueIcon from "../../assets/icons/edit-blue.svg";
 import InputSearch from "../../components/InputSearch/InputSearch";
 import { useSelector, useDispatch } from "react-redux";
@@ -40,7 +48,7 @@ import { useAddNewQuestionMutation } from "../../app/services/admin";
 import { updateOrganizationSettings } from "../../app/slices/organization";
 import InputSelect from "../../components/InputSelect/InputSelect";
 import { timeZones } from "../../constants/constants";
-
+// import questionMark from '../../assets/images/question-mark.svg'
 const initialState = {
   name: "",
   phone: "",
@@ -54,28 +62,34 @@ const subModalInitialState = {
 
 const initialTabs = [
   {
-    Icon: PlayIcon,
+    Icon: OrgDefaultLogo2,
+    Icon2: OrgDefaultLogo,
     name: "Organization Defaults",
     selected: true,
   },
   {
-    Icon: PlayIcon,
+    Icon: CAndBLogo2,
+    Icon2: CAndBLogo,
     name: "Company and Brand",
     selected: false,
   },
+
   {
-    Icon: PlayIcon,
-    name: "Signup form detail",
+    Icon: AccOverviewLogo2,
+    Icon2: AccOverviewLogo,
+    name: "Account  Overview",
     selected: false,
   },
   {
-    Icon: PlayIcon,
-    name: "Account  Overview",
+    Icon: ClientsSignupLogo2,
+    Icon2: ClientsSignupLogo,
+    name: "Clients Sign Up",
     selected: false,
   },
 ];
 export default function Settings() {
   const [modalActive, setModalActive] = useState(false);
+  const { firstName, lastName } = useSelector((state) => state.user);
   const [tagModalActive, setTagModalActive] = useState(false);
   const [addCodeModalActive, setAddCodeModalActive] = useState(false);
   const [subModalData, setSubModalData] = useState(subModalInitialState);
@@ -306,9 +320,9 @@ export default function Settings() {
       );
     });
   };
- 
+
   const fetchSettings = () => {
-   
+
     if (organization.settings) {
       setSettingsData(organization.settings);
     }
@@ -360,7 +374,7 @@ export default function Settings() {
       settings,
     };
     console.log("body", body, updatedSetting);
-   
+
     setSaveLoading(true);
     updateSetting(body)
       .then((res) => {
@@ -843,17 +857,28 @@ export default function Settings() {
   return (
     <>
       <div className=" bg-lightWhite min-h-screen px-8 pt-[50px] pb-[50px] lg:px-[100px] ">
+        <p className="text-[#24A3D9]  mb-9 ">
+          {organization?.company +
+
+            "  >  "}
+          <span className="font-semibold">Settings</span>
+        </p>
         <div className="flex justify-between items-center mb-[45px]">
           <div className={styles.tabsContainer}>
             {tabs.map((item, idx) => {
               return (
                 <div
-                  className={`${styles.tab} ${
-                    activeTab === idx + 1 ? styles.selectedTab : ""
-                  } cursor-pointer`}
+                  className={`${styles.tab} ${activeTab === idx + 1 ? styles.selectedTab : ""
+                    } cursor-pointer`}
                   onClick={() => changeTab(idx + 1)}
                 >
-                  <img src={item.Icon} />
+                  {activeTab === idx + 1 && (
+                    <img src={item.Icon} />
+                  )}
+                  {activeTab === idx + 1 || (
+                    <img src={item.Icon2} />
+                  )}
+
                   <p> {item.name} </p>
                   {activeTab === idx + 1 && (
                     <img src={ActiveTab} className={styles.activeBgIcon} />
@@ -894,24 +919,26 @@ export default function Settings() {
         {activeTab === 1 || !activeTab ? (
           <div>
             <div className="flex items-center gap-x-5 mb-4">
+              <div>
+                <InputSelect
+                  optionData={timeZones}
+                  parentClassName="min-w-[200px]"
+                  label="Default Timezone"
+                  value={settingsData.timeZone}
+                  onChange={(val) => handleChange("timeZone", val)}
+                />
+              </div>
               <InputSelect
-                optionData={timeZones}
+                optionData={["dd/mm/yy", "mm/dd/yy", "yy/mm/dd"]}
                 parentClassName="min-w-[200px]"
-                label="Default Timezone"
-                value={settingsData.timeZone}
-                onChange={(val) => handleChange("timeZone", val)}
-              />
-              <InputSelect
-                optionData={["dd/mm/yy", "mm/dd/yy"]}
-                parentClassName="min-w-[200px]"
-                label="Default Timezone"
+                label="Default Date Format"
                 value={settingsData.dateFormat}
                 onChange={(val) => handleChange("dateFormat", val)}
-                
+
               />
             </div>
             <SettingsCard
-              title="Lead Status Items"
+              title="Lead Status Items (parent / student)"
               body={
                 <div className="flex items-center flex-wrap [&>*]:mb-[10px] bg-white shadow-small p-4 rounded-5">
                   <AddTag onAddTag={handleAddTag} keyName="leadStatus" />
@@ -954,7 +981,7 @@ export default function Settings() {
                       return (
                         <div key={i} className="bg-white shadow-small p-4 ">
                           <div className="flex items-center justify-between pr-8 ">
-                            <p className="font-bold text-[#24A3D9] mb-4">
+                            <p className="font-medium text-[#24A3D9] mb-4">
                               {subscription.code}
                               <span className="inline-block ml-4 font-normal text-[#517CA8]">
                                 {subscription.expiry} Weeks
@@ -999,12 +1026,12 @@ export default function Settings() {
                             </div>
                           </div>
                           <div className="flex items-center flex-wrap [&>*]:mb-[18px] ">
-                            <AddTag
+                            {/* <AddTag
                               openModal={true}
                               onAddTag={(code) => handleAddTest(subscription)}
                               keyName={subscription.code}
                               text="Add Tests"
-                            />
+                            /> */}
                             <FilterItems
                               isString={true}
                               onlyItems={true}
@@ -1020,10 +1047,10 @@ export default function Settings() {
                       );
                     })}
                   <AddTag
-                    children="Add Code"
-                    className="pl-3 pr-3 pt-1.4 pb-1.5 mt-5 bg-primary text-white"
-                    text="Add Code"
-                    hideIcon={true}
+                    children="Add New Code"
+                    className="px-[18px] py-3 mt-5 bg-primary text-white"
+                    text="Add New Code"
+                    hideIcon={false}
                     openModal={true}
                     onAddTag={onAddCode}
                   />
@@ -1074,7 +1101,7 @@ export default function Settings() {
                             className="bg-white shadow-small p-4 mb-3"
                           >
                             <div className="flex items-center justify-between pr-8">
-                              <p className="font-bold text-[#24A3D9] mb-4">
+                              <p className="font-medium text-[#24A3D9] mb-4">
                                 {service.service}
                               </p>
                               <div
@@ -1089,11 +1116,11 @@ export default function Settings() {
                               </div>
                             </div>
                             <div className="flex items-center flex-wrap [&>*]:mb-[18px]">
-                              <AddTag
+                              {/* <AddTag
                                 onAddTag={handleAddSpecialization}
                                 keyName={service.service}
-                                text="Add Specialization"
-                              />
+                                text="Add Service"
+                              /> */}
                               <FilterItems
                                 isString={true}
                                 onlyItems={true}
@@ -1108,9 +1135,9 @@ export default function Settings() {
                       })}
                   </div>
                   <AddTag
-                    children="Add service"
-                    className="pl-3 pr-3 pt-1.4 pb-1.5 mt-5 bg-primary text-white"
-                    text="Add service"
+                    children="Add Service"
+                    className="px-[18px] py-3 mt-5 bg-primary text-white"
+                    text="Add Service"
                     onAddTag={onAddService}
                   />
                 </div>
@@ -1127,7 +1154,7 @@ export default function Settings() {
                       return (
                         <div key={i} className="bg-white shadow-small p-4 mb-3">
                           <div className="flex items-center justify-between pr-8">
-                            <p className="font-bold text-[#24A3D9] mb-4">
+                            <p className="font-medium text-[#24A3D9] mb-4">
                               {service.heading}
                             </p>
                             <div
@@ -1142,11 +1169,11 @@ export default function Settings() {
                             </div>
                           </div>
                           <div className="flex items-center flex-wrap [&>*]:mb-[18px]">
-                            <AddTag
+                            {/* <AddTag
                               onAddTag={handleAddSessionTag}
                               keyName={service.heading}
                               text="Add Items"
-                            />
+                            /> */}
                             <FilterItems
                               isString={true}
                               onlyItems={true}
@@ -1160,10 +1187,10 @@ export default function Settings() {
                       );
                     })}
                   <AddTag
-                    children="Add Session Tag"
-                    className="pl-3 pr-3 pt-1.4 pb-1.5 mt-5 bg-primary text-white"
-                    text="Add service"
-                    hideIcon={true}
+                    children="Add Heading"
+                    className="px-[18px] py-3 mt-5 bg-primary text-white"
+                    text="Add Heading"
+                    hideIcon={false}
                     onAddTag={onAddSessionTag}
                   />
                 </div>
@@ -1369,13 +1396,13 @@ export default function Settings() {
                 return (
                   <>
                     {item.choosedValue === true ||
-                    item.choosedValue === false ? (
+                      item.choosedValue === false ? (
                       <div
                         key={id}
                         className="pt-[34px] pb-[30px] border-b-2 border-[#CBD6E2] text-[#24A3D9] font-medium text-[17.5px] flex items-center justify-between"
                       >
                         <p>
-                         
+
                           {renderColoredText(item.name)}
                         </p>
 
@@ -1396,24 +1423,22 @@ export default function Settings() {
                             id="option"
                             className="border border-gray-300 px-2  rounded-md text-[#26435F] bg-[#E9ECEF]"
                           >
-                             <option value={item.choosedValue}>
-                              {`   ${
-                                item.permissionActionName ===
+                            <option value={item.choosedValue}>
+                              {`   ${item.permissionActionName ===
                                 "notifyParentBefSession"
-                                  ?item.choosedValue===0?"OFF":item.choosedValue + " hours before"
-                                  :item.choosedValue
-                              }`}
+                                ? item.choosedValue === 0 ? "OFF" : item.choosedValue + " hours before"
+                                : item.choosedValue
+                                }`}
                             </option>
                             {item.values.map((values, i) => {
                               return (
                                 item.choosedValue !== values && (
                                   <option key={i} value={values}>
-                                    {` ${
-                                      item.permissionActionName ===
+                                    {` ${item.permissionActionName ===
                                       "notifyParentBefSession"
-                                        ? values===0?"OFF":values + " hours before"
-                                        : values 
-                                    }`}
+                                      ? values === 0 ? "OFF" : values + " hours before"
+                                      : values
+                                      }`}
                                   </option>
                                 )
                               );
@@ -1656,11 +1681,10 @@ export default function Settings() {
           cancelBtnClassName="w-140 hidden"
           primaryBtn={{
             text: "Save",
-            className: `w-140 ml-0 bg-primaryOrange mt-2 ${
-              tagText.trim().length < 1 || tagImage === null
-                ? "pointer-events-none opacity-60"
-                : ""
-            } `,
+            className: `w-140 ml-0 bg-primaryOrange mt-2 ${tagText.trim().length < 1 || tagImage === null
+              ? "pointer-events-none opacity-60"
+              : ""
+              } `,
             form: "settings-form",
             type: "submit",
             loading: saveLoading,

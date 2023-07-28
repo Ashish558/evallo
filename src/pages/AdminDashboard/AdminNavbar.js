@@ -72,7 +72,7 @@ const tempnavdata = [
   {
     icon: Invoice,
     activeIcon: Invoice2,
-    path: "/invoicing",
+    path: "/",
     tooltip: "Invoicing",
   },
   {

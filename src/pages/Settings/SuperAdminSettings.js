@@ -156,7 +156,7 @@ export default function SuperAdminSettings() {
   const [modalData, setModalData] = useState(initialState);
   const [fetchedPermissions, setThePermission] = useState([]);
   const dispatch = useDispatch();
-  
+
 
   const handlePermissionOption = (value, key) => {
     let nvalue = value;
@@ -169,12 +169,12 @@ export default function SuperAdminSettings() {
       }
       return { ...per };
     });
-   
+
     setThePermission(arr)
     let updatedSetting = {
       permissions: arr,
     };
-   
+
     updateAndFetchsettings(updatedSetting);
   };
   const togglePermissions = (key, value) => {
@@ -184,8 +184,8 @@ export default function SuperAdminSettings() {
       }
       return { ...per };
     });
-    
-   
+
+
     setThePermission(arr)
 
     let updatedSetting = {
@@ -823,9 +823,8 @@ export default function SuperAdminSettings() {
             {tabs.map((item, idx) => {
               return (
                 <div
-                  className={`${styles.tab} ${
-                    activeTab === idx + 1 ? styles.selectedTab : ""
-                  } cursor-pointer`}
+                  className={`${styles.tab} ${activeTab === idx + 1 ? styles.selectedTab : ""
+                    } cursor-pointer`}
                   onClick={() => changeTab(idx + 1)}
                 >
                   <img src={item.Icon} />
@@ -1038,7 +1037,7 @@ export default function SuperAdminSettings() {
                               <AddTag
                                 onAddTag={handleAddSpecialization}
                                 keyName={service.service}
-                                text="Add Specialization"
+                                text="Add Service"
                               />
                               <FilterItems
                                 isString={true}
@@ -1197,7 +1196,7 @@ export default function SuperAdminSettings() {
                 </div>
               }
             />
-              <div className="flex items-center pb-2 text-[#26435F] font-medium text-xl">
+            <div className="flex items-center pb-2 text-[#26435F] font-medium text-xl">
               <p className="pr-2">Set Permissions </p>
               <p>
                 <img src={questionMark} alt="" />
@@ -1209,13 +1208,13 @@ export default function SuperAdminSettings() {
                 return (
                   <>
                     {item.choosedValue === true ||
-                    item.choosedValue === false ? (
+                      item.choosedValue === false ? (
                       <div
                         key={id}
                         className="pt-[34px] pb-[30px] border-b-2 border-[#CBD6E2] text-[#24A3D9] font-medium text-[17.5px] flex items-center justify-between"
                       >
                         <p>
-                         
+
                           {renderColoredText(item.name)}
                         </p>
 
@@ -1237,23 +1236,21 @@ export default function SuperAdminSettings() {
                             className="border border-gray-300 px-2  rounded-md text-[#26435F] bg-[#E9ECEF]"
                           >
                             <option value={item.choosedValue}>
-                              {`   ${
-                                item.permissionActionName ===
+                              {`   ${item.permissionActionName ===
                                 "notifyParentBefSession"
-                                  ?item.choosedValue===0?"OFF":item.choosedValue + " hours before"
-                                  :item.choosedValue
-                              }`}
+                                ? item.choosedValue === 0 ? "OFF" : item.choosedValue + " hours before"
+                                : item.choosedValue
+                                }`}
                             </option>
                             {item.values.map((values, i) => {
                               return (
                                 item.choosedValue !== values && (
                                   <option key={i} value={values}>
-                                    {` ${
-                                      item.permissionActionName ===
+                                    {` ${item.permissionActionName ===
                                       "notifyParentBefSession"
-                                        ? values===0?"OFF":values + " hours before"
-                                        : values 
-                                    }`}
+                                      ? values === 0 ? "OFF" : values + " hours before"
+                                      : values
+                                      }`}
                                   </option>
                                 )
                               );
@@ -1490,11 +1487,10 @@ export default function SuperAdminSettings() {
           cancelBtnClassName="w-140 hidden"
           primaryBtn={{
             text: "Save",
-            className: `w-140 ml-0 bg-primaryOrange mt-2 ${
-              tagText.trim().length < 1 || tagImage === null
-                ? "pointer-events-none opacity-60"
-                : ""
-            } `,
+            className: `w-140 ml-0 bg-primaryOrange mt-2 ${tagText.trim().length < 1 || tagImage === null
+              ? "pointer-events-none opacity-60"
+              : ""
+              } `,
             form: "settings-form",
             type: "submit",
             loading: saveLoading,

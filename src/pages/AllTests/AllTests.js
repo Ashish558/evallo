@@ -206,7 +206,7 @@ export default function AllTests() {
    return (
       <div className="lg:ml-pageLeft bg-lightWhite min-h-screen">
          <div className="py-14 px-5">
-            <p className="text-[#24A3D9] text-xl mb-3 ">
+            <p className="text-[#24A3D9]  mb-3 ">
                {organization?.company +
                   "  >  " +
                   firstName +
@@ -233,7 +233,7 @@ export default function AllTests() {
                   type="select"
                />
                <button
-                  className="bg-[#FFA28D] py-4 px-6 flex items-center text-white font-semibold rounded-lg mr-55 text-[15px]"
+                  className="bg-[#FFA28D] py-4 px-6 flex items-center text-white  rounded-lg mr-55 text-[15px]"
                   onClick={() => setModalActive(true)}
                >
                   <span className="pt-1">   Add New Material</span>
