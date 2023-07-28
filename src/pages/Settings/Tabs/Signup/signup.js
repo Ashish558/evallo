@@ -18,11 +18,24 @@ export default function SignupTab({ setAddNewQuestionModalActive, fetchS }) {
       setCustomFields(fetchS.data.updatedOrg.customFields);
     }
   }, [fetchS]);
+  const [isChecked, setIsChecked] = useState(false);
+  const [isCheckedTwo, setIsCheckedTwo] = useState(false);
+  const [isCheckedThree, setIsCheckedThree] = useState(false);
+
+  const handleCheckboxChange = () => {
+    setIsChecked(!isChecked);
+  };
+  const handleCheckboxChangeTwo = () => {
+    setIsCheckedTwo(!isCheckedTwo);
+  };
+  const handleCheckboxChangeThree = () => {
+    setIsCheckedThree(!isCheckedThree);
+  };
   return (
     <div className="">
       <p className="text-sm underline w-500">
-       <a href={`${process.env.REACT_APP_FE_URL}/signup/user?orgName=${organization.company}`} target={"_blank"}> {`${process.env.REACT_APP_FE_URL}/signup/user?orgName=${organization.company}`}
-       </a>
+        <a href={`${process.env.REACT_APP_FE_URL}/signup/user?orgName=${organization.company}`} target={"_blank"}> {`${process.env.REACT_APP_FE_URL}/signup/user?orgName=${organization.company}`}
+        </a>
       </p>
       <div className="grid grid-cols-2 gap-x-5">
         <div className={styles.colContainer}>
@@ -51,23 +64,54 @@ export default function SignupTab({ setAddNewQuestionModalActive, fetchS }) {
               label="Phone"
             />
 
-           
-         
+
+
           </div>
           <div>
             <p className={`mb-5 ${styles.label}`}>
               Are you signing up as a Parent or a Student?
             </p>
             <div className="flex items-center gap-x-6">
-              <p className={styles.textLight}>Parent / Guardian</p>
-              <p className={styles.textLight}>Student</p>
+              <p className={styles.textLight}>
+                <label className={`${styles['checkbox-label']} block  `}>
+                  <input
+                    type="checkbox"
+                    checked={isChecked}
+                    onChange={handleCheckboxChange}
+                  />
+                  <span className={`${styles['custom-checkbox']} ${isChecked ? 'checked' : ''}`}></span>
+                  <span className="ml-3">Parent / Guardian</span>
+                </label></p>
+              <p className={styles.textLight}><label className={`${styles['checkbox-label']} block  `}>
+                <input
+                  type="checkbox"
+                  checked={isCheckedTwo}
+                  onChange={handleCheckboxChangeTwo}
+                />
+                <span className={`${styles['custom-checkbox']} ${isChecked ? 'checked' : ''}`}></span>
+                <span className="ml-3">Student</span>
+              </label></p>
+
             </div>
+
+          </div>
+          <div className=" gap-x-2 my-5">
+            <p className={styles.textLight}><label className={`${styles['checkbox-label']} block  `}>
+              <input
+                type="checkbox"
+                checked={isCheckedThree}
+                onChange={handleCheckboxChangeThree}
+              />
+              <span className={`${styles['custom-checkbox']} ${isChecked ? 'checked' : ''}`}></span>
+              <span className="ml-3">I confirm that I am 13 years or older</span>
+            </label></p>
           </div>
           <div className="flex gap-x-2 my-5">
+
             <CCheckbox />
             <p className={`${styles.textLight}`}>
-              I have carefully read and agree to the Terms of Use and Privacy
-              Policy
+              I have carefully read and agree to the <span className="font-medium text-[#26435F]">Terms of Use and Privacy
+                Policy</span>
             </p>
           </div>
         </div>
@@ -96,8 +140,17 @@ export default function SignupTab({ setAddNewQuestionModalActive, fetchS }) {
               parentClassName="text-xs mb-3"
               label="Phone"
             />
+            <InputField
+              placeholder=""
+              parentClassName="text-xs mb-3"
+              label="School Name"
+            />
+            <InputField
+              placeholder=""
+              parentClassName="text-xs mb-3"
+              label="Student's Grade"
+            />
 
-           
           </div>
         </div>
       </div>
@@ -137,7 +190,7 @@ export default function SignupTab({ setAddNewQuestionModalActive, fetchS }) {
           })}
         </div>
         <PrimaryButton
-          disabled={customFields?.length >= 5 ? true :false}
+          disabled={customFields?.length >= 5 ? true : false}
           children={"Add new question"}
           onClick={() => setAddNewQuestionModalActive(true)}
         />

@@ -33,7 +33,7 @@ function App() {
         return;
       }
       dispatch(updateOrganization(res.data.organisation));
-      // console.log("res", res.data.organisation);
+
     });
   };
 
@@ -61,7 +61,7 @@ function App() {
         if (res.data.data.userdetails) {
           timeZone = res.data.data.userdetails.timeZone;
         }
-        // if(!role) return
+
         sessionStorage.setItem("role", role);
         setLoading(false);
         dispatch(updateIsLoggedIn(true));
@@ -92,8 +92,7 @@ function App() {
 
       console.log("beforeunload event triggered");
 
-      // return (event.returnValue =
-      //   'Are you sure you want to exit?');
+
     };
 
     window.addEventListener("beforeunload", handleTabClose);
@@ -105,7 +104,7 @@ function App() {
       window.removeEventListener("beforeunload", handleTabClose);
     };
   }, []);
-  if (loading) return <Loader /> ;
+  if (loading) return <Loader />;
 
   return (
     <>
