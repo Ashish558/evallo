@@ -9,7 +9,7 @@ import { useState } from "react";
 const SubFrame0 = ({ userData }) => {
   const [fetchTotalhours, status]= useGetTotalHoursMutation()
   const [totalHours,setTotalHours]= useState({})
-  console.log("first", userData);
+ 
   useEffect(()=>{
   fetchTotalhours({orgId:userData.associatedOrg  }).then((res)=>{
     console.log(res)
@@ -17,7 +17,7 @@ const SubFrame0 = ({ userData }) => {
   }).catch(err =>{
  console.log(err)
   })
-  },[])
+  },[userData])
   return (
     <div className="flex flex-col gap-5">
       <div className="flex flex-col gap-4 border-b-[1.5px] border-b-gray-300">

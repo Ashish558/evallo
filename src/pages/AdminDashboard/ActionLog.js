@@ -86,10 +86,10 @@ export default function ActionLog({ actionLog }) {
                 <p className="text-[#4A556C] pt-5 font-medium text-xs mr-6 w-[80px]">
                   {new Date(item.createdAt).toLocaleTimeString()}
                   {item.topDate && (
-                    <p className="text-xs ml-28 top-0 text-[#FFA28D] absolute z-5000 backdrop-blur-sm ">
+                    <span className="text-xs ml-5 top-0 text-[#FFA28D] absolute z-5000 backdrop-blur-sm ">
                       {" "}
                       {item?.topDate}
-                    </p>
+                    </span>
                   )}
                 </p>
                 <div className={`pt-5 ${styles.actionBorder}`}>
