@@ -31,7 +31,7 @@ export default function Table(props) {
       setTableData(data);
     } else {
       const temp = data.slice(0, maxPageSize);
-    
+
       setTableData(temp);
       setSorted(temp);
       setCurrentPage(1);
@@ -84,7 +84,7 @@ export default function Table(props) {
           )}
         </tbody>
       </table>
-      
+
       <div className="flex justify-end items-center">
         <Pagination
           totalPages={Math.ceil(data.length / maxPageSize)}

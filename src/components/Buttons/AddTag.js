@@ -31,13 +31,13 @@ export default function AddTag({ keyName, onAddTag, isFile, openModal, className
   }
 
   return (
-    <button className={`${className ? className : ' bg-primary'} flex items-center text-white font-bold text-sm py-1.4 px-3 rounded-7 mr-[15px] ${isClicked ? 'justify-center' : ''}`}
+    <button className={`${className ? className : ' bg-primary'} flex items-center text-white font-medium text-[17.5px] py-3 px-[18px] rounded-7 mr-[15px] ${isClicked ? 'justify-center' : ''}`}
       onClick={handleClick} >
       {
         !isClicked ?
           <>
-            <p className='mr-1'>
-              {text ? text : 'Add Tag'}
+            <p className='mr-1 '>
+              {text ? text : 'Add Item'}
             </p>
             {
               !hideIcon &&

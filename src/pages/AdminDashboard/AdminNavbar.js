@@ -21,7 +21,8 @@ import Schedule from "../../assets/images/Vector (2).png";
 import Schedule1 from "../../assets/images/Calendar 1.svg";
 import Assignment from "../../assets/images/Vector (3).png";
 import Assignment1 from "../../assets/images/Vector (4).svg";
-import Content from "../../assets/images/Vector (4).png";
+import Content from "../../assets/images/content.png";
+import Content2 from "../../assets/images/content-1.svg";
 import Invoice from "../../assets/images/Vector (5).png";
 import Invoice2 from "../../assets/images/invoicing.png";
 import Settings from "../../assets/images/Settings 1 new.svg";
@@ -60,19 +61,19 @@ const tempnavdata = [
   {
     icon: Assignment,
     activeIcon: Assignment1,
-    path: "/all-tests",
+    path: "/assigned-tests",
     tooltip: "Assignments",
   },
   {
-    icon: Assignment,
-    activeIcon: Assignment1,
-    path: "/assigned-tests",
+    icon: Content,
+    activeIcon: Content2,
+    path: "/all-tests",
     tooltip: "Content",
   },
   {
     icon: Invoice,
     activeIcon: Invoice2,
-    path: "/invoicing",
+    path: "/",
     tooltip: "Invoicing",
   },
   {
@@ -100,7 +101,7 @@ const parentNav = [
   {
     icon: Assignment,
     activeIcon: Assignment1,
-    path: "/all-tests",
+    path: "/assigned-tests",
     tooltip: "Assignments",
   },
   {
@@ -134,7 +135,7 @@ const studentNav = [
   {
     icon: Assignment,
     activeIcon: Assignment1,
-    path: "/all-tests",
+    path: "/assigned-tests",
     tooltip: "Assignments",
   },
   {

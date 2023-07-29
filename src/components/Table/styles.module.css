@@ -1,0 +1,7 @@
+thead tr th:nth-child(-n + 5) div::after {
+    content: url("../../assets/images/arrow-down.svg");
+    margin-left: 5px; 
+    display: inline-block; 
+width: 25px;
+height: 25px;
+  }
