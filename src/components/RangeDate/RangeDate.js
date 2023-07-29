@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import InputSelect from "../InputSelect/InputSelectDate";
 import { calculateDateRange, getModifiedDate } from "./utils";
+import styles from './rangeDate.module.css'
 
 import { useState } from "react";
 import { useEffect } from "react";
@@ -37,8 +38,8 @@ const RangeDate = ({ handleRangeData }) => {
         placeholder="Select"
         parentClassName="border-none text-xs text-[#26435F] w-fit"
         labelClassname="text-sm"
-        inputContainerClassName="border-none w-[260px] font-semibold text-[#FFA28D] "
-        inputClassName="border-none w-fit bg-transparent font-semibold text-[#FFA28D]"
+        inputContainerClassName={`border-none w-[260px] font-semibold text-[#FFA28D]  ${styles['text']}`}
+        inputClassName={`border-none w-fit bg-transparent font-semibold text-[#FFA28D] `}
         value={startDate}
         optionData={[]}
         setSelectedDate={setSelectedDate}

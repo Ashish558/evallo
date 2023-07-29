@@ -121,7 +121,8 @@ module.exports = {
          boxShadow: {
             white: "0px 8px 16px rgba(0, 0, 0, 0.05)",
             light: "0px 6px 20px rgba(0, 10, 255, 0.14)",
-            small: '0px 0px 2.500000476837158px 0px rgba(0, 0, 0, 0.25)'
+            small: '0px 0px 2.500000476837158px 0px rgba(0, 0, 0, 0.25)',
+            box: '0px 0px 2px 0px rgba(0, 0, 0, 0.25)'
          },
          borderWidth: {
             3: "3px",
@@ -131,8 +132,7 @@ module.exports = {
           },
           gridTemplateColumns: {
             '13': 'repeat(13, minmax(0, 1fr))',
-          }
-    
+          },
       },
    },
    plugins: [],
