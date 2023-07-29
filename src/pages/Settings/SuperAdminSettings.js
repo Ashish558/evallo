@@ -844,13 +844,17 @@ export default function SuperAdminSettings() {
                     } cursor-pointer`}
                   onClick={() => changeTab(idx + 1)}
                 >
-                  {activeTab === idx + 1 && (
-                    <img src={item.Icon} />
-                  )}
-                  {activeTab === idx + 1 || (
-                    <img src={item.Icon2} />
-                  )}
-                  <p> {item.name} </p>
+                  <div className="w-[195px] flex justify-center">
+                    <div>
+                      {activeTab === idx + 1 && (
+                        <img src={item.Icon} alt="item-logo" />
+                      )}
+                      {activeTab === idx + 1 || (
+                        <img src={item.Icon2} alt="item-logo" />
+                      )}
+                    </div>
+                    <p >{item.name} </p>
+                  </div>
                   {activeTab === idx + 1 && (
                     <img src={ActiveTab} className={styles.activeBgIcon} />
                   )}

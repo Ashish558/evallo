@@ -25,7 +25,7 @@
 .activeBgIcon{
    position: absolute;
    top: 6px;
-   left: 2px;
+   /* left: 2px; */
    transform: scaleX(1.25);
    width: calc(100%);
    z-index: -1;
