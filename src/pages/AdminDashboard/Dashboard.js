@@ -385,9 +385,9 @@ const Dashboard = () => {
             <Table
               data={latestSignUp?.data ? latestSignUp?.data : []}
               AdminLatestSignUp={true}
-              // Icon={
-              //   <img src={ArrowDown} alt="down" className="flex-shrink-0" />
-              // }
+              Icon={
+                <img src={ArrowDown} alt="down" className="flex-shrink-0" />
+              }
               tableHeaders={latestSignUpHeaders}
               maxPageSize={5}
             />
@@ -414,7 +414,7 @@ const Dashboard = () => {
               </p>
               <Table
                 data={popularServices}
-                // Icon={<img src={ArrowDown} alt="down" className="" />}
+                Icon={<img src={ArrowDown} alt="down" className="" />}
                 tableHeaders={[
                   "Service",
                   "Actively Using",
@@ -525,7 +525,7 @@ const Dashboard = () => {
           <div className="mr-2 w-max ">
             <Table
               data={tutorPerformanceData}
-              // Icon={<img src={ArrowDown} alt="down" className="" />}
+              Icon={<img src={ArrowDown} alt="down" className="" />}
               tableHeaders={tutorTableHeaders}
               maxPageSize={5}
             />
