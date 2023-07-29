@@ -1017,7 +1017,7 @@ export default function SuperAdminSettings() {
                     })}
                   <AddTag
                     children="Add New Code"
-                    className="pl-3 pr-3 pt-1.4 pb-1.5 mt-5 bg-primary text-white"
+                    className="py-3 px-[18px] mt-5 bg-primary text-white"
                     text="Add New Code"
                     hideIcon={false}
                     openModal={true}
@@ -1075,9 +1075,9 @@ export default function SuperAdminSettings() {
                       })}
                   </div>
                   <AddTag
-                    children="Add service"
-                    className="pl-3 pr-3 pt-1.4 pb-1.5 mt-5 bg-primary text-white"
-                    text="Add service"
+                    children="Add Service"
+                    className="py-3 px-[18px] mt-5 bg-primary text-white"
+                    text="Add Service"
                     onAddTag={onAddService}
                   />
                 </div>
@@ -1127,8 +1127,8 @@ export default function SuperAdminSettings() {
                       );
                     })}
                   <AddTag
-                    children="Add Session Tag"
-                    className="pl-3 pr-3 pt-1.4 pb-1.5 mt-5 bg-primary text-white"
+                    children="Add Heading"
+                    className="py-3 px-[18px] mt-5 bg-primary text-white"
                     text="Add Heading"
                     hideIcon={false}
                     onAddTag={onAddSessionTag}
