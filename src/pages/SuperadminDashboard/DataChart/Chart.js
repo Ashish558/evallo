@@ -10,7 +10,21 @@ const BubbleChart = () => {
     useGetUserDailyActivityQuery();
   const [dailyuserData, setDailyUserData] = useState("");
   const [chartData, setChartData] = useState("");
+  const plugin = {
+    beforeInit(chart) {
+      console.log("be");
+      // reference of original fit function
+      const originalFit = chart.legend.fit;
 
+      // override the fit function
+      chart.legend.fit = function fit() {
+        // call original function and bind scope in order to use `this` correctly inside it
+        originalFit.bind(chart.legend)();
+        // increase the width to add more space
+        this.width += 20;
+      };
+    },
+  };
   useEffect(() => {
     if (dailyActivityAccess) {
       let rolesData = {
@@ -107,27 +121,49 @@ const BubbleChart = () => {
                 display: true,
 
                 position: "right",
+                layout: {
+                  padding: {
+                      left: 0,
+                      right: 10,
+                      top: 10,
+                      bottom: 0
+                  }
               },
+              },
+              layout: {
+                padding: {
+                    left: 0,
+                    right: 10,
+                    top: 10,
+                    bottom: 0
+                }
+            },
               plugins: {
                 legend: {
                   display: true,
                   position: "top", // Place legends at the top
                   align: "center", // Align legends to the left
-                  
+                 padding:0.2,
                   labels: {
-                    usePointStyle: true,
-                  
-                  
-                    boxWidth: 40,
-
                    
+                   
+                    usePointStyle: true,
+                    layout: {
+                      padding: {
+                          left: 0,
+                          right: 10,
+                          top: 10,
+                          bottom: 0
+                      }
+                  },
+                    boxWidth: 100,
+
                     pointStyle: "circle",
 
                     radius: 7,
                   },
                 },
               },
-              
             }}
           />
         </div>
