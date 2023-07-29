@@ -142,5 +142,5 @@ export const orgData = [
 ]
 
 export const tableHeaders = [
-   'Org name', 'Org Admin', 'Status', 'Subscription Type', 'Join Date'
+   'Org name', 'Org admin', 'Status', 'Subscription type', 'Join date'
 ]

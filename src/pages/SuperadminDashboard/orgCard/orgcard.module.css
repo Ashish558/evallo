@@ -1,14 +1,18 @@
 .container {
     background: #ffff;
     border-radius: 4px;
-    margin-right: 7px;
+    margin-right: 9px;
 
 }
-
+.container:last-child {
+    background: #ffff;
+    border-radius: 4px;
+    margin-right:0;
+}
 .heading {
     font-family: 'Inter';
     color: #26435F;
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
     font-size: 14px;
     padding-right: 6px;
 }
