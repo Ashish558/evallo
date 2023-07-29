@@ -4,7 +4,7 @@ import DownArrow from "../../assets/icons/down-chevron.svg";
 import UpArrow from "../../assets/icons/chevron-up-solid (1).svg";
 import useOutsideAlerter from "../../hooks/useOutsideAlerter";
 import CCheckbox from "../CCheckbox/CCheckbox";
-
+import questionMark from "../../assets/images/question-mark.svg";
 export default function InputSelect({
   parentClassName,
   Icon,
@@ -45,18 +45,27 @@ export default function InputSelect({
         parentClassName ? parentClassName : ""
       } ${disabled === true ? "pointer-events-none" : ""} `}
     >
-      {label && (
-        <label className={`font-semibold inline-block mb-1 ${labelClassname}`}>
-          {label}
-          {required && (
-            <span className="text-primaryRed inline-block pl-1">*</span>
+      <div className="flex items-center mb-1">
+        {label && (
+          <label
+            className={`font-medium text-[#26435F] inline-block  ${labelClassname}`}
+          >
+            {label}
+            {required && (
+              <span className="text-primaryRed inline-block pl-1">*</span>
+            )}
+          </label>
+        )}
+        <div>
+          {label == "Default Timezone" && (
+            <img className="ml-3" src={questionMark} alt=""></img>
           )}
-        </label>
-      )}
+        </div>
+      </div>
 
       <div
         onClick={() => setSelected(true)}
-        className={`py-[10px] px-[14px]  lg:py-[8px] lg:px-[16px] border-[#D0D5DD] flex items-center rounded-[7.5px] relative cursor-pointer z-50 ${
+        className={`py-[10px] px-[14px]  lg:py-[8px] lg:px-[16px] border border-[#D0D5DD] flex items-center rounded relative cursor-pointer z-50 ${
           inputContainerClassName ? inputContainerClassName : ""
         } `}
       >

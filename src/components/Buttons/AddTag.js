@@ -38,37 +38,33 @@ export default function AddTag({
   };
 
   return (
-    <button
-      className={`${
-        className ? className : " bg-primary"
-      } flex items-center text-white font-bold text-sm py-1.4 px-3 rounded-7 mr-[15px] ${
-        isClicked ? "justify-center" : ""
-      }`}
-      onClick={handleClick}
-      type='button'
-    >
-      {!isClicked ? (
-        <>
-          <p className="mr-1">{text ? text : "Add Tag"}</p>
-          {!hideIcon && (
-            <img src={AddIcon} alt="tag-icon" className="w-4 ml-1" />
-          )}
-        </>
-      ) : (
-        <div className={`w-auto`}>
-          <input
-            size={size}
-            autoFocus
-            ref={inputRef}
-            value={value}
-            className="w-full outline-0 border-0 bg-transparent transition"
-            onChange={handleChange}
-            // onKeyDown={e => e.key === 'Enter' && handleBlur}
-            onKeyDown={(e) => e.key === "Enter" && handleBlur()}
-            onBlur={handleBlur}
-          />
-        </div>
-      )}
+    <button className={`${className ? className : ' bg-primary'} flex items-center text-white font-medium text-[17.5px] py-3 px-[18px] rounded-7 mr-[15px] ${isClicked ? 'justify-center' : ''}`}
+      onClick={handleClick} >
+      {
+        !isClicked ?
+          <>
+            <p className='mr-1 '>
+              {text ? text : 'Add Item'}
+            </p>
+            {
+              !hideIcon &&
+              <img src={AddIcon} alt='tag-icon' className='w-4 ml-1' />
+            }
+          </>
+          :
+          <div className={`w-auto`} >
+            <input size={size}
+              autoFocus
+              ref={inputRef}
+              value={value}
+              className='w-full outline-0 border-0 bg-transparent transition'
+              onChange={handleChange}
+              // onKeyDown={e => e.key === 'Enter' && handleBlur}
+              onKeyDown={e => e.key === 'Enter' && handleBlur()}
+              onBlur={handleBlur} />
+          </div>
+      }
+
     </button>
   );
 }

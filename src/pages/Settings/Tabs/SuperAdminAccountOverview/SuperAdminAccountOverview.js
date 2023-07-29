@@ -26,7 +26,7 @@ const AccountOverview = () => {
     phone: "",
     subscriptionCode: "",
     company: "",
-    
+
   });
   const [values, setValues] = useState({
     firstName: "",
@@ -50,9 +50,9 @@ const AccountOverview = () => {
     activeStudents: "",
     activeTutors: "",
     services: [],
-    currentPassword:"",
-    newPassword:"",
-    confirmPassword:"",
+    currentPassword: "",
+    newPassword: "",
+    confirmPassword: "",
   });
   const [userDetails, userDetailsStatus] = useLazyGetPersonalDetailQuery();
   const [updateAccount, updateAccountStatus] = useUpdateUserAccountMutation();
@@ -117,7 +117,7 @@ const AccountOverview = () => {
       }
       console.log(res.data);
       alert("Password reset link sent to your email.");
-    
+
     });
   };
 
@@ -206,7 +206,7 @@ const AccountOverview = () => {
           />
         </div>
         <div className="flex gap-7 flex-1">
-        <InputField
+          <InputField
             placeholder=""
             parentClassName="text-xs text-[#26435F]"
             inputContainerClassName=" bg-white"
@@ -221,7 +221,7 @@ const AccountOverview = () => {
             }
             error={error.currentPassword}
           />
-            <InputField
+          <InputField
             placeholder=""
             parentClassName="text-xs text-[#26435F]"
             inputContainerClassName=" bg-white"
@@ -236,7 +236,7 @@ const AccountOverview = () => {
             }
             error={error.newPassword}
           />
-            <InputField
+          <InputField
             placeholder=""
             parentClassName="text-xs text-[#26435F]"
             inputContainerClassName=" bg-white"
@@ -252,15 +252,15 @@ const AccountOverview = () => {
             error={error.confirmPassword}
           />
           <div>
-          
+
             <button
               onClick={handleClose}
-              className="bg-[#FFA28D] text-white rounded-md my-5 px-3 py-2 text-sm"
+              className="bg-[#FFA28D] text-white rounded-md my-3  px-[50px] py-3 "
             >
               Update
             </button>
           </div>
-         
+
         </div>
         <div>
           {reset && (

@@ -38,9 +38,8 @@ export default function SingleItem({
   return (
     <div
       key={idx}
-      className={`mr-3 ${
-        className ? className : ""
-      } bg-primaryLight py-1 px-3 rounded-7 group ${styles.filterItem}`}
+      className={`mr-3 ${className ? className : ""
+        } bg-primaryLight py-1 px-3 rounded-7 group ${styles.filterItem}`}
     >
       {image && (
         <div className="w-[85px] h-[85px] mx-auto flex justify-center">
@@ -50,14 +49,14 @@ export default function SingleItem({
           />
         </div>
       )}
-      <p className="text-lightGray text-center text-[14px]">
+      <p className="text-[#26435F] text-center text-[15px]">
         {sliceText
           ? item.image.slice(-23)
           : isString
-          ? fetchData
-            ? text
-            : item
-          : item.text}
+            ? fetchData
+              ? text
+              : item
+            : item.text}
       </p>
       <img
         alt="cross-icon"
