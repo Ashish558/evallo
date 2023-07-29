@@ -77,7 +77,7 @@ const initialTabs = [
   {
     Icon: AccOverviewLogo2,
     Icon2: AccOverviewLogo,
-    name: "Account  Overview",
+    name: `Account  Overview`,
     selected: false,
   },
   {
@@ -874,16 +874,20 @@ export default function Settings() {
                     } cursor-pointer`}
                   onClick={() => changeTab(idx + 1)}
                 >
-                  {activeTab === idx + 1 && (
-                    <img src={item.Icon} />
-                  )}
-                  {activeTab === idx + 1 || (
-                    <img src={item.Icon2} />
-                  )}
 
-                  <p> {item.name} </p>
+                  <div className="w-[195px] flex justify-center">
+                    <div>
+                      {activeTab === idx + 1 && (
+                        <img src={item.Icon} alt="item-logo" />
+                      )}
+                      {activeTab === idx + 1 || (
+                        <img src={item.Icon2} alt="item-logo" />
+                      )}
+                    </div>
+                    <p >{item.name} </p>
+                  </div>
                   {activeTab === idx + 1 && (
-                    <img src={ActiveTab} className={styles.activeBgIcon} />
+                    <img src={ActiveTab} className={styles.activeBgIcon} alt="item-background" />
                   )}
                 </div>
               );
