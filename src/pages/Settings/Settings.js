@@ -367,7 +367,7 @@ export default function Settings() {
     const body = {
       settings,
     };
-    console.log("body", body, updatedSetting);
+    console.log("body", body);
 
     setSaveLoading(true);
     updateSetting(body)
@@ -1471,6 +1471,7 @@ export default function Settings() {
             setAddNewQuestionModalActive={setAddNewQuestionModalActive}
             fetchS={fetchS}
             organization={organization}
+            updateAndFetchsettings={updateAndFetchsettings}
           />
         )}
         {activeTab === 3 && <AccountOverview />}

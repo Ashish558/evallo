@@ -6,12 +6,15 @@ import PrimaryButton from "../../../../components/Buttons/PrimaryButton";
 import CCheckbox from "../../../../components/CCheckbox/CCheckbox";
 import InputSelect from "../../../../components/InputSelect/InputSelect";
 import CheckboxIcon from "../../../../assets/icons/square.svg";
+import DeletIcon from "../../../../assets/Settings/delete.svg";
 
 export default function SignupTab({
   setAddNewQuestionModalActive,
   fetchS,
-  organization,
+  updateAndFetchsettings
 }) {
+  const { organization } = useSelector((state) => state.organization);
+
   const [customFields, setCustomFields] = useState(organization.customFields);
   useEffect(() => {
     if (fetchS && fetchS.data && fetchS.data.updatedOrg) {
@@ -30,6 +33,14 @@ export default function SignupTab({
   };
   const handleCheckboxChangeThree = () => {
     setIsCheckedThree(!isCheckedThree);
+  };
+
+  const handleDelete = (id) => {
+    let updatedCustomFields = customFields.filter(item => item._id !== id)
+    const body = {
+      customFields: updatedCustomFields
+    }
+    updateAndFetchsettings(body)
   };
   console.log("customFields", customFields);
 
@@ -211,13 +222,22 @@ export default function SignupTab({
                 </div>
 
                 <div className="col-span-4">
-                  <InputSelect
-                    value={item.dataType}
-                    labelClassname="hidden"
-                    parentClassName="w-[200px] mr-5 my-4 text-sm "
-                    optionData={["String", "Dropdown"]}
-                    inputContainerClassName='bg-[#F5F8FA] text-[#26435F] font-medium'
-                  />
+                  <div className="max-w-[200px]">
+                    <InputSelect
+                      value={item.dataType}
+                      labelClassname="hidden"
+                      parentClassName="w-[200px] mr-5 my-4 text-sm "
+                      optionData={["String", "Dropdown"]}
+                      inputContainerClassName={`bg-[#F5F8FA] border-0 text-[#26435F] font-medium ${styles["dropdown-container"]} `}
+                    />
+                    <div
+                      className="flex items-center justify-between cursor-pointer bg-[#F5F8FA] text-[#26435F] font-medium text-sm px-4 py-2"
+                      onClick={() => handleDelete(item._id)}
+                    >
+                      Delete
+                      <img src={DeletIcon} alt="delete" />
+                    </div>
+                  </div>
                 </div>
               </div>
             );
