@@ -42,7 +42,7 @@ export default function AddNewQuestion({ newQuestion, setNewQuestion }) {
             inputClassName={'bg-[#f2f2f2]'}
             labelClassname="hidden"
             parentClassName="w-[200px] mr-5"
-            optionData={["String", "Dropdown"]}
+            optionData={["String", "Checkboxes"]}
             onChange={(val) =>
               setNewQuestion({
                 ...newQuestion,
@@ -52,7 +52,7 @@ export default function AddNewQuestion({ newQuestion, setNewQuestion }) {
           />
         </div>
       </div>
-      {newQuestion.type === "Dropdown" && (
+      {newQuestion.type === "Checkboxes" && (
         <div className="px-1 flex flex-col gap-y-1" >
           {newQuestion.values.map((item, idx) => {
             return (
@@ -64,7 +64,7 @@ export default function AddNewQuestion({ newQuestion, setNewQuestion }) {
           })}
         </div>
       )}
-      {newQuestion.type === "Dropdown" && (
+      {newQuestion.type === "Checkboxes" && (
         <>
           {/* <div className="grid grid-cols-1 md:grid-cols-2  gap-x-2 md:gap-x-3 gap-y-4 mb-5 content-center	">
             <InputField

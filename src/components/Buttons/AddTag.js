@@ -39,7 +39,8 @@ export default function AddTag({
 
   return (
     <button className={`${className ? className : ' bg-primary'} flex items-center text-white font-medium text-[17.5px] pl-3 pr-3 pt-1.4 pb-1.5 rounded-7 mr-[15px] ${isClicked ? 'justify-center' : ''}`}
-      onClick={handleClick} >
+      onClick={handleClick}
+      type="button" >
       {
         !isClicked ?
           <>

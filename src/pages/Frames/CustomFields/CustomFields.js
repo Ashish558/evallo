@@ -81,7 +81,7 @@ export default function CustomFields({
                     handleParagraphChange(item._id, e.target.value)
                   }
                 />
-              ) : item.dataType === "Dropdown" ? (
+              ) : item.dataType === "Checkboxes" ? (
                 <div>
                   <p className="text-sm mb-2 font-medium"> {item.name} </p>
                   <div className="flex flex-row gap-y-4 gap-x-4">

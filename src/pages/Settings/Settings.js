@@ -792,7 +792,7 @@ export default function Settings() {
 
   const submitNewQuestion = (e) => {
     e.preventDefault();
-    if (organization?.customFields?.length === 5)
+    if (organization?.settings?.customFields?.length === 5)
       return alert("Only 5 fields are allowed");
     const body = {
       orgId: user.associatedOrg,
@@ -806,7 +806,7 @@ export default function Settings() {
         console.log(res.error);
         return;
       }
-      //window.location.reload()
+      window.location.reload()
       // console.log("reshi", res);
 
       setFetchS(res);

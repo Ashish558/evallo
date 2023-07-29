@@ -15,7 +15,11 @@ export default function SignupTab({
 }) {
   const { organization } = useSelector((state) => state.organization);
 
-  const [customFields, setCustomFields] = useState(organization.customFields);
+  const [customFields, setCustomFields] = useState();
+
+  useEffect(() => {
+    setCustomFields(organization?.settings?.customFields)
+  }, [organization])
   useEffect(() => {
     if (fetchS && fetchS.data && fetchS.data.updatedOrg) {
       setCustomFields(fetchS.data.updatedOrg.customFields);
@@ -37,12 +41,16 @@ export default function SignupTab({
 
   const handleDelete = (id) => {
     let updatedCustomFields = customFields.filter(item => item._id !== id)
+    updatedCustomFields = updatedCustomFields.map(item => ({
+      name: item.name,
+      Values: item.Values,
+      dataType: item.dataType,
+    }))
     const body = {
       customFields: updatedCustomFields
     }
     updateAndFetchsettings(body)
   };
-  console.log("customFields", customFields);
 
   return (
     <div className="">
@@ -227,7 +235,7 @@ export default function SignupTab({
                       value={item.dataType}
                       labelClassname="hidden"
                       parentClassName="w-[200px] mr-5 my-4 text-sm "
-                      optionData={["String", "Dropdown"]}
+                      optionData={["String", "Checkboxes"]}
                       inputContainerClassName={`bg-[#F5F8FA] border-0 text-[#26435F] font-medium ${styles["dropdown-container"]} `}
                     />
                     <div
