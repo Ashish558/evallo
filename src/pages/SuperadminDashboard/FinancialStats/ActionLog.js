@@ -1,16 +1,9 @@
 import styles from "./styles.module.css";
 import { useGetActionLogQuery } from "../../../app/services/superAdmin";
+import { useSelector } from "react-redux";
 export default function ActionLog() {
   const { data: actionLog, isSuccess: fetchStatus } = useGetActionLogQuery();
   //console.log("action", actionLog);
-  
-  const logData = Array.from(
-    { length: 10 },
-    (_, index) =>
-      `May-1,2023 - Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum  horrn has${
-        index + 1
-      }`
-  );
 
   return (
     <div className="ml-3">

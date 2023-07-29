@@ -10,9 +10,10 @@ import {
   faPlus,
   faUpload,
 } from "@fortawesome/free-solid-svg-icons";
-import { faQuestionCircle } from "@fortawesome/free-regular-svg-icons";
+import  faQuestionCircle  from "../../assets/images/Vectorqsn.svg";
 import icon from "../../assets/icons/FIGMA 3.svg";
-import Dashboard1 from "../../assets/images/Vector.png";
+import  logoutIcon from "../../assets/images/Vectorlogout new.svg";
+import Dashboard1 from "../../assets/images/Dashboard 1 new.svg";
 import Dashboard from "../../assets/images/Dashboard 1.svg";
 import UsersIcon from "../../assets/images/Vector (1).png";
 import UsersIcon1 from "../../assets/images/Vector (3).svg";
@@ -23,7 +24,7 @@ import Assignment1 from "../../assets/images/Vector (4).svg";
 import Content from "../../assets/images/Vector (4).png";
 import Invoice from "../../assets/images/Vector (5).png";
 import Invoice2 from "../../assets/images/invoicing.png";
-import Settings from "../../assets/images/Vector (6).png";
+import Settings from "../../assets/images/Settings 1 new.svg";
 import Settings1 from "../../assets/images/Settings 1.svg";
 import Profile from "../../assets/Navbar/profile.svg";
 import Profile1 from "../../assets/images/Vector (5).svg";
@@ -81,7 +82,6 @@ const tempnavdata = [
     excludes: ["student", "parent", "tutor"],
     tooltip: "Settings",
   },
-
 ];
 
 const parentNav = [
@@ -113,9 +113,9 @@ const parentNav = [
     icon: Settings,
     activeIcon: Settings1,
     path: "/settings",
-    excludes: ["student", "tutor", 'admin', 'superAdmin'],
+    excludes: ["student", "tutor", "admin", "superAdmin"],
     tooltip: "Settings",
-  }
+  },
 ];
 
 const studentNav = [
@@ -147,9 +147,9 @@ const studentNav = [
     icon: Settings,
     activeIcon: Settings1,
     path: "/settings",
-    excludes: ["parent", "tutor", 'admin', 'superAdmin'],
+    excludes: ["parent", "tutor", "admin", "superAdmin"],
     tooltip: "Settings",
-  }
+  },
 ];
 const tutorNav = [
   {
@@ -186,12 +186,11 @@ const tutorNav = [
     icon: Settings,
     activeIcon: Settings1,
     path: "/settings",
-    excludes: ["parent", "student", 'admin', 'superAdmin'],
+    excludes: ["parent", "student", "admin", "superAdmin"],
     tooltip: "Settings",
-  }
+  },
 ];
 const supAdminNavData = [
-
   {
     icon: Dashboard,
     activeIcon: Dashboard1,
@@ -212,7 +211,7 @@ const supAdminNavData = [
     path: "/settings",
     excludes: ["student", "parent", "tutor"],
     tooltip: "Settings",
-  }
+  },
 ];
 const AdminNavbar = () => {
   const [navData, setNavData] = useState(tempnavdata);
@@ -278,8 +277,10 @@ const AdminNavbar = () => {
   return (
     <>
       <div className="flex justify-around bg-[#26435F] h-[54px] items-center w-full">
-        <div>
-          <img src={icon} alt="" />
+        <div
+          className={`${persona === "superAdmin" ? "translate-x-[-80px]" : ""}`}
+        >
+          <img src={icon} alt="evallo_logo" />
         </div>
         <div className="flex  text-[#FFFFFF] font-semibold text-[13px]">
           {navData.map((item, idx) => {
@@ -289,44 +290,50 @@ const AdminNavbar = () => {
                 className="flex items-center mr-6 cursor-pointer"
                 onClick={() => handleNavigate(item.path)}
               >
-
-                {
-                  item?.path === activeRoute ? <>
-                    <p >
-                      <img className="w-[16px] h-[16px]" style={{ height: '16px' }} src={item.activeIcon} alt="" />
+                {item?.path === activeRoute ? (
+                  <>
+                    <p>
+                      <img
+                        className="w-[16px] h-[16px]"
+                        style={{ height: "16px" }}
+                        src={item.activeIcon}
+                        alt=""
+                      />
                     </p>
                     <p className="pl-[10px] text-[#FFA28D]"> {item.tooltip} </p>
                   </>
-                    :
-                    <>
-                      <p>
-                        <img className="w-[16px] h-[16px]" src={item.icon} alt="" />
-                      </p>
-                      <p className="pl-[10px]"> {item.tooltip} </p>
-                    </>
-                }
-
+                ) : (
+                  <>
+                    <p>
+                      <img
+                        className="w-[16px] h-[16px]"
+                        src={item.icon}
+                        alt=""
+                      />
+                    </p>
+                    <p className="pl-[10px]"> {item.tooltip} </p>
+                  </>
+                )}
               </div>
             );
           })}
         </div>
         <div className="flex font-bold">
           <div className="flex mr-[24px] text-[#24A3D9] text-xs ">
-            <p className=" ">Pricing </p>
-            <p>
-              <FontAwesomeIcon
-                className="pl-2"
-                icon={faDollar}
-              ></FontAwesomeIcon>
+            <p className=" ">Pricing 	</p>
+            <p className="pl-2">
+            &#36;
             </p>
           </div>
           <div className="flex mr-[24px] text-[#24A3D9] text-xs">
             <p className=" ">Help</p>
             <p>
-              <FontAwesomeIcon
-                className="pl-2"
-                icon={faQuestionCircle}
-              ></FontAwesomeIcon>
+            <img
+                        className="w-[16px] h-[14px] ml-2"
+                        style={{ height: "14px" }}
+                        src={faQuestionCircle}
+                        alt=""
+                      />
             </p>
           </div>
           {isLoggedIn && (
@@ -338,12 +345,12 @@ const AdminNavbar = () => {
                 <p className="text-[#24A3D9]">Logout</p>
               </div>
               <div>
-                <p>
-                  <FontAwesomeIcon
-                    className="pl-2 text-[#24A3D9]"
-                    icon={faArrowRightFromBracket}
-                  ></FontAwesomeIcon>
-                </p>
+              <img
+                        className="w-[16px] h-[14px] ml-2"
+                        style={{ height: "14px" }}
+                        src={logoutIcon}
+                        alt=""
+                      />
               </div>
             </div>
           )}

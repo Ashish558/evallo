@@ -85,7 +85,7 @@ export default function Table(props) {
         </tbody>
       </table>
       
-      <div className="flex grid-cols- justify-center items-center">
+      <div className="flex justify-end items-center">
         <Pagination
           totalPages={Math.ceil(data.length / maxPageSize)}
           currentPage={currentPage}

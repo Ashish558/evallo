@@ -59,12 +59,11 @@ export default function OrgDetails({
   const [country, setCountry] = useState([]);
   const [states, setStates] = useState([]);
 
-
   const handleState = (c) => {
     console.log(c);
     const state = country.filter((x) => x.name === c);
     const currentState = state.map((s) => s.states);
-   
+
     setStates(currentState);
     setValues({
       ...values,
@@ -83,9 +82,14 @@ export default function OrgDetails({
     setFrames((prev) => {
       return { ...prev, orgDetails: false, signupActive: true };
     });
-    setcurrentStep(1)
+    setcurrentStep(1);
   };
-
+  const handleCompanyTypeChange = (e) => {
+    setValues({
+      ...values,
+      companyType: e.target.value,
+    });
+  };
   return (
     <div className="mt-5 mb-3">
       <div className="">
@@ -103,7 +107,10 @@ export default function OrgDetails({
           <div className="flex flex-col h-min mt-2">
             <label className="">Company Type</label>
             <div className={style.changeOption}>
-              <select className="form-control  text-[13px]">
+              <select
+                onChange={(e) => handleCompanyTypeChange(e)}
+                className="form-control  text-[13px]"
+              >
                 <option value="0">Company Type</option>
                 {companyType.map((c, id) => {
                   return (
@@ -186,7 +193,6 @@ export default function OrgDetails({
           </div>
         </div>
         <div className="flex items-center mt-3 gap-5">
-
           <div className={style.changeOption}>
             <div className="flex flex-col h-min mt-[7px]">
               <label className="">State</label>
