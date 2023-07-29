@@ -79,7 +79,6 @@ const userTypes = [
   },
 ];
 
-
 function SuperadminDashboard() {
   const [orgSignUpData, setOrgSignUpData] = useState([]);
   const [fetchUserData, setUserData] = useLazyGetLatestOrgQuery();
@@ -175,9 +174,9 @@ function SuperadminDashboard() {
         <p className="text-[#24A3D9]">Dashboard</p>
         <div className="flex mt-7">
           <section className="flex flex-col">
-            <div>
+            <div className="w-full">
               <p className={styles.subheading}> Organizations </p>
-              <div className={`flex ${styles.orgCard}`}>
+              <div className={`flex mr-0 ${styles.orgCard}`}>
                 <div className={`${orgStyles.container}`}>
                   <p className={orgStyles.heading}> Total # of Orgs</p>
                   <p className={orgStyles.text}>
@@ -201,7 +200,7 @@ function SuperadminDashboard() {
               </div>
             </div>
             <div className="w-full">
-              <p className="mt-[20px] mb-2.5 font-medium text-[#26435F]">
+              <p className="mt-[20px] mb-2.5 font-semibold text-[#26435F]">
                 {" "}
                 User Stats{" "}
               </p>
@@ -212,15 +211,14 @@ function SuperadminDashboard() {
                       <div
                         key={id}
                         onClick={() => handleCurrentUser(item)}
-                        className={` bg-white border-b cursor-pointer border-[#000000] ${
-                          styles.userStat
-                        } ${
-                          currentUser?.name === item.text.toLowerCase()
-                            ? styles.selected
-                            : ""
-                        } `}
+                        className={` bg-white border-b-[1.3px] overflow-hidden relative cursor-pointer border-[rgb(10,30,40,0.27)] ${styles.userStat} `}
                       >
                         {item.text}
+                        {currentUser?.name === item.text.toLowerCase() ? (
+                          <p className="border-b-[4px] relative  rounded-t translate-y-[12px] z-5000 border-b-[#FFA28D]  text-[#FFA28D] "></p>
+                        ) : (
+                          ""
+                        )}
                       </div>
                     );
                   })}
@@ -229,64 +227,68 @@ function SuperadminDashboard() {
                   <div
                     className={`flex w-full bg-white ${styles.customBorder}`}
                   >
-                    <div className="w-1/5 flex flex-col items-center pt-3 pb-2">
+                    <div className="w-1/5 flex flex-col items-center pt-[5px] pb-2">
                       <p className={`${styles.statHead} text-xl font-semibold`}>
                         {currentUser?.name
                           ? currentUser[`${currentUser.name}`]
                           : ""}
                       </p>
-                      <p className="text-xs text-[#26435F]">Total</p>
+                      <p className="text-sm text-[#26435F] ml-[-3px]">Total</p>
                     </div>
-                    <div className="w-1/5 flex flex-col items-center pt-3 pb-2">
+                    <div className="w-1/5 flex flex-col items-center pt-[5px] pb-2">
                       <p className={`${styles.statHead} text-xl font-semibold`}>
                         {currentUser?.no_of_active_users}
                       </p>
-                      <p className="text-xs text-[#26435F]">Active</p>
+                      <p className="text-sm text-[#26435F]">Active</p>
                     </div>
-                    <div className="w-1/5 flex flex-col items-center pt-3 pb-2">
+                    <div className="w-1/5 flex flex-col items-center pt-[5px] pb-2">
                       <p className={`${styles.statHead} text-xl font-semibold`}>
                         {currentUser?.no_of_new_users}
                       </p>
-                      <p className="text-xs text-[#26435F]">New</p>
+                      <p className="text-sm text-[#26435F]">New</p>
                     </div>
-                    <div className="w-1/5 flex flex-col items-center pt-3 pb-2">
+                    <div className="w-1/5 flex flex-col items-center pt-[5px] pb-2">
                       <p className={`${styles.statHead} text-xl font-semibold`}>
                         {currentUser?.no_of_avg_logins}
                       </p>
-                      <p className="text-xs text-[#26435F] "># Avg. Logins</p>
+                      <p className="text-sm text-center text-[#26435F] ">
+                        Avg. # of logins
+                      </p>
                     </div>
-                    <div className="w-1/5 flex flex-col items-center pt-3 pb-2">
+                    <div className="w-1/5 flex flex-col items-center pt-[5px] pb-2">
                       <p className={`${styles.statHead} text-xl font-semibold`}>
                         {currentUser?.no_of_avg_session_duration}
                       </p>
-                      <p className="text-xs text-[#26435F] text-center">
-                        # Avg. Session duration
+                      <p className="text-sm text-[#26435F] text-center">
+                        Avg. Session duration
                       </p>
                     </div>
                   </div>
 
                   <div
-                    className={`flex items-center  justify-around pt-3 pb-2 text-[#26435F] bg-[#FFFFFF] mt-4 ${styles.customBorder}`}
+                    className={`flex items-center  justify-start gap-12 pl-7 pt-1 pb-2 text-[#26435F] bg-[#FFFFFF] mt-4 ${styles.customBorder}`}
                   >
                     <div>
-                      <p className="font-medium text-xl">
+                      <p className="font-semibold text-xl">
                         {currentUser?.no_of_test_assigned}
                       </p>
-                      <p className="text-xs"># of Tests Assigned</p>
+                      <p className="text-sm font-medium ">
+                        # of Tests Assigned
+                      </p>
                     </div>
                     <div>
-                      <p className="font-medium text-xl">
+                      <p className="font-semibold text-xl">
                         {currentUser?.no_of_test_created}
                       </p>
-                      <p className="text-xs"># of Tests Created</p>
+                      <p className="text-sm font-medium"># of Tests Created</p>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
           </section>
-          <section className="flex-1 px-5 mx-6 ">
-            <p className="text-[#26435F] font-medium text-sm">
+          <section className="flex-1  px-5 mx-6 ">
+            <p className="text-[#26435F] -mt-1 mb-[-6px] font-semibold text-md">
               {" "}
               Latest Org Signup{" "}
             </p>
@@ -294,10 +296,11 @@ function SuperadminDashboard() {
               data={orgSignUpData}
               tableHeaders={tableHeaders}
               maxPageSize={5}
+           
             />
           </section>
         </div>
-        <p className="text-[#26435F] font-medium mt-9">Daily active users</p>
+        <p className="text-[#26435F] font-semibold mt-9">Daily active users</p>
         <Chart />
         <Index />
         <div className="flex items-center mt-[50px]">
