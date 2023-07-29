@@ -4,7 +4,7 @@ import Table from "../../components/Table/Table";
 import Modal from "../../components/Modal/Modal";
 import InputField from "../../components/InputField/inputField";
 
-import AddIcon from "../../assets/icons/add.svg";
+import AddIcon from "../../assets/icons/plus.svg";
 import SearchIcon from "../../assets/icons/search.svg";
 import styles from "./style.module.css";
 
@@ -20,7 +20,7 @@ import { useSelector } from "react-redux";
 
 const optionData = ["option 1", "option 2", "option 3", "option 4", "option 5"];
 const testTypeOptions = ["SAT", "Other"];
-const tableHeaders = ["Test Name", "Test Type", "Created On", "Last Modified", "Total Assignments" , "", ""];
+const tableHeaders = ["Assignment Name", "Type", "Created On", "Last Modified", "Total Assignments", "", ""];
 
 const initialState = {
    testName: "",
@@ -29,6 +29,8 @@ const initialState = {
 };
 
 export default function AllTests() {
+   const { organization } = useSelector((state) => state.organization);
+   const { firstName, lastName } = useSelector((state) => state.user);
    const [tableData, setTableData] = useState([]);
    const [modalActive, setModalActive] = useState(false);
    const [testName, setTestName] = useState("");
@@ -126,7 +128,7 @@ export default function AllTests() {
             await axios
                .post(
                   `${BASE_URL}api/test/addpdf/${testId}`,
-                  formData, {headers: getAuthHeader()}
+                  formData, { headers: getAuthHeader() }
                )
                .then((res) => {
                   console.log('pdf post resp', res);
@@ -144,7 +146,7 @@ export default function AllTests() {
          if (csvFile !== null) {
             const formData = new FormData();
             formData.append("file", csvFile);
-            await axios.post(`${BASE_URL}api/test/addans/${testId}`, formData, {headers: getAuthHeader()} )
+            await axios.post(`${BASE_URL}api/test/addans/${testId}`, formData, { headers: getAuthHeader() })
                .then((res) => {
                   alert('CSV UPLOADED')
                   console.log('csv post resp', res);
@@ -191,7 +193,7 @@ export default function AllTests() {
    const fetchTests = () => {
       const headers = getAuthHeader()
       axios
-         .get(`${BASE_URL}api/test`, {headers})
+         .get(`${BASE_URL}api/test`, { headers })
          .then((res) => setTableData(res.data.data.test));
    };
 
@@ -204,6 +206,15 @@ export default function AllTests() {
    return (
       <div className="lg:ml-pageLeft bg-lightWhite min-h-screen">
          <div className="py-14 px-5">
+            <p className="text-[#24A3D9]  mb-3 ">
+               {organization?.company +
+                  "  >  " +
+                  firstName +
+                  "  " +
+                  lastName +
+                  "  >  "}
+               <span className="font-semibold">Content</span>
+            </p>
             <div className="flex justify-between items-center">
                {/* <p
                   className="font-bold text-4xl"
@@ -211,22 +222,22 @@ export default function AllTests() {
                >
                   All Tests
                </p>  */}
-                <InputField
+               <InputField
                   value={testName}
                   IconRight={SearchIcon}
                   onChange={(e) => setTestName(e.target.value)}
                   optionData={optionData}
-                  placeholder="Test Name"
+                  placeholder="Search"
                   parentClassName="w-290 mr-4"
                   inputContainerClassName="bg-white border pt-3.5 pb-3.5"
                   type="select"
                />
                <button
-                  className="bg-primaryOrange py-3.5 px-6 flex items-center text-white font-semibold rounded-lg mr-55"
+                  className="bg-[#FFA28D] py-4 px-6 flex items-center text-white  rounded-lg mr-55 text-[15px]"
                   onClick={() => setModalActive(true)}
                >
-                  Add new Test
-                  <img src={AddIcon} className="ml-3" />
+                  <span className="pt-1">   Add New Material</span>
+                  <img src={AddIcon} className="ml-1 " alt="add-icon" />
                </button>
             </div>
             {/* <div className="flex align-center mt-8">

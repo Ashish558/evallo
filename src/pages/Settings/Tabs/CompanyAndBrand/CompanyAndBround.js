@@ -146,7 +146,7 @@ const CompanyAndBround = () => {
     const file = e.target.files[0];
     formData.append("photos", file);
     formData.append("updatefieldName", "orgBussinessLogo");
-   
+
     updateOrgLogo({ formData: formData, id: organization._id }).then((res) => {
       if (res.error) {
         console.log("logo err", res.error);
@@ -225,7 +225,7 @@ const CompanyAndBround = () => {
               Business Logo{" "}
             </label>
             <div className="w-[312px] h-[200px]  relative p-2">
-              <img
+              {/* <img
                 src={
                   organization.orgBussinessLogo
                     ? organization.orgBussinessLogo
@@ -233,7 +233,7 @@ const CompanyAndBround = () => {
                 }
                 className="w-full h-full object-contain"
                 alt="orgDefaultLogo"
-              />
+              /> */}
               <div
                 className={styles["upload-container"]}
                 onClick={() => inpuRef.current.click()}

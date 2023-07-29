@@ -3,6 +3,7 @@ import toggleRectIcon from "../../assets/icons/toggle-rect.svg";
 import toggleRectActiveIcon from "../../assets/icons/toggle-rect-active.svg";
 import toggleCircleIcon from "../../assets/icons/toggle-circle.svg";
 import styles from "./style.module.css";
+import QuestionMark from '../../assets/images/question-mark.svg'
 
 export default function SettingsCard({
   title,
@@ -18,10 +19,17 @@ export default function SettingsCard({
       `}
     >
       <div
-        className={`text-primary-dark font-bold flex justify-between mb-5 ${titleClassName ? titleClassName : ""
+        className={`text-primary-dark font-medium flex justify-between mb-5 ${titleClassName ? titleClassName : ""
           }`}
       >
-        <p className="">{title}</p>
+        <div className="flex items-center">
+          <p className="">{title}</p>
+          <div>
+            {
+              title === "Edit Announcements" || <img className="ml-3" src={QuestionMark} alt="" />
+            }
+          </div>
+        </div>
         {toggle !== undefined && (
           <div className="flex items-center">
             <p className="text-[#AAAAAA] text-xs mr-2">Show icons / images</p>
@@ -38,8 +46,8 @@ export default function SettingsCard({
               <img
                 src={toggleCircleIcon}
                 className={`${toggle.value === false
-                    ? styles.toggleCircle
-                    : styles.toggleCircleActive
+                  ? styles.toggleCircle
+                  : styles.toggleCircleActive
                   }`}
                 alt="toggle"
               />

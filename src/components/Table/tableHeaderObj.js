@@ -7,7 +7,7 @@ export function TableHeaderNew({ header, dataFor, onClick, setSorted }) {
 
 
    return (
-      <th className={`px-2 py-3 font-semibold opacity-60 cursor-pointer ${header.className ? header.className : ''}`}
+      <th className={`px-2 py-3 font-semibold  cursor-pointer ${header.className ? header.className : ''}`}
          onClick={() => header.onCick && header.onCick()}
       >
          {header.text}
