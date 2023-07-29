@@ -55,7 +55,26 @@ export default function FurtherDetails({
   //     }
   //   });
   // }, [services]);
+  const handlePaymentTypeChange = (e) => {
+    setValues({
+      ...values,
+      paymentType: e.target.value,
+    });
+  };
+  const handleOthersField = (e, arr, setValue) => {
+    const text = e.target.value;
+    if (!text || text === "") return;
+    const temp = arr.filter((topic) => {
+      return topic.text !== "Others";
+    });
+    e.target.value = "";
 
+    temp.push({ text: text, checked: true });
+    temp.push({ text: "Others", checked: false });
+
+    setValue(temp);
+    console.log(temp);
+  };
   useEffect(() => {
     setcurrentStep(3);
   }, []);
@@ -104,7 +123,7 @@ export default function FurtherDetails({
             <p className="text-sm mb-[7px] text-[#24A3D9] font-bold">
               Test preparation
             </p>
-            <div className="grid grid-cols-3">
+            <div className="grid grid-cols-3 grid-flow-row-dense mr-5">
               {testPreparations?.map((item, idx) => {
                 return (
                   <div key={idx} className="flex items-center mb-3 mr-6">
@@ -141,8 +160,15 @@ export default function FurtherDetails({
                     {item.text === "Others" && item.checked ? (
                       <input
                         autoFocus
-                        className="ml-3 text-[13px] text-[#7E7E7E] outline-[#DCDCDD] border-2 border-[#DCDCDD] rounded-md bg-[#DCDCDD]  w-48"
+                        className="ml-3 text-[13px] text-[#7E7E7E] outline-[#DCDCDD] border-2 border-[#DCDCDD] rounded-md bg-[#DCDCDD]  w-32"
                         type="text"
+                        onBlur={(e) => {
+                          handleOthersField(
+                            e,
+                            testPreparations,
+                            setTestPreparations
+                          );
+                        }}
                       />
                     ) : (
                       ""
@@ -156,7 +182,7 @@ export default function FurtherDetails({
             <p className="text-sm mt-[30px] mb-[7px] text-[#24A3D9] font-bold">
               Subject Tutoring
             </p>
-            <div className="grid grid-cols-3">
+            <div className="grid grid-cols-3 grid-flow-row-dense mr-5">
               {tutoring?.map((item, idx) => {
                 return (
                   <div key={idx} className="flex items-center mb-3 mr-6">
@@ -185,8 +211,11 @@ export default function FurtherDetails({
                     {item.text === "Others" && item.checked ? (
                       <input
                         autoFocus
-                        className="ml-3 text-[13px] text-[#7E7E7E] outline-[#DCDCDD] border-2 border-[#DCDCDD] rounded-md bg-[#DCDCDD]  w-48"
+                        className="ml-3 text-[13px] text-[#7E7E7E] outline-[#DCDCDD] border-2 border-[#DCDCDD] rounded-md bg-[#DCDCDD]  w-32"
                         type="text"
+                        onBlur={(e) => {
+                          handleOthersField(e, tutoring, setTutoring);
+                        }}
                       />
                     ) : (
                       ""
@@ -200,7 +229,7 @@ export default function FurtherDetails({
             <p className="text-sm mb-[7px] text-[#24A3D9] font-bold">
               Coaching
             </p>
-            <div className="grid grid-cols-3">
+            <div className="grid grid-cols-3 grid-flow-row-dense mr-5">
               {coaching?.map((item, idx) => {
                 return (
                   <div key={idx} className="flex items-center mb-3 mr-6">
@@ -229,8 +258,11 @@ export default function FurtherDetails({
                     {item.text === "Others" && item.checked ? (
                       <input
                         autoFocus
-                        className="ml-3 text-[13px] text-[#7E7E7E] outline-[#DCDCDD] border-2 border-[#DCDCDD] rounded-md bg-[#DCDCDD]  w-48"
+                        className="ml-3 text-[13px] text-[#7E7E7E] outline-[#DCDCDD] border-2 border-[#DCDCDD] rounded-md bg-[#DCDCDD]  w-32"
                         type="text"
+                        onBlur={(e) => {
+                          handleOthersField(e, coaching, setCoaching);
+                        }}
                       />
                     ) : (
                       ""
@@ -309,7 +341,10 @@ export default function FurtherDetails({
         </p>
         <div className="flex flex-col h-min mt-3 text-[#667085]">
           <div className={style.changeOption}>
-            <select className="form-control  text-xs pl-2">
+            <select
+              onChange={(e) => handlePaymentTypeChange(e)}
+              className="form-control  text-xs pl-2"
+            >
               <option value="0">Options</option>
               {paymentOptions.map((c, id) => {
                 return (
@@ -337,7 +372,7 @@ export default function FurtherDetails({
            
           `}
           onClick={() => handleSubmit()}
-        // disabled={disabled}
+          // disabled={disabled}
         />
       </div>
     </div>

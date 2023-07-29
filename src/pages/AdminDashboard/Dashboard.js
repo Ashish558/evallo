@@ -19,10 +19,12 @@ import {
   useLazyGetTutorPerformanceQuery,
   useLazyGetPopularServicesQuery,
   useLazyGetImprovementStatsQuery,
+  useGetFilteredActionLogMutation,
 } from "../../app/services/adminDashboard";
 import { latestSignUpHeaders, tutorTableHeaders } from "./staticData";
 import { useState } from "react";
 import RangeDate from "../../components/RangeDate/RangeDate";
+import { useEffect } from "react";
 
 const Dashboard = () => {
   const { data: latestSignUp } = useGetLatestSignUpQuery();
@@ -46,6 +48,9 @@ const Dashboard = () => {
   const [fetchImprovementStats, fetchImprovementStatsStatus] =
     useLazyGetImprovementStatsQuery();
   const [improvementStats, setImprovementStats] = useState([]);
+  const [fetchFilteredActionLog, fetchFilteredActionLogStatus] =
+    useGetFilteredActionLogMutation();
+  const [filteredActionLog, setFilteredActionLog] = useState([]);
   const handleFetchRevenue = (fetchMutation, body, setValue) => {
     fetchMutation(body)
       .then((res) => {
@@ -58,8 +63,14 @@ const Dashboard = () => {
 
   const convertDateToRange = (startDate) => {
     let startD = startDate.split("-")[0];
+
+    startD = new Date(startD);
+    startD = startD.setDate(startD.getDate() + 1);
     startD = new Date(startD).toISOString().split("T")[0];
+
     let endD = startDate.split("-")[1];
+    endD = new Date(endD);
+    endD = endD.setDate(endD.getDate() + 1);
     endD = new Date(endD).toISOString().split("T")[0];
     const body = { startDate: startD, endDate: endD };
 
@@ -77,7 +88,7 @@ const Dashboard = () => {
     fetchTutorPerformanceData(body)
       .then((res) => {
         console.log(res?.data);
-       // setTutorPerformance(res?.data?.all_tutors);
+        // setTutorPerformance(res?.data?.all_tutors);
       })
       .catch((err) => {
         console.log(err);
@@ -89,28 +100,43 @@ const Dashboard = () => {
     fetchPopularServicesData(body)
       .then((res) => {
         console.log(res?.data);
-       // setPopularServices(res?.data?.all_services);
+        // setPopularServices(res?.data?.all_services);
       })
       .catch((err) => {
         console.log(err);
       });
-      handleImprovementStats(startDate) 
-     };
+    handleImprovementStats(startDate);
+  };
   const handleImprovementStats = (startDate) => {
     const body = convertDateToRange(startDate);
 
     fetchImprovementStats(body)
       .then((res) => {
         console.log(res?.data);
-       // setImprovementStats(res?.data?.all_tutors);
+        setImprovementStats(res?.data);
       })
       .catch((err) => {
         console.log(err);
       });
   };
+  const handleUserStats = (startDate) => {
+    const body = convertDateToRange(startDate);
+
+    fetchFilteredActionLog(body)
+      .then((res) => {
+        console.log(res?.data);
+       
+        
+        setFilteredActionLog(res?.data?.actions);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   return (
     <div className={styles.container}>
-      <div className=" mt-[28px] bg-#2E2E2E ">
+      <div className=" mt-[28px] bg-#2E2E2E">
         <div className="mt-[42px] flex justify-center">
           <div className="w-full mx-[80px]">
             <p className="text-[#24A3D9] mb-3">
@@ -285,13 +311,7 @@ const Dashboard = () => {
               <p className="font-bold">USER OVERVIEW </p>
 
               <div className="flex font-semibold text-[#FFA28D] text-xs">
-                <p> 1 May - May 12, 2023 </p>
-                <p>
-                  <FontAwesomeIcon
-                    className="pl-3"
-                    icon={faCaretDown}
-                  ></FontAwesomeIcon>
-                </p>
+                <RangeDate handleRangeData={handleUserStats} />
               </div>
             </div>
           </div>
@@ -306,7 +326,7 @@ const Dashboard = () => {
                     <span className="font-bold text-[#FFA28D] text-3xl">
                       {userStats?.student.activeUsers.count}
                     </span>{" "}
-                    /{" "}
+                    <span className=" text-[#FFA28D] text-3xl">/ </span>
                     <span className="text-[#24A3D9]">
                       {" "}
                       {userStats
@@ -322,7 +342,7 @@ const Dashboard = () => {
                     <span className="font-bold text-[#FFA28D] text-3xl">
                       {userStats?.tutor.activeUsers.count}
                     </span>{" "}
-                    /{" "}
+                    <span className=" text-[#FFA28D] text-3xl">/ </span>
                     <span className="text-[#24A3D9]">
                       {" "}
                       {userStats
@@ -338,7 +358,7 @@ const Dashboard = () => {
                     <span className="font-bold text-[#FFA28D] text-3xl">
                       {userStats?.parent.activeUsers.count}
                     </span>{" "}
-                    /{" "}
+                    <span className=" text-[#FFA28D] text-3xl">/ </span>
                     <span className="text-[#24A3D9]">
                       {" "}
                       {userStats
@@ -353,7 +373,9 @@ const Dashboard = () => {
 
             <div className="col-span-5">
               <p className="mb-1 font-semibold text-[#26435F]">ACTION LOG</p>
-              <ActionLog />
+              <ActionLog
+                actionLog={filteredActionLog ? filteredActionLog : [""]}
+              />
             </div>
           </div>
         </section>
@@ -439,7 +461,7 @@ const Dashboard = () => {
                   className={`w-[150px] mt-2  h-[67px] bg-[rgba(255,162,141,0.2)] ${styles.smallBox}`}
                 >
                   <p className="text-[#FFA28D] h-full w-full justify-center font-semibold text-3xl flex items-center text-center">
-                    76
+                    {improvementStats.no_of_referrals}
                   </p>
                 </div>
               </div>
@@ -449,7 +471,9 @@ const Dashboard = () => {
                   className={`w-[190px] mt-2 h-[67px] bg-[rgba(36,163,217,0.2)]  ${styles.smallBox}`}
                 >
                   <p className="text-[#24A3D9] h-full w-full justify-center font-semibold text-3xl flex items-center text-center">
-                    677
+                    {improvementStats.avg_sat_improvement
+                      ? improvementStats.avg_sat_improvement
+                      : 0}
                   </p>
                 </div>
               </div>
@@ -459,7 +483,9 @@ const Dashboard = () => {
                   className={`w-[190px] mt-2 h-[67px] bg-[rgba(36,163,217,0.2)]  ${styles.smallBox}`}
                 >
                   <p className="text-[#24A3D9] h-full w-full justify-center font-semibold text-3xl flex items-center text-center">
-                    677
+                    {improvementStats.avg_act_improvement
+                      ? improvementStats.avg_act_improvement
+                      : 0}
                   </p>
                 </div>
               </div>
@@ -498,15 +524,15 @@ const Dashboard = () => {
             <div className="mt-2 h-[1px] bg-[#00000033]"></div>
           </div>
         </div>
-        <div className="w-[screen] mx-[80px] mt-[42px] text-[#26435F]">
+        <div className="w-[screen] mx-[80px]  mt-[42px] text-[#26435F]">
           <div className="flex justify-between items-center ">
             <p className="font-bold uppercase">Tutor Performence Overview </p>
 
             <RangeDate handleRangeData={handleTutorPerformance} />
           </div>
         </div>
-        <section>
-          <div className="mx-[80px] w-[93vw] scroll-m-3 overflow-x-auto">
+        <section className="overflow-x-auto scrollbar-content mx-[80px] my-7  scroll-m-1 ">
+          <div className="mr-2 w-max ">
             <Table
               data={tutorPerformanceData}
               Icon={
@@ -519,6 +545,7 @@ const Dashboard = () => {
               maxPageSize={5}
             />
           </div>
+
           <div className="flex justify-center">
             <div className="mt-[36px] mb-[44px] bg-[#CBD6E2] h-[1px] w-[100px]"></div>
           </div>

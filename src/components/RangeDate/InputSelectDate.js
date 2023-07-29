@@ -38,7 +38,7 @@ export default function InputSelect({
     if (!checkbox) setSelected(false);
   }, [value]);
   const handleChange = (optionType, option, idx) => {
-    onChange(optionType === "object" ? option.name : option, idx);
+    onChange(optionType,option, idx);
   };
 
   return (

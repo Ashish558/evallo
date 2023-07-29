@@ -87,7 +87,7 @@ export default function Signup() {
     state: "",
     zip: "",
     city: "",
-
+    paymentType: "",
     activeStudents: "",
     activeTutors: "",
     services: [],
@@ -123,7 +123,7 @@ export default function Signup() {
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
   }, [frames]);
-
+  
   const [signupUser, signupUserResp] = useSignupUserMutation();
   const [addUserDetails, addUserDetailsResp] = useAddUserDetailsMutation();
   const [getUserDetail, userDetailResp] = useLazyGetTutorDetailsQuery();
@@ -326,7 +326,7 @@ export default function Signup() {
     promiseState().then(() => {
       let reqBody = {
         firstname: values.firstName,
-        lastname: values.firstName,
+        lastname: values.lastName,
         workemail: values.email,
         password: values.firstName,
         phone: values.phone,
@@ -342,13 +342,16 @@ export default function Signup() {
         zip: values.zip,
         activestudents: values.activeStudents,
         numberoftutors: values.activeTutors,
-
+        website: values.website,
         testpreparation: getCheckedString(testPreparations),
         subjecttutoring: getCheckedString(tutoring),
         coaching: getCheckedString(coaching),
         formatofinstruction: getCheckedString(instructions),
         studentserved: getCheckedString(studentserved),
-        hearaboutus: getCheckedString(hearAboutUs),
+        hearAbout: getCheckedString(hearAboutUs),
+        paymentMethod:values.paymentType,
+        rating:rateUs,
+        term:true,
         solutionyouarelookingfor: getCheckedString(solutions),
       };
       console.log({ reqBody });
@@ -406,7 +409,7 @@ export default function Signup() {
       }
     });
   };
-
+  
   const handleClick = () => {
     const emailAlreadyExists = async () => {
       let checked = false;
@@ -535,10 +538,7 @@ export default function Signup() {
     navigate("/");
   };
   return (
-    <div
-      className="min-h-screen   pb-6 bg-primary relative"
-      id={styles.signUp}
-    >
+    <div className="min-h-screen   pb-6 bg-primary relative" id={styles.signUp}>
       {/* <AdminNavbar></AdminNavbar> */}
       <div className="flex justify-center flex-col items-center md:grid-cols-2 min-h-screen mb-[100px]">
         <img src={cuate} alt="rocket" className="h-10vh mb-10" />
@@ -549,8 +549,8 @@ export default function Signup() {
                 {frames.signupActive
                   ? "Sign Up"
                   : frames.setPassword
-                    ? ""
-                    : "Profile Details"}
+                  ? ""
+                  : "Profile Details"}
               </h1>
 
               <h6 className="mb-[10px]">Sign up with email address</h6>
@@ -625,7 +625,6 @@ export default function Signup() {
                       error={error.email}
                     />
 
-
                     <InputFieldDropdown
                       placeholder=""
                       parentClassName="text-xs w-4/5 ml-8 mt-1"
@@ -654,7 +653,10 @@ export default function Signup() {
                     }
                     error={error.company}
                   />
-                  <p className="text-[15px] mb-4 text-[#26435F]"> Registration as </p>
+                  <p className="text-[15px] mb-4 text-[#26435F]">
+                    {" "}
+                    Registration as{" "}
+                  </p>
                   <div className="flex items-center text-xs">
                     <div
                       className="flex items-center mr-6 cursor-pointer"
@@ -679,7 +681,16 @@ export default function Signup() {
                           className="mr-3 p-0"
                         />
                       </div>
-                      <p className={`${values.registrationAs === "Company" ? 'text-[#FFA28D]  ' : ''} text-[14px] `}> Company </p>
+                      <p
+                        className={`${
+                          values.registrationAs === "Company"
+                            ? "text-[#FFA28D]  "
+                            : ""
+                        } text-[14px] `}
+                      >
+                        {" "}
+                        Company{" "}
+                      </p>
                     </div>
                     <div
                       className="flex items-center cursor-pointer"
@@ -705,7 +716,16 @@ export default function Signup() {
                         />
                       </div>
 
-                      <p className={`${values.registrationAs === "Individual" ? 'text-[#FFA28D]  ' : ''} text-[14px] `}> Individual </p>
+                      <p
+                        className={`${
+                          values.registrationAs === "Individual"
+                            ? "text-[#FFA28D]  "
+                            : ""
+                        } text-[14px] `}
+                      >
+                        {" "}
+                        Individual{" "}
+                      </p>
                     </div>
                   </div>
                   <div className="mt-[40px] flex">
@@ -743,10 +763,11 @@ export default function Signup() {
                       onClick={handleBack}
                     />
                     <PrimaryButton
-                      className={`w-full bg-[#FFA28D] disabled:opacity-60 max-w-[110px]  rounded text-white text-sm font-medium relative ${loading
-                        ? "cursor-wait opacity-60 pointer-events-none"
-                        : "cursor-pointer"
-                        }`}
+                      className={`w-full bg-[#FFA28D] disabled:opacity-60 max-w-[110px]  rounded text-white text-sm font-medium relative ${
+                        loading
+                          ? "cursor-wait opacity-60 pointer-events-none"
+                          : "cursor-pointer"
+                      }`}
                       disabled={
                         values.email === "" || !isChecked ? true : false
                       }
@@ -814,7 +835,6 @@ export default function Signup() {
     </div>
   );
 }
-
 
 /*
 

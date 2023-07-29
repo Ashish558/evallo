@@ -80,6 +80,29 @@ export const superAdminServicesApi = createApi({
         headers: getAuthHeader(),
       }),
     }),
+    getAllOrg: builder.query({
+      query: () => ({
+        url: `/api/user/superadmin/getAllOrg`,
+        method: "GET",
+        headers: getAuthHeader(),
+      }),
+    }),
+    getSpecificActionLog: builder.mutation({
+      query: (body) => ({
+        url: `/api/user/superadmin/getSpecificActionLog`,
+        method: "POST",
+        body: body,
+        headers: getAuthHeader(),
+      }),
+    }),
+    getTotalHours: builder.mutation({
+      query: (body) => ({
+        url: `api/user/superadmin/totalHours`,
+        method: "POST",
+        body: body,
+        headers: getAuthHeader(),
+      }),
+    }),
   }),
 });
 
@@ -90,8 +113,11 @@ export const {
   useGetUserDailyActivityQuery,
   useAddUserDemographyMutation,
   useGetActionLogQuery,
+  useLazyGetAllOrgQuery,
+  useGetTotalHoursMutation,
   useLazyGetLatestOrgQuery,
   useLazyGetLogoutQuery,
   useGetFinancialStatsQuery,
+  useGetSpecificActionLogMutation
   
 } = superAdminServicesApi;

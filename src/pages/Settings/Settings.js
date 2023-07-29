@@ -306,9 +306,8 @@ export default function Settings() {
       );
     });
   };
- 
+
   const fetchSettings = () => {
-   
     if (organization.settings) {
       setSettingsData(organization.settings);
     }
@@ -360,7 +359,7 @@ export default function Settings() {
       settings,
     };
     console.log("body", body, updatedSetting);
-   
+
     setSaveLoading(true);
     updateSetting(body)
       .then((res) => {
@@ -464,7 +463,16 @@ export default function Settings() {
     console.log(updatedSetting);
     updateAndFetchsettings(updatedSetting);
   };
-
+  const handleImageRemoval=(offer)=>{
+    console.log(offer)
+    const arr= offerImages.filter((item)=>{
+       return item._id !== offer._id;
+    }) 
+    let updatedSetting = {
+      offerImages: arr,
+    };
+    updateAndFetchsettings(updatedSetting);
+  }
   const handleOfferChange = (offer, key, value) => {
     let updatedField = settingsData.offerImages.map((item) => {
       if (item._id === offer._id) {
@@ -907,7 +915,6 @@ export default function Settings() {
                 label="Default Timezone"
                 value={settingsData.dateFormat}
                 onChange={(val) => handleChange("dateFormat", val)}
-                
               />
             </div>
             <SettingsCard
@@ -1307,8 +1314,8 @@ export default function Settings() {
                   /> */}
                     {offerImages?.map((offer) => {
                       return (
-                        <div key={offer._id}>
-                          <div>
+                        <div key={offer._id} >
+                          <div className="relative">
                             {toggleImage.offer && (
                               <div className="w-[300px] h-[150px] overflow-hidden mb-5">
                                 <img
@@ -1316,9 +1323,17 @@ export default function Settings() {
                                   className="w-full h-full object-cover rounded-7"
                                   alt="offer-image2"
                                 />
+                              
                               </div>
                             )}
-                            <div>
+                            <div >
+                            <div onClick={()=>handleImageRemoval(offer)} className="w-7 h-7 z-5000 -top-2 right-0 flex items-center absolute justify-center bg-[#E3E3E3] rounded-full cursor-pointer">
+                                  <img
+                                    src={DeleteIcon}
+                                    className="w-5"
+                                    alt="delete"
+                                  />
+                                </div>
                               <InputField
                                 defaultValue={offer.link}
                                 parentClassName={"mb-3"}
@@ -1374,10 +1389,7 @@ export default function Settings() {
                         key={id}
                         className="pt-[34px] pb-[30px] border-b-2 border-[#CBD6E2] text-[#24A3D9] font-medium text-[17.5px] flex items-center justify-between"
                       >
-                        <p>
-                         
-                          {renderColoredText(item.name)}
-                        </p>
+                        <p>{renderColoredText(item.name)}</p>
 
                         <ToggleBar
                           toggle={{ value: item.choosedValue, key: item._id }}
@@ -1396,12 +1408,14 @@ export default function Settings() {
                             id="option"
                             className="border border-gray-300 px-2  rounded-md text-[#26435F] bg-[#E9ECEF]"
                           >
-                             <option value={item.choosedValue}>
+                            <option value={item.choosedValue}>
                               {`   ${
                                 item.permissionActionName ===
                                 "notifyParentBefSession"
-                                  ?item.choosedValue===0?"OFF":item.choosedValue + " hours before"
-                                  :item.choosedValue
+                                  ? item.choosedValue === 0
+                                    ? "OFF"
+                                    : item.choosedValue + " hours before"
+                                  : item.choosedValue
                               }`}
                             </option>
                             {item.values.map((values, i) => {
@@ -1411,8 +1425,10 @@ export default function Settings() {
                                     {` ${
                                       item.permissionActionName ===
                                       "notifyParentBefSession"
-                                        ? values===0?"OFF":values + " hours before"
-                                        : values 
+                                        ? values === 0
+                                          ? "OFF"
+                                          : values + " hours before"
+                                        : values
                                     }`}
                                   </option>
                                 )

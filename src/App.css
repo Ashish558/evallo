@@ -8,11 +8,12 @@
 
 body {
     background-color: #F5F8FA;
-    height: 100vh;
+    min-height: 100vh;
     padding-right: 0;
-    padding-bottom: 0;
+    padding-bottom: 50px;
     font-family: "Inter", sans-serif;
     overflow-x: hidden;
+    position: relative;
 }
 
 nav .active {
