@@ -1,17 +1,17 @@
 import React from "react";
 import styles from './styles.module.css';
-import image from '../../../assets/stats/Vector.png';
-import image1 from '../../../assets/stats/Vector (1).png';
-import image2 from '../../../assets/stats/Vector (2).png';
-import image3 from '../../../assets/stats/Vector (3).png';
-import image4 from '../../../assets/stats/Vector (4).png';
+import image from '../../../assets/icons/Vectorschedule.svg';
+import image1 from '../../../assets/icons/Vectorcompleted.svg';
+import image2 from '../../../assets/icons/Vectormissed.svg';
+import image3 from '../../../assets/icons/Vectorcancel.svg';
+import image4 from '../../../assets/icons/mdi_file-rotate-counter-clockwise-outlinetotalTrans.svg';
 import image5 from '../../../assets/stats/Vector (5).png';
 import image6 from '../../../assets/stats/Vector (6).png';
-import image7 from '../../../assets/stats/Vector (7).png';
+import image7 from '../../../assets/icons/ic_round-paymentnotransaction.svg';
 import image8 from '../../../assets/stats/Vector (8).png';
-import image9 from '../../../assets/stats/Vector (9).png';
+import image9 from '../../../assets/icons/basil_invoice-outlineinvoice.svg';
 import image10 from '../../../assets/stats/Vector (10).png';
-import image11 from '../../../assets/stats/Vector (11).svg';
+import image11 from '../../../assets/icons/carbon_chart-averageaveragetransaction.svg';
 import rectangle from '../../../assets/stats/Rectangle 2061.png';
 
 import {useGetFinancialStatsQuery} from "../../../app/services/superAdmin"
@@ -69,7 +69,7 @@ export default function FinancialStats() {
         </div>
       </div> */}
 
-      <div className="grid grid-cols-4 gap-x-12 gap-y-[10px]">
+      <div className="grid grid-cols-4 gap-x-8 gap-y-[10px]">
         <div className={`text-[#00ADD3] w-[95px] h-[145px] ${styles.card} flex flex-col justify-center items-center`}>
           <p className="p-3 bg-[#FFFFFF] rounded"><img src={image} alt="" /></p>
           <p className="text-sm mt-4">Scheduled</p>
@@ -91,23 +91,23 @@ export default function FinancialStats() {
           <p className="font-semibold text-2xl">{financialStats?.canceledSessions}</p>
         </div>
         <div className={`text-[#26435F] w-[95px] h-[180px] ${styles.card2} `}>
-          <p className="bg-[#26435F] rounded p-3 w-[40px] h-[40px] mx-auto mt-[21px]"><span><img src={image9} alt="" /></span></p>
+          <p className="bg-[#26435F] rounded p-2 w-[40px] h-[40px] mx-auto mt-[21px]"><span><img src={image9} alt="" /></span></p>
           <p className="text-sm text-center mt-4">Invoice</p>
           <p className="font-semibold text-2xl text-center mt-[27px]">51</p>
         </div>
         <div className={`text-[#26435F] w-[95px] h-[180px] ${styles.card2} `}>
-          <p className="bg-[#26435F] rounded p-3 w-[40px] h-[40px] mx-auto mt-[21px]"><span><img src={image7} alt="" /></span></p>
+          <p className="bg-[#26435F] rounded p-2 w-[40px] h-[40px] mx-auto mt-[21px]"><span><img src={image7} alt="" /></span></p>
           <p className="text-sm text-center mt-4"># of Transaction</p>
           <p className="font-semibold text-2xl text-center mt-[11px]">51</p>
         </div>
         <div className={`text-[#26435F] w-[95px] h-[180px] ${styles.card2}`}>
-          <p className="bg-[#26435F] rounded p-3 w-[40px] h-[40px] mx-auto mt-[21px]"><img src={image4} alt="" /></p>
+          <p className="bg-[#26435F] rounded p-2 w-[40px] h-[40px] mx-auto mt-[21px]"><img src={image4} alt="" /></p>
           <p className="text-sm text-center mt-4">Transaction
             Amount Total</p>
           <p className="font-semibold text-2xl text-center mt-[11px]">51</p>
         </div>
         <div className={`text-[#26435F] w-[95px] h-[180px] ${styles.card2} `}>
-          <p className="bg-[#26435F] rounded p-3 w-[40px] h-[40px] mx-auto mt-[21px]"><img src={image11} alt="" /></p>
+          <p className="bg-[#26435F] rounded p-2 w-[40px] h-[40px] mx-auto mt-[21px]"><img src={image11} alt="" /></p>
           <p className="text-sm text-center mt-4 px-1">Avg transaction</p>
           <p className="font-semibold text-2xl text-center mt-[11px]">51</p>
         </div>

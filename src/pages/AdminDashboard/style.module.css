@@ -110,10 +110,11 @@ table th:last-child {
 
 tr:nth-child(odd) {
     background: #FFFFFF;
-    box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.25);
+    box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.25);
     border-radius: 4px;
+    margin:3px 0px;
     color: #517CA8;
-
+    outline: black;
 }
 
 tr:nth-child(even) {
