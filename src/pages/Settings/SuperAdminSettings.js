@@ -856,7 +856,7 @@ export default function SuperAdminSettings() {
                     <p >{item.name} </p>
                   </div>
                   {activeTab === idx + 1 && (
-                    <img src={ActiveTab} className={styles.activeBgIcon} />
+                    <img src={ActiveTab} className={styles.activeBgIcon} alt="item-background" />
                   )}
                 </div>
               );
