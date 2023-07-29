@@ -23,7 +23,7 @@ import {
 import { latestSignUpHeaders, tutorTableHeaders } from "./staticData";
 import { useState } from "react";
 import RangeDate from "../../components/RangeDate/RangeDate";
-import ArrowDown from '../../assets/Dashboard/sort-down.svg'
+import ArrowDown from "../../assets/Dashboard/sort-down.svg";
 
 const Dashboard = () => {
   const { data: latestSignUp } = useGetLatestSignUpQuery();
@@ -78,7 +78,7 @@ const Dashboard = () => {
     fetchTutorPerformanceData(body)
       .then((res) => {
         console.log(res?.data);
-       // setTutorPerformance(res?.data?.all_tutors);
+        // setTutorPerformance(res?.data?.all_tutors);
       })
       .catch((err) => {
         console.log(err);
@@ -90,20 +90,20 @@ const Dashboard = () => {
     fetchPopularServicesData(body)
       .then((res) => {
         console.log(res?.data);
-       // setPopularServices(res?.data?.all_services);
+        // setPopularServices(res?.data?.all_services);
       })
       .catch((err) => {
         console.log(err);
       });
-      handleImprovementStats(startDate) 
-     };
+    handleImprovementStats(startDate);
+  };
   const handleImprovementStats = (startDate) => {
     const body = convertDateToRange(startDate);
 
     fetchImprovementStats(body)
       .then((res) => {
         console.log(res?.data);
-       // setImprovementStats(res?.data?.all_tutors);
+        // setImprovementStats(res?.data?.all_tutors);
       })
       .catch((err) => {
         console.log(err);
@@ -305,7 +305,8 @@ const Dashboard = () => {
                   <p className="text-[#26435F]">Active / Total Students</p>
                   <p className="text-xl">
                     <span className="font-bold text-[#FFA28D] text-3xl">
-                      {userStats?.student.activeUsers.count}{' / '}
+                      {userStats?.student.activeUsers.count}
+                      {" / "}
                     </span>
                     <span className="text-[#24A3D9]">
                       {userStats
@@ -319,7 +320,8 @@ const Dashboard = () => {
                   <p className="text-[#26435F]">Active / Total Tutors</p>
                   <p className="text-xl">
                     <span className="font-bold text-[#FFA28D] text-3xl">
-                      {userStats?.tutor.activeUsers.count}{' / '}
+                      {userStats?.tutor.activeUsers.count}
+                      {" / "}
                     </span>
                     <span className="text-[#24A3D9]">
                       {userStats
@@ -333,7 +335,8 @@ const Dashboard = () => {
                   <p className="text-[#26435F]">Active / Total Parents</p>
                   <p className="text-xl">
                     <span className="font-bold text-[#FFA28D] text-3xl">
-                      {userStats?.parent.activeUsers.count}{' / '}
+                      {userStats?.parent.activeUsers.count}
+                      {" / "}
                     </span>
                     <span className="text-[#24A3D9]">
                       {userStats
@@ -361,7 +364,7 @@ const Dashboard = () => {
               data={latestSignUp?.data ? latestSignUp?.data : []}
               AdminLatestSignUp={true}
               Icon={
-                <img src={ArrowDown} alt='down' className="w-[10px]" />
+                <img src={ArrowDown} alt="down" className="flex-shrink-0" />
               }
               tableHeaders={latestSignUpHeaders}
               maxPageSize={5}
@@ -389,13 +392,7 @@ const Dashboard = () => {
               </p>
               <Table
                 data={popularServices}
-                Icon={
-                  <img src={ArrowDown} alt='down' className="w-[10px]" />
-                  // <FontAwesomeIcon
-                  //   className="pl-1 w-[10px]"
-                  //   icon={faArrowDown}
-                  // ></FontAwesomeIcon>
-                }
+                Icon={<img src={ArrowDown} alt="down" className="" />}
                 tableHeaders={[
                   "Service",
                   "Actively Using",
@@ -408,7 +405,7 @@ const Dashboard = () => {
               />
             </div>
 
-            <div className="pl-7" >
+            <div className="pl-7">
               <p className="mt-1 mb-[10px] font-semibold text-[#26435F] text-[14px] ">
                 Star Clients
               </p>
@@ -426,7 +423,7 @@ const Dashboard = () => {
         <section className="mt-[30px] mx-[80px]">
           <div className="grid grid-cols-2 gap-x-80">
             <div className="flex justify-start gap-x-6 mt-2 text-sm text-[#26435F]">
-              <div className="flex-1" >
+              <div className="flex-1">
                 <p className="font-semibold text-sm">Total # Of Referrals</p>
                 <div
                   className={`mt-2 h-[67px] bg-[rgba(255,162,141,0.2)] ${styles.smallBox}`}
@@ -502,12 +499,7 @@ const Dashboard = () => {
           <div className="mx-[80px] w-[93vw] scroll-m-3 overflow-x-auto">
             <Table
               data={tutorPerformanceData}
-              Icon={
-                <FontAwesomeIcon
-                  className="pl-1 w-[10px]"
-                  icon={faArrowDown}
-                ></FontAwesomeIcon>
-              }
+              Icon={<img src={ArrowDown} alt="down" className="" />}
               tableHeaders={tutorTableHeaders}
               maxPageSize={5}
             />

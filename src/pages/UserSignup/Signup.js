@@ -298,6 +298,14 @@ export default function UserSignup() {
       new Promise((resolve) => {
         resolve(resetErrors());
       });
+    let updatedCustomfields = customFields.map((item) => {
+      return {
+        _id: item._id,
+        dataType: item.dataType,
+        name: item.name,
+        Values: item.value,
+      };
+    });
     promiseState().then(() => {
       let reqBody = {
         firstName: values.firstName,
@@ -306,7 +314,7 @@ export default function UserSignup() {
         phone: values.phone,
         role: values.role.toLowerCase(),
         ...otherDetails,
-        customFields,
+        customFields: updatedCustomfields,
         associatedOrg: organisation._id,
       };
       console.log({ reqBody });
@@ -350,16 +358,16 @@ export default function UserSignup() {
                 return;
               }
               setLoading(false);
-               alert("Signup successful");
+              alert("Signup successful");
               //navigate("/");
-              
+
               setFrames({
                 ...frames,
-                setPasswordFields:true,
-                userDetails:false,
+                setPasswordFields: true,
+                userDetails: false,
                 customFields: false,
               });
-              
+
               sessionStorage.clear();
             })
             .catch((err) => {
@@ -439,16 +447,17 @@ export default function UserSignup() {
                   ? "Sign Up"
                   : frames.setPasswordFields
                   ? "Set Password"
-                  : "Profile Details"
-                  
-                  }
+                  : "Profile Details"}
               </h1>
 
               {currentStep > 1 && !frames.signupSuccessful && (
                 <NumericSteppers
-                  totalSteps={customFields.length === 0 ? 2+isAddedByAdmin : 3+isAddedByAdmin}
+                  totalSteps={
+                    customFields.length === 0
+                      ? 2 + isAddedByAdmin
+                      : 3 + isAddedByAdmin
+                  }
                   currentStep={currentStep}
-                
                   customFieldsPresents={true}
                 />
               )}
@@ -593,8 +602,8 @@ export default function UserSignup() {
                   handleSignup={handleSignup}
                 />
               ) : frames.setPasswordFields ? (
-                <SetPassword 
-                {...props}
+                <SetPassword
+                  {...props}
                   {...valueProps}
                   currentStep={currentStep}
                 />

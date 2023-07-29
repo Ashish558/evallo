@@ -85,12 +85,7 @@ export default function Settings() {
   const [newQuestion, setNewQuestion] = useState({
     type: "String",
     text: "Add",
-    values: {
-      option1: "",
-      option2: "",
-      option3: "",
-      option4: "",
-    },
+    values: []
   });
   const { organization } = useSelector((state) => state.organization);
 
@@ -777,12 +772,11 @@ export default function Settings() {
     e.preventDefault();
     if (organization?.customFields?.length === 5)
       return alert("Only 5 fields are allowed");
-    const { option1, option2, option3, option4 } = newQuestion.values;
     const body = {
       orgId: user.associatedOrg,
       name: newQuestion.text,
       dataType: newQuestion.type,
-      values: [option1, option2, option3, option4],
+      values: newQuestion.values,
     };
     setAddNewQuestionModalActive(false);
     addNewQuestion(body).then((res) => {
@@ -1435,6 +1429,7 @@ export default function Settings() {
           <SignupTab
             setAddNewQuestionModalActive={setAddNewQuestionModalActive}
             fetchS={fetchS}
+            organization={organization}
           />
         )}
         {activeTab === 4 && <AccountOverview />}
