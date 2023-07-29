@@ -52,7 +52,7 @@ export default function Table(props) {
   return (
     <div>
       <table
-        className={`${styles.customTable} mb-3 text-center w-full min-h-[300px]`}
+        className={`${styles.customTable}  border-collapse border-spacing-2  mb-3 text-center w-full min-h-[300px]`}
       >
         <thead className="bg-[#26435F]">
           <tr>

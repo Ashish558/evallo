@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import styles from "./style.module.css";
 import DownArrow from "../../assets/icons/down-chevron.svg";
+import countryDA from "../../assets/icons/Layer 2countryda.svg";
 import useOutsideAlerter from "../../hooks/useOutsideAlerter";
 import CCheckbox from "../CCheckbox/CCheckbox";
 
@@ -21,6 +22,8 @@ export default function InputSelectNew({
   optionType,
   disabled,
   required,
+  placeHolderClass,
+  IconDemography,
   optionListClassName,
 }) {
   const [selected, setSelected] = useState(false);
@@ -56,7 +59,7 @@ export default function InputSelectNew({
         {Icon && <img src={Icon} className="mr-6" alt="icon" />}
         {
           <img
-            src={DownArrow}
+            src={IconDemography?countryDA:DownArrow}
             className={`w-[15px] ${styles.downArrow}`}
             alt="down-arrow"
             onClick={() => setSelected(!selected)}
@@ -69,7 +72,7 @@ export default function InputSelectNew({
           name={label}
         >
           {value === "" ? (
-            <span className="text-primary-60"> {placeholder} </span>
+            <span className={`text-primary-60 ${placeHolderClass}`}> {placeholder} </span>
           ) : (
             value
           )}

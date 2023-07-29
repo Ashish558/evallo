@@ -4,7 +4,8 @@ import { VectorMap } from "@react-jvectormap/core";
 import React, { useEffect, useState } from "react";
 import { colorScale, countries, missingCountries } from "./Countries";
 import styles from "./styles.module.css";
-const Map = ({ markings, countryMarking }) => {
+import ReactCountryFlag from "react-country-flag";
+const Map = ({ markings, countryMarking, countryFlag }) => {
   // console.log(markings);
   const [locate, setLocation] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -34,6 +35,7 @@ const Map = ({ markings, countryMarking }) => {
       {(loading === true || locate.length === 0) && (
         <VectorMap
           map={worldMill}
+          zoomButtons={false}
           containerStyle={{
             // width: "700px",
             height: "700px",
@@ -62,16 +64,16 @@ const Map = ({ markings, countryMarking }) => {
             ],
           }}
           onRegionTipShow={function reginalTip(event, label, code) {
-            label.css('opacity',0)
+            label.css("opacity", 0);
             return label.html(`
                     `);
           }}
-         
         />
       )}
       {locate.length > 0 && loading === false && (
         <VectorMap
           map={worldMill}
+          zoomButtons={false}
           containerStyle={{
             // width: "700px",
             height: "700px",
@@ -108,10 +110,12 @@ const Map = ({ markings, countryMarking }) => {
               marginLeft: "130px",
               marginTop: "-10px",
             });
+            
             return label.html(`
                     <div style="background-color: white;outline:none;  border-color:white; border-radius: 6px;  min-height: 50px; width: 125px; color: black"; padding: 5px>
                       <p>
                       <b>
+                      
                       ${label.html()}
                       </b>
                       </p>
@@ -136,7 +140,9 @@ const Map = ({ markings, countryMarking }) => {
                       ${label.html()}
                       </b>
                       </br/>
-                      ${locate[code].no_of_orgs} ${ locate[code].no_of_orgs>1?' Users':' User'}  
+                      ${locate[code].no_of_orgs} ${
+              locate[code].no_of_orgs > 1 ? " Users" : " User"
+            }  
                       </p>
                       <div class='${styles.point}'></div>
                       </div>

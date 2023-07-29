@@ -26,6 +26,7 @@ code {
     border-style: solid none;
     padding: 10px;
 }
+
 .table-auto td:first-child {
     border-left-style: solid;
     border-top-left-radius: 10px;
