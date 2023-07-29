@@ -2,15 +2,15 @@ import React from "react";
 import { Bubble } from "react-chartjs-2";
 import { bubbleChartData } from "./ChartData";
 import { useGetUserDailyActivityQuery } from "../../../app/services/superAdmin";
-import { groupDatesIntoWeeks,convertToChart } from "../utils";
+import { groupDatesIntoWeeks, convertToChart } from "../utils";
 import { useEffect } from "react";
 import { useState } from "react";
 const BubbleChart = () => {
   const { data: userDailyActivity, isSuccess: dailyActivityAccess } =
     useGetUserDailyActivityQuery();
   const [dailyuserData, setDailyUserData] = useState("");
-  const [chartData, setChartData] =useState("");
- 
+  const [chartData, setChartData] = useState("");
+
   useEffect(() => {
     if (dailyActivityAccess) {
       let rolesData = {
@@ -23,28 +23,29 @@ const BubbleChart = () => {
         rolesData[d.role].push({
           date: d.datetime,
           count: d.count,
-          totalHours:d.totalHours
+          totalHours: d.totalHours,
         });
       });
-      
+
       Object.keys(rolesData).forEach((key) => {
-        rolesData[key] =rolesData[key].length>0? groupDatesIntoWeeks(rolesData[key]):[];
+        rolesData[key] =
+          rolesData[key].length > 0 ? groupDatesIntoWeeks(rolesData[key]) : [];
       });
-     // console.log(rolesData);
-       let mainData = convertToChart(rolesData);
-       setChartData(mainData)
+      // console.log(rolesData);
+      let mainData = convertToChart(rolesData);
+      setChartData(mainData);
       // setDailyUserData({
       //   ...userDailyActivity,
       // });
     }
   }, [dailyActivityAccess]);
- // console.log(chartData)
+  // console.log(chartData)
   return (
-    <div className="bg-[#FFFFFF] flex justify-center items-center border border-gray-200 p-4 mt-[6px] rounded-md">
+    <div className="bg-[#FFFFFF] flex justify-center items-center border-[1.5px] border-gray-200 p-4 mt-[6px] rounded-md">
       <div className="w-full max-w-screen-lg">
         <div className="flex justify-center w-full">
           <Bubble
-            data={chartData?chartData:bubbleChartData}
+            data={chartData ? chartData : bubbleChartData}
             options={{
               scales: {
                 x: {
@@ -104,7 +105,27 @@ const BubbleChart = () => {
               },
               legend: {
                 display: true,
+
                 position: "right",
+              },
+              plugins: {
+                legend: {
+                  display: true,
+                  position: "top", // Place legends at the top
+                  align: "center", // Align legends to the left
+                  
+                  labels: {
+                    usePointStyle: true,
+                  
+                  
+                    boxWidth: 40,
+
+                   
+                    pointStyle: "circle",
+
+                    radius: 7,
+                  },
+                },
               },
               
             }}

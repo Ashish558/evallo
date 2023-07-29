@@ -36,6 +36,7 @@ export function convertToChart(dates) {
   let adminData = [];
   let tutorData = [];
   let parentData = [];
+  let studentData = [];
   dates["admin"]?.map((it) => {
     mxLabel = Math.max(mxLabel, it.week);
     adminData.push({ x: it.week, y: it.hours, r: it.data.length, label: ("week " + it.week) });
@@ -64,9 +65,14 @@ export function convertToChart(dates) {
         backgroundColor: "#FF7714",
       },
       {
-        label: "Parent",
+        label: "Parents",
         data: parentData,
         backgroundColor: "#24FF00",
+      },
+      {
+        label: "students",
+        data: studentData,
+        backgroundColor: "#26435F",
       },
     ],
   };
