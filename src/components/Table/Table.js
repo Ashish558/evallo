@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";
 import ApiTable from "./ApiTAble";
-import Pagination from "./Pagination";
 import { TableHeader } from "./TableHeader";
 import { TableHeaderNew } from "./tableHeaderObj";
 import TableItem from "./tableItem";
@@ -29,7 +28,7 @@ export default function Table(props) {
    const [currentPage, setCurrentPage] = useState(1);
    const dataLength = data?.length > 30 ? 30 : data?.length;
    const [sorted, setSorted] = useState(false)
-
+   
    useEffect(() => {
       if (changePageAfterUpdate === false) return
       if (hidePagination === true) {
@@ -47,7 +46,7 @@ export default function Table(props) {
       // console.log("object");
       // setTableData(tableData.sort((a, b) => b.dueDate?.split("-").join("") - a.dueDate?.split("-").join("")))
    }
-
+  
 
    //change tabledata if current page changes
    useEffect(() => {
@@ -57,17 +56,18 @@ export default function Table(props) {
    }, [currentPage, data])
 
    if (isCallingApi) return <ApiTable {...props} />
+  
    return (
       <div>
-         <table className="table-auto mb-3 text-center w-full">
-            <thead className="pb-2">
+         <table className="table-auto mb-3 text-center w-full whitespace-nowrap">
+            <thead className="pb-2 whitespace-nowrap">
                <tr>
                   {tableHeaders.map((item, idx) => {
-                     return headerObject === true ? <TableHeaderNew header={item} /> : <TableHeader key={idx} header={item} onClick={sorting} setSorted={setSorted} dataFor={dataFor} />;
+                     return headerObject === true ? <TableHeaderNew  header={item} dataFor={dataFor} /> : <TableHeader key={idx} header={item} onClick={sorting} setSorted={setSorted} dataFor={dataFor} />;
                   })}
                </tr>
             </thead>
-            <tbody className="relative">
+            <tbody className="relative whitespace-nowrap">
                {
                   loading ?
                      <div className={`absolute w-full min-h-[100px] flex justify-center items-center`}>
@@ -81,6 +81,7 @@ export default function Table(props) {
                               dataFor={dataFor}
                               item={item}
                               key={idx}
+                             
                               excludes={excludes}
                               onClick={onClick}
                            />
@@ -90,7 +91,7 @@ export default function Table(props) {
 
             </tbody>
          </table>
-
+        
          <div className={`flex grid-cols- justify-center items-center ${loading ? 'mt-7' : ''} `}>
             <aside></aside>
             {!hidePagination &&

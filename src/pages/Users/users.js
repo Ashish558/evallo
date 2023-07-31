@@ -539,7 +539,7 @@ export default function Users() {
   };
 
   const handleDelete = (item) => {
-    console.log(item);
+    
     setUserToDelete(item);
     setDeleteModalActive(true);
   };
@@ -636,12 +636,12 @@ export default function Users() {
 
   const [students, setStudents] = useState([]);
   return (
-    <div className="lg:ml-pageLeft bg-lightWhite min-h-screen">
-      <div className="py-14 px-5">
+    <div className="lg:mx-[60px] bg-lightWhite min-h-screen">
+      <div className="py-10 px-5">
         <div className="flex justify-between items-center">
-          <p className="text-[#24A3D9] text-xl font-semibold">{`{Company Name} > {Admin Full Name} > CRM`}</p>
+          <p className="text-[#24A3D9] text-sm ">{`{Company Name} > {Admin Full Name} > `}<span className="font-semibold">CRM</span></p>
           <button
-            className="bg-[#24A3D9] w-[188px] text-sm justify-center flex pt-4 pb-4 px-5 items-center text-white font-semibold rounded-lg"
+            className="bg-[#24A3D9] w-[188px] text-sm justify-center flex py-2 px-5 items-center text-white font-semibold rounded-lg"
             onClick={() => setAssignStudentModalActive(true)}
           >
             Tutor Mapping
@@ -650,11 +650,11 @@ export default function Users() {
         </div>
         <div>
           <div className="flex mb-[50px]">
-            <button className="bg-[#517CA8] w-[158px] text-sm justify-center flex py-3 px-2 items-center text-white font-semibold rounded-lg mr-5">
+            <button className="bg-[#517CA8] w-[158px] text-sm justify-center flex py-1 px-2 items-center text-white font-semibold rounded-lg mr-5">
               Export Data{" "}
               <img src={ExportIcon} className="ml-3" alt="ExportIcon" />
             </button>
-            <button className="bg-[#517CA8] w-[158px] text-sm justify-center flex py-3 px-2 items-center text-white font-semibold rounded-lg mr-5">
+            <button className="bg-[#517CA8] w-[158px] text-sm justify-center flex py-1 px-2 items-center text-white font-semibold rounded-lg mr-5">
               Bulk Upload{" "}
               <img src={UploadIcon} className="ml-3" alt="UploadIcon" />
             </button>
@@ -671,12 +671,12 @@ export default function Users() {
             />
           </div>
         </div>
-        <div className="flex justify-start items-center gap-y-4 gap-x-5 mb-6">
+        <div className="flex justify-between items-center gap-7 mb-6">
           <InputField
             IconRight={SearchIcon}
             placeholder="Type Name"
-            parentClassName="w-full w-1/6"
-            inputContainerClassName="text-sm text-sm drop-shadow-small bg-white  px-[20px] py-[16px]"
+            parentClassName="w-full w-[300px] py-1"
+            inputContainerClassName="text-sm mt-1 shadow-[0px_0px_2.4999988079071045px_0px_#00000040] border-white text-sm bg-white  px-[20px] py-[10px] "
             type="text"
             value={filterData.typeName}
             onChange={(e) =>
@@ -685,7 +685,7 @@ export default function Users() {
           />
           <InputSelect
             optionData={userTypesList}
-            inputContainerClassName="text-sm bg-white drop-shadow-small px-[20px] py-[16px]"
+            inputContainerClassName="text-sm shadow-[0px_0px_2.4999988079071045px_0px_#00000040] border-white bg-white px-[20px] py-[16px]"
             placeholder="User Type"
             parentClassName="w-full w-1/6"
             type="select"
@@ -707,9 +707,10 @@ export default function Users() {
           <InputSelect
             optionData={settings.leadStatus}
             placeholder="Lead Status"
-            parentClassName="w-full w-1/6"
-            inputContainerClassName="text-sm drop-shadow-small bg-white px-[20px] py-[16px]"
+            parentClassName="w-full w-1/6 border-none "
+            inputContainerClassName="text-sm rounded-md shadow-[0px_0px_2.4999988079071045px_0px_#00000040] border-white bg-white px-[20px] py-[16px]"
             type="select"
+         
             checkbox={{
               visible: true,
               name: "test",
@@ -730,7 +731,7 @@ export default function Users() {
             placeholder="Services"
             parentClassName="w-full w-1/6"
             type="select"
-            inputContainerClassName="text-sm drop-shadow-small bg-white px-[20px] py-[16px]"
+            inputContainerClassName="text-sm rounded-md shadow-[0px_0px_2.4999988079071045px_0px_#00000040] border-white bg-white px-[20px] py-[16px]"
             value={
               filterData.specialization.length > 0
                 ? filterData.specialization[0]
@@ -768,12 +769,12 @@ export default function Users() {
                         : [...filterData.userStatus, val]
                   })}
                /> */}
-          <InputSelectNew
+          <InputSelect
             optionData={allTutors}
             placeholder="Tutor"
             parentClassName="w-full w-1/6"
             type="select"
-            inputContainerClassName="text-sm drop-shadow-small bg-white px-[20px] "
+            inputContainerClassName="text-sm rounded-md shadow-[0px_0px_2.4999988079071045px_0px_#00000040] border-white bg-white px-[20px] py-[16px]"
             optionType="object"
             value={filterData.tutor.length > 0 ? filterData.tutor[0] : ""}
             checkbox={{
@@ -788,20 +789,20 @@ export default function Users() {
             }}
           />
         </div>
-        {/* <div className='flex mb-6'>
-               <button className='bg-[#26435f80] px-3 py-2 rounded-md text-sm text-[#FFFFFF] mr-2'>Student</button>
-               <button className='relative bg-[#26435f80] px-3 py-2 rounded-md text-sm text-[#FFFFFF]'>Parent
-                  <img className='absolute top-[-10px] left-[55px]' src={XIcon} alt="" />
-               </button>
-            </div> */}
-        <div>
-          <div className="mt-2 mb-5">
-            <FilterItems
-              items={filterItems}
-              setData={setFilterItems}
-              onRemoveFilter={onRemoveFilter}
+        <div className="flex mb-6">
+          <button className="bg-[#26435f80] px-3 py-2 rounded-md text-sm text-[#FFFFFF] mr-2">
+            Student
+          </button>
+          <button className="relative bg-[#26435f80] px-3 py-2 rounded-md text-sm text-[#FFFFFF]">
+            Parent
+            <img
+              className="absolute top-[-10px] left-[55px]"
+              src={XIcon}
+              alt=""
             />
-          </div>
+          </button>
+        </div>
+        <div className="flex justify-between ">
           <div className="flex">
             <label
               className={`${styles["checkbox-label"]} block text-[#26435F] font-medium`}
@@ -820,8 +821,19 @@ export default function Users() {
             </label>
             <div></div>
           </div>
-        </div>
+          <button className="bg-[#26435F] px-7 py-2 rounded-md text-white">
+            Save
+          </button>
 
+        </div>
+        <div className="flex align-center mt-0 gap-[20px]"></div>
+        <div className="mt-4">
+          <FilterItems
+            items={filterItems}
+            setData={setFilterItems}
+            onRemoveFilter={onRemoveFilter}
+          />
+        </div>
         <div className="mt-6">
           <Table
             dataFor="allUsers"
@@ -843,13 +855,20 @@ export default function Users() {
 
       {modalActive && (
         <Modal
-          classname={"max-w-[780px] mx-auto"}
+          classname={"max-w-[700px] mx-auto rounded-md"}
           title="Add a New User"
-          cancelBtn={true}
+          cancelBtn={false}
+          titleClassName="text-start mb-3 pb-3 border-b border-b-gray-300"
+          primaryCancel={true}
           cancelBtnClassName="w-140"
+          SaveUser={
+            <button className="bg-[#FFA28D] text-white px-10  rounded-lg" >
+               Save User
+            </button>
+          }
           primaryBtn={{
-            text: "Send Invite",
-            // className: 'w-140',
+            text: "Invite User",
+             className: 'rounded-lg bg-transparent border border-[#FFA28D] py-2 text-[#FFA28D]',
             form: "add-user-form",
             // onClick: handleSubmit,
             loading: loading,
@@ -863,11 +882,11 @@ export default function Users() {
               onSubmit={handleSubmit}
               className="px-[3px] mb-0.5"
             >
-              <div className="grid grid-cols-1 md:grid-cols-2  gap-x-2 md:gap-x-3 gap-y-3  mb-5">
+              <div className="grid grid-cols-1 md:grid-cols-2  gap-x-2 md:gap-x-3 gap-y-3 gap-y-4 mb-5">
                 <div>
                   <InputField
                     label="First Name"
-                    labelClassname="ml-4 mb-0.5"
+                    labelClassname="ml-4 mb-0.5 text-[#26435F] font-semibold"
                     placeholder="First Name"
                     inputContainerClassName="text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0"
                     inputClassName="bg-transparent"
@@ -883,7 +902,7 @@ export default function Users() {
                 <div>
                   <InputField
                     label="Last Name"
-                    labelClassname="ml-4 mb-0.5"
+                    labelClassname="ml-4 mb-0.5 text-[#26435F] font-semibold"
                     isRequired={true}
                     placeholder="Last Name"
                     inputContainerClassName="text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0"
@@ -898,8 +917,8 @@ export default function Users() {
                 </div>
                 <div>
                   <InputField
-                    label="Email Addresss"
-                    labelClassname="ml-4 mb-0.5"
+                    label="Email Addresss "
+                    labelClassname="ml-4 mt-2 mb-0.5 text-[#26435F] font-semibold"
                     isRequired={true}
                     placeholder="Email Addresss"
                     inputContainerClassName="text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0"
@@ -920,37 +939,16 @@ export default function Users() {
                     }
                     isRequired={true}
                     type="select"
-                    placeholder="Select User Type"
+                    placeholder="Select User Type "
                     label="User Type"
-                    labelClassname="ml-4 mb-0.5"
+                    labelClassname="ml-0 mb-0.5 text-[#26435F] font-bold"
                     optionData={userTypeOptions}
                     inputContainerClassName="text-sm pt-3.5 pb-3.5 bg-primary-50 px-5 border-0"
                     parentClassName="w-full"
                   />
                 </div>
 
-                <div>
-                  <InputField
-                    label="Phone Number"
-                    labelClassname="ml-4 mb-0.5"
-                    isRequired={true}
-                    placeholder="Phone Number"
-                    inputContainerClassName="text-sm pt-3.5 pb-3.5 px-5  bg-primary-50 border-0"
-                    inputClassName="bg-transparent pl-[60px]"
-                    parentClassName="w-full"
-                    type="text"
-                    value={modalData.phone}
-                    inputLeftField={
-                      <CountryCode
-                        numberPrefix={numberPrefix}
-                        setNumberPrefix={setNumberPrefix}
-                      />
-                    }
-                    onChange={(e) =>
-                      setModalData({ ...modalData, phone: e.target.value })
-                    }
-                  />
-                </div>
+                
               </div>
             </form>
           }
