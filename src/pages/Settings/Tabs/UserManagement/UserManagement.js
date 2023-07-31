@@ -15,7 +15,10 @@ import {
   useLazyGetTutorDetailsQuery,
   useLazyGetUserDetailQuery,
 } from "../../../../app/services/users";
-import { useForgotPasswordMutation, useSignupUserMutation } from "../../../../app/services/auth";
+import {
+  useForgotPasswordMutation,
+  useSignupUserMutation,
+} from "../../../../app/services/auth";
 import { useNavigate } from "react-router-dom";
 import { roles } from "../../../../constants/constants";
 import {
@@ -58,10 +61,10 @@ export default function UserManagement() {
   useEffect(() => {
     setValidData(
       isEmail(modalData.email) &&
-      modalData.firstName &&
-      modalData.lastName &&
-      modalData.userType &&
-      modalData.phone
+        modalData.firstName &&
+        modalData.lastName &&
+        modalData.userType &&
+        modalData.phone
     );
   }, [
     modalData,
@@ -126,13 +129,16 @@ export default function UserManagement() {
     },
     {
       id: 8,
-      text: 'Profile'
+      text: "Profile",
     },
     {
       id: 9,
       text: "Password",
-    }
-
+    },
+    {
+      id: 10,
+      text: "Password",
+    },
   ];
 
   const handleResetPassword = (email) => {
@@ -757,7 +763,12 @@ export default function UserManagement() {
           <Table
             dataFor="allUsersSuperAdmin"
             data={filteredUsersData}
-            onClick={{ redirect, handleTutorStatus, handleDelete, handleResetPassword }}
+            onClick={{
+              redirect,
+              handleTutorStatus,
+              handleDelete,
+              handleResetPassword,
+            }}
             tableHeaders={tableHeaders}
             headerObject={true}
             maxPageSize={maxPageSize}

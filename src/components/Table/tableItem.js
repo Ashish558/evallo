@@ -315,6 +315,11 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch, ext
                   </div>
                </td>
                <td className="font-medium text-sm px-1  min-w-14 py-4">
+                  <div className="my-[6px]">
+                     {/* {item.lastLogin ? item.lastLogin : '-'} */}
+                  </div>
+               </td>
+               <td className="font-medium text-sm px-1  min-w-14 py-4">
                   <div className="">
                      <button className="rounded-md bg-[#26435F3B] text-[#517CA8] px-2 py-[2px]"
                         onClick={() => onClick.handleResetPassword(item.email)}>
@@ -379,7 +384,7 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch, ext
                   </div>
                </td> */}
                <td className="font-medium px-1 min-w-14 py-4">
-                  <div className="w-4 h-4 rounded-full bg-[#E3E3E3] flex items-center justify-center">
+                  <div className="w-4 h-4 mx-auto rounded-full bg-[#E3E3E3] flex items-center justify-center">
                      <img
                         src={TrashIcon}
                         className="cursor-pointer"
