@@ -198,7 +198,7 @@ export default function UserManagement() {
     setUsersData([]);
     setFilteredUsersData([]);
 
-    let urlParams = `?limit=${maxPageSize}&page=${currentPage}`;
+    let urlParams = `?limit=${maxPageSize}&page=${currentPage}&role=superAdmin`;
     if (filterData.userType.length > 0) {
       filterData.userType.forEach((item) => {
         urlParams = urlParams + `&role=${item}`;
@@ -322,6 +322,7 @@ export default function UserManagement() {
   useEffect(() => {
     fetchTutors();
   }, []);
+
   const changeUserField = (field, id) => {
     let temp = filteredUsersData.map((item) => {
       // console.log(item[Object.keys(field)[0]]);
@@ -612,7 +613,15 @@ export default function UserManagement() {
     }
   };
 
-  // console.log('users', filteredUsersData);
+  const filteredUserData = [];
+
+  filteredUsersData.map((user) => {
+    const ids = filteredUserData.map((item) => item._id);
+    if (!ids.includes(user._id)) {
+      filteredUserData.push(user);
+    }
+  });
+
 
   return (
     <div className=" bg-lightWhite min-h-screen">
@@ -762,7 +771,7 @@ export default function UserManagement() {
         <div className="mt-6">
           <Table
             dataFor="allUsersSuperAdmin"
-            data={filteredUsersData}
+            data={filteredUserData}
             onClick={{
               redirect,
               handleTutorStatus,
