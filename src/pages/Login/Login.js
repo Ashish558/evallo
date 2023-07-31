@@ -122,7 +122,7 @@ export default function Login({ setLoginFormActive }) {
             pagination={true}
           />
         </div>
-        <div className="lg:flex lg:items-center bg-white rounded-md py-6 px-5 md:px-[66px]">
+        <div className="lg:flex lg:items-center bg-white rounded-md py-6 px-5 md:px-[66px] lg:min-w-[550px] ">
           {loginActive ? (
             <div className="w-full">
               <div className="flex justify-center" >

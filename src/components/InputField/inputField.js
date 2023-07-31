@@ -88,7 +88,7 @@ export default function InputField({
           </div>
         )}
         <input
-          className={`outline-0 w-full text-sm pl-3 ${inputClassName ? inputClassName : ""
+          className={`outline-0 w-full text-sm pl-0 ${inputClassName ? inputClassName : ""
             } ${disabled === true ? "cursor-not-allowed" : ""} `}
           placeholder={placeholder}
           type={inputType ? inputType : "text"}

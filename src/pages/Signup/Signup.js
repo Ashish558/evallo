@@ -558,18 +558,8 @@ export default function Signup() {
           ) : (
             <></>
           )}
-          <div className="flex lg:items-center relative bg-white rounded-md py-4 px-5 md:px-[48px] lg:w-[540px]">
+          <div className="flex lg:items-center relative bg-white rounded-md py-4 px-5 md:px-[48px] lg:w-[650px]">
             <div className="w-full py-4">
-              {/* <h1
-                className={`hidden lg:block mb-1.5 text-[30px] ${styles.title} `}
-              >
-                {frames.signupActive
-                  ? "Sign Up"
-                  : frames.setPassword
-                    ? ""
-                    : ""}
-              </h1> */}
-
               {currentStep > 0 && (
                 <NumericSteppers totalSteps={4} currentStep={currentStep} />
               )}
@@ -655,7 +645,7 @@ export default function Signup() {
                   />
                   <p className="text-[15px] mb-4 text-[#26435F]">
                     {" "}
-                    Registration as{" "}
+                    Registering as{" "}
                   </p>
                   <div className="flex items-center text-xs">
                     <div

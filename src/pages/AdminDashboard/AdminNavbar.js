@@ -277,7 +277,7 @@ const AdminNavbar = () => {
   }, [location.pathname]);
   return (
     <>
-      <div className="flex justify-around bg-[#26435F] h-[54px] items-center w-full">
+      <div className="flex justify-around bg-[#26435F] h-[72px] items-center w-full">
         <div
           className={`${persona === "superAdmin" ? "translate-x-[-80px]" : ""}`}
         >
