@@ -48,6 +48,7 @@ import { useAddNewQuestionMutation } from "../../app/services/admin";
 import { updateOrganizationSettings } from "../../app/slices/organization";
 import InputSelect from "../../components/InputSelect/InputSelect";
 import { timeZones } from "../../constants/constants";
+
 // import questionMark from '../../assets/images/question-mark.svg'
 const initialState = {
   name: "",
@@ -304,10 +305,10 @@ export default function Settings() {
   const fetchSettings = () => {
     if (organization.settings) {
       setSettingsData(organization.settings);
-      setThePermission(organization.settings.permissions);
+     setThePermission(organization.settings.permissions);
     }
   };
-
+console.log(organization)
   const onRemoveTextImageTag = (item, key, idx) => {
     let updatedField = settingsData[key].filter((item, i) => i !== idx);
     let updatedSetting = {

@@ -1,6 +1,8 @@
 import React, { useEffect } from "react";
 import styles from "./modal.module.css";
 import CancelIcon from "../../assets/Modal/cancel.svg";
+import primaryCancelIcon from "../../assets/icons/Groupcancel bt.svg";
+
 import SecondaryButton from "../Buttons/SecondaryButton";
 import Loader from "../Loader";
 
@@ -13,6 +15,8 @@ export default function Modal({
    primaryBtn,
    handleClose,
    classname,
+   SaveUser,
+   primaryCancel,
    cancelBtnStyle
 }) {
    //disable body scroll if modal open
@@ -46,6 +50,9 @@ export default function Modal({
                         type="button"
                      />
                   )}
+                  {
+                     SaveUser&&SaveUser
+                  }
                   {primaryBtn && (
                      <button
                         onClick={primaryBtn.onClick ? primaryBtn.onClick : null}
@@ -68,7 +75,7 @@ export default function Modal({
                   style={cancelBtnStyle}
                   onClick={handleClose}
                >
-                  <img src={CancelIcon} onClick={handleClose} />
+                  <img src={primaryCancel?primaryCancelIcon:CancelIcon} onClick={handleClose} />
                </button>
             </div>
 
