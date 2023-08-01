@@ -98,9 +98,9 @@ function App() {
     window.addEventListener("beforeunload", handleTabClose);
 
     return () => {
-      logOutApi().then(() => {
-        console.log("Successfully logged out");
-      });
+      // logOutApi().then(() => {
+      //   console.log("Successfully logged out");
+      // });
       window.removeEventListener("beforeunload", handleTabClose);
     };
   }, []);

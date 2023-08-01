@@ -298,7 +298,7 @@ export default function UserSignup() {
       new Promise((resolve) => {
         resolve(resetErrors());
       });
-    let updatedCustomfields = customFields.map((item) => {
+    let updatedCustomfields = customFields?.map((item) => {
       return {
         _id: item._id,
         dataType: item.dataType,
@@ -453,7 +453,7 @@ export default function UserSignup() {
               {currentStep > 1 && !frames.signupSuccessful && (
                 <NumericSteppers
                   totalSteps={
-                    customFields.length === 0
+                    customFields?.length === 0
                       ? 2 + isAddedByAdmin
                       : 3 + isAddedByAdmin
                   }
