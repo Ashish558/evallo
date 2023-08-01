@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import SecondaryButton from '../../components/Buttons/SecondaryButton'
 import BackIcon from '../../assets/assignedTests/back.svg'
+import questionMark from '../../assets/assignedTests/question-mark.svg'
 import PrimaryButton from '../../components/Buttons/PrimaryButton'
 import styles from './style.module.css'
 import { tableData, answerTableData, timeTakenSeries, ttOptions, accuracySeries, accuracyOptions } from './tempData'
@@ -27,12 +28,13 @@ const tableHeadersParent = [
    'Q No.', 'Accuracy', 'Concept', 'Strategy', 'Time Taken',
 ]
 const adminTableHeaders = [
-   'Q No.', 'Correct Answer', 'Student Response', 'Accuracy', 'Concept', 'Strategy', 'Time Taken',
+   'Q No.', 'Correct Answer', 'Student Response', 'Accuracy', 'Concept', 'Strategy', 'Time Taken', 'Marked For Review'
 ]
 
 
 export default function StudentReport() {
-
+   const { organization } = useSelector((state) => state.organization);
+   const { firstName, lastName } = useSelector((state) => state.user);
    const [tableHeaders, setTableHeaders] = useState([])
    const [tableData, setTableData] = useState([])
    const [testData, setTestData] = useState(tableData)
@@ -78,6 +80,7 @@ export default function StudentReport() {
       testName: '-',
       assignedOn: '-',
       name: '-',
+      dueOn: '-',
       startedOn: '-',
       completedOn: '-',
       duration: '-',
@@ -391,6 +394,7 @@ export default function StudentReport() {
          // console.log('answerKey', answerKey[selectedSubject.idx]);
          let temp = responseData.response[selectedSubject.idx].map((item, index) => {
             const { QuestionNumber, QuestionType, ResponseAnswer, isCorrect, responseTime, _id } = item
+            // console.log(item)
             return {
                QuestionNumber,
                CorrectAnswer: answerKey[currentAnswerKeyIndex][index]?.CorrectAnswer,
@@ -667,7 +671,7 @@ export default function StudentReport() {
    if (answerKey.length === 0) return <></>
    if (selectedSubject.concepts === undefined) return <></>
    return (
-      <div className='ml-pageLeft bg-lightWhite min-h-screen'>
+      <div className='px-[80px] bg-lightWhite min-h-screen'>
          <div className='py-14 px-5'>
             <div className='px-0'>
                <SecondaryButton
@@ -681,40 +685,66 @@ export default function StudentReport() {
                         </span>
                      </>
                   } />
-               <p className='mt-6 text-textPrimaryDark text-4xl font-bold'>
-                  {testDetails.testName}
+               <p className="text-[#24A3D9] my-3">
+                  {organization?.company +
+                     "  >  " +
+                     firstName +
+                     "  " +
+                     lastName +
+                     "  >  Assignments > "}<span className="font-semibold">Report</span>
                </p>
 
-               <div className='grid grid-cols-2 grid-rows-3 max-w-840 gap-y-4 mt-2'>
+
+               <div className='flex justify-between'>
+                  <p className='mt-[31px] text-textPrimaryDark text-2xl font-bold'>
+                     {testDetails.testName}
+                  </p>
+                  <button className={`py-[14px] px-[16px] bg-[#FFA28D] text-white rounded-lg flex items-center shadow-md `}>
+                     <span className='inline-block font-bold text-[18px]'>
+                        {displayScore.cumulative}
+                     </span>
+                     <div className={styles.line}></div>
+                     <span className='inline-block  text-[17px]' >
+                        {displayScore.right}
+                     </span>
+                  </button>
+               </div>
+               <div className='grid grid-cols-2 grid-rows-3 max-w-840 gap-y-4 mt-6 text-[#26435F]'>
                   <div>
-                     <p className='inline-block w-138 font-semibold opacity-60'> Student’s Name</p>
+                     <p className='inline-block w-138 '> Student’s Name</p>
                      <span className='inline-block mr-4'>:</span>
-                     <p className='inline-block font-semibold'> {testDetails.name} </p>
+                     <p className='inline-block font-medium'> {testDetails.name} </p>
                   </div>
                   <div>
-                     <p className='inline-block w-138 font-semibold opacity-60'> Started on </p>
+                     <p className='inline-block w-138 '> Started on </p>
                      <span className='inline-block mr-4'>:</span>
-                     <p className='inline-block  font-semibold'> {testDetails.startedOn} </p>
+                     <p className='inline-block  font-medium'> {testDetails.startedOn} </p>
+                  </div>
+
+                  <div>
+                     <p className='inline-block w-138 '>  Date Assigned </p>
+                     <span className='inline-block mr-4'>:</span>
+                     <p className='inline-block  font-medium'> {testDetails.assignedOn} </p>
                   </div>
                   <div>
-                     <p className='inline-block w-138 font-semibold opacity-60'>  Date Assigned </p>
+                     <p className='inline-block w-138 '> Completed on </p>
                      <span className='inline-block mr-4'>:</span>
-                     <p className='inline-block  font-semibold'> {testDetails.assignedOn} </p>
+                     <p className='inline-block  font-medium'> {testDetails.completedOn} </p>
+                  </div>
+                  <div >
+                     <p className='inline-block w-138 '> Duration </p>
+                     <span className='inline-block mr-4'>:</span>
+                     <p className='inline-block  font-medium'> {testDetails.duration} </p>
                   </div>
                   <div>
-                     <p className='inline-block w-138 font-semibold opacity-60'> Completed on </p>
+                     <p className='inline-block w-138 '> Due on </p>
                      <span className='inline-block mr-4'>:</span>
-                     <p className='inline-block  font-semibold'> {testDetails.completedOn} </p>
+                     <p className='inline-block  font-medium'> {testDetails.startedOn} </p>
                   </div>
                   <div className='col-span-2'>
-                     <p className='inline-block w-138 font-semibold opacity-60'> Duration </p>
+                     <p className='inline-block w-138 '> Instruction from tutor </p>
                      <span className='inline-block mr-4'>:</span>
-                     <p className='inline-block  font-semibold'> {testDetails.duration} </p>
-                  </div>
-                  <div className='col-span-2'>
-                     <p className='inline-block w-138 font-semibold opacity-60'> Instruction from tutor </p>
-                     <span className='inline-block mr-4'>:</span>
-                     <p className='inline-block w138 font-semibold'> {testDetails.instruction} </p>
+                     <p className='inline-block w-138 font-medium'> {testDetails.instruction} </p>
                   </div>
                </div>
 
@@ -727,24 +757,16 @@ export default function StudentReport() {
                            className={`py-2 px-0 mr-7 font-semibold w-160 ${item.selected ? '' : 'bg-secondaryLight text-textGray'}`} />
                      })}
                   </div>
-                  <button className={`py-4 px-6 bg-primaryOrange text-white rounded-20 flex items-center shadow-md pr-7`}>
-                     <span className='inline-block font-bold text-42'>
-                        {displayScore.cumulative}
-                     </span>
-                     <div className={styles.line}></div>
-                     <span className='inline-block font-bold text-xl' >
-                        {displayScore.right}
-                     </span>
-                  </button>
+
                </div>
 
-               <div className='mt-7'>
+               <div className='mt-7 flex'>
                   {/* <p className='text-lg font-bold mb-2'>
                      Score: {`${sectionScore.correct} / ${sectionScore.outOf}`}
                   </p> */}
-                  <div className='flex bg-[#EBEDEE] py-4 px-4 rounded-10' >
-                     <div className='flex flex-col mr-[64px]'>
-                        <p className='font-semibold text-primary mb-2.2' onClick={getSortedConcepts} >Concepts</p>
+                  <div className='flex  py-4 px-4 rounded-10 bg-[#FFFFFF]' >
+                     <div className='flex  flex-col mr-[64px]'>
+                        <p className='font-semibold text-[#26435F] mb-2.2' onClick={getSortedConcepts} >Concepts</p>
                         {
                            // selectedSubject.no_of_correct === 0 ?
                            //    <>
@@ -758,7 +780,7 @@ export default function StudentReport() {
                               //    </p> : <></>
                               // })
                               sortedConcepts.map((item, idx) => {
-                                 return <p key={idx} className='font-semibold mb-2'>
+                                 return <p key={idx} className=' text-[#517CA8] mb-2'>
                                     {item.name}
                                  </p>
                               })
@@ -767,7 +789,7 @@ export default function StudentReport() {
 
                      </div>
                      <div className='flex flex-col items-center'>
-                        <p className='font-semibold text-primary mb-2.2'> Incorrect Answers</p>
+                        <p className='font-semibold text-[#26435F] mb-2.2'> Incorrect</p>
                         {
                            // selectedSubject.no_of_correct === 0 ?
                            //    <>
@@ -775,57 +797,70 @@ export default function StudentReport() {
                            //    </> :
                            selectedSubject.concepts ?
                               sortedConcepts.map((item, idx) => {
-                                 return <p key={idx} className='font-semibold mb-2'>
+                                 return <p key={idx} className='text-[#517CA8] mb-4'>
                                     {item.incorrect >= 0 ? item.incorrect : 0}/{item.correct + item.incorrect}
                                  </p>
                               })
                               : <></>
                         }
                      </div>
-                     <div className='flex flex-col items-cener ml-auto mr-[145px]'>
-                        <p className='font-semibold text-primary mb-2.2'> Section Started</p>
-                        <p className='font-semibold mb-2'> {getDate(responseData.createdAt)} </p>
-                        {/* <p className='font-semibold mb-2 opacity-0'>04:25 PM EST</p> */}
-                        <p className='font-semibold text-primary mb-2.2 mt-6'> Section Time Limit</p>
-                        <p className='font-semibold mb-2'>
-                           {/* {selectedSubject.timeTaken/1000} */}
-                           {selectedSubject.timeTaken ?
-                              // moment.duration(selectedSubject.timeTaken).format('HH:mm')
-                              sectionDuration ? sectionDuration : ''
-                              // millisToMinutesAndSeconds(selectedSubject.timeTaken)
-                              : <></>
-                           }
-                        </p>
+
+
+                  </div>
+
+                  <div className='w-3/4'>
+                     <div className='flex bg-[#FFFFFF] p-4 rounded-10 ml-[45px]  h-[140px]'>
+                        <div className='flex   mr-[50px]'>
+                           <div className='mr-[50px]'> <p className='font-semibold text-[#26435F] mb-2.2'> Section Started</p>
+                              <p className=' mb-2 text-[#517CA8] '> {getDate(responseData.createdAt)} </p>
+                              {/* <p className='font-semibold mb-2 opacity-0'>04:25 PM EST</p> */}</div>
+                           <div>
+                              <p className='font-semibold text-[#26435F] mb-2.2 '> Section Time Limit</p>
+                              <p className=' mb-2  text-[#517CA8] '>
+                                 {/* {selectedSubject.timeTaken/1000} */}
+                                 {selectedSubject.timeTaken ?
+                                    // moment.duration(selectedSubject.timeTaken).format('HH:mm')
+                                    sectionDuration ? sectionDuration : ''
+                                    // millisToMinutesAndSeconds(selectedSubject.timeTaken)
+                                    : <></>
+                                 }
+                              </p>
+                           </div>
+                        </div>
+                        <div className='flex  '>
+                           <div className='mr-[38px]'><p className='font-semibold text-[#26435F] mb-2.2'> Section Accuracy</p>
+                              <p className=' mb-2 text-[#517CA8] '>
+                                 {
+                                    Object.keys(responseData).length >= 1 &&
+                                    Object.keys(selectedSubject).length >= 1
+                                    &&
+                                    <>
+                                       {selectedSubject.no_of_correct} / {' '}
+                                       {responseData.response[selectedSubject.idx].length}
+                                    </>
+                                 }
+                              </p></div>
+                           <div><p className='font-semibold text-[#26435F] mb-2.2 '> Total Time Taken </p>
+                              <p className=' mb-2 text-[#517CA8] '>
+                                 {/* {selectedSubject.timeTaken/1000} */}
+                                 {selectedSubject.timeTaken ?
+                                    // moment.duration(selectedSubject.timeTaken).format('HH:mm')
+                                    totalTimeTaken
+                                    // millisToMinutesAndSeconds(selectedSubject.timeTaken)
+                                    : <></>
+                                 }
+                              </p></div>
+                        </div>
                      </div>
-                     <div className='flex flex-col items-cener mr-12'>
-                        <p className='font-semibold text-primary mb-2.2'> Section Accuracy</p>
-                        <p className='font-semibold mb-2'>
-                           {
-                              Object.keys(responseData).length >= 1 &&
-                              Object.keys(selectedSubject).length >= 1
-                              &&
-                              <>
-                                 {selectedSubject.no_of_correct} / {' '}
-                                 {responseData.response[selectedSubject.idx].length}
-                              </>
-                           }
-                        </p>
-                        <p className='font-semibold text-primary mb-2.2 mt-6'> Total Time Taken </p>
-                        <p className='font-semibold mb-2'>
-                           {/* {selectedSubject.timeTaken/1000} */}
-                           {selectedSubject.timeTaken ?
-                              // moment.duration(selectedSubject.timeTaken).format('HH:mm')
-                              totalTimeTaken
-                              // millisToMinutesAndSeconds(selectedSubject.timeTaken)
-                              : <></>
-                           }
-                        </p>
-                     </div>
+
+
+                     <div className='text-lg  text-[#24A3D9] px-4 py-2 ml-[45px] border-2 border-[#FFA28D] rounded-7 w-[338px] mt-[70px]'><p className='text-center font-semibold'>Section Score: <span className='text-[#517CA8] pl-1 font-medium'> 20 / 36</span></p></div>
+
 
                   </div>
                </div>
 
-               <div className='mt-4 max-w-[900px]'>
+               <div className='mt-12'>
                   <Table
                      dataFor={persona === 'parent' || persona === 'student' ? 'studentTestsReportSmall' : 'studentTestsReport'}
                      hidePagination={true}
@@ -840,19 +875,22 @@ export default function StudentReport() {
                      tableHeaders={adminTableHeaders}
                      maxPageSize={10} /> */}
                </div>
-
-               <div className='bg-white mt-6 rounded-20 py-5 px-5 '>
-                  <p className='text-primary-dark font-bold text-3xl text-center mb-6 mt-2'>Time Taken</p>
+               <p className='text-primary-dark font-bold text-xl   mt-10'>
+                  Time Taken
+               </p>
+               <div className='bg-white mt-1 rounded-20 py-5 px-5 '>
+                  {/* <p className='text-primary-dark font-bold text-3xl text-center mb-6 mt-2'>Time Taken</p> */}
                   <BarGraph series={[timeSeries]} options={timeSeriesOptions} height='600px' />
                </div>
-               <div className='bg-white mt-6 rounded-20 py-5 px-5 max-w-[1100px]'>
-                  <p className='text-primary-dark font-bold text-3xl text-center mb-6 mt-2'>
-                     Conceptual Accuracy
-                  </p>
+               <p className='text-primary-dark font-bold text-xl   mt-10'>
+                  Conceptual Accuracy
+               </p>
+               <div className='bg-white mt-1 rounded-20 py-5 px-5 '>
+
                   <BarGraph series={[accuracySeries]} options={accuracyGraphOptions} height='600px' />
                </div>
             </div>
          </div>
-      </div>
+      </div >
    )
 }
