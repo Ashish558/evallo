@@ -1015,12 +1015,12 @@ console.log(organization)
                             </div>
                           </div>
                           <div className="flex items-center flex-wrap [&>*]:mb-[18px] ">
-                            {/* <AddTag
+                            <AddTag
                               openModal={true}
                               onAddTag={(code) => handleAddTest(subscription)}
                               keyName={subscription.code}
                               text="Add Tests"
-                            /> */}
+                            /> 
                             <FilterItems
                               isString={true}
                               onlyItems={true}
@@ -1105,11 +1105,11 @@ console.log(organization)
                               </div>
                             </div>
                             <div className="flex items-center flex-wrap [&>*]:mb-[18px]">
-                              {/* <AddTag
+                             <AddTag
                                 onAddTag={handleAddSpecialization}
                                 keyName={service.service}
-                                text="Add Service"
-                              /> */}
+                                text="Add Item"
+                              /> 
                               <FilterItems
                                 isString={true}
                                 onlyItems={true}
@@ -1158,11 +1158,11 @@ console.log(organization)
                             </div>
                           </div>
                           <div className="flex items-center flex-wrap [&>*]:mb-[18px]">
-                            {/* <AddTag
+                             <AddTag
                               onAddTag={handleAddSessionTag}
                               keyName={service.heading}
                               text="Add Items"
-                            /> */}
+                            /> 
                             <FilterItems
                               isString={true}
                               onlyItems={true}
