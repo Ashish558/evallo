@@ -395,6 +395,16 @@ export default function StudentReport() {
          let temp = responseData.response[selectedSubject.idx].map((item, index) => {
             const { QuestionNumber, QuestionType, ResponseAnswer, isCorrect, responseTime, _id } = item
             // console.log(item)
+            const CustomImage = () => {
+               return (
+                  <div className='w-full flex justify-center'>
+                     <img
+                        src={questionMark}
+                        alt="QuestionMark"
+                     />
+                  </div>
+               );
+            }
             return {
                QuestionNumber,
                CorrectAnswer: answerKey[currentAnswerKeyIndex][index]?.CorrectAnswer,
@@ -402,7 +412,8 @@ export default function StudentReport() {
                isCorrect,
                Concept: answerKey[currentAnswerKeyIndex][index]?.Concepts ? answerKey[currentAnswerKeyIndex][index]?.Concepts : '-',
                Strategy: answerKey[currentAnswerKeyIndex][index]?.Strategy ? answerKey[currentAnswerKeyIndex][index]?.Strategy : '-',
-               responseTime: responseTime >= 0 ? `${responseTime} sec` : '-'
+               responseTime: responseTime >= 0 ? `${responseTime} sec` : '-',
+               review: <CustomImage />
             }
          })
          setTableData(temp)
