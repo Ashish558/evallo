@@ -135,7 +135,7 @@ export default function AssignedTests() {
 
    const { role: persona, id } = useSelector(state => state.user)
    const handleClose = () => setAssignTestModalActive(false);
-
+   const { organization } = useSelector((state) => state.organization);
    const [filterData, setFilterData] = useState({
       studentName: '',
       testName: '',
@@ -524,11 +524,20 @@ export default function AssignedTests() {
       setStudentNameOptions(studentNames)
    }, [allAssignedTests])
 
-   // console.log('filteredTests', filteredTests);
+    console.log('filteredTests', filteredTests);
    return (
       <>
          <div className="lg:ml-pageLeft bg-lightWhite min-h-screen">
             <div className="py-14 px-5">
+           
+            <p className="text-[#24A3D9]  mb-3 ">
+               {organization?.company +
+                  "  >  " +
+                  "Assignments"+
+                  "  >  "}
+               <span className="font-semibold">Content</span>
+            </p>
+            
                <div className="flex gap-4 justify-between items-center">
                   {persona === "parent" || persona === 'student' ? <p className={`font-bold text-4xl text-primary-dark`}
                   // style={{ color: "#25335A" }}
