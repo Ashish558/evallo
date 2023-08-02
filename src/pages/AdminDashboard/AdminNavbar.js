@@ -10,9 +10,9 @@ import {
   faPlus,
   faUpload,
 } from "@fortawesome/free-solid-svg-icons";
-import  faQuestionCircle  from "../../assets/images/Vectorqsn.svg";
+import faQuestionCircle from "../../assets/images/Vectorqsn.svg";
 import icon from "../../assets/icons/FIGMA 3.svg";
-import  logoutIcon from "../../assets/images/Vectorlogout new.svg";
+import logoutIcon from "../../assets/images/Vectorlogout new.svg";
 import Dashboard1 from "../../assets/images/Dashboard 1 new.svg";
 import Dashboard from "../../assets/images/Dashboard 1.svg";
 import UsersIcon from "../../assets/images/Vector (1).png";
@@ -143,14 +143,7 @@ const studentNav = [
     activeIcon: Schedule1,
     path: "/calendar",
     tooltip: "Schedule",
-  },
-  {
-    icon: Settings,
-    activeIcon: Settings1,
-    path: "/settings",
-    excludes: ["parent", "tutor", "admin", "superAdmin"],
-    tooltip: "Settings",
-  },
+  }
 ];
 const tutorNav = [
   {
@@ -323,18 +316,18 @@ const AdminNavbar = () => {
           <div className="flex mr-[24px] text-[#24A3D9] text-xs ">
             <p className=" ">Pricing 	</p>
             <p className="pl-2">
-            &#36;
+              &#36;
             </p>
           </div>
           <div className="flex mr-[24px] text-[#24A3D9] text-xs">
             <p className=" ">Help</p>
             <p>
-            <img
-                        className="w-[16px] h-[14px] ml-2"
-                        style={{ height: "14px" }}
-                        src={faQuestionCircle}
-                        alt=""
-                      />
+              <img
+                className="w-[16px] h-[14px] ml-2"
+                style={{ height: "14px" }}
+                src={faQuestionCircle}
+                alt=""
+              />
             </p>
           </div>
           {isLoggedIn && (
@@ -346,12 +339,12 @@ const AdminNavbar = () => {
                 <p className="text-[#24A3D9]">Logout</p>
               </div>
               <div>
-              <img
-                        className="w-[16px] h-[14px] ml-2"
-                        style={{ height: "14px" }}
-                        src={logoutIcon}
-                        alt=""
-                      />
+                <img
+                  className="w-[16px] h-[14px] ml-2"
+                  style={{ height: "14px" }}
+                  src={logoutIcon}
+                  alt=""
+                />
               </div>
             </div>
           )}
