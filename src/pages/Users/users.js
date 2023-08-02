@@ -572,15 +572,15 @@ export default function Users() {
       modalData.email.trim() === "" ||
       modalData.firstName.trim() === "" ||
       modalData.lastName.trim() === "" ||
-      modalData.phone.trim() === "" ||
+      // modalData.phone.trim() === "" ||
       modalData.userType.trim() === ""
     ) {
       setAddUserBtnDisabled(true);
     } else {
       if (
-        modalData.phone.length < 10 ||
-        !isEmail(modalData.email) ||
-        !isPhoneNumber(modalData.phone)
+        // modalData.phone.length < 10 ||
+        !isEmail(modalData.email) 
+        // !isPhoneNumber(modalData.phone)
       ) {
         setAddUserBtnDisabled(true);
       } else {
@@ -857,20 +857,16 @@ export default function Users() {
         <Modal
           classname={"max-w-[700px] mx-auto rounded-md"}
           title="Add a New User"
-          cancelBtn={false}
+          cancelBtn={true}
           titleClassName="text-start mb-3 pb-3 border-b border-b-gray-300"
           primaryCancel={true}
           cancelBtnClassName="w-140"
-          SaveUser={
-            <button className="bg-[#FFA28D] text-white px-10  rounded-lg" >
-               Save User
-            </button>
-          }
+        
           primaryBtn={{
             text: "Invite User",
              className: 'rounded-lg bg-transparent border border-[#FFA28D] py-2 text-[#FFA28D]',
             form: "add-user-form",
-            // onClick: handleSubmit,
+            onClick: handleSubmit,
             loading: loading,
             type: "submit",
             disabled: addUserBtnDisabled,

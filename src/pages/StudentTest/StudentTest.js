@@ -56,7 +56,6 @@ export default function StudentTest() {
    const { role: persona, id, dateFormat } = useSelector(state => state.user)
    const [getTestResponse, getTestResponseResp] = useLazyGetTestResponseQuery()
    const [awsLink, setAwsLink] = useState('')
-   console.log('dateFormat', dateFormat);
 
    const sortByDueDate = () => {
       setAllTests(prev => {

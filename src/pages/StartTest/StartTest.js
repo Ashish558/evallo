@@ -31,6 +31,7 @@ export default function StartTest() {
    const [initialSeconds, setInitialSeconds] = useState(0)
    const [countDown, setCountDown] = useState(0)
    const { firstName, lastName } = useSelector(state => state.user)
+   const { dateFormat } = useSelector(state => state.user)
 
    const [testHeaderDetails, setTestHeaderDetails] = useState({
       name: `${firstName} ${lastName}`,
@@ -87,8 +88,8 @@ export default function StartTest() {
                   ...prev,
                   testName: testId.testName,
                   instruction: instruction,
-                  dateAssigned: getFormattedDate(createdAt),
-                  dueDate: getFormattedDate(dueDate),
+                  dateAssigned: getFormattedDate(createdAt, dateFormat),
+                  dueDate: getFormattedDate(dueDate, dateFormat),
                }))
             }
             setTestHeaderDetails(prev => ({
@@ -170,7 +171,7 @@ export default function StartTest() {
             setTestHeaderDetails(prev => ({
                ...prev,
                // duration,
-               startedOn: getFormattedDate(new Date(res.data.data.subjects.createdAt))
+               startedOn: getFormattedDate(new Date(res.data.data.subjects.createdAt), dateFormat)
             }))
             setSectionDetails(res.data.data)
             let tempsubs = res.data.data.subjects.subjects.map(item => {
