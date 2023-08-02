@@ -3,6 +3,7 @@ import EyeIcon from "../../assets/form/eye-open.svg";
 import Message from "./Message/Message";
 import { useRef } from "react";
 import { useEffect } from "react";
+import useOutsideAlerter from "../../hooks/useOutsideAlerter";
 
 export default function InputField({
   parentClassName,
@@ -36,19 +37,12 @@ export default function InputField({
   const [inputType, setInputType] = useState(type);
   const [showDiv, setShowDiv] = useState(true);
   const divRef = useRef();
+  const handleClose = () => setShowDiv(false)
+  useOutsideAlerter(divRef, handleClose)
+
   useEffect(() => {
-    function handleClickOutside(event) {
-      if (divRef.current && !divRef.current.contains(event.target)) {
-        setShowDiv(false);
-      }
-    }
-
-    document.addEventListener('click', handleClickOutside);
-    return () => {
-      document.removeEventListener('click', handleClickOutside);
-    };
-  }, []);
-
+    setShowDiv(true)
+  }, [error])
   return (
     <div className={`relative text-sm ${parentClassName && parentClassName}`}>
       {label && (
@@ -118,15 +112,18 @@ export default function InputField({
 
         {right && right}
       </div>
-      {error !== undefined && error !== '' &&
-        <div>
-          {showDiv && (
-            <div ref={divRef}>
-              <Message error={error} type='danger' />
-            </div>
-          )}
-        </div>
-      }
+
+      <div ref={divRef}>
+        {error !== undefined && error !== '' &&
+          <div >
+            {showDiv && (
+              <div>
+                <Message error={error} type='danger' />
+              </div>
+            )}
+          </div>
+        }
+      </div>
 
     </div>
   );

@@ -64,7 +64,7 @@ export default function UserDetails({
         });
       } 
       else if(customFields?.length===0 || !customFields){
-        alert('CustomFields are empty ,please fill those ')
+        // alert('CustomFields are empty ,please fill those ')
         handleSignup();
       }
       else if(customFields?.length > 0) {

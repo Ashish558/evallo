@@ -8,6 +8,7 @@ import CompleteProfile from "../../components/CompleteProfile/CompleteProfile";
 import SessionFeedback from "../../components/SessionFeedback/SessionFeedback";
 import InputSelect from "../../components/InputSelect/InputSelect";
 import { getMonthName } from "../../utils/utils";
+import { useSelector } from "react-redux";
 
 const StudentDashboard = () => {
    const [subjects, setSubjects] = useState([])
@@ -15,12 +16,10 @@ const StudentDashboard = () => {
    const [showSub, setShowSub] = useState(false);
    const [showSlot, setShowSlot] = useState(false);
    const [selectedConceptIdx, setSelectedConceptIdx] = useState(0)
-
    const [selectedSubject, setSelectedSubject] = useState('')
    const [currentSubData, setCurrentSubData] = useState({})
    const [dates, setDates] = useState([])
    const [currentDate, setCurrentDate] = useState('')
-
    useEffect(() => {
       // console.log('currentSubData', currentSubData)
       if (currentSubData.concepts === undefined) return

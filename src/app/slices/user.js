@@ -39,6 +39,7 @@ const user = createSlice({
       state.email = payload.email;
       state.phone = payload.phone;
       state.associatedOrg = payload.associatedOrg;
+      state.dateFormat = payload.dateFormat;
     },
   },
 });
