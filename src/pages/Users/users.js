@@ -35,6 +35,7 @@ import { isPhoneNumber } from "../Signup/utils/util";
 import { checkIfExistInNestedArray } from "../../utils/utils";
 import InputSelectNew from "../../components/InputSelectNew/InputSelectNew";
 import InputSearch from "../../components/InputSearch/InputSearch";
+import { useSelector } from "react-redux";
 
 const optionData = ["option 1", "option 2", "option 3", "option 4", "option 5"];
 
@@ -51,6 +52,8 @@ const initialState = {
 export default function Users() {
   const [modalActive, setModalActive] = useState(false);
   const navigate = useNavigate();
+  const { organization } = useSelector((state) => state.organization);
+  const { firstName, lastName } = useSelector((state) => state.user);
   const [modalData, setModalData] = useState(initialState);
   const [validData, setValidData] = useState(true);
   const [deleteModalActive, setDeleteModalActive] = useState(false);
@@ -131,7 +134,7 @@ export default function Users() {
     },
     {
       id: 5,
-      text: "Tutor",
+      text: "Assigned Tutor",
     },
     {
       id: 1,
@@ -139,24 +142,16 @@ export default function Users() {
     },
     {
       id: 6,
-      text: "User Status",
+      text: "Tutor Status",
     },
     {
       id: 7,
-      text: "Specialization",
+      text: "Service(s)",
     },
     {
       id: 8,
-      text: "Created On",
-    },
-    {
-      id: 9,
-      text: "",
-    },
-    {
-      id: 10,
-      text: "",
-    },
+      text: "Join Date",
+    }
   ];
 
   const [assignStudentModalActive, setAssignStudentModalActive] =
@@ -638,8 +633,16 @@ export default function Users() {
   return (
     <div className="lg:mx-[60px] bg-lightWhite min-h-screen">
       <div className="py-10 px-5">
-        <div className="flex justify-between items-center">
-          <p className="text-[#24A3D9] text-sm ">{`{Company Name} > {Admin Full Name} > `}<span className="font-semibold">CRM</span></p>
+        <div className="flex justify-between items-center mb-3">
+        <p className="text-[#24A3D9] mb-3">
+              {organization?.company +
+                "  >  " +
+                firstName +
+                "  " +
+                lastName +
+                "  >  "}
+                     <span className="font-semibold">CRM</span>
+            </p>
           <button
             className="bg-[#24A3D9] w-[188px] text-sm justify-center flex py-2 px-5 items-center text-white font-semibold rounded-lg"
             onClick={() => setAssignStudentModalActive(true)}
@@ -789,7 +792,7 @@ export default function Users() {
             }}
           />
         </div>
-        <div className="flex mb-6">
+        {/* <div className="flex mb-6">
           <button className="bg-[#26435f80] px-3 py-2 rounded-md text-sm text-[#FFFFFF] mr-2">
             Student
           </button>
@@ -801,9 +804,9 @@ export default function Users() {
               alt=""
             />
           </button>
-        </div>
+        </div> */}
         <div className="flex justify-between ">
-          <div className="flex">
+          {/* <div className="flex">
             <label
               className={`${styles["checkbox-label"]} block text-[#26435F] font-medium`}
             >
@@ -820,8 +823,8 @@ export default function Users() {
               <span className="ml-6">2 Selected</span>
             </label>
             <div></div>
-          </div>
-          <button className="bg-[#26435F] px-7 py-2 rounded-md text-white">
+          </div> */}
+          <button className="bg-[#26435F] px-7 py-2 rounded-md text-white ml-auto">
             Save
           </button>
 

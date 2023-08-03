@@ -865,7 +865,17 @@ export default function StudentReport() {
                      </div>
 
 
-                     <div className='text-lg  text-[#24A3D9] px-4 py-2 ml-[45px] border-2 border-[#FFA28D] rounded-7 w-[338px] mt-[70px]'><p className='text-center font-semibold'>Section Score: <span className='text-[#517CA8] pl-1 font-medium'> 20 / 36</span></p></div>
+                     <div className='text-lg  text-[#24A3D9] px-4 py-2 ml-[45px] border-2 border-[#FFA28D] rounded-7 w-[338px] mt-[70px]'><p className='text-center font-semibold'>Section Score: <span className='text-[#517CA8] pl-1 font-medium'>
+                        {
+                           Object.keys(responseData).length >= 1 &&
+                           Object.keys(selectedSubject).length >= 1
+                           &&
+                           <>
+                              {selectedSubject.no_of_correct} / {' '}
+                              {responseData.response[selectedSubject.idx].length}
+                           </>
+                        }
+                     </span></p></div>
 
 
                   </div>

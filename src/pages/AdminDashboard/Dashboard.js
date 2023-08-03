@@ -145,7 +145,8 @@ const Dashboard = () => {
                 firstName +
                 "  " +
                 lastName +
-                "  >  Dashboard"}
+                "  >  "}
+                    <span className="font-semibold">Dashboard</span>
             </p>
 
             <div className="flex justify-between items-center ">
