@@ -137,7 +137,7 @@ const Dashboard = () => {
 
   return (
     <div className={styles.container}>
-      <div className=" mt-[28px] bg-#2E2E2E">
+      <div className="mx-7 mt-[28px] bg-#2E2E2E">
         <div className="mt-[42px] flex justify-center">
           <div className="w-full mx-[80px]">
             <p className="text-[#24A3D9] mb-3">
@@ -157,12 +157,12 @@ const Dashboard = () => {
           </div>
         </div>
 
-        <section className="flex justify-center">
+        <section className="flex justify-center ">
           <div className={styles.mainBox}>
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-2 gap-5 px-2">
               <div className={`${styles.gridBorder} `}>
-                <div className="flex  justify-center gap-x-8 px-8 ">
-                  <div className="w-[170px] flex-1">
+                <div className="flex  justify-evenly gap-4">
+                  <div className="w-[160px]">
                     <div className="flex justify-between items-center mb-1 text-[#26435F] text-sm">
                       <p className="   font-medium">Completed Revenue</p>
                       <div className="group relative">
@@ -443,10 +443,10 @@ const Dashboard = () => {
         </section>
 
         <section className="mt-[30px] mx-[80px]">
-          <div className="grid grid-cols-2 gap-x-80">
-            <div className="flex justify-start gap-x-6 mt-2 text-sm text-[#26435F]">
-              <div className="flex-1">
-                <p className="font-semibold text-sm">Total # Of Referrals</p>
+          <div className="grid grid-cols-2 gap-x-[40px]">
+            <div className="flex scale-[0.98] justify-between gap-4 mt-2 text-sm text-[#26435F]">
+              <div>
+                <p className="font-semibold text-[13px]">Total # Of referrals</p>
                 <div
                   className={`mt-2 h-[67px] bg-[rgba(255,162,141,0.2)] ${styles.smallBox}`}
                 >
@@ -455,10 +455,10 @@ const Dashboard = () => {
                   </p>
                 </div>
               </div>
-              <div className="flex-1">
-                <p className="font-semibold text-sm">Average SAT Improvement</p>
+              <div>
+                <p className="font-semibold text-[13px]">Average SAT improvement</p>
                 <div
-                  className={`mt-2 h-[67px] bg-[rgba(36,163,217,0.2)]  ${styles.smallBox}`}
+                  className={`w-[170px] mt-2 h-[67px] bg-[rgba(36,163,217,0.2)]  ${styles.smallBox}`}
                 >
                   <p className="text-[#24A3D9] h-full w-full justify-center font-semibold text-3xl flex items-center text-center">
                     {improvementStats.avg_sat_improvement
@@ -467,10 +467,10 @@ const Dashboard = () => {
                   </p>
                 </div>
               </div>
-              <div className="flex-1">
-                <p className="font-semibold text-sm">Average ACT Improvement</p>
+              <div>
+                <p className="font-semibold text-[13px]">Average ACT improvement</p>
                 <div
-                  className={`mt-2 h-[67px] bg-[rgba(36,163,217,0.2)]  ${styles.smallBox}`}
+                  className={`w-[170px] mt-2 h-[67px] bg-[rgba(36,163,217,0.2)]  ${styles.smallBox}`}
                 >
                   <p className="text-[#24A3D9] h-full w-full justify-center font-semibold text-3xl flex items-center text-center">
                     {improvementStats.avg_act_improvement
@@ -480,11 +480,11 @@ const Dashboard = () => {
                 </div>
               </div>
             </div>
-            <div className="flex mt-2  text-xs justify-between text-[#667085]">
+            <div className="flex scale-[0.961]  mt-2 whitespace-nowrap gap-4  text-xs justify-between text-[#667085]">
               <div>
                 <p>Average GRE Improvement</p>
                 <div
-                  className={`w-[150px] h-[67px] ${styles.smallBox2} flex items-center justify-center font-medium`}
+                  className={`w-[150px] mt-3 h-[67px] ${styles.smallBox2} flex items-center justify-center font-medium`}
                 >
                   <p>Coming Soon</p>
                 </div>
@@ -492,7 +492,7 @@ const Dashboard = () => {
               <div>
                 <p>Average GMAT Improvement</p>
                 <div
-                  className={`w-[150px] h-[67px] ${styles.smallBox2} flex items-center justify-center font-medium`}
+                  className={`w-[150px] mt-3 h-[67px] ${styles.smallBox2} flex items-center justify-center font-medium`}
                 >
                   <p>Coming Soon</p>
                 </div>
@@ -500,13 +500,13 @@ const Dashboard = () => {
               <div>
                 <p>Average IELTS Improvement</p>
                 <div
-                  className={`w-[150px] h-[67px] ${styles.smallBox2} flex items-center justify-center font-medium`}
+                  className={`w-[150px] mt-3 h-[67px] ${styles.smallBox2} flex items-center justify-center font-medium`}
                 >
                   <p>Coming Soon</p>
                 </div>
               </div>
             </div>
-            <div></div>
+           
           </div>
         </section>
         <div className="flex justify-center">

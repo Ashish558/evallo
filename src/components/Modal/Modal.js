@@ -17,6 +17,7 @@ export default function Modal({
    classname,
    SaveUser,
    primaryCancel,
+   otherBt,
    cancelBtnStyle
 }) {
    //disable body scroll if modal open
@@ -53,6 +54,9 @@ export default function Modal({
                   {
                      SaveUser&&SaveUser
                   }
+                  {
+                     otherBt? otherBt:<></>
+                  }
                   {primaryBtn && (
                      <button
                         onClick={primaryBtn.onClick ? primaryBtn.onClick : null}
@@ -63,11 +67,14 @@ export default function Modal({
                         loading={primaryBtn.loading}
                         // disabled
                      >
-                        {primaryBtn.text}
+                        {primaryBtn.text}  {
+                           (primaryBtn.icon && primaryBtn?.loading === false) ? primaryBtn.icon :''
+                        }
                         {
                            primaryBtn !== undefined && primaryBtn?.loading === true &&
                            <Loader />
                         }
+                      
                      </button>
                   )}
                </div>
