@@ -92,7 +92,7 @@ const RangeDate = ({ handleRangeData }) => {
         }
         DateSelect={
           <div className="flex flex-col hover:bg-white items-center pt-1 z-5000 border-b ">
-            <div className="font-semibold text-black flex w-full justify-around">
+            {/* <div className="font-semibold text-black flex w-full justify-around">
               <label htmlFor="sdate">Start Date</label>
               <label htmlFor="edate">End Date</label>
             </div>
@@ -114,8 +114,8 @@ const RangeDate = ({ handleRangeData }) => {
                 placeholder="Start Date"
                 onChange={(e) => handleLocalDate(e.target.value, "eDate")}
               />
-            </div>
-            <button
+            </div> */}
+            {/* <button
               disabled={!selectDate.eDate || !selectDate.sDate}
               className={`${
                 !selectDate.eDate || !selectDate.sDate ? "opacity-75" : ""
@@ -123,7 +123,7 @@ const RangeDate = ({ handleRangeData }) => {
               onClick={handleStartDate}
             >
               Submit
-            </button>
+            </button> */}
           </div>
         }
       />

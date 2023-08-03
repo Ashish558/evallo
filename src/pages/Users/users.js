@@ -789,7 +789,7 @@ export default function Users() {
             }}
           />
         </div>
-        <div className="flex mb-6">
+        {/* <div className="flex mb-6">
           <button className="bg-[#26435f80] px-3 py-2 rounded-md text-sm text-[#FFFFFF] mr-2">
             Student
           </button>
@@ -801,8 +801,8 @@ export default function Users() {
               alt=""
             />
           </button>
-        </div>
-        <div className="flex justify-between ">
+        </div> */}
+        {/* <div className="flex justify-between ">
           <div className="flex">
             <label
               className={`${styles["checkbox-label"]} block text-[#26435F] font-medium`}
@@ -825,7 +825,7 @@ export default function Users() {
             Save
           </button>
 
-        </div>
+        </div> */}
         <div className="flex align-center mt-0 gap-[20px]"></div>
         <div className="mt-4">
           <FilterItems
