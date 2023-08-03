@@ -104,7 +104,7 @@ export default function Table(props) {
                   className='table-pagination-container flex justify-center mt-5'
                   pageClassName={`flex justify-center items-center w-[38.12px] h-[38.12px] border border-primary rounded-full mr-5 cursor-pointer
             ${'text-primary'}`}
-                  activeClassName={`bg-primary text-white`}
+                  activeClassName={`${styles['active-pagination']}`}
                   breakLabel="..."
                   // nextLabel="next >"
                   onPageChange={(val) => setCurrentPage(val.selected + 1)}
