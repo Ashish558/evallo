@@ -7,7 +7,7 @@ import InputField from "../../components/InputField/inputField";
 import AddIcon from "../../assets/icons/plus.svg";
 import SearchIcon from "../../assets/icons/search.svg";
 import styles from "./style.module.css";
-import check from '../../assets/icons/Group 31477.svg'
+import check from "../../assets/icons/Group 31477.svg";
 import data from "./tempData";
 import upload from "./../../assets/icons/upload.png";
 import Papa from "papaparse";
@@ -20,6 +20,12 @@ import { useSelector } from "react-redux";
 
 const optionData = ["option 1", "option 2", "option 3", "option 4", "option 5"];
 const testTypeOptions = ["SAT", "Other"];
+
+const initialState = {
+  testName: "",
+  dateModified: "",
+  testType: "",
+};
 const tableHeaders = [
   "Assignment Name",
   "Type",
@@ -29,12 +35,6 @@ const tableHeaders = [
   "",
   "",
 ];
-
-const initialState = {
-  testName: "",
-  dateModified: "",
-  testType: "",
-};
 
 export default function AllTests() {
   const { organization } = useSelector((state) => state.organization);
@@ -55,7 +55,107 @@ export default function AllTests() {
   const [submitTest, submitTestResp] = useAddTestMutation();
   const [submitPdf, submitPdfResp] = useAddPdfMutation();
   const [modalData, setModalData] = useState(initialState);
+  const [sortOrder,setSortOrder]= useState({
+    testName:false,
+    createdAt:false,
+    updatedAt:false,
+    testType:false,
+  })
 
+
+  const sortByString = (st) => {
+    setFilteredTests((prev) => {
+      let arr = [...prev];
+      arr = arr.sort(function (a, b) {
+        let fl=a[st].localeCompare(b[st])
+        if(sortOrder[st])
+        return fl<=0;
+        else
+        return fl>0;
+      });
+      
+      return arr;
+    });
+    setSortOrder({
+      ...sortOrder,
+      [st]:!sortOrder[st]
+    })
+  };
+
+const sortBycreateDate = () => {
+  setFilteredTests((prev) => {
+    let arr = [...prev];
+    arr = arr.sort(function (a, b) {
+      if(sortOrder.createdAt)
+      return new Date(a.createdAt) - new Date(b.createdAt);
+        else
+      return new Date(b.createdAt) - new Date(a.createdAt);
+    });
+    return arr;
+  });
+  setSortOrder({
+    ...sortOrder,
+    createdAt:!sortOrder.createdAt
+  })
+};
+  const sortByAssignedDate = () => {
+    setFilteredTests((prev) => {
+      let arr = [...prev];
+      arr = arr.sort(function (a, b) {
+        if(sortOrder.updatedAt)
+        return new Date(a.updatedAt) - new Date(b.updatedAt);
+          else
+        return new Date(b.updatedAt) - new Date(a.updatedAt);
+      });
+      return arr;
+    });
+    setSortOrder({
+      ...sortOrder,
+      updatedAt:!sortOrder.updatedAt
+    })
+  };
+
+  const tableObjHeaders = [
+ 
+    
+    {
+      id: 1,
+      text: "Assignment Name",
+      className: "text-left pl-6",
+      onCick:()=> sortByString("testName"),
+    },
+    {
+      id: 2,
+      text: "Type",
+      onCick:()=> sortByString("testType"),
+    },
+    {
+      id: 3,
+      text: "Created On",
+      onCick: sortBycreateDate,
+    },
+
+    {
+      id: 4,
+      text: "Last Modified",
+      onCick: sortByAssignedDate,
+    },
+    {
+      id: 5,
+      text: "Total Assignments",
+      
+    },
+    {
+      id: 6,
+      text: "",
+      
+    },
+    {
+      id: 7,
+      text: "",
+      
+    },
+  ];
   useEffect(() => {
     if (
       modalData.testName.trim() === "" ||
@@ -212,7 +312,7 @@ export default function AllTests() {
   useEffect(() => {
     fetchTests();
   }, []);
- console.log("jjj",filteredTests)
+  
   if (persona === "parent" || persona === "student") return <StudentTest />;
 
   return (
@@ -269,7 +369,8 @@ export default function AllTests() {
           <Table
             dataFor="allTests"
             data={filteredTests}
-            tableHeaders={tableHeaders}
+            tableHeaders={tableObjHeaders}
+            headerObject={true}
             maxPageSize={10}
             onClick={{ openRemoveTestModal }}
           />
@@ -281,69 +382,73 @@ export default function AllTests() {
           title="Upload New Material"
           titleClassName="text-start text-sm mb-3"
           classname={"max-w-[630px] mx-auto"}
-          
           primaryBtn={{
             text: "Create",
             form: "add-test-form",
             onClick: handleSubmit,
             type: "submit",
-            className: "w-[123px] pl-6 pr-6 py-2 mr-5 my-auto pr-2 flex gap-2 mt-7 h-min disabled:opacity-80",
+            className:
+              "w-[123px] pl-6 pr-6 py-2 mr-5 my-auto pr-2 flex gap-2 mt-7 h-min disabled:opacity-80",
             disabled: submitBtnDisabled,
             loading: loading,
-            icon:<img src={check} alt="check" className="inline-block"/>
+            icon: <img src={check} alt="check" className="inline-block" />,
           }}
           otherBt={
-           
-                <div id={styles.handleFileUpload} >
-                  <div id={styles.uploadButtons}  className="mt-7 ml-7 px-0  gap-2 flex justify-between">
-                    <div id={styles.pdfUpload}>
-                      <label
-                        htmlFor="pdf"
-                        className={`${pdfFile !== null ? "bg-[#26435F] " : "bg-[#26435F] "} w-[160px]`}
-                      >
-                        Upload PDF
-                        <img src={upload} alt="Upload" />
-                      </label>
-                      <div className={styles.error}>{PDFError}</div>
-                      <input
-                        id="pdf"
-                        type="file"
-                        accept="application/pdf"
-                        onChange={(e) => handlePDFFile(e.target.files[0])}
-                      />
-                      <div id={styles.filename}>
-                        {pdfFile?.name || pdfFile?.name}
-                      </div>
-                    </div>
-
-                    <div id={styles.csvUpload}>
-                      <label
-                        htmlFor="csv"
-                       
-                        className={`${csvFile !== null && styles.fileUploaded? "bg-[#26435F] " : "bg-[#26435F] "} w-[200px]`}
-                      >
-                        Upload Metadata
-                        <img src={upload} alt="Upload" />
-                      </label>
-                      <div className={styles.error}>{csvError}</div>
-                      <input
-                        id="csv"
-                        type="file"
-                        accept=".xls,.xlsx"
-                        // onChange={e => {
-                        onChange={(e) => setCSVFile(e.target.files[0])}
-                      />
-                      <div id={styles.filename}>
-                        {csvFile ? csvFile?.name : ""}
-                      </div>
-                    </div>
+            <div id={styles.handleFileUpload}>
+              <div
+                id={styles.uploadButtons}
+                className="mt-7 ml-7 px-0  gap-2 flex justify-between"
+              >
+                <div id={styles.pdfUpload}>
+                  <label
+                    htmlFor="pdf"
+                    className={`${
+                      pdfFile !== null ? "bg-[#26435F] " : "bg-[#26435F] "
+                    } w-[160px]`}
+                  >
+                    Upload PDF
+                    <img src={upload} alt="Upload" />
+                  </label>
+                  <div className={styles.error}>{PDFError}</div>
+                  <input
+                    id="pdf"
+                    type="file"
+                    accept="application/pdf"
+                    onChange={(e) => handlePDFFile(e.target.files[0])}
+                  />
+                  <div id={styles.filename}>
+                    {pdfFile?.name || pdfFile?.name}
                   </div>
-                  {/* 
+                </div>
+
+                <div id={styles.csvUpload}>
+                  <label
+                    htmlFor="csv"
+                    className={`${
+                      csvFile !== null && styles.fileUploaded
+                        ? "bg-[#26435F] "
+                        : "bg-[#26435F] "
+                    } w-[200px]`}
+                  >
+                    Upload Metadata
+                    <img src={upload} alt="Upload" />
+                  </label>
+                  <div className={styles.error}>{csvError}</div>
+                  <input
+                    id="csv"
+                    type="file"
+                    accept=".xls,.xlsx"
+                    // onChange={e => {
+                    onChange={(e) => setCSVFile(e.target.files[0])}
+                  />
+                  <div id={styles.filename}>{csvFile ? csvFile?.name : ""}</div>
+                </div>
+              </div>
+              {/* 
                            <div id={styles.filename}>
                               {pdfFile?.name || csvFile?.name}
                            </div> */}
-                </div>
-             
+            </div>
           }
           handleClose={handleClose}
           body={
@@ -387,8 +492,6 @@ export default function AllTests() {
                   }
                 />
               </div>
-
-             
             </form>
           }
         />
