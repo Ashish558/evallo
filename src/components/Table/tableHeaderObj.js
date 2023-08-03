@@ -4,7 +4,7 @@ import InputSelect from "../InputSelect/InputSelect";
 import sort from "./../../assets/icons/sort.webp";
 import styles from "./styles.module.css";
 export function TableHeaderNew({ header, checkedHeader, Handler}) {
-  
+ 
   const handleCheckboxChange = () => {
     Handler();
   };
