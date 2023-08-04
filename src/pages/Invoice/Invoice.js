@@ -9,6 +9,7 @@ import InputSearch from '../../components/InputSearch/InputSearch';
 import { useLazyGetParentsByNameQuery, useAddInvoiceMutation, useLazyGetAllInvoiceQuery, useEditInvoiceMutation } from '../../app/services/admin';
 import { getCurrentDate, getFormattedDate } from '../../utils/utils';
 import { useLazyGetUserDetailQuery } from '../../app/services/users';
+import styles from './styles.module.css'
 
 const options = ['Discounted Package']
 
@@ -78,23 +79,23 @@ export default function Invoice() {
             setLoading(false)
             console.log(res)
             setInvoiceData(initialState)
-            fetchInvoices()
+            // fetchInvoices()
          })
    }
    const checkIfExist = val => val ? val : '-'
 
    const handleEdit = updatedInvoice => {
-      console.log('payload' ,updatedInvoice);
+      console.log('payload', updatedInvoice);
       editInvoice(updatedInvoice)
          .then(res => {
-            console.log('response' ,res)
+            console.log('response', res)
             if (res.error) {
-               if(res.error?.data?.states){
+               if (res.error?.data?.states) {
                   alert(res.error?.data?.states)
-               }else if(res.error?.data?.status){
+               } else if (res.error?.data?.status) {
                   alert(res.error?.data?.status)
                }
-               else{
+               else {
                   alert(res.error?.data?.message)
                }
                return
@@ -126,43 +127,43 @@ export default function Invoice() {
          })
    }
 
-   const fetchInvoices = () => {
-      fetchAllInvoice()
-         .then(resp => {
-            setAllInvoices([])
-            console.log('all invoices', resp.data.data.invoice)
-            resp.data.data.invoice.map((invoice, idx) => {
-               const { _id, createdAt, isPaid, status, invoiceType, amountDue, balanceChange, type, parentId, updatedAt, remark } = invoice
+   // const fetchInvoices = () => {
+   //    fetchAllInvoice()
+   //       .then(resp => {
+   //          setAllInvoices([])
+   //          console.log('all invoices', resp.data.data.invoice)
+   //          resp.data.data.invoice.map((invoice, idx) => {
+   //             const { _id, createdAt, isPaid, status, invoiceType, amountDue, balanceChange, type, parentId, updatedAt, remark } = invoice
 
-               getUserDetail({ id: parentId }).then((res) => {
-                  const { firstName, lastName, credits } = res.data.data.user
-                  setAllInvoices(prev => {
-                     let obj = {
-                        _id,
-                        name: `${firstName} ${lastName}`,
-                        currentBalance: `$${credits}`,
-                        invoiceId: _id.slice(-8),
-                        createDate: getFormattedDate(createdAt),
-                        // status: isPaid ? 'Paid' : 'Unpaid',
-                        invoiceType: invoiceType,
-                        paidOn: '-',
-                        remark: remark,
-                        type: checkIfExist(type),
-                        amountDue: `$${amountDue}`,
-                        balanceCredit: `$${balanceChange}`,
-                        parentId,
-                        updatedAt
-                     }
-                     let allinvs = [...prev, { ...obj }]
-                     return allinvs.sort(function (a, b) {
-                        return new Date(b.updatedAt) - new Date(a.updatedAt);
-                     });
+   //             getUserDetail({ id: parentId }).then((res) => {
+   //                const { firstName, lastName, credits } = res.data.data.user
+   //                setAllInvoices(prev => {
+   //                   let obj = {
+   //                      _id,
+   //                      name: `${firstName} ${lastName}`,
+   //                      currentBalance: `$${credits}`,
+   //                      invoiceId: _id.slice(-8),
+   //                      createDate: getFormattedDate(createdAt),
+   //                      // status: isPaid ? 'Paid' : 'Unpaid',
+   //                      invoiceType: invoiceType,
+   //                      paidOn: '-',
+   //                      remark: remark,
+   //                      type: checkIfExist(type),
+   //                      amountDue: `$${amountDue}`,
+   //                      balanceCredit: `$${balanceChange}`,
+   //                      parentId,
+   //                      updatedAt
+   //                   }
+   //                   let allinvs = [...prev, { ...obj }]
+   //                   return allinvs.sort(function (a, b) {
+   //                      return new Date(b.updatedAt) - new Date(a.updatedAt);
+   //                   });
 
-                  })
-               })
-            })
-         })
-   }
+   //                })
+   //             })
+   //          })
+   //       })
+   // }
 
    useEffect(() => {
       if (invoiceData.invoiceType === 'hourly') {
@@ -174,22 +175,40 @@ export default function Invoice() {
       // console.log(invoiceData)
    }, [invoiceData.invoiceType, invoiceData.amountDue])
 
-   useEffect(() => {
-      fetchInvoices()
-   }, [])
+   // useEffect(() => {
+   //    fetchInvoices()
+   // }, [])
 
    // console.log(allInvoices);
 
    return (
-      <>
+      <div className='relative'>
+         <div className={styles.box}>
+            <div className={`bg-[#FFFFFF] w-[500px]  px-4 py-3 border-4 border-[#FFA28D] rounded-3xl`}>
+               <p className='text-[#517CA8] '>We are working hard to build a reliable invoicing system to ensure that you can easily send invoices to your clients, and they can process your payments on time in a secure manner.<br></br>
+                  We will be offering this feature, along with many others, during our alpha launch.</p>
+            </div>
+            <p className='text-center text-[#FFFFFF]'><button >Back</button> </p>
+         </div>
+         <svg xmlns="http://www.w3.org/2000/svg"
+            width="1920"
+            height="992"
+            viewBox="0 0 1920 992"
+            fill="none">
 
+            <path d="M0 0.998047H1920V991.665H0V0.998047Z"
+               fill="rgba(38, 67, 95, 0.50)"
+               fillOpacity="">
+            </path>
+         </svg>
          {/* // <div className='lg:ml-pageLeft bg-lightWhite min-h-screen pt-[30px] pb-[50px] pl-[66px] pr-[41px]'>
          //    <div className=''>
          //       <p className='font-bold text-[48px] mb-[30px] text-[#25335A]'> Invoices </p>
          //       <div className='flex'>
          //          <div className='grid grid-cols-2 flex-1 gap-x-[46px] gap-y-[16px] mr-[50px]'> */}
-         <div className='lg:ml-pageLeft bg-lightWhite min-h-screen pt-[30px] pb-[50px] pl-[41px] pr-[41px]'>
-            <div className=''>
+         <div className={` lg:ml-pageLeft bg-lightWhite min-h-screen pt-[30px] pb-[50px] pl-[41px] pr-[41px] ${styles.container}`}>
+
+            <div >
                <p className='font-bold text-[48px] mb-[30px] text-[#25335A]'> Invoice </p>
                <form className='flex' onSubmit={handleSubmit} >
                   <div className='grid grid-cols-2 flex-1 gap-x-[46px] gap-y-[16px] mr-[50px]'>
@@ -299,6 +318,7 @@ export default function Invoice() {
                </div>
             </div>
          </div>
-      </>
+
+      </div>
    )
 }
