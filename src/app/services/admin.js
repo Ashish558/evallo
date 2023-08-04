@@ -102,7 +102,7 @@ export const adminServicesApi = createApi({
       }),
       addNewQuestion: builder.mutation({
          query: (body) => ({
-            url: `/api/user/addNewField/org/${body.orgId}`,
+            url: `/api/user/addNewField`,
             method: "POST",
             body: body,
             headers: getAuthHeader()

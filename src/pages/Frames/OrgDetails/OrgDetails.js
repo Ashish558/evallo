@@ -111,7 +111,7 @@ export default function OrgDetails({
                 onChange={(e) => handleCompanyTypeChange(e)}
                 className="form-control  text-[13px]"
               >
-                <option value="0">Company Type</option>
+                <option value="0">Other</option>
                 {companyType.map((c, id) => {
                   return (
                     <>

@@ -4,7 +4,7 @@ import DownArrow from "../../assets/icons/down-chevron.svg";
 import UpArrow from "../../assets/icons/chevron-up-solid (1).svg";
 import useOutsideAlerter from "../../hooks/useOutsideAlerter";
 import CCheckbox from "../CCheckbox/CCheckbox";
-import questionMark from '../../assets/images/question-mark.svg'
+import questionMark from "../../assets/images/question-mark.svg";
 export default function InputSelect({
   parentClassName,
   Icon,
@@ -41,12 +41,15 @@ export default function InputSelect({
   return (
     <div
       ref={selectRef}
-      className={`${selected && "relative z-5000"} ${parentClassName ? parentClassName : ""
-        } ${disabled === true ? "pointer-events-none" : ""} `}
+      className={`${selected && "relative z-5000"} ${
+        parentClassName ? parentClassName : ""
+      } ${disabled === true ? "pointer-events-none" : ""} `}
     >
       <div className="flex items-center mb-1">
         {label && (
-          <label className={`font-medium text-[#26435F] inline-block  ${labelClassname}`}>
+          <label
+            className={`font-medium text-[#26435F] inline-block  ${labelClassname}`}
+          >
             {label}
             {required && (
               <span className="text-primaryRed inline-block pl-1">*</span>
@@ -54,16 +57,17 @@ export default function InputSelect({
           </label>
         )}
         <div>
-          {
-            label == "Default Timezone" && <img className="ml-3" src={questionMark} alt=""></img>
-          }
+          {label == "Default Timezone" && (
+            <img className="ml-3" src={questionMark} alt=""></img>
+          )}
         </div>
       </div>
 
       <div
         onClick={() => setSelected(true)}
-        className={`py-[10px] px-[14px]  lg:py-[8px] lg:px-[16px] border border-[#D0D5DD] flex items-center rounded relative cursor-pointer z-50 ${inputContainerClassName ? inputContainerClassName : ""
-          } `}
+        className={`py-[10px] px-[14px]  lg:py-[8px] lg:px-[16px] border border-[#D0D5DD] flex items-center rounded relative cursor-pointer z-50 ${
+          inputContainerClassName ? inputContainerClassName : ""
+        } `}
       >
         {Icon && <img src={Icon} className={`mr-5  w-[28px]}`} alt="icon" />}
         {selected ? (
@@ -87,8 +91,9 @@ export default function InputSelect({
         )}
 
         <div
-          className={`outline-0 w-full relative ${optionClassName ? optionClassName : ""
-            }`}
+          className={`outline-0 w-full relative ${
+            optionClassName ? optionClassName : ""
+          }`}
           name={label}
         >
           {value === "" || !value ? (

@@ -15,7 +15,10 @@ import {
   useLazyGetTutorDetailsQuery,
   useLazyGetUserDetailQuery,
 } from "../../../../app/services/users";
-import { useForgotPasswordMutation, useSignupUserMutation } from "../../../../app/services/auth";
+import {
+  useForgotPasswordMutation,
+  useSignupUserMutation,
+} from "../../../../app/services/auth";
 import { useNavigate } from "react-router-dom";
 import { roles } from "../../../../constants/constants";
 import {
@@ -58,10 +61,10 @@ export default function UserManagement() {
   useEffect(() => {
     setValidData(
       isEmail(modalData.email) &&
-      modalData.firstName &&
-      modalData.lastName &&
-      modalData.userType &&
-      modalData.phone
+        modalData.firstName &&
+        modalData.lastName &&
+        modalData.userType &&
+        modalData.phone
     );
   }, [
     modalData,
@@ -126,13 +129,16 @@ export default function UserManagement() {
     },
     {
       id: 8,
-      text: 'Profile'
+      text: "Profile",
     },
     {
       id: 9,
       text: "Password",
-    }
-
+    },
+    {
+      id: 10,
+      text: "Password",
+    },
   ];
 
   const handleResetPassword = (email) => {
@@ -192,7 +198,7 @@ export default function UserManagement() {
     setUsersData([]);
     setFilteredUsersData([]);
 
-    let urlParams = `?limit=${maxPageSize}&page=${currentPage}`;
+    let urlParams = `?limit=${maxPageSize}&page=${currentPage}&role=superAdmin`;
     if (filterData.userType.length > 0) {
       filterData.userType.forEach((item) => {
         urlParams = urlParams + `&role=${item}`;
@@ -316,6 +322,7 @@ export default function UserManagement() {
   useEffect(() => {
     fetchTutors();
   }, []);
+
   const changeUserField = (field, id) => {
     let temp = filteredUsersData.map((item) => {
       // console.log(item[Object.keys(field)[0]]);
@@ -606,7 +613,15 @@ export default function UserManagement() {
     }
   };
 
-  // console.log('users', filteredUsersData);
+  const filteredUserData = [];
+
+  filteredUsersData.map((user) => {
+    const ids = filteredUserData.map((item) => item._id);
+    if (!ids.includes(user._id)) {
+      filteredUserData.push(user);
+    }
+  });
+
 
   return (
     <div className=" bg-lightWhite min-h-screen">
@@ -756,8 +771,13 @@ export default function UserManagement() {
         <div className="mt-6">
           <Table
             dataFor="allUsersSuperAdmin"
-            data={filteredUsersData}
-            onClick={{ redirect, handleTutorStatus, handleDelete, handleResetPassword }}
+            data={filteredUserData}
+            onClick={{
+              redirect,
+              handleTutorStatus,
+              handleDelete,
+              handleResetPassword,
+            }}
             tableHeaders={tableHeaders}
             headerObject={true}
             maxPageSize={maxPageSize}

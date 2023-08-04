@@ -7,10 +7,10 @@
 .line::before {
   content: "";
   position: absolute;
-  right: -93px;
+  right: -129px;
   top: 50%;
   transform: translateY(-50%);
-  width:93px;
+  width:129px;
   height: 1px;
   background-color: #7152eb;
   z-index: -99;

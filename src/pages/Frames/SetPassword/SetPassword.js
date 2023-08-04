@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import InputField from "../../../components/InputField/inputField";
 import Passwordicon from "../../../assets/form/password.svg";
 import styles from "../../Signup/signup.module.css";
@@ -49,8 +49,8 @@ export default function SetPassword({
       new Promise((resolve) => {
         resolve(resetErrors());
       });
-    setLoading(true);
-    promiseState().then(() => {
+      setLoading(true);
+      promiseState().then(() => {
       const reqBody = { password, token };
       const result = validatePassword({ password, confirmPassword });
       // console.log(result);
@@ -98,7 +98,7 @@ export default function SetPassword({
         <div className="flex justify-center min-h-screen">
           {/* <div className="bg-primary"></div> */}
           <div className="flex flex-col justify-center items-center">
-          <img src={EvalloLogo} alt="logo" className="mb-4 scale-[.93] " />
+            <img src={EvalloLogo} alt="logo" className="mb-4 scale-[.93] " />
 
             <div className={`w-full bg-white py-6 ${signup ? "" : "px-148"} `}>
               <p className="font-bold text-4xl leading-snug mb-7">

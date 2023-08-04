@@ -1,8 +1,13 @@
-.upload-container{
-   position: absolute;
-   bottom: -7px;
-   right: 4px;
-   display: flex;
-   column-gap: 4px;
-   cursor: pointer;
+.upload-container {
+  position: absolute;
+  bottom: -7px;
+  right: 4px;
+  display: flex;
+  column-gap: 4px;
+  cursor: pointer;
+}
+.upload-container-centered {
+  bottom: 50%;
+  right: 50%;
+  transform: translate(50%, 50%);
 }
