@@ -215,6 +215,7 @@ export default function Invoice() {
 
                      <InputSearch
                         label="Client Name"
+                        disabled={true}
                         labelClassname="ml-2 mb-1.2"
                         placeholder="Select Test Type"
                         parentClassName="w-full"
@@ -228,6 +229,7 @@ export default function Invoice() {
                         onOptionClick={(item) => setInvoiceData({ ...invoiceData, clientName: item.value, parentId: item._id })}
                      />
                      <InputField
+                        disabled={true}
                         parentClassName="relative"
                         label="Amount Due"
                         labelClassname="ml-2 mb-1.2"
@@ -247,6 +249,7 @@ export default function Invoice() {
                         onChange={(e) => setInvoiceData({ ...invoiceData, amountDue: e.target.value, })}
                      />
                      <InputSelect
+                        disabled={true}
                         label="Invoice Type"
                         labelClassname="ml-2 mb-1.2"
                         optionData={options}
@@ -264,13 +267,14 @@ export default function Invoice() {
                         }
                      />
                      <InputField
+                        disabled={true}
                         parentClassName="relative"
                         label="Balance to be credited"
                         labelClassname="ml-2 mb-1.2"
                         inputContainerClassName="relative border bg-white border pt-2.5 pb-2.5"
                         inputClassName="ml-10"
                         type='number'
-                        disabled={invoiceData.invoiceType === 'hourly' ? true : false}
+                        // disabled={invoiceData.invoiceType === 'hourly' ? true : false}
                         inputLeftField={
                            <div className={`relative z-5000 flex items-center justify-center ${inputStyle.phoneNumberField}`}
                               style={{ width: '50px' }} >
@@ -289,6 +293,7 @@ export default function Invoice() {
                      <div className='flex flex-1 flex-col self-stretch'>
                         <label className='font-semibold ml-2 mb-1.2'> Invoice Description </label>
                         <textarea
+                           disabled={true}
                            placeholder="Session Notes"
                            value={invoiceData.description}
                            onChange={(e) =>
@@ -301,7 +306,7 @@ export default function Invoice() {
                      {/* <div className='ml-[36px] mt-[30px]'>
                         <PrimaryButton children='Create' className='py-[13.5px] px-[43px]' /> */}
                      <div className='ml-[36px] mt-[30px]'>
-                        <PrimaryButton type='submit' children='Create' className='py-[13.5px] px-[43px]' loading={loading} />
+                        <PrimaryButton disabled={true} type='submit' children='Create' className='py-[13.5px] px-[43px]' loading={loading} />
                      </div>
                   </div>
                </form>
