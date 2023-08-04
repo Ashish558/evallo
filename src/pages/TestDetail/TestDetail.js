@@ -88,7 +88,7 @@ export default function TestDetail() {
       formData.append("pdf", file);
       setPDFFile(file);
       setPdfBtnDisabled(true)
-      axios.post(`${BASE_URL}api/test/addpdf/${id}`, formData,  {headers: getAuthHeader()})
+      axios.post(`${BASE_URL}api/test/addpdf/${id}`, formData, { headers: getAuthHeader() })
          .then((res) => {
             setPdfBtnDisabled(false)
             alert('PDF file uploaded successfully!')
@@ -105,7 +105,9 @@ export default function TestDetail() {
    };
 
    const fetchData = () => {
-      axios.get(`${BASE_URL}api/test/${id}`)
+      axios.get(`${BASE_URL}api/test/${id}`, {
+         headers: getAuthHeader()
+      })
          .then((res) => {
             console.log('test data', res.data.data);
             setAwsLink(res.data.data.baseLink)
