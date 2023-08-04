@@ -844,7 +844,7 @@ export default function Users() {
             onClick={{ redirect, handleTutorStatus, handleDelete }}
             tableHeaders={tableHeaders}
             headerObject={true}
-            maxPageSize={maxPageSize}
+            maxPageSize={10}
             isCallingApi={true}
             total_pages={Math.ceil(totalPages / maxPageSize)}
             setMaxPageSize={setMaxPageSize}
@@ -986,7 +986,7 @@ export default function Users() {
           primaryBtn={{
             text: "Assign",
             className: "max-w-140 pl-8 pr-8",
-            onClick: () => handleSubmit(),
+            onClick: (e) => handleSubmit(e),
             disabled: submitBtnDisabled,
             loading: loading,
           }}
@@ -1044,7 +1044,7 @@ export default function Users() {
                     labelClassname="ml-2 mb-0.5"
                     inputContainerClassName="px-5 py-3.5 text-sm bg-primary-50 border-0"
                     inputClassName="bg-transparent"
-                    placeholder="Student Name"
+                    placeholder="Tutor Name"
                     type="select"
                   />
                 </div>
