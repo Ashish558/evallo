@@ -66,10 +66,10 @@ export default function Users() {
   useEffect(() => {
     setValidData(
       isEmail(modalData.email) &&
-        modalData.firstName &&
-        modalData.lastName &&
-        modalData.userType &&
-        modalData.phone
+      modalData.firstName &&
+      modalData.lastName &&
+      modalData.userType &&
+      modalData.phone
     );
   }, [
     modalData,
@@ -534,7 +534,7 @@ export default function Users() {
   };
 
   const handleDelete = (item) => {
-    
+
     setUserToDelete(item);
     setDeleteModalActive(true);
   };
@@ -574,7 +574,7 @@ export default function Users() {
     } else {
       if (
         // modalData.phone.length < 10 ||
-        !isEmail(modalData.email) 
+        !isEmail(modalData.email)
         // !isPhoneNumber(modalData.phone)
       ) {
         setAddUserBtnDisabled(true);
@@ -634,15 +634,15 @@ export default function Users() {
     <div className="lg:mx-[60px] bg-lightWhite min-h-screen">
       <div className="py-10 px-5">
         <div className="flex justify-between items-center mb-3">
-        <p className="text-[#24A3D9] mb-3">
-              {organization?.company +
-                "  >  " +
-                firstName +
-                "  " +
-                lastName +
-                "  >  "}
-                     <span className="font-semibold">CRM</span>
-            </p>
+          <p className="text-[#24A3D9] mb-3">
+            {organization?.company +
+              "  >  " +
+              firstName +
+              "  " +
+              lastName +
+              "  >  "}
+            <span className="font-semibold">CRM</span>
+          </p>
           <button
             className="bg-[#24A3D9] w-[188px] text-sm justify-center flex py-2 px-5 items-center text-white font-semibold rounded-lg"
             onClick={() => setAssignStudentModalActive(true)}
@@ -713,7 +713,7 @@ export default function Users() {
             parentClassName="w-full w-1/6 border-none "
             inputContainerClassName="text-sm rounded-md shadow-[0px_0px_2.4999988079071045px_0px_#00000040] border-white bg-white px-[20px] py-[16px]"
             type="select"
-         
+
             checkbox={{
               visible: true,
               name: "test",
@@ -824,18 +824,42 @@ export default function Users() {
             </label>
             <div></div>
           </div> */}
-          <button className="bg-[#26435F] px-7 py-2 rounded-md text-white ml-auto">
-            Save
-          </button>
 
-        </div> 
-        <div className="flex align-center mt-0 gap-[20px]"></div>
-        <div className="mt-4">
+
+        </div>
+        {/* <div className="flex align-center mt-0 gap-[20px]"></div> */}
+        <div >
           <FilterItems
             items={filterItems}
             setData={setFilterItems}
             onRemoveFilter={onRemoveFilter}
           />
+
+        </div>
+        <div className="flex justify-between items-center mt-5">
+
+          <div className="ml-6 ">
+            <label
+              className={`  text-[#26435F] font-medium flex items-center`}
+            >
+              <input
+                type="checkbox"
+                checked={isChecked}
+                onChange={handleCheckboxChange}
+              />
+              <span
+                className={`${styles["custom-checkbox"]} ${isChecked ? "checked" : ""
+                  }`}
+              ></span>
+              <span className="block">{filterData?.status?.length} Selected</span>
+            </label>
+
+          </div>
+          <div>
+            <button className="bg-[#26435F] px-7 py-2 rounded-md text-white ml-auto">
+              Save
+            </button>
+          </div>
         </div>
         <div className="mt-6">
           <Table
@@ -864,10 +888,10 @@ export default function Users() {
           titleClassName="text-start mb-3 pb-3 border-b border-b-gray-300"
           primaryCancel={true}
           cancelBtnClassName="w-140"
-        
+
           primaryBtn={{
             text: "Invite User",
-             className: 'rounded-lg bg-transparent border border-[#FFA28D] py-2 text-[#FFA28D]',
+            className: 'rounded-lg bg-transparent border border-[#FFA28D] py-2 text-[#FFA28D]',
             form: "add-user-form",
             onClick: handleSubmit,
             loading: loading,
@@ -947,7 +971,7 @@ export default function Users() {
                   />
                 </div>
 
-                
+
               </div>
             </form>
           }
