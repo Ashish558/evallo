@@ -449,7 +449,7 @@ const Dashboard = () => {
               <div>
                 <p className="font-semibold text-[13px]">Total # Of referrals</p>
                 <div
-                  className={`mt-2 h-[67px] bg-[rgba(255,162,141,0.2)] ${styles.smallBox}`}
+                  className={`mt-1 h-[67px] bg-[rgba(255,162,141,0.2)] ${styles.smallBox}`}
                 >
                   <p className="text-[#FFA28D] h-full w-full justify-center font-semibold text-3xl flex items-center text-center">
                     {improvementStats.no_of_referrals}
@@ -459,7 +459,7 @@ const Dashboard = () => {
               <div>
                 <p className="font-semibold text-[13px]">Average SAT improvement</p>
                 <div
-                  className={`w-[170px] mt-2 h-[67px] bg-[rgba(36,163,217,0.2)]  ${styles.smallBox}`}
+                  className={`w-[170px] mt-1 h-[67px] bg-[rgba(36,163,217,0.2)]  ${styles.smallBox}`}
                 >
                   <p className="text-[#24A3D9] h-full w-full justify-center font-semibold text-3xl flex items-center text-center">
                     {improvementStats.avg_sat_improvement
@@ -471,7 +471,7 @@ const Dashboard = () => {
               <div>
                 <p className="font-semibold text-[13px]">Average ACT improvement</p>
                 <div
-                  className={`w-[170px] mt-2 h-[67px] bg-[rgba(36,163,217,0.2)]  ${styles.smallBox}`}
+                  className={`w-[170px] mt-1 h-[67px] bg-[rgba(36,163,217,0.2)]  ${styles.smallBox}`}
                 >
                   <p className="text-[#24A3D9] h-full w-full justify-center font-semibold text-3xl flex items-center text-center">
                     {improvementStats.avg_act_improvement
@@ -485,7 +485,7 @@ const Dashboard = () => {
               <div>
                 <p>Average GRE Improvement</p>
                 <div
-                  className={`w-[150px] mt-3 h-[67px] ${styles.smallBox2} flex items-center justify-center font-medium`}
+                  className={`w-[150px] mt-2 h-[67px] ${styles.smallBox2} flex items-center justify-center font-medium`}
                 >
                   <p>Coming Soon</p>
                 </div>
@@ -493,7 +493,7 @@ const Dashboard = () => {
               <div>
                 <p>Average GMAT Improvement</p>
                 <div
-                  className={`w-[150px] mt-3 h-[67px] ${styles.smallBox2} flex items-center justify-center font-medium`}
+                  className={`w-[150px] mt-2 h-[67px] ${styles.smallBox2} flex items-center justify-center font-medium`}
                 >
                   <p>Coming Soon</p>
                 </div>
@@ -501,7 +501,7 @@ const Dashboard = () => {
               <div>
                 <p>Average IELTS Improvement</p>
                 <div
-                  className={`w-[150px] mt-3 h-[67px] ${styles.smallBox2} flex items-center justify-center font-medium`}
+                  className={`w-[150px] mt-2 h-[67px] ${styles.smallBox2} flex items-center justify-center font-medium`}
                 >
                   <p>Coming Soon</p>
                 </div>
