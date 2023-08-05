@@ -72,8 +72,8 @@ const RangeDate = ({ handleRangeData }) => {
         placeholder="Select"
         parentClassName="border-none text-xs text-[#26435F] w-fit"
         labelClassname="text-sm"
-        inputContainerClassName={`border-none w-[300px] font-semibold text-[#FFA28D]  ${styles['text']}`}
-        inputClassName={`border-none w-fit bg-transparent font-semibold text-[#FFA28D] `}
+        inputContainerClassName={`border-none w-[300px]  text-[#FFA28D]  ${styles['text']}`}
+        inputClassName={`border-none w-fit bg-transparent  text-[#FFA28D] `}
         value={startDate}
         optionData={[
           { name: "Today", days: 0 },
@@ -86,7 +86,8 @@ const RangeDate = ({ handleRangeData }) => {
         onChange={handleQuickOptions}
         IconRight={
           <FontAwesomeIcon
-            className="pl-1 absolute right-10"
+            className=" absolute right-12 h-4 pb-1"
+            
             icon={faCaretDown}
           ></FontAwesomeIcon>
         }
