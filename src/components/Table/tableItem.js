@@ -218,7 +218,6 @@ export default function TableItem({
    setIsChecked(checkedHeader);
  },[checkedHeader])
 
-  // console.log('item', item);
   // console.log('extraData', extraData );
   // console.log('onClick', onClick );
 
