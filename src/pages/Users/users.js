@@ -876,6 +876,7 @@ export default function Users() {
             setnumberChecked={setnumberChecked}
             isCallingApi={true}
             isChecked={isChecked}
+            setIsChecked={setIsChecked}
             total_pages={Math.ceil(totalPages / maxPageSize)}
             setMaxPageSize={setMaxPageSize}
             currentPage={currentPage}
