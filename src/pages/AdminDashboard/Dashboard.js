@@ -615,8 +615,7 @@ const Dashboard = () => {
           <div className="mr-2 w-max ">
             <Table2
               data={tutorPerformanceData}
-              // Icon={<img src={ArrowDown} alt="down" className="" />}
-              tableHeaders={tutorTableHeaders}
+               tableHeaders={tutorTableHeaders}
               maxPageSize={5}
             />
           </div>
