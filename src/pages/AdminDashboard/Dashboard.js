@@ -9,7 +9,7 @@ import styles from "./style.module.css";
 
 import Table from "../../components/Table/Table";
 import ActionLog from "./ActionLog";
-
+import Table2 from "../SuperadminDashboard/Table/table"
 import {
   useGetAllRevenueMutation,
   useGetImpendingRevenueMutation,
@@ -473,9 +473,7 @@ const Dashboard = () => {
               data={userData}
               AdminLatestSignUp={true}
               headerObject={true}
-              // Icon={
-              //   <img src={ArrowDown} alt="down" className="flex-shrink-0" />
-              // }
+              
               tableHeaders={latestSignUpHeaders}
               maxPageSize={5}
             />
@@ -500,10 +498,9 @@ const Dashboard = () => {
               <p className="font-semibold text-[#26435F] text-[14px]">
                 Popular services
               </p>
-              <Table
+              <Table2
                 data={popularServices}
-                // Icon={<img src={ArrowDown} alt="down" className="" />}
-                tableHeaders={[
+               tableHeaders={[
                   "Service",
                   "Actively Using",
                   "Total Used",
@@ -616,10 +613,9 @@ const Dashboard = () => {
         </div>
         <section className="overflow-x-auto scrollbar-content mx-[80px] my-7  scroll-m-1 ">
           <div className="mr-2 w-max ">
-            <Table
+            <Table2
               data={tutorPerformanceData}
-              // Icon={<img src={ArrowDown} alt="down" className="" />}
-              tableHeaders={tutorTableHeaders}
+               tableHeaders={tutorTableHeaders}
               maxPageSize={5}
             />
           </div>
