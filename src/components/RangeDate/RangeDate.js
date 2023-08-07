@@ -86,7 +86,8 @@ const RangeDate = ({ handleRangeData }) => {
         onChange={handleQuickOptions}
         IconRight={
           <FontAwesomeIcon
-            className="pl-1 absolute right-10"
+            className=" absolute right-10 pb-1"
+            
             icon={faCaretDown}
           ></FontAwesomeIcon>
         }

@@ -72,6 +72,7 @@ export default function Table(props) {
             tableData.map((item, idx) => {
               return (
                 <TableItem
+
                   dataFor={dataFor}
                   AdminLatestSignUp={AdminLatestSignUp}
                   item={item}

@@ -63,10 +63,11 @@ export default function ApiTable({
                   checkedHeader={checkedHeader}
                   Handler={setcheckedHeaderHandler}
                   header={item}
+                  key={idx}
                 />
               ) : (
                 <TableHeader key={idx} header={item} dataFor={dataFor} />
-              );
+                );
             })}
           </tr>
         </thead>
