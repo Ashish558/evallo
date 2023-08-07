@@ -4,7 +4,7 @@ import { TableHeader } from "./TableHeader";
 import TableItem from "./tableItem";
 import ReactPaginate from "react-paginate";
 import { TableHeaderNew } from "./tableHeaderObj";
-import Pagination from '../../pages/SuperadminDashboard/Table/Pagination';
+import Pagination from "../../pages/SuperadminDashboard/Table/Pagination";
 
 export default function ApiTable({
   dataFor,
@@ -22,6 +22,9 @@ export default function ApiTable({
   fetch,
   headerObject,
   extraData,
+  isChecked,
+  numberChecked,
+  setnumberChecked
 }) {
   const [tableData, setTableData] = useState(
     data.sort(
@@ -30,8 +33,15 @@ export default function ApiTable({
     )
   );
   const dataLength = data.length > 30 ? 30 : data.length;
-  const [checkedHeader, setcheckedHeader] = useState(false);
-  // console.log();
+  const [checkedHeader, setcheckedHeader] = useState(isChecked);
+  useEffect(()=>{
+    setcheckedHeaderHandler()
+
+  },[isChecked])
+  useEffect(() => {
+    setcheckedHeader(false);
+    setnumberChecked(0);
+  }, [currentPage]);
 
   useEffect(() => {
     if (hidePagination === true) {
@@ -51,7 +61,11 @@ export default function ApiTable({
   }, [currentPage, data]);
   const setcheckedHeaderHandler = () => {
     setcheckedHeader(!checkedHeader);
+    if (!checkedHeader) {
+      setnumberChecked(tableData.length);
+    } else setnumberChecked(0);
   };
+  console.log({ numberChecked });
   return (
     <div>
       <table className="table-auto mb-3 text-center w-full">
@@ -79,6 +93,8 @@ export default function ApiTable({
                 key={idx}
                 excludes={excludes}
                 onClick={onClick}
+                numberChecked={numberChecked}
+                setnumberChecked={setnumberChecked}
                 checkedHeader={checkedHeader}
                 fetch={fetch}
                 extraData={extraData}
@@ -89,8 +105,13 @@ export default function ApiTable({
       </table>
 
       <div className="flex justify-end items-center">
-
-      <Pagination currentPage={ currentPage} setCurrentPage={setCurrentPage} totalPages={isCallingApi ? total_pages : Math.ceil(data.length / maxPageSize)} />
+        <Pagination
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+          totalPages={
+            isCallingApi ? total_pages : Math.ceil(data.length / maxPageSize)
+          }
+        />
 
         {/* {!hidePagination && <Pagination
                totalPages={total_pages}

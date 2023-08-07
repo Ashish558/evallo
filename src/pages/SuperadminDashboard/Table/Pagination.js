@@ -50,7 +50,7 @@ export default function Pagination({
           ""
         )}
 
-        {currentPage !== totalPages ? (
+        {currentPage !== totalPages && totalPages!==0 ? (
           <div
             className="p-1 cursor-pointer  text-[#B7C2CB]"
             onClick={() => handleClick(totalPages)}

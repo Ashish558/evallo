@@ -61,7 +61,7 @@ export default function Table(props) {
             })}
           </tr>
         </thead>
-        <tbody className="">
+        <tbody className="h-fit">
           {loading ? (
             <div
               className={`absolute w-full min-h-[100px] flex justify-center items-center`}
