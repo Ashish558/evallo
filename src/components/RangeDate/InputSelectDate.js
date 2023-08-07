@@ -113,7 +113,7 @@ export default function InputSelect({
           <div
             className={`scrollbar-content scrollbar-vertical  shadow-sm ${styles.options} $`}
           >
-            {DateSelect && DateSelect}
+            
             {optionData?.map((option, idx) => {
               return (
                 <div
@@ -142,6 +142,7 @@ export default function InputSelect({
                 </div>
               );
             })}
+            {DateSelect && DateSelect}
           </div>
         )}
       </div>
