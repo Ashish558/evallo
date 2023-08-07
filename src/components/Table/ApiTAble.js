@@ -25,7 +25,7 @@ export default function ApiTable({
   isChecked,
   setIsChecked,
   numberChecked,
-  setnumberChecked
+  setnumberChecked,
 }) {
   const [tableData, setTableData] = useState(
     data.sort(
@@ -35,12 +35,11 @@ export default function ApiTable({
   );
   const dataLength = data.length > 30 ? 30 : data.length;
   const [checkedHeader, setcheckedHeader] = useState(isChecked);
-  useEffect(()=>{
-    setcheckedHeaderHandler(isChecked)
-
-  },[isChecked])
   useEffect(() => {
-   setIsChecked(false)
+    setcheckedHeaderHandler(isChecked);
+  }, [isChecked]);
+  useEffect(() => {
+    setIsChecked(false);
   }, [currentPage]);
 
   useEffect(() => {
@@ -59,17 +58,16 @@ export default function ApiTable({
     // const temp = data.slice((currentPage - 1) * maxPageSize, (currentPage - 1) * maxPageSize + maxPageSize)
     // setTableData(temp)
   }, [currentPage, data]);
-  const topcheckedHandler=()=>{
-    setIsChecked(!isChecked)
-  }
+  const topcheckedHandler = () => {
+    setIsChecked(!isChecked);
+  };
   const setcheckedHeaderHandler = (isChecked) => {
-
     setcheckedHeader(isChecked);
     if (isChecked) {
       setnumberChecked(tableData.length);
     } else setnumberChecked(0);
   };
-  
+
   return (
     <div>
       <table className="table-auto mb-3 text-center w-full">
@@ -116,29 +114,7 @@ export default function ApiTable({
             isCallingApi ? total_pages : Math.ceil(data.length / maxPageSize)
           }
         />
-
-        {/* {!hidePagination && <Pagination
-               totalPages={total_pages}
-               currentPage={currentPage}
-               setCurrentPage={setCurrentPage}
-            />} */}
-        {/* <ReactPaginate
-          className="table-pagination-container flex justify-center mt-5"
-          pageClassName={`flex justify-center items-center w-[38.12px] h-[38.12px] border border-primary rounded-full mr-5 cursor-pointer
-               ${"text-primary"}`}
-          activeClassName={`bg-primary text-white`}
-          breakLabel="..."
-          // nextLabel="next >"
-          onPageChange={(val) => setCurrentPage(val.selected + 1)}
-          pageRangeDisplayed={3}
-          pageCount={total_pages}
-          // previousLabel="< previous"
-          previousClassName="hidden"
-          nextClassName="hidden"
-          renderOnZeroPageCount={null}
-          forcePage={currentPage - 1}
-          pageLinkClassName="w-full h-full flex justify-center items-center"
-        /> */}
+        
       </div>
     </div>
   );
