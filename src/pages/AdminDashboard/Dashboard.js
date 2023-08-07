@@ -498,7 +498,7 @@ const Dashboard = () => {
               <p className="font-semibold text-[#26435F] text-[14px]">
                 Popular services
               </p>
-              <Table2
+              <Table
                 data={popularServices}
                tableHeaders={[
                   "Service",
@@ -535,7 +535,7 @@ const Dashboard = () => {
                   Total # Of referrals
                 </p>
                 <div
-                  className={`mt-1 h-[67px] bg-[rgba(255,162,141,0.2)] ${styles.smallBox}`}
+                  className={`mt-1 w-[155px] h-[70px] bg-[rgba(255,162,141,0.2)] ${styles.smallBox}`}
                 >
                   <p className="text-[#FFA28D] h-full w-full justify-center font-semibold text-3xl flex items-center text-center">
                     {improvementStats.no_of_referrals}
@@ -547,7 +547,7 @@ const Dashboard = () => {
                   Average SAT improvement
                 </p>
                 <div
-                  className={`w-[170px] mt-1 h-[67px] bg-[rgba(36,163,217,0.2)]  ${styles.smallBox}`}
+                  className={`w-[190px] mt-1 h-[70px] bg-[rgba(36,163,217,0.2)]  ${styles.smallBox}`}
                 >
                   <p className="text-[#24A3D9] h-full w-full justify-center font-semibold text-3xl flex items-center text-center">
                     {improvementStats.avg_sat_improvement
@@ -561,7 +561,7 @@ const Dashboard = () => {
                   Average ACT improvement
                 </p>
                 <div
-                  className={`w-[170px] mt-1 h-[67px] bg-[rgba(36,163,217,0.2)]  ${styles.smallBox}`}
+                  className={`w-[190px] mt-1 h-[70px] bg-[rgba(36,163,217,0.2)]  ${styles.smallBox}`}
                 >
                   <p className="text-[#24A3D9] h-full w-full justify-center font-semibold text-3xl flex items-center text-center">
                     {improvementStats.avg_act_improvement
@@ -575,7 +575,7 @@ const Dashboard = () => {
               <div>
                 <p>Average GRE Improvement</p>
                 <div
-                  className={`w-[150px] mt-2 h-[67px] ${styles.smallBox2} flex items-center justify-center font-medium`}
+                  className={`w-[150px] mt-2 h-[70px] ${styles.smallBox2} flex items-center justify-center font-medium`}
                 >
                   <p>Coming Soon</p>
                 </div>
@@ -583,7 +583,7 @@ const Dashboard = () => {
               <div>
                 <p>Average GMAT Improvement</p>
                 <div
-                  className={`w-[150px] mt-2 h-[67px] ${styles.smallBox2} flex items-center justify-center font-medium`}
+                  className={`w-[150px] mt-2 h-[70px] ${styles.smallBox2} flex items-center justify-center font-medium`}
                 >
                   <p>Coming Soon</p>
                 </div>
@@ -591,7 +591,7 @@ const Dashboard = () => {
               <div>
                 <p>Average IELTS Improvement</p>
                 <div
-                  className={`w-[150px] mt-2 h-[67px] ${styles.smallBox2} flex items-center justify-center font-medium`}
+                  className={`w-[150px] mt-2 h-[70px] ${styles.smallBox2} flex items-center justify-center font-medium`}
                 >
                   <p>Coming Soon</p>
                 </div>
@@ -611,14 +611,14 @@ const Dashboard = () => {
             <RangeDate handleRangeData={handleTutorPerformance} />
           </div>
         </div>
-        <section className="overflow-x-auto scrollbar-content mx-[80px] my-7  scroll-m-1 ">
-          <div className="mr-2 w-max ">
-            <Table2
+        <section className="mx-[80px]  ">
+         
+            <Table
               data={tutorPerformanceData}
                tableHeaders={tutorTableHeaders}
               maxPageSize={5}
             />
-          </div>
+       
 
           <div className="flex justify-center">
             <div className="mt-[36px] mb-[44px] bg-[#CBD6E2] h-[1px] w-[100px]"></div>

@@ -51,12 +51,13 @@ export default function Table(props) {
   const totalPages = Math.ceil(data.length / maxPageSize);
 
   return (
-    <div>
+    <div className="w-full">
+      <div className="overflow-x-auto scrollbar-content  my-7  scroll-m-1 ">
       <table
-        className={`${styles.customTable}  border-collapse border-spacing-2  mb-3 text-center w-full min-h-[300px]`}
+        className={`${styles.customTable}  border-collapse border-spacing-2 whitespace-nowrap  mb-3 text-center w-full min-h-[300px]`}
       >
-        <thead className="bg-[#26435F]">
-          <tr>
+        <thead className="bg-[#26435F] whitespace-nowrap">
+          <tr className=" whitespace-nowrap">
             {tableHeaders.map((item, idx) => {
               return <TableHeader key={idx} Icon={Icon} header={item} dataFor={dataFor} />;
             })}
@@ -86,6 +87,8 @@ export default function Table(props) {
           )}
         </tbody>
       </table>
+      </div>
+      
 
       <div className="flex justify-end items-center">
         <Pagination
