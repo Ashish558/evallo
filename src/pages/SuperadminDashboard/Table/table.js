@@ -20,6 +20,7 @@ export default function Table(props) {
     AdminLatestSignUp
   } = props;
 
+  
   const [tableData, setTableData] = useState(data);
   const [currentPage, setCurrentPage] = useState(1);
   const dataLength = data?.length > 30 ? 30 : data?.length;
@@ -61,7 +62,7 @@ export default function Table(props) {
             })}
           </tr>
         </thead>
-        <tbody className="">
+        <tbody className="h-fit">
           {loading ? (
             <div
               className={`absolute w-full min-h-[100px] flex justify-center items-center`}

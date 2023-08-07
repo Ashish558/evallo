@@ -42,6 +42,8 @@ export default function TableItem({
   fetch,
   checkedHeader,
   extraData,
+  numberChecked,
+  setnumberChecked
 }) {
   const [score, setScore] = useState("-");
   const navigate = useNavigate();
@@ -210,7 +212,10 @@ export default function TableItem({
   }, [item]);
   const [isChecked, setIsChecked] = useState(checkedHeader);
   const handleCheckboxChange = () => {
-   setIsChecked(!isChecked);
+    console.log("handleCheckboxChange")
+   setIsChecked(!isChecked);  
+   let fl=isChecked?1:-1
+   setnumberChecked(numberChecked-fl)
  };
  
 
