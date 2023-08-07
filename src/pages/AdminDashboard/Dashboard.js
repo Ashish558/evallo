@@ -7,7 +7,7 @@ import { faQuestionCircle } from "@fortawesome/free-regular-svg-icons";
 import icon from "../../assets/images/Evallo.png";
 import styles from "./style.module.css";
 
-import Table from "../SuperadminDashboard/Table/table";
+import Table from "../../components/Table/Table";
 import ActionLog from "./ActionLog";
 
 import {
@@ -21,7 +21,7 @@ import {
   useLazyGetImprovementStatsQuery,
   useGetFilteredActionLogMutation,
 } from "../../app/services/adminDashboard";
-import { latestSignUpHeaders, tutorTableHeaders } from "./staticData";
+import { tutorTableHeaders } from "./staticData";
 import { useState } from "react";
 import RangeDate from "../../components/RangeDate/RangeDate";
 import ArrowDown from "../../assets/Dashboard/sort-down.svg";
@@ -52,6 +52,7 @@ const Dashboard = () => {
   const [fetchFilteredActionLog, fetchFilteredActionLogStatus] =
     useGetFilteredActionLogMutation();
   const [filteredActionLog, setFilteredActionLog] = useState([]);
+  const [userData, setUserData] = useState([]);
   const handleFetchRevenue = (fetchMutation, body, setValue) => {
     fetchMutation(body)
       .then((res) => {
@@ -61,7 +62,93 @@ const Dashboard = () => {
         console.log(err);
       });
   };
+  useEffect(() => {
+    if (latestSignUp?.data) setUserData(latestSignUp?.data);
+  }, [latestSignUp]);
 
+  const sortByName = () => {
+    setUserData((prev) => {
+      let arr = [...prev];
+      arr = arr.sort(function (a, b) {
+        if (a.firstName < b.firstName) {
+          return -1;
+        }
+        if (a.firstName > b.firstName) {
+          return 1;
+        }
+        return 0;
+      });
+      console.log({ arr });
+      return arr;
+    });
+  };
+  const sortByType = () => {
+    setUserData((prev) => {
+      let arr = [...prev];
+      arr = arr.sort(function (a, b) {
+        if (a.role < b.role) {
+          return -1;
+        }
+        if (a.role > b.role) {
+          return 1;
+        }
+        return 0;
+      });
+     
+      return arr;
+    });
+  };
+  const sortByDate = () => {
+    setUserData((prev) => {
+      let arr = [...prev];
+      arr = arr.sort(function (a, b) {
+        return new Date(b.lastSignUp) - new Date(a.lastSignUp);
+      });
+      return arr;
+    });
+  };
+  const latestSignUpHeaders = [
+    {
+      id: 1,
+      text: "Full Name",
+      className: "text-left pl-6",
+      onCick: sortByName,
+    },
+    {
+      id: 2,
+      text: "User Type",
+      onCick: sortByType,
+    },
+    {
+      id: 3,
+      text: "Email",
+    },
+    {
+      id: 4,
+      text: "Phone",
+    },
+    {
+      id: 5,
+      text: "Assigned Tutor",
+    },
+    {
+      id: 6,
+      text: "Lead Status",
+    },
+    {
+      id: 7,
+      text: "Tutor Status",
+    },
+    {
+      id: 8,
+      text: "Services",
+    },
+    {
+      id: 9,
+      text: "Date Added",
+      onCick: sortByDate,
+    },
+  ];
   const convertDateToRange = (startDate) => {
     let startD = startDate.split("-")[0];
 
@@ -126,8 +213,7 @@ const Dashboard = () => {
     fetchFilteredActionLog(body)
       .then((res) => {
         console.log(res?.data);
-       
-        
+
         setFilteredActionLog(res?.data?.actions);
       })
       .catch((err) => {
@@ -147,7 +233,7 @@ const Dashboard = () => {
                 "  " +
                 lastName +
                 "  >  "}
-                    <span className="font-semibold">Dashboard</span>
+              <span className="font-semibold">Dashboard</span>
             </p>
 
             <div className="flex justify-between items-center ">
@@ -384,8 +470,9 @@ const Dashboard = () => {
 
           <div className="">
             <Table
-              data={latestSignUp?.data ? latestSignUp?.data : []}
+              data={userData}
               AdminLatestSignUp={true}
+              headerObject={true}
               // Icon={
               //   <img src={ArrowDown} alt="down" className="flex-shrink-0" />
               // }
@@ -447,7 +534,9 @@ const Dashboard = () => {
           <div className="grid grid-cols-2 gap-x-[40px]">
             <div className="flex scale-[0.98] justify-between gap-4 mt-2 text-sm text-[#26435F]">
               <div>
-                <p className="font-semibold text-[13px]">Total # Of referrals</p>
+                <p className="font-semibold text-[13px]">
+                  Total # Of referrals
+                </p>
                 <div
                   className={`mt-2 h-[67px] bg-[rgba(255,162,141,0.2)] ${styles.smallBox}`}
                 >
@@ -457,7 +546,9 @@ const Dashboard = () => {
                 </div>
               </div>
               <div>
-                <p className="font-semibold text-[13px]">Average SAT improvement</p>
+                <p className="font-semibold text-[13px]">
+                  Average SAT improvement
+                </p>
                 <div
                   className={`w-[170px] mt-2 h-[67px] bg-[rgba(36,163,217,0.2)]  ${styles.smallBox}`}
                 >
@@ -469,7 +560,9 @@ const Dashboard = () => {
                 </div>
               </div>
               <div>
-                <p className="font-semibold text-[13px]">Average ACT improvement</p>
+                <p className="font-semibold text-[13px]">
+                  Average ACT improvement
+                </p>
                 <div
                   className={`w-[170px] mt-2 h-[67px] bg-[rgba(36,163,217,0.2)]  ${styles.smallBox}`}
                 >
@@ -507,7 +600,6 @@ const Dashboard = () => {
                 </div>
               </div>
             </div>
-           
           </div>
         </section>
         <div className="flex justify-center">

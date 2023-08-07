@@ -47,16 +47,14 @@ export default function ApiTable({
       setTableData(data);
     } else {
       const temp = data.slice(0, maxPageSize);
-      // const temp = tableData.slice(0, maxPageSize); ***  it Was the Previous one  ***
-      setTableData(temp);
+        setTableData(temp);
     }
   }, [data, maxPageSize, data.length]);
 
-  //change tabledata if current page changes
+  
   useEffect(() => {
     if (hidePagination === true) return;
-    // const temp = data.slice((currentPage - 1) * maxPageSize, (currentPage - 1) * maxPageSize + maxPageSize)
-    // setTableData(temp)
+    
   }, [currentPage, data]);
   const topcheckedHandler = () => {
     setIsChecked(!isChecked);
@@ -79,6 +77,7 @@ export default function ApiTable({
                   checkedHeader={checkedHeader}
                   Handler={topcheckedHandler}
                   header={item}
+                  dataFor={dataFor}
                 />
               ) : (
                 <TableHeader key={idx} header={item} dataFor={dataFor} />
