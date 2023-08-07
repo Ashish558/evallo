@@ -473,9 +473,7 @@ const Dashboard = () => {
               data={userData}
               AdminLatestSignUp={true}
               headerObject={true}
-              // Icon={
-              //   <img src={ArrowDown} alt="down" className="flex-shrink-0" />
-              // }
+              
               tableHeaders={latestSignUpHeaders}
               maxPageSize={5}
             />
@@ -502,8 +500,7 @@ const Dashboard = () => {
               </p>
               <Table2
                 data={popularServices}
-                // Icon={<img src={ArrowDown} alt="down" className="" />}
-                tableHeaders={[
+               tableHeaders={[
                   "Service",
                   "Actively Using",
                   "Total Used",
