@@ -745,7 +745,7 @@ export default function AssignedTests() {
               onChange={(e) =>
                 setFilterData({ ...filterData, studentName: e.target.value })
               }
-              inputContainerClassName="px-[20px] py-[16px] bg-white"
+              inputContainerClassName="px-[20px] mt-1 py-[16px] bg-white"
               placeholder="Student Name"
               parentClassName="w-full text-sm"
               type="text"
