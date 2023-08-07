@@ -5,7 +5,7 @@ const LatestSignUpTableItem = ({ item, onClick }) => {
         onClick.redirect(item);
       };
     return (
-      <tr className="shadow-sm shadow-slate-200 rounded-2xl leading-8 ">
+      <tr className="shadow-sm shadow-slate-200 rounded-2xl leading-8 my-2">
         <td className="  text-sm px-1  min-w-14 py-3 text-left">
           <span
             className="inline-block cursor-pointer pl-4 "
