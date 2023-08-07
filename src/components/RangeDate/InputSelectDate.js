@@ -4,6 +4,7 @@ import DownArrow from "../../assets/icons/down-chevron.svg";
 import UpArrow from "../../assets/icons/chevron-up-solid (1).svg";
 import useOutsideAlerter from "../../hooks/useOutsideAlerter";
 import CCheckbox from "../CCheckbox/CCheckbox";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export default function InputSelect({
   parentClassName,
@@ -24,21 +25,21 @@ export default function InputSelect({
   optionListClassName,
   IconRight,
   DateSelect,
-  setSelectedDate
+  setSelectedDate,
 }) {
   const [selected, setSelected] = useState(false);
   const selectRef = useRef();
   useOutsideAlerter(selectRef, () => setSelected(false));
   const handleOption = () => {
+    console.log("handleOption")
     setSelected(!selected);
-    if(setSelectedDate)
-    setSelectedDate({ sDate: "", eDate: "" });
+    if (setSelectedDate) setSelectedDate({ sDate: "", eDate: "" });
   };
   useEffect(() => {
     if (!checkbox) setSelected(false);
   }, [value]);
   const handleChange = (optionType, option, idx) => {
-    onChange(optionType,option, idx);
+    onChange(optionType, option, idx);
   };
 
   return (
@@ -65,7 +66,11 @@ export default function InputSelect({
         {Icon && <img src={Icon} className={`mr-5  w-[28px]}`} alt="icon" />}
         {selected ? (
           IconRight ? (
-            IconRight
+            <FontAwesomeIcon
+              className="w-[30px] absolute right-7 pb-1 z-[5000]"
+              onClick={handleOption}
+              icon={IconRight}
+            ></FontAwesomeIcon>
           ) : (
             <img
               src={UpArrow}
@@ -74,7 +79,11 @@ export default function InputSelect({
             />
           )
         ) : IconRight ? (
-          IconRight
+          <FontAwesomeIcon
+            className="w-[30px] absolute right-7 pb-1 z-[5000]"
+            onClick={handleOption}
+            icon={IconRight}
+          ></FontAwesomeIcon>
         ) : (
           <img
             src={DownArrow}
@@ -84,31 +93,24 @@ export default function InputSelect({
         )}
 
         <div
-          className={`outline-0 w-full relative ${
+          className={`outline-0 w-full cursor-default relative ${
             optionClassName ? optionClassName : ""
           }`}
           name={label}
         >
           {value === "" || !value ? (
-            <span
-              onClick={handleOption}
-              className="text-primary-60 pl-5  text-[13px]  mr-10 whitespace-nowrap"
-            >
+            <span className="text-primary-60 pl-5 cursor-default  text-[13px]  mr-10 whitespace-nowrap">
               {" "}
               {placeholder}{" "}
             </span>
           ) : (
-            <span
-              onClick={handleOption}
-              className="mr-10 pl-5 text-[13px] whitespace-nowrap"
-            >
+            <span className="mr-10 pl-5 text-[13px] cursor-default whitespace-nowrap">
               {value}
             </span>
           )}
         </div>
         {selected && (
           <div
-           
             className={`scrollbar-content scrollbar-vertical  shadow-sm ${styles.options} $`}
           >
             {DateSelect && DateSelect}

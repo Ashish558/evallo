@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import InputSelect from "./InputSelectDate";
 import { calculateDateRange, getModifiedDate } from "./utils";
-import styles from './rangeDate.module.css'
+import styles from "./rangeDate.module.css";
 
 import { useState } from "react";
 import { useEffect } from "react";
@@ -72,7 +72,7 @@ const RangeDate = ({ handleRangeData }) => {
         placeholder="Select"
         parentClassName="border-none text-xs text-[#26435F] w-fit"
         labelClassname="text-sm"
-        inputContainerClassName={`border-none w-[300px] font-semibold text-[#FFA28D]  ${styles['text']}`}
+        inputContainerClassName={`border-none w-[300px] font-semibold text-[#FFA28D]  ${styles["text"]}`}
         inputClassName={`border-none w-fit bg-transparent font-semibold text-[#FFA28D] `}
         value={startDate}
         optionData={[
@@ -84,13 +84,7 @@ const RangeDate = ({ handleRangeData }) => {
         optionType={"object"}
         setSelectedDate={setSelectedDate}
         onChange={handleQuickOptions}
-        IconRight={
-          <FontAwesomeIcon
-            className=" absolute right-10 pb-1"
-            
-            icon={faCaretDown}
-          ></FontAwesomeIcon>
-        }
+        IconRight={faCaretDown}
         DateSelect={
           <div className="flex flex-col hover:bg-white items-center pt-1 z-5000 border-b ">
             {/* <div className="font-semibold text-black flex w-full justify-around">
