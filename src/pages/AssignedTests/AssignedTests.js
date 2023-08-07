@@ -628,7 +628,7 @@ export default function AssignedTests() {
             <span className="font-semibold">Content</span>
           </p>
 
-          <div className="flex gap-10 my-5">
+          {/* <div className="flex gap-10 my-5">
             <div>
               <h1 className="font-bold text-3xl  text-[#26435F]">ACT 0</h1>
               <div className="flex flex-col gap-3 pr-24 px-4 py-5 mt-3 rounded-md shadow-[0px_0px_2.499999761581421px_0px_#00000040]">
@@ -698,7 +698,7 @@ export default function AssignedTests() {
                 </button>
               </div>
             </div>
-          </div>
+          </div> */}
           <div className="flex gap-4 justify-between items-center">
             {persona === "parent" || persona === "student" ? (
               <p

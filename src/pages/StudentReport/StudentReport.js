@@ -16,6 +16,7 @@ import { useSelector } from 'react-redux'
 import RedIcon from "../../assets/assignedTests/red.svg";
 import GreenIcon from "../../assets/assignedTests/green.svg";
 import moment from 'moment'
+import PrimaryTab from '../../components/Buttons/PrimaryTab'
 
 const tempsubjects = [
    { text: 'Trigonometry', selected: true },
@@ -762,15 +763,20 @@ export default function StudentReport() {
                <div className='mt-6 flex justify-between items-end'>
                   <div>
                      {subjects.map((item, idx) => {
-                        return <PrimaryButton
-                           children={item.name}
-                           onClick={() => handleChange(item)}
-                           className={`py-2 px-0 mr-7 font-semibold w-160 ${item.selected ? '' : 'bg-secondaryLight text-textGray'}`} />
+                        return <>
+                           <PrimaryTab
+                              children={item.name}
+                              onClick={() => handleChange(item)}
+                              className={` px-4 mr-7   ${item.selected ? 'border-b-4 border-[#FFA28D] text-[#FFA28D]' : ''}`} />
+
+                        </>
+
                      })}
                   </div>
 
-               </div>
 
+               </div>
+               <hr className='border-t-[1.25px] border-[#D3D3D3]' />
                <div className='mt-7 flex'>
                   {/* <p className='text-lg font-bold mb-2'>
                      Score: {`${sectionScore.correct} / ${sectionScore.outOf}`}
@@ -824,6 +830,7 @@ export default function StudentReport() {
                         <div className='flex   mr-[50px]'>
                            <div className='mr-[50px]'> <p className='font-semibold text-[#26435F] mb-2.2'> Section Started</p>
                               <p className=' mb-2 text-[#517CA8] '> {getDate(responseData.createdAt)} </p>
+                              <p className=' mb-2 text-[#24A3D9] '> 04:25 PM EST</p>
                               {/* <p className='font-semibold mb-2 opacity-0'>04:25 PM EST</p> */}</div>
                            <div>
                               <p className='font-semibold text-[#26435F] mb-2.2 '> Section Time Limit</p>
@@ -865,7 +872,17 @@ export default function StudentReport() {
                      </div>
 
 
-                     <div className='text-lg  text-[#24A3D9] px-4 py-2 ml-[45px] border-2 border-[#FFA28D] rounded-7 w-[338px] mt-[70px]'><p className='text-center font-semibold'>Section Score: <span className='text-[#517CA8] pl-1 font-medium'> 20 / 36</span></p></div>
+                     <div className='text-lg  text-[#24A3D9] px-4 py-2 ml-[45px] border-2 border-[#FFA28D] rounded-7 w-[338px] mt-[70px]'><p className='text-center font-semibold'>Section Score: <span className='text-[#517CA8] pl-1 font-medium'>
+                        {
+                           Object.keys(responseData).length >= 1 &&
+                           Object.keys(selectedSubject).length >= 1
+                           &&
+                           <>
+                              {selectedSubject.no_of_correct} / {' '}
+                              {responseData.response[selectedSubject.idx].length}
+                           </>
+                        }
+                     </span></p></div>
 
 
                   </div>

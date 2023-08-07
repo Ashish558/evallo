@@ -100,12 +100,7 @@ export default function Settings() {
   const [newQuestion, setNewQuestion] = useState({
     type: "String",
     text: "Add",
-    values: {
-      option1: "",
-      option2: "",
-      option3: "",
-      option4: "",
-    },
+    values: []
   });
   const { organization } = useSelector((state) => state.organization);
 
@@ -354,7 +349,7 @@ console.log(organization)
     const body = {
       settings,
     };
-    console.log("body", body, updatedSetting);
+    console.log("body", body);
 
     setSaveLoading(true);
     updateSetting(body)
@@ -779,14 +774,13 @@ console.log(organization)
 
   const submitNewQuestion = (e) => {
     e.preventDefault();
-    if (organization?.customFields?.length === 5)
+    if (organization?.settings?.customFields?.length === 5)
       return alert("Only 5 fields are allowed");
-    const { option1, option2, option3, option4 } = newQuestion.values;
     const body = {
       orgId: user.associatedOrg,
       name: newQuestion.text,
       dataType: newQuestion.type,
-      values: [option1, option2, option3, option4],
+      values: newQuestion.values,
     };
     setAddNewQuestionModalActive(false);
     addNewQuestion(body).then((res) => {
@@ -794,7 +788,7 @@ console.log(organization)
         console.log(res.error);
         return;
       }
-      //window.location.reload()
+      window.location.reload()
       // console.log("reshi", res);
 
       setFetchS(res);
@@ -1021,12 +1015,12 @@ console.log(organization)
                             </div>
                           </div>
                           <div className="flex items-center flex-wrap [&>*]:mb-[18px] ">
-                            {/* <AddTag
+                            <AddTag
                               openModal={true}
                               onAddTag={(code) => handleAddTest(subscription)}
                               keyName={subscription.code}
                               text="Add Tests"
-                            /> */}
+                            /> 
                             <FilterItems
                               isString={true}
                               onlyItems={true}
@@ -1111,11 +1105,11 @@ console.log(organization)
                               </div>
                             </div>
                             <div className="flex items-center flex-wrap [&>*]:mb-[18px]">
-                              {/* <AddTag
+                             <AddTag
                                 onAddTag={handleAddSpecialization}
                                 keyName={service.service}
-                                text="Add Service"
-                              /> */}
+                                text="Add Item"
+                              /> 
                               <FilterItems
                                 isString={true}
                                 onlyItems={true}
@@ -1164,11 +1158,11 @@ console.log(organization)
                             </div>
                           </div>
                           <div className="flex items-center flex-wrap [&>*]:mb-[18px]">
-                            {/* <AddTag
+                             <AddTag
                               onAddTag={handleAddSessionTag}
                               keyName={service.heading}
                               text="Add Items"
-                            /> */}
+                            /> 
                             <FilterItems
                               isString={true}
                               onlyItems={true}
@@ -1464,13 +1458,15 @@ console.log(organization)
           <></>
         )}
         {activeTab === 2 && <CompanyAndBround />}
-        {activeTab === 3 && (
+        {activeTab === 4 && (
           <SignupTab
             setAddNewQuestionModalActive={setAddNewQuestionModalActive}
             fetchS={fetchS}
+            organization={organization}
+            updateAndFetchsettings={updateAndFetchsettings}
           />
         )}
-        {activeTab === 4 && <AccountOverview />}
+        {activeTab === 3 && <AccountOverview />}
       </div>
       {modalActive && (
         <Modal

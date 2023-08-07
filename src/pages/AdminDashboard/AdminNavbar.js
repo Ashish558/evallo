@@ -73,7 +73,7 @@ const tempnavdata = [
   {
     icon: Invoice,
     activeIcon: Invoice2,
-    path: "/",
+    path: "/invoice",
     tooltip: "Invoicing",
   },
   {
@@ -135,7 +135,7 @@ const studentNav = [
   {
     icon: Assignment,
     activeIcon: Assignment1,
-    path: "/assigned-tests",
+    path: "/all-tests",
     tooltip: "Assignments",
   },
   {
@@ -270,7 +270,7 @@ const AdminNavbar = () => {
   }, [location.pathname]);
   return (
     <>
-      <div className="flex justify-around bg-[#26435F] h-[54px] items-center w-full">
+      <div className="flex justify-around bg-[#26435F] h-[72px] items-center w-full">
         <div
           className={`${persona === "superAdmin" ? "translate-x-[-80px]" : ""}`}
         >

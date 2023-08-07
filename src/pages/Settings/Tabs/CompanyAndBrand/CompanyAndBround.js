@@ -225,17 +225,16 @@ const CompanyAndBround = () => {
               Business Logo{" "}
             </label>
             <div className="w-[312px] h-[200px]  relative p-2">
-              {/* <img
-                src={
-                  organization.orgBussinessLogo
-                    ? organization.orgBussinessLogo
-                    : orgDefaultLogo
-                }
-                className="w-full h-full object-contain"
-                alt="orgDefaultLogo"
-              /> */}
+              {
+                organization.orgBussinessLogo &&
+                <img
+                  src={organization.orgBussinessLogo}
+                  className="w-full h-full object-contain"
+                  alt="orgDefaultLogo"
+                />
+              }
               <div
-                className={styles["upload-container"]}
+                className={`${styles["upload-container"]} ${!organization.orgBussinessLogo ? styles['upload-container-centered'] : ''} `}
                 onClick={() => inpuRef.current.click()}
               >
                 <p className="text-[#24A3D9] text-xs"> Upload </p>

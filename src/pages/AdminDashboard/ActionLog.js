@@ -60,8 +60,8 @@ export default function ActionLog({ actionLog }) {
   }, [actionLog]);
 
   return (
-    <div className="ml-3">
-      <div className="flex flex-col border border-solid border-gray-200 bg-[#FFFFFF]">
+    <div className="">
+      <div className="flex flex-col border border-solid border-gray-200 rounded-5 bg-[#FFFFFF]">
         <div className="  border border-solid border-gray-200">
           <p className="uppercase  pl-[29px] pt-[16px] pb-3 text-[#26435F]">
             {sortedAction[currentElementIndex]

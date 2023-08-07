@@ -21,6 +21,7 @@ const StudentDashboardHeader = () => {
    const [getUserDetail, userDetailResp] = useLazyGetTutorDetailsQuery()
    const [getSession, getSessionResp] = useLazyGetSingleSessionQuery()
    const [updateFeedback, updateFeedbackResp] = useUpdateFeedbackMutation()
+   const { organization } = useSelector(state => state.organization)
 
    // console.log(id);
 
@@ -50,11 +51,8 @@ const StudentDashboardHeader = () => {
    }, [feedbacks])
 
    useEffect(() => {
-      fetchSettings()
-         .then(res => {
-            setImages(res.data.data.setting.offerImages)
-         })
-   }, [])
+      setImages(organization?.settings?.offerImages)
+   }, [organization?.settings?.offerImages])
 
    return (
       <>
@@ -75,10 +73,9 @@ const StudentDashboardHeader = () => {
          <div className="flex flex-col lg:flex-row h-[500px] lg:h-[250px] max-w-[840px] relative gap-[16px] mb-[42px] mt-[37px] mr-[9px]">
             <div className="w-full relative h-full flex rounded-lg items-center overflow-hidden"
                id={styles.exploreBgDisable}
-            // style={{ position: 'static', top: '0', left: '0' }} 
             >
                {
-                  images.length >= 1 &&
+                  images?.length >= 1 &&
                   <ImageSlideshow images={images} text='text' />
                }
             </div>

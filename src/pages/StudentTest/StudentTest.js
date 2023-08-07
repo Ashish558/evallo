@@ -53,10 +53,9 @@ export default function StudentTest() {
 
    const [testDetails, setTestDetails] = useState([])
 
-   const { role: persona, id } = useSelector(state => state.user)
+   const { role: persona, id, dateFormat } = useSelector(state => state.user)
    const [getTestResponse, getTestResponseResp] = useLazyGetTestResponseQuery()
    const [awsLink, setAwsLink] = useState('')
-
 
    const sortByDueDate = () => {
       setAllTests(prev => {
@@ -145,9 +144,9 @@ export default function StudentTest() {
                   if (testId === null) return
                   return {
                      testName: testId ? testId.testName : '-',
-                     assignedOn: getFormattedDate(new Date(createdAt)),
+                     assignedOn: getFormattedDate(new Date(createdAt), dateFormat),
                      studentId: studentId ? studentId : '-',
-                     dueDate: getFormattedDate(new Date(test.dueDate)),
+                     dueDate: getFormattedDate(new Date(test.dueDate), dateFormat),
                      duration: multiple ? getDuration(multiple) : 'Unlimited',
                      status: isCompleted === true ? 'completed' : isStarted ? 'started' : 'notStarted',
                      scores: '-',

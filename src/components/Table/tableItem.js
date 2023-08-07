@@ -367,6 +367,11 @@ export default function TableItem({
             </div>
           </td>
           <td className="font-medium text-sm px-1  min-w-14 py-4">
+            <div className="my-[6px]">
+
+            </div>
+          </td>
+          <td className="font-medium text-sm px-1  min-w-14 py-4">
             <div className="">
               <button
                 className="rounded-md bg-[#26435F3B] text-[#517CA8] px-2 py-[2px]"

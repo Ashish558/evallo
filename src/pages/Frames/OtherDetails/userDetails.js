@@ -47,7 +47,7 @@ export default function UserDetails({
 
   const handleClick = () => {
     const result = validateOtherDetails(otherDetails);
-    // console.log(result);
+    console.log(result);
     const promiseState = async (state) =>
       new Promise((resolve) => {
         resolve(resetDetailsErrors());
@@ -63,11 +63,11 @@ export default function UserDetails({
           };
         });
       } 
-      else if(customFields.length===0){
-        //alert('CustomFields are empty ,please fill those ')
+      else if(customFields?.length===0 || !customFields){
+        // alert('CustomFields are empty ,please fill those ')
         handleSignup();
       }
-      else if(customFields.length > 0) {
+      else if(customFields?.length > 0) {
         // return
         setFrames((prev) => {
           return {

@@ -58,10 +58,11 @@ function App() {
         } = res.data.data.user;
         dispatch(updateAwsLink(res.data.data.baseLink));
         let timeZone = "";
+        let dateFormat = "";
         if (res.data.data.userdetails) {
           timeZone = res.data.data.userdetails.timeZone;
+          dateFormat = res.data.data.userdetails.dateFormat;
         }
-
         sessionStorage.setItem("role", role);
         setLoading(false);
         dispatch(updateIsLoggedIn(true));
@@ -77,6 +78,7 @@ function App() {
             email,
             phone,
             associatedOrg,
+            dateFormat: dateFormat ? dateFormat : 'dd/mm/yy'
           })
         );
         getOrganizationDetail(associatedOrg);
@@ -89,18 +91,13 @@ function App() {
   useEffect(() => {
     const handleTabClose = (event) => {
       event.preventDefault();
-
       console.log("beforeunload event triggered");
-
-
     };
-
     window.addEventListener("beforeunload", handleTabClose);
-
     return () => {
-      logOutApi().then(() => {
-        console.log("Successfully logged out");
-      });
+      // logOutApi().then(() => {
+      //   console.log("Successfully logged out");
+      // });
       window.removeEventListener("beforeunload", handleTabClose);
     };
   }, []);

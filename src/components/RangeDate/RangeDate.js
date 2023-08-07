@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import InputSelect from "./InputSelectDate";
 import { calculateDateRange, getModifiedDate } from "./utils";
+import styles from './rangeDate.module.css'
 
 import { useState } from "react";
 import { useEffect } from "react";
@@ -71,8 +72,8 @@ const RangeDate = ({ handleRangeData }) => {
         placeholder="Select"
         parentClassName="border-none text-xs text-[#26435F] w-fit"
         labelClassname="text-sm"
-        inputContainerClassName="border-none w-[300px] font-semibold text-[#FFA28D] "
-        inputClassName="border-none w-fit bg-transparent font-semibold text-[#FFA28D]"
+        inputContainerClassName={`border-none w-[300px] font-semibold text-[#FFA28D]  ${styles['text']}`}
+        inputClassName={`border-none w-fit bg-transparent font-semibold text-[#FFA28D] `}
         value={startDate}
         optionData={[
           { name: "Today", days: 0 },
@@ -91,7 +92,7 @@ const RangeDate = ({ handleRangeData }) => {
         }
         DateSelect={
           <div className="flex flex-col hover:bg-white items-center pt-1 z-5000 border-b ">
-            <div className="font-semibold text-black flex w-full justify-around">
+            {/* <div className="font-semibold text-black flex w-full justify-around">
               <label htmlFor="sdate">Start Date</label>
               <label htmlFor="edate">End Date</label>
             </div>
@@ -113,8 +114,8 @@ const RangeDate = ({ handleRangeData }) => {
                 placeholder="Start Date"
                 onChange={(e) => handleLocalDate(e.target.value, "eDate")}
               />
-            </div>
-            <button
+            </div> */}
+            {/* <button
               disabled={!selectDate.eDate || !selectDate.sDate}
               className={`${
                 !selectDate.eDate || !selectDate.sDate ? "opacity-75" : ""
@@ -122,7 +123,7 @@ const RangeDate = ({ handleRangeData }) => {
               onClick={handleStartDate}
             >
               Submit
-            </button>
+            </button> */}
           </div>
         }
       />

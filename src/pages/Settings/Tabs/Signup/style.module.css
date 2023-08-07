@@ -157,3 +157,7 @@ input[type='checkbox']:checked + .custom-checkbox {
   background-color: #FFA28D;
   border: 1.5px solid #FFA28D;
 }
+
+.dropdown-container{
+  border: 0;
+}
