@@ -82,7 +82,7 @@ export default function Table(props) {
       <div className="overflow-x-auto scrollbar-content  my-7  scroll-m-1 ">
       <table className="table-auto mb-3 text-center w-full whitespace-nowrap">
         <thead className="pb-2 whitespace-nowrap">
-          <tr>
+          <tr className=" whitespace-nowrap">
             {tableHeaders.map((item, idx) => {
               return headerObject === true ? (
                 <TableHeaderNew header={item} dataFor={dataFor} />

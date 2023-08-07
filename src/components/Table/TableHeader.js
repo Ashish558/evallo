@@ -6,7 +6,7 @@ import sort from "./../../assets/icons/sort.webp";
 export function TableHeader({ header, dataFor, onClick, setSorted, Icon }) {
   return dataFor === "assignedTestsStude" || dataFor === "invoice" ? (
     <th
-      className={`px-2 py-[16px] text-[16px] font-[500] bg-[#7152EB] text-white ${
+      className={`px-2 py-[16px]  whitespace-nowrap text-[16px] font-[500] bg-[#7152EB] text-white ${
         header === "Full Name" || header === "Name" ? "text-left pl-7" : ""
       }
       `}
@@ -33,7 +33,7 @@ export function TableHeader({ header, dataFor, onClick, setSorted, Icon }) {
     </th>
   ) : (
     <th
-      className={`px-2 py-3 font-medium  ${
+      className={`px-2 py-3 font-medium whitespace-nowrap  ${
         header === "Full Name" || header === "Name" || header === "Student Name"
           ? "text-left pl-7"
           : ""

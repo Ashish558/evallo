@@ -10,11 +10,11 @@ export function TableHeaderNew({ header, checkedHeader, dataFor, Handler}) {
   };
   return (
     <th
-      className={`px-2 py-3 font-semibold  cursor-pointer ${
+      className={`px-2 py-3 font-semibold  text-center  cursor-pointer ${
         header.className ? header.className : ""
       }`}
     >
-      <div className="flex ">
+      <div className="flex justify-center">
         {header.text === "Full Name" &&  dataFor==='allUsers'? (
          
             <label
@@ -35,7 +35,7 @@ export function TableHeaderNew({ header, checkedHeader, dataFor, Handler}) {
         ) : (
           ""
         )}
-        <span onClick={() => header.onCick && header.onCick()} className="">
+        <span onClick={() => header.onCick && header.onCick()} className="text-center">
           {header.text}
         </span>
       </div>
