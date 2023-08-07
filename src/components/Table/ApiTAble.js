@@ -55,7 +55,7 @@ export default function ApiTable({
   return (
     <div>
       <table className="table-auto mb-3 text-center w-full">
-        <thead className="pb-2" >
+        <thead className="pb-2">
           <tr>
             {tableHeaders.map((item, idx) => {
               return headerObject === true ? (
@@ -63,6 +63,7 @@ export default function ApiTable({
                   checkedHeader={checkedHeader}
                   Handler={setcheckedHeaderHandler}
                   header={item}
+                  key={idx}
                 />
               ) : (
                 <TableHeader key={idx} header={item} dataFor={dataFor} />
