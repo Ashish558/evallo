@@ -299,8 +299,8 @@ const sortBycreateDate = () => {
   }, [testName]);
 
   // console.log(testName);
-  // console.log(tableData);
-  // console.log('filteredTests', filteredTests);
+   console.log(tableData);
+   console.log('filteredTests', filteredTests);
 
   const fetchTests = () => {
     const headers = getAuthHeader();
@@ -316,8 +316,8 @@ const sortBycreateDate = () => {
   if (persona === "parent" || persona === "student") return <StudentTest />;
 
   return (
-    <div className="lg:ml-pageLeft bg-lightWhite min-h-screen">
-      <div className="py-14 px-5">
+    <div className="lg:mx-[40px] bg-lightWhite min-h-screen">
+      <div className="py-14 px-5 w-full">
         <p className="text-[#24A3D9]  mb-3 ">
           {organization?.company +
             "  >  " +
@@ -352,20 +352,9 @@ const sortBycreateDate = () => {
             <img src={AddIcon} className="ml-1 " alt="add-icon" />
           </button>
         </div>
-        {/* <div className="flex align-center mt-8">
-               <InputField
-                  value={testName}
-                  IconRight={SearchIcon}
-                  onChange={(e) => setTestName(e.target.value)}
-                  optionData={optionData}
-                  placeholder="Test Name"
-                  parentClassName="w-290 mr-4"
-                  inputContainerClassName="bg-white border pt-3.5 pb-3.5"
-                  type="select"
-               />
-            </div> */}
+      
 
-        <div className="mt-6">
+        <div className="mt-6 w-full">
           <Table
             dataFor="allTests"
             data={filteredTests}
