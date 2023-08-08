@@ -678,7 +678,9 @@ export default function StudentReport() {
    // console.log('selectedSubject', responseData.response)
    // console.log('responseData', responseData)
    // console.log('answerKey', answerKey)
-
+   if (Object.keys(responseData).length === 0) return <></>
+   if (answerKey.length === 0) return <></>
+   if (selectedSubject.concepts === undefined) return <></>
   
    return (
       <div className='px-[80px] bg-lightWhite min-h-screen'>

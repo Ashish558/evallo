@@ -120,50 +120,60 @@ export default function AssignedTests() {
     {
       id: 1,
       text: "Name",
-      className: "text-left pl-6",
+      className: "text-left pl-6 no-arrow",
       onCick: sortByName,
     },
     {
       id: 2,
       text: "Assigned on",
+      className: "no-arrow",
       onCick: sortByAssignedDate,
     },
     {
       id: 3,
       text: "Assigned By",
+      className: "no-arrow",
       onCick: sortByAssignedDate,
     },
     {
       id: 4,
       text: "Due Date",
+      className: "no-arrow",
       onCick: sortByDueDate,
     },
     {
       id: 5,
+      className: "no-arrow",
       text: "Test Name",
     },
     {
       id: 6,
+      className: "no-arrow",
       text: "Duration",
     },
     {
       id: 7,
+      className: "no-arrow",
       text: "Status",
     },
     {
       id: 8,
+      className: "no-arrow",
       text: "Scores",
     },
     {
       id: 9,
+      className: "no-arrow",
       text: "",
     },
     {
       id: 10,
+      className: "no-arrow",
       text: "",
     },
     {
       id: 11,
+      className: "no-arrow",
       text: "",
     },
   ];

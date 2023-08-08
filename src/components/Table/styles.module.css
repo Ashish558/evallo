@@ -6,6 +6,13 @@ thead tr th div::after {
   height: 25px;
 }
 
+.no-arrow div::after{
+  content: " ";
+  margin-left: 5px;
+  display: none;
+  width: 25px;
+  height: 25px;
+}
 .checkbox-label {
   display: inline-flex;
   align-items: center;
