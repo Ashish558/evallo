@@ -5,7 +5,7 @@ import InputSelect from "../../components/InputSelect/InputSelect";
 
 import AddIcon from "../../assets/icons/add.svg";
 import SearchIcon from "../../assets/icons/search.svg";
-
+import styles from "./styles.module.css";
 import { tempTableData, studentsDataTable } from "./tempData";
 import InputField from "../../components/InputField/inputField";
 import axios from "axios";
@@ -166,7 +166,7 @@ export default function AssignedTests() {
   const [fetchTutorStudents, tutorStudentsResp] =
     useLazyGetTutorStudentsByNameQuery();
   const [assignedBys, setAssignedBys] = useState([]);
-
+  const [currentUser, setCurrentUser] = useState({ name: "english" });
   const [students, setStudents] = useState([]);
 
   const [testsData, setTestsData] = useState([]);
@@ -556,7 +556,37 @@ export default function AssignedTests() {
     setTestToDelete(item);
     setDeleteModalActive(true);
   };
-
+  const testTypes = [
+    {
+      text: "English",
+      selected: true,
+    },
+    {
+      text: "Maths",
+      selected: false,
+    },
+    {
+      text: "Reading",
+      selected: false,
+    },
+    {
+      text: "Science",
+      selected: false,
+    },
+    {
+      text: "History",
+      selected: false,
+    },
+    {
+      text: "Economics",
+      selected: false,
+    },
+  ];
+  const handleCurrentUser = (item) => {
+    setCurrentUser({
+      name: item.text.toLowerCase(),
+    });
+  };
   const status = [
     {
       text: "Not Started",
@@ -597,73 +627,6 @@ export default function AssignedTests() {
             <span className="font-semibold">Content</span>
           </p>
 
-          {/* <div className="flex gap-10 my-5">
-            <div>
-              <h1 className="font-bold text-3xl  text-[#26435F]">ACT 0</h1>
-              <div className="flex flex-col gap-3 pr-24 px-4 py-5 mt-3 rounded-md shadow-[0px_0px_2.499999761581421px_0px_#00000040]">
-                <span className="flex gap-10">
-                  <span className="w-[100px] text-[#26435F]">Created on </span>{" "}
-                  <span>:</span>{" "}
-                  <span className="text-[#24A3D9]">20/06/22</span>
-                </span>
-                <span className="flex gap-10">
-                  <span className="w-[100px] text-[#26435F]">Updated on </span>{" "}
-                  <span>:</span>{" "}
-                  <span className="text-[#24A3D9]">20/06/22</span>
-                </span>
-                <span className="flex gap-10">
-                  <span className="w-[100px] text-[#26435F]">Name </span>{" "}
-                  <span>:</span>{" "}
-                  <span className="text-[#24A3D9]">20/06/22</span>
-                </span>
-                <span className="flex gap-10">
-                  <span className="w-[100px] text-[#26435F]">Type </span>{" "}
-                  <span>:</span>{" "}
-                  <span className="text-[#24A3D9]">20/06/22</span>
-                </span>
-                <span className="flex gap-10">
-                  <span className="w-[100px] text-[#26435F]">Created by </span>{" "}
-                  <span>:</span>{" "}
-                  <span className="text-[#24A3D9]">20/06/22</span>
-                </span>
-                <span className="flex gap-10">
-                  <span className="w-[100px] text-[#26435F]">Updated by </span>{" "}
-                  <span>:</span>{" "}
-                  <span className="text-[#24A3D9]">20/06/22</span>
-                </span>
-              </div>
-            </div>
-            <div>
-              <h1 className="font-bold text-3xl  text-[#26435F]">Sections</h1>
-              <div className="flex flex-col gap-3  px-5 py-5 mt-3 rounded-md shadow-[0px_0px_2.499999761581421px_0px_#00000040]">
-                <span className="grid grid-cols-3 gap-x-16">
-                  <span className="w-[100px] text-[#26435F] text-center">Section</span>{" "}
-                  <span className="text-center">Time</span> <span className="text-center">Total Questions</span>
-                </span>
-                <div className=" h-[170px] overflow-y-auto">
-                  {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((item) => {
-                    return (
-                      <span className="grid grid-cols-3 gap-x-16 my-1 text-[#24A3D9]">
-                        <span className="w-[100px] text-center">English</span>{" "}
-                        <span className="text-center">45 min</span> <span className="text-center">75</span>
-                      </span>
-                    );
-                  })}
-                </div>
-              </div>
-            </div>
-            <div>
-              <h1 className="font-bold text-3xl opacity-0 mb-3 text-[#26435F]">
-                ACT 0
-              </h1>
-              <div className="border border-[#26435F] rounded-md border-dotted border-spacing-5  px-20 py-14 w-[300px] ">
-                <img src={pdfUpload} alt="" />
-                <button className="bg-[#517CA8] text-white rounded-md p-1 mt-5">
-                  Reupload Pdf
-                </button>
-              </div>
-            </div>
-          </div> */}
           <div className="flex gap-4 justify-between items-center">
             {persona === "parent" || persona === "student" ? (
               <p
@@ -686,16 +649,7 @@ export default function AssignedTests() {
               parentClassName="w-full text-sm"
               type="text"
             />
-            {/* <InputField
-                     value={filterData.testName}
-                     IconRight={SearchIcon}
-                     onChange={e => setFilterData({ ...filterData, testName: e.target.value })}
-                     optionData={optionData}
-                     placeholder="Test Name"
-                     inputContainerClassName="px-[20px] py-[16px] bg-white"
-                     parentClassName="w-full text-sm"
-                     type="text"
-                  /> */}
+           
             <InputSelect
               value={filterData.testName}
               onChange={(val) =>
@@ -733,7 +687,7 @@ export default function AssignedTests() {
               onClick={() => setAssignTestModalActive(true)}
             >
               Assign new test
-              <img src={AddIcon} className="ml-3" />
+              <img src={AddIcon} className="ml-3" alt="new test"/>
             </button>
           </div>
 
@@ -751,7 +705,33 @@ export default function AssignedTests() {
               <AssignedTestIndicator key={idx} text={text} color={color} />
             ))}
           </div>
+          <div className="flex w-1/2">
+            {testTypes.map((item, id) => {
+              return (
+                <div
+                  key={id}
+                  onClick={() => handleCurrentUser(item)}
+                  className={` border-b-[1.3px] overflow-hidden relative cursor-pointer border-b-[rgb(10,30,40,0.27)] ${styles.userStat} `}
+                >
+                  <span
+                    className={`${
+                      currentUser?.name === item.text.toLowerCase()
+                        ? "text-[#FFA28D] "
+                        : ""
+                    }`}
+                  >
+                    {item.text}
+                  </span>
 
+                  {currentUser?.name === item.text.toLowerCase() ? (
+                    <p className="border-b-[4px] relative  rounded-t translate-y-[11px] z-5000 border-b-[#FFA28D]  text-[#FFA28D] "></p>
+                  ) : (
+                    ""
+                  )}
+                </div>
+              );
+            })}
+          </div>
           <div className="mt-6">
             <Table
               onClick={{ handleResend, handleDelete }}

@@ -3,7 +3,7 @@ import { useLazyGetSettingsQuery } from "../../app/services/session";
 import InputSelect from "../InputSelect/InputSelect";
 import sort from "./../../assets/icons/sort.webp";
 import styles from "./styles.module.css";
-export function TableHeaderNew({ header, checkedHeader, Handler}) {
+export function TableHeaderNew({ header, checkedHeader, dataFor, Handler}) {
  
   const handleCheckboxChange = () => {
     Handler();
@@ -15,7 +15,7 @@ export function TableHeaderNew({ header, checkedHeader, Handler}) {
       }`}
     >
       <div className="flex ">
-        {header.text === "Full Name" ? (
+        {header.text === "Full Name" &&  dataFor==='allUsers'? (
          
             <label
               className={`${styles["checkbox-label"]} block text-[#26435F] font-medium`}

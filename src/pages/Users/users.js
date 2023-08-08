@@ -180,6 +180,7 @@ export default function Users() {
   const [currentPage, setCurrentPage] = useState(1);
   const [allTutors, setAllTutors] = useState([]);
   const [tutors, setTutors] = useState([]);
+  const [numberChecked, setnumberChecked] = useState(0);
   const [filterData, setFilterData] = useState({
     typeName: "",
     userType: [],
@@ -347,7 +348,7 @@ export default function Users() {
   };
 
   useEffect(() => {
-    // fetch()
+     fetch()
     //console.log('shivam yadav 1',filteredUsersData)
   }, [maxPageSize, currentPage]);
   // console.log('currentPage', currentPage);
@@ -845,8 +846,9 @@ export default function Users() {
                 className={`${styles["custom-checkbox"]} ${isChecked ? "checked" : ""
                   }`}
               ></span>
-              <span className="block">{filterData?.status?.length} Selected</span>
+              <span className="block">{numberChecked} Selected</span>
             </label>
+
 
           </div>
           <div>
@@ -855,6 +857,7 @@ export default function Users() {
             </button>
           </div>
         </div>
+
         <div className="mt-6">
           <Table
             dataFor="allUsers"
@@ -863,7 +866,11 @@ export default function Users() {
             tableHeaders={tableHeaders}
             headerObject={true}
             maxPageSize={10}
+            numberChecked={numberChecked}
+            setnumberChecked={setnumberChecked}
             isCallingApi={true}
+            isChecked={isChecked}
+            setIsChecked={setIsChecked}
             total_pages={Math.ceil(totalPages / maxPageSize)}
             setMaxPageSize={setMaxPageSize}
             currentPage={currentPage}
