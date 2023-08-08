@@ -679,25 +679,13 @@ export default function StudentReport() {
    // console.log('responseData', responseData)
    // console.log('answerKey', answerKey)
 
-   if (Object.keys(responseData).length === 0) return <></>
-   if (answerKey.length === 0) return <></>
-   if (selectedSubject.concepts === undefined) return <></>
+  
    return (
       <div className='px-[80px] bg-lightWhite min-h-screen'>
          <div className='py-14 px-5'>
             <div className='px-0'>
-               <SecondaryButton
-                  className='flex items-center pl-2 pr-5 py-2.5'
-                  onClick={() => navigate(-1)}
-                  children={
-                     <>
-                        <img src={BackIcon} className='mr-2' />
-                        <span>
-                           Back
-                        </span>
-                     </>
-                  } />
-               <p className="text-[#24A3D9] my-3">
+               
+               <p className="text-[#24A3D9] my-3 text-lg">
                   {organization?.company +
                      "  >  " +
                      firstName +
@@ -711,7 +699,7 @@ export default function StudentReport() {
                   <p className='mt-[31px] text-textPrimaryDark text-2xl font-bold'>
                      {testDetails.testName}
                   </p>
-                  <button className={`py-[14px] px-[16px] bg-[#FFA28D] text-white rounded-lg flex items-center shadow-md `}>
+                  <button className={`py-[14px] px-[16px] bg-[#FFA28D] text-white rounded-lg flex items-center shadow-sm `}>
                      <span className='inline-block font-bold text-[18px]'>
                         {displayScore.cumulative}
                      </span>
@@ -723,40 +711,40 @@ export default function StudentReport() {
                </div>
                <div className='grid grid-cols-2 grid-rows-3 max-w-840 gap-y-4 mt-6 text-[#26435F]'>
                   <div>
-                     <p className='inline-block w-138 '> Student’s Name</p>
-                     <span className='inline-block mr-4'>:</span>
-                     <p className='inline-block font-medium'> {testDetails.name} </p>
+                     <p className='inline-block w-[160px] '> Student’s Name</p>
+                     <span className='inline-block mr-10'>:</span>
+                     <p className='inline-block font-medium text-[#26435F]'> {testDetails.name} </p>
                   </div>
                   <div>
-                     <p className='inline-block w-138 '> Started on </p>
-                     <span className='inline-block mr-4'>:</span>
-                     <p className='inline-block  font-medium'> {testDetails.startedOn} </p>
+                     <p className='inline-block w-[160px] '> Started on </p>
+                     <span className='inline-block mr-10'>:</span>
+                     <p className='inline-block  font-medium text-[#26435F]'> {testDetails.startedOn} </p>
                   </div>
 
                   <div>
-                     <p className='inline-block w-138 '>  Date Assigned </p>
-                     <span className='inline-block mr-4'>:</span>
-                     <p className='inline-block  font-medium'> {testDetails.assignedOn} </p>
+                     <p className='inline-block w-[160px] '>  Date Assigned </p>
+                     <span className='inline-block mr-10'>:</span>
+                     <p className='inline-block  font-medium text-[#26435F]'> {testDetails.assignedOn} </p>
                   </div>
                   <div>
-                     <p className='inline-block w-138 '> Completed on </p>
-                     <span className='inline-block mr-4'>:</span>
-                     <p className='inline-block  font-medium'> {testDetails.completedOn} </p>
+                     <p className='inline-block w-[160px] '> Completed on </p>
+                     <span className='inline-block mr-10'>:</span>
+                     <p className='inline-block  font-medium text-[#26435F]'> {testDetails.completedOn} </p>
                   </div>
                   <div >
-                     <p className='inline-block w-138 '> Duration </p>
-                     <span className='inline-block mr-4'>:</span>
-                     <p className='inline-block  font-medium'> {testDetails.duration} </p>
+                     <p className='inline-block w-[160px] '> Duration </p>
+                     <span className='inline-block mr-10'>:</span>
+                     <p className='inline-block  font-medium text-[#26435F]'> {testDetails.duration} </p>
                   </div>
                   <div>
-                     <p className='inline-block w-138 '> Due on </p>
-                     <span className='inline-block mr-4'>:</span>
-                     <p className='inline-block  font-medium'> {testDetails.startedOn} </p>
+                     <p className='inline-block w-[160px] '> Due on </p>
+                     <span className='inline-block mr-10'>:</span>
+                     <p className='inline-block  font-medium text-[#26435F]'> {testDetails.startedOn} </p>
                   </div>
-                  <div className='col-span-2'>
-                     <p className='inline-block w-138 '> Instruction from tutor </p>
-                     <span className='inline-block mr-4'>:</span>
-                     <p className='inline-block w-138 font-medium'> {testDetails.instruction} </p>
+                  <div className='col-span-2 items-center'>
+                     <p className='inline-block  w-[160px] '> Instruction from tutor </p>
+                     <span className='inline-block mr-10 my-auto'>:</span>
+                     <p className='inline-block w-[160px] font-medium text-[#26435F]'> {testDetails.instruction} </p>
                   </div>
                </div>
 
@@ -767,7 +755,7 @@ export default function StudentReport() {
                            <PrimaryTab
                               children={item.name}
                               onClick={() => handleChange(item)}
-                              className={` px-4 mr-7   ${item.selected ? 'border-b-4 border-[#FFA28D] text-[#FFA28D]' : ''}`} />
+                              className={` px-4 mr-7   ${item.selected ? 'border-b-4 rounded border-[#FFA28D] text-[#FFA28D]' : ''}`} />
 
                         </>
 
@@ -872,7 +860,7 @@ export default function StudentReport() {
                      </div>
 
 
-                     <div className='text-lg  text-[#24A3D9] px-4 py-2 ml-[45px] border-2 border-[#FFA28D] rounded-7 w-[338px] mt-[70px]'><p className='text-center font-semibold'>Section Score: <span className='text-[#517CA8] pl-1 font-medium'>
+                     <div className='text-lg  text-[#24A3D9] px-4 py-3 ml-[45px] border-[2.5px] border-[#FFA28D] rounded-7 w-[338px] mt-[70px]'><p className='text-center font-semibold'>Section Score: <span className='text-[#517CA8] text-xl pl-1 font-semibold'>
                         {
                            Object.keys(responseData).length >= 1 &&
                            Object.keys(selectedSubject).length >= 1
