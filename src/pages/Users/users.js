@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-
+import { CSVLink, CSVDownload } from "react-csv";
 import Table from "../../components/Table/Table";
 import FilterItems from "../../components/FilterItemsNew/filterItems";
 import Modal from "../../components/Modal/Modal";
@@ -14,6 +14,7 @@ import UploadIcon from "../../assets/icons/upload.svg";
 import XIcon from "../../assets/icons/x.png";
 import SearchIcon from "../../assets/icons/search.svg";
 import { tableData, userTypesList } from "./tempData";
+import { csvHeaders } from "./csvUtlis";
 import {
   useAddUserMutation,
   useLazyGetAllUsersQuery,
@@ -627,6 +628,8 @@ export default function Users() {
     }
   };
 
+   console.log('shivam',filteredUsersData)
+
 
   const [students, setStudents] = useState([]);
   return (
@@ -653,11 +656,13 @@ export default function Users() {
         <div>
           <div className="flex mb-[50px]">
             <button className="bg-[#517CA8] w-[158px] text-sm justify-center flex py-1 px-2 items-center text-white font-semibold rounded-lg mr-5">
-              Export Data{" "}
+             
+              <CSVLink filename={"Evallo_CRM_Data.csv"} data={filteredUsersData} headers={csvHeaders}> Export Data{" "}</CSVLink>
               <img src={ExportIcon} className="ml-3" alt="ExportIcon" />
             </button>
             <button className="bg-[#517CA8] w-[158px] text-sm justify-center flex py-1 px-2 items-center text-white font-semibold rounded-lg mr-5">
               Bulk Upload{" "}
+             
               <img src={UploadIcon} className="ml-3" alt="UploadIcon" />
             </button>
             <PrimaryButton

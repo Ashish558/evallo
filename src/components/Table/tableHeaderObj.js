@@ -11,7 +11,7 @@ export function TableHeaderNew({ header, checkedHeader, dataFor, Handler}) {
   
   return (
     <th
-      className={`px-2 py-3 font-semibold  text-center  cursor-pointer ${
+      className={`px-1 py-3 font-semibold whitespace-nowrap  text-center  cursor-pointer ${
         header.className ? header.className : ""
       } ${flag?styles["no-arrow"]:''}`}
     >
