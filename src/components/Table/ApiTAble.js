@@ -27,6 +27,7 @@ export default function ApiTable({
   numberChecked,
   setnumberChecked,
 }) {
+  const [dummy, setDummy] = useState([]);
   const [tableData, setTableData] = useState(
     data.sort(
       (a, b) =>
@@ -41,7 +42,22 @@ export default function ApiTable({
   useEffect(() => {
     setIsChecked(false);
   }, [currentPage]);
-
+  useEffect(() => {
+    let arr = [];
+    let noOfkeys;
+    if (headerObject) noOfkeys = Object.keys(tableHeaders).length;
+    else noOfkeys = tableHeaders.length;
+    arr.length = noOfkeys;
+    for (let i = 0; i < maxPageSize - tableData.length; i++) {
+      let curr = [];
+      for (let j = 0; j < noOfkeys; j++) {
+        curr.push(" Dummy ");
+      }
+      arr.push(curr);
+    }
+    console.log({tableData,maxPageSize, arr });
+    setDummy(arr);
+  }, [tableData]);
   useEffect(() => {
     if (hidePagination === true) {
       setTableData(data);
@@ -67,7 +83,9 @@ export default function ApiTable({
   };
 
   return (
-    <div>
+    <div className="w-full">
+    <div className="overflow-x-auto scrollbar-content  my-7  scroll-m-1 ">
+
       <table className="table-auto mb-3 text-center w-full">
         <thead className="pb-2">
           <tr>
@@ -103,9 +121,25 @@ export default function ApiTable({
               />
             );
           })}
+           {dummy.map((it, iti) => {
+            return (
+              <tr
+                key={iti}
+                className="shadow-sm shadow-slate-200 rounded-2xl leading-8 "
+              >
+                {it.map((d, di) => {
+                  return (
+                    <td  key={di} className="opacity-0 text-sm px-1 min-w-14 py-3 ">
+                      {d}
+                    </td>
+                  );
+                })}
+              </tr>
+            );
+          })}
         </tbody>
       </table>
-
+      </div>
       <div className="flex justify-end items-center">
         <Pagination
           currentPage={currentPage}
