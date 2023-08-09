@@ -59,7 +59,7 @@ export default function InputSelect({
       )}
 
       <div
-        className={`py-[10px] px-[14px]  lg:py-[10px] lg:px-[16px] border border-[#D0D5DD] flex items-center rounded relative cursor-pointer z-50 ${
+        className={`py-[10px]  lg:py-[10px]  border border-[#D0D5DD] flex items-center rounded relative  z-50 ${
           inputContainerClassName ? inputContainerClassName : ""
         } `}
       >
@@ -67,20 +67,20 @@ export default function InputSelect({
         {selected ? (
           IconRight ? (
             <FontAwesomeIcon
-              className="w-[30px] absolute right-7 pb-1 z-[5000]"
+              className="w-[30px] cursor-pointer absolute right-0 pb-1 z-[5000]"
               onClick={handleOption}
               icon={IconRight}
             ></FontAwesomeIcon>
           ) : (
             <img
               src={UpArrow}
-              className={`w-[15px]  ${styles.downArrow}`}
+              className={`w-[15px]   ${styles.downArrow}`}
               alt="down-arrow"
             />
           )
         ) : IconRight ? (
           <FontAwesomeIcon
-            className="w-[30px] absolute right-7 pb-1 z-[5000]"
+            className="w-[30px] cursor-pointer absolute right-0 pb-1 z-[5000]"
             onClick={handleOption}
             icon={IconRight}
           ></FontAwesomeIcon>
@@ -93,13 +93,13 @@ export default function InputSelect({
         )}
 
         <div
-          className={`outline-0 w-full cursor-default relative ${
+          className={`outline-0 w-full text-right cursor-default relative ${
             optionClassName ? optionClassName : ""
           }`}
           name={label}
         >
           {value === "" || !value ? (
-            <span className="text-primary-60 pl-5 cursor-default  text-[13px]  mr-10 whitespace-nowrap">
+            <span className="text-primary-60 mr-10 pl-5 cursor-default  text-[13px]   whitespace-nowrap">
               {" "}
               {placeholder}{" "}
             </span>

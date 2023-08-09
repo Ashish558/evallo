@@ -151,6 +151,10 @@ export default function Users() {
     {
       id: 8,
       text: "Join Date",
+    },
+    {
+      id: 9,
+      text: "",
     }
   ];
 
