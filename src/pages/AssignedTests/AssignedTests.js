@@ -698,23 +698,26 @@ export default function AssignedTests() {
             )}
 
             <InputField
+             IconRight={SearchIcon}
               value={filterData.studentName}
               onChange={(e) =>
                 setFilterData({ ...filterData, studentName: e.target.value })
               }
-              inputContainerClassName="px-[20px] mt-1 py-[16px] bg-white"
+              inputContainerClassName="px-[20px] shadow-[0px_0px_1px_0px_rgba(0,0,0,0.25)] mt-1 py-[16px] bg-white"
               placeholder="Search Student"
               parentClassName="w-full text-sm"
               type="text"
             />
 
             <InputSelect
+            
               value={filterData.testName}
               onChange={(val) =>
                 setFilterData({ ...filterData, testName: val })
               }
+
               optionData={testNameOptions}
-              inputContainerClassName="px-[20px] py-[16px] bg-white"
+              inputContainerClassName="px-[20px]  shadow-[0px_0px_1px_0px_rgba(0,0,0,0.25)] py-[16px] bg-white"
               placeholder="Search Assignment"
               parentClassName="w-full text-sm"
               type="select"
@@ -723,7 +726,7 @@ export default function AssignedTests() {
               value={filterData.status}
               onChange={(val) => setFilterData({ ...filterData, status: val })}
               optionData={["Started", "Not Started", "Completed"]}
-              inputContainerClassName="px-[20px] py-[16px] bg-white"
+              inputContainerClassName="px-[20px] shadow-[0px_0px_1px_0px_rgba(0,0,0,0.25)] py-[16px] bg-white"
               placeholder="Completion Status"
               parentClassName="w-full text-sm"
               type="select"
@@ -734,7 +737,7 @@ export default function AssignedTests() {
                 setFilterData({ ...filterData, assignedBy: val })
               }
               parentClassName="w-full text-sm"
-              inputContainerClassName="px-[20px] py-[16px] bg-white"
+              inputContainerClassName="px-[20px] shadow-[0px_0px_1px_0px_rgba(0,0,0,0.25)] py-[16px] bg-white"
               optionData={assignedBys}
               placeholder="Filter by Tutor"
               type="text"
