@@ -547,7 +547,7 @@ const Dashboard = () => {
                   Average SAT improvement
                 </p>
                 <div
-                  className={`w-[190px] mt-1 h-[70px] bg-[rgba(36,163,217,0.2)]  ${styles.smallBox}`}
+                  className={`w-[180px] mt-1 h-[70px] bg-[rgba(36,163,217,0.2)]  ${styles.smallBox}`}
                 >
                   <p className="text-[#24A3D9] h-full w-full justify-center font-semibold text-3xl flex items-center text-center">
                     {improvementStats.avg_sat_improvement
@@ -561,7 +561,7 @@ const Dashboard = () => {
                   Average ACT improvement
                 </p>
                 <div
-                  className={`w-[190px] mt-1 h-[70px] bg-[rgba(36,163,217,0.2)]  ${styles.smallBox}`}
+                  className={`w-[180px] mt-1 h-[70px] bg-[rgba(36,163,217,0.2)]  ${styles.smallBox}`}
                 >
                   <p className="text-[#24A3D9] h-full w-full justify-center font-semibold text-3xl flex items-center text-center">
                     {improvementStats.avg_act_improvement
@@ -571,7 +571,7 @@ const Dashboard = () => {
                 </div>
               </div>
             </div>
-            <div className="flex scale-[0.961]  mt-2 whitespace-nowrap gap-4  text-xs justify-between text-[#667085]">
+            <div className="flex scale-[0.95]  mt-2 whitespace-nowrap gap-4  text-xs justify-between text-[#667085]">
               <div>
                 <p>Average GRE Improvement</p>
                 <div
