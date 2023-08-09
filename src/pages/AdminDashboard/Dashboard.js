@@ -345,8 +345,8 @@ const Dashboard = () => {
               </div>
 
               <div className={`${styles.gridBorder2}`}>
-                <div className="flex px-8 gap-x-8 justify-evenly">
-                  <div className="w-[170px] flex-1 ">
+                <div className="flex px-8 gap-x-8 justify-evenly whitespace-nowrap">
+                  <div className="w-[190px] flex-1 ">
                     <div className="mb-2">
                       <p className="text-sm font-medium text-[#26435F80]">
                         Unpaid Invoices
@@ -358,7 +358,7 @@ const Dashboard = () => {
                       <p>Coming soon</p>
                     </div>
                   </div>
-                  <div className="w-[170px] flex-1 ">
+                  <div className="w-[190px] flex-1 ">
                     <div className=" mb-2">
                       <p className="text-sm font-medium text-[#26435F80]">
                         Paid Invoices
@@ -370,7 +370,7 @@ const Dashboard = () => {
                       <p>Coming soon</p>
                     </div>
                   </div>
-                  <div className="w-[170px] flex-1">
+                  <div className="w-[190px] flex-1">
                     <div className="mb-2">
                       <p className="text-sm font-medium text-[#26435F80]">
                         Cancelled Invoices
