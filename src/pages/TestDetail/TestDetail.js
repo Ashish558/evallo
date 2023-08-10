@@ -230,7 +230,7 @@ export default function TestDetail() {
                   <div className="">
                      <SecondaryButton
                         className="flex items-center pl-2 pr-5 py-2.5"
-                        onClick={() => navigate("/all-tests")}
+                        onClick={() => navigate(-1)}
                         children={
                            <>
                               <img src={BackIcon} className="mr-2" />

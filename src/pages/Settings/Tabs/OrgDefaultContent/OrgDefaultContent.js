@@ -86,7 +86,9 @@ export default function AllTests() {
   const removeTest = (item) => {
     setRemoveQuestionModal(false);
     // console.log(testForDelete._id);
-    axios.delete(`${BASE_URL}api/test/${testForDelete._id}`).then((res) => {
+    axios.delete(`${BASE_URL}api/test/${testForDelete._id}`, {
+      headers: getAuthHeader()
+    }).then((res) => {
       console.log(res);
       fetchTests();
     });
