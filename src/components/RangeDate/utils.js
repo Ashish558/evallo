@@ -5,13 +5,17 @@ export function calculateDateRange(startD) {
 
   var rangeStart = new Date(startDate); // Start of the range
   var rangeEnd = new Date(currentDate); // End of the range
-
-  dateRanges.push(formatDate(rangeStart) + " - " + formatDate(rangeEnd));
+   let ndate={
+    sDate:rangeStart,
+    eDate:rangeEnd
+   }
+  dateRanges.push(getModifiedDate(ndate));
   return dateRanges.slice(0,100);
  
 }
 
 export const getModifiedDate = (date) => {
+ 
   let startDate = new Date(date.sDate).toDateString().split(' ')
   startDate = startDate[2]+' '+startDate[1]+ ' '+startDate[3]
   let endDate = new Date(date.eDate).toDateString().split(' ')

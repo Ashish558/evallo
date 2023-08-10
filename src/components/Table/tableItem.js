@@ -6,7 +6,7 @@ import DownloadIcon from "../../assets/icons/download.png";
 import SuccessIcon from "../../assets/assignedTests/success.svg";
 import FailIcon from "../../assets/assignedTests/fail.svg";
 import YellowIcon from "../../assets/assignedTests/yellow.svg";
-import LightBlueIcon from "../../assets/assignedTests/lightblue.svg";
+import LightBlueIcon from "../../assets/icons/Test Statusred.svg";
 import RedIcon from "../../assets/assignedTests/red.svg";
 import GreenIcon from "../../assets/assignedTests/green.svg";
 import GrayIcon from "../../assets/assignedTests/gray.svg";
@@ -42,6 +42,8 @@ export default function TableItem({
   fetch,
   checkedHeader,
   extraData,
+  numberChecked,
+  setnumberChecked
 }) {
   const [score, setScore] = useState("-");
   const navigate = useNavigate();
@@ -210,7 +212,10 @@ export default function TableItem({
   }, [item]);
   const [isChecked, setIsChecked] = useState(checkedHeader);
   const handleCheckboxChange = () => {
-   setIsChecked(!isChecked);
+    console.log("handleCheckboxChange")
+   setIsChecked(!isChecked);  
+   let fl=isChecked?1:-1
+   setnumberChecked(numberChecked-fl)
  };
  
 
@@ -492,6 +497,7 @@ export default function TableItem({
                   ? "opacity-50 pointer-events-none"
                   : ""
               }`}
+              
               onClick={() =>
                 navigate(
                   `/assigned-tests/${item.testId}/${item.assignedTestId}/report/${item.studentId}`

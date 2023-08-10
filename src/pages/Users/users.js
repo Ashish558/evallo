@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-
+import { CSVLink, CSVDownload } from "react-csv";
 import Table from "../../components/Table/Table";
 import FilterItems from "../../components/FilterItemsNew/filterItems";
 import Modal from "../../components/Modal/Modal";
@@ -14,6 +14,7 @@ import UploadIcon from "../../assets/icons/upload.svg";
 import XIcon from "../../assets/icons/x.png";
 import SearchIcon from "../../assets/icons/search.svg";
 import { tableData, userTypesList } from "./tempData";
+import { csvHeaders } from "./csvUtlis";
 import {
   useAddUserMutation,
   useLazyGetAllUsersQuery,
@@ -151,6 +152,10 @@ export default function Users() {
     {
       id: 8,
       text: "Join Date",
+    },
+    {
+      id: 9,
+      text: "",
     }
   ];
 
@@ -180,6 +185,7 @@ export default function Users() {
   const [currentPage, setCurrentPage] = useState(1);
   const [allTutors, setAllTutors] = useState([]);
   const [tutors, setTutors] = useState([]);
+  const [numberChecked, setnumberChecked] = useState(0);
   console.log("allTutors", allTutors);
   const [filterData, setFilterData] = useState({
     typeName: "",
@@ -350,7 +356,7 @@ export default function Users() {
   };
 
   useEffect(() => {
-    // fetch()
+     fetch()
     //console.log('shivam yadav 1',filteredUsersData)
   }, [maxPageSize, currentPage]);
   // console.log('currentPage', currentPage);
@@ -624,10 +630,10 @@ export default function Users() {
       // }))
     }
   };
-
+  
   console.log(filterData);
 
-  // console.log('shivam',filteredUsersData)
+   console.log('shivam',filteredUsersData)
 
   const [students, setStudents] = useState([]);
   return (
@@ -654,11 +660,13 @@ export default function Users() {
         <div>
           <div className="flex mb-[50px]">
             <button className="bg-[#517CA8] w-[158px] text-sm justify-center flex py-1 px-2 items-center text-white font-semibold rounded-lg mr-5">
-              Export Data{" "}
+             
+              <CSVLink filename={"Evallo_CRM_Data.csv"} data={filteredUsersData} headers={csvHeaders}> Export Data{" "}</CSVLink>
               <img src={ExportIcon} className="ml-3" alt="ExportIcon" />
             </button>
             <button className="bg-[#517CA8] w-[158px] text-sm justify-center flex py-1 px-2 items-center text-white font-semibold rounded-lg mr-5">
               Bulk Upload{" "}
+             
               <img src={UploadIcon} className="ml-3" alt="UploadIcon" />
             </button>
             <PrimaryButton
@@ -851,8 +859,9 @@ export default function Users() {
                 className={`${styles["custom-checkbox"]} ${isChecked ? "checked" : ""
                   }`}
               ></span>
-              <span className="block">{filterData?.status?.length} Selected</span>
+              <span className="block">{numberChecked} Selected</span>
             </label>
+
 
           </div>
           <div>
@@ -861,6 +870,7 @@ export default function Users() {
             </button>
           </div>
         </div>
+
         <div className="mt-6">
           <Table
             dataFor="allUsers"
@@ -869,7 +879,11 @@ export default function Users() {
             tableHeaders={tableHeaders}
             headerObject={true}
             maxPageSize={10}
+            numberChecked={numberChecked}
+            setnumberChecked={setnumberChecked}
             isCallingApi={true}
+            isChecked={isChecked}
+            setIsChecked={setIsChecked}
             total_pages={Math.ceil(totalPages / maxPageSize)}
             setMaxPageSize={setMaxPageSize}
             currentPage={currentPage}

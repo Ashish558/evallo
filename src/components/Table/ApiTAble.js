@@ -4,7 +4,7 @@ import { TableHeader } from "./TableHeader";
 import TableItem from "./tableItem";
 import ReactPaginate from "react-paginate";
 import { TableHeaderNew } from "./tableHeaderObj";
-import Pagination from '../../pages/SuperadminDashboard/Table/Pagination';
+import Pagination from "../../pages/SuperadminDashboard/Table/Pagination";
 
 export default function ApiTable({
   dataFor,
@@ -22,7 +22,12 @@ export default function ApiTable({
   fetch,
   headerObject,
   extraData,
+  isChecked,
+  setIsChecked,
+  numberChecked,
+  setnumberChecked,
 }) {
+  const [dummy, setDummy] = useState([]);
   const [tableData, setTableData] = useState(
     data.sort(
       (a, b) =>
@@ -30,30 +35,57 @@ export default function ApiTable({
     )
   );
   const dataLength = data.length > 30 ? 30 : data.length;
-  const [checkedHeader, setcheckedHeader] = useState(false);
-  // console.log();
-
+  const [checkedHeader, setcheckedHeader] = useState(isChecked);
+  useEffect(() => {
+    setcheckedHeaderHandler(isChecked);
+  }, [isChecked]);
+  useEffect(() => {
+    setIsChecked(false);
+  }, [currentPage]);
+  useEffect(() => {
+    let arr = [];
+    let noOfkeys;
+    if (headerObject) noOfkeys = Object.keys(tableHeaders).length;
+    else noOfkeys = tableHeaders.length;
+    arr.length = noOfkeys;
+    for (let i = 0; i < maxPageSize - tableData.length; i++) {
+      let curr = [];
+      for (let j = 0; j < noOfkeys; j++) {
+        curr.push(" Dummy ");
+      }
+      arr.push(curr);
+    }
+    console.log({tableData,maxPageSize, arr });
+    setDummy(arr);
+  }, [tableData]);
   useEffect(() => {
     if (hidePagination === true) {
       setTableData(data);
     } else {
       const temp = data.slice(0, maxPageSize);
-      // const temp = tableData.slice(0, maxPageSize); ***  it Was the Previous one  ***
-      setTableData(temp);
+        setTableData(temp);
     }
   }, [data, maxPageSize, data.length]);
 
-  //change tabledata if current page changes
+  
   useEffect(() => {
     if (hidePagination === true) return;
-    // const temp = data.slice((currentPage - 1) * maxPageSize, (currentPage - 1) * maxPageSize + maxPageSize)
-    // setTableData(temp)
+    
   }, [currentPage, data]);
-  const setcheckedHeaderHandler = () => {
-    setcheckedHeader(!checkedHeader);
+  const topcheckedHandler = () => {
+    setIsChecked(!isChecked);
   };
+  const setcheckedHeaderHandler = (isChecked) => {
+    setcheckedHeader(isChecked);
+    if (isChecked) {
+      setnumberChecked(tableData.length);
+    } else setnumberChecked(0);
+  };
+
   return (
-    <div>
+    <div className="w-full">
+    <div className="overflow-x-auto scrollbar-content  my-7  scroll-m-1 ">
+
       <table className="table-auto mb-3 text-center w-full">
         <thead className="pb-2">
           <tr>
@@ -61,9 +93,10 @@ export default function ApiTable({
               return headerObject === true ? (
                 <TableHeaderNew
                   checkedHeader={checkedHeader}
-                  Handler={setcheckedHeaderHandler}
+                  Handler={topcheckedHandler}
                   header={item}
                   key={idx}
+                  dataFor={dataFor}
                 />
               ) : (
                 <TableHeader key={idx} header={item} dataFor={dataFor} />
@@ -80,41 +113,42 @@ export default function ApiTable({
                 key={idx}
                 excludes={excludes}
                 onClick={onClick}
+                numberChecked={numberChecked}
+                setnumberChecked={setnumberChecked}
                 checkedHeader={checkedHeader}
                 fetch={fetch}
                 extraData={extraData}
               />
             );
           })}
+           {dummy.map((it, iti) => {
+            return (
+              <tr
+                key={iti}
+                className="shadow-sm shadow-slate-200 rounded-2xl leading-8 "
+              >
+                {it.map((d, di) => {
+                  return (
+                    <td  key={di} className="opacity-0 text-sm px-1 min-w-14 py-3 ">
+                      {d}
+                    </td>
+                  );
+                })}
+              </tr>
+            );
+          })}
         </tbody>
       </table>
-
+      </div>
       <div className="flex justify-end items-center">
-
-      <Pagination currentPage={ currentPage} setCurrentPage={setCurrentPage} totalPages={isCallingApi ? total_pages : Math.ceil(data.length / maxPageSize)} />
-
-        {/* {!hidePagination && <Pagination
-               totalPages={total_pages}
-               currentPage={currentPage}
-               setCurrentPage={setCurrentPage}
-            />} */}
-        {/* <ReactPaginate
-          className="table-pagination-container flex justify-center mt-5"
-          pageClassName={`flex justify-center items-center w-[38.12px] h-[38.12px] border border-primary rounded-full mr-5 cursor-pointer
-               ${"text-primary"}`}
-          activeClassName={`bg-primary text-white`}
-          breakLabel="..."
-          // nextLabel="next >"
-          onPageChange={(val) => setCurrentPage(val.selected + 1)}
-          pageRangeDisplayed={3}
-          pageCount={total_pages}
-          // previousLabel="< previous"
-          previousClassName="hidden"
-          nextClassName="hidden"
-          renderOnZeroPageCount={null}
-          forcePage={currentPage - 1}
-          pageLinkClassName="w-full h-full flex justify-center items-center"
-        /> */}
+        <Pagination
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+          totalPages={
+            isCallingApi ? total_pages : Math.ceil(data.length / maxPageSize)
+          }
+        />
+        
       </div>
     </div>
   );

@@ -5,7 +5,7 @@ import InputSelect from "../../components/InputSelect/InputSelect";
 
 import AddIcon from "../../assets/icons/add.svg";
 import SearchIcon from "../../assets/icons/search.svg";
-
+import styles from "./styles.module.css";
 import { tempTableData, studentsDataTable } from "./tempData";
 import InputField from "../../components/InputField/inputField";
 import axios from "axios";
@@ -86,50 +86,94 @@ export default function AssignedTests() {
       return arr;
     });
   };
+  const sortByName = () => {
+    setAllAssignedTests((prev) => {
+      let arr = [...prev];
+      arr = arr.sort(function (a, b) {
+        if (a.studentName < b.studentName) {
+          return -1;
+        }
+        if (a.studentName > b.studentName) {
+          return 1;
+        }
+        return 0;
+      });
+      return arr;
+    });
 
+    setFilteredTests((prev) => {
+      let arr = [...prev];
+      console.log("arr", arr);
+      arr = arr.sort(function (a, b) {
+        if (a.studentName < b.studentName) {
+          return -1;
+        }
+        if (a.studentName > b.studentName) {
+          return 1;
+        }
+        return 0;
+      });
+      return arr;
+    });
+  };
   const tempTableHeaders = [
     {
       id: 1,
       text: "Name",
-      className: "text-left pl-6",
+      className: "text-left pl-6 no-arrow",
+      onCick: sortByName,
     },
     {
       id: 2,
       text: "Assigned on",
-      onCick: sortByAssignedDate,
-    },
-    {
-      id: 2,
-      text: "Assigned By",
+      className: "no-arrow",
       onCick: sortByAssignedDate,
     },
     {
       id: 3,
-      text: "Due Date",
-      onCick: sortByDueDate,
+      text: "Assigned By",
+      className: "no-arrow",
+      onCick: sortByAssignedDate,
     },
     {
       id: 4,
-      text: "Test Name",
+      text: "Due Date",
+      className: "no-arrow",
+      onCick: sortByDueDate,
     },
     {
       id: 5,
-      text: "Duration",
-    },
-    {
-      id: 1,
-      text: "Status",
+      className: "no-arrow",
+      text: "Test Name",
     },
     {
       id: 6,
-      text: "Scores",
+      className: "no-arrow",
+      text: "Duration",
     },
     {
       id: 7,
-      text: "",
+      className: "no-arrow",
+      text: "Status",
     },
     {
       id: 8,
+      className: "no-arrow",
+      text: "Scores",
+    },
+    {
+      id: 9,
+      className: "no-arrow",
+      text: "",
+    },
+    {
+      id: 10,
+      className: "no-arrow",
+      text: "",
+    },
+    {
+      id: 11,
+      className: "no-arrow",
       text: "",
     },
   ];
@@ -166,9 +210,9 @@ export default function AssignedTests() {
   const [fetchTutorStudents, tutorStudentsResp] =
     useLazyGetTutorStudentsByNameQuery();
   const [assignedBys, setAssignedBys] = useState([]);
-
+  const [currentUser, setCurrentUser] = useState({ name: "english" });
   const [students, setStudents] = useState([]);
-
+  const { firstName, lastName } = useSelector((state) => state.user);
   const [testsData, setTestsData] = useState([]);
   const [maxPageSize, setMaxPageSize] = useState(10);
   const [validData, setValidData] = useState(true);
@@ -556,20 +600,51 @@ export default function AssignedTests() {
     setTestToDelete(item);
     setDeleteModalActive(true);
   };
-
+  const testTypes = [
+    {
+      text: "English",
+      selected: true,
+    },
+    {
+      text: "Maths",
+      selected: false,
+    },
+    {
+      text: "Reading",
+      selected: false,
+    },
+    {
+      text: "Science",
+      selected: false,
+    },
+    {
+      text: "History",
+      selected: false,
+    },
+    {
+      text: "Economics",
+      selected: false,
+    },
+  ];
+  const handleCurrentUser = (item) => {
+    setCurrentUser({
+      name: item.text.toLowerCase(),
+    });
+  };
   const status = [
     {
+      text: "Completed",
+      color: "#32D583",
+    },
+    {
       text: "Not Started",
-      color: "#CBC0F5",
+      color: "#FF7979",
     },
     {
       text: "Started",
       color: "#F6A429",
     },
-    {
-      text: "Completed",
-      color: "#32D583",
-    },
+    
   ];
 
   useEffect(() => {
@@ -591,80 +666,25 @@ export default function AssignedTests() {
   console.log("filteredTests", filteredTests);
   return (
     <>
-      <div className="lg:ml-pageLeft bg-lightWhite min-h-screen">
-        <div className="py-14 px-5">
+      <div className="lg:mx-[40px] bg-lightWhite min-h-screen">
+        <div className="py-14 px-5 ">
+          <div className="flex justify-between items-center my-2">
           <p className="text-[#24A3D9]  mb-3 ">
-            {organization?.company + "  >  " + "Assignments" + "  >  "}
-            <span className="font-semibold">Content</span>
+            {organization?.company + "  >  " +   firstName +
+            "  " +
+            lastName  + "  >  "}
+            <span className="font-semibold">Assignments</span>
           </p>
-
-          {/* <div className="flex gap-10 my-5">
-            <div>
-              <h1 className="font-bold text-3xl  text-[#26435F]">ACT 0</h1>
-              <div className="flex flex-col gap-3 pr-24 px-4 py-5 mt-3 rounded-md shadow-[0px_0px_2.499999761581421px_0px_#00000040]">
-                <span className="flex gap-10">
-                  <span className="w-[100px] text-[#26435F]">Created on </span>{" "}
-                  <span>:</span>{" "}
-                  <span className="text-[#24A3D9]">20/06/22</span>
-                </span>
-                <span className="flex gap-10">
-                  <span className="w-[100px] text-[#26435F]">Updated on </span>{" "}
-                  <span>:</span>{" "}
-                  <span className="text-[#24A3D9]">20/06/22</span>
-                </span>
-                <span className="flex gap-10">
-                  <span className="w-[100px] text-[#26435F]">Name </span>{" "}
-                  <span>:</span>{" "}
-                  <span className="text-[#24A3D9]">20/06/22</span>
-                </span>
-                <span className="flex gap-10">
-                  <span className="w-[100px] text-[#26435F]">Type </span>{" "}
-                  <span>:</span>{" "}
-                  <span className="text-[#24A3D9]">20/06/22</span>
-                </span>
-                <span className="flex gap-10">
-                  <span className="w-[100px] text-[#26435F]">Created by </span>{" "}
-                  <span>:</span>{" "}
-                  <span className="text-[#24A3D9]">20/06/22</span>
-                </span>
-                <span className="flex gap-10">
-                  <span className="w-[100px] text-[#26435F]">Updated by </span>{" "}
-                  <span>:</span>{" "}
-                  <span className="text-[#24A3D9]">20/06/22</span>
-                </span>
-              </div>
-            </div>
-            <div>
-              <h1 className="font-bold text-3xl  text-[#26435F]">Sections</h1>
-              <div className="flex flex-col gap-3  px-5 py-5 mt-3 rounded-md shadow-[0px_0px_2.499999761581421px_0px_#00000040]">
-                <span className="grid grid-cols-3 gap-x-16">
-                  <span className="w-[100px] text-[#26435F] text-center">Section</span>{" "}
-                  <span className="text-center">Time</span> <span className="text-center">Total Questions</span>
-                </span>
-                <div className=" h-[170px] overflow-y-auto">
-                  {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((item) => {
-                    return (
-                      <span className="grid grid-cols-3 gap-x-16 my-1 text-[#24A3D9]">
-                        <span className="w-[100px] text-center">English</span>{" "}
-                        <span className="text-center">45 min</span> <span className="text-center">75</span>
-                      </span>
-                    );
-                  })}
-                </div>
-              </div>
-            </div>
-            <div>
-              <h1 className="font-bold text-3xl opacity-0 mb-3 text-[#26435F]">
-                ACT 0
-              </h1>
-              <div className="border border-[#26435F] rounded-md border-dotted border-spacing-5  px-20 py-14 w-[300px] ">
-                <img src={pdfUpload} alt="" />
-                <button className="bg-[#517CA8] text-white rounded-md p-1 mt-5">
-                  Reupload Pdf
-                </button>
-              </div>
-            </div>
-          </div> */}
+          <button
+              className="bg-[#FFA28D] text-lg justify-center flex py-3 px-5 items-center text-white font-semibold rounded-lg"
+              onClick={() => setAssignTestModalActive(true)}
+            >
+              New Assignment
+              <img src={AddIcon} className="ml-3" alt="new test" />
+            </button>
+          </div>
+          
+       
           <div className="flex gap-4 justify-between items-center">
             {persona === "parent" || persona === "student" ? (
               <p
@@ -682,21 +702,12 @@ export default function AssignedTests() {
               onChange={(e) =>
                 setFilterData({ ...filterData, studentName: e.target.value })
               }
-              inputContainerClassName="px-[20px] py-[16px] bg-white"
-              placeholder="Student Name"
+              inputContainerClassName="px-[20px] mt-1 py-[16px] bg-white"
+              placeholder="Search Student"
               parentClassName="w-full text-sm"
               type="text"
             />
-            {/* <InputField
-                     value={filterData.testName}
-                     IconRight={SearchIcon}
-                     onChange={e => setFilterData({ ...filterData, testName: e.target.value })}
-                     optionData={optionData}
-                     placeholder="Test Name"
-                     inputContainerClassName="px-[20px] py-[16px] bg-white"
-                     parentClassName="w-full text-sm"
-                     type="text"
-                  /> */}
+
             <InputSelect
               value={filterData.testName}
               onChange={(val) =>
@@ -704,7 +715,16 @@ export default function AssignedTests() {
               }
               optionData={testNameOptions}
               inputContainerClassName="px-[20px] py-[16px] bg-white"
-              placeholder="Test Name"
+              placeholder="Search Assignment"
+              parentClassName="w-full text-sm"
+              type="select"
+            />
+             <InputSelect
+              value={filterData.status}
+              onChange={(val) => setFilterData({ ...filterData, status: val })}
+              optionData={["Started", "Not Started", "Completed"]}
+              inputContainerClassName="px-[20px] py-[16px] bg-white"
+              placeholder="Completion Status"
               parentClassName="w-full text-sm"
               type="select"
             />
@@ -716,26 +736,12 @@ export default function AssignedTests() {
               parentClassName="w-full text-sm"
               inputContainerClassName="px-[20px] py-[16px] bg-white"
               optionData={assignedBys}
-              placeholder="Assigned By"
+              placeholder="Filter by Tutor"
               type="text"
             />
-            <InputSelect
-              value={filterData.status}
-              onChange={(val) => setFilterData({ ...filterData, status: val })}
-              optionData={["Started", "Not Started", "Completed"]}
-              inputContainerClassName="px-[20px] py-[16px] bg-white"
-              placeholder="Completion Status"
-              parentClassName="w-full text-sm"
-              type="select"
-            />
+           
 
-            <button
-              className="bg-primaryOrange w-full text-lg justify-center flex pt-4 pb-4 px-5 items-center text-white font-semibold rounded-lg"
-              onClick={() => setAssignTestModalActive(true)}
-            >
-              Assign new test
-              <img src={AddIcon} className="ml-3" />
-            </button>
+            
           </div>
 
           <div className="mt-4">
@@ -752,7 +758,7 @@ export default function AssignedTests() {
               <AssignedTestIndicator key={idx} text={text} color={color} />
             ))}
           </div>
-
+         
           <div className="mt-6">
             <Table
               onClick={{ handleResend, handleDelete }}

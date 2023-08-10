@@ -7,9 +7,9 @@ import { faQuestionCircle } from "@fortawesome/free-regular-svg-icons";
 import icon from "../../assets/images/Evallo.png";
 import styles from "./style.module.css";
 
-import Table from "../SuperadminDashboard/Table/table";
+import Table from "../../components/Table/Table";
 import ActionLog from "./ActionLog";
-
+import Table2 from "../SuperadminDashboard/Table/table"
 import {
   useGetAllRevenueMutation,
   useGetImpendingRevenueMutation,
@@ -21,7 +21,7 @@ import {
   useLazyGetImprovementStatsQuery,
   useGetFilteredActionLogMutation,
 } from "../../app/services/adminDashboard";
-import { latestSignUpHeaders, tutorTableHeaders } from "./staticData";
+import { tutorTableHeaders } from "./staticData";
 import { useState } from "react";
 import RangeDate from "../../components/RangeDate/RangeDate";
 import ArrowDown from "../../assets/Dashboard/sort-down.svg";
@@ -52,6 +52,7 @@ const Dashboard = () => {
   const [fetchFilteredActionLog, fetchFilteredActionLogStatus] =
     useGetFilteredActionLogMutation();
   const [filteredActionLog, setFilteredActionLog] = useState([]);
+  const [userData, setUserData] = useState([]);
   const handleFetchRevenue = (fetchMutation, body, setValue) => {
     fetchMutation(body)
       .then((res) => {
@@ -61,7 +62,93 @@ const Dashboard = () => {
         console.log(err);
       });
   };
+  useEffect(() => {
+    if (latestSignUp?.data) setUserData(latestSignUp?.data);
+  }, [latestSignUp]);
 
+  const sortByName = () => {
+    setUserData((prev) => {
+      let arr = [...prev];
+      arr = arr.sort(function (a, b) {
+        if (a.firstName < b.firstName) {
+          return -1;
+        }
+        if (a.firstName > b.firstName) {
+          return 1;
+        }
+        return 0;
+      });
+      console.log({ arr });
+      return arr;
+    });
+  };
+  const sortByType = () => {
+    setUserData((prev) => {
+      let arr = [...prev];
+      arr = arr.sort(function (a, b) {
+        if (a.role < b.role) {
+          return -1;
+        }
+        if (a.role > b.role) {
+          return 1;
+        }
+        return 0;
+      });
+     
+      return arr;
+    });
+  };
+  const sortByDate = () => {
+    setUserData((prev) => {
+      let arr = [...prev];
+      arr = arr.sort(function (a, b) {
+        return new Date(b.lastSignUp) - new Date(a.lastSignUp);
+      });
+      return arr;
+    });
+  };
+  const latestSignUpHeaders = [
+    {
+      id: 1,
+      text: "Full Name",
+      className: "text-left pl-6",
+      onCick: sortByName,
+    },
+    {
+      id: 2,
+      text: "User Type",
+      onCick: sortByType,
+    },
+    {
+      id: 3,
+      text: "Email",
+    },
+    {
+      id: 4,
+      text: "Phone",
+    },
+    {
+      id: 5,
+      text: "Assigned Tutor",
+    },
+    {
+      id: 6,
+      text: "Lead Status",
+    },
+    {
+      id: 7,
+      text: "Tutor Status",
+    },
+    {
+      id: 8,
+      text: "Services",
+    },
+    {
+      id: 9,
+      text: "Date Added",
+      onCick: sortByDate,
+    },
+  ];
   const convertDateToRange = (startDate) => {
     let startD = startDate.split("-")[0];
 
@@ -126,8 +213,7 @@ const Dashboard = () => {
     fetchFilteredActionLog(body)
       .then((res) => {
         console.log(res?.data);
-       
-        
+
         setFilteredActionLog(res?.data?.actions);
       })
       .catch((err) => {
@@ -147,7 +233,7 @@ const Dashboard = () => {
                 "  " +
                 lastName +
                 "  >  "}
-                    <span className="font-semibold">Dashboard</span>
+              <span className="font-semibold">Dashboard</span>
             </p>
 
             <div className="flex justify-between items-center ">
@@ -259,8 +345,8 @@ const Dashboard = () => {
               </div>
 
               <div className={`${styles.gridBorder2}`}>
-                <div className="flex px-8 gap-x-8 justify-evenly">
-                  <div className="w-[170px] flex-1 ">
+                <div className="flex px-8 gap-x-8 justify-evenly whitespace-nowrap">
+                  <div className="w-[190px] flex-1 ">
                     <div className="mb-2">
                       <p className="text-sm font-medium text-[#26435F80]">
                         Unpaid Invoices
@@ -272,7 +358,7 @@ const Dashboard = () => {
                       <p>Coming soon</p>
                     </div>
                   </div>
-                  <div className="w-[170px] flex-1 ">
+                  <div className="w-[190px] flex-1 ">
                     <div className=" mb-2">
                       <p className="text-sm font-medium text-[#26435F80]">
                         Paid Invoices
@@ -284,7 +370,7 @@ const Dashboard = () => {
                       <p>Coming soon</p>
                     </div>
                   </div>
-                  <div className="w-[170px] flex-1">
+                  <div className="w-[190px] flex-1">
                     <div className="mb-2">
                       <p className="text-sm font-medium text-[#26435F80]">
                         Cancelled Invoices
@@ -384,11 +470,10 @@ const Dashboard = () => {
 
           <div className="">
             <Table
-              data={latestSignUp?.data ? latestSignUp?.data : []}
+              data={userData}
               AdminLatestSignUp={true}
-              // Icon={
-              //   <img src={ArrowDown} alt="down" className="flex-shrink-0" />
-              // }
+              headerObject={true}
+              
               tableHeaders={latestSignUpHeaders}
               maxPageSize={5}
             />
@@ -415,8 +500,7 @@ const Dashboard = () => {
               </p>
               <Table
                 data={popularServices}
-                // Icon={<img src={ArrowDown} alt="down" className="" />}
-                tableHeaders={[
+               tableHeaders={[
                   "Service",
                   "Actively Using",
                   "Total Used",
@@ -447,9 +531,11 @@ const Dashboard = () => {
           <div className="grid grid-cols-2 gap-x-[40px]">
             <div className="flex scale-[0.98] justify-between gap-4 mt-2 text-sm text-[#26435F]">
               <div>
-                <p className="font-semibold text-[13px]">Total # Of referrals</p>
+                <p className="font-semibold text-[13px]">
+                  Total # Of referrals
+                </p>
                 <div
-                  className={`mt-1 h-[67px] bg-[rgba(255,162,141,0.2)] ${styles.smallBox}`}
+                  className={`mt-1 w-[155px] h-[70px] bg-[rgba(255,162,141,0.2)] ${styles.smallBox}`}
                 >
                   <p className="text-[#FFA28D] h-full w-full justify-center font-semibold text-3xl flex items-center text-center">
                     {improvementStats.no_of_referrals}
@@ -457,9 +543,11 @@ const Dashboard = () => {
                 </div>
               </div>
               <div>
-                <p className="font-semibold text-[13px]">Average SAT improvement</p>
+                <p className="font-semibold text-[13px]">
+                  Average SAT improvement
+                </p>
                 <div
-                  className={`w-[170px] mt-1 h-[67px] bg-[rgba(36,163,217,0.2)]  ${styles.smallBox}`}
+                  className={`w-[180px] mt-1 h-[70px] bg-[rgba(36,163,217,0.2)]  ${styles.smallBox}`}
                 >
                   <p className="text-[#24A3D9] h-full w-full justify-center font-semibold text-3xl flex items-center text-center">
                     {improvementStats.avg_sat_improvement
@@ -469,9 +557,11 @@ const Dashboard = () => {
                 </div>
               </div>
               <div>
-                <p className="font-semibold text-[13px]">Average ACT improvement</p>
+                <p className="font-semibold text-[13px]">
+                  Average ACT improvement
+                </p>
                 <div
-                  className={`w-[170px] mt-1 h-[67px] bg-[rgba(36,163,217,0.2)]  ${styles.smallBox}`}
+                  className={`w-[180px] mt-1 h-[70px] bg-[rgba(36,163,217,0.2)]  ${styles.smallBox}`}
                 >
                   <p className="text-[#24A3D9] h-full w-full justify-center font-semibold text-3xl flex items-center text-center">
                     {improvementStats.avg_act_improvement
@@ -481,11 +571,11 @@ const Dashboard = () => {
                 </div>
               </div>
             </div>
-            <div className="flex scale-[0.961]  mt-2 whitespace-nowrap gap-4  text-xs justify-between text-[#667085]">
+            <div className="flex scale-[0.95]  mt-2 whitespace-nowrap gap-4  text-xs justify-between text-[#667085]">
               <div>
                 <p>Average GRE Improvement</p>
                 <div
-                  className={`w-[150px] mt-2 h-[67px] ${styles.smallBox2} flex items-center justify-center font-medium`}
+                  className={`w-[150px] mt-2 h-[70px] ${styles.smallBox2} flex items-center justify-center font-medium`}
                 >
                   <p>Coming Soon</p>
                 </div>
@@ -493,7 +583,7 @@ const Dashboard = () => {
               <div>
                 <p>Average GMAT Improvement</p>
                 <div
-                  className={`w-[150px] mt-2 h-[67px] ${styles.smallBox2} flex items-center justify-center font-medium`}
+                  className={`w-[150px] mt-2 h-[70px] ${styles.smallBox2} flex items-center justify-center font-medium`}
                 >
                   <p>Coming Soon</p>
                 </div>
@@ -501,13 +591,12 @@ const Dashboard = () => {
               <div>
                 <p>Average IELTS Improvement</p>
                 <div
-                  className={`w-[150px] mt-2 h-[67px] ${styles.smallBox2} flex items-center justify-center font-medium`}
+                  className={`w-[150px] mt-2 h-[70px] ${styles.smallBox2} flex items-center justify-center font-medium`}
                 >
                   <p>Coming Soon</p>
                 </div>
               </div>
             </div>
-           
           </div>
         </section>
         <div className="flex justify-center">
@@ -522,15 +611,14 @@ const Dashboard = () => {
             <RangeDate handleRangeData={handleTutorPerformance} />
           </div>
         </div>
-        <section className="overflow-x-auto scrollbar-content mx-[80px] my-7  scroll-m-1 ">
-          <div className="mr-2 w-max ">
+        <section className="mx-[80px]  ">
+         
             <Table
               data={tutorPerformanceData}
-              // Icon={<img src={ArrowDown} alt="down" className="" />}
-              tableHeaders={tutorTableHeaders}
+               tableHeaders={tutorTableHeaders}
               maxPageSize={5}
             />
-          </div>
+       
 
           <div className="flex justify-center">
             <div className="mt-[36px] mb-[44px] bg-[#CBD6E2] h-[1px] w-[100px]"></div>

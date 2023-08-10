@@ -2,13 +2,15 @@ import React, { useEffect, useState } from "react";
 import { useLazyGetSettingsQuery } from "../../app/services/session";
 import InputSelect from "../InputSelect/InputSelect";
 import sort from "./../../assets/icons/sort.webp";
-
+import styles from "./styles.module.css"
 export function TableHeader({ header, dataFor, onClick, setSorted, Icon }) {
+
+  const [flag,setFlag]= useState(dataFor==="studentTestsReportSmall" || dataFor==="studentTestsReport"?true:false)
   return dataFor === "assignedTestsStude" || dataFor === "invoice" ? (
     <th
-      className={`px-2 py-[16px] text-[16px] font-[500] bg-[#7152EB] text-white ${
+      className={`px-1 py-[16px]  whitespace-nowrap text-[16px] font-[500] bg-[#7152EB] text-white ${
         header === "Full Name" || header === "Name" ? "text-left pl-7" : ""
-      }
+      } 
       `}
     >
       {header === "Due Date" && (
@@ -33,11 +35,11 @@ export function TableHeader({ header, dataFor, onClick, setSorted, Icon }) {
     </th>
   ) : (
     <th
-      className={`px-2 py-3 font-medium  ${
+      className={`px-1 py-3 font-medium whitespace-nowrap  ${
         header === "Full Name" || header === "Name" || header === "Student Name"
           ? "text-left pl-7"
           : ""
-      } ${dataFor === "allUsers" ? "text-sm" : "text-sm"}
+      } ${dataFor === "allUsers" ? "text-sm" : "text-sm"} ${flag?styles["no-arrow"]:''}
        `}
     >
       <div
