@@ -20,7 +20,7 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import SimpleCalendar from "../../components/SimpleCalendar/SimpleCalendar";
 import EventModal from "../Frames/EventModal/EventModal";
 import InputSearch from "../../components/InputSearch/InputSearch";
-import multiMonthPlugin from '@fullcalendar/multimonth'
+// import multiMonthPlugin from '@fullcalendar/multimonth'
 import {
    useLazyGetSessionsQuery,
    useLazyGetTutorStudentsQuery,
@@ -856,8 +856,7 @@ export default function Calendar() {
                         timeGridPlugin,
                         timeGridWeek,
                         interactionPlugin,
-                        dayGridPlugin,
-                        multiMonthPlugin
+                        dayGridPlugin
                      
 
                         // momentTimezonePlugin
