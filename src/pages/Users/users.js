@@ -190,8 +190,6 @@ export default function Users() {
   const [tutors, setTutors] = useState([]);
   const [csvData,setCsvData]= useState([])
   const [numberChecked, setnumberChecked] = useState(0);
-  console.log("allTutors", allTutors);
-  
   const [filterData, setFilterData] = useState({
     typeName: "",
     userType: [],
@@ -202,10 +200,8 @@ export default function Users() {
   });
 
   useEffect(() => {
-    fetchSettings().then((res) => {
-      setSettings(res.data.data.setting);
-    });
-  }, []);
+    setSettings(organization.settings)
+  }, [organization]);
 
   // console.log(settings)
 
@@ -636,8 +632,6 @@ export default function Users() {
       // }))
     }
   };
-  
-  console.log(filterData);
  
    useEffect(()=>{
    if(allUsers?.data?.user){
@@ -661,6 +655,7 @@ export default function Users() {
    }
    },[allUsers])
    console.log('shivam',{csvData},{filteredUsersData})
+
 
   const [students, setStudents] = useState([]);
   return (

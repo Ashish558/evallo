@@ -663,7 +663,6 @@ export default function AssignedTests() {
     setStudentNameOptions(studentNames);
   }, [allAssignedTests]);
 
-  console.log("filteredTests", filteredTests);
   return (
     <>
       <div className="lg:mx-[40px] bg-lightWhite min-h-screen">
