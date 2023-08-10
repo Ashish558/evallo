@@ -167,6 +167,7 @@ export const {
   useAddUserMutation,
   useUpdateUserAccountMutation,
   useLazyGetAllOrgUsersQuery,
+  useGetAllOrgUsersQuery,
   useLazyGetUserDetailQuery,
   useLazyGetTutorDetailsQuery,
   useUpdateUserFieldsMutation,

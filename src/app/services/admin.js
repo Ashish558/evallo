@@ -92,6 +92,13 @@ export const adminServicesApi = createApi({
             headers: getAuthHeader()
          })
       }),
+     getCalenderInsight: builder.query({
+         query: (body) => ({
+            url: `/api/user/admin/getTutorSessionDetails?tutorName=${body}`,
+            method: "GET",
+            headers: getAuthHeader()
+         })
+      }),
       deleteAssignedTutor: builder.mutation({
          query: (body) => ({
             url: `/api/user/removeTutor/${body.studentId}/${body.tutorId}`,
@@ -113,6 +120,7 @@ export const adminServicesApi = createApi({
 
 export const {
    useAddInvoiceMutation,
+   useLazyGetCalenderInsightQuery,
    useLazyGetParentsByNameQuery,
    useLazyGetAllInvoiceQuery,
    useBlockUserMutation,
