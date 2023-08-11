@@ -124,7 +124,8 @@ export default function EventModal({
       homeworkAssigned: "",
       sessionNotes: "",
       feedbackStars: 0,
-      sessionTags:[]
+      whiteboardLink: '',
+      sessionTags: []
    });
    const [submitDisabled, setSubmitDisabled] = useState(false)
 
@@ -259,9 +260,9 @@ export default function EventModal({
    }, [defaultEventData])
 
    useEffect(() => {
-      if(organization?.settings){
-         
-         if(Object.keys(organization?.settings).length > 0){
+      if (organization?.settings) {
+
+         if (Object.keys(organization?.settings).length > 0) {
             // console.log('organization', organization.settings);
             let sessionTags = organization.settings.sessionTags;
             setAllSessionTags(sessionTags)
@@ -271,36 +272,7 @@ export default function EventModal({
                   items: []
                }
             })
-            setData({...data, sessionTags: tempSessionTags})
-            // let homeworks = sessionTags.homeworkAssigned.map((item) => {
-            //    return {
-            //       text: item,
-            //       checked: false,
-            //    };
-            // });
-            // setHomeworks(homeworks);
-            // let topics = sessionTags.topicsCovered.map((item) => {
-            //    return {
-            //       text: item,
-            //       checked: false,
-            //    };
-            // });
-            // setTopics(topics);
-   
-            // let moods = sessionTags.studentMode.map((item) => {
-            //    return {
-            //       text: item,
-            //       checked: false,
-            //    };
-            // });
-            // setStudentMoods(moods);
-            // let productive = sessionTags.wasProductive.map((item) => {
-            //    return {
-            //       text: item,
-            //       checked: false,
-            //    };
-            // });
-            // setIsProductive(productive);
+            setData({ ...data, sessionTags: tempSessionTags })
             setAllServicesAndSpec(organization.settings.servicesAndSpecialization)
             setServices(organization.settings.Expertise);
             setIsSettingsLoaded(true);
@@ -628,7 +600,7 @@ export default function EventModal({
             // console.log(res.data);
          })
    }
- 
+
    const fetchFeedback = () => {
       getSessionFeedback(sessionToUpdate._id)
          .then(res => {
@@ -731,28 +703,28 @@ export default function EventModal({
             sessionToUpdate.timeZone === data.timeZone &&
             getFormattedDate(startDate) === data.date
          ) {
-            setData(prev => ({...prev, rescheduling: false}))
+            setData(prev => ({ ...prev, rescheduling: false }))
          } else {
-            setData(prev => ({...prev, rescheduling: true}))
+            setData(prev => ({ ...prev, rescheduling: true }))
          }
       }
    }, [isUpdating, sessionToUpdate?.time, data?.time, sessionToUpdate?.date, data?.date])
-  
+
    const handleSessiontagChange = (item, tagId) => {
       const tempSessionTag = data.sessionTags.map(tag => {
-         if(tag._id === tagId){
+         if (tag._id === tagId) {
             let items = [...tag.items]
-            if(tag.items.includes(item)){
+            if (tag.items.includes(item)) {
                items = items.filter(text => text !== item)
-            }else{
+            } else {
                items.push(item)
             }
-            return {...tag, items}
-         }else{
-            return {...tag}
+            return { ...tag, items }
+         } else {
+            return { ...tag }
          }
       })
-      setData({...data, sessionTags: tempSessionTag})
+      setData({ ...data, sessionTags: tempSessionTag })
    }
    const dataProps = { data, setData }
 
@@ -827,6 +799,7 @@ export default function EventModal({
                         type="select"
                         disabled={!isEditable}
                      />
+
                      {
                         persona === 'admin' || persona === 'tutor' ?
                            <></>
@@ -849,6 +822,21 @@ export default function EventModal({
                            : <></>
                      }
 
+                  </div>
+                  <div className="mt-4 max-w-[330px]">
+                     <InputField
+                        parentClassName="w-full mr-6"
+                        label="Whiteboard Links"
+                        labelClassname="ml-3"
+                        inputContainerClassName="bg-lightWhite border-0  pt-3.5 pb-3.5"
+                        inputClassName="bg-transparent appearance-none"
+                        value={data.whiteboardLink}
+                        type="text"
+                        onChange={(e) =>
+                           setData({ ...data, whiteboardLink: e.target.value })
+                        }
+                        disabled={!isEditable}
+                     />
                   </div>
                   <div>
                      {persona === "parent" || persona === 'student' ? (
@@ -878,40 +866,40 @@ export default function EventModal({
                         <div className="mt-7 mb-5">
                            {
                               allSessionTags.map(tag => {
-                                return <div key={tag._id} >
-                                   <p className="font-medium mb-2.5">
-                                     {tag.heading}
-                                   </p>
-                                   <div className="flex">
-                                     {tag.items.length > 0 &&
-                                       tag.items.map((item, idx) => {
-                                          const currentUserSession = data.sessionTags.find(dataSessionTag => dataSessionTag._id === tag._id)
-                                          let checked = false
-                                          if(currentUserSession?.items.includes(item)){
-                                             checked = true
-                                          }
-                                         return (
-                                           <div
-                                             key={idx}
-                                             className="flex mb-3 mr-3"
-                                             onClick={() =>
-                                               handleSessiontagChange(
-                                                item,
-                                                tag._id,
-                                               )
+                                 return <div key={tag._id} >
+                                    <p className="font-medium mb-2.5">
+                                       {tag.heading}
+                                    </p>
+                                    <div className="flex">
+                                       {tag.items.length > 0 &&
+                                          tag.items.map((item, idx) => {
+                                             const currentUserSession = data.sessionTags.find(dataSessionTag => dataSessionTag._id === tag._id)
+                                             let checked = false
+                                             if (currentUserSession?.items.includes(item)) {
+                                                checked = true
                                              }
-                                           >
-                                             <CCheckbox
-                                               checked={checked}
-                                               name="topic"
-                                             />
-                                             <p className="font-medium text-primary-60 text-sm">
-                                               {item}
-                                             </p>
-                                           </div>
-                                         );
-                                       })}
-                                   </div>
+                                             return (
+                                                <div
+                                                   key={idx}
+                                                   className="flex mb-3 mr-3"
+                                                   onClick={() =>
+                                                      handleSessiontagChange(
+                                                         item,
+                                                         tag._id,
+                                                      )
+                                                   }
+                                                >
+                                                   <CCheckbox
+                                                      checked={checked}
+                                                      name="topic"
+                                                   />
+                                                   <p className="font-medium text-primary-60 text-sm">
+                                                      {item}
+                                                   </p>
+                                                </div>
+                                             );
+                                          })}
+                                    </div>
                                  </div>;
                               })
                            }
