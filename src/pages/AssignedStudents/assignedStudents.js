@@ -125,7 +125,7 @@ export default function AssignedStudents() {
                }
             })
             // console.log('isMatch', isMatch);
-            if(isMatch) return user
+            if (isMatch) return user
          })
       } else {
          tempdata = tempdata.filter(user => user.timeZone !== '')
@@ -176,7 +176,7 @@ export default function AssignedStudents() {
    useEffect(() => {
       setValidData(modalData.email && modalData.firstName && modalData.lastName && modalData.userType);
    }, [modalData, modalData.email.length, modalData.firstName.length, modalData.lastName.length, modalData.phone.length, modalData.userType.length,])
-
+   // console.log(timeZones)
    return (
       <>
          <div className="lg:ml-pageLeft bg-lightWhite min-h-screen">
@@ -197,7 +197,7 @@ export default function AssignedStudents() {
                      onChange={e => setFilterData({ ...filterData, tutorName: e.target.value })}
                      optionData={optionData}
                      placeholder="Tutor Name"
-                     inputContainerClassName="border bg-white py-[16px] px-[20px]"
+                     inputContainerClassName="border bg-white py-[16px] px-[20px] w-[250px]"
                      parentClassName="w-full mr-4"
                      type="text"
                   />
@@ -207,25 +207,38 @@ export default function AssignedStudents() {
                      onChange={e => setFilterData({ ...filterData, studentName: e.target.value })}
                      optionData={optionData}
                      placeholder="Student Name"
-                     inputContainerClassName="border bg-white py-[16px] px-[20px]"
+                     inputContainerClassName="border bg-white py-[16px] px-[20px] w-[250px]"
                      parentClassName="w-full mr-4"
                      type="text"
                   />
                   <InputSelect
-                     value={filterData.timeZone}
-                     onChange={val => setFilterData({ ...filterData, timeZone: val })}
                      optionData={timeZones}
-                     inputContainerClassName="py-[16px] px-[20px] border bg-white"
+                     // onChange={val => setFilterData({ ...filterData, timeZone: val })}
+                     inputContainerClassName="border bg-white px-[20px] py-[16px] h-[39.55px] w-[200px]"
                      placeholder="Time Zones"
                      parentClassName="w-full mr-4"
                      type="select"
+                     value={filterData.timeZone.length > 0 ? filterData.timeZone[0] : ""}
+                     checkbox={{
+                        visible: true,
+                        name: "test",
+                        match: filterData.timeZone,
+                     }}
+                     onChange={(val) =>
+                        setFilterData({
+                           ...filterData,
+                           timeZone: filterData.timeZone.includes(val)
+                              ? filterData.timeZone.filter((item) => item !== val)
+                              : [...filterData.timeZone, val],
+                        })
+                     }
                   />
                   <InputField
                      value={filterData.specialization}
                      IconRight={SearchIcon}
                      onChange={e => setFilterData({ ...filterData, specialization: e.target.value })}
                      placeholder="Specialization"
-                     inputContainerClassName="border bg-white py-[16px] px-[20px]"
+                     inputContainerClassName="border bg-white py-[16px] px-[20px] w-[250px]"
                      parentClassName="w-full mr-4"
                      type="text"
                   />
