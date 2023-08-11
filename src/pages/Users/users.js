@@ -897,11 +897,11 @@ export default function Users() {
           cancelBtn={true}
           titleClassName="text-start mb-3 pb-3 border-b border-b-gray-300"
           primaryCancel={true}
-          cancelBtnClassName="w-140"
+          cancelBtnClassName="w-130"
 
           primaryBtn={{
             text: "Invite User",
-            className: 'rounded-lg bg-transparent border border-[#FFA28D] py-2 text-[#FFA28D]',
+            className: 'rounded-lg bg-transparent border-2 border-[#FFA28D] py-2 text-[#FFA28D]',
             form: "add-user-form",
             onClick: handleSubmit,
             loading: loading,
@@ -964,7 +964,7 @@ export default function Users() {
                     }
                   />
                 </div>
-                <div>
+                <div className="mt-[7px]">
                   <InputSelect
                     value={modalData.userType}
                     onChange={(val) =>
@@ -974,9 +974,9 @@ export default function Users() {
                     type="select"
                     placeholder="Select User Type "
                     label="User Type"
-                    labelClassname="ml-0 mb-0.5 text-[#26435F] font-bold"
+                    labelClassname="ml-0  text-[#26435F] font-bold"
                     optionData={userTypeOptions}
-                    inputContainerClassName="text-sm pt-3.5 pb-3.5 bg-primary-50 px-5 border-0"
+                    inputContainerClassName="text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0"
                     parentClassName="w-full"
                   />
                 </div>
