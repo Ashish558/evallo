@@ -16,8 +16,8 @@ import timeGridWeek from "@fullcalendar/timegrid";
 import LeftIcon from "../../assets/icons/left.svg";
 import nextIcon from "../../assets/icons/right.svg";
 import up_triangle from "../../assets/icons/Group 32064up triangle.svg"
-import 'bootstrap/dist/css/bootstrap.css';
-import 'bootstrap-icons/font/bootstrap-icons.css';
+// import 'bootstrap/dist/css/bootstrap.css';
+// import 'bootstrap-icons/font/bootstrap-icons.css';
 import SimpleCalendar from "../../components/SimpleCalendar/SimpleCalendar";
 import EventModal from "../Frames/EventModal/EventModal";
 import InputSearch from "../../components/InputSearch/InputSearch";
@@ -1041,7 +1041,7 @@ export default function Calendar() {
                 // optionData={['Asia/Calcutta', ...moment.tz.zonesForCountry('US')]}
                 optionData={timeZones}
                 onChange={(val) => setTimeZone(val)}
-                parentClassName="w-[250px]"
+                parentClassName="w-[160px]"
                 inputContainerClassName="text-primaryDark font-bold text-"
               />
                  {/* <div class="inline-flex rounded shadow-sm mt-1">
