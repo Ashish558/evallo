@@ -113,6 +113,7 @@ export default function Calendar() {
   const [currentDate, setCurrentDate] = useState(new Date());
   const { isLoggedIn } = useSelector((state) => state.user);
   const [getCalenderInsight,getCalenderInsightStatus]= useLazyGetCalenderInsightQuery()
+  const [insightData,setInsightData]= useState({})
   const [timeZone, setTimeZone] = useState("Asia/Kolkata");
   // console.log(moment.tz.zonesForCountry('US'))
 
@@ -598,6 +599,8 @@ export default function Calendar() {
    console.log({name})
    getCalenderInsight(name).then((res)=>{
       console.log("insights",res)
+      if(res?.data)
+      setInsightData(res)
    })
   }
   useEffect(() => {
