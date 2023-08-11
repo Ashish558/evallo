@@ -47,7 +47,7 @@ export default function Modal({
                      <SecondaryButton
                         onClick={handleClose}
                         children="Cancel"
-                        className={`pt-3 pb-3 ${cancelBtnClassName}`}
+                        className={`py-2 ${cancelBtnClassName}`}
                         type="button"
                      />
                   )}
@@ -62,7 +62,7 @@ export default function Modal({
                         onClick={primaryBtn.onClick ? primaryBtn.onClick : null}
                         form={primaryBtn.form ? primaryBtn.form : null}
                         type={primaryBtn.type ? primaryBtn.type : "button"}
-                        className={`${primaryBtn.bgDanger ? 'bg-[#FF5B4F]' : ' bg-primary'} relative disabled:opacity-75 rounded-md text-lg font-medium text-white py-3 px-12 ml-12 ${primaryBtn.className ? primaryBtn.className : ""}`}
+                        className={`${primaryBtn.bgDanger ? 'bg-[#FF5B4F]' : ' bg-primary'} relative disabled:opacity-75 rounded-md font-medium text-white  px-6 ml-9 ${primaryBtn.className ? primaryBtn.className : ""}`}
                         disabled={primaryBtn?.loading === true ? true : primaryBtn.disabled}
                         loading={primaryBtn.loading}
                         // disabled
