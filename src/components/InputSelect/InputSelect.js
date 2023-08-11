@@ -48,7 +48,7 @@ export default function InputSelect({
       <div className="flex items-center mb-1">
         {label && (
           <label
-            className={`font-medium text-[#26435F] inline-block  ${labelClassname}`}
+            className={`font-medium ${label=='User Type' && 'text-sm'} text-[#26435F] inline-block  ${labelClassname}`}
           >
             {label}
             {required && (

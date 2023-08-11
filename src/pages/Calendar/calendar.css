@@ -72,3 +72,22 @@
 .fc-direction-ltr .fc-timegrid-slot-label-frame{
     transform: translateY(17px) !important;
 }
+tbody{
+    color: #26435F;
+    font-weight: 600;
+    text-align: center;
+}
+.fc-daygrid-day-top{
+align-items: center;
+justify-content: center;
+}
+.fc .fc-timegrid-slot{
+    height: 4.5rem !important;
+}
+.fc .fc-timegrid-slot-label{
+    display: block;
+
+}
+a{
+    text-decoration: none !important;
+}

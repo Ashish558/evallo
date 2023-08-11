@@ -635,7 +635,7 @@ export default function StudentProfile({ isOwn }) {
                               </p>
                            </div>
                            <div className='mb-6'>
-                              <EditableText editable={persona === 'admin' ? true : false}
+                              <EditableText editable={editable}
                                  onClick={() => setToEdit({ ...toEdit, subscriptionCode: { ...toEdit.subscriptionCode, active: true } })}
                                  text='Subscription'
                                  textClassName="text-[21px]"
