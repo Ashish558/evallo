@@ -72,3 +72,23 @@
 .fc-direction-ltr .fc-timegrid-slot-label-frame{
     transform: translateY(17px) !important;
 }
+
+.fc-scrollgrid-sync-inner::after {
+  content:" ";
+  
+}
+
+.fc-scroller-harness::after  {
+    content:" ";
+    display: none;
+    
+  }
+
+  .fc .fc-col-header-cell-cushion  div::after{
+    content:" ";
+    display: none;
+  }
+  .fc .fc-timegrid-axis-frame::after{
+    content:" ";
+    display: none;
+  }
