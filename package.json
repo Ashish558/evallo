@@ -23,8 +23,6 @@
     "@testing-library/user-event": "^13.5.0",
     "apexcharts": "^3.36.3",
     "axios": "^1.4.0",
-    "bootstrap": "^5.3.1",
-    "bootstrap-icons": "^1.10.5",
     "chart.js": "^4.3.0",
     "country-state-city": "^3.1.4",
     "faker": "^6.6.6",

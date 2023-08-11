@@ -13,7 +13,9 @@ import ExportIcon from "../../assets/icons/Export Data.png";
 import UploadIcon from "../../assets/icons/upload.svg";
 import XIcon from "../../assets/icons/x.png";
 import SearchIcon from "../../assets/icons/search.svg";
+import fileupload from "../../assets/icons/fileupload.png"
 import { tableData, userTypesList } from "./tempData";
+import { BASE_URL, getAuthHeader } from "../../app/constants/constants";
 import { csvHeaders } from "./csvUtlis";
 import {
   useAddUserMutation,
@@ -37,6 +39,7 @@ import { checkIfExistInNestedArray } from "../../utils/utils";
 import InputSelectNew from "../../components/InputSelectNew/InputSelectNew";
 import InputSearch from "../../components/InputSearch/InputSearch";
 import { useSelector } from "react-redux";
+import axios from "axios";
 
 const optionData = ["option 1", "option 2", "option 3", "option 4", "option 5"];
 
@@ -63,6 +66,10 @@ export default function Users() {
   const [numberPrefix, setNumberPrefix] = useState("+1");
   const [usersData, setUsersData] = useState([]);
   const [filteredUsersData, setFilteredUsersData] = useState([]);
+  const [bulkUpload,setBulkUpload]=useState(false);
+  const[xlsFile,setXlsFile]=useState();
+  const[inviteUsers,setInviteUsers]=useState(false);
+
 
   useEffect(() => {
     setValidData(
@@ -632,6 +639,41 @@ export default function Users() {
 
 
   const [students, setStudents] = useState([]);
+  const upload=()=>{
+    setBulkUpload(true);
+  }
+  const saveData=async ()=>{
+    if(xlsFile!==undefined){
+    const formdata=new FormData();
+    formdata.append('file',xlsFile);
+    await axios
+    .post(`${BASE_URL}/api/user/bulkUploadUser}`,formdata,{
+      headers:getAuthHeader()
+    }).then((res)=>{
+        alert("File Uploaded");
+        setXlsFile(undefined)
+    }).catch((err)=>{
+      console.log(err)
+      setXlsFile(undefined)
+    })
+  }
+  }
+  const bulkInvite= async ()=>{
+    if (xlsFile!==undefined)
+    {
+      const formdata=new FormData()
+      formdata.append('file',xlsFile)
+      await axios.post(`${BASE_URL}/api/user/bulkInviteUser`,formdata,{
+        headers:getAuthHeader()
+      }).then((res)=>{
+        alert("File Uploaded")
+        setXlsFile(undefined)
+      }).catch((err)=>{
+        console.log("error in bulk upload and invite")
+        setXlsFile(undefined)
+      })
+    }
+  }
   return (
     <div className="lg:mx-[60px] bg-lightWhite min-h-screen">
       <div className="py-10 px-5">
@@ -660,11 +702,12 @@ export default function Users() {
               <CSVLink filename={"Evallo_CRM_Data.csv"} data={filteredUsersData} headers={csvHeaders}> Export Data{" "}</CSVLink>
               <img src={ExportIcon} className="ml-3" alt="ExportIcon" />
             </button>
-            <button className="bg-[#517CA8] w-[158px] text-sm justify-center flex py-1 px-2 items-center text-white font-semibold rounded-lg mr-5">
+            <button onClick={upload} className="bg-[#517CA8] w-[158px] text-sm justify-center flex py-1 px-2 items-center text-white font-semibold rounded-lg mr-5">
               Bulk Upload{" "}
              
               <img src={UploadIcon} className="ml-3" alt="UploadIcon" />
             </button>
+
             <PrimaryButton
               type="submit"
               children={
@@ -676,6 +719,122 @@ export default function Users() {
               onClick={() => setModalActive(true)}
               className=" flex items-center text-sm font-semibold py-3 px-3"
             />
+
+          {bulkUpload && <Modal
+           title="Bulk Upload"
+           classname={"max-w-[760px] mx-auto"}
+           cancelBtnClassName="max-w-140"
+           titleClassName="flex  items-start ml-5"
+            handleClose={()=>setBulkUpload(false)}
+          //  primaryBtn={{
+          //    text: "Assign",
+          //    className: "max-w-140 pl-8 pr-8",
+          //    onClick: (e) => handleSubmit(e),
+          //    disabled: submitBtnDisabled,
+          //    loading: loading,
+          //  }}
+          
+          //  handleClose={}
+          
+            body={
+              <>  
+              <div className="">  
+              <div className="flex justify-center">
+                <div className="max h-[200px] max w-[300px] mb-10 " style={{border:"2.5px dashed #CBD6E2",borderRadius:'10px'}}>
+                <div className="mt-12 flex justify-center">
+                  {/* This thing is for displaying xls logo if file is selected */}
+                  {/* {xlsFile==undefined ? (<img src={fileupload}></img>):(<img src={}></img>)} */}
+                  <img src={fileupload}></img>
+                </div>
+
+
+                <div className="flex justify-center">
+                 
+                { xlsFile==undefined ? ( <label htmlFor="file"className="block text-white bg-[#517CA8] hover:bg-[#517CA8] items-center justify-center font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-[#517CA8] dark:hover:bg-[#517CA8] "
+                >Choose File</label>):
+                (<label htmlFor="file">{xlsFile.name}</label>)
+                }
+
+                <input
+                     onChange={(e)=>setXlsFile(e.target.files[0])}
+                      type="file"
+                      id="file"
+                      accept=".xls,.xlsx"
+                    >
+                     
+                    </input>
+                    </div>
+                </div>
+                </div>
+              <div className="flex justify-center">
+                    <button
+                      data-modal-target="popup-modal"
+                      data-modal-toggle="popup-modal"
+                      className="block text-white bg-[#FFA28D] hover:bg-[#FFA28D] me-3 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-[#FFA28D] dark:hover:bg-[#FFA28D] "
+                      type="button"
+                      onClick={saveData}
+                    >
+                      Save Data Only
+                    </button>
+                   <button type="button" onClick={()=>{setInviteUsers(true);setBulkUpload(false)}}
+  className="block text-orange-500 border-3 border-[#FFA28D] bg-white hover:bg-[#FFA28D] hover:text-orange-500 ms-3 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-white dark:hover:bg-[#FFA28D] dark:hover:text-orange-500"
+>
+  Save Data and Invite User
+</button>
+
+                    </div>
+                    </div>
+                    </>
+
+            }
+            ></Modal>}
+            {/* invite user modal */}
+          {inviteUsers &&  <Modal
+           title="Are You Sure You Want to Invite XX User To Join Evallo?"
+           classname={"max-w-[760px] mx-auto"}
+          titleClassName={"mt-2"}
+           handleClose={()=>setInviteUsers(false)}
+          //  primaryBtn={{
+          //    text: "Assign",
+          //    className: "max-w-140 pl-8 pr-8",
+          //    onClick: (e) => handleSubmit(e),
+          //    disabled: submitBtnDisabled,
+          //    loading: loading,
+          //  }}
+          
+          //  handleClose={}
+          
+            body={
+              <>        <div className="text-center ">
+                           <p className="text-[#517CA8] font-semibold"> All users that are invited to the platform will receive an email invitation to create an account within your organization. If you only want to store their data and do not want to invite them to create an account, please click on “Save Data Only” button.
+                            <br></br>If you want to continue inviting the users, please click on the “Confirm Email Invitations” button below.</p>
+                         </div>
+              
+                          <div className="flex justify-center">
+                                <button
+                                  data-modal-target="popup-modal"
+                                  data-modal-toggle="popup-modal"
+                                  className="block text-white bg-[#FFA28D] hover:bg-[#FFA28D] me-3 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-[#FFA28D] dark:hover:bg-[#FFA28D] "
+                                  type="button"
+                                  onClick={bulkInvite}
+                                >
+                                  Yes,  Confirm
+                                </button>
+                              <button type="button"
+                    className="max-w-140 text-orange-500 border-3 border-[#FFA28D] bg-white hover:bg-[#FFA28D] hover:text-orange-500 ms-3 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-white dark:hover:bg-[#FFA28D] dark:hover:text-orange-500"
+                               onClick={()=>setInviteUsers(false)}
+                               >
+                                Cancel
+                               </button>
+
+                                </div>
+                                
+                                </>
+
+            }
+            ></Modal>}
+
+
           </div>
         </div>
         <div className="flex justify-between items-center gap-7 mb-6">
