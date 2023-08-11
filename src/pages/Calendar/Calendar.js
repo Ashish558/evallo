@@ -13,13 +13,15 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import timeGridWeek from "@fullcalendar/timegrid";
-
 import LeftIcon from "../../assets/icons/left.svg";
 import nextIcon from "../../assets/icons/right.svg";
 import up_triangle from "../../assets/icons/Group 32064up triangle.svg"
+import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap-icons/font/bootstrap-icons.css';
 import SimpleCalendar from "../../components/SimpleCalendar/SimpleCalendar";
 import EventModal from "../Frames/EventModal/EventModal";
 import InputSearch from "../../components/InputSearch/InputSearch";
+// import multiMonthPlugin from '@fullcalendar/multimonth'
 import {
   useLazyGetSessionsQuery,
   useLazyGetTutorStudentsQuery,
@@ -116,6 +118,7 @@ export default function Calendar() {
   const [insightData,setInsightData]= useState({})
   const [timeZone, setTimeZone] = useState("Asia/Kolkata");
   // console.log(moment.tz.zonesForCountry('US'))
+   const [intialView,setInitialView]=useState("dayGridMonth")
 
   const [searchedUser, setSearchedUser] = useState({
     id: "",
@@ -466,50 +469,38 @@ export default function Calendar() {
     }
   }, []);
 
-  const getDayHeaders = (arg) => {
-    let text = arg.text.split(" ");
-    return (
-      <div
-        className={`p-[10px] rounded-7 ${
-          arg.isToday ? "bg-primary border" : ""
-        }  `}
-      >
-        <p
-          className={`${
-            arg.isToday ? "text-primaryWhite-900" : ""
-          } text-sm font-semibold
-                   ${
-                     arg.isPast
-                       ? "text-[#BEC2CE]"
-                       : arg.isFuture
-                       ? "text-primary-60"
-                       : ""
-                   } `}
-        >
-          {days[arg.date.getDay()]}
-        </p>
-        <p
-          className={`${
-            arg.isToday ? "text-primaryWhite-900" : ""
-          } text-2xl font-bold font-inter
-                   ${
-                     arg.isPast
-                       ? "text-[#BEC2CE]"
-                       : arg.isFuture
-                       ? "text-primary-dark"
-                       : ""
-                   }`}
-        >
-          {text[1]}
-        </p>
-      </div>
-    );
-  };
+   const getDayHeaders = (arg) => {
+      let text = arg.text.split(" ");
+            
+      return (
+         <div
+            className={`p-[10px] rounded-7 ${arg.isToday ? "bg-primary border" : ""
+               }  `}
+         >
+            <p
+               className={`${arg.isToday ? "text-primaryWhite-900" : ""
+                  } text-sm font-semibold
+                   ${arg.isPast ? "text-[#BEC2CE]" : arg.isFuture ? 'text-primary-60' : ''} `}
+            >
+               {days[arg.date.getDay()]}
+            </p>
+            <p
+               className={`${arg.isToday ? "text-primaryWhite-900" : ""
+                  } text-2xl font-bold font-inter
+                   ${arg.isPast ? "text-[#BEC2CE]" : arg.isFuture ? 'text-primary-dark' : ''
+                  }`}
+            >
+               {text[1]}
+            </p>
+         </div>
+      );
+   };
 
-  const handlePrevClick = (arg) => {
-    const calendarAPI = calendarRef?.current?.getApi();
-    calendarAPI?.prev();
-  };
+   const handlePrevClick = (arg) => {
+      const calendarAPI = calendarRef?.current?.getApi();
+
+      calendarAPI?.prev();
+   };
 
   const handleNextClick = (arg) => {
     // console.log(arg)
@@ -949,6 +940,7 @@ export default function Calendar() {
             </div>
           </div>
           <div className="flex-1 w-4/5 relative" id="calendarContainer">
+            
             <FullCalendar
               events={
                 persona === "parent" || persona === "tutor"
@@ -974,9 +966,13 @@ export default function Calendar() {
                 timeGridPlugin,
                 timeGridWeek,
                 interactionPlugin,
+                        dayGridPlugin
+                     
+
                 // momentTimezonePlugin
               ]}
               firstDay={1}
+                     slotDuration={'00:60:00'}
               customButtons={{
                 prevButton: {
                   text: (
@@ -1000,6 +996,7 @@ export default function Calendar() {
               allDaySlot={false}
               headerToolbar={{
                 start: "prevButton title nextButton",
+                        center:"timeGridWeek,dayGridMonth,multiMonthYear",
                 end: "",
               }}
               titleFormat={{
@@ -1017,14 +1014,17 @@ export default function Calendar() {
               }}
               dayHeaderContent={getDayHeaders}
               selectable={true}
-              // select={handleDateClick}
+              select={handleDateClick}
               dateClick={handleDateClick}
-              select={handleDateSelect}
+              
+                     // select={handleDateSelect}
               // titleFormat={{
               //    month: ''
               // }}
               selectOverlap={false}
               defaultTimedEventDuration="01:00"
+                     showNonCurrentDates={false}
+                   
             />
             <div
               className=""
@@ -1044,7 +1044,22 @@ export default function Calendar() {
                 parentClassName="w-[250px]"
                 inputContainerClassName="text-primaryDark font-bold text-"
               />
+                 {/* <div class="inline-flex rounded shadow-sm mt-1">
+    <button class="px-2 py-1 text-xs font-medium text-blue-700 bg-white border border-gray-200 rounded-l-lg hover:bg-gray-100 focus:z-10 focus:text-orange-700 dark:bg-gray-700 dark:border-gray-600 dark:text-dark dark:hover:text-orange dark:hover:bg-gray-600 dark:focus:text-orange" >
+        Weekly
+    </button>
+    <button class="px-2 py-1 text-xs font-medium text-gray-900 bg-white border border-gray-200 hover:bg-gray-100 hover:text-orange-700 focus:z-10 focus:text-orange-700 dark:bg-gray-700 dark:border-gray-600 dark:text-dark dark:hover:text-orange dark:hover:bg-gray-600 dark:focus:text-orange" >
+        Monthly
+    </button>
+    <button class="px-2 py-1 text-xs font-medium text-gray-900 bg-white border border-gray-200 rounded-r-md hover:bg-gray-100 hover:text-orange-700 focus:z-10 focus:text-orange-700 dark:bg-gray-700 dark:border-gray-600 dark:text-dark dark:hover:text-orange dark:hover:bg-gray-600 dark:focus:text-orange">
+        Yearly
+    </button>
+</div> */}
+
+
+
             </div>
+                  
           </div>
         </div>
       </div>
