@@ -15,8 +15,7 @@ import interactionPlugin from "@fullcalendar/interaction";
 import timeGridWeek from "@fullcalendar/timegrid";
 import LeftIcon from "../../assets/icons/left.svg";
 import nextIcon from "../../assets/icons/right.svg";
-import 'bootstrap/dist/css/bootstrap.css';
-import 'bootstrap-icons/font/bootstrap-icons.css';
+
 import SimpleCalendar from "../../components/SimpleCalendar/SimpleCalendar";
 import EventModal from "../Frames/EventModal/EventModal";
 import InputSearch from "../../components/InputSearch/InputSearch";
