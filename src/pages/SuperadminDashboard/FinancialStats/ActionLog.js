@@ -72,8 +72,10 @@ export default function ActionLog() {
 
   return (
     <div className="">
-      <div className="flex flex-col border border-solid border-gray-200 rounded-5 bg-[#FFFFFF]">
-        <div className="  border border-solid border-gray-200">
+       <h2 className="font-semibold mb-1 text-[#26435F]">Action Logs</h2>
+    
+      <div className="flex flex-col  border border-solid border-gray-200 rounded-5 bg-[#FFFFFF]">
+        <div className=" border border-solid border-gray-200">
           <p className="uppercase  pl-[29px] pt-[16px] pb-3 text-[#26435F]">
             {sortedAction[currentElementIndex]
               ? new Date(
