@@ -16,6 +16,7 @@ import {
 } from "../../../../app/services/users";
 import { BASE_URL, getAuthHeader } from "../../../../app/constants/constants";
 import InputFieldDropdown from "../../../../components/InputField/inputFieldDropdown";
+import { useUpdateEmailMutation } from "../../../../app/services/organization";
 const AccountOverview = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [reset, setReset] = useState(false);
@@ -51,6 +52,7 @@ const AccountOverview = () => {
     activeTutors: "",
     services: [],
   });
+  const [updateEmail,setUpdateEmail]= useUpdateEmailMutation()
   const [userDetails, userDetailsStatus] = useLazyGetPersonalDetailQuery();
   const [updateAccount, updateAccountStatus] = useUpdateUserAccountMutation();
   useEffect(() => {
@@ -84,7 +86,12 @@ const AccountOverview = () => {
     };
     updateUserAccount();
   }, [values]);
-
+const handleEmailUpdate=((email)=>{
+  console.log("Email Updation invoked",email)
+  updateEmail({email}).then((res)=>{
+    console.log("Email Link sent",res)
+  })
+})
   const showResetConfirmation = () => {
     setReset(true);
     handlePasswordReset();
@@ -166,7 +173,9 @@ const AccountOverview = () => {
                 ...values,
                 email: e.target.value,
               })
+              
             }
+            onBlur={()=>{handleEmailUpdate(values.email)}}
             error={error.email}
             Tooltip={
               <span className="absolute top-10 w-[200px] scale-0 rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100">

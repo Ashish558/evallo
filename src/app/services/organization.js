@@ -36,10 +36,31 @@ export const orgServicesApi = createApi({
             headers: getAuthHeader(),
           }),
         }),
+        updateEmail: builder.mutation({
+         query: (body) => ({
+            url: `api/user/update/newEmail`,
+            method: "POST",
+            body: body,
+            headers: getAuthHeader(),
+          }),
+        }),
+        verifyNewEmail: builder.mutation({
+         query: (body) => ({
+            url: `api/user/confirm/newEmail/${body.userid}`,
+            method: "POST",
+            body,
+            headers: {
+               "Content-type": "application/json",
+            },
+          }),
+        }),
    }),
 });
 
 export const {
+   useUpdateEmailMutation,
+   useVerifyNewEmailMutation ,
+
   useGetUserByOrgNameMutation,
   useUpdateUserOrganizationMutation,
   useUpdateOrgLogoMutation,

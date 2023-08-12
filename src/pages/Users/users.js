@@ -13,7 +13,7 @@ import ExportIcon from "../../assets/icons/Export Data.png";
 import UploadIcon from "../../assets/icons/upload.svg";
 import XIcon from "../../assets/icons/x.png";
 import SearchIcon from "../../assets/icons/search.svg";
-import fileupload from "../../assets/icons/fileupload.png"
+import fileupload from "../../assets/icons/fileupload.png";
 import { tableData, userTypesList } from "./tempData";
 import { BASE_URL, getAuthHeader } from "../../app/constants/constants";
 import { csvHeaders } from "./csvUtlis";
@@ -42,6 +42,8 @@ import InputSelectNew from "../../components/InputSelectNew/InputSelectNew";
 import InputSearch from "../../components/InputSearch/InputSearch";
 import { useSelector } from "react-redux";
 import axios from "axios";
+import Loader from "../../components/Loader";
+import LoaderNew from "../../components/Loader/LoaderNew";
 
 const optionData = ["option 1", "option 2", "option 3", "option 4", "option 5"];
 
@@ -68,18 +70,17 @@ export default function Users() {
   const [numberPrefix, setNumberPrefix] = useState("+1");
   const [usersData, setUsersData] = useState([]);
   const [filteredUsersData, setFilteredUsersData] = useState([]);
-  const [bulkUpload,setBulkUpload]=useState(false);
-  const[xlsFile,setXlsFile]=useState();
-  const[inviteUsers,setInviteUsers]=useState(false);
-
+  const [bulkUpload, setBulkUpload] = useState(false);
+  const [xlsFile, setXlsFile] = useState();
+  const [inviteUsers, setInviteUsers] = useState(false);
 
   useEffect(() => {
     setValidData(
       isEmail(modalData.email) &&
-      modalData.firstName &&
-      modalData.lastName &&
-      modalData.userType &&
-      modalData.phone
+        modalData.firstName &&
+        modalData.lastName &&
+        modalData.userType &&
+        modalData.phone
     );
   }, [
     modalData,
@@ -165,7 +166,7 @@ export default function Users() {
     {
       id: 9,
       text: "",
-    }
+    },
   ];
 
   const [assignStudentModalActive, setAssignStudentModalActive] =
@@ -183,7 +184,7 @@ export default function Users() {
   const [userToDelete, setUserToDelete] = useState({});
 
   const [fetchUsers, fetchUsersResp] = useLazyGetAllUsersQuery();
-  const {data:allUsers,setAllUsers}=useGetAllOrgUsersQuery()
+  const [getAllUsers, setAllUsers] = useLazyGetAllOrgUsersQuery();
   const [addUser, addUserResp] = useAddUserMutation();
   const [signupUser, signupUserResp] = useSignupUserMutation();
   const [deleteUser, deleteUserResp] = useDeleteUserMutation();
@@ -195,7 +196,7 @@ export default function Users() {
   const [currentPage, setCurrentPage] = useState(1);
   const [allTutors, setAllTutors] = useState([]);
   const [tutors, setTutors] = useState([]);
-  const [csvData,setCsvData]= useState([])
+  const [csvData, setCsvData] = useState([]);
   const [numberChecked, setnumberChecked] = useState(0);
   const [filterData, setFilterData] = useState({
     typeName: "",
@@ -207,7 +208,7 @@ export default function Users() {
   });
 
   useEffect(() => {
-    setSettings(organization.settings)
+    setSettings(organization.settings);
   }, [organization]);
 
   // console.log(settings)
@@ -258,8 +259,7 @@ export default function Users() {
       // if(res.data.data.no_of_users < maxPageSize){
       //    setTotalPages(15)
       // }else{
-        if(res?.data?.data)
-      setTotalPages(res?.data?.data?.total_users);
+      if (res?.data?.data) setTotalPages(res?.data?.data?.total_users);
       // }
       // console.log('total users', res.data.data.total_users);
 
@@ -365,7 +365,7 @@ export default function Users() {
   };
 
   useEffect(() => {
-     fetch()
+    fetch();
     //console.log('shivam yadav 1',filteredUsersData)
   }, [maxPageSize, currentPage]);
   // console.log('currentPage', currentPage);
@@ -549,7 +549,6 @@ export default function Users() {
   };
 
   const handleDelete = (item) => {
-
     setUserToDelete(item);
     setDeleteModalActive(true);
   };
@@ -639,67 +638,83 @@ export default function Users() {
       // }))
     }
   };
- 
-   useEffect(()=>{
-   if(allUsers?.data?.user){
-    let arr=[]
-    allUsers?.data?.user?.forEach((it)=>{
-      let obj={}
-      obj.name=it.firstName + " "+it.lastName;
-      obj._id=it._id
-      obj.userType=it.role
-      obj.block=it.block
-      obj.createdAt=it.createdAt
-      obj.specialization=it.specialization
-      obj.tutorStatus=it.userStatus
-      obj.leadStatus=""
-      obj.assignedTutor=it.assiginedTutors
-      obj.phone=it.phone
-      obj.email=it.email
-      arr.push(obj);
-    })
-    setCsvData(arr)
-   }
-   },[allUsers])
-   console.log('shivam',{csvData},{filteredUsersData})
 
+  //console.log("shivam", { csvData }, { filteredUsersData });
+  const [csvLoad, setCsvLoad] = useState(false);
+  const [successFetched, setsuccessFetched] = useState(false);
+  const handleBulkExport = async () => {
+    setCsvLoad(true);
+    getAllUsers()
+      .then((res) => {
+        let result = res?.data?.data?.user;
 
-  const [students, setStudents] = useState([]);
-  const upload=()=>{
-    setBulkUpload(true);
-  }
-  const saveData=async ()=>{
-    if(xlsFile!==undefined){
-    const formdata=new FormData();
-    formdata.append('file',xlsFile);
-    await axios
-    .post(`${BASE_URL}/api/user/bulkUploadUser}`,formdata,{
-      headers:getAuthHeader()
-    }).then((res)=>{
-        alert("File Uploaded");
-        setXlsFile(undefined)
-    }).catch((err)=>{
-      console.log(err)
-      setXlsFile(undefined)
-    })
-  }
-  }
-  const bulkInvite= async ()=>{
-    if (xlsFile!==undefined)
-    {
-      const formdata=new FormData()
-      formdata.append('file',xlsFile)
-      await axios.post(`${BASE_URL}/api/user/bulkInviteUser`,formdata,{
-        headers:getAuthHeader()
-      }).then((res)=>{
-        alert("File Uploaded")
-        setXlsFile(undefined)
-      }).catch((err)=>{
-        console.log("error in bulk upload and invite")
-        setXlsFile(undefined)
+        if (result) {
+          let arr = [];
+          result?.forEach((it) => {
+            let obj = {};
+            obj.name = it.firstName + " " + it.lastName;
+            obj._id = it._id;
+            obj.userType = it.role;
+            obj.block = it.block;
+            obj.createdAt = it.createdAt;
+            obj.specialization = it.specialization;
+            obj.tutorStatus = it.userStatus;
+            obj.leadStatus = "";
+            obj.assignedTutor = it.assiginedTutors;
+            obj.phone = it.phone;
+            obj.email = it.email;
+            arr.push(obj);
+          });
+          setCsvData(arr);
+        }
+        setsuccessFetched(true)
+        setCsvLoad(false);
       })
+      .catch((err) => {
+        setCsvLoad(false);
+      });
+  };
+  
+  const [students, setStudents] = useState([]);
+  const upload = () => {
+    setBulkUpload(true);
+  };
+  const saveData = async () => {
+    if (xlsFile !== undefined) {
+      const formdata = new FormData();
+      formdata.append("file", xlsFile);
+      await axios
+        .post(`${BASE_URL}/api/user/bulkUploadUser}`, formdata, {
+          headers: getAuthHeader(),
+        })
+        .then((res) => {
+          alert("File Uploaded");
+          setXlsFile(undefined);
+        })
+        .catch((err) => {
+          console.log(err);
+          setXlsFile(undefined);
+        });
     }
-  }
+  };
+  const bulkInvite = async () => {
+    if (xlsFile !== undefined) {
+      const formdata = new FormData();
+      formdata.append("file", xlsFile);
+      await axios
+        .post(`${BASE_URL}/api/user/bulkInviteUser`, formdata, {
+          headers: getAuthHeader(),
+        })
+        .then((res) => {
+          alert("File Uploaded");
+          setXlsFile(undefined);
+        })
+        .catch((err) => {
+          console.log("error in bulk upload and invite");
+          setXlsFile(undefined);
+        });
+    }
+  };
   return (
     <div className="lg:mx-[60px] bg-lightWhite min-h-screen">
       <div className="py-10 px-5">
@@ -723,14 +738,39 @@ export default function Users() {
         </div>
         <div>
           <div className="flex mb-[50px]">
-            <button className="bg-[#517CA8] w-[158px] text-sm justify-center flex py-1 px-2 items-center text-white font-semibold rounded-lg mr-5">
+            <button
              
-              <CSVLink filename={"Evallo_CRM_Data.csv"} data={csvData} headers={csvHeaders}> Export Data{" "}</CSVLink>
-              <img src={ExportIcon} className="ml-3" alt="ExportIcon" />
+              className="bg-[#517CA8] w-[158px] text-sm justify-center flex py-1 px-2 items-center text-white font-semibold rounded-lg mr-5"
+            >
+              {
+                csvLoad?<LoaderNew />:''
+              }
+              {!csvLoad  && !successFetched?<p  onClick={handleBulkExport}>Export Data</p>  :''}
+
+              {csvData.length > 0 && successFetched&& (
+                <CSVLink
+                  filename={"Evallo_CRM_Data.csv"}
+                  data={csvData}
+                  headers={csvHeaders}
+                 
+                  onClick={(event, done) => {
+                    setCsvData([]);
+                    setsuccessFetched(false);
+                   
+                  }}
+                >
+                  {" "}
+                  Download File{" "}
+                </CSVLink>
+              )}
+
+              {!csvLoad&&<img src={ExportIcon} className="ml-3" alt="ExportIcon" />}
             </button>
-            <button onClick={upload} className="bg-[#517CA8] w-[158px] text-sm justify-center flex py-1 px-2 items-center text-white font-semibold rounded-lg mr-5">
+            <button
+              onClick={upload}
+              className="bg-[#517CA8] w-[158px] text-sm justify-center flex py-1 px-2 items-center text-white font-semibold rounded-lg mr-5"
+            >
               Bulk Upload{" "}
-             
               <img src={UploadIcon} className="ml-3" alt="UploadIcon" />
             </button>
 
@@ -746,121 +786,142 @@ export default function Users() {
               className=" flex items-center text-sm font-semibold py-3 px-3"
             />
 
-          {bulkUpload && <Modal
-           title="Bulk Upload"
-           classname={"max-w-[760px] mx-auto"}
-           cancelBtnClassName="max-w-140"
-           titleClassName="flex  items-start ml-5"
-            handleClose={()=>setBulkUpload(false)}
-          //  primaryBtn={{
-          //    text: "Assign",
-          //    className: "max-w-140 pl-8 pr-8",
-          //    onClick: (e) => handleSubmit(e),
-          //    disabled: submitBtnDisabled,
-          //    loading: loading,
-          //  }}
-          
-          //  handleClose={}
-          
-            body={
-              <>  
-              <div className="">  
-              <div className="flex justify-center">
-                <div className="max h-[200px] max w-[300px] mb-10 " style={{border:"2.5px dashed #CBD6E2",borderRadius:'10px'}}>
-                <div className="mt-12 flex justify-center">
-                  {/* This thing is for displaying xls logo if file is selected */}
-                  {/* {xlsFile==undefined ? (<img src={fileupload}></img>):(<img src={}></img>)} */}
-                  <img src={fileupload}></img>
-                </div>
+            {bulkUpload && (
+              <Modal
+                title="Bulk Upload"
+                classname={"max-w-[760px] mx-auto"}
+                cancelBtnClassName="max-w-140"
+                titleClassName="flex  items-start ml-5"
+                handleClose={() => setBulkUpload(false)}
+                //  primaryBtn={{
+                //    text: "Assign",
+                //    className: "max-w-140 pl-8 pr-8",
+                //    onClick: (e) => handleSubmit(e),
+                //    disabled: submitBtnDisabled,
+                //    loading: loading,
+                //  }}
 
+                //  handleClose={}
 
-                <div className="flex justify-center">
-                 
-                { xlsFile==undefined ? ( <label htmlFor="file"className="block text-white bg-[#517CA8] hover:bg-[#517CA8] items-center justify-center font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-[#517CA8] dark:hover:bg-[#517CA8] "
-                >Choose File</label>):
-                (<label htmlFor="file">{xlsFile.name}</label>)
-                }
+                body={
+                  <>
+                    <div className="">
+                      <div className="flex justify-center">
+                        <div
+                          className="max h-[200px] max w-[300px] mb-10 "
+                          style={{
+                            border: "2.5px dashed #CBD6E2",
+                            borderRadius: "10px",
+                          }}
+                        >
+                          <div className="mt-12 flex justify-center">
+                            {/* This thing is for displaying xls logo if file is selected */}
+                            {/* {xlsFile==undefined ? (<img src={fileupload}></img>):(<img src={}></img>)} */}
+                            <img src={fileupload}></img>
+                          </div>
 
-                <input
-                     onChange={(e)=>setXlsFile(e.target.files[0])}
-                      type="file"
-                      id="file"
-                      accept=".xls,.xlsx"
-                    >
-                     
-                    </input>
-                    </div>
-                </div>
-                </div>
-              <div className="flex justify-center">
-                    <button
-                      data-modal-target="popup-modal"
-                      data-modal-toggle="popup-modal"
-                      className="block text-white bg-[#FFA28D] hover:bg-[#FFA28D] me-3 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-[#FFA28D] dark:hover:bg-[#FFA28D] "
-                      type="button"
-                      onClick={saveData}
-                    >
-                      Save Data Only
-                    </button>
-                   <button type="button" onClick={()=>{setInviteUsers(true);setBulkUpload(false)}}
-  className="block text-orange-500 border-3 border-[#FFA28D] bg-white hover:bg-[#FFA28D] hover:text-orange-500 ms-3 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-white dark:hover:bg-[#FFA28D] dark:hover:text-orange-500"
->
-  Save Data and Invite User
-</button>
-
-                    </div>
-                    </div>
-                    </>
-
-            }
-            ></Modal>}
-            {/* invite user modal */}
-          {inviteUsers &&  <Modal
-           title="Are You Sure You Want to Invite XX User To Join Evallo?"
-           classname={"max-w-[760px] mx-auto"}
-          titleClassName={"mt-2"}
-           handleClose={()=>setInviteUsers(false)}
-          //  primaryBtn={{
-          //    text: "Assign",
-          //    className: "max-w-140 pl-8 pr-8",
-          //    onClick: (e) => handleSubmit(e),
-          //    disabled: submitBtnDisabled,
-          //    loading: loading,
-          //  }}
-          
-          //  handleClose={}
-          
-            body={
-              <>        <div className="text-center ">
-                           <p className="text-[#517CA8] font-semibold"> All users that are invited to the platform will receive an email invitation to create an account within your organization. If you only want to store their data and do not want to invite them to create an account, please click on “Save Data Only” button.
-                            <br></br>If you want to continue inviting the users, please click on the “Confirm Email Invitations” button below.</p>
-                         </div>
-              
                           <div className="flex justify-center">
-                                <button
-                                  data-modal-target="popup-modal"
-                                  data-modal-toggle="popup-modal"
-                                  className="block text-white bg-[#FFA28D] hover:bg-[#FFA28D] me-3 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-[#FFA28D] dark:hover:bg-[#FFA28D] "
-                                  type="button"
-                                  onClick={bulkInvite}
-                                >
-                                  Yes,  Confirm
-                                </button>
-                              <button type="button"
-                    className="max-w-140 text-orange-500 border-3 border-[#FFA28D] bg-white hover:bg-[#FFA28D] hover:text-orange-500 ms-3 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-white dark:hover:bg-[#FFA28D] dark:hover:text-orange-500"
-                               onClick={()=>setInviteUsers(false)}
-                               >
-                                Cancel
-                               </button>
+                            {xlsFile == undefined ? (
+                              <label
+                                htmlFor="file"
+                                className="block text-white bg-[#517CA8] hover:bg-[#517CA8] items-center justify-center font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-[#517CA8] dark:hover:bg-[#517CA8] "
+                              >
+                                Choose File
+                              </label>
+                            ) : (
+                              <label htmlFor="file">{xlsFile.name}</label>
+                            )}
 
-                                </div>
-                                
-                                </>
+                            <input
+                              onChange={(e) => setXlsFile(e.target.files[0])}
+                              type="file"
+                              id="file"
+                              accept=".xls,.xlsx"
+                            ></input>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="flex justify-center">
+                        <button
+                          data-modal-target="popup-modal"
+                          data-modal-toggle="popup-modal"
+                          className="block text-white bg-[#FFA28D] hover:bg-[#FFA28D] me-3 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-[#FFA28D] dark:hover:bg-[#FFA28D] "
+                          type="button"
+                          onClick={saveData}
+                        >
+                          Save Data Only
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setInviteUsers(true);
+                            setBulkUpload(false);
+                          }}
+                          className="block text-orange-500 border-3 border-[#FFA28D] bg-white hover:bg-[#FFA28D] hover:text-orange-500 ms-3 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-white dark:hover:bg-[#FFA28D] dark:hover:text-orange-500"
+                        >
+                          Save Data and Invite User
+                        </button>
+                      </div>
+                    </div>
+                  </>
+                }
+              ></Modal>
+            )}
+            {/* invite user modal */}
+            {inviteUsers && (
+              <Modal
+                title="Are You Sure You Want to Invite XX User To Join Evallo?"
+                classname={"max-w-[760px] mx-auto"}
+                titleClassName={"mt-2"}
+                handleClose={() => setInviteUsers(false)}
+                //  primaryBtn={{
+                //    text: "Assign",
+                //    className: "max-w-140 pl-8 pr-8",
+                //    onClick: (e) => handleSubmit(e),
+                //    disabled: submitBtnDisabled,
+                //    loading: loading,
+                //  }}
 
-            }
-            ></Modal>}
+                //  handleClose={}
 
-
+                body={
+                  <>
+                    {" "}
+                    <div className="text-center ">
+                      <p className="text-[#517CA8] font-semibold">
+                        {" "}
+                        All users that are invited to the platform will receive
+                        an email invitation to create an account within your
+                        organization. If you only want to store their data and
+                        do not want to invite them to create an account, please
+                        click on “Save Data Only” button.
+                        <br></br>If you want to continue inviting the users,
+                        please click on the “Confirm Email Invitations” button
+                        below.
+                      </p>
+                    </div>
+                    <div className="flex justify-center">
+                      <button
+                        data-modal-target="popup-modal"
+                        data-modal-toggle="popup-modal"
+                        className="block text-white bg-[#FFA28D] hover:bg-[#FFA28D] me-3 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-[#FFA28D] dark:hover:bg-[#FFA28D] "
+                        type="button"
+                        onClick={bulkInvite}
+                      >
+                        Yes, Confirm
+                      </button>
+                      <button
+                        type="button"
+                        className="max-w-140 text-orange-500 border-3 border-[#FFA28D] bg-white hover:bg-[#FFA28D] hover:text-orange-500 ms-3 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-white dark:hover:bg-[#FFA28D] dark:hover:text-orange-500"
+                        onClick={() => setInviteUsers(false)}
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </>
+                }
+              ></Modal>
+            )}
           </div>
         </div>
         <div className="flex justify-between items-center gap-7 mb-6">
@@ -902,7 +963,6 @@ export default function Users() {
             parentClassName="w-full w-1/6 border-none "
             inputContainerClassName="text-sm rounded-md shadow-[0px_0px_2.4999988079071045px_0px_#00000040] border-white bg-white px-[20px] py-[16px]"
             type="select"
-
             checkbox={{
               visible: true,
               name: "test",
@@ -1013,37 +1073,30 @@ export default function Users() {
             </label>
             <div></div>
           </div> */}
-
-
         </div>
         {/* <div className="flex align-center mt-0 gap-[20px]"></div> */}
-        <div >
+        <div>
           <FilterItems
             items={filterItems}
             setData={setFilterItems}
             onRemoveFilter={onRemoveFilter}
           />
-
         </div>
         <div className="flex justify-between items-center mt-5">
-
           <div className="ml-6 ">
-            <label
-              className={`  text-[#26435F] font-medium flex items-center`}
-            >
+            <label className={`  text-[#26435F] font-medium flex items-center`}>
               <input
                 type="checkbox"
                 checked={isChecked}
                 onChange={handleCheckboxChange}
               />
               <span
-                className={`${styles["custom-checkbox"]} ${isChecked ? "checked" : ""
-                  }`}
+                className={`${styles["custom-checkbox"]} ${
+                  isChecked ? "checked" : ""
+                }`}
               ></span>
               <span className="block">{numberChecked} Selected</span>
             </label>
-
-
           </div>
           <div>
             <button className="bg-[#26435F] px-7 py-2 rounded-md text-white ml-auto">
@@ -1083,10 +1136,10 @@ export default function Users() {
           titleClassName="text-start mb-3 pb-3 border-b border-b-gray-300"
           primaryCancel={true}
           cancelBtnClassName="w-130"
-
           primaryBtn={{
             text: "Invite User",
-            className: 'rounded-lg bg-transparent border-2 border-[#FFA28D] py-2 text-[#FFA28D]',
+            className:
+              "rounded-lg bg-transparent border-2 border-[#FFA28D] py-2 text-[#FFA28D]",
             form: "add-user-form",
             onClick: handleSubmit,
             loading: loading,
@@ -1165,8 +1218,6 @@ export default function Users() {
                     parentClassName="w-full"
                   />
                 </div>
-
-
               </div>
             </form>
           }
