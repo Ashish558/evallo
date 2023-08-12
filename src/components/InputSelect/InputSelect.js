@@ -112,6 +112,7 @@ export default function InputSelect({
           >
             {DateSelect && DateSelect}
             {optionData?.map((option, idx) => {
+              console.log('option', option);
               return (
                 <div
                   className="outline-0 border-0 py-2.5 px-4 flex items-center justify-between"
@@ -119,7 +120,7 @@ export default function InputSelect({
                   onClick={() => handleChange(optionType, option, idx)}
                 >
                   <p className={optionListClassName}>
-                    {optionType === "object" ? option.name : option}
+                    {optionType === "object" ? option.value :  option}
                   </p>
                   {radio && (
                     <input

@@ -628,8 +628,7 @@ export default function Users() {
     }
   };
 
-   console.log('shivam',filteredUsersData)
-
+  console.log('f', allTutors);
 
   const [students, setStudents] = useState([]);
   return (
@@ -647,7 +646,7 @@ export default function Users() {
           </p>
           <button
             className="bg-[#24A3D9] w-[188px] text-sm justify-center flex py-2 px-5 items-center text-white font-semibold rounded-lg"
-            onClick={() => setAssignStudentModalActive(true)}
+            onClick={() => navigate('/assigned-tutors')}
           >
             Tutor Mapping
             <img src={PlusIcon} className="ml-3" alt="PlusIcon" />
