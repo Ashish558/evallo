@@ -17,6 +17,8 @@ import { tableData, userTypesList } from "./tempData";
 import { csvHeaders } from "./csvUtlis";
 import {
   useAddUserMutation,
+  useGetAllOrgUsersQuery,
+  useLazyGetAllOrgUsersQuery,
   useLazyGetAllUsersQuery,
   useLazyGetTutorDetailsQuery,
   useLazyGetUserDetailQuery,
@@ -174,6 +176,7 @@ export default function Users() {
   const [userToDelete, setUserToDelete] = useState({});
 
   const [fetchUsers, fetchUsersResp] = useLazyGetAllUsersQuery();
+  const { data: allUsers, setAllUsers } = useGetAllOrgUsersQuery()
   const [addUser, addUserResp] = useAddUserMutation();
   const [signupUser, signupUserResp] = useSignupUserMutation();
   const [deleteUser, deleteUserResp] = useDeleteUserMutation();
@@ -185,6 +188,7 @@ export default function Users() {
   const [currentPage, setCurrentPage] = useState(1);
   const [allTutors, setAllTutors] = useState([]);
   const [tutors, setTutors] = useState([]);
+  const [csvData, setCsvData] = useState([])
   const [numberChecked, setnumberChecked] = useState(0);
   const [filterData, setFilterData] = useState({
     typeName: "",
@@ -247,12 +251,13 @@ export default function Users() {
       // if(res.data.data.no_of_users < maxPageSize){
       //    setTotalPages(15)
       // }else{
-      setTotalPages(res.data.data.total_users);
+      if (res?.data?.data)
+        setTotalPages(res?.data?.data?.total_users);
       // }
       // console.log('total users', res.data.data.total_users);
 
       const fetchDetails = async () => {
-        await res.data.data.user.map(async (user) => {
+        await res?.data?.data?.user?.map(async (user) => {
           let obj = {
             _id: user._id,
             block: user.block,
@@ -316,7 +321,7 @@ export default function Users() {
 
     fetchUsers(urlParams).then((res) => {
       // console.log('tutors', res.data.data);
-      if (!res.data.data.user) return;
+      if (!res?.data?.data?.user) return;
       let data = res.data.data.user.map((item) => {
         const { firstName, lastName } = item;
         return {
@@ -353,7 +358,7 @@ export default function Users() {
   };
 
   useEffect(() => {
-     fetch()
+    fetch()
     //console.log('shivam yadav 1',filteredUsersData)
   }, [maxPageSize, currentPage]);
   // console.log('currentPage', currentPage);
@@ -624,6 +629,30 @@ export default function Users() {
     }
   };
 
+  useEffect(() => {
+    if (allUsers?.data?.user) {
+      let arr = []
+      allUsers?.data?.user?.forEach((it) => {
+        let obj = {}
+        obj.name = it.firstName + " " + it.lastName;
+        obj._id = it._id
+        obj.userType = it.role
+        obj.block = it.block
+        obj.createdAt = it.createdAt
+        obj.specialization = it.specialization
+        obj.tutorStatus = it.userStatus
+        obj.leadStatus = ""
+        obj.assignedTutor = it.assiginedTutors
+        obj.phone = it.phone
+        obj.email = it.email
+        arr.push(obj);
+      })
+      setCsvData(arr)
+    }
+  }, [allUsers])
+  console.log('shivam', { csvData }, { filteredUsersData })
+
+
   const [students, setStudents] = useState([]);
   return (
     <div className="lg:mx-[60px] bg-lightWhite min-h-screen">
@@ -649,13 +678,13 @@ export default function Users() {
         <div>
           <div className="flex mb-[50px]">
             <button className="bg-[#517CA8] w-[158px] text-sm justify-center flex py-1 px-2 items-center text-white font-semibold rounded-lg mr-5">
-             
-              <CSVLink filename={"Evallo_CRM_Data.csv"} data={filteredUsersData} headers={csvHeaders}> Export Data{" "}</CSVLink>
+
+              <CSVLink filename={"Evallo_CRM_Data.csv"} data={csvData} headers={csvHeaders}> Export Data{" "}</CSVLink>
               <img src={ExportIcon} className="ml-3" alt="ExportIcon" />
             </button>
             <button className="bg-[#517CA8] w-[158px] text-sm justify-center flex py-1 px-2 items-center text-white font-semibold rounded-lg mr-5">
               Bulk Upload{" "}
-             
+
               <img src={UploadIcon} className="ml-3" alt="UploadIcon" />
             </button>
             <PrimaryButton
