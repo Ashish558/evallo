@@ -35,7 +35,7 @@ export default function InputSelect({
     if (!checkbox) setSelected(false);
   }, [value]);
   const handleChange = (optionType, option, idx) => {
-    onChange(optionType === "object" ? option.name : option, idx);
+    onChange(optionType === "object" ? option : option, idx);
   };
 
   return (
@@ -112,7 +112,6 @@ export default function InputSelect({
           >
             {DateSelect && DateSelect}
             {optionData?.map((option, idx) => {
-              console.log('option', option);
               return (
                 <div
                   className="outline-0 border-0 py-2.5 px-4 flex items-center justify-between"
@@ -132,7 +131,7 @@ export default function InputSelect({
                   {checkbox && (
                     <div className="flex">
                       <CCheckbox
-                        checked={checkbox.match.includes(option) ? true : false}
+                        checked={checkbox.match.includes(option.value ? option.value : option) ? true : false}
                         name="student"
                       />
                     </div>

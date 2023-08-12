@@ -243,7 +243,7 @@ export default function Users() {
 
     console.log("urlParams", urlParams);
     fetchUsers(urlParams).then((res) => {
-      console.log("all-users", res.data.data.user);
+      // console.log("all-users", res.data.data.user);
       // if(res.data.data.no_of_users < maxPageSize){
       //    setTotalPages(15)
       // }else{
@@ -605,13 +605,9 @@ export default function Users() {
 
   const handleTutorChange = (item) => {
     console.log("item", item);
-    // console.log('filterData tutor', filterData.tutor);
+    console.log('filterData tutor', filterData.tutor);
     if (filterData.tutor.includes(item.value)) {
       let updated = filterData.tutor.filter((tutor) => tutor !== item.value);
-      // setUpdatedSubscriptionData(prev => ({
-      //    ...prev,
-      //    tests: updated
-      // }))
       setFilterData({
         ...filterData,
         tutor: updated,
@@ -627,8 +623,6 @@ export default function Users() {
       // }))
     }
   };
-
-  console.log('f', allTutors);
 
   const [students, setStudents] = useState([]);
   return (
