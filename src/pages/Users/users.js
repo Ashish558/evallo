@@ -19,6 +19,8 @@ import { BASE_URL, getAuthHeader } from "../../app/constants/constants";
 import { csvHeaders } from "./csvUtlis";
 import {
   useAddUserMutation,
+  useGetAllOrgUsersQuery,
+  useLazyGetAllOrgUsersQuery,
   useLazyGetAllUsersQuery,
   useLazyGetTutorDetailsQuery,
   useLazyGetUserDetailQuery,
@@ -181,6 +183,7 @@ export default function Users() {
   const [userToDelete, setUserToDelete] = useState({});
 
   const [fetchUsers, fetchUsersResp] = useLazyGetAllUsersQuery();
+  const {data:allUsers,setAllUsers}=useGetAllOrgUsersQuery()
   const [addUser, addUserResp] = useAddUserMutation();
   const [signupUser, signupUserResp] = useSignupUserMutation();
   const [deleteUser, deleteUserResp] = useDeleteUserMutation();
@@ -192,6 +195,7 @@ export default function Users() {
   const [currentPage, setCurrentPage] = useState(1);
   const [allTutors, setAllTutors] = useState([]);
   const [tutors, setTutors] = useState([]);
+  const [csvData,setCsvData]= useState([])
   const [numberChecked, setnumberChecked] = useState(0);
   const [filterData, setFilterData] = useState({
     typeName: "",
@@ -250,16 +254,17 @@ export default function Users() {
 
     console.log("urlParams", urlParams);
     fetchUsers(urlParams).then((res) => {
-      console.log("all-users", res.data.data.user);
+      console.log("all-users", res);
       // if(res.data.data.no_of_users < maxPageSize){
       //    setTotalPages(15)
       // }else{
-      setTotalPages(res.data.data.total_users);
+        if(res?.data?.data)
+      setTotalPages(res?.data?.data?.total_users);
       // }
       // console.log('total users', res.data.data.total_users);
 
       const fetchDetails = async () => {
-        await res.data.data.user.map(async (user) => {
+        await res?.data?.data?.user?.map(async (user) => {
           let obj = {
             _id: user._id,
             block: user.block,
@@ -323,7 +328,7 @@ export default function Users() {
 
     fetchUsers(urlParams).then((res) => {
       // console.log('tutors', res.data.data);
-      if (!res.data.data.user) return;
+      if (!res?.data?.data?.user) return;
       let data = res.data.data.user.map((item) => {
         const { firstName, lastName } = item;
         return {
@@ -634,8 +639,29 @@ export default function Users() {
       // }))
     }
   };
-
-   console.log('shivam',filteredUsersData)
+ 
+   useEffect(()=>{
+   if(allUsers?.data?.user){
+    let arr=[]
+    allUsers?.data?.user?.forEach((it)=>{
+      let obj={}
+      obj.name=it.firstName + " "+it.lastName;
+      obj._id=it._id
+      obj.userType=it.role
+      obj.block=it.block
+      obj.createdAt=it.createdAt
+      obj.specialization=it.specialization
+      obj.tutorStatus=it.userStatus
+      obj.leadStatus=""
+      obj.assignedTutor=it.assiginedTutors
+      obj.phone=it.phone
+      obj.email=it.email
+      arr.push(obj);
+    })
+    setCsvData(arr)
+   }
+   },[allUsers])
+   console.log('shivam',{csvData},{filteredUsersData})
 
 
   const [students, setStudents] = useState([]);
@@ -699,7 +725,7 @@ export default function Users() {
           <div className="flex mb-[50px]">
             <button className="bg-[#517CA8] w-[158px] text-sm justify-center flex py-1 px-2 items-center text-white font-semibold rounded-lg mr-5">
              
-              <CSVLink filename={"Evallo_CRM_Data.csv"} data={filteredUsersData} headers={csvHeaders}> Export Data{" "}</CSVLink>
+              <CSVLink filename={"Evallo_CRM_Data.csv"} data={csvData} headers={csvHeaders}> Export Data{" "}</CSVLink>
               <img src={ExportIcon} className="ml-3" alt="ExportIcon" />
             </button>
             <button onClick={upload} className="bg-[#517CA8] w-[158px] text-sm justify-center flex py-1 px-2 items-center text-white font-semibold rounded-lg mr-5">
@@ -1056,11 +1082,11 @@ export default function Users() {
           cancelBtn={true}
           titleClassName="text-start mb-3 pb-3 border-b border-b-gray-300"
           primaryCancel={true}
-          cancelBtnClassName="w-140"
+          cancelBtnClassName="w-130"
 
           primaryBtn={{
             text: "Invite User",
-            className: 'rounded-lg bg-transparent border border-[#FFA28D] py-2 text-[#FFA28D]',
+            className: 'rounded-lg bg-transparent border-2 border-[#FFA28D] py-2 text-[#FFA28D]',
             form: "add-user-form",
             onClick: handleSubmit,
             loading: loading,
@@ -1123,7 +1149,7 @@ export default function Users() {
                     }
                   />
                 </div>
-                <div>
+                <div className="mt-[7px]">
                   <InputSelect
                     value={modalData.userType}
                     onChange={(val) =>
@@ -1133,9 +1159,9 @@ export default function Users() {
                     type="select"
                     placeholder="Select User Type "
                     label="User Type"
-                    labelClassname="ml-0 mb-0.5 text-[#26435F] font-bold"
+                    labelClassname="ml-0  text-[#26435F] font-bold"
                     optionData={userTypeOptions}
-                    inputContainerClassName="text-sm pt-3.5 pb-3.5 bg-primary-50 px-5 border-0"
+                    inputContainerClassName="text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0"
                     parentClassName="w-full"
                   />
                 </div>

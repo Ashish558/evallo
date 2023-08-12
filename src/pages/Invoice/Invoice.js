@@ -10,6 +10,7 @@ import { useLazyGetParentsByNameQuery, useAddInvoiceMutation, useLazyGetAllInvoi
 import { getCurrentDate, getFormattedDate } from '../../utils/utils';
 import { useLazyGetUserDetailQuery } from '../../app/services/users';
 import styles from './styles.module.css'
+import { useNavigate } from 'react-router-dom';
 
 const options = ['Discounted Package']
 
@@ -180,7 +181,11 @@ export default function Invoice() {
    // }, [])
 
    // console.log(allInvoices);
-
+   const navigate=useNavigate()
+const handleNavigate=()=>{
+   console.log('back')
+   navigate(-1)
+}
    return (
       <div className='relative'>
          <div className={styles.box}>
@@ -188,7 +193,7 @@ export default function Invoice() {
                <p className='text-[#517CA8] '>We are working hard to build a reliable invoicing system to ensure that you can easily send invoices to your clients, and they can process your payments on time in a secure manner.<br></br>
                   We will be offering this feature, along with many others, during our alpha launch.</p>
             </div>
-            <p className='text-center text-[#FFFFFF]'><button >Back</button> </p>
+            <p className='text-center text-[#FFFFFF]'><button onClick={handleNavigate} >Back</button> </p>
          </div>
          <svg xmlns="http://www.w3.org/2000/svg"
             width="1920"
