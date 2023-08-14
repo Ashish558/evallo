@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import moment from "moment-timezone";
 import momentOg from "moment";
-
+import "./Transition.css"
 import "./calendar.css";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -15,7 +15,10 @@ import interactionPlugin from "@fullcalendar/interaction";
 import timeGridWeek from "@fullcalendar/timegrid";
 import LeftIcon from "../../assets/icons/left.svg";
 import nextIcon from "../../assets/icons/right.svg";
-import up_triangle from "../../assets/icons/Group 32064up triangle.svg"
+import up_triangle from "../../assets/icons/Group 32064up triangle.svg";
+import down_triangle from "../../assets/icons/Group 31479down.svg"
+
+
 // import 'bootstrap/dist/css/bootstrap.css';
 // import 'bootstrap-icons/font/bootstrap-icons.css';
 import SimpleCalendar from "../../components/SimpleCalendar/SimpleCalendar";
@@ -62,7 +65,8 @@ export default function Calendar() {
   const [events, setEvents] = useState([]);
   const [filteredEvents, setFilteredEvents] = useState([]);
   const { role: persona } = useSelector((state) => state.user);
-
+  const accordionRefs = useRef([]);
+  const accordionImgRefs=useRef([])
   // const [timeZones, setTimeZones] = useState(temptimeZones)
   const { id: sessionToEdit } = useParams();
   const [isEdited, setIsEdited] = useState(false);
@@ -114,11 +118,12 @@ export default function Calendar() {
   // const params = useParams()
   const [currentDate, setCurrentDate] = useState(new Date());
   const { isLoggedIn } = useSelector((state) => state.user);
-  const [getCalenderInsight,getCalenderInsightStatus]= useLazyGetCalenderInsightQuery()
-  const [insightData,setInsightData]= useState({})
+  const [getCalenderInsight, getCalenderInsightStatus] =
+    useLazyGetCalenderInsightQuery();
+  const [insightData, setInsightData] = useState({});
   const [timeZone, setTimeZone] = useState("Asia/Kolkata");
   // console.log(moment.tz.zonesForCountry('US'))
-   const [intialView,setInitialView]=useState("dayGridMonth")
+  const [intialView, setInitialView] = useState("dayGridMonth");
 
   const [searchedUser, setSearchedUser] = useState({
     id: "",
@@ -143,8 +148,8 @@ export default function Calendar() {
     const url = `/api/session/${role}/${id}`;
     // console.log(url)
     fetchUserSessions(url).then((res) => {
-       console.log('sessions', res);
-       if(!(res?.data?.data)) return;
+      console.log("sessions", res);
+      if (!res?.data?.data) return;
       const tempEvents = res.data.data.session.map((session) => {
         const time = session.time;
         const strtTime12HFormat = `${time.start.time} ${time.start.timeType}`;
@@ -469,38 +474,52 @@ export default function Calendar() {
     }
   }, []);
 
-   const getDayHeaders = (arg) => {
-      let text = arg.text.split(" ");
-            
-      return (
-         <div
-            className={`p-[10px] rounded-7 ${arg.isToday ? "bg-primary border" : ""
-               }  `}
-         >
-            <p
-               className={`${arg.isToday ? "text-primaryWhite-900" : ""
-                  } text-sm font-semibold
-                   ${arg.isPast ? "text-[#BEC2CE]" : arg.isFuture ? 'text-primary-60' : ''} `}
-            >
-               {days[arg.date.getDay()]}
-            </p>
-            <p
-               className={`${arg.isToday ? "text-primaryWhite-900" : ""
-                  } text-2xl font-bold font-inter
-                   ${arg.isPast ? "text-[#BEC2CE]" : arg.isFuture ? 'text-primary-dark' : ''
-                  }`}
-            >
-               {text[1]}
-            </p>
-         </div>
-      );
-   };
+  const getDayHeaders = (arg) => {
+    let text = arg.text.split(" ");
 
-   const handlePrevClick = (arg) => {
-      const calendarAPI = calendarRef?.current?.getApi();
+    return (
+      <div
+        className={`p-[10px] rounded-7 ${
+          arg.isToday ? "bg-primary border" : ""
+        }  `}
+      >
+        <p
+          className={`${
+            arg.isToday ? "text-primaryWhite-900" : ""
+          } text-sm font-semibold
+                   ${
+                     arg.isPast
+                       ? "text-[#BEC2CE]"
+                       : arg.isFuture
+                       ? "text-primary-60"
+                       : ""
+                   } `}
+        >
+          {days[arg.date.getDay()]}
+        </p>
+        <p
+          className={`${
+            arg.isToday ? "text-primaryWhite-900" : ""
+          } text-2xl font-bold font-inter
+                   ${
+                     arg.isPast
+                       ? "text-[#BEC2CE]"
+                       : arg.isFuture
+                       ? "text-primary-dark"
+                       : ""
+                   }`}
+        >
+          {text[1]}
+        </p>
+      </div>
+    );
+  };
 
-      calendarAPI?.prev();
-   };
+  const handlePrevClick = (arg) => {
+    const calendarAPI = calendarRef?.current?.getApi();
+
+    calendarAPI?.prev();
+  };
 
   const handleNextClick = (arg) => {
     // console.log(arg)
@@ -586,19 +605,19 @@ export default function Calendar() {
     //    description: 'QWerfgfgsrt',
     // }])
   };
-  const handleInsights= (name)=>{
-   console.log({name})
-   getCalenderInsight(name).then((res)=>{
-      console.log("insights",res)
-      if(res?.data)
-      setInsightData(res)
-   })
-  }
+  const handleInsights = (name) => {
+    console.log({ name });
+    getCalenderInsight(name).then((res) => {
+      console.log("insights", res?.data?.tutorSessionDetails);
+      if (res?.data?.tutorSessionDetails) setInsightData(res?.data?.tutorSessionDetails);
+      else setInsightData({message:"User does'nt have any Tutor "})
+    });
+  };
+  console.log({ insightData });
   useEffect(() => {
-   
     if (name.length > 0) {
       fetchNames(name).then((res) => {
-         console.log(res.data.data.user)
+        console.log(res.data.data.user);
         let tempData = res.data.data.user.map((user) => {
           return {
             _id: user._id,
@@ -823,6 +842,30 @@ export default function Calendar() {
     // console.log('filtered', filtered);
     setFilteredEvents(filtered);
   }, [events, students]);
+const [exp,setExp]=useState(
+  null
+)
+  const toggleAccordions = (id) => {
+    const currentRef = accordionRefs.current[id];
+    const isExpanded = currentRef.style.width;
+    setExp(-1)
+    setExp(id)
+    currentRef.style.transition="all 1s ease"
+    if (currentRef.classList.contains('expanded')) {
+    
+      accordionRefs.current.forEach((ar,i)=>{
+        ar?.classList.add('expanded')
+        accordionImgRefs.current[i].src=down_triangle
+      })
+      accordionImgRefs.current[id].src=up_triangle
+      currentRef.classList.remove('expanded');
+     
+    } else {
+      // Adjust this value based on your content
+      accordionImgRefs.current[id].src=down_triangle
+      currentRef.classList.add('expanded');
+    }
+  };
   
   // console.log('filteredEvents', filteredEvents);
   // console.log('events', events);
@@ -893,7 +936,9 @@ export default function Calendar() {
                   inputContainerClassName="bg-white shadow"
                   type="select"
                   value={name}
-                  onChange={(e) => setName(e.target.value)}
+                  onChange={(e) => {setName(e.target.value);
+                  setInsightData([]);}
+                  }
                   optionData={names}
                   onOptionClick={(item) => {
                     setName(item.value);
@@ -903,44 +948,72 @@ export default function Calendar() {
                 />
               </div>
             )}
-            <div
-             
-              className="flex font-semibold box-content flex-col my-5 bg-[#FFFFFF] rounded-md  text-lg  w-[270px] "
-            >
-              <div className="bg-[rgba(255,162,141,0.2)] overflow-hidden relative z-50 py-3 px-5 text-[#FFA28D] mx-0 flex justify-between shadow-sm rounded-t-md w-full  ">
-                Sample Name
-                <img className="inline-block" src={up_triangle} alt="inscribed triangle"/>
-              </div>
-              <div className="rounded-b-md border border-t-0 border-r-2 border-b-2 border-l-2 border-dotted border-[rgba(255,162,141,1)]">
+            {insightData.length > 0 ?
+              insightData?.map((item, id) => {
+                return (
+                  <div
+                    key={id}
+                    className="transition-shy flex transition-all duration-300 font-semibold box-content flex-col my-3 bg-[#FFFFFF] rounded-md  text-lg  w-[270px] "
+                  >
+                    <div
+                      onClick={() => toggleAccordions(id)}
+                      className="transition-shy cursor-pointer bg-[rgba(255,162,141,0.2)] overflow-hidden relative z-50 py-3 px-5 text-[#FFA28D] mx-0 flex justify-between shadow-sm rounded-t-md w-full  "
+                    >
+                     {name}
+                      <img
+                      ref={(el) => (accordionImgRefs.current[id] = el)}
+                        className="inline-block"
+                        src={down_triangle}
+                        alt="inscribed triangle"
+                      />
+                    </div>
+                    
+                      <div   ref={(el) => (accordionRefs.current[id] = el)} className="expanded transition-shy transition-all duration-300 rounded-b-md border border-t-0 border-r-2 border-b-2 border-l-2 border-dotted border-[rgba(255,162,141,1)]">
+                        <div className="text-lg px-5 py-2 text-[#26435F]">
+                          {" "}
+                          <p className="flex py-1 overflow-x-auto scrollbar-content">{item?.sessionDetailsObj?.length>0?item?.sessionDetailsObj?.map((ser,sid)=>{
+                            return sid!==0 &&(
+                              <span key={sid} className="whitespace-nowrap">
+                                {" "} {ser.service}
+                                {sid!==item?.sessionDetailsObj?.length-1?" , ":' '}
 
+                              </span>
+                            )
+                          }):"None"}</p>
+                          <p className="text-[16px] text-[#7C98B6]">
+                            {item?.tutor?.firstName}
+                          </p>
+                        </div>
+                        <div className="text-lg px-5 py-2 text-[#38C980]">
+                          {" "}
+                          <p>Hours Completed</p>
+                          <p> {item?.sessionDetailsObj[0]?.no_of_completed_sessions?item?.sessionDetailsObj[0]?.no_of_completed_sessions:"0"}</p>
+                        </div>
+                        <div className="text-lg px-5 py-2 text-[#FF7979]">
+                          <p>Hours Missed</p>
+                          <p>{item?.sessionDetailsObj[0]?.no_of_missed_sessions?item?.sessionDetailsObj[0]?.no_of_missed_sessions:"0"}</p>
+                        </div>
+                        <div className="text-lg px-5 py-2 text-[#FFCE84]">
+                          <p>Hours Canceled</p>
+                          <p>{item?.sessionDetailsObj[0]?.no_of_cancelled_sessions?item?.sessionDetailsObj[0]?.no_of_cancelled_sessions:"0"}</p>
+                        </div>
+                        <div className="text-lg px-5 py-2 text-[#7C98B6]">
+                          <p>Hours Scheduled</p>
+                          <p>{item?.sessionDetailsObj[0]?.no_of_scheduled_sessions?item?.sessionDetailsObj[0]?.no_of_scheduled_sessions:"0"}</p>
+                        </div>
+                      </div>
+                   
+                  </div>
+                );
+              }):insightData.message && <div
               
-              <div className="text-lg px-5 py-2 text-[#26435F]">
-                {" "}
-                <p>Hours Completed</p>
-                <p className="text-[16px] text-[#7C98B6]">Tutor Name</p>
-              </div>
-              <div className="text-lg px-5 py-2 text-[#38C980]">
-                {" "}
-                <p>Hours Completed</p>
-                <p>Hours Completed</p>
-              </div>
-              <div className="text-lg px-5 py-2 text-[#FF7979]">
-                <p>Hours Completed</p>
-                <p>Hours Completed</p>
-              </div>
-              <div className="text-lg px-5 py-2 text-[#FFCE84]">
-                <p>Hours Completed</p>
-                <p>Hours Completed</p>
-              </div>
-              <div className="text-lg px-5 py-2 text-[#7C98B6]">
-                <p>Hours Completed</p>
-                <p>Hours Completed</p>
-              </div>
-              </div>
-            </div>
+              className="transition-shy mt-3 cursor-pointer bg-[rgba(255,162,141,0.2)] overflow-hidden relative z-50 py-3 px-5 text-[#FFA28D] mx-0 flex justify-between shadow-sm rounded-t-md w-full  "
+            >
+             {insightData.message}
+             
+            </div>}
           </div>
           <div className="flex-1 w-4/5 relative" id="calendarContainer">
-            
             <FullCalendar
               events={
                 persona === "parent" || persona === "tutor"
@@ -966,13 +1039,12 @@ export default function Calendar() {
                 timeGridPlugin,
                 timeGridWeek,
                 interactionPlugin,
-                        dayGridPlugin
-                     
+                dayGridPlugin,
 
                 // momentTimezonePlugin
               ]}
               firstDay={1}
-                     slotDuration={'00:60:00'}
+              slotDuration={"00:60:00"}
               customButtons={{
                 prevButton: {
                   text: (
@@ -996,7 +1068,7 @@ export default function Calendar() {
               allDaySlot={false}
               headerToolbar={{
                 start: "prevButton title nextButton",
-                        center:"timeGridWeek,dayGridMonth,multiMonthYear",
+                center: "timeGridWeek,dayGridMonth,multiMonthYear",
                 end: "",
               }}
               titleFormat={{
@@ -1016,15 +1088,13 @@ export default function Calendar() {
               selectable={true}
               select={handleDateClick}
               dateClick={handleDateClick}
-              
-                     // select={handleDateSelect}
+              // select={handleDateSelect}
               // titleFormat={{
               //    month: ''
               // }}
               selectOverlap={false}
               defaultTimedEventDuration="01:00"
-                     showNonCurrentDates={false}
-                   
+              showNonCurrentDates={false}
             />
             <div
               className=""
@@ -1044,7 +1114,7 @@ export default function Calendar() {
                 parentClassName="w-[160px]"
                 inputContainerClassName="text-primaryDark font-bold text-"
               />
-                 {/* <div class="inline-flex rounded shadow-sm mt-1">
+              {/* <div class="inline-flex rounded shadow-sm mt-1">
     <button class="px-2 py-1 text-xs font-medium text-blue-700 bg-white border border-gray-200 rounded-l-lg hover:bg-gray-100 focus:z-10 focus:text-orange-700 dark:bg-gray-700 dark:border-gray-600 dark:text-dark dark:hover:text-orange dark:hover:bg-gray-600 dark:focus:text-orange" >
         Weekly
     </button>
@@ -1055,11 +1125,7 @@ export default function Calendar() {
         Yearly
     </button>
 </div> */}
-
-
-
             </div>
-                  
           </div>
         </div>
       </div>

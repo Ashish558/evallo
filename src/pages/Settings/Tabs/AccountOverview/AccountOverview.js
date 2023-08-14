@@ -88,6 +88,7 @@ const AccountOverview = () => {
   }, [values]);
 const handleEmailUpdate=((email)=>{
   console.log("Email Updation invoked",email)
+  if(email!=="")
   updateEmail({email}).then((res)=>{
     console.log("Email Link sent",res)
   })
