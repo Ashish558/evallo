@@ -33,7 +33,7 @@ export default function Pagination({
             className="p-1 cursor-pointer text-[#B7C2CB]"
             onClick={() => handleClick(currentPage + 1)}
           >
-            {currentPage < 10 ? "0" : ""}
+            {currentPage+1 < 10 ? "0" : ""}
             {currentPage + 1}
           </div>
         ) : (
@@ -55,7 +55,7 @@ export default function Pagination({
             className="p-1 cursor-pointer  text-[#B7C2CB]"
             onClick={() => handleClick(totalPages)}
           >
-            {currentPage < 10 ? "0" : ""}
+            {totalPages < 10 ? "0" : ""}
             {totalPages}
           </div>
         ) : (
