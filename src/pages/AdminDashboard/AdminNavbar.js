@@ -143,7 +143,14 @@ const studentNav = [
     activeIcon: Schedule1,
     path: "/calendar",
     tooltip: "Schedule",
-  }
+  },
+  {
+    icon: Settings,
+    activeIcon: Settings1,
+    path: "/settings",
+    excludes: ["parent", "tutor", "admin", "superAdmin"],
+    tooltip: "Settings",
+  },
 ];
 const tutorNav = [
   {
