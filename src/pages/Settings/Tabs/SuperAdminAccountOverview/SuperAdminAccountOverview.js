@@ -27,7 +27,6 @@ const AccountOverview = () => {
     phone: "",
     subscriptionCode: "",
     company: "",
-
   });
   const [values, setValues] = useState({
     firstName: "",
@@ -55,40 +54,27 @@ const AccountOverview = () => {
     newPassword: "",
     confirmPassword: "",
   });
-  const [updateEmail,setUpdateEmail]= useUpdateEmailMutation()
+  const [updateEmail, setUpdateEmail] = useUpdateEmailMutation();
   const [userDetails, userDetailsStatus] = useLazyGetPersonalDetailQuery();
   const [updateAccount, updateAccountStatus] = useUpdateUserAccountMutation();
+  const [fetchedData,setFetchedData]=useState({})
   useEffect(() => {
     userDetails()
       .then((res) => {
         setValues({
           ...res?.data.data.user,
         });
+        setFetchedData({
+          ...res?.data.data.user,
+        });
       })
+
       .catch((err) => {
         console.log(err);
       });
   }, []);
 
-  useEffect(() => {
-    const updateUserAccount = async () => {
-      try {
-        let reqBody = { ...values };
-        delete reqBody["_id"];
-        delete reqBody["email"];
-        updateAccount(reqBody)
-          .then((res) => {
-            console.log(res);
-          })
-          .catch((err) => {
-            console.log(err?.message);
-          });
-      } catch (e) {
-        console.error(e?.response?.data?.message);
-      }
-    };
-    updateUserAccount();
-  }, [values]);
+ 
 
   const showResetConfirmation = () => {
     setReset(true);
@@ -119,15 +105,36 @@ const AccountOverview = () => {
       }
       console.log(res.data);
       alert("Password reset link sent to your email.");
-
     });
   };
-  const handleEmailUpdate=((email)=>{
-    console.log("Email Updation invoked",email)
-    updateEmail({email}).then((res)=>{
-      console.log("Email Link sent",res)
-    })
-  })
+  const handleEmailUpdate = (email) => {
+    console.log("Email Updation invoked", email);
+    updateEmail({ email }).then((res) => {
+      console.log("Email Link sent", res);
+    });
+  };
+  const handleDataUpdate = () => {
+    const updateUserAccount = async () => {
+      try {
+        let reqBody = { ...values };
+        delete reqBody["_id"];
+        delete reqBody["email"];
+        updateAccount(reqBody)
+          .then((res) => {
+            console.log(res);
+          })
+          .catch((err) => {
+            console.log(err?.message);
+          });
+      } catch (e) {
+        console.error(e?.response?.data?.message);
+      }
+    };
+    updateUserAccount();
+    if(fetchedData?.email!==values.email)
+    handleEmailUpdate(values.email)
+    console.log({fetchedData,values})
+  };
   return (
     <div>
       <div className="flex flex-col gap-10 w-[900px] ">
@@ -172,13 +179,13 @@ const AccountOverview = () => {
             label="Email"
             IconRight={tooltipIcon}
             value={values.email}
-            onChange={(e) =>
+            onChange={(e) => {
               setValues({
                 ...values,
                 email: e.target.value,
-              })
-            }
-            onBlur={()=>{handleEmailUpdate(values.email)}}
+              });
+              
+            }}
             error={error.email}
             Tooltip={
               <span className="absolute top-10 w-[200px] scale-0 rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100">
@@ -260,7 +267,6 @@ const AccountOverview = () => {
             error={error.confirmPassword}
           />
           <div>
-
             <button
               onClick={handleClose}
               className="bg-[#FFA28D] text-white rounded-md my-3  px-[50px] py-3 "
@@ -268,7 +274,14 @@ const AccountOverview = () => {
               Update
             </button>
           </div>
-
+        </div>
+        <div className="flex h-fit flex-1 justify-center items-center">
+          <button
+            onClick={handleDataUpdate}
+            className="bg-[#FF7979] text-white  rounded-md px-5 py-2 text-sm"
+          >
+            Save
+          </button>
         </div>
         <div>
           {reset && (
