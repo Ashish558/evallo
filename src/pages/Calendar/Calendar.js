@@ -1082,9 +1082,9 @@ const [exp,setExp]=useState(
               // slotMaxTime={"30:00:00"}
               dayHeaderFormat={{
                 day: "2-digit",
-                month: "narrow",
+                month: "long",
               }}
-              dayHeaderContent={getDayHeaders}
+              // dayHeaderContent={getDayHeaders}
               selectable={true}
               select={handleDateClick}
               dateClick={handleDateClick}
