@@ -255,7 +255,7 @@ export default function Users() {
 
     console.log("urlParams", urlParams);
     fetchUsers(urlParams).then((res) => {
-      console.log("all-users", res);
+      // console.log("all-users", res.data.data.user);
       // if(res.data.data.no_of_users < maxPageSize){
       //    setTotalPages(15)
       // }else{
@@ -264,6 +264,7 @@ export default function Users() {
       // console.log('total users', res.data.data.total_users);
 
       const fetchDetails = async () => {
+        let tempData = [];
         await res?.data?.data?.user?.map(async (user) => {
           let obj = {
             _id: user._id,
@@ -279,10 +280,7 @@ export default function Users() {
             tutorStatus: "-",
             specialization: user.specialization ? user.specialization : [],
           };
-          setUsersData((prev) => [...prev, obj]);
-
-          setFilteredUsersData((prev) => [...prev, obj]);
-
+          tempData.push(obj);
           // if (user.role === 'tutor') {
           //    // console.log('tutor', user._id);
           //    await getTutorDetail({ id: user._id })
@@ -314,15 +312,18 @@ export default function Users() {
           //       })
           // }
         });
+        setUsersData(tempData);
+
+        setFilteredUsersData(tempData);
       };
 
       fetchDetails();
-      //  console.log('shivam',filteredUsersData)
+
       // setUsersData(data)
       // setFilteredUsersData(data)
     });
   };
-
+  console.log("shivam", filteredUsersData);
   const fetchTutors = () => {
     let urlParams = `?role=tutor`;
 
@@ -616,13 +617,9 @@ export default function Users() {
 
   const handleTutorChange = (item) => {
     console.log("item", item);
-    // console.log('filterData tutor', filterData.tutor);
+    console.log("filterData tutor", filterData.tutor);
     if (filterData.tutor.includes(item.value)) {
       let updated = filterData.tutor.filter((tutor) => tutor !== item.value);
-      // setUpdatedSubscriptionData(prev => ({
-      //    ...prev,
-      //    tests: updated
-      // }))
       setFilterData({
         ...filterData,
         tutor: updated,
@@ -667,14 +664,14 @@ export default function Users() {
           });
           setCsvData(arr);
         }
-        setsuccessFetched(true)
+        setsuccessFetched(true);
         setCsvLoad(false);
       })
       .catch((err) => {
         setCsvLoad(false);
       });
   };
-  
+
   const [students, setStudents] = useState([]);
   const upload = () => {
     setBulkUpload(true);
@@ -730,7 +727,7 @@ export default function Users() {
           </p>
           <button
             className="bg-[#24A3D9] w-[188px] text-sm justify-center flex py-2 px-5 items-center text-white font-semibold rounded-lg"
-            onClick={() => setAssignStudentModalActive(true)}
+            onClick={() => navigate("/assigned-tutors")}
           >
             Tutor Mapping
             <img src={PlusIcon} className="ml-3" alt="PlusIcon" />
@@ -738,25 +735,22 @@ export default function Users() {
         </div>
         <div>
           <div className="flex mb-[50px]">
-            <button
-             
-              className="bg-[#517CA8] w-[158px] text-sm justify-center flex py-1 px-2 items-center text-white font-semibold rounded-lg mr-5"
-            >
-              {
-                csvLoad?<LoaderNew />:''
-              }
-              {!csvLoad  && !successFetched?<p  onClick={handleBulkExport}>Export Data</p>  :''}
+            <button className="bg-[#517CA8] w-[158px] text-sm justify-center flex py-1 px-2 items-center text-white font-semibold rounded-lg mr-5">
+              {csvLoad ? <LoaderNew /> : ""}
+              {!csvLoad && !successFetched ? (
+                <p onClick={handleBulkExport}>Export Data</p>
+              ) : (
+                ""
+              )}
 
-              {csvData.length > 0 && successFetched&& (
+              {csvData.length > 0 && successFetched && (
                 <CSVLink
                   filename={"Evallo_CRM_Data.csv"}
                   data={csvData}
                   headers={csvHeaders}
-                 
                   onClick={(event, done) => {
                     setCsvData([]);
                     setsuccessFetched(false);
-                   
                   }}
                 >
                   {" "}
@@ -764,7 +758,9 @@ export default function Users() {
                 </CSVLink>
               )}
 
-              {!csvLoad&&<img src={ExportIcon} className="ml-3" alt="ExportIcon" />}
+              {!csvLoad && (
+                <img src={ExportIcon} className="ml-3" alt="ExportIcon" />
+              )}
             </button>
             <button
               onClick={upload}
