@@ -1,21 +1,24 @@
 import styles from "./styles.module.css";
 import { useGetActionLogQuery } from "../../../app/services/superAdmin";
 import { useSelector } from "react-redux";
-import { useState } from "react";
+import React, { useState } from "react";
 import { useEffect } from "react";
-export default function ActionLog() {
-  const { data: actionLogData, isSuccess: fetchStatus } = useGetActionLogQuery();
-  
+import { useRef } from "react";
+function ActionLog() {
+  const { data: actionLogData, isSuccess: fetchStatus } =
+    useGetActionLogQuery();
+
   const [currentElementIndex, setCurrentElementIndex] = useState(0);
   const [extraElement, setExtraElement] = useState(0);
   const [sortedAction, setSortedAction] = useState([]);
-  const [actionLog,setActionLog]=useState([])
-  console.log("action", actionLog);
-  useEffect(()=>{
- if(actionLogData?.actions?.length>0){
-  setActionLog(actionLogData?.actions)
- }
-  },[actionLogData])
+  const [actionLog, setActionLog] = useState([]);
+  const ref = useRef();
+  useEffect(() => {
+    if (actionLogData?.actions?.length > 0) {
+      setActionLog(actionLogData?.actions);
+      console.log("action", actionLogData?.actions);
+    }
+  }, [actionLogData]);
   const handleScroll = (e) => {
     // Get the height of each element row
 
@@ -23,7 +26,12 @@ export default function ActionLog() {
 
     // Calculate the index of the current element at the top of the visible area
     const index = Math.floor(e.target.scrollTop / elementHeight);
-    setCurrentElementIndex(index);
+    //setCurrentElementIndex(index);
+    ref.current.textContent = sortedAction?.length>0&&sortedAction[index]
+      ? new Date(sortedAction[index]?.createdAt).toDateString()
+      : new Date().toDateString();
+
+    
   };
   useEffect(() => {
     setCurrentElementIndex(0);
@@ -72,11 +80,14 @@ export default function ActionLog() {
 
   return (
     <div className="">
-       <h2 className="font-semibold mb-1 text-[#26435F]">Action Logs</h2>
-    
+      <h2 className="font-semibold mb-1 text-[#26435F]">Action Logs</h2>
+
       <div className="flex flex-col  border border-solid border-gray-200 rounded-5 bg-[#FFFFFF]">
         <div className=" border border-solid border-gray-200">
-          <p className="uppercase  pl-[29px] pt-[16px] pb-3 text-[#26435F]">
+          <p
+            ref={ref}
+            className="uppercase  pl-[29px] pt-[16px] pb-3 text-[#26435F]"
+          >
             {sortedAction[currentElementIndex]
               ? new Date(
                   sortedAction[currentElementIndex]?.createdAt
@@ -94,30 +105,30 @@ export default function ActionLog() {
         >
           <div className="h-[1px] bg-[#CBD6E2]" />
           {sortedAction?.map((item, index) => (
-            <>
-              <div key={index} className="flex ml-2 h-[57px] pl-5 relative">
-                <p className="text-[#4A556C] pt-5 font-medium text-xs mr-6 w-[80px]">
-                  {new Date(item.createdAt).toLocaleTimeString()}
-                  {item.topDate && (
-                    <span className="text-xs ml-5 top-0 text-[#FFA28D] absolute z-5000 backdrop-blur-sm ">
-                      {" "}
-                      {item?.topDate}
-                    </span>
-                  )}
-                </p>
-                <div className={`pt-5 ${styles.actionBorder}`}>
-                  <div className={styles.circle}>
-                    <div className={styles.circle2}></div>
-                  </div>
-                  <p className="pl-4 text-sm font-medium text-[#4A556C]">
-                    {item.message}
-                  </p>
+            <div key={index} className="flex ml-2 h-[57px] pl-5 relative">
+              <p className="text-[#4A556C] pt-5 font-medium text-xs mr-6 w-[80px]">
+                {new Date(item.createdAt).toLocaleTimeString()}
+                {item.topDate && (
+                  <span className="text-xs ml-5 top-0 text-[#FFA28D] absolute z-5000 backdrop-blur-sm ">
+                    {" "}
+                    {item?.topDate}
+                  </span>
+                )}
+              </p>
+              <div className={`pt-5 ${styles.actionBorder}`}>
+                <div className={styles.circle}>
+                  <div className={styles.circle2}></div>
                 </div>
+                <p className="pl-4 text-sm font-medium text-[#4A556C]">
+                  {item.message}
+                </p>
               </div>
-            </>
+            </div>
           ))}
         </ul>
       </div>
     </div>
   );
 }
+
+export default React.memo(ActionLog);

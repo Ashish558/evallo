@@ -52,7 +52,7 @@ const Demography1 = () => {
   useEffect(() => {
     handleState(countryName, currentDemographicArea);
   }, [currentDemographicArea, countryName]);
-  console.log(countryFlag);
+  console.log({countryFlag});
   return (
     <div className="bg-[#FFFFFF] flex justify-center items-center border border-gray-200 p-4 mt-[6px] rounded-md">
       <div className="grid grid-cols-2 gap-x-5">
@@ -156,4 +156,4 @@ const Demography1 = () => {
   );
 };
 
-export default Demography1;
+export default React.memo(Demography1);
