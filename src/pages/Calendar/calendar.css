@@ -129,7 +129,7 @@ justify-content: center;
     border-radius: 0 !important;
     box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.25) !important;
     height: 5rem !important;
-}
+
 .calender tr:nth-child(even){
     height: 5rem !important;
 }
@@ -181,6 +181,7 @@ justify-content: center;
 .calender .font-bold{
     font-weight: 500 !important;
 }
+
 .calender .timegrid-slot-label-cushion {
 padding: 0px 0px;
 font-size: 1.2rem;

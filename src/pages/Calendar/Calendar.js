@@ -512,7 +512,6 @@ export default function Calendar() {
 
    const handlePrevClick = (arg) => {
       const calendarAPI = calendarRef?.current?.getApi();
-
       calendarAPI?.prev();
    };
 
