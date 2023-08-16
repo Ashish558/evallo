@@ -1035,113 +1035,113 @@ export default function Calendar() {
                         interactionPlugin,
                         dayGridPlugin,
 
-                        // momentTimezonePlugin
-                     ]}
-                     firstDay={1}
-                     slotDuration={"00:60:00"}
-                     customButtons={{
-                        prevButton: {
-                           text: (
-                              <span className="calendar-prevButton-custom">
-                                 <img src={LeftIcon} />
-                              </span>
-                           ),
-                           click: handlePrevClick,
-                        },
-                        nextButton: {
-                           text: (
-                              <span className="calendar-nextButton-custom">
-                                 <img src={nextIcon} />
-                              </span>
-                           ),
-                           click: handleNextClick,
-                        },
-                     }}
-                     eventContent={eventContent}
-                     initialView="timeGridWeek"
-                     allDaySlot={false}
-                     headerToolbar={{
-                        start: "prevButton title nextButton",
-                        center: "timeGridWeek,dayGridMonth,multiMonthYear",
-                        end: "",
-                     }}
-                     titleFormat={{
-                        day: "numeric",
-                        month: "numeric",
-                        year: "numeric",
-                     }}
-                     expandRows={true}
-                     contentHeight={"100%"}
-                     // slotMinTime={"06:00:00"}
-                     // slotMaxTime={"30:00:00"}
-                     dayHeaderFormat={{
-                        day: "2-digit",
-                        month: "narrow",
-                     }}
-                     dayHeaderContent={getDayHeaders}
-                     selectable={true}
-                     select={handleDateClick}
-                     dateClick={handleDateClick}
-                     // select={handleDateSelect}
-                     // titleFormat={{
-                     //    month: ''
-                     // }}
-                     selectOverlap={false}
-                     defaultTimedEventDuration="01:00"
-                     showNonCurrentDates={false}
-                  />
-                  <div
-                     className=""
-                     style={{ position: "absolute", top: "00px", right: "40px" }}
-                  >
-                     <InputSelect
-                        value={
-                           timeZone == "local"
-                              ? getLocalTimeZone()
-                              : timeZone.substring(0, 20)
-                        }
-                        //  optionData={['local', 'America/New_York']}
-                        // optionData={['Asia/Calcutta', ...moment.tz.zonesForCountry('US')]}
-                        // optionData={['Asia/Calcutta', ...moment.tz.zonesForCountry('US')]}
-                        optionData={timeZones}
-                        onChange={(val) => setTimeZone(val)}
-                        parentClassName="w-[160px]"
-                        inputContainerClassName="text-primaryDark font-bold text-"
-                     />
-                     {/* <div class="inline-flex rounded shadow-sm mt-1">
-                        <button class="px-2 py-1 text-xs font-medium text-blue-700 bg-white border border-gray-200 rounded-l-lg hover:bg-gray-100 focus:z-10 focus:text-orange-700 dark:bg-gray-700 dark:border-gray-600 dark:text-dark dark:hover:text-orange dark:hover:bg-gray-600 dark:focus:text-orange" >
-                           Weekly
-                        </button>
-                        <button class="px-2 py-1 text-xs font-medium text-gray-900 bg-white border border-gray-200 hover:bg-gray-100 hover:text-orange-700 focus:z-10 focus:text-orange-700 dark:bg-gray-700 dark:border-gray-600 dark:text-dark dark:hover:text-orange dark:hover:bg-gray-600 dark:focus:text-orange" >
-                           Monthly
-                        </button>
-                        <button class="px-2 py-1 text-xs font-medium text-gray-900 bg-white border border-gray-200 rounded-r-md hover:bg-gray-100 hover:text-orange-700 focus:z-10 focus:text-orange-700 dark:bg-gray-700 dark:border-gray-600 dark:text-dark dark:hover:text-orange dark:hover:bg-gray-600 dark:focus:text-orange">
-                           Yearly
-                        </button>
-                     </div> */}
-                  </div>
-               </div>
+                // momentTimezonePlugin
+              ]}
+              firstDay={1}
+              slotDuration={"00:60:00"}
+              customButtons={{
+                prevButton: {
+                  text: (
+                    <span className="calendar-prevButton-custom">
+                      <img src={LeftIcon} />
+                    </span>
+                  ),
+                  click: handlePrevClick,
+                },
+                nextButton: {
+                  text: (
+                    <span className="calendar-nextButton-custom">
+                      <img src={nextIcon} />
+                    </span>
+                  ),
+                  click: handleNextClick,
+                },
+              }}
+              eventContent={eventContent}
+              initialView="timeGridWeek"
+              allDaySlot={false}
+              headerToolbar={{
+                start: "prevButton title nextButton",
+                center: "timeGridWeek,dayGridMonth,multiMonthYear",
+                end: "",
+              }}
+              titleFormat={{
+                day: "numeric",
+                month: "numeric",
+                year: "numeric",
+              }}
+              expandRows={true}
+              contentHeight={"100%"}
+              // slotMinTime={"06:00:00"}
+              // slotMaxTime={"30:00:00"}
+              dayHeaderFormat={{
+                day: "2-digit",
+                month: "long",
+              }}
+              // dayHeaderContent={getDayHeaders}
+              selectable={true}
+              select={handleDateClick}
+              dateClick={handleDateClick}
+              // select={handleDateSelect}
+              // titleFormat={{
+              //    month: ''
+              // }}
+              selectOverlap={false}
+              defaultTimedEventDuration="01:00"
+              showNonCurrentDates={false}
+            />
+            <div
+              className=""
+              style={{ position: "absolute", top: "00px", right: "40px" }}
+            >
+              <InputSelect
+                value={
+                  timeZone == "local"
+                    ? getLocalTimeZone()
+                    : timeZone.substring(0, 20)
+                }
+                //  optionData={['local', 'America/New_York']}
+                // optionData={['Asia/Calcutta', ...moment.tz.zonesForCountry('US')]}
+                // optionData={['Asia/Calcutta', ...moment.tz.zonesForCountry('US')]}
+                optionData={timeZones}
+                onChange={(val) => setTimeZone(val)}
+                parentClassName="w-[160px]"
+                inputContainerClassName="text-primaryDark font-bold text-"
+              />
+              {/* <div class="inline-flex rounded shadow-sm mt-1">
+    <button class="px-2 py-1 text-xs font-medium text-blue-700 bg-white border border-gray-200 rounded-l-lg hover:bg-gray-100 focus:z-10 focus:text-orange-700 dark:bg-gray-700 dark:border-gray-600 dark:text-dark dark:hover:text-orange dark:hover:bg-gray-600 dark:focus:text-orange" >
+        Weekly
+    </button>
+    <button class="px-2 py-1 text-xs font-medium text-gray-900 bg-white border border-gray-200 hover:bg-gray-100 hover:text-orange-700 focus:z-10 focus:text-orange-700 dark:bg-gray-700 dark:border-gray-600 dark:text-dark dark:hover:text-orange dark:hover:bg-gray-600 dark:focus:text-orange" >
+        Monthly
+    </button>
+    <button class="px-2 py-1 text-xs font-medium text-gray-900 bg-white border border-gray-200 rounded-r-md hover:bg-gray-100 hover:text-orange-700 focus:z-10 focus:text-orange-700 dark:bg-gray-700 dark:border-gray-600 dark:text-dark dark:hover:text-orange dark:hover:bg-gray-600 dark:focus:text-orange">
+        Yearly
+    </button>
+</div> */}
             </div>
-         </div>
-         {eventModalActive && (
-            <EventModal
-               isEditable={isEditable}
-               defaultEventData={defaultEventData}
-               setEventModalActive={setEventModalActive}
-               persona={persona}
-               refetchSessions={refetchSessions}
-            />
-         )}
-         {updateEventModalActive && (
-            <EventModal
-               isEditable={isEditable}
-               setEventModalActive={setUpdateEventModalActive}
-               persona={persona}
-               isUpdating={true}
-               sessionToUpdate={sessionToUpdate}
-               refetchSessions={refetchSessions}
-            />
-         )}
-      </>
-   );
+          </div>
+        </div>
+      </div>
+      {eventModalActive && (
+        <EventModal
+          isEditable={isEditable}
+          defaultEventData={defaultEventData}
+          setEventModalActive={setEventModalActive}
+          persona={persona}
+          refetchSessions={refetchSessions}
+        />
+      )}
+      {updateEventModalActive && (
+        <EventModal
+          isEditable={isEditable}
+          setEventModalActive={setUpdateEventModalActive}
+          persona={persona}
+          isUpdating={true}
+          sessionToUpdate={sessionToUpdate}
+          refetchSessions={refetchSessions}
+        />
+      )}
+    </>
+  );
 }
