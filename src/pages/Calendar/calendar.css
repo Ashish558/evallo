@@ -133,10 +133,10 @@ justify-content: center;
 .calender tr:nth-child(even){
     height: 5rem !important;
 }
-.fc-theme-standard td, .fc-theme-standard th{
+.calender .fc-theme-standard td, .fc-theme-standard th{
     border: 1px solid white !important;
 }
-.fc-theme-standard .fc-toolbar .fc-toolbar-title{
+.calender .fc-theme-standard .fc-toolbar .fc-toolbar-title{
     color:#26435F !important;
     font-weight: 500 !important;
     font-size: 17.5px;
