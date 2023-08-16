@@ -53,7 +53,7 @@ const BubbleChart = () => {
       // });
     }
   }, [dailyActivityAccess]);
-  // console.log(chartData)
+   console.log({ userDailyActivity,chartData})
   return (
     <div className="bg-[#FFFFFF] flex justify-center items-center border-[1.5px] border-gray-200 p-4 mt-[6px] rounded-md">
       <div className="w-full max-w-screen-lg">
@@ -172,4 +172,4 @@ const BubbleChart = () => {
   );
 };
 
-export default BubbleChart;
+export default React.memo(BubbleChart);

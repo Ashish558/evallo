@@ -1,19 +1,19 @@
-.fc-theme-standard .fc-timeGridWeek-view .fc-scrollgrid {
+.calender .fc-theme-standard .fc-timeGridWeek-view .fc-scrollgrid {
     border: 0;
 }
-.fc-theme-standard .fc-toolbar .fc-toolbar-chunk:nth-child(1) {
+.calender .fc-theme-standard .fc-toolbar .fc-toolbar-chunk:nth-child(1) {
     display: flex !important;
     align-items: center !important;
 }
 
-.fc-theme-standard .fc-toolbar .fc-toolbar-title {
+.calender .fc-theme-standard .fc-toolbar .fc-toolbar-title {
     color: rgba(71, 21, 215, 1) !important;
     font-weight: 600;
     font-size: 24px;
     line-height: normal;
 }
 
-.fc-theme-standard
+.calender .fc-theme-standard
     .fc-toolbar
     .fc-toolbar-chunk
     .fc-prev-button.fc-button
@@ -26,7 +26,7 @@
     background-color: transparent !important;
 }
 
-.calendar-prev-button {
+.calender .calendar-prev-button {
     border: 0 !important;
     outline: 0 !important;
     background-color: transparent !important;
@@ -37,22 +37,22 @@
     align-items: center !important;
 }
 
-.fc-direction-ltr .fc-timegrid-col-events {
+.calender .fc-direction-ltr .fc-timegrid-col-events {
     margin: 0 !important;
 }
-.fc-theme-standard .fc-timegrid-event {
+.calender .fc-theme-standard .fc-timegrid-event {
     background-color: transparent !important;
     border: 0 !important;
     box-shadow: none !important;
 }
 
-.student-circle {
+.calender .student-circle {
     width: 20px;
     height: 20px;
     border-radius: 50%;
 }
 
-#calendarContainer {
+.calender #calendarContainer {
     background-color: #fff;
     padding: 40px;
     padding-top: 0;
@@ -62,52 +62,130 @@
     overflow-y: auto;
     scroll-behavior: smooth;
 }
-#calendarContainer .fc-direction-ltr.fc-theme-standard{
+.calender #calendarContainer .fc-direction-ltr.fc-theme-standard{
     padding-top: 2rem;
 }
-.fc .fc-timegrid-slot-minor{
+.calender .fc .fc-timegrid-slot-minor{
     border-top-style: none !important;
 }
 
-.fc-direction-ltr .fc-timegrid-slot-label-frame{
+.calender .fc-direction-ltr .fc-timegrid-slot-label-frame{
     transform: translateY(17px) !important;
 }
 
-.fc-scrollgrid-sync-inner::after {
+.calender .fc-scrollgrid-sync-inner::after {
   content:" ";
   
 }
 
-.fc-scroller-harness::after  {
+.calender .fc-scroller-harness::after  {
     content:" ";
     display: none;
     
   }
 
-  .fc .fc-col-header-cell-cushion  div::after{
+  .calender .fc .fc-col-header-cell-cushion  div::after{
     content:" ";
     display: none;
   }
-  .fc .fc-timegrid-axis-frame::after{
+  .calender .fc .fc-timegrid-axis-frame::after{
     content:" ";
     display: none;
   }
-tbody{
+  .calender tbody{
     color: #26435F;
     font-weight: 600;
     text-align: center;
+    /* background: rgb(243 245 247 / var(--tw-bg-opacity)) !important; */
 }
-.fc-daygrid-day-top{
+.calender .fc-daygrid-day-top{
 align-items: center;
 justify-content: center;
 }
-.fc .fc-timegrid-slot{
-    height: 4.5rem !important;
+.calender .fc .fc-timegrid-slot{
+    height: 2.5rem !important;
 }
-.fc .fc-timegrid-slot-label{
+.calender .fc .fc-timegrid-slot-label{
     display: block;
 
 }
-a{
+.calender a{
     text-decoration: none !important;
+}
+.calender #calendarContainer{
+    background-color: inherit !important;
+    box-shadow: 0 0 0px rgba(0, 0, 0, 0.2) !important;
+    overflow-y: auto !important;
+}
+.calender th{
+    background-color: rgb(243 245 247 / var(--tw-bg-opacity)) !important;
+    padding: 0 !important;
+    color: #517ca8 !important;
+}
+
+.calender tr:nth-child(odd) {
+    background: inherit !important;
+    color: #517ca8  !important;
+    border-radius: 0 !important;
+    box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.25) !important;
+    height: 5rem !important;
+}
+.calender tr:nth-child(even){
+    height: 5rem !important;
+}
+.fc-theme-standard td, .fc-theme-standard th{
+    border: 1px solid white !important;
+}
+.fc-theme-standard .fc-toolbar .fc-toolbar-title{
+    color:#26435F !important;
+    font-weight: 500 !important;
+    font-size: 17.5px;
+}
+.calender button-primary:not(:disabled).fc-button-active {
+    
+    background-color: #fff !important;
+    border-color: #fff !important;
+    color: #FFA28D !important;
+    
+
+}
+.calender .fc .fc-button
+{
+    background-color: inherit !important;
+}
+.calender .fc .fc-button-primary{
+    background-color: #fff !important;
+    border: 1.25px solid #F5F6F7 !important;
+    /* border-color: #fff !important; */
+    color: #ADB8CC !important;
+}
+.calender .fc .fc-button-primary:hover{
+    background-color: #fff !important;
+    border-color: #fff !important;
+    color: #FFA28D !important;
+
+}
+.calender .fc-timeGridWeek-button{
+    border-radius: 20px 0px 0px 20px !important;
+}
+.calender .calendar-prev-button{
+    border-radius: 30px !important;
+}
+.calender .calendar-next-button{
+    border-radius: 30px !important;
+}
+.calender .text-2xl {
+    font-size: 1rem !important;
+    line-height: 1  rem !important;
+}
+.calender .font-bold{
+    font-weight: 500 !important;
+}
+.calender .timegrid-slot-label-cushion {
+padding: 0px 0px;
+font-size: 1.2rem;
+}
+.calender .fc .fc-col-header-cell-cushion{
+    font-size: 1.5rem !important;
+    margin-top: 1.2rem !important;
 }

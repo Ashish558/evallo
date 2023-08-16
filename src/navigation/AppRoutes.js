@@ -36,6 +36,7 @@ import Footer from "../components/Footer/Footer";
 import Settings from "../pages/Settings/Settings";
 import SuperAdminSettings from "../pages/Settings/SuperAdminSettings";
 import SuperAdminProfile from "../pages/SuperadminDashboard/components/About/About";
+import EmailVerify from "../pages/Settings/Tabs/AccountOverview/EmailVerify";
 
 const PrivateRoutes = [
   {
@@ -79,6 +80,7 @@ const AppRoutes = () => {
         <Route path="/signup/user" element={<UserSignup />} />
         <Route path="/dashboard" element={<SuperadminDashboard />} />
         <Route path="/all-orgs" element={<AllOrgs />} />
+        <Route path="/verify-email" element={<EmailVerify />} />
         <Route path="/orgadmin-profile/:id" element={<SuperAdminProfile />} />
         <Route
           path="/users"

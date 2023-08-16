@@ -16,6 +16,7 @@ import {
 } from "../../../../app/services/users";
 import { BASE_URL, getAuthHeader } from "../../../../app/constants/constants";
 import InputFieldDropdown from "../../../../components/InputField/inputFieldDropdown";
+import { useUpdateEmailMutation } from "../../../../app/services/organization";
 const AccountOverview = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [reset, setReset] = useState(false);
@@ -51,12 +52,17 @@ const AccountOverview = () => {
     activeTutors: "",
     services: [],
   });
+  const [updateEmail, setUpdateEmail] = useUpdateEmailMutation();
   const [userDetails, userDetailsStatus] = useLazyGetPersonalDetailQuery();
   const [updateAccount, updateAccountStatus] = useUpdateUserAccountMutation();
+  const [fetchedData,setFetchedData]=useState({})
   useEffect(() => {
     userDetails()
       .then((res) => {
         setValues({
+          ...res?.data.data.user,
+        });
+        setFetchedData({
           ...res?.data.data.user,
         });
       })
@@ -65,7 +71,14 @@ const AccountOverview = () => {
       });
   }, []);
 
-  useEffect(() => {
+  const handleEmailUpdate = (email) => {
+    console.log("Email Updation invoked", email);
+    if (email !== "")
+      updateEmail({ email }).then((res) => {
+        console.log("Email Link sent", res);
+      });
+  };
+  const handleDataUpdate = () => {
     const updateUserAccount = async () => {
       try {
         let reqBody = { ...values };
@@ -83,8 +96,10 @@ const AccountOverview = () => {
       }
     };
     updateUserAccount();
-  }, [values]);
-
+    if(fetchedData?.email!==values.email)
+    handleEmailUpdate(values.email)
+    console.log({fetchedData,values})
+  };
   const showResetConfirmation = () => {
     setReset(true);
     handlePasswordReset();
@@ -116,7 +131,7 @@ const AccountOverview = () => {
       alert("Password reset link sent to your email.");
     });
   };
-  
+
   return (
     <div>
       <div className="flex flex-col gap-10 w-[900px] ">
@@ -161,12 +176,13 @@ const AccountOverview = () => {
             label="Email"
             IconRight={tooltipIcon}
             value={values.email}
-            onChange={(e) =>
+            onChange={(e) => {
               setValues({
                 ...values,
                 email: e.target.value,
-              })
-            }
+              });
+             
+            }}
             error={error.email}
             Tooltip={
               <span className="absolute top-10 w-[200px] scale-0 rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100">
@@ -195,8 +211,9 @@ const AccountOverview = () => {
             handleCodeChange={(e) =>
               setValues({
                 ...values,
-                phoneCode:e.target.value
-              })}
+                phoneCode: e.target.value,
+              })
+            }
             onChange={(e) =>
               setValues({
                 ...values,
@@ -206,6 +223,7 @@ const AccountOverview = () => {
             error={error.phone}
           />
         </div>
+
         <div className="flex gap-7 flex-1">
           <div>
             <h1 className="my-1 text-[#26435F] font-semibold text-sm">
@@ -224,6 +242,14 @@ const AccountOverview = () => {
             </h1>
             <button className="bg-[#517CA8] text-white rounded-md px-5 py-2 text-sm">
               Download
+            </button>
+          </div>
+          <div>
+            <button
+              onClick={handleDataUpdate}
+              className="bg-[#FF7979] text-white mt-7 rounded-md px-5 py-2 text-sm"
+            >
+              Save
             </button>
           </div>
         </div>

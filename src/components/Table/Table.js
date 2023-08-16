@@ -44,7 +44,6 @@ export default function Table(props) {
       }
       arr.push(curr);
     }
-    console.log({tableData,maxPageSize, arr });
     setDummy(arr);
   }, [tableData]);
   useEffect(() => {

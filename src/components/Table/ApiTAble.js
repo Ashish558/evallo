@@ -55,7 +55,6 @@ export default function ApiTable({
       }
       arr.push(curr);
     }
-    console.log({tableData,maxPageSize, arr });
     setDummy(arr);
   }, [tableData]);
   useEffect(() => {
