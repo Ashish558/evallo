@@ -48,6 +48,7 @@ import { useAddNewQuestionMutation } from "../../app/services/admin";
 import { updateOrganizationSettings } from "../../app/slices/organization";
 import InputSelect from "../../components/InputSelect/InputSelect";
 import { timeZones } from "../../constants/constants";
+import { permissionsStaticData } from "./Tabs/staticData";
 
 // import questionMark from '../../assets/images/question-mark.svg'
 const initialState = {
@@ -201,11 +202,7 @@ export default function Settings() {
       }
       return { ...per };
     });
-    const body = {
-      orgId: organization._id,
-      permissionId: key,
-      choosedValue: value,
-    };
+    
 
     setThePermission(arr);
     let updatedSetting = {
@@ -300,7 +297,9 @@ export default function Settings() {
   const fetchSettings = () => {
     if (organization.settings) {
       setSettingsData(organization.settings);
+      if(organization?.settings?.permissions?.length>0)
      setThePermission(organization.settings.permissions);
+   
     }
   };
 console.log(organization)

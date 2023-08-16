@@ -24,6 +24,7 @@ import {
   useUpdateOrgLogoMutation,
   useUpdateUserOrganizationMutation,
 } from "../../../../app/services/organization";
+import { object } from "prop-types";
 const CompanyAndBround = () => {
   const { organization } = useSelector((state) => state.organization);
   const userData = useSelector((state) => state.user);
@@ -50,6 +51,8 @@ const CompanyAndBround = () => {
   const handleState = (c) => {
     if (!c) return;
     console.log("country", c);
+    if(typeof c === "object")
+    c=c.name
     const state = country.filter((x) => x.name === c);
     const currentState = state.map((s) => s.states);
 
@@ -309,7 +312,10 @@ const CompanyAndBround = () => {
                 value={values.country}
                 optionData={country}
                 optionType={"object"}
-                onChange={(e) => handleState(e)}
+                onChange={(e) => {
+                  
+                  handleState(e);
+                }}
                 error={error.country}
               />
             </div>
@@ -327,7 +333,7 @@ const CompanyAndBround = () => {
                 onChange={(e) =>
                   setValues({
                     ...values,
-                    state: e,
+                    state: e.name,
                   })
                 }
                 error={error.state}
