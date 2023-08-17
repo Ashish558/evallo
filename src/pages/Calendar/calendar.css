@@ -184,3 +184,21 @@
   font-size: 1.5rem !important;
   margin-top: 1.2rem !important;
 }
+.react-calendar .react-calendar__navigation__label__labelText.react-calendar__navigation__label__labelText--from{
+    color: #26435F !important;
+}
+.react-calendar__tile--active abbr {
+    border-radius: 50%;
+    background-color: #FFA28D !important;
+}
+.border {
+    /* border-width: 1px; */
+    border: 1.25px solid #FFA28D!important;
+    border-radius: 50px;
+    background: white;
+    color: #FFA28D !important;
+    margin-top: 28px !important;
+}
+::-webkit-scrollbar{
+    width: 0 !important;
+}

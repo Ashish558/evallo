@@ -1061,7 +1061,7 @@ export default function Calendar() {
               allDaySlot={false}
               headerToolbar={{
                 start: "prevButton title nextButton",
-                center: "timeGridWeek,dayGridMonth,multiMonthYear",
+                center: "timeGridWeek,dayGridMonth",
                 end: "",
               }}
               titleFormat={{
