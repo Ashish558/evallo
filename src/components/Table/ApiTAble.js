@@ -40,7 +40,7 @@ export default function ApiTable({
     setcheckedHeaderHandler(isChecked);
   }, [isChecked]);
   useEffect(() => {
-    setIsChecked(false);
+   setIsChecked && setIsChecked(false);
   }, [currentPage]);
   useEffect(() => {
     let arr = [];
@@ -72,13 +72,13 @@ export default function ApiTable({
     
   }, [currentPage, data]);
   const topcheckedHandler = () => {
-    setIsChecked(!isChecked);
+   setIsChecked && setIsChecked(!isChecked);
   };
   const setcheckedHeaderHandler = (isChecked) => {
     setcheckedHeader(isChecked);
     if (isChecked) {
       setnumberChecked(tableData.length);
-    } else setnumberChecked(0);
+    } else setnumberChecked && setnumberChecked(tableData.length);
   };
 
   return (
