@@ -52,9 +52,9 @@ export default function Table(props) {
 
   return (
     <div className="w-full">
-      <div className="overflow-x-auto scrollbar-content  my-7  scroll-m-1 ">
+      <div className="overflow-x-auto  scrollbar-content   scroll-m-1 ">
       <table
-        className={`${styles.customTable}  border-collapse border-spacing-2 whitespace-nowrap  mb-3 text-center w-full min-h-[300px]`}
+        className={`${styles.customTable} px-2 border-collapse border-spacing-2 whitespace-nowrap  mb-3 text-center w-full min-h-[300px]`}
       >
         <thead className="bg-[#26435F] whitespace-nowrap">
           <tr className=" whitespace-nowrap">
