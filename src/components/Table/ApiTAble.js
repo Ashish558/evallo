@@ -85,7 +85,7 @@ export default function ApiTable({
     <div className="w-full">
     <div className="overflow-x-auto scrollbar-content  my-7  scroll-m-1 ">
 
-      <table className="table-auto px-2 mb-3 text-center w-full">
+      <table className="table-auto px-[2.5px] mb-3 text-center w-full">
         <thead className="pb-2">
           <tr>
             {tableHeaders.map((item, idx) => {

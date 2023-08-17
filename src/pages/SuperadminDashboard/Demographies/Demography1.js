@@ -55,7 +55,7 @@ const Demography1 = () => {
   console.log({countryFlag});
   return (
     <div className="bg-[#FFFFFF] flex justify-center items-center border border-gray-200 p-4 mt-[6px] rounded-md">
-      <div className="grid grid-cols-2 gap-x-5">
+      <div className="grid grid-cols-2 gap-x-3">
         <div>
           <button className="">
             <InputSelectNew
