@@ -54,9 +54,9 @@ const Demography1 = () => {
   }, [currentDemographicArea, countryName]);
   console.log({countryFlag});
   return (
-    <div className="bg-[#FFFFFF] flex justify-center items-center border border-gray-200 p-4 mt-[6px] rounded-md">
-      <div className="grid grid-cols-2 gap-x-3">
-        <div>
+    <div className="bg-[#FFFFFF] flex justify-center items-center border border-gray-200 p-3 mt-[6px] rounded-md">
+      <div className="grid grid-cols-2 gap-x-5">
+        <div className="">
           <button className="">
             <InputSelectNew
               placeholder={"User"}
@@ -109,7 +109,7 @@ const Demography1 = () => {
         </div>
         <div>
           <p className="text-[#26435F] text-sm font-semibold mt-4 ">
-            <span className="shadow-md rounded-md mr-2">
+            <span className="shadow-md rounded-md ml-[-20px] mr-2 ">
             <ReactCountryFlag
               countryCode={countryFlag}
               svg
@@ -125,26 +125,26 @@ const Demography1 = () => {
               <img className="ml-2 inline-block" src={downArrow} alt={"downArrow"} />
             </span>
           </p>
-          <table className="table-auto w-full whitespace-nowrap">
+          <table className="table-auto border-spacing-y-1 border-separate w-full whitespace-nowrap">
             <thead>
               <tr>
-                <th className="px-5">State </th>
-                <th className="px-5"># of orgs </th>
-                <th className="px-5">Avg. # of S / O </th>
-                <th className="px-5">Avg. # of T / O</th>
+                <th className="px-4">State </th>
+                <th className="px-4"># of orgs </th>
+                <th className="px-4">Avg. # of S / O </th>
+                <th className="px-4">Avg. # of T / O</th>
               </tr>
             </thead>
             <tbody>
               {currentDemographicArea?.map((state, id) => {
                 return (
-                  <tr className={`my-5 overflow-hidden `} key={id}>
-                    <td className={` ${id%2?"bg-[#F5F8FA]":'bg-white'}`}>
+                  <tr className={`my-7 overflow-hidden `} key={id}>
+                    <td className={`mb-1 ${id%2?"bg-[#F5F8FA]":'bg-white'}`}>
                       {state.state_name.charAt(0).toUpperCase() +
                         state.state_name.slice(1)}
                     </td>
-                    <td className={` ${id%2?"bg-[#F5F8FA]":'bg-white'}`}>{state.no_of_orgs}</td>
-                    <td className={` ${id%2?"bg-[#F5F8FA]":'bg-white'}`}>{Math.round(state.average_students)}</td>
-                    <td className={` ${id%2?"bg-[#F5F8FA]":'bg-white'}`}>{Math.round(state.average_tutors)}</td>
+                    <td className={`mb-1 ${id%2?"bg-[#F5F8FA]":'bg-white'}`}>{state.no_of_orgs}</td>
+                    <td className={`mb-1 ${id%2?"bg-[#F5F8FA]":'bg-white'}`}>{Math.round(state.average_students)}</td>
+                    <td className={` mb-1 ${id%2?"bg-[#F5F8FA]":'bg-white'}`}>{Math.round(state.average_tutors)}</td>
                   </tr>
                 );
               })}
