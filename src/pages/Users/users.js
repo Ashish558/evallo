@@ -681,7 +681,7 @@ export default function Users() {
       const formdata = new FormData();
       formdata.append("file", xlsFile);
       await axios
-        .post(`${BASE_URL}api/user/bulkUploadUser`, formdata, {
+        .post(`${BASE_URL}api/user/bulkUploadUsers`, formdata, {
           headers: getAuthHeader(),
         })
         .then((res) => {
@@ -699,7 +699,7 @@ export default function Users() {
       const formdata = new FormData();
       formdata.append("file", xlsFile);
       await axios
-        .post(`${BASE_URL}api/user/bulkInviteUser`, formdata, {
+        .post(`${BASE_URL}api/user/bulkInviteUsers`, formdata, {
           headers: getAuthHeader(),
         })
         .then((res) => {
