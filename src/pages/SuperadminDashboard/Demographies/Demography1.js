@@ -137,14 +137,14 @@ const Demography1 = () => {
             <tbody>
               {currentDemographicArea?.map((state, id) => {
                 return (
-                  <tr className="my-5" key={id}>
-                    <td className="">
+                  <tr className={`my-5 overflow-hidden `} key={id}>
+                    <td className={` ${id%2?"bg-[#F5F8FA]":'bg-white'}`}>
                       {state.state_name.charAt(0).toUpperCase() +
                         state.state_name.slice(1)}
                     </td>
-                    <td className="">{state.no_of_orgs}</td>
-                    <td className="">{Math.round(state.average_students)}</td>
-                    <td className="">{Math.round(state.average_tutors)}</td>
+                    <td className={` ${id%2?"bg-[#F5F8FA]":'bg-white'}`}>{state.no_of_orgs}</td>
+                    <td className={` ${id%2?"bg-[#F5F8FA]":'bg-white'}`}>{Math.round(state.average_students)}</td>
+                    <td className={` ${id%2?"bg-[#F5F8FA]":'bg-white'}`}>{Math.round(state.average_tutors)}</td>
                   </tr>
                 );
               })}

@@ -27,7 +27,7 @@ code {
     padding: 10px;
 }
 
-.table-auto td:first-child {
+/* .table-auto td:first-child {
     border-left-style: solid;
     border-top-left-radius: 10px;
     border-bottom-left-radius: 10px;
@@ -36,7 +36,7 @@ code {
     border-right-style: solid;
     border-bottom-right-radius: 10px;
     border-top-right-radius: 10px;
-}
+} */
 
 * {
     scrollbar-width: none;
