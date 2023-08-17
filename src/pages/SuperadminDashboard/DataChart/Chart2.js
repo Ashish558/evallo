@@ -5,8 +5,8 @@ import { bubbleChartData } from "./ChartData";
 const BubbleChart2 = () => {
   return (
     <div className="bg-[#FFFFFF] flex justify-center items-center border border-gray-200 p-4 mt-[6px] rounded-md">
-      < div className="w-full max-w-screen-lg " >
-        <div className="flex justify-center w-full">
+     
+        <div className="flex items-center justify-center w-full">
           <Bubble
             data={bubbleChartData}
             options={{
@@ -66,7 +66,7 @@ const BubbleChart2 = () => {
             }}
           />
         </div>
-      </div >
+    
     </div >
   );
 };

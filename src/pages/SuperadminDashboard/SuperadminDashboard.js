@@ -1,42 +1,27 @@
 import React, { useEffect } from "react";
-import SAdminNavbar from "../../components/sAdminNavbar/sAdminNavbar";
+
 import styles from "./styles.module.css";
-import OrgCard from "./orgCard/orgCard";
+
 import orgStyles from "./orgCard/orgcard.module.css";
 import Table from "./Table/table";
 import { orgData, tableHeaders } from "./temp";
-import { useLazyGetAllOrgUsersQuery } from "../../app/services/users";
-import { useLazyGetLatestOrgQuery } from "../../app/services/superAdmin";
+import {  useGetAllOrgStatsRangeMutation, useGetLatestOrgRangeMutation, useLazyGetLatestOrgQuery } from "../../app/services/superAdmin";
 import Chart from "./DataChart/Chart";
 import Chart2 from "./DataChart/Chart2";
 import Index from "./FinancialStats/Index1";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faArrowDown,
-  faArrowDown19,
-  faArrowDown91,
-  faArrowRightFromBracket,
-  faCaretDown,
-  faDollar,
-  faPlus,
-  faUpload,
-} from "@fortawesome/free-solid-svg-icons";
+
 import { faQuestionCircle } from "@fortawesome/free-regular-svg-icons";
-import icon from "../../assets/images/Evallo.png";
-import image from "../../assets/images/Vector.png";
-import image1 from "../../assets/images/Vector (1).png";
-import image2 from "../../assets/images/Vector (2).png";
-import image3 from "../../assets/images/Vector (3).png";
-import image4 from "../../assets/images/Vector (4).png";
-import image5 from "../../assets/images/Vector (5).png";
-import image6 from "../../assets/images/Vector (6).png";
+
 import Demography from "./Demographies/Demography1";
-import axios from "axios";
+
 import { useState } from "react";
 import {
-  useGetAllOrgStatsQuery,
   useGetUserStatsByRoleQuery,
 } from "../../app/services/superAdmin";
+import RangeDate from "../../components/RangeDate/RangeDate";
+import { convertDateToRange } from "./utils";
+import { useSelector } from "react-redux";
 const orgContents = [
   {
     heading: "Total # of Orgs",
@@ -80,9 +65,12 @@ const userTypes = [
 ];
 
 function SuperadminDashboard() {
+
   const [orgSignUpData, setOrgSignUpData] = useState([]);
-  const [fetchUserData, setUserData] = useLazyGetLatestOrgQuery();
-  const { data: OrgStats } = useGetAllOrgStatsQuery();
+  const [fetchUserData, setUserData] = useGetLatestOrgRangeMutation();
+  const [ OrgStatsData,OrgStatsStatus ] = useGetAllOrgStatsRangeMutation()
+  const [OrgStats,setOrgStats]= useState({})
+  const [dateRange,setDateRange]= useState();
   const [currentUser, setCurrentUser] = useState();
   const [totalUsers, setTotalUsers] = useState({
     admin: null,
@@ -107,8 +95,8 @@ function SuperadminDashboard() {
     role: "student",
   });
 
-  const getLatestOrgs = async () => {
-    fetchUserData().then((result) => {
+  const getLatestOrgs = async (body) => {
+    fetchUserData(body).then((result) => {
       try {
         let arr = [];
         for (let i = 0; i < result?.data?.data?.length; i++) {
@@ -136,10 +124,11 @@ function SuperadminDashboard() {
           }
         }
 
-        if (arr.length > 0) setOrgSignUpData(arr);
+      setOrgSignUpData(arr);
       } catch (e) {}
     });
   };
+  
   useEffect(() => {
     setTotalUsers({
       admin: userAdminStats,
@@ -154,7 +143,7 @@ function SuperadminDashboard() {
 
       ...userAdminStats,
     });
-    getLatestOrgs();
+    
   }, [
     userAdminStats,
     userParentStats,
@@ -168,14 +157,30 @@ function SuperadminDashboard() {
       ...totalUsers[`${item.text.toLowerCase()}`],
     });
   };
+  const handleDataRange=(startDate)=>{
+  const body=convertDateToRange(startDate)
+ 
+  OrgStatsData(body).then((res)=>{
+    console.log({res})
+    setOrgStats(res?.data)
+  })
+  getLatestOrgs(body);
+  setDateRange(body)
+  }
+  
   return (
     <div className={styles.container}>
-      <div className=" mt-[60px] bg-#2E2E2E mx-[110px] pb-7 ">
+      <div className=" mt-[40px] bg-#2E2E2E mx-[110px] pb-7 ">
+        <div className="flex justify-between">
         <p className="text-[#24A3D9]">Dashboard</p>
+      
+        <RangeDate super={true} handleRangeData={handleDataRange} />
+        </div>
+       
         <div className="flex gap-7 justify-between mt-7 ">
           <section className="flex flex-col">
             <div className="w-full whitespace-nowrap">
-              <p className={styles.subheading}> Organizations </p>
+              <p className={styles.subheading}> users </p>
               <div className={`flex mr-0 ${styles.orgCard}`}>
                 <div className={`  ${orgStyles.container}`}>
                   <p className={orgStyles.heading}> Total # of Orgs</p>
@@ -199,19 +204,18 @@ function SuperadminDashboard() {
                 </div>
               </div>
             </div>
-            <div
-              
-              className="w-full"
-            >
+            <div className="w-full">
               <p className="mt-[20px] mb-2.5 font-semibold text-[#26435F]">
                 {" "}
                 User Stats{" "}
               </p>
-              <div  className={styles.userStatsContainer}>
-                <div style={{
-               boxShadow: "0px 0px 2px rgba(0, 0, 0, 0.25) ",
-              
-              }} className="flex overflow-hidden rounded-t-md">
+              <div className={styles.userStatsContainer}>
+                <div
+                  style={{
+                    boxShadow: "0px 0px 2px rgba(0, 0, 0, 0.25) ",
+                  }}
+                  className="flex overflow-hidden rounded-t-md"
+                >
                   {userTypes.map((item, id) => {
                     return (
                       <div
@@ -229,7 +233,7 @@ function SuperadminDashboard() {
                     );
                   })}
                 </div>
-                <div  className="bg-[#F5F8FA]">
+                <div className="bg-[#F5F8FA]">
                   <div
                     className={`flex w-full bg-white ${styles.customBorder}`}
                   >
@@ -272,7 +276,6 @@ function SuperadminDashboard() {
                   </div>
 
                   <div
-                 
                     className={`flex items-center  justify-start gap-12 pl-7 pt-1 pb-2 text-[#26435F] bg-[#FFFFFF] mt-4 ${styles.customBorder}`}
                   >
                     <div>
@@ -307,8 +310,8 @@ function SuperadminDashboard() {
           </section>
         </div>
         <p className="text-[#26435F] font-semibold mt-9">Daily active users</p>
-        <Chart />
-        <Index />
+        <Chart dateRange={dateRange}/>
+        <Index dateRange={dateRange}/>
         <div className="flex items-center mt-[50px]">
           <p className="text-[#26435F] font-semibold ">
             Financial Stats chart{" "}

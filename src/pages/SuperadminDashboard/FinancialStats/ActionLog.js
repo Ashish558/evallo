@@ -1,24 +1,18 @@
 import styles from "./styles.module.css";
-import { useGetActionLogQuery } from "../../../app/services/superAdmin";
+import { useGetActionLogQuery, useGetActionLogRangeMutation } from "../../../app/services/superAdmin";
 import { useSelector } from "react-redux";
 import React, { useState } from "react";
 import { useEffect } from "react";
 import { useRef } from "react";
-function ActionLog() {
-  const { data: actionLogData, isSuccess: fetchStatus } =
-    useGetActionLogQuery();
+function ActionLog({dateRange}) {
+  const [ actionLogData, fetchStatus ] =useGetActionLogRangeMutation()
 
   const [currentElementIndex, setCurrentElementIndex] = useState(0);
   const [extraElement, setExtraElement] = useState(0);
   const [sortedAction, setSortedAction] = useState([]);
   const [actionLog, setActionLog] = useState([]);
   const ref = useRef();
-  useEffect(() => {
-    if (actionLogData?.actions?.length > 0) {
-      setActionLog(actionLogData?.actions);
-      console.log("action", actionLogData?.actions);
-    }
-  }, [actionLogData]);
+
   const handleScroll = (e) => {
     // Get the height of each element row
 
@@ -77,7 +71,17 @@ function ActionLog() {
     setExtraElement(extra);
     setSortedAction(newarr);
   }, [actionLog]);
-
+  useEffect(()=>{
+    if (dateRange === ""||!dateRange) return ;
+    const fetchActivity=()=>{
+      
+      actionLogData(dateRange).then((res)=>{
+       console.log("actionlog",{dateRange},{res:res?.data})
+       setActionLog(res?.data?.actions)
+      })
+    }
+    fetchActivity()
+  },[dateRange])
   return (
     <div className="">
       <h2 className="font-semibold mb-1 text-[#26435F]">Action Logs</h2>
@@ -97,7 +101,7 @@ function ActionLog() {
         </div>
         <ul
           style={{
-            overflow: "scroll",
+           
             height: "300px", // Set the desired height of the div here
           }}
           onScroll={handleScroll}

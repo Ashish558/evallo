@@ -143,6 +143,7 @@ export default function Table(props) {
               </tr>
             );
           })}
+          
         </tbody>
       </table>
       </div>

@@ -4,6 +4,8 @@ import Pagination from "./Pagination";
 import TableItem from "./TableItem";
 import TableHeader from "./TableHeader";
 import styles from "./styles.module.css";
+import Loader from "../../../components/Loader";
+import LoaderNew from "../../../components/Loader/LoaderNew";
 
 export default function Table(props) {
   const {
@@ -20,12 +22,25 @@ export default function Table(props) {
     AdminLatestSignUp
   } = props;
 
-  
+  const [dummy, setDummy] = useState([]);
   const [tableData, setTableData] = useState(data);
   const [currentPage, setCurrentPage] = useState(1);
   const dataLength = data?.length > 30 ? 30 : data?.length;
   const [sorted, setSorted] = useState(false);
-
+  useEffect(() => {
+    let arr = [];
+    let noOfkeys;
+   noOfkeys = tableHeaders.length;
+    arr.length = noOfkeys;
+    for (let i = 0; i < maxPageSize - tableData.length; i++) {
+      let curr = [];
+      for (let j = 0; j < noOfkeys; j++) {
+        curr.push(" Dummy ");
+      }
+      arr.push(curr);
+    }
+    setDummy(arr);
+  }, [tableData]);
   useEffect(() => {
     if (changePageAfterUpdate === false) return;
     if (hidePagination === true) {
@@ -68,7 +83,7 @@ export default function Table(props) {
             <div
               className={`absolute w-full min-h-[100px] flex justify-center items-center`}
             >
-              <div></div>
+              <div><LoaderNew/></div>
             </div>
           ) : (
             tableData.map((item, idx) => {
@@ -85,6 +100,22 @@ export default function Table(props) {
               );
             })
           )}
+           {dummy.map((it, iti) => {
+            return (
+              <tr
+                key={iti}
+                className="shadow-sm shadow-slate-200 rounded-2xl leading-8 "
+              >
+                {it.map((d, di) => {
+                  return (
+                    <td  key={di} className="opacity-0 text-sm px-1 min-w-14 py-3 ">
+                      {d}
+                    </td>
+                  );
+                })}
+              </tr>
+            );
+          })}
         </tbody>
       </table>
       </div>

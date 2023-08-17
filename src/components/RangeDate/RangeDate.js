@@ -8,7 +8,7 @@ import styles from "./rangeDate.module.css";
 import { useState } from "react";
 import { useEffect } from "react";
 
-const RangeDate = ({ handleRangeData }) => {
+const RangeDate = ({ handleRangeData  }) => {
   const [startDate, setStartDate] = useState(() => calculateDateRange()[0]);
   const [selectDate, setSelectedDate] = useState({
     sDate: "",

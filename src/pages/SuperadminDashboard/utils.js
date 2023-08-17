@@ -6,15 +6,16 @@ export function groupDatesIntoWeeks(dates) {
 
   let tot = 0;
   let pw = 0;
+  let limit=1;
   sortedDates.forEach((date) => {
     const diffInDays = (new Date(date.date) - stDate) / (1000 * 60 * 60 * 24);
-    if (parseInt(diffInDays / 7) === pw) {
+    if (parseInt(diffInDays / limit) === pw) {
       currentWeek.push(date);
       tot += Math.abs(date.totalHours);
     } else {
       weeks.push({ data: currentWeek, week: pw + 1, hours: tot });
       tot = 0;
-      pw = parseInt(diffInDays / 7);
+      pw = parseInt(diffInDays /limit);
       currentWeek = [date];
       tot = Math.abs(date.totalHours);
     }
@@ -28,7 +29,8 @@ export function groupDatesIntoWeeks(dates) {
   return weeks;
 }
 
-export function convertToChart(dates) {
+export function convertToChart(dates,userData) {
+  if(!dates|| !userData||dates?.length===0||userData?.length===0)return []
   let labels = [];
   let mxLabel = 0;
 
@@ -37,20 +39,30 @@ export function convertToChart(dates) {
   let tutorData = [];
   let parentData = [];
   let studentData = [];
+ 
+  let labelData=JSON.parse(JSON.stringify(userData))
+  if(labelData?.length>0)
+  labelData=groupDatesIntoWeeks2(labelData)
+  console.log({labelData})
   dates["admin"]?.map((it) => {
     mxLabel = Math.max(mxLabel, it.week);
-    adminData.push({ x: it.week, y: it.hours, r: it.data.length, label: ("week " + it.week) });
+    adminData.push({ x: it.week, y: it.hours, r: it.data.length, label: ("Day " + it?.data[0]?.datetime) });
   });
-  dates["tutors"]?.map((it) => {
+  dates["tutor"]?.map((it) => {
     mxLabel = Math.max(mxLabel, it.week);
-    tutorData.push({ x: it.week, y: it.hours, r: it.data.length, label: ("week " + it.week) });
+    tutorData.push({ x: it.week, y: it.hours, r: it.data.length, label: ("Day " + it?.data[0]?.datetime) });
   });
   dates["parent"]?.map((it) => {
     mxLabel = Math.max(mxLabel, it.week);
-    parentData.push({ x: it.week, y: it.hours, r: it.data.length, label: ("week " + it.week) });
+    parentData.push({ x: it.week, y: it.hours, r: it.data.length, label: ("Day " + it?.data[0]?.datetime) });
   });
-  for (let i = 0; i < mxLabel; i++)
-    labels.push("Week " + (i + 1));
+  dates["student"]?.map((it) => {
+    mxLabel = Math.max(mxLabel, it.week);
+    studentData.push({ x: it.week, y: it.hours, r: it.data.length, label: ("Day " + it?.data[0]?.datetime) });
+  });
+  mxLabel=userData.length
+  for (let i = 0; i < labelData.length; i++)
+    labels.push( new Date(labelData[i]?.data[0]?.datetime).toDateString());
   let result = {
     labels: labels,
     datasets: [
@@ -83,3 +95,49 @@ export const convertDate = (date) => {
   let date1 = new Date(date);
 
 };
+
+export const convertDateToRange = (startDate) => {
+  let startD = startDate.split("-")[0];
+
+  startD = new Date(startD);
+  startD = startD.setDate(startD.getDate() + 1);
+  startD = new Date(startD).toISOString().split("T")[0];
+
+  let endD = startDate.split("-")[1];
+  endD = new Date(endD);
+  endD = endD.setDate(endD.getDate() + 1);
+  endD = new Date(endD).toISOString().split("T")[0];
+  const body = { startDate: startD, endDate: endD };
+
+  return body;
+};
+export function groupDatesIntoWeeks2(dates) {
+  const sortedDates = dates.sort((a, b) => new Date(a.datetime) - new Date(b.datetime));
+  const weeks = [];
+  let currentWeek = [];
+  let stDate = new Date(sortedDates[0].datetime);
+
+  let tot = 0;
+  let pw = 0;
+  let limit=1;
+  sortedDates.forEach((date) => {
+    const diffInDays = (new Date(date.datetime) - stDate) / (1000 * 60 * 60 * 24);
+    if (parseInt(diffInDays / limit) === pw) {
+      currentWeek.push(date);
+      tot += Math.abs(date.totalHours);
+    } else {
+      weeks.push({ data: currentWeek, week: pw + 1, hours: tot });
+      tot = 0;
+      pw = parseInt(diffInDays /limit);
+      currentWeek = [date];
+      tot = Math.abs(date.totalHours);
+    }
+
+  });
+
+  if (currentWeek.length > 0) {
+    weeks.push({ data: currentWeek, week: pw + 1, hours: tot });
+  }
+
+  return weeks;
+}

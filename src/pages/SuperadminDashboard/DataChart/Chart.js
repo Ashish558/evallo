@@ -1,13 +1,14 @@
-import React from "react";
+import React, { useRef } from "react";
 import { Bubble } from "react-chartjs-2";
 import { bubbleChartData } from "./ChartData";
-import { useGetUserDailyActivityQuery } from "../../../app/services/superAdmin";
+import { useGetUserDailyActivityQuery, useGetUserDailyActivityRangeMutation } from "../../../app/services/superAdmin";
 import { groupDatesIntoWeeks, convertToChart } from "../utils";
 import { useEffect } from "react";
 import { useState } from "react";
-const BubbleChart = () => {
-  const { data: userDailyActivity, isSuccess: dailyActivityAccess } =
-    useGetUserDailyActivityQuery();
+const BubbleChart = ({dateRange}) => {
+  const [ userDailyActivity,  setDailyActivity ]=useState([])
+const [userDailyActivityData,status]=useGetUserDailyActivityRangeMutation()
+    
   const [dailyuserData, setDailyUserData] = useState("");
   const [chartData, setChartData] = useState("");
   const plugin = {
@@ -25,15 +26,29 @@ const BubbleChart = () => {
       };
     },
   };
+  useEffect(()=>{
+    if (dateRange === ""||!dateRange) return ;
+    const fetchActivity=()=>{
+     
+      userDailyActivityData(dateRange).then((res)=>{
+       console.log("dailyActivity",{dateRange},{res:res?.data?.data})
+       setDailyActivity(res?.data?.data)
+      })
+    }
+    fetchActivity()
+  },[dateRange])
   useEffect(() => {
-    if (dailyActivityAccess) {
+    if (userDailyActivity?.length>=0) {
       let rolesData = {
         admin: [],
         tutor: [],
         parent: [],
+        student:[],
+        superadmin:[]
       };
-
-      userDailyActivity?.data.map((d) => {
+       
+      userDailyActivity?.map((d) => {
+        if(d?.role&&rolesData[d?.role])
         rolesData[d.role].push({
           date: d.datetime,
           count: d.count,
@@ -46,19 +61,20 @@ const BubbleChart = () => {
           rolesData[key].length > 0 ? groupDatesIntoWeeks(rolesData[key]) : [];
       });
       // console.log(rolesData);
-      let mainData = convertToChart(rolesData);
+      let mainData = convertToChart(rolesData,userDailyActivity);
       setChartData(mainData);
       // setDailyUserData({
       //   ...userDailyActivity,
       // });
     }
-  }, [dailyActivityAccess]);
-   console.log({ userDailyActivity,chartData})
+  }, [userDailyActivity]);
+
+   
   return (
-    <div className="bg-[#FFFFFF] flex justify-center items-center border-[1.5px] border-gray-200 p-4 mt-[6px] rounded-md">
-      <div className="w-full max-w-screen-lg">
-        <div className="flex justify-center w-full">
-          <Bubble
+    <div className="bg-[#FFFFFF] relative flex justify-center items-center border-[1.5px] border-gray-200 p-4 mt-[6px] rounded-md">
+     
+        <div className="flex relative max-w-full justify-center w-full">
+          <Bubble 
             data={chartData ? chartData : bubbleChartData}
             options={{
               scales: {
@@ -166,8 +182,9 @@ const BubbleChart = () => {
               },
             }}
           />
+          <></>
         </div>
-      </div>
+    
     </div>
   );
 };
