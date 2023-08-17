@@ -425,8 +425,8 @@ export default function StudentReport() {
 
    //change time taken series data
    useEffect(() => {
-      const oddcolors = ['#8ADCFF', '#FF4D00']
-      const evencolors = ['#8E76ED', '#E02B1D']
+      const oddcolors = ['#8ADCFF', '#96D7F2']
+      const evencolors = ['#8E76ED', '#24A3D9']
       if (Object.keys(selectedSubject).length === 0) return
       const selected = responseData.response[selectedSubject.idx]
       // console.log('timetaken', selected)
@@ -468,14 +468,53 @@ export default function StudentReport() {
          ...prev,
          colors,
          xaxis: {
+            // categories: ['Category 1', 'Category 2', 'Category 3', 'Category 4', 'Category 5'],
             ...prev.xaxis,
             // tickAmount: 'dataPoints',
             range: 5,
             group: {
                ...prev.xaxis.group,
                groups
-            }
+            },
+           
+            title: {
+              text: 'Question Number',
+              style: {
+               fontSize: '18px', 
+               color: '#24A3D9',
+               fontFamily: 'Lexend',
+               cssClass: 'custom-xaxis-title'
+             },
+            },
+          },
+          
+          chart: {
+            // ... other chart options ...
+        toolbar:{
+         show:false
+        },
+            // Add the custom style to the CSS class
+            events: {
+              updated: function(chartContext, config) {
+                // Apply the custom style to the x-axis title
+                var xaxisTitle = chartContext.el.querySelector('.custom-xaxis-title');
+                if (xaxisTitle) {
+                  xaxisTitle.style.transform = 'translate(0px, 105px)';
+                }
+              },
+            },
          },
+         yaxis:{
+              title: {
+               text: 'Time Taken (in sec)', 
+               style: {
+                  fontSize: '18px', 
+                  color: '#24A3D9',
+                  fontFamily: 'Lexend'
+                },
+            }
+             },
+            
          // tooltip: {
          //    custom: function({series, seriesIndex, dataPointIndex, w}) {
          //      return '<div class="arrow_box">' +
