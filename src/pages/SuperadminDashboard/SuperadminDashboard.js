@@ -172,7 +172,7 @@ function SuperadminDashboard() {
     <div className={styles.container}>
       <div className=" mt-[60px] bg-#2E2E2E mx-[110px] pb-7 ">
         <p className="text-[#24A3D9]">Dashboard</p>
-        <div className="flex justify-between mt-7 ">
+        <div className="flex  justify-between mt-7 ">
           <section className="flex flex-col">
             <div className="w-full whitespace-nowrap">
               <p className={styles.subheading}> Organizations </p>
@@ -294,7 +294,7 @@ function SuperadminDashboard() {
               </div>
             </div>
           </section>
-          <section className="">
+          <section className="w-full ml-5 overflow-auto">
             <p className="text-[#26435F] -mt-1 mb-[-6px] font-semibold text-md">
               {" "}
               Latest Org Signup{" "}
