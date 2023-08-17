@@ -170,14 +170,14 @@ function SuperadminDashboard() {
   };
   return (
     <div className={styles.container}>
-      <div className=" mt-[60px] bg-#2E2E2E mx-[80px] pb-7">
+      <div className=" mt-[60px] bg-#2E2E2E mx-[110px] pb-7 ">
         <p className="text-[#24A3D9]">Dashboard</p>
-        <div className="flex mt-7">
+        <div className="flex  justify-between mt-7 ">
           <section className="flex flex-col">
-            <div className="w-full">
+            <div className="w-full whitespace-nowrap">
               <p className={styles.subheading}> Organizations </p>
               <div className={`flex mr-0 ${styles.orgCard}`}>
-                <div className={`${orgStyles.container}`}>
+                <div className={`  ${orgStyles.container}`}>
                   <p className={orgStyles.heading}> Total # of Orgs</p>
                   <p className={orgStyles.text}>
                     {" "}
@@ -199,13 +199,19 @@ function SuperadminDashboard() {
                 </div>
               </div>
             </div>
-            <div className="w-full">
+            <div
+              
+              className="w-full"
+            >
               <p className="mt-[20px] mb-2.5 font-semibold text-[#26435F]">
                 {" "}
                 User Stats{" "}
               </p>
-              <div className={styles.userStatsContainer}>
-                <div className="flex">
+              <div  className={styles.userStatsContainer}>
+                <div style={{
+               boxShadow: "0px 0px 2px rgba(0, 0, 0, 0.25) ",
+              
+              }} className="flex overflow-hidden rounded-t-md">
                   {userTypes.map((item, id) => {
                     return (
                       <div
@@ -223,7 +229,7 @@ function SuperadminDashboard() {
                     );
                   })}
                 </div>
-                <div className="bg-[#F5F8FA]">
+                <div  className="bg-[#F5F8FA]">
                   <div
                     className={`flex w-full bg-white ${styles.customBorder}`}
                   >
@@ -266,6 +272,7 @@ function SuperadminDashboard() {
                   </div>
 
                   <div
+                 
                     className={`flex items-center  justify-start gap-12 pl-7 pt-1 pb-2 text-[#26435F] bg-[#FFFFFF] mt-4 ${styles.customBorder}`}
                   >
                     <div>
@@ -287,7 +294,7 @@ function SuperadminDashboard() {
               </div>
             </div>
           </section>
-          <section className="flex-1  px-5 mx-6 ">
+          <section className="w-full ml-5 overflow-auto">
             <p className="text-[#26435F] -mt-1 mb-[-6px] font-semibold text-md">
               {" "}
               Latest Org Signup{" "}
@@ -296,7 +303,6 @@ function SuperadminDashboard() {
               data={orgSignUpData}
               tableHeaders={tableHeaders}
               maxPageSize={5}
-           
             />
           </section>
         </div>

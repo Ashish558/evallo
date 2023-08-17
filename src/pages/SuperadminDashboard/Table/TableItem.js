@@ -8,7 +8,8 @@ export default function TableItem({ item, onClick, AdminLatestSignUp }) {
   return AdminLatestSignUp ? (
     <LatestSignUpTableItem item={item} onClick={onClick} />
   ) : (
-    <tr className=" shadow-sm shadow-slate-200 rounded-lg border border-gray-400 leading-8 ">
+    <tr className="my-5 box-content  shadow-[0px_0px_1px_0px_rgba(0,0,0,0.25)]">
+     
       <td className="  text-sm px-1  min-w-14 py-3 text-left">
         <span
           className="inline-block cursor-pointer pl-4 "

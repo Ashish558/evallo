@@ -134,7 +134,7 @@ const AccountOverview = () => {
 
   return (
     <div>
-      <div className="flex flex-col gap-10 w-[900px] ">
+      <div className="flex flex-col gap-10  ">
         <div className="flex gap-5">
           <InputField
             placeholder=""
@@ -222,6 +222,14 @@ const AccountOverview = () => {
             }
             error={error.phone}
           />
+           <div>
+            <button
+              onClick={handleDataUpdate}
+              className="bg-[#FF7979] text-white mt-5 ml-10 rounded-md px-10 py-2 text-sm"
+            >
+              Save
+            </button>
+          </div>
         </div>
 
         <div className="flex gap-7 flex-1">
@@ -244,14 +252,7 @@ const AccountOverview = () => {
               Download
             </button>
           </div>
-          <div>
-            <button
-              onClick={handleDataUpdate}
-              className="bg-[#FF7979] text-white mt-7 rounded-md px-5 py-2 text-sm"
-            >
-              Save
-            </button>
-          </div>
+         
         </div>
         <div>
           {reset && (
