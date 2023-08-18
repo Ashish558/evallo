@@ -64,6 +64,12 @@ const RangeDate = ({ handleRangeData  }) => {
   useEffect(() => {
     if (startDate) handleRangeData(startDate);
   }, []);
+  let temp=startDate.split("-");
+  let newDateformat=temp[0];
+  temp=temp[1].split(" ")
+  newDateformat+=" - "+temp[0]+" "+ temp[1]+" "+temp[2]+ ", "+temp[3]
+  
+  console.log({tp:temp})
   return (
     <div className="flex text-xs ">
       <p className="font-semibold text-[#FFA28D]"> </p>
@@ -74,7 +80,7 @@ const RangeDate = ({ handleRangeData  }) => {
         labelClassname="text-sm"
         inputContainerClassName={`border-none w-[300px] font-semibold text-[#FFA28D]  ${styles["text"]}`}
         inputClassName={`border-none w-fit bg-transparent font-semibold text-[#FFA28D] `}
-        value={startDate}
+        value={newDateformat}
         optionData={[
           { name: "Today", days: 0 },
           { name: "Last 7 Days", days: 7 },

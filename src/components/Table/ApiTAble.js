@@ -86,7 +86,7 @@ export default function ApiTable({
 
   return (
     <div className="w-full">
-    <div className="overflow-x-auto scrollbar-content  my-7  scroll-m-1 ">
+    <div className="overflow-x-auto scrollbar-content    scroll-m-1 ">
 
       <table className="table-auto px-[2px] mb-3 text-center w-full">
         <thead className="pb-2">
