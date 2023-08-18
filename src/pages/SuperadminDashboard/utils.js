@@ -46,19 +46,19 @@ export function convertToChart(dates,userData) {
   console.log({labelData})
   dates["admin"]?.map((it) => {
     mxLabel = Math.max(mxLabel, it.week);
-    adminData.push({ x: it.week, y: it.hours, r: it.data.length, label: ("Day " + it?.data[0]?.datetime) });
+    adminData.push({ x: it.week, y: it.hours, r: it.data.length*2<=20?it.data.length*2:20, label: ("Day " + it?.data[0]?.datetime) });
   });
   dates["tutor"]?.map((it) => {
     mxLabel = Math.max(mxLabel, it.week);
-    tutorData.push({ x: it.week, y: it.hours, r: it.data.length, label: ("Day " + it?.data[0]?.datetime) });
+    tutorData.push({ x: it.week, y: it.hours, r: it.data.length*2<=20?it.data.length*2:20, label: ("Day " + it?.data[0]?.datetime) });
   });
   dates["parent"]?.map((it) => {
     mxLabel = Math.max(mxLabel, it.week);
-    parentData.push({ x: it.week, y: it.hours, r: it.data.length, label: ("Day " + it?.data[0]?.datetime) });
+    parentData.push({ x: it.week, y: it.hours, r: it.data.length*2<=20?it.data.length*2:20, label: ("Day " + it?.data[0]?.datetime) });
   });
   dates["student"]?.map((it) => {
     mxLabel = Math.max(mxLabel, it.week);
-    studentData.push({ x: it.week, y: it.hours, r: it.data.length, label: ("Day " + it?.data[0]?.datetime) });
+    studentData.push({ x: it.week, y: it.hours, r: it.data.length*2<=20?it.data.length*2:20, label: ("Day " + it?.data[0]?.datetime) });
   });
   mxLabel=userData.length
   for (let i = 0; i < labelData.length; i++)

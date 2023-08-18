@@ -54,6 +54,11 @@ nav .active {
     width: 25px;
     height: 25px;
   }
+  .customTable {
+    border-collapse: separate;
+    border-spacing: 0 5.1px;
+    margin-top: 5px;
+}
 .concept {
     position: relative;
 }

@@ -170,7 +170,7 @@ function SuperadminDashboard() {
   
   return (
     <div className={styles.container}>
-      <div className=" mt-[34px] bg-#2E2E2E mx-[110px] pb-7 ">
+      <div className=" mt-[34px] bg-#2E2E2E mx-[100px] pb-7 ">
         <div className="flex justify-between">
         <p className="text-[#24A3D9]">Dashboard</p>
       
@@ -221,7 +221,7 @@ function SuperadminDashboard() {
                       <div
                         key={id}
                         onClick={() => handleCurrentUser(item)}
-                        className={`  bg-white border-b-[1.3px] overflow-hidden relative cursor-pointer border-[rgb(10,30,40,0.27)] ${styles.userStat} `}
+                        className={`  bg-white border-b-[1.4px] overflow-hidden relative cursor-pointer border-[rgb(10,30,40,0.27)] ${styles.userStat} `}
                       >
                         <span className={` ${currentUser?.name === item.text.toLowerCase() ? "text-[#FFA28D]":""}`} >{item.text}</span>
                         {currentUser?.name === item.text.toLowerCase() ? (

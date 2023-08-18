@@ -125,8 +125,11 @@ const Demography1 = () => {
               <img className="ml-2 inline-block" src={downArrow} alt={"downArrow"} />
             </span>
           </p>
-          <table className="table-auto border-spacing-y-1 border-separate w-full whitespace-nowrap">
-            <thead>
+          <div className="overflow-y-auto h-[360px] py-0 relative">
+
+         
+          <table className="table-auto border-spacing-y-4 px-1 customTable border-separate w-full whitespace-nowrap">
+            <thead className="sticky top-0">
               <tr>
                 <th className="px-4">State </th>
                 <th className="px-4"># of orgs </th>
@@ -134,7 +137,7 @@ const Demography1 = () => {
                 <th className="px-4">Avg. # of T / O</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody >
               {currentDemographicArea?.map((state, id) => {
                 return (
                   <tr className={`my-7 overflow-hidden `} key={id}>
@@ -150,6 +153,7 @@ const Demography1 = () => {
               })}
             </tbody>
           </table>
+          </div>
         </div>
       </div>
     </div>

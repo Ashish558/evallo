@@ -105,7 +105,7 @@ export default function Table(props) {
             return (
               <tr
                 key={iti}
-                className="shadow-sm shadow-slate-200 rounded-2xl leading-8 "
+                className="bg-white leading-8 "
               >
                 {it.map((d, di) => {
                   return (
