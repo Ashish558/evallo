@@ -199,7 +199,9 @@
     color: #FFA28D !important;
     margin-top: 28px !important;
 }
-
+#number select{
+  background: transparent !important;
+}
 /* ::-webkit-scrollbar{
     width: 0 !important;
 } */
