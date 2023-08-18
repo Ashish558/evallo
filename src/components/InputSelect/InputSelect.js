@@ -78,7 +78,7 @@ export default function InputSelect({
           ) : (
             <img
               src={UpArrow}
-              className={`w-[15px]  ${styles.downArrow}`}
+              className={`w-[15px] h-[12px]  ${styles.downArrow}`}
               alt="down-arrow"
             />
           )
@@ -87,7 +87,7 @@ export default function InputSelect({
         ) : (
           <img
             src={DownArrow}
-            className={`w-[15px]  ${styles.downArrow}`}
+            className={`w-[15px] h-[12px]   ${styles.downArrow}`}
             alt="down-arrow"
           />
         )}

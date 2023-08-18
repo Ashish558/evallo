@@ -19,7 +19,7 @@ export default function SettingsCard({
       `}
     >
       <div
-        className={`text-primary-dark font-medium flex justify-between mb-5 ${titleClassName ? titleClassName : ""
+        className={`text-primary-dark font-medium flex justify-between mb-1 ${titleClassName ? titleClassName : ""
           }`}
       >
         <div className="flex items-center">
@@ -31,29 +31,31 @@ export default function SettingsCard({
           </div>
         </div>
         {toggle !== undefined && (
-          <div className="flex items-center">
-            <p className="text-[#AAAAAA] text-xs mr-2">Show icons / images</p>
-            <div
-              className={styles.toggleContainer}
-              onClick={() => onToggle(toggle.key, !toggle.value)}
-            >
-              <img
-                src={
-                  toggle.value === false ? toggleRectIcon : toggleRectActiveIcon
-                }
-                alt="toggle"
-              />
-              <img
-                src={toggleCircleIcon}
-                className={`${toggle.value === false
-                  ? styles.toggleCircle
-                  : styles.toggleCircleActive
-                  }`}
-                alt="toggle"
-              />
-            </div>
-          </div>
-        )}
+                    <div className="flex items-center  rounded-[9px]">
+                        <div
+                            className={styles.toggleContainer}
+                            onClick={() => onToggle(toggle.key, !toggle.value)}
+                        >
+                            <img
+                                src={
+                                    toggle.value === false ? toggleRectIcon : toggleRectIcon 
+                                }
+                                alt="toggle"
+                            />
+                            {
+                                
+                            }
+                            <div
+                                // src={toggleCircleIcon}
+                                className={`${toggle.value === false
+                                    ? styles.toggleCircle
+                                    : styles.toggleCircleActive
+                                    }  w-[16px] h-[16px] rounded-[10px]`}
+                                alt="toggle"
+                            />
+                        </div>
+                    </div>
+                )}
       </div>
       {body && body}
     </div>

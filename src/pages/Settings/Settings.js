@@ -25,14 +25,14 @@ import axios from "axios";
 import DeleteIcon from "../../assets/icons/delete.svg";
 import PauseIcon from "../../assets/icons/pause.svg";
 import PlayIcon from "../../assets/icons/play.svg";
-import OrgDefaultLogo from "../../assets/icons/org-default.png";
-import OrgDefaultLogo2 from "../../assets/icons/org default2.png";
+import OrgDefaultLogo from "../../assets/icons/org-default 2.svg";
+import OrgDefaultLogo2 from "../../assets/icons/org-default.svg";
 import CAndBLogo from "../../assets/icons/company & brand.svg";
-import CAndBLogo2 from "../../assets/icons/company & brand2.png";
-import AccOverviewLogo from "../../assets/icons/account-overview.png";
-import AccOverviewLogo2 from "../../assets/icons/account overview2.png";
-import ClientsSignupLogo from "../../assets/icons/Client sign up 1.png";
-import ClientsSignupLogo2 from "../../assets/icons/Client sign up 2.png";
+import CAndBLogo2 from "../../assets/icons/company & brand 2.svg";
+import AccOverviewLogo from "../../assets/icons/account overview.svg";
+import AccOverviewLogo2 from "../../assets/icons/account-overview 2.svg";
+import ClientsSignupLogo from "../../assets/icons/Client sign up 1.svg";
+import ClientsSignupLogo2 from "../../assets/icons/Client sign up 2.svg";
 import EditBlueIcon from "../../assets/icons/edit-blue.svg";
 import InputSearch from "../../components/InputSearch/InputSearch";
 import { useSelector, useDispatch } from "react-redux";
@@ -912,7 +912,7 @@ console.log(organization)
                 <InputSelect
                   optionData={timeZones}
                   parentClassName="min-w-[200px]"
-                  label="Default Timezone"
+                  label="Default Time Zone"
                   value={settingsData.timeZone}
                   onChange={(val) => handleChange("timeZone", val)}
                 />
@@ -925,8 +925,9 @@ console.log(organization)
                 onChange={(val) => handleChange("dateFormat", val)}
               />
             </div>
+            <div className="h-[1.25px] bg-[#CBD6E2] mb-4 mt-8"></div>
             <SettingsCard
-              title="Lead Status Items (parent / student)"
+              title="Lead Status Items (Parent / Student)"
               body={
                 <div className="flex items-center flex-wrap [&>*]:mb-[10px] bg-white shadow-small p-4 rounded-5">
                   <AddTag onAddTag={handleAddTag} keyName="leadStatus" />
@@ -1076,7 +1077,7 @@ console.log(organization)
             /> */}
 
             <SettingsCard
-              title="Manage Services and Topics"
+              title="Manage Services & Topics"
               className={styles["bordered-settings-container"]}
               body={
                 <div>
@@ -1389,7 +1390,7 @@ console.log(organization)
               </p>
             </div>
 
-            <div className="bg-[#FFFFFF] border-[2.5px] px-[82px] border-dotted border-[#CBD6E2] mb-[316px]">
+            <div className="bg-[#FFFFFF] border-[2.5px] px-[82px] border-dotted border-[#CBD6E2] mb-[30px]">
               {fetchedPermissions?.map((item, id) => {
                 return (
                   <>
@@ -1397,7 +1398,7 @@ console.log(organization)
                     item.choosedValue === false ? (
                       <div
                         key={id}
-                        className="pt-[34px] pb-[30px] border-b-2 border-[#CBD6E2] text-[#24A3D9] font-medium text-[17.5px] flex items-center justify-between"
+                        className="pt-[34px] pb-[30px] border-b-2 border-[#CBD6E2] text-[#24A3D9] font-medium text-[17.5px] flex items-center justify-between permission"
                       >
                         <p>{renderColoredText(item.name)}</p>
 
@@ -1407,7 +1408,7 @@ console.log(organization)
                         ></ToggleBar>
                       </div>
                     ) : (
-                      <div className="pt-[34px] pb-[30px] border-b-2 border-[#CBD6E2] text-[#24A3D9] font-medium text-[17.5px] flex justify-between">
+                      <div className={`pt-[34px] pb-[30px]   text-[#24A3D9] font-medium text-[17.5px] flex justify-between border-b-2 border-[#CBD6E2] ${styles.permission}`}>
                         <p>{renderColoredText(item.name)}</p>
 
                         <p>
