@@ -16,6 +16,7 @@ import {
 } from "../../../../app/services/users";
 import { BASE_URL, getAuthHeader } from "../../../../app/constants/constants";
 import { useUpdateEmailMutation } from "../../../../app/services/organization";
+import InputFieldDropdown from "../../../../components/InputField/inputFieldDropdown";
 const AccountOverview = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [reset, setReset] = useState(false);
@@ -57,7 +58,7 @@ const AccountOverview = () => {
   const [updateEmail, setUpdateEmail] = useUpdateEmailMutation();
   const [userDetails, userDetailsStatus] = useLazyGetPersonalDetailQuery();
   const [updateAccount, updateAccountStatus] = useUpdateUserAccountMutation();
-  const [fetchedData,setFetchedData]=useState({})
+  const [fetchedData, setFetchedData] = useState({});
   useEffect(() => {
     userDetails()
       .then((res) => {
@@ -73,8 +74,6 @@ const AccountOverview = () => {
         console.log(err);
       });
   }, []);
-
- 
 
   const showResetConfirmation = () => {
     setReset(true);
@@ -131,13 +130,12 @@ const AccountOverview = () => {
       }
     };
     updateUserAccount();
-    if(fetchedData?.email!==values.email)
-    handleEmailUpdate(values.email)
-    console.log({fetchedData,values})
+    if (fetchedData?.email !== values.email) handleEmailUpdate(values.email);
+    console.log({ fetchedData, values });
   };
   return (
     <div>
-      <div className="flex flex-col gap-10 w-[900px] ">
+      <div className="flex flex-col gap-10  ">
         <div className="flex gap-5">
           <InputField
             placeholder=""
@@ -184,7 +182,6 @@ const AccountOverview = () => {
                 ...values,
                 email: e.target.value,
               });
-              
             }}
             error={error.email}
             Tooltip={
@@ -204,13 +201,20 @@ const AccountOverview = () => {
             }
           />
 
-          <InputField
+          <InputFieldDropdown
             placeholder=""
-            parentClassName="text-xs text-[#26435F]"
+            parentClassName="text-xs w-[220px] text-[#26435F]"
             inputContainerClassName=" bg-white"
             inputClassName="bg-transparent"
             label="Phone"
             value={values.phone}
+            codeValue={values.phoneCode}
+            handleCodeChange={(e) =>
+              setValues({
+                ...values,
+                phoneCode: e.target.value,
+              })
+            }
             onChange={(e) =>
               setValues({
                 ...values,
@@ -219,6 +223,14 @@ const AccountOverview = () => {
             }
             error={error.phone}
           />
+          <div className="flex h-fit flex-1 w-full mt-[20px] justify-end items-center">
+            <button
+              onClick={handleDataUpdate}
+              className="bg-[#FF7979] text-white  rounded-md px-10 py-[9px] text-sm"
+            >
+              Save
+            </button>
+          </div>
         </div>
         <div className="flex gap-7 flex-1">
           <InputField
@@ -275,14 +287,7 @@ const AccountOverview = () => {
             </button>
           </div>
         </div>
-        <div className="flex h-fit flex-1 justify-center items-center">
-          <button
-            onClick={handleDataUpdate}
-            className="bg-[#FF7979] text-white  rounded-md px-5 py-2 text-sm"
-          >
-            Save
-          </button>
-        </div>
+
         <div>
           {reset && (
             <div className="flex gap-2">
