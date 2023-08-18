@@ -84,10 +84,20 @@ function ActionLog({dateRange}) {
   },[dateRange])
   return (
     <div className="">
-      <h2 className="font-semibold mb-1 text-[#26435F]">Action Logs</h2>
+      <h2 className="font-semibold mb-1 text-[#26435F]">Action Log</h2>
 
-      <div className="flex flex-col  border border-solid border-gray-200 rounded-5 bg-[#FFFFFF]">
-        <div className=" border border-solid border-gray-200">
+      <div style={{
+           border: "1.33px solid #FFFFFF",
+           boxShadow: "0px 0px 2.6666667461395264px 0px #00000040"
+
+            // Set the desired height of the div here
+          }} className="flex flex-col   rounded-5 bg-[#FFFFFF]">
+        <div style={{
+           borderBottom: "1.7px solid #CBD6E2"
+           
+
+            // Set the desired height of the div here
+          }} className="border-b-[1.6px]  border-b-[#CBD6E2]">
           <p
             ref={ref}
             className="uppercase  pl-[29px] pt-[16px] pb-3 text-[#26435F]"
@@ -105,7 +115,7 @@ function ActionLog({dateRange}) {
             height: "300px", // Set the desired height of the div here
           }}
           onScroll={handleScroll}
-          className="list-disc overflow-y-scroll min-w-[600px] max-h-[17.6rem] "
+          className="list-disc overflow-y-scroll rounded-b-md min-w-[600px] max-h-[17.6rem] "
         >
           <div className="h-[1px] bg-[#CBD6E2]" />
           {sortedAction?.map((item, index) => (

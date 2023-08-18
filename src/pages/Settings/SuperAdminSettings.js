@@ -828,15 +828,15 @@ export default function SuperAdminSettings() {
   // console.log('subscriptionCode', settingsData.subscriptionCode);
   return (
     <>
-      <div className="lg:ml-pageLeft bg-lightWhite min-h-screen px-8 pt-[50px] pb-[50px]">
+      <div className=" bg-lightWhite min-h-screen px-20 pt-[30px] pb-[50px]">
         <p className="text-[#24A3D9]  mb-9 ">
-          {organization?.company +
+          {/* {organization?.company +
 
-            "  >  "}
-          <span className="font-semibold">Settings</span>
+            "  >  "} */}
+          <span className="font-medium text-lg">Settings</span>
         </p>
         <div className="flex justify-between items-center mb-[45px]">
-          <div className={styles.tabsContainer}>
+          <div className={`${styles.tabsContainer} flex-1`}>
             {tabs.map((item, idx) => {
               return (
                 <div

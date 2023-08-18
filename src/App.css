@@ -47,7 +47,13 @@ nav .active {
 ::-webkit-scrollbar-thumb:hover {
     background: #555;
 }
-
+.no-arrow div::after{
+    content: " ";
+    margin-left: 5px;
+    display: none;
+    width: 25px;
+    height: 25px;
+  }
 .concept {
     position: relative;
 }

@@ -18,6 +18,7 @@ export default function Table(props) {
     excludes,
     changePageAfterUpdate,
     loading,
+    noArrow,
     Icon,
     AdminLatestSignUp
   } = props;
@@ -74,7 +75,7 @@ export default function Table(props) {
         <thead className="bg-[#26435F] whitespace-nowrap">
           <tr className=" whitespace-nowrap">
             {tableHeaders.map((item, idx) => {
-              return <TableHeader key={idx} Icon={Icon} header={item} dataFor={dataFor} />;
+              return <TableHeader noArrow={noArrow} key={idx} Icon={Icon} header={item} dataFor={dataFor} />;
             })}
           </tr>
         </thead>

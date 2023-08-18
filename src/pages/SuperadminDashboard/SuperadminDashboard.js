@@ -170,7 +170,7 @@ function SuperadminDashboard() {
   
   return (
     <div className={styles.container}>
-      <div className=" mt-[40px] bg-#2E2E2E mx-[110px] pb-7 ">
+      <div className=" mt-[34px] bg-#2E2E2E mx-[110px] pb-7 ">
         <div className="flex justify-between">
         <p className="text-[#24A3D9]">Dashboard</p>
       
@@ -180,7 +180,7 @@ function SuperadminDashboard() {
         <div className="flex gap-7 justify-between mt-7 ">
           <section className="flex flex-col">
             <div className="w-full whitespace-nowrap">
-              <p className={styles.subheading}> users </p>
+              <p className={styles.subheading}> Organizations </p>
               <div className={`flex mr-0 ${styles.orgCard}`}>
                 <div className={`  ${orgStyles.container}`}>
                   <p className={orgStyles.heading}> Total # of Orgs</p>
@@ -221,9 +221,9 @@ function SuperadminDashboard() {
                       <div
                         key={id}
                         onClick={() => handleCurrentUser(item)}
-                        className={` bg-white border-b-[1.3px] overflow-hidden relative cursor-pointer border-[rgb(10,30,40,0.27)] ${styles.userStat} `}
+                        className={`  bg-white border-b-[1.3px] overflow-hidden relative cursor-pointer border-[rgb(10,30,40,0.27)] ${styles.userStat} `}
                       >
-                        {item.text}
+                        <span className={` ${currentUser?.name === item.text.toLowerCase() ? "text-[#FFA28D]":""}`} >{item.text}</span>
                         {currentUser?.name === item.text.toLowerCase() ? (
                           <p className="border-b-[4px] relative  rounded-t translate-y-[12px] z-5000 border-b-[#FFA28D]  text-[#FFA28D] "></p>
                         ) : (
@@ -303,6 +303,7 @@ function SuperadminDashboard() {
               Latest Org Signup{" "}
             </p>
             <Table
+            noArrow={true}
               data={orgSignUpData}
               tableHeaders={tableHeaders}
               maxPageSize={5}
