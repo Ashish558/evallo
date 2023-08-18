@@ -191,13 +191,15 @@
     border-radius: 50%;
     background-color: #FFA28D !important;
 }
-/* .border {
+
+#input .border {
     border: 1.25px solid #FFA28D!important;
     border-radius: 50px;
     background: white;
     color: #FFA28D !important;
     margin-top: 28px !important;
-} */
+}
+
 /* ::-webkit-scrollbar{
     width: 0 !important;
 } */
