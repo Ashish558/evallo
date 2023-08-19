@@ -55,10 +55,7 @@ const tempTableHeaders = [
       id: 6,
       text: "Remove Tutor",
    },
-   {
-      id: 7,
-      text: '',
-   },
+
 ];
 
 const timeZones = [
@@ -474,7 +471,7 @@ const navigate = useNavigate()
                               labelClassname="ml-2 mb-0.5"
                               inputContainerClassName="px-5 py-3.5 text-sm bg-primary-50 border-0"
                               inputClassName="bg-transparent"
-                              placeholder="Student Name"
+                              placeholder="Tutor Name"
                               type="select"
                            />
                         </div>
