@@ -20,6 +20,7 @@ import {
   useLazyGetPopularServicesQuery,
   useLazyGetImprovementStatsQuery,
   useGetFilteredActionLogMutation,
+  useGetLatestSignUpRangeMutation,
 } from "../../app/services/adminDashboard";
 import { tutorTableHeaders } from "./staticData";
 import { useState } from "react";
@@ -28,7 +29,7 @@ import ArrowDown from "../../assets/Dashboard/sort-down.svg";
 import { useEffect } from "react";
 
 const Dashboard = () => {
-  const { data: latestSignUp } = useGetLatestSignUpQuery();
+  const [ latestSignUp,latsestStatus ] = useGetLatestSignUpRangeMutation();
   const { organization } = useSelector((state) => state.organization);
   const { firstName, lastName } = useSelector((state) => state.user);
   const { data: userStats } = useGetUserStatsQuery();
@@ -63,8 +64,14 @@ const Dashboard = () => {
       });
   };
   useEffect(() => {
-    if (latestSignUp?.data) setUserData(latestSignUp?.data);
-  }, [latestSignUp]);
+    latestSignUp({startDate:"",endDate:""}).then((res)=>{
+      if(!res?.error){
+        console.log("latest",{res})
+        setUserData(res?.data?.data?res?.data?.data:[]);
+      }
+    })
+   
+  }, []);
 
   const sortByName = () => {
     setUserData((prev) => {

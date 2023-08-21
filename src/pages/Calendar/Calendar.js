@@ -610,7 +610,7 @@ export default function Calendar() {
    useEffect(() => {
       if (name.length > 0) {
          fetchNames(name).then((res) => {
-            console.log(res.data.data.user);
+            console.log("fetchnames",res.data.data.user);
             let tempData = res.data.data.user.map((user) => {
                return {
                   _id: user._id,
@@ -863,7 +863,7 @@ export default function Calendar() {
    // console.log('filteredEvents', filteredEvents);
    // console.log('events', events);
    // console.log('eventDetails', eventDetails);
-   // console.log('students', students);
+   console.log('students', students);
 
    return (
       <>
@@ -881,7 +881,7 @@ export default function Calendar() {
                         setCurrentDate={setCurrentDate}
                      />
                   </div>
-                  {persona === "parent" || persona === "tutor" ? (
+                  {persona === "parent" ? (
                      <div className="mt-10 pr-4">
                         <p className="text-primaryDark text-21 font-semibold mb-8 ml-2">
                            {" "}

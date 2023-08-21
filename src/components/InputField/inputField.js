@@ -10,6 +10,7 @@ export default function InputField({
   inputContainerClassName,
   Icon,
   iconSize,
+ refS,
   value,
   placeholder,
   label,
@@ -32,6 +33,7 @@ export default function InputField({
   onFocus,
   Tooltip,
   onBlur,
+  onMouseEnter,
   defaultValue
 }) {
   const [inputType, setInputType] = useState(type);
@@ -43,6 +45,8 @@ export default function InputField({
   useEffect(() => {
     setShowDiv(true)
   }, [error])
+  if(type)
+  console.log({type})
   return (
     <div className={`relative text-sm ${parentClassName && parentClassName}`}>
       {label && (
@@ -88,12 +92,14 @@ export default function InputField({
           type={inputType ? inputType : "text"}
           onChange={(e) => (onChange !== undefined ? onChange(e) : "")}
           value={value}
+          ref={refS}
           defaultValue={defaultValue}
           required={isRequired ? true : false}
           disabled={disabled !== undefined ? disabled : false}
           onKeyDown={onKeyDown ? onKeyDown : () => { }}
           minLength={minLength && minLength}
           maxLength={maxLength && maxLength}
+          onMouseEnter={onMouseEnter}
           onFocus={onFocus}
           onBlur={onBlur}
         />

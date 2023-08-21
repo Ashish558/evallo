@@ -68,8 +68,7 @@ const RangeDate = ({ handleRangeData  }) => {
   let newDateformat=temp[0];
   temp=temp[1].split(" ")
   newDateformat+=" - "+temp[0]+" "+ temp[1]+" "+temp[2]+ ", "+temp[3]
-  
-  console.log({tp:temp})
+
   return (
     <div className="flex text-xs ">
       <p className="font-semibold text-[#FFA28D]"> </p>

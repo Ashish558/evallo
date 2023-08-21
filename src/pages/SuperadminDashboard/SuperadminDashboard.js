@@ -17,7 +17,8 @@ import Demography from "./Demographies/Demography1";
 
 import { useState } from "react";
 import {
-  useGetUserStatsByRoleQuery,
+  useGetUserStatsByRoleRangeMutation,
+  
 } from "../../app/services/superAdmin";
 import RangeDate from "../../components/RangeDate/RangeDate";
 import { convertDateToRange } from "./utils";
@@ -68,7 +69,7 @@ function SuperadminDashboard() {
 
   const [orgSignUpData, setOrgSignUpData] = useState([]);
   const [fetchUserData, setUserData] = useGetLatestOrgRangeMutation();
-  const [ OrgStatsData,OrgStatsStatus ] = useGetAllOrgStatsRangeMutation()
+  const [OrgStatsData,OrgStatsStatus ] = useGetAllOrgStatsRangeMutation()
   const [OrgStats,setOrgStats]= useState({})
   const [dateRange,setDateRange]= useState();
   const [currentUser, setCurrentUser] = useState();
@@ -79,21 +80,10 @@ function SuperadminDashboard() {
     student: null,
     contributor: null,
   });
-  const { data: userAdminStats } = useGetUserStatsByRoleQuery({
-    role: "admin",
+  const [ userAdminStats,adminstatsStaus]= useGetUserStatsByRoleRangeMutation({
+    
   });
-  const { data: userParentStats } = useGetUserStatsByRoleQuery({
-    role: "parent",
-  });
-  const { data: userTutorStats } = useGetUserStatsByRoleQuery({
-    role: "tutor",
-  });
-  const { data: userContributorStats } = useGetUserStatsByRoleQuery({
-    role: "contributor",
-  });
-  const { data: userStudentStats } = useGetUserStatsByRoleQuery({
-    role: "student",
-  });
+ 
 
   const getLatestOrgs = async (body) => {
     fetchUserData(body).then((result) => {
@@ -128,28 +118,33 @@ function SuperadminDashboard() {
       } catch (e) {}
     });
   };
-  
+  useEffect(()=>{
+    if(dateRange?.startDate){
+    Object.keys(totalUsers).forEach((key)=>{
+
+      const body={
+        role:key,
+        ...dateRange
+      }
+      userAdminStats(body).then((res)=>{
+        console.log({dateRange,key,res})
+        totalUsers[key] && setTotalUsers({...totalUsers,key:res?.data})
+      })
+      
+    })
+  }
+  },[dateRange])
   useEffect(() => {
-    setTotalUsers({
-      admin: userAdminStats,
-      parent: userParentStats,
-      tutor: userTutorStats,
-      student: userStudentStats,
-      contributor: userContributorStats,
-    });
+   
 
     setCurrentUser({
       name: "admin",
 
-      ...userAdminStats,
+      ...totalUsers["admin"],
     });
     
   }, [
-    userAdminStats,
-    userParentStats,
-    userTutorStats,
-    userStudentStats,
-    userContributorStats,
+   totalUsers,
   ]);
   const handleCurrentUser = (item) => {
     setCurrentUser({
@@ -167,7 +162,7 @@ function SuperadminDashboard() {
   getLatestOrgs(body);
   setDateRange(body)
   }
-  
+  console.log({totalUsers})
   return (
     <div className={styles.container}>
       <div className=" mt-[34px] bg-#2E2E2E mx-[100px] pb-7 ">
@@ -325,7 +320,7 @@ function SuperadminDashboard() {
         <p className="text-[#26435F] font-semibold mt-[50px]">
           User demography
         </p>
-        <Demography></Demography>
+        <Demography dateRange={ dateRange }></Demography>
       </div>
     </div>
   );

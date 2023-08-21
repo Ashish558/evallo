@@ -46,7 +46,7 @@ export default function InputSelect({
     >
 
       {
-        placeholder === 'Time Zones' || <div className="flex items-center mb-1">
+        placeholder === 'Time Zones' || <div className="flex items-center">
           {label && (
             <label
               className={`font-medium ${label == 'User Type' && 'text-sm'} text-[#26435F] inline-block  ${labelClassname}`}
