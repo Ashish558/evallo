@@ -37,6 +37,7 @@ export default function ApiTable({
   const dataLength = data.length > 30 ? 30 : data.length;
   const [checkedHeader, setcheckedHeader] = useState(isChecked);
   useEffect(() => {
+    if(setcheckedHeaderHandler)
     setcheckedHeaderHandler(isChecked);
   }, [isChecked]);
   useEffect(() => {
@@ -76,16 +77,16 @@ export default function ApiTable({
   };
   const setcheckedHeaderHandler = (isChecked) => {
     setcheckedHeader(isChecked);
-    if (isChecked) {
+    if (isChecked && setnumberChecked) {
       setnumberChecked(tableData.length);
     } else setnumberChecked && setnumberChecked(tableData.length);
   };
 
   return (
     <div className="w-full">
-    <div className="overflow-x-auto scrollbar-content  my-7  scroll-m-1 ">
+    <div className="overflow-x-auto scrollbar-content    scroll-m-1 ">
 
-      <table className="table-auto px-2 mb-3 text-center w-full">
+      <table className="table-auto customTable px-[2px] mb-3 text-center w-full">
         <thead className="pb-2">
           <tr>
             {tableHeaders.map((item, idx) => {
@@ -124,7 +125,7 @@ export default function ApiTable({
             return (
               <tr
                 key={iti}
-                className="shadow-sm shadow-slate-200 rounded-2xl leading-8 "
+                className="bg-white  leading-8 "
               >
                 {it.map((d, di) => {
                   return (
