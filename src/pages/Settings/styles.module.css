@@ -38,9 +38,13 @@
 div{
    font-family: 'Lexend Deca', sans-serif;
 }
-/* border-b-2 border-[#CBD6E2] */
+.styles_tabsContainer__dqk-Y{
+   width: 100% !important;
+};
+.border-\[\#D0D5DD\]{
+   border-color: none !important;
+}
 .permission:last-child{
    border-bottom: 0px;
    /* border-bottom: 2px solid #CBD6E2; */
-
 }

@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import InputField from "../../../../components/InputField/inputField";
 import PrimaryButton from "../../../../components/Buttons/PrimaryButton";
 import { CheckboxNew } from "../../../../components/Checkbox/CheckboxNew";
+import "../../../Settings/styles.module.css"
 import InputSelect from "../../../../components/InputSelect/InputSelect";
 import { studentServedData, instructionFormat } from "../staticData";
 import logo from "../../../../assets/icons/Frame 31070.svg";
@@ -16,6 +17,7 @@ import {
 } from "../../../../app/services/users";
 import { BASE_URL, getAuthHeader } from "../../../../app/constants/constants";
 import { useUpdateEmailMutation } from "../../../../app/services/organization";
+import InputFieldDropdown from "../../../../components/InputField/inputFieldDropdown";
 const AccountOverview = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [reset, setReset] = useState(false);
@@ -57,7 +59,7 @@ const AccountOverview = () => {
   const [updateEmail, setUpdateEmail] = useUpdateEmailMutation();
   const [userDetails, userDetailsStatus] = useLazyGetPersonalDetailQuery();
   const [updateAccount, updateAccountStatus] = useUpdateUserAccountMutation();
-  const [fetchedData,setFetchedData]=useState({})
+  const [fetchedData, setFetchedData] = useState({});
   useEffect(() => {
     userDetails()
       .then((res) => {
@@ -73,8 +75,6 @@ const AccountOverview = () => {
         console.log(err);
       });
   }, []);
-
- 
 
   const showResetConfirmation = () => {
     setReset(true);
@@ -131,20 +131,20 @@ const AccountOverview = () => {
       }
     };
     updateUserAccount();
-    if(fetchedData?.email!==values.email)
-    handleEmailUpdate(values.email)
-    console.log({fetchedData,values})
+    if (fetchedData?.email !== values.email) handleEmailUpdate(values.email);
+    console.log({ fetchedData, values });
   };
   return (
     <div>
       <div className="flex flex-col gap-10 w-[900px] ">
-        <div className="flex gap-5">
+        <div className="flex gap-5 " style={{verticalAlign:'center'}}>
           <InputField
+            style={{color:'blue'}}
             placeholder=""
             parentClassName="text-xs text-[#26435F]"
-            inputContainerClassName=" bg-white"
-            inputClassName="bg-transparent"
-            label="First Name"
+            inputContainerClassName=" bg-white border border-white rounded-5"
+            inputClassName="bg-transparent "
+            label="First name"
             value={values.firstName}
             onChange={(e) =>
               setValues({
@@ -158,9 +158,9 @@ const AccountOverview = () => {
           <InputField
             placeholder=""
             parentClassName="text-xs text-[#26435F]"
-            inputContainerClassName=" bg-white"
+            inputContainerClassName=" bg-white border border-white rounded-5"
             inputClassName="bg-transparent"
-            label="Last Name"
+            label="Last name"
             value={values.lastName}
             onChange={(e) =>
               setValues({
@@ -174,17 +174,16 @@ const AccountOverview = () => {
           <InputField
             placeholder=""
             parentClassName="text-xs text-[#26435F]"
-            inputContainerClassName=" bg-white"
-            inputClassName="bg-transparent"
+            inputContainerClassName=" bg-white border border-white rounded-5 w-[300px]"
+            inputClassName="bg-transparent border border-white rounded-5"
             label="Email"
-            IconRight={tooltipIcon}
+
             value={values.email}
             onChange={(e) => {
               setValues({
                 ...values,
                 email: e.target.value,
               });
-              
             }}
             error={error.email}
             Tooltip={
@@ -204,13 +203,20 @@ const AccountOverview = () => {
             }
           />
 
-          <InputField
+          <InputFieldDropdown
             placeholder=""
             parentClassName="text-xs text-[#26435F]"
-            inputContainerClassName=" bg-white"
-            inputClassName="bg-transparent"
+            inputContainerClassName=" bg-white border border-white rounded-5"
+            inputClassName="bg-transparent "
             label="Phone"
             value={values.phone}
+            codeValue={values.phoneCode}
+            handleCodeChange={(e) =>
+              setValues({
+                ...values,
+                phoneCode: e.target.value,
+              })
+            }
             onChange={(e) =>
               setValues({
                 ...values,
@@ -219,14 +225,22 @@ const AccountOverview = () => {
             }
             error={error.phone}
           />
+          <div className="flex h-fit flex-1 w-full mt-[20px] justify-end items-center">
+            <button
+              onClick={handleDataUpdate}
+              className="bg-[#FF7979] text-white  rounded-md px-10 py-[9px] text-sm"
+            >
+              Save
+            </button>
+          </div>
         </div>
         <div className="flex gap-7 flex-1">
           <InputField
             placeholder=""
             parentClassName="text-xs text-[#26435F]"
-            inputContainerClassName=" bg-white"
-            inputClassName="bg-transparent"
-            label="Current Password"
+            inputContainerClassName=" bg-white border border-white rounded-5"
+            inputClassName="bg-transparent border border-white rounded-5"
+            label="Current password"
             value={values.currentPassword}
             onChange={(e) =>
               setValues({
@@ -239,9 +253,9 @@ const AccountOverview = () => {
           <InputField
             placeholder=""
             parentClassName="text-xs text-[#26435F]"
-            inputContainerClassName=" bg-white"
-            inputClassName="bg-transparent"
-            label="New Password"
+            inputContainerClassName=" bg-white border border-white rounded-5"
+            inputClassName="bg-transparent border border-white rounded-5"
+            label="New password"
             value={values.newPassword}
             onChange={(e) =>
               setValues({
@@ -252,11 +266,12 @@ const AccountOverview = () => {
             error={error.newPassword}
           />
           <InputField
+          style={{border:'1px solid white !important'}}
             placeholder=""
             parentClassName="text-xs text-[#26435F]"
-            inputContainerClassName=" bg-white"
-            inputClassName="bg-transparent"
-            label="Confirm Password"
+            inputContainerClassName=" bg-white border border-white rounded-5"
+            inputClassName="bg-transparent border border-white rounded-5"
+            label="Confirm password"
             value={values.confirmPassword}
             onChange={(e) =>
               setValues({
@@ -265,24 +280,19 @@ const AccountOverview = () => {
               })
             }
             error={error.confirmPassword}
+            
           />
           <div>
             <button
               onClick={handleClose}
-              className="bg-[#FFA28D] text-white rounded-md my-3  px-[50px] py-3 "
+              className="bg-[#FFA28D]  rounded-md my-3  px-[50px] py-3  mt-4 w-[186.67px]"
+              style={{color:'#EEEEEE'}}
             >
               Update
             </button>
           </div>
         </div>
-        <div className="flex h-fit flex-1 justify-center items-center">
-          <button
-            onClick={handleDataUpdate}
-            className="bg-[#FF7979] text-white  rounded-md px-5 py-2 text-sm"
-          >
-            Save
-          </button>
-        </div>
+
         <div>
           {reset && (
             <div className="flex gap-2">

@@ -839,13 +839,13 @@ console.log(organization)
 
   return (
     <>
-      <div className=" bg-lightWhite min-h-screen px-8 pt-[50px] pb-[50px] lg:px-[100px] ">
+      <div className=" bg-lightWhite min-h-screen px-[120px] pt-[50px] pb-[50px] lg:px-[120px] ">
         <p className="text-[#24A3D9]  mb-9 ">
           {organization?.company + "  >  "}
           <span className="font-semibold">Settings</span>
         </p>
-        <div className="flex justify-between items-center mb-[45px]">
-          <div className={styles.tabsContainer}>
+        <div className=" flex w-full flex-1 items-center mb-[30px]">
+          <div className={`${styles.tabsContainer} flex-1`}>
             {tabs.map((item, idx) => {
               return (
                 <div

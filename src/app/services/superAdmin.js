@@ -15,6 +15,14 @@ export const superAdminServicesApi = createApi({
         headers: getAuthHeader(),
       }),
     }),
+    getAllOrgStatsRange: builder.mutation({
+      query: (body) => ({
+        url: `api/user/superadmin/dashboard/orgstats`,
+        method: "POST",
+        body,
+        headers: getAuthHeader(),
+      }),
+    }),
     getLogout: builder.query({
       query: (name) => ({
         url: `api/user/org/logOut`,
@@ -43,6 +51,14 @@ export const superAdminServicesApi = createApi({
         headers: getAuthHeader(),
       }),
     }),
+    getFinancialStatsRange: builder.mutation({
+      query: (body) => ({
+        url: `api/user/superadmin/financialStats`,
+        method: "POST",
+        body,
+        headers: getAuthHeader(),
+      }),
+    }),
     getUserDailyActivity: builder.query({
       query: (name) => ({
         url: `api/user/superAdmin/userDailyActivity`,
@@ -50,10 +66,26 @@ export const superAdminServicesApi = createApi({
         headers: getAuthHeader(),
       }),
     }),
+    getUserDailyActivityRange: builder.mutation({
+      query: (body) => ({
+        url: `api/user/superAdmin/userDailyActivity`,
+        method: "POST",
+        body,
+        headers: getAuthHeader(),
+      }),
+    }),
     getActionLog: builder.query({
       query: (name) => ({
         url: `/api/user/superadmin/actionlog`,
         method: "GET",
+        headers: getAuthHeader(),
+      }),
+    }),
+    getActionLogRange:builder.mutation({
+      query: (body) => ({
+        url: `/api/user/superadmin/actionlog`,
+        method: "POST",
+        body,
         headers: getAuthHeader(),
       }),
     }),
@@ -77,6 +109,14 @@ export const superAdminServicesApi = createApi({
       query: () => ({
         url: `/api/user/superadmin/getlastSignUpdetails`,
         method: "GET",
+        headers: getAuthHeader(),
+      }),
+    }),
+    getLatestOrgRange:builder.mutation({
+      query: (body) => ({
+        url: `/api/user/superadmin/getlastSignUpdetails`,
+        method: "POST",
+        body,
         headers: getAuthHeader(),
       }),
     }),
@@ -108,16 +148,22 @@ export const superAdminServicesApi = createApi({
 
 export const {
   useGetAllOrgStatsQuery,
+  useGetAllOrgStatsRangeMutation,
   useGetAllTestQuery,
   useGetUserStatsByRoleQuery,
   useGetUserDailyActivityQuery,
+  useGetUserDailyActivityRangeMutation,
   useAddUserDemographyMutation,
   useGetActionLogQuery,
+  useGetActionLogRangeMutation,
   useLazyGetAllOrgQuery,
   useGetTotalHoursMutation,
   useLazyGetLatestOrgQuery,
+  useGetLatestOrgRangeMutation,
   useLazyGetLogoutQuery,
   useGetFinancialStatsQuery,
+  useGetFinancialStatsRangeMutation,
+
   useGetSpecificActionLogMutation
   
 } = superAdminServicesApi;

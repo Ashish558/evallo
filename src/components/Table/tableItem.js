@@ -12,7 +12,7 @@ import GreenIcon from "../../assets/assignedTests/green.svg";
 import GrayIcon from "../../assets/assignedTests/gray.svg";
 import RemoveIcon from "../../assets/icons/remove.svg";
 import EditTestIcon from "../../assets/icons/edit-test.svg";
-import TrashIcon from "../../assets/icons/delete.svg";
+import TrashIcon from "../../assets/icons/trash2.png";
 import styles from './styles.module.css'
 import AddIcon from "../../assets/icons/plus.svg";
 import EditIcon from "../../assets/icons/test-edit.svg";
@@ -229,7 +229,7 @@ export default function TableItem({
   return (
     <>
       {dataFor === "allUsers" && (
-        <tr className="odd:bg-white  shadow-sm shadow-slate-200 even:bg-primaryWhite-300 rounded-2xl leading-8">
+        <tr className="odd:bg-white   leading-8">
           
           <td className="font-medium text-sm px-1  min-w-14 py-4  text-left">
             <span
@@ -350,7 +350,7 @@ export default function TableItem({
         </tr>
       )}
       {dataFor === "allUsersSuperAdmin" && (
-        <tr className="odd:bg-white shadow-sm shadow-slate-200 even:bg-primaryWhite-300 rounded-2xl leading-8">
+        <tr className="odd:bg-white  leading-8">
           <td className="font-medium text-sm px-1  min-w-14 py-4  text-left">
             <span
               className="inline-block cursor-pointer pl-4"
@@ -372,13 +372,13 @@ export default function TableItem({
           </td>
           <td className="font-medium text-sm px-1  min-w-14 py-4">
             <div className="my-[6px]">
-
+               <span style={{textDecoration:'underline'}}>edit</span> 
             </div>
           </td>
           <td className="font-medium text-sm px-1  min-w-14 py-4">
             <div className="">
               <button
-                className="rounded-md bg-[#26435F3B] text-[#517CA8] px-2 py-[2px]"
+                className="rounded-md bg-[#26435F3B] text-[#517CA8] px-2 py-[2px] w-[85px] h-[26.67px] text-18.67px"
                 onClick={() => onClick.handleResetPassword(item.email)}
               >
                 Reset
@@ -453,7 +453,7 @@ export default function TableItem({
         </tr>
       )}
       {dataFor === "assignedTests" && (
-        <tr className="odd:bg-white text-sm shadow-sm shadow-slate-200 even:bg-primaryWhite-300 rounded-2xl leading-8">
+        <tr className="odd:bg-white text-sm  leading-8">
           <td className="px-1 font-medium  min-w-14 py-4 text-left">
             <span className="inline-block cursor-pointer pl-4">
               {item.studentName}
@@ -537,7 +537,7 @@ export default function TableItem({
       )}
 
       {dataFor === "tests" && (
-        <tr className="odd:bg-white text-sm shadow-sm shadow-slate-200 even:bg-primaryWhite-300 rounded-2xl leading-7">
+        <tr className="odd:bg-white text-sm  leading-7">
           {Object.keys(item).map((key, i) =>
             key === "Accuracy" ? (
               <td key={i} className="font-medium px-1  min-w-14 py-4">
@@ -563,7 +563,7 @@ export default function TableItem({
         </tr>
       )}
       {dataFor === "assignedStudents" && (
-        <tr className="odd:bg-white text-sm shadow-sm shadow-slate-200 even:bg-primaryWhite-300 rounded-2xl leading-7">
+        <tr className="odd:bg-white text-sm  leading-7">
           {MapData(item, "assignedStudents", excludes, onClick)}
           {/* <td>
                   <img src={RemoveIcon} />
@@ -572,10 +572,10 @@ export default function TableItem({
       )}
       {dataFor === "studentTestsReport" && (
         <tr
-          className={`text-sm shadow-sm shadow-slate-200 rounded-2xl leading-7 ${
+          className={`text-sm   leading-7 ${
             !item.isCorrect
               ? "bg-[#e02b1d]/5"
-              : "odd:bg-white  even:bg-primaryWhite-300"
+              : "odd:bg-white  "
           } `}
         >
           {MapData(item)}
@@ -583,17 +583,17 @@ export default function TableItem({
       )}
       {dataFor === "studentTestsReportSmall" && (
         <tr
-          className={`text-sm shadow-sm shadow-slate-200  rounded-2xl leading-7 ${
+          className={`text-sm  leading-7 ${
             !item.isCorrect
               ? "bg-[#e02b1d]/5"
-              : "odd:bg-white  even:bg-primaryWhite-300"
+              : "odd:bg-white  "
           } `}
         >
           {MapData(item)}
         </tr>
       )}
       {dataFor === "studentTestsAnswers" && (
-        <tr className="odd:bg-white text-sm shadow-sm shadow-slate-200 even:bg-primaryWhite-300 rounded-2xl leading-7">
+        <tr className="odd:bg-white text-sm  leading-7">
           {MapData(item)}
           <td className="font-medium px-1 min-w-14 py-4 flex justify-center items-center">
             <button className="flex items-center">
@@ -606,7 +606,7 @@ export default function TableItem({
         </tr>
       )}
       {dataFor === "assignedTestsStudents" && (
-        <tr className="odd:bg-white shadow-sm text-sm shadow-slate-200 even:bg-primaryWhite-300 rounded-2xl leading-7">
+        <tr className="odd:bg-white shadow-sm text-sm shadow-slate-200   leading-7">
           {Object.keys(item).map((key, i) =>
             excludes.includes(key) ? (
               <></>
@@ -701,12 +701,12 @@ export default function TableItem({
         </tr>
       )}
       {dataFor === "invoice" && (
-        <tr className="bg-white text-sm shadow-sm shadow-slate-200 rounded-2xl leading-7 mt-[10px]">
+        <tr className="bg-white text-sm   leading-7 mt-[10px]">
           {MapData(item, dataFor, excludes, onClick)}
         </tr>
       )}
       {dataFor === "testsDetailQuestions" && (
-        <tr className="bg-white text-sm shadow-sm shadow-slate-200 rounded-2xl leading-7 mt-[10px]">
+        <tr className="bg-white text-sm   leading-7 mt-[10px]">
           {MapData(item, dataFor, excludes)}
           <td className="font-medium px-1 min-w-14 py-4">
             <img
@@ -718,7 +718,7 @@ export default function TableItem({
         </tr>
       )}
       {dataFor === "allTests" && (
-        <tr className="odd:bg-white font-medium text-sm shadow-sm shadow-slate-200 even:bg-primaryWhite-300 rounded-2xl lead">
+        <tr className="odd:bg-white font-medium text-sm  lead">
           <td>{item.testName}</td>
           <td>{item.testType}</td>
           <td>{item.createdAt.split("T")[0]}</td>
@@ -745,7 +745,7 @@ export default function TableItem({
         </tr>
       )}
       {dataFor === "allTestsSuperAdmin" && (
-        <tr className="odd:bg-white font-medium text-sm shadow-sm shadow-slate-200 even:bg-primaryWhite-300 rounded-2xl lead">
+        <tr className="odd:bg-white font-medium text-sm  lead">
           <td>{item.testName}</td>
           <td>{item.testType}</td>
           <td>{item.createdAt.split("T")[0]}</td>
@@ -786,7 +786,7 @@ export default function TableItem({
         </tr>
       )}
       {dataFor === "assignedTutors" && (
-        <tr className="bg-white text-sm shadow-sm shadow-slate-200 rounded-2xl leading-7 mt-[10px]">
+        <tr className="bg-white text-sm   leading-7 mt-[10px]">
           {MapData(item, dataFor, excludes, onClick)}
           <td className="font-medium flex justify-center px-1 min-w-14 py-4">
             <img
@@ -798,7 +798,7 @@ export default function TableItem({
         </tr>
       )}
       {dataFor === "allOrgs" && (
-        <tr className="odd:bg-white shadow-sm shadow-slate-200 even:bg-primaryWhite-300 rounded-2xl leading-8">
+        <tr className="odd:bg-white  leading-8">
           <td className="font-medium text-sm px-1  min-w-14 py-4  text-left">
             <span
               className="inline-block cursor-pointer pl-4"

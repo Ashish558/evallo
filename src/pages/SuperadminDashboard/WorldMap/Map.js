@@ -37,7 +37,7 @@ const Map = ({ markings, countryMarking, countryFlag }) => {
           map={worldMill}
           zoomButtons={false}
           containerStyle={{
-            // width: "700px",
+            
             height: "700px",
             backgroundColor: "#EBEBEB",
           }}
@@ -75,7 +75,7 @@ const Map = ({ markings, countryMarking, countryFlag }) => {
           map={worldMill}
           zoomButtons={false}
           containerStyle={{
-            // width: "700px",
+            
             height: "700px",
             backgroundColor: "#EBEBEB",
           }}
