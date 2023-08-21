@@ -1,3 +1,4 @@
+
 import React, { useEffect, useRef, useState } from "react";
 import PrimaryButton from "../../components/Buttons/PrimaryButton";
 import EditIcon from "../../assets/icons/edit-white.svg";
@@ -27,6 +28,8 @@ import PlayIcon from "../../assets/icons/play.svg";
 import AccountOverviewLogo from "../../assets/icons/account-overview.png";
 import AccountOverviewLogo2 from "../../assets/icons/account overview2.png";
 import OrgDefaultLogo from "../../assets/icons/org-default.png";
+import org1 from "../../assets/icons/org1.png";
+import org2 from  "../../assets/icons/org2.png";
 import OrgDefaultLogo2 from "../../assets/icons/org default2.png";
 import OrgDefaultContentLogo2 from "../../assets/icons/org default content.png";
 import OrgDefaultContentLogo from "../../assets/icons/org default content(2).png";
@@ -72,8 +75,8 @@ const initialTabs = [
     selected: false,
   },
   {
-    Icon: OrgDefaultLogo2,
-    Icon2: OrgDefaultLogo,
+    Icon: org2,
+    Icon2: org1,
     name: "Org Default",
     selected: false,
   },
@@ -833,7 +836,7 @@ export default function SuperAdminSettings() {
           <span className="font-medium text-lg">Settings</span>
         </p>
         <div className="flex justify-between items-center mb-[45px]">
-          <div className={`${styles.tabsContainer} flex-1`}>
+          <div className={`${styles.tabsContainer} w-full`}>
             {tabs.map((item, idx) => {
               return (
                 <div
@@ -841,7 +844,7 @@ export default function SuperAdminSettings() {
                     } cursor-pointer`}
                   onClick={() => changeTab(idx + 1)}
                 >
-                  <div className="w-[195px] flex justify-center">
+                  <div className={` flex justify-center w-full`} >
                     <div>
                       {activeTab === idx + 1 && (
                         <img src={item.Icon} alt="item-logo" />

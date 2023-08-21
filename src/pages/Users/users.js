@@ -681,7 +681,7 @@ export default function Users() {
       const formdata = new FormData();
       formdata.append("file", xlsFile);
       await axios
-        .post(`${BASE_URL}api/user/bulkUploadUser`, formdata, {
+        .post(`${BASE_URL}api/user/bulkUploadUsers`, formdata, {
           headers: getAuthHeader(),
         })
         .then((res) => {
@@ -699,7 +699,7 @@ export default function Users() {
       const formdata = new FormData();
       formdata.append("file", xlsFile);
       await axios
-        .post(`${BASE_URL}api/user/bulkInviteUser`, formdata, {
+        .post(`${BASE_URL}api/user/bulkInviteUsers`, formdata, {
           headers: getAuthHeader(),
         })
         .then((res) => {
@@ -868,7 +868,7 @@ export default function Users() {
               <Modal
                 title="Are You Sure You Want to Invite XX User To Join Evallo?"
                 classname={"max-w-[760px] mx-auto"}
-                titleClassName={"mt-2"}
+                titleClassName={"mt-5"}
                 handleClose={() => setInviteUsers(false)}
                 //  primaryBtn={{
                 //    text: "Assign",
@@ -900,7 +900,7 @@ export default function Users() {
                       <button
                         data-modal-target="popup-modal"
                         data-modal-toggle="popup-modal"
-                        className="block text-white bg-[#FFA28D] hover:bg-[#FFA28D] me-3 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-[#FFA28D] dark:hover:bg-[#FFA28D] "
+                        className="block text-white mr-6 bg-[#FFA28D] hover:bg-[#FFA28D] me-3 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-[#FFA28D] dark:hover:bg-[#FFA28D] "
                         type="button"
                         onClick={bulkInvite}
                       >

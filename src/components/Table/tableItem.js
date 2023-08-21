@@ -12,7 +12,7 @@ import GreenIcon from "../../assets/assignedTests/green.svg";
 import GrayIcon from "../../assets/assignedTests/gray.svg";
 import RemoveIcon from "../../assets/icons/remove.svg";
 import EditTestIcon from "../../assets/icons/edit-test.svg";
-import TrashIcon from "../../assets/icons/delete.svg";
+import TrashIcon from "../../assets/icons/trash2.png";
 import styles from './styles.module.css'
 import AddIcon from "../../assets/icons/plus.svg";
 import EditIcon from "../../assets/icons/test-edit.svg";
@@ -372,13 +372,13 @@ export default function TableItem({
           </td>
           <td className="font-medium text-sm px-1  min-w-14 py-4">
             <div className="my-[6px]">
-
+               <span style={{textDecoration:'underline'}}>edit</span> 
             </div>
           </td>
           <td className="font-medium text-sm px-1  min-w-14 py-4">
             <div className="">
               <button
-                className="rounded-md bg-[#26435F3B] text-[#517CA8] px-2 py-[2px]"
+                className="rounded-md bg-[#26435F3B] text-[#517CA8] px-2 py-[2px] w-[85px] h-[26.67px] text-18.67px"
                 onClick={() => onClick.handleResetPassword(item.email)}
               >
                 Reset

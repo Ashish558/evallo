@@ -844,7 +844,7 @@ console.log(organization)
           {organization?.company + "  >  "}
           <span className="font-semibold">Settings</span>
         </p>
-        <div className=" flex w-full flex-1 items-center mb-[45px]">
+        <div className=" flex w-full flex-1 items-center mb-[30px]">
           <div className={`${styles.tabsContainer} flex-1`}>
             {tabs.map((item, idx) => {
               return (
