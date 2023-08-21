@@ -30,7 +30,10 @@ export default function SignupTab({
   const [isChecked, setIsChecked] = useState(false);
   const [isCheckedTwo, setIsCheckedTwo] = useState(false);
   const [isCheckedThree, setIsCheckedThree] = useState(false);
-
+ const [checkTerms,setCheckTerms]=useState()
+ const handleCheckboxChangeTerms = () => {
+  setCheckTerms(!checkTerms);
+};
   const handleCheckboxChange = () => {
     setIsChecked(!isChecked);
   };
@@ -131,7 +134,7 @@ export default function SignupTab({
                       isChecked ? "checked" : ""
                     }`}
                   ></span>
-                  <span className="ml-3">Parent / Guardian</span>
+                  <span className="ml-2 text-[#507CA8]">Parent / Guardian</span>
                 </label>
               </p>
               <p className={styles.textLight}>
@@ -146,7 +149,7 @@ export default function SignupTab({
                       isChecked ? "checked" : ""
                     }`}
                   ></span>
-                  <span className="ml-3">Student</span>
+                  <span className="ml-2 text-[#507CA8]">Student</span>
                 </label>
               </p>
             </div>
@@ -164,21 +167,35 @@ export default function SignupTab({
                     isChecked ? "checked" : ""
                   }`}
                 ></span>
-                <span className="ml-3">
+                <span className="ml-2 text-[#507CA8]">
                   I confirm that I am 13 years or older
                 </span>
               </label>
             </p>
           </div>
-          <div className="flex gap-x-2 my-5">
-            <CCheckbox />
-            <p className={`${styles.textLight}`}>
-              I have carefully read and agree to the{" "}
-              <span className="font-medium text-[#26435F]">
+          <div className=" gap-x-2 my-5">
+            <p className={styles.textLight}>
+              <label className={`${styles["checkbox-label"]} block  `}>
+                <input
+                  type="checkbox"
+                  checked={checkTerms}
+                  onChange={handleCheckboxChangeTerms}
+                />
+                <span
+                  className={`${styles["custom-checkbox"]} ${
+                    isChecked ? "checked" : ""
+                  }`}
+                ></span>
+               <p className={` ml-2 text-[#507CA8]`}>
+               I have carefully read and agree to the{" "}
+              <span className="font-semibold text-[#26435F]">
                 Terms of Use and Privacy Policy
               </span>
             </p>
+              </label>
+            </p>
           </div>
+          
         </div>
         <div className={styles.colContainer}>
         <span className={`hidden lg:flex mb-[26px]  items-center`} style={{color:'#26435F',fontWeight:600}}>
