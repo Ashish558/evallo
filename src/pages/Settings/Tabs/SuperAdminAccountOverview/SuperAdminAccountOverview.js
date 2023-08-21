@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import InputField from "../../../../components/InputField/inputField";
 import PrimaryButton from "../../../../components/Buttons/PrimaryButton";
 import { CheckboxNew } from "../../../../components/Checkbox/CheckboxNew";
+import "../../../Settings/styles.module.css"
 import InputSelect from "../../../../components/InputSelect/InputSelect";
 import { studentServedData, instructionFormat } from "../staticData";
 import logo from "../../../../assets/icons/Frame 31070.svg";
@@ -138,13 +139,14 @@ const AccountOverview = () => {
   return (
     <div>
       <div className="flex flex-col gap-10 w-[900px] ">
-        <div className="flex gap-5">
+        <div className="flex gap-5 " style={{verticalAlign:'center'}}>
           <InputField
+            style={{color:'blue'}}
             placeholder=""
             parentClassName="text-xs text-[#26435F]"
-            inputContainerClassName=" bg-white"
-            inputClassName="bg-transparent"
-            label="First Name"
+            inputContainerClassName=" bg-white border border-white rounded-5"
+            inputClassName="bg-transparent "
+            label="First name"
             value={values.firstName}
             onChange={(e) =>
               setValues({
@@ -158,9 +160,9 @@ const AccountOverview = () => {
           <InputField
             placeholder=""
             parentClassName="text-xs text-[#26435F]"
-            inputContainerClassName=" bg-white"
+            inputContainerClassName=" bg-white border border-white rounded-5"
             inputClassName="bg-transparent"
-            label="Last Name"
+            label="Last name"
             value={values.lastName}
             onChange={(e) =>
               setValues({
@@ -174,10 +176,10 @@ const AccountOverview = () => {
           <InputField
             placeholder=""
             parentClassName="text-xs text-[#26435F]"
-            inputContainerClassName=" bg-white"
-            inputClassName="bg-transparent"
+            inputContainerClassName=" bg-white border border-white rounded-5 w-[300px]"
+            inputClassName="bg-transparent border border-white rounded-5"
             label="Email"
-            IconRight={tooltipIcon}
+
             value={values.email}
             onChange={(e) => {
               setValues({
@@ -207,8 +209,8 @@ const AccountOverview = () => {
           <InputField
             placeholder=""
             parentClassName="text-xs text-[#26435F]"
-            inputContainerClassName=" bg-white"
-            inputClassName="bg-transparent"
+            inputContainerClassName=" bg-white border border-white rounded-5"
+            inputClassName="bg-transparent "
             label="Phone"
             value={values.phone}
             onChange={(e) =>
@@ -224,9 +226,9 @@ const AccountOverview = () => {
           <InputField
             placeholder=""
             parentClassName="text-xs text-[#26435F]"
-            inputContainerClassName=" bg-white"
-            inputClassName="bg-transparent"
-            label="Current Password"
+            inputContainerClassName=" bg-white border border-white rounded-5"
+            inputClassName="bg-transparent border border-white rounded-5"
+            label="Current password"
             value={values.currentPassword}
             onChange={(e) =>
               setValues({
@@ -239,9 +241,9 @@ const AccountOverview = () => {
           <InputField
             placeholder=""
             parentClassName="text-xs text-[#26435F]"
-            inputContainerClassName=" bg-white"
-            inputClassName="bg-transparent"
-            label="New Password"
+            inputContainerClassName=" bg-white border border-white rounded-5"
+            inputClassName="bg-transparent border border-white rounded-5"
+            label="New password"
             value={values.newPassword}
             onChange={(e) =>
               setValues({
@@ -252,11 +254,12 @@ const AccountOverview = () => {
             error={error.newPassword}
           />
           <InputField
+          style={{border:'1px solid white !important'}}
             placeholder=""
             parentClassName="text-xs text-[#26435F]"
-            inputContainerClassName=" bg-white"
-            inputClassName="bg-transparent"
-            label="Confirm Password"
+            inputContainerClassName=" bg-white border border-white rounded-5"
+            inputClassName="bg-transparent border border-white rounded-5"
+            label="Confirm password"
             value={values.confirmPassword}
             onChange={(e) =>
               setValues({
@@ -265,11 +268,13 @@ const AccountOverview = () => {
               })
             }
             error={error.confirmPassword}
+            
           />
           <div>
             <button
               onClick={handleClose}
-              className="bg-[#FFA28D] text-white rounded-md my-3  px-[50px] py-3 "
+              className="bg-[#FFA28D]  rounded-md my-3  px-[50px] py-3  mt-4 w-[186.67px]"
+              style={{color:'#EEEEEE'}}
             >
               Update
             </button>

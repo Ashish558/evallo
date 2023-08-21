@@ -139,8 +139,8 @@ const AccountOverview = () => {
           <InputField
             placeholder=""
             parentClassName="text-xs text-[#26435F]"
-            inputContainerClassName=" bg-white"
-            inputClassName="bg-transparent"
+            inputContainerClassName=" bg-white  border border-white"
+            inputClassName=" text-400 bg-transparent"
             label="First Name"
             value={values.firstName}
             onChange={(e) =>
@@ -155,8 +155,8 @@ const AccountOverview = () => {
           <InputField
             placeholder=""
             parentClassName="text-xs text-[#26435F]"
-            inputContainerClassName=" bg-white"
-            inputClassName="bg-transparent"
+            inputContainerClassName=" bg-white border border-white"
+            inputClassName=" text-400 bg-transparent"
             label="Last Name"
             value={values.lastName}
             onChange={(e) =>
@@ -171,10 +171,10 @@ const AccountOverview = () => {
           <InputField
             placeholder=""
             parentClassName="text-xs text-[#26435F]"
-            inputContainerClassName=" bg-white"
-            inputClassName="bg-transparent"
+            inputContainerClassName=" bg-white border border-white"
+            inputClassName=" text-400 bg-transparent"
             label="Email"
-            IconRight={tooltipIcon}
+            // IconRight={tooltipIcon}
             value={values.email}
             onChange={(e) => {
               setValues({
@@ -200,11 +200,12 @@ const AccountOverview = () => {
               </span>
             }
           />
+          <div id="number">
           <InputFieldDropdown
             placeholder=""
             parentClassName="text-xs text-[#26435F]"
-            inputContainerClassName=" bg-white"
-            inputClassName="bg-transparent"
+            inputContainerClassName=" bg-white border border-white "
+            inputClassName="  bg-transparent text-400 "
             label="Phone"
             value={values.phone}
             codeValue={values.phoneCode}
@@ -222,10 +223,12 @@ const AccountOverview = () => {
             }
             error={error.phone}
           />
+          </div>
            <div>
             <button
+              style={{color:'#EEEEEE'}}
               onClick={handleDataUpdate}
-              className="bg-[#FF7979] text-white mt-5 ml-10 rounded-md px-10 py-2 text-sm"
+              className="bg-[#FFA28D]  mt-5 ml-10 rounded-md px-10 py-2 text-sm"
             >
               Save
             </button>

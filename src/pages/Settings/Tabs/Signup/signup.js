@@ -7,7 +7,9 @@ import CCheckbox from "../../../../components/CCheckbox/CCheckbox";
 import InputSelect from "../../../../components/InputSelect/InputSelect";
 import CheckboxIcon from "../../../../assets/icons/square.svg";
 import DeletIcon from "../../../../assets/Settings/delete.svg";
-
+import que from '../../../../assets/icons/que.png'
+import que2 from '../../../../assets/icons/que2.png'
+import plus1 from '../../../../assets/icons/plus1.png'
 export default function SignupTab({
   setAddNewQuestionModalActive,
   fetchS,
@@ -54,38 +56,60 @@ export default function SignupTab({
 
   return (
     <div className="">
-      <p className="text-sm underline w-500">
-        <a
+      <div className="mb-[40px]">
+      
+      <span className="text-sm flex items-start w-300" style={{color:'#507CA8'}}>
+      <img src={que} className="mr-1"></img>
+      Please enter the fields for the sign up form that you want to show your clients. You are allowed to create up to 5 additional custom questions beyond the mandatory fields that we require from parents and students.
+      </span>
+      <p></p>
+      
+      
+      <span className="text-sm flex w-300 mt-3" style={{color:'#507CA8'}}>
+      <img src={que} className="mr-1"></img>
+      Link to the Sign-up form for Org Name: 
+        <a style={{textDecoration:'underline',color:'#26435F'}}
           href={`${process.env.REACT_APP_FE_URL}/signup/user?orgName=${organization.company}`}
           target={"_blank"}
         >
           {" "}
           {`${process.env.REACT_APP_FE_URL}/signup/user?orgName=${organization.company}`}
         </a>
-      </p>
+      </span>
+      
+      </div>
       <div className="grid grid-cols-2 gap-x-5">
         <div className={styles.colContainer}>
-          <p className={`hidden lg:block mb-[26px] ${styles.textGrayed} `}>
-            Please fill your detail to create your account.
+          <p className={`hidden lg:flex mb-[26px] items-center`} style={{color:'#26435F',fontWeight:600}}>
+          Page 1: Basic Details (all fields mandatory)
+          <img src={que2} className="ml-10"></img>
           </p>
           <div className={`flex mt-[59px] lg:mt-0 ${styles.inputs}`}>
             <InputField
               placeholder=""
+              inputContainerClassName="bg-gray-200 border border-gray-200 "
+              inputClassName="bg-gray-200"
               parentClassName="text-xs"
               label="First Name"
             />
             <InputField
               placeholder=""
+              inputContainerClassName="bg-gray-200 border border-gray-200 "
+              inputClassName="bg-gray-200"
               parentClassName="text-xs"
               label="Last Name"
             />
             <InputField
               label="Email"
+              inputContainerClassName="bg-gray-200 border border-gray-200 w-[400px] "
+              inputClassName="bg-gray-200"
               placeholder=""
-              parentClassName="text-xs mb-4"
+              parentClassName="text-xs mb-4 "
             />
             <InputField
               placeholder=""
+              inputContainerClassName="bg-gray-200 border border-gray-200 "
+              inputClassName="bg-gray-200"
               parentClassName="text-xs mb-4"
               label="Phone"
             />
@@ -157,38 +181,53 @@ export default function SignupTab({
           </div>
         </div>
         <div className={styles.colContainer}>
-          <p className={`hidden lg:block mb-[26px] ${styles.textGrayed} `}>
-            Please fill your detail to create your account.
-          </p>
-          <div className={`flex mt-[59px] lg:mt-0 ${styles.inputs}`}>
+        <span className={`hidden lg:flex mb-[26px]  items-center`} style={{color:'#26435F',fontWeight:600}}>
+        Page 2: Associated Student / Parent Details (all fields mandatory)
+        <img className="ml-10" src={que2}></img>
+          </span>
+          <div className={`flex mt-[59px]  lg:mt-0 ${styles.inputs}`}>
             <InputField
               placeholder=""
               parentClassName="text-xs"
+              inputContainerClassName="bg-gray-200 border border-gray-200 "
+              inputClassName="bg-gray-200"
               label="Student / Parent First Name"
+
             />
             <InputField
               placeholder=""
               parentClassName="text-xs"
+              inputContainerClassName="bg-gray-200 border border-gray-200 "
+              inputClassName="bg-gray-200"
               label="Student / Parent Last Name"
             />
             <InputField
               label="Student / Parent Email"
               placeholder=" "
+              inputContainerClassName="bg-gray-200 border border-gray-200 w-[400px]"
+              inputClassName="bg-gray-200"
               parentClassName="text-xs mb-3"
             />
             <InputField
               placeholder=""
               parentClassName="text-xs mb-3"
+              inputContainerClassName="bg-gray-200 border border-gray-200 "
+              inputClassName="bg-gray-200"
               label="Phone"
             />
+            <div></div>
             <InputField
               placeholder=""
               parentClassName="text-xs mb-3"
+              inputContainerClassName="bg-gray-200 border border-gray-200 w-[400px]"
+              inputClassName="bg-gray-200"
               label="School Name"
             />
             <InputField
               placeholder=""
               parentClassName="text-xs mb-3"
+              inputContainerClassName="bg-gray-200 border border-gray-200 "
+              inputClassName="bg-gray-200"
               label="Student's Grade"
             />
           </div>
@@ -196,9 +235,10 @@ export default function SignupTab({
       </div>
 
       <div className={styles.customContainer}>
-        <p className={styles.title}>
-          Page 3: Custom Fields (Add a maximum of 5 items)
-        </p>
+      <span className={`hidden lg:flex mb-[26px]  items-center`} style={{color:'#26435F',fontWeight:600}}>
+      Page 3: Custom Fields (Add a maximum of 5 items)
+        <img className="ml-10" src={que2}></img>
+          </span>
         <div className="mb-10">
           {customFields?.map((item, idx) => {
             return (
@@ -251,9 +291,11 @@ export default function SignupTab({
             );
           })}
         </div>
+
         <PrimaryButton
           disabled={customFields?.length >= 5 ? true : false}
-          children={"Add new question"}
+          children={"Add New Question"}
+          Icon={plus1}
           onClick={() => setAddNewQuestionModalActive(true)}
         />
       </div>
