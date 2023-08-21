@@ -7,21 +7,21 @@ import CCheckbox from "../../../../components/CCheckbox/CCheckbox";
 import InputSelect from "../../../../components/InputSelect/InputSelect";
 import CheckboxIcon from "../../../../assets/icons/square.svg";
 import DeletIcon from "../../../../assets/Settings/delete.svg";
-import que from '../../../../assets/icons/que.png'
-import que2 from '../../../../assets/icons/que2.png'
-import plus1 from '../../../../assets/icons/plus1.png'
+import que from "../../../../assets/icons/que.png";
+import que2 from "../../../../assets/icons/que2.png";
+import plus1 from "../../../../assets/icons/plus1.png";
 export default function SignupTab({
   setAddNewQuestionModalActive,
   fetchS,
-  updateAndFetchsettings
+  updateAndFetchsettings,
 }) {
   const { organization } = useSelector((state) => state.organization);
 
   const [customFields, setCustomFields] = useState();
 
   useEffect(() => {
-    setCustomFields(organization?.settings?.customFields)
-  }, [organization])
+    setCustomFields(organization?.settings?.customFields);
+  }, [organization]);
   useEffect(() => {
     if (fetchS && fetchS.data && fetchS.data.updatedOrg) {
       setCustomFields(fetchS.data.updatedOrg.customFields);
@@ -30,10 +30,10 @@ export default function SignupTab({
   const [isChecked, setIsChecked] = useState(false);
   const [isCheckedTwo, setIsCheckedTwo] = useState(false);
   const [isCheckedThree, setIsCheckedThree] = useState(false);
- const [checkTerms,setCheckTerms]=useState()
- const handleCheckboxChangeTerms = () => {
-  setCheckTerms(!checkTerms);
-};
+  const [checkTerms, setCheckTerms] = useState();
+  const handleCheckboxChangeTerms = () => {
+    setCheckTerms(!checkTerms);
+  };
   const handleCheckboxChange = () => {
     setIsChecked(!isChecked);
   };
@@ -45,47 +45,54 @@ export default function SignupTab({
   };
 
   const handleDelete = (id) => {
-    let updatedCustomFields = customFields.filter(item => item._id !== id)
-    updatedCustomFields = updatedCustomFields.map(item => ({
+    let updatedCustomFields = customFields.filter((item) => item._id !== id);
+    updatedCustomFields = updatedCustomFields.map((item) => ({
       name: item.name,
       Values: item.Values,
       dataType: item.dataType,
-    }))
+    }));
     const body = {
-      customFields: updatedCustomFields
-    }
-    updateAndFetchsettings(body)
+      customFields: updatedCustomFields,
+    };
+    updateAndFetchsettings(body);
   };
 
   return (
     <div className="">
       <div className="mb-[40px]">
-      
-      <span className="text-sm flex items-start w-300" style={{color:'#507CA8'}}>
-      <img src={que} className="mr-1"></img>
-      Please enter the fields for the sign up form that you want to show your clients. You are allowed to create up to 5 additional custom questions beyond the mandatory fields that we require from parents and students.
-      </span>
-      <p></p>
-      
-      
-      <span className="text-sm flex w-300 mt-3" style={{color:'#507CA8'}}>
-      <img src={que} className="mr-1"></img>
-      Link to the Sign-up form for Org Name: 
-        <a style={{textDecoration:'underline',color:'#26435F'}}
-          href={`${process.env.REACT_APP_FE_URL}/signup/user?orgName=${organization.company}`}
-          target={"_blank"}
+        <span
+          className="text-sm flex items-start w-300"
+          style={{ color: "#507CA8" }}
         >
-          {" "}
-          {`${process.env.REACT_APP_FE_URL}/signup/user?orgName=${organization.company}`}
-        </a>
-      </span>
-      
+          <img src={que} className="mr-1"></img>
+          Please enter the fields for the sign up form that you want to show
+          your clients. You are allowed to create up to 5 additional custom
+          questions beyond the mandatory fields that we require from parents and
+          students.
+        </span>
+        <p></p>
+
+        <span className="text-sm flex w-300 mt-3" style={{ color: "#507CA8" }}>
+          <img src={que} className="mr-1"></img>
+          Link to the Sign-up form for Org Name:
+          <a
+            style={{ textDecoration: "underline", color: "#26435F" }}
+            href={`${process.env.REACT_APP_FE_URL}/signup/user?orgName=${organization.company}`}
+            target={"_blank"}
+          >
+            {" "}
+            {`${process.env.REACT_APP_FE_URL}/signup/user?orgName=${organization.company}`}
+          </a>
+        </span>
       </div>
       <div className="grid grid-cols-2 gap-x-5">
         <div className={styles.colContainer}>
-          <p className={`hidden lg:flex mb-[26px] items-center`} style={{color:'#26435F',fontWeight:600}}>
-          Page 1: Basic Details (all fields mandatory)
-          <img src={que2} className="ml-10"></img>
+          <p
+            className={`hidden lg:flex mb-[26px] items-center`}
+            style={{ color: "#26435F", fontWeight: 600 }}
+          >
+            Page 1: Basic Details (all fields mandatory)
+            <img src={que2} className="ml-10"></img>
           </p>
           <div className={`flex mt-[59px] lg:mt-0 ${styles.inputs}`}>
             <InputField
@@ -122,35 +129,45 @@ export default function SignupTab({
               Are you signing up as a Parent or a Student?
             </p>
             <div className="flex items-center gap-x-6">
-              <p className={styles.textLight}>
-                <label className={`${styles["checkbox-label"]} block  `}>
+              <p onClick={()=>setIsChecked(true)} className={styles.textLight}>
+                <div   className={`${styles["checkbox-label"]} block  `}>
                   <input
-                    type="checkbox"
-                    checked={isChecked}
-                    onChange={handleCheckboxChange}
+                    type="radio"
+                    className="form-radio hidden"
+                    id="radioOption"
                   />
-                  <span
-                    className={`${styles["custom-checkbox"]} ${
-                      isChecked ? "checked" : ""
-                    }`}
-                  ></span>
+                  <label
+                    htmlFor="radioOption"
+                    className={`relative w-4 h-4 rounded-full border ${isChecked?"border-[#FFA28D]":"border-gray-600"} cursor-pointer`}
+                   
+                  >
+                    {isChecked && (
+                      <div className="absolute inset-0 my-auto mx-auto w-[9px] h-[9px] rounded-full bg-[#FFA28D]" />
+                    )}{" "}
+                  </label>
+
                   <span className="ml-2 text-[#507CA8]">Parent / Guardian</span>
-                </label>
+                </div>
               </p>
-              <p className={styles.textLight}>
-                <label className={`${styles["checkbox-label"]} block  `}>
+              <p onClick={()=>setIsChecked(false)}  className={styles.textLight}>
+                <div  className={`${styles["checkbox-label"]} block  `}>
                   <input
-                    type="checkbox"
-                    checked={isCheckedTwo}
-                    onChange={handleCheckboxChangeTwo}
+                    type="radio"
+                    className="form-radio hidden"
+                    id="radioOption"
                   />
-                  <span
-                    className={`${styles["custom-checkbox"]} ${
-                      isChecked ? "checked" : ""
-                    }`}
-                  ></span>
+                  <label
+                   
+                    className={`relative w-4 h-4 rounded-full border ${!isChecked?"border-[#FFA28D]":"border-gray-600"} cursor-pointer`}
+                    
+                  >
+                    {!isChecked && (
+                      <div className="absolute inset-0 my-auto mx-auto w-[9px] h-[9px] rounded-full bg-[#FFA28D]" />
+                    )}{" "}
+                  </label>
+
                   <span className="ml-2 text-[#507CA8]">Student</span>
-                </label>
+                </div>
               </p>
             </div>
           </div>
@@ -186,21 +203,23 @@ export default function SignupTab({
                     isChecked ? "checked" : ""
                   }`}
                 ></span>
-               <p className={` ml-2 text-[#507CA8]`}>
-               I have carefully read and agree to the{" "}
-              <span className="font-semibold text-[#26435F]">
-                Terms of Use and Privacy Policy
-              </span>
-            </p>
+                <p className={` ml-2 text-[#507CA8]`}>
+                  I have carefully read and agree to the{" "}
+                  <span className="font-semibold text-[#26435F]">
+                    Terms of Use and Privacy Policy
+                  </span>
+                </p>
               </label>
             </p>
           </div>
-          
         </div>
         <div className={styles.colContainer}>
-        <span className={`hidden lg:flex mb-[26px]  items-center`} style={{color:'#26435F',fontWeight:600}}>
-        Page 2: Associated Student / Parent Details (all fields mandatory)
-        <img className="ml-10" src={que2}></img>
+          <span
+            className={`hidden lg:flex mb-[26px]  items-center`}
+            style={{ color: "#26435F", fontWeight: 600 }}
+          >
+            Page 2: Associated Student / Parent Details (all fields mandatory)
+            <img className="ml-10" src={que2}></img>
           </span>
           <div className={`flex mt-[59px]  lg:mt-0 ${styles.inputs}`}>
             <InputField
@@ -209,7 +228,6 @@ export default function SignupTab({
               inputContainerClassName="bg-gray-200 border border-gray-200 "
               inputClassName="bg-gray-200"
               label="Student / Parent First Name"
-
             />
             <InputField
               placeholder=""
@@ -252,10 +270,13 @@ export default function SignupTab({
       </div>
 
       <div className={styles.customContainer}>
-      <span className={`hidden lg:flex mb-[26px]  items-center`} style={{color:'#26435F',fontWeight:600}}>
-      Page 3: Custom Fields (Add a maximum of 5 items)
-        <img className="ml-10" src={que2}></img>
-          </span>
+        <span
+          className={`hidden lg:flex mb-[26px]  items-center`}
+          style={{ color: "#26435F", fontWeight: 600 }}
+        >
+          Page 3: Custom Fields (Add a maximum of 5 items)
+          <img className="ml-10" src={que2}></img>
+        </span>
         <div className="mb-10">
           {customFields?.map((item, idx) => {
             return (
