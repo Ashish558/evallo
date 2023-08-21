@@ -117,15 +117,15 @@ export default function UserManagement() {
     },
     {
       id: 2,
-      text: "Email",
+      text: "Usertype",
     },
     {
       id: 3,
-      text: "User Type",
+      text: "Email",
     },
     {
       id: 7,
-      text: "Last Login",
+      text: "Last login",
     },
     {
       id: 8,
@@ -134,11 +134,11 @@ export default function UserManagement() {
     {
       id: 9,
       text: "Password",
-    },
-    {
-      id: 10,
-      text: "Password",
-    },
+    },{
+      id:10,
+      text:"Password"
+    }
+
   ];
 
   const handleResetPassword = (email) => {

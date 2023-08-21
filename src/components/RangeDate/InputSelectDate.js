@@ -101,13 +101,16 @@ export default function InputSelect({
           {value === "" || !value ? (
             <span className="text-primary-60 mr-10 pl-5 cursor-default  text-[13px]   whitespace-nowrap">
               {" "}
-              {placeholder}{" "}
+              <span > {placeholder}</span>
+             {" "}
             </span>
           ) : (
             <span className="mr-10 pl-5 text-[13px] cursor-default whitespace-nowrap">
-              {value}
+             <span >{value}</span>
+              
             </span>
           )}
+          
         </div>
         {selected && (
           <div

@@ -1061,7 +1061,7 @@ export default function Calendar() {
               allDaySlot={false}
               headerToolbar={{
                 start: "prevButton title nextButton",
-                center: "timeGridWeek,dayGridMonth,multiMonthYear",
+                center: "timeGridWeek,dayGridMonth",
                 end: "",
               }}
               titleFormat={{
@@ -1093,7 +1093,9 @@ export default function Calendar() {
               className=""
               style={{ position: "absolute", top: "00px", right: "40px" }}
             >
+               <span id="input">
               <InputSelect
+               
                 value={
                   timeZone == "local"
                     ? getLocalTimeZone()
@@ -1105,8 +1107,10 @@ export default function Calendar() {
                 optionData={timeZones}
                 onChange={(val) => setTimeZone(val)}
                 parentClassName="w-[160px]"
+                
                 inputContainerClassName="text-primaryDark font-bold text-"
               />
+              </span>
               {/* <div class="inline-flex rounded shadow-sm mt-1">
     <button class="px-2 py-1 text-xs font-medium text-blue-700 bg-white border border-gray-200 rounded-l-lg hover:bg-gray-100 focus:z-10 focus:text-orange-700 dark:bg-gray-700 dark:border-gray-600 dark:text-dark dark:hover:text-orange dark:hover:bg-gray-600 dark:focus:text-orange" >
         Weekly
