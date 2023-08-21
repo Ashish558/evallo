@@ -138,7 +138,7 @@ export default function SignupTab({
                   />
                   <label
                     htmlFor="radioOption"
-                    className={`relative w-4 h-4 rounded-full border ${isChecked?"border-[#FFA28D]":"border-gray-600"} cursor-pointer`}
+                    className={`relative w-4 h-4 mx-1 rounded-full border ${isChecked?"border-[#FFA28D]":"border-gray-600"} cursor-pointer`}
                    
                   >
                     {isChecked && (
@@ -158,7 +158,7 @@ export default function SignupTab({
                   />
                   <label
                    
-                    className={`relative w-4 h-4 rounded-full border ${!isChecked?"border-[#FFA28D]":"border-gray-600"} cursor-pointer`}
+                    className={`relative w-4 h-4  mx-1 rounded-full border ${!isChecked?"border-[#FFA28D]":"border-gray-600"} cursor-pointer`}
                     
                   >
                     {!isChecked && (
