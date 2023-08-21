@@ -23,7 +23,7 @@ export default function SettingsCard({
           }`}
       >
         <div className="flex items-center">
-          <p className="">{title}</p>
+          <p className="text-[#26435F]">{title}</p>
           <div>
             {
               title === "Edit Announcements" || <img className="ml-3" src={QuestionMark} alt="" />
