@@ -58,34 +58,45 @@ export default function ActionLog({ actionLog }) {
     setExtraElement(extra);
     setSortedAction(newarr);
   }, [actionLog]);
-
+  let headerDate = sortedAction[currentElementIndex]
+    ? new Date(sortedAction[currentElementIndex]?.createdAt).toDateString()
+    : new Date().toDateString();
+  if (headerDate) {
+    headerDate = headerDate.split(" ");
+    let temp = headerDate[1] + " " + headerDate[2] + ", " + headerDate[3];
+    headerDate = temp;
+  }
   return (
     <div className="">
-      <div className="flex flex-col border border-solid border-gray-200 rounded-5 bg-[#FFFFFF]">
-        <div className="  border border-solid border-gray-200">
+      <div
+      
+        className="flex flex-col shadow-[0px_0px_2.6666667461395264px_0px_#00000040] rounded-5 bg-[#FFFFFF]"
+      >
+        <div className=" border-b-[1.6px]  border-b-[#CBD6E2] ">
           <p className="uppercase  pl-[29px] pt-[16px] pb-3 text-[#26435F]">
-            {sortedAction[currentElementIndex]
-              ? new Date(
-                  sortedAction[currentElementIndex]?.createdAt
-                ).toDateString()
-              : new Date().toDateString()}
+            {headerDate}
           </p>
         </div>
         <ul
-          style={{
-            overflow: "scroll",
-            height: "300px", // Set the desired height of the div here
-          }}
+         
           onScroll={handleScroll}
-          className="list-disc overflow-y-scroll min-w-[600px] max-h-[17.6rem] "
+          className="list-disc h-[230px] rounded-b-md overflow-y-scroll min-w-[600px] max-h-[17.6rem] "
         >
-          <div className="h-[1px] bg-[#CBD6E2]" />
           {sortedAction?.map((item, index) => (
             <>
               <div key={index} className="flex ml-2 h-[57px] pl-5 relative">
-                <p className="text-[#4A556C] pt-5 font-medium text-xs mr-6 w-[80px]">
-                  {new Date(item.createdAt).toLocaleTimeString()}
-                  {item.topDate && (
+                <p className="text-[#4A556C] pt-6 font-medium text-xs mr-6 w-[80px]">
+                  {item?.message &&
+                    new Date(item.createdAt)
+                      .toLocaleTimeString()
+                      .split(":")
+                      .slice(0, 2)
+                      .join(":") +
+                      " " +
+                      new Date(item.createdAt)
+                        .toLocaleTimeString()
+                        .split(" ")[1]}
+                  {item?.topDate && item?.message && (
                     <span className="text-xs ml-5 top-0 text-[#FFA28D] absolute z-5000 backdrop-blur-sm ">
                       {" "}
                       {item?.topDate}
@@ -97,7 +108,7 @@ export default function ActionLog({ actionLog }) {
                     <div className={styles.circle2}></div>
                   </div>
                   <p className="pl-4 text-sm font-medium text-[#4A556C]">
-                    {item.message}
+                    {item?.message}
                   </p>
                 </div>
               </div>

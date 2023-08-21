@@ -1,13 +1,18 @@
-import React from "react";
+import React, { useRef } from "react";
 import { Bubble } from "react-chartjs-2";
 import { bubbleChartData } from "./ChartData";
-import { useGetUserDailyActivityQuery } from "../../../app/services/superAdmin";
+import {
+  useGetUserDailyActivityQuery,
+  useGetUserDailyActivityRangeMutation,
+} from "../../../app/services/superAdmin";
 import { groupDatesIntoWeeks, convertToChart } from "../utils";
 import { useEffect } from "react";
 import { useState } from "react";
-const BubbleChart = () => {
-  const { data: userDailyActivity, isSuccess: dailyActivityAccess } =
-    useGetUserDailyActivityQuery();
+const BubbleChart = ({ dateRange }) => {
+  const [userDailyActivity, setDailyActivity] = useState([]);
+  const [userDailyActivityData, status] =
+    useGetUserDailyActivityRangeMutation();
+
   const [dailyuserData, setDailyUserData] = useState("");
   const [chartData, setChartData] = useState("");
   const plugin = {
@@ -26,147 +31,144 @@ const BubbleChart = () => {
     },
   };
   useEffect(() => {
-    if (dailyActivityAccess) {
+    if (dateRange === "" || !dateRange) return;
+    const fetchActivity = () => {
+      userDailyActivityData(dateRange).then((res) => {
+        console.log("dailyActivity", { dateRange }, { res: res?.data?.data });
+        setDailyActivity(res?.data?.data);
+      });
+    };
+    fetchActivity();
+  }, [dateRange]);
+  useEffect(() => {
+    if (userDailyActivity?.length >= 0) {
       let rolesData = {
         admin: [],
         tutor: [],
         parent: [],
+        student: [],
+        superadmin: [],
       };
 
-      userDailyActivity?.data.map((d) => {
-        rolesData[d.role].push({
-          date: d.datetime,
-          count: d.count,
-          totalHours: d.totalHours,
-        });
+      userDailyActivity?.map((d) => {
+        if (d?.role && rolesData[d?.role])
+          rolesData[d.role].push({
+            date: d.datetime,
+            count: d.count,
+            totalHours: d.totalHours,
+          });
       });
 
       Object.keys(rolesData).forEach((key) => {
         rolesData[key] =
           rolesData[key].length > 0 ? groupDatesIntoWeeks(rolesData[key]) : [];
       });
-      // console.log(rolesData);
-      let mainData = convertToChart(rolesData);
+      console.log(rolesData);
+      let mainData = convertToChart(rolesData, userDailyActivity);
       setChartData(mainData);
-      // setDailyUserData({
-      //   ...userDailyActivity,
-      // });
+      
     }
-  }, [dailyActivityAccess]);
-   console.log({ userDailyActivity,chartData})
+  }, [userDailyActivity]);
+
   return (
-    <div className="bg-[#FFFFFF] flex justify-center items-center border-[1.5px] border-gray-200 p-4 mt-[6px] rounded-md">
-      <div className="w-full max-w-screen-lg">
-        <div className="flex justify-center w-full">
-          <Bubble
-            data={chartData ? chartData : bubbleChartData}
-            options={{
-              scales: {
-                x: {
-                  display: true,
-                  title: {
-                    display: true,
-                    text: "Weeks",
-                    padding: { top: 40 },
-                    color: "#24A3D9",
-
-                    font: {
-                      weight: 500,
-                      size: 14,
-                    },
-                  },
-                  ticks: {
-                    // stepSize: 1,
-                    // callback: (value) => {
-                    //   if (Number.isInteger(value)) {
-                    //     return value;
-                    //   }
-                    //   return null;
-                    // },
-                    color: "#507CA8",
-                    font: {
-                      weight: 500,
-                      size: 14,
-                    },
-                  },
-                },
-                y: {
-                  display: true,
-                  title: {
-                    display: true,
-                    text: "Hours",
-                    padding: { bottom: 40 },
-                    color: "#507CA8",
-                    font: {
-                      weight: 500,
-                      size: 12,
-                    },
-                  },
-                  ticks: {
-                    color: "#507CA8",
-                    font: {
-                      weight: 500,
-                      size: 12,
-                    },
-                  },
-                },
-              },
-
-              title: {
+    <div className="bg-[#FFFFFF] relative flex justify-center items-center border-[1.5px] border-gray-200 p-4 mt-[6px] rounded-md">
+      <div className="flex relative max-w-full justify-center w-full">
+        <Bubble
+          data={chartData ? chartData : bubbleChartData}
+          options={{
+            scales: {
+              x: {
                 display: true,
-                text: "Bubble Chart",
-                fontSize: 20,
+                title: {
+                  display: true,
+                  text: "Weeks",
+                  padding: { top: 40 },
+                  color: "#24A3D9",
+
+                  font: {
+                    weight: 500,
+                    size: 14,
+                  },
+                },
+                ticks: {
+                  // stepSize: 1,
+                  // callback: (value) => {
+                  //   if (Number.isInteger(value)) {
+                  //     return value;
+                  //   }
+                  //   return null;
+                  // },
+                  color: "#507CA8",
+                  font: {
+                    weight: 500,
+                    size: 14,
+                  },
+                },
               },
+              y: {
+                display: true,
+                title: {
+                  display: true,
+                  text: "Hours",
+                  padding: { bottom: 40 },
+                  color: "#507CA8",
+                  font: {
+                    weight: 500,
+                    size: 12,
+                  },
+                },
+                ticks: {
+                  color: "#507CA8",
+                  font: {
+                    weight: 500,
+                    size: 12,
+                  },
+                },
+              },
+            },
+
+            title: {
+              display: true,
+              text: "Bubble Chart",
+              fontSize: 20,
+            },
+
+            layout: {
+              padding: {
+                left: 10,
+                right: 10,
+                top: 10,
+                bottom: 0,
+              },
+            },
+            plugins: {
+             
+            
               legend: {
                 display: true,
-
-                position: "right",
-                layout: {
-                  padding: {
-                      left: 0,
-                      right: 10,
-                      top: 10,
-                      bottom: 0
-                  }
-              },
-              },
-              layout: {
-                padding: {
-                    left: 0,
-                    right: 10,
-                    top: 10,
-                    bottom: 0
-                }
-            },
-              plugins: {
-                legend: {
-                  display: true,
-                  position: "top", // Place legends at the top
-                  align: "center", // Align legends to the left
-                 padding:0.2,
-                  labels: {
-                   
-                   
-                    usePointStyle: true,
-                    layout: {
-                      padding: {
-                          left: 0,
-                          right: 10,
-                          top: 10,
-                          bottom: 0
-                      }
+                position: "top",
+                align: "center",
+               
+                labels: {
+                  
+                  usePointStyle: true,
+                  font: {
+                    size: 10,
+                    family: 'Arial',
                   },
-                    boxWidth: 100,
+                  marginBottom: 10,
+                  labelSpacing: 100,
+                  boxWidth: 100,
 
-                    pointStyle: "circle",
+                  pointStyle: "circle",
 
-                    radius: 7,
-                  },
+                  radius: 7,
                 },
               },
-            }}
-          />
-        </div>
+            },
+          }}
+        />
+        <></>
       </div>
     </div>
   );
