@@ -69,13 +69,8 @@ export default function ActionLog({ actionLog }) {
   return (
     <div className="">
       <div
-        style={{
-       
-          boxShadow: "0px 0px 2.6666667461395264px 0px #00000040",
-
-          // Set the desired height of the div here
-        }}
-        className="flex flex-col  rounded-5 bg-[#FFFFFF]"
+      
+        className="flex flex-col shadow-[0px_0px_2.6666667461395264px_0px_#00000040] rounded-5 bg-[#FFFFFF]"
       >
         <div className=" border-b-[1.6px]  border-b-[#CBD6E2] ">
           <p className="uppercase  pl-[29px] pt-[16px] pb-3 text-[#26435F]">
@@ -83,13 +78,9 @@ export default function ActionLog({ actionLog }) {
           </p>
         </div>
         <ul
-          style={{
-            height: "227px",
-           
-            // Set the desired height of the div here
-          }}
+         
           onScroll={handleScroll}
-          className="list-disc rounded-b-md overflow-y-scroll min-w-[600px] max-h-[17.6rem] "
+          className="list-disc h-[230px] rounded-b-md overflow-y-scroll min-w-[600px] max-h-[17.6rem] "
         >
           {sortedAction?.map((item, index) => (
             <>

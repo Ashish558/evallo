@@ -17,13 +17,13 @@ function ActionLog({ dateRange }) {
   const ref = useRef();
 
   const handleScroll = (e) => {
-    // Get the height of each element row
+   
 
     const elementHeight = e.target.scrollHeight / actionLog?.length;
 
-    // Calculate the index of the current element at the top of the visible area
+   
     const index = Math.floor(e.target.scrollTop / elementHeight);
-    //setCurrentElementIndex(index);
+    
     let headerDate =
       sortedAction?.length > 0 && sortedAction[index]
         ? new Date(sortedAction[index]?.createdAt).toDateString()
@@ -119,11 +119,9 @@ function ActionLog({ dateRange }) {
           </p>
         </div>
         <ul
-          style={{
-            height: "300px", // Set the desired height of the div here
-          }}
+         
           onScroll={handleScroll}
-          className="list-disc overflow-y-scroll rounded-b-md min-w-[600px] max-h-[17.6rem] "
+          className="list-disc h-[300px] overflow-y-scroll rounded-b-md min-w-[600px] max-h-[17.6rem] "
         >
           {sortedAction?.map((item, index) => (
             <div key={index} className="flex ml-2 h-[57px] pl-5 relative">

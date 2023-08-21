@@ -825,14 +825,11 @@ export default function SuperAdminSettings() {
     updateAndFetchsettings(body);
   };
 
-  // console.log('subscriptionCode', settingsData.subscriptionCode);
   return (
     <>
       <div className=" bg-lightWhite min-h-screen px-24 pt-[30px] pb-[50px]">
         <p className="text-[#24A3D9]  mb-9 ">
-          {/* {organization?.company +
-
-            "  >  "} */}
+         
           <span className="font-medium text-lg">Settings</span>
         </p>
         <div className="flex justify-between items-center mb-[45px]">
