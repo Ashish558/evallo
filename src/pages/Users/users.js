@@ -686,11 +686,11 @@ export default function Users() {
         })
         .then((res) => {
           alert("File Uploaded");
-          setXlsFile(undefined);
+       
         })
         .catch((err) => {
           console.log(err);
-          setXlsFile(undefined);
+         
         });
     }
   };
@@ -853,7 +853,7 @@ export default function Users() {
                             setInviteUsers(true);
                             setBulkUpload(false);
                           }}
-                          className="  block text-orange-500 border-2 border-[#FFA28D] bg-white hover:bg-[#FFA28D] hover:text-orange-500 ms-3 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-white dark:hover:bg-[#FFA28D] dark:hover:text-orange-500"
+                          className="  block text-orange-500 border-2 border-[#FFA28D] bg-white hover:bg-[#FFA28D] hover:text-white-500 ms-3 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-white dark:hover:bg-[#FFA28D] dark:hover:text-orange-500"
                         >
                           Save Data and Invite User
                         </button>

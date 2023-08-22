@@ -194,7 +194,8 @@ export default function AssignedTests() {
     testName: "",
     assignedBy: "",
     status: "",
-  });
+  }
+  );
 
   const [assignTest, assignTestResp] = useAssignTestMutation();
 
@@ -222,6 +223,7 @@ export default function AssignedTests() {
   const [filterItems, setFilterItems] = useState([]);
 
   useEffect(() => {
+   
     setValidData(
       modalData.name &&
         modalData.limit &&
