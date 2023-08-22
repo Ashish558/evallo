@@ -14,10 +14,12 @@ import image10 from '../../../assets/stats/Vector (10).png';
 import image11 from '../../../assets/icons/carbon_chart-averageaveragetransaction.svg';
 import rectangle from '../../../assets/stats/Rectangle 2061.png';
 
-import {useGetFinancialStatsQuery} from "../../../app/services/superAdmin"
-export default function FinancialStats() {
-  const {data:financialStats} = useGetFinancialStatsQuery()
-  
+import {useGetFinancialStatsQuery, useGetFinancialStatsRangeMutation} from "../../../app/services/superAdmin"
+import { useEffect } from "react";
+import { useState } from "react";
+export default function FinancialStats({dateRange}) {
+  const [financialStats,setFinantialStats] = useState({})
+  const [getFinancialStats,status]=useGetFinancialStatsRangeMutation()
   const financialData = [
     { title: "Card 1", value: "$100" },
     { title: "Card 2", value: "$200" },
@@ -28,7 +30,17 @@ export default function FinancialStats() {
     { title: "Card 7", value: "$700" },
     { title: "Card 8", value: "$800" },
   ];
-
+useEffect(()=>{
+  if (dateRange === ""||!dateRange) return ;
+  const fetchActivity=()=>{
+   
+    getFinancialStats(dateRange).then((res)=>{
+     console.log("finantial",{dateRange},{res:res?.data})
+     setFinantialStats(res?.data)
+    })
+  }
+  fetchActivity()
+},[dateRange])
   return (
     <div className="h-1/2 w-1/2">
       <h2 className="font-semibold mb-1 text-[#26435F]">Financial Stats</h2>
