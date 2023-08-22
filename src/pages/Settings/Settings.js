@@ -202,7 +202,7 @@ export default function Settings() {
       }
       return { ...per };
     });
-    
+
 
     setThePermission(arr);
     let updatedSetting = {
@@ -297,12 +297,12 @@ export default function Settings() {
   const fetchSettings = () => {
     if (organization.settings) {
       setSettingsData(organization.settings);
-      if(organization?.settings?.permissions?.length>0)
-     setThePermission(organization.settings.permissions);
-   
+      if (organization?.settings?.permissions?.length > 0)
+        setThePermission(organization.settings.permissions);
+
     }
   };
-console.log(organization)
+  console.log(organization)
   const onRemoveTextImageTag = (item, key, idx) => {
     let updatedField = settingsData[key].filter((item, i) => i !== idx);
     let updatedSetting = {
@@ -849,9 +849,8 @@ console.log(organization)
             {tabs.map((item, idx) => {
               return (
                 <div
-                  className={`${styles.tab} ${
-                    activeTab === idx + 1 ? styles.selectedTab : ""
-                  } cursor-pointer`}
+                  className={`${styles.tab} ${activeTab === idx + 1 ? styles.selectedTab : ""
+                    } cursor-pointer`}
                   onClick={() => changeTab(idx + 1)}
                 >
                   <div className="w-[195px] flex justify-center">
@@ -1020,7 +1019,7 @@ console.log(organization)
                               onAddTag={(code) => handleAddTest(subscription)}
                               keyName={subscription.code}
                               text="Add Tests"
-                            /> 
+                            />
                             <FilterItems
                               isString={true}
                               onlyItems={true}
@@ -1105,11 +1104,11 @@ console.log(organization)
                               </div>
                             </div>
                             <div className="flex items-center flex-wrap [&>*]:mb-[18px]">
-                             <AddTag
+                              <AddTag
                                 onAddTag={handleAddSpecialization}
                                 keyName={service.service}
                                 text="Add Item"
-                              /> 
+                              />
                               <FilterItems
                                 isString={true}
                                 onlyItems={true}
@@ -1158,11 +1157,11 @@ console.log(organization)
                             </div>
                           </div>
                           <div className="flex items-center flex-wrap [&>*]:mb-[18px]">
-                             <AddTag
+                            <AddTag
                               onAddTag={handleAddSessionTag}
                               keyName={service.heading}
                               text="Add Items"
-                            /> 
+                            />
                             <FilterItems
                               isString={true}
                               onlyItems={true}
@@ -1298,7 +1297,7 @@ console.log(organization)
               onToggle={onToggle}
               body={
                 <div>
-                  <div className="flex items-center flex-wrap [&>*]:mb-[10px] bg-white shadow-small gap-x-4 p-4 rounded-5 mb-3">
+                  <div className="flex items-center flex-wrap [&>*]:mb-[10px] bg-white  gap-x-5 p-4 rounded-br-5 rounded-bl-5 mb-3">
                     {/* <input type='file' ref={inputRef} className='hidden' accept="image/*"
                            onChange={e => onImageChange(e)} /> */}
 
@@ -1326,18 +1325,24 @@ console.log(organization)
                         <div key={offer._id}>
                           <div className="relative">
                             {toggleImage.offer && (
-                              <div className="w-[300px] h-[150px] overflow-hidden mb-5">
-                                <img
-                                  src={`${awsLink}${offer.image}`}
-                                  className="w-full h-full object-cover rounded-7"
-                                  alt="offer-image2"
-                                />
+                              <div className=" overflow-hidden mb-5">
+
+                                <div className="flex">
+                                  <div className="w-[300px] h-[150px]">
+                                    <img
+                                      src={`${awsLink}${offer.image}`}
+                                      alt="offer-image3"
+                                      className="w-full h-full object-cover rounded-7"
+                                    />
+                                  </div>
+                                  <div className="w-[1.25px] h-[150px] bg-[#CBD6E2] ml-5" />
+                                </div>
                               </div>
                             )}
                             <div>
                               <div
                                 onClick={() => handleImageRemoval(offer)}
-                                className="w-7 h-7 z-5000 -top-2 right-0 flex items-center absolute justify-center bg-[#E3E3E3] rounded-full cursor-pointer"
+                                className="w-7 h-7 z-5000 -top-2 right-[9px] flex items-center absolute justify-center bg-[#E3E3E3] rounded-full cursor-pointer"
                               >
                                 <img
                                   src={DeleteIcon}
@@ -1347,7 +1352,8 @@ console.log(organization)
                               </div>
                               <InputField
                                 defaultValue={offer.link}
-                                parentClassName={"mb-3"}
+                                inputClassName={"bg-[#F5F8FA]"}
+                                parentClassName={"mb-3 bg-[#F5F8FA]"}
                                 onBlur={(e) =>
                                   handleOfferChange(
                                     offer,
@@ -1358,6 +1364,8 @@ console.log(organization)
                               />
                               <InputField
                                 defaultValue={offer.buttonText}
+                                parentClassName={"bg-[#F5F8FA]"}
+                                inputClassName={"bg-[#F5F8FA]"}
                                 placeholder={
                                   "Button (eg. Register, Enroll, View)"
                                 }
@@ -1395,7 +1403,7 @@ console.log(organization)
                 return (
                   <>
                     {item.choosedValue === true ||
-                    item.choosedValue === false ? (
+                      item.choosedValue === false ? (
                       <div
                         key={id}
                         className="pt-[34px] pb-[30px] border-b-2 border-[#CBD6E2] text-[#24A3D9] font-medium text-[17.5px] flex items-center justify-between permission"
@@ -1420,27 +1428,25 @@ console.log(organization)
                             className="border border-gray-300 px-2  rounded-md text-[#26435F] bg-[#E9ECEF]"
                           >
                             <option value={item.choosedValue}>
-                              {`   ${
-                                item.permissionActionName ===
+                              {`   ${item.permissionActionName ===
                                 "notifyParentBefSession"
-                                  ? item.choosedValue === 0
-                                    ? "OFF"
-                                    : item.choosedValue + " hours before"
-                                  : item.choosedValue
-                              }`}
+                                ? item.choosedValue === 0
+                                  ? "OFF"
+                                  : item.choosedValue + " hours before"
+                                : item.choosedValue
+                                }`}
                             </option>
                             {item.values.map((values, i) => {
                               return (
                                 item.choosedValue !== values && (
                                   <option key={i} value={values}>
-                                    {` ${
-                                      item.permissionActionName ===
+                                    {` ${item.permissionActionName ===
                                       "notifyParentBefSession"
-                                        ? values === 0
-                                          ? "OFF"
-                                          : values + " hours before"
-                                        : values
-                                    }`}
+                                      ? values === 0
+                                        ? "OFF"
+                                        : values + " hours before"
+                                      : values
+                                      }`}
                                   </option>
                                 )
                               );
@@ -1685,11 +1691,10 @@ console.log(organization)
           cancelBtnClassName="w-140 hidden"
           primaryBtn={{
             text: "Save",
-            className: `w-140 ml-0 bg-primaryOrange mt-2 ${
-              tagText.trim().length < 1 || tagImage === null
-                ? "pointer-events-none opacity-60"
-                : ""
-            } `,
+            className: `w-140 ml-0 bg-primaryOrange mt-2 ${tagText.trim().length < 1 || tagImage === null
+              ? "pointer-events-none opacity-60"
+              : ""
+              } `,
             form: "settings-form",
             type: "submit",
             loading: saveLoading,

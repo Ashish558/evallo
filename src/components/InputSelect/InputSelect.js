@@ -58,7 +58,7 @@ export default function InputSelect({
             </label>
           )}
           <div>
-            {label == "Default Timezone" && (
+            {label == "Default Time Zone" && (
               <img className="ml-3" src={questionMark} alt=""></img>
             )}
           </div>
@@ -78,7 +78,7 @@ export default function InputSelect({
           ) : (
             <img
               src={UpArrow}
-              className={`w-[15px] h-[15px]  ${styles.downArrow}`}
+              className={`w-[15px] h-[12px]  ${styles.downArrow}`}
               alt="down-arrow"
             />
           )
@@ -87,7 +87,7 @@ export default function InputSelect({
         ) : (
           <img
             src={DownArrow}
-            className={`w-[15px] h-[15px]   ${styles.downArrow}`}
+            className={`w-[15px] h-[12px]   ${styles.downArrow}`}
             alt="down-arrow"
           />
         )}

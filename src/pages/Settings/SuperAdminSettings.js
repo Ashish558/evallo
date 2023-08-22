@@ -29,7 +29,7 @@ import AccountOverviewLogo from "../../assets/icons/account-overview.png";
 import AccountOverviewLogo2 from "../../assets/icons/account overview2.png";
 import OrgDefaultLogo from "../../assets/icons/org-default.png";
 import org1 from "../../assets/icons/org1.png";
-import org2 from  "../../assets/icons/org2.png";
+import org2 from "../../assets/icons/org2.png";
 import OrgDefaultLogo2 from "../../assets/icons/org default2.png";
 import OrgDefaultContentLogo2 from "../../assets/icons/org default content.png";
 import OrgDefaultContentLogo from "../../assets/icons/org default content(2).png";
@@ -828,15 +828,15 @@ export default function SuperAdminSettings() {
     };
     updateAndFetchsettings(body);
   };
-console.log(organization?.company)
+  console.log(organization?.company)
   return (
     <>
       <div className=" bg-lightWhite min-h-screen px-24 pt-[30px] pb-[50px]">
         <p className="text-[#24A3D9]  mb-9 ">
-         
+
           <span className="font-medium text-lg"> {organization?.company +
-                
-                "  >  "} Settings</span>
+
+            "  >  "} Settings</span>
         </p>
         <div className="flex justify-between items-center mb-[45px]">
           <div className={`${styles.tabsContainer} w-full`}>
@@ -898,14 +898,16 @@ console.log(organization?.company)
         {activeTab === 3 ? (
           <div>
             <div className="flex items-center gap-x-5 mb-4">
-              <InputSelect
-              placeholder="Select"
-                optionData={timeZones}
-                parentClassName="min-w-[200px]"
-                label="Default Time Zone"
-                value={settingsData.timeZone}
-                onChange={(val) => handleChange("timeZone", val)}
-              />
+              <div>
+                <InputSelect
+                  placeholder='Select'
+                  optionData={timeZones}
+                  parentClassName="min-w-[200px]"
+                  label="Default Time Zone"
+                  value={settingsData.timeZone}
+                  onChange={(val) => handleChange("timeZone", val)}
+                />
+              </div>
               <InputSelect
                 optionData={["dd/mm/yy", "mm/dd/yy", "yy/mm/dd"]}
                 parentClassName="min-w-[200px]"
@@ -981,10 +983,10 @@ console.log(organization?.company)
                                   onClick={() => handlePause(subscription)}
                                 />
                               )} */}
-                         <ToggleBar
-                          toggle={{ value: 5, key:9 }}
-                          onToggle={togglePermissions}
-                        ></ToggleBar>
+                              <ToggleBar
+                                toggle={{ value: 5, key: 9 }}
+                                onToggle={togglePermissions}
+                              ></ToggleBar>
                               <div
                                 className="w-5 h-5 flex items-center justify-center bg-[#E3E3E3] rounded-full cursor-pointer"
                                 onClick={() => onEditCode(subscription)}
@@ -1156,7 +1158,7 @@ console.log(organization?.company)
               onToggle={onToggle}
               body={
                 <div>
-                  <div className="flex items-center flex-wrap [&>*]:mb-[10px] bg-white shadow-small gap-x-4 p-4 rounded-5 mb-3">
+                  <div className="flex items-center flex-wrap [&>*]:mb-[10px] bg-white  gap-x-4 p-4 rounded-br-5 rounded-bl-5 mb-3">
                     {/* <input type='file' ref={inputRef} className='hidden' accept="image/*"
                            onChange={e => onImageChange(e)} /> */}
 
@@ -1184,18 +1186,25 @@ console.log(organization?.company)
                         <div key={offer._id}>
                           <div>
                             {toggleImage.offer && (
-                              <div className="w-[300px] h-[150px] overflow-hidden mb-5">
-                                <img
-                                  src={`${awsLink}${offer.image}`}
-                                  alt="offer-image3"
-                                  className="w-full h-full object-cover rounded-7"
-                                />
+                              <div className=" overflow-hidden mb-5">
+
+                                <div className="flex">
+                                  <div className="w-[300px] h-[150px]">
+                                    <img
+                                      src={`${awsLink}${offer.image}`}
+                                      alt="offer-image3"
+                                      className="w-full h-full object-cover rounded-7"
+                                    />
+                                  </div>
+                                  <div className="w-[1.25px] h-[150px] bg-[#CBD6E2] ml-4" />
+                                </div>
                               </div>
                             )}
                             <div>
                               <InputField
                                 defaultValue={offer.link}
-                                parentClassName={"mb-3"}
+                                inputClassName={"bg-[#F5F8FA]"}
+                                parentClassName={"mb-3 bg-[#F5F8FA]"}
                                 onBlur={(e) =>
                                   handleOfferChange(
                                     offer,
@@ -1205,6 +1214,8 @@ console.log(organization?.company)
                                 }
                               />
                               <InputField
+                                parentClassName={"bg-[#F5F8FA]"}
+                                inputClassName={"bg-[#F5F8FA]"}
                                 value={offer.buttonText}
                                 placeholder={
                                   "Button (eg. Register, Enroll, View)"

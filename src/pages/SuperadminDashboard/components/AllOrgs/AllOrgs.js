@@ -2,8 +2,9 @@ import React from "react";
 
 import InputField from "../../../../components/InputField/inputField";
 import { useState } from "react";
-import searchIcon from "../../../../assets/icons/Search.png";
-import uploadIcon from "../../../../assets/icons/upload.png";
+import searchIcon from "../../../../assets/icons/search.svg";
+import uploadIcon from "../../../../assets/icons/uil_export.svg";
+import calendar from "../../../../assets/icons/calendar.svg";
 import { frameHeaderNames, framesData } from "./staticData";
 import FramesScreen from "./FramesScreen";
 import arrowDown from "../../../../assets/icons/arrowdown.svg";
@@ -46,10 +47,10 @@ const AllOrgs = () => {
       <div className="pl-16 pt-7 mb-12">
         <h4 className="text-[#24A3D9]">All Orgs</h4>
         <div className="flex justify-between py-5 ">
-          <div className="w-full flex gap-5 ">
+          <div className="w-full flex gap-5 items-center">
             <InputField
-              placeholder="search"
-              parentClassName="text-xs "
+              placeholder="Search"
+              parentClassName="text-xs text-[#667085]"
               inputContainerClassName="bg-white"
               Icon={searchIcon}
               value={values.search}
@@ -63,10 +64,10 @@ const AllOrgs = () => {
             />
             <InputSelect
               placeholder="Org type"
-              parentClassName="text-xs"
+              parentClassName="text-xs text-[#667085]"
               value={values.orgType}
-              inputContainerClassName="bg-white "
-              optionClassName="min-w-[90px] py-[1.5px]"
+              inputContainerClassName="bg-white mb-1"
+              optionClassName="min-w-[90px] py-[3px]"
               onChange={(e) =>
                 setValues({
                   ...values,
@@ -76,8 +77,9 @@ const AllOrgs = () => {
               error={error.orgType}
             />
             <InputField
+              IconLeft={calendar}
               placeholder="Join Date"
-              parentClassName="text-xs "
+              parentClassName="text-xs text-[#667085]"
               inputContainerClassName="bg-white"
               value={values.joinDate}
               onChange={(e) =>
@@ -90,10 +92,10 @@ const AllOrgs = () => {
             />
             <InputSelect
               placeholder="Region"
-              parentClassName="text-xs "
-              inputContainerClassName="bg-white"
+              parentClassName="text-xs text-[#667085]"
+              inputContainerClassName="bg-white mb-1"
               optionData={["a", "b", "c", "d", "e", "f", "g", "h", "i"]}
-              optionClassName="min-w-[90px] py-[1.5px]"
+              optionClassName="min-w-[90px] py-[2.5px]"
               value={values.region}
               onChange={(e) =>
                 setValues({
@@ -105,9 +107,9 @@ const AllOrgs = () => {
             />
             <InputSelect
               placeholder="Subscription"
-              parentClassName="text-xs "
-              inputContainerClassName="bg-white"
-              optionClassName="min-w-[90px] py-[1.5px]"
+              parentClassName="text-xs text-[#667085]"
+              inputContainerClassName="bg-white mb-1 "
+              optionClassName="min-w-[90px] py-[2.6px]"
               value={values.subscription}
               onChange={(e) =>
                 setValues({
@@ -119,7 +121,7 @@ const AllOrgs = () => {
             />
             <InputField
               placeholder="# of student"
-              parentClassName="text-xs "
+              parentClassName="text-xs text-[#667085]"
               inputContainerClassName="bg-white"
               value={values.numberOfStudent}
               onChange={(e) =>
@@ -134,22 +136,22 @@ const AllOrgs = () => {
           <div className="w-[400px] flex justify-center  items-center">
             <button
               type="button"
-              className="flex rounded-md gap-2 bg-[#517CA8] text-sm p-2 px-5 text-white"
+              className="flex rounded-md gap-2 bg-[#517CA8] text-sm p-3 px-8 text-white"
             >
-              Export <img className="h-4" src={uploadIcon} />
+              Export <img className="h-4" src={uploadIcon} alt="export" />
             </button>
           </div>
         </div>
-        <div className="overflow-x-auto scrollbar-content scroll-mt-3 pr-7" >
-        <Table
-          data={adminData}
-          tableHeaders={frameHeaderNames}
-          maxPageSize={10}
-          dataFor="allOrgs"
-          excludes={["_id"]}
-        />
+        <div className="overflow-x-auto scrollbar-content scroll-mt-3 pr-7 mt-2" >
+          <Table
+            data={adminData}
+            tableHeaders={frameHeaderNames}
+            maxPageSize={10}
+            dataFor="allOrgs"
+            excludes={["_id"]}
+          />
         </div>
-       
+
       </div>
     </>
   );

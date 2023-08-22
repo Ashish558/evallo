@@ -30,34 +30,84 @@ export default function SettingsCard({
             }
           </div>
         </div>
-        {toggle !== undefined && (
-                    <div className="flex items-center  rounded-[9px]">
-                        <div
-                            className={styles.toggleContainer}
-                            onClick={() => onToggle(toggle.key, !toggle.value)}
-                        >
-                            <img
-                                src={
-                                    toggle.value === false ? toggleRectIcon : toggleRectIcon 
-                                }
-                                alt="toggle"
-                            />
-                            {
-                                
-                            }
-                            <div
-                                // src={toggleCircleIcon}
-                                className={`${toggle.value === false
-                                    ? styles.toggleCircle
-                                    : styles.toggleCircleActive
-                                    }  w-[16px] h-[16px] rounded-[10px]`}
-                                alt="toggle"
-                            />
-                        </div>
-                    </div>
-                )}
+        {
+          title == "Edit Announcements" || <div>
+            {toggle !== undefined && (
+              <div className="flex items-center  rounded-[9px]">
+                <div
+                  className={styles.toggleContainer}
+                  onClick={() => onToggle(toggle.key, !toggle.value)}
+                >
+                  <img
+                    src={
+                      toggle.value === false ? toggleRectIcon : toggleRectIcon
+                    }
+                    alt="toggle"
+                  />
+                  {
+
+                  }
+                  <div
+                    // src={toggleCircleIcon}
+                    className={`${toggle.value === false
+                      ? styles.toggleCircle
+                      : styles.toggleCircleActive
+                      }  w-[16px] h-[16px] rounded-[10px]`}
+                    alt="toggle"
+                  />
+                </div>
+              </div>
+            )}
+          </div>
+        }
       </div>
-      {body && body}
+      {
+        title == "Edit Announcements" || <div> {body && body}</div>
+      }
+
+      <div>
+        {
+          title == "Edit Announcements" &&
+
+          <div>
+            <div className="flex items-center bg-white rounded-tl-5 rounded-tr-5 pt-4">
+              <div className="text-[#24A3D9] mr-3 pl-4 ">
+                Show Announcement Images
+              </div>
+              <div>
+                {toggle !== undefined && (
+                  <div className="flex items-center border-[2px] border-[#26435F] rounded-[9px]">
+                    <div
+                      className={styles.toggleContainer}
+                      onClick={() => onToggle(toggle.key, !toggle.value)}
+                    >
+                      <img
+                        src={
+                          toggle.value === false ? toggleRectIcon : toggleRectIcon
+                        }
+                        alt="toggle"
+                      />
+                      {
+
+                      }
+                      <div
+                        // src={toggleCircleIcon}
+                        className={`${toggle.value === false
+                          ? styles.toggleCircle
+                          : styles.toggleCircleActive
+                          }  w-[16px] h-[16px] rounded-[10px]`}
+                        alt="toggle"
+                      />
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+            {body && body}
+          </div>
+        }
+      </div>
+
     </div>
   );
 }
