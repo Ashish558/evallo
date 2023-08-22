@@ -219,13 +219,13 @@ export default function EventModal({
       if (defaultEventData !== null && !isUpdating) {
          // console.log(defaultEventData)
          const { date, tutorId, tutorName } = defaultEventData
-         let formattedDate = date.getDate()
+         let formattedDate = date?.getDate()
          if (formattedDate < 10) {
             formattedDate = `0${formattedDate}`
          }
          // let defDate = `${date.getFullYear()}-${date.getMonth() + 1}-${formattedDate}`
          let defDate = getFormattedDate(date)
-         let hours = defaultEventData.date.getHours()
+         let hours = defaultEventData.date?.getHours()
          let endHours = hours + 1
          // console.log(endHours)
          if (hours < 10) {
