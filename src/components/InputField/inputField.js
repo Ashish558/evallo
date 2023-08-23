@@ -57,7 +57,7 @@ export default function InputField({
         </label>
       )}
       <div
-        className={`py-[13px] px-[14px] lg:py-[9px] lg:px-[16px] flex items-center rounded border border-[#D0D5DD] ${inputContainerClassName ? inputContainerClassName : ""
+        className={`py-[13px] px-[14px] lg:py-[9px] lg:px-[16px] flex items-center rounded  ${inputContainerClassName ? inputContainerClassName : ""
           } ${disabled === true ? "cursor-not-allowed" : ""} `}
       >
         {Icon && (
@@ -68,11 +68,11 @@ export default function InputField({
               }`}
           />
         )}
-     
+
         {inputLeftField && inputLeftField}
-        
+
         {prefix && <span className="mr-3">{prefix}</span>}
-        
+
         {IconRight && (
           <div className="group relative w-fit">
             <img
@@ -101,7 +101,7 @@ export default function InputField({
           onFocus={onFocus}
           onBlur={onBlur}
         />
-          {IconLeft && (
+        {IconLeft && (
           <div className="group relative w-fit">
             <img
               src={IconLeft}
