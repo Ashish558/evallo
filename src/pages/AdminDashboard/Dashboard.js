@@ -233,9 +233,9 @@ const Dashboard = () => {
 
   return (
     <div className={styles.container}>
-      <div className="mx-7 mt-[28px] bg-#2E2E2E">
+      <div className="mx-6 mt-[28px] bg-#2E2E2E">
         <div className="mt-[42px] flex justify-center">
-          <div className="w-full mx-[80px]">
+          <div className="w-full mx-[75px]">
             <p className="text-[#24A3D9] mb-3">
               {organization?.company +
                 "  >  " +
@@ -475,7 +475,7 @@ const Dashboard = () => {
           </div>
         </section>
 
-        <section className="mt-[30px] mx-[80px]">
+        <section className="mt-[30px] mx-[75px]">
           <p className="font-semibold text-[#26435F] translate-y-[10px]">Latest Sign-ups</p>
 
           <div className="">
@@ -504,12 +504,14 @@ const Dashboard = () => {
 
         <section className="mt-[10px] mx-[80px]">
           <div className="grid grid-cols-4">
-            <div className="col-span-3 pr-5 border-r-[1.7px] border-[#CBD6E2]">
+            <div className="col-span-3 ">
               <p className="font-semibold text-[#26435F] translate-y-[10px] text-[14px]">
-                Popular services
+                Popular Services
               </p>
+              <div className="col-span-3 pr-5 border-r-[1.7px] border-[#CBD6E2]">
               <Table
                 data={popularServices}
+                hidePagination={true}
                tableHeaders={[
                   "Service",
                   "Actively Using",
@@ -521,7 +523,7 @@ const Dashboard = () => {
                 maxPageSize={5}
               />
             </div>
-
+            </div>
             <div className="pl-5">
               <p className=" mb-[10px] translate-y-[10px] font-semibold text-[#26435F] text-[14px] ">
                 Star Clients

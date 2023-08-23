@@ -148,7 +148,7 @@ export default function Table(props) {
       </table>
       </div>
     
-      {true ? (
+      {!hidePagination ? (
         <div className="flex justify-end items-center">
           <Pagination
             currentPage={currentPage}

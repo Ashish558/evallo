@@ -23,6 +23,7 @@ export default function InputSelect({
   required,
   optionListClassName,
   IconRight,
+  IconLeft,
   DateSelect,
 }) {
   const [selected, setSelected] = useState(false);
@@ -37,7 +38,7 @@ export default function InputSelect({
   const handleChange = (optionType, option, idx) => {
     onChange(optionType === "object" ? option : option, idx);
   };
-
+ 
   return (
     <div
       ref={selectRef}
@@ -72,10 +73,11 @@ export default function InputSelect({
           } `}
       >
         {Icon && <img src={Icon} className={`mr-5  w-[28px]}`} alt="icon" />}
+        {IconLeft&& <img src={IconLeft} className={`mr-5  w-[28px]}`} alt="IconLeft" />}
         {selected ? (
           IconRight ? (
             IconRight
-          ) : (
+          ) :!IconLeft &&(
             <img
               src={UpArrow}
               className={`w-[15px]  ${styles.downArrow}`}
@@ -84,7 +86,7 @@ export default function InputSelect({
           )
         ) : IconRight ? (
           IconRight
-        ) : (
+        ) :!IconLeft&& (
           <img
             src={DownArrow}
             className={`w-[15px]  ${styles.downArrow}`}

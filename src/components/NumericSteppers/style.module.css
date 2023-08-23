@@ -36,10 +36,10 @@
 .line2::before {
   content: "";
   position: absolute;
-  right: -150px;
+  right: -185px;
   top: 50%;
   transform: translateY(-50%);
-  width:150px;
+  width:185px;
   height: 1px;
   background-color: #7152eb;
   z-index: -99;

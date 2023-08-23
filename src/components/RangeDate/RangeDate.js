@@ -65,10 +65,16 @@ const RangeDate = ({ handleRangeData  }) => {
     if (startDate) handleRangeData(startDate);
   }, []);
   let temp=startDate.split("-");
+  
   let newDateformat=temp[0];
   temp=temp[1].split(" ")
+  let firsYear=newDateformat.split(" ")
+  if(firsYear[2]===temp[3]){
+    newDateformat=firsYear[0]+ " "+firsYear[1]
+   
+  }
   newDateformat+=" - "+temp[0]+" "+ temp[1]+" "+temp[2]+ ", "+temp[3]
-
+  
   return (
     <div className="flex text-xs ">
       <p className="font-semibold text-[#FFA28D]"> </p>

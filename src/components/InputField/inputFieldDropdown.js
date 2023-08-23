@@ -45,8 +45,9 @@ export default function InputFieldDropdown({
   }
   useEffect(() => {
     fetch("countryCode.json")
-      .then((res) => res.json())
+      .then((res) =>  res.json())
       .then((data) =>{
+        console.log({data})
         data.sort((a, b) =>{
           return parseInt(a.dial_code.split('+')[1]) - parseInt(b.dial_code.split('+')[1]);
         })
@@ -55,7 +56,7 @@ export default function InputFieldDropdown({
       }
       );
   }, []);
-
+console.log({dialCode})
   return (
     <div className={`relative text-sm ${parentClassName && parentClassName}`}>
       {label && (

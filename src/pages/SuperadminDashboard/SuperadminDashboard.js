@@ -271,7 +271,7 @@ function SuperadminDashboard() {
                     </div>
                     <div className="w-1/5 flex flex-col items-center pt-[5px] pb-2">
                       <p className={`${styles.statHead} text-xl font-semibold`}>
-                        {currentUser?.no_of_avg_session_duration}
+                        {currentUser?.avg_session_duration}
                       </p>
                       <p className="text-sm text-[#26435F] text-center">
                         Avg. Session duration
