@@ -9,7 +9,7 @@ import axios from "axios";
 import SetPassword from "../Frames/SetPassword/SetPasswordInvited";
 import cuate from "../../assets/signup/cuate.png";
 import NumericSteppers from "../../components/NumericSteppers/NumericSteppers";
-
+import CountryCode from "../../components/CountryCode/CountryCode";
 import {
   useAddUserDetailsMutation,
   useSignupMutation,
@@ -40,6 +40,8 @@ import RadioSelected from "../../assets/icons/radio-selected.svg";
 import OtherDetails from "../Frames/OtherDetails/userDetails";
 import CustomFields from "../Frames/CustomFields/CustomFields";
 import { useGetUserByOrgNameMutation } from "../../app/services/organization";
+import InputFieldDropdown from "../../components/InputField/inputFieldDropdown";
+import SecondaryButton from "../../components/Buttons/SecondaryButton";
 
 export default function UserSignup() {
   const [frames, setFrames] = useState({
@@ -61,6 +63,10 @@ export default function UserSignup() {
     phone: "",
     userId: "",
     role: "parent",
+    referalCode:"",
+    phoneCode:"",
+    terms:false,
+    ageChecked:false
   });
 
   const [error, setError] = useState({
@@ -79,6 +85,7 @@ export default function UserSignup() {
     LastName: "",
     Email: "",
     Phone: "",
+    PphoneCode:"",
     aboutScore: "",
   });
 
@@ -151,12 +158,12 @@ export default function UserSignup() {
         console.log(res.error);
         return;
       }
-      // console.log(res.data);
+     
       if (!res.data.organisation) return;
       if (res.data.organisation.length === 0) return;
       if (res.data.organisation[0]) {
         setOrganisation(res.data.organisation[0]);
-        setCustomFields(res.data.organisation[0].customFields);
+        setCustomFields(res.data.organisation[0]?.settings?.customFields);
       }
     });
   }, [searchParams.get("orgName")]);
@@ -240,7 +247,7 @@ export default function UserSignup() {
       };
     });
   };
-
+ console.log({customFields})
   const resetDetailsErrors = () => {
     setDetailsError((prev) => {
       return {
@@ -306,6 +313,7 @@ export default function UserSignup() {
         Values: item.value,
       };
     });
+
     promiseState().then(() => {
       let reqBody = {
         firstName: values.firstName,
@@ -414,17 +422,36 @@ export default function UserSignup() {
     setStudentNumberPrefix,
   };
   // console.log("customFields", customFields);
-
+ 
+  const handleCheckboxChangeTerms = () => {
+    setValues({
+      ...values,
+      terms: !values.terms,
+    })
+  };
+const handleCheckboxChangeReferral=()=>{
+  if(values.referalCode.trim().length===0)
+  return 
+  setValues({
+    ...values,
+    referalCode:values.referalCode.trim()
+  })
+}
+  const handleCheckboxChangeAge = () => {
+    setValues({
+      ...values,
+      ageChecked: !values.ageChecked,
+    })
+    
+  };
+  
   return (
-    <div
-      className="min-h-screen overflow-y-auto pb-6 bg-primary"
-      id={styles.signUp}
-    >
-      <div className="flex justify-center flex-col items-center md:grid-cols-2 min-h-screen ">
-        <img src={cuate} alt="rocket" class="h-10vh mb-10" />
+    <div className=" pb-6 bg-primary" id={styles.signUp}>
+      <div className="flex justify-center flex-col items-center md:grid-cols-2  ">
+        <img src={cuate} alt="rocket" className="h-10vh mb-2" />
         <>
           {!frames.signupSuccessful ? (
-            <div className="lg:hidden bg-primary text-white pt-[79px] px-[49px]">
+            <div className="hidden bg-primary text-white pt-[79px] px-[49px]">
               <h1 className="text-[28px] mb-[13px]">
                 {frames.signupActive
                   ? "Sign Up"
@@ -438,20 +465,21 @@ export default function UserSignup() {
           ) : (
             <></>
           )}
-          <div className="flex lg:items-center relative bg-white rounded-md py-6 px-5 md:px-[48px] lg:w-[520px]">
-            <div className="w-full py-6">
+          <div className="flex lg:items-center relative bg-white rounded-md py-6 px-5 md:px-[48px] w-[600px]">
+            <div className="w-full py-3">
               <h1
                 className={`hidden lg:block mb-1.5 text-[30px] ${styles.title} `}
               >
                 {frames.signupActive
-                  ? "Sign Up"
+                  ? ""
                   : frames.setPasswordFields
                   ? "Set Password"
-                  : "Profile Details"}
+                  : ""}
               </h1>
 
-              {currentStep > 1 && !frames.signupSuccessful && (
-                <NumericSteppers
+              {currentStep > 0 && !frames.signupSuccessful && (
+                <NumericSteppers 
+                  className='mt-3'
                   totalSteps={
                     customFields?.length === 0
                       ? 2 + isAddedByAdmin
@@ -464,16 +492,14 @@ export default function UserSignup() {
 
               {frames.signupActive ? (
                 <div>
-                  <p
-                    className={`hidden lg:block mb-[26px] ${styles.textGrayed} `}
-                  >
-                    Please fill your detail to create your account.
-                  </p>
-                  <div className={`flex mt-[59px] lg:mt-0 ${styles.inputs}`}>
+                
+                  <div className={`flex mt-[59px]  gap-8 lg:mt-0 `}>
                     <InputField
                       placeholder=""
-                      parentClassName="text-xs"
+                      parentClassName="text-xs w-[250px]"
+                      labelClassname="mb-1 text-[#26435F] font-bold"
                       label="First Name"
+                      
                       value={values.firstName}
                       onChange={(e) =>
                         setValues({
@@ -485,7 +511,8 @@ export default function UserSignup() {
                     />
                     <InputField
                       placeholder=""
-                      parentClassName="text-xs"
+                      parentClassName="text-xs flex-1"
+                      labelClassname="mb-1 text-[#26435F] font-bold"
                       label="Last Name"
                       value={values.lastName}
                       onChange={(e) =>
@@ -497,11 +524,12 @@ export default function UserSignup() {
                       error={error.lastName}
                     />
                   </div>
-                  <div className="mt-3 mb-4">
+                  <div className="flex gap-8 items-center mt-6 mb-6">
                     <InputField
+                      labelClassname="mb-1 text-[#26435F] font-bold"
                       label="Email"
                       placeholder=""
-                      parentClassName="text-xs mb-3"
+                      parentClassName="w-[300px] text-xs "
                       value={values.email}
                       onChange={(e) =>
                         setValues({
@@ -511,79 +539,166 @@ export default function UserSignup() {
                       }
                       error={error.email}
                     />
-                    <InputField
+                    <InputFieldDropdown
                       placeholder=""
-                      parentClassName="text-xs"
+                      parentClassName="text-xs "
+                      inputContainerClassName=" bg-white  "
+                      inputClassName="  bg-transparent text-400 "
+                      labelClassname="mb-1 text-[#26435F] font-bold text-[#26435F]"
                       label="Phone"
                       value={values.phone}
+                      codeValue={values.phoneCode}
+                      handleCodeChange={(e) =>
+                        setValues({
+                          ...values,
+                          phoneCode: e.target.value,
+                        })
+                      }
                       onChange={(e) =>
                         setValues({
                           ...values,
                           phone: e.target.value,
                         })
                       }
-                      error={error.phone}
+                     
                     />
                   </div>
-                  <p className="text-xs mb-4"> Registration as </p>
-                  <div className="flex items-center text-xs">
-                    <div
-                      className="flex items-center mr-6 cursor-pointer"
-                      onClick={() => {
-                        setValues((prev) => ({
-                          ...prev,
-                          role: "parent",
-                        }));
-                      }}
-                    >
-                      <img
-                        src={
-                          values.role === "parent"
-                            ? RadioSelected
-                            : RadioUnselected
-                        }
-                        alt="radio"
-                        className="mr-1.5"
-                      />
-                      <p> Parent / Guardian </p>
-                    </div>
-                    <div
-                      className="flex items-center cursor-pointer"
-                      onClick={() => {
+                
+                 
+                  <div className="mt-5">
+                    <p className={`mb-3 text-[#26435F] text-[14px]  font-semibold`}>
+                      Are you signing up as a Parent or a Student?
+                    </p>
+                    <div className="flex items-center  text-[13.5px] gap-x-6">
+                      <div 
+                        onClick={() => {
+                          setValues((prev) => ({
+                            ...prev,
+                            role: "parent",
+                          }));
+                        }}
+                        className={styles.textLight}
+                      >
+                        <div className={` flex items-center  `}>
+                          <input
+                            type="radio"
+                            className="form-radio hidden"
+                            id="radioOption"
+                          />
+                          <div
+                            
+                            className={`relative inline-block ml-[2px] w-4 h-4   rounded-full border ${
+                               values.role === "parent" ? "border-[#FFA28D]" : "border-gray-600"
+                            } cursor-pointer`}
+                          >
+                            { values.role === "parent" && (
+                              <div className="absolute inset-0 my-auto mx-auto w-[8px] h-[8px] rounded-full bg-[#FFA28D]" />
+                            )}{" "}
+                          </div>
+
+                          <span className="ml-[10px] text-[#507CA8]">
+                            Parent / Guardian
+                          </span>
+                        </div>
+                      </div>
+                      <div
+                       onClick={() => {
                         setValues((prev) => ({
                           ...prev,
                           role: "student",
                         }));
                       }}
-                    >
-                      <img
-                        src={
-                          values.role === "student"
-                            ? RadioSelected
-                            : RadioUnselected
-                        }
-                        alt="radio"
-                        className="mr-1.5"
-                      />
-                      <p> Student </p>
+                        className={styles.textLight}
+                      >
+                        <div className={` flex items-center  `}>
+                          <input
+                            type="radio"
+                            className="form-radio hidden"
+                            id="radioOption"
+                          />
+                          <div
+                            className={`relative inline-block w-4 h-4 p-1   rounded-full border ${
+                              values.role === "student"
+                                ? "border-[#FFA28D]"
+                                : "border-gray-600"
+                            } cursor-pointer`}
+                          >
+                            {values.role === "student" && (
+                              <div className="absolute inset-0 my-auto mx-auto w-[8px] h-[8px] rounded-full bg-[#FFA28D]" />
+                            )}{" "}
+                          </div>
+
+                          <span className="ml-2 text-[#507CA8]">Student</span>
+                        </div>
+                      </div>
                     </div>
                   </div>
+                  <div className=" gap-x-2 my-5">
+                    <div className={styles.textLight}>
+                      <label className={`${styles["checkbox-label"]} text-[13.5px] block  `}>
+                        <input
+                          type="checkbox"
+                          checked={values.ageChecked}
+                          onChange={handleCheckboxChangeAge}
+                        />
+                        <span
+                          className={`${styles["custom-checkbox"]} ${
+                            values.ageChecked ? "checked" : ""
+                          }`}
+                        ></span>
+                        <span className="ml-2 text-[#507CA8]">
+                          I confirm that I am 13 years or older
+                        </span>
+                      </label>
+                    </div>
+                  </div>
+                  
+                  <div className=" gap-x-2 my-5">
+                    <div className={styles.textLight}>
+                      <label className={`${styles["checkbox-label"]} text-[13.5px] block  `}>
+                        <input
+                          type="checkbox"
+                          checked={values.terms}
+                          onChange={handleCheckboxChangeTerms}
+                        />
+                        <span
+                          className={`${styles["custom-checkbox"]} w-[25px] ${
+                            values.terms ? "checked" : ""
+                          }`}
+                        ></span>
+                        <p className={` ml-2  text-[#507CA8]`}>
+                          I have carefully read and agree to the{" "}
+                          <a  href="http://evallo.org/tou" className="font-semibold text-[#26435F] mr-1">
+                            Terms of Use 
+                          </a>
+                          and
+                          <a  href="http://evallo.org/privacy-policy"  className=" ml-1 font-semibold text-[#26435F]" >
+                          Privacy Policy
+                              </a> 
+                        </p>
+                      </label>
+                    </div>
+                  </div>
+                  <div className="flex items-center mt-[30px] justify-between">
+                    <SecondaryButton
+                      children="Go Back"
+                      className="text-sm mr-6 bg-white text-[#a3aDC7] border-[1.5px] border-[#D0D5DD] "
+                      onClick={() => navigate("/")}
+                    />
+                   
                   <PrimaryButton
-                    className={`w-full bg-primary disabled:opacity-60 max-w-[110px] mt-[99px] lg:mt-12 rounded text-white text-xs font-medium relative ${
+                     className={`w-full bg-[#FFA28D] text-center items-center justify-center disabled:opacity-60 max-w-[110px]  rounded text-white text-sm font-medium relative ${
                       loading
                         ? "cursor-wait opacity-60 pointer-events-none"
                         : "cursor-pointer"
                     }`}
-                    disabled={values.email === "" ? true : false}
+                    disabled={values.email.trim().length === 0|| !values.terms || !values.ageChecked ? true: false}
                     onClick={handleClick}
                     children={`Next`}
                   />
-                  <p
-                    className="text-secondary text-xs font-semibold ml-2 mt-2 cursor-pointer inline-block"
-                    onClick={() => navigate("/")}
-                  >
-                    Login Instead?
-                  </p>
+                   </div>
+                  
+                 
                 </div>
               ) : frames.userDetails ? (
                 <OtherDetails

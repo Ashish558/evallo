@@ -205,7 +205,7 @@ const AccountOverview = () => {
             placeholder=""
             parentClassName="text-xs text-[#26435F]"
             inputContainerClassName=" bg-white border border-white "
-            inputClassName="  bg-transparent text-400 "
+            inputClassName="  text-400 "
             label="Phone"
             value={values.phone}
             codeValue={values.phoneCode}
