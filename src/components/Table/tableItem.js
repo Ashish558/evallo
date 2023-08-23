@@ -839,7 +839,7 @@ export default function TableItem({
           </td>
 
           <td className="font-medium text-sm px-1  min-w-14 py-4">
-            <div className="my-[6px]">active</div>
+            <div className="my-[6px]">{item?.userStatus}</div>
           </td>
           <td className="font-medium text-sm px-1  min-w-14 py-4">
             <div className="my-[6px]">{item.associatedOrg?.numberOfTutors}</div>

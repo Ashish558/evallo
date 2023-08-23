@@ -129,7 +129,7 @@ export default function Login({ setLoginFormActive }) {
               <img src={EvalloLogo} alt="logo" className="mb-4 scale-[.93] " />
               </div>
               <p
-                className={`font-bold text-[28px] lg:text-5xl mb-1.5 bg-transparent lg:text-black pt-[90px] pb-[34px] lg:pt-0 lg:pb-0 ${styles.title}`}
+                className={`font-bold text-[16px] lg:text-md mb-1.5 bg-transparen text-[#26435F] pt-[90px] pb-[34px] lg:pt-0 lg:pb-0 `}
               >
                 Login
               </p>
@@ -148,7 +148,7 @@ export default function Login({ setLoginFormActive }) {
                   placeholder="Email address"
                   parentClassName="mb-[20px] lg:mb-6"
                   label="Email Address"
-                  labelClassname="ml-2 mb-[4px] lg:mb-2 text-[12px] lg:text-[14px]"
+                  labelClassname=" mb-[4px] text-[#26435F] lg:mb-2 text-[12px] lg:text-[14px]"
                   inputClassName="bg-transparent"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -162,7 +162,7 @@ export default function Login({ setLoginFormActive }) {
                   placeholder="Password"
                   label="Password"
                   type="password"
-                  labelClassname="ml-2 mb-[4px] lg:mb-2 text-[12px] lg:text-[14px]"
+                  labelClassname="text-[#26435F] mb-[4px] lg:mb-2 text-[12px] lg:text-[14px]"
                   inputClassName="bg-transparent"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
@@ -179,13 +179,13 @@ export default function Login({ setLoginFormActive }) {
                       checked={remember}
                       onChange={() => setRemember(!remember)}
                     />{" "}
-                    <span className="text-small font-semibold">
+                    <span className="text-[13px] text-[#26435F] -mt-1 font-semibold">
                       {" "}
                       Remember me{" "}
                     </span>
                   </div>
                   <p
-                    className="text-secondary text-[10px] lg:text-xs inline-block cursor-pointer font-semibold ml-auto"
+                    className=" text-[10px] lg:text-xs inline-block cursor-pointer text-[#24A3D9] font-semibold ml-auto"
                     onClick={() => setActiveFrame(setIsPasswordForgot)}
                   >
                     Forgot Password ?
@@ -198,7 +198,7 @@ export default function Login({ setLoginFormActive }) {
                       ? true
                       : !(emailValidation.test(email) && password.length > 0)
                   }
-                  className={`w-full relative bg-[#FFA28D] disabled:opacity-70 pt-3.5 pb-3.5 lg:pt-[9px] lg:pb-[9px] mt-[148px] lg:mt-5 rounded-7 text-white text-lg ${
+                  className={`w-full relative  bg-[#FFA28D] disabled:opacity-70 pt-3.5 pb-3.5 lg:pt-[9px] lg:pb-[9px] mt-[148px] lg:mt-5 rounded-7 text-white text-lg ${
                     loginLoading ? "cursor-wait" : "cursor-pointer"
                   }`}
                   onClick={handleSubmit}
@@ -206,18 +206,20 @@ export default function Login({ setLoginFormActive }) {
                   Sign In
                   {loginLoading && <Loader />}
                 </button>
+                <div className="flex justify-center">
                 <p
-                  className={`cursor-pointer relative text-xs font-semibold ml-2 mt-2 inline-block `}
+                  className={`cursor-pointer relative text-sm text-[#26435F] font-semibold ml-2 mt-2 inline-block `}
                   onClick={() => navigate("/signup")}
                 >
                   Don’t have an account?
                 </p>
                 <span
-                  className={`text-secondary cursor-pointer relative text-xs font-semibold ml-2 mt-2   inline-block `}
+                  className={`text-[#24A3D9] cursor-pointer relative text-sm font-semibold ml-2 mt-2   inline-block `}
                   onClick={() => navigate("/signup")}
                 >
-                  Sign-up Instead?
+                  Sign Up
                 </span>
+                </div>
               </form>
             </div>
           ) : isPasswordForgot ? (

@@ -4,9 +4,12 @@ import InputSelect from "../../../components/InputSelect/InputSelect";
 import PrimaryButton from "../../../components/Buttons/PrimaryButton";
 import CCheckbox from "../../../components/CCheckbox/CCheckbox";
 import styles from "./customFields.module.css";
+import SecondaryButton from "../../../components/Buttons/SecondaryButton";
 
 export default function CustomFields({
   setcurrentStep,
+  setFrames,
+  persona,
   customFields,
   setCustomFields,
   handleSignup,
@@ -59,7 +62,18 @@ export default function CustomFields({
     });
     setCustomFields(temp);
   };
-
+  const handleBack = () => {
+    setcurrentStep(2);
+    if (persona === "parent") {
+      setFrames((prev) => {
+        return { ...prev, userDetails: true, signupActive: false };
+      });
+    } else {
+      setFrames((prev) => {
+        return { ...prev, userDetails: true, signupActive: false };
+      });
+    }
+  };
   console.log("customFields", customFields);
   return (
     <div>
@@ -83,8 +97,8 @@ export default function CustomFields({
                 />
               ) : item.dataType === "Checkboxes" ? (
                 <div>
-                  <p className="text-sm mb-2 font-medium"> {item.name} </p>
-                  <div className="flex flex-row gap-y-4 gap-x-4">
+                  <p className="text-md text-[#26435F] mb-3 font-semibold"> {item.name} </p>
+                  <div className="flex flex-row flex-wrap gap-y-4 gap-x-4">
                     {item.Values?.map((option) => {
                       let checked = false;
                       if (item.value) {
@@ -93,7 +107,7 @@ export default function CustomFields({
                         }
                       }
                       return (
-                        <div className="flex items-center">
+                        <div className="flex items-center text-[#26435F] whitespace-nowrap">
                           <CCheckbox
                             checked={checked}
                             value={option}
@@ -112,11 +126,24 @@ export default function CustomFields({
           );
         })}
       </div>
-      <PrimaryButton
+      <div className="flex justify-between items-center mt-16">
+        
+          <SecondaryButton
+            children="Go Back"
+            className="text-sm mr-6 bg-white text-[#a3aDC7] border-[1.5px] border-[#D0D5DD] "
+            onClick={handleBack}
+          />
+       
+         <PrimaryButton
         children="Signup"
-        className="text-sm"
+        className={`w-full bg-[#FFA28D] text-center items-center justify-center disabled:opacity-60 max-w-[110px]  rounded text-white text-sm font-medium relative `}
+         
+        
         onClick={() => handleSignup()}
       />
+      
+      </div>
+     
     </div>
   );
 }

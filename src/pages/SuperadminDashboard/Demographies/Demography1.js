@@ -11,7 +11,7 @@ import { Country, State } from "country-state-city";
 import InputSelect from "../../../components/InputSelect/InputSelect";
 import ReactCountryFlag from "react-country-flag";
 import InputSelectNew from "../../../components/InputSelectNew/InputSelectNew";
-const Demography1 = () => {
+const Demography1 = ({ dateRange }) => {
   const [currentDemographicArea, setCurrentDemographicArea] = useState([]);
   const [fetchDemography, setDemography] = useAddUserDemographyMutation();
   const [country, setCountry] = useState([]);
@@ -45,14 +45,15 @@ const Demography1 = () => {
   }, []);
 
   useEffect(() => {
-    fetchDemography({ country: countryName }).then((res) => {
+    fetchDemography({ country: countryName,...dateRange }).then((res) => {
+      console.log("demog",res)
       setCurrentDemographicArea(res?.data?.aggregatedData);
     });
-  }, [fetchDemography, countryName]);
+  }, [fetchDemography, countryName,dateRange]);
   useEffect(() => {
     handleState(countryName, currentDemographicArea);
   }, [currentDemographicArea, countryName]);
-  console.log({countryFlag});
+ 
   return (
     <div className="bg-[#FFFFFF] flex justify-center items-center border border-gray-200 p-3 mt-[6px] rounded-md">
       <div className="grid grid-cols-2 gap-x-5">
