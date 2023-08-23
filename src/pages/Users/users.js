@@ -690,10 +690,9 @@ export default function Users() {
         })
         .catch((err) => {
           console.log(err);
-         
-         // alert('Error Occured')
-         // setXlsFile(undefined);
-                });
+          alert('Error Occured')
+          setXlsFile(undefined);
+        });
     }
   };
   const bulkInvite = async () => {

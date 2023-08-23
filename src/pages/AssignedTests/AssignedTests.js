@@ -31,7 +31,7 @@ import { getDuration, getFormattedDate } from "../../utils/utils";
 import FilterItems from "../../components/FilterItems/filterItems";
 
 const optionData = ["1", "2", "3", "4", "5"];
-const timeLimits = ["Regular", "1.5x", "Unlimited"];
+const timeLimits = ["Regular", '1.1x', '1.25x', ,"1.5x", "Unlimited",];
 const testData = ["SAT", "ACT"];
 
 const initialState = {
@@ -432,6 +432,8 @@ export default function AssignedTests() {
 
   const getTimeLimit = (val) => {
     if (val === "Regular") return 1;
+    if (val === "1.1x") return 1.1;
+    if (val === "1.25x") return 1.25;
     if (val === "1.5x") return 1.5;
     if (val === "Unlimited") return 0;
     return 1;

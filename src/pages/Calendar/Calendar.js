@@ -553,16 +553,16 @@ export default function Calendar() {
     );
   };
 
-  const handleDateClick = (arg) => {
-    // console.log(arg)
-    let date = new Date(arg.date);
-    let currentDate = new Date();
-    currentDate.setHours(0, 0, 0, 0);
-    // console.log(date - currentDate);
-    // if (date - currentDate < 0) {
-    //    alert('Cant set events on past date')
-    //    return
-    // }
+   const handleDateClick = (arg) => {
+      // console.log(arg)
+      let date = new Date(arg.date);
+      let currentDate = new Date();
+      currentDate.setHours(0, 0, 0, 0);
+      // console.log(date - currentDate);
+      // if (date - currentDate < 0) {
+      //    alert('Cant set events on past date')
+      //    return
+      // }
 
     if (persona === "tutor") {
       setDefaultEventData({
@@ -814,15 +814,11 @@ export default function Calendar() {
     });
   };
 
-  useEffect(() => {
-    getUserDetail({ id: localStorage.getItem("userId") }).then((res) =>
-      setTimeZone(
-        res?.data?.data?.userdetails?.timeZone
-          ? res?.data?.data?.userdetails?.timeZone
-          : "Etc/UTC"
-      )
-    );
-  }, []);
+   // useEffect(() => {
+   //    getUserDetail({ id: localStorage.getItem("userId") }).then((res) =>
+   //       setTimeZone(res.data?.data?.userdetails?.timeZone)
+   //    );
+   // }, []);
 
   useEffect(() => {
     if (calendarRef.current === null) return;
