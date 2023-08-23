@@ -6,12 +6,13 @@ import SecondaryButton from "../../../components/Buttons/SecondaryButton";
 import InputField from "../../../components/InputField/inputField";
 import useOutsideAlerter from "../../../hooks/useOutsideAlerter";
 import styles from "../../Signup/signup.module.css";
+import style from "./signup.module.css";
 import { validateOtherDetails } from "../../Signup/utils/util";
 import selectStyles from "../../../components/InputSelect/style.module.css";
 import CustomFields from "../CustomFields/CustomFields";
 import InputFieldDropdown from "../../../components/InputField/inputFieldDropdown";
 import InputSelect from "../../../components/InputSelect/InputSelect";
-import leftDrop from "../../../assets/icons/Polygon 2.svg"
+import leftDrop from "../../../assets/icons/Polygon 2.svg";
 export default function UserDetails({
   setFrames,
   persona,
@@ -27,7 +28,10 @@ export default function UserDetails({
   isAddedByAdmin,
   customFields,
   values,
-}) {
+}) 
+{
+
+  console.log({values,otherDetails})
   const [selected, setSelected] = useState(false);
   const [disabled, setDisabled] = useState(false);
 
@@ -149,12 +153,12 @@ export default function UserDetails({
           parentClassName="mb-6 w-[200px]"
           label={`${personaText} Phone  ${persona !== "parent" ? "" : ""} `}
           labelClassname="text-[#26435F] font-bold  mb-1 text-sm"
-          inputContainerClassName="pt-3 pb-3 relative border"
-          inputClassName="ml-80"
+          inputContainerClassName="pt-3   pb-3 relative border"
+          inputClassName="ml-2"
           required={persona === "student" ? true : false}
-          codeValue={values.phoneCode}
+          codeValue={otherDetails.PphoneCode}
           handleCodeChange={(e) =>
-            setOtherDetails({ ...otherDetails, phoneCode: e.target.value, e })
+            setOtherDetails({ ...otherDetails, PphoneCode: e.target.value, })
           }
           value={otherDetails.Phone}
           onChange={(e) =>
@@ -163,38 +167,67 @@ export default function UserDetails({
           error={detailsError.Phone}
         />
       </div>
-    
-        <InputField
-          parentClassName="mb-6 relative flex-1"
-          label={`Student School `}
-          inputContainerClassName="pt-3 pb-3 border"
-          labelClassname="text-[#26435F] font-bold  mb-1 text-sm"
-          value={otherDetails.Email}
-          onChange={(e) =>
-            setOtherDetails({ ...otherDetails, Email: e.target.value })
-          }
-          error={detailsError.Email}
-        />
-        <InputSelect
+
+      <InputField
+        parentClassName="mb-6 relative flex-1"
+        label={`Student School `}
+        inputContainerClassName="pt-3 pb-3 border"
+        labelClassname="text-[#26435F] font-bold  mb-1 text-sm"
+        value={otherDetails.schoolName}
+        onChange={(e) =>
+          setOtherDetails({ ...otherDetails, schoolName: e.target.value })
+        }
+        error={detailsError.schoolName}
+      />
+      <InputSelect
         IconLeft={leftDrop}
-          parentClassName="mb-6 w-[200px]"
-          optionData={['A','B','C','D','E']}
-          label={`Student's Grade`}
-          labelClassname="text-[#26435F] font-bold  mb-1 text-sm "
-          inputContainerClassName="py-1 relative border"
-          inputClassName="ml-80"
-          required={persona === "student" ? true : false}
-          codeValue={values.phoneCode}
-          handleCodeChange={(e) =>
-            setOtherDetails({ ...otherDetails, phoneCode: e.target.value, e })
-          }
-          value={otherDetails.Phone}
+        parentClassName="mb-6 w-[200px]"
+        optionData={["5","6","7","8","9","10","11","12"]}
+        label={`Student's Grade`}
+        labelClassname="text-[#26435F] font-bold  mb-1 text-sm "
+        inputContainerClassName="py-1 relative border"
+        inputClassName="ml-80"
+        required={persona === "student" ? true : false}
+       
+        value={otherDetails.grade}
+        onChange={(e) =>
+          setOtherDetails({ ...otherDetails, grade: e})
+        }
+        error={detailsError.grade}
+      />
+     
+        <InputField
+          labelClassname="mb-1 text-[#26435F] font-bold"
+          label="Referral Code"
+          placeholder=""
+          parentClassName=" text-xs flex-1"
+          value={otherDetails.referalCode}
           onChange={(e) =>
-            setOtherDetails({ ...otherDetails, Phone: e.target.value })
+            setOtherDetails({ ...otherDetails, referalCode: e.target.value })
           }
-          error={detailsError.Phone}
         />
-      
+
+        <div className={style.shy}>
+          <label className={`${style["checkbox-label"]} block mt-7 py-auto `}>
+            <input
+              type="checkbox"
+              checked={otherDetails.referalCode?.trim()?.length === 0 || otherDetails.referalCode===""}
+              //  onChange={handleCheckboxChangeReferral}
+            />
+            <span
+            onClick={()=>{
+              setOtherDetails({...otherDetails,referalCode:""})
+            }}
+              className={`${style["custom-checkbox"]} ${
+                otherDetails.referalCode?.trim()?.length === 0 ? "checked" : ""
+              }`}
+            ></span>
+            <span className="ml-2 font-medium text-[#507CA8]">
+              I don't have one
+            </span>
+          </label>
+        </div>
+   
       <div className="flex justify-between items-center mt-16">
         {!isAddedByAdmin && (
           <SecondaryButton

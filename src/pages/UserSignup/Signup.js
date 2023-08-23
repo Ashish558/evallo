@@ -64,6 +64,7 @@ export default function UserSignup() {
     userId: "",
     role: "parent",
     referalCode:"",
+    phoneCode:"",
     terms:false,
     ageChecked:false
   });
@@ -84,6 +85,7 @@ export default function UserSignup() {
     LastName: "",
     Email: "",
     Phone: "",
+    PphoneCode:"",
     aboutScore: "",
   });
 
@@ -156,12 +158,12 @@ export default function UserSignup() {
         console.log(res.error);
         return;
       }
-      // console.log(res.data);
+     
       if (!res.data.organisation) return;
       if (res.data.organisation.length === 0) return;
       if (res.data.organisation[0]) {
         setOrganisation(res.data.organisation[0]);
-        setCustomFields(res.data.organisation[0].customFields);
+        setCustomFields(res.data.organisation[0]?.settings?.customFields);
       }
     });
   }, [searchParams.get("orgName")]);
@@ -245,7 +247,7 @@ export default function UserSignup() {
       };
     });
   };
-
+ console.log({customFields})
   const resetDetailsErrors = () => {
     setDetailsError((prev) => {
       return {
@@ -442,10 +444,11 @@ const handleCheckboxChangeReferral=()=>{
     })
     
   };
+  
   return (
     <div className=" pb-6 bg-primary" id={styles.signUp}>
       <div className="flex justify-center flex-col items-center md:grid-cols-2  ">
-        <img src={cuate} alt="rocket" class="h-10vh mb-10" />
+        <img src={cuate} alt="rocket" className="h-10vh mb-2" />
         <>
           {!frames.signupSuccessful ? (
             <div className="hidden bg-primary text-white pt-[79px] px-[49px]">
@@ -521,7 +524,7 @@ const handleCheckboxChangeReferral=()=>{
                       error={error.lastName}
                     />
                   </div>
-                  <div className="flex gap-8 items-center mt-3 mb-4">
+                  <div className="flex gap-8 items-center mt-6 mb-6">
                     <InputField
                       labelClassname="mb-1 text-[#26435F] font-bold"
                       label="Email"
@@ -560,48 +563,14 @@ const handleCheckboxChangeReferral=()=>{
                      
                     />
                   </div>
-                  <div className="flex  gap-8 items-center mt-3 mb-4">
-                    <InputField
-                      labelClassname="mb-1 text-[#26435F] font-bold"
-                      label="Referral Code"
-                      placeholder=""
-                      parentClassName="w-[265px] text-xs "
-                      value={values.referalCode}
-                      onChange={(e) =>
-                        setValues({
-                          ...values,
-                          referalCode: e.target.value,
-                        })
-                      }
-                      error={error.referalCode}
-                    />
-                   
-                    <div className={styles.textLight}>
-                      <label className={`${styles["checkbox-label"]} block mt-7 py-auto `}>
-                        <input
-                          type="checkbox"
-                          checked={ values.referalCode?.trim()?.length===0}
-                           onChange={handleCheckboxChangeReferral}
-                        />
-                        <span
-                          className={`${styles["custom-checkbox"]} ${
-                            values.referalCode?.trim()?.length===0 ? "checked" : ""
-                          }`}
-                        ></span>
-                        <span className="ml-2 font-medium text-[#507CA8]">
-                          I don't have one
-                        </span>
-                      </label>
-                    </div>
-                 
-                  </div>
+                
                  
                   <div className="mt-5">
                     <p className={`mb-3 text-[#26435F] text-[14px]  font-semibold`}>
                       Are you signing up as a Parent or a Student?
                     </p>
                     <div className="flex items-center  text-[13.5px] gap-x-6">
-                      <p
+                      <div 
                         onClick={() => {
                           setValues((prev) => ({
                             ...prev,
@@ -631,8 +600,8 @@ const handleCheckboxChangeReferral=()=>{
                             Parent / Guardian
                           </span>
                         </div>
-                      </p>
-                      <p
+                      </div>
+                      <div
                        onClick={() => {
                         setValues((prev) => ({
                           ...prev,
@@ -661,11 +630,11 @@ const handleCheckboxChangeReferral=()=>{
 
                           <span className="ml-2 text-[#507CA8]">Student</span>
                         </div>
-                      </p>
+                      </div>
                     </div>
                   </div>
                   <div className=" gap-x-2 my-5">
-                    <p className={styles.textLight}>
+                    <div className={styles.textLight}>
                       <label className={`${styles["checkbox-label"]} text-[13.5px] block  `}>
                         <input
                           type="checkbox"
@@ -681,11 +650,11 @@ const handleCheckboxChangeReferral=()=>{
                           I confirm that I am 13 years or older
                         </span>
                       </label>
-                    </p>
+                    </div>
                   </div>
                   
                   <div className=" gap-x-2 my-5">
-                    <p className={styles.textLight}>
+                    <div className={styles.textLight}>
                       <label className={`${styles["checkbox-label"]} text-[13.5px] block  `}>
                         <input
                           type="checkbox"
@@ -699,12 +668,16 @@ const handleCheckboxChangeReferral=()=>{
                         ></span>
                         <p className={` ml-2  text-[#507CA8]`}>
                           I have carefully read and agree to the{" "}
-                          <span className="font-semibold text-[#26435F]">
-                            Terms of Use and Privacy Policy
-                          </span>
+                          <a  href="http://evallo.org/tou" className="font-semibold text-[#26435F] mr-1">
+                            Terms of Use 
+                          </a>
+                          and
+                          <a  href="http://evallo.org/privacy-policy"  className=" ml-1 font-semibold text-[#26435F]" >
+                          Privacy Policy
+                              </a> 
                         </p>
                       </label>
-                    </p>
+                    </div>
                   </div>
                   <div className="flex items-center mt-[30px] justify-between">
                     <SecondaryButton
@@ -719,7 +692,7 @@ const handleCheckboxChangeReferral=()=>{
                         ? "cursor-wait opacity-60 pointer-events-none"
                         : "cursor-pointer"
                     }`}
-                    disabled={values.email.trim().length === 0|| !values.terms ? true : false}
+                    disabled={values.email.trim().length === 0|| !values.terms || !values.ageChecked ? true: false}
                     onClick={handleClick}
                     children={`Next`}
                   />

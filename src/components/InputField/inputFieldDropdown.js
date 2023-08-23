@@ -44,7 +44,7 @@ export default function InputFieldDropdown({
     setDialCode(arr)
   }
   useEffect(() => {
-    fetch("countryCode.json")
+    fetch("/countryCode.json")
       .then((res) =>  res.json())
       .then((data) =>{
         console.log({data})
@@ -56,7 +56,7 @@ export default function InputFieldDropdown({
       }
       );
   }, []);
-console.log({dialCode})
+
   return (
     <div className={`relative text-sm ${parentClassName && parentClassName}`}>
       {label && (
@@ -80,8 +80,8 @@ console.log({dialCode})
             name="country_code"
           >
             <option value="0">{codeValue}</option>
-            {dialCode.map((code) => {
-              return <option value={code?.dial_code}>{code?.dial_code}</option>;
+            {dialCode?.map((code,id) => {
+              return <option key={id} value={code?.dial_code}>{code?.dial_code}</option>;
             })}
           </select>
         </div>

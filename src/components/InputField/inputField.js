@@ -117,7 +117,7 @@ export default function InputField({
             }
           />
         )}
-        {console.log({IconRight2,inputType})}
+        
          {IconRight2 &&<img onClick={DateIconClick} className="ml-3 cursor-pointer scale-[0.80]" src={IconRight2} alt="right icon"/>}
         {right && right}
       </div>

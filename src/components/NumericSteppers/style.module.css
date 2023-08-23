@@ -54,3 +54,31 @@
 .line2.disabledSteps:nth-last-child(1)::before {
   display: none;
 }
+
+.line4 {
+  position: relative;
+  z-index: 10;
+  font-style: normal;
+}
+
+.line4::before {
+  content: "";
+  position: absolute;
+  right: -405px;
+  top: 50%;
+  transform: translateY(-50%);
+  width:405px;
+  height: 1px;
+  background-color: #7152eb;
+  z-index: -99;
+}
+.line4:nth-last-child(1) {
+  margin-right: 0;
+}
+.line4:nth-last-child(1)::before {
+  display: none;
+}
+
+.line4.disabledSteps:nth-last-child(1)::before {
+  display: none;
+}

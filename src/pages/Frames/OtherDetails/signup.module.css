@@ -1,0 +1,68 @@
+.shy .textGrayed {
+  font-weight: 400;
+  font-size: 11.7354px;
+  line-height: 18px;
+  color: #667085;
+}
+
+.shy .title {
+  font-weight: 700;
+  font-size: 29.9448px;
+  line-height: 36px;
+  letter-spacing: 0.01em;
+  text-transform: capitalize;
+}
+
+.shy .steppers {
+  justify-content: flex-start;
+}
+.shy .steppers button::before {
+  width: 50px;
+  right: -50px;
+}
+.shy .checkbox-label {
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.shy .custom-checkbox {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+
+  border: 1.5px solid rgba(0, 0, 0, 0.2);
+  border-radius: 2px;
+  position: relative;
+}
+
+.shy input[type="checkbox"] {
+  display: none;
+}
+
+.shy .custom-checkbox::before {
+  content: "✓";
+  display: block;
+  width: 100%;
+  height: 100%;
+  font-size: 14px;
+  text-align: center;
+  color: white;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+}
+
+.shy input[type="checkbox"]:checked + .custom-checkbox::before {
+  opacity: 1;
+}
+.shy input[type="checkbox"]:checked +  .custom-checkbox {
+  background-color: #ffa28d;
+  border: 1.5px solid #ffa28d;
+}
+
+.shy .dropdown-container {
+  border: 0;
+}
