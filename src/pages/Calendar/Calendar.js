@@ -549,7 +549,6 @@ export default function Calendar() {
    };
 
    const handleDateClick = (arg) => {
-      // console.log(arg)
       let date = new Date(arg.date);
       let currentDate = new Date();
       currentDate.setHours(0, 0, 0, 0);
@@ -793,11 +792,11 @@ export default function Calendar() {
       });
    };
 
-   useEffect(() => {
-      getUserDetail({ id: localStorage.getItem("userId") }).then((res) =>
-         setTimeZone(res.data.data.userdetails.timeZone)
-      );
-   }, []);
+   // useEffect(() => {
+   //    getUserDetail({ id: localStorage.getItem("userId") }).then((res) =>
+   //       setTimeZone(res.data?.data?.userdetails?.timeZone)
+   //    );
+   // }, []);
 
    useEffect(() => {
       if (calendarRef.current === null) return;
