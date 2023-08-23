@@ -10,7 +10,8 @@ export default function InputField({
   inputContainerClassName,
   Icon,
   iconSize,
- refS,
+  refS,
+  IconRight2,
   value,
   placeholder,
   label,
@@ -32,6 +33,7 @@ export default function InputField({
   prefix,
   onFocus,
   Tooltip,
+  DateIconClick,
   onBlur,
   onMouseEnter,
   defaultValue
@@ -45,8 +47,8 @@ export default function InputField({
   useEffect(() => {
     setShowDiv(true)
   }, [error])
-  if(type)
-  console.log({type})
+
+  
   return (
     <div className={`relative text-sm ${parentClassName && parentClassName}`}>
       {label && (
@@ -115,7 +117,8 @@ export default function InputField({
             }
           />
         )}
-
+        {console.log({IconRight2,inputType})}
+         {IconRight2 &&<img onClick={DateIconClick} className="ml-3 cursor-pointer scale-[0.80]" src={IconRight2} alt="right icon"/>}
         {right && right}
       </div>
 

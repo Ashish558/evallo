@@ -120,18 +120,27 @@ function SuperadminDashboard() {
   };
   useEffect(()=>{
     if(dateRange?.startDate){
-    Object.keys(totalUsers).forEach((key)=>{
+      let counter=0;
+      let arr=totalUsers
+    Object.keys(totalUsers).forEach(async (key)=>{
 
       const body={
         role:key,
         ...dateRange
       }
       userAdminStats(body).then((res)=>{
-        console.log({dateRange,key,res})
-        totalUsers[key] && setTotalUsers({...totalUsers,key:res?.data})
+        counter++;
+        
+         arr={...arr,[key]:res?.data}
+         console.log({counter,arr})
+         if(counter===5){
+          setTotalUsers(arr)
+         }
       })
-      
+
+     
     })
+   
   }
   },[dateRange])
   useEffect(() => {

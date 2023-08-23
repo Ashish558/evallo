@@ -8,6 +8,7 @@ import { frameHeaderNames, framesData } from "./staticData";
 import FramesScreen from "./FramesScreen";
 import arrowDown from "../../../../assets/icons/arrowdown.svg";
 import { useEffect } from "react";
+import DateIcon from "../../../../assets/icons/solar_calendar-date-outline.svg"
 import Table from "../../../../components/Table/Table";
 
 import InputSelect from "../../../../components/InputSelect/InputSelect";
@@ -19,6 +20,7 @@ const AllOrgs = () => {
   const [adminData, setAdminData] = useState([]);
   const [fetchedData, setFetchedData] = useState([]);
   const inputRef = useRef(null);
+  const [forceChange,setForceChange]=useState(false)
   const [country, setCountry] = useState([]);
   const [fetchAllOrgQuery, fetchAllOrgQueryStatus] = useLazyGetAllOrgQuery();
   const [csvData, setCsvData] = useState([]);
@@ -134,7 +136,11 @@ const AllOrgs = () => {
     console.log({ arr });
     setAdminData(arr);
   }, [values, fetchedData]);
-  
+  const handleButtonIcon=(e)=>{
+    inputRef.current.type = "date";
+    setForceChange(!forceChange)
+    
+  }
   return (
     <>
       <div className="pl-16 pt-7 mb-12">
@@ -143,7 +149,7 @@ const AllOrgs = () => {
           <div className="w-full flex gap-5 items-center ">
             <InputField
               placeholder="search"
-              parentClassName="text-xs "
+              parentClassName="w-full w-[150px] py-1"
               inputContainerClassName="bg-white  shadow-[0px_0px_2.6666667461395264px_0px_#00000040] "
               Icon={searchIcon}
               value={values.search}
@@ -172,14 +178,18 @@ const AllOrgs = () => {
             />
             <InputField
               placeholder="Join Date"
+              IconRight2={inputRef?.current?.type==='text'?DateIcon:''}
+              DateIconClick={handleButtonIcon}
+              parentClassName="w-full w-[150px] py-1"
               refS={inputRef}
-              onBlur={(e) => (inputRef.current.type = "text")}
-              onFocus={(e) => (inputRef.current.type = "date")}
-              parentClassName="text-xs "
+              onBlur={(e) => {(inputRef.current.type = "text"); setForceChange(!forceChange)}}
+              onFocus={(e) => {(inputRef.current.type = "date") ; setForceChange(!forceChange)}}
+            
               inputContainerClassName="bg-white shadow-[0px_0px_2.6666667461395264px_0px_#00000040]"
               value={values.joinDate}
               onChange={(e) =>
                 setValues({
+
                   ...values,
                   joinDate: e.target.value,
                 })
@@ -218,7 +228,7 @@ const AllOrgs = () => {
             />
             <InputField
               placeholder="# of student"
-              parentClassName="text-xs "
+              parentClassName="w-full w-[150px] py-1"
               inputContainerClassName="bg-white shadow-[0px_0px_2.6666667461395264px_0px_#00000040]"
               value={values.numberOfStudent}
               onChange={(e) =>
