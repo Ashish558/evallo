@@ -63,10 +63,10 @@ export default function UserSignup() {
     phone: "",
     userId: "",
     role: "parent",
-    referalCode:"",
-    phoneCode:"",
-    terms:false,
-    ageChecked:false
+    referalCode: "",
+    phoneCode: "",
+    terms: false,
+    ageChecked: false,
   });
 
   const [error, setError] = useState({
@@ -85,7 +85,7 @@ export default function UserSignup() {
     LastName: "",
     Email: "",
     Phone: "",
-    PphoneCode:"",
+    PphoneCode: "",
     aboutScore: "",
   });
 
@@ -158,7 +158,7 @@ export default function UserSignup() {
         console.log(res.error);
         return;
       }
-     
+
       if (!res.data.organisation) return;
       if (res.data.organisation.length === 0) return;
       if (res.data.organisation[0]) {
@@ -247,7 +247,7 @@ export default function UserSignup() {
       };
     });
   };
- console.log({customFields})
+  console.log({ customFields });
   const resetDetailsErrors = () => {
     setDetailsError((prev) => {
       return {
@@ -385,7 +385,7 @@ export default function UserSignup() {
         } else {
           signupUser(reqBody)
             .then((res) => {
-              console.log(res);
+              console.log("sessionClear", res);
               setLoading(false);
               if (res?.data?.status === "success") {
                 alert("Signup successful");
@@ -393,11 +393,13 @@ export default function UserSignup() {
                 sessionStorage.clear();
                 return;
               }
-              alert("something went wrong , please try again");
+              if (res?.error?.data?.message === "Referral code not match.")
+                alert("Referal code is not valid! Enter valid referal code.");
+              else alert("something went wrong , please try again");
             })
             .catch((err) => {
               setLoading(false);
-              console.log(err);
+              console.log("error", err);
             });
         }
       }
@@ -422,29 +424,27 @@ export default function UserSignup() {
     setStudentNumberPrefix,
   };
   // console.log("customFields", customFields);
- 
+
   const handleCheckboxChangeTerms = () => {
     setValues({
       ...values,
       terms: !values.terms,
-    })
+    });
   };
-const handleCheckboxChangeReferral=()=>{
-  if(values.referalCode.trim().length===0)
-  return 
-  setValues({
-    ...values,
-    referalCode:values.referalCode.trim()
-  })
-}
+  const handleCheckboxChangeReferral = () => {
+    if (values.referalCode.trim().length === 0) return;
+    setValues({
+      ...values,
+      referalCode: values.referalCode.trim(),
+    });
+  };
   const handleCheckboxChangeAge = () => {
     setValues({
       ...values,
       ageChecked: !values.ageChecked,
-    })
-    
+    });
   };
-  
+
   return (
     <div className=" pb-6 bg-primary" id={styles.signUp}>
       <div className="flex justify-center flex-col items-center md:grid-cols-2  ">
@@ -478,8 +478,8 @@ const handleCheckboxChangeReferral=()=>{
               </h1>
 
               {currentStep > 0 && !frames.signupSuccessful && (
-                <NumericSteppers 
-                  className='mt-3'
+                <NumericSteppers
+                  className="mt-3"
                   totalSteps={
                     customFields?.length === 0
                       ? 2 + isAddedByAdmin
@@ -492,14 +492,12 @@ const handleCheckboxChangeReferral=()=>{
 
               {frames.signupActive ? (
                 <div>
-                
                   <div className={`flex mt-[59px]  gap-8 lg:mt-0 `}>
                     <InputField
                       placeholder=""
                       parentClassName="text-xs w-[250px]"
                       labelClassname="mb-1 text-[#26435F] font-bold"
                       label="First Name"
-                      
                       value={values.firstName}
                       onChange={(e) =>
                         setValues({
@@ -560,17 +558,17 @@ const handleCheckboxChangeReferral=()=>{
                           phone: e.target.value,
                         })
                       }
-                     
                     />
                   </div>
-                
-                 
+
                   <div className="mt-5">
-                    <p className={`mb-3 text-[#26435F] text-[14px]  font-semibold`}>
+                    <p
+                      className={`mb-3 text-[#26435F] text-[14px]  font-semibold`}
+                    >
                       Are you signing up as a Parent or a Student?
                     </p>
                     <div className="flex items-center  text-[13.5px] gap-x-6">
-                      <div 
+                      <div
                         onClick={() => {
                           setValues((prev) => ({
                             ...prev,
@@ -586,12 +584,13 @@ const handleCheckboxChangeReferral=()=>{
                             id="radioOption"
                           />
                           <div
-                            
                             className={`relative inline-block ml-[2px] w-4 h-4   rounded-full border ${
-                               values.role === "parent" ? "border-[#FFA28D]" : "border-gray-600"
+                              values.role === "parent"
+                                ? "border-[#FFA28D]"
+                                : "border-gray-600"
                             } cursor-pointer`}
                           >
-                            { values.role === "parent" && (
+                            {values.role === "parent" && (
                               <div className="absolute inset-0 my-auto mx-auto w-[8px] h-[8px] rounded-full bg-[#FFA28D]" />
                             )}{" "}
                           </div>
@@ -602,12 +601,12 @@ const handleCheckboxChangeReferral=()=>{
                         </div>
                       </div>
                       <div
-                       onClick={() => {
-                        setValues((prev) => ({
-                          ...prev,
-                          role: "student",
-                        }));
-                      }}
+                        onClick={() => {
+                          setValues((prev) => ({
+                            ...prev,
+                            role: "student",
+                          }));
+                        }}
                         className={styles.textLight}
                       >
                         <div className={` flex items-center  `}>
@@ -635,7 +634,9 @@ const handleCheckboxChangeReferral=()=>{
                   </div>
                   <div className=" gap-x-2 my-5">
                     <div className={styles.textLight}>
-                      <label className={`${styles["checkbox-label"]} text-[13.5px] block  `}>
+                      <label
+                        className={`${styles["checkbox-label"]} text-[13.5px] block  `}
+                      >
                         <input
                           type="checkbox"
                           checked={values.ageChecked}
@@ -652,10 +653,12 @@ const handleCheckboxChangeReferral=()=>{
                       </label>
                     </div>
                   </div>
-                  
+
                   <div className=" gap-x-2 my-5">
                     <div className={styles.textLight}>
-                      <label className={`${styles["checkbox-label"]} text-[13.5px] block  `}>
+                      <label
+                        className={`${styles["checkbox-label"]} text-[13.5px] block  `}
+                      >
                         <input
                           type="checkbox"
                           checked={values.terms}
@@ -668,13 +671,19 @@ const handleCheckboxChangeReferral=()=>{
                         ></span>
                         <p className={` ml-2  text-[#507CA8]`}>
                           I have carefully read and agree to the{" "}
-                          <a  href="http://evallo.org/tou" className="font-semibold text-[#26435F] mr-1">
-                            Terms of Use 
+                          <a
+                            href="http://evallo.org/tou"
+                            className="font-semibold text-[#26435F] mr-1"
+                          >
+                            Terms of Use
                           </a>
                           and
-                          <a  href="http://evallo.org/privacy-policy"  className=" ml-1 font-semibold text-[#26435F]" >
-                          Privacy Policy
-                              </a> 
+                          <a
+                            href="http://evallo.org/privacy-policy"
+                            className=" ml-1 font-semibold text-[#26435F]"
+                          >
+                            Privacy Policy
+                          </a>
                         </p>
                       </label>
                     </div>
@@ -685,20 +694,24 @@ const handleCheckboxChangeReferral=()=>{
                       className="text-sm mr-6 bg-white text-[#a3aDC7] border-[1.5px] border-[#D0D5DD] "
                       onClick={() => navigate("/")}
                     />
-                   
-                  <PrimaryButton
-                     className={`w-full bg-[#FFA28D] text-center items-center justify-center disabled:opacity-60 max-w-[110px]  rounded text-white text-sm font-medium relative ${
-                      loading
-                        ? "cursor-wait opacity-60 pointer-events-none"
-                        : "cursor-pointer"
-                    }`}
-                    disabled={values.email.trim().length === 0|| !values.terms || !values.ageChecked ? true: false}
-                    onClick={handleClick}
-                    children={`Next`}
-                  />
-                   </div>
-                  
-                 
+
+                    <PrimaryButton
+                      className={`w-full bg-[#FFA28D] text-center items-center justify-center disabled:opacity-60 max-w-[110px]  rounded text-white text-sm font-medium relative ${
+                        loading
+                          ? "cursor-wait opacity-60 pointer-events-none"
+                          : "cursor-pointer"
+                      }`}
+                      disabled={
+                        values.email.trim().length === 0 ||
+                        !values.terms ||
+                        !values.ageChecked
+                          ? true
+                          : false
+                      }
+                      onClick={handleClick}
+                      children={`Next`}
+                    />
+                  </div>
                 </div>
               ) : frames.userDetails ? (
                 <OtherDetails
