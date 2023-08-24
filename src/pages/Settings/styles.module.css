@@ -34,6 +34,7 @@
 .bordered-settings-container{
    border: 2.5px dashed #CBD6E2;
    padding: 24px;
+   border-radius: 0;
 }
 div{
    font-family: 'Lexend Deca', sans-serif;
@@ -41,10 +42,10 @@ div{
 /* .styles_tabsContainer__dqk-Y{
    width: 100% !important;
 }; */
-.border-\[\#D0D5DD\]{
+/* .border-\[\#D0D5DD\]{
    border-color: none !important;
-}
-.permission:last-child{
+} */
+.permission > div:last-child{
    border-bottom: 0px;
    /* border-bottom: 2px solid #CBD6E2; */
 }
