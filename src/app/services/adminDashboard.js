@@ -30,6 +30,14 @@ export const adminDashboardServicesApi = createApi({
         headers: getAuthHeader(),
       }),
     }),
+    getLatestSignUpRange: builder.mutation({
+      query: (body) => ({
+        url: `/api/user/superadmin/getlastSignUpdetails`,
+        method: "POST",
+        body,
+        headers: getAuthHeader(),
+      }),
+    }),
     getTutorPerformance: builder.query({
       query: (body) => ({
         url: `/api/user/admin/getTutorPerformance?startDate=${body.startDate}&endDate=${body.endDate}`,
@@ -90,6 +98,7 @@ export const adminDashboardServicesApi = createApi({
 export const {
   useGetSpecificActionLogQuery,
   useGetLatestSignUpQuery,
+  useGetLatestSignUpRangeMutation,
   useGetUserStatsQuery,
   useGetImpendingRevenueMutation,
   useGetLeakedRevenueMutation,

@@ -44,9 +44,10 @@ export default function InputFieldDropdown({
     setDialCode(arr)
   }
   useEffect(() => {
-    fetch("countryCode.json")
-      .then((res) => res.json())
+    fetch("/countryCode.json")
+      .then((res) =>  res.json())
       .then((data) =>{
+        console.log({data})
         data.sort((a, b) =>{
           return parseInt(a.dial_code.split('+')[1]) - parseInt(b.dial_code.split('+')[1]);
         })
@@ -79,8 +80,8 @@ export default function InputFieldDropdown({
             name="country_code"
           >
             <option value="0">{codeValue}</option>
-            {dialCode.map((code) => {
-              return <option value={code?.dial_code}>{code?.dial_code}</option>;
+            {dialCode?.map((code,id) => {
+              return <option key={id} value={code?.dial_code}>{code?.dial_code}</option>;
             })}
           </select>
         </div>
