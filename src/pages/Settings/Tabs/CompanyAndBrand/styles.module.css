@@ -4,7 +4,7 @@
   right: 4px;
   display: flex;
   column-gap: 4px;
-  cursor: pointer;
+  /* cursor: pointer; */
 }
 .upload-container-centered {
   bottom: 50%;

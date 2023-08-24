@@ -6,7 +6,7 @@ import InputField from '../../../../components/InputField/inputField';
 export default function DaysEndDate({ days, setDays, data, setData, isEditable }) {
 
    const handleDayChange = id => {
-      if(isEditable === false) return
+      if (isEditable === false) return
       let tempdays = days.map(day => {
          return day.id === id
             ? { ...day, checked: !day.checked }
@@ -16,9 +16,9 @@ export default function DaysEndDate({ days, setDays, data, setData, isEditable }
    };
 
    return (
-      <div className="flex mb-10">
+      <div className="flex mb-10 mt-6">
          <div className="mr-8">
-            <p className="font-medium text-primary-60 mb-1">
+            <p className="font-medium  mb-1 text-[#26435F]">
                Repeat every week on
             </p>
             <div className="flex">
@@ -39,10 +39,10 @@ export default function DaysEndDate({ days, setDays, data, setData, isEditable }
          </div>
          <InputField
             label="End Date"
-            labelClassname="ml-3"
+            labelClassname="ml-3 text-[#26435F] font-medium"
             parentClassName={`w-full self-end ${!data.recurring ? 'opacity-50 pointer-events-none' : ''}} `}
             type="date"
-            inputContainerClassName="bg-lightWhite border-0 font-medium pr-3 pt-3.5 pb-3.5"
+            inputContainerClassName="bg-lightWhite border-0 font-medium pr-3 pt-3.5 pb-3.5 h-[53px]"
             inputClassName="bg-transparent appearance-none font-medium"
             value={data.endDate}
             onChange={(e) =>
