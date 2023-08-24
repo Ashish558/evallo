@@ -9,6 +9,7 @@ export default function InputField({
   parentClassName,
   inputContainerClassName,
   Icon,
+  IconRight2Click,
   iconSize,
   refS,
   IconRight2,

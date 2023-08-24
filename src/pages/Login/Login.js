@@ -5,7 +5,7 @@ import InputField from "../../components/InputField/inputField";
 import ForgotPassword from "../Frames/ForgotPassword";
 import ResetPassword from "../Frames/ResetPassword";
 import ImageSlider from "../../components/ImageSlider/ImageSlider";
-
+import cutEmail from "../../assets/signup/cutEmail.svg"
 import { useLoginUserMutation } from "../../app/services/auth";
 import { updateIsLoggedIn } from "../../app/slices/user";
 
@@ -18,7 +18,7 @@ import PrimaryButton from "../../components/Buttons/PrimaryButton";
 import Loader from "../../components/Loader";
 import CCheckbox from "../../components/CCheckbox/CCheckbox";
 import EvalloLogo from "../../assets/icons/evallo_new.svg";
-import cuate from "../../assets/signup/cuate.png";
+import cuate from "../../assets/signup/cuate.svg";
 import AdminNavbar from "../AdminDashboard/AdminNavbar";
 
 
@@ -104,6 +104,12 @@ export default function Login({ setLoginFormActive }) {
         sessionStorage.setItem("token", res.data.data.token);
         sessionStorage.setItem("role", res.data.data.role);
         sessionStorage.setItem("userId", res.data.data.userId);
+        if(remember){
+          localStorage.setItem("evalloToken", res.data.data.token);
+          localStorage.setItem("role", res.data.data.role);
+          
+          localStorage.setItem("userId", res.data.data.userId);
+        }
         dispatch(updateIsLoggedIn(true));
       });
     });
@@ -113,8 +119,8 @@ export default function Login({ setLoginFormActive }) {
 
   return (
     <div className={styles.bg}>
-      <div className="flex justify-center flex-col items-center md:grid-cols-2 min-h-screen ">
-        <img src={cuate} alt="rocket" className="h-10vh mb-10" />
+      <div className="flex  flex-col items-center md:grid-cols-2  ">
+        <img src={cuate} alt="rocket" className="h-10vh mt-3 mb-4" />
         <div className="bg-primary hidden lg:block">
           <ImageSlider
             className={styles.loginCarousel}
@@ -126,14 +132,14 @@ export default function Login({ setLoginFormActive }) {
           {loginActive ? (
             <div className="w-full">
               <div className="flex justify-center" >
-              <img src={EvalloLogo} alt="logo" className="mb-4 scale-[.93] " />
+              <img src={EvalloLogo} alt="logo" className=" h-[29.796px] scale-[.97] " />
               </div>
               <p
-                className={`font-bold text-[16px] lg:text-md mb-1.5 bg-transparen text-[#26435F] pt-[90px] pb-[34px] lg:pt-0 lg:pb-0 `}
+                className={`font-bold text-[16.1px] mt-[40px] lg:text-md mb-1.5 bg-transparen text-[#26435F]  pb-[34px] lg:pt-0 lg:pb-0 `}
               >
                 Login
               </p>
-              <p className={`text-lg font-bold mb-9 ${styles.textGrayed} `}>
+               <p className={`text-lg text-[19px] font-bold mb-9 ${styles.textGrayed} `}>
                 Please fill your detail to access your account.
               </p>
               <form
@@ -143,13 +149,14 @@ export default function Login({ setLoginFormActive }) {
                 }`}
               >
                 <InputField
-                  // Icon={EmailIcon}
+                  right={<img onClick={()=>setEmail("")} className="ml-3 cursor-pointer scale-[0.80]" src={cutEmail} alt="right icon"/>}
+       
                   iconSize="medium"
-                  placeholder="Email address"
-                  parentClassName="mb-[20px] lg:mb-6"
-                  label="Email Address"
-                  labelClassname=" mb-[4px] text-[#26435F] lg:mb-2 text-[12px] lg:text-[14px]"
-                  inputClassName="bg-transparent"
+                  placeholder=""
+                  parentClassName="mb-[20px]"
+                  label="Email "
+                  labelClassname=" mb-[4px] text-[#26435F]  text-[12px] lg:text-[14px] leading-[18.715px]"
+                  inputClassName="bg-transparent py-1"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   error={error.email}
@@ -158,12 +165,12 @@ export default function Login({ setLoginFormActive }) {
                 <InputField
                   // Icon={Passwordicon}
                   iconSize="medium"
-                  parentClassName="mb-[9px] lg:mb-6"
-                  placeholder="Password"
+                  parentClassName="mb-[10px]"
+                  placeholder=""
                   label="Password"
                   type="password"
-                  labelClassname="text-[#26435F] mb-[4px] lg:mb-2 text-[12px] lg:text-[14px]"
-                  inputClassName="bg-transparent"
+                  labelClassname="text-[#26435F] mb-[4px]  text-[12px] lg:text-[14px] leading-[18.715px]"
+                  inputClassName="bg-transparent py-1"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   error={error.password}
@@ -179,18 +186,20 @@ export default function Login({ setLoginFormActive }) {
                       checked={remember}
                       onChange={() => setRemember(!remember)}
                     />{" "}
-                    <span className="text-[13px] text-[#26435F] -mt-1 font-semibold">
+                    <span className="text-[13px] text-[#26435F]  font-semibold">
                       {" "}
                       Remember me{" "}
                     </span>
                   </div>
                   <p
-                    className=" text-[10px] lg:text-xs inline-block cursor-pointer text-[#24A3D9] font-semibold ml-auto"
+                    className=" lg:text-xs inline-block cursor-pointer text-[#24A3D9]  leading-[18.715px]  font-medium ml-auto"
                     onClick={() => setActiveFrame(setIsPasswordForgot)}
                   >
                     Forgot Password ?
                   </p>
                 </div>
+<div className="flex justify-center">
+
 
                 <button
                   disabled={
@@ -198,14 +207,15 @@ export default function Login({ setLoginFormActive }) {
                       ? true
                       : !(emailValidation.test(email) && password.length > 0)
                   }
-                  className={`w-full relative  bg-[#FFA28D] disabled:opacity-70 pt-3.5 pb-3.5 lg:pt-[9px] lg:pb-[9px] mt-[148px] lg:mt-5 rounded-7 text-white text-lg ${
+                  className={`w-[80%] relative mx-auto  bg-[#FFA28D] disabled:opacity-70 pt-3.5 pb-3.5 lg:pt-[9px] lg:pb-[9px] mt-[66px]  rounded-7 text-white text-lg ${
                     loginLoading ? "cursor-wait" : "cursor-pointer"
                   }`}
                   onClick={handleSubmit}
                 >
-                  Sign In
+                  Sign in
                   {loginLoading && <Loader />}
                 </button>
+                </div>
                 <div className="flex justify-center">
                 <p
                   className={`cursor-pointer relative text-sm text-[#26435F] font-semibold ml-2 mt-2 inline-block `}

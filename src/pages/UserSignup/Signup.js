@@ -7,7 +7,7 @@ import SignupLast from "../Frames/SignupLast/SignupLast";
 import FurtherDetails from "../Frames/FurtherDetails/FurtherDetails";
 import axios from "axios";
 import SetPassword from "../Frames/SetPassword/SetPasswordInvited";
-import cuate from "../../assets/signup/cuate.png";
+import cuate from "../../assets/signup/cuate.svg";
 import NumericSteppers from "../../components/NumericSteppers/NumericSteppers";
 import CountryCode from "../../components/CountryCode/CountryCode";
 import {
@@ -448,7 +448,7 @@ export default function UserSignup() {
   return (
     <div className=" pb-6 bg-primary" id={styles.signUp}>
       <div className="flex justify-center flex-col items-center md:grid-cols-2  ">
-        <img src={cuate} alt="rocket" className="h-10vh mb-2" />
+        <img src={cuate} alt="rocket" className="h-10vh mt-3 mb-4" />
         <>
           {!frames.signupSuccessful ? (
             <div className="hidden bg-primary text-white pt-[79px] px-[49px]">

@@ -9,7 +9,7 @@ import FurtherDetails from "../Frames/FurtherDetails/FurtherDetails";
 import SignupSuccessful from "../Frames/SignupSuccessful/SignupSuccessful";
 
 
-import cuate from "../../assets/signup/cuate.png";
+import cuate from "../../assets/signup/cuate.svg";
 import NumericSteppers from "../../components/NumericSteppers/NumericSteppers";
 import CCheckbox from "../../components/CCheckbox/CCheckbox";
 
@@ -263,7 +263,7 @@ export default function Signup() {
   useEffect(() => {
     setCount(1);
   }, []);
-
+  const emailValidation = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
   useEffect(() => {
     if (sessionStorage.getItem("frames")) {
       // console.log(sessionStorage.getItem('frames'));
@@ -539,10 +539,10 @@ export default function Signup() {
     navigate("/");
   };
   return (
-    <div className="min-h-screen   pb-6 bg-primary relative" id={styles.signUp}>
+    <div className="   pb-6 bg-primary relative" id={styles.signUp}>
       {/* <AdminNavbar></AdminNavbar> */}
-      <div className="flex justify-center flex-col items-center md:grid-cols-2 min-h-screen mb-[100px]">
-        <img src={cuate} alt="rocket" className="h-10vh mb-10" />
+      <div className="flex justify-center flex-col items-center md:grid-cols-2  mb-[100px]">
+        <img src={cuate} alt="rocket" className="h-10vh mt-3 mb-4" />
         <>
           {!frames.signupSuccessful ? (
             <div className="lg:hidden bg-primary text-white pt-[79px] px-[49px]">
@@ -760,7 +760,7 @@ export default function Signup() {
                           : "cursor-pointer"
                       }`}
                       disabled={
-                        values.email === "" || !isChecked ? true : false
+                        values.email === "" || !isChecked || !emailValidation.test(values.email)? true : false
                       }
                       onClick={handleClick}
                       children={`Next`}

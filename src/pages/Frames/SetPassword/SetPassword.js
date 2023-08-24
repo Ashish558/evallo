@@ -10,7 +10,7 @@ import {
 import { validatePassword } from "./utils";
 import Loader from "../../../components/Loader";
 import PrimaryButton from "../../../components/Buttons/PrimaryButton";
-import EvalloLogo from "../../../assets/signup/cuate.png";
+import EvalloLogo from "../../../assets/signup/cuate.svg";
 
 
 export default function SetPassword({
