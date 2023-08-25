@@ -147,10 +147,10 @@ const AllOrgs = () => {
       <div className="pl-16 pt-7 mb-12">
         <h4 className="text-[#24A3D9]">All Orgs</h4>
         <div className="flex justify-between py-5 ">
-          <div className="w-full flex gap-5 items-center items-center">
+          <div className="w-full flex gap-5 items-center">
             <InputField
-              placeholder="search"
-              parentClassName="w-full w-[150px] py-1"
+              placeholder="Search"
+              parentClassName="w-full w-[170px] py-1 text-[#667085]"
               inputContainerClassName="bg-white  shadow-[0px_0px_2.6666667461395264px_0px_#00000040] "
               Icon={searchIcon}
               value={values.search}
@@ -166,8 +166,8 @@ const AllOrgs = () => {
               placeholder="Org type"
               parentClassName="text-xs  text-[#667085]"
               value={values.orgType}
-              inputContainerClassName="bg-white "
-              optionClassName="min-w-[90px] py-[1.5px]"
+              inputContainerClassName="bg-white  shadow-[0px_0px_2.6666667461395264px_0px_#00000040] "
+              optionClassName="min-w-[90px] py-[3px] w-[110px]"
               onChange={(e) =>
                 setValues({
                   ...values,
@@ -177,7 +177,6 @@ const AllOrgs = () => {
               error={error.orgType}
             />
             <InputField
-              IconLeft={calendar}
               placeholder="Join Date"
               IconRight2={inputRef?.current?.type === 'text' ? DateIcon : ''}
               DateIconClick={handleButtonIcon}
@@ -186,7 +185,7 @@ const AllOrgs = () => {
               onBlur={(e) => { (inputRef.current.type = "text"); setForceChange(!forceChange) }}
               onFocus={(e) => { (inputRef.current.type = "date"); setForceChange(!forceChange) }}
 
-              inputContainerClassName="bg-white shadow-[0px_0px_2.6666667461395264px_0px_#00000040]"
+              inputContainerClassName="bg-white shadow-[0px_0px_2.6666667461395264px_0px_#00000040] w-[150px]"
               value={values.joinDate}
               onChange={(e) =>
                 setValues({
@@ -199,11 +198,11 @@ const AllOrgs = () => {
             />
             <InputSelect
               placeholder="Region"
-              parentClassName="text-xs "
+              parentClassName="text-xs text-[#667085]"
               inputContainerClassName="bg-white shadow-[0px_0px_2.6666667461395264px_0px_#00000040]"
               optionData={country}
               optionType={"object"}
-              optionClassName="min-w-[90px] py-[2.5px]"
+              optionClassName="min-w-[90px] py-[3px] w-[110px]"
               value={values.region}
               onChange={(e) =>
                 setValues({
@@ -216,8 +215,8 @@ const AllOrgs = () => {
             <InputSelect
               placeholder="Subscription"
               parentClassName="text-xs text-[#667085]"
-              inputContainerClassName="bg-white"
-              optionClassName="min-w-[90px] py-[1.5px]"
+              inputContainerClassName="bg-white shadow-[0px_0px_2.6666667461395264px_0px_#00000040]"
+              optionClassName="min-w-[90px] py-[3px] w-[110px]"
               value={values.subscription}
               onChange={(e) =>
                 setValues({
@@ -229,8 +228,9 @@ const AllOrgs = () => {
             />
             <InputField
               placeholder="# of student"
-              parentClassName="w-full w-[150px] py-1"
+              parentClassName="w-full w-[150px] py-1 text-[#667085]"
               inputContainerClassName="bg-white shadow-[0px_0px_2.6666667461395264px_0px_#00000040]"
+              optionClassName="min-w-[90px] py-1 w-[110px]"
               value={values.numberOfStudent}
               onChange={(e) =>
                 setValues({
