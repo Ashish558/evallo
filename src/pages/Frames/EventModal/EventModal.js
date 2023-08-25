@@ -120,6 +120,7 @@ export default function EventModal({
       specialization: "",
       topicsCovered: "",
       rescheduling: false,
+      partialSession: false,
       studentMood: "",
       homeworkAssigned: "",
       sessionNotes: "",
@@ -733,7 +734,7 @@ export default function EventModal({
          <Modal
             classname="max-w-[750px] md:pl-6 md:pr-6 mx-auto max-h-[90vh] 2xl:max-h-[700px] overflow-y-auto scrollbar-content scrollbar-vertical"
             handleClose={() => setEventModalActive(false)}
-            title={isEditable == false ? 'Session' : isUpdating ? "Update Session" : "Create a New Session"}
+            title={isEditable == false ? 'Session' : isUpdating ? "Update Session" : "Schedule New Session"}
             body={
                <div className="text-sm" >
                   <SearchNames setStudent={setStudent}
@@ -749,19 +750,18 @@ export default function EventModal({
                            ...data,
                            recurring: !data.recurring,
                         })} disabled={!isEditable} />
-                     <p className="font-medium text-primary-60 text-sm">
+                     <p className="font-medium text-[#26435F] text-sm">
                         Recurring
                      </p>
                   </div>
 
                   <DaysEndDate isEditable={isEditable} days={days} setDays={setDays} {...dataProps} />
 
-                  {/* SESSIONS */}
-                  <SessionInputs {...dataProps} status={status} isEditable={isEditable} />
-                  <div className="flex">
+
+                  <div className="flex mb-7">
                      <InputSelect
-                        label="Services"
-                        labelClassname="ml-3"
+                        label="Service"
+                        labelClassname="font-semibold"
                         value={data.service}
                         onChange={(val) => {
                            // console.log(val)
@@ -773,15 +773,15 @@ export default function EventModal({
                        `}
                         inputClassName="bg-transparent appearance-none font-medium pt-4 pb-4"
                         placeholder="Select Service"
-                        parentClassName={`w-full mr-4 max-w-373 self-end 
+                        parentClassName={`w-full mr-8 max-w-373 self-end 
                         ${persona === "student" ? "mr-4" : ""} ${persona === "parent" ? " order-2" : ""}
                         `}
                         type="select"
                         disabled={!isEditable}
                      />
                      <InputSelect
-                        label="Specialization"
-                        labelClassname="ml-3"
+                        label="Topic"
+                        labelClassname="font-semibold"
                         value={data.specialization}
                         onChange={(val) => {
                            // console.log(val)
@@ -792,8 +792,8 @@ export default function EventModal({
                         inputContainerClassName={`bg-lightWhite pt-3.5 pb-3.5 border-0 font-medium pr-3
                        `}
                         inputClassName="bg-transparent appearance-none font-medium pt-4 pb-4"
-                        placeholder="Specialization"
-                        parentClassName={`w-full mr-4 max-w-373 self-end 
+                        placeholder="Topic"
+                        parentClassName={`w-full mr-7 max-w-373 self-end 
                         ${persona === "student" ? "mr-4" : ""} ${persona === "parent" ? " order-2" : ""}
                         `}
                         type="select"
@@ -823,11 +823,31 @@ export default function EventModal({
                      }
 
                   </div>
-                  <div className="mt-4 max-w-[330px]">
+
+
+                  <div className="mt-4  flex ">
+                     <InputField
+                        label="Meeting Link"
+                        labelClassname="ml-3 text-[#26435F] font-medium"
+                        placeholder="Meeting Link"
+                        parentClassName="w-full mr-8"
+                        inputContainerClassName="bg-lightWhite border-0 pt-3.5 pb-3.5"
+                        inputClassName="bg-transparent"
+                        type="text"
+                        value={data.session}
+                        onChange={(e) =>
+                           setData({
+                              ...data,
+                              session: e.target.value,
+                           })
+                        }
+                        disabled={!isEditable}
+                     />
                      <InputField
                         parentClassName="w-full mr-6"
-                        label="Whiteboard Links"
-                        labelClassname="ml-3"
+                        label="Whiteboard Link"
+                        placeholder="Whiteboard Link"
+                        labelClassname="ml-3 text-[#26435F] font-medium"
                         inputContainerClassName="bg-lightWhite border-0  pt-3.5 pb-3.5"
                         inputClassName="bg-transparent appearance-none"
                         value={data.whiteboardLink}
@@ -837,7 +857,11 @@ export default function EventModal({
                         }
                         disabled={!isEditable}
                      />
+
+
                   </div>
+                  {/* SESSIONS */}
+                  <SessionInputs {...dataProps} status={status} isEditable={isEditable} />
                   <div>
                      {persona === "parent" || persona === 'student' ? (
                         <div className="ml-4 mt-5">
@@ -978,7 +1002,7 @@ export default function EventModal({
                                  </> :
                                  <PrimaryButton
                                     children="Schedule"
-                                    className="text-lg py-3 pl-2 pr-2 font-medium px-7 h-[50px] w-[140px] disabled:opacity-60"
+                                    className="text-lg py-3  font-medium px-7 h-[50px] w-[140px] disabled:opacity-60"
                                     onClick={() => handleSubmit()}
                                     disabled={submitDisabled}
                                     loading={loading}

@@ -59,7 +59,7 @@ export default function InputSelect({
             </label>
           )}
           <div>
-            {label == "Default Timezone" && (
+            {label == "Default Time Zone" && (
               <img className="ml-3" src={questionMark} alt=""></img>
             )}
           </div>
@@ -69,7 +69,7 @@ export default function InputSelect({
 
       <div
         onClick={() => setSelected(true)}
-        className={`py-[10px] px-[14px]  lg:py-[8px] lg:px-[16px] border border-[#D0D5DD] flex items-center rounded relative cursor-pointer z-50 ${inputContainerClassName ? inputContainerClassName : ""
+        className={`py-[10px] px-[14px]  lg:py-[8px] lg:px-[16px]  flex items-center rounded relative cursor-pointer z-50 ${inputContainerClassName ? inputContainerClassName : ""
           } `}
       >
         {Icon && <img src={Icon} className={`mr-5  w-[28px]}`} alt="icon" />}
@@ -80,7 +80,7 @@ export default function InputSelect({
           ) :!IconLeft &&(
             <img
               src={UpArrow}
-              className={`w-[15px]  ${styles.downArrow}`}
+              className={`w-[15px] h-[12px]  ${styles.downArrow}`}
               alt="down-arrow"
             />
           )
@@ -89,7 +89,7 @@ export default function InputSelect({
         ) :!IconLeft&& (
           <img
             src={DownArrow}
-            className={`w-[15px]  ${styles.downArrow}`}
+            className={`w-[15px] h-[12px]   ${styles.downArrow}`}
             alt="down-arrow"
           />
         )}
