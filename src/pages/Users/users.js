@@ -704,11 +704,11 @@ export default function Users() {
         })
         .then((res) => {
           alert("File Uploaded");
-          setXlsFile(undefined);
+          // setXlsFile(undefined);
         })
         .catch((err) => {
           console.log("error in bulk upload and invite");
-          setXlsFile(undefined);
+          // setXlsFile(undefined);
         });
     }
   };
@@ -815,19 +815,20 @@ export default function Users() {
                             {/* {xlsFile==undefined ? (<img src={fileupload}></img>):(<img src={}></img>)} */}
                             <img src={fileupload}></img>
                           </div>
-
+                          <div className="flex items-center justify-center">
+                          {xlsFile == undefined ? (
+                                  <p className=""></p>
+                            ) : (
+                             <p className="block ">{xlsFile.name}</p>
+                            )}
+                            </div>
                           <div className="flex justify-center">
-                            {xlsFile == undefined ? (
-                              <label
+                          <label
                                 htmlFor="file"
                                 className="block text-white bg-[#517CA8] hover:bg-[#517CA8] items-center justify-center font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-[#517CA8] dark:hover:bg-[#517CA8] "
                               >
                                 Choose File
                               </label>
-                            ) : (
-                              <label htmlFor="file">{xlsFile.name}</label>
-                            )}
-
                             <input
                               onChange={(e) => setXlsFile(e.target.files[0])}
                               type="file"
@@ -853,7 +854,7 @@ export default function Users() {
                             setInviteUsers(true);
                             setBulkUpload(false);
                           }}
-                          className="  block text-orange-500 border-2 border-[#FFA28D] bg-white hover:bg-[#FFA28D] hover:text-white-500 ms-3 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-white dark:hover:bg-[#FFA28D] dark:hover:text-orange-500"
+                          className="  block text-orange-500 border-2 border-[#FFA28D] bg-white hover:bg-[#FFA28D] hover:text-white ms-3 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-white dark:hover:bg-[#FFA28D] dark:hover:text-white"
                         >
                           Save Data and Invite User
                         </button>

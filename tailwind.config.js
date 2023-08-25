@@ -133,6 +133,15 @@ module.exports = {
           gridTemplateColumns: {
             '13': 'repeat(13, minmax(0, 1fr))',
           },
+          backgroundColor:{
+            'profilecard' : '#F5F8FA'
+          },
+          boxShadowColor:{
+            'customshadow':'0px 0px 2.6666667461395264px 0px rgba(0, 0, 0, 0.1)'
+          },
+          margin:{
+            'pageRight':'2rem'
+          }
       },
    },
    plugins: [],

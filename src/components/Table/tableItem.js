@@ -228,6 +228,54 @@ export default function TableItem({
 
   return (
     <>
+    
+    {
+      dataFor==="tutorFeedback" &&(
+        <>
+            
+              <tr className=" "> 
+                <td>
+                  {item.studentname}
+                </td>
+                <td>
+                  {item.feedback}
+                </td>
+                <td>
+                  {item.comment}
+                </td>
+                <td>
+                  {item.service}
+                </td>
+                <td>
+                  {item.sessiondata}
+                </td>
+              </tr>
+             
+        </>
+      )
+
+    }
+ {
+      dataFor==="serviceRates" &&(
+        <>
+            
+              <tr className=" "> 
+                <td>
+                  {item.service}
+                </td>
+                <td>
+                  {item.currency}
+                </td>
+                <td>
+                  {item.hourlyrate}
+                </td>
+              </tr>
+             
+        </>
+      )
+
+    }
+
       {dataFor === "allUsers" && (
         <tr className="odd:bg-white   leading-8">
           
