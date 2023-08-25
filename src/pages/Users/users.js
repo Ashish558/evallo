@@ -685,13 +685,15 @@ export default function Users() {
           headers: getAuthHeader(),
         })
         .then((res) => {
+          console.log("uploaded")
           alert("File Uploaded");
-       
+          setBulkUpload(false)
         })
         .catch((err) => {
-          console.log(err);
+
           alert('Error Occured')
           setXlsFile(undefined);
+          setBulkUpload(false);
         });
     }
   };
@@ -704,12 +706,15 @@ export default function Users() {
           headers: getAuthHeader(),
         })
         .then((res) => {
+          setInviteUsers(false);
+   
           alert("File Uploaded");
           // setXlsFile(undefined);
         })
         .catch((err) => {
           console.log("error in bulk upload and invite");
           setXlsFile(undefined);
+          setInviteUsers(false);
         });
     }
   };
