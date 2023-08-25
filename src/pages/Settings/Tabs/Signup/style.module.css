@@ -78,12 +78,13 @@
 .colContainer {
   border: 1px solid #dcdcdc;
   border-radius: 8px;
-  padding: 20px;
+  padding: 20px 70px 20px 20px;
 }
 .label {
   font-weight: 600;
   font-size: 14px;
   line-height: 18px;
+  color: #26435F;
 }
 .textLight {
   font-size: 14px;
@@ -92,8 +93,8 @@
 }
 .customContainer {
   border: 2.5px dashed #FFA28D;
-  border-radius: 8px;
-  margin-top: 16px;
+  border-radius: 10px;
+  margin-top: 36px;
   padding: 1rem;
 }
 .title {

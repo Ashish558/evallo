@@ -5,6 +5,7 @@ import { CheckboxNew } from "../../../../components/Checkbox/CheckboxNew";
 import InputSelect from "../../../../components/InputSelect/InputSelect";
 import { studentServedData, instructionFormat } from "../staticData";
 import logo from "../../../../assets/icons/Frame 31070.svg";
+import caution from "../../../../assets/icons/octicon_stop-16.svg";
 import resetSendIcon from "../../../../assets/icons/teenyicons_shield-tick-solid.svg";
 import tooltipIcon from "../../../../assets/icons/octicon_stop-16.svg";
 import { useState } from "react";
@@ -55,7 +56,7 @@ const AccountOverview = () => {
   const [updateEmail, setUpdateEmail] = useUpdateEmailMutation();
   const [userDetails, userDetailsStatus] = useLazyGetPersonalDetailQuery();
   const [updateAccount, updateAccountStatus] = useUpdateUserAccountMutation();
-  const [fetchedData,setFetchedData]=useState({})
+  const [fetchedData, setFetchedData] = useState({})
   useEffect(() => {
     userDetails()
       .then((res) => {
@@ -96,9 +97,9 @@ const AccountOverview = () => {
       }
     };
     updateUserAccount();
-    if(fetchedData?.email!==values.email)
-    handleEmailUpdate(values.email)
-    console.log({fetchedData,values})
+    if (fetchedData?.email !== values.email)
+      handleEmailUpdate(values.email)
+    console.log({ fetchedData, values })
   };
   const showResetConfirmation = () => {
     setReset(true);
@@ -138,8 +139,9 @@ const AccountOverview = () => {
         <div className="flex gap-5">
           <InputField
             placeholder=""
-            parentClassName="text-xs text-[#26435F]"
-            inputContainerClassName=" bg-white  border border-white"
+            labelClassname="font-medium text-base"
+            parentClassName="text-[#26435F]"
+            inputContainerClassName=" bg-white  border border-white text-[#667085]"
             inputClassName=" text-400 bg-transparent"
             label="First Name"
             value={values.firstName}
@@ -154,8 +156,9 @@ const AccountOverview = () => {
 
           <InputField
             placeholder=""
-            parentClassName="text-xs text-[#26435F]"
-            inputContainerClassName=" bg-white border border-white"
+            labelClassname="font-medium text-base"
+            parentClassName="text-[#26435F]"
+            inputContainerClassName=" bg-white border border-white text-[#667085]"
             inputClassName=" text-400 bg-transparent"
             label="Last Name"
             value={values.lastName}
@@ -169,10 +172,12 @@ const AccountOverview = () => {
           />
 
           <InputField
+            IconLeft={caution}
             placeholder=""
-            parentClassName="text-xs text-[#26435F]"
-            inputContainerClassName=" bg-white border border-white"
-            inputClassName=" text-400 bg-transparent"
+            labelClassname="font-medium text-base"
+            parentClassName="text-[#26435F]"
+            inputContainerClassName=" bg-white border border-white text-[#667085]"
+            inputClassName=" text-400 bg-transparent w-[250px]"
             label="Email"
             // IconRight={tooltipIcon}
             value={values.email}
@@ -181,7 +186,7 @@ const AccountOverview = () => {
                 ...values,
                 email: e.target.value,
               });
-             
+
             }}
             error={error.email}
             Tooltip={
@@ -201,34 +206,35 @@ const AccountOverview = () => {
             }
           />
           <div id="number">
-          <InputFieldDropdown
-            placeholder=""
-            parentClassName="text-xs text-[#26435F]"
-            inputContainerClassName=" bg-white border border-white "
-            inputClassName="  text-400 "
-            label="Phone"
-            value={values.phone}
-            codeValue={values.phoneCode}
-            handleCodeChange={(e) =>
-              setValues({
-                ...values,
-                phoneCode: e.target.value,
-              })
-            }
-            onChange={(e) =>
-              setValues({
-                ...values,
-                phone: e.target.value,
-              })
-            }
-            error={error.phone}
-          />
+            <InputFieldDropdown
+              placeholder=""
+              labelClassname="font-medium text-base"
+              parentClassName="text-[#26435F]"
+              inputContainerClassName=" bg-white border border-white text-[#667085]"
+              inputClassName="  text-400 "
+              label="Phone"
+              value={values.phone}
+              codeValue={values.phoneCode}
+              handleCodeChange={(e) =>
+                setValues({
+                  ...values,
+                  phoneCode: e.target.value,
+                })
+              }
+              onChange={(e) =>
+                setValues({
+                  ...values,
+                  phone: e.target.value,
+                })
+              }
+              error={error.phone}
+            />
           </div>
-           <div>
+          <div>
             <button
-              style={{color:'#EEEEEE'}}
+
               onClick={handleDataUpdate}
-              className="bg-[#FFA28D]  mt-5 ml-10 rounded-md px-10 py-2 text-sm"
+              className="bg-[#FFA28D]  mt-5 ml-10 rounded-md px-10 py-2 text-sm text-[#EEE]"
             >
               Save
             </button>
@@ -255,7 +261,7 @@ const AccountOverview = () => {
               Download
             </button>
           </div>
-         
+
         </div>
         <div>
           {reset && (
