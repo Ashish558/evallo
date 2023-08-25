@@ -29,7 +29,7 @@ import ArrowDown from "../../assets/Dashboard/sort-down.svg";
 import { useEffect } from "react";
 
 const Dashboard = () => {
-  const [ latestSignUp,latsestStatus ] = useGetLatestSignUpRangeMutation();
+  const [latestSignUp, latsestStatus] = useGetLatestSignUpRangeMutation();
   const { organization } = useSelector((state) => state.organization);
   const { firstName, lastName } = useSelector((state) => state.user);
   const { data: userStats } = useGetUserStatsQuery();
@@ -64,13 +64,13 @@ const Dashboard = () => {
       });
   };
   useEffect(() => {
-    latestSignUp({startDate:"",endDate:""}).then((res)=>{
-      if(!res?.error){
-        console.log("latest",{res})
-        setUserData(res?.data?.data?res?.data?.data:[]);
+    latestSignUp({ startDate: "", endDate: "" }).then((res) => {
+      if (!res?.error) {
+        console.log("latest", { res })
+        setUserData(res?.data?.data ? res?.data?.data : []);
       }
     })
-   
+
   }, []);
 
   const sortByName = () => {
@@ -101,7 +101,7 @@ const Dashboard = () => {
         }
         return 0;
       });
-     
+
       return arr;
     });
   };
@@ -219,12 +219,12 @@ const Dashboard = () => {
 
     fetchFilteredActionLog(body)
       .then((res) => {
-        console.log("actionlog",res);
-         if(res?.data?.actions)
-        setFilteredActionLog(res?.data?.actions);
-      else {
-        setFilteredActionLog([{createdAt:body.startDate}]);
-      }
+        console.log("actionlog", res);
+        if (res?.data?.actions)
+          setFilteredActionLog(res?.data?.actions);
+        else {
+          setFilteredActionLog([{ createdAt: body.startDate }]);
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -233,10 +233,10 @@ const Dashboard = () => {
 
   return (
     <div className={styles.container}>
-      <div className="mx-6 mt-[28px] bg-#2E2E2E">
-        <div className="mt-[42px] flex justify-center">
-          <div className="w-full mx-[75px]">
-            <p className="text-[#24A3D9] mb-3">
+      <div className=" mt-[28px] bg-#2E2E2E">
+        <div className="mt-[50px] flex justify-center">
+          <div className="w-[83.33vw]">
+            <p className="text-[#24A3D9] mb-[30px] text-xl">
               {organization?.company +
                 "  >  " +
                 firstName +
@@ -247,104 +247,110 @@ const Dashboard = () => {
             </p>
 
             <div className="flex justify-between items-center ">
-              <p className="font-bold text-[#26435F]">BUSINESS OVERVIEW </p>
+              <p className="font-bold text-[#FFA28D] text-xl">BUSINESS OVERVIEW </p>
 
               <RangeDate handleRangeData={handleRevenue} />
             </div>
           </div>
         </div>
 
-        <section className="flex justify-center mx-[75px]">
+        <section className="flex justify-center w-[83.33vw] mx-auto">
           <div className={styles.mainBox}>
-            <div className="grid grid-cols-2 px-3 gap-x-2 ">
+            <div className="grid grid-cols-2 px-[1.95vw] ">
               <div className={`${styles.gridBorder} `}>
-                <div className="flex px-3  whitespace-nowrap   gap-4">
-                  <div className="w-[170px] flex-1">
-                    <div className="flex justify-between items-center mb-1 text-[#26435F] text-sm">
-                      <p className="   font-medium">Completed Revenue</p>
+                <div className="flex pr-[1.8vw]   justify-between whitespace-nowrap">
+                  <div className="w-[11.083vw] ">
+                    <div className="flex justify-between items-center mb-[10px] text-[#26435F] text-sm">
+                      <p className="   font-medium text-[0.916vw]">Completed Revenue</p>
                       <div className="group relative">
                         <p>
                           <FontAwesomeIcon
                             icon={faQuestionCircle}
                           ></FontAwesomeIcon>
                         </p>
-                        <span className="absolute  -top-10 left-10  w-[300px] scale-0 rounded-lg bg-[rgba(31,41,55,0.9)] p-2 text-xs text-white group-hover:scale-100">
-                          <h3 className="text-[#22A699] text-[16px] py-1 font-semibold mb-1">
+
+                        <span className="absolute  -top-10 left-10 z-20 w-[333px]  scale-0 rounded-lg bg-[rgba(31,41,55,0.9)]  text-[13px] text-white group-hover:scale-100 whitespace-normal py-5 px-3">
+                          <h3 className="text-[#22A699] text-[16px] py-1 font-medium mb-1">
                             Completed Revenue
                           </h3>
-                          This value is calculated by adding up all the revenue
-                          generated from sessions that have been marked as
-                          “Completed” for the selected date range.
-                          <br /> Note that the revenue is calculated by
-                          multiplying a Tutor’s Service Rate by the Session
-                          Duration and adding all those values up.
+                          <span className="font-light">
+                            This value is calculated by adding up all the revenue
+                            generated from sessions that have been marked as
+                            “Completed” for the selected date range.
+                            <br /> Note that the revenue is calculated by
+                            multiplying a Tutor’s Service Rate by the Session
+                            Duration and adding all those values up.
+                          </span>
                         </span>
                       </div>
                     </div>
                     <div
-                      className={`h-[100px] flex justify-center rounded-md items-center text-2xl font-bold bg-[#22A69933] box-border ${styles.boxBorder1}`}
+                      className={`h-[106px] flex justify-center rounded-md items-center text-[1.57vw] font-bold bg-[#22A69933] box-border ${styles.boxBorder1}`}
                     >
                       <p className="text-[#38C980]">
                         ${cRevenue?.completedRevenue}
                       </p>
                     </div>
                   </div>
-                  <div className="w-[170px] flex-1 ">
-                    <div className="flex justify-between rounded-md items-center mb-1 text-[#26435F] text-sm">
-                      <p className="font-medium">Leaked Revenue</p>
+                  <div className="w-[11.083vw]">
+                    <div className="flex justify-between rounded-md items-center mb-[10px] text-[#26435F] text-sm ">
+                      <p className="font-medium text-[0.916vw]">Leaked Revenue</p>
                       <div className="group relative">
                         <p>
                           <FontAwesomeIcon
                             icon={faQuestionCircle}
                           ></FontAwesomeIcon>
                         </p>
-                        <span className="absolute  -top-10 left-10  w-[300px] scale-0 rounded-lg bg-[rgba(31,41,55,0.9)] p-2 text-xs text-white group-hover:scale-100">
-                          <h3 className="text-[#FF5175] text-[16px] py-1 font-semibold mb-1">
+                        <span className="absolute  -top-10 left-10 z-20 w-[333px]  scale-0 rounded-lg bg-[rgba(31,41,55,0.9)]  text-[13px] text-white group-hover:scale-100 whitespace-normal py-5 px-3">
+                          <h3 className="text-[#FF5175] text-[16px] py-1 font-medium mb-1">
                             Leaked Revenue
                           </h3>
-                          This value is calculated by adding up all the revenue
-                          lost from sessions that have been marked as “Canceled”
-                          or “Partial” for the selected date range.
-                          <br />
-                          Note that the revenue is calculated by multiplying a
-                          Tutor’s Service Rate by the Session Duration and
-                          adding all those values up.
+                          <span className="font-light">
+                            This value is calculated by adding up all the revenue
+                            lost from sessions that have been marked as “Canceled”
+                            or “Partial” for the selected date range.
+                            <br />
+                            Note that the revenue is calculated by multiplying a
+                            Tutor’s Service Rate by the Session Duration and
+                            adding all those values up.</span>
                         </span>
                       </div>
                     </div>
                     <div
-                      className={`h-[100px] flex rounded-md justify-center items-center text-2xl font-semibold bg-[#FF797933] box-border ${styles.boxBorder2}`}
+                      className={`h-[106px] flex rounded-md justify-center items-center text-[1.57vw] font-semibold bg-[#FF797933] box-border ${styles.boxBorder2}`}
                     >
                       <p className="text-[#FF7979]">
                         ${lRevenue?.canceledRevenue}
                       </p>
                     </div>
                   </div>
-                  <div className="w-[170px] flex-1">
-                    <div className="flex justify-between items-center mb-1 text-[#26435F] text-sm">
-                      <p className="   font-medium">Impending Revenue</p>
+                  <div className="w-[11.083vw]">
+                    <div className="flex justify-between items-center mb-[10px] text-[#26435F] text-sm">
+                      <p className="   font-medium text-[0.916vw]">Impending Revenue</p>
                       <div className="group relative">
                         <p>
                           <FontAwesomeIcon
                             icon={faQuestionCircle}
                           ></FontAwesomeIcon>
                         </p>
-                        <span className="absolute  -top-10 left-10  w-[300px] scale-0 rounded-lg bg-[rgba(31,41,55,0.9)] p-2 text-xs text-white group-hover:scale-100">
-                          <h3 className="text-[#7152EB] text-[16px] py-1 font-semibold mb-1">
+                        <span className="absolute  -top-10 left-10 z-20 w-[333px]  scale-0 rounded-lg bg-[rgba(31,41,55,0.9)]  text-[13px] text-white group-hover:scale-100 whitespace-normal py-5 px-3">
+                          <h3 className="text-[#7152EB] text-[16px] py-1 font-medium mb-1">
                             Impending Revenue
                           </h3>
-                          This value is calculated by adding up all the revenue
-                          lost from sessions that have been marked as
-                          “Scheduled” for the selected date range.
-                          <br />
-                          Note that the revenue is calculated by multiplying a
-                          Tutor’s Service Rate by the Session Duration and
-                          adding all those values up.
+                          <span className="font-light">
+                            This value is calculated by adding up all the revenue
+                            lost from sessions that have been marked as
+                            “Scheduled” for the selected date range.
+                            <br />
+                            Note that the revenue is calculated by multiplying a
+                            Tutor’s Service Rate by the Session Duration and
+                            adding all those values up.
+                          </span>
                         </span>
                       </div>
                     </div>
                     <div
-                      className={`h-[100px] flex rounded-md justify-center items-center text-2xl font-semibold bg-[#7152EB33] box-border ${styles.boxBorder3}`}
+                      className={`h-[106px] flex rounded-md justify-center items-center text-[1.57vw] font-semibold bg-[#7152EB33] box-border ${styles.boxBorder3}`}
                     >
                       <p className="text-[#7152EB]">
                         ${iRevenue?.impendingRevenue}
@@ -355,39 +361,39 @@ const Dashboard = () => {
               </div>
 
               <div className={`${styles.gridBorder2}`}>
-                <div className="flex px-3 gap-4 ml-2 pr-4  justify-evenly whitespace-nowrap">
-                  <div className="w-[180px] flex-1 ">
+                <div className="flex pl-[1.8vw]   justify-between whitespace-nowrap">
+                  <div className="w-[11.083vw] text-[0.916vw]">
                     <div className="mb-[6px]">
-                      <p className="text-sm font-medium text-[#26435F80]">
+                      <p className=" font-medium text-[#26435F80]">
                         Unpaid Invoices
                       </p>
                     </div>
                     <div
-                      className={`h-[97px] flex justify-center items-center rounded-5 text-sm shadow-box text-[#667085] bg-[#F5F8FA]`}
+                      className={`h-[106px] flex justify-center items-center rounded-5  shadow-box text-[#667085] bg-[#F5F8FA]`}
                     >
                       <p>Coming soon</p>
                     </div>
                   </div>
-                  <div className="w-[180px] flex-1 ">
-                    <div className=" mb-[6px]">
-                      <p className="text-sm font-medium text-[#26435F80]">
+                  <div className="w-[11.083vw] text-[0.916vw]">
+                    <div className="mb-[6px]">
+                      <p className=" font-medium text-[#26435F80]">
                         Paid Invoices
                       </p>
                     </div>
                     <div
-                      className={`h-[97px] flex justify-center items-center rounded-5 text-sm shadow-box text-[#667085] bg-[#F5F8FA]`}
+                      className={`h-[106px] flex justify-center items-center rounded-5  shadow-box text-[#667085] bg-[#F5F8FA]`}
                     >
                       <p>Coming soon</p>
                     </div>
                   </div>
-                  <div className="w-[180px] flex-1">
+                  <div className="w-[11.083vw] text-[0.916vw]">
                     <div className="mb-[6px]">
-                      <p className="text-sm font-medium text-[#26435F80]">
+                      <p className=" font-medium text-[#26435F80]">
                         Cancelled Invoices
                       </p>
                     </div>
                     <div
-                      className={`h-[97px] flex justify-center items-center rounded-5 text-sm shadow-box text-[#667085] bg-[#F5F8FA]`}
+                      className={`h-[106px] flex justify-center items-center rounded-5  shadow-box text-[#667085] bg-[#F5F8FA]`}
                     >
                       <p>Coming soon</p>
                     </div>
@@ -400,13 +406,13 @@ const Dashboard = () => {
 
         <section>
           <div className="flex justify-center">
-            <div className="mt-[30px] w-screen mx-[120px]">
+            <div className="mt-[50px] w-[78.125vw]">
               <div className="mt-2 h-[1px] bg-[#00000033]"></div>
             </div>
           </div>
-          <div className="w-[screen] mx-[80px] mt-[42px] text-[#26435F]">
+          <div className=" w-[83.33vw] mt-[40px] text-[#FFA28D] mx-auto">
             <div className="flex justify-between items-center ">
-              <p className="font-bold">USER OVERVIEW </p>
+              <p className="font-bold text-xl">USERS OVERVIEW </p>
 
               <div className="flex font-semibold text-[#FFA28D] text-xs">
                 <RangeDate handleRangeData={handleUserStats} />
@@ -414,51 +420,51 @@ const Dashboard = () => {
             </div>
           </div>
 
-          <div className="grid grid-cols-12 mt-[30px] mx-[80px] gap-x-5">
+          <div className="grid grid-cols-12 mt-[18px] w-[83.33vw] gap-x-5 mx-auto">
             <div className="col-span-3">
-              <p className=" mb-1 font-semibold text-[#26435F]">User Stats</p>
+              <p className=" mb-1 font-semibold text-[#26435F] text-xl">User Stats</p>
               <div className={styles.sidebox}>
-                <div className="pl-[19px]  pt-5 rounded ">
-                  <p className="text-[#26435F]">Active / Total Students</p>
+                <div className="pl-[38px]  pt-6 rounded ">
+                  <p className="text-[#26435F] text-xl">Active / Total Students</p>
                   <p className="text-xl">
-                    <span className="font-bold text-[#FFA28D] text-3xl">
+                    <span className="font-bold text-[#FFA28D] text-4xl">
                       {userStats?.student.activeUsers.count}
-                      <span className="font-medium" > {" / "}</span> 
+                      <span className="font-medium" > {" / "}</span>
                     </span>
-                    <span className="text-[#24A3D9]">
+                    <span className="text-[#24A3D9] text-[25px]">
                       {userStats
                         ? userStats?.student.activeUsers.count +
-                          userStats?.student.inactiveUsers.count
+                        userStats?.student.inactiveUsers.count
                         : "Loading.."}
                     </span>
                   </p>
                 </div>
-                <div className={`  pl-[19px] pt-7 rounded `}>
-                  <p className="text-[#26435F]">Active / Total Tutors</p>
+                <div className={`  pl-[38px] pt-7 rounded `}>
+                  <p className="text-[#26435F] text-xl">Active / Total Tutors</p>
                   <p className="text-xl">
-                    <span className="font-bold text-[#FFA28D] text-3xl">
+                    <span className="font-bold text-[#FFA28D] text-4xl">
                       {userStats?.tutor.activeUsers.count}
-                      <span className="font-medium" > {" / "}</span> 
+                      <span className="font-medium" > {" / "}</span>
                     </span>
-                    <span className="text-[#24A3D9]">
+                    <span className="text-[#24A3D9] text-[25px]">
                       {userStats
                         ? userStats?.tutor.activeUsers.count +
-                          userStats?.tutor.inactiveUsers.count
+                        userStats?.tutor.inactiveUsers.count
                         : "Loading..."}
                     </span>
                   </p>
                 </div>
-                <div className={`  pl-[19px] pt-7 rounded pb-6`}>
-                  <p className="text-[#26435F]">Active / Total Parents</p>
+                <div className={`  pl-[38px] pt-7 rounded pb-6`}>
+                  <p className="text-[#26435F] text-xl">Active / Total Parents</p>
                   <p className="text-xl">
-                    <span className="font-bold text-[#FFA28D] text-3xl">
+                    <span className="font-bold text-[#FFA28D] text-4xl">
                       {userStats?.parent.activeUsers.count}
-                      <span className="font-medium" > {" / "}</span> 
+                      <span className="font-medium" > {" / "}</span>
                     </span>
-                    <span className="text-[#24A3D9]">
+                    <span className="text-[#24A3D9] text-[25px]">
                       {userStats
                         ? userStats?.parent.activeUsers.count +
-                          userStats?.parent.inactiveUsers.count
+                        userStats?.parent.inactiveUsers.count
                         : "Loading..."}
                     </span>
                   </p>
@@ -466,8 +472,8 @@ const Dashboard = () => {
               </div>
             </div>
 
-            <div className="col-span-9 pl-3">
-              <p className="mb-1 font-semibold text-[#26435F]">Action Log</p>
+            <div className="col-span-9 pl-[17.5px]">
+              <p className="mb-1 font-semibold text-[#26435F] text-xl">Action Log</p>
               <ActionLog
                 actionLog={filteredActionLog ? filteredActionLog : [""]}
               />
@@ -475,57 +481,57 @@ const Dashboard = () => {
           </div>
         </section>
 
-        <section className="mt-[30px] mx-[75px]">
-          <p className="font-semibold text-[#26435F] translate-y-[10px]">Latest Sign-ups</p>
+        <section className="mt-[30px] w-[83.33vw] mx-auto">
+          <p className="font-semibold text-[#26435F] translate-y-[10px] text-xl mb-2">Latest Sign-ups</p>
 
           <div className="">
             <Table
               data={userData}
               AdminLatestSignUp={true}
               headerObject={true}
-              
+
               tableHeaders={latestSignUpHeaders}
               maxPageSize={5}
             />
           </div>
         </section>
         <div className="flex justify-center">
-          <div className="mt-[30px] w-screen mx-[120px]">
+          <div className="mt-[40px] w-[78.125vw] mx-auto">
             <div className="mt-2 h-[1px] bg-[#00000033]"></div>
           </div>
         </div>
-        <div className="w-[screen] mx-[80px] mt-[42px] text-[#26435F]">
+        <div className="w-[83.33vw] mx-auto mt-[52px] text-[#26435F]">
           <div className="flex justify-between items-center translate-y-[10px] ">
-            <p className="font-bold uppercase">Client Success Overview </p>
+            <p className="font-bold uppercase text-[#FFA28D] text-xl">Client Success Overview </p>
 
             <RangeDate handleRangeData={handlePopularServices} />
           </div>
         </div>
 
-        <section className="mt-[10px] mx-[80px]">
-          <div className="grid grid-cols-4">
-            <div className="col-span-3 ">
-              <p className="font-semibold text-[#26435F] translate-y-[10px] text-[14px]">
+        <section className="mt-[10px] mx-auto w-[83.33vw]">
+          <div className="grid grid-cols-[60.2vw,23vw]">
+            <div className="">
+              <p className="font-semibold text-[#26435F] translate-y-[10px] text-[17.5px] mb-2">
                 Popular Services
               </p>
-              <div className="col-span-3 pr-5 border-r-[1.7px] border-[#CBD6E2]">
-              <Table
-                data={popularServices}
-                hidePagination={true}
-               tableHeaders={[
-                  "Service",
-                  "Actively Using",
-                  "Total Used",
-                  "Scheduled Hours",
-                  "Completed Hours",
-                  "% of Business",
-                ]}
-                maxPageSize={5}
-              />
+              <div className=" pr-[1.5625vw] border-r-[1.7px] border-[#CBD6E2]">
+                <Table
+                  data={popularServices}
+                  hidePagination={true}
+                  tableHeaders={[
+                    "Service",
+                    "Actively Using",
+                    "Total Used",
+                    "Scheduled Hours",
+                    "Completed Hours",
+                    "% of Business",
+                  ]}
+                  maxPageSize={5}
+                />
+              </div>
             </div>
-            </div>
-            <div className="pl-5">
-              <p className=" mb-[10px] translate-y-[10px] font-semibold text-[#26435F] text-[14px] ">
+            <div className="pl-[1.5625vw]">
+              <p className=" mb-[17px] translate-y-[10px] font-semibold text-[#26435F] text-[17.5px] ">
                 Star Clients
               </p>
               <div>
@@ -539,29 +545,29 @@ const Dashboard = () => {
           </div>
         </section>
 
-        <section className="mt-[30px] mx-[80px]">
-          <div className="grid grid-cols-2 gap-x-[40px]">
-            <div className="flex scale-[0.98] justify-between gap-4 mt-2 text-sm text-[#26435F]">
+        <section className="mt-[37px] mx-auto w-[83.33vw]">
+          <div className="grid grid-cols-2 gap-x-[5.46875vw]">
+            <div className="flex  justify-between gap-x-[1.953125vw]  mt-2 text-sm text-[#26435F]">
               <div>
-                <p className="font-semibold text-[13px]">
+                <p className="font-semibold text-[0.9114583333vw]">
                   Total # Of Referrals
                 </p>
                 <div
-                  className={`mt-1 w-[155px] h-[70px] bg-[rgba(255,162,141,0.2)] ${styles.smallBox}`}
+                  className={`mt-1  h-[72px] bg-[rgba(255,162,141,0.2)] ${styles.smallBox}`}
                 >
-                  <p className="text-[#FFA28D] h-full w-full justify-center font-semibold text-3xl flex items-center text-center">
+                  <p className="text-[#FFA28D] h-full w-full justify-center font-bold text-[1.953125vw] flex items-center text-center">
                     {improvementStats.no_of_referrals}
                   </p>
                 </div>
               </div>
               <div>
-                <p className="font-semibold text-[13px]">
+                <p className="font-semibold text-[0.9114583333vw]">
                   Average SAT Improvement
                 </p>
                 <div
-                  className={`w-[180px] mt-1 h-[70px] bg-[rgba(36,163,217,0.2)]  ${styles.smallBox}`}
+                  className={` mt-1 h-[72px] bg-[rgba(36,163,217,0.2)]  ${styles.smallBox3}`}
                 >
-                  <p className="text-[#24A3D9] h-full w-full justify-center font-semibold text-3xl flex items-center text-center">
+                  <p className="text-[#24A3D9] h-full w-full justify-center font-bold text-[1.953125vw] flex items-center text-center">
                     {improvementStats.avg_sat_improvement
                       ? improvementStats.avg_sat_improvement
                       : 0}
@@ -569,13 +575,13 @@ const Dashboard = () => {
                 </div>
               </div>
               <div>
-                <p className="font-semibold text-[13px]">
+                <p className="font-semibold text-[0.9114583333vw]">
                   Average ACT Improvement
                 </p>
                 <div
-                  className={`w-[180px] mt-1 h-[70px] bg-[rgba(36,163,217,0.2)]  ${styles.smallBox}`}
+                  className={` mt-1 h-[72px] bg-[rgba(36,163,217,0.2)]  ${styles.smallBox3}`}
                 >
-                  <p className="text-[#24A3D9] h-full w-full justify-center font-semibold text-3xl flex items-center text-center">
+                  <p className="text-[#24A3D9] h-full w-full justify-center font-bold text-[1.953125vw] flex items-center text-center">
                     {improvementStats.avg_act_improvement
                       ? improvementStats.avg_act_improvement
                       : 0}
@@ -583,11 +589,11 @@ const Dashboard = () => {
                 </div>
               </div>
             </div>
-            <div className="flex scale-[0.95]  mt-2 whitespace-nowrap gap-4  text-xs justify-between text-[#667085]">
+            <div className="flex   mt-2 whitespace-nowrap   text-[0.78125vw] justify-between text-[#667085]">
               <div>
                 <p>Average GRE Improvement</p>
                 <div
-                  className={`w-[150px] mt-2 h-[70px] ${styles.smallBox2} flex items-center justify-center font-medium`}
+                  className={`w-[11.328125vw] mt-1 h-[72px] ${styles.smallBox2} flex items-center justify-center font-medium`}
                 >
                   <p>Coming Soon</p>
                 </div>
@@ -595,7 +601,7 @@ const Dashboard = () => {
               <div>
                 <p>Average GMAT Improvement</p>
                 <div
-                  className={`w-[150px] mt-2 h-[70px] ${styles.smallBox2} flex items-center justify-center font-medium`}
+                  className={`w-[11.328125vw] mt-1 h-[72px] ${styles.smallBox2} flex items-center justify-center font-medium`}
                 >
                   <p>Coming Soon</p>
                 </div>
@@ -603,7 +609,7 @@ const Dashboard = () => {
               <div>
                 <p>Average IELTS Improvement</p>
                 <div
-                  className={`w-[150px] mt-2 h-[70px] ${styles.smallBox2} flex items-center justify-center font-medium`}
+                  className={`w-[11.328125vw] mt-1 h-[72px] ${styles.smallBox2} flex items-center justify-center font-medium`}
                 >
                   <p>Coming Soon</p>
                 </div>
@@ -612,25 +618,25 @@ const Dashboard = () => {
           </div>
         </section>
         <div className="flex justify-center">
-          <div className="mt-[41px] w-screen mx-[120px]">
+          <div className="mt-[51px] w-[78.125vw] mx-auto">
             <div className="mt-2 h-[1px] bg-[#00000033]"></div>
           </div>
         </div>
-        <div className="w-[screen] mx-[80px]  mt-[42px] text-[#26435F]">
-          <div className="flex justify-between items-center  translate-y-[15px]">
-            <p className="font-bold uppercase">Tutor Performence Overview </p>
+        <div className="w-[83.33vw] mx-auto  mt-[42px] text-[#FFA28D] ">
+          <div className="flex justify-between items-center  translate-y-[15px] mb-[16px]">
+            <p className="font-bold uppercase text-xl">Tutor Performence Overview </p>
 
             <RangeDate handleRangeData={handleTutorPerformance} />
           </div>
         </div>
-        <section className="mx-[80px]  ">
-         
-            <Table
-              data={tutorPerformanceData}
-               tableHeaders={tutorTableHeaders}
-              maxPageSize={5}
-            />
-       
+        <section className="mx-auto  w-[83.33vw]">
+
+          <Table
+            data={tutorPerformanceData}
+            tableHeaders={tutorTableHeaders}
+            maxPageSize={5}
+          />
+
 
           <div className="flex justify-center">
             <div className="mt-[36px] mb-[44px] bg-[#CBD6E2] h-[1px] w-[100px]"></div>

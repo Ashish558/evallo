@@ -12,7 +12,7 @@ import GreenIcon from "../../assets/assignedTests/green.svg";
 import GrayIcon from "../../assets/assignedTests/gray.svg";
 import RemoveIcon from "../../assets/icons/remove.svg";
 import EditTestIcon from "../../assets/icons/edit-test.svg";
-import TrashIcon from "../../assets/icons/trash2.png";
+import TrashIcon from "../../assets/icons/ic_outline-delete.svg";
 import styles from './styles.module.css'
 import AddIcon from "../../assets/icons/plus.svg";
 import EditIcon from "../../assets/icons/test-edit.svg";
@@ -324,13 +324,13 @@ export default function TableItem({
               })}
             </div>
           </td>
-          <td className="font-medium text-sm px-1  min-w-14 py-4">
+          <td className="font-medium text-sm px-1  min-w-14 py-4 text-[#507CA8]">
             <div className="my-[6px]">{getFormattedDate(item.createdAt)}</div>
           </td>
 
           <td className="font-medium px-1 min-w-14 py-4">
             {item.userType !== "admin" ? (
-              <div className="w-4 h-4 rounded-full bg-[#E3E3E3] flex items-center justify-center">
+              <div className=" flex items-center justify-center">
 
                 <img
                   src={TrashIcon}

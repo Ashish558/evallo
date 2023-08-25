@@ -47,7 +47,7 @@ import LoaderNew from "../../components/Loader/LoaderNew";
 
 const optionData = ["option 1", "option 2", "option 3", "option 4", "option 5"];
 
-const userTypeOptions = ["tutor", "parent", "student"];
+const userTypeOptions = ["Tutor", "Parent", "Student"];
 
 const initialState = {
   email: "",
@@ -715,10 +715,10 @@ export default function Users() {
     }
   };
   return (
-    <div className="lg:mx-[60px] bg-lightWhite min-h-screen">
-      <div className="py-10 px-5">
+    <div className="w-[83.6989583333vw] mx-auto bg-lightWhite min-h-screen">
+      <div className="pb-10 px-5 mt-[50px]">
         <div className="flex justify-between items-center mb-3">
-          <p className="text-[#24A3D9] mb-3">
+          <p className="text-[#24A3D9] mb-6 text-xl">
             {organization?.company +
               "  >  " +
               firstName +
@@ -728,7 +728,7 @@ export default function Users() {
             <span className="font-semibold">CRM</span>
           </p>
           <button
-            className="bg-[#24A3D9] w-[188px] text-sm justify-center flex py-2 px-5 items-center text-white font-semibold rounded-lg"
+            className="bg-[#24A3D9] w-[188px] text-[15px] justify-center flex py-2 px-5 items-center text-white font-semibold rounded-lg"
             onClick={() => navigate("/assigned-tutors")}
           >
             Tutor Mapping
@@ -736,8 +736,8 @@ export default function Users() {
           </button>
         </div>
         <div>
-          <div className="flex mb-[50px]">
-            <button className="bg-[#517CA8] w-[158px] text-sm justify-center flex py-1 px-2 items-center text-white  rounded-lg mr-5">
+          <div className="flex mb-[46px]">
+            <button className="bg-[#517CA8] w-[158px] text-[15px] justify-center flex  items-center text-white  rounded-lg mr-[25px]">
               {csvLoad ? <LoaderNew /> : ""}
               {!csvLoad && !successFetched ? (
                 <p onClick={handleBulkExport}>Export Data</p>
@@ -766,7 +766,7 @@ export default function Users() {
             </button>
             <button
               onClick={upload}
-              className="bg-[#517CA8] w-[158px] text-sm justify-center flex py-1 px-2 items-center text-white  rounded-lg mr-5"
+              className="bg-[#517CA8] w-[158px] text-[15px] justify-center flex  items-center text-white  rounded-lg mr-[25px]"
             >
               Bulk Upload{" "}
               <img src={UploadIcon} className="ml-3" alt="UploadIcon" />
@@ -781,7 +781,7 @@ export default function Users() {
                 </>
               }
               onClick={() => setModalActive(true)}
-              className=" flex items-center text-sm  py-3 px-3"
+              className=" flex items-center text-[15px]  py-3 px-3"
             />
 
             {bulkUpload && (
