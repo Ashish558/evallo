@@ -24,7 +24,7 @@
    top: 0;
    left: 0;
   
-  
+   border: 1.5px solid rgba(0, 0, 0, 0.2);
    border-radius: 4px;
  }
  
@@ -45,12 +45,13 @@
  }
  
  .container .checkmark:after {
-   left: 7.4px;
+   left: 6.8px;
    top: 2.9px;
    width: 6.2px;
    height: 12px;
    border: solid white;
    border-width: 0 2px 2px 0;
+   
    -webkit-transform: rotate(45deg);
    -ms-transform: rotate(45deg);
    transform: rotate(45deg);

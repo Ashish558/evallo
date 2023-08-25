@@ -110,7 +110,7 @@ export default function SetPassword({
               <p className="font-medium text-sm text-center mx-auto py-1 text-[#FFA28D] leading-snug mb-7">
                 Set Password
               </p>
-              <div className="h-[1px] bg-[#EBEBEB] mx-[0px]  mt-[-16px] w-full mb-[19px]"></div>
+              <div className="h-[1px] bg-[#EBEBEB] mx-[0px]  mt-[-16px] w-[110%] mb-[19px]"></div>
               <p className="mb-8 text-[#26435F] text-center">
                 Congratulations! Your email has been verified. Now,
                 <br /> please set a strong password for your Evallo account.
@@ -120,7 +120,8 @@ export default function SetPassword({
                   parentClassName="mb-6 relative"
                   type="password"
                   placeholder="minimum 8 characters"
-                  inputContainerClassName="border border-[0.98px_solid_#D0D5DD] py-4"
+                  inputContainerClassName="border border-[0.98px_solid_#D0D5DD]"
+                  inputClassName={"py-[2px]"}
                   label="Set New Password"
                   labelClassname="ml-2 mb-2"
                   value={password}
@@ -131,8 +132,9 @@ export default function SetPassword({
                 <InputField
                   parentClassName="mb-2.5 relative"
                   type="password"
+                  inputClassName={"py-[2px]"}
                   placeholder="Confirm Password"
-                  inputContainerClassName="border border-[0.98px_solid_#D0D5DD] py-4"
+                  inputContainerClassName="border border-[0.98px_solid_#D0D5DD]"
                   label="Confirm Password"
                   labelClassname="ml-2 mb-2"
                   value={confirmPassword}
@@ -148,7 +150,7 @@ export default function SetPassword({
                 onClick={handleSubmit}
                 loading={loading}
                 children={"Set New Password"}
-                className="w-[300px] mt-6"
+                className="w-[300px] mt-6 py-3"
               />
               {/* <button
                         className={`w-full relative bg-primaryDark font-medium disabled:bg-pink pt-3 pb-3 mt-12 rounded-10 text-white text-lg  ${loading ? 'cursor-wait opacity-60' : 'cursor-pointer'}`}

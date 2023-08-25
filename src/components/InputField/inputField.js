@@ -49,8 +49,10 @@ export default function InputField({
 
   useEffect(() => {
     setShowDiv(true)
-  }, [error,value,totalErrors])
-
+  }, [error,totalErrors])
+useEffect(()=>{
+  setShowDiv(false)
+},[value])
   
   return (
     <div className={`relative text-sm ${parentClassName && parentClassName}`}>

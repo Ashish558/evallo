@@ -20,6 +20,7 @@ import CCheckbox from "../../components/CCheckbox/CCheckbox";
 import EvalloLogo from "../../assets/icons/evallo_new.svg";
 import cuate from "../../assets/signup/cuate.svg";
 import AdminNavbar from "../AdminDashboard/AdminNavbar";
+import SCheckbox from "../../components/CCheckbox/SCheckbox";
 
 
 export default function Login({ setLoginFormActive }) {
@@ -144,7 +145,7 @@ export default function Login({ setLoginFormActive }) {
               </p>
               <form
                 onSubmit={handleSubmit}
-                className={` mt-[105px] lg:mt-0 ${
+                className={` mt-[105px] tracking-[0.03em] lg:mt-0 ${
                   wait ? "cursor-wait" : "cursor-default"
                 }`}
               >
@@ -183,8 +184,9 @@ export default function Login({ setLoginFormActive }) {
                   }}
                 />
                 <div className="flex justify-between items-center">
-                  <div className="flex items-center">
+                  <div className="flex items-center justify-center">
                     <CCheckbox
+                    className="scale-[0.8]"
                       checked={remember}
                       onChange={() => setRemember(!remember)}
                     />{" "}
@@ -209,7 +211,7 @@ export default function Login({ setLoginFormActive }) {
                       ? true
                       : !(emailValidation.test(email) && password.length > 0)
                   }
-                  className={`w-[80%] relative mx-auto  bg-[#FFA28D] disabled:opacity-70 pt-3.5 pb-3.5 lg:pt-[9px] lg:pb-[9px] mt-[66px]  rounded-7 text-white text-lg ${
+                  className={`w-[80%] relative mx-auto  bg-[#FFA28D] disabled:opacity-70 pt-3.5 pb-3.5 lg:pt-[9px] lg:pb-[9px] mt-[50px]   rounded-7 text-white text-lg ${
                     loginLoading ? "cursor-wait" : "cursor-pointer"
                   }`}
                   onClick={handleSubmit}

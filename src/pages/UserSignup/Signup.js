@@ -42,6 +42,7 @@ import CustomFields from "../Frames/CustomFields/CustomFields";
 import { useGetUserByOrgNameMutation } from "../../app/services/organization";
 import InputFieldDropdown from "../../components/InputField/inputFieldDropdown";
 import SecondaryButton from "../../components/Buttons/SecondaryButton";
+import CCheckbox from "../../components/CCheckbox/CCheckbox";
 
 export default function UserSignup() {
   const [frames, setFrames] = useState({
@@ -585,7 +586,7 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
                       label="Email"
                       placeholder=""
                       inputContainerClassName="  bg-white   border border-[#D0D5DD]"
-                      parentClassName="w-[300px] text-xs "
+                      parentClassName="w-[340px] text-xs "
                       value={values.email}
                       onChange={(e) =>
                         setValues({
@@ -598,11 +599,11 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
                     />
                     <InputFieldDropdown
                       placeholder=""
-                      inputContainerClassName="  bg-white   border border-[#D0D5DD]"
-                      parentClassName="text-xs "
+                      inputContainerClassName="  bg-white h-[40px]  border border-[#D0D5DD]"
+                      parentClassName="text-xs w-[300px]"
                       
                       inputClassName="  bg-transparent text-400 "
-                      labelClassname="mb-1 text-[#26435F] font-bold text-[#26435F]"
+                      labelClassname="mb-1 text-[#26435F]  font-bold text-[#26435F]"
                       label="Phone"
                       value={values.phone}
                       codeValue={values.phoneCode}
@@ -697,20 +698,13 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
                     </div>
                   </div>
                   <div className=" gap-x-2 my-5">
+                    
                     <div className={styles.textLight}>
                       <label
                         className={`${styles["checkbox-label"]} text-[13.5px] block  `}
                       >
-                        <input
-                          type="checkbox"
-                          checked={values.ageChecked}
-                          onChange={handleCheckboxChangeAge}
-                        />
-                        <span
-                          className={`${styles["custom-checkbox"]} ${
-                            values.ageChecked ? "checked" : ""
-                          }`}
-                        ></span>
+                      <CCheckbox  checked={values.ageChecked}
+                          onChange={handleCheckboxChangeAge}/>
                         <span className="ml-2 text-[#507CA8]">
                           I confirm that I am 13 years or older
                         </span>
@@ -723,16 +717,8 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
                       <label
                         className={`${styles["checkbox-label"]} text-[13.5px] block  `}
                       >
-                        <input
-                          type="checkbox"
-                          checked={values.terms}
-                          onChange={handleCheckboxChangeTerms}
-                        />
-                        <span
-                          className={`${styles["custom-checkbox"]} w-[25px] ${
-                            values.terms ? "checked" : ""
-                          }`}
-                        ></span>
+                       <CCheckbox  checked={values.terms}
+                          onChange={handleCheckboxChangeTerms}/>
                         <p className={` ml-2  text-[#507CA8]`}>
                           I have carefully read and agree to the{" "}
                           <a

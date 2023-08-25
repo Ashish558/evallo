@@ -3,7 +3,8 @@ import EyeIcon from "../../assets/form/eye-open.svg";
 import Message from "./Message/Message";
 import { useEffect } from "react";
 import useOutsideAlerter from "../../hooks/useOutsideAlerter";
-
+import downArrow from "../../assets/icons/down-chevron.svg";
+import upArrow from "../../assets/icons/upArrow.svg";
 export default function InputFieldDropdown({
   parentClassName,
   inputContainerClassName,
@@ -36,47 +37,57 @@ export default function InputFieldDropdown({
   onBlur,
 }) {
   const [inputType, setInputType] = useState(type);
-  const [searchCode, setSearchCode] = useState("")
+  const [searchCode, setSearchCode] = useState("");
   const [dialCode, setDialCode] = useState([]);
+  const [toggleOptions, setToggleOptions] = useState(false);
   const [showDiv, setShowDiv] = useState(true);
   const divRef = useRef();
   const [showDiv2, setShowDiv2] = useState(true);
   const divRef2 = useRef();
-  const handleClose = () => setShowDiv(false)
-  useOutsideAlerter(divRef, handleClose)
-  const handleClose2 = () => setShowDiv2(false)
-  useOutsideAlerter(divRef2, handleClose2)
+  const handleClose = () => setShowDiv(false);
+  useOutsideAlerter(divRef, handleClose);
+  const handleClose2 = () => setShowDiv2(false);
+  useOutsideAlerter(divRef2, handleClose2);
   useEffect(() => {
-    if(error?.length>0)
-    setShowDiv(true)
-  if(codeError?.length>0)
-  setShowDiv2(true)
-  }, [error,value,totalErrors])
+    if (error?.length > 0) setShowDiv(true);
+    if (codeError?.length > 0) setShowDiv2(true);
+  }, [error, totalErrors]);
+  useEffect(() => {
+    setShowDiv(false);
+    setShowDiv2(false);
+  }, [value]);
 
-  const handleCodeSearch=(e)=>{
-    setSearchCode(e.target.value)
-    let arr=dialCode.filter((item)=>{
-        return item?.dial_code.includes(e.target.value);
-    })
-    console.log(arr)
-    setDialCode(arr)
-  }
+  const handleCodeSearch = (e) => {
+    setSearchCode(e.target.value);
+    let arr = dialCode.filter((item) => {
+      return item?.dial_code.includes(e.target.value);
+    });
+    console.log(arr);
+    setDialCode(arr);
+  };
   useEffect(() => {
     fetch("/countryCode.json")
-      .then((res) =>  res.json())
-      .then((data) =>{
-        console.log({data})
-        data.sort((a, b) =>{
-          return parseInt(a.dial_code.split('+')[1]) - parseInt(b.dial_code.split('+')[1]);
-        })
-      
-        setDialCode(data)
-      }
-      );
+      .then((res) => res.json())
+      .then((data) => {
+        console.log({ data });
+        // data.sort((a, b) => {
+        //   return (
+        //     parseInt(a.dial_code.split("+")[1]) -
+        //     parseInt(b.dial_code.split("+")[1])
+        //   );
+        // });
+        data.sort((a, b) => {
+          if(a.code < b.code) { return -1; }
+    if(a.code > b.code) { return 1; }
+    return 0;
+          
+        });
+        setDialCode(data);
+      });
   }, []);
-
+  console.log({ toggleOptions,codeValue });
   return (
-    <div className={`relative text-sm ${parentClassName && parentClassName}`}>
+    <div className={`relative text-sm ${parentClassName && parentClassName} `}>
       {label && (
         <label className={`inline-block font-semibold ${labelClassname} ml-0`}>
           {label}
@@ -90,25 +101,50 @@ export default function InputFieldDropdown({
           inputContainerClassName ? inputContainerClassName : ""
         } ${disabled === true ? "cursor-not-allowed" : ""} `}
       >
-        <div className="">
-          
-          <select
-            onChange={handleCodeChange}
-            className="bg-[#EAF5FA] min-w-[20px] text-[black] focus:outline-none rounded-sm text-sm"
+        <div
+          className="relative flex justify-between gap-3 max-w-[130px]"
+          onClick={() => setToggleOptions(!toggleOptions)}
+        >
+          <div
+            className={` flex justify-between cursor-pointer gap-4   items-center rounded-[3px]  bg-[#EAF5FA]  text-[black] focus:outline-none  px-2 text-sm ${codeValue?"  pr-5":"w-[35px] justify-center py-2 pl-3"}`}
+           
+          >
+            {codeValue&&<span className=" ">
+            {codeValue}
+            </span>}
+           
+
+            <img src={toggleOptions?upArrow:downArrow} className="inline-block w-3 h-3 " alt="down" />
+          </div>
+
+          <div
+           
+            className={`${
+              toggleOptions ? "" : "hidden"
+            } whitespace-nowrap absolute text-xs mt-[40px]  shadow-lg border border-gray-300  z-[1] h-[300px] rounded-[4px] overflow-y-auto flex flex-col bg-[#EAF5FA] w-[85px] text-[black] focus:outline-none rounded-sm `}
             name="country_code"
           >
-            <option value="0">{codeValue}</option>
-            {dialCode?.map((code,id) => {
-              return <option key={id} value={code?.dial_code}>{code?.dial_code}</option>;
-            })}
-          </select>
-          
+            
+            {toggleOptions &&
+              dialCode?.map((code, id) => {
+                return (
+                  <span
+                    className="hover:bg-blue-400 px-1 cursor-default hover:text-white"
+                    key={id}
+                    value={code?.dial_code}
+                    onClick={(e)=> handleCodeChange({target:{value:code?.dial_code}})}
+                  >
+                    {code?.code} {code?.dial_code}
+                  </span>
+                );
+              })}
+          </div>
         </div>
         <div ref={divRef2} className="relative whitespace-nowrap">
-      {codeError !== undefined && codeError !== "" && showDiv2 && (
-        <Message error={codeError} type="danger" />
-      )}
-      </div>
+          {codeError !== undefined && codeError !== "" && showDiv2 && (
+            <Message error={codeError} type="danger" />
+          )}
+        </div>
         {Icon && (
           <img
             src={Icon}
@@ -157,9 +193,9 @@ export default function InputFieldDropdown({
         {right && right}
       </div>
       <div ref={divRef}>
-      {error !== undefined && error !== "" && showDiv && (
-        <Message error={error} type="danger" />
-      )}
+        {error !== undefined && error !== "" && showDiv && (
+          <Message error={error} type="danger" />
+        )}
       </div>
     </div>
   );

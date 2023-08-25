@@ -112,12 +112,14 @@ export default function UserDetails({
           label={`${personaText} First Name`}
           labelClassname="text-[#26435F] font-bold  mb-1 text-sm"
           value={otherDetails.FirstName}
+          
           onChange={(e) =>
             setOtherDetails({
               ...otherDetails,
               FirstName: e.target.value,
             })
           }
+          totalErrors={detailsError} 
           error={detailsError.FirstName}
         />
         <InputField
@@ -133,6 +135,7 @@ export default function UserDetails({
               LastName: e.target.value,
             })
           }
+          totalErrors={detailsError} 
           error={detailsError.LastName}
         />
       </div>
@@ -147,14 +150,15 @@ export default function UserDetails({
           onChange={(e) =>
             setOtherDetails({ ...otherDetails, Email: e.target.value })
           }
+          totalErrors={detailsError} 
           error={detailsError.Email}
         />
         <InputFieldDropdown
-          parentClassName="mb-6 w-[200px]"
+          parentClassName="mb-6 w-[210px]"
           label={`${personaText} Phone  ${persona !== "parent" ? "" : ""} `}
           labelClassname="text-[#26435F] font-bold  mb-1 text-sm"
-          inputContainerClassName="border border-[#D0D5DD] pt-3   pb-3 relative border"
-          inputClassName="ml-2"
+          inputContainerClassName="border h-[40px] border-[#D0D5DD] pt-3   pb-3 relative border"
+          inputClassName=""
           required={persona === "student" ? true : false}
           codeValue={otherDetails.PphoneCode}
           handleCodeChange={(e) =>
@@ -164,6 +168,7 @@ export default function UserDetails({
           onChange={(e) =>
             setOtherDetails({ ...otherDetails, Phone: e.target.value })
           }
+          totalErrors={detailsError} 
           error={detailsError.Phone}
         />
       </div>
@@ -177,6 +182,7 @@ export default function UserDetails({
         onChange={(e) =>
           setOtherDetails({ ...otherDetails, schoolName: e.target.value })
         }
+        totalErrors={detailsError} 
         error={detailsError.schoolName}
       />
       <InputSelect
@@ -193,6 +199,7 @@ export default function UserDetails({
         onChange={(e) =>
           setOtherDetails({ ...otherDetails, grade: e})
         }
+        totalErrors={detailsError} 
         error={detailsError.grade}
       />
      

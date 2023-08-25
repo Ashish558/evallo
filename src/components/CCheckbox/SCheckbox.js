@@ -17,7 +17,7 @@ useEffect(()=>{
           onClick={(e)=>setCheckG(!checkG)}
         >
          <input checked={true} type='checkbox' name={name ? name : 'moods'} value='' readOnly />
-         <span className={`w-5 h-5 ${styles.checkmark} ${checkMarkClassName}`}></span>
+         <span className={`w-5 h-5 ${styles.checkmark} ${checkMarkClassName} `}></span>
       </div>
    )
 }

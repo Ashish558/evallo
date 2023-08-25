@@ -701,7 +701,7 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
 
                     <InputFieldDropdown
                       placeholder=""
-                      parentClassName="text-xs w-4/5 ml-8 mt-1"
+                      parentClassName="text-xs w-4/5 ml-8 "
                       labelClassname="text-[#26435F] font-semibold"
                       inputContainerClassName=" border border-[#D0D5DD] rounded-md py-[9px] h-[45px] text-md"
                       label="Phone"
