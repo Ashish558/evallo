@@ -13,7 +13,10 @@ export default function NumericSteppers({customFieldsPresents, totalSteps, curre
              ${i + 1 > currentStep ? 'opacity-50 before:hidden text-[#F3F5F7] bg-gray-400' : ''} 
              transition 
              
-             ${totalSteps===4+(customFieldsPresents?1:0)&&i===3+(customFieldsPresents?1:0)?'':(totalSteps===3?styles.line2:styles.line)} `}
+             ${totalSteps===4+(customFieldsPresents?1:0)&&i===3+(customFieldsPresents?1:0)?'':(totalSteps===3?styles.line2:styles.line)} 
+             ${totalSteps===2?styles.line4:""}
+             `}
+              
             // onClick={() => handleClick(i + 1)}
             >
                {i + 1}

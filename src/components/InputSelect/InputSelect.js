@@ -23,6 +23,7 @@ export default function InputSelect({
   required,
   optionListClassName,
   IconRight,
+  IconLeft,
   DateSelect,
 }) {
   const [selected, setSelected] = useState(false);
@@ -37,7 +38,7 @@ export default function InputSelect({
   const handleChange = (optionType, option, idx) => {
     onChange(optionType === "object" ? option : option, idx);
   };
-
+ 
   return (
     <div
       ref={selectRef}
@@ -46,7 +47,7 @@ export default function InputSelect({
     >
 
       {
-        placeholder === 'Time Zones' || <div className="flex items-center mb-1">
+        placeholder === 'Time Zones' || <div className="flex items-center">
           {label && (
             <label
               className={`font-medium ${label == 'User Type' && 'text-sm'} text-[#26435F] inline-block  ${labelClassname}`}
@@ -58,7 +59,7 @@ export default function InputSelect({
             </label>
           )}
           <div>
-            {label == "Default Timezone" && (
+            {label == "Default Time Zone" && (
               <img className="ml-3" src={questionMark} alt=""></img>
             )}
           </div>
@@ -68,26 +69,27 @@ export default function InputSelect({
 
       <div
         onClick={() => setSelected(true)}
-        className={`py-[10px] px-[14px]  lg:py-[8px] lg:px-[16px] border border-[#D0D5DD] flex items-center rounded relative cursor-pointer z-50 ${inputContainerClassName ? inputContainerClassName : ""
+        className={`py-[10px] px-[14px]  lg:py-[8px] lg:px-[16px]  flex items-center rounded relative cursor-pointer z-50 ${inputContainerClassName ? inputContainerClassName : ""
           } `}
       >
         {Icon && <img src={Icon} className={`mr-5  w-[28px]}`} alt="icon" />}
+        {IconLeft&& <img src={IconLeft} className={`mr-5  w-[28px]}`} alt="IconLeft" />}
         {selected ? (
           IconRight ? (
             IconRight
-          ) : (
+          ) :!IconLeft &&(
             <img
               src={UpArrow}
-              className={`w-[15px]  ${styles.downArrow}`}
+              className={`w-[15px] h-[12px]  ${styles.downArrow}`}
               alt="down-arrow"
             />
           )
         ) : IconRight ? (
           IconRight
-        ) : (
+        ) :!IconLeft&& (
           <img
             src={DownArrow}
-            className={`w-[15px]  ${styles.downArrow}`}
+            className={`w-[15px] h-[12px]   ${styles.downArrow}`}
             alt="down-arrow"
           />
         )}

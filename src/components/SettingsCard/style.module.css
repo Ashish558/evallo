@@ -7,11 +7,12 @@
    position: absolute;
    top: 0;
    left: 0;
-   
+   background-color: #4bd657;
    transition: 0.2s;
 }
 
 .toggleCircleActive {
+   background-color: #FFA28D;
    position: absolute;
    top: 0;
    left: 100%;

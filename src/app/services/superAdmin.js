@@ -37,6 +37,14 @@ export const superAdminServicesApi = createApi({
         headers: getAuthHeader(),
       }),
     }),
+    getUserStatsByRoleRange :builder.mutation({
+      query: (body) => ({
+        url: `api/user/superadmin/dashboard/userstats?role=${body.role}`,
+        method: "POST",
+        body,
+        headers: getAuthHeader(),
+      }),
+    }),
     getAllTest: builder.query({
       query: (name) => ({
         url: `api/user/superadmin/getAllTest`,
@@ -151,6 +159,7 @@ export const {
   useGetAllOrgStatsRangeMutation,
   useGetAllTestQuery,
   useGetUserStatsByRoleQuery,
+  useGetUserStatsByRoleRangeMutation,
   useGetUserDailyActivityQuery,
   useGetUserDailyActivityRangeMutation,
   useAddUserDemographyMutation,

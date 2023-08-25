@@ -690,7 +690,8 @@ export default function Users() {
         })
         .catch((err) => {
           console.log(err);
-         
+          alert('Error Occured')
+          setXlsFile(undefined);
         });
     }
   };
@@ -708,7 +709,7 @@ export default function Users() {
         })
         .catch((err) => {
           console.log("error in bulk upload and invite");
-          // setXlsFile(undefined);
+          setXlsFile(undefined);
         });
     }
   };

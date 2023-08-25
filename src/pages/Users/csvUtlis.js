@@ -44,3 +44,20 @@ export const csvHeaders = [
     key: "block",
   },
 ];
+
+
+export const csvHeaderNames = [
+ {label: "Org name", key:"name"},
+ {label: "Type", key:"type"},
+ {label: "Address", key:"address"},
+ {label: "City", key:"city"},
+ {label: "State", key:"state"},
+ {label: "Country", key:"country "},
+ {label: "A name", key:"firstName"},
+ {label: "Admin  email", key:"email"},
+ {label: "A Phone", key:"phone"},
+ {label: "Status", key:"userStatus"},
+ {label: "# tutors", key:"tutors"},
+ {label: "# students", key:"student"},
+ {label: "# contributors", key:"contributor"},
+];

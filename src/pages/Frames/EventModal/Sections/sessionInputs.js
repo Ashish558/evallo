@@ -11,24 +11,7 @@ export default function SessionInputs({ data, setData, status, isEditable }) {
 
    return (
       <>
-         <div className="flex">
-            <InputField
-               label="Session Link"
-               labelClassname="ml-3"
-               placeholder="Session Link"
-               parentClassName="w-full mr-8"
-               inputContainerClassName="bg-lightWhite border-0 pt-3.5 pb-3.5"
-               inputClassName="bg-transparent"
-               type="text"
-               value={data.session}
-               onChange={(e) =>
-                  setData({
-                     ...data,
-                     session: e.target.value,
-                  })
-               }
-               disabled={!isEditable}
-            />
+         <div className="flex mt-8 ">
             {persona === "student" ? (
                <div className="w-full flex flex-col items-start">
                   <InputSelect
@@ -62,7 +45,7 @@ export default function SessionInputs({ data, setData, status, isEditable }) {
                   </div>
                </div>
             ) : (
-               <div className="w-full flex flex-col items-center pt-[0px]">
+               <div className="w-full flex  pt-[0px]">
                   <InputSelect
                      value={data.sessionStatus}
                      onChange={(val) =>
@@ -77,19 +60,32 @@ export default function SessionInputs({ data, setData, status, isEditable }) {
                      inputClassName="bg-transparent appearance-none font-medium"
                      placeholder="Session Status"
                      label="Session Status"
-                     labelClassname="ml-2"
-                     parentClassName="w-full mr-4"
+                     labelClassname="font-semibold"
+                     parentClassName="w-[300px] mr-10"
                      type="select"
                   />
-                  <div className="flex mb-3 mt-3">
-                     <CCheckbox checked={data.rescheduling} name='rescheduling' onChange={() =>
-                        setData({
-                           ...data,
-                           rescheduling: !data.rescheduling,
-                        })} disabled={!isEditable} />
-                     <p className="font-medium text-primary-60 text-sm">
-                        Rescheduled
-                     </p>
+                  <div className="flex mt-7">
+                     <div className='flex'>
+                        <CCheckbox checked={data.rescheduling} name='rescheduling' onChange={() =>
+                           setData({
+                              ...data,
+                              rescheduling: !data.rescheduling,
+                           })} disabled={!isEditable} />
+                        <p className="font-medium text-primary-60 text-sm">
+                           Rescheduled
+                        </p>
+                     </div>
+                     <div className='flex ml-5'>
+                        <CCheckbox checked={data.partialSession} name='partialSession' onChange={() =>
+                           setData({
+                              ...data,
+                              partialSession: !data.partialSession,
+                           })} disabled={!isEditable} />
+                        <p className="font-medium text-primary-60 text-sm">
+                           Partial Session
+                        </p>
+                     </div>
+
                   </div>
                </div>
             )}

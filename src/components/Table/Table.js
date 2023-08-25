@@ -79,76 +79,76 @@ export default function Table(props) {
   return (
     <div className="w-full">
       <div className="overflow-x-auto scrollbar-content    scroll-m-1 ">
-      <table className="table-auto customTable px-[2px] mb-3 text-center w-full whitespace-nowrap">
-        <thead className="pb-2 whitespace-nowrap">
-          <tr className=" whitespace-nowrap">
-            {tableHeaders.map((item, idx) => {
-              return headerObject === true ? (
-                <TableHeaderNew header={item} dataFor={dataFor} />
-              ) : (
-                <TableHeader
-                  key={idx}
-                  header={item}
-                  onClick={sorting}
-                  setSorted={setSorted}
-                  dataFor={dataFor}
-                />
+        <table className="table-auto customTable px-[2px] mb-3 text-center w-full whitespace-nowrap">
+          <thead className="pb-2 whitespace-nowrap">
+            <tr className=" whitespace-nowrap">
+              {tableHeaders.map((item, idx) => {
+                return headerObject === true ? (
+                  <TableHeaderNew header={item} dataFor={dataFor} />
+                ) : (
+                  <TableHeader
+                    key={idx}
+                    header={item}
+                    onClick={sorting}
+                    setSorted={setSorted}
+                    dataFor={dataFor}
+                  />
+                );
+              })}
+            </tr>
+          </thead>
+          <tbody className="relative whitespace-nowrap">
+            {loading ? (
+              <div
+                className={`absolute w-full min-h-[100px] flex justify-center items-center`}
+              >
+                <div>
+                  <Loader size="medium" />
+                </div>
+              </div>
+            ) : (
+              tableData.map((item, idx) => {
+                return AdminLatestSignUp ? (
+                  <LatestSignUpTableItem
+                    dataFor={dataFor}
+                    item={item}
+                    key={idx}
+                    excludes={excludes}
+                    onClick={onClick}
+                  />
+                ) : (
+                  <TableItem
+                    dataFor={dataFor}
+                    item={item}
+                    key={idx}
+                    excludes={excludes}
+                    onClick={onClick}
+                  />
+                );
+              })
+            )}
+            {dummy.map((it, iti) => {
+              return (
+                <tr
+                  key={iti}
+                  className="bg-white leading-8 shadow-sm text-sm shadow-slate-300"
+                >
+                  {it.map((d, di) => {
+                    return (
+                      <td key={di} className="opacity-0 text-sm px-1 min-w-14 py-3 ">
+                        {d}
+                      </td>
+                    );
+                  })}
+                </tr>
               );
             })}
-          </tr>
-        </thead>
-        <tbody className="relative whitespace-nowrap">
-          {loading ? (
-            <div
-              className={`absolute w-full min-h-[100px] flex justify-center items-center`}
-            >
-              <div>
-                <Loader size="medium" />
-              </div>
-            </div>
-          ) : (
-            tableData.map((item, idx) => {
-              return AdminLatestSignUp ? (
-                <LatestSignUpTableItem
-                  dataFor={dataFor}
-                  item={item}
-                  key={idx}
-                  excludes={excludes}
-                  onClick={onClick}
-                />
-              ) : (
-                <TableItem
-                  dataFor={dataFor}
-                  item={item}
-                  key={idx}
-                  excludes={excludes}
-                  onClick={onClick}
-                />
-              );
-            })
-          )}
-          {dummy.map((it, iti) => {
-            return (
-              <tr
-                key={iti}
-                className="bg-white leading-8 "
-              >
-                {it.map((d, di) => {
-                  return (
-                    <td  key={di} className="opacity-0 text-sm px-1 min-w-14 py-3 ">
-                      {d}
-                    </td>
-                  );
-                })}
-              </tr>
-            );
-          })}
-          
-        </tbody>
-      </table>
+
+          </tbody>
+        </table>
       </div>
-    
-      {true ? (
+
+      {!hidePagination ? (
         <div className="flex justify-end items-center">
           <Pagination
             currentPage={currentPage}
@@ -160,9 +160,8 @@ export default function Table(props) {
         </div>
       ) : (
         <div
-          className={`flex grid-cols- justify-center items-center ${
-            loading ? "mt-7" : ""
-          } `}
+          className={`flex grid-cols- justify-center items-center ${loading ? "mt-7" : ""
+            } `}
         >
           <aside></aside>
           {!hidePagination && (

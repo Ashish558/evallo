@@ -213,15 +213,15 @@ export default function TableItem({
   const [isChecked, setIsChecked] = useState(checkedHeader);
   const handleCheckboxChange = () => {
     console.log("handleCheckboxChange")
-   setIsChecked(!isChecked);  
-   let fl=isChecked?1:-1
-   setnumberChecked(numberChecked-fl)
- };
- 
+    setIsChecked(!isChecked);
+    let fl = isChecked ? 1 : -1
+    setnumberChecked(numberChecked - fl)
+  };
 
- useEffect(()=>{
-   setIsChecked(checkedHeader);
- },[checkedHeader])
+
+  useEffect(() => {
+    setIsChecked(checkedHeader);
+  }, [checkedHeader])
 
   // console.log('extraData', extraData );
   // console.log('onClick', onClick );
@@ -278,37 +278,36 @@ export default function TableItem({
 
       {dataFor === "allUsers" && (
         <tr className="odd:bg-white   leading-8">
-          
+
           <td className="font-medium text-sm px-1  min-w-14 py-4  text-left">
             <span
               className="inline-block cursor-pointer pl-4"
-            
+
             >
-                <div className="flex ">
-        {dataFor==="allUsers"? (
-         
-            <label
-              className={`${styles["checkbox-label"]} block text-[#26435F] font-medium`}
-            >
-              <input
-                type="checkbox"
-                checked={isChecked}
-                onChange={handleCheckboxChange}
-              />
-              <span
-                className={`${styles["custom-checkbox"]} ${
-                  isChecked ? "checked" : ""
-                }`}
-              ></span>
-            </label>
-          
-        ) : (
-          ""
-        )}
-        <span   onClick={() => onClick.redirect(item)} className="">
-          {item.name}
-        </span>
-      </div>
+              <div className="flex ">
+                {dataFor === "allUsers" ? (
+
+                  <label
+                    className={`${styles["checkbox-label"]} block text-[#26435F] font-medium`}
+                  >
+                    <input
+                      type="checkbox"
+                      checked={isChecked}
+                      onChange={handleCheckboxChange}
+                    />
+                    <span
+                      className={`${styles["custom-checkbox"]} ${isChecked ? "checked" : ""
+                        }`}
+                    ></span>
+                  </label>
+
+                ) : (
+                  ""
+                )}
+                <span onClick={() => onClick.redirect(item)} className="">
+                  {item.name}
+                </span>
+              </div>
             </span>
           </td>
           <td className="font-medium text-sm px-1 min-w-14 py-4">
@@ -325,12 +324,11 @@ export default function TableItem({
             <div className="my-[6px]">
               {item.assignedTutor?.length > 0
                 ? item.assignedTutor?.map((id, idx) => {
-                    const name = extraData.find((item) => item._id === id);
-                    if (name === undefined) return "l";
-                    return `${name.value} ${
-                      idx + 1 < item.assignedTutor.length ? "," : ""
+                  const name = extraData.find((item) => item._id === id);
+                  if (name === undefined) return "l";
+                  return `${name.value} ${idx + 1 < item.assignedTutor.length ? "," : ""
                     } `;
-                  })
+                })
                 : "-"}
             </div>
           </td>
@@ -369,9 +367,8 @@ export default function TableItem({
           <td className="font-medium text-sm px-1  min-w-14 py-4">
             <div className="my-[6px]">
               {item.specialization?.map((specialization, idx) => {
-                return `${specialization}${
-                  idx + 1 === item.specialization.length ? "" : ","
-                }`;
+                return `${specialization}${idx + 1 === item.specialization.length ? "" : ","
+                  }`;
               })}
             </div>
           </td>
@@ -380,19 +377,19 @@ export default function TableItem({
           </td>
 
           <td className="font-medium px-1 min-w-14 py-4">
-          {item.userType !== "admin" ? (
-            <div className="w-4 h-4 rounded-full bg-[#E3E3E3] flex items-center justify-center">
-              
+            {item.userType !== "admin" ? (
+              <div className="w-4 h-4 rounded-full bg-[#E3E3E3] flex items-center justify-center">
+
                 <img
                   src={TrashIcon}
                   className="cursor-pointer"
                   onClick={() => onClick.handleDelete(item)}
                 />
-             
-              
-            </div>
-             ) : (
-               ""
+
+
+              </div>
+            ) : (
+              ""
             )}
           </td>
         </tr>
@@ -420,7 +417,7 @@ export default function TableItem({
           </td>
           <td className="font-medium text-sm px-1  min-w-14 py-4">
             <div className="my-[6px]">
-               <span style={{textDecoration:'underline'}}>edit</span> 
+              <span style={{ textDecoration: 'underline' }}>edit</span>
             </div>
           </td>
           <td className="font-medium text-sm px-1  min-w-14 py-4">
@@ -508,9 +505,8 @@ export default function TableItem({
             </span>
           </td>
           <td
-            className={`font-medium px-1 flex justify-center items-center min-w-14 py-4 relative ${
-              item.late && "text-[#EE3434]"
-            }`}
+            className={`font-medium px-1 flex justify-center items-center min-w-14 py-4 relative ${item.late && "text-[#EE3434]"
+              }`}
           >
             {item.late && (
               <span className="inline-block w-[20px] h-[20px] rounded-full bg-[#EE3434]"></span>
@@ -531,7 +527,7 @@ export default function TableItem({
           </td>
           <td
             className="font-medium px-1 test-center text-left min-w-14 py-4"
-            // style={{ padding: 0,}}
+          // style={{ padding: 0,}}
           >
             <div className="text-center">
               {item.status === "completed" ? score : "-"}
@@ -539,12 +535,11 @@ export default function TableItem({
           </td>
           <td className="font-medium px-1  min-w-14 py-4">
             <button
-              className={`px-2.5 py-1.8 rounded-md flex items-center leading-none bg-primary text-white ${
-                item.status !== "completed" && item.status !== "started"
-                  ? "opacity-50 pointer-events-none"
-                  : ""
-              }`}
-              
+              className={`px-2.5 py-1.8 rounded-md flex items-center leading-none bg-primary text-white ${item.status !== "completed" && item.status !== "started"
+                ? "opacity-50 pointer-events-none"
+                : ""
+                }`}
+
               onClick={() =>
                 navigate(
                   `/assigned-tests/${item.testId}/${item.assignedTestId}/report/${item.studentId}`
@@ -620,22 +615,20 @@ export default function TableItem({
       )}
       {dataFor === "studentTestsReport" && (
         <tr
-          className={`text-sm   leading-7 ${
-            !item.isCorrect
-              ? "bg-[#e02b1d]/5"
-              : "odd:bg-white  "
-          } `}
+          className={`text-sm   leading-7 ${!item.isCorrect
+            ? "bg-[#e02b1d]/5"
+            : "odd:bg-white  "
+            } `}
         >
           {MapData(item)}
         </tr>
       )}
       {dataFor === "studentTestsReportSmall" && (
         <tr
-          className={`text-sm  leading-7 ${
-            !item.isCorrect
-              ? "bg-[#e02b1d]/5"
-              : "odd:bg-white  "
-          } `}
+          className={`text-sm  leading-7 ${!item.isCorrect
+            ? "bg-[#e02b1d]/5"
+            : "odd:bg-white  "
+            } `}
         >
           {MapData(item)}
         </tr>
@@ -692,11 +685,10 @@ export default function TableItem({
               {persona === "parent" ? (
                 <>
                   <button
-                    className={`px-2.5 py-1.8 rounded-md flex items-center leading-none bg-primary text-white ml-4 ${
-                      item.isCompleted === false
-                        ? "opacity-50 pointer-events-none"
-                        : ""
-                    }`}
+                    className={`px-2.5 py-1.8 rounded-md flex items-center leading-none bg-primary text-white ml-4 ${item.isCompleted === false
+                      ? "opacity-50 pointer-events-none"
+                      : ""
+                      }`}
                     onClick={() =>
                       navigate(
                         `/assigned-tests/${item.testId}/${item.assignedTestId}/report/${item.studentId._id}`
@@ -793,7 +785,7 @@ export default function TableItem({
         </tr>
       )}
       {dataFor === "allTestsSuperAdmin" && (
-        <tr className="odd:bg-white font-medium text-sm  lead">
+        <tr className="odd:bg-white font-medium  lead shadow-sm text-sm shadow-slate-300">
           <td>{item.testName}</td>
           <td>{item.testType}</td>
           <td>{item.createdAt.split("T")[0]}</td>
@@ -887,7 +879,7 @@ export default function TableItem({
           </td>
 
           <td className="font-medium text-sm px-1  min-w-14 py-4">
-            <div className="my-[6px]">active</div>
+            <div className="my-[6px]">{item?.userStatus}</div>
           </td>
           <td className="font-medium text-sm px-1  min-w-14 py-4">
             <div className="my-[6px]">{item.associatedOrg?.numberOfTutors}</div>
@@ -939,9 +931,8 @@ const MapData = (data, dataFor, exclude = [], onClick) => {
       key === "parent" ? (
       <td key={i} className={`font-medium px-1 `}>
         <p
-          className={`pl-4 ${
-            key === "name" ? "text-left cursor-pointer" : ""
-          } font-semibold`}
+          className={`pl-4 ${key === "name" ? "text-left cursor-pointer" : ""
+            } font-semibold`}
           onClick={() =>
             key === "name" && onClick.handleNavigate("student", data._id)
           }
@@ -987,9 +978,8 @@ const MapData = (data, dataFor, exclude = [], onClick) => {
                 remark: remarkText,
               });
           }}
-          inputContainerClassName={`bg-white ${
-            disabled ? "border-0" : "border"
-          } pt-1.5 pb-1.5 lg:pt-1.5 lg:pb-1.5 disabled:border-0`}
+          inputContainerClassName={`bg-white ${disabled ? "border-0" : "border"
+            } pt-1.5 pb-1.5 lg:pt-1.5 lg:pb-1.5 disabled:border-0`}
         />
       </td>
     ) : (dataFor === "assignedTutors" && key === "tutorName") ||
@@ -1014,19 +1004,16 @@ const MapData = (data, dataFor, exclude = [], onClick) => {
             onClick.handleNavigate(`/profile/parent/${data.associatedParent}`)
           }
         >
-          {`${data.parentFirstName ? data.parentFirstName : ""} ${
-            data.parentLast ? data.parentLast : ""
-          }`}
+          {`${data.parentFirstName ? data.parentFirstName : ""} ${data.parentLast ? data.parentLast : ""
+            }`}
         </p>
       </td>
     ) : (
       <td
         key={i}
-        className={`font-medium px-1 ${
-          data[key] === "Unpaid" && "text-[#E02B1D]"
-        } ${data[key] === "Paid" && "text-[#009262]"} ${
-          data[key] === "Cancelled" && "text-[#7C859C]"
-        } min-w-14 py-4`}
+        className={`font-medium px-1 ${data[key] === "Unpaid" && "text-[#E02B1D]"
+          } ${data[key] === "Paid" && "text-[#009262]"} ${data[key] === "Cancelled" && "text-[#7C859C]"
+          } min-w-14 py-4`}
       >
         {data[key]}
       </td>

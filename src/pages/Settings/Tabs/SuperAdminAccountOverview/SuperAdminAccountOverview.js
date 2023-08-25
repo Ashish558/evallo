@@ -205,7 +205,7 @@ const AccountOverview = () => {
 
           <InputFieldDropdown
             placeholder=""
-            parentClassName="text-xs text-[#26435F]"
+            parentClassName="text-xs w-[400px] text-[#26435F]"
             inputContainerClassName=" bg-white border border-white rounded-5"
             inputClassName="bg-transparent "
             label="Phone"
