@@ -59,7 +59,7 @@
   padding-top: 0;
   border-radius: 20px;
   box-shadow: 0 0 16px rgba(0, 0, 0, 0.2);
-  height: 91vh;
+  height: 830px;
   overflow-y: auto;
   scroll-behavior: smooth;
 }
@@ -116,7 +116,7 @@
   overflow-y: auto !important;
 }
 .calender th {
-  background-color: rgb(243 245 247 / var(--tw-bg-opacity)) !important;
+  background-color: white !important;
   padding: 0 !important;
   color: #517ca8 !important;
 }
@@ -126,15 +126,19 @@
   color: #517ca8 !important;
   border-radius: 0 !important;
   box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.25) !important;
-  height: 5rem !important;
+  height: 3rem !important;
 }
+
 .calender tr:nth-child(even) {
-  height: 5rem !important;
+  height: 3rem !important;
 }
-.calender .fc-theme-standard td,
-.fc-theme-standard th {
-  border: 1px solid white !important;
-}
+.calender .fc-theme-standard td
+ {
+  border: 1px solid #e9e1e1 !important;
+  }
+  .fc-theme-standard th{
+    border: 0 !important;
+  }
 .calender .fc-theme-standard .fc-toolbar .fc-toolbar-title {
   color: #26435f !important;
   font-weight: 500 !important;
@@ -181,7 +185,7 @@
   font-size: 1.2rem;
 }
 .calender .fc .fc-col-header-cell-cushion {
-  font-size: 1.5rem !important;
+  font-size: 16px !important;
   margin-top: 1.2rem !important;
 }
 .react-calendar .react-calendar__navigation__label__labelText.react-calendar__navigation__label__labelText--from{
@@ -202,6 +206,50 @@
 #number select{
   background: transparent !important;
 }
+/* .fc-scroller{
+  display: none !important;
+} */
+table th:first-child
+{
+  border: 0 !important;
+}
+table th:last-child{
+  border: 0 !important;
+}
+.fc-col-header{
+  width:100% !important;
+}
+.fc-scroller{
+  overflow: auto !important;
+}
+.fc .fc-scrollgrid-section-sticky > *{
+  position: relative !important;
+}
+/* .calender .fc-theme-standard td, .fc-theme-standard th{
+  border: 1px solid black !important;
+} */
 /* ::-webkit-scrollbar{
     width: 0 !important;
 } */
+.calender .fc .fc-timegrid-slot-label{
+  display: revert !important;
+  vertical-align: baseline !important;
+}
+.react-calendar .react-calendar__navigation__arrow.react-calendar__navigation__prev-button, .react-calendar .react-calendar__navigation__arrow.react-calendar__navigation__next-button{
+  display: none !important;
+}
+.react-calendar__viewContainer{
+  background-color: white;
+  color: #7C98B6 !important;
+}
+.react-calendar__navigation{
+  margin-bottom: 0 !important;
+  padding-top: 10px !important;
+}
+.react-calendar__month-view__weekdays__weekday abbr{
+  color: #24A3D9 !important;
+}
+.react-calendar__month-view__days__day--weekend{
+  color: #7C98B6 !important;
+
+}

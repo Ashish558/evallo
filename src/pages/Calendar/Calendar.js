@@ -49,6 +49,7 @@ const days = ["S", "M", "T", "W", "T", "F", "S"];
 const backgrounds = ["#51D294", "#C56DEE", "#6F7ADE", "#7DE94A", "#F6935A"];
 
 const timeZones = [
+  "IST",
   "Asia/Kolkata",
   // 'America/New_York',
   "US/Alaska",
@@ -1198,17 +1199,18 @@ export default function Calendar() {
               <span id="input">
                 <InputSelect
                   value={
-                    timeZone == "local"
-                      ? getLocalTimeZone()
-                      : timeZone.substring(0, 20)
+                    "IST"
+                    // timeZone == "local"
+                    //   ? getLocalTimeZone()
+                    //   : timeZone.substring(0, 20)
                   }
                   //  optionData={['local', 'America/New_York']}
                   // optionData={['Asia/Calcutta', ...moment.tz.zonesForCountry('US')]}
                   // optionData={['Asia/Calcutta', ...moment.tz.zonesForCountry('US')]}
                   optionData={timeZones}
                   onChange={(val) => setTimeZone(val)}
-                  parentClassName="w-[160px]"
-                  inputContainerClassName="text-primaryDark font-bold text-"
+                  parentClassName=""
+                  inputContainerClassName="text-primaryDark font-bold border"
                 />
               </span>
               {/* <div class="inline-flex rounded shadow-sm mt-1">

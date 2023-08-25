@@ -43,6 +43,11 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
 
    const data = [
       {
+         name: 'profileData',
+         title: 'profileData',
+         api: 'user',
+      },
+      {
          name: 'fullName',
          title: 'Full Name',
          api: 'user',
@@ -277,7 +282,9 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
       // setToEdit()
    }
 
-
+useEffect(()=>{
+   console.log("currentToEdit",currentToEdit)
+})
    useEffect(() => {
       if (student.length > 0) {
          fetchStudents(student).then((res) => {
@@ -492,7 +499,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
 
    const handlePriceChange = value => {
       let updated = []
-      currentToEdit.tutorServices.map(serv => {
+      currentToEdit?.tutorServices?.map(serv => {
          //if exists
          if (serv.service === organization.settings?.servicesAndSpecialization[currentToEdit.selectedIdx].service) {
             updated.push({ ...serv, price: value })
@@ -517,7 +524,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
 
    const [modalClassName,setModalClassName]=useState('500px');
 useEffect(()=>
-   {
+   {     {console.log("modalClassName"+modalClassName)}
          if(currentField.name==='about' || currentField.name==='interest')
          {
             setModalClassName('900px')
@@ -525,7 +532,7 @@ useEffect(()=>
          else{
             setModalClassName('500px')
          }
-   }
+   },[currentField.name,modalClassName]
 )
    return (
       
@@ -533,7 +540,7 @@ useEffect(()=>
          return toEdit[key].active === true &&
             <Modal
                key={key}
-               classname={`max-w-[${modalClassName}] md:pb-5 mx-auto overflow-visible pb-5`}
+               classname={`max-w-['900px'] md:pb-5 mx-auto overflow-visible pb-5`}
                title=''
                cancelBtn={false}
                // primaryBtn={{
@@ -1257,7 +1264,7 @@ useEffect(()=>
                               </div>
                            </div>
                         }
-                        {currentField.name === 'about' &&
+                        {currentField.name === 'profileData' &&
                            <div className=''>
                               {/* <textarea
                                  placeholder=""
@@ -1449,14 +1456,20 @@ useEffect(()=>
                         }
                         {currentField.name === 'serviceSpecializations' &&
                            <div className='flex flex-wrap'>
-                              {settings.Expertise.map(item => {
+                              {settings?.Expertise?.map(item => {
                                  return (
-                                    !currentToEdit.serviceSpecializations.includes(item._id) ?
+                                    !currentToEdit?.serviceSpecializations?.includes(item._id) ?
                                        <div className={`px-3 mr-2 rounded rounded-md py-1.5 border border-primary text-primary cursor-pointer`}
-                                          onClick={() => setCurrentToEdit({
+                                          onClick={() => {
+                                             let servicesArray=[]
+                                             if(currentToEdit.serviceSpecializations){
+                                                servicesArray=currentToEdit.serviceSpecializations
+                                             }
+                                             console.log(servicesArray)
+                                             setCurrentToEdit({
                                              ...currentToEdit,
-                                             serviceSpecializations: [...currentToEdit.serviceSpecializations, item._id]
-                                          })} >
+                                             serviceSpecializations: [...servicesArray, item._id]
+                                          })}} >
                                           <p className='font-medium'>
                                              {item.text}
                                           </p>

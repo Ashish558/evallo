@@ -133,6 +133,12 @@ const data=[
 ]
    
    const [toEdit, setToEdit] = useState({
+      profileData:{
+         active:false,
+         firstName:'',
+         lastName:'',
+         tagLine:''
+      },
       fullName: {
          active: false,
          firstName: '',
@@ -217,9 +223,13 @@ const data=[
          active: false,
          videoLink: ''
       },
+      
    })
 
    useEffect(() => {
+      {
+         console.log("toEdit",toEdit)
+      }
       getFeedbacks({ id: params.id })
          .then(({ error, data }) => {
             if (error) {
@@ -298,6 +308,13 @@ const data=[
                         firstName,
                         lastName,
                      },
+                     profileData:{
+                        ...prevToEdit.profileData,
+                        firstName,
+                        lastName,
+                        tagLine
+                        
+                        },
                      tutorContact: {
                         ...prevToEdit.tutorContact,
                         email: email,
@@ -405,6 +422,7 @@ const data=[
       //    .then(res => {
 
       //    })
+      console.log("UserDetails",userDetail)
       console.log("organizations"+organization.settings)
          setSettings(organization.settings)
    }, [])
@@ -506,7 +524,7 @@ const data=[
                                  <div className='ml-40 mt-auto pt-10'>
                                     <div className='flex items-center'>
                                     <p className='text-white ' style={{fontWeight:'600',fontSize:'32px'}}>{user.firstName+" "}{user.lastName}</p>
-                                    <p className='text-white ml-5 underline cursor-pointer' onClick={()=>setToEdit({ ...toEdit, about: { ...toEdit.about, active: true } })}>edit</p>
+                                    <p className='text-white ml-5 underline cursor-pointer' onClick={()=>setToEdit({ ...toEdit, profileData: { ...toEdit.profileData, active: true } })}>edit</p>
                                     {/* <EditableText text='edit'
                                     editable={editable}
                               onClick={() => setToEdit({ ...toEdit, about: { ...toEdit.about, active: true } })}
@@ -611,16 +629,32 @@ const data=[
                         bgClassName="bg-profilecard"
                         body={
                            <>
-                             <div className='overflow-x-auto scrollbar-content max-h-[500px] scrollbar-vertical '>
+                                 {settings && settings.Expertise?.length > 0 && userDetail.serviceSpecializations && userDetail.serviceSpecializations.map((id, idx) => {
+                                    return (
+                                       settings.Expertise?.find(item => item._id === id) ?
+                                          <div key={idx} className='flex flex-col items-center mb-10'>
+                                             <div className='flex h-90 w-90 rounded-full  items-center justify-center mb-3' >
+                                                <img className='max-w-[90px] max-h-[90px]' src={settings.Expertise.find(item => item._id === id).image}
+                                                />
+                                             </div>
+                                             <p className='opacity-70 font-semibold text-lg'>
+                                                {settings.Expertise.find(item => item._id === id).text}
+                                             </p>
+                                          </div>
+                                          :
+                                          <></>
+                                    )
+                                 })}
+                             {/* <div className='overflow-x-auto scrollbar-content max-h-[500px] scrollbar-vertical '>
                                                          <div className=' bg-white rounded min-h-[60px] flex items-center '>
                                  <div className='ml-3'>
                                     <img src={sat}></img>
                                  </div>
                                  <div className=' ml-10'>
-                                    <p className='text-[#517CA8] ' style={{fontWeight:'400'}}>hello</p>
+                                    <p className='text-[#517CA8] ' style={{fontWeight:'400'}}></p>
                                  </div>
                               </div>
-                              </div>
+                              </div> */}
 
 
 
@@ -1104,8 +1138,8 @@ const data=[
                   } */}
 
                   {/* rates */}
-                  {/* {
-                     persona === 'admin' &&
+                  {
+                     persona !== 'admin' &&
                      <ProfileCard hideShadow
                         className='col-span-3 mt-6 lg:mt-0  max-h-[300px] overflow-y-auto scrollbar-content'
                         body={
@@ -1187,7 +1221,7 @@ const data=[
                         }
                      />
 
-                  } */}
+                  }
                   {
                      persona === 'admin' &&
                      <FeedbackTable feedbacks={feedbacks} />

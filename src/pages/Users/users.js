@@ -707,7 +707,6 @@ export default function Users() {
         })
         .then((res) => {
           setInviteUsers(false);
-   
           alert("File Uploaded");
           // setXlsFile(undefined);
         })
