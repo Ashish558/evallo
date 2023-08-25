@@ -106,7 +106,7 @@ export default function UserDetails({
     <div className="w-full">
       <div className="flex justify-between gap-8">
         <InputField
-          inputContainerClassName="pt-3 pb-3 border "
+          inputContainerClassName="border border-[#D0D5DD] pt-3 pb-3 border "
           parentClassName="mb-6  relative flex-1"
           required={persona === "student" ? true : false}
           label={`${personaText} First Name`}
@@ -122,7 +122,7 @@ export default function UserDetails({
         />
         <InputField
           parentClassName="mb-6 relative flex-1"
-          inputContainerClassName="pt-3 pb-3 border"
+          inputContainerClassName="border border-[#D0D5DD] pt-3 pb-3 border"
           label={`${personaText} Last Name`}
           required={persona === "student" ? true : false}
           labelClassname="text-[#26435F] font-bold  mb-1 text-sm"
@@ -140,7 +140,7 @@ export default function UserDetails({
         <InputField
           parentClassName="mb-6 relative flex-1"
           label={`${personaText} Email `}
-          inputContainerClassName="pt-3 pb-3 border"
+          inputContainerClassName="border border-[#D0D5DD] pt-3 pb-3 border"
           required={persona === "student" ? true : false}
           labelClassname="text-[#26435F] font-bold  mb-1 text-sm"
           value={otherDetails.Email}
@@ -153,7 +153,7 @@ export default function UserDetails({
           parentClassName="mb-6 w-[200px]"
           label={`${personaText} Phone  ${persona !== "parent" ? "" : ""} `}
           labelClassname="text-[#26435F] font-bold  mb-1 text-sm"
-          inputContainerClassName="pt-3   pb-3 relative border"
+          inputContainerClassName="border border-[#D0D5DD] pt-3   pb-3 relative border"
           inputClassName="ml-2"
           required={persona === "student" ? true : false}
           codeValue={otherDetails.PphoneCode}
@@ -171,7 +171,7 @@ export default function UserDetails({
       <InputField
         parentClassName="mb-6 relative flex-1"
         label={`Student School `}
-        inputContainerClassName="pt-3 pb-3 border"
+        inputContainerClassName="border border-[#D0D5DD] pt-3 pb-3 border"
         labelClassname="text-[#26435F] font-bold  mb-1 text-sm"
         value={otherDetails.schoolName}
         onChange={(e) =>
@@ -185,7 +185,7 @@ export default function UserDetails({
         optionData={["5","6","7","8","9","10","11","12"]}
         label={`Student's Grade`}
         labelClassname="text-[#26435F] font-bold  mb-1 text-sm "
-        inputContainerClassName="py-1 relative border"
+        inputContainerClassName="border text-sm border-[#D0D5DD] py-1 relative border"
         inputClassName="ml-80"
         required={persona === "student" ? true : false}
        
@@ -201,6 +201,7 @@ export default function UserDetails({
           label="Referral Code"
           placeholder=""
           parentClassName=" text-xs flex-1"
+          inputContainerClassName="border border-[#D0D5DD] py-1 relative border"
           value={otherDetails.referalCode}
           onChange={(e) =>
             setOtherDetails({ ...otherDetails, referalCode: e.target.value })

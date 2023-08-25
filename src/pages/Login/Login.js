@@ -128,7 +128,7 @@ export default function Login({ setLoginFormActive }) {
             pagination={true}
           />
         </div>
-        <div className="lg:flex lg:items-center bg-white rounded-md py-6 px-5 md:px-[66px] lg:min-w-[550px] ">
+        <div className="lg:flex lg:items-center bg-white rounded-md py-6 px-5 md:px-[66px] lg:min-w-[500px] ">
           {loginActive ? (
             <div className="w-full">
               <div className="flex justify-center" >
@@ -139,7 +139,7 @@ export default function Login({ setLoginFormActive }) {
               >
                 Login
               </p>
-               <p className={`text-lg text-[19px] font-bold mb-9 ${styles.textGrayed} `}>
+               <p className={`text-lg text-[19px] font-bold mb-9 ${styles.textGrayed} text-[#667085] `}>
                 Please fill your detail to access your account.
               </p>
               <form
@@ -156,7 +156,8 @@ export default function Login({ setLoginFormActive }) {
                   parentClassName="mb-[20px]"
                   label="Email "
                   labelClassname=" mb-[4px] text-[#26435F]  text-[12px] lg:text-[14px] leading-[18.715px]"
-                  inputClassName="bg-transparent py-1"
+                  inputClassName="bg-transparent "
+                  inputContainerClassName="  border border-[#D0D5DD] rounded-md h-[47px]"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   error={error.email}
@@ -170,7 +171,8 @@ export default function Login({ setLoginFormActive }) {
                   label="Password"
                   type="password"
                   labelClassname="text-[#26435F] mb-[4px]  text-[12px] lg:text-[14px] leading-[18.715px]"
-                  inputClassName="bg-transparent py-1"
+                  inputClassName="bg-transparent "
+                  inputContainerClassName="  border border-[#D0D5DD] rounded-md h-[45px]"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   error={error.password}

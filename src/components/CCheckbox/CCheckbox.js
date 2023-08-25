@@ -2,7 +2,7 @@ import React from 'react'
 import styles from './style.module.css'
 
 export default function CCheckbox({ checked, onChange, name, disabled, value }) {
-
+  
    const handleClick = ()=>{
       if(disabled === true) return
       onChange(value)

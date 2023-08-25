@@ -382,7 +382,7 @@ const AdminNavbar = () => {
               you want to logout ?
             </>
           }
-          titleClassName="leading-9"
+          titleClassName="leading-9 text-center whitespace-nowrap mb-5"
           cancelBtn={true}
           cancelBtnClassName="py-4"
           primaryBtn={{
@@ -391,7 +391,7 @@ const AdminNavbar = () => {
             onClick: logoutUser,
           }}
           handleClose={() => setLogoutModalActive(false)}
-          body={<div className="mb-10"></div>}
+          body={<div className="mb-6"></div>}
           classname={"max-w-567 mx-auto"}
         />
       )}

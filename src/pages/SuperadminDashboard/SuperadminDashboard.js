@@ -88,6 +88,7 @@ function SuperadminDashboard() {
   const getLatestOrgs = async (body) => {
     fetchUserData(body).then((result) => {
       try {
+        console.log("latest",{body,result})
         let arr = [];
         for (let i = 0; i < result?.data?.data?.length; i++) {
           if (result?.data?.data[i].role === "admin") {

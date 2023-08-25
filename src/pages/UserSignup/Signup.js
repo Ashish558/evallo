@@ -74,6 +74,7 @@ export default function UserSignup() {
     lastName: "",
     email: "",
     phone: "",
+    phoneCode:"",
     subscriptionCode: "",
   });
 
@@ -258,8 +259,54 @@ export default function UserSignup() {
       };
     });
   };
-
+  const [isValidated,setValidated]=useState({ 
+    firstName: "",
+    lastName: "",
+    email: "",
+    phoneCode:"",
+    phone: "",
+    subscriptionCode: "",
+    company: "",
+    phoneCode:"",
+})
+  const handleNextErrors=(alsoSet)=>{
+    resetErrors()
+    const result = validateSignup(values);
+   
+    if (result.data !== true) {
+      setValidated((prev) => {
+        return {
+          [result.data]: result.message,
+        };
+      })
+    }
+    else{
+      setValidated({
+      })
+    }
+    if(alsoSet){
+    let flag=true;
+    Object.keys(isValidated).map((it)=>{
+     if (isValidated[it] && isValidated[it].length>0){
+       flag=false;
+     }
+    })
+    resetErrors()
+    let arr={...isValidated}
+    setError(arr)
+    console.log({isValidated})
+    return flag;
+   }
+  }
+  useEffect(()=>{
+   
+    handleNextErrors()
+  },[values])
+const [emailExistLoad,setEmailExistLoad]=useState(false)
   const handleClick = async () => {
+    const emailAlreadyExists=async ()=>{
+
+    
     let checked = false;
     if (isAddedByAdmin) {
       setFrames({
@@ -298,6 +345,11 @@ export default function UserSignup() {
         userDetails: true,
       });
     }
+  }
+  if(!handleNextErrors(true)){
+    return 
+  }
+  emailAlreadyExists()
   };
 
   const handleSignup = () => {
@@ -480,6 +532,7 @@ export default function UserSignup() {
               {currentStep > 0 && !frames.signupSuccessful && (
                 <NumericSteppers
                   className="mt-3"
+                  fieldNames={["Personal info" ,"Student / Parent","Further details"]} 
                   totalSteps={
                     customFields?.length === 0
                       ? 2 + isAddedByAdmin
@@ -495,6 +548,7 @@ export default function UserSignup() {
                   <div className={`flex mt-[59px]  gap-8 lg:mt-0 `}>
                     <InputField
                       placeholder=""
+                      inputContainerClassName="  bg-white   border border-[#D0D5DD]"
                       parentClassName="text-xs w-[250px]"
                       labelClassname="mb-1 text-[#26435F] font-bold"
                       label="First Name"
@@ -505,10 +559,12 @@ export default function UserSignup() {
                           firstName: e.target.value,
                         })
                       }
+                      totalErrors={error}
                       error={error.firstName}
                     />
                     <InputField
                       placeholder=""
+                      inputContainerClassName="  bg-white   border border-[#D0D5DD]"
                       parentClassName="text-xs flex-1"
                       labelClassname="mb-1 text-[#26435F] font-bold"
                       label="Last Name"
@@ -519,6 +575,7 @@ export default function UserSignup() {
                           lastName: e.target.value,
                         })
                       }
+                      totalErrors={error}
                       error={error.lastName}
                     />
                   </div>
@@ -527,6 +584,7 @@ export default function UserSignup() {
                       labelClassname="mb-1 text-[#26435F] font-bold"
                       label="Email"
                       placeholder=""
+                      inputContainerClassName="  bg-white   border border-[#D0D5DD]"
                       parentClassName="w-[300px] text-xs "
                       value={values.email}
                       onChange={(e) =>
@@ -535,12 +593,14 @@ export default function UserSignup() {
                           email: e.target.value,
                         })
                       }
+                      totalErrors={error}
                       error={error.email}
                     />
                     <InputFieldDropdown
                       placeholder=""
+                      inputContainerClassName="  bg-white   border border-[#D0D5DD]"
                       parentClassName="text-xs "
-                      inputContainerClassName=" bg-white  "
+                      
                       inputClassName="  bg-transparent text-400 "
                       labelClassname="mb-1 text-[#26435F] font-bold text-[#26435F]"
                       label="Phone"
@@ -558,6 +618,10 @@ export default function UserSignup() {
                           phone: e.target.value,
                         })
                       }
+                      
+                      totalErrors={error}
+                      error={error.phone}
+                      codeError={error.phoneCode}
                     />
                   </div>
 

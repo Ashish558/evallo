@@ -45,20 +45,23 @@ export default function SignupSuccessful({
   return (
     <>
       <div className="mb-7 hidden lg:block ">
+      <div className='h-[1px] bg-[#EBEBEB] mt-[-20px] mx-[6px] w-full mb-[25px]'>
+
+</div>
         <div>
-          <p className="font-medium mb-6">Sign-up successful!</p>
-          <div className="text-center flex flex-col gap-3 text-md w-fit">
-            <h3 className="font-[500]">{successfulSignUpMessage.head}</h3>
-            <h4>{successfulSignUpMessage.mid}</h4>
+        
+          <div className="text-center text-[#26435F] flex flex-col gap-3 text-md w-fit">
+            <h3 className="font-medium">{successfulSignUpMessage.head}</h3>
+            <h4 className="font-medium">{successfulSignUpMessage.mid}</h4>
             <h4>{successfulSignUpMessage.last} <span onClick={() => handleSubmit()} className="text-[#24A3D9] cursor-pointer">{successfulSignUpMessage.verify}</span></h4>
-            <h2 className="font-bold">{successfulSignUpMessage.bottom}</h2>
+            <h2 className="font-semibold">{successfulSignUpMessage.bottom}</h2>
           </div>
         </div>
 
         <div className="flex items-center mt-16">
           <SecondaryButton
-            children="Back To Sign In"
-            className="text-19 py-3 font-[600] px-6 bg-[#FFA28D] text-gray-50 mx-auto w-[250px]"
+            children="Back to Sign in"
+            className="text-19 py-3  px-6 bg-[#FFA28D] text-gray-50 mx-auto w-[270px]"
             onClick={handleSuccessfullBack}
             lastLoginDisabled={lastLoginDisabled}
           />

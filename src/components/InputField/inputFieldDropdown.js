@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import EyeIcon from "../../assets/form/eye-open.svg";
 import Message from "./Message/Message";
 import { useEffect } from "react";
+import useOutsideAlerter from "../../hooks/useOutsideAlerter";
 
 export default function InputFieldDropdown({
   parentClassName,
@@ -16,6 +17,7 @@ export default function InputFieldDropdown({
   inputClassName,
   inputLeftField,
   onChange,
+  codeError,
   type,
   right,
   required,
@@ -29,12 +31,28 @@ export default function InputFieldDropdown({
   maxLength,
   minLength,
   prefix,
+  totalErrors,
   onFocus,
   onBlur,
 }) {
   const [inputType, setInputType] = useState(type);
   const [searchCode, setSearchCode] = useState("")
   const [dialCode, setDialCode] = useState([]);
+  const [showDiv, setShowDiv] = useState(true);
+  const divRef = useRef();
+  const [showDiv2, setShowDiv2] = useState(true);
+  const divRef2 = useRef();
+  const handleClose = () => setShowDiv(false)
+  useOutsideAlerter(divRef, handleClose)
+  const handleClose2 = () => setShowDiv2(false)
+  useOutsideAlerter(divRef2, handleClose2)
+  useEffect(() => {
+    if(error?.length>0)
+    setShowDiv(true)
+  if(codeError?.length>0)
+  setShowDiv2(true)
+  }, [error,value,totalErrors])
+
   const handleCodeSearch=(e)=>{
     setSearchCode(e.target.value)
     let arr=dialCode.filter((item)=>{
@@ -72,7 +90,7 @@ export default function InputFieldDropdown({
           inputContainerClassName ? inputContainerClassName : ""
         } ${disabled === true ? "cursor-not-allowed" : ""} `}
       >
-        <div>
+        <div className="">
           
           <select
             onChange={handleCodeChange}
@@ -84,7 +102,13 @@ export default function InputFieldDropdown({
               return <option key={id} value={code?.dial_code}>{code?.dial_code}</option>;
             })}
           </select>
+          
         </div>
+        <div ref={divRef2} className="relative whitespace-nowrap">
+      {codeError !== undefined && codeError !== "" && showDiv2 && (
+        <Message error={codeError} type="danger" />
+      )}
+      </div>
         {Icon && (
           <img
             src={Icon}
@@ -132,9 +156,11 @@ export default function InputFieldDropdown({
         )}
         {right && right}
       </div>
-      {error !== undefined && error !== "" && (
+      <div ref={divRef}>
+      {error !== undefined && error !== "" && showDiv && (
         <Message error={error} type="danger" />
       )}
+      </div>
     </div>
   );
 }
