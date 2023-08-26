@@ -263,11 +263,10 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
 
    useEffect(() => {
       Object.keys(toEdit).map(key => {
-         if (toEdit[key].active === true) {
-            getCurrentField(key)
+         if (toEdit[key].active === true) {getCurrentField(key)
             // console.log(toEdit);
             // setEditFieldValue(toEdit[key])
-
+            setCurrentToEdit(toEdit[key])
          }
       })
       console.log(currentToEdit.phone+"currentUser")
@@ -521,28 +520,18 @@ useEffect(()=>{
    }
    // console.log(settings);
    const [startDate, setStartDate] = useState(new Date());
+ 
 
-   const [modalClassName,setModalClassName]=useState('500px');
-useEffect(()=>
-   {     {console.log("modalClassName"+modalClassName)}
-         if(currentField.name==='about' || currentField.name==='interest')
-         {
-            setModalClassName('900px')
-         }
-         else{
-            setModalClassName('500px')
-         }
-   },[currentField.name,modalClassName]
-)
+const forCss=['profileData','interest','serviceSpecializations']
    return (
       
       Object.keys(toEdit).map(key => {
          return toEdit[key].active === true &&
             <Modal
                key={key}
-               classname={`max-w-['900px'] md:pb-5 mx-auto overflow-visible pb-5`}
+               classname={ forCss.includes(currentField.name) ? "max-w-[900px]  md:pb-5 mx-auto overflow-visible pb-5":"max-w-[500px]  md:pb-5 mx-auto overflow-visible pb-5"  }  /*{ ` max-w-[900px] md:pb-5 mx-auto overflow-visible pb-5`}*/
                title=''
-               cancelBtn={false}
+             
                // primaryBtn={{
                //    text: "Save",
                //    className: 'w-[100px] bg-primaryOrange text-base pt-2 ml-0 pb-2 text-lg pl-3 pr-3 ',
@@ -1431,13 +1420,21 @@ useEffect(()=>
                            <div className='flex flex-wrap'>
                               {settings.interest.map(item => {
                                  return (
-                                    !currentToEdit.interest.includes(item._id) ?
-                                       <div className={`px-3 mr-2 rounded rounded-md py-1.5 border border-primary text-primary cursor-pointer`}
-                                          onClick={() => setCurrentToEdit({
+                                    !currentToEdit?.interest?.includes(item._id) ?
+                                       <div id='selected' className={`px-3 mr-2  rounded rounded-lg py-1.5 border-[1.33px] border-[#26435F80] text-[#26435F80]  cursor-pointer`}
+                                          onClick={() =>{ 
+                                             let intersetArray=[] 
+
+                                             if(currentToEdit.interest)
+                                             {
+                                                intersetArray=currentToEdit.interest
+                                             }
+                                             console.log(intersetArray)                                             
+                                             setCurrentToEdit({
                                              ...currentToEdit,
-                                             interest: [...currentToEdit.interest, item._id]
-                                          })} >
-                                          <p className='font-medium'>
+                                             interest: [...intersetArray, item._id]
+                                          })} }>
+                                          <p className='font-semibold'>
                                              {item.text}
                                           </p>
                                        </div> :
@@ -1459,7 +1456,7 @@ useEffect(()=>
                               {settings?.Expertise?.map(item => {
                                  return (
                                     !currentToEdit?.serviceSpecializations?.includes(item._id) ?
-                                       <div className={`px-3 mr-2 rounded rounded-md py-1.5 border border-primary text-primary cursor-pointer`}
+                                       <div className={`px-3 mr-2 rounded rounded-lg   py-1.5 border-[1.33px] border-[#26435F80] text-[#26435F80]  cursor-pointer`}
                                           onClick={() => {
                                              let servicesArray=[]
                                              if(currentToEdit.serviceSpecializations){
@@ -1470,11 +1467,11 @@ useEffect(()=>
                                              ...currentToEdit,
                                              serviceSpecializations: [...servicesArray, item._id]
                                           })}} >
-                                          <p className='font-medium'>
+                                          <p className='font-semibold '>
                                              {item.text}
                                           </p>
                                        </div> :
-                                       <div className={`px-3 mr-2 rounded rounded-md text-white py-1.5 border border-primary bg-primary text-primary cursor-pointer`}
+                                       <div className={`px-3 mr-2 rounded rounded-md text-white py-1.5 border border-primary bg-primary text-primary font-semibold cursor-pointer`}
                                           onClick={() => setCurrentToEdit({
                                              ...currentToEdit,
                                              serviceSpecializations: currentToEdit.serviceSpecializations.filter(id => id !== item._id)

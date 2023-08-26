@@ -52,8 +52,8 @@ const CompanyAndBround = () => {
   const handleState = (c) => {
     if (!c) return;
     console.log("country", c);
-    if(typeof c === "object")
-    c=c.name
+    if (typeof c === "object")
+      c = c.name
     const state = country.filter((x) => x.name === c);
     const currentState = state.map((s) => s.states);
 
@@ -240,14 +240,15 @@ const CompanyAndBround = () => {
               }
               <div
                 className={`${styles["upload-container"]} ${!organization.orgBussinessLogo ? styles['upload-container-centered'] : ''} `}
-               
+
               >
-         
-       <div className="flex flex-col">
-       <p className="block mx-auto mt-[-25px]">      <img src={UploadIcon} alt="logo" /></p>
-          <p className="text-[#FFFFFF] text-sm bg-[#517CA8] rounded-[5px] pt-3 mt-5 pb-2 px-4 cursor-pointer"  onClick={() => inpuRef.current.click()}>Choose file</p>
-          <p className="text-[#517CA8] text-xs mt-5 text-center">Less then 1 MB</p>
-       </div>
+
+                <div className="flex flex-col ">
+                  <p className="block mx-auto mt-[-25px]">
+                    <img src={UploadIcon} alt="logo" /></p>
+                  <p className="text-[#FFFFFF] text-sm bg-[#517CA8] rounded-[5px] pt-3 mt-5 pb-2 px-4 cursor-pointer" onClick={() => inpuRef.current.click()}>Choose file</p>
+                  <p className="text-[#517CA8] text-xs mt-5 text-center">Less then 1 MB</p>
+                </div>
                 <input
                   className="hidden"
                   type="file"
@@ -278,7 +279,7 @@ const CompanyAndBround = () => {
                 placeholder="Select"
                 parentClassName="text-xs text-[#26435F] w-[60%] "
                 inputContainerClassName=" bg-white h-[38px] mb-1"
-                labelClassname="text-sm font-bold"
+                labelClassname="text-sm font-bold mb-1"
                 inputClassName="bg-transparent"
                 label="Company Type"
                 value={values.companyType}
@@ -312,14 +313,14 @@ const CompanyAndBround = () => {
                 placeholder="Select"
                 parentClassName="text-xs text-[#26435F] w-[60%] mt-1"
                 inputContainerClassName=" bg-white h-[38px] mb-1 "
-                labelClassname="text-sm font-bold"
+                labelClassname="text-sm font-bold mb-1"
                 inputClassName="bg-transparent"
                 label="Country"
                 value={values.country}
                 optionData={country}
                 optionType={"object"}
                 onChange={(e) => {
-                  
+
                   handleState(e);
                 }}
                 error={error.country}
@@ -329,7 +330,7 @@ const CompanyAndBround = () => {
               <InputSelect
                 placeholder="Select"
                 parentClassName="text-xs text-[#26435F] w-full mt-1 pt-1"
-                labelClassname="text-sm font-bold"
+                labelClassname="text-sm font-bold mb-1"
                 inputContainerClassName=" bg-white h-[40px] mb-1 "
                 inputClassName="bg-transparent"
                 label="State / Region "
@@ -411,7 +412,7 @@ const CompanyAndBround = () => {
         </div>
         <div className="mt-5">
           <h1 className="mt-[-30px] text-[#26435F] font-semibold text-xl my-1">
-            Signup Form Details
+            Signup Form Detail
           </h1>
           <div className="w-full h-[200px] bg-white"></div>
         </div>
