@@ -17,21 +17,23 @@ export function isPhoneNumber(val) {
 }
 
 export const validateSignup = (values) => {
-   const { firstName, lastName, email, phone } = values
-   if (firstName.trim() === '') return { data: 'firstName', message: 'Fill First Name' }
-   if (lastName.trim() === '') return { data: 'lastName', message: 'Fill Last Name' }
-   if (email.trim() === '') return { data: 'email', message: 'Fill email' }
+   const { firstName, lastName, email, phone,company,phoneCode } = values
+   
+   if (firstName?.trim() === '') return { data: 'firstName', message: 'Fill First Name' }
+   if (lastName?.trim() === '') return { data: 'lastName', message: 'Fill Last Name' }
+   if (email?.trim() === '') return { data: 'email', message: 'Fill email' }
    if (!isEmail(email)) return { data: 'email', message: 'Please enter valid email' }
-   if (phone.trim() === '') return { data: 'phone', message: 'Fill Phone number' }
+   if (phone?.trim() === '') return { data: 'phone', message: 'Fill Phone number' }
    if(!isPhoneNumber(phone))  return { data: 'phone', message: 'Please enter a valid phone number' }
-   if (phone.length < 10 ) return { data: 'phone', message: 'Phone number must be greater than 9 digits' }
-
+   if (phone?.length < 10 ) return { data: 'phone', message: 'Phone number must be greater than 9 digits' }
+   if (company?.trim() === '') return { data: 'company', message: 'Fill company name' }
+   if (phoneCode?.trim() === '') return { data: 'phoneCode', message: 'Fill country code' }
    return { data: true, message: 'none' }
 }
 
 export const validateOtherDetails = (values) => {
    // console.log(values);
-   const { FirstName, LastName, Email, Phone } = values
+   const { FirstName, LastName, Email, Phone,phoneCode } = values
    if (FirstName.trim() === '') return { data: 'FirstName', message: 'Fill First Name' }
    if (LastName.trim() === '') return { data: 'LastName', message: 'Fill Last Name' }
    if (Email.trim() === '') return { data: 'Email', message: 'Fill email' }

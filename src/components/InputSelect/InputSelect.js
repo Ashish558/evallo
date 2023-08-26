@@ -44,6 +44,7 @@ export default function InputSelect({
       ref={selectRef}
       className={`${selected && "relative z-5000"} ${parentClassName ? parentClassName : ""
         } ${disabled === true ? "pointer-events-none" : ""} `}
+      onClick={() => setSelected(!selected)}
     >
 
       {

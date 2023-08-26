@@ -7,7 +7,7 @@ import SignupLast from "../Frames/SignupLast/SignupLast";
 import FurtherDetails from "../Frames/FurtherDetails/FurtherDetails";
 import axios from "axios";
 import SetPassword from "../Frames/SetPassword/SetPasswordInvited";
-import cuate from "../../assets/signup/cuate.png";
+import cuate from "../../assets/signup/cuate.svg";
 import NumericSteppers from "../../components/NumericSteppers/NumericSteppers";
 import CountryCode from "../../components/CountryCode/CountryCode";
 import {
@@ -42,6 +42,7 @@ import CustomFields from "../Frames/CustomFields/CustomFields";
 import { useGetUserByOrgNameMutation } from "../../app/services/organization";
 import InputFieldDropdown from "../../components/InputField/inputFieldDropdown";
 import SecondaryButton from "../../components/Buttons/SecondaryButton";
+import CCheckbox from "../../components/CCheckbox/CCheckbox";
 
 export default function UserSignup() {
   const [frames, setFrames] = useState({
@@ -63,10 +64,10 @@ export default function UserSignup() {
     phone: "",
     userId: "",
     role: "parent",
-    referalCode:"",
-    phoneCode:"",
-    terms:false,
-    ageChecked:false
+    referalCode: "",
+    phoneCode: "",
+    terms: false,
+    ageChecked: false,
   });
 
   const [error, setError] = useState({
@@ -74,6 +75,7 @@ export default function UserSignup() {
     lastName: "",
     email: "",
     phone: "",
+    phoneCode:"",
     subscriptionCode: "",
   });
 
@@ -85,7 +87,7 @@ export default function UserSignup() {
     LastName: "",
     Email: "",
     Phone: "",
-    PphoneCode:"",
+    PphoneCode: "",
     aboutScore: "",
   });
 
@@ -158,7 +160,7 @@ export default function UserSignup() {
         console.log(res.error);
         return;
       }
-     
+
       if (!res.data.organisation) return;
       if (res.data.organisation.length === 0) return;
       if (res.data.organisation[0]) {
@@ -247,7 +249,7 @@ export default function UserSignup() {
       };
     });
   };
- console.log({customFields})
+  console.log({ customFields });
   const resetDetailsErrors = () => {
     setDetailsError((prev) => {
       return {
@@ -258,8 +260,54 @@ export default function UserSignup() {
       };
     });
   };
-
+  const [isValidated,setValidated]=useState({ 
+    firstName: "",
+    lastName: "",
+    email: "",
+    phoneCode:"",
+    phone: "",
+    subscriptionCode: "",
+    company: "",
+    phoneCode:"",
+})
+  const handleNextErrors=(alsoSet)=>{
+    resetErrors()
+    const result = validateSignup(values);
+   
+    if (result.data !== true) {
+      setValidated((prev) => {
+        return {
+          [result.data]: result.message,
+        };
+      })
+    }
+    else{
+      setValidated({
+      })
+    }
+    if(alsoSet){
+    let flag=true;
+    Object.keys(isValidated).map((it)=>{
+     if (isValidated[it] && isValidated[it].length>0){
+       flag=false;
+     }
+    })
+    resetErrors()
+    let arr={...isValidated}
+    setError(arr)
+    console.log({isValidated})
+    return flag;
+   }
+  }
+  useEffect(()=>{
+   
+    handleNextErrors()
+  },[values])
+const [emailExistLoad,setEmailExistLoad]=useState(false)
   const handleClick = async () => {
+    const emailAlreadyExists=async ()=>{
+
+    
     let checked = false;
     if (isAddedByAdmin) {
       setFrames({
@@ -298,6 +346,11 @@ export default function UserSignup() {
         userDetails: true,
       });
     }
+  }
+  if(!handleNextErrors(true)){
+    return 
+  }
+  emailAlreadyExists()
   };
 
   const handleSignup = () => {
@@ -360,23 +413,41 @@ export default function UserSignup() {
           reqBody.userId = values.userId;
           updateUser(reqBody)
             .then((res) => {
+              setLoading(false);
               console.log(res);
+              if (res?.error?.data?.message === "Referral code not match."){
+              alert("Referal code is not valid! Enter valid referal code.");
+          return ;
+              }
               if (res.error) {
                 alert("Something went wrong");
                 return;
               }
-              setLoading(false);
+              
+             
+            
               alert("Signup successful");
               //navigate("/");
-
-              setFrames({
-                ...frames,
-                setPasswordFields: true,
-                userDetails: false,
-                customFields: false,
-              });
-
-              sessionStorage.clear();
+               if(frames.userDetails && customFields?.length>0){
+               
+                setFrames({
+                  ...frames,
+                  setPasswordFields: false,
+                  userDetails: false,
+                  customFields: true,
+                });
+                return 
+            }
+            else {
+            setFrames({
+              ...frames,
+              setPasswordFields: true,
+              userDetails: false,
+              customFields: false,
+            });
+            sessionStorage.clear();
+          }
+             
             })
             .catch((err) => {
               setLoading(false);
@@ -385,7 +456,7 @@ export default function UserSignup() {
         } else {
           signupUser(reqBody)
             .then((res) => {
-              console.log(res);
+              console.log("sessionClear", res);
               setLoading(false);
               if (res?.data?.status === "success") {
                 alert("Signup successful");
@@ -393,11 +464,13 @@ export default function UserSignup() {
                 sessionStorage.clear();
                 return;
               }
-              alert("something went wrong , please try again");
+              if (res?.error?.data?.message === "Referral code not match.")
+                alert("Referal code is not valid! Enter valid referal code.");
+              else alert("something went wrong , please try again");
             })
             .catch((err) => {
               setLoading(false);
-              console.log(err);
+              console.log("error", err);
             });
         }
       }
@@ -422,40 +495,38 @@ export default function UserSignup() {
     setStudentNumberPrefix,
   };
   // console.log("customFields", customFields);
- 
+
   const handleCheckboxChangeTerms = () => {
     setValues({
       ...values,
       terms: !values.terms,
-    })
+    });
   };
-const handleCheckboxChangeReferral=()=>{
-  if(values.referalCode.trim().length===0)
-  return 
-  setValues({
-    ...values,
-    referalCode:values.referalCode.trim()
-  })
-}
+  const handleCheckboxChangeReferral = () => {
+    if (values.referalCode.trim().length === 0) return;
+    setValues({
+      ...values,
+      referalCode: values.referalCode.trim(),
+    });
+  };
   const handleCheckboxChangeAge = () => {
     setValues({
       ...values,
       ageChecked: !values.ageChecked,
-    })
-    
+    });
   };
-  
+
   return (
     <div className=" pb-6 bg-primary" id={styles.signUp}>
       <div className="flex justify-center flex-col items-center md:grid-cols-2  ">
-        <img src={cuate} alt="rocket" className="h-10vh mb-2" />
+        <img src={cuate} alt="rocket" className="h-10vh mt-3 mb-4" />
         <>
           {!frames.signupSuccessful ? (
             <div className="hidden bg-primary text-white pt-[79px] px-[49px]">
               <h1 className="text-[28px] mb-[13px]">
                 {frames.signupActive
                   ? "Sign Up"
-                  : frames.setPasswordFields
+                  : frames.setPasswordFields && !isAddedByAdmin
                   ? "Set Password"
                   : "Profile Details"}
               </h1>
@@ -478,8 +549,9 @@ const handleCheckboxChangeReferral=()=>{
               </h1>
 
               {currentStep > 0 && !frames.signupSuccessful && (
-                <NumericSteppers 
-                  className='mt-3'
+                <NumericSteppers
+                  className="mt-3"
+                  fieldNames={["Personal info" ,"Student / Parent",isAddedByAdmin?"Set password":"Further details"]} 
                   totalSteps={
                     customFields?.length === 0
                       ? 2 + isAddedByAdmin
@@ -492,14 +564,13 @@ const handleCheckboxChangeReferral=()=>{
 
               {frames.signupActive ? (
                 <div>
-                
                   <div className={`flex mt-[59px]  gap-8 lg:mt-0 `}>
                     <InputField
                       placeholder=""
+                      inputContainerClassName="  bg-white   border border-[#D0D5DD]"
                       parentClassName="text-xs w-[250px]"
                       labelClassname="mb-1 text-[#26435F] font-bold"
                       label="First Name"
-                      
                       value={values.firstName}
                       onChange={(e) =>
                         setValues({
@@ -507,10 +578,12 @@ const handleCheckboxChangeReferral=()=>{
                           firstName: e.target.value,
                         })
                       }
+                      totalErrors={error}
                       error={error.firstName}
                     />
                     <InputField
                       placeholder=""
+                      inputContainerClassName="  bg-white   border border-[#D0D5DD]"
                       parentClassName="text-xs flex-1"
                       labelClassname="mb-1 text-[#26435F] font-bold"
                       label="Last Name"
@@ -521,6 +594,7 @@ const handleCheckboxChangeReferral=()=>{
                           lastName: e.target.value,
                         })
                       }
+                      totalErrors={error}
                       error={error.lastName}
                     />
                   </div>
@@ -529,7 +603,8 @@ const handleCheckboxChangeReferral=()=>{
                       labelClassname="mb-1 text-[#26435F] font-bold"
                       label="Email"
                       placeholder=""
-                      parentClassName="w-[300px] text-xs "
+                      inputContainerClassName="  bg-white   border border-[#D0D5DD]"
+                      parentClassName="w-[340px] text-xs "
                       value={values.email}
                       onChange={(e) =>
                         setValues({
@@ -537,14 +612,16 @@ const handleCheckboxChangeReferral=()=>{
                           email: e.target.value,
                         })
                       }
+                      totalErrors={error}
                       error={error.email}
                     />
                     <InputFieldDropdown
                       placeholder=""
-                      parentClassName="text-xs "
-                      inputContainerClassName=" bg-white  "
+                      inputContainerClassName="  bg-white h-[40px]  border border-[#D0D5DD]"
+                      parentClassName="text-xs w-[300px]"
+                      
                       inputClassName="  bg-transparent text-400 "
-                      labelClassname="mb-1 text-[#26435F] font-bold text-[#26435F]"
+                      labelClassname="mb-1 text-[#26435F]  font-bold text-[#26435F]"
                       label="Phone"
                       value={values.phone}
                       codeValue={values.phoneCode}
@@ -560,17 +637,21 @@ const handleCheckboxChangeReferral=()=>{
                           phone: e.target.value,
                         })
                       }
-                     
+                      
+                      totalErrors={error}
+                      error={error.phone}
+                      codeError={error.phoneCode}
                     />
                   </div>
-                
-                 
+
                   <div className="mt-5">
-                    <p className={`mb-3 text-[#26435F] text-[14px]  font-semibold`}>
+                    <p
+                      className={`mb-3 text-[#26435F] text-[14px]  font-semibold`}
+                    >
                       Are you signing up as a Parent or a Student?
                     </p>
                     <div className="flex items-center  text-[13.5px] gap-x-6">
-                      <div 
+                      <div
                         onClick={() => {
                           setValues((prev) => ({
                             ...prev,
@@ -586,12 +667,13 @@ const handleCheckboxChangeReferral=()=>{
                             id="radioOption"
                           />
                           <div
-                            
                             className={`relative inline-block ml-[2px] w-4 h-4   rounded-full border ${
-                               values.role === "parent" ? "border-[#FFA28D]" : "border-gray-600"
+                              values.role === "parent"
+                                ? "border-[#FFA28D]"
+                                : "border-gray-600"
                             } cursor-pointer`}
                           >
-                            { values.role === "parent" && (
+                            {values.role === "parent" && (
                               <div className="absolute inset-0 my-auto mx-auto w-[8px] h-[8px] rounded-full bg-[#FFA28D]" />
                             )}{" "}
                           </div>
@@ -602,12 +684,12 @@ const handleCheckboxChangeReferral=()=>{
                         </div>
                       </div>
                       <div
-                       onClick={() => {
-                        setValues((prev) => ({
-                          ...prev,
-                          role: "student",
-                        }));
-                      }}
+                        onClick={() => {
+                          setValues((prev) => ({
+                            ...prev,
+                            role: "student",
+                          }));
+                        }}
                         className={styles.textLight}
                       >
                         <div className={` flex items-center  `}>
@@ -634,49 +716,42 @@ const handleCheckboxChangeReferral=()=>{
                     </div>
                   </div>
                   <div className=" gap-x-2 my-5">
-                    <div className={styles.textLight}>
-                      <label className={`${styles["checkbox-label"]} text-[13.5px] block  `}>
-                        <input
-                          type="checkbox"
-                          checked={values.ageChecked}
-                          onChange={handleCheckboxChangeAge}
-                        />
-                        <span
-                          className={`${styles["custom-checkbox"]} ${
-                            values.ageChecked ? "checked" : ""
-                          }`}
-                        ></span>
-                        <span className="ml-2 text-[#507CA8]">
+                    
+                    <div className={`flex ${styles.textLight}`}>
+                    <CCheckbox  checked={values.ageChecked}
+                          onChange={handleCheckboxChangeAge}/>
+                     
+                     
+
+                        <span className="ml-2 text-sm text-[#507CA8]">
                           I confirm that I am 13 years or older
                         </span>
-                      </label>
+                     
                     </div>
                   </div>
-                  
+
                   <div className=" gap-x-2 my-5">
-                    <div className={styles.textLight}>
-                      <label className={`${styles["checkbox-label"]} text-[13.5px] block  `}>
-                        <input
-                          type="checkbox"
-                          checked={values.terms}
-                          onChange={handleCheckboxChangeTerms}
-                        />
-                        <span
-                          className={`${styles["custom-checkbox"]} w-[25px] ${
-                            values.terms ? "checked" : ""
-                          }`}
-                        ></span>
-                        <p className={` ml-2  text-[#507CA8]`}>
+                    <div className={`flex ${styles.textLight}`}>
+                     
+                       <CCheckbox  checked={values.terms}
+                          onChange={handleCheckboxChangeTerms}/>
+                        <p className={` ml-2 text-sm text-[#507CA8]`}>
                           I have carefully read and agree to the{" "}
-                          <a  href="http://evallo.org/tou" className="font-semibold text-[#26435F] mr-1">
-                            Terms of Use 
+                          <a
+                            href="http://evallo.org/tou"
+                            className="font-semibold text-[#26435F] mr-1"
+                          >
+                            Terms of Use
                           </a>
                           and
-                          <a  href="http://evallo.org/privacy-policy"  className=" ml-1 font-semibold text-[#26435F]" >
-                          Privacy Policy
-                              </a> 
+                          <a
+                            href="http://evallo.org/privacy-policy"
+                            className=" ml-1 font-semibold text-[#26435F]"
+                          >
+                            Privacy Policy
+                          </a>
                         </p>
-                      </label>
+                     
                     </div>
                   </div>
                   <div className="flex items-center mt-[30px] justify-between">
@@ -685,20 +760,24 @@ const handleCheckboxChangeReferral=()=>{
                       className="text-sm mr-6 bg-white text-[#a3aDC7] border-[1.5px] border-[#D0D5DD] "
                       onClick={() => navigate("/")}
                     />
-                   
-                  <PrimaryButton
-                     className={`w-full bg-[#FFA28D] text-center items-center justify-center disabled:opacity-60 max-w-[110px]  rounded text-white text-sm font-medium relative ${
-                      loading
-                        ? "cursor-wait opacity-60 pointer-events-none"
-                        : "cursor-pointer"
-                    }`}
-                    disabled={values.email.trim().length === 0|| !values.terms || !values.ageChecked ? true: false}
-                    onClick={handleClick}
-                    children={`Next`}
-                  />
-                   </div>
-                  
-                 
+
+                    <PrimaryButton
+                      className={`w-full bg-[#FFA28D] text-center items-center justify-center disabled:opacity-60 max-w-[110px]  rounded text-white text-sm font-medium relative ${
+                        loading
+                          ? "cursor-wait opacity-60 pointer-events-none"
+                          : "cursor-pointer"
+                      }`}
+                      disabled={
+                        values.email.trim().length === 0 ||
+                        !values.terms ||
+                        !values.ageChecked
+                          ? true
+                          : false
+                      }
+                      onClick={handleClick}
+                      children={`Next`}
+                    />
+                  </div>
                 </div>
               ) : frames.userDetails ? (
                 <OtherDetails
