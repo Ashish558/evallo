@@ -13,7 +13,7 @@ import ExportIcon from "../../assets/icons/export.svg";
 import UploadIcon from "../../assets/icons/upload.svg";
 import XIcon from "../../assets/icons/x.png";
 import SearchIcon from "../../assets/icons/search.svg";
-import fileupload from "../../assets/icons/fileupload.png";
+import fileupload from "../../assets/icons/basil_file-upload-outline (2).svg";
 import { tableData, userTypesList } from "./tempData";
 import { BASE_URL, getAuthHeader } from "../../app/constants/constants";
 import { csvHeaders } from "./csvUtlis";
@@ -715,8 +715,8 @@ export default function Users() {
     }
   };
   return (
-    <div className="w-[83.6989583333vw] mx-auto bg-lightWhite min-h-screen">
-      <div className="pb-10 px-5 mt-[50px]">
+    <div className="w-[83.6989583333vw] mx-auto  min-h-screen">
+      <div className="pb-10  mt-[50px]">
         <div className="flex justify-between items-center mb-3">
           <p className="text-[#24A3D9] mb-6 text-xl">
             {organization?.company +
@@ -787,9 +787,9 @@ export default function Users() {
             {bulkUpload && (
               <Modal
                 title="Bulk Upload"
-                classname={"max-w-[760px] mx-auto"}
+                classname={"max-w-[666px] mx-auto"}
                 cancelBtnClassName="max-w-140"
-                titleClassName="flex  items-start ml-5"
+                titleClassName="flex  items-start mb-[22px]"
                 handleClose={() => setBulkUpload(false)}
                 //  primaryBtn={{
                 //    text: "Assign",
@@ -806,23 +806,20 @@ export default function Users() {
                     <div className="">
                       <div className="flex justify-center">
                         <div
-                          className="max h-[200px] max w-[300px] mb-10 "
-                          style={{
-                            border: "2.5px dashed #CBD6E2",
-                            borderRadius: "10px",
-                          }}
+                          className="min-h-[161px] min-w-[198px] border-[1.33px] border-dashed mb-[26px] border-[#517CA8] rounded-[5px]"
+
                         >
-                          <div className="mt-12 flex justify-center">
+                          <div className="mt-[18px] mb-[13px] flex justify-center">
                             {/* This thing is for displaying xls logo if file is selected */}
                             {/* {xlsFile==undefined ? (<img src={fileupload}></img>):(<img src={}></img>)} */}
-                            <img src={fileupload}></img>
+                            <img src={fileupload} alt='fileuploadIcon'></img>
                           </div>
 
                           <div className="flex justify-center">
                             {xlsFile == undefined ? (
                               <label
                                 htmlFor="file"
-                                className="block text-white bg-[#517CA8] hover:bg-[#517CA8] items-center justify-center font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-[#517CA8] dark:hover:bg-[#517CA8] "
+                                className="block text-white bg-[#517CA8] hover:bg-[#517CA8] items-center justify-center  rounded-[5px]  px-4 py-2.5 text-center dark:bg-[#517CA8] dark:hover:bg-[#517CA8] "
                               >
                                 Choose File
                               </label>
@@ -843,7 +840,7 @@ export default function Users() {
                         <button
                           data-modal-target="popup-modal"
                           data-modal-toggle="popup-modal"
-                          className="block mr-6 text-white bg-[#FFA28D] hover:bg-[#FFA28D]  font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-[#FFA28D] dark:hover:bg-[#FFA28D] "
+                          className="block mr-6 text-white bg-[#FFA28D] hover:bg-[#FFA28D]  font-medium rounded-lg  px-[13.33px] py-[17.33px] text-center dark:bg-[#FFA28D] dark:hover:bg-[#FFA28D] "
                           type="button"
                           onClick={saveData}
                         >
@@ -855,7 +852,7 @@ export default function Users() {
                             setInviteUsers(true);
                             setBulkUpload(false);
                           }}
-                          className="  block text-orange-500 border-2 border-[#FFA28D] bg-white hover:bg-[#FFA28D] hover:text-white-500 ms-3 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-white dark:hover:bg-[#FFA28D] dark:hover:text-orange-500"
+                          className="  block text-[#FFA28D] border-[1.33px] border-[#FFA28D] bg-white hover:bg-[#FFA28D] hover:text-white-500 ms-3 font-medium rounded-lg  px-[13.33px] py-[17.33px] text-center dark:bg-white dark:hover:bg-[#FFA28D] hover:text-white"
                         >
                           Save Data and Invite User
                         </button>
@@ -868,9 +865,11 @@ export default function Users() {
             {/* invite user modal */}
             {inviteUsers && (
               <Modal
-                title="Are You Sure You Want to Invite XX User To Join Evallo?"
-                classname={"max-w-[760px] mx-auto"}
-                titleClassName={"mt-5"}
+                crossBtn={true}
+                underline={true}
+                title="Are You Sure You Want to Invite XX Users To Join Evallo?"
+                classname={"max-w-[781px] mx-auto"}
+                titleClassName={"mb-5 "}
                 handleClose={() => setInviteUsers(false)}
                 //  primaryBtn={{
                 //    text: "Assign",
@@ -884,33 +883,35 @@ export default function Users() {
 
                 body={
                   <>
-                    {" "}
-                    <div className="text-center ">
-                      <p className="text-[#517CA8] font-semibold">
-                        {" "}
+
+                    <div className="text-center mb-7">
+                      <p className="text-[#517CA8]  text-lg font-light">
                         All users that are invited to the platform will receive
                         an email invitation to create an account within your
                         organization. If you only want to store their data and
                         do not want to invite them to create an account, please
                         click on “Save Data Only” button.
-                        <br></br>If you want to continue inviting the users,
-                        please click on the “Confirm Email Invitations” button
-                        below.
+                        <br /><span classname="pt-1">If you want to continue inviting the users,
+                          please click on the <span classname="font-normal">“Confirm Email Invitations”</span> button
+                          below.</span>
                       </p>
                     </div>
                     <div className="flex justify-center">
                       <button
                         data-modal-target="popup-modal"
                         data-modal-toggle="popup-modal"
-                        className="block text-white mr-6 bg-[#FFA28D] hover:bg-[#FFA28D] me-3 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-[#FFA28D] dark:hover:bg-[#FFA28D] "
+                        className="block text-white  bg-[#FFA28D] hover:bg-[#FFA28D] mr-[40px] font-medium rounded-lg  px-6 py-[17.33px] text-center dark:bg-[#FFA28D] dark:hover:bg-[#FFA28D] "
                         type="button"
-                        onClick={bulkInvite}
+                        onClick={() => {
+                          bulkInvite();
+                          setInviteUsers(false);
+                        }}
                       >
                         Yes, Confirm
                       </button>
                       <button
                         type="button"
-                        className="max-w-140 text-orange-500 border-3 border-[#FFA28D] bg-white hover:bg-[#FFA28D] hover:text-orange-500 ms-3 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-white dark:hover:bg-[#FFA28D] dark:hover:text-orange-500"
+                        className="max-w-140 text-[#FFA28D] border-[1.33px] border-[#FFA28D] bg-white hover:bg-[#FFA28D] hover:text-white  font-medium rounded-lg  px-[46px] py-[17.33px] text-center dark:bg-white dark:hover:bg-[#FFA28D]"
                         onClick={() => setInviteUsers(false)}
                       >
                         Cancel
@@ -926,9 +927,9 @@ export default function Users() {
           <InputField
             IconRight={SearchIcon}
             placeholder="Search"
-            inputClassName="pl-4"
-            parentClassName="w-full w-[300px] py-1"
-            inputContainerClassName="text-sm mt-1 shadow-[0px_0px_2.4999988079071045px_0px_#00000040] border-white text-sm bg-white  px-[20px] py-[10px] mb-1"
+            inputClassName="pl-4 text-[#667085]"
+            parentClassName="w-[22.03125vw] py-1"
+            inputContainerClassName="text-sm mt-1 shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white   mb-1"
             type="text"
             value={filterData.typeName}
             onChange={(e) =>
@@ -937,9 +938,10 @@ export default function Users() {
           />
           <InputSelect
             optionData={userTypesList}
-            inputContainerClassName="text-sm shadow-[0px_0px_2.4999988079071045px_0px_#00000040] border-white bg-white px-[20px] py-[16px]"
+            optionListClassName="text-[#667085]"
+            inputContainerClassName="text-sm shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white px-[20px] py-[16px]"
             placeholder="User Type"
-            parentClassName="w-full w-1/6"
+            parentClassName="w-[12.8541666667vw] text-[#667085]"
             type="select"
             value={filterData.userType.length > 0 ? filterData.userType[0] : ""}
             checkbox={{
@@ -957,10 +959,11 @@ export default function Users() {
             }
           />
           <InputSelect
+            optionListClassName="text-[#667085]"
             optionData={settings.leadStatus}
             placeholder="Lead Status"
-            parentClassName="w-full w-1/6 border-none "
-            inputContainerClassName="text-sm rounded-md shadow-[0px_0px_2.4999988079071045px_0px_#00000040] border-white bg-white px-[20px] py-[16px]"
+            parentClassName="w-[12.8541666667vw] border-none text-[#667085]"
+            inputContainerClassName="text-sm shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white px-[20px] py-[16px]"
             type="select"
             checkbox={{
               visible: true,
@@ -978,11 +981,12 @@ export default function Users() {
             value={filterData.status.length > 0 ? filterData.status[0] : ""}
           />
           <InputSelect
+            optionListClassName="text-[#667085]"
             optionData={specializations}
             placeholder="Services"
-            parentClassName="w-full w-1/6"
+            parentClassName="w-[12.8541666667vw] text-[#667085]"
             type="select"
-            inputContainerClassName="text-sm rounded-md shadow-[0px_0px_2.4999988079071045px_0px_#00000040] border-white bg-white px-[20px] py-[16px]"
+            inputContainerClassName="text-sm shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white px-[20px] py-[16px]"
             value={
               filterData.specialization.length > 0
                 ? filterData.specialization[0]
@@ -1021,11 +1025,12 @@ export default function Users() {
                   })}
                /> */}
           <InputSelect
+            optionListClassName="text-[#667085]"
             optionData={allTutors}
             placeholder="Tutor"
-            parentClassName="w-full w-1/6"
+            parentClassName="w-[12.8541666667vw] text-[#667085]"
             type="select"
-            inputContainerClassName="text-sm rounded-md shadow-[0px_0px_2.4999988079071045px_0px_#00000040] border-white bg-white px-[20px] py-[16px]"
+            inputContainerClassName="text-sm shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white px-[20px] py-[16px]"
             optionType="object"
             value={filterData.tutor.length > 0 ? filterData.tutor[0] : ""}
             checkbox={{
@@ -1081,7 +1086,7 @@ export default function Users() {
             onRemoveFilter={onRemoveFilter}
           />
         </div>
-        <div className="flex justify-between items-center mt-5">
+        <div className="flex justify-between items-center mt-[23.75px]">
           <div className="ml-6 ">
             <label className={`  text-[#26435F] font-medium flex items-center`}>
               <input
@@ -1093,11 +1098,11 @@ export default function Users() {
                 className={`${styles["custom-checkbox"]} ${isChecked ? "checked" : ""
                   }`}
               ></span>
-              <span className="block">{numberChecked} Selected</span>
+              <span className="block text-[17.5px]">{numberChecked} Selected</span>
             </label>
           </div>
           <div>
-            <button className="bg-[#26435F] px-7 py-2 rounded-md text-white ml-auto">
+            <button className="bg-[#26435F] text-[15px] px-[20px] py-[10px] rounded-[7.5px] text-white ml-auto">
               Save
             </button>
           </div>
@@ -1126,201 +1131,207 @@ export default function Users() {
         </div>
       </div>
 
-      {modalActive && (
-        <Modal
-          classname={"max-w-[700px] mx-auto rounded-md"}
-          title="Add a New User"
-          cancelBtn={true}
-          titleClassName="text-start mb-3 pb-3 border-b border-b-gray-300"
-          primaryCancel={true}
-          cancelBtnClassName="w-130"
-          primaryBtn={{
-            text: "Invite User",
-            className:
-              "rounded-lg bg-transparent border-2 border-[#FFA28D] py-2 text-[#FFA28D]",
-            form: "add-user-form",
-            onClick: handleSubmit,
-            loading: loading,
-            type: "submit",
-            disabled: addUserBtnDisabled,
-          }}
-          handleClose={handleClose}
-          body={
-            <form
-              id="add-user-form"
-              onSubmit={handleSubmit}
-              className="px-[3px] mb-0.5"
-            >
-              <div className="grid grid-cols-1 md:grid-cols-2  gap-x-2 md:gap-x-3 gap-y-3 gap-y-4 mb-5">
-                <div>
-                  <InputField
-                    label="First Name"
-                    labelClassname="ml-4 mb-0.5 text-[#26435F] font-semibold"
-                    placeholder="First Name"
-                    inputContainerClassName="text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0"
-                    inputClassName="bg-transparent"
-                    parentClassName="w-full"
-                    type="text"
-                    value={modalData.firstName}
-                    isRequired={true}
-                    onChange={(e) =>
-                      setModalData({ ...modalData, firstName: e.target.value })
-                    }
-                  />
+      {
+        modalActive && (
+          <Modal
+            classname={"max-w-[700px] mx-auto rounded-md"}
+            title="Add a New User"
+            cancelBtn={true}
+            titleClassName="text-start mb-3 pb-3 border-b border-b-gray-300"
+            primaryCancel={true}
+            cancelBtnClassName="w-130"
+            primaryBtn={{
+              text: "Invite User",
+              className:
+                "rounded-lg bg-transparent border-2 border-[#FFA28D] py-2 text-[#FFA28D]",
+              form: "add-user-form",
+              onClick: handleSubmit,
+              loading: loading,
+              type: "submit",
+              disabled: addUserBtnDisabled,
+            }}
+            handleClose={handleClose}
+            body={
+              <form
+                id="add-user-form"
+                onSubmit={handleSubmit}
+                className="px-[3px] mb-0.5"
+              >
+                <div className="grid grid-cols-1 md:grid-cols-2  gap-x-2 md:gap-x-3 gap-y-3 gap-y-4 mb-5">
+                  <div>
+                    <InputField
+                      label="First Name"
+                      labelClassname="ml-4 mb-0.5 text-[#26435F] font-semibold"
+                      placeholder="First Name"
+                      inputContainerClassName="text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0"
+                      inputClassName="bg-transparent"
+                      parentClassName="w-full"
+                      type="text"
+                      value={modalData.firstName}
+                      isRequired={true}
+                      onChange={(e) =>
+                        setModalData({ ...modalData, firstName: e.target.value })
+                      }
+                    />
+                  </div>
+                  <div>
+                    <InputField
+                      label="Last Name"
+                      labelClassname="ml-4 mb-0.5 text-[#26435F] font-semibold"
+                      isRequired={true}
+                      placeholder="Last Name"
+                      inputContainerClassName="text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0"
+                      inputClassName="bg-transparent"
+                      parentClassName="w-full"
+                      type="text"
+                      value={modalData.lastName}
+                      onChange={(e) =>
+                        setModalData({ ...modalData, lastName: e.target.value })
+                      }
+                    />
+                  </div>
+                  <div>
+                    <InputField
+                      label="Email Addresss "
+                      labelClassname="ml-4 mt-2 mb-0.5 text-[#26435F] font-semibold"
+                      isRequired={true}
+                      placeholder="Email Addresss"
+                      inputContainerClassName="text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0"
+                      inputClassName="bg-transparent"
+                      parentClassName="w-full"
+                      type="text"
+                      value={modalData.email}
+                      onChange={(e) =>
+                        setModalData({ ...modalData, email: e.target.value })
+                      }
+                    />
+                  </div>
+                  <div className="mt-[7px]">
+                    <InputSelect
+                      value={modalData.userType}
+                      onChange={(val) =>
+                        setModalData({ ...modalData, userType: val })
+                      }
+                      isRequired={true}
+                      type="select"
+                      placeholder="Select User Type "
+                      label="User Type"
+                      labelClassname="ml-0  text-[#26435F] font-bold"
+                      optionData={userTypeOptions}
+                      inputContainerClassName="text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0"
+                      parentClassName="w-full"
+                    />
+                  </div>
                 </div>
-                <div>
-                  <InputField
-                    label="Last Name"
-                    labelClassname="ml-4 mb-0.5 text-[#26435F] font-semibold"
-                    isRequired={true}
-                    placeholder="Last Name"
-                    inputContainerClassName="text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0"
-                    inputClassName="bg-transparent"
-                    parentClassName="w-full"
-                    type="text"
-                    value={modalData.lastName}
-                    onChange={(e) =>
-                      setModalData({ ...modalData, lastName: e.target.value })
-                    }
-                  />
+              </form>
+            }
+          />
+        )
+      }
+      {
+        deleteModalActive && (
+          <Modal
+            title={
+              <span className="leading-10">
+                Are you sure <br />
+                you want to delete user{" "}
+                {`${userToDelete.name} ${userToDelete._id}`} and all associated
+                data ?
+              </span>
+            }
+            titleClassName="mb-12 leading-10"
+            cancelBtn={true}
+            cancelBtnClassName="max-w-140"
+            primaryBtn={{
+              text: "Delete",
+              className: "w-[140px] pl-4 px-4",
+              onClick: () => onDelete(),
+              bgDanger: true,
+              loading: deleteLoading,
+            }}
+            handleClose={() => setDeleteModalActive(false)}
+            classname={"max-w-567 mx-auto"}
+          />
+        )
+      }
+      {
+        assignStudentModalActive && (
+          <Modal
+            title="Assign Tutor"
+            classname={"max-w-[760px] mx-auto"}
+            cancelBtn={true}
+            cancelBtnClassName="max-w-140"
+            primaryBtn={{
+              text: "Assign",
+              className: "max-w-140 pl-8 pr-8",
+              onClick: (e) => handleSubmit(e),
+              disabled: submitBtnDisabled,
+              loading: loading,
+            }}
+            handleClose={handleClose2}
+            body={
+              <>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-2 md:gap-x-3 gap-y-4 mb-5">
+                  <div>
+                    <InputSearch
+                      label="Student Name"
+                      value={modalData.studentName}
+                      onChange={(e) =>
+                        setModalData({
+                          ...modalData,
+                          studentName: e.target.value,
+                        })
+                      }
+                      optionData={students}
+                      onOptionClick={(item) => {
+                        setModalData({
+                          ...modalData,
+                          studentName: item.value,
+                          studentId: item._id,
+                        });
+                      }}
+                      optionPrefix="s"
+                      parentClassName="w-full mr-4"
+                      labelClassname="ml-2 mb-0.5"
+                      inputContainerClassName="px-5 py-3.5 text-sm bg-primary-50 border-0"
+                      inputClassName="bg-transparent"
+                      placeholder="Student Name"
+                      type="select"
+                    />
+                  </div>
+                  <div>
+                    <InputSearch
+                      label="Tutor Name"
+                      value={modalData.tutorName}
+                      onChange={(e) =>
+                        setModalData({
+                          ...modalData,
+                          tutorName: e.target.value,
+                        })
+                      }
+                      optionData={tutors}
+                      onOptionClick={(item) => {
+                        setModalData({
+                          ...modalData,
+                          tutorName: item.value,
+                          tutorId: item._id,
+                        });
+                      }}
+                      optionPrefix="t"
+                      parentClassName="w-full mr-4"
+                      labelClassname="ml-2 mb-0.5"
+                      inputContainerClassName="px-5 py-3.5 text-sm bg-primary-50 border-0"
+                      inputClassName="bg-transparent"
+                      placeholder="Tutor Name"
+                      type="select"
+                    />
+                  </div>
                 </div>
-                <div>
-                  <InputField
-                    label="Email Addresss "
-                    labelClassname="ml-4 mt-2 mb-0.5 text-[#26435F] font-semibold"
-                    isRequired={true}
-                    placeholder="Email Addresss"
-                    inputContainerClassName="text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0"
-                    inputClassName="bg-transparent"
-                    parentClassName="w-full"
-                    type="text"
-                    value={modalData.email}
-                    onChange={(e) =>
-                      setModalData({ ...modalData, email: e.target.value })
-                    }
-                  />
-                </div>
-                <div className="mt-[7px]">
-                  <InputSelect
-                    value={modalData.userType}
-                    onChange={(val) =>
-                      setModalData({ ...modalData, userType: val })
-                    }
-                    isRequired={true}
-                    type="select"
-                    placeholder="Select User Type "
-                    label="User Type"
-                    labelClassname="ml-0  text-[#26435F] font-bold"
-                    optionData={userTypeOptions}
-                    inputContainerClassName="text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0"
-                    parentClassName="w-full"
-                  />
-                </div>
-              </div>
-            </form>
-          }
-        />
-      )}
-      {deleteModalActive && (
-        <Modal
-          title={
-            <span className="leading-10">
-              Are you sure <br />
-              you want to delete user{" "}
-              {`${userToDelete.name} ${userToDelete._id}`} and all associated
-              data ?
-            </span>
-          }
-          titleClassName="mb-12 leading-10"
-          cancelBtn={true}
-          cancelBtnClassName="max-w-140"
-          primaryBtn={{
-            text: "Delete",
-            className: "w-[140px] pl-4 px-4",
-            onClick: () => onDelete(),
-            bgDanger: true,
-            loading: deleteLoading,
-          }}
-          handleClose={() => setDeleteModalActive(false)}
-          classname={"max-w-567 mx-auto"}
-        />
-      )}
-      {assignStudentModalActive && (
-        <Modal
-          title="Assign Tutor"
-          classname={"max-w-[760px] mx-auto"}
-          cancelBtn={true}
-          cancelBtnClassName="max-w-140"
-          primaryBtn={{
-            text: "Assign",
-            className: "max-w-140 pl-8 pr-8",
-            onClick: (e) => handleSubmit(e),
-            disabled: submitBtnDisabled,
-            loading: loading,
-          }}
-          handleClose={handleClose2}
-          body={
-            <>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-2 md:gap-x-3 gap-y-4 mb-5">
-                <div>
-                  <InputSearch
-                    label="Student Name"
-                    value={modalData.studentName}
-                    onChange={(e) =>
-                      setModalData({
-                        ...modalData,
-                        studentName: e.target.value,
-                      })
-                    }
-                    optionData={students}
-                    onOptionClick={(item) => {
-                      setModalData({
-                        ...modalData,
-                        studentName: item.value,
-                        studentId: item._id,
-                      });
-                    }}
-                    optionPrefix="s"
-                    parentClassName="w-full mr-4"
-                    labelClassname="ml-2 mb-0.5"
-                    inputContainerClassName="px-5 py-3.5 text-sm bg-primary-50 border-0"
-                    inputClassName="bg-transparent"
-                    placeholder="Student Name"
-                    type="select"
-                  />
-                </div>
-                <div>
-                  <InputSearch
-                    label="Tutor Name"
-                    value={modalData.tutorName}
-                    onChange={(e) =>
-                      setModalData({
-                        ...modalData,
-                        tutorName: e.target.value,
-                      })
-                    }
-                    optionData={tutors}
-                    onOptionClick={(item) => {
-                      setModalData({
-                        ...modalData,
-                        tutorName: item.value,
-                        tutorId: item._id,
-                      });
-                    }}
-                    optionPrefix="t"
-                    parentClassName="w-full mr-4"
-                    labelClassname="ml-2 mb-0.5"
-                    inputContainerClassName="px-5 py-3.5 text-sm bg-primary-50 border-0"
-                    inputClassName="bg-transparent"
-                    placeholder="Tutor Name"
-                    type="select"
-                  />
-                </div>
-              </div>
-            </>
-          }
-        />
-      )}
-    </div>
+              </>
+            }
+          />
+        )
+      }
+    </div >
   );
 }

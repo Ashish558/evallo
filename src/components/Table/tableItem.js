@@ -301,7 +301,7 @@ export default function TableItem({
               value={item.userStatus ? item.userStatus : "-"}
               optionData={["active", "blocked", "dormant"]}
               inputContainerClassName="min-w-[100px] pt-0 pb-0 pr-2 pl-0 text-center"
-              optionClassName="font-semibold opacity-60 text-sm"
+              optionClassName="text-sm"
               labelClassname="hidden"
               onChange={(val) => handlestatusChange({ userStatus: val })}
             />

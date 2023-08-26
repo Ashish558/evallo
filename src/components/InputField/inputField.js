@@ -49,7 +49,7 @@ export default function InputField({
     setShowDiv(true)
   }, [error])
 
-  
+
   return (
     <div className={`relative text-sm ${parentClassName && parentClassName}`}>
       {label && (
@@ -63,7 +63,7 @@ export default function InputField({
         </label>
       )}
       <div
-        className={`py-[13px] px-[14px] lg:py-[9px] lg:px-[16px] flex items-center rounded  ${inputContainerClassName ? inputContainerClassName : ""
+        className={`py-[9px] px-[14px] lg:py-[13px] lg:px-[21px] flex items-center rounded  ${inputContainerClassName ? inputContainerClassName : ""
           } ${disabled === true ? "cursor-not-allowed" : ""} `}
       >
         {Icon && (
@@ -92,7 +92,7 @@ export default function InputField({
           </div>
         )}
         <input
-          className={`outline-0 w-full text-sm pl-1 ${inputClassName ? inputClassName : ""
+          className={`outline-0 w-full text-[17.5px] pl-1 ${inputClassName ? inputClassName : ""
             } ${disabled === true ? "cursor-not-allowed" : ""} `}
           placeholder={placeholder}
           type={inputType ? inputType : "text"}
@@ -133,8 +133,8 @@ export default function InputField({
             }
           />
         )}
-        
-         {IconRight2 &&<img onClick={DateIconClick} className="ml-3 cursor-pointer scale-[0.80]" src={IconRight2} alt="right icon"/>}
+
+        {IconRight2 && <img onClick={DateIconClick} className="ml-3 cursor-pointer scale-[0.80]" src={IconRight2} alt="right icon" />}
         {right && right}
       </div>
 
