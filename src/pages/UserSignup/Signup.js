@@ -413,23 +413,30 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
           reqBody.userId = values.userId;
           updateUser(reqBody)
             .then((res) => {
+              setLoading(false);
               console.log(res);
+              if (res?.error?.data?.message === "Referral code not match."){
+              alert("Referal code is not valid! Enter valid referal code.");
+          return ;
+              }
               if (res.error) {
                 alert("Something went wrong");
                 return;
               }
-              setLoading(false);
+              
+             
             
               alert("Signup successful");
               //navigate("/");
                if(frames.userDetails && customFields?.length>0){
-                alert("hhhh")
+               
                 setFrames({
                   ...frames,
                   setPasswordFields: false,
                   userDetails: false,
                   customFields: true,
                 });
+                return 
             }
             else {
             setFrames({
