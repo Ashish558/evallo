@@ -37,9 +37,17 @@ export default function InputFieldDropdown({
   onBlur,
 }) {
   const [inputType, setInputType] = useState(type);
+
   const [searchCode, setSearchCode] = useState("");
   const [dialCode, setDialCode] = useState([]);
   const [toggleOptions, setToggleOptions] = useState(false);
+  const selectRef = useRef();
+  useOutsideAlerter(selectRef, () => setToggleOptions(false));
+
+  useEffect(() => {
+   
+    setToggleOptions(false)
+  }, [value]);
   const [showDiv, setShowDiv] = useState(true);
   const divRef = useRef();
   const [showDiv2, setShowDiv2] = useState(true);
@@ -102,6 +110,7 @@ export default function InputFieldDropdown({
         } ${disabled === true ? "cursor-not-allowed" : ""} `}
       >
         <div
+        ref={selectRef} 
           className="relative flex justify-between gap-3 max-w-[130px]"
           onClick={() => setToggleOptions(!toggleOptions)}
         >

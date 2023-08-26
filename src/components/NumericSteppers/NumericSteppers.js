@@ -27,7 +27,7 @@ export default function NumericSteppers({
               className={`w-[36px] relative z-[5000] lg:block  h-[36px] bg-primary border rounded-full  font-medium
              ${
                i + 1 < parseInt(currentStep)
-                 ? "bg-[#FFA28D]  before:bg-blue-500 text-white "
+                 ? "bg-[#FFA28D] before:!bg-[#FFA28D]  text-white "
                  : ""
              } 
              ${

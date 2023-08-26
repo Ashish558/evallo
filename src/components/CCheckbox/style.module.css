@@ -30,6 +30,7 @@
  
  .container input:checked~.checkmark {
    background-color: #FFA28D;
+   border:none;
  }
  .container2 input:checked ~ .checkmark {
     background-color: #9CA3AF;
@@ -46,7 +47,7 @@
  
  .container .checkmark:after {
    left: 6.8px;
-   top: 2.9px;
+   top: 2.2px;
    width: 6.2px;
    height: 12px;
    border: solid white;

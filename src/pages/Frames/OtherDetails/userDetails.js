@@ -13,6 +13,7 @@ import CustomFields from "../CustomFields/CustomFields";
 import InputFieldDropdown from "../../../components/InputField/inputFieldDropdown";
 import InputSelect from "../../../components/InputSelect/InputSelect";
 import leftDrop from "../../../assets/icons/Polygon 2.svg";
+import CCheckbox from "../../../components/CCheckbox/CCheckbox";
 export default function UserDetails({
   setFrames,
   persona,
@@ -139,7 +140,7 @@ export default function UserDetails({
           error={detailsError.LastName}
         />
       </div>
-      <div className="flex justify-between gap-5 items-center">
+      <div className="flex justify-between gap-6 items-center">
         <InputField
           parentClassName="mb-6 relative flex-1"
           label={`${personaText} Email `}
@@ -154,7 +155,7 @@ export default function UserDetails({
           error={detailsError.Email}
         />
         <InputFieldDropdown
-          parentClassName="mb-6 w-[210px]"
+          parentClassName="mb-6 w-[230px]"
           label={`${personaText} Phone  ${persona !== "parent" ? "" : ""} `}
           labelClassname="text-[#26435F] font-bold  mb-1 text-sm"
           inputContainerClassName="border h-[40px] border-[#D0D5DD] pt-3   pb-3 relative border"
@@ -216,24 +217,14 @@ export default function UserDetails({
         />
 
         <div className={style.shy}>
-          <label className={`${style["checkbox-label"]} block mt-7 py-auto `}>
-            <input
-              type="checkbox"
-              checked={otherDetails.referalCode?.trim()?.length === 0 || otherDetails.referalCode===""}
-              //  onChange={handleCheckboxChangeReferral}
-            />
-            <span
-            onClick={()=>{
-              setOtherDetails({...otherDetails,referalCode:""})
-            }}
-              className={`${style["custom-checkbox"]} ${
-                otherDetails.referalCode?.trim()?.length === 0 ? "checked" : ""
-              }`}
-            ></span>
+       <div className="flex items-center mt-2">
+         <CCheckbox  checked={otherDetails.referalCode?.trim()?.length === 0 }
+                          onChange={()=>  setOtherDetails({...otherDetails,referalCode:""})}/>
+        
             <span className="ml-2 font-medium text-[#507CA8]">
               I don't have one
             </span>
-          </label>
+        </div>
         </div>
    
       <div className="flex justify-between items-center mt-16">

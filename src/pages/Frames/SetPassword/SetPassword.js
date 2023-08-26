@@ -100,21 +100,42 @@ export default function SetPassword({
             <img src={EvalloLogo} alt="logo" className="mb-4 scale-[.93] " />
 
             <div
-              className={`w-full flex flex-col justify-center items-center bg-white py-6 pb-10 ${
+              className={`w-full flex rounded-md flex-col justify-center items-center bg-white py-6 pb-10 ${
                 signup ? "" : "px-[130px]"
               } `}
             >
-              <div className="bg-[#FFA28D] rounded-full w-10 h-10 p-2 text-center mx-auto text-white">
+
+              {
+                !resetPassword ?
+                <>
+                <div className="bg-[#FFA28D] rounded-full w-10 h-10 p-2 text-center mx-auto text-white">
                 5
               </div>
-              <p className="font-medium text-sm text-center mx-auto py-1 text-[#FFA28D] leading-snug mb-7">
+              <p className="font-medium text-[15px] text-center mx-auto py-1 text-[#FFA28D] leading-snug mb-7">
                 Set Password
               </p>
+
+              
+              
               <div className="h-[1px] bg-[#EBEBEB] mx-[0px]  mt-[-16px] w-[110%] mb-[19px]"></div>
               <p className="mb-8 text-[#26435F] text-center">
                 Congratulations! Your email has been verified. Now,
                 <br /> please set a strong password for your Evallo account.
-              </p>
+              </p> </>:
+              <>
+             
+               <p className="font-medium text-4xl text-center mx-auto py-2 text-[#FFA28D] leading-snug mb-7">
+               Reset Password
+             </p>
+             <div className="h-[1px] bg-[#EBEBEB] mx-[0px]  mt-[-16px] w-[110%] mb-[25px]"></div>
+             <p className="mb-8 text-[#26435F] text-center">
+              
+              Please set a new strong password for your Evallo account.
+            </p>
+             </>
+}
+
+
               <div className="flex justify-between gap-10">
                 <InputField
                   parentClassName="mb-6 relative"

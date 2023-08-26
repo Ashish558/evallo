@@ -17,13 +17,22 @@ export default function SignupSuccessful({
   email
 }) {
   const [resentEmailApi, setResentEmailApi] = useResentEmailMutation();
-
+ const [loading,setLoading]=useState(false)
   const handleSubmit = () => {
+if(loading)
+return
 
-
-
+    setLoading(true)
     resentEmailApi({ email }).then((res) => {
+      if(res?.data?.status==='success')
+      alert("New email verification link sent.")
       console.log("Successfully resent email", res);
+      setLoading(false)
+    }).catch((err)=>{
+    
+      if(err?.data?.message)
+      alert(err?.data?.message)
+      setLoading(false)
     });
 
   }
@@ -53,7 +62,7 @@ export default function SignupSuccessful({
           <div className="text-center text-[#26435F] flex flex-col gap-3 text-md w-fit">
             <h3 className="font-medium">{successfulSignUpMessage.head}</h3>
             <h4 className="font-medium">{successfulSignUpMessage.mid}</h4>
-            <h4>{successfulSignUpMessage.last} <span onClick={() => handleSubmit()} className="text-[#24A3D9] cursor-pointer">{successfulSignUpMessage.verify}</span></h4>
+            <h4>{successfulSignUpMessage.last} <span onClick={() => handleSubmit()} className={`text-[#24A3D9] cursor-pointer ${loading?'opacity-70':''}`}>{successfulSignUpMessage.verify}</span></h4>
             <h2 className="font-semibold">{successfulSignUpMessage.bottom}</h2>
           </div>
         </div>

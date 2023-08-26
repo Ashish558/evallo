@@ -419,17 +419,28 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
                 return;
               }
               setLoading(false);
+            
               alert("Signup successful");
               //navigate("/");
-
-              setFrames({
-                ...frames,
-                setPasswordFields: true,
-                userDetails: false,
-                customFields: false,
-              });
-
-              sessionStorage.clear();
+               if(frames.userDetails && customFields?.length>0){
+                alert("hhhh")
+                setFrames({
+                  ...frames,
+                  setPasswordFields: false,
+                  userDetails: false,
+                  customFields: true,
+                });
+            }
+            else {
+            setFrames({
+              ...frames,
+              setPasswordFields: true,
+              userDetails: false,
+              customFields: false,
+            });
+            sessionStorage.clear();
+          }
+             
             })
             .catch((err) => {
               setLoading(false);
@@ -508,7 +519,7 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
               <h1 className="text-[28px] mb-[13px]">
                 {frames.signupActive
                   ? "Sign Up"
-                  : frames.setPasswordFields
+                  : frames.setPasswordFields && !isAddedByAdmin
                   ? "Set Password"
                   : "Profile Details"}
               </h1>
@@ -533,7 +544,7 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
               {currentStep > 0 && !frames.signupSuccessful && (
                 <NumericSteppers
                   className="mt-3"
-                  fieldNames={["Personal info" ,"Student / Parent","Further details"]} 
+                  fieldNames={["Personal info" ,"Student / Parent",isAddedByAdmin?"Set password":"Further details"]} 
                   totalSteps={
                     customFields?.length === 0
                       ? 2 + isAddedByAdmin
@@ -699,27 +710,25 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
                   </div>
                   <div className=" gap-x-2 my-5">
                     
-                    <div className={styles.textLight}>
-                      <label
-                        className={`${styles["checkbox-label"]} text-[13.5px] block  `}
-                      >
-                      <CCheckbox  checked={values.ageChecked}
+                    <div className={`flex ${styles.textLight}`}>
+                    <CCheckbox  checked={values.ageChecked}
                           onChange={handleCheckboxChangeAge}/>
-                        <span className="ml-2 text-[#507CA8]">
+                     
+                     
+
+                        <span className="ml-2 text-sm text-[#507CA8]">
                           I confirm that I am 13 years or older
                         </span>
-                      </label>
+                     
                     </div>
                   </div>
 
                   <div className=" gap-x-2 my-5">
-                    <div className={styles.textLight}>
-                      <label
-                        className={`${styles["checkbox-label"]} text-[13.5px] block  `}
-                      >
+                    <div className={`flex ${styles.textLight}`}>
+                     
                        <CCheckbox  checked={values.terms}
                           onChange={handleCheckboxChangeTerms}/>
-                        <p className={` ml-2  text-[#507CA8]`}>
+                        <p className={` ml-2 text-sm text-[#507CA8]`}>
                           I have carefully read and agree to the{" "}
                           <a
                             href="http://evallo.org/tou"
@@ -735,7 +744,7 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
                             Privacy Policy
                           </a>
                         </p>
-                      </label>
+                     
                     </div>
                   </div>
                   <div className="flex items-center mt-[30px] justify-between">

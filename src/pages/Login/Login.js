@@ -30,13 +30,13 @@ export default function Login({ setLoginFormActive }) {
   const [loginActive, setLoginActive] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState({});
+
   const [wait, setWait] = useState(false);
   const [remember, setRemember] = useState(false);
-  // const [error, setError] = useState({
-  //    password: '',
-  //    email: ''
-  // })
+  const [error, setError] = useState({
+     password: '',
+     email: ''
+  })
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -71,6 +71,25 @@ export default function Login({ setLoginFormActive }) {
         setLoginLoading(false);
         if (res.error) {
           console.log("login err", res.error);
+          
+          if(res?.error?.data?.message==="Email not found"){
+            setError({
+email:res?.error?.data?.message
+            })
+            return 
+          }
+          if(res?.error?.data?.message==="Wrong password"){
+            setError({
+password:res?.error?.data?.message
+            })
+            return 
+          }
+          if(res?.error?.data?.message==="User not verified"){
+            setError({
+email: "Email not verified! Please Verify your email and set your password"
+            })
+            return 
+          }
           if (res.error.status == 500) {
             alert("Login failed");
             return;
@@ -162,6 +181,7 @@ export default function Login({ setLoginFormActive }) {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   error={error.email}
+                  totalErrors={error}
                 />
 
                 <InputField
@@ -177,6 +197,7 @@ export default function Login({ setLoginFormActive }) {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   error={error.password}
+                  totalErrors={error}
                   onKeyDown={(e) => {
                     if (e.key === "Enter") {
                       handleSubmit();
