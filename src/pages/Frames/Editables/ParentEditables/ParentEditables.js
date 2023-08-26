@@ -288,12 +288,9 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
    }
 
    useEffect(() => {
-      console.log("currentToEdit", currentToEdit)
-   })
-   useEffect(() => {
       if (student.length > 0) {
          fetchStudents(student).then((res) => {
-            console.log('students', res.data.data.students);
+            // console.log('students', res.data.data.students);
             let tempData = res.data.data.students.map((tutor) => {
                return {
                   _id: tutor._id,
@@ -484,7 +481,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
    }
 
    // console.log('awsLink', awsLink)
-   console.log('toedit--', currentToEdit)
+   // console.log('toedit--', currentToEdit)
    // console.log('setting', settings.servicesAndSpecialization[currentToEdit.selectedIdx])
    // console.log('field', currentField)
    // console.log('sett', settings)

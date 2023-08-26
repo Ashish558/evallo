@@ -229,10 +229,14 @@ export default function TutorProfile({ isOwn }) {
    })
 
    useEffect(() => {
-      {
-         console.log("toEdit",toEdit)
+      let userId = ''
+      if (isOwn) {
+         userId = id
+      } else {
+         console.log("userid" + params.id)
+         userId = params.id
       }
-      getFeedbacks({ id: params.id })
+      getFeedbacks({ id: userId })
          .then(({ error, data }) => {
             if (error) {
                console.log('feedback error', error)
@@ -285,9 +289,7 @@ export default function TutorProfile({ isOwn }) {
       let userId = ''
       if (isOwn) {
          userId = id
-         console.log("id" + id)
       } else {
-         console.log("userid" + params.id)
          userId = params.id
       }
       getUserDetail({ id: userId })
@@ -432,15 +434,15 @@ export default function TutorProfile({ isOwn }) {
       //    .then(res => {
 
       //    })
-      console.log("UserDetails",userDetail)
-      console.log("organizations"+organization.settings)
-         setSettings(organization.settings)
+      console.log("UserDetails", userDetail)
+      console.log("organizations" + organization.settings)
+      setSettings(organization.settings)
    }, [])
 
    // console.log('user', user)
    // console.log('To-edit', toEdit)
    // console.log('userdetail', userDetail.serviceSpecializations)
-   console.log('settings', settings.Expertise)
+   // console.log('settings', settings.Expertise)
    const { about, education, tagLine, tutorLevel, testPrepRate, otherRate, subjectTutoringRate, address, pincode, paymentInfo, tutorRank, income, paymentStatus, linkedIn, videoLink } = userDetail
    // console.log('userdetail', tutorLevel)
 
