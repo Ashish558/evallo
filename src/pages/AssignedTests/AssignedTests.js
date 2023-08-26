@@ -687,7 +687,7 @@ export default function AssignedTests() {
                 <img src={AddIcon} className="ml-3" alt="new test" />
               </button>
             )}
-
+{persona === "parent" &&
             <div className="flex justify-between whitespace-nowrap items-center gap-6">
               <InputField
                 IconRight={SearchIcon}
@@ -707,8 +707,9 @@ export default function AssignedTests() {
                 ))}
               </div>
             </div>
+}
           </div>
-
+                
           {persona === "admin" && (
             <>
               <div className="flex gap-4 justify-between items-center">
