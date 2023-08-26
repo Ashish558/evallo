@@ -203,6 +203,11 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
          api: 'tutorDetail',
       },
       {
+         name: 'addressData',
+         title: 'Address',
+         api: 'tutorDetail',
+      },
+      {
          name: 'tutorContact',
          title: 'Contact',
          api: 'user',
@@ -267,10 +272,11 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
             getCurrentField(key)
             // console.log(toEdit);
             // setEditFieldValue(toEdit[key])
+            setCurrentToEdit(toEdit[key])
 
          }
       })
-      console.log(currentToEdit.phone+"currentUser")
+      console.log(currentToEdit.phone + "currentUser")
    }, [toEdit])
 
    const handleClose = () => {
@@ -282,13 +288,13 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
       // setToEdit()
    }
 
-useEffect(()=>{
-   console.log("currentToEdit",currentToEdit)
-})
+   useEffect(() => {
+      console.log("currentToEdit", currentToEdit)
+   })
    useEffect(() => {
       if (student.length > 0) {
          fetchStudents(student).then((res) => {
-            console.log('students' ,res.data.data.students);
+            console.log('students', res.data.data.students);
             let tempData = res.data.data.students.map((tutor) => {
                return {
                   _id: tutor._id,
@@ -301,7 +307,7 @@ useEffect(()=>{
       }
    }, [student]);
    useEffect(() => {
-      {console.log(currentField.name+"current field")}
+      { console.log(currentField.name + "current field") }
       if (parent.length > 0) {
          fetchParents(parent).then((res) => {
             let tempData = res.data.data.parents.map((parent) => {
@@ -479,7 +485,7 @@ useEffect(()=>{
    }
 
    // console.log('awsLink', awsLink)
-   // console.log('toedit', currentToEdit)
+   console.log('toedit--', currentToEdit)
    // console.log('setting', settings.servicesAndSpecialization[currentToEdit.selectedIdx])
    // console.log('field', currentField)
    // console.log('sett', settings)
@@ -522,20 +528,19 @@ useEffect(()=>{
    // console.log(settings);
    const [startDate, setStartDate] = useState(new Date());
 
-   const [modalClassName,setModalClassName]=useState('500px');
-useEffect(()=>
-   {     {console.log("modalClassName"+modalClassName)}
-         if(currentField.name==='about' || currentField.name==='interest')
-         {
-            setModalClassName('900px')
-         }
-         else{
-            setModalClassName('500px')
-         }
-   },[currentField.name,modalClassName]
-)
+   const [modalClassName, setModalClassName] = useState('500px');
+   useEffect(() => {
+      { console.log("modalClassName" + modalClassName) }
+      if (currentField.name === 'about' || currentField.name === 'interest') {
+         setModalClassName('900px')
+      }
+      else {
+         setModalClassName('500px')
+      }
+   }, [currentField.name, modalClassName]
+   )
    return (
-      
+
       Object.keys(toEdit).map(key => {
          return toEdit[key].active === true &&
             <Modal
@@ -555,13 +560,13 @@ useEffect(()=>
                handleClose={handleClose}
                body={
                   <>
-                  <div className='flex'>
-                     <div className='' style={{color:'#26435F',fontWeight:'600',fontSize:'21.33px'}}>
-                        {currentField.title ? currentField.title : toEdit.tutorServices ? 'Service' : ''}
-                     </div>
-                     <button className='w-[100px] bg-primaryOrange text-base pt-2 rounded text-white pb-2 text-lg pl-3 pr-3 ml-auto' onClick={handleSubmit}>
-                        Save
-                     </button>
+                     <div className='flex'>
+                        <div className='' style={{ color: '#26435F', fontWeight: '600', fontSize: '21.33px' }}>
+                           {currentField.title ? currentField.title : toEdit.tutorServices ? 'Service' : ''}
+                        </div>
+                        <button className='w-[100px] bg-primaryOrange text-base pt-2 rounded text-white pb-2 text-lg pl-3 pr-3 ml-auto' onClick={handleSubmit}>
+                           Save
+                        </button>
                      </div>
                      <div class="mt-3 border-1 ml-5 mr-5 border-t border-[#26435F33]-300 justify-center "></div>
                      <form className='mt-5 mb-4' id='editable-form' onSubmit={handleSubmit} >
@@ -974,77 +979,77 @@ useEffect(()=>
                               </div> */}
                               <div className='grid grid-cols-12 gap-4'>
                                  <div className='col-span-6'>
-                                 <div><p style={{color:'#26435F',fontWeight:'500'}}>Street</p></div>
-                                 <InputField
-                                    labelClassname='hidden'
-                                    placeholder='Text'
-                                    inputContainerClassName='text-sm pt-3.5 pb-3 px-5 bg-primary-50 border-'
-                                    inputClassName='bg-transparent rounded-[4px]'
-                                    parentClassName='flex-1' type='text'
-                                    // value={currentToEdit.education}
-                                    // onChange={e => setCurrentToEdit({ ...currentToEdit, education: e.target.value })} 
+                                    <div><p style={{ color: '#26435F', fontWeight: '500' }}>Street</p></div>
+                                    <InputField
+                                       labelClassname='hidden'
+                                       placeholder='Text'
+                                       inputContainerClassName='text-sm pt-3.5 pb-3 px-5 bg-primary-50 border-'
+                                       inputClassName='bg-transparent rounded-[4px]'
+                                       parentClassName='flex-1' type='text'
+                                       value={currentToEdit.address}
+                                       onChange={e => setCurrentToEdit({ ...currentToEdit, address: e.target.value })}
                                     />
 
                                  </div>
                                  <div className='col-span-6'>
-                                 <div><p style={{color:'#26435F',fontWeight:'500'}}>City</p></div>
-                                 <InputField
-                                    labelClassname='hidden'
-                                    placeholder='City'
-                                    inputContainerClassName='text-sm pt-3.5 pb-3 px-5 bg-primary-50 border-'
-                                    inputClassName='bg-transparent rounded-[4px]'
-                                    parentClassName='flex-1' type='text'
-                                    // value={currentToEdit.education}
-                                    // onChange={e => setCurrentToEdit({ ...currentToEdit, education: e.target.value })} 
+                                    <div><p style={{ color: '#26435F', fontWeight: '500' }}>City</p></div>
+                                    <InputField
+                                       labelClassname='hidden'
+                                       placeholder='City'
+                                       inputContainerClassName='text-sm pt-3.5 pb-3 px-5 bg-primary-50 border-'
+                                       inputClassName='bg-transparent rounded-[4px]'
+                                       parentClassName='flex-1' type='text'
+                                       value={currentToEdit.city}
+                                       onChange={e => setCurrentToEdit({ ...currentToEdit, city: e.target.value })}
                                     />
                                  </div>
-                                 </div>
-                                 
+                              </div>
 
-                                 <div className='grid grid-cols-12 gap-4 mt-5'>
+
+                              <div className='grid grid-cols-12 gap-4 mt-5'>
                                  <div className='col-span-6'>
-                                 <div><p style={{color:'#26435F',fontWeight:'500'}}>State</p></div>
-                                 <InputField
-                                    labelClassname='hidden'
-                                    placeholder='Text'
-                                    inputContainerClassName='text-sm pt-3.5 pb-3 px-5 bg-primary-50 border-'
-                                    inputClassName='bg-transparent rounded-[4px]'
-                                    parentClassName='flex-1' type='text'
-                                    // value={currentToEdit.education}
-                                    // onChange={e => setCurrentToEdit({ ...currentToEdit, education: e.target.value })} 
+                                    <div><p style={{ color: '#26435F', fontWeight: '500' }}>State</p></div>
+                                    <InputField
+                                       labelClassname='hidden'
+                                       placeholder='Text'
+                                       inputContainerClassName='text-sm pt-3.5 pb-3 px-5 bg-primary-50 border-'
+                                       inputClassName='bg-transparent rounded-[4px]'
+                                       parentClassName='flex-1' type='text'
+                                       value={currentToEdit.state}
+                                       onChange={e => setCurrentToEdit({ ...currentToEdit, state: e.target.value })}
                                     />
 
                                  </div>
                                  <div className='col-span-6'>
-                                 <div><p style={{color:'#26435F',fontWeight:'500'}}>Country</p></div>
-                                 <InputField
-                                    labelClassname='hidden'
-                                    placeholder='City'
-                                    inputContainerClassName='text-sm pt-3.5 pb-3 px-5 bg-primary-50 border-'
-                                    inputClassName='bg-transparent rounded-[4px]'
-                                    parentClassName='flex-1' type='text'
-                                    // value={currentToEdit.education}
-                                    // onChange={e => setCurrentToEdit({ ...currentToEdit, education: e.target.value })} 
+                                    <div><p style={{ color: '#26435F', fontWeight: '500' }}>Country</p></div>
+                                    <InputField
+                                       labelClassname='hidden'
+                                       placeholder='City'
+                                       inputContainerClassName='text-sm pt-3.5 pb-3 px-5 bg-primary-50 border-'
+                                       inputClassName='bg-transparent rounded-[4px]'
+                                       parentClassName='flex-1' type='text'
+                                       value={currentToEdit.country}
+                                       onChange={e => setCurrentToEdit({ ...currentToEdit, country: e.target.value })}
                                     />
                                  </div>
                               </div>
 
                               <div className='grid grid-cols-12 gap-4 mt-5'>
                                  <div className='col-span-6'>
-                                 <div><p style={{color:'#26435F',fontWeight:'500'}}>Zip</p></div>
-                                 <InputField
-                                    labelClassname='hidden'
-                                    placeholder='Text'
-                                    inputContainerClassName='text-sm pt-3.5 pb-3 px-5 bg-primary-50 border-'
-                                    inputClassName='bg-transparent rounded-[4px]'
-                                    parentClassName='flex-1' type='text'
-                                    // value={currentToEdit.education}
-                                    // onChange={e => setCurrentToEdit({ ...currentToEdit, education: e.target.value })} 
+                                    <div><p style={{ color: '#26435F', fontWeight: '500' }}>Zip</p></div>
+                                    <InputField
+                                       labelClassname='hidden'
+                                       placeholder='Text'
+                                       inputContainerClassName='text-sm pt-3.5 pb-3 px-5 bg-primary-50 border-'
+                                       inputClassName='bg-transparent rounded-[4px]'
+                                       parentClassName='flex-1' type='text'
+                                       value={currentToEdit.pincode}
+                                       onChange={e => setCurrentToEdit({ ...currentToEdit, pincode: e.target.value })}
                                     />
 
                                  </div>
-                                 
-                           </div>
+
+                              </div>
                            </div>
                         }
                         {currentField.name === 'tagLine' &&
@@ -1230,7 +1235,7 @@ useEffect(()=>
                         }
                         {currentField.name === 'income' &&
                            <div className='flex justify-center items-center mb-4 pb-4'>
-                           
+
                               <InputField
                                  labelClassname='hidden'
                                  placeholder=''
@@ -1276,126 +1281,126 @@ useEffect(()=>
                                  className="bg-lightWhite w-full outline-0 px-5 py-4 rounded"
                               ></textarea> */}
                               <div>
-                              <div className='grid grid-cols-12'>
-                                 <div className='col-span-2'>
-                                 <ProfilePhoto isTutor={true}
-                                    src={currentToEdit.photo ? `${awsLink}${currentField.photo}` : '/images/default.jpeg'}
-                                    handleChange={handleProfilePhotoChange} editable={true} />
+                                 <div className='grid grid-cols-12'>
+                                    <div className='col-span-2'>
+                                       <ProfilePhoto isTutor={true}
+                                          src={currentToEdit.photo ? `${awsLink}${currentField.photo}` : '/images/default.jpeg'}
+                                          handleChange={handleProfilePhotoChange} editable={true} />
+                                    </div>
+                                    <div className=' col-span-8 '>
+                                       <div className='grid grid-cols-12 gap-8'>
+                                          <div className=' col-span-3'>
+                                             <div><p style={{ color: '#26435F', fontWeight: '500' }}>First Name</p></div>
+                                             <InputField
+                                                labelClassname='hidden'
+                                                placeholder='First Name'
+                                                inputContainerClassName='text-sm pt-3 pb-3 px-5 bg-primary-50 border-white'
+                                                inputClassName='bg-transparent text-[#667085] text-400'
+                                                value={currentToEdit.firstName}
+                                                onChange={e => setCurrentToEdit({ ...currentToEdit, firstName: e.target.value })} />
+
+                                          </div>
+                                          <div className=' col-span-3'>
+                                             <div><p style={{ color: '#26435F', fontWeight: '500' }}>Last Name</p></div>
+
+                                             <InputField
+                                                labelClassname='hidden'
+                                                placeholder='Last Name'
+                                                inputContainerClassName='text-sm pt-3 pb-3 px-5 bg-primary-50 border-white'
+                                                inputClassName='bg-transparent text-[#667085] text-400'
+                                                value={currentToEdit.lastName}
+                                                onChange={e => setCurrentToEdit({ ...currentToEdit, lastName: e.target.value })} />
+
+                                          </div>
+
+                                          <div className=' col-span-6'>
+                                             <div><p style={{ color: '#26435F', fontWeight: '500' }}>Email</p></div>
+
+                                             <InputField
+                                                labelClassname='hidden'
+                                                placeholder='Email'
+                                                inputContainerClassName='text-sm pt-3 pb-3 px-5 bg-primary-50 border-white'
+                                                inputClassName='bg-transparent text-[#667085] text-400'
+                                                value={currentToEdit.email}
+                                                onChange={e => setCurrentToEdit({ ...currentToEdit, email: e.target.value })} />
+
+                                          </div>
+                                          <div className=' col-span-6'>
+                                             <div><p style={{ color: '#26435F', fontWeight: '500' }}>LinkedIn</p></div>
+
+                                             <InputField
+                                                labelClassname='hidden'
+                                                placeholder='Linkedin'
+                                                inputContainerClassName='text-sm pt-3 pb-3 px-5 bg-primary-50 border-white'
+                                                inputClassName='bg-transparent text-[#667085] text-400'
+                                                value={currentToEdit.linkedIn}
+                                                onChange={e => setCurrentToEdit({ ...currentToEdit, linkedIn: e.target.value })} />
+
+                                          </div>
+                                          <div className='col-span-6 '>
+                                             <div><p style={{ color: '#26435F', fontWeight: '500' }}>Phone</p></div>
+                                             <div className='grid grid-cols-12 gap-3'>
+                                                <div className='col-span-4'>
+
+                                                   <InputField
+                                                      labelClassname='hidden'
+                                                      placeholder=''
+                                                      inputContainerClassName='text-sm pt-3 pb-3 px-5 bg-primary-50 border-white'
+                                                      inputClassName='bg-transparent text-[#667085] text-400'
+                                                      value={currentToEdit.phoneCode}
+                                                      onChange={e => setCurrentToEdit({ ...currentToEdit, phoneCode: e.target.value })} />
+                                                </div>
+
+                                                <div className='col-span-8'>
+                                                   <div><p style={{ color: '#26435F', fontWeight: '500' }}> </p></div>
+
+                                                   <InputField
+                                                      labelClassname='hidden'
+                                                      placeholder='Mobile'
+                                                      inputContainerClassName='text-sm pt-3 pb-3 px-5 bg-primary-50 border-white'
+                                                      inputClassName='bg-transparent text-[#667085] text-400'
+                                                      value={currentToEdit.phone}
+                                                      onChange={e => { setCurrentToEdit({ ...currentToEdit, phone: e.target.value }); console.log(currentToEdit.phone + "phone") }} />
+                                                </div>
+                                             </div>
+                                          </div>
+                                       </div>
+                                    </div>
                                  </div>
-                                 <div className=' col-span-8 '>
-                                    <div className='grid grid-cols-12 gap-8'>
-                                    <div className=' col-span-3'>
-                                       <div><p style={{color:'#26435F',fontWeight:'500'}}>First Name</p></div>
-                                          <InputField
-                                    labelClassname='hidden'
-                                    placeholder='First Name'
-                                    inputContainerClassName='text-sm pt-3 pb-3 px-5 bg-primary-50 border-white'
-                                    inputClassName='bg-transparent text-[#667085] text-400'
-                                    value={currentToEdit.firstName}
-                                    onChange={e => setCurrentToEdit({ ...currentToEdit, firstName: e.target.value })} />
-                                   
-                                    </div>
-                                    <div className=' col-span-3'>
-                                    <div><p style={{color:'#26435F',fontWeight:'500'}}>Last Name</p></div>
 
-                                          <InputField
-                                    labelClassname='hidden'
-                                    placeholder='Last Name'
-                                    inputContainerClassName='text-sm pt-3 pb-3 px-5 bg-primary-50 border-white'
-                                    inputClassName='bg-transparent text-[#667085] text-400'
-                                    value={currentToEdit.lastName}
-                                    onChange={e => setCurrentToEdit({ ...currentToEdit, lastName: e.target.value })} />
-                                   
-                                    </div>
+                              </div>
 
-                                    <div className=' col-span-6'>
-                                    <div><p style={{color:'#26435F',fontWeight:'500'}}>Email</p></div>
-
-                                          <InputField
-                                    labelClassname='hidden'
-                                    placeholder='Email'
-                                    inputContainerClassName='text-sm pt-3 pb-3 px-5 bg-primary-50 border-white'
-                                    inputClassName='bg-transparent text-[#667085] text-400'
-                                    value={currentToEdit.email}
-                                    onChange={e => setCurrentToEdit({ ...currentToEdit, email: e.target.value })} />
-                                   
-                                    </div>
-                                    <div className=' col-span-6'>
-                                    <div><p style={{color:'#26435F',fontWeight:'500'}}>LinkedIn</p></div>
-
-                                          <InputField
-                                    labelClassname='hidden'
-                                    placeholder='Linkedin'
-                                    inputContainerClassName='text-sm pt-3 pb-3 px-5 bg-primary-50 border-white'
-                                    inputClassName='bg-transparent text-[#667085] text-400'
-                                    value={currentToEdit.linkedIn}
-                                    onChange={e => setCurrentToEdit({ ...currentToEdit, linkedIn: e.target.value })} />
-                                   
-                                    </div>
-                                    <div className='col-span-6 '>
-                                    <div><p style={{color:'#26435F',fontWeight:'500'}}>Phone</p></div>
-                                          <div className='grid grid-cols-12 gap-3'>
-                                          <div className='col-span-4'>
-
-                                          <InputField
-                                    labelClassname='hidden'
-                                    placeholder=''
-                                    inputContainerClassName='text-sm pt-3 pb-3 px-5 bg-primary-50 border-white'
-                                    inputClassName='bg-transparent text-[#667085] text-400'
-                                    value={currentToEdit.phoneCode}
-                                    onChange={e => setCurrentToEdit({ ...currentToEdit, phoneCode: e.target.value })} />
-                                          </div>
-
-                                          <div className='col-span-8'>
-                                          <div><p style={{color:'#26435F',fontWeight:'500'}}> </p></div>
-
-                                          <InputField
-                                    labelClassname='hidden'
-                                    placeholder='Mobile'
-                                    inputContainerClassName='text-sm pt-3 pb-3 px-5 bg-primary-50 border-white'
-                                    inputClassName='bg-transparent text-[#667085] text-400'
-                                    value={currentToEdit.phone}
-                                    onChange={e => {setCurrentToEdit({ ...currentToEdit, phone: e.target.value });console.log(currentToEdit.phone+"phone")}} />
-                                          </div>
-                                    </div>
-                                    </div>
-                                    </div>
+                              <div className='mt-8 grid grid-cols-12' >
+                                 <div><p style={{ color: '#26435F', fontWeight: '500' }}>TagLine</p></div>
+                                 <div className='col-span-12 '>
+                                    <textarea cols={80} value={currentToEdit.tagLine} className=' rounded focus:border-[#D0D5DD]' style={{ border: '1px solid #D0D5DD', color: '#667085' }} onChange={(e) => setCurrentToEdit({ ...currentToEdit, tagLine: e.target.value })}></textarea>
                                  </div>
                               </div>
 
-                           </div>
-                           
-                            <div className='mt-8 grid grid-cols-12' >     
-                            <div><p style={{color:'#26435F',fontWeight:'500'}}>TagLine</p></div>
-                           <div className='col-span-12 '>
-                              <textarea cols={80} value={currentToEdit.tagLine} className=' rounded focus:border-[#D0D5DD]'style={{border:'1px solid #D0D5DD',color:'#667085'}}onChange={(e)=>setCurrentToEdit({...currentToEdit,tagLine:e.target.value})}></textarea>
-                           </div>
-                           </div>
-
-                           <div className='mt-8 grid grid-cols-12' >     
-                            <div><p style={{color:'#26435F',fontWeight:'500'}}>About</p></div>
-                           <div className='col-span-12 '>
-                              <textarea rows={3} cols={80} className=' rounded focus:border-[#D0D5DD]'style={{border:'1px solid #D0D5DD',color:'#667085'}} 
-                              value={currentToEdit.about}
-                              onChange={(e)=>{setCurrentToEdit({...currentToEdit,about:e.target.value})}}
-                              ></textarea>
-                           </div>
-                           </div>
+                              <div className='mt-8 grid grid-cols-12' >
+                                 <div><p style={{ color: '#26435F', fontWeight: '500' }}>About</p></div>
+                                 <div className='col-span-12 '>
+                                    <textarea rows={3} cols={80} className=' rounded focus:border-[#D0D5DD]' style={{ border: '1px solid #D0D5DD', color: '#667085' }}
+                                       value={currentToEdit.about}
+                                       onChange={(e) => { setCurrentToEdit({ ...currentToEdit, about: e.target.value }) }}
+                                    ></textarea>
+                                 </div>
+                              </div>
 
                               <div className='mt-8'>
-                                <div className='grid grid-cols-12 '>
+                                 <div className='grid grid-cols-12 '>
                                     <div className='col-span-6'>
-                                    <div><p style={{color:'#26435F',fontWeight:'500'}}>Education</p></div>
-                                       <textarea rows={3} cols={35} className=' rounded focus:border-[#D0D5DD]'style={{border:'1px solid #D0D5DD',color:'#667085'}}
-                                       value={currentToEdit.education}
-                                       onChange={(e)=>{setCurrentToEdit({...currentToEdit,education:e.target.value})}}
+                                       <div><p style={{ color: '#26435F', fontWeight: '500' }}>Education</p></div>
+                                       <textarea rows={3} cols={35} className=' rounded focus:border-[#D0D5DD]' style={{ border: '1px solid #D0D5DD', color: '#667085' }}
+                                          value={currentToEdit.education}
+                                          onChange={(e) => { setCurrentToEdit({ ...currentToEdit, education: e.target.value }) }}
                                        ></textarea>
                                     </div>
                                     <div className='col-span-6'>
-                                    <div><p style={{color:'#26435F',fontWeight:'500'}}>Experience</p></div>
-                                       <textarea rows={3} cols={35} className=' rounded focus:border-[#D0D5DD]'style={{border:'1px solid #D0D5DD',color:'#667085'}}></textarea>
+                                       <div><p style={{ color: '#26435F', fontWeight: '500' }}>Experience</p></div>
+                                       <textarea rows={3} cols={35} className=' rounded focus:border-[#D0D5DD]' style={{ border: '1px solid #D0D5DD', color: '#667085' }}></textarea>
                                     </div>
-                                 </div> 
+                                 </div>
                               </div>
 
                            </div>
@@ -1461,15 +1466,16 @@ useEffect(()=>
                                     !currentToEdit?.serviceSpecializations?.includes(item._id) ?
                                        <div className={`px-3 mr-2 rounded rounded-md py-1.5 border border-primary text-primary cursor-pointer`}
                                           onClick={() => {
-                                             let servicesArray=[]
-                                             if(currentToEdit.serviceSpecializations){
-                                                servicesArray=currentToEdit.serviceSpecializations
+                                             let servicesArray = []
+                                             if (currentToEdit.serviceSpecializations) {
+                                                servicesArray = currentToEdit.serviceSpecializations
                                              }
                                              console.log(servicesArray)
                                              setCurrentToEdit({
-                                             ...currentToEdit,
-                                             serviceSpecializations: [...servicesArray, item._id]
-                                          })}} >
+                                                ...currentToEdit,
+                                                serviceSpecializations: [...servicesArray, item._id]
+                                             })
+                                          }} >
                                           <p className='font-medium'>
                                              {item.text}
                                           </p>
@@ -1632,7 +1638,7 @@ useEffect(()=>
                                        }
                                        tempScores = tempScores.map((item, idx) => {
                                           if (selectedScoreIndex === idx) {
-                                             return { ...item, maths: checkNumber(currentToEdit.actScores[selectedScoreIndex]?.maths, parseInt(e.target.value), 36)}
+                                             return { ...item, maths: checkNumber(currentToEdit.actScores[selectedScoreIndex]?.maths, parseInt(e.target.value), 36) }
                                           } else {
                                              return { ...item }
                                           }
@@ -1667,7 +1673,7 @@ useEffect(()=>
                                        }
                                        tempScores = tempScores.map((item, idx) => {
                                           if (selectedScoreIndex === idx) {
-                                             return { ...item, english: checkNumber(currentToEdit.actScores[selectedScoreIndex]?.english, parseInt(e.target.value), 36)}
+                                             return { ...item, english: checkNumber(currentToEdit.actScores[selectedScoreIndex]?.english, parseInt(e.target.value), 36) }
                                           } else {
                                              return { ...item }
                                           }
@@ -1690,7 +1696,7 @@ useEffect(()=>
                                     inputClassName='bg-transparent pl-4 rounded-[4px]'
                                     parentClassName='flex-1 max-w-[140px]' type='number'
                                     value={currentToEdit.actScores[selectedScoreIndex]?.reading}
-                                   
+
                                     onChange={e => {
                                        let tempScores = [...currentToEdit.actScores]
                                        if (tempScores.length <= selectedScoreIndex) {
@@ -1703,7 +1709,7 @@ useEffect(()=>
                                        }
                                        tempScores = tempScores.map((item, idx) => {
                                           if (selectedScoreIndex === idx) {
-                                             return { ...item, reading: checkNumber(currentToEdit.actScores[selectedScoreIndex]?.reading, parseInt(e.target.value), 36)}
+                                             return { ...item, reading: checkNumber(currentToEdit.actScores[selectedScoreIndex]?.reading, parseInt(e.target.value), 36) }
                                           } else {
                                              return { ...item }
                                           }
@@ -1738,7 +1744,7 @@ useEffect(()=>
                                        }
                                        tempScores = tempScores.map((item, idx) => {
                                           if (selectedScoreIndex === idx) {
-                                             return { ...item, science: checkNumber(currentToEdit.actScores[selectedScoreIndex]?.science, parseInt(e.target.value), 36)}
+                                             return { ...item, science: checkNumber(currentToEdit.actScores[selectedScoreIndex]?.science, parseInt(e.target.value), 36) }
                                           } else {
                                              return { ...item }
                                           }
