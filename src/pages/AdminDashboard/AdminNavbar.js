@@ -16,6 +16,8 @@ import logoutIcon from "../../assets/images/Vectorlogout new.svg";
 import Dashboard1 from "../../assets/images/Dashboard 1 new.svg";
 import Dashboard from "../../assets/images/Dashboard 1.svg";
 import UsersIcon from "../../assets/images/Vector (1).png";
+import StudentIcon from "../../assets/icons/mdi_account-studentstudent.svg";
+import StudentIcon2 from "../../assets/icons/mdi_account-studentstudent2.svg";
 import UsersIcon1 from "../../assets/images/Vector (3).svg";
 import Schedule from "../../assets/images/Vector (2).png";
 import Schedule1 from "../../assets/images/Calendar 1.svg";
@@ -178,8 +180,8 @@ const tutorNav = [
     tooltip: "Assignments",
   },
   {
-    icon: UsersIcon,
-    activeIcon: UsersIcon1,
+    icon: StudentIcon,
+    activeIcon: StudentIcon2,
     path: "/assigned-students",
     tooltip: "Students",
   },
@@ -268,28 +270,43 @@ const AdminNavbar = () => {
       console.log("Successfully logged out");
     });
     sessionStorage.clear();
+   localStorage.clear("evalloToken");
     navigate("/");
     dispatch(updateIsLoggedIn(false));
     window.location.reload();
   };
   useEffect(() => {
     setActiveRoute(location.pathname);
+   
   }, [location.pathname]);
+ useEffect(()=>{
+
+  if((activeRoute==='/signup/user'|| activeRoute==='/signup' || activeRoute==="/")&&!isLoggedIn){
+    let arr=tutorNav;
+    if(activeRoute==='/')
+    arr[0].path="/dashboard"
+    setNavData(arr)
+  }
+ },[activeRoute])
+  console.log({navData,activeRoute,persona,isLoggedIn})
   return (
     <>
       <div className="flex justify-around bg-[#26435F] h-[72px] items-center w-full">
         <div
           className={`${persona === "superAdmin" ? "translate-x-[-80px]" : ""}`}
         >
-          <img src={icon} alt="evallo_logo" />
+          <a href="https://app.evallo.org">
+          <img className="h-[29.796px]" src={icon}  alt="evallo_logo" />
+          </a>
+         
         </div>
-        <div className="flex  text-[#FFFFFF] font-semibold text-[13px]">
+        <div className={`flex  text-[#FFFFFF] font-semibold text-[13px] ${!isLoggedIn&&"opacity-[0.3]"}`}>
           {navData.map((item, idx) => {
             return (
               <div
                 key={idx}
-                className="flex items-center mr-6 cursor-pointer"
-                onClick={() => handleNavigate(item.path)}
+                className={`flex items-center mr-6 ${isLoggedIn?"cursor-pointer":' cursor-default'}`}
+                onClick={() =>isLoggedIn&& handleNavigate(item.path)}
               >
                 {item?.path === activeRoute ? (
                   <>
@@ -319,7 +336,7 @@ const AdminNavbar = () => {
             );
           })}
         </div>
-        <div className="flex font-bold">
+        <div className={`flex font-bold ${isLoggedIn?"":"opacity-[0.3]"}`}>
           <div className="flex mr-[24px] text-[#24A3D9] text-xs ">
             <p className=" ">Pricing 	</p>
             <p className="pl-2">
@@ -337,10 +354,10 @@ const AdminNavbar = () => {
               />
             </p>
           </div>
-          {isLoggedIn && (
+          
             <div
               className="flex text-xs cursor-pointer"
-              onClick={() => setLogoutModalActive(true)}
+              onClick={() => isLoggedIn&& setLogoutModalActive(true)}
             >
               <div>
                 <p className="text-[#24A3D9]">Logout</p>
@@ -354,7 +371,7 @@ const AdminNavbar = () => {
                 />
               </div>
             </div>
-          )}
+         
         </div>
       </div>
       {logoutModalActive && (
@@ -365,7 +382,7 @@ const AdminNavbar = () => {
               you want to logout ?
             </>
           }
-          titleClassName="leading-9"
+          titleClassName="leading-9 text-center whitespace-nowrap mb-5"
           cancelBtn={true}
           cancelBtnClassName="py-4"
           primaryBtn={{
@@ -374,7 +391,7 @@ const AdminNavbar = () => {
             onClick: logoutUser,
           }}
           handleClose={() => setLogoutModalActive(false)}
-          body={<div className="mb-10"></div>}
+          body={<div className="mb-6"></div>}
           classname={"max-w-567 mx-auto"}
         />
       )}

@@ -9,6 +9,7 @@ export default function InputField({
   parentClassName,
   inputContainerClassName,
   Icon,
+  IconRight2Click,
   iconSize,
   refS,
   IconRight2,
@@ -37,7 +38,8 @@ export default function InputField({
   DateIconClick,
   onBlur,
   onMouseEnter,
-  defaultValue
+  defaultValue,
+  totalErrors
 }) {
   const [inputType, setInputType] = useState(type);
   const [showDiv, setShowDiv] = useState(true);
@@ -47,8 +49,10 @@ export default function InputField({
 
   useEffect(() => {
     setShowDiv(true)
-  }, [error])
-
+  }, [error,totalErrors])
+useEffect(()=>{
+  setShowDiv(false)
+},[value])
   
   return (
     <div className={`relative text-sm ${parentClassName && parentClassName}`}>
