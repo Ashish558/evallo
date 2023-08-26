@@ -231,7 +231,7 @@ export default function TableItem({
       {dataFor === "allUsers" && (
         <tr className="odd:bg-white   leading-8">
 
-          <td className="font-medium text-sm px-1  min-w-14 py-4  text-left">
+          <td className=" text-[17.5px] px-1  min-w-14 py-4  text-left">
             <span
               className="inline-block cursor-pointer pl-4"
 
@@ -240,7 +240,7 @@ export default function TableItem({
                 {dataFor === "allUsers" ? (
 
                   <label
-                    className={`${styles["checkbox-label"]} block text-[#26435F] font-medium`}
+                    className={`${styles["checkbox-label"]} block text-[#26435F] `}
                   >
                     <input
                       type="checkbox"
@@ -262,17 +262,17 @@ export default function TableItem({
               </div>
             </span>
           </td>
-          <td className="font-medium text-sm px-1 min-w-14 py-4">
+          <td className=" text-[17.5px] px-1 min-w-14 py-4">
             <div className="my-[6px]">{item.userType}</div>
           </td>
-          <td className="font-medium text-sm px-1  min-w-14 py-4">
+          <td className=" text-[17.5px] px-1  min-w-14 py-4">
             <div className="my-[6px]">{item.email}</div>
           </td>
 
-          <td className="font-medium text-sm px-1  min-w-14 py-4">
+          <td className=" text-[17.5px] px-1  min-w-14 py-4">
             <div className="my-[6px]">{item.phone}</div>
           </td>
-          <td className="font-medium text-sm px-1  min-w-14 py-4">
+          <td className=" text-[17.5px] px-1  min-w-14 py-4">
             <div className="my-[6px]">
               {item.assignedTutor?.length > 0
                 ? item.assignedTutor?.map((id, idx) => {
@@ -284,30 +284,30 @@ export default function TableItem({
                 : "-"}
             </div>
           </td>
-          <td className="font-medium text-sm px-1  min-w-14 py-4">
+          <td className=" text-[17.5px] px-1  min-w-14 py-4">
             <div className="my-[6px]">
               <InputSelect
                 value={leadStatus ? leadStatus : "-"}
                 optionData={settings.leadStatus}
                 inputContainerClassName="min-w-[100px] pt-0 pb-0 pr-2 pl-0 text-center"
-                optionClassName="font-semibold opacity-60 text-sm"
+                optionClassName="font-semibold opacity-60 text-[17.5px]"
                 labelClassname="hidden"
                 onChange={(val) => handleChange({ leadStatus: val })}
               />
             </div>
           </td>
-          <td className="font-medium text-sm px-1  min-w-14 py-4">
+          <td className=" text-[17.5px] px-1  min-w-14 py-4">
             <InputSelect
               value={item.userStatus ? item.userStatus : "-"}
               optionData={["active", "blocked", "dormant"]}
               inputContainerClassName="min-w-[100px] pt-0 pb-0 pr-2 pl-0 text-center"
-              optionClassName="text-sm"
+              optionClassName="text-[17.5px]"
               labelClassname="hidden"
               onChange={(val) => handlestatusChange({ userStatus: val })}
             />
           </td>
 
-          {/* <td className="font-medium text-sm px-1  min-w-14 py-4">
+          {/* <td className=" text-[17.5px] px-1  min-w-14 py-4">
                   <div className="my-[6px]">
                   
                      <span className="cursor-pointer inline-block px-1" onClick={() => onClick.handleTutorStatus(item,)}>
@@ -316,7 +316,7 @@ export default function TableItem({
 
                   </div>
                </td>  */}
-          <td className="font-medium text-sm px-1  min-w-14 py-4">
+          <td className=" text-[17.5px] px-1  min-w-14 py-4">
             <div className="my-[6px]">
               {item.specialization?.map((specialization, idx) => {
                 return `${specialization}${idx + 1 === item.specialization.length ? "" : ","
@@ -324,11 +324,11 @@ export default function TableItem({
               })}
             </div>
           </td>
-          <td className="font-medium text-sm px-1  min-w-14 py-4 text-[#507CA8]">
+          <td className=" text-[17.5px] px-1  min-w-14 py-4 text-[#507CA8]">
             <div className="my-[6px]">{getFormattedDate(item.createdAt)}</div>
           </td>
 
-          <td className="font-medium px-1 min-w-14 py-4">
+          <td className=" px-1 min-w-14 py-4">
             {item.userType !== "admin" ? (
               <div className=" flex items-center justify-center">
 
@@ -348,7 +348,7 @@ export default function TableItem({
       )}
       {dataFor === "allUsersSuperAdmin" && (
         <tr className="odd:bg-white  leading-8">
-          <td className="font-medium text-sm px-1  min-w-14 py-4  text-left">
+          <td className="font-medium text-[17.5px] px-1  min-w-14 py-4  text-left">
             <span
               className="inline-block cursor-pointer pl-4"
               onClick={() => onClick.redirect(item)}
@@ -356,23 +356,23 @@ export default function TableItem({
               {item.name}
             </span>
           </td>
-          <td className="font-medium text-sm px-1 min-w-14 py-4">
+          <td className="font-medium text-[17.5px] px-1 min-w-14 py-4">
             <div className="my-[6px]">{item.userType}</div>
           </td>
-          <td className="font-medium text-sm px-1  min-w-14 py-4">
+          <td className="font-medium text-[17.5px] px-1  min-w-14 py-4">
             <div className="my-[6px]">{item.email}</div>
           </td>
-          <td className="font-medium text-sm px-1  min-w-14 py-4">
+          <td className="font-medium text-[17.5px] px-1  min-w-14 py-4">
             <div className="my-[6px]">
               {item.lastLogin ? item.lastLogin : "-"}
             </div>
           </td>
-          <td className="font-medium text-sm px-1  min-w-14 py-4">
+          <td className="font-medium text-[17.5px] px-1  min-w-14 py-4">
             <div className="my-[6px]">
               <span style={{ textDecoration: 'underline' }}>edit</span>
             </div>
           </td>
-          <td className="font-medium text-sm px-1  min-w-14 py-4">
+          <td className="font-medium text-[17.5px] px-1  min-w-14 py-4">
             <div className="">
               <button
                 className="rounded-md bg-[#26435F3B] text-[#517CA8] px-2 py-[2px] w-[85px] h-[26.67px] text-18.67px"
@@ -382,12 +382,12 @@ export default function TableItem({
               </button>
             </div>
           </td>
-          {/*  <td className="font-medium text-sm px-1  min-w-14 py-4">
+          {/*  <td className="font-medium text-[17.5px] px-1  min-w-14 py-4">
                   <div className="my-[6px]">
                      {item.phone}
                   </div>
                </td>
-              <td className="font-medium text-sm px-1  min-w-14 py-4">
+              <td className="font-medium text-[17.5px] px-1  min-w-14 py-4">
                   <div className="my-[6px]">
                      {item.assignedTutor?.length > 0 ?
                         item.assignedTutor?.map((id, idx) => {
@@ -398,26 +398,26 @@ export default function TableItem({
                      }
                   </div>
                </td>
-               <td className="font-medium text-sm px-1  min-w-14 py-4">
+               <td className="font-medium text-[17.5px] px-1  min-w-14 py-4">
                   <div className="my-[6px]">
                      <InputSelect value={leadStatus ? leadStatus : '-'}
                         optionData={settings.leadStatus}
                         inputContainerClassName='min-w-[100px] pt-0 pb-0 pr-2 pl-0 text-center'
-                        optionClassName='font-semibold opacity-60 text-sm'
+                        optionClassName='font-semibold opacity-60 text-[17.5px]'
                         labelClassname='hidden'
                         onChange={val => handleChange({ leadStatus: val })} />
                   </div>
                </td>
-               <td className="font-medium text-sm px-1  min-w-14 py-4">
+               <td className="font-medium text-[17.5px] px-1  min-w-14 py-4">
                   <InputSelect value={item.userStatus ? item.userStatus : '-'}
                      optionData={['active', 'blocked', 'dormant']}
                      inputContainerClassName='min-w-[100px] pt-0 pb-0 pr-2 pl-0 text-center'
-                     optionClassName='font-semibold opacity-60 text-sm'
+                     optionClassName='font-semibold opacity-60 text-[17.5px]'
                      labelClassname='hidden'
                      onChange={val => handlestatusChange({ userStatus: val })} />
                </td>
                
-               <td className="font-medium text-sm px-1  min-w-14 py-4">
+               <td className="font-medium text-[17.5px] px-1  min-w-14 py-4">
                   <div className="my-[6px]">
                   
                      <span className="cursor-pointer inline-block px-1" onClick={() => onClick.handleTutorStatus(item,)}>
@@ -426,14 +426,14 @@ export default function TableItem({
 
                   </div>
                </td> 
-               <td className="font-medium text-sm px-1  min-w-14 py-4">
+               <td className="font-medium text-[17.5px] px-1  min-w-14 py-4">
                   <div className="my-[6px]">
                      {item.specialization?.map((specialization, idx) => {
                         return `${specialization}${idx + 1 === item.specialization.length ? '' : ','}`
                      })}
                   </div>
                </td> */}
-          {/* <td className="font-medium text-sm px-1  min-w-14 py-4">
+          {/* <td className="font-medium text-[17.5px] px-1  min-w-14 py-4">
                   <div className="my-[6px]">
                      {getFormattedDate(item.createdAt)}
                   </div>
@@ -450,7 +450,7 @@ export default function TableItem({
         </tr>
       )}
       {dataFor === "assignedTests" && (
-        <tr className="odd:bg-white text-sm  leading-8">
+        <tr className="odd:bg-white text-[17.5px]  leading-8">
           <td className="px-1 font-medium  min-w-14 py-4 text-left">
             <span className="inline-block cursor-pointer pl-4">
               {item.studentName}
@@ -532,7 +532,7 @@ export default function TableItem({
       )}
 
       {dataFor === "tests" && (
-        <tr className="odd:bg-white text-sm  leading-7">
+        <tr className="odd:bg-white text-[17.5px]  leading-7">
           {Object.keys(item).map((key, i) =>
             key === "Accuracy" ? (
               <td key={i} className="font-medium px-1  min-w-14 py-4">
@@ -558,7 +558,7 @@ export default function TableItem({
         </tr>
       )}
       {dataFor === "assignedStudents" && (
-        <tr className="odd:bg-white text-sm  leading-7">
+        <tr className="odd:bg-white text-[17.5px]  leading-7">
           {MapData(item, "assignedStudents", excludes, onClick)}
           {/* <td>
                   <img src={RemoveIcon} />
@@ -567,7 +567,7 @@ export default function TableItem({
       )}
       {dataFor === "studentTestsReport" && (
         <tr
-          className={`text-sm   leading-7 ${!item.isCorrect
+          className={`text-[17.5px]   leading-7 ${!item.isCorrect
             ? "bg-[#e02b1d]/5"
             : "odd:bg-white  "
             } `}
@@ -577,7 +577,7 @@ export default function TableItem({
       )}
       {dataFor === "studentTestsReportSmall" && (
         <tr
-          className={`text-sm  leading-7 ${!item.isCorrect
+          className={`text-[17.5px]  leading-7 ${!item.isCorrect
             ? "bg-[#e02b1d]/5"
             : "odd:bg-white  "
             } `}
@@ -586,7 +586,7 @@ export default function TableItem({
         </tr>
       )}
       {dataFor === "studentTestsAnswers" && (
-        <tr className="odd:bg-white text-sm  leading-7">
+        <tr className="odd:bg-white text-[17.5px]  leading-7">
           {MapData(item)}
           <td className="font-medium px-1 min-w-14 py-4 flex justify-center items-center">
             <button className="flex items-center">
@@ -599,7 +599,7 @@ export default function TableItem({
         </tr>
       )}
       {dataFor === "assignedTestsStudents" && (
-        <tr className="odd:bg-white shadow-sm text-sm shadow-slate-200   leading-7">
+        <tr className="odd:bg-white shadow-sm text-[17.5px] shadow-slate-200   leading-7">
           {Object.keys(item).map((key, i) =>
             excludes.includes(key) ? (
               <></>
@@ -693,12 +693,12 @@ export default function TableItem({
         </tr>
       )}
       {dataFor === "invoice" && (
-        <tr className="bg-white text-sm   leading-7 mt-[10px]">
+        <tr className="bg-white text-[17.5px]   leading-7 mt-[10px]">
           {MapData(item, dataFor, excludes, onClick)}
         </tr>
       )}
       {dataFor === "testsDetailQuestions" && (
-        <tr className="bg-white text-sm   leading-7 mt-[10px]">
+        <tr className="bg-white text-[17.5px]   leading-7 mt-[10px]">
           {MapData(item, dataFor, excludes)}
           <td className="font-medium px-1 min-w-14 py-4">
             <img
@@ -710,7 +710,7 @@ export default function TableItem({
         </tr>
       )}
       {dataFor === "allTests" && (
-        <tr className="odd:bg-white font-medium text-sm  lead">
+        <tr className="odd:bg-white font-medium text-[17.5px]  lead">
           <td>{item.testName}</td>
           <td>{item.testType}</td>
           <td>{item.createdAt.split("T")[0]}</td>
@@ -737,7 +737,7 @@ export default function TableItem({
         </tr>
       )}
       {dataFor === "allTestsSuperAdmin" && (
-        <tr className="odd:bg-white font-medium  lead shadow-sm text-sm shadow-slate-300">
+        <tr className="odd:bg-white font-medium  lead shadow-sm text-[17.5px] shadow-slate-300">
           <td>{item.testName}</td>
           <td>{item.testType}</td>
           <td>{item.createdAt.split("T")[0]}</td>
@@ -778,7 +778,7 @@ export default function TableItem({
         </tr>
       )}
       {dataFor === "assignedTutors" && (
-        <tr className="bg-white text-sm   leading-7 mt-[10px]">
+        <tr className="bg-white text-[17.5px]   leading-7 mt-[10px]">
           {MapData(item, dataFor, excludes, onClick)}
           <td className="font-medium flex justify-center px-1 min-w-14 py-4">
             <img
@@ -791,7 +791,7 @@ export default function TableItem({
       )}
       {dataFor === "allOrgs" && (
         <tr className="odd:bg-white  leading-8">
-          <td className="font-medium text-sm px-1  min-w-14 py-4  text-left">
+          <td className="font-medium text-[17.5px] px-1  min-w-14 py-4  text-left">
             <span
               className="inline-block cursor-pointer pl-4"
               onClick={() => navigate(`/orgadmin-profile/${item._id}`)}
@@ -801,48 +801,48 @@ export default function TableItem({
                 : item.company}
             </span>
           </td>
-          <td className="font-medium text-sm px-1 min-w-14 py-4">
+          <td className="font-medium text-[17.5px] px-1 min-w-14 py-4">
             <div className="my-[6px]">{item.associatedOrg?.companyType}</div>
           </td>
-          <td className="font-medium text-sm px-1  min-w-14 py-4">
+          <td className="font-medium text-[17.5px] px-1  min-w-14 py-4">
             <div className="my-[6px]">{item.associatedOrg?.address}</div>
           </td>
-          <td className="font-medium text-sm px-1  min-w-14 py-4">
+          <td className="font-medium text-[17.5px] px-1  min-w-14 py-4">
             <div className="my-[6px]">{item.associatedOrg?.city}</div>
           </td>
 
-          <td className="font-medium text-sm px-1  min-w-14 py-4">
+          <td className="font-medium text-[17.5px] px-1  min-w-14 py-4">
             <div className="my-[6px]">{item.associatedOrg?.state}</div>
           </td>
-          <td className="font-medium text-sm px-1  min-w-14 py-4">
+          <td className="font-medium text-[17.5px] px-1  min-w-14 py-4">
             <div className="my-[6px]">{item.associatedOrg?.country}</div>
           </td>
 
-          <td className="font-medium text-sm px-1  min-w-14 py-4">
+          <td className="font-medium text-[17.5px] px-1  min-w-14 py-4">
             <div className="my-[6px]">{item.firstName}</div>
           </td>
 
-          <td className="font-medium text-sm px-1  min-w-14 py-4">
+          <td className="font-medium text-[17.5px] px-1  min-w-14 py-4">
             <div className="my-[6px]">{item.email}</div>
           </td>
 
-          <td className="font-medium text-sm px-1  min-w-14 py-4">
+          <td className="font-medium text-[17.5px] px-1  min-w-14 py-4">
             <div className="my-[6px]">{item.phone}</div>
           </td>
 
-          <td className="font-medium text-sm px-1  min-w-14 py-4">
+          <td className="font-medium text-[17.5px] px-1  min-w-14 py-4">
             <div className="my-[6px]">{item?.userStatus}</div>
           </td>
-          <td className="font-medium text-sm px-1  min-w-14 py-4">
+          <td className="font-medium text-[17.5px] px-1  min-w-14 py-4">
             <div className="my-[6px]">{item.associatedOrg?.numberOfTutors}</div>
           </td>
-          <td className="font-medium text-sm px-1  min-w-14 py-4">
+          <td className="font-medium text-[17.5px] px-1  min-w-14 py-4">
             <div className="my-[6px]">
               {item.associatedOrg?.numberOfActiveStudent}
             </div>
           </td>
 
-          <td className="font-medium text-sm px-1  min-w-14 py-4">
+          <td className="font-medium text-[17.5px] px-1  min-w-14 py-4">
             <div className="my-[6px]">contributors</div>
           </td>
         </tr>
@@ -903,7 +903,7 @@ const MapData = (data, dataFor, exclude = [], onClick) => {
                 : ["paid", "draft", "cancelled", "unpaid"]
             }
             inputContainerClassName="min-w-[100px] pt-0 pb-0 pr-2 pl-0 text-center"
-            optionClassName="font-semibold opacity-60 text-sm"
+            optionClassName="font-semibold opacity-60 text-[17.5px]"
             labelClassname="hidden"
             onChange={(val) =>
               onClick.handleEdit({

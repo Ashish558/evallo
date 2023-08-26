@@ -79,7 +79,7 @@ export default function Table(props) {
   return (
     <div className="w-full">
       <div className="overflow-x-auto scrollbar-content    scroll-m-1 ">
-        <table className="table-auto customTable px-[2px] mb-3 text-center w-full whitespace-nowrap">
+        <table className=" customTable  mb-3 text-center w-full whitespace-nowrap">
           <thead className="pb-2 whitespace-nowrap">
             <tr className=" whitespace-nowrap">
               {tableHeaders.map((item, idx) => {
@@ -131,11 +131,11 @@ export default function Table(props) {
               return (
                 <tr
                   key={iti}
-                  className="bg-white leading-8 shadow-sm text-sm shadow-slate-300"
+                  className="bg-white leading-8 shadow-[0px_0px_2px_rgba(0,0,0,0.25)] text-[17.5px] "
                 >
                   {it.map((d, di) => {
                     return (
-                      <td key={di} className="opacity-0 text-sm px-1 min-w-14 py-3 ">
+                      <td key={di} className="opacity-0 text-[17.5px] px-[10px] min-w-14 py-4 ">
                         {d}
                       </td>
                     );

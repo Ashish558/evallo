@@ -34,7 +34,7 @@ export function TableHeader({ header, dataFor, onClick, setSorted, Icon }) {
     </th>
   ) : (
     <th
-      className={`px-3 py-3 font-medium whitespace-nowrap  ${header === "Full Name" || header === "Name" || header === "Student Name"
+      className={`px-6 py-[18px] font-medium whitespace-nowrap  ${header === "Full Name" || header === "Name" || header === "Student Name"
         ? "text-left pl-7"
         : ""
         } ${dataFor === "allUsers" ? "text-sm" : "text-sm"} ${flag ? styles["no-arrow"] : ''}
@@ -46,7 +46,7 @@ export function TableHeader({ header, dataFor, onClick, setSorted, Icon }) {
           header === "Student Name"
           ? "text-left pl-7"
           : ""
-          } ${dataFor === "allUsers" ? "text-sm" : "text-sm"}
+          } ${dataFor === "allUsers" ? "text-[17.5px]" : "text-[17.5px]"}
        `}
       >
         {" "}
