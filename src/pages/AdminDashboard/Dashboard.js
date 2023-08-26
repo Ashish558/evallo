@@ -118,7 +118,7 @@ const Dashboard = () => {
     {
       id: 1,
       text: "Full Name",
-      className: "text-left pl-6",
+      className: "text-left pl-8",
       onCick: sortByName,
     },
     {
@@ -632,6 +632,7 @@ const Dashboard = () => {
         <section className="mx-auto  w-[83.33vw]">
 
           <Table
+            headerWidth="w-[150px] whitespace-normal"
             data={tutorPerformanceData}
             tableHeaders={tutorTableHeaders}
             maxPageSize={5}

@@ -3,7 +3,7 @@ import { useLazyGetSettingsQuery } from "../../app/services/session";
 import InputSelect from "../InputSelect/InputSelect";
 import sort from "./../../assets/icons/sort.webp";
 import styles from "./styles.module.css"
-export function TableHeader({ header, dataFor, onClick, setSorted, Icon }) {
+export function TableHeader({ header, dataFor, onClick, setSorted, Icon, headerWidth }) {
 
   const [flag, setFlag] = useState(dataFor === "studentTestsReportSmall" || dataFor === "studentTestsReport" ? true : false)
   return dataFor === "assignedTestsStude" || dataFor === "invoice" ? (
@@ -34,14 +34,14 @@ export function TableHeader({ header, dataFor, onClick, setSorted, Icon }) {
     </th>
   ) : (
     <th
-      className={`px-6 py-[18px] font-medium whitespace-nowrap  ${header === "Full Name" || header === "Name" || header === "Student Name"
+      className={`${headerWidth ? 'py-[15px]' : 'py-[20px]'} px-6 font-medium whitespace-nowrap  ${header === "Full Name" || header === "Name" || header === "Student Name"
         ? "text-left pl-7"
         : ""
         } ${dataFor === "allUsers" ? "text-sm" : "text-sm"} ${flag ? styles["no-arrow"] : ''}
        `}
     >
       <div
-        className={`flex items-center justify-center font-medium  ${header === "Full Name" ||
+        className={`${headerWidth ? headerWidth : ''} flex items-center justify-center font-medium  ${header === "Full Name" ||
           header === "Name" ||
           header === "Student Name"
           ? "text-left pl-7"
@@ -50,6 +50,7 @@ export function TableHeader({ header, dataFor, onClick, setSorted, Icon }) {
        `}
       >
         {" "}
+
         {header}
       </div>
     </th>

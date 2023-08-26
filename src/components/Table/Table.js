@@ -25,6 +25,7 @@ export default function Table(props) {
     changePageAfterUpdate,
     loading,
     AdminLatestSignUp,
+    headerWidth
   } = props;
   const [dummy, setDummy] = useState([]);
   const [tableData, setTableData] = useState(data);
@@ -92,6 +93,7 @@ export default function Table(props) {
                     onClick={sorting}
                     setSorted={setSorted}
                     dataFor={dataFor}
+                    headerWidth={headerWidth}
                   />
                 );
               })}
