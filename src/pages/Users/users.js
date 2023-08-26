@@ -67,7 +67,7 @@ export default function Users() {
   const [deleteModalActive, setDeleteModalActive] = useState(false);
   const [deleteLoading, setDeleteLoading] = useState(false);
   const [specializations, setSpecializations] = useState([]);
-  const [numberPrefix, setNumberPrefix] = useState("+1");
+  const [numberPrefix, setNumberPrefix] = useState("");
   const [usersData, setUsersData] = useState([]);
   const [filteredUsersData, setFilteredUsersData] = useState([]);
   const [bulkUpload, setBulkUpload] = useState(false);
@@ -323,7 +323,7 @@ export default function Users() {
       // setFilteredUsersData(data)
     });
   };
-  console.log("shivam", filteredUsersData);
+  console.log("filteredUsers", filteredUsersData);
   const fetchTutors = () => {
     let urlParams = `?role=tutor`;
 

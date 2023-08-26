@@ -44,6 +44,7 @@ export default function InputSelect({
       ref={selectRef}
       className={`${selected && "relative z-5000"} ${parentClassName ? parentClassName : ""
         } ${disabled === true ? "pointer-events-none" : ""} `}
+        onClick={() => setSelected(!selected)}
     >
 
       {
@@ -68,7 +69,7 @@ export default function InputSelect({
 
 
       <div
-        onClick={() => setSelected(true)}
+       
         className={`py-[10px] px-[14px]  lg:py-[8px] lg:px-[16px]  flex items-center rounded relative cursor-pointer z-50 ${inputContainerClassName ? inputContainerClassName : ""
           } `}
       >
