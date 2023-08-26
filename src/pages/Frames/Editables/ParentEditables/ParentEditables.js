@@ -524,26 +524,15 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
    // console.log(settings);
    const [startDate, setStartDate] = useState(new Date());
 
-   const [modalClassName,setModalClassName]=useState('500px');
-useEffect(()=>
-   {     {console.log("modalClassName"+modalClassName)}
-         if(currentField.name==='about' || currentField.name==='interest')
-         {
-            setModalClassName('900px')
-         }
-         else{
-            setModalClassName('500px')
-         }
-   },[currentField.name,modalClassName]
-)
+   const forCss=['profileData','interest','serviceSpecializations']
    return (
 
       Object.keys(toEdit).map(key => {
          return toEdit[key].active === true &&
             <Modal
                key={key}
-               classname={ forCss.includes(currentField.name) ? "max-w-[900px]  md:pb-5 mx-auto overflow-visible pb-5":"max-w-[500px]  md:pb-5 mx-auto overflow-visible pb-5"  }  /*{ ` max-w-[900px] md:pb-5 mx-auto overflow-visible pb-5`}*/
-               title=''
+               classname={ forCss.includes(currentField.name) ? "max-w-[900px] md:pb-5 mx-auto overflow-visible pb-5":"max-w-[500px] md:pb-5 mx-auto overflow-visible pb-5" } /*{ ` max-w-[900px] md:pb-5 mx-auto overflow-visible pb-5`}*/
+                    title=''
              
                // primaryBtn={{
                //    text: "Save",

@@ -909,8 +909,8 @@ export default function Settings() {
             <div className="flex items-center gap-x-5 mb-4">
               <div>
                 <InputSelect
-                  labelClassname="mb-1"
-                  inputContainerClassName="shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-[#FFFFFF]"
+                 labelClassname="mb-1"
+                 inputContainerClassName="shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-[#FFFFFF]"
                   optionData={timeZones}
                   parentClassName="min-w-[200px]"
                   label="Default Time Zone"
@@ -1410,8 +1410,7 @@ export default function Settings() {
                       item.choosedValue === false ? (
                       <div
                         key={id}
-                        className="pt-[34px] pb-[30px] border-b-2 border-[#CBD6E2] text-[#24A3D9] font-medium text-[17.5px] flex items-center justify-between"
-                      >
+                        className="pt-[34px] pb-[30px] border-b-2 border-[#CBD6E2] text-[#24A3D9] font-medium text-[17.5px] flex items-center justify-between"     >
                         <p>{renderColoredText(item.name)}</p>
 
                         <ToggleBar

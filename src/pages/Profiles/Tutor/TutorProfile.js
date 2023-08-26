@@ -321,7 +321,7 @@ export default function TutorProfile({ isOwn }) {
                      tutorAddress: {
                         ...prevToEdit.addressData,
                         city: !details ? '' : details?.city,
-                        country: !details ? '' : details?.counntry,
+                        country: !details ? '' : details?.country,
                         pincode: !details ? '' : details?.pincode,
                         state: !details ? '' : details?.state,
                         address: !details ? '' : details?.address,
@@ -443,7 +443,7 @@ export default function TutorProfile({ isOwn }) {
    // console.log('To-edit', toEdit)
    // console.log('userdetail', userDetail.serviceSpecializations)
    // console.log('settings', settings.Expertise)
-   const { about, education, tagLine, tutorLevel, testPrepRate, otherRate, subjectTutoringRate, address, pincode, paymentInfo, tutorRank, income, paymentStatus, linkedIn, videoLink } = userDetail
+   const { about, education, tagLine, tutorLevel, testPrepRate, otherRate, subjectTutoringRate, address, pincode, paymentInfo, tutorRank, income, paymentStatus, linkedIn, videoLink,city,state,country } = userDetail
    // console.log('userdetail', tutorLevel)
 
    // console.log(user);
@@ -536,8 +536,7 @@ export default function TutorProfile({ isOwn }) {
                                  <div className='ml-40 mt-auto pt-10'>
                                     <div className='flex items-center'>
                                     <p className='text-white ' style={{fontWeight:'600',fontSize:'32px'}}>{user.firstName+" "}{user.lastName}</p>
-                                    <p className='text-white ml-5 underline cursor-pointer' onClick={()=>setToEdit({ ...toEdit, profileData: { ...toEdit.profileData, active: true } })}>edit</p>
-                                    {/* <EditableText text='edit'
+                                    {(isOwn===true || persona==='admin') && <p className='text-white ml-5 underline cursor-pointer' onClick={()=>setToEdit({ ...toEdit, profileData: { ...toEdit.profileData, active: true } })}>edit</p>}                       {/* <EditableText text='edit'
                                     editable={editable}
                               onClick={() => setToEdit({ ...toEdit, about: { ...toEdit.about, active: true } })}
                               className='text-green'
@@ -562,7 +561,7 @@ export default function TutorProfile({ isOwn }) {
                               <div className={`absolute ml-5 mt-12`}  >
                                  <ProfilePhoto isTutor={true}
                                     src={user.photo ? `${awsLink}${user.photo}` : '/images/default.jpeg'}
-                                    handleChange={handleProfilePhotoChange} editable={editable} />
+                                    handleChange={handleProfilePhotoChange}  />
                                  </div>
                               </div>
                                  <div className='ml-40 mt-6 '>
@@ -582,7 +581,7 @@ export default function TutorProfile({ isOwn }) {
                                  <img src={experience} ></img>
                                  <div>
                                  <div>
-                                 <p className='' style={{color:'#24A3D9',fontWeight:'700',fontSize:'21.33px'}} onClick={(e)=>setToEdit({...toEdit,education:{...toEdit.education,active:true}})}>Education</p>
+                                 <p className='' style={{color:'#24A3D9',fontWeight:'700',fontSize:'21.33px'}} >Education</p>
                                  </div>
                                  <div>
                                  <p style={{color:'#517CA8',fontWeight:'400',fontSize:'18.67px'}}>{userDetail.education}</p>
@@ -634,7 +633,7 @@ export default function TutorProfile({ isOwn }) {
                     <div>
                      <div className='flex'>
                     <div className='ml-3' style={{color:'#26435F', fontSize:'21.33px' ,fontWeight:'600'}}>Expertise</div>
-                    <p className='text-[#667085] ml-auto underline cursor-pointer' onClick={()=>setToEdit({ ...toEdit, serviceSpecializations: { ...toEdit.serviceSpecializations, active: true } })}>edit</p>
+                    {(isOwn==true || persona==='admin') && <p className='text-[#667085] ml-auto underline cursor-pointer' onClick={()=>setToEdit({ ...toEdit, serviceSpecializations: { ...toEdit.serviceSpecializations, active: true } })}>edit</p>}
                     </div>
                      <ProfileCard className='flex-1 '
                         hideShadow={true}
@@ -643,16 +642,18 @@ export default function TutorProfile({ isOwn }) {
                            <>
                                  {settings && settings.Expertise?.length > 0 && userDetail.serviceSpecializations && userDetail.serviceSpecializations.map((id, idx) => {
                                     return (
-                                       settings.Expertise?.find(item => item._id === id) ?
-                                          <div key={idx} className='flex flex-col items-center mb-10'>
-                                             <div className='flex h-90 w-90 rounded-full  items-center justify-center mb-3' >
-                                                <img className='max-w-[90px] max-h-[90px]' src={settings.Expertise.find(item => item._id === id).image}
-                                                />
+                                       settings?.Expertise?.find(item => item._id === id) ?
+                                       <div className=' mt-3 overflow-x-auto scrollbar-content max-h-[500px] scrollbar-vertical '>
+                                       <div className=' bg-white rounded min-h-[60px] flex items-center '>
+                                                <div className='ml-3'>
+                                                   <img className='max-w-[40px] max-h-[40px]' src={`${awsLink}${settings?.Expertise?.find(item=>item._id===id).image}`}></img>
+                                                </div>
+                                                <div className=' ml-10'>
+                                                   <p className='text-[#517CA8] ' style={{fontWeight:'400'}}>{settings?.Expertise?.find(item=>item._id===id).text}</p>
+                                                </div>
                                              </div>
-                                             <p className='opacity-70 font-semibold text-lg'>
-                                                {settings.Expertise.find(item => item._id === id).text}
-                                             </p>
-                                          </div>
+                                             </div>
+                                                
                                           :
                                           <></>
                                     )
@@ -699,7 +700,7 @@ export default function TutorProfile({ isOwn }) {
                   </div>
                <div className='col-span-6'>
                   <div className='flex'>
-                  <p className='text-[#667085] ml-auto underline cursor-pointer' onClick={()=>setToEdit({ ...toEdit, videoLink: { ...toEdit.videoLink, active: true } })}>edit</p>
+                  {(isOwn==true && persona==='admin') && <p className='text-[#667085] ml-auto underline cursor-pointer' onClick={()=>setToEdit({ ...toEdit, videoLink: { ...toEdit.videoLink, active: true } })}>edit</p>}
                   </div>
                   <div className='  pt-10 min-h-[680px]  relative z-10 flex items-end ' >
              
@@ -751,22 +752,29 @@ export default function TutorProfile({ isOwn }) {
                   <div className='col-span-3'>
                   <div className='flex'>
                     <div className='ml-3' style={{color:'#26435F', fontSize:'21.33px' ,fontWeight:'600'}}>Interest</div>
-                    <p className='text-[#667085] ml-auto underline cursor-pointer' onClick={()=>setToEdit({ ...toEdit, interest: { ...toEdit.interest, active: true } })}>edit</p>
+                    {(isOwn === true || persona==='admin') && <p className='text-[#667085] ml-auto underline cursor-pointer' onClick={()=>setToEdit({ ...toEdit, interest: { ...toEdit.interest, active: true } })}>edit</p>}
                     </div>
                    
                <ProfileCard className='flex-1 ' hideShadow
                         bgClassName="bg-profilecard"
                         body={
-                           <> <div className='overflow-x-auto scrollbar-content max-h-[500px] scrollbar-vertical'>
-                                       <div className=' bg-white rounded min-h-[60px]  flex items-center'>
-                                 <div className='ml-3'>
-                                    <img className='max-w-[40px] max-h-[40px]' src={`${awsLink}${settings?.interest?.find(item=> item._id===id).image}`}></img>
-                                 </div>
-                                 <div className=' ml-10'>
-                                    <p className='text-[#517CA8] ' style={{fontWeight:'400'}}>hello</p>
-                                 </div>
-                              </div>
-                              </div>
+                           <> {settings && settings.interest.length > 0 && userDetail.interest && userDetail.interest.map((id, idx) => {
+                              return (
+                                 settings?.interest?.find(item => item._id === id) ?
+                                 <div className='mt-3 overflow-x-auto scrollbar-content max-h-[500px] scrollbar-vertical'>
+                                 <div className=' bg-white rounded min-h-[60px]  flex items-center'>
+                           <div className='ml-3'>
+                              <img className='max-w-[40px] max-h-[40px]' src={`${awsLink}${settings?.interest?.find(item=> item._id===id).image}`}></img>
+                           </div>
+                           <div className=' ml-10'>
+                              <p className='text-[#517CA8] ' style={{fontWeight:'400'}}>{settings?.interest?.find(item=> item._id===id).text}</p>
+                           </div>
+                        </div>
+                        </div>
+                                    :
+                                    <></>
+                              )
+                           })}
 
                               {/* <EditableText editable={editable}
                                  onClick={() => setToEdit({ ...toEdit, interest: { ...toEdit.interest, active: true } })}
@@ -804,7 +812,7 @@ export default function TutorProfile({ isOwn }) {
                   <div className='col-span-7'>
                   <div className='flex'>
                     <div className='ml-3' style={{color:'#26435F', fontSize:'21.33px' ,fontWeight:'600'}}>Address</div>
-                    <p className='text-[#667085] ml-auto underline cursor-pointer' onClick={()=>setToEdit({ ...toEdit, tutorAddress: { ...toEdit.tutorAddress, active: true } })}>edit</p>
+                    {(isOwn==true || persona==='admin')&& <p className='text-[#667085] ml-auto underline cursor-pointer' onClick={()=>setToEdit({ ...toEdit, tutorAddress: { ...toEdit.tutorAddress, active: true } })}>edit</p>}
                     </div>
                      <div>
                         {
@@ -819,7 +827,7 @@ export default function TutorProfile({ isOwn }) {
                                              street Adress
                                           </div>
                                           <div style={{ fontWeight: '400', color: "#517CA8" }}>
-                                             B-1 Minal road
+                                            {userDetail.address}
                                           </div>
                                        </div>
 
@@ -827,14 +835,14 @@ export default function TutorProfile({ isOwn }) {
                                           <div style={{ color: '#24A3D9', fontWeight: '600' }}>
                                              city
                                           </div>
-                                          <div style={{ fontWeight: '400', color: "#517CA8" }}>Bhopal
+                                          <div style={{ fontWeight: '400', color: "#517CA8" }}>{userDetail.city}
                                           </div>
                                        </div>
 
                                        <div className='col-span-3'>
                                           <div style={{ color: '#24A3D9', fontWeight: '600' }}>         state
                                           </div>
-                                          <div style={{ fontWeight: '400', color: "#517CA8" }}>Madhya Pradesh
+                                          <div style={{ fontWeight: '400', color: "#517CA8" }}>{userDetail.state}
                                           </div>
                                        </div>
 
@@ -842,7 +850,7 @@ export default function TutorProfile({ isOwn }) {
                                           <div style={{ color: '#24A3D9', fontWeight: '600' }}>
                                              country
                                           </div>
-                                          <div style={{ fontWeight: '400', color: "#517CA8" }}>India
+                                          <div style={{ fontWeight: '400', color: "#517CA8" }}>{userDetail.country}
                                           </div>
                                        </div>
 
@@ -850,7 +858,7 @@ export default function TutorProfile({ isOwn }) {
                                           <div style={{ color: '#24A3D9', fontWeight: '600' }}>
                                              zip
                                           </div>
-                                          <div style={{ fontWeight: '400', color: "#517CA8" }}>4620022
+                                          <div style={{ fontWeight: '400', color: "#517CA8" }}>{userDetail.pincode}
                                           </div>
                                        </div>
                                     </div>
@@ -864,7 +872,7 @@ export default function TutorProfile({ isOwn }) {
                   <div className='col-span-2'>
                   <div className='flex'>
                     <div className='ml-3' style={{color:'#26435F', fontSize:'21.33px' ,fontWeight:'600'}}>Tutor Income</div>
-                    <p className='text-[#667085] ml-auto underline cursor-pointer' onClick={()=>setToEdit({ ...toEdit, income: { ...toEdit.income, active: true } })}>edit</p>
+                    {(isOwn==true || persona==='admin')&& <p className='text-[#667085] ml-auto underline cursor-pointer' onClick={()=>setToEdit({ ...toEdit, income: { ...toEdit.income, active: true } })}>edit</p>}
                     </div>
                      <ProfileCard
                         bgClassName="bg-white"
@@ -885,7 +893,7 @@ export default function TutorProfile({ isOwn }) {
                 { (isOwn===true || persona==="admin")  ?( <div className='col-span-3'>
                   <div className='flex'>
                     <div className='ml-3' style={{color:'#26435F', fontSize:'21.33px' ,fontWeight:'600'}}>Payment Info</div>
-                    <p className='text-[#667085] ml-auto underline cursor-pointer' onClick={()=>setToEdit({ ...toEdit, paymentInfo: { ...toEdit.paymentInfo, active: true } })}>edit</p>
+                    {(isOwn==true || persona==='admin')&&<p className='text-[#667085] ml-auto underline cursor-pointer' onClick={()=>setToEdit({ ...toEdit, paymentInfo: { ...toEdit.paymentInfo, active: true } })}>edit</p>}
                     </div>
                   <ProfileCard
                   bgClassName="bg-white "
@@ -933,7 +941,7 @@ export default function TutorProfile({ isOwn }) {
 
                      <div className='col-span-5'>     <div className='flex'>
                     <div className='ml-3' style={{color:'#26435F', fontSize:'21.33px' ,fontWeight:'600'}}>Tutor Status</div>
-                    <p className='text-[#667085] ml-auto underline cursor-pointer' onClick={()=>setToEdit({ ...toEdit, paymentInfo: { ...toEdit.paymentInfo, active: true } })}>edit</p>
+                    {(isOwn === true || persona==='admin') && <p className='text-[#667085] ml-auto underline cursor-pointer' onClick={()=>setToEdit({ ...toEdit, paymentInfo: { ...toEdit.paymentInfo, active: true } })}>edit</p>}
                    </div>
                      <ProfileCard
                         hideShadow
@@ -954,7 +962,7 @@ export default function TutorProfile({ isOwn }) {
                      <Table
                      tableHeaders={tableHeaders2}
                      dataFor="serviceRates"
-                     data={data2}
+                     data={userDetail.tutorServices}
                      maxPageSize={7}
                      headerObject={true}>
 
@@ -1155,7 +1163,7 @@ export default function TutorProfile({ isOwn }) {
 
                   {/* rates */}
                   {
-                     persona !== 'admin' &&
+                     persona === 'admin' &&
                      <ProfileCard hideShadow
                         className='col-span-3 mt-6 lg:mt-0  max-h-[300px] overflow-y-auto scrollbar-content'
                         body={

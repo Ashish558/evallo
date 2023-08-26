@@ -264,10 +264,10 @@ export default function TableItem({
                   {item.service}
                 </td>
                 <td>
-                  {item.currency ? item.currency:"USD"}
+                {item.currency ? item.currency:"USD"}
                 </td>
                 <td>
-                  {item.price}
+                {item.price}
                 </td>
               </tr>
              
