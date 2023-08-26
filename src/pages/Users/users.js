@@ -276,9 +276,9 @@ export default function Users() {
             phone: user.phone ? user.phone : "-",
             createdAt: user.createdAt,
             assignedTutor: user.assiginedTutors ? user.assiginedTutors : "",
-            leadStatus: "-",
-            tutorStatus: "-",
-            specialization: user.specialization ? user.specialization : [],
+            leadStatus: user?.leadStatus,
+            tutorStatus: user?.tutorStatus,
+            specialization: user?.specialization ? user.specialization : [],
           };
           tempData.push(obj);
           // if (user.role === 'tutor') {
@@ -714,6 +714,7 @@ export default function Users() {
         });
     }
   };
+  
   return (
     <div className="lg:mx-[60px] bg-lightWhite min-h-screen">
       <div className="py-10 px-5">
