@@ -1046,7 +1046,7 @@ console.log(organization)
               }
             />
 
-            {/* <SettingsCard
+            <SettingsCard
               title="Expertise"
               toggle={{ value: toggleImage.Expertise, key: "Expertise" }}
               onToggle={onToggle}
@@ -1073,7 +1073,7 @@ console.log(organization)
                   />
                 </div>
               }
-            /> */}
+            /> 
 
             <SettingsCard
               title="Manage Services and Topics"
