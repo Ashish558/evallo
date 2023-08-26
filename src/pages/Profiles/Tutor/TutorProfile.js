@@ -585,7 +585,7 @@ export default function TutorProfile({ isOwn }) {
                   </div>
 
 
-                  <div className='flex items-start gap-4 items-start mt-5'>
+                  <div className='flex items-start gap-4 mt-5'>
                      <img src={experience}></img>
                      <div >
                         <div>
