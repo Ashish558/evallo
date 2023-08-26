@@ -2,8 +2,9 @@ import React, { useRef } from "react";
 
 import InputField from "../../../../components/InputField/inputField";
 import { useState } from "react";
-import searchIcon from "../../../../assets/icons/Search.png";
-import uploadIcon from "../../../../assets/icons/upload.png";
+import searchIcon from "../../../../assets/icons/search.svg";
+import uploadIcon from "../../../../assets/icons/uil_export.svg";
+import calendar from "../../../../assets/icons/calendar.svg";
 import { frameHeaderNames, framesData } from "./staticData";
 import FramesScreen from "./FramesScreen";
 import arrowDown from "../../../../assets/icons/arrowdown.svg";
@@ -20,46 +21,46 @@ const AllOrgs = () => {
   const [adminData, setAdminData] = useState([]);
   const [fetchedData, setFetchedData] = useState([]);
   const inputRef = useRef(null);
-  const [forceChange,setForceChange]=useState(false)
+  const [forceChange, setForceChange] = useState(false)
   const [country, setCountry] = useState([]);
   const [fetchAllOrgQuery, fetchAllOrgQueryStatus] = useLazyGetAllOrgQuery();
   const [csvData, setCsvData] = useState([]);
   const [csvLoad, setCsvLoad] = useState(false);
   const [successFetched, setsuccessFetched] = useState(false);
   const handleBulkExport = async () => {
-   
-    if(adminData?.length>0){
+
+    if (adminData?.length > 0) {
       setCsvLoad(true);
-        let result =adminData;
+      let result = adminData;
 
-        if (result) {
-          let arr = [];
-          result?.forEach((item) => {
-            let obj = {};
+      if (result) {
+        let arr = [];
+        result?.forEach((item) => {
+          let obj = {};
 
-            obj.name = item.associatedOrg?.company
-                ? item.associatedOrg?.company
-                : item.company
-            obj.type = item.associatedOrg?.companyType
-            obj.address =item.associatedOrg?.address;
-            obj.city =item.associatedOrg?.city
-            obj.state = item.associatedOrg?.state
-            obj.country = item.associatedOrg?.country
-            obj.firstName = item.firstName
-            obj.email =item.email
-            obj.phone = item.phone
-            obj.userStatus =item?.userStatus
-            obj.tutors= item.associatedOrg?.numberOfTutors
-            obj.student=item.associatedOrg?.numberOfActiveStudent
-            obj.contributor="contributors"
-            arr.push(obj);
-          });
-          setCsvData(arr);
-        }
-        setsuccessFetched(true);
-        setCsvLoad(false);
+          obj.name = item.associatedOrg?.company
+            ? item.associatedOrg?.company
+            : item.company
+          obj.type = item.associatedOrg?.companyType
+          obj.address = item.associatedOrg?.address;
+          obj.city = item.associatedOrg?.city
+          obj.state = item.associatedOrg?.state
+          obj.country = item.associatedOrg?.country
+          obj.firstName = item.firstName
+          obj.email = item.email
+          obj.phone = item.phone
+          obj.userStatus = item?.userStatus
+          obj.tutors = item.associatedOrg?.numberOfTutors
+          obj.student = item.associatedOrg?.numberOfActiveStudent
+          obj.contributor = "contributors"
+          arr.push(obj);
+        });
+        setCsvData(arr);
       }
-     
+      setsuccessFetched(true);
+      setCsvLoad(false);
+    }
+
   };
   const [values, setValues] = useState({
     search: "",
@@ -95,7 +96,7 @@ const AllOrgs = () => {
     if (country.length === 0) {
       fetch("countryData.json")
         .then((res) => res.json())
-        .then((data) => setCountry([{name:'None'},...data]));
+        .then((data) => setCountry([{ name: 'None' }, ...data]));
     }
     fetchAllOrgQuery()
       .then((result) => {
@@ -136,20 +137,20 @@ const AllOrgs = () => {
     console.log({ arr });
     setAdminData(arr);
   }, [values, fetchedData]);
-  const handleButtonIcon=(e)=>{
+  const handleButtonIcon = (e) => {
     inputRef.current.type = "date";
     setForceChange(!forceChange)
-    
+
   }
   return (
     <>
       <div className="pl-16 pt-7 mb-12">
         <h4 className="text-[#24A3D9]">All Orgs</h4>
         <div className="flex justify-between py-5 ">
-          <div className="w-full flex gap-5 items-center ">
+          <div className="w-full flex gap-5 items-center">
             <InputField
-              placeholder="search"
-              parentClassName="w-full w-[150px] py-1"
+              placeholder="Search"
+              parentClassName="w-full w-[170px] py-1 text-[#667085]"
               inputContainerClassName="bg-white  shadow-[0px_0px_2.6666667461395264px_0px_#00000040] "
               Icon={searchIcon}
               value={values.search}
@@ -163,29 +164,28 @@ const AllOrgs = () => {
             />
             <InputSelect
               placeholder="Org type"
-              parentClassName="text-xs "
+              parentClassName="text-xs  text-[#667085]"
               value={values.orgType}
-              optionData={orgType}
               inputContainerClassName="bg-white  shadow-[0px_0px_2.6666667461395264px_0px_#00000040] "
-              optionClassName="min-w-[90px] py-[2.5px]"
+              optionClassName="min-w-[90px] py-[3px] w-[110px]"
               onChange={(e) =>
                 setValues({
                   ...values,
-                  orgType: e!=="None"?e:'',
+                  orgType: e !== "None" ? e : '',
                 })
               }
               error={error.orgType}
             />
             <InputField
               placeholder="Join Date"
-              IconRight2={inputRef?.current?.type==='text'?DateIcon:''}
+              IconRight2={inputRef?.current?.type === 'text' ? DateIcon : ''}
               DateIconClick={handleButtonIcon}
               parentClassName="w-full w-[150px] py-1"
               refS={inputRef}
-              onBlur={(e) => {(inputRef.current.type = "text"); setForceChange(!forceChange)}}
-              onFocus={(e) => {(inputRef.current.type = "date") ; setForceChange(!forceChange)}}
-            
-              inputContainerClassName="bg-white shadow-[0px_0px_2.6666667461395264px_0px_#00000040]"
+              onBlur={(e) => { (inputRef.current.type = "text"); setForceChange(!forceChange) }}
+              onFocus={(e) => { (inputRef.current.type = "date"); setForceChange(!forceChange) }}
+
+              inputContainerClassName="bg-white shadow-[0px_0px_2.6666667461395264px_0px_#00000040] w-[150px]"
               value={values.joinDate}
               onChange={(e) =>
                 setValues({
@@ -198,25 +198,25 @@ const AllOrgs = () => {
             />
             <InputSelect
               placeholder="Region"
-              parentClassName="text-xs "
+              parentClassName="text-xs text-[#667085]"
               inputContainerClassName="bg-white shadow-[0px_0px_2.6666667461395264px_0px_#00000040]"
               optionData={country}
               optionType={"object"}
-              optionClassName="min-w-[90px] py-[2.5px]"
+              optionClassName="min-w-[90px] py-[3px] w-[110px]"
               value={values.region}
               onChange={(e) =>
                 setValues({
                   ...values,
-                  region:  e.name!=="None"?e.name:'',
+                  region: e.name !== "None" ? e.name : '',
                 })
               }
               error={error.region}
             />
             <InputSelect
               placeholder="Subscription"
-              parentClassName="text-xs "
+              parentClassName="text-xs text-[#667085]"
               inputContainerClassName="bg-white shadow-[0px_0px_2.6666667461395264px_0px_#00000040]"
-              optionClassName="min-w-[90px] py-[2.5px]"
+              optionClassName="min-w-[90px] py-[3px] w-[110px]"
               value={values.subscription}
               onChange={(e) =>
                 setValues({
@@ -228,8 +228,9 @@ const AllOrgs = () => {
             />
             <InputField
               placeholder="# of student"
-              parentClassName="w-full w-[150px] py-1"
+              parentClassName="w-full w-[150px] py-1 text-[#667085]"
               inputContainerClassName="bg-white shadow-[0px_0px_2.6666667461395264px_0px_#00000040]"
+              optionClassName="min-w-[90px] py-1 w-[110px]"
               value={values.numberOfStudent}
               onChange={(e) =>
                 setValues({
@@ -241,7 +242,7 @@ const AllOrgs = () => {
             />
           </div>
           <div className="w-[400px] flex justify-center  items-center">
-            
+
             <button className="flex rounded-md gap-2 bg-[#517CA8] text-sm p-3 px-5 text-white">
               {csvLoad ? <LoaderNew /> : ""}
               {!csvLoad && !successFetched ? (
@@ -266,12 +267,12 @@ const AllOrgs = () => {
               )}
 
               {!csvLoad && (
-               <img className="h-4" src={uploadIcon} alt="upload"/>
+                <img className="h-4" src={uploadIcon} alt="upload" />
               )}
             </button>
           </div>
         </div>
-        <div className="overflow-x-auto scrollbar-content scroll-mt-3 pr-7">
+        <div className="overflow-x-auto scrollbar-content scroll-mt-3 pr-7 mt-2" >
           <Table
             data={adminData}
             tableHeaders={frameHeaderNames}

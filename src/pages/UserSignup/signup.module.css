@@ -27,10 +27,11 @@
 }
 
 #signUp{
-
+  flex: 1 1 auto;
     background: url('../../assets/signup/5156620\ 1.png'), #add8e660 -0.005px -145.667px / 90% 124.756% no-repeat;
     background-size: cover;
     background-position: center;
+
   }
 
 #signUp input {
@@ -106,7 +107,7 @@
   }
   
   .custom-checkbox::before {
-    content: '✓'; 
+    content: ''; 
     display: block;
     width: 100%;
     height: 100%;

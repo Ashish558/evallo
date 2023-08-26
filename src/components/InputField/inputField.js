@@ -9,6 +9,7 @@ export default function InputField({
   parentClassName,
   inputContainerClassName,
   Icon,
+  IconRight2Click,
   iconSize,
   refS,
   IconRight2,
@@ -17,6 +18,7 @@ export default function InputField({
   label,
   labelClassname,
   IconRight,
+  IconLeft,
   inputClassName,
   inputLeftField,
   onChange,
@@ -36,7 +38,8 @@ export default function InputField({
   DateIconClick,
   onBlur,
   onMouseEnter,
-  defaultValue
+  defaultValue,
+  totalErrors
 }) {
   const [inputType, setInputType] = useState(type);
   const [showDiv, setShowDiv] = useState(true);
@@ -46,8 +49,10 @@ export default function InputField({
 
   useEffect(() => {
     setShowDiv(true)
-  }, [error])
-
+  }, [error,totalErrors])
+useEffect(()=>{
+  setShowDiv(false)
+},[value])
   
   return (
     <div className={`relative text-sm ${parentClassName && parentClassName}`}>
@@ -62,7 +67,7 @@ export default function InputField({
         </label>
       )}
       <div
-        className={`py-[13px] px-[14px] lg:py-[9px] lg:px-[16px] flex items-center rounded border border-[#D0D5DD] ${inputContainerClassName ? inputContainerClassName : ""
+        className={`py-[13px] px-[14px] lg:py-[9px] lg:px-[16px] flex items-center rounded  ${inputContainerClassName ? inputContainerClassName : ""
           } ${disabled === true ? "cursor-not-allowed" : ""} `}
       >
         {Icon && (
@@ -73,8 +78,11 @@ export default function InputField({
               }`}
           />
         )}
+
         {inputLeftField && inputLeftField}
+
         {prefix && <span className="mr-3">{prefix}</span>}
+
         {IconRight && (
           <div className="group relative w-fit">
             <img
@@ -105,6 +113,18 @@ export default function InputField({
           onFocus={onFocus}
           onBlur={onBlur}
         />
+        {IconLeft && (
+          <div className="group relative w-fit">
+            <img
+              src={IconLeft}
+              alt='icon-left'
+              className={` cursor-pointer ${iconSize === "medium" && "w-[24px]"
+                }`}
+
+            />
+            {Tooltip}
+          </div>
+        )}
         {type === "password" && (
           <img
             src={EyeIcon}

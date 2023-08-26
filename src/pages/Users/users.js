@@ -9,7 +9,7 @@ import styles from "./styles.module.css";
 import AddIcon from "../../assets/icons/add.svg";
 import Dropdown from "../../assets/icons/Polygon 2.png";
 import PlusIcon from "../../assets/icons/plus.svg";
-import ExportIcon from "../../assets/icons/Export Data.png";
+import ExportIcon from "../../assets/icons/export.svg";
 import UploadIcon from "../../assets/icons/upload.svg";
 import XIcon from "../../assets/icons/x.png";
 import SearchIcon from "../../assets/icons/search.svg";
@@ -67,7 +67,7 @@ export default function Users() {
   const [deleteModalActive, setDeleteModalActive] = useState(false);
   const [deleteLoading, setDeleteLoading] = useState(false);
   const [specializations, setSpecializations] = useState([]);
-  const [numberPrefix, setNumberPrefix] = useState("+1");
+  const [numberPrefix, setNumberPrefix] = useState("");
   const [usersData, setUsersData] = useState([]);
   const [filteredUsersData, setFilteredUsersData] = useState([]);
   const [bulkUpload, setBulkUpload] = useState(false);
@@ -77,10 +77,10 @@ export default function Users() {
   useEffect(() => {
     setValidData(
       isEmail(modalData.email) &&
-        modalData.firstName &&
-        modalData.lastName &&
-        modalData.userType &&
-        modalData.phone
+      modalData.firstName &&
+      modalData.lastName &&
+      modalData.userType &&
+      modalData.phone
     );
   }, [
     modalData,
@@ -276,9 +276,9 @@ export default function Users() {
             phone: user.phone ? user.phone : "-",
             createdAt: user.createdAt,
             assignedTutor: user.assiginedTutors ? user.assiginedTutors : "",
-            leadStatus: "-",
-            tutorStatus: "-",
-            specialization: user.specialization ? user.specialization : [],
+            leadStatus: user?.leadStatus,
+            tutorStatus: user?.tutorStatus,
+            specialization: user?.specialization ? user.specialization : [],
           };
           tempData.push(obj);
           // if (user.role === 'tutor') {
@@ -323,7 +323,7 @@ export default function Users() {
       // setFilteredUsersData(data)
     });
   };
-  console.log("shivam", filteredUsersData);
+  console.log("filteredUsers", filteredUsersData);
   const fetchTutors = () => {
     let urlParams = `?role=tutor`;
 
@@ -686,7 +686,7 @@ export default function Users() {
         })
         .then((res) => {
           alert("File Uploaded");
-       
+
         })
         .catch((err) => {
           console.log(err);
@@ -714,6 +714,7 @@ export default function Users() {
         });
     }
   };
+  
   return (
     <div className="lg:mx-[60px] bg-lightWhite min-h-screen">
       <div className="py-10 px-5">
@@ -737,7 +738,7 @@ export default function Users() {
         </div>
         <div>
           <div className="flex mb-[50px]">
-            <button className="bg-[#517CA8] w-[158px] text-sm justify-center flex py-1 px-2 items-center text-white font-semibold rounded-lg mr-5">
+            <button className="bg-[#517CA8] w-[158px] text-sm justify-center flex py-1 px-2 items-center text-white  rounded-lg mr-5">
               {csvLoad ? <LoaderNew /> : ""}
               {!csvLoad && !successFetched ? (
                 <p onClick={handleBulkExport}>Export Data</p>
@@ -766,7 +767,7 @@ export default function Users() {
             </button>
             <button
               onClick={upload}
-              className="bg-[#517CA8] w-[158px] text-sm justify-center flex py-1 px-2 items-center text-white font-semibold rounded-lg mr-5"
+              className="bg-[#517CA8] w-[158px] text-sm justify-center flex py-1 px-2 items-center text-white  rounded-lg mr-5"
             >
               Bulk Upload{" "}
               <img src={UploadIcon} className="ml-3" alt="UploadIcon" />
@@ -776,12 +777,12 @@ export default function Users() {
               type="submit"
               children={
                 <>
-                  Add new User
+                  Add New User
                   <img src={PlusIcon} className="ml-3" alt="add-icon" />
                 </>
               }
               onClick={() => setModalActive(true)}
-              className=" flex items-center text-sm font-semibold py-3 px-3"
+              className=" flex items-center text-sm  py-3 px-3"
             />
 
             {bulkUpload && (
@@ -925,9 +926,10 @@ export default function Users() {
         <div className="flex justify-between items-center gap-7 mb-6">
           <InputField
             IconRight={SearchIcon}
-            placeholder="Type Name"
+            placeholder="Search"
+            inputClassName="pl-4"
             parentClassName="w-full w-[300px] py-1"
-            inputContainerClassName="text-sm mt-1 shadow-[0px_0px_2.4999988079071045px_0px_#00000040] border-white text-sm bg-white  px-[20px] py-[10px] "
+            inputContainerClassName="text-sm mt-1 shadow-[0px_0px_2.4999988079071045px_0px_#00000040] border-white text-sm bg-white  px-[20px] py-[10px] mb-1"
             type="text"
             value={filterData.typeName}
             onChange={(e) =>
@@ -1089,9 +1091,8 @@ export default function Users() {
                 onChange={handleCheckboxChange}
               />
               <span
-                className={`${styles["custom-checkbox"]} ${
-                  isChecked ? "checked" : ""
-                }`}
+                className={`${styles["custom-checkbox"]} ${isChecked ? "checked" : ""
+                  }`}
               ></span>
               <span className="block">{numberChecked} Selected</span>
             </label>

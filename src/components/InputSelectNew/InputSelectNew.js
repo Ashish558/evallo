@@ -4,10 +4,11 @@ import DownArrow from "../../assets/icons/down-chevron.svg";
 import countryDA from "../../assets/icons/Layer 2countryda.svg";
 import useOutsideAlerter from "../../hooks/useOutsideAlerter";
 import CCheckbox from "../CCheckbox/CCheckbox";
-
+import UpArrow from "../../assets/icons/upArrow.svg";
 export default function InputSelectNew({
   parentClassName,
   Icon,
+  optionsEachClassName,
   value,
   placeholder,
   label,
@@ -31,8 +32,13 @@ export default function InputSelectNew({
   useOutsideAlerter(selectRef, () => setSelected(false));
 
   useEffect(() => {
-    if (!checkbox) setSelected(false);
+   
+    setSelected(false)
   }, [value]);
+  const handleOptionSelect=(option,idx)=>{
+    onChange(optionType === "object" ? option : option, idx);
+    
+  }
 
   return (
     <div
@@ -40,7 +46,7 @@ export default function InputSelectNew({
       className={`${selected && "relative z-5000"} ${
         parentClassName ? parentClassName : ""
       } ${disabled === true ? "pointer-events-none" : ""} `}
-      onClick={() => setSelected(true)}
+      onClick={() => setSelected(!selected)}
     >
       {label && (
         <label className={`font-semibold  inline-block ${labelClassname}`}>
@@ -57,13 +63,20 @@ export default function InputSelectNew({
         } `}
       >
         {Icon && <img src={Icon} className="mr-6" alt="icon" />}
-        {
+
+        {!selected ?
           <img
             src={IconDemography?countryDA:DownArrow}
             className={`w-[15px] ${styles.downArrow}`}
             alt="down-arrow"
             onClick={() => setSelected(!selected)}
-          />
+          />:<img
+          src={IconDemography?countryDA:UpArrow}
+          className={`w-[15px] ${styles.downArrow}`}
+          alt="down-arrow"
+          onClick={() => setSelected(!selected)}
+        />
+
         }
         <div
           className={`outline-0 w-full mr-3 relative ${
@@ -79,18 +92,16 @@ export default function InputSelectNew({
         </div>
         {selected && (
           <div
-            className={`scrollbar-content scrollbar-vertical shadow-md w-full ${styles.options} ${optionContainerClassName}`}
+            className={`scrollbar-content scrollbar-vertical shadow-md w-full max-h-[165px] ${styles.options} ${optionContainerClassName}`}
           >
-            {optionData.map((option, idx) => {
+            {optionData?.map((option, idx) => {
               // console.log('option', option);
               // console.log('checkbox.match', checkbox.match);
               return (
                 <div
-                  className="outline-0 border-0 py-2.5  px-4 flex items-center justify-between"
+                  className={`outline-0 border-0 py-2.5  px-4 flex items-center justify-between ${optionsEachClassName}`}
                   key={idx}
-                  onClick={() => {
-                    onChange(optionType === "object" ? option : option, idx);
-                  }}
+                  onClick={()=> handleOptionSelect(option,idx)}
                 >
                   <p className={optionListClassName}>
                     {optionType !== undefined && optionType === "object"

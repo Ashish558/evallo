@@ -20,11 +20,14 @@
 }
 .bg {
   
-    background: linear-gradient(180deg, rgba(43, 73, 240, 0) 0%,rgb(227 245 252) 100%), url('../../assets/signup/5156620\ 1.png');
+   /* background: linear-gradient(180deg, rgba(43, 73, 240, 0) 0%,rgb(227 245 252) 100%), url('../../assets/signup/5156620\ 1.png');*/
+   background: url('../../assets/signup/5156620\ 1.png'), #add8e660 -0.005px -145.667px / 90% 124.756% no-repeat;
+   position: relative;
+
     background-size: cover;
     background-position: center;
-    overflow-y: auto;
-   padding-bottom: 35px;
+   padding-bottom:50px;
+   flex: 1 1 auto;
   }
 
 /* 

@@ -6,6 +6,7 @@
    border-radius: 4px;
    color: white;
    padding-left: 2rem;
+   width: 100%;
 }
 .tab{
    display: flex;
@@ -33,13 +34,18 @@
 .bordered-settings-container{
    border: 2.5px dashed #CBD6E2;
    padding: 24px;
+   border-radius: 0;
 }
 div{
    font-family: 'Lexend Deca', sans-serif;
 }
-.styles_tabsContainer__dqk-Y{
+/* .styles_tabsContainer__dqk-Y{
    width: 100% !important;
-};
-.border-\[\#D0D5DD\]{
+}; */
+/* .border-\[\#D0D5DD\]{
    border-color: none !important;
+} */
+.permission > div:last-child{
+   border-bottom: 0px;
+   /* border-bottom: 2px solid #CBD6E2; */
 }
