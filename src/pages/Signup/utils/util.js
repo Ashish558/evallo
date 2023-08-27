@@ -33,13 +33,13 @@ export const validateSignup = (values) => {
 
 export const validateOtherDetails = (values) => {
    // console.log(values);
-   const { FirstName, LastName, Email, Phone,phoneCode } = values
-   if (FirstName.trim() === '') return { data: 'FirstName', message: 'Fill First Name' }
-   if (LastName.trim() === '') return { data: 'LastName', message: 'Fill Last Name' }
-   if (Email.trim() === '') return { data: 'Email', message: 'Fill email' }
+   const { FirstName, LastName, Email, Phone,PphoneCode } = values
+   if (FirstName?.trim() === '') return { data: 'FirstName', message: 'Fill First Name' }
+   if (LastName?.trim() === '') return { data: 'LastName', message: 'Fill Last Name' }
+   if (Email?.trim() === '') return { data: 'Email', message: 'Fill email' }
    if (!isEmail(Email)) return { data: 'Email', message: 'Please enter valid email' }
-   if (Phone.trim() === '') return { data: 'Phone', message: 'Fill Phone number' }
-   if (Phone.length < 10 ) return { data: 'Phone', message: 'Phone number must be greater than 9 digits' }
-
+   if (Phone?.trim() === '') return { data: 'Phone', message: 'Fill Phone number' }
+   if (Phone?.length < 10 ) return { data: 'Phone', message: 'Phone number must be greater than 9 digits' }
+   if (PphoneCode?.trim() === '') return { data: 'PphoneCode', message: 'Fill country code' }
    return { data: true, message: 'none' }
 }

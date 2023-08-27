@@ -31,6 +31,7 @@ import {
   useLazyGetTutorDetailsQuery,
   useLazyGetSingleUserQuery,
   useUpdateUserMutation,
+  useLazyGetOrganizationQuery,
 } from "../../app/services/users";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import Loader from "../../components/Loader";
@@ -107,7 +108,7 @@ export default function UserSignup() {
   const [getUserDetail, userDetailResp] = useLazyGetTutorDetailsQuery();
   const [count, setCount] = useState(0);
   const [organisation, setOrganisation] = useState({});
-
+const [fetchOrganisation,fetchOrganisationstatus]= useLazyGetOrganizationQuery()
   const [currentStep, setcurrentStep] = useState(1);
 
   const [getOrgDetails, getOrgDetailsResp] = useGetUserByOrgNameMutation();
@@ -154,7 +155,9 @@ export default function UserSignup() {
   ]);
 
   useEffect(() => {
+   
     const name = searchParams.get("orgName");
+ 
     getOrgDetails({ company: name }).then((res) => {
       if (res.error) {
         console.log(res.error);
@@ -188,7 +191,7 @@ export default function UserSignup() {
       }
       console.log("param res", res.data);
       if (res.data?.user) {
-        const { firstName, lastName, phone, email, role } = res.data.user;
+        const { firstName, lastName, phone, email, role,associatedOrg } = res.data.user;
         setValues((prev) => {
           return {
             ...prev,
@@ -200,8 +203,21 @@ export default function UserSignup() {
             role,
           };
         });
+        fetchOrganisation(associatedOrg).then((org)=>{
+          //console.log("organisation details",{org})
+          if (org.error) {
+            console.log(org.error);
+            return;
+          }
+    
+         
+          if (org?.data?.organisation) {
+            setOrganisation(org.data.organisation);
+            setCustomFields(org.data.organisation?.settings?.customFields);
+          }
+        })
       }
-      const { user, userdetails } = res.data.data;
+      const { user, userdetails } = res.data.user;
       let user_detail = { ...userdetails };
       console.log("user", user);
     });
@@ -210,6 +226,7 @@ export default function UserSignup() {
   useEffect(() => {
     setCount(1);
   }, []);
+
 
   useEffect(() => {
     if (sessionStorage.getItem("frames")) {
@@ -543,7 +560,7 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
               >
                 {frames.signupActive
                   ? ""
-                  : frames.setPasswordFields
+                  : frames.setPasswordFields&& !isAddedByAdmin
                   ? "Set Password"
                   : ""}
               </h1>
@@ -551,7 +568,7 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
               {currentStep > 0 && !frames.signupSuccessful && (
                 <NumericSteppers
                   className="mt-3"
-                  fieldNames={["Personal info" ,"Student / Parent",isAddedByAdmin?"Set password":"Further details"]} 
+                  fieldNames={customFields?.length>0 && isAddedByAdmin?["Personal info" ,"Student / Parent","Further details","Set password"]:["Personal info" ,"Student / Parent",isAddedByAdmin?"Set password":"Further details",]} 
                   totalSteps={
                     customFields?.length === 0
                       ? 2 + isAddedByAdmin
