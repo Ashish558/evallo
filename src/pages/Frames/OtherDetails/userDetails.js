@@ -171,6 +171,7 @@ export default function UserDetails({
           }
           totalErrors={detailsError} 
           error={detailsError.Phone}
+          codeError={detailsError.PphoneCode}
         />
       </div>
 
