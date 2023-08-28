@@ -232,7 +232,7 @@ export default function AssignedTests() {
   }, [modalData.name, modalData.limit, modalData.date, modalData.test]);
 
   useEffect(() => {
-    // if (modalData.name.trim() === '' || modalData.limit.trim() === '' || modalData.date === '' || modalData.testId === '' || modalData.studentId.trim() === '') {
+
     if (
       modalData.name.trim() === "" ||
       modalData.limit.trim() === "" ||
@@ -261,12 +261,12 @@ export default function AssignedTests() {
     modalData.studentId,
   ]);
 
-  // console.log(modalData);
+
   useEffect(() => {
     if (modalData.name.length > 0) {
       if (persona === "admin") {
         fetchStudents(modalData.name).then((res) => {
-          // console.log(res.data.data)
+
           let tempData = res.data.data.students.map((student) => {
             return {
               _id: student._id,
@@ -277,7 +277,7 @@ export default function AssignedTests() {
         });
       } else {
         fetchTutorStudents(modalData.name).then((res) => {
-          // console.log(res.data.data)
+
           let tempData = res.data.data.students.map((student) => {
             return {
               _id: student._id,
@@ -481,7 +481,7 @@ export default function AssignedTests() {
       timeLimit: getTimeLimit(modalData.limit),
     };
     console.log(body);
-    // return
+
     assignTest(body).then((res) => {
       setLoading(false);
       if (res.error) {
@@ -505,16 +505,16 @@ export default function AssignedTests() {
 
   useEffect(() => {
     let tempdata = [...allAssignedTests];
-    // console.log(usersData)
 
-    //NAME FILTER
+
+
     if (filterData.studentName !== "") {
       const regex2 = new RegExp(`${filterData.studentName.toLowerCase()}`, "i");
       tempdata = tempdata.filter((test) => test.studentName.match(regex2));
     } else {
       tempdata = tempdata.filter((test) => test.studentName !== "");
     }
-    //TEST NAME FILTER
+
     if (filterData.testName !== "") {
       const regex2 = new RegExp(`${filterData.testName.toLowerCase()}`, "i");
       tempdata = tempdata.filter((test) => test.testName.match(regex2));
@@ -895,7 +895,7 @@ export default function AssignedTests() {
                   <InputField
                     label="Due Date"
                     iconSize="medium"
-                    // IconRight={calendar}
+
                     value={modalData.date}
                     onChange={(val) =>
                       setModalData({
@@ -917,7 +917,7 @@ export default function AssignedTests() {
                 label="Instruction From Tutor"
                 type="text"
                 iconSize="medium"
-                // IconRight={calendar}
+
                 value={modalData.instruction}
                 onChange={(val) =>
                   setModalData({
