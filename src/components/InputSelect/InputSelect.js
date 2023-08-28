@@ -32,6 +32,9 @@ export default function InputSelect({
   const handleOption = () => {
     setSelected(!selected);
   };
+  const handleToggleSelected = () => {
+    setSelected(!selected);
+  }
   useEffect(() => {
     if (!checkbox) setSelected(false);
   }, [value]);
@@ -44,7 +47,7 @@ export default function InputSelect({
       ref={selectRef}
       className={`${selected && "relative z-5000"} ${parentClassName ? parentClassName : ""
         } ${disabled === true ? "pointer-events-none" : ""} `}
-      onClick={() => setSelected(!selected)}
+      onClick={handleToggleSelected}
     >
 
       {

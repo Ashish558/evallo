@@ -31,7 +31,7 @@ import { getDuration, getFormattedDate } from "../../utils/utils";
 import FilterItems from "../../components/FilterItems/filterItems";
 
 const optionData = ["1", "2", "3", "4", "5"];
-const timeLimits = ["Regular", '1.1x', '1.25x', ,"1.5x", "Unlimited",];
+const timeLimits = ["Regular", '1.1x', '1.25x', , "1.5x", "Unlimited",];
 const testData = ["SAT", "ACT"];
 
 const initialState = {
@@ -223,13 +223,13 @@ export default function AssignedTests() {
   const [filterItems, setFilterItems] = useState([]);
 
   useEffect(() => {
-   
+
     setValidData(
       modalData.name &&
-        modalData.limit &&
-        modalData.date &&
-        modalData.test === "" &&
-        modalData.instruction === ""
+      modalData.limit &&
+      modalData.date &&
+      modalData.test === "" &&
+      modalData.instruction === ""
     );
   }, [modalData.name, modalData.limit, modalData.date, modalData.test]);
 
@@ -325,9 +325,8 @@ export default function AssignedTests() {
           isStarted,
           assignedBy,
         } = item;
-        const assignedByName = `${
-          assignedBy?.firstName ? assignedBy?.firstName : "-"
-        } ${assignedBy?.lastName ? assignedBy?.lastName : ""}`;
+        const assignedByName = `${assignedBy?.firstName ? assignedBy?.firstName : "-"
+          } ${assignedBy?.lastName ? assignedBy?.lastName : ""}`;
         if (assignedBy) {
           if (!allAssignedBys.includes(assignedByName)) {
             allAssignedBys.push(assignedByName);
@@ -352,8 +351,8 @@ export default function AssignedTests() {
             isCompleted === true
               ? "completed"
               : isStarted
-              ? "started"
-              : "notStarted",
+                ? "started"
+                : "notStarted",
           createdAt,
           assignedTestId: item._id,
         };
@@ -385,9 +384,8 @@ export default function AssignedTests() {
           isStarted,
           assignedBy,
         } = item;
-        const assignedByName = `${
-          assignedBy?.firstName ? assignedBy?.firstName : "-"
-        } ${assignedBy?.lastName ? assignedBy?.lastName : ""}`;
+        const assignedByName = `${assignedBy?.firstName ? assignedBy?.firstName : "-"
+          } ${assignedBy?.lastName ? assignedBy?.lastName : ""}`;
         if (assignedBy) {
           if (!allAssignedBys.includes(assignedByName)) {
             allAssignedBys.push(assignedByName);
@@ -400,9 +398,8 @@ export default function AssignedTests() {
           studentId: studentId ? studentId._id : "-",
           assignedOn: getFormattedDate(createdAt),
           assignedBy: assignedBy
-            ? `${assignedBy?.firstName ? assignedBy?.firstName : "-"} ${
-                assignedBy?.lastName ? assignedBy?.lastName : ""
-              }`
+            ? `${assignedBy?.firstName ? assignedBy?.firstName : "-"} ${assignedBy?.lastName ? assignedBy?.lastName : ""
+            }`
             : "-",
           testName: testId ? testId.testName : "-",
           testId: testId ? testId._id : null,
@@ -413,8 +410,8 @@ export default function AssignedTests() {
             isCompleted === true
               ? "completed"
               : isStarted
-              ? "started"
-              : "notStarted",
+                ? "started"
+                : "notStarted",
           createdAt,
           dueDate: getFormattedDate(dueDate),
           assignedTestId: item._id,
@@ -648,7 +645,7 @@ export default function AssignedTests() {
       text: "Started",
       color: "#F6A429",
     },
-    
+
   ];
 
   useEffect(() => {
@@ -672,13 +669,13 @@ export default function AssignedTests() {
       <div className="lg:mx-[40px] bg-lightWhite min-h-screen">
         <div className="py-14 px-5 ">
           <div className="flex justify-between items-center my-2">
-          <p className="text-[#24A3D9]  mb-3 ">
-            {organization?.company + "  >  " +   firstName +
-            "  " +
-            lastName  + "  >  "}
-            <span className="font-semibold">Assignments</span>
-          </p>
-          <button
+            <p className="text-[#24A3D9]  mb-3 ">
+              {organization?.company + "  >  " + firstName +
+                "  " +
+                lastName + "  >  "}
+              <span className="font-semibold">Assignments</span>
+            </p>
+            <button
               className="bg-[#FFA28D] text-lg justify-center flex py-3 px-5 items-center text-white font-semibold rounded-lg"
               onClick={() => setAssignTestModalActive(true)}
             >
@@ -686,13 +683,13 @@ export default function AssignedTests() {
               <img src={AddIcon} className="ml-3" alt="new test" />
             </button>
           </div>
-          
-       
+
+
           <div className="flex gap-4 justify-between items-center">
             {persona === "parent" || persona === "student" ? (
               <p
                 className={`font-bold text-4xl text-primary-dark`}
-                // style={{ color: "#25335A" }}
+              // style={{ color: "#25335A" }}
               >
                 Assigned Tests
               </p>
@@ -701,7 +698,7 @@ export default function AssignedTests() {
             )}
 
             <InputField
-             IconRight={SearchIcon}
+              IconRight={SearchIcon}
               value={filterData.studentName}
               onChange={(e) =>
                 setFilterData({ ...filterData, studentName: e.target.value })
@@ -713,7 +710,7 @@ export default function AssignedTests() {
             />
 
             <InputSelect
-            
+
               value={filterData.testName}
               onChange={(val) =>
                 setFilterData({ ...filterData, testName: val })
@@ -725,7 +722,7 @@ export default function AssignedTests() {
               parentClassName="w-full text-sm"
               type="select"
             />
-             <InputSelect
+            <InputSelect
               value={filterData.status}
               onChange={(val) => setFilterData({ ...filterData, status: val })}
               optionData={["Started", "Not Started", "Completed"]}
@@ -745,9 +742,9 @@ export default function AssignedTests() {
               placeholder="Filter by Tutor"
               type="text"
             />
-           
 
-            
+
+
           </div>
 
           <div className="mt-4">
@@ -764,7 +761,7 @@ export default function AssignedTests() {
               <AssignedTestIndicator key={idx} text={text} color={color} />
             ))}
           </div>
-         
+
           <div className="mt-6">
             <Table
               onClick={{ handleResend, handleDelete }}
