@@ -141,7 +141,12 @@ const StudentSettings = () => {
       alert("Password reset link sent to your email.");
     });
   };
-
+const handleFirstName=(e)=>{
+  setValues({
+    ...values,
+    firstName: e.target.value,
+  })
+}
   return (
     <div>
       <div className="flex flex-col gap-10  mx-[100px] my-12 design:mx-[160px] design:my-[60px]">
@@ -159,10 +164,7 @@ const StudentSettings = () => {
             label="First Name"
             value={values.firstName}
             onChange={(e) =>
-              setValues({
-                ...values,
-                firstName: e.target.value,
-              })
+              handleFirstName(e)
             }
             error={error.firstName}
           />
@@ -192,7 +194,7 @@ const StudentSettings = () => {
             inputContainerClassName=" bg-white border border-white text-[#667085]"
             inputClassName=" text-400 bg-transparent "
             label="Email"
-            // IconRight={tooltipIcon}
+            
             value={values.email}
             onChange={(e) => {
               setValues({

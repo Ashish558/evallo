@@ -663,7 +663,9 @@ export default function AssignedTests() {
     setTestNameOptions(testNames);
     setStudentNameOptions(studentNames);
   }, [allAssignedTests]);
-
+  const handleStatus = (val) => {
+    setFilterData({ ...filterData, status: val });
+  };
   return (
     <>
       <div className="lg:mx-[40px] bg-lightWhite min-h-screen">
@@ -687,37 +689,40 @@ export default function AssignedTests() {
                 <img src={AddIcon} className="ml-3" alt="new test" />
               </button>
             )}
-{persona === "parent" &&
-            <div className="flex justify-between whitespace-nowrap items-center gap-6">
-              <InputField
-                IconRight={SearchIcon}
-                value={filterData.studentName}
-                onChange={(e) =>
-                  setFilterData({ ...filterData, studentName: e.target.value })
-                }
-                inputContainerClassName="px-[20px] shadow-[0px_0px_1px_0px_rgba(0,0,0,0.25)] mt-1 py-[16px] bg-white"
-                placeholder="Search Student"
-                parentClassName="w-full text-sm"
-                type="text"
-              />
-              <div className="flex items-center justify-end gap-[20px] mt-[10px]">
-                {/* <AssignedTestIndicator /> */}
-                {status.map(({ text, color }, idx) => (
-                  <AssignedTestIndicator key={idx} text={text} color={color} />
-                ))}
+            {persona === "parent" && (
+              <div className="flex justify-between whitespace-nowrap items-center gap-6">
+                <InputField
+                  IconRight={SearchIcon}
+                  value={filterData.studentName}
+                  onChange={(e) =>
+                    setFilterData({
+                      ...filterData,
+                      studentName: e.target.value,
+                    })
+                  }
+                  inputContainerClassName="px-[20px] shadow-[0px_0px_1px_0px_rgba(0,0,0,0.25)] mt-1 py-[16px] bg-white"
+                  placeholder="Search Student"
+                  parentClassName="w-full text-sm"
+                  type="text"
+                />
+                <div className="flex items-center justify-end gap-[20px] mt-[10px]">
+                  {status.map(({ text, color }, idx) => (
+                    <AssignedTestIndicator
+                      key={idx}
+                      text={text}
+                      color={color}
+                    />
+                  ))}
+                </div>
               </div>
-            </div>
-}
+            )}
           </div>
-                
+
           {persona === "admin" && (
             <>
               <div className="flex gap-4 justify-between items-center">
                 {persona === "student" ? (
-                  <p
-                    className={`font-bold text-4xl text-primary-dark`}
-                    // style={{ color: "#25335A" }}
-                  >
+                  <p className={`font-bold text-4xl text-primary-dark`}>
                     Assigned Tests
                   </p>
                 ) : (
@@ -752,9 +757,7 @@ export default function AssignedTests() {
                 />
                 <InputSelect
                   value={filterData.status}
-                  onChange={(val) =>
-                    setFilterData({ ...filterData, status: val })
-                  }
+                  onChange={(val) => handleStatus(val)}
                   optionData={["Started", "Not Started", "Completed"]}
                   inputContainerClassName="px-[20px] shadow-[0px_0px_1px_0px_rgba(0,0,0,0.25)] py-[16px] bg-white"
                   placeholder="Completion Status"
@@ -783,7 +786,7 @@ export default function AssignedTests() {
               </div>
 
               <div className="flex items-center justify-end gap-[20px] mt-[10px]">
-                {/* <AssignedTestIndicator /> */}
+               
                 {status.map(({ text, color }, idx) => (
                   <AssignedTestIndicator key={idx} text={text} color={color} />
                 ))}

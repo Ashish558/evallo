@@ -134,13 +134,6 @@ export default function StudentTest() {
   ];
   const [tableHeaders, setTableHeaders] = useState(studentTableHeaders);
 
-  // useEffect(() => {
-  //    getResponse({ id: '63b567682cbfe817fe551afb' })
-  //       .then(res => {
-  //          console.log(res.data);
-  //       })
-  // }, [])
-
   useEffect(() => {
     if (persona === "student") {
       getTest().then((res) => {
@@ -363,24 +356,10 @@ export default function StudentTest() {
                 {persona === "student" ? (
                   <></>
                 ) : (
-                  // <div className="flex flex-col items-center justify-end">
-                  //    {parentTestInfo.map(item => {
-                  //       return <div className="flex items-center mb-[20px]">
-                  //          <div className="w-[20px] h-[20px] rounded-full mr-[20px]" style={{ backgroundColor: item.bg }}></div>
-                  //          <div className="font-semibold w-[90px]"> {item.text} </div>
-                  //       </div>
-                  //    })}
-                  // </div>
+                 
                   persona === "parent" && (
                     <div className="pl-4">
-                      {/* <div className="flex items-center justify-end">
-                        {parentTestInfo.map((item, idx) => {
-                           return <>
-                              <div key={idx} className="w-[20px] h-[20px] rounded-full mr-[20px]" style={{ backgroundColor: item.bg }}></div>
-                              <div className="mr-[20px] font-semibold"> {item.text} </div>
-                           </>
-                        })}
-                     </div> */}
+                     
                       <div className="flex">
                         {associatedStudents.map((student, idx) => {
                           return (
