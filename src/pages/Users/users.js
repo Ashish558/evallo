@@ -123,6 +123,7 @@ export default function Users() {
       });
       return arr;
     });
+    
   };
   const tableHeaders = [
     {
@@ -270,9 +271,9 @@ export default function Users() {
             phone: user.phone ? user.phone : "-",
             createdAt: user.createdAt,
             assignedTutor: user.assiginedTutors ? user.assiginedTutors : "",
-            leadStatus: "-",
-            tutorStatus: "-",
-            specialization: user.specialization ? user.specialization : [],
+            leadStatus: user?.leadStatus,
+            tutorStatus: user?.tutorStatus,
+            specialization: user?.specialization ? user.specialization : [],
           };
           tempData.push(obj);
 
@@ -673,6 +674,7 @@ export default function Users() {
         });
     }
   };
+  
   return (
     <div className="w-[83.6989583333vw] mx-auto  min-h-screen">
       <div className="pb-10  mt-[50px]">

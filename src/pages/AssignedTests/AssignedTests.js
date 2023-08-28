@@ -31,7 +31,7 @@ import { getDuration, getFormattedDate } from "../../utils/utils";
 import FilterItems from "../../components/FilterItems/filterItems";
 
 const optionData = ["1", "2", "3", "4", "5"];
-const timeLimits = ["Regular", '1.1x', '1.25x', , "1.5x", "Unlimited",];
+const timeLimits = ["Regular", "1.1x", "1.25x", , "1.5x", "Unlimited"];
 const testData = ["SAT", "ACT"];
 
 const initialState = {
@@ -194,8 +194,7 @@ export default function AssignedTests() {
     testName: "",
     assignedBy: "",
     status: "",
-  }
-  );
+  });
 
   const [assignTest, assignTestResp] = useAssignTestMutation();
 
@@ -223,7 +222,6 @@ export default function AssignedTests() {
   const [filterItems, setFilterItems] = useState([]);
 
   useEffect(() => {
-
     setValidData(
       modalData.name &&
       modalData.limit &&
@@ -645,7 +643,6 @@ export default function AssignedTests() {
       text: "Started",
       color: "#F6A429",
     },
-
   ];
 
   useEffect(() => {
@@ -663,106 +660,137 @@ export default function AssignedTests() {
     setTestNameOptions(testNames);
     setStudentNameOptions(studentNames);
   }, [allAssignedTests]);
-
+  const handleStatus = (val) => {
+    setFilterData({ ...filterData, status: val });
+  };
   return (
     <>
       <div className="lg:mx-[40px] bg-lightWhite min-h-screen">
         <div className="py-14 px-5 ">
           <div className="flex justify-between items-center my-2">
-            <p className="text-[#24A3D9]  mb-3 ">
-              {organization?.company + "  >  " + firstName +
+            <p className="text-[#24A3D9]   ">
+              {organization?.company +
+                "  >  " +
+                firstName +
                 "  " +
-                lastName + "  >  "}
+                lastName +
+                "  >  "}
               <span className="font-semibold">Assignments</span>
             </p>
-            <button
-              className="bg-[#FFA28D] text-lg justify-center flex py-3 px-5 items-center text-white font-semibold rounded-lg"
-              onClick={() => setAssignTestModalActive(true)}
-            >
-              New Assignment
-              <img src={AddIcon} className="ml-3" alt="new test" />
-            </button>
-          </div>
-
-
-          <div className="flex gap-4 justify-between items-center">
-            {persona === "parent" || persona === "student" ? (
-              <p
-                className={`font-bold text-4xl text-primary-dark`}
-              // style={{ color: "#25335A" }}
+            {persona !== "parent" && persona !== "student" && (
+              <button
+                className="bg-[#FFA28D] text-lg justify-center flex py-3 px-5 items-center text-white font-semibold rounded-lg"
+                onClick={() => setAssignTestModalActive(true)}
               >
-                Assigned Tests
-              </p>
-            ) : (
-              <></>
+                New Assignment
+                <img src={AddIcon} className="ml-3" alt="new test" />
+              </button>
             )}
-
-            <InputField
-              IconRight={SearchIcon}
-              value={filterData.studentName}
-              onChange={(e) =>
-                setFilterData({ ...filterData, studentName: e.target.value })
-              }
-              inputContainerClassName="px-[20px] shadow-[0px_0px_1px_0px_rgba(0,0,0,0.25)] mt-1 py-[16px] bg-white"
-              placeholder="Search Student"
-              parentClassName="w-full text-sm"
-              type="text"
-            />
-
-            <InputSelect
-
-              value={filterData.testName}
-              onChange={(val) =>
-                setFilterData({ ...filterData, testName: val })
-              }
-
-              optionData={testNameOptions}
-              inputContainerClassName="px-[20px]  shadow-[0px_0px_1px_0px_rgba(0,0,0,0.25)] py-[16px] bg-white"
-              placeholder="Search Assignment"
-              parentClassName="w-full text-sm"
-              type="select"
-            />
-            <InputSelect
-              value={filterData.status}
-              onChange={(val) => setFilterData({ ...filterData, status: val })}
-              optionData={["Started", "Not Started", "Completed"]}
-              inputContainerClassName="px-[20px] shadow-[0px_0px_1px_0px_rgba(0,0,0,0.25)] py-[16px] bg-white"
-              placeholder="Completion Status"
-              parentClassName="w-full text-sm"
-              type="select"
-            />
-            <InputSelect
-              value={filterData.assignedBy}
-              onChange={(val) =>
-                setFilterData({ ...filterData, assignedBy: val })
-              }
-              parentClassName="w-full text-sm"
-              inputContainerClassName="px-[20px] shadow-[0px_0px_1px_0px_rgba(0,0,0,0.25)] py-[16px] bg-white"
-              optionData={assignedBys}
-              placeholder="Filter by Tutor"
-              type="text"
-            />
-
-
-
+            {persona === "parent" && (
+              <div className="flex justify-between whitespace-nowrap items-center gap-6">
+                <InputField
+                  IconRight={SearchIcon}
+                  value={filterData.studentName}
+                  onChange={(e) =>
+                    setFilterData({
+                      ...filterData,
+                      studentName: e.target.value,
+                    })
+                  }
+                  inputContainerClassName="px-[20px] shadow-[0px_0px_1px_0px_rgba(0,0,0,0.25)] mt-1 py-[16px] bg-white"
+                  placeholder="Search Student"
+                  parentClassName="w-full text-sm"
+                  type="text"
+                />
+                <div className="flex items-center justify-end gap-[20px] mt-[10px]">
+                  {status.map(({ text, color }, idx) => (
+                    <AssignedTestIndicator
+                      key={idx}
+                      text={text}
+                      color={color}
+                    />
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
 
-          <div className="mt-4">
-            <FilterItems
-              items={filterItems}
-              setData={setFilterItems}
-              onRemoveFilter={onRemoveFilter}
-            />
-          </div>
+          {persona === "admin" && (
+            <>
+              <div className="flex gap-4 justify-between items-center">
+                {persona === "student" ? (
+                  <p className={`font-bold text-4xl text-primary-dark`}>
+                    Assigned Tests
+                  </p>
+                ) : (
+                  <></>
+                )}
 
-          <div className="flex items-center justify-end gap-[20px] mt-[10px]">
-            {/* <AssignedTestIndicator /> */}
-            {status.map(({ text, color }, idx) => (
-              <AssignedTestIndicator key={idx} text={text} color={color} />
-            ))}
-          </div>
+                <InputField
+                  IconRight={SearchIcon}
+                  value={filterData.studentName}
+                  onChange={(e) =>
+                    setFilterData({
+                      ...filterData,
+                      studentName: e.target.value,
+                    })
+                  }
+                  inputContainerClassName="px-[20px] shadow-[0px_0px_1px_0px_rgba(0,0,0,0.25)] mt-1 py-[16px] bg-white"
+                  placeholder="Search Student"
+                  parentClassName="w-full text-sm"
+                  type="text"
+                />
 
-          <div className="mt-6">
+                <InputSelect
+                  value={filterData.testName}
+                  onChange={(val) =>
+                    setFilterData({ ...filterData, testName: val })
+                  }
+                  optionData={testNameOptions}
+                  inputContainerClassName="px-[20px]  shadow-[0px_0px_1px_0px_rgba(0,0,0,0.25)] py-[16px] bg-white"
+                  placeholder="Search Assignment"
+                  parentClassName="w-full text-sm"
+                  type="select"
+                />
+                <InputSelect
+                  value={filterData.status}
+                  onChange={(val) => handleStatus(val)}
+                  optionData={["Started", "Not Started", "Completed"]}
+                  inputContainerClassName="px-[20px] shadow-[0px_0px_1px_0px_rgba(0,0,0,0.25)] py-[16px] bg-white"
+                  placeholder="Completion Status"
+                  parentClassName="w-full text-sm"
+                  type="select"
+                />
+                <InputSelect
+                  value={filterData.assignedBy}
+                  onChange={(val) =>
+                    setFilterData({ ...filterData, assignedBy: val })
+                  }
+                  parentClassName="w-full text-sm"
+                  inputContainerClassName="px-[20px] shadow-[0px_0px_1px_0px_rgba(0,0,0,0.25)] py-[16px] bg-white"
+                  optionData={assignedBys}
+                  placeholder="Filter by Tutor"
+                  type="text"
+                />
+              </div>
+
+              <div className="mt-4">
+                <FilterItems
+                  items={filterItems}
+                  setData={setFilterItems}
+                  onRemoveFilter={onRemoveFilter}
+                />
+              </div>
+
+              <div className="flex items-center justify-end gap-[20px] mt-[10px]">
+
+                {status.map(({ text, color }, idx) => (
+                  <AssignedTestIndicator key={idx} text={text} color={color} />
+                ))}
+              </div>
+            </>
+          )}
+          <div className="mt-8">
             <Table
               onClick={{ handleResend, handleDelete }}
               dataFor="assignedTests"

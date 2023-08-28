@@ -281,14 +281,14 @@ const AdminNavbar = () => {
   }, [location.pathname]);
  useEffect(()=>{
 
-  if((activeRoute==='/signup/user'|| activeRoute==='/signup' || activeRoute==="/")&&!isLoggedIn){
+  if(!isLoggedIn&&(activeRoute==='/signup/user'|| activeRoute==='/signup' || activeRoute==="/")){
     let arr=tutorNav;
     if(activeRoute==='/')
     arr[0].path="/dashboard"
     setNavData(arr)
   }
  },[activeRoute])
-  console.log({navData,activeRoute,persona,isLoggedIn})
+ 
   return (
     <>
       <div className="flex justify-around bg-[#26435F] h-[72px] items-center w-full">
@@ -308,7 +308,7 @@ const AdminNavbar = () => {
                 className={`flex items-center mr-6 ${isLoggedIn?"cursor-pointer":' cursor-default'}`}
                 onClick={() =>isLoggedIn&& handleNavigate(item.path)}
               >
-                {item?.path === activeRoute ? (
+                { isLoggedIn && item?.path === activeRoute ? (
                   <>
                     <p>
                       <img
