@@ -262,6 +262,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
          if (data[key].name === keyName) {
             // console.log(data[key]);
             setCurrentField(data[key])
+
          }
       })
    }
@@ -275,7 +276,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
 
          }
       })
-      console.log(currentToEdit.phone + "currentUser")
+      console.log("currentUser")
    }, [toEdit])
 
    const handleClose = () => {
@@ -303,7 +304,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
       }
    }, [student]);
    useEffect(() => {
-      { console.log(currentField.name + "current field") }
+     
       if (parent.length > 0) {
          fetchParents(parent).then((res) => {
             let tempData = res.data.data.parents.map((parent) => {
@@ -1270,7 +1271,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                                  <div className='grid grid-cols-12'>
                                     <div className='col-span-2'>
                                        <ProfilePhoto isTutor={true}
-                                          src={currentToEdit.photo ? `${awsLink}${currentField.photo}` : '/images/default.jpeg'}
+                                          src={currentToEdit.photo ? `${awsLink}${currentToEdit.photo}` : '/images/default.jpeg'}
                                           handleChange={handleProfilePhotoChange} editable={true} />
                                     </div>
                                     <div className=' col-span-8 '>
