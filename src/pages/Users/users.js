@@ -211,12 +211,11 @@ export default function Users() {
     setSettings(organization.settings);
   }, [organization]);
 
-  // console.log(settings)
+
 
   const fetch = () => {
     setUsersData([]);
     setFilteredUsersData([]);
-    // console.log('shi',filteredUsersData)
     let urlParams = `?limit=${maxPageSize}&page=${currentPage}`;
     if (filterData.userType.length > 0) {
       filterData.userType.forEach((item) => {
@@ -255,13 +254,8 @@ export default function Users() {
 
     console.log("urlParams", urlParams);
     fetchUsers(urlParams).then((res) => {
-      // console.log("all-users", res.data.data.user);
-      // if(res.data.data.no_of_users < maxPageSize){
-      //    setTotalPages(15)
-      // }else{
       if (res?.data?.data) setTotalPages(res?.data?.data?.total_users);
-      // }
-      // console.log('total users', res.data.data.total_users);
+
 
       const fetchDetails = async () => {
         let tempData = [];
@@ -281,36 +275,7 @@ export default function Users() {
             specialization: user.specialization ? user.specialization : [],
           };
           tempData.push(obj);
-          // if (user.role === 'tutor') {
-          //    // console.log('tutor', user._id);
-          //    await getTutorDetail({ id: user._id })
-          //       .then(resp => {
-          //          // console.log('TUTOR RESp', resp);
 
-          //          setFilterItems(prev => [...prev])
-          //          // console.log('tutor-details', resp.data.data);
-          //          let status = '-'
-          //          if (resp.data.data.details) {
-          //             status = resp.data.data.details.leadStatus
-          //             obj.leadStatus = status ? status : '-'
-          //          }
-          //          setUsersData(prev => [...prev, obj])
-          //          setFilteredUsersData(prev => [...prev, obj])
-          //       })
-          // } else {
-          //    await getUserDetail({ id: user._id })
-          //       .then(resp => {
-          //          setFilterItems(prev => [...prev])
-          //          // console.log('user-details', resp.data.data);
-          //          let status = '-'
-          //          if (resp.data.data.userdetails) {
-          //             status = resp.data.data.userdetails.leadStatus
-          //             obj.leadStatus = status ? status : '-'
-          //          }
-          //          setUsersData(prev => [...prev, obj])
-          //          setFilteredUsersData(prev => [...prev, obj])
-          //       })
-          // }
         });
         setUsersData(tempData);
 
@@ -319,8 +284,7 @@ export default function Users() {
 
       fetchDetails();
 
-      // setUsersData(data)
-      // setFilteredUsersData(data)
+
     });
   };
   console.log("filteredUsers", filteredUsersData);
@@ -328,7 +292,7 @@ export default function Users() {
     let urlParams = `?role=tutor`;
 
     fetchUsers(urlParams).then((res) => {
-      // console.log('tutors', res.data.data);
+
       if (!res?.data?.data?.user) return;
       let data = res.data.data.user.map((item) => {
         const { firstName, lastName } = item;
@@ -346,7 +310,7 @@ export default function Users() {
   }, []);
   const changeUserField = (field, id) => {
     let temp = filteredUsersData.map((item) => {
-      // console.log(item[Object.keys(field)[0]]);
+
       if (item._id === id) {
         return { ...item, ...field };
       } else {
@@ -360,27 +324,25 @@ export default function Users() {
         return { ...item };
       }
     });
-    // console.log('shivam',temp);
+
     setFilteredUsersData(temp);
     setUsersData(tempAllusers);
   };
 
   useEffect(() => {
     fetch();
-    //console.log('shivam yadav 1',filteredUsersData)
+
   }, [maxPageSize, currentPage]);
-  // console.log('currentPage', currentPage);
+
 
   useEffect(() => {
     let tempdata = [...usersData];
-    // console.log('all users data', usersData)
-    // console.log('filterData.specialization', filterData.specialization)
+
     fetch();
 
     setCurrentPage(1);
     return;
-    // setTotalPages(0)
-    //USER TYPE FILTER
+
     if (filterData.userType.length > 0) {
       tempdata = tempdata.filter((user) =>
         filterData.userType.includes(user.userType)
@@ -389,7 +351,7 @@ export default function Users() {
       tempdata = tempdata.filter((user) => user.userType !== "");
     }
 
-    //LEAD STATUS FILTER
+
     if (filterData.status.length > 0) {
       tempdata = tempdata.filter((user) =>
         filterData.status.includes(user.leadStatus)
@@ -416,21 +378,21 @@ export default function Users() {
       tempdata = tempdata.filter((user) => user.userStatus !== "");
     }
 
-    //NAME FILTER
+
     if (filterData.typeName !== "") {
       const regex2 = new RegExp(`${filterData.typeName.toLowerCase()}`, "i");
       tempdata = tempdata.filter((user) => user.name.match(regex2));
     } else {
       tempdata = tempdata.filter((user) => user.name !== "");
     }
-    // setFilteredUsersData(tempdata)
+
   }, [filterData]);
 
   const removeFilter = (key, text, isArray) => {
     if (isArray) {
       let tempFilterData = { ...filterData };
       tempFilterData[key] = tempFilterData[key].filter((item) => item !== text);
-      // tempFilterData[key] = [ tempFilterData[key].filter(text => text !==)]
+
       setFilterData(tempFilterData);
     } else {
       let tempFilterData = { ...filterData };
@@ -457,7 +419,7 @@ export default function Users() {
   }, [filterData]);
 
   const onRemoveFilter = (item, text, isArray) => {
-    // console.log(item, text, isArray);
+
     item.removeFilter(item.type, text, isArray);
   };
 
@@ -512,7 +474,7 @@ export default function Users() {
   const handleClose = () => setModalActive(false);
 
   const redirect = (item) => {
-    // console.log(item)
+
     if (roles.includes(item.userType) && item.userType !== "admin") {
       navigate(`/profile/${item.userType}/${item._id}`);
     }
@@ -582,15 +544,15 @@ export default function Users() {
       modalData.email.trim() === "" ||
       modalData.firstName.trim() === "" ||
       modalData.lastName.trim() === "" ||
-      // modalData.phone.trim() === "" ||
+
       modalData.userType.trim() === ""
     ) {
       setAddUserBtnDisabled(true);
     } else {
       if (
-        // modalData.phone.length < 10 ||
+
         !isEmail(modalData.email)
-        // !isPhoneNumber(modalData.phone)
+
       ) {
         setAddUserBtnDisabled(true);
       } else {
@@ -629,14 +591,11 @@ export default function Users() {
         ...filterData,
         tutor: [...filterData.tutor, item.value],
       });
-      // setUpdatedSubscriptionData(prev => ({
-      //    ...prev,
-      //    tests: [...updatedSubscriptionData.tests, item._id]
-      // }))
+
     }
   };
 
-  //console.log("shivam", { csvData }, { filteredUsersData });
+
   const [csvLoad, setCsvLoad] = useState(false);
   const [successFetched, setsuccessFetched] = useState(false);
   const handleBulkExport = async () => {
@@ -791,15 +750,7 @@ export default function Users() {
                 cancelBtnClassName="max-w-140"
                 titleClassName="flex  items-start mb-[22px]"
                 handleClose={() => setBulkUpload(false)}
-                //  primaryBtn={{
-                //    text: "Assign",
-                //    className: "max-w-140 pl-8 pr-8",
-                //    onClick: (e) => handleSubmit(e),
-                //    disabled: submitBtnDisabled,
-                //    loading: loading,
-                //  }}
 
-                //  handleClose={}
 
                 body={
                   <>
@@ -871,15 +822,7 @@ export default function Users() {
                 classname={"max-w-[781px] mx-auto"}
                 titleClassName={"mb-5 "}
                 handleClose={() => setInviteUsers(false)}
-                //  primaryBtn={{
-                //    text: "Assign",
-                //    className: "max-w-140 pl-8 pr-8",
-                //    onClick: (e) => handleSubmit(e),
-                //    disabled: submitBtnDisabled,
-                //    loading: loading,
-                //  }}
 
-                //  handleClose={}
 
                 body={
                   <>
@@ -1041,44 +984,14 @@ export default function Users() {
             }}
             onChange={(val) => {
               handleTutorChange(val);
-              // setFilterData({ ...filterData, tutor: val })
             }}
           />
         </div>
-        {/* <div className="flex mb-6">
-          <button className="bg-[#26435f80] px-3 py-2 rounded-md text-sm text-[#FFFFFF] mr-2">
-            Student
-          </button>
-          <button className="relative bg-[#26435f80] px-3 py-2 rounded-md text-sm text-[#FFFFFF]">
-            Parent
-            <img
-              className="absolute top-[-10px] left-[55px]"
-              src={XIcon}
-              alt=""
-            />
-          </button>
-        </div> */}
+
         <div className="flex justify-between ">
-          {/* <div className="flex">
-            <label
-              className={`${styles["checkbox-label"]} block text-[#26435F] font-medium`}
-            >
-              <input
-                type="checkbox"
-                checked={isChecked}
-                onChange={handleCheckboxChange}
-              />
-              <span
-                className={`${styles["custom-checkbox"]} ${
-                  isChecked ? "checked" : ""
-                }`}
-              ></span>
-              <span className="ml-6">2 Selected</span>
-            </label>
-            <div></div>
-          </div> */}
+
         </div>
-        {/* <div className="flex align-center mt-0 gap-[20px]"></div> */}
+
         <div>
           <FilterItems
             items={filterItems}

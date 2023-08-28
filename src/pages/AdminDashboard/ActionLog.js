@@ -6,11 +6,11 @@ export default function ActionLog({ actionLog }) {
   const [extraElement, setExtraElement] = useState(0);
   const [sortedAction, setSortedAction] = useState([]);
   const handleScroll = (e) => {
-    // Get the height of each element row
+
 
     const elementHeight = e.target.scrollHeight / actionLog?.length;
 
-    // Calculate the index of the current element at the top of the visible area
+
     const index = Math.floor(e.target.scrollTop / elementHeight);
     setCurrentElementIndex(index);
   };

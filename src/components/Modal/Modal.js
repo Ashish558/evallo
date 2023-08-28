@@ -22,7 +22,7 @@ export default function Modal({
    underline,
    crossBtn
 }) {
-   //disable body scroll if modal open
+
    useEffect(() => {
       document.body.style.overflow = "hidden";
       return () => {
@@ -69,7 +69,7 @@ export default function Modal({
                         className={`${primaryBtn.bgDanger ? 'bg-[#FF5B4F]' : ' bg-primary'} relative disabled:opacity-75 rounded-md font-medium text-white  px-6 ml-9 ${primaryBtn.className ? primaryBtn.className : ""}`}
                         disabled={primaryBtn?.loading === true ? true : primaryBtn.disabled}
                         loading={primaryBtn.loading}
-                     // disabled
+
                      >
                         {primaryBtn.text}  {
                            (primaryBtn.icon && primaryBtn?.loading === false) ? primaryBtn.icon : ''

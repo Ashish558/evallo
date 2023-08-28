@@ -33,7 +33,7 @@ import { useLazyGetTestResponseQuery } from "../../app/services/test";
 import { getFormattedDate, getScore, getScoreStr } from "../../utils/utils";
 import InputField from "../InputField/inputField";
 
-//can b made dynamic
+
 export default function TableItem({
   item,
   dataFor,
@@ -64,7 +64,7 @@ export default function TableItem({
   const [userDetail, setUserDetail] = useState({});
   const [leadStatus, setLeadStatus] = useState("");
 
-  // console.log(dataFor);
+
   const [settings, setSettings] = useState({
     leadStatus: [],
   });
@@ -75,7 +75,7 @@ export default function TableItem({
       let url = `/api/test/getresponse/${item.assignedTestId}`;
       if (persona !== "student") {
         url = `/api/test/admin/getresponse/${item.assignedTestId}`;
-        // params = { userId: item.studentId._id }
+
       }
       if (item.isCompleted === true) {
         getTestResponse({ url, params: params }).then((res) => {
@@ -83,7 +83,7 @@ export default function TableItem({
             console.log("resp err", res.error);
             return;
           }
-          // console.log('Resp score', res.data.data.response);
+
           let responseData = res.data.data.response;
           let score = getScoreStr(
             responseData.testType,
@@ -91,7 +91,7 @@ export default function TableItem({
             responseData.subjects,
             responseData.subjects.length
           );
-          // let scr = getScore(res.data.data.response.testType, res.data.data.response.subjects)
+
           setScore(`${score.cumulative} ${score.right}`);
         });
       }
@@ -103,13 +103,13 @@ export default function TableItem({
       let url = `/api/test/admin/getresponse/${item.assignedTestId}`;
       let params = { userId: item.studentId };
       if (item.status === "completed") {
-        // console.log(item);
+
         getTestResponse({ url, params: params }).then((res) => {
           if (res.error) {
             console.log("resp err", res.error);
             return;
           }
-          // console.log('Resp score', res.data.data.response);
+
           let responseData = res.data.data.response;
           let score = getScoreStr(
             responseData.testType,
@@ -117,8 +117,7 @@ export default function TableItem({
             responseData.subjects,
             responseData.subjects.length
           );
-          // console.log('SCORE', score);
-          // let scr = getScore(res.data.data.response.testType, res.data.data.response.subjects)
+
           setScore(`${score.cumulative} ${score.right}`);
         });
       }
@@ -132,9 +131,7 @@ export default function TableItem({
   }, []);
 
   const handlestatusChange = (field) => {
-    // console.log(field)
-    // console.log(item)
-    // return
+
     updateFields({ id: item._id, fields: field }).then((res) => {
       if (res.error) {
         return console.log("error updating");
@@ -144,9 +141,7 @@ export default function TableItem({
     });
   };
   const handleChange = (field) => {
-    // console.log(field)
-    // console.log(item._id)
-    // console.log(userDetail)
+
     if (item.userType === "parent" || item.userType === "student") {
       updateUserDetail({ fields: field, id: item._id }).then((res) => {
         fetch && fetch(field, item._id);
@@ -188,10 +183,9 @@ export default function TableItem({
   useEffect(() => {
     if (dataFor === "allUsers") {
       if (item.role === "tutor") {
-        // console.log('tutor', user._id);
+
         getTutorDetail({ id: item._id }).then((resp) => {
-          // console.log('TUTOR RESp', resp);
-          // console.log('tutor-details', resp.data.data);
+
           let status = "-";
           if (resp.data.data.details) {
             status = resp.data.data.details.leadStatus;
@@ -200,7 +194,7 @@ export default function TableItem({
         });
       } else {
         getUserDetail({ id: item._id }).then((resp) => {
-          // console.log('user-details', resp.data.data);
+
           let status = "-";
           if (resp.data.data.userdetails) {
             status = resp.data.data.userdetails.leadStatus;
@@ -223,8 +217,7 @@ export default function TableItem({
     setIsChecked(checkedHeader);
   }, [checkedHeader])
 
-  // console.log('extraData', extraData );
-  // console.log('onClick', onClick );
+
 
   return (
     <>
@@ -474,12 +467,12 @@ export default function TableItem({
           <td className="font-medium px-1  min-w-14 py-4">
             <div className={`flex items-center no-wrap justify-center`}>
               {returnStatus(item.status)}
-              {/* {returnStatus(item.status)} */}
+
             </div>
           </td>
           <td
             className="font-medium px-1 test-center text-left min-w-14 py-4"
-          // style={{ padding: 0,}}
+
           >
             <div className="text-center">
               {item.status === "completed" ? score : "-"}
@@ -852,7 +845,7 @@ export default function TableItem({
 }
 
 const MapData = (data, dataFor, exclude = [], onClick) => {
-  // console.log(data.remark);
+
   const [remarkText, setRemarkText] = useState("");
   useEffect(() => {
     if (data.remark) {

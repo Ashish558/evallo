@@ -183,7 +183,6 @@ const Dashboard = () => {
     fetchTutorPerformanceData(body)
       .then((res) => {
         console.log(res?.data);
-        // setTutorPerformance(res?.data?.all_tutors);
       })
       .catch((err) => {
         console.log(err);
@@ -195,7 +194,6 @@ const Dashboard = () => {
     fetchPopularServicesData(body)
       .then((res) => {
         console.log(res?.data);
-        // setPopularServices(res?.data?.all_services);
       })
       .catch((err) => {
         console.log(err);

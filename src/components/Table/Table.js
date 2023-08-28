@@ -53,7 +53,7 @@ export default function Table(props) {
       setTableData(data);
     } else {
       const temp = data.slice(0, maxPageSize);
-      // const temp = tableData.slice(0, maxPageSize); ***  it Was the Previous one  ***
+
       setTableData(temp);
       setSorted(temp);
       setCurrentPage(1);
@@ -61,11 +61,10 @@ export default function Table(props) {
   }, [data, maxPageSize, data?.length]);
 
   const sorting = () => {
-    // console.log("object");
-    // setTableData(tableData.sort((a, b) => b.dueDate?.split("-").join("") - a.dueDate?.split("-").join("")))
+
   };
 
-  //change tabledata if current page changes
+
   useEffect(() => {
     if (hidePagination === true) return;
     const temp = data.slice(
@@ -167,18 +166,13 @@ export default function Table(props) {
         >
           <aside></aside>
           {!hidePagination && (
-            // <Pagination
-            //    totalPages={isCallingApi ? total_pages : Math.ceil(data.length / maxPageSize)}
-            //    currentPage={currentPage}
-            //    setCurrentPage={setCurrentPage}
-            // />
+
             <ReactPaginate
               className="table-pagination-container flex justify-center mt-5"
               pageClassName={`flex justify-center items-center w-[38.12px] h-[38.12px] border border-primary rounded-full mr-5 cursor-pointer
             ${"text-primary"}`}
               activeClassName={`${styles["active-pagination"]}`}
               breakLabel="..."
-              // nextLabel="next >"
               onPageChange={(val) => setCurrentPage(val.selected + 1)}
               pageRangeDisplayed={3}
               pageCount={
@@ -186,7 +180,6 @@ export default function Table(props) {
                   ? total_pages
                   : Math.ceil(data.length / maxPageSize)
               }
-              // previousLabel="< previous"
               previousClassName="hidden"
               nextClassName="hidden"
               renderOnZeroPageCount={null}
