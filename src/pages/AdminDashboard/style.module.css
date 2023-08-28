@@ -50,7 +50,7 @@
   border: 1px solid #ffffff;
   box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.25);
   border-radius: 4px;
-  /* margin-right: 20px; */
+ 
 }
 
 .actionBorder {
@@ -167,13 +167,3 @@ thead {
 }
 
 
-/* .overview-texts{
-  font-size: 17.5px;
-}
-
-
-@media (max-width: 768px) {
-  .overview-texts{
-    font-size: 10vw; 
-  }
-} */

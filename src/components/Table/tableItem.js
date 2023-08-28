@@ -300,15 +300,7 @@ export default function TableItem({
             />
           </td>
 
-          {/* <td className=" text-[17.5px] px-1  min-w-14 py-4">
-                  <div className="my-[6px]">
-                  
-                     <span className="cursor-pointer inline-block px-1" onClick={() => onClick.handleTutorStatus(item,)}>
-                        {item.block === false ? 'Active' : item.userType === 'parent' || item.userType === 'student' ? 'Blocked' : 'Dormant'}
-                     </span>
 
-                  </div>
-               </td>  */}
           <td className=" text-[17.5px] px-1  min-w-14 py-4">
             <div className="my-[6px]">
               {item.specialization?.map((specialization, idx) => {
@@ -375,62 +367,8 @@ export default function TableItem({
               </button>
             </div>
           </td>
-          {/*  <td className="font-medium text-[17.5px] px-1  min-w-14 py-4">
-                  <div className="my-[6px]">
-                     {item.phone}
-                  </div>
-               </td>
-              <td className="font-medium text-[17.5px] px-1  min-w-14 py-4">
-                  <div className="my-[6px]">
-                     {item.assignedTutor?.length > 0 ?
-                        item.assignedTutor?.map((id, idx) => {
-                           const name = extraData.find(item => item._id === id)
-                           if (name === undefined) return 'l'
-                           return `${name.value} ${idx + 1 < item.assignedTutor.length ? ',' : ''} `
-                        }) : '-'
-                     }
-                  </div>
-               </td>
-               <td className="font-medium text-[17.5px] px-1  min-w-14 py-4">
-                  <div className="my-[6px]">
-                     <InputSelect value={leadStatus ? leadStatus : '-'}
-                        optionData={settings.leadStatus}
-                        inputContainerClassName='min-w-[100px] pt-0 pb-0 pr-2 pl-0 text-center'
-                        optionClassName='font-semibold opacity-60 text-[17.5px]'
-                        labelClassname='hidden'
-                        onChange={val => handleChange({ leadStatus: val })} />
-                  </div>
-               </td>
-               <td className="font-medium text-[17.5px] px-1  min-w-14 py-4">
-                  <InputSelect value={item.userStatus ? item.userStatus : '-'}
-                     optionData={['active', 'blocked', 'dormant']}
-                     inputContainerClassName='min-w-[100px] pt-0 pb-0 pr-2 pl-0 text-center'
-                     optionClassName='font-semibold opacity-60 text-[17.5px]'
-                     labelClassname='hidden'
-                     onChange={val => handlestatusChange({ userStatus: val })} />
-               </td>
-               
-               <td className="font-medium text-[17.5px] px-1  min-w-14 py-4">
-                  <div className="my-[6px]">
-                  
-                     <span className="cursor-pointer inline-block px-1" onClick={() => onClick.handleTutorStatus(item,)}>
-                        {item.block === false ? 'Active' : item.userType === 'parent' || item.userType === 'student' ? 'Blocked' : 'Dormant'}
-                     </span>
 
-                  </div>
-               </td> 
-               <td className="font-medium text-[17.5px] px-1  min-w-14 py-4">
-                  <div className="my-[6px]">
-                     {item.specialization?.map((specialization, idx) => {
-                        return `${specialization}${idx + 1 === item.specialization.length ? '' : ','}`
-                     })}
-                  </div>
-               </td> */}
-          {/* <td className="font-medium text-[17.5px] px-1  min-w-14 py-4">
-                  <div className="my-[6px]">
-                     {getFormattedDate(item.createdAt)}
-                  </div>
-               </td> */}
+
           <td className="font-medium px-1 min-w-14 py-4">
             <div className="w-4 h-4 rounded-full bg-[#E3E3E3] flex items-center justify-center">
               <img
@@ -501,19 +439,9 @@ export default function TableItem({
               onClick={() => handlePdfNavigate()}
             />
           </td>
-          {/* <td className="font-medium px-1 min-w-14 py-4">
-                  <img
-                     src={ResendConfirmation}
-                     className="cursor-pointer"
-                     onClick={() => onClick.handleResend(item)}
-                  />
-               </td> */}
+
           <td className="font-medium px-1 min-w-14 py-4">
-            {/* <img
-                     src={RedIcon}
-                     className="cursor-pointer w-5 relative"
-                     onClick={() => onClick.handleDelete(item)}
-                  /> */}
+
             <div
               className="bg-[#FF5555] rounded-full relative w-5 h-5 text-white text-21 cursor-pointer"
               onClick={() => onClick.handleDelete(item)}
@@ -553,9 +481,7 @@ export default function TableItem({
       {dataFor === "assignedStudents" && (
         <tr className="odd:bg-white text-[17.5px]  leading-7">
           {MapData(item, "assignedStudents", excludes, onClick)}
-          {/* <td>
-                  <img src={RemoveIcon} />
-               </td> */}
+
         </tr>
       )}
       {dataFor === "studentTestsReport" && (

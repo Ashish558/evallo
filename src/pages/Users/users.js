@@ -761,8 +761,7 @@ export default function Users() {
 
                         >
                           <div className="mt-[18px] mb-[13px] flex justify-center">
-                            {/* This thing is for displaying xls logo if file is selected */}
-                            {/* {xlsFile==undefined ? (<img src={fileupload}></img>):(<img src={}></img>)} */}
+
                             <img src={fileupload} alt='fileuploadIcon'></img>
                           </div>
 
@@ -813,7 +812,7 @@ export default function Users() {
                 }
               ></Modal>
             )}
-            {/* invite user modal */}
+
             {inviteUsers && (
               <Modal
                 crossBtn={true}
@@ -949,24 +948,7 @@ export default function Users() {
               })
             }
           />
-          {/* <InputSelect optionData={['active', 'blocked', 'dormant']}
-                  placeholder='User Status'
-                  parentClassName='w-full w-1/6 capitalize'
-                  type='select'
-                  inputContainerClassName='text-sm border bg-white px-[20px] py-[16px]'
-                  value={filterData.userStatus.length > 0 ? filterData.userStatus[0] : ''}
-                  checkbox={{
-                     visible: true,
-                     name: 'test',
-                     match: filterData.userStatus
-                  }}
-                  onChange={val => setFilterData({
-                     ...filterData,
-                     userStatus: filterData.userStatus.includes(val) ?
-                        filterData.userStatus.filter(item => item !== val)
-                        : [...filterData.userStatus, val]
-                  })}
-               /> */}
+
           <InputSelect
             optionListClassName="text-[#667085]"
             optionData={allTutors}

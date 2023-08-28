@@ -45,7 +45,7 @@ export default function Modal({
                }
                {body}
 
-               {/* footer buttons */}
+
                <div className="flex justify-center">
                   {cancelBtn && (
                      <SecondaryButton
