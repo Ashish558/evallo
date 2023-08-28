@@ -57,7 +57,9 @@ const StudentSettings = () => {
   const [userDetails, userDetailsStatus] = useLazyGetPersonalDetailQuery();
   const [updateAccount, updateAccountStatus] = useUpdateUserAccountMutation();
   const [fetchedData, setFetchedData] = useState({});
+  const [saving,setSaving]= useState(false)
   useEffect(() => {
+    setSaving(true)
     userDetails()
       .then((res) => {
         setValues({
@@ -66,8 +68,10 @@ const StudentSettings = () => {
         setFetchedData({
           ...res?.data.data.user,
         });
+        setSaving(false)
       })
       .catch((err) => {
+        setSaving(false)
         console.log(err);
       });
   }, []);
@@ -80,19 +84,25 @@ const StudentSettings = () => {
       });
   };
   const handleDataUpdate = () => {
+    setSaving(true)
     const updateUserAccount = async () => {
       try {
         let reqBody = { ...values };
         delete reqBody["_id"];
         delete reqBody["email"];
+
         updateAccount(reqBody)
           .then((res) => {
+            alert("Account details updated succesfully")
             console.log(res);
+            setSaving(false)
           })
           .catch((err) => {
+            setSaving(false)
             console.log(err?.message);
           });
       } catch (e) {
+        setSaving(false)
         console.error(e?.response?.data?.message);
       }
     };
@@ -134,19 +144,15 @@ const StudentSettings = () => {
 
   return (
     <div>
-      <div className="flex flex-col gap-10  px-[calc(160*0.05050vw)] p-sy-50">
-        <div className="text-[#24A3D9] font-lexend-deca text-2xl  font-semibold leading-normal">
-          <span className=" !text-[1.2vw] font-medium ">
-            Student
-          </span>
-          <span className="font-semibold">
-          {"  > Settings"}
-          </span>
+      <div className="flex flex-col gap-10  mx-[100px] my-12 design:mx-[160px] design:my-[60px]">
+        <div className="text-[#24A3D9] font-lexend-deca text-md design:text-xl  font-semibold leading-normal">
+          <span className=" font-medium ">Student</span>
+          <span className="font-semibold">{"  > Settings"}</span>
         </div>
         <div className="flex gap-5">
           <InputField
             placeholder=""
-            labelClassname="font-medium text-base"
+            labelClassname=" text-md text-[#26435F] font-semibold"
             parentClassName="text-[#26435F]"
             inputContainerClassName=" bg-white  border border-white text-[#667085]"
             inputClassName=" text-400 bg-transparent"
@@ -163,7 +169,7 @@ const StudentSettings = () => {
 
           <InputField
             placeholder=""
-            labelClassname="font-medium text-base"
+            labelClassname=" text-md text-[#26435F] font-semibold"
             parentClassName="text-[#26435F]"
             inputContainerClassName=" bg-white border border-white text-[#667085]"
             inputClassName=" text-400 bg-transparent"
@@ -181,8 +187,8 @@ const StudentSettings = () => {
           <InputField
             IconLeft={caution}
             placeholder=""
-            labelClassname="font-medium text-base "
-            parentClassName="text-[#26435F] w-[calc(376*0.05050vw)] text-[calc(17.5*0.05050vw)]"
+            labelClassname=" text-md text-[#26435F] font-semibold"
+            parentClassName="text-[#26435F] w-[calc(376*0.05050vw)] min-w-[230px] text-[calc(17.5*0.05050vw)]"
             inputContainerClassName=" bg-white border border-white text-[#667085]"
             inputClassName=" text-400 bg-transparent "
             label="Email"
@@ -214,7 +220,7 @@ const StudentSettings = () => {
           <div id="number">
             <InputFieldDropdown
               placeholder=""
-              labelClassname="font-medium text-base"
+              labelClassname=" text-md"
               parentClassName="text-[#26435F]"
               inputContainerClassName=" bg-white border border-white text-[#667085]"
               inputClassName="  text-400 "
@@ -237,45 +243,80 @@ const StudentSettings = () => {
             />
           </div>
           <div>
-            <button
+            <PrimaryButton
               onClick={handleDataUpdate}
-              className="bg-[#FFA28D]  mt-5 ml-10 rounded-md px-10 py-2 text-sm text-[#EEE]"
+              disabled={saving}
+              loading={saving}
+              className={`bg-[#FFA28D]  mt-5 ml-10 rounded-md px-10 py-2 text-sm text-white  `}
             >
               Save
-            </button>
+            </PrimaryButton>
           </div>
         </div>
 
         <div className="flex gap-7 flex-1">
           <div>
-            <h1 className="my-1 text-[#26435F] font-semibold text-sm">
+            <h1 className="my-0 mb-1 text-[#26435F] font-semibold text-sm">
               Send Link
             </h1>
             <button
               onClick={handleClose}
-              className="bg-[#517CA8] text-white rounded-md px-3 py-2 text-sm"
+              className="bg-[#517CA8] text-white rounded-md  px-3 py-2 text-sm"
             >
               Reset Password
-            </button>
-          </div>
-          <div>
-            <h1 className="my-1 text-[#26435F] font-semibold text-sm">
-              2FA Codes / key
-            </h1>
-            <button className="bg-[#517CA8] text-white rounded-md px-5 py-2 text-sm">
-              Download
             </button>
           </div>
         </div>
         <div>
           {reset && (
-            <div className="flex gap-2">
-              <p className="bg-[rgba(119,221,119,0.2)] rounded-xl text-sm text-[#77DD77] px-3 py-1">
+            <div className="flex -mt-3 gap-2 text-xs">
+              <p className="bg-[rgba(119,221,119,0.2)] rounded-xl text-[11px] text-[#77DD77] px-3 py-1">
                 <img className="inline-block mr-3" src={resetSendIcon} alt="" />
-                {"Password Reset Link Sent To {email address}"}
+                Password Reset Link Sent To {values?.email}
               </p>
             </div>
           )}
+        </div>
+        <div className="flex justify-between gap-20 mt-16">
+          <div className="flex-1">
+            <p className=" text-sm text-[#26435F] font-semibold">
+              Submit Feedback
+            </p>
+            <textarea
+                rows="3"
+                className="mt-1 block w-full h-[180px] resize-none focus:!ring-blue-500 p-2 focus:!border-blue-500 placeholder-[#CBD6E2] text-sm  placeholder:text-xs "
+                placeholder=" If you have any feedback for this online platform, please submit
+                it here. Our team takes every suggestion seriously."
+              ></textarea>
+          
+           
+            <button
+              
+              className="bg-[#517CA8] text-white rounded-md mt-2 float-right px-4 py-2 text-xs"
+            >
+              Submit
+            </button>
+          </div>
+          <div className="flex-1">
+            <p className=" text-sm text-[#26435F] font-semibold ">
+              Request Technical Support
+            </p>
+           
+              <textarea
+                rows="3"
+                className="mt-1 block w-full h-[180px] resize-none focus:!ring-blue-500 p-2 focus:!border-blue-500 placeholder-[#CBD6E2] text-sm  placeholder:text-xs "
+                placeholder=" If you require technical support, please submit your request here
+
+              and our team will help you out accordingly."
+              ></textarea>
+          
+            <button
+              
+              className="bg-[#517CA8] text-white rounded-md mt-2 float-right px-4 py-2 text-xs"
+            >
+              Submit
+            </button>
+          </div>
         </div>
       </div>
       {modalOpen && (
