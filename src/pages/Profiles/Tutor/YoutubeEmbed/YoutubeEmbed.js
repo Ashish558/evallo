@@ -29,6 +29,7 @@ export default function YoutubeEmbed({ embedId }) {
          width: '100%',
          height: '800px',
          zIndex: '-1',
+
          paddingBottom: '157px'
       }} >
          {
@@ -42,6 +43,7 @@ export default function YoutubeEmbed({ embedId }) {
                      allow="autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                      allowFullScreen
                      title="Embedded youtube"
+                     style={{borderRadius:'10px'}}
                   />
                </> : <></>
          }
