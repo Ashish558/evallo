@@ -218,7 +218,7 @@ export default function TableItem({
   }, [checkedHeader])
 
 
-
+  console.log(dataFor)
   return (
     <>
       {dataFor === "allUsers" && (
@@ -230,7 +230,7 @@ export default function TableItem({
 
             >
               <div className="flex ">
-                {dataFor === "allUsers" ? (
+                {(dataFor === "allUsers") || (dataFor === "assignedTests") ? (
 
                   <label
                     className={`${styles["checkbox-label"]} block text-[#26435F] `}

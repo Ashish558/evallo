@@ -25,6 +25,7 @@ export default function InputSelect({
   IconRight,
   IconLeft,
   DateSelect,
+  IconSearch
 }) {
   const [selected, setSelected] = useState(false);
   const selectRef = useRef();
@@ -78,6 +79,7 @@ export default function InputSelect({
       >
         {Icon && <img src={Icon} className={`mr-5  w-[28px]}`} alt="icon" />}
         {IconLeft && <img src={IconLeft} className={`mr-5  w-[28px]}`} alt="IconLeft" />}
+        {IconSearch && <img src={IconSearch} className={`mr-5  w-[28px]}`} alt="IconLeft" />}
         {selected ? (
           IconRight ? (
             IconRight
