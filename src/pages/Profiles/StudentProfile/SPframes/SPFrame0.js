@@ -36,7 +36,7 @@ const SPFrame0 = ({userDetail,settings}) => {
                   <span>
                     <p>Time Zone</p>
                     <p className=" font-semibold ">
-                      {settings.timeZone ? settings.timeZone : "-"}
+                      {settings?.timeZone ? settings.timeZone : "-"}
                     </p>
                   </span>
                 </div>
