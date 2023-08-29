@@ -15,8 +15,8 @@ export default function SettingsCard({
 }) {
   return (
     <div
-      className={`${className ? className : ""} py-4  mb-5 pb-4 rounded-2xl
-      `}
+    className={`${className ? className : ""} py-4  mb-5 pb-4 rounded-2xl
+    `}
     >
       <div
         className={`text-primary-dark font-medium flex justify-between mb-1 ${titleClassName ? titleClassName : ""

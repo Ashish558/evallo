@@ -221,6 +221,54 @@ export default function TableItem({
   console.log(dataFor)
   return (
     <>
+
+      {
+        dataFor === "tutorFeedback" && (
+          <>
+
+            <tr className=" ">
+              <td>
+                {item.studentname}
+              </td>
+              <td>
+                {item.feedback}
+              </td>
+              <td>
+                {item.comment}
+              </td>
+              <td>
+                {item.service}
+              </td>
+              <td>
+                {item.sessiondata}
+              </td>
+            </tr>
+
+          </>
+        )
+
+      }
+      {
+        dataFor === "serviceRates" && (
+          <>
+
+            <tr className=" ">
+              <td>
+                {item.service}
+              </td>
+              <td>
+                {item.currency ? item.currency : "USD"}
+              </td>
+              <td>
+                {item.price}
+              </td>
+            </tr>
+
+          </>
+        )
+
+      }
+
       {dataFor === "allUsers" && (
         <tr className="odd:bg-white   leading-8">
 
@@ -282,10 +330,11 @@ export default function TableItem({
               <InputSelect
                 value={leadStatus ? leadStatus : "-"}
                 optionData={settings.leadStatus}
-                inputContainerClassName="min-w-[100px] pt-0 pb-0 pr-2 pl-0 text-center"
+                inputContainerClassName={`min-w-[100px] pt-0 pb-0 pr-2 pl-0 text-center ${styles.customPadding}`}
                 optionClassName="font-semibold opacity-60 text-[17.5px]"
                 labelClassname="hidden"
                 onChange={(val) => handleChange({ leadStatus: val })}
+              // customPadding
               />
             </div>
           </td>

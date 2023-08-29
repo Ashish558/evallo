@@ -123,7 +123,7 @@ export default function Users() {
       });
       return arr;
     });
-    
+
   };
   const tableHeaders = [
     {
@@ -645,13 +645,15 @@ export default function Users() {
           headers: getAuthHeader(),
         })
         .then((res) => {
+          console.log("uploaded")
           alert("File Uploaded");
 
         })
         .catch((err) => {
-          console.log(err);
+
           alert('Error Occured')
           setXlsFile(undefined);
+          setBulkUpload(false);
         });
     }
   };
@@ -664,17 +666,18 @@ export default function Users() {
           headers: getAuthHeader(),
         })
         .then((res) => {
+          setInviteUsers(false);
           alert("File Uploaded");
-          setXlsFile(undefined);
+          // setXlsFile(undefined);
         })
         .catch((err) => {
           console.log("error in bulk upload and invite");
-          alert('Error Occured')
           setXlsFile(undefined);
+          setInviteUsers(false);
         });
     }
   };
-  
+
   return (
     <div className="w-[83.6989583333vw] mx-auto  min-h-screen">
       <div className="pb-10  mt-[50px]">
@@ -767,18 +770,20 @@ export default function Users() {
                             <img src={fileupload} alt='fileuploadIcon'></img>
                           </div>
 
-                          <div className="flex justify-center">
+                          <div className="flex items-center justify-center">
                             {xlsFile == undefined ? (
-                              <label
-                                htmlFor="file"
-                                className="block text-white bg-[#517CA8] hover:bg-[#517CA8] items-center justify-center  rounded-[5px]  px-4 py-2.5 text-center dark:bg-[#517CA8] dark:hover:bg-[#517CA8] "
-                              >
-                                Choose File
-                              </label>
+                              <p className=""></p>
                             ) : (
-                              <label htmlFor="file">{xlsFile.name}</label>
+                              <p className="block ">{xlsFile.name}</p>
                             )}
-
+                          </div>
+                          <div className="flex justify-center">
+                            <label
+                              htmlFor="file"
+                              className="block text-white bg-[#517CA8] hover:bg-[#517CA8] items-center justify-center  rounded-[5px]  px-4 py-2.5 text-center dark:bg-[#517CA8] dark:hover:bg-[#517CA8] "
+                            >
+                              Choose File
+                            </label>
                             <input
                               onChange={(e) => setXlsFile(e.target.files[0])}
                               type="file"

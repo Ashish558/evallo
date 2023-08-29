@@ -58,3 +58,8 @@ input[type="checkbox"]:checked + .custom-checkbox {
   background-color: #ffa28d;
   color: white;
 }
+
+
+.customPadding{
+  padding: 0px;
+}
