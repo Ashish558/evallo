@@ -97,7 +97,7 @@ export default function ActionLog({ actionLog }) {
                         .toLocaleTimeString()
                         .split(" ")[1]}
                   {item?.topDate && item?.message && (
-                    <span className="text-xs ml-5 top-0 text-[#FFA28D] absolute z-5000 backdrop-blur-sm ">
+                    <span className="text-xs ml-5 top-0 text-[#FFA28D] absolute  backdrop-blur-sm ">
                       {" "}
                       {item?.topDate}
                     </span>

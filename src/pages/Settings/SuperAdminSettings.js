@@ -900,6 +900,8 @@ export default function SuperAdminSettings() {
             <div className="flex items-center gap-x-5 mb-4">
               <div>
                 <InputSelect
+                  labelClassname="mb-1"
+                  inputContainerClassName="shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-[#FFFFFF]"
                   placeholder='Select'
                   optionData={timeZones}
                   parentClassName="min-w-[200px]"
@@ -909,6 +911,8 @@ export default function SuperAdminSettings() {
                 />
               </div>
               <InputSelect
+                labelClassname="mb-1"
+                inputContainerClassName="shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-[#FFFFFF]"
                 optionData={["dd/mm/yy", "mm/dd/yy", "yy/mm/dd"]}
                 parentClassName="min-w-[200px]"
                 label="Default Date Format"
@@ -950,7 +954,7 @@ export default function SuperAdminSettings() {
                 </div>
               }
             />
-
+            <div className="h-[1.25px] bg-[#CBD6E2] my-8"></div>
             <SettingsCard
               title="Manage Referral Codes"
               className={styles["bordered-settings-container"]}
@@ -1249,7 +1253,7 @@ export default function SuperAdminSettings() {
               </p>
             </div>
 
-            <div className="bg-[#FFFFFF] border-[2.5px] px-[82px] border-dotted border-[#CBD6E2] mb-[316px]">
+            <div className={`bg-[#FFFFFF] border-[2.5px] px-[82px] border-dotted border-[#CBD6E2] mb-[30px] ${styles.permission}`}>
               {fetchedPermissions?.map((item, id) => {
                 return (
                   <>

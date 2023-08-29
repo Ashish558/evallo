@@ -13,6 +13,7 @@ import CustomFields from "../CustomFields/CustomFields";
 import InputFieldDropdown from "../../../components/InputField/inputFieldDropdown";
 import InputSelect from "../../../components/InputSelect/InputSelect";
 import leftDrop from "../../../assets/icons/Polygon 2.svg";
+import CCheckbox from "../../../components/CCheckbox/CCheckbox";
 export default function UserDetails({
   setFrames,
   persona,
@@ -106,23 +107,25 @@ export default function UserDetails({
     <div className="w-full">
       <div className="flex justify-between gap-8">
         <InputField
-          inputContainerClassName="pt-3 pb-3 border "
+          inputContainerClassName="border border-[#D0D5DD] pt-3 pb-3 border "
           parentClassName="mb-6  relative flex-1"
           required={persona === "student" ? true : false}
           label={`${personaText} First Name`}
           labelClassname="text-[#26435F] font-bold  mb-1 text-sm"
           value={otherDetails.FirstName}
+          
           onChange={(e) =>
             setOtherDetails({
               ...otherDetails,
               FirstName: e.target.value,
             })
           }
+          totalErrors={detailsError} 
           error={detailsError.FirstName}
         />
         <InputField
           parentClassName="mb-6 relative flex-1"
-          inputContainerClassName="pt-3 pb-3 border"
+          inputContainerClassName="border border-[#D0D5DD] pt-3 pb-3 border"
           label={`${personaText} Last Name`}
           required={persona === "student" ? true : false}
           labelClassname="text-[#26435F] font-bold  mb-1 text-sm"
@@ -133,28 +136,30 @@ export default function UserDetails({
               LastName: e.target.value,
             })
           }
+          totalErrors={detailsError} 
           error={detailsError.LastName}
         />
       </div>
-      <div className="flex justify-between gap-5 items-center">
+      <div className="flex justify-between gap-6 items-center">
         <InputField
           parentClassName="mb-6 relative flex-1"
           label={`${personaText} Email `}
-          inputContainerClassName="pt-3 pb-3 border"
+          inputContainerClassName="border border-[#D0D5DD] pt-3 pb-3 border"
           required={persona === "student" ? true : false}
           labelClassname="text-[#26435F] font-bold  mb-1 text-sm"
           value={otherDetails.Email}
           onChange={(e) =>
             setOtherDetails({ ...otherDetails, Email: e.target.value })
           }
+          totalErrors={detailsError} 
           error={detailsError.Email}
         />
         <InputFieldDropdown
-          parentClassName="mb-6 w-[200px]"
+          parentClassName="mb-6 w-[230px]"
           label={`${personaText} Phone  ${persona !== "parent" ? "" : ""} `}
           labelClassname="text-[#26435F] font-bold  mb-1 text-sm"
-          inputContainerClassName="pt-3   pb-3 relative border"
-          inputClassName="ml-2"
+          inputContainerClassName="border h-[40px] border-[#D0D5DD] pt-3   pb-3 relative border"
+          inputClassName=""
           required={persona === "student" ? true : false}
           codeValue={otherDetails.PphoneCode}
           handleCodeChange={(e) =>
@@ -164,19 +169,22 @@ export default function UserDetails({
           onChange={(e) =>
             setOtherDetails({ ...otherDetails, Phone: e.target.value })
           }
+          totalErrors={detailsError} 
           error={detailsError.Phone}
+          codeError={detailsError.PphoneCode}
         />
       </div>
 
       <InputField
         parentClassName="mb-6 relative flex-1"
         label={`Student School `}
-        inputContainerClassName="pt-3 pb-3 border"
+        inputContainerClassName="border border-[#D0D5DD] pt-3 pb-3 border"
         labelClassname="text-[#26435F] font-bold  mb-1 text-sm"
         value={otherDetails.schoolName}
         onChange={(e) =>
           setOtherDetails({ ...otherDetails, schoolName: e.target.value })
         }
+        totalErrors={detailsError} 
         error={detailsError.schoolName}
       />
       <InputSelect
@@ -185,7 +193,7 @@ export default function UserDetails({
         optionData={["5","6","7","8","9","10","11","12"]}
         label={`Student's Grade`}
         labelClassname="text-[#26435F] font-bold  mb-1 text-sm "
-        inputContainerClassName="py-1 relative border"
+        inputContainerClassName="border text-sm border-[#D0D5DD] py-1 relative border"
         inputClassName="ml-80"
         required={persona === "student" ? true : false}
        
@@ -193,6 +201,7 @@ export default function UserDetails({
         onChange={(e) =>
           setOtherDetails({ ...otherDetails, grade: e})
         }
+        totalErrors={detailsError} 
         error={detailsError.grade}
       />
      
@@ -201,6 +210,7 @@ export default function UserDetails({
           label="Referral Code"
           placeholder=""
           parentClassName=" text-xs flex-1"
+          inputContainerClassName="border border-[#D0D5DD] py-1 relative border"
           value={otherDetails.referalCode}
           onChange={(e) =>
             setOtherDetails({ ...otherDetails, referalCode: e.target.value })
@@ -208,24 +218,14 @@ export default function UserDetails({
         />
 
         <div className={style.shy}>
-          <label className={`${style["checkbox-label"]} block mt-7 py-auto `}>
-            <input
-              type="checkbox"
-              checked={otherDetails.referalCode?.trim()?.length === 0 || otherDetails.referalCode===""}
-              //  onChange={handleCheckboxChangeReferral}
-            />
-            <span
-            onClick={()=>{
-              setOtherDetails({...otherDetails,referalCode:""})
-            }}
-              className={`${style["custom-checkbox"]} ${
-                otherDetails.referalCode?.trim()?.length === 0 ? "checked" : ""
-              }`}
-            ></span>
+       <div className="flex items-center mt-2">
+         <CCheckbox  checked={otherDetails.referalCode?.trim()?.length === 0 }
+                          onChange={()=>  setOtherDetails({...otherDetails,referalCode:""})}/>
+        
             <span className="ml-2 font-medium text-[#507CA8]">
               I don't have one
             </span>
-          </label>
+        </div>
         </div>
    
       <div className="flex justify-between items-center mt-16">

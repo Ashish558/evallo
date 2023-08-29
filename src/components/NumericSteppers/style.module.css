@@ -7,12 +7,13 @@
 .line::before {
   content: "";
   position: absolute;
-  right: -129px;
+  right: -100px;
   top: 50%;
+  margin-top:-15px;
   transform: translateY(-50%);
-  width:129px;
+  width:100px;
   height: 1px;
-  background-color: #7152eb;
+  background-color: #B3BDC7;
   z-index: -99;
 }
 .line:nth-last-child(1) {
@@ -36,12 +37,13 @@
 .line2::before {
   content: "";
   position: absolute;
-  right: -185px;
+  right: -170px;
   top: 50%;
+  margin-top:-15px;
   transform: translateY(-50%);
-  width:185px;
+  width:170px;
   height: 1px;
-  background-color: #7152eb;
+  background-color: #B3BDC7;
   z-index: -99;
 }
 .line2:nth-last-child(1) {
@@ -55,6 +57,8 @@
   display: none;
 }
 
+
+
 .line4 {
   position: relative;
   z-index: 10;
@@ -64,21 +68,26 @@
 .line4::before {
   content: "";
   position: absolute;
-  right: -405px;
+  right: -350px;
   top: 50%;
+  margin-top:-15px;
   transform: translateY(-50%);
-  width:405px;
+  width:350px;
   height: 1px;
-  background-color: #7152eb;
+  background-color: #B3BDC7;
   z-index: -99;
 }
-.line4:nth-last-child(1) {
-  margin-right: 0;
-}
-.line4:nth-last-child(1)::before {
-  display: none;
-}
 
-.line4.disabledSteps:nth-last-child(1)::before {
-  display: none;
+.line5::before {
+  content: none;
+  display:none;
+  position: absolute;
+  right: -185px;
+  top: 50%;
+  margin-top:-15px;
+  transform: translateY(-50%);
+  width:185px;
+  height: 1px;
+  background-color: #B3BDC7;
+  z-index: -99;
 }

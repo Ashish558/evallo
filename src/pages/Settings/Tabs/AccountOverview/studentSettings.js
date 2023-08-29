@@ -18,7 +18,7 @@ import {
 import { BASE_URL, getAuthHeader } from "../../../../app/constants/constants";
 import InputFieldDropdown from "../../../../components/InputField/inputFieldDropdown";
 import { useUpdateEmailMutation } from "../../../../app/services/organization";
-const AccountOverview = () => {
+const StudentSettings = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [reset, setReset] = useState(false);
   const [forgotPassword, forgotPasswordResp] = useForgotPasswordMutation();
@@ -56,7 +56,7 @@ const AccountOverview = () => {
   const [updateEmail, setUpdateEmail] = useUpdateEmailMutation();
   const [userDetails, userDetailsStatus] = useLazyGetPersonalDetailQuery();
   const [updateAccount, updateAccountStatus] = useUpdateUserAccountMutation();
-  const [fetchedData, setFetchedData] = useState({})
+  const [fetchedData, setFetchedData] = useState({});
   useEffect(() => {
     userDetails()
       .then((res) => {
@@ -97,9 +97,8 @@ const AccountOverview = () => {
       }
     };
     updateUserAccount();
-    if (fetchedData?.email !== values.email)
-      handleEmailUpdate(values.email)
-    console.log({ fetchedData, values })
+    if (fetchedData?.email !== values.email) handleEmailUpdate(values.email);
+    console.log({ fetchedData, values });
   };
   const showResetConfirmation = () => {
     setReset(true);
@@ -135,7 +134,15 @@ const AccountOverview = () => {
 
   return (
     <div>
-      <div className="flex flex-col gap-10  ">
+      <div className="flex flex-col gap-10  px-[calc(160*0.05050vw)] p-sy-50">
+        <div className="text-[#24A3D9] font-lexend-deca text-2xl  font-semibold leading-normal">
+          <span className=" !text-[1.2vw] font-medium ">
+            Student
+          </span>
+          <span className="font-semibold">
+          {"  > Settings"}
+          </span>
+        </div>
         <div className="flex gap-5">
           <InputField
             placeholder=""
@@ -174,10 +181,10 @@ const AccountOverview = () => {
           <InputField
             IconLeft={caution}
             placeholder=""
-            labelClassname="font-medium text-base"
-            parentClassName="text-[#26435F]"
+            labelClassname="font-medium text-base "
+            parentClassName="text-[#26435F] w-[calc(376*0.05050vw)] text-[calc(17.5*0.05050vw)]"
             inputContainerClassName=" bg-white border border-white text-[#667085]"
-            inputClassName=" text-400 bg-transparent w-[250px]"
+            inputClassName=" text-400 bg-transparent "
             label="Email"
             // IconRight={tooltipIcon}
             value={values.email}
@@ -186,7 +193,6 @@ const AccountOverview = () => {
                 ...values,
                 email: e.target.value,
               });
-
             }}
             error={error.email}
             Tooltip={
@@ -232,7 +238,6 @@ const AccountOverview = () => {
           </div>
           <div>
             <button
-
               onClick={handleDataUpdate}
               className="bg-[#FFA28D]  mt-5 ml-10 rounded-md px-10 py-2 text-sm text-[#EEE]"
             >
@@ -261,7 +266,6 @@ const AccountOverview = () => {
               Download
             </button>
           </div>
-
         </div>
         <div>
           {reset && (
@@ -298,4 +302,4 @@ const AccountOverview = () => {
   );
 };
 
-export default AccountOverview;
+export default StudentSettings;

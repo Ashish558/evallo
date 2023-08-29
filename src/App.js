@@ -40,7 +40,7 @@ function App() {
   useEffect(() => {
     setLoading(true);
 
-    if (sessionStorage.getItem("token")) {
+    if (sessionStorage.getItem("token")||localStorage.getItem("evalloToken")) {
       fetchPersonalDetails().then((res) => {
         if (res.error) {
           return;

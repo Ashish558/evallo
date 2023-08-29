@@ -15,7 +15,7 @@ export default function SettingsCard({
 }) {
   return (
     <div
-      className={`rounded-2xl py-4  mb-5 pb-4 ${className ? className : ""}
+      className={`${className ? className : ""} py-4  mb-5 pb-4 rounded-2xl
       `}
     >
       <div
