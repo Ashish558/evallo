@@ -223,9 +223,9 @@ export default function TutorDashboard() {
 
    return (
       <div className='bg-[#F5F8FA]'>
-         <div className="lg:ml-pageLeft  min-h-screen overflow-x-hidden">
-            <div className="py-8 pr-5">
-               <p className='text-[#24A3D9] text-xl mx-4'>Dashboard</p>
+         <div className="w-[90.6770833333vw] mx-auto">
+            <div className="py-8">
+               <p className='text-[#24A3D9] text-xl '>Dashboard</p>
 
 
                <div className='px-4 w-[521px] mx-auto'>
@@ -249,26 +249,28 @@ export default function TutorDashboard() {
                <div className='flex items-start'>
 
                   <div className='flex flex-col items-start flex-[7]' >
-                     <div className='px-4 mb-[50px]'>
-                        <p className='text-primary-dark font-semibold text-[21px] mb-8 '>Latest Students</p>
-                        <div className={styles.studentImages} >
-                           {
-                              students.length > 0 &&
-                              <OwlCarousel items={5} autoWidth margin={20} >
-                                 {students.map(student => {
-                                    return <div className='flex flex-col items-center text-center w-[110px]'>
-                                       <img src={`${student.photo ? `${awsLink}${student.photo}` : '/images/default.jpeg'} `} className='w-[100px]' alt='studentImage' />
-                                       <p className='text-lg font-semibold mt-4 cursor-pointer'
-                                          onClick={() => navigate(`/profile/student/${student._id}`)} >
-                                          {student.name.split(" ")[0]} <br /> {student.name.split(" ")[1]} </p>
-                                    </div>
-                                 })}
-                              </OwlCarousel>
-                           }
+                     <div className=' mb-[40px] w-[58.9583333333vw]'>
+                        <p className='text-primary-dark font-semibold text-[21px] mb-[10.67px] '>Latest Students</p>
+                        <div className='rounded-[5.333px] bg-[#FFF] shadow-[0px_0px_2px_rgba(0,0,0,0.25)] py-7 px-5'>
+                           <div className={styles.studentImages} >
+                              {
+                                 students.length > 0 &&
+                                 <OwlCarousel items={5} autoWidth margin={20} >
+                                    {students.map(student => {
+                                       return <div className='flex flex-col items-center text-center w-[110px]'>
+                                          <img src={`${student.photo ? `${awsLink}${student.photo}` : '/images/default.jpeg'} `} className='w-[100px]' alt='studentImage' />
+                                          <p className='text-[1.09375vw] text-[#517CA8]  mt-4 cursor-pointer'
+                                             onClick={() => navigate(`/profile/student/${student._id}`)} >
+                                             {student.name.split(" ")[0]} <br /> {student.name.split(" ")[1]} </p>
+                                       </div>
+                                    })}
+                                 </OwlCarousel>
+                              }
+                           </div>
                         </div>
                      </div>
 
-                     <div className='flex w-full pl-5'>
+                     <div className='flex w-[58.958333333vw]'>
                         <DashboardCard data={{
                            title: tutorHours,
                            subtitle: `${tutorHours > 1 ? 'Hours' : 'Hour'}`
@@ -280,16 +282,17 @@ export default function TutorDashboard() {
                            header='Earned'
                            subHeader='This Month'
                            className='bg-[#4BBD94]' />
-                        <div className='ml-[30px] flex justify-center items-center w-[290px] bg-[#F4F4F4] mr-[30px] rounded-[5px]'>
-                           <div>     <p className='text-[32px] text-center text-[#667085] font-semibold'>Tutor Rank</p>
+
+                        <div className='ml-[30px] flex justify-center items-center w-[17.4402775vw] bg-[#F4F4F4]  rounded-[5px]'>
+                           <div>     <p className='text-[1.6666666667vw] text-center text-[#667085] font-semibold'>Tutor Rank</p>
                               <p className='text-[#667085] text-center text-xl'>Coming Soon</p></div>
                         </div>
                      </div>
 
 
-                     <div className='w-full pl-6 mt-10'>
-                        <p className='text-primary-dark font-semibold text-[21px] mb-4'>Today’s Schedule</p>
-                        <div className='px-[29px] py-[31px] bg-white mr-5 rounded-[5.333px] scrollbar-content scrollbar-vertical max-h-[600px] overflow-auto shadow-[0px_0px_2.6px_0px_rgba(0,0,0,0.25)]'>
+                     <div className='w-[58.958333333vw] mt-10'>
+                        <p className='text-primary-dark font-semibold text-[21px] mb-[13px]'>Today’s Schedule</p>
+                        <div className='px-[29px] py-[31px] bg-white  rounded-[5.333px] scrollbar-content scrollbar-vertical max-h-[600px] overflow-auto shadow-[0px_0px_2.6px_0px_rgba(0,0,0,0.25)]'>
                            {sessions.map((item, idx) => {
                               return <TutorSchedule {...item} setIsOpen={setIsOpen} handleLinkClick={handleLinkClick} />
                            })}
@@ -300,7 +303,7 @@ export default function TutorDashboard() {
                   </div>
                   <div className=' flex-2 '>
 
-                     <p className='text-[21px] text-[#26435F] mb-2 font-semibold'>Latest Practice Test</p>
+                     <p className='text-[21px] text-[#26435F] mb-[9.33px] font-semibold'>Latest Practice Test</p>
                      <div className='bg-[#FFFFFF]  rounded-[5px] shadow-[0px_0px_2.6px_0px_rgba(0,0,0,0.25)]'>
                         <div className=''>
 
@@ -338,11 +341,11 @@ export default function TutorDashboard() {
                         </div> */}
                         </div>
 
-                        <div className='min-w-[330px]'>
+                        <div className='w-[29.1666666667vw]'>
                            {/* <p className='text-primary font-semibold text-[21px] mb-4'>
                            Latest Practice Test
                         </p> */}
-                           <div className='px-[19px] h-[331px] overflow-auto py-[19px] bg-white rounded-20'>
+                           <div className='px-[19px] h-[515px] overflow-auto py-[19px] bg-white rounded-20'>
                               {allAssignedTests.map(item => {
                                  return (
                                     <div className=' mb-5' key={item._id} >
@@ -352,7 +355,7 @@ export default function TutorDashboard() {
                                        <div className=' flex justify-between items-center'>
                                           <div>
                                              <p className='text-[#24A3D9] text-lg font-bold'> {item.testName} </p>
-                                             <div className=' text-[#517CA8] flex opacity-50'>
+                                             <div className=' text-[#517CA8] flex'>
                                                 <p className='font-semibold'>Due:</p>
                                                 <p className='ml-2'> {getDate(item.dueDate)} </p>
                                              </div>
@@ -363,11 +366,11 @@ export default function TutorDashboard() {
                                           <div>
                                              {
                                                 item.status = "notStarted" ? <p className='text-[#32D583] underline'>
-                                                   {item.status.charAt(0).toUpperCase() + item.status.slice(1).replace(/([A-Z])/g, ' $1').trim()}
+                                                   {/* {item.status.charAt(0).toUpperCase() + item.status.slice(1).replace(/([A-Z])/g, ' $1').trim()} */}
 
                                                 </p> :
                                                    <p className='text-[#FFCE84] underline'>
-                                                      {item.status.charAt(0).toUpperCase() + item.status.slice(1).replace(/([A-Z])/g, ' $1').trim()}
+                                                      {/* {item.status.charAt(0).toUpperCase() + item.status.slice(1).replace(/([A-Z])/g, ' $1').trim()} */}
                                                    </p>
                                              }
 

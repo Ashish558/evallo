@@ -278,7 +278,7 @@ export default function TableItem({
 
             >
               <div className="flex ">
-                {(dataFor === "allUsers") || (dataFor === "assignedTests") ? (
+                {dataFor === "allUsers" ? (
 
                   <label
                     className={`${styles["checkbox-label"]} block text-[#26435F] `}
@@ -328,10 +328,11 @@ export default function TableItem({
           <td className=" text-[17.5px] px-1  min-w-14 py-4">
             <div className="my-[6px]">
               <InputSelect
+                tableDropdown={true}
                 value={leadStatus ? leadStatus : "-"}
                 optionData={settings.leadStatus}
-                inputContainerClassName={`min-w-[100px] pt-0 pb-0 pr-2 pl-0 text-center ${styles.customPadding}`}
-                optionClassName="font-semibold opacity-60 text-[17.5px]"
+                inputContainerClassName={`min-w-[100px] pt-0 pb-0 pr-2 pl-0 text-center`}
+                optionClassName="text-[17.5px]"
                 labelClassname="hidden"
                 onChange={(val) => handleChange({ leadStatus: val })}
               // customPadding
@@ -340,6 +341,7 @@ export default function TableItem({
           </td>
           <td className=" text-[17.5px] px-1  min-w-14 py-4">
             <InputSelect
+              tableDropdown={true}
               value={item.userStatus ? item.userStatus : "-"}
               optionData={["active", "blocked", "dormant"]}
               inputContainerClassName="min-w-[100px] pt-0 pb-0 pr-2 pl-0 text-center"
@@ -430,46 +432,70 @@ export default function TableItem({
         </tr>
       )}
       {dataFor === "assignedTests" && (
-        <tr className="odd:bg-white text-[17.5px]  leading-8">
+        <tr className=" text-[17.5px]  leading-8">
+          <td className=" text-[17.5px] px-1  min-w-14 py-4  text-left">
+            <span
+              className="inline-block cursor-pointer pl-4"
+
+            >
+              <div className="flex ">
+                {dataFor === "assignedTests" ? (
+
+                  <label
+                    className={`${styles["checkbox-label"]} block text-[#26435F] `}
+                  >
+                    <input
+                      type="checkbox"
+                      checked={isChecked}
+                      onChange={handleCheckboxChange}
+                    />
+                    <span
+                      className={`${styles["custom-checkbox"]} ${isChecked ? "checked" : ""
+                        }`}
+                    ></span>
+                  </label>
+
+                ) : (
+                  ""
+                )}
+                <span onClick={() => onClick.redirect(item)} className="">
+                  {item.assignedOn}
+                </span>
+              </div>
+            </span>
+          </td>
           <td className="px-1 font-medium  min-w-14 py-4 text-left">
             <span className="inline-block cursor-pointer pl-4">
               {item.studentName}
             </span>
           </td>
-          <td
-            className={`font-medium px-1 flex justify-center items-center min-w-14 py-4 relative ${item.late && "text-[#EE3434]"
-              }`}
-          >
-            {item.late && (
-              <span className="inline-block w-[20px] h-[20px] rounded-full bg-[#EE3434]"></span>
-            )}
-            {item.assignedOn}
-          </td>
-          <td className="font-medium px-1  min-w-14 py-4">{item.assignedBy}</td>
-          <td className="font-medium px-1  min-w-14 py-4">{item.dueDate}</td>
           <td className="font-medium px-1  min-w-14 py-4">{item.testName}</td>
+          <td className="font-medium px-1  min-w-14 py-4">{item.assignedBy
+          }</td>
           <td className="font-medium px-1  min-w-14 py-4">
-            {item.duration === "-" ? "Unlimited" : item.duration}
-          </td>
-          <td className="font-medium px-1  min-w-14 py-4">
+
+
             <div className={`flex items-center no-wrap justify-center`}>
               {returnStatus(item.status)}
 
             </div>
-          </td>
-          <td
-            className="font-medium px-1 test-center text-left min-w-14 py-4"
 
-          >
+
+          </td>
+          <td className="font-medium px-1  min-w-14 py-4">
+            {item.duration === "-" ? "Unlimited" : item.duration}
+          </td>
+          <td className="font-medium px-1  min-w-14 py-4">
             <div className="text-center">
               {item.status === "completed" ? score : "-"}
             </div>
           </td>
-          <td className="font-medium px-1  min-w-14 py-4">
+
+          <td className=" px-1  min-w-14 py-4">
             <button
-              className={`px-2.5 py-1.8 rounded-md flex items-center leading-none bg-primary text-white ${item.status !== "completed" && item.status !== "started"
-                ? "opacity-50 pointer-events-none"
-                : ""
+              className={`text-[15px] px-2.5 py-1.8 rounded-md flex items-center leading-none  text-white ${item.status !== "completed" && item.status !== "started "
+                ? "bg-[rgba(38,67,95,0.20)] pointer-events-none"
+                : "bg-primary"
                 }`}
 
               onClick={() =>
@@ -478,10 +504,10 @@ export default function TableItem({
                 )
               }
             >
-              Test details
+              View Report
             </button>
           </td>
-          <td className="font-medium px-1 min-w-14 py-4">
+          {/* <td className="font-medium px-1 min-w-14 py-4">
             <img
               src={DownloadIcon}
               className="w-[30px] cursor-pointer"
@@ -497,7 +523,7 @@ export default function TableItem({
             >
               <span className="absolute top-[-7px] left-[3.5px]">×</span>
             </div>
-          </td>
+          </td> */}
         </tr>
       )}
 
