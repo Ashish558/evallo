@@ -22,18 +22,18 @@ import { permissionsStaticData } from "./Tabs/staticData";
 import { getSessionTagName } from "../../utils/utils";
 import { BASE_URL, getAuthHeader } from "../../app/constants/constants";
 import axios from "axios";
-import DeleteIcon from "../../assets/icons/delete.svg";
+import DeleteIcon from "../../assets/icons/delete (2).svg";
 import PauseIcon from "../../assets/icons/pause.svg";
 import PlayIcon from "../../assets/icons/play.svg";
 import AccountOverviewLogo from "../../assets/icons/account-overview.png";
 import AccountOverviewLogo2 from "../../assets/icons/account overview2.png";
 import OrgDefaultLogo from "../../assets/icons/org-default.png";
 import org1 from "../../assets/icons/org1.png";
-import org2 from  "../../assets/icons/org2.png";
+import org2 from "../../assets/icons/org2.png";
 import OrgDefaultLogo2 from "../../assets/icons/org default2.png";
 import OrgDefaultContentLogo2 from "../../assets/icons/org default content.png";
 import OrgDefaultContentLogo from "../../assets/icons/org default content(2).png";
-import EditBlueIcon from "../../assets/icons/edit-blue.svg";
+import EditBlueIcon from "../../assets/icons/edit 15.png";
 import InputSearch from "../../components/InputSearch/InputSearch";
 import { useSelector, useDispatch } from "react-redux";
 import { useUpdateUserFieldsMutation } from "../../app/services/users";
@@ -49,6 +49,7 @@ import UserManagement from "./Tabs/UserManagement/UserManagement";
 import OrgDefaultContent from "./Tabs/OrgDefaultContent/OrgDefaultContent";
 import { timeZones } from "../../constants/constants";
 import InputSelect from "../../components/InputSelect/InputSelect";
+import ToogleBar from "../../components/SettingsCard/ToogleBar";
 
 const initialState = {
   name: "",
@@ -77,7 +78,7 @@ const initialTabs = [
   {
     Icon: org2,
     Icon2: org1,
-    name: "Org Default",
+    name: "Org Default Settings",
     selected: false,
   },
   {
@@ -88,7 +89,7 @@ const initialTabs = [
   },
 ];
 export default function SuperAdminSettings() {
-
+  const { firstName, lastName } = useSelector((state) => state.user);
   const [modalActive, setModalActive] = useState(false);
   const [tagModalActive, setTagModalActive] = useState(false);
   const [addCodeModalActive, setAddCodeModalActive] = useState(false);
@@ -192,7 +193,7 @@ export default function SuperAdminSettings() {
     updateAndFetchsettings(updatedSetting);
   };
   const togglePermissions = (key, value) => {
-    const arr = fetchedPermissions.map((per) => {
+    const arr = fetchedPermissions?.map((per) => {
       if (per._id === key) {
         return { ...per, choosedValue: !per.choosedValue };
       }
@@ -827,13 +828,15 @@ export default function SuperAdminSettings() {
     };
     updateAndFetchsettings(body);
   };
-
+  console.log(organization?.company)
   return (
     <>
       <div className=" bg-lightWhite min-h-screen px-24 pt-[30px] pb-[50px]">
         <p className="text-[#24A3D9]  mb-9 ">
-         
-          <span className="font-medium text-lg">Settings</span>
+
+          <span className="font-medium text-lg"> {organization?.company +
+
+            "  >  "} Settings</span>
         </p>
         <div className="flex justify-between items-center mb-[45px]">
           <div className={`${styles.tabsContainer} w-full`}>
@@ -895,14 +898,21 @@ export default function SuperAdminSettings() {
         {activeTab === 3 ? (
           <div>
             <div className="flex items-center gap-x-5 mb-4">
+              <div>
+                <InputSelect
+                  labelClassname="mb-1"
+                  inputContainerClassName="shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-[#FFFFFF]"
+                  placeholder='Select'
+                  optionData={timeZones}
+                  parentClassName="min-w-[200px]"
+                  label="Default Time Zone"
+                  value={settingsData.timeZone}
+                  onChange={(val) => handleChange("timeZone", val)}
+                />
+              </div>
               <InputSelect
-                optionData={timeZones}
-                parentClassName="min-w-[200px]"
-                label="Default Timezone"
-                value={settingsData.timeZone}
-                onChange={(val) => handleChange("timeZone", val)}
-              />
-              <InputSelect
+                labelClassname="mb-1"
+                inputContainerClassName="shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-[#FFFFFF]"
                 optionData={["dd/mm/yy", "mm/dd/yy", "yy/mm/dd"]}
                 parentClassName="min-w-[200px]"
                 label="Default Date Format"
@@ -910,10 +920,11 @@ export default function SuperAdminSettings() {
                 onChange={(val) => handleChange("dateFormat", val)}
               />
             </div>
+            <div className="h-[1.25px] bg-[#CBD6E2] mb-4 mt-8"></div>
             <SettingsCard
               title="Lead Status Items (Parent / Student)"
               body={
-                <div className="flex items-center flex-wrap [&>*]:mb-[10px] bg-white shadow-small p-4 rounded-5">
+                <div className="flex items-center flex-wrap [&>*]:mb-[10px] bg-white shadow-small p-6 rounded-5">
                   <AddTag onAddTag={handleAddTag} keyName="leadStatus" />
                   <FilterItems
                     onlyItems={true}
@@ -926,11 +937,11 @@ export default function SuperAdminSettings() {
                 </div>
               }
             />
-
+            <div className="h-[1.25px] bg-[#CBD6E2] mb-4 mt-8"></div>
             <SettingsCard
               title="Tutor Status Items"
               body={
-                <div className="flex items-center flex-wrap [&>*]:mb-[10px] bg-white shadow-small p-4 rounded-5">
+                <div className="flex items-center flex-wrap [&>*]:mb-[10px] bg-white shadow-small p-6 rounded-5">
                   <AddTag onAddTag={handleAddTag} keyName="tutorStatus" />
                   <FilterItems
                     onlyItems={true}
@@ -943,7 +954,7 @@ export default function SuperAdminSettings() {
                 </div>
               }
             />
-
+            <div className="h-[1.25px] bg-[#CBD6E2] my-8"></div>
             <SettingsCard
               title="Manage Referral Codes"
               className={styles["bordered-settings-container"]}
@@ -952,7 +963,7 @@ export default function SuperAdminSettings() {
                   {subscriptionCode !== undefined &&
                     subscriptionCode.map((subscription, i) => {
                       return (
-                        <div key={i} className="bg-white shadow-small p-4 ">
+                        <div key={i} className="bg-white shadow-small p-4 rounded-[5px]">
                           <div className="flex items-center justify-between pr-8 ">
                             <p className="font-medium text-[#24A3D9] mb-4">
                               {subscription.code}
@@ -961,7 +972,7 @@ export default function SuperAdminSettings() {
                               </span>
                             </p>
                             <div className="flex items-center gap-x-4">
-                              {subscription.pause === false ? (
+                              {/* {subscription.pause === false ? (
                                 <img
                                   src={PlayIcon}
                                   className="w-4 cursor-pointer"
@@ -975,7 +986,11 @@ export default function SuperAdminSettings() {
                                   alt="play"
                                   onClick={() => handlePause(subscription)}
                                 />
-                              )}
+                              )} */}
+                              <ToggleBar
+                                toggle={{ value: 5, key: 9 }}
+                                onToggle={togglePermissions}
+                              ></ToggleBar>
                               <div
                                 className="w-5 h-5 flex items-center justify-center bg-[#E3E3E3] rounded-full cursor-pointer"
                                 onClick={() => onEditCode(subscription)}
@@ -1147,7 +1162,7 @@ export default function SuperAdminSettings() {
               onToggle={onToggle}
               body={
                 <div>
-                  <div className="flex items-center flex-wrap [&>*]:mb-[10px] bg-white shadow-small gap-x-4 p-4 rounded-5 mb-3">
+                  <div className="flex items-center flex-wrap [&>*]:mb-[10px] bg-white  gap-x-4 p-4 rounded-br-5 rounded-bl-5 mb-3">
                     {/* <input type='file' ref={inputRef} className='hidden' accept="image/*"
                            onChange={e => onImageChange(e)} /> */}
 
@@ -1175,18 +1190,25 @@ export default function SuperAdminSettings() {
                         <div key={offer._id}>
                           <div>
                             {toggleImage.offer && (
-                              <div className="w-[300px] h-[150px] overflow-hidden mb-5">
-                                <img
-                                  src={`${awsLink}${offer.image}`}
-                                  alt="offer-image3"
-                                  className="w-full h-full object-cover rounded-7"
-                                />
+                              <div className=" overflow-hidden mb-5">
+
+                                <div className="flex">
+                                  <div className="w-[300px] h-[150px]">
+                                    <img
+                                      src={`${awsLink}${offer.image}`}
+                                      alt="offer-image3"
+                                      className="w-full h-full object-cover rounded-7"
+                                    />
+                                  </div>
+                                  <div className="w-[1.25px] h-[150px] bg-[#CBD6E2] ml-4" />
+                                </div>
                               </div>
                             )}
                             <div>
                               <InputField
                                 defaultValue={offer.link}
-                                parentClassName={"mb-3"}
+                                inputClassName={"bg-[#F5F8FA]"}
+                                parentClassName={"mb-3 bg-[#F5F8FA]"}
                                 onBlur={(e) =>
                                   handleOfferChange(
                                     offer,
@@ -1196,6 +1218,8 @@ export default function SuperAdminSettings() {
                                 }
                               />
                               <InputField
+                                parentClassName={"bg-[#F5F8FA]"}
+                                inputClassName={"bg-[#F5F8FA]"}
                                 value={offer.buttonText}
                                 placeholder={
                                   "Button (eg. Register, Enroll, View)"
@@ -1229,7 +1253,7 @@ export default function SuperAdminSettings() {
               </p>
             </div>
 
-            <div className="bg-[#FFFFFF] border-[2.5px] px-[82px] border-dotted border-[#CBD6E2] mb-[316px]">
+            <div className={`bg-[#FFFFFF] border-[2.5px] px-[82px] border-dotted border-[#CBD6E2] mb-[30px] ${styles.permission}`}>
               {fetchedPermissions?.map((item, id) => {
                 return (
                   <>

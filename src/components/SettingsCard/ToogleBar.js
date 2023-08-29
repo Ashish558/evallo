@@ -23,23 +23,26 @@ const ToogleBar = ({
             >
                 <p className="">{title}</p>
                 {toggle !== undefined && (
-                    <div className="flex items-center">
+                    <div className="flex items-center border-[2px] border-[#26435F] rounded-[9px]">
                         <div
                             className={styles.toggleContainer}
                             onClick={() => onToggle(toggle.key, !toggle.value)}
                         >
                             <img
                                 src={
-                                    toggle.value === false ? toggleRectIcon : toggleRectActiveIcon
+                                    toggle.value === false ? toggleRectIcon : toggleRectIcon 
                                 }
                                 alt="toggle"
                             />
-                            <img
-                                src={toggleCircleIcon}
+                            {
+                                
+                            }
+                            <div
+                                // src={toggleCircleIcon}
                                 className={`${toggle.value === false
                                     ? styles.toggleCircle
                                     : styles.toggleCircleActive
-                                    }`}
+                                    }  w-[16px] h-[16px] rounded-[10px]`}
                                 alt="toggle"
                             />
                         </div>

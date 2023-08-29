@@ -10,11 +10,12 @@ import {
 } from "../staticData";
 import logo from "../../../../assets/icons/Frame 31070.svg";
 import orgDefaultLogo from "../../../../assets/images/org-default.png";
+import lock from "../../../../assets/icons/lock.svg";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
 import { Country } from "country-state-city";
-import UploadIcon from "../../../../assets/icons/upload-colored.svg";
+import UploadIcon from "../../../../assets/icons/basil_file-upload-outline.svg";
 import styles from "./styles.module.css";
 
 import { useRef } from "react";
@@ -51,8 +52,8 @@ const CompanyAndBround = () => {
   const handleState = (c) => {
     if (!c) return;
     console.log("country", c);
-    if(typeof c === "object")
-    c=c.name
+    if (typeof c === "object")
+      c = c.name
     const state = country.filter((x) => x.name === c);
     const currentState = state.map((s) => s.states);
 
@@ -166,6 +167,7 @@ const CompanyAndBround = () => {
         <div className="flex gap-5">
           <InputField
             placeholder=""
+            IconLeft={lock}
             parentClassName="text-xs text-[#26435F]"
             inputContainerClassName=" bg-white"
             inputClassName="bg-transparent"
@@ -191,7 +193,7 @@ const CompanyAndBround = () => {
             error={error.company}
           />
           <InputField
-            placeholder=""
+            placeholder="Text"
             parentClassName="text-xs text-[#26435F]"
             inputContainerClassName=" bg-white"
             inputClassName="bg-transparent"
@@ -223,11 +225,11 @@ const CompanyAndBround = () => {
         </div>
         <div className="flex gap-5 flex-1">
           <div className="">
-            <label className="inline-block text-sm font-semibold undefined ml-0">
+            <label className="inline-block text-[15px] font-semibold undefined ml-0 text-[#26435F] ">
               {" "}
               Business Logo{" "}
             </label>
-            <div className="w-[312px] h-[200px]  relative p-2">
+            <div className="w-[312px] h-[200px]  relative p-2 bg-[#FFFFFF] rounded-[5px]">
               {
                 organization.orgBussinessLogo &&
                 <img
@@ -238,10 +240,15 @@ const CompanyAndBround = () => {
               }
               <div
                 className={`${styles["upload-container"]} ${!organization.orgBussinessLogo ? styles['upload-container-centered'] : ''} `}
-                onClick={() => inpuRef.current.click()}
+
               >
-                <p className="text-[#24A3D9] text-xs"> Upload </p>
-                <img src={UploadIcon} alt="logo" />
+
+                <div className="flex flex-col ">
+                  <p className="block mx-auto mt-[-25px]">
+                    <img src={UploadIcon} alt="logo" /></p>
+                  <p className="text-[#FFFFFF] text-sm bg-[#517CA8] rounded-[5px] pt-3 mt-5 pb-2 px-4 cursor-pointer" onClick={() => inpuRef.current.click()}>Choose file</p>
+                  <p className="text-[#517CA8] text-xs mt-5 text-center">Less then 1 MB</p>
+                </div>
                 <input
                   className="hidden"
                   type="file"
@@ -255,9 +262,9 @@ const CompanyAndBround = () => {
             <div className="flex gap-5 items-center justify-between">
               <InputField
                 placeholder=""
-                parentClassName="text-xs text-[#26435F] w-full"
-                inputContainerClassName=" bg-white "
-                inputClassName="bg-transparent"
+                parentClassName="text-xs text-[#26435F] w-full mb-1"
+                inputContainerClassName=" bg-white mt-1"
+                inputClassName="bg-transparent "
                 label="Website"
                 value={values.website}
                 onChange={(e) =>
@@ -270,9 +277,9 @@ const CompanyAndBround = () => {
               />
               <InputSelect
                 placeholder="Select"
-                parentClassName="text-xs text-[#26435F] w-[60%]"
-                inputContainerClassName=" bg-white"
-                labelClassname="text-sm"
+                parentClassName="text-xs text-[#26435F] w-[60%] "
+                inputContainerClassName=" bg-white h-[38px] mb-1"
+                labelClassname="text-sm font-bold mb-1"
                 inputClassName="bg-transparent"
                 label="Company Type"
                 value={values.companyType}
@@ -290,7 +297,7 @@ const CompanyAndBround = () => {
               <InputField
                 placeholder=""
                 parentClassName="text-xs text-[#26435F] w-full"
-                inputContainerClassName=" bg-white "
+                inputContainerClassName=" bg-white mt-1"
                 inputClassName="bg-transparent"
                 label="Street Address"
                 value={values.address}
@@ -304,16 +311,16 @@ const CompanyAndBround = () => {
               />
               <InputSelect
                 placeholder="Select"
-                parentClassName="text-xs text-[#26435F] w-[60%]"
-                inputContainerClassName=" bg-white"
-                labelClassname="text-sm"
+                parentClassName="text-xs text-[#26435F] w-[60%] mt-1"
+                inputContainerClassName=" bg-white h-[38px] mb-1 "
+                labelClassname="text-sm font-bold mb-1"
                 inputClassName="bg-transparent"
                 label="Country"
                 value={values.country}
                 optionData={country}
                 optionType={"object"}
                 onChange={(e) => {
-                  
+
                   handleState(e);
                 }}
                 error={error.country}
@@ -322,9 +329,9 @@ const CompanyAndBround = () => {
             <div className="flex gap-5 items-center justify-between">
               <InputSelect
                 placeholder="Select"
-                parentClassName="text-xs text-[#26435F] w-full"
-                labelClassname="text-sm"
-                inputContainerClassName=" bg-white"
+                parentClassName="text-xs text-[#26435F] w-full mt-1 pt-1"
+                labelClassname="text-sm font-bold mb-1"
+                inputContainerClassName=" bg-white h-[40px] mb-1 "
                 inputClassName="bg-transparent"
                 label="State / Region "
                 value={values.state}
@@ -340,9 +347,9 @@ const CompanyAndBround = () => {
               />
               <InputField
                 placeholder=""
-                parentClassName="text-xs text-[#26435F] w-full"
-                inputContainerClassName=" bg-white "
-                inputClassName="bg-transparent"
+                parentClassName="text-xs text-[#26435F] w-full pt-1"
+                inputContainerClassName=" bg-white mt-1"
+                inputClassName="bg-transparent "
                 label="City"
                 value={values.city}
                 onChange={(e) =>
@@ -355,8 +362,8 @@ const CompanyAndBround = () => {
               />
               <InputField
                 placeholder=""
-                parentClassName="text-xs text-[#26435F] w-full"
-                inputContainerClassName=" bg-white "
+                parentClassName="text-xs text-[#26435F] w-full pt-1"
+                inputContainerClassName=" bg-white mt-1"
                 inputClassName="bg-transparent"
                 label="Zip Code"
                 value={values.zip}
@@ -371,9 +378,9 @@ const CompanyAndBround = () => {
             </div>
           </div>
         </div>
-        <div className="flex gap-5 mt-3 border-b-[2px] border-b-[#CBD6E2] pb-5">
+        <div className="flex gap-11 mt-3 border-b-[2px] border-b-[#CBD6E2] pb-9">
           <div className="flex flex-col rounded-sm w-[200px] flex-wrap gap-3 bg-white p-3">
-            <h1 className="mt-[-35px]  text-[#26435F] font-semibold text-sm">
+            <h1 className="mt-[-35px]  text-[#26435F] font-semibold text-sm ml-[-10px] mb-1">
               Format Of Instructions
             </h1>
             {instructions.map((item, id) => (
@@ -388,7 +395,7 @@ const CompanyAndBround = () => {
             ))}
           </div>
           <div className="flex flex-col rounded-sm w-[500px] h-[200px] flex-wrap gap-3 p-3 bg-white">
-            <h1 className="mt-[-35px]  text-[#26435F] font-semibold text-sm">
+            <h1 className="mt-[-35px]  text-[#26435F] font-semibold text-sm ml-[-10px] mb-1">
               Students Served
             </h1>
             {studentServed.map((item, id) => (
@@ -403,9 +410,9 @@ const CompanyAndBround = () => {
             ))}
           </div>
         </div>
-        <div className="">
-          <h1 className="mt-[-30px] text-[#26435F] font-semibold text-sm my-3">
-            Signup Form Details
+        <div className="mt-5">
+          <h1 className="mt-[-30px] text-[#26435F] font-semibold text-xl my-1">
+            Signup Form Detail
           </h1>
           <div className="w-full h-[200px] bg-white"></div>
         </div>

@@ -5,6 +5,7 @@ module.exports = {
       extend: {
          screens: {
             '2xl': '1400px',
+            'design':'1920px',
           },
          spacing: {
             1.2: "5px",
@@ -38,6 +39,7 @@ module.exports = {
             240: "240px",
             272: "272px",
             290: "290px",
+            'sy': '0.0505vw'
          },
          colors: {
             // primary: '',

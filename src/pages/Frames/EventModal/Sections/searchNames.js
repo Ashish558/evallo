@@ -11,9 +11,9 @@ export default function SearchNames({ setStudent, setData, student, tutor, data,
    const [fetchStudents, studentResponse] = useLazyGetStudentsByNameQuery();
    const [fetchTutorStudents, tutorStudentsResp] = useLazyGetTutorStudentsByNameQuery();
    const [students, setStudents] = useState([]);
-   const {role : persona } = useSelector(state => state.user)
+   const { role: persona } = useSelector(state => state.user)
    // console.log(user);
- 
+
    useEffect(() => {
       if (tutor.length > 0) {
          fetchTutors(tutor).then((res) => {
@@ -61,9 +61,10 @@ export default function SearchNames({ setStudent, setData, student, tutor, data,
       <div className="flex mb-4">
          <InputSearch
             label="Student Name"
-            labelClassname="ml-3"
+            required="true"
+            labelClassname="font-medium"
             placeholder="Student Name"
-            parentClassName="w-full mr-[18.48px]"
+            parentClassName="w-full mr-[18.48px] text-[#26435F] "
             inputContainerClassName="bg-lightWhite border-0 pt-3.5 pb-3.5"
             inputClassName="bg-transparent"
             type="text"
@@ -79,11 +80,12 @@ export default function SearchNames({ setStudent, setData, student, tutor, data,
          />
          <InputSearch
             label="Tutor Name"
-            labelClassname="ml-3"
+            required="true"
+            labelClassname="font-medium"
             placeholder="Tutor Name"
-            parentClassName="w-full"
+            parentClassName="w-full text-[#26435F]"
             inputContainerClassName="bg-lightWhite border-0 pt-3.5 pb-3.5 text-s"
-            inputClassName="bg-transparent"
+            inputClassName="bg-transparent "
             type="text"
             optionPrefix='t'
             value={tutor}
