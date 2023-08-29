@@ -11,7 +11,12 @@
     transform: translate(-50%, -50%);
     display: flex;
 }
-
+.beforeDot::before {
+  
+}
+#borderDashed{
+    border: 1.25px dashed #517CA8;
+}
 .editIcon {
     width: auto !important;
 }

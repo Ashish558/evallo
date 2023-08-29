@@ -8,7 +8,7 @@ import styles from "./rangeDate.module.css";
 import { useState } from "react";
 import { useEffect } from "react";
 
-const RangeDate = ({ handleRangeData  }) => {
+const RangeDate = ({ handleRangeData ,className,manualHide ,inputContainerClassName}) => {
   const [startDate, setStartDate] = useState(() => calculateDateRange()[0]);
   const [selectDate, setSelectedDate] = useState({
     sDate: "",
@@ -76,16 +76,17 @@ const RangeDate = ({ handleRangeData  }) => {
   newDateformat+=" - "+temp[0]+" "+ temp[1]+" "+temp[2]+ ", "+temp[3]
   
   return (
-    <div className="flex text-xs ">
+    <div className={`flex text-xs   ${className}`}>
       <p className="font-semibold text-[#FFA28D]"> </p>
 
       <InputSelect
         placeholder="Select"
         parentClassName="border-none text-xs text-[#26435F] w-fit"
         labelClassname="text-sm"
-        inputContainerClassName={`border-none w-[300px] font-semibold text-[#FFA28D]  ${styles["text"]}`}
+        inputContainerClassName={`border-none w-[300px] whitespace-nowrap font-semibold text-[#FFA28D] ${inputContainerClassName}  ${styles["text"]}`}
         inputClassName={`border-none w-fit bg-transparent font-semibold text-[#FFA28D] `}
         value={newDateformat}
+        optionClassName=""
         optionData={[
           { name: "Today", days: 0 },
           { name: "Last 7 Days", days: 7 },
@@ -97,7 +98,8 @@ const RangeDate = ({ handleRangeData  }) => {
         onChange={handleQuickOptions}
         IconRight={faCaretDown}
         DateSelect={
-          <div className="flex flex-col hover:bg-white items-center pt-2 z-5000 border-b ">
+           !manualHide &&
+          <div className="flex relative flex-col hover:bg-white items-center pt-2 z-5000 border-b  ">
             <div className="font-semibold text-black flex w-full justify-around">
               <label htmlFor="sdate">Start Date</label>
               <label htmlFor="edate">End Date</label>
@@ -131,6 +133,7 @@ const RangeDate = ({ handleRangeData  }) => {
               Submit
             </button>
           </div>
+        
         }
       />
       <p></p>
