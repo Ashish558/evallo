@@ -42,13 +42,11 @@ export default function FilterItems({
             return (
               <div
                 key={idx}
-                className={`mr-3 ${
-                  className ? className : ""
-                } bg-primaryLight py-1 px-3 rounded-7 group ${
-                  styles.filterItem
-                }`}
+                className={`mr-3 ${className ? className : ""
+                  } bg-[rgba(38,67,95,0.50)] py-1 px-3 rounded-5 group ${styles.filterItem
+                  }`}
               >
-                <p className="text-lightGray text-[16px]">{text}</p>
+                <p className="text-[rgba(255,255,255,1)] text-[16px]">{text}</p>
                 <img
                   className={styles.icon}
                   src={CrossIcon}
@@ -65,9 +63,8 @@ export default function FilterItems({
         ) : (
           <div
             key={idx}
-            className={`mr-3 ${
-              className ? className : ""
-            } bg-primaryLight py-1 px-3 rounded-7 group ${styles.filterItem}`}
+            className={`mr-3 ${className ? className : ""
+              } bg-primaryLight py-1 px-3 rounded-7 group ${styles.filterItem}`}
           >
             <p className="text-lightGray text-[16px]">
               {isString ? singleItem : singleItem.text}
@@ -86,11 +83,9 @@ export default function FilterItems({
         );
       })}
       <div
-        className={`mr-3 ${
-          className ? className : ""
-        } bg-primaryLight py-1 px-3 rounded-7 group ${
-          styles.filterItem
-        } opacity-0`}
+        className={`mr-3 ${className ? className : ""
+          } bg-primaryLight py-1 px-3 rounded-7 group ${styles.filterItem
+          } opacity-0`}
       >
         <p className="text-lightGray text-[16px]">"default"</p>
         <img className={styles.icon} src={CrossIcon} alt="cross-icon" />
