@@ -2,7 +2,9 @@ import React from "react";
 import styles from "../style.module.css";
 import cancelIcon from "../../../../assets/YIcons/cutIcon.svg";
 import dot from "../../../../assets/YIcons/dotIcon.svg";
-const SPFrame2 = () => {
+import EditableText from "../../../../components/EditableText/EditableText";
+const SPFrame2 = ({userDetail,settings , editable, setToEdit, toEdit,setSelectedScoreIndex }) => {
+  console.log("frame2",settings,userDetail)
   return (
     <div>
       {" "}
@@ -32,10 +34,27 @@ const SPFrame2 = () => {
         <div className="flex-1 h-[230px]">
           <p className=" text-sm text-[#26435F] font-semibold">
             Official SAT® scores
+            <EditableText
+                  editable={editable}
+                  onClick={() => {
+                    setSelectedScoreIndex(2);
+                    setToEdit({
+                      ...toEdit,
+                      satScores: {
+                        ...toEdit.satScores,
+                        active: true,
+                      },
+                    });
+                  }}
+                    text="edit"
+                    textClassName="text-sm text-[#517CA8] text-underline  "
+                    className="text-sm my-0 flex justify-end   float-right"
+                  />
           </p>
 
           <div className="w-full bg-white relative h-full p-1 flex flex-col gap-1 !rounded-md shadow-[0px_0px_2.500001907348633px_0px_#00000040] rounded-md items-center overflow-y-auto custom-scroller">
-            {[1, 2, 3, 4, 5, 7, 8, 8, 9, 10, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1].map(
+           
+          {userDetail?.satScores?.map(
               (it) => {
                 return (
                   <div className="beforeDot  p-2  flex-1 flex  w-full">
@@ -48,8 +67,8 @@ const SPFrame2 = () => {
                       <p className="text-[#517CA8]">February 05, 2023</p>
 
                       <p>
-                        <span className="text-[#24A3D9]">C1450</span>
-                        <span className="text-[#517CA8]">| V700 M750</span>
+                        <span className="text-[#24A3D9]">C{it?.english +  it?.science + it?.maths +it?.reading }</span>
+                        <span className="text-[#517CA8]">| E{it?.english}  R{it?.reading} M{it?.maths} S{it?.science}</span>
                       </p>
                     </div>
                     <img
@@ -67,10 +86,27 @@ const SPFrame2 = () => {
         <div className="flex-1 h-[230px]">
           <p className=" text-sm text-[#26435F] font-semibold">
             Official ACT® scores
+            <EditableText
+                editable={editable}
+                onClick={() => {
+                  setSelectedScoreIndex(1);
+                  setToEdit({
+                    ...toEdit,
+                    actScores: {
+                      ...toEdit.actScores,
+                      active: true,
+                    },
+                  });
+                }}
+                text="edit"
+                    textClassName="text-sm text-[#517CA8] text-underline  "
+                    className="text-sm my-0 flex justify-end   float-right"
+              />
           </p>
 
           <div className="w-full bg-white relative h-full p-1 flex flex-col gap-1 !rounded-md shadow-[0px_0px_2.500001907348633px_0px_#00000040] rounded-md items-center overflow-y-auto custom-scroller">
-            {[1, 2, 3, 4, 5, 7, 8, 8, 9, 10, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1].map(
+        
+               {userDetail?.actScores?.map(
               (it) => {
                 return (
                   <div className="beforeDot  p-2  flex-1 flex  w-full">
@@ -83,8 +119,8 @@ const SPFrame2 = () => {
                       <p className="text-[#517CA8]">February 05, 2023</p>
 
                       <p>
-                        <span className="text-[#24A3D9]">C1450</span>
-                        <span className="text-[#517CA8]">| V700 M750</span>
+                        <span className="text-[#24A3D9]">C{it?.english +  it?.science + it?.maths +it?.reading }</span>
+                        <span className="text-[#517CA8]">| E{it?.english}  R{it?.reading} M{it?.maths} S{it?.science}</span>
                       </p>
                     </div>
                     <img
@@ -101,10 +137,25 @@ const SPFrame2 = () => {
         <div className="flex-1 h-[230px]">
           <p className=" text-sm text-[#26435F] font-semibold">
             Baseline Scores
+            <EditableText
+                    editable={editable}
+                    onClick={() =>
+                      setToEdit({
+                        ...toEdit,
+                        subscriptionCode: {
+                          ...toEdit.subscriptionCode,
+                          active: true,
+                        },
+                      })
+                    }
+                    text="edit"
+                    textClassName="text-sm text-[#517CA8] text-underline  "
+                    className="text-sm my-0 flex justify-end   float-right"
+                  />
           </p>
 
           <div className="w-full bg-white relative h-full p-1 flex flex-col gap-1 !rounded-md shadow-[0px_0px_2.500001907348633px_0px_#00000040] rounded-md items-center overflow-y-auto custom-scroller">
-            {[1, 2, 3, 4, 5, 7, 8, 8, 9, 10, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1].map(
+          {userDetail?.acScores?.map(
               (it) => {
                 return (
                   <div className="beforeDot  p-2  flex-1 flex  w-full">
@@ -117,8 +168,8 @@ const SPFrame2 = () => {
                       <p className="text-[#517CA8]">February 05, 2023</p>
 
                       <p>
-                        <span className="text-[#24A3D9]">C1450</span>
-                        <span className="text-[#517CA8]">| V700 M750</span>
+                        <span className="text-[#24A3D9]">C{it?.english +  it?.science + it?.maths +it?.reading }</span>
+                        <span className="text-[#517CA8]">| E{it?.english}  R{it?.reading} M{it?.maths} S{it?.science}</span>
                       </p>
                     </div>
                     <img

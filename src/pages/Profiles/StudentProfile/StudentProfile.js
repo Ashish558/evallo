@@ -541,8 +541,9 @@ export default function StudentProfile({ isOwn }) {
               <div className="flex-1 flex justify-between items-center">
                 <div className="ml-5 my-auto">
                   <div className="flex  items-center text-[#F3F5F7]">
+                  {user.firstName} {user.lastName}
                     <EditableText
-                      text={`${user.firstName} ${user.lastName}`}
+                 
                       editable={editable}
                       onClick={() =>
                         setToEdit({
@@ -550,46 +551,25 @@ export default function StudentProfile({ isOwn }) {
                           fullName: { ...toEdit.fullName, active: true },
                         })
                       }
-                      className="!text-lg capitalize  justify-center text-[#F3F5F7] text-center font-bold  lg:text-[#F3F5F7]"
-                      textClassName="flex-1"
-                      imgClass="ml-auto ml-1"
+                      text="edit"
+                    textClassName=" ml-3 text-sm text-[#517CA8] text-underline  "
+                    className="text-sm my-0 flex justify-end   float-right"
                     />
+
                   </div>
-                  <div className="flex mt-1 items-center text-[#F3F5F7]">
-                    <EditableText
-                      text={`${
+                  <div className="flex mt-1 text-xs items-center text-[#F3F5F7]">
+                  {
                         userDetail.schoolName
                           ? userDetail.schoolName
                           : "Sample School Name"
-                      }`}
-                      editable={editable}
-                      onClick={() =>
-                        setToEdit({
-                          ...toEdit,
-                          schoolName: { ...toEdit.schoolName, active: true },
-                        })
                       }
-                      className="text-[12px] capitalize justify-center text-[#F3F5F7] text-center font-medium  mr-6"
-                      textClassName="flex-1 font-medium"
-                      imgClass="ml-auto"
-                    />
+                    
                   </div>
-                  <div className="flex  mt-1 items-center text-[#F3F5F7]">
-                    <EditableText
-                      text={`${
+                  <div className="flex text-xs mt-1 items-center text-[#F3F5F7]">
+                  {
                         userDetail.grade ? userDetail.grade : "12th Grade"
-                      }`}
-                      editable={editable}
-                      onClick={() =>
-                        setToEdit({
-                          ...toEdit,
-                          grade: { ...toEdit.grade, active: true },
-                        })
                       }
-                      className="text-[12px] capitalize justify-center text-[#F3F5F7] text-center font-medium  mr-6"
-                      textClassName="flex-1 font-medium"
-                      imgClass="ml-auto"
-                    />
+                    
                     {/* <p className='font-semibold text-[22px] mr-4'>
                            {userDetail.grade}
                         </p> */}
@@ -715,10 +695,26 @@ export default function StudentProfile({ isOwn }) {
               />
             </div>
           </div>
-          <SPFrame0 userDetail={userDetail} />
-          <SPFrame1 />
+          <EditableText
+                    editable={editable}
+                    onClick={() =>
+                      setToEdit({
+                        ...toEdit,
+                        subscriptionCode: {
+                          ...toEdit.subscriptionCode,
+                          active: true,
+                        },
+                      })
+                    }
+                    text="edit"
+                    textClassName="text-sm text-[#517CA8] text-underline  "
+                    className="text-sm my-0 flex justify-end translate-y-7  float-right"
+                  />
+          <SPFrame0 userDetail={userDetail} settings={settings} />
+          
+          <SPFrame1 useDetail={userDetail} settings={settings} editable={editable} setToEdit={setToEdit} toEdit={toEdit}/>
           <div className="h-[2px] mt-14  bg-[#CBD6E2] w-[95%] mx-auto"></div>
-          <SPFrame2 />
+          <SPFrame2 userDetail={userDetail} setSelectedScoreIndex={setSelectedScoreIndex} settings={settings}  editable={editable} setToEdit={setToEdit} toEdit={toEdit}/>
           <div className="flex-1 ">
             <p className=" translate-y-[50px] text-sm text-[#26435F] font-semibold">
               Latest Assignmets
@@ -770,7 +766,7 @@ export default function StudentProfile({ isOwn }) {
           </div>
         </div>
 
-        <div className="lg:grid hidden px-2 mt-[300px] relative grid-cols-12 grid-ros-6 lg:mt-10 gap-5 lg:pl-3 !hidden">
+        <div className="lg:grid hidden px-2 mt-[300px] relative grid-cols-12 grid-ros-6 lg:mt-10 gap-5 lg:pl-3 ">
           <ProfileCard
             className="col-span-3 py-6 px-4 mt-3  lg:mt-0"
             body={
@@ -924,7 +920,7 @@ export default function StudentProfile({ isOwn }) {
               </div>
             }
           />
-
+-
           <ProfileCard
             className="mt-53 col-span-3 lg:mt-0"
             body={

@@ -5,7 +5,8 @@ import bod from "../../../../assets/YIcons/bod.svg";
 import dropbox from "../../../../assets/YIcons/dropbox.svg";
 import accomodations from "../../../../assets/YIcons/accomodations.svg";
 import clickArrowIcon from "../../../../assets/YIcons/clickArrow.svg";
-const SPFrame0 = ({userDetail}) => {
+const SPFrame0 = ({userDetail,settings}) => {
+  
   return (
     <div>
               <div className="bg-white mt-7 px-3 py-2 !rounded-md shadow-[0px_0px_2.500001907348633px_0px_#00000040] flex gap-3 justify-between  text-[#24A3D9]">
@@ -35,7 +36,7 @@ const SPFrame0 = ({userDetail}) => {
                   <span>
                     <p>Time Zone</p>
                     <p className=" font-semibold ">
-                      {userDetail.timeZone ? userDetail.timeZone : "-"}
+                      {settings.timeZone ? settings.timeZone : "-"}
                     </p>
                   </span>
                 </div>
