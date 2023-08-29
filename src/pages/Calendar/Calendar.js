@@ -49,6 +49,7 @@ const days = ["S", "M", "T", "W", "T", "F", "S"];
 const backgrounds = ["#51D294", "#C56DEE", "#6F7ADE", "#7DE94A", "#F6935A"];
 
 const timeZones = [
+  // "IST",
   "Asia/Kolkata",
   // 'America/New_York',
   "US/Alaska",
@@ -888,7 +889,7 @@ export default function Calendar() {
     <>
       <div className="lg:ml-pageLeft calender bg-lightWhite min-h-screen">
         <div className="py-14 pt-10 pb-2 pl-5 calendar flex">
-          <div className="p-10 pt-10 pl-0 pr-0 w-[280px] mr-[10px]">
+        <div className=" pl-0 pr-0 w-[280px] mr-[10px]">
             <div className="w-[280px]">
               <SimpleCalendar
                 events={
@@ -1198,17 +1199,18 @@ export default function Calendar() {
               <span id="input">
                 <InputSelect
                   value={
-                    timeZone == "local"
-                      ? getLocalTimeZone()
-                      : timeZone.substring(0, 20)
+                    "IST"
+                    // timeZone == "local"
+                    //   ? getLocalTimeZone()
+                    //   : timeZone.substring(0, 20)
                   }
                   //  optionData={['local', 'America/New_York']}
                   // optionData={['Asia/Calcutta', ...moment.tz.zonesForCountry('US')]}
                   // optionData={['Asia/Calcutta', ...moment.tz.zonesForCountry('US')]}
                   optionData={timeZones}
                   onChange={(val) => setTimeZone(val)}
-                  parentClassName="w-[160px]"
-                  inputContainerClassName="text-primaryDark font-bold text-"
+                  parentClassName=""
+                  inputContainerClassName="text-primaryDark font-bold border"
                 />
               </span>
               {/* <div class="inline-flex rounded shadow-sm mt-1">

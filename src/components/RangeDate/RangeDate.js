@@ -64,17 +64,17 @@ const RangeDate = ({ handleRangeData ,className,manualHide ,inputContainerClassN
   useEffect(() => {
     if (startDate) handleRangeData(startDate);
   }, []);
-  let temp=startDate.split("-");
-  
-  let newDateformat=temp[0];
-  temp=temp[1].split(" ")
-  let firsYear=newDateformat.split(" ")
-  if(firsYear[2]===temp[3]){
-    newDateformat=firsYear[0]+ " "+firsYear[1]
-   
+  let temp = startDate.split("-");
+
+  let newDateformat = temp[0];
+  temp = temp[1].split(" ")
+  let firsYear = newDateformat.split(" ")
+  if (firsYear[2] === temp[3]) {
+    newDateformat = firsYear[0] + " " + firsYear[1]
+
   }
-  newDateformat+=" - "+temp[0]+" "+ temp[1]+" "+temp[2]+ ", "+temp[3]
-  
+  newDateformat += " - " + temp[0] + " " + temp[1] + " " + temp[2] + ", " + temp[3]
+
   return (
     <div className={`flex text-xs   ${className}`}>
       <p className="font-semibold text-[#FFA28D]"> </p>
@@ -117,21 +117,24 @@ const RangeDate = ({ handleRangeData ,className,manualHide ,inputContainerClassN
                 type="date"
                 min={selectDate.sDate}
                 name="edate"
-                className="rounded-md bg-[#FFA28D] p-1 text-white"
+                className="rounded-md text-[#FFA28D] p-1 w-[120px]"
                 value={selectDate.eDate}
                 placeholder="Start Date"
                 onChange={(e) => handleLocalDate(e.target.value, "eDate")}
               />
             </div>
-            <button
-              disabled={!selectDate.eDate || !selectDate.sDate}
-              className={`${
-                !selectDate.eDate || !selectDate.sDate ? "opacity-75" : ""
-              } rounded-md bg-[#FFA28D] py-1 px-4 my-2 mb-3 text-white hover:shadow-sm hover:scale-105`}
-              onClick={handleStartDate}
-            >
-              Submit
-            </button>
+            <div className="w-full flex justify-start">
+              <p className="ml-[26px]">
+                <button
+                  disabled={!selectDate.eDate || !selectDate.sDate}
+                  className={`${!selectDate.eDate || !selectDate.sDate ? "opacity-75" : ""
+                    } rounded-md bg-[#FFA28D] py-1 px-4 mt-5 mb-[17px]  text-white hover:shadow-sm hover:scale-105`}
+                  onClick={handleStartDate}
+                >
+                  Submit
+                </button>
+              </p>
+            </div>
           </div>
         
         }

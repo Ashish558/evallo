@@ -1,5 +1,5 @@
 
-export const tableData=[
+export const tableData = [
    {
       name: 'Joseph Brown 1',
       userType: 'Student',
@@ -167,8 +167,8 @@ export const tableData=[
 ]
 
 export const userTypesList = [
-   'admin',
-   'parent',
-   'student',
-   'tutor',
+   'Admin',
+   'Parent',
+   'Student',
+   'Tutor',
 ]

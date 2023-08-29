@@ -45,9 +45,8 @@ export default function InputSelect({
   return (
     <div
       ref={selectRef}
-      className={`${selected && "relative z-5000"} ${
-        parentClassName ? parentClassName : ""
-      } ${disabled === true ? "pointer-events-none" : ""} `}
+      className={`${selected && "relative z-5000"} ${parentClassName ? parentClassName : ""
+        } ${disabled === true ? "pointer-events-none" : ""} `}
     >
       {label && (
         <label className={`font-semibold inline-block mb-1 ${labelClassname}`}>
@@ -59,15 +58,14 @@ export default function InputSelect({
       )}
 
       <div
-        className={`py-[10px]  lg:py-[10px]  border border-[#D0D5DD] flex items-center rounded relative  z-50 ${
-          inputContainerClassName ? inputContainerClassName : ""
-        } `}
+        className={`py-[10px]  lg:py-[10px]  border border-[#D0D5DD] flex items-center rounded relative  z-50 ${inputContainerClassName ? inputContainerClassName : ""
+          } `}
       >
         {Icon && <img src={Icon} className={`mr-5  w-[28px]}`} alt="icon" />}
         {selected ? (
           IconRight ? (
             <FontAwesomeIcon
-              className="w-[30px] cursor-pointer absolute right-0 pb-1 z-[5000]"
+              className="w-[30px] text-lg cursor-pointer absolute right-0 pb-1 z-[5000]"
               onClick={handleOption}
               icon={IconRight}
             ></FontAwesomeIcon>
@@ -80,7 +78,7 @@ export default function InputSelect({
           )
         ) : IconRight ? (
           <FontAwesomeIcon
-            className="w-[30px] cursor-pointer absolute right-0 pb-1 z-[5000]"
+            className="w-[30px] text-lg cursor-pointer absolute right-0 pb-1 z-[5000]"
             onClick={handleOption}
             icon={IconRight}
           ></FontAwesomeIcon>
@@ -93,34 +91,33 @@ export default function InputSelect({
         )}
 
         <div
-          className={`outline-0 w-full text-right cursor-default relative ${
-            optionClassName ? optionClassName : ""
-          }`}
+          className={`outline-0 w-full text-right cursor-default relative ${optionClassName ? optionClassName : ""
+            }`}
           name={label}
         >
           {value === "" || !value ? (
             <span className="text-primary-60 mr-10 pl-5 cursor-default  text-[13px]   whitespace-nowrap">
               {" "}
               <span > {placeholder}</span>
-             {" "}
+              {" "}
             </span>
           ) : (
-            <span className="mr-10 pl-5 text-[13px] cursor-default whitespace-nowrap">
-             <span >{value}</span>
-              
+            <span className="mr-10 pl-5 text-[15px] cursor-default whitespace-nowrap">
+              <span >{value}</span>
+
             </span>
           )}
-          
+
         </div>
         {selected && (
           <div
             className={`scrollbar-content scrollbar-vertical  shadow-md ${styles.options} $`}
           >
-            
+
             {optionData?.map((option, idx) => {
               return (
                 <div
-                  className="outline-0 border-0 py-2.5 px-4 flex items-center justify-between"
+                  className="outline-0 border-0 py-[15px] px-[26px] flex items-center justify-start"
                   key={idx}
                   onClick={() => handleChange(optionType, option, idx)}
                 >
@@ -145,6 +142,7 @@ export default function InputSelect({
                 </div>
               );
             })}
+            <p className="px-[26px] text-[15px] underline underline-offset-4 font-semibold py-[15px]">Custom</p>
             {DateSelect && DateSelect}
           </div>
         )}
