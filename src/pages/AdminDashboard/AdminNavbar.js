@@ -103,7 +103,7 @@ const parentNav = [
   {
     icon: Assignment,
     activeIcon: Assignment1,
-    path: "/assigned-tests",
+    path: "/all-tests",
     tooltip: "Assignments",
   },
   {

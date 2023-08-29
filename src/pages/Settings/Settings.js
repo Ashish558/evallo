@@ -1050,7 +1050,7 @@ export default function Settings() {
               }
             />
 
-            {/* <SettingsCard
+            <SettingsCard
               title="Expertise"
               toggle={{ value: toggleImage.Expertise, key: "Expertise" }}
               onToggle={onToggle}
@@ -1077,7 +1077,7 @@ export default function Settings() {
                   />
                 </div>
               }
-            /> */}
+            /> 
 
             <SettingsCard
               title="Manage Services & Topics"
