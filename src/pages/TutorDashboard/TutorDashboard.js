@@ -363,11 +363,10 @@ export default function TutorDashboard() {
                                           <div>
                                              {
                                                 item.status = "notStarted" ? <p className='text-[#32D583] underline'>
-                                                   {item.status.charAt(0).toUpperCase() + item.status.slice(1).replace(/([A-Z])/g, ' $1').trim()}
-
+                                                   Not started
                                                 </p> :
                                                    <p className='text-[#FFCE84] underline'>
-                                                      {item.status.charAt(0).toUpperCase() + item.status.slice(1).replace(/([A-Z])/g, ' $1').trim()}
+                                                      {item.status?.props?.children === 'completed' ? 'Completed' : 'Started'}
                                                    </p>
                                              }
 
