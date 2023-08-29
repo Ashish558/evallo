@@ -5,13 +5,13 @@ export default function EditableText({ className, text, editable, imgClass, text
 
 
    return (
-      <div className={`text-primaryDark ${text !== "Contact" && "text-center"} font-bold flex ${className}`}>
-         <div className={`${textClassName ? textClassName : ''}`}>
+      <div className={`text-primaryDark cursor-pointer  ${text !== "Contact" && "text-center"} font-bold flex ${className}`}>
+         <div onClick={onClick} className={`${textClassName ? textClassName : ''} underline mr-1`}>
             {text}
          </div>
-         {editable &&
+         {editable && false &&
             <img src={EditIcon}  alt='edit-icon' className={`${editOnly ? "ml-4" : "ml-1"} ${imgClass ? imgClass : ''} cursor-pointer`}
-               onClick={onClick} />
+                />
          }
       </div>
    )

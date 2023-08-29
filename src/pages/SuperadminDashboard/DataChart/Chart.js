@@ -105,6 +105,7 @@ const BubbleChart = ({ dateRange }) => {
                   },
                 },
               },
+              
               y: {
                 display: true,
                 title: {
