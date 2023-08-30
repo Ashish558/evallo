@@ -32,6 +32,7 @@ const data1 = {
       },
    ],
 };
+
 export default function Chart({ setSubjects, subjects, selectedSubject, selectedStudent, currentSubData, setCurrentSubData, selectedConceptIdx }) {
 
    const [fetchPersonalDetails, personalDetailsResp] = useLazyGetPersonalDetailQuery()
@@ -50,10 +51,13 @@ export default function Chart({ setSubjects, subjects, selectedSubject, selected
    // }
 
    useEffect(() => {
+      console.log("gg1")
       if (persona == 'student') return
       if (selectedStudent?._id === undefined || selectedStudent?._id === null) return
+      console.log("gg2")
       getUserDetail({ id: selectedStudent._id })
          .then(res => {
+            console.log("gg3",res)
             if (res.error) {
                return
             }
@@ -184,9 +188,11 @@ export default function Chart({ setSubjects, subjects, selectedSubject, selected
                display: false
             }
          },
+
          scales: {
             ...prev.scales,
             x: {
+               
                ...prev.scales.x,
                ticks: {
                   ...prev.scales.x.ticks,

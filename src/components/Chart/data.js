@@ -9,8 +9,13 @@ export const iniOptions = {
             display: false
          },
          title: {
+            color: "#24A3D9",
             display: true,
-            text: 'Subjects'
+            text: 'Subjects',
+            font: {
+               weight: 500,
+               size: 14,
+             },
          },
          ticks: {
          
@@ -30,6 +35,11 @@ export const iniOptions = {
          title: {
             display: true,
             text: 'Accuracy(%)',
+            color: "#24A3D9",
+            font: {
+               weight: 500,
+               size: 14,
+             },
          },
          ticks: {
             stepSize: 5,

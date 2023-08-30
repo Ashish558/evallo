@@ -111,7 +111,7 @@ export default function InputSelect({
         </div>
         {selected && (
           <div
-            className={`scrollbar-content scrollbar-vertical  shadow-sm ${styles.options} $`}
+            className={`scrollbar-content scrollbar-vertical  shadow-md ${styles.options} $`}
           >
 
             {optionData?.map((option, idx) => {
