@@ -18,31 +18,34 @@ export default function Modal({
    SaveUser,
    primaryCancel,
    otherBt,
-   cancelBtnStyle
+   cancelBtnStyle,
+   underline,
+   crossBtn
 }) {
-   //disable body scroll if modal open
+
    useEffect(() => {
       document.body.style.overflow = "hidden";
       return () => {
          document.body.style.overflow = "unset";
       };
    }, []);
-
    return (
       <div className={styles.modalContainer}>
          <div className="w-full p-1">
-            <div className={`w-full bg-white p-3 py-5 md:py-9.5 md:px-9.5 rounded-20 relative ${classname ? classname : ""
+            <div className={`w-full bg-white p-3 py-5 md:py-[33px] md:px-[33px] rounded-lg relative ${classname ? classname : ""
                }`}
             >
-               <p className={`font-semibold text-xl md:text-2xl text-left text-primary-dark
+               <p className={`font-semibold text-xl md:text-[21px] text-center text-[#26435F]
                ${titleClassName ? titleClassName : "mb-[18px]"}`}
                >
                   {title}
                </p>
-               <div className="h-[1px] w-full bg-[rgba(0,0,0,0.20)] mb-[18px]"></div>
+               {
+                  underline == true ? "" : <div className="h-[1.33px] w-full bg-[rgba(0,0,0,0.20)] mb-[28px]"></div>
+               }
                {body}
 
-               {/* footer buttons */}
+
                <div className="flex justify-center">
                   {cancelBtn && (
                      <SecondaryButton
@@ -66,7 +69,7 @@ export default function Modal({
                         className={`${primaryBtn.bgDanger ? 'bg-[#FF5B4F]' : ' bg-primary'} relative disabled:opacity-75 rounded-md font-medium text-white  px-6 ml-9 ${primaryBtn.className ? primaryBtn.className : ""}`}
                         disabled={primaryBtn?.loading === true ? true : primaryBtn.disabled}
                         loading={primaryBtn.loading}
-                     // disabled
+
                      >
                         {primaryBtn.text}  {
                            (primaryBtn.icon && primaryBtn?.loading === false) ? primaryBtn.icon : ''
@@ -79,13 +82,15 @@ export default function Modal({
                      </button>
                   )}
                </div>
-               <button className={styles.cancelBtn}
-                  style={cancelBtnStyle}
-                  onClick={handleClose}
-               >
-                  <img src={primaryCancel ? primaryCancelIcon : primaryCancelIcon} onClick={handleClose} />
-               </button>
 
+               {
+                  crossBtn ? '' : <button className={styles.cancelBtn}
+                     style={cancelBtnStyle}
+                     onClick={handleClose}
+                  >
+                     <img src={primaryCancel ? primaryCancelIcon : primaryCancelIcon} onClick={handleClose} />
+                  </button>
+               }
             </div>
 
             <div className={styles.modalOverlay}></div>

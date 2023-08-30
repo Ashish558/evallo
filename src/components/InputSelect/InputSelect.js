@@ -25,6 +25,7 @@ export default function InputSelect({
   IconRight,
   IconLeft,
   DateSelect,
+  IconSearch
 }) {
   const [selected, setSelected] = useState(false);
   const selectRef = useRef();
@@ -32,19 +33,22 @@ export default function InputSelect({
   const handleOption = () => {
     setSelected(!selected);
   };
+  const handleToggleSelected = () => {
+    setSelected(!selected);
+  }
   useEffect(() => {
     if (!checkbox) setSelected(false);
   }, [value]);
   const handleChange = (optionType, option, idx) => {
     onChange(optionType === "object" ? option : option, idx);
   };
- 
+
   return (
     <div
       ref={selectRef}
       className={`${selected && "relative z-5000"} ${parentClassName ? parentClassName : ""
         } ${disabled === true ? "pointer-events-none" : ""} `}
-        onClick={() => setSelected(!selected)}
+      onClick={handleToggleSelected}
     >
 
       {
@@ -69,16 +73,17 @@ export default function InputSelect({
 
 
       <div
-       
-        className={`py-[10px] px-[14px]  lg:py-[8px] lg:px-[16px]  flex items-center rounded relative cursor-pointer z-50 ${inputContainerClassName ? inputContainerClassName : ""
+        onClick={() => setSelected(true)}
+        className={`py-[9px] px-[14px] lg:py-[13px] lg:px-[21px]  flex items-center rounded relative cursor-pointer z-50 ${inputContainerClassName ? inputContainerClassName : ""
           } `}
       >
         {Icon && <img src={Icon} className={`mr-5  w-[28px]}`} alt="icon" />}
-        {IconLeft&& <img src={IconLeft} className={`mr-5  w-[28px]}`} alt="IconLeft" />}
+        {IconLeft && <img src={IconLeft} className={`mr-5  w-[28px]}`} alt="IconLeft" />}
+        {IconSearch && <img src={IconSearch} className={`mr-5  w-[28px]}`} alt="IconLeft" />}
         {selected ? (
           IconRight ? (
             IconRight
-          ) :!IconLeft &&(
+          ) : !IconLeft && (
             <img
               src={UpArrow}
               className={`w-[15px] h-[12px]  ${styles.downArrow}`}
@@ -87,7 +92,7 @@ export default function InputSelect({
           )
         ) : IconRight ? (
           IconRight
-        ) :!IconLeft&& (
+        ) : !IconLeft && (
           <img
             src={DownArrow}
             className={`w-[15px] h-[12px]   ${styles.downArrow}`}
@@ -101,12 +106,12 @@ export default function InputSelect({
           name={label}
         >
           {value === "" || !value ? (
-            <span className="text-primary-60 text-[13px]  mr-10 whitespace-nowrap">
+            <span className="text-[#667085] text-[17.5px]  mr-10 whitespace-nowrap">
               {" "}
               {placeholder}{" "}
             </span>
           ) : (
-            <span className="mr-10 text-[13px] whitespace-nowrap">{value}</span>
+            <span className="mr-10 text-[17.5px] whitespace-nowrap">{value}</span>
           )}
         </div>
         {selected && (
@@ -118,7 +123,7 @@ export default function InputSelect({
             {optionData?.map((option, idx) => {
               return (
                 <div
-                  className="outline-0 border-0 py-2.5 px-4 flex items-center justify-between"
+                  className="outline-0 border-0 text-[17.5px] py-2.5 px-4 flex items-center justify-between"
                   key={idx}
                   onClick={() => handleChange(optionType, option, idx)}
                 >
