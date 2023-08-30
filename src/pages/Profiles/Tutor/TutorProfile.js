@@ -536,7 +536,7 @@ export default function TutorProfile({ isOwn }) {
                                  <div className='ml-40 mt-auto pt-10'>
                                     <div className='flex items-center'>
                                     <p className='text-white ' style={{fontWeight:'600',fontSize:'32px'}}>{user.firstName+" "}{user.lastName}</p>
-                                    {(isOwn===true || persona==='admin') && <p className='text-white ml-5 underline cursor-pointer' onClick={()=>setToEdit({ ...toEdit, profileData: { ...toEdit.profileData, active: true } })}>edit</p>}                       {/* <EditableText text='edit'
+                                    {(isOwn===true || persona==='admin') && <p className='text-white ml-5 underline cursor-pointer' onClick={()=>setToEdit({ ...toEdit, about: { ...toEdit.about, active: true } })}>edit</p>}                       {/* <EditableText text='edit'
                                     editable={editable}
                               onClick={() => setToEdit({ ...toEdit, about: { ...toEdit.about, active: true } })}
                               className='text-green'
@@ -581,7 +581,7 @@ export default function TutorProfile({ isOwn }) {
                                  <img src={experience} ></img>
                                  <div>
                                  <div>
-                                 <p className='' style={{color:'#24A3D9',fontWeight:'700',fontSize:'21.33px'}} >Education</p>
+                                 <p className='' onClick={()=>setToEdit({ ...toEdit, education: { ...toEdit.education, active: true } })} style={{color:'#24A3D9',fontWeight:'700',fontSize:'21.33px'}} >Education</p>
                                  </div>
                                  <div>
                                  <p style={{color:'#517CA8',fontWeight:'400',fontSize:'18.67px'}}>{userDetail.education}</p>
@@ -700,7 +700,7 @@ export default function TutorProfile({ isOwn }) {
                   </div>
                <div className='col-span-6'>
                   <div className='flex'>
-                  {(isOwn==true && persona==='admin') && <p className='text-[#667085] ml-auto underline cursor-pointer' onClick={()=>setToEdit({ ...toEdit, videoLink: { ...toEdit.videoLink, active: true } })}>edit</p>}
+                  {(isOwn===true || persona==='admin') && <p className='text-[#667085] ml-auto underline cursor-pointer' onClick={()=>setToEdit({ ...toEdit, videoLink: { ...toEdit.videoLink, active: true } })}>edit</p>}
                   </div>
                   <div className='  pt-10 min-h-[680px]  relative z-10 flex items-end ' >
              

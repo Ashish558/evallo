@@ -1256,7 +1256,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                               </div>
                            </div>
                         }
-                        {currentField.name === 'profileData' &&
+                        {currentField.name === 'about' &&
                            <div className=''>
                               {/* <textarea
                                  placeholder=""
@@ -1377,7 +1377,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                               <div className='mt-8'>
                                  <div className='grid grid-cols-12 '>
                                     <div className='col-span-6'>
-                                       <div><p style={{ color: '#26435F', fontWeight: '500' }}>Education</p></div>
+                                       <div><p  style={{ color: '#26435F', fontWeight: '500' }}>Education</p></div>
                                        <textarea rows={3} cols={35} className=' rounded focus:border-[#D0D5DD]' style={{ border: '1px solid #D0D5DD', color: '#667085' }}
                                           value={currentToEdit.education}
                                           onChange={(e) => { setCurrentToEdit({ ...currentToEdit, education: e.target.value }) }}
