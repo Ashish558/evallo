@@ -225,7 +225,7 @@ export default function StartTest() {
             if (completed !== undefined) {
                setCompletedSubjects(completed)
             }
-            if (endTime !== null && endTime || sectionName.length > 1) {
+            if (endTime !== null && endTime || sectionName?.length > 1) {
                let timer = (new Date(endTime) - new Date()) / 1000
                setTimer(Math.trunc(timer))
                setInitialSeconds(Math.trunc(timer))
