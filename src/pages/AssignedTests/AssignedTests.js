@@ -161,12 +161,8 @@ export default function AssignedTests() {
       id: 10,
       className: "no-arrow",
       text: "",
-    },
-    {
-      id: 11,
-      className: "no-arrow",
-      text: "",
     }
+
 
   ];
 
@@ -633,7 +629,7 @@ export default function AssignedTests() {
     },
     {
       text: "Started",
-      color: "#F6A429",
+      color: "#FFCE84",
     },
   ];
   const [numberChecked, setnumberChecked] = useState(0);
