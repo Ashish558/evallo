@@ -108,7 +108,7 @@ const RangeDate = ({ handleRangeData ,optionClassName,className,manualHide ,inpu
               <input
                 type="date"
                 name="sdate"
-                className="rounded-md bg-[#FFA28D] p-1 text-white"
+                className="rounded-md bg-primary-50 p-1 text-[#FFA28D]"
                 value={selectDate.sDate}
                 max={selectDate.eDate}
                 onChange={(e) => handleLocalDate(e.target.value, "sDate")}
@@ -117,13 +117,13 @@ const RangeDate = ({ handleRangeData ,optionClassName,className,manualHide ,inpu
                 type="date"
                 min={selectDate.sDate}
                 name="edate"
-                className="rounded-md text-[#FFA28D] p-1 w-[120px]"
+                className="rounded-md bg-primary-50 text-[#FFA28D] p-1 w-[120px]"
                 value={selectDate.eDate}
                 placeholder="Start Date"
                 onChange={(e) => handleLocalDate(e.target.value, "eDate")}
               />
             </div>
-            <div className="w-full flex justify-start">
+            <div className="w-full flex justify-center">
               <p className="ml-[26px]">
                 <button
                   disabled={!selectDate.eDate || !selectDate.sDate}

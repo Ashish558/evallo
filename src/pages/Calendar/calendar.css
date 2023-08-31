@@ -220,20 +220,20 @@
 /* .fc-scroller{
   display: none !important;
 } */
-table th:first-child
+.calender table th:first-child
 {
   border: 0 !important;
 }
-table th:last-child{
+.calender table th:last-child{
   border: 0 !important;
 }
-.fc-col-header{
+.calender .fc-col-header{
   width:100% !important;
 }
-.fc-scroller{
+.calender .fc-scroller{
   overflow: auto !important;
 }
-.fc .fc-scrollgrid-section-sticky > *{
+.calender .fc .fc-scrollgrid-section-sticky > *{
   position: relative !important;
 }
 /* .calender .fc-theme-standard td, .fc-theme-standard th{
@@ -264,7 +264,7 @@ table th:last-child{
   color: #7C98B6 !important;
 
 }
-tr{
+.calender tr{
   box-shadow: 0px 0px 2px 0px #fff !important;
   border-radius: 0 !important;
 }

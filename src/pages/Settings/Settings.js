@@ -906,13 +906,13 @@ export default function Settings() {
         </div>
         {activeTab === 1 || !activeTab ? (
           <div>
-            <div className="flex items-center gap-x-5 mb-4">
+            <div className="flex items-center gap-x-8 mb-4">
               <div>
                 <InputSelect
                  labelClassname="mb-1"
                  inputContainerClassName="shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-[#FFFFFF]"
                   optionData={timeZones}
-                  parentClassName="min-w-[200px]"
+                  parentClassName="min-w-[360px]"
                   label="Default Time Zone"
                   value={settingsData.timeZone}
                   onChange={(val) => handleChange("timeZone", val)}
@@ -922,7 +922,7 @@ export default function Settings() {
                 labelClassname="mb-1"
                 inputContainerClassName="shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-[#FFFFFF]"
                 optionData={["dd/mm/yy", "mm/dd/yy", "yy/mm/dd"]}
-                parentClassName="min-w-[200px]"
+                parentClassName="min-w-[360px]"
                 label="Default Date Format"
                 value={settingsData.dateFormat}
                 onChange={(val) => handleChange("dateFormat", val)}

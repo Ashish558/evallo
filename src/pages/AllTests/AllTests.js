@@ -316,7 +316,7 @@ const sortBycreateDate = () => {
   if (persona === "parent" || persona === "student") return <StudentTest />;
 
   return (
-    <div className="lg:mx-[40px] bg-lightWhite min-h-screen">
+    <div className="w-[83.6989583333vw] mx-auto bg-lightWhite min-h-screen">
       <div className="py-14 px-5 w-full">
         <p className="text-[#24A3D9]  mb-3 ">
           {organization?.company +
@@ -341,6 +341,7 @@ const sortBycreateDate = () => {
             optionData={optionData}
             placeholder="Search"
             parentClassName="w-290 mr-4"
+            inputClassName="placeholder:font-semibold pl-2 "
             inputContainerClassName="bg-white border pt-3.5 pb-3.5"
             type="select"
           />
@@ -377,7 +378,7 @@ const sortBycreateDate = () => {
             onClick: handleSubmit,
             type: "submit",
             className:
-              "w-[123px] pl-6 pr-6 py-2 mr-5 my-auto pr-2 flex gap-2 mt-7 h-min disabled:opacity-80",
+              "w-[123px] pl-6 pr-6 py-1 mr-5 my-auto pr-2 flex gap-2 mt-7 h-min disabled:opacity-80",
             disabled: submitBtnDisabled,
             loading: loading,
             icon: <img src={check} alt="check" className="inline-block" />,

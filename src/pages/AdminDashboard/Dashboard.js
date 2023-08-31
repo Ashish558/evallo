@@ -503,7 +503,7 @@ const Dashboard = () => {
           <div className="flex justify-between items-center translate-y-[10px] ">
             <p className="font-bold uppercase text-[#FFA28D] text-xl">Client Success Overview </p>
 
-            <RangeDate handleRangeData={handlePopularServices} />
+            <RangeDate inputContainerClassName="!w-[500px]" optionClassName="!w-[500px]" handleRangeData={handlePopularServices} />
           </div>
         </div>
 

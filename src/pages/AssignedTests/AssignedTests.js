@@ -729,9 +729,9 @@ export default function AssignedTests() {
                     })
                   }
                   placeholder="Search Student"
-                  inputClassName="pl-4 text-[#667085]"
-                  parentClassName="w-[20.8333333333vw] text-sm"
-                  inputContainerClassName=" my-1 shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white  "
+                  inputClassName="pl-4 py-[14px] text-md text-[#667085]   placeholder:text-lg pl-2 placeholder:text-md"
+                  parentClassName="w-[20.8333333333vw] text-md"
+                  inputContainerClassName=" my-1 shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white  !py-0"
                   type="text"
                 />
 
@@ -818,7 +818,7 @@ export default function AssignedTests() {
               </div>
             </>
           )}
-          <div className="mt-8">
+          <div className="mt-3">
             <Table
               numberChecked={numberChecked}
               setnumberChecked={setnumberChecked}
@@ -874,7 +874,7 @@ export default function AssignedTests() {
                     parentClassName="w-full mr-4"
                     labelClassname="ml-2 mb-0.5"
                     inputContainerClassName="px-5 py-3.5 text-sm bg-primary-50 border-0"
-                    inputClassName="bg-transparent"
+                    inputClassName="bg-transparent "
                     placeholder="Student Name"
                     type="select"
                   />
