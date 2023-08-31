@@ -146,7 +146,7 @@ const StudentDashboard = () => {
                 onChange={(val) => handleSubjectChange(val)}
               /> */}
 
-              <RangeDate className="ml-0" manualHide={true} inputContainerClassName="w-[190px]" handleRangeData={setSelectedConceptIdx} />
+              <RangeDate className="ml-0" manualHide={true} optionClassName="w-[200px]" inputContainerClassName="w-[230px]" handleRangeData={setSelectedConceptIdx} />
             </div>
           </div>
           <div

@@ -27,7 +27,7 @@ const SPFrame2 = ({userDetail,settings , editable, setToEdit, toEdit,setSelected
             </p>
             <p className=" text-sm text-[#26435F] font-semibold">
             Join date
-              <span className=" text-[#FFA28D] text-2xl block">90</span>
+              <span className=" text-[#FFA28D] text-xl block">{new Date(userDetail?.createdAt).toLocaleDateString()}</span>
             </p>
           </div>
         </div>
@@ -67,8 +67,8 @@ const SPFrame2 = ({userDetail,settings , editable, setToEdit, toEdit,setSelected
                       <p className="text-[#517CA8]">February 05, 2023</p>
 
                       <p>
-                        <span className="text-[#24A3D9]">C{it?.english +  it?.science + it?.maths +it?.reading }</span>
-                        <span className="text-[#517CA8]">| E{it?.english}  R{it?.reading} M{it?.maths} S{it?.science}</span>
+                        <span className="text-[#24A3D9]">C{ it?.maths +it?.verbal }</span>
+                        <span className="text-[#517CA8]">|  M{it?.maths} V{it?.verbal}</span>
                       </p>
                     </div>
                     <img

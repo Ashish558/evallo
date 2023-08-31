@@ -96,9 +96,10 @@ export default function InputField({
           </div>
         )}
         <input
-          className={`outline-0 w-full text-[17.5px] pl-1 ${inputClassName ? inputClassName : ""
+          className={`outline-0 w-full text-[17.5px] pl-1 placeholder:text-sm ${inputClassName ? inputClassName : ""
             } ${disabled === true ? "cursor-not-allowed" : ""} `}
           placeholder={placeholder}
+          
           type={inputType ? inputType : "text"}
           onChange={(e) => (onChange !== undefined ? onChange(e) : "")}
           value={value}
