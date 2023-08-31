@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import styles from "../style.module.css";
 import { useSelector } from "react-redux";
@@ -13,22 +14,27 @@ const SPFrame1 = ({ settings, userDetail,editable, setToEdit, toEdit, }) => {
     setArr(temp)
   }
   console.log("frame1",{userDetail})
+
   return (
     <div>
       {" "}
       <div className="flex mt-7 justify-between gap-5">
+
         <div className="flex-1 h-[270px] gap-2 flex flex-col">
           <div className="flex-1 ">
             <p className=" text-sm text-[#26435F] font-semibold">
               Whiteboard Links
            
+
               <EditableText
                     editable={editable}
                     onClick={() =>
                       setToEdit({
                         ...toEdit,
+
                         whiteBoardLinks: {
                           ...toEdit.whiteBoardLinks,
+
                           active: true,
                         },
                       })
@@ -40,6 +46,7 @@ const SPFrame1 = ({ settings, userDetail,editable, setToEdit, toEdit, }) => {
             </p>
 
             <div
+
               className="w-full relative custom-scroller !border-[1.25px_dashed_#517CA8] bg-white h-full max-h-[90px]  flex flex-col rounded-md items-center overflow-y-auto shadow-[0px_0px_2.500001907348633px_0px_#00000040]"
               id={styles.borderDashed}
             >
@@ -59,10 +66,12 @@ const SPFrame1 = ({ settings, userDetail,editable, setToEdit, toEdit, }) => {
             </div>
           </div>
           <div className="flex-1 mt-2">
+
             <p className=" text-sm text-[#26435F] font-semibold">
               Associated docs
              
             </p>
+
             <div id={styles.borderDashed} className="w-full relative !border-[1.25px_dashed_#517CA8] h-full !max-h-[140px] flex rounded-md items-center bg-white overflow-hidden shadow-[0px_0px_2.500001907348633px_0px_#00000040]">
                         <div
                           className=" flex-1 "
@@ -106,6 +115,7 @@ const SPFrame1 = ({ settings, userDetail,editable, setToEdit, toEdit, }) => {
           </div>
         </div>
         <div className="flex-1 h-[260px]">
+
           <p className=" text-sm text-[#26435F] font-semibold">Interests   <EditableText
         editable={editable}
         onClick={() =>
@@ -126,7 +136,9 @@ const SPFrame1 = ({ settings, userDetail,editable, setToEdit, toEdit, }) => {
                 return settings.interest.find((item) => item._id === id) ? (
                   <div
                     key={idx}
+
                     className="bg-white  p-2 !rounded-md shadow-[0px_0px_2.500001907348633px_0px_#00000040] flex-1 w-full"
+
                   >
                     <div className="flex h-90 w-90 rounded-full  items-center justify-center mb-3">
                       <img
@@ -160,7 +172,9 @@ const SPFrame1 = ({ settings, userDetail,editable, setToEdit, toEdit, }) => {
                {
               !settings?.interest?.length > 0 &&[1, 2, 3, 4, 5].map((it) => {
                 return (
+
                   <div className="bg-white p-2 !rounded-md shadow-[0px_0px_2.500001907348633px_0px_#00000040] flex-1 w-full">
+
                     {it}
                   </div>
                 );
@@ -168,7 +182,9 @@ const SPFrame1 = ({ settings, userDetail,editable, setToEdit, toEdit, }) => {
           </div>
         </div>
 
+
         <div className="flex-1 h-[260px]">
+
           <p className=" text-sm text-[#26435F] font-semibold">Subjects    <EditableText
           editable={editable}
           onClick={() =>
@@ -188,22 +204,28 @@ const SPFrame1 = ({ settings, userDetail,editable, setToEdit, toEdit, }) => {
                   return (
                     <p
                       key={idx}
+
                       className="bg-white p-2 !rounded-md shadow-[0px_0px_2.500001907348633px_0px_#00000040] flex-1 w-full"
+
                     >
                       {sub}{" "}
                     </p>
                   );
                 })
+
               : [1, 2, 3, 4, 5,6,7,8,9]?.map((it) => {
                   return (
                     <div className="bg-white p-2 !rounded-md shadow-[0px_0px_2.500001907348633px_0px_#00000040] flex-1 w-full">
+
                       {it}
                     </div>
                   );
                 })}
           </div>
         </div>
+
         <div className="flex-1 h-[260px]">
+
           <p className=" text-sm text-[#26435F] font-semibold">Personality    
            <EditableText
         editable={editable}

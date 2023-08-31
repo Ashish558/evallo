@@ -8,7 +8,9 @@ import styles from "./rangeDate.module.css";
 import { useState } from "react";
 import { useEffect } from "react";
 
+
 const RangeDate = ({ handleRangeData ,optionClassName,className,manualHide ,inputContainerClassName}) => {
+
   const [startDate, setStartDate] = useState(() => calculateDateRange()[0]);
   const [selectDate, setSelectedDate] = useState({
     sDate: "",
@@ -86,7 +88,9 @@ const RangeDate = ({ handleRangeData ,optionClassName,className,manualHide ,inpu
         inputContainerClassName={`border-none w-[300px] whitespace-nowrap font-semibold text-[#FFA28D] ${inputContainerClassName}  ${styles["text"]}`}
         inputClassName={`border-none w-fit bg-transparent font-semibold text-[#FFA28D] `}
         value={newDateformat}
+
         optionClassName={`${optionClassName}`}
+
         optionData={[
           { name: "Today", days: 0 },
           { name: "Last 7 Days", days: 7 },
