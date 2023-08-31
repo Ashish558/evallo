@@ -252,14 +252,14 @@ export default function TableItem({
         dataFor === "serviceRates" && (
           <>
 
-            <tr className=" ">
-              <td>
+            <tr >
+              <td className="py-4 px-[10px]">
                 {item.service}
               </td>
-              <td>
+              <td className="py-4 px-[10px]">
                 {item.currency ? item.currency : "USD"}
               </td>
-              <td>
+              <td className="py-4 px-[10px]">
                 {item.price}
               </td>
             </tr>
