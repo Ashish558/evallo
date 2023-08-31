@@ -1,6 +1,5 @@
 thead tr th div::after {
   content: url("../../assets/images/arrow-down.svg");
-  margin-left: 5px;
   display: inline-block;
   width: 25px;
   height: 25px;
@@ -58,4 +57,9 @@ input[type="checkbox"]:checked + .custom-checkbox {
 .active-pagination {
   background-color: #ffa28d;
   color: white;
+}
+
+
+.customPadding{
+  padding: 0px;
 }

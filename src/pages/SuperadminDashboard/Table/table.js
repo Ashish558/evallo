@@ -31,7 +31,7 @@ export default function Table(props) {
   useEffect(() => {
     let arr = [];
     let noOfkeys;
-   noOfkeys = tableHeaders.length;
+    noOfkeys = tableHeaders.length;
     arr.length = noOfkeys;
     for (let i = 0; i < maxPageSize - tableData.length; i++) {
       let curr = [];
@@ -69,58 +69,58 @@ export default function Table(props) {
   return (
     <div className="w-full">
       <div className="overflow-x-auto  scrollbar-content   scroll-m-1 ">
-      <table
-        className={`${styles.customTable} px-[2px] border-collapse border-spacing-2 whitespace-nowrap  mb-3 text-center w-full min-h-[300px]`}
-      >
-        <thead className="bg-[#26435F] whitespace-nowrap">
-          <tr className=" whitespace-nowrap">
-            {tableHeaders.map((item, idx) => {
-              return <TableHeader noArrow={noArrow} key={idx} Icon={Icon} header={item} dataFor={dataFor} />;
-            })}
-          </tr>
-        </thead>
-        <tbody className="h-fit">
-          {loading ? (
-            <div
-              className={`absolute w-full min-h-[100px] flex justify-center items-center`}
-            >
-              <div><LoaderNew/></div>
-            </div>
-          ) : (
-            tableData.map((item, idx) => {
-              return (
-                <TableItem
-
-                  dataFor={dataFor}
-                  AdminLatestSignUp={AdminLatestSignUp}
-                  item={item}
-                  key={idx}
-                  excludes={excludes}
-                  onClick={onClick}
-                />
-              );
-            })
-          )}
-           {dummy.map((it, iti) => {
-            return (
-              <tr
-                key={iti}
-                className="bg-white leading-8 "
+        <table
+          className={`${styles.customTable} px-[2px] border-collapse border-spacing-2 whitespace-nowrap  mb-3 text-center w-full min-h-[300px]`}
+        >
+          <thead className="bg-[#26435F] whitespace-nowrap">
+            <tr className=" whitespace-nowrap">
+              {tableHeaders.map((item, idx) => {
+                return <TableHeader noArrow={noArrow} key={idx} Icon={Icon} header={item} dataFor={dataFor} />;
+              })}
+            </tr>
+          </thead>
+          <tbody className="h-fit">
+            {loading ? (
+              <div
+                className={`absolute w-full min-h-[100px] flex justify-center items-center`}
               >
-                {it.map((d, di) => {
-                  return (
-                    <td  key={di} className="opacity-0 text-sm px-1 min-w-14 py-3 ">
-                      {d}
-                    </td>
-                  );
-                })}
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+                <div><LoaderNew /></div>
+              </div>
+            ) : (
+              tableData.map((item, idx) => {
+                return (
+                  <TableItem
+
+                    dataFor={dataFor}
+                    AdminLatestSignUp={AdminLatestSignUp}
+                    item={item}
+                    key={idx}
+                    excludes={excludes}
+                    onClick={onClick}
+                  />
+                );
+              })
+            )}
+            {dummy.map((it, iti) => {
+              return (
+                <tr
+                  key={iti}
+                  className="bg-white leading-8 "
+                >
+                  {it.map((d, di) => {
+                    return (
+                      <td key={di} className="opacity-0 text-sm px-1 min-w-14 py-3 ">
+                        {d}
+                      </td>
+                    );
+                  })}
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
       </div>
-      
+
 
       <div className="flex justify-end items-center">
         <Pagination

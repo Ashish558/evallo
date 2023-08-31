@@ -121,8 +121,8 @@
   color: #517ca8 !important;
 
 }
- tr td{
- background:  rgb(243 245 247) !important
+.calendar-parent-class tr td {
+  background:  rgb(243 245 247) !important
 }
 
 .calender tr:nth-child(odd) {

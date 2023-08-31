@@ -16,13 +16,13 @@ export default function Pagination({
     <>
       <div className="flex gap-x-3 justify-end items-center">
         <div
-          className="p-1 cursor-pointer text-[#26435F]"
+          className="p-1 cursor-pointer text-[#26435F] text-[12.5px]"
           onClick={() => handleClick(currentPage - 1)}
         >
           Prev
         </div>
         <div
-          className="p-1 cursor-pointer  text-[#FFA28D]"
+          className="p-1 cursor-pointer  text-[#FFA28D] text-[12.5px]"
           onClick={() => handleClick(currentPage)}
         >
           {currentPage < 10 ? "0" : ""}
@@ -33,7 +33,7 @@ export default function Pagination({
             className="p-1 cursor-pointer text-[#B7C2CB]"
             onClick={() => handleClick(currentPage + 1)}
           >
-            {currentPage+1 < 10 ? "0" : ""}
+            {currentPage + 1 < 10 ? "0" : ""}
             {currentPage + 1}
           </div>
         ) : (
@@ -50,7 +50,7 @@ export default function Pagination({
           ""
         )}
 
-        {currentPage !== totalPages && totalPages!==0 ? (
+        {currentPage !== totalPages && totalPages !== 0 ? (
           <div
             className="p-1 cursor-pointer  text-[#B7C2CB]"
             onClick={() => handleClick(totalPages)}
@@ -63,7 +63,7 @@ export default function Pagination({
         )}
 
         <div
-          className="p-1 cursor-pointer text-[#26435F]"
+          className="p-1 cursor-pointer text-[#26435F] text-[12.5px]"
           onClick={() => handleClick(currentPage + 1)}
         >
           Next

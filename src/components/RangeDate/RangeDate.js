@@ -8,7 +8,7 @@ import styles from "./rangeDate.module.css";
 import { useState } from "react";
 import { useEffect } from "react";
 
-const RangeDate = ({ handleRangeData  }) => {
+const RangeDate = ({ handleRangeData }) => {
   const [startDate, setStartDate] = useState(() => calculateDateRange()[0]);
   const [selectDate, setSelectedDate] = useState({
     sDate: "",
@@ -64,17 +64,17 @@ const RangeDate = ({ handleRangeData  }) => {
   useEffect(() => {
     if (startDate) handleRangeData(startDate);
   }, []);
-  let temp=startDate.split("-");
-  
-  let newDateformat=temp[0];
-  temp=temp[1].split(" ")
-  let firsYear=newDateformat.split(" ")
-  if(firsYear[2]===temp[3]){
-    newDateformat=firsYear[0]+ " "+firsYear[1]
-   
+  let temp = startDate.split("-");
+
+  let newDateformat = temp[0];
+  temp = temp[1].split(" ")
+  let firsYear = newDateformat.split(" ")
+  if (firsYear[2] === temp[3]) {
+    newDateformat = firsYear[0] + " " + firsYear[1]
+
   }
-  newDateformat+=" - "+temp[0]+" "+ temp[1]+" "+temp[2]+ ", "+temp[3]
-  
+  newDateformat += " - " + temp[0] + " " + temp[1] + " " + temp[2] + ", " + temp[3]
+
   return (
     <div className="flex text-xs ">
       <p className="font-semibold text-[#FFA28D]"> </p>
@@ -83,6 +83,8 @@ const RangeDate = ({ handleRangeData  }) => {
         placeholder="Select"
         parentClassName="border-none text-xs text-[#26435F] w-fit"
         labelClassname="text-sm"
+        optionClassName=""
+        optionListClassName="text-[15px] font-medium text-[#517CA8] underline underline-offset-2"
         inputContainerClassName={`border-none w-[300px] font-semibold text-[#FFA28D]  ${styles["text"]}`}
         inputClassName={`border-none w-fit bg-transparent font-semibold text-[#FFA28D] `}
         value={newDateformat}
@@ -98,38 +100,44 @@ const RangeDate = ({ handleRangeData  }) => {
         IconRight={faCaretDown}
         DateSelect={
           <div className="flex flex-col hover:bg-white items-center pt-2 z-5000 border-b ">
-            <div className="font-semibold text-black flex w-full justify-around">
-              <label htmlFor="sdate">Start Date</label>
-              <label htmlFor="edate">End Date</label>
+            <div className=" text-black flex flex-col w-full justify-start">
+              <div className="flex flex-col px-[26px] justify-start  ">
+                <label className="text-[#517CA8] text-[9px]" htmlFor="sdate">Start Date</label>
+
+                <input
+                  type="date"
+                  name="sdate"
+                  className="rounded-md  p-1 text-[#FFA28D]"
+                  value={selectDate.sDate}
+                  max={selectDate.eDate}
+                  onChange={(e) => handleLocalDate(e.target.value, "sDate")}
+                />
+              </div>
             </div>
-            <div className="flex p-1 justify-between gap-5 ">
-              <input
-                type="date"
-                name="sdate"
-                className="rounded-md bg-[#FFA28D] p-1 text-white"
-                value={selectDate.sDate}
-                max={selectDate.eDate}
-                onChange={(e) => handleLocalDate(e.target.value, "sDate")}
-              />
+            <div className="flex flex-col  justify-start  mt-[15px]">
+              <label className="text-[#517CA8] text-[9px]" htmlFor="edate">End Date</label>
               <input
                 type="date"
                 min={selectDate.sDate}
                 name="edate"
-                className="rounded-md bg-[#FFA28D] p-1 text-white"
+                className="rounded-md text-[#FFA28D] p-1 w-[120px]"
                 value={selectDate.eDate}
                 placeholder="Start Date"
                 onChange={(e) => handleLocalDate(e.target.value, "eDate")}
               />
             </div>
-            <button
-              disabled={!selectDate.eDate || !selectDate.sDate}
-              className={`${
-                !selectDate.eDate || !selectDate.sDate ? "opacity-75" : ""
-              } rounded-md bg-[#FFA28D] py-1 px-4 my-2 mb-3 text-white hover:shadow-sm hover:scale-105`}
-              onClick={handleStartDate}
-            >
-              Submit
-            </button>
+            <div className="w-full flex justify-start">
+              <p className="ml-[26px]">
+                <button
+                  disabled={!selectDate.eDate || !selectDate.sDate}
+                  className={`${!selectDate.eDate || !selectDate.sDate ? "opacity-75" : ""
+                    } rounded-md bg-[#FFA28D] py-1 px-4 mt-5 mb-[17px]  text-white hover:shadow-sm hover:scale-105`}
+                  onClick={handleStartDate}
+                >
+                  Submit
+                </button>
+              </p>
+            </div>
           </div>
         }
       />

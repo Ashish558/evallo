@@ -11,7 +11,7 @@ export function TableHeaderNew({ header, checkedHeader, dataFor, Handler }) {
 
   return (
     <th
-    className={`px-1 py-3 font-medium whitespace-nowrap text-center cursor-pointer ${header.className ? header.className : ""
+      className={`px-6 py-[20px] font-medium whitespace-nowrap  text-center  cursor-pointer ${header.className ? header.className : ""
         } ${flag ? styles["no-arrow"] : ''}`}
     >
       <div className="flex justify-center">
