@@ -7,6 +7,12 @@ import BCut from "../../../../assets/YIcons/BCut.svg"
 const SPFrame1 = ({ settings, userDetail,editable, setToEdit, toEdit, }) => {
   const [xlsFile,setXlsFile]=useState({})
   const { awsLink } = useSelector((state) => state.user);
+  const reduceArr=(arr,id,setArr)=>{
+    let temp=[...arr]
+    temp=temp?.filter((item,idd)=> idd!== id )
+    setArr(temp)
+  }
+  console.log("frame1",{userDetail})
   return (
     <div>
       {" "}
@@ -38,11 +44,11 @@ const SPFrame1 = ({ settings, userDetail,editable, setToEdit, toEdit, }) => {
               id={styles.borderDashed}
             >
 {
-  userDetail?.whiteBoardLinks?.map((it)=>{
+  userDetail?.whiteBoardLinks?.map((it,id)=>{
     return (
   <p className="flex flex-1 text-[#517CA8] w-full text-xs justify-between px-3 py-1">
-    <span >{it?.link}</span>
-    <img src={BCut} className="text-xs inline-block"/>
+    <span >{it}</span>
+    <img  src={BCut} className="text-xs !h-[20px] !w-[20px] inline-block"/>
 
   </p>
     )

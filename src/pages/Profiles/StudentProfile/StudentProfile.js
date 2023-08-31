@@ -440,6 +440,7 @@ const [toEdit, setToEdit] = useState({
         timeZone,
         birthyear,
         personality,
+        whiteBoardLinks,
         interest,
         schoolName,
         grade,
@@ -540,6 +541,10 @@ const [toEdit, setToEdit] = useState({
                 personality: {
                   ...prev.personality,
                   personality: personality,
+                },
+                whiteBoardLinks: {
+                  ...prev.whiteBoardLinks,
+                  whiteBoardLinks: whiteBoardLinks,
                 },
                 interest: {
                   ...prev.interest,
@@ -870,7 +875,7 @@ const [toEdit, setToEdit] = useState({
           <SPFrame0 userDetail={userDetail} settings={settings} />
 
           <SPFrame1
-            useDetail={userDetail}
+            userDetail={userDetail}
             settings={settings}
             editable={editable}
             setToEdit={setToEdit}
