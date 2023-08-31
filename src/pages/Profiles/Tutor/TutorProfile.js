@@ -69,7 +69,7 @@ export default function TutorProfile({ isOwn }) {
    const [feedbacks, setFeedbacks] = useState([])
    const [awsLink, setAwsLink] = useState('')
    const { organization } = useSelector((state) => state.organization);
-
+// console.log(feedbacks)
    const { id } = useSelector(state => state.user)
    const tableHeaders1 = [
       {

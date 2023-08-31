@@ -216,7 +216,11 @@ export default function TableItem({
   useEffect(() => {
     setIsChecked(checkedHeader);
   }, [checkedHeader])
-
+  const timestamp = item.createdAt;
+  const date = new Date(timestamp);
+  
+  const options = { year: 'numeric', month: 'long', day: 'numeric' };
+  const formattedDate = date.toLocaleDateString('en-US', options);
 
   console.log(dataFor)
   return (
@@ -227,20 +231,20 @@ export default function TableItem({
           <>
 
             <tr className=" ">
-              <td>
-                {item.studentname}
+              <td className="py-4 px-[10px]">
+                {item.studentName}
               </td>
-              <td>
-                {item.feedback}
+              <td className="py-4 px-[10px]">
+                {item.rating}
               </td>
-              <td>
-                {item.comment}
+              <td className="py-4 px-[10px]">
+                {item.comments}
               </td>
-              <td>
+              <td className="py-4 px-[10px]">
                 {item.service}
               </td>
-              <td>
-                {item.sessiondata}
+              <td className="py-4 px-[10px]">
+                {formattedDate}
               </td>
             </tr>
 
