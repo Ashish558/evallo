@@ -981,7 +981,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                               </div> */}
                               <div className='grid grid-cols-12 gap-4'>
                                  <div className='col-span-6'>
-                                    <div><p style={{ color: '#26435F', fontWeight: '500' }}>Street</p></div>
+                                    <div><p  className={styles.address}>Street</p></div>
                                     <InputField
                                        labelClassname='hidden'
                                        placeholder='Text'
@@ -994,7 +994,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
 
                                  </div>
                                  <div className='col-span-6'>
-                                    <div><p style={{ color: '#26435F', fontWeight: '500' }}>City</p></div>
+                                    <div><p className={styles.address}>City</p></div>
                                     <InputField
                                        labelClassname='hidden'
                                        placeholder='City'
@@ -1010,7 +1010,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
 
                               <div className='grid grid-cols-12 gap-4 mt-5'>
                                  <div className='col-span-6'>
-                                    <div><p style={{ color: '#26435F', fontWeight: '500' }}>State</p></div>
+                                    <div><p className={styles.address}>State</p></div>
                                     <InputField
                                        labelClassname='hidden'
                                        placeholder='Text'
@@ -1023,7 +1023,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
 
                                  </div>
                                  <div className='col-span-6'>
-                                    <div><p style={{ color: '#26435F', fontWeight: '500' }}>Country</p></div>
+                                    <div><p className={styles.address}>Country</p></div>
                                     <InputField
                                        labelClassname='hidden'
                                        placeholder='City'
@@ -1038,7 +1038,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
 
                               <div className='grid grid-cols-12 gap-4 mt-5'>
                                  <div className='col-span-6'>
-                                    <div><p style={{ color: '#26435F', fontWeight: '500' }}>Zip</p></div>
+                                    <div><p className={styles.address}>Zip</p></div>
                                     <InputField
                                        labelClassname='hidden'
                                        placeholder='Text'
@@ -1271,7 +1271,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                               </div>
                            </div>
                         }
-                        {currentField.name === 'about' &&
+                        {currentField.name === 'profileData' &&
                            <div className=''>
                               {/* <textarea
                                  placeholder=""
@@ -1292,7 +1292,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                                     <div className=' col-span-8 '>
                                        <div className='grid grid-cols-12 gap-8'>
                                           <div className=' col-span-3'>
-                                             <div><p style={{ color: '#26435F', fontWeight: '500' }}>First Name</p></div>
+                                             <div><p className={styles.address}>First Name</p></div>
                                              <InputField
                                                 labelClassname='hidden'
                                                 placeholder='First Name'
@@ -1303,7 +1303,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
 
                                           </div>
                                           <div className=' col-span-3'>
-                                             <div><p style={{ color: '#26435F', fontWeight: '500' }}>Last Name</p></div>
+                                             <div><p className={styles.address}>Last Name</p></div>
 
                                              <InputField
                                                 labelClassname='hidden'
@@ -1316,7 +1316,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                                           </div>
 
                                           <div className=' col-span-6'>
-                                             <div><p style={{ color: '#26435F', fontWeight: '500' }}>Email</p></div>
+                                             <div><p className={styles.address}>Email</p></div>
 
                                              <InputField
                                                 labelClassname='hidden'
@@ -1328,7 +1328,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
 
                                           </div>
                                           <div className=' col-span-6'>
-                                             <div><p style={{ color: '#26435F', fontWeight: '500' }}>LinkedIn</p></div>
+                                             <div><p className={styles.address}>LinkedIn</p></div>
 
                                              <InputField
                                                 labelClassname='hidden'
@@ -1340,7 +1340,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
 
                                           </div>
                                           <div className='col-span-6 '>
-                                             <div><p style={{ color: '#26435F', fontWeight: '500' }}>Phone</p></div>
+                                             <div><p className={styles.address}>Phone</p></div>
                                              <div className='grid grid-cols-12 gap-3'>
                                                 <div className='col-span-4'>
 
@@ -1354,7 +1354,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                                                 </div>
 
                                                 <div className='col-span-8'>
-                                                   <div><p style={{ color: '#26435F', fontWeight: '500' }}> </p></div>
+                                                   <div><p className={styles.address}> </p></div>
 
                                                    <InputField
                                                       labelClassname='hidden'
@@ -1373,7 +1373,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                               </div>
 
                               <div className='mt-8 grid grid-cols-12' >
-                                 <div><p style={{ color: '#26435F', fontWeight: '500' }}>TagLine</p></div>
+                                 <div><p className={styles.address}>TagLine</p></div>
                                  <div className='col-span-12 '>
                                     <textarea cols={80} value={currentToEdit.tagLine} className=' rounded focus:border-[#D0D5DD]'
                                        style={{ border: '1px solid #D0D5DD', color: '#667085' }}
@@ -1382,7 +1382,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                               </div>
 
                               <div className='mt-8 grid grid-cols-12' >
-                                 <div><p style={{ color: '#26435F', fontWeight: '500' }}>About</p></div>
+                                 <div><p className={styles.address}>About</p></div>
                                  <div className='col-span-12 '>
                                     <textarea rows={3} cols={80} className=' rounded focus:border-[#D0D5DD]'
                                        style={{ border: '1px solid #D0D5DD', color: '#667085' }}
@@ -1395,7 +1395,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                               <div className='mt-8'>
                                  <div className='grid grid-cols-12 '>
                                     <div className='col-span-6'>
-                                       <div><p style={{ color: '#26435F', fontWeight: '500' }}>Education</p></div>
+                                       <div><p className={styles.address}>Education</p></div>
                                        <textarea rows={3} cols={35} className=' rounded focus:border-[#D0D5DD]'
                                           style={{ border: '1px solid #D0D5DD', color: '#667085' }}
                                           value={currentToEdit.education}
@@ -1403,7 +1403,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                                        ></textarea>
                                     </div>
                                     <div className='col-span-6'>
-                                       <div><p style={{ color: '#26435F', fontWeight: '500' }}>Experience</p></div>
+                                       <div><p className={styles.address}>Experience</p></div>
                                        <textarea rows={3} cols={35} className=' rounded focus:border-[#D0D5DD]'
                                           style={{ border: '1px solid #D0D5DD', color: '#667085' }}></textarea>
                                     </div>

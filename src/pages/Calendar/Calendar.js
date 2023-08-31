@@ -59,6 +59,14 @@ const timeZones = [
   "US/Mountain",
   "US/Pacific",
 ];
+const timeZones2 = [
+  "IST",
+  "AKST",
+  "EST",
+  "HST",
+  "MST",
+  "PST"
+];
 export default function Calendar() {
   const calendarRef = useRef(null);
   // console.log(calendarRef.current)
@@ -122,6 +130,7 @@ export default function Calendar() {
     useLazyGetCalenderInsightQuery();
   const [insightData, setInsightData] = useState({});
   const [timeZone, setTimeZone] = useState("Asia/Kolkata");
+  const [newTimeZone,setnewTimeZone]=useState("IST")
   // console.log(moment.tz.zonesForCountry('US'))
   const [intialView, setInitialView] = useState("dayGridMonth");
 
@@ -474,6 +483,22 @@ export default function Calendar() {
     }
   }, []);
 
+  useEffect(()=>{
+    if(timeZone=='Asia/Kolkata')
+      setnewTimeZone('IST')
+      if(timeZone=='US/Alaska')
+      setnewTimeZone('AKST')
+      if(timeZone=='US/Central')
+      setnewTimeZone('CST')
+      if(timeZone=='US/Eastern')
+      setnewTimeZone('EST')
+      if(timeZone=='US/Hawaii')
+      setnewTimeZone('HST')
+      if(timeZone=='US/Mountain')
+      setnewTimeZone('MST')
+      if(timeZone=='US/Pacific')
+      setnewTimeZone('PST')
+  },[timeZone])
   const getDayHeaders = (arg) => {
     let text = arg.text.split(" ");
 
@@ -1144,7 +1169,7 @@ export default function Calendar() {
               customButtons={{
                 prevButton: {
                   text: (
-                    <span className="calendar-prevButton-custom">
+                    <span  className="calendar-prevButton-custom">
                       <img src={LeftIcon} />
                     </span>
                   ),
@@ -1164,12 +1189,12 @@ export default function Calendar() {
               allDaySlot={false}
               headerToolbar={{
                 start: "prevButton title nextButton",
-                center: "timeGridWeek,dayGridMonth",
-                end: "",
+                center: "",
+                end: "timeGridWeek,dayGridMonth",
               }}
               titleFormat={{
-                day: "numeric",
-                month: "numeric",
+                day:'2-digit',
+                month: "short",
                 year: "numeric",
               }}
               expandRows={true}
@@ -1177,8 +1202,10 @@ export default function Calendar() {
               // slotMinTime={"06:00:00"}
               // slotMaxTime={"30:00:00"}
               dayHeaderFormat={{
-                day: "2-digit",
-                month: "long",
+                day: "numeric",
+                weekday:'long'
+                
+
               }}
               // dayHeaderContent={getDayHeaders}
               selectable={true}
@@ -1191,6 +1218,7 @@ export default function Calendar() {
               selectOverlap={false}
               defaultTimedEventDuration="01:00"
               showNonCurrentDates={false}
+              slotLabelFormat={{hour:'2-digit',minute:'2-digit',meridiem:'short'}}              
             />
             <div
               className=""
@@ -1199,16 +1227,21 @@ export default function Calendar() {
               <span id="input">
                 <InputSelect
                   value={
-                    "IST"
-                    // timeZone == "local"
-                    //   ? getLocalTimeZone()
-                    //   : timeZone.substring(0, 20)
+                   newTimeZone
                   }
                   //  optionData={['local', 'America/New_York']}
                   // optionData={['Asia/Calcutta', ...moment.tz.zonesForCountry('US')]}
                   // optionData={['Asia/Calcutta', ...moment.tz.zonesForCountry('US')]}
-                  optionData={timeZones}
-                  onChange={(val) => setTimeZone(val)}
+                  optionData={timeZones2}
+                  onChange={(val) => {
+                    if(val=='IST')setTimeZone('Asia/Kolkata')
+                    if(val=='CST')setTimeZone('US/Central')
+                    if(val=='AKST')setTimeZone('US/Alaska')
+                    if(val=='EST')setTimeZone('US/Eastern')
+                    if(val=='HST')setTimeZone('US/Hawai')
+                    if(val=='MST')setTimeZone('US/Mountain')
+                    if(val=='PST')setTimeZone('US/Pacific')
+                  }}
                   parentClassName=""
                   inputContainerClassName="text-primaryDark font-bold border"
                 />

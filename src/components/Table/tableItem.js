@@ -214,6 +214,7 @@ export default function TableItem({
 
 
   useEffect(() => {
+    console.log("item",item)
     setIsChecked(checkedHeader);
   }, [checkedHeader])
 
@@ -228,7 +229,7 @@ export default function TableItem({
 
             <tr className=" ">
               <td>
-                {item.studentname}
+                {item.studentName}
               </td>
               <td>
                 {item.feedback}
@@ -240,7 +241,7 @@ export default function TableItem({
                 {item.service}
               </td>
               <td>
-                {item.sessiondata}
+                {item.createdAt}
               </td>
             </tr>
 

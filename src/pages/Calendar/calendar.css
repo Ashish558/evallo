@@ -126,7 +126,7 @@
 }
 
 .calender tr:nth-child(odd) {
-  background: rgb(243 245 247) !important;
+  /* background: rgb(243 245 247) !important; */
   color: #517ca8 !important;
   border-radius: 0 !important;
   /* box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.25) !important; */
@@ -139,6 +139,8 @@
 .calender .fc-theme-standard .fc-timeGridWeek-view .fc-scrollgrid{
   border: 2px solid white !important;
 }
+
+
 .calender .fc-theme-standard td
  {
   border: 2px solid #ffff !important;
@@ -147,9 +149,7 @@
     border: 0 !important;
 
   }
-  .style_sTable__JkBD3 tbody, thead {
-    border: 2px solid white;
-  }
+
 .calender .fc-theme-standard .fc-toolbar .fc-toolbar-title {
   color: #26435f !important;
   font-weight: 500 !important;
@@ -165,7 +165,7 @@
 }
 .calender .fc .fc-button-primary {
   background-color: #fff !important;
-  border: 1.25px solid #f5f6f7 !important;
+  /* border: 1.25px solid #f5f6f7 !important; */
   /* border-color: #fff !important; */
   color: #adb8cc !important;
 }
@@ -176,7 +176,13 @@
 }
 .calender .fc-timeGridWeek-button {
   border-radius: 20px 0px 0px 20px !important;
+  border: 1px solid #f5f6f7 !important;
 }
+.calender .fc-dayGridMonth-button {
+
+  border: 1px solid #f5f6f7 !important;
+}
+
 .calender .calendar-prev-button {
   border-radius: 30px !important;
 }
@@ -197,7 +203,7 @@
 }
 .calender .fc .fc-col-header-cell-cushion {
   font-size: 16px !important;
-  margin-top: 1.2rem !important;
+  margin-top: .7rem !important;
 }
 .react-calendar .react-calendar__navigation__label__labelText.react-calendar__navigation__label__labelText--from{
     color: #26435F !important;
@@ -275,3 +281,45 @@ tr{
   border: 0 !important;
 }
 
+tr td{
+  background: inherit !important;
+}
+thead tr th div::after{
+  content: none !important;
+}
+.calendar .fc-nextButton-button{
+  width: 50px !important;
+  height: 50px !important;
+  border: 2.5px solid #F5F6F7 !important;
+}
+.calendar .fc-prevButton-button{
+  width: 50px !important;
+  height: 50px !important;
+  border: 2.5px solid #F5F6F7 !important;
+}
+.calendar-prevButton-custom{
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  margin-left: 10px !important;  
+}
+.calendar-nextButton-custom{
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  margin-left: 10px !important;  
+}
+.fc .fc-button-group{
+  margin-right: 15rem !important;
+}
+.fc .fc-timegrid-axis-frame {
+  margin-top:10px !important ;
+  margin-left: 15px !important;
+  content: url('../../../public/time.png') !important;
+}
+.fc .fc-timegrid-slot-label-cushion {
+  font-weight: 500 !important;
+  font-size: 16px !important;
+
+
+}

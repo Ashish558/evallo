@@ -542,7 +542,7 @@ export default function TutorProfile({ isOwn }) {
                                  <div className='ml-40 mt-auto pt-10'>
                                     <div className='flex items-center'>
                                     <p className='text-white ' style={{fontWeight:'600',fontSize:'32px'}}>{user.firstName+" "}{user.lastName}</p>
-                                    {(isOwn===true || persona==='admin') && <p className='text-white ml-5 underline cursor-pointer' onClick={()=>setToEdit({ ...toEdit, about: { ...toEdit.about, active: true } })}>edit</p>}                       {/* <EditableText text='edit'
+                                    {(isOwn===true || persona==='admin') && <p className='text-white ml-5 underline cursor-pointer' onClick={()=>setToEdit({ ...toEdit, profileData: { ...toEdit.profileData, active: true } })}>edit</p>}                       {/* <EditableText text='edit'
                                     editable={editable}
                               onClick={() => setToEdit({ ...toEdit, about: { ...toEdit.about, active: true } })}
                               className='text-green'
