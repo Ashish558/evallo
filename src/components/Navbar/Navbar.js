@@ -232,6 +232,7 @@ export default function Navbar() {
       }
    }, [persona])
 
+   console.log(navData);
    return (
       <>
          <div

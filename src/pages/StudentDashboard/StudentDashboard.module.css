@@ -10,22 +10,28 @@
     background-color: #fff;
     padding: 0 10px;
     border-radius: 20px;
-    margin-top: 19px;
+   
 }
 
 #chartContainer::-webkit-scrollbar {
-    width: 10px;
+    width: 5px;
+    height:3px;
+  
 }
 
 #chartContainer::-webkit-scrollbar-track {
-    background: #6da8ff26;
+    background: #CBD6E2;
+    width:100px;
+    margin-top:20px;
     margin-left: 16px;
     margin-right: 40px;
     border-radius: 20px;
+   
+  
 }
 
 #chartContainer::-webkit-scrollbar-thumb {
-    background-color: rgba(109, 168, 255, 0.6);
+    background-color: #7C98B6;
     border-radius: 20px;
 }
 

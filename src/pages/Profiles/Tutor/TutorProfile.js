@@ -317,7 +317,13 @@ export default function TutorProfile({ isOwn }) {
                         ...prevToEdit.profileData,
                         firstName,
                         lastName,
-                        tagLine
+                        tagLine,
+                        phone,
+                        phoneCode,
+                        linkedIn: !details ? '' : details?.linkedIn,
+                        about: !details ? '' : details?.about,
+                        education: !details ? '' : details?.education,
+                        experience: !details ? '' : details?.experience,
                      },
                      tutorAddress: {
                         ...prevToEdit.addressData,
