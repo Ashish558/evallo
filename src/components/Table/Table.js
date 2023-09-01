@@ -88,7 +88,7 @@ export default function Table(props) {
                   <TableHeaderNew header={item} dataFor={dataFor} />
                 ) : (
                   <TableHeader
-                  noArrow={noArrow}
+                    noArrow={noArrow}
                     key={idx}
                     header={item}
                     onClick={sorting}
