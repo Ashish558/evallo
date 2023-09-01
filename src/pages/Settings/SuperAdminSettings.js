@@ -25,14 +25,14 @@ import axios from "axios";
 import DeleteIcon from "../../assets/icons/delete (2).svg";
 import PauseIcon from "../../assets/icons/pause.svg";
 import PlayIcon from "../../assets/icons/play.svg";
-import AccountOverviewLogo from "../../assets/icons/account-overview.png";
-import AccountOverviewLogo2 from "../../assets/icons/account overview2.png";
+import AccountOverviewLogo from "../../assets/icons/account overview.svg";
+import AccountOverviewLogo2 from "../../assets/icons/account-overview 2.svg";
 import OrgDefaultLogo from "../../assets/icons/org-default.png";
-import org1 from "../../assets/icons/org1.png";
-import org2 from "../../assets/icons/org2.png";
+import org1 from "../../assets/icons/org-default 2.svg";
+import org2 from "../../assets/icons/org-default.svg";
 import OrgDefaultLogo2 from "../../assets/icons/org default2.png";
-import OrgDefaultContentLogo2 from "../../assets/icons/org default content.png";
-import OrgDefaultContentLogo from "../../assets/icons/org default content(2).png";
+import OrgDefaultContentLogo2 from "../../assets/icons/org-default-content.svg";
+import OrgDefaultContentLogo from "../../assets/icons/org-default-content (2).svg";
 import EditBlueIcon from "../../assets/icons/edit 15.png";
 import InputSearch from "../../components/InputSearch/InputSearch";
 import { useSelector, useDispatch } from "react-redux";
@@ -78,7 +78,7 @@ const initialTabs = [
   {
     Icon: org2,
     Icon2: org1,
-    name: "Org Default Settings",
+    name: "Org Default",
     selected: false,
   },
   {
@@ -843,7 +843,7 @@ export default function SuperAdminSettings() {
             {tabs.map((item, idx) => {
               return (
                 <div
-                  className={`${styles.tab} ${activeTab === idx + 1 ? styles.selectedTab : ""
+                  className={`${styles.tab} w-[200px] ${activeTab === idx + 1 ? styles.selectedTab : ""
                     } cursor-pointer`}
                   onClick={() => changeTab(idx + 1)}
                 >
@@ -897,14 +897,14 @@ export default function SuperAdminSettings() {
         {activeTab === 1 || !activeTab ? <AccountOverview /> : <></>}
         {activeTab === 3 ? (
           <div>
-            <div className="flex items-center gap-x-5 mb-4">
+            <div className="flex items-center gap-x-[50px] mb-4">
               <div>
                 <InputSelect
                   labelClassname="mb-1"
-                  inputContainerClassName="shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-[#FFFFFF]"
+                  inputContainerClassName="shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-[#FFFFFF] w-[20.15625vw]"
                   placeholder='Select'
                   optionData={timeZones}
-                  parentClassName="min-w-[200px]"
+                  parentClassName=""
                   label="Default Time Zone"
                   value={settingsData.timeZone}
                   onChange={(val) => handleChange("timeZone", val)}
@@ -912,15 +912,15 @@ export default function SuperAdminSettings() {
               </div>
               <InputSelect
                 labelClassname="mb-1"
-                inputContainerClassName="shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-[#FFFFFF]"
+                inputContainerClassName="shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-[#FFFFFF] w-[20.15625vw]"
                 optionData={["dd/mm/yy", "mm/dd/yy", "yy/mm/dd"]}
-                parentClassName="min-w-[200px]"
+                parentClassName=""
                 label="Default Date Format"
                 value={settingsData.dateFormat}
                 onChange={(val) => handleChange("dateFormat", val)}
               />
             </div>
-            <div className="h-[1.25px] bg-[#CBD6E2] mb-4 mt-8"></div>
+            <div className="h-[1.25px] bg-[#CBD6E2] mb-[21px] mt-[37px]"></div>
             <SettingsCard
               title="Lead Status Items (Parent / Student)"
               body={
@@ -937,7 +937,7 @@ export default function SuperAdminSettings() {
                 </div>
               }
             />
-            <div className="h-[1.25px] bg-[#CBD6E2] mb-4 mt-8"></div>
+            <div className="h-[1.25px] bg-[#CBD6E2] my-[21px]"></div>
             <SettingsCard
               title="Tutor Status Items"
               body={
@@ -954,7 +954,7 @@ export default function SuperAdminSettings() {
                 </div>
               }
             />
-            <div className="h-[1.25px] bg-[#CBD6E2] my-8"></div>
+            <div className="h-[1.25px] bg-[#CBD6E2] mt-[21px] mb-[37px]"></div>
             <SettingsCard
               title="Manage Referral Codes"
               className={styles["bordered-settings-container"]}
@@ -988,11 +988,12 @@ export default function SuperAdminSettings() {
                                 />
                               )} */}
                               <ToggleBar
-                                toggle={{ value: 5, key: 9 }}
+                                circleColor="bg-[rgba(119,221,119,1)]"
+                                toggle={{ value: 5, key: 'code' }}
                                 onToggle={togglePermissions}
                               ></ToggleBar>
                               <div
-                                className="w-5 h-5 flex items-center justify-center bg-[#E3E3E3] rounded-full cursor-pointer"
+                                className=" flex items-center justify-center  rounded-full cursor-pointer"
                                 onClick={() => onEditCode(subscription)}
                               >
                                 <img
@@ -1002,7 +1003,7 @@ export default function SuperAdminSettings() {
                                 />
                               </div>
                               <div
-                                className="w-5 h-5 flex items-center justify-center bg-[#E3E3E3] rounded-full cursor-pointer"
+                                className=" flex items-center justify-center  rounded-full cursor-pointer"
                                 onClick={() => onRemoveCode(subscription)}
                               >
                                 <img
@@ -1059,12 +1060,28 @@ export default function SuperAdminSettings() {
                             key={i}
                             className="bg-white shadow-small p-4 mb-3"
                           >
-                            <div className="flex items-center justify-between pr-8">
+                            <div className="flex items-center justify-between pr-8 ">
                               <p className="font-medium text-[#24A3D9] mb-4">
                                 {service.service}
                               </p>
+                            <div className="flex items-center gap-x-4">
+                            <ToggleBar
+                                circleColor="bg-[rgba(119,221,119,1)]"
+                                toggle={{ value: 5, key: 'code' }}
+                                onToggle={togglePermissions}
+                              ></ToggleBar>
                               <div
-                                className="w-5 h-5 flex items-center justify-center bg-[#E3E3E3] rounded-full cursor-pointer"
+                                className=" flex items-center justify-center  rounded-full cursor-pointer"
+                                // onClick={() => onEditService(service)}
+                              >
+                                <img
+                                  src={EditBlueIcon}
+                                  className="w-4"
+                                  alt="edit"
+                                />
+                              </div>
+                              <div
+                                className=" flex items-center justify-center  rounded-full cursor-pointer"
                                 onClick={() => onRemoveService(service)}
                               >
                                 <img
@@ -1073,6 +1090,7 @@ export default function SuperAdminSettings() {
                                   alt="delete"
                                 />
                               </div>
+                            </div>
                             </div>
                             <div className="flex items-center flex-wrap [&>*]:mb-[18px]">
                               {/* <AddTag
@@ -1116,15 +1134,32 @@ export default function SuperAdminSettings() {
                             <p className="font-medium text-[#24A3D9] mb-4">
                               {service.heading}
                             </p>
-                            <div
-                              className="w-5 h-5 flex items-center justify-center bg-[#E3E3E3] rounded-full cursor-pointer"
-                              onClick={() => onRemoveSessionTag(service)}
-                            >
-                              <img
-                                src={DeleteIcon}
-                                className="w-4"
-                                alt="delete"
-                              />
+                            <div className="flex items-center gap-x-4">
+                            <ToggleBar
+                                circleColor="bg-[rgba(119,221,119,1)]"
+                                toggle={{ value: 5, key: 'code' }}
+                                onToggle={togglePermissions}
+                              ></ToggleBar>
+                              <div
+                                className=" flex items-center justify-center  rounded-full cursor-pointer"
+                                // onClick={() => onEditService(service)}
+                              >
+                                <img
+                                  src={EditBlueIcon}
+                                  className="w-4"
+                                  alt="edit"
+                                />
+                              </div>
+                              <div
+                                className=" flex items-center justify-center  rounded-full cursor-pointer"
+                                onClick={() => onRemoveSessionTag(service)}
+                              >
+                                <img
+                                  src={DeleteIcon}
+                                  className="w-4"
+                                  alt="delete"
+                                />
+                              </div>
                             </div>
                           </div>
                           <div className="flex items-center flex-wrap [&>*]:mb-[18px]">
@@ -1162,7 +1197,7 @@ export default function SuperAdminSettings() {
               onToggle={onToggle}
               body={
                 <div>
-                  <div className="flex items-center flex-wrap [&>*]:mb-[10px] bg-white  gap-x-4 p-4 rounded-br-5 rounded-bl-5 mb-3">
+                  <div className="flex items-center flex-wrap [&>*]:mb-[10px] bg-white  gap-x-4 p-4 rounded-br-5 rounded-bl-5 mb-3 ">
                     {/* <input type='file' ref={inputRef} className='hidden' accept="image/*"
                            onChange={e => onImageChange(e)} /> */}
 
@@ -1188,7 +1223,7 @@ export default function SuperAdminSettings() {
                     {offerImages?.map((offer) => {
                       return (
                         <div key={offer._id}>
-                          <div>
+                          <div className="pr-4 border-r-[1.25px] border-[#CBD6E2]">
                             {toggleImage.offer && (
                               <div className=" overflow-hidden mb-5">
 
@@ -1200,15 +1235,15 @@ export default function SuperAdminSettings() {
                                       className="w-full h-full object-cover rounded-7"
                                     />
                                   </div>
-                                  <div className="w-[1.25px] h-[150px] bg-[#CBD6E2] ml-4" />
+                                  {/* <div className="w-[1.25px] h-[150px] bg-[#CBD6E2] ml-4" /> */}
                                 </div>
                               </div>
                             )}
                             <div>
                               <InputField
                                 defaultValue={offer.link}
-                                inputClassName={"bg-[#F5F8FA]"}
-                                parentClassName={"mb-3 bg-[#F5F8FA]"}
+                                inputClassName="bg-[#F5F8FA] text-[#667085] text-[17.5px] h-[30px]"
+                                parentClassName="mb-3 bg-[#F5F8FA]"
                                 onBlur={(e) =>
                                   handleOfferChange(
                                     offer,
@@ -1218,8 +1253,8 @@ export default function SuperAdminSettings() {
                                 }
                               />
                               <InputField
-                                parentClassName={"bg-[#F5F8FA]"}
-                                inputClassName={"bg-[#F5F8FA]"}
+                                parentClassName="bg-[#F5F8FA]"
+                                inputClassName="bg-[#F5F8FA] text-[#667085] text-[17.5px] h-[30px]"
                                 value={offer.buttonText}
                                 placeholder={
                                   "Button (eg. Register, Enroll, View)"

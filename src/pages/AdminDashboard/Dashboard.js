@@ -530,15 +530,25 @@ const Dashboard = () => {
               </div>
             </div>
             <div className="pl-[1.5625vw]">
-              <p className=" mb-[17px] translate-y-[10px] font-semibold text-[#26435F] text-[17.5px] ">
-                Star Clients
+              <p className=" mb-[8px] translate-y-[10px] font-semibold text-[#26435F] text-[17.5px] ">
+              Star Clients
               </p>
               <div>
-                <div
+                {/* <div
                   className={`h-[85px] flex justify-center items-center text-sm text-[#667085] bg-[#E5E8EA]`}
                 >
                   <p>Coming soon</p>
-                </div>
+                </div> */}
+                <Table
+                  data={[]}
+                  hidePagination={true}
+                  tableHeaders={[
+                    "Client Name",
+                    "Code",
+                    "Referrals"
+                  ]}
+                  maxPageSize={5}
+                />
               </div>
             </div>
           </div>
