@@ -216,6 +216,29 @@ const supAdminNavData = [
     tooltip: "Settings",
   },
 ];
+
+const contributorNavdata = [
+  {
+    icon: Dashboard,
+    activeIcon: Dashboard1,
+    path: "/",
+    tooltip: "Dashboard",
+  },
+  {
+    icon: Content,
+    activeIcon: Content2,
+    path: "/all-tests",
+    tooltip: "Content",
+  },
+  {
+    icon: Settings,
+    activeIcon: Settings1,
+    path: "/settings",
+    excludes: ["student", "parent", "tutor"],
+    tooltip: "Settings",
+  },
+];
+
 const AdminNavbar = () => {
   const [navData, setNavData] = useState(tempnavdata);
   const location = useLocation();

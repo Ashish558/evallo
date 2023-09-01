@@ -19,7 +19,7 @@ export default function Home() {
         <StudentDashboard />
       ) : persona === "tutor" ? (
         <TutorDashboard />
-      ) : persona === "admin" ? (
+      ) : (persona === "admin" || persona === 'contributor') ? (
         <Dashboard />
       ) : persona === "superAdmin" ? (
         <SuperadminDashboard />
