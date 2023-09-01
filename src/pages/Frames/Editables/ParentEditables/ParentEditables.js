@@ -1405,6 +1405,8 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                                     <div className='col-span-6'>
                                        <div><p style={{ color: '#26435F', fontWeight: '500' }}>Experience</p></div>
                                        <textarea rows={3} cols={35} className=' rounded focus:border-[#D0D5DD]'
+                                          value={currentToEdit.experience}
+                                          onChange={(e) => { setCurrentToEdit({ ...currentToEdit, experience: e.target.value }) }}
                                           style={{ border: '1px solid #D0D5DD', color: '#667085' }}></textarea>
                                     </div>
                                  </div>

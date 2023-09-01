@@ -31,40 +31,14 @@ import UserSignup from "../pages/UserSignup/Signup";
 import Dashboard from "../pages/AdminDashboard/Dashboard";
 import AdminContent from "../pages/AdminContent/AdminContent";
 import AllOrgs from "../pages/SuperadminDashboard/components/AllOrgs/AllOrgs";
-import AdminNavbar from "../pages/AdminDashboard/AdminNavbar";
 import Footer from "../components/Footer/Footer";
 import Settings from "../pages/Settings/Settings";
 import SuperAdminSettings from "../pages/Settings/SuperAdminSettings";
 import SuperAdminProfile from "../pages/SuperadminDashboard/components/About/About";
 import EmailVerify from "../pages/Settings/Tabs/AccountOverview/EmailVerify";
 import StudentSettings from "../pages/Settings/Tabs/AccountOverview/studentSettings";
+import ContributorSettings from "../pages/Settings/ContributorSettings";
 
-const PrivateRoutes = [
-  {
-    el: Calendar,
-    path: "/calendar",
-  },
-  {
-    el: Users,
-    path: "/users",
-  },
-  {
-    el: Calendar,
-    path: "/calendar/:persona",
-  },
-  {
-    el: Calendar,
-    path: "/calendar",
-  },
-  {
-    el: Calendar,
-    path: "/calendar",
-  },
-  {
-    el: Calendar,
-    path: "/calendar",
-  },
-];
 
 const AppRoutes = () => {
   const { isLoggedIn } = useSelector((state) => state.user);
@@ -72,9 +46,7 @@ const AppRoutes = () => {
 
   return (
     <BrowserRouter>
-      <AdminNavbar />
-      {/* <a href='https://www.banao.tech/'
-            style={{ opacity: '0', pointerEvents: 'none', width: 0, height: 0, zIndex: '-1' }} > </a> */}
+      <Navbar />
       <Routes>
         <Route path="/" element={isLoggedIn ? <Home /> : <Login />} />
         <Route path="/signup" element={<Signup />} />
@@ -244,7 +216,7 @@ const AppRoutes = () => {
           path="/settings"
           element={
             <RequireAuth isLoggedIn={isLoggedIn}>
-              {persona === "superAdmin" ? <SuperAdminSettings /> :persona==='student'?<StudentSettings/>: <Settings />}
+              {persona === "superAdmin" ? <SuperAdminSettings /> : persona === 'student' ? <StudentSettings /> : persona === 'contributor' ? <ContributorSettings /> : <Settings />}
             </RequireAuth>
           }
         />

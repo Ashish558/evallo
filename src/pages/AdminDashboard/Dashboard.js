@@ -555,7 +555,7 @@ const Dashboard = () => {
                   className={`mt-1  h-[72px] bg-[rgba(255,162,141,0.2)] ${styles.smallBox}`}
                 >
                   <p className="text-[#FFA28D] h-full w-full justify-center font-bold text-[1.953125vw] flex items-center text-center">
-                    {improvementStats.no_of_referrals}
+                    {improvementStats?.no_of_referrals}
                   </p>
                 </div>
               </div>
@@ -567,8 +567,8 @@ const Dashboard = () => {
                   className={` mt-1 h-[72px] bg-[rgba(36,163,217,0.2)]  ${styles.smallBox3}`}
                 >
                   <p className="text-[#24A3D9] h-full w-full justify-center font-bold text-[1.953125vw] flex items-center text-center">
-                    {improvementStats.avg_sat_improvement
-                      ? improvementStats.avg_sat_improvement
+                    {improvementStats?.avg_sat_improvement
+                      ? improvementStats?.avg_sat_improvement
                       : 0}
                   </p>
                 </div>
@@ -581,8 +581,8 @@ const Dashboard = () => {
                   className={` mt-1 h-[72px] bg-[rgba(36,163,217,0.2)]  ${styles.smallBox3}`}
                 >
                   <p className="text-[#24A3D9] h-full w-full justify-center font-bold text-[1.953125vw] flex items-center text-center">
-                    {improvementStats.avg_act_improvement
-                      ? improvementStats.avg_act_improvement
+                    {improvementStats?.avg_act_improvement
+                      ? improvementStats?.avg_act_improvement
                       : 0}
                   </p>
                 </div>
