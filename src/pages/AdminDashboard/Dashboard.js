@@ -419,13 +419,13 @@ const Dashboard = () => {
             </div>
           </div>
 
-          <div className="grid grid-cols-12 mt-[18px] w-[83.33vw] gap-x-5 mx-auto">
-            <div className="col-span-3">
-              <p className=" mb-1 font-semibold text-[#26435F] text-xl">User Stats</p>
-              <div className={styles.sidebox}>
+          <div className="grid grid-cols-12 !h-[350px] mt-[18px] w-[83.33vw] gap-x-5 mx-auto">
+            <div className="col-span-3  !whitespace-nowrap">
+              <p className=" mb-1 font-semibold text-[#26435F] text-xl ">User Stats</p>
+              <div className={`${styles.sidebox}`}>
                 <div className="pl-[38px]  pt-6 rounded ">
-                  <p className="text-[#26435F] text-xl">Active / Total Students</p>
-                  <p className="text-xl">
+                  <p className="text-[#26435F] text-md ">Active / Total Students</p>
+                  <p className="text-md">
                     <span className="font-bold text-[#FFA28D] text-4xl">
                       {userStats?.student.activeUsers.count}
                       <span className="font-medium" > {" / "}</span>
@@ -439,8 +439,8 @@ const Dashboard = () => {
                   </p>
                 </div>
                 <div className={`  pl-[38px] pt-7 rounded `}>
-                  <p className="text-[#26435F] text-xl">Active / Total Tutors</p>
-                  <p className="text-xl">
+                  <p className="text-[#26435F] text-md">Active / Total Tutors</p>
+                  <p className="text-md">
                     <span className="font-bold text-[#FFA28D] text-4xl">
                       {userStats?.tutor.activeUsers.count}
                       <span className="font-medium" > {" / "}</span>
@@ -454,8 +454,8 @@ const Dashboard = () => {
                   </p>
                 </div>
                 <div className={`  pl-[38px] pt-7 rounded pb-6`}>
-                  <p className="text-[#26435F] text-xl">Active / Total Parents</p>
-                  <p className="text-xl">
+                  <p className="text-[#26435F] text-md">Active / Total Parents</p>
+                  <p className="text-md">
                     <span className="font-bold text-[#FFA28D] text-4xl">
                       {userStats?.parent.activeUsers.count}
                       <span className="font-medium" > {" / "}</span>
@@ -471,7 +471,7 @@ const Dashboard = () => {
               </div>
             </div>
 
-            <div className="col-span-9 pl-[17.5px]">
+            <div className="col-span-9 h-[330px] pl-[17.5px]">
               <p className="mb-1 font-semibold text-[#26435F] text-xl">Action Log</p>
               <ActionLog
                 actionLog={filteredActionLog ? filteredActionLog : [""]}

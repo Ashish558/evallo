@@ -62,10 +62,29 @@ export default function InputSelect({
           } `}
       >
         {Icon && <img src={Icon} className={`mr-5  w-[28px]}`} alt="icon" />}
-        {selected ? (
+      
+
+        <div
+          className={`outline-0 w-full text-right cursor-default relative ${optionClassName ? optionClassName : ""
+            }`}
+          name={label}
+        >
+          {value === "" || !value ? (
+            <span className="text-primary-60 mr-5 pl-5 cursor-default  text-[13px]   whitespace-nowrap">
+              {" "}
+              <span > {placeholder}</span>
+              {" "}
+            </span>
+          ) : (
+            <span className="mr-5 pl-5 text-[15px] cursor-default whitespace-nowrap">
+              <span >{value}</span>
+
+            </span>
+          )}
+  {selected ? (
           IconRight ? (
             <FontAwesomeIcon
-              className="w-[30px] text-lg cursor-pointer absolute right-0 pb-1 z-[5000]"
+              className="w-[30px] text-lg cursor-pointer  z-[5000]"
               onClick={handleOption}
               icon={IconRight}
             ></FontAwesomeIcon>
@@ -78,7 +97,7 @@ export default function InputSelect({
           )
         ) : IconRight ? (
           <FontAwesomeIcon
-            className="w-[30px] text-lg cursor-pointer absolute right-0 pb-1 z-[5000]"
+            className="w-[30px] text-lg cursor-pointer   z-[5000]"
             onClick={handleOption}
             icon={IconRight}
           ></FontAwesomeIcon>
@@ -89,39 +108,20 @@ export default function InputSelect({
             alt="down-arrow"
           />
         )}
-
-        <div
-          className={`outline-0 w-full text-right cursor-default relative ${optionClassName ? optionClassName : ""
-            }`}
-          name={label}
-        >
-          {value === "" || !value ? (
-            <span className="text-primary-60 mr-10 pl-5 cursor-default  text-[13px]   whitespace-nowrap">
-              {" "}
-              <span > {placeholder}</span>
-              {" "}
-            </span>
-          ) : (
-            <span className="mr-10 pl-5 text-[15px] cursor-default whitespace-nowrap">
-              <span >{value}</span>
-
-            </span>
-          )}
-
         </div>
         {selected && (
           <div
-            className={`scrollbar-content scrollbar-vertical  shadow-md ${styles.options} $`}
+            className={`scrollbar-content relative !z-[9999999999] scrollbar-vertical  shadow-md ${styles.options} $`}
           >
 
             {optionData?.map((option, idx) => {
               return (
                 <div
-                  className="outline-0 border-0 py-[15px] px-[26px] flex items-center justify-start"
+                  className="outline-0 border-0 relative !z-[9999999999] py-[15px] px-[26px] flex items-center justify-start"
                   key={idx}
                   onClick={() => handleChange(optionType, option, idx)}
                 >
-                  <p className={optionListClassName}>
+                  <p className={`${optionListClassName} relative !z-[9999999999]`}>
                     {optionType === "object" ? option.name : option}
                   </p>
                   {radio && (

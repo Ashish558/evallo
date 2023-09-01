@@ -291,7 +291,7 @@ const AdminNavbar = () => {
  
   return (
     <>
-      <div className="flex justify-around bg-[#26435F] h-[72px] items-center w-full">
+      <div className="flex justify-around bg-[#26435F] h-[72px] items-center w-full overflow-y-auto w-[100vw]">
         <div
           className={`${persona === "superAdmin" ? "translate-x-[-80px]" : ""}`}
         >

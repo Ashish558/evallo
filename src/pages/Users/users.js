@@ -877,7 +877,7 @@ export default function Users() {
             IconRight={SearchIcon}
             placeholder="Search"
             inputClassName="pl-4 text-[#667085]"
-            parentClassName="w-[22.03125vw] py-1"
+            parentClassName="w-[22.03125vw]  py-1"
             inputContainerClassName="text-sm mt-1 shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white   mb-1"
             type="text"
             value={filterData.typeName}

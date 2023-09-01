@@ -81,12 +81,12 @@ const RangeDate = ({ handleRangeData ,optionClassName,className,manualHide ,inpu
 
       <InputSelect
         placeholder="Select"
-        parentClassName="border-none text-xs text-[#26435F] w-fit"
+        parentClassName="border-none text-xs text-[#26435F] w-fit relative z-[500]"
         labelClassname="text-sm"
         inputContainerClassName={`border-none w-[300px] whitespace-nowrap font-semibold text-[#FFA28D] ${inputContainerClassName}  ${styles["text"]}`}
         inputClassName={`border-none w-fit bg-transparent font-semibold text-[#FFA28D] `}
         value={newDateformat}
-        optionClassName={`${optionClassName}`}
+        optionClassName={`${optionClassName} relative`}
         optionData={[
           { name: "Today", days: 0 },
           { name: "Last 7 Days", days: 7 },

@@ -80,12 +80,12 @@ export default function ActionLog({ actionLog }) {
         <ul
 
           onScroll={handleScroll}
-          className="list-disc h-[230px] rounded-b-md overflow-y-scroll min-w-[600px] max-h-[17.6rem] "
+          className="list-disc h-[247px] rounded-b-md overflow-y-scroll max-h-[17.6rem] "
         >
           {sortedAction?.map((item, index) => (
             <>
               <div key={index} className="flex ml-2 h-[57px] pl-5 relative">
-                <p className="text-[#4A556C] pt-6 font-medium text-[15px] mr-6 w-[80px]">
+                <p className="text-[#517CA8] pt-6 font-medium text-[14px] mr-6 w-[80px]">
                   {item?.message &&
                     new Date(item.createdAt)
                       .toLocaleTimeString()
@@ -107,7 +107,7 @@ export default function ActionLog({ actionLog }) {
                   <div className={styles.circle}>
                     <div className={styles.circle2}></div>
                   </div>
-                  <p className="pl-4  font-medium text-[#4A556C] text-[17.5px]">
+                  <p className="pl-4  font-medium text-[#517CA8] text-[15.5px]">
                     {item?.message}
                   </p>
                 </div>

@@ -839,7 +839,7 @@ export default function Settings() {
 
   return (
     <>
-      <div className=" bg-lightWhite min-h-screen px-[120px] pt-[50px] pb-[50px] lg:px-[120px] ">
+      <div className=" bg-lightWhite min-h-screen w-[83.6989583333vw] mx-auto">
         <p className="text-[#24A3D9]  mb-9 ">
           {organization?.company + "  >  "}
           <span className="font-semibold">Settings</span>

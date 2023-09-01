@@ -10,10 +10,9 @@
 .options {
     position: absolute;
     top: calc(100% + 3px);
-    left: 67%;
-    transform: translateX(-50%);
+    
     background-color: white;
-  
+    right:0;
     border-radius: 20px;
     max-height: 165px;
     overflow-y: auto;
