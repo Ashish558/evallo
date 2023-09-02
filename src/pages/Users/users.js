@@ -261,6 +261,7 @@ export default function Users() {
       const fetchDetails = async () => {
         let tempData = [];
         await res?.data?.data?.user?.map(async (user) => {
+          console.log("user",user)
           let obj = {
             _id: user._id,
             block: user.block,
@@ -269,6 +270,7 @@ export default function Users() {
             email: user.email ? user.email : "-",
             userType: user.role ? user.role : "-",
             phone: user.phone ? user.phone : "-",
+            phoneCode:user.phoneCode ? user.phoneCode :"-",
             createdAt: user.createdAt,
             assignedTutor: user.assiginedTutors ? user.assiginedTutors : "",
             leadStatus: user?.leadStatus,
