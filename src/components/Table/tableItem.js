@@ -206,7 +206,6 @@ export default function TableItem({
   }, [item]);
   const [isChecked, setIsChecked] = useState(checkedHeader);
   const handleCheckboxChange = () => {
-    console.log("handleCheckboxChange")
     setIsChecked(!isChecked);
     let fl = isChecked ? 1 : -1
     setnumberChecked(numberChecked - fl)
@@ -218,7 +217,6 @@ export default function TableItem({
   }, [checkedHeader])
 
 
-  console.log(dataFor)
   return (
     <>
 

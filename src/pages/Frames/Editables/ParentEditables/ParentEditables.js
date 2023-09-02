@@ -497,9 +497,9 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
    }
 
    // console.log('awsLink', awsLink)
-   console.log('toedit--', currentToEdit)
+   // console.log('toedit--', currentToEdit)
    // console.log('setting', settings.servicesAndSpecialization[currentToEdit.selectedIdx])
-   console.log('field', currentField)
+   // console.log('field', currentField)
    // console.log('sett', settings)
    // console.log('students', students)
    // console.log('parents', parents)

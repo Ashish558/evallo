@@ -132,9 +132,7 @@ export default function Calendar() {
 
   const refetchSessions = () => {
     // console.log(searchedUser);
-    console.log("persona", persona);
     if (persona === "tutor") {
-      console.log("shd run");
       fetchTutorSessions();
     } else {
       if (searchedUser.id === "") return;
@@ -262,6 +260,7 @@ export default function Calendar() {
           endDate: endDateUtc,
           updatedDate: startUtc,
           updatedDateEnd: endDateUtc,
+          tutorId: session.tutorId,
           sessionStatus: session.sessionStatus,
           description: `${strtTime12HFormat} - ${endTime12HFormat}`,
         };
@@ -428,6 +427,7 @@ export default function Calendar() {
                     updatedDateEnd: endDateUtc,
                     description: `${strtTime12HFormat} - ${endTime12HFormat}`,
                     sessionStatus: session.sessionStatus,
+                    tutorId: session.tutorId,
                     studentId: session.studentId,
                     background: getBackground(
                       resp.data.data.user.assiginedStudents.length,
@@ -479,35 +479,30 @@ export default function Calendar() {
 
     return (
       <div
-        className={`p-[10px] rounded-7 ${
-          arg.isToday ? "bg-primary border" : ""
-        }  `}
+        className={`p-[10px] rounded-7 ${arg.isToday ? "bg-primary border" : ""
+          }  `}
       >
         <p
-          className={`${
-            arg.isToday ? "text-primaryWhite-900" : ""
-          } text-sm font-semibold
-                   ${
-                     arg.isPast
-                       ? "text-[#BEC2CE]"
-                       : arg.isFuture
-                       ? "text-primary-60"
-                       : ""
-                   } `}
+          className={`${arg.isToday ? "text-primaryWhite-900" : ""
+            } text-sm font-semibold
+                   ${arg.isPast
+              ? "text-[#BEC2CE]"
+              : arg.isFuture
+                ? "text-primary-60"
+                : ""
+            } `}
         >
           {days[arg.date.getDay()]}
         </p>
         <p
-          className={`${
-            arg.isToday ? "text-primaryWhite-900" : ""
-          } text-2xl font-bold font-inter
-                   ${
-                     arg.isPast
-                       ? "text-[#BEC2CE]"
-                       : arg.isFuture
-                       ? "text-primary-dark"
-                       : ""
-                   }`}
+          className={`${arg.isToday ? "text-primaryWhite-900" : ""
+            } text-2xl font-bold font-inter
+                   ${arg.isPast
+              ? "text-[#BEC2CE]"
+              : arg.isFuture
+                ? "text-primary-dark"
+                : ""
+            }`}
         >
           {text[1]}
         </p>
@@ -526,6 +521,8 @@ export default function Calendar() {
     calendarAPI?.next();
   };
   const eventContent = (arg) => {
+    console.log('arg-', arg.event._def.extendedProps);
+    
     const description = arg.event._def.extendedProps.description;
     let background = "#ebe7ff";
     let isCompleted = false;
@@ -540,9 +537,8 @@ export default function Calendar() {
           style={{ background: background }}
         >
           <p
-            className={`text-primary font-semibold text-sm ${
-              isCompleted ? "line-through" : ""
-            } `}
+            className={`text-primary font-semibold text-sm ${isCompleted ? "line-through" : ""
+              } `}
           >
             {" "}
             {arg.event._def.title}{" "}
@@ -554,15 +550,15 @@ export default function Calendar() {
     );
   };
 
-   const handleDateClick = (arg) => {
-      let date = new Date(arg.date);
-      let currentDate = new Date();
-      currentDate.setHours(0, 0, 0, 0);
-      // console.log(date - currentDate);
-      // if (date - currentDate < 0) {
-      //    alert('Cant set events on past date')
-      //    return
-      // }
+  const handleDateClick = (arg) => {
+    let date = new Date(arg.date);
+    let currentDate = new Date();
+    currentDate.setHours(0, 0, 0, 0);
+    // console.log(date - currentDate);
+    // if (date - currentDate < 0) {
+    //    alert('Cant set events on past date')
+    //    return
+    // }
 
     if (persona === "tutor") {
       setDefaultEventData({
@@ -612,7 +608,7 @@ export default function Calendar() {
         let arr = [];
         if (res?.data?.tutorSessionDetails) {
           arr = res?.data?.tutorSessionDetails;
-         // arr = arr?.length >= 0 ? arr : [arr];
+          // arr = arr?.length >= 0 ? arr : [arr];
         }
 
         setInsightData({
@@ -621,13 +617,12 @@ export default function Calendar() {
         });
       } else
         setInsightData({
-          message: `User does'nt have any ${
-            role !== "tutor" ? "tutor" : "parent or student"
-          } `,
+          message: `User does'nt have any ${role !== "tutor" ? "tutor" : "parent or student"
+            } `,
         });
     });
   };
-  console.log({ insightData });
+
   useEffect(() => {
     if (name.length > 0) {
       fetchNames(name).then((res) => {
@@ -649,7 +644,6 @@ export default function Calendar() {
   const fetchTutorSessions = () => {
     const userId = currentUserId;
     if (persona === "tutor") {
-      console.log("FETCHING", userId);
       fetchStudents(userId).then((res) => {
         setEventDetails(res.data.data.session);
         // console.log(res.data.data);
@@ -708,6 +702,7 @@ export default function Calendar() {
             title: session.studentName,
             start: startUtc,
             endDate: endDateUtc,
+            tutorId: session.tutorId,
             updatedDate: startUtc,
             updatedDateEnd: endDateUtc,
             sessionStatus: session.sessionStatus,
@@ -815,11 +810,11 @@ export default function Calendar() {
     });
   };
 
-   // useEffect(() => {
-   //    getUserDetail({ id: localStorage.getItem("userId") }).then((res) =>
-   //       setTimeZone(res.data?.data?.userdetails?.timeZone)
-   //    );
-   // }, []);
+  // useEffect(() => {
+  //    getUserDetail({ id: localStorage.getItem("userId") }).then((res) =>
+  //       setTimeZone(res.data?.data?.userdetails?.timeZone)
+  //    );
+  // }, []);
 
   useEffect(() => {
     if (calendarRef.current === null) return;
@@ -842,14 +837,15 @@ export default function Calendar() {
     });
     setStudents(tempStudents);
   };
+
   const colorsTutor = {
     bg: ["#F6935A33", "#7DE94A33", "#6F7ADE33", "#C97BEE33"],
     text: ["#F6935A", "#7DE94A", "#6F7ADE", "#C97BEE"],
   };
+
   useEffect(() => {
     if (students.length === 0) return;
     if (events.length === 0) return;
-    console.log("students", students);
     let selectedStudents = students
       .filter((item) => item.selected === true)
       .map((item) => item._id);
@@ -860,7 +856,9 @@ export default function Calendar() {
     // console.log('filtered', filtered);
     setFilteredEvents(filtered);
   }, [events, students]);
+
   const [exp, setExp] = useState(null);
+  
   const toggleAccordions = (id) => {
     const currentRef = accordionRefs.current[id];
     const isExpanded = currentRef.style.width;
@@ -882,14 +880,14 @@ export default function Calendar() {
   };
 
   // console.log('filteredEvents', filteredEvents);
-  // console.log('events', events);
+  console.log('events', events);
   // console.log('eventDetails', eventDetails);
 
   return (
     <>
       <div className="lg:ml-pageLeft calender bg-lightWhite min-h-screen">
         <div className="py-14 pt-10 pb-2 pl-5 calendar flex">
-        <div className=" pl-0 pr-0 w-[280px] mr-[10px]">
+          <div className=" pl-0 pr-0 w-[280px] mr-[10px]">
             <div className="w-[280px]">
               <SimpleCalendar
                 events={
@@ -912,17 +910,15 @@ export default function Calendar() {
                     return (
                       <div
                         key={student.studentId}
-                        className={`p-4 mb-4 rounded-10 flex justify-between items-center  bg-white ${
-                          student.selected
-                            ? "border border-[#c6c6c6] shadow-md"
-                            : "border"
-                        } `}
+                        className={`p-4 mb-4 rounded-10 flex justify-between items-center  bg-white ${student.selected
+                          ? "border border-[#c6c6c6] shadow-md"
+                          : "border"
+                          } `}
                         onClick={() => handleStudentChange(student)}
                       >
                         <p
-                          className={` ${
-                            student.selected ? "font-medium" : ""
-                          } `}
+                          className={` ${student.selected ? "font-medium" : ""
+                            } `}
                         >
                           {student.studentName}
                         </p>
@@ -963,37 +959,37 @@ export default function Calendar() {
               </div>
             )}
             <div className="max-h-[600px] overflow-y-auto scrollbar-content">
-            {insightData?.data?.length > 0 && insightData?.role !== "tutor"
-              ? insightData?.data?.map((item, id) => {
+              {insightData?.data?.length > 0 && insightData?.role !== "tutor"
+                ? insightData?.data?.map((item, id) => {
                   return (
                     <div
                       key={id}
                       className="transition-shy flex transition-all duration-300 font-semibold box-content flex-col my-3 bg-[#FFFFFF] rounded-md  text-lg  w-[270px] "
                     >
                       <div
-                      style={{
-                        backgroundColor: colorsTutor.bg[id % 4],
-                        color: colorsTutor.text[id % 4],
-                      }}
+                        style={{
+                          backgroundColor: colorsTutor.bg[id % 4],
+                          color: colorsTutor.text[id % 4],
+                        }}
                         onClick={() => toggleAccordions(id)}
                         className="transition-shy cursor-pointer bg-[rgba(255,162,141,0.2)] overflow-hidden relative z-50 py-3 px-5 text-[#FFA28D] mx-0 flex justify-between shadow-sm rounded-t-md w-full  "
                       >
-                        {item?.tutor?.firstName + " "+item?.tutor?.lastName }
+                        {item?.tutor?.firstName + " " + item?.tutor?.lastName}
                         <div
-                        style={{
-                          backgroundColor: colorsTutor.text[id % 4],
-                        }}
-                        className="flex justify-center items-center text-center py-auto my-auto w-5 h-5 rounded-3xl "
-                      >
-                       
-                        <img
-                          ref={(el) => (accordionImgRefs.current[id] = el)}
-                          className="inline-block my-auto text-white"
-                          src={down_triangle}
-                          alt="inscribed triangle"
-                        />
-                        
-                        
+                          style={{
+                            backgroundColor: colorsTutor.text[id % 4],
+                          }}
+                          className="flex justify-center items-center text-center py-auto my-auto w-5 h-5 rounded-3xl "
+                        >
+
+                          <img
+                            ref={(el) => (accordionImgRefs.current[id] = el)}
+                            className="inline-block my-auto text-white"
+                            src={down_triangle}
+                            alt="inscribed triangle"
+                          />
+
+
                         </div>
                       </div>
 
@@ -1006,26 +1002,26 @@ export default function Calendar() {
                           <p className="flex py-1 overflow-x-auto scrollbar-content">
                             {item?.sessionDetailsObj?.length > 0
                               ? item?.sessionDetailsObj?.map((ser, sid) => {
-                                  return (
-                                     (
-                                      <span
-                                        key={sid}
-                                        className="whitespace-nowrap"
-                                      >
-                                        {" "}
-                                        {ser.service}
-                                        {sid !==
+                                return (
+                                  (
+                                    <span
+                                      key={sid}
+                                      className="whitespace-nowrap"
+                                    >
+                                      {" "}
+                                      {ser.service}
+                                      {sid !==
                                         item?.sessionDetailsObj?.length - 1
-                                          ? " , "
-                                          : " "}
-                                      </span>
-                                    )
-                                  );
-                                })
+                                        ? " , "
+                                        : " "}
+                                    </span>
+                                  )
+                                );
+                              })
                               : "None"}
                           </p>
                           <p className="text-[16px] text-[#7C98B6]">
-                            {item?.tutor?.firstName + " "+item?.tutor?.lastName }
+                            {item?.tutor?.firstName + " " + item?.tutor?.lastName}
                           </p>
                         </div>
                         <div className="text-lg px-5 py-2 text-[#38C980]">
@@ -1036,7 +1032,7 @@ export default function Calendar() {
                             {item?.sessionDetailsObj[0]
                               ?.no_of_completed_sessions
                               ? item?.sessionDetailsObj[0]
-                                  ?.no_of_completed_sessions
+                                ?.no_of_completed_sessions
                               : "0"}
                           </p>
                         </div>
@@ -1045,7 +1041,7 @@ export default function Calendar() {
                           <p>
                             {item?.sessionDetailsObj[0]?.no_of_missed_sessions
                               ? item?.sessionDetailsObj[0]
-                                  ?.no_of_missed_sessions
+                                ?.no_of_missed_sessions
                               : "0"}
                           </p>
                         </div>
@@ -1055,7 +1051,7 @@ export default function Calendar() {
                             {item?.sessionDetailsObj[0]
                               ?.no_of_cancelled_sessions
                               ? item?.sessionDetailsObj[0]
-                                  ?.no_of_cancelled_sessions
+                                ?.no_of_cancelled_sessions
                               : "0"}
                           </p>
                         </div>
@@ -1065,7 +1061,7 @@ export default function Calendar() {
                             {item?.sessionDetailsObj[0]
                               ?.no_of_scheduled_sessions
                               ? item?.sessionDetailsObj[0]
-                                  ?.no_of_scheduled_sessions
+                                ?.no_of_scheduled_sessions
                               : "0"}
                           </p>
                         </div>
@@ -1073,41 +1069,41 @@ export default function Calendar() {
                     </div>
                   );
                 })
-              : insightData.message && (
+                : insightData.message && (
                   <div className="transition-shy mt-3 cursor-pointer bg-[rgba(255,162,141,0.2)] overflow-hidden relative z-50 py-3 px-5 text-[#FFA28D] mx-0 flex justify-between shadow-sm rounded-t-md w-full  ">
                     {insightData.message}
                   </div>
                 )}
-            {insightData?.data?.length > 0 &&
-              insightData?.role === "tutor" &&
-              insightData?.data?.map((item, id) => {
-                return (
-                  <div
-                    key={id}
-                    className="transition-shy flex transition-all duration-300 font-semibold box-content flex-col my-3 bg-[#FFFFFF] rounded-md  text-lg  w-[270px] "
-                  >
+              {insightData?.data?.length > 0 &&
+                insightData?.role === "tutor" &&
+                insightData?.data?.map((item, id) => {
+                  return (
                     <div
-                      style={{
-                        backgroundColor: colorsTutor.bg[id % 4],
-                        color: colorsTutor.text[id % 4],
-                      }}
-                      className="transition-shy cursor-pointer  overflow-hidden relative z-50 py-3 px-5  mx-0 flex justify-between shadow-sm rounded-t-md w-full  "
+                      key={id}
+                      className="transition-shy flex transition-all duration-300 font-semibold box-content flex-col my-3 bg-[#FFFFFF] rounded-md  text-lg  w-[270px] "
                     >
-                      {item?.student?.firstName + " " + item?.student?.lastName}
                       <div
                         style={{
-                          backgroundColor: colorsTutor.text[id % 4],
+                          backgroundColor: colorsTutor.bg[id % 4],
+                          color: colorsTutor.text[id % 4],
                         }}
-                        className="inline-block my-auto w-4 h-4 rounded-lg "
+                        className="transition-shy cursor-pointer  overflow-hidden relative z-50 py-3 px-5  mx-0 flex justify-between shadow-sm rounded-t-md w-full  "
                       >
-                        {" "}
-                        
+                        {item?.student?.firstName + " " + item?.student?.lastName}
+                        <div
+                          style={{
+                            backgroundColor: colorsTutor.text[id % 4],
+                          }}
+                          className="inline-block my-auto w-4 h-4 rounded-lg "
+                        >
+                          {" "}
+
+                        </div>
                       </div>
                     </div>
-                  </div>
-                );
-              })}
-              </div>
+                  );
+                })}
+            </div>
           </div>
           <div className="flex-1 w-4/5 relative" id="calendarContainer">
             <FullCalendar
