@@ -112,32 +112,33 @@ export default function UserManagement() {
     {
       id: 1,
       text: "Full Name",
-      className: "text-left pl-6",
+      className: "text-left pl-7",
       onCick: sortByName,
     },
     {
       id: 2,
-      text: "Usertype",
-    },
-    {
-      id: 3,
       text: "Email",
     },
     {
-      id: 7,
+      id: 3,
+      text: "Usertype",
+    },
+    {
+      id: 4,
       text: "Last login",
     },
     {
-      id: 8,
+      id: 5,
       text: "Profile",
     },
     {
-      id: 9,
+      id: 6,
       text: "Password",
-    },{
-      id:10,
-      text:"Password"
-    }
+    },
+    {
+      id: 7,
+      text: "",
+    },
 
   ];
 
@@ -625,7 +626,7 @@ export default function UserManagement() {
 
   return (
     <div className=" bg-lightWhite min-h-screen">
-      <div className="py-14 pt-0 px-5">
+      <div className="py-14 pt-0 ">
         {/* <div className="flex justify-between items-center gap-4">
           <InputField
             IconRight={SearchIcon}
@@ -770,6 +771,7 @@ export default function UserManagement() {
         </div> */}
         <div className="mt-6">
           <Table
+            noArrow={true}
             dataFor="allUsersSuperAdmin"
             data={filteredUserData}
             onClick={{

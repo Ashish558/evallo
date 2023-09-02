@@ -537,11 +537,21 @@ const Dashboard = () => {
                 Star Clients
               </p>
               <div>
-                <div
+                {/* <div
                   className={`h-[85px] flex justify-center items-center text-sm text-[#667085] bg-[#E5E8EA]`}
                 >
                   <p>Coming soon</p>
-                </div>
+                </div> */}
+                <Table
+                  data={[]}
+                  hidePagination={true}
+                  tableHeaders={[
+                    "Client Name",
+                    "Code",
+                    "Referrals"
+                  ]}
+                  maxPageSize={5}
+                />
               </div>
             </div>
           </div>

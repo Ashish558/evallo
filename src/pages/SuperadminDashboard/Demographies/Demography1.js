@@ -60,11 +60,12 @@ const Demography1 = ({ dateRange }) => {
         <div className="">
           <button className="">
             <InputSelectNew
+              arrowWidth="w-[10px]"
               placeholder={"User"}
-              parentClassName="ml-0  scale-[0.8] items-center flex text-[#FFA28D] text-xs border px-1 py-2 border-[#FFA28D] rounded-full  "
-              inputContainerClassName=" bg-white my-0 py-[5px] px-[35px]"
+              parentClassName="ml-0  scale-[0.8] items-center flex text-[#FFA28D] text-xs border-[1.33px] px-1 py-2 border-[#FFA28D] rounded-full  "
+              inputContainerClassName=" bg-white my-0 py-[5px] px-[35px] text-[15px]"
               placeHolderClass="text-[#FFA28D] "
-              labelClassname="text-sm"
+              labelClassname="text-[15px]"
               inputClassName="bg-transparent"
               value={userName}
               IconDemography={true}
@@ -80,10 +81,11 @@ const Demography1 = ({ dateRange }) => {
           </button>
           <button className="">
             <InputSelectNew
+              arrowWidth="w-[10px]"
               placeholder={"Country"}
-              parentClassName="ml-0  scale-[0.8] items-center flex text-[#FFA28D] text-xs border px-1 py-2 border-[#FFA28D] rounded-full  "
-              inputContainerClassName=" bg-white py-[4.8px] px-[35px]"
-              labelClassname="text-sm"
+              parentClassName="ml-0  scale-[0.8] items-center flex text-[#FFA28D] text-xs border-[1.33px] px-1 py-2 border-[#FFA28D] rounded-full  "
+              inputContainerClassName=" bg-white py-[4.8px] px-[35px] text-[15px]"
+              labelClassname="text-[15px]"
               inputClassName="bg-transparent"
               value={countryName}
               optionData={country}
@@ -94,7 +96,7 @@ const Demography1 = ({ dateRange }) => {
           </button>
 
           <WMap markings={states} countryMarking={countryMarking} countryFlag={countryFlag}/>
-          <div className="flex justify-between px-8">
+          <div className="flex justify-between px-8 text-[13px] text-[#26435F] font-medium">
             <p>Last 11 days</p>
             <div className="flex items-center gap-4">
               <span>100</span>

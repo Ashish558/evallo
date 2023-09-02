@@ -98,19 +98,14 @@ function ActionLog({ dateRange }) {
     headerDate = temp;
   }
   return (
-    <div className="">
+    <div className="w-[51.5625vw]">
       <h2 className="font-semibold mb-1 text-[#26435F]">Action Log</h2>
 
       <div
-        style={{
-         
-          boxShadow: "0px 0px 2.6666667461395264px 0px #00000040",
-
-          // Set the desired height of the div here
-        }}
-        className="flex flex-col   rounded-5 bg-[#FFFFFF]"
+        
+        className="flex flex-col rounded-[5.33px] border-[1.333px] border-[#FFF]  bg-[#FFF] shadow-[0px_0px_2px_rgba(0,0,0,0.25)]"
       >
-        <div className="border-b-[2px]  border-b-[#CBD6E2]">
+        <div className="border-b-[1.333px]  border-b-[#CBD6E2]">
           <p
             ref={ref}
             className="uppercase  pl-[29px] pt-[16px] pb-3 text-[#26435F]"
@@ -121,7 +116,7 @@ function ActionLog({ dateRange }) {
         <ul
          
           onScroll={handleScroll}
-          className="list-disc h-[300px] overflow-y-scroll rounded-b-md min-w-[600px] max-h-[17.6rem] "
+          className="list-disc max-h-[390.33px] overflow-y-scroll rounded-b-md "
         >
           {sortedAction?.map((item, index) => (
             <div key={index} className="flex ml-2 h-[57px] pl-5 relative">

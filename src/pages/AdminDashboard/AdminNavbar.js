@@ -11,7 +11,7 @@ import {
   faUpload,
 } from "@fortawesome/free-solid-svg-icons";
 import faQuestionCircle from "../../assets/images/Vectorqsn.svg";
-import icon from "../../assets/icons/FIGMA 3.svg";
+import icon from "../../assets/icons/Evallo Logo.svg";
 import logoutIcon from "../../assets/images/Vectorlogout new.svg";
 import Dashboard1 from "../../assets/images/Dashboard 1 new.svg";
 import Dashboard from "../../assets/images/Dashboard 1.svg";

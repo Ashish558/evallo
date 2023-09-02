@@ -11,6 +11,7 @@ const ToogleBar = ({
     body,
     toggle,
     onToggle,
+    circleColor
 }) => {
     return (
         <div
@@ -34,15 +35,13 @@ const ToogleBar = ({
                                 }
                                 alt="toggle"
                             />
-                            {
-                                
-                            }
+                           
                             <div
                                 // src={toggleCircleIcon}
                                 className={`${toggle.value === false
-                                    ? styles.toggleCircle
-                                    : styles.toggleCircleActive
-                                    }  w-[16px] h-[16px] rounded-[10px]`}
+                                    ? (`${styles.toggleCircle} ${circleColor ? circleColor:'bg-[#4bd657]'} `)
+                                    : (`${styles.toggleCircleActive} ${circleColor ? circleColor:'bg-[#FFA28D]'} `)
+                                    }  w-[13px] h-[13px] rounded-[6px]`}
                                 alt="toggle"
                             />
                         </div>

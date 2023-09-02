@@ -31,6 +31,7 @@ export default function InputSelect({
 }) {
   const [selected, setSelected] = useState(false);
   const selectRef = useRef();
+  // console.log(selectRef)
   useOutsideAlerter(selectRef, () => setSelected(false));
   const handleOption = () => {
     setSelected(!selected);
