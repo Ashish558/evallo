@@ -7,11 +7,12 @@ import ProfileImg from '../../../assets/images/profile.png'
 import TutorImg from '../../../assets/images/tutor.png'
 import TutorSmallImg from '../../../assets/images/tutor-small.png'
 import sat from '../../../assets/icons/sat.png'
-import linkedin from '../../../assets/icons/linkedin.png'
-import call from '../../../assets/icons/call.png'
-import mail from '../../../assets/icons/mail.png'
+import linkedin from '../../../assets/icons/linkedin.svg'
+import call from '../../../assets/icons/ic_baseline-local-phone.svg'
+import mail from '../../../assets/icons/mdi_email.svg'
 import education from '../../../assets/icons/education.png'
-import experience from '../../../assets/icons/experience.png'
+import experience from '../../../assets/icons/cap.svg'
+import bag from '../../../assets/icons/bag.svg'
 
 
 import EditIcon from '../../../assets/icons/edit.svg'
@@ -59,7 +60,7 @@ export default function TutorProfile({ isOwn }) {
    const [user, setUser] = useState({})
    const [userDetail, setUserDetail] = useState({})
    const [settings, setSettings] = useState({})
-
+   console.log(userDetail)
    const params = useParams()
    const [getUserDetail, userDetailResp] = useLazyGetTutorDetailsQuery()
    const [fetchSettings, settingsResp] = useLazyGetSettingsQuery()
@@ -68,7 +69,7 @@ export default function TutorProfile({ isOwn }) {
    const [feedbacks, setFeedbacks] = useState([])
    const [awsLink, setAwsLink] = useState('')
    const { organization } = useSelector((state) => state.organization);
-
+// console.log(feedbacks)
    const { id } = useSelector(state => state.user)
    const tableHeaders1 = [
       {
@@ -268,7 +269,7 @@ export default function TutorProfile({ isOwn }) {
             })
          })
    }, [])
-
+   console.log(settings?.Expertise, 'settings')
    const handleClose = () => {
       setToEdit(prev => {
          let tempToEdit = {}
@@ -316,12 +317,18 @@ export default function TutorProfile({ isOwn }) {
                         ...prevToEdit.profileData,
                         firstName,
                         lastName,
-                        tagLine
+                        tagLine,
+                        phone,
+                        phoneCode,
+                        linkedIn: !details ? '' : details?.linkedIn,
+                        about: !details ? '' : details?.about,
+                        education: !details ? '' : details?.education,
+                        experience: !details ? '' : details?.experience,
                      },
                      tutorAddress: {
                         ...prevToEdit.addressData,
                         city: !details ? '' : details?.city,
-                        country: !details ? '' : details?.counntry,
+                        country: !details ? '' : details?.country,
                         pincode: !details ? '' : details?.pincode,
                         state: !details ? '' : details?.state,
                         address: !details ? '' : details?.address,
@@ -430,6 +437,12 @@ export default function TutorProfile({ isOwn }) {
    }, [params.id])
 
    useEffect(() => {
+      // fetchSettings()
+      //    .then(res => {
+
+      //    })
+      console.log("UserDetails", userDetail)
+      console.log("organizations" + organization.settings)
       setSettings(organization.settings)
    }, [])
 
@@ -437,7 +450,7 @@ export default function TutorProfile({ isOwn }) {
    // console.log('To-edit', toEdit)
    // console.log('userdetail', userDetail.serviceSpecializations)
    // console.log('settings', settings.Expertise)
-   const { about, education, tagLine, tutorLevel, testPrepRate, otherRate, subjectTutoringRate, address, pincode, paymentInfo, tutorRank, income, paymentStatus, linkedIn, videoLink } = userDetail
+   const { about, education, tagLine, tutorLevel, testPrepRate, otherRate, subjectTutoringRate, address, pincode, paymentInfo, tutorRank, income, paymentStatus, linkedIn, videoLink, city, state, country } = userDetail
    // console.log('userdetail', tutorLevel)
 
    // console.log(user);
@@ -504,11 +517,20 @@ export default function TutorProfile({ isOwn }) {
    }
    // console.log(isOwn);
    // console.log(tutorRank);
+   const timestamp = userDetail?.createdAt;
+   const date = new Date(timestamp);
+
+   const options = { year: 'numeric', month: 'long', day: 'numeric' };
+   const formattedDate = date.toLocaleDateString('en-US', options);
+
+   // console.log(formattedDate);
    return (
       <>
 
-         <div className='lg:ml-pageLeft min-h-screen pb-120 pt-0 mr-pageRight'>
-
+         <div className="w-[90.6770833333vw] mx-auto">
+            <div className="py-8">
+               <p className='text-[#24A3D9] text-xl '>Org</p>
+            </div>
             <div className='grid grid-cols-12'>
                <ProfileCard hideShadow
                   titleClassName='text-left'
@@ -526,44 +548,64 @@ export default function TutorProfile({ isOwn }) {
                   body={
                      <>
                         <div className='bg-white border border-[#00000010]'>
-                           <div className=' flex relative ' style={{ background: '#26435F' }}>
-                              <div className='ml-40 mt-auto pt-10'>
-                                 <div className='flex items-center'>
-                                    <p className='text-white ' style={{ fontWeight: '600', fontSize: '32px' }}>{user.firstName + " "}{user.lastName}</p>
-                                    <p className='text-white ml-5 underline cursor-pointer' onClick={() => setToEdit({ ...toEdit, profileData: { ...toEdit.profileData, active: true } })}>edit</p>
-                                    {/* <EditableText text='edit'
+                           <div className=' flex relative bg-[#26435F]' >
+                              <div className='ml-8 mt-auto pt-10 w-4/6'>
+                                 <div className='flex items-end'>
+                                    <div className='mb-[-150px]'>
+                                       <ProfilePhoto
+                                          isTutor={true}
+                                          src={user.photo ? `${awsLink}${user.photo}` : '/images/default.jpeg'}
+                                          handleChange={handleProfilePhotoChange} />
+                                           {(isOwn === true || persona === 'admin') && <p className='text-[#667085] text-center underline underline-offset-2 mt-[7.2px] cursor-pointer text-[15.002px] font-semibold' onClick={() => setToEdit({ ...toEdit, profileData: { ...toEdit.profileData, active: true } })}>Edit Profile</p>} 
+                                    </div>
+                                    <div className='pl-7'>
+                                       <div className='flex items-center '>
+                                          <p className='text-white text-[25px] font-semibold' >{user.firstName + " "}{user.lastName}</p>
+                                                              
+                                           {/* <EditableText text='edit'
                                     editable={editable}
                               onClick={() => setToEdit({ ...toEdit, about: { ...toEdit.about, active: true } })}
                               className='text-green'
                                 /> */}
+                                       </div>
+                                       <div className='w-full break-words'>
+                                          <p className='text-white text-light text-[17px] mb-4' >
+                                             {userDetail.tagLine}
+                                          </p>
+                                       </div>
+                                    </div>
                                  </div>
-                                 <p className='text-white' style={{ fontWeight: '400', fontSize: '18.67px' }}>{userDetail.tagLine}</p>
+
                               </div>
-                              <div className='ml-auto mt-auto pt-10 mr-10'>
-                                 <div className='flex gap-4 items-center '>
-                                    <img src={mail}></img>
-                                    <p className='text-white' style={{ fontWeight: '400', fontSize: '18.67px' }}>{user.email}</p>
+                              <div className='ml-auto mt-auto pt-[26px] pb-[21px] mr-8'>
+                                 <div className='flex gap-4 items-center mb-[10px]'>
+                                    <img src={mail} alt="mailLogo"></img>
+                                    <p className='text-white text-[17.503px]'>{user.email}</p>
                                  </div>
-                                 <div className='flex gap-4 items-center '>
-                                    <img src={call}></img>
-                                    <p className='text-white' style={{ fontWeight: '400', fontSize: '18.67px' }}>{user.phoneCode}{user.phone}</p>
+                                 <div className='flex gap-4 items-center mb-[10px]'>
+                                    <img src={call} alt="callLogo"></img>
+                                    <p className='text-white text-[17.503px]'>{user.phoneCode}{user.phone}</p>
                                  </div>
-                                 <div className='flex gap-4 items-center '>
-                                    <img src={linkedin}></img>
-                                    <p className='text-white' style={{ fontWeight: '400', fontSize: '18.67px' }}>{userDetail.linkedIn}</p>
+                                 <div className='flex gap-4 items-center mb-[10px]'>
+                                    <img src={linkedin} alt="linkedinLogo"></img>
+                                    <p className='text-white text-[17.503px]'>{userDetail.linkedIn}</p>
                                  </div>
                               </div>
-                              <div className={`absolute ml-5 mt-12`}  >
+                              {/* <div>
                                  <ProfilePhoto isTutor={true}
                                     src={user.photo ? `${awsLink}${user.photo}` : '/images/default.jpeg'}
-                                    handleChange={handleProfilePhotoChange} editable={editable} />
+                                    handleChange={handleProfilePhotoChange} />
+                              </div> */}
+                           </div>
+                           <div className="flex ml-8  min-h-[186px]">
+                              <div className="min-w-[200px]"></div>
+                              <div className="my-[38px] pl-7 pr-[41px]">
+                                 <p className="text-[18.67px] text-[#517CA8] whitespace-normal text-left">
+                                    {userDetail.about}
+                                 </p>
                               </div>
                            </div>
-                           <div className='ml-40 mt-6 '>
-                              <span style={{ fontSize: '18.67px', color: '#517CA8', fontWeight: '400' }}>
-                                 {userDetail.about}
-                              </span>
-                           </div>
+
                         </div>
 
                         {/* <div>
@@ -571,30 +613,28 @@ export default function TutorProfile({ isOwn }) {
                               </div> */}
                      </>
                   } />
-               <div className='col-span-2 mt-53 '>
-                  <div className='flex items-start gap-4'>
-                     <img src={experience} ></img>
-                     <div>
-                        <div>
-                           <p className='' style={{ color: '#24A3D9', fontWeight: '700', fontSize: '21.33px' }} onClick={(e) => setToEdit({ ...toEdit, education: { ...toEdit.education, active: true } })}>Education</p>
-                        </div>
-                        <div>
-                           <p style={{ color: '#517CA8', fontWeight: '400', fontSize: '18.67px' }}>{userDetail.education}</p>
-                        </div>
+               <div className=''>
+                  <div className='flex items-start'>
+                     <img className='w-full' src={experience} alt="experience"></img>
+
+                     <div className='ml-6'>
+                        <p className='text-[#24A3D9] font-bold text-[21.33px]'>Education</p>
+                        <p className='text-[17.503px] text-[#517CA8]'>{userDetail.education}
+                        </p>
                      </div>
+
                   </div>
 
 
-                  <div className='flex items-start gap-4 mt-5'>
-                     <img src={experience}></img>
-                     <div >
-                        <div>
-                           <p className='' style={{ color: '#24A3D9', fontWeight: '700', fontSize: '21.33px' }}>Experience</p>
-                        </div>
-                        <div>
-                           <p style={{ color: '#517CA8', fontWeight: '400', fontSize: '18.67px' }}>Lorem ipsum dolor sit amet,cosect</p>
-                        </div>
+                  <div className='flex items-start pl-2 mt-[46px] w-fit'>
+                     <img className='w-full' src={bag} alt="experience"></img>
+
+                     <div className='ml-6'>
+                        <p className='text-[#24A3D9] font-bold text-[21.33px]'>Experience</p>
+                        <p className='text-[17.503px] text-[#517CA8]'>{userDetail.experience}
+                        </p>
                      </div>
+
                   </div>
 
 
@@ -603,9 +643,9 @@ export default function TutorProfile({ isOwn }) {
             </div>
 
 
-            <div className='lg:px-5 lg:pt-0 lg:pr-0 relative mt-20'>
+            <div className=' lg:pt-0 lg:pr-0 relative mt-[67px]'>
 
-               <div className='grid grid-cols-12 gap-4'>
+               <div className='grid grid-cols-12 gap-x-[46px]'>
 
                   <div className='col-span-3 mt-53 lg:mt-0 flex flex-col '>
                      {/* {
@@ -627,26 +667,28 @@ export default function TutorProfile({ isOwn }) {
                      }  */}
                      <div>
                         <div className='flex'>
-                           <div className='ml-3' style={{ color: '#26435F', fontSize: '21.33px', fontWeight: '600' }}>Expertise</div>
-                           <p className='text-[#667085] ml-auto underline cursor-pointer' onClick={() => setToEdit({ ...toEdit, serviceSpecializations: { ...toEdit.serviceSpecializations, active: true } })}>edit</p>
+                           <div className='text-xl text-[#26435F] font-semibold' >Expertise</div>
+                           {(isOwn == true || persona === 'admin') && <p className='text-[#667085] ml-auto underline cursor-pointer' onClick={() => setToEdit({ ...toEdit, serviceSpecializations: { ...toEdit.serviceSpecializations, active: true } })}>edit</p>}
                         </div>
-                        <ProfileCard className='flex-1 '
+                        <ProfileCard className='flex-1 pr-0'
                            hideShadow={true}
                            bgClassName="bg-profilecard"
                            body={
                               <>
                                  {settings && settings.Expertise?.length > 0 && userDetail.serviceSpecializations && userDetail.serviceSpecializations.map((id, idx) => {
                                     return (
-                                       settings.Expertise?.find(item => item._id === id) ?
-                                          <div key={idx} className='flex flex-col items-center mb-10'>
-                                             <div className='flex h-90 w-90 rounded-full  items-center justify-center mb-3' >
-                                                <img className='max-w-[90px] max-h-[90px]' src={settings.Expertise.find(item => item._id === id).image}
-                                                />
+                                       settings?.Expertise?.find(item => item._id === id) ?
+                                          <div className='mt-[10px] overflow-x-auto scrollbar-content max-h-[500px] scrollbar-vertical '>
+                                          <div className=' bg-white rounded min-h-[60px]  flex items-center pl-[40px]'>
+                                                <div className='ml-3'>
+                                                   <img className='max-w-[40px] max-h-[40px]' src={`${awsLink}${settings?.Expertise?.find(item => item._id === id).image}`}></img>
+                                                </div>
+                                                <div className='ml-[35px]'>
+                                                   <p className='text-[#517CA8] text-[17.5px]' >{settings?.Expertise?.find(item => item._id === id).text}</p>
+                                                </div>
                                              </div>
-                                             <p className='opacity-70 font-semibold text-lg'>
-                                                {settings.Expertise.find(item => item._id === id).text}
-                                             </p>
                                           </div>
+
                                           :
                                           <></>
                                     )
@@ -689,14 +731,16 @@ export default function TutorProfile({ isOwn }) {
                               </div> */}
                               </>
                            } />
+                        
                      </div>
                   </div>
                   <div className='col-span-6'>
                      <div className='flex'>
-                        <p className='text-[#667085] ml-auto underline cursor-pointer' onClick={() => setToEdit({ ...toEdit, videoLink: { ...toEdit.videoLink, active: true } })}>edit</p>
+                        {/* {(isOwn == true && persona === 'admin') && <p className='text-[#667085] ml-auto underline cursor-pointer' onClick={() => setToEdit({ ...toEdit, videoLink: { ...toEdit.videoLink, active: true } })}>edit</p>} */}
+                    <p className='text-[#667085] mb-[12px]  ml-auto underline cursor-pointer' onClick={() => setToEdit({ ...toEdit, videoLink: { ...toEdit.videoLink, active: true } })}>edit</p>
                      </div>
                      <div className='  pt-10 min-h-[680px]  relative z-10 flex items-end ' >
-
+                    
                         <YoutubeEmbed embedId={videoLink} />
                         {/* <div className={`${styles.backBtn} mt-10`} >
                      </div> */}
@@ -716,21 +760,21 @@ export default function TutorProfile({ isOwn }) {
                         }
 
                      </div>
-                     <div className='ml-3' style={{ color: '#26435F', fontSize: '21.33px', fontWeight: '600' }}>Reviews</div>
+                     <div className=' text-xl text-[#26435F] font-semibold' >Reviews</div>
                      <ProfileCard className='border border-[#00000010]' hideShadow
-                        bgClassName="bg-white"
+                        bgClassName="bg-white pl-7 py-3 rounded-[10px]"
                         body={
                            <div>
-                              <p style={{ color: '#24A3D9', fontWeight: '400' }}>May 05,2022</p>
+                              <p className='text-[#24A3D9] font-light text-[15px]'>{formattedDate}</p>
                               <div>
-                                 <p style={{ color: '#24A3D9', fontWeight: '300', fontSize: '18.67px' }}> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu. </p>
+                                 <p className='text-[#24A3D9] font-light text-[17.503px]' > {userDetail.reviews} </p>
                               </div>
-                              <div className='flex mt-5'>
+                              <div className='flex mt-7'>
                                  <div>
-                                    <button className=' h-[33px] rounded-full w-[160px] mr-5' style={{ background: '#26435F33', color: '#26435F' }}>Parent / Student</button>
+                                    <button className=' h-[31px] rounded-full w-[160px] mr-5 text-[15px] bg-[#26435F33] text-[#26435F]' >Parent / Student</button>
                                  </div>
                                  <div>
-                                    <button className='rounded-full h-[33px] w-[133px]' style={{ background: '#26435F33', color: '#26435F' }}>"Service"</button>
+                                    <button className='rounded-full h-[33px] w-[133px] bg-[#26435F33] text-[#26435F]' >"Service"</button>
                                  </div>
                               </div>
                            </div>
@@ -744,23 +788,30 @@ export default function TutorProfile({ isOwn }) {
 
                   <div className='col-span-3'>
                      <div className='flex'>
-                        <div className='ml-3' style={{ color: '#26435F', fontSize: '21.33px', fontWeight: '600' }}>Interest</div>
-                        <p className='text-[#667085] ml-auto underline cursor-pointer' onClick={() => setToEdit({ ...toEdit, interest: { ...toEdit.interest, active: true } })}>edit</p>
+                     <div className='text-xl text-[#26435F] font-semibold' >Interest</div>
+                        {(isOwn === true || persona === 'admin') && <p className='text-[#667085] ml-auto underline cursor-pointer' onClick={() => setToEdit({ ...toEdit, interest: { ...toEdit.interest, active: true } })}>edit</p>}
                      </div>
 
-                     <ProfileCard className='flex-1 ' hideShadow
+                     <ProfileCard className='flex-1 pr-0' hideShadow
                         bgClassName="bg-profilecard"
                         body={
-                           <> <div className='overflow-x-auto scrollbar-content max-h-[500px] scrollbar-vertical'>
-                              <div className=' bg-white rounded min-h-[60px]  flex items-center'>
-                                 <div className='ml-3'>
-                                    <img src={sat}></img>
-                                 </div>
-                                 <div className=' ml-10'>
-                                    <p className='text-[#517CA8] ' style={{ fontWeight: '400' }}>hello</p>
-                                 </div>
-                              </div>
-                           </div>
+                           <> {settings && settings.interest.length > 0 && userDetail.interest && userDetail.interest.map((id, idx) => {
+                              return (
+                                 settings?.interest?.find(item => item._id === id) ?
+                                    <div className='mt-[10px] overflow-x-auto scrollbar-content max-h-[500px] scrollbar-vertical'>
+                                       <div className=' bg-white rounded-5 min-h-[60px]  flex items-center pl-[40px] '>
+                                          <div className='ml-3'>
+                                             <img className='max-w-[40px] max-h-[40px]' src={`${awsLink}${settings?.interest?.find(item => item._id === id).image}`}></img>
+                                          </div>
+                                          <div className=' ml-[35px]'>
+                                             <p className='text-[#517CA8] text-[17.5px]'>{settings?.interest?.find(item => item._id === id).text}</p>
+                                          </div>
+                                       </div>
+                                    </div>
+                                    :
+                                    <></>
+                              )
+                           })}
 
                               {/* <EditableText editable={editable}
                                  onClick={() => setToEdit({ ...toEdit, interest: { ...toEdit.interest, active: true } })}
@@ -769,14 +820,14 @@ export default function TutorProfile({ isOwn }) {
                               {/* <div className='flex flex-col overflow-x-auto scrollbar-content max-h-[500px] scrollbar-vertical'>
                                  {settings && settings.interest.length > 0 && userDetail.interest && userDetail.interest.map((id, idx) => {
                                     return (
-                                       settings.interest.find(item => item._id === id) ?
+                                       settings?.interest?.find(item => item._id === id) ?
                                           <div key={idx} className='flex flex-col items-center mb-10'>
                                              <div className='flex h-90 w-90 rounded-full  items-center justify-center mb-3' >
-                                                <img className='max-w-[90px] max-h-[90px]' src={settings.interest.find(item => item._id === id).image}
+                                                <img className='max-w-[90px] max-h-[90px]' src={settings?.interest?.find(item => item._id === id).image}
                                                 />
                                              </div>
                                              <p className='opacity-70 font-semibold text-lg'>
-                                                {settings.interest.find(item => item._id === id).text}
+                                                {settings?.interest?.find(item => item._id === id).text}
                                              </p>
                                           </div>
                                           :
@@ -784,63 +835,67 @@ export default function TutorProfile({ isOwn }) {
                                     )
                                  })}
                               </div> */}
+
+
+
                            </>
+
                         } />
                   </div>
                </div>
                <div class="mt-20 border-4 ml-20 mr-20 border-t border-[#CBD6E2]-300 justify-center border-dotted"></div>
                {/* address row */}
-               <div className='grid grid-cols-12 mt-20 gap-4'>
+               <div className='grid grid-cols-12 mt-20 gap-x-[37px]'>
                   <div className='col-span-7'>
                      <div className='flex'>
-                        <div className='ml-3' style={{ color: '#26435F', fontSize: '21.33px', fontWeight: '600' }}>Address</div>
-                        <p className='text-[#667085] ml-auto underline cursor-pointer' onClick={() => setToEdit({ ...toEdit, tutorAddress: { ...toEdit.tutorAddress, active: true } })}>edit</p>
+                        <div className=' text-[#26435F] text-[21.33px] font-semibold' >Address</div>
+                        {(isOwn == true || persona === 'admin') && <p className='text-[#667085] ml-auto underline cursor-pointer' onClick={() => setToEdit({ ...toEdit, tutorAddress: { ...toEdit.tutorAddress, active: true } })}>edit</p>}
                      </div>
                      <div>
                         {
                            (isOwn === true) || (persona === 'admin') ?
                               <ProfileCard
-                                 bgClassName="bg-white" hideShadow
-                                 className='col-span-3  lg:mt-0 flex items-center border border-[#00000010]'
+                                 bgClassName="bg-white " 
+                                 className='min-h-[106px] mt-[-4px] '
                                  body={
-                                    <div className='grid grid-cols-12'>
-                                       <div className='col-span-4'>
-                                          <div style={{ color: '#24A3D9', fontWeight: '600' }}>
-                                             street Adress
+                                    <div className='flex justify-between px-7 pt-[31px] pb-[29px]'>
+                                       <div className=''>
+                                          <div className='text-[#24A3D9] font-semibold text-[15.002px]' >
+                                             Street Adress
                                           </div>
-                                          <div style={{ fontWeight: '400', color: "#517CA8" }}>
-                                             B-1 Minal road
-                                          </div>
-                                       </div>
-
-                                       <div className='col-span-2'>
-                                          <div style={{ color: '#24A3D9', fontWeight: '600' }}>
-                                             city
-                                          </div>
-                                          <div style={{ fontWeight: '400', color: "#517CA8" }}>Bhopal
+                                          <div className='text-[#517CA8] font-normal text-[17.503px]'>
+                                             {userDetail.address} 
                                           </div>
                                        </div>
 
-                                       <div className='col-span-3'>
-                                          <div style={{ color: '#24A3D9', fontWeight: '600' }}>         state
+                                       <div className=''>
+                                       <div className='text-[#24A3D9] font-semibold text-[15.002px]' >
+                                             City
                                           </div>
-                                          <div style={{ fontWeight: '400', color: "#517CA8" }}>Madhya Pradesh
-                                          </div>
-                                       </div>
-
-                                       <div className='col-span-2'>
-                                          <div style={{ color: '#24A3D9', fontWeight: '600' }}>
-                                             country
-                                          </div>
-                                          <div style={{ fontWeight: '400', color: "#517CA8" }}>India
+                                          <div className='text-[#517CA8] font-normal text-[17.503px]'>{userDetail.city}
                                           </div>
                                        </div>
 
-                                       <div className='col-span-1'>
-                                          <div style={{ color: '#24A3D9', fontWeight: '600' }}>
-                                             zip
+                                       <div className=''>
+                                       <div className='text-[#24A3D9] font-semibold text-[15.002px]' >      State
                                           </div>
-                                          <div style={{ fontWeight: '400', color: "#517CA8" }}>4620022
+                                          <div className='text-[#517CA8] font-normal text-[17.503px]'>{userDetail.state} 
+                                          </div>
+                                       </div>
+
+                                       <div className=''>
+                                       <div className='text-[#24A3D9] font-semibold text-[15.002px]' >
+                                            Country
+                                          </div>
+                                          <div className='text-[#517CA8] font-normal text-[17.503px]'>{userDetail.country}
+                                          </div>
+                                       </div>
+
+                                       <div className=''>
+                                       <div className='text-[#24A3D9] font-semibold text-[15.002px]' >
+                                             Zip
+                                          </div>
+                                          <div className='text-[#517CA8] font-normal text-[17.503px]'>{userDetail.pincode}
                                           </div>
                                        </div>
                                     </div>
@@ -853,17 +908,17 @@ export default function TutorProfile({ isOwn }) {
 
                   <div className='col-span-2'>
                      <div className='flex'>
-                        <div className='ml-3' style={{ color: '#26435F', fontSize: '21.33px', fontWeight: '600' }}>Tutor Income</div>
-                        <p className='text-[#667085] ml-auto underline cursor-pointer' onClick={() => setToEdit({ ...toEdit, income: { ...toEdit.income, active: true } })}>edit</p>
+                        <div className='text-xl text-[#26435F] font-semibold' >Tutor Income</div>
+                        {(isOwn == true || persona === 'admin') && <p className='text-[#667085] ml-auto underline cursor-pointer' onClick={() => setToEdit({ ...toEdit, income: { ...toEdit.income, active: true } })}>edit</p>}
                      </div>
                      <ProfileCard
                         bgClassName="bg-white"
-                        hideShadow
-                        className="flex items-center justify-center min-h-[96px] border border-[#00000010]"
+                       
+                        className="flex items-center justify-center min-h-[106px] "
                         body={
                            <>
                               <div>
-                                 <div style={{ fontWeight: '400', color: "#517CA8", fontSize: '21.33px' }}>{"$" + userDetail.income}
+                                 <div className='font-normal text-[#517CA8] text-xl' >{"$" + userDetail.income} / hour
                                  </div>
                               </div>
                            </>
@@ -874,13 +929,13 @@ export default function TutorProfile({ isOwn }) {
                   </div>
                   {(isOwn === true || persona === "admin") ? (<div className='col-span-3'>
                      <div className='flex'>
-                        <div className='ml-3' style={{ color: '#26435F', fontSize: '21.33px', fontWeight: '600' }}>Payment Info</div>
-                        <p className='text-[#667085] ml-auto underline cursor-pointer' onClick={() => setToEdit({ ...toEdit, paymentInfo: { ...toEdit.paymentInfo, active: true } })}>edit</p>
+                        <div className='text-[#26435F] text-xl font-semibold' >Payment Info</div>
+                        {(isOwn == true || persona === 'admin') && <p className='text-[#667085] ml-auto underline cursor-pointer' onClick={() => setToEdit({ ...toEdit, paymentInfo: { ...toEdit.paymentInfo, active: true } })}>edit</p>}
                      </div>
                      <ProfileCard
                         bgClassName="bg-white "
-                        hideShadow
-                        className="flex items-center justify-center min-h-[96px] border border-[#00000010]"
+                    
+                        className="flex items-center justify-center min-h-[106px]"
                         body={
                            <>
                               <div>
@@ -888,7 +943,7 @@ export default function TutorProfile({ isOwn }) {
                                        onClick={() => setToEdit({ ...toEdit, paymentInfo: { ...toEdit.paymentInfo, active: true } })}
                                      
                                     /> */}
-                                 <div style={{ fontWeight: '400', color: "#517CA8", fontSize: '21.33px' }}>
+                                 <div className='font-normal text-[#517CA8] text-xl'>
                                     {userDetail.paymentInfo}
                                  </div>
                               </div>
@@ -899,9 +954,9 @@ export default function TutorProfile({ isOwn }) {
                </div>
 
 
-               <div className='grid grid-cols-12 gap-8 mt-20'>
+               <div className='grid grid-cols-12 gap-x-[50px] mt-20 mb-[191px]'>
                   <div className='col-span-7'>
-                     <div className='ml-3 ' style={{ color: '#26435F', fontSize: '21.33px', fontWeight: '600' }}>Recent Feedback History</div>
+                     <div className='text-xl text-[#26435F] font-semibold mb-[-10px]' >Recent Feedback History</div>
                      <div className='flex'>
                         <Table
                            tableHeaders={tableHeaders1}
@@ -922,8 +977,8 @@ export default function TutorProfile({ isOwn }) {
                   </div>
 
                   <div className='col-span-5'>     <div className='flex'>
-                     <div className='ml-3' style={{ color: '#26435F', fontSize: '21.33px', fontWeight: '600' }}>Tutor Status</div>
-                     <p className='text-[#667085] ml-auto underline cursor-pointer' onClick={() => setToEdit({ ...toEdit, paymentInfo: { ...toEdit.paymentInfo, active: true } })}>edit</p>
+                     <div className='text-[#26435F] text-[18px] font-semibold' >Tutor Status</div>
+                     {(isOwn === true || persona === 'admin') && <p className='text-[#667085] ml-auto underline cursor-pointer' onClick={() => setToEdit({ ...toEdit, tutorLevel: { ...toEdit.tutorLevel, active: true } })}>edit</p>}
                   </div>
                      <ProfileCard
                         hideShadow
@@ -931,7 +986,7 @@ export default function TutorProfile({ isOwn }) {
                         bgClassName="bg-white"
                         body={
                            <>
-                              <div style={{ fontWeight: '400', color: "#517CA8", fontSize: '21.33px' }}>
+                              <div className='text-[#517CA8] text-lg p-3 min-h-[50px]'>
                                  {userDetail.tutorLevel}
                               </div>
 
@@ -939,12 +994,12 @@ export default function TutorProfile({ isOwn }) {
                         }
                      />
 
-                     <div className='mt-3'>
-                        <div className='ml-3 mt-3' style={{ color: '#26435F', fontSize: '21.33px', fontWeight: '600' }}>Service Rates</div>
+                     <div className='mt-[33.75px]'>
+                        <div className=' text-[#26435F] text-xl font-semibold mb-[-10px]' >Service Rates</div>
                         <Table
                            tableHeaders={tableHeaders2}
                            dataFor="serviceRates"
-                           data={data2}
+                           data={userDetail.tutorServices}
                            maxPageSize={7}
                            headerObject={true}>
 
@@ -1145,7 +1200,7 @@ export default function TutorProfile({ isOwn }) {
 
             {/* rates */}
             {
-               persona !== 'admin' &&
+               persona === 'admin' &&
                <ProfileCard hideShadow
                   className='col-span-3 mt-6 lg:mt-0  max-h-[300px] overflow-y-auto scrollbar-content'
                   body={

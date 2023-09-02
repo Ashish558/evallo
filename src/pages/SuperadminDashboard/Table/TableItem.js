@@ -8,7 +8,7 @@ export default function TableItem({ item, onClick, AdminLatestSignUp }) {
   return AdminLatestSignUp ? (
     <LatestSignUpTableItem item={item} onClick={onClick} />
   ) : (
-    <tr className="my-5 box-content  shadow-[0px_0px_1px_0px_rgba(0,0,0,0.25)]">
+    <tr className="my-5 box-content  shadow-[0px_0px_1.33333px_0px_rgba(0,0,0,0.25)]">
      
       <td className="  text-sm px-1  min-w-14 py-3 text-left">
         <span
@@ -18,16 +18,16 @@ export default function TableItem({ item, onClick, AdminLatestSignUp }) {
           {item.name}
         </span>
       </td>
-      <td className=" text-sm px-1 min-w-14 py-3 ">
+      <td className=" text-sm px-1 min-w-14 py-3 text-left">
         <div>{item.admin}</div>
       </td>
-      <td className=" text-sm px-1  min-w-14 py-3">
+      <td className=" text-sm pr-2  min-w-14 py-3 pl-1">
         <div>{item.status}</div>
       </td>
-      <td className=" text-sm px-1  min-w-14 py-3">
+      <td className=" text-sm   min-w-14 py-3 pr-3 pl-1">
         <div>{item.type}</div>
       </td>
-      <td className=" text-sm px-1  min-w-14 py-3">
+      <td className=" text-sm   min-w-14 py-3 pr-3 pl-1">
         <div>{new Date(item.date).toDateString().split(' ')[1] }. {new Date(item.date).getDate() }, {new Date(item.date).getFullYear()}</div>
       </td>
     </tr>

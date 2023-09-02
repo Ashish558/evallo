@@ -15,8 +15,8 @@ export default function SettingsCard({
 }) {
   return (
     <div
-      className={`${className ? className : ""} py-4  mb-5 pb-4 rounded-2xl
-      `}
+    className={`${className ? className : ""} py-4  mb-5 pb-4 rounded-2xl
+    `}
     >
       <div
         className={`text-primary-dark font-medium flex justify-between mb-1 ${titleClassName ? titleClassName : ""
@@ -93,9 +93,9 @@ export default function SettingsCard({
                       <div
                         // src={toggleCircleIcon}
                         className={`${toggle.value === false
-                          ? styles.toggleCircle
-                          : styles.toggleCircleActive
-                          }  w-[16px] h-[16px] rounded-[10px]`}
+                          ? styles.toggleCircleImages
+                          : styles.toggleCircleImagesActive
+                          }   w-[13px] h-[13px] rounded-[6px]`}
                         alt="toggle"
                       />
                     </div>

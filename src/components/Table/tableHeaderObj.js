@@ -3,7 +3,7 @@ import { useLazyGetSettingsQuery } from "../../app/services/session";
 import InputSelect from "../InputSelect/InputSelect";
 import sort from "./../../assets/icons/sort.webp";
 import styles from "./styles.module.css";
-export function TableHeaderNew({ header, checkedHeader, dataFor, Handler }) {
+export function TableHeaderNew({ header, checkedHeader, dataFor, Handler,noArrow }) {
   const [flag, setFlag] = useState(header?.className ? header.className.includes('no-arrow') : false)
   const handleCheckboxChange = () => {
     Handler();
@@ -11,10 +11,10 @@ export function TableHeaderNew({ header, checkedHeader, dataFor, Handler }) {
 
   return (
     <th
-      className={`px-1 py-3 font-medium whitespace-nowrap  text-center  cursor-pointer ${header.className ? header.className : ""
+      className={`px-6 py-[20px] font-medium whitespace-nowrap  text-center  cursor-pointer ${header.className ? header.className : ""
         } ${flag ? styles["no-arrow"] : ''}`}
     >
-      <div className="flex justify-center">
+      <div className={`flex justify-center ${noArrow ? '' : styles.marker}`}>
         {header.text === "Full Name" && dataFor === 'allUsers' ? (
 
           <label

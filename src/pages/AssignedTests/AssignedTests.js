@@ -5,6 +5,8 @@ import InputSelect from "../../components/InputSelect/InputSelect";
 
 import AddIcon from "../../assets/icons/add.svg";
 import SearchIcon from "../../assets/icons/search.svg";
+import ResendIcon from "../../assets/icons/resend.svg";
+import DeleteIcon from "../../assets/icons/ic_outline-delete-black.svg";
 import styles from "./styles.module.css";
 import { tempTableData, studentsDataTable } from "./tempData";
 import InputField from "../../components/InputField/inputField";
@@ -119,63 +121,49 @@ export default function AssignedTests() {
   const tempTableHeaders = [
     {
       id: 1,
-      text: "Name",
+      text: "Date Assigned",
       className: "text-left pl-6 no-arrow",
-      onCick: sortByName,
+      onCick: sortByAssignedDate,
     },
     {
       id: 2,
-      text: "Assigned on",
+      text: "Student Name",
       className: "no-arrow",
-      onCick: sortByAssignedDate,
+      onCick: sortByName,
     },
     {
       id: 3,
-      text: "Assigned By",
       className: "no-arrow",
-      onCick: sortByAssignedDate,
+      text: "Test Name",
     },
     {
       id: 4,
-      text: "Due Date",
       className: "no-arrow",
-      onCick: sortByDueDate,
+      text: "Tutor",
     },
     {
       id: 5,
       className: "no-arrow",
-      text: "Test Name",
+      text: "Completion",
     },
+
     {
       id: 6,
       className: "no-arrow",
       text: "Duration",
     },
     {
-      id: 7,
-      className: "no-arrow",
-      text: "Status",
-    },
-    {
-      id: 8,
-      className: "no-arrow",
-      text: "Scores",
-    },
-    {
       id: 9,
       className: "no-arrow",
-      text: "",
+      text: "Score",
     },
     {
       id: 10,
       className: "no-arrow",
       text: "",
-    },
-    {
-      id: 11,
-      className: "no-arrow",
-      text: "",
-    },
+    }
+
+
   ];
 
   const [assignTestModalActive, setAssignTestModalActive] = useState(false);
@@ -224,15 +212,15 @@ export default function AssignedTests() {
   useEffect(() => {
     setValidData(
       modalData.name &&
-        modalData.limit &&
-        modalData.date &&
-        modalData.test === "" &&
-        modalData.instruction === ""
+      modalData.limit &&
+      modalData.date &&
+      modalData.test === "" &&
+      modalData.instruction === ""
     );
   }, [modalData.name, modalData.limit, modalData.date, modalData.test]);
 
   useEffect(() => {
-    // if (modalData.name.trim() === '' || modalData.limit.trim() === '' || modalData.date === '' || modalData.testId === '' || modalData.studentId.trim() === '') {
+
     if (
       modalData.name.trim() === "" ||
       modalData.limit.trim() === "" ||
@@ -261,12 +249,12 @@ export default function AssignedTests() {
     modalData.studentId,
   ]);
 
-  // console.log(modalData);
+
   useEffect(() => {
     if (modalData.name.length > 0) {
       if (persona === "admin") {
         fetchStudents(modalData.name).then((res) => {
-          // console.log(res.data.data)
+
           let tempData = res.data.data.students.map((student) => {
             return {
               _id: student._id,
@@ -277,7 +265,7 @@ export default function AssignedTests() {
         });
       } else {
         fetchTutorStudents(modalData.name).then((res) => {
-          // console.log(res.data.data)
+
           let tempData = res.data.data.students.map((student) => {
             return {
               _id: student._id,
@@ -323,9 +311,8 @@ export default function AssignedTests() {
           isStarted,
           assignedBy,
         } = item;
-        const assignedByName = `${
-          assignedBy?.firstName ? assignedBy?.firstName : "-"
-        } ${assignedBy?.lastName ? assignedBy?.lastName : ""}`;
+        const assignedByName = `${assignedBy?.firstName ? assignedBy?.firstName : "-"
+          } ${assignedBy?.lastName ? assignedBy?.lastName : ""}`;
         if (assignedBy) {
           if (!allAssignedBys.includes(assignedByName)) {
             allAssignedBys.push(assignedByName);
@@ -350,8 +337,8 @@ export default function AssignedTests() {
             isCompleted === true
               ? "completed"
               : isStarted
-              ? "started"
-              : "notStarted",
+                ? "started"
+                : "notStarted",
           createdAt,
           assignedTestId: item._id,
         };
@@ -383,9 +370,8 @@ export default function AssignedTests() {
           isStarted,
           assignedBy,
         } = item;
-        const assignedByName = `${
-          assignedBy?.firstName ? assignedBy?.firstName : "-"
-        } ${assignedBy?.lastName ? assignedBy?.lastName : ""}`;
+        const assignedByName = `${assignedBy?.firstName ? assignedBy?.firstName : "-"
+          } ${assignedBy?.lastName ? assignedBy?.lastName : ""}`;
         if (assignedBy) {
           if (!allAssignedBys.includes(assignedByName)) {
             allAssignedBys.push(assignedByName);
@@ -398,9 +384,8 @@ export default function AssignedTests() {
           studentId: studentId ? studentId._id : "-",
           assignedOn: getFormattedDate(createdAt),
           assignedBy: assignedBy
-            ? `${assignedBy?.firstName ? assignedBy?.firstName : "-"} ${
-                assignedBy?.lastName ? assignedBy?.lastName : ""
-              }`
+            ? `${assignedBy?.firstName ? assignedBy?.firstName : "-"} ${assignedBy?.lastName ? assignedBy?.lastName : ""
+            }`
             : "-",
           testName: testId ? testId.testName : "-",
           testId: testId ? testId._id : null,
@@ -411,8 +396,8 @@ export default function AssignedTests() {
             isCompleted === true
               ? "completed"
               : isStarted
-              ? "started"
-              : "notStarted",
+                ? "started"
+                : "notStarted",
           createdAt,
           dueDate: getFormattedDate(dueDate),
           assignedTestId: item._id,
@@ -484,7 +469,7 @@ export default function AssignedTests() {
       timeLimit: getTimeLimit(modalData.limit),
     };
     console.log(body);
-    // return
+
     assignTest(body).then((res) => {
       setLoading(false);
       if (res.error) {
@@ -508,16 +493,16 @@ export default function AssignedTests() {
 
   useEffect(() => {
     let tempdata = [...allAssignedTests];
-    // console.log(usersData)
 
-    //NAME FILTER
+
+
     if (filterData.studentName !== "") {
       const regex2 = new RegExp(`${filterData.studentName.toLowerCase()}`, "i");
       tempdata = tempdata.filter((test) => test.studentName.match(regex2));
     } else {
       tempdata = tempdata.filter((test) => test.studentName !== "");
     }
-    //TEST NAME FILTER
+
     if (filterData.testName !== "") {
       const regex2 = new RegExp(`${filterData.testName.toLowerCase()}`, "i");
       tempdata = tempdata.filter((test) => test.testName.match(regex2));
@@ -644,10 +629,10 @@ export default function AssignedTests() {
     },
     {
       text: "Started",
-      color: "#F6A429",
+      color: "#FFCE84",
     },
   ];
-
+  const [numberChecked, setnumberChecked] = useState(0);
   useEffect(() => {
     if (!allAssignedTests) return;
     let testNames = [];
@@ -666,12 +651,17 @@ export default function AssignedTests() {
   const handleStatus = (val) => {
     setFilterData({ ...filterData, status: val });
   };
+  const [isChecked, setIsChecked] = useState(false);
+
+  const handleCheckboxChange = () => {
+    setIsChecked(!isChecked);
+  };
   return (
     <>
-      <div className="lg:mx-[40px] bg-lightWhite min-h-screen">
-        <div className="py-14 px-5 ">
-          <div className="flex justify-between items-center my-2">
-            <p className="text-[#24A3D9]   ">
+      <div className="w-[83.3333333333vw] mx-auto min-h-screen">
+        <div className="py-14 ">
+          <div className="flex justify-between items-center mb-[40px]">
+            <p className="text-[#24A3D9]  text-xl">
               {organization?.company +
                 "  >  " +
                 firstName +
@@ -682,7 +672,7 @@ export default function AssignedTests() {
             </p>
             {persona !== "parent" && persona !== "student" && (
               <button
-                className="bg-[#FFA28D] text-lg justify-center flex py-3 px-5 items-center text-white font-semibold rounded-lg"
+                className="bg-[#FFA28D] text-[15px] justify-center flex p-[10px] items-center text-white font-bold rounded-[7.5px]"
                 onClick={() => setAssignTestModalActive(true)}
               >
                 New Assignment
@@ -738,30 +728,34 @@ export default function AssignedTests() {
                       studentName: e.target.value,
                     })
                   }
-                  inputContainerClassName="px-[20px] shadow-[0px_0px_1px_0px_rgba(0,0,0,0.25)] mt-1 py-[16px] bg-white"
                   placeholder="Search Student"
-                  parentClassName="w-full text-sm"
+                  inputClassName="pl-4 text-[#667085]"
+                  parentClassName="w-[20.8333333333vw] text-sm"
+                  inputContainerClassName=" my-1 shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white  "
                   type="text"
                 />
 
                 <InputSelect
+                  IconSearch={SearchIcon}
                   value={filterData.testName}
                   onChange={(val) =>
                     setFilterData({ ...filterData, testName: val })
                   }
                   optionData={testNameOptions}
-                  inputContainerClassName="px-[20px]  shadow-[0px_0px_1px_0px_rgba(0,0,0,0.25)] py-[16px] bg-white"
+                  optionListClassName="text-[#667085]"
+                  inputContainerClassName=" my-1 shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white  "
                   placeholder="Search Assignment"
-                  parentClassName="w-full text-sm"
+                  parentClassName="w-[23.75vw] text-sm text-[#667085]"
                   type="select"
                 />
                 <InputSelect
                   value={filterData.status}
                   onChange={(val) => handleStatus(val)}
+                  optionListClassName="text-[#667085]"
                   optionData={["Started", "Not Started", "Completed"]}
-                  inputContainerClassName="px-[20px] shadow-[0px_0px_1px_0px_rgba(0,0,0,0.25)] py-[16px] bg-white"
-                  placeholder="Completion Status"
-                  parentClassName="w-full text-sm"
+                  inputContainerClassName=" shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px]  bg-white"
+                  placeholder="Completion"
+                  parentClassName="w-[11.9791666667vw] text-sm text-[#667085]"
                   type="select"
                 />
                 <InputSelect
@@ -769,15 +763,16 @@ export default function AssignedTests() {
                   onChange={(val) =>
                     setFilterData({ ...filterData, assignedBy: val })
                   }
-                  parentClassName="w-full text-sm"
-                  inputContainerClassName="px-[20px] shadow-[0px_0px_1px_0px_rgba(0,0,0,0.25)] py-[16px] bg-white"
+                  optionListClassName="text-[#667085]"
+                  parentClassName="w-[15.625vw] text-sm"
+                  inputContainerClassName="shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] bg-white"
                   optionData={assignedBys}
                   placeholder="Filter by Tutor"
                   type="text"
                 />
               </div>
 
-              <div className="mt-4">
+              <div className="mt-[50px] mb-[23.75px]">
                 <FilterItems
                   items={filterItems}
                   setData={setFilterItems}
@@ -785,16 +780,48 @@ export default function AssignedTests() {
                 />
               </div>
 
-              <div className="flex items-center justify-end gap-[20px] mt-[10px]">
-               
-                {status.map(({ text, color }, idx) => (
-                  <AssignedTestIndicator key={idx} text={text} color={color} />
-                ))}
+              <div className="flex items-center  justify-between gap-[20px] mt-[10px]">
+                <div className="flex text-[#26435F] items-center text-[17.5px]">
+                  <div className="ml-6 ">
+                    <label className={`  text-[#26435F] font-medium flex items-center`}>
+                      <input
+                        type="checkbox"
+                        checked={isChecked}
+                        onChange={handleCheckboxChange}
+                      />
+                      <span
+                        className={`${styles["custom-checkbox"]} ${isChecked ? "checked" : ""
+                          }`}
+                      ></span>
+                      <span className="block font-medium">{numberChecked} Selected</span>
+                    </label>
+                  </div>
+
+                  <div className="gap-x-[5px] px-4 py-[11px] bg-[#FFF] rounded-5 ml-6 flex">
+                    <p >Delete</p>
+                    <p ><img src={DeleteIcon} alt="" /></p>
+                  </div>
+                  <div className="gap-x-[5px] px-4 py-[11px] bg-[#FFF] rounded-5 ml-6 flex">
+                    <p >Resend</p>
+                    <img src={ResendIcon} alt="" />
+                  </div>
+                  <div className="px-4 py-[11px] bg-[#FFF] rounded-5 ml-6">
+                    <p>Mark Completed</p>
+                  </div>
+                </div>
+                <div className="flex items-center justify-between gap-x-[20px]">
+                  {status.map(({ text, color }, idx) => (
+                    <AssignedTestIndicator key={idx} text={text} color={color} />
+                  ))}
+                </div>
+
               </div>
             </>
           )}
           <div className="mt-8">
             <Table
+              numberChecked={numberChecked}
+              setnumberChecked={setnumberChecked}
               onClick={{ handleResend, handleDelete }}
               dataFor="assignedTests"
               data={filteredTests}
@@ -898,7 +925,7 @@ export default function AssignedTests() {
                   <InputField
                     label="Due Date"
                     iconSize="medium"
-                    // IconRight={calendar}
+
                     value={modalData.date}
                     onChange={(val) =>
                       setModalData({
@@ -920,7 +947,7 @@ export default function AssignedTests() {
                 label="Instruction From Tutor"
                 type="text"
                 iconSize="medium"
-                // IconRight={calendar}
+
                 value={modalData.instruction}
                 onChange={(val) =>
                   setModalData({

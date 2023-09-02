@@ -44,7 +44,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
    const data = [
       {
          name: 'profileData',
-         title: 'profileData',
+         title: 'Profile Data',
          api: 'user',
       },
       {
@@ -262,6 +262,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
          if (data[key].name === keyName) {
             // console.log(data[key]);
             setCurrentField(data[key])
+
          }
       })
    }
@@ -276,7 +277,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
 
          }
       })
-      console.log(currentToEdit.phone + "currentUser")
+      console.log("currentUser")
    }, [toEdit])
 
    const handleClose = () => {
@@ -304,7 +305,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
       }
    }, [student]);
    useEffect(() => {
-      { console.log(currentField.name + "current field") }
+
       if (parent.length > 0) {
          fetchParents(parent).then((res) => {
             let tempData = res.data.data.parents.map((parent) => {
@@ -372,6 +373,20 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
       delete reqBody['active']
       // console.log(reqBody);
 
+      if (currentField.name === 'profileData') {
+         let body = { ...reqBody }
+         delete body['firstName']
+         delete body['lastName']
+         delete body['phones']
+         delete body['phoneCode']
+         updateTutorDetails({ id: userId, fields: reqBody })
+            .then(res => {
+               console.log('patched', res)
+               setLoading(false)
+               fetchDetails(true, true)
+               // handleClose()
+            })
+      }
       if (currentField.api === 'user') {
          updateFields({ id: userId, fields: reqBody })
             .then(res => {
@@ -482,9 +497,9 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
    }
 
    // console.log('awsLink', awsLink)
-   // console.log('toedit--', currentToEdit)
+   console.log('toedit--', currentToEdit)
    // console.log('setting', settings.servicesAndSpecialization[currentToEdit.selectedIdx])
-   // console.log('field', currentField)
+   console.log('field', currentField)
    // console.log('sett', settings)
    // console.log('students', students)
    // console.log('parents', parents)
@@ -525,26 +540,16 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
    // console.log(settings);
    const [startDate, setStartDate] = useState(new Date());
 
-   const [modalClassName, setModalClassName] = useState('500px');
-   useEffect(() => {
-      { console.log("modalClassName" + modalClassName) }
-      if (currentField.name === 'about' || currentField.name === 'interest') {
-         setModalClassName('900px')
-      }
-      else {
-         setModalClassName('500px')
-      }
-   }, [currentField.name, modalClassName]
-   )
+   const forCss = ['profileData', 'interest', 'serviceSpecializations']
    return (
 
       Object.keys(toEdit).map(key => {
          return toEdit[key].active === true &&
             <Modal
                key={key}
-               classname={`max-w-['900px'] md:pb-5 mx-auto overflow-visible pb-5`}
+               classname={forCss.includes(currentField.name) ? "max-w-[900px] md:pb-5 mx-auto overflow-visible pb-5" : "max-w-[500px] md:pb-5 mx-auto overflow-visible pb-5"} /*{ ` max-w-[900px] md:pb-5 mx-auto overflow-visible pb-5`}*/
                title=''
-               cancelBtn={false}
+
                // primaryBtn={{
                //    text: "Save",
                //    className: 'w-[100px] bg-primaryOrange text-base pt-2 ml-0 pb-2 text-lg pl-3 pr-3 ',
@@ -1267,7 +1272,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                            </div>
                         }
                         {currentField.name === 'profileData' &&
-                           <div className=''>
+                           <div className='h-[60vh] overflow-y-auto'>
                               {/* <textarea
                                  placeholder=""
                                  value={currentToEdit.about}
@@ -1278,13 +1283,15 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                                  className="bg-lightWhite w-full outline-0 px-5 py-4 rounded"
                               ></textarea> */}
                               <div>
-                                 <div className='grid grid-cols-12'>
+                                 <div className='grid grid-cols-12 '>
                                     <div className='col-span-2'>
-                                       <ProfilePhoto isTutor={true}
-                                          src={currentToEdit.photo ? `${awsLink}${currentField.photo}` : '/images/default.jpeg'}
+                                       <ProfilePhoto 
+                                       isTutor={true}
+                                       customWidth={true}
+                                          src={currentToEdit.photo ? `${awsLink}${currentToEdit.photo}` : '/images/default.jpeg'}
                                           handleChange={handleProfilePhotoChange} editable={true} />
                                     </div>
-                                    <div className=' col-span-8 '>
+                                    <div className='ml-5 col-span-8 '>
                                        <div className='grid grid-cols-12 gap-8'>
                                           <div className=' col-span-3'>
                                              <div><p style={{ color: '#26435F', fontWeight: '500' }}>First Name</p></div>
@@ -1364,20 +1371,22 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                                        </div>
                                     </div>
                                  </div>
-
                               </div>
 
                               <div className='mt-8 grid grid-cols-12' >
                                  <div><p style={{ color: '#26435F', fontWeight: '500' }}>TagLine</p></div>
                                  <div className='col-span-12 '>
-                                    <textarea cols={80} value={currentToEdit.tagLine} className=' rounded focus:border-[#D0D5DD]' style={{ border: '1px solid #D0D5DD', color: '#667085' }} onChange={(e) => setCurrentToEdit({ ...currentToEdit, tagLine: e.target.value })}></textarea>
+                                    <textarea cols={80} value={currentToEdit.tagLine} className=' rounded focus:border-[#D0D5DD]'
+                                       style={{ border: '1px solid #D0D5DD', color: '#667085' }}
+                                       onChange={(e) => setCurrentToEdit({ ...currentToEdit, tagLine: e.target.value })}></textarea>
                                  </div>
                               </div>
 
                               <div className='mt-8 grid grid-cols-12' >
                                  <div><p style={{ color: '#26435F', fontWeight: '500' }}>About</p></div>
                                  <div className='col-span-12 '>
-                                    <textarea rows={3} cols={80} className=' rounded focus:border-[#D0D5DD]' style={{ border: '1px solid #D0D5DD', color: '#667085' }}
+                                    <textarea rows={3} cols={80} className=' rounded focus:border-[#D0D5DD]'
+                                       style={{ border: '1px solid #D0D5DD', color: '#667085' }}
                                        value={currentToEdit.about}
                                        onChange={(e) => { setCurrentToEdit({ ...currentToEdit, about: e.target.value }) }}
                                     ></textarea>
@@ -1388,14 +1397,16 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                                  <div className='grid grid-cols-12 '>
                                     <div className='col-span-6'>
                                        <div><p style={{ color: '#26435F', fontWeight: '500' }}>Education</p></div>
-                                       <textarea rows={3} cols={35} className=' rounded focus:border-[#D0D5DD]' style={{ border: '1px solid #D0D5DD', color: '#667085' }}
+                                       <textarea rows={3} cols={35} className=' rounded focus:border-[#D0D5DD]'
+                                          style={{ border: '1px solid #D0D5DD', color: '#667085' }}
                                           value={currentToEdit.education}
                                           onChange={(e) => { setCurrentToEdit({ ...currentToEdit, education: e.target.value }) }}
                                        ></textarea>
                                     </div>
                                     <div className='col-span-6'>
                                        <div><p style={{ color: '#26435F', fontWeight: '500' }}>Experience</p></div>
-                                       <textarea rows={3} cols={35} className=' rounded focus:border-[#D0D5DD]' style={{ border: '1px solid #D0D5DD', color: '#667085' }}></textarea>
+                                       <textarea rows={3} cols={35} className=' rounded focus:border-[#D0D5DD]'
+                                          style={{ border: '1px solid #D0D5DD', color: '#667085' }}></textarea>
                                     </div>
                                  </div>
                               </div>
@@ -1433,17 +1444,24 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                            <div className='flex flex-wrap'>
                               {settings.interest.map(item => {
                                  return (
-                                    !currentToEdit.interest.includes(item._id) ?
-                                       <div className={`px-3 mr-2 rounded rounded-md py-1.5 border border-primary text-primary cursor-pointer`}
-                                          onClick={() => setCurrentToEdit({
+                                    !currentToEdit?.interest?.includes(item._id) ?
+                                       <div id='selected' className={`px-3 mr-2  rounded-md py-1.5 border-[1.33px] border-[#26435F80] text-[#26435F80]  cursor-pointer`}
+                                          onClick={() =>{ 
+                                             let intersetArray=[] 
+
+                                             if (currentToEdit.interest) {
+                                                intersetArray = currentToEdit.interest
+                                             }
+                                             console.log(intersetArray)
+                                             setCurrentToEdit({
                                              ...currentToEdit,
-                                             interest: [...currentToEdit.interest, item._id]
-                                          })} >
-                                          <p className='font-medium'>
+                                             interest: [...intersetArray, item._id]
+                                          })} }>
+                                          <p className=''>
                                              {item.text}
                                           </p>
                                        </div> :
-                                       <div className={`px-3 mr-2 rounded rounded-md text-white py-1.5 border border-primary bg-primary text-primary cursor-pointer`}
+                                       <div className={`px-3 mr-2  rounded-md text-white py-1.5 border border-primary bg-primary  cursor-pointer`}
                                           onClick={() => setCurrentToEdit({
                                              ...currentToEdit,
                                              interest: currentToEdit.interest.filter(id => id !== item._id)
@@ -1461,7 +1479,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                               {settings?.Expertise?.map(item => {
                                  return (
                                     !currentToEdit?.serviceSpecializations?.includes(item._id) ?
-                                       <div className={`px-3 mr-2 rounded rounded-md py-1.5 border border-primary text-primary cursor-pointer`}
+                                       <div className={`px-3 mr-2 rounded rounded-lg   py-1.5 border-[1.33px] border-[#26435F80] text-[#26435F80]  cursor-pointer`}
                                           onClick={() => {
                                              let servicesArray = []
                                              if (currentToEdit.serviceSpecializations) {
@@ -1477,7 +1495,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                                              {item.text}
                                           </p>
                                        </div> :
-                                       <div className={`px-3 mr-2 rounded rounded-md text-white py-1.5 border border-primary bg-primary text-primary cursor-pointer`}
+                                       <div className={`px-3 mr-2 rounded-md text-white py-1.5 border border-primary bg-primary  font-semibold cursor-pointer`}
                                           onClick={() => setCurrentToEdit({
                                              ...currentToEdit,
                                              serviceSpecializations: currentToEdit.serviceSpecializations.filter(id => id !== item._id)

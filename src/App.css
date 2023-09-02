@@ -99,3 +99,71 @@ nav .active {
     z-index: 1050;
     border-radius: 50%;
 } */
+
+.custom-scroller::-webkit-scrollbar {
+  width: 5px;
+}
+
+.custom-scroller::-webkit-scrollbar-track {
+  background: #cbd6e2;
+  margin-left: 16px;
+  margin-right: 40px;
+  border-radius: 20px;
+}
+
+.custom-scroller::-webkit-scrollbar-thumb {
+  background-color: #7c98b6;
+  border-radius: 20px;
+}
+
+.custom-scroller::-webkit-scrollbar-thumb:hover {
+  background: rgba(40, 68, 109, 0.6);
+}
+
+#borderLeft {
+  
+  border-left: 5px solid #26435f;
+  position: absolute;
+  top: 50%;
+  bottom: 0;
+}
+#borderRight {
+  
+  border-right: 5px solid #26435f;
+  position: absolute;
+  top: 50%;
+  right: 0;
+  bottom: 0;
+}
+#borderBottom {
+ 
+  border-bottom: 5px solid #26435f;
+  position: absolute;
+  top: 100%;
+ width:100%;
+  bottom: 0;
+}
+#borderRound{
+
+  border-top: 3px solid #26435f;
+  border-right: 3px solid #26435f;
+  border-radius:100%;
+}
+::-webkit-scrollbar:horizontal{
+  height: 8px;
+width:20px;
+}
+::-webkit-scrollbar-thumb:horizontal{
+        background: #000;
+        border-radius: 10px;
+        height: 8px;
+        width:20px;
+        
+    }
+    ::-webkit-scrollbar-track:horizontal{
+        background: #000;
+        border-radius: 10px;
+        height: 8px;
+        width:20px;
+        
+    }

@@ -93,18 +93,18 @@
 }
 
 #tutorList::-webkit-scrollbar {
-    width: 10px;
+    width: 5px;
 }
 
 #tutorList::-webkit-scrollbar-track {
-    background: #6da8ff26;
+    background: #CBD6E2;
     margin-left: 16px;
     margin-right: 40px;
     border-radius: 20px;
 }
 
 #tutorList::-webkit-scrollbar-thumb {
-    background-color: rgba(109, 168, 255, 0.6);
+    background-color: #7C98B6;
     border-radius: 20px;
 }
 

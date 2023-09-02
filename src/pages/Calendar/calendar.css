@@ -5,6 +5,9 @@
   display: flex !important;
   align-items: center !important;
 }
+.calender #calendarContainer .fc-direction-ltr.fc-theme-standard{
+  padding: 0 !important;
+}
 
 .calender .fc-theme-standard .fc-toolbar .fc-toolbar-title {
   color: rgba(71, 21, 215, 1) !important;
@@ -53,16 +56,7 @@
   border-radius: 50%;
 }
 
-.calender #calendarContainer {
-  background-color: #fff;
-  padding: 40px;
-  padding-top: 0;
-  border-radius: 20px;
-  box-shadow: 0 0 16px rgba(0, 0, 0, 0.2);
-  height: 830px;
-  overflow-y: auto;
-  scroll-behavior: smooth;
-}
+
 .calender #calendarContainer .fc-direction-ltr.fc-theme-standard {
   padding-top: 2rem;
 }
@@ -95,6 +89,7 @@
   color: #26435f;
   font-weight: 600;
   text-align: center;
+
   /* background: rgb(243 245 247 / var(--tw-bg-opacity)) !important; */
 }
 .calender .fc-daygrid-day-top {
@@ -112,32 +107,48 @@
 }
 .calender #calendarContainer {
   background-color: inherit !important;
+  padding: 40px;
+  padding-top: 0;
+  border-radius: 20px;
   box-shadow: 0 0 0px rgba(0, 0, 0, 0.2) !important;
+  height: 550px !important;
   overflow-y: auto !important;
+  scroll-behavior: smooth;
 }
 .calender th {
-  background-color: white !important;
+  background-color: rgb(243 245 247) !important;
   padding: 0 !important;
   color: #517ca8 !important;
+
+}
+.calendar-parent-class tr td {
+  background:  rgb(243 245 247) !important
 }
 
 .calender tr:nth-child(odd) {
-  background: inherit !important;
+  background: rgb(243 245 247) !important;
   color: #517ca8 !important;
   border-radius: 0 !important;
-  box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.25) !important;
+  /* box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.25) !important; */
   height: 3rem !important;
 }
 
 .calender tr:nth-child(even) {
   height: 3rem !important;
 }
+.calender .fc-theme-standard .fc-timeGridWeek-view .fc-scrollgrid{
+  border: 2px solid white !important;
+}
 .calender .fc-theme-standard td
  {
-  border: 1px solid #e9e1e1 !important;
+  border: 2px solid #ffff !important;
   }
   .fc-theme-standard th{
     border: 0 !important;
+
+  }
+  .style_sTable__JkBD3 tbody, thead {
+    border: 2px solid white;
   }
 .calender .fc-theme-standard .fc-toolbar .fc-toolbar-title {
   color: #26435f !important;
@@ -201,7 +212,7 @@
     border-radius: 50px;
     background: white;
     color: #FFA28D !important;
-    margin-top: 28px !important;
+
 }
 #number select{
   background: transparent !important;
@@ -253,3 +264,14 @@ table th:last-child{
   color: #7C98B6 !important;
 
 }
+/* tr{
+  box-shadow: 0px 0px 2px 0px #fff !important;
+  border-radius: 0 !important;
+} */
+#calendarContainer::-webkit-scrollbar{
+  width: 0px !important;
+}
+.fc-button-active{
+  border: 0 !important;
+}
+

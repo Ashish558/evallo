@@ -318,21 +318,19 @@ export default function TestDetail() {
 
                <div className="flex-1 pl-2">
                   <p className="text-2xl text-textPrimaryDark my-7 font-bold"> Questions by Section </p>
-                  <div className="mt-6 flex justify-between items-end">
-                     <div>
-                        {subjects.map((item, idx) => {
-                           return (
-                              <PrimaryButton
-                                 children={item.name}
-                                 className={`py-2.5 px-0 text-xs mr-4 font-semibold w-[120px] ${item.selected
-                                    ? ""
-                                    : "bg-secondaryLight text-textGray"
-                                    }`}
-                                 onClick={() => handleSubjectChange(item._id)}
-                              />
-                           );
-                        })}
-                     </div>
+                  <div className="mt-6 flex flex-wrap items-end">
+                     {subjects.map((item, idx) => {
+                        return (
+                           <PrimaryButton
+                              children={item.name}
+                              className={`py-2.5 px-0 text-xs mr-4 font-semibold w-[120px] ${item.selected
+                                 ? ""
+                                 : "bg-secondaryLight text-textGray"
+                                 }`}
+                              onClick={() => handleSubjectChange(item._id)}
+                           />
+                        );
+                     })}
                   </div>
 
                   <div className="flex justify-between mt-7">
