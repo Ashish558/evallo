@@ -8,7 +8,7 @@ import styles from "./rangeDate.module.css";
 import { useState } from "react";
 import { useEffect } from "react";
 
-const RangeDate = ({ handleRangeData }) => {
+const RangeDate = ({ handleRangeData ,className,manualHide ,inputContainerClassName}) => {
   const [startDate, setStartDate] = useState(() => calculateDateRange()[0]);
   const [selectDate, setSelectedDate] = useState({
     sDate: "",
@@ -76,18 +76,17 @@ const RangeDate = ({ handleRangeData }) => {
   newDateformat += " - " + temp[0] + " " + temp[1] + " " + temp[2] + ", " + temp[3]
 
   return (
-    <div className="flex text-xs ">
+    <div className={`flex text-xs   ${className}`}>
       <p className="font-semibold text-[#FFA28D]"> </p>
 
       <InputSelect
         placeholder="Select"
         parentClassName="border-none text-xs text-[#26435F] w-fit"
         labelClassname="text-sm"
-        optionClassName=""
-        optionListClassName="text-[15px] font-medium text-[#517CA8] underline underline-offset-2"
-        inputContainerClassName={`border-none w-[300px] font-semibold text-[#FFA28D]  ${styles["text"]}`}
+        inputContainerClassName={`border-none w-[300px] whitespace-nowrap font-semibold text-[#FFA28D] ${inputContainerClassName}  ${styles["text"]}`}
         inputClassName={`border-none w-fit bg-transparent font-semibold text-[#FFA28D] `}
         value={newDateformat}
+        optionClassName=""
         optionData={[
           { name: "Today", days: 0 },
           { name: "Last 7 Days", days: 7 },
@@ -99,23 +98,21 @@ const RangeDate = ({ handleRangeData }) => {
         onChange={handleQuickOptions}
         IconRight={faCaretDown}
         DateSelect={
-          <div className="flex flex-col hover:bg-white items-center pt-2 z-5000 border-b ">
-            <div className=" text-black flex flex-col w-full justify-start">
-              <div className="flex flex-col px-[26px] justify-start  ">
-                <label className="text-[#517CA8] text-[9px]" htmlFor="sdate">Start Date</label>
-
-                <input
-                  type="date"
-                  name="sdate"
-                  className="rounded-md  p-1 text-[#FFA28D]"
-                  value={selectDate.sDate}
-                  max={selectDate.eDate}
-                  onChange={(e) => handleLocalDate(e.target.value, "sDate")}
-                />
-              </div>
+           !manualHide &&
+          <div className="flex relative flex-col hover:bg-white items-center pt-2 z-5000 border-b  ">
+            <div className="font-semibold text-black flex w-full justify-around">
+              <label htmlFor="sdate">Start Date</label>
+              <label htmlFor="edate">End Date</label>
             </div>
-            <div className="flex flex-col  justify-start  mt-[15px]">
-              <label className="text-[#517CA8] text-[9px]" htmlFor="edate">End Date</label>
+            <div className="flex p-1 justify-between gap-5 ">
+              <input
+                type="date"
+                name="sdate"
+                className="rounded-md bg-[#FFA28D] p-1 text-white"
+                value={selectDate.sDate}
+                max={selectDate.eDate}
+                onChange={(e) => handleLocalDate(e.target.value, "sDate")}
+              />
               <input
                 type="date"
                 min={selectDate.sDate}
@@ -139,6 +136,7 @@ const RangeDate = ({ handleRangeData }) => {
               </p>
             </div>
           </div>
+        
         }
       />
       <p></p>

@@ -4,12 +4,12 @@ import ProfileImg from '../../assets/images/profile.png'
 import CameraIcon from '../../assets/profile/camera.svg'
 import { useRef } from 'react'
 
-export default function ProfilePhoto({ src, handleChange, editable, isTutor }) {
+export default function ProfilePhoto({ src, handleChange, editable, isTutor,customWidth }) {
 
    const inputref = useRef()
 
    return (
-      <div className={`${styles.imgContainer} ${isTutor ? styles.imgContainerTutor : ''}`}>
+      <div className={`${styles.imgContainer} ${isTutor ? styles.imgContainerTutor : ''}  ${customWidth ? styles.imgContainerModalTutor :''}`}>
          <img src={src} />
          {
             editable &&

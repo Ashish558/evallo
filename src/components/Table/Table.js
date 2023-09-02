@@ -10,6 +10,7 @@ import LatestSignUpTableItem from "./LatestSignUpTableItem";
 import Pagination from "../../pages/SuperadminDashboard/Table/Pagination";
 export default function Table(props) {
   const {
+    noArrow,
     dataFor,
     data,
     tableHeaders,
@@ -74,7 +75,7 @@ export default function Table(props) {
     setTableData(temp);
   }, [currentPage, data]);
 
-  if (isCallingApi) return <ApiTable {...props} />;
+  if (isCallingApi) return <ApiTable noArrow={noArrow} {...props} />;
 
   return (
     <div className="w-full">
@@ -87,6 +88,7 @@ export default function Table(props) {
                   <TableHeaderNew header={item} dataFor={dataFor} />
                 ) : (
                   <TableHeader
+                    noArrow={noArrow}
                     key={idx}
                     header={item}
                     onClick={sorting}

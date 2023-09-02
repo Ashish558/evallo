@@ -7,6 +7,7 @@ import { TableHeaderNew } from "./tableHeaderObj";
 import Pagination from "../../pages/SuperadminDashboard/Table/Pagination";
 
 export default function ApiTable({
+  noArrow,
   dataFor,
   data,
   tableHeaders,
@@ -86,12 +87,13 @@ export default function ApiTable({
     <div className="w-fullx">
     <div className="overflow-x-auto scrollbar-content    scroll-m-1 ">
 
-      <table className="table-auto customTable px-[2px] mb-3 text-center w-full">
+      <table className="customTable px-[2px] mb-3 text-center w-full">
         <thead className="pb-2">
           <tr>
             {tableHeaders.map((item, idx) => {
               return headerObject === true ? (
                 <TableHeaderNew
+                  noArrow={noArrow}
                   checkedHeader={checkedHeader}
                   Handler={topcheckedHandler}
                   header={item}
@@ -129,7 +131,7 @@ export default function ApiTable({
               >
                 {it.map((d, di) => {
                   return (
-                    <td  key={di} className="opacity-0 text-sm px-1 min-w-14 py-3 ">
+                    <td  key={di} className="opacity-0 text-[17.5px] px-1 min-w-14 py-4 ">
                       {d}
                     </td>
                   );

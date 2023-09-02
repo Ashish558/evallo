@@ -1,4 +1,4 @@
-thead tr th div::after {
+thead tr th .marker::after {
   content: url("../../assets/images/arrow-down.svg");
   display: inline-block;
   width: 25px;

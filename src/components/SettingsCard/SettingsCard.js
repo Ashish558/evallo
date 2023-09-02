@@ -93,9 +93,9 @@ export default function SettingsCard({
                       <div
                         // src={toggleCircleIcon}
                         className={`${toggle.value === false
-                          ? styles.toggleCircle
-                          : styles.toggleCircleActive
-                          }  w-[16px] h-[16px] rounded-[10px]`}
+                          ? styles.toggleCircleImages
+                          : styles.toggleCircleImagesActive
+                          }   w-[13px] h-[13px] rounded-[6px]`}
                         alt="toggle"
                       />
                     </div>

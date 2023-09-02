@@ -26,6 +26,7 @@ export default function InputSelectNew({
   placeHolderClass,
   IconDemography,
   optionListClassName,
+  arrowWidth
 }) {
   const [selected, setSelected] = useState(false);
   const selectRef = useRef();
@@ -67,12 +68,12 @@ export default function InputSelectNew({
         {!selected ?
           <img
             src={IconDemography?countryDA:DownArrow}
-            className={`w-[15px] ${styles.downArrow}`}
+            className={`${arrowWidth ? arrowWidth:'w-[15px]'} ${styles.downArrow}`}
             alt="down-arrow"
             onClick={() => setSelected(!selected)}
           />:<img
           src={IconDemography?countryDA:UpArrow}
-          className={`w-[15px] ${styles.downArrow}`}
+          className={` ${arrowWidth ? arrowWidth:'w-[15px]'}  ${styles.downArrow}`}
           alt="down-arrow"
           onClick={() => setSelected(!selected)}
         />

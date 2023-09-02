@@ -13,6 +13,7 @@ import GrayIcon from "../../assets/assignedTests/gray.svg";
 import RemoveIcon from "../../assets/icons/remove.svg";
 import EditTestIcon from "../../assets/icons/edit-test.svg";
 import TrashIcon from "../../assets/icons/ic_outline-delete.svg";
+import TrashIcon2 from "../../assets/icons/trash-blue.svg";
 import styles from './styles.module.css'
 import AddIcon from "../../assets/icons/plus.svg";
 import EditIcon from "../../assets/icons/test-edit.svg";
@@ -218,7 +219,11 @@ export default function TableItem({
     console.log("item",item)
     setIsChecked(checkedHeader);
   }, [checkedHeader])
-
+  const timestamp = item.createdAt;
+  const date = new Date(timestamp);
+  
+  const options = { year: 'numeric', month: 'long', day: 'numeric' };
+  const formattedDate = date.toLocaleDateString('en-US', options);
 
   console.log(dataFor)
   const getFormatDate=(inputDate)=>{
@@ -243,20 +248,20 @@ console.log(item)
           <>
 
             <tr className=" ">
-              <td>
+              <td className="py-4 px-[10px]">
                 {item.studentName}
               </td>
-              <td>
-                {item.feedback}
+              <td className="py-4 px-[10px]">
+                {item.rating}
               </td>
-              <td>
-                {item.comment}
+              <td className="py-4 px-[10px]">
+                {item.comments}
               </td>
-              <td>
+              <td className="py-4 px-[10px]">
                 {item.service}
               </td>
-              <td>
-                {item.createdAt}
+              <td className="py-4 px-[10px]">
+                {formattedDate}
               </td>
             </tr>
 
@@ -268,14 +273,14 @@ console.log(item)
         dataFor === "serviceRates" && (
           <>
 
-            <tr className=" ">
-              <td>
+            <tr >
+              <td className="py-4 px-[10px]">
                 {item.service}
               </td>
-              <td>
+              <td className="py-4 px-[10px]">
                 {item.currency ? item.currency : "USD"}
               </td>
-              <td>
+              <td className="py-4 px-[10px]">
                 {item.price}
               </td>
             </tr>
@@ -400,34 +405,34 @@ console.log(item)
       )}
       {dataFor === "allUsersSuperAdmin" && (
         <tr className="odd:bg-white  leading-8">
-          <td className="font-medium text-[17.5px] px-1  min-w-14 py-4  text-left">
+          <td className="font-medium text-[17.5px] px-1  min-w-14   text-center">
             <span
-              className="inline-block cursor-pointer pl-4"
+              className="inline-block cursor-pointer"
               onClick={() => onClick.redirect(item)}
             >
               {item.name}
             </span>
           </td>
-          <td className="font-medium text-[17.5px] px-1 min-w-14 py-4">
-            <div className="my-[6px]">{item.userType}</div>
+          <td className="font-medium text-[17.5px] px-1 min-w-14 ">
+            <div className="">{item.userType}</div>
           </td>
-          <td className="font-medium text-[17.5px] px-1  min-w-14 py-4">
-            <div className="my-[6px]">{item.email}</div>
+          <td className="font-medium text-[17.5px] px-1  min-w-14 ">
+            <div className="">{item.email}</div>
           </td>
-          <td className="font-medium text-[17.5px] px-1  min-w-14 py-4">
-            <div className="my-[6px]">
+          <td className="font-medium text-[17.5px] px-1  min-w-14 ">
+            <div className="">
               {item.lastLogin ? item.lastLogin : "-"}
             </div>
           </td>
-          <td className="font-medium text-[17.5px] px-1  min-w-14 py-4">
-            <div className="my-[6px]">
+          <td className="font-medium text-[17.5px] px-1  min-w-14 ">
+            <div className="">
               <span style={{ textDecoration: 'underline' }}>edit</span>
             </div>
           </td>
-          <td className="font-medium text-[17.5px] px-1  min-w-14 py-4">
+          <td className="font-medium text-[17.5px]  ">
             <div className="">
               <button
-                className="rounded-md bg-[#26435F3B] text-[#517CA8] px-2 py-[2px] w-[85px] h-[26.67px] text-18.67px"
+                className="rounded-[5.33px] bg-[rgba(38,67,95,0.23)] text-[#517CA8] px-[17px] pt-0 pb-2  text-[18.67px]"
                 onClick={() => onClick.handleResetPassword(item.email)}
               >
                 Reset
@@ -436,14 +441,19 @@ console.log(item)
           </td>
 
 
-          <td className="font-medium px-1 min-w-14 py-4">
-            <div className="w-4 h-4 rounded-full bg-[#E3E3E3] flex items-center justify-center">
-              <img
-                src={TrashIcon}
-                className="cursor-pointer"
-                onClick={() => onClick.handleDelete(item)}
-              />
-            </div>
+          <td className=" px-1 min-w-14 py-4">
+            {item.userType !== "admin" ? (
+              <div className=" flex items-center justify-center">
+                <img
+                  src={TrashIcon2}
+                  className="cursor-pointer"
+                  onClick={() => onClick.handleDelete(item)}
+                  alt="TrashIcon"
+                />
+              </div>
+            ) : (
+              ""
+            )}
           </td>
         </tr>
       )}

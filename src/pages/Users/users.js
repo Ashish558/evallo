@@ -649,6 +649,7 @@ export default function Users() {
         .then((res) => {
           console.log("uploaded")
           alert("File Uploaded");
+          //setBulkUpload(false)
 
         })
         .catch((err) => {
