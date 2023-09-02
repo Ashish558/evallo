@@ -317,8 +317,7 @@ const sortBycreateDate = () => {
 
   return (
     <div className="w-[83.6989583333vw] mx-auto bg-lightWhite min-h-screen">
-      <div className="py-14 px-5 w-full">
-        <p className="text-[#24A3D9]  mb-3 ">
+      <p className="text-[#24A3D9]  !mt-[calc(50*0.052vw)] !mb-[calc(25*0.052vw)]">
           {organization?.company +
             "  >  " +
             firstName +
@@ -327,6 +326,8 @@ const sortBycreateDate = () => {
             "  >  "}
           <span className="font-semibold">Content</span>
         </p>
+      <div className=" w-full">
+        
         <div className="flex justify-between items-center">
           {/* <p
                   className="font-bold text-4xl"
@@ -339,14 +340,15 @@ const sortBycreateDate = () => {
             IconRight={SearchIcon}
             onChange={(e) => setTestName(e.target.value)}
             optionData={optionData}
+          
             placeholder="Search"
             parentClassName="w-290 mr-4"
-            inputClassName="placeholder:font-semibold pl-2 "
-            inputContainerClassName="bg-white border pt-3.5 pb-3.5"
+            inputClassName="placeholder:font-semibold pl-2 text-base-17-5"
+            inputContainerClassName="bg-white border pt-3.5 pb-3.5 !rounded-lg"
             type="select"
           />
           <button
-            className="bg-[#FFA28D] py-4 px-6 flex items-center text-white  rounded-lg mr-55 text-[15px]"
+            className="bg-[#FFA28D] py-[10px] px-6 flex items-center text-white  rounded-lg  text-[15px] text-base-15"
             onClick={() => setModalActive(true)}
           >
             <span className="pt-1"> Add New Material</span>

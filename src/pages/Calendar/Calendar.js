@@ -71,6 +71,8 @@ export default function Calendar() {
   const { id: sessionToEdit } = useParams();
   const [isEdited, setIsEdited] = useState(false);
   const [isEditable, setIsEditable] = useState(false);
+  const { organization } = useSelector((state) => state.organization);
+
   // console.log(sessionToEdit)
   const [associatedStudents, setAssociatedStudents] = useState([]);
   const { id, timeZone: currentUserTImeZone } = useSelector(
@@ -888,9 +890,19 @@ export default function Calendar() {
   return (
     <>
       <div className="mx-auto calender bg-lightWhite min-h-screen !w-[90vw]">
-        <div className="py-14 pt-10 pb-2 pl-5 calendar flex">
-        <div className=" pl-0 pr-0 w-[280px] mr-[10px]">
-            <div className="w-[280px]">
+      <p className="text-[#24A3D9] text-xl text-base-20 !mt-[calc(50*0.052vw)]">
+            {organization?.company +
+              "  >  " +
+              firstName +
+              "  " +
+              lastName +
+              "  >  "}
+            <span className="font-semibold">Schedule</span>
+          </p>
+        <div className="py-8 pt-[calc(50*0.052vw)] pb-2 pl-5 calendar flex">
+        
+        <div className=" pl-0 pr-0 w-[280px]  mr-[10px]">
+            <div className="w-[280px] translate-y-[-5px]">
               <SimpleCalendar
                 events={
                   persona === "parent" || persona === "tutor"

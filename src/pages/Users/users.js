@@ -680,9 +680,9 @@ export default function Users() {
 
   return (
     <div className="w-[83.6989583333vw] mx-auto  min-h-screen">
-      <div className="pb-10  mt-[50px]">
+      <div className="pb-10  mt-[50px] !mt-[calc(50*0.0522vw)]">
         <div className="flex justify-between items-center mb-3">
-          <p className="text-[#24A3D9] mb-6 text-xl">
+          <p className="text-[#24A3D9] mb-6 text-xl text-base-20">
             {organization?.company +
               "  >  " +
               firstName +
@@ -692,7 +692,7 @@ export default function Users() {
             <span className="font-semibold">CRM</span>
           </p>
           <button
-            className="bg-[#24A3D9] w-[188px] text-[15px] justify-center flex py-2 px-5 items-center text-white font-semibold rounded-lg"
+            className="bg-[#24A3D9] w-[188px] text-[15px] justify-center flex py-2 px-5 items-center text-white font-semibold rounded-lg text-base-15"
             onClick={() => navigate("/assigned-tutors")}
           >
             Tutor Mapping
@@ -701,7 +701,7 @@ export default function Users() {
         </div>
         <div>
           <div className="flex mb-[46px]">
-            <button className="bg-[#517CA8] w-[158px] text-[15px] justify-center flex  items-center text-white  rounded-lg mr-[25px]">
+            <button className="bg-[#517CA8] text-base-15 w-[158px] text-[15px] justify-center flex  items-center text-white  rounded-lg mr-[25px]">
               {csvLoad ? <LoaderNew /> : ""}
               {!csvLoad && !successFetched ? (
                 <p onClick={handleBulkExport}>Export Data</p>
@@ -730,7 +730,7 @@ export default function Users() {
             </button>
             <button
               onClick={upload}
-              className="bg-[#517CA8] w-[158px] text-[15px] justify-center flex  items-center text-white  rounded-lg mr-[25px]"
+              className="bg-[#517CA8] text-base-15 w-[158px] text-[15px] justify-center flex  items-center text-white  rounded-lg mr-[25px]"
             >
               Bulk Upload{" "}
               <img src={UploadIcon} className="ml-3" alt="UploadIcon" />
@@ -745,7 +745,7 @@ export default function Users() {
                 </>
               }
               onClick={() => setModalActive(true)}
-              className=" flex items-center text-[15px]  py-3 px-3"
+              className=" flex items-center text-[15px]  py-[10px] px-3 text-base-15"
             />
 
             {bulkUpload && (
@@ -780,7 +780,7 @@ export default function Users() {
                           <div className="flex justify-center">
                             <label
                               htmlFor="file"
-                              className="block text-white bg-[#517CA8] hover:bg-[#517CA8] items-center justify-center  rounded-[5px]  px-4 py-2.5 text-center dark:bg-[#517CA8] dark:hover:bg-[#517CA8] "
+                              className="block text-white bg-[#517CA8] text-base-15 hover:bg-[#517CA8] items-center justify-center  rounded-[5px]  px-4 py-2.5 text-center dark:bg-[#517CA8] dark:hover:bg-[#517CA8] "
                             >
                               Choose File
                             </label>
@@ -876,9 +876,9 @@ export default function Users() {
           <InputField
             IconRight={SearchIcon}
             placeholder="Search"
-            inputClassName="pl-4 text-[#667085]"
+            inputClassName="text-base-17-5 pl-4 text-[#667085]"
             parentClassName="w-[22.03125vw]  py-1"
-            inputContainerClassName="text-sm mt-1 shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white   mb-1"
+            inputContainerClassName="text-sm  mt-1 shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white   mb-1"
             type="text"
             value={filterData.typeName}
             onChange={(e) =>
@@ -886,9 +886,10 @@ export default function Users() {
             }
           />
           <InputSelect
+            placeholderClass="text-base-17-5"
             optionData={userTypesList}
-            optionListClassName="text-[#667085]"
-            inputContainerClassName="text-sm shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white px-[20px] py-[16px]"
+            optionListClassName="text-base-17-5 text-[#667085]"
+            inputContainerClassName="text-sm  shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white px-[20px] py-[16px]"
             placeholder="User Type"
             parentClassName="w-[12.8541666667vw] text-[#667085]"
             type="select"
@@ -908,11 +909,12 @@ export default function Users() {
             }
           />
           <InputSelect
-            optionListClassName="text-[#667085]"
+            optionListClassName="text-base-17-5 text-[#667085]"
+            placeholderClass="text-base-17-5"
             optionData={settings.leadStatus}
             placeholder="Lead Status"
             parentClassName="w-[12.8541666667vw] border-none text-[#667085]"
-            inputContainerClassName="text-sm shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white px-[20px] py-[16px]"
+            inputContainerClassName="text-sm  shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white px-[20px] py-[16px]"
             type="select"
             checkbox={{
               visible: true,
@@ -930,12 +932,13 @@ export default function Users() {
             value={filterData.status.length > 0 ? filterData.status[0] : ""}
           />
           <InputSelect
-            optionListClassName="text-[#667085]"
+            optionListClassName="text-base-17-5 text-[#667085]"
+            placeholderClass="text-base-17-5"
             optionData={specializations}
             placeholder="Services"
             parentClassName="w-[12.8541666667vw] text-[#667085]"
             type="select"
-            inputContainerClassName="text-sm shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white px-[20px] py-[16px]"
+            inputContainerClassName="text-sm  shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white px-[20px] py-[16px]"
             value={
               filterData.specialization.length > 0
                 ? filterData.specialization[0]
@@ -957,12 +960,13 @@ export default function Users() {
           />
 
           <InputSelect
-            optionListClassName="text-[#667085]"
+            optionListClassName="text-base-17-5 text-[#667085]"
+            placeholderClass="text-base-17-5"
             optionData={allTutors}
             placeholder="Tutor"
             parentClassName="w-[12.8541666667vw] text-[#667085]"
             type="select"
-            inputContainerClassName="text-sm shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white px-[20px] py-[16px]"
+            inputContainerClassName="text-sm  shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white px-[20px] py-[16px]"
             optionType="object"
             value={filterData.tutor.length > 0 ? filterData.tutor[0] : ""}
             checkbox={{
@@ -1000,11 +1004,11 @@ export default function Users() {
                 className={`${styles["custom-checkbox"]} ${isChecked ? "checked" : ""
                   }`}
               ></span>
-              <span className="block text-[17.5px]">{numberChecked} Selected</span>
+              <span className="block text-[17.5px] text-base-17-5">{numberChecked} Selected</span>
             </label>
           </div>
           <div>
-            <button className="bg-[#26435F] text-[15px] px-[20px] py-[10px] rounded-[7.5px] text-white ml-auto">
+            <button className="bg-[#26435F] text-[15px] px-[25px] py-[10px] rounded-[7.5px] text-white ml-auto text-base-15">
               Save
             </button>
           </div>
@@ -1065,8 +1069,8 @@ export default function Users() {
                       label="First Name"
                       labelClassname="ml-4 mb-0.5 text-[#26435F] font-semibold"
                       placeholder="First Name"
-                      inputContainerClassName="text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0"
-                      inputClassName="bg-transparent"
+                      inputContainerClassName="text-sm  pt-3.5 pb-3.5 px-5 bg-primary-50 border-0"
+                      inputClassName="text-base-17-5 bg-transparent"
                       parentClassName="w-full"
                       type="text"
                       value={modalData.firstName}
@@ -1082,8 +1086,8 @@ export default function Users() {
                       labelClassname="ml-4 mb-0.5 text-[#26435F] font-semibold"
                       isRequired={true}
                       placeholder="Last Name"
-                      inputContainerClassName="text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0"
-                      inputClassName="bg-transparent"
+                      inputContainerClassName="text-sm  pt-3.5 pb-3.5 px-5 bg-primary-50 border-0"
+                      inputClassName="text-base-17-5 bg-transparent"
                       parentClassName="w-full"
                       type="text"
                       value={modalData.lastName}
@@ -1098,8 +1102,8 @@ export default function Users() {
                       labelClassname="ml-4 mt-2 mb-0.5 text-[#26435F] font-semibold"
                       isRequired={true}
                       placeholder="Email Addresss"
-                      inputContainerClassName="text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0"
-                      inputClassName="bg-transparent"
+                      inputContainerClassName="text-sm  pt-3.5 pb-3.5 px-5 bg-primary-50 border-0"
+                      inputClassName="text-base-17-5 bg-transparent"
                       parentClassName="w-full"
                       type="text"
                       value={modalData.email}
@@ -1119,8 +1123,9 @@ export default function Users() {
                       placeholder="Select User Type "
                       label="User Type"
                       labelClassname="ml-0  text-[#26435F] font-bold"
+                      placeholderClass="text-base-17-5"
                       optionData={userTypeOptions}
-                      inputContainerClassName="text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0"
+                      inputContainerClassName="text-sm  pt-3.5 pb-3.5 px-5 bg-primary-50 border-0"
                       parentClassName="w-full"
                     />
                   </div>
@@ -1184,6 +1189,7 @@ export default function Users() {
                           studentName: e.target.value,
                         })
                       }
+                      placeholderClass="text-base-17-5"
                       optionData={students}
                       onOptionClick={(item) => {
                         setModalData({
@@ -1196,7 +1202,7 @@ export default function Users() {
                       parentClassName="w-full mr-4"
                       labelClassname="ml-2 mb-0.5"
                       inputContainerClassName="px-5 py-3.5 text-sm bg-primary-50 border-0"
-                      inputClassName="bg-transparent"
+                      inputClassName="text-base-17-5 bg-transparent"
                       placeholder="Student Name"
                       type="select"
                     />
@@ -1211,6 +1217,7 @@ export default function Users() {
                           tutorName: e.target.value,
                         })
                       }
+                      placeholderClass="text-base-17-5"
                       optionData={tutors}
                       onOptionClick={(item) => {
                         setModalData({
@@ -1223,7 +1230,7 @@ export default function Users() {
                       parentClassName="w-full mr-4"
                       labelClassname="ml-2 mb-0.5"
                       inputContainerClassName="px-5 py-3.5 text-sm bg-primary-50 border-0"
-                      inputClassName="bg-transparent"
+                      inputClassName="text-base-17-5 bg-transparent"
                       placeholder="Tutor Name"
                       type="select"
                     />

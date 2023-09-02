@@ -839,35 +839,36 @@ export default function Settings() {
 
   return (
     <>
-      <div className=" bg-lightWhite min-h-screen w-[83.6989583333vw] mx-auto">
-        <p className="text-[#24A3D9]  mb-9 ">
+      <div className="  min-h-screen w-[83.6989583333vw] mx-auto">
+        <p className="text-[#24A3D9]  !my-[calc(50*0.052vw)] text-base-20">
           {organization?.company + "  >  "}
           <span className="font-semibold">Settings</span>
         </p>
         <div className=" flex w-full flex-1 items-center mb-[30px]">
-          <div className={`${styles.tabsContainer} flex-1`}>
+          <div className={`${styles.tabsContainer} gap-7 flex-1 !shadow-[0px_0px_2.5px_0px_rgba(0,0,0,0.25)]`}>
             {tabs.map((item, idx) => {
               return (
                 <div
                   className={`${styles.tab} ${activeTab === idx + 1 ? styles.selectedTab : ""
-                    } cursor-pointer`}
+                    } cursor-pointer `}
                   onClick={() => changeTab(idx + 1)}
                 >
-                  <div className="w-[195px] flex justify-center">
+                  <div className={`" px-1   flex justify-center items-center ${activeTab === idx + 1?' ':''}`}>
                     <div>
                       {activeTab === idx + 1 && (
-                        <img src={item.Icon} alt="item-logo" />
+                        <img src={item.Icon} className="w-[15px] h-[15px]" alt="item-logo" />
                       )}
                       {activeTab === idx + 1 || (
-                        <img src={item.Icon2} alt="item-logo" />
+                        <img src={item.Icon2} className="w-[15px] h-[15px]" alt="item-logo" />
                       )}
                     </div>
-                    <p>{item.name} </p>
+                    <p className="flex items-center  w-[calc(191*0.0522vw)] justify-center text-base-17-5  whitespace-nowrap">{item.name} </p>
                   </div>
                   {activeTab === idx + 1 && (
                     <img
                       src={ActiveTab}
-                      className={styles.activeBgIcon}
+
+                      className={`${styles.activeBgIcon} `}
                       alt="item-background"
                     />
                   )}
@@ -909,20 +910,26 @@ export default function Settings() {
             <div className="flex items-center gap-x-8 mb-4">
               <div>
                 <InputSelect
-                 labelClassname="mb-1"
-                 inputContainerClassName="shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-[#FFFFFF]"
-                  optionData={timeZones}
-                  parentClassName="min-w-[360px]"
+                 labelClassname="text-base-20 mb-1"
+                 inputContainerClassName=" text-base-17-5 shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-[#FFFFFF]"
+                 optionListClassName="text-base-17-5" 
+                 optionClassName="text-base-17-5"
+                 optionData={timeZones}
+                 placeholderClass="text-base-17-5" 
+                 parentClassName=" text-base-17-5 py-0 w-[calc(387*0.0522vw)] min-w-[300px]"
                   label="Default Time Zone"
                   value={settingsData.timeZone}
                   onChange={(val) => handleChange("timeZone", val)}
                 />
               </div>
               <InputSelect
-                labelClassname="mb-1"
-                inputContainerClassName="shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-[#FFFFFF]"
+                labelClassname="text-base-20 mb-1"
+                inputContainerClassName=" text-base-17-5 shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-[#FFFFFF]"
+                optionListClassName="text-base-17-5"
+                optionClassName="text-base-17-5"
                 optionData={["dd/mm/yy", "mm/dd/yy", "yy/mm/dd"]}
-                parentClassName="min-w-[360px]"
+                placeholderClass="text-base-17-5"
+                parentClassName=" text-base-17-5 py-0 w-[calc(387*0.0522vw)] min-w-[300px]"
                 label="Default Date Format"
                 value={settingsData.dateFormat}
                 onChange={(val) => handleChange("dateFormat", val)}
@@ -930,7 +937,9 @@ export default function Settings() {
             </div>
             <div className="h-[1.25px] bg-[#CBD6E2] mb-4 mt-8"></div>
             <SettingsCard
+              titleClassName="text-base-20"
               title="Lead Status Items (Parent / Student)"
+              
               body={
                 <div className="flex items-center flex-wrap [&>*]:mb-[10px] bg-white shadow-small p-4 rounded-5">
                   <AddTag onAddTag={handleAddTag} keyName="leadStatus" />
@@ -940,16 +949,17 @@ export default function Settings() {
                     items={leadStatus ? leadStatus : []}
                     keyName="leadStatus"
                     onRemoveFilter={onRemoveFilter}
-                    className="pt-1 pb-1 mr-15"
+                    className="pt-1 pb-1 mr-15 text-base-17-5"
                   />
                 </div>
               }
             />
 
             <SettingsCard
+              titleClassName="text-base-20"
               title="Tutor Status Items"
               body={
-                <div className="flex items-center flex-wrap [&>*]:mb-[10px] bg-white shadow-small p-4 rounded-5">
+                <div className="flex items-center flex-wrap [&>*]:mb-[10px] bg-white shadow-small p-4 rounded-5 text-base-17-5">
                   <AddTag onAddTag={handleAddTag} keyName="tutorStatus" />
                   <FilterItems
                     onlyItems={true}
@@ -957,13 +967,14 @@ export default function Settings() {
                     items={tutorStatus ? tutorStatus : []}
                     keyName="tutorStatus"
                     onRemoveFilter={onRemoveFilter}
-                    className="pt-1 pb-1 mr-15"
+                    className="pt-1 pb-1 mr-15 text-base-17-5"
                   />
                 </div>
               }
             />
 
             <SettingsCard
+              titleClassName="text-base-20"
               title="Manage Referral Codes"
               className={styles["bordered-settings-container"]}
               body={
@@ -1032,7 +1043,7 @@ export default function Settings() {
                               fetchData={true}
                               api="test"
                               onRemoveFilter={onRemoveCodeTest}
-                              className="pt-1 pb-1 mr-15"
+                              className="pt-1 pb-1 mr-15 text-base-17-5"
                             />
                           </div>
                         </div>
@@ -1051,6 +1062,7 @@ export default function Settings() {
             />
 
             <SettingsCard
+              titleClassName="text-base-20"
               title="Expertise"
               toggle={{ value: toggleImage.Expertise, key: "Expertise" }}
               onToggle={onToggle}
@@ -1073,13 +1085,14 @@ export default function Settings() {
                     keyName="Expertise"
                     baseLink={awsLink}
                     onRemoveFilter={onRemoveTextImageTag}
-                    className="pt-1 pb-1 mr-15"
+                    className="pt-1 pb-1 mr-15 text-base-17-5"
                   />
                 </div>
               }
             /> 
 
             <SettingsCard
+              titleClassName="text-base-20"
               title="Manage Services & Topics"
               className={styles["bordered-settings-container"]}
               body={
@@ -1119,7 +1132,7 @@ export default function Settings() {
                                 keyName={service.service}
                                 items={service.specialization}
                                 onRemoveFilter={onRemoveSpecialization}
-                                className="pt-1 pb-1 mr-15"
+                                className="pt-1 pb-1 mr-15 text-base-17-5"
                               />
                             </div>
                           </div>
@@ -1137,6 +1150,7 @@ export default function Settings() {
             />
 
             <SettingsCard
+              titleClassName="text-base-20"
               title="Session Tags & Reconciliation"
               className={styles["bordered-settings-container"]}
               body={
@@ -1172,7 +1186,7 @@ export default function Settings() {
                               keyName={service.heading}
                               items={service.items}
                               onRemoveFilter={onRemoveSessionTagItem}
-                              className="pt-1 pb-1 mr-15"
+                              className="pt-1 pb-1 mr-15 text-base-17-5"
                             />
                           </div>
                         </div>
@@ -1189,6 +1203,7 @@ export default function Settings() {
               }
             />
             {/* <SettingsCard
+              titleClassName="text-base-20"
               title="Session Tags"
               titleClassName="text-[21px] mb-[15px]"
               body={
@@ -1211,7 +1226,7 @@ export default function Settings() {
                               keyName={Object.keys(sessionTags)[i]}
                               items={sessionTags[tag]}
                               onRemoveFilter={onRemoveSessionTag}
-                              className="pt-1 pb-1 mr-15"
+                              className="pt-1 pb-1 mr-15 text-base-17-5"
                             />
                           </div>
                         </div>
@@ -1222,6 +1237,7 @@ export default function Settings() {
             /> */}
 
             {/* <SettingsCard
+              titleClassName="text-base-20"
               title="Personality"
               toggle={{ value: toggleImage.personality, key: "personality" }}
               onToggle={onToggle}
@@ -1244,13 +1260,14 @@ export default function Settings() {
                     keyName="personality"
                     baseLink={awsLink}
                     onRemoveFilter={onRemoveTextImageTag}
-                    className="pt-1 pb-1 mr-15"
+                    className="pt-1 pb-1 mr-15 text-base-17-5"
                   />
                 </div>
               }
             /> */}
 
             {/* <SettingsCard
+              titleClassName="text-base-20"
               title="Interest"
               toggle={{ value: toggleImage.interest, key: "interest" }}
               onToggle={onToggle}
@@ -1271,13 +1288,14 @@ export default function Settings() {
                     keyName="interest"
                     baseLink={awsLink}
                     onRemoveFilter={onRemoveTextImageTag}
-                    className="pt-1 pb-1 mr-15"
+                    className="pt-1 pb-1 mr-15 text-base-17-5"
                   />
                 </div>
               }
             /> */}
 
             {/* <SettingsCard
+              titleClassName="text-base-20"
               title="Subjects"
               body={
                 <div className="flex items-center flex-wrap [&>*]:mb-[10px]">
@@ -1289,13 +1307,14 @@ export default function Settings() {
                     items={classes ? classes : []}
                     baseLink={awsLink}
                     onRemoveFilter={onRemoveFilter}
-                    className="pt-1 pb-1 mr-15"
+                    className="pt-1 pb-1 mr-15 text-base-17-5"
                   />
                 </div>
               }
             /> */}
 
             <SettingsCard
+              titleClassName="text-base-20"
               title="Edit Announcements"
               toggle={{ value: toggleImage.offer, key: "offer" }}
               onToggle={onToggle}
@@ -1322,7 +1341,7 @@ export default function Settings() {
                     baseLink={awsLink}
                     onRemoveFilter={onRemoveImage}
                     // onRemoveFilter={onRemoveFilter}
-                    className="pt-1 pb-1 mr-15"
+                    className="pt-1 pb-1 mr-15 text-base-17-5"
                   /> */}
                     {offerImages?.map((offer) => {
                       return (
@@ -1356,7 +1375,7 @@ export default function Settings() {
                               </div>
                               <InputField
                                 defaultValue={offer.link}
-                                inputClassName={"bg-[#F5F8FA]"}
+                                inputClassName={" text-base-17-5 bg-[#F5F8FA]"}
                                 parentClassName={"mb-3 bg-[#F5F8FA]"}
                                 onBlur={(e) =>
                                   handleOfferChange(
@@ -1369,7 +1388,7 @@ export default function Settings() {
                               <InputField
                                 defaultValue={offer.buttonText}
                                 parentClassName={"bg-[#F5F8FA]"}
-                                inputClassName={"bg-[#F5F8FA]"}
+                                inputClassName={" text-base-17-5 bg-[#F5F8FA]"}
                                 placeholder={
                                   "Button (eg. Register, Enroll, View)"
                                 }
@@ -1395,7 +1414,7 @@ export default function Settings() {
                 </div>
               }
             />
-            <div className="flex items-center pb-2 text-[#26435F] font-medium text-xl">
+            <div className="flex items-center pb-2 text-[#26435F] font-medium text-xl text-base-20">
               <p className="pr-2">Set Permissions </p>
               <p>
                 <img src={questionMark} alt="" />
@@ -1410,7 +1429,7 @@ export default function Settings() {
                       item.choosedValue === false ? (
                       <div
                         key={id}
-                        className="pt-[34px] pb-[30px] border-b-2 border-[#CBD6E2] text-[#24A3D9] font-medium text-[17.5px] flex items-center justify-between"     >
+                        className="pt-[34px] pb-[30px] border-b-2 border-[#CBD6E2] text-[#24A3D9] font-medium text-[17.5px] flex items-center justify-between text-base-17-5"     >
                         <p>{renderColoredText(item.name)}</p>
 
                         <ToggleBar
@@ -1480,8 +1499,9 @@ export default function Settings() {
       {modalActive && (
         <Modal
           classname={"max-w-840 mx-auto"}
+          titleClassName="text-base-20 mb-[18px]"
           title="Edit Details"
-          titleClassName="mb-[18px]"
+          
           cancelBtn={true}
           cancelBtnClassName="w-140"
           primaryBtn={{
@@ -1497,11 +1517,12 @@ export default function Settings() {
                 <div>
                   <InputField
                     label="Admin First Name"
-                    labelClassname="ml-4 mb-0.5"
+                    labelClassname="text-base-20 ml-4 mb-0.5"
                     placeholder="Admin Name"
-                    inputContainerClassName="px-5 bg-primary-50 border-0"
+                    inputContainerClassName=" text-base-17-5 px-5 bg-primary-50 border-0"
                     inputClassName="bg-transparent"
-                    parentClassName="w-full mr-4"
+                    placeholderClass="text-base-17-5"
+                    parentClassName=" text-base-17-5 py-0 w-full mr-4"
                     type="text"
                     value={adminModalDetails.firstName}
                     isRequired={true}
@@ -1516,11 +1537,12 @@ export default function Settings() {
                 <div>
                   <InputField
                     label="Admin Last Name"
-                    labelClassname="ml-4 mb-0.5"
+                    labelClassname="text-base-20 ml-4 mb-0.5"
                     placeholder="Admin Name"
-                    inputContainerClassName="px-5 bg-primary-50 border-0"
+                    inputContainerClassName=" text-base-17-5 px-5 bg-primary-50 border-0"
                     inputClassName="bg-transparent"
-                    parentClassName="w-full mr-4"
+                    placeholderClass="text-base-17-5"
+                    parentClassName=" text-base-17-5 py-0 w-full mr-4"
                     type="text"
                     value={adminModalDetails.lastName}
                     isRequired={true}
@@ -1535,12 +1557,13 @@ export default function Settings() {
                 <div>
                   <InputField
                     label="Phone No."
-                    labelClassname="ml-4 mb-0.5"
+                    labelClassname="text-base-20 ml-4 mb-0.5"
                     isRequired={true}
                     placeholder="+91 Phone Number"
-                    inputContainerClassName="px-5 bg-primary-50 border-0"
+                    inputContainerClassName=" text-base-17-5 px-5 bg-primary-50 border-0"
                     inputClassName="bg-transparent"
-                    parentClassName="w-full mr-4"
+                    placeholderClass="text-base-17-5"
+                    parentClassName=" text-base-17-5 py-0 w-full mr-4"
                     type="text"
                     value={adminModalDetails.phone}
                     onChange={(e) =>
@@ -1554,13 +1577,14 @@ export default function Settings() {
                 <div>
                   <InputField
                     label="Email Address"
-                    labelClassname="ml-4 mb-0.5"
+                    labelClassname="text-base-20 ml-4 mb-0.5"
                     isRequired={true}
                     placeholder="Email Address"
                     type="email"
-                    inputContainerClassName="px-5 bg-primary-50 border-0"
+                    inputContainerClassName=" text-base-17-5 px-5 bg-primary-50 border-0"
                     inputClassName="bg-transparent"
-                    parentClassName="w-full mr-4"
+                    placeholderClass="text-base-17-5"
+                    parentClassName=" text-base-17-5 py-0 w-full mr-4"
                     value={adminModalDetails.email}
                     onChange={(e) =>
                       setAdminModalDetails({
@@ -1578,8 +1602,9 @@ export default function Settings() {
       {addCodeModalActive && (
         <Modal
           classname={"max-w-[700px] mx-auto"}
+          titleClassName="text-base-20 mb-[18px]"
           title="Add / Edit Subscription Code"
-          titleClassName="mb-[18px]"
+         
           cancelBtn={false}
           cancelBtnClassName="w-0"
           primaryBtn={{
@@ -1599,11 +1624,12 @@ export default function Settings() {
                 <div>
                   <InputField
                     label="Subscription Code"
-                    labelClassname="ml-4 mb-0.5"
+                    labelClassname="text-base-20 ml-4 mb-0.5"
                     placeholder="Sample Code"
-                    inputContainerClassName="px-5 bg-primary-50 border-0"
+                    inputContainerClassName=" text-base-17-5 px-5 bg-primary-50 border-0"
                     inputClassName="bg-transparent"
-                    parentClassName="w-full mr-4"
+                    placeholderClass="text-base-17-5"
+                    parentClassName=" text-base-17-5 py-0 w-full mr-4"
                     type="text"
                     value={subModalData.code}
                     isRequired={true}
@@ -1615,12 +1641,13 @@ export default function Settings() {
                 <div>
                   <InputField
                     label="Duration (in weeks)"
-                    labelClassname="ml-4 mb-0.5"
+                    labelClassname="text-base-20 ml-4 mb-0.5"
                     isRequired={true}
                     placeholder=""
-                    inputContainerClassName="px-5 bg-primary-50 border-0"
+                    inputContainerClassName=" text-base-17-5 px-5 bg-primary-50 border-0"
                     inputClassName="bg-transparent"
-                    parentClassName="w-full mr-4"
+                    placeholderClass="text-base-17-5"
+                    parentClassName=" text-base-17-5 py-0 w-full mr-4"
                     type="text"
                     value={subModalData.expiry}
                     onChange={(e) =>
@@ -1639,8 +1666,9 @@ export default function Settings() {
       {addTestModalActive && (
         <Modal
           classname={"max-w-[700px] mx-auto"}
+          titleClassName="text-base-20 mb-[18px]"
           title="Add Tests"
-          titleClassName="mb-[18px]"
+          
           cancelBtn={false}
           cancelBtnClassName="w-0"
           primaryBtn={{
@@ -1658,10 +1686,11 @@ export default function Settings() {
               <div className="grid grid-cols-1 md:grid-cols-2  gap-x-2 md:gap-x-3 gap-y-2 gap-y-4 mb-5">
                 <div>
                   <InputSearch
-                    labelClassname="hidden"
+                    labelClassname="text-base-20 hidden"
                     placeholder="Type Test Name"
-                    parentClassName="w-full  mb-10"
-                    inputContainerClassName="bg-[#F3F5F7] border-0 pt-3.5 pb-3.5"
+                    placeholderClass="text-base-17-5"
+                    parentClassName=" text-base-17-5 py-0 w-full  mb-10"
+                    inputContainerClassName=" text-base-17-5 bg-[#F3F5F7] border-0 pt-3.5 pb-3.5"
                     inputClassName="bg-[#F3F5F7]"
                     type="text"
                     value={searchedTest}
@@ -1671,6 +1700,8 @@ export default function Settings() {
                       match: updatedSubscriptionData.tests,
                     }}
                     onChange={(e) => setSearchedTest(e.target.value)}
+                    optionListClassName="text-base-17-5"
+                    optionClassName="text-base-17-5"
                     optionData={filteredTests}
                     onOptionClick={(item) => {
                       handleTestChange(item);
@@ -1688,8 +1719,9 @@ export default function Settings() {
       {tagModalActive && (
         <Modal
           classname={"max-w-[540px] mx-auto"}
+          titleClassName="text-base-20 mb-[18px]"
           title=""
-          titleClassName="mb-[18px]"
+          
           cancelBtn={true}
           cancelBtnClassName="w-140 hidden"
           primaryBtn={{
@@ -1708,11 +1740,12 @@ export default function Settings() {
               <div className="flex flex-col items-start mb-5">
                 <InputField
                   label="Text"
-                  labelClassname="ml-4 mb-0.5"
+                  labelClassname="text-base-20 ml-4 mb-0.5"
                   placeholder="Text"
-                  inputContainerClassName="px-5 pt-3 pb-3 bg-primary-50 border-0"
+                  inputContainerClassName=" text-base-17-5 px-5 pt-3 pb-3 bg-primary-50 border-0"
                   inputClassName="bg-transparent"
-                  parentClassName="w-full mr-4 mb-3"
+                  placeholderClass="text-base-17-5"
+                  parentClassName=" text-base-17-5 py-0 w-full mr-4 mb-3"
                   type="text"
                   value={tagText}
                   isRequired={true}
@@ -1746,8 +1779,9 @@ export default function Settings() {
       {addNewQuestionModalActive && (
         <Modal
           classname={"max-w-[700px] mx-auto"}
+          titleClassName="text-base-20 mb-[18px]"
           title="Add Question"
-          titleClassName="mb-[18px]"
+          
           cancelBtn={true}
           cancelBtnClassName="w-140"
           primaryBtn={{

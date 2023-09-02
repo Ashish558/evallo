@@ -71,7 +71,7 @@ export default function SettingsCard({
 
           <div>
             <div className="flex items-center bg-white rounded-tl-5 rounded-tr-5 pt-4">
-              <div className="text-[#24A3D9] mr-3 pl-4 ">
+              <div className="text-[#24A3D9] mr-3 pl-4 text-base-17-5">
                 Show Announcement Images
               </div>
               <div>

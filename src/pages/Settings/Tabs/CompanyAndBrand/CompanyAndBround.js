@@ -171,6 +171,7 @@ const CompanyAndBround = () => {
             parentClassName="text-xs w-full text-[#26435F]"
             inputContainerClassName=" bg-white"
             inputClassName="text-base-17-5 bg-transparent"
+            labelClassname="text-base-17-5 text-sm font-bold mb-1"
             label="Account Type"
             disabled={true}
             value={"Company"}
@@ -182,6 +183,7 @@ const CompanyAndBround = () => {
             parentClassName="text-xs w-full text-[#26435F]"
             inputContainerClassName=" bg-white"
             inputClassName="text-base-17-5 bg-transparent"
+            labelClassname="text-base-17-5 text-sm font-bold mb-1"
             label="Company Name"
             value={values.company}
             onChange={(e) =>
@@ -197,6 +199,7 @@ const CompanyAndBround = () => {
             parentClassName="text-xs w-full text-[#26435F]"
             inputContainerClassName=" bg-white"
             inputClassName="text-base-17-5 bg-transparent"
+            labelClassname="text-base-17-5 text-sm font-bold mb-1"
             label="Support Email"
             value={values.supportEmail}
             onChange={(e) =>
@@ -212,6 +215,7 @@ const CompanyAndBround = () => {
             parentClassName="text-xs w-full text-[#26435F]"
             inputContainerClassName=" bg-white"
             inputClassName="text-base-17-5 bg-transparent"
+            labelClassname="text-base-17-5 text-sm font-bold mb-1"
             label="Role / Position"
             value={values.role}
             onChange={(e) =>
@@ -225,7 +229,7 @@ const CompanyAndBround = () => {
         </div>
         <div className="flex gap-[calc(39*0.050vw)] flex-1">
           <div className="">
-            <label className="inline-block text-[15px] font-semibold undefined ml-0 text-[#26435F] ">
+            <label className="inline-block text-[15px] font-semibold undefined ml-0 text-[#26435F] text-base-17-5">
               {" "}
               Business Logo{" "}
             </label>
@@ -265,6 +269,7 @@ const CompanyAndBround = () => {
                 parentClassName="text-xs text-[#26435F] w-[calc(589*0.050vw)] mb-1"
                 inputContainerClassName=" bg-white mt-1 rounded-md"
                 inputClassName="text-base-17-5 bg-transparent "
+                labelClassname="text-base-17-5 text-sm font-bold mb-1"
                 label="Website"
                 value={values.website}
                 onChange={(e) =>
@@ -281,6 +286,7 @@ const CompanyAndBround = () => {
                 inputContainerClassName=" bg-white py-1 mb-1"
                 labelClassname="text-base-17-5 text-sm font-bold mb-1"
                 inputClassName="text-base-17-5 bg-transparent "
+                
                 label="Company Type"
                 value={values.companyType}
                 optionData={companyType}
@@ -299,6 +305,7 @@ const CompanyAndBround = () => {
                 parentClassName="text-xs text-[#26435F]  w-full"
                 inputContainerClassName=" bg-white rounded-md mt-1"
                 inputClassName="text-base-17-5 bg-transparenttext-base-17-5"
+                
                 label="Street Address"
                 value={values.address}
                 onChange={(e) =>
@@ -315,6 +322,7 @@ const CompanyAndBround = () => {
                 inputContainerClassName=" bg-white py-1 mb-1 "
                 labelClassname="text-base-17-5 text-sm font-bold mb-1 text-base-17-5"
                 inputClassName="text-base-17-5 bg-transparent"
+                
                 label="Country"
                 value={values.country}
                 optionData={country}
@@ -333,6 +341,7 @@ const CompanyAndBround = () => {
                 labelClassname="text-base-17-5 text-sm font-bold mb-1"
                 inputContainerClassName=" bg-white mb-1 "
                 inputClassName="text-base-17-5 bg-transparent "
+                
                 label="State / Region "
                 value={values.state}
                 optionData={states}
@@ -350,6 +359,7 @@ const CompanyAndBround = () => {
                 parentClassName="text-xs text-[#26435F] w-full pt-1"
                 inputContainerClassName=" bg-white mt-1"
                 inputClassName="text-base-17-5 bg-transparent "
+                
                 label="City"
                 value={values.city}
                 onChange={(e) =>
@@ -365,6 +375,7 @@ const CompanyAndBround = () => {
                 parentClassName="text-xs text-[#26435F] w-full pt-1"
                 inputContainerClassName=" bg-white mt-1"
                 inputClassName="text-base-17-5 bg-transparent"
+                
                 label="Zip Code"
                 value={values.zip}
                 onChange={(e) =>
@@ -379,8 +390,8 @@ const CompanyAndBround = () => {
           </div>
         </div>
         <div className="flex flex-1  gap-11 mt-3  w-[48vw] pb-0">
-          <div  className="flex flex-col rounded-sm w-1/3 flex-wrap gap-3 bg-white p-3">
-            <h1 className="mt-[-35px]  text-[#26435F] font-semibold text-sm ml-[-10px] mb-1">
+          <div  className="flex flex-col rounded-sm w-1/3 min-w-[275px] flex-wrap gap-3 bg-white p-3">
+            <h1 className="mt-[-35px]  text-[#26435F] font-semibold text-sm ml-[-10px] mb-1 text-base-17-5 ">
               Format Of Instructions
             </h1>
             {instructions.map((item, id) => (
@@ -394,8 +405,8 @@ const CompanyAndBround = () => {
               />
             ))}
           </div>
-          <div className="flex flex-col rounded-sm w-2/3 h-[200px] flex-wrap gap-3 p-3 bg-white">
-            <h1 className="mt-[-35px]  text-[#26435F] font-semibold text-sm ml-[-10px] mb-1">
+          <div className="flex flex-col rounded-sm w-2/3 min-w-[500px] design:min-w-[600px] h-[200px] flex-wrap gap-3 p-3 bg-white">
+            <h1 className="mt-[-35px]  text-[#26435F] font-semibold text-sm ml-[-10px] mb-1 text-base-17-5">
               Students Served
             </h1>
             {studentServed.map((item, id) => (
@@ -411,8 +422,8 @@ const CompanyAndBround = () => {
           </div>
         </div>
         <div className="w-full h-[2px] bg-[#CBD6E2]"></div>
-        <div className="mt-4 ">
-          <h1 className="mt-[-30px] text-[#26435F] font-semibold text-xl my-1">
+        <div className="my-4 mb-10 ">
+          <h1 className="mt-[-30px] text-[#26435F] font-semibold text-xl my-1 text-base-17-5">
             Signup Form Detail
           </h1>
           <div className="w-full h-[200px] bg-white"></div>

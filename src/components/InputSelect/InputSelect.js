@@ -10,6 +10,7 @@ export default function InputSelect({
   Icon,
   value,
   placeholder,
+  placeholderClass,
   label,
   labelClassname,
   optionData,
@@ -107,24 +108,24 @@ export default function InputSelect({
           name={label}
         >
           {value === "" || !value ? (
-            <span className={`text-[#667085] text-[17.5px] whitespace-nowrap ${tableDropdown ? 'mr-0' : 'mr-10'}`}>
+            <span className={`text-[#667085] text-[17.5px] whitespace-nowrap ${tableDropdown ? 'mr-0' : 'mr-10'} ${placeholderClass} text-base-17-5`}>
               {" "}
               {placeholder}{" "}
             </span>
           ) : (
-            <span className={`mr-10 text-[17.5px] whitespace-nowrap ${tableDropdown ? 'mr-0' : 'mr-10'}`}>{value}</span>
+            <span className={`mr-10 text-[17.5px] whitespace-nowrap ${tableDropdown ? 'mr-0' : 'mr-10'}  ${placeholderClass} text-base-17-5`}>{value}</span>
           )}
         </div>
         {selected && (
           <div
             onClick={handleOption}
-            className={`scrollbar-content scrollbar-vertical  shadow-sm ${styles.options} $`}
+            className={`scrollbar-content  scrollbar-vertical  shadow-lg shadow-[0px_0px_3px_0px_#00000040] ${styles.options} $`}
           >
             {DateSelect && DateSelect}
             {optionData?.map((option, idx) => {
               return (
                 <div
-                  className="outline-0 border-0 text-[17.5px] py-2.5 px-4 flex items-center justify-between"
+                  className="outline-0 border-0 text-[17.5px] py-2 px-4 flex items-center justify-between text-base-15"
                   key={idx}
                   onClick={() => handleChange(optionType, option, idx)}
                 >

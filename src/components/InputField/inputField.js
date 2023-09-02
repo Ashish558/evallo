@@ -58,7 +58,7 @@ export default function InputField({
     <div className={`relative text-sm ${parentClassName && parentClassName}`}>
       {label && (
         <label
-          className={`inline-block text-sm font-semibold ${labelClassname} ml-0`}
+          className={`inline-block text-sm font-semibold ${labelClassname} ml-0 text-base-17-5`}
         >
           {label}
           {required && (
@@ -96,8 +96,8 @@ export default function InputField({
           </div>
         )}
         <input
-          className={`outline-0 w-full text-[17.5px] pl-1 placeholder:text-sm ${inputClassName ? inputClassName : ""
-            } ${disabled === true ? "cursor-not-allowed" : ""} `}
+          className={`outline-0 w-full text-[17.5px] pl-1 placeholder:text-base-17-5 ${inputClassName ? inputClassName : ""
+            } ${disabled === true ? "cursor-not-allowed" : ""} text-base-17-5`}
           placeholder={placeholder}
           
           type={inputType ? inputType : "text"}

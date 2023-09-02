@@ -136,13 +136,13 @@ const AccountOverview = () => {
   return (
     <div>
       <div className="flex flex-col gap-10  ">
-        <div className="flex gap-5">
+        <div className="flex gap-8">
           <InputField
             placeholder=""
             labelClassname="font-medium text-base"
             parentClassName="text-[#26435F]"
             inputContainerClassName=" bg-white  border border-white text-[#667085]"
-            inputClassName=" text-400 bg-transparent"
+            inputClassName=" text-400 py-0 bg-transparent"
             label="First Name"
             value={values.firstName}
             onChange={(e) =>
@@ -159,7 +159,7 @@ const AccountOverview = () => {
             labelClassname="font-medium text-base"
             parentClassName="text-[#26435F]"
             inputContainerClassName=" bg-white border border-white text-[#667085]"
-            inputClassName=" text-400 bg-transparent"
+            inputClassName=" text-400 py-0 bg-transparent"
             label="Last Name"
             value={values.lastName}
             onChange={(e) =>
@@ -177,7 +177,7 @@ const AccountOverview = () => {
             labelClassname="font-medium text-base"
             parentClassName="text-[#26435F]"
             inputContainerClassName=" bg-white border border-white text-[#667085]"
-            inputClassName=" text-400 bg-transparent w-[250px]"
+            inputClassName=" text-400 py-0 bg-transparent w-[calc(377*0.0522vw)]"
             label="Email"
             // IconRight={tooltipIcon}
             value={values.email}
@@ -209,9 +209,9 @@ const AccountOverview = () => {
             <InputFieldDropdown
               placeholder=""
               labelClassname="font-medium text-base"
-              parentClassName="text-[#26435F]"
-              inputContainerClassName=" bg-white border border-white text-[#667085]"
-              inputClassName="  text-400 "
+              parentClassName="text-[#26435F] "
+              inputContainerClassName="py-3 bg-white border border-white text-[#667085]"
+              inputClassName="  text-400 py-1"
               label="Phone"
               value={values.phone}
               codeValue={values.phoneCode}
@@ -230,11 +230,11 @@ const AccountOverview = () => {
               error={error.phone}
             />
           </div>
-          <div>
+          <div className="flex flex-1 justify-end">
             <button
 
               onClick={handleDataUpdate}
-              className="bg-[#FFA28D]  mt-5 ml-10 rounded-md px-10 py-2 text-sm text-[#EEE]"
+              className="bg-[#FFA28D]  py-3 mt-6 rounded-md px-10  text-sm text-[#EEE] text-base-17-5"
             >
               Save
             </button>
@@ -243,21 +243,21 @@ const AccountOverview = () => {
 
         <div className="flex gap-7 flex-1">
           <div>
-            <h1 className="my-1 text-[#26435F] font-semibold text-sm">
+            <h1 className="my-1 text-[#26435F] font-semibold text-sm text-base-17-5">
               Send Link
             </h1>
             <button
               onClick={handleClose}
-              className="bg-[#517CA8] text-white rounded-md px-3 py-2 text-sm"
+              className="bg-[#517CA8] text-white rounded-md px-3 py-3 text-sm text-base-17-5 "
             >
               Reset Password
             </button>
           </div>
           <div>
-            <h1 className="my-1 text-[#26435F] font-semibold text-sm">
+            <h1 className="my-1 text-[#26435F] font-semibold text-sm text-base-17-5">
               2FA Codes / key
             </h1>
-            <button className="bg-[#517CA8] text-white rounded-md px-5 py-2 text-sm">
+            <button className="bg-[#517CA8] text-white rounded-md px-5 py-3 text-sm text-base-17-5" >
               Download
             </button>
           </div>
@@ -266,7 +266,7 @@ const AccountOverview = () => {
         <div>
           {reset && (
             <div className="flex gap-2">
-              <p className="bg-[rgba(119,221,119,0.2)] rounded-xl text-sm text-[#77DD77] px-3 py-1">
+              <p className="bg-[rgba(119,221,119,0.2)] rounded-xl text-sm text-[#77DD77] px-3 py-1 text-base-15">
                 <img className="inline-block mr-3" src={resetSendIcon} alt="" />
                 {"Password Reset Link Sent To {email address}"}
               </p>
