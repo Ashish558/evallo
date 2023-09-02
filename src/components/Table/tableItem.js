@@ -223,7 +223,7 @@ export default function TableItem({
   const options = { year: 'numeric', month: 'long', day: 'numeric' };
   const formattedDate = date.toLocaleDateString('en-US', options);
 
-  console.log(dataFor)
+  //console.log(dataFor)
   return (
     <>
 

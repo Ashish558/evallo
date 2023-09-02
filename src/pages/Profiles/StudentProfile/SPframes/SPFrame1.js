@@ -4,15 +4,30 @@ import { useSelector } from "react-redux";
 import EditableText from "../../../../components/EditableText/EditableText";
 import fileupload from "../../../../assets/icons/basil_file-upload-outline (2).svg";
 import BCut from "../../../../assets/YIcons/BCut.svg"
+import { useAddAssociatedDocStudentMutation } from "../../../../app/services/users";
 const SPFrame1 = ({ settings, userDetail,editable, setToEdit, toEdit, }) => {
   const [xlsFile,setXlsFile]=useState({})
   const { awsLink } = useSelector((state) => state.user);
+  const [addDoc,addDocStatus]=useAddAssociatedDocStudentMutation()
   const reduceArr=(arr,id,setArr)=>{
     let temp=[...arr]
     temp=temp?.filter((item,idd)=> idd!== id )
     setArr(temp)
   }
-  console.log("frame1",{userDetail})
+  const addDocHandler=()=>{
+    if(!xlsFile|| !xlsFile.name){return}
+    const formData = new FormData();
+    formData.append("file", xlsFile);
+    formData.append("studentId", userDetail?._id);
+    addDoc(formData).then(res=>{
+  console.log("docc",res)
+  if(res?.data){
+    alert(res?.data?.message)
+    setXlsFile({})
+  }
+    })
+  }
+  console.log("frame1",{userDetail,xlsFile})
   return (
     <div>
       {" "}
@@ -63,7 +78,7 @@ const SPFrame1 = ({ settings, userDetail,editable, setToEdit, toEdit, }) => {
               Associated docs
              
             </p>
-            <div id={styles.borderDashed} className="w-full relative !border-[1.25px_dashed_#517CA8] h-full !max-h-[140px] flex rounded-md items-center bg-white overflow-hidden shadow-[0px_0px_2.500001907348633px_0px_#00000040]">
+            <div id={styles.borderDashed} className="w-full relative !border-[1.25px_dashed_#517CA8] h-full !max-h-[150px] flex rounded-md items-center bg-white overflow-hidden shadow-[0px_0px_2.500001907348633px_0px_#00000040]">
                         <div
                           className=" flex-1 "
 
@@ -80,20 +95,30 @@ const SPFrame1 = ({ settings, userDetail,editable, setToEdit, toEdit, }) => {
                               <p className="block ">{xlsFile.name}</p>
                             )}
                           </div>
+                          {
+                                !xlsFile?.name?
                           <div className="flex justify-center">
                             <label
                               htmlFor="file"
                               className="block text-sm text-white bg-[#517CA8] hover:bg-[#517CA8] items-center justify-center  rounded-[5px]  px-4 py-2 text-center ] "
                             >
-                              Choose File
+                               Choose File
+
+                              
+                             
                             </label>
                             <input
                               onChange={(e) => setXlsFile(e.target.files[0])}
                               type="file"
                               id="file"
-                              accept=".xls,.xlsx"
+                             
                             ></input>
-                          </div>
+                          </div>:
+                          <div className="flex justify-center">
+<span onClick={addDocHandler} className=" cursor-pointer block text-sm text-white bg-[#517CA8] hover:bg-[#517CA8] items-center justify-center  rounded-[5px]  px-4 py-2 text-center ]" >
+Submit File
+</span>
+                          </div>}
                           <label
                               htmlFor="file"
                               className="block text-xs items-center justify-center  rounded-[5px]  px-4 py-2 font-normal text-center text-[#517CA8] "

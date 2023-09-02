@@ -159,6 +159,12 @@ const handleFeedback=(message,type)=>{
 message,type
   }
   studentFeedback(body).then((res)=>{
+    if(res?.error){
+      alert("Coudn't send feedback , try again")
+    }
+    if(res?.data){
+      alert("Feedback successfully sent")
+    }
     console.log({res})
   })
 }

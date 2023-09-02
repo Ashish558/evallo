@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useLazyGetParentsByNameQuery } from "../../../../app/services/admin";
 import { useLazyGetStudentsByNameQuery } from "../../../../app/services/session";
-import ProfilePhoto from "../../../../components/ProfilePhoto/ProfilePhoto";
+import ProfilePhoto from "./ProfilePhoto";
 import {
   useUpdateTutorDetailsMutation,
   useUpdateUserDetailsMutation,
   useUpdateUserFieldsMutation,
   usePostTutorDetailsMutation,
+  useAddLinkStudentMutation,
 } from "../../../../app/services/users";
 import InputField from "../../../../components/InputField/inputField";
 import InputSearch from "../../../../components/InputSearch/InputSearch";
@@ -275,7 +276,8 @@ export default function ParentEditables({
       api: "tutorDetail",
     },
   ];
-
+const [addLink,addLinkStatus]=useAddLinkStudentMutation()
+console.log("parentEditables",currentToEdit)
   const handleProfilePhotoChange = (file) => {
     // console.log(file)
     let url = "";
@@ -287,7 +289,7 @@ export default function ParentEditables({
       url = `${BASE_URL}api/user/addphoto`;
     }
     axios.patch(url, formData, { headers: getAuthHeader() }).then((res) => {
-      console.log(res);
+    //  console.log(res);
       fetchDetails();
     });
   };
@@ -504,14 +506,41 @@ export default function ParentEditables({
       }
     }
     let { schoolName, grade } = currentToEdit;
-  
+   let {dropBoxLink,dropLink}= currentToEdit
     if (currentToEdit.hasOwnProperty("schoolName")) {
       let reqBody = {
         schoolName: currentToEdit.schoolName,
         grade: currentToEdit?.grade,
       };
      
+     
       userDetailSave(reqBody);
+    }
+    if (currentToEdit.hasOwnProperty("driveLink") && currentToEdit.driveLink.length>=0) {
+      let reqBody = {
+        type: 'driveLink',
+        link:currentToEdit.driveLink,
+        studentId:userId,
+      };
+      addLink(reqBody).then((res) => {
+        console.log("drive",res);
+        if(res?.data){
+         console.log("drive link added")
+        }
+      });
+    }
+    if (currentToEdit.hasOwnProperty("dropBoxLink") && currentToEdit.dropBoxLink.length>=0) {
+      let reqBody = {
+        type: 'dropBoxLink',
+        link:currentToEdit.dropBoxLink,
+        studentId:userId,
+      };
+      addLink(reqBody).then((res) => {
+        console.log("drop",res);
+        if(res?.data){
+         console.log("drop link added")
+        }
+      });
     }
   };
 
@@ -584,7 +613,7 @@ export default function ParentEditables({
   };
   // console.log(settings);
   const [startDate, setStartDate] = useState(new Date());
-  console.log({ currentField, currentToEdit });
+  //console.log({ currentField, currentToEdit });
   const forCss = [
     "profileData",
     "interest",
@@ -650,8 +679,9 @@ export default function ParentEditables({
                               ? `${awsLink}${user.photo}`
                               : "/images/default.jpeg"
                           }
-                          imageClassName="!w-[115px] !h-[110px] border-[4px] border-white"
+                          imageClassName=" border-[4px] border-white"
                           className=""
+                          imgSizeClass="!w-[120px] !h-[120px] "
                           handleChange={handleProfilePhotoChange}
                           editable={editable}
                         />
@@ -881,11 +911,11 @@ export default function ParentEditables({
                         inputClassName="bg-transparent text-xs   "
                         parentClassName="flex-1 "
                         type="text"
-                        value={currentToEdit.Drive}
+                        value={currentToEdit.dropBoxLink}
                         onChange={(e) =>
                           setCurrentToEdit({
                             ...currentToEdit,
-                            Drive: e.target.value,
+                            dropBoxLink: e.target.value,
                           })
                         }
                       />
@@ -899,11 +929,11 @@ export default function ParentEditables({
                         inputClassName="bg-transparent text-xs   "
                         parentClassName="flex-1 "
                         type="text"
-                        value={currentToEdit.Drive}
+                        value={currentToEdit.driveLink}
                         onChange={(e) =>
                           setCurrentToEdit({
                             ...currentToEdit,
-                            Drive: e.target.value,
+                            driveLink: e.target.value,
                           })
                         }
                       />
@@ -1410,7 +1440,7 @@ return ( <div className="flex !text-sm gap-4 ">
                     optionData={parents}
                     onOptionClick={(val) => {
                       // setStudent(item.value);
-                      console.log(val);
+                  
                       setCurrentToEdit({
                         ...currentToEdit,
                         associatedParent: val._id,
@@ -2030,9 +2060,7 @@ return ( <div className="flex !text-sm gap-4 ">
                                         ...currentToEdit,
                                         phone: e.target.value,
                                       });
-                                      console.log(
-                                        currentToEdit.phone + "phone"
-                                      );
+                                    
                                     }}
                                   />
                                 </div>

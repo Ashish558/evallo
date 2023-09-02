@@ -79,7 +79,7 @@ const StudentDashboard = () => {
   };
   // console.log('dates', dates)
   // console.log('selectedSubject', selectedSubject)
-
+console.log({subjects,selectedSubject,selectedConceptIdx})
   return (
     <div className={`lg:mx-[80px] design:mx-[160px] pb-[70px]`} id="container">
       <p className="text-[#24A3D9] mt-7 mb-3">

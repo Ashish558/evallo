@@ -1,7 +1,7 @@
 import React from 'react'
-import styles from './style.module.css'
-import ProfileImg from '../../assets/images/profile.png'
-import CameraIcon from '../../assets/profile/camera.svg'
+import styles from './style2.module.css'
+import ProfileImg from '../../../../assets/images/profile.png'
+import CameraIcon from '../../../../assets/profile/camera.svg'
 import { useRef } from 'react'
 
 export default function ProfilePhoto({ src, handleChange, editable, isTutor,customWidth ,imgSizeClass}) {
