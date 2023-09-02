@@ -11,6 +11,7 @@ import que from "../../../../assets/icons/que.png";
 import que2 from "../../../../assets/icons/que2.png";
 import plus1 from "../../../../assets/icons/plus1.png";
 import dropdown from "../../../../assets/icons/dropdown (2).svg";
+import InputFieldDropdown from "../../../../components/InputField/inputFieldDropdown";
 export default function SignupTab({
   setAddNewQuestionModalActive,
   fetchS,
@@ -67,7 +68,7 @@ export default function SignupTab({
           <p className="pl-2">Please enter the fields for the sign up form that you want to show your clients. You are allowed to create up to 5 additional custom questions beyond the mandatory fields that we require from parents and students.</p>
         </div>
         <div className="text-sm flex items-start w-300 text-[#507CA8]">
-          <p className="mt-[3px]"><img width="14px" src={que} alt="que"></img></p>
+          <p className="mt-[3px]"><img width="15px" src={que} alt="que"></img></p>
           <p className="pl-2">Link to the Sign-up form for Org Name: <a rel="noreferrer"
             className="underline text-[#26435F]"
             href={`${process.env.REACT_APP_FE_URL}/signup/user?orgName=${organization.company}`}
@@ -82,11 +83,11 @@ export default function SignupTab({
       <div className="grid grid-cols-2 gap-x-5">
         <div className={styles.colContainer}>
           <div
-            className={`hidden lg:flex mb-[26px] items-center justify-between text-[#26435F] font-semibold`}
+            className={`hidden lg:flex mb-[26px] items-center  text-[#26435F] font-semibold`}
           >
             <p>      Page 1: Basic Details (all fields mandatory)</p>
 
-            <p className="mr-2"> <img src={que2} alt="que"></img></p>
+            <p className="ml-40"> <img src={que2} alt="que"></img></p>
           </div>
           <div className={`flex mt-[59px] lg:mt-0 ${styles.inputs}`}>
             <InputField
@@ -231,21 +232,23 @@ export default function SignupTab({
             <InputField
               label="Student / Parent Email"
               placeholder=" "
-              inputContainerClassName="bg-gray-200 border border-gray-200 w-[32.5vw]"
+              inputContainerClassName="bg-gray-200 border border-gray-200 w-[34.2vw]"
               inputClassName="bg-gray-200"
               parentClassName="text-xs  text-[#26435F] mb-2"
             />
-            <InputField
+              
+              <InputField
               placeholder=""
-              parentClassName="text-xs  text-[#26435F] mb-2"
+              parentClassName="text-xs  text-[#26435F] mb-2 "
               inputContainerClassName="bg-gray-200 border border-gray-200 "
-              inputClassName="bg-gray-200"
-              label="Student / Parent Phone"
+              inputClassName="bg-gray-200 "
+             label=" Student/Parent Phone"
             />
+             
             <InputField
               placeholder=""
               parentClassName="text-xs  text-[#26435F] mb-2"
-              inputContainerClassName="bg-gray-200 border border-gray-200 w-[32.5vw]"
+              inputContainerClassName="bg-gray-200 border border-gray-200 w-[34.2vw]"
               inputClassName="bg-gray-200"
               label="School Name"
             />
@@ -264,11 +267,11 @@ export default function SignupTab({
 
       <div className={styles.customContainer}>
         <span
-          className={`hidden lg:flex mb-[26px]  items-center`}
+          className={`hidden lg:flex mb-[26px]  items-center `}
           style={{ color: "#26435F", fontWeight: 600 }}
         >
           Page 3: Custom Fields (Add a maximum of 5 items)
-          <img className="ml-10" src={que2}></img>
+          <img className="ml-[100px]" src={que2}></img>
         </span>
         <div className="mb-10">
           {customFields?.map((item, idx) => {
@@ -327,6 +330,7 @@ export default function SignupTab({
           disabled={customFields?.length >= 5 ? true : false}
           children={"Add New Question"}
           Icon={plus1}
+          iconClassName="h-5"
           onClick={() => setAddNewQuestionModalActive(true)}
         />
       </div>

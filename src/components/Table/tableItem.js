@@ -70,6 +70,7 @@ export default function TableItem({
   });
 
   useEffect(() => {
+
     if (dataFor === "assignedTestsStudents") {
       let params = {};
       let url = `/api/test/getresponse/${item.assignedTestId}`;
@@ -344,7 +345,7 @@ export default function TableItem({
             <InputSelect
               tableDropdown={true}
               value={item.userStatus ? item.userStatus : "-"}
-              optionData={["active", "blocked", "dormant"]}
+              optionData={["Active", "Blocked", "Dormant"]}
               inputContainerClassName="min-w-[100px] pt-0 pb-0 pr-2 pl-0 text-center"
               optionClassName="text-[17.5px]"
               labelClassname="hidden"

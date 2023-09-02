@@ -654,6 +654,7 @@ export default function Calendar() {
   };
   console.log({ insightData });
   useEffect(() => {
+    console.log("role="+persona)
     if (name.length > 0) {
       fetchNames(name).then((res) => {
         console.log("fetchnames", res.data.data.user);
@@ -912,8 +913,8 @@ export default function Calendar() {
 
   return (
     <>
-      <div className="lg:ml-pageLeft calender bg-lightWhite min-h-screen">
-        <div className="py-14 pt-10 pb-2 pl-5 calendar flex">
+      <div className="lg:ml-pageLeft calender bg-lightWhite min-h-screen"  id={persona}>
+        <div className="py-14 pt-10 pb-2 pl-5 calendar flex" >
         <div className=" pl-0 pr-0 w-[280px] mr-[10px]">
             <div className="w-[280px]">
               <SimpleCalendar
