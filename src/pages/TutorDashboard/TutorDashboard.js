@@ -68,7 +68,6 @@ export default function TutorDashboard() {
    const [getUserDetail, userDetailResp] = useLazyGetTutorDetailsQuery()
    const [fetchTutorAssignedTests, fetchTutorAssignedTestsResp] = useLazyGetTutorAssignedTestsQuery();
    const [allAssignedTests, setAllAssignedTests] = useState([])
-   console.log(allAssignedTests)
    const [tutorHours, setTutorHours] = useState(0)
    const navigate = useNavigate()
 
@@ -191,6 +190,12 @@ export default function TutorDashboard() {
                const { createdAt, studentId, dueDate, photo, testId, multiple, timeLimit, isCompleted, isStarted } = item
                // console.log(photo);
                let profile = studentId.photo ? studentId.photo : null
+               let status = 'notStarted'
+               if (isCompleted === true) {
+                  status = 'completed'
+               } else if (isStarted) {
+                  status = 'started'
+               }
                return {
                   studentName: studentId ? `${studentId.firstName} ${studentId.lastName}` : '-',
                   studentId: studentId ? studentId._id : '-',
@@ -199,7 +204,7 @@ export default function TutorDashboard() {
                   testId: testId ? testId._id : null,
                   scores: '-',
                   duration: multiple ? getDuration(multiple) : 'Unlimited',
-                  status: isCompleted === true ? 'completed' : isStarted ? 'started' : 'notStarted',
+                  status: status,
                   createdAt,
                   photo: profile,
                   dueDate: getFormattedDate(dueDate),
@@ -347,6 +352,7 @@ export default function TutorDashboard() {
                         </p> */}
                            <div className='px-[19px] h-[515px] overflow-auto py-[19px] bg-white rounded-20'>
                               {allAssignedTests.map(item => {
+                                 console.log('adssadsad', item);
                                  return (
                                     <div className=' mb-5' key={item._id} >
                                        <div>
