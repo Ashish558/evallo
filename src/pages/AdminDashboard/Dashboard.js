@@ -533,7 +533,7 @@ const Dashboard = () => {
               </div>
             </div>
             <div className="pl-[1.5625vw]">
-              <p className=" mb-[17px] translate-y-[10px] font-semibold text-[#26435F] text-[17.5px] text-base-17-5">
+              <p className=" mb-[8px] translate-y-[10px] font-semibold text-[#26435F] text-[17.5px] text-base-17-5">
                 Star Clients
               </p>
               <div>
