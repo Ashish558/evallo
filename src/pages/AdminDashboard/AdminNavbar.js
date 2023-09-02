@@ -291,7 +291,7 @@ const AdminNavbar = () => {
  
   return (
     <>
-      <div className="flex justify-around bg-[#26435F] h-[72px] items-center w-full overflow-y-auto w-[100vw]">
+      <div className="flex justify-around bg-[#26435F] h-[74px] items-center w-full overflow-y-auto w-[100vw]">
         <div
           className={`${persona === "superAdmin" ? "translate-x-[-80px]" : ""}`}
         >
@@ -300,12 +300,12 @@ const AdminNavbar = () => {
           </a>
          
         </div>
-        <div className={`flex  text-[#FFFFFF] font-semibold text-[13px] ${!isLoggedIn&&"opacity-[0.3]"}`}>
+        <div className={`flex  text-[#FFFFFF] font-semibold text-[13px] ${!isLoggedIn&& " opacity-[0.3]"}`}>
           {navData.map((item, idx) => {
             return (
               <div
                 key={idx}
-                className={`flex items-center mr-6 text-base-17-5 ${isLoggedIn?"cursor-pointer":' cursor-default'}`}
+                className={`flex items-center mr-8 text-base-17-5 ${isLoggedIn?"cursor-pointer":' cursor-default'}`}
                 onClick={() =>isLoggedIn&& handleNavigate(item.path)}
               >
                 { isLoggedIn && item?.path === activeRoute ? (
