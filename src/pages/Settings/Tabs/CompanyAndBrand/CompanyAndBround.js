@@ -163,14 +163,14 @@ const CompanyAndBround = () => {
 
   return (
     <div>
-      <div className="flex flex-col gap-10 w-[900px] ">
-        <div className="flex gap-5">
+      <div className="flex flex-col gap-10  w-[66vw]">
+        <div className="flex gap-7 w-full flex-1">
           <InputField
             placeholder=""
             IconLeft={lock}
-            parentClassName="text-xs text-[#26435F]"
+            parentClassName="text-xs w-full text-[#26435F]"
             inputContainerClassName=" bg-white"
-            inputClassName="bg-transparent"
+            inputClassName="text-base-17-5 bg-transparent"
             label="Account Type"
             disabled={true}
             value={"Company"}
@@ -179,9 +179,9 @@ const CompanyAndBround = () => {
 
           <InputField
             placeholder=""
-            parentClassName="text-xs text-[#26435F]"
+            parentClassName="text-xs w-full text-[#26435F]"
             inputContainerClassName=" bg-white"
-            inputClassName="bg-transparent"
+            inputClassName="text-base-17-5 bg-transparent"
             label="Company Name"
             value={values.company}
             onChange={(e) =>
@@ -194,9 +194,9 @@ const CompanyAndBround = () => {
           />
           <InputField
             placeholder="Text"
-            parentClassName="text-xs text-[#26435F]"
+            parentClassName="text-xs w-full text-[#26435F]"
             inputContainerClassName=" bg-white"
-            inputClassName="bg-transparent"
+            inputClassName="text-base-17-5 bg-transparent"
             label="Support Email"
             value={values.supportEmail}
             onChange={(e) =>
@@ -209,9 +209,9 @@ const CompanyAndBround = () => {
           />
           <InputField
             placeholder=""
-            parentClassName="text-xs text-[#26435F]"
+            parentClassName="text-xs w-full text-[#26435F]"
             inputContainerClassName=" bg-white"
-            inputClassName="bg-transparent"
+            inputClassName="text-base-17-5 bg-transparent"
             label="Role / Position"
             value={values.role}
             onChange={(e) =>
@@ -223,13 +223,13 @@ const CompanyAndBround = () => {
             error={error.role}
           />
         </div>
-        <div className="flex gap-5 flex-1">
+        <div className="flex gap-[calc(39*0.050vw)] flex-1">
           <div className="">
             <label className="inline-block text-[15px] font-semibold undefined ml-0 text-[#26435F] ">
               {" "}
               Business Logo{" "}
             </label>
-            <div className="w-[312px] h-[200px]  relative p-2 bg-[#FFFFFF] rounded-[5px]">
+            <div id="borderDashed" className="w-[312px] h-[200px]  relative p-2 bg-[#FFFFFF] rounded-[5px]">
               {
                 organization.orgBussinessLogo &&
                 <img
@@ -258,13 +258,13 @@ const CompanyAndBround = () => {
               </div>
             </div>
           </div>
-          <div className="flex flex-col  gap-4 flex-1 py-auto">
+          <div className="flex flex-col  gap-[calc(43*0.050vw)] flex-1 py-auto">
             <div className="flex gap-5 items-center justify-between">
               <InputField
                 placeholder=""
-                parentClassName="text-xs text-[#26435F] w-full mb-1"
-                inputContainerClassName=" bg-white mt-1"
-                inputClassName="bg-transparent "
+                parentClassName="text-xs text-[#26435F] w-[calc(589*0.050vw)] mb-1"
+                inputContainerClassName=" bg-white mt-1 rounded-md"
+                inputClassName="text-base-17-5 bg-transparent "
                 label="Website"
                 value={values.website}
                 onChange={(e) =>
@@ -278,9 +278,9 @@ const CompanyAndBround = () => {
               <InputSelect
                 placeholder="Select"
                 parentClassName="text-xs text-[#26435F] w-[60%] "
-                inputContainerClassName=" bg-white h-[38px] mb-1"
-                labelClassname="text-sm font-bold mb-1"
-                inputClassName="bg-transparent"
+                inputContainerClassName=" bg-white py-1 mb-1"
+                labelClassname="text-base-17-5 text-sm font-bold mb-1"
+                inputClassName="text-base-17-5 bg-transparent "
                 label="Company Type"
                 value={values.companyType}
                 optionData={companyType}
@@ -296,9 +296,9 @@ const CompanyAndBround = () => {
             <div className="flex gap-5 items-center justify-between">
               <InputField
                 placeholder=""
-                parentClassName="text-xs text-[#26435F] w-full"
-                inputContainerClassName=" bg-white mt-1"
-                inputClassName="bg-transparent"
+                parentClassName="text-xs text-[#26435F]  w-full"
+                inputContainerClassName=" bg-white rounded-md mt-1"
+                inputClassName="text-base-17-5 bg-transparenttext-base-17-5"
                 label="Street Address"
                 value={values.address}
                 onChange={(e) =>
@@ -312,9 +312,9 @@ const CompanyAndBround = () => {
               <InputSelect
                 placeholder="Select"
                 parentClassName="text-xs text-[#26435F] w-[60%] mt-1"
-                inputContainerClassName=" bg-white h-[38px] mb-1 "
-                labelClassname="text-sm font-bold mb-1"
-                inputClassName="bg-transparent"
+                inputContainerClassName=" bg-white py-1 mb-1 "
+                labelClassname="text-base-17-5 text-sm font-bold mb-1 text-base-17-5"
+                inputClassName="text-base-17-5 bg-transparent"
                 label="Country"
                 value={values.country}
                 optionData={country}
@@ -330,9 +330,9 @@ const CompanyAndBround = () => {
               <InputSelect
                 placeholder="Select"
                 parentClassName="text-xs text-[#26435F] w-full mt-1 pt-1"
-                labelClassname="text-sm font-bold mb-1"
-                inputContainerClassName=" bg-white h-[40px] mb-1 "
-                inputClassName="bg-transparent"
+                labelClassname="text-base-17-5 text-sm font-bold mb-1"
+                inputContainerClassName=" bg-white mb-1 "
+                inputClassName="text-base-17-5 bg-transparent "
                 label="State / Region "
                 value={values.state}
                 optionData={states}
@@ -349,7 +349,7 @@ const CompanyAndBround = () => {
                 placeholder=""
                 parentClassName="text-xs text-[#26435F] w-full pt-1"
                 inputContainerClassName=" bg-white mt-1"
-                inputClassName="bg-transparent "
+                inputClassName="text-base-17-5 bg-transparent "
                 label="City"
                 value={values.city}
                 onChange={(e) =>
@@ -364,7 +364,7 @@ const CompanyAndBround = () => {
                 placeholder=""
                 parentClassName="text-xs text-[#26435F] w-full pt-1"
                 inputContainerClassName=" bg-white mt-1"
-                inputClassName="bg-transparent"
+                inputClassName="text-base-17-5 bg-transparent"
                 label="Zip Code"
                 value={values.zip}
                 onChange={(e) =>
@@ -378,8 +378,8 @@ const CompanyAndBround = () => {
             </div>
           </div>
         </div>
-        <div className="flex gap-11 mt-3 border-b-[2px] border-b-[#CBD6E2] pb-9">
-          <div className="flex flex-col rounded-sm w-[200px] flex-wrap gap-3 bg-white p-3">
+        <div className="flex flex-1  gap-11 mt-3  w-[48vw] pb-0">
+          <div  className="flex flex-col rounded-sm w-1/3 flex-wrap gap-3 bg-white p-3">
             <h1 className="mt-[-35px]  text-[#26435F] font-semibold text-sm ml-[-10px] mb-1">
               Format Of Instructions
             </h1>
@@ -394,7 +394,7 @@ const CompanyAndBround = () => {
               />
             ))}
           </div>
-          <div className="flex flex-col rounded-sm w-[500px] h-[200px] flex-wrap gap-3 p-3 bg-white">
+          <div className="flex flex-col rounded-sm w-2/3 h-[200px] flex-wrap gap-3 p-3 bg-white">
             <h1 className="mt-[-35px]  text-[#26435F] font-semibold text-sm ml-[-10px] mb-1">
               Students Served
             </h1>
@@ -410,7 +410,8 @@ const CompanyAndBround = () => {
             ))}
           </div>
         </div>
-        <div className="mt-5">
+        <div className="w-full h-[2px] bg-[#CBD6E2]"></div>
+        <div className="mt-4 ">
           <h1 className="mt-[-30px] text-[#26435F] font-semibold text-xl my-1">
             Signup Form Detail
           </h1>

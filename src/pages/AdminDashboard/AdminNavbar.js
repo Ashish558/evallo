@@ -296,7 +296,7 @@ const AdminNavbar = () => {
           className={`${persona === "superAdmin" ? "translate-x-[-80px]" : ""}`}
         >
           <a href="https://app.evallo.org">
-          <img className="h-[29.796px]" src={icon}  alt="evallo_logo" />
+          <img className="h-[29px]" src={icon}  alt="evallo_logo" />
           </a>
          
         </div>
@@ -305,7 +305,7 @@ const AdminNavbar = () => {
             return (
               <div
                 key={idx}
-                className={`flex items-center mr-6 ${isLoggedIn?"cursor-pointer":' cursor-default'}`}
+                className={`flex items-center mr-6 text-base-17-5 ${isLoggedIn?"cursor-pointer":' cursor-default'}`}
                 onClick={() =>isLoggedIn&& handleNavigate(item.path)}
               >
                 { isLoggedIn && item?.path === activeRoute ? (

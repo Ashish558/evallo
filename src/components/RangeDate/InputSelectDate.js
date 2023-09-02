@@ -70,13 +70,13 @@ export default function InputSelect({
           name={label}
         >
           {value === "" || !value ? (
-            <span className="text-primary-60 mr-5 pl-5 cursor-default  text-[13px]   whitespace-nowrap">
+            <span className="text-primary-60 mr-5 pl-5 cursor-default  text-[13px]  !text-[calc(15*0.050vw)]  whitespace-nowrap">
               {" "}
               <span > {placeholder}</span>
               {" "}
             </span>
           ) : (
-            <span className="mr-5 pl-5 text-[15px] cursor-default whitespace-nowrap">
+            <span className="mr-5 pl-5 text-[15px] !text-[calc(15*0.050vw)] cursor-default whitespace-nowrap">
               <span >{value}</span>
 
             </span>
@@ -117,7 +117,7 @@ export default function InputSelect({
             {optionData?.map((option, idx) => {
               return (
                 <div
-                  className="outline-0 border-0 relative !z-[9999999999] py-[15px] px-[26px] flex items-center justify-start"
+                  className="outline-0 border-0 relative !z-[9999999999] py-2 px-[26px] flex items-center justify-start"
                   key={idx}
                   onClick={() => handleChange(optionType, option, idx)}
                 >
@@ -142,8 +142,10 @@ export default function InputSelect({
                 </div>
               );
             })}
-            <p className="px-[26px] text-[15px] underline underline-offset-4 font-semibold py-[15px]">Custom</p>
-            {DateSelect && DateSelect}
+           
+            {DateSelect &&<> <p className="px-[26px] text-center text-[15px] underline underline-offset-4 font-semibold py-[15px] !text-[calc(15*0.050vw)]">Custom</p>
+            { DateSelect}
+            </>}
           </div>
         )}
       </div>

@@ -76,17 +76,17 @@ const RangeDate = ({ handleRangeData ,optionClassName,className,manualHide ,inpu
   newDateformat += " - " + temp[0] + " " + temp[1] + " " + temp[2] + ", " + temp[3]
 
   return (
-    <div className={`flex text-xs   ${className}`}>
+    <div className={`flex text-xs  !text-[calc(15*0.050vw)] ${className}`}>
       <p className="font-semibold text-[#FFA28D]"> </p>
 
       <InputSelect
         placeholder="Select"
-        parentClassName="border-none text-xs text-[#26435F] w-fit relative z-[500]"
-        labelClassname="text-sm"
-        inputContainerClassName={`border-none w-[300px] whitespace-nowrap font-semibold text-[#FFA28D] ${inputContainerClassName}  ${styles["text"]}`}
-        inputClassName={`border-none w-fit bg-transparent font-semibold text-[#FFA28D] `}
+        parentClassName="border-none text-xs text-[#26435F] w-fit relative z-[500] !text-[calc(15*0.050vw)]"
+        labelClassname="text-sm !text-[calc(15*0.050vw)]"
+        inputContainerClassName={`border-none w-[300px] !text-[calc(15*0.050vw)] whitespace-nowrap font-semibold text-[#FFA28D] ${inputContainerClassName}  ${styles["text"]}`}
+        inputClassName={`border-none w-fit bg-transparent font-semibold text-[#FFA28D] !text-[calc(15*0.050vw)]`}
         value={newDateformat}
-        optionClassName={`${optionClassName} relative`}
+        optionClassName={`${optionClassName} relative !text-[calc(15*0.050vw)]`}
         optionData={[
           { name: "Today", days: 0 },
           { name: "Last 7 Days", days: 7 },

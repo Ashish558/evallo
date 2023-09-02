@@ -205,7 +205,7 @@ message,type
             IconLeft={caution}
             placeholder=""
             labelClassname=" text-md text-[#26435F] font-semibold"
-            parentClassName="text-[#26435F] w-[calc(376*0.05050vw)] min-w-[230px] text-[calc(17.5*0.05050vw)]"
+            parentClassName="text-[#26435F] w-[calc(376*0.05050vw)] min-w-[230px] text-base-17-5"
             inputContainerClassName=" bg-white border border-white text-[#667085]"
             inputClassName=" text-400 bg-transparent "
             label="Email"

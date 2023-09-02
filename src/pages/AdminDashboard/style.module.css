@@ -13,21 +13,25 @@
 .gridBorder {
   margin-top: 1.7vw;
   margin-bottom: 1.7vw;
+  border-right: 1.25px solid #cbd6e2;
 }
 
 .gridBorder2 {
   border-left: 1.25px solid #cbd6e2;
   margin-top: 1.7vw;
   margin-bottom: 1.7vw;
+  
 }
 
 .boxBorder1 {
   border-right: 5.5px solid #38c980;
   border-radius: 5px;
   border-bottom-left-radius: 5px;
+  height: calc(105*0.050vw) !important;
 }
 
 .boxBorder2 {
+  height: calc(105*0.050vw) !important;
 
   border-right: 5.5px solid #FF7979;
   border-radius: 5px;
@@ -38,6 +42,7 @@
   border-right: 5.5px solid #7152eb;
   border-radius: 5px;
   border-bottom-left-radius: 5px;
+  height: calc(105*0.050vw) !important;
 }
 
 .smallBoxBorder {

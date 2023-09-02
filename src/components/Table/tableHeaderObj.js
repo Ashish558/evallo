@@ -14,7 +14,7 @@ export function TableHeaderNew({ header, checkedHeader, dataFor, Handler }) {
       className={`px-6 py-[20px] font-medium whitespace-nowrap  text-center  cursor-pointer ${header.className ? header.className : ""
         } ${flag ? styles["no-arrow"] : ''}`}
     >
-      <div className="flex justify-center">
+      <div className="flex justify-center !text-[calc(17.5*0.050vw)]">
         {header.text === "Full Name" && dataFor === 'allUsers' ? (
 
           <label
@@ -34,7 +34,7 @@ export function TableHeaderNew({ header, checkedHeader, dataFor, Handler }) {
         ) : (
           ""
         )}
-        <span onClick={() => header.onCick && header.onCick()} className="text-center">
+        <span onClick={() => header.onCick && header.onCick()} className="text-center !text-[calc(17.5*0.050vw)]">
           {header.text}
         </span>
       </div>

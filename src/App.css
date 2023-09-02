@@ -149,21 +149,17 @@ nav .active {
   border-right: 3px solid #26435f;
   border-radius:100%;
 }
+#borderDashed{
+    border: 1.25px dashed #517CA8;
+}
 ::-webkit-scrollbar:horizontal{
   height: 8px;
 width:20px;
 }
-::-webkit-scrollbar-thumb:horizontal{
-        background: #000;
-        border-radius: 10px;
-        height: 8px;
-        width:20px;
-        
-    }
-    ::-webkit-scrollbar-track:horizontal{
-        background: #000;
-        border-radius: 10px;
-        height: 8px;
-        width:20px;
-        
-    }
+td{
+font-size:0.912vw !important;
+}
+th{
+font-size:0.912vw !important;
+}
+

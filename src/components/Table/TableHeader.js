@@ -46,7 +46,7 @@ export function TableHeader({ header, dataFor, onClick, setSorted, Icon, headerW
           header === "Student Name"
           ? "text-left pl-7"
           : ""
-          } ${dataFor === "allUsers" ? "text-[17.5px]" : "text-[17.5px]"}
+          } ${dataFor === "allUsers" ? "text-[17.5px]" : "text-[17.5px] !text-[calc(17.5*0.050vw)]"}
        `}
       >
         {" "}

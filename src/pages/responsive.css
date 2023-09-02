@@ -1,0 +1,22 @@
+.text-base-15{
+font-size:max(10px,0.783vw) !important;
+}
+
+.text-base-17-5{
+font-size:max(12px,0.9114vw) !important;
+}
+.text-base-20{
+    font-size:max(14px,1.044vw) !important;
+}
+.text-base-25{
+    font-size:max(16px,1.305vw) !important;
+}
+.text-base-30{
+    font-size:max(18px,1.566vw) !important;
+}
+.text-base-37-5{
+    font-size:max(20px,1.9575vw) !important;
+}
+.text-base-6{
+    font-size:max(22px,1.9575vw) !important;
+}
