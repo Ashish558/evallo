@@ -321,7 +321,7 @@ export default function StudentTest({fromProfile}) {
 
   return (
     <>
-      <div className={`mx-[70px] bg-lightWhite min-h-screen ${fromProfile?'!mx-0':'}'}`}>
+      <div className={`mx-[70px] bg-lightWhite  ${fromProfile?'!mx-0':'min-h-screen'}`}>
         <div className={`py-14 px-5 ${fromProfile?'px-0 py-0 ':''}`}>
           {persona === "student" && !fromProfile && (
             <div

@@ -21,3 +21,151 @@
    border: 1px solid #26435F80 !important;
    background:#26435F80 !important;  
 }
+
+.chartContainer {
+   width: 1200px;
+}
+
+.chartRow {
+   display: flex;
+   align-items: center;
+   gap: 19px;
+   margin: 33px 0;
+   width: 120rem;
+   overflow: visible;
+}
+
+.hr {
+   width: 110rem;
+   height: 5px;
+
+   background-color: #c2c2c2;
+   opacity: 0.3;
+}
+
+.chartContainer h5 {
+   font-size: 14px;
+   font-weight: 700;
+}
+
+.chartRowContainer {
+   position: relative;
+}
+
+#algebra {
+   width: 100px;
+   height: 100px;
+   position: absolute;
+   background-color: #4d33e999;
+   border-radius: 50%;
+   top: 36%;
+   left: 3%;
+}
+
+#advMath {
+   width: 54px;
+   height: 54px;
+   position: absolute;
+   background-color: #da33e999;
+   border-radius: 50%;
+   top: 60%;
+   left: 14.5%;
+}
+
+#geometry {
+   position: absolute;
+   width: 127px;
+   height: 127px;
+   background-color: #33e99299;
+   border-radius: 50%;
+   top: 22%;
+   left: 23%;
+}
+#trigonometry {
+   position: absolute;
+   width: 56px;
+   height: 56px;
+   background-color: #33bde999;
+   border-radius: 50%;
+   top: 24%;
+   left: 40%;
+}
+#stat {
+   position: absolute;
+   width: 82px;
+   height: 82px;
+   background-color: #f1848a;
+   opacity: 0.6;
+   border-radius: 50%;
+   top: 43%;
+   left: 53.2%;
+}
+#prob {
+   position: absolute;
+   width: 82px;
+   height: 82px;
+   background-color: #e9d73399;
+   opacity: 0.6;
+   border-radius: 50%;
+   top: 30%;
+   left: 65%;
+}
+
+#algebra2 {
+   width: 100px;
+   height: 100px;
+   position: absolute;
+   background-color: #4d33e999;
+   border-radius: 50%;
+   top: 36%;
+   left: 77%;
+}
+
+#advMath2 {
+   width: 54px;
+   height: 54px;
+   position: absolute;
+   background-color: #da33e999;
+   border-radius: 50%;
+   top: 60%;
+   left: 89.5%;
+}
+
+#geometry2 {
+   position: absolute;
+   width: 127px;
+   height: 127px;
+   background-color: #33e99299;
+   border-radius: 50%;
+   top: 22%;
+   left: 98.1%;
+}
+#trigonometry2 {
+   position: absolute;
+   width: 56px;
+   height: 56px;
+   background-color: #33bde999;
+   border-radius: 50%;
+   top: 24%;
+   left: 115%;
+}
+#stat2 {
+   position: absolute;
+   width: 82px;
+   height: 82px;
+   background-color: #f1848a;
+   opacity: 0.6;
+   border-radius: 50%;
+   top: 43%;
+   left: 127.6%;
+}
+#prob2 {
+   position: absolute;
+   width: 82px;
+   height: 82px;
+   background-color: #e9d73399;
+   opacity: 0.6;
+   border-radius: 50%;
+   top: 30%;
+   left: 141%;
+}

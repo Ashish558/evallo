@@ -593,7 +593,7 @@ const [toEdit, setToEdit] = useState({
       setSettings(res.data.data.setting);
     });
   }, []);
-  console.log({ userDetail, settings });
+ // console.log({ userDetail, settings });
   const handleProfilePhotoChange = (file) => {
     // console.log(file)
     let url = "";
@@ -901,7 +901,7 @@ const [toEdit, setToEdit] = useState({
             </p>
 
             <StudentTest fromProfile={true} />
-           <SPFrame3 userDetail={userDetail} subjects={subjects} subjects1={subjects1} subjects2={subjects2}/>
+           <SPFrame3 userDetail={userDetail} subject={subjects} subjects1={subjects1} subjects2={subjects2}/>
           </div>
         </div>
 

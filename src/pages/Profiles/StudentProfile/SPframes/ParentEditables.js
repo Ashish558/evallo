@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useLazyGetParentsByNameQuery } from "../../../../app/services/admin";
 import { useLazyGetStudentsByNameQuery } from "../../../../app/services/session";
 import ProfilePhoto from "./ProfilePhoto";
@@ -25,6 +25,7 @@ import ProfileCard from "../../../../components/ProfileCard/ProfileCard";
 import axios from "axios";
 import InputFieldDropdown from "../../../../components/InputField/inputFieldDropdown";
 import InputSelectNew from "../../../../components/InputSelectNew/InputSelectNew";
+import useOutsideAlerter from "../../../../hooks/useOutsideAlerter";
 
 // 637b9df1e9beff25e9c2aa83
 export default function ParentEditables({
@@ -312,7 +313,7 @@ console.log("parentEditables",currentToEdit)
         setCurrentToEdit(toEdit[key]);
       }
     });
-    console.log("currentUser");
+  // console.log("currentUser");
   }, [toEdit]);
 
   const handleClose = () => {
@@ -369,7 +370,7 @@ console.log("parentEditables",currentToEdit)
       tempStudents.push(item._id);
       tempStudentsData.push(item);
     }
-    console.log(tempStudentsData);
+   // console.log(tempStudentsData);
     setCurrentToEdit({
       ...currentToEdit,
       assiginedStudents: tempStudents,
@@ -516,7 +517,7 @@ console.log("parentEditables",currentToEdit)
      
       userDetailSave(reqBody);
     }
-    if (currentToEdit.hasOwnProperty("driveLink") && currentToEdit.driveLink.length>=0) {
+    if (currentToEdit.hasOwnProperty("driveLink") && currentToEdit.driveLink.length>2) {
       let reqBody = {
         type: 'driveLink',
         link:currentToEdit.driveLink,
@@ -529,7 +530,7 @@ console.log("parentEditables",currentToEdit)
         }
       });
     }
-    if (currentToEdit.hasOwnProperty("dropBoxLink") && currentToEdit.dropBoxLink.length>=0) {
+    if (currentToEdit.hasOwnProperty("dropBoxLink") && currentToEdit.dropBoxLink.length>2) {
       let reqBody = {
         type: 'dropBoxLink',
         link:currentToEdit.dropBoxLink,
@@ -612,6 +613,8 @@ console.log("parentEditables",currentToEdit)
     // })
   };
   // console.log(settings);
+  
+
   const [startDate, setStartDate] = useState(new Date());
   //console.log({ currentField, currentToEdit });
   const forCss = [
@@ -621,10 +624,12 @@ console.log("parentEditables",currentToEdit)
     "personality",
     "subjects",
   ];
-  return Object.keys(toEdit).map((key) => {
+  return  Object.keys(toEdit).map((key) => {
     return (
       toEdit[key].active === true && (
+        
         <Modal
+        fetchDetails={fetchDetails}
           key={key}
           classname={
             forCss.includes(currentField.name)

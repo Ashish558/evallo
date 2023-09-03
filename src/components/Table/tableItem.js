@@ -610,7 +610,8 @@ export default function TableItem({
         <tr className="odd:bg-white shadow-sm text-[17.5px] shadow-slate-200   leading-7">
           {Object.keys(item).map((key, i) =>
             excludes.includes(key) ? (
-              <></>
+              <React.Fragment key={i}> 
+              </React.Fragment>
             ) : (
               <td key={i} className="font-medium px-1  min-w-14 py-4">
                 {key === "status" ? (
@@ -873,7 +874,8 @@ const MapData = (data, dataFor, exclude = [], onClick) => {
   const [disabled, setDisabled] = useState(true);
   return Object.keys(data).map((key, i) =>
     exclude.includes(key) ? (
-      <></>
+      <React.Fragment key={i}>
+        </React.Fragment>
     ) : key === "isCorrect" ? (
       <td key={i} className="font-medium px-1  min-w-14 py-4">
         <div className="flex items-center justify-center">

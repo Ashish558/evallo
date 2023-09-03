@@ -79,14 +79,17 @@ export default function Table(props) {
 
   return (
     <div className="w-full">
-      <div className="overflow-x-auto scrollbar-content    scroll-m-1 ">
+      <div className="overflow-x-auto scrollbar-content custom-scroller-2  scroll-m-1 ">
         <table className=" customTable  mb-3 text-center px-1 w-full whitespace-nowrap">
           <thead className="pb-2 whitespace-nowrap">
             <tr className=" whitespace-nowrap">
               {tableHeaders.map((item, idx) => {
                 return headerObject === true ? (
+                  <React.Fragment key={idx}>
                   <TableHeaderNew header={item} dataFor={dataFor} />
+                  </React.Fragment>
                 ) : (
+                  <React.Fragment key={idx}>
                   <TableHeader
                     noArrow={noArrow}
                     key={idx}
@@ -96,6 +99,7 @@ export default function Table(props) {
                     dataFor={dataFor}
                     headerWidth={headerWidth}
                   />
+                  </React.Fragment>
                 );
               })}
             </tr>
@@ -111,7 +115,9 @@ export default function Table(props) {
               </div>
             ) : (
               tableData.map((item, idx) => {
+                
                 return AdminLatestSignUp ? (
+                  <React.Fragment key={idx}>
                   <LatestSignUpTableItem
                     dataFor={dataFor}
                     item={item}
@@ -119,7 +125,10 @@ export default function Table(props) {
                     excludes={excludes}
                     onClick={onClick}
                   />
+                  </React.Fragment>
                 ) : (
+                  <React.Fragment key={idx}>
+                  
                   <TableItem
                     dataFor={dataFor}
                     item={item}
@@ -127,6 +136,7 @@ export default function Table(props) {
                     excludes={excludes}
                     onClick={onClick}
                   />
+                  </React.Fragment>
                 );
               })
             )}
