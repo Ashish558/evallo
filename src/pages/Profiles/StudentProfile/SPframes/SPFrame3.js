@@ -1,6 +1,7 @@
 import React from "react";
 import Chart from "./ChartStudent";
 import Chart2 from "../../../../components/Chart/Chart";
+import LineChart from "./LineChart"
 import styles from "../style.module.css";
 import { useState } from "react";
 import { useScoreProgressionStudentMutation } from "../../../../app/services/users";
@@ -77,15 +78,11 @@ const SPFrame3 = ({ userDetail  }) => {
       {" "}
       <div
         id={styles.chartContainer}
-        className="!rounded-md shadow-[0px_0px_2.500001907348633px_0px_#00000040] custom-scroller "
+        className="!rounded-md bg-white shadow-[0px_0px_2.500001907348633px_0px_#00000040] custom-scroller "
       >
-        <Chart2
-          setSubjects={[]}
-         
-          subjects={subjects}
-          selectedSubject={[]}
-          currentSubData={[]}
-          setCurrentSubData={[]}
+        <LineChart
+        scoreProgression={scoreProgression}
+        
         />
       </div>
       <div className=" flex-1 w-full">

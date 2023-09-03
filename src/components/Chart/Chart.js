@@ -151,7 +151,7 @@ export default function Chart({ setSubjects, subjects, selectedSubject, selected
       }
       const curr = chartData.find(item => item.subject === selectedSubject)
       if (curr === undefined) return
-       console.log('Shycurr', curr)
+     //  console.log('Shycurr', curr)
      let concepts =[]
       setCurrentSubData(curr)
       let currentConceptTotal = {}
@@ -172,7 +172,7 @@ export default function Chart({ setSubjects, subjects, selectedSubject, selected
          return key
       })]
    }
-       console.log('concepts', concepts)
+      // console.log('concepts', concepts)
       setCurrentConcepts(concepts)
       setOptions(prev => ({
          ...prev,
@@ -224,12 +224,12 @@ export default function Chart({ setSubjects, subjects, selectedSubject, selected
       }
       Object.keys(currentConceptTotal).forEach((totalConcept, idx) => {
          if (Object.keys(currentConceptCorrect).includes(totalConcept)) {
-            console.log("currentConceptTotal",currentConceptTotal,currentConceptCorrect,totalConcept)
+           // console.log("currentConceptTotal",currentConceptTotal,currentConceptCorrect,totalConcept)
             let x = (cid + 1) * 5
             let totalVal = currentConceptTotal[totalConcept]
             let getValue = currentConceptCorrect[totalConcept]
             const percent = Math.round(getValue * 100 / totalVal)
-            console.log("vv",getValue,totalVal)
+          //  console.log("vv",getValue,totalVal)
             let radius = totalVal * 2
             // console.log(totalConcept, percent);
             if (radius < 15) {

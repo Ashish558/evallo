@@ -143,7 +143,7 @@ export default function Chart({ setSubjects, subjects, selectedSubject, selected
         setData({ datasets: [] })
         return
       }
-       console.log('Shycurr', curr)
+     //  console.log('Shycurr', curr)
      let concepts =curr?.concepts?[...Object.keys(curr?.concepts).map(key => {
         return key
      })]:[curr?.name]
@@ -208,7 +208,7 @@ export default function Chart({ setSubjects, subjects, selectedSubject, selected
             let totalVal = 10
             let getValue = curr?.no_of_correct
             const percent = curr?.timeTaken?curr?.timeTaken:0
-            console.log("chart Current",curr,getValue,totalVal)
+           // console.log("chart Current",curr,getValue,totalVal)
             let radius = Math.round(getValue )        
             // console.log(totalConcept, percent);
             if (radius < 15) {
@@ -218,13 +218,13 @@ export default function Chart({ setSubjects, subjects, selectedSubject, selected
             }
           
             datasets.push({
-               label: percent/60 + "minutes",
+               label: concepts[0],
                // data: [{ x, y: percent, r: 20 }],
-               data: [{ x, y: percent, r: radius }],
+               data: [{ x, y: percent, r: radius ,label: concepts[0]}],
                backgroundColor: getColor(0, 1),
             })
          
-
+console.log("first",datasets)
      
       setData({
          datasets: datasets
