@@ -5,7 +5,8 @@ import "./Transition.css";
 import "./calendar.css";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
-
+import downIcon from '../../assets/icons/down-pink.svg'
+import upIcon from '../../assets/icons/up-blue.svg'
 import FullCalendar, { formatDate } from "@fullcalendar/react"; // must go before plugins
 // import { Calendar } from '@fullcalendar/core';
 import { toMoment } from "@fullcalendar/moment";
@@ -112,7 +113,7 @@ export default function Calendar() {
   const [names, setNames] = useState([]);
   const [name, setName] = useState("");
   const [eventDetails, setEventDetails] = useState([]);
-
+  const { organization } = useSelector((state) => state.organization);
   const [students, setStudents] = useState([]);
   const [sessionToUpdate, setSessionToUpdate] = useState({});
   // const params = useParams()
@@ -479,35 +480,30 @@ export default function Calendar() {
 
     return (
       <div
-        className={`p-[10px] rounded-7 ${
-          arg.isToday ? "bg-primary border" : ""
-        }  `}
+        className={`p-[10px] rounded-7 ${arg.isToday ? "bg-primary border" : ""
+          }  `}
       >
         <p
-          className={`${
-            arg.isToday ? "text-primaryWhite-900" : ""
-          } text-sm font-semibold
-                   ${
-                     arg.isPast
-                       ? "text-[#BEC2CE]"
-                       : arg.isFuture
-                       ? "text-primary-60"
-                       : ""
-                   } `}
+          className={`${arg.isToday ? "text-primaryWhite-900" : ""
+            } text-sm font-semibold
+                   ${arg.isPast
+              ? "text-[#BEC2CE]"
+              : arg.isFuture
+                ? "text-primary-60"
+                : ""
+            } `}
         >
           {days[arg.date.getDay()]}
         </p>
         <p
-          className={`${
-            arg.isToday ? "text-primaryWhite-900" : ""
-          } text-2xl font-bold font-inter
-                   ${
-                     arg.isPast
-                       ? "text-[#BEC2CE]"
-                       : arg.isFuture
-                       ? "text-primary-dark"
-                       : ""
-                   }`}
+          className={`${arg.isToday ? "text-primaryWhite-900" : ""
+            } text-2xl font-bold font-inter
+                   ${arg.isPast
+              ? "text-[#BEC2CE]"
+              : arg.isFuture
+                ? "text-primary-dark"
+                : ""
+            }`}
         >
           {text[1]}
         </p>
@@ -540,9 +536,8 @@ export default function Calendar() {
           style={{ background: background }}
         >
           <p
-            className={`text-primary font-semibold text-sm ${
-              isCompleted ? "line-through" : ""
-            } `}
+            className={`text-primary font-semibold text-sm ${isCompleted ? "line-through" : ""
+              } `}
           >
             {" "}
             {arg.event._def.title}{" "}
@@ -554,15 +549,15 @@ export default function Calendar() {
     );
   };
 
-   const handleDateClick = (arg) => {
-      let date = new Date(arg.date);
-      let currentDate = new Date();
-      currentDate.setHours(0, 0, 0, 0);
-      // console.log(date - currentDate);
-      // if (date - currentDate < 0) {
-      //    alert('Cant set events on past date')
-      //    return
-      // }
+  const handleDateClick = (arg) => {
+    let date = new Date(arg.date);
+    let currentDate = new Date();
+    currentDate.setHours(0, 0, 0, 0);
+    // console.log(date - currentDate);
+    // if (date - currentDate < 0) {
+    //    alert('Cant set events on past date')
+    //    return
+    // }
 
     if (persona === "tutor") {
       setDefaultEventData({
@@ -612,7 +607,7 @@ export default function Calendar() {
         let arr = [];
         if (res?.data?.tutorSessionDetails) {
           arr = res?.data?.tutorSessionDetails;
-         // arr = arr?.length >= 0 ? arr : [arr];
+          // arr = arr?.length >= 0 ? arr : [arr];
         }
 
         setInsightData({
@@ -621,9 +616,8 @@ export default function Calendar() {
         });
       } else
         setInsightData({
-          message: `User does'nt have any ${
-            role !== "tutor" ? "tutor" : "parent or student"
-          } `,
+          message: `User does'nt have any ${role !== "tutor" ? "tutor" : "parent or student"
+            } `,
         });
     });
   };
@@ -815,11 +809,11 @@ export default function Calendar() {
     });
   };
 
-   // useEffect(() => {
-   //    getUserDetail({ id: localStorage.getItem("userId") }).then((res) =>
-   //       setTimeZone(res.data?.data?.userdetails?.timeZone)
-   //    );
-   // }, []);
+  // useEffect(() => {
+  //    getUserDetail({ id: localStorage.getItem("userId") }).then((res) =>
+  //       setTimeZone(res.data?.data?.userdetails?.timeZone)
+  //    );
+  // }, []);
 
   useEffect(() => {
     if (calendarRef.current === null) return;
@@ -888,8 +882,17 @@ export default function Calendar() {
   return (
     <>
       <div className="lg:ml-pageLeft calender bg-lightWhite min-h-screen">
-        <div className="py-14 pt-10 pb-2 pl-5 calendar flex">
-        <div className=" pl-0 pr-0 w-[280px] mr-[10px]">
+        <p className="text-[#24A3D9] text-xl mb-[30px] mt-[50px] pl-5">
+          {organization?.company +
+            "  >  " +
+            firstName +
+            "  " +
+            lastName +
+            "  >  "}
+          <span className="font-bold">Dashboard</span>
+        </p>
+        <div className="  pb-2 pl-5 calendar flex">
+          <div className=" pl-0 pr-0 w-[280px] mr-[10px]">
             <div className="w-[280px]">
               <SimpleCalendar
                 events={
@@ -912,17 +915,15 @@ export default function Calendar() {
                     return (
                       <div
                         key={student.studentId}
-                        className={`p-4 mb-4 rounded-10 flex justify-between items-center  bg-white ${
-                          student.selected
-                            ? "border border-[#c6c6c6] shadow-md"
-                            : "border"
-                        } `}
+                        className={`p-4 mb-4 rounded-10 flex justify-between items-center  bg-white ${student.selected
+                          ? "border border-[#c6c6c6] shadow-md"
+                          : "border"
+                          } `}
                         onClick={() => handleStudentChange(student)}
                       >
                         <p
-                          className={` ${
-                            student.selected ? "font-medium" : ""
-                          } `}
+                          className={` ${student.selected ? "font-medium" : ""
+                            } `}
                         >
                           {student.studentName}
                         </p>
@@ -942,7 +943,7 @@ export default function Calendar() {
               <></>
             ) : (
               <div>
-                <InputSearch
+                {/* <InputSearch
                   // IconRight={SearchIcon}
                   placeholder="Type Name"
                   parentClassName="w-full mr-4 mt-5"
@@ -959,41 +960,65 @@ export default function Calendar() {
                     handleInsights(item.value, item.role);
                     fetchSessions(item._id, item.role);
                   }}
-                />
+                /> */}
+                <div className="mt-[48px] mb-2">
+                  <div className="flex justify-between pt-[19px] px-[21px] pb-[14px] bg-[rgba(36,63,217,0.20)] rounded-5 items-center">
+                    <p className="text-[#24A3D9] text-xl font-semibold">Sample Student 1</p>
+                    <p><img src={upIcon} alt="" /></p>
+                  </div>
+                  <div>
+                    <div className="flex justify-between pt-[19px] px-[21px] pb-[14px] bg-[rgba(255,162,141,0.20)] rounded-t-5 items-center mt-5">
+                      <p className="text-[#FFA28D] text-xl font-semibold">Sample Student 1</p>
+                      <p><img src={downIcon} alt="" /></p>
+                    </div>
+                    <div className="py-[17.5px] pl-3 bg-[#FFFFFF] rounded-b-5">
+                      <p className="text-[#26435F] text-lg font-medium">Service Name</p>
+                      <p className="text-[17.5px] text-[#7C98B6] mt-[19px]">Topic Name</p>
+                      <p className="text-[rgba(56,201,128,1)] text-lg font-medium pt-[40px]">Hours Completed</p>
+                      <p className="text-[25px] text-[rgba(56,201,128,1)] mt-[19px]">1</p>
+                      <p className="text-[#FF7979] text-lg font-medium pt-[40px]">Hours Missed</p>
+                      <p className="text-[25px] text-[#FF7979] mt-[19px]">0</p>
+                      <p className="text-[rgba(255,206,132,1)] text-lg font-medium pt-[40px]">Hours Canceled</p>
+                      <p className="text-[25px] text-[rgba(255,206,132,1)] mt-[19px]">0</p>
+                      <p className="text-[rgba(124,152,182,1)] text-lg font-medium pt-[40px]">Hours Scheduled</p>
+                      <p className="text-[25px] text-[rgba(124,152,182,1)] mt-[19px]">1</p>
+                    </div>
+                  </div>
+                </div>
               </div>
             )}
             <div className="max-h-[600px] overflow-y-auto scrollbar-content">
-            {insightData?.data?.length > 0 && insightData?.role !== "tutor"
-              ? insightData?.data?.map((item, id) => {
+              {insightData?.data?.length > 0 && insightData?.role !== "tutor"
+                ? insightData?.data?.map((item, id) => {
                   return (
                     <div
                       key={id}
                       className="transition-shy flex transition-all duration-300 font-semibold box-content flex-col my-3 bg-[#FFFFFF] rounded-md  text-lg  w-[270px] "
                     >
                       <div
-                      style={{
-                        backgroundColor: colorsTutor.bg[id % 4],
-                        color: colorsTutor.text[id % 4],
-                      }}
+                        style={{
+                          backgroundColor: colorsTutor.bg[id % 4],
+                          color: colorsTutor.text[id % 4],
+                        }}
                         onClick={() => toggleAccordions(id)}
                         className="transition-shy cursor-pointer bg-[rgba(255,162,141,0.2)] overflow-hidden relative z-50 py-3 px-5 text-[#FFA28D] mx-0 flex justify-between shadow-sm rounded-t-md w-full  "
                       >
-                        {item?.tutor?.firstName + " "+item?.tutor?.lastName }
+                        {item?.tutor?.firstName + " " + item?.tutor?.lastName}
                         <div
-                        style={{
-                          backgroundColor: colorsTutor.text[id % 4],
-                        }}
-                        className="flex justify-center items-center text-center py-auto my-auto w-5 h-5 rounded-3xl "
-                      >
-                       
-                        <img
-                          ref={(el) => (accordionImgRefs.current[id] = el)}
-                          className="inline-block my-auto text-white"
-                          src={down_triangle}
-                          alt="inscribed triangle"
-                        />
-                        
-                        
+                          style={{
+                            backgroundColor: colorsTutor.text[id % 4],
+                          }}
+                          className="flex justify-center items-center text-center py-auto my-auto w-5 h-5 rounded-3xl "
+                        >
+
+                          <img
+                            ref={(el) => (accordionImgRefs.current[id] = el)}
+                            className="inline-block my-auto text-white"
+                            src={down_triangle}
+                            alt="inscribed triangle"
+                          />
+
+
                         </div>
                       </div>
 
@@ -1006,26 +1031,26 @@ export default function Calendar() {
                           <p className="flex py-1 overflow-x-auto scrollbar-content">
                             {item?.sessionDetailsObj?.length > 0
                               ? item?.sessionDetailsObj?.map((ser, sid) => {
-                                  return (
-                                     (
-                                      <span
-                                        key={sid}
-                                        className="whitespace-nowrap"
-                                      >
-                                        {" "}
-                                        {ser.service}
-                                        {sid !==
+                                return (
+                                  (
+                                    <span
+                                      key={sid}
+                                      className="whitespace-nowrap"
+                                    >
+                                      {" "}
+                                      {ser.service}
+                                      {sid !==
                                         item?.sessionDetailsObj?.length - 1
-                                          ? " , "
-                                          : " "}
-                                      </span>
-                                    )
-                                  );
-                                })
+                                        ? " , "
+                                        : " "}
+                                    </span>
+                                  )
+                                );
+                              })
                               : "None"}
                           </p>
                           <p className="text-[16px] text-[#7C98B6]">
-                            {item?.tutor?.firstName + " "+item?.tutor?.lastName }
+                            {item?.tutor?.firstName + " " + item?.tutor?.lastName}
                           </p>
                         </div>
                         <div className="text-lg px-5 py-2 text-[#38C980]">
@@ -1036,7 +1061,7 @@ export default function Calendar() {
                             {item?.sessionDetailsObj[0]
                               ?.no_of_completed_sessions
                               ? item?.sessionDetailsObj[0]
-                                  ?.no_of_completed_sessions
+                                ?.no_of_completed_sessions
                               : "0"}
                           </p>
                         </div>
@@ -1045,7 +1070,7 @@ export default function Calendar() {
                           <p>
                             {item?.sessionDetailsObj[0]?.no_of_missed_sessions
                               ? item?.sessionDetailsObj[0]
-                                  ?.no_of_missed_sessions
+                                ?.no_of_missed_sessions
                               : "0"}
                           </p>
                         </div>
@@ -1055,7 +1080,7 @@ export default function Calendar() {
                             {item?.sessionDetailsObj[0]
                               ?.no_of_cancelled_sessions
                               ? item?.sessionDetailsObj[0]
-                                  ?.no_of_cancelled_sessions
+                                ?.no_of_cancelled_sessions
                               : "0"}
                           </p>
                         </div>
@@ -1065,7 +1090,7 @@ export default function Calendar() {
                             {item?.sessionDetailsObj[0]
                               ?.no_of_scheduled_sessions
                               ? item?.sessionDetailsObj[0]
-                                  ?.no_of_scheduled_sessions
+                                ?.no_of_scheduled_sessions
                               : "0"}
                           </p>
                         </div>
@@ -1073,41 +1098,41 @@ export default function Calendar() {
                     </div>
                   );
                 })
-              : insightData.message && (
+                : insightData.message && (
                   <div className="transition-shy mt-3 cursor-pointer bg-[rgba(255,162,141,0.2)] overflow-hidden relative z-50 py-3 px-5 text-[#FFA28D] mx-0 flex justify-between shadow-sm rounded-t-md w-full  ">
                     {insightData.message}
                   </div>
                 )}
-            {insightData?.data?.length > 0 &&
-              insightData?.role === "tutor" &&
-              insightData?.data?.map((item, id) => {
-                return (
-                  <div
-                    key={id}
-                    className="transition-shy flex transition-all duration-300 font-semibold box-content flex-col my-3 bg-[#FFFFFF] rounded-md  text-lg  w-[270px] "
-                  >
+              {insightData?.data?.length > 0 &&
+                insightData?.role === "tutor" &&
+                insightData?.data?.map((item, id) => {
+                  return (
                     <div
-                      style={{
-                        backgroundColor: colorsTutor.bg[id % 4],
-                        color: colorsTutor.text[id % 4],
-                      }}
-                      className="transition-shy cursor-pointer  overflow-hidden relative z-50 py-3 px-5  mx-0 flex justify-between shadow-sm rounded-t-md w-full  "
+                      key={id}
+                      className="transition-shy flex transition-all duration-300 font-semibold box-content flex-col my-3 bg-[#FFFFFF] rounded-md  text-lg  w-[270px] "
                     >
-                      {item?.student?.firstName + " " + item?.student?.lastName}
                       <div
                         style={{
-                          backgroundColor: colorsTutor.text[id % 4],
+                          backgroundColor: colorsTutor.bg[id % 4],
+                          color: colorsTutor.text[id % 4],
                         }}
-                        className="inline-block my-auto w-4 h-4 rounded-lg "
+                        className="transition-shy cursor-pointer  overflow-hidden relative z-50 py-3 px-5  mx-0 flex justify-between shadow-sm rounded-t-md w-full  "
                       >
-                        {" "}
-                        
+                        {item?.student?.firstName + " " + item?.student?.lastName}
+                        <div
+                          style={{
+                            backgroundColor: colorsTutor.text[id % 4],
+                          }}
+                          className="inline-block my-auto w-4 h-4 rounded-lg "
+                        >
+                          {" "}
+
+                        </div>
                       </div>
                     </div>
-                  </div>
-                );
-              })}
-              </div>
+                  );
+                })}
+            </div>
           </div>
           <div className="flex-1 w-4/5 relative" id="calendarContainer">
             <FullCalendar
@@ -1193,8 +1218,7 @@ export default function Calendar() {
               showNonCurrentDates={false}
             />
             <div
-              className=""
-              style={{ position: "absolute", top: "00px", right: "40px" }}
+              className="absolute right-[50px] top-0 "
             >
               <span id="input">
                 <InputSelect
@@ -1210,7 +1234,8 @@ export default function Calendar() {
                   optionData={timeZones}
                   onChange={(val) => setTimeZone(val)}
                   parentClassName=""
-                  inputContainerClassName="text-primaryDark font-bold border"
+                  optionClassName=""
+                  inputContainerClassName="text-primaryDark font-bold border "
                 />
               </span>
               {/* <div class="inline-flex rounded shadow-sm mt-1">

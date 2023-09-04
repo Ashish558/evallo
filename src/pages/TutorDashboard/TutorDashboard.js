@@ -71,7 +71,7 @@ export default function TutorDashboard() {
    console.log(allAssignedTests)
    const [tutorHours, setTutorHours] = useState(0)
    const navigate = useNavigate()
-
+   const { firstName, lastName } = useSelector((state) => state.user);
    const [sessions, setSessions] = useState([])
    const [isOpen, setIsOpen] = useState(false)
    const { id } = useSelector(state => state.user)
@@ -79,7 +79,7 @@ export default function TutorDashboard() {
    const [tutorRank, setTutorRank] = useState('-')
    // const [awsLink, setAwsLink] = useState('')
    const { awsLink } = useSelector(state => state.user)
-
+   const { organization } = useSelector((state) => state.organization);
    useEffect(() => {
       const url = `/api/session/tutor/${id}`;
       fetchUserSessions(url)
@@ -224,10 +224,18 @@ export default function TutorDashboard() {
    return (
       <div className='bg-[#F5F8FA]'>
          <div className="w-[90.6770833333vw] mx-auto">
-            <div className="py-8">
-               <p className='text-[#24A3D9] text-xl '>Dashboard</p>
+            <div className="">
+               <p className="text-[#24A3D9] text-xl mb-[30px] mt-[50px]">
+                  {organization?.company +
+                     "  >  " +
+                     firstName +
+                     "  " +
+                     lastName +
+                     "  >  "}
+                  <span className="font-bold">Dashboard</span>
+               </p>
 
-
+               {/* 
                <div className='px-4 w-[521px] mx-auto'>
                   <div className='flex justify-between items-center px-4'>
                      <p className='text-[#26435F]  text-[21px] cursor-pointer'
@@ -237,20 +245,20 @@ export default function TutorDashboard() {
                      <img src={RightIcon} className='cursor-pointer' onClick={() => navigate('/profile')} alt="RightIcon" />
                   </div>
                   <div className='px-4  text-lg font-medium  flex justify-between items-center'>
-                     {/* <p className=''>Profile Status</p> */}
+                    
                      <ProgressBar num={profileProgress} />
                      <p className='pl-3'>
                         {`${profileProgress}%`}
                      </p>
                   </div>
 
-               </div>
+               </div> */}
 
                <div className='flex items-start'>
 
                   <div className='flex flex-col items-start flex-[7]' >
-                     <div className=' mb-[40px] w-[58.9583333333vw]'>
-                        <p className='text-primary-dark font-semibold text-[21px] mb-[10.67px] '>Latest Students</p>
+                     <div className=' mb-[30px] w-[58.9583333333vw]'>
+                        <p className='text-[#26435F] font-semibold text-xl mb-[20px] '>Latest Students</p>
                         <div className='rounded-[5.333px] bg-[#FFF] shadow-[0px_0px_2px_rgba(0,0,0,0.25)] py-7 px-5'>
                            <div className={styles.studentImages} >
                               {
@@ -277,13 +285,13 @@ export default function TutorDashboard() {
                         }}
                            header='Completed'
                            subHeader='This Month'
-                           className='bg-[#63A1FD]' />
+                           className='bg-[#FFA28D]' />
                         <DashboardCard data={{ title: '-', subtitle: 'USD', titleClassName: 'text-[32px]' }}
                            header='Earned'
                            subHeader='This Month'
-                           className='bg-[#4BBD94]' />
+                           className='bg-[#FFA28D]' />
 
-                        <div className='ml-[30px] flex justify-center items-center w-[17.4402775vw] bg-[#F4F4F4]  rounded-[5px]'>
+                        <div className='ml-[30px] flex justify-center items-center w-[17.4402775vw] bg-[#F4F4F4]  rounded-[5px] shadow-[0px_0px_2px_0px_rgba(0,0,0,0.25)]'>
                            <div>     <p className='text-[1.6666666667vw] text-center text-[#667085] font-semibold'>Tutor Rank</p>
                               <p className='text-[#667085] text-center text-xl'>Coming Soon</p></div>
                         </div>
@@ -291,7 +299,7 @@ export default function TutorDashboard() {
 
 
                      <div className='w-[58.958333333vw] mt-10'>
-                        <p className='text-primary-dark font-semibold text-[21px] mb-[13px]'>Today’s Schedule</p>
+                        <p className='text-primary-dark font-semibold text-[20px] mb-[13px]'>Today’s Schedule</p>
                         <div className='px-[29px] py-[31px] bg-white  rounded-[5.333px] scrollbar-content scrollbar-vertical max-h-[600px] overflow-auto shadow-[0px_0px_2.6px_0px_rgba(0,0,0,0.25)]'>
                            {sessions.map((item, idx) => {
                               return <TutorSchedule {...item} setIsOpen={setIsOpen} handleLinkClick={handleLinkClick} />
@@ -303,7 +311,7 @@ export default function TutorDashboard() {
                   </div>
                   <div className=' flex-2 '>
 
-                     <p className='text-[21px] text-[#26435F] mb-[9.33px] font-semibold'>Latest Practice Test</p>
+                     <p className='text-xl text-[#26435F] mb-[20px] font-semibold'>Latest Practice Test</p>
                      <div className='bg-[#FFFFFF]  rounded-[5px] shadow-[0px_0px_2.6px_0px_rgba(0,0,0,0.25)]'>
                         <div className=''>
 
@@ -345,7 +353,7 @@ export default function TutorDashboard() {
                            {/* <p className='text-primary font-semibold text-[21px] mb-4'>
                            Latest Practice Test
                         </p> */}
-                           <div className='px-[19px] h-[515px] overflow-auto py-[19px] bg-white rounded-20'>
+                           <div className='pl-[30px] pr-[26px] h-[515px] overflow-auto py-[30px]  bg-white rounded-20'>
                               {allAssignedTests.map(item => {
                                  return (
                                     <div className=' mb-5' key={item._id} >
@@ -353,22 +361,23 @@ export default function TutorDashboard() {
                                           {/* <img src={`${item.photo ? `${awsLink}${item.photo}` : '/images/default.jpeg'} `} className='w-[62px] h-[62px] rounded-full' /> */}
                                        </div>
                                        <div className=' flex justify-between items-center'>
-                                          <div>
-                                             <p className='text-[#24A3D9] text-lg font-bold'> {item.testName} </p>
-                                             <div className=' text-[#517CA8] flex'>
+                                          <div className='w-3/6'>
+                                             <p className='text-[#24A3D9] text-[22.5px] font-bold'> {item.testName} </p>
+                                             <div className=' text-[#517CA8] flex text-[17.5px]'>
                                                 <p className='font-semibold'>Due:</p>
                                                 <p className='ml-2'> {getDate(item.dueDate)} </p>
                                              </div>
                                           </div>
                                           <div>
-                                             <img className='cursor-pointer' width="25px" src={download} alt="" />
+                                             <img className='cursor-pointer' width="35px" src={download} alt="" />
                                           </div>
-                                          <div>
+                                          <div className='text-[17.5px]'>
                                              {
-                                                item.status = "notStarted" ? <p className='text-[#32D583] underline'>
-                                                   Not started
-                                                </p> :
-                                                   <p className='text-[#FFCE84] underline'>
+                                                item.status = "notStarted" ?
+                                                   <p className='text-[#FFCE84] underline '>
+                                                      Not started
+                                                   </p> :
+                                                   <p className='text-[#32D583] underline'>
                                                       {item.status?.props?.children === 'completed' ? 'Completed' : 'Started'}
                                                    </p>
                                              }
