@@ -4,15 +4,22 @@ import { useSelector } from "react-redux";
 import EditableText from "../../../../components/EditableText/EditableText";
 import fileupload from "../../../../assets/icons/basil_file-upload-outline (2).svg";
 import BCut from "../../../../assets/YIcons/BCut.svg";
-import { useAddAssociatedDocStudentMutation } from "../../../../app/services/users";
-const SPFrame1 = ({ settings, userDetail, editable, setToEdit, toEdit }) => {
+import { useAddAssociatedDocStudentMutation, useUpdateUserDetailsMutation } from "../../../../app/services/users";
+const SPFrame1 = ({ userId, settings, userDetail, editable, setToEdit, toEdit ,fetchDetails}) => {
   const [xlsFile, setXlsFile] = useState({});
   const { awsLink } = useSelector((state) => state.user);
   const [addDoc, addDocStatus] = useAddAssociatedDocStudentMutation();
-  const reduceArr = (arr, id, setArr) => {
-    let temp = [...arr];
+  const [updateDetails, updateDetailsResp] = useUpdateUserDetailsMutation();
+  const reduceArr = (id, update) => {
+   
+    
+  //  console.log({toEdit})
+    let temp = [...toEdit?.whiteBoardLinks?.whiteBoardLinks];
     temp = temp?.filter((item, idd) => idd !== id);
-    setArr(temp);
+    
+      if(update){
+        handleSubmit(temp)
+      }
   };
   const addDocHandler = () => {
     if (!xlsFile || !xlsFile.name) {
@@ -28,6 +35,28 @@ const SPFrame1 = ({ settings, userDetail, editable, setToEdit, toEdit }) => {
         setXlsFile({});
       }
     });
+  };
+  const handleSubmit = (e) => {
+    //e.preventDefault();
+   // setLoading(true);
+    let reqBody = { whiteBoardLinks:e };
+   // delete reqBody["active"];
+     console.log({reqBody,id:userId});
+    const userDetailSave = (reqBody) => {
+    
+       console.log({reqBody,userDetail});
+      // return
+      updateDetails({ id:userId, fields: reqBody }).then((res) => {
+        console.log(res);
+        //setLoading(false);
+        fetchDetails(true, true);
+        // handleClose()
+      });
+    };
+    
+      userDetailSave(reqBody);
+   
+    
   };
   //console.log("frame1", { userDetail, xlsFile });
   return (
@@ -67,6 +96,7 @@ const SPFrame1 = ({ settings, userDetail, editable, setToEdit, toEdit }) => {
                   >
                     <span>{it}</span>
                     <img
+                    onClick={()=>reduceArr(id,true,)}
                       src={BCut}
                       className="text-xs !h-[20px] !w-[20px] inline-block"
                     />

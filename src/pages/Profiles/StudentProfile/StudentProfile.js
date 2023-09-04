@@ -877,21 +877,26 @@ const [toEdit, setToEdit] = useState({
             textClassName="text-sm text-[#517CA8] text-underline  "
             className="text-sm my-0 flex justify-end translate-y-7  float-right"
           />
-          <SPFrame0 userDetail={userDetail} settings={settings} toEdit={toEdit} setToEdit={setToEdit}/>
+          <SPFrame0 userDetail={userDetail}  settings={settings} toEdit={toEdit} setToEdit={setToEdit}/>
 
           <SPFrame1
             userDetail={userDetail}
             settings={settings}
+            userId={isOwn ? id : params.id}
             editable={editable}
+            fetchDetails={fetchDetails}
             setToEdit={setToEdit}
             toEdit={toEdit}
           />
           <div className="h-[2px] mt-14  bg-[#CBD6E2] w-[95%] mx-auto"></div>
           <SPFrame2
             userDetail={userDetail}
+            fetchDetails={fetchDetails}
             setSelectedScoreIndex={setSelectedScoreIndex}
             settings={settings}
+            userId={isOwn ? id : params.id}
             editable={editable}
+          
             setToEdit={setToEdit}
             toEdit={toEdit}
           />

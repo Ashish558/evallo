@@ -412,7 +412,7 @@ console.log("parentEditables",currentToEdit)
     setLoading(true);
     let reqBody = { ...currentToEdit };
     delete reqBody["active"];
-    // console.log(reqBody);
+     console.log({reqBody,userId});
     const userDetailSave = (reqBody) => {
       // if (reqBody.satScores) {
       //   if (isNaN(reqBody?.satScores?.maths)) reqBody.satScores.maths = 0;
@@ -999,6 +999,7 @@ return ( <div className="flex !text-sm gap-4 ">
   onChange={(e) =>{
 
     let temp=[...currentToEdit.whiteBoardLinks]
+    
     temp[id]=e.target.value
     setCurrentToEdit({
       ...currentToEdit,

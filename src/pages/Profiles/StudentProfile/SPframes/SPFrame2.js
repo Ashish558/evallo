@@ -3,15 +3,57 @@ import styles from "../style.module.css";
 import cancelIcon from "../../../../assets/YIcons/cutIcon.svg";
 import dot from "../../../../assets/YIcons/dotIcon.svg";
 import EditableText from "../../../../components/EditableText/EditableText";
+import { useUpdateUserDetailsMutation } from "../../../../app/services/users";
 const SPFrame2 = ({
   userDetail,
   settings,
   editable,
+  userId,
+  fetchDetails,
   setToEdit,
   toEdit,
   setSelectedScoreIndex,
 }) => {
- // console.log("frame2", settings, userDetail);
+  const [updateDetails, updateDetailsResp] = useUpdateUserDetailsMutation();
+  const reduceArr = (id,key, update) => {
+   
+    
+    //  console.log({toEdit})
+    let temp=[]
+if(!toEdit[key] || !toEdit[key][key]) return 
+       temp = [...toEdit[key][key]];
+      temp = temp?.filter((item, idd) => idd !== id);
+      
+        if(update){
+          handleSubmit(key,temp)
+        }
+    };
+  
+  const handleSubmit = (key,e) => {
+    //e.preventDefault();
+   // setLoading(true);
+    let reqBody = { [key]:e };
+   // delete reqBody["active"];
+     console.log({reqBody,id:userId});
+    const userDetailSave = (reqBody) => {
+    
+       console.log({reqBody,userDetail});
+      // return
+      updateDetails({ id:userId, fields: reqBody }).then((res) => {
+        console.log(res);
+        //setLoading(false);
+        fetchDetails(true, true);
+        // handleClose()
+      });
+    };
+    
+      userDetailSave(reqBody);
+   
+    
+  };
+  console.log("frame2", settings, userDetail);
+
+ 
   return (
     <div>
       {" "}
@@ -83,6 +125,7 @@ const SPFrame2 = ({
                     </p>
                   </div>
                   <img
+                    onClick={()=>reduceArr(idx,"satScores",true)}
                     src={cancelIcon}
                     className="absolute right-3 inline-block float-right !w-3 !h-3"
                     alt="cancelIcon"
@@ -137,6 +180,7 @@ const SPFrame2 = ({
                     </p>
                   </div>
                   <img
+                   onClick={()=>reduceArr(idx,"actScores",true)}
                     src={cancelIcon}
                     className="absolute right-3 inline-block float-right !w-3 !h-3"
                     alt="cancelIcon"

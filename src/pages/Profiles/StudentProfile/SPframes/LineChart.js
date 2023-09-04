@@ -88,12 +88,12 @@ const iniOptions = {
         
         usePointStyle: true,
         font: {
-          size: 15,
+          size: 12,
           family: 'Arial',
         },
         marginBottom: 10,
         labelSpacing: 100,
-        boxWidth: 100,
+        boxWidth: 80,
 
         pointStyle: "circle",
 
