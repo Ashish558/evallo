@@ -72,11 +72,20 @@ export const settingsServicesApi = createApi({
         headers: getAuthHeader(),
       }),
     }),
+    studentFeedback: builder.mutation({
+      query: (body) => ({
+        url: `/api/feedback/feedback`,
+        method: "POST",
+        body: body,
+        headers: {...getAuthHeader(), "content-type":"application/json"},
+      }),
+    }),
   }),
 });
 
 export const {
   useUpdateSettingMutation,
+  useStudentFeedbackMutation,
   useUpdateOfferImageMutation,
   useUpdateOrgSettingMutation,
   useGetAllPermissionQuery,

@@ -49,7 +49,7 @@ export default function SingleItem({
           />
         </div>
       )}
-      <p className="text-[#26435F] text-center text-[15px]">
+      <p className="text-[#26435F] text-center text-[15px] text-base-15">
         {sliceText
           ? item.image.slice(-23)
           : isString

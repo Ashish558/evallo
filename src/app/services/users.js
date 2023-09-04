@@ -157,6 +157,55 @@ export const userServicesApi = createApi({
         },
       }),
     }),
+
+    getLinkStudent: builder.mutation({
+      query: (body) => ({
+        url: `api/user/student/getLink`,
+        method: "POST",
+        body: body,
+        headers: getAuthHeader(),
+      }),
+    }),
+    addLinkStudent: builder.mutation({
+      query: (body) => ({
+        url: `api/user/student/addLink`,
+        method: "POST",
+        body: body,
+        headers: getAuthHeader(),
+      }),
+    }),
+    removeLinkStudent: builder.mutation({
+      query: (body) => ({
+        url: `api/user/student/removeLink`,
+        method: "POST",
+        body: body,
+        headers: getAuthHeader(),
+      }),
+    }),
+    addAssociatedDocStudent: builder.mutation({
+      query: (body) => ({
+        url: `api/user/student/uploadAssociatedDoc`,
+        method: "POST",
+        body: body,
+        headers: getAuthHeader(),
+      }),
+    }),
+    conceptChartStudent: builder.mutation({
+      query: (body) => ({
+        url: `api/user/student/conceptChart`,
+        method: "POST",
+        body: body,
+        headers: getAuthHeader(),
+      }),
+    }),
+    scoreProgressionStudent: builder.mutation({
+      query: (body) => ({
+        url: `api/user/student/scoreProgression`,
+        method: "POST",
+        body: body,
+        headers: getAuthHeader(),
+      }),
+    }),
   }),
 });
 
@@ -183,4 +232,10 @@ export const {
   useLazyGetOrganizationQuery,
   useUpdateUserMutation,
   useLazyGetSingleUserQuery,
+  useScoreProgressionStudentMutation,
+  useConceptChartStudentMutation,
+  useAddAssociatedDocStudentMutation,
+  useRemoveLinkStudentMutation,
+  useAddLinkStudentMutation,
+  useGetLinkStudentMutation
 } = userServicesApi;

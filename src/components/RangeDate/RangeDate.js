@@ -8,7 +8,7 @@ import styles from "./rangeDate.module.css";
 import { useState } from "react";
 import { useEffect } from "react";
 
-const RangeDate = ({ handleRangeData ,className,manualHide ,inputContainerClassName}) => {
+const RangeDate = ({ handleRangeData ,optionClassName,className,manualHide ,inputContainerClassName}) => {
   const [startDate, setStartDate] = useState(() => calculateDateRange()[0]);
   const [selectDate, setSelectedDate] = useState({
     sDate: "",
@@ -76,17 +76,17 @@ const RangeDate = ({ handleRangeData ,className,manualHide ,inputContainerClassN
   newDateformat += " - " + temp[0] + " " + temp[1] + " " + temp[2] + ", " + temp[3]
 
   return (
-    <div className={`flex text-xs   ${className}`}>
+    <div className={`flex text-xs  !text-[calc(15*0.050vw)] ${className}`}>
       <p className="font-semibold text-[#FFA28D]"> </p>
 
       <InputSelect
         placeholder="Select"
-        parentClassName="border-none text-xs text-[#26435F] w-fit"
-        labelClassname="text-sm"
-        inputContainerClassName={`border-none w-[300px] whitespace-nowrap font-semibold text-[#FFA28D] ${inputContainerClassName}  ${styles["text"]}`}
-        inputClassName={`border-none w-fit bg-transparent font-semibold text-[#FFA28D] `}
+        parentClassName="border-none text-xs text-[#26435F] w-fit relative z-[500] !text-[calc(15*0.050vw)]"
+        labelClassname="text-sm !text-[calc(15*0.050vw)]"
+        inputContainerClassName={`border-none w-[300px] !text-[calc(15*0.050vw)] whitespace-nowrap font-semibold text-[#FFA28D] ${inputContainerClassName}  ${styles["text"]}`}
+        inputClassName={`border-none w-fit bg-transparent font-semibold text-[#FFA28D] !text-[calc(15*0.050vw)]`}
         value={newDateformat}
-        optionClassName=""
+        optionClassName={`${optionClassName} relative !text-[calc(15*0.050vw)]`}
         optionData={[
           { name: "Today", days: 0 },
           { name: "Last 7 Days", days: 7 },
@@ -108,7 +108,7 @@ const RangeDate = ({ handleRangeData ,className,manualHide ,inputContainerClassN
               <input
                 type="date"
                 name="sdate"
-                className="rounded-md bg-[#FFA28D] p-1 text-white"
+                className="rounded-md bg-primary-50 p-1 text-[#FFA28D]"
                 value={selectDate.sDate}
                 max={selectDate.eDate}
                 onChange={(e) => handleLocalDate(e.target.value, "sDate")}
@@ -117,13 +117,13 @@ const RangeDate = ({ handleRangeData ,className,manualHide ,inputContainerClassN
                 type="date"
                 min={selectDate.sDate}
                 name="edate"
-                className="rounded-md text-[#FFA28D] p-1 w-[120px]"
+                className="rounded-md bg-primary-50 text-[#FFA28D] p-1 w-[120px]"
                 value={selectDate.eDate}
                 placeholder="Start Date"
                 onChange={(e) => handleLocalDate(e.target.value, "eDate")}
               />
             </div>
-            <div className="w-full flex justify-start">
+            <div className="w-full flex justify-center">
               <p className="ml-[26px]">
                 <button
                   disabled={!selectDate.eDate || !selectDate.sDate}

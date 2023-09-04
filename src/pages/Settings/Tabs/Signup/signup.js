@@ -8,8 +8,8 @@ import InputSelect from "../../../../components/InputSelect/InputSelect";
 import CheckboxIcon from "../../../../assets/icons/square.svg";
 import DeletIcon from "../../../../assets/Settings/delete.svg";
 import que from "../../../../assets/icons/que.png";
-import que2 from "../../../../assets/icons/que2.png";
-import plus1 from "../../../../assets/icons/plus1.png";
+import que2 from "../../../../assets/icons/que2.svg";
+import plus1 from "../../../../assets/icons/plus1.svg";
 import dropdown from "../../../../assets/icons/dropdown (2).svg";
 export default function SignupTab({
   setAddNewQuestionModalActive,
@@ -62,11 +62,11 @@ export default function SignupTab({
     <div className="">
       <div className="mb-[40px]">
         <div
-          className="text-sm flex items-start w-300 text-[#507CA8] mb-4">
+          className="text-base-17-5 flex items-start w-300 text-[#507CA8] mb-4">
           <p className="mt-[3px]"><img src={que} alt="que"></img></p>
           <p className="pl-2">Please enter the fields for the sign up form that you want to show your clients. You are allowed to create up to 5 additional custom questions beyond the mandatory fields that we require from parents and students.</p>
         </div>
-        <div className="text-sm flex items-start w-300 text-[#507CA8]">
+        <div className="text-base-17-5 flex items-start w-300 text-[#507CA8]">
           <p className="mt-[3px]"><img width="14px" src={que} alt="que"></img></p>
           <p className="pl-2">Link to the Sign-up form for Org Name: <a rel="noreferrer"
             className="underline text-[#26435F]"
@@ -82,7 +82,7 @@ export default function SignupTab({
       <div className="grid grid-cols-2 gap-x-5">
         <div className={styles.colContainer}>
           <div
-            className={`hidden lg:flex mb-[26px] items-center justify-between text-[#26435F] font-semibold`}
+            className={`hidden lg:flex mb-[26px] items-center justify-between text-[#26435F] font-semibold text-base-20 text-base-20`}
           >
             <p>      Page 1: Basic Details (all fields mandatory)</p>
 
@@ -119,7 +119,7 @@ export default function SignupTab({
             />
           </div>
           <div>
-            <p className={`mb-5 ${styles.label}`}>
+            <p className={`mb-5 ${styles.label} text-base-17-5`}>
               Are you signing up as a Parent or a Student?
             </p>
             <div className="flex items-center gap-x-6">
@@ -140,7 +140,7 @@ export default function SignupTab({
                     )}{" "}
                   </label>
 
-                  <span className="ml-2 text-[#507CA8]">Parent / Guardian</span>
+                  <span className="ml-2 text-[#507CA8] text-base-17-5">Parent / Guardian</span>
                 </div>
               </p>
               <p onClick={() => setIsChecked(false)} className={styles.textLight}>
@@ -160,7 +160,7 @@ export default function SignupTab({
                     )}{" "}
                   </label>
 
-                  <span className="ml-2 text-[#507CA8]">Student</span>
+                  <span className="ml-2 text-[#507CA8] text-base-17-5">Student</span>
                 </div>
               </p>
             </div>
@@ -177,7 +177,7 @@ export default function SignupTab({
                   className={`${styles["custom-checkbox"]} ${isChecked ? "checked" : ""
                     }`}
                 ></span>
-                <span className="ml-2 text-[#507CA8]">
+                <span className="ml-2 text-[#507CA8] text-base-17-5">
                   I confirm that I am 13 years or older
                 </span>
               </label>
@@ -195,7 +195,7 @@ export default function SignupTab({
                   className={`${styles["custom-checkbox"]} ${isChecked ? "checked" : ""
                     }`}
                 ></span>
-                <p className={` ml-2 text-[#507CA8]`}>
+                <p className={` ml-2 text-[#507CA8] text-base-17-5`}>
                   I have carefully read and agree to the{" "}
                   <span className="font-semibold text-[#26435F]">
                     Terms of Use and Privacy Policy
@@ -207,7 +207,7 @@ export default function SignupTab({
         </div>
         <div className="border border-[#dcdcdc] rounded-lg">
           <div
-            className={`hidden lg:flex mb-[26px] items-center justify-between text-[#26435F] font-semibold pt-5`}
+            className={`hidden lg:flex mb-[26px] items-center justify-between text-[#26435F] font-semibold text-base-20 pt-5`}
           >
             <p className=" pl-5 ">Page 2: Associated Student / Parent Details (all fields mandatory)</p>
 
@@ -264,7 +264,7 @@ export default function SignupTab({
 
       <div className={styles.customContainer}>
         <span
-          className={`hidden lg:flex mb-[26px]  items-center`}
+          className={`hidden lg:flex mb-[26px]  items-center text-base-20`}
           style={{ color: "#26435F", fontWeight: 600 }}
         >
           Page 3: Custom Fields (Add a maximum of 5 items)
@@ -305,7 +305,7 @@ export default function SignupTab({
                     <InputSelect
                       value={item.dataType}
                       labelClassname="hidden"
-                      parentClassName="w-[200px] mr-5 my-4 text-sm "
+                      parentClassName="w-[200px] mr-5 my-4 text-base-17-5 "
                       optionData={["String", "Checkboxes"]}
                       inputContainerClassName={`bg-[#F5F8FA] border-0 text-[#26435F] font-medium ${styles["dropdown-container"]} `}
                     />
@@ -327,6 +327,7 @@ export default function SignupTab({
           disabled={customFields?.length >= 5 ? true : false}
           children={"Add New Question"}
           Icon={plus1}
+          className="text-base-17-5"
           onClick={() => setAddNewQuestionModalActive(true)}
         />
       </div>
