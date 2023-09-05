@@ -163,15 +163,14 @@ const CompanyAndBround = () => {
 
   return (
     <div>
-      <div className="flex flex-col gap-10 w-[1150px] ">
-        <div className="flex gap-5 grid  grid-cols-12">
-          <div className="col-span-3">
+      <div className="flex flex-col gap-10  w-[66vw]">
+        <div className="flex gap-7 w-full flex-1">
           <InputField
             placeholder=""
             IconLeft={lock}
-            parentClassName="text-xs text-[#26435F] "
-            inputContainerClassName=" bg-white "
-            inputClassName="bg-transparent "
+            parentClassName="text-xs text-[#26435F]"
+            inputContainerClassName=" bg-white"
+            inputClassName="bg-transparent"
             label="Account Type"
             disabled={true}
             value={"Company"}
@@ -181,9 +180,10 @@ const CompanyAndBround = () => {
         <div className="col-span-3">
           <InputField
             placeholder=""
-            parentClassName="text-xs text-[#26435F] "
+            parentClassName="text-xs text-[#26435F]"
             inputContainerClassName=" bg-white"
-            inputClassName="bg-transparent"
+            inputClassName="text-base-17-5 bg-transparent"
+            labelClassname="text-base-17-5 text-sm font-bold mb-1"
             label="Company Name"
             value={values.company}
             onChange={(e) =>
@@ -198,9 +198,10 @@ const CompanyAndBround = () => {
           <div className="col-span-3">
           <InputField
             placeholder="Text"
-            parentClassName="text-xs text-[#26435F]"
+            parentClassName="text-xs w-full text-[#26435F]"
             inputContainerClassName=" bg-white"
-            inputClassName="bg-transparent"
+            inputClassName="text-base-17-5 bg-transparent"
+            labelClassname="text-base-17-5 text-sm font-bold mb-1"
             label="Support Email"
             value={values.supportEmail}
             onChange={(e) =>
@@ -215,8 +216,8 @@ const CompanyAndBround = () => {
           <div className="col-span-3">
           <InputField
             placeholder=""
-            parentClassName="text-xs text-[#26435F] max-w-[200px]"
-            inputContainerClassName=" bg-white mb-1"
+            parentClassName="text-xs text-[#26435F]"
+            inputContainerClassName=" bg-white"
             inputClassName="bg-transparent"
             label="Role / Position"
             value={values.role}
@@ -228,15 +229,14 @@ const CompanyAndBround = () => {
             }
             error={error.role}
           />
-          </div>
         </div>
         <div className="flex gap-5 flex-1">
           <div className="">
-            <label className="inline-block text-[15px] font-semibold undefined ml-0 text-[#26435F] ">
+            <label className="inline-block text-[15px] font-semibold undefined ml-0 text-[#26435F] text-base-17-5">
               {" "}
               Business Logo{" "}
             </label>
-            <div className="w-[270px] h-[200px]  relative p-2 bg-[#FFFFFF] rounded-[5px]">
+            <div className="w-[312px] h-[200px]  relative p-2 bg-[#FFFFFF] rounded-[5px]">
               {
                 organization.orgBussinessLogo &&
                 <img
@@ -266,13 +266,13 @@ const CompanyAndBround = () => {
             </div>
           </div>
           <div className="flex flex-col  gap-4 flex-1 py-auto">
-            <div className="flex gap-5 items-center justify-between grid grid-cols-12">
-              <div className="col-span-8">
+            <div className="flex gap-5 items-center justify-between">
               <InputField
                 placeholder=""
-                parentClassName="text-xs text-[#26435F] w-full mb-1"
-                inputContainerClassName=" bg-white mt-1"
-                inputClassName="bg-transparent "
+                parentClassName="text-xs text-[#26435F] w-[calc(589*0.050vw)] mb-1"
+                inputContainerClassName=" bg-white mt-1 rounded-md"
+                inputClassName="text-base-17-5 bg-transparent "
+                labelClassname="text-base-17-5 text-sm font-bold mb-1"
                 label="Website"
                 value={values.website}
                 onChange={(e) =>
@@ -287,7 +287,7 @@ const CompanyAndBround = () => {
               <div className='col-span-3'>
               <InputSelect
                 placeholder="Select"
-                parentClassName="text-xs text-[#26435F] "
+                parentClassName="text-xs text-[#26435F] w-[60%] "
                 inputContainerClassName=" bg-white h-[38px] mb-1"
                 labelClassname="text-sm font-bold mb-1"
                 inputClassName="bg-transparent"
@@ -308,9 +308,10 @@ const CompanyAndBround = () => {
               <div className="col-span-8">
               <InputField
                 placeholder=""
-                parentClassName="text-xs text-[#26435F] w-full"
-                inputContainerClassName=" bg-white mt-1"
-                inputClassName="bg-transparent"
+                parentClassName="text-xs text-[#26435F]  w-full"
+                inputContainerClassName=" bg-white rounded-md mt-1"
+                inputClassName="text-base-17-5 bg-transparenttext-base-17-5"
+                
                 label="Street Address"
                 value={values.address}
                 onChange={(e) =>
@@ -325,7 +326,7 @@ const CompanyAndBround = () => {
               <div className="col-span-3">
               <InputSelect
                 placeholder="Select"
-                parentClassName="text-xs text-[#26435F]  mt-1"
+                parentClassName="text-xs text-[#26435F] w-[60%] mt-1"
                 inputContainerClassName=" bg-white h-[38px] mb-1 "
                 labelClassname="text-sm font-bold mb-1"
                 inputClassName="bg-transparent"
@@ -345,10 +346,10 @@ const CompanyAndBround = () => {
               <div className='col-span-4'>
               <InputSelect
                 placeholder="Select"
-                parentClassName="text-xs text-[#26435F]  mt-1 pt-1"
+                parentClassName="text-xs text-[#26435F] w-full mt-1 pt-1"
                 labelClassname="text-sm font-bold mb-1"
                 inputContainerClassName=" bg-white h-[40px] mb-1 "
-                inputClassName="bg-transparent "
+                inputClassName="bg-transparent"
                 label="State / Region "
                 value={values.state}
                 optionData={states}
@@ -367,7 +368,8 @@ const CompanyAndBround = () => {
                 placeholder=""
                 parentClassName="text-xs text-[#26435F] w-full pt-1"
                 inputContainerClassName=" bg-white mt-1"
-                inputClassName="bg-transparent "
+                inputClassName="text-base-17-5 bg-transparent "
+                
                 label="City"
                 value={values.city}
                 onChange={(e) =>
@@ -384,7 +386,8 @@ const CompanyAndBround = () => {
                 placeholder=""
                 parentClassName="text-xs text-[#26435F] w-full pt-1"
                 inputContainerClassName=" bg-white mt-1"
-                inputClassName="bg-transparent"
+                inputClassName="text-base-17-5 bg-transparent"
+                
                 label="Zip Code"
                 value={values.zip}
                 onChange={(e) =>
@@ -395,7 +398,6 @@ const CompanyAndBround = () => {
                 }
                 error={error.zip}
               />
-              </div>
             </div>
           </div>
         </div>
@@ -415,8 +417,8 @@ const CompanyAndBround = () => {
               />
             ))}
           </div>
-          <div className="flex flex-col rounded-sm w-[500px] h-[200px] flex-wrap gap-3 p-3 bg-white">
-            <h1 className="mt-[-35px]  text-[#26435F] font-semibold text-sm ml-[-10px] mb-1">
+          <div className="flex flex-col rounded-sm w-2/3 min-w-[500px] design:min-w-[600px] h-[200px] flex-wrap gap-3 p-3 bg-white">
+            <h1 className="mt-[-35px]  text-[#26435F] font-semibold text-sm ml-[-10px] mb-1 text-base-17-5">
               Students Served
             </h1>
             {studentServed.map((item, id) => (
@@ -431,8 +433,9 @@ const CompanyAndBround = () => {
             ))}
           </div>
         </div>
-        <div className="mt-5">
-          <h1 className="mt-[-30px] text-[#26435F] font-semibold text-xl my-1">
+        <div className="w-full h-[2px] bg-[#CBD6E2]"></div>
+        <div className="my-4 mb-10 ">
+          <h1 className="mt-[-30px] text-[#26435F] font-semibold text-xl my-1 text-base-17-5">
             Signup Form Detail
           </h1>
           <div className="w-full h-[200px] bg-white"></div>

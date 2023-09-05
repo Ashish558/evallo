@@ -316,9 +316,8 @@ const sortBycreateDate = () => {
   if (persona === "parent" || persona === "student") return <StudentTest />;
 
   return (
-    <div className="lg:mx-[40px] bg-lightWhite min-h-screen">
-      <div className="py-14 px-5 w-full">
-        <p className="text-[#24A3D9]  mb-3 ">
+    <div className="w-[83.6989583333vw] mx-auto bg-lightWhite min-h-screen">
+      <p className="text-[#24A3D9]  !mt-[calc(50*0.052vw)] !mb-[calc(25*0.052vw)]">
           {organization?.company +
             "  >  " +
             firstName +
@@ -327,6 +326,8 @@ const sortBycreateDate = () => {
             "  >  "}
           <span className="font-semibold">Content</span>
         </p>
+      <div className=" w-full">
+        
         <div className="flex justify-between items-center">
           {/* <p
                   className="font-bold text-4xl"
@@ -339,13 +340,15 @@ const sortBycreateDate = () => {
             IconRight={SearchIcon}
             onChange={(e) => setTestName(e.target.value)}
             optionData={optionData}
+          
             placeholder="Search"
             parentClassName="w-290 mr-4"
-            inputContainerClassName="bg-white border pt-3.5 pb-3.5"
+            inputClassName="placeholder:font-semibold pl-2 text-base-17-5"
+            inputContainerClassName="bg-white border pt-3.5 pb-3.5 !rounded-lg"
             type="select"
           />
           <button
-            className="bg-[#FFA28D] py-4 px-6 flex items-center text-white  rounded-lg mr-55 text-[15px]"
+            className="bg-[#FFA28D] py-[10px] px-6 flex items-center text-white  rounded-lg  text-[15px] text-base-15"
             onClick={() => setModalActive(true)}
           >
             <span className="pt-1"> Add New Material</span>
@@ -377,7 +380,7 @@ const sortBycreateDate = () => {
             onClick: handleSubmit,
             type: "submit",
             className:
-              "w-[123px] pl-6 pr-6 py-2 mr-5 my-auto pr-2 flex gap-2 mt-7 h-min disabled:opacity-80",
+              "w-[123px] pl-6 pr-6 py-1 mr-5 my-auto pr-2 flex gap-2 mt-7 h-min disabled:opacity-80",
             disabled: submitBtnDisabled,
             loading: loading,
             icon: <img src={check} alt="check" className="inline-block" />,

@@ -8,8 +8,8 @@ import OwlCarousel from "react-owl-carousel";
 import ProfileCard from "../../../components/ProfileCard/ProfileCard";
 import EditableText from "../../../components/EditableText/EditableText";
 import SubjectSlider from "../../../components/SubjectSlider/SubjectSlider";
-import ProfilePhoto from "../../../components/ProfilePhoto/ProfilePhoto";
-import ParentEditables from "../../Frames/Editables/ParentEditables/ParentEditables";
+import ProfilePhoto from "./SPframes/ProfilePhoto";
+import ParentEditables from "./SPframes/ParentEditables";
 import clickArrowIcon from "../../../assets/YIcons/clickArrow.svg";
 import ProfileImg from "../../../assets/images/profile.png";
 import EditIcon from "../../../assets/icons/edit.svg";
@@ -39,6 +39,7 @@ import SPFrame0 from "./SPframes/SPFrame0";
 
 import StudentTest from "../../StudentTest/StudentTest";
 import Chart from "../../../components/Chart/Chart";
+import SPFrame3 from "./SPframes/SPFrame3";
 
 const students = [
   {
@@ -151,11 +152,148 @@ export default function StudentProfile({ isOwn }) {
   const [selectedScoreIndex, setSelectedScoreIndex] = useState(0);
   const { organization } = useSelector((state) => state.organization);
   const [toEdit, setToEdit] = useState({
-    fullName: {
+    frame0: {
+     
+      grade: [],
       active: false,
       firstName: "",
       lastName: "",
+
+      schoolName: [],
+
+      email: "",
+      phone: "",
+      phoneCode: "",
     },
+    frame1: {
+      active: false,
+      timeZone: "",
+      birthyear: "",
+      accomodations: "",
+      subscriptionCode: "",
+      subscribeType: "",
+      dropBoxLink:"",
+      driveLink:""
+    },
+ 
+    whiteBoardLinks:{
+      active: false,
+      whiteBoardLinks:[]
+    },
+   
+    aboutScore: {
+      active: false,
+      aboutScore: "",
+    },
+   
+    address: {
+      active: false,
+      residentialAddress: "",
+    },
+    
+    service: {
+      active: false,
+      service: [],
+    },
+    leadStatus: {
+      active: false,
+      leadStatus: "",
+    },
+    associatedParent: {
+      active: false,
+      associatedParent: "",
+    },
+    subjects: {
+      active: false,
+      subjects: [],
+    },
+    personality: {
+      active: false,
+      personality: [],
+    },
+    interest: {
+      active: false,
+      interest: [],
+    },
+   
+    satScores: {
+      active: false,
+      satScores: [
+        { created:"",
+          verbal: 0,
+          maths: 0,
+        },
+        { created:"",
+          verbal: 0,
+          maths: 0,
+        },
+        { created:"",
+          verbal: 0,
+          maths: 0,
+        },
+      ],
+    },
+    actScores: {
+      active: false,
+      actScores: [
+        { created:"",
+          english: 0,
+          maths: 0,
+          reading: 0,
+          science: 0,
+        },
+        { created:"",
+          english: 0,
+          maths: 0,
+          reading: 0,
+          science: 0,
+        },
+        { created:"",
+          english: 0,
+          maths: 0,
+          reading: 0,
+          science: 0,
+        },
+      ],
+    },
+  });
+
+  const handleClose = () => {
+    setToEdit((prev) => {
+      let tempToEdit = {};
+      Object.keys(prev).map((key) => {
+        tempToEdit[key] = { ...prev[key], active: false };
+      });
+      return tempToEdit;
+    });
+  };
+
+
+  /*
+const [toEdit, setToEdit] = useState({
+    frame0: {
+      active: false,
+      firstName: "",
+      lastName: "",
+
+      schoolName: [],
+
+      grade: [],
+
+      email: "",
+      phone: "",
+      phoneCode: "",
+    },
+    frame1: {
+      active: false,
+      timeZone: "",
+      birthyear: "",
+    },
+    // fullName: {
+    //   active: false,
+    //   firstName: "",
+    //   lastName: "",
+    // },
     timeZone: {
       active: false,
       timeZone: "",
@@ -176,12 +314,12 @@ export default function StudentProfile({ isOwn }) {
       active: false,
       aboutScore: "",
     },
-    contact: {
-      active: false,
-      email: "",
-      phone: "",
-      phoneCode: "",
-    },
+    // contact: {
+    //   active: false,
+    //   email: "",
+    //   phone: "",
+    //   phoneCode: "",
+    // },
     address: {
       active: false,
       residentialAddress: "",
@@ -214,14 +352,14 @@ export default function StudentProfile({ isOwn }) {
       active: false,
       interest: [],
     },
-    schoolName: {
-      active: false,
-      schoolName: [],
-    },
-    grade: {
-      active: false,
-      grade: [],
-    },
+    // schoolName: {
+    //   active: false,
+    //   schoolName: [],
+    // },
+    // grade: {
+    //   active: false,
+    //   grade: [],
+    // },
     satScores: {
       active: false,
       satScores: [
@@ -274,6 +412,7 @@ export default function StudentProfile({ isOwn }) {
     });
   };
 
+  */
   useEffect(() => {
     if (persona === "admin" || persona === "parent" || isOwn) {
       setEditable(true);
@@ -304,6 +443,7 @@ export default function StudentProfile({ isOwn }) {
         timeZone,
         birthyear,
         personality,
+        whiteBoardLinks,
         interest,
         schoolName,
         grade,
@@ -342,29 +482,54 @@ export default function StudentProfile({ isOwn }) {
             setToEdit((prev) => {
               return {
                 ...prev,
-                fullName: {
-                  ...prev.fullName,
+                frame0:{
+                  ...prev.frame0,
                   firstName,
                   lastName,
-                },
-                timeZone: {
-                  ...prev.timeZone,
-                  timeZone: timeZone ? timeZone : "",
-                },
-                subscriptionCode: {
-                  ...prev.subscriptionCode,
-                  subscriptionCode: subscriptionCode ? subscriptionCode : "",
-                },
-                contact: {
-                  ...prev.contact,
                   email: email,
                   phone: phone === null ? "" : phone,
                   phoneCode: phoneCode === null ? "" : phoneCode,
+                  ...prev.frame0.grade,
+                  grade,
+                  ...prev.frame0.schoolName,
+                  schoolName,
                 },
-                birthYear: {
-                  ...prev.birthYear,
+                frame1:{
+                  ...prev.frame1,
+                  ...prev.frame1.timeZone,
+                  timeZone: timeZone ? timeZone : "",
+                  ...prev.frame1.subscriptionCode,
+                  subscriptionCode: subscriptionCode ? subscriptionCode : "",
+                  ...prev.frame1.birthYear,
                   birthyear,
+                  ...prev.frame1.accomodations,
+                  accomodations: accomodations,
+
                 },
+                // fullName: {
+                //   ...prev.fullName,
+                //   firstName,
+                //   lastName,
+                // },
+               
+                // timeZone: {
+                //   ...prev.timeZone,
+                //   timeZone: timeZone ? timeZone : "",
+                // },
+                // subscriptionCode: {
+                //   ...prev.subscriptionCode,
+                //   subscriptionCode: subscriptionCode ? subscriptionCode : "",
+                // },
+                // contact: {
+                //   ...prev.contact,
+                //   email: email,
+                //   phone: phone === null ? "" : phone,
+                //   phoneCode: phoneCode === null ? "" : phoneCode,
+                // },
+                // birthYear: {
+                //   ...prev.birthYear,
+                //   birthyear,
+                // },
                 notes: {
                   ...prev.notes,
                 },
@@ -372,26 +537,30 @@ export default function StudentProfile({ isOwn }) {
                   ...prev.service,
                   service: service ? [...service] : [],
                 },
-                accomodations: {
-                  ...prev.accomodations,
-                  accomodations: accomodations,
-                },
+                // accomodations: {
+                //   ...prev.accomodations,
+                //   accomodations: accomodations,
+                // },
                 personality: {
                   ...prev.personality,
                   personality: personality,
+                },
+                whiteBoardLinks: {
+                  ...prev.whiteBoardLinks,
+                  whiteBoardLinks: whiteBoardLinks,
                 },
                 interest: {
                   ...prev.interest,
                   interest,
                 },
-                schoolName: {
-                  ...prev.schoolName,
-                  schoolName,
-                },
-                grade: {
-                  ...prev.grade,
-                  grade,
-                },
+                // schoolName: {
+                //   ...prev.schoolName,
+                //   schoolName,
+                // },
+                // grade: {
+                //   ...prev.grade,
+                //   grade,
+                // },
                 satScores: {
                   ...prev.satScores,
                   satScores: satScores,
@@ -424,7 +593,7 @@ export default function StudentProfile({ isOwn }) {
       setSettings(res.data.data.setting);
     });
   }, []);
-  console.log({ userDetail, settings });
+ // console.log({ userDetail, settings });
   const handleProfilePhotoChange = (file) => {
     // console.log(file)
     let url = "";
@@ -533,43 +702,40 @@ export default function StudentProfile({ isOwn }) {
                     ? `${awsLink}${user.photo}`
                     : "/images/default.jpeg"
                 }
-                imageClassName="!w-[100px] !h-[100px] border-[4px] border-white"
-                className="!translate-y-10"
+                imgSizeClass="!w-[110px] !h-[110px] !translate-y-8 border-[4px] border-white "
+                imageClassName="!w-[100px] !h-[100px] border-[4px] border-white "
+                className=""
                 handleChange={handleProfilePhotoChange}
-                editable={editable}
+                editable={false}
               />
               <div className="flex-1 flex justify-between items-center">
-                <div className="ml-5 my-auto">
+                <div className="ml-4 my-auto">
                   <div className="flex  items-center text-[#F3F5F7]">
-                  {user.firstName} {user.lastName}
+                    {user.firstName} {user.lastName}
                     <EditableText
-                 
                       editable={editable}
                       onClick={() =>
                         setToEdit({
                           ...toEdit,
-                          fullName: { ...toEdit.fullName, active: true },
+                         
+                          frame0:{
+                            ...toEdit.frame0,active:true
+                          }
                         })
                       }
                       text="edit"
-                    textClassName=" ml-3 text-sm text-[#517CA8] text-underline  "
-                    className="text-sm my-0 flex justify-end   float-right"
+                      textClassName=" ml-2 text-sm text-[#517CA8] text-underline  "
+                      className="text-sm my-0 flex justify-end   float-right"
                     />
-
                   </div>
                   <div className="flex mt-1 text-xs items-center text-[#F3F5F7]">
-                  {
-                        userDetail.schoolName
-                          ? userDetail.schoolName
-                          : "Sample School Name"
-                      }
-                    
+                    {userDetail.schoolName
+                      ? userDetail.schoolName
+                      : "Sample School Name"}
                   </div>
                   <div className="flex text-xs mt-1 items-center text-[#F3F5F7]">
-                  {
-                        userDetail.grade ? userDetail.grade : "12th Grade"
-                      }
-                    
+                    {userDetail.grade ? userDetail.grade : "12th Grade"}
+
                     {/* <p className='font-semibold text-[22px] mr-4'>
                            {userDetail.grade}
                         </p> */}
@@ -625,7 +791,7 @@ export default function StudentProfile({ isOwn }) {
             </div>
           </div>
           <div className="bg-white !rounded-b-md shadow-[0px_0px_2.500001907348633px_0px_#00000040] flex  h-[100px] justify-between ">
-            <div className="ml-[120px] flex my-auto py-auto w-4/5 text-[12px] px-5  flex-1 h-full  pt-5  ">
+            <div className="ml-[126px] flex my-auto py-auto w-4/5 text-[12px] px-5  flex-1 h-full  pt-5  ">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
               eiusmod empor incididunt ut labore et dolore gna aliqua. Ut enim
               ad minim veniam, nostrud exercitation ullamco laboris nisi ut
@@ -641,8 +807,9 @@ export default function StudentProfile({ isOwn }) {
                       ? `${awsLink}${associatedParent.photo}`
                       : "/images/default.jpeg"
                   }
+                  imgSizeClass="!w-[50px] !h-[50px] !translate-y-[40px]"
                   imageClassName="!w-[50px] !h-[50px] border-[2px] border-[#26435F]"
-                  className=" !translate-y-[45px]"
+                  className=" "
                   handleChange={handleProfilePhotoChange}
                 />
               </div>
@@ -650,7 +817,7 @@ export default function StudentProfile({ isOwn }) {
               <div className="flex flex-col ml-14   font-medium text-[#24A3D9] ">
                 <p
                   onClick={() =>
-                    Object.keys(associatedParent).length > 1 &&
+                    Object.keys(associatedParent).length > 0 &&
                     navigate(`/profile/parent/${associatedParent._id}`)
                   }
                   className="font-semibold cursor-pointer text-[14px]"
@@ -696,77 +863,68 @@ export default function StudentProfile({ isOwn }) {
             </div>
           </div>
           <EditableText
-                    editable={editable}
-                    onClick={() =>
-                      setToEdit({
-                        ...toEdit,
-                        subscriptionCode: {
-                          ...toEdit.subscriptionCode,
-                          active: true,
-                        },
-                      })
-                    }
-                    text="edit"
-                    textClassName="text-sm text-[#517CA8] text-underline  "
-                    className="text-sm my-0 flex justify-end translate-y-7  float-right"
-                  />
-          <SPFrame0 userDetail={userDetail} settings={settings} />
-          
-          <SPFrame1 useDetail={userDetail} settings={settings} editable={editable} setToEdit={setToEdit} toEdit={toEdit}/>
+            editable={editable}
+            onClick={() =>
+              setToEdit({
+                ...toEdit,
+                frame1: {
+                  ...toEdit.frame1,
+                  active: true,
+                },
+              })
+            }
+            text="edit"
+            textClassName="text-sm text-[#517CA8] text-underline  "
+            className="text-sm my-0 flex justify-end translate-y-7  float-right"
+          />
+          <SPFrame0 userDetail={userDetail}  settings={settings} toEdit={toEdit} setToEdit={setToEdit}/>
+
+          <SPFrame1
+            userDetail={userDetail}
+            settings={settings}
+            userId={isOwn ? id : params.id}
+            editable={editable}
+            fetchDetails={fetchDetails}
+            setToEdit={setToEdit}
+            toEdit={toEdit}
+          />
           <div className="h-[2px] mt-14  bg-[#CBD6E2] w-[95%] mx-auto"></div>
-          <SPFrame2 userDetail={userDetail} setSelectedScoreIndex={setSelectedScoreIndex} settings={settings}  editable={editable} setToEdit={setToEdit} toEdit={toEdit}/>
+          <SPFrame2
+            userDetail={userDetail}
+            fetchDetails={fetchDetails}
+            setSelectedScoreIndex={setSelectedScoreIndex}
+            settings={settings}
+            userId={isOwn ? id : params.id}
+            editable={editable}
+          
+            setToEdit={setToEdit}
+            toEdit={toEdit}
+          />
           <div className="flex-1 ">
             <p className=" translate-y-[50px] text-sm text-[#26435F] font-semibold">
               Latest Assignmets
             </p>
 
             <StudentTest fromProfile={true} />
-            <div
-            id={styles.chartContainer}
-            className="!rounded-md shadow-[0px_0px_2.500001907348633px_0px_#00000040] custom-scroller "
-          >
-            <Chart
-              setSubjects={[]}
-              subjects={subjects}
-              selectedSubject={[]}
-              selectedConceptIdx={[]}
-              setSelectedConceptIdx={[]}
-              currentSubData={[]}
-              setCurrentSubData={[]}
-            />
-          </div>
-          <div
-            id={styles.chartContainer}
-            className="!rounded-md shadow-[0px_0px_2.500001907348633px_0px_#00000040] custom-scroller "
-          >
-            <Chart
-              setSubjects={[]}
-              subjects={subjects}
-              selectedSubject={[]}
-              selectedConceptIdx={[]}
-              setSelectedConceptIdx={[]}
-              currentSubData={[]}
-              setCurrentSubData={[]}
-            />
-          </div>
-          <div
-            id={styles.chartContainer}
-            className="!rounded-md shadow-[0px_0px_2.500001907348633px_0px_#00000040] custom-scroller "
-          >
-            <Chart
-              setSubjects={[]}
-              subjects={subjects}
-              selectedSubject={[]}
-              selectedConceptIdx={[]}
-              setSelectedConceptIdx={[]}
-              currentSubData={[]}
-              setCurrentSubData={[]}
-            />
-          </div>
+           <SPFrame3 userDetail={userDetail} subject={subjects} subjects1={subjects1} subjects2={subjects2}/>
           </div>
         </div>
 
-        <div className="lg:grid !hidden px-2 mt-[300px] relative grid-cols-12 grid-ros-6 lg:mt-10 gap-5 lg:pl-3 ">
+       
+      </div>
+      <ParentEditables
+        settings={settings}
+        fetchDetails={fetchDetails}
+        userId={isOwn ? id : params.id}
+        toEdit={toEdit}
+        user={user}
+        editable={editable}
+        setToEdit={setToEdit}
+        persona={user.role}
+        awsLink={awsLink}
+        selectedScoreIndex={selectedScoreIndex}
+      />
+       <div className="lg:grid !hidden px-2 mt-[300px] relative grid-cols-12 grid-ros-6 lg:mt-10 gap-5 lg:pl-3 ">
           <ProfileCard
             className="col-span-3 py-6 px-4 mt-3  lg:mt-0"
             body={
@@ -822,9 +980,7 @@ export default function StudentProfile({ isOwn }) {
               </div>
             }
           />
-
           <div className="col-span-2 flex  justify-center items-center  scrollbar-content overflow-x-auto lg:py-5 bg-primary-light px-4 py-5 rounded-15"></div>
-
           <div className="col-span-4 flex flex-col justify-between">
             <ProfileCard
               className="mt-5 mt-auto flex-1"
@@ -851,7 +1007,6 @@ export default function StudentProfile({ isOwn }) {
               }
             />
           </div>
-
           <ProfileCard
             className="col-span-3 mt-6 lg:mt-0"
             body={
@@ -920,7 +1075,7 @@ export default function StudentProfile({ isOwn }) {
               </div>
             }
           />
--
+          -
           <ProfileCard
             className="mt-53 col-span-3 lg:mt-0"
             body={
@@ -986,7 +1141,6 @@ export default function StudentProfile({ isOwn }) {
               </>
             }
           />
-
           <div className="col-span-6">
             <ProfileCard
               titleClassName="text-left text-[21px]"
@@ -1294,7 +1448,6 @@ export default function StudentProfile({ isOwn }) {
               </>
             }
           />
-
           {persona === "admin" || editableByTutor ? (
             <>
               <ProfileCard
@@ -1564,17 +1717,6 @@ export default function StudentProfile({ isOwn }) {
             </>
           )}
         </div>
-      </div>
-      <ParentEditables
-        settings={settings}
-        fetchDetails={fetchDetails}
-        userId={isOwn ? id : params.id}
-        toEdit={toEdit}
-        setToEdit={setToEdit}
-        persona={user.role}
-        awsLink={awsLink}
-        selectedScoreIndex={selectedScoreIndex}
-      />
     </>
   );
 }

@@ -93,7 +93,7 @@ export default function InputSelectNew({
         </div>
         {selected && (
           <div
-            className={`scrollbar-content scrollbar-vertical shadow-md w-full max-h-[165px] ${styles.options} ${optionContainerClassName}`}
+            className={`scrollbar-content scrollbar-vertical shadow-md w-full max-h-[165px] ${styles.options} ${optionContainerClassName} shadow-[0px_0px_3px_0px_#00000040]`}
           >
             {optionData?.map((option, idx) => {
               // console.log('option', option);
