@@ -133,7 +133,7 @@ export default function Calendar() {
   const [newTimeZone,setnewTimeZone]=useState("IST")
   // console.log(moment.tz.zonesForCountry('US'))
   const [intialView, setInitialView] = useState("dayGridMonth");
-
+const [tutors,setTutors]=useState([]);
   const [searchedUser, setSearchedUser] = useState({
     id: "",
     role: "",
@@ -157,7 +157,6 @@ export default function Calendar() {
     const url = `/api/session/${role}/${id}`;
     // console.log(url)
     fetchUserSessions(url).then((res) => {
-      console.log("sessions", res);
       if (!res?.data?.data) return;
       const tempEvents = res.data.data.session.map((session) => {
         const time = session.time;
@@ -197,6 +196,10 @@ export default function Calendar() {
       setEventDetails(tempEvents);
       // console.log(res.data.data.session)
       let tempSession = res.data.data.session.map((session) => {
+          let temparray=tutors
+          temparray.push(session.tutorId);
+          setTutors(temparray)
+        
         const time = session.time;
         // console.log(session);
         const strtTime12HFormat = `${time.start.time} ${time.start.timeType}`;
@@ -272,6 +275,7 @@ export default function Calendar() {
           updatedDate: startUtc,
           updatedDateEnd: endDateUtc,
           sessionStatus: session.sessionStatus,
+          tutorId:session.tutorId ? session.tutorId : "-",
           description: `${strtTime12HFormat} - ${endTime12HFormat}`,
         };
         return eventObj;
@@ -338,6 +342,7 @@ export default function Calendar() {
               const url = `/api/session/student/${student}`;
               await fetchUserSessions(url).then((res) => {
                 const tempEvents = res.data.data.session.map((session) => {
+
                   const time = session.time;
                   const strtTime12HFormat = `${time.start.time} ${time.start.timeType}`;
                   const startTime = convertTime12to24(
@@ -371,6 +376,7 @@ export default function Calendar() {
                 });
                 allsessions.push(...tempEvents);
                 let tempSession = res.data.data.session.map((session) => {
+                    console.log("sesssions",session)
                   const time = session.time;
                   // console.log(session);
                   const strtTime12HFormat = `${time.start.time} ${time.start.timeType}`;
@@ -438,6 +444,7 @@ export default function Calendar() {
                     description: `${strtTime12HFormat} - ${endTime12HFormat}`,
                     sessionStatus: session.sessionStatus,
                     studentId: session.studentId,
+                    tutorId:session.tutorId ? session.tutorId:"-",
                     background: getBackground(
                       resp.data.data.user.assiginedStudents.length,
                       idx
@@ -466,6 +473,8 @@ export default function Calendar() {
         });
       });
     }
+
+    
   }, [persona]);
 
   // console.log(students)
@@ -551,6 +560,7 @@ export default function Calendar() {
     calendarAPI?.next();
   };
   const eventContent = (arg) => {
+    
     const description = arg.event._def.extendedProps.description;
     let background = "#ebe7ff";
     let isCompleted = false;
@@ -562,7 +572,7 @@ export default function Calendar() {
       <div className="p-0.5 h-full">
         <div
           className="bg- h-full p-2 rounded-lg"
-          style={{ background: background }}
+          style={{ background: "#41432c" }}
         >
           <p
             className={`text-primary font-semibold text-sm ${
@@ -910,7 +920,21 @@ export default function Calendar() {
   // console.log('filteredEvents', filteredEvents);
   // console.log('events', events);
   // console.log('eventDetails', eventDetails);
-
+  const map=[]
+  useEffect(()=>{
+    if(tutors)
+    {
+      tutors.map((item)=>{
+        const letters = '0123456789ABCDEF';
+        let color = '#';
+        for (let i = 0; i < 6; i++) {
+          color += letters[Math.floor(Math.random() * 16)];
+        }
+        map[item]=color
+        console.log("map function",map)
+      })
+    }
+  },[tutors])
   return (
     <>
       <div className="lg:ml-pageLeft calender bg-lightWhite min-h-screen"  id={persona}>
