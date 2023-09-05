@@ -67,25 +67,25 @@ export default function ActionLog({ actionLog }) {
     headerDate = temp;
   }
   return (
-    <div className="">
+    
       <div
 
-        className="flex flex-col shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-5 bg-[#FFFFFF]"
+        className="flex flex-col h-[315px] max-h-[500px]  shadow-[0px_0px_2px_rgba(0,0,0,0.25)]  rounded-5 bg-[#FFFFFF] "
       >
         <div className=" border-b-[1.6px]  border-b-[#CBD6E2] ">
-          <p className="uppercase  pl-[29px] pt-[16px] pb-3 text-[#26435F] text-xl">
+          <p className="uppercase  pl-[29px] pt-[16px] pb-3 text-[#26435F] text-xl !text-[calc(20*0.050vw)]">
             {headerDate}
           </p>
         </div>
         <ul
 
           onScroll={handleScroll}
-          className="list-disc h-[230px] rounded-b-md overflow-y-scroll min-w-[600px] max-h-[17.6rem] "
+          className="list-disc rounded-b-md overflow-y-scroll h-full "
         >
           {sortedAction?.map((item, index) => (
             <>
-              <div key={index} className="flex ml-2 h-[57px] pl-5 relative">
-                <p className="text-[#4A556C] pt-6 font-medium text-[15px] mr-6 w-[80px]">
+              <div key={index} className="flex h-[57px] pl-5 relative ">
+                <p className="text-[#517CA8] pt-6 !font-medium text-[14px] mr-2 w-[calc(143*0.050vw)] text-center !text-[calc(17.5*0.050vw)] whitespace-nowrap">
                   {item?.message &&
                     new Date(item.createdAt)
                       .toLocaleTimeString()
@@ -107,7 +107,7 @@ export default function ActionLog({ actionLog }) {
                   <div className={styles.circle}>
                     <div className={styles.circle2}></div>
                   </div>
-                  <p className="pl-4  font-medium text-[#4A556C] text-[17.5px]">
+                  <p className="pl-4  font-medium text-[#517CA8] text-[15.5px] !text-[calc(17.5*0.050vw)]">
                     {item?.message}
                   </p>
                 </div>
@@ -116,6 +116,6 @@ export default function ActionLog({ actionLog }) {
           ))}
         </ul>
       </div>
-    </div>
+    
   );
 }

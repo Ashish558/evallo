@@ -11,7 +11,7 @@ export const iniOptions = {
          title: {
             color: "#24A3D9",
             display: true,
-            text: 'Subjects',
+            text: 'Concepts',
             font: {
                weight: 500,
                size: 14,

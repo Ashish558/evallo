@@ -136,13 +136,13 @@ const AccountOverview = () => {
   };
   return (
     <div>
-      <div className="flex flex-col gap-10 w-[900px] ">
-        <div className="flex gap-5 " style={{verticalAlign:'center'}}>
+      <div className="flex flex-col gap-10 ">
+        <div className="flex gap-10 " style={{verticalAlign:'center'}}>
           <InputField
             style={{color:'blue'}}
             placeholder=""
-            parentClassName="text-xs text-[#26435F]"
-            inputContainerClassName=" bg-white border border-white rounded-5"
+            parentClassName="text-xs text-[#26435F] "
+            inputContainerClassName="text-[rgba(102,112,133,1)] bg-white border border-white rounded-5 w-[15.2604166667vw]"
             inputClassName="bg-transparent "
             label="First name"
             value={values.firstName}
@@ -158,7 +158,7 @@ const AccountOverview = () => {
           <InputField
             placeholder=""
             parentClassName="text-xs text-[#26435F]"
-            inputContainerClassName=" bg-white border border-white rounded-5"
+            inputContainerClassName="text-[rgba(102,112,133,1)] bg-white border border-white rounded-5 w-[15.2604166667vw]"
             inputClassName="bg-transparent"
             label="Last name"
             value={values.lastName}
@@ -174,7 +174,7 @@ const AccountOverview = () => {
           <InputField
             placeholder=""
             parentClassName="text-xs text-[#26435F]"
-            inputContainerClassName=" bg-white border border-white rounded-5 w-[300px]"
+            inputContainerClassName="text-[rgba(102,112,133,1)] bg-white border border-white rounded-5 w-[21.0416666667vw]"
             inputClassName="bg-transparent border border-white rounded-5"
             label="Email"
 
@@ -205,8 +205,8 @@ const AccountOverview = () => {
 
           <InputFieldDropdown
             placeholder=""
-            parentClassName="text-xs w-[400px] text-[#26435F]"
-            inputContainerClassName=" bg-white border border-white rounded-5"
+            parentClassName="text-xs w-[400px] text-[#26435F] "
+            inputContainerClassName="text-[rgba(102,112,133,1)] bg-white border border-white rounded-5 h-[47px] w-[15.26vw]"
             inputClassName="bg-transparent "
             label="Phone"
             value={values.phone}
@@ -225,20 +225,20 @@ const AccountOverview = () => {
             }
             error={error.phone}
           />
-          <div className="flex h-fit flex-1 w-full mt-[20px] justify-end items-center">
+          {/* <div className="flex h-fit flex-1 w-full mt-[20px] justify-end items-center">
             <button
               onClick={handleDataUpdate}
               className="bg-[#FF7979] text-white  rounded-md px-10 py-[9px] text-sm"
             >
               Save
             </button>
-          </div>
+          </div> */}
         </div>
-        <div className="flex gap-7 flex-1">
+        <div className="flex gap-10 flex-1">
           <InputField
             placeholder=""
             parentClassName="text-xs text-[#26435F]"
-            inputContainerClassName=" bg-white border border-white rounded-5"
+            inputContainerClassName="text-[rgba(102,112,133,1)] bg-white border border-white rounded-5 w-[15.2604166667vw]"
             inputClassName="bg-transparent border border-white rounded-5"
             label="Current password"
             value={values.currentPassword}
@@ -253,7 +253,7 @@ const AccountOverview = () => {
           <InputField
             placeholder=""
             parentClassName="text-xs text-[#26435F]"
-            inputContainerClassName=" bg-white border border-white rounded-5"
+            inputContainerClassName="text-[rgba(102,112,133,1)] bg-white border border-white rounded-5 w-[15.2604166667vw]"
             inputClassName="bg-transparent border border-white rounded-5"
             label="New password"
             value={values.newPassword}
@@ -269,7 +269,7 @@ const AccountOverview = () => {
           style={{border:'1px solid white !important'}}
             placeholder=""
             parentClassName="text-xs text-[#26435F]"
-            inputContainerClassName=" bg-white border border-white rounded-5"
+            inputContainerClassName="text-[rgba(102,112,133,1)] bg-white border border-white rounded-5 w-[15.2604166667vw]"
             inputClassName="bg-transparent border border-white rounded-5"
             label="Confirm password"
             value={values.confirmPassword}
@@ -284,8 +284,8 @@ const AccountOverview = () => {
           />
           <div>
             <button
-              onClick={handleClose}
-              className="bg-[#FFA28D]  rounded-md my-3  px-[50px] py-3  mt-4 w-[186.67px]"
+              onClick={handleDataUpdate}
+              className="bg-[#FFA28D]  rounded-md my-3  px-[50px] py-3  mt-5 w-[186.67px]"
               style={{color:'#EEEEEE'}}
             >
               Update

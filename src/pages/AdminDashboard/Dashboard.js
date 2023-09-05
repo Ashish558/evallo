@@ -232,9 +232,9 @@ const Dashboard = () => {
   return (
     <div className={styles.container}>
       <div className=" mt-[28px] bg-#2E2E2E">
-        <div className="mt-[50px] flex justify-center">
+        <div className="mt-[calc(50*0.050vw)] flex justify-center">
           <div className="w-[83.33vw]">
-            <p className="text-[#24A3D9] mb-[30px] text-xl">
+            <p className="text-[#24A3D9]  text-base-20">
               {organization?.company +
                 "  >  " +
                 firstName +
@@ -245,22 +245,22 @@ const Dashboard = () => {
             </p>
 
 
-            <div className="flex justify-between items-center ">
-              <p className="font-bold text-[#FFA28D] text-xl">BUSINESS OVERVIEW </p>
+            <div className="flex mt-[calc(40*0.050vw)] justify-between items-center ">
+              <p className="font-bold  text-[#FFA28D] text-base-20">BUSINESS OVERVIEW </p>
 
-              <RangeDate handleRangeData={handleRevenue} />
+              <RangeDate  handleRangeData={handleRevenue} />
             </div>
           </div>
         </div>
 
-        <section className="flex justify-center w-[83.33vw] mx-auto">
+        <section className="flex justify-center w-[83.33vw] mx-auto ">
           <div className={styles.mainBox}>
             <div className="grid grid-cols-2 px-[1.95vw] ">
-              <div className={`${styles.gridBorder} `}>
-                <div className="flex pr-[1.8vw]   justify-between whitespace-nowrap">
-                  <div className="w-[11.083vw] ">
-                    <div className="flex justify-between items-center mb-[10px] text-[#26435F] text-sm">
-                      <p className="   font-medium text-[0.916vw]">Completed Revenue</p>
+              <div className={`${styles.gridBorder} my-auto `}>
+                <div className="flex pr-[1.8vw] items-center  my-auto justify-between whitespace-nowrap">
+                  <div className="w-[11.083vw]  ">
+                    <div className="flex justify-between items-center mb-[6px] text-[#26435F] text-sm">
+                      <p className="   font-medium text-base-17-5">Completed Revenue</p>
                       <div className="group relative">
                         <p>
                           <FontAwesomeIcon
@@ -284,16 +284,16 @@ const Dashboard = () => {
                       </div>
                     </div>
                     <div
-                      className={`h-[106px] flex justify-center rounded-md items-center text-[1.57vw] font-bold bg-[#22A69933] box-border ${styles.boxBorder1}`}
+                      className={` !h-[calc(106*0.050vw)] flex justify-center rounded-md items-center text-[1.57vw] text-base-30 font-bold bg-[#22A69933]  ${styles.boxBorder1}`}
                     >
                       <p className="text-[#38C980]">
                         ${cRevenue?.completedRevenue}
                       </p>
                     </div>
                   </div>
-                  <div className="w-[11.083vw]">
-                    <div className="flex justify-between rounded-md items-center mb-[10px] text-[#26435F] text-sm ">
-                      <p className="font-medium text-[0.916vw]">Leaked Revenue</p>
+                  <div className="w-[11.083vw] ">
+                    <div className="flex justify-between rounded-md items-center mb-[6px] text-[#26435F] text-sm ">
+                      <p className="font-medium text-base-17-5">Leaked Revenue</p>
                       <div className="group relative">
                         <p>
                           <FontAwesomeIcon
@@ -316,16 +316,16 @@ const Dashboard = () => {
                       </div>
                     </div>
                     <div
-                      className={`h-[106px] flex rounded-md justify-center items-center text-[1.57vw] font-semibold bg-[#FF797933] box-border ${styles.boxBorder2}`}
+                      className={` !h-[calc(106*0.050vw)] flex rounded-md justify-center items-center text-[1.57vw] font-semibold bg-[#FF797933]  ${styles.boxBorder2}`}
                     >
                       <p className="text-[#FF7979]">
                         ${lRevenue?.canceledRevenue}
                       </p>
                     </div>
                   </div>
-                  <div className="w-[11.083vw]">
-                    <div className="flex justify-between items-center mb-[10px] text-[#26435F] text-sm">
-                      <p className="   font-medium text-[0.916vw]">Impending Revenue</p>
+                  <div className="w-[11.083vw] text-base-17-5">
+                    <div className="flex justify-between items-center mb-[6px] text-[#26435F] text-sm">
+                      <p className="   font-medium text-base-17-5">Impending Revenue</p>
                       <div className="group relative">
                         <p>
                           <FontAwesomeIcon
@@ -349,7 +349,7 @@ const Dashboard = () => {
                       </div>
                     </div>
                     <div
-                      className={`h-[106px] flex rounded-md justify-center items-center text-[1.57vw] font-semibold bg-[#7152EB33] box-border ${styles.boxBorder3}`}
+                      className={` !h-[calc(106*0.050vw)] flex rounded-md justify-center items-center text-[1.57vw] font-semibold bg-[#7152EB33]  ${styles.boxBorder3}`}
                     >
                       <p className="text-[#7152EB]">
                         ${iRevenue?.impendingRevenue}
@@ -357,42 +357,45 @@ const Dashboard = () => {
                     </div>
                   </div>
                 </div>
+                
               </div>
-
-              <div className={`${styles.gridBorder2}`}>
-                <div className="flex pl-[1.8vw]   justify-between whitespace-nowrap">
-                  <div className="w-[11.083vw] text-[0.916vw]">
+             
+              <div className={` my-auto `}>
+             
+                <div className="flex pl-[1.8vw]  my-auto items-center  justify-between whitespace-nowrap">
+                 
+                  <div className="w-[11.083vw]  text-base-17-5">
                     <div className="mb-[6px]">
-                      <p className=" font-medium text-[#26435F80]">
+                      <p className=" font-medium text-[#26435F80] mb-[5px]">
                         Unpaid Invoices
                       </p>
                     </div>
                     <div
-                      className={`h-[106px] flex justify-center items-center rounded-5  shadow-box text-[#667085] bg-[#F5F8FA]`}
+                      className={` !h-[calc(106*0.050vw)] flex justify-center items-center rounded-5   shadow-box text-[#667085] bg-[#F5F8FA]`}
                     >
                       <p>Coming soon</p>
                     </div>
                   </div>
-                  <div className="w-[11.083vw] text-[0.916vw]">
+                  <div className="w-[11.083vw]  text-base-17-5">
                     <div className="mb-[6px]">
-                      <p className=" font-medium text-[#26435F80]">
+                      <p className=" font-medium text-[#26435F80] mb-[5px]">
                         Paid Invoices
                       </p>
                     </div>
                     <div
-                      className={`h-[106px] flex justify-center items-center rounded-5  shadow-box text-[#667085] bg-[#F5F8FA]`}
+                      className={` !h-[calc(106*0.050vw)] flex justify-center items-center rounded-5  shadow-box text-[#667085] bg-[#F5F8FA]`}
                     >
                       <p>Coming soon</p>
                     </div>
                   </div>
-                  <div className="w-[11.083vw] text-[0.916vw]">
+                  <div className="w-[11.083vw]  text-base-17-5">
                     <div className="mb-[6px]">
-                      <p className=" font-medium text-[#26435F80]">
+                      <p className=" font-medium text-[#26435F80] mb-[5px]" >
                         Cancelled Invoices
                       </p>
                     </div>
                     <div
-                      className={`h-[106px] flex justify-center items-center rounded-5  shadow-box text-[#667085] bg-[#F5F8FA]`}
+                      className={` !h-[calc(106*0.050vw)] flex justify-center items-center rounded-5  shadow-box text-[#667085] bg-[#F5F8FA]`}
                     >
                       <p>Coming soon</p>
                     </div>
@@ -405,13 +408,13 @@ const Dashboard = () => {
 
         <section>
           <div className="flex justify-center">
-            <div className="mt-[50px] w-[78.125vw]">
-              <div className="mt-2 h-[1px] bg-[#00000033]"></div>
+            <div className="mt-[50px] w-[78.125vw] !mt-[calc(50*0.050vw)]">
+              <div className=" h-[1px] bg-[#00000033]"></div>
             </div>
           </div>
-          <div className=" w-[83.33vw] mt-[40px] text-[#FFA28D] mx-auto">
-            <div className="flex justify-between items-center ">
-              <p className="font-bold text-xl">USERS OVERVIEW </p>
+          <div className=" w-[83.33vw]  text-[#FFA28D] mx-auto ">
+            <div className="flex justify-between items-center !mt-[calc(40*0.050vw)] h-min py-0 ">
+              <p className="font-bold text-xl  text-base-20 ">USERS OVERVIEW </p>
 
               <div className="flex font-semibold text-[#FFA28D] text-xs">
                 <RangeDate handleRangeData={handleUserStats} />
@@ -419,18 +422,18 @@ const Dashboard = () => {
             </div>
           </div>
 
-          <div className="grid grid-cols-12 mt-[18px] w-[83.33vw] gap-x-5 mx-auto">
-            <div className="col-span-3">
-              <p className=" mb-1 font-semibold text-[#26435F] text-xl">User Stats</p>
-              <div className={styles.sidebox}>
+          <div className="grid grid-cols-12  mt-[18px] w-[83.33vw] gap-x-5 mx-auto">
+            <div className="col-span-3 h-full  !whitespace-nowrap">
+              <p className=" mb-1 font-semibold text-[#26435F] text-xl text-base-20">User Stats</p>
+              <div className={`${styles.sidebox} min-h-[305px] min-w-[200px]`}>
                 <div className="pl-[38px]  pt-6 rounded ">
-                  <p className="text-[#26435F] text-xl">Active / Total Students</p>
-                  <p className="text-xl">
-                    <span className="font-bold text-[#FFA28D] text-4xl">
+                  <p className="text-[#26435F] text-md text-base-20">Active / Total Students</p>
+                  <p className="text-md">
+                    <span className="font-bold text-[#FFA28D] text-4xl text-base-37-5">
                       {userStats?.student.activeUsers.count}
-                      <span className="font-medium" > {" / "}</span>
+                      <span className="font-medium text-base-37-5" > {" / "}</span>
                     </span>
-                    <span className="text-[#24A3D9] text-[25px]">
+                    <span className="text-[#24A3D9] text-[25px] text-base-25">
                       {userStats
                         ? userStats?.student.activeUsers.count +
                         userStats?.student.inactiveUsers.count
@@ -439,13 +442,13 @@ const Dashboard = () => {
                   </p>
                 </div>
                 <div className={`  pl-[38px] pt-7 rounded `}>
-                  <p className="text-[#26435F] text-xl">Active / Total Tutors</p>
-                  <p className="text-xl">
-                    <span className="font-bold text-[#FFA28D] text-4xl">
+                  <p className="text-[#26435F] text-md text-base-20">Active / Total Tutors</p>
+                  <p className="text-md">
+                    <span className="font-bold text-[#FFA28D] text-4xl text-base-37-5">
                       {userStats?.tutor.activeUsers.count}
-                      <span className="font-medium" > {" / "}</span>
+                      <span className="font-medium text-base-37-5" > {" / "}</span>
                     </span>
-                    <span className="text-[#24A3D9] text-[25px]">
+                    <span className="text-[#24A3D9] text-[25px] text-base-25">
                       {userStats
                         ? userStats?.tutor.activeUsers.count +
                         userStats?.tutor.inactiveUsers.count
@@ -454,13 +457,13 @@ const Dashboard = () => {
                   </p>
                 </div>
                 <div className={`  pl-[38px] pt-7 rounded pb-6`}>
-                  <p className="text-[#26435F] text-xl">Active / Total Parents</p>
-                  <p className="text-xl">
-                    <span className="font-bold text-[#FFA28D] text-4xl">
+                  <p className="text-[#26435F] text-md text-base-20">Active / Total Parents</p>
+                  <p className="text-md">
+                    <span className="font-bold text-[#FFA28D] text-4xl text-base-37-5">
                       {userStats?.parent.activeUsers.count}
-                      <span className="font-medium" > {" / "}</span>
+                      <span className="font-medium text-base-37-5" > {" / "}</span>
                     </span>
-                    <span className="text-[#24A3D9] text-[25px]">
+                    <span className="text-[#24A3D9] text-[25px] text-base-25">
                       {userStats
                         ? userStats?.parent.activeUsers.count +
                         userStats?.parent.inactiveUsers.count
@@ -471,8 +474,8 @@ const Dashboard = () => {
               </div>
             </div>
 
-            <div className="col-span-9 pl-[17.5px]">
-              <p className="mb-1 font-semibold text-[#26435F] text-xl">Action Log</p>
+            <div className="col-span-9  pl-[17.5px]">
+              <p className="mb-1 font-semibold text-[#26435F] text-xl text-base-20">Action Log</p>
               <ActionLog
                 actionLog={filteredActionLog ? filteredActionLog : [""]}
               />
@@ -480,8 +483,8 @@ const Dashboard = () => {
           </div>
         </section>
 
-        <section className="mt-[30px] w-[83.33vw] mx-auto">
-          <p className="font-semibold text-[#26435F] translate-y-[10px] text-xl mb-2">Latest Sign-ups</p>
+        <section className="mt-[30px] w-[83.33vw] mx-auto !mt-[calc(30*0.050vw)]">
+          <p className="font-semibold text-[#26435F]  text-xl mb text-base-20">Latest Sign-ups</p>
 
           <div className="">
             <Table
@@ -501,19 +504,19 @@ const Dashboard = () => {
         </div>
         <div className="w-[83.33vw] mx-auto mt-[52px] text-[#26435F]">
           <div className="flex justify-between items-center translate-y-[10px] ">
-            <p className="font-bold uppercase text-[#FFA28D] text-xl">Client Success Overview </p>
+            <p className="font-bold uppercase text-[#FFA28D] text-xl text-base-20">Client Success Overview </p>
 
-            <RangeDate handleRangeData={handlePopularServices} />
+            <RangeDate inputContainerClassName="!w-[500px]" optionClassName="!w-[500px]" handleRangeData={handlePopularServices} />
           </div>
         </div>
 
         <section className="mt-[10px] mx-auto w-[83.33vw]">
           <div className="grid grid-cols-[60.2vw,23vw]">
             <div className="">
-              <p className="font-semibold text-[#26435F] translate-y-[10px] text-[17.5px] mb-2">
+              <p className="font-semibold text-[#26435F] translate-y-[10px] text-[17.5px] mb-2 text-base-17-5">
                 Popular Services
               </p>
-              <div className=" pr-[1.5625vw] border-r-[1.7px] border-[#CBD6E2]">
+              <div className=" pr-[1.5625vw] border-r-[1.7px] border-[#CBD6E2] text-base-17-5">
                 <Table
                   data={popularServices}
                   hidePagination={true}
@@ -530,15 +533,25 @@ const Dashboard = () => {
               </div>
             </div>
             <div className="pl-[1.5625vw]">
-              <p className=" mb-[17px] translate-y-[10px] font-semibold text-[#26435F] text-[17.5px] ">
+              <p className=" mb-[8px] translate-y-[10px] font-semibold text-[#26435F] text-[17.5px] text-base-17-5">
                 Star Clients
               </p>
               <div>
-                <div
+                {/* <div
                   className={`h-[85px] flex justify-center items-center text-sm text-[#667085] bg-[#E5E8EA]`}
                 >
                   <p>Coming soon</p>
-                </div>
+                </div> */}
+                <Table
+                  data={[]}
+                  hidePagination={true}
+                  tableHeaders={[
+                    "Client Name",
+                    "Code",
+                    "Referrals"
+                  ]}
+                  maxPageSize={5}
+                />
               </div>
             </div>
           </div>
@@ -548,11 +561,11 @@ const Dashboard = () => {
           <div className="grid grid-cols-2 gap-x-[5.46875vw]">
             <div className="flex  justify-between gap-x-[1.953125vw]  mt-2 text-sm text-[#26435F]">
               <div>
-                <p className="font-semibold text-[0.9114583333vw]">
+                <p className="font-semibold text-base-17-5">
                   Total # Of Referrals
                 </p>
                 <div
-                  className={`mt-1  h-[72px] bg-[rgba(255,162,141,0.2)] ${styles.smallBox}`}
+                  className={`mt-1  h-[72px] !h-[calc(75*0.050vw)] bg-[rgba(255,162,141,0.2)] ${styles.smallBox}`}
                 >
                   <p className="text-[#FFA28D] h-full w-full justify-center font-bold text-[1.953125vw] flex items-center text-center">
                     {improvementStats?.no_of_referrals}
@@ -560,11 +573,11 @@ const Dashboard = () => {
                 </div>
               </div>
               <div>
-                <p className="font-semibold text-[0.9114583333vw]">
+                <p className="font-semibold text-base-17-5">
                   Average SAT Improvement
                 </p>
                 <div
-                  className={` mt-1 h-[72px] bg-[rgba(36,163,217,0.2)]  ${styles.smallBox3}`}
+                  className={` mt-1 h-[72px] !h-[calc(75*0.050vw)] bg-[rgba(36,163,217,0.2)]  ${styles.smallBox3}`}
                 >
                   <p className="text-[#24A3D9] h-full w-full justify-center font-bold text-[1.953125vw] flex items-center text-center">
                     {improvementStats?.avg_sat_improvement
@@ -574,11 +587,11 @@ const Dashboard = () => {
                 </div>
               </div>
               <div>
-                <p className="font-semibold text-[0.9114583333vw]">
+                <p className="font-semibold text-base-17-5">
                   Average ACT Improvement
                 </p>
                 <div
-                  className={` mt-1 h-[72px] bg-[rgba(36,163,217,0.2)]  ${styles.smallBox3}`}
+                  className={` mt-1 h-[72px] !h-[calc(75*0.050vw)] bg-[rgba(36,163,217,0.2)]  ${styles.smallBox3}`}
                 >
                   <p className="text-[#24A3D9] h-full w-full justify-center font-bold text-[1.953125vw] flex items-center text-center">
                     {improvementStats?.avg_act_improvement
@@ -588,11 +601,11 @@ const Dashboard = () => {
                 </div>
               </div>
             </div>
-            <div className="flex   mt-2 whitespace-nowrap   text-[0.78125vw] justify-between text-[#667085]">
+            <div className="flex   mt-2 whitespace-nowrap   text-base-15 justify-between text-[#667085]">
               <div>
                 <p>Average GRE Improvement</p>
                 <div
-                  className={`w-[11.328125vw] mt-1 h-[72px] ${styles.smallBox2} flex items-center justify-center font-medium`}
+                  className={`w-[11.328125vw] mt-2 h-[72px] !h-[calc(75*0.050vw)] ${styles.smallBox2} flex items-center justify-center font-medium`}
                 >
                   <p>Coming Soon</p>
                 </div>
@@ -600,7 +613,7 @@ const Dashboard = () => {
               <div>
                 <p>Average GMAT Improvement</p>
                 <div
-                  className={`w-[11.328125vw] mt-1 h-[72px] ${styles.smallBox2} flex items-center justify-center font-medium`}
+                  className={`w-[11.328125vw] mt-2 h-[72px] !h-[calc(75*0.050vw)] ${styles.smallBox2} flex items-center justify-center font-medium`}
                 >
                   <p>Coming Soon</p>
                 </div>
@@ -608,7 +621,7 @@ const Dashboard = () => {
               <div>
                 <p>Average IELTS Improvement</p>
                 <div
-                  className={`w-[11.328125vw] mt-1 h-[72px] ${styles.smallBox2} flex items-center justify-center font-medium`}
+                  className={`w-[11.328125vw] mt-2 h-[72px] !h-[calc(75*0.050vw)] ${styles.smallBox2} flex items-center justify-center font-medium`}
                 >
                   <p>Coming Soon</p>
                 </div>
@@ -622,12 +635,13 @@ const Dashboard = () => {
           </div>
         </div>
         <div className="w-[83.33vw] mx-auto  mt-[42px] text-[#FFA28D] ">
-          <div className="flex justify-between items-center  translate-y-[15px] mb-[16px]">
-            <p className="font-bold uppercase text-xl">Tutor Performence Overview </p>
+          <div className="flex justify-between items-center  translate-y-[15px] mb-[10px]">
+            <p className="font-bold uppercase text-xl text-base-17-5">Tutor Performence Overview </p>
 
             <RangeDate handleRangeData={handleTutorPerformance} />
           </div>
         </div>
+        
         <section className="mx-auto  w-[83.33vw]">
 
           <Table

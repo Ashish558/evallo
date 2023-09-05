@@ -13,7 +13,7 @@ body {
   padding-right: 0;
   padding-bottom: 50px;
   font-family: "Inter", sans-serif;
-
+ overflow-x:hidden;
   position: relative;
   display: flex;
   flex-flow: column;
@@ -34,136 +34,7 @@ nav .active {
   margin-top: 10px;
 }
 
-::-webkit-scrollbar {
-  width: 10px;
-}
 
-::-webkit-scrollbar-track {
-  background: rgba(217, 217, 217, 0.2);
-}
-
-::-webkit-scrollbar-thumb {
-  background: #888;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #555;
-}
-.no-arrow div::after {
-  content: " ";
-  margin-left: 5px;
-  display: none;
-  width: 25px;
-  height: 25px;
-}
 #root {
   display: contents;
 }
-.customTable {
-  border-collapse: separate;
-  border-spacing: 0 5.1px;
-  margin-top: 5px;
-}
-.concept {
-  position: relative;
-}
-
-.concept .owl-nav {
-  margin-top: 0 !important;
-  position: absolute;
-  top: -29px;
-  visibility: hidden;
-  right: 0;
-}
-
-.fc-scrollgrid {
-  height: 1340px !important;
-}
-
-.fc-timegrid.fc-timeGridWeek-view.fc-view {
-  height: 100% !important;
-}
-
-.react-calendar__tile--active {
-  position: relative !important;
-}
-
-/* 
-.react-calendar__tile--active::after{
-    content: "";
-    position: absolute;
-    width: 4px;
-    height: 4px;
-    background: #fff;
-    bottom: 2px;
-    z-index: 1050;
-    border-radius: 50%;
-} */
-
-.custom-scroller::-webkit-scrollbar {
-  width: 5px;
-}
-
-.custom-scroller::-webkit-scrollbar-track {
-  background: #cbd6e2;
-  margin-left: 16px;
-  margin-right: 40px;
-  border-radius: 20px;
-}
-
-.custom-scroller::-webkit-scrollbar-thumb {
-  background-color: #7c98b6;
-  border-radius: 20px;
-}
-
-.custom-scroller::-webkit-scrollbar-thumb:hover {
-  background: rgba(40, 68, 109, 0.6);
-}
-
-#borderLeft {
-  
-  border-left: 5px solid #26435f;
-  position: absolute;
-  top: 50%;
-  bottom: 0;
-}
-#borderRight {
-  
-  border-right: 5px solid #26435f;
-  position: absolute;
-  top: 50%;
-  right: 0;
-  bottom: 0;
-}
-#borderBottom {
- 
-  border-bottom: 5px solid #26435f;
-  position: absolute;
-  top: 100%;
- width:100%;
-  bottom: 0;
-}
-#borderRound{
-
-  border-top: 3px solid #26435f;
-  border-right: 3px solid #26435f;
-  border-radius:100%;
-}
-::-webkit-scrollbar:horizontal{
-  height: 8px;
-width:20px;
-}
-::-webkit-scrollbar-thumb:horizontal{
-        background: #000;
-        border-radius: 10px;
-        height: 8px;
-        width:20px;
-        
-    }
-    ::-webkit-scrollbar-track:horizontal{
-        background: #000;
-        border-radius: 10px;
-        height: 8px;
-        width:20px;
-        
-    }

@@ -210,7 +210,7 @@ function SuperadminDashboard() {
               </div>
             </div>
             <div className="w-full">
-              <p className="mt-[20px] mb-2.5 font-semibold text-[#26435F]">
+              <p className="mt-[20px] mb-[5px] font-semibold text-[#26435F]">
                 {" "}
                 User Stats{" "}
               </p>
@@ -303,7 +303,7 @@ function SuperadminDashboard() {
             </div>
           </section>
           <section className="w-full  overflow-auto">
-            <p className="text-[#26435F] -mt-1 mb-[-6px] font-semibold text-md">
+            <p className="text-[#26435F] -mt-1 mb-[-7px] font-semibold text-md">
               {" "}
               Latest Org Signup{" "}
             </p>
@@ -315,12 +315,12 @@ function SuperadminDashboard() {
             />
           </section>
         </div>
-        <p className="text-[#26435F] font-semibold mt-9">Daily active users</p>
+        <p className="text-[#26435F] font-semibold mt-9 mb-[-1px]">Daily active users</p>
         <Chart dateRange={dateRange}/>
         <Index dateRange={dateRange}/>
-        <div className="flex items-center mt-[50px]">
+        <div className="flex items-center mt-[50px] ">
           <p className="text-[#26435F] font-semibold ">
-            Financial Stats chart{" "}
+            Financial Stats Chart{" "}
           </p>
           <p className="text-[#26435F] pl-[15px] pt-1">
             <FontAwesomeIcon icon={faQuestionCircle}></FontAwesomeIcon>

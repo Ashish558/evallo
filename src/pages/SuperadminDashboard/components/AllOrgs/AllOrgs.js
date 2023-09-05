@@ -144,14 +144,15 @@ const AllOrgs = () => {
   }
   return (
     <>
-      <div className="pl-16 pt-7 mb-12">
+      <div className="pl-[5.46875vw] pt-7 mb-12">
         <h4 className="text-[#24A3D9]">All Orgs</h4>
         <div className="flex justify-between py-5 ">
-          <div className="w-full flex gap-5 items-center">
+          <div className="w-full flex  gap-x-[1.4583333333vw]  items-center">
             <InputField
+            inputClassName="text-[#667085]"
               placeholder="Search"
-              parentClassName="w-full w-[170px] py-1 text-[#667085]"
-              inputContainerClassName="bg-white  shadow-[0px_0px_2.6666667461395264px_0px_#00000040] "
+              parentClassName="text-[#667085]"
+              inputContainerClassName="w-[11.1115625vw] bg-white  shadow-[0px_0px_2.6666667461395264px_0px_#00000040] h-[51px]"
               Icon={searchIcon}
               value={values.search}
               onChange={(e) =>
@@ -164,10 +165,10 @@ const AllOrgs = () => {
             />
             <InputSelect
               placeholder="Org type"
-              parentClassName="text-xs  text-[#667085]"
+              parentClassName="  text-[#667085]"
               value={values.orgType}
-              inputContainerClassName="bg-white  shadow-[0px_0px_2.6666667461395264px_0px_#00000040] "
-              optionClassName="min-w-[90px] py-[3px] w-[110px]"
+              inputContainerClassName="w-[9.6875vw] bg-white  shadow-[0px_0px_2.6666667461395264px_0px_#00000040] text-xs"
+              optionClassName=" py-[3px] w-[9.6875vw] text-[#667085] font-normal"
               onChange={(e) =>
                 setValues({
                   ...values,
@@ -180,12 +181,12 @@ const AllOrgs = () => {
               placeholder="Join Date"
               IconRight2={inputRef?.current?.type === 'text' ? DateIcon : ''}
               DateIconClick={handleButtonIcon}
-              parentClassName="w-full w-[150px] py-1"
+              parentClassName=" "
               refS={inputRef}
               onBlur={(e) => { (inputRef.current.type = "text"); setForceChange(!forceChange) }}
               onFocus={(e) => { (inputRef.current.type = "date"); setForceChange(!forceChange) }}
-
-              inputContainerClassName="bg-white shadow-[0px_0px_2.6666667461395264px_0px_#00000040] w-[150px]"
+              inputClassName="text-[0.8333333333vw] text-[#667085]"
+              inputContainerClassName="bg-white shadow-[0px_0px_2.6666667461395264px_0px_#00000040] w-[9.6875vw] h-[51px]"
               value={values.joinDate}
               onChange={(e) =>
                 setValues({
@@ -199,10 +200,10 @@ const AllOrgs = () => {
             <InputSelect
               placeholder="Region"
               parentClassName="text-xs text-[#667085]"
-              inputContainerClassName="bg-white shadow-[0px_0px_2.6666667461395264px_0px_#00000040]"
+              inputContainerClassName="w-[9.6875vw] bg-white shadow-[0px_0px_2.6666667461395264px_0px_#00000040] h-[51px]"
               optionData={country}
               optionType={"object"}
-              optionClassName="min-w-[90px] py-[3px] w-[110px]"
+              optionClassName="w-[9.6875vw] py-[3px] w-[110px]"
               value={values.region}
               onChange={(e) =>
                 setValues({
@@ -215,8 +216,8 @@ const AllOrgs = () => {
             <InputSelect
               placeholder="Subscription"
               parentClassName="text-xs text-[#667085]"
-              inputContainerClassName="bg-white shadow-[0px_0px_2.6666667461395264px_0px_#00000040]"
-              optionClassName="min-w-[90px] py-[3px] w-[110px]"
+              inputContainerClassName="w-[9.6875vw] bg-white shadow-[0px_0px_2.6666667461395264px_0px_#00000040] h-[51px]"
+              optionClassName="w-[9.6875vw] py-[3px] "
               value={values.subscription}
               onChange={(e) =>
                 setValues({
@@ -228,9 +229,9 @@ const AllOrgs = () => {
             />
             <InputField
               placeholder="# of student"
-              parentClassName="w-full w-[150px] py-1 text-[#667085]"
-              inputContainerClassName="bg-white shadow-[0px_0px_2.6666667461395264px_0px_#00000040]"
-              optionClassName="min-w-[90px] py-1 w-[110px]"
+              parentClassName="w-full w-[9.6875vw] py-1 text-[#667085]"
+              inputContainerClassName="bg-white shadow-[0px_0px_2.6666667461395264px_0px_#00000040] h-[51px] text-[#667085]"
+              optionClassName="w-[9.6875vw] py-1"
               value={values.numberOfStudent}
               onChange={(e) =>
                 setValues({
@@ -241,12 +242,12 @@ const AllOrgs = () => {
               error={error.numberOfStudent}
             />
           </div>
-          <div className="w-[400px] flex justify-center  items-center">
+          <div className="w-[400px] flex justify-center  items-center ">
 
-            <button className="flex rounded-md gap-2 bg-[#517CA8] text-sm p-3 px-5 text-white">
+            <button className="flex rounded-md justify-center gap-2 bg-[#517CA8] h-[51px] w-[8.984375vw] items-center  text-white">
               {csvLoad ? <LoaderNew /> : ""}
               {!csvLoad && !successFetched ? (
-                <p onClick={handleBulkExport}>Export Data</p>
+                <p onClick={handleBulkExport}>Export</p>
               ) : (
                 ""
               )}
@@ -267,13 +268,14 @@ const AllOrgs = () => {
               )}
 
               {!csvLoad && (
-                <img className="h-4" src={uploadIcon} alt="upload" />
+                <img  src={uploadIcon} alt="upload" />
               )}
             </button>
           </div>
         </div>
         <div className="overflow-x-auto scrollbar-content scroll-mt-3 pr-7 mt-2" >
           <Table
+            noArrow={false}
             data={adminData}
             tableHeaders={frameHeaderNames}
             maxPageSize={10}

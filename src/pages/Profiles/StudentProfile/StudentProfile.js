@@ -8,7 +8,7 @@ import OwlCarousel from "react-owl-carousel";
 import ProfileCard from "../../../components/ProfileCard/ProfileCard";
 import EditableText from "../../../components/EditableText/EditableText";
 import SubjectSlider from "../../../components/SubjectSlider/SubjectSlider";
-import ProfilePhoto from "../../../components/ProfilePhoto/ProfilePhoto";
+import ProfilePhoto from "./SPframes/ProfilePhoto";
 import ParentEditables from "./SPframes/ParentEditables";
 import clickArrowIcon from "../../../assets/YIcons/clickArrow.svg";
 import ProfileImg from "../../../assets/images/profile.png";
@@ -39,6 +39,7 @@ import SPFrame0 from "./SPframes/SPFrame0";
 
 import StudentTest from "../../StudentTest/StudentTest";
 import Chart from "../../../components/Chart/Chart";
+import SPFrame3 from "./SPframes/SPFrame3";
 
 const students = [
   {
@@ -171,6 +172,8 @@ export default function StudentProfile({ isOwn }) {
       accomodations: "",
       subscriptionCode: "",
       subscribeType: "",
+      dropBoxLink:"",
+      driveLink:""
     },
  
     whiteBoardLinks:{
@@ -590,7 +593,7 @@ const [toEdit, setToEdit] = useState({
       setSettings(res.data.data.setting);
     });
   }, []);
-  console.log({ userDetail, settings });
+ // console.log({ userDetail, settings });
   const handleProfilePhotoChange = (file) => {
     // console.log(file)
     let url = "";
@@ -699,13 +702,14 @@ const [toEdit, setToEdit] = useState({
                     ? `${awsLink}${user.photo}`
                     : "/images/default.jpeg"
                 }
-                imageClassName="!w-[100px] !h-[100px] border-[4px] border-white"
-                className="!translate-y-10"
+                imgSizeClass="!w-[110px] !h-[110px] !translate-y-8 border-[4px] border-white "
+                imageClassName="!w-[100px] !h-[100px] border-[4px] border-white "
+                className=""
                 handleChange={handleProfilePhotoChange}
                 editable={false}
               />
               <div className="flex-1 flex justify-between items-center">
-                <div className="ml-5 my-auto">
+                <div className="ml-4 my-auto">
                   <div className="flex  items-center text-[#F3F5F7]">
                     {user.firstName} {user.lastName}
                     <EditableText
@@ -720,7 +724,7 @@ const [toEdit, setToEdit] = useState({
                         })
                       }
                       text="edit"
-                      textClassName=" ml-3 text-sm text-[#517CA8] text-underline  "
+                      textClassName=" ml-2 text-sm text-[#517CA8] text-underline  "
                       className="text-sm my-0 flex justify-end   float-right"
                     />
                   </div>
@@ -787,7 +791,7 @@ const [toEdit, setToEdit] = useState({
             </div>
           </div>
           <div className="bg-white !rounded-b-md shadow-[0px_0px_2.500001907348633px_0px_#00000040] flex  h-[100px] justify-between ">
-            <div className="ml-[120px] flex my-auto py-auto w-4/5 text-[12px] px-5  flex-1 h-full  pt-5  ">
+            <div className="ml-[126px] flex my-auto py-auto w-4/5 text-[12px] px-5  flex-1 h-full  pt-5  ">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
               eiusmod empor incididunt ut labore et dolore gna aliqua. Ut enim
               ad minim veniam, nostrud exercitation ullamco laboris nisi ut
@@ -803,8 +807,9 @@ const [toEdit, setToEdit] = useState({
                       ? `${awsLink}${associatedParent.photo}`
                       : "/images/default.jpeg"
                   }
+                  imgSizeClass="!w-[50px] !h-[50px] !translate-y-[40px]"
                   imageClassName="!w-[50px] !h-[50px] border-[2px] border-[#26435F]"
-                  className=" !translate-y-[45px]"
+                  className=" "
                   handleChange={handleProfilePhotoChange}
                 />
               </div>
@@ -812,7 +817,7 @@ const [toEdit, setToEdit] = useState({
               <div className="flex flex-col ml-14   font-medium text-[#24A3D9] ">
                 <p
                   onClick={() =>
-                    Object.keys(associatedParent).length > 1 &&
+                    Object.keys(associatedParent).length > 0 &&
                     navigate(`/profile/parent/${associatedParent._id}`)
                   }
                   className="font-semibold cursor-pointer text-[14px]"
@@ -872,21 +877,26 @@ const [toEdit, setToEdit] = useState({
             textClassName="text-sm text-[#517CA8] text-underline  "
             className="text-sm my-0 flex justify-end translate-y-7  float-right"
           />
-          <SPFrame0 userDetail={userDetail} settings={settings} />
+          <SPFrame0 userDetail={userDetail}  settings={settings} toEdit={toEdit} setToEdit={setToEdit}/>
 
           <SPFrame1
             userDetail={userDetail}
             settings={settings}
+            userId={isOwn ? id : params.id}
             editable={editable}
+            fetchDetails={fetchDetails}
             setToEdit={setToEdit}
             toEdit={toEdit}
           />
           <div className="h-[2px] mt-14  bg-[#CBD6E2] w-[95%] mx-auto"></div>
           <SPFrame2
             userDetail={userDetail}
+            fetchDetails={fetchDetails}
             setSelectedScoreIndex={setSelectedScoreIndex}
             settings={settings}
+            userId={isOwn ? id : params.id}
             editable={editable}
+          
             setToEdit={setToEdit}
             toEdit={toEdit}
           />
@@ -896,52 +906,25 @@ const [toEdit, setToEdit] = useState({
             </p>
 
             <StudentTest fromProfile={true} />
-            <div
-              id={styles.chartContainer}
-              className="!rounded-md shadow-[0px_0px_2.500001907348633px_0px_#00000040] custom-scroller "
-            >
-              <Chart
-                setSubjects={[]}
-                subjects={subjects}
-                selectedSubject={[]}
-                selectedConceptIdx={[]}
-                setSelectedConceptIdx={[]}
-                currentSubData={[]}
-                setCurrentSubData={[]}
-              />
-            </div>
-            <div
-              id={styles.chartContainer}
-              className="!rounded-md shadow-[0px_0px_2.500001907348633px_0px_#00000040] custom-scroller "
-            >
-              <Chart
-                setSubjects={[]}
-                subjects={subjects}
-                selectedSubject={[]}
-                selectedConceptIdx={[]}
-                setSelectedConceptIdx={[]}
-                currentSubData={[]}
-                setCurrentSubData={[]}
-              />
-            </div>
-            <div
-              id={styles.chartContainer}
-              className="!rounded-md shadow-[0px_0px_2.500001907348633px_0px_#00000040] custom-scroller "
-            >
-              <Chart
-                setSubjects={[]}
-                subjects={subjects}
-                selectedSubject={[]}
-                selectedConceptIdx={[]}
-                setSelectedConceptIdx={[]}
-                currentSubData={[]}
-                setCurrentSubData={[]}
-              />
-            </div>
+           <SPFrame3 userDetail={userDetail} subject={subjects} subjects1={subjects1} subjects2={subjects2}/>
           </div>
         </div>
 
-        <div className="lg:grid !hidden px-2 mt-[300px] relative grid-cols-12 grid-ros-6 lg:mt-10 gap-5 lg:pl-3 ">
+       
+      </div>
+      <ParentEditables
+        settings={settings}
+        fetchDetails={fetchDetails}
+        userId={isOwn ? id : params.id}
+        toEdit={toEdit}
+        user={user}
+        editable={editable}
+        setToEdit={setToEdit}
+        persona={user.role}
+        awsLink={awsLink}
+        selectedScoreIndex={selectedScoreIndex}
+      />
+       <div className="lg:grid !hidden px-2 mt-[300px] relative grid-cols-12 grid-ros-6 lg:mt-10 gap-5 lg:pl-3 ">
           <ProfileCard
             className="col-span-3 py-6 px-4 mt-3  lg:mt-0"
             body={
@@ -1734,19 +1717,6 @@ const [toEdit, setToEdit] = useState({
             </>
           )}
         </div>
-      </div>
-      <ParentEditables
-        settings={settings}
-        fetchDetails={fetchDetails}
-        userId={isOwn ? id : params.id}
-        toEdit={toEdit}
-        user={user}
-        editable={editable}
-        setToEdit={setToEdit}
-        persona={user.role}
-        awsLink={awsLink}
-        selectedScoreIndex={selectedScoreIndex}
-      />
     </>
   );
 }

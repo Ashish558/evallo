@@ -97,7 +97,7 @@ export default function InputFieldDropdown({
   return (
     <div className={`relative text-sm ${parentClassName && parentClassName} `}>
       {label && (
-        <label className={`inline-block font-semibold ${labelClassname} ml-0`}>
+        <label className={`inline-block font-semibold ${labelClassname} ml-0 text-base-17-5`}>
           {label}
           {required && (
             <span className="text-primaryRed inline-block pl-1">*</span>
@@ -167,7 +167,7 @@ export default function InputFieldDropdown({
         <input
           className={`outline-0 w-full pl-2 text-sm ${
             inputClassName ? inputClassName : ""
-          } ${disabled === true ? "cursor-not-allowed" : ""} `}
+          } ${disabled === true ? "cursor-not-allowed" : ""} text-base-17-5`}
           placeholder={placeholder}
           type={inputType ? inputType : "text"}
           onChange={(e) => (onChange !== undefined ? onChange(e) : "")}

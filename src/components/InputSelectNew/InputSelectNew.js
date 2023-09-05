@@ -26,6 +26,7 @@ export default function InputSelectNew({
   placeHolderClass,
   IconDemography,
   optionListClassName,
+  arrowWidth
 }) {
   const [selected, setSelected] = useState(false);
   const selectRef = useRef();
@@ -67,12 +68,12 @@ export default function InputSelectNew({
         {!selected ?
           <img
             src={IconDemography?countryDA:DownArrow}
-            className={`w-[15px] ${styles.downArrow}`}
+            className={`${arrowWidth ? arrowWidth:'w-[15px]'} ${styles.downArrow}`}
             alt="down-arrow"
             onClick={() => setSelected(!selected)}
           />:<img
           src={IconDemography?countryDA:UpArrow}
-          className={`w-[15px] ${styles.downArrow}`}
+          className={` ${arrowWidth ? arrowWidth:'w-[15px]'}  ${styles.downArrow}`}
           alt="down-arrow"
           onClick={() => setSelected(!selected)}
         />
@@ -92,7 +93,7 @@ export default function InputSelectNew({
         </div>
         {selected && (
           <div
-            className={`scrollbar-content scrollbar-vertical shadow-md w-full max-h-[165px] ${styles.options} ${optionContainerClassName}`}
+            className={`scrollbar-content scrollbar-vertical shadow-md w-full max-h-[165px] ${styles.options} ${optionContainerClassName} shadow-[0px_0px_3px_0px_#00000040]`}
           >
             {optionData?.map((option, idx) => {
               // console.log('option', option);

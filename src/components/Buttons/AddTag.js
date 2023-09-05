@@ -38,7 +38,7 @@ export default function AddTag({
   };
 
   return (
-    <button className={`${className ? className : ' bg-primary'} flex items-center text-white font-medium text-[17.5px] pl-3 pr-3 pt-1.4 pb-1.5 rounded-7 mr-[15px] ${isClicked ? 'justify-center' : ''}`}
+    <button className={`${className ? className : ' bg-primary'} flex items-center text-white font-medium text-[17.5px] pl-3 pr-3 pt-1.4 pb-1.5 rounded-7 mr-[15px] ${isClicked ? 'justify-center' : ''} text-base-17-5`}
       onClick={handleClick}
       type="button" >
       {
@@ -58,7 +58,7 @@ export default function AddTag({
               autoFocus
               ref={inputRef}
               value={value}
-              className='w-full outline-0 border-0 bg-transparent transition'
+              className='w-full outline-0 border-0 bg-transparent transition '
               onChange={handleChange}
               // onKeyDown={e => e.key === 'Enter' && handleBlur}
               onKeyDown={e => e.key === 'Enter' && handleBlur()}

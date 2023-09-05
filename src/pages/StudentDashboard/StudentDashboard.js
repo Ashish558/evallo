@@ -29,7 +29,7 @@ const StudentDashboard = () => {
   useEffect(() => {
     // console.log('currentSubData', currentSubData)
     if (currentSubData.concepts === undefined) return;
-    console.log("currentConcept", currentSubData.concepts);
+    //console.log("currentConcept", currentSubData);
 
     let currentConcept = currentSubData.concepts[selectedConceptIdx];
     if (currentConcept === undefined) return;
@@ -79,7 +79,7 @@ const StudentDashboard = () => {
   };
   // console.log('dates', dates)
   // console.log('selectedSubject', selectedSubject)
-
+//console.log({subjects,selectedSubject,selectedConceptIdx})
   return (
     <div className={`lg:mx-[80px] design:mx-[160px] pb-[70px]`} id="container">
       <p className="text-[#24A3D9] mt-7 mb-3">
@@ -134,7 +134,7 @@ const StudentDashboard = () => {
                 value={selectedSubject}
                 IconDemography={true}
                 optionData={subjects.map((item) => item.name)}
-                optionType={"object"}
+
                 onChange={(e) => handleSubjectChange(e)}
               />
               {/* <InputSelect
@@ -153,7 +153,7 @@ const StudentDashboard = () => {
           </div>
           <div
             id={styles.chartContainer}
-            className="!rounded-md shadow-[0px_0px_2.500001907348633px_0px_#00000040] custom-scroller "
+            className="!rounded-md  bg-white w-full flex-1 shadow-[0px_0px_2.500001907348633px_0px_#00000040] custom-scroller "
           >
             <Chart
               setSubjects={setSubjects}
@@ -167,7 +167,7 @@ const StudentDashboard = () => {
           </div>
         </div>
 
-        <div className="flex-1">
+        <div className="min-w-[350px] w-1/3 h-fit">
           <SessionFeedback />
         </div>
       </div>

@@ -69,9 +69,9 @@ const BubbleChart = ({ dateRange }) => {
       
     }
   }, [userDailyActivity]);
-
+console.log(chartData)
   return (
-    <div className="bg-[#FFFFFF] relative flex justify-center items-center border-[1.5px] border-gray-200 p-4 mt-[6px] rounded-md">
+    <div className="bg-[#FFFFFF] relative flex justify-center items-center border-[1.3px] border-[#FFF] p-4 mt-[6px] rounded-[5.33px] shadow-[0px_0px_2px_rgba(0,0,0,0.25)]">
       <div className="flex relative max-w-full justify-center w-full">
         <Bubble
           data={chartData ? chartData : bubbleChartData}
@@ -154,7 +154,7 @@ const BubbleChart = ({ dateRange }) => {
                   
                   usePointStyle: true,
                   font: {
-                    size: 10,
+                    size: 15,
                     family: 'Arial',
                   },
                   marginBottom: 10,
