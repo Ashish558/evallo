@@ -18,7 +18,27 @@ ChartJS.register(
   LineElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
+  {
+    id: 'uniqueid5', //typescript crashes without id
+    afterDraw: function (chart, easing) {
+      if (chart.tooltip._active && chart.tooltip._active.length) {
+        const activePoint = chart.tooltip._active[0];
+        const ctx = chart.ctx;
+        const x = activePoint.element.x;
+        const topY = chart.scales.y.top;
+        const bottomY = chart.scales.y.bottom;
+        ctx.save();
+        ctx.beginPath();
+        ctx.moveTo(x, topY);
+        ctx.lineTo(x, bottomY);
+        ctx.lineWidth = 1;
+        ctx.strokeStyle = '#e23fa9';
+        ctx.stroke();
+        ctx.restore();
+      }
+    }
+  }
 );
 
 const iniOptions = {
@@ -33,7 +53,7 @@ const iniOptions = {
       title: {
         color: "#24A3D9",
         display: true,
-        text: "Concepts",
+        text: "Test Name",
         font: {
           weight: 500,
           size: 14,
