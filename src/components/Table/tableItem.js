@@ -162,13 +162,13 @@ export default function TableItem({
 
   const returnStatus = (status) => {
     return status === "completed" ? (
-      <img className="first:mr-2" src={GreenIcon} />
+      <img className="first:mr-2 w-[22px] h-[22px] " src={GreenIcon} />
     ) : status === "started" ? (
-      <img className="first:mr-2" src={YellowIcon} />
+      <img className="first:mr-2 w-[22px] h-[22px]" src={YellowIcon} />
     ) : status === "notStarted" ? (
-      <img className="first:mr-2" src={LightBlueIcon} />
+      <img className="first:mr-2 w-[22px] h-[22px]" src={LightBlueIcon} />
     ) : status === 3 ? (
-      <img className="first:mr-2" src={LightBlueIcon} />
+      <img className="first:mr-2 w-[22px] h-[22px]" src={LightBlueIcon} />
     ) : (
       <></>
     );
@@ -223,7 +223,7 @@ export default function TableItem({
   const options = { year: 'numeric', month: 'long', day: 'numeric' };
   const formattedDate = date.toLocaleDateString('en-US', options);
 
-  console.log(dataFor)
+  //console.log(dataFor)
   return (
     <>
 
@@ -335,9 +335,11 @@ export default function TableItem({
               <InputSelect
                 tableDropdown={true}
                 value={leadStatus ? leadStatus : "-"}
+               placeholderClass="text-base-17-5" 
                 optionData={settings.leadStatus}
                 inputContainerClassName={`min-w-[100px] pt-0 pb-0 pr-2 pl-0 text-center`}
-                optionClassName="text-[17.5px]"
+                optionListClassName="text-base-17-5"
+                optionClassName="text-[17.5px] text-base-17-5"
                 labelClassname="hidden"
                 onChange={(val) => handleChange({ leadStatus: val })}
               // customPadding
@@ -348,9 +350,11 @@ export default function TableItem({
             <InputSelect
               tableDropdown={true}
               value={item.userStatus ? item.userStatus : "-"}
+             placeholderClass="text-base-17-5" 
               optionData={["active", "blocked", "dormant"]}
               inputContainerClassName="min-w-[100px] pt-0 pb-0 pr-2 pl-0 text-center"
-              optionClassName="text-[17.5px]"
+              optionListClassName="text-base-17-5"
+              optionClassName="text-[17.5px] text-base-17-5"
               labelClassname="hidden"
               onChange={(val) => handlestatusChange({ userStatus: val })}
             />
@@ -503,8 +507,8 @@ export default function TableItem({
 
           <td className=" px-1  min-w-14 py-4">
             <button
-              className={`text-[15px] px-2.5 py-1.8 rounded-md flex items-center leading-none  text-white ${item.status !== "completed" && item.status !== "started "
-                ? "bg-[rgba(38,67,95,0.20)] pointer-events-none"
+              className={`text-[15px] text-base-15 px-2.5 py-1.8 rounded-md flex items-center leading-none  text-white ${item.status !== "completed" && item.status !== "started "
+                ? "bg-[rgba(38,67,95,0.20)] pointer-events-none "
                 : "bg-primary"
                 }`}
 
@@ -606,7 +610,8 @@ export default function TableItem({
         <tr className="odd:bg-white shadow-sm text-[17.5px] shadow-slate-200   leading-7">
           {Object.keys(item).map((key, i) =>
             excludes.includes(key) ? (
-              <></>
+              <React.Fragment key={i}> 
+              </React.Fragment>
             ) : (
               <td key={i} className="font-medium px-1  min-w-14 py-4">
                 {key === "status" ? (
@@ -869,7 +874,8 @@ const MapData = (data, dataFor, exclude = [], onClick) => {
   const [disabled, setDisabled] = useState(true);
   return Object.keys(data).map((key, i) =>
     exclude.includes(key) ? (
-      <></>
+      <React.Fragment key={i}>
+        </React.Fragment>
     ) : key === "isCorrect" ? (
       <td key={i} className="font-medium px-1  min-w-14 py-4">
         <div className="flex items-center justify-center">
@@ -900,13 +906,14 @@ const MapData = (data, dataFor, exclude = [], onClick) => {
       <td key={i} className="font-medium px-1 text-[#009262] py-4">
         <p className={`font-semibold`}>
           <InputSelect
-            value={data[key] ? data[key] : "-"}
+           placeholderClass="text-base-17-5" value={data[key] ? data[key] : "-"}
             optionData={
               data[key] === "paid"
                 ? ["paid", "cancelled"]
                 : ["paid", "draft", "cancelled", "unpaid"]
             }
             inputContainerClassName="min-w-[100px] pt-0 pb-0 pr-2 pl-0 text-center"
+            optionListClassName="text-base-17-5"
             optionClassName="font-semibold opacity-60 text-[17.5px]"
             labelClassname="hidden"
             onChange={(val) =>

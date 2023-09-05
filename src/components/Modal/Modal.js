@@ -5,6 +5,9 @@ import primaryCancelIcon from "../../assets/icons/Groupcancel bt.svg";
 
 import SecondaryButton from "../Buttons/SecondaryButton";
 import Loader from "../Loader";
+import { useState } from "react";
+import useOutsideAlerter from "../../hooks/useOutsideAlerter";
+import { useRef } from "react";
 
 export default function Modal({
    title,
@@ -20,21 +23,33 @@ export default function Modal({
    otherBt,
    cancelBtnStyle,
    underline,
-   crossBtn
+   crossBtn,
+   toEdit
 }) {
-
+   
+   const selectRef = useRef();
+   // console.log(selectRef)
+   useOutsideAlerter(selectRef, () =>{
+      selectRef.current=null;
+   handleClose && handleClose()
+  
+   });
+  
    useEffect(() => {
       document.body.style.overflow = "hidden";
       return () => {
          document.body.style.overflow = "unset";
       };
    }, []);
-   return (
-      <div className={styles.modalContainer}>
+   return   (
+      <>
+      {
+         <div className={styles.modalContainer}>
          <div className="w-full p-1">
-            <div className={`w-full bg-white p-3 py-5 md:py-[33px] md:px-[33px] rounded-lg relative ${classname ? classname : ""
+            <div ref={handleClose?selectRef:null} className={`w-full bg-white p-3 py-5 md:py-[33px] md:px-[33px] rounded-lg relative ${classname ? classname : ""
                }`}
             >
+               <div >
                <p className={`font-semibold text-xl md:text-[21px] text-center text-[#26435F]
                ${titleClassName ? titleClassName : "mb-[18px]"}`}
                >
@@ -90,9 +105,12 @@ export default function Modal({
                   </button>
                }
             </div>
-
+            </div>
             <div className={styles.modalOverlay}></div>
          </div>
       </div>
+      }
+      </>
+     
    );
 }

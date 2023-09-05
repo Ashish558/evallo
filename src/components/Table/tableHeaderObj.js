@@ -34,7 +34,7 @@ export function TableHeaderNew({ header, checkedHeader, dataFor, Handler,noArrow
         ) : (
           ""
         )}
-        <span onClick={() => header.onCick && header.onCick()} className="text-center">
+        <span onClick={() => header.onCick && header.onCick()} className="text-center !text-[calc(17.5*0.050vw)]">
           {header.text}
         </span>
       </div>

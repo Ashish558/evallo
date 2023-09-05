@@ -85,13 +85,14 @@ export default function ApiTable({
 
   return (
     <div className="w-full">
-    <div className="overflow-x-auto scrollbar-content    scroll-m-1 ">
+    <div className="overflow-x-auto scrollbar-content custom-scroller-2 scroll-m-1 ">
 
-      <table className="customTable px-[2px] mb-3 text-center w-full">
+      <table className="table-auto customTable px-[4px] mb-3 text-center w-full">
         <thead className="pb-2">
           <tr>
             {tableHeaders.map((item, idx) => {
               return headerObject === true ? (
+                <React.Fragment key={idx}>
                 <TableHeaderNew
                   noArrow={noArrow}
                   checkedHeader={checkedHeader}
@@ -100,8 +101,11 @@ export default function ApiTable({
                   key={idx}
                   dataFor={dataFor}
                 />
+                </React.Fragment>
               ) : (
+                <React.Fragment key={idx}>
                 <TableHeader key={idx} header={item} dataFor={dataFor} />
+                </React.Fragment>
                 );
             })}
           </tr>
@@ -109,6 +113,7 @@ export default function ApiTable({
         <tbody>
           {tableData.map((item, idx) => {
             return (
+              <React.Fragment key={idx}>
               <TableItem
                 dataFor={dataFor}
                 item={item}
@@ -121,6 +126,7 @@ export default function ApiTable({
                 fetch={fetch}
                 extraData={extraData}
               />
+              </React.Fragment>
             );
           })}
            {dummy.map((it, iti) => {
@@ -151,6 +157,7 @@ export default function ApiTable({
           }
         />
         
+
       </div>
     </div>
   );

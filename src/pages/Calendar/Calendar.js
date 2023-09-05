@@ -72,6 +72,7 @@ export default function Calendar() {
   const { id: sessionToEdit } = useParams();
   const [isEdited, setIsEdited] = useState(false);
   const [isEditable, setIsEditable] = useState(false);
+
   // console.log(sessionToEdit)
   const [associatedStudents, setAssociatedStudents] = useState([]);
   const { id, timeZone: currentUserTImeZone } = useSelector(
@@ -260,6 +261,7 @@ export default function Calendar() {
           id: session._id,
           title: role === "tutor" ? session.studentName : session.tutorName,
           start: startUtc,
+          tutorId: session.tutorId,
           endDate: endDateUtc,
           updatedDate: startUtc,
           updatedDateEnd: endDateUtc,
@@ -425,6 +427,7 @@ export default function Calendar() {
                     title: session.tutorName,
                     start: startUtc,
                     endDate: endDateUtc,
+                    tutorId: session.tutorId,
                     updatedDate: startUtc,
                     updatedDateEnd: endDateUtc,
                     description: `${strtTime12HFormat} - ${endTime12HFormat}`,
@@ -621,7 +624,7 @@ export default function Calendar() {
         });
     });
   };
-  console.log({ insightData });
+
   useEffect(() => {
     if (name.length > 0) {
       fetchNames(name).then((res) => {
@@ -700,6 +703,7 @@ export default function Calendar() {
           let eventObj = {
             id: session._id,
             title: session.studentName,
+            tutorId: session.tutorId,
             start: startUtc,
             endDate: endDateUtc,
             updatedDate: startUtc,
@@ -876,7 +880,7 @@ export default function Calendar() {
   };
 
   // console.log('filteredEvents', filteredEvents);
-  // console.log('events', events);
+  console.log('events', events);
   // console.log('eventDetails', eventDetails);
 
   return (
