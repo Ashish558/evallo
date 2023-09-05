@@ -219,7 +219,7 @@ export default function TableItem({
   }, [checkedHeader])
   const timestamp = item.createdAt;
   const date = new Date(timestamp);
-  
+
   const options = { year: 'numeric', month: 'long', day: 'numeric' };
   const formattedDate = date.toLocaleDateString('en-US', options);
 
@@ -231,7 +231,7 @@ export default function TableItem({
         dataFor === "tutorFeedback" && (
           <>
 
-            <tr className=" ">
+            <tr className=" text-[17.5px] font-medium">
               <td className="py-4 px-[10px]">
                 {item.studentName}
               </td>
@@ -257,7 +257,7 @@ export default function TableItem({
         dataFor === "serviceRates" && (
           <>
 
-            <tr >
+            <tr className=" text-[17.5px] font-medium">
               <td className="py-4 px-[10px]">
                 {item.service}
               </td>
@@ -335,7 +335,7 @@ export default function TableItem({
               <InputSelect
                 tableDropdown={true}
                 value={leadStatus ? leadStatus : "-"}
-               placeholderClass="text-base-17-5" 
+                placeholderClass="text-base-17-5"
                 optionData={settings.leadStatus}
                 inputContainerClassName={`min-w-[100px] pt-0 pb-0 pr-2 pl-0 text-center`}
                 optionListClassName="text-base-17-5"
@@ -350,7 +350,7 @@ export default function TableItem({
             <InputSelect
               tableDropdown={true}
               value={item.userStatus ? item.userStatus : "-"}
-             placeholderClass="text-base-17-5" 
+              placeholderClass="text-base-17-5"
               optionData={["active", "blocked", "dormant"]}
               inputContainerClassName="min-w-[100px] pt-0 pb-0 pr-2 pl-0 text-center"
               optionListClassName="text-base-17-5"
@@ -610,7 +610,7 @@ export default function TableItem({
         <tr className="odd:bg-white shadow-sm text-[17.5px] shadow-slate-200   leading-7">
           {Object.keys(item).map((key, i) =>
             excludes.includes(key) ? (
-              <React.Fragment key={i}> 
+              <React.Fragment key={i}>
               </React.Fragment>
             ) : (
               <td key={i} className="font-medium px-1  min-w-14 py-4">
@@ -875,7 +875,7 @@ const MapData = (data, dataFor, exclude = [], onClick) => {
   return Object.keys(data).map((key, i) =>
     exclude.includes(key) ? (
       <React.Fragment key={i}>
-        </React.Fragment>
+      </React.Fragment>
     ) : key === "isCorrect" ? (
       <td key={i} className="font-medium px-1  min-w-14 py-4">
         <div className="flex items-center justify-center">
@@ -906,7 +906,7 @@ const MapData = (data, dataFor, exclude = [], onClick) => {
       <td key={i} className="font-medium px-1 text-[#009262] py-4">
         <p className={`font-semibold`}>
           <InputSelect
-           placeholderClass="text-base-17-5" value={data[key] ? data[key] : "-"}
+            placeholderClass="text-base-17-5" value={data[key] ? data[key] : "-"}
             optionData={
               data[key] === "paid"
                 ? ["paid", "cancelled"]

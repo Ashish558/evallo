@@ -106,14 +106,14 @@
 }
 
 td {
-  font-size: 0.912vw !important;
-  font-weight: 550;
+  /* font-size: 0.912vw !important;
+  font-weight: 550; */
   padding-top: 15px !important;
   padding-bottom: 15px !important;
 }
 th {
-  font-size: 0.912vw !important;
-  font-weight: 500;
+  /* font-size: 0.912vw !important;
+  font-weight: 500; */
   padding-top: 15px !important;
   padding-bottom: 15px !important;
 }

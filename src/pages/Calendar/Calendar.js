@@ -126,7 +126,7 @@ export default function Calendar() {
   const [timeZone, setTimeZone] = useState("Asia/Kolkata");
   // console.log(moment.tz.zonesForCountry('US'))
   const [intialView, setInitialView] = useState("dayGridMonth");
-
+  console.log(students)
   const [searchedUser, setSearchedUser] = useState({
     id: "",
     role: "",
