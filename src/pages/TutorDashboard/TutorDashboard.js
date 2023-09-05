@@ -222,7 +222,7 @@ export default function TutorDashboard() {
    // console.log('prof', profileProgress);
 
    return (
-      <div className='bg-[#F5F8FA]'>
+      <div className='bg-[#F5F8FA] mb-[100px]'>
          <div className="w-[90.6770833333vw] mx-auto">
             <div className="">
                <p className="text-[#24A3D9] text-xl mb-[30px] mt-[50px]">
