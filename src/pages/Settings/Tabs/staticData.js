@@ -7,10 +7,10 @@ export const studentServedData = [
     text: "Elementary / Primary School",
     checked: false,
   },
-  {
-    text: "Classroom",
-    checked: false,
-  },
+  // {
+  //   text: "Classroom",
+  //   checked: false,
+  // },
   {
     text: "Middle School",
     checked: false,

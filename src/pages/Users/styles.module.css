@@ -44,3 +44,7 @@
   input[type='file']{
     display: none;
   }
+  .customborder{
+    border:2px dashed #517CA8 !important;
+    padding: 10px !important;
+  }

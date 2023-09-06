@@ -60,6 +60,14 @@ const timeZones = [
   "US/Mountain",
   "US/Pacific",
 ];
+const timeZones2 = [
+  "IST",
+  "AKST",
+  "EST",
+  "HST",
+  "MST",
+  "PST"
+];
 export default function Calendar() {
   const calendarRef = useRef(null);
   // console.log(calendarRef.current)
@@ -124,9 +132,10 @@ export default function Calendar() {
     useLazyGetCalenderInsightQuery();
   const [insightData, setInsightData] = useState({});
   const [timeZone, setTimeZone] = useState("Asia/Kolkata");
+  const [newTimeZone, setnewTimeZone] = useState("IST")
   // console.log(moment.tz.zonesForCountry('US'))
   const [intialView, setInitialView] = useState("dayGridMonth");
-  console.log(students)
+  const [tutors, setTutors] = useState([]);
   const [searchedUser, setSearchedUser] = useState({
     id: "",
     role: "",
@@ -150,7 +159,6 @@ export default function Calendar() {
     const url = `/api/session/${role}/${id}`;
     // console.log(url)
     fetchUserSessions(url).then((res) => {
-      console.log("sessions", res);
       if (!res?.data?.data) return;
       const tempEvents = res.data.data.session.map((session) => {
         const time = session.time;
@@ -190,6 +198,10 @@ export default function Calendar() {
       setEventDetails(tempEvents);
       // console.log(res.data.data.session)
       let tempSession = res.data.data.session.map((session) => {
+        let temparray = tutors
+        temparray.push(session.tutorId);
+        setTutors(temparray)
+
         const time = session.time;
         // console.log(session);
         const strtTime12HFormat = `${time.start.time} ${time.start.timeType}`;
@@ -266,6 +278,7 @@ export default function Calendar() {
           updatedDate: startUtc,
           updatedDateEnd: endDateUtc,
           sessionStatus: session.sessionStatus,
+          tutorId: session.tutorId ? session.tutorId : "-",
           description: `${strtTime12HFormat} - ${endTime12HFormat}`,
         };
         return eventObj;
@@ -332,6 +345,7 @@ export default function Calendar() {
               const url = `/api/session/student/${student}`;
               await fetchUserSessions(url).then((res) => {
                 const tempEvents = res.data.data.session.map((session) => {
+
                   const time = session.time;
                   const strtTime12HFormat = `${time.start.time} ${time.start.timeType}`;
                   const startTime = convertTime12to24(
@@ -365,6 +379,7 @@ export default function Calendar() {
                 });
                 allsessions.push(...tempEvents);
                 let tempSession = res.data.data.session.map((session) => {
+                  console.log("sesssions", session)
                   const time = session.time;
                   // console.log(session);
                   const strtTime12HFormat = `${time.start.time} ${time.start.timeType}`;
@@ -433,6 +448,7 @@ export default function Calendar() {
                     description: `${strtTime12HFormat} - ${endTime12HFormat}`,
                     sessionStatus: session.sessionStatus,
                     studentId: session.studentId,
+                    tutorId: session.tutorId ? session.tutorId : "-",
                     background: getBackground(
                       resp.data.data.user.assiginedStudents.length,
                       idx
@@ -461,6 +477,8 @@ export default function Calendar() {
         });
       });
     }
+
+
   }, [persona]);
 
   // console.log(students)
@@ -478,6 +496,22 @@ export default function Calendar() {
     }
   }, []);
 
+  useEffect(() => {
+    if (timeZone == 'Asia/Kolkata')
+      setnewTimeZone('IST')
+    if (timeZone == 'US/Alaska')
+      setnewTimeZone('AKST')
+    if (timeZone == 'US/Central')
+      setnewTimeZone('CST')
+    if (timeZone == 'US/Eastern')
+      setnewTimeZone('EST')
+    if (timeZone == 'US/Hawaii')
+      setnewTimeZone('HST')
+    if (timeZone == 'US/Mountain')
+      setnewTimeZone('MST')
+    if (timeZone == 'US/Pacific')
+      setnewTimeZone('PST')
+  }, [timeZone])
   const getDayHeaders = (arg) => {
     let text = arg.text.split(" ");
 
@@ -525,6 +559,7 @@ export default function Calendar() {
     calendarAPI?.next();
   };
   const eventContent = (arg) => {
+
     const description = arg.event._def.extendedProps.description;
     let background = "#ebe7ff";
     let isCompleted = false;
@@ -536,7 +571,7 @@ export default function Calendar() {
       <div className="p-0.5 h-full">
         <div
           className="bg- h-full p-2 rounded-lg"
-          style={{ background: background }}
+          style={{ background: "#41432c" }}
         >
           <p
             className={`text-primary font-semibold text-sm ${isCompleted ? "line-through" : ""
@@ -626,6 +661,7 @@ export default function Calendar() {
   };
 
   useEffect(() => {
+    console.log("role=" + persona)
     if (name.length > 0) {
       fetchNames(name).then((res) => {
         console.log("fetchnames", res.data.data.user);
@@ -882,7 +918,20 @@ export default function Calendar() {
   // console.log('filteredEvents', filteredEvents);
   console.log('events', events);
   // console.log('eventDetails', eventDetails);
-
+  const map = []
+  useEffect(() => {
+    if (tutors) {
+      tutors.map((item) => {
+        const letters = '0123456789ABCDEF';
+        let color = '#';
+        for (let i = 0; i < 6; i++) {
+          color += letters[Math.floor(Math.random() * 16)];
+        }
+        map[item] = color
+        console.log("map function", map)
+      })
+    }
+  }, [tutors])
   return (
     <>
       <div className="lg:ml-pageLeft calender bg-lightWhite min-h-screen">
@@ -1193,12 +1242,12 @@ export default function Calendar() {
               allDaySlot={false}
               headerToolbar={{
                 start: "prevButton title nextButton",
-                center: "timeGridWeek,dayGridMonth",
-                end: "",
+                center: "",
+                end: "timeGridWeek,dayGridMonth",
               }}
               titleFormat={{
-                day: "numeric",
-                month: "numeric",
+                day: '2-digit',
+                month: "short",
                 year: "numeric",
               }}
               expandRows={true}
@@ -1206,8 +1255,10 @@ export default function Calendar() {
               // slotMinTime={"06:00:00"}
               // slotMaxTime={"30:00:00"}
               dayHeaderFormat={{
-                day: "2-digit",
-                month: "long",
+                day: "numeric",
+                weekday: 'long'
+
+
               }}
               // dayHeaderContent={getDayHeaders}
               selectable={true}
@@ -1220,6 +1271,7 @@ export default function Calendar() {
               selectOverlap={false}
               defaultTimedEventDuration="01:00"
               showNonCurrentDates={false}
+              slotLabelFormat={{ hour: '2-digit', minute: '2-digit', meridiem: 'short' }}
             />
             <div
               className="absolute right-[50px] top-0 "
@@ -1227,16 +1279,21 @@ export default function Calendar() {
               <span id="input">
                 <InputSelect
                   value={
-                    "IST"
-                    // timeZone == "local"
-                    //   ? getLocalTimeZone()
-                    //   : timeZone.substring(0, 20)
+                    newTimeZone
                   }
                   //  optionData={['local', 'America/New_York']}
                   // optionData={['Asia/Calcutta', ...moment.tz.zonesForCountry('US')]}
                   // optionData={['Asia/Calcutta', ...moment.tz.zonesForCountry('US')]}
-                  optionData={timeZones}
-                  onChange={(val) => setTimeZone(val)}
+                  optionData={timeZones2}
+                  onChange={(val) => {
+                    if (val == 'IST') setTimeZone('Asia/Kolkata')
+                    if (val == 'CST') setTimeZone('US/Central')
+                    if (val == 'AKST') setTimeZone('US/Alaska')
+                    if (val == 'EST') setTimeZone('US/Eastern')
+                    if (val == 'HST') setTimeZone('US/Hawai')
+                    if (val == 'MST') setTimeZone('US/Mountain')
+                    if (val == 'PST') setTimeZone('US/Pacific')
+                  }}
                   parentClassName=""
                   optionClassName=""
                   inputContainerClassName="text-primaryDark font-bold border "
