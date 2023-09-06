@@ -1,0 +1,13 @@
+  <svg
+        xmlns="http://www.w3.org/2000/svg"
+        className="my-auto"
+        width="30"
+        height="31"
+        viewBox="0 0 30 31"
+        fill="none"
+      >
+        <path
+          d="M10.0352 27.75L7.81641 25.5313L18.0977 15.25L7.81641 4.96875L10.0352 2.75L22.5352 15.25L10.0352 27.75Z"
+          fill="#26435F"
+        />
+      </svg>

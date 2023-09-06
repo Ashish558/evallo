@@ -4,7 +4,7 @@ export default function DashboardCard({ className, data, header, subHeader }) {
 
 
    return (
-      <div className={`max-w-[321px] py-[20px] px-[26px] flex flex-1 text-white   first:mr-[30px] ${className} rounded-[5px] `}
+      <div className={`w-[18.6875003125vw] py-[20px] px-[26px] flex flex-1 text-white   first:mr-[30px] ${className} rounded-[5px] `}
       // style={{
       //    filter: 'drop-shadow(0px 6px 24px rgba(75, 189, 148, 0.5))'
       // }} 
@@ -20,7 +20,7 @@ export default function DashboardCard({ className, data, header, subHeader }) {
          </div>
 
          <div className='px-5'>
-            <p className=' font-semibold text-[32px]'>
+            <p className=' font-semibold text-[1.6666666667vw]'>
                {header}
             </p>
             <p className='text-xl font-medium'>

@@ -13,6 +13,7 @@ import GrayIcon from "../../assets/assignedTests/gray.svg";
 import RemoveIcon from "../../assets/icons/remove.svg";
 import EditTestIcon from "../../assets/icons/edit-test.svg";
 import TrashIcon from "../../assets/icons/ic_outline-delete.svg";
+import TrashIcon2 from "../../assets/icons/trash-blue.svg";
 import styles from './styles.module.css'
 import AddIcon from "../../assets/icons/plus.svg";
 import EditIcon from "../../assets/icons/test-edit.svg";
@@ -161,13 +162,13 @@ export default function TableItem({
 
   const returnStatus = (status) => {
     return status === "completed" ? (
-      <img className="first:mr-2" src={GreenIcon} />
+      <img className="first:mr-2 w-[22px] h-[22px] " src={GreenIcon} />
     ) : status === "started" ? (
-      <img className="first:mr-2" src={YellowIcon} />
+      <img className="first:mr-2 w-[22px] h-[22px]" src={YellowIcon} />
     ) : status === "notStarted" ? (
-      <img className="first:mr-2" src={LightBlueIcon} />
+      <img className="first:mr-2 w-[22px] h-[22px]" src={LightBlueIcon} />
     ) : status === 3 ? (
-      <img className="first:mr-2" src={LightBlueIcon} />
+      <img className="first:mr-2 w-[22px] h-[22px]" src={LightBlueIcon} />
     ) : (
       <></>
     );
@@ -215,8 +216,13 @@ export default function TableItem({
   useEffect(() => {
     setIsChecked(checkedHeader);
   }, [checkedHeader])
+  const timestamp = item.createdAt;
+  const date = new Date(timestamp);
+  
+  const options = { year: 'numeric', month: 'long', day: 'numeric' };
+  const formattedDate = date.toLocaleDateString('en-US', options);
 
-
+  //console.log(dataFor)
   return (
     <>
 
@@ -225,20 +231,20 @@ export default function TableItem({
           <>
 
             <tr className=" ">
-              <td>
-                {item.studentname}
+              <td className="py-4 px-[10px]">
+                {item.studentName}
               </td>
-              <td>
-                {item.feedback}
+              <td className="py-4 px-[10px]">
+                {item.rating}
               </td>
-              <td>
-                {item.comment}
+              <td className="py-4 px-[10px]">
+                {item.comments}
               </td>
-              <td>
+              <td className="py-4 px-[10px]">
                 {item.service}
               </td>
-              <td>
-                {item.sessiondata}
+              <td className="py-4 px-[10px]">
+                {formattedDate}
               </td>
             </tr>
 
@@ -250,14 +256,14 @@ export default function TableItem({
         dataFor === "serviceRates" && (
           <>
 
-            <tr className=" ">
-              <td>
+            <tr >
+              <td className="py-4 px-[10px]">
                 {item.service}
               </td>
-              <td>
+              <td className="py-4 px-[10px]">
                 {item.currency ? item.currency : "USD"}
               </td>
-              <td>
+              <td className="py-4 px-[10px]">
                 {item.price}
               </td>
             </tr>
@@ -276,7 +282,7 @@ export default function TableItem({
 
             >
               <div className="flex ">
-                {(dataFor === "allUsers") || (dataFor === "assignedTests") ? (
+                {dataFor === "allUsers" ? (
 
                   <label
                     className={`${styles["checkbox-label"]} block text-[#26435F] `}
@@ -326,10 +332,13 @@ export default function TableItem({
           <td className=" text-[17.5px] px-1  min-w-14 py-4">
             <div className="my-[6px]">
               <InputSelect
+                tableDropdown={true}
                 value={leadStatus ? leadStatus : "-"}
+               placeholderClass="text-base-17-5" 
                 optionData={settings.leadStatus}
-                inputContainerClassName={`min-w-[100px] pt-0 pb-0 pr-2 pl-0 text-center ${styles.customPadding}`}
-                optionClassName="font-semibold opacity-60 text-[17.5px]"
+                inputContainerClassName={`min-w-[100px] pt-0 pb-0 pr-2 pl-0 text-center`}
+                optionListClassName="text-base-17-5"
+                optionClassName="text-[17.5px] text-base-17-5"
                 labelClassname="hidden"
                 onChange={(val) => handleChange({ leadStatus: val })}
               // customPadding
@@ -338,10 +347,13 @@ export default function TableItem({
           </td>
           <td className=" text-[17.5px] px-1  min-w-14 py-4">
             <InputSelect
+              tableDropdown={true}
               value={item.userStatus ? item.userStatus : "-"}
+             placeholderClass="text-base-17-5" 
               optionData={["active", "blocked", "dormant"]}
               inputContainerClassName="min-w-[100px] pt-0 pb-0 pr-2 pl-0 text-center"
-              optionClassName="text-[17.5px]"
+              optionListClassName="text-base-17-5"
+              optionClassName="text-[17.5px] text-base-17-5"
               labelClassname="hidden"
               onChange={(val) => handlestatusChange({ userStatus: val })}
             />
@@ -380,34 +392,34 @@ export default function TableItem({
       )}
       {dataFor === "allUsersSuperAdmin" && (
         <tr className="odd:bg-white  leading-8">
-          <td className="font-medium text-[17.5px] px-1  min-w-14 py-4  text-left">
+          <td className="font-medium text-[17.5px] px-1  min-w-14   text-center">
             <span
-              className="inline-block cursor-pointer pl-4"
+              className="inline-block cursor-pointer"
               onClick={() => onClick.redirect(item)}
             >
               {item.name}
             </span>
           </td>
-          <td className="font-medium text-[17.5px] px-1 min-w-14 py-4">
-            <div className="my-[6px]">{item.userType}</div>
+          <td className="font-medium text-[17.5px] px-1 min-w-14 ">
+            <div className="">{item.userType}</div>
           </td>
-          <td className="font-medium text-[17.5px] px-1  min-w-14 py-4">
-            <div className="my-[6px]">{item.email}</div>
+          <td className="font-medium text-[17.5px] px-1  min-w-14 ">
+            <div className="">{item.email}</div>
           </td>
-          <td className="font-medium text-[17.5px] px-1  min-w-14 py-4">
-            <div className="my-[6px]">
+          <td className="font-medium text-[17.5px] px-1  min-w-14 ">
+            <div className="">
               {item.lastLogin ? item.lastLogin : "-"}
             </div>
           </td>
-          <td className="font-medium text-[17.5px] px-1  min-w-14 py-4">
-            <div className="my-[6px]">
+          <td className="font-medium text-[17.5px] px-1  min-w-14 ">
+            <div className="">
               <span style={{ textDecoration: 'underline' }}>edit</span>
             </div>
           </td>
-          <td className="font-medium text-[17.5px] px-1  min-w-14 py-4">
+          <td className="font-medium text-[17.5px]  ">
             <div className="">
               <button
-                className="rounded-md bg-[#26435F3B] text-[#517CA8] px-2 py-[2px] w-[85px] h-[26.67px] text-18.67px"
+                className="rounded-[5.33px] bg-[rgba(38,67,95,0.23)] text-[#517CA8] px-[17px] pt-0 pb-2  text-[18.67px]"
                 onClick={() => onClick.handleResetPassword(item.email)}
               >
                 Reset
@@ -416,14 +428,19 @@ export default function TableItem({
           </td>
 
 
-          <td className="font-medium px-1 min-w-14 py-4">
-            <div className="w-4 h-4 rounded-full bg-[#E3E3E3] flex items-center justify-center">
-              <img
-                src={TrashIcon}
-                className="cursor-pointer"
-                onClick={() => onClick.handleDelete(item)}
-              />
-            </div>
+          <td className=" px-1 min-w-14 py-4">
+            {item.userType !== "admin" ? (
+              <div className=" flex items-center justify-center">
+                <img
+                  src={TrashIcon2}
+                  className="cursor-pointer"
+                  onClick={() => onClick.handleDelete(item)}
+                  alt="TrashIcon"
+                />
+              </div>
+            ) : (
+              ""
+            )}
           </td>
         </tr>
       )}
@@ -452,46 +469,70 @@ export default function TableItem({
         </tr>
       )}
       {dataFor === "assignedTests" && (
-        <tr className="odd:bg-white text-[17.5px]  leading-8">
+        <tr className=" text-[17.5px]  leading-8">
+          <td className=" text-[17.5px] px-1  min-w-14 py-4  text-left">
+            <span
+              className="inline-block cursor-pointer pl-4"
+
+            >
+              <div className="flex ">
+                {dataFor === "assignedTests" ? (
+
+                  <label
+                    className={`${styles["checkbox-label"]} block text-[#26435F] `}
+                  >
+                    <input
+                      type="checkbox"
+                      checked={isChecked}
+                      onChange={handleCheckboxChange}
+                    />
+                    <span
+                      className={`${styles["custom-checkbox"]} ${isChecked ? "checked" : ""
+                        }`}
+                    ></span>
+                  </label>
+
+                ) : (
+                  ""
+                )}
+                <span onClick={() => onClick.redirect(item)} className="">
+                  {item.assignedOn}
+                </span>
+              </div>
+            </span>
+          </td>
           <td className="px-1 font-medium  min-w-14 py-4 text-left">
             <span className="inline-block cursor-pointer pl-4">
               {item.studentName}
             </span>
           </td>
-          <td
-            className={`font-medium px-1 flex justify-center items-center min-w-14 py-4 relative ${item.late && "text-[#EE3434]"
-              }`}
-          >
-            {item.late && (
-              <span className="inline-block w-[20px] h-[20px] rounded-full bg-[#EE3434]"></span>
-            )}
-            {item.assignedOn}
-          </td>
-          <td className="font-medium px-1  min-w-14 py-4">{item.assignedBy}</td>
-          <td className="font-medium px-1  min-w-14 py-4">{item.dueDate}</td>
           <td className="font-medium px-1  min-w-14 py-4">{item.testName}</td>
+          <td className="font-medium px-1  min-w-14 py-4">{item.assignedBy
+          }</td>
           <td className="font-medium px-1  min-w-14 py-4">
-            {item.duration === "-" ? "Unlimited" : item.duration}
-          </td>
-          <td className="font-medium px-1  min-w-14 py-4">
+
+
             <div className={`flex items-center no-wrap justify-center`}>
               {returnStatus(item.status)}
 
             </div>
-          </td>
-          <td
-            className="font-medium px-1 test-center text-left min-w-14 py-4"
 
-          >
+
+          </td>
+          <td className="font-medium px-1  min-w-14 py-4">
+            {item.duration === "-" ? "Unlimited" : item.duration}
+          </td>
+          <td className="font-medium px-1  min-w-14 py-4">
             <div className="text-center">
               {item.status === "completed" ? score : "-"}
             </div>
           </td>
-          <td className="font-medium px-1  min-w-14 py-4">
+
+          <td className=" px-1  min-w-14 py-4">
             <button
-              className={`px-2.5 py-1.8 rounded-md flex items-center leading-none bg-primary text-white ${item.status !== "completed" && item.status !== "started"
-                ? "opacity-50 pointer-events-none"
-                : ""
+              className={`text-[15px] text-base-15 px-2.5 py-1.8 rounded-md flex items-center leading-none  text-white ${item.status !== "completed" && item.status !== "started "
+                ? "bg-[rgba(38,67,95,0.20)] pointer-events-none "
+                : "bg-primary"
                 }`}
 
               onClick={() =>
@@ -500,10 +541,10 @@ export default function TableItem({
                 )
               }
             >
-              Test details
+              View Report
             </button>
           </td>
-          <td className="font-medium px-1 min-w-14 py-4">
+          {/* <td className="font-medium px-1 min-w-14 py-4">
             <img
               src={DownloadIcon}
               className="w-[30px] cursor-pointer"
@@ -519,7 +560,7 @@ export default function TableItem({
             >
               <span className="absolute top-[-7px] left-[3.5px]">×</span>
             </div>
-          </td>
+          </td> */}
         </tr>
       )}
 
@@ -592,7 +633,8 @@ export default function TableItem({
         <tr className="odd:bg-white shadow-sm text-[17.5px] shadow-slate-200   leading-7">
           {Object.keys(item).map((key, i) =>
             excludes.includes(key) ? (
-              <></>
+              <React.Fragment key={i}> 
+              </React.Fragment>
             ) : (
               <td key={i} className="font-medium px-1  min-w-14 py-4">
                 {key === "status" ? (
@@ -855,7 +897,8 @@ const MapData = (data, dataFor, exclude = [], onClick) => {
   const [disabled, setDisabled] = useState(true);
   return Object.keys(data).map((key, i) =>
     exclude.includes(key) ? (
-      <></>
+      <React.Fragment key={i}>
+        </React.Fragment>
     ) : key === "isCorrect" ? (
       <td key={i} className="font-medium px-1  min-w-14 py-4">
         <div className="flex items-center justify-center">
@@ -886,13 +929,14 @@ const MapData = (data, dataFor, exclude = [], onClick) => {
       <td key={i} className="font-medium px-1 text-[#009262] py-4">
         <p className={`font-semibold`}>
           <InputSelect
-            value={data[key] ? data[key] : "-"}
+           placeholderClass="text-base-17-5" value={data[key] ? data[key] : "-"}
             optionData={
               data[key] === "paid"
                 ? ["paid", "cancelled"]
                 : ["paid", "draft", "cancelled", "unpaid"]
             }
             inputContainerClassName="min-w-[100px] pt-0 pb-0 pr-2 pl-0 text-center"
+            optionListClassName="text-base-17-5"
             optionClassName="font-semibold opacity-60 text-[17.5px]"
             labelClassname="hidden"
             onChange={(val) =>

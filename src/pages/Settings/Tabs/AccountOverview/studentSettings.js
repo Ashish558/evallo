@@ -18,6 +18,7 @@ import {
 import { BASE_URL, getAuthHeader } from "../../../../app/constants/constants";
 import InputFieldDropdown from "../../../../components/InputField/inputFieldDropdown";
 import { useUpdateEmailMutation } from "../../../../app/services/organization";
+import { useStudentFeedbackMutaion, useStudentFeedbackMutation } from "../../../../app/services/settings";
 const StudentSettings = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [reset, setReset] = useState(false);
@@ -56,6 +57,7 @@ const StudentSettings = () => {
   const [updateEmail, setUpdateEmail] = useUpdateEmailMutation();
   const [userDetails, userDetailsStatus] = useLazyGetPersonalDetailQuery();
   const [updateAccount, updateAccountStatus] = useUpdateUserAccountMutation();
+  const [studentFeedback,setStatus]=useStudentFeedbackMutation()
   const [fetchedData, setFetchedData] = useState({});
   const [saving,setSaving]= useState(false)
   useEffect(() => {
@@ -147,6 +149,25 @@ const handleFirstName=(e)=>{
     firstName: e.target.value,
   })
 }
+const [feedBack,setFeedback]=useState({
+  tech:"",
+  support:"",
+})
+const handleFeedback=(message,type)=>{
+  console.log({message,feedBack})
+  const body={
+message,type
+  }
+  studentFeedback(body).then((res)=>{
+    if(res?.error){
+      alert("Coudn't send feedback , try again")
+    }
+    if(res?.data){
+      alert("Feedback successfully sent")
+    }
+    console.log({res})
+  })
+}
   return (
     <div>
       <div className="flex flex-col gap-10  mx-[100px] my-12 design:mx-[160px] design:my-[60px]">
@@ -190,7 +211,7 @@ const handleFirstName=(e)=>{
             IconLeft={caution}
             placeholder=""
             labelClassname=" text-md text-[#26435F] font-semibold"
-            parentClassName="text-[#26435F] w-[calc(376*0.05050vw)] min-w-[230px] text-[calc(17.5*0.05050vw)]"
+            parentClassName="text-[#26435F] w-[calc(376*0.05050vw)] min-w-[230px] text-base-17-5"
             inputContainerClassName=" bg-white border border-white text-[#667085]"
             inputClassName=" text-400 bg-transparent "
             label="Email"
@@ -219,13 +240,13 @@ const handleFirstName=(e)=>{
               </span>
             }
           />
-          <div id="number">
+         
             <InputFieldDropdown
               placeholder=""
-              labelClassname=" text-md"
-              parentClassName="text-[#26435F]"
-              inputContainerClassName=" bg-white border border-white text-[#667085]"
-              inputClassName="  text-400 "
+              labelClassname=" text-md text-[#26435F] font-semibold mb-[1px]"
+              parentClassName="text-[#26435F] w-[calc(376*0.05050vw)] min-w-[230px] "
+              inputContainerClassName=" bg-white border  border-white text-[#667085]"
+              inputClassName=" text-400 !py-1 !text-[17px] bg-transparent "
               label="Phone"
               value={values.phone}
               codeValue={values.phoneCode}
@@ -243,7 +264,7 @@ const handleFirstName=(e)=>{
               }
               error={error.phone}
             />
-          </div>
+         
           <div>
             <PrimaryButton
               onClick={handleDataUpdate}
@@ -286,6 +307,13 @@ const handleFirstName=(e)=>{
             </p>
             <textarea
                 rows="3"
+                value={feedBack?.support}
+                onChange={(e)=>{
+                  setFeedback({
+                    ...feedBack,
+                    support: e.target.value 
+                  })
+                }}
                 className="mt-1 block w-full h-[180px] resize-none focus:!ring-blue-500 p-2 focus:!border-blue-500 placeholder-[#CBD6E2] text-sm  placeholder:text-xs "
                 placeholder=" If you have any feedback for this online platform, please submit
                 it here. Our team takes every suggestion seriously."
@@ -293,7 +321,9 @@ const handleFirstName=(e)=>{
           
            
             <button
-              
+              onClick={()=>{
+                handleFeedback(feedBack.support,"feedback")
+              }}
               className="bg-[#517CA8] text-white rounded-md mt-2 float-right px-4 py-2 text-xs"
             >
               Submit
@@ -306,14 +336,24 @@ const handleFirstName=(e)=>{
            
               <textarea
                 rows="3"
+                value={feedBack?.tech}
+                onChange={(e)=>{
+                  setFeedback({
+                    ...feedBack,
+                    tech: e.target.value 
+                  })
+                }}
+
                 className="mt-1 block w-full h-[180px] resize-none focus:!ring-blue-500 p-2 focus:!border-blue-500 placeholder-[#CBD6E2] text-sm  placeholder:text-xs "
                 placeholder=" If you require technical support, please submit your request here
-
+                
               and our team will help you out accordingly."
               ></textarea>
           
             <button
-              
+               onClick={()=>{
+                handleFeedback(feedBack.tech,"")
+              }}
               className="bg-[#517CA8] text-white rounded-md mt-2 float-right px-4 py-2 text-xs"
             >
               Submit

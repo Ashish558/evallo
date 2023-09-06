@@ -115,32 +115,33 @@ export default function UserManagement() {
     {
       id: 1,
       text: "Full Name",
-      className: "text-left pl-6",
+      className: "text-left pl-7",
       onCick: sortByName,
     },
     {
       id: 2,
-      text: "Usertype",
-    },
-    {
-      id: 3,
       text: "Email",
     },
     {
-      id: 7,
+      id: 3,
+      text: "Usertype",
+    },
+    {
+      id: 4,
       text: "Last login",
     },
     {
-      id: 8,
+      id: 5,
       text: "Profile",
     },
     {
-      id: 9,
+      id: 6,
       text: "Password",
-    }, {
-      id: 10,
-      text: "Password"
-    }
+    },
+    {
+      id: 7,
+      text: "",
+    },
   ];
 
   if (role === 'manager') {
@@ -653,7 +654,8 @@ export default function UserManagement() {
 
         <div className="mt-6">
           <Table
-            dataFor={ role === 'superAdmin' ? "allUsersSuperAdmin" : 'allUsersManager'}
+            dataFor={role === 'superAdmin' ? "allUsersSuperAdmin" : 'allUsersManager'}
+            noArrow={true}
             data={filteredUserData}
             onClick={{
               redirect,
@@ -675,7 +677,7 @@ export default function UserManagement() {
         </div>
       </div>
 
-    
+
       {deleteModalActive && (
         <Modal
           title={

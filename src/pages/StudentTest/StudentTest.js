@@ -42,7 +42,7 @@ const parentTestInfo = [
   },
 ];
 
-export default function StudentTest() {
+export default function StudentTest({fromProfile}) {
   const [user, setUser] = useState({});
   const [associatedStudents, setAssociatedStudents] = useState([]);
   const [selectedStudent, setSelectedStudent] = useState(null);
@@ -321,9 +321,9 @@ export default function StudentTest() {
 
   return (
     <>
-      <div className="mx-[70px] bg-lightWhite min-h-screen">
-        <div className="py-14 px-5">
-          {persona === "student" && (
+      <div className={`mx-[70px] bg-lightWhite  ${fromProfile?'!mx-0':'min-h-screen'}`}>
+        <div className={`py-14 px-5 ${fromProfile?'px-0 py-0 ':''}`}>
+          {persona === "student" && !fromProfile && (
             <div
               className={`${
                 persona === "student" ? "flex justify-between items-center" : ""
@@ -388,7 +388,7 @@ export default function StudentTest() {
               </div>
             </div>
           )}
-          <div className="mt-6">
+          <div className={`mt-6 ${fromProfile?'!mt-0':''}`}>
             <Table
               dataFor="assignedTestsStudents"
               headerObject={true}

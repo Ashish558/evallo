@@ -8,7 +8,9 @@ import styles from "./rangeDate.module.css";
 import { useState } from "react";
 import { useEffect } from "react";
 
-const RangeDate = ({ handleRangeData }) => {
+
+const RangeDate = ({ handleRangeData ,optionClassName,className,manualHide ,inputContainerClassName}) => {
+
   const [startDate, setStartDate] = useState(() => calculateDateRange()[0]);
   const [selectDate, setSelectedDate] = useState({
     sDate: "",
@@ -76,18 +78,17 @@ const RangeDate = ({ handleRangeData }) => {
   newDateformat += " - " + temp[0] + " " + temp[1] + " " + temp[2] + ", " + temp[3]
 
   return (
-    <div className="flex text-xs ">
+    <div className={`flex text-xs  !text-[calc(15*0.050vw)] ${className}`}>
       <p className="font-semibold text-[#FFA28D]"> </p>
 
       <InputSelect
         placeholder="Select"
-        parentClassName="border-none text-xs text-[#26435F] w-fit"
-        labelClassname="text-sm"
-        optionClassName=""
-        optionListClassName="text-[15px] font-medium text-[#517CA8] underline underline-offset-2"
-        inputContainerClassName={`border-none w-[300px] font-semibold text-[#FFA28D]  ${styles["text"]}`}
-        inputClassName={`border-none w-fit bg-transparent font-semibold text-[#FFA28D] `}
+        parentClassName="border-none text-xs text-[#26435F] w-fit relative z-[500] !text-[calc(15*0.050vw)]"
+        labelClassname="text-sm !text-[calc(15*0.050vw)]"
+        inputContainerClassName={`border-none w-[300px] !text-[calc(15*0.050vw)] whitespace-nowrap font-semibold text-[#FFA28D] ${inputContainerClassName}  ${styles["text"]}`}
+        inputClassName={`border-none w-fit bg-transparent font-semibold text-[#FFA28D] !text-[calc(15*0.050vw)]`}
         value={newDateformat}
+        optionClassName={`${optionClassName} relative !text-[calc(15*0.050vw)]`}
         optionData={[
           { name: "Today", days: 0 },
           { name: "Last 7 Days", days: 7 },
@@ -99,34 +100,32 @@ const RangeDate = ({ handleRangeData }) => {
         onChange={handleQuickOptions}
         IconRight={faCaretDown}
         DateSelect={
-          <div className="flex flex-col hover:bg-white items-center pt-2 z-5000 border-b ">
-            <div className=" text-black flex flex-col w-full justify-start">
-              <div className="flex flex-col px-[26px] justify-start  ">
-                <label className="text-[#517CA8] text-[9px]" htmlFor="sdate">Start Date</label>
-
-                <input
-                  type="date"
-                  name="sdate"
-                  className="rounded-md  p-1 text-[#FFA28D]"
-                  value={selectDate.sDate}
-                  max={selectDate.eDate}
-                  onChange={(e) => handleLocalDate(e.target.value, "sDate")}
-                />
-              </div>
+           !manualHide &&
+          <div className="flex relative flex-col hover:bg-white items-center pt-2 z-5000 border-b  ">
+            <div className="font-semibold text-black flex w-full justify-around">
+              <label htmlFor="sdate">Start Date</label>
+              <label htmlFor="edate">End Date</label>
             </div>
-            <div className="flex flex-col  justify-start  mt-[15px]">
-              <label className="text-[#517CA8] text-[9px]" htmlFor="edate">End Date</label>
+            <div className="flex p-1 justify-between gap-5 ">
+              <input
+                type="date"
+                name="sdate"
+                className="rounded-md bg-primary-50 p-1 text-[#FFA28D]"
+                value={selectDate.sDate}
+                max={selectDate.eDate}
+                onChange={(e) => handleLocalDate(e.target.value, "sDate")}
+              />
               <input
                 type="date"
                 min={selectDate.sDate}
                 name="edate"
-                className="rounded-md text-[#FFA28D] p-1 w-[120px]"
+                className="rounded-md bg-primary-50 text-[#FFA28D] p-1 w-[120px]"
                 value={selectDate.eDate}
                 placeholder="Start Date"
                 onChange={(e) => handleLocalDate(e.target.value, "eDate")}
               />
             </div>
-            <div className="w-full flex justify-start">
+            <div className="w-full flex justify-center">
               <p className="ml-[26px]">
                 <button
                   disabled={!selectDate.eDate || !selectDate.sDate}
@@ -139,6 +138,7 @@ const RangeDate = ({ handleRangeData }) => {
               </p>
             </div>
           </div>
+        
         }
       />
       <p></p>

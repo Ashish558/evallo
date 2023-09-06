@@ -46,7 +46,7 @@ export default function FilterItems({
               className ? className : ""
             } bg-primaryLight py-1 px-3 rounded-7 group ${styles.filterItem}`}
           >
-            <p className="text-lightGray text-[16px]">
+            <p className="text-lightGray text-[16px] text-base-15">
               {isString ? item : item.text}
             </p>
             <img

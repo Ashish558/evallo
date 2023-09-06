@@ -10,6 +10,7 @@ export default function InputSelect({
   Icon,
   value,
   placeholder,
+  placeholderClass,
   label,
   labelClassname,
   optionData,
@@ -25,10 +26,12 @@ export default function InputSelect({
   IconRight,
   IconLeft,
   DateSelect,
-  IconSearch
+  IconSearch,
+  tableDropdown
 }) {
   const [selected, setSelected] = useState(false);
   const selectRef = useRef();
+  // console.log(selectRef)
   useOutsideAlerter(selectRef, () => setSelected(false));
   const handleOption = () => {
     setSelected(!selected);
@@ -74,7 +77,7 @@ export default function InputSelect({
 
       <div
         onClick={() => setSelected(true)}
-        className={`py-[9px] px-[14px] lg:py-[13px] lg:px-[21px]  flex items-center rounded relative cursor-pointer z-50 ${inputContainerClassName ? inputContainerClassName : ""
+        className={`py-[13px] px-[21px]  flex items-center rounded relative cursor-pointer z-50 ${inputContainerClassName ? inputContainerClassName : ""
           } `}
       >
         {Icon && <img src={Icon} className={`mr-5  w-[28px]}`} alt="icon" />}
@@ -106,24 +109,24 @@ export default function InputSelect({
           name={label}
         >
           {value === "" || !value ? (
-            <span className="text-[#667085] text-[17.5px]  mr-10 whitespace-nowrap">
+            <span className={`text-[#667085] text-[17.5px] whitespace-nowrap ${tableDropdown ? 'mr-0' : 'mr-10'} ${placeholderClass} text-base-17-5`}>
               {" "}
               {placeholder}{" "}
             </span>
           ) : (
-            <span className="mr-10 text-[17.5px] whitespace-nowrap">{value}</span>
+            <span className={`mr-10 text-[17.5px] whitespace-nowrap ${tableDropdown ? 'mr-0' : 'mr-10'}  ${placeholderClass} text-base-17-5`}>{value}</span>
           )}
         </div>
         {selected && (
           <div
             onClick={handleOption}
-            className={`scrollbar-content scrollbar-vertical  shadow-sm ${styles.options} $`}
+            className={`scrollbar-content  scrollbar-vertical  shadow-lg shadow-[0px_0px_3px_0px_#00000040] ${styles.options} $`}
           >
             {DateSelect && DateSelect}
             {optionData?.map((option, idx) => {
               return (
                 <div
-                  className="outline-0 border-0 text-[17.5px] py-2.5 px-4 flex items-center justify-between"
+                  className="outline-0 border-0 text-[17.5px] py-2 px-4 flex items-center justify-between text-base-15"
                   key={idx}
                   onClick={() => handleChange(optionType, option, idx)}
                 >
