@@ -90,7 +90,7 @@
   font-weight: 600;
   text-align: center;
 
-  /* background: rgb(243 245 247 / var(--tw-bg-opacity)) !important; */
+
 }
 .calender .fc-daygrid-day-top {
   align-items: center;
@@ -119,17 +119,20 @@
   background-color: rgb(243 245 247) !important;
   padding: 0 !important;
   color: #517ca8 !important;
-
+}
+#student .calendar th{
+  background-color: white !important;
+}
+#student .fc-daygrid th{
+  background: rgb(243 245 247) !important;
 }
 .calendar-parent-class tr td {
   background:  rgb(243 245 247) !important
 }
 
 .calender tr:nth-child(odd) {
-  background: rgb(243 245 247) !important;
   color: #517ca8 !important;
   border-radius: 0 !important;
-  /* box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.25) !important; */
   height: 3rem !important;
 }
 
@@ -139,17 +142,25 @@
 .calender .fc-theme-standard .fc-timeGridWeek-view .fc-scrollgrid{
   border: 2px solid white !important;
 }
-.calender .fc-theme-standard td
+.calender .fc-theme-standard .fc-daygrid .fc-scrollgrid{
+  border: 2px solid white !important;
+}
+
+ .calender .fc-theme-standard td
  {
-  border: 2px solid #ffff !important;
+  border: 2px solid white !important;
   }
+
+ #student  .fc-theme-standard .fc-timeGridWeek-view td
+ {
+  border: 2px solid #F5F8FA !important;
+  }
+
   .fc-theme-standard th{
     border: 0 !important;
 
   }
-  .style_sTable__JkBD3 tbody, thead {
-    border: 2px solid white;
-  }
+
 .calender .fc-theme-standard .fc-toolbar .fc-toolbar-title {
   color: #26435f !important;
   font-weight: 500 !important;
@@ -165,8 +176,6 @@
 }
 .calender .fc .fc-button-primary {
   background-color: #fff !important;
-  border: 1.25px solid #f5f6f7 !important;
-  /* border-color: #fff !important; */
   color: #adb8cc !important;
 }
 .calender .fc .fc-button-primary:hover {
@@ -176,7 +185,13 @@
 }
 .calender .fc-timeGridWeek-button {
   border-radius: 20px 0px 0px 20px !important;
+  border: 1px solid #f5f6f7 !important;
 }
+.calender .fc-dayGridMonth-button {
+
+  border: 1px solid #f5f6f7 !important;
+}
+
 .calender .calendar-prev-button {
   border-radius: 30px !important;
 }
@@ -197,24 +212,24 @@
 }
 .calender .fc .fc-col-header-cell-cushion {
   font-size: 16px !important;
-  margin-top: 1.2rem !important;
+  margin-top: .7rem !important;
 }
-.react-calendar .react-calendar__navigation__label__labelText.react-calendar__navigation__label__labelText--from{
+.calendar .react-calendar .react-calendar__navigation__label__labelText.react-calendar__navigation__label__labelText--from{
     color: #26435F !important;
 }
-.react-calendar__tile--active abbr {
+.calendar .react-calendar__tile--active abbr {
     border-radius: 50%;
     background-color: #FFA28D !important;
 }
 
-#input .border {
+.calendar #input .border {
     border: 1.25px solid #FFA28D!important;
     border-radius: 50px;
     background: white;
     color: #FFA28D !important;
 
 }
-#number select{
+.calendar #number select{
   background: transparent !important;
 }
 /* .fc-scroller{
@@ -236,42 +251,90 @@
 .calender .fc .fc-scrollgrid-section-sticky > *{
   position: relative !important;
 }
-/* .calender .fc-theme-standard td, .fc-theme-standard th{
-  border: 1px solid black !important;
-} */
-/* ::-webkit-scrollbar{
-    width: 0 !important;
-} */
 .calender .fc .fc-timegrid-slot-label{
   display: revert !important;
   vertical-align: baseline !important;
 }
-.react-calendar .react-calendar__navigation__arrow.react-calendar__navigation__prev-button, .react-calendar .react-calendar__navigation__arrow.react-calendar__navigation__next-button{
+.calendar .react-calendar .react-calendar__navigation__arrow.react-calendar__navigation__prev-button, .react-calendar .react-calendar__navigation__arrow.react-calendar__navigation__next-button{
   display: none !important;
 }
-.react-calendar__viewContainer{
+
+.calendar .react-calendar__viewContainer{
   background-color: white;
   color: #7C98B6 !important;
 }
-.react-calendar__navigation{
+.calendar .react-calendar__navigation{
   margin-bottom: 0 !important;
   padding-top: 10px !important;
 }
-.react-calendar__month-view__weekdays__weekday abbr{
+.calendar .react-calendar__month-view__weekdays__weekday abbr{
   color: #24A3D9 !important;
 }
-.react-calendar__month-view__days__day--weekend{
+.calendar .react-calendar__month-view__days__day--weekend{
   color: #7C98B6 !important;
 
 }
-/* tr{
+.calendar tr{
   box-shadow: 0px 0px 2px 0px #fff !important;
   border-radius: 0 !important;
 } */
 #calendarContainer::-webkit-scrollbar{
   width: 0px !important;
 }
-.fc-button-active{
+.calendar ::-webkit-scrollbar{
+  width: 0px !important;
+}
+
+.calendar .fc-button-active{
   border: 0 !important;
 }
 
+ .calendar tr td{
+  background: inherit !important;
+}
+/* #student tr td{
+  background: white !important;
+
+} */
+#student .fc-timegrid-col-frame{
+  background: white !important;
+}
+.calendar thead tr th div::after{
+  content: none !important;
+}
+.calendar .fc-nextButton-button{
+  width: 50px !important;
+  height: 50px !important;
+  border: 2.5px solid #F5F6F7 !important;
+}
+.calendar .fc-prevButton-button{
+  width: 50px !important;
+  height: 50px !important;
+  border: 2.5px solid #F5F6F7 !important;
+}
+.calendar-prevButton-custom{
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  margin-left: 10px !important;  
+}
+.calendar-nextButton-custom{
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  margin-left: 10px !important;  
+}
+.calendar .fc .fc-button-group{
+  margin-right: 15rem !important;
+}
+.calendar .fc .fc-timegrid-axis-frame {
+  margin-top:10px !important ;
+  margin-left: 15px !important;
+  content: url('../../../public/time.png') !important;
+}
+.calendar .fc .fc-timegrid-slot-label-cushion {
+  font-weight: 500 !important;
+  font-size: 16px !important;
+
+
+}

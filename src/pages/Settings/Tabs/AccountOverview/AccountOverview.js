@@ -10,7 +10,9 @@ import resetSendIcon from "../../../../assets/icons/teenyicons_shield-tick-solid
 import tooltipIcon from "../../../../assets/icons/octicon_stop-16.svg";
 import { useState } from "react";
 import Modal from "../../../../components/Modal/Modal";
+import  './style.css'
 import { useForgotPasswordMutation } from "../../../../app/services/auth";
+
 import {
   useLazyGetPersonalDetailQuery,
   useUpdateUserAccountMutation,

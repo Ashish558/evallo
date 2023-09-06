@@ -38,6 +38,7 @@ import SuperAdminSettings from "../pages/Settings/SuperAdminSettings";
 import SuperAdminProfile from "../pages/SuperadminDashboard/components/About/About";
 import EmailVerify from "../pages/Settings/Tabs/AccountOverview/EmailVerify";
 import StudentSettings from "../pages/Settings/Tabs/AccountOverview/studentSettings";
+import TutorSetting from "../pages/Settings/TutorSetting";
 
 const PrivateRoutes = [
   {

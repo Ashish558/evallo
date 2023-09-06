@@ -261,6 +261,7 @@ export default function Users() {
       const fetchDetails = async () => {
         let tempData = [];
         await res?.data?.data?.user?.map(async (user) => {
+          console.log("user",user)
           let obj = {
             _id: user._id,
             block: user.block,
@@ -269,6 +270,7 @@ export default function Users() {
             email: user.email ? user.email : "-",
             userType: user.role ? user.role : "-",
             phone: user.phone ? user.phone : "-",
+            phoneCode:user.phoneCode ? user.phoneCode :"-",
             createdAt: user.createdAt,
             assignedTutor: user.assiginedTutors ? user.assiginedTutors : "",
             leadStatus: user?.leadStatus,
@@ -763,7 +765,7 @@ export default function Users() {
                     <div className="">
                       <div className="flex justify-center">
                         <div
-                          className="min-h-[161px] min-w-[198px] border-[1.33px] border-dashed mb-[26px] border-[#517CA8] rounded-[5px]"
+                          className={`min-h-[161px] min-w-[198px] border-[1.33px]  mb-[26px] border-[#517CA8] rounded-[5px] ${styles.customborder}`}
 
                         >
                           <div className="mt-[18px] mb-[13px] flex justify-center">
@@ -783,7 +785,7 @@ export default function Users() {
                               htmlFor="file"
                               className="block text-white bg-[#517CA8] text-base-15 hover:bg-[#517CA8] items-center justify-center  rounded-[5px]  px-4 py-2.5 text-center dark:bg-[#517CA8] dark:hover:bg-[#517CA8] "
                             >
-                              Choose File
+                              Choose file
                             </label>
                             <input
                               onChange={(e) => setXlsFile(e.target.files[0])}
@@ -993,7 +995,7 @@ export default function Users() {
             onRemoveFilter={onRemoveFilter}
           />
         </div>
-        <div className="flex justify-between items-center mt-[23.75px]">
+        <div className="flex gap-6 items-center    mt-[23.75px]">
           <div className="ml-6 ">
             <label className={`  text-[#26435F] font-medium flex items-center`}>
               <input
@@ -1008,6 +1010,12 @@ export default function Users() {
               <span className="block text-[17.5px] text-base-17-5">{numberChecked} Selected</span>
             </label>
           </div>
+          <InputField value="Lead Status"  IconRight={Dropdown} inputClassName="bg-white border border-white w-[150px]" inputContainerClassName="bg-white " >
+            </InputField>
+            <InputField value="Tutor Status"  IconRight={Dropdown} inputClassName="bg-white border border-white w-[150px]" inputContainerClassName="bg-white " >
+            </InputField>
+            <InputField value="Assigned Status"  IconRight={Dropdown} inputClassName="bg-white border border-white w-[150px]" inputContainerClassName="bg-white " >
+            </InputField>
           <div>
             <button className="bg-[#26435F] text-[15px] px-[25px] py-[10px] rounded-[7.5px] text-white ml-auto text-base-15">
               Save
@@ -1041,22 +1049,23 @@ export default function Users() {
       {
         modalActive && (
           <Modal
+          underline="false"
             classname={"max-w-[700px] mx-auto rounded-md"}
-            title="Add a New User"
-            cancelBtn={true}
+            title="Add A New User"
+            // cancelBtn={true}
             titleClassName="text-start mb-3 pb-3 border-b border-b-gray-300"
-            primaryCancel={true}
-            cancelBtnClassName="w-130"
-            primaryBtn={{
-              text: "Invite User",
-              className:
-                "rounded-lg bg-transparent border-2 border-[#FFA28D] py-2 text-[#FFA28D]",
-              form: "add-user-form",
-              onClick: handleSubmit,
-              loading: loading,
-              type: "submit",
-              disabled: addUserBtnDisabled,
-            }}
+            // primaryCancel={true}
+            // cancelBtnClassName="w-130"
+            // primaryBtn={{
+            //   text: "Invite User",
+            //   className:
+            //     "rounded-lg bg-transparent border-2 border-[#FFA28D] py-2 text-[#FFA28D]",
+            //   form: "add-user-form",
+            //   onClick: handleSubmit,
+            //   loading: loading,
+            //   type: "submit",
+            //   disabled: addUserBtnDisabled,
+            // }}
             handleClose={handleClose}
             body={
               <form
@@ -1070,8 +1079,8 @@ export default function Users() {
                       label="First Name"
                       labelClassname="ml-4 mb-0.5 text-[#26435F] font-semibold"
                       placeholder="First Name"
-                      inputContainerClassName="text-sm  pt-3.5 pb-3.5 px-5 bg-primary-50 border-0"
-                      inputClassName="text-base-17-5 bg-transparent"
+                      inputContainerClassName="text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0"
+                      inputClassName="bg-transparent"
                       parentClassName="w-full"
                       type="text"
                       value={modalData.firstName}
@@ -1087,8 +1096,8 @@ export default function Users() {
                       labelClassname="ml-4 mb-0.5 text-[#26435F] font-semibold"
                       isRequired={true}
                       placeholder="Last Name"
-                      inputContainerClassName="text-sm  pt-3.5 pb-3.5 px-5 bg-primary-50 border-0"
-                      inputClassName="text-base-17-5 bg-transparent"
+                      inputContainerClassName="text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0"
+                      inputClassName="bg-transparent"
                       parentClassName="w-full"
                       type="text"
                       value={modalData.lastName}
@@ -1103,8 +1112,8 @@ export default function Users() {
                       labelClassname="ml-4 mt-2 mb-0.5 text-[#26435F] font-semibold"
                       isRequired={true}
                       placeholder="Email Addresss"
-                      inputContainerClassName="text-sm  pt-3.5 pb-3.5 px-5 bg-primary-50 border-0"
-                      inputClassName="text-base-17-5 bg-transparent"
+                      inputContainerClassName="text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0"
+                      inputClassName="bg-transparent"
                       parentClassName="w-full"
                       type="text"
                       value={modalData.email}
@@ -1126,10 +1135,15 @@ export default function Users() {
                       labelClassname="ml-0  text-[#26435F] font-bold"
                       placeholderClass="text-base-17-5"
                       optionData={userTypeOptions}
-                      inputContainerClassName="text-sm  pt-3.5 pb-3.5 px-5 bg-primary-50 border-0"
+                      inputContainerClassName="text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0"
                       parentClassName="w-full"
                     />
                   </div>
+                </div>
+                <div className='flex items-center justify-center gap-4'>
+                <button className="rounded-lg bg-[#FFA28D] border-2 border-[#FFA28D] py-2 text-[#FFFFFF] w-[146px]">Save User</button>
+                <button className="rounded-lg bg-transparent border-2 border-[#FFA28D] py-2 text-[#FFA28D]  w-[146px]" onClick={handleSubmit} disabled={addUserBtnDisabled}>Invite User</button>
+
                 </div>
               </form>
             }
