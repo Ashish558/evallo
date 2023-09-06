@@ -253,7 +253,7 @@ const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
       className="flex flex-row justify-between !gap-[calc(68*0.0522vw)] lg:py-[20px] py-[10px] "
      
     >
-      <div className=" flex-1 w-[70%]">
+      <div className=" flex-1 w-[70%] h-full">
         <div className="flex items-center justify-between">
           <h1 className="text-[#26435F]  text-sm font-semibold ">
             Concept Chart
@@ -314,14 +314,14 @@ const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
         </div>
       </div>
 
-      <div className="w-full lg:w-1/3 flex flex-col gap-3 mt-1">
+      <div className="w-full lg:w-1/3 flex flex-col gap-3 mt-1 h-full">
         <div className="concept" id={styles.studentCarousel}>
           <div >
           <h1 className="text-[#26435F]  text-sm font-semibold ">
            Tutor Profile
            
           </h1>
-          <div className="bg-[linear-gradient(100deg,#26435F_0.06%,#1C3BDE_99.95%)] h-[180px] rounded-md !w-[calc(489*0.0522vw)]">
+          <div className=" bg-[linear-gradient(100deg,#26435F_0.06%,#1C3BDE_99.95%)] flex items-center h-[180px] rounded-md !w-[calc(489*0.0522vw)]">
 
           
             {filteredTutors.length >= totalTutors || true ? (
@@ -336,10 +336,10 @@ const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
                   return (
                     <div
                       key={idx}
-                      className="item flex gap-2  h-full h-[180px]"
+                      className="item flex gap-2 my-auto  h-full"
                     
                     >
-                      <div className="w-[40%] ml-5 flex justify-center flex-col  ">
+                      <div className="w-[40%] ml-5 flex justify-center flex-col h-full ">
                       <h3 className="mt-0 mb-1 mt-2.5 text-[#FFA28D] font-semibold">
                           {" "}
                           {`${tutor.firstName} ${tutor.lastName} `}{"Dummy "}

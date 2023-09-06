@@ -8,6 +8,7 @@ import UpArrow from "../../assets/icons/upArrow.svg";
 export default function InputSelectNew({
   parentClassName,
   Icon,
+  iconClass,
   optionsEachClassName,
   value,
   placeholder,
@@ -26,7 +27,8 @@ export default function InputSelectNew({
   placeHolderClass,
   IconDemography,
   optionListClassName,
-  arrowWidth
+  arrowWidth,
+  labelIcon
 }) {
   const [selected, setSelected] = useState(false);
   const selectRef = useRef();
@@ -57,21 +59,22 @@ export default function InputSelectNew({
           )}
         </label>
       )}
+      {labelIcon && <img src={labelIcon} className={`mr-6 inline-block ${iconClass} `} alt="icon" />}
 
       <div
         className={`py-[10px] px-[21px] flex items-center rounded-10 relative cursor-pointer  z-50 ${
           inputContainerClassName ? inputContainerClassName : ""
         } `}
       >
-        {Icon && <img src={Icon} className="mr-6" alt="icon" />}
+        {Icon && <img src={Icon} className={`mr-6 inline-block ${iconClass} `} alt="icon" />}
 
-        {!selected ?
+        {!selected && !Icon && !labelIcon?
           <img
             src={IconDemography?countryDA:DownArrow}
             className={`${arrowWidth ? arrowWidth:'w-[15px]'} ${styles.downArrow}`}
             alt="down-arrow"
             onClick={() => setSelected(!selected)}
-          />:<img
+          />: !Icon &&  !labelIcon && <img
           src={IconDemography?countryDA:UpArrow}
           className={` ${arrowWidth ? arrowWidth:'w-[15px]'}  ${styles.downArrow}`}
           alt="down-arrow"

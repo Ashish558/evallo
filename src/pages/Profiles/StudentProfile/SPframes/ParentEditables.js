@@ -517,6 +517,15 @@ console.log("parentEditables",currentToEdit)
      
       userDetailSave(reqBody);
     }
+    if (currentToEdit.hasOwnProperty("about")) {
+      let reqBody = {
+        about: currentToEdit.about,
+       
+      };
+     
+     
+      userDetailSave(reqBody);
+    }
     if (currentToEdit.hasOwnProperty("driveLink") && currentToEdit.driveLink.length>2) {
       let reqBody = {
         type: 'driveLink',

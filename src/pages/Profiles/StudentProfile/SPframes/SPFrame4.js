@@ -49,7 +49,7 @@ let signupData = [
     key: "",
   },
 ];
-const SPFrame1 = ({
+const SPFrame4 = ({
   userId,
   settings,
   userDetail,
@@ -301,4 +301,4 @@ const handleLeadStatus=(e)=>{
   );
 };
 
-export default SPFrame1;
+export default SPFrame4;
