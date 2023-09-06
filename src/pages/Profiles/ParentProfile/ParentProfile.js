@@ -670,7 +670,7 @@ const [toEdit, setToEdit] = useState({
   return (
     <>
       <div className={`mx-[80px] min-h-screen design:mx-[160px] pb-[70px]`}>
-        <p className="text-[#24A3D9] mt-7 mb-3">
+        <p className="text-[#24A3D9] !my-[calc(50*0.0522vw)]">
           {organization?.company +
             " > " +
             user?.firstName +
@@ -681,6 +681,10 @@ const [toEdit, setToEdit] = useState({
         </p>
 
         <div className={` rounded-b-md w-full flex flex-col relative `}>
+          <div className="flex gap-7"> 
+            <div className={` rounded-b-md w-full flex flex-col relative `}>
+
+         
           <div className=" bg-[#26435F]   px-5 h-[100px]  w-full  flex  items-center">
             {!isOwn ? (
               <button
@@ -726,21 +730,16 @@ const [toEdit, setToEdit] = useState({
                     />
                   </div>
                   <div className="flex mt-1 text-xs items-center text-[#F3F5F7]">
-                    {userDetail.schoolName
-                      ? userDetail.schoolName
-                      : "Sample School Name"}
-                  </div>
-                  <div className="flex text-xs mt-1 items-center text-[#F3F5F7]">
-                    {userDetail.grade ? userDetail.grade : "12th Grade"}
-
-                    {/* <p className='font-semibold text-[22px] mr-4'>
-                           {userDetail.grade}
-                        </p> */}
-
-                    {/* <p className='font-semibold text-[22px]'>
-                           {userDetail.schoolName}
-                        </p> */}
-                  </div>
+                  <p>
+                          <span>
+                            <img
+                              className="inline-block !w-4 !h-4 mr-2"
+                              src={emailIcon}
+                            />
+                          </span>
+                          {user?.email}
+                        </p>
+</div>
                 </div>
 
                 <div className="flex flex-col text-[12px]  font-medium text-white my-auto ">
@@ -786,6 +785,7 @@ const [toEdit, setToEdit] = useState({
                 </div>
               </div>
             </div>
+           
           </div>
           <div className="bg-white !rounded-b-md shadow-[0px_0px_2.500001907348633px_0px_#00000040] flex  h-[100px] justify-between ">
             <div className="ml-[126px] flex my-auto py-auto w-4/5 text-[12px] px-5  flex-1 h-full  pt-5  ">
@@ -796,68 +796,26 @@ const [toEdit, setToEdit] = useState({
               voluptate orem ipsum dolor sit amet, consectetur adipiscing elit.
               Ut enim ad minim veniam,
             </div>
-            <div className="w-[250px] ml-6 my-0">
-              <div className="mt-[-20px]">
+           
+          </div>
+          </div>
+          <div className="w-[200px] bg-white rounded-md overflow-hidden">
+            <div className="bg-[#26435F] h-[100px]">
+            <div className="flex justify-center items-center">
                 <ProfilePhoto
                   src={
                     associatedParent.photo
                       ? `${awsLink}${associatedParent.photo}`
                       : "/images/default.jpeg"
                   }
-                  imgSizeClass="!w-[50px] !h-[50px] !translate-y-[40px]"
+                  imgSizeClass="!w-[70px] !h-[70px] !translate-y-[15px]"
                   imageClassName="!w-[50px] !h-[50px] border-[2px] border-[#26435F]"
                   className=" "
                   handleChange={handleProfilePhotoChange}
                 />
               </div>
-
-              <div className="flex flex-col ml-14   font-medium text-[#24A3D9] ">
-                <p
-                  onClick={() =>
-                    Object.keys(associatedParent).length > 0 &&
-                    navigate(`/profile/parent/${associatedParent._id}`)
-                  }
-                  className="font-semibold cursor-pointer text-[14px]"
-                >
-                  {Object.keys(associatedParent).length > 1
-                    ? `${associatedParent.firstName} ${associatedParent.lastName}`
-                    : `${userDetail.FirstName} ${userDetail.LastName}`}
-                  <img
-                    src={clickArrowIcon}
-                    className="!ml-2 cursor-pointer !w-3 !h-3 inline-block"
-                  />
-                </p>
-
-                <p className="font-medium text-[12px]">
-                  <span
-                    className="text-xs cursor-pointer font-semibold opacity-60 inline-block mr-1"
-
-                    // navigate(`/profile/parent/${associatedParent._id}`)
-                  >
-                    {Object.keys(associatedParent).length > 1
-                      ? `${associatedParent.email}`
-                      : `${userDetail.Email} `}
-                    {/* View Profile */}
-                  </span>
-                </p>
-              </div>
             </div>
-            <div className="flex flex-col items-center mb-3">
-              {/* <p className='text-lg text-center text-primary font-semibold mb-5 text-[21px]'>Associated Parent</p> */}
-              <EditableText
-                editable={persona === "admin" ? true : false}
-                onClick={() =>
-                  setToEdit({
-                    ...toEdit,
-                    associatedParent: {
-                      ...toEdit.associatedParent,
-                      active: true,
-                    },
-                  })
-                }
-                className="text-[12px] mb-2 flex justify-start text-left self-stretch"
-              />
-            </div>
+          </div>
           </div>
           <EditableText
             editable={editable}

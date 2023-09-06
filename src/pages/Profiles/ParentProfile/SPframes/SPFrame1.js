@@ -4,22 +4,32 @@ import { useSelector } from "react-redux";
 import EditableText from "../../../../components/EditableText/EditableText";
 import fileupload from "../../../../assets/icons/basil_file-upload-outline (2).svg";
 import BCut from "../../../../assets/YIcons/BCut.svg";
-import { useAddAssociatedDocStudentMutation, useUpdateUserDetailsMutation } from "../../../../app/services/users";
-const SPFrame1 = ({ userId, settings, userDetail, editable, setToEdit, toEdit ,fetchDetails}) => {
+import {
+  useAddAssociatedDocStudentMutation,
+  useUpdateUserDetailsMutation,
+} from "../../../../app/services/users";
+import InputSelectNew from "../../../../components/InputSelectNew/InputSelectNew";
+const SPFrame1 = ({
+  userId,
+  settings,
+  userDetail,
+  editable,
+  setToEdit,
+  toEdit,
+  fetchDetails,
+}) => {
   const [xlsFile, setXlsFile] = useState({});
   const { awsLink } = useSelector((state) => state.user);
   const [addDoc, addDocStatus] = useAddAssociatedDocStudentMutation();
   const [updateDetails, updateDetailsResp] = useUpdateUserDetailsMutation();
   const reduceArr = (id, update) => {
-   
-    
-  //  console.log({toEdit})
+    //  console.log({toEdit})
     let temp = [...toEdit?.whiteBoardLinks?.whiteBoardLinks];
     temp = temp?.filter((item, idd) => idd !== id);
-    
-      if(update){
-        handleSubmit(temp)
-      }
+
+    if (update) {
+      handleSubmit(temp);
+    }
   };
   const addDocHandler = () => {
     if (!xlsFile || !xlsFile.name) {
@@ -38,303 +48,103 @@ const SPFrame1 = ({ userId, settings, userDetail, editable, setToEdit, toEdit ,f
   };
   const handleSubmit = (e) => {
     //e.preventDefault();
-   // setLoading(true);
-    let reqBody = { whiteBoardLinks:e };
-   // delete reqBody["active"];
-     console.log({reqBody,id:userId});
+    // setLoading(true);
+    let reqBody = { whiteBoardLinks: e };
+    // delete reqBody["active"];
+    console.log({ reqBody, id: userId });
     const userDetailSave = (reqBody) => {
-    
-       console.log({reqBody,userDetail});
+      console.log({ reqBody, userDetail });
       // return
-      updateDetails({ id:userId, fields: reqBody }).then((res) => {
+      updateDetails({ id: userId, fields: reqBody }).then((res) => {
         console.log(res);
         //setLoading(false);
         fetchDetails(true, true);
         // handleClose()
       });
     };
-    
-      userDetailSave(reqBody);
-   
-    
+
+    userDetailSave(reqBody);
   };
   //console.log("frame1", { userDetail, xlsFile });
   return (
-    <div>
-      {" "}
-      <div className="flex mt-7 justify-between gap-5">
-        <div className="flex-1 h-[270px] gap-2 flex flex-col">
-          <div className="flex-1 ">
-            <p className=" text-sm text-[#26435F] font-semibold">
-              Whiteboard Links
-              <EditableText
-                editable={editable}
-                onClick={() =>
-                  setToEdit({
-                    ...toEdit,
-                    whiteBoardLinks: {
-                      ...toEdit.whiteBoardLinks,
-                      active: true,
-                    },
-                  })
-                }
-                text="edit"
-                textClassName="text-sm text-[#517CA8] text-underline  "
-                className="text-sm my-0 flex justify-end   float-right"
-              />
+    <div className="flex w-full justify-between mt-5">
+      <div className="flex flex-col gap-3 !w-[calc(813*0.0522vw)]">
+        <div className="flex justify-between gap-7">
+          <div className=" !w-[calc(545*0.0522vw)]">
+            <p className=" text-sm text-[#26435F] font-semibold text-base-20 mb-1 custom-scroller">
+              Internal Notes
             </p>
-
-            <div
-              className="w-full relative custom-scroller !border-[1.25px_dashed_#517CA8] bg-white h-full max-h-[90px]  flex flex-col rounded-md items-center overflow-y-auto shadow-[0px_0px_2.500001907348633px_0px_#00000040]"
-              id={styles.borderDashed}
-            >
-              {userDetail?.whiteBoardLinks?.map((it, id) => {
-                return (
-                  <p
-                    key={id}
-                    className="flex flex-1 text-[#517CA8] w-full text-xs justify-between px-3 py-1"
-                  >
-                    <span>{it}</span>
-                    <img
-                    onClick={()=>reduceArr(id,true,)}
-                      src={BCut}
-                      className="text-xs !h-[20px] !w-[20px] inline-block"
-                    />
-                  </p>
-                );
-              })}
+            <div className="bg-white flex-1 text-base-17-5 p-2 text-[#B5B5B5] h-[200px] rounded-md shadow-[0px_0px_2.500001907348633px_0px_#00000040]">
+              Add notes about the parent. Here are some ideas to get you
+              started:
+              <ul className="list">
+                <li>How did the initial call go?</li>
+                <li>What is the parent’s budget?</li>
+                <li>What timeline do they have in mind for tutoring?</li>
+                <li>Has the student been tutored before?</li>
+                <li>Do they prefer online or offline tutoring?</li>
+                <li>Does the student have siblings?</li>
+              </ul>
             </div>
           </div>
-          <div className="flex-1 mt-2">
-            <p className=" text-sm text-[#26435F] font-semibold">
-              Associated docs
-            </p>
-            <div
-              id={styles.borderDashed}
-              className="w-full relative !border-[1.25px_dashed_#517CA8] h-full !max-h-[150px] flex rounded-md items-center bg-white overflow-hidden shadow-[0px_0px_2.500001907348633px_0px_#00000040]"
-            >
-              <div className=" flex-1 ">
-                <div className="mt-[13px] mb-[13px] items-center flex justify-center">
-                  <img src={fileupload} alt="fileuploadIcon"></img>
-                </div>
-
-                <div className="flex items-center justify-center">
-                  {xlsFile == undefined ? (
-                    <p className=""></p>
-                  ) : (
-                    <p className="block ">{xlsFile.name}</p>
-                  )}
-                </div>
-                {!xlsFile?.name ? (
-                  <div className="flex justify-center">
-                    <label
-                      htmlFor="file"
-                      className="block text-sm text-white bg-[#517CA8] hover:bg-[#517CA8] items-center justify-center  rounded-[5px]  px-4 py-2 text-center ] "
-                    >
-                      Choose File
-                    </label>
-                    <input
-                      onChange={(e) => setXlsFile(e.target.files[0])}
-                      type="file"
-                      id="file"
-                    ></input>
-                  </div>
-                ) : (
-                  <div className="flex justify-center">
-                    <span
-                      onClick={addDocHandler}
-                      className=" cursor-pointer block text-sm text-white bg-[#517CA8] hover:bg-[#517CA8] items-center justify-center  rounded-[5px]  px-4 py-2 text-center ]"
-                    >
-                      Submit File
-                    </span>
-                  </div>
-                )}
-                <label
-                  htmlFor="file"
-                  className="block text-xs items-center justify-center  rounded-[5px]  px-4 py-2 font-normal text-center text-[#517CA8] "
-                >
-                  Less than 1 MB
-                </label>
+          <div className="flex-1 flex flex-col h-[200px] gap-8">
+            <div className="flex-1  ">
+              <p className=" text-sm text-[#26435F] font-semibold text-base-20 mb-1">
+                Lead Status
+              </p>
+              <div className=" flex-1  rounded-md h-full  h-[50px] ">
+                <InputSelectNew
+                  placeholder={"Lead Status"}
+                  parentClassName="ml-0 w-full  items-center flex text-[#517CA8] text-xs px-2 whitespace-nowrap "
+                  inputContainerClassName="bg-white h-[45px] shadow-[0px_0px_2.500001907348633px_0px_#00000040] my-0 py-[5px] px-[35px]"
+                  placeHolderClass="text-[#517CA8] "
+                  labelClassname="text-sm"
+                  inputClassName="bg-transparent"
+                  value={""}
+                  IconDemography={true}
+                  optionData={["Interested"]}
+                />
               </div>
             </div>
+            <div className="flex-1">
+              <p className=" text-sm text-[#26435F] font-semibold text-base-20 mb-1">
+                Services
+              </p>
+              <div className="bg-white flex-1  rounded-md h-full shadow-[0px_0px_2.500001907348633px_0px_#00000040]"></div>
+            </div>
           </div>
         </div>
-        <div className="flex-1 h-[260px]">
-          <p className=" text-sm text-[#26435F] font-semibold">
-            Interests{" "}
-            <EditableText
-              editable={editable}
-              onClick={() =>
-                setToEdit({
-                  ...toEdit,
-                  interest: { ...toEdit.interest, active: true },
-                })
-              }
-              text="edit"
-              textClassName="text-sm text-[#517CA8] text-underline  "
-              className="text-sm my-0 flex justify-end   float-right"
-            />
+        <div className="">
+          <p className=" text-sm text-[#26435F] font-semibold text-base-20 mb-1">
+            Sign up form details
           </p>
-
-          <div className="w-full relative h-full p-1 flex flex-col gap-1  rounded-md items-center overflow-y-auto custom-scroller">
-            {settings ? (
-              settings.interest.length > 0 &&
-              userDetail.interest.map((id, idx) => {
-                return settings.interest.find((item) => item._id === id) ? (
-                  <div
-                    key={idx}
-                    className="bg-white  p-2 !rounded-md shadow-[0px_0px_2.500001907348633px_0px_#00000040] flex-1 w-full"
-                  >
-                    <div className="flex h-90 w-90 rounded-full  items-center justify-center mb-3">
-                      <img
-                        className="max-w-[90px] max-h-[90px]"
-                        src={
-                          settings.interest.find((item) => item._id === id)
-                            ? `${awsLink}${
-                                settings.interest.find(
-                                  (item) => item._id === id
-                                ).image
-                              }`
-                            : ""
-                        }
-                      />
-                    </div>
-                    <p className="opacity-70 font-semibold text-lg">
-                      {settings.interest.find((item) => item._id === id) ? (
-                        settings.interest.find((item) => item._id === id).text
-                      ) : (
-                        <></>
-                      )}
-                    </p>
-                  </div>
-                ) : (
-                  <> </>
-                );
-              })
-            ) : (
-              <></>
-            )}
-            {!settings?.interest?.length > 0 &&
-              [1, 2, 3, 4, 5].map((it, idx) => {
-                return (
-                  <div
-                    key={idx}
-                    className="bg-white p-2 !rounded-md shadow-[0px_0px_2.500001907348633px_0px_#00000040] flex-1 w-full"
-                  >
-                    {it}
-                  </div>
-                );
-              })}
-          </div>
+          <div className="bg-white flex-1 h-[200px] rounded-md shadow-[0px_0px_2.500001907348633px_0px_#00000040] custom-scroller"></div>
         </div>
-
-        <div className="flex-1 h-[260px]">
-          <p className=" text-sm text-[#26435F] font-semibold">
-            Subjects{" "}
-            <EditableText
-              editable={editable}
-              onClick={() =>
-                setToEdit({
-                  ...toEdit,
-                  subjects: { ...toEdit.subjects, active: true },
-                })
-              }
-              text="edit"
-              textClassName="text-sm text-[#517CA8] text-underline  "
-              className="text-sm my-0 flex justify-end   float-right"
-            />
-          </p>
-
-          <div className="w-full relative h-full p-1 flex flex-col gap-1  rounded-md items-center overflow-y-auto custom-scroller">
-            {userDetail?.subjects
-              ? userDetail.subjects.map((sub, idx) => {
-                  return (
-                    <p
-                      key={idx}
-                      className="bg-white p-2 !rounded-md shadow-[0px_0px_2.500001907348633px_0px_#00000040] flex-1 w-full"
-                    >
-                      {sub}{" "}
-                    </p>
-                  );
-                })
-              : [1, 2, 3, 4, 5, 6, 7, 8, 9]?.map((it, idx) => {
-                  return (
-                    <div
-                      key={idx}
-                      className="bg-white p-2 !rounded-md shadow-[0px_0px_2.500001907348633px_0px_#00000040] flex-1 w-full"
-                    >
-                      {it}
-                    </div>
-                  );
-                })}
-          </div>
-        </div>
-        <div className="flex-1 h-[260px]">
-          <p className=" text-sm text-[#26435F] font-semibold">
-            Personality
-            <EditableText
-              editable={editable}
-              onClick={() =>
-                setToEdit({
-                  ...toEdit,
-                  personality: { ...toEdit.personality, active: true },
-                })
-              }
-              text="edit"
-              textClassName="text-sm text-[#517CA8] text-underline  "
-              className="text-sm my-0 flex justify-end   float-right"
-            />
-          </p>
-
-          <div className="w-full relative h-full p-1 flex flex-col gap-1  rounded-md items-center overflow-y-auto custom-scroller">
-            {settings &&
-              settings.personality &&
-              settings.personality.length > 0 &&
-              userDetail.personality &&
-              userDetail.personality.map((id, idx) => {
-                return settings.personality.find((item) => item._id === id) ? (
-                  <div
-                    key={idx}
-                    className="bg-white h-[100px] p-2 !rounded-md shadow-[0px_0px_2.500001907348633px_0px_#00000040] flex-1 w-full"
-                  >
-                    <div className="flex h-90 w-90 rounded-full  items-center justify-center mb-3">
-                      <img
-                        className="max-w-[90px] max-h-[90px]"
-                        src={
-                          settings.personality.find((item) => item._id === id)
-                            ? `${awsLink}${
-                                settings.personality.find(
-                                  (item) => item._id === id
-                                )?.image
-                              }`
-                            : ""
-                        }
-                      />
-                    </div>
-                    <p className="opacity-70 font-semibold text-lg">
-                      {settings.personality.find((item) => item._id === id) ? (
-                        settings.personality.find((item) => item._id === id)
-                          .text
-                      ) : (
-                        <></>
-                      )}
-                    </p>
-                  </div>
-                ) : (
-                  <></>
-                );
-              })}
-            {!settings?.personality?.length > 0 &&
-              [1, 2, 3, 4, 5].map((it, idx) => {
-                return (
-                  <div
-                    key={idx}
-                    className="bg-white h-[100px] p-2 !rounded-md shadow-[0px_0px_2.500001907348633px_0px_#00000040] flex-1 w-full"
-                  >
-                    {it}
-                  </div>
-                );
-              })}
+      </div>
+      <div className="!w-[calc(757*0.0522vw)]">
+        <p className=" text-sm text-[#26435F] font-semibold text-base-20 mb-1">
+          Session Notes
+        </p>
+        <div className="bg-white flex-1 h-[435px] rounded-md custom-scroller shadow-[0px_0px_2.500001907348633px_0px_#00000040]">
+          <div className="mx-6 p-2 ">
+            <button
+              className={`rounded-[50px] px-2 mr-5 py-1 text-base-15 ${
+                true
+                  ? "bg-[#FFA28D] text-white"
+                  : "bg-white text-[#FFA28D] border border-[#FFA28D]"
+              }`}
+            >
+              Client Notes
+            </button>
+            <button
+              className={`rounded-[50px] px-2 py-1 text-base-15 ${
+                false
+                  ? "bg-[#FFA28D] text-white"
+                  : "bg-white text-[#FFA28D] border border-[#FFA28D]"
+              }`}
+            >
+              Internal Notes
+            </button>
           </div>
         </div>
       </div>
