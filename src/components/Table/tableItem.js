@@ -353,7 +353,7 @@ console.log(item)
                 value={leadStatus ? leadStatus : "-"}
                placeholderClass="text-base-17-5" 
                 optionData={settings.leadStatus}
-                inputContainerClassName={`min-w-[100px] pt-0 pb-0 pr-2 pl-0 text-center`}
+                inputContainerClassName={`min-w-[100px] pt-0 pb-0 pr-2 pl-0 text-center capitalize `}
                 optionClassName="text-[17.5px]"
                 labelClassname="hidden"
                 onChange={(val) => handleChange({ leadStatus: val })}
@@ -366,7 +366,7 @@ console.log(item)
               tableDropdown={true}
               value={item.userStatus ? item.userStatus : "-"}
               optionData={["active", "blocked", "dormant"]}
-              inputContainerClassName="min-w-[100px] pt-0 pb-0 pr-2 pl-0 text-center"
+              inputContainerClassName="min-w-[100px] pt-0 pb-0 pr-2 pl-0 text-center capitalize"
               optionClassName="text-[17.5px]"
               labelClassname="hidden"
               onChange={(val) => handlestatusChange({ userStatus: val })}
