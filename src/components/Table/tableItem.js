@@ -216,7 +216,7 @@ export default function TableItem({
 
 
   useEffect(() => {
-    console.log("item",item)
+    console.log("item", item)
     setIsChecked(checkedHeader);
   }, [checkedHeader])
   const timestamp = item.createdAt;
@@ -226,18 +226,18 @@ export default function TableItem({
   const formattedDate = date.toLocaleDateString('en-US', options);
 
   console.log(dataFor)
-  const getFormatDate=(inputDate)=>{
+  const getFormatDate = (inputDate) => {
     const dateObj = new Date(inputDate);
 
-// Format the date in the desired format
-const options = { year: 'numeric', month: 'short', day: '2-digit' };
-const formattedDate = dateObj.toLocaleDateString('en-US', options);
+    // Format the date in the desired format
+    const options = { year: 'numeric', month: 'short', day: '2-digit' };
+    const formattedDate = dateObj.toLocaleDateString('en-US', options);
 
-console.log(formattedDate); // Output: "August 02, 2023"
-   return formattedDate
+    console.log(formattedDate); // Output: "August 02, 2023"
+    return formattedDate
   }
-  const getPhone=(val)=>{
-console.log(item)
+  const getPhone = (val) => {
+    console.log(item)
     console.log(val)
   }
   return (
@@ -365,10 +365,6 @@ console.log(item)
             <InputSelect
               tableDropdown={true}
               value={item.userStatus ? item.userStatus : "-"}
-<<<<<<< HEAD
-              placeholderClass="text-base-17-5"
-=======
->>>>>>> 2b4db89d7aa31b57fe6a506f4c47a48ca5f58f35
               optionData={["active", "blocked", "dormant"]}
               inputContainerClassName="min-w-[100px] pt-0 pb-0 pr-2 pl-0 text-center"
               optionClassName="text-[17.5px]"
