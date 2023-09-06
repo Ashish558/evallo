@@ -228,6 +228,30 @@ const contributorNavdata = [
    },
 ];
 
+const managerNavData = [
+   {
+      icon: Dashboard,
+      activeIcon: Dashboard1,
+      path: "/dashboard",
+      excludes: ["student", "parent", "tutor"],
+      tooltip: "Dashboard",
+   },
+   {
+      icon: Profile,
+      activeIcon: Profile1,
+      path: "/all-orgs",
+      excludes: ["student", "parent", "tutor"],
+      tooltip: "All Orgs",
+   },
+   {
+      icon: Settings,
+      activeIcon: Settings1,
+      path: "/settings",
+      excludes: ["student", "parent", "tutor"],
+      tooltip: "Settings",
+   },
+];
+
 const Navbar = () => {
    const [navData, setNavData] = useState(tempnavdata);
    const location = useLocation();
@@ -260,6 +284,8 @@ const Navbar = () => {
          setNavData(supAdminNavData);
       } else if (persona === "contributor") {
          setNavData(contributorNavdata);
+      } else if (persona === "manager") {
+         setNavData(managerNavData);
       } else {
          setNavData([]);
       }

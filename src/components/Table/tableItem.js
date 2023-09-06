@@ -207,7 +207,6 @@ export default function TableItem({
   }, [item]);
   const [isChecked, setIsChecked] = useState(checkedHeader);
   const handleCheckboxChange = () => {
-    console.log("handleCheckboxChange")
     setIsChecked(!isChecked);
     let fl = isChecked ? 1 : -1
     setnumberChecked(numberChecked - fl)
@@ -442,6 +441,30 @@ export default function TableItem({
             ) : (
               ""
             )}
+          </td>
+        </tr>
+      )}
+
+      {dataFor === "allUsersManager" && (
+        <tr className="odd:bg-white  leading-8">
+          <td className="font-medium text-[17.5px] px-1  min-w-14 py-4  text-left">
+            <span
+              className="inline-block cursor-pointer pl-4"
+              onClick={() => onClick.redirect(item)}
+            >
+              {item.name}
+            </span>
+          </td>
+          <td className="font-medium text-[17.5px] px-1 min-w-14 py-4">
+            <div className="my-[6px]">{item.userType}</div>
+          </td>
+          <td className="font-medium text-[17.5px] px-1  min-w-14 py-4">
+            <div className="my-[6px]">{item.email}</div>
+          </td>
+          <td className="font-medium text-[17.5px] px-1  min-w-14 py-4">
+            <div className="my-[6px]">
+              {item.lastLogin ? item.lastLogin : "-"}
+            </div>
           </td>
         </tr>
       )}

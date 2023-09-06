@@ -134,9 +134,7 @@ export default function Calendar() {
 
   const refetchSessions = () => {
     // console.log(searchedUser);
-    console.log("persona", persona);
     if (persona === "tutor") {
-      console.log("shd run");
       fetchTutorSessions();
     } else {
       if (searchedUser.id === "") return;
@@ -265,6 +263,7 @@ export default function Calendar() {
           endDate: endDateUtc,
           updatedDate: startUtc,
           updatedDateEnd: endDateUtc,
+          tutorId: session.tutorId,
           sessionStatus: session.sessionStatus,
           description: `${strtTime12HFormat} - ${endTime12HFormat}`,
         };
@@ -432,6 +431,7 @@ export default function Calendar() {
                     updatedDateEnd: endDateUtc,
                     description: `${strtTime12HFormat} - ${endTime12HFormat}`,
                     sessionStatus: session.sessionStatus,
+                    tutorId: session.tutorId,
                     studentId: session.studentId,
                     background: getBackground(
                       resp.data.data.user.assiginedStudents.length,
@@ -525,6 +525,8 @@ export default function Calendar() {
     calendarAPI?.next();
   };
   const eventContent = (arg) => {
+    console.log('arg-', arg.event._def.extendedProps);
+    
     const description = arg.event._def.extendedProps.description;
     let background = "#ebe7ff";
     let isCompleted = false;
@@ -646,7 +648,6 @@ export default function Calendar() {
   const fetchTutorSessions = () => {
     const userId = currentUserId;
     if (persona === "tutor") {
-      console.log("FETCHING", userId);
       fetchStudents(userId).then((res) => {
         setEventDetails(res.data.data.session);
         // console.log(res.data.data);
@@ -706,6 +707,7 @@ export default function Calendar() {
             tutorId: session.tutorId,
             start: startUtc,
             endDate: endDateUtc,
+            tutorId: session.tutorId,
             updatedDate: startUtc,
             updatedDateEnd: endDateUtc,
             sessionStatus: session.sessionStatus,
@@ -840,14 +842,15 @@ export default function Calendar() {
     });
     setStudents(tempStudents);
   };
+
   const colorsTutor = {
     bg: ["#F6935A33", "#7DE94A33", "#6F7ADE33", "#C97BEE33"],
     text: ["#F6935A", "#7DE94A", "#6F7ADE", "#C97BEE"],
   };
+
   useEffect(() => {
     if (students.length === 0) return;
     if (events.length === 0) return;
-    console.log("students", students);
     let selectedStudents = students
       .filter((item) => item.selected === true)
       .map((item) => item._id);
@@ -858,7 +861,9 @@ export default function Calendar() {
     // console.log('filtered', filtered);
     setFilteredEvents(filtered);
   }, [events, students]);
+
   const [exp, setExp] = useState(null);
+  
   const toggleAccordions = (id) => {
     const currentRef = accordionRefs.current[id];
     const isExpanded = currentRef.style.width;

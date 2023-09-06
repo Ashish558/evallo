@@ -21,7 +21,7 @@ export default function Home() {
         <TutorDashboard />
       ) : (persona === "admin" || persona === 'contributor') ? (
         <Dashboard />
-      ) : persona === "superAdmin" ? (
+      ) : (persona === "superAdmin" || persona === 'manager') ? (
         <SuperadminDashboard />
       ) : (
         <div className="ml-pageLeft bg-lightWhite min-h-screen"></div>
