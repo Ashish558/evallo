@@ -47,7 +47,7 @@ import LoaderNew from "../../components/Loader/LoaderNew";
 
 const optionData = ["option 1", "option 2", "option 3", "option 4", "option 5"];
 
-const userTypeOptions = ["Tutor", "Parent", "Student", "Contributor"];
+const userTypeOptions = ["Tutor", "Parent", "Student", "Contributor", "Manager"];
 
 const initialState = {
   email: "",

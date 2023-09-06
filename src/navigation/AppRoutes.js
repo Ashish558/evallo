@@ -216,7 +216,10 @@ const AppRoutes = () => {
           path="/settings"
           element={
             <RequireAuth isLoggedIn={isLoggedIn}>
-              {persona === "superAdmin" ? <SuperAdminSettings /> : persona === 'student' ? <StudentSettings /> : persona === 'contributor' ? <ContributorSettings /> : <Settings />}
+              {(persona === "superAdmin" || persona === 'manager') ?
+                <SuperAdminSettings /> : persona === 'student'
+                  ? <StudentSettings /> : persona === 'contributor' ?
+                    <ContributorSettings /> : <Settings />}
             </RequireAuth>
           }
         />
