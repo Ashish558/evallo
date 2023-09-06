@@ -25,6 +25,7 @@ import axios from "axios";
 import DeleteIcon from "../../assets/icons/delete.svg";
 import PauseIcon from "../../assets/icons/pause.svg";
 import PlayIcon from "../../assets/icons/play.svg";
+import down from "../../assets/icons/down.png"
 import OrgDefaultLogo from "../../assets/icons/org-default 2.svg";
 import OrgDefaultLogo2 from "../../assets/icons/org-default.svg";
 import CAndBLogo from "../../assets/icons/company & brand.svg";
@@ -49,6 +50,7 @@ import { updateOrganizationSettings } from "../../app/slices/organization";
 import InputSelect from "../../components/InputSelect/InputSelect";
 import { timeZones } from "../../constants/constants";
 import { permissionsStaticData } from "./Tabs/staticData";
+import InputFieldDropdown from "../../components/InputField/inputFieldDropdown";
 
 // import questionMark from '../../assets/images/question-mark.svg'
 const initialState = {
@@ -1606,21 +1608,15 @@ export default function Settings() {
           title="Add / Edit Subscription Code"
          
           cancelBtn={false}
-          cancelBtnClassName="w-0"
-          primaryBtn={{
-            text: "Submit",
-            className: "w-140 pl-3 pr-3 ml-0 my-4",
-            form: "settings-form",
-            type: "submit",
-            loading: saveLoading,
-          }}
+          cancelBtnClassName="w-140 "
           handleClose={() => {
             setAddCodeModalActive(false);
             setSubModalData(subModalInitialState);
           }}
           body={
             <form id="settings-form" onSubmit={handleCodeSubmit}>
-              <div className="grid grid-cols-1 md:grid-cols-2  gap-x-2 md:gap-x-3 gap-y-2 gap-y-4 mb-5">
+              <div className="  grid-cols-1 md:grid-cols-2  gap-x-2 md:gap-x-3 gap-y-2 gap-y-4 mb-5">
+              <div className="flex gap-4">
                 <div>
                   <InputField
                     label="Subscription Code"
@@ -1658,6 +1654,21 @@ export default function Settings() {
                     }
                   />
                 </div>
+                </div>
+                  <div className="mt-3">
+                  <InputField 
+                  label="Select Assignments (optional)"
+                  placeholder="Select"
+                  inputContainerClassName="bg-primary-50 w-[88%]"
+                  inputClassName="bg-transparent"
+                  IconLeft ={down}
+                  />
+                  </div>
+                  <div className="flex gap-4 items-center justify-center mt-3">
+                  <button className="rounded-lg bg-[#FFA28D] border-2 border-[#FFA28D] py-2 text-[#FFFFFF] w-[146px]">Save </button>
+                <button className="rounded-lg bg-transparent border-2 border-[#FFA28D] py-2 text-[#FFA28D]  w-[146px]" onClick={()=>setAddCodeModalActive(!addCodeModalActive)}>Cancel </button>
+
+                  </div>
               </div>
             </form>
           }

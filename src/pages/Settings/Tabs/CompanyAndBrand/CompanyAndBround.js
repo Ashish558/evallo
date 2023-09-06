@@ -168,19 +168,19 @@ const CompanyAndBround = () => {
           <InputField
             placeholder=""
             IconLeft={lock}
-            parentClassName="text-xs w-full text-[#26435F]"
+            parentClassName="text-xs text-[#26435F]"
             inputContainerClassName=" bg-white"
-            inputClassName="text-base-17-5 bg-transparent"
-            labelClassname="text-base-17-5 text-sm font-bold mb-1"
+            inputClassName="bg-transparent"
             label="Account Type"
             disabled={true}
             value={"Company"}
             error={error.accountType}
           />
-
+          </div>
+        <div className="col-span-3">
           <InputField
             placeholder=""
-            parentClassName="text-xs w-full text-[#26435F]"
+            parentClassName="text-xs text-[#26435F]"
             inputContainerClassName=" bg-white"
             inputClassName="text-base-17-5 bg-transparent"
             labelClassname="text-base-17-5 text-sm font-bold mb-1"
@@ -194,6 +194,8 @@ const CompanyAndBround = () => {
             }
             error={error.company}
           />
+          </div>
+          <div className="col-span-3">
           <InputField
             placeholder="Text"
             parentClassName="text-xs w-full text-[#26435F]"
@@ -210,12 +212,13 @@ const CompanyAndBround = () => {
             }
             error={error.supportEmail}
           />
+          </div>
+          <div className="col-span-3">
           <InputField
             placeholder=""
-            parentClassName="text-xs w-full text-[#26435F]"
+            parentClassName="text-xs text-[#26435F]"
             inputContainerClassName=" bg-white"
-            inputClassName="text-base-17-5 bg-transparent"
-            labelClassname="text-base-17-5 text-sm font-bold mb-1"
+            inputClassName="bg-transparent"
             label="Role / Position"
             value={values.role}
             onChange={(e) =>
@@ -227,13 +230,13 @@ const CompanyAndBround = () => {
             error={error.role}
           />
         </div>
-        <div className="flex gap-[calc(39*0.050vw)] flex-1">
+        <div className="flex gap-5 flex-1">
           <div className="">
             <label className="inline-block text-[15px] font-semibold undefined ml-0 text-[#26435F] text-base-17-5">
               {" "}
               Business Logo{" "}
             </label>
-            <div id="borderDashed" className="w-[312px] h-[200px]  relative p-2 bg-[#FFFFFF] rounded-[5px]">
+            <div className="w-[312px] h-[200px]  relative p-2 bg-[#FFFFFF] rounded-[5px]">
               {
                 organization.orgBussinessLogo &&
                 <img
@@ -262,7 +265,7 @@ const CompanyAndBround = () => {
               </div>
             </div>
           </div>
-          <div className="flex flex-col  gap-[calc(43*0.050vw)] flex-1 py-auto">
+          <div className="flex flex-col  gap-4 flex-1 py-auto">
             <div className="flex gap-5 items-center justify-between">
               <InputField
                 placeholder=""
@@ -280,13 +283,14 @@ const CompanyAndBround = () => {
                 }
                 error={error.website}
               />
+              </div>
+              <div className='col-span-3'>
               <InputSelect
                 placeholder="Select"
                 parentClassName="text-xs text-[#26435F] w-[60%] "
-                inputContainerClassName=" bg-white py-1 mb-1"
-                labelClassname="text-base-17-5 text-sm font-bold mb-1"
-                inputClassName="text-base-17-5 bg-transparent "
-                
+                inputContainerClassName=" bg-white h-[38px] mb-1"
+                labelClassname="text-sm font-bold mb-1"
+                inputClassName="bg-transparent"
                 label="Company Type"
                 value={values.companyType}
                 optionData={companyType}
@@ -298,8 +302,10 @@ const CompanyAndBround = () => {
                 }
                 error={error.companyType}
               />
+              </div>
             </div>
-            <div className="flex gap-5 items-center justify-between">
+            <div className="flex gap-5 items-center justify-between grid grid-cols-12">
+              <div className="col-span-8">
               <InputField
                 placeholder=""
                 parentClassName="text-xs text-[#26435F]  w-full"
@@ -316,13 +322,14 @@ const CompanyAndBround = () => {
                 }
                 error={error.address}
               />
+              </div>
+              <div className="col-span-3">
               <InputSelect
                 placeholder="Select"
                 parentClassName="text-xs text-[#26435F] w-[60%] mt-1"
-                inputContainerClassName=" bg-white py-1 mb-1 "
-                labelClassname="text-base-17-5 text-sm font-bold mb-1 text-base-17-5"
-                inputClassName="text-base-17-5 bg-transparent"
-                
+                inputContainerClassName=" bg-white h-[38px] mb-1 "
+                labelClassname="text-sm font-bold mb-1"
+                inputClassName="bg-transparent"
                 label="Country"
                 value={values.country}
                 optionData={country}
@@ -333,15 +340,16 @@ const CompanyAndBround = () => {
                 }}
                 error={error.country}
               />
+              </div>
             </div>
-            <div className="flex gap-5 items-center justify-between">
+            <div className="flex gap-5 items-center justify-between grid grid-cols-12">
+              <div className='col-span-4'>
               <InputSelect
                 placeholder="Select"
                 parentClassName="text-xs text-[#26435F] w-full mt-1 pt-1"
-                labelClassname="text-base-17-5 text-sm font-bold mb-1"
-                inputContainerClassName=" bg-white mb-1 "
-                inputClassName="text-base-17-5 bg-transparent "
-                
+                labelClassname="text-sm font-bold mb-1"
+                inputContainerClassName=" bg-white h-[40px] mb-1 "
+                inputClassName="bg-transparent"
                 label="State / Region "
                 value={values.state}
                 optionData={states}
@@ -354,6 +362,8 @@ const CompanyAndBround = () => {
                 }
                 error={error.state}
               />
+              </div>
+              <div className="col-span-4">
               <InputField
                 placeholder=""
                 parentClassName="text-xs text-[#26435F] w-full pt-1"
@@ -370,6 +380,8 @@ const CompanyAndBround = () => {
                 }
                 error={error.city}
               />
+              </div>
+              <div className="col-span-3">
               <InputField
                 placeholder=""
                 parentClassName="text-xs text-[#26435F] w-full pt-1"
@@ -389,9 +401,9 @@ const CompanyAndBround = () => {
             </div>
           </div>
         </div>
-        <div className="flex flex-1  gap-11 mt-3  w-[48vw] pb-0">
-          <div  className="flex flex-col rounded-sm w-1/3 min-w-[275px] flex-wrap gap-3 bg-white p-3">
-            <h1 className="mt-[-35px]  text-[#26435F] font-semibold text-sm ml-[-10px] mb-1 text-base-17-5 ">
+        <div className="flex gap-11 mt-3 border-b-[2px] border-b-[#CBD6E2] pb-9">
+          <div className="flex flex-col rounded-sm w-[200px] flex-wrap gap-3 bg-white p-3">
+            <h1 className="mt-[-35px]  text-[#26435F] font-semibold text-sm ml-[-10px] mb-1">
               Format Of Instructions
             </h1>
             {instructions.map((item, id) => (
