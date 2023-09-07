@@ -1,7 +1,8 @@
 import React from 'react';
 import stars from '../../assets/icons/stars.svg'
 
-const BarChart = () => {
+const BarChart = ({ studentFeedbacks }) => {
+    console.log(studentFeedbacks)
     return (
         <div>
             <p className='text-[#26435F] text-xl font-semibold' >Student Feedback Overview</p>

@@ -39,7 +39,7 @@ import SubjectSlider from '../../../components/SubjectSlider/SubjectSlider'
 import BackBtn from '../../../components/Buttons/Back'
 import { useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { useLazyGetTutorDetailsQuery } from '../../../app/services/users'
+import { useLazyGetTutorDetailsQuery, useLazyGetFeedbackQuery } from '../../../app/services/users'
 import { useLazyGetSettingsQuery, useLazyGetSingleSessionQuery } from '../../../app/services/session'
 import { useSelector } from 'react-redux'
 import ParentEditables from '../../Frames/Editables/ParentEditables/ParentEditables'
@@ -64,6 +64,7 @@ export default function TutorProfile({ isOwn }) {
    console.log(userDetail)
    const params = useParams()
    const [getUserDetail, userDetailResp] = useLazyGetTutorDetailsQuery()
+   const [getStudentFeedback, userStudentFeedbackResp] = useLazyGetFeedbackQuery()
    const [fetchSettings, settingsResp] = useLazyGetSettingsQuery()
    const [getFeedbacks, getFeedbacksResp] = useLazyGetFeedbacksQuery()
    const [getSession, getSessionResp] = useLazyGetSingleSessionQuery()
@@ -72,6 +73,17 @@ export default function TutorProfile({ isOwn }) {
    const { organization } = useSelector((state) => state.organization);
    // console.log(feedbacks)
    const { id } = useSelector(state => state.user)
+   const [studentFeedbacks, setStudentFeedbacks] = useState([])
+   useEffect(() => {
+      getStudentFeedback()
+         .then(({ error, data }) => {
+            if (error) {
+               return console.log(error);
+            }
+            setStudentFeedbacks(data)
+
+         })
+   })
    const tableHeaders1 = [
       {
          id: 1,
@@ -978,7 +990,9 @@ export default function TutorProfile({ isOwn }) {
 
                   </div>
                   <div className='w-[19.8vw] '>
-                     <BarChart></BarChart>
+                     <BarChart studentFeedbacks={studentFeedbacks}>
+
+                     </BarChart>
                   </div>
                   <div className=" w-[1.25px] h-[630px] bg-[#CBD6E2] "></div>
                   <div className='w-[20.9vw]'>

@@ -66,6 +66,13 @@ export const userServicesApi = createApi({
         headers: getAuthHeader(),
       }),
     }),
+    getFeedback: builder.query({
+      query: () => ({
+        url: `api/feedback/rating/allRating`,
+        method: "GET",
+        headers: getAuthHeader(),
+      }),
+    }),
     updateUser: builder.mutation({
       query: (body) => ({
         url: `api/user/updateUser/${body.userId}`,
@@ -237,5 +244,6 @@ export const {
   useAddAssociatedDocStudentMutation,
   useRemoveLinkStudentMutation,
   useAddLinkStudentMutation,
-  useGetLinkStudentMutation
+  useGetLinkStudentMutation,
+  useLazyGetFeedbackQuery
 } = userServicesApi;
