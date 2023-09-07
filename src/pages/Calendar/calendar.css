@@ -120,12 +120,18 @@
   padding: 0 !important;
   color: #517ca8 !important;
 }
-#student .calendar th{
+ .calendar th{
   background-color: white !important;
 }
-#student .fc-daygrid th{
+/* #student .calendar th{
+  background-color: white !important;
+} */
+ .fc-daygrid th{
   background: rgb(243 245 247) !important;
 }
+/* #student .fc-daygrid th{
+  background: rgb(243 245 247) !important;
+} */
 .calendar-parent-class tr td {
   background:  rgb(243 245 247) !important
 }
@@ -148,7 +154,7 @@
 
  .calender .fc-theme-standard td
  {
-  border: 2px solid white !important;
+  border: 2px solid #F5F8FA  !important;
   }
 
  #student  .fc-theme-standard .fc-timeGridWeek-view td
@@ -292,11 +298,18 @@
  .calendar tr td{
   background: inherit !important;
 }
+ .calendar td{
+  padding-top: 0 !important;
+}
+
 /* #student tr td{
   background: white !important;
 
 } */
-#student .fc-timegrid-col-frame{
+/* #student .fc-timegrid-col-frame{
+  background: white !important;
+} */
+ .fc-timegrid-col-frame{
   background: white !important;
 }
 .calendar thead tr th div::after{
