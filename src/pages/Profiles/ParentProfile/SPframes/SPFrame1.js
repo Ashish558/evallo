@@ -171,9 +171,18 @@ const handleLeadStatus=(e)=>{
                   placeHolderClass="text-[#517CA8] "
                   labelClassname="text-sm"
                   inputClassName="bg-transparent"
-                  Icon={Drop}
+                  optionContainerClassName="!w-[190px]"
+                 
+                  ICON2={Drop}
                   value={userDetail?.leadStatus}
-                  optionData={organization?.settings?.leadStatus}
+                  optionData={ [
+                    "Open / Raw",
+                    "Interested",
+                    "Not Interested",
+                    "Contacted - No Answer",
+                    "Left Voicemail",
+                    "Completed"
+                  ]}
                   onChange={(e) => {
                     handleLeadStatus(e)
                    
