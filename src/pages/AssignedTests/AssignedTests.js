@@ -658,7 +658,7 @@ export default function AssignedTests() {
   };
   return (
     <>
-      <div className="w-[83.3333333333vw] mx-auto min-h-screen">
+      <div className="w-[83.3333333333vw] mx-auto min-h-screen mb-[40px]">
         <div className="">
           <div className="flex justify-between items-center ">
             <p className="text-[#24A3D9] text-xl mb-8 mt-[50px]">
