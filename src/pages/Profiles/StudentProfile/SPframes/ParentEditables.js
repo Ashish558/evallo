@@ -26,6 +26,7 @@ import axios from "axios";
 import InputFieldDropdown from "../../../../components/InputField/inputFieldDropdown";
 import InputSelectNew from "../../../../components/InputSelectNew/InputSelectNew";
 import useOutsideAlerter from "../../../../hooks/useOutsideAlerter";
+import { Interest, commonSubjects, qualities } from "./staticData";
 
 // 637b9df1e9beff25e9c2aa83
 export default function ParentEditables({
@@ -512,6 +513,15 @@ console.log("parentEditables",currentToEdit)
       let reqBody = {
         schoolName: currentToEdit.schoolName,
         grade: currentToEdit?.grade,
+      };
+     
+     
+      userDetailSave(reqBody);
+    }
+    if (currentToEdit.hasOwnProperty("about")) {
+      let reqBody = {
+        about: currentToEdit.about,
+       
       };
      
      
@@ -1358,35 +1368,46 @@ return ( <div className="flex !text-sm gap-4 ">
                 )}
                 {currentField.name === "subjects" && (
                   <div>
-                    <div className="flex items-center mb-5 pt-1 pb-5">
-                      <InputSelect
-                        value={
-                          currentToEdit.subjects.length === 0
-                            ? ""
-                            : currentToEdit.subjects[0]
-                        }
-                        checkbox={{
-                          visible: true,
-                          name: "subjects",
-                          match: currentToEdit.subjects,
-                        }}
-                        optionData={settings.classes ? settings.classes : []}
-                        inputContainerClassName="pt-3 pb-3 border bg-white"
-                        placeholder="Subjects"
-                        parentClassName="w-full mr-4"
-                        type="select"
-                        onChange={
-                          (val) => handleSubjectChange(val)
-                          // setCurrentToEdit({ ...currentToEdit, service: val })
-                        }
-                        onOptionClick={(item) => {
-                          // setStudent(item.value);
-                          console.log(item);
-                          // handleStudentsChange(item)
-                          // setCurrentToEdit({ ...currentToEdit, students: [... item._id] });
-                        }}
-                      />
-                    </div>
+                      <div className="flex flex-wrap max-h-[70vh] overflow-y-auto custom-scroller">
+                    {commonSubjects.map((item) => {
+                      return !currentToEdit?.subjects?.includes(item) ? (
+                        <div
+                          id="selected"
+                          className={`px-3 mr-2 m-1 rounded-lg py-1.5 border-[1.33px] border-[#26435F80] text-[#26435F80]  cursor-pointer text-base-17-5`}
+                          onClick={() => {
+                            let intersetArray = [];
+
+                            if (currentToEdit.subjects) {
+                              intersetArray = currentToEdit.subjects;
+                            }
+                            console.log(intersetArray);
+                            setCurrentToEdit({
+                              ...currentToEdit,
+                              subjects: [...intersetArray, item],
+                            });
+                          }}
+                        >
+                          <p className="font-semibold ">{item}</p>
+                        </div>
+                      ) : (
+                        <div
+                        id="selected"
+                          className={`px-3 mr-2 m-1 text-center rounded-lg text-white py-1.5 border border-primary bg-primary text-base-17-5 cursor-pointer`}
+                          onClick={() =>
+                            setCurrentToEdit({
+                              ...currentToEdit,
+                              subjects: currentToEdit.subjects.filter(
+                                (id) => id !== item
+                              ),
+                            })
+                          }
+                        >
+                          <p className="font-medium">{item}</p>
+                        </div>
+                      );
+                    })}
+                  </div>
+                   
                   </div>
                 )}
                 {currentField.name === "leadStatus" && (
@@ -2174,48 +2195,53 @@ return ( <div className="flex !text-sm gap-4 ">
                   </div>
                 )}
                 {currentField.name === "personality" && (
-                  <div className="flex flex-wrap">
-                    {settings.personality.map((item) => {
-                      return !currentToEdit.personality.includes(item._id) ? (
-                        <div
-                          className={`px-3 mr-2 rounded rounded-md py-1.5 border border-primary text-primary cursor-pointer`}
-                          onClick={() =>
-                            setCurrentToEdit({
-                              ...currentToEdit,
-                              personality: [
-                                ...currentToEdit.personality,
-                                item._id,
-                              ],
-                            })
-                          }
-                        >
-                          <p className="font-medium">{item.text}</p>
-                        </div>
-                      ) : (
-                        <div
-                          className={`px-3 mr-2 rounded rounded-md text-white py-1.5 border border-primary bg-primary text-primary cursor-pointer`}
-                          onClick={() =>
-                            setCurrentToEdit({
-                              ...currentToEdit,
-                              personality: currentToEdit.personality.filter(
-                                (id) => id !== item._id
-                              ),
-                            })
-                          }
-                        >
-                          <p className="font-medium">{item.text}</p>
-                        </div>
-                      );
-                    })}
-                  </div>
+                   <div className="flex flex-wrap">
+                   {qualities.map((item) => {
+                     return !currentToEdit?.personality?.includes(item) ? (
+                       <div
+                         id="selected"
+                         className={`px-3 mr-2 m-1 rounded-lg py-1.5 border-[1.33px] border-[#26435F80] text-[#26435F80]  cursor-pointer text-base-17-5`}
+                         onClick={() => {
+                           let intersetArray = [];
+
+                           if (currentToEdit.personality) {
+                             intersetArray = currentToEdit.personality;
+                           }
+                           console.log(intersetArray);
+                           setCurrentToEdit({
+                             ...currentToEdit,
+                             personality: [...intersetArray, item],
+                           });
+                         }}
+                       >
+                         <p className="font-semibold ">{item}</p>
+                       </div>
+                     ) : (
+                       <div
+                       id="selected"
+                         className={`px-3 mr-2 m-1 text-center rounded-lg text-white py-1.5 border border-primary bg-primary text-base-17-5 cursor-pointer`}
+                         onClick={() =>
+                           setCurrentToEdit({
+                             ...currentToEdit,
+                             personality: currentToEdit.personality.filter(
+                               (id) => id !== item
+                             ),
+                           })
+                         }
+                       >
+                         <p className="font-medium">{item}</p>
+                       </div>
+                     );
+                   })}
+                 </div>
                 )}
                 {currentField.name === "interest" && (
                   <div className="flex flex-wrap">
-                    {settings.interest.map((item) => {
-                      return !currentToEdit?.interest?.includes(item._id) ? (
+                    {Interest.map((item) => {
+                      return !currentToEdit?.interest?.includes(item) ? (
                         <div
                           id="selected"
-                          className={`px-3 mr-2  rounded rounded-lg py-1.5 border-[1.33px] border-[#26435F80] text-[#26435F80]  cursor-pointer`}
+                          className={`px-3 mr-2 m-1 rounded-lg py-1.5 border-[1.33px] border-[#26435F80] text-[#26435F80]  cursor-pointer text-base-17-5`}
                           onClick={() => {
                             let intersetArray = [];
 
@@ -2225,25 +2251,26 @@ return ( <div className="flex !text-sm gap-4 ">
                             console.log(intersetArray);
                             setCurrentToEdit({
                               ...currentToEdit,
-                              interest: [...intersetArray, item._id],
+                              interest: [...intersetArray, item],
                             });
                           }}
                         >
-                          <p className="font-semibold">{item.text}</p>
+                          <p className="font-semibold ">{item}</p>
                         </div>
                       ) : (
                         <div
-                          className={`px-3 mr-2 rounded rounded-md text-white py-1.5 border border-primary bg-primary text-primary cursor-pointer`}
+                        id="selected"
+                          className={`px-3 mr-2 m-1 text-center rounded-lg text-white py-1.5 border border-primary bg-primary text-base-17-5 cursor-pointer`}
                           onClick={() =>
                             setCurrentToEdit({
                               ...currentToEdit,
                               interest: currentToEdit.interest.filter(
-                                (id) => id !== item._id
+                                (id) => id !== item
                               ),
                             })
                           }
                         >
-                          <p className="font-medium">{item.text}</p>
+                          <p className="font-medium">{item}</p>
                         </div>
                       );
                     })}

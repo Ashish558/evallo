@@ -31,7 +31,7 @@ export default function SingleTutor({ idx, tutor }) {
           </button>
         </div>
 
-        <div className="relative ml-3 mt-1">
+        <div className="relative translate-x-[30%] design:translate-x-[20%] -mt-4">
           <img
             src={
               tutor.photo ? `${awsLink}${tutor.photo}` : "/images/default.jpeg"

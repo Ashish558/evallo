@@ -5,7 +5,8 @@ import "./Transition.css";
 import "./calendar.css";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
-
+import downIcon from '../../assets/icons/down-pink.svg'
+import upIcon from '../../assets/icons/up-blue.svg'
 import FullCalendar, { formatDate } from "@fullcalendar/react"; // must go before plugins
 // import { Calendar } from '@fullcalendar/core';
 import { toMoment } from "@fullcalendar/moment";
@@ -59,6 +60,14 @@ const timeZones = [
   "US/Mountain",
   "US/Pacific",
 ];
+const timeZones2 = [
+  "IST",
+  "AKST",
+  "EST",
+  "HST",
+  "MST",
+  "PST"
+];
 export default function Calendar() {
   const calendarRef = useRef(null);
   // console.log(calendarRef.current)
@@ -71,7 +80,6 @@ export default function Calendar() {
   const { id: sessionToEdit } = useParams();
   const [isEdited, setIsEdited] = useState(false);
   const [isEditable, setIsEditable] = useState(false);
-  const { organization } = useSelector((state) => state.organization);
 
   // console.log(sessionToEdit)
   const [associatedStudents, setAssociatedStudents] = useState([]);
@@ -114,7 +122,7 @@ export default function Calendar() {
   const [names, setNames] = useState([]);
   const [name, setName] = useState("");
   const [eventDetails, setEventDetails] = useState([]);
-
+  const { organization } = useSelector((state) => state.organization);
   const [students, setStudents] = useState([]);
   const [sessionToUpdate, setSessionToUpdate] = useState({});
   // const params = useParams()
@@ -124,9 +132,10 @@ export default function Calendar() {
     useLazyGetCalenderInsightQuery();
   const [insightData, setInsightData] = useState({});
   const [timeZone, setTimeZone] = useState("Asia/Kolkata");
+  const [newTimeZone,setnewTimeZone]=useState("IST")
   // console.log(moment.tz.zonesForCountry('US'))
   const [intialView, setInitialView] = useState("dayGridMonth");
-
+const [tutors,setTutors]=useState([]);
   const [searchedUser, setSearchedUser] = useState({
     id: "",
     role: "",
@@ -148,7 +157,6 @@ export default function Calendar() {
     const url = `/api/session/${role}/${id}`;
     // console.log(url)
     fetchUserSessions(url).then((res) => {
-      console.log("sessions", res);
       if (!res?.data?.data) return;
       const tempEvents = res.data.data.session.map((session) => {
         const time = session.time;
@@ -188,6 +196,10 @@ export default function Calendar() {
       setEventDetails(tempEvents);
       // console.log(res.data.data.session)
       let tempSession = res.data.data.session.map((session) => {
+          let temparray=tutors
+          temparray.push(session.tutorId);
+          setTutors(temparray)
+        
         const time = session.time;
         // console.log(session);
         const strtTime12HFormat = `${time.start.time} ${time.start.timeType}`;
@@ -265,6 +277,7 @@ export default function Calendar() {
           updatedDateEnd: endDateUtc,
           tutorId: session.tutorId,
           sessionStatus: session.sessionStatus,
+          tutorId:session.tutorId ? session.tutorId : "-",
           description: `${strtTime12HFormat} - ${endTime12HFormat}`,
         };
         return eventObj;
@@ -331,6 +344,7 @@ export default function Calendar() {
               const url = `/api/session/student/${student}`;
               await fetchUserSessions(url).then((res) => {
                 const tempEvents = res.data.data.session.map((session) => {
+
                   const time = session.time;
                   const strtTime12HFormat = `${time.start.time} ${time.start.timeType}`;
                   const startTime = convertTime12to24(
@@ -364,6 +378,7 @@ export default function Calendar() {
                 });
                 allsessions.push(...tempEvents);
                 let tempSession = res.data.data.session.map((session) => {
+                    console.log("sesssions",session)
                   const time = session.time;
                   // console.log(session);
                   const strtTime12HFormat = `${time.start.time} ${time.start.timeType}`;
@@ -433,6 +448,7 @@ export default function Calendar() {
                     sessionStatus: session.sessionStatus,
                     tutorId: session.tutorId,
                     studentId: session.studentId,
+                    tutorId:session.tutorId ? session.tutorId:"-",
                     background: getBackground(
                       resp.data.data.user.assiginedStudents.length,
                       idx
@@ -461,6 +477,8 @@ export default function Calendar() {
         });
       });
     }
+
+    
   }, [persona]);
 
   // console.log(students)
@@ -478,6 +496,22 @@ export default function Calendar() {
     }
   }, []);
 
+  useEffect(()=>{
+    if(timeZone=='Asia/Kolkata')
+      setnewTimeZone('IST')
+      if(timeZone=='US/Alaska')
+      setnewTimeZone('AKST')
+      if(timeZone=='US/Central')
+      setnewTimeZone('CST')
+      if(timeZone=='US/Eastern')
+      setnewTimeZone('EST')
+      if(timeZone=='US/Hawaii')
+      setnewTimeZone('HST')
+      if(timeZone=='US/Mountain')
+      setnewTimeZone('MST')
+      if(timeZone=='US/Pacific')
+      setnewTimeZone('PST')
+  },[timeZone])
   const getDayHeaders = (arg) => {
     let text = arg.text.split(" ");
 
@@ -525,7 +559,9 @@ export default function Calendar() {
     calendarAPI?.next();
   };
   const eventContent = (arg) => {
+
     console.log('arg-', arg.event._def.extendedProps);
+
     
     const description = arg.event._def.extendedProps.description;
     let background = "#ebe7ff";
@@ -538,7 +574,7 @@ export default function Calendar() {
       <div className="p-0.5 h-full">
         <div
           className="bg- h-full p-2 rounded-lg"
-          style={{ background: background }}
+          style={{ background: "#41432c" }}
         >
           <p
             className={`text-primary font-semibold text-sm ${isCompleted ? "line-through" : ""
@@ -628,6 +664,7 @@ export default function Calendar() {
   };
 
   useEffect(() => {
+    console.log("role="+persona)
     if (name.length > 0) {
       fetchNames(name).then((res) => {
         console.log("fetchnames", res.data.data.user);
@@ -887,23 +924,36 @@ export default function Calendar() {
   // console.log('filteredEvents', filteredEvents);
   console.log('events', events);
   // console.log('eventDetails', eventDetails);
-
+  const map=[]
+  useEffect(()=>{
+    if(tutors)
+    {
+      tutors.map((item)=>{
+        const letters = '0123456789ABCDEF';
+        let color = '#';
+        for (let i = 0; i < 6; i++) {
+          color += letters[Math.floor(Math.random() * 16)];
+        }
+        map[item]=color
+        console.log("map function",map)
+      })
+    }
+  },[tutors])
   return (
     <>
-      <div className="mx-auto calender bg-lightWhite min-h-screen !w-[90vw]">
-      <p className="text-[#24A3D9] text-xl text-base-20 !mt-[calc(50*0.052vw)]">
-            {organization?.company +
-              "  >  " +
-              firstName +
-              "  " +
-              lastName +
-              "  >  "}
-            <span className="font-semibold">Schedule</span>
-          </p>
-        <div className="py-8 pt-[calc(50*0.052vw)] pb-2 pl-5 calendar flex">
-        
-        <div className=" pl-0 pr-0 w-[280px]  mr-[10px]">
-            <div className="w-[280px] translate-y-[-5px]">
+      <div className="lg:ml-pageLeft calender bg-lightWhite min-h-screen">
+        <p className="text-[#24A3D9] text-xl mb-[30px] mt-[50px] pl-5">
+          {organization?.company +
+            "  >  " +
+            firstName +
+            "  " +
+            lastName +
+            "  >  "}
+          <span className="font-bold">Dashboard</span>
+        </p>
+        <div className="  pb-2 pl-5 calendar flex">
+          <div className=" pl-0 pr-0 w-[280px] mr-[10px]">
+            <div className="w-[280px]">
               <SimpleCalendar
                 events={
                   persona === "parent" || persona === "tutor"
@@ -953,7 +1003,7 @@ export default function Calendar() {
               <></>
             ) : (
               <div>
-                <InputSearch
+                {/* <InputSearch
                   // IconRight={SearchIcon}
                   placeholder="Type Name"
                   parentClassName="w-full mr-4 mt-5"
@@ -970,7 +1020,31 @@ export default function Calendar() {
                     handleInsights(item.value, item.role);
                     fetchSessions(item._id, item.role);
                   }}
-                />
+                /> */}
+                <div className="mt-[48px] mb-2">
+                  <div className="flex justify-between pt-[19px] px-[21px] pb-[14px] bg-[rgba(36,63,217,0.20)] rounded-5 items-center">
+                    <p className="text-[#24A3D9] text-xl font-semibold">Sample Student 1</p>
+                    <p><img src={upIcon} alt="" /></p>
+                  </div>
+                  <div>
+                    <div className="flex justify-between pt-[19px] px-[21px] pb-[14px] bg-[rgba(255,162,141,0.20)] rounded-t-5 items-center mt-5">
+                      <p className="text-[#FFA28D] text-xl font-semibold">Sample Student 1</p>
+                      <p><img src={downIcon} alt="" /></p>
+                    </div>
+                    <div className="py-[17.5px] pl-3 bg-[#FFFFFF] rounded-b-5">
+                      <p className="text-[#26435F] text-lg font-medium">Service Name</p>
+                      <p className="text-[17.5px] text-[#7C98B6] mt-[19px]">Topic Name</p>
+                      <p className="text-[rgba(56,201,128,1)] text-lg font-medium pt-[40px]">Hours Completed</p>
+                      <p className="text-[25px] text-[rgba(56,201,128,1)] mt-[19px]">1</p>
+                      <p className="text-[#FF7979] text-lg font-medium pt-[40px]">Hours Missed</p>
+                      <p className="text-[25px] text-[#FF7979] mt-[19px]">0</p>
+                      <p className="text-[rgba(255,206,132,1)] text-lg font-medium pt-[40px]">Hours Canceled</p>
+                      <p className="text-[25px] text-[rgba(255,206,132,1)] mt-[19px]">0</p>
+                      <p className="text-[rgba(124,152,182,1)] text-lg font-medium pt-[40px]">Hours Scheduled</p>
+                      <p className="text-[25px] text-[rgba(124,152,182,1)] mt-[19px]">1</p>
+                    </div>
+                  </div>
+                </div>
               </div>
             )}
             <div className="max-h-[600px] overflow-y-auto scrollbar-content">
@@ -1155,7 +1229,7 @@ export default function Calendar() {
               customButtons={{
                 prevButton: {
                   text: (
-                    <span className="calendar-prevButton-custom">
+                    <span  className="calendar-prevButton-custom">
                       <img src={LeftIcon} />
                     </span>
                   ),
@@ -1175,12 +1249,12 @@ export default function Calendar() {
               allDaySlot={false}
               headerToolbar={{
                 start: "prevButton title nextButton",
-                center: "timeGridWeek,dayGridMonth",
-                end: "",
+                center: "",
+                end: "timeGridWeek,dayGridMonth",
               }}
               titleFormat={{
-                day: "numeric",
-                month: "numeric",
+                day:'2-digit',
+                month: "short",
                 year: "numeric",
               }}
               expandRows={true}
@@ -1188,8 +1262,10 @@ export default function Calendar() {
               // slotMinTime={"06:00:00"}
               // slotMaxTime={"30:00:00"}
               dayHeaderFormat={{
-                day: "2-digit",
-                month: "long",
+                day: "numeric",
+                weekday:'long'
+                
+
               }}
               // dayHeaderContent={getDayHeaders}
               selectable={true}
@@ -1202,26 +1278,32 @@ export default function Calendar() {
               selectOverlap={false}
               defaultTimedEventDuration="01:00"
               showNonCurrentDates={false}
+              slotLabelFormat={{hour:'2-digit',minute:'2-digit',meridiem:'short'}}              
             />
             <div
-              className=""
-              style={{ position: "absolute", top: "00px", right: "40px" }}
+              className="absolute right-[50px] top-0 "
             >
               <span id="input">
                 <InputSelect
                   value={
-                    "IST"
-                    // timeZone == "local"
-                    //   ? getLocalTimeZone()
-                    //   : timeZone.substring(0, 20)
+                   newTimeZone
                   }
                   //  optionData={['local', 'America/New_York']}
                   // optionData={['Asia/Calcutta', ...moment.tz.zonesForCountry('US')]}
                   // optionData={['Asia/Calcutta', ...moment.tz.zonesForCountry('US')]}
-                  optionData={timeZones}
-                  onChange={(val) => setTimeZone(val)}
+                  optionData={timeZones2}
+                  onChange={(val) => {
+                    if(val=='IST')setTimeZone('Asia/Kolkata')
+                    if(val=='CST')setTimeZone('US/Central')
+                    if(val=='AKST')setTimeZone('US/Alaska')
+                    if(val=='EST')setTimeZone('US/Eastern')
+                    if(val=='HST')setTimeZone('US/Hawai')
+                    if(val=='MST')setTimeZone('US/Mountain')
+                    if(val=='PST')setTimeZone('US/Pacific')
+                  }}
                   parentClassName=""
-                  inputContainerClassName="text-primaryDark font-bold border"
+                  optionClassName=""
+                  inputContainerClassName="text-primaryDark font-bold border "
                 />
               </span>
               {/* <div class="inline-flex rounded shadow-sm mt-1">

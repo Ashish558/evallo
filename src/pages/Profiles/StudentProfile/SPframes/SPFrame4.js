@@ -49,7 +49,7 @@ let signupData = [
     key: "",
   },
 ];
-const SPFrame1 = ({
+const SPFrame4 = ({
   userId,
   settings,
   userDetail,
@@ -170,9 +170,8 @@ const handleLeadStatus=(e)=>{
                   inputContainerClassName="bg-white h-[45px] shadow-[0px_0px_2.500001907348633px_0px_#00000040] my-0 py-[5px] px-[35px]"
                   placeHolderClass="text-[#517CA8] "
                   labelClassname="text-sm"
-                  inputClassName="bg-transparent"
                   optionContainerClassName="!w-[190px]"
-                 
+                  inputClassName="bg-transparent"
                   ICON2={Drop}
                   value={userDetail?.leadStatus}
                   optionData={ [
@@ -270,7 +269,7 @@ const handleLeadStatus=(e)=>{
               Internal Notes
             </button>
           </div>
-          <div className="flex flex-col h-[380px]   bg-[#FFFFFF] ">
+          <div className="flex flex-col h-[360px]  ">
             <ul className="list-disc rounded-b-md overflow-y-auto custom-scroller h-full ">
               {[{ message: "Hii", createdAt: new Date() }]?.map(
                 (item, index) => (
@@ -310,4 +309,4 @@ const handleLeadStatus=(e)=>{
   );
 };
 
-export default SPFrame1;
+export default SPFrame4;

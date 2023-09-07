@@ -58,7 +58,7 @@ export default function InputSelect({
       )}
 
       <div
-        className={`py-[10px]  lg:py-[10px]  border border-[#D0D5DD] flex items-center rounded relative  z-50 ${inputContainerClassName ? inputContainerClassName : ""
+        className={`py-[10px]  lg:py-[10px]  border border-[#D0D5DD] flex items-center justify-end rounded relative  z-50 ${inputContainerClassName ? inputContainerClassName : ""
           } `}
       >
         {Icon && <img src={Icon} className={`mr-5  w-[28px]}`} alt="icon" />}

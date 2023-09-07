@@ -71,6 +71,7 @@ export default function TableItem({
   });
 
   useEffect(() => {
+
     if (dataFor === "assignedTestsStudents") {
       let params = {};
       let url = `/api/test/getresponse/${item.assignedTestId}`;
@@ -214,6 +215,7 @@ export default function TableItem({
 
 
   useEffect(() => {
+    console.log("item",item)
     setIsChecked(checkedHeader);
   }, [checkedHeader])
   const timestamp = item.createdAt;
@@ -222,7 +224,21 @@ export default function TableItem({
   const options = { year: 'numeric', month: 'long', day: 'numeric' };
   const formattedDate = date.toLocaleDateString('en-US', options);
 
-  //console.log(dataFor)
+  console.log(dataFor)
+  const getFormatDate=(inputDate)=>{
+    const dateObj = new Date(inputDate);
+
+// Format the date in the desired format
+const options = { year: 'numeric', month: 'short', day: '2-digit' };
+const formattedDate = dateObj.toLocaleDateString('en-US', options);
+
+console.log(formattedDate); // Output: "August 02, 2023"
+   return formattedDate
+  }
+  const getPhone=(val)=>{
+console.log(item)
+    console.log(val)
+  }
   return (
     <>
 
@@ -301,23 +317,23 @@ export default function TableItem({
                 ) : (
                   ""
                 )}
-                <span onClick={() => onClick.redirect(item)} className="">
+                <span onClick={() => onClick.redirect(item)} className="capitalize">
                   {item.name}
                 </span>
               </div>
             </span>
           </td>
-          <td className=" text-[17.5px] px-1 min-w-14 py-4">
+          <td className=" text-[17.5px] px-1 min-w-14 py-4 capitalize" >
             <div className="my-[6px]">{item.userType}</div>
           </td>
-          <td className=" text-[17.5px] px-1  min-w-14 py-4">
+          <td className=" text-[17.5px] px-1  min-w-14 py-4 ">
             <div className="my-[6px]">{item.email}</div>
           </td>
 
-          <td className=" text-[17.5px] px-1  min-w-14 py-4">
-            <div className="my-[6px]">{item.phone}</div>
+          <td className=" text-[17.5px] px-1  min-w-14 py-4 capitalize">
+            <div className="my-[6px]">{item.phoneCode}{item.phone}</div>
           </td>
-          <td className=" text-[17.5px] px-1  min-w-14 py-4">
+          <td className=" text-[17.5px] px-1  min-w-14 py-4 capitalize">
             <div className="my-[6px]">
               {item.assignedTutor?.length > 0
                 ? item.assignedTutor?.map((id, idx) => {
@@ -337,8 +353,7 @@ export default function TableItem({
                placeholderClass="text-base-17-5" 
                 optionData={settings.leadStatus}
                 inputContainerClassName={`min-w-[100px] pt-0 pb-0 pr-2 pl-0 text-center`}
-                optionListClassName="text-base-17-5"
-                optionClassName="text-[17.5px] text-base-17-5"
+                optionClassName="text-[17.5px]"
                 labelClassname="hidden"
                 onChange={(val) => handleChange({ leadStatus: val })}
               // customPadding
@@ -349,11 +364,9 @@ export default function TableItem({
             <InputSelect
               tableDropdown={true}
               value={item.userStatus ? item.userStatus : "-"}
-             placeholderClass="text-base-17-5" 
               optionData={["active", "blocked", "dormant"]}
               inputContainerClassName="min-w-[100px] pt-0 pb-0 pr-2 pl-0 text-center"
-              optionListClassName="text-base-17-5"
-              optionClassName="text-[17.5px] text-base-17-5"
+              optionClassName="text-[17.5px]"
               labelClassname="hidden"
               onChange={(val) => handlestatusChange({ userStatus: val })}
             />
@@ -369,7 +382,7 @@ export default function TableItem({
             </div>
           </td>
           <td className=" text-[17.5px] px-1  min-w-14 py-4 text-[#507CA8]">
-            <div className="my-[6px]">{getFormattedDate(item.createdAt)}</div>
+            <div className="my-[6px] capitalize">{getFormatDate(item.createdAt)}</div>
           </td>
 
           <td className=" px-1 min-w-14 py-4">
@@ -686,18 +699,18 @@ export default function TableItem({
                 <>
                   {item.isCompleted ? (
                     <button
-                      className="px-2.5 py-1.8 rounded-md flex items-center leading-none bg-primary text-white ml-4"
+                      className="px-2.5 py-1.8 bg-[#38C980] rounded-md flex items-center leading-none bg-primary text-white ml-4"
                       onClick={() =>
                         navigate(
                           `/assigned-tests/${item.testId}/${item.assignedTestId}/report/`
                         )
                       }
                     >
-                      View Report
+                     Report
                     </button>
                   ) : item.isStarted ? (
                     <button
-                      className="px-2.5 py-1.8 rounded-md flex items-center leading-none bg-primary text-white ml-4"
+                      className="px-2.5 py-1.8 bg-[#FFCE84] rounded-md flex items-center leading-none bg-primary text-white ml-4"
                       onClick={() =>
                         navigate(
                           `/all-tests/start-section/${item.testId}/${item.assignedTestId}`
@@ -708,14 +721,14 @@ export default function TableItem({
                     </button>
                   ) : (
                     <button
-                      className="px-2.5 py-1.8 rounded-md flex items-center leading-none bg-primary text-white ml-4"
+                      className="px-2.5 py-1.8 rounded-md bg-[#FF7979] flex items-center leading-none bg-primary text-white ml-4"
                       onClick={() =>
                         navigate(
                           `/all-tests/start-section/${item.testId}/${item.assignedTestId}`
                         )
                       }
                     >
-                      Start Test
+                      Start 
                     </button>
                   )}
                 </>

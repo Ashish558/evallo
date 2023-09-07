@@ -37,7 +37,10 @@ import SuperAdminSettings from "../pages/Settings/SuperAdminSettings";
 import SuperAdminProfile from "../pages/SuperadminDashboard/components/About/About";
 import EmailVerify from "../pages/Settings/Tabs/AccountOverview/EmailVerify";
 import StudentSettings from "../pages/Settings/Tabs/AccountOverview/studentSettings";
+
+import TutorSetting from "../pages/Settings/TutorSetting";
 import ContributorSettings from "../pages/Settings/ContributorSettings";
+
 
 
 const AppRoutes = () => {
@@ -216,10 +219,12 @@ const AppRoutes = () => {
           path="/settings"
           element={
             <RequireAuth isLoggedIn={isLoggedIn}>
+
               {(persona === "superAdmin" || persona === 'manager') ?
-                <SuperAdminSettings /> : persona === 'student'
+                <SuperAdminSettings /> : persona === 'student' || persona==='parent'
                   ? <StudentSettings /> : persona === 'contributor' ?
                     <ContributorSettings /> : <Settings />}
+
             </RequireAuth>
           }
         />

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { getDate, getScore, getScoreStr } from '../../../utils/utils'
-import downloadImage from "../../../assets/icons/download.png";
+import downloadImage2 from "../../../assets/icons/download.png";
+import downloadImage from "../../../assets/icons/download2.svg";
 import { useSelector } from 'react-redux';
 import { useLazyGetTestResponseQuery } from '../../../app/services/test';
 import { useNavigate } from 'react-router-dom';
@@ -52,13 +53,13 @@ export default function ParentTest({ styles, assignedTestId, testId, testName, s
       >
          <div className="w-1/2">
             <div className={styles.listedDataItem}>
-               <h1> {testName} </h1>
+               <h1 className='!text-[#517CA8] font-semibold text-base-20'> {testName} </h1>
                <div
                   className="flex mr-2"
                   style={{ gap: "6px" }}
                >
-                  <p className="text-xs font-semibold opacity-50">Due Date: </p>
-                  <h3 className="opacity-60 text-xs font-semibold">
+                  <p className="text-xs font-semibold opacity-50 text-[#517CA8] text-base-15">Due Date: </p>
+                  <h3 className="opacity-60 text-xs font-semibold text-[#517CA8] text-base-15">
                      {getDate(dueDate)}
                   </h3>
                </div>
@@ -72,8 +73,9 @@ export default function ParentTest({ styles, assignedTestId, testId, testName, s
                      style={{ gap: "10px" }}
                   >
                      <img src={downloadImage} onClick={handleReportNavigate} alt='download-icon' className='cursor-pointer' />
-                     <div className="button bg-[#EFECF9] text-[#0671E0] p-[10px] rounded-[6px] w-[190px] text-center text-sm font-semibold cursor-pointer" onClick={handleNavigate} >
-                        {score}
+                     <div className="button  text-[#7D7] p-[10px] rounded-[6px] w-[190px] text-center text-base-17-5 font-semibold cursor-pointer" onClick={handleNavigate} >
+                        {/* {score} */}
+                        View Report
                      </div>
                   </div>
                </div>
@@ -84,7 +86,7 @@ export default function ParentTest({ styles, assignedTestId, testId, testName, s
                         style={{ gap: "10px" }}
                      >
                         <img src={downloadImage} alt='download-icon' onClick={handleReportNavigate} className="cursor-pointer" />
-                        <div className="button bg-[#EFECF9] text-[#F6A429] p-[10px] rounded-[6px] w-[190px] text-center text-sm font-semibold">
+                        <div className="button  text-[#FFCE84] p-[10px] rounded-[6px] w-[190px] text-center text-base-17-5 font-semibold">
                            Started
                         </div>
                      </div>
@@ -96,7 +98,7 @@ export default function ParentTest({ styles, assignedTestId, testId, testName, s
                         style={{ gap: "10px" }}
                      >
                         <img alt='download-icon' src={downloadImage} onClick={handleReportNavigate} className="cursor-pointer" />
-                        <div className="button bg-[#EFECF9] text-[#E02B1D] p-[10px] rounded-[6px] w-[190px] text-center text-sm font-semibold">
+                        <div className="button  text-[#FF6961] p-[10px] rounded-[6px] w-[190px] text-center text-base-17-5 font-semibold">
                            Not Started
                         </div>
                      </div>

@@ -25,7 +25,10 @@ import ValueThreeIcon from "../../../assets/images/val-3.svg";
 import InterestOneIcon from "../../../assets/images/int-1.svg";
 import InterestTwoIcon from "../../../assets/images/int-2.svg";
 import InterestThreeIcon from "../../../assets/images/int-3.svg";
-
+import copy1 from "../../../assets/YIcons/VectorCopy.svg";
+import copy2 from "../../../assets/YIcons/fluent_copy-16-filledBlackCopy.svg";
+import left from "../../../assets/YIcons/VectorleftParent.svg";
+import right from "../../../assets/YIcons/VectorrightParent.svg";
 import { useLazyGetUserDetailQuery } from "../../../app/services/users";
 import { useLazyGetSettingsQuery } from "../../../app/services/session";
 import { BASE_URL, getAuthHeader } from "../../../app/constants/constants";
@@ -36,7 +39,6 @@ import "owl.carousel/dist/assets/owl.theme.default.css";
 import SPFrame1 from "./SPframes/SPFrame1";
 
 import SPFrame0 from "./SPframes/SPFrame0";
-
 
 const students = [
   {
@@ -86,49 +88,6 @@ const interests = [
   },
 ];
 
-const subjects = [
-  "Biology",
-  "Biology",
-  "Chemistry",
-  "Chemistry",
-  "Physics",
-  "Physics",
-];
-const subjects1 = [
-  {
-    marks: "-",
-    name: "Verbal Score",
-    bg: "#FEDCC3",
-  },
-  {
-    marks: "-",
-    name: "Maths Score",
-    bg: "#DACDFF",
-  },
-];
-
-const subjects2 = [
-  {
-    marks: "-",
-    name: "Verbal",
-    bg: "#FFCBCB",
-  },
-  {
-    marks: "-",
-    name: "Maths",
-    bg: "#A7EAF9",
-  },
-  {
-    marks: "-",
-    name: "Verbal",
-    bg: "#FFF38B",
-  },
-  {
-    marks: "-",
-    name: "Maths",
-    bg: "#A4FFA7",
-  },
-];
 export default function StudentProfile({ isOwn }) {
   const navigate = useNavigate();
   const [editable, setEditable] = useState(false);
@@ -138,7 +97,8 @@ export default function StudentProfile({ isOwn }) {
   const [user, setUser] = useState({});
   const [userDetail, setUserDetail] = useState({});
   const [settings, setSettings] = useState({});
-  const [associatedParent, setAssociatedParent] = useState({});
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [associatedStudents, setAssociatedStudents] = useState([]);
   const params = useParams();
   const [getUserDetail, userDetailResp] = useLazyGetUserDetailQuery();
   const [fetchSettings, settingsResp] = useLazyGetSettingsQuery();
@@ -146,18 +106,17 @@ export default function StudentProfile({ isOwn }) {
   const { awsLink } = useSelector((state) => state.user);
 
   const { id } = useSelector((state) => state.user);
+
+  
   const [selectedScoreIndex, setSelectedScoreIndex] = useState(0);
   const { organization } = useSelector((state) => state.organization);
+  console.log({organization})
   const [toEdit, setToEdit] = useState({
     frame0: {
-     
-      grade: [],
       active: false,
       firstName: "",
       lastName: "",
-
-      schoolName: [],
-
+      about:"",
       email: "",
       phone: "",
       phoneCode: "",
@@ -165,29 +124,26 @@ export default function StudentProfile({ isOwn }) {
     frame1: {
       active: false,
       timeZone: "",
-      birthyear: "",
+      industry: "",
       accomodations: "",
-      subscriptionCode: "",
-      subscribeType: "",
-      dropBoxLink:"",
-      driveLink:""
+      birthyear: "",
+      country: "",
+      address: "",
+      state: "",
+      city: "",
+      pincode: "",
     },
- 
-    whiteBoardLinks:{
-      active: false,
-      whiteBoardLinks:[]
-    },
-   
+
     aboutScore: {
       active: false,
       aboutScore: "",
     },
-   
+
     address: {
       active: false,
       residentialAddress: "",
     },
-    
+
     service: {
       active: false,
       service: [],
@@ -196,62 +152,13 @@ export default function StudentProfile({ isOwn }) {
       active: false,
       leadStatus: "",
     },
-    associatedParent: {
+    associatedStudents: {
       active: false,
-      associatedParent: "",
+      assiginedStudents: [],
     },
-    subjects: {
+    notes: {
       active: false,
-      subjects: [],
-    },
-    personality: {
-      active: false,
-      personality: [],
-    },
-    interest: {
-      active: false,
-      interest: [],
-    },
-   
-    satScores: {
-      active: false,
-      satScores: [
-        { created:"",
-          verbal: 0,
-          maths: 0,
-        },
-        { created:"",
-          verbal: 0,
-          maths: 0,
-        },
-        { created:"",
-          verbal: 0,
-          maths: 0,
-        },
-      ],
-    },
-    actScores: {
-      active: false,
-      actScores: [
-        { created:"",
-          english: 0,
-          maths: 0,
-          reading: 0,
-          science: 0,
-        },
-        { created:"",
-          english: 0,
-          maths: 0,
-          reading: 0,
-          science: 0,
-        },
-        { created:"",
-          english: 0,
-          maths: 0,
-          reading: 0,
-          science: 0,
-        },
-      ],
+      notes: "",
     },
   });
 
@@ -264,7 +171,6 @@ export default function StudentProfile({ isOwn }) {
       return tempToEdit;
     });
   };
-
 
   /*
 const [toEdit, setToEdit] = useState({
@@ -415,7 +321,7 @@ const [toEdit, setToEdit] = useState({
       setEditable(true);
     }
   }, []);
-
+ const [fetchOrg,setFetchOrg]=useState(false)
   const fetchDetails = (closeModal) => {
     let userId = "";
     if (isOwn) {
@@ -432,54 +338,56 @@ const [toEdit, setToEdit] = useState({
           setEditableByTutor(true);
         }
       }
-      const { firstName, lastName, phone, phoneCode, email, associatedParent } =
-        res.data.data.user;
+      const {
+        firstName,
+        lastName,
+        phone,
+        email,
+        assiginedStudents,
+        phoneCode,
+      } = res.data.data.user;
+
+      setUser(res.data.data.user);
+      const { leadStatus, notes, residentialAddress, subscribeType } =
+        res.data.data.userdetails;
+
+      let studentsData = [];
+      if (assiginedStudents === undefined || assiginedStudents.length === 0)
+        setAssociatedStudents([]);
+
+      assiginedStudents !== undefined &&
+        assiginedStudents.map((student) => {
+          getUserDetail({ id: student }).then((res) => {
+           // console.log({[id]:res})
+            studentsData.push({
+              _id: res.data.data.user._id,
+              value: `${res.data.data.user.firstName} ${res.data.data.user.lastName}`,
+              photo: res.data.data.user.photo ? res.data.data.user.photo : null,
+              email:res.data.data.user.email ? res.data.data.user.email : null,
+              service:res.data.data.userdetails.service ? res.data.data.userdetails.service : [],
+            });
+          });
+        });
+
       let {
         service,
         accomodations,
         timeZone,
         birthyear,
-        personality,
-        whiteBoardLinks,
-        interest,
+        industry,
         schoolName,
         grade,
-        satScores,
-        actScores,
+         about,
         subscriptionCode,
       } = res.data.data.userdetails;
-      associatedParent &&
-        getUserDetail({ id: associatedParent }).then((res) => {
-          const { firstName, lastName, _id } = res.data.data.user;
-          setAssociatedParent({
-            firstName,
-            lastName,
-            _id,
-            photo: res.data.data.user.photo
-              ? res.data.data.user.photo
-              : "/images/default.jpeg",
-          });
-        });
-      setUser(res.data.data.user);
-      if (!satScores) satScores = [];
-      if (!actScores) actScores = [];
-      // if (!satScores) satScores = [{
-      //    verbal: 0,
-      //    maths: 0
-      // }]
-      // if (!actScores) actScores = {
-      //    english: 0,
-      //    maths: 0,
-      //    reading: 0,
-      //    science: 0
-      // }
+
       const promiseState = async (state) =>
         new Promise((resolve) => {
           resolve(
             setToEdit((prev) => {
               return {
                 ...prev,
-                frame0:{
+                frame0: {
                   ...prev.frame0,
                   firstName,
                   lastName,
@@ -490,43 +398,24 @@ const [toEdit, setToEdit] = useState({
                   grade,
                   ...prev.frame0.schoolName,
                   schoolName,
+                  about,
                 },
-                frame1:{
+                frame1: {
                   ...prev.frame1,
                   ...prev.frame1.timeZone,
                   timeZone: timeZone ? timeZone : "",
-                  ...prev.frame1.subscriptionCode,
-                  subscriptionCode: subscriptionCode ? subscriptionCode : "",
-                  ...prev.frame1.birthYear,
+                  ...prev.frame1.birthyear,
+                  country:organization?.country,
+                  state:organization?.state,
+                  city:organization?.city,
+                  pincode:organization?.zip,
+                  address:organization?.address,
+                  
                   birthyear,
-                  ...prev.frame1.accomodations,
-                  accomodations: accomodations,
-
+                  ...prev.frame1.industry,
+                  industry
                 },
-                // fullName: {
-                //   ...prev.fullName,
-                //   firstName,
-                //   lastName,
-                // },
-               
-                // timeZone: {
-                //   ...prev.timeZone,
-                //   timeZone: timeZone ? timeZone : "",
-                // },
-                // subscriptionCode: {
-                //   ...prev.subscriptionCode,
-                //   subscriptionCode: subscriptionCode ? subscriptionCode : "",
-                // },
-                // contact: {
-                //   ...prev.contact,
-                //   email: email,
-                //   phone: phone === null ? "" : phone,
-                //   phoneCode: phoneCode === null ? "" : phoneCode,
-                // },
-                // birthYear: {
-                //   ...prev.birthYear,
-                //   birthyear,
-                // },
+
                 notes: {
                   ...prev.notes,
                 },
@@ -538,45 +427,40 @@ const [toEdit, setToEdit] = useState({
                 //   ...prev.accomodations,
                 //   accomodations: accomodations,
                 // },
-                personality: {
-                  ...prev.personality,
-                  personality: personality,
-                },
-                whiteBoardLinks: {
-                  ...prev.whiteBoardLinks,
-                  whiteBoardLinks: whiteBoardLinks,
-                },
-                interest: {
-                  ...prev.interest,
-                  interest,
-                },
-                // schoolName: {
-                //   ...prev.schoolName,
-                //   schoolName,
-                // },
-                // grade: {
-                //   ...prev.grade,
-                //   grade,
-                // },
-                satScores: {
-                  ...prev.satScores,
-                  satScores: satScores,
-                },
-                actScores: {
-                  ...prev.actScores,
-                  actScores: actScores,
-                },
               };
             })
           );
         });
       promiseState().then(() => {
         closeModal && handleClose();
+        setFetchOrg(true)
       });
       setUserDetail(res.data.data.userdetails);
     });
   };
-
+  useEffect(()=>{
+    if(!organization) return
+    console.log("inside country effect",organization)
+    setToEdit((prev) => 
+    {
+      return {
+        
+          ...prev,
+          frame1:{
+       ...prev.frame1,
+       country:organization?.country,
+                  state:organization?.state,
+                  city:organization?.city,
+                  pincode:organization?.zip,
+                  address:organization?.address,
+       
+        }
+      }
+    }
+    
+    )
+  },[organization,fetchOrg])
+  console.log({toEdit})
   useEffect(() => {
     fetchDetails();
   }, [params.id]);
@@ -590,65 +474,26 @@ const [toEdit, setToEdit] = useState({
       setSettings(res.data.data.setting);
     });
   }, []);
- // console.log({ userDetail, settings });
+   console.log({ userDetail,user,settings});
   const handleProfilePhotoChange = (file) => {
     // console.log(file)
     let url = "";
     const formData = new FormData();
     formData.append("photo", file);
-    if (persona === "admin" || persona === "parent") {
+    if (persona === "admin") {
       url = `${BASE_URL}api/user/admin/addphoto/${params.id} `;
     } else {
       url = `${BASE_URL}api/user/addphoto`;
     }
-    axios.patch(url, formData, { headers: getAuthHeader() }).then((res) => {
-      console.log("photo res", res);
-      fetchDetails();
-    });
-  };
-
-  const getSatMarks = (idx) => {
-    // let scores = [
-    //    userDetail.satScores.verbal,
-    //    userDetail.satScores.maths
-    // ]
-    // scores =  scores.filter(score => !isNaN(score))
-    // console.log(scores);
-    let res = 0;
-    if (
-      typeof userDetail.satScores[idx]?.verbal === "number" &&
-      typeof userDetail.satScores[idx]?.maths
-    ) {
-      res =
-        userDetail.satScores[idx]?.verbal + userDetail.satScores[idx]?.maths;
-    }
-    if (isNaN(res)) return 0;
-    return res;
-  };
-
-  const getActMarks = (idx) => {
-    // let scores = [
-    //    userDetail.satScores.verbal,
-    //    userDetail.satScores.maths
-    // ]
-    // scores =  scores.filter(score => !isNaN(score))
-    // console.log(scores);
-    let res = 0;
-    if (
-      typeof userDetail.actScores[idx]?.maths &&
-      typeof userDetail.actScores[idx]?.english &&
-      typeof userDetail.actScores[idx]?.reading &&
-      typeof userDetail.actScores[idx]?.science
-    ) {
-      res =
-        (userDetail.actScores[idx]?.english +
-          userDetail.actScores[idx]?.maths +
-          userDetail.actScores[idx]?.reading +
-          userDetail.actScores[idx]?.science) /
-        4;
-    }
-    if (isNaN(res)) return 0;
-    return res;
+    axios
+      .patch(url, formData, { headers: getAuthHeader() })
+      .then((res) => {
+        // console.log(res)
+        fetchDetails();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   useEffect(() => {
@@ -663,14 +508,35 @@ const [toEdit, setToEdit] = useState({
   // console.log('isEditable', editable)
   // console.log(settings)
 
-  if (Object.keys(user).length < 1) return;
-  if (Object.keys(userDetail).length < 1) return;
-  if (Object.keys(settings).length < 1) return;
+  useEffect(() => {
+    if (user.assiginedStudents === undefined) return;
+    let studentsData = [];
+    user.assiginedStudents.map((student) => {
+      getUserDetail({ id: student }).then((res) => {
+        if (res.error) return;
+        studentsData.push({
+          _id: res.data.data.user._id,
+          name: `${res.data.data.user.firstName} ${res.data.data.user.lastName}`,
+          photo: res.data.data.user.photo ? res.data.data.user.photo : null,
+          email:res.data.data.user.email ? res.data.data.user.email : null,
+          service:res.data.data.userdetails.service ? res.data.data.userdetails.service : [],
+        });
+        
+      });
+    });
+    setAssociatedStudents(studentsData);
+    // setAssociatedStudents(studentsData)
+    setActiveIndex(0);
+  }, [user]);
 
+  useEffect(() => {
+    fetchDetails();
+  }, [params.id]);
+console.log({associatedStudents})
   return (
     <>
       <div className={`mx-[80px] min-h-screen design:mx-[160px] pb-[70px]`}>
-        <p className="text-[#24A3D9] mt-7 mb-3">
+        <p className="text-[#24A3D9] !my-[calc(50*0.0522vw)]">
           {organization?.company +
             " > " +
             user?.firstName +
@@ -679,184 +545,229 @@ const [toEdit, setToEdit] = useState({
             " > "}
           <span className="font-semibold">Dashboard</span>
         </p>
+        {!isOwn ? (
+          <button
+            className=" bg-[#D9BBFF] px-[14px] mb-10 py-[8px] rounded-[8px] text-[#636363] text-[18px] font-medium top-[1px] left-[22px] gap-[12px] cursor-pointer flex justify-center items-center"
+            onClick={() => window.history.back()}
+          >
+            <img src={LeftIcon} alt="icon" /> Back
+          </button>
+        ) : (
+          <></>
+        )}
 
         <div className={` rounded-b-md w-full flex flex-col relative `}>
-          <div className=" bg-[#26435F]   px-5 h-[100px]  w-full  flex  items-center">
-            {!isOwn ? (
-              <button
-                className="absolute bg-[#D9BBFF] px-[14px] py-[8px] rounded-[8px] text-[#636363] text-[18px] font-medium top-[16px] left-[22px] flex gap-[12px] cursor-pointer flex justify-center items-center"
-                onClick={() => window.history.back()}
-              >
-                <img src={LeftIcon} alt="icon" /> Back
-              </button>
-            ) : (
-              <></>
-            )}
-            <div className="flex flex-1 w-full">
-              <ProfilePhoto
-                src={
-                  user.photo
-                    ? `${awsLink}${user.photo}`
-                    : "/images/default.jpeg"
-                }
-                imgSizeClass="!w-[110px] !h-[110px] !translate-y-8 border-[4px] border-white "
-                imageClassName="!w-[100px] !h-[100px] border-[4px] border-white "
-                className=""
-                handleChange={handleProfilePhotoChange}
-                editable={false}
-              />
-              <div className="flex-1 flex justify-between items-center">
-                <div className="ml-4 my-auto">
-                  <div className="flex  items-center text-[#F3F5F7]">
-                    {user.firstName} {user.lastName}
+          <div className="flex gap-7">
+            <div className={` rounded-b-md w-full flex flex-col relative `}>
+              <div className=" bg-[#26435F]   px-5 h-[110px]  w-full  flex  items-center">
+                <div className="flex flex-1 w-full relative">
+                  <div className="h-fit">
+                    <ProfilePhoto
+                      src={
+                        user.photo
+                          ? `${awsLink}${user.photo}`
+                          : "/images/default.jpeg"
+                      }
+                      imgSizeClass="!w-[110px] !h-[110px] !translate-y-8 border-[4px] border-white "
+                      imageClassName="!w-[100px] !h-[100px] border-[4px] border-white "
+                      className=""
+                      handleChange={handleProfilePhotoChange}
+                      editable={false}
+                    />
                     <EditableText
                       editable={editable}
                       onClick={() =>
                         setToEdit({
                           ...toEdit,
-                         
-                          frame0:{
-                            ...toEdit.frame0,active:true
-                          }
+
+                          frame0: {
+                            ...toEdit.frame0,
+                            active: true,
+                          },
                         })
                       }
-                      text="edit"
-                      textClassName=" ml-2 text-sm text-[#517CA8] text-underline  "
-                      className="text-sm my-0 flex justify-end   float-right"
+                      text="Edit Profile"
+                      textClassName=" ml-2 text-sm  mx-auto text-center text-[#26435F] text-underline text-base-15 "
+                      className="text-sm my-0 flex items-center justify-center text-center !translate-y-9  "
                     />
                   </div>
-                  <div className="flex mt-1 text-xs items-center text-[#F3F5F7]">
-                    {userDetail.schoolName
-                      ? userDetail.schoolName
-                      : "Sample School Name"}
-                  </div>
-                  <div className="flex text-xs mt-1 items-center text-[#F3F5F7]">
-                    {userDetail.grade ? userDetail.grade : "12th Grade"}
-
-                    {/* <p className='font-semibold text-[22px] mr-4'>
-                           {userDetail.grade}
-                        </p> */}
-
-                    {/* <p className='font-semibold text-[22px]'>
-                           {userDetail.schoolName}
-                        </p> */}
-                  </div>
-                </div>
-
-                <div className="flex flex-col text-[12px]  font-medium text-white my-auto ">
-                  <ProfileCard
-                    className="lg:mt-0 flex-1 !bg-transparent h-min !shadow-none relative"
-                    titleClassName="!bg-transparent"
-                    title={
-                      <EditableText
-                        editable={editable}
-                        onClick={() =>
-                          setToEdit({
-                            ...toEdit,
-                            contact: { ...toEdit.contact, active: true },
-                          })
-                        }
-                        imgClass="!bg-transparent"
-                        className=" !bg-transparent absolute right-0 top-[50%]"
-                      />
-                    }
-                    body={
-                      <div className="flex h-min !bg-transparent justify-center flex-col  ">
+                  <div className="flex-1 flex justify-between items-center">
+                    <div className="ml-4 my-auto">
+                      <div className="flex  items-center text-[#F3F5F7]">
+                        {user.firstName} {user.lastName}
+                      </div>
+                      <div className="flex mt-1 text-xs items-center text-[#F3F5F7]">
                         <p>
                           <span>
                             <img
                               className="inline-block !w-4 !h-4 mr-2"
                               src={emailIcon}
+                              alt="email"
                             />
                           </span>
                           {user?.email}
-                        </p>
-                        <p>
                           <span>
                             <img
-                              className="inline-block !w-4 !h-4 mr-2"
-                              src={phoneIcon}
+                              className="inline-block ml-2 !w-4 !h-4 mr-2"
+                              src={copy1}
+                              alt="copy"
                             />
                           </span>
-                          {user?.phone}
                         </p>
                       </div>
-                    }
-                  />
+                    </div>
+
+                    <div className="flex flex-col text-[12px]  font-medium text-white my-auto ">
+                      <ProfileCard
+                        className="lg:mt-0 flex-1 !bg-transparent h-min !shadow-none relative"
+                        titleClassName="!bg-transparent"
+                        title={
+                          <EditableText
+                            editable={editable}
+                            onClick={() =>
+                              setToEdit({
+                                ...toEdit,
+                                contact: { ...toEdit.contact, active: true },
+                              })
+                            }
+                            imgClass="!bg-transparent"
+                            className=" !bg-transparent absolute right-0 top-[50%]"
+                          />
+                        }
+                        body={
+                          <div className="flex h-min !bg-transparent justify-center flex-col  ">
+                            <p>
+                              <span>
+                                <img
+                                  className="inline-block !w-4 !h-4 mr-2"
+                                  src={emailIcon}
+                                  alt="email"
+                                />
+                              </span>
+                              {user?.email}
+                              <span>
+                                <img
+                                  className="inline-block ml-2 !w-4 !h-4 mr-2"
+                                  src={copy1}
+                                  alt="copy"
+                                />
+                              </span>
+                            </p>
+                            <p>
+                              <span>
+                                <img
+                                  className="inline-block !w-4 !h-4 mr-2"
+                                  src={phoneIcon}
+                                  alt="phone"
+                                />
+                              </span>
+                              {user?.phone}
+                            </p>
+                          </div>
+                        }
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="bg-white !rounded-b-md shadow-[0px_0px_2.500001907348633px_0px_#00000040] flex design:h-[140px]  h-[120px] justify-between ">
+                <div className="ml-[126px] my-auto py-auto w-4/5 text-[12px] px-5  flex-1 design:h-[140px]  h-[120px] overflow-y-auto pt-3  ">
+                  <p className=" font-semibold text-[#26435F] text-base-15  ">
+                    About
+                  </p>
+                  <p className="font-semibold text-[#517CA8] text-base-17-5 overflow-y-auto">
+                   {userDetail?.about}
+                  </p>
                 </div>
               </div>
             </div>
-          </div>
-          <div className="bg-white !rounded-b-md shadow-[0px_0px_2.500001907348633px_0px_#00000040] flex  h-[100px] justify-between ">
-            <div className="ml-[126px] flex my-auto py-auto w-4/5 text-[12px] px-5  flex-1 h-full  pt-5  ">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod empor incididunt ut labore et dolore gna aliqua. Ut enim
-              ad minim veniam, nostrud exercitation ullamco laboris nisi ut
-              aliquip ex ea commodo cnsquat duis aute irure dolor inerit in
-              voluptate orem ipsum dolor sit amet, consectetur adipiscing elit.
-              Ut enim ad minim veniam,
-            </div>
-            <div className="w-[250px] ml-6 my-0">
-              <div className="mt-[-20px]">
-                <ProfilePhoto
-                  src={
-                    associatedParent.photo
-                      ? `${awsLink}${associatedParent.photo}`
-                      : "/images/default.jpeg"
-                  }
-                  imgSizeClass="!w-[50px] !h-[50px] !translate-y-[40px]"
-                  imageClassName="!w-[50px] !h-[50px] border-[2px] border-[#26435F]"
-                  className=" "
-                  handleChange={handleProfilePhotoChange}
-                />
+            <div className="w-[calc(256*0.0522vw)] min-w-[200px] bg-white rounded-md overflow-hidden !rounded-b-md shadow-[0px_0px_2.500001907348633px_0px_#00000040]">
+              <div
+                className={`${styles.studentsContainer} min-h-[200px] w-full`}
+              >
+                {associatedStudents.map((student, idx) => {
+                  return (
+                    <div
+                      key={idx}
+                      className={`${styles.student} ${
+                        activeIndex === idx
+                          ? styles.activeStudent
+                          : idx < activeIndex
+                          ? styles.previousStudent
+                          : styles.nextStudent
+                      } flex flex-col items-center  lg:mb-10`}
+                    >
+                      <div className="bg-[#354a5e] w-full h-[110px]">
+                        <div className="flex justify-center items-center">
+                          <ProfilePhoto
+                            src={
+                              student.photo
+                                ? `${awsLink}${student.photo}`
+                                : "/images/default.jpeg"
+                            }
+                            imgSizeClass="!w-[70px] !h-[70px] !translate-y-[20px]"
+                            imageClassName="!w-[50px] !h-[50px] border-[2px] border-[#26435F]"
+                            className=" "
+                            handleChange={handleProfilePhotoChange}
+                          />
+                        </div>
+                      </div>
+                      <div className="flex flex-col mt-[-16px] h-[120px] design:h-[140px] gap-1 justify-center items-center ">
+                        <p
+                          onClick={() =>
+                            navigate(`/profile/student/${student._id}`)
+                          }
+                          className="text-base-17-5 font-semibold cursor-pointer text-[#26435F]"
+                        >
+                          {" "}
+                          {student.name}
+                        </p>
+                        <p className="  text-[#667085] text-base-15 ml-4">
+                        {student.email}
+                          <span>
+                            <img
+                              className="inline-block !w-4 !h-4 mr-2"
+                              src={copy2}
+                              alt="copy2"
+                            />
+                          </span>
+                        </p>
+                        <p className="  text-[#517CA8] w-[100px] flex gap-3 text-base-15">
+                        {student?.service?.map((it,idx)=>{
+                          return (
+                            <span  key={idx}>{it}</span>
+                          )
+                        })}
+                        </p>
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
 
-              <div className="flex flex-col ml-14   font-medium text-[#24A3D9] ">
-                <p
-                  onClick={() =>
-                    Object.keys(associatedParent).length > 0 &&
-                    navigate(`/profile/parent/${associatedParent._id}`)
-                  }
-                  className="font-semibold cursor-pointer text-[14px]"
-                >
-                  {Object.keys(associatedParent).length > 1
-                    ? `${associatedParent.firstName} ${associatedParent.lastName}`
-                    : `${userDetail.FirstName} ${userDetail.LastName}`}
+              <p className=" text-base-17-5 mx-auto text-center flex justify-center relative z-[3333]">
+                <span>
                   <img
-                    src={clickArrowIcon}
-                    className="!ml-2 cursor-pointer !w-3 !h-3 inline-block"
+                    className="inline-block !w-4 !h-4 mr-2"
+                    src={left}
+                    alt="left"
+                    onClick={() =>
+                      activeIndex !== 0 && setActiveIndex(activeIndex - 1)
+                    }
                   />
-                </p>
-
-                <p className="font-medium text-[12px]">
-                  <span
-                    className="text-xs cursor-pointer font-semibold opacity-60 inline-block mr-1"
-
-                    // navigate(`/profile/parent/${associatedParent._id}`)
-                  >
-                    {Object.keys(associatedParent).length > 1
-                      ? `${associatedParent.email}`
-                      : `${userDetail.Email} `}
-                    {/* View Profile */}
-                  </span>
-                </p>
-              </div>
-            </div>
-            <div className="flex flex-col items-center mb-3">
-              {/* <p className='text-lg text-center text-primary font-semibold mb-5 text-[21px]'>Associated Parent</p> */}
-              <EditableText
-                editable={persona === "admin" ? true : false}
-                onClick={() =>
-                  setToEdit({
-                    ...toEdit,
-                    associatedParent: {
-                      ...toEdit.associatedParent,
-                      active: true,
-                    },
-                  })
-                }
-                className="text-[12px] mb-2 flex justify-start text-left self-stretch"
-              />
+                </span>
+                <span>
+                  <img
+                    className="inline-block !w-4 !h-4 mr-2"
+                    src={right}
+                    onClick={() =>
+                      activeIndex < associatedStudents.length - 1 &&
+                      setActiveIndex(activeIndex + 1)
+                    }
+                    alt="right"
+                  />
+                </span>
+              </p>
             </div>
           </div>
           <EditableText
@@ -871,11 +782,19 @@ const [toEdit, setToEdit] = useState({
               })
             }
             text="edit"
-            textClassName="text-sm text-[#517CA8] text-underline  "
+            textClassName="text-sm text-[#26435F]  text-underline  text-base-15"
             className="text-sm my-0 flex justify-end translate-y-7  float-right"
           />
-          <SPFrame0 userDetail={userDetail}  settings={settings} toEdit={toEdit} setToEdit={setToEdit}/>
-
+          <SPFrame0
+            userDetail={userDetail}
+            settings={settings}
+            toEdit={toEdit}
+            setToEdit={setToEdit}
+          />
+          <div
+            id="borderDashed"
+            className="border !border-[#CBD6E3] w-[calc(1500*0.0522vw)] mx-auto my-[calc(50*0.0522vw)]"
+          ></div>
           <SPFrame1
             userDetail={userDetail}
             settings={settings}
@@ -885,12 +804,9 @@ const [toEdit, setToEdit] = useState({
             setToEdit={setToEdit}
             toEdit={toEdit}
           />
-        
-         
         </div>
-
-       
       </div>
+
       <ParentEditables
         settings={settings}
         fetchDetails={fetchDetails}
@@ -903,7 +819,6 @@ const [toEdit, setToEdit] = useState({
         awsLink={awsLink}
         selectedScoreIndex={selectedScoreIndex}
       />
-    
     </>
   );
 }

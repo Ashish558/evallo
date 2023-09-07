@@ -11,6 +11,7 @@ import que from "../../../../assets/icons/que.png";
 import que2 from "../../../../assets/icons/que2.svg";
 import plus1 from "../../../../assets/icons/plus1.svg";
 import dropdown from "../../../../assets/icons/dropdown (2).svg";
+import InputFieldDropdown from "../../../../components/InputField/inputFieldDropdown";
 export default function SignupTab({
   setAddNewQuestionModalActive,
   fetchS,
@@ -86,7 +87,7 @@ export default function SignupTab({
           >
             <p>      Page 1: Basic Details (all fields mandatory)</p>
 
-            <p className="mr-2"> <img src={que2} alt="que"></img></p>
+            <p className="ml-40"> <img src={que2} alt="que"></img></p>
           </div>
           <div className={`flex mt-[59px] lg:mt-0 ${styles.inputs}`}>
             <InputField
@@ -231,21 +232,23 @@ export default function SignupTab({
             <InputField
               label="Student / Parent Email"
               placeholder=" "
-              inputContainerClassName="bg-gray-200 border border-gray-200 w-[32.5vw]"
+              inputContainerClassName="bg-gray-200 border border-gray-200 w-[34.2vw]"
               inputClassName="bg-gray-200"
               parentClassName="text-xs  text-[#26435F] mb-2"
             />
-            <InputField
+              
+              <InputField
               placeholder=""
-              parentClassName="text-xs  text-[#26435F] mb-2"
+              parentClassName="text-xs  text-[#26435F] mb-2 "
               inputContainerClassName="bg-gray-200 border border-gray-200 "
-              inputClassName="bg-gray-200"
-              label="Student / Parent Phone"
+              inputClassName="bg-gray-200 "
+             label=" Student/Parent Phone"
             />
+             
             <InputField
               placeholder=""
               parentClassName="text-xs  text-[#26435F] mb-2"
-              inputContainerClassName="bg-gray-200 border border-gray-200 w-[32.5vw]"
+              inputContainerClassName="bg-gray-200 border border-gray-200 w-[34.2vw]"
               inputClassName="bg-gray-200"
               label="School Name"
             />
@@ -268,7 +271,7 @@ export default function SignupTab({
           style={{ color: "#26435F", fontWeight: 600 }}
         >
           Page 3: Custom Fields (Add a maximum of 5 items)
-          <img className="ml-10" src={que2}></img>
+          <img className="ml-[100px]" src={que2}></img>
         </span>
         <div className="mb-10">
           {customFields?.map((item, idx) => {

@@ -8,6 +8,7 @@ import UpArrow from "../../assets/icons/upArrow.svg";
 export default function InputSelectNew({
   parentClassName,
   Icon,
+  iconClass,
   optionsEachClassName,
   value,
   placeholder,
@@ -26,7 +27,9 @@ export default function InputSelectNew({
   placeHolderClass,
   IconDemography,
   optionListClassName,
-  arrowWidth
+  arrowWidth,
+  ICON2,
+  labelIcon
 }) {
   const [selected, setSelected] = useState(false);
   const selectRef = useRef();
@@ -57,21 +60,22 @@ export default function InputSelectNew({
           )}
         </label>
       )}
+      {labelIcon && <img src={labelIcon} className={`mr-6 inline-block ${iconClass} `} alt="icon" />}
 
       <div
         className={`py-[10px] px-[21px] flex items-center rounded-10 relative cursor-pointer  z-50 ${
           inputContainerClassName ? inputContainerClassName : ""
         } `}
       >
-        {Icon && <img src={Icon} className="mr-6" alt="icon" />}
+        {Icon && !ICON2 && <img src={Icon} className={`mr-6 inline-block ${iconClass} `} alt="icon" />}
 
-        {!selected ?
+        {!selected && !ICON2&& !Icon && !labelIcon?
           <img
             src={IconDemography?countryDA:DownArrow}
             className={`${arrowWidth ? arrowWidth:'w-[15px]'} ${styles.downArrow}`}
             alt="down-arrow"
             onClick={() => setSelected(!selected)}
-          />:<img
+          />: !Icon && !ICON2&&  !labelIcon && <img
           src={IconDemography?countryDA:UpArrow}
           className={` ${arrowWidth ? arrowWidth:'w-[15px]'}  ${styles.downArrow}`}
           alt="down-arrow"
@@ -90,21 +94,23 @@ export default function InputSelectNew({
           ) : (
             value
           )}
+           {ICON2 && <img src={ICON2} className={`ml-4 inline-block ${iconClass} `} alt="icon" />}
+
         </div>
         {selected && (
           <div
-            className={`scrollbar-content scrollbar-vertical shadow-md w-full max-h-[165px] ${styles.options} ${optionContainerClassName} shadow-[0px_0px_3px_0px_#00000040]`}
+            className={`scrollbar-content scrollbar-vertical shadow-md w-full  max-h-[165px] ${styles.options} ${optionContainerClassName} custom-scroller shadow-[0px_0px_3px_0px_#00000040] text-base-17-5`}
           >
             {optionData?.map((option, idx) => {
               // console.log('option', option);
               // console.log('checkbox.match', checkbox.match);
               return (
                 <div
-                  className={`outline-0 border-0 py-2.5  px-4 flex items-center justify-between ${optionsEachClassName}`}
+                  className={`outline-0 border-0 py-2.5  px-4 flex flex-wrap items-center justify-between ${optionsEachClassName} text-base-17-5`}
                   key={idx}
                   onClick={()=> handleOptionSelect(option,idx)}
                 >
-                  <p className={optionListClassName}>
+                  <p className={`${optionListClassName} text-base-17-5 `}>
                     {optionType !== undefined && optionType === "object"
                       ? option.value
                         ? option.value

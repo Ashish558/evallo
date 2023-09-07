@@ -110,10 +110,16 @@ export default function StudentTest({fromProfile}) {
       text: "Assigned on",
       onCick: sortByAssignedDate,
     },
+   
     {
       id: 3,
       text: "Due Date",
       onCick: sortByDueDate,
+    },
+    {
+      id: 4,
+      text: "Assigned by",
+     
     },
     {
       id: 5,
@@ -145,6 +151,7 @@ export default function StudentTest({fromProfile}) {
             studentId,
             dueDate,
             multiple,
+            assignedBy,
             isCompleted,
             isStarted,
             createdAt,
@@ -152,6 +159,8 @@ export default function StudentTest({fromProfile}) {
           } = test;
           if (testId === null) return;
           return {
+            assignedBy: assignedBy ? assignedBy.firstName +" "+ assignedBy.lastName : "-",
+          
             testName: testId ? testId.testName : "-",
             assignedOn: getFormattedDate(new Date(createdAt), dateFormat),
             studentId: studentId ? studentId : "-",
@@ -222,12 +231,14 @@ export default function StudentTest({fromProfile}) {
             isCompleted,
             multiple,
             isStarted,
+            assignedBy,
             dueDate,
             createdAt,
             updatedAt,
           } = test;
           if (testId === null) return;
           return {
+            assignedBy: assignedBy ? assignedBy.firstName +" "+ assignedBy.lastName : "-",
             testName: testId ? testId.testName : "-",
             assignedOn: getFormattedDate(new Date(createdAt)),
             studentId: studentId ? studentId : "-",
@@ -277,7 +288,7 @@ export default function StudentTest({fromProfile}) {
       });
     }
   }, [associatedStudents]);
-
+console.log({allTests})
   useEffect(() => {
     if (selectedStudent === null) return;
     if (Object.keys(selectedStudent).length === 0) return;
@@ -307,7 +318,7 @@ export default function StudentTest({fromProfile}) {
   const status = [
     {
       text: "Completed",
-      color: "#32D583",
+      color: "#38C980",
     },
     {
       text: "Not Started",
@@ -315,14 +326,14 @@ export default function StudentTest({fromProfile}) {
     },
     {
       text: "Started",
-      color: "#F6A429",
+      color: "#FFCE84",
     },
   ];
 
   return (
     <>
       <div className={`mx-[70px] bg-lightWhite  ${fromProfile?'!mx-0':'min-h-screen'}`}>
-        <div className={`py-14 px-5 ${fromProfile?'px-0 py-0 ':''}`}>
+        <div className={`py-4 px-5 ${fromProfile?'px-0 py-0 ':''}`}>
           {persona === "student" && !fromProfile && (
             <div
               className={`${

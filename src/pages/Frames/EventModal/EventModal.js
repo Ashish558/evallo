@@ -1004,7 +1004,7 @@ export default function EventModal({
                                     children="Schedule"
                                     className="text-lg py-3  font-medium px-7 h-[50px] w-[140px] disabled:opacity-60"
                                     onClick={() => handleSubmit()}
-                                    disabled={submitDisabled}
+                                    disabled={false}
                                     loading={loading}
                                  />
                            }

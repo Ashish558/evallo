@@ -8,6 +8,9 @@
 .text-base-20 {
   font-size: max(14px, 1.044vw) !important;
 }
+.text-base-22-5 {
+  font-size: max(15.5px, 1.174vw) !important;
+}
 .text-base-25 {
   font-size: max(16px, 1.305vw) !important;
 }
@@ -26,7 +29,15 @@
 
 
 */
-
+.owl-stage-outer{
+height:100%;
+}
+.owl-stage{
+height:100%;
+}
+.owl-item.active{
+  height:100%;
+}
 .no-arrow div::after {
   content: " ";
   margin-left: 5px;
@@ -77,15 +88,17 @@
   } */
 
 #borderLeft {
+  border-top-right-radius:4px;
   border-left: 5px solid #26435f;
   position: absolute;
-  top: 50%;
+  top: 70%;
   bottom: 0;
 }
 #borderRight {
+  border-top-left-radius:4px;
   border-right: 5px solid #26435f;
   position: absolute;
-  top: 50%;
+  top: 70%;
   right: 0;
   bottom: 0;
 }
@@ -110,6 +123,9 @@ td {
   font-weight: 550;
   padding-top: 15px !important;
   padding-bottom: 15px !important;
+}
+tr{
+  box-shadow: 0px 0px 2.499999523162842px 0px #00000040 !important;
 }
 th {
   font-size: 0.912vw !important;
