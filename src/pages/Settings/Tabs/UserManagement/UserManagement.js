@@ -32,6 +32,7 @@ import CountryCode from "../../../../components/CountryCode/CountryCode";
 import { isPhoneNumber } from "../../../Signup/utils/util";
 import { checkIfExistInNestedArray } from "../../../../utils/utils";
 import InputSelectNew from "../../../../components/InputSelectNew/InputSelectNew";
+import { useSelector } from "react-redux";
 
 const optionData = ["option 1", "option 2", "option 3", "option 4", "option 5"];
 
@@ -57,14 +58,15 @@ export default function UserManagement() {
   const [usersData, setUsersData] = useState([]);
   const [filteredUsersData, setFilteredUsersData] = useState([]);
   const [forgotPassword, forgotPasswordResp] = useForgotPasswordMutation();
+  const { role } = useSelector((state) => state.user);
 
   useEffect(() => {
     setValidData(
       isEmail(modalData.email) &&
-        modalData.firstName &&
-        modalData.lastName &&
-        modalData.userType &&
-        modalData.phone
+      modalData.firstName &&
+      modalData.lastName &&
+      modalData.userType &&
+      modalData.phone
     );
   }, [
     modalData,
@@ -108,7 +110,8 @@ export default function UserManagement() {
       return arr;
     });
   };
-  const tableHeaders = [
+
+  let tableHeaders = [
     {
       id: 1,
       text: "Full Name",
@@ -139,9 +142,30 @@ export default function UserManagement() {
       id: 7,
       text: "",
     },
-
   ];
 
+  if (role === 'manager') {
+    tableHeaders = [
+      {
+        id: 1,
+        text: "Full Name",
+        className: "text-left pl-6",
+        onCick: sortByName,
+      },
+      {
+        id: 2,
+        text: "Usertype",
+      },
+      {
+        id: 3,
+        text: "Email",
+      },
+      {
+        id: 7,
+        text: "Last login",
+      },
+    ];
+  }
   const handleResetPassword = (email) => {
     forgotPassword({ email: email }).then((res) => {
       if (res.error) {
@@ -626,153 +650,12 @@ export default function UserManagement() {
 
   return (
     <div className=" bg-lightWhite min-h-screen">
-      <div className="py-14 pt-0 ">
-        {/* <div className="flex justify-between items-center gap-4">
-          <InputField
-            IconRight={SearchIcon}
-            placeholder="Type Name"
-            parentClassName="w-full w-1/6"
-            inputContainerClassName="text-sm text-sm bg-white  px-[20px] py-[16px] border"
-            type="text"
-            value={filterData.typeName}
-            onChange={(e) =>
-              setFilterData({ ...filterData, typeName: e.target.value })
-            }
-          />
-          <InputSelect
-            optionData={userTypesList}
-            inputContainerClassName="text-sm border bg-white px-[20px] py-[16px]"
-            placeholder="User Type"
-            parentClassName="w-full w-1/6"
-            type="select"
-            value={filterData.userType.length > 0 ? filterData.userType[0] : ""}
-            checkbox={{
-              visible: true,
-              name: "test",
-              match: filterData.userType,
-            }}
-            onChange={(val) =>
-              setFilterData({
-                ...filterData,
-                userType: filterData.userType.includes(val)
-                  ? filterData.userType.filter((item) => item !== val)
-                  : [...filterData.userType, val],
-              })
-            }
-          />
-          <InputSelect
-            optionData={settings.leadStatus}
-            placeholder="Lead Status"
-            parentClassName="w-full w-1/6"
-            inputContainerClassName="text-sm border bg-white px-[20px] py-[16px]"
-            type="select"
-            checkbox={{
-              visible: true,
-              name: "test",
-              match: filterData.status,
-            }}
-            onChange={(val) =>
-              setFilterData({
-                ...filterData,
-                status: filterData.status.includes(val)
-                  ? filterData.status.filter((item) => item !== val)
-                  : [...filterData.status, val],
-              })
-            }
-            value={filterData.status.length > 0 ? filterData.status[0] : ""}
-          />
-          <InputSelect
-            optionData={specializations}
-            placeholder="Specializations"
-            parentClassName="w-full w-1/6"
-            type="select"
-            inputContainerClassName="text-sm border bg-white px-[20px] py-[16px]"
-            value={
-              filterData.specialization.length > 0
-                ? filterData.specialization[0]
-                : ""
-            }
-            checkbox={{
-              visible: true,
-              name: "test",
-              match: filterData.specialization,
-            }}
-            onChange={(val) =>
-              setFilterData({
-                ...filterData,
-                specialization: filterData.specialization.includes(val)
-                  ? filterData.specialization.filter((item) => item !== val)
-                  : [...filterData.specialization, val],
-              })
-            }
-          />
-          <InputSelect
-            optionData={["active", "blocked", "dormant"]}
-            placeholder="User Status"
-            parentClassName="w-full w-1/6 capitalize"
-            type="select"
-            inputContainerClassName="text-sm border bg-white px-[20px] py-[16px]"
-            value={
-              filterData.userStatus.length > 0 ? filterData.userStatus[0] : ""
-            }
-            checkbox={{
-              visible: true,
-              name: "test",
-              match: filterData.userStatus,
-            }}
-            onChange={(val) =>
-              setFilterData({
-                ...filterData,
-                userStatus: filterData.userStatus.includes(val)
-                  ? filterData.userStatus.filter((item) => item !== val)
-                  : [...filterData.userStatus, val],
-              })
-            }
-          />
-          <InputSelectNew
-            optionData={allTutors}
-            placeholder="Tutor"
-            parentClassName="w-full w-1/6"
-            type="select"
-            inputContainerClassName="text-sm border bg-white px-[20px] py-[16px]"
-            optionType="object"
-            value={filterData.tutor.length > 0 ? filterData.tutor[0] : ""}
-            checkbox={{
-              visible: true,
-              name: "test",
-              match: filterData.tutor,
-              matchKey: "value",
-            }}
-            onChange={(val) => {
-              handleTutorChange(val);
-              // setFilterData({ ...filterData, tutor: val })
-            }}
-          />
+      <div className="py-14 pt-0 px-5">
 
-          <PrimaryButton
-            type="submit"
-            children={
-              <>
-                Add new User
-                <img src={AddIcon} className="ml-3" />
-              </>
-            }
-            onClick={() => setModalActive(true)}
-            className="pt-[14px] flex items-center text-lg font-semibold pb-[14px] pl-[21px] pr-[21px]"
-          />
-        </div>
-        <div className="flex align-center mt-0 gap-[20px]"></div>
-        <div className="mt-4">
-          <FilterItems
-            items={filterItems}
-            setData={setFilterItems}
-            onRemoveFilter={onRemoveFilter}
-          />
-        </div> */}
         <div className="mt-6">
           <Table
+            dataFor={role === 'superAdmin' ? "allUsersSuperAdmin" : 'allUsersManager'}
             noArrow={true}
-            dataFor="allUsersSuperAdmin"
             data={filteredUserData}
             onClick={{
               redirect,
@@ -794,121 +677,7 @@ export default function UserManagement() {
         </div>
       </div>
 
-      {modalActive && (
-        <Modal
-          classname={"max-w-[780px] mx-auto"}
-          title="Add a New User"
-          cancelBtn={true}
-          cancelBtnClassName="w-140"
-          primaryBtn={{
-            text: "Send Invite",
-            // className: 'w-140',
-            form: "add-user-form",
-            // onClick: handleSubmit,
-            loading: loading,
-            type: "submit",
-            disabled: addUserBtnDisabled,
-          }}
-          handleClose={handleClose}
-          body={
-            <form
-              id="add-user-form"
-              onSubmit={handleSubmit}
-              className="px-[3px] mb-0.5"
-            >
-              <div className="grid grid-cols-1 md:grid-cols-2  gap-x-2 md:gap-x-3 gap-y-3 gap-y-4 mb-5">
-                <div>
-                  <InputField
-                    label="First Name"
-                    labelClassname="ml-4 mb-0.5"
-                    placeholder="First Name"
-                    inputContainerClassName="text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0"
-                    inputClassName="bg-transparent"
-                    parentClassName="w-full"
-                    type="text"
-                    value={modalData.firstName}
-                    isRequired={true}
-                    onChange={(e) =>
-                      setModalData({ ...modalData, firstName: e.target.value })
-                    }
-                  />
-                </div>
-                <div>
-                  <InputField
-                    label="Last Name"
-                    labelClassname="ml-4 mb-0.5"
-                    isRequired={true}
-                    placeholder="Last Name"
-                    inputContainerClassName="text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0"
-                    inputClassName="bg-transparent"
-                    parentClassName="w-full"
-                    type="text"
-                    value={modalData.lastName}
-                    onChange={(e) =>
-                      setModalData({ ...modalData, lastName: e.target.value })
-                    }
-                  />
-                </div>
-                <div>
-                  <InputField
-                    label="Email Addresss"
-                    labelClassname="ml-4 mb-0.5"
-                    isRequired={true}
-                    placeholder="Email Addresss"
-                    inputContainerClassName="text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0"
-                    inputClassName="bg-transparent"
-                    parentClassName="w-full"
-                    type="text"
-                    value={modalData.email}
-                    onChange={(e) =>
-                      setModalData({ ...modalData, email: e.target.value })
-                    }
-                  />
-                </div>
-                <div>
-                  <InputSelect
-                    value={modalData.userType}
-                    onChange={(val) =>
-                      setModalData({ ...modalData, userType: val })
-                    }
-                    isRequired={true}
-                    type="select"
-                    placeholder="Select User Type"
-                    label="User Type"
-                    labelClassname="ml-4 mb-0.5"
-                    optionData={userTypeOptions}
-                    inputContainerClassName="text-sm pt-3.5 pb-3.5 bg-primary-50 px-5 border-0"
-                    parentClassName="w-full"
-                  />
-                </div>
 
-                <div>
-                  <InputField
-                    label="Phone Number"
-                    labelClassname="ml-4 mb-0.5"
-                    isRequired={true}
-                    placeholder="Phone Number"
-                    inputContainerClassName="text-sm pt-3.5 pb-3.5 px-5  bg-primary-50 border-0"
-                    inputClassName="bg-transparent pl-[60px]"
-                    parentClassName="w-full"
-                    type="text"
-                    value={modalData.phone}
-                    inputLeftField={
-                      <CountryCode
-                        numberPrefix={numberPrefix}
-                        setNumberPrefix={setNumberPrefix}
-                      />
-                    }
-                    onChange={(e) =>
-                      setModalData({ ...modalData, phone: e.target.value })
-                    }
-                  />
-                </div>
-              </div>
-            </form>
-          }
-        />
-      )}
       {deleteModalActive && (
         <Modal
           title={

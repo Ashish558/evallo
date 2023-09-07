@@ -143,9 +143,7 @@ const [tutors,setTutors]=useState([]);
 
   const refetchSessions = () => {
     // console.log(searchedUser);
-    console.log("persona", persona);
     if (persona === "tutor") {
-      console.log("shd run");
       fetchTutorSessions();
     } else {
       if (searchedUser.id === "") return;
@@ -277,6 +275,7 @@ const [tutors,setTutors]=useState([]);
           endDate: endDateUtc,
           updatedDate: startUtc,
           updatedDateEnd: endDateUtc,
+          tutorId: session.tutorId,
           sessionStatus: session.sessionStatus,
           tutorId:session.tutorId ? session.tutorId : "-",
           description: `${strtTime12HFormat} - ${endTime12HFormat}`,
@@ -447,6 +446,7 @@ const [tutors,setTutors]=useState([]);
                     updatedDateEnd: endDateUtc,
                     description: `${strtTime12HFormat} - ${endTime12HFormat}`,
                     sessionStatus: session.sessionStatus,
+                    tutorId: session.tutorId,
                     studentId: session.studentId,
                     tutorId:session.tutorId ? session.tutorId:"-",
                     background: getBackground(
@@ -559,6 +559,9 @@ const [tutors,setTutors]=useState([]);
     calendarAPI?.next();
   };
   const eventContent = (arg) => {
+
+    console.log('arg-', arg.event._def.extendedProps);
+
     
     const description = arg.event._def.extendedProps.description;
     let background = "#ebe7ff";
@@ -682,7 +685,6 @@ const [tutors,setTutors]=useState([]);
   const fetchTutorSessions = () => {
     const userId = currentUserId;
     if (persona === "tutor") {
-      console.log("FETCHING", userId);
       fetchStudents(userId).then((res) => {
         setEventDetails(res.data.data.session);
         // console.log(res.data.data);
@@ -742,6 +744,7 @@ const [tutors,setTutors]=useState([]);
             tutorId: session.tutorId,
             start: startUtc,
             endDate: endDateUtc,
+            tutorId: session.tutorId,
             updatedDate: startUtc,
             updatedDateEnd: endDateUtc,
             sessionStatus: session.sessionStatus,
@@ -876,14 +879,15 @@ const [tutors,setTutors]=useState([]);
     });
     setStudents(tempStudents);
   };
+
   const colorsTutor = {
     bg: ["#F6935A33", "#7DE94A33", "#6F7ADE33", "#C97BEE33"],
     text: ["#F6935A", "#7DE94A", "#6F7ADE", "#C97BEE"],
   };
+
   useEffect(() => {
     if (students.length === 0) return;
     if (events.length === 0) return;
-    console.log("students", students);
     let selectedStudents = students
       .filter((item) => item.selected === true)
       .map((item) => item._id);
@@ -894,7 +898,9 @@ const [tutors,setTutors]=useState([]);
     // console.log('filtered', filtered);
     setFilteredEvents(filtered);
   }, [events, students]);
+
   const [exp, setExp] = useState(null);
+  
   const toggleAccordions = (id) => {
     const currentRef = accordionRefs.current[id];
     const isExpanded = currentRef.style.width;
