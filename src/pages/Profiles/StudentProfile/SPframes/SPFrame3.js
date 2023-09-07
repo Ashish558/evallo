@@ -8,6 +8,7 @@ import { useScoreProgressionStudentMutation } from "../../../../app/services/use
 import { useEffect } from "react";
 import RangeDate from "../../../../components/RangeDate/RangeDate";
 import InputSelectNew from "../../../../components/InputSelectNew/InputSelectNew";
+import { useParams } from "react-router-dom";
 const SPFrame3 = ({ userDetail  }) => {
   const [getProgression, Progstatus] = useScoreProgressionStudentMutation();
   const [scoreProgression, setScore] = useState([]);
@@ -18,16 +19,28 @@ const SPFrame3 = ({ userDetail  }) => {
   const [selectedSubject, setSelectedSubject] = useState("");
   const [currentspSubData,setCurrentspSubData]= useState({})
   const [currentSubData, setCurrentSubData] = useState({});
+  const param=useParams()
+  const [id,setId]=useState(param?.id)
+ 
+ useEffect(()=>{
+  if( !param.id){
+setId(userDetail?._id)
+  }
+  else{
+    setId(param?.id)
+  }
+ },[userDetail])
   useEffect(() => {
-    if (userDetail?._id) {
-      getProgression({ studentId: userDetail?._id, testType: "SAT" }).then(
+    if (id) {
+     // console.log({id,hud:userDetail?._id})
+      getProgression({ studentId: userDetail?._id , testType: "SAT" }).then(
         (res) => {
           console.log("progression", res);
           if (res?.data?.scoreProgression) setScore(res?.data?.scoreProgression);
         }
       );
     }
-  }, [userDetail]);
+  }, [userDetail,id]);
 
   useEffect(() => {
     if (scoreProgression[0]?.subjects) {

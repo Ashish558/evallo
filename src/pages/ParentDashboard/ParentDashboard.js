@@ -10,7 +10,7 @@ const ParentDashboard = () => {
     return (
         <div
             id={styles.ParentDashboardContainer}
-            className="flex-auto overflow-x-hiden lg:ml-pageLeft"
+            className="flex-auto overflow-x-hiden !mx-[calc(160*0.0522vw)]"
         >
             <ParentDashboardHeader selectedStudent={selectedStudent} setSelectedStudent={setSelectedStudent} />
             <ConceptSection selectedStudent={selectedStudent} setSelectedStudent={setSelectedStudent} />

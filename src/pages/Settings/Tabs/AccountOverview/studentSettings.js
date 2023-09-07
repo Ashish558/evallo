@@ -19,6 +19,7 @@ import { BASE_URL, getAuthHeader } from "../../../../app/constants/constants";
 import InputFieldDropdown from "../../../../components/InputField/inputFieldDropdown";
 import { useUpdateEmailMutation } from "../../../../app/services/organization";
 import { useStudentFeedbackMutaion, useStudentFeedbackMutation } from "../../../../app/services/settings";
+import { useSelector } from "react-redux";
 const StudentSettings = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [reset, setReset] = useState(false);
@@ -56,6 +57,8 @@ const StudentSettings = () => {
   });
   const [updateEmail, setUpdateEmail] = useUpdateEmailMutation();
   const [userDetails, userDetailsStatus] = useLazyGetPersonalDetailQuery();
+  const { role: persona } = useSelector(state => state.user)
+  const {organization} = useSelector(state => state.organization)
   const [updateAccount, updateAccountStatus] = useUpdateUserAccountMutation();
   const [studentFeedback,setStatus]=useStudentFeedbackMutation()
   const [fetchedData, setFetchedData] = useState({});
@@ -168,11 +171,12 @@ message,type
     console.log({res})
   })
 }
+
   return (
     <div>
       <div className="flex flex-col gap-10  mx-[100px] my-12 design:mx-[160px] design:my-[60px]">
         <div className="text-[#24A3D9] font-lexend-deca text-md design:text-xl  font-semibold leading-normal">
-          <span className=" font-medium ">Student</span>
+          <span className=" font-medium ">{organization?.company}</span>
           <span className="font-semibold">{"  > Settings"}</span>
         </div>
         <div className="flex gap-5">
