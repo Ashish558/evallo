@@ -74,6 +74,7 @@ export default function Calendar() {
   const [events, setEvents] = useState([]);
   const [filteredEvents, setFilteredEvents] = useState([]);
   const { role: persona } = useSelector((state) => state.user);
+  const userDetail=useSelector((state)=>state.user)
   const accordionRefs = useRef([]);
   const accordionImgRefs = useRef([]);
   // const [timeZones, setTimeZones] = useState(temptimeZones)
@@ -83,8 +84,7 @@ export default function Calendar() {
 
   // console.log(sessionToEdit)
   const [associatedStudents, setAssociatedStudents] = useState([]);
-  const { id, timeZone: currentUserTImeZone } = useSelector(
-    (state) => state.user
+  const { id, timeZone: currentUserTImeZone } = useSelector((state) => state.user
   );
   const time = formatAMPM(new Date());
 
@@ -118,7 +118,16 @@ export default function Calendar() {
     lastName,
     id: currentUserId,
   } = useSelector((state) => state.user);
-
+useEffect( ()=>{
+    try{
+      console.log(userDetail)
+     let res= fetchStudents(`${userDetail.id}`).then((res)=>
+      console.log("total tutors",res)
+)}
+    catch(e){
+      console.log(e)
+    }
+    },[])
   const [names, setNames] = useState([]);
   const [name, setName] = useState("");
   const [eventDetails, setEventDetails] = useState([]);
@@ -136,11 +145,15 @@ export default function Calendar() {
   // console.log(moment.tz.zonesForCountry('US'))
   const [intialView, setInitialView] = useState("dayGridMonth");
 const [tutors,setTutors]=useState([]);
+const [alldetails,setAllDetails]=useState([]);
+const [showTutorDetails,setShowTutorDetails]=useState({})
   const [searchedUser, setSearchedUser] = useState({
     id: "",
     role: "",
   });
-
+  useEffect(()=>{
+    console.log("tutos",tutors)
+  },[])
   const refetchSessions = () => {
     // console.log(searchedUser);
     if (persona === "tutor") {
@@ -196,6 +209,10 @@ const [tutors,setTutors]=useState([]);
       setEventDetails(tempEvents);
       // console.log(res.data.data.session)
       let tempSession = res.data.data.session.map((session) => {
+          let tempobj=alldetails
+          tempobj.push(session)
+          setAllDetails(tempobj)
+          console.log("alldetails",alldetails)
           let temparray=tutors
           temparray.push(session.tutorId);
           setTutors(temparray)
@@ -313,7 +330,7 @@ const [tutors,setTutors]=useState([]);
       if (!currentUserId) return;
       fetchSessions(currentUserId, persona);
     }
-  }, [persona]);
+  }, [persona,alldetails]);
 
   useEffect(() => {
     if (persona == "parent") {
@@ -564,7 +581,7 @@ const [tutors,setTutors]=useState([]);
 
     
     const description = arg.event._def.extendedProps.description;
-    let background = "#ebe7ff";
+    let background = "blue";
     let isCompleted = false;
     if (arg.event._def.extendedProps.sessionStatus === "Completed") {
       isCompleted = true;
@@ -574,7 +591,7 @@ const [tutors,setTutors]=useState([]);
       <div className="p-0.5 h-full">
         <div
           className="bg- h-full p-2 rounded-lg"
-          style={{ background: "#41432c" }}
+          style={{ background: 'blue' }}
         >
           <p
             className={`text-primary font-semibold text-sm ${isCompleted ? "line-through" : ""
@@ -939,9 +956,15 @@ const [tutors,setTutors]=useState([]);
       })
     }
   },[tutors])
+  const toggleTutorDetails = (tutorId) => {
+    setShowTutorDetails((prevState) => ({
+      ...prevState,
+      [tutorId]: !prevState[tutorId],
+    }));
+  };
   return (
     <>
-      <div className="lg:ml-pageLeft calender bg-lightWhite min-h-screen">
+      <div className="lg:ml-pageLeft calender bg-lightWhite min-h-screen" id={persona}>
         <p className="text-[#24A3D9] text-xl mb-[30px] mt-[50px] pl-5">
           {organization?.company +
             "  >  " +
@@ -999,7 +1022,7 @@ const [tutors,setTutors]=useState([]);
                   })}
                 </div>
               </div>
-            ) : persona === "student" ? (
+            ) : persona !== "student" ? (
               <></>
             ) : (
               <div>
@@ -1020,31 +1043,32 @@ const [tutors,setTutors]=useState([]);
                     handleInsights(item.value, item.role);
                     fetchSessions(item._id, item.role);
                   }}
-                /> */}
-                <div className="mt-[48px] mb-2">
+                /> */}{console.log("userrrrrrr",alldetails)}
+             {alldetails?.map((item) => ( <div className="mt-[48px] mb-2">
                   <div className="flex justify-between pt-[19px] px-[21px] pb-[14px] bg-[rgba(36,63,217,0.20)] rounded-5 items-center">
-                    <p className="text-[#24A3D9] text-xl font-semibold">Sample Student 1</p>
-                    <p><img src={upIcon} alt="" /></p>
+                    <p className="text-[#24A3D9] text-xl font-semibold">{item.tutorName}</p>
+                    <p><img src= {showTutorDetails[item.id] ? downIcon : upIcon} alt="" onClick={()=>toggleTutorDetails(item.id)} /></p>
                   </div>
                   <div>
-                    <div className="flex justify-between pt-[19px] px-[21px] pb-[14px] bg-[rgba(255,162,141,0.20)] rounded-t-5 items-center mt-5">
-                      <p className="text-[#FFA28D] text-xl font-semibold">Sample Student 1</p>
-                      <p><img src={downIcon} alt="" /></p>
-                    </div>
+                                { showTutorDetails[item.id] && <> <div key={item.id} className="flex justify-between pt-19px px-21px pb-14px bg-rgba(255,162,141,0.20) rounded-t-5 items-center mt-5">
+                                  
+                                  </div>
                     <div className="py-[17.5px] pl-3 bg-[#FFFFFF] rounded-b-5">
-                      <p className="text-[#26435F] text-lg font-medium">Service Name</p>
-                      <p className="text-[17.5px] text-[#7C98B6] mt-[19px]">Topic Name</p>
+                      <p className="text-[#26435F] text-lg font-medium">Service </p>
+                      <p className="text-[17.5px] text-[#7C98B6] mt-[19px]">{item.service}</p>
                       <p className="text-[rgba(56,201,128,1)] text-lg font-medium pt-[40px]">Hours Completed</p>
-                      <p className="text-[25px] text-[rgba(56,201,128,1)] mt-[19px]">1</p>
+                      <p className="text-[25px] text-[rgba(56,201,128,1)] mt-[19px]">{item.total_hours}</p>
                       <p className="text-[#FF7979] text-lg font-medium pt-[40px]">Hours Missed</p>
                       <p className="text-[25px] text-[#FF7979] mt-[19px]">0</p>
                       <p className="text-[rgba(255,206,132,1)] text-lg font-medium pt-[40px]">Hours Canceled</p>
                       <p className="text-[25px] text-[rgba(255,206,132,1)] mt-[19px]">0</p>
                       <p className="text-[rgba(124,152,182,1)] text-lg font-medium pt-[40px]">Hours Scheduled</p>
-                      <p className="text-[25px] text-[rgba(124,152,182,1)] mt-[19px]">1</p>
-                    </div>
+                      <p className="text-[25px] text-[rgba(124,152,182,1)] mt-[19px]">{item.total_hours}</p>
+                    </div></>}
+                    
+                     
                   </div>
-                </div>
+                </div>))}
               </div>
             )}
             <div className="max-h-[600px] overflow-y-auto scrollbar-content">
