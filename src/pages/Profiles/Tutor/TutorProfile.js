@@ -610,7 +610,7 @@ export default function TutorProfile({ isOwn }) {
                                  </div>
                                  <div className='flex gap-4 items-center mb-[10px]'>
                                     <img src={linkedin} alt="linkedinLogo"></img>
-                                    <p className='text-white text-[17.503px]'>{userDetail.linkedIn}</p>
+                                    <a className='text-white text-[17.503px]' href={userDetail.linkedIn}>{userDetail.linkedIn}</a>
                                  </div>
                               </div>
                               {/* <div>

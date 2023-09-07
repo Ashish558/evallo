@@ -670,7 +670,7 @@ export default function AssignedTests() {
                 "  >  "}
               <span className="font-bold">Assignments</span>
             </p>
-            {persona !== "parent" && persona !== "student" && (
+            {persona !== "parent" && persona !== "student" && persona !== "tutor" && (
               <button
                 className="bg-[#FFA28D] text-[15px] justify-center flex p-[7px] design:p-[10px] items-center text-white font-bold rounded-[7.5px] text-base-15"
                 onClick={() => setAssignTestModalActive(true)}
@@ -710,7 +710,7 @@ export default function AssignedTests() {
             )}
           </div>
 
-          {persona === "admin" && (
+          {(persona === "admin" || persona === "tutor") && (
             <>
               <div className="flex gap-4 justify-between items-center">
                 {persona === "student" ? (
@@ -765,20 +765,35 @@ export default function AssignedTests() {
                   parentClassName="w-[11.9791666667vw] text-sm text-[#667085]"
                   type="select"
                 />
-                <InputSelect
-                  value={filterData.assignedBy}
-                  onChange={(val) =>
-                    setFilterData({ ...filterData, assignedBy: val })
-                  }
-                  optionListClassName="text-base-17-5 text-[#667085]"
-                  parentClassName="w-[15.625vw] text-sm"
-                  inputClassName="text-base-17-5 py-3"
-                  inputContainerClassName="shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] bg-white"
-                  placeholderClass="text-base-17-5"
-                  optionData={assignedBys}
-                  placeholder="Filter by Tutor"
-                  type="text"
-                />
+                {persona === "tutor" ?
+                  <div className="w-2/6 flex justify-end">
+                    <div>
+                      <button
+                        className="bg-[#FFA28D] text-[15px] justify-center flex p-[7px] design:p-[10px] items-center text-white font-bold rounded-[7.5px] text-base-15"
+                        onClick={() => setAssignTestModalActive(true)}
+                      >
+                        New Assignment
+                        <img src={AddIcon} className="ml-3" alt="new test" />
+                      </button>
+                    </div>
+                  </div>
+                  :
+
+                  <InputSelect
+                    value={filterData.assignedBy}
+                    onChange={(val) =>
+                      setFilterData({ ...filterData, assignedBy: val })
+                    }
+                    optionListClassName="text-base-17-5 text-[#667085]"
+                    parentClassName="w-[15.625vw] text-sm"
+                    inputClassName="text-base-17-5 py-3"
+                    inputContainerClassName="shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] bg-white"
+                    placeholderClass="text-base-17-5"
+                    optionData={assignedBys}
+                    placeholder="Filter by Tutor"
+                    type="text"
+                  />
+                }
               </div>
 
               <div className="mt-[50px] mb-[23.75px]">
@@ -829,6 +844,7 @@ export default function AssignedTests() {
           )}
           <div className="mt-3">
             <Table
+              noArrow={true}
               numberChecked={numberChecked}
               setnumberChecked={setnumberChecked}
               onClick={{ handleResend, handleDelete }}
