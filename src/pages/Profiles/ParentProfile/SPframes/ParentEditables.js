@@ -26,7 +26,8 @@ import axios from "axios";
 import InputFieldDropdown from "../../../../components/InputField/inputFieldDropdown";
 import InputSelectNew from "../../../../components/InputSelectNew/InputSelectNew";
 import useOutsideAlerter from "../../../../hooks/useOutsideAlerter";
-
+import { Country } from "country-state-city";
+import { useUpdateUserOrganizationMutation } from "../../../../app/services/organization";
 // 637b9df1e9beff25e9c2aa83
 export default function ParentEditables({
   userId,
@@ -114,27 +115,13 @@ export default function ParentEditables({
       title: "Accomodations",
       api: "userDetail",
     },
-    {
-      name: "schoolName",
-      title: "School Name",
-      api: "userDetail",
-    },
-    {
-      name: "grade",
-      title: "Grade",
-      api: "userDetail",
-    },
-
+   
     {
       name: "industry",
       title: "Industry",
       api: "userDetail",
     },
-    {
-      name: "contact",
-      title: "Contact",
-      api: "user",
-    },
+    
     {
       name: "address",
       title: "Residential Address",
@@ -147,7 +134,7 @@ export default function ParentEditables({
     },
     {
       name: "notes",
-      title: "Notes",
+      title: "Internal Notes",
       api: "userDetail",
     },
     {
@@ -166,16 +153,7 @@ export default function ParentEditables({
       api: "userDetail",
     },
 
-    {
-      name: "personality",
-      title: "How Would You Describe Yourself using a few adjectives?",
-      api: persona === "tutor" ? "tutorDetail" : "userDetail",
-    },
-    {
-      name: "interest",
-      title: "What Are Your Interests?",
-      api: persona === "tutor" ? "tutorDetail" : "userDetail",
-    },
+    
     {
       name: "serviceSpecializations",
       title: "Service Specialisation",
@@ -277,6 +255,39 @@ export default function ParentEditables({
       api: "tutorDetail",
     },
   ];
+  const [country, setCountry] = useState([]);
+  const [states, setStates] = useState([]);
+  const handleState = (c) => {
+    if (!c) return;
+    console.log("country", c);
+    if (typeof c === "object")
+      c = c.name
+    const state = country.filter((x) => x.name === c);
+    const currentState = state.map((s) => s.states);
+
+    setStates([...currentState[0]]);
+
+   
+  };
+  const countryData = Country.getAllCountries().map((city) => ({
+    value: city.name,
+    displayValue: city.name,
+  }));
+  useEffect(() => {
+    if(!currentToEdit.country)return 
+    if (country.length === 0) {
+      fetch("countryData.json")
+        .then((res) => res.json())
+        .then((data) => setCountry(data));
+    }
+    const c = currentToEdit.country;
+    if (c) {
+      const state = country.filter((x) => x.name === c);
+      const currentState = state.map((s) => s.states);
+      if (currentState.length > 0) setStates([...currentState[0]]);
+    }
+  
+  }, [currentToEdit]);
 const [addLink,addLinkStatus]=useAddLinkStudentMutation()
 console.log("parentEditables",currentToEdit)
   const handleProfilePhotoChange = (file) => {
@@ -388,7 +399,8 @@ console.log("parentEditables",currentToEdit)
     }
     setCurrentToEdit({ ...currentToEdit, service: tempService });
   };
-
+  const [updateUserOrg, updateUserOrgStatus] =
+    useUpdateUserOrganizationMutation();
   const handleSubjectChange = (item) => {
     let tempSubjects = [...currentToEdit.subjects];
     if (tempSubjects.includes(item)) {
@@ -406,13 +418,29 @@ console.log("parentEditables",currentToEdit)
   //          console.log(res);
   //       })
   // }, [])
-
+  const updateUserAccount = async (values) => {
+    try {
+      updateUserOrg(values)
+        .then((res) => {
+          console.log("org updated", values,res);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    
+    } catch (e) {
+      console.error(e);
+    }
+  };
   const handleSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
     let reqBody = { ...currentToEdit };
     delete reqBody["active"];
      console.log({reqBody,userId});
+     if(reqBody.hasOwnProperty("country")){
+      updateUserAccount(reqBody)
+     }
     const userDetailSave = (reqBody) => {
       // if (reqBody.satScores) {
       //   if (isNaN(reqBody?.satScores?.maths)) reqBody.satScores.maths = 0;
@@ -517,15 +545,6 @@ console.log("parentEditables",currentToEdit)
      
       userDetailSave(reqBody);
     }
-    if (currentToEdit.hasOwnProperty("about")) {
-      let reqBody = {
-        about: currentToEdit.about,
-       
-      };
-     
-     
-      userDetailSave(reqBody);
-    }
     if (currentToEdit.hasOwnProperty("driveLink") && currentToEdit.driveLink.length>2) {
       let reqBody = {
         type: 'driveLink',
@@ -538,6 +557,15 @@ console.log("parentEditables",currentToEdit)
          console.log("drive link added")
         }
       });
+    }
+    if (currentToEdit.hasOwnProperty("about")) {
+      let reqBody = {
+        about: currentToEdit.about,
+        accomodations:"None",
+      };
+     
+     
+      userDetailSave(reqBody);
     }
     if (currentToEdit.hasOwnProperty("dropBoxLink") && currentToEdit.dropBoxLink.length>2) {
       let reqBody = {
@@ -633,6 +661,7 @@ console.log("parentEditables",currentToEdit)
     "personality",
     "subjects",
   ];
+  console.log({country,states,currentToEdit})
   return  Object.keys(toEdit).map((key) => {
     return (
       toEdit[key].active === true && (
@@ -678,7 +707,7 @@ console.log("parentEditables",currentToEdit)
               </div>
               <div className="mt-3 border-1  border-t-2 pb-3 border-[1.25px_solid_#00000033] justify-center "></div>
               <form
-                className="mt-5 mb-4"
+                className="mt-1 mb-4"
                 id="editable-form"
                 onSubmit={handleSubmit}
               >
@@ -706,7 +735,7 @@ console.log("parentEditables",currentToEdit)
                             label="First Name"
                             labelClassname="text-[#26435F]"
                             placeholder="First Name"
-                            inputContainerClassName="text-xs  bg-primary-50 border-0 !py-3 !px-2 !rounded-[5px]"
+                            inputContainerClassName="text-xs  bg-[#F6F6F6] border-0 !py-3 !px-2 !rounded-[5px]"
                             inputClassName="bg-transparent text-xs   "
                             parentClassName="flex-1 "
                             type="text"
@@ -719,28 +748,12 @@ console.log("parentEditables",currentToEdit)
                             }
                           />
 
-                          <InputField
-                            label="School Name"
-                            labelClassname="text-[#26435F]"
-                            placeholder="School Name"
-                            inputContainerClassName="text-xs  bg-primary-50 border-0 !py-3 !px-2 !rounded-[5px]"
-                            inputClassName="bg-transparent text-xs   "
-                            parentClassName="flex-1 "
-                            type="text"
-                            value={currentToEdit.schoolName}
-                            onChange={(e) =>
-                              setCurrentToEdit({
-                                ...currentToEdit,
-                                schoolName: e.target.value,
-                              })
-                            }
-                          />
-
+                        
                           <InputField
                             label="Last Name"
                             labelClassname="text-[#26435F]"
                             placeholder="Last Name"
-                            inputContainerClassName="text-xs  bg-primary-50 border-0 !py-3 !px-2 !rounded-[5px]"
+                            inputContainerClassName="text-xs  bg-[#F6F6F6] border-0 !py-3 !px-2 !rounded-[5px]"
                             inputClassName="bg-transparent text-xs   "
                             parentClassName="flex-1 "
                             type="text"
@@ -758,7 +771,7 @@ console.log("parentEditables",currentToEdit)
                             label="Email"
                             labelClassname="text-[#26435F]"
                             placeholder="Email Id"
-                            inputContainerClassName="text-xs  bg-primary-50 border-0 !py-3 !px-2 !rounded-[5px]"
+                            inputContainerClassName="text-xs  bg-[#F6F6F6] border-0 !py-3 !px-2 !rounded-[5px]"
                             inputClassName="bg-transparent !w-[200px] text-xs   "
                             parentClassName="flex-1 "
                             type="text"
@@ -774,7 +787,7 @@ console.log("parentEditables",currentToEdit)
                           <InputFieldDropdown
                             placeholder=""
                             labelClassname="text-[#26435F]"
-                            inputContainerClassName="!text-xs   bg-primary-50 border-0"
+                            inputContainerClassName="!text-xs   bg-[#F6F6F6] border-0"
                             inputClassName="bg-transparent !w-[80px] !text-xs rounded-[4px] "
                             parentClassName="flex-1 "
                             label="Phone"
@@ -794,20 +807,7 @@ console.log("parentEditables",currentToEdit)
                             }
                           />
 
-                          <InputSelectNew
-                            optionData={grades}
-                            labelClassname="text-[#26435F] !font-bold"
-                            label="Grade"
-                            placeholder="Enter your Grade"
-                            inputContainerClassName="text-xs  bg-primary-50 !py-3 border-0 !rounded-[5px]"
-                            inputClassName="bg-transparent text-xs  "
-                            parentClassName="flex-1 "
-                            type="text"
-                            value={currentToEdit.grade}
-                            onChange={(val) =>
-                              setCurrentToEdit({ ...currentToEdit, grade: val })
-                            }
-                          />
+                         
                         </div>
                       </div>
                     </div>
@@ -833,61 +833,17 @@ console.log("parentEditables",currentToEdit)
                     </div>
                   </div>
                 )}
-                {currentField.name === "fullName" && (
-                  <div>
-                    <div className="flex items-center mb-5">
-                      <p className="font-medium mr-4 text-[20px]">
-                        {" "}
-                        First Name{" "}
-                      </p>
-                      <InputField
-                        labelClassname="hidden"
-                        placeholder="First Name"
-                        inputContainerClassName="text-sm pt-3 pb-3 px-5 bg-primary-50 border-0"
-                        inputClassName="bg-transparent"
-                        parentClassName="flex-1 "
-                        type="text"
-                        value={currentToEdit.firstName}
-                        onChange={(e) =>
-                          setCurrentToEdit({
-                            ...currentToEdit,
-                            firstName: e.target.value,
-                          })
-                        }
-                      />
-                    </div>
-                    <div className="flex items-center">
-                      <p className="font-medium mr-4 text-[20px]">
-                        {" "}
-                        Last Name{" "}
-                      </p>
-                      <InputField
-                        labelClassname="hidden"
-                        placeholder="Last Name"
-                        inputContainerClassName="text-sm pt-3 pb-3 px-5 bg-primary-50 border-0"
-                        inputClassName="bg-transparent"
-                        parentClassName="flex-1 "
-                        type="text"
-                        value={currentToEdit.lastName}
-                        onChange={(e) =>
-                          setCurrentToEdit({
-                            ...currentToEdit,
-                            lastName: e.target.value,
-                          })
-                        }
-                      />
-                    </div>
-                  </div>
-                )}
+            
                 {currentField.name === "frame1" && (
-                  <div className="flex flex-col gap-5 !w-[350px]">
+                  <>
+                  <div className="flex flex-col gap-5 !w-[calc(1000*0.0522vw)] min-w-[550px]">
                     <div className="flex !text-sm gap-4 ">
                       <InputField
                         label="D.O.B"
-                        labelClassname="text-[#26435F]"
+                        labelClassname="text-[#26435F] "
                         placeholder=""
-                        inputContainerClassName="text-xs  bg-primary-50 border-0 !py-3 !px-2 !rounded-[5px]"
-                        inputClassName="bg-transparent text-xs   "
+                        inputContainerClassName="text-xs  bg-[#F6F6F6] border-0 !py-3 !px-2 !rounded-[5px] text-base-17-5"
+                        inputClassName="bg-transparent text-xs text-base-17-5 "
                         parentClassName="flex-1 "
                         type="date"
                         value={currentToEdit.dob}
@@ -901,10 +857,10 @@ console.log("parentEditables",currentToEdit)
                       />
 
                       <InputSelectNew
-                        labelClassname="text-[#26435F] !font-bold"
+                        labelClassname="text-[#26435F] !font-bold text-base-17-5"
                         label="Time zone"
                         placeholder="Time Zone"
-                        inputContainerClassName="text-xs  bg-primary-50 !py-3 border-0 !rounded-[5px]"
+                        inputContainerClassName="text-xs  bg-[#F6F6F6] !py-3 border-0 !rounded-[5px]"
                         inputClassName="bg-transparent text-xs  "
                         parentClassName="flex-1 "
                         type="text"
@@ -915,128 +871,144 @@ console.log("parentEditables",currentToEdit)
                         optionData={timeZones}
                         radio={true}
                       />
-                    </div>
-                    <div className="flex !text-sm gap-4 ">
-                      <InputField
-                        label="DropBox"
-                        labelClassname="text-[#26435F]"
-                        placeholder="Paste your link here"
-                        inputContainerClassName="text-xs  bg-primary-50 border-0 !py-3 !px-2 !rounded-[5px]"
-                        inputClassName="bg-transparent text-xs   "
-                        parentClassName="flex-1 "
-                        type="text"
-                        value={currentToEdit.dropBoxLink}
+                       <InputField
+                         labelClassname="text-[#26435F] !font-bold text-base-17-5"
+                         label="Industry"
+                         placeholder="Industry"
+                         inputContainerClassName="text-xs  bg-[#F6F6F6] !py-3 border-0 !rounded-[5px]"
+                         inputClassName="bg-transparent text-xs  "
+                         parentClassName="flex-1 "
+                         type="text"
+                       
+                        
+                         optionData={timeZones}
+                        value={currentToEdit.industry}
                         onChange={(e) =>
                           setCurrentToEdit({
                             ...currentToEdit,
-                            dropBoxLink: e.target.value,
+                            industry: e.target.value,
                           })
                         }
+                      
                       />
                     </div>
+                
                     <div className="flex !text-sm gap-4 ">
-                      <InputField
-                        label="Drive"
-                        labelClassname="text-[#26435F]"
-                        placeholder="Paste your link here"
-                        inputContainerClassName="text-xs  bg-primary-50 border-0 !py-3 !px-2 !rounded-[5px]"
-                        inputClassName="bg-transparent text-xs   "
+                   
+                       <InputSelectNew
+                        labelClassname="text-[#26435F] !font-bold text-base-17-5"
+                        label="Country"
+                        placeholder="Country"
+                        inputContainerClassName="text-xs  bg-[#F6F6F6] !py-3 border-0 !rounded-[5px]"
+                        inputClassName="bg-transparent text-xs  "
                         parentClassName="flex-1 "
                         type="text"
-                        value={currentToEdit.driveLink}
-                        onChange={(e) =>
+                      
+                        optionData={country}
+                        optionType={"object"}
+                        value={currentToEdit?.country}
+                        
+                         onChange={(e) =>{
+                          handleState(e);
+                        
                           setCurrentToEdit({
                             ...currentToEdit,
-                            driveLink: e.target.value,
+                            country: e.name,
                           })
-                        }
-                      />
+                         }
+                          
+                         }
+                       />
+                         
+                       <InputField
+                          label="Street adress"
+                          labelClassname="text-[#26435F] text-base-17-5"
+                          placeholder=""
+                          inputContainerClassName="text-xs  bg-[#F6F6F6] border-0 !py-3 !px-2 !rounded-[5px]"
+                          inputClassName="bg-transparent text-xs   "
+                          parentClassName="flex-1 "
+                         type="text"
+                         value={currentToEdit.address}
+                         onChange={(e) =>
+                           setCurrentToEdit({
+                             ...currentToEdit,
+                             address: e.target.value,
+                           })
+                         }
+                       />
                     </div>
                     <div className="flex !text-sm gap-4 ">
-                      <InputField
-                        label="Referral Code"
-                        labelClassname="text-[#26435F]"
-                        placeholder=""
-                        inputContainerClassName="text-xs  bg-primary-50 border-0 !py-3 !px-2 !rounded-[5px]"
-                        inputClassName="bg-transparent text-xs   "
-                        parentClassName="flex-1 "
-                        type="text"
-                        value={currentToEdit.subscriptionCode}
-                        onChange={(e) =>
-                          setCurrentToEdit({
-                            ...currentToEdit,
-                            subscriptionCode: e.target.value,
-                          })
-                        }
-                      />
+                    
+                       <InputSelectNew
+                          labelClassname="text-[#26435F] !font-bold text-base-17-5"
+                          label="State"
+                          placeholder="State"
+                          inputContainerClassName="text-xs  bg-[#F6F6F6] !py-3 border-0 !rounded-[5px]"
+                          inputClassName="bg-transparent text-xs  "
+                          parentClassName="flex-1 "
+                          type="text"
+                          optionData={states}
+                          optionType={"object"}
+                          onChange={(e) =>{
+                            setCurrentToEdit({
+                              ...currentToEdit,
+                              state: e.name,
+                            })
+                          }
+                           
+                          }
+                         
+                         
+                         value={currentToEdit.state}
+                        
+                       />
 
-                      <InputField
-                        label="Accomodations"
-                        labelClassname="text-[#26435F]"
+                    
+                      
+                       <InputField
+                            labelClassname="text-[#26435F] !font-bold text-base-17-5"
+                            label="City"
+                            placeholder="City"
+                            inputContainerClassName="text-xs  bg-[#F6F6F6] !py-3 border-0 !rounded-[5px]"
+                            inputClassName="bg-transparent text-xs  "
+                            parentClassName="flex-1 "
+                            type="text"
+                          
+                           
+                            optionData={timeZones}
+                         value={currentToEdit.city}
+                         onChange={(e) =>
+                           setCurrentToEdit({
+                             ...currentToEdit,
+                             city: e.target.value,
+                           })
+                         }
+                       />
+                   
+                       <InputField
+                        label="Zip"
+                        labelClassname="text-[#26435F] text-base-17-5"
                         placeholder=""
-                        inputContainerClassName="text-xs  bg-primary-50 border-0 !py-3 !px-2 !rounded-[5px]"
+                        inputContainerClassName="text-xs  bg-[#F6F6F6] border-0 !py-3 !px-2 !rounded-[5px]"
                         inputClassName="bg-transparent text-xs   "
                         parentClassName="flex-1 "
-                        type="text"
-                        value={currentToEdit.accomodations}
-                        onChange={(e) =>
-                          setCurrentToEdit({
-                            ...currentToEdit,
-                            accomodations: e.target.value,
-                          })
-                        }
-                      />
+                       type="text"
+                         value={currentToEdit.pincode}
+                         onChange={(e) =>
+                           setCurrentToEdit({
+                             ...currentToEdit,
+                             pincode: e.target.value,
+                           })
+                         }
+                       />
+                    
                     </div>
                   </div>
+               
+                 
+                 </>
                 )}
-                  {currentField.name === "whiteBoardLinks" && (
-                  <div className="flex flex-col gap-5  !w-[350px]">
-                 <div className="max-h-[50vh] flex flex-col gap-5 custom-scroller overflow-y-auto">
-
-                   {
-                    currentToEdit?.whiteBoardLinks?.map((it,id)=>{
-return ( <div className="flex !text-sm gap-4 ">
-<InputField
-  label=""
-  labelClassname="text-[#26435F] hidden"
-  placeholder="Add whiteboard link"
-  inputContainerClassName="text-xs  bg-primary-50 border-0 !py-3 !px-2 !rounded-[5px]"
-  inputClassName="bg-transparent text-xs   "
-  parentClassName="flex-1 "
-  type="text"
-  value={it}
-  onChange={(e) =>{
-
-    let temp=[...currentToEdit.whiteBoardLinks]
-    
-    temp[id]=e.target.value
-    setCurrentToEdit({
-      ...currentToEdit,
-      whiteBoardLinks:temp
-    })
-  }
-    
-   
-  }
-/>
-</div>)
-                    })
-                   }
-                   </div>
-                   <p onClick={()=>{
-                    let tempScores = [...currentToEdit.whiteBoardLinks];
-                   
-                      tempScores.push("");
-                      setCurrentToEdit({
-                        ...currentToEdit,
-                        whiteBoardLinks: tempScores,
-                      });
-                   }} className="font-bold !text-lg cursor-pointer    text-[#24A3D9]">Add <svg className="inline-block -mt-1" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
-  <path d="M14.4987 9.29037H9.29037V14.4987C9.29037 14.775 9.18062 15.0399 8.98527 15.2353C8.78992 15.4306 8.52497 15.5404 8.2487 15.5404C7.97243 15.5404 7.70748 15.4306 7.51213 15.2353C7.31678 15.0399 7.20703 14.775 7.20703 14.4987V9.29037H1.9987C1.72243 9.29037 1.45748 9.18062 1.26213 8.98527C1.06678 8.78992 0.957031 8.52497 0.957031 8.2487C0.957031 7.97243 1.06678 7.70748 1.26213 7.51213C1.45748 7.31678 1.72243 7.20703 1.9987 7.20703H7.20703V1.9987C7.20703 1.72243 7.31678 1.45748 7.51213 1.26213C7.70748 1.06678 7.97243 0.957031 8.2487 0.957031C8.52497 0.957031 8.78992 1.06678 8.98527 1.26213C9.18062 1.45748 9.29037 1.72243 9.29037 1.9987V7.20703H14.4987C14.775 7.20703 15.0399 7.31678 15.2353 7.51213C15.4306 7.70748 15.5404 7.97243 15.5404 8.2487C15.5404 8.52497 15.4306 8.78992 15.2353 8.98527C15.0399 9.18062 14.775 9.29037 14.4987 9.29037Z" fill="#24A3D9"/>
-</svg></p>
-                   
-                  </div>
-                )}
+                 
                 {currentField.name === "associatedStudents" && (
                   <div>
                     <div className=" mb-5">
@@ -1073,65 +1045,7 @@ return ( <div className="flex !text-sm gap-4 ">
                     </div>
                   </div>
                 )}
-                {currentField.name === "contact" && (
-                  <div>
-                    <div className="flex items-center mb-5">
-                      <p className="font-medium mr-4 min-w-[80px] text-[20px]">
-                        {" "}
-                        Email Id{" "}
-                      </p>
-                      <InputField
-                        labelClassname="hidden"
-                        placeholder="Email Id"
-                        inputContainerClassName="text-sm pt-3 pb-3 px-5 bg-primary-50 border-0"
-                        inputClassName="bg-transparent rounded-[4px]"
-                        parentClassName="flex-1 "
-                        type="text"
-                        value={currentToEdit.email}
-                        onChange={(e) =>
-                          setCurrentToEdit({
-                            ...currentToEdit,
-                            email: e.target.value,
-                          })
-                        }
-                      />
-                    </div>
-                    <div className="flex items-center">
-                      <p className="font-medium mr-4 min-w-[80px] text-[20px]">
-                        {" "}
-                        Phone{" "}
-                      </p>
-                      <InputField
-                        prefix=""
-                        labelClassname="hidden"
-                        placeholder="Phone"
-                        inputContainerClassName="text-sm pt-3 pb-3 px-5 bg-primary-50 border-0"
-                        inputClassName="bg-transparent rounded-[4px]  ml-[70px]"
-                        parentClassName="flex-1 "
-                        type="text"
-                        value={currentToEdit.phone}
-                        inputLeftField={
-                          <CountryCode
-                            className={styles.phoneNumber}
-                            numberPrefix={currentToEdit.phoneCode}
-                            setNumberPrefix={(val) => {
-                              setCurrentToEdit({
-                                ...currentToEdit,
-                                phoneCode: val,
-                              });
-                            }}
-                          />
-                        }
-                        onChange={(e) =>
-                          setCurrentToEdit({
-                            ...currentToEdit,
-                            phone: e.target.value,
-                          })
-                        }
-                      />
-                    </div>
-                  </div>
-                )}
+           
                 {currentField.name === "birthYear" && (
                   <div className="bg-[#F3F5F7] ">
                     {/* <div className='flex items-center mb-5 bg-white rounded-10' style={{ boxShadow: "-3px -4px 24px rgba(0, 0, 0, 0.25)" }}> */}
@@ -1139,7 +1053,7 @@ return ( <div className="flex !text-sm gap-4 ">
                     <InputField
                       labelClassname="hidden"
                       placeholder="Enter your birth year"
-                      inputContainerClassName="text-sm pt-3 pb-3 rounded-sm bg-primary-50 border-0"
+                      inputContainerClassName="text-sm pt-3 pb-3 rounded-sm bg-[#F6F6F6] border-0"
                       inputClassName="bg-transparent"
                       parentClassName="flex-1 "
                       type="text"
@@ -1169,7 +1083,7 @@ return ( <div className="flex !text-sm gap-4 ">
                             industry: e.target.value,
                           })
                         }
-                        inputContainerClassName="text-sm pt-3 pb-3 rounded-sm bg-primary-50 border-0"
+                        inputContainerClassName="text-sm pt-3 pb-3 rounded-sm bg-[#F6F6F6] border-0"
                         inputClassName="bg-transparent"
                         placeholder="Industry"
                         parentClassName="w-full mr-4"
@@ -1184,7 +1098,7 @@ return ( <div className="flex !text-sm gap-4 ">
                       <InputField
                         labelClassname="hidden"
                         placeholder="Enter your Residential Address"
-                        inputContainerClassName="text-sm pt-3 pb-3 px-5 bg-primary-50 border-0"
+                        inputContainerClassName="text-sm pt-3 pb-3 px-5 bg-[#F6F6F6] border-0"
                         inputClassName="bg-transparent"
                         parentClassName="flex-1 "
                         type="text"
@@ -1199,48 +1113,8 @@ return ( <div className="flex !text-sm gap-4 ">
                     </div>
                   </div>
                 )}
-                {currentField.name === "grade" && (
-                  <div>
-                    <div className="flex items-center mb-5 pt-6">
-                      {/* <p className='font-medium mr-4 min-w-[60px]'>  </p> */}
-                      <InputSelect
-                        optionData={grades}
-                        labelClassname="hidden"
-                        placeholder="Enter your Grade"
-                        inputContainerClassName="text-sm pt-3 pb-3 px-5 bg-primary-50 border-0"
-                        inputClassName="bg-transparent"
-                        parentClassName="flex-1 "
-                        type="text"
-                        value={currentToEdit.grade}
-                        onChange={(val) =>
-                          setCurrentToEdit({ ...currentToEdit, grade: val })
-                        }
-                      />
-                    </div>
-                  </div>
-                )}
-                {currentField.name === "schoolName" && (
-                  <div>
-                    <div className="flex items-center mb-5 pt-6">
-                      {/* <p className='font-medium mr-4 min-w-[60px]'>  </p> */}
-                      <InputField
-                        labelClassname="hidden"
-                        placeholder="Enter your Schol Name"
-                        inputContainerClassName="text-sm pt-3 pb-3 px-5 bg-primary-50 border-0"
-                        inputClassName="bg-transparent"
-                        parentClassName="flex-1 "
-                        type="text"
-                        value={currentToEdit.schoolName}
-                        onChange={(e) =>
-                          setCurrentToEdit({
-                            ...currentToEdit,
-                            schoolName: e.target.value,
-                          })
-                        }
-                      />
-                    </div>
-                  </div>
-                )}
+                
+              
                 {currentField.name === "timeZone" && (
                   <div>
                     <div className="flex items-center mb-5 pt-3 pb-5">
@@ -1261,75 +1135,44 @@ return ( <div className="flex !text-sm gap-4 ">
                 )}
                 {currentField.name === "notes" && (
                   <div>
-                    <div className="flex items-center mb-5 pt-6">
+                    <div className="flex items-center mb-5 pt-6 w-[400px]">
                       {/* <p className='font-medium mr-4 min-w-[60px]'>  </p> */}
-                      <InputField
-                        labelClassname="hidden"
-                        placeholder="Enter your notes"
-                        inputContainerClassName="text-sm pt-3 pb-3 px-5 bg-primary-50 border-0"
-                        inputClassName="bg-transparent"
-                        parentClassName="flex-1 "
-                        type="text"
-                        value={currentToEdit.notes}
+                      <div className="border w-full h-full rounded-md">
+                      <textarea
+                rows="3"
+                value={currentToEdit.notes}
                         onChange={(e) =>
                           setCurrentToEdit({
                             ...currentToEdit,
                             notes: e.target.value,
                           })
                         }
-                      />
+
+                className={`mt-1 block w-full resize-none focus:!ring-blue-500 p-2 focus:!border-blue-500 placeholder-[#CBD6E2] text-sm  placeholder:text-xs ${currentToEdit?.notes?.length===0?"h-":"h-[180px] "}`}
+                placeholder=""
+              ></textarea>
+              {
+                currentToEdit?.notes?.length==0&&
+                 <div className=" text-[#CBD6E2] text-xs flex-1 text-base-17-5 p-3">
+                 Add notes about the parent. Here are some ideas to get you
+                 started:
+                 <ul className="list-disc px-4 design:px-5">
+                   <li>How did the initial call go?</li>
+                   <li>What is the parent’s budget?</li>
+                   <li>What timeline do they have in mind for tutoring?</li>
+                   <li>Has the student been tutored before?</li>
+                   <li>Do they prefer online or offline tutoring?</li>
+                   <li>Does the student have siblings?</li>
+                 </ul>
+               </div>
+              }
+                      </div>
+                     
+                     
                     </div>
                   </div>
                 )}
-                {currentField.name === "subscribeType" && (
-                  <div>
-                    <div className="flex items-center mb-5 pt-1 pb-5">
-                      <InputSelect
-                        value={currentToEdit.subscribeType}
-                        onChange={(val) =>
-                          setCurrentToEdit({
-                            ...currentToEdit,
-                            subscribeType: val,
-                          })
-                        }
-                        optionData={[
-                          "Unsubscribed",
-                          "3 Months Trial",
-                          "6 Months Trial",
-                          "Subscribed",
-                        ]}
-                        radio={true}
-                        inputContainerClassName="pt-3 pb-3 border bg-white"
-                        placeholder="Subscription Type"
-                        parentClassName="w-full mr-4"
-                        type="select"
-                      />
-                    </div>
-                  </div>
-                )}
-                {currentField.name === "subscriptionCode" && (
-                  <div>
-                    <div className="flex items-center mb-5 pt-1 pb-5">
-                      <InputSelect
-                        value={currentToEdit.subscriptionCode}
-                        onChange={(val) =>
-                          setCurrentToEdit({
-                            ...currentToEdit,
-                            subscriptionCode: val,
-                          })
-                        }
-                        optionData={settings.subscriptionCode.map(
-                          (item) => item.code
-                        )}
-                        radio={true}
-                        inputContainerClassName="pt-3 pb-3 border bg-white"
-                        placeholder="Subscription Type"
-                        parentClassName="w-full mr-4"
-                        type="select"
-                      />
-                    </div>
-                  </div>
-                )}
+               
                 {currentField.name === "service" && (
                   <div>
                     <div className="flex items-center mb-5 pt-1 pb-5">
@@ -1347,7 +1190,7 @@ return ( <div className="flex !text-sm gap-4 ">
                         optionData={organization?.settings?.servicesAndSpecialization.map(
                           (item) => item.service
                         )}
-                        inputContainerClassName="pt-3 pb-3 border bg-white"
+                        inputContainerClassName="pt-3 pb-3 border rounded-md bg-[#F6F6F6]"
                         placeholder="Service"
                         parentClassName="w-full mr-4"
                         type="select"
@@ -1365,39 +1208,7 @@ return ( <div className="flex !text-sm gap-4 ">
                     </div>
                   </div>
                 )}
-                {currentField.name === "subjects" && (
-                  <div>
-                    <div className="flex items-center mb-5 pt-1 pb-5">
-                      <InputSelect
-                        value={
-                          currentToEdit.subjects.length === 0
-                            ? ""
-                            : currentToEdit.subjects[0]
-                        }
-                        checkbox={{
-                          visible: true,
-                          name: "subjects",
-                          match: currentToEdit.subjects,
-                        }}
-                        optionData={settings.classes ? settings.classes : []}
-                        inputContainerClassName="pt-3 pb-3 border bg-white"
-                        placeholder="Subjects"
-                        parentClassName="w-full mr-4"
-                        type="select"
-                        onChange={
-                          (val) => handleSubjectChange(val)
-                          // setCurrentToEdit({ ...currentToEdit, service: val })
-                        }
-                        onOptionClick={(item) => {
-                          // setStudent(item.value);
-                          console.log(item);
-                          // handleStudentsChange(item)
-                          // setCurrentToEdit({ ...currentToEdit, students: [... item._id] });
-                        }}
-                      />
-                    </div>
-                  </div>
-                )}
+             
                 {currentField.name === "leadStatus" && (
                   <div>
                     <div className="flex items-center mb-5 pt-2">
@@ -1409,9 +1220,9 @@ return ( <div className="flex !text-sm gap-4 ">
                             leadStatus: val,
                           })
                         }
-                        optionData={settings.leadStatus}
+                        optionData={organization?.settings.leadStatus}
                         radio={true}
-                        inputContainerClassName="pt-3 pb-3 border bg-white"
+                        inputContainerClassName="pt-3 pb-3 border rounded-md bg-[#F6F6F6]"
                         placeholder="Lead Status"
                         parentClassName="w-full mr-4"
                         type="select"
@@ -1426,7 +1237,7 @@ return ( <div className="flex !text-sm gap-4 ">
                       <InputField
                         labelClassname="hidden"
                         placeholder="Accomodations"
-                        inputContainerClassName="text-sm pt-3 pb-3 px-5 bg-primary-50 border-0"
+                        inputContainerClassName="text-sm pt-3 pb-3 px-5 bg-[#F6F6F6] border-0"
                         inputClassName="bg-transparent"
                         parentClassName="flex-1 "
                         type="text"
@@ -1494,7 +1305,7 @@ return ( <div className="flex !text-sm gap-4 ">
                       <InputField
                         labelClassname="hidden"
                         placeholder="Education"
-                        inputContainerClassName="text-sm pt-3.5 pb-3 px-5 bg-primary-50 border-0"
+                        inputContainerClassName="text-sm pt-3.5 pb-3 px-5 bg-[#F6F6F6] border-0"
                         inputClassName="bg-transparent rounded-[4px]"
                         parentClassName="flex-1"
                         type="text"
@@ -1515,7 +1326,7 @@ return ( <div className="flex !text-sm gap-4 ">
                                  <InputField
                                     labelClassname='hidden'
                                     placeholder='Address'
-                                    inputContainerClassName='text-sm pt-3.5 pb-3 px-5 bg-primary-50 border-0'
+                                    inputContainerClassName='text-sm pt-3.5 pb-3 px-5 bg-[#F6F6F6] border-0'
                                     inputClassName='bg-transparent rounded-[4px]'
                                     parentClassName='flex-1' type='text'
                                     value={currentToEdit.address}
@@ -1531,7 +1342,7 @@ return ( <div className="flex !text-sm gap-4 ">
                         <InputField
                           labelClassname="hidden"
                           placeholder="Text"
-                          inputContainerClassName="text-sm pt-3.5 pb-3 px-5 bg-primary-50 border-"
+                          inputContainerClassName="text-sm pt-3.5 pb-3 px-5 bg-[#F6F6F6] border-"
                           inputClassName="bg-transparent rounded-[4px]"
                           parentClassName="flex-1"
                           type="text"
@@ -1553,7 +1364,7 @@ return ( <div className="flex !text-sm gap-4 ">
                         <InputField
                           labelClassname="hidden"
                           placeholder="City"
-                          inputContainerClassName="text-sm pt-3.5 pb-3 px-5 bg-primary-50 border-"
+                          inputContainerClassName="text-sm pt-3.5 pb-3 px-5 bg-[#F6F6F6] border-"
                           inputClassName="bg-transparent rounded-[4px]"
                           parentClassName="flex-1"
                           type="text"
@@ -1578,7 +1389,7 @@ return ( <div className="flex !text-sm gap-4 ">
                         <InputField
                           labelClassname="hidden"
                           placeholder="Text"
-                          inputContainerClassName="text-sm pt-3.5 pb-3 px-5 bg-primary-50 border-"
+                          inputContainerClassName="text-sm pt-3.5 pb-3 px-5 bg-[#F6F6F6] border-"
                           inputClassName="bg-transparent rounded-[4px]"
                           parentClassName="flex-1"
                           type="text"
@@ -1600,7 +1411,7 @@ return ( <div className="flex !text-sm gap-4 ">
                         <InputField
                           labelClassname="hidden"
                           placeholder="City"
-                          inputContainerClassName="text-sm pt-3.5 pb-3 px-5 bg-primary-50 border-"
+                          inputContainerClassName="text-sm pt-3.5 pb-3 px-5 bg-[#F6F6F6] border-"
                           inputClassName="bg-transparent rounded-[4px]"
                           parentClassName="flex-1"
                           type="text"
@@ -1625,7 +1436,7 @@ return ( <div className="flex !text-sm gap-4 ">
                         <InputField
                           labelClassname="hidden"
                           placeholder="Text"
-                          inputContainerClassName="text-sm pt-3.5 pb-3 px-5 bg-primary-50 border-"
+                          inputContainerClassName="text-sm pt-3.5 pb-3 px-5 bg-[#F6F6F6] border-"
                           inputClassName="bg-transparent rounded-[4px]"
                           parentClassName="flex-1"
                           type="text"
@@ -1647,7 +1458,7 @@ return ( <div className="flex !text-sm gap-4 ">
                       <InputField
                         labelClassname="hidden"
                         placeholder="Tagline"
-                        inputContainerClassName="text-sm pt-3.5 pb-3 px-5 bg-primary-50 border-0"
+                        inputContainerClassName="text-sm pt-3.5 pb-3 px-5 bg-[#F6F6F6] border-0"
                         inputClassName="bg-transparent rounded-[4px]"
                         parentClassName="flex-1"
                         type="text"
@@ -1662,73 +1473,7 @@ return ( <div className="flex !text-sm gap-4 ">
                     </div>
                   </div>
                 )}
-                {currentField.name === "rates" && (
-                  <div>
-                    <div className="flex items-center mb-4">
-                      <p className="font-medium mr-4 min-w-[150px]">
-                        Test Prep Rate
-                      </p>
-                      <InputField
-                        labelClassname="hidden"
-                        placeholder=""
-                        inputContainerClassName="text-sm pt-3 pb-3 px-5 bg-primary-50 border-0"
-                        inputLeftField={<div>$</div>}
-                        inputClassName="bg-transparent pl-4 rounded-[4px]"
-                        parentClassName="flex-1 "
-                        type="text"
-                        value={currentToEdit.testPrepRate}
-                        onChange={(e) =>
-                          setCurrentToEdit({
-                            ...currentToEdit,
-                            testPrepRate: e.target.value,
-                          })
-                        }
-                      />
-                    </div>
-                    <div className="flex items-center mb-4">
-                      <p className="font-medium mr-4 min-w-[150px] ">
-                        Subject Tutoring
-                      </p>
-                      <InputField
-                        labelClassname="hidden"
-                        placeholder=""
-                        inputContainerClassName="text-sm pt-3 pb-3 px-5 bg-primary-50 border-0"
-                        inputLeftField={<div>$</div>}
-                        inputClassName="bg-transparent pl-4 rounded-[4px]"
-                        parentClassName="flex-1 "
-                        type="text"
-                        value={currentToEdit.subjectTutoringRate}
-                        onChange={(e) =>
-                          setCurrentToEdit({
-                            ...currentToEdit,
-                            subjectTutoringRate: e.target.value,
-                          })
-                        }
-                      />
-                    </div>
-                    <div className="flex items-center">
-                      <p className="font-medium mr-4 min-w-[150px] ">
-                        Other Rate
-                      </p>
-                      <InputField
-                        labelClassname="hidden"
-                        placeholder=""
-                        inputContainerClassName="text-sm pt-3 pb-3 px-5 bg-primary-50 border-0"
-                        inputLeftField={<div>$</div>}
-                        inputClassName="bg-transparent pl-4 rounded-[4px]"
-                        parentClassName="flex-1 "
-                        type="text"
-                        value={currentToEdit.otherRate}
-                        onChange={(e) =>
-                          setCurrentToEdit({
-                            ...currentToEdit,
-                            otherRate: e.target.value,
-                          })
-                        }
-                      />
-                    </div>
-                  </div>
-                )}
+                
                 {currentField.name === "tutorServices" && (
                   <div>
                     <div className="flex items-center mb-4">
@@ -1742,7 +1487,7 @@ return ( <div className="flex !text-sm gap-4 ">
                       <InputField
                         labelClassname="hidden"
                         placeholder=""
-                        inputContainerClassName="text-sm pt-3 pb-3 px-5 bg-primary-50 border-0"
+                        inputContainerClassName="text-sm pt-3 pb-3 px-5 bg-[#F6F6F6] border-0"
                         inputLeftField={<div>$</div>}
                         inputClassName="bg-transparent pl-4 rounded-[4px]"
                         parentClassName="flex-1 "
@@ -1759,7 +1504,7 @@ return ( <div className="flex !text-sm gap-4 ">
                       <InputField
                         labelClassname="hidden"
                         placeholder="Payment Info"
-                        inputContainerClassName="text-sm pt-3.5 pb-3 px-5 w-[181px] bg-primary-50 border-0 text-[#667085]"
+                        inputContainerClassName="text-sm pt-3.5 pb-3 px-5 w-[181px] bg-[#F6F6F6] border-0 text-[#667085]"
                         inputClassName="bg-transparent rounded-[4px]"
                         parentClassName="flex-1"
                         type="text"
@@ -1780,7 +1525,7 @@ return ( <div className="flex !text-sm gap-4 ">
                                  <InputField
                                     labelClassname='hidden'
                                     placeholder=''
-                                    inputContainerClassName='text-sm pt-3 pb-3 px-5 bg-primary-50 border-0'
+                                    inputContainerClassName='text-sm pt-3 pb-3 px-5 bg-[#F6F6F6] border-0'
                                     inputClassName='bg-transparent rounded-[4px]'
                                     parentClassName='flex-1 ' type='text'
                                     value={currentToEdit.bankName}
@@ -1796,7 +1541,7 @@ return ( <div className="flex !text-sm gap-4 ">
                                  <InputField
                                     labelClassname='hidden'
                                     placeholder=''
-                                    inputContainerClassName='text-sm pt-3 pb-3 px-5 bg-primary-50 border-0'
+                                    inputContainerClassName='text-sm pt-3 pb-3 px-5 bg-[#F6F6F6] border-0'
                                     inputClassName='bg-transparent rounded-[4px]'
                                     parentClassName='flex-1 ' type='text'
                                     value={currentToEdit.AccNo}
@@ -1812,7 +1557,7 @@ return ( <div className="flex !text-sm gap-4 ">
                                  <InputField
                                     labelClassname='hidden'
                                     placeholder=''
-                                    inputContainerClassName='text-sm pt-3 pb-3 px-5 bg-primary-50 border-0'
+                                    inputContainerClassName='text-sm pt-3 pb-3 px-5 bg-[#F6F6F6] border-0'
                                     inputClassName='bg-transparent rounded-[4px]'
                                     parentClassName='flex-1 ' type='text'
                                     value={currentToEdit.ifcsCode}
@@ -1837,7 +1582,7 @@ return ( <div className="flex !text-sm gap-4 ">
                       <InputField
                         labelClassname="hidden"
                         placeholder="Tutor Rank"
-                        inputContainerClassName="text-sm pt-3.5 pb-3 px-5 bg-primary-50 border-0"
+                        inputContainerClassName="text-sm pt-3.5 pb-3 px-5 bg-[#F6F6F6] border-0"
                         inputClassName="bg-transparent rounded-[4px]"
                         parentClassName="flex-1"
                         type="text"
@@ -1857,7 +1602,7 @@ return ( <div className="flex !text-sm gap-4 ">
                     <InputField
                       labelClassname="hidden"
                       placeholder=""
-                      inputContainerClassName="text-sm pt-3 pb-3 px-5 bg-primary-50 border-0 text-[#667085]"
+                      inputContainerClassName="text-sm pt-3 pb-3 px-5 bg-[#F6F6F6] border-0 text-[#667085]"
                       inputLeftField={<div>$</div>}
                       inputClassName="bg-transparent pl-4 rounded-[4px]"
                       parentClassName="flex-1 max-w-[181px]"
@@ -1934,7 +1679,7 @@ return ( <div className="flex !text-sm gap-4 ">
                               <InputField
                                 labelClassname="hidden"
                                 placeholder="First Name"
-                                inputContainerClassName="text-sm pt-3 pb-3 px-5 bg-primary-50 border-white"
+                                inputContainerClassName="text-sm pt-3 pb-3 px-5 bg-[#F6F6F6] border-white"
                                 inputClassName="bg-transparent text-[#667085] text-400"
                                 value={currentToEdit.firstName}
                                 onChange={(e) =>
@@ -1960,7 +1705,7 @@ return ( <div className="flex !text-sm gap-4 ">
                               <InputField
                                 labelClassname="hidden"
                                 placeholder="Last Name"
-                                inputContainerClassName="text-sm pt-3 pb-3 px-5 bg-primary-50 border-white"
+                                inputContainerClassName="text-sm pt-3 pb-3 px-5 bg-[#F6F6F6] border-white"
                                 inputClassName="bg-transparent text-[#667085] text-400"
                                 value={currentToEdit.lastName}
                                 onChange={(e) =>
@@ -1987,7 +1732,7 @@ return ( <div className="flex !text-sm gap-4 ">
                               <InputField
                                 labelClassname="hidden"
                                 placeholder="Email"
-                                inputContainerClassName="text-sm pt-3 pb-3 px-5 bg-primary-50 border-white"
+                                inputContainerClassName="text-sm pt-3 pb-3 px-5 bg-[#F6F6F6] border-white"
                                 inputClassName="bg-transparent text-[#667085] text-400"
                                 value={currentToEdit.email}
                                 onChange={(e) =>
@@ -2013,7 +1758,7 @@ return ( <div className="flex !text-sm gap-4 ">
                               <InputField
                                 labelClassname="hidden"
                                 placeholder="Linkedin"
-                                inputContainerClassName="text-sm pt-3 pb-3 px-5 bg-primary-50 border-white"
+                                inputContainerClassName="text-sm pt-3 pb-3 px-5 bg-[#F6F6F6] border-white"
                                 inputClassName="bg-transparent text-[#667085] text-400"
                                 value={currentToEdit.linkedIn}
                                 onChange={(e) =>
@@ -2040,7 +1785,7 @@ return ( <div className="flex !text-sm gap-4 ">
                                   <InputField
                                     labelClassname="hidden"
                                     placeholder=""
-                                    inputContainerClassName="text-sm pt-3 pb-3 px-5 bg-primary-50 border-white"
+                                    inputContainerClassName="text-sm pt-3 pb-3 px-5 bg-[#F6F6F6] border-white"
                                     inputClassName="bg-transparent text-[#667085] text-400"
                                     value={currentToEdit.phoneCode}
                                     onChange={(e) =>
@@ -2067,7 +1812,7 @@ return ( <div className="flex !text-sm gap-4 ">
                                   <InputField
                                     labelClassname="hidden"
                                     placeholder="Mobile"
-                                    inputContainerClassName="text-sm pt-3 pb-3 px-5 bg-primary-50 border-white"
+                                    inputContainerClassName="text-sm pt-3 pb-3 px-5 bg-[#F6F6F6] border-white"
                                     inputClassName="bg-transparent text-[#667085] text-400"
                                     value={currentToEdit.phone}
                                     onChange={(e) => {
@@ -2182,607 +1927,12 @@ return ( <div className="flex !text-sm gap-4 ">
                     </div>
                   </div>
                 )}
-                {currentField.name === "personality" && (
-                  <div className="flex flex-wrap">
-                    {settings.personality.map((item) => {
-                      return !currentToEdit.personality.includes(item._id) ? (
-                        <div
-                          className={`px-3 mr-2 rounded rounded-md py-1.5 border border-primary text-primary cursor-pointer`}
-                          onClick={() =>
-                            setCurrentToEdit({
-                              ...currentToEdit,
-                              personality: [
-                                ...currentToEdit.personality,
-                                item._id,
-                              ],
-                            })
-                          }
-                        >
-                          <p className="font-medium">{item.text}</p>
-                        </div>
-                      ) : (
-                        <div
-                          className={`px-3 mr-2 rounded rounded-md text-white py-1.5 border border-primary bg-primary text-primary cursor-pointer`}
-                          onClick={() =>
-                            setCurrentToEdit({
-                              ...currentToEdit,
-                              personality: currentToEdit.personality.filter(
-                                (id) => id !== item._id
-                              ),
-                            })
-                          }
-                        >
-                          <p className="font-medium">{item.text}</p>
-                        </div>
-                      );
-                    })}
-                  </div>
-                )}
-                {currentField.name === "interest" && (
-                  <div className="flex flex-wrap">
-                    {settings.interest.map((item) => {
-                      return !currentToEdit?.interest?.includes(item._id) ? (
-                        <div
-                          id="selected"
-                          className={`px-3 mr-2  rounded rounded-lg py-1.5 border-[1.33px] border-[#26435F80] text-[#26435F80]  cursor-pointer`}
-                          onClick={() => {
-                            let intersetArray = [];
-
-                            if (currentToEdit.interest) {
-                              intersetArray = currentToEdit.interest;
-                            }
-                            console.log(intersetArray);
-                            setCurrentToEdit({
-                              ...currentToEdit,
-                              interest: [...intersetArray, item._id],
-                            });
-                          }}
-                        >
-                          <p className="font-semibold">{item.text}</p>
-                        </div>
-                      ) : (
-                        <div
-                          className={`px-3 mr-2 rounded rounded-md text-white py-1.5 border border-primary bg-primary text-primary cursor-pointer`}
-                          onClick={() =>
-                            setCurrentToEdit({
-                              ...currentToEdit,
-                              interest: currentToEdit.interest.filter(
-                                (id) => id !== item._id
-                              ),
-                            })
-                          }
-                        >
-                          <p className="font-medium">{item.text}</p>
-                        </div>
-                      );
-                    })}
-                  </div>
-                )}
-                {currentField.name === "serviceSpecializations" && (
-                  <div className="flex flex-wrap">
-                    {settings?.Expertise?.map((item) => {
-                      return !currentToEdit?.serviceSpecializations?.includes(
-                        item._id
-                      ) ? (
-                        <div
-                          className={`px-3 mr-2 rounded rounded-lg   py-1.5 border-[1.33px] border-[#26435F80] text-[#26435F80]  cursor-pointer`}
-                          onClick={() => {
-                            let servicesArray = [];
-                            if (currentToEdit.serviceSpecializations) {
-                              servicesArray =
-                                currentToEdit.serviceSpecializations;
-                            }
-                            console.log(servicesArray);
-                            setCurrentToEdit({
-                              ...currentToEdit,
-                              serviceSpecializations: [
-                                ...servicesArray,
-                                item._id,
-                              ],
-                            });
-                          }}
-                        >
-                          <p className="font-medium">{item.text}</p>
-                        </div>
-                      ) : (
-                        <div
-                          className={`px-3 mr-2 rounded rounded-md text-white py-1.5 border border-primary bg-primary text-primary font-semibold cursor-pointer`}
-                          onClick={() =>
-                            setCurrentToEdit({
-                              ...currentToEdit,
-                              serviceSpecializations:
-                                currentToEdit.serviceSpecializations.filter(
-                                  (id) => id !== item._id
-                                ),
-                            })
-                          }
-                        >
-                          <p className="font-medium">{item.text}</p>
-                        </div>
-                      );
-                    })}
-                  </div>
-                )}
-                {currentField.name === "tutorContact" && (
-                  <div>
-                    <div className="flex items-center mb-5">
-                      <p className="font-medium mr-4 min-w-[80px] text-[20px]">
-                        {" "}
-                        Linked In{" "}
-                      </p>
-                      <InputField
-                        labelClassname="hidden"
-                        placeholder="Linked in"
-                        inputContainerClassName="text-sm pt-3 pb-3 px-5 bg-primary-50 border-0"
-                        inputClassName="bg-transparent rounded-[4px]"
-                        parentClassName="flex-1 "
-                        type="text"
-                        value={currentToEdit.linkedIn}
-                        onChange={(e) =>
-                          setCurrentToEdit({
-                            ...currentToEdit,
-                            linkedIn: e.target.value,
-                          })
-                        }
-                      />
-                    </div>
-
-                    <div className="flex items-center mb-5">
-                      <p className="font-medium mr-4 min-w-[80px] text-[20px]">
-                        {" "}
-                        Email Id{" "}
-                      </p>
-                      <InputField
-                        labelClassname="hidden"
-                        placeholder="Email Id"
-                        inputContainerClassName="text-sm pt-3 pb-3 px-5 bg-primary-50 border-0"
-                        inputClassName="bg-transparent rounded-[4px]"
-                        parentClassName="flex-1 "
-                        type="text"
-                        value={currentToEdit.email}
-                        onChange={(e) =>
-                          setCurrentToEdit({
-                            ...currentToEdit,
-                            email: e.target.value,
-                          })
-                        }
-                      />
-                    </div>
-                    <div className="flex items-center">
-                      <p className="font-medium mr-4 min-w-[80px] text-[20px]">
-                        {" "}
-                        Phone{" "}
-                      </p>
-                      <InputField
-                        labelClassname="hidden"
-                        placeholder="Phone"
-                        inputContainerClassName="text-sm pt-3 pb-3 px-5 bg-primary-50 border-0"
-                        inputClassName="bg-transparent rounded-[4px] ml-[70px]"
-                        parentClassName="flex-1 "
-                        type="text"
-                        value={currentToEdit.phone}
-                        inputLeftField={
-                          <CountryCode
-                            className={styles.phoneNumber}
-                            numberPrefix={currentToEdit.phoneCode}
-                            setNumberPrefix={(val) => {
-                              setCurrentToEdit({
-                                ...currentToEdit,
-                                phoneCode: val,
-                              });
-                            }}
-                          />
-                        }
-                        onChange={(e) =>
-                          setCurrentToEdit({
-                            ...currentToEdit,
-                            phone: e.target.value,
-                          })
-                        }
-                      />
-                    </div>
-                  </div>
-                )}
-                {currentField.name === "satScores" && (
-                  <div className="flex flex-col gap-4">
-                     <div className="max-h-[50vh] overflow-y-auto custom-scroller">
-
-                   
-                      {currentToEdit?.satScores?.map(
-                        (it,selectedScoreIndex) => {
-                          return (
-                          <div className="flex flex-col ">
-                            <p className="font-bold !text-lg cursor-pointer mb-2  text-[#24A3D9]">SAT {selectedScoreIndex+1}</p>
-                            <div className="flex gap-5">
-                              <InputField
-                                labelClassname="hidden"
-                                placeholder="Verbal Score"
-                                placeholderClassName="text-sm"
-                                inputContainerClassName="text-sm pt-3 text-center pb-3 bg-primary-50 border-0"
-                                inputClassName="bg-transparent text-center rounded-[4px] text-[#517CA8]"
-                                parentClassName="flex-1 text-sm text-center max-w-[150px]"
-                                type="number"
-                                value={
-                                  currentToEdit.satScores[selectedScoreIndex]
-                                    ?.verbal
-                                }
-                                onChange={(e) => {
-                                  let tempScores = [...currentToEdit.satScores];
-                                  if (tempScores.length <= selectedScoreIndex) {
-                                    tempScores.push({
-                                      maths: 0,
-                                      verbal: 0,
-                                      cumulative:0,
-                                    });
-                                  }
-                                  tempScores = tempScores.map((item, idx) => {
-                                    if (selectedScoreIndex === idx) {
-                                      let num = checkNumber(
-                                        currentToEdit.satScores[
-                                          selectedScoreIndex
-                                        ]?.verbal,
-                                        parseInt(e.target.value),
-                                        800
-                                      );
-                                      return { ...item, verbal: num };
-                                    } else {
-                                      return { ...item };
-                                    }
-                                  });
-                                  setCurrentToEdit({
-                                    ...currentToEdit,
-                                    satScores: tempScores,
-                                  });
-                                }}
-                              />
-                              <InputField
-                                labelClassname="hidden"
-                                placeholder="Math Score"
-                                inputContainerClassName="text-sm pt-3 pb-3 px-5 bg-primary-50 border-0"
-                                inputClassName="bg-transparent pl-4 rounded-[4px] text-[#517CA8]"
-                                parentClassName="flex-1 max-w-[150px]"
-                                type="number"
-                                value={
-                                  currentToEdit.satScores[selectedScoreIndex]
-                                    ?.maths
-                                }
-                                onChange={(e) => {
-                                  let tempScores = [...currentToEdit.satScores];
-                                  if (tempScores.length <= selectedScoreIndex) {
-                                    tempScores.push({
-                                      maths: 0,
-                                      verbal: 0,
-                                    });
-                                  }
-                                  tempScores = tempScores.map((item, idx) => {
-                                    if (selectedScoreIndex === idx) {
-                                      return {
-                                        ...item,
-                                        maths: checkNumber(
-                                          currentToEdit.satScores[
-                                            selectedScoreIndex
-                                          ]?.maths,
-                                          parseInt(e.target.value),
-                                          800
-                                        ),
-                                      };
-                                    } else {
-                                      return { ...item };
-                                    }
-                                  });
-                                  // tempScores[selectedScoreIndex].maths = checkNumber(currentToEdit.satScores.maths, parseInt(e.target.value), 800)
-                                  // console.log('tempScores', tempScores);
-                                  setCurrentToEdit({
-                                    ...currentToEdit,
-                                    satScores: tempScores,
-                                  });
-                                }}
-                                
-                              />
-                              
-                            <div className="text-md  rounded-[4px] flex items-center  font-semibold  text-center py-auto px-5 bg-primary-50 border-0 !w-[150px] text-[#FFA28D]">
-                              { currentToEdit.satScores[selectedScoreIndex]?.maths +  currentToEdit.satScores[selectedScoreIndex]
-                                    ?.verbal ?currentToEdit.satScores[selectedScoreIndex]?.maths + currentToEdit.satScores[selectedScoreIndex]?.verbal:
-                              <span className="text-sm my-auto font-semibold">
-                                
-                                cumulative
-                                </span>}
-                              </div>
-                          
-                            </div>
-                            <div className="mt-3 border-1  border-t-2 pb-3 border-[1.25px_solid_#00000033] justify-center "></div>
-           
-                          </div>)
-                        }
-                      )}
-                      </div>
-
-                   <p onClick={()=>{
-                    let tempScores = [...currentToEdit.satScores];
-                   
-                      tempScores.push({
-                        maths: null,
-                        verbal: null,
-                        created:new Date()
-                      });
-                      setCurrentToEdit({
-                        ...currentToEdit,
-                        satScores: tempScores,
-                      });
-                   }} className="font-bold !text-lg cursor-pointer    text-[#24A3D9]">Add <svg className="inline-block -mt-1" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
-  <path d="M14.4987 9.29037H9.29037V14.4987C9.29037 14.775 9.18062 15.0399 8.98527 15.2353C8.78992 15.4306 8.52497 15.5404 8.2487 15.5404C7.97243 15.5404 7.70748 15.4306 7.51213 15.2353C7.31678 15.0399 7.20703 14.775 7.20703 14.4987V9.29037H1.9987C1.72243 9.29037 1.45748 9.18062 1.26213 8.98527C1.06678 8.78992 0.957031 8.52497 0.957031 8.2487C0.957031 7.97243 1.06678 7.70748 1.26213 7.51213C1.45748 7.31678 1.72243 7.20703 1.9987 7.20703H7.20703V1.9987C7.20703 1.72243 7.31678 1.45748 7.51213 1.26213C7.70748 1.06678 7.97243 0.957031 8.2487 0.957031C8.52497 0.957031 8.78992 1.06678 8.98527 1.26213C9.18062 1.45748 9.29037 1.72243 9.29037 1.9987V7.20703H14.4987C14.775 7.20703 15.0399 7.31678 15.2353 7.51213C15.4306 7.70748 15.5404 7.97243 15.5404 8.2487C15.5404 8.52497 15.4306 8.78992 15.2353 8.98527C15.0399 9.18062 14.775 9.29037 14.4987 9.29037Z" fill="#24A3D9"/>
-</svg></p>
-                  </div>
-                )}
-                {currentField.name === "actScores" && (
-                  <>
-                  
-                  <div className="flex flex-col gap-4 ">
-                   <div className="max-h-[50vh] overflow-y-auto custom-scroller">
-
-                   {currentToEdit?.actScores?.map(
-                     (it,selectedScoreIndex) => {
-                       return (
-                       <div className="flex flex-col ">
-                         <p className="font-bold !text-lg cursor-pointer mb-2  text-[#24A3D9]">ACT {selectedScoreIndex+1}</p>
-                         <div className="flex gap-5 items-center !text-md">
-                         <div className="grid grid-cols-2 gap-3 !text-[#517CA8]">
-                    <div className="flex flex-col items-center mb-4">
-                     
-                      <InputField
-                        labelClassname="hidden"
-                        placeholder="Maths"
-                        inputContainerClassName="text-sm py-1 px-5 bg-primary-50 border-0"
-                        inputClassName="bg-transparent pl-4 rounded-[4px] placeholder:text-sm"
-                        parentClassName="flex-1 !text-sm max-w-[140px]"
-                        type="number"
-                        value={
-                          currentToEdit.actScores[selectedScoreIndex]?.maths
-                        }
-                        onChange={(e) => {
-                          let tempScores = [...currentToEdit.actScores];
-                          if (tempScores.length <= selectedScoreIndex) {
-                            tempScores.push({
-                              maths: 0,
-                              english: 0,
-                              reading: 0,
-                              science: 0,
-                            });
-                          }
-                          tempScores = tempScores.map((item, idx) => {
-                            if (selectedScoreIndex === idx) {
-                              return {
-                                ...item,
-                                maths: checkNumber(
-                                  currentToEdit.actScores[selectedScoreIndex]
-                                    ?.maths,
-                                  parseInt(e.target.value),
-                                  36
-                                ),
-                              };
-                            } else {
-                              return { ...item };
-                            }
-                          });
-                          setCurrentToEdit({
-                            ...currentToEdit,
-                            actScores: tempScores,
-                          });
-                        }}
-                      />
-                    </div>
-                    <div className="flex  flex-col  items-center mb-4">
-                    
-                      <InputField
-                        labelClassname="hidden"
-                        placeholder="English"
-                        inputContainerClassName="text-sm py-1 px-5 bg-primary-50 border-0"
-                        inputClassName="bg-transparent pl-4 rounded-[4px]"
-                        parentClassName="flex-1 max-w-[140px]"
-                        type="number"
-                        value={
-                          currentToEdit.actScores[selectedScoreIndex]?.english
-                        }
-                        onChange={(e) => {
-                          let tempScores = [...currentToEdit.actScores];
-                          if (tempScores.length <= selectedScoreIndex) {
-                            tempScores.push({
-                              maths: 0,
-                              english: 0,
-                              reading: 0,
-                              science: 0,
-                            });
-                          }
-                          tempScores = tempScores.map((item, idx) => {
-                            if (selectedScoreIndex === idx) {
-                              return {
-                                ...item,
-                                english: checkNumber(
-                                  currentToEdit.actScores[selectedScoreIndex]
-                                    ?.english,
-                                  parseInt(e.target.value),
-                                  36
-                                ),
-                              };
-                            } else {
-                              return { ...item };
-                            }
-                          });
-                          setCurrentToEdit({
-                            ...currentToEdit,
-                            actScores: tempScores,
-                          });
-                        }}
-                      />
-                    </div>
-                    <div className="flex  flex-col  items-center mb-4">
-                   
-                      <InputField
-                        labelClassname="hidden"
-                        placeholder="Reading"
-                        inputContainerClassName="text-sm py-1 px-5 bg-primary-50 border-0"
-                        inputClassName="bg-transparent pl-4 rounded-[4px]"
-                        parentClassName="flex-1 max-w-[140px]"
-                        type="number"
-                        value={
-                          currentToEdit.actScores[selectedScoreIndex]?.reading
-                        }
-                        onChange={(e) => {
-                          let tempScores = [...currentToEdit.actScores];
-                          if (tempScores.length <= selectedScoreIndex) {
-                            tempScores.push({
-                              maths: 0,
-                              english: 0,
-                              reading: 0,
-                              science: 0,
-                            });
-                          }
-                          tempScores = tempScores.map((item, idx) => {
-                            if (selectedScoreIndex === idx) {
-                              return {
-                                ...item,
-                                reading: checkNumber(
-                                  currentToEdit.actScores[selectedScoreIndex]
-                                    ?.reading,
-                                  parseInt(e.target.value),
-                                  36
-                                ),
-                              };
-                            } else {
-                              return { ...item };
-                            }
-                          });
-                          setCurrentToEdit({
-                            ...currentToEdit,
-                            actScores: tempScores,
-                          });
-                        }}
-                      />
-                    </div>
-                    <div className="flex  flex-col  items-center mb-4">
-                     
-                      <InputField
-                        labelClassname="hidden"
-                        placeholder="Science"
-                        inputContainerClassName="text-sm py-1 px-5 bg-primary-50 border-0"
-                        inputClassName="bg-transparent pl-4 rounded-[4px]"
-                        parentClassName="flex-1 max-w-[140px]"
-                        type="number"
-                        value={
-                          currentToEdit.actScores[selectedScoreIndex]?.science
-                        }
-                        onChange={(e) => {
-                          let tempScores = [...currentToEdit.actScores];
-                          if (tempScores.length <= selectedScoreIndex) {
-                            tempScores.push({
-                              maths: 0,
-                              english: 0,
-                              reading: 0,
-                              science: 0,
-                            });
-                          }
-                          tempScores = tempScores.map((item, idx) => {
-                            if (selectedScoreIndex === idx) {
-                              return {
-                                ...item,
-                                science: checkNumber(
-                                  currentToEdit.actScores[selectedScoreIndex]
-                                    ?.science,
-                                  parseInt(e.target.value),
-                                  36
-                                ),
-                              };
-                            } else {
-                              return { ...item };
-                            }
-                          });
-                          setCurrentToEdit({
-                            ...currentToEdit,
-                            actScores: tempScores,
-                          });
-                        }}
-                      />
-                    </div>
-                  </div>
-                            
-                         <div className="text-md py-2 rounded-[4px] flex items-center  font-semibold  text-center py-auto px-5 bg-primary-50 border-0 !w-[150px] text-[#FFA28D]">
-                           { it?.maths +  it?.science + it?.reading + it?.english 
-                                  ?it?.maths +  it?.science + it?.reading + it?.english :
-                           <span className="text-placeholder:text-sm my-auto font-semibold">
-                             
-                             cumulative
-                             </span>}
-                           </div>
-                       
-                         </div>
-                         <div className="mt-3 border-1  border-t-2 pb-3 border-[1.25px_solid_#00000033] justify-center "></div>
-        
-                       </div>)
-                     }
-                   )}
-                   </div>
-                <p onClick={()=>{
-                 let tempScores = [...currentToEdit.actScores];
                 
-                   tempScores.push({
-                    maths: null,
-                    english: null,
-                    reading: null,
-                    science: null,
-                    
-                   });
-                   setCurrentToEdit({
-                     ...currentToEdit,
-                     actScores: tempScores,
-                   });
-                }} className="font-bold !text-lg cursor-pointer    text-[#24A3D9]">Add <svg className="inline-block -mt-1" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
-<path d="M14.4987 9.29037H9.29037V14.4987C9.29037 14.775 9.18062 15.0399 8.98527 15.2353C8.78992 15.4306 8.52497 15.5404 8.2487 15.5404C7.97243 15.5404 7.70748 15.4306 7.51213 15.2353C7.31678 15.0399 7.20703 14.775 7.20703 14.4987V9.29037H1.9987C1.72243 9.29037 1.45748 9.18062 1.26213 8.98527C1.06678 8.78992 0.957031 8.52497 0.957031 8.2487C0.957031 7.97243 1.06678 7.70748 1.26213 7.51213C1.45748 7.31678 1.72243 7.20703 1.9987 7.20703H7.20703V1.9987C7.20703 1.72243 7.31678 1.45748 7.51213 1.26213C7.70748 1.06678 7.97243 0.957031 8.2487 0.957031C8.52497 0.957031 8.78992 1.06678 8.98527 1.26213C9.18062 1.45748 9.29037 1.72243 9.29037 1.9987V7.20703H14.4987C14.775 7.20703 15.0399 7.31678 15.2353 7.51213C15.4306 7.70748 15.5404 7.97243 15.5404 8.2487C15.5404 8.52497 15.4306 8.78992 15.2353 8.98527C15.0399 9.18062 14.775 9.29037 14.4987 9.29037Z" fill="#24A3D9"/>
-</svg></p>
-               </div>
-                
-                  </>
-                
-                )}
-                {currentField.name === "aboutScore" && (
-                  <div>
-                    <div className="flex items-center mb-5">
-                      <InputField
-                        labelClassname="hidden"
-                        placeholder="PSAT / P-ACT Scores"
-                        inputContainerClassName="text-sm pt-3.5 pb-3 px-5 bg-primary-50 border-0"
-                        inputClassName="bg-transparent rounded-[4px]"
-                        parentClassName="flex-1"
-                        type="text"
-                        value={currentToEdit.aboutScore}
-                        onChange={(e) =>
-                          setCurrentToEdit({
-                            ...currentToEdit,
-                            aboutScore: e.target.value,
-                          })
-                        }
-                      />
-                    </div>
-                  </div>
-                )}
-                {currentField.name === "videoLink" && (
-                  <div>
-                    <input
-                      placeholder=""
-                      value={currentToEdit.videoLink}
-                      onChange={(e) =>
-                        setCurrentToEdit({
-                          ...currentToEdit,
-                          videoLink: e.target.value,
-                        })
-                      }
-                      className="bg-lightWhite w-full outline-0 px-5 pt-3 pb-3 rounded"
-                    />
-                  </div>
-                )}
+               
                 {/* <InputField label='First Name'
                            labelClassname='ml-4 mb-0.5'
                            placeholder='First Name'
-                           inputContainerClassName='text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0'
+                           inputContainerClassName='text-sm pt-3.5 pb-3.5 px-5 bg-[#F6F6F6] border-0'
                            inputClassName='bg-transparent'
                            parentClassName='w-full mr-4' type='text' /> */}
               </form>

@@ -22,7 +22,7 @@ const SPFrame2 = ({
     let temp=[]
 if(!toEdit[key] || !toEdit[key][key]) return 
        temp = [...toEdit[key][key]];
-      temp = temp?.filter((item, idd) => idd !== id);
+      temp = temp?.filter((it, idd) => idd !== id);
       
         if(update){
           handleSubmit(key,temp)
@@ -103,7 +103,7 @@ if(!toEdit[key] || !toEdit[key][key]) return
             />
           </p>
 
-          <div className="w-full bg-white relative h-full p-1 flex flex-col gap-1 !rounded-md shadow-[0px_0px_2.500001907348633px_0px_#00000040] rounded-md items-center overflow-y-auto custom-scroller">
+          <div className="w-full bg-white relative h-full p-1 flex flex-col gap-1 !rounded-md shadow-[0px_0px_2.500001907348633px_0px_#00000040] rounded-md its-center overflow-y-auto custom-scroller">
             {userDetail?.satScores?.map((it, idx) => {
               return (
                 <div key={idx} className="beforeDot  p-2  flex-1 flex  w-full">
@@ -113,7 +113,17 @@ if(!toEdit[key] || !toEdit[key][key]) return
                     alt="dot"
                   />
                   <div className="mx-2 flex flex-col text-xs">
-                    <p className="text-[#517CA8]">February 05, 2023</p>
+                    <p className="text-[#517CA8]">{it.createdAt?new Date(it.createdAt)
+                            .toDateString()
+                            .split(" ")[1] +
+                            " " +
+                            new Date(it.createdAt)
+                              .toDateString()
+                              .split(" ")[2] +
+                            ", " +
+                            new Date(it.createdAt)
+                              .toDateString()
+                              .split(" ")[3]:"NA" }</p>
 
                     <p>
                       <span className="text-[#24A3D9]">
@@ -157,7 +167,7 @@ if(!toEdit[key] || !toEdit[key][key]) return
             />
           </p>
 
-          <div className="w-full bg-white relative h-full p-1 flex flex-col gap-1 !rounded-md shadow-[0px_0px_2.500001907348633px_0px_#00000040] rounded-md items-center overflow-y-auto custom-scroller">
+          <div className="w-full bg-white relative h-full p-1 flex flex-col gap-1 !rounded-md shadow-[0px_0px_2.500001907348633px_0px_#00000040] rounded-md its-center overflow-y-auto custom-scroller">
             {userDetail?.actScores?.map((it, idx) => {
               return (
                 <div key={idx} className="beforeDot  p-2  flex-1 flex  w-full">
@@ -167,7 +177,17 @@ if(!toEdit[key] || !toEdit[key][key]) return
                     alt="dot"
                   />
                   <div className="mx-2 flex flex-col text-xs">
-                    <p className="text-[#517CA8]">February 05, 2023</p>
+                    <p className="text-[#517CA8]">{it.createdAt?new Date(it.createdAt)
+                            .toDateString()
+                            .split(" ")[1] +
+                            " " +
+                            new Date(it.createdAt)
+                              .toDateString()
+                              .split(" ")[2] +
+                            ", " +
+                            new Date(it.createdAt)
+                              .toDateString()
+                              .split(" ")[3]:"NA"}</p>
 
                     <p>
                       <span className="text-[#24A3D9]">
@@ -210,7 +230,7 @@ if(!toEdit[key] || !toEdit[key][key]) return
             />
           </p>
 
-          <div className="w-full bg-white relative h-full p-1 flex flex-col gap-1 !rounded-md shadow-[0px_0px_2.500001907348633px_0px_#00000040] rounded-md items-center overflow-y-auto custom-scroller">
+          <div className="w-full bg-white relative h-full p-1 flex flex-col gap-1 !rounded-md shadow-[0px_0px_2.500001907348633px_0px_#00000040] rounded-md its-center overflow-y-auto custom-scroller">
             {userDetail?.acScores?.map((it, idx) => {
               return (
                 <div key={idx} className="beforeDot  p-2  flex-1 flex  w-full">

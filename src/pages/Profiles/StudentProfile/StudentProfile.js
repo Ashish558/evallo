@@ -40,6 +40,7 @@ import SPFrame0 from "./SPframes/SPFrame0";
 import StudentTest from "../../StudentTest/StudentTest";
 import Chart from "../../../components/Chart/Chart";
 import SPFrame3 from "./SPframes/SPFrame3";
+import SPFrame4 from "./SPframes/SPFrame4";
 
 const students = [
   {
@@ -160,7 +161,7 @@ export default function StudentProfile({ isOwn }) {
       lastName: "",
 
       schoolName: [],
-
+    about:'',
       email: "",
       phone: "",
       phoneCode: "",
@@ -449,6 +450,7 @@ const [toEdit, setToEdit] = useState({
         grade,
         satScores,
         actScores,
+        about,
         subscriptionCode,
       } = res.data.data.userdetails;
       associatedParent &&
@@ -493,6 +495,7 @@ const [toEdit, setToEdit] = useState({
                   grade,
                   ...prev.frame0.schoolName,
                   schoolName,
+                  about,
                 },
                 frame1:{
                   ...prev.frame1,
@@ -682,12 +685,9 @@ const [toEdit, setToEdit] = useState({
             " > "}
           <span className="font-semibold">Dashboard</span>
         </p>
-
-        <div className={` rounded-b-md w-full flex flex-col relative `}>
-          <div className=" bg-[#26435F]   px-5 h-[100px]  w-full  flex  items-center">
-            {!isOwn ? (
+        {!isOwn ? (
               <button
-                className="absolute bg-[#D9BBFF] px-[14px] py-[8px] rounded-[8px] text-[#636363] text-[18px] font-medium top-[16px] left-[22px] flex gap-[12px] cursor-pointer flex justify-center items-center"
+                className="my-5 bg-[#D9BBFF] px-[14px] py-[8px] rounded-[8px] text-[#636363] text-[18px] font-medium top-[16px] left-[22px] flex gap-[12px] cursor-pointer flex justify-center items-center"
                 onClick={() => window.history.back()}
               >
                 <img src={LeftIcon} alt="icon" /> Back
@@ -695,6 +695,9 @@ const [toEdit, setToEdit] = useState({
             ) : (
               <></>
             )}
+        <div className={` rounded-b-md w-full flex flex-col relative `}>
+          <div className=" bg-[#26435F]   px-5 h-[100px]  w-full  flex  items-center">
+           
             <div className="flex flex-1 w-full">
               <ProfilePhoto
                 src={
@@ -791,13 +794,8 @@ const [toEdit, setToEdit] = useState({
             </div>
           </div>
           <div className="bg-white !rounded-b-md shadow-[0px_0px_2.500001907348633px_0px_#00000040] flex  h-[100px] justify-between ">
-            <div className="ml-[126px] flex my-auto py-auto w-4/5 text-[12px] px-5  flex-1 h-full  pt-5  ">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod empor incididunt ut labore et dolore gna aliqua. Ut enim
-              ad minim veniam, nostrud exercitation ullamco laboris nisi ut
-              aliquip ex ea commodo cnsquat duis aute irure dolor inerit in
-              voluptate orem ipsum dolor sit amet, consectetur adipiscing elit.
-              Ut enim ad minim veniam,
+            <div className="ml-[126px] flex my-auto py-auto w-4/5 text-[12px] px-5  flex-1 h-full  h-[100px] overflow-y-auto custom-scroller pt-5  ">
+            {userDetail?.about}
             </div>
             <div className="w-[250px] ml-6 my-0">
               <div className="mt-[-20px]">
@@ -906,7 +904,21 @@ const [toEdit, setToEdit] = useState({
             </p>
 
             <StudentTest fromProfile={true} />
-           <SPFrame3 userDetail={userDetail} subject={subjects} subjects1={subjects1} subjects2={subjects2}/>
+           <SPFrame3 userDetail={userDetail} />
+           <div
+            id="borderDashed"
+            className="border !border-[#CBD6E3] w-[calc(1500*0.0522vw)] mx-auto my-[calc(50*0.0522vw)]"
+          ></div>
+           <SPFrame4 userDetail={userDetail}        
+                fetchDetails={fetchDetails}
+            setSelectedScoreIndex={setSelectedScoreIndex}
+            settings={settings}
+            userId={isOwn ? id : params.id}
+            editable={editable}
+          
+            setToEdit={setToEdit}
+            toEdit={toEdit} />
+          
           </div>
         </div>
 

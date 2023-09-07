@@ -8,6 +8,9 @@
 .text-base-20 {
   font-size: max(14px, 1.044vw) !important;
 }
+.text-base-22-5 {
+  font-size: max(15.5px, 1.174vw) !important;
+}
 .text-base-25 {
   font-size: max(16px, 1.305vw) !important;
 }
@@ -26,7 +29,15 @@
 
 
 */
-
+.owl-stage-outer{
+height:100%;
+}
+.owl-stage{
+height:100%;
+}
+.owl-item.active{
+  height:100%;
+}
 .no-arrow div::after {
   content: " ";
   margin-left: 5px;
