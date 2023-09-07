@@ -4,6 +4,8 @@ import cancelIcon from "../../../../assets/YIcons/cutIcon.svg";
 import dot from "../../../../assets/YIcons/dotIcon.svg";
 import EditableText from "../../../../components/EditableText/EditableText";
 import { useUpdateUserDetailsMutation } from "../../../../app/services/users";
+import act from "../../../../assets/YIcons/Official ACT® scores.svg"
+import sat from "../../../../assets/YIcons/Official SAT® scores.svg"
 const SPFrame2 = ({
   userDetail,
   settings,
@@ -61,21 +63,21 @@ if(!toEdit[key] || !toEdit[key][key]) return
         <div className="flex-1 h-[230px] gap-7 flex flex-col">
           <div className="flex-1  flex justify-between">
             <p className=" text-sm text-[#26435F] font-semibold">
-              hours tutored
+              Hours Tutored
               <span className=" text-[#FFA28D] text-2xl block">90</span>
             </p>
             <p className=" text-sm text-[#26435F] font-semibold">
-              no. of sessions
+              No. Of Sessions
               <span className=" text-[#FFA28D] text-2xl block">90</span>
             </p>
           </div>
           <div className="flex-1  flex justify-between">
             <p className=" text-sm text-[#26435F] font-semibold">
-              # of practice tests
+              # Of Practice Tests
               <span className=" text-[#FFA28D] text-2xl block">90</span>
             </p>
             <p className=" text-sm text-[#26435F] font-semibold">
-              Join date
+              Join Date
               <span className=" text-[#FFA28D] text-xl block">
                 {new Date(userDetail?.createdAt).toLocaleDateString()}
               </span>
@@ -84,7 +86,14 @@ if(!toEdit[key] || !toEdit[key][key]) return
         </div>
         <div className="flex-1 h-[230px]">
           <p className=" text-sm text-[#26435F] font-semibold">
-            Official SAT® scores
+          <span>
+                            <img
+                             className="inline-block ml-2 -mt-1 !w-[150px] !h-5 mr-2"
+                           
+                              src={sat}
+                              alt="copy"
+                            />
+                          </span>
             <EditableText
               editable={editable}
               onClick={() => {
@@ -148,7 +157,15 @@ if(!toEdit[key] || !toEdit[key][key]) return
 
         <div className="flex-1 h-[230px]">
           <p className=" text-sm text-[#26435F] font-semibold">
-            Official ACT® scores
+          <span>
+                            <img
+                             className="inline-block -mt-1 ml-2 !w-[150px] !h-5 mr-2"
+                           
+                              src={act}
+                              alt="copy"
+                            />
+                          </span>
+            
             <EditableText
               editable={editable}
               onClick={() => {

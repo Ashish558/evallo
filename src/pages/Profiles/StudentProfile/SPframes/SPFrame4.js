@@ -170,10 +170,18 @@ const handleLeadStatus=(e)=>{
                   inputContainerClassName="bg-white h-[45px] shadow-[0px_0px_2.500001907348633px_0px_#00000040] my-0 py-[5px] px-[35px]"
                   placeHolderClass="text-[#517CA8] "
                   labelClassname="text-sm"
+                  optionContainerClassName="!w-[190px]"
                   inputClassName="bg-transparent"
-                  Icon={Drop}
+                  ICON2={Drop}
                   value={userDetail?.leadStatus}
-                  optionData={organization?.settings?.leadStatus}
+                  optionData={ [
+                    "Open / Raw",
+                    "Interested",
+                    "Not Interested",
+                    "Contacted - No Answer",
+                    "Left Voicemail",
+                    "Completed"
+                  ]}
                   onChange={(e) => {
                     handleLeadStatus(e)
                    
@@ -234,7 +242,7 @@ const handleLeadStatus=(e)=>{
         <p className=" text-sm text-[#26435F] font-semibold text-base-20 mb-1">
           Session Notes
         </p>
-        <div className="bg-white flex-1 h-[410px] rounded-md custom-scroller shadow-[0px_0px_2.500001907348633px_0px_#00000040]">
+        <div className="bg-white flex-1  rounded-md custom-scroller shadow-[0px_0px_2.500001907348633px_0px_#00000040]">
           <div className="mx-6 p-2 ">
             <button
               onClick={() => {
@@ -261,8 +269,8 @@ const handleLeadStatus=(e)=>{
               Internal Notes
             </button>
           </div>
-          <div className="flex flex-col h-[400px]   bg-[#FFFFFF] ">
-            <ul className="list-disc rounded-b-md overflow-y-scroll custom-scroller h-full ">
+          <div className="flex flex-col h-[360px]  ">
+            <ul className="list-disc rounded-b-md overflow-y-auto custom-scroller h-full ">
               {[{ message: "Hii", createdAt: new Date() }]?.map(
                 (item, index) => (
                   <>

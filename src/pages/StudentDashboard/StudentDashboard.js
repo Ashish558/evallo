@@ -81,7 +81,7 @@ const StudentDashboard = () => {
   // console.log('selectedSubject', selectedSubject)
 //console.log({subjects,selectedSubject,selectedConceptIdx})
   return (
-    <div className={`lg:mx-[80px] design:mx-[160px] pb-[70px]`} id="container">
+    <div className={`mx-[80px] design:mx-[160px] pb-[70px]`} >
       <p className="text-[#24A3D9] mt-7 mb-3">
         {organization?.company +
           " > " +
@@ -94,7 +94,7 @@ const StudentDashboard = () => {
 
       <StudentDashboardHeader />
 
-      <div className="flex mt-10 pt-[10px]  gap-[39px]">
+      <div className="flex mt-10 pt-[10px]  gap-16">
         <div className=" flex-1 w-[70%]">
           <div className="flex items-center justify-between">
             <h1 className="text-[#26435F]  text-sm font-semibold ">
@@ -126,7 +126,7 @@ const StudentDashboard = () => {
               /> */}
               <InputSelectNew
                 placeholder={""}
-                parentClassName="ml-0  scale-[0.8] items-center flex text-[#FFA28D] text-xs border px-1 py-2 border-[#FFA28D] rounded-full  "
+                parentClassName="ml-0  scale-[0.9] items-center flex text-[#FFA28D] text-xs border px-1 py-2 border-[#FFA28D] rounded-full  "
                 inputContainerClassName=" my-0 py-[5px] px-[35px]"
                 placeHolderClass="text-[#FFA28D] "
                 labelClassname="text-sm"
@@ -147,7 +147,7 @@ const StudentDashboard = () => {
               /> */}
 
 
-              <RangeDate className="ml-0" manualHide={true} optionClassName="w-[200px]" inputContainerClassName="w-[230px]" handleRangeData={setSelectedConceptIdx} />
+              <RangeDate className="ml-0" manualHide={true} optionClassName="!w-min relative" inputContainerClassName="w-min relative" handleRangeData={setSelectedConceptIdx} />
 
             </div>
           </div>
@@ -158,6 +158,7 @@ const StudentDashboard = () => {
             <Chart
               setSubjects={setSubjects}
               subjects={subjects}
+              YHeader="Score"
               selectedSubject={selectedSubject}
               selectedConceptIdx={selectedConceptIdx}
               setSelectedConceptIdx={setSelectedConceptIdx}

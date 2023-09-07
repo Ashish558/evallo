@@ -88,15 +88,17 @@ height:100%;
   } */
 
 #borderLeft {
+  border-top-right-radius:4px;
   border-left: 5px solid #26435f;
   position: absolute;
-  top: 50%;
+  top: 70%;
   bottom: 0;
 }
 #borderRight {
+  border-top-left-radius:4px;
   border-right: 5px solid #26435f;
   position: absolute;
-  top: 50%;
+  top: 70%;
   right: 0;
   bottom: 0;
 }
@@ -121,6 +123,9 @@ td {
   font-weight: 550;
   padding-top: 15px !important;
   padding-bottom: 15px !important;
+}
+tr{
+  box-shadow: 0px 0px 2.499999523162842px 0px #00000040 !important;
 }
 th {
   font-size: 0.912vw !important;

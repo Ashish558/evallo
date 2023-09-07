@@ -98,10 +98,10 @@ const StudentDashboardHeader = () => {
             Assigned Tutors
           </p>
           <div className=".mybox relative shadow-[0px_0px_2.500001907348633px_0px_#00000040] border-b-4 border-b-[#26435F] h-[215px] rounded-md max-w-[440px]  design:max-w-[460px]">
-          <div id="borderLeft" className="rounded-r-lg"></div>
+          <div id="borderLeft" className="rounded-t-r-md"></div>
             <TutorCarousel />
             
-            <div id="borderRight" className="rounded-l-lg"></div>
+            <div id="borderRight" className="rojunded"></div>
             <div id="borderBottom" className="rounded-b-lg"></div>
           </div>
         </div>

@@ -4,6 +4,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import OwlCarousel from "react-owl-carousel";
+import copy1 from "../../../assets/YIcons/VectorCopy.svg";
+import copy2 from "../../../assets/YIcons/fluent_copy-16-filledBlackCopy.svg";
 
 import ProfileCard from "../../../components/ProfileCard/ProfileCard";
 import EditableText from "../../../components/EditableText/EditableText";
@@ -451,6 +453,7 @@ const [toEdit, setToEdit] = useState({
         satScores,
         actScores,
         about,
+        subjects,
         subscriptionCode,
       } = res.data.data.userdetails;
       associatedParent &&
@@ -556,10 +559,10 @@ const [toEdit, setToEdit] = useState({
                   ...prev.interest,
                   interest,
                 },
-                // schoolName: {
-                //   ...prev.schoolName,
-                //   schoolName,
-                // },
+                subjects: {
+                  ...prev.subjects,
+                  subjects,
+                },
                 // grade: {
                 //   ...prev.grade,
                 //   grade,
@@ -696,9 +699,10 @@ const [toEdit, setToEdit] = useState({
               <></>
             )}
         <div className={` rounded-b-md w-full flex flex-col relative `}>
-          <div className=" bg-[#26435F]   px-5 h-[100px]  w-full  flex  items-center">
+          <div className=" bg-[#26435F] rounded-t-[4px]  px-5 h-[100px]  w-full  flex  items-center">
            
             <div className="flex flex-1 w-full">
+            <div className="h-fit">
               <ProfilePhoto
                 src={
                   user.photo
@@ -711,11 +715,7 @@ const [toEdit, setToEdit] = useState({
                 handleChange={handleProfilePhotoChange}
                 editable={false}
               />
-              <div className="flex-1 flex justify-between items-center">
-                <div className="ml-4 my-auto">
-                  <div className="flex  items-center text-[#F3F5F7]">
-                    {user.firstName} {user.lastName}
-                    <EditableText
+              <EditableText
                       editable={editable}
                       onClick={() =>
                         setToEdit({
@@ -726,10 +726,16 @@ const [toEdit, setToEdit] = useState({
                           }
                         })
                       }
-                      text="edit"
-                      textClassName=" ml-2 text-sm text-[#517CA8] text-underline  "
-                      className="text-sm my-0 flex justify-end   float-right"
+                      text="Edit Profile"
+                      textClassName=" ml-2 text-sm  mx-auto text-center text-[#26435F] text-underline text-base-15 "
+                      className="text-sm my-0 flex items-center justify-center text-center !translate-y-9  "
                     />
+                  </div>
+              <div className="flex-1 flex justify-between items-center">
+                <div className="ml-4 my-auto">
+                  <div className="flex  items-center text-[#F3F5F7]">
+                    {user.firstName} {user.lastName}
+                    
                   </div>
                   <div className="flex mt-1 text-xs items-center text-[#F3F5F7]">
                     {userDetail.schoolName
@@ -773,15 +779,24 @@ const [toEdit, setToEdit] = useState({
                             <img
                               className="inline-block !w-4 !h-4 mr-2"
                               src={emailIcon}
+                              alt="email"
                             />
                           </span>
                           {user?.email}
+                          <span>
+                            <img
+                              className="inline-block ml-2 !w-4 !h-4 mr-2"
+                              src={copy1}
+                              alt="copy"
+                            />
+                          </span>
                         </p>
                         <p>
                           <span>
                             <img
                               className="inline-block !w-4 !h-4 mr-2"
                               src={phoneIcon}
+                            alt="phone"
                             />
                           </span>
                           {user?.phone}
@@ -826,7 +841,8 @@ const [toEdit, setToEdit] = useState({
                   <img
                     src={clickArrowIcon}
                     className="!ml-2 cursor-pointer !w-3 !h-3 inline-block"
-                  />
+                alt="arrow"
+                />
                 </p>
 
                 <p className="font-medium text-[12px]">
@@ -839,6 +855,13 @@ const [toEdit, setToEdit] = useState({
                       ? `${associatedParent.email}`
                       : `${userDetail.Email} `}
                     {/* View Profile */}
+                    <span>
+                            <img
+                              className="inline-block ml-2 !w-4 !h-4 mr-2"
+                              src={copy2}
+                              alt="copy"
+                            />
+                          </span>
                   </span>
                 </p>
               </div>
@@ -904,6 +927,10 @@ const [toEdit, setToEdit] = useState({
             </p>
 
             <StudentTest fromProfile={true} />
+            <div
+           
+            className="border !border-[#CBD6E2] w-[calc(1500*0.0522vw)] mx-auto mb-[calc(50*0.0522vw)]"
+          ></div>
            <SPFrame3 userDetail={userDetail} />
            <div
             id="borderDashed"

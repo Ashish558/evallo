@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import EditableText from "../../../../components/EditableText/EditableText";
 import fileupload from "../../../../assets/icons/basil_file-upload-outline (2).svg";
 import BCut from "../../../../assets/YIcons/BCut.svg";
+import { commonSubjects,Interest,qualities } from "./staticData";
 import { useAddAssociatedDocStudentMutation, useUpdateUserDetailsMutation } from "../../../../app/services/users";
 const SPFrame1 = ({ userId, settings, userDetail, editable, setToEdit, toEdit ,fetchDetails}) => {
   const [xlsFile, setXlsFile] = useState({});
@@ -25,6 +26,13 @@ const SPFrame1 = ({ userId, settings, userDetail, editable, setToEdit, toEdit ,f
   const addDocHandler = () => {
     if (!xlsFile || !xlsFile.name) {
       return;
+    }
+    console.log("size",xlsFile.size)
+    let size=xlsFile.size/1024;
+    size=size/1024;
+    if(size>1){
+      alert("File is larger than than 1MB")
+      return 
     }
     const formData = new FormData();
     formData.append("file", xlsFile);
@@ -88,7 +96,7 @@ const SPFrame1 = ({ userId, settings, userDetail, editable, setToEdit, toEdit ,f
 
             <div
 
-              className="w-full relative custom-scroller !border-[1.25px_dashed_#517CA8] bg-white h-full max-h-[90px]  flex flex-col rounded-md items-center overflow-y-auto shadow-[0px_0px_2.500001907348633px_0px_#00000040]"
+              className="w-full relative custom-scroller !border-[1.25px_dashed_#517CA8] bg-white h-full max-h-[90px]  flex flex-col rounded-md items-center overflow-y-auto "
               id={styles.borderDashed}
             >
               {userDetail?.whiteBoardLinks?.map((it, id) => {
@@ -97,12 +105,13 @@ const SPFrame1 = ({ userId, settings, userDetail, editable, setToEdit, toEdit ,f
                     key={id}
                     className="flex flex-1 text-[#517CA8] w-full text-xs justify-between px-3 py-1"
                   >
-                    <span>{it}</span>
+                    <a href={it} target="_blank" >{it}</a>
                     <img
                     onClick={()=>reduceArr(id,true,)}
                       src={BCut}
                       className="text-xs !h-[20px] !w-[20px] inline-block"
-                    />
+                    
+                    alt="cut"/>
                   </p>
                 );
               })}
@@ -111,18 +120,18 @@ const SPFrame1 = ({ userId, settings, userDetail, editable, setToEdit, toEdit ,f
           <div className="flex-1 mt-2">
 
             <p className=" text-sm text-[#26435F] font-semibold">
-              Associated docs
+              Associated Docs
             </p>
             <div
               id={styles.borderDashed}
-              className="w-full relative !border-[1.25px_dashed_#517CA8] h-full !max-h-[150px] flex rounded-md items-center bg-white overflow-hidden shadow-[0px_0px_2.500001907348633px_0px_#00000040]"
+              className="w-full relative !border-[1.25px_dashed_#517CA8] h-full !max-h-[150px] flex rounded-md items-center bg-white overflow-hidden "
             >
               <div className=" flex-1 ">
-                <div className="mt-[13px] mb-[13px] items-center flex justify-center">
+                <div className="mt-[10px] mb-[10px] items-center flex justify-center">
                   <img src={fileupload} alt="fileuploadIcon"></img>
                 </div>
 
-                <div className="flex items-center justify-center">
+                <div className="flex items-center text-center justify-center text-base-15">
                   {xlsFile == undefined ? (
                     <p className=""></p>
                   ) : (
@@ -133,7 +142,7 @@ const SPFrame1 = ({ userId, settings, userDetail, editable, setToEdit, toEdit ,f
                   <div className="flex justify-center">
                     <label
                       htmlFor="file"
-                      className="block text-sm text-white bg-[#517CA8] hover:bg-[#517CA8] items-center justify-center  rounded-[5px]  px-4 py-2 text-center ] "
+                      className="block text-sm text-white bg-[#517CA8] hover:bg-[#517CA8] items-center justify-center  rounded-[5px]  px-3 py-2 text-base-17-5 text-center ] "
                     >
                       Choose File
                     </label>
@@ -147,7 +156,7 @@ const SPFrame1 = ({ userId, settings, userDetail, editable, setToEdit, toEdit ,f
                   <div className="flex justify-center">
                     <span
                       onClick={addDocHandler}
-                      className=" cursor-pointer block text-sm text-white bg-[#517CA8] hover:bg-[#517CA8] items-center justify-center  rounded-[5px]  px-4 py-2 text-center ]"
+                      className=" cursor-pointer block text-sm text-white bg-[#517CA8] hover:bg-[#517CA8] items-center justify-center  rounded-[5px]  px-4 py-2 text-center text-base-17-5]"
                     >
                       Submit File
                     </span>
@@ -155,7 +164,7 @@ const SPFrame1 = ({ userId, settings, userDetail, editable, setToEdit, toEdit ,f
                 )}
                 <label
                   htmlFor="file"
-                  className="block text-xs items-center justify-center  rounded-[5px]  px-4 py-2 font-normal text-center text-[#517CA8] "
+                  className="block text-xs items-center justify-center  rounded-[5px]  px-4 py-2 font-normal text-center text-[#517CA8] text-base-15"
                 >
                   Less than 1 MB
                 </label>
@@ -181,7 +190,7 @@ const SPFrame1 = ({ userId, settings, userDetail, editable, setToEdit, toEdit ,f
           </p>
 
           <div className="w-full relative h-full p-1 flex flex-col gap-1  rounded-md items-center overflow-y-auto custom-scroller">
-            {settings ? (
+            {/* {settings ? (
               settings.interest.length > 0 &&
               userDetail.interest.map((id, idx) => {
                 return settings.interest.find((item) => item._id === id) ? (
@@ -219,13 +228,14 @@ const SPFrame1 = ({ userId, settings, userDetail, editable, setToEdit, toEdit ,f
               })
             ) : (
               <></>
-            )}
-            {!settings?.interest?.length > 0 &&
-              [1, 2, 3, 4, 5].map((it, idx) => {
+            )} */}
+            
+            {userDetail?.interest?.length > 0 &&
+              userDetail?.interest.map((it, idx) => {
                 return (
                   <div
                     key={idx}
-                    className="bg-white p-2 !rounded-md shadow-[0px_0px_2.500001907348633px_0px_#00000040] flex-1 w-full"
+                    className="bg-white p-2 h-min  text-[#517CA8] text-base-17-5 !rounded-md shadow-[0px_0px_2.500001907348633px_0px_#00000040]  w-full"
                   >
                     {it}
                   </div>
@@ -259,23 +269,14 @@ const SPFrame1 = ({ userId, settings, userDetail, editable, setToEdit, toEdit ,f
                     <p
                       key={idx}
 
-                      className="bg-white p-2 !rounded-md shadow-[0px_0px_2.500001907348633px_0px_#00000040] flex-1 w-full"
+                      className="bg-white text-[#517CA8] text-base-17-5 p-2 !rounded-md shadow-[0px_0px_2.500001907348633px_0px_#00000040] flex-1 w-full"
 
                     >
                       {sub}{" "}
                     </p>
                   );
                 })
-              : [1, 2, 3, 4, 5, 6, 7, 8, 9]?.map((it, idx) => {
-                  return (
-                    <div
-                      key={idx}
-                      className="bg-white p-2 !rounded-md shadow-[0px_0px_2.500001907348633px_0px_#00000040] flex-1 w-full"
-                    >
-                      {it}
-                    </div>
-                  );
-                })}
+              : <></>}
           </div>
         </div>
 
@@ -297,7 +298,7 @@ const SPFrame1 = ({ userId, settings, userDetail, editable, setToEdit, toEdit ,f
           </p>
 
           <div className="w-full relative h-full p-1 flex flex-col gap-1  rounded-md items-center overflow-y-auto custom-scroller">
-            {settings &&
+            {/* {settings &&
               settings.personality &&
               settings.personality.length > 0 &&
               userDetail.personality &&
@@ -333,13 +334,13 @@ const SPFrame1 = ({ userId, settings, userDetail, editable, setToEdit, toEdit ,f
                 ) : (
                   <></>
                 );
-              })}
-            {!settings?.personality?.length > 0 &&
-              [1, 2, 3, 4, 5].map((it, idx) => {
+              })} */}
+            {userDetail?.personality?.length > 0 &&
+              userDetail?.personality.map((it, idx) => {
                 return (
                   <div
                     key={idx}
-                    className="bg-white h-[100px] p-2 !rounded-md shadow-[0px_0px_2.500001907348633px_0px_#00000040] flex-1 w-full"
+                    className="bg-white h-[100px]  text-[#517CA8] text-base-17-5 p-2 !rounded-md shadow-[0px_0px_2.500001907348633px_0px_#00000040] flex-1 w-full"
                   >
                     {it}
                   </div>

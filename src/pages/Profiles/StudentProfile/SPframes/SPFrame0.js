@@ -49,13 +49,13 @@ const SPFrame0 = ({ userDetail, settings, toEdit, setToEdit }) => {
         <div className="flex gap-3 text-sm items-center">
           <span>
             <img
-              className="ml-2 !w-5 !h-5 inline-block"
+              className="ml-2 !w-6 !h-6 inline-block"
               src={bod}
               alt="arrow down"
             />
           </span>
           <span>
-            <p>BirthYear</p>
+            <p>Birth Year</p>
             <p className=" font-semibold ">
               {userDetail.birthyear ? userDetail.birthyear : " "}
             </p>
@@ -64,7 +64,7 @@ const SPFrame0 = ({ userDetail, settings, toEdit, setToEdit }) => {
         <div className="flex gap-3 text-sm items-center">
           <span>
             <img
-              className="ml-2 !w-5 !h-5 inline-block"
+              className="ml-2 !w-6 !h-6 inline-block"
               src={time}
               alt="arrow down"
             />
@@ -79,13 +79,13 @@ const SPFrame0 = ({ userDetail, settings, toEdit, setToEdit }) => {
         <div className="flex gap-3 text-sm items-center">
           <span>
             <img
-              className="ml-2 !w-5 !h-5 inline-block"
+              className="ml-2 !w-6 !h-6 inline-block"
               src={referral}
               alt="arrow down"
             />
           </span>
           <span>
-            <p>Referral code</p>
+            <p>Referral</p>
             <p className=" font-semibold ">
               {userDetail.subscriptionCode
                 ? userDetail.subscriptionCode
@@ -96,16 +96,16 @@ const SPFrame0 = ({ userDetail, settings, toEdit, setToEdit }) => {
         <div className="flex gap-3 text-sm items-center">
           <span>
             <img
-              className="ml-2 !w-5 !h-5 inline-block"
+              className="ml-2 !w-6 !h-6 inline-block"
               src={dropbox}
               alt="arrow down"
             />
           </span>
           <span className="flex flex-col">
             <a href={dropLink} target="_blank" rel="noreferrer">
-              DropBox{" "}
+              Dropbox{" "}
               <img
-                className="ml-2 !w-2 !h-2 inline-block"
+                className="ml-2 !w-3 !h-2 inline-block"
                 src={clickArrowIcon}
                 alt="arrow down"
               />
@@ -118,7 +118,7 @@ const SPFrame0 = ({ userDetail, settings, toEdit, setToEdit }) => {
             >
               Drive
               <img
-                className="ml-2 !w-2 !h-2 inline-block"
+                className="ml-2 !w-3 !h-2 inline-block"
                 src={clickArrowIcon}
                 alt="arrow down"
               />
@@ -128,7 +128,7 @@ const SPFrame0 = ({ userDetail, settings, toEdit, setToEdit }) => {
         <div className="flex gap-3 text-sm items-center">
           <span>
             <img
-              className="ml-2 !w-5 !h-5 inline-block"
+              className="ml-2 !w-6 !h-6 inline-block"
               src={accomodations}
               alt="arrow down"
             />

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Stat from "./../../assets/icons/stat.svg"
-import Download from "./../../assets/icons/download.png"
+import Download from "./../../assets/icons/download2.svg"
 import { useSelector } from 'react-redux';
 import { useLazyGetTestResponseQuery } from '../../app/services/test';
 import { getDate, getScore, getScoreStr } from '../../utils/utils';
@@ -74,7 +74,7 @@ export const TestItem = ({ testName, assignedTestId, dueDate, pdfLink, testId, s
 
           {/* {action === 'Start' && <div className="w-full font-bold bg-[#F6A429CC] px-2 py-2 text-center text-white rounded-[6px]">{action}</div>} */}
           {isCompleted === true ?
-            <div className="cursor-pointer  break-al  w-full text-sm font-semibold bg-[#FFCE84] px-2 py-2 text-center text-black rounded-[6px]" onClick={handleReportNavigate} >
+            <div className="cursor-pointer  break-al  w-full text-sm font-semibold bg-[#38C980] px-2 py-2 text-center text-white rounded-[6px]" onClick={handleReportNavigate} >
               {/* {score} */}
               Report
             </div> :

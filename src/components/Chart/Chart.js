@@ -33,7 +33,7 @@ const data1 = {
    ],
 };
 
-export default function Chart({ setSubjects, subjects, selectedSubject, selectedStudent, currentSubData, setCurrentSubData, selectedConceptIdx }) {
+export default function Chart({ setSubjects,YHeader, subjects, selectedSubject, selectedStudent, currentSubData, setCurrentSubData, selectedConceptIdx }) {
 
    const [fetchPersonalDetails, personalDetailsResp] = useLazyGetPersonalDetailQuery()
    const [options, setOptions] = useState(iniOptions)
@@ -203,9 +203,18 @@ export default function Chart({ setSubjects, subjects, selectedSubject, selected
                      return index === 0 ? '' : concepts[index - 1]
                   }
                }
+            },
+            y:{
+               ...prev.scales.y,
+               title: {
+                  ...prev.scales.y.title,
+                
+                  text:YHeader?YHeader:prev.scales.y.title.text,
             }
          },
-      }))
+           
+      }
+   }))
       const datasets = []
    
       for(let cid=0;cid<curr.concepts?.length;cid++) {

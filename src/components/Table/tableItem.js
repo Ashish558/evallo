@@ -676,18 +676,18 @@ console.log(item)
                 <>
                   {item.isCompleted ? (
                     <button
-                      className="px-2.5 py-1.8 rounded-md flex items-center leading-none bg-primary text-white ml-4"
+                      className="px-2.5 py-1.8 bg-[#38C980] rounded-md flex items-center leading-none bg-primary text-white ml-4"
                       onClick={() =>
                         navigate(
                           `/assigned-tests/${item.testId}/${item.assignedTestId}/report/`
                         )
                       }
                     >
-                      View Report
+                     Report
                     </button>
                   ) : item.isStarted ? (
                     <button
-                      className="px-2.5 py-1.8 rounded-md flex items-center leading-none bg-primary text-white ml-4"
+                      className="px-2.5 py-1.8 bg-[#FFCE84] rounded-md flex items-center leading-none bg-primary text-white ml-4"
                       onClick={() =>
                         navigate(
                           `/all-tests/start-section/${item.testId}/${item.assignedTestId}`
@@ -698,14 +698,14 @@ console.log(item)
                     </button>
                   ) : (
                     <button
-                      className="px-2.5 py-1.8 rounded-md flex items-center leading-none bg-primary text-white ml-4"
+                      className="px-2.5 py-1.8 rounded-md bg-[#FF7979] flex items-center leading-none bg-primary text-white ml-4"
                       onClick={() =>
                         navigate(
                           `/all-tests/start-section/${item.testId}/${item.assignedTestId}`
                         )
                       }
                     >
-                      Start Test
+                      Start 
                     </button>
                   )}
                 </>

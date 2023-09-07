@@ -234,7 +234,7 @@ const handleLeadStatus=(e)=>{
         <p className=" text-sm text-[#26435F] font-semibold text-base-20 mb-1">
           Session Notes
         </p>
-        <div className="bg-white flex-1 h-[410px] rounded-md custom-scroller shadow-[0px_0px_2.500001907348633px_0px_#00000040]">
+        <div className="bg-white flex-1  rounded-md custom-scroller shadow-[0px_0px_2.500001907348633px_0px_#00000040]">
           <div className="mx-6 p-2 ">
             <button
               onClick={() => {
@@ -261,8 +261,8 @@ const handleLeadStatus=(e)=>{
               Internal Notes
             </button>
           </div>
-          <div className="flex flex-col h-[400px]   bg-[#FFFFFF] ">
-            <ul className="list-disc rounded-b-md overflow-y-scroll custom-scroller h-full ">
+          <div className="flex flex-col h-[380px]   bg-[#FFFFFF] ">
+            <ul className="list-disc rounded-b-md overflow-y-auto custom-scroller h-full ">
               {[{ message: "Hii", createdAt: new Date() }]?.map(
                 (item, index) => (
                   <>
