@@ -731,7 +731,7 @@ export default function AssignedTests() {
                     })
                   }
                   placeholder="Search Student"
-                  inputClassName="pl-4 py-[14px] text-base-17-5 text-md text-[#667085]   placeholder:text-lg pl-2 placeholder:text-md"
+                  inputClassName="pl-4 py-[14px] text-base-17-5 text-md text-[#667085]   placeholder:text-base-17-5 placeholder:text-[#667085] pl-2"
                   parentClassName="w-[20.8333333333vw] text-md"
 
                   inputContainerClassName=" my-1 shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white  !py-0"
