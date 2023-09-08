@@ -305,7 +305,7 @@ export default function TutorDashboard() {
 
                      <div className='w-[58.958333333vw] mt-10'>
                         <p className='text-primary-dark font-semibold text-[20px] mb-[13px]'>Today’s Schedule</p>
-                        <div className='px-[29px] py-[31px] bg-white  rounded-[5.333px] scrollbar-content scrollbar-vertical max-h-[600px] overflow-auto shadow-[0px_0px_2.6px_0px_rgba(0,0,0,0.25)]'>
+                        <div className='px-[43px] py-[26px] bg-white  rounded-[5.333px] scrollbar-content scrollbar-vertical max-h-[499px] overflow-auto shadow-[0px_0px_2.6px_0px_rgba(0,0,0,0.25)]'>
                            {sessions.map((item, idx) => {
                               return <TutorSchedule {...item} setIsOpen={setIsOpen} handleLinkClick={handleLinkClick} />
                            })}
@@ -358,9 +358,9 @@ export default function TutorDashboard() {
                            {/* <p className='text-primary font-semibold text-[21px] mb-4'>
                            Latest Practice Test
                         </p> */}
-                           <div className='pl-[30px] pr-[26px] h-[515px] overflow-auto py-[30px]  bg-white rounded-20'>
+                           <div className='pl-[30px] pr-[26px] h-[950px] overflow-auto py-[30px]  bg-white rounded-20'>
                               {allAssignedTests.map(item => {
-                                 console.log('adssadsad', item);
+
                                  return (
                                     <div className=' mb-5' key={item._id} >
                                        <div>

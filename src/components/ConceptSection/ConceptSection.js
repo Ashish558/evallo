@@ -256,12 +256,12 @@ const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
       <div className=" flex-1 w-[70%] h-full">
         <div className="flex items-center justify-between">
           <h1 className="text-[#26435F]  text-sm font-semibold ">
-            Concept Chart
+            Conceptual Accuracy 
             <span className="inline-block my-auto ml-2 translate-y-1">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                width="19"
-                height="19"
+                width="15"
+                height="15"
                 viewBox="0 0 19 19"
                 fill="none"
               >
@@ -292,8 +292,8 @@ const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
             <RangeDate
               className="ml-0"
               manualHide={true}
-              optionClassName="w-[200px]"
-              inputContainerClassName="w-[230px] "
+              optionClassName="w-min"
+              inputContainerClassName="w-min"
               handleRangeData={setSelectedConceptIdx}
             />
           </div>
@@ -321,10 +321,10 @@ const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
            Tutor Profile
            
           </h1>
-          <div className=" bg-[linear-gradient(100deg,#26435F_0.06%,#1C3BDE_99.95%)] flex items-center h-[180px] rounded-md !w-[calc(489*0.0522vw)]">
+          <div className="mb-3 bg-[linear-gradient(100deg,#26435F_0.06%,#1C3BDE_99.95%)] flex items-center h-[180px] rounded-md !w-[calc(489*0.0522vw)]">
 
           
-            {filteredTutors.length >= totalTutors || true ? (
+            {filteredTutors.length >= totalTutors  ? (
               <OwlCarousel
                 ref={tutorCarouselRef}
                 className="owl-theme h-full"
@@ -332,7 +332,7 @@ const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
                 margin={8}
                 items={1}
               >
-                {[{tutorLevel:"",firstName:"",education:"",tagLine:"",_id:"",photo:""}].map((tutor, idx) => {
+                {filteredTutors.map((tutor, idx) => {
                   return (
                     <div
                       key={idx}
@@ -340,19 +340,19 @@ const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
                     
                     >
                       <div className="w-[40%] ml-5 flex justify-center flex-col h-full ">
-                      <h3 className="mt-0 mb-1 mt-2.5 text-[#FFA28D] font-semibold">
+                      <h3 className="mt-0 mb-1 mt-2.5 text-[#FFA28D] font-semibold max-w-[100px] overflow-x-auto">
                           {" "}
-                          {`${tutor.firstName} ${tutor.lastName} `}{"Dummy "}
+                          {`${tutor.firstName} ${tutor.lastName} `}
                         </h3>
-                        <h5 className={`text-white`}>
+                        {/* <h5 className={`text-white`}>
                           
                           {tutor.tutorLevel && `${tutor.tutorLevel} Belt`}
-                        </h5>
-                        <p>{tutor?.education}</p>
-                     
-                        <p>{tutor?.tagLine}</p>
+                        </h5> */}
+                        <p className="text-white text-base-17-5 max-w-[100px] overflow-x-auto ">{tutor?.tutorServices[0]?.service?tutor?.tutorServices[0]?.service:tutor?.tutorServices[1]?.service?tutor?.tutorServices[1]?.service:"None"}</p>
+                   
+                        <p className="text-white text-base-15 max-w-[100px] overflow-x-auto mt-1">{tutor?.tagLine}</p>
                         <button
-                       className="p-2 mt-5 !w-fit rounded-lg whitespace-nowrap text-sm px-4 bg-[#FFA28D] text-white"
+                       className="p-2 mt-5 !w-fit rounded-lg whitespace-nowrap text-sm px-4 bg-[#FFA28D] text-white text-base-17-5"
          
                        onClick={() =>
                         tutor._id && navigate(`/profile/tutor/${tutor._id}`)
@@ -366,7 +366,7 @@ const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
                           src={
                             tutor.photo
                               ? `${awsLink}${tutor.photo}`
-                              : "/images/default.jpeg"
+                              : "/images/tutorDefault.svg"
                           }
                           className="mx-auto object-cover !w-[100px] !h-[100px] rounded-full"
                           alt="profile-icon"
@@ -378,7 +378,7 @@ const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
               </OwlCarousel>
             ) : (
               <p
-                className="text-white font-semibold pt-8 not-italic pb-8 text-lg"
+                className="text-white  text-center w-full font-semibold pt-8 not-italic pb-8 text-lg"
                 style={{
                   fontSize: "18px",
                   fontStyle: "normal",

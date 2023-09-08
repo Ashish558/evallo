@@ -110,7 +110,7 @@ export default function StudentProfile({ isOwn }) {
   
   const [selectedScoreIndex, setSelectedScoreIndex] = useState(0);
   const { organization } = useSelector((state) => state.organization);
-  console.log({organization})
+ 
   const [toEdit, setToEdit] = useState({
     frame0: {
       active: false,
@@ -378,6 +378,11 @@ const [toEdit, setToEdit] = useState({
         schoolName,
         grade,
          about,
+         pincode,
+         address,
+         country,
+         city,
+         state:state1,
         subscriptionCode,
       } = res.data.data.userdetails;
 
@@ -405,11 +410,11 @@ const [toEdit, setToEdit] = useState({
                   ...prev.frame1.timeZone,
                   timeZone: timeZone ? timeZone : "",
                   ...prev.frame1.birthyear,
-                  country:organization?.country,
-                  state:organization?.state,
-                  city:organization?.city,
-                  pincode:organization?.zip,
-                  address:organization?.address,
+                  country:country,
+                  state:state1,
+                  city:city,
+                  pincode:pincode,
+                  address:address,
                   
                   birthyear,
                   ...prev.frame1.industry,
@@ -438,29 +443,8 @@ const [toEdit, setToEdit] = useState({
       setUserDetail(res.data.data.userdetails);
     });
   };
-  useEffect(()=>{
-    if(!organization) return
-    console.log("inside country effect",organization)
-    setToEdit((prev) => 
-    {
-      return {
-        
-          ...prev,
-          frame1:{
-       ...prev.frame1,
-       country:organization?.country,
-                  state:organization?.state,
-                  city:organization?.city,
-                  pincode:organization?.zip,
-                  address:organization?.address,
-       
-        }
-      }
-    }
-    
-    )
-  },[organization,fetchOrg])
-  console.log({toEdit})
+
+ 
   useEffect(() => {
     fetchDetails();
   }, [params.id]);
@@ -474,7 +458,7 @@ const [toEdit, setToEdit] = useState({
       setSettings(res.data.data.setting);
     });
   }, []);
-   console.log({ userDetail,user,settings});
+  
   const handleProfilePhotoChange = (file) => {
     // console.log(file)
     let url = "";
@@ -532,7 +516,7 @@ const [toEdit, setToEdit] = useState({
   useEffect(() => {
     fetchDetails();
   }, [params.id]);
-console.log({associatedStudents})
+console.log({user,userDetail})
   return (
     <>
       <div className={`mx-[80px] min-h-screen design:mx-[160px] pb-[70px]`}>
@@ -566,7 +550,7 @@ console.log({associatedStudents})
                       src={
                         user.photo
                           ? `${awsLink}${user.photo}`
-                          : "/images/default.jpeg"
+                          : "/images/Rectangle 2347.svg"
                       }
                       imgSizeClass="!w-[110px] !h-[110px] !translate-y-8 border-[4px] border-white "
                       imageClassName="!w-[100px] !h-[100px] border-[4px] border-white "
@@ -703,7 +687,7 @@ console.log({associatedStudents})
                             src={
                               student.photo
                                 ? `${awsLink}${student.photo}`
-                                : "/images/default.jpeg"
+                                : "/images/Rectangle 2346.svg"
                             }
                             imgSizeClass="!w-[70px] !h-[70px] !translate-y-[20px]"
                             imageClassName="!w-[50px] !h-[50px] border-[2px] border-[#26435F]"
@@ -796,6 +780,7 @@ console.log({associatedStudents})
             className="border !border-[#CBD6E3] w-[calc(1500*0.0522vw)] mx-auto my-[calc(50*0.0522vw)]"
           ></div>
           <SPFrame1
+          user={user}
             userDetail={userDetail}
             settings={settings}
             userId={isOwn ? id : params.id}

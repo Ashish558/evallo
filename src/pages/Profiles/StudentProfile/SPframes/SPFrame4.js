@@ -46,7 +46,7 @@ let signupData = [
   },
   {
     label: "Do You Have Any Accomodations?",
-    key: "",
+    key: "accomodations",
   },
 ];
 const SPFrame4 = ({
@@ -54,6 +54,7 @@ const SPFrame4 = ({
   settings,
   userDetail,
   editable,
+  user,
   setToEdit,
   toEdit,
   fetchDetails,
@@ -118,6 +119,7 @@ const handleLeadStatus=(e)=>{
     fetchDetails(true, true);
   })
 }
+console.log("frame1 parent", { userDetail, user });
   //console.log("frame1", { userDetail, xlsFile });
   return (
     <div className="flex w-full justify-between ">
@@ -228,10 +230,17 @@ const handleLeadStatus=(e)=>{
                     {it.label}{" "}
                   </span>
                   <span>:</span>
-
+                   {
+                    Array.isArray(userDetail[it.key])?userDetail[it.key]?.map(itt=>{
+                    return   <span key={itt} className="text-[#517CA8] font-medium">
+                    {itt ? itt : it?.default}
+                  </span>
+                    })
+                   :
                   <span className="text-[#517CA8] font-medium">
                     {it?.key ? userDetail[it.key] : it?.default}
                   </span>
+                  }
                 </p>
               );
             })}
@@ -271,30 +280,60 @@ const handleLeadStatus=(e)=>{
           </div>
           <div className="flex flex-col h-[360px]  ">
             <ul className="list-disc rounded-b-md overflow-y-auto custom-scroller h-full ">
-              {[{ message: "Hii", createdAt: new Date() }]?.map(
+            {internal && user?.internalNotes?.map(
                 (item, index) => (
                   <>
-                    <div key={index} className="flex h-[57px] pl-5 relative ">
-                      <p className="text-[#517CA8] pt-6 !font-medium text-[14px] mr-2 w-[calc(143*0.050vw)] text-center !text-[calc(17.5*0.050vw)] whitespace-nowrap">
-                        {item?.message &&
-                          new Date(item.createdAt)
+                     <div key={index} className="flex h-[57px] pl-5 relative items-center">
+                      <p className="text-[#517CA8]  !font-medium text-[14px] mr-4 w-[calc(143*0.050vw)] text-center !text-[calc(17.5*0.050vw)] whitespace-nowrap">
+                        {item?.note&&
+                          new Date(item.date)
                             .toDateString()
                             .split(" ")[1] +
                             " " +
-                            new Date(item.createdAt)
+                            new Date(item.date)
                               .toDateString()
                               .split(" ")[2] +
                             ", " +
-                            new Date(item.createdAt)
+                            new Date(item.date)
                               .toDateString()
                               .split(" ")[3]}
                       </p>
-                      <div className={`pt-5 ${styles.actionBorder}`}>
+                      <div className={` ${styles.actionBorder} items-center`}>
                         <div className={styles.circle}>
                           <div className={styles.circle2}></div>
                         </div>
-                        <p className="pl-4  font-medium text-[#517CA8] text-[15.5px] !text-[calc(17.5*0.050vw)]">
-                          {item?.message}
+                        <p className="pl-4    font-medium text-[#517CA8] text-[15.5px] !text-[calc(17.5*0.050vw)]">
+                          {item?.note}
+                        </p>
+                      </div>
+                    </div>
+                  </>
+                )
+              )}
+               {!internal && user?.clientNotes?.map(
+                (item, index) => (
+                  <>
+                    <div key={index} className="flex h-[57px] pl-5 relative items-center">
+                      <p className="text-[#517CA8]  !font-medium text-[14px] mr-4 w-[calc(143*0.050vw)] text-center !text-[calc(17.5*0.050vw)] whitespace-nowrap">
+                        {item?.note&&
+                          new Date(item.date)
+                            .toDateString()
+                            .split(" ")[1] +
+                            " " +
+                            new Date(item.date)
+                              .toDateString()
+                              .split(" ")[2] +
+                            ", " +
+                            new Date(item.date)
+                              .toDateString()
+                              .split(" ")[3]}
+                      </p>
+                      <div className={` ${styles.actionBorder} items-center`}>
+                        <div className={styles.circle}>
+                          <div className={styles.circle2}></div>
+                        </div>
+                        <p className="pl-4    font-medium text-[#517CA8] text-[15.5px] !text-[calc(17.5*0.050vw)]">
+                          {item?.note}
                         </p>
                       </div>
                     </div>

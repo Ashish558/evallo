@@ -36,20 +36,19 @@ export default function InputSelectNew({
   useOutsideAlerter(selectRef, () => setSelected(false));
 
   useEffect(() => {
-   
+
     setSelected(false)
   }, [value]);
-  const handleOptionSelect=(option,idx)=>{
+  const handleOptionSelect = (option, idx) => {
     onChange(optionType === "object" ? option : option, idx);
-    
+
   }
 
   return (
     <div
       ref={selectRef}
-      className={`${selected && "relative z-5000"} ${
-        parentClassName ? parentClassName : ""
-      } ${disabled === true ? "pointer-events-none" : ""} `}
+      className={`${selected && "relative z-5000"} ${parentClassName ? parentClassName : ""
+        } ${disabled === true ? "pointer-events-none" : ""} `}
       onClick={() => setSelected(!selected)}
     >
       {label && (
@@ -63,16 +62,15 @@ export default function InputSelectNew({
       {labelIcon && <img src={labelIcon} className={`mr-6 inline-block ${iconClass} `} alt="icon" />}
 
       <div
-        className={`py-[10px] px-[21px] flex items-center rounded-10 relative cursor-pointer  z-50 ${
-          inputContainerClassName ? inputContainerClassName : ""
-        } `}
+        className={`py-[10px] px-[21px] flex items-center rounded-10 relative cursor-pointer  z-50 ${inputContainerClassName ? inputContainerClassName : ""
+          } `}
       >
         {Icon && !ICON2 && <img src={Icon} className={`mr-6 inline-block ${iconClass} `} alt="icon" />}
 
         {!selected && !ICON2&& !Icon && !labelIcon?
           <img
-            src={IconDemography?countryDA:DownArrow}
-            className={`${arrowWidth ? arrowWidth:'w-[15px]'} ${styles.downArrow}`}
+            src={IconDemography ? countryDA : DownArrow}
+            className={`${arrowWidth ? arrowWidth : 'w-[15px]'} ${styles.downArrow}`}
             alt="down-arrow"
             onClick={() => setSelected(!selected)}
           />: !Icon && !ICON2&&  !labelIcon && <img
@@ -84,13 +82,12 @@ export default function InputSelectNew({
 
         }
         <div
-          className={`outline-0 w-full mr-3 relative ${
-            optionClassName ? optionClassName : ""
-          }`}
+          className={`outline-0 w-full mr-3 relative ${optionClassName ? optionClassName : ""
+            }`}
           name={label}
         >
           {value === "" ? (
-            <span className={`text-primary-60 ${placeHolderClass}`}> {placeholder} </span>
+            <span className={` ${placeHolderClass ? placeHolderClass : "text-primary-60"}`}> {placeholder} </span>
           ) : (
             value
           )}
@@ -108,7 +105,7 @@ export default function InputSelectNew({
                 <div
                   className={`outline-0 border-0 py-2.5  px-4 flex flex-wrap items-center justify-between ${optionsEachClassName} text-base-17-5`}
                   key={idx}
-                  onClick={()=> handleOptionSelect(option,idx)}
+                  onClick={() => handleOptionSelect(option, idx)}
                 >
                   <p className={`${optionListClassName} text-base-17-5 `}>
                     {optionType !== undefined && optionType === "object"

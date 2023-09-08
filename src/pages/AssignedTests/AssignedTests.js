@@ -658,19 +658,19 @@ export default function AssignedTests() {
   };
   return (
     <>
-      <div className="w-[83.3333333333vw] mx-auto min-h-screen">
+      <div className="w-[83.3333333333vw] mx-auto min-h-screen mb-[40px]">
         <div className="">
           <div className="flex justify-between items-center ">
-            <p className="text-[#24A3D9]  text-xl text-base-17-5 !my-[calc(50*0.052vw)]">
+            <p className="text-[#24A3D9] text-xl mb-8 mt-[50px]">
               {organization?.company +
                 "  >  " +
                 firstName +
                 "  " +
                 lastName +
                 "  >  "}
-              <span className="font-semibold">Assignments</span>
+              <span className="font-bold">Assignments</span>
             </p>
-            {persona !== "parent" && persona !== "student" && (
+            {persona !== "parent" && persona !== "student" && persona !== "tutor" && (
               <button
                 className="bg-[#FFA28D] text-[15px] justify-center flex p-[7px] design:p-[10px] items-center text-white font-bold rounded-[7.5px] text-base-15"
                 onClick={() => setAssignTestModalActive(true)}
@@ -690,7 +690,7 @@ export default function AssignedTests() {
                       studentName: e.target.value,
                     })
                   }
-                 
+
                   placeholder="Search Student"
                   inputClassName="text-base-17-5 pl-4 text-[#667085] placeholder:text-base-15"
                   parentClassName="w-[22.03125vw]  py-1"
@@ -710,7 +710,7 @@ export default function AssignedTests() {
             )}
           </div>
 
-          {persona === "admin" && (
+          {(persona === "admin" || persona === "tutor") && (
             <>
               <div className="flex gap-4 justify-between items-center">
                 {persona === "student" ? (
@@ -731,9 +731,9 @@ export default function AssignedTests() {
                     })
                   }
                   placeholder="Search Student"
-                  inputClassName="pl-4 py-[14px] text-base-17-5 text-md text-[#667085]   placeholder:text-lg pl-2 placeholder:text-md"
+                  inputClassName="pl-4 py-[14px] text-base-17-5 text-md text-[#667085]   placeholder:text-base-17-5 placeholder:text-[#667085] pl-2"
                   parentClassName="w-[20.8333333333vw] text-md"
-                 
+
                   inputContainerClassName=" my-1 shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white  !py-0"
                   type="text"
                 />
@@ -765,20 +765,35 @@ export default function AssignedTests() {
                   parentClassName="w-[11.9791666667vw] text-sm text-[#667085]"
                   type="select"
                 />
-                <InputSelect
-                  value={filterData.assignedBy}
-                  onChange={(val) =>
-                    setFilterData({ ...filterData, assignedBy: val })
-                  }
-                  optionListClassName="text-base-17-5 text-[#667085]"
-                  parentClassName="w-[15.625vw] text-sm"
-                  inputClassName="text-base-17-5 py-3"
-                  inputContainerClassName="shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] bg-white"
-                  placeholderClass="text-base-17-5"
-                  optionData={assignedBys}
-                  placeholder="Filter by Tutor"
-                  type="text"
-                />
+                {persona === "tutor" ?
+                  <div className="w-2/6 flex justify-end">
+                    <div>
+                      <button
+                        className="bg-[#FFA28D] text-[15px] justify-center flex p-[7px] design:p-[10px] items-center text-white font-bold rounded-[7.5px] text-base-15"
+                        onClick={() => setAssignTestModalActive(true)}
+                      >
+                        New Assignment
+                        <img src={AddIcon} className="ml-3" alt="new test" />
+                      </button>
+                    </div>
+                  </div>
+                  :
+
+                  <InputSelect
+                    value={filterData.assignedBy}
+                    onChange={(val) =>
+                      setFilterData({ ...filterData, assignedBy: val })
+                    }
+                    optionListClassName="text-base-17-5 text-[#667085]"
+                    parentClassName="w-[15.625vw] text-sm"
+                    inputClassName="text-base-17-5 py-3"
+                    inputContainerClassName="shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] bg-white"
+                    placeholderClass="text-base-17-5"
+                    optionData={assignedBys}
+                    placeholder="Filter by Tutor"
+                    type="text"
+                  />
+                }
               </div>
 
               <div className="mt-[50px] mb-[23.75px]">
@@ -829,6 +844,7 @@ export default function AssignedTests() {
           )}
           <div className="mt-3">
             <Table
+              noArrow={true}
               numberChecked={numberChecked}
               setnumberChecked={setnumberChecked}
               onClick={{ handleResend, handleDelete }}
@@ -884,7 +900,7 @@ export default function AssignedTests() {
                     optionPrefix="s"
                     parentClassName="w-full mr-4"
                     labelClassname=" !font-medium text-[#26435F] ml-2 mb-0.5 !font-semibold text-[#26435F]"
-                    
+
                     inputContainerClassName="px-5 py-3.5 text-sm bg-primary-50 border-0"
                     inputClassName="text-base-17-5 bg-transparent "
                     placeholder="Student Name"
@@ -913,7 +929,7 @@ export default function AssignedTests() {
                     placeholder="Type Test Name"
                     parentClassName="w-full mr-4"
                     labelClassname=" !font-medium text-[#26435F] ml-2 mb-0.5"
-                    
+
                     inputContainerClassName="px-5 py-3.5 text-sm bg-primary-50 border-0"
                     inputClassName="text-base-17-5 bg-transparent"
                     type="select"
@@ -930,7 +946,7 @@ export default function AssignedTests() {
                     optionData={timeLimits}
                     parentClassName="w-full mr-4 "
                     labelClassname=" !font-medium text-[#26435F] ml-2 mb-0.5 !font-semibold text-[#26435F]"
-                    
+
                     inputContainerClassName="px-5 text-sm py-3.5 bg-primary-50 border-0"
                     inputClassName="text-base-17-5 bg-transparent"
                     placeholder="Select Duration"
@@ -951,7 +967,7 @@ export default function AssignedTests() {
                     }
                     parentClassName="w-full mr-4"
                     labelClassname=" !font-medium text-[#26435F] ml-2 mb-0.5 text-[#26435F] font-semibold"
-                    
+
                     inputContainerClassName="px-5 py-3.5 bg-primary-50 border-0"
                     inputClassName="text-base-17-5 bg-transparent text-sm"
                     placeholderClass="text-base-17-5"

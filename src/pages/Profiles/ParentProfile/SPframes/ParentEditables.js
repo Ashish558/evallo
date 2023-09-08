@@ -8,6 +8,7 @@ import {
   useUpdateUserFieldsMutation,
   usePostTutorDetailsMutation,
   useAddLinkStudentMutation,
+  useAddNotesMutation,
 } from "../../../../app/services/users";
 import InputField from "../../../../components/InputField/inputField";
 import InputSearch from "../../../../components/InputSearch/InputSearch";
@@ -52,7 +53,7 @@ export default function ParentEditables({
   const [parent, setParent] = useState("");
   const [fetchParents, fetchParentsResp] = useLazyGetParentsByNameQuery();
   const [parents, setParents] = useState([]);
-
+   const [addNotes,notesStatus]=useAddNotesMutation()
   const [updateFields, updateFieldsResp] = useUpdateUserFieldsMutation();
   const [updateDetails, updateDetailsResp] = useUpdateUserDetailsMutation();
   const [updateTutorDetails, updateTutorDetailsResp] =
@@ -441,6 +442,20 @@ console.log("parentEditables",currentToEdit)
      if(reqBody.hasOwnProperty("country")){
       updateUserAccount(reqBody)
      }
+     if (currentToEdit.hasOwnProperty("notes")) {
+      let reqBody = {
+      
+        "note":currentToEdit?.notes,
+        "type":"internalNotes", // or it can be 'internalNotes'
+        "date":new Date()
+      };
+     
+     
+     addNotes(reqBody).then((res)=>{
+      console.log("internal",{res})
+     })
+    
+    }
     const userDetailSave = (reqBody) => {
       // if (reqBody.satScores) {
       //   if (isNaN(reqBody?.satScores?.maths)) reqBody.satScores.maths = 0;
@@ -720,7 +735,7 @@ console.log("parentEditables",currentToEdit)
                           src={
                             user.photo
                               ? `${awsLink}${user.photo}`
-                              : "/images/default.jpeg"
+                              : "/images/Rectangle 2347.svg"
                           }
                           imageClassName=" border-[4px] border-white"
                           className=""
@@ -860,8 +875,8 @@ console.log("parentEditables",currentToEdit)
                         labelClassname="text-[#26435F] !font-bold text-base-17-5"
                         label="Time zone"
                         placeholder="Time Zone"
-                        inputContainerClassName="text-xs  bg-[#F6F6F6] !py-3 border-0 !rounded-[5px]"
-                        inputClassName="bg-transparent text-xs  "
+                        inputContainerClassName="text-xs min-h-[42px] bg-[#F6F6F6] !py-3 border-0 !rounded-[5px]"
+                        inputClassName="bg-transparent min-h-[42px] text-xs  "
                         parentClassName="flex-1 "
                         type="text"
                         value={currentToEdit.timeZone}
@@ -899,8 +914,8 @@ console.log("parentEditables",currentToEdit)
                         labelClassname="text-[#26435F] !font-bold text-base-17-5"
                         label="Country"
                         placeholder="Country"
-                        inputContainerClassName="text-xs  bg-[#F6F6F6] !py-3 border-0 !rounded-[5px]"
-                        inputClassName="bg-transparent text-xs  "
+                        inputContainerClassName="text-xs min-h-[20px] min-h-[42px] bg-[#F6F6F6] !py-3 border-0 !rounded-[5px]"
+                        inputClassName="bg-transparent min-h-[42px] text-xs  "
                         parentClassName="flex-1 "
                         type="text"
                       
@@ -943,8 +958,8 @@ console.log("parentEditables",currentToEdit)
                           labelClassname="text-[#26435F] !font-bold text-base-17-5"
                           label="State"
                           placeholder="State"
-                          inputContainerClassName="text-xs  bg-[#F6F6F6] !py-3 border-0 !rounded-[5px]"
-                          inputClassName="bg-transparent text-xs  "
+                          inputContainerClassName="text-xs min-h-[42px]  bg-[#F6F6F6] !py-3 border-0 !rounded-[5px]"
+                          inputClassName="bg-transparent min-h-[42px] text-xs  "
                           parentClassName="flex-1 "
                           type="text"
                           optionData={states}

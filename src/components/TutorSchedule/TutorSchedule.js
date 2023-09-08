@@ -2,7 +2,7 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import calendar from '../../assets/images/uiw_date.png'
 
-export default function TutorSchedule({ service, date, studentName, time, timeZone, session, _id, handleLinkClick }) {
+export default function TutorSchedule({ service, date, studentName, time, timeZone, session, _id, handleLinkClick, specialization }) {
 
    const startTime = time.start
    const endTime = time.end
@@ -15,10 +15,10 @@ export default function TutorSchedule({ service, date, studentName, time, timeZo
    }
 
    return <div className='bg-[#F5F8FA] shadow-[0px_0px_2.6px_0px_rgba(0,0,0,0.25)]'>
-      <div className='flex justify-between items-center rounded-[5.333px]   py-[20px] px-[43px]'>
+      <div className='flex mb-5 justify-between items-center rounded-[5.333px]   py-[20px] px-[43px]'>
          <div>
             <p className='text-[#24A3D9] text-xl font-medium'>{studentName}</p>
-            <p className=' text-[#26435F]'>{service}</p>
+            <p className=' text-[#26435F]'>{service} | {specialization}</p>
          </div>
          <div>
             <div className='flex items-center'>

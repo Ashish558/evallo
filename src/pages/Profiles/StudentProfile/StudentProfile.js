@@ -140,7 +140,7 @@ export default function StudentProfile({ isOwn }) {
   const [editable, setEditable] = useState(false);
   const dispatch = useDispatch();
   const { role: persona } = useSelector((state) => state.user);
-
+  const [totalTest,setTotaltest]=useState(0)
   const [user, setUser] = useState({});
   const [userDetail, setUserDetail] = useState({});
   const [settings, setSettings] = useState({});
@@ -188,7 +188,11 @@ export default function StudentProfile({ isOwn }) {
       active: false,
       aboutScore: "",
     },
-   
+    baselineScores: {
+      active: false,
+      baselineScores: "",
+    },
+    
     address: {
       active: false,
       residentialAddress: "",
@@ -453,6 +457,7 @@ const [toEdit, setToEdit] = useState({
         satScores,
         actScores,
         about,
+        baselineScores,
         subjects,
         subscriptionCode,
       } = res.data.data.userdetails;
@@ -550,6 +555,10 @@ const [toEdit, setToEdit] = useState({
                 personality: {
                   ...prev.personality,
                   personality: personality,
+                },
+                baselineScores: {
+                  ...prev.baselineScores,
+                  baselineScores: baselineScores,
                 },
                 whiteBoardLinks: {
                   ...prev.whiteBoardLinks,
@@ -667,7 +676,7 @@ const [toEdit, setToEdit] = useState({
   }, [userDetail.timeZone]);
 
   // console.log(user)
-  // console.log(userDetail)
+   console.log("student",{userDetail,user})
   // console.log('associatedParent', associatedParent)
   // console.log('isEditable', editable)
   // console.log(settings)
@@ -679,7 +688,7 @@ const [toEdit, setToEdit] = useState({
   return (
     <>
       <div className={`mx-[80px] min-h-screen design:mx-[160px] pb-[70px]`}>
-        <p className="text-[#24A3D9] mt-7 mb-3">
+        <p className="text-[#24A3D9] my-[calc(50*0.0522vw)]">
           {organization?.company +
             " > " +
             user?.firstName +
@@ -707,7 +716,7 @@ const [toEdit, setToEdit] = useState({
                 src={
                   user.photo
                     ? `${awsLink}${user.photo}`
-                    : "/images/default.jpeg"
+                    : "/images/Rectangle 2346.svg"
                 }
                 imgSizeClass="!w-[110px] !h-[110px] !translate-y-8 border-[4px] border-white "
                 imageClassName="!w-[100px] !h-[100px] border-[4px] border-white "
@@ -809,7 +818,7 @@ const [toEdit, setToEdit] = useState({
             </div>
           </div>
           <div className="bg-white !rounded-b-md shadow-[0px_0px_2.500001907348633px_0px_#00000040] flex  h-[100px] justify-between ">
-            <div className="ml-[126px] flex my-auto py-auto w-4/5 text-[12px] px-5  flex-1 h-full  h-[100px] overflow-y-auto custom-scroller pt-5  ">
+            <div className="ml-[126px] flex my-auto py-auto w-4/5 text-[12px] px-5  flex-1 h-full  h-[100px] overflow-y-auto custom-scroller pt-5  text-[#517CA8] text-base-17-5 ">
             {userDetail?.about}
             </div>
             <div className="w-[250px] ml-6 my-0">
@@ -818,10 +827,10 @@ const [toEdit, setToEdit] = useState({
                   src={
                     associatedParent.photo
                       ? `${awsLink}${associatedParent.photo}`
-                      : "/images/default.jpeg"
+                      : "/images/Rectangle 2347.svg"
                   }
-                  imgSizeClass="!w-[50px] !h-[50px] !translate-y-[40px]"
-                  imageClassName="!w-[50px] !h-[50px] border-[2px] border-[#26435F]"
+                  imgSizeClass="!w-[50px] !h-[50px] !translate-y-[45px]  border-[2px] border-[#26435F]"
+                  imageClassName="!w-[50px] !h-[50px] "
                   className=" "
                   handleChange={handleProfilePhotoChange}
                 />
@@ -917,7 +926,7 @@ const [toEdit, setToEdit] = useState({
             settings={settings}
             userId={isOwn ? id : params.id}
             editable={editable}
-          
+            totalTest={totalTest}
             setToEdit={setToEdit}
             toEdit={toEdit}
           />
@@ -926,7 +935,7 @@ const [toEdit, setToEdit] = useState({
               Latest Assignmets
             </p>
 
-            <StudentTest fromProfile={true} />
+            <StudentTest setTotaltest={setTotaltest} fromProfile={true} />
             <div
            
             className="border !border-[#CBD6E2] w-[calc(1500*0.0522vw)] mx-auto mb-[calc(50*0.0522vw)]"
@@ -938,6 +947,7 @@ const [toEdit, setToEdit] = useState({
           ></div>
            <SPFrame4 userDetail={userDetail}        
                 fetchDetails={fetchDetails}
+                user={user}
             setSelectedScoreIndex={setSelectedScoreIndex}
             settings={settings}
             userId={isOwn ? id : params.id}

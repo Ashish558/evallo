@@ -3,14 +3,15 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useTutorDetails } from "../../hooks/useTutorDetails";
 import styles from "./TutorCarousel.module.css";
-
+import left from "../../assets/YIcons/VectorleftParent.svg";
+import right from "../../assets/YIcons/VectorrightParent.svg";
 export default function SingleTutor({ idx, tutor }) {
   const navigate = useNavigate();
   const { awsLink } = useSelector((state) => state.user);
 
   return (
-    <div key={idx} className="item px-4 h-full">
-      <div className="flex items-center gap-5 my-auto justify-center">
+    <div key={idx} className="item px-2 h-full ">
+      <div className="flex flex-1 h-full items-center gap-5 my-auto justify-center">
         <div className="w-2/3">
           {/* <h5 className={`${styles.tag}`}>
             {tutor.tutorLevel && `${tutor.tutorLevel} Belt`}
@@ -30,11 +31,11 @@ export default function SingleTutor({ idx, tutor }) {
             View Profile
           </button>
         </div>
-
-        <div className="relative translate-x-[30%] design:translate-x-[20%] -mt-4">
+      <div className="w-fit h-fit" >
+        <div className="relative ">
           <img
             src={
-              tutor.photo ? `${awsLink}${tutor.photo}` : "/images/default.jpeg"
+              tutor.photo ? `${awsLink}${tutor.photo}` : "/images/tutorDefault.svg"
             }
             className="absolute z-[500] left-[-15px] top-[8.2px] design:top-[6px] rounded-full w-[70px] h-[95px] design:!w-[100px] design:!h-[100px] object-cover shrink-0"
             alt=""
@@ -55,6 +56,12 @@ export default function SingleTutor({ idx, tutor }) {
               strokeWidth="3.19966"
             />
           </svg>
+          
+        </div>
+        <span className="flex px-6 pt-2 gap-2">
+        <span><img src={left}  className="w-2 h-3 m-0 p-0 "/></span>
+        <span><img src={right} className="w-2 h-3 m-0 p-0 " /></span>
+        </span>
         </div>
       </div>
     </div>

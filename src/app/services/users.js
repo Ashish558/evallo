@@ -66,6 +66,13 @@ export const userServicesApi = createApi({
         headers: getAuthHeader(),
       }),
     }),
+    getFeedback: builder.query({
+      query: () => ({
+        url: `api/feedback/rating/allRating`,
+        method: "GET",
+        headers: getAuthHeader(),
+      }),
+    }),
     updateUser: builder.mutation({
       query: (body) => ({
         url: `api/user/updateUser/${body.userId}`,
@@ -79,6 +86,14 @@ export const userServicesApi = createApi({
         url: `api/user/${body.id}`,
         method: "PATCH",
         body: body.fields,
+        headers: getAuthHeader(),
+      }),
+    }),
+    addNotes: builder.mutation({
+      query: (body) => ({
+        url: `api/user/notes/addNotes`,
+        method: "POST",
+        body: body,
         headers: getAuthHeader(),
       }),
     }),
@@ -212,6 +227,7 @@ export const userServicesApi = createApi({
 export const {
   useLazyGetAllUsersQuery,
   useLazyGetParentTutorsQuery,
+  useAddNotesMutation,
   useLazyGetStudentTutorsQuery,
   useAddUserMutation,
   useUpdateUserAccountMutation,
@@ -237,5 +253,6 @@ export const {
   useAddAssociatedDocStudentMutation,
   useRemoveLinkStudentMutation,
   useAddLinkStudentMutation,
-  useGetLinkStudentMutation
+  useGetLinkStudentMutation,
+  useLazyGetFeedbackQuery
 } = userServicesApi;

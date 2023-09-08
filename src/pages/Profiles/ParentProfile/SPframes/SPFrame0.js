@@ -13,14 +13,14 @@ const SPFrame0 = ({ userDetail, settings, toEdit, setToEdit }) => {
   const [getLink, getLinkStatus] = useGetLinkStudentMutation();
  
  
-  console.log({userDetail});
+  //console.log({userDetail});
   return (
     <div>
       <div className="bg-white mt-7 px-3 py-6 !rounded-md   shadow-[0px_0px_2.46px_0px_#00000040] flex gap-3 justify-between  text-[#24A3D9]">
         <div className="flex gap-3 text-sm items-center">
           <span>
             <img
-              className="ml-2 !w-5 !h-5 inline-block"
+              className="ml-2 !w-7 !h-7 inline-block"
               src={industry}
               alt="arrow down"
             />
@@ -35,7 +35,7 @@ const SPFrame0 = ({ userDetail, settings, toEdit, setToEdit }) => {
         <div className="flex gap-3 text-sm items-center">
           <span>
             <img
-              className="ml-2 !w-5 !h-5 inline-block"
+              className="ml-2 !w-7 !h-7 inline-block"
               src={referral}
               alt="arrow down"
             />
@@ -52,7 +52,7 @@ const SPFrame0 = ({ userDetail, settings, toEdit, setToEdit }) => {
         <div className="flex gap-3 text-sm items-center">
           <span>
             <img
-              className="ml-2 !w-5 !h-5 inline-block"
+              className="ml-2 !w-7 !h-7 inline-block"
               src={time}
               alt="arrow down"
             />
@@ -68,7 +68,7 @@ const SPFrame0 = ({ userDetail, settings, toEdit, setToEdit }) => {
         <div className="flex gap-3 text-sm items-center">
         <span>
             <img
-              className="ml-2 !w-5 !h-5 inline-block"
+              className="ml-2 !w-7 !h-7 inline-block"
               src={bod}
               alt="arrow down"
             />
@@ -83,7 +83,7 @@ const SPFrame0 = ({ userDetail, settings, toEdit, setToEdit }) => {
         <div className="flex gap-3 text-sm items-center">
           <span>
             <img
-              className="ml-2 !w-5 !h-5 inline-block"
+              className="ml-2 !w-7 !h-7 inline-block"
               src={accomodations}
               alt="arrow down"
             />

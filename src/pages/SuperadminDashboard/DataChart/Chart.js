@@ -15,6 +15,7 @@ const BubbleChart = ({ dateRange }) => {
 
   const [dailyuserData, setDailyUserData] = useState("");
   const [chartData, setChartData] = useState("");
+  console.log(chartData)
   const plugin = {
     beforeInit(chart) {
       console.log("be");
@@ -66,10 +67,10 @@ const BubbleChart = ({ dateRange }) => {
       console.log(rolesData);
       let mainData = convertToChart(rolesData, userDailyActivity);
       setChartData(mainData);
-      
+
     }
   }, [userDailyActivity]);
-console.log(chartData)
+  console.log(chartData)
   return (
     <div className="bg-[#FFFFFF] relative flex justify-center items-center border-[1.3px] border-[#FFF] p-4 mt-[6px] rounded-[5.33px] shadow-[0px_0px_2px_rgba(0,0,0,0.25)]">
       <div className="flex relative max-w-full justify-center w-full">
@@ -105,7 +106,7 @@ console.log(chartData)
                   },
                 },
               },
-              
+
               y: {
                 display: true,
                 title: {
@@ -143,15 +144,15 @@ console.log(chartData)
               },
             },
             plugins: {
-             
-            
+
+
               legend: {
                 display: true,
                 position: "top",
                 align: "center",
-               
+
                 labels: {
-                  
+
                   usePointStyle: true,
                   font: {
                     size: 15,
