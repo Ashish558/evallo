@@ -39,7 +39,7 @@ import SubjectSlider from '../../../components/SubjectSlider/SubjectSlider'
 import BackBtn from '../../../components/Buttons/Back'
 import { useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { useLazyGetTutorDetailsQuery } from '../../../app/services/users'
+import { useLazyGetTutorDetailsQuery, useLazyGetFeedbackQuery } from '../../../app/services/users'
 import { useLazyGetSettingsQuery, useLazyGetSingleSessionQuery } from '../../../app/services/session'
 import { useSelector } from 'react-redux'
 import ParentEditables from '../../Frames/Editables/ParentEditables/ParentEditables'
@@ -50,6 +50,7 @@ import axios from 'axios'
 import ProfilePhoto from '../../../components/ProfilePhoto/ProfilePhoto'
 import YoutubeEmbed from './YoutubeEmbed/YoutubeEmbed'
 import CircleButton from '../../../components/CircleButton/CircleButton'
+import BarChart from '../../../components/BarChart/BarChart'
 
 
 export default function TutorProfile({ isOwn }) {
@@ -63,6 +64,7 @@ export default function TutorProfile({ isOwn }) {
    console.log(userDetail)
    const params = useParams()
    const [getUserDetail, userDetailResp] = useLazyGetTutorDetailsQuery()
+   const [getStudentFeedback, userStudentFeedbackResp] = useLazyGetFeedbackQuery()
    const [fetchSettings, settingsResp] = useLazyGetSettingsQuery()
    const [getFeedbacks, getFeedbacksResp] = useLazyGetFeedbacksQuery()
    const [getSession, getSessionResp] = useLazyGetSingleSessionQuery()
@@ -71,6 +73,17 @@ export default function TutorProfile({ isOwn }) {
    const { organization } = useSelector((state) => state.organization);
    // console.log(feedbacks)
    const { id } = useSelector(state => state.user)
+   const [studentFeedbacks, setStudentFeedbacks] = useState([])
+   useEffect(() => {
+      getStudentFeedback()
+         .then(({ error, data }) => {
+            if (error) {
+               return console.log(error);
+            }
+            setStudentFeedbacks(data)
+
+         })
+   })
    const tableHeaders1 = [
       {
          id: 1,
@@ -527,7 +540,7 @@ export default function TutorProfile({ isOwn }) {
    return (
       <>
 
-         <div className="w-[90.6770833333vw] mx-auto">
+         <div className="w-[83.3vw] mx-auto">
             {/* <div className="py-8">
                <p className='text-[#24A3D9] text-xl '>Org</p>
             </div> */}
@@ -540,11 +553,11 @@ export default function TutorProfile({ isOwn }) {
                   "  >  "}
                <span className="font-bold">Dashboard</span>
             </p>
-            <div className='grid grid-cols-12'>
+            <div className='flex justify-between'>
                <ProfileCard hideShadow
                   titleClassName='text-left'
                   bgClassName='bg-profilecard'
-                  className='mt-53 lg:mt-0 flex-1 h-inherit col-span-10 '
+                  className=' w-[68.5vw]'
                   // title={
                   //    <EditableText text=''
                   //       editable={editable}
@@ -597,7 +610,7 @@ export default function TutorProfile({ isOwn }) {
                                  </div>
                                  <div className='flex gap-4 items-center mb-[10px]'>
                                     <img src={linkedin} alt="linkedinLogo"></img>
-                                    <p className='text-white text-[17.503px]'>{userDetail.linkedIn}</p>
+                                    <a className='text-white text-[17.503px]' href={userDetail.linkedIn}>{userDetail.linkedIn}</a>
                                  </div>
                               </div>
                               {/* <div>
@@ -622,19 +635,15 @@ export default function TutorProfile({ isOwn }) {
                               </div> */}
                      </>
                   } />
-               <div className='col-span-2'>
+               <div className='w-[13vw]'>
                   <div className='flex '>
                      <img className='' src={experience} alt="experience"></img>
-
                      <div className='ml-6'>
                         <p className='text-[#24A3D9] font-semibold text-[20px]'>Education</p>
                         <p className='text-[17.503px] text-[#517CA8]'>{userDetail.education}
                         </p>
                      </div>
-
                   </div>
-
-
                   <div className='flex  pl-2 mt-[43.76px] '>
                      <img className='' src={bag} alt="experience"></img>
 
@@ -643,11 +652,7 @@ export default function TutorProfile({ isOwn }) {
                         <p className='text-[17.503px] text-[#517CA8]'>{userDetail.experience}
                         </p>
                      </div>
-
                   </div>
-
-
-
                </div>
             </div>
 
@@ -854,8 +859,8 @@ export default function TutorProfile({ isOwn }) {
                </div>
                <div class="mt-20 border-4 ml-20 mr-20 border-t border-[#CBD6E2]-300 justify-center border-dotted"></div>
                {/* address row */}
-               <div className='grid grid-cols-12 mt-[55px] gap-x-[37px]'>
-                  <div className='col-span-7'>
+               <div className='flex justify-between mt-[55px] gap-x-[37px]'>
+                  <div className='w-[60.32vw]'>
                      <div className='flex items-center mb-1'>
                         <div className=' text-[#26435F] text-xl font-semibold' >Address</div>
                         {(isOwn == true || persona === 'admin') && <p className='text-[#667085] ml-auto underline cursor-pointer font-semibold text-[15px]' onClick={() => setToEdit({ ...toEdit, tutorAddress: { ...toEdit.tutorAddress, active: true } })}>edit</p>}
@@ -915,9 +920,9 @@ export default function TutorProfile({ isOwn }) {
                      </div>
                   </div>
 
-                  <div className='col-span-2'>
+                  <div className='w-[10.49vw]'>
                      <div className='flex items-center'>
-                        <div className='text-xl text-[#26435F] font-semibold' >Tutor Income</div>
+                        <div className='text-xl text-[#26435F] font-semibold' >Salary</div>
                         {(isOwn == true || persona === 'admin') && <p className='text-[#667085] ml-auto underline cursor-pointer font-semibold text-[15px]' onClick={() => setToEdit({ ...toEdit, income: { ...toEdit.income, active: true } })}>edit</p>}
                      </div>
                      <ProfileCard
@@ -936,7 +941,7 @@ export default function TutorProfile({ isOwn }) {
 
 
                   </div>
-                  {(isOwn === true || persona === "admin") ? (<div className='col-span-3'>
+                  {(isOwn === true || persona === "admin") ? (<div className='w-[25.10vw]'>
                      <div className='flex items-center'>
                         <div className='text-[#26435F] text-xl font-semibold' >Payment Info</div>
                         {(isOwn == true || persona === 'admin') && <p className='text-[#667085] ml-auto underline cursor-pointer font-semibold text-[15px]' onClick={() => setToEdit({ ...toEdit, paymentInfo: { ...toEdit.paymentInfo, active: true } })}>edit</p>}
@@ -963,8 +968,8 @@ export default function TutorProfile({ isOwn }) {
                </div>
 
 
-               <div className='grid grid-cols-12 gap-x-[50px] mt-20 mb-[191px]'>
-                  <div className='col-span-7'>
+               <div className='flex justify-between mt-20 mb-[191px]'>
+                  <div className='w-[36.5vw]'>
                      <div className='text-xl text-[#26435F] font-semibold mb-[-10px]' >Recent Feedback History</div>
                      <div className='flex'>
                         <Table
@@ -976,16 +981,21 @@ export default function TutorProfile({ isOwn }) {
                            // tableHeaders={tableHeaders}
                            headerObject={true}
                            maxPageSize={9}
-
+                           noArrow={true}
                         // loading={tableLoading}
 
                         />
-                        <div className=" ml-10 w-px h-[490px] bg-[#CBD6E2] "></div>
+
                      </div>
 
                   </div>
+                  <div className='w-[19.8vw] '>
+                     <BarChart studentFeedbacks={studentFeedbacks}>
 
-                  <div className='col-span-5'>
+                     </BarChart>
+                  </div>
+                  <div className=" w-[1.25px] h-[630px] bg-[#CBD6E2] "></div>
+                  <div className='w-[20.9vw]'>
                      <div className='flex items-center'>
                         <div className='text-[#26435F] text-[20px] font-semibold' >Tutor Status</div>
                         {(isOwn === true || persona === 'admin') && <p className='text-[#667085] ml-auto underline cursor-pointer text-[15px] font-semibold' onClick={() => setToEdit({ ...toEdit, tutorLevel: { ...toEdit.tutorLevel, active: true } })}>edit</p>}
@@ -1005,14 +1015,18 @@ export default function TutorProfile({ isOwn }) {
                      />
 
                      <div className='mt-[33.75px]'>
-                        <div className=' text-[#26435F] text-xl font-semibold mb-[-10px]' >Service Rates</div>
+                        <div className='flex justify-between mb-[-10px]'>
+                           <div className=' text-[#26435F] text-xl font-semibold ' >Service Rates</div>
+                           {(isOwn === true || persona === 'admin') && <p className='text-[#667085] ml-auto underline cursor-pointer text-[15px] font-semibold' onClick={() => setToEdit({ ...toEdit, tutorLevel: { ...toEdit.tutorLevel, active: true } })}>edit</p>}
+                        </div>
                         <Table
                            tableHeaders={tableHeaders2}
                            dataFor="serviceRates"
                            data={userDetail.tutorServices}
                            maxPageSize={7}
-                           headerObject={true}>
-
+                           headerObject={true}
+                           noArrow={true}
+                        >
                         </Table>
                      </div>
                   </div>

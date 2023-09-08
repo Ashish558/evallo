@@ -139,7 +139,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
       },
       {
          name: 'serviceSpecializations',
-         title: 'Service Specialisation',
+         title: 'Expertise',
          api: persona === 'tutor' ? 'tutorDetail' : 'userDetail',
       },
       {
@@ -563,14 +563,14 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                body={
                   <>
                      <div className='flex'>
-                        <div className='' style={{ color: '#26435F', fontWeight: '600', fontSize: '21.33px' }}>
+                        <div className='text-[#26435F] font-semibold text-[21.33px]' >
                            {currentField.title ? currentField.title : toEdit.tutorServices ? 'Service' : ''}
                         </div>
                         <button className='w-[100px] bg-[#FFA28D] text-base pt-2 rounded text-white pb-2  pl-3 pr-3 ml-auto' onClick={handleSubmit}>
                            Save
                         </button>
                      </div>
-                     <div className="mt-[18px] border-1 border-t border-[#26435F33]-300 justify-center "></div>
+                     <div className="mt-[18px] border-1 border-t border-[#26435F33] justify-center "></div>
                      <form className='mt-5 mb-4' id='editable-form' onSubmit={handleSubmit} >
                         {/* {currentField.fields && currentField.fields} */}
                         {currentField.name === 'fullName' &&
@@ -981,7 +981,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                               </div> */}
                               <div className='grid grid-cols-12 gap-4'>
                                  <div className='col-span-6'>
-                                    <div><p  className={styles.address}>Street</p></div>
+                                    <div><p className={styles.address}>Street</p></div>
                                     <InputField
                                        labelClassname='hidden'
                                        placeholder='Text'
@@ -1282,19 +1282,19 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                                  rows={5}
                                  className="bg-lightWhite w-full outline-0 px-5 py-4 rounded"
                               ></textarea> */}
-                              <div>
+                              <div className='px-1'>
                                  <div className='grid grid-cols-12 '>
-                                    <div className='col-span-2'>
+                                    <div className='col-span-2 flex items-center justify-start'>
                                        <ProfilePhoto
                                           isTutor={true}
                                           customWidth={true}
                                           src={currentToEdit?.photo ? `${awsLink}${currentToEdit?.photo}` : '/images/default.jpeg'}
                                           handleChange={handleProfilePhotoChange} editable={true} />
                                     </div>
-                                    <div className='ml-5 col-span-8 '>
+                                    <div className='ml-5 col-span-10 '>
                                        <div className='grid grid-cols-12 gap-8'>
                                           <div className=' col-span-3'>
-                                             <div><p className={styles.address}>First Name</p></div>
+                                             <div><p className='text-[18.667px] text-[#26435F] font-medium' >First Name</p></div>
                                              <InputField
                                                 labelClassname='hidden'
                                                 placeholder='First Name'
@@ -1305,7 +1305,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
 
                                           </div>
                                           <div className=' col-span-3'>
-                                             <div><p className={styles.address}>Last Name</p></div>
+                                             <div><p className='text-[18.667px] text-[#26435F] font-medium' >Last Name</p></div>
 
                                              <InputField
                                                 labelClassname='hidden'
@@ -1318,7 +1318,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                                           </div>
 
                                           <div className=' col-span-6'>
-                                             <div><p className={styles.address}>Email</p></div>
+                                             <div><p className='text-[18.667px] text-[#26435F] font-medium' >Email</p></div>
 
                                              <InputField
                                                 labelClassname='hidden'
@@ -1330,7 +1330,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
 
                                           </div>
                                           <div className=' col-span-6'>
-                                             <div><p className={styles.address}>LinkedIn</p></div>
+                                             <div><p className='text-[18.667px] text-[#26435F] font-medium' >LinkedIn</p></div>
 
                                              <InputField
                                                 labelClassname='hidden'
@@ -1342,7 +1342,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
 
                                           </div>
                                           <div className='col-span-6 '>
-                                             <div><p className={styles.address}>Phone</p></div>
+                                             <div><p className='text-[18.667px] text-[#26435F] font-medium' >Phone</p></div>
                                              <div className='grid grid-cols-12 gap-3'>
                                                 <div className='col-span-4'>
 
@@ -1374,20 +1374,18 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                               </div>
 
                               <div className='mt-8 grid grid-cols-12' >
-                                 <div><p className={styles.address}>TagLine</p></div>
+                                 <div><p className='text-[18.667px] text-[#26435F] font-medium' >Tagline</p></div>
                                  <div className='col-span-12 '>
-                                    <textarea cols={80} className=' rounded focus:border-[#D0D5DD]'
-                                       style={{ border: '1px solid #D0D5DD', color: '#667085' }}
+                                    <textarea rows={2} cols={88} className=' rounded focus:border-[#D0D5DD] border border-[#D0D5DD] text-[#667085]'
                                        value={currentToEdit.tagLine}
                                        onChange={(e) => { setCurrentToEdit({ ...currentToEdit, tagLine: e.target.value }) }}></textarea>
                                  </div>
                               </div>
 
                               <div className='mt-8 grid grid-cols-12' >
-                                 <div><p className={styles.address}>About</p></div>
+                                 <div><p className='text-[18.667px] font-medium text-[#26435F]' >About</p></div>
                                  <div className='col-span-12 '>
-                                    <textarea rows={3} cols={80} className=' rounded focus:border-[#D0D5DD]'
-                                       style={{ border: '1px solid #D0D5DD', color: '#667085' }}
+                                    <textarea rows={4} cols={88} className=' rounded focus:border-[#D0D5DD] border border-[#D0D5DD] text-[#667085]'
                                        value={currentToEdit.about}
                                        onChange={(e) => { setCurrentToEdit({ ...currentToEdit, about: e.target.value }) }}
                                     ></textarea>
@@ -1397,19 +1395,19 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                               <div className='mt-8'>
                                  <div className='grid grid-cols-12 '>
                                     <div className='col-span-6'>
-                                       <div><p className={styles.address}>Education</p></div>
-                                       <textarea rows={3} cols={35} className=' rounded focus:border-[#D0D5DD]'
-                                          style={{ border: '1px solid #D0D5DD', color: '#667085' }}
+                                       <div><p className='text-[18.667px] text-[#26435F] font-medium' >Education</p></div>
+                                       <textarea rows={3} cols={42} className=' rounded focus:border-[#D0D5DD] border border-[#D0D5DD] text-[#667085]'
+
                                           value={currentToEdit.education}
                                           onChange={(e) => { setCurrentToEdit({ ...currentToEdit, education: e.target.value }) }}
                                        ></textarea>
                                     </div>
                                     <div className='col-span-6'>
-                                       <div><p className={styles.address}>Experience</p></div>
-                                       <textarea rows={3} cols={35} className=' rounded focus:border-[#D0D5DD]'
+                                       <div><p className='text-[18.667px]' style={{ color: '#26435F', fontWeight: '500' }}>Experience</p></div>
+                                       <textarea rows={3} cols={42} className=' rounded focus:border-[#D0D5DD] border border-[#D0D5DD] text-[#667085]'
                                           value={currentToEdit.experience}
                                           onChange={(e) => { setCurrentToEdit({ ...currentToEdit, experience: e.target.value }) }}
-                                          style={{ border: '1px solid #D0D5DD', color: '#667085' }}></textarea>
+                                       ></textarea>
                                     </div>
                                  </div>
                               </div>
