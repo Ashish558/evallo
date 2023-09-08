@@ -281,7 +281,7 @@ const CompanyAndBround = () => {
               />
               <InputSelect
                 placeholder="Select"
-                parentClassName="text-xs text-[#26435F] min-w-[14.3229vw] "
+                parentClassName="text-xs text-[#26435F] w-[14.3229vw] "
                 inputContainerClassName=" bg-white h-[42px] "
                 labelClassname="text-sm font-bold"
                 inputClassName="bg-transparent"
@@ -316,7 +316,7 @@ const CompanyAndBround = () => {
 
               <InputSelect
                 placeholder="Select"
-                parentClassName="text-xs text-[#26435F] min-w-[14.3229vw] "
+                parentClassName="text-xs text-[#26435F] w-[14.3229vw] "
                 inputContainerClassName=" bg-white h-[38px]  h-[42px]"
                 labelClassname="text-sm font-bold"
                 inputClassName="bg-transparent"
@@ -335,7 +335,7 @@ const CompanyAndBround = () => {
             <div className="flex justify-between">
               <InputSelect
                 placeholder="Select"
-                parentClassName="text-xs text-[#26435F] min-w-[14.3229vw]  pt-1"
+                parentClassName="text-xs text-[#26435F] w-[14.3229vw]  pt-1"
                 labelClassname="text-sm font-bold "
                 inputContainerClassName=" bg-white h-[42px] "
                 inputClassName="bg-transparent"
