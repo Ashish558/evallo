@@ -3,7 +3,7 @@ import { useLazyGetSettingsQuery } from "../../app/services/session";
 import InputSelect from "../InputSelect/InputSelect";
 import sort from "./../../assets/icons/sort.webp";
 import styles from "./styles.module.css";
-export function TableHeaderNew({ header, checkedHeader, dataFor, Handler,noArrow }) {
+export function TableHeaderNew({ header, checkedHeader, dataFor, Handler, noArrow }) {
   const [flag, setFlag] = useState(header?.className ? header.className.includes('no-arrow') : false)
   const handleCheckboxChange = () => {
     Handler();
@@ -34,7 +34,7 @@ export function TableHeaderNew({ header, checkedHeader, dataFor, Handler,noArrow
         ) : (
           ""
         )}
-        <span onClick={() => header.onCick && header.onCick()} className="text-center !text-[calc(17.5*0.050vw)]">
+        <span onClick={() => header.onCick && header.onCick()} className="text-center text-[17.5px]">
           {header.text}
         </span>
       </div>

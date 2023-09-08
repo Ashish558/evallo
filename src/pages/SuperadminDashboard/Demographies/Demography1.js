@@ -45,57 +45,59 @@ const Demography1 = ({ dateRange }) => {
   }, []);
 
   useEffect(() => {
-    fetchDemography({ country: countryName,...dateRange }).then((res) => {
-      console.log("demog",res)
+    fetchDemography({ country: countryName, ...dateRange }).then((res) => {
+      console.log("demog", res)
       setCurrentDemographicArea(res?.data?.aggregatedData);
     });
-  }, [fetchDemography, countryName,dateRange]);
+  }, [fetchDemography, countryName, dateRange]);
   useEffect(() => {
     handleState(countryName, currentDemographicArea);
   }, [currentDemographicArea, countryName]);
- 
+
   return (
-    <div className="bg-[#FFFFFF] flex justify-center items-center border border-gray-200 p-3 mt-[6px] rounded-md">
+    <div className="bg-[#FFFFFF] flex justify-center items-center border border-gray-200 p-3 mt-[6px] rounded-md relative">
       <div className="grid grid-cols-2 gap-x-5">
         <div className="">
-          <button className="">
-            <InputSelectNew
-              arrowWidth="w-[10px]"
-              placeholder={"User"}
-              parentClassName="ml-0  scale-[0.8] items-center flex text-[#FFA28D] text-xs border-[1.33px] px-1 py-2 border-[#FFA28D] rounded-full  "
-              inputContainerClassName=" bg-white my-0 py-[5px] px-[35px] text-[15px]"
-              placeHolderClass="text-[#FFA28D] "
-              labelClassname="text-[15px]"
-              inputClassName="bg-transparent"
-              value={userName}
-              IconDemography={true}
-              optionData={[
-                { name: "Admin" },
-                { name: "Tutor" },
-                { name: "Parent" },
-                { name: "Student" },
-              ]}
-              optionType={"object"}
-              onChange={(e) => setUserName(e.name)}
-            />
-          </button>
-          <button className="">
-            <InputSelectNew
-              arrowWidth="w-[10px]"
-              placeholder={"Country"}
-              parentClassName="ml-0  scale-[0.8] items-center flex text-[#FFA28D] text-xs border-[1.33px] px-1 py-2 border-[#FFA28D] rounded-full  "
-              inputContainerClassName=" bg-white py-[4.8px] px-[35px] text-[15px]"
-              labelClassname="text-[15px]"
-              inputClassName="bg-transparent"
-              value={countryName}
-              optionData={country}
-              IconDemography={true}
-              optionType={"object"}
-              onChange={(e) => setCountryName(e.name)}
-            />
-          </button>
+          <div className="absolute top-0 z-10 left-0 pt-[18px] pl-[28px]" >
+            <button >
+              <InputSelectNew
+                arrowWidth="h-[6px]"
+                placeholder={"User"}
+                parentClassName="ml-0  scale-[0.8] items-center flex text-[#FFA28D] text-xs border-[1.33px] px-1 py-2 border-[#FFA28D] rounded-full  "
+                inputContainerClassName=" bg-white my-0 py-[5px] px-[35px] text-[15px] min-w-[114px] "
+                placeHolderClass="text-[#FFA28D] "
+                labelClassname="text-[15px]"
+                inputClassName="bg-transparent"
+                value={userName}
+                IconDemography={true}
+                optionData={[
+                  { name: "Admin" },
+                  { name: "Tutor" },
+                  { name: "Parent" },
+                  { name: "Student" },
+                ]}
+                optionType={"object"}
+                onChange={(e) => setUserName(e.name)}
+              />
+            </button>
+            <button className="">
+              <InputSelectNew
+                arrowWidth="h-[6px]"
+                placeholder={"Country"}
+                parentClassName="ml-0  scale-[0.8] items-center flex text-[#FFA28D] text-xs border-[1.33px] px-1 py-[9px] border-[#FFA28D] rounded-full  "
+                inputContainerClassName=" bg-white py-[4.8px] px-[35px] text-[15px] min-w-[114px]"
+                labelClassname="text-[15px]"
+                inputClassName="bg-transparent "
+                value={countryName}
+                optionData={country}
+                IconDemography={true}
+                optionType={"object"}
+                onChange={(e) => setCountryName(e.name)}
+              />
+            </button>
+          </div>
 
-          <WMap markings={states} countryMarking={countryMarking} countryFlag={countryFlag}/>
+          <WMap markings={states} countryMarking={countryMarking} countryFlag={countryFlag} />
           <div className="flex justify-between px-8 text-[13px] text-[#26435F] font-medium">
             <p>Last 11 days</p>
             <div className="flex items-center gap-4">
@@ -113,16 +115,16 @@ const Demography1 = ({ dateRange }) => {
         <div>
           <p className="text-[#26435F] text-sm font-semibold mt-4 ">
             <span className="shadow-md rounded-md ml-[-20px] mr-2 ">
-            <ReactCountryFlag
-              countryCode={countryFlag}
-              svg
-              cdnUrl="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.4.3/flags/1x1/"
-              cdnSuffix="svg"
-              title={countryFlag}
-              
-            />
+              <ReactCountryFlag
+                countryCode={countryFlag}
+                svg
+                cdnUrl="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.4.3/flags/1x1/"
+                cdnSuffix="svg"
+                title={countryFlag}
+
+              />
             </span>
-          
+
             {countryName.toUpperCase()}
             <span >
               <img className="ml-2 inline-block" src={downArrow} alt={"downArrow"} />
@@ -130,32 +132,32 @@ const Demography1 = ({ dateRange }) => {
           </p>
           <div className="overflow-y-auto h-[360px] py-0 relative">
 
-         
-          <table className="table-auto border-spacing-y-4 px-1 customTable border-separate w-full whitespace-nowrap">
-            <thead className="sticky top-0">
-              <tr>
-                <th className="px-4">State </th>
-                <th className="px-4"># of orgs </th>
-                <th className="px-4">Avg. # of S / O </th>
-                <th className="px-4">Avg. # of T / O</th>
-              </tr>
-            </thead>
-            <tbody >
-              {currentDemographicArea?.map((state, id) => {
-                return (
-                  <tr className={`my-7 overflow-hidden `} key={id}>
-                    <td className={`mb-1 ${id%2?"bg-[#F5F8FA]":'bg-white'}`}>
-                      {state.state_name.charAt(0).toUpperCase() +
-                        state.state_name.slice(1)}
-                    </td>
-                    <td className={`mb-1 ${id%2?"bg-[#F5F8FA]":'bg-white'}`}>{state.no_of_orgs}</td>
-                    <td className={`mb-1 ${id%2?"bg-[#F5F8FA]":'bg-white'}`}>{Math.round(state.average_students)}</td>
-                    <td className={` mb-1 ${id%2?"bg-[#F5F8FA]":'bg-white'}`}>{Math.round(state.average_tutors)}</td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+
+            <table className="table-auto border-spacing-y-4 px-1 customTable border-separate w-full whitespace-nowrap">
+              <thead className="sticky top-0">
+                <tr>
+                  <th className="px-4">State </th>
+                  <th className="px-4"># of orgs </th>
+                  <th className="px-4">Avg. # of S / O </th>
+                  <th className="px-4">Avg. # of T / O</th>
+                </tr>
+              </thead>
+              <tbody >
+                {currentDemographicArea?.map((state, id) => {
+                  return (
+                    <tr className={`my-7 overflow-hidden `} key={id}>
+                      <td className={`mb-1 ${id % 2 ? "bg-[#F5F8FA]" : 'bg-white'}`}>
+                        {state.state_name.charAt(0).toUpperCase() +
+                          state.state_name.slice(1)}
+                      </td>
+                      <td className={`mb-1 ${id % 2 ? "bg-[#F5F8FA]" : 'bg-white'}`}>{state.no_of_orgs}</td>
+                      <td className={`mb-1 ${id % 2 ? "bg-[#F5F8FA]" : 'bg-white'}`}>{Math.round(state.average_students)}</td>
+                      <td className={` mb-1 ${id % 2 ? "bg-[#F5F8FA]" : 'bg-white'}`}>{Math.round(state.average_tutors)}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
           </div>
         </div>
       </div>

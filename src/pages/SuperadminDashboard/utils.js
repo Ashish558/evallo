@@ -6,7 +6,7 @@ export function groupDatesIntoWeeks(dates) {
 
   let tot = 0;
   let pw = 0;
-  let limit=1;
+  let limit = 1;
   sortedDates.forEach((date) => {
     const diffInDays = (new Date(date.date) - stDate) / (1000 * 60 * 60 * 24);
     if (parseInt(diffInDays / limit) === pw) {
@@ -15,7 +15,7 @@ export function groupDatesIntoWeeks(dates) {
     } else {
       weeks.push({ data: currentWeek, week: pw + 1, hours: tot });
       tot = 0;
-      pw = parseInt(diffInDays /limit);
+      pw = parseInt(diffInDays / limit);
       currentWeek = [date];
       tot = Math.abs(date.totalHours);
     }
@@ -29,8 +29,8 @@ export function groupDatesIntoWeeks(dates) {
   return weeks;
 }
 
-export function convertToChart(dates,userData) {
-  if(!dates|| !userData||dates?.length===0||userData?.length===0)return []
+export function convertToChart(dates, userData) {
+  if (!dates || !userData || dates?.length === 0 || userData?.length === 0) return []
   let labels = [];
   let mxLabel = 0;
 
@@ -39,30 +39,30 @@ export function convertToChart(dates,userData) {
   let tutorData = [];
   let parentData = [];
   let studentData = [];
- 
-  let labelData=JSON.parse(JSON.stringify(userData))
-  if(labelData?.length>0)
-  labelData=groupDatesIntoWeeks2(labelData)
-  console.log({labelData})
+
+  let labelData = JSON.parse(JSON.stringify(userData))
+  if (labelData?.length > 0)
+    labelData = groupDatesIntoWeeks2(labelData)
+  console.log({ labelData })
   dates["admin"]?.map((it) => {
     mxLabel = Math.max(mxLabel, it.week);
-    adminData.push({ x: it.week, y: it.hours, r: it.data.length*2<=20?it.data.length*2:20, label: ("Day " + it?.data[0]?.datetime) });
+    adminData.push({ x: it.week, y: it.hours, r: it.data.length * 2 <= 20 ? it.data.length * 2 : 20, label: ("Day " + it?.data[0]?.datetime) });
   });
   dates["tutor"]?.map((it) => {
     mxLabel = Math.max(mxLabel, it.week);
-    tutorData.push({ x: it.week, y: it.hours, r: it.data.length*2<=20?it.data.length*2:20, label: ("Day " + it?.data[0]?.datetime) });
+    tutorData.push({ x: it.week, y: it.hours, r: it.data.length * 2 <= 20 ? it.data.length * 2 : 20, label: ("Day " + it?.data[0]?.datetime) });
   });
   dates["parent"]?.map((it) => {
     mxLabel = Math.max(mxLabel, it.week);
-    parentData.push({ x: it.week, y: it.hours, r: it.data.length*2<=20?it.data.length*2:20, label: ("Day " + it?.data[0]?.datetime) });
+    parentData.push({ x: it.week, y: it.hours, r: it.data.length * 2 <= 20 ? it.data.length * 2 : 20, label: ("Day " + it?.data[0]?.datetime) });
   });
   dates["student"]?.map((it) => {
     mxLabel = Math.max(mxLabel, it.week);
-    studentData.push({ x: it.week, y: it.hours, r: it.data.length*2<=20?it.data.length*2:20, label: ("Day " + it?.data[0]?.datetime) });
+    studentData.push({ x: it.week, y: it.hours, r: it.data.length * 2 <= 20 ? it.data.length * 2 : 20, label: ("Day " + it?.data[0]?.datetime) });
   });
-  mxLabel=userData.length
+  mxLabel = userData.length
   for (let i = 0; i < labelData.length; i++)
-    labels.push( new Date(labelData[i]?.data[0]?.datetime).toDateString());
+    labels.push(new Date(labelData[i]?.data[0]?.datetime).toDateString());
   let result = {
     labels: labels,
     datasets: [
@@ -82,7 +82,7 @@ export function convertToChart(dates,userData) {
         backgroundColor: "#24FF00",
       },
       {
-        label: "students",
+        label: "Students",
         data: studentData,
         backgroundColor: "#26435F",
       },
@@ -119,7 +119,7 @@ export function groupDatesIntoWeeks2(dates) {
 
   let tot = 0;
   let pw = 0;
-  let limit=1;
+  let limit = 1;
   sortedDates.forEach((date) => {
     const diffInDays = (new Date(date.datetime) - stDate) / (1000 * 60 * 60 * 24);
     if (parseInt(diffInDays / limit) === pw) {
@@ -128,7 +128,7 @@ export function groupDatesIntoWeeks2(dates) {
     } else {
       weeks.push({ data: currentWeek, week: pw + 1, hours: tot });
       tot = 0;
-      pw = parseInt(diffInDays /limit);
+      pw = parseInt(diffInDays / limit);
       currentWeek = [date];
       tot = Math.abs(date.totalHours);
     }

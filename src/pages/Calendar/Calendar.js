@@ -74,7 +74,7 @@ export default function Calendar() {
   const [events, setEvents] = useState([]);
   const [filteredEvents, setFilteredEvents] = useState([]);
   const { role: persona } = useSelector((state) => state.user);
-  const userDetail=useSelector((state)=>state.user)
+  const userDetail = useSelector((state) => state.user)
   const accordionRefs = useRef([]);
   const accordionImgRefs = useRef([]);
   // const [timeZones, setTimeZones] = useState(temptimeZones)
@@ -118,16 +118,17 @@ export default function Calendar() {
     lastName,
     id: currentUserId,
   } = useSelector((state) => state.user);
-useEffect( ()=>{
-    try{
+  useEffect(() => {
+    try {
       console.log(userDetail)
-     let res= fetchStudents(`${userDetail.id}`).then((res)=>
-      console.log("total tutors",res)
-)}
-    catch(e){
+      let res = fetchStudents(`${userDetail.id}`).then((res) =>
+        console.log("total tutors", res)
+      )
+    }
+    catch (e) {
       console.log(e)
     }
-    },[])
+  }, [])
   const [names, setNames] = useState([]);
   const [name, setName] = useState("");
   const [eventDetails, setEventDetails] = useState([]);
@@ -141,19 +142,19 @@ useEffect( ()=>{
     useLazyGetCalenderInsightQuery();
   const [insightData, setInsightData] = useState({});
   const [timeZone, setTimeZone] = useState("Asia/Kolkata");
-  const [newTimeZone,setnewTimeZone]=useState("IST")
+  const [newTimeZone, setnewTimeZone] = useState("IST")
   // console.log(moment.tz.zonesForCountry('US'))
   const [intialView, setInitialView] = useState("dayGridMonth");
-const [tutors,setTutors]=useState([]);
-const [alldetails,setAllDetails]=useState([]);
-const [showTutorDetails,setShowTutorDetails]=useState({})
+  const [tutors, setTutors] = useState([]);
+  const [alldetails, setAllDetails] = useState([]);
+  const [showTutorDetails, setShowTutorDetails] = useState({})
   const [searchedUser, setSearchedUser] = useState({
     id: "",
     role: "",
   });
-  useEffect(()=>{
-    console.log("tutos",tutors)
-  },[])
+  useEffect(() => {
+    console.log("tutos", tutors)
+  }, [])
   const refetchSessions = () => {
     // console.log(searchedUser);
     console.log("persona", persona);
@@ -211,14 +212,14 @@ const [showTutorDetails,setShowTutorDetails]=useState({})
       setEventDetails(tempEvents);
       // console.log(res.data.data.session)
       let tempSession = res.data.data.session.map((session) => {
-          let tempobj=alldetails
-          tempobj.push(session)
-          setAllDetails(tempobj)
-          console.log("alldetails",alldetails)
-          let temparray=tutors
-          temparray.push(session.tutorId);
-          setTutors(temparray)
-        
+        let tempobj = alldetails
+        tempobj.push(session)
+        setAllDetails(tempobj)
+        console.log("alldetails", alldetails)
+        let temparray = tutors
+        temparray.push(session.tutorId);
+        setTutors(temparray)
+
         const time = session.time;
         // console.log(session);
         const strtTime12HFormat = `${time.start.time} ${time.start.timeType}`;
@@ -295,7 +296,7 @@ const [showTutorDetails,setShowTutorDetails]=useState({})
           updatedDate: startUtc,
           updatedDateEnd: endDateUtc,
           sessionStatus: session.sessionStatus,
-          tutorId:session.tutorId ? session.tutorId : "-",
+          tutorId: session.tutorId ? session.tutorId : "-",
           description: `${strtTime12HFormat} - ${endTime12HFormat}`,
         };
         return eventObj;
@@ -331,7 +332,7 @@ const [showTutorDetails,setShowTutorDetails]=useState({})
       if (!currentUserId) return;
       fetchSessions(currentUserId, persona);
     }
-  }, [persona,alldetails]);
+  }, [persona, alldetails]);
 
   useEffect(() => {
     if (persona == "parent") {
@@ -396,7 +397,7 @@ const [showTutorDetails,setShowTutorDetails]=useState({})
                 });
                 allsessions.push(...tempEvents);
                 let tempSession = res.data.data.session.map((session) => {
-                    console.log("sesssions",session)
+                  console.log("sesssions", session)
                   const time = session.time;
                   // console.log(session);
                   const strtTime12HFormat = `${time.start.time} ${time.start.timeType}`;
@@ -465,7 +466,7 @@ const [showTutorDetails,setShowTutorDetails]=useState({})
                     description: `${strtTime12HFormat} - ${endTime12HFormat}`,
                     sessionStatus: session.sessionStatus,
                     studentId: session.studentId,
-                    tutorId:session.tutorId ? session.tutorId:"-",
+                    tutorId: session.tutorId ? session.tutorId : "-",
                     background: getBackground(
                       resp.data.data.user.assiginedStudents.length,
                       idx
@@ -495,7 +496,7 @@ const [showTutorDetails,setShowTutorDetails]=useState({})
       });
     }
 
-    
+
   }, [persona]);
 
   // console.log(students)
@@ -513,22 +514,22 @@ const [showTutorDetails,setShowTutorDetails]=useState({})
     }
   }, []);
 
-  useEffect(()=>{
-    if(timeZone=='Asia/Kolkata')
+  useEffect(() => {
+    if (timeZone == 'Asia/Kolkata')
       setnewTimeZone('IST')
-      if(timeZone=='US/Alaska')
+    if (timeZone == 'US/Alaska')
       setnewTimeZone('AKST')
-      if(timeZone=='US/Central')
+    if (timeZone == 'US/Central')
       setnewTimeZone('CST')
-      if(timeZone=='US/Eastern')
+    if (timeZone == 'US/Eastern')
       setnewTimeZone('EST')
-      if(timeZone=='US/Hawaii')
+    if (timeZone == 'US/Hawaii')
       setnewTimeZone('HST')
-      if(timeZone=='US/Mountain')
+    if (timeZone == 'US/Mountain')
       setnewTimeZone('MST')
-      if(timeZone=='US/Pacific')
+    if (timeZone == 'US/Pacific')
       setnewTimeZone('PST')
-  },[timeZone])
+  }, [timeZone])
   const getDayHeaders = (arg) => {
     let text = arg.text.split(" ");
 
@@ -576,7 +577,7 @@ const [showTutorDetails,setShowTutorDetails]=useState({})
     calendarAPI?.next();
   };
   const eventContent = (arg) => {
-    
+
     const description = arg.event._def.extendedProps.description;
     let background = "blue";
     let isCompleted = false;
@@ -678,7 +679,7 @@ const [showTutorDetails,setShowTutorDetails]=useState({})
   };
 
   useEffect(() => {
-    console.log("role="+persona)
+    console.log("role=" + persona)
     if (name.length > 0) {
       fetchNames(name).then((res) => {
         console.log("fetchnames", res.data.data.user);
@@ -935,21 +936,20 @@ const [showTutorDetails,setShowTutorDetails]=useState({})
   // console.log('filteredEvents', filteredEvents);
   console.log('events', events);
   // console.log('eventDetails', eventDetails);
-  const map=[]
-  useEffect(()=>{
-    if(tutors)
-    {
-      tutors.map((item)=>{
+  const map = []
+  useEffect(() => {
+    if (tutors) {
+      tutors.map((item) => {
         const letters = '0123456789ABCDEF';
         let color = '#';
         for (let i = 0; i < 6; i++) {
           color += letters[Math.floor(Math.random() * 16)];
         }
-        map[item]=color
-        console.log("map function",map)
+        map[item] = color
+        console.log("map function", map)
       })
     }
-  },[tutors])
+  }, [tutors])
   const toggleTutorDetails = (tutorId) => {
     setShowTutorDetails((prevState) => ({
       ...prevState,
@@ -1037,30 +1037,30 @@ const [showTutorDetails,setShowTutorDetails]=useState({})
                     handleInsights(item.value, item.role);
                     fetchSessions(item._id, item.role);
                   }}
-                /> */}{console.log("userrrrrrr",alldetails)}
-             {alldetails?.map((item) => ( <div className="mt-[48px] mb-2">
+                /> */}{console.log("userrrrrrr", alldetails)}
+                {alldetails?.map((item) => (<div className="mt-[48px] mb-2">
                   <div className="flex justify-between pt-[19px] px-[21px] pb-[14px] bg-[rgba(36,63,217,0.20)] rounded-5 items-center">
                     <p className="text-[#24A3D9] text-xl font-semibold">{item.tutorName}</p>
-                    <p><img src= {showTutorDetails[item.id] ? downIcon : upIcon} alt="" onClick={()=>toggleTutorDetails(item.id)} /></p>
+                    <p><img src={showTutorDetails[item.id] ? downIcon : upIcon} alt="" onClick={() => toggleTutorDetails(item.id)} /></p>
                   </div>
                   <div>
-                                { showTutorDetails[item.id] && <> <div key={item.id} className="flex justify-between pt-19px px-21px pb-14px bg-rgba(255,162,141,0.20) rounded-t-5 items-center mt-5">
-                                  
-                                  </div>
-                    <div className="py-[17.5px] pl-3 bg-[#FFFFFF] rounded-b-5">
-                      <p className="text-[#26435F] text-lg font-medium">Service </p>
-                      <p className="text-[17.5px] text-[#7C98B6] mt-[19px]">{item.service}</p>
-                      <p className="text-[rgba(56,201,128,1)] text-lg font-medium pt-[40px]">Hours Completed</p>
-                      <p className="text-[25px] text-[rgba(56,201,128,1)] mt-[19px]">{item.total_hours}</p>
-                      <p className="text-[#FF7979] text-lg font-medium pt-[40px]">Hours Missed</p>
-                      <p className="text-[25px] text-[#FF7979] mt-[19px]">0</p>
-                      <p className="text-[rgba(255,206,132,1)] text-lg font-medium pt-[40px]">Hours Canceled</p>
-                      <p className="text-[25px] text-[rgba(255,206,132,1)] mt-[19px]">0</p>
-                      <p className="text-[rgba(124,152,182,1)] text-lg font-medium pt-[40px]">Hours Scheduled</p>
-                      <p className="text-[25px] text-[rgba(124,152,182,1)] mt-[19px]">{item.total_hours}</p>
-                    </div></>}
-                    
-                     
+                    {showTutorDetails[item.id] && <> <div key={item.id} className="flex justify-between pt-19px px-21px pb-14px bg-rgba(255,162,141,0.20) rounded-t-5 items-center mt-5">
+
+                    </div>
+                      <div className="py-[17.5px] pl-3 bg-[#FFFFFF] rounded-b-5">
+                        <p className="text-[#26435F] text-lg font-medium">Service </p>
+                        <p className="text-[17.5px] text-[#7C98B6] mt-[19px]">{item.service}</p>
+                        <p className="text-[rgba(56,201,128,1)] text-lg font-medium pt-[40px]">Hours Completed</p>
+                        <p className="text-[25px] text-[rgba(56,201,128,1)] mt-[19px]">{item.total_hours}</p>
+                        <p className="text-[#FF7979] text-lg font-medium pt-[40px]">Hours Missed</p>
+                        <p className="text-[25px] text-[#FF7979] mt-[19px]">0</p>
+                        <p className="text-[rgba(255,206,132,1)] text-lg font-medium pt-[40px]">Hours Canceled</p>
+                        <p className="text-[25px] text-[rgba(255,206,132,1)] mt-[19px]">0</p>
+                        <p className="text-[rgba(124,152,182,1)] text-lg font-medium pt-[40px]">Hours Scheduled</p>
+                        <p className="text-[25px] text-[rgba(124,152,182,1)] mt-[19px]">{item.total_hours}</p>
+                      </div></>}
+
+
                   </div>
                 </div>))}
               </div>
@@ -1247,7 +1247,7 @@ const [showTutorDetails,setShowTutorDetails]=useState({})
               customButtons={{
                 prevButton: {
                   text: (
-                    <span  className="calendar-prevButton-custom">
+                    <span className="calendar-prevButton-custom">
                       <img src={LeftIcon} />
                     </span>
                   ),
@@ -1271,7 +1271,7 @@ const [showTutorDetails,setShowTutorDetails]=useState({})
                 end: "timeGridWeek,dayGridMonth",
               }}
               titleFormat={{
-                day:'2-digit',
+                day: '2-digit',
                 month: "short",
                 year: "numeric",
               }}
@@ -1281,8 +1281,8 @@ const [showTutorDetails,setShowTutorDetails]=useState({})
               // slotMaxTime={"30:00:00"}
               dayHeaderFormat={{
                 day: "numeric",
-                weekday:'long'
-                
+                weekday: 'long'
+
 
               }}
               // dayHeaderContent={getDayHeaders}
@@ -1296,7 +1296,7 @@ const [showTutorDetails,setShowTutorDetails]=useState({})
               selectOverlap={false}
               defaultTimedEventDuration="01:00"
               showNonCurrentDates={false}
-              slotLabelFormat={{hour:'2-digit',minute:'2-digit',meridiem:'short'}}              
+              slotLabelFormat={{ hour: '2-digit', minute: '2-digit', meridiem: 'short' }}
             />
             <div
               className="absolute right-[50px] top-0 "
@@ -1304,20 +1304,20 @@ const [showTutorDetails,setShowTutorDetails]=useState({})
               <span id="input">
                 <InputSelect
                   value={
-                   newTimeZone
+                    newTimeZone
                   }
                   //  optionData={['local', 'America/New_York']}
                   // optionData={['Asia/Calcutta', ...moment.tz.zonesForCountry('US')]}
                   // optionData={['Asia/Calcutta', ...moment.tz.zonesForCountry('US')]}
                   optionData={timeZones2}
                   onChange={(val) => {
-                    if(val=='IST')setTimeZone('Asia/Kolkata')
-                    if(val=='CST')setTimeZone('US/Central')
-                    if(val=='AKST')setTimeZone('US/Alaska')
-                    if(val=='EST')setTimeZone('US/Eastern')
-                    if(val=='HST')setTimeZone('US/Hawai')
-                    if(val=='MST')setTimeZone('US/Mountain')
-                    if(val=='PST')setTimeZone('US/Pacific')
+                    if (val == 'IST') setTimeZone('Asia/Kolkata')
+                    if (val == 'CST') setTimeZone('US/Central')
+                    if (val == 'AKST') setTimeZone('US/Alaska')
+                    if (val == 'EST') setTimeZone('US/Eastern')
+                    if (val == 'HST') setTimeZone('US/Hawai')
+                    if (val == 'MST') setTimeZone('US/Mountain')
+                    if (val == 'PST') setTimeZone('US/Pacific')
                   }}
                   parentClassName=""
                   optionClassName=""

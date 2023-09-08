@@ -216,28 +216,28 @@ export default function TableItem({
 
 
   useEffect(() => {
-    console.log("item",item)
+    console.log("item", item)
     setIsChecked(checkedHeader);
   }, [checkedHeader])
   const timestamp = item.createdAt;
   const date = new Date(timestamp);
-  
+
   const options = { year: 'numeric', month: 'long', day: 'numeric' };
   const formattedDate = date.toLocaleDateString('en-US', options);
 
   console.log(dataFor)
-  const getFormatDate=(inputDate)=>{
+  const getFormatDate = (inputDate) => {
     const dateObj = new Date(inputDate);
 
-// Format the date in the desired format
-const options = { year: 'numeric', month: 'short', day: '2-digit' };
-const formattedDate = dateObj.toLocaleDateString('en-US', options);
+    // Format the date in the desired format
+    const options = { year: 'numeric', month: 'short', day: '2-digit' };
+    const formattedDate = dateObj.toLocaleDateString('en-US', options);
 
-console.log(formattedDate); // Output: "August 02, 2023"
-   return formattedDate
+    console.log(formattedDate); // Output: "August 02, 2023"
+    return formattedDate
   }
-  const getPhone=(val)=>{
-console.log(item)
+  const getPhone = (val) => {
+    console.log(item)
     console.log(val)
   }
   return (
@@ -247,7 +247,7 @@ console.log(item)
         dataFor === "tutorFeedback" && (
           <>
 
-            <tr className=" ">
+            <tr className=" text-[17.5px] font-medium">
               <td className="py-4 px-[10px]">
                 {item.studentName}
               </td>
@@ -273,7 +273,7 @@ console.log(item)
         dataFor === "serviceRates" && (
           <>
 
-            <tr >
+            <tr className=" text-[17.5px] font-medium">
               <td className="py-4 px-[10px]">
                 {item.service}
               </td>
@@ -351,7 +351,7 @@ console.log(item)
               <InputSelect
                 tableDropdown={true}
                 value={leadStatus ? leadStatus : "-"}
-               placeholderClass="text-base-17-5" 
+                placeholderClass="text-base-17-5"
                 optionData={settings.leadStatus}
                 inputContainerClassName={`min-w-[100px] pt-0 pb-0 pr-2 pl-0 text-center capitalize `}
                 optionClassName="text-[17.5px]"
@@ -623,7 +623,7 @@ console.log(item)
         <tr className="odd:bg-white shadow-sm text-[17.5px] shadow-slate-200   leading-7">
           {Object.keys(item).map((key, i) =>
             excludes.includes(key) ? (
-              <React.Fragment key={i}> 
+              <React.Fragment key={i}>
               </React.Fragment>
             ) : (
               <td key={i} className="font-medium px-1  min-w-14 py-4">
@@ -888,7 +888,7 @@ const MapData = (data, dataFor, exclude = [], onClick) => {
   return Object.keys(data).map((key, i) =>
     exclude.includes(key) ? (
       <React.Fragment key={i}>
-        </React.Fragment>
+      </React.Fragment>
     ) : key === "isCorrect" ? (
       <td key={i} className="font-medium px-1  min-w-14 py-4">
         <div className="flex items-center justify-center">
@@ -919,7 +919,7 @@ const MapData = (data, dataFor, exclude = [], onClick) => {
       <td key={i} className="font-medium px-1 text-[#009262] py-4">
         <p className={`font-semibold`}>
           <InputSelect
-           placeholderClass="text-base-17-5" value={data[key] ? data[key] : "-"}
+            placeholderClass="text-base-17-5" value={data[key] ? data[key] : "-"}
             optionData={
               data[key] === "paid"
                 ? ["paid", "cancelled"]
