@@ -49,11 +49,11 @@ const TutorCarousel = () => {
   }, []);
 
   return (
-    <div className="h-full relative items-center flex py-5 mr-[20px] max-w-[83%] design:mr-[30px]">
+    <div className="h-full relative items-center flex py-2 mr-[10%]">
       <h2 className="pl-5 pt-4">{""}</h2>
       {tutors.length >= totalTutors ? (
         <OwlCarousel
-          className="owl-theme pt-3 z-40  "
+          className="owl-theme h-full relative z-40  "
           margin={30}
           items={1}
           onTranslated={(e) => {
@@ -69,7 +69,7 @@ const TutorCarousel = () => {
         <div className="font-semibold text-center mt-12">No tutors added !</div>
       )}
      
-    <img src={swipeRight} className="mr-5"/>
+   
     </div>
   );
 };

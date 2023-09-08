@@ -42,7 +42,7 @@ const parentTestInfo = [
   },
 ];
 
-export default function StudentTest({fromProfile}) {
+export default function StudentTest({fromProfile,setTotaltest}) {
   const [user, setUser] = useState({});
   const [associatedStudents, setAssociatedStudents] = useState([]);
   const [selectedStudent, setSelectedStudent] = useState(null);
@@ -186,6 +186,7 @@ export default function StudentTest({fromProfile}) {
         let sortedArr = tempAllTests.sort(function (a, b) {
           return new Date(b.updatedAt) - new Date(a.updatedAt);
         });
+        setTotaltest(sortedArr?.length)
         setAllTests(sortedArr.filter((item) => item !== undefined));
       });
     }

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "../style.module.css";
 import cancelIcon from "../../../../assets/YIcons/cutIcon.svg";
 import dot from "../../../../assets/YIcons/dotIcon.svg";
@@ -14,9 +14,11 @@ const SPFrame2 = ({
   fetchDetails,
   setToEdit,
   toEdit,
+  totalTest,
   setSelectedScoreIndex,
 }) => {
   const [updateDetails, updateDetailsResp] = useUpdateUserDetailsMutation();
+  
   const reduceArr = (id,key, update) => {
    
     
@@ -36,13 +38,13 @@ if(!toEdit[key] || !toEdit[key][key]) return
    // setLoading(true);
     let reqBody = { [key]:e };
    // delete reqBody["active"];
-     console.log({reqBody,id:userId});
+   //  console.log({reqBody,id:userId});
     const userDetailSave = (reqBody) => {
     
-       console.log({reqBody,userDetail});
+      // console.log({reqBody,userDetail});
       // return
       updateDetails({ id:userId, fields: reqBody }).then((res) => {
-        console.log(res);
+      //  console.log(res);
         //setLoading(false);
         fetchDetails(true, true);
         // handleClose()
@@ -74,7 +76,7 @@ if(!toEdit[key] || !toEdit[key][key]) return
           <div className="flex-1  flex justify-between">
             <p className=" text-sm text-[#26435F] font-semibold">
               # Of Practice Tests
-              <span className=" text-[#FFA28D] text-2xl block">90</span>
+              <span className=" text-[#FFA28D] text-2xl block">{totalTest}</span>
             </p>
             <p className=" text-sm text-[#26435F] font-semibold">
               Join Date
@@ -235,8 +237,8 @@ if(!toEdit[key] || !toEdit[key][key]) return
               onClick={() =>
                 setToEdit({
                   ...toEdit,
-                  subscriptionCode: {
-                    ...toEdit.subscriptionCode,
+                  baselineScores: {
+                    ...toEdit.baselineScores,
                     active: true,
                   },
                 })

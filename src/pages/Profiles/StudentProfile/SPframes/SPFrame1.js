@@ -50,13 +50,13 @@ const SPFrame1 = ({ userId, settings, userDetail, editable, setToEdit, toEdit ,f
    // setLoading(true);
     let reqBody = { whiteBoardLinks:e };
    // delete reqBody["active"];
-     console.log({reqBody,id:userId});
+  //   console.log({reqBody,id:userId});
     const userDetailSave = (reqBody) => {
     
-       console.log({reqBody,userDetail});
+      // console.log({reqBody,userDetail});
       // return
       updateDetails({ id:userId, fields: reqBody }).then((res) => {
-        console.log(res);
+       // console.log(res);
         //setLoading(false);
         fetchDetails(true, true);
         // handleClose()
