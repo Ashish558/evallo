@@ -12,11 +12,11 @@ export default function SingleTutor({ idx, tutor }) {
     <div key={idx} className="item px-4 h-full">
       <div className="flex items-center gap-5 my-auto justify-center">
         <div className="w-2/3">
-          <h5 className={`${styles.tag}`}>
+          {/* <h5 className={`${styles.tag}`}>
             {tutor.tutorLevel && `${tutor.tutorLevel} Belt`}
           </h5>
-          <p>{tutor?.education}</p>
-          <h3 className="mt-0 mb-1 mt-2 text-[#517CA8]">
+          <p>{tutor?.education}</p> */}
+          <h3 className="mt-0 mb-1 mt-2 text-[#26435F] text-base-22-5 font-semibold">
             {" "}
             {`${tutor.firstName} ${tutor.lastName}`}{" "}
           </h3>
