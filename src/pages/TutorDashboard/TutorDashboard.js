@@ -271,7 +271,7 @@ export default function TutorDashboard() {
                                  <OwlCarousel items={5} autoWidth margin={20} >
                                     {students.map(student => {
                                        return <div className='flex flex-col items-center text-center w-[108px]'>
-                                          <img  src={`${student.photo ? `${awsLink}${student.photo}` : '/images/default.jpeg'} `}  alt='studentImage' />
+                                          <img src={`${student.photo ? `${awsLink}${student.photo}` : '/images/default.jpeg'} `} alt='studentImage' />
                                           <p className='text-[0.78125vw] text-[#517CA8]  mt-4 cursor-pointer'
                                              onClick={() => navigate(`/profile/student/${student._id}`)} >
                                              {student.name.split(" ")[0]} <br /> {student.name.split(" ")[1]} </p>
@@ -368,7 +368,7 @@ export default function TutorDashboard() {
                                        </div>
                                        <div className='w-[88%] flex justify-between items-center'>
                                           <div className='w-3/6'>
-                                             <p className='text-[#24A3D9] text-[1.172vw] font-bold'> {item.testName} </p>
+                                             <p className='text-[#24A3D9] text-[1.172vw] font-bold cursor-pointer' onClick={() => navigate(`/assigned-tests/${item.testId}/${item.assignedTestId}/report/${item.studentId}`)} > {item.testName} </p>
                                              <div className=' text-[#517CA8] flex text-[0.911vw]'>
                                                 <p className='font-semibold'>Due:</p>
                                                 <p className='ml-2'> {getDate(item.dueDate)} </p>
