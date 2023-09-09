@@ -219,7 +219,7 @@ export default function ParentEditables({
       api: "tutorDetail",
     },
     {
-      name: "baselineScores",
+      name: "baseLineScore",
       title: "Baseline Scores",
       api: "userDetail",
     },
@@ -2570,7 +2570,7 @@ return ( <div className="flex !text-sm gap-4 ">
 </svg></p>
                   </div>
                 )}
-                 {currentField.name === "baselineScores" && (
+                 {currentField.name === "baseLineScore" && (
                   <div className="flex flex-col gap-4 mt-[-20px]">
                      <div className="max-h-[50vh] overflow-y-auto custom-scroller">
 
@@ -2588,12 +2588,21 @@ return ( <div className="flex !text-sm gap-4 ">
                                 parentClassName="flex-1 text-sm text-center max-w-[150px]"
                                 type="number"
                                 value={
-                                  currentToEdit.baselineScores
+                                  currentToEdit.baseLineScore?.satBaseLineScore
                                     ?.verbal
                                 }
                                 onChange={(e) => {
                                  
-                                 
+                                 setCurrentToEdit({
+                                  ...currentToEdit,
+                                  baseLineScore:{
+                                    ...currentToEdit?.baseLineScore,
+                                    satBaseLineScore:{
+                                      ...currentToEdit.baseLineScore?.satBaseLineScore,
+                                      verbal: e.target.value
+                                    }
+                                  }
+                                 })
                                 }}
                               />
                               <InputField
@@ -2604,12 +2613,21 @@ return ( <div className="flex !text-sm gap-4 ">
                                 parentClassName="flex-1 max-w-[150px]"
                                 type="number"
                                value={
-                                  currentToEdit.baselineScores
-                                    ?.verbal
+                                  currentToEdit.baseLineScore?.satBaseLineScore
+                                    ?.maths
                                 }
                                 onChange={(e) => {
                                  
-                                 
+                                 setCurrentToEdit({
+                                  ...currentToEdit,
+                                  baseLineScore:{
+                                    ...currentToEdit?.baseLineScore,
+                                    satBaseLineScore:{
+                                      ...currentToEdit.baseLineScore?.satBaseLineScore,
+                                      maths: e.target.value
+                                    }
+                                  }
+                                 })
                                 }}
                                   // tempScores[selectedScoreIndex].maths = checkNumber(currentToEdit.satScores.maths, parseInt(e.target.value), 800)
                                   // console.log('tempScores', tempScores);
@@ -2618,8 +2636,8 @@ return ( <div className="flex !text-sm gap-4 ">
                               />
                               
                             <div className="text-md  rounded-[4px] flex items-center  font-semibold  text-center py-auto px-5 bg-primary-50 border-0 !w-[150px] text-[#FFA28D]">
-                              {false&& currentToEdit.satScores[selectedScoreIndex]?.maths +  currentToEdit.satScores[selectedScoreIndex]
-                                    ?.verbal ?currentToEdit.satScores[selectedScoreIndex]?.maths + currentToEdit.satScores[selectedScoreIndex]?.verbal:
+                              { parseInt(currentToEdit.baseLineScore?.satBaseLineScore?.maths) +  parseInt(currentToEdit.baseLineScore?.satBaseLineScore?.verbal)  ? 
+                                    parseInt(currentToEdit.baseLineScore?.satBaseLineScore?.maths) + parseInt(currentToEdit.baseLineScore?.satBaseLineScore?.verbal):
                               <span className="text-sm my-auto font-semibold">
                                 
                                 cumulative
@@ -2644,12 +2662,21 @@ return ( <div className="flex !text-sm gap-4 ">
                         parentClassName="flex-1 !text-sm max-w-[140px]"
                         type="number"
                         value={
-                          currentToEdit.baselineScores
-                            ?.verbal
+                          currentToEdit.baseLineScore?.actBaseLineScore
+                            ?.maths
                         }
                         onChange={(e) => {
                          
-                         
+                         setCurrentToEdit({
+                          ...currentToEdit,
+                          baseLineScore:{
+                            ...currentToEdit?.baseLineScore,
+                            actBaseLineScore:{
+                              ...currentToEdit.baseLineScore?.actBaseLineScore,
+                              maths: e.target.value
+                            }
+                          }
+                         })
                         }}
                       />
                     </div>
@@ -2663,12 +2690,21 @@ return ( <div className="flex !text-sm gap-4 ">
                         parentClassName="flex-1 max-w-[140px]"
                         type="number"
                         value={
-                          currentToEdit.baselineScores
-                            ?.verbal
+                          currentToEdit.baseLineScore?.actBaseLineScore
+                            ?.english
                         }
                         onChange={(e) => {
                          
-                         
+                         setCurrentToEdit({
+                          ...currentToEdit,
+                          baseLineScore:{
+                            ...currentToEdit?.baseLineScore,
+                            actBaseLineScore:{
+                              ...currentToEdit.baseLineScore?.actBaseLineScore,
+                              english: e.target.value
+                            }
+                          }
+                         })
                         }}
                       />
                     </div>
@@ -2682,12 +2718,21 @@ return ( <div className="flex !text-sm gap-4 ">
                         parentClassName="flex-1 max-w-[140px]"
                         type="number"
                         value={
-                          currentToEdit.baselineScores
-                            ?.verbal
+                          currentToEdit.baseLineScore?.actBaseLineScore
+                            ?.reading
                         }
                         onChange={(e) => {
                          
-                         
+                         setCurrentToEdit({
+                          ...currentToEdit,
+                          baseLineScore:{
+                            ...currentToEdit?.baseLineScore,
+                            actBaseLineScore:{
+                              ...currentToEdit.baseLineScore?.actBaseLineScore,
+                              reading: e.target.value
+                            }
+                          }
+                         })
                         }}
                       />
                     </div>
@@ -2701,20 +2746,29 @@ return ( <div className="flex !text-sm gap-4 ">
                         parentClassName="flex-1 max-w-[140px]"
                         type="number"
                         value={
-                          currentToEdit.baselineScores
-                            ?.verbal
+                          currentToEdit.baseLineScore?.actBaseLineScore
+                            ?.science
                         }
                         onChange={(e) => {
                          
-                         
+                         setCurrentToEdit({
+                          ...currentToEdit,
+                          baseLineScore:{
+                            ...currentToEdit?.baseLineScore,
+                            actBaseLineScore:{
+                              ...currentToEdit.baseLineScore?.actBaseLineScore,
+                              science: e.target.value
+                            }
+                          }
+                         })
                         }}
                       />
                     </div>
                   </div>
                             
                          <div className="text-md py-2 rounded-[4px] flex items-center  font-semibold  text-center py-auto px-5 bg-primary-50 border-0 !w-[150px] text-[#FFA28D]">
-                           { false && it?.maths +  it?.science + it?.reading + it?.english 
-                                  ?it?.maths +  it?.science + it?.reading + it?.english :
+                           {  parseInt(currentToEdit.baseLineScore?.actBaseLineScore?.maths) +  parseInt(currentToEdit.baseLineScore?.actBaseLineScore?.science) + parseInt(currentToEdit.baseLineScore?.actBaseLineScore?.reading) + parseInt(currentToEdit.baseLineScore?.actBaseLineScore?.english) 
+                                  ?parseInt(currentToEdit.baseLineScore?.actBaseLineScore?.maths) +  parseInt(currentToEdit.baseLineScore?.actBaseLineScore?.science) + parseInt(currentToEdit.baseLineScore?.actBaseLineScore?.reading) + parseInt(currentToEdit.baseLineScore?.actBaseLineScore?.english) :
                            <span className="text-placeholder:text-sm my-auto text-sm font-semibold">
                              
                              cumulative

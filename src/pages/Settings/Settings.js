@@ -5,6 +5,7 @@ import ActiveTab from "../../assets/icons/active-tab.svg";
 import SettingsCard from "../../components/SettingsCard/SettingsCard";
 import ToggleBar from "../../components/SettingsCard/ToogleBar";
 import AddTag from "../../components/Buttons/AddTag";
+import "./tab.css"
 import FilterItems from "../../components/FilterItems/filterItems";
 import InputField from "../../components/InputField/inputField";
 import Modal from "../../components/Modal/Modal";
@@ -846,16 +847,42 @@ export default function Settings() {
           {organization?.company + "  >  "}
           <span className="font-semibold">Settings</span>
         </p>
+        <div className="shivam-tabs rounded-md">
+          <ul class="tabs group">
+          {tabs.map((item, idx) => {
+              return (
+                <li
+                className={`" ${activeTab === idx + 1?'active':''}`}
+                  onClick={() => changeTab(idx + 1)}
+                >
+                  <a className={`"w-full cursor-pointer flex justify-center items-center ${activeTab === idx + 1?'!text-[#26435F]':'!text-white'}`}>
+                    <span className="pb-1">
+                      {activeTab === idx + 1 && (
+                        <img src={item.Icon} className="!w-[15px] !h-[15px] " alt="item-logo" />
+                      )}
+                      {activeTab === idx + 1 || (
+                        <img src={item.Icon2} className="!w-[15px] !h-[15px]" alt="item-logo" />
+                      )}
+                    </span>
+                    <p className="py-2 px-2 pb-3 font-medium  text-base-20  whitespace-nowrap">{item.name} </p>
+                  </a>
+                
+                </li>
+              );
+            })}
+
+</ul>
+</div>
         <div className=" flex w-full flex-1 items-center mb-[30px]">
           <div className={`${styles.tabsContainer} gap-7 flex-1 !shadow-[0px_0px_2.5px_0px_rgba(0,0,0,0.25)]`}>
-            {tabs.map((item, idx) => {
+            {/* {tabs.map((item, idx) => {
               return (
                 <div
                   className={`${styles.tab} ${activeTab === idx + 1 ? styles.selectedTab : ""
-                    } cursor-pointer `}
+                    } cursor-pointer h-full`}
                   onClick={() => changeTab(idx + 1)}
                 >
-                  <div className={`" px-1   flex justify-center items-center ${activeTab === idx + 1?' ':''}`}>
+                  <div className={`"h-full  w-full flex justify-center items-center ${activeTab === idx + 1?'':''}`}>
                     <div>
                       {activeTab === idx + 1 && (
                         <img src={item.Icon} className="w-[15px] h-[15px]" alt="item-logo" />
@@ -864,20 +891,21 @@ export default function Settings() {
                         <img src={item.Icon2} className="w-[15px] h-[15px]" alt="item-logo" />
                       )}
                     </div>
-                    <p className="flex items-center  w-[calc(191*0.0522vw)] justify-center text-base-17-5  whitespace-nowrap">{item.name} </p>
+                    <p className="flex items-center py-2  w-[calc(191*0.0522vw)] justify-center text-base-17-5  whitespace-nowrap">{item.name} </p>
                   </div>
-                  {activeTab === idx + 1 && (
+                  {/ {activeTab === idx + 1 && (
                     <img
                       src={ActiveTab}
 
-                      className={`${styles.activeBgIcon} `}
+                      className={`${styles.activeBgIcon} lg:top-[10px] `}
                       alt="item-background"
                     />
-                  )}
+                  )} }
                 </div>
               );
-            })}
+            })} */}
           </div>
+         
           {/* <div>
                   <p className='font-bold text-4xl mb-[54px] text-[#25335A]'> Settings </p>
                   <div className='text-base'>
