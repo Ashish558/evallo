@@ -82,20 +82,21 @@ export default function AssignedStudents() {
                   getUserDetail({ id: studentId })
                      .then(res => {
                         console.log('detail res', resp.data.data)
-                        const { _id, firstName, lastName, email, phone, services, topics, status } = res.data.data.user
+                        const { _id, firstName, lastName, email, phone, services, topics, status, assignedDate } = res.data.data.user
                         const { specialization, FirstName, LastName, timeZone } = res.data.data.userdetails
                         studentsData.push({
                            _id,
                            name: `${firstName} ${lastName}`,
                            email: `${email}`,
                            phone: `${phone}`,
-                           services: `${services}`,
-                           topics: `${topics}`,
-                           status: `${status}`,
+                           services: `${services == undefined ? '_' : services}`,
+                           topics: `${topics == undefined ? '_' : topics}`,
+                           status: `${status == undefined ? '_' : status}`,
+                           assignedDate: `${assignedDate == undefined ? '_' : assignedDate}`
                            // specialization: ['we', 'ew'].join(','),
                            // parentName: `${FirstName} ${LastName}`,
                            // score: '-',
-                           assignedDate: '_'
+                           // assignedDate: '_'
                         })
                         if (idx === resp.data.data.user.assiginedStudents.length - 1) cb()
                      })

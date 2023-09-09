@@ -249,6 +249,7 @@ export default function AssignedTests() {
     modalData.studentId,
   ]);
   const handleNavigate = (role, id) => {
+    console.log("clicked")
     navigate(`/profile/${role}/${id}`)
   }
 

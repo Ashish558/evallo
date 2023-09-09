@@ -8,7 +8,7 @@ const BarChart = ({ studentFeedbacks }) => {
     console.log(studentFeedbacks)
     const ratings = studentFeedbacks?.data?.ratingCounts
     const totalStudents = studentFeedbacks?.data?.feedback
-    console.log(totalStudents.length)
+    // console.log(totalStudents.length)
 
     let count = 0
     let percentage = []
