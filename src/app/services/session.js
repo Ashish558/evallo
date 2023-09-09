@@ -75,6 +75,14 @@ export const sessionServicesApi = createApi({
             headers: getAuthHeader()
          })
       }),
+      getTotalHours: builder.query({
+         query: (payload) => ({
+            url: `/api/user/student/getTotalHoursTutored/${payload}`,
+            method: "GET",
+           
+            headers: getAuthHeader()
+         })
+      }),
       updateAllSession: builder.mutation({
          query: (payload) => ({
             url: `/api/session/all/${payload.id}`,
@@ -188,6 +196,7 @@ export const {
    useLazyGetSettingsQuery,
    useSubmitSessionMutation,
    useLazyGetUsersByNameQuery,
+   useLazyGetTotalHoursQuery,
    useLazyGetCompletedSessionsQuery,
    useLazyGetSessionsQuery,
    useLazyGetSingleSessionQuery,

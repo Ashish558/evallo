@@ -188,9 +188,25 @@ export default function StudentProfile({ isOwn }) {
       active: false,
       aboutScore: "",
     },
-    baselineScores: {
+    baseLineScore: {
       active: false,
-      baselineScores: "",
+      baseLineScore: {
+        satBaseLineScore: 
+          { created:"",
+          cumilativeScore:0,
+           verbal: 0,
+            maths: 0,
+            
+          },
+          actBaseLineScore:
+            { created:"",
+              cumilativeScore:0,
+              english: 0,
+              maths: 0,
+              reading: 0,
+              science: 0,
+            },
+      },
     },
     
     address: {
@@ -457,7 +473,7 @@ const [toEdit, setToEdit] = useState({
         satScores,
         actScores,
         about,
-        baselineScores,
+        baseLineScore,
         subjects,
         subscriptionCode,
       } = res.data.data.userdetails;
@@ -556,9 +572,9 @@ const [toEdit, setToEdit] = useState({
                   ...prev.personality,
                   personality: personality,
                 },
-                baselineScores: {
-                  ...prev.baselineScores,
-                  baselineScores: baselineScores,
+                baseLineScore: {
+                  ...prev.baseLineScore,
+                  baseLineScore: baseLineScore,
                 },
                 whiteBoardLinks: {
                   ...prev.whiteBoardLinks,

@@ -1,0 +1,117 @@
+.shivam-tabs .tabs li { 
+  /* Makes a horizontal row */
+  float: left; 
+	
+  /* So the psueudo elements can be
+     abs. positioned inside */
+  position: relative; 
+}
+.shivam-tabs .tabs a { 
+  /* Make them block level
+     and only as wide as they need */
+  float: left; 
+  padding: 2px 6px; 
+  text-decoration: none;
+  
+  /* Default colors */ 
+  color: black;
+  background: #26435F; 
+  
+  /* Only round the top corners */
+  -webkit-border-top-left-radius: 5px;
+  -webkit-border-top-right-radius: 5px;
+  -moz-border-radius-topleft: 5px;
+  -moz-border-radius-topright: 5px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px; 
+}
+.shivam-tabs .tabs .active {
+  /* Highest, active tab is on top */
+  z-index: 3;
+}
+.shivam-tabs .tabs .active a { 
+  /* Colors when tab is active */
+  background: white; 
+  color: black; 
+}
+.shivam-tabs .tabs li:before, .shivam-tabs .tabs li:after, 
+.shivam-tabs .tabs li a:before, .shivam-tabs .tabs li a:after {
+  /* All pseudo elements are 
+     abs. positioned and on bottom */
+  position: absolute;
+  bottom: 0;
+}
+/* Only the first, last, and active
+   tabs need pseudo elements at all */
+.shivam-tabs .tabs li:last-child:after,   .shivam-tabs .tabs li:last-child a:after,
+.shivam-tabs .tabs li:first-child:before, .shivam-tabs .tabs li:first-child a:before,
+.shivam-tabs .tabs .active:after,   .shivam-tabs .tabs .active:before, 
+.shivam-tabs .tabs .active a:after, .shivam-tabs .tabs .active a:before {
+  content: "";
+}
+.shivam-tabs .tabs .active:before, .shivam-tabs .tabs .active:after {
+  background: white; 
+  
+  /* Squares below circles */
+  z-index: 1;
+}
+/* Squares */
+.shivam-tabs .tabs li:before, .shivam-tabs .tabs li:after {
+  background: #26435F;
+  width: 10px;
+  height: 10px;
+}
+.shivam-tabs .tabs li:before {
+  left: -10px;      
+}
+.shivam-tabs .tabs li:after { 
+  right: -10px;
+}
+/* Circles */
+.shivam-tabs .tabs li a:after, .shivam-tabs .tabs li a:before {
+  width: 20px; 
+  height: 20px;
+  /* Circles are circular */
+  -webkit-border-radius: 15px;
+  -moz-border-radius:    15px;
+  border-radius:         15px;
+  background: #26435F;
+  
+  /* Circles over squares */
+  z-index: 2;
+}
+.shivam-tabs .tabs .active a:after, .shivam-tabs .tabs .active a:before {
+  background: #26435F;
+}
+/* First and last tabs have different
+   outside color needs */
+.shivam-tabs .tabs li:first-child.active a:before,
+.shivam-tabs .tabs li:last-child.active a:after {
+  background:#26435F;
+}
+.shivam-tabs .tabs li a:before {
+  left: -20px;
+}
+.shivam-tabs .tabs li a:after {
+  right: -20px;
+}
+
+.shivam-tabs {
+background:#26435F;
+padding:8px;
+
+padding-left:20px;
+padding-bottom:0px;
+position:relative;
+
+}
+.shivam-tabs .tabs{
+display:flex;
+
+}
+
+.shivam-tabs .tabs li a{
+
+    width:calc(320*0.0522vw);
+    min-width:230px;
+}
