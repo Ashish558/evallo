@@ -189,8 +189,8 @@ setId(userDetail?._id)
             <RangeDate
               className="ml-0"
               manualHide={true}
-              optionClassName="w-fit"
-              inputContainerClassName="w-min"
+              optionClassName="!w-min"
+              inputContainerClassName="!w-min"
               handleRangeData={setSelectedConceptIdx}
             />
           </div>
@@ -254,8 +254,8 @@ setId(userDetail?._id)
             <RangeDate
               className="ml-0"
               manualHide={true}
-              optionClassName="w-fit"
-              inputContainerClassName="w-min"
+              optionClassName="!w-min"
+              inputContainerClassName="!w-min"
               handleRangeData={setSelectedConceptIdx}
             />
           </div>
