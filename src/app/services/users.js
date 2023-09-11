@@ -89,6 +89,14 @@ export const userServicesApi = createApi({
         headers: getAuthHeader(),
       }),
     }),
+    addNotes: builder.mutation({
+      query: (body) => ({
+        url: `api/user/notes/addNotes`,
+        method: "POST",
+        body: body,
+        headers: getAuthHeader(),
+      }),
+    }),
     updateUserDetails: builder.mutation({
       query: (body) => ({
         url: `api/user/updatedetails/${body.id}`,
@@ -219,6 +227,7 @@ export const userServicesApi = createApi({
 export const {
   useLazyGetAllUsersQuery,
   useLazyGetParentTutorsQuery,
+  useAddNotesMutation,
   useLazyGetStudentTutorsQuery,
   useAddUserMutation,
   useUpdateUserAccountMutation,

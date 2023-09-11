@@ -52,6 +52,7 @@ let signupData = [
 const SPFrame1 = ({
   userId,
   settings,
+  user,
   userDetail,
   editable,
   setToEdit,
@@ -118,7 +119,7 @@ const handleLeadStatus=(e)=>{
     fetchDetails(true, true);
   })
 }
-  //console.log("frame1", { userDetail, xlsFile });
+  console.log("frame1 Stud", { userDetail, user });
   return (
     <div className="flex w-full justify-between ">
       <div className="flex flex-col gap-3 !w-[calc(813*0.0522vw)]">
@@ -171,9 +172,18 @@ const handleLeadStatus=(e)=>{
                   placeHolderClass="text-[#517CA8] "
                   labelClassname="text-sm"
                   inputClassName="bg-transparent"
-                  Icon={Drop}
+                  optionContainerClassName="!w-[190px]"
+                 
+                  ICON2={Drop}
                   value={userDetail?.leadStatus}
-                  optionData={organization?.settings?.leadStatus}
+                  optionData={ [
+                    "Open / Raw",
+                    "Interested",
+                    "Not Interested",
+                    "Contacted - No Answer",
+                    "Left Voicemail",
+                    "Completed"
+                  ]}
                   onChange={(e) => {
                     handleLeadStatus(e)
                    
@@ -234,7 +244,7 @@ const handleLeadStatus=(e)=>{
         <p className=" text-sm text-[#26435F] font-semibold text-base-20 mb-1">
           Session Notes
         </p>
-        <div className="bg-white flex-1 h-[410px] rounded-md custom-scroller shadow-[0px_0px_2.500001907348633px_0px_#00000040]">
+        <div className="bg-white flex-1  rounded-md custom-scroller shadow-[0px_0px_2.500001907348633px_0px_#00000040]">
           <div className="mx-6 p-2 ">
             <button
               onClick={() => {
@@ -261,32 +271,62 @@ const handleLeadStatus=(e)=>{
               Internal Notes
             </button>
           </div>
-          <div className="flex flex-col h-[400px]   bg-[#FFFFFF] ">
-            <ul className="list-disc rounded-b-md overflow-y-scroll custom-scroller h-full ">
-              {[{ message: "Hii", createdAt: new Date() }]?.map(
+          <div className="flex flex-col h-[380px]   bg-[#FFFFFF] ">
+            <ul className="list-disc rounded-b-md overflow-y-auto custom-scroller h-full ">
+            {internal && user?.internalNotes?.map(
                 (item, index) => (
                   <>
-                    <div key={index} className="flex h-[57px] pl-5 relative ">
-                      <p className="text-[#517CA8] pt-6 !font-medium text-[14px] mr-2 w-[calc(143*0.050vw)] text-center !text-[calc(17.5*0.050vw)] whitespace-nowrap">
-                        {item?.message &&
-                          new Date(item.createdAt)
+                    <div key={index} className="flex h-[57px] pl-5 relative items-center">
+                      <p className="text-[#517CA8]  !font-medium text-[14px] mr-4 w-[calc(143*0.050vw)] text-center !text-[calc(17.5*0.050vw)] whitespace-nowrap">
+                        {item?.note&&
+                          new Date(item.date)
                             .toDateString()
                             .split(" ")[1] +
                             " " +
-                            new Date(item.createdAt)
+                            new Date(item.date)
                               .toDateString()
                               .split(" ")[2] +
                             ", " +
-                            new Date(item.createdAt)
+                            new Date(item.date)
                               .toDateString()
                               .split(" ")[3]}
                       </p>
-                      <div className={`pt-5 ${styles.actionBorder}`}>
+                      <div className={` ${styles.actionBorder} items-center`}>
                         <div className={styles.circle}>
                           <div className={styles.circle2}></div>
                         </div>
-                        <p className="pl-4  font-medium text-[#517CA8] text-[15.5px] !text-[calc(17.5*0.050vw)]">
-                          {item?.message}
+                        <p className="pl-4    font-medium text-[#517CA8] text-[15.5px] !text-[calc(17.5*0.050vw)]">
+                          {item?.note}
+                        </p>
+                      </div>
+                    </div>
+                  </>
+                )
+              )}
+               {!internal && user?.clientNotes?.map(
+                (item, index) => (
+                  <>
+                     <div key={index} className="flex h-[57px] pl-5 relative items-center">
+                      <p className="text-[#517CA8]  !font-medium text-[14px] mr-4 w-[calc(143*0.050vw)] text-center !text-[calc(17.5*0.050vw)] whitespace-nowrap">
+                        {item?.note&&
+                          new Date(item.date)
+                            .toDateString()
+                            .split(" ")[1] +
+                            " " +
+                            new Date(item.date)
+                              .toDateString()
+                              .split(" ")[2] +
+                            ", " +
+                            new Date(item.date)
+                              .toDateString()
+                              .split(" ")[3]}
+                      </p>
+                      <div className={` ${styles.actionBorder} items-center`}>
+                        <div className={styles.circle}>
+                          <div className={styles.circle2}></div>
+                        </div>
+                        <p className="pl-4    font-medium text-[#517CA8] text-[15.5px] !text-[calc(17.5*0.050vw)]">
+                          {item?.note}
                         </p>
                       </div>
                     </div>
@@ -297,6 +337,8 @@ const handleLeadStatus=(e)=>{
           </div>
         </div>
       </div>
+     
+
     </div>
   );
 };

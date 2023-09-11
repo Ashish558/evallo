@@ -18,6 +18,8 @@ import Ledger from "./../../pages/Ledger/Ledger";
 import { useLazyPayBalanceQuery } from "../../app/services/dashboard";
 import { useDisableBodyScroll } from "../../hooks/useDisableBodyScroll";
 import InputSelectNew from "../InputSelectNew/InputSelectNew";
+import { useRef } from "react";
+
 
 const ParentDashboardHeader = ({ selectedStudent, setSelectedStudent }) => {
   const [images, setImages] = useState([]);
@@ -25,7 +27,7 @@ const ParentDashboardHeader = ({ selectedStudent, setSelectedStudent }) => {
   const [associatedStudents, setAssociatedStudents] = useState([]);
   const { organization } = useSelector((state) => state.organization);
   const [ledgerVisible, setLedgerVisible] = useState(false);
-
+  const tutorCarouselRef = useRef();
   const [getUserDetail, userDetailResp] = useLazyGetUserDetailQuery();
   const [fetchSettings, fetchSettingsResp] = useLazyGetSettingsQuery();
   const [payBalance, payBalanceResp] = useLazyPayBalanceQuery();
@@ -58,7 +60,7 @@ const ParentDashboardHeader = ({ selectedStudent, setSelectedStudent }) => {
               name: `${res.data?.data?.user.firstName} ${res.data?.data?.user.lastName}`,
               photo: res.data.data?.user.photo
                 ? `${baseLink}${res.data.data.user.photo}`
-                : "/images/default.jpeg",
+                : "/images/Rectangle 2346.svg",
               serviceSeeking: res.data?.data?.userdetails?.serviceSeeking,
             },
           ]);
@@ -67,7 +69,7 @@ const ParentDashboardHeader = ({ selectedStudent, setSelectedStudent }) => {
             value: `${res.data.data?.user.firstName} ${res.data.data?.user.lastName}`,
             photo: res.data.data?.user.photo
               ? `${baseLink}${res.data.data?.user.photo}`
-              : "/images/default.jpeg",
+              : "/images/Rectangle 2346.svg",
             serviceSeeking: res.data.data?.userdetails?.serviceSeeking,
           });
           setDetailStudent(res.data.data.userdetails);
@@ -106,7 +108,9 @@ const ParentDashboardHeader = ({ selectedStudent, setSelectedStudent }) => {
       }
     });
   };
-
+  const openLink = (link) => {
+    window.open(link)
+ }
   console.log("associatedStudents", associatedStudents);
   console.log("selectedStudent", selectedStudent);
 
@@ -135,17 +139,54 @@ const ParentDashboardHeader = ({ selectedStudent, setSelectedStudent }) => {
               </p>
 
               <div
-                className="w-full h-[225px] design:h-[260px] relative flex rounded-md items-center overflow-hidden shadow-[0px_0px_2.500001907348633px_0px_#00000040]"
+                className="w-full h-[225px] design:h-[260px] relative flex rounded-md items-center  shadow-[0px_0px_2.500001907348633px_0px_#00000040]"
                 id={styles.exploreBgDisable}
               >
-                {images?.length >= 1 && (
+                <div className={styles.images}>
+                {images?.length >0  ? (
+              <OwlCarousel
+                ref={tutorCarouselRef}
+                className="owl-theme h-full"
+                loop
+                margin={8}
+                items={1}
+              >
+                {images.map((image, idx) => {
+                  return (
+                    <div className={` rounded-md bg-cover	bg-center	 ${styles.img}`}
+                       style={{ backgroundImage: `url(${awsLink}${image.image})` }}
+                       >
+                        <p className="absolute top-5 left-4 z-10 font-bold text-base-25 text-white"></p>
+                       
+                        <button  onClick={() => openLink(image.link)} className="bg-[#FFA28D] text-white p-2 text-base-17-5 px-4 rounded-lg absolute left-5 bottom-4">
+                        {image?.buttonText?image?.buttonText:"Register"}
+                        </button>
+                    </div>
+                  );
+                })}
+              </OwlCarousel>
+            ) : (
+              <p
+                className="text-white  text-center w-full font-semibold pt-8 not-italic pb-8 text-lg"
+                style={{
+                  fontSize: "18px",
+                  fontStyle: "normal",
+                  fontWeight: "500",
+                }}
+              >
+                No Announcements
+              </p>
+            )}
+            </div>
+                {/* {images?.length >= 1 && (
                   <ImageSlideshow images={images} text="text" />
                 )}
+                {console.log({images})} */}
               </div>
             </div>
             <div className="w-full lg:w-2/3  !w-[calc(463*0.0522vw)] h-[206px] lg:h-auto ">
               <p className=" text-sm text-[#26435F] font-semibold text-base-20 mb-1">
-                Invoice details
+                Invoice Details
               </p>
 
               <div
@@ -203,7 +244,7 @@ const ParentDashboardHeader = ({ selectedStudent, setSelectedStudent }) => {
            
           </div>
           <div className=".mybox -mt-5 bg-white relative shadow-[0px_0px_2.500001907348633px_0px_#00000040] border-b-4 border-b-[#26435F] h-[215px] rounded-md !w-[calc(489*0.0522vw)]">
-            <div id="borderLeft" className="rounded-r-lg"></div>
+            <div id="borderLeft" className=""></div>
 
             <div
               className={` relative  w-100 h-full px-[22px] `}
@@ -275,8 +316,8 @@ const ParentDashboardHeader = ({ selectedStudent, setSelectedStudent }) => {
                 )}
               </div>
             </div>
-            <div id="borderRight" className="rounded-l-lg bg-red-600"></div>
-            <div id="borderBottom" className="rounded-b-lg"></div>
+            <div id="borderRight" className=""></div>
+            <div id="borderBottom" className=""></div>
           </div>
         </div>
       </div>

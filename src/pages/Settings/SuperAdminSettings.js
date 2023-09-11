@@ -1371,7 +1371,7 @@ export default function SuperAdminSettings() {
           handleClose={handleClose}
           body={
             <form id="settings-form" onSubmit={handleSubmit}>
-              <div className="grid grid-cols-1 md:grid-cols-2  gap-x-2 md:gap-x-3 gap-y-2 gap-y-4 mb-5">
+              <div className="grid grid-cols-1 md:grid-cols-2  gap-x-2 md:gap-x-3 gap-y-4 mb-5">
                 <div>
                   <InputField
                     label="Admin First Name"

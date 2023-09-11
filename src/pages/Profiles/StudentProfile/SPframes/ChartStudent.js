@@ -174,7 +174,7 @@ export default function Chart({ setSubjects, subjects, selectedSubject, selected
             tooltip: {
                callbacks: {
                   label: function (context, c, d) {
-                     return `  ${"Time Taken"} : ${context.parsed.y/60} minutes`
+                     return `  ${"Time "} : ${context.parsed.y/60} minutes`
                   }
                },
                backgroundColor: 'rgba(0, 0, 0, 0.7)',

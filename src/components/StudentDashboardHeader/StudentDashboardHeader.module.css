@@ -111,3 +111,41 @@
 #tutorList::-webkit-scrollbar-thumb:hover {
     background: rgba(40, 68, 109, 0.6);
 }
+
+.images {
+    position: relative;
+ 
+    width: 100%;
+    height: 100%;
+ }
+ .image{
+    width: 100%;
+    /* max-height: 100px; */
+    object-fit: contain;
+    transition: 0.3s;
+ }
+ .img {
+    position: absolute;
+    /* width: 100%; */
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transition: 0.3s;
+    top: 50%;
+    transform: translateY(-50%);
+ }
+ 
+ .prev {
+    left: -100%;
+    opacity: 0;
+ }
+ 
+ .next {
+    opacity: 0;
+    left: 100%;
+ }
+ 
+ .active {
+    left: 50%;
+    transform: translate(-50%, -50%);
+ }

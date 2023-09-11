@@ -208,7 +208,6 @@ export default function TableItem({
   }, [item]);
   const [isChecked, setIsChecked] = useState(checkedHeader);
   const handleCheckboxChange = () => {
-    console.log("handleCheckboxChange")
     setIsChecked(!isChecked);
     let fl = isChecked ? 1 : -1
     setnumberChecked(numberChecked - fl)
@@ -458,6 +457,30 @@ export default function TableItem({
           </td>
         </tr>
       )}
+
+      {dataFor === "allUsersManager" && (
+        <tr className="odd:bg-white  leading-8">
+          <td className="font-medium text-[17.5px] px-1  min-w-14 py-4  text-left">
+            <span
+              className="inline-block cursor-pointer pl-4"
+              onClick={() => onClick.redirect(item)}
+            >
+              {item.name}
+            </span>
+          </td>
+          <td className="font-medium text-[17.5px] px-1 min-w-14 py-4">
+            <div className="my-[6px]">{item.userType}</div>
+          </td>
+          <td className="font-medium text-[17.5px] px-1  min-w-14 py-4">
+            <div className="my-[6px]">{item.email}</div>
+          </td>
+          <td className="font-medium text-[17.5px] px-1  min-w-14 py-4">
+            <div className="my-[6px]">
+              {item.lastLogin ? item.lastLogin : "-"}
+            </div>
+          </td>
+        </tr>
+      )}
       {dataFor === "assignedTests" && (
         <tr className=" text-[17.5px]  leading-8">
           <td className=" text-[17.5px] px-1  min-w-14 py-4  text-left">
@@ -678,18 +701,18 @@ export default function TableItem({
                 <>
                   {item.isCompleted ? (
                     <button
-                      className="px-2.5 py-1.8 rounded-md flex items-center leading-none bg-primary text-white ml-4"
+                      className="px-2.5 py-1.8 bg-[#38C980] rounded-md flex items-center leading-none bg-primary text-white ml-4"
                       onClick={() =>
                         navigate(
                           `/assigned-tests/${item.testId}/${item.assignedTestId}/report/`
                         )
                       }
                     >
-                      View Report
+                     Report
                     </button>
                   ) : item.isStarted ? (
                     <button
-                      className="px-2.5 py-1.8 rounded-md flex items-center leading-none bg-primary text-white ml-4"
+                      className="px-2.5 py-1.8 bg-[#FFCE84] rounded-md flex items-center leading-none bg-primary text-white ml-4"
                       onClick={() =>
                         navigate(
                           `/all-tests/start-section/${item.testId}/${item.assignedTestId}`
@@ -700,14 +723,14 @@ export default function TableItem({
                     </button>
                   ) : (
                     <button
-                      className="px-2.5 py-1.8 rounded-md flex items-center leading-none bg-primary text-white ml-4"
+                      className="px-2.5 py-1.8 rounded-md bg-[#FF7979] flex items-center leading-none bg-primary text-white ml-4"
                       onClick={() =>
                         navigate(
                           `/all-tests/start-section/${item.testId}/${item.assignedTestId}`
                         )
                       }
                     >
-                      Start Test
+                      Start 
                     </button>
                   )}
                 </>

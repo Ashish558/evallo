@@ -85,10 +85,7 @@ input[type="password"]::-ms-clear {
     --webkit-appearance: none;
     display: none;
     cursor: pointer;
-    /* width: 15px;
-    padding: 0px;
-    margin: 0px;
-    background-image: url(./assets/form/eye-open.svg); */
+ 
 }
 
 .react-calendar {
@@ -98,3 +95,11 @@ input[type="password"]::-ms-clear {
 .table-pagination-container li.break {
     margin-right: 20px;
 }
+
+   /*
+    width: 15px;
+    padding: 0px;
+    margin: 0px;
+    background-image: url(./assets/form/eye-open.svg); 
+    
+*/

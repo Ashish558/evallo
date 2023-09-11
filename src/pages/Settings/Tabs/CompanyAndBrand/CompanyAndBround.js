@@ -171,7 +171,8 @@ const CompanyAndBround = () => {
             IconLeft={lock}
             parentClassName="text-xs w-[14.3229vw] text-[#26435F]"
             inputContainerClassName=" bg-white"
-            inputClassName="bg-transparent"
+            inputClassName="text-base-17-5 bg-transparent"
+            labelClassname="text-base-17-5 text-sm font-bold mb-1"
             label="Account Type"
             disabled={true}
             value={"Company"}
@@ -232,7 +233,7 @@ const CompanyAndBround = () => {
               {" "}
               Business Logo{" "}
             </label>
-            <div className="w-[312px] h-[200px]  relative p-2 bg-[#FFFFFF] rounded-[5px]">
+            <div id="borderDashed" className="w-[312px] h-[200px]  relative p-2 bg-[#FFFFFF] rounded-[5px]">
               {
                 organization.orgBussinessLogo &&
                 <img
@@ -388,9 +389,9 @@ const CompanyAndBround = () => {
 
           </div>
         </div>
-        <div className="flex gap-11 mt-3 border-b-[2px] border-b-[#CBD6E2] pb-9">
-          <div className="flex flex-col rounded-sm w-[200px] flex-wrap gap-3 bg-white p-3">
-            <h1 className="mt-[-35px]  text-[#26435F] font-semibold text-sm ml-[-10px] mb-1">
+        <div className="flex flex-1  gap-11 mt-3  w-[48vw] pb-0">
+          <div className="flex flex-col rounded-sm w-1/3 min-w-[275px] flex-wrap gap-3 bg-white p-3">
+            <h1 className="mt-[-35px]  text-[#26435F] font-semibold text-sm ml-[-10px] mb-1 text-base-17-5 ">
               Format Of Instructions
             </h1>
             {instructions.map((item, id) => (

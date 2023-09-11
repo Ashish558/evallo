@@ -8,6 +8,7 @@ import {
   useUpdateUserFieldsMutation,
   usePostTutorDetailsMutation,
   useAddLinkStudentMutation,
+  useAddNotesMutation,
 } from "../../../../app/services/users";
 import InputField from "../../../../components/InputField/inputField";
 import InputSearch from "../../../../components/InputSearch/InputSearch";
@@ -26,6 +27,7 @@ import axios from "axios";
 import InputFieldDropdown from "../../../../components/InputField/inputFieldDropdown";
 import InputSelectNew from "../../../../components/InputSelectNew/InputSelectNew";
 import useOutsideAlerter from "../../../../hooks/useOutsideAlerter";
+import { Interest, commonSubjects, qualities } from "./staticData";
 
 // 637b9df1e9beff25e9c2aa83
 export default function ParentEditables({
@@ -43,7 +45,7 @@ export default function ParentEditables({
   const [title, setTitle] = useState("");
   const [currentField, setCurrentField] = useState({});
   const [currentToEdit, setCurrentToEdit] = useState({});
-
+  const [addNotes,notesStatus]=useAddNotesMutation()
   const [student, setStudent] = useState("");
   const [fetchStudents, studentResponse] = useLazyGetStudentsByNameQuery();
   const [students, setStudents] = useState([]);
@@ -147,7 +149,7 @@ export default function ParentEditables({
     },
     {
       name: "notes",
-      title: "Notes",
+      title: "Internal Notes",
       api: "userDetail",
     },
     {
@@ -217,6 +219,11 @@ export default function ParentEditables({
       api: "tutorDetail",
     },
     {
+      name: "baseLineScore",
+      title: "Baseline Scores",
+      api: "userDetail",
+    },
+    {
       name: "tutorRank",
       title: "Tutor Rank",
       api: "tutorDetail",
@@ -253,12 +260,12 @@ export default function ParentEditables({
     },
     {
       name: "satScores",
-      title: "SAT Scores",
+      title: "Official SAT Scores",
       api: "userDetail",
     },
     {
       name: "actScores",
-      title: "ACT Scores",
+      title: "Official ACT Scoress",
       api: "userDetail",
     },
     {
@@ -413,6 +420,20 @@ console.log("parentEditables",currentToEdit)
     let reqBody = { ...currentToEdit };
     delete reqBody["active"];
      console.log({reqBody,userId});
+     if (currentToEdit.hasOwnProperty("notes")) {
+      let reqBody = {
+      
+        "note":currentToEdit?.notes,
+        "type":"internalNotes", // or it can be 'internalNotes'
+        "date":new Date()
+      };
+     
+     
+     addNotes(reqBody).then((res)=>{
+      console.log("internal",{res})
+     })
+    
+    }
     const userDetailSave = (reqBody) => {
       // if (reqBody.satScores) {
       //   if (isNaN(reqBody?.satScores?.maths)) reqBody.satScores.maths = 0;
@@ -424,6 +445,7 @@ console.log("parentEditables",currentToEdit)
       //   if (isNaN(reqBody.actScores.reading)) reqBody.actScores.reading = 0;
       //   if (isNaN(reqBody.actScores.science)) reqBody.actScores.science = 0;
       // }
+
        console.log({reqBody,currentToEdit});
       // return
       updateDetails({ id: userId, fields: reqBody }).then((res) => {
@@ -691,7 +713,7 @@ console.log("parentEditables",currentToEdit)
                           src={
                             user.photo
                               ? `${awsLink}${user.photo}`
-                              : "/images/default.jpeg"
+                              : "/images/Rectangle 2346.svg"
                           }
                           imageClassName=" border-[4px] border-white"
                           className=""
@@ -1259,25 +1281,42 @@ return ( <div className="flex !text-sm gap-4 ">
                     </div>
                   </div>
                 )}
-                {currentField.name === "notes" && (
+                 {currentField.name === "notes" && (
                   <div>
-                    <div className="flex items-center mb-5 pt-6">
+                    <div className="flex items-center mb-5 pt-6 w-[400px]">
                       {/* <p className='font-medium mr-4 min-w-[60px]'>  </p> */}
-                      <InputField
-                        labelClassname="hidden"
-                        placeholder="Enter your notes"
-                        inputContainerClassName="text-sm pt-3 pb-3 px-5 bg-primary-50 border-0"
-                        inputClassName="bg-transparent"
-                        parentClassName="flex-1 "
-                        type="text"
-                        value={currentToEdit.notes}
+                      <div className="border w-full h-full rounded-md">
+                      <textarea
+                rows="3"
+                value={currentToEdit.notes}
                         onChange={(e) =>
                           setCurrentToEdit({
                             ...currentToEdit,
                             notes: e.target.value,
                           })
                         }
-                      />
+
+                className={`mt-1 block w-full resize-none focus:!ring-blue-500 p-2 focus:!border-blue-500 placeholder-[#CBD6E2] text-sm  placeholder:text-xs ${currentToEdit?.notes?.length===0?"h-":"h-[180px] "}`}
+                placeholder=""
+              ></textarea>
+              {
+                currentToEdit?.notes?.length==0&&
+                 <div className=" text-[#CBD6E2] text-xs flex-1 text-base-17-5 p-3">
+                 Add notes about the parent. Here are some ideas to get you
+                 started:
+                 <ul className="list-disc px-4 design:px-5">
+                   <li>How did the initial call go?</li>
+                   <li>What is the parent’s budget?</li>
+                   <li>What timeline do they have in mind for tutoring?</li>
+                   <li>Has the student been tutored before?</li>
+                   <li>Do they prefer online or offline tutoring?</li>
+                   <li>Does the student have siblings?</li>
+                 </ul>
+               </div>
+              }
+                      </div>
+                     
+                     
                     </div>
                   </div>
                 )}
@@ -1367,35 +1406,46 @@ return ( <div className="flex !text-sm gap-4 ">
                 )}
                 {currentField.name === "subjects" && (
                   <div>
-                    <div className="flex items-center mb-5 pt-1 pb-5">
-                      <InputSelect
-                        value={
-                          currentToEdit.subjects.length === 0
-                            ? ""
-                            : currentToEdit.subjects[0]
-                        }
-                        checkbox={{
-                          visible: true,
-                          name: "subjects",
-                          match: currentToEdit.subjects,
-                        }}
-                        optionData={settings.classes ? settings.classes : []}
-                        inputContainerClassName="pt-3 pb-3 border bg-white"
-                        placeholder="Subjects"
-                        parentClassName="w-full mr-4"
-                        type="select"
-                        onChange={
-                          (val) => handleSubjectChange(val)
-                          // setCurrentToEdit({ ...currentToEdit, service: val })
-                        }
-                        onOptionClick={(item) => {
-                          // setStudent(item.value);
-                          console.log(item);
-                          // handleStudentsChange(item)
-                          // setCurrentToEdit({ ...currentToEdit, students: [... item._id] });
-                        }}
-                      />
-                    </div>
+                      <div className="flex flex-wrap max-h-[70vh] overflow-y-auto custom-scroller">
+                    {commonSubjects.map((item) => {
+                      return !currentToEdit?.subjects?.includes(item) ? (
+                        <div
+                          id="selected"
+                          className={`px-3 mr-2 m-1 rounded-lg py-1.5 border-[1.33px] border-[#26435F80] text-[#26435F80]  cursor-pointer text-base-17-5`}
+                          onClick={() => {
+                            let intersetArray = [];
+
+                            if (currentToEdit.subjects) {
+                              intersetArray = currentToEdit.subjects;
+                            }
+                          
+                            setCurrentToEdit({
+                              ...currentToEdit,
+                              subjects: [...intersetArray, item],
+                            });
+                          }}
+                        >
+                          <p className="font-semibold ">{item}</p>
+                        </div>
+                      ) : (
+                        <div
+                        id="selected"
+                          className={`px-3 mr-2 m-1 text-center rounded-lg text-white py-1.5 border border-primary bg-primary text-base-17-5 cursor-pointer`}
+                          onClick={() =>
+                            setCurrentToEdit({
+                              ...currentToEdit,
+                              subjects: currentToEdit.subjects.filter(
+                                (id) => id !== item
+                              ),
+                            })
+                          }
+                        >
+                          <p className="font-medium">{item}</p>
+                        </div>
+                      );
+                    })}
+                  </div>
+                   
                   </div>
                 )}
                 {currentField.name === "leadStatus" && (
@@ -2183,48 +2233,53 @@ return ( <div className="flex !text-sm gap-4 ">
                   </div>
                 )}
                 {currentField.name === "personality" && (
-                  <div className="flex flex-wrap">
-                    {settings.personality.map((item) => {
-                      return !currentToEdit.personality.includes(item._id) ? (
-                        <div
-                          className={`px-3 mr-2 rounded rounded-md py-1.5 border border-primary text-primary cursor-pointer`}
-                          onClick={() =>
-                            setCurrentToEdit({
-                              ...currentToEdit,
-                              personality: [
-                                ...currentToEdit.personality,
-                                item._id,
-                              ],
-                            })
-                          }
-                        >
-                          <p className="font-medium">{item.text}</p>
-                        </div>
-                      ) : (
-                        <div
-                          className={`px-3 mr-2 rounded rounded-md text-white py-1.5 border border-primary bg-primary text-primary cursor-pointer`}
-                          onClick={() =>
-                            setCurrentToEdit({
-                              ...currentToEdit,
-                              personality: currentToEdit.personality.filter(
-                                (id) => id !== item._id
-                              ),
-                            })
-                          }
-                        >
-                          <p className="font-medium">{item.text}</p>
-                        </div>
-                      );
-                    })}
-                  </div>
+                   <div className="flex flex-wrap">
+                   {qualities.map((item) => {
+                     return !currentToEdit?.personality?.includes(item) ? (
+                       <div
+                         id="selected"
+                         className={`px-3 mr-2 m-1 rounded-lg py-1.5 border-[1.33px] border-[#26435F80] text-[#26435F80]  cursor-pointer text-base-17-5`}
+                         onClick={() => {
+                           let intersetArray = [];
+
+                           if (currentToEdit.personality) {
+                             intersetArray = currentToEdit.personality;
+                           }
+                           console.log(intersetArray);
+                           setCurrentToEdit({
+                             ...currentToEdit,
+                             personality: [...intersetArray, item],
+                           });
+                         }}
+                       >
+                         <p className="font-semibold ">{item}</p>
+                       </div>
+                     ) : (
+                       <div
+                       id="selected"
+                         className={`px-3 mr-2 m-1 text-center rounded-lg text-white py-1.5 border border-primary bg-primary text-base-17-5 cursor-pointer`}
+                         onClick={() =>
+                           setCurrentToEdit({
+                             ...currentToEdit,
+                             personality: currentToEdit.personality.filter(
+                               (id) => id !== item
+                             ),
+                           })
+                         }
+                       >
+                         <p className="font-medium">{item}</p>
+                       </div>
+                     );
+                   })}
+                 </div>
                 )}
                 {currentField.name === "interest" && (
                   <div className="flex flex-wrap">
-                    {settings.interest.map((item) => {
-                      return !currentToEdit?.interest?.includes(item._id) ? (
+                    {Interest.map((item) => {
+                      return !currentToEdit?.interest?.includes(item) ? (
                         <div
                           id="selected"
-                          className={`px-3 mr-2  rounded rounded-lg py-1.5 border-[1.33px] border-[#26435F80] text-[#26435F80]  cursor-pointer`}
+                          className={`px-3 mr-2 m-1 rounded-lg py-1.5 border-[1.33px] border-[#26435F80] text-[#26435F80]  cursor-pointer text-base-17-5`}
                           onClick={() => {
                             let intersetArray = [];
 
@@ -2234,25 +2289,26 @@ return ( <div className="flex !text-sm gap-4 ">
                             console.log(intersetArray);
                             setCurrentToEdit({
                               ...currentToEdit,
-                              interest: [...intersetArray, item._id],
+                              interest: [...intersetArray, item],
                             });
                           }}
                         >
-                          <p className="font-semibold">{item.text}</p>
+                          <p className="font-semibold ">{item}</p>
                         </div>
                       ) : (
                         <div
-                          className={`px-3 mr-2 rounded rounded-md text-white py-1.5 border border-primary bg-primary text-primary cursor-pointer`}
+                        id="selected"
+                          className={`px-3 mr-2 m-1 text-center rounded-lg text-white py-1.5 border border-primary bg-primary text-base-17-5 cursor-pointer`}
                           onClick={() =>
                             setCurrentToEdit({
                               ...currentToEdit,
                               interest: currentToEdit.interest.filter(
-                                (id) => id !== item._id
+                                (id) => id !== item
                               ),
                             })
                           }
                         >
-                          <p className="font-medium">{item.text}</p>
+                          <p className="font-medium">{item}</p>
                         </div>
                       );
                     })}
@@ -2512,6 +2568,219 @@ return ( <div className="flex !text-sm gap-4 ">
                    }} className="font-bold !text-lg cursor-pointer    text-[#24A3D9]">Add <svg className="inline-block -mt-1" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
   <path d="M14.4987 9.29037H9.29037V14.4987C9.29037 14.775 9.18062 15.0399 8.98527 15.2353C8.78992 15.4306 8.52497 15.5404 8.2487 15.5404C7.97243 15.5404 7.70748 15.4306 7.51213 15.2353C7.31678 15.0399 7.20703 14.775 7.20703 14.4987V9.29037H1.9987C1.72243 9.29037 1.45748 9.18062 1.26213 8.98527C1.06678 8.78992 0.957031 8.52497 0.957031 8.2487C0.957031 7.97243 1.06678 7.70748 1.26213 7.51213C1.45748 7.31678 1.72243 7.20703 1.9987 7.20703H7.20703V1.9987C7.20703 1.72243 7.31678 1.45748 7.51213 1.26213C7.70748 1.06678 7.97243 0.957031 8.2487 0.957031C8.52497 0.957031 8.78992 1.06678 8.98527 1.26213C9.18062 1.45748 9.29037 1.72243 9.29037 1.9987V7.20703H14.4987C14.775 7.20703 15.0399 7.31678 15.2353 7.51213C15.4306 7.70748 15.5404 7.97243 15.5404 8.2487C15.5404 8.52497 15.4306 8.78992 15.2353 8.98527C15.0399 9.18062 14.775 9.29037 14.4987 9.29037Z" fill="#24A3D9"/>
 </svg></p>
+                  </div>
+                )}
+                 {currentField.name === "baseLineScore" && (
+                  <div className="flex flex-col gap-4 mt-[-20px]">
+                     <div className="max-h-[50vh] overflow-y-auto custom-scroller">
+
+                   
+                    
+                          <div className="flex flex-col ">
+                            <p className="font-bold !text-md cursor-pointer mb-2  text-[#24A3D9]">SAT Baseline Score</p>
+                            <div className="flex gap-5">
+                              <InputField
+                                labelClassname="hidden"
+                                placeholder="Verbal Score"
+                                placeholderClassName="text-sm"
+                                inputContainerClassName="text-sm pt-3 text-center pb-3 bg-primary-50 border-0"
+                                inputClassName="bg-transparent text-center rounded-[4px] text-[#517CA8]"
+                                parentClassName="flex-1 text-sm text-center max-w-[150px]"
+                                type="number"
+                                value={
+                                  currentToEdit.baseLineScore?.satBaseLineScore
+                                    ?.verbal
+                                }
+                                onChange={(e) => {
+                                 
+                                 setCurrentToEdit({
+                                  ...currentToEdit,
+                                  baseLineScore:{
+                                    ...currentToEdit?.baseLineScore,
+                                    satBaseLineScore:{
+                                      ...currentToEdit.baseLineScore?.satBaseLineScore,
+                                      verbal: e.target.value
+                                    }
+                                  }
+                                 })
+                                }}
+                              />
+                              <InputField
+                                labelClassname="hidden"
+                                placeholder="Math Score"
+                                inputContainerClassName="text-sm pt-3 pb-3 px-5 bg-primary-50 border-0"
+                                inputClassName="bg-transparent pl-4 rounded-[4px] text-[#517CA8]"
+                                parentClassName="flex-1 max-w-[150px]"
+                                type="number"
+                               value={
+                                  currentToEdit.baseLineScore?.satBaseLineScore
+                                    ?.maths
+                                }
+                                onChange={(e) => {
+                                 
+                                 setCurrentToEdit({
+                                  ...currentToEdit,
+                                  baseLineScore:{
+                                    ...currentToEdit?.baseLineScore,
+                                    satBaseLineScore:{
+                                      ...currentToEdit.baseLineScore?.satBaseLineScore,
+                                      maths: e.target.value
+                                    }
+                                  }
+                                 })
+                                }}
+                                  // tempScores[selectedScoreIndex].maths = checkNumber(currentToEdit.satScores.maths, parseInt(e.target.value), 800)
+                                  // console.log('tempScores', tempScores);
+                                 
+                                
+                              />
+                              
+                            <div className="text-md  rounded-[4px] flex items-center  font-semibold  text-center py-auto px-5 bg-primary-50 border-0 !w-[150px] text-[#FFA28D]">
+                              { parseInt(currentToEdit.baseLineScore?.satBaseLineScore?.maths) +  parseInt(currentToEdit.baseLineScore?.satBaseLineScore?.verbal)  ? 
+                                    parseInt(currentToEdit.baseLineScore?.satBaseLineScore?.maths) + parseInt(currentToEdit.baseLineScore?.satBaseLineScore?.verbal):
+                              <span className="text-sm my-auto font-semibold">
+                                
+                                cumulative
+                                </span>}
+                              </div>
+                          
+                            </div>
+                            <div className="mt-5 border-1  border-t-2 pb-3 border-[1.25px_solid_#00000033] justify-center "></div>
+           
+                          </div>
+                          <div className="flex flex-col ">
+                         <p className="font-bold !text-md cursor-pointer mb-2  text-[#24A3D9]">ACT Baseline Score</p>
+                         <div className="flex gap-5 items-center !text-md">
+                         <div className="grid grid-cols-2 gap-3 !text-[#517CA8]">
+                    <div className="flex flex-col items-center mb-4">
+                     
+                      <InputField
+                        labelClassname="hidden"
+                        placeholder="Maths"
+                        inputContainerClassName="text-sm py-1 px-5 bg-primary-50 border-0"
+                        inputClassName="bg-transparent pl-4 rounded-[4px] placeholder:text-sm"
+                        parentClassName="flex-1 !text-sm max-w-[140px]"
+                        type="number"
+                        value={
+                          currentToEdit.baseLineScore?.actBaseLineScore
+                            ?.maths
+                        }
+                        onChange={(e) => {
+                         
+                         setCurrentToEdit({
+                          ...currentToEdit,
+                          baseLineScore:{
+                            ...currentToEdit?.baseLineScore,
+                            actBaseLineScore:{
+                              ...currentToEdit.baseLineScore?.actBaseLineScore,
+                              maths: e.target.value
+                            }
+                          }
+                         })
+                        }}
+                      />
+                    </div>
+                    <div className="flex  flex-col  items-center mb-4">
+                    
+                      <InputField
+                        labelClassname="hidden"
+                        placeholder="English"
+                        inputContainerClassName="text-sm py-1 px-5 bg-primary-50 border-0"
+                        inputClassName="bg-transparent pl-4 rounded-[4px]"
+                        parentClassName="flex-1 max-w-[140px]"
+                        type="number"
+                        value={
+                          currentToEdit.baseLineScore?.actBaseLineScore
+                            ?.english
+                        }
+                        onChange={(e) => {
+                         
+                         setCurrentToEdit({
+                          ...currentToEdit,
+                          baseLineScore:{
+                            ...currentToEdit?.baseLineScore,
+                            actBaseLineScore:{
+                              ...currentToEdit.baseLineScore?.actBaseLineScore,
+                              english: e.target.value
+                            }
+                          }
+                         })
+                        }}
+                      />
+                    </div>
+                    <div className="flex  flex-col  items-center mb-4">
+                   
+                      <InputField
+                        labelClassname="hidden"
+                        placeholder="Reading"
+                        inputContainerClassName="text-sm py-1 px-5 bg-primary-50 border-0"
+                        inputClassName="bg-transparent pl-4 rounded-[4px]"
+                        parentClassName="flex-1 max-w-[140px]"
+                        type="number"
+                        value={
+                          currentToEdit.baseLineScore?.actBaseLineScore
+                            ?.reading
+                        }
+                        onChange={(e) => {
+                         
+                         setCurrentToEdit({
+                          ...currentToEdit,
+                          baseLineScore:{
+                            ...currentToEdit?.baseLineScore,
+                            actBaseLineScore:{
+                              ...currentToEdit.baseLineScore?.actBaseLineScore,
+                              reading: e.target.value
+                            }
+                          }
+                         })
+                        }}
+                      />
+                    </div>
+                    <div className="flex  flex-col  items-center mb-4">
+                     
+                      <InputField
+                        labelClassname="hidden"
+                        placeholder="Science"
+                        inputContainerClassName="text-sm py-1 px-5 bg-primary-50 border-0"
+                        inputClassName="bg-transparent pl-4 rounded-[4px]"
+                        parentClassName="flex-1 max-w-[140px]"
+                        type="number"
+                        value={
+                          currentToEdit.baseLineScore?.actBaseLineScore
+                            ?.science
+                        }
+                        onChange={(e) => {
+                         
+                         setCurrentToEdit({
+                          ...currentToEdit,
+                          baseLineScore:{
+                            ...currentToEdit?.baseLineScore,
+                            actBaseLineScore:{
+                              ...currentToEdit.baseLineScore?.actBaseLineScore,
+                              science: e.target.value
+                            }
+                          }
+                         })
+                        }}
+                      />
+                    </div>
+                  </div>
+                            
+                         <div className="text-md py-2 rounded-[4px] flex items-center  font-semibold  text-center py-auto px-5 bg-primary-50 border-0 !w-[150px] text-[#FFA28D]">
+                           {  parseInt(currentToEdit.baseLineScore?.actBaseLineScore?.maths) +  parseInt(currentToEdit.baseLineScore?.actBaseLineScore?.science) + parseInt(currentToEdit.baseLineScore?.actBaseLineScore?.reading) + parseInt(currentToEdit.baseLineScore?.actBaseLineScore?.english) 
+                                  ?parseInt(currentToEdit.baseLineScore?.actBaseLineScore?.maths) +  parseInt(currentToEdit.baseLineScore?.actBaseLineScore?.science) + parseInt(currentToEdit.baseLineScore?.actBaseLineScore?.reading) + parseInt(currentToEdit.baseLineScore?.actBaseLineScore?.english) :
+                           <span className="text-placeholder:text-sm my-auto text-sm font-semibold">
+                             
+                             cumulative
+                             </span>}
+                           </div>
+                       
+                         </div>
+                         
+                       </div>
+                      </div>
+                     
+                   
                   </div>
                 )}
                 {currentField.name === "actScores" && (
