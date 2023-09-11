@@ -4,6 +4,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import OwlCarousel from "react-owl-carousel";
+import copy1 from "../../../assets/YIcons/VectorCopy.svg";
+import copy2 from "../../../assets/YIcons/fluent_copy-16-filledBlackCopy.svg";
 
 import ProfileCard from "../../../components/ProfileCard/ProfileCard";
 import EditableText from "../../../components/EditableText/EditableText";
@@ -138,7 +140,7 @@ export default function StudentProfile({ isOwn }) {
   const [editable, setEditable] = useState(false);
   const dispatch = useDispatch();
   const { role: persona } = useSelector((state) => state.user);
-
+  const [totalTest,setTotaltest]=useState(0)
   const [user, setUser] = useState({});
   const [userDetail, setUserDetail] = useState({});
   const [settings, setSettings] = useState({});
@@ -186,7 +188,27 @@ export default function StudentProfile({ isOwn }) {
       active: false,
       aboutScore: "",
     },
-   
+    baseLineScore: {
+      active: false,
+      baseLineScore: {
+        satBaseLineScore: 
+          { created:"",
+          cumilativeScore:0,
+           verbal: 0,
+            maths: 0,
+            
+          },
+          actBaseLineScore:
+            { created:"",
+              cumilativeScore:0,
+              english: 0,
+              maths: 0,
+              reading: 0,
+              science: 0,
+            },
+      },
+    },
+    
     address: {
       active: false,
       residentialAddress: "",
@@ -451,6 +473,8 @@ const [toEdit, setToEdit] = useState({
         satScores,
         actScores,
         about,
+        baseLineScore,
+        subjects,
         subscriptionCode,
       } = res.data.data.userdetails;
       associatedParent &&
@@ -548,6 +572,10 @@ const [toEdit, setToEdit] = useState({
                   ...prev.personality,
                   personality: personality,
                 },
+                baseLineScore: {
+                  ...prev.baseLineScore,
+                  baseLineScore: baseLineScore,
+                },
                 whiteBoardLinks: {
                   ...prev.whiteBoardLinks,
                   whiteBoardLinks: whiteBoardLinks,
@@ -556,10 +584,10 @@ const [toEdit, setToEdit] = useState({
                   ...prev.interest,
                   interest,
                 },
-                // schoolName: {
-                //   ...prev.schoolName,
-                //   schoolName,
-                // },
+                subjects: {
+                  ...prev.subjects,
+                  subjects,
+                },
                 // grade: {
                 //   ...prev.grade,
                 //   grade,
@@ -664,7 +692,7 @@ const [toEdit, setToEdit] = useState({
   }, [userDetail.timeZone]);
 
   // console.log(user)
-  // console.log(userDetail)
+   console.log("student",{userDetail,user})
   // console.log('associatedParent', associatedParent)
   // console.log('isEditable', editable)
   // console.log(settings)
@@ -676,7 +704,7 @@ const [toEdit, setToEdit] = useState({
   return (
     <>
       <div className={`mx-[80px] min-h-screen design:mx-[160px] pb-[70px]`}>
-        <p className="text-[#24A3D9] mt-7 mb-3">
+        <p className="text-[#24A3D9] my-[calc(50*0.0522vw)]">
           {organization?.company +
             " > " +
             user?.firstName +
@@ -696,14 +724,15 @@ const [toEdit, setToEdit] = useState({
               <></>
             )}
         <div className={` rounded-b-md w-full flex flex-col relative `}>
-          <div className=" bg-[#26435F]   px-5 h-[100px]  w-full  flex  items-center">
+          <div className=" bg-[#26435F] rounded-t-[4px]  px-5 h-[100px]  w-full  flex  items-center">
            
             <div className="flex flex-1 w-full">
+            <div className="h-fit">
               <ProfilePhoto
                 src={
                   user.photo
                     ? `${awsLink}${user.photo}`
-                    : "/images/default.jpeg"
+                    : "/images/Rectangle 2346.svg"
                 }
                 imgSizeClass="!w-[110px] !h-[110px] !translate-y-8 border-[4px] border-white "
                 imageClassName="!w-[100px] !h-[100px] border-[4px] border-white "
@@ -711,11 +740,7 @@ const [toEdit, setToEdit] = useState({
                 handleChange={handleProfilePhotoChange}
                 editable={false}
               />
-              <div className="flex-1 flex justify-between items-center">
-                <div className="ml-4 my-auto">
-                  <div className="flex  items-center text-[#F3F5F7]">
-                    {user.firstName} {user.lastName}
-                    <EditableText
+              <EditableText
                       editable={editable}
                       onClick={() =>
                         setToEdit({
@@ -726,10 +751,16 @@ const [toEdit, setToEdit] = useState({
                           }
                         })
                       }
-                      text="edit"
-                      textClassName=" ml-2 text-sm text-[#517CA8] text-underline  "
-                      className="text-sm my-0 flex justify-end   float-right"
+                      text="Edit Profile"
+                      textClassName=" ml-2 text-sm  mx-auto text-center text-[#26435F] text-underline text-base-15 "
+                      className="text-sm my-0 flex items-center justify-center text-center !translate-y-9  "
                     />
+                  </div>
+              <div className="flex-1 flex justify-between items-center">
+                <div className="ml-4 my-auto">
+                  <div className="flex  items-center text-[#F3F5F7]">
+                    {user.firstName} {user.lastName}
+                    
                   </div>
                   <div className="flex mt-1 text-xs items-center text-[#F3F5F7]">
                     {userDetail.schoolName
@@ -773,15 +804,24 @@ const [toEdit, setToEdit] = useState({
                             <img
                               className="inline-block !w-4 !h-4 mr-2"
                               src={emailIcon}
+                              alt="email"
                             />
                           </span>
                           {user?.email}
+                          <span>
+                            <img
+                              className="inline-block ml-2 !w-4 !h-4 mr-2"
+                              src={copy1}
+                              alt="copy"
+                            />
+                          </span>
                         </p>
                         <p>
                           <span>
                             <img
                               className="inline-block !w-4 !h-4 mr-2"
                               src={phoneIcon}
+                            alt="phone"
                             />
                           </span>
                           {user?.phone}
@@ -794,7 +834,7 @@ const [toEdit, setToEdit] = useState({
             </div>
           </div>
           <div className="bg-white !rounded-b-md shadow-[0px_0px_2.500001907348633px_0px_#00000040] flex  h-[100px] justify-between ">
-            <div className="ml-[126px] flex my-auto py-auto w-4/5 text-[12px] px-5  flex-1 h-full  h-[100px] overflow-y-auto custom-scroller pt-5  ">
+            <div className="ml-[126px] flex my-auto py-auto w-4/5 text-[12px] px-5  flex-1 h-full  h-[100px] overflow-y-auto custom-scroller pt-5  text-[#517CA8] text-base-17-5 ">
             {userDetail?.about}
             </div>
             <div className="w-[250px] ml-6 my-0">
@@ -803,10 +843,10 @@ const [toEdit, setToEdit] = useState({
                   src={
                     associatedParent.photo
                       ? `${awsLink}${associatedParent.photo}`
-                      : "/images/default.jpeg"
+                      : "/images/Rectangle 2347.svg"
                   }
-                  imgSizeClass="!w-[50px] !h-[50px] !translate-y-[40px]"
-                  imageClassName="!w-[50px] !h-[50px] border-[2px] border-[#26435F]"
+                  imgSizeClass="!w-[50px] !h-[50px] !translate-y-[45px]  border-[2px] border-[#26435F]"
+                  imageClassName="!w-[50px] !h-[50px] "
                   className=" "
                   handleChange={handleProfilePhotoChange}
                 />
@@ -826,7 +866,8 @@ const [toEdit, setToEdit] = useState({
                   <img
                     src={clickArrowIcon}
                     className="!ml-2 cursor-pointer !w-3 !h-3 inline-block"
-                  />
+                alt="arrow"
+                />
                 </p>
 
                 <p className="font-medium text-[12px]">
@@ -839,6 +880,13 @@ const [toEdit, setToEdit] = useState({
                       ? `${associatedParent.email}`
                       : `${userDetail.Email} `}
                     {/* View Profile */}
+                    <span>
+                            <img
+                              className="inline-block ml-2 !w-4 !h-4 mr-2"
+                              src={copy2}
+                              alt="copy"
+                            />
+                          </span>
                   </span>
                 </p>
               </div>
@@ -894,7 +942,7 @@ const [toEdit, setToEdit] = useState({
             settings={settings}
             userId={isOwn ? id : params.id}
             editable={editable}
-          
+            totalTest={totalTest}
             setToEdit={setToEdit}
             toEdit={toEdit}
           />
@@ -903,7 +951,11 @@ const [toEdit, setToEdit] = useState({
               Latest Assignmets
             </p>
 
-            <StudentTest fromProfile={true} />
+            <StudentTest setTotaltest={setTotaltest} fromProfile={true} />
+            <div
+           
+            className="border !border-[#CBD6E2] w-[calc(1500*0.0522vw)] mx-auto mb-[calc(50*0.0522vw)]"
+          ></div>
            <SPFrame3 userDetail={userDetail} />
            <div
             id="borderDashed"
@@ -911,6 +963,7 @@ const [toEdit, setToEdit] = useState({
           ></div>
            <SPFrame4 userDetail={userDetail}        
                 fetchDetails={fetchDetails}
+                user={user}
             setSelectedScoreIndex={setSelectedScoreIndex}
             settings={settings}
             userId={isOwn ? id : params.id}

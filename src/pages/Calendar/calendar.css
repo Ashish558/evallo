@@ -283,7 +283,7 @@
 .calendar tr{
   box-shadow: 0px 0px 2px 0px #fff !important;
   border-radius: 0 !important;
-} */
+} 
 #calendarContainer::-webkit-scrollbar{
   width: 0px !important;
 }
