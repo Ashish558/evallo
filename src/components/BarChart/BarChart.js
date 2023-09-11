@@ -5,7 +5,7 @@ import starGold from '../../assets/icons/star-gold.png'
 import { useState } from 'react';
 
 const BarChart = ({ studentFeedbacks }) => {
-    console.log(studentFeedbacks)
+    // console.log(studentFeedbacks)
     const ratings = studentFeedbacks?.data?.ratingCounts
     const totalStudents = studentFeedbacks?.data?.feedback
     // console.log(totalStudents.length)
@@ -26,12 +26,12 @@ const BarChart = ({ studentFeedbacks }) => {
     }
     console.log(count)
     const percentArray = percentage.map(value => `${value}%`);
-    console.log(percentArray)
-    console.log(studentFeedbacks?.data?.overallAverageRating)
+    // console.log(percentArray)
+    // console.log(studentFeedbacks?.data?.overallAverageRating)
     const stars = studentFeedbacks?.data?.overallAverageRating
     let element
     if (stars >= 4 && stars < 5) {
-        console.log('true')
+        // console.log('true')
         element =
             <div className='flex '>
                 <img className='inline-block w-[13.5px] mr-[4px] ' src={starGold} alt="" />
@@ -113,8 +113,8 @@ const BarChart = ({ studentFeedbacks }) => {
                 </div>
                 <div className='flex justify-between'>
                     {
-                        (percentArray).map(p =>
-                            <div className='w-[13.32%] h-[300px] rounded-[3px] relative border-[1.33px] border-[rgba(217,217,217,1)]'>
+                        (percentArray).map((p, index) =>
+                            <div key={index} className='w-[13.32%] h-[300px] rounded-[3px] relative border-[1.33px] border-[rgba(217,217,217,1)]'>
                                 <div className={`bg-[#ebc034] w-full h-[${p}] absolute bottom-0 rounded-[3px]`}></div>
                             </div>
                         )
