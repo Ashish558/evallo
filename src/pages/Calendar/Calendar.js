@@ -203,11 +203,13 @@ export default function Calendar() {
         );
         return {
           ...session,
+         
           updatedDate,
         };
       });
       // setEventDetails(res.data.data.session);
       setEventDetails(tempEvents);
+      console.log("in fetch")
       // console.log(res.data.data.session)
       let tempSession = res.data.data.session.map((session) => {
         let tempobj = alldetails
@@ -584,22 +586,36 @@ export default function Calendar() {
     if (arg.event._def.extendedProps.sessionStatus === "Completed") {
       isCompleted = true;
     }
+    console.log("kjcgjewyhcgwevewv",arg.event._def.extendedProps?.background)
+  
+      const textclasses= {
+     
+        Completed:"!bg-[#38C980] ",
+      
+        Scheduled:"!bg-[#38C980] ",
+        Cancelled:"!bg-[#FF7979] ",
+        Missed:"!bg-[#FFCE84] "
+      }
 
     return (
-      <div className="p-0.5 h-full">
+      <div className="p-0.5 h-full  border-[1.87px_solid_#FFA28D]">
+        <div className={`w-full bg-rose-200 h-[5px] rounded-[5px_5px_0px_0px] relative z-[500] ${textclasses[arg.event._def.extendedProps.sessionStatus]}`} ></div>
         <div
-          className="bg- h-full p-2 rounded-lg"
-          style={{ background: 'blue' }}
+        style={{
+          background:arg.event._def.extendedProps?.background+"50"
+        }}
+          className={`border-[1.87px_solid_#FFA28D] calender-border h-full p-1 rounded-b-lg `}
+          
         >
           <p
-            className={`text-primary font-semibold text-sm ${isCompleted ? "line-through" : ""
+            className={`text-[#507CA8] font-semibold text-sm ${isCompleted ? "line-through" : ""
               } `}
           >
             {" "}
             {arg.event._def.title}{" "}
           </p>
           {/* <p className='text-black opacity-60 text-xs'> {arg.timeText} </p> */}
-          <p className="text-black opacity-60 text-xs"> {description} </p>
+          <p className="text-[#26435F] opacity-60 text-xs text-base-15"> {description} </p>
         </div>
       </div>
     );
@@ -655,8 +671,8 @@ export default function Calendar() {
     // }])
   };
   const [studentName, setStudentNames] = useState([]);
-  const handleInsights = (name, role) => {
-    //  console.log({ name, role });
+  const handleInsights = (name, role,item) => {
+      console.log({ name, role,item });
     getCalenderInsight(name).then((res) => {
       console.log("insights", res);
       if (res?.data?.tutorSessionDetails) {
@@ -696,14 +712,16 @@ export default function Calendar() {
 
     }
   }, [name]);
+console.log({defaultEventData,eventDetails,alldetails})
 
   const fetchTutorSessions = () => {
     const userId = currentUserId;
     if (persona === "tutor") {
       fetchStudents(userId).then((res) => {
         setEventDetails(res.data.data.session);
+        console.log("tutorrr")
         // console.log(res.data.data);
-        let tempSession = res.data.data.session.map((session) => {
+        let tempSession = res.data.data.session.map((session,idx) => {
           const time = session.time;
           // console.log(session);
           const strtTime12HFormat = `${time.start.time} ${time.start.timeType}`;
@@ -765,6 +783,10 @@ export default function Calendar() {
             sessionStatus: session.sessionStatus,
             studentId: session.studentId,
             description: `${strtTime12HFormat} - ${endTime12HFormat}`,
+            background: getBackground(
+              res.data.data.user.assiginedStudents.length,
+              idx
+            ),
           };
           return eventObj;
         });
@@ -899,7 +921,10 @@ export default function Calendar() {
     bg: ["#F6935A33", "#7DE94A33", "#6F7ADE33", "#C97BEE33"],
     text: ["#F6935A", "#7DE94A", "#6F7ADE", "#C97BEE"],
   };
-
+  const [colorMapping,setColorMapping]=useState()
+  useEffect(()=>{
+   
+  },[])
   useEffect(() => {
     if (students.length === 0) return;
     if (events.length === 0) return;
@@ -936,9 +961,9 @@ export default function Calendar() {
     }
   };
 
-  // console.log('filteredEvents', filteredEvents);
-  console.log('events', events);
-  // console.log('eventDetails', eventDetails);
+   //console.log('filteredEvents events details', filteredEvents,events);
+   //console.log('events', events);
+   console.log('eventDetails',insightData,defaultEventData,alldetails,userDetail);
   const map = []
   useEffect(() => {
     if (tutors) {
@@ -1023,24 +1048,7 @@ export default function Calendar() {
               <></>
             ) : (
               <div>
-                {/* <InputSearch
-                  // IconRight={SearchIcon}
-                  placeholder="Type Name"
-                  parentClassName="w-full mr-4 mt-5"
-                  inputContainerClassName="bg-white shadow"
-                  type="select"
-                  value={name}
-                  onChange={(e) => {
-                    setName(e.target.value);
-                    setInsightData([]);
-                  }}
-                  optionData={names}
-                  onOptionClick={(item) => {
-                    setName(item.value);
-                    handleInsights(item.value, item.role);
-                    fetchSessions(item._id, item.role);
-                  }}
-                /> */}{console.log("userrrrrrr", alldetails)}
+               {console.log("userrrrrrr", alldetails)}
                 {alldetails?.map((item) => (<div className="mt-[48px] mb-2">
                   <div className="flex justify-between pt-[19px] px-[21px] pb-[14px] bg-[rgba(36,63,217,0.20)] rounded-5 items-center">
                     <p className="text-[#24A3D9] text-xl font-semibold">{item.tutorName}</p>
@@ -1068,6 +1076,23 @@ export default function Calendar() {
                 </div>))}
               </div>
             )}
+             {persona==='admin'&& <InputSearch
+                  // IconRight={SearchIcon}
+                  placeholder="Type Name"
+                  parentClassName="w-full mr-4 mt-5"
+                  inputContainerClassName="bg-white shadow"
+                  type="select"
+                  value={name}
+                  onChange={(e) => {
+                    setName(e.target.value);
+                    setInsightData([]);
+                  }}
+                  optionData={names}
+                  onOptionClick={(item) => {
+                    setName(item.value);
+                    handleInsights(item.value, item.role,item);
+                    fetchSessions(item._id, item.role);
+                  }}/>}
             <div className="max-h-[600px] overflow-y-auto scrollbar-content">
               {insightData?.data?.length > 0 && insightData?.role !== "tutor"
                 ? insightData?.data?.map((item, id) => {

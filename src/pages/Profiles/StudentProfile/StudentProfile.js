@@ -136,6 +136,7 @@ const subjects2 = [
   },
 ];
 export default function StudentProfile({ isOwn }) {
+  ////console.log({isOwn})
   const navigate = useNavigate();
   const [editable, setEditable] = useState(false);
   const dispatch = useDispatch();
@@ -233,6 +234,10 @@ export default function StudentProfile({ isOwn }) {
     personality: {
       active: false,
       personality: [],
+    },
+    notes: {
+      active: false,
+      notes: "",
     },
     interest: {
       active: false,
@@ -450,8 +455,8 @@ const [toEdit, setToEdit] = useState({
       userId = params.id;
     }
     getUserDetail({ id: userId }).then((res) => {
-      console.log("details -- ", res.data.data);
-      // console.log('tut id', id);
+      //console.log("details -- ", res.data.data);
+      // //console.log('tut id', id);
       if (res.data.data.user.assiginedTutors) {
         if (res.data.data.user.assiginedTutors?.includes(id)) {
           setEditable(true);
@@ -618,15 +623,15 @@ const [toEdit, setToEdit] = useState({
   useEffect(() => {
     fetchSettings().then((res) => {
       if (res.error) {
-        console.log("settings fetch err", res.error);
+        //console.log("settings fetch err", res.error);
         return;
       }
       setSettings(res.data.data.setting);
     });
   }, []);
- // console.log({ userDetail, settings });
+ // //console.log({ userDetail, settings });
   const handleProfilePhotoChange = (file) => {
-    // console.log(file)
+    // //console.log(file)
     let url = "";
     const formData = new FormData();
     formData.append("photo", file);
@@ -636,7 +641,7 @@ const [toEdit, setToEdit] = useState({
       url = `${BASE_URL}api/user/addphoto`;
     }
     axios.patch(url, formData, { headers: getAuthHeader() }).then((res) => {
-      console.log("photo res", res);
+      //console.log("photo res", res);
       fetchDetails();
     });
   };
@@ -647,7 +652,7 @@ const [toEdit, setToEdit] = useState({
     //    userDetail.satScores.maths
     // ]
     // scores =  scores.filter(score => !isNaN(score))
-    // console.log(scores);
+    // //console.log(scores);
     let res = 0;
     if (
       typeof userDetail.satScores[idx]?.verbal === "number" &&
@@ -666,7 +671,7 @@ const [toEdit, setToEdit] = useState({
     //    userDetail.satScores.maths
     // ]
     // scores =  scores.filter(score => !isNaN(score))
-    // console.log(scores);
+    // //console.log(scores);
     let res = 0;
     if (
       typeof userDetail.actScores[idx]?.maths &&
@@ -686,16 +691,16 @@ const [toEdit, setToEdit] = useState({
   };
 
   useEffect(() => {
-    // console.log(userDetail.timeZone);
+    // //console.log(userDetail.timeZone);
     if (userDetail.timeZone === undefined) return;
     dispatch(updateTimeZone({ timeZone: userDetail.timeZone }));
   }, [userDetail.timeZone]);
 
-  // console.log(user)
-   console.log("student",{userDetail,user})
-  // console.log('associatedParent', associatedParent)
-  // console.log('isEditable', editable)
-  // console.log(settings)
+  // //console.log(user)
+   //console.log("student",{userDetail,user})
+   //console.log('associatedParent', associatedParent)
+  // //console.log('isEditable', editable)
+  // //console.log(settings)
 
   if (Object.keys(user).length < 1) return;
   if (Object.keys(userDetail).length < 1) return;
@@ -923,9 +928,10 @@ const [toEdit, setToEdit] = useState({
             textClassName="text-sm text-[#517CA8] text-underline  "
             className="text-sm my-0 flex justify-end translate-y-7  float-right"
           />
-          <SPFrame0 userDetail={userDetail}  settings={settings} toEdit={toEdit} setToEdit={setToEdit}/>
+          <SPFrame0 isOwn={isOwn} userDetail={userDetail}  settings={settings} toEdit={toEdit} setToEdit={setToEdit}/>
 
           <SPFrame1
+          isOwn={isOwn}
             userDetail={userDetail}
             settings={settings}
             userId={isOwn ? id : params.id}
@@ -936,6 +942,7 @@ const [toEdit, setToEdit] = useState({
           />
           <div className="h-[2px] mt-14  bg-[#CBD6E2] w-[95%] mx-auto"></div>
           <SPFrame2
+          isOwn={isOwn}
             userDetail={userDetail}
             fetchDetails={fetchDetails}
             setSelectedScoreIndex={setSelectedScoreIndex}
@@ -946,22 +953,22 @@ const [toEdit, setToEdit] = useState({
             setToEdit={setToEdit}
             toEdit={toEdit}
           />
-          <div className="flex-1 ">
-            <p className=" translate-y-[50px] text-sm text-[#26435F] font-semibold">
+          <div className="flex-1 mt-10">
+            <p className=" translate-y-[24px] text-sm text-[#26435F] font-semibold">
               Latest Assignmets
             </p>
 
-            <StudentTest setTotaltest={setTotaltest} fromProfile={true} />
+            <StudentTest isOwn={isOwn} setTotaltest={setTotaltest} fromProfile={true} />
             <div
            
             className="border !border-[#CBD6E2] w-[calc(1500*0.0522vw)] mx-auto mb-[calc(50*0.0522vw)]"
           ></div>
-           <SPFrame3 userDetail={userDetail} />
+           <SPFrame3 isOwn={isOwn} userDetail={userDetail} />
            <div
             id="borderDashed"
             className="border !border-[#CBD6E3] w-[calc(1500*0.0522vw)] mx-auto my-[calc(50*0.0522vw)]"
           ></div>
-           <SPFrame4 userDetail={userDetail}        
+           <SPFrame4 isOwn={isOwn} userDetail={userDetail}        
                 fetchDetails={fetchDetails}
                 user={user}
             setSelectedScoreIndex={setSelectedScoreIndex}
@@ -985,7 +992,7 @@ const [toEdit, setToEdit] = useState({
         user={user}
         editable={editable}
         setToEdit={setToEdit}
-        persona={user.role}
+        
         awsLink={awsLink}
         selectedScoreIndex={selectedScoreIndex}
       />
