@@ -5,6 +5,8 @@ import UpArrow from "../../assets/icons/chevron-up-solid (1).svg";
 import useOutsideAlerter from "../../hooks/useOutsideAlerter";
 import CCheckbox from "../CCheckbox/CCheckbox";
 import questionMark from "../../assets/images/question-mark.svg";
+import { useSelector } from "react-redux";
+
 export default function InputSelect({
   parentClassName,
   Icon,
@@ -36,6 +38,16 @@ export default function InputSelect({
   const handleOption = () => {
     setSelected(!selected);
   };
+  const { role: persona } = useSelector(state => state.user)
+  useEffect(() => {
+    if (persona === 'admin') {
+      const userType = (optionData.find((user) => user == "Manager"))
+      if (userType === "Manager") {
+        optionData.pop()
+      }
+    }
+    // console.log(optionData)
+  }, [])
   const handleToggleSelected = () => {
     setSelected(!selected);
   }
