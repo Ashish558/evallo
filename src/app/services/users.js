@@ -67,8 +67,8 @@ export const userServicesApi = createApi({
       }),
     }),
     getFeedback: builder.query({
-      query: () => ({
-        url: `api/feedback/rating/allRating`,
+      query: (body) => ({
+        url: `api/feedback/rating/allRating?userId=${body.id}`,
         method: "GET",
         headers: getAuthHeader(),
       }),

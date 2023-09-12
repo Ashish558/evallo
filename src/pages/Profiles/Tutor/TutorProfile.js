@@ -75,7 +75,7 @@ export default function TutorProfile({ isOwn }) {
    const { id } = useSelector(state => state.user)
    const [studentFeedbacks, setStudentFeedbacks] = useState([])
    useEffect(() => {
-      getStudentFeedback()
+      getStudentFeedback({id:id})
          .then(({ error, data }) => {
             if (error) {
                return console.log(error);
