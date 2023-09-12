@@ -228,7 +228,7 @@ export default function TutorDashboard() {
 
    return (
       <div className='bg-[#F5F8FA] mb-[100px]'>
-         <div className="w-[90.6770833333vw] mx-auto">
+         <div className="w-[85.05vw] mx-auto">
             <div className="">
                <p className="text-[#24A3D9] text-xl mb-[30px] mt-[50px]">
                   {organization?.company +
@@ -262,17 +262,17 @@ export default function TutorDashboard() {
                <div className='flex items-start'>
 
                   <div className='flex flex-col items-start flex-[7]' >
-                     <div className=' mb-[30px] w-[58.9583333333vw]'>
+                     <div className=' mb-[30px] w-[55.52vw]'>
                         <p className='text-[#26435F] font-semibold text-xl mb-[20px] '>Latest Students</p>
-                        <div className='rounded-[5.333px] bg-[#FFF] shadow-[0px_0px_2px_rgba(0,0,0,0.25)] py-7 px-5'>
+                        <div className='rounded-[5.333px] bg-[#FFF] shadow-[0px_0px_2px_rgba(0,0,0,0.25)] py-5 px-5'>
                            <div className={styles.studentImages} >
                               {
                                  students.length > 0 &&
                                  <OwlCarousel items={5} autoWidth margin={20} >
                                     {students.map(student => {
-                                       return <div className='flex flex-col items-center text-center w-[110px]'>
-                                          <img src={`${student.photo ? `${awsLink}${student.photo}` : '/images/default.jpeg'} `} className='w-[100px]' alt='studentImage' />
-                                          <p className='text-[1.09375vw] text-[#517CA8]  mt-4 cursor-pointer'
+                                       return <div className='flex flex-col items-center text-center w-[108px]'>
+                                          <img src={`${student.photo ? `${awsLink}${student.photo}` : '/images/default.jpeg'} `} alt='studentImage' />
+                                          <p className='text-[0.78125vw] text-[#517CA8]  mt-4 cursor-pointer'
                                              onClick={() => navigate(`/profile/student/${student._id}`)} >
                                              {student.name.split(" ")[0]} <br /> {student.name.split(" ")[1]} </p>
                                        </div>
@@ -283,7 +283,7 @@ export default function TutorDashboard() {
                         </div>
                      </div>
 
-                     <div className='flex w-[58.958333333vw]'>
+                     <div className='flex w-[55.52vw] justify-between'>
                         <DashboardCard data={{
                            title: tutorHours,
                            subtitle: `${tutorHours > 1 ? 'Hours' : 'Hour'}`
@@ -291,19 +291,19 @@ export default function TutorDashboard() {
                            header='Completed'
                            subHeader='This Month'
                            className='bg-[#FFA28D]' />
-                        <DashboardCard data={{ title: '-', subtitle: 'USD', titleClassName: 'text-[32px]' }}
+                        <DashboardCard data={{ title: '-', subtitle: 'USD', titleClassName: 'text-[1.41vw]' }}
                            header='Earned'
                            subHeader='This Month'
                            className='bg-[#FFA28D]' />
 
-                        <div className='ml-[30px] flex justify-center items-center w-[17.4402775vw] bg-[#F4F4F4]  rounded-[5px] shadow-[0px_0px_2px_0px_rgba(0,0,0,0.25)]'>
-                           <div>     <p className='text-[1.6666666667vw] text-center text-[#667085] font-semibold'>Tutor Rank</p>
-                              <p className='text-[#667085] text-center text-xl'>Coming Soon</p></div>
+                        <div className=' flex justify-center items-center w-[16.41vw] bg-[#F4F4F4]  rounded-[5px] shadow-[0px_0px_2px_0px_rgba(0,0,0,0.25)]'>
+                           <div>     <p className='text-[1.41vw] text-center text-[#667085] font-semibold'>Tutor Rank</p>
+                              <p className='text-[#667085] text-center text-[0.9375vw]'>Coming Soon</p></div>
                         </div>
                      </div>
 
 
-                     <div className='w-[58.958333333vw] mt-10'>
+                     <div className='w-[55.52vw] mt-10'>
                         <p className='text-primary-dark font-semibold text-[20px] mb-[13px]'>Today’s Schedule</p>
                         <div className='px-[43px] py-[26px] bg-white  rounded-[5.333px] scrollbar-content scrollbar-vertical max-h-[499px] overflow-auto shadow-[0px_0px_2.6px_0px_rgba(0,0,0,0.25)]'>
                            {sessions.map((item, idx) => {
@@ -314,7 +314,7 @@ export default function TutorDashboard() {
 
 
                   </div>
-                  <div className=' flex-2 '>
+                  <div >
 
                      <p className='text-xl text-[#26435F] mb-[20px] font-semibold'>Latest Practice Test</p>
                      <div className='bg-[#FFFFFF]  rounded-[5px] shadow-[0px_0px_2.6px_0px_rgba(0,0,0,0.25)]'>
@@ -354,22 +354,22 @@ export default function TutorDashboard() {
                         </div> */}
                         </div>
 
-                        <div className='w-[29.1666666667vw]'>
+                        <div className='w-[27.34vw]'>
                            {/* <p className='text-primary font-semibold text-[21px] mb-4'>
                            Latest Practice Test
                         </p> */}
-                           <div className='pl-[30px] pr-[26px] h-[950px] overflow-auto py-[30px]  bg-white rounded-20'>
+                           <div className='pl-[30px] pr-[26px] h-[900px] overflow-auto py-[30px]  bg-white rounded-20'>
                               {allAssignedTests.map(item => {
 
                                  return (
-                                    <div className=' mb-5' key={item._id} >
+                                    <div className=' mb-[18px]' key={item._id} >
                                        <div>
                                           {/* <img src={`${item.photo ? `${awsLink}${item.photo}` : '/images/default.jpeg'} `} className='w-[62px] h-[62px] rounded-full' /> */}
                                        </div>
-                                       <div className=' flex justify-between items-center'>
+                                       <div className='w-[88%] flex justify-between items-center'>
                                           <div className='w-3/6'>
-                                             <p className='text-[#24A3D9] text-[22.5px] font-bold'> {item.testName} </p>
-                                             <div className=' text-[#517CA8] flex text-[17.5px]'>
+                                             <p className='text-[#24A3D9] text-[1.172vw] font-bold cursor-pointer' onClick={() => navigate(`/assigned-tests/${item.testId}/${item.assignedTestId}/report/${item.studentId}`)} > {item.testName} </p>
+                                             <div className=' text-[#517CA8] flex text-[0.911vw]'>
                                                 <p className='font-semibold'>Due:</p>
                                                 <p className='ml-2'> {getDate(item.dueDate)} </p>
                                              </div>
@@ -377,7 +377,7 @@ export default function TutorDashboard() {
                                           <div>
                                              <img className='cursor-pointer' width="35px" src={download} alt="" />
                                           </div>
-                                          <div className='text-[17.5px]'>
+                                          <div className='text-[0.911vw] font-semibold'>
                                              {
                                                 item.status = "notStarted" ?
                                                    <p className='text-[#FFCE84] underline '>
@@ -394,7 +394,7 @@ export default function TutorDashboard() {
                                           onClick={() => navigate(`/assigned-tests/${item.testId}/${item.assignedTestId}/report/${item.studentId}`)} >
                                           View
                                        </button> */}
-                                       <div className='mt-3 h-[1px] w-[100%] bg-[#D9D9D9]' ></div>
+                                       <div className='mt-5 h-[1px] w-[100%] bg-[#D9D9D9]' ></div>
                                     </div>
                                  )
                               })}

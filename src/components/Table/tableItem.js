@@ -515,7 +515,9 @@ export default function TableItem({
             </span>
           </td>
           <td className="px-1 font-medium  min-w-14 py-4 text-left">
-            <span className="inline-block cursor-pointer pl-4">
+            <span className="inline-block cursor-pointer pl-4" onClick={() =>
+              onClick.handleNavigate("student", item.studentId)
+            }>
               {item.studentName}
             </span>
           </td>
@@ -929,7 +931,7 @@ const MapData = (data, dataFor, exclude = [], onClick) => {
       key === "parent" ? (
       <td key={i} className={`font-medium px-1 `}>
         <p
-          className={`pl-4 ${key === "name" ? "text-left cursor-pointer" : ""
+          className={`pl-4 ${key === "name" ? "text-center cursor-pointer" : ""
             } font-semibold`}
           onClick={() =>
             key === "name" && onClick.handleNavigate("student", data._id)
