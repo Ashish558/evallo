@@ -43,7 +43,7 @@ export default function InputSelectNew({
     onChange(optionType === "object" ? option : option, idx);
 
   }
-//console.log({disabled})
+
   return (
     <div
       ref={selectRef}

@@ -31,7 +31,7 @@ let signupData = [
   },
   {
     label: "Are You A Student Or A Parent?",
-    default: "Parent",
+    default: "role",
   },
   {
     label: "What Service(S) Are You Seeking?",
@@ -65,8 +65,8 @@ const SPFrame1 = ({
   const {organization}= useSelector((state)=>state.organization)
   const [internal, setInternal] = useState(false);
   const { awsLink,role:persona } = useSelector((state) => state.user);
-  //const user2 = useSelector((state) => state);
-  ////console.log("states",user2)
+  const user2 = useSelector((state) => state);
+  console.log("states",user2,persona)
   const [addDoc, addDocStatus] = useAddAssociatedDocStudentMutation();
   const [updateDetails, updateDetailsResp] = useUpdateUserDetailsMutation();
   const reduceArr = (id, update) => {
@@ -211,7 +211,7 @@ return <></>
                  
                   ICON2={Drop}
                   value={userDetail?.leadStatus}
-                  disabled={persona!=="admin"}
+                  disabled={persona!=="admin"?true:false}
                   optionData={organization?.settings?.leadStatus}
                   onChange={(e) => {
                     handleLeadStatus(e)
@@ -261,7 +261,7 @@ return <></>
                   <span>:</span>
 
                   <span className="text-[#517CA8] font-medium">
-                    {it?.key ? userDetail[it.key] : it?.default}
+                    {it?.key ? userDetail[it.key] : it?.default&&user[it?.default]}
                   </span>
                 </p>
               );

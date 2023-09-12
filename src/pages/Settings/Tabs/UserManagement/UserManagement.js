@@ -5,7 +5,7 @@ import FilterItems from "../../../../components/FilterItemsNew/filterItems";
 import Modal from "../../../../components/Modal/Modal";
 import InputField from "../../../../components/InputField/inputField";
 import InputSelect from "../../../../components/InputSelect/InputSelect";
-
+import AddManager from "../../../../assets/YIcons/+ Add Manager.svg"
 import AddIcon from "../../../../assets/icons/add.svg";
 import SearchIcon from "../../../../assets/icons/search.svg";
 import { userTypesList } from "./tempData";
@@ -602,7 +602,7 @@ export default function UserManagement() {
     modalData.phone,
     modalData.userType,
   ]);
-
+console.log({addUserBtnDisabled})
   useEffect(() => {
     if (!settings.servicesAndSpecialization) return;
     let specs = [];
@@ -647,10 +647,10 @@ export default function UserManagement() {
     }
   });
 
-
+console.log({modalData})
   return (
     <div className=" bg-lightWhite min-h-screen">
-      <div className="py-14 pt-0 px-5">
+      <div className="py-14 pt-0 ">
 
         <div className="mt-6">
           <Table
@@ -675,9 +675,113 @@ export default function UserManagement() {
             extraData={allTutors}
           />
         </div>
+        <div onClick={()=>{setModalActive(true) ;setModalData({ ...modalData, userType: 'manager' })}} className="text-[#26435F] -mt-2 cursor-pointer"><img src={AddManager} alt="add manager" /></div>
       </div>
 
-
+      {
+        modalActive && (
+          <Modal
+          underline="false"
+            classname={"max-w-[700px] mx-auto rounded-md"}
+            title="Add A Manager"
+            // cancelBtn={true}
+            titleClassName="text-start mb-3 pb-3 border-b border-b-gray-300"
+            // primaryCancel={true}
+            // cancelBtnClassName="w-130"
+            // primaryBtn={{
+            //   text: "Invite User",
+            //   className:
+            //     "rounded-lg bg-transparent border-2 border-[#FFA28D] py-2 text-[#FFA28D]",
+            //   form: "add-user-form",
+            //   onClick: handleSubmit,
+            //   loading: loading,
+            //   type: "submit",
+            //   disabled: addUserBtnDisabled,
+            // }}
+            handleClose={handleClose}
+            body={
+              <form
+                id="add-user-form"
+                onSubmit={handleSubmit}
+                className="px-[3px] mb-0.5"
+              >
+                <div className="grid grid-cols-1 md:grid-cols-2  gap-x-2 md:gap-x-3 gap-y-3 gap-y-4 mb-5">
+                  <div>
+                    <InputField
+                      label="First Name"
+                      labelClassname="ml-4 mb-0.5 text-[#26435F] font-semibold"
+                      placeholder="First Name"
+                      inputContainerClassName="text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0"
+                      inputClassName="bg-transparent"
+                      parentClassName="w-full"
+                      type="text"
+                      value={modalData.firstName}
+                      isRequired={true}
+                      onChange={(e) =>
+                        setModalData({ ...modalData, firstName: e.target.value })
+                      }
+                    />
+                  </div>
+                  <div>
+                    <InputField
+                      label="Last Name"
+                      labelClassname="ml-4 mb-0.5 text-[#26435F] font-semibold"
+                      isRequired={true}
+                      placeholder="Last Name"
+                      inputContainerClassName="text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0"
+                      inputClassName="bg-transparent"
+                      parentClassName="w-full"
+                      type="text"
+                      value={modalData.lastName}
+                      onChange={(e) =>
+                        setModalData({ ...modalData, lastName: e.target.value })
+                      }
+                    />
+                  </div>
+                  <div>
+                    <InputField
+                      label="Email Addresss "
+                      labelClassname="ml-4 mt-2 mb-0.5 text-[#26435F] font-semibold"
+                      isRequired={true}
+                      placeholder="Email Addresss"
+                      inputContainerClassName="text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0"
+                      inputClassName="bg-transparent"
+                      parentClassName="w-full"
+                      type="text"
+                      value={modalData.email}
+                      onChange={(e) =>
+                        setModalData({ ...modalData, email: e.target.value })
+                      }
+                    />
+                  </div>
+                  <div>
+                    <InputField
+                      label="Phone "
+                      labelClassname="ml-4 mt-2 mb-0.5 text-[#26435F] font-semibold"
+                      isRequired={true}
+                      placeholder="Phone"
+                      inputContainerClassName="text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0"
+                      inputClassName="bg-transparent"
+                      parentClassName="w-full"
+                      type="text"
+                      value={modalData.phone}
+                      onChange={(e) =>
+                        setModalData({ ...modalData, phone: e.target.value })
+                      }
+                    />
+                  </div>
+                 
+                </div>
+                <div className='flex items-center justify-center gap-4'>
+               
+                <button className="rounded-lg bg-transparent border-2 border-[#FFA28D] py-2 text-[#FFA28D]  w-[146px]" onClick={handleSubmit} disabled={addUserBtnDisabled}>Invite User</button>
+                <button onClick={(e)=>{e.preventDefault();handleClose()}} className="rounded-lg bg-[#FFA28D] border-2 border-[#FFA28D] py-2 text-[#FFFFFF] w-[146px]">Cancel</button>
+                </div>
+              </form>
+            }
+          />
+        )
+      }
       {deleteModalActive && (
         <Modal
           title={
