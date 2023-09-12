@@ -221,7 +221,7 @@ const AppRoutes = () => {
             <RequireAuth isLoggedIn={isLoggedIn}>
 
               {(persona === "superAdmin" || persona === 'manager') ?
-                <SuperAdminSettings /> : persona === 'student' || persona==='parent'
+                <SuperAdminSettings /> : persona === 'student' || persona === 'parent' || persona === 'tutor'
                   ? <StudentSettings /> : persona === 'contributor' ?
                     <ContributorSettings /> : <Settings />}
 

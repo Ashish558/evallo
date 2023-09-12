@@ -8,6 +8,8 @@ import {
 import { groupDatesIntoWeeks, convertToChart } from "../utils";
 import { useEffect } from "react";
 import { useState } from "react";
+import arrow from '../../../assets/icons/arrow-chart.svg'
+import arrow1 from '../../../assets/icons/arrow-up-chart.svg'
 const BubbleChart = ({ dateRange }) => {
   const [userDailyActivity, setDailyActivity] = useState([]);
   const [userDailyActivityData, status] =
@@ -88,7 +90,7 @@ const BubbleChart = ({ dateRange }) => {
 
                   font: {
                     weight: 500,
-                    size: 14,
+                    size: 18.667,
                   },
                 },
                 ticks: {
@@ -101,8 +103,8 @@ const BubbleChart = ({ dateRange }) => {
                   // },
                   color: "#507CA8",
                   font: {
-                    weight: 500,
-                    size: 14,
+                    weight: 400,
+                    size: 16,
                   },
                 },
               },
@@ -116,14 +118,14 @@ const BubbleChart = ({ dateRange }) => {
                   color: "#507CA8",
                   font: {
                     weight: 500,
-                    size: 12,
+                    size: 16,
                   },
                 },
                 ticks: {
                   color: "#507CA8",
                   font: {
-                    weight: 500,
-                    size: 12,
+                    weight: 400,
+                    size: 16,
                   },
                 },
               },
@@ -170,8 +172,14 @@ const BubbleChart = ({ dateRange }) => {
             },
           }}
         />
-        <></>
+
       </div>
+      <div className="absolute z-20 bottom-[5%] left-[10%] font-medium text-lg flex items-center text-[#26435F]">
+        <div className="bg-[rgba(38,67,95,1)] w-[40px] h-[11px] mr-[13px]"></div>
+        <p>past 12 days</p>
+      </div>
+      <div className="absolute bottom-[6.5%] left-[50.5%]"><img src={arrow} alt="" /></div>
+      <div className="absolute top-[40%] left-[3.5%]"><img src={arrow1} alt="" /></div>
     </div>
   );
 };
