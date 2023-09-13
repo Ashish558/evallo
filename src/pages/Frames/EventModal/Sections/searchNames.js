@@ -56,7 +56,7 @@ export default function SearchNames({ setStudent, setData, student, tutor, data,
          }
       }
    }, [student]);
-
+console.log({students,tutors,data})
    return (
       <div className="flex mb-4">
          <InputSearch

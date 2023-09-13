@@ -10,6 +10,7 @@ import AddIcon from "../../../../assets/icons/add.svg";
 import SearchIcon from "../../../../assets/icons/search.svg";
 import { userTypesList } from "./tempData";
 import {
+  useAddManagerMutation,
   useAddUserMutation,
   useLazyGetAllUsersQuery,
   useLazyGetTutorDetailsQuery,
@@ -59,7 +60,7 @@ export default function UserManagement() {
   const [filteredUsersData, setFilteredUsersData] = useState([]);
   const [forgotPassword, forgotPasswordResp] = useForgotPasswordMutation();
   const { role } = useSelector((state) => state.user);
-
+  const [addManager,setManager]=useAddManagerMutation()
   useEffect(() => {
     setValidData(
       isEmail(modalData.email) &&
@@ -488,7 +489,9 @@ export default function UserManagement() {
         handleClose();
       });
       return;
-    } else {
+    }
+    
+    else {
       body.role = modalData.userType;
       console.log(body);
       addUser(body).then((res) => {
