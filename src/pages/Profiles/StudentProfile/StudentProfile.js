@@ -961,16 +961,20 @@ const [toEdit, setToEdit] = useState({
             id="borderDashed"
             className="border !border-[#CBD6E3] w-[calc(1500*0.0522vw)] mx-auto my-[calc(50*0.0522vw)]"
           ></div>
-           <SPFrame4 userDetail={userDetail}        
-                fetchDetails={fetchDetails}
-                user={user}
-            setSelectedScoreIndex={setSelectedScoreIndex}
-            settings={settings}
-            userId={isOwn ? id : params.id}
-            editable={editable}
-          
-            setToEdit={setToEdit}
-            toEdit={toEdit} />
+
+          {
+            persona === "admin"  && <SPFrame4 userDetail={userDetail}        
+            fetchDetails={fetchDetails}
+            user={user}
+        setSelectedScoreIndex={setSelectedScoreIndex}
+        settings={settings}
+        userId={isOwn ? id : params.id}
+        editable={editable}
+      
+        setToEdit={setToEdit}
+        toEdit={toEdit} />
+          }
+           
           
           </div>
         </div>
