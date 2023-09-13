@@ -82,11 +82,11 @@ export default function TableItem({
       if (item.isCompleted === true) {
         getTestResponse({ url, params: params }).then((res) => {
           if (res.error) {
-            console.log("resp err", res.error);
+            //console.log("resp err", res.error);
             return;
           }
 
-          let responseData = res.data.data.response;
+          let responseData = res?.data?.data?.response;
           let score = getScoreStr(
             responseData.testType,
             responseData.score,
@@ -108,11 +108,11 @@ export default function TableItem({
 
         getTestResponse({ url, params: params }).then((res) => {
           if (res.error) {
-            console.log("resp err", res.error);
+            //console.log("resp err", res.error);
             return;
           }
 
-          let responseData = res.data.data.response;
+          let responseData = res?.data?.data?.response;
           let score = getScoreStr(
             responseData.testType,
             responseData.score,
@@ -136,10 +136,10 @@ export default function TableItem({
 
     updateFields({ id: item._id, fields: field }).then((res) => {
       if (res.error) {
-        return console.log("error updating");
+        return //console.log("error updating");
       }
       fetch && fetch(field, item._id);
-      console.log("update res", res.data);
+      //console.log("update res", res.data);
     });
   };
   const handleChange = (field) => {
@@ -189,7 +189,7 @@ export default function TableItem({
         getTutorDetail({ id: item._id }).then((resp) => {
 
           let status = "-";
-          if (resp.data.data.details) {
+          if (resp?.data?.data?.details) {
             status = resp.data.data.details.leadStatus;
             setLeadStatus(status);
           }
@@ -198,7 +198,7 @@ export default function TableItem({
         getUserDetail({ id: item._id }).then((resp) => {
 
           let status = "-";
-          if (resp.data.data.userdetails) {
+          if (resp?.data?.data?.userdetails) {
             status = resp.data.data.userdetails.leadStatus;
             setLeadStatus(status);
           }
@@ -215,7 +215,7 @@ export default function TableItem({
 
 
   useEffect(() => {
-    console.log("item", item)
+    //console.log("item", item)
     setIsChecked(checkedHeader);
   }, [checkedHeader])
   const timestamp = item.createdAt;
@@ -224,7 +224,7 @@ export default function TableItem({
   const options = { year: 'numeric', month: 'long', day: 'numeric' };
   const formattedDate = date.toLocaleDateString('en-US', options);
 
-  console.log(dataFor)
+  //console.log(dataFor)
   const getFormatDate = (inputDate) => {
     const dateObj = new Date(inputDate);
 
@@ -232,12 +232,12 @@ export default function TableItem({
     const options = { year: 'numeric', month: 'short', day: '2-digit' };
     const formattedDate = dateObj.toLocaleDateString('en-US', options);
 
-    console.log(formattedDate); // Output: "August 02, 2023"
+    //console.log(formattedDate); // Output: "August 02, 2023"
     return formattedDate
   }
   const getPhone = (val) => {
-    console.log(item)
-    console.log(val)
+    //console.log(item)
+    //console.log(val)
   }
   return (
     <>
@@ -515,7 +515,9 @@ export default function TableItem({
             </span>
           </td>
           <td className="px-1 font-medium  min-w-14 py-4 text-left">
-            <span className="inline-block cursor-pointer pl-4">
+            <span className="inline-block cursor-pointer pl-4" onClick={() =>
+              onClick.handleNavigate("student", item.studentId)
+            }>
               {item.studentName}
             </span>
           </td>
@@ -929,7 +931,7 @@ const MapData = (data, dataFor, exclude = [], onClick) => {
       key === "parent" ? (
       <td key={i} className={`font-medium px-1 `}>
         <p
-          className={`pl-4 ${key === "name" ? "text-left cursor-pointer" : ""
+          className={`pl-4 ${key === "name" ? "text-center cursor-pointer" : ""
             } font-semibold`}
           onClick={() =>
             key === "name" && onClick.handleNavigate("student", data._id)

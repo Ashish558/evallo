@@ -31,7 +31,7 @@ import AssignedTestIndicator from "../../components/AssignedTestIndicator/Assign
 import { useSelector } from "react-redux";
 import { getDuration, getFormattedDate } from "../../utils/utils";
 import FilterItems from "../../components/FilterItems/filterItems";
-
+import { useNavigate } from "react-router-dom";
 const optionData = ["1", "2", "3", "4", "5"];
 const timeLimits = ["Regular", "1.1x", "1.25x", , "1.5x", "Unlimited"];
 const testData = ["SAT", "ACT"];
@@ -49,7 +49,7 @@ const initialState = {
 export default function AssignedTests() {
   const [tableData, setTableData] = useState([]);
   const [tableHeaders, setTableHeaders] = useState([]);
-
+  const navigate = useNavigate()
   const [testNameOptions, setTestNameOptions] = useState([]);
   const [studentNameOptions, setStudentNameOptions] = useState([]);
   const [allAssignedTests, setAllAssignedTests] = useState([]);
@@ -248,7 +248,10 @@ export default function AssignedTests() {
     modalData.testId,
     modalData.studentId,
   ]);
-
+  const handleNavigate = (role, id) => {
+    console.log("clicked")
+    navigate(`/profile/${role}/${id}`)
+  }
 
   useEffect(() => {
     if (modalData.name.length > 0) {
@@ -847,7 +850,7 @@ export default function AssignedTests() {
               noArrow={true}
               numberChecked={numberChecked}
               setnumberChecked={setnumberChecked}
-              onClick={{ handleResend, handleDelete }}
+              onClick={{ handleResend, handleDelete, handleNavigate }}
               dataFor="assignedTests"
               data={filteredTests}
               headerObject={true}

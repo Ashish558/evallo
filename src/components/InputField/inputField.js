@@ -39,7 +39,8 @@ export default function InputField({
   onBlur,
   onMouseEnter,
   defaultValue,
-  totalErrors
+  totalErrors,
+  iconPadding
 }) {
   const [inputType, setInputType] = useState(type);
   const [showDiv, setShowDiv] = useState(true);
@@ -96,10 +97,10 @@ export default function InputField({
           </div>
         )}
         <input
-          className={`outline-0 w-full text-[17.5px] pl-1 placeholder:text-base-17-5 ${inputClassName ? inputClassName : ""
+          className={`outline-0 w-full text-[17.5px]  ${iconPadding ? iconPadding : "pl-1"} placeholder:text-base-17-5 ${inputClassName ? inputClassName : ""
             } ${disabled === true ? "cursor-not-allowed" : ""} text-base-17-5`}
           placeholder={placeholder}
-          
+
           type={inputType ? inputType : "text"}
           onChange={(e) => (onChange !== undefined ? onChange(e) : "")}
           value={value}

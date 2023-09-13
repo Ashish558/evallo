@@ -99,8 +99,8 @@ export default function InputSelectNew({
             className={`scrollbar-content scrollbar-vertical shadow-md w-full  max-h-[165px] ${styles.options} ${optionContainerClassName} custom-scroller shadow-[0px_0px_3px_0px_#00000040] text-base-17-5`}
           >
             {optionData?.map((option, idx) => {
-              // console.log('option', option);
-              // console.log('checkbox.match', checkbox.match);
+              // //console.log('option', option);
+              // //console.log('checkbox.match', checkbox.match);
               return (
                 <div
                   className={`outline-0 border-0 py-2.5  px-4 flex flex-wrap items-center justify-between ${optionsEachClassName} text-base-17-5`}

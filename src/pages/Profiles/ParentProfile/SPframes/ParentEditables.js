@@ -64,7 +64,7 @@ export default function ParentEditables({
   const [loading, setLoading] = useState(false);
 
   const { organization } = useSelector((state) => state.organization);
-
+const [textOpen,setTextOpen]=useState(false)
   const data = [
     {
       name: "profileData",
@@ -260,7 +260,7 @@ export default function ParentEditables({
   const [states, setStates] = useState([]);
   const handleState = (c) => {
     if (!c) return;
-    console.log("country", c);
+    //console.log("country", c);
     if (typeof c === "object")
       c = c.name
     const state = country.filter((x) => x.name === c);
@@ -290,9 +290,9 @@ export default function ParentEditables({
   
   }, [currentToEdit]);
 const [addLink,addLinkStatus]=useAddLinkStudentMutation()
-console.log("parentEditables",currentToEdit)
+//console.log("parentEditables",currentToEdit)
   const handleProfilePhotoChange = (file) => {
-    // console.log(file)
+    // //console.log(file)
     let url = "";
     const formData = new FormData();
     formData.append("photo", file);
@@ -302,7 +302,7 @@ console.log("parentEditables",currentToEdit)
       url = `${BASE_URL}api/user/addphoto`;
     }
     axios.patch(url, formData, { headers: getAuthHeader() }).then((res) => {
-    //  console.log(res);
+    //  //console.log(res);
       fetchDetails();
     });
   };
@@ -310,7 +310,7 @@ console.log("parentEditables",currentToEdit)
   const getCurrentField = (keyName) => {
     Object.keys(data).map((key) => {
       if (data[key].name === keyName) {
-        // console.log(data[key]);
+        // //console.log(data[key]);
         setCurrentField(data[key]);
       }
     });
@@ -320,27 +320,30 @@ console.log("parentEditables",currentToEdit)
     Object.keys(toEdit).map((key) => {
       if (toEdit[key].active === true) {
         getCurrentField(key);
-        // console.log(toEdit);
+        // //console.log(toEdit);
         // setEditFieldValue(toEdit[key])
         setCurrentToEdit(toEdit[key]);
       }
     });
-  // console.log("currentUser");
+  // //console.log("currentUser");
   }, [toEdit]);
 
   const handleClose = () => {
+    
     let tempToEdit = {};
     Object.keys(toEdit).map((key) => {
       return (tempToEdit[key] = { ...toEdit[key], active: false });
     });
+     setTextOpen(false)
     setToEdit(tempToEdit);
+   
     // setToEdit()
   };
 
   useEffect(() => {
     if (student.length > 0) {
       fetchStudents(student).then((res) => {
-        // console.log('students', res.data.data.students);
+        // //console.log('students', res.data.data.students);
         let tempData = res.data.data.students.map((tutor) => {
           return {
             _id: tutor._id,
@@ -356,7 +359,7 @@ console.log("parentEditables",currentToEdit)
     if (parent.length > 0) {
       fetchParents(parent).then((res) => {
         let tempData = res.data.data.parents.map((parent) => {
-          // console.log(parent);
+          // //console.log(parent);
           return {
             _id: parent._id,
             value: `${parent.firstName} ${parent.lastName}`,
@@ -382,7 +385,7 @@ console.log("parentEditables",currentToEdit)
       tempStudents.push(item._id);
       tempStudentsData.push(item);
     }
-   // console.log(tempStudentsData);
+   // //console.log(tempStudentsData);
     setCurrentToEdit({
       ...currentToEdit,
       assiginedStudents: tempStudents,
@@ -393,7 +396,7 @@ console.log("parentEditables",currentToEdit)
   const handleServiceChange = (item) => {
     let tempService = [...currentToEdit.service];
     if (tempService.includes(item)) {
-      // console.log(tempService);
+      // //console.log(tempService);
       tempService = tempService.filter((service) => service !== item);
     } else {
       tempService.push(item);
@@ -405,7 +408,7 @@ console.log("parentEditables",currentToEdit)
   const handleSubjectChange = (item) => {
     let tempSubjects = [...currentToEdit.subjects];
     if (tempSubjects.includes(item)) {
-      // console.log(tempSubjects);
+      // //console.log(tempSubjects);
       tempSubjects = tempSubjects.filter((subject) => subject !== item);
     } else {
       tempSubjects.push(item);
@@ -416,17 +419,17 @@ console.log("parentEditables",currentToEdit)
   // useEffect(() => {
   //    updateFields({ id: '637b1522e00aeb4098e8952a', fields: { amountToPay: 5 } })
   //       .then(res => {
-  //          console.log(res);
+  //          //console.log(res);
   //       })
   // }, [])
   const updateUserAccount = async (values) => {
     try {
       updateUserOrg(values)
         .then((res) => {
-          console.log("org updated", values,res);
+          //console.log("org updated", values,res);
         })
         .catch((err) => {
-          console.log(err);
+          //console.log(err);
         });
     
     } catch (e) {
@@ -438,7 +441,7 @@ console.log("parentEditables",currentToEdit)
     setLoading(true);
     let reqBody = { ...currentToEdit };
     delete reqBody["active"];
-     console.log({reqBody,userId});
+     //console.log({reqBody,userId});
      if(reqBody.hasOwnProperty("country")){
       updateUserAccount(reqBody)
      }
@@ -451,9 +454,9 @@ console.log("parentEditables",currentToEdit)
       };
      
      
-     addNotes(reqBody).then((res)=>{
-      console.log("internal",{res})
-     })
+    //  addNotes(reqBody).then((res)=>{
+    //   //console.log("internal",{res})
+    //  })
     
     }
     const userDetailSave = (reqBody) => {
@@ -467,10 +470,10 @@ console.log("parentEditables",currentToEdit)
       //   if (isNaN(reqBody.actScores.reading)) reqBody.actScores.reading = 0;
       //   if (isNaN(reqBody.actScores.science)) reqBody.actScores.science = 0;
       // }
-       console.log({reqBody,currentToEdit});
+       //console.log({reqBody,currentToEdit});
       // return
       updateDetails({ id: userId, fields: reqBody }).then((res) => {
-        console.log(res);
+        //console.log(res);
         setLoading(false);
         fetchDetails(true, true);
         // handleClose()
@@ -478,7 +481,7 @@ console.log("parentEditables",currentToEdit)
     };
     if (currentField.api === "user") {
       updateFields({ id: userId, fields: reqBody }).then((res) => {
-        console.log(res);
+        //console.log(res);
         setLoading(false);
         if (reqBody.linkedIn) {
           if (currentToEdit.isPresent === false) {
@@ -529,12 +532,12 @@ console.log("parentEditables",currentToEdit)
           });
         }
       }
-      // console.log('reqBody', reqBody)
+      // //console.log('reqBody', reqBody)
       // return
       if (currentToEdit.isPresent === false) {
         delete reqBody["isPresent"];
         postTutorDetails({ id: userId, fields: reqBody }).then((res) => {
-          console.log("posted", res);
+          //console.log("posted", res);
           setLoading(false);
           fetchDetails(true, true);
           // handleClose()
@@ -542,7 +545,7 @@ console.log("parentEditables",currentToEdit)
       } else {
         delete reqBody["isPresent"];
         updateTutorDetails({ id: userId, fields: reqBody }).then((res) => {
-          console.log("patched", res);
+          //console.log("patched", res);
           setLoading(false);
           fetchDetails(true, true);
           // handleClose()
@@ -567,9 +570,9 @@ console.log("parentEditables",currentToEdit)
         studentId:userId,
       };
       addLink(reqBody).then((res) => {
-        console.log("drive",res);
+        //console.log("drive",res);
         if(res?.data){
-         console.log("drive link added")
+         //console.log("drive link added")
         }
       });
     }
@@ -589,9 +592,9 @@ console.log("parentEditables",currentToEdit)
         studentId:userId,
       };
       addLink(reqBody).then((res) => {
-        console.log("drop",res);
+        //console.log("drop",res);
         if(res?.data){
-         console.log("drop link added")
+         //console.log("drop link added")
         }
       });
     }
@@ -615,13 +618,13 @@ console.log("parentEditables",currentToEdit)
     }
   };
 
-  // console.log('awsLink', awsLink)
-  // console.log('toedit--', currentToEdit)
-  // console.log('setting', settings.servicesAndSpecialization[currentToEdit.selectedIdx])
-  // console.log('field', currentField)
-  // console.log('sett', settings)
-  // console.log('students', students)
-  // console.log('parents', parents)
+  // //console.log('awsLink', awsLink)
+  // //console.log('toedit--', currentToEdit)
+  // //console.log('setting', settings.servicesAndSpecialization[currentToEdit.selectedIdx])
+  // //console.log('field', currentField)
+  // //console.log('sett', settings)
+  // //console.log('students', students)
+  // //console.log('parents', parents)
 
   const checkNumber = (prevNum, num, limit) => {
     if (limit) {
@@ -656,7 +659,7 @@ console.log("parentEditables",currentToEdit)
       }
     });
 
-    console.log(updated);
+    //console.log(updated);
     // setCurrentToEdit(prev => {
     //    return {
     //       ...prev,
@@ -664,11 +667,11 @@ console.log("parentEditables",currentToEdit)
     //    }
     // })
   };
-  // console.log(settings);
+  // //console.log(settings);
   
 
   const [startDate, setStartDate] = useState(new Date());
-  //console.log({ currentField, currentToEdit });
+  ////console.log({ currentField, currentToEdit });
   const forCss = [
     "profileData",
     "interest",
@@ -676,7 +679,7 @@ console.log("parentEditables",currentToEdit)
     "personality",
     "subjects",
   ];
-  console.log({country,states,currentToEdit})
+  //console.log({country,states,currentToEdit})
   return  Object.keys(toEdit).map((key) => {
     return (
       toEdit[key].active === true && (
@@ -1153,7 +1156,9 @@ console.log("parentEditables",currentToEdit)
                     <div className="flex items-center mb-5 pt-6 w-[400px]">
                       {/* <p className='font-medium mr-4 min-w-[60px]'>  </p> */}
                       <div className="border w-full h-full rounded-md">
-                      <textarea
+                    {textOpen && 
+
+                     <textarea
                 rows="3"
                 value={currentToEdit.notes}
                         onChange={(e) =>
@@ -1162,13 +1167,14 @@ console.log("parentEditables",currentToEdit)
                             notes: e.target.value,
                           })
                         }
-
-                className={`mt-1 block w-full resize-none focus:!ring-blue-500 p-2 focus:!border-blue-500 placeholder-[#CBD6E2] text-sm  placeholder:text-xs ${currentToEdit?.notes?.length===0?"h-":"h-[180px] "}`}
+                        onFocus={()=>setTextOpen(true)}
+                 onBlur={()=>currentToEdit?.notes?.length==0&&setTextOpen(false)}
+                className={`mt-1 block w-full resize-none focus:!ring-blue-500 p-2 focus:!border-blue-500 placeholder-[#CBD6E2] text-sm  placeholder:text-xs h-[300px] `}
                 placeholder=""
-              ></textarea>
-              {
+              ></textarea>}
+              {!textOpen &&
                 currentToEdit?.notes?.length==0&&
-                 <div className=" text-[#CBD6E2] text-xs flex-1 text-base-17-5 p-3">
+                 <div onClick={()=>setTextOpen(true)} className=" text-[#CBD6E2] text-xs flex-1 text-base-17-5 p-3 h-[300px]">
                  Add notes about the parent. Here are some ideas to get you
                  started:
                  <ul className="list-disc px-4 design:px-5">
@@ -1215,7 +1221,7 @@ console.log("parentEditables",currentToEdit)
                         }
                         onOptionClick={(item) => {
                           // setStudent(item.value);
-                          console.log(item);
+                          //console.log(item);
                           // handleStudentsChange(item)
                           // setCurrentToEdit({ ...currentToEdit, students: [... item._id] });
                         }}

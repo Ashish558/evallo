@@ -2,7 +2,7 @@ export const bubbleChartData = {
   labels: ["Week 1", "Week 2", "Week 3", "Week 4", "Week 1"],
   datasets: [
     {
-      label: "Admin",
+      label: "Scheduled",
       data: [
         // { x: 10, y: 80, r: 10 },
         // { x: 15, y: 10, r: 15 },
@@ -32,7 +32,7 @@ export const bubbleChartData = {
       // borderColor: ["rgba(54, 162, 235, 1)"],
     },
     {
-      label: "Tutor",
+      label: "Completed",
       data: [
         // { x: 70, y: 80, r: 10 },
         // { x: 15, y: 10, r: 15 },
@@ -59,7 +59,7 @@ export const bubbleChartData = {
 
     },
     {
-      label: "Parents",
+      label: "Missed",
       data: [
         // { x: 70, y: 80, r: 10 },
         // { x: 15, y: 10, r: 15 },
@@ -86,7 +86,7 @@ export const bubbleChartData = {
 
     },
     {
-      label: "Students",
+      label: "Cancelled",
       data: [
         // { x: 70, y: 80, r: 10 },
         // { x: 15, y: 10, r: 15 },

@@ -577,8 +577,14 @@ export default function EventModal({
       submitSession(reqBody).then((res) => {
          console.log(res)
          setLoading(false)
-         setEventModalActive(false)
-         refetchSessions()
+         if(res?.error?.data?.message){
+            alert("Error occured while scheduling a session , please try again!")
+         }
+         else {
+            setEventModalActive(false)
+            refetchSessions()
+         }
+         
       })
    }
    // console.log(data);

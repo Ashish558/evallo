@@ -16,6 +16,8 @@ import { getDuration, getFormattedDate } from "../../utils/utils";
 import { tempTableData, studentsDataTable } from "../AssignedTests/tempData";
 import InputField from "../../components/InputField/inputField";
 import AssignedTestIndicator from "../../components/AssignedTestIndicator/AssignedTestIndicator";
+import InputSelectNew from "../../components/InputSelectNew/InputSelectNew";
+import { useParams } from "react-router-dom";
 
 const studentTableHeaders2 = [
   "Test Name",
@@ -47,7 +49,7 @@ export default function StudentTest({fromProfile,setTotaltest}) {
   const [associatedStudents, setAssociatedStudents] = useState([]);
   const [selectedStudent, setSelectedStudent] = useState(null);
   const { firstName, lastName } = useSelector((state) => state.user);
-  const organization = useSelector((state) => state.organization);
+  const {organization} = useSelector((state) => state.organization);
   const [getTest, getTestResp] = useLazyGetAssignedTestQuery();
 
   const [getUserDetail, userDetailResp] = useLazyGetUserDetailQuery();
@@ -139,7 +141,7 @@ export default function StudentTest({fromProfile,setTotaltest}) {
     },
   ];
   const [tableHeaders, setTableHeaders] = useState(studentTableHeaders);
-
+  const params= useParams()
   useEffect(() => {
     if (persona === "student") {
       getTest().then((res) => {
@@ -158,6 +160,7 @@ export default function StudentTest({fromProfile,setTotaltest}) {
             updatedAt,
           } = test;
           if (testId === null) return;
+          console.log("test inside test",test)
           return {
             assignedBy: assignedBy ? assignedBy.firstName +" "+ assignedBy.lastName : "-",
           
@@ -183,10 +186,12 @@ export default function StudentTest({fromProfile,setTotaltest}) {
             updatedAt,
           };
         });
+      
         let sortedArr = tempAllTests.sort(function (a, b) {
           return new Date(b.updatedAt) - new Date(a.updatedAt);
         });
-        setTotaltest(sortedArr?.length)
+       // console.log({tempAllTests,sortedArr})
+        setTotaltest&& setTotaltest(sortedArr?.length)
         setAllTests(sortedArr.filter((item) => item !== undefined));
       });
     }
@@ -217,10 +222,11 @@ export default function StudentTest({fromProfile,setTotaltest}) {
         });
       });
     }
-  }, [persona]);
+   
+  }, [persona,id]);
 
   useEffect(() => {
-    if (persona === "parent") {
+    if (persona === "parent" ) {
       fetchAssignedTests(id).then((res) => {
         if (res.error)
           return console.log("assigned test parent resp", res.error);
@@ -238,6 +244,7 @@ export default function StudentTest({fromProfile,setTotaltest}) {
             updatedAt,
           } = test;
           if (testId === null) return;
+          console.log("parent",test)
           return {
             assignedBy: assignedBy ? assignedBy.firstName +" "+ assignedBy.lastName : "-",
             testName: testId ? testId.testName : "-",
@@ -263,10 +270,11 @@ export default function StudentTest({fromProfile,setTotaltest}) {
         let sortedArr = tempAllTests.sort(function (a, b) {
           return new Date(b.updatedAt) - new Date(a.updatedAt);
         });
+        console.log({tempAllTests,sortedArr})
         setAllTests(sortedArr.filter((item) => item !== undefined));
       });
     }
-  }, []);
+  }, [persona,id]);
 
   useEffect(() => {
     if (associatedStudents.length === 0) return;
@@ -289,6 +297,7 @@ export default function StudentTest({fromProfile,setTotaltest}) {
       });
     }
   }, [associatedStudents]);
+  console.log({selectedStudent,associatedStudents})
 console.log({allTests})
   useEffect(() => {
     if (selectedStudent === null) return;
@@ -335,10 +344,10 @@ console.log({allTests})
     <>
       <div className={`mx-[70px] bg-lightWhite  ${fromProfile?'!mx-0':'min-h-screen'}`}>
         <div className={`py-4 px-5 ${fromProfile?'px-0 py-0 ':''}`}>
-          {persona === "student" && !fromProfile && (
+          {(persona === "student" || persona === "parent") && !fromProfile && (
             <div
               className={`${
-                persona === "student" ? "flex justify-between items-center" : ""
+                persona === "student"||true ? "flex justify-between items-center" : ""
               }`}
             >
               <p className="text-[#24A3D9]   ">
@@ -351,20 +360,7 @@ console.log({allTests})
                 <span className="font-semibold">Assignments</span>
               </p>
               <div className="flex justify-end items-center">
-                {persona === "student" && (
-                  <div className="flex justify-between whitespace-nowrap items-center gap-6">
-                    <div className="flex items-center justify-end gap-[20px] mt-[10px]">
-                      {/* <AssignedTestIndicator /> */}
-                      {status.map(({ text, color }, idx) => (
-                        <AssignedTestIndicator
-                          key={idx}
-                          text={text}
-                          color={color}
-                        />
-                      ))}
-                    </div>
-                  </div>
-                )}
+                
                 {persona === "student" ? (
                   <></>
                 ) : (
@@ -372,8 +368,36 @@ console.log({allTests})
                   persona === "parent" && (
                     <div className="pl-4">
                      
-                      <div className="flex">
-                        {associatedStudents.map((student, idx) => {
+                      <div className="flex mr-4">
+                        <InputSelectNew 
+                        
+                        
+                        placeholder={"Lead Status"}
+                        parentClassName="ml-0 w-full  items-center flex text-[#517CA8] text-xs  whitespace-nowrap "
+                        inputContainerClassName="bg-white h-[45px] !w-[200px] shadow-[0px_0px_2.500001907348633px_0px_#00000040] my-0 py-[5px] px-[35px]"
+                        placeHolderClass="text-[#517CA8] "
+                        labelClassname="text-sm text-base-17-5"
+                        inputClassName="bg-transparent"
+                        optionContainerClassName="!w-[200px]"
+                       
+                       
+                        value={selectedStudent?.name}
+                        optionType={"object"}
+                        optionData={associatedStudents?.map((it)=>{
+                          return {
+                            ...it,
+                            value:it?.name
+                          }
+                        })}
+                        onChange={(e) => {
+                          handleStudentChange(e)
+                         
+                        }}
+                        
+                        
+                        
+                        />
+                        {/* {associatedStudents.map((student, idx) => {
                           return (
                             <div
                               key={idx}
@@ -392,10 +416,24 @@ console.log({allTests})
                               </p>
                             </div>
                           );
-                        })}
+                        })} */}
                       </div>
                     </div>
                   )
+                )}
+                {(persona === "student" || persona==='parent') && (
+                  <div className="flex justify-between whitespace-nowrap items-center gap-6">
+                    <div className="flex items-center justify-end gap-[20px] mt-[0px]">
+                      {/* <AssignedTestIndicator /> */}
+                      {status.map(({ text, color }, idx) => (
+                        <AssignedTestIndicator
+                          key={idx}
+                          text={text}
+                          color={color}
+                        />
+                      ))}
+                    </div>
+                  </div>
                 )}
               </div>
             </div>
