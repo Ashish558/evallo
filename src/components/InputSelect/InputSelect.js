@@ -38,16 +38,6 @@ export default function InputSelect({
   const handleOption = () => {
     setSelected(!selected);
   };
-  const { role: persona } = useSelector(state => state.user)
-  useEffect(() => {
-    if (persona === 'admin') {
-      const userType = (optionData.find((user) => user == "Manager"))
-      if (userType === "Manager") {
-        optionData.pop()
-      }
-    }
-    // console.log(optionData)
-  }, [])
   const handleToggleSelected = () => {
     setSelected(!selected);
   }
