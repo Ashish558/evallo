@@ -199,7 +199,7 @@ export default function Chart({ scoreProgression }) {
     if (idx > backgroundColors?.length) {
       index = index % len;
     }
-    // console.log(index);
+    // //console.log(index);
     return backgroundColors[index] !== undefined
       ? backgroundColors[index]
       : backgroundColors[0];
@@ -227,7 +227,7 @@ export default function Chart({ scoreProgression }) {
       const testName = chartData[cid]?.testName;
       const date = chartData[cid]?.date;
 
-      //  console.log('concepts', concepts)
+      //  //console.log('concepts', concepts)
 
     
 

@@ -122,14 +122,14 @@ export default function Chart({ setSubjects, subjects, selectedSubject, selected
     
      setChartData(subjects)
    },[subjects])
-//console.log("first",{setSubjects,chartData, subjects, selectedSubject, selectedStudent, currentSubData, setCurrentSubData, selectedConceptIdx  })
+////console.log("first",{setSubjects,chartData, subjects, selectedSubject, selectedStudent, currentSubData, setCurrentSubData, selectedConceptIdx  })
 
    const getColor = (idx, len) => {
       let index = idx
       if (idx > len - 1) {
          index = index % len
       }
-      // console.log(index);
+      // //console.log(index);
       return backgroundColors[index] !== undefined ? backgroundColors[index] : backgroundColors[0]
    }
    useEffect(() => {
@@ -143,7 +143,7 @@ export default function Chart({ setSubjects, subjects, selectedSubject, selected
         setData({ datasets: [] })
         return
       }
-     //  console.log('Shycurr', curr)
+     //  //console.log('Shycurr', curr)
      let concepts =curr?.concepts?[...Object.keys(curr?.concepts).map(key => {
         return key
      })]:[curr?.name]
@@ -166,7 +166,7 @@ export default function Chart({ setSubjects, subjects, selectedSubject, selected
          return key
       })]
    }
-     //  console.log('concepts', concepts)
+     //  //console.log('concepts', concepts)
       setCurrentConcepts(concepts)
       setOptions(prev => ({
          ...prev,
@@ -208,9 +208,9 @@ export default function Chart({ setSubjects, subjects, selectedSubject, selected
             let totalVal = 10
             let getValue = curr?.no_of_correct
             const percent = curr?.timeTaken?curr?.timeTaken:0
-           // console.log("chart Current",curr,getValue,totalVal)
+           // //console.log("chart Current",curr,getValue,totalVal)
             let radius = Math.round(getValue )        
-            // console.log(totalConcept, percent);
+            // //console.log(totalConcept, percent);
             if (radius < 15) {
                radius = 15
             } else if (radius > 40) {
@@ -224,7 +224,7 @@ export default function Chart({ setSubjects, subjects, selectedSubject, selected
                backgroundColor: getColor(0, 1),
             })
          
-console.log("first",datasets)
+//console.log("first",datasets)
      
       setData({
          datasets: datasets
@@ -235,9 +235,9 @@ console.log("first",datasets)
    useEffect(() => {
 
    }, [currentSubData])
-   // console.log('data', data)
-   // console.log('currentSubData', currentSubData)
-   // console.log('selectedConceptIdx', selectedConceptIdx)
+   // //console.log('data', data)
+   // //console.log('currentSubData', currentSubData)
+   // //console.log('selectedConceptIdx', selectedConceptIdx)
 
    useEffect(() => {
       // if (currentConcepts.length < 10) {

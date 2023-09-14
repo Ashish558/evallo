@@ -12,10 +12,11 @@ const SPFrame1 = ({ userId, settings, userDetail, editable, setToEdit, toEdit ,f
   const { awsLink } = useSelector((state) => state.user);
   const [addDoc, addDocStatus] = useAddAssociatedDocStudentMutation();
   const [updateDetails, updateDetailsResp] = useUpdateUserDetailsMutation();
+  const {role:persona } = useSelector((state) => state.user);
   const reduceArr = (id, update) => {
    
     
-  //  console.log({toEdit})
+  //  ////console.log({toEdit})
     let temp = [...toEdit?.whiteBoardLinks?.whiteBoardLinks];
     temp = temp?.filter((item, idd) => idd !== id);
     
@@ -27,7 +28,7 @@ const SPFrame1 = ({ userId, settings, userDetail, editable, setToEdit, toEdit ,f
     if (!xlsFile || !xlsFile.name) {
       return;
     }
-    console.log("size",xlsFile.size)
+    ////console.log("size",xlsFile.size)
     let size=xlsFile.size/1024;
     size=size/1024;
     if(size>1){
@@ -38,7 +39,7 @@ const SPFrame1 = ({ userId, settings, userDetail, editable, setToEdit, toEdit ,f
     formData.append("file", xlsFile);
     formData.append("studentId", userDetail?._id);
     addDoc(formData).then((res) => {
-      console.log("docc", res);
+      ////console.log("docc", res);
       if (res?.data) {
         alert(res?.data?.message);
         setXlsFile({});
@@ -50,13 +51,13 @@ const SPFrame1 = ({ userId, settings, userDetail, editable, setToEdit, toEdit ,f
    // setLoading(true);
     let reqBody = { whiteBoardLinks:e };
    // delete reqBody["active"];
-  //   console.log({reqBody,id:userId});
+  //   ////console.log({reqBody,id:userId});
     const userDetailSave = (reqBody) => {
     
-      // console.log({reqBody,userDetail});
+      // ////console.log({reqBody,userDetail});
       // return
       updateDetails({ id:userId, fields: reqBody }).then((res) => {
-       // console.log(res);
+       // ////console.log(res);
         //setLoading(false);
         fetchDetails(true, true);
         // handleClose()
@@ -67,7 +68,7 @@ const SPFrame1 = ({ userId, settings, userDetail, editable, setToEdit, toEdit ,f
    
     
   };
-  //console.log("frame1", { userDetail, xlsFile });
+  //////console.log("frame1", { userDetail, xlsFile });
   return (
     <div>
       {" "}
@@ -77,7 +78,8 @@ const SPFrame1 = ({ userId, settings, userDetail, editable, setToEdit, toEdit ,f
           <div className="flex-1 ">
             <p className=" text-sm text-[#26435F] font-semibold">
               Whiteboard Links
-              <EditableText
+             {persona!=='student' && persona=='parent' && 
+             <EditableText
                 editable={editable}
                 onClick={() =>
                   setToEdit({
@@ -92,6 +94,7 @@ const SPFrame1 = ({ userId, settings, userDetail, editable, setToEdit, toEdit ,f
                 textClassName="text-sm text-[#517CA8] text-underline  "
                 className="text-sm my-0 flex justify-end   float-right"
               />
+}
             </p>
 
             <div
@@ -107,7 +110,7 @@ const SPFrame1 = ({ userId, settings, userDetail, editable, setToEdit, toEdit ,f
                   >
                     <a href={it} target="_blank" >{it}</a>
                     <img
-                    onClick={()=>reduceArr(id,true,)}
+                    onClick={()=>(persona==='tutor'||persona==='admin')&&reduceArr(id,true)}
                       src={BCut}
                       className="text-xs !h-[20px] !w-[20px] inline-block"
                     
@@ -142,6 +145,7 @@ const SPFrame1 = ({ userId, settings, userDetail, editable, setToEdit, toEdit ,f
                   <div className="flex justify-center">
                     <label
                       htmlFor="file"
+                       
                       className="block text-sm text-white bg-[#517CA8] hover:bg-[#517CA8] items-center justify-center  rounded-[5px]  px-3 py-2 text-base-17-5 text-center ] "
                     >
                       Choose File
@@ -149,6 +153,7 @@ const SPFrame1 = ({ userId, settings, userDetail, editable, setToEdit, toEdit ,f
                     <input
                       onChange={(e) => setXlsFile(e.target.files[0])}
                       type="file"
+                      disabled={persona==='student'||persona==='parent'}
                       id="file"
                     ></input>
                   </div>

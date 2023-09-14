@@ -81,6 +81,14 @@ export const userServicesApi = createApi({
         headers: getAuthHeader(),
       }),
     }),
+    addManager: builder.mutation({
+      query: (body) => ({
+        url: `api/user/registerManager`,
+        method: "POST",
+        body: body,
+        headers: getAuthHeader(),
+      }),
+    }),
     updateUserFields: builder.mutation({
       query: (body) => ({
         url: `api/user/${body.id}`,
@@ -237,6 +245,7 @@ export const {
   useLazyGetTutorDetailsQuery,
   useUpdateUserFieldsMutation,
   useGetUserDetailQuery,
+  useAddManagerMutation,
   useUpdateUserDetailsMutation,
   useUpdateTutorDetailsMutation,
   usePostTutorDetailsMutation,

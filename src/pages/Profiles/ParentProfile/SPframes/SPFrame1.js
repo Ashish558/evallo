@@ -10,6 +10,7 @@ import {
 } from "../../../../app/services/users";
 
 import InputSelectNew from "../../../../components/InputSelectNew/InputSelectNew";
+import { object } from "yup";
 
 let signupData = [
   {
@@ -60,14 +61,16 @@ const SPFrame1 = ({
   fetchDetails,
 }) => {
   const [xlsFile, setXlsFile] = useState({});
-
+  
   const {organization}= useSelector((state)=>state.organization)
   const [internal, setInternal] = useState(false);
-  const { awsLink } = useSelector((state) => state.user);
+  const { awsLink,role:persona } = useSelector((state) => state.user);
+  //const user2 = useSelector((state) => state);
+  ////console.log("states",user2)
   const [addDoc, addDocStatus] = useAddAssociatedDocStudentMutation();
   const [updateDetails, updateDetailsResp] = useUpdateUserDetailsMutation();
   const reduceArr = (id, update) => {
-    //  console.log({toEdit})
+    //  //console.log({toEdit})
     let temp = [...toEdit?.whiteBoardLinks?.whiteBoardLinks];
     temp = temp?.filter((item, idd) => idd !== id);
 
@@ -83,25 +86,25 @@ const SPFrame1 = ({
     formData.append("file", xlsFile);
     formData.append("studentId", userDetail?._id);
     addDoc(formData).then((res) => {
-      console.log("docc", res);
+      //console.log("docc", res);
       if (res?.data) {
         alert(res?.data?.message);
         setXlsFile({});
       }
     });
   };
-  //console.log({ settings, userDetail });
+  ////console.log({ settings, userDetail });
   const handleSubmit = (e) => {
     //e.preventDefault();
     // setLoading(true);
     let reqBody = { whiteBoardLinks: e };
     // delete reqBody["active"];
-    console.log({ reqBody, id: userId });
+    //console.log({ reqBody, id: userId });
     const userDetailSave = (reqBody) => {
-      console.log({ reqBody, userDetail });
+      //console.log({ reqBody, userDetail });
       // return
       updateDetails({ id: userId, fields: reqBody }).then((res) => {
-        console.log(res);
+        //console.log(res);
         //setLoading(false);
         fetchDetails(true, true);
         // handleClose()
@@ -110,16 +113,19 @@ const SPFrame1 = ({
 
     userDetailSave(reqBody);
   };
+  //console.log("organisation",organization)
 const handleLeadStatus=(e)=>{
   const reqBody={
     leadStatus:e
   }
   updateDetails({ id: userId, fields: reqBody }).then((res)=>{
-    console.log("leadStatus",e,{res})
+    //console.log("leadStatus",e,{res})
     fetchDetails(true, true);
   })
 }
-  console.log("frame1 Stud", { userDetail, user });
+if(persona==="student"||persona==="parent")
+return <></>
+  //console.log("frame1 Stud", { userDetail, user,persona });
   return (
     <div className="flex w-full justify-between ">
       <div className="flex flex-col gap-3 !w-[calc(813*0.0522vw)]">
@@ -129,7 +135,7 @@ const handleLeadStatus=(e)=>{
               <p className=" text-sm text-[#26435F] font-semibold text-base-20 mb-1 custom-scroller">
                 Internal Notes
               </p>
-              <EditableText
+             {persona==='admin'&& <EditableText
                 editable={editable}
                 onClick={() =>
                   setToEdit({
@@ -140,11 +146,40 @@ const handleLeadStatus=(e)=>{
                 text="Edit"
                 textClassName=" ml-2 text-sm  mx-auto text-center text-[#26435F] text-underline text-base-15 "
                 className="text-sm my-0 flex items-center justify-center text-center   "
-              />
+              />}
             </div>
 
-            <div className="bg-white flex-1 text-base-17-5 p-3 text-[#B5B5B5] h-fit rounded-md shadow-[0px_0px_2.500001907348633px_0px_#00000040]">
-              Add notes about the parent. Here are some ideas to get you
+            <div className="bg-white flex-1 text-base-17-5 p-3 text-[#B5B5B5] h-fit max-h-[200px] overflow-y-auto custom-scroller rounded-md shadow-[0px_0px_2.500001907348633px_0px_#00000040]">
+            {user?.internalNotes?.length>0 ? user?.internalNotes?.map(
+                (item, index) => (
+                  <>
+                     <div key={index} className="flex h-[57px] relative items-center">
+                      <p className="text-[#517CA8]  !font-medium text-[14px] mr-4 w-[calc(143*0.050vw)] text-center !text-[calc(17.5*0.050vw)] whitespace-nowrap">
+                        {item?.note&&
+                          new Date(item.date)
+                            .toDateString()
+                            .split(" ")[1] +
+                            " " +
+                            new Date(item.date)
+                              .toDateString()
+                              .split(" ")[2] +
+                            ", " +
+                            new Date(item.date)
+                              .toDateString()
+                              .split(" ")[3]}
+                      </p>
+                      <div className={` ${styles.actionBorder} items-center`}>
+                        <div className={styles.circle}>
+                          <div className={styles.circle2}></div>
+                        </div>
+                        <p className="pl-4    font-medium text-[#517CA8] text-[15.5px] !text-[calc(17.5*0.050vw)]">
+                          {item?.note}
+                        </p>
+                      </div>
+                    </div>
+                  </>
+                )
+              ):<> Add notes about the parent. Here are some ideas to get you
               started:
               <ul className="list-disc px-4 design:px-5">
                 <li>How did the initial call go?</li>
@@ -153,11 +188,11 @@ const handleLeadStatus=(e)=>{
                 <li>Has the student been tutored before?</li>
                 <li>Do they prefer online or offline tutoring?</li>
                 <li>Does the student have siblings?</li>
-              </ul>
+              </ul></>}
             </div>
           </div>
-          <div className="flex-1 flex flex-col h-fit gap-4">
-            <div className="flex-1  ">
+         <div className="flex-1 flex flex-col h-fit gap-4">
+         {persona==='admin'&&<div className="flex-1  ">
             <div className="flex justify-between">
               <p className=" text-sm text-[#26435F] font-semibold text-base-20 mb-1">
                 Lead Status
@@ -170,44 +205,38 @@ const handleLeadStatus=(e)=>{
                   parentClassName="ml-0 w-full  items-center flex text-[#517CA8] text-xs  whitespace-nowrap "
                   inputContainerClassName="bg-white h-[45px] shadow-[0px_0px_2.500001907348633px_0px_#00000040] my-0 py-[5px] px-[35px]"
                   placeHolderClass="text-[#517CA8] "
-                  labelClassname="text-sm"
+                  labelClassname="text-sm text-base-17-5"
                   inputClassName="bg-transparent"
                   optionContainerClassName="!w-[190px]"
                  
                   ICON2={Drop}
                   value={userDetail?.leadStatus}
-                  optionData={ [
-                    "Open / Raw",
-                    "Interested",
-                    "Not Interested",
-                    "Contacted - No Answer",
-                    "Left Voicemail",
-                    "Completed"
-                  ]}
+                  disabled={persona!=="admin"}
+                  optionData={organization?.settings?.leadStatus}
                   onChange={(e) => {
                     handleLeadStatus(e)
                    
                   }}
                 />
               </div>
-            </div>
+            </div>}
             <div className="flex-1">
             <div className="flex justify-between">
               <p className=" text-sm text-[#26435F] font-semibold text-base-20 mb-1">
                 Services
               </p>
-              <EditableText
+             {persona==="admin"&& <EditableText
                 editable={editable}
                 onClick={() =>
                   setToEdit({
                     ...toEdit,
-                    service: { ...toEdit.service, active: true },
+                    service: { ...toEdit.service,service:organization?.settings?.servicesAndSpecialization?.map((it)=> it?.service) , active: true },
                   })
                 }
                 text="Edit"
                 textClassName=" ml-2 text-sm  mx-auto text-center text-[#26435F] text-underline text-base-15 "
                 className="text-sm my-0 flex items-center justify-center text-center   "
-              />
+              />}
               </div>
               <div className="bg-white flex-1 custom-scroller text-[#517CA8] p-2 text-base-17-5 h-[80px] design:h-[120px] overflow-y-auto rounded-md  shadow-[0px_0px_2.500001907348633px_0px_#00000040] flex flex-col gap-1 justify-start">
                 {userDetail?.service?.map((it, id) => {
@@ -217,7 +246,7 @@ const handleLeadStatus=(e)=>{
             </div>
           </div>
         </div>
-        <div className="">
+        {persona==='admin'&&    <div className="">
           <p className=" text-sm text-[#26435F] font-semibold text-base-20 mb-1">
             Sign up form details
           </p>
@@ -238,7 +267,7 @@ const handleLeadStatus=(e)=>{
               );
             })}
           </div>
-        </div>
+        </div>}
       </div>
       <div className="!w-[calc(757*0.0522vw)]">
         <p className=" text-sm text-[#26435F] font-semibold text-base-20 mb-1">
