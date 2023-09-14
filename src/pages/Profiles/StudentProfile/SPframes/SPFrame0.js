@@ -42,7 +42,7 @@ const SPFrame0 = ({ userDetail, settings, toEdit, setToEdit }) => {
       });
     }
   }, [userDetail]);
-//  console.log({ driveLink, dropLink });
+//  //console.log({ driveLink, dropLink });
   return (
     <div>
       <div className="bg-white mt-7 px-3 py-2 !rounded-md shadow-[0px_0px_2.500001907348633px_0px_#00000040] flex gap-3 justify-between  text-[#24A3D9]">

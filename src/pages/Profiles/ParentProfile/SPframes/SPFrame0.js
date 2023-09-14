@@ -13,7 +13,7 @@ const SPFrame0 = ({ userDetail, settings, toEdit, setToEdit }) => {
   const [getLink, getLinkStatus] = useGetLinkStudentMutation();
  
  
-  //console.log({userDetail});
+  ////console.log({userDetail});
   return (
     <div>
       <div className="bg-white mt-7 px-3 py-6 !rounded-md   shadow-[0px_0px_2.46px_0px_#00000040] flex gap-3 justify-between  text-[#24A3D9]">

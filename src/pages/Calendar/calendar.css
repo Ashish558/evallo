@@ -97,7 +97,7 @@
   justify-content: center;
 }
 .calender .fc .fc-timegrid-slot {
-  height: 2.5rem !important;
+  height: 3rem !important;
 }
 .calender .fc .fc-timegrid-slot-label {
   display: block;
@@ -214,11 +214,11 @@
 
 .calender .timegrid-slot-label-cushion {
   padding: 0px 0px;
-  font-size: 1.2rem;
+  font-size: 1rem;
 }
 .calender .fc .fc-col-header-cell-cushion {
-  font-size: 16px !important;
-  margin-top: .7rem !important;
+  font-size: 14.6px !important;
+  margin-top: .5rem !important;
 }
 .calendar .react-calendar .react-calendar__navigation__label__labelText.react-calendar__navigation__label__labelText--from{
     color: #26435F !important;
@@ -341,13 +341,13 @@
   margin-right: 15rem !important;
 }
 .calendar .fc .fc-timegrid-axis-frame {
-  margin-top:10px !important ;
-  margin-left: 15px !important;
-  content: url('../../../public/time.png') !important;
+  margin-top:12px !important ;
+  margin-left: 19px !important;
+  content: url('../../assets/YIcons/timeC.svg') !important;
 }
 .calendar .fc .fc-timegrid-slot-label-cushion {
   font-weight: 500 !important;
-  font-size: 16px !important;
+  font-size: 14.6px !important;
 
 
 }

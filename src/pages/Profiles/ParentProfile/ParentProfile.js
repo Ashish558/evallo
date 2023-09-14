@@ -330,8 +330,8 @@ const [toEdit, setToEdit] = useState({
       userId = params.id;
     }
     getUserDetail({ id: userId }).then((res) => {
-      console.log("details -- ", res.data.data);
-      // console.log('tut id', id);
+      //console.log("details -- ", res.data.data);
+      // //console.log('tut id', id);
       if (res.data.data.user.assiginedTutors) {
         if (res.data.data.user.assiginedTutors?.includes(id)) {
           setEditable(true);
@@ -358,7 +358,7 @@ const [toEdit, setToEdit] = useState({
       assiginedStudents !== undefined &&
         assiginedStudents.map((student) => {
           getUserDetail({ id: student }).then((res) => {
-           // console.log({[id]:res})
+           // //console.log({[id]:res})
             studentsData.push({
               _id: res.data.data.user._id,
               value: `${res.data.data.user.firstName} ${res.data.data.user.lastName}`,
@@ -452,7 +452,7 @@ const [toEdit, setToEdit] = useState({
   useEffect(() => {
     fetchSettings().then((res) => {
       if (res.error) {
-        console.log("settings fetch err", res.error);
+        //console.log("settings fetch err", res.error);
         return;
       }
       setSettings(res.data.data.setting);
@@ -460,7 +460,7 @@ const [toEdit, setToEdit] = useState({
   }, []);
   
   const handleProfilePhotoChange = (file) => {
-    // console.log(file)
+    // //console.log(file)
     let url = "";
     const formData = new FormData();
     formData.append("photo", file);
@@ -472,25 +472,25 @@ const [toEdit, setToEdit] = useState({
     axios
       .patch(url, formData, { headers: getAuthHeader() })
       .then((res) => {
-        // console.log(res)
+        // //console.log(res)
         fetchDetails();
       })
       .catch((err) => {
-        console.log(err);
+        //console.log(err);
       });
   };
 
   useEffect(() => {
-    // console.log(userDetail.timeZone);
+    // //console.log(userDetail.timeZone);
     if (userDetail.timeZone === undefined) return;
     dispatch(updateTimeZone({ timeZone: userDetail.timeZone }));
   }, [userDetail.timeZone]);
 
-  // console.log(user)
-  // console.log(userDetail)
-  // console.log('associatedParent', associatedParent)
-  // console.log('isEditable', editable)
-  // console.log(settings)
+  // //console.log(user)
+  // //console.log(userDetail)
+  // //console.log('associatedParent', associatedParent)
+  // //console.log('isEditable', editable)
+  // //console.log(settings)
 
   useEffect(() => {
     if (user.assiginedStudents === undefined) return;
@@ -516,7 +516,7 @@ const [toEdit, setToEdit] = useState({
   useEffect(() => {
     fetchDetails();
   }, [params.id]);
-console.log({user,userDetail})
+//console.log({user,userDetail})
   return (
     <>
       <div className={`mx-[80px] min-h-screen design:mx-[160px] pb-[70px]`}>

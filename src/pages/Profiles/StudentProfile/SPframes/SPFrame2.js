@@ -24,7 +24,7 @@ const SPFrame2 = ({
   const reduceArr = (id,key, update) => {
    
     
-    //  console.log({toEdit})
+    //  //console.log({toEdit})
     let temp=[]
 if(!toEdit[key] || !toEdit[key][key]) return 
        temp = [...toEdit[key][key]];
@@ -38,7 +38,7 @@ if(!toEdit[key] || !toEdit[key][key]) return
     
     if(userId){
       getHours(userId).then((res)=>{
-        console.log("tutored ",res)
+        //console.log("tutored ",res)
       })
     }
   },[userId])
@@ -47,13 +47,13 @@ if(!toEdit[key] || !toEdit[key][key]) return
    // setLoading(true);
     let reqBody = { [key]:e };
    // delete reqBody["active"];
-   //  console.log({reqBody,id:userId});
+   //  //console.log({reqBody,id:userId});
     const userDetailSave = (reqBody) => {
     
-      // console.log({reqBody,userDetail});
+      // //console.log({reqBody,userDetail});
       // return
       updateDetails({ id:userId, fields: reqBody }).then((res) => {
-      //  console.log(res);
+      //  //console.log(res);
         //setLoading(false);
         fetchDetails(true, true);
         // handleClose()
@@ -64,7 +64,7 @@ if(!toEdit[key] || !toEdit[key][key]) return
    
     
   };
-  console.log("frame2", settings, userDetail);
+  //console.log("frame2", settings, userDetail);
 
  
   return (

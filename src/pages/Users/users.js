@@ -47,7 +47,7 @@ import LoaderNew from "../../components/Loader/LoaderNew";
 
 const optionData = ["option 1", "option 2", "option 3", "option 4", "option 5"];
 
-const userTypeOptions = ["Tutor", "Parent", "Student", "Contributor", "Manager"];
+const userTypeOptions = ["Tutor", "Parent", "Student", "Contributor"];
 
 const initialState = {
   email: "",
@@ -111,7 +111,7 @@ export default function Users() {
 
     setFilteredUsersData((prev) => {
       let arr = [...prev];
-      console.log("arr", arr);
+      //console.log("arr", arr);
       arr = arr.sort(function (a, b) {
         if (a.name < b.name) {
           return -1;
@@ -253,7 +253,7 @@ export default function Users() {
       urlParams = urlParams + `&search=${filterData.typeName}`;
     }
 
-    console.log("urlParams", urlParams);
+    //console.log("urlParams", urlParams);
     fetchUsers(urlParams).then((res) => {
       if (res?.data?.data) setTotalPages(res?.data?.data?.total_users);
 
@@ -261,7 +261,7 @@ export default function Users() {
       const fetchDetails = async () => {
         let tempData = [];
         await res?.data?.data?.user?.map(async (user) => {
-          console.log("user",user)
+          //console.log("user",user)
           let obj = {
             _id: user._id,
             block: user.block,
@@ -290,7 +290,7 @@ export default function Users() {
 
     });
   };
-  console.log("filteredUsers", filteredUsersData);
+  //console.log("filteredUsers", filteredUsersData);
   const fetchTutors = () => {
     let urlParams = `?role=tutor`;
 
@@ -400,7 +400,7 @@ export default function Users() {
     } else {
       let tempFilterData = { ...filterData };
       tempFilterData[key] = "";
-      console.log("tempFilterData", tempFilterData);
+      //console.log("tempFilterData", tempFilterData);
       setFilterData(tempFilterData);
     }
   };
@@ -437,10 +437,10 @@ export default function Users() {
     };
     setLoading(true);
     if (modalData.userType === "tutor") {
-      console.log(body);
+      //console.log(body);
       body.role = modalData.userType.toLowerCase();
       addUser(body).then((res) => {
-        console.log(res);
+        //console.log(res);
         setLoading(false);
         if (res.error) {
           alert(res.error.data.message);
@@ -454,10 +454,10 @@ export default function Users() {
       return;
     } else {
       body.role = modalData.userType.toLowerCase();
-      console.log(body);
+      //console.log(body);
       addUser(body).then((res) => {
         setLoading(false);
-        console.log(res);
+        //console.log(res);
         if (res.error) {
           alert(res.error.data.message);
           return;
@@ -484,7 +484,7 @@ export default function Users() {
   };
 
   const handleTutorStatus = (item) => {
-    console.log(item);
+    //console.log(item);
     if (item.block === false) {
       blockUser({ id: item._id }).then((res) => {
         if (res.data.status === "success") {
@@ -525,9 +525,9 @@ export default function Users() {
       setDeleteLoading(false);
       setDeleteModalActive(false);
       if (res.error) {
-        return console.log(res.error);
+        return //console.log(res.error);
       }
-      console.log(res.data);
+      //console.log(res.data);
       fetch();
     });
   };
@@ -577,12 +577,12 @@ export default function Users() {
       specs.push(...service.specialization);
     });
     setSpecializations(specs);
-    console.log("specs", specs);
+    //console.log("specs", specs);
   }, [settings]);
 
   const handleTutorChange = (item) => {
-    console.log("item", item);
-    console.log("filterData tutor", filterData.tutor);
+    //console.log("item", item);
+    //console.log("filterData tutor", filterData.tutor);
     if (filterData.tutor.includes(item.value)) {
       let updated = filterData.tutor.filter((tutor) => tutor !== item.value);
       setFilterData({
@@ -647,7 +647,7 @@ export default function Users() {
           headers: getAuthHeader(),
         })
         .then((res) => {
-          console.log("uploaded")
+          //console.log("uploaded")
           alert("File Uploaded");
           //setBulkUpload(false)
 
@@ -674,7 +674,7 @@ export default function Users() {
           // setXlsFile(undefined);
         })
         .catch((err) => {
-          console.log("error in bulk upload and invite");
+          //console.log("error in bulk upload and invite");
           setXlsFile(undefined);
           setInviteUsers(false);
         });

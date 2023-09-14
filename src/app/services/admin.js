@@ -94,7 +94,7 @@ export const adminServicesApi = createApi({
       }),
      getCalenderInsight: builder.query({
          query: (body) => ({
-            url: `/api/user/admin/getTutorSessionDetails?userName=${body}`,
+            url: `/api/user/admin/getTutorSessionDetails?userName=${body.name}&userId=${body.id}`,
             method: "GET",
             headers: getAuthHeader()
          })

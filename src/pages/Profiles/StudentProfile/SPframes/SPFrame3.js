@@ -9,7 +9,7 @@ import { useEffect } from "react";
 import RangeDate from "../../../../components/RangeDate/RangeDate";
 import InputSelectNew from "../../../../components/InputSelectNew/InputSelectNew";
 import { useParams } from "react-router-dom";
-const SPFrame3 = ({ userDetail  }) => {
+const SPFrame3 = ({ userDetail ,isOwn }) => {
   const [getProgression, Progstatus] = useScoreProgressionStudentMutation();
   const [scoreProgression, setScore] = useState([]);
   const [spSubject, setspSubject] = useState([]);
@@ -33,10 +33,18 @@ setId(userDetail?._id)
  const [officialTest,setOfficial]=useState("SAT")
   useEffect(() => {
     if (id) {
-     // console.log({id,hud:userDetail?._id})
-      getProgression({ studentId: userDetail?._id , testType: officialTest }).then(
+     // //console.log({id,hud:userDetail?._id})
+      // 
+      let idd="";
+      if (isOwn) {
+        idd = userDetail?._id;
+      } else {
+        idd = param.id;
+      }
+       //console.log({idd,hid:userDetail?._id})
+      getProgression({ studentId: idd , testType: officialTest }).then(
         (res) => {
-          console.log("progression", res);
+          //console.log("progression res", res);
           if (res?.data?.scoreProgression) setScore(res?.data?.scoreProgression);
         }
       );
@@ -86,7 +94,7 @@ setId(userDetail?._id)
     });
     setSubjects(updated);
   };
- // console.log("sprame3",{spSubject})
+ // //console.log("sprame3",{spSubject})
   return (
     <div className="flex flex-col gap-5 -mt-5">
       {" "}
