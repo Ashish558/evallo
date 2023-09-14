@@ -94,6 +94,7 @@ export default function Calendar() {
   const slides = document.getElementsByClassName(
     "fc-timegrid-slot-label-cushion fc-scrollgrid-shrink-cushion"
   );
+
   //  console.log(document.getElementsByClassName('fc-timegrid-slot-label-cushion fc-scrollgrid-shrink-cushion'));
   for (var i = 0; i < slides.length; i++) {
     const item = slides.item(i);
@@ -579,29 +580,39 @@ export default function Calendar() {
   const eventContent = (arg) => {
 
     const description = arg.event._def.extendedProps.description;
+    // console.log(description)
     let background = "blue";
     let isCompleted = false;
+    let isMissed = false;
+    let isCancelled = false;
     if (arg.event._def.extendedProps.sessionStatus === "Completed") {
       isCompleted = true;
     }
+    if (arg.event._def.extendedProps.sessionStatus === "Missed") {
+      isMissed = true;
+    }
+    if (arg.event._def.extendedProps.sessionStatus === "Cancelled") {
+      isCancelled = true;
+    }
 
     return (
-      <div className="p-0.5 h-full">
+      <div className="">
         <div
-          className="bg- h-full p-2 rounded-lg"
-          style={{ background: 'blue' }}
+          className={`border-t-[3px]  h-full px-2 py-1 rounded-5  ${isCompleted ? "bg-[rgba(36,163,217,0.2)] border-t-[#FFCE84]" : `${isMissed ? 'bg-[rgba(255,162,141,0.20)] border-t-[#7C98B6]' : `${isCancelled ? 'bg-[rgba(36,163,217,0.2)] border-t-[#E97451]' : 'bg-[rgba(255,162,141,0.20)] border-t-[#38C980]'}`}`
+            } `}
+
         >
           <p
-            className={`text-primary font-semibold text-sm ${isCompleted ? "line-through" : ""
+            className={`text-[#507CA8]  text-sm ${isCompleted ? "line-through" : ""
               } `}
           >
             {" "}
             {arg.event._def.title}{" "}
           </p>
           {/* <p className='text-black opacity-60 text-xs'> {arg.timeText} </p> */}
-          <p className="text-black opacity-60 text-xs"> {description} </p>
+          <p className="text-[#26435F] text-sm"> {description} </p>
         </div>
-      </div>
+      </div >
     );
   };
 
@@ -915,7 +926,7 @@ export default function Calendar() {
   }, [events, students]);
 
   const [exp, setExp] = useState(null);
-  
+
   const toggleAccordions = (id) => {
     const currentRef = accordionRefs.current[id];
     const isExpanded = currentRef.style.width;
@@ -961,7 +972,7 @@ export default function Calendar() {
   };
   return (
     <>
-      <div className="lg:ml-pageLeft calender bg-lightWhite min-h-screen" id={persona}>
+      <div className="lg:ml-pageLeft calender  min-h-screen" id={persona}>
         <p className="text-[#24A3D9] text-xl mb-[30px] mt-[50px] pl-5">
           {organization?.company +
             "  >  " +
@@ -1271,7 +1282,7 @@ export default function Calendar() {
               headerToolbar={{
                 start: "prevButton title nextButton",
                 center: "",
-                end: "timeGridWeek,dayGridMonth",
+                end: "timeGridWeek,dayGridMonth"
               }}
               titleFormat={{
                 day: '2-digit',
