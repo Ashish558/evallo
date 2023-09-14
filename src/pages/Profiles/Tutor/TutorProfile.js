@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import ProfileCard from '../../../components/ProfileCard/ProfileCard'
 import styles from './style.module.css'
 import EditableText from '../../../components/EditableText/EditableText'
-
+import dots from '../../../assets/icons/four-dot.svg'
 import ProfileImg from '../../../assets/images/profile.png'
 import TutorImg from '../../../assets/images/tutor.png'
 import TutorSmallImg from '../../../assets/images/tutor-small.png'
@@ -75,11 +75,12 @@ export default function TutorProfile({ isOwn }) {
    const { id } = useSelector(state => state.user)
    const [studentFeedbacks, setStudentFeedbacks] = useState([])
    useEffect(() => {
-      getStudentFeedback()
+      getStudentFeedback({id:id})
          .then(({ error, data }) => {
             if (error) {
                return console.log(error);
             }
+            console.log(studentFeedbacks)
             setStudentFeedbacks(data)
 
          })
@@ -793,7 +794,7 @@ export default function TutorProfile({ isOwn }) {
                               </div>
                            </div>
                         } />
-
+                     <div className='flex justify-center mx-auto mt-5'><img className='inline-block' src={dots} alt="" /></div>
                   </div>
 
 
@@ -857,7 +858,7 @@ export default function TutorProfile({ isOwn }) {
                         } />
                   </div>
                </div>
-               <div class="mt-20 border-4 ml-20 mr-20 border-t border-[#CBD6E2]-300 justify-center border-dotted"></div>
+               <div class="mt-[50px] border-4 mx-[40px]  border-t border-[#CBD6E2]-300 justify-center border-dotted"></div>
                {/* address row */}
                <div className='flex justify-between mt-[55px] gap-x-[37px]'>
                   <div className='w-[60.32vw]'>
@@ -1223,7 +1224,7 @@ export default function TutorProfile({ isOwn }) {
                   } */}
 
             {/* rates */}
-            {
+            {/* {
                persona === 'admin' &&
                <ProfileCard hideShadow
                   className='col-span-3 mt-6 lg:mt-0  max-h-[300px] overflow-y-auto scrollbar-content'
@@ -1306,11 +1307,11 @@ export default function TutorProfile({ isOwn }) {
                   }
                />
 
-            }
-            {
+            } */}
+            {/* {
                persona === 'admin' &&
                <FeedbackTable feedbacks={feedbacks} />
-            }
+            } */}
 
 
             {/* </div>

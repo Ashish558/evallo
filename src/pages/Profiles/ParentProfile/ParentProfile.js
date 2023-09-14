@@ -779,16 +779,19 @@ const [toEdit, setToEdit] = useState({
             id="borderDashed"
             className="border !border-[#CBD6E3] w-[calc(1500*0.0522vw)] mx-auto my-[calc(50*0.0522vw)]"
           ></div>
-          <SPFrame1
-          user={user}
-            userDetail={userDetail}
-            settings={settings}
-            userId={isOwn ? id : params.id}
-            editable={editable}
-            fetchDetails={fetchDetails}
-            setToEdit={setToEdit}
-            toEdit={toEdit}
-          />
+          {
+            persona === "admin" &&  <SPFrame1
+            user={user}
+              userDetail={userDetail}
+              settings={settings}
+              userId={isOwn ? id : params.id}
+              editable={editable}
+              fetchDetails={fetchDetails}
+              setToEdit={setToEdit}
+              toEdit={toEdit}
+            />
+          }
+         
         </div>
       </div>
 

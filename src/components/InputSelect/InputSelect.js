@@ -5,6 +5,8 @@ import UpArrow from "../../assets/icons/chevron-up-solid (1).svg";
 import useOutsideAlerter from "../../hooks/useOutsideAlerter";
 import CCheckbox from "../CCheckbox/CCheckbox";
 import questionMark from "../../assets/images/question-mark.svg";
+import { useSelector } from "react-redux";
+
 export default function InputSelect({
   parentClassName,
   Icon,

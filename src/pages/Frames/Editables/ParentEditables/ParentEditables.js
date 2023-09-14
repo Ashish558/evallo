@@ -234,7 +234,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
       },
       {
          name: 'videoLink',
-         title: 'Youtube Link',
+         title: 'Tutor Highlight Video',
          api: 'tutorDetail',
       },
    ]
@@ -540,14 +540,15 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
    // console.log(settings);
    const [startDate, setStartDate] = useState(new Date());
 
-   const forCss = ['profileData', 'interest', 'serviceSpecializations']
+   const forCss = ['profileData', 'interest', 'serviceSpecializations', 'videoLink']
    return (
 
       Object.keys(toEdit).map(key => {
          return toEdit[key].active === true &&
             <Modal
+               underline={true}
                key={key}
-               classname={forCss.includes(currentField.name) ? "max-w-[900px] md:pb-5 mx-auto overflow-visible pb-5" : "max-w-[500px] md:pb-5 mx-auto overflow-visible pb-5"} /*{ ` max-w-[900px] md:pb-5 mx-auto overflow-visible pb-5`}*/
+               classname={forCss.includes(currentField.name) ? "max-w-[57.6041666667vw] md:pb-5 mx-auto overflow-visible pb-5" : "max-w-[500px] md:pb-5 mx-auto overflow-visible pb-5"} /*{ ` max-w-[900px] md:pb-5 mx-auto overflow-visible pb-5`}*/
                title=''
 
                // primaryBtn={{
@@ -560,14 +561,17 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                // }}
                cancelBtnStyle={{ top: '18px' }}
                handleClose={handleClose}
+               crossBtn={true}
                body={
                   <>
-                     <div className='flex'>
+                     <div className='flex items-center'>
                         <div className='text-[#26435F] font-semibold text-[21.33px]' >
                            {currentField.title ? currentField.title : toEdit.tutorServices ? 'Service' : ''}
                         </div>
                         <button className='w-[100px] bg-[#FFA28D] text-base pt-2 rounded text-white pb-2  pl-3 pr-3 ml-auto' onClick={handleSubmit}>
-                           Save
+                           {
+                              currentField.title == "Address" ? 'Add' : 'Save'
+                           }
                         </button>
                      </div>
                      <div className="mt-[18px] border-1 border-t border-[#26435F33] justify-center "></div>
@@ -1113,7 +1117,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                                  <InputField
                                     labelClassname='hidden'
                                     placeholder=''
-                                    inputContainerClassName='text-sm pt-3 pb-3 px-5 bg-primary-50 border-0'
+                                    inputContainerClassName='text-[16px] pt-3 pb-3 px-5 bg-primary-50 border-0'
                                     inputLeftField={
                                        <div>
                                           $
@@ -1791,9 +1795,10 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                            </div>
                         }
                         {currentField.name === "videoLink" &&
-                           <div>
+                           <div >
+                              <p className="text-lg text-[#26435F] font-medium">YouTube Video Link</p>
                               <input
-                                 placeholder=""
+                                 placeholder="Paste the YouTube link of a video highlighting your tutor or your tutoring company."
                                  value={currentToEdit.videoLink}
                                  onChange={e =>
                                     setCurrentToEdit({ ...currentToEdit, videoLink: e.target.value })
