@@ -1018,7 +1018,9 @@ const [toEdit, setToEdit] = useState({
             id="borderDashed"
             className="border !border-[#CBD6E3] w-[calc(1500*0.0522vw)] mx-auto my-[calc(50*0.0522vw)]"
           ></div>
-           <SPFrame4 isOwn={isOwn} userDetail={userDetail}        
+           {
+            persona === "admin"  &&
+            <SPFrame4 isOwn={isOwn} userDetail={userDetail}        
                 fetchDetails={fetchDetails}
                 user={user}
             setSelectedScoreIndex={setSelectedScoreIndex}
@@ -1028,7 +1030,7 @@ const [toEdit, setToEdit] = useState({
           
             setToEdit={setToEdit}
             toEdit={toEdit} />
-          
+           }
           </div>
         </div>
 

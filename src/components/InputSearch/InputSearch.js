@@ -35,7 +35,7 @@ export default function InputSearch({
    // console.log('value', value);
    // console.log('optionData', optionData);
    useOutsideAlerter(inputRef, handleClose)
- 
+
    return (
       <div className={` ${parentClassName && parentClassName}`} ref={inputRef} >
          <label
@@ -49,6 +49,9 @@ export default function InputSearch({
                }`}
          >
             {Icon && <img src={Icon} className="mr-6" />}
+            {
+               IconRight && <img src={SeacrchIcon} className="mr-4" />
+            }
             {inputLeftField && inputLeftField}
             <input disabled={disabled}
                className={`outline-0 w-full ${inputClassName ? inputClassName : ""}`}
@@ -61,13 +64,15 @@ export default function InputSearch({
                onFocus={() => setOptionsVisible(true)}
             // onBlur={()=> setOptionsVisible(false)}
             />
-            <img src={SeacrchIcon} className="ml-4" />
+            {
+               IconRight || <img src={SeacrchIcon} className="ml-4" />
+            }
             {right && right}
 
             {optionsVisible &&
                <div className={`${styles.options} scrollbar-content scrollbar-vertical shadow-xl rounded-t-none`}>
                   {optionData.map((option, idx) => {
-               
+
                      return (
                         <div className='outline-0  border-0 py-2 px-4 flex justify-between' key={idx}
                            onClick={() => { return checkbox ? onOptionClick(option) : (onOptionClick(option), handleClose()) }}

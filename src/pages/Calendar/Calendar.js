@@ -595,8 +595,11 @@ setColorMapping(temp);
   };
   const eventContent = (arg) => {
     const description = arg.event._def.extendedProps.description;
+    // console.log(description)
     let background = "blue";
     let isCompleted = false;
+    let isMissed = false;
+    let isCancelled = false;
     if (arg.event._def.extendedProps.sessionStatus === "Completed") {
       isCompleted = true;
     }
@@ -653,7 +656,7 @@ setColorMapping(temp);
             {description}{" "}
           </p>
         </div>
-      </div>
+      </div >
     );
   };
 
@@ -1450,7 +1453,7 @@ setColorMapping(temp);
               headerToolbar={{
                 start: "prevButton title nextButton",
                 center: "",
-                end: "timeGridWeek,dayGridMonth",
+                end: "timeGridWeek,dayGridMonth"
               }}
               titleFormat={{
                 day: "2-digit",
