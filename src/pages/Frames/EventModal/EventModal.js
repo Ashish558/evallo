@@ -669,8 +669,8 @@ export default function EventModal({
                   tutorServs.push(item.service)
                }
             })
-            // console.log('allServicesAndSpec', allServicesAndSpec);
-            // console.log('services', services);
+             console.log('allServicesAndSpec', allServicesAndSpec);
+             console.log('services',details.tutorServices, services);
             setServicesAndSpecialization(tutorServs)
          })
       // }
@@ -679,14 +679,14 @@ export default function EventModal({
 
    useEffect(() => {
       // console.log('all', allServicesAndSpec)
-      // console.log('servicesAndSpecialization', servicesAndSpecialization)
+       console.log('servicesAndSpecialization', servicesAndSpecialization)
       let specs = []
       allServicesAndSpec.map(item => {
          if (item.service === data.service) {
             specs = item.specialization
          }
       })
-      // console.log('spec', specs)
+       console.log('spec', specs)
       setSpecializations(specs)
    }, [servicesAndSpecialization, data.service, allServicesAndSpec])
 
