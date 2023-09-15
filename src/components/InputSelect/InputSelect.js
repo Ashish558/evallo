@@ -29,7 +29,8 @@ export default function InputSelect({
   IconLeft,
   DateSelect,
   IconSearch,
-  tableDropdown
+  tableDropdown,
+  customArrow
 }) {
   const [selected, setSelected] = useState(false);
   const selectRef = useRef();
@@ -90,8 +91,8 @@ export default function InputSelect({
             IconRight
           ) : !IconLeft && (
             <img
-              src={UpArrow}
-              className={`w-[15px] h-[12px]  ${styles.downArrow}`}
+            src={customArrow ? customArrow :DownArrow}
+            className={`${customArrow ?`w-[20px] h-[20px] rotate-180`:`w-[15px] h-[12px]`}   ${styles.downArrow}`}
               alt="down-arrow"
             />
           )
@@ -99,8 +100,8 @@ export default function InputSelect({
           IconRight
         ) : !IconLeft && (
           <img
-            src={DownArrow}
-            className={`w-[15px] h-[12px]   ${styles.downArrow}`}
+            src={customArrow ? customArrow :DownArrow}
+            className={`${customArrow ?`w-[20px] h-[20px]`:`w-[15px] h-[12px]`}   ${styles.downArrow}`}
             alt="down-arrow"
           />
         )}
@@ -111,12 +112,12 @@ export default function InputSelect({
           name={label}
         >
           {value === "" || !value ? (
-            <span className={`text-[#667085] text-[17.5px] whitespace-nowrap ${tableDropdown ? 'mr-0' : 'mr-10'} ${placeholderClass} text-base-17-5`}>
+            <span className={`text-[#667085] .text-base-17-5 whitespace-nowrap ${tableDropdown ? 'mr-0' : 'mr-10'}  ${placeholderClass} `}>
               {" "}
               {placeholder}{" "}
             </span>
           ) : (
-            <span className={`mr-10 text-[17.5px] whitespace-nowrap ${tableDropdown ? 'mr-0' : 'mr-10'}  ${placeholderClass} text-base-17-5`}>{value}</span>
+            <span className={`mr-10 .text-base-17-5 whitespace-nowrap ${tableDropdown ? 'mr-0' : 'mr-10'}  ${placeholderClass} `}>{value}</span>
           )}
         </div>
         {selected && (

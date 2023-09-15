@@ -50,7 +50,7 @@ export default function Modal({
                      }`}
                   >
                      <div >
-                        <p className={`font-semibold text-xl md:text-[21px] text-center text-[#26435F]
+                        <p className={`font-semibold text-xl md:text-[21px] text-left text-[#26435F]
                ${titleClassName ? titleClassName : "mb-[18px]"}`}
                         >
                            {title}

@@ -126,9 +126,9 @@
 /* #student .calendar th{
   background-color: white !important;
 } */
- .fc-daygrid th{
+ /* .fc-daygrid th{
   background: rgb(243 245 247) !important;
-}
+} */
 /* #student .fc-daygrid th{
   background: rgb(243 245 247) !important;
 } */
@@ -146,7 +146,7 @@
   height: 3rem !important;
 }
 .calender .fc-theme-standard .fc-timeGridWeek-view .fc-scrollgrid{
-  border: 2px solid white !important;
+  border-right: .2px solid white !important;
 }
 .calender .fc-theme-standard .fc-daygrid .fc-scrollgrid{
   border: 2px solid white !important;
@@ -155,6 +155,7 @@
  .calender .fc-theme-standard td
  {
   border: 2px solid #F5F8FA  !important;
+  padding-bottom: 2px!important;
   }
 
  #student  .fc-theme-standard .fc-timeGridWeek-view td
@@ -184,18 +185,23 @@
   background-color: #fff !important;
   color: #adb8cc !important;
 }
+.calender .fc .fc-button-primary::first-letter {
+text-transform: uppercase;
+}
 .calender .fc .fc-button-primary:hover {
   background-color: #fff !important;
   border-color: #fff !important;
   color: #ffa28d !important;
 }
 .calender .fc-timeGridWeek-button {
-  border-radius: 20px 0px 0px 20px !important;
+  border-radius: 0px 20px 20px 0px !important;
   border: 1px solid #f5f6f7 !important;
 }
-.calender .fc-dayGridMonth-button {
 
-  border: 1px solid #f5f6f7 !important;
+.calender .fc-dayGridMonth-button {
+  border-radius: 20px 0px 0px 20px !important;
+  border: 0px solid #f5f6f7 !important;
+  margin: 0px;
 }
 
 .calender .calendar-prev-button {
@@ -260,6 +266,7 @@
 .calender .fc .fc-timegrid-slot-label{
   display: revert !important;
   vertical-align: baseline !important;
+  border: 3px solid rgba(245, 248, 250, 1)!important;
 }
 .calendar .react-calendar .react-calendar__navigation__arrow.react-calendar__navigation__prev-button, .react-calendar .react-calendar__navigation__arrow.react-calendar__navigation__next-button{
   display: none !important;
@@ -350,4 +357,8 @@
   font-size: 14.6px !important;
 
 
+}
+
+.fc-daygrid-day-frame {
+  background-color: white;
 }
