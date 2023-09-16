@@ -1041,9 +1041,8 @@ setColorMapping(temp);
     }
   };
 
-  //////console.log('filteredEvents events details', filteredEvents,events);
-  //////console.log('events', events);
-  ////console.log('eventDetails',insightData,defaultEventData,alldetails,userDetail);
+  
+  console.log('eventDetails',insightData,defaultEventData,alldetails,userDetail,associatedStudents);
   const map = [];
   useEffect(() => {
     if (tutors) {

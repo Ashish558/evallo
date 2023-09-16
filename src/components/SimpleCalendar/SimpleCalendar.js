@@ -45,7 +45,7 @@ export default function SimpleCalendar({ currentDate, setCurrentDate, events }) 
             }
 
          />
-         <InputSearch
+         {/* <InputSearch
 
             value=""
             IconRight={true}
@@ -83,7 +83,7 @@ export default function SimpleCalendar({ currentDate, setCurrentDate, events }) 
                <p className="text-[#7C98B6] text-[25px] mt-2">0</p>
 
             </div>
-         </div>
+         </div> */}
       </>
    );
 }
