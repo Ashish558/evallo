@@ -7,22 +7,23 @@ import RightIcon from '../../assets/calendar/right.svg'
 import InputSearch from "../InputSearch/InputSearch";
 import upRed from '../../assets/icons/up-red.svg'
 import downBlue from '../../assets/icons/down-blue.svg'
+import { useSelector } from "react-redux";
 
 export default function SimpleCalendar({ currentDate, setCurrentDate, events }) {
-
+   const { role: persona } = useSelector((state) => state.user);
    const changeDate = (e) => {
       setCurrentDate(e);
    };
 
    const currentDate2 = new Date();
    const firstDayOfMonth = new Date(currentDate2.getFullYear(), currentDate2.getMonth(), 1);
- 
+
    const tileClassName = ({ date }) => {
-     // Check if the date is before the first day of the current month
-     if (date < firstDayOfMonth) {
-       return 'grayed-out-date'; // Apply a CSS class for grayed-out dates
-     }
-     return '';
+      // Check if the date is before the first day of the current month
+      if (date < firstDayOfMonth) {
+         return 'grayed-out-date'; // Apply a CSS class for grayed-out dates
+      }
+      return '';
    };
    useEffect(() => {
       const els = document.querySelectorAll('.calendar-dot')
@@ -50,7 +51,7 @@ export default function SimpleCalendar({ currentDate, setCurrentDate, events }) 
          <Calendar value={currentDate} onChange={changeDate}
             prevLabel={<img src={LeftIcon} />}
             nextLabel={<img src={RightIcon} />}
-            formatShortWeekday={(locale, value) => ['S','S', 'M', 'T', 'W', 'T', 'F', ][value.getDay()]
+            formatShortWeekday={(locale, value) => ['S', 'S', 'M', 'T', 'W', 'T', 'F',][value.getDay()]
             }
             tileClassName={tileClassName}
          />
@@ -68,31 +69,36 @@ export default function SimpleCalendar({ currentDate, setCurrentDate, events }) 
             placeholder="Search User"
 
          />
+         {
+            persona !== "parent" && persona !== "student" ?
+               <>
+                  <div className="px-[17px] py-[21px] bg-[rgba(36,163,217,0.20)] flex justify-between rounded-5 mt-[30px]">
+                     <p className="text-xl text-[#24A3D9] font-semibold">{`{Associated User 1}`}</p>
+                     <img className="inline-block" src={downBlue} alt="" srcset="" />
+                  </div>
+                  <div className="mt-[30px] bg-white ">
+                     <div className="px-[17px] py-[21px] bg-[rgba(255,162,141,0.20)] flex justify-between rounded-tr-5 rounded-tl-5">
+                        <p className="text-xl text-[#FFA28D] font-semibold">{`{Associated User 2}`}</p>
+                        <img className="inline-block" src={upRed} alt="" srcset="" />
 
-         <div className="px-[17px] py-[21px] bg-[rgba(36,163,217,0.20)] flex justify-between rounded-5 mt-[30px]">
-            <p className="text-xl text-[#24A3D9] font-semibold">{`{Associated User 1}`}</p>
-            <img className="inline-block" src={downBlue} alt="" srcset="" />
-         </div>
-         <div className="mt-[30px] bg-white ">
-            <div className="px-[17px] py-[21px] bg-[rgba(255,162,141,0.20)] flex justify-between rounded-tr-5 rounded-tl-5">
-               <p className="text-xl text-[#FFA28D] font-semibold">{`{Associated User 2}`}</p>
-               <img className="inline-block" src={upRed} alt="" srcset="" />
+                     </div>
+                     <div className="p-[17px] mb-5 rounded-br-5 rounded-bl-5">
+                        <p className="text-xl text-[#26435F] font-medium">{`{Associated Heading}`}</p>
+                        <p className="text-[#7C98B6] text-[17.5px] mt-3">{`{Associated Heading}`}</p>
+                        <p className="text-xl text-[#38C980] font-medium mt-8">Hours Completed</p>
+                        <p className="text-[#38C980]  text-[25px] mt-2">1</p>
+                        <p className="text-xl text-[#FF7979] font-medium mt-8">Hours Missed</p>
+                        <p className="text-[#FF7979] text-[25px] mt-2">0</p>
+                        <p className="text-xl text-[#FFCE84] font-medium mt-8">Hours Canceled</p>
+                        <p className="text-[#FFCE84] text-[25px] mt-2">0</p>
+                        <p className="text-xl text-[#7C98B6] font-medium mt-8">Hours Scheduled</p>
+                        <p className="text-[#7C98B6] text-[25px] mt-2">0</p>
 
-            </div>
-            <div className="p-[17px] mb-5 rounded-br-5 rounded-bl-5">
-               <p className="text-xl text-[#26435F] font-medium">{`{Associated Heading}`}</p>
-               <p className="text-[#7C98B6] text-[17.5px] mt-3">{`{Associated Heading}`}</p>
-               <p className="text-xl text-[#38C980] font-medium mt-8">Hours Completed</p>
-               <p className="text-[#38C980]  text-[25px] mt-2">1</p>
-               <p className="text-xl text-[#FF7979] font-medium mt-8">Hours Missed</p>
-               <p className="text-[#FF7979] text-[25px] mt-2">0</p>
-               <p className="text-xl text-[#FFCE84] font-medium mt-8">Hours Canceled</p>
-               <p className="text-[#FFCE84] text-[25px] mt-2">0</p>
-               <p className="text-xl text-[#7C98B6] font-medium mt-8">Hours Scheduled</p>
-               <p className="text-[#7C98B6] text-[25px] mt-2">0</p>
+                     </div>
+                  </div>
+               </> : ''
+         }
 
-            </div>
-         </div>
       </>
    );
 }

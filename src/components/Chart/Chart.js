@@ -10,7 +10,8 @@ import { Bubble } from 'react-chartjs-2';
 import { useLazyGetPersonalDetailQuery, useLazyGetUserDetailQuery } from '../../app/services/users';
 import { backgroundColors, iniOptions } from './data';
 import { useSelector } from 'react-redux';
-
+import upArrow from '../../assets/icons/small-chart-arrow -2.svg'
+import downArrow from '../../assets/icons/small-chart-arrow.svg'
 ChartJS.register(LinearScale, PointElement, Tooltip, Legend);
 
 const tempdata = [
@@ -306,14 +307,15 @@ export default function Chart({ setSubjects,YHeader, subjects, selectedSubject, 
 
    return (
       data !== undefined &&
-      <div className='wrapper w-full min-w-2/3 overflow-x-auto'  >
+      <div className='wrapper w-full min-w-2/3 overflow-x-auto h-[460px] pt-[80px] pl-[30px] relative'  >
 
          <Bubble ref={chartRef}
             options={options} data={data}
             height={200}
             width={canvasWidth}
-         /> :
-
+         /> 
+      <p className='absolute bottom-[18%] right-[43%]'><img src={upArrow} alt="" /></p>
+      <p className='absolute bottom-[39%] right-[93%]'><img src={downArrow} alt="" /></p>
       </div>
    )
 }

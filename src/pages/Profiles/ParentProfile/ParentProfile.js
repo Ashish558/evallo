@@ -107,16 +107,16 @@ export default function StudentProfile({ isOwn }) {
 
   const { id } = useSelector((state) => state.user);
 
-  
+
   const [selectedScoreIndex, setSelectedScoreIndex] = useState(0);
   const { organization } = useSelector((state) => state.organization);
- 
+
   const [toEdit, setToEdit] = useState({
     frame0: {
       active: false,
       firstName: "",
       lastName: "",
-      about:"",
+      about: "",
       email: "",
       phone: "",
       phoneCode: "",
@@ -321,7 +321,7 @@ const [toEdit, setToEdit] = useState({
       setEditable(true);
     }
   }, []);
- const [fetchOrg,setFetchOrg]=useState(false)
+  const [fetchOrg, setFetchOrg] = useState(false)
   const fetchDetails = (closeModal) => {
     let userId = "";
     if (isOwn) {
@@ -358,13 +358,13 @@ const [toEdit, setToEdit] = useState({
       assiginedStudents !== undefined &&
         assiginedStudents.map((student) => {
           getUserDetail({ id: student }).then((res) => {
-           // //console.log({[id]:res})
+            // //console.log({[id]:res})
             studentsData.push({
               _id: res.data.data.user._id,
               value: `${res.data.data.user.firstName} ${res.data.data.user.lastName}`,
               photo: res.data.data.user.photo ? res.data.data.user.photo : null,
-              email:res.data.data.user.email ? res.data.data.user.email : null,
-              service:res.data.data.userdetails.service ? res.data.data.userdetails.service : [],
+              email: res.data.data.user.email ? res.data.data.user.email : null,
+              service: res.data.data.userdetails.service ? res.data.data.userdetails.service : [],
             });
           });
         });
@@ -377,12 +377,12 @@ const [toEdit, setToEdit] = useState({
         industry,
         schoolName,
         grade,
-         about,
-         pincode,
-         address,
-         country,
-         city,
-         state:state1,
+        about,
+        pincode,
+        address,
+        country,
+        city,
+        state: state1,
         subscriptionCode,
       } = res.data.data.userdetails;
 
@@ -410,12 +410,12 @@ const [toEdit, setToEdit] = useState({
                   ...prev.frame1.timeZone,
                   timeZone: timeZone ? timeZone : "",
                   ...prev.frame1.birthyear,
-                  country:country,
-                  state:state1,
-                  city:city,
-                  pincode:pincode,
-                  address:address,
-                  
+                  country: country,
+                  state: state1,
+                  city: city,
+                  pincode: pincode,
+                  address: address,
+
                   birthyear,
                   ...prev.frame1.industry,
                   industry
@@ -444,7 +444,7 @@ const [toEdit, setToEdit] = useState({
     });
   };
 
- 
+
   useEffect(() => {
     fetchDetails();
   }, [params.id]);
@@ -458,7 +458,7 @@ const [toEdit, setToEdit] = useState({
       setSettings(res.data.data.setting);
     });
   }, []);
-  
+
   const handleProfilePhotoChange = (file) => {
     // //console.log(file)
     let url = "";
@@ -502,10 +502,10 @@ const [toEdit, setToEdit] = useState({
           _id: res.data.data.user._id,
           name: `${res.data.data.user.firstName} ${res.data.data.user.lastName}`,
           photo: res.data.data.user.photo ? res.data.data.user.photo : null,
-          email:res.data.data.user.email ? res.data.data.user.email : null,
-          service:res.data.data.userdetails.service ? res.data.data.userdetails.service : [],
+          email: res.data.data.user.email ? res.data.data.user.email : null,
+          service: res.data.data.userdetails.service ? res.data.data.userdetails.service : [],
         });
-        
+
       });
     });
     setAssociatedStudents(studentsData);
@@ -516,10 +516,10 @@ const [toEdit, setToEdit] = useState({
   useEffect(() => {
     fetchDetails();
   }, [params.id]);
-//console.log({user,userDetail})
+  //console.log({user,userDetail})
   return (
     <>
-      <div className={`mx-[80px] min-h-screen design:mx-[160px] pb-[70px]`}>
+      <div className={`w-[83.3vw] mx-auto pb-[70px]`}>
         <p className="text-[#24A3D9] !my-[calc(50*0.0522vw)]">
           {organization?.company +
             " > " +
@@ -542,8 +542,8 @@ const [toEdit, setToEdit] = useState({
 
         <div className={` rounded-b-md w-full flex flex-col relative `}>
           <div className="flex gap-7">
-            <div className={` rounded-b-md w-full flex flex-col relative `}>
-              <div className=" bg-[#26435F]   px-5 h-[110px]  w-full  flex  items-center">
+            <div className={` rounded-b-md w-[67.71vw] flex flex-col relative `}>
+              <div className=" bg-[#26435F]   px-8 h-[142px] border rounded-tr-5 rounded-tl-5  w-full  flex  items-center ">
                 <div className="flex flex-1 w-full relative">
                   <div className="h-fit">
                     <ProfilePhoto
@@ -552,8 +552,8 @@ const [toEdit, setToEdit] = useState({
                           ? `${awsLink}${user.photo}`
                           : "/images/Rectangle 2347.svg"
                       }
-                      imgSizeClass="!w-[110px] !h-[110px] !translate-y-8 border-[4px] border-white "
-                      imageClassName="!w-[100px] !h-[100px] border-[4px] border-white "
+                      imgSizeClass="w-[187px] h-[187px] mt-[100px] !translate-y-8 border-[2.5px] border-white "
+                      imageClassName="w-[187px] h-[187px] border-[4px] border-white "
                       className=""
                       handleChange={handleProfilePhotoChange}
                       editable={false}
@@ -571,16 +571,16 @@ const [toEdit, setToEdit] = useState({
                         })
                       }
                       text="Edit Profile"
-                      textClassName=" ml-2 text-sm  mx-auto text-center text-[#26435F] text-underline text-base-15 "
+                      textClassName=" ml-2 text-[15px]  mx-auto text-center text-[#26435F] text-underline font-semibold"
                       className="text-sm my-0 flex items-center justify-center text-center !translate-y-9  "
                     />
                   </div>
                   <div className="flex-1 flex justify-between items-center">
                     <div className="ml-4 my-auto">
-                      <div className="flex  items-center text-[#F3F5F7]">
+                      <div className="flex  font-semibold items-center text-[#F3F5F7] text-[30px]">
                         {user.firstName} {user.lastName}
                       </div>
-                      <div className="flex mt-1 text-xs items-center text-[#F3F5F7]">
+                      <div className="flex mt-1 text-[17.5px] items-center text-[#F3F5F7]">
                         <p>
                           <span>
                             <img
@@ -601,7 +601,7 @@ const [toEdit, setToEdit] = useState({
                       </div>
                     </div>
 
-                    <div className="flex flex-col text-[12px]  font-medium text-white my-auto ">
+                    <div className="flex flex-col   font-medium text-white my-auto ">
                       <ProfileCard
                         className="lg:mt-0 flex-1 !bg-transparent h-min !shadow-none relative"
                         titleClassName="!bg-transparent"
@@ -619,7 +619,7 @@ const [toEdit, setToEdit] = useState({
                           />
                         }
                         body={
-                          <div className="flex h-min !bg-transparent justify-center flex-col  ">
+                          <div className="flex h-min !bg-transparent justify-center flex-col  text-[17.5px]">
                             <p>
                               <span>
                                 <img
@@ -654,18 +654,18 @@ const [toEdit, setToEdit] = useState({
                   </div>
                 </div>
               </div>
-              <div className="bg-white !rounded-b-md shadow-[0px_0px_2.500001907348633px_0px_#00000040] flex design:h-[140px]  h-[120px] justify-between ">
-                <div className="ml-[126px] my-auto py-auto w-4/5 text-[12px] px-5  flex-1 design:h-[140px]  h-[120px] overflow-y-auto pt-3  ">
-                  <p className=" font-semibold text-[#26435F] text-base-15  ">
+              <div className="bg-white !rounded-b-md shadow-[0px_0px_2.500001907348633px_0px_#00000040] flex design:h-[170px]  h-[170px] justify-between ">
+                <div className="ml-[220px] py-auto w-[80.33%] text-[12px] px-5    overflow-y-auto pt-3  ">
+                  <p className=" font-semibold text-[#26435F] text-[15px]  ">
                     About
                   </p>
-                  <p className="font-semibold text-[#517CA8] text-base-17-5 overflow-y-auto">
-                   {userDetail?.about}
+                  <p className=" text-[#517CA8] text-[17.5px] overflow-y-auto">
+                    {userDetail?.about}
                   </p>
                 </div>
               </div>
             </div>
-            <div className="w-[calc(256*0.0522vw)] min-w-[200px] bg-white rounded-md overflow-hidden !rounded-b-md shadow-[0px_0px_2.500001907348633px_0px_#00000040]">
+            <div className="w-[13.80vw]  bg-white rounded-md overflow-hidden !rounded-b-md shadow-[0px_0px_2.500001907348633px_0px_#00000040] relative">
               <div
                 className={`${styles.studentsContainer} min-h-[200px] w-full`}
               >
@@ -673,15 +673,14 @@ const [toEdit, setToEdit] = useState({
                   return (
                     <div
                       key={idx}
-                      className={`${styles.student} ${
-                        activeIndex === idx
-                          ? styles.activeStudent
-                          : idx < activeIndex
+                      className={`${styles.student} ${activeIndex === idx
+                        ? styles.activeStudent
+                        : idx < activeIndex
                           ? styles.previousStudent
                           : styles.nextStudent
-                      } flex flex-col items-center  lg:mb-10`}
+                        } flex flex-col items-center  lg:mb-10`}
                     >
-                      <div className="bg-[#354a5e] w-full h-[110px]">
+                      <div className="bg-[#354a5e] w-full h-[142px]">
                         <div className="flex justify-center items-center">
                           <ProfilePhoto
                             src={
@@ -689,8 +688,8 @@ const [toEdit, setToEdit] = useState({
                                 ? `${awsLink}${student.photo}`
                                 : "/images/Rectangle 2346.svg"
                             }
-                            imgSizeClass="!w-[70px] !h-[70px] !translate-y-[20px]"
-                            imageClassName="!w-[50px] !h-[50px] border-[2px] border-[#26435F]"
+                            imgSizeClass="!w-[100px] !h-[100px] !translate-y-[20px]"
+                            imageClassName="!w-[100px] !h-[100px] border-[2px] border-[#26435F]"
                             className=" "
                             handleChange={handleProfilePhotoChange}
                           />
@@ -707,7 +706,7 @@ const [toEdit, setToEdit] = useState({
                           {student.name}
                         </p>
                         <p className="  text-[#667085] text-base-15 ml-4">
-                        {student.email}
+                          {student.email}
                           <span>
                             <img
                               className="inline-block !w-4 !h-4 mr-2"
@@ -717,11 +716,11 @@ const [toEdit, setToEdit] = useState({
                           </span>
                         </p>
                         <p className="  text-[#517CA8] w-[100px] flex gap-3 text-base-15">
-                        {student?.service?.map((it,idx)=>{
-                          return (
-                            <span  key={idx}>{it}</span>
-                          )
-                        })}
+                          {student?.service?.map((it, idx) => {
+                            return (
+                              <span key={idx}>{it}</span>
+                            )
+                          })}
                         </p>
                       </div>
                     </div>
@@ -729,29 +728,31 @@ const [toEdit, setToEdit] = useState({
                 })}
               </div>
 
-              <p className=" text-base-17-5 mx-auto text-center flex justify-center relative z-[3333]">
-                <span>
-                  <img
-                    className="inline-block !w-4 !h-4 mr-2"
-                    src={left}
-                    alt="left"
-                    onClick={() =>
-                      activeIndex !== 0 && setActiveIndex(activeIndex - 1)
-                    }
-                  />
-                </span>
-                <span>
-                  <img
-                    className="inline-block !w-4 !h-4 mr-2"
-                    src={right}
-                    onClick={() =>
-                      activeIndex < associatedStudents.length - 1 &&
-                      setActiveIndex(activeIndex + 1)
-                    }
-                    alt="right"
-                  />
-                </span>
-              </p>
+              <div className="absolute left-[50%] bottom-0 text-center transform -translate-x-1/2 -translate-y-1/2">
+                <p className=" text-base-17-5 mx-auto text-center flex justify-center  z-[3333]">
+                  <span>
+                    <img
+                      className="inline-block !w-4 !h-4 mr-2"
+                      src={left}
+                      alt="left"
+                      onClick={() =>
+                        activeIndex !== 0 && setActiveIndex(activeIndex - 1)
+                      }
+                    />
+                  </span>
+                  <span>
+                    <img
+                      className="inline-block !w-4 !h-4 mr-2"
+                      src={right}
+                      onClick={() =>
+                        activeIndex < associatedStudents.length - 1 &&
+                        setActiveIndex(activeIndex + 1)
+                      }
+                      alt="right"
+                    />
+                  </span>
+                </p>
+              </div>
             </div>
           </div>
           <EditableText
@@ -766,7 +767,7 @@ const [toEdit, setToEdit] = useState({
               })
             }
             text="edit"
-            textClassName="text-sm text-[#26435F]  text-underline  text-base-15"
+            textClassName="text-[15px] text-[#26435F]  text-underline"
             className="text-sm my-0 flex justify-end translate-y-7  float-right"
           />
           <SPFrame0
@@ -780,8 +781,8 @@ const [toEdit, setToEdit] = useState({
             className="border !border-[#CBD6E3] w-[calc(1500*0.0522vw)] mx-auto my-[calc(50*0.0522vw)]"
           ></div>
           {
-            persona === "admin" &&  <SPFrame1
-            user={user}
+            persona === "admin" && <SPFrame1
+              user={user}
               userDetail={userDetail}
               settings={settings}
               userId={isOwn ? id : params.id}
@@ -791,7 +792,7 @@ const [toEdit, setToEdit] = useState({
               toEdit={toEdit}
             />
           }
-         
+
         </div>
       </div>
 

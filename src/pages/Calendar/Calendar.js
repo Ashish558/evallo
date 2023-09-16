@@ -44,7 +44,7 @@ import InputSelect from "../../components/InputSelect/InputSelect";
 import momentTimezonePlugin from "@fullcalendar/moment-timezone";
 import { useLazyGetUserDetailQuery } from "../../app/services/users";
 import { useLazyGetCalenderInsightQuery } from "../../app/services/admin";
-
+import downBlue from '../../assets/icons/down-blue.svg'
 const days = ["S", "M", "T", "W", "T", "F", "S"];
 
 const backgrounds = ["#51D294", "#C56DEE", "#6F7ADE", "#7DE94A", "#F6935A"];
@@ -997,34 +997,30 @@ export default function Calendar() {
             </div>
             {persona === "parent" ? (
               <div className="mt-10 pr-4">
-                <p className="text-primaryDark text-21 font-semibold mb-8 ml-2">
+                {/* <p className="text-primaryDark text-21 font-semibold mb-8 ml-2">
                   {" "}
                   Student Name{" "}
-                </p>
-                <div>
+                </p> */}
+                <div className="mt-[30px]">
                   {students.map((student, idx) => {
                     return (
                       <div
                         key={student.studentId}
-                        className={`p-4 mb-4 rounded-10 flex justify-between items-center  bg-white ${student.selected
-                          ? "border border-[#c6c6c6] shadow-md"
-                          : "border"
-                          } `}
+                        className={`px-[17px] py-[21px] bg-[rgba(36,163,217,0.20)]  flex justify-between rounded-5 mb-5 ${student.selected ? "bg-[rgba(36,163,217,0.20)]" : "bg-[rgba(36,163,217,0.20)]"
+                          }`}
                         onClick={() => handleStudentChange(student)}
                       >
                         <p
-                          className={` ${student.selected ? "font-medium" : ""
+                          className={`text-xl text-[#24A3D9] font-semibold ${student.selected ? "font-medium" : ""
                             } `}
                         >
                           {student.studentName}
                         </p>
                         <div
-                          className="student-circle"
-                          style={{
-                            backgroundColor: "#ebe7ff",
-                            //  getBackground(students.length, idx),
-                          }}
-                        ></div>
+
+                        >
+                          <img className="inline-block" src={downBlue} alt="" srcset="" />
+                        </div>
                       </div>
                     );
                   })}
@@ -1052,9 +1048,9 @@ export default function Calendar() {
                     fetchSessions(item._id, item.role);
                   }}
                 /> */}{console.log("userrrrrrr", alldetails)}
-                {alldetails?.map((item) => (<div className="mt-[48px] mb-2">
-                  <div className="flex justify-between pt-[19px] px-[21px] pb-[14px] bg-[rgba(36,63,217,0.20)] rounded-5 items-center">
-                    <p className="text-[#24A3D9] text-xl font-semibold">{item.tutorName}</p>
+                {alldetails?.map((item) => (<div className="mt-[30px] mb-2">
+                  <div className={`flex justify-between pt-[19px] px-[21px] pb-[14px] bg-[rgba(36,163,217,0.20)] rounded-5 items-center ${showTutorDetails[item.id] ? 'bg-[rgba(255,162,141,0.20)] ' : 'bg-[rgba(36,163,217,0.20)]'}`}>
+                    <p className={` text-xl font-semibold ${showTutorDetails[item.id] ? 'text-[#FFA28D]' : "text-[#24A3D9]"}`}>{item.tutorName}</p>
                     <p><img src={showTutorDetails[item.id] ? downIcon : upIcon} alt="" onClick={() => toggleTutorDetails(item.id)} /></p>
                   </div>
                   <div>
@@ -1295,7 +1291,7 @@ export default function Calendar() {
               // slotMaxTime={"30:00:00"}
               dayHeaderFormat={{
                 day: "numeric",
-               weekday: 'long'
+                weekday: 'long'
 
               }}
               // dayHeaderContent={getDayHeaders}
@@ -1336,7 +1332,7 @@ export default function Calendar() {
                   }}
                   parentClassName=""
                   optionClassName=""
-                
+
                 />
               </span>
               {/* <div class="inline-flex rounded shadow-sm mt-1">

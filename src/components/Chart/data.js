@@ -35,6 +35,7 @@ export const iniOptions = {
          title: {
             display: true,
             text: 'Accuracy(%)',
+            padding: { bottom: 10 },
             color: "#24A3D9",
             font: {
                weight: 500,
