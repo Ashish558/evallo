@@ -716,7 +716,7 @@ const [toEdit, setToEdit] = useState({
 
   return (
     <>
-      <div className={`mx-[80px] min-h-screen design:mx-[160px] pb-[70px]`}>
+      <div className={`w-[83.3vw] mx-auto pb-[70px]`}>
         <p className="text-[#24A3D9] my-[calc(50*0.0522vw)] text-xl">
           {organization?.company +
             " > " +

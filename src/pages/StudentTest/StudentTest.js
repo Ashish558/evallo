@@ -341,9 +341,9 @@ export default function StudentTest({ fromProfile, setTotaltest }) {
   ];
 
   return (
-    <>
-      <div className={`mx-[70px] bg-lightWhite  ${fromProfile ? '!mx-0' : 'min-h-screen'}`}>
-        <div className={`py-4 px-5 ${fromProfile ? 'px-0 py-0 ' : ''}`}>
+    <div className="w-[83.23vw] mx-auto">
+      <div className={`  ${fromProfile ? '!mx-0' : 'min-h-screen'}`}>
+        <div className={`pb-4 mt-[35px]  ${fromProfile ? 'px-0 py-0 ' : ''}`}>
           {(persona === "student" || persona === "parent") && !fromProfile && (
             <div
               className={`${persona === "student" || true ? "flex justify-between items-center" : ""
@@ -420,20 +420,22 @@ export default function StudentTest({ fromProfile, setTotaltest }) {
                     </div>
                   )
                 )}
-                {(persona === "student" || persona === 'parent') && (
-                  <div className="flex justify-between whitespace-nowrap items-center gap-6">
-                    <div className="flex items-center justify-end gap-[20px] mt-[34px]">
-                      {/* <AssignedTestIndicator /> */}
-                      {status.map(({ text, color }, idx) => (
-                        <AssignedTestIndicator
-                          key={idx}
-                          text={text}
-                          color={color}
-                        />
-                      ))}
+                <div>
+                  {(persona === "student" || persona === 'parent') && (
+                    <div className="flex justify-between whitespace-nowrap items-center gap-6">
+                      <div className="flex items-center justify-end gap-[20px] mt-[34px]">
+                        {/* <AssignedTestIndicator /> */}
+                        {status.map(({ text, color }, idx) => (
+                          <AssignedTestIndicator
+                            key={idx}
+                            text={text}
+                            color={color}
+                          />
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                )}
+                  )}
+                </div>
               </div>
             </div>
           )}
@@ -460,6 +462,6 @@ export default function StudentTest({ fromProfile, setTotaltest }) {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }

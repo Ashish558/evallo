@@ -973,7 +973,7 @@ export default function Calendar() {
   return (
     <>
       <div className="lg:ml-pageLeft calender  min-h-screen" id={persona}>
-        <p className="text-[#24A3D9] text-xl mb-[30px] mt-[50px] pl-5">
+        <p className="text-[#24A3D9] text-xl mb-[30px] mt-[50px] pl-[74px]">
           {organization?.company +
             "  >  " +
             firstName +
@@ -982,7 +982,7 @@ export default function Calendar() {
             "  >  "}
           <span className="font-bold">Schedule</span>
         </p>
-        <div className="  pb-2 pl-5 calendar flex">
+        <div className="  pb-2 pl-[74px] calendar flex">
           <div className=" pl-0 pr-0 w-[280px] mr-[10px]">
             <div className="w-[280px]">
               <SimpleCalendar

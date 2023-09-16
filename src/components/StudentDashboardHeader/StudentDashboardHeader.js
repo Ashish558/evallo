@@ -34,7 +34,7 @@ const StudentDashboardHeader = () => {
   const [getSession, getSessionResp] = useLazyGetSingleSessionQuery();
   const [updateFeedback, updateFeedbackResp] = useUpdateFeedbackMutation();
   const { organization } = useSelector((state) => state.organization);
-
+  console.log(feedbackSessions)
   // console.log(id);
 
   const fetchSessions = () => {
@@ -67,7 +67,7 @@ const StudentDashboardHeader = () => {
   }, [organization?.settings?.offerImages]);
   const openLink = (link) => {
     window.open(link)
- }
+  }
   return (
     <>
       {/* <div className="flex h-[250px]" id={styles.StudentDashboardHeader}>
@@ -84,49 +84,49 @@ const StudentDashboardHeader = () => {
             </div>
          </div> */}
 
-      <div className="flex flex-1  h-[210px] justify-between relative gap-[50px] mb-[42px] mt-[37px] ">
-        <div className="w-full lg:w-2/3  !w-[calc(550*0.0522vw)] h-[206px] lg:h-auto ">
-          <p className=" text-sm text-[#26435F] font-semibold">Announcements</p>
+      <div className="flex justify-between relative  mb-[92px] mt-[31px] ">
+        <div className="  w-[28.65vw] h-[250px] ">
+          <p className="text-xl text-[#26435F] font-semibold">Announcements</p>
 
           <div
             className="w-full relative h-full flex rounded-md items-center  shadow-[0px_0px_2.500001907348633px_0px_#00000040]"
             id={styles.exploreBgDisable}
           >
-             <div className={styles.images}>
-                {images?.length >0  ? (
-              <OwlCarousel
-                ref={tutorCarouselRef}
-                className="owl-theme h-full"
-                loop
-                margin={8}
-                items={1}
-              >
-                {images.map((image, idx) => {
-                  return (
-                    <div className={` rounded-md bg-cover	bg-center	 ${styles.img}`}
-                       style={{ backgroundImage: `url(${awsLink}${image.image})` }}
-                       >
+            <div className={styles.images}>
+              {images?.length > 0 ? (
+                <OwlCarousel
+                  ref={tutorCarouselRef}
+                  className="owl-theme h-full"
+                  loop
+                  margin={8}
+                  items={1}
+                >
+                  {images.map((image, idx) => {
+                    return (
+                      <div className={` rounded-md bg-cover	bg-center	 ${styles.img}`}
+                        style={{ backgroundImage: `url(${awsLink}${image.image})` }}
+                      >
                         <p className="absolute top-5 left-4 z-10 font-bold text-base-25 text-white"></p>
-                       
-                        <button  onClick={() => openLink(image.link)} className="bg-[#FFA28D] text-white p-2 text-base-17-5 px-4 rounded-lg absolute left-5 bottom-4">
-                        {image?.buttonText?image?.buttonText:"Register"}
+
+                        <button onClick={() => openLink(image.link)} className="bg-[#FFA28D] text-white p-2 text-base-17-5 px-4 rounded-lg absolute left-5 bottom-4">
+                          {image?.buttonText ? image?.buttonText : "Register"}
                         </button>
-                    </div>
-                  );
-                })}
-              </OwlCarousel>
-            ) : (
-              <p
-                className="text-white  text-center w-full font-semibold pt-8 not-italic pb-8 text-lg"
-                style={{
-                  fontSize: "18px",
-                  fontStyle: "normal",
-                  fontWeight: "500",
-                }}
-              >
-                No Announcements
-              </p>
-            )}
+                      </div>
+                    );
+                  })}
+                </OwlCarousel>
+              ) : (
+                <p
+                  className="text-white  text-center w-full font-semibold pt-8 not-italic pb-8 text-lg"
+                  style={{
+                    fontSize: "18px",
+                    fontStyle: "normal",
+                    fontWeight: "500",
+                  }}
+                >
+                  No Announcements
+                </p>
+              )}
             </div>
             {/* {images?.length >= 1 && (
               <ImageSlideshow images={images} text="text" />
@@ -134,24 +134,24 @@ const StudentDashboardHeader = () => {
           </div>
         </div>
 
-        <div className="flex-1 mx-auto h-[200px]">
-          <p className=" text-sm text-[#26435F] font-semibold">
+        <div className="w-[25.52vw] mx-auto h-[250px]">
+          <p className=" text-xl text-[#26435F] font-semibold">
             Assigned Tutors
           </p>
-          <div className=".mybox relative shadow-[0px_0px_2.500001907348633px_0px_#00000040] border-b-4 border-b-[#26435F] h-[215px] rounded-md max-w-[440px]  design:max-w-[460px]">
-          <div id="borderLeft" className="rounded-t-r-md"></div>
+          <div className=".mybox relative shadow-[0px_0px_2.5px_0px_rgba(0,0,0,0.25)] border-b-4 border-b-[#26435F] h-full rounded-md max-w-[440px]  design:max-w-[460px]">
+            <div id="borderLeft" className="rounded-t-r-md"></div>
             <TutorCarousel />
-            
+
             <div id="borderRight" className="rojunded"></div>
             <div id="borderBottom" className="rounded-b-lg"></div>
           </div>
         </div>
 
-        <div className=" flex-1 h-[210px]">
-          <p className=" text-sm text-[#26435F] font-semibold ">
+        <div className="w-[25vw] h-[250px]">
+          <p className=" text-xl text-[#26435F] font-semibold ">
             Session Feedback
           </p>
-          <div className="h-[215px] bg-white  rounded-md  shadow-[0px_0px_2.500001907348633px_0px_#00000040]">
+          <div className="h-full bg-white  rounded-md  shadow-[0px_0px_2.500001907348633px_0px_#00000040]">
             <div
               className="overflow-y-auto flex-1  p-4  h-[100%] custom-scroller"
               id={styles.tutorList}
@@ -167,7 +167,6 @@ const StudentDashboardHeader = () => {
               ) : (
                 <p className="font-medium pt-6">No feedbacks given!</p>
               )}
-             
 
             </div>
           </div>

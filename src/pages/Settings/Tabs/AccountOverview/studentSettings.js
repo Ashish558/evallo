@@ -173,8 +173,8 @@ const StudentSettings = () => {
   }
 
   return (
-    <div>
-      <div className="flex flex-col gap-10  mx-[100px] my-12 design:mx-[160px] design:my-[60px]">
+    <div className="w-[83.23vw] mx-auto">
+      <div className="flex flex-col gap-10   my-12">
         <div className="text-[#24A3D9] font-lexend-deca text-md design:text-xl  font-semibold leading-normal">
           <span className=" font-medium text-xl">{organization?.company}</span>
           <span className="font-semibold text-xl">{"  > Settings"}</span>
@@ -274,7 +274,7 @@ const StudentSettings = () => {
               onClick={handleDataUpdate}
               disabled={saving}
               loading={saving}
-              className={`bg-[#FFA28D]  mt-5 ml-10 rounded-md px-10 py-2 h-[46px] text-sm text-white  `}
+              className={`bg-[#FFA28D]  mt-5 ml-10 rounded-md px-14 py-2 h-[46px] text-xl text-white font-semibold`}
             >
               Save
             </PrimaryButton>
@@ -304,8 +304,8 @@ const StudentSettings = () => {
             </div>
           )}
         </div>
-        <div className="flex justify-between gap-20 mt-16">
-          <div className="flex-1">
+        <div className="flex justify-between gap-4 mt-16 w-[72.08vw]">
+          <div className="w-full">
             <p className=" text-sm text-[#26435F] font-semibold">
               Submit Feedback
             </p>
@@ -318,9 +318,8 @@ const StudentSettings = () => {
                   support: e.target.value
                 })
               }}
-              className="mt-1 block w-full h-[180px] resize-none focus:!ring-blue-500 p-2 focus:!border-blue-500 placeholder-[#CBD6E2] text-sm  placeholder:text-xs "
-              placeholder=" If you have any feedback for this online platform, please submit
-                it here. Our team takes every suggestion seriously."
+              className="mt-1 block  resize-none focus:!ring-blue-500 p-5 focus:!border-blue-500 placeholder-[#CBD6E2] text-base-18  placeholder:text-base-18  w-[33.54vw] h-[352px] "
+              placeholder=" If you have any feedback for this online platform, please submit it here. Our team takes every suggestion seriously."
             ></textarea>
 
 
@@ -328,7 +327,7 @@ const StudentSettings = () => {
               onClick={() => {
                 handleFeedback(feedBack.support, "feedback")
               }}
-              className="bg-[#517CA8] text-white rounded-md mt-2 float-right px-4 py-2 text-xs"
+              className="bg-[#517CA8] text-white rounded-lg mt-2 float-right px-4 py-2 mr-[60px]"
             >
               Submit
             </button>
@@ -348,17 +347,15 @@ const StudentSettings = () => {
                 })
               }}
 
-              className="mt-1 block w-full h-[180px] resize-none focus:!ring-blue-500 p-2 focus:!border-blue-500 placeholder-[#CBD6E2] text-sm  placeholder:text-xs "
-              placeholder=" If you require technical support, please submit your request here
-                
-              and our team will help you out accordingly."
+              className="mt-1 block w-[33.54vw] h-[352px] resize-none focus:!ring-blue-500 p-5 focus:!border-blue-500 placeholder-[#CBD6E2] text-base-18   placeholder:text-base-18  "
+              placeholder=" If you require technical support, please submit your request here and our team will help you out accordingly."
             ></textarea>
 
             <button
               onClick={() => {
                 handleFeedback(feedBack.tech, "")
               }}
-              className="bg-[#517CA8] text-white rounded-md mt-2 float-right px-4 py-2 text-xs"
+              className="bg-[#517CA8] text-white rounded-lg mt-2 float-right px-4 py-2 "
             >
               Submit
             </button>

@@ -45,7 +45,7 @@ export default function InputFieldDropdown({
   useOutsideAlerter(selectRef, () => setToggleOptions(false));
 
   useEffect(() => {
-   
+
     setToggleOptions(false)
   }, [value]);
   const [showDiv, setShowDiv] = useState(true);
@@ -85,19 +85,19 @@ export default function InputFieldDropdown({
         //   );
         // });
         data.sort((a, b) => {
-          if(a.code < b.code) { return -1; }
-    if(a.code > b.code) { return 1; }
-    return 0;
-          
+          if (a.code < b.code) { return -1; }
+          if (a.code > b.code) { return 1; }
+          return 0;
+
         });
         setDialCode(data);
       });
   }, []);
-  console.log({ toggleOptions,codeValue });
+  console.log({ toggleOptions, codeValue });
   return (
     <div className={`relative text-sm ${parentClassName && parentClassName} `}>
       {label && (
-        <label className={`inline-block font-semibold ${labelClassname} ml-0 text-base-17-5`}>
+        <label className={`inline-block font-semibold text-base-17-5  ${labelClassname} ml-0 `}>
           {label}
           {required && (
             <span className="text-primaryRed inline-block pl-1">*</span>
@@ -105,35 +105,33 @@ export default function InputFieldDropdown({
         </label>
       )}
       <div
-        className={`py-[13px] px-[14px] lg:py-[9px] lg:px-[16px] flex items-center rounded border border-[#D0D5DD] ${
-          inputContainerClassName ? inputContainerClassName : ""
-        } ${disabled === true ? "cursor-not-allowed" : ""} `}
+        className={`py-[13px] px-[14px] lg:py-[9px] lg:px-[16px] flex items-center rounded border border-[#D0D5DD] ${inputContainerClassName ? inputContainerClassName : ""
+          } ${disabled === true ? "cursor-not-allowed" : ""} `}
       >
         <div
-        ref={selectRef} 
+          ref={selectRef}
           className="relative flex justify-between gap-3 max-w-[130px]"
           onClick={() => setToggleOptions(!toggleOptions)}
         >
           <div
-            className={` flex justify-between cursor-pointer gap-4   items-center rounded-[3px]  bg-[#EAF5FA]  text-[black] focus:outline-none  px-2 text-sm ${codeValue?"  pr-5":"w-[35px] justify-center py-2 pl-3"}`}
-           
-          >
-            {codeValue&&<span className=" ">
-            {codeValue}
-            </span>}
-           
+            className={` flex justify-between cursor-pointer gap-4   items-center rounded-[3px]  bg-[#EAF5FA]  text-[black] focus:outline-none  px-2 text-sm ${codeValue ? "  pr-5" : "w-[35px] justify-center py-2 pl-3"}`}
 
-            <img src={toggleOptions?upArrow:downArrow} className="inline-block w-3 h-3 " alt="down" />
+          >
+            {codeValue && <span className=" ">
+              {codeValue}
+            </span>}
+
+
+            <img src={toggleOptions ? upArrow : downArrow} className="inline-block w-3 h-3 " alt="down" />
           </div>
 
           <div
-           
-            className={`${
-              toggleOptions ? "" : "hidden"
-            } whitespace-nowrap absolute text-xs mt-[40px]  shadow-lg border border-gray-300  z-[1] h-[300px] rounded-[4px] overflow-y-auto flex flex-col bg-[#EAF5FA] w-[85px] text-[black] focus:outline-none rounded-sm `}
+
+            className={`${toggleOptions ? "" : "hidden"
+              } whitespace-nowrap absolute text-xs mt-[40px]  shadow-lg border border-gray-300  z-[1] h-[300px] rounded-[4px] overflow-y-auto flex flex-col bg-[#EAF5FA] w-[85px] text-[black] focus:outline-none rounded-sm `}
             name="country_code"
           >
-            
+
             {toggleOptions &&
               dialCode?.map((code, id) => {
                 return (
@@ -141,7 +139,7 @@ export default function InputFieldDropdown({
                     className="hover:bg-blue-400 px-1 cursor-default hover:text-white"
                     key={id}
                     value={code?.dial_code}
-                    onClick={(e)=> handleCodeChange({target:{value:code?.dial_code}})}
+                    onClick={(e) => handleCodeChange({ target: { value: code?.dial_code } })}
                   >
                     {code?.code} {code?.dial_code}
                   </span>
@@ -157,24 +155,22 @@ export default function InputFieldDropdown({
         {Icon && (
           <img
             src={Icon}
-            className={`mr-5 ${
-              iconSize === "medium" ? "w-[24px]" : "w-[28px]"
-            }`}
+            className={`mr-5 ${iconSize === "medium" ? "w-[24px]" : "w-[28px]"
+              }`}
           />
         )}
         {inputLeftField && inputLeftField}
         {prefix && <span className="mr-3">{prefix}</span>}
         <input
-          className={`outline-0 w-full pl-2 text-sm ${
-            inputClassName ? inputClassName : ""
-          } ${disabled === true ? "cursor-not-allowed" : ""} text-base-17-5`}
+          className={`outline-0 w-full pl-2 text-sm ${inputClassName ? inputClassName : ""
+            } ${disabled === true ? "cursor-not-allowed" : ""} text-base-17-5`}
           placeholder={placeholder}
           type={inputType ? inputType : "text"}
           onChange={(e) => (onChange !== undefined ? onChange(e) : "")}
           value={value}
           required={isRequired ? true : false}
           disabled={disabled !== undefined ? disabled : false}
-          onKeyDown={onKeyDown ? onKeyDown : () => {}}
+          onKeyDown={onKeyDown ? onKeyDown : () => { }}
           minLength={minLength && minLength}
           maxLength={maxLength && maxLength}
           onFocus={onFocus}
@@ -194,9 +190,8 @@ export default function InputFieldDropdown({
         {IconRight && (
           <img
             src={IconRight}
-            className={`ml-4 cursor-pointer ${
-              iconSize === "medium" && "w-[24px]"
-            }`}
+            className={`ml-4 cursor-pointer ${iconSize === "medium" && "w-[24px]"
+              }`}
           />
         )}
         {right && right}
