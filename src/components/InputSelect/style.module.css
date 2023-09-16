@@ -4,7 +4,7 @@
     top: 50%;
     transform: translateY(-50%);
     z-index: 200000;
-    width: 15px;
+    /* width: 15px; */
 }
 
 .options {
@@ -14,13 +14,13 @@
     transform: translateX(-50%);
     background-color: white;
     width: 100%;
-    border-radius: 20px;
+    border-radius: 6px;
     max-height: 165px;
     overflow-y: auto;
     z-index: 100000;
 
-    border-top-right-radius: 6px;
-    border-bottom-right-radius: 6px;
+    /* border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px; */
 }
 
 .options > div:hover {

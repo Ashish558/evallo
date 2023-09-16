@@ -49,7 +49,7 @@ const TutorCarousel = () => {
   }, []);
 
   return (
-    <div className="h-full relative items-center flex py-2 mr-[10%]">
+    <div className="h-full relative items-center  flex py-2 mr-[10%]">
       <h2 className="pl-5 pt-4">{""}</h2>
       {tutors.length >= totalTutors ? (
         <OwlCarousel

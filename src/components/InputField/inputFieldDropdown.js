@@ -12,6 +12,7 @@ export default function InputFieldDropdown({
   iconSize,
   value,
   placeholder,
+  codeColor,
   label,
   labelClassname,
   IconRight,
@@ -35,6 +36,7 @@ export default function InputFieldDropdown({
   totalErrors,
   onFocus,
   onBlur,
+  studentCode
 }) {
   const [inputType, setInputType] = useState(type);
 
@@ -109,23 +111,25 @@ export default function InputFieldDropdown({
           inputContainerClassName ? inputContainerClassName : ""
         } ${disabled === true ? "cursor-not-allowed" : ""} `}
       >
-        <div
+        {studentCode && <input type="text"  onChange={(e)=> handleCodeChange({target:{value:e.target.value}})} value={codeValue} className="!w-[50px] outline-0 text-400 !py-1 text-base-17-5 bg-transparent  pl-2 text-sm"/>}
+       {!studentCode&& <div
         ref={selectRef} 
           className="relative flex justify-between gap-3 max-w-[130px]"
           onClick={() => setToggleOptions(!toggleOptions)}
         >
           <div
-            className={` flex justify-between cursor-pointer gap-4   items-center rounded-[3px]  bg-[#EAF5FA]  text-[black] focus:outline-none  px-2 text-sm ${codeValue?"  pr-5":"w-[35px] justify-center py-2 pl-3"}`}
+            className={` flex justify-between cursor-pointer gap-4   items-center rounded-[3px]  bg-[#EAF5FA]  text-[black] focus:outline-none  px-2 text-sm ${codeValue?"  pr-5":"w-[35px] justify-center py-2 pl-3"} text-base-17-5 !text-[#667085]`}
            
           >
             {codeValue&&<span className=" ">
             {codeValue}
+           
             </span>}
            
 
             <img src={toggleOptions?upArrow:downArrow} className="inline-block w-3 h-3 " alt="down" />
           </div>
-
+ 
           <div
            
             className={`${
@@ -148,7 +152,7 @@ export default function InputFieldDropdown({
                 );
               })}
           </div>
-        </div>
+        </div>}
         <div ref={divRef2} className="relative whitespace-nowrap">
           {codeError !== undefined && codeError !== "" && showDiv2 && (
             <Message error={codeError} type="danger" />

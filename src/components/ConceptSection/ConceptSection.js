@@ -138,21 +138,31 @@ const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
   useEffect(() => {
     setTutors([]);
     fetchTutors({ id }).then((res) => {
-      // console.log('tutors resp', res.data);
+       console.log('tutors resp', res.data);
       setTotalTutors(res.data.tutors.length);
-      res.data.tutors.map((tutor) => {
-        getTutorDetail({ id: tutor._id }).then((response) => {
+      let temp=[]
+      res.data.tutors.map((tutor2,idx) => {
+        getTutorDetail({ id: tutor2._id }).then((response) => {
           // console.log('tutors response', response.data);
           let details = response.data.data.details;
           if (details === null || details === undefined) {
             details = {};
           }
-          setTutors((prev) => [
-            ...prev,
-            { ...tutor, ...details, _id: tutor._id },
-          ]);
+         temp = [
+            ...temp,
+            { ...tutor2, ...details, _id: tutor2._id },
+          ];
+          if(idx===res.data.tutors.length-1){
+            // setTutors((prev) => [
+            //   ...prev,
+            //   { ...tutor2, ...details, _id: tutor2._id },
+            // ]);
+            setTutors(temp);
+          }
         });
       });
+
+     
     });
   }, []);
 
@@ -246,7 +256,7 @@ const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
     setSubjects(updated);
   };
 
-  // console.log('tutors', tutors);
+   console.log('tutors', tutors,filteredTutors);
 
   return (
     <div
@@ -292,8 +302,8 @@ const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
             <RangeDate
               className="ml-0"
               manualHide={true}
-              optionClassName="w-min"
-              inputContainerClassName="w-min"
+              optionClassName="!w-min"
+              inputContainerClassName="!w-min"
               handleRangeData={setSelectedConceptIdx}
             />
           </div>
@@ -324,7 +334,7 @@ const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
           <div className="mb-3 bg-[linear-gradient(100deg,#26435F_0.06%,#1C3BDE_99.95%)] flex items-center h-[180px] rounded-md !w-[calc(489*0.0522vw)]">
 
           
-            {filteredTutors.length >= totalTutors  ? (
+            {filteredTutors.length >0  ? (
               <OwlCarousel
                 ref={tutorCarouselRef}
                 className="owl-theme h-full"

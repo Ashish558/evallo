@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import ProfileCard from '../../../components/ProfileCard/ProfileCard'
 import styles from './style.module.css'
 import EditableText from '../../../components/EditableText/EditableText'
-
+import dots from '../../../assets/icons/four-dot.svg'
 import ProfileImg from '../../../assets/images/profile.png'
 import TutorImg from '../../../assets/images/tutor.png'
 import TutorSmallImg from '../../../assets/images/tutor-small.png'
@@ -75,11 +75,12 @@ export default function TutorProfile({ isOwn }) {
    const { id } = useSelector(state => state.user)
    const [studentFeedbacks, setStudentFeedbacks] = useState([])
    useEffect(() => {
-      getStudentFeedback()
+      getStudentFeedback({id:id})
          .then(({ error, data }) => {
             if (error) {
                return console.log(error);
             }
+            console.log(studentFeedbacks)
             setStudentFeedbacks(data)
 
          })
@@ -457,7 +458,7 @@ export default function TutorProfile({ isOwn }) {
       console.log("UserDetails", userDetail)
       console.log("organizations" + organization.settings)
       setSettings(organization.settings)
-   }, [])
+   }, [organization])
 
    // console.log('user', user)
    // console.log('To-edit', toEdit)
@@ -468,9 +469,9 @@ export default function TutorProfile({ isOwn }) {
 
    // console.log(user);
    // console.log('settings', settings.servicesAndSpecialization);
-   if (Object.keys(user).length < 1) return
-   if (Object.keys(settings).length < 1) return
-   // if (Object.keys(userDetail).length < 1) return
+  if (Object.keys(user).length < 1) return
+  if (Object.keys(settings).length < 1) return
+   if (Object.keys(userDetail).length < 1) return
    let tutorLevelIcon = TutorLevelOne
    let tutorLevelTextColor = 'text-[#ff4300]'
    let tutorLevelBg = '#FBDB89'
@@ -599,6 +600,9 @@ export default function TutorProfile({ isOwn }) {
                                  </div>
 
                               </div>
+                              {
+
+                              (persona==='tutor'||persona==='admin') &&
                               <div className='ml-auto mt-auto pt-[25px] pb-[15px] mr-8'>
                                  <div className='flex gap-4 items-center mb-[10px]'>
                                     <img src={mail} alt="mailLogo"></img>
@@ -613,6 +617,25 @@ export default function TutorProfile({ isOwn }) {
                                     <a className='text-white text-[17.503px]' href={userDetail.linkedIn}>{userDetail.linkedIn}</a>
                                  </div>
                               </div>
+                              }
+                               {
+
+(persona==='student'||persona==='parent') && organization?.settings?.permissions[2]?.choosedValue &&
+<div className='ml-auto mt-auto pt-[25px] pb-[15px] mr-8'>
+   <div className='flex gap-4 items-center mb-[10px]'>
+      <img src={mail} alt="mailLogo"></img>
+      <p className='text-white text-[17.503px]'>{user.email}</p>
+   </div>
+   <div className='flex gap-4 items-center mb-[10px]'>
+      <img src={call} alt="callLogo"></img>
+      <p className='text-white text-[17.503px]'>{user.phoneCode}{user.phone}</p>
+   </div>
+   <div className='flex gap-4 items-center mb-[10px]'>
+      <img src={linkedin} alt="linkedinLogo"></img>
+      <a className='text-white text-[17.503px]' href={userDetail.linkedIn}>{userDetail.linkedIn}</a>
+   </div>
+</div>
+}
                               {/* <div>
                                  <ProfilePhoto isTutor={true}
                                     src={user.photo ? `${awsLink}${user.photo}` : '/images/default.jpeg'}
@@ -749,10 +772,13 @@ export default function TutorProfile({ isOwn }) {
                      </div>
                   </div>
                   <div className='col-span-6'>
+                     { persona==='admin' &&
                      <div className='flex'>
                         {/* {(isOwn == true && persona === 'admin') && <p className='text-[#667085] ml-auto underline cursor-pointer' onClick={() => setToEdit({ ...toEdit, videoLink: { ...toEdit.videoLink, active: true } })}>edit</p>} */}
-                        <p className='text-[#667085] mb-[12px]  ml-auto underline cursor-pointer text-[15px] font-semibold' onClick={() => setToEdit({ ...toEdit, videoLink: { ...toEdit.videoLink, active: true } })}>edit</p>
-                     </div>
+                        <p className='text-[#667085] mb-[12px]  ml-auto underline cursor-pointer text-[15px] font-semibold' 
+                        onClick={() =>
+                         setToEdit({ ...toEdit, videoLink: { ...toEdit.videoLink, active: true } })}>edit</p>
+                     </div>}
                      <div className='  pt-10 min-h-[460px]  relative z-10 flex items-end ' >
 
                         <YoutubeEmbed embedId={videoLink} />
@@ -793,7 +819,7 @@ export default function TutorProfile({ isOwn }) {
                               </div>
                            </div>
                         } />
-
+                     <div className='flex justify-center mx-auto mt-5'><img className='inline-block' src={dots} alt="" /></div>
                   </div>
 
 
@@ -857,14 +883,20 @@ export default function TutorProfile({ isOwn }) {
                         } />
                   </div>
                </div>
-               <div class="mt-20 border-4 ml-20 mr-20 border-t border-[#CBD6E2]-300 justify-center border-dotted"></div>
+               <div class="mt-[50px] border-4 mx-[40px]  border-t border-[#CBD6E2]-300 justify-center border-dotted"></div>
                {/* address row */}
                <div className='flex justify-between mt-[55px] gap-x-[37px]'>
                   <div className='w-[60.32vw]'>
                      <div className='flex items-center mb-1'>
-                        <div className=' text-[#26435F] text-xl font-semibold' >Address</div>
-                        {(isOwn == true || persona === 'admin') && <p className='text-[#667085] ml-auto underline cursor-pointer font-semibold text-[15px]' onClick={() => setToEdit({ ...toEdit, tutorAddress: { ...toEdit.tutorAddress, active: true } })}>edit</p>}
-                     </div>
+                     {(isOwn == true || persona === 'admin') && 
+                     <>
+                      <div className=' text-[#26435F] text-xl font-semibold' >Address</div>
+                         <p className='text-[#667085] ml-auto underline cursor-pointer font-semibold text-[15px]' 
+                         onClick={() => setToEdit({ ...toEdit, tutorAddress: { ...toEdit.tutorAddress, active: true } })}>edit</p>
+</>
+}
+                         </div>
+                     
                      <div>
                         {
                            (isOwn === true) || (persona === 'admin') ?
@@ -919,11 +951,11 @@ export default function TutorProfile({ isOwn }) {
                         }
                      </div>
                   </div>
-
+                  {( persona === 'admin') &&
                   <div className='w-[10.49vw]'>
                      <div className='flex items-center'>
                         <div className='text-xl text-[#26435F] font-semibold' >Salary</div>
-                        {(isOwn == true || persona === 'admin') && <p className='text-[#667085] ml-auto underline cursor-pointer font-semibold text-[15px]' onClick={() => setToEdit({ ...toEdit, income: { ...toEdit.income, active: true } })}>edit</p>}
+                        <p className='text-[#667085] ml-auto underline cursor-pointer font-semibold text-[15px]' onClick={() => setToEdit({ ...toEdit, income: { ...toEdit.income, active: true } })}>edit</p>
                      </div>
                      <ProfileCard
                         bgClassName="bg-white"
@@ -940,11 +972,11 @@ export default function TutorProfile({ isOwn }) {
                      />
 
 
-                  </div>
+                  </div>}
                   {(isOwn === true || persona === "admin") ? (<div className='w-[25.10vw]'>
                      <div className='flex items-center'>
                         <div className='text-[#26435F] text-xl font-semibold' >Payment Info</div>
-                        {(isOwn == true || persona === 'admin') && <p className='text-[#667085] ml-auto underline cursor-pointer font-semibold text-[15px]' onClick={() => setToEdit({ ...toEdit, paymentInfo: { ...toEdit.paymentInfo, active: true } })}>edit</p>}
+                        {( persona === 'admin') && <p className='text-[#667085] ml-auto underline cursor-pointer font-semibold text-[15px]' onClick={() => setToEdit({ ...toEdit, paymentInfo: { ...toEdit.paymentInfo, active: true } })}>edit</p>}
                      </div>
                      <ProfileCard
                         bgClassName="bg-white "
@@ -957,7 +989,7 @@ export default function TutorProfile({ isOwn }) {
                                        onClick={() => setToEdit({ ...toEdit, paymentInfo: { ...toEdit.paymentInfo, active: true } })}
                                      
                                     /> */}
-                                 <div className='font-normal text-[#517CA8] text-xl'>
+                                 <div className='font-normal text-[#517CA8] text-lg px-3 py-2 '>
                                     {userDetail.paymentInfo}
                                  </div>
                               </div>
@@ -969,7 +1001,7 @@ export default function TutorProfile({ isOwn }) {
 
 
                <div className='flex justify-between mt-20 mb-[191px]'>
-                  <div className='w-[36.5vw]'>
+               {( persona === 'admin') &&  <div className='w-[36.5vw]'>
                      <div className='text-xl text-[#26435F] font-semibold mb-[-10px]' >Recent Feedback History</div>
                      <div className='flex'>
                         <Table
@@ -988,14 +1020,14 @@ export default function TutorProfile({ isOwn }) {
 
                      </div>
 
-                  </div>
-                  <div className='w-[19.8vw] '>
+                  </div>}
+                  {( persona === 'admin') &&   <div className='w-[19.8vw] '>
                      <BarChart studentFeedbacks={studentFeedbacks}>
 
                      </BarChart>
-                  </div>
-                  <div className=" w-[1.25px] h-[630px] bg-[#CBD6E2] "></div>
-                  <div className='w-[20.9vw]'>
+                  </div>}
+                  {( persona === 'admin') && <div className=" w-[1.25px] h-[630px] bg-[#CBD6E2] "></div>}
+                  {( persona === 'admin') &&<div className='w-[20.9vw]'>
                      <div className='flex items-center'>
                         <div className='text-[#26435F] text-[20px] font-semibold' >Tutor Status</div>
                         {(isOwn === true || persona === 'admin') && <p className='text-[#667085] ml-auto underline cursor-pointer text-[15px] font-semibold' onClick={() => setToEdit({ ...toEdit, tutorLevel: { ...toEdit.tutorLevel, active: true } })}>edit</p>}
@@ -1017,20 +1049,29 @@ export default function TutorProfile({ isOwn }) {
                      <div className='mt-[33.75px]'>
                         <div className='flex justify-between mb-[-10px]'>
                            <div className=' text-[#26435F] text-xl font-semibold ' >Service Rates</div>
-                           {(isOwn === true || persona === 'admin') && <p className='text-[#667085] ml-auto underline cursor-pointer text-[15px] font-semibold' onClick={() => setToEdit({ ...toEdit, tutorLevel: { ...toEdit.tutorLevel, active: true } })}>edit</p>}
+                           {(persona === 'admin') && <p className='text-[#667085] ml-auto underline cursor-pointer text-[15px] font-semibold' onClick={() => setToEdit({ ...toEdit, tutorServices: { ...toEdit.tutorServices, active: true } })}>edit</p>}
+                          
                         </div>
                         <Table
                            tableHeaders={tableHeaders2}
                            dataFor="serviceRates"
                            data={userDetail.tutorServices}
                            maxPageSize={7}
+                           setPrice={ (idx,isPresent) => setToEdit({
+                              ...toEdit,
+                              tutorServices: {
+                                 ...toEdit.tutorServices, active: true, selectedIdx: idx,
+                                 servicePresent: isPresent
+                              }
+                           })}
                            headerObject={true}
                            noArrow={true}
                         >
                         </Table>
                      </div>
-                  </div>
+                  </div>}
                </div>
+
 
                {/* <div className='lg:grid mt-12 px-2 grid-cols-12 grid-ros-6 lg:mt-[60px] gap-5 lg:pl-3'>
 
@@ -1223,7 +1264,7 @@ export default function TutorProfile({ isOwn }) {
                   } */}
 
             {/* rates */}
-            {
+            {/* {
                persona === 'admin' &&
                <ProfileCard hideShadow
                   className='col-span-3 mt-6 lg:mt-0  max-h-[300px] overflow-y-auto scrollbar-content'
@@ -1308,9 +1349,9 @@ export default function TutorProfile({ isOwn }) {
 
             }
             {
-               persona === 'admin' &&
+               persona === 'admin'&&false &&
                <FeedbackTable feedbacks={feedbacks} />
-            }
+            } */}
 
 
             {/* </div>

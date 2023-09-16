@@ -73,6 +73,7 @@
 /* weekday headers */
 .react-calendar__month-view__weekdays {
     margin-bottom: 10px;
+    margin-top: 10px;
 }
 
 .react-calendar button abbr {
@@ -148,3 +149,9 @@
 .react-calendar__tile--active .calendar-dot::before {
     background-color: #f7f7f7;
 }
+
+.grayed-out-date {
+    color: #BEC2CE; 
+    pointer-events: none; 
+    
+  }

@@ -244,7 +244,7 @@ message,type
               </span>
             }
           />
-         
+         <div id="number" >
             <InputFieldDropdown
               placeholder=""
               labelClassname=" text-md text-[#26435F] font-semibold mb-[1px]"
@@ -253,6 +253,8 @@ message,type
               inputClassName=" text-400 !py-1 !text-[17px] bg-transparent "
               label="Phone"
               value={values.phone}
+              codeColor="bg-white"
+             
               codeValue={values.phoneCode}
               handleCodeChange={(e) =>
                 setValues({
@@ -268,13 +270,13 @@ message,type
               }
               error={error.phone}
             />
-         
+         </div>
           <div>
             <PrimaryButton
               onClick={handleDataUpdate}
               disabled={saving}
               loading={saving}
-              className={`bg-[#FFA28D]  mt-5 ml-10 rounded-md px-10 py-2 text-sm text-white  `}
+              className={`bg-[#FFA28D]   mt-5 ml-10 rounded-md px-10 py-[14.3px] text-sm text-white  `}
             >
               Save
             </PrimaryButton>
@@ -304,8 +306,8 @@ message,type
             </div>
           )}
         </div>
-        <div className="flex justify-between gap-20 mt-16">
-          <div className="flex-1">
+        <div className="flex  gap-20 mt-16">
+          <div className="flex-1 max-w-[400px]">
             <p className=" text-sm text-[#26435F] font-semibold">
               Submit Feedback
             </p>
@@ -333,7 +335,7 @@ message,type
               Submit
             </button>
           </div>
-          <div className="flex-1">
+          <div className="flex-1 max-w-[400px]">
             <p className=" text-sm text-[#26435F] font-semibold ">
               Request Technical Support
             </p>

@@ -785,7 +785,7 @@ const [toEdit, setToEdit] = useState({
                   </div>
                 </div>
 
-                <div className="flex flex-col text-[12px]  font-medium text-white my-auto ">
+               {( persona!=='tutor')  && <div className="flex flex-col text-[12px]  font-medium text-white my-auto ">
                   <ProfileCard
                     className="lg:mt-0 flex-1 !bg-transparent h-min !shadow-none relative"
                     titleClassName="!bg-transparent"
@@ -834,7 +834,57 @@ const [toEdit, setToEdit] = useState({
                       </div>
                     }
                   />
-                </div>
+                </div>}
+                {( persona==='tutor') && organization?.settings?.permissions[2]?.choosedValue && <div className="flex flex-col text-[12px]  font-medium text-white my-auto ">
+                  <ProfileCard
+                    className="lg:mt-0 flex-1 !bg-transparent h-min !shadow-none relative"
+                    titleClassName="!bg-transparent"
+                    title={
+                      <EditableText
+                        editable={editable}
+                        onClick={() =>
+                          setToEdit({
+                            ...toEdit,
+                            contact: { ...toEdit.contact, active: true },
+                          })
+                        }
+                        imgClass="!bg-transparent"
+                        className=" !bg-transparent absolute right-0 top-[50%]"
+                      />
+                    }
+                    body={
+                      <div className="flex h-min !bg-transparent justify-center flex-col  ">
+                        <p>
+                          <span>
+                            <img
+                              className="inline-block !w-4 !h-4 mr-2"
+                              src={emailIcon}
+                              alt="email"
+                            />
+                          </span>
+                          {user?.email}
+                          <span>
+                            <img
+                              className="inline-block ml-2 !w-4 !h-4 mr-2"
+                              src={copy1}
+                              alt="copy"
+                            />
+                          </span>
+                        </p>
+                        <p>
+                          <span>
+                            <img
+                              className="inline-block !w-4 !h-4 mr-2"
+                              src={phoneIcon}
+                            alt="phone"
+                            />
+                          </span>
+                          {user?.phone}
+                        </p>
+                      </div>
+                    }
+                  />
+                </div>}
               </div>
             </div>
           </div>
@@ -875,7 +925,7 @@ const [toEdit, setToEdit] = useState({
                 />
                 </p>
 
-                <p className="font-medium text-[12px]">
+                {(persona !== "tutor"||(persona==='tutor'&&organization?.settings?.permissions[2]?.choosedValue) )&&  <p className="font-medium text-[12px]">
                   <span
                     className="text-xs cursor-pointer font-semibold opacity-60 inline-block mr-1"
 
@@ -893,7 +943,7 @@ const [toEdit, setToEdit] = useState({
                             />
                           </span>
                   </span>
-                </p>
+                </p>}
               </div>
             </div>
             <div className="flex flex-col items-center mb-3">
@@ -968,7 +1018,9 @@ const [toEdit, setToEdit] = useState({
             id="borderDashed"
             className="border !border-[#CBD6E3] w-[calc(1500*0.0522vw)] mx-auto my-[calc(50*0.0522vw)]"
           ></div>
-           <SPFrame4 isOwn={isOwn} userDetail={userDetail}        
+           {
+            persona === "admin"  &&
+            <SPFrame4 isOwn={isOwn} userDetail={userDetail}        
                 fetchDetails={fetchDetails}
                 user={user}
             setSelectedScoreIndex={setSelectedScoreIndex}
@@ -978,7 +1030,7 @@ const [toEdit, setToEdit] = useState({
           
             setToEdit={setToEdit}
             toEdit={toEdit} />
-          
+           }
           </div>
         </div>
 

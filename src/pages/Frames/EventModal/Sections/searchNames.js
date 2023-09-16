@@ -62,11 +62,11 @@ console.log({students,tutors,data})
          <InputSearch
             label="Student Name"
             required="true"
-            labelClassname="font-medium"
+            labelClassname="font-medium text-base-17-5"
             placeholder="Student Name"
             parentClassName="w-full mr-[18.48px] text-[#26435F] "
-            inputContainerClassName="bg-lightWhite border-0 pt-3.5 pb-3.5"
-            inputClassName="bg-transparent"
+            inputContainerClassName="bg-lightWhite border-0 pt-3.5 pb-3.5 text-[#507CA8]"
+            inputClassName="bg-transparent text-[#507CA8]"
             type="text"
             optionPrefix='s'
             value={student}
@@ -75,17 +75,18 @@ console.log({students,tutors,data})
             disabled={!isEditable}
             onOptionClick={(item) => {
                setStudent(item.value);
-               setData({ ...data, studentId: item._id });
+               setData({ ...data, studentId: item._id,studentName: item.value});
             }}
+            
          />
          <InputSearch
             label="Tutor Name"
             required="true"
-            labelClassname="font-medium"
+            labelClassname="font-medium text-base-17-5"
             placeholder="Tutor Name"
             parentClassName="w-full text-[#26435F]"
-            inputContainerClassName="bg-lightWhite border-0 pt-3.5 pb-3.5 text-s"
-            inputClassName="bg-transparent "
+            inputContainerClassName="bg-lightWhite border-0 pt-3.5 pb-3.5 text-[#507CA8]"
+            inputClassName="bg-transparent text-[#507CA8]"
             type="text"
             optionPrefix='t'
             value={tutor}
@@ -94,7 +95,7 @@ console.log({students,tutors,data})
             optionData={tutors}
             onOptionClick={(item) => {
                setTutor(item.value);
-               setData({ ...data, tutorId: item._id });
+               setData({ ...data, tutorId: item._id,tutorName: item.value });
             }}
          />
       </div>
