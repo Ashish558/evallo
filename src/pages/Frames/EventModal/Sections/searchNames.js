@@ -11,9 +11,9 @@ export default function SearchNames({ setStudent, setData, student, tutor, data,
    const [fetchStudents, studentResponse] = useLazyGetStudentsByNameQuery();
    const [fetchTutorStudents, tutorStudentsResp] = useLazyGetTutorStudentsByNameQuery();
    const [students, setStudents] = useState([]);
-   const {role : persona } = useSelector(state => state.user)
+   const { role: persona } = useSelector(state => state.user)
    // console.log(user);
- 
+
    useEffect(() => {
       if (tutor.length > 0) {
          fetchTutors(tutor).then((res) => {
@@ -56,16 +56,17 @@ export default function SearchNames({ setStudent, setData, student, tutor, data,
          }
       }
    }, [student]);
-
+console.log({students,tutors,data})
    return (
       <div className="flex mb-4">
          <InputSearch
             label="Student Name"
-            labelClassname="ml-3"
+            required="true"
+            labelClassname="font-medium text-base-17-5"
             placeholder="Student Name"
-            parentClassName="w-full mr-[18.48px]"
-            inputContainerClassName="bg-lightWhite border-0 pt-3.5 pb-3.5"
-            inputClassName="bg-transparent"
+            parentClassName="w-full mr-[18.48px] text-[#26435F] "
+            inputContainerClassName="bg-lightWhite border-0 pt-3.5 pb-3.5 text-[#507CA8]"
+            inputClassName="bg-transparent text-[#507CA8]"
             type="text"
             optionPrefix='s'
             value={student}
@@ -76,14 +77,16 @@ export default function SearchNames({ setStudent, setData, student, tutor, data,
                setStudent(item.value);
                setData({ ...data, studentId: item._id });
             }}
+            
          />
          <InputSearch
             label="Tutor Name"
-            labelClassname="ml-3"
+            required="true"
+            labelClassname="font-medium text-base-17-5"
             placeholder="Tutor Name"
-            parentClassName="w-full"
-            inputContainerClassName="bg-lightWhite border-0 pt-3.5 pb-3.5 text-s"
-            inputClassName="bg-transparent"
+            parentClassName="w-full text-[#26435F]"
+            inputContainerClassName="bg-lightWhite border-0 pt-3.5 pb-3.5 text-[#507CA8]"
+            inputClassName="bg-transparent text-[#507CA8]"
             type="text"
             optionPrefix='t'
             value={tutor}

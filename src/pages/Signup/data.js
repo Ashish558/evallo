@@ -324,7 +324,8 @@ export const paymentOptionsData = ['Cash',
 export const successfulSignUpMessage = {
   head: `Welcome aboard, and thank you for choosing Evallo!`,
   mid: `You've just taken a significant leap towards optimizing your tutoring operations, and we're thrilled to be part of your journey. A verification email is on its way to your inbox as we speak. It includes a link for verifying your account and setting up your password. `,
-  last: `If it seems to be taking longer than usual, you might want to check your spam folder just in case. If there's still no sign of it, don't worry. You can simply click here to request a new verification email. 
+  last: `If it seems to be taking longer than usual, you might want to check your spam folder just in case. If there's still no sign of it, don't worry. You can simply 
   `,
+  verify:`click here to request a new verification email.`,
   bottom: `Welcome to a smoother, more efficient way of tutoring!`,
 };

@@ -25,7 +25,7 @@ export  const CheckboxNew = ({item, handleCheckboxChange,boxData,setBoxData,Dnam
                     
                 handleCheckboxChange(item.text,boxData,setBoxData,Dname)
               }
-              className="font-medium text-[#507CA8]  text-[13px] opacity-90 leading-5"
+              className="font-medium text-[#507CA8]  text-[13px] opacity-90 leading-5 text-base-15"
             >
               {item.text}
             </p>

@@ -1,3 +1,4 @@
+
 import React, { useEffect, useRef, useState } from "react";
 import PrimaryButton from "../../components/Buttons/PrimaryButton";
 import EditIcon from "../../assets/icons/edit-white.svg";
@@ -7,18 +8,32 @@ import AddTag from "../../components/Buttons/AddTag";
 import FilterItems from "../../components/FilterItems/filterItems";
 import InputField from "../../components/InputField/inputField";
 import Modal from "../../components/Modal/Modal";
+import questionMark from "../../assets/images/Vector (6).svg";
+import ToggleBar from "../../components/SettingsCard/ToogleBar";
 import { useLazyGetSettingsQuery } from "../../app/services/session";
 import {
+  useGetAllPermissionQuery,
+  useUpdateOrgSettingMutation,
+  useUpdatePermissionMutation,
   useUpdateOfferImageMutation,
   useUpdateSettingMutation,
 } from "../../app/services/settings";
+import { permissionsStaticData } from "./Tabs/staticData";
 import { getSessionTagName } from "../../utils/utils";
 import { BASE_URL, getAuthHeader } from "../../app/constants/constants";
 import axios from "axios";
-import DeleteIcon from "../../assets/icons/delete.svg";
+import DeleteIcon from "../../assets/icons/delete (2).svg";
 import PauseIcon from "../../assets/icons/pause.svg";
 import PlayIcon from "../../assets/icons/play.svg";
-import EditBlueIcon from "../../assets/icons/edit-blue.svg";
+import AccountOverviewLogo from "../../assets/icons/account overview.svg";
+import AccountOverviewLogo2 from "../../assets/icons/account-overview 2.svg";
+import OrgDefaultLogo from "../../assets/icons/org-default.png";
+import org1 from "../../assets/icons/org-default 2.svg";
+import org2 from "../../assets/icons/org-default.svg";
+import OrgDefaultLogo2 from "../../assets/icons/org default2.png";
+import OrgDefaultContentLogo2 from "../../assets/icons/org-default-content.svg";
+import OrgDefaultContentLogo from "../../assets/icons/org-default-content (2).svg";
+import EditBlueIcon from "../../assets/icons/edit 15.png";
 import InputSearch from "../../components/InputSearch/InputSearch";
 import { useSelector, useDispatch } from "react-redux";
 import { useUpdateUserFieldsMutation } from "../../app/services/users";
@@ -29,9 +44,12 @@ import SignupTab from "./Tabs/Signup/signup";
 import AddNewQuestion from "../Frames/AddNewQuestion/AddNewQuestion";
 import { useAddNewQuestionMutation } from "../../app/services/admin";
 import { updateOrganizationSettings } from "../../app/slices/organization";
-import AccountOverview from "./Tabs/AccountOverview/AccountOverview";
+import AccountOverview from "./Tabs/SuperAdminAccountOverview/SuperAdminAccountOverview";
 import UserManagement from "./Tabs/UserManagement/UserManagement";
 import OrgDefaultContent from "./Tabs/OrgDefaultContent/OrgDefaultContent";
+import { timeZones } from "../../constants/constants";
+import InputSelect from "../../components/InputSelect/InputSelect";
+import ToogleBar from "../../components/SettingsCard/ToogleBar";
 
 const initialState = {
   name: "",
@@ -46,27 +64,32 @@ const subModalInitialState = {
 
 const initialTabs = [
   {
-    Icon: PlayIcon,
+    Icon: AccountOverviewLogo2,
+    Icon2: AccountOverviewLogo,
     name: "Account Overview",
     selected: true,
   },
   {
-    Icon: PlayIcon,
+    Icon: AccountOverviewLogo2,
+    Icon2: AccountOverviewLogo,
     name: "User Management",
     selected: false,
   },
   {
-    Icon: PlayIcon,
+    Icon: org2,
+    Icon2: org1,
     name: "Org Default",
     selected: false,
   },
   {
-    Icon: PlayIcon,
+    Icon: OrgDefaultContentLogo2,
+    Icon2: OrgDefaultContentLogo,
     name: "Org Default Content",
     selected: false,
   },
 ];
 export default function SuperAdminSettings() {
+  const { firstName, lastName } = useSelector((state) => state.user);
   const [modalActive, setModalActive] = useState(false);
   const [tagModalActive, setTagModalActive] = useState(false);
   const [addCodeModalActive, setAddCodeModalActive] = useState(false);
@@ -146,7 +169,83 @@ export default function SuperAdminSettings() {
   const [imageName, setImageName] = useState("");
   const [tagText, setTagText] = useState("");
   const [modalData, setModalData] = useState(initialState);
+  const [fetchedPermissions, setThePermission] = useState([]);
   const dispatch = useDispatch();
+
+
+  const handlePermissionOption = (value, key) => {
+    let nvalue = value;
+    if (!isNaN(Number(value))) {
+      nvalue = Number(value);
+    }
+    const arr = fetchedPermissions.map((per) => {
+      if (per._id === key) {
+        return { ...per, choosedValue: nvalue };
+      }
+      return { ...per };
+    });
+
+    setThePermission(arr)
+    let updatedSetting = {
+      permissions: arr,
+    };
+
+    updateAndFetchsettings(updatedSetting);
+  };
+  const togglePermissions = (key, value) => {
+    const arr = fetchedPermissions?.map((per) => {
+      if (per._id === key) {
+        return { ...per, choosedValue: !per.choosedValue };
+      }
+      return { ...per };
+    });
+
+
+    setThePermission(arr)
+
+    let updatedSetting = {
+      permissions: arr,
+    };
+    updateAndFetchsettings(updatedSetting);
+  };
+  const renderColoredText = (text) => {
+    const keywords = [
+      "students",
+      "parents",
+      "admins",
+      "tutors",
+      "parent",
+      "student",
+      "tutor",
+      "admin",
+      "&",
+      "/",
+      "tutors / parents",
+      "tutors & parents",
+      "parents / students",
+      "parents & students",
+      "students / parents",
+      "students or parents",
+      "students and parents",
+      "students & parents",
+    ];
+    const parts = text.split(new RegExp(`(${keywords.join("|")})`, "i"));
+
+    return (
+      <>
+        {parts.map((part, index) => {
+          if (keywords.includes(part.toLowerCase())) {
+            return (
+              <span key={index} style={{ color: "#FFA28D" }}>
+                {part}
+              </span>
+            );
+          }
+          return <span style={{ color: "#24A3D9" }}>{part}</span>;
+        })}
+      </>
+    );
+  };
 
   const handleClose = () => setModalActive(false);
   const handleTagModal = (text) => {
@@ -199,10 +298,11 @@ export default function SuperAdminSettings() {
         console.log("settings fetch err", res.error);
         return;
       }
-      console.log("settings", res.data);
+      console.log("settings  new", res.data);
       // setBaseLink(res.data.data.baseLink);
       if (res.data.data.setting === null) return;
       setSettingsData(res.data.data.setting);
+      setThePermission(res.data.data.setting.permissions);
     });
   };
 
@@ -226,18 +326,6 @@ export default function SuperAdminSettings() {
     updateAndFetchsettings(updatedSetting);
   };
 
-  const onRemoveSessionTag = (item, key, idx) => {
-    let updatedSessionTag = { ...settingsData.sessionTags };
-    // let updatedField = settingsData.sessionTags[key].filter(text => text !== item)
-    let updatedField = settingsData.sessionTags[key].filter(
-      (text, i) => i !== idx
-    );
-    updatedSessionTag[key] = updatedField;
-
-    const updatedSetting = { sessionTags: updatedSessionTag };
-    updateAndFetchsettings(updatedSetting);
-  };
-
   const handleAddTag = (text, key) => {
     let tempSettings = { ...settingsData };
     let updatedSetting = {
@@ -257,20 +345,20 @@ export default function SuperAdminSettings() {
   };
 
   const updateAndFetchsettings = (updatedSetting) => {
-    const settings = {
+    const setting = {
       ...settingsData,
       ...updatedSetting,
     };
     const body = {
-      settings,
+      setting,
     };
-    console.log("body", body);
+    console.log("body set", body);
     // return;
     setSaveLoading(true);
     updateSetting(updatedSetting)
       .then((res) => {
         setSaveLoading(false);
-        console.log("res", res.data);
+        console.log("res", res);
         setSettingsData(res.data.data.setting);
         dispatch(updateOrganizationSettings(res.data.data.setting));
         // console.log('updated', res.data.data.setting.settings);
@@ -656,24 +744,122 @@ export default function SuperAdminSettings() {
     updateAndFetchsettings(updatedSetting);
   };
 
-  // console.log('subscriptionCode', settingsData.subscriptionCode);
+  const onRemoveSessionTag = (itemToRemove) => {
+    let updated = settingsData.sessionTags.filter(
+      (item) => item._id !== itemToRemove._id
+    );
+    let updatedSetting = {
+      sessionTags: updated,
+    };
+    updateAndFetchsettings(updatedSetting);
+  };
+
+  const handleAddSessionTag = (text, key) => {
+    let tempSettings = { ...settingsData };
+
+    let updated = sessionTags.map((serv) => {
+      if (serv.heading === key) {
+        return {
+          ...serv,
+          items: [...serv.items, text],
+        };
+      } else {
+        return { ...serv };
+      }
+    });
+
+    let updatedSetting = {
+      sessionTags: updated,
+    };
+    updateAndFetchsettings(updatedSetting);
+    // console.log('updatedSetting', updatedSetting)
+  };
+
+  const handleOfferChange = (offer, key, value) => {
+    let updatedField = settingsData.offerImages.map((item) => {
+      if (item._id === offer._id) {
+        return { ...item, [key]: value };
+      } else {
+        return item;
+      }
+    });
+    let updatedSetting = {
+      offerImages: updatedField,
+    };
+    console.log("updatedSetting", updatedSetting);
+    updateAndFetchsettings(updatedSetting);
+  };
+
+  const onRemoveSessionTagItem = (text, heading) => {
+    // console.log(text);
+    // console.log(service);
+    let updated = sessionTags.map((serv) => {
+      if (serv.heading === heading) {
+        let updatedSpec = serv.items.filter((spec) => spec !== text);
+        return { ...serv, items: updatedSpec };
+      } else {
+        return { ...serv };
+      }
+    });
+    let updatedSetting = {
+      sessionTags: updated,
+    };
+    updateAndFetchsettings(updatedSetting);
+  };
+
+  const onAddSessionTag = (val) => {
+    let tempSettings = { ...settingsData };
+    let updatedSetting = {
+      sessionTags: [
+        ...tempSettings["sessionTags"],
+        {
+          heading: val,
+          items: [],
+        },
+      ],
+    };
+
+    updateAndFetchsettings(updatedSetting);
+  };
+
+  const handleChange = (key, value) => {
+    const body = {
+      [key]: value,
+    };
+    updateAndFetchsettings(body);
+  };
+  console.log(organization?.company)
   return (
     <>
-      <div className="lg:ml-pageLeft bg-lightWhite min-h-screen px-8 pt-[50px] pb-[50px]">
+      <div className=" bg-lightWhite min-h-screen px-24 pt-[30px] pb-[50px]">
+        <p className="text-[#24A3D9]  mb-9 ">
+
+          <span className="font-medium text-lg"> {organization?.company +
+
+            "  >  "} Settings</span>
+        </p>
         <div className="flex justify-between items-center mb-[45px]">
-          <div className={styles.tabsContainer}>
+          <div className={`${styles.tabsContainer} w-full`}>
             {tabs.map((item, idx) => {
               return (
                 <div
-                  className={`${styles.tab} ${
-                    activeTab === idx + 1 ? styles.selectedTab : ""
-                  } cursor-pointer`}
+                  className={`${styles.tab} w-[200px] ${activeTab === idx + 1 ? styles.selectedTab : ""
+                    } cursor-pointer`}
                   onClick={() => changeTab(idx + 1)}
                 >
-                  <img src={item.Icon} />
-                  <p> {item.name} </p>
+                  <div className={` flex justify-center w-full`} >
+                    <div>
+                      {activeTab === idx + 1 && (
+                        <img src={item.Icon} alt="item-logo" />
+                      )}
+                      {activeTab === idx + 1 || (
+                        <img src={item.Icon2} alt="item-logo" />
+                      )}
+                    </div>
+                    <p >{item.name} </p>
+                  </div>
                   {activeTab === idx + 1 && (
-                    <img src={ActiveTab} className={styles.activeBgIcon} />
+                    <img src={ActiveTab} className={styles.activeBgIcon} alt="item-background" />
                   )}
                 </div>
               );
@@ -711,10 +897,34 @@ export default function SuperAdminSettings() {
         {activeTab === 1 || !activeTab ? <AccountOverview /> : <></>}
         {activeTab === 3 ? (
           <div>
+            <div className="flex items-center gap-x-[50px] mb-4">
+              <div>
+                <InputSelect
+                  labelClassname="mb-1"
+                  inputContainerClassName="shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-[#FFFFFF] w-[20.15625vw]"
+                  placeholder='Select'
+                  optionData={timeZones}
+                  parentClassName=""
+                  label="Default Time Zone"
+                  value={settingsData.timeZone}
+                  onChange={(val) => handleChange("timeZone", val)}
+                />
+              </div>
+              <InputSelect
+                labelClassname="mb-1"
+                inputContainerClassName="shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-[#FFFFFF] w-[20.15625vw]"
+                optionData={["dd/mm/yy", "mm/dd/yy", "yy/mm/dd"]}
+                parentClassName=""
+                label="Default Date Format"
+                value={settingsData.dateFormat}
+                onChange={(val) => handleChange("dateFormat", val)}
+              />
+            </div>
+            <div className="h-[1.25px] bg-[#CBD6E2] mb-[21px] mt-[37px]"></div>
             <SettingsCard
-              title="Lead Status Items"
+              title="Lead Status Items (Parent / Student)"
               body={
-                <div className="flex items-center flex-wrap [&>*]:mb-[10px]">
+                <div className="flex items-center flex-wrap [&>*]:mb-[10px] bg-white shadow-small p-6 rounded-5">
                   <AddTag onAddTag={handleAddTag} keyName="leadStatus" />
                   <FilterItems
                     onlyItems={true}
@@ -727,11 +937,11 @@ export default function SuperAdminSettings() {
                 </div>
               }
             />
-
+            <div className="h-[1.25px] bg-[#CBD6E2] my-[21px]"></div>
             <SettingsCard
               title="Tutor Status Items"
               body={
-                <div className="flex items-center flex-wrap [&>*]:mb-[10px]">
+                <div className="flex items-center flex-wrap [&>*]:mb-[10px] bg-white shadow-small p-6 rounded-5">
                   <AddTag onAddTag={handleAddTag} keyName="tutorStatus" />
                   <FilterItems
                     onlyItems={true}
@@ -744,23 +954,25 @@ export default function SuperAdminSettings() {
                 </div>
               }
             />
+            <div className="h-[1.25px] bg-[#CBD6E2] mt-[21px] mb-[37px]"></div>
             <SettingsCard
-              title="Manage Subscription Codes"
+              title="Manage Referral Codes"
+              className={styles["bordered-settings-container"]}
               body={
-                <div className="max-h-[360px] overflow-auto scrollbar-content scrollbar-vertical">
+                <div className="max-h-[360px] overflow-auto scrollbar-content scrollbar-vertical ">
                   {subscriptionCode !== undefined &&
                     subscriptionCode.map((subscription, i) => {
                       return (
-                        <div key={i}>
-                          <div className="flex items-center justify-between pr-8">
-                            <p className="font-bold text-primary-dark mb-4">
+                        <div key={i} className="bg-white shadow-small p-4 rounded-[5px]">
+                          <div className="flex items-center justify-between pr-8 ">
+                            <p className="font-medium text-[#24A3D9] mb-4">
                               {subscription.code}
-                              <span className="inline-block ml-4 font-normal">
+                              <span className="inline-block ml-4 font-normal text-[#517CA8]">
                                 {subscription.expiry} Weeks
                               </span>
                             </p>
                             <div className="flex items-center gap-x-4">
-                              {subscription.pause === false ? (
+                              {/* {subscription.pause === false ? (
                                 <img
                                   src={PlayIcon}
                                   className="w-4 cursor-pointer"
@@ -774,9 +986,14 @@ export default function SuperAdminSettings() {
                                   alt="play"
                                   onClick={() => handlePause(subscription)}
                                 />
-                              )}
+                              )} */}
+                              <ToggleBar
+                                circleColor="bg-[rgba(119,221,119,1)]"
+                                toggle={{ value: 5, key: 'code' }}
+                                onToggle={togglePermissions}
+                              ></ToggleBar>
                               <div
-                                className="w-5 h-5 flex items-center justify-center bg-[#E3E3E3] rounded-full cursor-pointer"
+                                className=" flex items-center justify-center  rounded-full cursor-pointer"
                                 onClick={() => onEditCode(subscription)}
                               >
                                 <img
@@ -786,7 +1003,7 @@ export default function SuperAdminSettings() {
                                 />
                               </div>
                               <div
-                                className="w-5 h-5 flex items-center justify-center bg-[#E3E3E3] rounded-full cursor-pointer"
+                                className=" flex items-center justify-center  rounded-full cursor-pointer"
                                 onClick={() => onRemoveCode(subscription)}
                               >
                                 <img
@@ -797,13 +1014,13 @@ export default function SuperAdminSettings() {
                               </div>
                             </div>
                           </div>
-                          <div className="flex items-center flex-wrap [&>*]:mb-[18px]">
-                            <AddTag
+                          <div className="flex items-center flex-wrap [&>*]:mb-[18px] ">
+                            {/* <AddTag
                               openModal={true}
                               onAddTag={(code) => handleAddTest(subscription)}
                               keyName={subscription.code}
                               text="Add Tests"
-                            />
+                            /> */}
                             <FilterItems
                               isString={true}
                               onlyItems={true}
@@ -819,10 +1036,10 @@ export default function SuperAdminSettings() {
                       );
                     })}
                   <AddTag
-                    children="Add Code"
+                    children="Add New Code"
                     className="pl-3 pr-3 pt-1.4 pb-1.5 mt-5 bg-primary text-white"
-                    text="Add Code"
-                    hideIcon={true}
+                    text="Add New Code"
+                    hideIcon={false}
                     openModal={true}
                     onAddTag={onAddCode}
                   />
@@ -831,115 +1048,73 @@ export default function SuperAdminSettings() {
             />
 
             <SettingsCard
-              title="Session Tags"
-              titleClassName="text-[21px] mb-[15px]"
+              title="Manage Services and Topics"
+              className={styles["bordered-settings-container"]}
               body={
                 <div>
-                  {sessionTags !== undefined &&
-                    Object.keys(sessionTags).map((tag, i) => {
-                      return (
-                        <div key={i}>
-                          <p className="font-bold text-primary-dark mb-[25px]">
-                            {getSessionTagName(Object.keys(sessionTags)[i])}
-                          </p>
-                          <div className="flex items-center flex-wrap [&>*]:mb-[10px]">
-                            <AddTag
-                              onAddTag={handleSessionAddTag}
-                              keyName={Object.keys(sessionTags)[i]}
-                            />
-                            <FilterItems
-                              isString={true}
-                              onlyItems={true}
-                              keyName={Object.keys(sessionTags)[i]}
-                              items={sessionTags[tag]}
-                              onRemoveFilter={onRemoveSessionTag}
-                              className="pt-1 pb-1 mr-15"
-                            />
-                          </div>
-                        </div>
-                      );
-                    })}
-                </div>
-              }
-            />
-
-            <SettingsCard
-              title="Expertise"
-              toggle={{ value: toggleImage.Expertise, key: "Expertise" }}
-              onToggle={onToggle}
-              body={
-                <div className="flex items-center flex-wrap [&>*]:mb-[10px]">
-                  <AddTag
-                    keyName="Expertise"
-                    openModal={true}
-                    onAddTag={() => handleTagModal("Expertise")}
-                  />
-                  <FilterItems
-                    isString={false}
-                    onlyItems={true}
-                    image={toggleImage.Expertise}
-                    items={
-                      sessionTags !== undefined
-                        ? Expertise.map((item) => item)
-                        : []
-                    }
-                    keyName="Expertise"
-                    baseLink={awsLink}
-                    onRemoveFilter={onRemoveTextImageTag}
-                    className="pt-1 pb-1 mr-15"
-                  />
-                </div>
-              }
-            />
-
-            <SettingsCard
-              title="Service and specialization"
-              className=""
-              titleClassName="text-[21px] mb-[15px]"
-              body={
-                <div className="max-h-[360px] overflow-auto scrollbar-content scrollbar-vertical">
-                  {servicesAndSpecialization !== undefined &&
-                    servicesAndSpecialization.map((service, i) => {
-                      return (
-                        <div key={i}>
-                          <div className="flex items-center justify-between pr-8">
-                            <p className="font-bold text-primary-dark mb-4">
-                              {service.service}
-                            </p>
-                            <div
-                              className="w-5 h-5 flex items-center justify-center bg-[#E3E3E3] rounded-full cursor-pointer"
-                              onClick={() => onRemoveService(service)}
-                            >
-                              <img
-                                src={DeleteIcon}
-                                className="w-4"
-                                alt="delete"
+                  <div className="max-h-[360px] overflow-auto scrollbar-content scrollbar-vertical">
+                    {servicesAndSpecialization !== undefined &&
+                      servicesAndSpecialization.map((service, i) => {
+                        return (
+                          <div
+                            key={i}
+                            className="bg-white shadow-small p-4 mb-3"
+                          >
+                            <div className="flex items-center justify-between pr-8 ">
+                              <p className="font-medium text-[#24A3D9] mb-4">
+                                {service.service}
+                              </p>
+                            <div className="flex items-center gap-x-4">
+                            <ToggleBar
+                                circleColor="bg-[rgba(119,221,119,1)]"
+                                toggle={{ value: 5, key: 'code' }}
+                                onToggle={togglePermissions}
+                              ></ToggleBar>
+                              <div
+                                className=" flex items-center justify-center  rounded-full cursor-pointer"
+                                // onClick={() => onEditService(service)}
+                              >
+                                <img
+                                  src={EditBlueIcon}
+                                  className="w-4"
+                                  alt="edit"
+                                />
+                              </div>
+                              <div
+                                className=" flex items-center justify-center  rounded-full cursor-pointer"
+                                onClick={() => onRemoveService(service)}
+                              >
+                                <img
+                                  src={DeleteIcon}
+                                  className="w-4"
+                                  alt="delete"
+                                />
+                              </div>
+                            </div>
+                            </div>
+                            <div className="flex items-center flex-wrap [&>*]:mb-[18px]">
+                              {/* <AddTag
+                                onAddTag={handleAddSpecialization}
+                                keyName={service.service}
+                                text="Add Service"
+                              /> */}
+                              <FilterItems
+                                isString={true}
+                                onlyItems={true}
+                                keyName={service.service}
+                                items={service.specialization}
+                                onRemoveFilter={onRemoveSpecialization}
+                                className="pt-1 pb-1 mr-15"
                               />
                             </div>
                           </div>
-                          <div className="flex items-center flex-wrap [&>*]:mb-[18px]">
-                            <AddTag
-                              onAddTag={handleAddSpecialization}
-                              keyName={service.service}
-                              text="Add Specialization"
-                            />
-                            <FilterItems
-                              isString={true}
-                              onlyItems={true}
-                              keyName={service.service}
-                              items={service.specialization}
-                              onRemoveFilter={onRemoveSpecialization}
-                              className="pt-1 pb-1 mr-15"
-                            />
-                          </div>
-                        </div>
-                      );
-                    })}
+                        );
+                      })}
+                  </div>
                   <AddTag
-                    children="Add service"
+                    children="Add Service"
                     className="pl-3 pr-3 pt-1.4 pb-1.5 mt-5 bg-primary text-white"
-                    text="Add service"
-                    hideIcon={true}
+                    text="Add Service"
                     onAddTag={onAddService}
                   />
                 </div>
@@ -947,94 +1122,89 @@ export default function SuperAdminSettings() {
             />
 
             <SettingsCard
-              title="Personality"
-              toggle={{ value: toggleImage.personality, key: "personality" }}
-              onToggle={onToggle}
+              title="Session Tags & Reconciliation"
+              className={styles["bordered-settings-container"]}
               body={
-                <div className="flex items-center flex-wrap [&>*]:mb-[10px]">
+                <div className="max-h-[360px] overflow-auto scrollbar-content scrollbar-vertical">
+                  {sessionTags !== undefined &&
+                    sessionTags.map((service, i) => {
+                      return (
+                        <div key={i} className="bg-white shadow-small p-4 mb-3">
+                          <div className="flex items-center justify-between pr-8">
+                            <p className="font-medium text-[#24A3D9] mb-4">
+                              {service.heading}
+                            </p>
+                            <div className="flex items-center gap-x-4">
+                            <ToggleBar
+                                circleColor="bg-[rgba(119,221,119,1)]"
+                                toggle={{ value: 5, key: 'code' }}
+                                onToggle={togglePermissions}
+                              ></ToggleBar>
+                              <div
+                                className=" flex items-center justify-center  rounded-full cursor-pointer"
+                                // onClick={() => onEditService(service)}
+                              >
+                                <img
+                                  src={EditBlueIcon}
+                                  className="w-4"
+                                  alt="edit"
+                                />
+                              </div>
+                              <div
+                                className=" flex items-center justify-center  rounded-full cursor-pointer"
+                                onClick={() => onRemoveSessionTag(service)}
+                              >
+                                <img
+                                  src={DeleteIcon}
+                                  className="w-4"
+                                  alt="delete"
+                                />
+                              </div>
+                            </div>
+                          </div>
+                          <div className="flex items-center flex-wrap [&>*]:mb-[18px]">
+                            {/* <AddTag
+                              onAddTag={handleAddSessionTag}
+                              keyName={service.heading}
+                              text="Add Items"
+                            /> */}
+                            <FilterItems
+                              isString={true}
+                              onlyItems={true}
+                              keyName={service.heading}
+                              items={service.items}
+                              onRemoveFilter={onRemoveSessionTagItem}
+                              className="pt-1 pb-1 mr-15"
+                            />
+                          </div>
+                        </div>
+                      );
+                    })}
                   <AddTag
-                    keyName="personality"
-                    openModal={true}
-                    onAddTag={() => handleTagModal("personality")}
-                  />
-                  <FilterItems
-                    isString={false}
-                    onlyItems={true}
-                    image={toggleImage.personality}
-                    items={
-                      personality !== undefined
-                        ? personality.map((item) => item)
-                        : []
-                    }
-                    keyName="personality"
-                    baseLink={awsLink}
-                    onRemoveFilter={onRemoveTextImageTag}
-                    className="pt-1 pb-1 mr-15"
+                    children="Add Heading"
+                    className="pl-3 pr-3 pt-1.4 pb-1.5 mt-5 bg-primary text-white"
+                    text="Add Heading"
+                    hideIcon={false}
+                    onAddTag={onAddSessionTag}
                   />
                 </div>
               }
             />
 
             <SettingsCard
-              title="Interest"
-              toggle={{ value: toggleImage.interest, key: "interest" }}
-              onToggle={onToggle}
-              body={
-                <div className="flex items-center flex-wrap [&>*]:mb-[10px]">
-                  <AddTag
-                    keyName="interest"
-                    openModal={true}
-                    onAddTag={() => handleTagModal("interest")}
-                  />
-                  <FilterItems
-                    isString={false}
-                    onlyItems={true}
-                    image={toggleImage.interest}
-                    items={
-                      interest !== undefined ? interest.map((item) => item) : []
-                    }
-                    keyName="interest"
-                    baseLink={awsLink}
-                    onRemoveFilter={onRemoveTextImageTag}
-                    className="pt-1 pb-1 mr-15"
-                  />
-                </div>
-              }
-            />
-
-            <SettingsCard
-              title="Subjects"
-              body={
-                <div className="flex items-center flex-wrap [&>*]:mb-[10px]">
-                  <AddTag onAddTag={handleAddTag} keyName="classes" />
-                  <FilterItems
-                    isString={true}
-                    onlyItems={true}
-                    keyName="classes"
-                    items={classes ? classes : []}
-                    baseLink={awsLink}
-                    onRemoveFilter={onRemoveFilter}
-                    className="pt-1 pb-1 mr-15"
-                  />
-                </div>
-              }
-            />
-
-            <SettingsCard
-              title="Images in Offer Slide"
+              title="Edit Announcements"
               toggle={{ value: toggleImage.offer, key: "offer" }}
               onToggle={onToggle}
               body={
-                <div className="flex items-center flex-wrap [&>*]:mb-[10px]">
-                  <AddTag
-                    openModal={true}
-                    onAddTag={() => handleTagModal("offer")}
-                  />
-                  {/* <input type='file' ref={inputRef} className='hidden' accept="image/*"
+                <div>
+                  <div className="flex items-center flex-wrap [&>*]:mb-[10px] bg-white  gap-x-4 p-4 rounded-br-5 rounded-bl-5 mb-3 ">
+                    {/* <input type='file' ref={inputRef} className='hidden' accept="image/*"
                            onChange={e => onImageChange(e)} /> */}
-                  <FilterItems
+
+                    {/* <FilterItems
                     isString={false}
-                    image={toggleImage.offer}
+                    // image={toggleImage.offer}
+                    offerImage={toggleImage.offer}
                     onlyItems={true}
                     sliceText={true}
                     items={
@@ -1049,22 +1219,141 @@ export default function SuperAdminSettings() {
                     onRemoveFilter={onRemoveImage}
                     // onRemoveFilter={onRemoveFilter}
                     className="pt-1 pb-1 mr-15"
+                  /> */}
+                    {offerImages?.map((offer) => {
+                      return (
+                        <div key={offer._id}>
+                          <div className="pr-4 border-r-[1.25px] border-[#CBD6E2]">
+                            {toggleImage.offer && (
+                              <div className=" overflow-hidden mb-5">
+
+                                <div className="flex">
+                                  <div className="w-[300px] h-[150px]">
+                                    <img
+                                      src={`${awsLink}${offer.image}`}
+                                      alt="offer-image3"
+                                      className="w-full h-full object-cover rounded-7"
+                                    />
+                                  </div>
+                                  {/* <div className="w-[1.25px] h-[150px] bg-[#CBD6E2] ml-4" /> */}
+                                </div>
+                              </div>
+                            )}
+                            <div>
+                              <InputField
+                                defaultValue={offer.link}
+                                inputClassName="bg-[#F5F8FA] text-[#667085] text-[17.5px] h-[30px]"
+                                parentClassName="mb-3 bg-[#F5F8FA]"
+                                onBlur={(e) =>
+                                  handleOfferChange(
+                                    offer,
+                                    "link",
+                                    e.target.value
+                                  )
+                                }
+                              />
+                              <InputField
+                                parentClassName="bg-[#F5F8FA]"
+                                inputClassName="bg-[#F5F8FA] text-[#667085] text-[17.5px] h-[30px]"
+                                value={offer.buttonText}
+                                placeholder={
+                                  "Button (eg. Register, Enroll, View)"
+                                }
+                                onBlur={(e) =>
+                                  handleOfferChange(
+                                    offer,
+                                    "buttonText",
+                                    e.target.value
+                                  )
+                                }
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                  <AddTag
+                    openModal={true}
+                    text="Add Announcement"
+                    onAddTag={() => handleTagModal("offer")}
                   />
                 </div>
               }
             />
+            <div className="flex items-center pb-2 text-[#26435F] font-medium text-xl">
+              <p className="pr-2">Set Permissions </p>
+              <p>
+                <img src={questionMark} alt="" />
+              </p>
+            </div>
+
+            <div className={`bg-[#FFFFFF] border-[2.5px] px-[82px] border-dotted border-[#CBD6E2] mb-[30px] ${styles.permission}`}>
+              {fetchedPermissions?.map((item, id) => {
+                return (
+                  <>
+                    {item.choosedValue === true ||
+                      item.choosedValue === false ? (
+                      <div
+                        key={id}
+                        className="pt-[34px] pb-[30px] border-b-2 border-[#CBD6E2] text-[#24A3D9] font-medium text-[17.5px] flex items-center justify-between"
+                      >
+                        <p>
+
+                          {renderColoredText(item.name)}
+                        </p>
+
+                        <ToggleBar
+                          toggle={{ value: item.choosedValue, key: item._id }}
+                          onToggle={togglePermissions}
+                        ></ToggleBar>
+                      </div>
+                    ) : (
+                      <div className="pt-[34px] pb-[30px] border-b-2 border-[#CBD6E2] text-[#24A3D9] font-medium text-[17.5px] flex justify-between">
+                        <p>{renderColoredText(item.name)}</p>
+
+                        <p>
+                          <select
+                            onChange={(e) =>
+                              handlePermissionOption(e.target.value, item._id)
+                            }
+                            id="option"
+                            className="border border-gray-300 px-2  rounded-md text-[#26435F] bg-[#E9ECEF]"
+                          >
+                            <option value={item.choosedValue}>
+                              {`   ${item.permissionActionName ===
+                                "notifyParentBefSession"
+                                ? item.choosedValue === 0 ? "OFF" : item.choosedValue + " hours before"
+                                : item.choosedValue
+                                }`}
+                            </option>
+                            {item.values.map((values, i) => {
+                              return (
+                                item.choosedValue !== values && (
+                                  <option key={i} value={values}>
+                                    {` ${item.permissionActionName ===
+                                      "notifyParentBefSession"
+                                      ? values === 0 ? "OFF" : values + " hours before"
+                                      : values
+                                      }`}
+                                  </option>
+                                )
+                              );
+                            })}
+                          </select>
+                        </p>
+                      </div>
+                    )}
+                  </>
+                );
+              })}
+            </div>
           </div>
         ) : (
           <></>
         )}
-       {
-         activeTab === 2 &&
-         <UserManagement />
-       }
-       {
-         activeTab === 4 &&
-         <OrgDefaultContent />
-       }
+        {activeTab === 2 && <UserManagement />}
+        {activeTab === 4 && <OrgDefaultContent />}
       </div>
       {modalActive && (
         <Modal
@@ -1082,7 +1371,7 @@ export default function SuperAdminSettings() {
           handleClose={handleClose}
           body={
             <form id="settings-form" onSubmit={handleSubmit}>
-              <div className="grid grid-cols-1 md:grid-cols-2  gap-x-2 md:gap-x-3 gap-y-2 gap-y-4 mb-5">
+              <div className="grid grid-cols-1 md:grid-cols-2  gap-x-2 md:gap-x-3 gap-y-4 mb-5">
                 <div>
                   <InputField
                     label="Admin First Name"
@@ -1283,11 +1572,10 @@ export default function SuperAdminSettings() {
           cancelBtnClassName="w-140 hidden"
           primaryBtn={{
             text: "Save",
-            className: `w-140 ml-0 bg-primaryOrange mt-2 ${
-              tagText.trim().length < 1 || tagImage === null
-                ? "pointer-events-none opacity-60"
-                : ""
-            } `,
+            className: `w-140 ml-0 bg-primaryOrange mt-2 ${tagText.trim().length < 1 || tagImage === null
+              ? "pointer-events-none opacity-60"
+              : ""
+              } `,
             form: "settings-form",
             type: "submit",
             loading: saveLoading,

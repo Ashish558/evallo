@@ -5,6 +5,7 @@ module.exports = {
       extend: {
          screens: {
             '2xl': '1400px',
+            'design':'1920px',
           },
          spacing: {
             1.2: "5px",
@@ -38,12 +39,13 @@ module.exports = {
             240: "240px",
             272: "272px",
             290: "290px",
+            'sy': '0.0505vw'
          },
          colors: {
             // primary: '',
             dark: "#A9A6B6",
             primary: {
-               DEFAULT: "#22BEF5",
+               DEFAULT: "#FFA28D",
                300: "rgba(113, 82, 235, 0.3)",
                dark: "#25335A",
                light: "rgba(151, 102, 255, 0.3)",
@@ -52,6 +54,9 @@ module.exports = {
                80: "#515C7B",
             },
             primaryRed: '#E02B1D',
+            primaryOrange: {
+               DEFAULT: '#FFA28D'
+            },
             danger: "rgba(255, 91, 79, 1)",
             primaryDark: "#4715D7",
             primaryYellow: '#F7A429',
@@ -83,6 +88,7 @@ module.exports = {
                "linear-gradient(94.33deg, #7152EB 10.45%, rgba(247, 125, 86, 0.99) 84.22%)",
          },
          borderRadius: {
+            5: "5px",
             7: "7px",
             15: "15px",
             10: "10px",
@@ -111,9 +117,14 @@ module.exports = {
          zIndex: {
             5000: 5000,
          },
+         dropShadow:{
+            'small': '0px 0px 2.4999988079071045px rgba(0, 0, 0, 0.25)'
+         },
          boxShadow: {
             white: "0px 8px 16px rgba(0, 0, 0, 0.05)",
             light: "0px 6px 20px rgba(0, 10, 255, 0.14)",
+            small: '0px 0px 2.500000476837158px 0px rgba(0, 0, 0, 0.25)',
+            box: '0px 0px 2px 0px rgba(0, 0, 0, 0.25)'
          },
          borderWidth: {
             3: "3px",
@@ -123,8 +134,16 @@ module.exports = {
           },
           gridTemplateColumns: {
             '13': 'repeat(13, minmax(0, 1fr))',
+          },
+          backgroundColor:{
+            'profilecard' : '#F5F8FA'
+          },
+          boxShadowColor:{
+            'customshadow':'0px 0px 2.6666667461395264px 0px rgba(0, 0, 0, 0.1)'
+          },
+          margin:{
+            'pageRight':'2rem'
           }
-    
       },
    },
    plugins: [],

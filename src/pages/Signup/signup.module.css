@@ -28,7 +28,9 @@
 
 #signUp{
    
-    background: linear-gradient(180deg, rgba(43, 73, 240, 0) 0%,rgb(227 245 252) 100%), url('../../assets/signup/5156620\ 1.png');
+   /* background: linear-gradient(180deg, rgba(43, 73, 240, 0) 0%,rgb(227 245 252) 100%), url('../../assets/signup/5156620\ 1.png');*/
+   background: url('../../assets/signup/5156620\ 1.png'), #add8e660 -0.005px -145.667px / 90% 124.756% no-repeat;
+   flex: 1 1 auto;
     background-size: cover;
     background-position: center;
     font-family: 'Lexend Deca', sans-serif;
@@ -53,9 +55,11 @@
 #signUp label {
     margin-left: 2px;
     margin-bottom: 5.87px;
-    font-size: 14px;
+   
     color:  #26435F;
-    font-weight: 500;
+    font-weight: 600;
+    line-height: 19.559px;
+    font-style:normal;
 }
 .inputs{
     display: flex;

@@ -1,21 +1,25 @@
 import React from "react";
 import styles from './styles.module.css';
-import image from '../../../assets/stats/Vector.png';
-import image1 from '../../../assets/stats/Vector (1).png';
-import image2 from '../../../assets/stats/Vector (2).png';
-import image3 from '../../../assets/stats/Vector (3).png';
-import image4 from '../../../assets/stats/Vector (4).png';
+import image from '../../../assets/icons/Vectorschedule.svg';
+import image1 from '../../../assets/icons/Vectorcompleted.svg';
+import image2 from '../../../assets/icons/Vectormissed.svg';
+import image3 from '../../../assets/icons/Vectorcancel.svg';
+import image4 from '../../../assets/icons/mdi_file-rotate-counter-clockwise-outlinetotalTrans.svg';
 import image5 from '../../../assets/stats/Vector (5).png';
 import image6 from '../../../assets/stats/Vector (6).png';
-import image7 from '../../../assets/stats/Vector (7).png';
+import image7 from '../../../assets/icons/ic_round-paymentnotransaction.svg';
 import image8 from '../../../assets/stats/Vector (8).png';
-import image9 from '../../../assets/stats/Vector (9).png';
+import image9 from '../../../assets/icons/basil_invoice-outlineinvoice.svg';
 import image10 from '../../../assets/stats/Vector (10).png';
-import image11 from '../../../assets/stats/Vector (11).svg';
+import image11 from '../../../assets/icons/carbon_chart-averageaveragetransaction.svg';
 import rectangle from '../../../assets/stats/Rectangle 2061.png';
 
-
-export default function FinancialStats() {
+import {useGetFinancialStatsQuery, useGetFinancialStatsRangeMutation} from "../../../app/services/superAdmin"
+import { useEffect } from "react";
+import { useState } from "react";
+export default function FinancialStats({dateRange}) {
+  const [financialStats,setFinantialStats] = useState({})
+  const [getFinancialStats,status]=useGetFinancialStatsRangeMutation()
   const financialData = [
     { title: "Card 1", value: "$100" },
     { title: "Card 2", value: "$200" },
@@ -26,9 +30,19 @@ export default function FinancialStats() {
     { title: "Card 7", value: "$700" },
     { title: "Card 8", value: "$800" },
   ];
-
+useEffect(()=>{
+  if (dateRange === ""||!dateRange) return ;
+  const fetchActivity=()=>{
+   
+    getFinancialStats(dateRange).then((res)=>{
+     console.log("finantial",{dateRange},{res:res?.data})
+     setFinantialStats(res?.data)
+    })
+  }
+  fetchActivity()
+},[dateRange])
   return (
-    <div className="h-1/2 w-1/2">
+    <div className="">
       <h2 className="font-semibold mb-1 text-[#26435F]">Financial Stats</h2>
       {/* <div className="grid grid-cols-2 gap-4 w-150 border border-solid border-grey-200 p-5">
         <div className="bg-blue-700 rounded p-4 shadow w-150 h-150">
@@ -67,47 +81,47 @@ export default function FinancialStats() {
         </div>
       </div> */}
 
-      <div className="grid grid-cols-4 gap-x-12 gap-y-[10px]">
-        <div className={`text-[#00ADD3] w-[95px] h-[145px] ${styles.card} flex flex-col justify-center items-center`}>
+      <div className="grid grid-cols-4 gap-x-5 gap-y-[13px]">
+        <div className={`text-[#00ADD3] w-[7.6388888889vw] h-[193.33px] ${styles.card} flex flex-col justify-center items-center`}>
           <p className="p-3 bg-[#FFFFFF] rounded"><img src={image} alt="" /></p>
           <p className="text-sm mt-4">Scheduled</p>
-          <p className="font-semibold text-2xl">51</p>
+          <p className="font-semibold text-2xl">{financialStats?.scheduledSessions}</p>
         </div>
-        <div className={`text-[#42CD00] w-[95px] h-[145px] ${styles.card} flex flex-col justify-center items-center`}>
+        <div className={`text-[#42CD00] w-[7.6388888889vw] h-[193.33px] ${styles.card} flex flex-col justify-center items-center`}>
           <p className="p-3 bg-[#FFFFFF] rounded"><img src={image1} alt="" /></p>
           <p className="text-sm mt-4">Completed</p>
-          <p className="font-semibold text-2xl">51</p>
+          <p className="font-semibold text-2xl">{financialStats?.completeSessions}</p>
         </div>
-        <div className={`text-[#FF4D4D] w-[95px] h-[145px] ${styles.card} flex flex-col justify-center items-center`}>
+        <div className={`text-[#FF4D4D] w-[7.6388888889vw] h-[193.33px] ${styles.card} flex flex-col justify-center items-center`}>
           <p className="p-3 bg-[#FFFFFF] rounded"><img src={image2} alt="" /></p>
           <p className="text-sm mt-4">Missed</p>
-          <p className="font-semibold text-2xl">51</p>
+          <p className="font-semibold text-2xl">{financialStats?.missedSessions}</p>
         </div>
-        <div className={`text-[#969696] w-[95px] h-[145px] ${styles.card} flex flex-col justify-center items-center`}>
+        <div className={`text-[#969696] w-[7.6388888889vw] h-[193.33px] ${styles.card} flex flex-col justify-center items-center`}>
           <p className="p-3 bg-[#FFFFFF] rounded"><img src={image3} alt="" /></p>
           <p className="text-sm mt-4">Cancelled</p>
-          <p className="font-semibold text-2xl">51</p>
+          <p className="font-semibold text-2xl">{financialStats?.canceledSessions}</p>
         </div>
-        <div className={`text-[#26435F] w-[95px] h-[180px] ${styles.card2} `}>
-          <p className="bg-[#26435F] rounded p-3 w-[40px] h-[40px] mx-auto mt-[21px]"><p><img src={image9} alt="" /></p></p>
-          <p className="text-sm text-center mt-4">Invoice</p>
+        <div className={`text-[#26435F] w-[7.6388888889vw] h-[240px] ${styles.card2} `}>
+          <p className="bg-[#26435F] rounded p-2 w-[40px] h-[40px] mx-auto mt-[28px]"><span><img src={image9} alt="" /></span></p>
+          <p className="text-sm text-center mt-5">Invoice</p>
           <p className="font-semibold text-2xl text-center mt-[27px]">51</p>
         </div>
-        <div className={`text-[#26435F] w-[95px] h-[180px] ${styles.card2} `}>
-          <p className="bg-[#26435F] rounded p-3 w-[40px] h-[40px] mx-auto mt-[21px]"><p><img src={image7} alt="" /></p></p>
-          <p className="text-sm text-center mt-4"># of Transaction</p>
-          <p className="font-semibold text-2xl text-center mt-[11px]">51</p>
+        <div className={`text-[#26435F] w-[7.6388888889vw] h-[240px] ${styles.card2} `}>
+          <p className="bg-[#26435F] rounded p-2 w-[40px] h-[40px] mx-auto mt-[28px]"><span><img src={image7} alt="" /></span></p>
+          <p className="text-sm text-center mt-5"># of Transaction</p>
+          <p className="font-semibold text-2xl text-center mt-[27px]">51</p>
         </div>
-        <div className={`text-[#26435F] w-[95px] h-[180px] ${styles.card2}`}>
-          <p className="bg-[#26435F] rounded p-3 w-[40px] h-[40px] mx-auto mt-[21px]"><img src={image4} alt="" /></p>
-          <p className="text-sm text-center mt-4">Transaction
+        <div className={`text-[#26435F] w-[7.6388888889vw] h-[240px] ${styles.card2}`}>
+          <p className="bg-[#26435F] rounded p-2 w-[40px] h-[40px] mx-auto mt-[28px]"><img src={image4} alt="" /></p>
+          <p className="text-sm text-center mt-5">Transaction
             Amount Total</p>
-          <p className="font-semibold text-2xl text-center mt-[11px]">51</p>
+          <p className="font-semibold text-2xl text-center mt-[8px]">51</p>
         </div>
-        <div className={`text-[#26435F] w-[95px] h-[180px] ${styles.card2} `}>
-          <p className="bg-[#26435F] rounded p-3 w-[40px] h-[40px] mx-auto mt-[21px]"><img src={image11} alt="" /></p>
-          <p className="text-sm text-center mt-4 px-1">Avg transaction</p>
-          <p className="font-semibold text-2xl text-center mt-[11px]">51</p>
+        <div className={`text-[#26435F] w-[7.6388888889vw] h-[240px] ${styles.card2} `}>
+          <p className="bg-[#26435F] rounded p-2 w-[40px] h-[40px] mx-auto mt-[28px]"><img src={image11} alt="" /></p>
+          <p className="text-sm text-center mt-5 px-1">Avg transaction</p>
+          <p className="font-semibold text-2xl text-center mt-[27px]">51</p>
         </div>
       </div>
     </div>

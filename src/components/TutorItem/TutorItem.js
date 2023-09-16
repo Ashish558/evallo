@@ -5,13 +5,13 @@ import { useLazyGetSessionFeedbackQuery, useSubmitFeedbackMutation } from '../..
 import { useState } from 'react';
 import { useEffect } from 'react';
 
-const TutorItem = ({ tutorName, rating, service, updatedAt, tutorId, studentId, _id }) => {
-
+const TutorItem = ({ tutorName, rating, service, updatedAt, tutorId, studentId, _id, time }) => {
+   console.log(time)
    const feedbackDate = new Date(updatedAt)
-   const month = feedbackDate.toLocaleString('default', { month: 'long' })
+   const month = feedbackDate.toLocaleString('default', { month: 'short' })
    const date = feedbackDate.getDate()
    const year = feedbackDate.getFullYear()
-   const dateStr = `${month} ${date}, ${year}`
+   const dateStr = `${time?.start?.time}${time?.start?.timeType} on ${month} ${date}`
    const [inputFeedback, setInputFeedback] = useState(0)
    const [submitFeedback, submitFeedbackResp] = useSubmitFeedbackMutation();
    const [getSessionFeedback, getSessionFeedbackResp] = useLazyGetSessionFeedbackQuery();
@@ -19,7 +19,7 @@ const TutorItem = ({ tutorName, rating, service, updatedAt, tutorId, studentId, 
    const [loading, setLoading] = useState(true)
 
    const fetchFeedback = (isInitial) => {
-      if(isInitial){
+      if (isInitial) {
          setLoading(true)
       }
       getSessionFeedback(_id)
@@ -62,17 +62,17 @@ const TutorItem = ({ tutorName, rating, service, updatedAt, tutorId, studentId, 
       return () => clearTimeout(timeoutId)
    }, [inputFeedback])
 
-   if (!displayFeedback || loading) return <></>
+   if (displayFeedback || loading) return <></>
 
    return (
       <div>
-         <h2 className='text-[18px] text-black mx-0'>{tutorName}</h2>
-         <h6 className='text-[#0671E0] text-[12px] mb-[6px]'>
+         <h2 className='text-base-20 text-[#517CA8] font-medium mx-0 mt-[19px]'>{tutorName}</h2>
+         <h6 className='text-[#517CA8] text-base-17-5 mb-[6px]'>
             {service} tutoring at {dateStr}
          </h6>
-         <div className="flex gap-[8px]">
+         <div className="flex gap-[3px]">
             {[...Array(5)].map((x, i) => (
-               <img
+               <img alt="star"
                   src={inputFeedback - 1 < i ? starDark : starGold}
                   className="mr-1 cursor-pointer w-[21px] "
                   onClick={() => {
@@ -81,7 +81,7 @@ const TutorItem = ({ tutorName, rating, service, updatedAt, tutorId, studentId, 
                />
             ))}
          </div>
-         <hr className='mt-[13px] mb-[17px]' />
+         {/* <hr className='mt-[13px] mb-[17px]' /> */}
       </div>
    )
 }

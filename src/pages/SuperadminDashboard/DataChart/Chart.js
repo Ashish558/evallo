@@ -1,74 +1,183 @@
-import React from "react";
+import React, { useRef } from "react";
 import { Bubble } from "react-chartjs-2";
-import { bubbleChartData } from "./ChartData";
+import { ChartData, bubbleChartData } from "./ChartData";
+import {
+  useGetUserDailyActivityQuery,
+  useGetUserDailyActivityRangeMutation,
+} from "../../../app/services/superAdmin";
+import { groupDatesIntoWeeks, convertToChart } from "../utils";
+import { useEffect } from "react";
+import { useState } from "react";
+import arrow from '../../../assets/icons/arrow-chart.svg'
+import arrow1 from '../../../assets/icons/arrow-up-chart.svg'
+const BubbleChart = ({ dateRange }) => {
+  const [userDailyActivity, setDailyActivity] = useState([]);
+  const [userDailyActivityData, status] =
+    useGetUserDailyActivityRangeMutation();
 
-const BubbleChart = () => {
+  const [dailyuserData, setDailyUserData] = useState("");
+  const [chartData, setChartData] = useState("");
+  console.log(chartData)
+  const plugin = {
+    beforeInit(chart) {
+      console.log("be");
+      // reference of original fit function
+      const originalFit = chart.legend.fit;
+
+      // override the fit function
+      chart.legend.fit = function fit() {
+        // call original function and bind scope in order to use `this` correctly inside it
+        originalFit.bind(chart.legend)();
+        // increase the width to add more space
+        this.width += 20;
+      };
+    },
+  };
+  useEffect(() => {
+    if (dateRange === "" || !dateRange) return;
+    const fetchActivity = () => {
+      userDailyActivityData(dateRange).then((res) => {
+        console.log("dailyActivity", { dateRange }, { res: res?.data?.data });
+        setDailyActivity(res?.data?.data);
+      });
+    };
+    fetchActivity();
+  }, [dateRange]);
+  useEffect(() => {
+    if (userDailyActivity?.length >= 0) {
+      let rolesData = {
+        admin: [],
+        tutor: [],
+        parent: [],
+        student: [],
+        superadmin: [],
+      };
+
+      userDailyActivity?.map((d) => {
+        if (d?.role && rolesData[d?.role])
+          rolesData[d.role].push({
+            date: d.datetime,
+            count: d.count,
+            totalHours: d.totalHours,
+          });
+      });
+
+      Object.keys(rolesData).forEach((key) => {
+        rolesData[key] =
+          rolesData[key].length > 0 ? groupDatesIntoWeeks(rolesData[key]) : [];
+      });
+      console.log(rolesData);
+      let mainData = convertToChart(rolesData, userDailyActivity);
+      setChartData(mainData);
+
+    }
+  }, [userDailyActivity]);
+  console.log(chartData)
   return (
-    <div className="bg-[#FFFFFF] flex justify-center items-center border border-gray-200 p-4 mt-[6px] rounded-md">
-      <div className="w-full max-w-screen-lg">
-        <div className="flex justify-center w-full">
-          <Bubble
-            data={bubbleChartData}
-            options={{
-              scales: {
-                x: {
-                  display: true,
-                  title: {
-                    display: true,
-                    text: 'Weeks',
-                    padding: { top: 40 },
-                    color: '#24A3D9',
-                    font: {
-                      weight: 500,
-                      size: 14,
-                    },
-                  },
-                  ticks: {
-                    color: '#507CA8',
-                    font: {
-                      weight: 500,
-                      size: 14,
-                    },
-                  },
-                },
-                y: {
-                  display: true,
-                  title: {
-                    display: true,
-                    text: 'Hours',
-                    padding: { bottom: 40 },
-                    color: '#507CA8',
-                    font: {
-                      weight: 500,
-                      size: 12,
-                    },
-                  },
-                  ticks: {
-                    color: '#507CA8',
-                    font: {
-                      weight: 500,
-                      size: 12,
-                    },
-                  },
-                },
-
+    <div className="bg-[#FFFFFF] relative flex justify-center items-center border-[1.3px] border-[#FFF] p-4 mt-[6px] rounded-[5.33px] shadow-[0px_0px_2px_rgba(0,0,0,0.25)]">
+      <div className="flex relative max-w-full justify-center w-full">
+        <Bubble
+          //  data={chartData ? chartData : bubbleChartData}
+          data={ ChartData}
+          options={{
+            layout: {
+              padding: {
+                top: 20,
+                bottom:20
               },
-
-              title: {
+            },
+            scales: {
+              x: {
+                type: 'category',
                 display: true,
-                text: "Bubble Chart",
-                fontSize: 20,
+                title: {
+                  display: true,
+                  text: 'Weeks',
+                  padding: { top: 40 },
+                  color: '#24A3D9',
+                  font: {
+                    weight: 500,
+                    size: 18,
+                  },
+                },
+                labels: ['', 'Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5','Week 6'],
+                ticks: {
+                  color: '#507CA8',
+                  font: {
+                    weight: 400,
+                    size: 16,
+                  },
+                },
               },
+              y: {
+                display: true,
+                title: {
+                  display: true,
+                  text: "Hours",
+                  padding: { bottom: 40 },
+                  color: "#507CA8",
+                  font: {
+                    weight: 500,
+                    size: 16,
+                  },
+                },
+                suggestedMin: 0, 
+                suggestedMax: 60, 
+                stepSize: 10, 
+                ticks: {
+                  color: '#507CA8',
+                  font: {
+                    weight: 400,
+                    size: 16,
+                  },
+                },
+              },
+
+            },
+            plugins: {
+
+
               legend: {
                 display: true,
-                position: "right",
+                position: "top",
+                align: "center",
+               
+
+                labels: {
+                  // boxHeight:400,
+                  usePointStyle: true,
+                  // radius: 20,
+                  font: {
+                    size: 15,
+                    family: 'Lexend Deca',
+                  },
+                  // pointStyleSize:5,
+                  // pointStyleHeight:5,
+
+                  pointStyle: "circle",
+
+                },
+                  // marginBottom:30,
               },
-            }}
-          />
-        </div>
+            },
+            title: {
+              display: true,
+              text: "Bubble Chart",
+              fontSize: 20,
+            },
+
+          }}
+        />
+
       </div>
-    </div>
+      <div className="absolute bottom-[10%] flex items-center font-medium text-lg left-[7%] text-[#26435F]">
+        <div className="bg-[rgba(38,67,95,1)] w-[40px] h-[11px] mr-[13px]"></div>
+        <p>past 12 days</p>
+      </div>
+      <div className="absolute bottom-[9%] left-[50%]"><img src={arrow} alt="" /></div>
+      <div className="absolute top-[40%] left-[3%]"><img src={arrow1} alt="" /></div>
+    </div >
   );
 };
 
-export default BubbleChart;
+export default React.memo(BubbleChart);

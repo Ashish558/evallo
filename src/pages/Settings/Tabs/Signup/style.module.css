@@ -78,12 +78,13 @@
 .colContainer {
   border: 1px solid #dcdcdc;
   border-radius: 8px;
-  padding: 20px;
+  padding: 20px 70px 20px 20px;
 }
 .label {
   font-weight: 600;
   font-size: 14px;
   line-height: 18px;
+  color: #26435F;
 }
 .textLight {
   font-size: 14px;
@@ -91,9 +92,10 @@
   color: #667085;
 }
 .customContainer {
-  border: 2px dashed #26435f;
-  border-radius: 8px;
-  margin-top: 16px;
+  border: 2.5px dashed #FFA28D;
+  border-radius: 10px;
+  margin-top: 36px;
+  margin-bottom:50px;
   padding: 1rem;
 }
 .title {
@@ -113,4 +115,51 @@
   font-size: 14px;
   line-height: 18px;
   color: #26435f;
+}
+
+.checkbox-label {
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.custom-checkbox {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  margin-right: 8px;
+  border: 1.5px solid rgba(0, 0, 0, 0.2);
+  border-radius: 6px;
+  position: relative;
+}
+
+input[type='checkbox'] {
+  display: none;
+}
+
+.custom-checkbox::before {
+  content: '✓'; 
+  display: block;
+  width: 100%;
+  height: 100%;
+  font-size: 14px; 
+  text-align: center;
+  color: white;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0; 
+}
+
+input[type='checkbox']:checked + .custom-checkbox::before {
+  opacity: 1; 
+}
+input[type='checkbox']:checked + .custom-checkbox {
+  background-color: #FFA28D;
+  border: 1.5px solid #FFA28D;
+}
+
+.dropdown-container{
+  border: 0;
 }

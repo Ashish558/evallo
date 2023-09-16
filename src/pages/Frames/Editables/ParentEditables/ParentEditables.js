@@ -13,6 +13,10 @@ import { grades, subjects, timeZones } from '../../../../constants/constants'
 import styles from './style.module.css'
 import CountryCode from '../../../../components/CountryCode/CountryCode'
 import { useSelector } from 'react-redux'
+import { BASE_URL, getAuthHeader } from '../../../../app/constants/constants'
+import ProfileCard from '../../../../components/ProfileCard/ProfileCard'
+import axios from 'axios'
+import ProfilePhoto from '../../../../components/ProfilePhoto/ProfilePhoto'
 
 // 637b9df1e9beff25e9c2aa83
 export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetails, settings, persona, awsLink, selectedScoreIndex }) {
@@ -34,9 +38,15 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
    const [postTutorDetails, postTutorDetailsResp] = usePostTutorDetailsMutation()
    const [updatedService, setUpdatedService] = useState({})
    const [loading, setLoading] = useState(false)
+
    const { organization } = useSelector((state) => state.organization);
 
    const data = [
+      {
+         name: 'profileData',
+         title: 'Basic Info',
+         api: 'user',
+      },
       {
          name: 'fullName',
          title: 'Full Name',
@@ -124,12 +134,12 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
       },
       {
          name: 'interest',
-         title: 'Your Interests',
+         title: 'What Are Your Interests?',
          api: persona === 'tutor' ? 'tutorDetail' : 'userDetail',
       },
       {
          name: 'serviceSpecializations',
-         title: 'Service Specialisation',
+         title: 'Expertise',
          api: persona === 'tutor' ? 'tutorDetail' : 'userDetail',
       },
       {
@@ -174,7 +184,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
       },
       {
          name: 'income',
-         title: 'Income',
+         title: 'Hourly Rate',
          api: 'tutorDetail',
       },
       {
@@ -190,6 +200,11 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
       {
          name: 'about',
          title: 'Bio',
+         api: 'tutorDetail',
+      },
+      {
+         name: 'addressData',
+         title: 'Address',
          api: 'tutorDetail',
       },
       {
@@ -219,18 +234,35 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
       },
       {
          name: 'videoLink',
-         title: 'Youtube Link',
+         title: 'Tutor Highlight Video',
          api: 'tutorDetail',
       },
    ]
 
    // console.log(currentField)
+   const handleProfilePhotoChange = (file) => {
+      // console.log(file)
+      let url = ''
+      const formData = new FormData
+      formData.append('photo', file)
+      if (persona === 'admin') {
+         url = `${BASE_URL}api/user/admin/addphoto/${userId} `
+      } else {
+         url = `${BASE_URL}api/user/addphoto`
+      }
+      axios.patch(url, formData, { headers: getAuthHeader() })
+         .then((res) => {
+            console.log(res)
+            fetchDetails()
+         })
+   }
 
    const getCurrentField = keyName => {
       Object.keys(data).map(key => {
          if (data[key].name === keyName) {
             // console.log(data[key]);
             setCurrentField(data[key])
+
          }
       })
    }
@@ -242,8 +274,10 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
             // console.log(toEdit);
             // setEditFieldValue(toEdit[key])
             setCurrentToEdit(toEdit[key])
+
          }
       })
+      console.log("currentUser")
    }, [toEdit])
 
    const handleClose = () => {
@@ -255,11 +289,10 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
       // setToEdit()
    }
 
-
    useEffect(() => {
       if (student.length > 0) {
          fetchStudents(student).then((res) => {
-            console.log('students' ,res.data.data.students);
+            // console.log('students', res.data.data.students);
             let tempData = res.data.data.students.map((tutor) => {
                return {
                   _id: tutor._id,
@@ -271,8 +304,8 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
          });
       }
    }, [student]);
-
    useEffect(() => {
+
       if (parent.length > 0) {
          fetchParents(parent).then((res) => {
             let tempData = res.data.data.parents.map((parent) => {
@@ -340,6 +373,20 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
       delete reqBody['active']
       // console.log(reqBody);
 
+      if (currentField.name === 'profileData') {
+         let body = { ...reqBody }
+         delete body['firstName']
+         delete body['lastName']
+         delete body['phones']
+         delete body['phoneCode']
+         updateTutorDetails({ id: userId, fields: reqBody })
+            .then(res => {
+               console.log('patched', res)
+               setLoading(false)
+               fetchDetails(true, true)
+               // handleClose()
+            })
+      }
       if (currentField.api === 'user') {
          updateFields({ id: userId, fields: reqBody })
             .then(res => {
@@ -450,7 +497,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
    }
 
    // console.log('awsLink', awsLink)
-   // console.log('toedit', currentToEdit)
+   // console.log('toedit--', currentToEdit)
    // console.log('setting', settings.servicesAndSpecialization[currentToEdit.selectedIdx])
    // console.log('field', currentField)
    // console.log('sett', settings)
@@ -470,7 +517,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
 
    const handlePriceChange = value => {
       let updated = []
-      currentToEdit.tutorServices.map(serv => {
+      currentToEdit?.tutorServices?.map(serv => {
          //if exists
          if (serv.service === organization.settings?.servicesAndSpecialization[currentToEdit.selectedIdx].service) {
             updated.push({ ...serv, price: value })
@@ -493,30 +540,42 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
    // console.log(settings);
    const [startDate, setStartDate] = useState(new Date());
 
+   const forCss = ['profileData', 'interest', 'serviceSpecializations', 'videoLink']
    return (
+
       Object.keys(toEdit).map(key => {
          return toEdit[key].active === true &&
             <Modal
+               underline={true}
                key={key}
-               classname={'max-w-[500px] md:pb-5 mx-auto overflow-visible'}
+               classname={forCss.includes(currentField.name) ? "max-w-[57.6041666667vw] md:pb-5 mx-auto overflow-visible pb-5" : "max-w-[500px] md:pb-5 mx-auto overflow-visible pb-5"} /*{ ` max-w-[900px] md:pb-5 mx-auto overflow-visible pb-5`}*/
                title=''
-               cancelBtn={false}
-               primaryBtn={{
-                  text: "Save",
-                  className: 'w-[100px] bg-primaryOrange text-base pt-2 ml-0 pb-2 text-lg pl-3 pr-3 ',
-                  form: 'editable-form',
-                  // onClick: handleSubmit,
-                  type: 'submit',
-                  loading,
-               }}
+
+               // primaryBtn={{
+               //    text: "Save",
+               //    className: 'w-[100px] bg-primaryOrange text-base pt-2 ml-0 pb-2 text-lg pl-3 pr-3 ',
+               //    form: 'editable-form',
+               //    // onClick: handleSubmit,
+               //    type: 'submit',
+               //    loading,
+               // }}
                cancelBtnStyle={{ top: '18px' }}
                handleClose={handleClose}
+               crossBtn={true}
                body={
                   <>
-                     <div className={styles.titleContainer}>
-                        {currentField.title ? currentField.title : toEdit.tutorServices ? 'Service' : ''}
+                     <div className='flex items-center'>
+                        <div className='text-[#26435F] font-semibold text-[21.33px]' >
+                           {currentField.title ? currentField.title : toEdit.tutorServices ? 'Service' : ''}
+                        </div>
+                        <button className='w-[100px] bg-[#FFA28D] text-base pt-2 rounded text-white pb-2  pl-3 pr-3 ml-auto' onClick={handleSubmit}>
+                           {
+                              currentField.title == "Address" ? 'Add' : 'Save'
+                           }
+                        </button>
                      </div>
-                     <form className='mt-20 mb-4' id='editable-form' onSubmit={handleSubmit} >
+                     <div className="mt-[18px] border-1 border-t border-[#26435F33] justify-center "></div>
+                     <form className='mt-5 mb-4' id='editable-form' onSubmit={handleSubmit} >
                         {/* {currentField.fields && currentField.fields} */}
                         {currentField.name === 'fullName' &&
                            <div>
@@ -914,7 +973,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                         }
                         {currentField.name === 'tutorAddress' &&
                            <div>
-                              <div className='flex items-center mb-5'>
+                              {/* <div className='flex items-center mb-5'>
                                  <InputField
                                     labelClassname='hidden'
                                     placeholder='Address'
@@ -923,6 +982,79 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                                     parentClassName='flex-1' type='text'
                                     value={currentToEdit.address}
                                     onChange={e => setCurrentToEdit({ ...currentToEdit, address: e.target.value })} />
+                              </div> */}
+                              <div className='grid grid-cols-12 gap-4'>
+                                 <div className='col-span-6'>
+                                    <div><p className={styles.address}>Street</p></div>
+                                    <InputField
+                                       labelClassname='hidden'
+                                       placeholder='Text'
+                                       inputContainerClassName='text-sm pt-3.5 pb-3 px-5 bg-primary-50 border-'
+                                       inputClassName='bg-transparent rounded-[4px]'
+                                       parentClassName='flex-1' type='text'
+                                       value={currentToEdit.address}
+                                       onChange={e => setCurrentToEdit({ ...currentToEdit, address: e.target.value })}
+                                    />
+
+                                 </div>
+                                 <div className='col-span-6'>
+                                    <div><p className={styles.address}>City</p></div>
+                                    <InputField
+                                       labelClassname='hidden'
+                                       placeholder='City'
+                                       inputContainerClassName='text-sm pt-3.5 pb-3 px-5 bg-primary-50 border-'
+                                       inputClassName='bg-transparent rounded-[4px]'
+                                       parentClassName='flex-1' type='text'
+                                       value={currentToEdit.city}
+                                       onChange={e => setCurrentToEdit({ ...currentToEdit, city: e.target.value })}
+                                    />
+                                 </div>
+                              </div>
+
+
+                              <div className='grid grid-cols-12 gap-4 mt-5'>
+                                 <div className='col-span-6'>
+                                    <div><p className={styles.address}>State</p></div>
+                                    <InputField
+                                       labelClassname='hidden'
+                                       placeholder='Text'
+                                       inputContainerClassName='text-sm pt-3.5 pb-3 px-5 bg-primary-50 border-'
+                                       inputClassName='bg-transparent rounded-[4px]'
+                                       parentClassName='flex-1' type='text'
+                                       value={currentToEdit.state}
+                                       onChange={e => setCurrentToEdit({ ...currentToEdit, state: e.target.value })}
+                                    />
+
+                                 </div>
+                                 <div className='col-span-6'>
+                                    <div><p className={styles.address}>Country</p></div>
+                                    <InputField
+                                       labelClassname='hidden'
+                                       placeholder='City'
+                                       inputContainerClassName='text-sm pt-3.5 pb-3 px-5 bg-primary-50 border-'
+                                       inputClassName='bg-transparent rounded-[4px]'
+                                       parentClassName='flex-1' type='text'
+                                       value={currentToEdit.country}
+                                       onChange={e => setCurrentToEdit({ ...currentToEdit, country: e.target.value })}
+                                    />
+                                 </div>
+                              </div>
+
+                              <div className='grid grid-cols-12 gap-4 mt-5'>
+                                 <div className='col-span-6'>
+                                    <div><p className={styles.address}>Zip</p></div>
+                                    <InputField
+                                       labelClassname='hidden'
+                                       placeholder='Text'
+                                       inputContainerClassName='text-sm pt-3.5 pb-3 px-5 bg-primary-50 border-'
+                                       inputClassName='bg-transparent rounded-[4px]'
+                                       parentClassName='flex-1' type='text'
+                                       value={currentToEdit.pincode}
+                                       onChange={e => setCurrentToEdit({ ...currentToEdit, pincode: e.target.value })}
+                                    />
+
+                                 </div>
+
                               </div>
                            </div>
                         }
@@ -985,7 +1117,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                                  <InputField
                                     labelClassname='hidden'
                                     placeholder=''
-                                    inputContainerClassName='text-sm pt-3 pb-3 px-5 bg-primary-50 border-0'
+                                    inputContainerClassName='text-[16px] pt-3 pb-3 px-5 bg-primary-50 border-0'
                                     inputLeftField={
                                        <div>
                                           $
@@ -1021,12 +1153,12 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                            </div>
                         }
                         {currentField.name === 'paymentInfo' &&
-                           <div>
-                              <div className='flex items-center mb-5'>
+                           <div className='flex items-center justify-center'>
+                              <div className=' mb-5'>
                                  <InputField
                                     labelClassname='hidden'
                                     placeholder='Payment Info'
-                                    inputContainerClassName='text-sm pt-3.5 pb-3 px-5 bg-primary-50 border-0'
+                                    inputContainerClassName='text-sm pt-3.5 pb-3 px-5 w-[181px] bg-primary-50 border-0 text-[#667085]'
                                     inputClassName='bg-transparent rounded-[4px]'
                                     parentClassName='flex-1' type='text'
                                     value={currentToEdit.paymentInfo}
@@ -1109,20 +1241,18 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                         }
                         {currentField.name === 'income' &&
                            <div className='flex justify-center items-center mb-4 pb-4'>
-                              <p className='font-medium mr-6 '>
-                                 Enter Income for Tutor
-                              </p>
+
                               <InputField
                                  labelClassname='hidden'
                                  placeholder=''
-                                 inputContainerClassName='text-sm pt-3 pb-3 px-5 bg-primary-50 border-0'
+                                 inputContainerClassName='text-sm pt-3 pb-3 px-5 bg-primary-50 border-0 text-[#667085]'
                                  inputLeftField={
                                     <div>
                                        $
                                     </div>
                                  }
                                  inputClassName='bg-transparent pl-4 rounded-[4px]'
-                                 parentClassName='flex-1 max-w-[152px]' type='text'
+                                 parentClassName='flex-1 max-w-[181px]' type='text'
                                  value={currentToEdit.income}
                                  onChange={e => setCurrentToEdit({ ...currentToEdit, income: e.target.value })} />
                            </div>
@@ -1145,9 +1275,9 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                               </div>
                            </div>
                         }
-                        {currentField.name === 'about' &&
-                           <div>
-                              <textarea
+                        {currentField.name === 'profileData' &&
+                           <div className='h-[60vh] overflow-y-auto'>
+                              {/* <textarea
                                  placeholder=""
                                  value={currentToEdit.about}
                                  onChange={e =>
@@ -1155,7 +1285,137 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                                  }
                                  rows={5}
                                  className="bg-lightWhite w-full outline-0 px-5 py-4 rounded"
-                              ></textarea>
+                              ></textarea> */}
+                              <div className='px-1'>
+                                 <div className='grid grid-cols-12 '>
+                                    <div className='col-span-2 flex items-center justify-start'>
+                                       <ProfilePhoto
+                                          isTutor={true}
+                                          customWidth={true}
+                                          src={currentToEdit?.photo ? `${awsLink}${currentToEdit?.photo}` : '/images/default.jpeg'}
+                                          handleChange={handleProfilePhotoChange} editable={true} />
+                                    </div>
+                                    <div className='ml-5 col-span-10 '>
+                                       <div className='grid grid-cols-12 gap-8'>
+                                          <div className=' col-span-3'>
+                                             <div><p className='text-[18.667px] text-[#26435F] font-medium' >First Name</p></div>
+                                             <InputField
+                                                labelClassname='hidden'
+                                                placeholder='First Name'
+                                                inputContainerClassName='text-sm pt-3 pb-3 px-5 bg-primary-50 border-white'
+                                                inputClassName='bg-transparent text-[#667085] text-400'
+                                                value={currentToEdit.firstName}
+                                                onChange={e => setCurrentToEdit({ ...currentToEdit, firstName: e.target.value })} />
+
+                                          </div>
+                                          <div className=' col-span-3'>
+                                             <div><p className='text-[18.667px] text-[#26435F] font-medium' >Last Name</p></div>
+
+                                             <InputField
+                                                labelClassname='hidden'
+                                                placeholder='Last Name'
+                                                inputContainerClassName='text-sm pt-3 pb-3 px-5 bg-primary-50 border-white'
+                                                inputClassName='bg-transparent text-[#667085] text-400'
+                                                value={currentToEdit.lastName}
+                                                onChange={e => setCurrentToEdit({ ...currentToEdit, lastName: e.target.value })} />
+
+                                          </div>
+
+                                          <div className=' col-span-6'>
+                                             <div><p className='text-[18.667px] text-[#26435F] font-medium' >Email</p></div>
+
+                                             <InputField
+                                                labelClassname='hidden'
+                                                placeholder='Email'
+                                                inputContainerClassName='text-sm pt-3 pb-3 px-5 bg-primary-50 border-white'
+                                                inputClassName='bg-transparent text-[#667085] text-400'
+                                                value={currentToEdit.email}
+                                                onChange={e => setCurrentToEdit({ ...currentToEdit, email: e.target.value })} />
+
+                                          </div>
+                                          <div className=' col-span-6'>
+                                             <div><p className='text-[18.667px] text-[#26435F] font-medium' >LinkedIn</p></div>
+
+                                             <InputField
+                                                labelClassname='hidden'
+                                                placeholder='Linkedin'
+                                                inputContainerClassName='text-sm pt-3 pb-3 px-5 bg-primary-50 border-white'
+                                                inputClassName='bg-transparent text-[#667085] text-400'
+                                                value={currentToEdit.linkedIn}
+                                                onChange={e => setCurrentToEdit({ ...currentToEdit, linkedIn: e.target.value })} />
+
+                                          </div>
+                                          <div className='col-span-6 '>
+                                             <div><p className='text-[18.667px] text-[#26435F] font-medium' >Phone</p></div>
+                                             <div className='grid grid-cols-12 gap-3'>
+                                                <div className='col-span-4'>
+
+                                                   <InputField
+                                                      labelClassname='hidden'
+                                                      placeholder=''
+                                                      inputContainerClassName='text-sm pt-3 pb-3 px-5 bg-primary-50 border-white'
+                                                      inputClassName='bg-transparent text-[#667085] text-400'
+                                                      value={currentToEdit.phoneCode}
+                                                      onChange={e => setCurrentToEdit({ ...currentToEdit, phoneCode: e.target.value })} />
+                                                </div>
+
+                                                <div className='col-span-8'>
+                                                   <div><p className={styles.address}> </p></div>
+
+                                                   <InputField
+                                                      labelClassname='hidden'
+                                                      placeholder='Mobile'
+                                                      inputContainerClassName='text-sm pt-3 pb-3 px-5 bg-primary-50 border-white'
+                                                      inputClassName='bg-transparent text-[#667085] text-400'
+                                                      value={currentToEdit.phone}
+                                                      onChange={e => { setCurrentToEdit({ ...currentToEdit, phone: e.target.value }); console.log(currentToEdit.phone + "phone") }} />
+                                                </div>
+                                             </div>
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+
+                              <div className='mt-8 grid grid-cols-12' >
+                                 <div><p className='text-[18.667px] text-[#26435F] font-medium' >Tagline</p></div>
+                                 <div className='col-span-12 '>
+                                    <textarea rows={2} cols={88} className=' rounded focus:border-[#D0D5DD] border border-[#D0D5DD] text-[#667085]'
+                                       value={currentToEdit.tagLine}
+                                       onChange={(e) => { setCurrentToEdit({ ...currentToEdit, tagLine: e.target.value }) }}></textarea>
+                                 </div>
+                              </div>
+
+                              <div className='mt-8 grid grid-cols-12' >
+                                 <div><p className='text-[18.667px] font-medium text-[#26435F]' >About</p></div>
+                                 <div className='col-span-12 '>
+                                    <textarea rows={4} cols={88} className=' rounded focus:border-[#D0D5DD] border border-[#D0D5DD] text-[#667085]'
+                                       value={currentToEdit.about}
+                                       onChange={(e) => { setCurrentToEdit({ ...currentToEdit, about: e.target.value }) }}
+                                    ></textarea>
+                                 </div>
+                              </div>
+
+                              <div className='mt-8'>
+                                 <div className='grid grid-cols-12 '>
+                                    <div className='col-span-6'>
+                                       <div><p className='text-[18.667px] text-[#26435F] font-medium' >Education</p></div>
+                                       <textarea rows={3} cols={42} className=' rounded focus:border-[#D0D5DD] border border-[#D0D5DD] text-[#667085]'
+
+                                          value={currentToEdit.education}
+                                          onChange={(e) => { setCurrentToEdit({ ...currentToEdit, education: e.target.value }) }}
+                                       ></textarea>
+                                    </div>
+                                    <div className='col-span-6'>
+                                       <div><p className='text-[18.667px]' style={{ color: '#26435F', fontWeight: '500' }}>Experience</p></div>
+                                       <textarea rows={3} cols={42} className=' rounded focus:border-[#D0D5DD] border border-[#D0D5DD] text-[#667085]'
+                                          value={currentToEdit.experience}
+                                          onChange={(e) => { setCurrentToEdit({ ...currentToEdit, experience: e.target.value }) }}
+                                       ></textarea>
+                                    </div>
+                                 </div>
+                              </div>
+
                            </div>
                         }
                         {currentField.name === 'personality' &&
@@ -1189,17 +1449,25 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                            <div className='flex flex-wrap'>
                               {settings.interest.map(item => {
                                  return (
-                                    !currentToEdit.interest.includes(item._id) ?
-                                       <div className={`px-3 mr-2 rounded rounded-md py-1.5 border border-primary text-primary cursor-pointer`}
-                                          onClick={() => setCurrentToEdit({
-                                             ...currentToEdit,
-                                             interest: [...currentToEdit.interest, item._id]
-                                          })} >
-                                          <p className='font-medium'>
+                                    !currentToEdit?.interest?.includes(item._id) ?
+                                       <div id='selected' className={`px-3 mr-2  rounded-md py-1.5 border-[1.33px] border-[#26435F80] text-[#26435F80]  cursor-pointer`}
+                                          onClick={() => {
+                                             let intersetArray = []
+
+                                             if (currentToEdit.interest) {
+                                                intersetArray = currentToEdit.interest
+                                             }
+                                             console.log(intersetArray)
+                                             setCurrentToEdit({
+                                                ...currentToEdit,
+                                                interest: [...intersetArray, item._id]
+                                             })
+                                          }}>
+                                          <p className=''>
                                              {item.text}
                                           </p>
                                        </div> :
-                                       <div className={`px-3 mr-2 rounded rounded-md text-white py-1.5 border border-primary bg-primary text-primary cursor-pointer`}
+                                       <div className={`px-3 mr-2  rounded-md text-white py-1.5 border border-primary bg-primary  cursor-pointer`}
                                           onClick={() => setCurrentToEdit({
                                              ...currentToEdit,
                                              interest: currentToEdit.interest.filter(id => id !== item._id)
@@ -1214,19 +1482,26 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                         }
                         {currentField.name === 'serviceSpecializations' &&
                            <div className='flex flex-wrap'>
-                              {settings.Expertise.map(item => {
+                              {settings?.Expertise?.map(item => {
                                  return (
-                                    !currentToEdit.serviceSpecializations.includes(item._id) ?
-                                       <div className={`px-3 mr-2 rounded rounded-md py-1.5 border border-primary text-primary cursor-pointer`}
-                                          onClick={() => setCurrentToEdit({
-                                             ...currentToEdit,
-                                             serviceSpecializations: [...currentToEdit.serviceSpecializations, item._id]
-                                          })} >
+                                    !currentToEdit?.serviceSpecializations?.includes(item._id) ?
+                                       <div className={`px-3 mr-2 rounded rounded-lg   py-1.5 border-[1.33px] border-[#26435F80] text-[#26435F80]  cursor-pointer`}
+                                          onClick={() => {
+                                             let servicesArray = []
+                                             if (currentToEdit.serviceSpecializations) {
+                                                servicesArray = currentToEdit.serviceSpecializations
+                                             }
+                                             console.log(servicesArray)
+                                             setCurrentToEdit({
+                                                ...currentToEdit,
+                                                serviceSpecializations: [...servicesArray, item._id]
+                                             })
+                                          }} >
                                           <p className='font-medium'>
                                              {item.text}
                                           </p>
                                        </div> :
-                                       <div className={`px-3 mr-2 rounded rounded-md text-white py-1.5 border border-primary bg-primary text-primary cursor-pointer`}
+                                       <div className={`px-3 mr-2 rounded-md text-white py-1.5 border border-primary bg-primary  font-semibold cursor-pointer`}
                                           onClick={() => setCurrentToEdit({
                                              ...currentToEdit,
                                              serviceSpecializations: currentToEdit.serviceSpecializations.filter(id => id !== item._id)
@@ -1384,7 +1659,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                                        }
                                        tempScores = tempScores.map((item, idx) => {
                                           if (selectedScoreIndex === idx) {
-                                             return { ...item, maths: checkNumber(currentToEdit.actScores[selectedScoreIndex]?.maths, parseInt(e.target.value), 36)}
+                                             return { ...item, maths: checkNumber(currentToEdit.actScores[selectedScoreIndex]?.maths, parseInt(e.target.value), 36) }
                                           } else {
                                              return { ...item }
                                           }
@@ -1419,7 +1694,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                                        }
                                        tempScores = tempScores.map((item, idx) => {
                                           if (selectedScoreIndex === idx) {
-                                             return { ...item, english: checkNumber(currentToEdit.actScores[selectedScoreIndex]?.english, parseInt(e.target.value), 36)}
+                                             return { ...item, english: checkNumber(currentToEdit.actScores[selectedScoreIndex]?.english, parseInt(e.target.value), 36) }
                                           } else {
                                              return { ...item }
                                           }
@@ -1442,7 +1717,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                                     inputClassName='bg-transparent pl-4 rounded-[4px]'
                                     parentClassName='flex-1 max-w-[140px]' type='number'
                                     value={currentToEdit.actScores[selectedScoreIndex]?.reading}
-                                   
+
                                     onChange={e => {
                                        let tempScores = [...currentToEdit.actScores]
                                        if (tempScores.length <= selectedScoreIndex) {
@@ -1455,7 +1730,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                                        }
                                        tempScores = tempScores.map((item, idx) => {
                                           if (selectedScoreIndex === idx) {
-                                             return { ...item, reading: checkNumber(currentToEdit.actScores[selectedScoreIndex]?.reading, parseInt(e.target.value), 36)}
+                                             return { ...item, reading: checkNumber(currentToEdit.actScores[selectedScoreIndex]?.reading, parseInt(e.target.value), 36) }
                                           } else {
                                              return { ...item }
                                           }
@@ -1490,7 +1765,7 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                                        }
                                        tempScores = tempScores.map((item, idx) => {
                                           if (selectedScoreIndex === idx) {
-                                             return { ...item, science: checkNumber(currentToEdit.actScores[selectedScoreIndex]?.science, parseInt(e.target.value), 36)}
+                                             return { ...item, science: checkNumber(currentToEdit.actScores[selectedScoreIndex]?.science, parseInt(e.target.value), 36) }
                                           } else {
                                              return { ...item }
                                           }
@@ -1520,9 +1795,10 @@ export default function ParentEditables({ userId, setToEdit, toEdit, fetchDetail
                            </div>
                         }
                         {currentField.name === "videoLink" &&
-                           <div>
+                           <div >
+                              <p className="text-lg text-[#26435F] font-medium">YouTube Video Link</p>
                               <input
-                                 placeholder=""
+                                 placeholder="Paste the YouTube link of a video highlighting your tutor or your tutoring company."
                                  value={currentToEdit.videoLink}
                                  onChange={e =>
                                     setCurrentToEdit({ ...currentToEdit, videoLink: e.target.value })

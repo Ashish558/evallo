@@ -10,27 +10,36 @@ import {
 } from "../staticData";
 import logo from "../../../../assets/icons/Frame 31070.svg";
 import orgDefaultLogo from "../../../../assets/images/org-default.png";
+import lock from "../../../../assets/icons/lock.svg";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
-import { Country, State } from "country-state-city";
-import UploadIcon from "../../../../assets/icons/upload-colored.svg";
+import { Country } from "country-state-city";
+import UploadIcon from "../../../../assets/icons/basil_file-upload-outline.svg";
 import styles from "./styles.module.css";
-import axios from "axios";
+
 import { useRef } from "react";
-import { BASE_URL, getAuthHeader } from "../../../../app/constants/constants";
+
 import { useUpdateUserMutation } from "../../../../app/services/users";
+import {
+  useUpdateOrgLogoMutation,
+  useUpdateUserOrganizationMutation,
+} from "../../../../app/services/organization";
+import { object } from "prop-types";
 const CompanyAndBround = () => {
   const { organization } = useSelector((state) => state.organization);
   const userData = useSelector((state) => state.user);
-  const [updateRole, setRole] = useUpdateUserMutation();
-  
+  const [updateRole, updateRoleStatus] = useUpdateUserMutation();
+  const [updateUserOrg, updateUserOrgStatus] =
+    useUpdateUserOrganizationMutation();
+  const [updateOrgLogo, updateOrgLogoStatus] = useUpdateOrgLogoMutation();
+
   const [studentServed, setStudentServed] = useState(studentServedData);
   const [instructions, setInstructions] = useState(instructionFormat);
   const inpuRef = useRef();
   const [country, setCountry] = useState([]);
   const [states, setStates] = useState([]);
-  const [values, setValues] = useState({ role: userData.role, email: "" });
+  const [values, setValues] = useState({ role: userData.role });
 
   const [error, setError] = useState({
     firstName: "",
@@ -40,12 +49,15 @@ const CompanyAndBround = () => {
     subscriptionCode: "",
     company: "",
   });
+
   const handleState = (c) => {
     if (!c) return;
     console.log("country", c);
+    if (typeof c === "object")
+      c = c.name
     const state = country.filter((x) => x.name === c);
     const currentState = state.map((s) => s.states);
-    //console.log(currentState);
+
     setStates([...currentState[0]]);
 
     setValues({
@@ -59,7 +71,6 @@ const CompanyAndBround = () => {
     displayValue: city.name,
   }));
   const handleCheckboxChange = (text, arr, setBoxValue, name) => {
-    console.log(arr);
     const temp = arr.map((topic) => {
       return topic.text === text
         ? { ...topic, checked: !topic.checked }
@@ -78,21 +89,16 @@ const CompanyAndBround = () => {
 
   const updateUserAccount = async () => {
     try {
-      //   alert(data.workemail)
-      let result = await axios.patch(
-        `${process.env.REACT_APP_BASE_URL}api/user/update/org`,
-        values,
-        {
-          headers: {
-            "Content-type": "application/json; charset=UTF-8",
-            Authorization: sessionStorage.getItem("token"),
-          },
-        }
-      );
-
+      updateUserOrg(values)
+        .then(() => {
+          console.log("org updated", values);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
       updateRole({ userId: userData.id, ...userData, role: values.role }).then(
         () => {
-        //  console.log("role changed");
+          console.log("role changed");
         }
       );
     } catch (e) {
@@ -101,7 +107,6 @@ const CompanyAndBround = () => {
   };
 
   useEffect(() => {
-    // setValues(organization);
     if (country.length === 0) {
       fetch("countryData.json")
         .then((res) => res.json())
@@ -113,8 +118,6 @@ const CompanyAndBround = () => {
       const currentState = state.map((s) => s.states);
       if (currentState.length > 0) setStates([...currentState[0]]);
     }
-
-    // console.log("updated", values);
     updateUserAccount();
   }, [values]);
 
@@ -128,8 +131,6 @@ const CompanyAndBround = () => {
           ? { ...topic, checked: true }
           : { ...topic };
       });
-
-      // handleCheckboxChange(element,instructions,setInstructions)
     });
 
     setInstructions(arr);
@@ -140,8 +141,6 @@ const CompanyAndBround = () => {
           ? { ...topic, checked: true }
           : { ...topic };
       });
-
-      // handleCheckboxChange(element,instructions,setInstructions)
     });
 
     setStudentServed(arr);
@@ -152,45 +151,39 @@ const CompanyAndBround = () => {
     const file = e.target.files[0];
     formData.append("photos", file);
     formData.append("updatefieldName", "orgBussinessLogo");
-    console.log(file);
-    await axios
-      .patch(
-        `${BASE_URL}api/user/org/addOrgLogos/${organization._id}`,
-        formData,
-        {
-          headers: getAuthHeader(),
-        }
-      )
-      .then((res) => {
-        if (res.error) {
-          console.log("logo err", res.error);
-        }
-        console.log("logo res", res.data);
-        window.location.reload();
-        alert("PDF UPLOADED");
-      });
+
+    updateOrgLogo({ formData: formData, id: organization._id }).then((res) => {
+      if (res.error) {
+        console.log("logo err", res.error);
+        return;
+      }
+      console.log("logo res", res.data);
+      window.location.reload();
+    });
   };
 
   return (
     <div>
-      <div className="flex flex-col gap-10 w-[900px] ">
-        <div className="flex gap-5">
+      <div className="flex flex-col gap-10  w-[68vw]">
+        <div className="flex justify-between">
           <InputField
             placeholder=""
-            parentClassName="text-xs text-[#26435F]"
+            IconLeft={lock}
+            parentClassName="text-xs w-[14.3229vw] text-[#26435F]"
             inputContainerClassName=" bg-white"
-            inputClassName="bg-transparent"
+            inputClassName="text-base-17-5 bg-transparent"
+            labelClassname="text-base-17-5 text-sm font-bold mb-1"
             label="Account Type"
             disabled={true}
             value={"Company"}
             error={error.accountType}
           />
-
           <InputField
             placeholder=""
-            parentClassName="text-xs text-[#26435F]"
-            inputContainerClassName=" bg-white"
-            inputClassName="bg-transparent"
+            parentClassName="text-xs w-[14.3229vw] text-[#26435F] "
+            inputContainerClassName=" bg-white mt-[-2px]"
+            inputClassName="text-base-17-5 bg-transparent"
+            labelClassname="text-base-17-5 text-sm font-bold mb-1"
             label="Company Name"
             value={values.company}
             onChange={(e) =>
@@ -202,10 +195,11 @@ const CompanyAndBround = () => {
             error={error.company}
           />
           <InputField
-            placeholder=""
-            parentClassName="text-xs text-[#26435F]"
-            inputContainerClassName=" bg-white"
-            inputClassName="bg-transparent"
+            placeholder="Text"
+            parentClassName="text-xs w-[14.3229vw] text-[#26435F]"
+            inputContainerClassName=" bg-white mt-[-2px]"
+            inputClassName="text-base-17-5 bg-transparent"
+            labelClassname="text-base-17-5 text-sm font-bold mb-1"
             label="Support Email"
             value={values.supportEmail}
             onChange={(e) =>
@@ -218,8 +212,8 @@ const CompanyAndBround = () => {
           />
           <InputField
             placeholder=""
-            parentClassName="text-xs text-[#26435F]"
-            inputContainerClassName=" bg-white"
+            parentClassName="text-xs w-[14.3229vw] text-[#26435F] "
+            inputContainerClassName=" bg-white mt-[2px]"
             inputClassName="bg-transparent"
             label="Role / Position"
             value={values.role}
@@ -232,27 +226,33 @@ const CompanyAndBround = () => {
             error={error.role}
           />
         </div>
+
         <div className="flex gap-5 flex-1">
           <div className="">
-            <label className="inline-block text-sm font-semibold undefined ml-0">
+            <label className="inline-block text-[15px] font-semibold undefined ml-0 text-[#26435F] text-base-17-5">
               {" "}
               Business Logo{" "}
             </label>
-            <div className="w-[312px] h-[250px] relative p-10">
-              <img
-                src={
-                  organization.orgBussinessLogo
-                    ? organization.orgBussinessLogo
-                    : orgDefaultLogo
-                }
-                className="w-full h-full object-contain"
-              />
+            <div id="borderDashed" className="w-[312px] h-[200px]  relative p-2 bg-[#FFFFFF] rounded-[5px]">
+              {
+                organization.orgBussinessLogo &&
+                <img
+                  src={organization.orgBussinessLogo}
+                  className="w-full h-full object-contain"
+                  alt="orgDefaultLogo"
+                />
+              }
               <div
-                className={styles["upload-container"]}
-                onClick={() => inpuRef.current.click()}
+                className={`${styles["upload-container"]} ${!organization.orgBussinessLogo ? styles['upload-container-centered'] : ''} `}
+
               >
-                <p className="text-[#24A3D9] text-xs"> Upload </p>
-                <img src={UploadIcon} />
+
+                <div className="flex flex-col ">
+                  <p className="block mx-auto mt-[-25px]">
+                    <img src={UploadIcon} alt="logo" /></p>
+                  <p className="text-[#FFFFFF] text-sm bg-[#517CA8] rounded-[5px] pt-3 mt-5 pb-2 px-4 cursor-pointer" onClick={() => inpuRef.current.click()}>Choose file</p>
+                  <p className="text-[#517CA8] text-xs mt-5 text-center">Less then 1 MB</p>
+                </div>
                 <input
                   className="hidden"
                   type="file"
@@ -262,13 +262,14 @@ const CompanyAndBround = () => {
               </div>
             </div>
           </div>
-          <div className="flex flex-col  gap-2 flex-1 py-auto">
-            <div className="flex gap-5 items-center justify-between">
+          <div className="flex flex-col  gap-4 flex-1 py-auto">
+            <div className="flex  items-center justify-between">
               <InputField
                 placeholder=""
-                parentClassName="text-xs text-[#26435F] w-full"
-                inputContainerClassName=" bg-white "
-                inputClassName="bg-transparent"
+                parentClassName="text-xs text-[#26435F] w-[30.5729vw] "
+                inputContainerClassName=" bg-white  rounded-md"
+                inputClassName="text-base-17-5 bg-transparent "
+                labelClassname="text-base-17-5 text-sm font-bold "
                 label="Website"
                 value={values.website}
                 onChange={(e) =>
@@ -281,9 +282,9 @@ const CompanyAndBround = () => {
               />
               <InputSelect
                 placeholder="Select"
-                parentClassName="text-xs text-[#26435F] w-[60%]"
-                inputContainerClassName=" bg-white"
-                labelClassname="text-sm"
+                parentClassName="text-xs text-[#26435F] w-[14.3229vw] "
+                inputContainerClassName=" bg-white h-[42px] "
+                labelClassname="text-sm font-bold"
                 inputClassName="bg-transparent"
                 label="Company Type"
                 value={values.companyType}
@@ -297,10 +298,10 @@ const CompanyAndBround = () => {
                 error={error.companyType}
               />
             </div>
-            <div className="flex gap-5 items-center justify-between">
+            <div className="flex justify-between">
               <InputField
                 placeholder=""
-                parentClassName="text-xs text-[#26435F] w-full"
+                parentClassName="text-xs text-[#26435F] w-[30.5729vw]"
                 inputContainerClassName=" bg-white "
                 inputClassName="bg-transparent"
                 label="Street Address"
@@ -313,26 +314,31 @@ const CompanyAndBround = () => {
                 }
                 error={error.address}
               />
+
               <InputSelect
                 placeholder="Select"
-                parentClassName="text-xs text-[#26435F] w-[60%]"
-                inputContainerClassName=" bg-white"
-                labelClassname="text-sm"
+                parentClassName="text-xs text-[#26435F] w-[14.3229vw] "
+                inputContainerClassName=" bg-white h-[38px]  h-[42px]"
+                labelClassname="text-sm font-bold"
                 inputClassName="bg-transparent"
                 label="Country"
                 value={values.country}
                 optionData={country}
                 optionType={"object"}
-                onChange={(e) => handleState(e)}
+                onChange={(e) => {
+
+                  handleState(e);
+                }}
                 error={error.country}
               />
+
             </div>
-            <div className="flex gap-5 items-center justify-between">
+            <div className="flex justify-between">
               <InputSelect
                 placeholder="Select"
-                parentClassName="text-xs text-[#26435F] w-full"
-                labelClassname="text-sm"
-                inputContainerClassName=" bg-white"
+                parentClassName="text-xs text-[#26435F] w-[14.3229vw]  pt-1"
+                labelClassname="text-sm font-bold "
+                inputContainerClassName=" bg-white h-[42px] "
                 inputClassName="bg-transparent"
                 label="State / Region "
                 value={values.state}
@@ -341,16 +347,16 @@ const CompanyAndBround = () => {
                 onChange={(e) =>
                   setValues({
                     ...values,
-                    state: e,
+                    state: e.name,
                   })
                 }
                 error={error.state}
               />
               <InputField
                 placeholder=""
-                parentClassName="text-xs text-[#26435F] w-full"
-                inputContainerClassName=" bg-white "
-                inputClassName="bg-transparent"
+                parentClassName="text-xs text-[#26435F] w-[14.3229vw] pt-1"
+                inputContainerClassName=" bg-white"
+                inputClassName="text-base-17-5 bg-transparent "
                 label="City"
                 value={values.city}
                 onChange={(e) =>
@@ -361,27 +367,31 @@ const CompanyAndBround = () => {
                 }
                 error={error.city}
               />
-              <InputField
-                placeholder=""
-                parentClassName="text-xs text-[#26435F] w-full"
-                inputContainerClassName=" bg-white "
-                inputClassName="bg-transparent"
-                label="Zip Code"
-                value={values.zip}
-                onChange={(e) =>
-                  setValues({
-                    ...values,
-                    zip: e.target.value,
-                  })
-                }
-                error={error.zip}
-              />
+              <div className="col-span-3">
+                <InputField
+                  placeholder=""
+                  parentClassName="text-xs text-[#26435F] w-[14.3229vw] pt-1"
+                  inputContainerClassName=" bg-white "
+                  inputClassName="text-base-17-5 bg-transparent"
+
+                  label="Zip Code"
+                  value={values.zip}
+                  onChange={(e) =>
+                    setValues({
+                      ...values,
+                      zip: e.target.value,
+                    })
+                  }
+                  error={error.zip}
+                />
+              </div>
             </div>
+
           </div>
         </div>
-        <div className="flex gap-5 mt-3 border-b-[2px] border-b-[#CBD6E2] pb-5">
-          <div className="flex flex-col rounded-sm w-[200px] flex-wrap gap-3 bg-white p-3">
-            <h1 className="mt-[-35px]  text-[#26435F] font-semibold text-sm">
+        <div className="flex flex-1  gap-11 mt-3  w-[48vw] pb-0">
+          <div className="flex flex-col rounded-sm w-1/3 min-w-[275px] flex-wrap gap-3 bg-white p-3">
+            <h1 className="mt-[-35px]  text-[#26435F] font-semibold text-sm ml-[-10px] mb-1 text-base-17-5 ">
               Format Of Instructions
             </h1>
             {instructions.map((item, id) => (
@@ -395,8 +405,8 @@ const CompanyAndBround = () => {
               />
             ))}
           </div>
-          <div className="flex flex-col rounded-sm w-[500px] h-[200px] flex-wrap gap-3 p-3 bg-white">
-            <h1 className="mt-[-35px]  text-[#26435F] font-semibold text-sm">
+          <div className="flex flex-col rounded-sm w-2/3 min-w-[500px] design:min-w-[600px] h-[200px] flex-wrap gap-3 p-3 bg-white">
+            <h1 className="mt-[-35px]  text-[#26435F] font-semibold text-sm ml-[-10px] mb-1 text-base-17-5">
               Students Served
             </h1>
             {studentServed.map((item, id) => (
@@ -411,9 +421,10 @@ const CompanyAndBround = () => {
             ))}
           </div>
         </div>
-        <div className="">
-          <h1 className="mt-[-30px] text-[#26435F] font-semibold text-sm my-3">
-            Signup Form Details
+        {/* <div className="w-full h-[2px] bg-[#CBD6E2]"></div> */}
+        <div className="my-4 mb-10 ">
+          <h1 className="mt-[-30px] text-[#26435F] font-semibold text-xl my-1 text-base-17-5">
+            Signup Form Detail
           </h1>
           <div className="w-full h-[200px] bg-white"></div>
         </div>

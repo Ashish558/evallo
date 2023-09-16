@@ -27,10 +27,11 @@
 }
 
 #signUp{
-    height: 100vh;
-    background: linear-gradient(180deg, rgba(43, 73, 240, 0) 0%, rgba(42, 108, 251, 0.2) 100%), url('../../assets/signup//2312.svg');
+  flex: 1 1 auto;
+    background: url('../../assets/signup/5156620\ 1.png'), #add8e660 -0.005px -145.667px / 90% 124.756% no-repeat;
     background-size: cover;
     background-position: center;
+
   }
 
 #signUp input {
@@ -50,11 +51,10 @@
 }
 
 #signUp label {
-    margin-left: 2px;
-    margin-bottom: 5.87px;
+    /* margin-left: 2px;
     font-size: 12px;
-    font-weight: 500;
-    color: rgba(0, 0, 0, 0.9);
+    font-weight: 600;
+    color: #26435F; */
 }
 .inputs{
     display: flex;
@@ -86,3 +86,49 @@
     width: 50px;
     right: -50px;
 }
+.checkbox-label {
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+  }
+  
+  .custom-checkbox {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+   
+    border: 1.5px solid rgba(0, 0, 0, 0.2);
+    border-radius: 2px;
+    position: relative;
+  }
+  
+  input[type='checkbox'] {
+    display: none;
+  }
+  
+  .custom-checkbox::before {
+    content: ''; 
+    display: block;
+    width: 100%;
+    height: 100%;
+    font-size: 14px; 
+    text-align: center;
+    color: white;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0; 
+  }
+  
+  input[type='checkbox']:checked + .custom-checkbox::before {
+    opacity: 1; 
+  }
+  input[type='checkbox']:checked + .custom-checkbox {
+    background-color: #FFA28D;
+    border: 1.5px solid #FFA28D;
+  }
+  
+  .dropdown-container{
+    border: 0;
+  }

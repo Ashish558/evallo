@@ -1,11 +1,12 @@
-.changeOption select{
-    width: 200px;
-    border: 1px solid rgb(208 213 221 );
-    height: 35px;
-    border-radius: 4px;
+.changeOption select {
+  width: 200px;
+  border: 1px solid rgb(208 213 221);
+  height: 35px;
+  border-radius: 4px;
+  padding: 0 15px;
 }
 
-.changeOption{
-    display: flex;
-    align-items: center;
+.changeOption {
+  display: flex;
+  align-items: center;
 }

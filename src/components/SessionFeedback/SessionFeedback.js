@@ -47,9 +47,9 @@ const SessionFeedback = () => {
 
    return (
       <div>
-      <h2 className="mb-[0px]" id={styles.practiceTestHeader}>Practice Tests</h2>
-         <div id={styles.sessionFeedbackContainer} className="scrollbar-content h-[382px] bg-white w-10/12 py-[21px] mt-[20px] rounded-[20px]">
-            <div id={styles.sessionFeedback} className="bg-white px-[28px] scrollbar-content rounded-[20px] h-full overflow-y-auto">
+         <h2 className="mt-3 !text-xl !font-bold !text-[#26435F]" >Assigned Tests</h2>
+         <div id={styles.sessionFeedbackContainer} className="mt-[10px] shadow-[0px_0px_2.500001907348633px_0px_#00000040] custom-scroller h-[383px] bg-white  py-[21px] !rounded-md">
+            <div id={styles.sessionFeedback} className="bg-white px-[10px] custom-scroller !rounded-md h-full overflow-y-auto">
                {/* {/* <TestItem name="name" status="due date" date="june 20, 2022" action="Start" marks="1250/1250" /> */}
 
                {allTests.map(test => {

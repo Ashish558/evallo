@@ -1,0 +1,12 @@
+.expanded {
+  height: 0px; 
+  display:none;/* Adjust this value based on your content */
+  transition:all 1s ease; /* Define the transition properties */
+}
+.transition-shy{
+    transition:all 1s ease;
+}
+.calender-border{
+  border: 1.87px solid #FFA28D;
+  border-top:none;
+}

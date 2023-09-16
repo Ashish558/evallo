@@ -30,8 +30,8 @@ export default function StartTest() {
 
    const [initialSeconds, setInitialSeconds] = useState(0)
    const [countDown, setCountDown] = useState(0)
-
    const { firstName, lastName } = useSelector(state => state.user)
+   const { dateFormat } = useSelector(state => state.user)
 
    const [testHeaderDetails, setTestHeaderDetails] = useState({
       name: `${firstName} ${lastName}`,
@@ -88,8 +88,8 @@ export default function StartTest() {
                   ...prev,
                   testName: testId.testName,
                   instruction: instruction,
-                  dateAssigned: getFormattedDate(createdAt),
-                  dueDate: getFormattedDate(dueDate),
+                  dateAssigned: getFormattedDate(createdAt, dateFormat),
+                  dueDate: getFormattedDate(dueDate, dateFormat),
                }))
             }
             setTestHeaderDetails(prev => ({
@@ -108,9 +108,9 @@ export default function StartTest() {
             setStartBtnLoading(false)
             if (res.error) {
                console.log(res.error)
-               if(res.error.data.message === "user blocked"){
+               if (res.error.data.message === "user blocked") {
                   alert('Account temporarily deactivated')
-               }else{
+               } else {
                   alert('Error starting test')
                }
                return
@@ -171,7 +171,7 @@ export default function StartTest() {
             setTestHeaderDetails(prev => ({
                ...prev,
                // duration,
-               startedOn: getFormattedDate(new Date(res.data.data.subjects.createdAt))
+               startedOn: getFormattedDate(new Date(res.data.data.subjects.createdAt), dateFormat)
             }))
             setSectionDetails(res.data.data)
             let tempsubs = res.data.data.subjects.subjects.map(item => {
@@ -225,7 +225,7 @@ export default function StartTest() {
             if (completed !== undefined) {
                setCompletedSubjects(completed)
             }
-            if (endTime !== null && endTime || sectionName.length > 1) {
+            if (endTime !== null && endTime || sectionName?.length > 1) {
                let timer = (new Date(endTime) - new Date()) / 1000
                setTimer(Math.trunc(timer))
                setInitialSeconds(Math.trunc(timer))
@@ -571,11 +571,13 @@ export default function StartTest() {
                         active={testStarted ? true : false}
                         setCountDown={setCountDown} isUnlimited={isUnlimited}
                         duration={testHeaderDetails.duration}
+
                      />
                   }
                   {
                      testStarted && <CurrentSection answers={answers} submitSection={handleSubmitSection}
-                     submitBtnLoading={submitBtnLoading} />
+                        setSubmitBtnLoading={setSubmitBtnLoading}
+                        submitBtnLoading={submitBtnLoading} />
                   }
                </div>
             </div>

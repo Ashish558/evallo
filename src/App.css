@@ -2,83 +2,39 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap");
 
 @font-face {
-    font-family: GilroySemiBold;
-    src: url(./assets/fonts/Gilroy-SemiBold.ttf);
+  font-family: GilroySemiBold;
+  src: url(./assets/fonts/Gilroy-SemiBold.ttf);
 }
 
 body {
-    background-color: #F5F8FA;
-    height: 100vh;
-    padding-right: 0;
-    padding-bottom: 0;
-    font-family: "Inter", sans-serif;
-    overflow-x: hidden;
+  background-color: #f5f8fa;
+  min-height: 100vh;
+  height: 100%;
+  padding-right: 0;
+  padding-bottom: 50px;
+  font-family: "Inter", sans-serif;
+ overflow-x:hidden;
+  position: relative;
+  display: flex;
+  flex-flow: column;
 }
 
 nav .active {
-    background-image: url("./assets/icons/navbar-active-icon.png");
-    background-size: 100%;
-    background-position-y: 50%;
-    background-position-x: 50%;
+  background-image: url("./assets/icons/navbar-active-icon.png");
+  background-size: 100%;
+  background-position-y: 50%;
+  background-position-x: 50%;
 }
 
 .btn-gold {
-    display: inline-block;
-    background-color: #f6a429;
-    padding: 10px 7px;
-    border-radius: 6px;
-    margin-top: 10px;
-}
-
-::-webkit-scrollbar {
-    width: 10px;
-}
-
-::-webkit-scrollbar-track {
-    background: rgba(217, 217, 217, 0.2);
-}
-
-::-webkit-scrollbar-thumb {
-    background: #888;
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: #555;
-}
-
-.concept {
-    position: relative;
-}
-
-.concept .owl-nav {
-    margin-top: 0 !important;
-    position: absolute;
-    top: -29px;
-    visibility: hidden;
-    right: 0;
-}
-
-.fc-scrollgrid {
-    height: 1340px !important;
+  display: inline-block;
+  background-color: #f6a429;
+  padding: 10px 7px;
+  border-radius: 6px;
+  margin-top: 10px;
 }
 
 
-.fc-timegrid.fc-timeGridWeek-view.fc-view {
-    height: 100% !important;
+#root {
+  display: contents;
 }
-
-.react-calendar__tile--active {
-    position: relative !important;
-}
-
-/* 
-.react-calendar__tile--active::after{
-    content: "";
-    position: absolute;
-    width: 4px;
-    height: 4px;
-    background: #fff;
-    bottom: 2px;
-    z-index: 1050;
-    border-radius: 50%;
-} */

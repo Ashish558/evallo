@@ -23,7 +23,7 @@ export default function ImageSlideshow({ images }) {
       <div className={styles.images}>
          {images.map((image, i) => {
             return (
-               <div className={`overflow-hidden rounded-[20px] bg-cover	bg-center	 ${styles.img} 
+               <div className={`overflow-hidden rounded-md bg-cover	bg-center	 ${styles.img} 
                ${current === i ? styles.active : i < current ? styles.prev : styles.next}`}
                   style={{ backgroundImage: `url(${awsLink}${image.image})` }}
                   onClick={() => openLink(image.link)} >

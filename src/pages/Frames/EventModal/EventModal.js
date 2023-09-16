@@ -120,10 +120,13 @@ export default function EventModal({
       specialization: "",
       topicsCovered: "",
       rescheduling: false,
+      partialSession: false,
       studentMood: "",
       homeworkAssigned: "",
       sessionNotes: "",
-      feedbackStars: 0
+      feedbackStars: 0,
+      whiteboardLink: '',
+      sessionTags: []
    });
    const [submitDisabled, setSubmitDisabled] = useState(false)
 
@@ -149,6 +152,7 @@ export default function EventModal({
    const [deleteSession, deleteSessionResp] = useDeleteSessionMutation()
    const [deleteAllSession, deleteAllSessionResp] = useDeleteAllRecurringSessionMutation()
    const [getUserDetail, userDetailResp] = useLazyGetTutorDetailsQuery()
+   const [allSessionTags, setAllSessionTags] = useState([])
 
    const [inputFeedback, setInputFeedback] = useState(0)
 
@@ -216,13 +220,13 @@ export default function EventModal({
       if (defaultEventData !== null && !isUpdating) {
          // console.log(defaultEventData)
          const { date, tutorId, tutorName } = defaultEventData
-         let formattedDate = date.getDate()
+         let formattedDate = date?.getDate()
          if (formattedDate < 10) {
             formattedDate = `0${formattedDate}`
          }
          // let defDate = `${date.getFullYear()}-${date.getMonth() + 1}-${formattedDate}`
          let defDate = getFormattedDate(date)
-         let hours = defaultEventData.date.getHours()
+         let hours = defaultEventData.date?.getHours()
          let endHours = hours + 1
          // console.log(endHours)
          if (hours < 10) {
@@ -257,83 +261,24 @@ export default function EventModal({
    }, [defaultEventData])
 
    useEffect(() => {
-      if(organization?.settings){
-         if(Object.keys(organization?.settings).length > 0){
-            console.log('organization', organization.settings);
+      if (organization?.settings) {
+
+         if (Object.keys(organization?.settings).length > 0) {
+            // console.log('organization', organization.settings);
             let sessionTags = organization.settings.sessionTags;
-            let homeworks = sessionTags.homeworkAssigned.map((item) => {
+            setAllSessionTags(sessionTags)
+            let tempSessionTags = sessionTags.map(item => {
                return {
-                  text: item,
-                  checked: false,
-               };
-            });
-            setHomeworks(homeworks);
-            let topics = sessionTags.topicsCovered.map((item) => {
-               return {
-                  text: item,
-                  checked: false,
-               };
-            });
-            setTopics(topics);
-   
-            let moods = sessionTags.studentMode.map((item) => {
-               return {
-                  text: item,
-                  checked: false,
-               };
-            });
-            setStudentMoods(moods);
-            let productive = sessionTags.wasProductive.map((item) => {
-               return {
-                  text: item,
-                  checked: false,
-               };
-            });
-            setIsProductive(productive);
+                  ...item,
+                  items: []
+               }
+            })
+            setData({ ...data, sessionTags: tempSessionTags })
             setAllServicesAndSpec(organization.settings.servicesAndSpecialization)
             setServices(organization.settings.Expertise);
             setIsSettingsLoaded(true);
          }
       }
-
-      // fetchSettings().then((res) => {
-      //    let sessionTags = res.data.data.setting.sessionTags;
-      //    // console.log(sessionTags)
-      //    let homeworks = sessionTags.homeworkAssigned.map((item) => {
-      //       return {
-      //          text: item,
-      //          checked: false,
-      //       };
-      //    });
-      //    setHomeworks(homeworks);
-      //    let topics = sessionTags.topicsCovered.map((item) => {
-      //       return {
-      //          text: item,
-      //          checked: false,
-      //       };
-      //    });
-      //    setTopics(topics);
-
-      //    let moods = sessionTags.studentMode.map((item) => {
-      //       return {
-      //          text: item,
-      //          checked: false,
-      //       };
-      //    });
-      //    setStudentMoods(moods);
-
-      //    let productive = sessionTags.wasProductive.map((item) => {
-      //       return {
-      //          text: item,
-      //          checked: false,
-      //       };
-      //    });
-      //    setIsProductive(productive);
-      //    // console.log('setting', res.data.data.setting)
-      //    setAllServicesAndSpec(res.data.data.setting.servicesAndSpecialization)
-      //    setServices(res.data.data.setting.Expertise);
-      //    setIsSettingsLoaded(true);
-      // });
    }, [organization]);
 
    useEffect(() => {
@@ -555,10 +500,10 @@ export default function EventModal({
          if (d.checked) day.push(d.full);
       });
       reqBody.day = day;
-      reqBody.topicsCovered = getCheckedString(topics)
-      reqBody.homeworkAssigned = getCheckedString(homeworks)
-      reqBody.studentMood = getCheckedString(studentMoods)
-      reqBody.sessionProductive = getCheckedString(isProductive)[0]
+      // reqBody.topicsCovered = getCheckedString(topics)
+      // reqBody.homeworkAssigned = getCheckedString(homeworks)
+      // reqBody.studentMood = getCheckedString(studentMoods)
+      // reqBody.sessionProductive = getCheckedString(isProductive)[0]
       if (reqBody.sessionProductive === undefined) {
          reqBody.sessionProductive = ''
       }
@@ -632,8 +577,14 @@ export default function EventModal({
       submitSession(reqBody).then((res) => {
          console.log(res)
          setLoading(false)
-         setEventModalActive(false)
-         refetchSessions()
+         if (res?.error?.data?.message) {
+            alert("Error occured while scheduling a session , please try again!")
+         }
+         else {
+            setEventModalActive(false)
+            refetchSessions()
+         }
+
       })
    }
    // console.log(data);
@@ -656,7 +607,7 @@ export default function EventModal({
             // console.log(res.data);
          })
    }
- 
+
    const fetchFeedback = () => {
       getSessionFeedback(sessionToUpdate._id)
          .then(res => {
@@ -759,20 +710,37 @@ export default function EventModal({
             sessionToUpdate.timeZone === data.timeZone &&
             getFormattedDate(startDate) === data.date
          ) {
-            setData(prev => ({...prev, rescheduling: false}))
+            setData(prev => ({ ...prev, rescheduling: false }))
          } else {
-            setData(prev => ({...prev, rescheduling: true}))
+            setData(prev => ({ ...prev, rescheduling: true }))
          }
       }
    }, [isUpdating, sessionToUpdate?.time, data?.time, sessionToUpdate?.date, data?.date])
-  
+
+   const handleSessiontagChange = (item, tagId) => {
+      const tempSessionTag = data.sessionTags.map(tag => {
+         if (tag._id === tagId) {
+            let items = [...tag.items]
+            if (tag.items.includes(item)) {
+               items = items.filter(text => text !== item)
+            } else {
+               items.push(item)
+            }
+            return { ...tag, items }
+         } else {
+            return { ...tag }
+         }
+      })
+      setData({ ...data, sessionTags: tempSessionTag })
+   }
    const dataProps = { data, setData }
+
    return (
       <>
          <Modal
             classname="max-w-[750px] md:pl-6 md:pr-6 mx-auto max-h-[90vh] 2xl:max-h-[700px] overflow-y-auto scrollbar-content scrollbar-vertical"
             handleClose={() => setEventModalActive(false)}
-            title={isEditable == false ? 'Session' : isUpdating ? "Update Session" : "Create a New Session"}
+            title={isEditable == false ? 'Session Details' : isUpdating ? "Update Session" : ` ${persona == "tutor" ? "Session Details" : "Schedule New Session"}`}
             body={
                <div className="text-sm" >
                   <SearchNames setStudent={setStudent}
@@ -788,19 +756,18 @@ export default function EventModal({
                            ...data,
                            recurring: !data.recurring,
                         })} disabled={!isEditable} />
-                     <p className="font-medium text-primary-60 text-sm">
+                     <p className="font-medium text-[#26435F] text-sm">
                         Recurring
                      </p>
                   </div>
 
                   <DaysEndDate isEditable={isEditable} days={days} setDays={setDays} {...dataProps} />
 
-                  {/* SESSIONS */}
-                  <SessionInputs {...dataProps} status={status} isEditable={isEditable} />
-                  <div className="flex">
+
+                  <div className="flex mb-7">
                      <InputSelect
-                        label="Services"
-                        labelClassname="ml-3"
+                        label="Service"
+                        labelClassname="font-semibold "
                         value={data.service}
                         onChange={(val) => {
                            // console.log(val)
@@ -812,15 +779,15 @@ export default function EventModal({
                        `}
                         inputClassName="bg-transparent appearance-none font-medium pt-4 pb-4"
                         placeholder="Select Service"
-                        parentClassName={`w-full mr-4 max-w-373 self-end 
+                        parentClassName={`w-full mr-8 max-w-373 self-end 
                         ${persona === "student" ? "mr-4" : ""} ${persona === "parent" ? " order-2" : ""}
                         `}
                         type="select"
                         disabled={!isEditable}
                      />
                      <InputSelect
-                        label="Specialization"
-                        labelClassname="ml-3"
+                        label="Topic"
+                        labelClassname="font-semibold"
                         value={data.specialization}
                         onChange={(val) => {
                            // console.log(val)
@@ -831,13 +798,15 @@ export default function EventModal({
                         inputContainerClassName={`bg-lightWhite pt-3.5 pb-3.5 border-0 font-medium pr-3
                        `}
                         inputClassName="bg-transparent appearance-none font-medium pt-4 pb-4"
-                        placeholder="Specialization"
-                        parentClassName={`w-full mr-4 max-w-373 self-end 
+                        placeholder="Topic"
+                        parentClassName={`w-full ml-2 max-w-373 self-end 
                         ${persona === "student" ? "mr-4" : ""} ${persona === "parent" ? " order-2" : ""}
                         `}
                         type="select"
                         disabled={!isEditable}
+
                      />
+
                      {
                         persona === 'admin' || persona === 'tutor' ?
                            <></>
@@ -861,13 +830,85 @@ export default function EventModal({
                      }
 
                   </div>
+
+
+                  <div className="mt-4  flex ">
+                     <InputField
+                        label="Meeting Link"
+                        labelClassname="ml-3 text-[#26435F] font-medium"
+                        placeholder="Meeting Link"
+                        parentClassName="w-full mr-8"
+                        inputContainerClassName="bg-lightWhite border-0 pt-3.5 pb-3.5"
+                        inputClassName="bg-transparent"
+                        type="text"
+                        value={data.session}
+                        onChange={(e) =>
+                           setData({
+                              ...data,
+                              session: e.target.value,
+                           })
+                        }
+                        disabled={!isEditable}
+                     />
+                     <InputField
+                        parentClassName="w-full ml-2"
+                        label="Whiteboard Link"
+                        placeholder="Whiteboard Link"
+                        labelClassname="ml-3 text-[#26435F] font-medium"
+                        inputContainerClassName="bg-lightWhite border-0  pt-3.5 pb-3.5"
+                        inputClassName="bg-transparent appearance-none"
+                        value={data.whiteboardLink}
+                        type="text"
+                        onChange={(e) =>
+                           setData({ ...data, whiteboardLink: e.target.value })
+                        }
+                        disabled={!isEditable}
+                     />
+
+
+                  </div>
+                  {
+                     persona == "parent" &&
+                     <div className="h-[1.3px] mt-[28px] bg-[rgba(0,0,0,0.20)] "></div >
+                  }
+                  {/* SESSIONS */}
+                  <SessionInputs {...dataProps} status={status} isEditable={isEditable} />
+
+
+
+                  {
+                     (persona == "parent" || persona == "student") && <div className="mt-[30px] mb-8">
+                        <p className="font-medium mb-2.5 text-[#26435F] text-base-17.5]">
+                           Session Notes
+                        </p>
+                        <textarea
+                           placeholder="Session Notes"
+                           value={data.sessionNotes}
+                           onChange={(e) =>
+                              setData({
+                                 ...data,
+                                 sessionNotes: e.target.value,
+                              })
+                           }
+                           rows={6}
+                           className="bg-white border border-[#D0D5DD] w-full outline-0 px-5 py-4 rounded-[6px]"
+                        ></textarea>
+                        <p className="text-right text-xs text-primary-80">
+                           0/200
+                        </p>
+                     </div>
+                  }
+                  {
+                     persona == "student" &&
+                     <div className="h-[1.33px] bg-[rgba(0,0,0,0.20)]"></div>
+                  }
                   <div>
-                     {persona === "parent" || persona === 'student' ? (
+                     {persona === 'student' ? (
                         <div className="ml-4 mt-5">
-                           <p className="font-medium mb-4">
-                              Session Feedback
+                           <p className="font-medium text-center mb-4 text-[18px] text-[#26435F]">
+                              How did this session go?
                            </p>
-                           <div className="flex">
+                           <div className="flex justify-center">
                               {[...Array(5)].map((x, i) => (
                                  <img
                                     src={inputFeedback - 1 < i ? StarIcon : StarActiveIcon}
@@ -887,117 +928,49 @@ export default function EventModal({
                   {persona !== "student" && persona !== "parent" && (
                      <>
                         <div className="mt-7 mb-5">
-                           <p className="font-medium mb-2.5">
-                              Topics Covered
-                           </p>
-                           <div className="flex">
-                              {topics.length > 0 &&
-                                 topics.map((topic, idx) => {
-                                    return (
-                                       <div
-                                          key={idx}
-                                          className="flex mb-3 mr-3"
-                                          onClick={() =>
-                                             handleCheckboxChange(topic.text, topics,
-                                                setTopics
-                                             )
-                                          }
-                                       >
-                                          <CCheckbox checked={topic.checked}
-                                             name='topic'
-                                          />
-                                          <p className="font-medium text-primary-60 text-sm">
-                                             {topic.text}
-                                          </p>
-                                       </div>
-                                    );
-                                 })}
-                           </div>
-                        </div>
-
-                        <div className="mt-5 mb-5">
-                           <p className="font-medium mb-2.5">
-                              Student Mood
-                           </p>
-                           <div className="flex">
-                              {studentMoods.length > 0 &&
-                                 studentMoods.map((item, idx) => {
-                                    return (
-                                       <div
-                                          key={idx}
-                                          className="flex mb-3 mr-3"
-                                          onClick={() => handleCheckboxChange(item.text, studentMoods, setStudentMoods)}
-                                       >
-                                          <CCheckbox checked={item.checked}
-                                             name='moods'
-                                          />
-                                          <p className="font-medium text-primary-60 text-sm">
-                                             {item.text}
-                                          </p>
-                                       </div>
-                                    );
-                                 })}
-                           </div>
-                        </div>
-
-                        <div className="mt-5 mb-7">
-                           <p className="font-medium  mb-2.5">
-                              Homework Assigned
-                           </p>
-                           <div className="flex flex-wrap	">
-                              {homeworks.length > 0 &&
-                                 homeworks.map((item, idx) => {
-                                    return (
-                                       <div
-                                          key={idx}
-                                          className="flex mb-3 mr-6"
-                                          onClick={() =>
-                                             handleCheckboxChange(
-                                                item.text,
-                                                homeworks,
-                                                setHomeworks
-                                             )
-                                          }
-                                       >
-                                          <CCheckbox checked={item.checked}
-                                             name='homeworks'
-                                          />
-                                          <p className="font-medium text-primary-60 text-sm">
-                                             {item.text}
-                                          </p>
-                                       </div>
-                                    );
-                                 })}
-                           </div>
-                        </div>
-
-                        <div className="mt-5 mb-7">
-                           <p className="font-medium mb-2.5">
-                              Was the session Productive?
-                           </p>
-                           <div className="flex flex-wrap	">
-                              {isProductive.map((item, idx) => {
-                                 return (
-                                    <div
-                                       key={idx}
-                                       className="flex mb-3 mr-6"
-                                       onClick={() =>
-                                          handleCheckboxChange(item.text, isProductive, setIsProductive, true)}
-                                    >
-                                       <CCheckbox checked={item.checked}
-                                          name='productive'
-                                       />
-                                       <p className="font-medium text-primary-60 text-sm">
-                                          {item.text}
-                                       </p>
+                           {
+                              allSessionTags.map(tag => {
+                                 return <div key={tag._id} >
+                                    <p className="font-medium mb-2.5">
+                                       {tag.heading}
+                                    </p>
+                                    <div className="flex">
+                                       {tag.items.length > 0 &&
+                                          tag.items.map((item, idx) => {
+                                             const currentUserSession = data.sessionTags.find(dataSessionTag => dataSessionTag._id === tag._id)
+                                             let checked = false
+                                             if (currentUserSession?.items.includes(item)) {
+                                                checked = true
+                                             }
+                                             return (
+                                                <div
+                                                   key={idx}
+                                                   className="flex mb-3 mr-3"
+                                                   onClick={() =>
+                                                      handleSessiontagChange(
+                                                         item,
+                                                         tag._id,
+                                                      )
+                                                   }
+                                                >
+                                                   <CCheckbox
+                                                      checked={checked}
+                                                      name="topic"
+                                                   />
+                                                   <p className="font-medium text-primary-60 text-sm">
+                                                      {item}
+                                                   </p>
+                                                </div>
+                                             );
+                                          })}
                                     </div>
-                                 );
-                              })}
-                           </div>
+                                 </div>;
+                              })
+                           }
                         </div>
 
                         <div className="mb-8">
-                           <p className="font-medium mb-2.5">
+                           <p className="font-medium mb-2.5 text-[#26435F text-base-17.5]">
                               Session Notes
                            </p>
                            <textarea
@@ -1069,9 +1042,9 @@ export default function EventModal({
                                  </> :
                                  <PrimaryButton
                                     children="Schedule"
-                                    className="text-lg py-3 pl-2 pr-2 font-medium px-7 h-[50px] w-[140px] disabled:opacity-60"
+                                    className="text-lg py-3  font-medium px-7 h-[50px] w-[140px] disabled:opacity-60"
                                     onClick={() => handleSubmit()}
-                                    disabled={submitDisabled}
+                                    disabled={false}
                                     loading={loading}
                                  />
                            }

@@ -8,7 +8,8 @@ import SignupLast from "../Frames/SignupLast/SignupLast";
 import FurtherDetails from "../Frames/FurtherDetails/FurtherDetails";
 import SignupSuccessful from "../Frames/SignupSuccessful/SignupSuccessful";
 
-import cuate from "../../assets/signup/cuate.png";
+
+import cuate from "../../assets/signup/cuate.svg";
 import NumericSteppers from "../../components/NumericSteppers/NumericSteppers";
 import CCheckbox from "../../components/CCheckbox/CCheckbox";
 
@@ -52,6 +53,7 @@ import RadioSelected from "../../assets/icons/radioChecked2.svg";
 import SecondaryButton from "../../components/Buttons/SecondaryButton";
 import InputFieldDropdown from "../../components/InputField/inputFieldDropdown";
 import AdminNavbar from "../AdminDashboard/AdminNavbar";
+import SCheckbox from "../../components/CCheckbox/SCheckbox";
 
 export default function Signup() {
   const [frames, setFrames] = useState({
@@ -78,7 +80,7 @@ export default function Signup() {
     role: "",
     userId: "",
     registrationAs: "Company",
-
+    phoneCode:"",
     orgName: "",
     companyType: "",
     website: "",
@@ -87,7 +89,7 @@ export default function Signup() {
     state: "",
     zip: "",
     city: "",
-
+    paymentType: "",
     activeStudents: "",
     activeTutors: "",
     services: [],
@@ -97,9 +99,11 @@ export default function Signup() {
     firstName: "",
     lastName: "",
     email: "",
+    phoneCode:"",
     phone: "",
     subscriptionCode: "",
     company: "",
+  
   });
 
   const [otherDetails, setOtherDetails] = useState({
@@ -110,6 +114,7 @@ export default function Signup() {
     LastName: "",
     Email: "",
     Phone: "",
+    company:"",
     aboutScore: "",
   });
 
@@ -123,7 +128,7 @@ export default function Signup() {
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
   }, [frames]);
-
+  
   const [signupUser, signupUserResp] = useSignupUserMutation();
   const [addUserDetails, addUserDetailsResp] = useAddUserDetailsMutation();
   const [getUserDetail, userDetailResp] = useLazyGetTutorDetailsQuery();
@@ -262,7 +267,7 @@ export default function Signup() {
   useEffect(() => {
     setCount(1);
   }, []);
-
+  const emailValidation = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
   useEffect(() => {
     if (sessionStorage.getItem("frames")) {
       // console.log(sessionStorage.getItem('frames'));
@@ -300,8 +305,11 @@ export default function Signup() {
         firstName: "",
         lastName: "",
         email: "",
+        phoneCode:"",
         phone: "",
         subscriptionCode: "",
+        company: "",
+        phoneCode:"",
       };
     });
   };
@@ -326,7 +334,7 @@ export default function Signup() {
     promiseState().then(() => {
       let reqBody = {
         firstname: values.firstName,
-        lastname: values.firstName,
+        lastname: values.lastName,
         workemail: values.email,
         password: values.firstName,
         phone: values.phone,
@@ -342,13 +350,16 @@ export default function Signup() {
         zip: values.zip,
         activestudents: values.activeStudents,
         numberoftutors: values.activeTutors,
-
+        website: values.website,
         testpreparation: getCheckedString(testPreparations),
         subjecttutoring: getCheckedString(tutoring),
         coaching: getCheckedString(coaching),
         formatofinstruction: getCheckedString(instructions),
         studentserved: getCheckedString(studentserved),
-        hearaboutus: getCheckedString(hearAboutUs),
+        hearAbout: getCheckedString(hearAboutUs),
+        paymentMethod:values.paymentType,
+        rating:rateUs,
+        term:true,
         solutionyouarelookingfor: getCheckedString(solutions),
       };
       console.log({ reqBody });
@@ -368,7 +379,7 @@ export default function Signup() {
         }
       }
       const result = validateSignup(values);
-      console.log({ result });
+      console.log("validation",{ result });
       if (result.data !== true) {
         setError((prev) => {
           return {
@@ -406,11 +417,53 @@ export default function Signup() {
       }
     });
   };
-
+  const [isValidated,setValidated]=useState({ 
+    firstName: "",
+    lastName: "",
+    email: "",
+    phoneCode:"",
+    phone: "",
+    subscriptionCode: "",
+    company: "",
+ 
+})
+  const handleNextErrors=(alsoSet)=>{
+    resetErrors()
+    const result = validateSignup(values);
+   
+    if (result.data !== true) {
+      setValidated((prev) => {
+        return {
+          [result.data]: result.message,
+        };
+      })
+    }
+    else{
+      setValidated({
+      })
+    }
+    if(alsoSet){
+    let flag=true;
+    Object.keys(isValidated).map((it)=>{
+     if (isValidated[it] && isValidated[it].length>0){
+       flag=false;
+     }
+    })
+    resetErrors()
+    let arr={...isValidated}
+    setError(arr)
+    
+    return flag;
+   }
+  }
+const [emailExistLoad,setEmailExistLoad]=useState(false)
   const handleClick = () => {
     const emailAlreadyExists = async () => {
+        setEmailExistLoad(true)
+        let cc=0;
       let checked = false;
       try {
+        
         let data = {
           workemail: values.email,
         };
@@ -425,8 +478,10 @@ export default function Signup() {
           }
         );
         if (result) checked = true;
+        cc++;
       } catch (e) {
         console.error(e.response?.data?.message);
+        cc++;
         setError({
           ...error,
           email: e.response?.data?.message,
@@ -446,23 +501,42 @@ export default function Signup() {
             },
           }
         );
+        cc++;
       } catch (e) {
         checked = false;
+        cc++;
         setError({
           ...error,
           company: e.response.data.message,
         });
       }
-      if (checked === true) {
+      if (checked === true ) {
+        
         setFrames({
           ...frames,
           signupActive: false,
           orgDetails: true,
         });
       }
+      if(cc>=2){
+        setEmailExistLoad(false)
+      }
     };
+   
+    if(!handleNextErrors(true)){
+      return 
+    }
+ 
+  else
     emailAlreadyExists();
   };
+ 
+
+
+  useEffect(()=>{
+   
+    handleNextErrors()
+  },[values])
 
   // console.log(isLinkedEmail);
   useEffect(() => {
@@ -535,13 +609,10 @@ export default function Signup() {
     navigate("/");
   };
   return (
-    <div
-      className="min-h-screen   pb-6 bg-primary relative"
-      id={styles.signUp}
-    >
+    <div className="   pb-6 bg-primary relative" id={styles.signUp}>
       {/* <AdminNavbar></AdminNavbar> */}
-      <div className="flex justify-center flex-col items-center md:grid-cols-2 min-h-screen mb-[100px]">
-        <img src={cuate} alt="rocket" className="h-10vh mb-10" />
+      <div className="flex justify-center flex-col items-center md:grid-cols-2  mb-[100px]">
+        <img src={cuate} alt="rocket" className="h-10vh mt-3 mb-4" />
         <>
           {!frames.signupSuccessful ? (
             <div className="lg:hidden bg-primary text-white pt-[79px] px-[49px]">
@@ -549,8 +620,8 @@ export default function Signup() {
                 {frames.signupActive
                   ? "Sign Up"
                   : frames.setPassword
-                    ? ""
-                    : "Profile Details"}
+                  ? ""
+                  : "Profile Details"}
               </h1>
 
               <h6 className="mb-[10px]">Sign up with email address</h6>
@@ -558,20 +629,12 @@ export default function Signup() {
           ) : (
             <></>
           )}
-          <div className="flex lg:items-center relative bg-white rounded-md py-4 px-5 md:px-[48px] lg:w-[540px]">
-            <div className="w-full py-4">
-              {/* <h1
-                className={`hidden lg:block mb-1.5 text-[30px] ${styles.title} `}
-              >
-                {frames.signupActive
-                  ? "Sign Up"
-                  : frames.setPassword
-                    ? ""
-                    : ""}
-              </h1> */}
-
+          <div className="flex lg:items-center relative bg-white rounded-md py-4 px-5 md:px-[48px] lg:w-[650px]">
+            <div className="w-full py-4 ">
               {currentStep > 0 && (
-                <NumericSteppers totalSteps={4} currentStep={currentStep} />
+                <NumericSteppers className={"px-2 flex-1"} fieldNames={["Personal info" ,"Org details","Further details","Requirements"]} totalSteps={4} currentStep={currentStep}
+                
+                />
               )}
               {frames.signupActive ? (
                 <div>
@@ -587,6 +650,9 @@ export default function Signup() {
                       placeholder=""
                       parentClassName="text-xs"
                       label="First Name"
+                      labelClassname="text-[#26435F] font-semibold"
+                      inputContainerClassName=" border border-[#D0D5DD] rounded-md py-[9px] h-[45px] text-md"
+                    
                       value={values.firstName}
                       onChange={(e) =>
                         setValues({
@@ -594,11 +660,14 @@ export default function Signup() {
                           firstName: e.target.value,
                         })
                       }
+                      totalErrors={error}
                       error={error.firstName}
                     />
                     <InputField
                       placeholder=""
                       parentClassName="text-xs"
+                      labelClassname="text-[#26435F] font-semibold"
+                      inputContainerClassName=" border border-[#D0D5DD] rounded-md py-[9px] h-[45px] text-md"
                       label="Last Name"
                       value={values.lastName}
                       onChange={(e) =>
@@ -607,6 +676,8 @@ export default function Signup() {
                           lastName: e.target.value,
                         })
                       }
+                      
+                      totalErrors={error}
                       error={error.lastName}
                     />
                   </div>
@@ -615,6 +686,8 @@ export default function Signup() {
                       label="Work Email"
                       placeholder=""
                       parentClassName="text-xs w-full "
+                      labelClassname="text-[#26435F] font-semibold"
+                      inputContainerClassName=" border border-[#D0D5DD] rounded-md py-[9px] h-[45px] text-md"
                       value={values.email}
                       onChange={(e) =>
                         setValues({
@@ -622,21 +695,33 @@ export default function Signup() {
                           email: e.target.value,
                         })
                       }
+                      totalErrors={error}
                       error={error.email}
                     />
 
-
                     <InputFieldDropdown
                       placeholder=""
-                      parentClassName="text-xs w-4/5 ml-8 mt-1"
+                      parentClassName="text-xs w-4/5 ml-8 "
+                      labelClassname="text-[#26435F] font-semibold"
+                      inputContainerClassName=" border border-[#D0D5DD] rounded-md py-[9px] h-[45px] text-md"
                       label="Phone"
                       value={values.phone}
+                      codeValue={values.phoneCode}
+                      
+                      handleCodeChange={(e) =>
+                        setValues({
+                          ...values,
+                          phoneCode: e.target.value,
+                        })
+                      }
                       onChange={(e) =>
                         setValues({
                           ...values,
                           phone: e.target.value,
                         })
                       }
+                      totalErrors={error}
+                      codeError={error.phoneCode}
                       error={error.phone}
                     />
                   </div>
@@ -645,6 +730,8 @@ export default function Signup() {
                     placeholder=""
                     parentClassName="text-xs mt-5 mb-6 w-full"
                     label="Name Of Business"
+                    labelClassname="text-[#26435F] font-semibold"
+                    inputContainerClassName=" border border-[#D0D5DD] rounded-md py-[9px] h-[45px] text-md"
                     value={values.company}
                     onChange={(e) =>
                       setValues({
@@ -652,12 +739,51 @@ export default function Signup() {
                         company: e.target.value,
                       })
                     }
+                    totalErrors={error}
                     error={error.company}
                   />
-                  <p className="text-[15px] mb-4 text-[#26435F]"> Registration as </p>
+                  <p className="text-[15px]  font-semibold mb-4 text-[#26435F]">
+                    {" "}
+                    Registering as{" "}
+                  </p>
                   <div className="flex items-center text-xs">
+                  <div
+                      className="flex mr-6  items-center cursor-pointer"
+                      onClick={() =>
+                        setValues((prev) => ({
+                          ...prev,
+                          registrationAs: "Individual",
+                        }))
+                      }
+                    >
+                      {/* <input type="radio" defaultChecked={values.registrationAs === "Individual"
+                            ? true
+                            : false} className="w-3 h-3"/> */}
+                      <div className="w-[30px]  flex justify-center">
+                        <img
+                          src={
+                            values.registrationAs === "Individual"
+                              ? RadioSelected
+                              : RadioUnselected
+                          }
+                          alt="radio"
+                          className=" mr-3"
+                        />
+                      </div>
+
+                      <p
+                        className={`${
+                          values.registrationAs === "Individual"
+                            ? "text-[#FFA28D] font-semibold "
+                            : "text-[#26435F] font-semibold"
+                        } text-[14px] `}
+                      >
+                        {" "}
+                        Individual{" "}
+                      </p>
+                    </div>
                     <div
-                      className="flex items-center mr-6 cursor-pointer"
+                      className="flex items-center cursor-pointer"
                       onClick={() =>
                         setValues((prev) => ({
                           ...prev,
@@ -679,56 +805,41 @@ export default function Signup() {
                           className="mr-3 p-0"
                         />
                       </div>
-                      <p className={`${values.registrationAs === "Company" ? 'text-[#FFA28D]  ' : ''} text-[14px] `}> Company </p>
+                      <p
+                        className={`${
+                          values.registrationAs === "Company"
+                            ? "text-[#FFA28D] font-semibold "
+                            : "text-[#26435F] font-semibold"
+                        } text-[14px] `}
+                      >
+                        {" "}
+                        Company{" "}
+                      </p>
                     </div>
-                    <div
-                      className="flex items-center cursor-pointer"
-                      onClick={() =>
-                        setValues((prev) => ({
-                          ...prev,
-                          registrationAs: "Individual",
-                        }))
-                      }
-                    >
-                      {/* <input type="radio" defaultChecked={values.registrationAs === "Individual"
-                            ? true
-                            : false} className="w-3 h-3"/> */}
-                      <div className="w-[30px] flex justify-center">
-                        <img
-                          src={
-                            values.registrationAs === "Individual"
-                              ? RadioSelected
-                              : RadioUnselected
-                          }
-                          alt="radio"
-                          className=" mr-3"
-                        />
-                      </div>
-
-                      <p className={`${values.registrationAs === "Individual" ? 'text-[#FFA28D]  ' : ''} text-[14px] `}> Individual </p>
-                    </div>
+                    
                   </div>
-                  <div className="mt-[40px] flex">
-                    <div className="mt-1">
-                      <label className={styles.container}>
-                        <input
-                          required={true}
-                          type="checkbox"
-                          checked={isChecked}
-                          onChange={handleCheckboxChange1}
-                        />
-                        <span class={styles.checkmark}></span>
-                      </label>
-                    </div>
-
-                    <p className="text-sm font-medium   leading-5 ml-1 pl-2">
+                  <div className="mt-[25px] flex">
+                    
+                    <div className="flex items-center">
+                   
+                    <SCheckbox checked={isChecked}
+                      uncheckColor={"bg-[#9CA3AF]"}
+                      onChange={handleCheckboxChange1}
+                    />
+                   
+                    <span className="text-[13px] text-[#26435F]  font-semibold">
+                      {" "}
+                     
+                    </span>
+                  </div>
+                    <p className="text-[15px] text-[#26435F] font-medium  leading-5 ml-1 pl-2">
                       Selecting this would confirm that you have carefully read
                       through and agree to our{" "}
-                      <span className="text-[#FFA28D]">
+                      <span className="text-[#FFA28D] font-semibold">
                         <a href="http://evallo.org/tou">Terms of Use</a>
                       </span>{" "}
                       and{" "}
-                      <span className="text-[#FFA28D]">
+                      <span className="text-[#FFA28D] font-semibold">
                         <a href="http://evallo.org/privacy-policy">
                           Privacy Policy
                         </a>
@@ -738,17 +849,21 @@ export default function Signup() {
                   </div>
                   <div className="flex items-center mt-[60px] justify-between">
                     <SecondaryButton
-                      children="Go Back"
-                      className="text-sm mr-6 bg-white text-[#a3aDC7] border-[1.5px] border-[#D0D5DD] "
+                      children="Go back"
+                      className="text-sm mr-6 bg-white text-[#cad0db] border-[1.7px] border-[#D0D5DD] py-2 "
                       onClick={handleBack}
                     />
                     <PrimaryButton
-                      className={`w-full bg-[#FFA28D] disabled:opacity-60 max-w-[110px]  rounded text-white text-sm font-medium relative ${loading
-                        ? "cursor-wait opacity-60 pointer-events-none"
-                        : "cursor-pointer"
-                        }`}
+                      className={`w-full flex justify-center  bg-[#FFA28D]  disabled:opacity-60 max-w-[110px]  rounded text-white text-sm font-medium relative py-[9px] ${
+                        loading
+                          ? "cursor-wait opacity-60 pointer-events-none"
+                          : "cursor-pointer"
+                      } 
+                      
+                      `}
+                      loading={emailExistLoad}
                       disabled={
-                        values.email === "" || !isChecked ? true : false
+                        values.email === "" || !isChecked || !emailValidation.test(values.email)? true : false
                       }
                       onClick={handleClick}
                       children={`Next`}
@@ -795,6 +910,7 @@ export default function Signup() {
                 />
               ) : frames.signupSuccessful ? (
                 <SignupSuccessful
+                  email={values.email}
                   {...props}
                   {...otherDetailsProps}
                   successfulSignUpMessage={successfulSignUpMessage}
@@ -809,11 +925,10 @@ export default function Signup() {
           </div>
         </>
       </div>
-     
+
     </div>
   );
 }
-
 
 /*
 

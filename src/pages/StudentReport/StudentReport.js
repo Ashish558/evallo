@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import SecondaryButton from '../../components/Buttons/SecondaryButton'
 import BackIcon from '../../assets/assignedTests/back.svg'
+import questionMark from '../../assets/assignedTests/question-mark.svg'
 import PrimaryButton from '../../components/Buttons/PrimaryButton'
 import styles from './style.module.css'
 import { tableData, answerTableData, timeTakenSeries, ttOptions, accuracySeries, accuracyOptions } from './tempData'
@@ -15,6 +16,7 @@ import { useSelector } from 'react-redux'
 import RedIcon from "../../assets/assignedTests/red.svg";
 import GreenIcon from "../../assets/assignedTests/green.svg";
 import moment from 'moment'
+import PrimaryTab from '../../components/Buttons/PrimaryTab'
 
 const tempsubjects = [
    { text: 'Trigonometry', selected: true },
@@ -27,12 +29,13 @@ const tableHeadersParent = [
    'Q No.', 'Accuracy', 'Concept', 'Strategy', 'Time Taken',
 ]
 const adminTableHeaders = [
-   'Q No.', 'Correct Answer', 'Student Response', 'Accuracy', 'Concept', 'Strategy', 'Time Taken',
+   'Q No.', 'Correct Answer', 'Student Response', 'Accuracy', 'Concept', 'Strategy', 'Time Taken', 'Marked For Review'
 ]
 
 
 export default function StudentReport() {
-
+   const { organization } = useSelector((state) => state.organization);
+   const { firstName, lastName } = useSelector((state) => state.user);
    const [tableHeaders, setTableHeaders] = useState([])
    const [tableData, setTableData] = useState([])
    const [testData, setTestData] = useState(tableData)
@@ -78,6 +81,7 @@ export default function StudentReport() {
       testName: '-',
       assignedOn: '-',
       name: '-',
+      dueOn: '-',
       startedOn: '-',
       completedOn: '-',
       duration: '-',
@@ -391,6 +395,17 @@ export default function StudentReport() {
          // console.log('answerKey', answerKey[selectedSubject.idx]);
          let temp = responseData.response[selectedSubject.idx].map((item, index) => {
             const { QuestionNumber, QuestionType, ResponseAnswer, isCorrect, responseTime, _id } = item
+            // console.log(item)
+            const CustomImage = () => {
+               return (
+                  <div className='w-full flex justify-center'>
+                     <img
+                        src={questionMark}
+                        alt="QuestionMark"
+                     />
+                  </div>
+               );
+            }
             return {
                QuestionNumber,
                CorrectAnswer: answerKey[currentAnswerKeyIndex][index]?.CorrectAnswer,
@@ -398,7 +413,8 @@ export default function StudentReport() {
                isCorrect,
                Concept: answerKey[currentAnswerKeyIndex][index]?.Concepts ? answerKey[currentAnswerKeyIndex][index]?.Concepts : '-',
                Strategy: answerKey[currentAnswerKeyIndex][index]?.Strategy ? answerKey[currentAnswerKeyIndex][index]?.Strategy : '-',
-               responseTime: responseTime >= 0 ? `${responseTime} sec` : '-'
+               responseTime: responseTime >= 0 ? `${responseTime} sec` : '-',
+               review: <CustomImage />
             }
          })
          setTableData(temp)
@@ -409,8 +425,8 @@ export default function StudentReport() {
 
    //change time taken series data
    useEffect(() => {
-      const oddcolors = ['#8ADCFF', '#FF4D00']
-      const evencolors = ['#8E76ED', '#E02B1D']
+      const oddcolors = ['#8ADCFF', '#96D7F2']
+      const evencolors = ['#8E76ED', '#24A3D9']
       if (Object.keys(selectedSubject).length === 0) return
       const selected = responseData.response[selectedSubject.idx]
       // console.log('timetaken', selected)
@@ -452,14 +468,53 @@ export default function StudentReport() {
          ...prev,
          colors,
          xaxis: {
+            // categories: ['Category 1', 'Category 2', 'Category 3', 'Category 4', 'Category 5'],
             ...prev.xaxis,
             // tickAmount: 'dataPoints',
             range: 5,
             group: {
                ...prev.xaxis.group,
                groups
-            }
+            },
+           
+            title: {
+              text: 'Question Number',
+              style: {
+               fontSize: '18px', 
+               color: '#24A3D9',
+               fontFamily: 'Lexend',
+               cssClass: 'custom-xaxis-title'
+             },
+            },
+          },
+          
+          chart: {
+            // ... other chart options ...
+        toolbar:{
+         show:false
+        },
+            // Add the custom style to the CSS class
+            events: {
+              updated: function(chartContext, config) {
+                // Apply the custom style to the x-axis title
+                var xaxisTitle = chartContext.el.querySelector('.custom-xaxis-title');
+                if (xaxisTitle) {
+                  xaxisTitle.style.transform = 'translate(0px, 105px)';
+                }
+              },
+            },
          },
+         yaxis:{
+              title: {
+               text: 'Time Taken (in sec)', 
+               style: {
+                  fontSize: '18px', 
+                  color: '#24A3D9',
+                  fontFamily: 'Lexend'
+                },
+            }
+             },
+            
          // tooltip: {
          //    custom: function({series, seriesIndex, dataPointIndex, w}) {
          //      return '<div class="arrow_box">' +
@@ -662,89 +717,100 @@ export default function StudentReport() {
    // console.log('selectedSubject', responseData.response)
    // console.log('responseData', responseData)
    // console.log('answerKey', answerKey)
-
-   if (Object.keys(responseData).length === 0) return <></>
-   if (answerKey.length === 0) return <></>
-   if (selectedSubject.concepts === undefined) return <></>
+  
+  
    return (
-      <div className='ml-pageLeft bg-lightWhite min-h-screen'>
+      <div className='px-[80px] bg-lightWhite min-h-screen'>
          <div className='py-14 px-5'>
             <div className='px-0'>
-               <SecondaryButton
-                  className='flex items-center pl-2 pr-5 py-2.5'
-                  onClick={() => navigate(-1)}
-                  children={
-                     <>
-                        <img src={BackIcon} className='mr-2' />
-                        <span>
-                           Back
-                        </span>
-                     </>
-                  } />
-               <p className='mt-6 text-textPrimaryDark text-4xl font-bold'>
-                  {testDetails.testName}
+               
+               <p className="text-[#24A3D9] my-3 text-lg">
+                  {organization?.company +
+                     "  >  " +
+                     firstName +
+                     "  " +
+                     lastName +
+                     "  >  Assignments > "}<span className="font-semibold">Report</span>
                </p>
 
-               <div className='grid grid-cols-2 grid-rows-3 max-w-840 gap-y-4 mt-2'>
+
+               <div className='flex justify-between'>
+                  <p className='mt-[31px] text-textPrimaryDark text-2xl font-bold'>
+                     {testDetails.testName}
+                  </p>
+                  <button className={`py-[14px] px-[16px] bg-[#FFA28D] text-white rounded-lg flex items-center shadow-sm `}>
+                     <span className='inline-block font-bold text-[18px]'>
+                        {displayScore.cumulative}
+                     </span>
+                     <div className={styles.line}></div>
+                     <span className='inline-block  text-[17px]' >
+                        {displayScore.right}
+                     </span>
+                  </button>
+               </div>
+               <div className='grid grid-cols-2 grid-rows-3 max-w-840 gap-y-4 mt-6 text-[#26435F]'>
                   <div>
-                     <p className='inline-block w-138 font-semibold opacity-60'> Student’s Name</p>
-                     <span className='inline-block mr-4'>:</span>
-                     <p className='inline-block font-semibold'> {testDetails.name} </p>
+                     <p className='inline-block w-[160px] '> Student’s Name</p>
+                     <span className='inline-block mr-10'>:</span>
+                     <p className='inline-block font-medium text-[#26435F]'> {testDetails.name} </p>
                   </div>
                   <div>
-                     <p className='inline-block w-138 font-semibold opacity-60'> Started on </p>
-                     <span className='inline-block mr-4'>:</span>
-                     <p className='inline-block  font-semibold'> {testDetails.startedOn} </p>
+                     <p className='inline-block w-[160px] '> Started on </p>
+                     <span className='inline-block mr-10'>:</span>
+                     <p className='inline-block  font-medium text-[#26435F]'> {testDetails.startedOn} </p>
+                  </div>
+
+                  <div>
+                     <p className='inline-block w-[160px] '>  Date Assigned </p>
+                     <span className='inline-block mr-10'>:</span>
+                     <p className='inline-block  font-medium text-[#26435F]'> {testDetails.assignedOn} </p>
                   </div>
                   <div>
-                     <p className='inline-block w-138 font-semibold opacity-60'>  Date Assigned </p>
-                     <span className='inline-block mr-4'>:</span>
-                     <p className='inline-block  font-semibold'> {testDetails.assignedOn} </p>
+                     <p className='inline-block w-[160px] '> Completed on </p>
+                     <span className='inline-block mr-10'>:</span>
+                     <p className='inline-block  font-medium text-[#26435F]'> {testDetails.completedOn} </p>
+                  </div>
+                  <div >
+                     <p className='inline-block w-[160px] '> Duration </p>
+                     <span className='inline-block mr-10'>:</span>
+                     <p className='inline-block  font-medium text-[#26435F]'> {testDetails.duration} </p>
                   </div>
                   <div>
-                     <p className='inline-block w-138 font-semibold opacity-60'> Completed on </p>
-                     <span className='inline-block mr-4'>:</span>
-                     <p className='inline-block  font-semibold'> {testDetails.completedOn} </p>
+                     <p className='inline-block w-[160px] '> Due on </p>
+                     <span className='inline-block mr-10'>:</span>
+                     <p className='inline-block  font-medium text-[#26435F]'> {testDetails.startedOn} </p>
                   </div>
-                  <div className='col-span-2'>
-                     <p className='inline-block w-138 font-semibold opacity-60'> Duration </p>
-                     <span className='inline-block mr-4'>:</span>
-                     <p className='inline-block  font-semibold'> {testDetails.duration} </p>
-                  </div>
-                  <div className='col-span-2'>
-                     <p className='inline-block w-138 font-semibold opacity-60'> Instruction from tutor </p>
-                     <span className='inline-block mr-4'>:</span>
-                     <p className='inline-block w138 font-semibold'> {testDetails.instruction} </p>
+                  <div className='col-span-2 items-center'>
+                     <p className='inline-block  w-[160px] '> Instruction from tutor </p>
+                     <span className='inline-block mr-10 my-auto'>:</span>
+                     <p className='inline-block w-[160px] font-medium text-[#26435F]'> {testDetails.instruction} </p>
                   </div>
                </div>
 
                <div className='mt-6 flex justify-between items-end'>
                   <div>
                      {subjects.map((item, idx) => {
-                        return <PrimaryButton
-                           children={item.name}
-                           onClick={() => handleChange(item)}
-                           className={`py-2 px-0 mr-7 font-semibold w-160 ${item.selected ? '' : 'bg-secondaryLight text-textGray'}`} />
+                        return <>
+                           <PrimaryTab
+                              children={item.name}
+                              onClick={() => handleChange(item)}
+                              className={` px-4 mr-7   ${item.selected ? 'border-b-4 rounded border-[#FFA28D] text-[#FFA28D]' : ''}`} />
+
+                        </>
+
                      })}
                   </div>
-                  <button className={`py-4 px-6 bg-primaryOrange text-white rounded-20 flex items-center shadow-md pr-7`}>
-                     <span className='inline-block font-bold text-42'>
-                        {displayScore.cumulative}
-                     </span>
-                     <div className={styles.line}></div>
-                     <span className='inline-block font-bold text-xl' >
-                        {displayScore.right}
-                     </span>
-                  </button>
-               </div>
 
-               <div className='mt-7'>
+
+               </div>
+               <hr className='border-t-[1.25px] border-[#D3D3D3]' />
+               <div className='mt-7 flex'>
                   {/* <p className='text-lg font-bold mb-2'>
                      Score: {`${sectionScore.correct} / ${sectionScore.outOf}`}
                   </p> */}
-                  <div className='flex bg-[#EBEDEE] py-4 px-4 rounded-10' >
-                     <div className='flex flex-col mr-[64px]'>
-                        <p className='font-semibold text-primary mb-2.2' onClick={getSortedConcepts} >Concepts</p>
+                  <div className='flex  py-4 px-4 rounded-10 bg-[#FFFFFF]' >
+                     <div className='flex  flex-col mr-[64px]'>
+                        <p className='font-semibold text-[#26435F] mb-2.2' onClick={getSortedConcepts} >Concepts</p>
                         {
                            // selectedSubject.no_of_correct === 0 ?
                            //    <>
@@ -758,7 +824,7 @@ export default function StudentReport() {
                               //    </p> : <></>
                               // })
                               sortedConcepts.map((item, idx) => {
-                                 return <p key={idx} className='font-semibold mb-2'>
+                                 return <p key={idx} className=' text-[#517CA8] mb-2'>
                                     {item.name}
                                  </p>
                               })
@@ -767,7 +833,7 @@ export default function StudentReport() {
 
                      </div>
                      <div className='flex flex-col items-center'>
-                        <p className='font-semibold text-primary mb-2.2'> Incorrect Answers</p>
+                        <p className='font-semibold text-[#26435F] mb-2.2'> Incorrect</p>
                         {
                            // selectedSubject.no_of_correct === 0 ?
                            //    <>
@@ -775,57 +841,81 @@ export default function StudentReport() {
                            //    </> :
                            selectedSubject.concepts ?
                               sortedConcepts.map((item, idx) => {
-                                 return <p key={idx} className='font-semibold mb-2'>
+                                 return <p key={idx} className='text-[#517CA8] mb-4'>
                                     {item.incorrect >= 0 ? item.incorrect : 0}/{item.correct + item.incorrect}
                                  </p>
                               })
                               : <></>
                         }
                      </div>
-                     <div className='flex flex-col items-cener ml-auto mr-[145px]'>
-                        <p className='font-semibold text-primary mb-2.2'> Section Started</p>
-                        <p className='font-semibold mb-2'> {getDate(responseData.createdAt)} </p>
-                        {/* <p className='font-semibold mb-2 opacity-0'>04:25 PM EST</p> */}
-                        <p className='font-semibold text-primary mb-2.2 mt-6'> Section Time Limit</p>
-                        <p className='font-semibold mb-2'>
-                           {/* {selectedSubject.timeTaken/1000} */}
-                           {selectedSubject.timeTaken ?
-                              // moment.duration(selectedSubject.timeTaken).format('HH:mm')
-                              sectionDuration ? sectionDuration : ''
-                              // millisToMinutesAndSeconds(selectedSubject.timeTaken)
-                              : <></>
-                           }
-                        </p>
+
+
+                  </div>
+
+                  <div className='w-3/4'>
+                     <div className='flex bg-[#FFFFFF] p-4 rounded-10 ml-[45px]  h-[140px]'>
+                        <div className='flex   mr-[50px]'>
+                           <div className='mr-[50px]'> <p className='font-semibold text-[#26435F] mb-2.2'> Section Started</p>
+                              <p className=' mb-2 text-[#517CA8] '> {getDate(responseData.createdAt)} </p>
+                              <p className=' mb-2 text-[#24A3D9] '> 04:25 PM EST</p>
+                              {/* <p className='font-semibold mb-2 opacity-0'>04:25 PM EST</p> */}</div>
+                           <div>
+                              <p className='font-semibold text-[#26435F] mb-2.2 '> Section Time Limit</p>
+                              <p className=' mb-2  text-[#517CA8] '>
+                                 {/* {selectedSubject.timeTaken/1000} */}
+                                 {selectedSubject.timeTaken ?
+                                    // moment.duration(selectedSubject.timeTaken).format('HH:mm')
+                                    sectionDuration ? sectionDuration : ''
+                                    // millisToMinutesAndSeconds(selectedSubject.timeTaken)
+                                    : <></>
+                                 }
+                              </p>
+                           </div>
+                        </div>
+                        <div className='flex  '>
+                           <div className='mr-[38px]'><p className='font-semibold text-[#26435F] mb-2.2'> Section Accuracy</p>
+                              <p className=' mb-2 text-[#517CA8] '>
+                                 {
+                                    Object.keys(responseData).length >= 1 &&
+                                    Object.keys(selectedSubject).length >= 1
+                                    &&
+                                    <>
+                                       {selectedSubject.no_of_correct} / {' '}
+                                       {responseData.response[selectedSubject.idx].length}
+                                    </>
+                                 }
+                              </p></div>
+                           <div><p className='font-semibold text-[#26435F] mb-2.2 '> Total Time Taken </p>
+                              <p className=' mb-2 text-[#517CA8] '>
+                                 {/* {selectedSubject.timeTaken/1000} */}
+                                 {selectedSubject.timeTaken ?
+                                    // moment.duration(selectedSubject.timeTaken).format('HH:mm')
+                                    totalTimeTaken
+                                    // millisToMinutesAndSeconds(selectedSubject.timeTaken)
+                                    : <></>
+                                 }
+                              </p></div>
+                        </div>
                      </div>
-                     <div className='flex flex-col items-cener mr-12'>
-                        <p className='font-semibold text-primary mb-2.2'> Section Accuracy</p>
-                        <p className='font-semibold mb-2'>
-                           {
-                              Object.keys(responseData).length >= 1 &&
-                              Object.keys(selectedSubject).length >= 1
-                              &&
-                              <>
-                                 {selectedSubject.no_of_correct} / {' '}
-                                 {responseData.response[selectedSubject.idx].length}
-                              </>
-                           }
-                        </p>
-                        <p className='font-semibold text-primary mb-2.2 mt-6'> Total Time Taken </p>
-                        <p className='font-semibold mb-2'>
-                           {/* {selectedSubject.timeTaken/1000} */}
-                           {selectedSubject.timeTaken ?
-                              // moment.duration(selectedSubject.timeTaken).format('HH:mm')
-                              totalTimeTaken
-                              // millisToMinutesAndSeconds(selectedSubject.timeTaken)
-                              : <></>
-                           }
-                        </p>
-                     </div>
+
+
+                     <div className='text-lg  text-[#24A3D9] px-4 py-3 ml-[45px] border-[2.5px] border-[#FFA28D] rounded-7 w-[338px] mt-[70px]'><p className='text-center font-semibold'>Section Score: <span className='text-[#517CA8] text-xl pl-1 font-semibold'>
+                        {
+                           Object.keys(responseData).length >= 1 &&
+                           Object.keys(selectedSubject).length >= 1
+                           &&
+                           <>
+                              {selectedSubject.no_of_correct} / {' '}
+                              {responseData.response[selectedSubject.idx].length}
+                           </>
+                        }
+                     </span></p></div>
+
 
                   </div>
                </div>
 
-               <div className='mt-4 max-w-[900px]'>
+               <div className='mt-12'>
                   <Table
                      dataFor={persona === 'parent' || persona === 'student' ? 'studentTestsReportSmall' : 'studentTestsReport'}
                      hidePagination={true}
@@ -840,19 +930,22 @@ export default function StudentReport() {
                      tableHeaders={adminTableHeaders}
                      maxPageSize={10} /> */}
                </div>
-
-               <div className='bg-white mt-6 rounded-20 py-5 px-5 '>
-                  <p className='text-primary-dark font-bold text-3xl text-center mb-6 mt-2'>Time Taken</p>
+               <p className='text-primary-dark font-bold text-xl   mt-10'>
+                  Time Taken
+               </p>
+               <div className='bg-white mt-1 rounded-20 py-5 px-5 '>
+                  {/* <p className='text-primary-dark font-bold text-3xl text-center mb-6 mt-2'>Time Taken</p> */}
                   <BarGraph series={[timeSeries]} options={timeSeriesOptions} height='600px' />
                </div>
-               <div className='bg-white mt-6 rounded-20 py-5 px-5 max-w-[1100px]'>
-                  <p className='text-primary-dark font-bold text-3xl text-center mb-6 mt-2'>
-                     Conceptual Accuracy
-                  </p>
+               <p className='text-primary-dark font-bold text-xl   mt-10'>
+                  Conceptual Accuracy
+               </p>
+               <div className='bg-white mt-1 rounded-20 py-5 px-5 '>
+
                   <BarGraph series={[accuracySeries]} options={accuracyGraphOptions} height='600px' />
                </div>
             </div>
          </div>
-      </div>
+      </div >
    )
 }

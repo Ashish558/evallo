@@ -10,7 +10,7 @@ import {
 import { validatePassword } from "./utils";
 import Loader from "../../../components/Loader";
 import PrimaryButton from "../../../components/Buttons/PrimaryButton";
-import EvalloLogo from "../../../assets/signup/cuate.png";
+import EvalloLogo from "../../../assets/signup/cuate.svg";
 
 
 export default function SetPassword({
@@ -99,44 +99,55 @@ export default function SetPassword({
   return (
     <>
       <div className="pb-[10px] w-full" >
-       
-            <div className={`w-full bg-white py-6 ${signup ? "" : "px-5"} `}>
+      <div className="h-[1px] bg-[#EBEBEB] mx-[0px]  mt-[-16px] mb-[19px]"></div>
+           
+            <div className={`w-full bg-white py-4 ${signup ? "" : "px-5"} `}>
               
-              <p className="mb-12 text-black-900">
-                The password must contain 8 characters
+              <p className="mb-8 text-center text-black-900 text-[#26435F]">
+              Congratulations! Your email has been verified. Now,
+please set a strong password for your Evallo account.
               </p>
 
-              <InputField
-                Icon={Passwordicon}
-                parentClassName="mb-6 relative"
-                type="password"
-                placeholder="minimum 8 characters"
-                inputContainerClassName="border pt-3 pb-3"
-                label="Set New Password"
-                labelClassname="ml-2 mb-2"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                error={error.password}
-              />
+              <div className="flex justify-between gap-10 my-2">
+               
+ <InputField
+                  parentClassName="mb-6 relative"
+                  type="password"
+                  placeholder="minimum 8 characters"
+                  inputContainerClassName="border border-[0.98px_solid_#D0D5DD]"
+                  inputClassName={"py-[2px]"}
+                  label="Set New Password"
+                  labelClassname="ml-2 mb-2 text-[#26435F]"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  error={error.password}
+                />
+             
+              
 
-              <InputField
-                Icon={Passwordicon}
-                parentClassName="mb-2.5 relative"
-                type="password"
-                placeholder="Confirm Password"
-                inputContainerClassName="border pt-3 pb-3"
-                label="Confirm Password"
-                labelClassname="ml-2 mb-2"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                error={error.confirmPassword}
-              />
+                <InputField
+                  parentClassName="mb-2.5 relative"
+                  type="password"
+                  inputClassName={"py-[2px]"}
+                  placeholder="Confirm Password"
+                  inputContainerClassName="border border-[0.98px_solid_#D0D5DD]"
+                  label="Confirm Password"
+                  labelClassname="ml-2 mb-2 text-[#26435F]"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  error={error.confirmPassword}
+                />
+              </div>
+              <div className="flex justify-center items-center  text-[#7C98B6] text-xs">
+                Note: The password should contain a minimum of 8 characters.
+              </div>
+
 
               <PrimaryButton
                 onClick={handleSubmit}
                 loading={loading}
                 children={"Set New Password"}
-                className="w-full mt-6"
+                className="w-[300px] mx-auto mt-10"
               />
               {/* <button
                         className={`w-full relative bg-primaryDark font-medium disabled:bg-pink pt-3 pb-3 mt-12 rounded-10 text-white text-lg  ${loading ? 'cursor-wait opacity-60' : 'cursor-pointer'}`}

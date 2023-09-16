@@ -5,6 +5,9 @@ import InputField from "../../../components/InputField/inputField";
 import styles from "../EventModal/style.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
+import SCheckbox from "../../../components/CCheckbox/SCheckbox";
+import InputSelectNew from "../../../components/InputSelectNew/InputSelectNew";
+import InputSelect from "../../../components/InputSelect/InputSelect";
 
 export default function SignupLast({
   setFrames,
@@ -57,18 +60,18 @@ export default function SignupLast({
   }, []);
 
   return (
-    <div className="">
+    <div className="mt-[-23px]">
       <div className="flex justify-center">
-        <div className='h-[1px] bg-[#EBEBEB] w-3/4 mb-[30px]'>
+        <div className='h-[1px] bg-[#EBEBEB] mx-[6px] w-full mb-[25px]'>
 
         </div>
       </div>
       <div className="mb-7">
-        <p className="font-medium mb-2 text-sm text-[#26435F]">
+        <p className="font-semibold mb-2 text-sm text-[#26435F]">
           Select the solutions you are looking for:
         </p>
 
-        <div className="grid grid-cols-2 mb-3">
+        <div className="grid grid-cols-2 mb-2">
           {solutions?.map((item, idx) => {
             return (
               <div
@@ -78,15 +81,12 @@ export default function SignupLast({
                   handleCheckboxChange(item.text, solutions, setSolutions)
                 }
               >
-                <div className={`${styles.container} `}>
-                  <input
-                    checked={item.checked}
-                    type="checkbox"
-                    name="hearAboutUs"
-                    value=""
-                  />
-                  <span class={styles.checkmark}></span>
-                </div>
+                
+                <SCheckbox
+                      checked={item.checked}
+                      className="scale-[0.8]"
+                      
+                    />
                 <p className="text-[13px] font-medium text-[#26435F] opacity-90 leading-5">
                   {item.text}
                 </p>
@@ -94,11 +94,11 @@ export default function SignupLast({
             );
           })}
         </div>
-        <div className='h-[1px] bg-[#EBEBEB] w-5/6 mb-5'>
+        <div className='h-[1px] bg-[#EBEBEB] w-5/6 mb-4'>
 
         </div>
-        <p className="font-medium mb-2 text-sm text-[#26435F]">How did you hear about us?</p>
-        <div className="grid grid-cols-2 mb-3">
+        <p className="font-semibold mb-2 text-sm text-[#26435F]">How did you hear about us?</p>
+        <div className="grid grid-cols-2 mb-0">
           {hearAboutUs?.map((item, idx) => {
             return (
               <div
@@ -108,15 +108,11 @@ export default function SignupLast({
                   handleCheckboxChange(item.text, hearAboutUs, setHearAboutUs)
                 }
               >
-                <div className={`${styles.container} `}>
-                  <input
-                    checked={item.checked}
-                    type="checkbox"
-                    name="hearAboutUs"
-                    value=""
-                  />
-                  <span class={styles.checkmark}></span>
-                </div>
+                 <SCheckbox
+                      checked={item.checked}
+                      className="scale-[0.8]"
+                      
+                    />
                 <p className="text-[13px] font-medium text-[#26435F] opacity-90 leading-5">
                   {item.text}
                 </p>
@@ -124,25 +120,29 @@ export default function SignupLast({
             );
           })}
         </div>
-        <div className='h-[1px] bg-[#EBEBEB] w-5/6 mb-5'>
+        <div className='h-[1px] bg-[#EBEBEB] w-5/6 mb-4'>
 
         </div>
-        <p className="font-medium mb-2 text-sm  text-[#26435F]">
+        <p className="font-semibold mb-1 text-sm  text-[#26435F]">
           On a scale of 1-10 (Bad to Great), how would you rate your sign up
           experience?
         </p>
-        <div className="w-full max-w-[248px] ">
-          <input
-            className="bg-transparent text-xs p-1 border border-[#EBEBEB] rounded-md py-2 outline-none pl-3"
-            type="number"
+        <InputSelectNew
             value={rateUs}
-            onChange={(e) => {
-              if (e.target.value >= 0 && e.target.value <= 10)
-                setRateUs(e.target.value);
-            }}
-          />
+            parentClassName="w-[150px] my-2 "
+            optionContainerClassName="text-[14px] "
+            optionsEachClassName="py-[7px]"
+            optionData={[1,2,3,4,5,6,7,8,9,10]}
+
+            placeholder={""}
+            
+            labelClassname="text-[#26435F] font-bold  mb-1 text-sm "
+            inputContainerClassName="py-1 text-sm h-[44.9px] border  border-[#D0D5DD] my-0 mt-[-2px] rounded-[6px]"
+            inputClassName="ml-80"
          
-        </div>
+            onChange={(e) => setRateUs(e)}
+          />
+      
         <div>
           <div className='h-[1px] bg-[#EBEBEB]  mb-5 mt-5'>
 

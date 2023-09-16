@@ -21,9 +21,9 @@
 #practiceTestHeader {
     color: #4715d7;
     font-family: "Inter", sans-serif;
-    font-size: 21px;
+   
     font-weight: 600;
-    margin-top: 36px;
+   
     margin-left: 20px;
     line-height: 25px;
 }
@@ -64,20 +64,4 @@
     border-radius: 6px;
 }
 
-#sessionFeedback::-webkit-scrollbar {
-    width: 10px;
-}
 
-#sessionFeedback::-webkit-scrollbar-track {
-    background: #6da8ff26;
-    border-radius: 20px;
-}
-
-#sessionFeedback::-webkit-scrollbar-thumb {
-    background: #6da8ff99;
-    border-radius: 20px;
-}
-
-#sessionFeedback::-webkit-scrollbar-thumb:hover {
-    background: #5582c599;
-}

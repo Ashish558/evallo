@@ -1,5 +1,6 @@
 import AppRoutes from "./navigation/AppRoutes";
 import "./App.css";
+import "./pages/responsive.css"
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import {
@@ -12,6 +13,8 @@ import {
   useLazyGetPersonalDetailQuery,
 } from "./app/services/users";
 import { updateOrganization } from "./app/slices/organization";
+import { useLazyGetLogoutQuery } from "./app/services/superAdmin";
+import Loader from "./components/Loader";
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -20,6 +23,7 @@ function App() {
   const [fetchOrganization, fetchOrganizationResp] =
     useLazyGetOrganizationQuery();
   const dispatch = useDispatch();
+  const [logOutApi, setLogOutApi] = useLazyGetLogoutQuery();
   const { isLoggedIn } = useSelector((state) => state.user);
 
   const getOrganizationDetail = (id) => {
@@ -29,15 +33,15 @@ function App() {
         console.log(res.error);
         return;
       }
-      dispatch(updateOrganization(res.data.organisation))
-     // console.log("res", res.data.organisation);
+      dispatch(updateOrganization(res.data.organisation));
+
     });
   };
 
   useEffect(() => {
     setLoading(true);
 
-    if (sessionStorage.getItem("token")) {
+    if (sessionStorage.getItem("token")||localStorage.getItem("evalloToken")) {
       fetchPersonalDetails().then((res) => {
         if (res.error) {
           return;
@@ -55,10 +59,11 @@ function App() {
         } = res.data.data.user;
         dispatch(updateAwsLink(res.data.data.baseLink));
         let timeZone = "";
+        let dateFormat = "";
         if (res.data.data.userdetails) {
           timeZone = res.data.data.userdetails.timeZone;
+          dateFormat = res.data.data.userdetails.dateFormat;
         }
-        // if(!role) return
         sessionStorage.setItem("role", role);
         setLoading(false);
         dispatch(updateIsLoggedIn(true));
@@ -74,6 +79,7 @@ function App() {
             email,
             phone,
             associatedOrg,
+            dateFormat: dateFormat ? dateFormat : 'dd/mm/yy'
           })
         );
         getOrganizationDetail(associatedOrg);
@@ -83,7 +89,20 @@ function App() {
     }
   }, [isLoggedIn]);
 
-  if (loading) return <></>;
+  useEffect(() => {
+    const handleTabClose = (event) => {
+      event.preventDefault();
+      console.log("beforeunload event triggered");
+    };
+    window.addEventListener("beforeunload", handleTabClose);
+    return () => {
+      // logOutApi().then(() => {
+      //   console.log("Successfully logged out");
+      // });
+      window.removeEventListener("beforeunload", handleTabClose);
+    };
+  }, []);
+  if (loading) return <Loader />;
 
   return (
     <>
