@@ -138,7 +138,7 @@ const StudentDashboardHeader = () => {
           <p className=" text-xl text-[#26435F] font-semibold">
             Assigned Tutors
           </p>
-          <div className=".mybox relative shadow-[0px_0px_2.5px_0px_rgba(0,0,0,0.25)] border-b-4 border-b-[#26435F] h-full rounded-md max-w-[440px]  design:max-w-[460px]">
+          <div className=".mybox bg-white relative shadow-[0px_0px_2.5px_0px_rgba(0,0,0,0.25)] border-b-4 border-b-[#26435F] h-full rounded-md max-w-[440px]  design:max-w-[460px]">
             <div id="borderLeft" className="rounded-t-r-md"></div>
             <TutorCarousel />
 
