@@ -23,7 +23,8 @@ export default function InputSearch({
    onOptionClick,
    optionPrefix,
    checkbox,
-   disabled
+   disabled,
+   IconSearch
 }) {
 
    const [optionsVisible, setOptionsVisible] = useState(false)
@@ -65,7 +66,10 @@ export default function InputSearch({
             // onBlur={()=> setOptionsVisible(false)}
             />
             {
-               IconRight || <img src={SeacrchIcon} className="ml-4" />
+               IconRight || (IconSearch ?
+                  <img src={SeacrchIcon} className="ml-4" alt="SeacrchIcon"/>:'')
+                  
+               
             }
             {right && right}
 

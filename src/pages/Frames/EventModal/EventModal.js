@@ -740,7 +740,7 @@ export default function EventModal({
          <Modal
             classname="max-w-[750px] md:pl-6 md:pr-6 mx-auto max-h-[90vh] 2xl:max-h-[700px] overflow-y-auto scrollbar-content scrollbar-vertical"
             handleClose={() => setEventModalActive(false)}
-            title={isEditable == false ? 'Session' : isUpdating ? "Update Session" : "Schedule New Session"}
+            title={isEditable == false ? 'Session' : isUpdating ? "Update Session" :` ${persona=="tutor"?"Session Details":"Schedule New Session"}`}
             body={
                <div className="text-sm" >
                   <SearchNames setStudent={setStudent}
@@ -767,7 +767,7 @@ export default function EventModal({
                   <div className="flex mb-7">
                      <InputSelect
                         label="Service"
-                        labelClassname="font-semibold"
+                        labelClassname="font-semibold "
                         value={data.service}
                         onChange={(val) => {
                            // console.log(val)
@@ -936,7 +936,7 @@ export default function EventModal({
                         </div>
 
                         <div className="mb-8">
-                           <p className="font-medium mb-2.5">
+                           <p className="font-medium mb-2.5 text-[#26435F text-base-17.5]">
                               Session Notes
                            </p>
                            <textarea

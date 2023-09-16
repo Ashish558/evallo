@@ -14,7 +14,16 @@ export default function SimpleCalendar({ currentDate, setCurrentDate, events }) 
       setCurrentDate(e);
    };
 
-
+   const currentDate2 = new Date();
+   const firstDayOfMonth = new Date(currentDate2.getFullYear(), currentDate2.getMonth(), 1);
+ 
+   const tileClassName = ({ date }) => {
+     // Check if the date is before the first day of the current month
+     if (date < firstDayOfMonth) {
+       return 'grayed-out-date'; // Apply a CSS class for grayed-out dates
+     }
+     return '';
+   };
    useEffect(() => {
       const els = document.querySelectorAll('.calendar-dot')
       // console.log(els);
@@ -41,9 +50,9 @@ export default function SimpleCalendar({ currentDate, setCurrentDate, events }) 
          <Calendar value={currentDate} onChange={changeDate}
             prevLabel={<img src={LeftIcon} />}
             nextLabel={<img src={RightIcon} />}
-            formatShortWeekday={(locale, value) => ['S', 'M', 'T', 'W', 'T', 'F', 'S'][value.getDay()]
+            formatShortWeekday={(locale, value) => ['S','S', 'M', 'T', 'W', 'T', 'F', ][value.getDay()]
             }
-
+            tileClassName={tileClassName}
          />
          {/* <InputSearch
 

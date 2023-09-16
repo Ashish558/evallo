@@ -18,7 +18,7 @@ export default function DaysEndDate({ days, setDays, data, setData, isEditable }
    return (
       <div className="flex mb-10 mt-6">
          <div className="mr-8">
-            <p className="font-medium  mb-1 text-[#26435F]">
+            <p className="font-medium text-base-17-5  mb-1 text-[#26435F]">
                Repeat every week on
             </p>
             <div className="flex">
@@ -28,7 +28,7 @@ export default function DaysEndDate({ days, setDays, data, setData, isEditable }
                         key={idx}
                         id={day.id}
                         body={day.text}
-                        bodyClassName={`font-medium flex ${day.checked ? ' bg-primary text-white' : 'bg-lightWhite'} mr-1.4 justify-center items-center text-lg w-[54px] h-[54px] rounded-10 `}
+                        bodyClassName={`font-medium flex ${day.checked ? ' bg-primary text-white' : 'bg-lightWhite text-[#507CA8]'} mr-1.4 justify-center items-center text-lg w-[54px] h-[54px] rounded-10 `}
                         className={`${!data.recurring ? 'opacity-50 pointer-events-none' : ''}`}
                         checked={day.checked}
                         onChange={handleDayChange}
@@ -39,11 +39,11 @@ export default function DaysEndDate({ days, setDays, data, setData, isEditable }
          </div>
          <InputField
             label="End Date"
-            labelClassname="ml-3 text-[#26435F] font-medium"
+            labelClassname="ml-3 text-[#26435F] font-medium text-base-17.5"
             parentClassName={`w-full self-end ${!data.recurring ? 'opacity-50 pointer-events-none' : ''}} `}
             type="date"
             inputContainerClassName="bg-lightWhite border-0 font-medium pr-3 pt-3.5 pb-3.5 h-[53px]"
-            inputClassName="bg-transparent appearance-none font-medium"
+            inputClassName="bg-transparent appearance-none font-medium text-[#507CA8]"
             value={data.endDate}
             onChange={(e) =>
                setData({
