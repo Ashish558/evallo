@@ -127,9 +127,7 @@ export default function Calendar() {
     } catch (e) {
       ////console.log(e)
     }
-    catch (e) {
-      console.log(e)
-    }
+   
   }, [])
   const [names, setNames] = useState([]);
   const [name, setName] = useState("");
@@ -724,7 +722,7 @@ setColorMapping(temp);
         });
     });
   };
-
+    useEffect(()=>{
      if(persona==='student'&&userDetail){
       handleInsights(userDetail?.firstName +" "+ userDetail?.lastName,"student",{_id:userDetail?.id})
      }  
@@ -1117,7 +1115,7 @@ setColorMapping(temp);
               <></>
             ) : (
               <div>
-               
+               { console.log({alldetails})}
                 {alldetails?.map((item) => (
                   <div className="mt-[48px] mb-2">
                     <div style={{backgroundColor:mapColor(item.tutorId)+"30"}} className="flex justify-between pt-[19px] px-[21px] pb-[14px]  rounded-5 items-center">
