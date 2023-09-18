@@ -226,7 +226,7 @@ export default function UserManagement() {
     setUsersData([]);
     setFilteredUsersData([]);
 
-    let urlParams = `?limit=${maxPageSize}&page=${currentPage}&role=superAdmin`;
+    let urlParams = `?limit=${maxPageSize}&page=${currentPage}&role=manager&role=superAdmin`;
     if (filterData.userType.length > 0) {
       filterData.userType.forEach((item) => {
         urlParams = urlParams + `&role=${item}`;

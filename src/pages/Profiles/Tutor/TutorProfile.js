@@ -84,7 +84,7 @@ export default function TutorProfile({ isOwn }) {
             setStudentFeedbacks(data)
 
          })
-   })
+   },[id])
    const tableHeaders1 = [
       {
          id: 1,
@@ -110,11 +110,8 @@ export default function TutorProfile({ isOwn }) {
       {
          id: 1,
          text: 'Service'
-      }, {
+      },  {
          id: 2,
-         text: 'Currency',
-      }, {
-         id: 3,
          text: 'Hourly Rate'
       }
 
@@ -240,6 +237,10 @@ export default function TutorProfile({ isOwn }) {
          active: false,
          videoLink: ''
       },
+      tutorReviews: {
+         active: false,
+         tutorReviews: []
+      }
 
    })
 
@@ -299,7 +300,38 @@ export default function TutorProfile({ isOwn }) {
          setEditable(true)
       }
    }, [])
-
+  const [tutorAdminServices,setTutorServices]=useState()
+   useEffect(()=>{
+      if(organization?.settings?.servicesAndSpecialization){
+         let temp=[]
+         temp=organization?.settings?.servicesAndSpecialization?.map((item)=>{
+            return {
+               service:item?.service,
+               price: null,
+               _id:item?._id
+            }
+         })
+         setTutorServices(temp)
+      }
+   },[organization])
+   console.log("servicessss",tutorAdminServices,userDetail)
+   useEffect(()=>{
+      if(userDetail?.tutorServices && tutorAdminServices){
+         //console.log("userDetailttftft",tutorAdminServices,userDetail?.tutorServices);
+         let temp=tutorAdminServices;
+         temp?.map((serv,id)=>{
+            userDetail.tutorServices?.map((item)=>{
+             
+               if(item?._id===serv?._id){
+                 temp[id].price=item?.price
+                
+               }
+            })
+         })
+         setTutorServices(temp)
+        
+      }
+   },[userDetail?.tutorServices])
    const fetchDetails = (closeModal) => {
       let userId = ''
       if (isOwn) {
@@ -318,6 +350,7 @@ export default function TutorProfile({ isOwn }) {
             console.log('details', details);
             // const { } = res.data.data.user
             // const { service } = res.data.data.userdetails
+           
             const promiseState = async state => new Promise(resolve => {
                resolve(setToEdit(prevToEdit => {
                   return {
@@ -415,8 +448,15 @@ export default function TutorProfile({ isOwn }) {
                         isPresent: details === null ? false : true
                      },
                      tutorServices: {
+                       
                         ...prevToEdit.tutorServices,
                         tutorServices: details !== null ? details.tutorServices : [],
+                        isPresent: details === null ? false : true
+                     },
+                     tutorReviews: {
+                       
+                        ...prevToEdit.tutorReviews,
+                        tutorReviews: details !== null ? details.tutorReviews : [],
                         isPresent: details === null ? false : true
                      },
                      serviceSpecializations: {
@@ -800,8 +840,17 @@ export default function TutorProfile({ isOwn }) {
                         }
 
                      </div>
-                     <div className=' text-xl text-[#26435F] font-semibold' >Reviews</div>
-                     <ProfileCard className='border border-[#00000010]' hideShadow
+                     <div className='relative z-[100] flex justify-between text-xl text-[#26435F] font-semibold' >
+                        <span>Reviews</span>
+                     
+                     
+                     {(persona === 'admin') && 
+                     <p className='text-[#667085] ml-auto underline cursor-pointer text-[15px] font-semibold' 
+                     onClick={() => setToEdit({ ...toEdit, tutorReviews: { tutorReviews:[], active: true } })}>edit</p>}
+                       
+                  
+                     </div>
+                       <ProfileCard className='border border-[#00000010]' hideShadow
                         bgClassName="bg-white pl-7 py-3 rounded-[10px]"
                         body={
                            <div>
@@ -1049,13 +1098,18 @@ export default function TutorProfile({ isOwn }) {
                      <div className='mt-[33.75px]'>
                         <div className='flex justify-between mb-[-10px]'>
                            <div className=' text-[#26435F] text-xl font-semibold ' >Service Rates</div>
-                           {(persona === 'admin') && <p className='text-[#667085] ml-auto underline cursor-pointer text-[15px] font-semibold' onClick={() => setToEdit({ ...toEdit, tutorServices: { ...toEdit.tutorServices, active: true } })}>edit</p>}
+                           {(persona === 'admin') && <p className='text-[#667085] ml-auto underline cursor-pointer text-[15px] font-semibold' onClick={() => setToEdit({ ...toEdit, tutorServices: { tutorServices:tutorAdminServices, active: true } })}>edit</p>}
                           
                         </div>
                         <Table
                            tableHeaders={tableHeaders2}
                            dataFor="serviceRates"
-                           data={userDetail.tutorServices}
+                           data={userDetail.tutorServices?.map((service)=>{
+                              return {
+                                 service: service.service,
+                                 price: service.price
+                              }
+                           })}
                            maxPageSize={7}
                            setPrice={ (idx,isPresent) => setToEdit({
                               ...toEdit,
@@ -1069,7 +1123,8 @@ export default function TutorProfile({ isOwn }) {
                         >
                         </Table>
                      </div>
-                  </div>}
+                  </div>
+                  }
                </div>
 
 
