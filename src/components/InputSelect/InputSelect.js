@@ -112,12 +112,12 @@ export default function InputSelect({
           name={label}
         >
           {value === "" || !value ? (
-            <span className={`text-[#667085] .text-base-17-5 whitespace-nowrap ${tableDropdown ? 'mr-0' : 'mr-10'}  ${placeholderClass} `}>
+            <span className={`text-[#667085] .text-base-17-5 whitespace-nowrap ${tableDropdown ? 'mr-0' : `${customArrow ?'mr-2':'mr-10'}`}  ${placeholderClass} `}>
               {" "}
               {placeholder}{" "}
             </span>
           ) : (
-            <span className={`mr-10 .text-base-17-5 whitespace-nowrap ${tableDropdown ? 'mr-0' : 'mr-10'}  ${placeholderClass} `}>{value}</span>
+            <span className={`.text-base-17-5 whitespace-nowrap ${tableDropdown ? 'mr-0' : `${customArrow ?'mr-6':'mr-10'}`}  ${placeholderClass} `}>{value}</span>
           )}
         </div>
         {selected && (

@@ -849,13 +849,13 @@ export default function Settings() {
         </p>
         <div className="shivam-tabs rounded-md">
           <ul class="tabs group">
-          {tabs.map((item, idx) => {
+            {tabs.map((item, idx) => {
               return (
                 <li
-                className={`" ${activeTab === idx + 1?'active':''}`}
+                  className={`" ${activeTab === idx + 1 ? 'active' : ''}`}
                   onClick={() => changeTab(idx + 1)}
                 >
-                  <a className={`"w-full cursor-pointer flex justify-center items-center ${activeTab === idx + 1?'!text-[#26435F]':'!text-white'}`}>
+                  <a className={`"w-full cursor-pointer flex justify-center items-center ${activeTab === idx + 1 ? '!text-[#26435F]' : '!text-white'}`}>
                     <span className="pb-1">
                       {activeTab === idx + 1 && (
                         <img src={item.Icon} className="!w-[15px] !h-[15px] " alt="item-logo" />
@@ -866,13 +866,13 @@ export default function Settings() {
                     </span>
                     <p className="py-2 px-2 pb-3 font-medium  text-base-20  whitespace-nowrap">{item.name} </p>
                   </a>
-                
+
                 </li>
               );
             })}
 
-</ul>
-</div>
+          </ul>
+        </div>
         <div className=" flex w-full flex-1 items-center mb-[30px]">
           <div className={`${styles.tabsContainer} gap-7 flex-1 !shadow-[0px_0px_2.5px_0px_rgba(0,0,0,0.25)]`}>
             {/* {tabs.map((item, idx) => {
@@ -905,7 +905,7 @@ export default function Settings() {
               );
             })} */}
           </div>
-         
+
           {/* <div>
                   <p className='font-bold text-4xl mb-[54px] text-[#25335A]'> Settings </p>
                   <div className='text-base'>
@@ -940,13 +940,13 @@ export default function Settings() {
             <div className="flex items-center gap-x-8 mb-4">
               <div>
                 <InputSelect
-                 labelClassname="text-base-20 mb-1"
-                 inputContainerClassName=" text-base-17-5 shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-[#FFFFFF]"
-                 optionListClassName="text-base-17-5" 
-                 optionClassName="text-base-17-5"
-                 optionData={timeZones}
-                 placeholderClass="text-base-17-5" 
-                 parentClassName=" text-base-17-5 py-0 w-[calc(387*0.0522vw)] min-w-[300px]"
+                  labelClassname="text-base-20 mb-1"
+                  inputContainerClassName=" text-base-17-5 shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-[#FFFFFF]"
+                  optionListClassName="text-base-17-5"
+                  optionClassName="text-base-17-5"
+                  optionData={timeZones}
+                  placeholderClass="text-base-17-5"
+                  parentClassName=" text-base-17-5 py-0 w-[calc(387*0.0522vw)] min-w-[300px]"
                   label="Default Time Zone"
                   value={settingsData.timeZone}
                   onChange={(val) => handleChange("timeZone", val)}
@@ -969,7 +969,7 @@ export default function Settings() {
             <SettingsCard
               titleClassName="text-base-20"
               title="Lead Status Items (Parent / Student)"
-              
+
               body={
                 <div className="flex items-center flex-wrap [&>*]:mb-[10px] bg-white shadow-small p-4 rounded-5">
                   <AddTag onAddTag={handleAddTag} keyName="leadStatus" />
@@ -1119,7 +1119,7 @@ export default function Settings() {
                   />
                 </div>
               }
-            /> 
+            />
 
             <SettingsCard
               titleClassName="text-base-20"
@@ -1461,7 +1461,9 @@ export default function Settings() {
                         key={id}
                         className="pt-[34px] pb-[30px] border-b-2 border-[#CBD6E2] text-[#24A3D9] font-medium text-[17.5px] flex items-center justify-between text-base-17-5"     >
                         <p>{renderColoredText(item.name)}</p>
-
+                        {
+                          console.log(item)
+                        }
                         <ToggleBar
                           toggle={{ value: item.choosedValue, key: item._id }}
                           onToggle={togglePermissions}
@@ -1531,7 +1533,7 @@ export default function Settings() {
           classname={"max-w-840 mx-auto"}
           titleClassName="text-base-20 mb-[18px]"
           title="Edit Details"
-          
+
           cancelBtn={true}
           cancelBtnClassName="w-140"
           primaryBtn={{
@@ -1634,7 +1636,7 @@ export default function Settings() {
           classname={"max-w-[700px] mx-auto"}
           titleClassName="text-base-20 mb-[18px]"
           title="Add / Edit Subscription Code"
-         
+
           cancelBtn={false}
           cancelBtnClassName="w-140 "
           handleClose={() => {
@@ -1644,59 +1646,59 @@ export default function Settings() {
           body={
             <form id="settings-form" onSubmit={handleCodeSubmit}>
               <div className="  grid-cols-1 md:grid-cols-2  gap-x-2 md:gap-x-3 gap-y-2 gap-y-4 mb-5">
-              <div className="flex gap-4">
-                <div>
-                  <InputField
-                    label="Subscription Code"
-                    labelClassname="text-base-20 ml-4 mb-0.5"
-                    placeholder="Sample Code"
-                    inputContainerClassName=" text-base-17-5 px-5 bg-primary-50 border-0"
-                    inputClassName="bg-transparent"
-                    placeholderClass="text-base-17-5"
-                    parentClassName=" text-base-17-5 py-0 w-full mr-4"
-                    type="text"
-                    value={subModalData.code}
-                    isRequired={true}
-                    onChange={(e) =>
-                      setSubModalData({ ...subModalData, code: e.target.value })
-                    }
-                  />
-                </div>
-                <div>
-                  <InputField
-                    label="Duration (in weeks)"
-                    labelClassname="text-base-20 ml-4 mb-0.5"
-                    isRequired={true}
-                    placeholder=""
-                    inputContainerClassName=" text-base-17-5 px-5 bg-primary-50 border-0"
-                    inputClassName="bg-transparent"
-                    placeholderClass="text-base-17-5"
-                    parentClassName=" text-base-17-5 py-0 w-full mr-4"
-                    type="text"
-                    value={subModalData.expiry}
-                    onChange={(e) =>
-                      setSubModalData({
-                        ...subModalData,
-                        expiry: e.target.value,
-                      })
-                    }
-                  />
-                </div>
-                </div>
-                  <div className="mt-3">
-                  <InputField 
-                  label="Select Assignments (optional)"
-                  placeholder="Select"
-                  inputContainerClassName="bg-primary-50 w-[88%]"
-                  inputClassName="bg-transparent"
-                  IconLeft ={down}
-                  />
+                <div className="flex gap-4">
+                  <div>
+                    <InputField
+                      label="Subscription Code"
+                      labelClassname="text-base-20 ml-4 mb-0.5"
+                      placeholder="Sample Code"
+                      inputContainerClassName=" text-base-17-5 px-5 bg-primary-50 border-0"
+                      inputClassName="bg-transparent"
+                      placeholderClass="text-base-17-5"
+                      parentClassName=" text-base-17-5 py-0 w-full mr-4"
+                      type="text"
+                      value={subModalData.code}
+                      isRequired={true}
+                      onChange={(e) =>
+                        setSubModalData({ ...subModalData, code: e.target.value })
+                      }
+                    />
                   </div>
-                  <div className="flex gap-4 items-center justify-center mt-3">
+                  <div>
+                    <InputField
+                      label="Duration (in weeks)"
+                      labelClassname="text-base-20 ml-4 mb-0.5"
+                      isRequired={true}
+                      placeholder=""
+                      inputContainerClassName=" text-base-17-5 px-5 bg-primary-50 border-0"
+                      inputClassName="bg-transparent"
+                      placeholderClass="text-base-17-5"
+                      parentClassName=" text-base-17-5 py-0 w-full mr-4"
+                      type="text"
+                      value={subModalData.expiry}
+                      onChange={(e) =>
+                        setSubModalData({
+                          ...subModalData,
+                          expiry: e.target.value,
+                        })
+                      }
+                    />
+                  </div>
+                </div>
+                <div className="mt-3">
+                  <InputField
+                    label="Select Assignments (optional)"
+                    placeholder="Select"
+                    inputContainerClassName="bg-primary-50 w-[88%]"
+                    inputClassName="bg-transparent"
+                    IconLeft={down}
+                  />
+                </div>
+                <div className="flex gap-4 items-center justify-center mt-3">
                   <button className="rounded-lg bg-[#FFA28D] border-2 border-[#FFA28D] py-2 text-[#FFFFFF] w-[146px]">Save </button>
-                <button className="rounded-lg bg-transparent border-2 border-[#FFA28D] py-2 text-[#FFA28D]  w-[146px]" onClick={()=>setAddCodeModalActive(!addCodeModalActive)}>Cancel </button>
+                  <button className="rounded-lg bg-transparent border-2 border-[#FFA28D] py-2 text-[#FFA28D]  w-[146px]" onClick={() => setAddCodeModalActive(!addCodeModalActive)}>Cancel </button>
 
-                  </div>
+                </div>
               </div>
             </form>
           }
@@ -1707,7 +1709,7 @@ export default function Settings() {
           classname={"max-w-[700px] mx-auto"}
           titleClassName="text-base-20 mb-[18px]"
           title="Add Tests"
-          
+
           cancelBtn={false}
           cancelBtnClassName="w-0"
           primaryBtn={{
@@ -1760,7 +1762,7 @@ export default function Settings() {
           classname={"max-w-[540px] mx-auto"}
           titleClassName="text-base-20 mb-[18px]"
           title=""
-          
+
           cancelBtn={true}
           cancelBtnClassName="w-140 hidden"
           primaryBtn={{
@@ -1820,7 +1822,7 @@ export default function Settings() {
           classname={"max-w-[700px] mx-auto"}
           titleClassName="text-base-20 mb-[18px]"
           title="Add Question"
-          
+
           cancelBtn={true}
           cancelBtnClassName="w-140"
           primaryBtn={{
