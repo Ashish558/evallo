@@ -767,7 +767,7 @@ export default function EventModal({
                   <div className="flex mb-7">
                      <InputSelect
                         label="Service"
-                        labelClassname="font-semibold "
+                        labelClassname="font-semibold text-base-17-5"
                         value={data.service}
                         onChange={(val) => {
                            // console.log(val)
@@ -787,7 +787,7 @@ export default function EventModal({
                      />
                      <InputSelect
                         label="Topic"
-                        labelClassname="font-semibold"
+                        labelClassname="font-semibold text-base-17-5"
                         value={data.specialization}
                         onChange={(val) => {
                            // console.log(val)
@@ -835,7 +835,7 @@ export default function EventModal({
                   <div className="mt-4  flex ">
                      <InputField
                         label="Meeting Link"
-                        labelClassname="ml-3 text-[#26435F] font-medium"
+                        labelClassname="ml-3 text-[#26435F] font-medium text-base-17-5"
                         placeholder="Meeting Link"
                         parentClassName="w-full mr-8"
                         inputContainerClassName="bg-lightWhite border-0 pt-3.5 pb-3.5"
@@ -854,7 +854,7 @@ export default function EventModal({
                         parentClassName="w-full ml-2"
                         label="Whiteboard Link"
                         placeholder="Whiteboard Link"
-                        labelClassname="ml-3 text-[#26435F] font-medium"
+                        labelClassname="ml-3 text-[#26435F] font-medium text-base-17-5"
                         inputContainerClassName="bg-lightWhite border-0  pt-3.5 pb-3.5"
                         inputClassName="bg-transparent appearance-none"
                         value={data.whiteboardLink}
@@ -878,7 +878,7 @@ export default function EventModal({
 
                   {
                      (persona == "parent" || persona == "student") && <div className="mt-[30px] mb-8">
-                        <p className="font-medium mb-2.5 text-[#26435F] text-base-17.5]">
+                        <p className="font-medium mb-2.5 text-[#26435F] text-base-17-5]">
                            Session Notes
                         </p>
                         <textarea
@@ -970,7 +970,7 @@ export default function EventModal({
                         </div>
 
                         <div className="mb-8">
-                           <p className="font-medium mb-2.5 text-[#26435F text-base-17.5]">
+                           <p className="font-medium mb-2.5 text-[#26435F] text-base-17-5">
                               Session Notes
                            </p>
                            <textarea

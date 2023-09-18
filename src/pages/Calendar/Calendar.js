@@ -87,7 +87,6 @@ export default function Calendar() {
   const { id, timeZone: currentUserTImeZone } = useSelector((state) => state.user
   );
   const time = formatAMPM(new Date());
-
   const exactTime =
     time.slice(0, time.indexOf(":")) +
     time.slice(time.indexOf("p"), time.length);
@@ -1224,6 +1223,15 @@ export default function Calendar() {
           </div>
           <div className="flex-1 w-4/5 relative" id="calendarContainer">
             <FullCalendar
+             slotLabelContent={(arg) => {
+              // Insert a blank row (gap) after every time slot
+              return (
+                <>
+                  <div>{arg.text}</div>
+                  <div className="blank-row" />
+                </>
+              );
+            }}
               events={
                 persona === "parent" || persona === "tutor"
                   ? filteredEvents
@@ -1290,9 +1298,8 @@ export default function Calendar() {
               // slotMinTime={"06:00:00"}
               // slotMaxTime={"30:00:00"}
               dayHeaderFormat={{
-                day: "numeric",
-                weekday: 'long'
-
+                weekday: 'long',
+                day: "numeric"
               }}
               // dayHeaderContent={getDayHeaders}
               selectable={true}
@@ -1332,7 +1339,6 @@ export default function Calendar() {
                   }}
                   parentClassName=""
                   optionClassName=""
-
                 />
               </span>
               {/* <div class="inline-flex rounded shadow-sm mt-1">

@@ -28,7 +28,7 @@ export default function SessionInputs({ data, setData, status, isEditable }) {
                      inputClassName="bg-transparent appearance-none font-medium"
                      placeholder="Session Status"
                      label="Session Status"
-                     labelClassname="font-semibold text-base-17.5"
+                     labelClassname="font-semibold text-base-17-5"
                      parentClassName="w-[300px] mr-10"
                      type="select"
                   />
@@ -72,7 +72,7 @@ export default function SessionInputs({ data, setData, status, isEditable }) {
                      inputClassName="bg-transparent appearance-none font-medium"
                      placeholder="Session Status"
                      label="Session Status"
-                     labelClassname="font-semibold text-base-17.5"
+                     labelClassname="font-semibold text-base-17-5"
                      parentClassName="w-[300px] mr-10"
                      type="select"
                   />
