@@ -707,7 +707,7 @@ export default function TableItem({
                         )
                       }
                     >
-                     Report
+                      Report
                     </button>
                   ) : item.isStarted ? (
                     <button
@@ -729,7 +729,7 @@ export default function TableItem({
                         )
                       }
                     >
-                      Start 
+                      Start
                     </button>
                   )}
                 </>

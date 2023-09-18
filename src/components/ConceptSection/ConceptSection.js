@@ -283,7 +283,7 @@ const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
             </span>
           </h1>
 
-          <div className="flex  justify-end ">
+          <div className="flex  justify-end absolute top-[51.5%] right-[38%]">
             
             <InputSelectNew
               placeholder={""}

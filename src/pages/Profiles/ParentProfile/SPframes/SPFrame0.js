@@ -16,8 +16,9 @@ const SPFrame0 = ({ userDetail, settings, toEdit, setToEdit }) => {
   ////console.log({userDetail});
   return (
     <div>
-      <div className="bg-white mt-7 px-3 py-6 !rounded-md   shadow-[0px_0px_2.46px_0px_#00000040] flex gap-3 justify-between  text-[#24A3D9]">
-        <div className="flex gap-3 text-sm items-center">
+      <div className="bg-white mt-7  !rounded-md   shadow-[0px_0px_2.46px_0px_#00000040]  text-[#24A3D9]">
+       <div className="px-5 py-6 flex gap-3 justify-between w-[90%]">
+       <div className="flex gap-3 text-[17.5px] items-center  text-[17.5px]">
           <span>
             <img
               className="ml-2 !w-7 !h-7 inline-block"
@@ -27,12 +28,12 @@ const SPFrame0 = ({ userDetail, settings, toEdit, setToEdit }) => {
           </span>
           <span>
             <p className="font-semibold text-[#24A3D9]">Industry</p>
-            <p className=" text-[#517CA8] ">
+            <p className=" text-[#517CA8]">
               {userDetail.industry ? userDetail.industry : " "}
             </p>
           </span>
         </div>
-        <div className="flex gap-3 text-sm items-center">
+        <div className="flex gap-3 text-[17.5px] items-center">
           <span>
             <img
               className="ml-2 !w-7 !h-7 inline-block"
@@ -49,7 +50,7 @@ const SPFrame0 = ({ userDetail, settings, toEdit, setToEdit }) => {
             </p>
           </span>
         </div>
-        <div className="flex gap-3 text-sm items-center">
+        <div className="flex gap-3 text-[17.5px] items-center">
           <span>
             <img
               className="ml-2 !w-7 !h-7 inline-block"
@@ -65,7 +66,7 @@ const SPFrame0 = ({ userDetail, settings, toEdit, setToEdit }) => {
           </span>
         </div>
         
-        <div className="flex gap-3 text-sm items-center">
+        <div className="flex gap-3 text-[17.5px] items-center">
         <span>
             <img
               className="ml-2 !w-7 !h-7 inline-block"
@@ -80,7 +81,7 @@ const SPFrame0 = ({ userDetail, settings, toEdit, setToEdit }) => {
             </p>
           </span>
         </div>
-        <div className="flex gap-3 text-sm items-center">
+        <div className="flex gap-3 text-[17.5px] items-center">
           <span>
             <img
               className="ml-2 !w-7 !h-7 inline-block"
@@ -95,6 +96,7 @@ const SPFrame0 = ({ userDetail, settings, toEdit, setToEdit }) => {
             </p>
           </span>
         </div>
+       </div>
       </div>
     </div>
   );
