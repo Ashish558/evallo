@@ -9,7 +9,7 @@ import { useEffect } from "react";
 import RangeDate from "../../../../components/RangeDate/RangeDate";
 import InputSelectNew from "../../../../components/InputSelectNew/InputSelectNew";
 import { useParams } from "react-router-dom";
-const SPFrame3 = ({ userDetail ,isOwn }) => {
+const SPFrame3 = ({ userDetail ,isOwn ,user}) => {
   const [getProgression, Progstatus] = useScoreProgressionStudentMutation();
   const [scoreProgression, setScore] = useState([]);
   const [spSubject, setspSubject] = useState([]);
@@ -41,15 +41,15 @@ setId(userDetail?._id)
       } else {
         idd = param.id;
       }
-       //console.log({idd,hid:userDetail?._id})
-      getProgression({ studentId: idd , testType: officialTest }).then(
+       console.log({idd,hid:userDetail?._id,iff:user?._id})
+      getProgression({ studentId: user?._id ,startDate:new Date(2023,1,1),endDate:new Date(),role:"student", testType: officialTest }).then(
         (res) => {
-          //console.log("progression res", res);
+          console.log("progression res", res);
           if (res?.data?.scoreProgression) setScore(res?.data?.scoreProgression);
         }
       );
     }
-  }, [userDetail,id,officialTest]);
+  }, [userDetail,id,officialTest,user]);
 
   useEffect(() => {
     if (scoreProgression[0]?.subjects) {
@@ -58,6 +58,11 @@ setId(userDetail?._id)
     }
   }, [scoreProgression]);
 
+  const handleConceptAccuracy=() => {
+  }
+  const handleTimeManagement=()=>{
+    
+  }
   useEffect(() => {
     spSubject.map((sub) => {
       if (sub.selected === true) {
@@ -94,7 +99,7 @@ setId(userDetail?._id)
     });
     setSubjects(updated);
   };
- // //console.log("sprame3",{spSubject})
+ console.log("sprame3",{spSubject,subjects,scoreProgression});
   return (
     <div className="flex flex-col gap-5 -mt-5">
       {" "}
@@ -199,7 +204,7 @@ setId(userDetail?._id)
               manualHide={true}
               optionClassName="!w-min"
               inputContainerClassName="!w-min"
-              handleRangeData={setSelectedConceptIdx}
+              handleRangeData={handleTimeManagement}
             />
           </div>
           <Chart
@@ -264,7 +269,7 @@ setId(userDetail?._id)
               manualHide={true}
               optionClassName="!w-min"
               inputContainerClassName="!w-min"
-              handleRangeData={setSelectedConceptIdx}
+              handleRangeData={handleConceptAccuracy}
             />
           </div>
           <Chart2

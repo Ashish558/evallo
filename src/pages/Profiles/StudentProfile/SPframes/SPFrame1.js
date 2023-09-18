@@ -78,7 +78,7 @@ const SPFrame1 = ({ userId, settings, userDetail, editable, setToEdit, toEdit ,f
           <div className="flex-1 ">
             <p className=" text-sm text-[#26435F] font-semibold">
               Whiteboard Links
-             {persona!=='student' && persona=='parent' && 
+             {persona!=='student' && persona!=='parent' && 
              <EditableText
                 editable={editable}
                 onClick={() =>

@@ -22,6 +22,7 @@ import { BASE_URL, getAuthHeader } from "../../../../app/constants/constants";
 import ProfileCard from "../../../../components/ProfileCard/ProfileCard";
 import axios from "axios";
 import ProfilePhoto from "../../../../components/ProfilePhoto/ProfilePhoto";
+import { useNavigate } from "react-router-dom";
 
 // 637b9df1e9beff25e9c2aa83
 export default function ParentEditables({
@@ -245,7 +246,7 @@ export default function ParentEditables({
     },
     {
       name: "tutorServices",
-      title: "Service",
+      title: "Hourly Service Rates",
       api: "tutorDetail",
     },
     {
@@ -254,8 +255,8 @@ export default function ParentEditables({
       api: "tutorDetail",
     },
     {
-      name: "review",
-      title: "Youtube Link",
+      name: "tutorReviews",
+      title: "Tutor Reviews",
       api: "tutorDetail",
     },
   ];
@@ -463,23 +464,23 @@ export default function ParentEditables({
         const level = getLevel(reqBody.tutorLevel);
         reqBody.tutorLevel = level;
       }
-      if (reqBody.tutorServices) {
-        if (currentToEdit.servicePresent === false) {
-          reqBody.tutorServices = [
-            ...reqBody.tutorServices,
-            { ...updatedService },
-          ];
-        } else {
-          reqBody.tutorServices = reqBody.tutorServices.map((serv) => {
-            if (serv.service === updatedService.service) {
-              return { ...updatedService };
-            } else {
-              return { ...serv };
-            }
-          });
-        }
-      }
-      // console.log('reqBody', reqBody)
+      // if (reqBody.tutorServices) {
+      //   if (currentToEdit.servicePresent === false) {
+      //     reqBody.tutorServices = [
+      //       ...reqBody.tutorServices,
+      //       { ...updatedService },
+      //     ];
+      //   } else {
+      //     reqBody.tutorServices = reqBody.tutorServices.map((serv) => {
+      //       if (serv.service === updatedService.service) {
+      //         return { ...updatedService };
+      //       } else {
+      //         return { ...serv };
+      //       }
+      //     });
+      //   }
+      // }
+       console.log('reqBody', reqBody)
       // return
       if (currentToEdit.isPresent === false) {
         delete reqBody["isPresent"];
@@ -537,7 +538,7 @@ export default function ParentEditables({
     }
     return num;
   };
-
+const navigate= useNavigate()
   const handlePriceChange = (value) => {
     let updated = [];
     currentToEdit?.tutorServices?.map((serv) => {
@@ -580,7 +581,7 @@ export default function ParentEditables({
           classname={
             forCss.includes(currentField.name)
               ? "max-w-[900px] md:pb-5 mx-auto overflow-visible pb-5"
-              : "max-w-[500px] md:pb-5 mx-auto overflow-visible pb-5"
+              : "max-w-[600px] md:pb-5 mx-auto overflow-visible pb-5"
           } /*{ ` max-w-[900px] md:pb-5 mx-auto overflow-visible pb-5`}*/
           title=""
           // primaryBtn={{
@@ -591,8 +592,10 @@ export default function ParentEditables({
           //    type: 'submit',
           //    loading,
           // }}
+          cancelBtn={false}
+          crossBtn={true}
           underline={true}
-          cancelBtnStyle={{ top: "18px" }}
+          cancelBtnStyle={{ top: "1px" }}
           handleClose={handleClose}
           body={
             <>
@@ -1347,8 +1350,52 @@ export default function ParentEditables({
                   </div>
                 )}
                 {currentField.name === "tutorServices" && (
-                  <div>
-                    <div className="flex items-center mb-4">
+                  <div >
+                    <p className="text-base-15 text-[#667085]"><span className="font-semibold ">⚠️ Note:</span> The hourly rates you set for the tutor here will directly affect automatic invoicing wherever applicable. Read detailed documentation in  Evallo’s  <span className="text-[#24A3D9]"> knowledge base.</span></p>
+                   <div className="flex gap-5 mt-3">
+
+                    <h2 className="text-base-20 font-bold text-[#26435F] min-w-[335px]">Service <span className="text-[#B3BDC7] font-medium">(pulled from settings)</span></h2>
+                    <h2 className="text-base-20 font-bold text-[#26435F]">Hourly Rate</h2>
+                   </div>
+                   <div className="max-h-[30vh] overflow-y-auto">
+                    {
+                    // console.log({organization,currentField,currentToEdit}),
+                    //handlePriceChange(e.target.value)
+
+                      currentToEdit?.tutorServices?.map((it,id)=>{
+                       return ( <div className="flex justify-between items-center mb-4 p-[2px]">
+                        <p className=" mr-4 min-w-[300px] text-sm pt-3 pb-3 px-5 bg-primary-50 border-0 rounded-sm font-semibold text-[#517CA8] text-base-20 shadow-[0px_0px_2.50039005279541px_0px_#00000040]">
+                         {it?.service}
+                        </p>
+                        
+
+                        <InputField
+                          labelClassname="hidden"
+                          placeholder=""
+                          inputContainerClassName="text-sm pt-3 pb-3 px-5 bg-primary-50 border-0 shadow-[0px_0px_2.50039005279541px_0px_#00000040]"
+                          inputLeftField={<div className="text-[#B3BDC7] font-semibold text-base-20 mr-3">$</div>}
+                          inputClassName="bg-transparent pl-4 rounded-[4px] font-semibold text-[#517CA8] text-base-20"
+                          parentClassName="w-[180px] "
+                          type="text"
+                          value={it?.price?it?.price:""}
+                          onChange={(e) =>{
+                            let temp=currentToEdit.tutorServices
+                            temp[id].price=e.target.value
+                            setCurrentToEdit({
+                              ...currentToEdit,
+                              tutorServices:temp
+                            })
+                          } }
+                        />
+                      </div>)
+                      })
+                     
+                    }
+                    </div>
+                    <div onClick={()=>navigate("/settings")} className="text-[#24A3D9] cursor-pointer font-semibold text-base-17-5">
+                    + Add New Service
+                    </div>
+                    {/* <div className="flex items-center mb-4">
                       <p className="font-medium mr-4 min-w-[150px]">
                         {currentToEdit.selectedIdx !== undefined
                           ? organization.settings.servicesAndSpecialization[
@@ -1367,7 +1414,127 @@ export default function ParentEditables({
                         value={currentToEdit.testPrepRate}
                         onChange={(e) => handlePriceChange(e.target.value)}
                       />
+                    </div> */}
+                  </div>
+                )}
+                 {currentField.name === "tutorReviews" && (
+                  <div >
+                     
+                   <div className="max-h-[40vh] overflow-y-auto custom-scroller">
+                    {
+                    // console.log({organization,currentField,currentToEdit}),
+                    //handlePriceChange(e.target.value)
+
+                      [{},{}]?.map((it,id)=>{
+                       return ( <div className="flex flex-col mb-4 bg-[#F6F6F6] p-3 rounded-md">
+                       
+                       <div className="flex gap-5">
+                       <InputSelect
+                          labelClassname="text-base-17-5 text-[#26435F]"
+                          label="Review Given By"
+                          placeholder=""
+                          inputContainerClassName="text-sm pt-[14px] pb-[14px] px-5 bg-white border-0 shadow-[0px_0px_2.50039005279541px_0px_#00000040]"
+                          inputLeftField={<div className="text-[#B3BDC7] font-semibold text-base-20 mr-3">$</div>}
+                          inputClassName="bg-transparent pl-4 rounded-[4px] font-semibold text-[#517CA8] text-base-20"
+                          parentClassName="w-[180px] "
+                          type="text"
+                          value={it?.price?it?.price:""}
+                          optionData={["student","parent"]}
+                          onChange={(e) =>{
+                            let temp=currentToEdit.tutorServices
+                            temp[id].price=e.target.value
+                            setCurrentToEdit({
+                              ...currentToEdit,
+                              tutorServices:temp
+                            })
+                          } }
+                        />
+                         <InputSelect
+                          labelClassname="text-base-17-5 text-[#26435F]"
+                          label="For Service"
+                          placeholder=""
+                          inputContainerClassName="text-sm pt-[14px] pb-[14px] px-5 bg-white border-0 shadow-[0px_0px_2.50039005279541px_0px_#00000040]"
+                          inputLeftField={<div className="text-[#B3BDC7] font-semibold text-base-20 mr-3">$</div>}
+                          inputClassName="bg-transparent pl-4 rounded-[4px] font-semibold text-[#517CA8] text-base-20"
+                          parentClassName="w-[180px] "
+                          type="text"
+                          value={it?.price?it?.price:""}
+                          optionData={organization?.settings?.servicesAndSpecialization?.map((it)=>{
+                            return it?.service
+                          })}
+                          onChange={(e) =>{
+                            let temp=currentToEdit.tutorServices
+                            temp[id].price=e.target.value
+                            setCurrentToEdit({
+                              ...currentToEdit,
+                              tutorServices:temp
+                            })
+                          } }
+                        />
+                         <InputField
+                          labelClassname="text-base-17-5 text-[#26435F] !font-medium"
+                          label="Review Date"
+                          placeholder=""
+                          inputContainerClassName="text-sm pt-2 pb-2 px-5 bg-white border-0 shadow-[0px_0px_2.50039005279541px_0px_#00000040]"
+                          inputClassName="bg-transparent pl-4 rounded-[4px] font-semibold text-[#517CA8] text-base-17-5"
+                          parentClassName="w-[180px] "
+                          type="date"
+                          value={it?.price?it?.price:""}
+                          onChange={(e) =>{
+                            let temp=currentToEdit?.tutorServices
+                            temp[id].price=e.target.value
+                            setCurrentToEdit({
+                              ...currentToEdit,
+                              tutorServices:temp
+                            })
+                          } }
+                        />
+                        </div>
+                        
+                        <div className=" my-5">
+                          <h5 className="text-base-17-5 text-[#26435F]">Review content</h5>
+                      <textarea
+                        rows="2"
+                        value={currentToEdit?.paymentInfo}
+                        onChange={(e) =>
+                          setCurrentToEdit({
+                            ...currentToEdit,
+                            paymentInfo: e.target.value,
+                          })
+                        }
+                        className="!shadow-[0px_0px_2.50039005279541px_0px_#00000040] rounded-md mt-1 block w-full h-[100px] flex-1 resize-none focus:!ring-blue-500 p-2 focus:!border-blue-500 placeholder-[#CBD6E2] text-sm  placeholder:text-xs pt-3.5 pb-3 px-5  bg-white border-0 text-[#667085]"
+                      ></textarea>
                     </div>
+
+                       
+                      </div>)
+                      })
+                     
+                    }
+                    </div>
+                    <div onClick={()=>navigate("/settings")} className="text-[#24A3D9] cursor-pointer font-semibold text-base-17-5">
+                    + Add New Review
+                    </div>
+                    {/* <div className="flex items-center mb-4">
+                      <p className="font-medium mr-4 min-w-[150px]">
+                        {currentToEdit.selectedIdx !== undefined
+                          ? organization.settings.servicesAndSpecialization[
+                              currentToEdit.selectedIdx
+                            ].service
+                          : ""}
+                      </p>
+                      <InputField
+                        labelClassname="hidden"
+                        placeholder=""
+                        inputContainerClassName="text-sm pt-3 pb-3 px-5 bg-primary-50 border-0"
+                        inputLeftField={<div>$</div>}
+                        inputClassName="bg-transparent pl-4 rounded-[4px]"
+                        parentClassName="flex-1 "
+                        type="text"
+                        value={currentToEdit.testPrepRate}
+                        onChange={(e) => handlePriceChange(e.target.value)}
+                      />
+                    </div> */}
                   </div>
                 )}
                 {currentField.name === "paymentInfo" && (

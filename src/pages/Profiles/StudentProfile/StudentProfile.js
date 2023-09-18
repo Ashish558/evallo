@@ -1013,7 +1013,7 @@ const [toEdit, setToEdit] = useState({
            
             className="border !border-[#CBD6E2] w-[calc(1500*0.0522vw)] mx-auto mb-[calc(50*0.0522vw)]"
           ></div>
-           <SPFrame3 isOwn={isOwn} userDetail={userDetail} />
+           <SPFrame3 isOwn={isOwn} userDetail={userDetail} user={user} />
            <div
             id="borderDashed"
             className="border !border-[#CBD6E3] w-[calc(1500*0.0522vw)] mx-auto my-[calc(50*0.0522vw)]"
