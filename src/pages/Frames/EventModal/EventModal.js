@@ -124,6 +124,14 @@ export default function EventModal({
       studentMood: "",
       homeworkAssigned: "",
       sessionNotes: "",
+      clientNotes:{
+        date:"",
+        note:""
+      },
+      internalNotes:{
+         date:"",
+         note:""
+      },
       feedbackStars: 0,
       whiteboardLink: '',
       sessionTags: []
@@ -295,6 +303,7 @@ export default function EventModal({
          }
          startDate.setHours(0);
          startDate.setMinutes(0);
+         
          setData({
             ...data,
             studentName: sessionToUpdate.studentName,
@@ -312,6 +321,7 @@ export default function EventModal({
             rescheduling: sessionToUpdate.resheduling,
             service: sessionToUpdate.service,
             sessionNotes: sessionToUpdate.sessionNotes,
+           
             specialization: sessionToUpdate.specialization,
          });
 
@@ -512,7 +522,7 @@ export default function EventModal({
       let endTime = convertTime12to24(`${end.time} ${end.timeType}`)
       let startT = moment(`2016-06-06T${startTime}:00`)
       let endT = moment(`2016-06-06T${endTime}:00`)
-
+      
       var duration = endT.diff(startT, 'hours')
       reqBody.total_hours = duration
       if (reqBody.timeZone === '') reqBody.timeZone = 'Asia/Kolkata'
@@ -669,8 +679,8 @@ export default function EventModal({
                   tutorServs.push(item.service)
                }
             })
-            // console.log('allServicesAndSpec', allServicesAndSpec);
-            // console.log('services', services);
+             console.log('allServicesAndSpec', allServicesAndSpec);
+             console.log('services',details.tutorServices, services);
             setServicesAndSpecialization(tutorServs)
          })
       // }
@@ -679,14 +689,14 @@ export default function EventModal({
 
    useEffect(() => {
       // console.log('all', allServicesAndSpec)
-      // console.log('servicesAndSpecialization', servicesAndSpecialization)
+       console.log('servicesAndSpecialization', servicesAndSpecialization)
       let specs = []
       allServicesAndSpec.map(item => {
          if (item.service === data.service) {
             specs = item.specialization
          }
       })
-      // console.log('spec', specs)
+       console.log('spec', specs)
       setSpecializations(specs)
    }, [servicesAndSpecialization, data.service, allServicesAndSpec])
 
@@ -977,10 +987,37 @@ export default function EventModal({
                               placeholder="Session Notes"
                               value={data.sessionNotes}
                               onChange={(e) =>
+                                 {
+                                    let internalNotes2={note:"",date:""}
+                                    if(persona==='tutor'&&e.target.value){
+                                  internalNotes2={
+                                     note:e.target.value,
+                                     date:new Date()
+                                  }
+                               }
+                               
+                               let clientNotes2={note:"",date:""}
+                               if(persona==='admin'&&e.target.value){
+                                  clientNotes2={
+                                     note:e.target.value,
+                                     date:new Date()
+                                  }
+                               }
+                               if(persona==='tutor')
                                  setData({
                                     ...data,
                                     sessionNotes: e.target.value,
+                                    internalNotes:internalNotes2,
+                                   
                                  })
+                                  if(persona==='admin')
+                                 setData({
+                                    ...data,
+                                    sessionNotes: e.target.value,
+                                    clientNotes:clientNotes2,
+                                   
+                                 })
+                                 }
                               }
                               rows={3}
                               className="bg-lightWhite w-full outline-0 px-5 py-4 rounded"

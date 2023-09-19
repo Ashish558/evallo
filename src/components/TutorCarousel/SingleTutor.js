@@ -10,8 +10,10 @@ export default function SingleTutor({ idx, tutor }) {
   const { awsLink } = useSelector((state) => state.user);
   console.log(tutor)
   return (
-    <div key={idx} className="item px-2 h-full ">
-      <div className="flex flex-1 h-full items-start gap-5 my-auto justify-center mt-[30px]">
+
+    <div key={idx} className="item px-2 h-full  ">
+      <div className="flex flex-1 h-full items-center gap-5 my-auto justify-center">
+
         <div className="w-2/3">
           {/* <h5 className={`${styles.tag}`}>
             {tutor.tutorLevel && `${tutor.tutorLevel} Belt`}

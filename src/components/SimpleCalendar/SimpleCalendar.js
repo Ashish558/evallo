@@ -55,7 +55,7 @@ export default function SimpleCalendar({ currentDate, setCurrentDate, events }) 
             }
             tileClassName={tileClassName}
          />
-         <InputSearch
+         {/* <InputSearch
 
             value=""
             IconRight={true}
@@ -98,6 +98,10 @@ export default function SimpleCalendar({ currentDate, setCurrentDate, events }) 
                   </div>
                </> : ''
          }
+
+
+            </div>
+         </div> */}
 
       </>
    );

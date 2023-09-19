@@ -245,36 +245,41 @@ const StudentSettings = () => {
             }
           />
 
-          <InputFieldDropdown
-            placeholder=""
-            labelClassname=" text-md text-[#26435F] font-semibold mb-[1px]"
-            parentClassName="text-[#26435F] w-[calc(376*0.05050vw)] min-w-[230px] "
-            inputContainerClassName=" bg-white border  border-white text-[#667085]"
-            inputClassName=" text-400 !py-1 !text-[17px] bg-transparent "
-            label="Phone"
-            value={values.phone}
-            codeValue={values.phoneCode}
-            handleCodeChange={(e) =>
-              setValues({
-                ...values,
-                phoneCode: e.target.value,
-              })
-            }
-            onChange={(e) =>
-              setValues({
-                ...values,
-                phone: e.target.value,
-              })
-            }
-            error={error.phone}
-          />
-
+         <div id="number" >
+            <InputFieldDropdown
+              placeholder=""
+              labelClassname=" text-md text-[#26435F] font-semibold mb-[1px]"
+              parentClassName="text-[#26435F] w-[calc(376*0.05050vw)] min-w-[230px] "
+              inputContainerClassName=" bg-white border  border-white text-[#667085]"
+              inputClassName=" text-400 !py-1 !text-[17px] bg-transparent "
+              label="Phone"
+              value={values.phone}
+              codeColor="bg-white"
+             
+              codeValue={values.phoneCode}
+              handleCodeChange={(e) =>
+                setValues({
+                  ...values,
+                  phoneCode: e.target.value,
+                })
+              }
+              onChange={(e) =>
+                setValues({
+                  ...values,
+                  phone: e.target.value,
+                })
+              }
+              error={error.phone}
+            />
+         </div>
           <div>
             <PrimaryButton
               onClick={handleDataUpdate}
               disabled={saving}
               loading={saving}
-              className={`bg-[#FFA28D]  mt-5 ml-10 rounded-md px-14 py-2 h-[46px] text-xl text-white font-semibold`}
+
+              className={`bg-[#FFA28D]   mt-5 ml-10 rounded-md px-10 py-[14.3px] text-sm text-white  `}
+
             >
               Save
             </PrimaryButton>
@@ -304,8 +309,10 @@ const StudentSettings = () => {
             </div>
           )}
         </div>
-        <div className="flex justify-between gap-4 mt-16 w-[72.08vw]">
-          <div className="w-full">
+
+        <div className="flex  gap-20 mt-16">
+          <div className="flex-1 max-w-[400px]">
+
             <p className=" text-sm text-[#26435F] font-semibold">
               Submit Feedback
             </p>
@@ -332,7 +339,7 @@ const StudentSettings = () => {
               Submit
             </button>
           </div>
-          <div className="flex-1">
+          <div className="flex-1 max-w-[400px]">
             <p className=" text-sm text-[#26435F] font-semibold ">
               Request Technical Support
             </p>

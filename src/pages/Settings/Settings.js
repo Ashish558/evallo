@@ -302,6 +302,7 @@ export default function Settings() {
       setSettingsData(organization.settings);
       if (organization?.settings?.permissions?.length > 0)
         setThePermission(organization.settings.permissions);
+     
 
     }
   };
@@ -344,6 +345,7 @@ export default function Settings() {
   };
 
   const updateAndFetchsettings = (updatedSetting) => {
+    if(!organization|| !settingsData || !updatedSetting)return
     const settings = {
       ...settingsData,
       ...updatedSetting,
@@ -1470,7 +1472,7 @@ export default function Settings() {
                         ></ToggleBar>
                       </div>
                     ) : (
-                      <div className={`pt-[34px] pb-[30px]   text-[#24A3D9] font-medium text-[17.5px] flex justify-between border-b-2 border-[#CBD6E2] ${styles.permission}`}>
+                      <div className={`pt-[34px] pb-[30px]   text-[#24A3D9] font-medium text-[17.5px] flex justify-between border-b-2 border-[#CBD6E2] ${styles.permission} text-base-17-5`}>
                         <p>{renderColoredText(item.name)}</p>
 
                         <p>

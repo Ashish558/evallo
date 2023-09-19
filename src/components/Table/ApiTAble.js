@@ -111,7 +111,7 @@ export default function ApiTable({
           </tr>
         </thead>
         <tbody>
-          {tableData.map((item, idx) => {
+          {tableData?.map((item, idx) => {
             return (
               <React.Fragment key={idx}>
               <TableItem

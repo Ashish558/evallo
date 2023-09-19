@@ -75,7 +75,7 @@ console.log({students,tutors,data})
             disabled={!isEditable}
             onOptionClick={(item) => {
                setStudent(item.value);
-               setData({ ...data, studentId: item._id });
+               setData({ ...data, studentId: item._id,studentName: item.value});
             }}
             
          />
@@ -95,7 +95,7 @@ console.log({students,tutors,data})
             optionData={tutors}
             onOptionClick={(item) => {
                setTutor(item.value);
-               setData({ ...data, tutorId: item._id });
+               setData({ ...data, tutorId: item._id,tutorName: item.value });
             }}
          />
       </div>
