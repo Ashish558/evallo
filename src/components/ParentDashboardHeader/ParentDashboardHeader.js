@@ -110,13 +110,13 @@ const ParentDashboardHeader = ({ selectedStudent, setSelectedStudent }) => {
   };
   const openLink = (link) => {
     window.open(link)
- }
+  }
   console.log("associatedStudents", associatedStudents);
   console.log("selectedStudent", selectedStudent);
 
   return (
     <div className="w-full flex-1 mb-5">
-      <p className="text-[#24A3D9] mt-7 mb-3 !my-[calc(50*0.0522vw)]">
+      <p className="text-[#24A3D9] mt-7 mb-3 !my-[calc(50*0.0522vw)] text-xl">
         {organization?.company +
           " > " +
           user?.firstName +
@@ -143,41 +143,41 @@ const ParentDashboardHeader = ({ selectedStudent, setSelectedStudent }) => {
                 id={styles.exploreBgDisable}
               >
                 <div className={styles.images}>
-                {images?.length >0  ? (
-              <OwlCarousel
-                ref={tutorCarouselRef}
-                className="owl-theme h-full"
-                loop
-                margin={8}
-                items={1}
-              >
-                {images.map((image, idx) => {
-                  return (
-                    <div className={` rounded-md bg-cover	bg-center	 ${styles.img}`}
-                       style={{ backgroundImage: `url(${awsLink}${image.image})` }}
-                       >
-                        <p className="absolute top-5 left-4 z-10 font-bold text-base-25 text-white"></p>
-                       
-                        <button  onClick={() => openLink(image.link)} className="bg-[#FFA28D] text-white p-2 text-base-17-5 px-4 rounded-lg absolute left-5 bottom-4">
-                        {image?.buttonText?image?.buttonText:"Register"}
-                        </button>
-                    </div>
-                  );
-                })}
-              </OwlCarousel>
-            ) : (
-              <p
-                className="text-white  text-center w-full font-semibold pt-8 not-italic pb-8 text-lg"
-                style={{
-                  fontSize: "18px",
-                  fontStyle: "normal",
-                  fontWeight: "500",
-                }}
-              >
-                No Announcements
-              </p>
-            )}
-            </div>
+                  {images?.length > 0 ? (
+                    <OwlCarousel
+                      ref={tutorCarouselRef}
+                      className="owl-theme h-full"
+                      loop
+                      margin={8}
+                      items={1}
+                    >
+                      {images.map((image, idx) => {
+                        return (
+                          <div className={` rounded-md bg-cover	bg-center	 ${styles.img}`}
+                            style={{ backgroundImage: `url(${awsLink}${image.image})` }}
+                          >
+                            <p className="absolute top-5 left-4 z-10 font-bold text-base-25 text-white"></p>
+
+                            <button onClick={() => openLink(image.link)} className="bg-[#FFA28D] text-white p-2 text-base-17-5 px-4 rounded-lg absolute left-5 bottom-4">
+                              {image?.buttonText ? image?.buttonText : "Register"}
+                            </button>
+                          </div>
+                        );
+                      })}
+                    </OwlCarousel>
+                  ) : (
+                    <p
+                      className="text-white  text-center w-full font-semibold pt-8 not-italic pb-8 text-lg"
+                      style={{
+                        fontSize: "18px",
+                        fontStyle: "normal",
+                        fontWeight: "500",
+                      }}
+                    >
+                      No Announcements
+                    </p>
+                  )}
+                </div>
                 {/* {images?.length >= 1 && (
                   <ImageSlideshow images={images} text="text" />
                 )}
@@ -220,28 +220,28 @@ const ParentDashboardHeader = ({ selectedStudent, setSelectedStudent }) => {
         </div>
 
         <div className="w-full lg:w-1/3 ">
-          <div className="flex justify-between items-center px-[11px]">
-          <InputSelectNew
-                optionType="object"
-                label={"Select Student "}
-                labelClassname="text-[#26435F] -mt-2 font-semibold text-base-20 mb-1"
-                iconClass=" translate-y-[0px] ml-3"
-                parentClassName="mb-2"
-                inputContainerClassName="pt-1 pb-1"
-                optionData={associatedStudents.map((item) => ({
-                  _id: item._id,
-                  name: item.name,
-                  value: item.name,
-                  photo: item.photo,
-                  serviceSeeking: item.serviceSeeking,
-                }))}
-                labelIcon={Drop}
-                optionClassName="w-[130px] text-sm"
-                optionListClassName="text-sm"
-                value={""}
-                onChange={(val) => setSelectedStudent(val)}
-              />
-           
+          <div className="flex justify-between items-center ">
+            <InputSelectNew
+              optionType="object"
+              label={"Select Student "}
+              labelClassname="text-[#26435F] -mt-2 font-semibold text-base-20 mb-1"
+              iconClass=" translate-y-[0px] ml-3"
+              parentClassName="mb-2"
+              inputContainerClassName="pt-1 pb-1"
+              optionData={associatedStudents.map((item) => ({
+                _id: item._id,
+                name: item.name,
+                value: item.name,
+                photo: item.photo,
+                serviceSeeking: item.serviceSeeking,
+              }))}
+              labelIcon={Drop}
+              optionClassName="w-[130px] text-sm"
+              optionListClassName="text-sm"
+              value={""}
+              onChange={(val) => setSelectedStudent(val)}
+            />
+
           </div>
           <div className=".mybox -mt-5 bg-white relative shadow-[0px_0px_2.500001907348633px_0px_#00000040] border-b-4 border-b-[#26435F] h-[215px] rounded-md !w-[calc(489*0.0522vw)]">
             <div id="borderLeft" className=""></div>
@@ -263,15 +263,15 @@ const ParentDashboardHeader = ({ selectedStudent, setSelectedStudent }) => {
                       {/* <h6 className="text-[10px]">SAT Tutoring <br />Subject Tutoring</h6> */}
 
                       <ul className="text-[12px] text-[#517CA8] my-8 text-base-17-5">
-                        {selectedStudent?.serviceSeeking?.length>0 ? selectedStudent?.serviceSeeking?.map((item, idx) => (
+                        {selectedStudent?.serviceSeeking?.length > 0 ? selectedStudent?.serviceSeeking?.map((item, idx) => (
                           <li>
                             {item}
                             {idx < selectedStudent?.serviceSeeking?.length - 1
                               ? ","
                               : ""}{""}
                           </li>
-                        )):"No service"}
-                       
+                        )) : "No service"}
+
                       </ul>
 
                       <Link

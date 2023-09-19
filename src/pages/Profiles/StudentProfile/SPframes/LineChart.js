@@ -186,7 +186,7 @@ export default function Chart({ scoreProgression }) {
   // const checkIfKeyExists = (concepts) => {
   //    concepts
   // }
-
+ console.log("line chart",scoreProgression)
   useEffect(() => {
     if (scoreProgression) {
       setChartData(scoreProgression);
@@ -213,6 +213,10 @@ export default function Chart({ scoreProgression }) {
     const datasets = [];
   
     const labels = [];
+    console.log({chartData})
+    let checkIfKeyExists ={
+
+    }
     for (let cid = 0; cid < chartData?.length; cid++) {
       const score = [
         ...Object.keys(chartData[cid]?.score).map((key) => {
@@ -234,30 +238,39 @@ export default function Chart({ scoreProgression }) {
        labels.push(testName)
       for (let sid = 0; sid < subjects?.length; sid++) {
        
-        const x=(cid+1)*5
+        const x=testName
         const scale=subjects[sid]?.scoreScale
         const y=chartData[cid].score[scale]
-      
+      if(!checkIfKeyExists.hasOwnProperty(subjects[sid]?.name)){
       datasets.push({
         label: concepts[sid],
         fill: false,
       borderColor: getColor(sid, subjects?.length),
-        data: [{ x, y, r: subjects[sid]?.no_of_correct,label: concepts[sid], },{ x:(cid+2)*5, y:Math.random()*100, r: subjects[sid]?.no_of_correct,label: concepts[sid], },{ x:(cid+3)*5, y:Math.random()*100, r: subjects[sid]?.no_of_correct,label: concepts[sid], }],
+        data: [{ x, y, r: subjects[sid]?.no_of_correct,label: concepts[sid], }],
         backgroundColor: getColor(sid, subjects?.length),
       });
+      checkIfKeyExists[subjects[sid]?.name]=datasets?.length-1;
+    }
+      else {
+        let iddd=checkIfKeyExists[subjects[sid]?.name]
+       datasets[iddd]={
+        ...datasets[iddd],
+        data: [...datasets[iddd]?.data,{ x, y, r: subjects[sid]?.no_of_correct,label: concepts[sid], }],
+     
+       }
+      }
      
     }
     
     }
     
-    labels.push("Dummy Test 2")
-    labels.push("Dummy Test 3")
+ 
     setData({
         labels,
       datasets: datasets,
     });
   }, [chartData]);
-
+console.log("linnnnnnnn",data)
   return (
     data !== undefined && (
       <div className="wrapper w-full min-w-2/3 overflow-x-auto">

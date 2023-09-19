@@ -8,7 +8,7 @@
 .calender #calendarContainer .fc-direction-ltr.fc-theme-standard{
   padding: 0 !important;
 }
-
+.
 .calender .fc-theme-standard .fc-toolbar .fc-toolbar-title {
   color: rgba(71, 21, 215, 1) !important;
   font-weight: 600;
@@ -214,9 +214,9 @@ text-transform: uppercase;
   font-size: 1rem !important;
   line-height: 1 rem !important;
 }
-.calender .font-bold {
+/* .calender .font-bold {
   font-weight: 500 !important;
-}
+} */
 
 .calender .timegrid-slot-label-cushion {
   padding: 0px 0px;
@@ -244,9 +244,7 @@ text-transform: uppercase;
 .calendar #number select{
   background: transparent !important;
 }
-/* .fc-scroller{
-  display: none !important;
-} */
+
 .calender table th:first-child
 {
   border: 0 !important;

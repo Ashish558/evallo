@@ -276,10 +276,9 @@ export default function TableItem({
               <td className="py-4 px-[10px]">
                 {item.service}
               </td>
+             
               <td className="py-4 px-[10px]">
-                {item.currency ? item.currency : "USD"}
-              </td>
-              <td className="py-4 px-[10px]">
+              <div className="text-[#517CA8] font-semibold text-base-20 mr-[2px] inline-block">$</div>
                 {item.price}
               </td>
             </tr>
@@ -708,7 +707,7 @@ export default function TableItem({
                         )
                       }
                     >
-                     Report
+                      Report
                     </button>
                   ) : item.isStarted ? (
                     <button
@@ -730,7 +729,7 @@ export default function TableItem({
                         )
                       }
                     >
-                      Start 
+                      Start
                     </button>
                   )}
                 </>

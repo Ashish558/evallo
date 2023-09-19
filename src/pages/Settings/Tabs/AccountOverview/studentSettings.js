@@ -58,11 +58,11 @@ const StudentSettings = () => {
   const [updateEmail, setUpdateEmail] = useUpdateEmailMutation();
   const [userDetails, userDetailsStatus] = useLazyGetPersonalDetailQuery();
   const { role: persona } = useSelector(state => state.user)
-  const {organization} = useSelector(state => state.organization)
+  const { organization } = useSelector(state => state.organization)
   const [updateAccount, updateAccountStatus] = useUpdateUserAccountMutation();
-  const [studentFeedback,setStatus]=useStudentFeedbackMutation()
+  const [studentFeedback, setStatus] = useStudentFeedbackMutation()
   const [fetchedData, setFetchedData] = useState({});
-  const [saving,setSaving]= useState(false)
+  const [saving, setSaving] = useState(false)
   useEffect(() => {
     setSaving(true)
     userDetails()
@@ -146,38 +146,38 @@ const StudentSettings = () => {
       alert("Password reset link sent to your email.");
     });
   };
-const handleFirstName=(e)=>{
-  setValues({
-    ...values,
-    firstName: e.target.value,
-  })
-}
-const [feedBack,setFeedback]=useState({
-  tech:"",
-  support:"",
-})
-const handleFeedback=(message,type)=>{
-  console.log({message,feedBack})
-  const body={
-message,type
+  const handleFirstName = (e) => {
+    setValues({
+      ...values,
+      firstName: e.target.value,
+    })
   }
-  studentFeedback(body).then((res)=>{
-    if(res?.error){
-      alert("Coudn't send feedback , try again")
-    }
-    if(res?.data){
-      alert("Feedback successfully sent")
-    }
-    console.log({res})
+  const [feedBack, setFeedback] = useState({
+    tech: "",
+    support: "",
   })
-}
+  const handleFeedback = (message, type) => {
+    console.log({ message, feedBack })
+    const body = {
+      message, type
+    }
+    studentFeedback(body).then((res) => {
+      if (res?.error) {
+        alert("Coudn't send feedback , try again")
+      }
+      if (res?.data) {
+        alert("Feedback successfully sent")
+      }
+      console.log({ res })
+    })
+  }
 
   return (
-    <div>
-      <div className="flex flex-col gap-10  mx-[100px] my-12 design:mx-[160px] design:my-[60px]">
+    <div className="w-[83.23vw] mx-auto">
+      <div className="flex flex-col gap-10   my-12">
         <div className="text-[#24A3D9] font-lexend-deca text-md design:text-xl  font-semibold leading-normal">
-          <span className=" font-medium ">{organization?.company}</span>
-          <span className="font-semibold">{"  > Settings"}</span>
+          <span className=" font-medium text-xl">{organization?.company}</span>
+          <span className="font-semibold text-xl">{"  > Settings"}</span>
         </div>
         <div className="flex gap-5">
           <InputField
@@ -219,7 +219,7 @@ message,type
             inputContainerClassName=" bg-white border border-white text-[#667085]"
             inputClassName=" text-400 bg-transparent "
             label="Email"
-            
+
             value={values.email}
             onChange={(e) => {
               setValues({
@@ -244,7 +244,8 @@ message,type
               </span>
             }
           />
-         
+
+         <div id="number" >
             <InputFieldDropdown
               placeholder=""
               labelClassname=" text-md text-[#26435F] font-semibold mb-[1px]"
@@ -253,6 +254,8 @@ message,type
               inputClassName=" text-400 !py-1 !text-[17px] bg-transparent "
               label="Phone"
               value={values.phone}
+              codeColor="bg-white"
+             
               codeValue={values.phoneCode}
               handleCodeChange={(e) =>
                 setValues({
@@ -268,13 +271,15 @@ message,type
               }
               error={error.phone}
             />
-         
+         </div>
           <div>
             <PrimaryButton
               onClick={handleDataUpdate}
               disabled={saving}
               loading={saving}
-              className={`bg-[#FFA28D]  mt-5 ml-10 rounded-md px-10 py-2 text-sm text-white  `}
+
+              className={`bg-[#FFA28D]   mt-5 ml-10 rounded-md px-10 py-[14.3px] text-sm text-white  `}
+
             >
               Save
             </PrimaryButton>
@@ -304,61 +309,60 @@ message,type
             </div>
           )}
         </div>
-        <div className="flex justify-between gap-20 mt-16">
-          <div className="flex-1">
+
+        <div className="flex  gap-20 mt-16">
+          <div className="flex-1 max-w-[400px]">
+
             <p className=" text-sm text-[#26435F] font-semibold">
               Submit Feedback
             </p>
             <textarea
-                rows="3"
-                value={feedBack?.support}
-                onChange={(e)=>{
-                  setFeedback({
-                    ...feedBack,
-                    support: e.target.value 
-                  })
-                }}
-                className="mt-1 block w-full h-[180px] resize-none focus:!ring-blue-500 p-2 focus:!border-blue-500 placeholder-[#CBD6E2] text-sm  placeholder:text-xs "
-                placeholder=" If you have any feedback for this online platform, please submit
-                it here. Our team takes every suggestion seriously."
-              ></textarea>
-          
-           
-            <button
-              onClick={()=>{
-                handleFeedback(feedBack.support,"feedback")
+              rows="3"
+              value={feedBack?.support}
+              onChange={(e) => {
+                setFeedback({
+                  ...feedBack,
+                  support: e.target.value
+                })
               }}
-              className="bg-[#517CA8] text-white rounded-md mt-2 float-right px-4 py-2 text-xs"
+              className="mt-1 block  resize-none focus:!ring-blue-500 p-5 focus:!border-blue-500 placeholder-[#CBD6E2] text-base-18  placeholder:text-base-18  w-[33.54vw] h-[352px] "
+              placeholder=" If you have any feedback for this online platform, please submit it here. Our team takes every suggestion seriously."
+            ></textarea>
+
+
+            <button
+              onClick={() => {
+                handleFeedback(feedBack.support, "feedback")
+              }}
+              className="bg-[#517CA8] text-white rounded-lg mt-2 float-right px-4 py-2 mr-[60px]"
             >
               Submit
             </button>
           </div>
-          <div className="flex-1">
+          <div className="flex-1 max-w-[400px]">
             <p className=" text-sm text-[#26435F] font-semibold ">
               Request Technical Support
             </p>
-           
-              <textarea
-                rows="3"
-                value={feedBack?.tech}
-                onChange={(e)=>{
-                  setFeedback({
-                    ...feedBack,
-                    tech: e.target.value 
-                  })
-                }}
 
-                className="mt-1 block w-full h-[180px] resize-none focus:!ring-blue-500 p-2 focus:!border-blue-500 placeholder-[#CBD6E2] text-sm  placeholder:text-xs "
-                placeholder=" If you require technical support, please submit your request here
-                
-              and our team will help you out accordingly."
-              ></textarea>
-          
-            <button
-               onClick={()=>{
-                handleFeedback(feedBack.tech,"")
+            <textarea
+              rows="3"
+              value={feedBack?.tech}
+              onChange={(e) => {
+                setFeedback({
+                  ...feedBack,
+                  tech: e.target.value
+                })
               }}
-              className="bg-[#517CA8] text-white rounded-md mt-2 float-right px-4 py-2 text-xs"
+
+              className="mt-1 block w-[33.54vw] h-[352px] resize-none focus:!ring-blue-500 p-5 focus:!border-blue-500 placeholder-[#CBD6E2] text-base-18   placeholder:text-base-18  "
+              placeholder=" If you require technical support, please submit your request here and our team will help you out accordingly."
+            ></textarea>
+
+            <button
+              onClick={() => {
+                handleFeedback(feedBack.tech, "")
+              }}
+              className="bg-[#517CA8] text-white rounded-lg mt-2 float-right px-4 py-2 "
             >
               Submit
             </button>

@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import { Bubble } from "react-chartjs-2";
-import { bubbleChartData } from "./ChartData";
+import { ChartData, bubbleChartData } from "./ChartData";
 import {
   useGetUserDailyActivityQuery,
   useGetUserDailyActivityRangeMutation,
@@ -77,38 +77,38 @@ const BubbleChart = ({ dateRange }) => {
     <div className="bg-[#FFFFFF] relative flex justify-center items-center border-[1.3px] border-[#FFF] p-4 mt-[6px] rounded-[5.33px] shadow-[0px_0px_2px_rgba(0,0,0,0.25)]">
       <div className="flex relative max-w-full justify-center w-full">
         <Bubble
-          data={chartData ? chartData : bubbleChartData}
+          //  data={chartData ? chartData : bubbleChartData}
+          data={ ChartData}
           options={{
+            layout: {
+              padding: {
+                top: 20,
+                bottom:20
+              },
+            },
             scales: {
               x: {
+                type: 'category',
                 display: true,
                 title: {
                   display: true,
-                  text: "Weeks",
+                  text: 'Weeks',
                   padding: { top: 40 },
-                  color: "#24A3D9",
-
+                  color: '#24A3D9',
                   font: {
                     weight: 500,
-                    size: 18.667,
+                    size: 18,
                   },
                 },
+                labels: ['', 'Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5','Week 6'],
                 ticks: {
-                  // stepSize: 1,
-                  // callback: (value) => {
-                  //   if (Number.isInteger(value)) {
-                  //     return value;
-                  //   }
-                  //   return null;
-                  // },
-                  color: "#507CA8",
+                  color: '#507CA8',
                   font: {
                     weight: 400,
                     size: 16,
                   },
                 },
               },
-
               y: {
                 display: true,
                 title: {
@@ -121,29 +121,18 @@ const BubbleChart = ({ dateRange }) => {
                     size: 16,
                   },
                 },
+                suggestedMin: 0, 
+                suggestedMax: 60, 
+                stepSize: 10, 
                 ticks: {
-                  color: "#507CA8",
+                  color: '#507CA8',
                   font: {
                     weight: 400,
                     size: 16,
                   },
                 },
               },
-            },
 
-            title: {
-              display: true,
-              text: "Bubble Chart",
-              fontSize: 20,
-            },
-
-            layout: {
-              padding: {
-                left: 10,
-                right: 10,
-                top: 10,
-                bottom: 0,
-              },
             },
             plugins: {
 
@@ -152,35 +141,42 @@ const BubbleChart = ({ dateRange }) => {
                 display: true,
                 position: "top",
                 align: "center",
+               
 
                 labels: {
-
+                  // boxHeight:400,
                   usePointStyle: true,
+                  // radius: 20,
                   font: {
                     size: 15,
-                    family: 'Arial',
+                    family: 'Lexend Deca',
                   },
-                  marginBottom: 10,
-                  labelSpacing: 100,
-                  boxWidth: 100,
+                  // pointStyleSize:5,
+                  // pointStyleHeight:5,
 
                   pointStyle: "circle",
 
-                  radius: 7,
                 },
+                  // marginBottom:30,
               },
             },
+            title: {
+              display: true,
+              text: "Bubble Chart",
+              fontSize: 20,
+            },
+
           }}
         />
 
       </div>
-      <div className="absolute z-20 bottom-[5%] left-[10%] font-medium text-lg flex items-center text-[#26435F]">
+      <div className="absolute bottom-[10%] flex items-center font-medium text-lg left-[7%] text-[#26435F]">
         <div className="bg-[rgba(38,67,95,1)] w-[40px] h-[11px] mr-[13px]"></div>
         <p>past 12 days</p>
       </div>
-      <div className="absolute bottom-[6.5%] left-[50.5%]"><img src={arrow} alt="" /></div>
-      <div className="absolute top-[40%] left-[3.5%]"><img src={arrow1} alt="" /></div>
-    </div>
+      <div className="absolute bottom-[9%] left-[50%]"><img src={arrow} alt="" /></div>
+      <div className="absolute top-[40%] left-[3%]"><img src={arrow1} alt="" /></div>
+    </div >
   );
 };
 

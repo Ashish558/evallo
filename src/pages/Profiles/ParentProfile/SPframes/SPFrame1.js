@@ -11,6 +11,8 @@ import {
 
 import InputSelectNew from "../../../../components/InputSelectNew/InputSelectNew";
 import { object } from "yup";
+import { useLazyGetSessionNotesQuery } from "../../../../app/services/session";
+import { useEffect } from "react";
 
 let signupData = [
   {
@@ -63,7 +65,11 @@ const SPFrame1 = ({
   const [xlsFile, setXlsFile] = useState({});
   
   const {organization}= useSelector((state)=>state.organization)
+  const [getSessions,setSessions]=useLazyGetSessionNotesQuery()
+  
   const [internal, setInternal] = useState(false);
+  const [clientNotes,setClientNotes] = useState([]);
+  const [internalNotes,setInternalNotes] = useState([])
   const { awsLink,role:persona } = useSelector((state) => state.user);
   //const user2 = useSelector((state) => state);
   ////console.log("states",user2)
@@ -123,6 +129,31 @@ const handleLeadStatus=(e)=>{
     fetchDetails(true, true);
   })
 }
+useEffect(()=>{
+  if(userDetail){
+    console.log(userDetail)
+    getSessions(userDetail.userId).then((response)=>{
+      console.log("session notes",response)
+      response?.data?.sessionNotes?.map((it)=>{
+        if(it?.clientNotes?.note)
+        setClientNotes((prev)=>{
+          return [
+            ...prev,
+            {...it?.clientNotes}
+          ]
+        })
+        if(it?.internalNotes?.note)
+        setInternalNotes((prev)=>{
+          return [
+            ...prev,
+            {...it?.internalNotes}
+          ]
+        })
+      })
+    })
+  }
+},[userDetail])
+
 if(persona==="student"||persona==="parent")
 return <></>
   //console.log("frame1 Stud", { userDetail, user,persona });
@@ -302,7 +333,7 @@ return <></>
           </div>
           <div className="flex flex-col h-[380px]   bg-[#FFFFFF] ">
             <ul className="list-disc rounded-b-md overflow-y-auto custom-scroller h-full ">
-            {internal && user?.internalNotes?.map(
+            {internal && internalNotes?.map(
                 (item, index) => (
                   <>
                     <div key={index} className="flex h-[57px] pl-5 relative items-center">
@@ -332,7 +363,7 @@ return <></>
                   </>
                 )
               )}
-               {!internal && user?.clientNotes?.map(
+               {!internal && clientNotes?.map(
                 (item, index) => (
                   <>
                      <div key={index} className="flex h-[57px] pl-5 relative items-center">

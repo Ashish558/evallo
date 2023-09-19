@@ -67,18 +67,18 @@ export default function InputSelectNew({
       >
         {Icon && !ICON2 && <img src={Icon} className={`mr-6 inline-block ${iconClass} `} alt="icon" />}
 
-        {!selected && !ICON2&& !Icon && !labelIcon?
+        {!selected && !ICON2 && !Icon && !labelIcon ?
           <img
             src={IconDemography ? countryDA : DownArrow}
             className={`${arrowWidth ? arrowWidth : 'w-[15px]'} ${styles.downArrow}`}
             alt="down-arrow"
             onClick={() => setSelected(!selected)}
-          />: !Icon && !ICON2&&  !labelIcon && <img
-          src={IconDemography?countryDA:UpArrow}
-          className={` ${arrowWidth ? arrowWidth:'w-[15px]'}  ${styles.downArrow}`}
-          alt="down-arrow"
-          onClick={() => setSelected(!selected)}
-        />
+          /> : !Icon && !ICON2 && !labelIcon && <img
+            src={IconDemography ? countryDA : UpArrow}
+            className={` ${arrowWidth ? arrowWidth : 'w-[15px]'}  ${styles.downArrow}`}
+            alt="down-arrow"
+            onClick={() => setSelected(!selected)}
+          />
 
         }
         <div
@@ -91,7 +91,7 @@ export default function InputSelectNew({
           ) : (
             value
           )}
-           {ICON2 && <img src={ICON2} className={`ml-4 inline-block ${iconClass} `} alt="icon" />}
+          {ICON2 && <img src={ICON2} className={`ml-4 inline-block ${iconClass} `} alt="icon" />}
 
         </div>
         {selected && (
