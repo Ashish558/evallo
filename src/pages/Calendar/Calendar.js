@@ -1560,9 +1560,8 @@ setColorMapping(temp);
               // slotMinTime={"06:00:00"}
               // slotMaxTime={"30:00:00"}
               dayHeaderFormat={{
-                
-                day: "numeric",
-                weekday: 'long'
+                weekday: 'long',
+                day: "numeric"
               }}
               // dayHeaderContent={getDayHeaders}
               selectable={true}
