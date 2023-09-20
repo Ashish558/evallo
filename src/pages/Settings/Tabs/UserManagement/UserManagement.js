@@ -34,6 +34,7 @@ import { isPhoneNumber } from "../../../Signup/utils/util";
 import { checkIfExistInNestedArray } from "../../../../utils/utils";
 import InputSelectNew from "../../../../components/InputSelectNew/InputSelectNew";
 import { useSelector } from "react-redux";
+import { useAddManager2Mutation } from "../../../../app/services/superAdmin";
 
 const optionData = ["option 1", "option 2", "option 3", "option 4", "option 5"];
 
@@ -193,6 +194,7 @@ export default function UserManagement() {
 
   const [fetchUsers, fetchUsersResp] = useLazyGetAllUsersQuery();
   const [addUser, addUserResp] = useAddUserMutation();
+  const [addManager2,setManager2status]=useAddManager2Mutation()
   const [signupUser, signupUserResp] = useSignupUserMutation();
   const [deleteUser, deleteUserResp] = useDeleteUserMutation();
 
@@ -224,7 +226,7 @@ export default function UserManagement() {
     setUsersData([]);
     setFilteredUsersData([]);
 
-    let urlParams = `?limit=${maxPageSize}&page=${currentPage}&role=superAdmin`;
+    let urlParams = `?limit=${maxPageSize}&page=${currentPage}&role=manager&role=superAdmin`;
     if (filterData.userType.length > 0) {
       filterData.userType.forEach((item) => {
         urlParams = urlParams + `&role=${item}`;
@@ -377,7 +379,7 @@ export default function UserManagement() {
 
   useEffect(() => {
     let tempdata = [...usersData];
-    // console.log('all users data', usersData)
+     console.log('all users data', usersData)
     // console.log('filterData.specialization', filterData.specialization)
     fetch();
     setCurrentPage(1);
@@ -490,7 +492,20 @@ export default function UserManagement() {
       });
       return;
     }
-    
+    else if(modalData.userType==='manager'){
+      addManager2(body).then((res) => {
+        setLoading(false);
+        console.log(res);
+        if (res.error) {
+          alert(res.error.data.message);
+          return;
+        }
+        fetch();
+        alert("Invitation sent!");
+        setModalData(initialState);
+        handleClose();
+      });
+    }
     else {
       body.role = modalData.userType;
       console.log(body);

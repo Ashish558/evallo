@@ -323,12 +323,12 @@ const AdminNavbar = () => {
           </a>
          
         </div>
-        <div className={`flex  text-[#FFFFFF] font-semibold text-[13px] ${!isLoggedIn&& " opacity-[0.3]"}`}>
+        <div className={`flex  text-[#FFFFFF] font-semibold text-base-20 ${!isLoggedIn&& " opacity-[0.3]"}`}>
           {navData.map((item, idx) => {
             return (
               <div
                 key={idx}
-                className={`flex items-center mr-8 text-base-17-5 ${isLoggedIn?"cursor-pointer":' cursor-default'}`}
+                className={`flex items-center mr-8 text-base-17-5 ${isLoggedIn?"cursor-pointer":' cursor-default'} text-base-20`}
                 onClick={() =>isLoggedIn&& handleNavigate(item.path)}
               >
                 { isLoggedIn && item?.path === activeRoute ? (
@@ -341,7 +341,7 @@ const AdminNavbar = () => {
                         alt=""
                       />
                     </p>
-                    <p className="pl-[10px] text-[#FFA28D]"> {item.tooltip} </p>
+                    <p className="pl-[10px] text-[#FFA28D] text-base-20"> {item.tooltip} </p>
                   </>
                 ) : (
                   <>
@@ -352,7 +352,7 @@ const AdminNavbar = () => {
                         alt=""
                       />
                     </p>
-                    <p className="pl-[10px]"> {item.tooltip} </p>
+                    <p className="pl-[10px] text-base-20"> {item.tooltip} </p>
                   </>
                 )}
               </div>

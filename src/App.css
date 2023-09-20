@@ -17,6 +17,7 @@ body {
   position: relative;
   display: flex;
   flex-flow: column;
+  min-width:1000px !important;
 }
 
 nav .active {

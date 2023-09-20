@@ -151,6 +151,14 @@ export const superAdminServicesApi = createApi({
         headers: getAuthHeader(),
       }),
     }),
+    addManager2: builder.mutation({
+      query: (body) => ({
+        url: `api/user/registerManager`,
+        method: "POST",
+        body: body,
+        headers: getAuthHeader(),
+      }),
+    }),
   }),
 });
 
@@ -158,6 +166,7 @@ export const {
   useGetAllOrgStatsQuery,
   useGetAllOrgStatsRangeMutation,
   useGetAllTestQuery,
+  useAddManager2Mutation,
   useGetUserStatsByRoleQuery,
   useGetUserStatsByRoleRangeMutation,
   useGetUserDailyActivityQuery,

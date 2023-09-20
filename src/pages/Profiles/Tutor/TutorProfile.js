@@ -84,7 +84,7 @@ export default function TutorProfile({ isOwn }) {
             setStudentFeedbacks(data)
 
          })
-   })
+   },[id])
    const tableHeaders1 = [
       {
          id: 1,
@@ -110,11 +110,8 @@ export default function TutorProfile({ isOwn }) {
       {
          id: 1,
          text: 'Service'
-      }, {
+      },  {
          id: 2,
-         text: 'Currency',
-      }, {
-         id: 3,
          text: 'Hourly Rate'
       }
 
@@ -240,6 +237,10 @@ export default function TutorProfile({ isOwn }) {
          active: false,
          videoLink: ''
       },
+      tutorReviews: {
+         active: false,
+         tutorReviews: []
+      }
 
    })
 
@@ -299,7 +300,38 @@ export default function TutorProfile({ isOwn }) {
          setEditable(true)
       }
    }, [])
-
+  const [tutorAdminServices,setTutorServices]=useState()
+   useEffect(()=>{
+      if(organization?.settings?.servicesAndSpecialization){
+         let temp=[]
+         temp=organization?.settings?.servicesAndSpecialization?.map((item)=>{
+            return {
+               service:item?.service,
+               price: null,
+               _id:item?._id
+            }
+         })
+         setTutorServices(temp)
+      }
+   },[organization])
+   console.log("servicessss",tutorAdminServices,userDetail)
+   useEffect(()=>{
+      if(userDetail?.tutorServices && tutorAdminServices){
+         //console.log("userDetailttftft",tutorAdminServices,userDetail?.tutorServices);
+         let temp=tutorAdminServices;
+         temp?.map((serv,id)=>{
+            userDetail.tutorServices?.map((item)=>{
+             
+               if(item?._id===serv?._id){
+                 temp[id].price=item?.price
+                
+               }
+            })
+         })
+         setTutorServices(temp)
+        
+      }
+   },[userDetail?.tutorServices])
    const fetchDetails = (closeModal) => {
       let userId = ''
       if (isOwn) {
@@ -318,6 +350,7 @@ export default function TutorProfile({ isOwn }) {
             console.log('details', details);
             // const { } = res.data.data.user
             // const { service } = res.data.data.userdetails
+           
             const promiseState = async state => new Promise(resolve => {
                resolve(setToEdit(prevToEdit => {
                   return {
@@ -415,8 +448,15 @@ export default function TutorProfile({ isOwn }) {
                         isPresent: details === null ? false : true
                      },
                      tutorServices: {
+                       
                         ...prevToEdit.tutorServices,
                         tutorServices: details !== null ? details.tutorServices : [],
+                        isPresent: details === null ? false : true
+                     },
+                     tutorReviews: {
+                       
+                        ...prevToEdit.tutorReviews,
+                        tutorReviews: details !== null ? details.tutorReviews : [],
                         isPresent: details === null ? false : true
                      },
                      serviceSpecializations: {
@@ -458,7 +498,7 @@ export default function TutorProfile({ isOwn }) {
       console.log("UserDetails", userDetail)
       console.log("organizations" + organization.settings)
       setSettings(organization.settings)
-   }, [])
+   }, [organization])
 
    // console.log('user', user)
    // console.log('To-edit', toEdit)
@@ -469,9 +509,9 @@ export default function TutorProfile({ isOwn }) {
 
    // console.log(user);
    // console.log('settings', settings.servicesAndSpecialization);
-   if (Object.keys(user).length < 1) return
-   if (Object.keys(settings).length < 1) return
-   // if (Object.keys(userDetail).length < 1) return
+  if (Object.keys(user).length < 1) return
+  if (Object.keys(settings).length < 1) return
+   if (Object.keys(userDetail).length < 1) return
    let tutorLevelIcon = TutorLevelOne
    let tutorLevelTextColor = 'text-[#ff4300]'
    let tutorLevelBg = '#FBDB89'
@@ -600,6 +640,9 @@ export default function TutorProfile({ isOwn }) {
                                  </div>
 
                               </div>
+                              {
+
+                              (persona==='tutor'||persona==='admin') &&
                               <div className='ml-auto mt-auto pt-[25px] pb-[15px] mr-8'>
                                  <div className='flex gap-4 items-center mb-[10px]'>
                                     <img src={mail} alt="mailLogo"></img>
@@ -614,6 +657,25 @@ export default function TutorProfile({ isOwn }) {
                                     <a className='text-white text-[17.503px]' href={userDetail.linkedIn}>{userDetail.linkedIn}</a>
                                  </div>
                               </div>
+                              }
+                               {
+
+(persona==='student'||persona==='parent') && organization?.settings?.permissions[2]?.choosedValue &&
+<div className='ml-auto mt-auto pt-[25px] pb-[15px] mr-8'>
+   <div className='flex gap-4 items-center mb-[10px]'>
+      <img src={mail} alt="mailLogo"></img>
+      <p className='text-white text-[17.503px]'>{user.email}</p>
+   </div>
+   <div className='flex gap-4 items-center mb-[10px]'>
+      <img src={call} alt="callLogo"></img>
+      <p className='text-white text-[17.503px]'>{user.phoneCode}{user.phone}</p>
+   </div>
+   <div className='flex gap-4 items-center mb-[10px]'>
+      <img src={linkedin} alt="linkedinLogo"></img>
+      <a className='text-white text-[17.503px]' href={userDetail.linkedIn}>{userDetail.linkedIn}</a>
+   </div>
+</div>
+}
                               {/* <div>
                                  <ProfilePhoto isTutor={true}
                                     src={user.photo ? `${awsLink}${user.photo}` : '/images/default.jpeg'}
@@ -750,10 +812,13 @@ export default function TutorProfile({ isOwn }) {
                      </div>
                   </div>
                   <div className='col-span-6'>
+                     { persona==='admin' &&
                      <div className='flex'>
                         {/* {(isOwn == true && persona === 'admin') && <p className='text-[#667085] ml-auto underline cursor-pointer' onClick={() => setToEdit({ ...toEdit, videoLink: { ...toEdit.videoLink, active: true } })}>edit</p>} */}
-                        <p className='text-[#667085] mb-[12px]  ml-auto underline cursor-pointer text-[15px] font-semibold' onClick={() => setToEdit({ ...toEdit, videoLink: { ...toEdit.videoLink, active: true } })}>edit</p>
-                     </div>
+                        <p className='text-[#667085] mb-[12px]  ml-auto underline cursor-pointer text-[15px] font-semibold' 
+                        onClick={() =>
+                         setToEdit({ ...toEdit, videoLink: { ...toEdit.videoLink, active: true } })}>edit</p>
+                     </div>}
                      <div className='  pt-10 min-h-[460px]  relative z-10 flex items-end ' >
 
                         <YoutubeEmbed embedId={videoLink} />
@@ -775,8 +840,17 @@ export default function TutorProfile({ isOwn }) {
                         }
 
                      </div>
-                     <div className=' text-xl text-[#26435F] font-semibold' >Reviews</div>
-                     <ProfileCard className='border border-[#00000010]' hideShadow
+                     <div className='relative z-[100] flex justify-between text-xl text-[#26435F] font-semibold' >
+                        <span>Reviews</span>
+                     
+                     
+                     {(persona === 'admin') && 
+                     <p className='text-[#667085] ml-auto underline cursor-pointer text-[15px] font-semibold' 
+                     onClick={() => setToEdit({ ...toEdit, tutorReviews: { tutorReviews:[], active: true } })}>edit</p>}
+                       
+                  
+                     </div>
+                       <ProfileCard className='border border-[#00000010]' hideShadow
                         bgClassName="bg-white pl-7 py-3 rounded-[10px]"
                         body={
                            <div>
@@ -863,9 +937,15 @@ export default function TutorProfile({ isOwn }) {
                <div className='flex justify-between mt-[55px] gap-x-[37px]'>
                   <div className='w-[60.32vw]'>
                      <div className='flex items-center mb-1'>
-                        <div className=' text-[#26435F] text-xl font-semibold' >Address</div>
-                        {(isOwn == true || persona === 'admin') && <p className='text-[#667085] ml-auto underline cursor-pointer font-semibold text-[15px]' onClick={() => setToEdit({ ...toEdit, tutorAddress: { ...toEdit.tutorAddress, active: true } })}>edit</p>}
-                     </div>
+                     {(isOwn == true || persona === 'admin') && 
+                     <>
+                      <div className=' text-[#26435F] text-xl font-semibold' >Address</div>
+                         <p className='text-[#667085] ml-auto underline cursor-pointer font-semibold text-[15px]' 
+                         onClick={() => setToEdit({ ...toEdit, tutorAddress: { ...toEdit.tutorAddress, active: true } })}>edit</p>
+</>
+}
+                         </div>
+                     
                      <div>
                         {
                            (isOwn === true) || (persona === 'admin') ?
@@ -920,11 +1000,11 @@ export default function TutorProfile({ isOwn }) {
                         }
                      </div>
                   </div>
-
+                  {( persona === 'admin') &&
                   <div className='w-[10.49vw]'>
                      <div className='flex items-center'>
                         <div className='text-xl text-[#26435F] font-semibold' >Salary</div>
-                        {(isOwn == true || persona === 'admin') && <p className='text-[#667085] ml-auto underline cursor-pointer font-semibold text-[15px]' onClick={() => setToEdit({ ...toEdit, income: { ...toEdit.income, active: true } })}>edit</p>}
+                        <p className='text-[#667085] ml-auto underline cursor-pointer font-semibold text-[15px]' onClick={() => setToEdit({ ...toEdit, income: { ...toEdit.income, active: true } })}>edit</p>
                      </div>
                      <ProfileCard
                         bgClassName="bg-white"
@@ -941,11 +1021,11 @@ export default function TutorProfile({ isOwn }) {
                      />
 
 
-                  </div>
+                  </div>}
                   {(isOwn === true || persona === "admin") ? (<div className='w-[25.10vw]'>
                      <div className='flex items-center'>
                         <div className='text-[#26435F] text-xl font-semibold' >Payment Info</div>
-                        {(isOwn == true || persona === 'admin') && <p className='text-[#667085] ml-auto underline cursor-pointer font-semibold text-[15px]' onClick={() => setToEdit({ ...toEdit, paymentInfo: { ...toEdit.paymentInfo, active: true } })}>edit</p>}
+                        {( persona === 'admin') && <p className='text-[#667085] ml-auto underline cursor-pointer font-semibold text-[15px]' onClick={() => setToEdit({ ...toEdit, paymentInfo: { ...toEdit.paymentInfo, active: true } })}>edit</p>}
                      </div>
                      <ProfileCard
                         bgClassName="bg-white "
@@ -958,7 +1038,7 @@ export default function TutorProfile({ isOwn }) {
                                        onClick={() => setToEdit({ ...toEdit, paymentInfo: { ...toEdit.paymentInfo, active: true } })}
                                      
                                     /> */}
-                                 <div className='font-normal text-[#517CA8] text-xl'>
+                                 <div className='font-normal text-[#517CA8] text-lg px-3 py-2 '>
                                     {userDetail.paymentInfo}
                                  </div>
                               </div>
@@ -970,7 +1050,7 @@ export default function TutorProfile({ isOwn }) {
 
 
                <div className='flex justify-between mt-20 mb-[191px]'>
-                  <div className='w-[36.5vw]'>
+               {( persona === 'admin') &&  <div className='w-[36.5vw]'>
                      <div className='text-xl text-[#26435F] font-semibold mb-[-10px]' >Recent Feedback History</div>
                      <div className='flex'>
                         <Table
@@ -989,14 +1069,14 @@ export default function TutorProfile({ isOwn }) {
 
                      </div>
 
-                  </div>
-                  <div className='w-[19.8vw] '>
+                  </div>}
+                  {( persona === 'admin') &&   <div className='w-[19.8vw] '>
                      <BarChart studentFeedbacks={studentFeedbacks}>
 
                      </BarChart>
-                  </div>
-                  <div className=" w-[1.25px] h-[630px] bg-[#CBD6E2] "></div>
-                  <div className='w-[20.9vw]'>
+                  </div>}
+                  {( persona === 'admin') && <div className=" w-[1.25px] h-[630px] bg-[#CBD6E2] "></div>}
+                  {( persona === 'admin') &&<div className='w-[20.9vw]'>
                      <div className='flex items-center'>
                         <div className='text-[#26435F] text-[20px] font-semibold' >Tutor Status</div>
                         {(isOwn === true || persona === 'admin') && <p className='text-[#667085] ml-auto underline cursor-pointer text-[15px] font-semibold' onClick={() => setToEdit({ ...toEdit, tutorLevel: { ...toEdit.tutorLevel, active: true } })}>edit</p>}
@@ -1018,20 +1098,35 @@ export default function TutorProfile({ isOwn }) {
                      <div className='mt-[33.75px]'>
                         <div className='flex justify-between mb-[-10px]'>
                            <div className=' text-[#26435F] text-xl font-semibold ' >Service Rates</div>
-                           {(isOwn === true || persona === 'admin') && <p className='text-[#667085] ml-auto underline cursor-pointer text-[15px] font-semibold' onClick={() => setToEdit({ ...toEdit, tutorLevel: { ...toEdit.tutorLevel, active: true } })}>edit</p>}
+                           {(persona === 'admin') && <p className='text-[#667085] ml-auto underline cursor-pointer text-[15px] font-semibold' onClick={() => setToEdit({ ...toEdit, tutorServices: { tutorServices:tutorAdminServices, active: true } })}>edit</p>}
+                          
                         </div>
                         <Table
                            tableHeaders={tableHeaders2}
                            dataFor="serviceRates"
-                           data={userDetail.tutorServices}
+                           data={userDetail.tutorServices?.map((service)=>{
+                              return {
+                                 service: service.service,
+                                 price: service.price
+                              }
+                           })}
                            maxPageSize={7}
+                           setPrice={ (idx,isPresent) => setToEdit({
+                              ...toEdit,
+                              tutorServices: {
+                                 ...toEdit.tutorServices, active: true, selectedIdx: idx,
+                                 servicePresent: isPresent
+                              }
+                           })}
                            headerObject={true}
                            noArrow={true}
                         >
                         </Table>
                      </div>
                   </div>
+                  }
                </div>
+
 
                {/* <div className='lg:grid mt-12 px-2 grid-cols-12 grid-ros-6 lg:mt-[60px] gap-5 lg:pl-3'>
 
@@ -1307,9 +1402,9 @@ export default function TutorProfile({ isOwn }) {
                   }
                />
 
-            } */}
-            {/* {
-               persona === 'admin' &&
+            }
+            {
+               persona === 'admin'&&false &&
                <FeedbackTable feedbacks={feedbacks} />
             } */}
 

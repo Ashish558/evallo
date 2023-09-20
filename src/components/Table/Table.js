@@ -36,10 +36,10 @@ export default function Table(props) {
   useEffect(() => {
     let arr = [];
     let noOfkeys;
-    if (headerObject) noOfkeys = Object.keys(tableHeaders).length;
-    else noOfkeys = tableHeaders.length;
+    if (headerObject) noOfkeys = Object.keys(tableHeaders)?.length;
+    else noOfkeys = tableHeaders?.length;
     arr.length = noOfkeys;
-    for (let i = 0; i < maxPageSize - tableData.length; i++) {
+    for (let i = 0; i < maxPageSize - tableData?.length; i++) {
       let curr = [];
       for (let j = 0; j < noOfkeys; j++) {
         curr.push(" Dummy ");
@@ -53,7 +53,7 @@ export default function Table(props) {
     if (hidePagination === true) {
       setTableData(data);
     } else {
-      const temp = data.slice(0, maxPageSize);
+      const temp = data?.slice(0, maxPageSize);
 
       setTableData(temp);
       setSorted(temp);
@@ -68,7 +68,7 @@ export default function Table(props) {
 
   useEffect(() => {
     if (hidePagination === true) return;
-    const temp = data.slice(
+    const temp = data?.slice(
       (currentPage - 1) * maxPageSize,
       (currentPage - 1) * maxPageSize + maxPageSize
     );
@@ -114,7 +114,7 @@ export default function Table(props) {
                 </div>
               </div>
             ) : (
-              tableData.map((item, idx) => {
+              tableData?.map((item, idx) => {
 
                 return AdminLatestSignUp ? (
                   <React.Fragment key={idx}>
@@ -167,7 +167,7 @@ export default function Table(props) {
             currentPage={currentPage}
             setCurrentPage={setCurrentPage}
             totalPages={
-              isCallingApi ? total_pages : Math.ceil(data.length / maxPageSize)
+              isCallingApi ? total_pages : Math.ceil(data?.length / maxPageSize)
             }
           />
         </div>
@@ -190,7 +190,7 @@ export default function Table(props) {
               pageCount={
                 isCallingApi
                   ? total_pages
-                  : Math.ceil(data.length / maxPageSize)
+                  : Math.ceil(data?.length / maxPageSize)
               }
               previousClassName="hidden"
               nextClassName="hidden"
