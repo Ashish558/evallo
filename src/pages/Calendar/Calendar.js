@@ -1288,6 +1288,9 @@ export default function Calendar() {
                 center: "",
                 end: "dayGridMonth,timeGridWeek"
               }}
+              datesSet={(arg) => {
+                console.log('datesSet', arg) //starting visible date
+              }}
               titleFormat={{
                 day: '2-digit',
                 month: "short",
@@ -1298,8 +1301,9 @@ export default function Calendar() {
               // slotMinTime={"06:00:00"}
               // slotMaxTime={"30:00:00"}
               dayHeaderFormat={{
-                weekday: 'long',
-                day: "numeric"
+                
+                day: "numeric",
+                weekday: 'long'
               }}
               // dayHeaderContent={getDayHeaders}
               selectable={true}
