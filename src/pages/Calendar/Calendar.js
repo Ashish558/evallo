@@ -1547,6 +1547,9 @@ setColorMapping(temp);
                 center: "",
                 end: "dayGridMonth,timeGridWeek"
               }}
+              datesSet={(arg) => {
+                console.log('datesSet', arg) //starting visible date
+              }}
               titleFormat={{
                 day: '2-digit',
                 month: "short",
