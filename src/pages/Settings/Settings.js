@@ -986,7 +986,7 @@ export default function Settings() {
                 </div>
               }
             />
-
+ <div className="h-[1.25px] bg-[#CBD6E2] my-4"></div>
             <SettingsCard
               titleClassName="text-base-20"
               title="Tutor Status Items"
@@ -1004,7 +1004,7 @@ export default function Settings() {
                 </div>
               }
             />
-
+ <div className="h-[1.25px] bg-[#CBD6E2] mb-8"></div>
             <SettingsCard
               titleClassName="text-base-20"
               title="Manage Referral Codes"
@@ -1633,9 +1633,9 @@ export default function Settings() {
       )}
       {addCodeModalActive && (
         <Modal
-          classname={"max-w-[700px] mx-auto"}
+          classname={"max-w-[560px] mx-auto"}
           titleClassName="text-base-20 mb-[18px]"
-          title="Add / Edit Subscription Code"
+          title="Add / Edit Referral Code"
          
           cancelBtn={false}
           cancelBtnClassName="w-140 "
@@ -1645,14 +1645,16 @@ export default function Settings() {
           }}
           body={
             <form id="settings-form" onSubmit={handleCodeSubmit}>
-              <div className="  grid-cols-1 md:grid-cols-2  gap-x-2 md:gap-x-3 gap-y-2 gap-y-4 mb-5">
-              <div className="flex gap-4">
-                <div>
+               <p className="text-base-17-5 mt-[-10px] text-[#667085]"><span className="font-semibold ">⚠️ Note:</span>  Referral codes can be used by your leads (parents and students) to sign up for accessing Evallo’s portal. You can choose how long you want to provide them this access and what assignments should show up automatically after they sign up with your organization. Read detailed documentation in Evallo’s <span className="text-[#24A3D9]"> knowledge base.</span></p>
+              
+              <div className="  grid-cols-1 md:grid-cols-2  gap-x-2 md:gap-x-3 gap-y-2 gap-y-4 mb-5 mt-3">
+              <div className="flex-1 flex gap-5 ">
+                <div className="flex-1">
                   <InputField
-                    label="Subscription Code"
-                    labelClassname="text-base-20 ml-4 mb-0.5"
-                    placeholder="Sample Code"
-                    inputContainerClassName=" text-base-17-5 px-5 bg-primary-50 border-0"
+                    label="Referral Code"
+                    labelClassname="text-base-20 text-[#26435F] mb-0.5"
+                    placeholder="Add a single-word referral code"
+                    inputContainerClassName=" text-base-17-5 !px-3 bg-primary-50 border-0"
                     inputClassName="bg-transparent"
                     placeholderClass="text-base-17-5"
                     parentClassName=" text-base-17-5 py-0 w-full mr-4"
@@ -1664,13 +1666,13 @@ export default function Settings() {
                     }
                   />
                 </div>
-                <div>
+                <div className="flex-1">
                   <InputField
                     label="Duration (in weeks)"
-                    labelClassname="text-base-20 ml-4 mb-0.5"
+                    labelClassname="text-base-20 text-[#26435F] mb-0.5"
                     isRequired={true}
-                    placeholder=""
-                    inputContainerClassName=" text-base-17-5 px-5 bg-primary-50 border-0"
+                    placeholder="Access duration allowed in weeks"
+                    inputContainerClassName=" text-base-17-5 !px-3 bg-primary-50 border-0"
                     inputClassName="bg-transparent"
                     placeholderClass="text-base-17-5"
                     parentClassName=" text-base-17-5 py-0 w-full mr-4"
@@ -1685,18 +1687,19 @@ export default function Settings() {
                   />
                 </div>
                 </div>
-                  <div className="mt-3">
+                  <div className="mt-3 flex-1">
                   <InputField 
                   label="Select Assignments (optional)"
+                  labelClassname="text-base-20 text-[#26435F] mb-0.5"
                   placeholder="Select"
-                  inputContainerClassName="bg-primary-50 w-[88%]"
+                  inputContainerClassName="bg-primary-50 w-[100%]"
                   inputClassName="bg-transparent"
                   IconLeft ={down}
                   />
                   </div>
                   <div className="flex gap-4 items-center justify-center mt-3">
-                  <button className="rounded-lg bg-[#FFA28D] border-2 border-[#FFA28D] py-2 text-[#FFFFFF] w-[146px]">Save </button>
-                <button className="rounded-lg bg-transparent border-2 border-[#FFA28D] py-2 text-[#FFA28D]  w-[146px]" onClick={()=>setAddCodeModalActive(!addCodeModalActive)}>Cancel </button>
+                  <button className="rounded-lg bg-[#FFA28D] border-2 border-[#FFA28D] py-[6px] text-[#FFFFFF] w-[146px]">Save </button>
+                <button className="rounded-lg bg-transparent border-2 border-[#FFA28D] py-[6px] text-[#FFA28D]  w-[146px]" onClick={()=>setAddCodeModalActive(!addCodeModalActive)}>Cancel </button>
 
                   </div>
               </div>

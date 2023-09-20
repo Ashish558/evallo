@@ -364,8 +364,8 @@ export default function TableItem({
               tableDropdown={true}
               value={item.userStatus ? item.userStatus : "-"}
               optionData={["active", "blocked", "dormant"]}
-              inputContainerClassName="min-w-[100px] pt-0 pb-0 pr-2 pl-0 text-center capitalize"
-              optionClassName="text-[17.5px]"
+              inputContainerClassName="min-w-[100px] pt-0 pb-0 pr-2 pl-0 text-center capitalize text-base-17-5"
+              optionClassName="text-[17.5px] text-base-17-5"
               labelClassname="hidden"
               onChange={(val) => handlestatusChange({ userStatus: val })}
             />
@@ -384,7 +384,7 @@ export default function TableItem({
             <div className="my-[6px] capitalize">{getFormatDate(item.createdAt)}</div>
           </td>
 
-          <td className=" px-1 min-w-14 py-4">
+         { false && <td className=" px-1 min-w-14 py-4">
             {item.userType !== "admin" ? (
               <div className=" flex items-center justify-center">
 
@@ -400,6 +400,7 @@ export default function TableItem({
               ""
             )}
           </td>
+}
         </tr>
       )}
       {dataFor === "allUsersSuperAdmin" && (
@@ -644,7 +645,7 @@ export default function TableItem({
         </tr>
       )}
       {dataFor === "assignedTestsStudents" && (
-        <tr className="odd:bg-white shadow-sm text-[17.5px] shadow-slate-200   leading-7">
+        <tr className="  text-[17.5px] leading-7">
           {Object.keys(item).map((key, i) =>
             excludes.includes(key) ? (
               <React.Fragment key={i}>
@@ -783,7 +784,7 @@ export default function TableItem({
         </tr>
       )}
       {dataFor === "allTestsSuperAdmin" && (
-        <tr className="odd:bg-white font-medium  lead shadow-sm text-[17.5px] shadow-slate-300">
+        <tr className=" font-medium  lead  text-[17.5px] ">
           <td>{item.testName}</td>
           <td>{item.testType}</td>
           <td>{item.createdAt.split("T")[0]}</td>

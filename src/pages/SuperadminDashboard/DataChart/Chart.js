@@ -74,8 +74,16 @@ const BubbleChart = ({ dateRange }) => {
   }, [userDailyActivity]);
   console.log(chartData)
   return (
-    <div className="bg-[#FFFFFF] relative flex justify-center items-center border-[1.3px] border-[#FFF] p-4 mt-[6px] rounded-[5.33px] shadow-[0px_0px_2px_rgba(0,0,0,0.25)]">
-      <div className="flex relative max-w-full justify-center w-full">
+    <div className="bg-[#FFFFFF] relative flex flex-col justify-center items-center border-[1.3px] border-[#FFF]  mt-[6px] rounded-[5.33px] shadow-[0px_0px_2px_rgba(0,0,0,0.25)]">
+      <div className="flex  gap-[10%] p-5  pl-[100px] w-full flex-1 border-b border-[1.33px_solid_#EBEBEB]">
+        <div className="flex items-center text-[#507CA8] gap-5 !text-[16px]"><span className="bg-[#26435F] inline-block  rounded-full w-3 h-3  "></span> Admin</div>
+        <div className="flex items-center text-[#507CA8] gap-5 !text-[16px]"><span className="bg-[#FF7714] inline-block  rounded-full w-3 h-3 text-[#507CA8] "></span> Tutor</div>
+        <div className="flex items-center text-[#507CA8] gap-5 !text-[16px]"><span className="bg-[#24FF00] inline-block  rounded-full w-3 h-3 text-[#507CA8] "></span> Parents</div>
+        <div className="flex items-center text-[#507CA8] gap-5 !text-[16px]"><span className="bg-[#26435F] inline-block  rounded-full w-3 h-3 text-[#507CA8] "></span> Students</div>
+      
+      </div>
+      
+      <div className="flex mt-6 relative max-w-full justify-center w-full p-4">
         <Bubble
           //  data={chartData ? chartData : bubbleChartData}
           data={ ChartData}
@@ -138,7 +146,7 @@ const BubbleChart = ({ dateRange }) => {
 
 
               legend: {
-                display: true,
+                display: false,
                 position: "top",
                 align: "center",
                

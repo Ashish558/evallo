@@ -83,13 +83,13 @@ export default function SignupTab({
       <div className="grid grid-cols-2 gap-x-5">
         <div className={styles.colContainer}>
           <div
-            className={`hidden lg:flex mb-[26px] items-center justify-between text-[#26435F] font-semibold text-base-20 text-base-20`}
+            className={`hidden lg:flex mb-[24px] items-center justify-between text-[#26435F] font-semibold text-base-20 text-base-20`}
           >
-            <p>      Page 1: Basic Details (all fields mandatory)</p>
+            <p className="whitespace-nowrap ">      Page 1: Basic Details (all fields mandatory)</p>
 
-            <p className="ml-40"> <img src={que2} alt="que"></img></p>
+            <p className="ml-6"> <img src={que2} alt="que"></img></p>
           </div>
-          <div className={`flex mt-[59px] lg:mt-0 ${styles.inputs}`}>
+          <div className={`flex mt-[55px] lg:mt-0 ${styles.inputs}`}>
             <InputField
               placeholder=""
               inputContainerClassName="bg-gray-200 border border-gray-200"

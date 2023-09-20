@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import * as XLSX from 'xlsx';
 import { CSVLink, CSVDownload } from "react-csv";
 import Table from "../../components/Table/Table";
 import FilterItems from "../../components/FilterItemsNew/filterItems";
@@ -164,10 +165,7 @@ export default function Users() {
       id: 8,
       text: "Join Date",
     },
-    {
-      id: 9,
-      text: "",
-    },
+   
   ];
 
   const [assignStudentModalActive, setAssignStudentModalActive] =
@@ -633,24 +631,60 @@ export default function Users() {
         setCsvLoad(false);
       });
   };
-
+  const [csvLength, setCsvLength]= useState("XX")
   const [students, setStudents] = useState([]);
   const upload = () => {
     setBulkUpload(true);
+  };
+
+  const [rowCount, setRowCount] = useState(null);
+
+  const handleFileUpload = (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+
+    reader.onload = (e) => {
+      const data = new Uint8Array(e.target.result);
+      const workbook = XLSX.read(data, { type: 'array' });
+
+      // Assuming the first sheet in the Excel file
+      const firstSheetName = workbook.SheetNames[0];
+      const worksheet = workbook.Sheets[firstSheetName];
+
+      // Convert the sheet to a CSV string
+      const csv = XLSX.utils.sheet_to_csv(worksheet);
+
+      // Split the CSV string into rows
+      const rows = csv.split('\n').filter((row) => {
+        // Check if the row contains any non-comma characters
+        return row.replace(/,/g, '').trim() !== '';
+      });
+     if(rows && rows?.length>0)
+     rows.length--;
+      setRowCount(rows.length);
+      setCsvLength(rows.length);
+    };
+
+    reader.readAsArrayBuffer(file);
   };
   const saveData = async () => {
     if (xlsFile !== undefined) {
       const formdata = new FormData();
       formdata.append("file", xlsFile);
+   
       await axios
         .post(`${BASE_URL}api/user/bulkUploadUsers`, formdata, {
           headers: getAuthHeader(),
         })
         .then((res) => {
-          //console.log("uploaded")
+          console.log("uploaded",res)
+          setXlsFile(null);
+          setCsvLength("XX")
           alert("File Uploaded");
           //setBulkUpload(false)
-
+         
         })
         .catch((err) => {
 
@@ -670,6 +704,8 @@ export default function Users() {
         })
         .then((res) => {
           setInviteUsers(false);
+          setXlsFile(null);
+          setCsvLength("XX")
           alert("File Uploaded");
           // setXlsFile(undefined);
         })
@@ -788,7 +824,10 @@ export default function Users() {
                               Choose file
                             </label>
                             <input
-                              onChange={(e) => setXlsFile(e.target.files[0])}
+                              onChange={(e) =>{ 
+                                setXlsFile(e.target.files[0]);
+                                handleFileUpload(e)
+                              }}
                               type="file"
                               id="file"
                               accept=".xls,.xlsx"
@@ -800,7 +839,7 @@ export default function Users() {
                         <button
                           data-modal-target="popup-modal"
                           data-modal-toggle="popup-modal"
-                          className="block mr-6 text-white bg-[#FFA28D] hover:bg-[#FFA28D]  font-medium rounded-lg  px-[13.33px] py-[17.33px] text-center dark:bg-[#FFA28D] dark:hover:bg-[#FFA28D] "
+                          className="block mr-6 text-white bg-[#FFA28D] hover:bg-[#FFA28D]  font-medium rounded-lg  px-[13.33px] py-3 text-center dark:bg-[#FFA28D] dark:hover:bg-[#FFA28D] "
                           type="button"
                           onClick={saveData}
                         >
@@ -808,11 +847,14 @@ export default function Users() {
                         </button>
                         <button
                           type="button"
+                          disabled={!xlsFile}
                           onClick={() => {
+                            
                             setInviteUsers(true);
                             setBulkUpload(false);
+                            
                           }}
-                          className="  block text-[#FFA28D] border-[1.33px] border-[#FFA28D] bg-white hover:bg-[#FFA28D] hover:text-white-500 ms-3 font-medium rounded-lg  px-[13.33px] py-[17.33px] text-center dark:bg-white dark:hover:bg-[#FFA28D] hover:text-white"
+                          className="  block text-[#FFA28D] border-[1.33px] border-[#FFA28D] bg-white hover:shadow-md ms-3 font-medium rounded-lg  px-[13.33px] py-3 text-center dark:bg-white "
                         >
                           Save Data and Invite User
                         </button>
@@ -827,7 +869,7 @@ export default function Users() {
               <Modal
                 crossBtn={true}
                 underline={true}
-                title="Are You Sure You Want to Invite XX Users To Join Evallo?"
+                title={`Are You Sure You Want to Invite ${csvLength} Users To Join Evallo?`}
                 classname={"max-w-[781px] mx-auto"}
                 titleClassName={"mb-5 "}
                 handleClose={() => setInviteUsers(false)}
@@ -843,8 +885,8 @@ export default function Users() {
                         organization. If you only want to store their data and
                         do not want to invite them to create an account, please
                         click on “Save Data Only” button.
-                        <br /><span classname="pt-1">If you want to continue inviting the users,
-                          please click on the <span classname="font-normal">“Confirm Email Invitations”</span> button
+                        <br /><span className="pt-1">If you want to continue inviting the users,
+                          please click on the <span className="font-normal">“Confirm Email Invitations”</span> button
                           below.</span>
                       </p>
                     </div>
@@ -863,7 +905,7 @@ export default function Users() {
                       </button>
                       <button
                         type="button"
-                        className="max-w-140 text-[#FFA28D] border-[1.33px] border-[#FFA28D] bg-white hover:bg-[#FFA28D] hover:text-white  font-medium rounded-lg  px-[46px] py-[17.33px] text-center dark:bg-white dark:hover:bg-[#FFA28D]"
+                        className="max-w-140 text-[#FFA28D] border-[1.5px] border-[#FFA28D] bg-white hover:bg-[#FFA28D] hover:text-white  font-medium rounded-lg  px-[46px] py-[17.33px] text-center dark:bg-white dark:hover:bg-[#FFA28D]"
                         onClick={() => setInviteUsers(false)}
                       >
                         Cancel
@@ -1053,7 +1095,7 @@ export default function Users() {
             classname={"max-w-[700px] mx-auto rounded-md"}
             title="Add A New User"
             // cancelBtn={true}
-            titleClassName="text-start mb-3 pb-3 border-b border-b-gray-300"
+            titleClassName="text-start mb-3 pb-3 border-b-[1.5px] border-b-[#00000020]"
             // primaryCancel={true}
             // cancelBtnClassName="w-130"
             // primaryBtn={{
