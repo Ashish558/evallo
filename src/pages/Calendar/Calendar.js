@@ -44,7 +44,7 @@ import InputSelect from "../../components/InputSelect/InputSelect";
 import momentTimezonePlugin from "@fullcalendar/moment-timezone";
 import { useLazyGetUserDetailQuery } from "../../app/services/users";
 import { useLazyGetCalenderInsightQuery } from "../../app/services/admin";
-
+import downBlue from '../../assets/icons/down-blue.svg'
 const days = ["S", "M", "T", "W", "T", "F", "S"];
 
 const backgrounds = ["#51D294", "#C56DEE", "#6F7ADE", "#7DE94A", "#F6935A"];
@@ -89,7 +89,6 @@ export default function Calendar() {
   const { id, timeZone: currentUserTImeZone } = useSelector((state) => state.user
   );
   const time = formatAMPM(new Date());
-
   const exactTime =
     time.slice(0, time.indexOf(":")) +
     time.slice(time.indexOf("p"), time.length);
@@ -1095,7 +1094,7 @@ setColorMapping(temp);
   return (
     <>
       <div className="lg:ml-pageLeft calender  min-h-screen" id={persona}>
-        <p className="text-[#24A3D9] text-xl mb-[30px] mt-[50px] pl-5">
+        <p className="text-[#24A3D9] text-xl mb-[30px] mt-[50px] pl-[74px]">
           {organization?.company +
             "  >  " +
             firstName +
@@ -1104,7 +1103,7 @@ setColorMapping(temp);
             "  >  "}
           <span className="font-bold">Schedule</span>
         </p>
-        <div className="  pb-2 pl-5 calendar flex">
+        <div className="  pb-2 pl-[74px] calendar flex">
           <div className=" pl-0 pr-0 w-[280px] mr-[10px]">
             <div className="w-[280px]">
               <SimpleCalendar
@@ -1119,15 +1118,16 @@ setColorMapping(temp);
             </div>
             {persona === "parent" ? (
               <div className="mt-10 pr-4">
-                <p className="text-primaryDark text-21 font-semibold mb-8 ml-2">
+                {/* <p className="text-primaryDark text-21 font-semibold mb-8 ml-2">
                   {" "}
                   Student Name{" "}
-                </p>
-                <div>
+                </p> */}
+                <div className="mt-[30px]">
                   {students.map((student, idx) => {
                     return (
                       <div
                         key={student.studentId}
+
                         className={`p-4 mb-4 rounded-10 flex justify-between items-center  bg-white ${student.selected
                           ? "border border-[#c6c6c6] shadow-md"
                           : "border"
@@ -1136,21 +1136,20 @@ setColorMapping(temp);
                             backgroundColor: colorsTutor.bg[id % 4],
                             color: colorsTutor.text[id % 4],
                           }}
+
                         onClick={() => handleStudentChange(student)}
                       >
                         <p
-                          className={` ${student.selected ? "font-medium" : ""
+                          className={`text-xl text-[#24A3D9] font-semibold ${student.selected ? "font-medium" : ""
                             } `}
                         >
                           {student.studentName}
                         </p>
                         <div
-                          className="student-circle"
-                          style={{
-                            backgroundColor: "#ebe7ff",
-                            //  getBackground(students.length, idx),
-                          }}
-                        ></div>
+
+                        >
+                          <img className="inline-block" src={downBlue} alt="" srcset="" />
+                        </div>
                       </div>
                     );
                   })}
@@ -1160,6 +1159,7 @@ setColorMapping(temp);
               <></>
             ) : (
               <div>
+
                {/* { //console.log({alldetails})}
                 {alldetails?.map((item) => (
                   <div className="mt-[48px] mb-2">
@@ -1225,6 +1225,7 @@ setColorMapping(temp);
                           </div>
                         </>
                       )}
+
                     </div>
                   </div>
                 ))} */}
@@ -1481,6 +1482,15 @@ setColorMapping(temp);
           </div>
           <div className="flex-1 w-4/5 relative" id="calendarContainer">
             <FullCalendar
+             slotLabelContent={(arg) => {
+              // Insert a blank row (gap) after every time slot
+              return (
+                <>
+                  <div>{arg.text}</div>
+                  <div className="blank-row" />
+                </>
+              );
+            }}
               events={
                 persona === "parent" || persona === "tutor"
                   ? filteredEvents
@@ -1537,6 +1547,9 @@ setColorMapping(temp);
                 center: "",
                 end: "dayGridMonth,timeGridWeek"
               }}
+              datesSet={(arg) => {
+                console.log('datesSet', arg) //starting visible date
+              }}
               titleFormat={{
                 day: '2-digit',
                 month: "short",
@@ -1547,9 +1560,8 @@ setColorMapping(temp);
               // slotMinTime={"06:00:00"}
               // slotMaxTime={"30:00:00"}
               dayHeaderFormat={{
-                day: "numeric",
-               weekday: 'long'
-
+                weekday: 'long',
+                day: "numeric"
               }}
               // dayHeaderContent={getDayHeaders}
               selectable={true}
@@ -1589,7 +1601,6 @@ setColorMapping(temp);
                   }}
                   parentClassName=""
                   optionClassName=""
-                
                 />
               </span>
               {/* <div class="inline-flex rounded shadow-sm mt-1">

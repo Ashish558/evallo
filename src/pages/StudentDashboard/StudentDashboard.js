@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styles from "./StudentDashboard.module.css";
-import Chart from "./../../components/Chart/Chart";
+import ChartStudent from "./../../components/Chart/ChartStudent";
 import arrowDown from "./../../assets/icons/arrow-down.png";
 import StudentDashboardHeader from "../../components/StudentDashboardHeader/StudentDashboardHeader";
 import TutorCarousel from "../../components/TutorCarousel/TutorCarousel";
@@ -79,10 +79,10 @@ const StudentDashboard = () => {
   };
   // console.log('dates', dates)
   // console.log('selectedSubject', selectedSubject)
-//console.log({subjects,selectedSubject,selectedConceptIdx})
+  //console.log({subjects,selectedSubject,selectedConceptIdx})
   return (
-    <div className={`mx-[80px] design:mx-[160px] pb-[70px]`} >
-      <p className="text-[#24A3D9] mt-7 mb-3">
+    <div className={`w-[83.3vw] mx-auto pb-[70px]`} >
+      <p className="text-[#24A3D9] mt-[50px]  text-xl">
         {organization?.company +
           " > " +
           user?.firstName +
@@ -94,10 +94,10 @@ const StudentDashboard = () => {
 
       <StudentDashboardHeader />
 
-      <div className="flex mt-10 pt-[10px]  gap-16">
+      <div className="flex mt-10 pt-[10px] justify-between">
         <div className=" flex-1 w-[70%]">
-          <div className="flex items-center justify-between">
-            <h1 className="text-[#26435F]  text-sm font-semibold ">
+          <div className="flex items-center justify-between mb-1 w-[54.43vw]">
+            <h1 className="text-[#26435F]  text-xl font-semibold ">
               Concept Chart
               <span className="inline-block my-auto ml-2 translate-y-1">
                 <svg
@@ -147,15 +147,15 @@ const StudentDashboard = () => {
               /> */}
 
 
-              <RangeDate className="ml-0" manualHide={true} optionClassName="!w-min " inputContainerClassName="!w-min " handleRangeData={setSelectedConceptIdx} />
+              <RangeDate className="ml-0  font-normal" manualHide={true} optionClassName="!w-min " inputContainerClassName="!w-min font-normal " handleRangeData={setSelectedConceptIdx} />
 
             </div>
           </div>
           <div
             id={styles.chartContainer}
-            className="!rounded-md  bg-white w-full flex-1 shadow-[0px_0px_2.500001907348633px_0px_#00000040] custom-scroller "
+            className="!rounded-md  bg-white w-[54.43vw] flex-1 shadow-[0px_0px_2.500001907348633px_0px_#00000040] custom-scroller "
           >
-            <Chart
+            <ChartStudent
               setSubjects={setSubjects}
               subjects={subjects}
               YHeader="Score"
@@ -168,7 +168,7 @@ const StudentDashboard = () => {
           </div>
         </div>
 
-        <div className="min-w-[350px] w-1/3 h-fit">
+        <div className="w-[25vw]  h-fit">
           <SessionFeedback />
         </div>
       </div>

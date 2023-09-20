@@ -47,12 +47,12 @@ export const TestItem = ({ testName, assignedTestId, dueDate, pdfLink, testId, s
   return (
     <div className='flex py-[8px] mb-2 last:mb-0'>
       <div className='w-1/2'>
-        <h2 className='text-[16px] font-semibold text-[#517CA8]'>{testName}</h2>
+        <h2 className='text-base-20 font-medium text-[#517CA8]'>{testName}</h2>
         <div className="flex gap-[12px] whitespace-nowrap">
-          <h5 className="text-xs opacity-60  font-medium text-[#517CA8]">
+          <h5 className="text-base-15  font-light text-[#517CA8]">
             Due date:
           </h5>
-          <h6 className="text-xs opacity-60 font-medium text-[#517CA8]">  {getDate(dueDate)}</h6>
+          <h6 className="text-base-15 font-light text-[#517CA8]">  {getDate(dueDate)}</h6>
         </div>
       </div>
       <div className='flex-1 ml-5'>
@@ -65,24 +65,24 @@ export const TestItem = ({ testName, assignedTestId, dueDate, pdfLink, testId, s
                 <img className='cursor-pointer' src={Stat} width='34px' alt="Stat" onClick={handleReportNavigate} />
               }
             </div> */}
-            <div className='w-[24px]'>
+            <div className=''>
 
-              <img className='cursor-pointer' src={Download} onClick={() => window.open(`${awsLink}${pdfLink}`)} width="34px" alt="download" />
+              <img className='cursor-pointer' src={Download} onClick={() => window.open(`${awsLink}${pdfLink}`)}  alt="download" />
 
             </div>
           </div>
 
           {/* {action === 'Start' && <div className="w-full font-bold bg-[#F6A429CC] px-2 py-2 text-center text-white rounded-[6px]">{action}</div>} */}
           {isCompleted === true ?
-            <div className="cursor-pointer  break-al  w-full text-sm font-semibold bg-[#38C980] px-2 py-2 text-center text-white rounded-[6px]" onClick={handleReportNavigate} >
+            <div className="cursor-pointer  break-al  w-full text-base-17-5  bg-[#38C980] px-2 py-2 text-center text-white rounded-[6px]" onClick={handleReportNavigate} >
               {/* {score} */}
               Report
             </div> :
             isStarted === true ?
-              <div className="cursor-pointer w-full text-sm font-semibold bg-[#FFCE84] px-2 py-2 text-center text-white rounded-[6px]" onClick={handleNavigate}>
+              <div className="cursor-pointer w-full text-base-17-5  bg-[#FFCE84] px-2 py-2 text-center text-white rounded-[6px]" onClick={handleNavigate}>
                 Continue
               </div> :
-              <div className="cursor-pointer w-full text-sm font-semibold bg-[#FF7979] px-2 py-2 text-center text-white rounded-[6px]" onClick={handleNavigate} >
+              <div className="cursor-pointer w-full text-base-17-5  bg-[#FF7979] px-2 py-2 text-center text-white rounded-[6px]" onClick={handleNavigate} >
                 Start
               </div>
           }

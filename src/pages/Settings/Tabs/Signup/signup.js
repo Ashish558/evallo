@@ -12,6 +12,7 @@ import que2 from "../../../../assets/icons/que2.svg";
 import plus1 from "../../../../assets/icons/plus1.svg";
 import dropdown from "../../../../assets/icons/dropdown (2).svg";
 import InputFieldDropdown from "../../../../components/InputField/inputFieldDropdown";
+import ToggleBar from "../../../../components/SettingsCard/ToogleBar";
 export default function SignupTab({
   setAddNewQuestionModalActive,
   fetchS,
@@ -58,7 +59,15 @@ export default function SignupTab({
     };
     updateAndFetchsettings(body);
   };
-
+  const togglePermissions = (key, value) => {
+    console.log(customFields)
+    // const arr = customFields?.map((per) => {
+    //   if (per._id === key) {
+    //     return { ...per, choosedValue: !per.choosedValue };
+    //   }
+    //   return { ...per };
+    // });
+  }
   return (
     <div className="">
       <div className="mb-[40px]">
@@ -83,13 +92,13 @@ export default function SignupTab({
       <div className="grid grid-cols-2 gap-x-5">
         <div className={styles.colContainer}>
           <div
-            className={`hidden lg:flex mb-[26px] items-center justify-between text-[#26435F] font-semibold text-base-20 text-base-20`}
+            className={`hidden lg:flex mb-[24px] items-center justify-between text-[#26435F] font-semibold text-base-20 text-base-20`}
           >
-            <p>      Page 1: Basic Details (all fields mandatory)</p>
+            <p className="whitespace-nowrap ">      Page 1: Basic Details (all fields mandatory)</p>
 
-            <p className="ml-40"> <img src={que2} alt="que"></img></p>
+            <p className="ml-6"> <img src={que2} alt="que"></img></p>
           </div>
-          <div className={`flex mt-[59px] lg:mt-0 ${styles.inputs}`}>
+          <div className={`flex mt-[55px] lg:mt-0 ${styles.inputs}`}>
             <InputField
               placeholder=""
               inputContainerClassName="bg-gray-200 border border-gray-200"
@@ -236,15 +245,15 @@ export default function SignupTab({
               inputClassName="bg-gray-200"
               parentClassName="text-xs  text-[#26435F] mb-2"
             />
-              
-              <InputField
+
+            <InputField
               placeholder=""
               parentClassName="text-xs  text-[#26435F] mb-2 "
               inputContainerClassName="bg-gray-200 border border-gray-200 "
               inputClassName="bg-gray-200 "
-             label=" Student/Parent Phone"
+              label=" Student/Parent Phone"
             />
-             
+
             <InputField
               placeholder=""
               parentClassName="text-xs  text-[#26435F] mb-2"
@@ -312,6 +321,12 @@ export default function SignupTab({
                       optionData={["String", "Checkboxes"]}
                       inputContainerClassName={`bg-[#F5F8FA] border-0 text-[#26435F] font-medium ${styles["dropdown-container"]} `}
                     />
+                    {/* <ToggleBar
+                      onToggle={togglePermissions}
+                    ></ToggleBar> */}
+                    {
+                      console.log(customFields)
+                    }
                     <div
                       className="flex items-center justify-between cursor-pointer bg-[#F5F8FA] text-[#26435F] font-medium text-sm px-4 py-2"
                       onClick={() => handleDelete(item._id)}

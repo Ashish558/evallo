@@ -10,6 +10,7 @@ import InputField from "../../components/InputField/inputField";
 import Modal from "../../components/Modal/Modal";
 import questionMark from "../../assets/images/Vector (6).svg";
 import ToggleBar from "../../components/SettingsCard/ToogleBar";
+import down from "../../assets/YIcons/Vectordown2.svg"
 import { useLazyGetSettingsQuery } from "../../app/services/session";
 import {
   useGetAllPermissionQuery,
@@ -33,7 +34,7 @@ import org2 from "../../assets/icons/org-default.svg";
 import OrgDefaultLogo2 from "../../assets/icons/org default2.png";
 import OrgDefaultContentLogo2 from "../../assets/icons/org-default-content.svg";
 import OrgDefaultContentLogo from "../../assets/icons/org-default-content (2).svg";
-import EditBlueIcon from "../../assets/icons/edit 15.png";
+import EditBlueIcon from "../../assets/YIcons/edit2.svg";
 import InputSearch from "../../components/InputSearch/InputSearch";
 import { useSelector, useDispatch } from "react-redux";
 import { useUpdateUserFieldsMutation } from "../../app/services/users";
@@ -901,6 +902,11 @@ export default function SuperAdminSettings() {
               <div>
                 <InputSelect
                   labelClassname="mb-1"
+                  IconRight={<img
+                    src={down}
+                    className={`${down ?`w-[12px] h-[12px] `:`w-[12px] h-[12px]`}   absolute right-5`}
+                      alt="down-arrow"
+                    />}
                   inputContainerClassName="shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-[#FFFFFF] w-[20.15625vw]"
                   placeholder='Select'
                   optionData={timeZones}
@@ -912,6 +918,11 @@ export default function SuperAdminSettings() {
               </div>
               <InputSelect
                 labelClassname="mb-1"
+                IconRight={<img
+                  src={down}
+                  className={`${down ?`w-[12px] h-[12px] `:`w-[12px] h-[12px]`}   absolute right-5`}
+                    alt="down-arrow"
+                  />}
                 inputContainerClassName="shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-[#FFFFFF] w-[20.15625vw]"
                 optionData={["dd/mm/yy", "mm/dd/yy", "yy/mm/dd"]}
                 parentClassName=""
@@ -956,16 +967,18 @@ export default function SuperAdminSettings() {
             />
             <div className="h-[1.25px] bg-[#CBD6E2] mt-[21px] mb-[37px]"></div>
             <SettingsCard
-              title="Manage Referral Codes"
-              className={styles["bordered-settings-container"]}
+              title=" Manage Referral Codes"
+              className={`${styles["bordered-settings-container"] }`}
               body={
-                <div className="max-h-[360px] overflow-auto scrollbar-content scrollbar-vertical ">
+                <div className="max-h-[360px] overflow-auto scrollbar-content p-1 scrollbar-vertical ">
                   {subscriptionCode !== undefined &&
                     subscriptionCode.map((subscription, i) => {
                       return (
-                        <div key={i} className="bg-white shadow-small p-4 rounded-[5px]">
-                          <div className="flex items-center justify-between pr-8 ">
-                            <p className="font-medium text-[#24A3D9] mb-4">
+                       
+
+                        <div key={i} className="bg-white p-4  items-center rounded-[5px] shadow-[0px_0px_2.500000476837158px_0px_#00000040] ">
+                          <div className="flex items-center justify-between  pr-8 ">
+                            <p className="font-medium text-[#24A3D9] ">
                               {subscription.code}
                               <span className="inline-block ml-4 font-normal text-[#517CA8]">
                                 {subscription.expiry} Weeks
@@ -1052,16 +1065,16 @@ export default function SuperAdminSettings() {
               className={styles["bordered-settings-container"]}
               body={
                 <div>
-                  <div className="max-h-[360px] overflow-auto scrollbar-content scrollbar-vertical">
+                  <div className="max-h-[360px] overflow-auto scrollbar-content p-1 scrollbar-vertical">
                     {servicesAndSpecialization !== undefined &&
                       servicesAndSpecialization.map((service, i) => {
                         return (
                           <div
                             key={i}
-                            className="bg-white shadow-small p-4 mb-3"
+                            className="bg-white shadow-small rounded-md p-4 mb-3 shadow-[0px_0px_2.500000476837158px_0px_#00000040] "
                           >
                             <div className="flex items-center justify-between pr-8 ">
-                              <p className="font-medium text-[#24A3D9] mb-4">
+                              <p className="font-medium text-[#24A3D9] ">
                                 {service.service}
                               </p>
                             <div className="flex items-center gap-x-4">
@@ -1125,13 +1138,13 @@ export default function SuperAdminSettings() {
               title="Session Tags & Reconciliation"
               className={styles["bordered-settings-container"]}
               body={
-                <div className="max-h-[360px] overflow-auto scrollbar-content scrollbar-vertical">
+                <div className="max-h-[360px] overflow-auto scrollbar-content p-1 scrollbar-vertical">
                   {sessionTags !== undefined &&
                     sessionTags.map((service, i) => {
                       return (
-                        <div key={i} className="bg-white shadow-small p-4 mb-3">
+                        <div key={i} className="bg-white rounded-md shadow-small p-4 mb-3 shadow-[0px_0px_2.500000476837158px_0px_#00000040] ">
                           <div className="flex items-center justify-between pr-8">
-                            <p className="font-medium text-[#24A3D9] mb-4">
+                            <p className="font-medium text-[#24A3D9] ">
                               {service.heading}
                             </p>
                             <div className="flex items-center gap-x-4">

@@ -19,12 +19,12 @@ const ToogleBar = ({
           `}
         >
             <div
-                className={`text-primary-dark font-bold flex justify-between  ${titleClassName ? titleClassName : ""
+                className={`text-primary-dark font-bold flex justify-between   ${titleClassName ? titleClassName : ""
                     }`}
             >
                 <p className="">{title}</p>
                 {toggle !== undefined && (
-                    <div className="flex items-center border-[2px] border-[#26435F] rounded-[9px]">
+                    <div className="flex items-center border-[2px] border-[#26435F] rounded-[15px]">
                         <div
                             className={styles.toggleContainer}
                             onClick={() => onToggle(toggle.key, !toggle.value)}
@@ -39,9 +39,9 @@ const ToogleBar = ({
                             <div
                                 // src={toggleCircleIcon}
                                 className={`${toggle.value === false
-                                    ? (`${styles.toggleCircle} ${circleColor ? circleColor:'bg-[#4bd657]'} `)
-                                    : (`${styles.toggleCircleActive} ${circleColor ? circleColor:'bg-[#FFA28D]'} `)
-                                    }  w-[13px] h-[13px] rounded-[6px]`}
+                                    ? (`${styles.toggleCircle} ${circleColor ? circleColor:'bg-[#FF7979]'} `)
+                                    : (`${styles.toggleCircleActive} ${circleColor ? circleColor:'bg-[#4bd657]'} `)
+                                    }  w-[12.7px] h-[12.7px] rounded-[6px]`}
                                 alt="toggle"
                             />
                         </div>

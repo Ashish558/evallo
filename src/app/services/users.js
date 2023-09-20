@@ -73,6 +73,14 @@ export const userServicesApi = createApi({
         headers: getAuthHeader(),
       }),
     }),
+    addTutorReview: builder.mutation({
+      query: (body) => ({
+        url: `api/feedback/tutor/review`,
+        method: "POST",
+        body,
+        headers: getAuthHeader(),
+      }),
+    }),
     updateUser: builder.mutation({
       query: (body) => ({
         url: `api/user/updateUser/${body.userId}`,
@@ -233,6 +241,7 @@ export const userServicesApi = createApi({
 });
 
 export const {
+  useAddTutorReviewMutation,
   useLazyGetAllUsersQuery,
   useLazyGetParentTutorsQuery,
   useAddNotesMutation,
