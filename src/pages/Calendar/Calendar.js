@@ -89,7 +89,6 @@ export default function Calendar() {
   const { id, timeZone: currentUserTImeZone } = useSelector((state) => state.user
   );
   const time = formatAMPM(new Date());
-
   const exactTime =
     time.slice(0, time.indexOf(":")) +
     time.slice(time.indexOf("p"), time.length);
@@ -1483,6 +1482,15 @@ setColorMapping(temp);
           </div>
           <div className="flex-1 w-4/5 relative" id="calendarContainer">
             <FullCalendar
+             slotLabelContent={(arg) => {
+              // Insert a blank row (gap) after every time slot
+              return (
+                <>
+                  <div>{arg.text}</div>
+                  <div className="blank-row" />
+                </>
+              );
+            }}
               events={
                 persona === "parent" || persona === "tutor"
                   ? filteredEvents
@@ -1539,6 +1547,9 @@ setColorMapping(temp);
                 center: "",
                 end: "dayGridMonth,timeGridWeek"
               }}
+              datesSet={(arg) => {
+                console.log('datesSet', arg) //starting visible date
+              }}
               titleFormat={{
                 day: '2-digit',
                 month: "short",
@@ -1549,9 +1560,8 @@ setColorMapping(temp);
               // slotMinTime={"06:00:00"}
               // slotMaxTime={"30:00:00"}
               dayHeaderFormat={{
-                day: "numeric",
-                weekday: 'long'
-
+                weekday: 'long',
+                day: "numeric"
               }}
               // dayHeaderContent={getDayHeaders}
               selectable={true}
@@ -1591,7 +1601,6 @@ setColorMapping(temp);
                   }}
                   parentClassName=""
                   optionClassName=""
-
                 />
               </span>
               {/* <div class="inline-flex rounded shadow-sm mt-1">

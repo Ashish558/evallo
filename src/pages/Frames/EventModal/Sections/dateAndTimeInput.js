@@ -22,7 +22,7 @@ export default function DateAndTimeInput({ data, setData, isEditable }) {
             parentClassName="w-full mr-6 "
             required="true"
             label="Session Date"
-            labelClassname="ml-3 text-[#26435F] font-medium text-[18px]"
+            labelClassname="ml-3 text-[#26435F] font-medium text-base-17-5"
             inputContainerClassName="bg-lightWhite border-0  pt-3.5 pb-3.5"
             inputClassName="bg-transparent appearance-none text-[#507CA8]"
             value={data.date}
@@ -66,7 +66,7 @@ export default function DateAndTimeInput({ data, setData, isEditable }) {
             parentClassName="w-full max-w-120 self-end"
             type="time"
             placeholderClass="text-[#507CA8]"
-            inputContainerClassName="bg-lightWhite border-0 font-medium pr-3 pt-3.5 pb-3.5 h-full text-[#507CA8]"
+            inputContainerClassName="bg-lightWhite border-0 font-medium pr-3 pt-3.5 pb-3.5 h-full text-[#507CA8] "
             inputClassName="bg-transparent appearance-none font-medium"
             // value={convertTime12to24(
             //    `${data.time.end.time} ${data.time.end.timeType}`
