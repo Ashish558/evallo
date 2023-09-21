@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
@@ -40,6 +41,8 @@ import StudentSettings from "../pages/Settings/Tabs/AccountOverview/studentSetti
 
 import TutorSetting from "../pages/Settings/TutorSetting";
 import ContributorSettings from "../pages/Settings/ContributorSettings";
+import TestPage from "../pages/DsatTestPage/TestPage";
+
 
 
 
@@ -211,6 +214,14 @@ const AppRoutes = () => {
           element={
             <RequireAuth isLoggedIn={isLoggedIn}>
               <Ledger />
+            </RequireAuth>
+          }
+        />
+         <Route
+          path="/testpage"
+          element={
+            <RequireAuth isLoggedIn={isLoggedIn}>
+             <TestPage/>
             </RequireAuth>
           }
         />

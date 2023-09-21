@@ -1,4 +1,3 @@
-
 import React, { useEffect, useRef, useState } from "react";
 import PrimaryButton from "../../components/Buttons/PrimaryButton";
 import EditIcon from "../../assets/icons/edit-white.svg";
