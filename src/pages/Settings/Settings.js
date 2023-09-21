@@ -10,7 +10,7 @@ import Modal from "../../components/Modal/Modal";
 import { useLazyGetSettingsQuery } from "../../app/services/session";
 import {
   useUpdateOfferImageMutation,
-  useUpdateSettingMutation,
+  useUpdateOrgSettingMutation,
 } from "../../app/services/settings";
 import { getSessionTagName } from "../../utils/utils";
 import { BASE_URL, getAuthHeader } from "../../app/constants/constants";
@@ -26,8 +26,11 @@ import { updateUserDetails } from "../../app/slices/user";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import styles from "./styles.module.css";
 import SignupTab from "./Tabs/Signup/signup";
+import CompanyAndBround from "./Tabs/CompanyAndBrand/CompanyAndBround";
+import AccountOverview from "./Tabs/AccountOverview/AccountOverview";
 import AddNewQuestion from "../Frames/AddNewQuestion/AddNewQuestion";
 import { useAddNewQuestionMutation } from "../../app/services/admin";
+import { updateOrganizationSettings } from "../../app/slices/organization";
 
 const initialState = {
   name: "",
@@ -84,7 +87,7 @@ export default function Settings() {
 
   const [searchParams, setSearchParams] = useSearchParams();
   const [tabs, setTabs] = useState(initialTabs);
-  const [activeTab, setActiveTab] = useState("1");
+  const [activeTab, setActiveTab] = useState(1);
   const [selectedSubscriptionData, setSelectedSubscriptionData] = useState({
     code: "",
     expiry: "",
@@ -120,8 +123,9 @@ export default function Settings() {
   const inputRef = useRef();
   const [image, setImage] = useState(null);
   const [getSettings, getSettingsResp] = useLazyGetSettingsQuery();
-  const [updateSetting, updateSettingResp] = useUpdateSettingMutation();
-  const [baseLink, setBaseLink] = useState("");
+  const [updateSetting, updateSettingResp] = useUpdateOrgSettingMutation();
+  const { awsLink } = useSelector(state => state.user)
+
   const [addNewQuestionModalActive, setAddNewQuestionModalActive] =
     useState(false);
 
@@ -189,22 +193,24 @@ export default function Settings() {
   };
 
   const fetchSettings = () => {
-    getSettings().then((res) => {
-      if (res.error) {
-        console.log("settings fetch err", res.error);
-        return;
-      }
-      console.log("settings", res.data);
-      setBaseLink(res.data.data.baseLink);
-      if (res.data.data.setting === null) return;
-      setSettingsData(res.data.data.setting);
-    });
+    // getSettings().then((res) => {
+    //   if (res.error) {
+    //     console.log("settings fetch err", res.error);
+    //     return;
+    //   }
+    //   console.log("settings", res.data);
+    //   setBaseLink(res.data.data.baseLink);
+    //   if (res.data.data.setting === null) return;
+    //   setSettingsData(res.data.data.setting);
+    // });
+    console.log("organization", organization);
+    if (organization.settings) {
+      setSettingsData(organization.settings);
+    }
   };
 
+  // console.log("organization", organization);
   const onRemoveTextImageTag = (item, key, idx) => {
-    // console.log(item)
-    // console.log(key)
-    // console.log(idx)
     let updatedField = settingsData[key].filter((item, i) => i !== idx);
     let updatedSetting = {
       [key]: updatedField,
@@ -254,12 +260,22 @@ export default function Settings() {
   };
 
   const updateAndFetchsettings = (updatedSetting) => {
+    const settings = {
+      ...settingsData,
+      ...updatedSetting
+    }
+    const body = {
+      settings
+    }
+    console.log("body", body);
+    // return;
     setSaveLoading(true);
-    updateSetting(updatedSetting)
+    updateSetting(body)
       .then((res) => {
         setSaveLoading(false);
-        // console.log('updated', res.data);
-        setSettingsData(res.data.data.setting);
+        setSettingsData(res.data.data.setting.settings);
+        dispatch(updateOrganizationSettings(res.data.data.setting.settings))
+        // console.log('updated', res.data.data.setting.settings);
       })
       .catch((err) => {
         setSaveLoading(false);
@@ -297,13 +313,14 @@ export default function Settings() {
     if (append === "") return;
     setSaveLoading(true);
     axios
-      .patch(`${BASE_URL}api/user/setting/${append}`, formData, {
+      .patch(`${BASE_URL}api/user/Orgsettings/${append}`, formData, {
         headers: getAuthHeader(),
         maxBodyLength: Infinity,
         maxContentLength: Infinity,
       })
       .then((res) => {
-        console.log(res);
+        // console.log('resp--' ,res.data.data.updatedSetting.settings);
+        dispatch(updateOrganizationSettings(res.data.data.updatedSetting.settings))
         setTagImage(null);
         setTagText("");
         setSelectedImageTag("");
@@ -365,7 +382,7 @@ export default function Settings() {
 
   useEffect(() => {
     fetchSettings();
-  }, []);
+  }, [organization]);
 
   const onAddService = (val) => {
     console.log(val);
@@ -584,7 +601,8 @@ export default function Settings() {
 
   const submitNewQuestion = (e) => {
     e.preventDefault();
-    if(organization?.customFields?.length === 5) return alert('Only 5 fields are allowed')
+    if (organization?.customFields?.length === 5)
+      return alert("Only 5 fields are allowed");
     const { option1, option2, option3, option4 } = newQuestion.values;
     const body = {
       orgId: user.associatedOrg,
@@ -600,14 +618,18 @@ export default function Settings() {
       }
       //window.location.reload()
       // console.log("reshi", res);
-     
+
       setFetchS(res);
     });
   };
 
   useEffect(() => {
     const activeTab = searchParams.get("tab");
+    if(activeTab){
+      setActiveTab(parseInt(activeTab))
+    }
   }, [searchParams.get("tab")]);
+
   // if (Object.keys(settingsData).length === 0) return <></>
   const {
     classes,
@@ -649,7 +671,7 @@ export default function Settings() {
                 <div
                   className={`${styles.tab} ${
                     activeTab === idx + 1 ? styles.selectedTab : ""
-                  }`}
+                  } cursor-pointer`}
                   onClick={() => changeTab(idx + 1)}
                 >
                   <img src={item.Icon} />
@@ -865,7 +887,7 @@ export default function Settings() {
                         : []
                     }
                     keyName="Expertise"
-                    baseLink={baseLink}
+                    baseLink={awsLink}
                     onRemoveFilter={onRemoveTextImageTag}
                     className="pt-1 pb-1 mr-15"
                   />
@@ -948,7 +970,7 @@ export default function Settings() {
                         : []
                     }
                     keyName="personality"
-                    baseLink={baseLink}
+                    baseLink={awsLink}
                     onRemoveFilter={onRemoveTextImageTag}
                     className="pt-1 pb-1 mr-15"
                   />
@@ -975,7 +997,7 @@ export default function Settings() {
                       interest !== undefined ? interest.map((item) => item) : []
                     }
                     keyName="interest"
-                    baseLink={baseLink}
+                    baseLink={awsLink}
                     onRemoveFilter={onRemoveTextImageTag}
                     className="pt-1 pb-1 mr-15"
                   />
@@ -993,7 +1015,7 @@ export default function Settings() {
                     onlyItems={true}
                     keyName="classes"
                     items={classes ? classes : []}
-                    baseLink={baseLink}
+                    baseLink={awsLink}
                     onRemoveFilter={onRemoveFilter}
                     className="pt-1 pb-1 mr-15"
                   />
@@ -1026,7 +1048,7 @@ export default function Settings() {
                           }))
                         : []
                     }
-                    baseLink={baseLink}
+                    baseLink={awsLink}
                     onRemoveFilter={onRemoveImage}
                     // onRemoveFilter={onRemoveFilter}
                     className="pt-1 pb-1 mr-15"
@@ -1038,12 +1060,22 @@ export default function Settings() {
         ) : (
           <></>
         )}
+        {
+          activeTab === 2 &&(
+           <CompanyAndBround/>
+          )
+        }
         {activeTab === 3 && (
           <SignupTab
             setAddNewQuestionModalActive={setAddNewQuestionModalActive}
             fetchS={fetchS}
           />
         )}
+        {
+          activeTab === 4 &&(
+          <AccountOverview/>
+          )
+        }
       </div>
       {modalActive && (
         <Modal

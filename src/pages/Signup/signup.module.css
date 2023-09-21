@@ -27,7 +27,7 @@
 }
 
 #signUp{
-    height: 100vh;
+   
     background: linear-gradient(180deg, rgba(43, 73, 240, 0) 0%,rgb(227 245 252) 100%), url('../../assets/signup/5156620\ 1.png');
     background-size: cover;
     background-position: center;
@@ -45,7 +45,7 @@
 }
 
 #signUp h6 {
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 700;
     /* margin-bottom: 26px; */
 }
@@ -53,7 +53,7 @@
 #signUp label {
     margin-left: 2px;
     margin-bottom: 5.87px;
-    font-size: 18px;
+    font-size: 14px;
     color:  #26435F;
     font-weight: 500;
 }
@@ -74,7 +74,7 @@
 
 .title {
     font-weight: 700;
-    font-size: 29.9448px;
+    font-size: 27.9448px;
     line-height: 36px;
     letter-spacing: 0.01em;
     text-transform: capitalize;

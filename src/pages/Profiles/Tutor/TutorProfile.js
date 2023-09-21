@@ -60,6 +60,7 @@ export default function TutorProfile({ isOwn }) {
    const [getSession, getSessionResp] = useLazyGetSingleSessionQuery()
    const [feedbacks, setFeedbacks] = useState([])
    const [awsLink, setAwsLink] = useState('')
+   const { organization } = useSelector((state) => state.organization);
 
    const { id } = useSelector(state => state.user)
 
@@ -149,7 +150,6 @@ export default function TutorProfile({ isOwn }) {
          videoLink: ''
       },
    })
-   console.log('params.id', params.id)
 
    useEffect(() => {
       getFeedbacks({ id: params.id })
@@ -749,7 +749,7 @@ export default function TutorProfile({ isOwn }) {
                         body={
                            <div className=''>
                               {
-                                 settings?.servicesAndSpecialization?.map((service, idx) => {
+                                 organization.settings?.servicesAndSpecialization?.map((service, idx) => {
                                     let price = '-'
                                     let isPresent = false
                                     if (userDetail !== undefined || userDetail !== null) {

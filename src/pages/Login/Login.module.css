@@ -19,11 +19,12 @@
     text-transform: capitalize;
 }
 .bg {
-    height: 100vh;
-    background: linear-gradient(180deg, rgba(43, 73, 240, 0) 0%, rgba(42, 108, 251, 0.2) 100%), url('../../assets/signup//2312.svg');
+  
+    background: linear-gradient(180deg, rgba(43, 73, 240, 0) 0%,rgb(227 245 252) 100%), url('../../assets/signup/5156620\ 1.png');
     background-size: cover;
     background-position: center;
     overflow-y: auto;
+   padding-bottom: 35px;
   }
 
 /* 

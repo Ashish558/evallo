@@ -14,7 +14,9 @@ import RemoveIcon from "../../assets/icons/remove.svg"
 import EditTestIcon from "../../assets/icons/edit-test.svg";
 import TrashIcon from '../../assets/icons/delete.svg'
 
-import DeleteIcon from "../../assets/icons/cross.svg"
+import AddIcon from "../../assets/icons/plus.svg"
+import EditIcon from "../../assets/icons/test-edit.svg"
+import DeleteIcon from "../../assets/icons/trash-icon.svg"
 import DeleteTutorIcon from "../../assets/icons/delete-tutor.svg"
 import InputSelect from "../InputSelect/InputSelect";
 import { useLazyGetSettingsQuery } from "../../app/services/session";
@@ -220,10 +222,23 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch, ext
                </td>
                <td className="font-medium text-sm px-1  min-w-14 py-4">
                   <div className="my-[6px]">
-                     {item.phone}
+                     {item.lastLogin ? item.lastLogin : '-'}
                   </div>
                </td>
                <td className="font-medium text-sm px-1  min-w-14 py-4">
+                  <div className="">
+                     <button className="rounded-md bg-[#26435F3B] text-[#517CA8] px-2 py-[2px]"
+                    onClick={() => onClick.handleResetPassword(item.email)}>
+                        Reset
+                     </button>
+                  </div>
+               </td>
+               {/*  <td className="font-medium text-sm px-1  min-w-14 py-4">
+                  <div className="my-[6px]">
+                     {item.phone}
+                  </div>
+               </td>
+              <td className="font-medium text-sm px-1  min-w-14 py-4">
                   <div className="my-[6px]">
                      {item.assignedTutor?.length > 0 ?
                         item.assignedTutor?.map((id, idx) => {
@@ -232,14 +247,6 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch, ext
                            return `${name.value} ${idx + 1 < item.assignedTutor.length ? ',' : ''} `
                         }) : '-'
                      }
-                     {/* {item.assignedTutor.length > 1 ?
-                        item.assignedTutor.map(id => {
-                           const name = extraData.find(item => item._id === id)
-                           if (name === undefined) return 'l'
-                           return name.value
-                        })
-                        :
-                        item.assignedTutor} */}
                   </div>
                </td>
                <td className="font-medium text-sm px-1  min-w-14 py-4">
@@ -260,7 +267,8 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch, ext
                      labelClassname='hidden'
                      onChange={val => handlestatusChange({ userStatus: val })} />
                </td>
-               {/* <td className="font-medium text-sm px-1  min-w-14 py-4">
+               
+               <td className="font-medium text-sm px-1  min-w-14 py-4">
                   <div className="my-[6px]">
                   
                      <span className="cursor-pointer inline-block px-1" onClick={() => onClick.handleTutorStatus(item,)}>
@@ -268,19 +276,19 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch, ext
                      </span>
 
                   </div>
-               </td> */}
+               </td> 
                <td className="font-medium text-sm px-1  min-w-14 py-4">
                   <div className="my-[6px]">
                      {item.specialization?.map((specialization, idx) => {
                         return `${specialization}${idx + 1 === item.specialization.length ? '' : ','}`
                      })}
                   </div>
-               </td>
-               <td className="font-medium text-sm px-1  min-w-14 py-4">
+               </td> */}
+               {/* <td className="font-medium text-sm px-1  min-w-14 py-4">
                   <div className="my-[6px]">
                      {getFormattedDate(item.createdAt)}
                   </div>
-               </td>
+               </td> */}
                <td className="font-medium px-1 min-w-14 py-4">
                   <div className="w-4 h-4 rounded-full bg-[#E3E3E3] flex items-center justify-center">
                      <img
@@ -525,26 +533,32 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch, ext
                <td>{item.createdAt.split("T")[0]}</td>
                <td>{item.updatedAt.split("T")[0]}</td>
                <td> {item.no_of_assign ? item.no_of_assign : '-'} </td>
-               <td className="font-medium px-1 py-4 text-right w-240">
-                  <div className="flex justify-end">
-                     <button
-                        className="flex bg-primaryOrange items-center leading-none text-white py-1.8 px-5 rounded"
+               <td className="font-medium px-1 py-4 text-right">
+                  <div className="flex justify-center">
+                     <p
+                        className="flex leading-none text-[#517CA8] underline py-1.8 px-0 underline-offset-1 cursor-pointer rounded"
                         onClick={() =>
                            navigate(`/all-tests/${item._id}`)
                         }
                      >
-                        View Test
-                     </button>
+                        View
+                     </p>
                   </div>
                </td>
-               <td className="font-medium px-1 text-right w-240 py-4">
-                  <div
-                     className="flex"
-                     onClick={() => onClick.openRemoveTestModal(item)}
-                  >
-                     <button className="flex ml-6 bg-textGray-400 items-center leading-none text-white py-1.8 px-5 rounded">
-                        Remove
-                     </button>
+               <td className="font-medium px-1 justify-center flex gap-x-2">
+                  <img src={EditIcon} className="cursor-pointer p-1" 
+                   onClick={() =>
+                     navigate(`/all-tests/${item._id}`)
+                   }
+                   alt='edit' />
+                  <img src={DeleteIcon} className="cursor-pointer p-1" alt='delete'  onClick={() => onClick.openRemoveTestModal(item)} />
+               </td>
+               <td className=" gap-x-2 ">
+                  <div className="flex items-center gap-x-2 justify-center pr-3">
+                  <button className="px-4 py-1 text-[#517CA8] bg-[#517CA81A] ">
+                     Beta
+                  </button>
+                  <img src={AddIcon} alt='add' className="" />
                   </div>
                </td>
             </tr>
@@ -560,6 +574,85 @@ export default function TableItem({ item, dataFor, onClick, excludes, fetch, ext
                   />
                </td>
             </tr>
+         )}
+         {dataFor === "allOrgs" && (
+              <tr className="odd:bg-white shadow-sm shadow-slate-200 even:bg-primaryWhite-300 rounded-2xl leading-8">
+              <td className="font-semibold text-sm px-1  min-w-14 py-4 text-primaryBlue text-left">
+                 <span
+                    className="inline-block cursor-pointer pl-4"
+                    onClick={() => onClick.redirect(item)}
+                 >
+                    {item.associatedOrg?.company}
+                 </span>
+              </td>
+              <td className="font-medium text-sm px-1 min-w-14 py-4">
+                 <div className="my-[6px]">
+                 {item.associatedOrg?.companyType}
+                 </div>
+              </td>
+              <td className="font-medium text-sm px-1  min-w-14 py-4">
+                 <div className="my-[6px]">
+                 {item.associatedOrg?.address}
+                 </div>
+              </td>
+              <td className="font-medium text-sm px-1  min-w-14 py-4">
+                 <div className="my-[6px]">
+                 {item.associatedOrg?.city}
+                 </div>
+              </td>
+   
+              <td className="font-medium text-sm px-1  min-w-14 py-4">
+                 <div className="my-[6px]">
+                 {item.associatedOrg?.state}
+                 </div>
+              </td>
+              <td className="font-medium text-sm px-1  min-w-14 py-4">
+                 <div className="my-[6px]">
+                 {item.associatedOrg?.country}
+                 </div>
+              </td>
+   
+              <td className="font-medium text-sm px-1  min-w-14 py-4">
+                 <div className="my-[6px]">
+                    {item.firstName}
+                 </div>
+              </td>
+   
+              <td className="font-medium text-sm px-1  min-w-14 py-4">
+                 <div className="my-[6px]">
+                    {item.email}
+                 </div>
+              </td>
+   
+              <td className="font-medium text-sm px-1  min-w-14 py-4">
+                 <div className="my-[6px]">
+                    {item.phone}
+                 </div>
+              </td>
+   
+              <td className="font-medium text-sm px-1  min-w-14 py-4">
+                 <div className="my-[6px]">
+                  active
+                 </div>
+              </td>
+              <td className="font-medium text-sm px-1  min-w-14 py-4">
+                 <div className="my-[6px]">
+                 {item.associatedOrg?.numberOfTutors}
+                 </div>
+              </td>
+              <td className="font-medium text-sm px-1  min-w-14 py-4">
+                 <div className="my-[6px]">
+                 {item.associatedOrg?.numberOfActiveStudent}
+                 </div>
+              </td>
+   
+              <td className="font-medium text-sm px-1  min-w-14 py-4">
+                 <div className="my-[6px]">
+                     contributors
+                 </div>
+              </td>
+   
+           </tr>
          )}
       </>
    );

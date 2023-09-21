@@ -1,0 +1,63 @@
+#testUploadContainer {
+    margin-top: 100px;
+    margin-bottom: 82px;
+    display: flex;
+    align-items: center;
+}
+
+#testUpload {
+    font-family: "Inter", sans-serif;
+    font-weight: 500;
+    font-size: 18px;
+}
+
+#uploadButtons {
+    display: flex;
+}
+
+.fileUploaded {
+    background-color: #7152eb !important;
+}
+
+#handleFileUpload label {
+    background-color: #bfb1f6;
+    padding: 14.5px 16px;
+    border-radius: 8px;
+    margin-right: 14px;
+    color: white;
+    display: flex;
+    gap: 8px;
+    cursor: pointer;
+}
+
+#handleFileUpload input {
+    display: none;
+}
+
+#pdfUpload {
+    display: block;
+}
+
+#handleFileUpload img {
+    width: 20px;
+    height: 20px;
+}
+
+#handleFileUpload {
+    padding-left: 51px;
+}
+
+#filename {
+    margin-top: 7px;
+    font-family: "Inter", sans-serif;
+    font-weight: 400;
+    font-style: italic;
+    font-size: 10px;
+}
+
+.error {
+    font-size: 10px;
+    font-weight: 400;
+    color: tomato;
+    margin-top: 7px;
+}

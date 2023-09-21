@@ -85,6 +85,7 @@ export default function UserDetails({
   }, []);
  
   const handleBack = () => {
+    setcurrentStep(1)
     if (persona === "parent") {
       setFrames((prev) => {
         return { ...prev, userDetails: false, signupActive: true };
@@ -96,9 +97,8 @@ export default function UserDetails({
     }
   };
 
-  let personaText = values.role === "Parent" ? "Student" : "Parent";
+  let personaText = values.role === "parent" ? "Student" : "Parent";
  // alert(personaText)
- console.log(values?.role);
   return (
     <div className="w-full">
       <div className="flex">

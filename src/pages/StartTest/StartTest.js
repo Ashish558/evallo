@@ -43,7 +43,10 @@ export default function StartTest() {
       dueDate: '',
       instruction: '',
    })
-
+   const handleNextClick = () => {
+      // Replace 'id' and 'assignedTestId' with the actual values you want to pass in the URL
+      navigate(`/all-tests/start-section/${id}/${assignedTestId}`);
+    };
    // console.log(testHeaderDetails);
    const [isUnlimited, setIsUnlimited] = useState(false)
    const [sectionDetails, setSectionDetails] = useState({})

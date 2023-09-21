@@ -7,10 +7,10 @@
 .line::before {
   content: "";
   position: absolute;
-  right: -95px;
+  right: -93px;
   top: 50%;
   transform: translateY(-50%);
-  width: 95px;
+  width:93px;
   height: 1px;
   background-color: #7152eb;
   z-index: -99;
@@ -23,5 +23,34 @@
 }
 
 .line.disabledSteps:nth-last-child(1)::before {
+  display: none;
+}
+
+
+.line2 {
+  position: relative;
+  z-index: 10;
+  font-style: normal;
+}
+
+.line2::before {
+  content: "";
+  position: absolute;
+  right: -150px;
+  top: 50%;
+  transform: translateY(-50%);
+  width:150px;
+  height: 1px;
+  background-color: #7152eb;
+  z-index: -99;
+}
+.line2:nth-last-child(1) {
+  margin-right: 0;
+}
+.line2:nth-last-child(1)::before {
+  display: none;
+}
+
+.line2.disabledSteps:nth-last-child(1)::before {
   display: none;
 }

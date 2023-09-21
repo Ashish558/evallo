@@ -19,6 +19,9 @@ import Loader from "../../components/Loader";
 import CCheckbox from "../../components/CCheckbox/CCheckbox";
 import EvalloLogo from "../../assets/icons/evallo_new.svg";
 import cuate from "../../assets/signup/cuate.png";
+import AdminNavbar from "../AdminDashboard/AdminNavbar";
+
+
 export default function Login({ setLoginFormActive }) {
   const emailValidation = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
   const [isPasswordForgot, setIsPasswordForgot] = useState(false);
@@ -232,6 +235,7 @@ export default function Login({ setLoginFormActive }) {
             ""
           )}
         </div>
+      
       </div>
     </div>
   );

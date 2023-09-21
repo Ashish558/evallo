@@ -179,6 +179,14 @@ export const testServicesApi = createApi({
             headers: getAuthHeader()
          })
       }),
+      getQuestion: builder.query({
+         query: (body) => ({
+            url: `/api/test/getdsat/64fb4e6d68528c79b20bbbd9?userId=${body.id}`,
+            method: "GET",
+            params: body.params,
+            headers: getAuthHeader()
+         })
+      }),
 
    }),
 });
@@ -205,5 +213,6 @@ export const {
    useLazyGetAnswersQuery,
    useLazyDeleteTestQuery,
    useEditQuestionMutation,
-   useAddBackupResponseMutation
+   useAddBackupResponseMutation,
+   useLazyGetQuestionQuery
 } = testServicesApi;

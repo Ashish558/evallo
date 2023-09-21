@@ -29,7 +29,7 @@ module.exports = {
             90: "90px",
             110: "110px",
             120: "100px",
-            pageLeft: "134px",
+            pageLeft: "30px",
             138: "128px",
             130: "130px",
             140: "140px",
@@ -124,8 +124,28 @@ module.exports = {
           gridTemplateColumns: {
             '13': 'repeat(13, minmax(0, 1fr))',
           }
+
+
     
       },
    },
+
+ 
+      theme: {
+        extend: {
+         
+          customPopup: {
+            base: 'fixed inset-0 overflow-hidden',
+            content: 'max-w-3xl mx-auto p-4 mt-16 mb-16 relative',
+            header: 'bg-blue-500 text-white p-2 rounded-t-lg',
+            body: 'bg-white p-4 rounded-b-lg',
+            selectedText: 'text-gray-700 mb-4',
+            textarea: 'w-full h-24 border border-gray-300 rounded p-2 focus:outline-none focus:ring focus:border-blue-400',
+            actions: 'flex justify-end mt-2',
+            button: 'px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 ml-2',
+            cancelButton: 'px-4 py-2 bg-gray-300 text-gray-600 rounded hover:bg-gray-400',
+          },
+        },
+      },
    plugins: [],
 };

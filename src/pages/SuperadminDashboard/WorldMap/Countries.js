@@ -20,4 +20,4 @@ export const countries = {
     VE: 90,
 };
 
-export const colorScale = ["#FFA27D", "#ffa29d"];
+export const colorScale = ["#EBEBEB", "#ffa29d"];
