@@ -75,7 +75,7 @@ export default function TutorProfile({ isOwn }) {
    const { id } = useSelector(state => state.user)
    const [studentFeedbacks, setStudentFeedbacks] = useState([])
    useEffect(() => {
-      getStudentFeedback({id:id})
+      getStudentFeedback({id:params.id})
          .then(({ error, data }) => {
             if (error) {
                return console.log(error);
@@ -84,7 +84,7 @@ export default function TutorProfile({ isOwn }) {
             setStudentFeedbacks(data)
 
          })
-   },[id])
+   },[params.id])
    const tableHeaders1 = [
       {
          id: 1,

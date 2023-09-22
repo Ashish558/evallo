@@ -25,7 +25,7 @@ const BarChart = ({ studentFeedbacks }) => {
         }
     }
     console.log(count)
-    const percentArray = percentage.map(value => `${value}%`);
+    const percentArray = percentage.map(value => `${(Math.round(value * 100) / 100).toFixed(0)}%`);
     // console.log(percentArray)
     // console.log(studentFeedbacks?.data?.overallAverageRating)
     const stars = studentFeedbacks?.data?.overallAverageRating
@@ -99,7 +99,7 @@ const BarChart = ({ studentFeedbacks }) => {
                     <p className='font-light text-[#092327]'> Total Ratings: {count}</p>
                     <div className='flex  items-center'>
                         {element}
-                        <p className='text-[#667085] text-[0.9114583333vw]'>{studentFeedbacks?.data?.overallAverageRating}</p>
+                        <p className='text-[#667085] text-[0.9114583333vw]'>{(Math.round(studentFeedbacks?.data?.overallAverageRating * 100) / 100).toFixed(1)}</p>
                     </div>
                     {/* <p className='text-[#667085]'><img className='inline-block' src={stars} alt="" />{studentFeedbacks?.data?.overallAverageRating}</p> */}
                 </div>
@@ -133,7 +133,9 @@ const BarChart = ({ studentFeedbacks }) => {
                         <p className='font-light text-[#092327]'> Total Ratings: {count}</p>
                         <div className='flex  items-center'>
                             {element}
-                            <p className='text-[#667085] text-[0.9114583333vw]'>{studentFeedbacks?.data?.overallAverageRating}</p>
+                            <p className='text-[#667085] text-[0.9114583333vw]'> 
+                            {(Math.round(studentFeedbacks?.data?.overallAverageRating * 100) / 100).toFixed(1)}
+                            </p>
                         </div>
                     </div>
                 </div>
