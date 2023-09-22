@@ -4,13 +4,16 @@ import Chart2 from "../../../../components/Chart/Chart";
 import LineChart from "./LineChart"
 import styles from "../style.module.css";
 import { useState } from "react";
-import { useScoreProgressionStudentMutation } from "../../../../app/services/users";
+import { useChartBubbleStudentMutation, useScoreProgressionStudentMutation } from "../../../../app/services/users";
 import { useEffect } from "react";
 import RangeDate from "../../../../components/RangeDate/RangeDate";
 import InputSelectNew from "../../../../components/InputSelectNew/InputSelectNew";
 import { useParams } from "react-router-dom";
 const SPFrame3 = ({ userDetail ,isOwn ,user}) => {
   const [getProgression, Progstatus] = useScoreProgressionStudentMutation();
+  const [getBubbleChart,bubbleChartStatus]=useChartBubbleStudentMutation()
+  const [ TimeChartData,setTimeChartData]= useState()
+  const [ ConceptualChartData,setConceptualChartData]= useState()
   const [scoreProgression, setScore] = useState([]);
   const [spSubject, setspSubject] = useState([]);
   const [selectedspSubject, setSelectedspSubject] = useState([]);
@@ -41,13 +44,20 @@ setId(userDetail?._id)
       } else {
         idd = param.id;
       }
-       console.log({idd,hid:userDetail?._id,iff:user?._id})
+      // console.log({idd,hid:userDetail?._id,iff:user?._id})
       getProgression({ studentId: user?._id ,startDate:new Date(2023,1,1),endDate:new Date(),role:"student", testType: officialTest }).then(
         (res) => {
           console.log("progression res", res);
           if (res?.data?.scoreProgression) setScore(res?.data?.scoreProgression);
         }
       );
+      getBubbleChart({ studentId: user?._id ,startDate:new Date(2023,1,1),endDate:new Date(),role:"student", chartType:"timeManagement" }).then(
+        (res) => {
+          console.log("time res", res);
+          if (res?.data?.chartData) setTimeChartData(res?.data?.chartData);
+        }
+      );
+     
     }
   }, [userDetail,id,officialTest,user]);
 
@@ -57,11 +67,42 @@ setId(userDetail?._id)
       setSelectedspSubject(scoreProgression[0]?.subjects[0]?.name)
     }
   }, [scoreProgression]);
+  const convertDateToRange = (startDate) => {
+    let startD = startDate.split("-")[0];
 
-  const handleConceptAccuracy=() => {
+    startD = new Date(startD);
+    startD = startD.setDate(startD.getDate() + 1);
+    startD = new Date(startD).toISOString().split("T")[0];
+
+    let endD = startDate.split("-")[1];
+    endD = new Date(endD);
+    endD = endD.setDate(endD.getDate() + 1);
+    endD = new Date(endD).toISOString().split("T")[0];
+    const body = { startDate: startD, endDate: endD };
+
+    return body;
+  };
+  const handleConceptAccuracy=(startDate) => {
+    let body = convertDateToRange(startDate);
+    body.studentId= user?._id ;
+    body.chartType= "conceptAccuracy"
+    getBubbleChart(body).then(
+      (res) => {
+        console.log("conceptual res", res);
+        if (res?.data?.chartData) setConceptualChartData(res?.data?.chartData);
+      }
+    );
   }
-  const handleTimeManagement=()=>{
-    
+  const handleTimeManagement=(startDate)=>{
+    let body = convertDateToRange(startDate);
+    body.studentId= user?._id ;
+    body.chartType= "timeManagement" ;
+    getBubbleChart(body).then(
+      (res) => {
+        console.log("time res", res);
+        if (res?.data?.chartData) setTimeChartData(res?.data?.chartData);
+      }
+    );
   }
   useEffect(() => {
     spSubject.map((sub) => {
@@ -99,7 +140,7 @@ setId(userDetail?._id)
     });
     setSubjects(updated);
   };
- console.log("sprame3",{spSubject,subjects,scoreProgression});
+ console.log("sprame3",{spSubject,subjects,scoreProgression,TimeChartData,ConceptualChartData});
   return (
     <div className="flex flex-col gap-5 -mt-5">
       {" "}

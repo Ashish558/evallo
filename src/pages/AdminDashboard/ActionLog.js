@@ -80,7 +80,7 @@ export default function ActionLog({ actionLog }) {
         <ul
 
           onScroll={handleScroll}
-          className="list-disc rounded-b-md overflow-y-scroll h-full "
+          className="list-disc rounded-b-md overflow-y-scroll  custom-scroller h-full "
         >
           {sortedAction?.map((item, index) => (
             <>

@@ -970,7 +970,7 @@ export default function SuperAdminSettings() {
               title=" Manage Referral Codes"
               className={`${styles["bordered-settings-container"] }`}
               body={
-                <div className="max-h-[360px] overflow-auto scrollbar-content p-1 scrollbar-vertical ">
+                <div className="max-h-[360px] overflow-auto custom-scroller p-1 scrollbar-vertical ">
                   {subscriptionCode !== undefined &&
                     subscriptionCode.map((subscription, i) => {
                       return (
@@ -1001,6 +1001,7 @@ export default function SuperAdminSettings() {
                                 />
                               )} */}
                               <ToggleBar
+                              boxClass="!h-[16px]"
                                 circleColor="bg-[rgba(119,221,119,1)]"
                                 toggle={{ value: 5, key: 'code' }}
                                 onToggle={togglePermissions}
@@ -1065,7 +1066,7 @@ export default function SuperAdminSettings() {
               className={styles["bordered-settings-container"]}
               body={
                 <div>
-                  <div className="max-h-[360px] overflow-auto scrollbar-content p-1 scrollbar-vertical">
+                  <div className="max-h-[360px] overflow-auto custom-scroller p-1 scrollbar-vertical">
                     {servicesAndSpecialization !== undefined &&
                       servicesAndSpecialization.map((service, i) => {
                         return (
@@ -1079,6 +1080,8 @@ export default function SuperAdminSettings() {
                               </p>
                             <div className="flex items-center gap-x-4">
                             <ToggleBar
+                            
+                                 boxClass="!h-[16px]"
                                 circleColor="bg-[rgba(119,221,119,1)]"
                                 toggle={{ value: 5, key: 'code' }}
                                 onToggle={togglePermissions}
@@ -1138,7 +1141,7 @@ export default function SuperAdminSettings() {
               title="Session Tags & Reconciliation"
               className={styles["bordered-settings-container"]}
               body={
-                <div className="max-h-[360px] overflow-auto scrollbar-content p-1 scrollbar-vertical">
+                <div className="max-h-[360px] overflow-auto custom-scroller p-1 scrollbar-vertical">
                   {sessionTags !== undefined &&
                     sessionTags.map((service, i) => {
                       return (
@@ -1149,6 +1152,7 @@ export default function SuperAdminSettings() {
                             </p>
                             <div className="flex items-center gap-x-4">
                             <ToggleBar
+                            boxClass="!h-[16px]"
                                 circleColor="bg-[rgba(119,221,119,1)]"
                                 toggle={{ value: 5, key: 'code' }}
                                 onToggle={togglePermissions}

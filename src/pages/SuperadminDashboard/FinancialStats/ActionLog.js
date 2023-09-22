@@ -116,7 +116,7 @@ function ActionLog({ dateRange }) {
         <ul
          
           onScroll={handleScroll}
-          className="list-disc max-h-[390.33px] overflow-y-scroll rounded-b-md "
+          className="list-disc max-h-[390.33px] overflow-y-scroll !scroll-my-4  custom-scroller rounded-b-md "
         >
           {sortedAction?.map((item, index) => (
             <div key={index} className="flex ml-2 h-[57px] pl-5 relative">

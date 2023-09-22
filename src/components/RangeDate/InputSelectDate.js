@@ -70,13 +70,13 @@ export default function InputSelect({
           name={label}
         >
           {value === "" || !value ? (
-            <span className="text-primary-60 mr-5 pl-5 cursor-default  text-[13px]  !text-[calc(15*0.050vw)]  whitespace-nowrap">
+            <span className="text-primary-60 mr-5 pl-5 cursor-default  text-[13px]  !text-[calc(17*0.050vw)]  whitespace-nowrap">
               {" "}
               <span > {placeholder}</span>
               {" "}
             </span>
           ) : (
-            <span className="mr-5 pl-5 text-[15px] !text-[calc(15*0.050vw)] cursor-default whitespace-nowrap">
+            <span className="mr-5 pl-5 text-[15px] !text-[calc(17*0.050vw)] cursor-default whitespace-nowrap">
               <span >{value}</span>
 
             </span>

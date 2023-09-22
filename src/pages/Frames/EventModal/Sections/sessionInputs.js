@@ -11,7 +11,7 @@ export default function SessionInputs({ data, setData, status, isEditable }) {
 
    return (
       <>
-         <div className="flex mt-8 ">
+         <div className="flex mt-[28px] ">
             {persona === "student" ? (
                <div className="w-full flex  pt-[0px]">
                   <InputSelect
@@ -24,12 +24,12 @@ export default function SessionInputs({ data, setData, status, isEditable }) {
                      }
                      disabled={!isEditable}
                      optionData={status}
-                     inputContainerClassName="bg-lightWhite border-0 font-medium pr-3 pt-4 pb-4"
-                     inputClassName="bg-transparent appearance-none font-medium"
+                     inputContainerClassName={`${data.sessionStatus=="Completed"?'bg-[#38C980]':'bg-lightWhite'}  border-0 font-medium pr-3 pt-4 pb-4 ${data.sessionStatus==="Completed"?'text-white':'text-[#507CA8]'}`}
+                     inputClassName={`bg-transparent appearance-none font-medium  text-[#507CA8]`}
                      placeholder="Session Status"
                      label="Session Status"
-                     labelClassname="font-semibold text-base-17-5"
-                     parentClassName="w-[300px] mr-10"
+                     labelClassname="font-medium text-[18.6px] text-[#26435F]"
+                     parentClassName="w-[333px] mr-10"
                      type="select"
                   />
                   <div className="flex mt-7">
@@ -39,17 +39,17 @@ export default function SessionInputs({ data, setData, status, isEditable }) {
                               ...data,
                               rescheduling: !data.rescheduling,
                            })} disabled={!isEditable} />
-                        <p className="font-medium text-primary-60 text-base-20">
+                        <p className="font-medium text-[18.6px] text-[#26435F]">
                            Rescheduled
                         </p>
                      </div>
-                     <div className='flex ml-5 items-center'>
+                     <div className='flex ml-[24px] items-center'>
                         <CCheckbox checked={data.partialSession} name='partialSession' onChange={() =>
                            setData({
                               ...data,
                               partialSession: !data.partialSession,
                            })} disabled={!isEditable} />
-                        <p className="font-medium text-primary-60 text-base-20">
+                        <p className="font-medium text-[18.6px] text-[#26435F]">
                            Partial Session
                         </p>
                      </div>
@@ -69,10 +69,10 @@ export default function SessionInputs({ data, setData, status, isEditable }) {
                      disabled={!isEditable}
                      optionData={status}
                      inputContainerClassName="bg-lightWhite border-0 font-medium pr-3 pt-4 pb-4"
-                     inputClassName="bg-transparent appearance-none font-medium"
+                     inputClassName="bg-transparent appearance-none font-medium text-[#507CA8]"
                      placeholder="Session Status"
                      label="Session Status"
-                     labelClassname="font-semibold text-base-17-5"
+                     labelClassname="font-semibold text-[18.6px] text-[#26435F]"
                      parentClassName="w-[300px] mr-10"
                      type="select"
                   />
@@ -83,7 +83,7 @@ export default function SessionInputs({ data, setData, status, isEditable }) {
                               ...data,
                               rescheduling: !data.rescheduling,
                            })} disabled={!isEditable} />
-                        <p className="font-medium text-primary-60 text-base-20">
+                        <p className="font-medium text-[18.6px] text-[#26435F]">
                            Rescheduled
                         </p>
                      </div>
@@ -93,7 +93,7 @@ export default function SessionInputs({ data, setData, status, isEditable }) {
                               ...data,
                               partialSession: !data.partialSession,
                            })} disabled={!isEditable} />
-                        <p className="font-medium text-primary-60 text-base-20">
+                        <p className="font-medium text-[18.6px] text-[#26435F]">
                            Partial Session
                         </p>
                      </div>

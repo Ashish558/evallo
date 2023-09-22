@@ -119,12 +119,7 @@ export default function AssignedTests() {
     });
   };
   const tempTableHeaders = [
-    {
-      id: 1,
-      text: "Date Assigned",
-      className: "text-left pl-6 no-arrow",
-      onCick: sortByAssignedDate,
-    },
+  
     {
       id: 2,
       text: "Student Name",
@@ -135,6 +130,12 @@ export default function AssignedTests() {
       id: 3,
       className: "no-arrow",
       text: "Test Name",
+    },
+    {
+      id: 1,
+      text: "Date Assigned",
+      className: "text-left pl-6 no-arrow",
+      onCick: sortByAssignedDate,
     },
     {
       id: 4,
@@ -734,7 +735,7 @@ export default function AssignedTests() {
                     })
                   }
                   placeholder="Search Student"
-                  inputClassName="pl-4 py-[14px] text-base-17-5 text-md text-[#667085]   placeholder:text-base-17-5 placeholder:text-[#667085] pl-2"
+                  inputClassName="pl-4 py-[12px] text-base-17-5 text-md text-[#667085]   placeholder:text-base-17-5 placeholder:text-[#667085] pl-2"
                   parentClassName="w-[20.8333333333vw] text-md"
 
                   inputContainerClassName=" my-1 shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white  !py-0"
@@ -750,8 +751,8 @@ export default function AssignedTests() {
                   placeholderClass="text-base-17-5"
                   optionData={testNameOptions}
                   optionListClassName="text-base-17-5 text-[#667085]"
-                  inputClassName="text-base-17-5 py-3"
-                  inputContainerClassName=" my-1 shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white  "
+                  inputClassName="text-base-17-5 !py-3"
+                  inputContainerClassName=" my-1 !py-3 shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white  "
                   placeholder="Search Assignment"
                   parentClassName="w-[23.75vw] text-sm text-[#667085]"
                   type="select"
@@ -762,8 +763,9 @@ export default function AssignedTests() {
                   optionListClassName="text-base-17-5 text-[#667085]"
                   placeholderClass="text-base-17-5"
                   optionData={["Started", "Not Started", "Completed"]}
-                  inputClassName="text-base-17-5 py-3"
-                  inputContainerClassName=" shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px]  bg-white"
+                  inputClassName="text-base-17-5 !py-3"
+                  inputContainerClassName=" shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px]  bg-white !py-3"
+                  optionClassName=""
                   placeholder="Completion"
                   parentClassName="w-[11.9791666667vw] text-sm text-[#667085]"
                   type="select"
@@ -772,11 +774,11 @@ export default function AssignedTests() {
                   <div className="w-2/6 flex justify-end">
                     <div>
                       <button
-                        className="bg-[#FFA28D] text-[15px] justify-center flex p-[7px] design:p-[10px] items-center text-white font-bold rounded-[7.5px] text-base-15"
+                        className="bg-[#FFA28D] text-[17.5px] justify-center flex p-[9px] design:p-[11px] items-center text-white font-bold rounded-[6px] text-base-17-5"
                         onClick={() => setAssignTestModalActive(true)}
                       >
                         New Assignment
-                        <img src={AddIcon} className="ml-3" alt="new test" />
+                        <img src={AddIcon} className="ml-3 !w-5 h-5" alt="new test" />
                       </button>
                     </div>
                   </div>
@@ -824,9 +826,9 @@ export default function AssignedTests() {
                     </label>
                   </div>
 
-                  <div className="gap-x-[5px] px-4 py-[11px] bg-[#FFF] rounded-5 ml-6 flex">
+                  <div className="gap-x-[5px] px-4 py-[9px] bg-[#FFF] rounded-5 ml-6 flex">
                     <p >Delete</p>
-                    <p ><img src={DeleteIcon} alt="" /></p>
+                    <p ><img className="w-5 h-5" src={DeleteIcon} alt="" /></p>
                   </div>
                   <div className="gap-x-[5px] px-4 py-[11px] bg-[#FFF] rounded-5 ml-6 flex">
                     <p >Resend</p>

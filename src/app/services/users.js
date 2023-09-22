@@ -237,10 +237,19 @@ export const userServicesApi = createApi({
         headers: getAuthHeader(),
       }),
     }),
+    chartBubbleStudent: builder.mutation({
+      query: (body) => ({
+        url: `api/user/student/chart`,
+        method: "POST",
+        body: body,
+        headers: getAuthHeader(),
+      }),
+    }),
   }),
 });
 
 export const {
+  useChartBubbleStudentMutation,
   useAddTutorReviewMutation,
   useLazyGetAllUsersQuery,
   useLazyGetParentTutorsQuery,

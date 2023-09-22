@@ -120,13 +120,17 @@ export default function SignupTab({
               placeholder=""
               parentClassName="text-xs  text-[#26435F] mb-2"
             />
+            <div className="flex gap-1 items-center">
+            <div className="bg-gray-200 border translate-y-[6px] p-2 rounded-[3.5px] border-gray-200 h-[43px] text-[#667085] text-xs px-3 flex items-center" >+91</div>
             <InputField
               placeholder=""
+              parentClassName="text-xs  text-[#26435F] mb-2 "
               inputContainerClassName="bg-gray-200 border border-gray-200 "
-              inputClassName="bg-gray-200"
-              parentClassName="text-xs  text-[#26435F] mb-7"
-              label="Phone"
+              inputClassName="bg-gray-200 "
+              label=" Phone"
+              labelClassname={"translate-x-[-46px]"}
             />
+</div>
           </div>
           <div>
             <p className={`mb-5 ${styles.label} text-base-17-5`}>
@@ -245,15 +249,17 @@ export default function SignupTab({
               inputClassName="bg-gray-200"
               parentClassName="text-xs  text-[#26435F] mb-2"
             />
-
+          <div className="flex gap-1 items-center">
+            <div className="bg-gray-200 border translate-y-[6px] p-2 rounded-[3.5px] border-gray-200 h-[43px] text-[#667085] text-xs px-3 flex items-center" >+91</div>
             <InputField
               placeholder=""
               parentClassName="text-xs  text-[#26435F] mb-2 "
               inputContainerClassName="bg-gray-200 border border-gray-200 "
               inputClassName="bg-gray-200 "
               label=" Student/Parent Phone"
+              labelClassname={"translate-x-[-46px]"}
             />
-
+</div>
             <InputField
               placeholder=""
               parentClassName="text-xs  text-[#26435F] mb-2"

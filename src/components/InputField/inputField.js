@@ -56,10 +56,10 @@ export default function InputField({
   }, [value])
 
   return (
-    <div className={`relative text-sm ${parentClassName && parentClassName}`}>
+    <div className={`relative  ${parentClassName && parentClassName}`}>
       {label && (
         <label
-          className={`inline-block text-sm font-semibold ${labelClassname} ml-0 text-base-17-5`}
+          className={`inline-block  font-semibold ${labelClassname} ml-0 `}
         >
           {label}
           {required && (
