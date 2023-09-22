@@ -46,7 +46,7 @@ export default function InputSearch({
             {required && <span className='text-primaryRed inline-block pl-1'>*</span>}
          </label>
          <div
-            className={`py-3 px-6 flex relative items-center rounded-10 ${inputContainerClassName ? inputContainerClassName : ""
+            className={`py-3 px-6 flex relative items-center rounded-5 ${inputContainerClassName ? inputContainerClassName : ""
                }`}
          >
             {Icon && <img src={Icon} className="mr-6" />}
