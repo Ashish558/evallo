@@ -210,23 +210,34 @@ const contributorNavdata = [
 const studentNav = [
   {
     icon: Dashboard,
+    activeIcon: Dashboard1,
     path: "/",
     tooltip: "Dashboard",
   },
   {
     icon: Profile,
+    activeIcon: Profile1,
     path: "/profile",
     tooltip: "Profile",
   },
   {
-    icon: Schedule,
-    path: "/calendar",
-    tooltip: "Calendar",
+    icon: Assignment,
+    activeIcon: Assignment1,
+    path: "/all-tests",
+    tooltip: "Assignments",
   },
   {
-    icon: Assignment,
-    path: "/all-tests",
-    tooltip: "Assigned Tests",
+    icon: Schedule,
+    activeIcon: Schedule1,
+    path: "/calendar",
+    tooltip: "Schedule",
+  },
+  {
+    icon: Settings,
+    activeIcon: Settings1,
+    path: "/settings",
+    excludes: ["parent", "tutor", "admin", "superAdmin"],
+    tooltip: "Settings",
   },
 ];
 

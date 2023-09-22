@@ -38,13 +38,15 @@ import InputField from "../InputField/inputField";
 export default function TableItem({
   item,
   dataFor,
+  index,
   onClick,
   excludes,
   fetch,
   checkedHeader,
   extraData,
   numberChecked,
-  setnumberChecked
+  setnumberChecked,
+  testtype
 }) {
   const [score, setScore] = useState("-");
   const navigate = useNavigate();
@@ -698,6 +700,7 @@ export default function TableItem({
                 </>
               ) : (
                 <>
+                {console.log(item)}
                   {item.isCompleted ? (
                     <button
                       className="px-2.5 py-1.8 bg-[#38C980] rounded-md flex items-center leading-none bg-primary text-white ml-4"
@@ -712,10 +715,15 @@ export default function TableItem({
                   ) : item.isStarted ? (
                     <button
                       className="px-2.5 py-1.8 bg-[#FFCE84] rounded-md flex items-center leading-none bg-primary text-white ml-4"
-                      onClick={() =>
+                      onClick={() =>{
+                        const indexx=testtype.findIndex(obj=>obj.testId===item.testId);
+                        testtype[indexx].testtype=='DSAT'?
+                        navigate(`/testpage/${item.testId}/${item.assignedTestId}?name=${item.studentId.firstName+' '+item.studentId.lastName}`)
+                        :
                         navigate(
                           `/all-tests/start-section/${item.testId}/${item.assignedTestId}`
                         )
+                      }
                       }
                     >
                       Continue
@@ -723,10 +731,15 @@ export default function TableItem({
                   ) : (
                     <button
                       className="px-2.5 py-1.8 rounded-md bg-[#FF7979] flex items-center leading-none bg-primary text-white ml-4"
-                      onClick={() =>
+                      onClick={() =>{
+                        const indexx=testtype.findIndex(obj=>obj.testId===item.testId);
+                        testtype[indexx].testtype=='DSAT'?
+                        navigate(`/testpage/${item.testId}/${item.assignedTestId}?name=${item.studentId.firstName+' '+item.studentId.lastName}`)
+                        :
                         navigate(
                           `/all-tests/start-section/${item.testId}/${item.assignedTestId}`
                         )
+                      }
                       }
                     >
                       Start

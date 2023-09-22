@@ -4,13 +4,13 @@ import { useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 
 
-const TestInstructionPage = ({ onNextClick, onBackClick }) => {
+const TestInstructionPage = ({ setisntructionpage }) => {
   const navigate = useNavigate();
   const { id, assignedTestId } = useParams();
 
   const handleNextClick = () => {
    
-    navigate(`/test-page`);
+    setisntructionpage(false)
   };
 
   return (
@@ -37,7 +37,6 @@ const TestInstructionPage = ({ onNextClick, onBackClick }) => {
         </p>
         <div className="mt-4 flex justify-between">
           <button
-            onClick={onBackClick}
             className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg focus:outline-none focus:ring focus:ring-blue-600"
           >
             Back

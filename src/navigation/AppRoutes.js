@@ -218,7 +218,7 @@ const AppRoutes = () => {
           }
         />
          <Route
-          path="/testpage"
+          path="/testpage/:testid/:userid"
           element={
             <RequireAuth isLoggedIn={isLoggedIn}>
              <TestPage/>

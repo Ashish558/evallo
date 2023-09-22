@@ -5,12 +5,14 @@ import { useEffect, useState } from "react";
 import Que from "./Questions";
 import axios from "axios";
 import { BASE_URL, getAuthHeader } from "../../app/constants/constants";
-import { useParams } from "react-router-dom/dist";
+import { useLocation, useParams } from "react-router-dom/dist";
 import {
   useLazyGetQuestionQuery,
   useSubmitTestMutation,
 } from "../../app/services/test";
 import LoaderPage from "../../components/TestItem/LoaderPage";
+import TestInstructionPage from "../../components/TestItem/TesInstructionPage";
+
 export default function TestPage() {
   const [getQue, GetQueRes] = useLazyGetQuestionQuery();
   const [info, setInfo] = useState([]);
@@ -26,86 +28,13 @@ export default function TestPage() {
   const [cutanswer, setcutanswer] = useState([]);
   const [markreview, setmarkreview] = useState([]);
   const [sectionDetails, setSectionDetails] = useState();
+  const [instructionpage, setisntructionpage] = useState(true);
   const [cutcheck,setcutcheck] = useState(false);
   const[cal,setCal] = useState(false)
   const[loader,setloader] = useState(false)  
-  const { id } = useParams();
-  const data2 = [
-    {
-      paragraph:
-        "<p>Lake Baikal is the world's deepest lake, located in Siberia, Russia. It is also the world's oldest and most voluminous lake by volume. The lake is home to a unique ecosystem and is a UNESCO World Heritage Site.</p>",
-      question: "What is the world's deepest lake?",
-      options: [
-        "Lake Baikal",
-        "Lake Tanganyika",
-        "Lake Superior",
-        "Lake Michigan",
-      ],
-    },
-    {
-      paragraph:
-        "<p>Mount Everest is the world's highest mountain, located in the Himalayas between Nepal and China. It is 29,031 feet (8,848 meters) tall. The mountain is a popular destination for mountaineers from all over the world.</p>",
-      question: "What is the world's highest mountain?",
-      options: ["Mount Everest", "K2", "Aconcagua", "Mauna Kea"],
-    },
-    {
-      paragraph:
-        "<p>The Nile River is the world's longest river, flowing through 11 countries in Africa. It is 4,132 miles (6,650 kilometers) long. The river is an important source of water for irrigation and transportation.</p>",
-      question: "What is the world's longest river?",
-      options: [
-        "The Nile River",
-        "The Amazon River",
-        "The Yangtze River",
-        "The Yellow River",
-      ],
-    },
-    {
-      paragraph:
-        "<p>The Sahara Desert is the world's largest desert, covering most of North Africa. It is 3.5 million square miles (9.1 million square kilometers) in size. The desert is home to a variety of animals and plants that have adapted to the harsh conditions.</p>",
-      question: "What is the world's largest desert?",
-      options: [
-        "The Sahara Desert",
-        "The Arctic Desert",
-        "The Antarctic Desert",
-        "The Arabian Desert",
-      ],
-    },
-    {
-      paragraph:
-        "<p>The Amazon rainforest is the world's largest rainforest, covering most of northwestern South America. It is 2.1 million square miles (5.4 million square kilometers) in size. The rainforest is home to a vast variety of plants and animals, including many that are found nowhere else in the world.</p>",
-      question: "What is the world's largest rainforest?",
-      options: [
-        "The Amazon rainforest",
-        "The Congo rainforest",
-        "The Sumatran rainforest",
-        "The Borneo rainforest",
-      ],
-    },
-    {
-      paragraph:
-        "<p>The Pacific Ocean is the world's largest ocean, covering about one-third of the Earth's surface. It is 165,250,000 square miles (427,075,000 square kilometers) in size. The ocean is home to a vast variety of marine life, including many that are found nowhere else in the world.</p>",
-      question: "What is the world's largest ocean?",
-      options: [
-        "The Pacific Ocean",
-        "The Atlantic Ocean",
-        "The Indian Ocean",
-        "The Arctic Ocean",
-      ],
-    },
-    {
-      paragraph:
-        "<p>Greenland is the world's largest island, located in the North Atlantic Ocean. It is 836,000 square miles (2,175,600 square kilometers) in size. The island is covered in ice and snow, and is home to a variety of wildlife, including polar bears, seals, and whales.</p>",
-      question: "What is the world's largest island?",
-      options: ["Greenland", "New Guinea", "Borneo", "Madagascar"],
-    },
-    {
-      paragraph:
-        "<p>China is the world's most populous country, with a population of over 1.4 billion people. It is located in East Asia. The country is home to a vast variety of cultures and languages.</p>",
-      question: "What is the world's most populous country?",
-      options: ["China", "India", "United States", "Indonesia"],
-    },
-  ];
-
+  const { testid,userid } = useParams();
+  const location = useLocation();
+  const name = new URLSearchParams(location.search).get("name");
   function MarkAnswer(QuestionNumber, correctAnswer) {
     const updatedanswer = answers.map((q) =>
       q.QuestionNumber === QuestionNumber
@@ -158,8 +87,9 @@ export default function TestPage() {
 
   const fetchApi = () => {
     setloader(true)
-    getQue({ id }).then((res) => {
+    getQue({ testid,userid }).then((res) => {
       if (res.error) return console.log("testerror", res.error);
+      console.log(res);
       setdata(res.data.data.answer.subjects)
       setSeconds(res.data.data.answer.subjects[sectionindex].timer*60)
       setSectionDetails(res.data.data.answer.subjects[sectionindex])
@@ -199,6 +129,11 @@ export default function TestPage() {
     setIndex(index - 1);
   };
 
+  useEffect(()=>{
+    
+    setSeconds(data.length>0?data[sectionindex].timer*60:100)
+    
+  },[instructionpage])
 
   function next_section() {
     setsectionindex(sectionindex + 1);
@@ -218,6 +153,7 @@ export default function TestPage() {
   }, [seconds]);
 
   const handleSubmitSection = () => {
+    if(sectionindex<data.length){
     //id of test
     var submitId = "64fb1f5c68528c79b20b45dd";
     const response = answers;
@@ -240,7 +176,9 @@ export default function TestPage() {
     setIndex(0)
     if(toggle2)
     tog2()
+    }
   };
+
 
   function  markre(QuestionNumber) {
     const updatedanswer = markreview.map((q) =>
@@ -257,6 +195,7 @@ export default function TestPage() {
 
   useEffect(() => {
     fetchApi();
+    console.log(sectionindex);
   }, [sectionindex]);
 
   useEffect(() => {
@@ -268,9 +207,13 @@ const [pages,setPage]=useState(arr)
     <div className=" relative ">
      {loader? <LoaderPage/>
      :
+     instructionpage?
+     <TestInstructionPage setisntructionpage={setisntructionpage}/> 
+     :
      <>
       <Navbar seconds={seconds} sectionDetails={data[sectionindex]} cal={cal} setCal={setCal} />
       <Que
+      answers={answers}
         markreview={markreview}
         markre={markre}
         cutcheck={cutcheck}
@@ -288,6 +231,7 @@ const [pages,setPage]=useState(arr)
         mark={pages}
       />
       <Foot
+      name={name}
       markreview={markreview}
       index={index}
       cutcheck={cutcheck}

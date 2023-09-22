@@ -49,6 +49,7 @@ export default function AllTests() {
   const [testForDelete, setTestForDelete] = useState("");
   const [filteredTests, setFilteredTests] = useState([]);
   const [filterItems, setFilterItems] = useState([]);
+  const [testtype2, settesttype2] = useState();
   const [submitBtnDisabled, setSubmitBtnDisabled] = useState(true);
   const [loading, setLoading] = useState(false);
   const [removeQuestionModal, setRemoveQuestionModal] = useState(false);
@@ -81,6 +82,7 @@ export default function AllTests() {
       [st]:!sortOrder[st]
     })
   };
+
 
 const sortBycreateDate = () => {
   setFilteredTests((prev) => {
@@ -306,14 +308,27 @@ const sortBycreateDate = () => {
     const headers = getAuthHeader();
     axios
       .get(`${BASE_URL}api/test`, { headers })
-      .then((res) => setTableData(res.data.data.test));
+      .then((res) =>{
+        console.log('asdadasdasdasd',res.data.data.test);
+      let dataofque=res.data.data.test
+      let cutdata = dataofque.map((item) => ({
+        testId:item._id,
+        testtype:item.testType
+      }));
+      console.log(cutdata);
+      settesttype2(cutdata)
+      setTableData(res.data.data.test)});
   };
 
   useEffect(() => {
     fetchTests();
   }, []);
   
-  if (persona === "parent" || persona === "student") return <StudentTest />;
+  useEffect(()=>{
+    console.log(testtype2);
+  },[testtype2])
+
+  if (persona === "parent" || persona === "student") return <StudentTest testtype={testtype2}/>;
 
   return (
     <div className="w-[83.6989583333vw] mx-auto bg-lightWhite min-h-screen">
@@ -327,7 +342,6 @@ const sortBycreateDate = () => {
           <span className="font-semibold">Content</span>
         </p>
       <div className=" w-full">
-        
         <div className="flex justify-between items-center">
           {/* <p
                   className="font-bold text-4xl"
@@ -355,10 +369,12 @@ const sortBycreateDate = () => {
             <img src={AddIcon} className="ml-1 " alt="add-icon" />
           </button>
         </div>
-      
+        {console.log('hwlooasd nas d ',testtype2)}
+
 
         <div className="mt-6 w-full">
           <Table
+            testtype={testtype2}
             dataFor="allTests"
             data={filteredTests}
             tableHeaders={tableObjHeaders}
