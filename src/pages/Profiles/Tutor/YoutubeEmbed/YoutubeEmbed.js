@@ -22,7 +22,7 @@ export default function YoutubeEmbed({ embedId }) {
    }, [embedId])
 
    return (
-      <div className="video-responsive" style={{
+      <div className="video-responsive " style={{
          position: 'absolute',
          left: '0',
          top: '0',

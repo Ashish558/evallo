@@ -164,15 +164,15 @@ const CompanyAndBround = () => {
 
   return (
     <div>
-      <div className="flex flex-col gap-10  w-[68vw]">
-        <div className="flex justify-between">
+      <div className="flex flex-col gap-10  w-[72.4vw] design:w-[68vw]">
+        <div className="flex justify-between gap-5 flex-1 w-full">
           <InputField
             placeholder=""
             IconLeft={lock}
-            parentClassName="text-xs w-[14.3229vw] text-[#26435F]"
+            parentClassName="text-xs w-[15.3229vw] text-[#26435F]"
             inputContainerClassName=" shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-white"
             inputClassName="text-base-17-5 bg-transparent"
-            labelClassname="text-base-17-5 text-sm font-bold mb-1"
+            labelClassname="text-base-17-5 text-sm font-bold mb-[2px]"
             label="Account Type"
             disabled={true}
             value={"Company"}
@@ -180,7 +180,7 @@ const CompanyAndBround = () => {
           />
           <InputField
             placeholder=""
-            parentClassName="text-xs w-[14.3229vw] text-[#26435F] "
+            parentClassName="text-xs w-[15.3229vw] text-[#26435F] "
             inputContainerClassName=" shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-white mt-[-2px]"
             inputClassName="text-base-17-5 bg-transparent"
             labelClassname="text-base-17-5 text-sm font-bold mb-1"
@@ -196,7 +196,7 @@ const CompanyAndBround = () => {
           />
           <InputField
             placeholder="Text"
-            parentClassName="text-xs w-[14.3229vw] text-[#26435F]"
+            parentClassName="text-xs w-[15.3229vw] text-[#26435F]"
             inputContainerClassName=" shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-white mt-[-2px]"
             inputClassName="text-base-17-5 bg-transparent"
             labelClassname="text-base-17-5 text-sm font-bold mb-1"
@@ -212,7 +212,7 @@ const CompanyAndBround = () => {
           />
           <InputField
             placeholder=""
-            parentClassName="text-xs w-[14.3229vw] text-[#26435F] "
+            parentClassName="text-xs w-[15.3229vw] text-[#26435F] "
             inputContainerClassName=" shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-white mt-[2px]"
             inputClassName="bg-transparent"
             label="Role / Position"
@@ -227,7 +227,7 @@ const CompanyAndBround = () => {
           />
         </div>
 
-        <div className="flex gap-5 flex-1">
+        <div className="flex gap-5 justify-between flex-1">
           <div className="">
             <label className="inline-block text-[15px] font-semibold undefined ml-0 text-[#26435F] text-base-17-5">
               {" "}
@@ -263,7 +263,7 @@ const CompanyAndBround = () => {
             </div>
           </div>
           <div className="flex flex-col  gap-4 flex-1 py-auto">
-            <div className="flex  items-center gap-5 ">
+            <div className="flex  items-center justify-between ">
               <InputField
                 placeholder=""
                 parentClassName="text-xs text-[#26435F] w-[30.5729vw] "
@@ -298,7 +298,7 @@ const CompanyAndBround = () => {
                 error={error.companyType}
               />
             </div>
-            <div className="flex justify-between">
+            <div className="flex items-center justify-between">
               <InputField
                 placeholder=""
                 parentClassName="text-xs text-[#26435F] w-[30.5729vw]"

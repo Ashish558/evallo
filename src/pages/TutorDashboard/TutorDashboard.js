@@ -305,7 +305,7 @@ export default function TutorDashboard() {
 
                      <div className='w-[55.52vw] mt-10'>
                         <p className='text-primary-dark font-semibold text-[20px] mb-[13px]'>Today’s Schedule</p>
-                        <div className='px-[43px] py-[26px] bg-white  rounded-[5.333px] scrollbar-content scrollbar-vertical max-h-[499px] overflow-auto shadow-[0px_0px_2.6px_0px_rgba(0,0,0,0.25)]'>
+                        <div className='px-[43px] py-[26px] bg-white  rounded-[5.333px] scrollbar-content scrollbar-vertical h-[350px] overflow-y-auto shadow-[0px_0px_2.6px_0px_rgba(0,0,0,0.25)]'>
                            {sessions.map((item, idx) => {
                               return <TutorSchedule {...item} setIsOpen={setIsOpen} handleLinkClick={handleLinkClick} />
                            })}
@@ -316,7 +316,7 @@ export default function TutorDashboard() {
                   </div>
                   <div >
 
-                     <p className='text-xl text-[#26435F] mb-[20px] font-semibold'>Latest Practice Test</p>
+                     <p className='text-xl text-[#26435F] mb-[20px] font-semibold'>Last 10 Assignments</p>
                      <div className='bg-[#FFFFFF]  rounded-[5px] shadow-[0px_0px_2.6px_0px_rgba(0,0,0,0.25)]'>
                         <div className=''>
 
@@ -358,11 +358,11 @@ export default function TutorDashboard() {
                            {/* <p className='text-primary font-semibold text-[21px] mb-4'>
                            Latest Practice Test
                         </p> */}
-                           <div className='pl-[30px] pr-[26px] h-[900px] overflow-auto py-[30px]  bg-white rounded-20'>
-                              {allAssignedTests.map(item => {
+                           <div className='pl-[30px] pr-[26px] custom-scroller h-[780px]  overflow-auto pt-[10px]  bg-white rounded-20'>
+                              {allAssignedTests?.slice(0,10)?.map(item => {
 
                                  return (
-                                    <div className=' mb-[18px]' key={item._id} >
+                                    <div className=' mb-[15px]' key={item._id} >
                                        <div>
                                           {/* <img src={`${item.photo ? `${awsLink}${item.photo}` : '/images/default.jpeg'} `} className='w-[62px] h-[62px] rounded-full' /> */}
                                        </div>

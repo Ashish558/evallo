@@ -105,7 +105,7 @@ const SPFrame0 = ({ userDetail, settings, toEdit, setToEdit }) => {
             <a href={dropLink} target="_blank" rel="noreferrer">
               Dropbox{" "}
               <img
-                className="ml-2 !w-3 !h-2 inline-block"
+                className="ml-1 !w-3 !h-2 inline-block"
                 src={clickArrowIcon}
                 alt="arrow down"
               />
@@ -118,7 +118,7 @@ const SPFrame0 = ({ userDetail, settings, toEdit, setToEdit }) => {
             >
               Drive
               <img
-                className="ml-2 !w-3 !h-2 inline-block"
+                className="ml-1 !w-3 !h-2 inline-block"
                 src={clickArrowIcon}
                 alt="arrow down"
               />

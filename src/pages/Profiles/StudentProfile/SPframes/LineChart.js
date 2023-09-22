@@ -281,7 +281,7 @@ console.log("linnnnnnnn",data)
           height={200}
           width={canvasWidth}
         />{" "}
-        :
+        
       </div>
     )
   );

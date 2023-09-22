@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useLazyGetParentsByNameQuery } from "../../../../app/services/admin";
 import { useLazyGetStudentsByNameQuery } from "../../../../app/services/session";
 import ProfilePhoto from "./ProfilePhoto";
+import caution from "../../../../assets/icons/octicon_stop-16.svg";
 import {
   useUpdateTutorDetailsMutation,
   useUpdateUserDetailsMutation,
@@ -733,27 +734,29 @@ const [addLink,addLinkStatus]=useAddLinkStudentMutation()
                 {currentField.name === "frame0" && (
                   <div className="flex flex-col px-2 it">
                     <div className="flex gap-3 items-center">
-                      <div className="!w-[140px]">
+                      
+                      <div className="flex flex-col gap-5">
+                        <div className="flex !text-sm gap-4 ">
+                        <div className="!w-[100px] mr-5">
                         <ProfilePhoto
                           src={
                             user.photo
                               ? `${awsLink}${user.photo}`
                               : "/images/Rectangle 2347.svg"
                           }
+                          cameraClass=" translate-y-3"
                           imageClassName=" border-[4px] border-white"
                           className=""
-                          imgSizeClass="!w-[120px] !h-[120px] "
+                          imgSizeClass="!w-[80px] !h-[80px] "
                           handleChange={handleProfilePhotoChange}
                           editable={editable}
                         />
                       </div>
-                      <div className="flex flex-col gap-5">
-                        <div className="flex !text-sm gap-4 ">
                           <InputField
                             label="First Name"
                             labelClassname="text-[#26435F]"
                             placeholder="First Name"
-                            inputContainerClassName="text-xs  bg-[#F6F6F6] border-0 !py-3 !px-2 !rounded-[5px]"
+                            inputContainerClassName="text-xs !shadow-[0px_0px_2px_0px_#00000040] bg-[#F6F6F6] border-0 !py-3 !px-2 !rounded-[5px]"
                             inputClassName="bg-transparent text-xs   "
                             parentClassName="flex-1 "
                             type="text"
@@ -771,7 +774,7 @@ const [addLink,addLinkStatus]=useAddLinkStudentMutation()
                             label="Last Name"
                             labelClassname="text-[#26435F]"
                             placeholder="Last Name"
-                            inputContainerClassName="text-xs  bg-[#F6F6F6] border-0 !py-3 !px-2 !rounded-[5px]"
+                            inputContainerClassName="text-xs !shadow-[0px_0px_2px_0px_#00000040] bg-[#F6F6F6] border-0 !py-3 !px-2 !rounded-[5px]"
                             inputClassName="bg-transparent text-xs   "
                             parentClassName="flex-1 "
                             type="text"
@@ -785,29 +788,15 @@ const [addLink,addLinkStatus]=useAddLinkStudentMutation()
                           />
                         </div>
                         <div className="flex !text-sm gap-4 ">
-                          <InputField
-                            label="Email"
-                            labelClassname="text-[#26435F]"
-                            placeholder="Email Id"
-                            inputContainerClassName="text-xs  bg-[#F6F6F6] border-0 !py-3 !px-2 !rounded-[5px]"
-                            inputClassName="bg-transparent !w-[200px] text-xs   "
-                            parentClassName="flex-1 "
-                            type="text"
-                            value={currentToEdit.email}
-                            onChange={(e) =>
-                              setCurrentToEdit({
-                                ...currentToEdit,
-                                email: e.target.value,
-                              })
-                            }
-                          />
+                         
 
                           <InputFieldDropdown
+                            codeClassName="!bg-white !rounded-sm"
                             placeholder=""
                             labelClassname="text-[#26435F]"
-                            inputContainerClassName="!text-xs   bg-[#F6F6F6] border-0"
-                            inputClassName="bg-transparent !w-[80px] !text-xs rounded-[4px] "
-                            parentClassName="flex-1 "
+                            inputContainerClassName="!text-xs  !border-none  bg-primary-50  !shadow-[0px_0px_2px_0px_#00000040]"
+                            inputClassName="bg-transparent !w-[90px] !text-xs rounded-[4px] "
+                           parentClassName="flex-1 "
                             label="Phone"
                             value={currentToEdit.phone}
                             codeValue={currentToEdit.phoneCode}
@@ -824,7 +813,54 @@ const [addLink,addLinkStatus]=useAddLinkStudentMutation()
                               })
                             }
                           />
-
+ <InputField
+  IconLeft={caution}
+                            label="Email"
+                            labelClassname="text-[#26435F]"
+                            placeholder="Email"
+                            inputContainerClassName="text-xs !shadow-[0px_0px_2px_0px_#00000040] bg-[#F6F6F6] border-0 !py-3 !px-2 !rounded-[5px]"
+                            inputClassName="bg-transparent !w-[200px] text-xs   "
+                            parentClassName="flex-1 "
+                            type="text"
+                            value={currentToEdit.email}
+                            onChange={(e) =>
+                              setCurrentToEdit({
+                                ...currentToEdit,
+                                email: e.target.value,
+                              })
+                            }
+                            Tooltip={
+                              <span className="absolute top-10 w-[200px] scale-0 rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100">
+                                <h3 className="text-[#24A3D9] font-semibold mb-1">
+                                  Email Confirmation Sent
+                                </h3>
+                                You need to verify your email if
+                                <ul className="list-disc pl-3 mb-2">
+                                  <li>you created a new account.</li>
+                                  <li>you recently changed your email.</li>
+                                </ul>
+                                We have sent you an email verification link to your current
+                                email address to make sure that it really is you who requested a
+                                change.
+                              </span>
+                            }
+                          />
+                           <InputField
+                            label="Alternative Email"
+                            labelClassname="text-[#26435F]"
+                            placeholder="Alternative Email"
+                            inputContainerClassName="text-xs !shadow-[0px_0px_2px_0px_#00000040] bg-[#F6F6F6] border-0 !py-3 !px-2 !rounded-[5px]"
+                            inputClassName="bg-transparent !w-[200px] text-xs   "
+                            parentClassName="flex-1 "
+                            type="text"
+                            value={currentToEdit.alternateEmail}
+                            onChange={(e) =>
+                              setCurrentToEdit({
+                                ...currentToEdit,
+                                alternateEmail: e.target.value,
+                              })
+                            }
+                          />
                          
                         </div>
                       </div>

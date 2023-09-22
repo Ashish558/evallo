@@ -12,7 +12,7 @@ export default function SingleTutor({ idx, tutor }) {
   return (
 
     <div key={idx} className="item px-2 h-full  ">
-      <div className="flex flex-1 h-full items-center gap-5 my-auto justify-center">
+      <div className="flex flex-1 h-full items-center gap-8 my-auto justify-between">
 
         <div className="w-2/3">
           {/* <h5 className={`${styles.tag}`}>
@@ -36,7 +36,7 @@ export default function SingleTutor({ idx, tutor }) {
             View Profile
           </button>
         </div>
-        <div className="w-fit h-fit pt-3" >
+        <div className="  float-right translate-x-[7%] design:translate-x-[0%] h-fit pt-3" >
           <div className="relative ">
             <img
               src={

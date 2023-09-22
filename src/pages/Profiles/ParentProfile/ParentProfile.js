@@ -106,7 +106,7 @@ export default function StudentProfile({ isOwn }) {
   const { awsLink } = useSelector((state) => state.user);
 
   const { id } = useSelector((state) => state.user);
-
+   console.log("user",user)
 
   const [selectedScoreIndex, setSelectedScoreIndex] = useState(0);
   const { organization } = useSelector((state) => state.organization);
