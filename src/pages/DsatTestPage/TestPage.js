@@ -27,7 +27,6 @@ export default function TestPage() {
   const [markreview, setmarkreview] = useState([]);
   const [sectionDetails, setSectionDetails] = useState();
   const [cutcheck,setcutcheck] = useState(false);
-  const[cal,setCal] = useState(false)
   const[loader,setloader] = useState(false)  
   const { id } = useParams();
   const data2 = [
@@ -269,7 +268,7 @@ const [pages,setPage]=useState(arr)
      {loader? <LoaderPage/>
      :
      <>
-      <Navbar seconds={seconds} sectionDetails={data[sectionindex]} cal={cal} setCal={setCal} />
+      <Navbar seconds={seconds} sectionDetails={data[sectionindex]}  />
       <Que
         markreview={markreview}
         markre={markre}
