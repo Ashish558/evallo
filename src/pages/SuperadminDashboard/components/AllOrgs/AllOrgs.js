@@ -146,13 +146,13 @@ const AllOrgs = () => {
     <>
       <div className="pl-[5.46875vw] pt-7 mb-12">
         <h4 className="text-[#24A3D9]">All Orgs</h4>
-        <div className="flex justify-between py-5 ">
+        <div className="flex items-center justify-between py-5 ">
           <div className="w-full flex  gap-x-[1.4583333333vw]  items-center">
             <InputField
-            inputClassName="text-[#667085]"
+            inputClassName="!text-[#667085] placeholder:!text-[#667085]"
               placeholder="Search"
-              parentClassName="text-[#667085]"
-              inputContainerClassName="w-[11.1115625vw] bg-white  shadow-[0px_0px_2.6666667461395264px_0px_#00000040] h-[51px]"
+              parentClassName="!text-[#667085]"
+              inputContainerClassName="w-[11.1115625vw] bg-white  border !text-[#667085] !rounded-lg border-[1.33px_solid_#EBEBEB] h-[48px]"
               Icon={searchIcon}
               value={values.search}
               onChange={(e) =>
@@ -167,8 +167,8 @@ const AllOrgs = () => {
               placeholder="Org type"
               parentClassName="  text-[#667085]"
               value={values.orgType}
-              inputContainerClassName="w-[9.6875vw] bg-white  shadow-[0px_0px_2.6666667461395264px_0px_#00000040] text-xs"
-              optionClassName=" py-[3px] w-[9.6875vw] text-[#667085] font-normal"
+              inputContainerClassName="w-[11vw] bg-white  border !text-[#667085] !rounded-lg border-[1.33px_solid_#EBEBEB] text-xs h-[49px]"
+              optionClassName=" py-[3px] w-[11vw] text-[#667085] font-normal"
               onChange={(e) =>
                 setValues({
                   ...values,
@@ -185,8 +185,8 @@ const AllOrgs = () => {
               refS={inputRef}
               onBlur={(e) => { (inputRef.current.type = "text"); setForceChange(!forceChange) }}
               onFocus={(e) => { (inputRef.current.type = "date"); setForceChange(!forceChange) }}
-              inputClassName="text-[0.8333333333vw] text-[#667085]"
-              inputContainerClassName="bg-white shadow-[0px_0px_2.6666667461395264px_0px_#00000040] w-[9.6875vw] h-[51px]"
+              inputClassName="text-[0.8333333333vw] !text-[#667085] placeholder:!text-[#667085]"
+              inputContainerClassName="bg-white border !text-[#667085] !rounded-lg border-[1.33px_solid_#EBEBEB] w-[11vw] h-[49px]"
               value={values.joinDate}
               onChange={(e) =>
                 setValues({
@@ -200,10 +200,10 @@ const AllOrgs = () => {
             <InputSelect
               placeholder="Region"
               parentClassName="text-xs text-[#667085]"
-              inputContainerClassName="w-[9.6875vw] bg-white shadow-[0px_0px_2.6666667461395264px_0px_#00000040] h-[51px]"
+              inputContainerClassName="w-[11vw] bg-white border !text-[#667085] !rounded-lg border-[1.33px_solid_#EBEBEB] h-[49px]"
               optionData={country}
               optionType={"object"}
-              optionClassName="w-[9.6875vw] py-[3px] w-[110px]"
+              optionClassName="w-[11vw] py-[3px] w-[110px]"
               value={values.region}
               onChange={(e) =>
                 setValues({
@@ -216,8 +216,8 @@ const AllOrgs = () => {
             <InputSelect
               placeholder="Subscription"
               parentClassName="text-xs text-[#667085]"
-              inputContainerClassName="w-[9.6875vw] bg-white shadow-[0px_0px_2.6666667461395264px_0px_#00000040] h-[51px]"
-              optionClassName="w-[9.6875vw] py-[3px] "
+              inputContainerClassName="w-[11vw] bg-white border !text-[#667085] !rounded-lg border-[1.33px_solid_#EBEBEB] h-[49px]"
+              optionClassName="w-[11vw] py-[3px] "
               value={values.subscription}
               onChange={(e) =>
                 setValues({
@@ -229,9 +229,10 @@ const AllOrgs = () => {
             />
             <InputField
               placeholder="# of student"
-              parentClassName="w-full w-[9.6875vw] py-1 text-[#667085]"
-              inputContainerClassName="bg-white shadow-[0px_0px_2.6666667461395264px_0px_#00000040] h-[51px] text-[#667085]"
-              optionClassName="w-[9.6875vw] py-1"
+              parentClassName="w-full w-[11vw] py-1 text-[#667085]"
+              inputContainerClassName="bg-white border !text-[#667085] !rounded-lg border-[1.33px_solid_#EBEBEB] h-[51px] text-[#667085]"
+              optionClassName="w-[11vw] py-1"
+              inputClassName={"placeholder:!text-[#667085]"}
               value={values.numberOfStudent}
               onChange={(e) =>
                 setValues({

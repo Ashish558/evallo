@@ -63,7 +63,7 @@ const Demography1 = ({ dateRange }) => {
               <InputSelectNew
                 arrowWidth="h-[6px]"
                 placeholder={"User"}
-                parentClassName="ml-0  scale-[0.8] items-center flex text-[#FFA28D] text-xs border-[1.33px] px-1 py-2 border-[#FFA28D] rounded-full  "
+                parentClassName="ml-0  scale-[0.8] items-center flex text-[#FFA28D] text-xs !border-[1.7px] px-1 py-2 border-[#FFA28D] rounded-full  "
                 inputContainerClassName=" bg-white my-0 py-[5px] px-[35px] text-[15px] min-w-[114px] "
                 placeHolderClass="text-[#FFA28D] "
                 labelClassname="text-[15px]"
@@ -84,7 +84,7 @@ const Demography1 = ({ dateRange }) => {
               <InputSelectNew
                 arrowWidth="h-[6px]"
                 placeholder={"Country"}
-                parentClassName="ml-0  scale-[0.8] items-center flex text-[#FFA28D] text-xs border-[1.33px] px-1 py-[9px] border-[#FFA28D] rounded-full  "
+                parentClassName="ml-0  scale-[0.8] items-center flex text-[#FFA28D] text-xs !border-[1.7px] px-1 py-[9px] border-[#FFA28D] rounded-full  "
                 inputContainerClassName=" bg-white py-[4.8px] px-[35px] text-[15px] min-w-[114px]"
                 labelClassname="text-[15px]"
                 inputClassName="bg-transparent "

@@ -57,7 +57,46 @@ export default function ParentEditables({
   const [loading, setLoading] = useState(false);
 
   const { organization } = useSelector((state) => state.organization);
-
+  const Interest = [
+    "Basketball",
+    "Soccer",
+    "American Football",
+    "Running",
+    "Yoga",
+    "Bowling",
+    "Tennis",
+    "Cricket",
+    "F1 Racing",
+    "Rock Climbing",
+    "Boxing",
+    "Trekking",
+    "Sketching",
+    "Painting",
+    "Digital Art",
+    "Writing ",
+    "Reading",
+    "Video Games",
+    "Travelling",
+    "Board Games ",
+    "Blogging",
+    "Podcasts",
+    "Youtube",
+    "Volunteering",
+    "Socializing",
+    "Singing",
+    "Dancing",
+    "Listening Music",
+    "Guitar",
+    "Violin",
+    "Drums",
+    "Piano",
+    "Upskilling",
+    "Movies",
+    "TV Shows",
+    "Anime",
+    "Comics",
+    "Cooking",
+  ];
   const data = [
     {
       name: "profileData",
@@ -1964,7 +2003,48 @@ const navigate= useNavigate()
                     })}
                   </div>
                 )}
-                {currentField.name === "interest" && (
+                 {currentField.name === "interest" && (
+                  <div className="flex flex-wrap">
+                    {Interest.map((item) => {
+                      return !currentToEdit?.interest?.includes(item) ? (
+                        <div
+                          id="selected"
+                          className={`px-3 mr-2 m-1 rounded-lg py-1.5 border-[1.33px] border-[#26435F80] text-[#26435F80]  cursor-pointer text-base-17-5`}
+                          onClick={() => {
+                            let intersetArray = [];
+
+                            if (currentToEdit.interest) {
+                              intersetArray = currentToEdit.interest;
+                            }
+                            //console.log(intersetArray);
+                            setCurrentToEdit({
+                              ...currentToEdit,
+                              interest: [...intersetArray, item],
+                            });
+                          }}
+                        >
+                          <p className="font-semibold ">{item}</p>
+                        </div>
+                      ) : (
+                        <div
+                        id="selected"
+                          className={`px-3 mr-2 m-1 text-center rounded-lg text-white py-1.5 border border-primary bg-primary text-base-17-5 cursor-pointer`}
+                          onClick={() =>
+                            setCurrentToEdit({
+                              ...currentToEdit,
+                              interest: currentToEdit.interest.filter(
+                                (id) => id !== item
+                              ),
+                            })
+                          }
+                        >
+                          <p className="font-medium">{item}</p>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+                {/* {currentField.name === "interest" && (
                   <div className="flex flex-wrap">
                     {settings.interest.map((item) => {
                       return !currentToEdit?.interest?.includes(item._id) ? (
@@ -2003,7 +2083,7 @@ const navigate= useNavigate()
                       );
                     })}
                   </div>
-                )}
+                )} */}
                 {currentField.name === "serviceSpecializations" && (
                   <div className="flex flex-wrap">
                     {settings?.Expertise?.map((item) => {

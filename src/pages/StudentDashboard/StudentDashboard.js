@@ -147,7 +147,7 @@ const StudentDashboard = () => {
               /> */}
 
 
-              <RangeDate className="ml-0  font-normal" manualHide={true} optionClassName="!w-min " inputContainerClassName="!w-min font-normal " handleRangeData={setSelectedConceptIdx} />
+              <RangeDate removeUnderline={true} className="ml-0  font-normal" manualHide={true} optionClassName="!w-min " inputContainerClassName="!w-min font-normal " handleRangeData={setSelectedConceptIdx} />
 
             </div>
           </div>

@@ -315,7 +315,7 @@ function SuperadminDashboard() {
             />
           </section>
         </div>
-        <p className="text-[#26435F] font-semibold mt-9 mb-[-1px]">Daily active users</p>
+        <p className="text-[#26435F] font-semibold mt-9 mb-[-1px]">Daily Active Users</p>
         <Chart dateRange={dateRange}/>
         <Index dateRange={dateRange}/>
         <div className="flex items-center mt-[50px] ">

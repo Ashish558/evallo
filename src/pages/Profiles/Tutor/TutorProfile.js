@@ -91,16 +91,14 @@ export default function TutorProfile({ isOwn }) {
          text: 'Student Name'
       },
       {
-         id: 2,
-         text: 'Feedback'
-      }, {
-         id: 3,
-         text: 'Comment'
-      },
-      {
          id: 4,
          text: 'Serivce'
       },
+      {
+         id: 2,
+         text: 'Rating'
+      },
+      
       {
          id: 5,
          text: 'Session Date'
@@ -502,7 +500,7 @@ export default function TutorProfile({ isOwn }) {
 
    // console.log('user', user)
    // console.log('To-edit', toEdit)
-   // console.log('userdetail', userDetail.serviceSpecializations)
+ console.log('userdetail', userDetail)
    // console.log('settings', settings.Expertise)
    const { about, education, tagLine, tutorLevel, testPrepRate, otherRate, subjectTutoringRate, address, pincode, paymentInfo, tutorRank, income, paymentStatus, linkedIn, videoLink, city, state, country } = userDetail
    // console.log('userdetail', tutorLevel)
@@ -585,7 +583,7 @@ export default function TutorProfile({ isOwn }) {
             {/* <div className="py-8">
                <p className='text-[#24A3D9] text-xl '>Org</p>
             </div> */}
-            <p className="text-[#24A3D9] text-xl mb-8 mt-[50px]">
+            <p className="text-[#24A3D9] text-xl mb-8 my-[calc(50*0.0522vw)] text-base-22-5">
                {organization?.company +
                   "  >  " +
                   firstName +
@@ -594,7 +592,7 @@ export default function TutorProfile({ isOwn }) {
                   "  >  "}
                <span className="font-bold">Dashboard</span>
             </p>
-            <div className='flex justify-between'>
+            <div className='flex  justify-between'>
                <ProfileCard hideShadow
                   titleClassName='text-left'
                   bgClassName='bg-profilecard'
@@ -610,20 +608,24 @@ export default function TutorProfile({ isOwn }) {
 
                   body={
                      <>
-                        <div className='bg-white border border-[#00000010]'>
-                           <div className=' flex relative bg-[#26435F]' >
-                              <div className='ml-8 mt-auto pt-10 w-4/6'>
-                                 <div className='flex items-end'>
-                                    <div className='mb-[-150px]'>
+                        <div className='bg-white rounded-md shadow-[0px_0px_2px_0px_#00000040]'>
+                           <div className='h-[120px]  rounded-t-md shadow-t-[0px_0px_2px_0px_#00000040] flex relative bg-[#26435F]' >
+                              <div className='ml-8  pt-1  w-4/6'>
+                                 <div className='flex h-full  items-end'>
+                                    <div className='mb-[-100px] h-min'>
                                        <ProfilePhoto
                                           isTutor={true}
+                                          imgSizeClass={"!w-[150px] !h-[150px]"}
+                                          className={"!w-[150px] !h-[150px]"}
                                           src={user.photo ? `${awsLink}${user.photo}` : '/images/default.jpeg'}
                                           handleChange={handleProfilePhotoChange} />
-                                       {(isOwn === true || persona === 'admin') && <p className='text-[#667085] text-center underline underline-offset-2 mt-[7.2px] cursor-pointer text-[15.002px] font-semibold' onClick={() => setToEdit({ ...toEdit, profileData: { ...toEdit.profileData, active: true } })}>Edit Profile</p>}
+                                       {(isOwn === true || persona === 'admin') &&
+                                        <p className='text-[#667085] text-center mt-1  underline underline-offset-2  cursor-pointer text-[15.002px] font-semibold text-base-15'
+                                        onClick={() => setToEdit({ ...toEdit, profileData: { ...toEdit.profileData, active: true } })}>Edit Profile</p>}
                                     </div>
-                                    <div className='pl-7'>
-                                       <div className='flex items-center '>
-                                          <p className='text-white text-[25px] font-semibold' >{user.firstName + " "}{user.lastName}</p>
+                                    <div className='pl-4'>
+                                       <div className='flex justify-start items-center '>
+                                          <p className='text-white text-[25px] text-base-25 font-semibold' >{user.firstName + " "}{user.lastName}</p>
 
                                           {/* <EditableText text='edit'
                                     editable={editable}
@@ -631,8 +633,8 @@ export default function TutorProfile({ isOwn }) {
                               className='text-green'
                                 /> */}
                                        </div>
-                                       <div className='w-full break-words'>
-                                          <p className='text-white text-light text-[17px] mb-4' >
+                                       <div className='w-full break-words  '>
+                                          <p className='text-white text-light text-[17px] text-base-17-5 mb-4' >
                                              {userDetail.tagLine}
                                           </p>
                                        </div>
@@ -643,18 +645,18 @@ export default function TutorProfile({ isOwn }) {
                               {
 
                               (persona==='tutor'||persona==='admin') &&
-                              <div className='ml-auto mt-auto pt-[25px] pb-[15px] mr-8'>
+                              <div className='ml-auto mt-auto pt-[10px] pb-[10px] mr-8'>
                                  <div className='flex gap-4 items-center mb-[10px]'>
                                     <img src={mail} alt="mailLogo"></img>
-                                    <p className='text-white text-[17.503px]'>{user.email}</p>
+                                    <p className='text-white text-[17.503px] text-base-17-5'>{user.email}</p>
                                  </div>
                                  <div className='flex gap-4 items-center mb-[10px]'>
                                     <img src={call} alt="callLogo"></img>
-                                    <p className='text-white text-[17.503px]'>{user.phoneCode}{user.phone}</p>
+                                    <p className='text-white text-[17.503px] text-base-17-5'>{user.phoneCode}{user.phone}</p>
                                  </div>
                                  <div className='flex gap-4 items-center mb-[10px]'>
                                     <img src={linkedin} alt="linkedinLogo"></img>
-                                    <a className='text-white text-[17.503px]' href={userDetail.linkedIn}>{userDetail.linkedIn}</a>
+                                    <a className='text-white text-[17.503px] text-base-17-5' href={userDetail.linkedIn}>{userDetail.linkedIn}</a>
                                  </div>
                               </div>
                               }
@@ -664,15 +666,15 @@ export default function TutorProfile({ isOwn }) {
 <div className='ml-auto mt-auto pt-[25px] pb-[15px] mr-8'>
    <div className='flex gap-4 items-center mb-[10px]'>
       <img src={mail} alt="mailLogo"></img>
-      <p className='text-white text-[17.503px]'>{user.email}</p>
+      <p className='text-white text-[17.503px] text-base-17-5'>{user.email}</p>
    </div>
    <div className='flex gap-4 items-center mb-[10px]'>
       <img src={call} alt="callLogo"></img>
-      <p className='text-white text-[17.503px]'>{user.phoneCode}{user.phone}</p>
+      <p className='text-white text-[17.503px] text-base-17-5'>{user.phoneCode}{user.phone}</p>
    </div>
    <div className='flex gap-4 items-center mb-[10px]'>
       <img src={linkedin} alt="linkedinLogo"></img>
-      <a className='text-white text-[17.503px]' href={userDetail.linkedIn}>{userDetail.linkedIn}</a>
+      <a className='text-white text-[17.503px] text-base-17-5' href={userDetail.linkedIn}>{userDetail.linkedIn}</a>
    </div>
 </div>
 }
@@ -682,10 +684,10 @@ export default function TutorProfile({ isOwn }) {
                                     handleChange={handleProfilePhotoChange} />
                               </div> */}
                            </div>
-                           <div className="flex ml-8  min-h-[186px]">
-                              <div className="min-w-[200px]"></div>
-                              <div className="my-[33px] pl-7 pr-[41px]">
-                                 <p className="text-[17.503px] text-[#517CA8] whitespace-normal text-left">
+                           <div className="flex ml-4  h-[120px] overflow-y-auto">
+                              <div className="min-w-[182px]"></div>
+                              <div className="my-[33px] pl-1 pr-[41px]">
+                                 <p className="text-[17.503px] text-base-17-5 text-[#517CA8] whitespace-normal text-left">
                                     {userDetail.about}
                                  </p>
                               </div>
@@ -702,8 +704,8 @@ export default function TutorProfile({ isOwn }) {
                   <div className='flex '>
                      <img className='' src={experience} alt="experience"></img>
                      <div className='ml-6'>
-                        <p className='text-[#24A3D9] font-semibold text-[20px]'>Education</p>
-                        <p className='text-[17.503px] text-[#517CA8]'>{userDetail.education}
+                        <p className='text-[#24A3D9] font-semibold text-[20px] text-base-20'>Education</p>
+                        <p className='text-[17.503px] text-base-17-5 text-[#517CA8]'>{userDetail.education}
                         </p>
                      </div>
                   </div>
@@ -711,8 +713,8 @@ export default function TutorProfile({ isOwn }) {
                      <img className='' src={bag} alt="experience"></img>
 
                      <div className='ml-6'>
-                        <p className='text-[#24A3D9] font-semibold text-[20px]'>Experience</p>
-                        <p className='text-[17.503px] text-[#517CA8]'>{userDetail.experience}
+                        <p className='text-[#24A3D9] font-semibold text-[20px] text-base-20'>Experience</p>
+                        <p className='text-[17.503px] text-base-17-5 text-[#517CA8]'>{userDetail.experience}
                         </p>
                      </div>
                   </div>
@@ -744,24 +746,24 @@ export default function TutorProfile({ isOwn }) {
                      }  */}
                      <div>
                         <div className='flex font-semibold items-center'>
-                           <div className='text-xl text-[#26435F] ' >Expertise</div>
-                           {(isOwn == true || persona === 'admin') && <p className='text-[#667085] ml-auto underline cursor-pointer text-[15px]' onClick={() => setToEdit({ ...toEdit, serviceSpecializations: { ...toEdit.serviceSpecializations, active: true } })}>edit</p>}
+                           <div className='text-xl text-[#26435F] text-base-20 text-[#26435F] font-semibold' >Expertise</div>
+                           {(isOwn == true || persona === 'admin') && <p className='text-[#667085] ml-auto underline cursor-pointer text-[15px] text-base-15' onClick={() => setToEdit({ ...toEdit, serviceSpecializations: { ...toEdit.serviceSpecializations, active: true } })}>edit</p>}
                         </div>
                         <ProfileCard className='flex-1 pr-0'
                            hideShadow={true}
                            bgClassName="bg-profilecard"
                            body={
-                              <>
+                              <div className=' max-h-[500px] custom-scroller scroll-mx-3'>
                                  {settings && settings.Expertise?.length > 0 && userDetail.serviceSpecializations && userDetail.serviceSpecializations.map((id, idx) => {
                                     return (
                                        settings?.Expertise?.find(item => item._id === id) ?
-                                          <div className='mt-[10px] overflow-x-auto scrollbar-content max-h-[500px] scrollbar-vertical '>
-                                             <div className=' bg-white rounded min-h-[60px]  flex items-center pl-[40px]'>
+                                          <div className='mt-[7px]  rounded-md shadow-[0px_0px_2px_0px_#00000040] overflow-x-auto  '>
+                                             <div className=' bg-white rounded min-h-[50px]  flex items-center pl-[40px]'>
                                                 <div className='ml-3'>
                                                    <img className='max-w-[40px] max-h-[40px]' src={`${awsLink}${settings?.Expertise?.find(item => item._id === id).image}`}></img>
                                                 </div>
                                                 <div className='ml-[35px]'>
-                                                   <p className='text-[#517CA8] text-[17.5px]' >{settings?.Expertise?.find(item => item._id === id).text}</p>
+                                                   <p className='text-[#517CA8] text-[17.5px] text-base-17-5' >{settings?.Expertise?.find(item => item._id === id).text}</p>
                                                 </div>
                                              </div>
                                           </div>
@@ -806,19 +808,19 @@ export default function TutorProfile({ isOwn }) {
                                     )
                                  })}
                               </div> */}
-                              </>
+                              </div>
                            } />
 
                      </div>
                   </div>
                   <div className='col-span-6'>
-                     { persona==='admin' &&
-                     <div className='flex'>
-                        {/* {(isOwn == true && persona === 'admin') && <p className='text-[#667085] ml-auto underline cursor-pointer' onClick={() => setToEdit({ ...toEdit, videoLink: { ...toEdit.videoLink, active: true } })}>edit</p>} */}
-                        <p className='text-[#667085] mb-[12px]  ml-auto underline cursor-pointer text-[15px] font-semibold' 
-                        onClick={() =>
-                         setToEdit({ ...toEdit, videoLink: { ...toEdit.videoLink, active: true } })}>edit</p>
-                     </div>}
+                     <div className='flex font-semibold items-center'>
+                        <div className='text-xl text-[#26435F] text-base-20 text-[#26435F] font-semibold mb-1' >Tutor Highlight Video</div>
+                        {(persona === 'admin') && <p className='text-[#667085] ml-auto underline cursor-pointer text-[15px] text-base-15' onClick={() =>
+                         setToEdit({ ...toEdit, videoLink: { ...toEdit.videoLink, active: true } })}>edit</p>}
+                     </div>
+                     
+                    
                      <div className='  pt-10 min-h-[460px]  relative z-10 flex items-end ' >
 
                         <YoutubeEmbed embedId={videoLink} />
@@ -840,12 +842,12 @@ export default function TutorProfile({ isOwn }) {
                         }
 
                      </div>
-                     <div className='relative z-[100] flex justify-between text-xl text-[#26435F] font-semibold' >
-                        <span>Reviews</span>
+                     <div className='relative z-[100] flex justify-between text-xl text-[#26435F] font-semibold text-base-20' >
+                        <span >Reviews</span>
                      
                      
                      {(persona === 'admin') && 
-                     <p className='text-[#667085] ml-auto underline cursor-pointer text-[15px] font-semibold' 
+                     <p className='text-[#667085] ml-auto underline cursor-pointer text-[15px] font-semibold text-base-15' 
                      onClick={() => setToEdit({ ...toEdit, tutorReviews: { tutorReviews:[], active: true } })}>edit</p>}
                        
                   
@@ -854,22 +856,21 @@ export default function TutorProfile({ isOwn }) {
                         bgClassName="bg-white pl-7 py-3 rounded-[10px]"
                         body={
                            <div>
-                              <p className='text-[#24A3D9] text-[15px]'>{formattedDate}</p>
+                              <p className='text-[#24A3D9] text-[15px] text-base-17-5'>{formattedDate}</p>
                               <div>
-                                 <p className='text-[#24A3D9] font-light text-[17.503px]' > {userDetail.reviews} </p>
+                                 <p className='text-[#517CA8] mt-4 font-light text-[17.503px] text-base-17-5' > {userDetail.reviews} </p>
                               </div>
                               <div className='flex mt-7 text-[15px]'>
                                  <div>
-                                    <button className=' h-[31px] rounded-full w-[160px] mr-5  bg-[#26435F33] text-[#26435F]' >Parent / Student</button>
+                                    <button className=' h-[31px] rounded-full w-[120px] mr-5 text-base-15 bg-[#26435F33] text-[#26435F]' >Parent / Student</button>
                                  </div>
                                  <div>
-                                    <button className='rounded-full h-[33px] w-[133px] bg-[#26435F33] text-[#26435F]' >{`{Service}`}</button>
+                                    <button className='rounded-full h-[33px] w-[100px] bg-[#26435F33] text-base-15 text-[#26435F]' >{`{Service}`}</button>
                                  </div>
                               </div>
                            </div>
                         } />
-                     <div className='flex justify-center mx-auto mt-5'><img className='inline-block' src={dots} alt="" /></div>
-                  </div>
+                     </div>
 
 
 
@@ -877,58 +878,112 @@ export default function TutorProfile({ isOwn }) {
 
                   <div className='col-span-3'>
                      <div className='flex font-semibold items-center'>
-                        <div className='text-xl text-[#26435F] ' >Interests</div>
-                        {(isOwn === true || persona === 'admin') && <p className='text-[#667085] ml-auto underline cursor-pointer text-[15px]' onClick={() => setToEdit({ ...toEdit, interest: { ...toEdit.interest, active: true } })}>edit</p>}
+                        <div className='text-xl text-[#26435F] text-base-20 text-[#26435F] font-semibold' >Interests</div>
+                        {(isOwn === true || persona === 'admin') && <p className='text-[#667085] ml-auto underline cursor-pointer text-[15px] text-base-15' onClick={() => setToEdit({ ...toEdit, interest: { ...toEdit.interest, active: true } })}>edit</p>}
                      </div>
+                     
 
                      <ProfileCard className='flex-1 pr-0' hideShadow
                         bgClassName="bg-profilecard"
                         body={
-                           <> {settings && settings.interest.length > 0 && userDetail.interest && userDetail.interest.map((id, idx) => {
-                              return (
-                                 settings?.interest?.find(item => item._id === id) ?
-                                    <div className='mt-[10px] overflow-x-auto scrollbar-content max-h-[500px] scrollbar-vertical'>
-                                       <div className=' bg-white rounded-5 min-h-[60px]  flex items-center pl-[40px] '>
-                                          <div className='ml-3'>
-                                             <img className='max-w-[40px] max-h-[40px]' src={`${awsLink}${settings?.interest?.find(item => item._id === id).image}`}></img>
-                                          </div>
-                                          <div className=' ml-[35px]'>
-                                             <p className='text-[#517CA8] text-[17.5px]'>{settings?.interest?.find(item => item._id === id).text}</p>
-                                          </div>
-                                       </div>
-                                    </div>
-                                    :
-                                    <></>
-                              )
-                           })}
+                           // //settings && settings.interest.length >= 0 &&
+                           // <div  className=' max-h-[500px] custom-scroller scroll-mx-3 '> { userDetail.interest && userDetail.interest.map((id, idx) => {
+                           //    return (
+                           //       userDetail?.interest?.find(item => item._id === id) ?
+                           //          <div className='mt-[7px]  rounded-md shadow-[0px_0px_2px_0px_#00000040] overflow-x-auto  '>
+                           //             <div className=' bg-white rounded-5 min-h-[50px]  flex items-center pl-[40px] '>
+                           //                <div className='ml-3'>
+                           //                   <img className='max-w-[40px] max-h-[40px]' src={`${awsLink}${userDetail?.interest?.find(item => item._id === id).image}`}></img>
+                           //                </div>
+                           //                <div className=' ml-[35px]'>
+                           //                   <p className='text-[#517CA8] text-[17.5px]'>{userDetail?.interest?.find(item => item._id === id).text}</p>
+                           //                </div>
+                           //             </div>
+                           //          </div>
+                           //          :
+                           //          <></>
+                           //    )
+                           // })}
 
-                              {/* <EditableText editable={editable}
-                                 onClick={() => setToEdit({ ...toEdit, interest: { ...toEdit.interest, active: true } })}
-                                 text='Interests'
-                                 className='text-lg mb-2 ' textClassName="flex-1 text-center text-[21px]" /> */}
-                              {/* <div className='flex flex-col overflow-x-auto scrollbar-content max-h-[500px] scrollbar-vertical'>
-                                 {settings && settings.interest.length > 0 && userDetail.interest && userDetail.interest.map((id, idx) => {
-                                    return (
-                                       settings?.interest?.find(item => item._id === id) ?
-                                          <div key={idx} className='flex flex-col items-center mb-10'>
-                                             <div className='flex h-90 w-90 rounded-full  items-center justify-center mb-3' >
-                                                <img className='max-w-[90px] max-h-[90px]' src={settings?.interest?.find(item => item._id === id).image}
-                                                />
-                                             </div>
-                                             <p className='opacity-70 font-semibold text-lg'>
-                                                {settings?.interest?.find(item => item._id === id).text}
-                                             </p>
-                                          </div>
-                                          :
-                                          <></>
-                                    )
-                                 })}
-                              </div> */}
+                           //    {/* <EditableText editable={editable}
+                           //       onClick={() => setToEdit({ ...toEdit, interest: { ...toEdit.interest, active: true } })}
+                           //       text='Interests'
+                           //       className='text-lg mb-2 ' textClassName="flex-1 text-center text-[21px]" /> */}
+                           //    {/* <div className='flex flex-col overflow-x-auto scrollbar-content max-h-[500px] scrollbar-vertical'>
+                           //       {settings && settings.interest.length > 0 && userDetail.interest && userDetail.interest.map((id, idx) => {
+                           //          return (
+                           //             settings?.interest?.find(item => item._id === id) ?
+                           //                <div key={idx} className='flex flex-col items-center mb-10'>
+                           //                   <div className='flex h-90 w-90 rounded-full  items-center justify-center mb-3' >
+                           //                      <img className='max-w-[90px] max-h-[90px]' src={settings?.interest?.find(item => item._id === id).image}
+                           //                      />
+                           //                   </div>
+                           //                   <p className='opacity-70 font-semibold text-lg'>
+                           //                      {settings?.interest?.find(item => item._id === id).text}
+                           //                   </p>
+                           //                </div>
+                           //                :
+                           //                <></>
+                           //          )
+                           //       })}
+                           //    </div> */}
 
 
 
-                           </>
-
+                           // </div>
+                           <div className="w-full relative h-full p-1 flex flex-col gap-1  rounded-md items-center overflow-y-auto custom-scroller">
+                           {/* {settings ? (
+                             settings.interest.length > 0 &&
+                             userDetail.interest.map((id, idx) => {
+                               return settings.interest.find((item) => item._id === id) ? (
+                                 <div
+                                   key={idx}
+               
+                                   className="bg-white  p-2 !rounded-md shadow-[0px_0px_2.500001907348633px_0px_#00000040] flex-1 w-full"
+               
+                                 >
+                                   <div className="flex h-90 w-90 rounded-full  items-center justify-center mb-3">
+                                     <img
+                                       className="max-w-[90px] max-h-[90px]"
+                                       src={
+                                         settings.interest.find((item) => item._id === id)
+                                           ? `${awsLink}${
+                                               settings.interest.find(
+                                                 (item) => item._id === id
+                                               ).image
+                                             }`
+                                           : ""
+                                       }
+                                     />
+                                   </div>
+                                   <p className="opacity-70 font-semibold text-lg">
+                                     {settings.interest.find((item) => item._id === id) ? (
+                                       settings.interest.find((item) => item._id === id).text
+                                     ) : (
+                                       <></>
+                                     )}
+                                   </p>
+                                 </div>
+                               ) : (
+                                 <> </>
+                               );
+                             })
+                           ) : (
+                             <></>
+                           )} */}
+                           
+                           {userDetail?.interest?.length > 0 &&
+                             userDetail?.interest.map((it, idx) => {
+                               return it[0]!=='6'&& (
+                                 <div
+                                   key={idx}
+                                   className="bg-white p-2 h-min  text-[#517CA8] text-base-17-5 !rounded-md shadow-[0px_0px_2.500001907348633px_0px_#00000040]  w-full"
+                                 >
+                                   {it}
+                                 </div>
+                               );
+                             })}
+                         </div>
                         } />
                   </div>
                </div>
@@ -958,7 +1013,7 @@ export default function TutorProfile({ isOwn }) {
                                           <div className='text-[#24A3D9] font-semibold text-[15.002px]' >
                                              Street Adress
                                           </div>
-                                          <div className='text-[#517CA8] font-normal text-[17.503px]'>
+                                          <div className='text-[#517CA8] font-normal text-[17.503px] text-base-17-5'>
                                              {userDetail.address}
                                           </div>
                                        </div>
@@ -967,14 +1022,14 @@ export default function TutorProfile({ isOwn }) {
                                           <div className='text-[#24A3D9] font-semibold text-[15.002px]' >
                                              City
                                           </div>
-                                          <div className='text-[#517CA8] font-normal text-[17.503px]'>{userDetail.city}
+                                          <div className='text-[#517CA8] font-normal text-[17.503px] text-base-17-5'>{userDetail.city}
                                           </div>
                                        </div>
 
                                        <div className=''>
                                           <div className='text-[#24A3D9] font-semibold text-[15.002px]' >      State
                                           </div>
-                                          <div className='text-[#517CA8] font-normal text-[17.503px]'>{userDetail.state}
+                                          <div className='text-[#517CA8] font-normal text-[17.503px] text-base-17-5'>{userDetail.state}
                                           </div>
                                        </div>
 
@@ -982,7 +1037,7 @@ export default function TutorProfile({ isOwn }) {
                                           <div className='text-[#24A3D9] font-semibold text-[15.002px]' >
                                              Country
                                           </div>
-                                          <div className='text-[#517CA8] font-normal text-[17.503px]'>{userDetail.country}
+                                          <div className='text-[#517CA8] font-normal text-[17.503px] text-base-17-5'>{userDetail.country}
                                           </div>
                                        </div>
 
@@ -990,7 +1045,7 @@ export default function TutorProfile({ isOwn }) {
                                           <div className='text-[#24A3D9] font-semibold text-[15.002px]' >
                                              Zip
                                           </div>
-                                          <div className='text-[#517CA8] font-normal text-[17.503px]'>{userDetail.pincode}
+                                          <div className='text-[#517CA8] font-normal text-[17.503px] text-base-17-5'>{userDetail.pincode}
                                           </div>
                                        </div>
                                     </div>
@@ -1076,9 +1131,9 @@ export default function TutorProfile({ isOwn }) {
                      </BarChart>
                   </div>}
                   {( persona === 'admin') && <div className=" w-[1.25px] h-[630px] bg-[#CBD6E2] "></div>}
-                  {( persona === 'admin') &&<div className='w-[20.9vw]'>
+                  {( persona === 'admin') &&<div className='w-[20.9vw '>
                      <div className='flex items-center'>
-                        <div className='text-[#26435F] text-[20px] font-semibold' >Tutor Status</div>
+                        <div className='text-[#26435F] text-[20px] text-base-20 font-semibold' >Tutor Status</div>
                         {(isOwn === true || persona === 'admin') && <p className='text-[#667085] ml-auto underline cursor-pointer text-[15px] font-semibold' onClick={() => setToEdit({ ...toEdit, tutorLevel: { ...toEdit.tutorLevel, active: true } })}>edit</p>}
                      </div>
                      <ProfileCard
@@ -1087,7 +1142,7 @@ export default function TutorProfile({ isOwn }) {
                         bgClassName="bg-white"
                         body={
                            <>
-                              <div className='text-[#517CA8] text-lg p-3 min-h-[50px]'>
+                              <div className='text-[#517CA8] text-lg p-3 min-h-[50px] shadow-[0px_0px_2px_0px_#00000040] rounded-md'>
                                  {userDetail.tutorLevel}
                               </div>
 

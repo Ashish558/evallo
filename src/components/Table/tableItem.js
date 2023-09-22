@@ -33,6 +33,8 @@ import { useSelector } from "react-redux";
 import { useLazyGetTestResponseQuery } from "../../app/services/test";
 import { getFormattedDate, getScore, getScoreStr } from "../../utils/utils";
 import InputField from "../InputField/inputField";
+import CCheckbox from "../CCheckbox/CCheckbox";
+import SCheckbox from "../CCheckbox/SCheckbox";
 
 
 export default function TableItem({
@@ -210,7 +212,7 @@ export default function TableItem({
   const handleCheckboxChange = () => {
     setIsChecked(!isChecked);
     let fl = isChecked ? 1 : -1
-    setnumberChecked(numberChecked - fl)
+    setnumberChecked && setnumberChecked(numberChecked - fl)
   };
 
 
@@ -251,14 +253,13 @@ export default function TableItem({
                 {item.studentName}
               </td>
               <td className="py-4 px-[10px]">
-                {item.rating}
-              </td>
-              <td className="py-4 px-[10px]">
-                {item.comments}
-              </td>
-              <td className="py-4 px-[10px]">
                 {item.service}
               </td>
+              <td className="py-4 px-[10px]">
+                {item.rating}
+              </td>
+              
+              
               <td className="py-4 px-[10px]">
                 {formattedDate}
               </td>
@@ -364,8 +365,8 @@ export default function TableItem({
               tableDropdown={true}
               value={item.userStatus ? item.userStatus : "-"}
               optionData={["active", "blocked", "dormant"]}
-              inputContainerClassName="min-w-[100px] pt-0 pb-0 pr-2 pl-0 text-center capitalize"
-              optionClassName="text-[17.5px]"
+              inputContainerClassName="min-w-[100px] pt-0 pb-0 pr-2 pl-0 text-center capitalize text-base-17-5"
+              optionClassName="text-[17.5px] text-base-17-5"
               labelClassname="hidden"
               onChange={(val) => handlestatusChange({ userStatus: val })}
             />
@@ -384,7 +385,7 @@ export default function TableItem({
             <div className="my-[6px] capitalize">{getFormatDate(item.createdAt)}</div>
           </td>
 
-          <td className=" px-1 min-w-14 py-4">
+         { false && <td className=" px-1 min-w-14 py-4">
             {item.userType !== "admin" ? (
               <div className=" flex items-center justify-center">
 
@@ -400,6 +401,7 @@ export default function TableItem({
               ""
             )}
           </td>
+}
         </tr>
       )}
       {dataFor === "allUsersSuperAdmin" && (
@@ -482,7 +484,7 @@ export default function TableItem({
       )}
       {dataFor === "assignedTests" && (
         <tr className=" text-[17.5px]  leading-8">
-          <td className=" text-[17.5px] px-1  min-w-14 py-4  text-left">
+            <td className="px-1 font-medium  min-w-14 py-4 text-left">
             <span
               className="inline-block cursor-pointer pl-4"
 
@@ -490,37 +492,32 @@ export default function TableItem({
               <div className="flex ">
                 {dataFor === "assignedTests" ? (
 
-                  <label
-                    className={`${styles["checkbox-label"]} block text-[#26435F] `}
-                  >
-                    <input
-                      type="checkbox"
-                      checked={isChecked}
-                      onChange={handleCheckboxChange}
-                    />
-                    <span
-                      className={`${styles["custom-checkbox"]} ${isChecked ? "checked" : ""
-                        }`}
-                    ></span>
-                  </label>
+                  
+                    <SCheckbox    checked={isChecked}
+                      onChange={(e)=>handleCheckboxChange(e)}/>
+                  
 
                 ) : (
                   ""
                 )}
-                <span onClick={() => onClick.redirect(item)} className="">
-                  {item.assignedOn}
-                </span>
+               
               </div>
             </span>
-          </td>
-          <td className="px-1 font-medium  min-w-14 py-4 text-left">
             <span className="inline-block cursor-pointer pl-4" onClick={() =>
               onClick.handleNavigate("student", item.studentId)
             }>
               {item.studentName}
             </span>
+            
           </td>
           <td className="font-medium px-1  min-w-14 py-4">{item.testName}</td>
+          <td className=" text-[17.5px] px-1  min-w-14 py-4  text-left">
+
+            <span onClick={() => onClick.redirect(item)} className="">
+                  {new Date(item.assignedOn).toLocaleDateString()}
+                </span>
+          </td>
+        
           <td className="font-medium px-1  min-w-14 py-4">{item.assignedBy
           }</td>
           <td className="font-medium px-1  min-w-14 py-4">
@@ -644,7 +641,7 @@ export default function TableItem({
         </tr>
       )}
       {dataFor === "assignedTestsStudents" && (
-        <tr className="odd:bg-white shadow-sm text-[17.5px] shadow-slate-200   leading-7">
+        <tr className="  text-[17.5px] leading-7">
           {Object.keys(item).map((key, i) =>
             excludes.includes(key) ? (
               <React.Fragment key={i}>
@@ -667,7 +664,9 @@ export default function TableItem({
                   >
                     {item.isCompleted === true ? score : "-"}
                   </div>
-                ) : (
+                ) :  key === "dueDate" ? (
+                 <span className={` ${new Date(item[key])<new Date()?"text-[#FF7979] font-semibold":""}`}> {item[key]}</span>
+                ):(
                   item[key]
                 )}
               </td>
@@ -783,7 +782,7 @@ export default function TableItem({
         </tr>
       )}
       {dataFor === "allTestsSuperAdmin" && (
-        <tr className="odd:bg-white font-medium  lead shadow-sm text-[17.5px] shadow-slate-300">
+        <tr className=" font-medium  lead  text-[17.5px] ">
           <td>{item.testName}</td>
           <td>{item.testType}</td>
           <td>{item.createdAt.split("T")[0]}</td>

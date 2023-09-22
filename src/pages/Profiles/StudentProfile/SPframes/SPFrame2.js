@@ -71,7 +71,7 @@ if(!toEdit[key] || !toEdit[key][key]) return
     <div>
       {" "}
       <div className="flex mt-7 justify-between gap-5">
-        <div className="flex-1 h-[230px] gap-7 flex flex-col">
+        <div className="flex-1 h-[200px] design:h-[230px] gap-7 flex flex-col">
           <div className="flex-1  flex justify-between">
             <p className=" text-sm text-[#26435F] font-semibold">
               Hours Tutored
@@ -95,7 +95,7 @@ if(!toEdit[key] || !toEdit[key][key]) return
             </p>
           </div>
         </div>
-        <div className="flex-1 h-[230px]">
+        <div className="flex-1 h-[200px] design:h-[230px]">
           <p className=" text-sm text-[#26435F] font-semibold">
           <span>
                             <img
@@ -166,7 +166,7 @@ if(!toEdit[key] || !toEdit[key][key]) return
           </div>
         </div>
 
-        <div className="flex-1 h-[230px]">
+        <div className="flex-1 h-[200px] design:h-[230px]">
           <p className=" text-sm text-[#26435F] font-semibold">
           <span>
                             <img
@@ -238,7 +238,7 @@ if(!toEdit[key] || !toEdit[key][key]) return
             })}
           </div>
         </div>
-        <div className="flex-1 h-[230px]">
+        <div className="flex-1 h-[200px] design:h-[230px]">
           <p className=" text-sm text-[#26435F] font-semibold">
             Baseline Scores
             <EditableText

@@ -235,7 +235,7 @@ export default function Chart({ setSubjects, subjects, selectedSubject, selected
    useEffect(() => {
 
    }, [currentSubData])
-   // //console.log('data', data)
+   console.log('data', data)
    // //console.log('currentSubData', currentSubData)
    // //console.log('selectedConceptIdx', selectedConceptIdx)
 
@@ -264,7 +264,7 @@ export default function Chart({ setSubjects, subjects, selectedSubject, selected
             options={options} data={data}
             height={200}
             width={canvasWidth}
-         /> :
+         /> 
 
       </div>
    )

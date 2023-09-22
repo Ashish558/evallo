@@ -408,12 +408,12 @@ const Dashboard = () => {
 
         <section>
           <div className="flex justify-center">
-            <div className="mt-[50px] w-[78.125vw] !mt-[calc(50*0.050vw)]">
-              <div className=" h-[1px] bg-[#00000033]"></div>
+            <div className=" w-[78.125vw] !mt-[calc(50*0.050vw)]">
+              <div className=" h-[1px] bg-[#CBD6E2]"></div>
             </div>
           </div>
           <div className=" w-[83.33vw]  text-[#FFA28D] mx-auto ">
-            <div className="flex justify-between items-center !mt-[calc(40*0.050vw)] h-min py-0 ">
+            <div className="flex justify-between items-center !mt-[calc(30*0.050vw)] h-min py-0 ">
               <p className="font-bold text-xl  text-base-20 ">USERS OVERVIEW </p>
 
               <div className="flex font-semibold text-[#FFA28D] text-xs">
@@ -422,7 +422,7 @@ const Dashboard = () => {
             </div>
           </div>
 
-          <div className="grid grid-cols-12  mt-[18px] w-[83.33vw] gap-x-5 mx-auto">
+          <div className="grid grid-cols-12  w-[83.33vw] gap-x-5 mx-auto">
             <div className="col-span-3 h-full  !whitespace-nowrap">
               <p className=" mb-1 font-semibold text-[#26435F] text-xl text-base-20">User Stats</p>
               <div className={`${styles.sidebox} min-h-[305px] min-w-[200px]`}>

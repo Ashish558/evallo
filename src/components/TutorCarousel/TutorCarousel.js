@@ -50,12 +50,12 @@ const TutorCarousel = () => {
 
   return (
 
-    <div className="h-full relative items-center  flex py-2 mr-[10%]">
+    <div className="h-full relative items-center  flex py-2 mr-[5%]">
 
       <h2 className="pl-5 pt-4">{""}</h2>
       {tutors.length >= totalTutors ? (
         <OwlCarousel
-          className="owl-theme h-full relative z-40  "
+          className="owl-theme flex-1 h-full relative z-40  w-full"
           margin={30}
           items={1}
           onTranslated={(e) => {

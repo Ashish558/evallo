@@ -112,10 +112,10 @@ margin:5px 0;
 tr {
  
   overflow:hidden;
-  box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.25);
+  box-shadow: 0 0 1.5px 0 rgba(0, 0, 0, 0.25);
    
     border-radius: 4px;
-    margin:3px 2px;
+    margin:4px 2px;
     color: #517CA8;
     outline: black;
 }
