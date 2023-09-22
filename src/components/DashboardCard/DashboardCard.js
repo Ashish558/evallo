@@ -4,26 +4,22 @@ export default function DashboardCard({ className, data, header, subHeader }) {
 
 
    return (
-      <div className={`max-w-[331px] py-[17px] px-[19px] flex flex-1 text-white rounded-20  first:mr-[30px] ${className}`}
-      // style={{
-      //    filter: 'drop-shadow(0px 6px 24px rgba(75, 189, 148, 0.5))'
-      // }} 
+      <div className={`w-[16.41vw] flex py-[17px] px-[22px]  text-white  ${className} rounded-[5px] items-center`}
       >
-
-         <div className='self-stretch min-w-[80px] h-[80px] text-center bg-white/20 rounded-[15px] flex flex-col justify-center'>
-            <p className={`font-bold leading-none ${data.titleClassName ? data.titleClassName : 'text-[30px]' }`}>
+         <div className='w-[80px] h-[80px] text-center bg-white/20 rounded-[5px] flex flex-col justify-center'>
+            <p className={`font-bold leading-none ${data.titleClassName ? data.titleClassName : 'text-[1.41vw]'}`}>
                {data.title}
             </p>
-            <p className='text-xl font-bold'>
+            <p className='text-[0.9375vw] font-medium'>
                {data.subtitle}
             </p>
          </div>
 
-         <div className='px-6'>
-            <p className='pt-[6px] font-bold text-[27px]'>
+         <div className='pl-4'>
+            <p className=' font-semibold text-[1.41vw]'>
                {header}
             </p>
-            <p className='text-lg font-semibold'>
+            <p className='text-[0.9375vw] font-medium'>
                {subHeader}
             </p>
          </div>

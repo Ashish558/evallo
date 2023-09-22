@@ -92,6 +92,13 @@ export const adminServicesApi = createApi({
             headers: getAuthHeader()
          })
       }),
+     getCalenderInsight: builder.query({
+         query: (body) => ({
+            url: `/api/user/admin/getTutorSessionDetails?userName=${body.name}&userId=${body.id}`,
+            method: "GET",
+            headers: getAuthHeader()
+         })
+      }),
       deleteAssignedTutor: builder.mutation({
          query: (body) => ({
             url: `/api/user/removeTutor/${body.studentId}/${body.tutorId}`,
@@ -102,7 +109,7 @@ export const adminServicesApi = createApi({
       }),
       addNewQuestion: builder.mutation({
          query: (body) => ({
-            url: `/api/user/addNewField/org/${body.orgId}`,
+            url: `/api/user/addNewField`,
             method: "POST",
             body: body,
             headers: getAuthHeader()
@@ -113,6 +120,7 @@ export const adminServicesApi = createApi({
 
 export const {
    useAddInvoiceMutation,
+   useLazyGetCalenderInsightQuery,
    useLazyGetParentsByNameQuery,
    useLazyGetAllInvoiceQuery,
    useBlockUserMutation,

@@ -15,3 +15,13 @@ svg {
 path {
     fill: #2a354d;
 } */
+.point {
+  width: 11px;
+  display: inline-block;
+  height: 11px;
+  background-color: white;
+  position: absolute;
+  bottom:5px;
+  box-shadow:0 2px 4px rgba(0, 0, 0, 0);
+  transform: rotate(45deg)  translateX(18px);
+}

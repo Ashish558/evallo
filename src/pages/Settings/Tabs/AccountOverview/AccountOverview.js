@@ -5,15 +5,21 @@ import { CheckboxNew } from "../../../../components/Checkbox/CheckboxNew";
 import InputSelect from "../../../../components/InputSelect/InputSelect";
 import { studentServedData, instructionFormat } from "../staticData";
 import logo from "../../../../assets/icons/Frame 31070.svg";
+import caution from "../../../../assets/icons/octicon_stop-16.svg";
 import resetSendIcon from "../../../../assets/icons/teenyicons_shield-tick-solid.svg";
 import tooltipIcon from "../../../../assets/icons/octicon_stop-16.svg";
 import { useState } from "react";
 import Modal from "../../../../components/Modal/Modal";
-import { useSelector } from "react-redux";
-import axios from "axios";
+import  './style.css'
 import { useForgotPasswordMutation } from "../../../../app/services/auth";
-import { useLazyGetPersonalDetailQuery, } from "../../../../app/services/users";
+
+import {
+  useLazyGetPersonalDetailQuery,
+  useUpdateUserAccountMutation,
+} from "../../../../app/services/users";
 import { BASE_URL, getAuthHeader } from "../../../../app/constants/constants";
+import InputFieldDropdown from "../../../../components/InputField/inputFieldDropdown";
+import { useUpdateEmailMutation } from "../../../../app/services/organization";
 const AccountOverview = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [reset, setReset] = useState(false);
@@ -49,11 +55,17 @@ const AccountOverview = () => {
     activeTutors: "",
     services: [],
   });
+  const [updateEmail, setUpdateEmail] = useUpdateEmailMutation();
   const [userDetails, userDetailsStatus] = useLazyGetPersonalDetailQuery();
+  const [updateAccount, updateAccountStatus] = useUpdateUserAccountMutation();
+  const [fetchedData, setFetchedData] = useState({})
   useEffect(() => {
     userDetails()
       .then((res) => {
         setValues({
+          ...res?.data.data.user,
+        });
+        setFetchedData({
           ...res?.data.data.user,
         });
       })
@@ -62,33 +74,35 @@ const AccountOverview = () => {
       });
   }, []);
 
-  useEffect(() => {
-    // setValues(organization);
+  const handleEmailUpdate = (email) => {
+    console.log("Email Updation invoked", email);
+    if (email !== "")
+      updateEmail({ email }).then((res) => {
+        console.log("Email Link sent", res);
+      });
+  };
+  const handleDataUpdate = () => {
     const updateUserAccount = async () => {
       try {
-        //   alert(data.workemail)
         let reqBody = { ...values };
         delete reqBody["_id"];
         delete reqBody["email"];
-        let result = await axios.patch(
-          `${process.env.REACT_APP_BASE_URL}api/user`,
-          reqBody,
-          {
-            headers: {
-              "Content-type": "application/json; charset=UTF-8",
-              Authorization: sessionStorage.getItem("token"),
-            },
-          }
-        );
-
-     //   console.log("updated", values);
+        updateAccount(reqBody)
+          .then((res) => {
+            console.log(res);
+          })
+          .catch((err) => {
+            console.log(err?.message);
+          });
       } catch (e) {
         console.error(e?.response?.data?.message);
       }
     };
     updateUserAccount();
-  }, [values]);
-
+    if (fetchedData?.email !== values.email)
+      handleEmailUpdate(values.email)
+    console.log({ fetchedData, values })
+  };
   const showResetConfirmation = () => {
     setReset(true);
     handlePasswordReset();
@@ -109,8 +123,6 @@ const AccountOverview = () => {
     setModalOpen(!modalOpen);
   };
 
- 
-
   const handlePasswordReset = () => {
     forgotPassword({ email: values.email }).then((res) => {
       if (res.error) {
@@ -120,19 +132,19 @@ const AccountOverview = () => {
       }
       console.log(res.data);
       alert("Password reset link sent to your email.");
-      // window.open(res.data.link)
     });
   };
 
   return (
     <div>
-      <div className="flex flex-col gap-10 w-[900px] ">
-        <div className="flex gap-5">
+      <div className="flex flex-col gap-10  ">
+        <div className="flex gap-8">
           <InputField
             placeholder=""
-            parentClassName="text-xs text-[#26435F]"
-            inputContainerClassName=" bg-white"
-            inputClassName="bg-transparent"
+            labelClassname="font-medium text-base"
+            parentClassName="text-[#26435F]"
+            inputContainerClassName=" bg-white  border border-white text-[#667085]"
+            inputClassName=" text-400 py-0 bg-transparent"
             label="First Name"
             value={values.firstName}
             onChange={(e) =>
@@ -146,9 +158,10 @@ const AccountOverview = () => {
 
           <InputField
             placeholder=""
-            parentClassName="text-xs text-[#26435F]"
-            inputContainerClassName=" bg-white"
-            inputClassName="bg-transparent"
+            labelClassname="font-medium text-base"
+            parentClassName="text-[#26435F]"
+            inputContainerClassName=" bg-white border border-white text-[#667085]"
+            inputClassName=" text-400 py-0 bg-transparent"
             label="Last Name"
             value={values.lastName}
             onChange={(e) =>
@@ -159,80 +172,103 @@ const AccountOverview = () => {
             }
             error={error.lastName}
           />
-          <div className="group relative">
-            <div className="">
-              <InputField
-                placeholder=""
-                parentClassName="text-xs text-[#26435F]"
-                inputContainerClassName=" bg-white"
-                inputClassName="bg-transparent"
-                label="Email"
-                IconRight={tooltipIcon}
-                value={values.email}
-                onChange={(e) =>
-                  setValues({
-                    ...values,
-                    email: e.target.value,
-                  })
-                }
-                error={error.email}
-              />
-            </div>
-            <span class="absolute top-20  scale-0 rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100">
-              <h3 className="text-[#24A3D9] font-semibold mb-1">
-                Email Confirmation Sent
-              </h3>
-              You need to verify your email if
-              <ul className="list-disc pl-3 mb-2">
-                <li>you created a new account.</li>
-                <li>you recently changed your email.</li>
-              </ul>
-              We have sent you an email verification link to your current email
-              address to make sure that it really is you who requested a change.
-            </span>
-          </div>
 
           <InputField
+            IconLeft={caution}
             placeholder=""
-            parentClassName="text-xs text-[#26435F]"
-            inputContainerClassName=" bg-white"
-            inputClassName="bg-transparent"
-            label="Phone"
-            value={values.phone}
-            onChange={(e) =>
+            labelClassname="font-medium text-base"
+            parentClassName="text-[#26435F]"
+            inputContainerClassName=" bg-white border border-white text-[#667085]"
+            inputClassName=" text-400 py-0 bg-transparent w-[calc(377*0.0522vw)]"
+            label="Email"
+            // IconRight={tooltipIcon}
+            value={values.email}
+            onChange={(e) => {
               setValues({
                 ...values,
-                phone: e.target.value,
-              })
+                email: e.target.value,
+              });
+
+            }}
+            error={error.email}
+            Tooltip={
+              <span className="absolute top-10 w-[200px] scale-0 rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100">
+                <h3 className="text-[#24A3D9] font-semibold mb-1">
+                  Email Confirmation Sent
+                </h3>
+                You need to verify your email if
+                <ul className="list-disc pl-3 mb-2">
+                  <li>you created a new account.</li>
+                  <li>you recently changed your email.</li>
+                </ul>
+                We have sent you an email verification link to your current
+                email address to make sure that it really is you who requested a
+                change.
+              </span>
             }
-            error={error.phone}
           />
+          <div id="number">
+            <InputFieldDropdown
+              placeholder=""
+              labelClassname="font-medium text-base"
+              parentClassName="text-[#26435F] "
+              inputContainerClassName="py-3 bg-white border border-white text-[#667085]"
+              inputClassName="  text-400 py-1"
+              label="Phone"
+              value={values.phone}
+              codeValue={values.phoneCode}
+              handleCodeChange={(e) =>
+                setValues({
+                  ...values,
+                  phoneCode: e.target.value,
+                })
+              }
+              onChange={(e) =>
+                setValues({
+                  ...values,
+                  phone: e.target.value,
+                })
+              }
+              error={error.phone}
+            />
+          </div>
+          <div className="flex flex-1 justify-end">
+            <button
+
+              onClick={handleDataUpdate}
+              className="bg-[#FFA28D]  py-3 mt-6 rounded-md px-10  text-sm text-[#EEE] text-base-17-5"
+            >
+              Save
+            </button>
+          </div>
         </div>
+
         <div className="flex gap-7 flex-1">
           <div>
-            <h1 className="my-1 text-[#26435F] font-semibold text-sm">
+            <h1 className="my-1 text-[#26435F] font-semibold text-sm text-base-17-5">
               Send Link
             </h1>
             <button
               onClick={handleClose}
-              className="bg-[#517CA8] text-white rounded-md px-3 py-2 text-sm"
+              className="bg-[#517CA8] text-white rounded-md px-3 py-3 text-sm text-base-17-5 "
             >
               Reset Password
             </button>
           </div>
           <div>
-            <h1 className="my-1 text-[#26435F] font-semibold text-sm">
+            <h1 className="my-1 text-[#26435F] font-semibold text-sm text-base-17-5">
               2FA Codes / key
             </h1>
-            <button className="bg-[#517CA8] text-white rounded-md px-5 py-2 text-sm">
+            <button className="bg-[#517CA8] text-white rounded-md px-5 py-3 text-sm text-base-17-5" >
               Download
             </button>
           </div>
+
         </div>
         <div>
           {reset && (
             <div className="flex gap-2">
-              <p className="bg-[rgba(119,221,119,0.2)] rounded-xl text-sm text-[#77DD77] px-3 py-1">
+              <p className="bg-[rgba(119,221,119,0.2)] rounded-xl text-sm text-[#77DD77] px-3 py-1 text-base-15">
                 <img className="inline-block mr-3" src={resetSendIcon} alt="" />
                 {"Password Reset Link Sent To {email address}"}
               </p>

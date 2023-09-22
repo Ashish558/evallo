@@ -6,7 +6,7 @@ import Calculator from './Calculator';
  
 export default function Que(props) {
 
-   const {ques,op,para,index,Setmark,mark,cal,seq,cutanswers,cutanswer,showcutcheck,cutcheck,markreview,markre} = props;
+   const {ques,op,para,answers,index,Setmark,mark,cal,seq,cutanswers,cutanswer,showcutcheck,cutcheck,markreview,markre} = props;
    const s ={
     height : "58.2vh"
   }
@@ -18,14 +18,14 @@ export default function Que(props) {
     Setmark(arr)
   }
   return (
-    <div className={` px-20 overflow-y-scroll grid grid-cols-2 gap-20 ${props.check && 'bg-gray-200'}`} style={s}>
+    <div className={` px-20 overflow-y-scroll flex flex-row ${props.check && 'bg-gray-200'} ${!para? 'justify-center' : 'justify-between'} `} style={s}>
         {
-          para?<div className=' pt-5'>
+          para?<div className='w-1/2 pt-5'>
            <div dangerouslySetInnerHTML={{__html:para}}/>
            {/* <img src={image} alt="" /> */}
         </div>:null
         }
-        <div className={`mt-5 ${props.check && 'hidden'}` }>
+        <div className={`mt-5 ${props.check && 'hidden'} ${!para? 'flex w-1/2 flex-col':'w-1/2'}` }>
           <div className=' flex bg-slate-200  text-center relative'>
             <span className=' bg-black text-white py-1 px-2'>{index}</span>
             <FontAwesomeIcon onClick={()=>{markre(index)}} icon={faBookmark} className={`cursor-pointer text-transparent border border-black relative top-2 mx-2 ${ markreview.length>0?markreview[index-1].review && 'bg-yellow-400':null}`} />  
@@ -41,7 +41,7 @@ export default function Que(props) {
           {
            op?.map((e,i)=>
                {
-                return  <div className={`flex flex-row items-center w-full`}> <span className='text-gray-600 font-semibold text-sm mr-2'>{e.label}</span> <li className='relative text-gray-600 border border-black list-none mb-6 rounded-lg' onClick={()=>{props.MarkAnswer(index,i)}}>
+                return  <div className={`flex flex-row w-full cursor-pointer border-[3px] rounded-xl my-2 px-2 py-2  items-center ${answers[index-1].ResponseAnswer==e.label? 'border-blue-400' :null} `}> <span className={`text-gray-600 font-semibold text-sm mr-4 border-[3px] rounded-full px-2 py-1 ml-2 ${answers[index-1].ResponseAnswer==e.label? 'bg-blue-400 text-white' :null}`}>{e.label}</span> <li className='relative flex items-center text-gray-600 border border-black list-none rounded-lg' onClick={()=>{props.MarkAnswer(index,i)}}>
                   { cutanswer[index-1].markcut[i]==1 && cutcheck?
                   <div className='flex w-full h-full bg-gray-300 absolute top-[0] left-[0] opacity-40 justify-center items-center'>
                     <div className='h-[3px] bg-gray-900 absolute w-full'></div>

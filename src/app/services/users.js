@@ -66,10 +66,25 @@ export const userServicesApi = createApi({
         headers: getAuthHeader(),
       }),
     }),
+    getFeedback: builder.query({
+      query: (body) => ({
+        url: `api/feedback/rating/allRating?userId=${body.id}`,
+        method: "GET",
+        headers: getAuthHeader(),
+      }),
+    }),
     updateUser: builder.mutation({
       query: (body) => ({
         url: `api/user/updateUser/${body.userId}`,
         method: "PATCH",
+        body: body,
+        headers: getAuthHeader(),
+      }),
+    }),
+    addManager: builder.mutation({
+      query: (body) => ({
+        url: `api/user/registerManager`,
+        method: "POST",
         body: body,
         headers: getAuthHeader(),
       }),
@@ -79,6 +94,14 @@ export const userServicesApi = createApi({
         url: `api/user/${body.id}`,
         method: "PATCH",
         body: body.fields,
+        headers: getAuthHeader(),
+      }),
+    }),
+    addNotes: builder.mutation({
+      query: (body) => ({
+        url: `api/user/notes/addNotes`,
+        method: "POST",
+        body: body,
         headers: getAuthHeader(),
       }),
     }),
@@ -139,26 +162,106 @@ export const userServicesApi = createApi({
         headers: getAuthHeader(),
       }),
     }),
+    updateUserAccount: builder.mutation({
+      query: (body) => ({
+        url: `/api/user`,
+        method: "PATCH",
+        body: body,
+        headers: getAuthHeader(),
+      }),
+    }),
+    resentEmail: builder.mutation({
+      query: (body) => ({
+        url: `api/user/resent/mail`,
+        method: "POST",
+        body: body,
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+      }),
+    }),
+
+    getLinkStudent: builder.mutation({
+      query: (body) => ({
+        url: `api/user/student/getLink`,
+        method: "POST",
+        body: body,
+        headers: getAuthHeader(),
+      }),
+    }),
+    addLinkStudent: builder.mutation({
+      query: (body) => ({
+        url: `api/user/student/addLink`,
+        method: "POST",
+        body: body,
+        headers: getAuthHeader(),
+      }),
+    }),
+    removeLinkStudent: builder.mutation({
+      query: (body) => ({
+        url: `api/user/student/removeLink`,
+        method: "POST",
+        body: body,
+        headers: getAuthHeader(),
+      }),
+    }),
+    addAssociatedDocStudent: builder.mutation({
+      query: (body) => ({
+        url: `api/user/student/uploadAssociatedDoc`,
+        method: "POST",
+        body: body,
+        headers: getAuthHeader(),
+      }),
+    }),
+    conceptChartStudent: builder.mutation({
+      query: (body) => ({
+        url: `api/user/student/conceptChart`,
+        method: "POST",
+        body: body,
+        headers: getAuthHeader(),
+      }),
+    }),
+    scoreProgressionStudent: builder.mutation({
+      query: (body) => ({
+        url: `api/user/student/scoreProgression`,
+        method: "POST",
+        body: body,
+        headers: getAuthHeader(),
+      }),
+    }),
   }),
 });
 
 export const {
   useLazyGetAllUsersQuery,
   useLazyGetParentTutorsQuery,
+  useAddNotesMutation,
   useLazyGetStudentTutorsQuery,
   useAddUserMutation,
+  useUpdateUserAccountMutation,
   useLazyGetAllOrgUsersQuery,
+  useGetAllOrgUsersQuery,
   useLazyGetUserDetailQuery,
   useLazyGetTutorDetailsQuery,
   useUpdateUserFieldsMutation,
+  useGetUserDetailQuery,
+  useAddManagerMutation,
   useUpdateUserDetailsMutation,
   useUpdateTutorDetailsMutation,
   usePostTutorDetailsMutation,
   useLazyGetPersonalDetailQuery,
-  
+  useResentEmailMutation,
+  useGetOrganizationQuery,
   useLazyGetInvoiceQuery,
   useUpdateProfileImageMutation,
   useLazyGetOrganizationQuery,
   useUpdateUserMutation,
   useLazyGetSingleUserQuery,
+  useScoreProgressionStudentMutation,
+  useConceptChartStudentMutation,
+  useAddAssociatedDocStudentMutation,
+  useRemoveLinkStudentMutation,
+  useAddLinkStudentMutation,
+  useGetLinkStudentMutation,
+  useLazyGetFeedbackQuery
 } = userServicesApi;

@@ -6,139 +6,346 @@ import PrimaryButton from "../../../../components/Buttons/PrimaryButton";
 import CCheckbox from "../../../../components/CCheckbox/CCheckbox";
 import InputSelect from "../../../../components/InputSelect/InputSelect";
 import CheckboxIcon from "../../../../assets/icons/square.svg";
-
-export default function SignupTab({ setAddNewQuestionModalActive, fetchS }) {
+import DeletIcon from "../../../../assets/Settings/delete.svg";
+import que from "../../../../assets/icons/que.png";
+import que2 from "../../../../assets/icons/que2.svg";
+import plus1 from "../../../../assets/icons/plus1.svg";
+import dropdown from "../../../../assets/icons/dropdown (2).svg";
+import InputFieldDropdown from "../../../../components/InputField/inputFieldDropdown";
+import ToggleBar from "../../../../components/SettingsCard/ToogleBar";
+export default function SignupTab({
+  setAddNewQuestionModalActive,
+  fetchS,
+  updateAndFetchsettings,
+}) {
   const { organization } = useSelector((state) => state.organization);
 
-  // console.log("organization", organization);
-  const [customFields, setCustomFields] = useState(organization.customFields);
+  const [customFields, setCustomFields] = useState();
 
+  useEffect(() => {
+    setCustomFields(organization?.settings?.customFields);
+  }, [organization]);
   useEffect(() => {
     if (fetchS && fetchS.data && fetchS.data.updatedOrg) {
       setCustomFields(fetchS.data.updatedOrg.customFields);
     }
   }, [fetchS]);
+  const [isChecked, setIsChecked] = useState(false);
+  const [isCheckedTwo, setIsCheckedTwo] = useState(false);
+  const [isCheckedThree, setIsCheckedThree] = useState(false);
+  const [checkTerms, setCheckTerms] = useState();
+  const handleCheckboxChangeTerms = () => {
+    setCheckTerms(!checkTerms);
+  };
+  const handleCheckboxChange = () => {
+    setIsChecked(!isChecked);
+  };
+  const handleCheckboxChangeTwo = () => {
+    setIsCheckedTwo(!isCheckedTwo);
+  };
+  const handleCheckboxChangeThree = () => {
+    setIsCheckedThree(!isCheckedThree);
+  };
+
+  const handleDelete = (id) => {
+    let updatedCustomFields = customFields.filter((item) => item._id !== id);
+    updatedCustomFields = updatedCustomFields.map((item) => ({
+      name: item.name,
+      Values: item.Values,
+      dataType: item.dataType,
+    }));
+    const body = {
+      customFields: updatedCustomFields,
+    };
+    updateAndFetchsettings(body);
+  };
+  const togglePermissions = (key, value) => {
+    console.log(customFields)
+    // const arr = customFields?.map((per) => {
+    //   if (per._id === key) {
+    //     return { ...per, choosedValue: !per.choosedValue };
+    //   }
+    //   return { ...per };
+    // });
+  }
   return (
     <div className="">
-      <p className="text-sm underline w-500">
-       <a href={`${process.env.REACT_APP_FE_URL}/signup/user?orgName=${organization.company}`} target={"_blank"}> {`${process.env.REACT_APP_FE_URL}/signup/user?orgName=${organization.company}`}
-       </a>
-      </p>
+      <div className="mb-[40px]">
+        <div
+          className="text-base-17-5 flex items-start w-300 text-[#507CA8] mb-4">
+          <p className="mt-[3px]"><img src={que} alt="que"></img></p>
+          <p className="pl-2">Please enter the fields for the sign up form that you want to show your clients. You are allowed to create up to 5 additional custom questions beyond the mandatory fields that we require from parents and students.</p>
+        </div>
+        <div className="text-base-17-5 flex items-start w-300 text-[#507CA8]">
+          <p className="mt-[3px]"><img width="14px" src={que} alt="que"></img></p>
+          <p className="pl-2">Link to the Sign-up form for Org Name: <a rel="noreferrer"
+            className="underline text-[#26435F]"
+            href={`${process.env.REACT_APP_FE_URL}/signup/user?orgName=${organization.company}`}
+            target={"_blank"}
+          >
+            {" "}
+            {`${process.env.REACT_APP_FE_URL}/signup/user?orgName=${organization.company}`}
+          </a>
+          </p>
+        </div>
+      </div>
       <div className="grid grid-cols-2 gap-x-5">
         <div className={styles.colContainer}>
-          <p className={`hidden lg:block mb-[26px] ${styles.textGrayed} `}>
-            Please fill your detail to create your account.
-          </p>
+          <div
+            className={`hidden lg:flex mb-[26px] items-center justify-between text-[#26435F] font-semibold text-base-20 text-base-20`}
+          >
+            <p>      Page 1: Basic Details (all fields mandatory)</p>
+
+            <p className="ml-40"> <img src={que2} alt="que"></img></p>
+          </div>
           <div className={`flex mt-[59px] lg:mt-0 ${styles.inputs}`}>
             <InputField
               placeholder=""
-              parentClassName="text-xs"
+              inputContainerClassName="bg-gray-200 border border-gray-200"
+              inputClassName="bg-gray-200"
+              parentClassName="text-xs text-[#26435F] mb-2"
               label="First Name"
             />
             <InputField
               placeholder=""
-              parentClassName="text-xs"
+              inputContainerClassName="bg-gray-200 border border-gray-200"
+              inputClassName="bg-gray-200"
+              parentClassName="text-xs text-[#26435F] mb-2"
               label="Last Name"
             />
             <InputField
               label="Email"
+              inputContainerClassName="bg-gray-200 border border-gray-200 w-[32.6vw]"
+              inputClassName="bg-gray-200"
               placeholder=""
-              parentClassName="text-xs mb-4"
+              parentClassName="text-xs  text-[#26435F] mb-2"
             />
             <InputField
               placeholder=""
-              parentClassName="text-xs mb-4"
+              inputContainerClassName="bg-gray-200 border border-gray-200 "
+              inputClassName="bg-gray-200"
+              parentClassName="text-xs  text-[#26435F] mb-7"
               label="Phone"
             />
-
-           
-         
           </div>
           <div>
-            <p className={`mb-5 ${styles.label}`}>
+            <p className={`mb-5 ${styles.label} text-base-17-5`}>
               Are you signing up as a Parent or a Student?
             </p>
             <div className="flex items-center gap-x-6">
-              <p className={styles.textLight}>Parent / Guardian</p>
-              <p className={styles.textLight}>Student</p>
+              <p onClick={() => setIsChecked(true)} className={styles.textLight}>
+                <div className={`${styles["checkbox-label"]} block  `}>
+                  <input
+                    type="radio"
+                    className="form-radio hidden"
+                    id="radioOption"
+                  />
+                  <label
+                    htmlFor="radioOption"
+                    className={`relative w-4 h-4 mx-1 rounded-full border ${isChecked ? "border-[#FFA28D]" : "border-gray-600"} cursor-pointer`}
+
+                  >
+                    {isChecked && (
+                      <div className="absolute inset-0 my-auto mx-auto w-[9px] h-[9px] rounded-full bg-[#FFA28D]" />
+                    )}{" "}
+                  </label>
+
+                  <span className="ml-2 text-[#507CA8] text-base-17-5">Parent / Guardian</span>
+                </div>
+              </p>
+              <p onClick={() => setIsChecked(false)} className={styles.textLight}>
+                <div className={`${styles["checkbox-label"]} block  `}>
+                  <input
+                    type="radio"
+                    className="form-radio hidden"
+                    id="radioOption"
+                  />
+                  <label
+
+                    className={`relative w-4 h-4  mx-1 rounded-full border ${!isChecked ? "border-[#FFA28D]" : "border-gray-600"} cursor-pointer`}
+
+                  >
+                    {!isChecked && (
+                      <div className="absolute inset-0 my-auto mx-auto w-[9px] h-[9px] rounded-full bg-[#FFA28D]" />
+                    )}{" "}
+                  </label>
+
+                  <span className="ml-2 text-[#507CA8] text-base-17-5">Student</span>
+                </div>
+              </p>
             </div>
           </div>
-          <div className="flex gap-x-2 my-5">
-            <CCheckbox />
-            <p className={`${styles.textLight}`}>
-              I have carefully read and agree to the Terms of Use and Privacy
-              Policy
+          <div className=" gap-x-2 my-5">
+            <p className={styles.textLight}>
+              <label className={`${styles["checkbox-label"]} block  `}>
+                <input
+                  type="checkbox"
+                  checked={isCheckedThree}
+                  onChange={handleCheckboxChangeThree}
+                />
+                <span
+                  className={`${styles["custom-checkbox"]} ${isChecked ? "checked" : ""
+                    }`}
+                ></span>
+                <span className="ml-2 text-[#507CA8] text-base-17-5">
+                  I confirm that I am 13 years or older
+                </span>
+              </label>
+            </p>
+          </div>
+          <div className=" gap-x-2 my-5">
+            <p className={styles.textLight}>
+              <label className={`${styles["checkbox-label"]} block  `}>
+                <input
+                  type="checkbox"
+                  checked={checkTerms}
+                  onChange={handleCheckboxChangeTerms}
+                />
+                <span
+                  className={`${styles["custom-checkbox"]} ${isChecked ? "checked" : ""
+                    }`}
+                ></span>
+                <p className={` ml-2 text-[#507CA8] text-base-17-5`}>
+                  I have carefully read and agree to the{" "}
+                  <span className="font-semibold text-[#26435F]">
+                    Terms of Use and Privacy Policy
+                  </span>
+                </p>
+              </label>
             </p>
           </div>
         </div>
-        <div className={styles.colContainer}>
-          <p className={`hidden lg:block mb-[26px] ${styles.textGrayed} `}>
-            Please fill your detail to create your account.
-          </p>
-          <div className={`flex mt-[59px] lg:mt-0 ${styles.inputs}`}>
+        <div className="border border-[#dcdcdc] rounded-lg">
+          <div
+            className={`hidden lg:flex mb-[26px] items-center justify-between text-[#26435F] font-semibold text-base-20 pt-5`}
+          >
+            <p className=" pl-5 ">Page 2: Associated Student / Parent Details (all fields mandatory)</p>
+
+            <p className="mr-2"> <img src={que2} alt="que"></img></p>
+          </div>
+          <div className={`flex mt-[59px]  lg:mt-0 ${styles.inputs}  pr-[70px] pl-5 pb-5`}>
             <InputField
               placeholder=""
-              parentClassName="text-xs"
+              parentClassName="text-xs  text-[#26435F] mb-2"
+              inputContainerClassName="bg-gray-200 border border-gray-200 "
+              inputClassName="bg-gray-200"
               label="Student / Parent First Name"
             />
             <InputField
               placeholder=""
-              parentClassName="text-xs"
+              parentClassName="text-xs  text-[#26435F] mb-2"
+              inputContainerClassName="bg-gray-200 border border-gray-200 "
+              inputClassName="bg-gray-200"
               label="Student / Parent Last Name"
             />
             <InputField
               label="Student / Parent Email"
               placeholder=" "
-              parentClassName="text-xs mb-3"
+              inputContainerClassName="bg-gray-200 border border-gray-200 w-[34.2vw]"
+              inputClassName="bg-gray-200"
+              parentClassName="text-xs  text-[#26435F] mb-2"
+            />
+
+            <InputField
+              placeholder=""
+              parentClassName="text-xs  text-[#26435F] mb-2 "
+              inputContainerClassName="bg-gray-200 border border-gray-200 "
+              inputClassName="bg-gray-200 "
+              label=" Student/Parent Phone"
+            />
+
+            <InputField
+              placeholder=""
+              parentClassName="text-xs  text-[#26435F] mb-2"
+              inputContainerClassName="bg-gray-200 border border-gray-200 w-[34.2vw]"
+              inputClassName="bg-gray-200"
+              label="School Name"
             />
             <InputField
               placeholder=""
-              parentClassName="text-xs mb-3"
-              label="Phone"
+              IconRight={dropdown}
+              parentClassName="text-xs  text-[#26435F] mb-2"
+              inputContainerClassName="bg-gray-200 border border-gray-200 w-[150px]"
+              inputClassName="bg-gray-200"
+              label="Student's Grade"
             />
 
-           
           </div>
         </div>
       </div>
 
       <div className={styles.customContainer}>
-        <p className={styles.title}>
+        <span
+          className={`hidden lg:flex mb-[26px]  items-center text-base-20`}
+          style={{ color: "#26435F", fontWeight: 600 }}
+        >
           Page 3: Custom Fields (Add a maximum of 5 items)
-        </p>
+          <img className="ml-[100px]" src={que2}></img>
+        </span>
         <div className="mb-10">
           {customFields?.map((item, idx) => {
             return (
-              <div key={item._id} className={styles.customField}>
-                <p>
-                  {" "}
-                  <span>{idx + 1}. </span> {item.name}{" "}
-                </p>
-                <InputSelect
-                  value={item.dataType}
-                  labelClassname="hidden"
-                  parentClassName="w-[200px] mr-5 my-4 text-sm "
-                  optionData={["String", "Dropdown"]}
-                />
-                {item.dataType === "Dropdown" && (
-                  <div className="grid grid-cols-2 gap-x-6 gap-y-4 mt-4 mb-7">
-                    {item.Values?.map((value) => {
-                      return (
-                        <div key={value} className="flex items-center">
-                          <img src={CheckboxIcon} alt="checkbox" />
-                          <p className="ml-2 text-[#507CA8]"> {value} </p>
-                        </div>
-                      );
-                    })}
+              <div
+                key={item._id}
+                className={`${styles.customField} grid grid-cols-12 gap-x-12 `}
+              >
+                <div className="col-span-8">
+                  <div className="py-3 px-4 border-b border-[#26435f]">
+                    <p>
+                      <span>{idx + 1}. </span> {item.name}{" "}
+                    </p>
                   </div>
-                )}
+                  {item.dataType === "Dropdown" && (
+                    <div className="flex flex-col gap-y-3 mt-7 mb-7">
+                      {item.Values?.map((value) => {
+                        return (
+                          <div key={value} className="flex items-center">
+                            <img src={CheckboxIcon} alt="checkbox" />
+                            <p className="ml-2 text-[#507CA8]">
+                              {" "}
+                              {value ? value : "-"}{" "}
+                            </p>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+
+                <div className="col-span-4">
+                  <div className="max-w-[200px]">
+                    <InputSelect
+                      value={item.dataType}
+                      labelClassname="hidden"
+                      parentClassName="w-[200px] mr-5 my-4 text-base-17-5 "
+                      optionData={["String", "Checkboxes"]}
+                      inputContainerClassName={`bg-[#F5F8FA] border-0 text-[#26435F] font-medium ${styles["dropdown-container"]} `}
+                    />
+                    {/* <ToggleBar
+                      onToggle={togglePermissions}
+                    ></ToggleBar> */}
+                    {
+                      console.log(customFields)
+                    }
+                    <div
+                      className="flex items-center justify-between cursor-pointer bg-[#F5F8FA] text-[#26435F] font-medium text-sm px-4 py-2"
+                      onClick={() => handleDelete(item._id)}
+                    >
+                      Delete
+                      <img src={DeletIcon} alt="delete" />
+                    </div>
+                  </div>
+                </div>
               </div>
             );
           })}
         </div>
+
         <PrimaryButton
-          disabled={customFields?.length >= 5 ? true :false}
-          children={"Add new question"}
+          disabled={customFields?.length >= 5 ? true : false}
+          children={"Add New Question"}
+          Icon={plus1}
+          className="text-base-17-5"
           onClick={() => setAddNewQuestionModalActive(true)}
         />
       </div>

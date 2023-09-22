@@ -32,57 +32,35 @@ import UserSignup from "../pages/UserSignup/Signup";
 import Dashboard from "../pages/AdminDashboard/Dashboard";
 import AdminContent from "../pages/AdminContent/AdminContent";
 import AllOrgs from "../pages/SuperadminDashboard/components/AllOrgs/AllOrgs";
-import AdminNavbar from "../pages/AdminDashboard/AdminNavbar";
 import Footer from "../components/Footer/Footer";
 import Settings from "../pages/Settings/Settings";
 import SuperAdminSettings from "../pages/Settings/SuperAdminSettings";
 import SuperAdminProfile from "../pages/SuperadminDashboard/components/About/About";
+import EmailVerify from "../pages/Settings/Tabs/AccountOverview/EmailVerify";
+import StudentSettings from "../pages/Settings/Tabs/AccountOverview/studentSettings";
+
+import TutorSetting from "../pages/Settings/TutorSetting";
+import ContributorSettings from "../pages/Settings/ContributorSettings";
 import TestPage from "../pages/DsatTestPage/TestPage";
 
-const PrivateRoutes = [
-  {
-    el: Calendar,
-    path: "/calendar",
-  },
-  {
-    el: Users,
-    path: "/users",
-  },
-  {
-    el: Calendar,
-    path: "/calendar/:persona",
-  },
-  {
-    el: Calendar,
-    path: "/calendar",
-  },
-  {
-    el: Calendar,
-    path: "/calendar",
-  },
-  {
-    el: Calendar,
-    path: "/calendar",
-  },
-];
+
 
 
 const AppRoutes = () => {
   const { isLoggedIn } = useSelector((state) => state.user);
   const { role: persona } = useSelector((state) => state.user);
-console.log({persona});
+
   return (
     <BrowserRouter>
-      <AdminNavbar />
-      {/* <a href='https://www.banao.tech/'
-            style={{ opacity: '0', pointerEvents: 'none', width: 0, height: 0, zIndex: '-1' }} > </a> */}
+      <Navbar />
       <Routes>
         <Route path="/" element={isLoggedIn ? <Home /> : <Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/signup/user" element={<UserSignup />} />
         <Route path="/dashboard" element={<SuperadminDashboard />} />
         <Route path="/all-orgs" element={<AllOrgs />} />
-        <Route path="/superadmin-profile" element={<SuperAdminProfile/>} />
+        <Route path="/verify-email" element={<EmailVerify />} />
+        <Route path="/orgadmin-profile/:id" element={<SuperAdminProfile />} />
         <Route
           path="/users"
           element={
@@ -240,7 +218,7 @@ console.log({persona});
           }
         />
          <Route
-          path="/testpage"
+          path="/testpage/:testid/:userid"
           element={
             <RequireAuth isLoggedIn={isLoggedIn}>
              <TestPage/>
@@ -252,7 +230,12 @@ console.log({persona});
           path="/settings"
           element={
             <RequireAuth isLoggedIn={isLoggedIn}>
-              {persona === "superAdmin" ? <SuperAdminSettings /> : <Settings />}
+
+              {(persona === "superAdmin" || persona === 'manager') ?
+                <SuperAdminSettings /> : persona === 'student' || persona === 'parent' || persona === 'tutor'
+                  ? <StudentSettings /> : persona === 'contributor' ?
+                    <ContributorSettings /> : <Settings />}
+
             </RequireAuth>
           }
         />

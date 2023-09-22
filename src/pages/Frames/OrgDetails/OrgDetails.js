@@ -7,20 +7,23 @@ import styles from "../EventModal/style.module.css";
 import { Country, State } from "country-state-city";
 import Dropdown from "./Commons/Dropdown";
 import style from "./styles.module.css";
-
+import InputFieldDropdown from "../../../components/InputField/inputFieldDropdown";
+import InputSelectNew from "../../../components/InputSelectNew/InputSelectNew";
+import lockIcon from "../../../assets/icons/lock.svg"
 const grades = [6, 7, 8, 9, 10, 11, 12, "College"];
 const companyType = [
   "Sole proprietorship",
   "Partnership",
-  " Limited liability company (LLC)",
-  " C Corporation",
+  "Limited liability company (LLC)",
+  "C Corporation",
   "S Corporation",
   "B Corporation",
-  " Close corporation",
-  " Nonprofit corporation",
+  "Close corporation",
+  "Nonprofit corporation",
   "Cooperative",
   "Private Limited Company",
   "Public",
+  "Other",
 ];
 export default function OrgDetails({
   setFrames,
@@ -61,16 +64,18 @@ export default function OrgDetails({
 
 
   const handleState = (c) => {
-    console.log(c);
+    console.log("country", c);
     const state = country.filter((x) => x.name === c);
-    const currentState = state.map((s) => s.states);
-   
+    const currentState = state[0]?.states;
+
     setStates(currentState);
-    setValues({
-      ...values,
-      country: c,
-    });
+    console.log({ state });
   };
+
+  useEffect(() => {
+    console.log("ref", { cc: values.country });
+    if (values?.country) handleState(values?.country);
+  }, [values.country, country]);
 
   useEffect(() => {
     setcurrentStep(2);
@@ -83,60 +88,51 @@ export default function OrgDetails({
     setFrames((prev) => {
       return { ...prev, orgDetails: false, signupActive: true };
     });
-    setcurrentStep(1)
+    setcurrentStep(1);
   };
-
+  const handleCompanyTypeChange = (e) => {
+    setValues({
+      ...values,
+      companyType: e,
+    });
+  };
   return (
-    <div className="mt-5 mb-3">
+    <div className="mt-2 mb-3">
       <div className="">
         <InputField
           disabled={true}
           placeholder=""
-          parentClassName=" min-w-[118px] w-full mb-6"
+          right={<img src={lockIcon} alt="lock" />}
+          parentClassName=" min-w-[118px] w-full "
+          inputContainerClassName=" border border-[#D0D5DD] rounded-md py-[9px] h-[44px] text-md"
           inputClassName="bg-transparent text-sm font-bold"
           type="text"
           value={values.company}
         />
 
-        <div className="flex items-center mb-1">
+        <div className="flex items-center mt-5">
           {/* <label>Company Type</label> */}
-          <div className="flex flex-col h-min mt-2">
-            <label className="">Company Type</label>
-            <div className={style.changeOption}>
-              <select className="form-control  text-[13px]">
-                <option value="0">Company Type</option>
-                {companyType.map((c, id) => {
-                  return (
-                    <>
-                      <option key={id} value={c}>
-                        {c}
-                      </option>
-                    </>
-                  );
-                })}
-              </select>
-            </div>
-          </div>
-          {/* <InputField
-            label="Company Type"
-            required={true}
-            placeholder=""
-            parentClassName="w-full max-w-[248px]"
-            inputClassName="bg-transparent text-xs"
-            type="text"
+          <InputSelectNew
             value={values.companyType}
-            onChange={(e) =>
-              setValues({
-                ...values,
-                companyType: e.target.value,
-              })
-            }
-          /> */}
+            parentClassName="w-[500px]"
+            optionContainerClassName="text-[13px] "
+            optionsEachClassName="py-[7px]"
+            optionData={companyType}
+            placeholder={"Company Type"}
+            label={`Company Type`}
+            labelClassname="text-[#26435F] font-bold  mb-1 text-sm "
+            inputContainerClassName="py-1 text-sm h-[44.9px] border  border-[#D0D5DD] my-0 mt-[-2px] rounded-[5px]"
+            inputClassName="ml-80"
+            required={persona === "student" ? true : false}
+            onChange={(e) => handleCompanyTypeChange(e)}
+          />
+
           <InputField
             label="Website"
             required={true}
             placeholder=""
-            parentClassName="w-full max-w-[full] ml-[50px] mt-2"
+            parentClassName="w-full max-w-[full] ml-[50px] "
+            inputContainerClassName=" border border-[#D0D5DD] rounded-md py-[9px] h-[44px] text-md"
             inputClassName="bg-transparent text-xs"
             type="text"
             value={values.website}
@@ -148,12 +144,13 @@ export default function OrgDetails({
             }
           />
         </div>
-        <div className="flex items-center mt-3 gap-5">
+        <div className="flex items-center mt-5 gap-5">
           <InputField
             label="Address"
             required={true}
             placeholder=""
             parentClassName="w-full max-w-[350px] "
+            inputContainerClassName=" border border-[#D0D5DD] rounded-md py-[9px] h-[44px] text-md"
             inputClassName="bg-transparent text-xs"
             type="text"
             value={values.address}
@@ -164,8 +161,28 @@ export default function OrgDetails({
               })
             }
           />
-
-          <div className={style.changeOption}>
+          <InputSelectNew
+            parentClassName="w-[500px]"
+            optionContainerClassName="text-[13px]  max-h-[250px] h-[250px] "
+            optionsEachClassName="py-[5px]"
+            optionData={country}
+            optionType="object"
+            placeholder={"Country"}
+            label={`Country`}
+            labelClassname="text-[#26435F] font-bold   text-sm "
+            inputContainerClassName="py-1 text-sm h-[44px] border border-[#D0D5DD] my-0 mt-[-3px] rounded-[4.3px]"
+            inputClassName="ml-80"
+            required={persona === "student" ? true : false}
+            value={values.country}
+            onChange={(e) =>
+              setValues({
+                ...values,
+                country: e.name,
+                state: "",
+              })
+            }
+          />
+          {/* <div className={style.changeOption}>
             <div className="flex flex-col h-min ml-[40px]">
               <label className="">Country</label>
               <select
@@ -183,11 +200,31 @@ export default function OrgDetails({
                 })}
               </select>
             </div>
-          </div>
+          </div> */}
         </div>
-        <div className="flex items-center mt-3 gap-5">
-
-          <div className={style.changeOption}>
+       
+        <div className="flex justify-between items-center mt-[18px] gap-7">
+        <InputSelectNew
+          parentClassName="w-[700px] "
+          optionContainerClassName="text-[13px]   max-h-[180px]"
+          optionsEachClassName="py-[5px]"
+          optionData={states}
+          placeholder={"State"}
+          optionType="object"
+          label={`State`}
+          labelClassname="text-[#26435F] font-bold   text-sm "
+          inputContainerClassName="py-1 text-sm h-[44px] border border-[#D0D5DD] my-0 mt-[-3px] rounded-[4.3px]"
+          inputClassName="ml-80"
+          required={persona === "student" ? true : false}
+          value={values.state}
+          onChange={(e) =>
+            setValues({
+              ...values,
+              state: e.name,
+            })
+          }
+        />
+          {/* <div className={style.changeOption}>
             <div className="flex flex-col h-min mt-[7px]">
               <label className="">State</label>
               <select
@@ -216,12 +253,13 @@ export default function OrgDetails({
                 })}
               </select>
             </div>
-          </div>
+          </div> */}
           <InputField
             label="City"
             required={true}
             placeholder=""
-            parentClassName="w-full max-w-[248px] mt-2"
+            parentClassName="w-full max-w-[248px]"
+            inputContainerClassName=" border border-[#D0D5DD] rounded-md py-[9px] h-[44px] text-md"
             inputClassName="bg-transparent text-xs"
             type="text"
             value={values.city}
@@ -236,7 +274,8 @@ export default function OrgDetails({
             label="Zip Code"
             required={true}
             placeholder=""
-            parentClassName="w-full max-w-[248px] mt-2"
+            parentClassName="w-full max-w-[248px] "
+            inputContainerClassName=" border border-[#D0D5DD] rounded-md py-[9px] h-[44px] text-md"
             inputClassName="bg-transparent text-xs"
             type="text"
             value={values.zip}
@@ -252,12 +291,12 @@ export default function OrgDetails({
         <div className="flex items-center mt-12 justify-between">
           <SecondaryButton
             children="Go Back"
-            className="text-sm mr-6 bg-white text-[#a3aDC7] border-[1.5px] border-[#D0D5DD] "
+            className="text-sm mr-6 bg-white text-[#cad0db] border-[1.5px] border-[#D0D5DD] py-2"
             onClick={handleBack}
           />
           <PrimaryButton
             children="Next"
-            className={` w-full bg-[#FFA28D] disabled:opacity-70 max-w-[110px]   rounded text-white text-sm font-medium relative 
+            className={` w-full flex justify-center bg-[#FFA28D] disabled:opacity-70 max-w-[110px] py-[9px] rounded text-white text-sm font-medium relative 
            
             `}
             onClick={() => handleSubmit()}

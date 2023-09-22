@@ -181,7 +181,7 @@ export const testServicesApi = createApi({
       }),
       getQuestion: builder.query({
          query: (body) => ({
-            url: `/api/test/getdsat/64fb4e6d68528c79b20bbbd9?userId=${body.id}`,
+            url: `/api/test/getdsat/${body.testid}?userId=${body.userid}`,
             method: "GET",
             params: body.params,
             headers: getAuthHeader()

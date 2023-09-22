@@ -24,7 +24,7 @@ export default function Navbar({seconds,sectionDetails}) {
   return (
     <div className=''>
       <nav className=' border border-black text-xl flex justify-between py-4 px-12 left-0 right-0 navb'>
-        <div>
+        <div className='flex w-1/3 flex-col items-start'>
         <div>
             <h3>{sectionDetails?.name?sectionDetails.name:'loading...'}</h3>
         </div>
@@ -38,7 +38,7 @@ export default function Navbar({seconds,sectionDetails}) {
         </div>:null
         }
         </div>
-        <div className='flex flex-col justify-center items-center'>
+        <div className='flex w-1/3 flex-col justify-center items-center'>
             <div className='' >
                 <h4>{minutes<10?'0'+minutes:minutes} :{second<10?'0'+second:second}</h4>
             </div>
@@ -46,7 +46,7 @@ export default function Navbar({seconds,sectionDetails}) {
                 <button className='border rounded-xl border-black hover:border-1 px-3' >Hide</button>
             </div>
         </div>
-        <div className=' flex pt-8   text-sm '>
+        <div  className=' flex pt-8 w-1/3 justify-end text-sm '>
             <div className=' cursor-pointer' onClick={handleCal} >
             <FontAwesomeIcon icon={faCalculator} className=' absolute top-8 right-48 ' />
                 <h4>Calculator</h4>

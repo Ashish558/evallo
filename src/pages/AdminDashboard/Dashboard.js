@@ -1,571 +1,664 @@
-import React from 'react';
-import SAdminNavbar2 from '../../components/sAdminNavbar/sAdminNavbar2';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowDown, faArrowDown19, faArrowDown91, faArrowRightFromBracket, faCaretDown, faDollar } from '@fortawesome/free-solid-svg-icons';
-import { faQuestionCircle } from '@fortawesome/free-regular-svg-icons';
-import icon from '../../assets/images/Evallo.png';
-import styles from './style.module.css';
-import image from '../../assets/images/Vector.png';
-import image1 from '../../assets/images/Vector (1).png';
-import image2 from '../../assets/images/Vector (2).png';
-import image3 from '../../assets/images/Vector (3).png';
-import image4 from '../../assets/images/Vector (4).png';
-import image5 from '../../assets/images/Vector (5).png';
-import image6 from '../../assets/images/Vector (6).png';
-import AdminNavbar from './AdminNavbar';
+import React from "react";
+import { useSelector } from "react-redux";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowDown, faCaretDown } from "@fortawesome/free-solid-svg-icons";
+import { faQuestionCircle } from "@fortawesome/free-regular-svg-icons";
+import icon from "../../assets/images/Evallo.png";
+import styles from "./style.module.css";
+
+import Table from "../../components/Table/Table";
+import ActionLog from "./ActionLog";
+import Table2 from "../SuperadminDashboard/Table/table"
+import {
+  useGetAllRevenueMutation,
+  useGetImpendingRevenueMutation,
+  useGetLatestSignUpQuery,
+  useGetLeakedRevenueMutation,
+  useGetUserStatsQuery,
+  useLazyGetTutorPerformanceQuery,
+  useLazyGetPopularServicesQuery,
+  useLazyGetImprovementStatsQuery,
+  useGetFilteredActionLogMutation,
+  useGetLatestSignUpRangeMutation,
+} from "../../app/services/adminDashboard";
+import { tutorTableHeaders } from "./staticData";
+import { useState } from "react";
+import RangeDate from "../../components/RangeDate/RangeDate";
+import ArrowDown from "../../assets/Dashboard/sort-down.svg";
+import { useEffect } from "react";
 
 const Dashboard = () => {
-    return (
-        <div class={styles.container}>
-            {/* <SAdminNavbar2></SAdminNavbar2> */}
-            <AdminNavbar></AdminNavbar>
-            <div className=" mt-[28px] bg-#2E2E2E " >
-                <div className='mt-[42px] flex justify-center'>
-                    <div className='w-full mx-[80px]'>
-                        <div className='flex justify-between items-center '>
-                            <p className='font-bold text-[#26435F]'>BUSINESS OVERVIEW </p>
+  const [latestSignUp, latsestStatus] = useGetLatestSignUpRangeMutation();
+  const { organization } = useSelector((state) => state.organization);
+  const { firstName, lastName } = useSelector((state) => state.user);
+  const { data: userStats } = useGetUserStatsQuery();
 
-                            <div className='flex text-xs '>
-                                <p className='font-semibold text-[#26435F]'> 1 May - May 12, 2023 </p>
-                                <p><FontAwesomeIcon className='pl-3' icon={faCaretDown}></FontAwesomeIcon></p>
-                            </div>
-                        </div>
-                    </div>
+  const [completedRevenue, completedRevenueStatus] = useGetAllRevenueMutation();
+  const [leakedRevenue, leakedRevenueStatus] = useGetLeakedRevenueMutation();
+  const [impendingRevenue, impendingRevenueStatus] =
+    useGetImpendingRevenueMutation();
+  const [cRevenue, setCRevenue] = useState("");
+  const [lRevenue, setLRevenue] = useState("");
+  const [iRevenue, setIRevenue] = useState("");
+  const [fetchTutorPerformanceData, fechedTutorPerformanceStatus] =
+    useLazyGetTutorPerformanceQuery();
+  const [tutorPerformanceData, setTutorPerformance] = useState([]);
+  const [fetchPopularServicesData, fechedPopularServicesStatus] =
+    useLazyGetPopularServicesQuery();
+  const [popularServices, setPopularServices] = useState([]);
+  const [fetchImprovementStats, fetchImprovementStatsStatus] =
+    useLazyGetImprovementStatsQuery();
+  const [improvementStats, setImprovementStats] = useState([]);
+  const [fetchFilteredActionLog, fetchFilteredActionLogStatus] =
+    useGetFilteredActionLogMutation();
+  const [filteredActionLog, setFilteredActionLog] = useState([]);
+  const [userData, setUserData] = useState([]);
+  const handleFetchRevenue = (fetchMutation, body, setValue) => {
+    fetchMutation(body)
+      .then((res) => {
+        setValue(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  useEffect(() => {
+    latestSignUp({ startDate: "", endDate: "" }).then((res) => {
+      if (!res?.error) {
+        console.log("latest", { res })
+        setUserData(res?.data?.data ? res?.data?.data : []);
+      }
+    })
 
-                </div>
+  }, []);
 
+  const sortByName = () => {
+    setUserData((prev) => {
+      let arr = [...prev];
+      arr = arr.sort(function (a, b) {
+        if (a.firstName < b.firstName) {
+          return -1;
+        }
+        if (a.firstName > b.firstName) {
+          return 1;
+        }
+        return 0;
+      });
+      console.log({ arr });
+      return arr;
+    });
+  };
+  const sortByType = () => {
+    setUserData((prev) => {
+      let arr = [...prev];
+      arr = arr.sort(function (a, b) {
+        if (a.role < b.role) {
+          return -1;
+        }
+        if (a.role > b.role) {
+          return 1;
+        }
+        return 0;
+      });
 
-                <section className='flex justify-center'>
-                    <div className={styles.mainBox}>
-                        <div className='grid grid-cols-2' >
+      return arr;
+    });
+  };
+  const sortByDate = () => {
+    setUserData((prev) => {
+      let arr = [...prev];
+      arr = arr.sort(function (a, b) {
+        return new Date(b.lastSignUp) - new Date(a.lastSignUp);
+      });
+      return arr;
+    });
+  };
+  const latestSignUpHeaders = [
+    {
+      id: 1,
+      text: "Full Name",
+      className: "text-left pl-8",
+      onCick: sortByName,
+    },
+    {
+      id: 2,
+      text: "User Type",
+      onCick: sortByType,
+    },
+    {
+      id: 3,
+      text: "Email",
+    },
+    {
+      id: 4,
+      text: "Phone",
+    },
+    {
+      id: 5,
+      text: "Assigned Tutor",
+    },
+    {
+      id: 6,
+      text: "Lead Status",
+    },
+    {
+      id: 7,
+      text: "Tutor Status",
+    },
+    {
+      id: 8,
+      text: "Services",
+    },
+    {
+      id: 9,
+      text: "Date Added",
+      onCick: sortByDate,
+    },
+  ];
+  const convertDateToRange = (startDate) => {
+    let startD = startDate.split("-")[0];
 
-                            <div className={`${styles.gridBorder}`}>
-                                <div className='flex  justify-evenly'>
-                                    <div className='w-[170px] '>
-                                        <div className='flex justify-between items-center mb-1 text-[#26435F] text-sm'>
-                                            <p className='   font-medium'>Completed Revenue</p>
-                                            <p><FontAwesomeIcon icon={faQuestionCircle}></FontAwesomeIcon></p>
-                                        </div>
-                                        <div className={`h-[85px] flex justify-center items-center text-2xl font-bold bg-[#22A69933] box-border ${styles.boxBorder1}`}>
-                                            <p>$90,850</p>
-                                        </div>
-                                    </div>
-                                    <div className='w-[170px] '>
-                                        <div className='flex justify-between items-center mb-1 text-[#26435F] text-sm'>
-                                            <p className='font-medium'>Leaked Revenue</p>
-                                            <p><FontAwesomeIcon icon={faQuestionCircle}></FontAwesomeIcon></p>
-                                        </div>
-                                        <div className={`h-[85px] flex justify-center items-center text-2xl font-semibold bg-[#FF517533] box-border ${styles.boxBorder2}`}>
-                                            <p>$2560</p>
-                                        </div>
-                                    </div>
-                                    <div className='w-[170px]'>
-                                        <div className='flex justify-between items-center mb-1 text-[#26435F] text-sm'>
-                                            <p className='   font-medium'>Impending Revenue</p>
-                                            <p><FontAwesomeIcon icon={faQuestionCircle}></FontAwesomeIcon></p>
-                                        </div>
-                                        <div className={`h-[85px] flex justify-center items-center text-2xl font-semibold bg-[#7152EB33] box-border ${styles.boxBorder3}`}>
-                                            <p>$9870</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+    startD = new Date(startD);
+    startD = startD.setDate(startD.getDate() + 1);
+    startD = new Date(startD).toISOString().split("T")[0];
 
+    let endD = startDate.split("-")[1];
+    endD = new Date(endD);
+    endD = endD.setDate(endD.getDate() + 1);
+    endD = new Date(endD).toISOString().split("T")[0];
+    const body = { startDate: startD, endDate: endD };
 
-                            <div className={`${styles.gridBorder2}`}>
-                                <div className='flex  justify-evenly'>
-                                    <div className='w-[170px] '>
-                                        <div className='mb-1'>
-                                            <p className='text-sm font-medium text-[#26435F80]'>Unpaid Invoices</p>
-                                        </div>
-                                        <div className={`h-[85px] flex justify-center items-center text-sm text-[#667085] bg-[#F5F8FA]`}>
-                                            <p >Coming soon</p>
-                                        </div>
-                                    </div>
-                                    <div className='w-[170px] '>
-                                        <div className=' mb-1'>
-                                            <p className='text-sm font-medium text-[#26435F80]'>Paid Invoices</p>
-                                        </div>
-                                        <div className={`h-[85px] flex justify-center items-center text-sm text-[#667085] bg-[#F5F8FA]`}>
-                                            <p >Coming soon</p>
-                                        </div>
-                                    </div>
-                                    <div className='w-[170px]'>
-                                        <div className='mb-1'>
-                                            <p className='text-sm font-medium text-[#26435F80]'>Cancelled Invoices</p>
+    return body;
+  };
+  const handleRevenue = (startDate) => {
+    const body = convertDateToRange(startDate);
+    handleFetchRevenue(completedRevenue, body, setCRevenue);
+    handleFetchRevenue(leakedRevenue, body, setLRevenue);
+    handleFetchRevenue(impendingRevenue, body, setIRevenue);
+  };
+  const handleTutorPerformance = (startDate) => {
+    const body = convertDateToRange(startDate);
 
-                                        </div>
-                                        <div className={`h-[85px] flex justify-center items-center text-sm text-[#667085] bg-[#F5F8FA]`}>
-                                            <p >Coming soon</p>
-                                        </div>
-                                    </div>
+    fetchTutorPerformanceData(body)
+      .then((res) => {
+        console.log(res?.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  const handlePopularServices = (startDate) => {
+    const body = convertDateToRange(startDate);
 
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
+    fetchPopularServicesData(body)
+      .then((res) => {
+        console.log(res?.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    handleImprovementStats(startDate);
+  };
+  const handleImprovementStats = (startDate) => {
+    const body = convertDateToRange(startDate);
 
-                <section>
+    fetchImprovementStats(body)
+      .then((res) => {
+        console.log(res?.data);
+        setImprovementStats(res?.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  const handleUserStats = (startDate) => {
+    const body = convertDateToRange(startDate);
 
-                    <div className='flex justify-center'>
-                        <div className='mt-[30px] w-screen mx-[120px]'>
-                            <div className='mt-2 h-[1px] bg-[#00000033]'>
-                            </div>
+    fetchFilteredActionLog(body)
+      .then((res) => {
+        console.log("actionlog", res);
+        if (res?.data?.actions)
+          setFilteredActionLog(res?.data?.actions);
+        else {
+          setFilteredActionLog([{ createdAt: body.startDate }]);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
-                        </div>
-                    </div>
-                    <div className='w-[screen] mx-[80px] mt-[42px] text-[#26435F]'>
-                        <div className='flex justify-between items-center '>
-                            <p className='font-bold'>USER OVERVIEW </p>
-
-                            <div className='flex font-semibold text-xs'>
-                                <p > 1 May - May 12, 2023 </p>
-                                <p><FontAwesomeIcon className='pl-3' icon={faCaretDown}></FontAwesomeIcon></p>
-                            </div>
-                        </div>
-                    </div>
-
-
-
-                    <div className='grid grid-cols-5 mt-[30px] mx-[80px] gap-x-29'>
-                        <div>
-                            <p className=' mb-1 font-semibold text-[#26435F]'>User Stats</p>
-                            <div className={styles.sidebox}>
-                                <div className='pl-[19px]  pt-5 rounded '  >
-                                    <p className='text-[#26435F]'>Active / Total Students</p>
-                                    <p className='text-xl'><span className='font-bold text-[#FFA28D] text-3xl'>59</span> / 267</p>
-                                </div>
-                                <div className={`  pl-[19px] pt-7 rounded `}>
-                                    <p className='text-[#26435F]'>Active / Total Students</p>
-                                    <p className='text-xl'><span className='font-bold text-[#FFA28D] text-3xl'>59</span> / 267</p>
-                                </div>
-                                <div className={`  pl-[19px] pt-7 rounded pb-6`}>
-                                    <p className='text-[#26435F]'>Active / Total Students</p>
-                                    <p className='text-xl'><span className='font-bold text-[#FFA28D] text-3xl'>59</span> / 267</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className='col-span-4' >
-                            <p className='mb-1 font-semibold text-[#26435F]'>ACTION LOG</p>
-                            <div className={styles.actionBox}>
-                                <div className='mr-5'>
-                                    <p className='uppercase  pl-[56px] pt-[12px] pb-[14px] text-[#26435F]'>May. 1, 2023</p>
-                                </div>
-                                <div className='h-[1px] bg-[#CBD6E2]' />
-
-                                <div >
-
-                                    <div className='flex ml-7 h-[57px]'>
-                                        <p className='text-[#4A556C] pt-5 font-medium text-xs mr-6'>2:10 pm</p>
-                                        <div className={`pt-5 ${styles.actionBorder}`}>
-                                            <div className={styles.circle}>
-                                                <div className={styles.circle2}></div>
-                                            </div>
-                                            <p className='pl-5 text-sm font-medium text-[#4A556C]'>Lorem ipsum dolor sit amet, consectetur adipiscing elit ,sed do eiusmod tempor incidut labore et dolore magna aliqua.</p>
-                                        </div>
-                                    </div>
-                                    <div className='flex ml-7 h-[57px]'>
-                                        <p className='text-[#4A556C] pt-5 font-medium text-xs mr-6'>2:10 pm</p>
-                                        <div className={`pt-5 ${styles.actionBorder}`}>
-                                            <div className={styles.circle}>
-                                                <div className={styles.circle2}></div>
-                                            </div>
-                                            <p className='pl-5 text-sm font-medium text-[#4A556C]'>Lorem ipsum dolor sit amet, consectetur adipiscing elit ,sed do eiusmod tempor incidut labore et dolore magna aliqua.</p>
-                                        </div>
-                                    </div><div className='flex ml-7 h-[57px]'>
-                                        <p className='text-[#4A556C] pt-5 font-medium text-xs mr-6'>2:10 pm</p>
-                                        <div className={`pt-5 ${styles.actionBorder}`}>
-                                            <div className={styles.circle}>
-                                                <div className={styles.circle2}></div>
-                                            </div>
-                                            <p className='pl-5 text-sm font-medium text-[#4A556C]'>Lorem ipsum dolor sit amet, consectetur adipiscing elit ,sed do eiusmod tempor incidut labore et dolore magna aliqua.</p>
-                                        </div>
-                                    </div>
-                                    <div className='flex ml-7 h-[57px]'>
-                                        <p className='text-[#4A556C] pt-5 font-medium text-xs mr-6'>2:10 pm</p>
-                                        <div className={`pt-5 ${styles.actionBorder}`}>
-                                            <div className={styles.circle}>
-                                                <div className={styles.circle2}></div>
-                                            </div>
-                                            <p className='pl-5 text-sm font-medium text-[#4A556C]'>Lorem ipsum dolor sit amet, consectetur adipiscing elit ,sed do eiusmod tempor incidut labore et dolore magna aliqua.</p>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                </section>
-
-                <section className='mt-[30px] mx-[80px]'>
-                    <p className='font-semibold text-[#26435F] '>Latest Sign-ups</p>
-
-
-                    <div className=''>
-                        <table className='table-auto w-full' >
-                            <thead>
-                                <tr>
-                                    <th>Full Name <FontAwesomeIcon className='pl-1 w-[10px]' icon={faArrowDown}></FontAwesomeIcon></th>
-                                    <th>User Type <FontAwesomeIcon className='pl-1 w-[10px]' icon={faArrowDown}></FontAwesomeIcon></th>
-                                    <th>Email <FontAwesomeIcon className='pl-1 w-[10px]' icon={faArrowDown}></FontAwesomeIcon></th>
-                                    <th>Phone <FontAwesomeIcon className='pl-1 w-[10px]' icon={faArrowDown}></FontAwesomeIcon></th>
-                                    <th>Assigned Tutor <FontAwesomeIcon className='pl-1 w-[10px]' icon={faArrowDown}></FontAwesomeIcon></th>
-                                    <th>Lead Status <FontAwesomeIcon className='pl-1 w-[10px]' icon={faArrowDown}></FontAwesomeIcon></th>
-                                    <th>Tutor Status <FontAwesomeIcon className='pl-1 w-[10px]' icon={faArrowDown}></FontAwesomeIcon></th>
-                                    <th>Services <FontAwesomeIcon className='pl-1 w-[10px]' icon={faArrowDown}></FontAwesomeIcon></th>
-                                    <th>Date Added <FontAwesomeIcon className='pl-1 w-[10px]' icon={faArrowDown}></FontAwesomeIcon></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td className=''>Lorem</td>
-                                    <td className=''>Student</td>
-                                    <td className=''>Loream123@gmail.com </td>
-                                    <td className=''>99930350xx</td>
-                                    <td className=''>Lorem</td>
-                                    <td className=''>Lorem</td>
-                                    <td className=''>Lorem</td>
-                                    <td className=''>Lorem</td>
-                                    <td className=''>May. 12, 2023</td>
-                                </tr>
-                                <tr>
-                                    <td className=''>Lorem</td>
-                                    <td className=''>Student</td>
-                                    <td className=''>Loream123@gmail.com </td>
-                                    <td className=''>99930350xx</td>
-                                    <td className=''>Lorem</td>
-                                    <td className=''>Lorem</td>
-                                    <td className=''>Lorem</td>
-                                    <td className=''>Lorem</td>
-                                    <td className=''>May. 12, 2023</td>
-                                </tr>
-                                <tr>
-                                    <td className=''>Lorem</td>
-                                    <td className=''>Student</td>
-                                    <td className=''>Loream123@gmail.com </td>
-                                    <td className=''>99930350xx</td>
-                                    <td className=''>Lorem</td>
-                                    <td className=''>Lorem</td>
-                                    <td className=''>Lorem</td>
-                                    <td className=''>Lorem</td>
-                                    <td className=''>May. 12, 2023</td>
-                                </tr>
-                                <tr>
-                                    <td className=''>Lorem</td>
-                                    <td className=''>Student</td>
-                                    <td className=''>Loream123@gmail.com </td>
-                                    <td className=''>99930350xx</td>
-                                    <td className=''>Lorem</td>
-                                    <td className=''>Lorem</td>
-                                    <td className=''>Lorem</td>
-                                    <td className=''>Lorem</td>
-                                    <td className=''>May. 12, 2023</td>
-                                </tr>
-                                <tr>
-                                    <td className=''>Lorem</td>
-                                    <td className=''>Student</td>
-                                    <td className=''>Loream123@gmail.com </td>
-                                    <td className=''>99930350xx</td>
-                                    <td className=''>Lorem</td>
-                                    <td className=''>Lorem</td>
-                                    <td className=''>Lorem</td>
-                                    <td className=''>Lorem</td>
-                                    <td className=''>May. 12, 2023</td>
-                                </tr>
-                                <tr>
-                                    <td className=''>Lorem</td>
-                                    <td className=''>Student</td>
-                                    <td className=''>Loream123@gmail.com </td>
-                                    <td className=''>99930350xx</td>
-                                    <td className=''>Lorem</td>
-                                    <td className=''>Lorem</td>
-                                    <td className=''>Lorem</td>
-                                    <td className=''>Lorem</td>
-                                    <td className=''>May. 12, 2023</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+  return (
+    <div className={styles.container}>
+      <div className=" mt-[28px] bg-#2E2E2E">
+        <div className="mt-[calc(50*0.050vw)] flex justify-center">
+          <div className="w-[83.33vw]">
+            <p className="text-[#24A3D9]  text-base-20">
+              {organization?.company +
+                "  >  " +
+                firstName +
+                "  " +
+                lastName +
+                "  >  "}
+              <span className="font-semibold">Dashboard</span>
+            </p>
 
 
+            <div className="flex mt-[calc(40*0.050vw)] justify-between items-center ">
+              <p className="font-bold  text-[#FFA28D] text-base-20">BUSINESS OVERVIEW </p>
 
-                </section>
-                <div className='flex justify-center'>
-                    <div className='mt-[30px] w-screen mx-[120px]'>
-                        <div className='mt-2 h-[1px] bg-[#00000033]' >
-                        </div>
-
-                    </div>
-                </div>
-                <div className='w-[screen] mx-[80px] mt-[42px] text-[#26435F]'>
-                    <div className='flex justify-between items-center '>
-                        <p className='font-bold uppercase'>Client Success Overview </p>
-
-                        <div className='flex font-semibold text-xs'>
-                            <p > 1 May - May 12, 2023 </p>
-                            <p><FontAwesomeIcon className='pl-3' icon={faCaretDown}></FontAwesomeIcon></p>
-                        </div>
-                    </div>
-                </div>
-
-                <section className='mt-[50px] mx-[80px]'>
-
-                    <div className='grid grid-cols-3 gap-12'>
-                        <div className='col-span-2'>
-                            <p className='font-semibold text-[#26435F] text-[14px]'>Popular services</p>
-                            <table className='table-auto w-full' >
-                                <thead>
-                                    <tr>
-                                        <th>Service <FontAwesomeIcon className='pl-1 w-[10px]' icon={faArrowDown}></FontAwesomeIcon></th>
-                                        <th>Actively Using <FontAwesomeIcon className='pl-1 w-[10px]' icon={faArrowDown}></FontAwesomeIcon></th>
-                                        <th>Total Users <FontAwesomeIcon className='pl-1 w-[10px]' icon={faArrowDown}></FontAwesomeIcon></th>
-                                        <th>Scheduled Hours<FontAwesomeIcon className='pl-1 w-[10px]' icon={faArrowDown}></FontAwesomeIcon></th>
-                                        <th>Completed Hours <FontAwesomeIcon className='pl-1 w-[10px]' icon={faArrowDown}></FontAwesomeIcon></th>
-                                        <th>% of Business <FontAwesomeIcon className='pl-1 w-[10px]' icon={faArrowDown}></FontAwesomeIcon></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td className=''>Lorem</td>
-                                        <td className=''>Lorem</td>
-                                        <td className=''>Lorem</td>
-                                        <td className=''>Lorem</td>
-                                        <td className=''>Lorem</td>
-                                        <td className=''>Lorem</td>
-
-                                    </tr>
-                                    <tr>
-                                        <td className=''>Lorem</td>
-                                        <td className=''>Lorem</td>
-                                        <td className=''>Lorem</td>
-                                        <td className=''>Lorem</td>
-                                        <td className=''>Lorem</td>
-                                        <td className=''>Lorem</td>
-
-                                    </tr>
-                                    <tr>
-                                        <td className=''>Lorem</td>
-                                        <td className=''>Lorem</td>
-                                        <td className=''>Lorem</td>
-                                        <td className=''>Lorem</td>
-                                        <td className=''>Lorem</td>
-                                        <td className=''>Lorem</td>
-
-                                    </tr>
-                                    <tr>
-                                        <td className=''>Lorem</td>
-                                        <td className=''>Lorem</td>
-                                        <td className=''>Lorem</td>
-                                        <td className=''>Lorem</td>
-                                        <td className=''>Lorem</td>
-                                        <td className=''>Lorem</td>
-
-                                    </tr>
-                                    <tr>
-                                        <td className=''>Lorem</td>
-                                        <td className=''>Lorem</td>
-                                        <td className=''>Lorem</td>
-                                        <td className=''>Lorem</td>
-                                        <td className=''>Lorem</td>
-                                        <td className=''>Lorem</td>
-
-                                    </tr>
-                                    <tr>
-                                        <td className=''>Lorem</td>
-                                        <td className=''>Lorem</td>
-                                        <td className=''>Lorem</td>
-                                        <td className=''>Lorem</td>
-                                        <td className=''>Lorem</td>
-                                        <td className=''>Lorem</td>
-
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-
-                        <div>
-
-                            <p className='mt-1 mb-[10px] font-semibold text-[#26435F] text-[14px] '>Star Clients</p>
-                            <div>
-                                <table className={` w-full ${styles.sTable} `} >
-                                    <thead>
-                                        <tr>
-                                            <th>Client Name </th>
-                                            <th>Code </th>
-                                            <th>Referrals </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr className='h-[45px]'>
-                                            <td className=''>Lorem</td>
-                                            <td className=''>$XDR$#</td>
-                                            <td className=''>45</td>
-                                        </tr>
-                                        <tr className='h-[45px]'>
-                                            <td className=''>Lorem</td>
-                                            <td className=''>$XDR$#</td>
-                                            <td className=''>45</td>
-                                        </tr>
-                                        <tr className='h-[45px]'>
-                                            <td className=''>Lorem</td>
-                                            <td className=''>$XDR$#</td>
-                                            <td className=''>45</td>
-                                        </tr>
-                                        <tr className='h-[45px]'>
-                                            <td className=''>Lorem</td>
-                                            <td className=''>$XDR$#</td>
-                                            <td className=''>45</td>
-                                        </tr>
-                                        <tr className='h-[45px]'>
-                                            <td className=''>Lorem</td>
-                                            <td className=''>$XDR$#</td>
-                                            <td className=''>45</td>
-                                        </tr>
-                                        <tr className='h-[45px]'>
-                                            <td className=''>Lorem</td>
-                                            <td className=''>$XDR$#</td>
-                                            <td className=''>45</td>
-                                        </tr>
-
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-
-
-
-                </section>
-
-                <section className='mt-[30px] mx-[80px]'>
-                    <div className='grid grid-cols-2 gap-x-80'>
-                        <div className='flex justify-between text-sm text-[#26435F]'>
-                            <div>
-                                <p className='font-semibold text-sm'>Total # Of referrals</p>
-                                <div className={`w-[174px] h-[58px] ${styles.smallBox}`} ></div>
-                            </div>
-                            <div>
-                                <p className='font-semibold text-sm'>Average SAT improvement</p>
-                                <div className={`w-[190px] h-[58px] ${styles.smallBox}`} ></div>
-                            </div>
-                            <div>
-                                <p className='font-semibold text-sm'>Average ACT improvement</p>
-                                <div className={`w-[190px] h-[58px] ${styles.smallBox}`} ></div>
-                            </div>
-                        </div>
-                        <div className='flex  text-xs justify-between text-[#667085]'>
-                            <div>
-                                <p >Average GRE improvement</p>
-                                <div className={`w-[174px] h-[58px] ${styles.smallBox2} flex items-center justify-center font-medium`} ><p >Coming Soon</p></div>
-                            </div>
-                            <div>
-                                <p >Average GMAT improvement</p>
-                                <div className={`w-[174px] h-[58px] ${styles.smallBox2} flex items-center justify-center font-medium`} ><p >Coming Soon</p></div>
-                            </div>
-                            <div>
-                                <p >Average IELTS improvement</p>
-                                <div className={`w-[174px] h-[58px] ${styles.smallBox2} flex items-center justify-center font-medium`} ><p >Coming Soon</p></div>
-                            </div>
-                        </div>
-                        <div>
-                        </div>
-                    </div>
-                </section>
-                <div className='flex justify-center'>
-                    <div className='mt-[41px] w-screen mx-[120px]'>
-                        <div className='mt-2 h-[1px] bg-[#00000033]' >
-                        </div>
-
-                    </div>
-                </div>
-                <div className='w-[screen] mx-[80px] mt-[42px] text-[#26435F]'>
-                    <div className='flex justify-between items-center '>
-                        <p className='font-bold uppercase'>Tutor Performence  Overview </p>
-
-                        <div className='flex font-semibold text-xs'>
-                            <p > 1 May - May 12, 2023 </p>
-                            <p><FontAwesomeIcon className='pl-3' icon={faCaretDown}></FontAwesomeIcon></p>
-                        </div>
-                    </div>
-                </div>
-                <section >
-                    <div className='mx-[80px]'>
-                        <table className='table-auto w-full' >
-                            <thead>
-                                <tr>
-                                    <th>Tutor Name <FontAwesomeIcon className='pl-1 w-[10px]' icon={faArrowDown}></FontAwesomeIcon></th>
-                                    <th>Tutor Status <FontAwesomeIcon className='pl-1 w-[10px]' icon={faArrowDown}></FontAwesomeIcon></th>
-                                    <th>Rating <FontAwesomeIcon className='pl-1 w-[10px]' icon={faArrowDown}></FontAwesomeIcon></th>
-                                    <th>Referrals <FontAwesomeIcon className='pl-1 w-[10px]' icon={faArrowDown}></FontAwesomeIcon></th>
-                                    <th>Hours Completed <FontAwesomeIcon className='pl-1 w-[10px]' icon={faArrowDown}></FontAwesomeIcon></th>
-                                    <th>Hours Scheduled <FontAwesomeIcon className='pl-1 w-[10px]' icon={faArrowDown}></FontAwesomeIcon></th>
-                                    <th>Hours Cancelled<FontAwesomeIcon className='pl-1 w-[10px]' icon={faArrowDown}></FontAwesomeIcon></th>
-                                    <th>Hours Missed <FontAwesomeIcon className='pl-1 w-[10px]' icon={faArrowDown}></FontAwesomeIcon></th>
-                                    <th>Avg SAT improvement  <FontAwesomeIcon className='pl-1 w-[10px]' icon={faArrowDown}></FontAwesomeIcon></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td className=''>Lorem</td>
-                                    <td className=''>Lorem</td>
-                                    <td className=''>Lorem </td>
-                                    <td className=''>Lorem</td>
-                                    <td className=''>Lorem</td>
-                                    <td className=''>Lorem</td>
-                                    <td className=''>Lorem</td>
-                                    <td className=''>Lorem</td>
-                                    <td className=''>Lorem</td>
-                                </tr>
-                                <tr>
-                                    <td className=''>Lorem</td>
-                                    <td className=''>Lorem</td>
-                                    <td className=''>Lorem </td>
-                                    <td className=''>Lorem</td>
-                                    <td className=''>Lorem</td>
-                                    <td className=''>Lorem</td>
-                                    <td className=''>Lorem</td>
-                                    <td className=''>Lorem</td>
-                                    <td className=''>Lorem</td>
-                                </tr>
-                                <tr>
-                                    <td className=''>Lorem</td>
-                                    <td className=''>Lorem</td>
-                                    <td className=''>Lorem </td>
-                                    <td className=''>Lorem</td>
-                                    <td className=''>Lorem</td>
-                                    <td className=''>Lorem</td>
-                                    <td className=''>Lorem</td>
-                                    <td className=''>Lorem</td>
-                                    <td className=''>Lorem</td>
-                                </tr>
-
-                            </tbody>
-                        </table>
-                    </div>
-                    <div className='flex justify-center'>
-                        <div className='mt-[36px] mb-[44px] bg-[#CBD6E2] h-[1px] w-[100px]'>
-
-                        </div>
-                    </div>
-                </section>
-
-                <footer className='bg-[#26435F] text-[#FFFFFF] py-[18px] w-full'>
-                    <div className='flex  text-xs font-medium justify-between'>
-                        <p className='ml-[74px]'>Copyright © Sevenimagine Education Private Limited</p>
-                        <div className='flex mr-[45px]'>
-                            <p>Terms of Usage</p>
-                            <p className='ml-6'>Privacy Policy</p>
-                        </div>
-                    </div>
-                </footer>
+              <RangeDate  handleRangeData={handleRevenue} />
             </div>
+          </div>
         </div>
 
-    );
+        <section className="flex justify-center w-[83.33vw] mx-auto ">
+          <div className={styles.mainBox}>
+            <div className="grid grid-cols-2 px-[1.95vw] ">
+              <div className={`${styles.gridBorder} my-auto `}>
+                <div className="flex pr-[1.8vw] items-center  my-auto justify-between whitespace-nowrap">
+                  <div className="w-[11.083vw]  ">
+                    <div className="flex justify-between items-center mb-[6px] text-[#26435F] text-sm">
+                      <p className="   font-medium text-base-17-5">Completed Revenue</p>
+                      <div className="group relative">
+                        <p>
+                          <FontAwesomeIcon
+                            icon={faQuestionCircle}
+                          ></FontAwesomeIcon>
+                        </p>
+
+                        <span className="absolute  -top-10 left-10 z-20 w-[333px]  scale-0 rounded-lg bg-[rgba(31,41,55,0.9)]  text-[13px] text-white group-hover:scale-100 whitespace-normal py-5 px-3">
+                          <h3 className="text-[#22A699] text-[16px] py-1 font-medium mb-1">
+                            Completed Revenue
+                          </h3>
+                          <span className="font-light">
+                            This value is calculated by adding up all the revenue
+                            generated from sessions that have been marked as
+                            “Completed” for the selected date range.
+                            <br /> Note that the revenue is calculated by
+                            multiplying a Tutor’s Service Rate by the Session
+                            Duration and adding all those values up.
+                          </span>
+                        </span>
+                      </div>
+                    </div>
+                    <div
+                      className={` !h-[calc(106*0.050vw)] flex justify-center rounded-md items-center text-[1.57vw] text-base-30 font-bold bg-[#22A69933]  ${styles.boxBorder1}`}
+                    >
+                      <p className="text-[#38C980]">
+                        ${cRevenue?.completedRevenue}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="w-[11.083vw] ">
+                    <div className="flex justify-between rounded-md items-center mb-[6px] text-[#26435F] text-sm ">
+                      <p className="font-medium text-base-17-5">Leaked Revenue</p>
+                      <div className="group relative">
+                        <p>
+                          <FontAwesomeIcon
+                            icon={faQuestionCircle}
+                          ></FontAwesomeIcon>
+                        </p>
+                        <span className="absolute  -top-10 left-10 z-20 w-[333px]  scale-0 rounded-lg bg-[rgba(31,41,55,0.9)]  text-[13px] text-white group-hover:scale-100 whitespace-normal py-5 px-3">
+                          <h3 className="text-[#FF5175] text-[16px] py-1 font-medium mb-1">
+                            Leaked Revenue
+                          </h3>
+                          <span className="font-light">
+                            This value is calculated by adding up all the revenue
+                            lost from sessions that have been marked as “Canceled”
+                            or “Partial” for the selected date range.
+                            <br />
+                            Note that the revenue is calculated by multiplying a
+                            Tutor’s Service Rate by the Session Duration and
+                            adding all those values up.</span>
+                        </span>
+                      </div>
+                    </div>
+                    <div
+                      className={` !h-[calc(106*0.050vw)] flex rounded-md justify-center items-center text-[1.57vw] font-semibold bg-[#FF797933]  ${styles.boxBorder2}`}
+                    >
+                      <p className="text-[#FF7979]">
+                        ${lRevenue?.canceledRevenue}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="w-[11.083vw] text-base-17-5">
+                    <div className="flex justify-between items-center mb-[6px] text-[#26435F] text-sm">
+                      <p className="   font-medium text-base-17-5">Impending Revenue</p>
+                      <div className="group relative">
+                        <p>
+                          <FontAwesomeIcon
+                            icon={faQuestionCircle}
+                          ></FontAwesomeIcon>
+                        </p>
+                        <span className="absolute  -top-10 left-10 z-20 w-[333px]  scale-0 rounded-lg bg-[rgba(31,41,55,0.9)]  text-[13px] text-white group-hover:scale-100 whitespace-normal py-5 px-3">
+                          <h3 className="text-[#7152EB] text-[16px] py-1 font-medium mb-1">
+                            Impending Revenue
+                          </h3>
+                          <span className="font-light">
+                            This value is calculated by adding up all the revenue
+                            lost from sessions that have been marked as
+                            “Scheduled” for the selected date range.
+                            <br />
+                            Note that the revenue is calculated by multiplying a
+                            Tutor’s Service Rate by the Session Duration and
+                            adding all those values up.
+                          </span>
+                        </span>
+                      </div>
+                    </div>
+                    <div
+                      className={` !h-[calc(106*0.050vw)] flex rounded-md justify-center items-center text-[1.57vw] font-semibold bg-[#7152EB33]  ${styles.boxBorder3}`}
+                    >
+                      <p className="text-[#7152EB]">
+                        ${iRevenue?.impendingRevenue}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                
+              </div>
+             
+              <div className={` my-auto `}>
+             
+                <div className="flex pl-[1.8vw]  my-auto items-center  justify-between whitespace-nowrap">
+                 
+                  <div className="w-[11.083vw]  text-base-17-5">
+                    <div className="mb-[6px]">
+                      <p className=" font-medium text-[#26435F80] mb-[5px]">
+                        Unpaid Invoices
+                      </p>
+                    </div>
+                    <div
+                      className={` !h-[calc(106*0.050vw)] flex justify-center items-center rounded-5   shadow-box text-[#667085] bg-[#F5F8FA]`}
+                    >
+                      <p>Coming soon</p>
+                    </div>
+                  </div>
+                  <div className="w-[11.083vw]  text-base-17-5">
+                    <div className="mb-[6px]">
+                      <p className=" font-medium text-[#26435F80] mb-[5px]">
+                        Paid Invoices
+                      </p>
+                    </div>
+                    <div
+                      className={` !h-[calc(106*0.050vw)] flex justify-center items-center rounded-5  shadow-box text-[#667085] bg-[#F5F8FA]`}
+                    >
+                      <p>Coming soon</p>
+                    </div>
+                  </div>
+                  <div className="w-[11.083vw]  text-base-17-5">
+                    <div className="mb-[6px]">
+                      <p className=" font-medium text-[#26435F80] mb-[5px]" >
+                        Cancelled Invoices
+                      </p>
+                    </div>
+                    <div
+                      className={` !h-[calc(106*0.050vw)] flex justify-center items-center rounded-5  shadow-box text-[#667085] bg-[#F5F8FA]`}
+                    >
+                      <p>Coming soon</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <div className="flex justify-center">
+            <div className="mt-[50px] w-[78.125vw] !mt-[calc(50*0.050vw)]">
+              <div className=" h-[1px] bg-[#00000033]"></div>
+            </div>
+          </div>
+          <div className=" w-[83.33vw]  text-[#FFA28D] mx-auto ">
+            <div className="flex justify-between items-center !mt-[calc(40*0.050vw)] h-min py-0 ">
+              <p className="font-bold text-xl  text-base-20 ">USERS OVERVIEW </p>
+
+              <div className="flex font-semibold text-[#FFA28D] text-xs">
+                <RangeDate handleRangeData={handleUserStats} />
+              </div>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-12  mt-[18px] w-[83.33vw] gap-x-5 mx-auto">
+            <div className="col-span-3 h-full  !whitespace-nowrap">
+              <p className=" mb-1 font-semibold text-[#26435F] text-xl text-base-20">User Stats</p>
+              <div className={`${styles.sidebox} min-h-[305px] min-w-[200px]`}>
+                <div className="pl-[38px]  pt-6 rounded ">
+                  <p className="text-[#26435F] text-md text-base-20">Active / Total Students</p>
+                  <p className="text-md">
+                    <span className="font-bold text-[#FFA28D] text-4xl text-base-37-5">
+                      {userStats?.student.activeUsers.count}
+                      <span className="font-medium text-base-37-5" > {" / "}</span>
+                    </span>
+                    <span className="text-[#24A3D9] text-[25px] text-base-25">
+                      {userStats
+                        ? userStats?.student.activeUsers.count +
+                        userStats?.student.inactiveUsers.count
+                        : "Loading.."}
+                    </span>
+                  </p>
+                </div>
+                <div className={`  pl-[38px] pt-7 rounded `}>
+                  <p className="text-[#26435F] text-md text-base-20">Active / Total Tutors</p>
+                  <p className="text-md">
+                    <span className="font-bold text-[#FFA28D] text-4xl text-base-37-5">
+                      {userStats?.tutor.activeUsers.count}
+                      <span className="font-medium text-base-37-5" > {" / "}</span>
+                    </span>
+                    <span className="text-[#24A3D9] text-[25px] text-base-25">
+                      {userStats
+                        ? userStats?.tutor.activeUsers.count +
+                        userStats?.tutor.inactiveUsers.count
+                        : "Loading..."}
+                    </span>
+                  </p>
+                </div>
+                <div className={`  pl-[38px] pt-7 rounded pb-6`}>
+                  <p className="text-[#26435F] text-md text-base-20">Active / Total Parents</p>
+                  <p className="text-md">
+                    <span className="font-bold text-[#FFA28D] text-4xl text-base-37-5">
+                      {userStats?.parent.activeUsers.count}
+                      <span className="font-medium text-base-37-5" > {" / "}</span>
+                    </span>
+                    <span className="text-[#24A3D9] text-[25px] text-base-25">
+                      {userStats
+                        ? userStats?.parent.activeUsers.count +
+                        userStats?.parent.inactiveUsers.count
+                        : "Loading..."}
+                    </span>
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="col-span-9  pl-[17.5px]">
+              <p className="mb-1 font-semibold text-[#26435F] text-xl text-base-20">Action Log</p>
+              <ActionLog
+                actionLog={filteredActionLog ? filteredActionLog : [""]}
+              />
+            </div>
+          </div>
+        </section>
+
+        <section className="mt-[30px] w-[83.33vw] mx-auto !mt-[calc(30*0.050vw)]">
+          <p className="font-semibold text-[#26435F]  text-xl mb text-base-20">Latest Sign-ups</p>
+
+          <div className="">
+            <Table
+              data={userData}
+              AdminLatestSignUp={true}
+              headerObject={true}
+
+              tableHeaders={latestSignUpHeaders}
+              maxPageSize={5}
+            />
+          </div>
+        </section>
+        <div className="flex justify-center">
+          <div className="mt-[40px] w-[78.125vw] mx-auto">
+            <div className="mt-2 h-[1px] bg-[#00000033]"></div>
+          </div>
+        </div>
+        <div className="w-[83.33vw] mx-auto mt-[52px] text-[#26435F]">
+          <div className="flex justify-between items-center translate-y-[10px] ">
+            <p className="font-bold uppercase text-[#FFA28D] text-xl text-base-20">Client Success Overview </p>
+
+            <RangeDate inputContainerClassName="!w-[500px]" optionClassName="!w-[500px]" handleRangeData={handlePopularServices} />
+          </div>
+        </div>
+
+        <section className="mt-[10px] mx-auto w-[83.33vw]">
+          <div className="grid grid-cols-[60.2vw,23vw]">
+            <div className="">
+              <p className="font-semibold text-[#26435F] translate-y-[10px] text-[17.5px] mb-2 text-base-17-5">
+                Popular Services
+              </p>
+              <div className=" pr-[1.5625vw] border-r-[1.7px] border-[#CBD6E2] text-base-17-5">
+                <Table
+                  data={popularServices}
+                  hidePagination={true}
+                  tableHeaders={[
+                    "Service",
+                    "Actively Using",
+                    "Total Used",
+                    "Scheduled Hours",
+                    "Completed Hours",
+                    "% of Business",
+                  ]}
+                  maxPageSize={5}
+                />
+              </div>
+            </div>
+            <div className="pl-[1.5625vw]">
+              <p className=" mb-[8px] translate-y-[10px] font-semibold text-[#26435F] text-[17.5px] text-base-17-5">
+                Star Clients
+              </p>
+              <div>
+                {/* <div
+                  className={`h-[85px] flex justify-center items-center text-sm text-[#667085] bg-[#E5E8EA]`}
+                >
+                  <p>Coming soon</p>
+                </div> */}
+                <Table
+                  data={[]}
+                  hidePagination={true}
+                  tableHeaders={[
+                    "Client Name",
+                    "Code",
+                    "Referrals"
+                  ]}
+                  maxPageSize={5}
+                />
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="mt-[37px] mx-auto w-[83.33vw]">
+          <div className="grid grid-cols-2 gap-x-[5.46875vw]">
+            <div className="flex  justify-between gap-x-[1.953125vw]  mt-2 text-sm text-[#26435F]">
+              <div>
+                <p className="font-semibold text-base-17-5">
+                  Total # Of Referrals
+                </p>
+                <div
+                  className={`mt-1  h-[72px] !h-[calc(75*0.050vw)] bg-[rgba(255,162,141,0.2)] ${styles.smallBox}`}
+                >
+                  <p className="text-[#FFA28D] h-full w-full justify-center font-bold text-[1.953125vw] flex items-center text-center">
+                    {improvementStats?.no_of_referrals}
+                  </p>
+                </div>
+              </div>
+              <div>
+                <p className="font-semibold text-base-17-5">
+                  Average SAT Improvement
+                </p>
+                <div
+                  className={` mt-1 h-[72px] !h-[calc(75*0.050vw)] bg-[rgba(36,163,217,0.2)]  ${styles.smallBox3}`}
+                >
+                  <p className="text-[#24A3D9] h-full w-full justify-center font-bold text-[1.953125vw] flex items-center text-center">
+                    {improvementStats?.avg_sat_improvement
+                      ? improvementStats?.avg_sat_improvement
+                      : 0}
+                  </p>
+                </div>
+              </div>
+              <div>
+                <p className="font-semibold text-base-17-5">
+                  Average ACT Improvement
+                </p>
+                <div
+                  className={` mt-1 h-[72px] !h-[calc(75*0.050vw)] bg-[rgba(36,163,217,0.2)]  ${styles.smallBox3}`}
+                >
+                  <p className="text-[#24A3D9] h-full w-full justify-center font-bold text-[1.953125vw] flex items-center text-center">
+                    {improvementStats?.avg_act_improvement
+                      ? improvementStats?.avg_act_improvement
+                      : 0}
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div className="flex   mt-2 whitespace-nowrap   text-base-15 justify-between text-[#667085]">
+              <div>
+                <p>Average GRE Improvement</p>
+                <div
+                  className={`w-[11.328125vw] mt-2 h-[72px] !h-[calc(75*0.050vw)] ${styles.smallBox2} flex items-center justify-center font-medium`}
+                >
+                  <p>Coming Soon</p>
+                </div>
+              </div>
+              <div>
+                <p>Average GMAT Improvement</p>
+                <div
+                  className={`w-[11.328125vw] mt-2 h-[72px] !h-[calc(75*0.050vw)] ${styles.smallBox2} flex items-center justify-center font-medium`}
+                >
+                  <p>Coming Soon</p>
+                </div>
+              </div>
+              <div>
+                <p>Average IELTS Improvement</p>
+                <div
+                  className={`w-[11.328125vw] mt-2 h-[72px] !h-[calc(75*0.050vw)] ${styles.smallBox2} flex items-center justify-center font-medium`}
+                >
+                  <p>Coming Soon</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <div className="flex justify-center">
+          <div className="mt-[51px] w-[78.125vw] mx-auto">
+            <div className="mt-2 h-[1px] bg-[#00000033]"></div>
+          </div>
+        </div>
+        <div className="w-[83.33vw] mx-auto  mt-[42px] text-[#FFA28D] ">
+          <div className="flex justify-between items-center  translate-y-[15px] mb-[10px]">
+            <p className="font-bold uppercase text-xl text-base-17-5">Tutor Performence Overview </p>
+
+            <RangeDate handleRangeData={handleTutorPerformance} />
+          </div>
+        </div>
+        
+        <section className="mx-auto  w-[83.33vw]">
+
+          <Table
+            headerWidth="w-[150px] whitespace-normal"
+            data={tutorPerformanceData}
+            tableHeaders={tutorTableHeaders}
+            maxPageSize={5}
+          />
+
+
+          <div className="flex justify-center">
+            <div className="mt-[36px] mb-[44px] bg-[#CBD6E2] h-[1px] w-[100px]"></div>
+          </div>
+        </section>
+      </div>
+    </div>
+  );
 };
 
-export default Dashboard;
+export default React.memo(Dashboard);

@@ -38,12 +38,15 @@
    }
 
    .imgContainerTutor {
-      width: 122px;
-      height: 122px;
+      width: 200px;
+      height: 200px;
    }
    .imgContainerTutor img{
       width: 100%;
       height: 100%;
    }
-
+   .imgContainerModalTutor {
+      width: 130px;
+      height: 130px;
+   }
 }

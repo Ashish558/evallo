@@ -9,11 +9,16 @@ export const iniOptions = {
             display: false
          },
          title: {
+            color: "#24A3D9",
             display: true,
-            text: 'Subjects'
+            text: 'Concepts',
+            font: {
+               weight: 500,
+               size: 14,
+            },
          },
          ticks: {
-         
+
             stepSize: 5,
             // callback: function (value, index, ticks) {
             //    // return tempsubjects[index]
@@ -30,6 +35,12 @@ export const iniOptions = {
          title: {
             display: true,
             text: 'Accuracy(%)',
+            padding: { bottom: 10 },
+            color: "#24A3D9",
+            font: {
+               weight: 500,
+               size: 14,
+            },
          },
          ticks: {
             stepSize: 5,
@@ -44,7 +55,66 @@ export const iniOptions = {
       padding: {
          top: 50
       }
-  },
+   },
+
+};
+export const iniOptionsStudent = {
+   scales: {
+      y: {
+         beginAtZero: true,
+      },
+      x: {
+         grid: {
+            display: false
+         },
+         title: {
+            color: "#24A3D9",
+            display: true,
+            text: 'Concepts',
+            font: {
+               weight: 500,
+               size: 14,
+            },
+         },
+         ticks: {
+
+            stepSize: 5,
+            // callback: function (value, index, ticks) {
+            //    // return tempsubjects[index]
+            //    return index
+            // }
+         }
+      },
+      y: {
+         // grid: {
+         //   display: false
+         // }
+         // min: 100,
+         max: 100,
+         title: {
+            display: true,
+            text: 'Score',
+            padding: { bottom: 10 },
+            color: "#24A3D9",
+            font: {
+               weight: 500,
+               size: 14,
+            },
+         },
+         ticks: {
+            stepSize: 5,
+            maxTicksLimit: 6
+            // callback: function (value, index, ticks) {
+            //    return '' + value;
+            // }
+         }
+      }
+   },
+   layout: {
+      padding: {
+         top: 50
+      }
+   },
 
 };
 

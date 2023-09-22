@@ -41,7 +41,7 @@ export const getCheckedString = (arr) => {
    return strArr
 }
 
-export const getFormattedDate = argDate => {
+export const getFormattedDate = (argDate, format) => {
    const date = new Date(argDate)
    if (argDate === undefined) return "-"
    let year = date.getFullYear()
@@ -54,7 +54,14 @@ export const getFormattedDate = argDate => {
    if (dateNum < 10) {
       dateNum = `0${dateNum}`
    }
-   let dateFormatted = `${year}-${month}-${dateNum}`
+   let dateFormatted = ''
+   if (format === 'dd/mm/yy') {
+      dateFormatted = `${dateNum}-${month}-${year}`
+   } else if (format === 'mm/dd/yy') {
+      dateFormatted = `${month}-${dateNum}-${year}`
+   } else {
+      dateFormatted = `${year}-${month}-${dateNum}`
+   }
    return dateFormatted
 }
 
@@ -373,7 +380,7 @@ export const getMonthName = idx => {
    const monthNames = ["January", "February", "March", "April", "May", "June",
       "July", "August", "September", "October", "November", "December"
    ]
-   if(idx > 11) return monthNames[0]
+   if (idx > 11) return monthNames[0]
    return monthNames[idx]
 }
 

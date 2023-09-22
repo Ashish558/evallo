@@ -29,6 +29,14 @@ export const sessionServicesApi = createApi({
             headers: getAuthHeader()
          }),
       }),
+      getSessionNotes: builder.query({
+         query: (id) => ({
+            url: `api/session/student/getAllSessionNotes/${id}`,
+         
+            method: "GET",
+            headers: getAuthHeader()
+         }),
+      }),
       getTutorStudentsByName: builder.query({
          query: (name) => ({
             url: `api/user/mystudents`,
@@ -72,6 +80,14 @@ export const sessionServicesApi = createApi({
             url: `/api/session/${payload.id}`,
             method: "PATCH",
             body: payload.body,
+            headers: getAuthHeader()
+         })
+      }),
+      getTotalHours: builder.query({
+         query: (payload) => ({
+            url: `/api/user/student/getTotalHoursTutored/${payload}`,
+            method: "GET",
+           
             headers: getAuthHeader()
          })
       }),
@@ -186,8 +202,10 @@ export const {
    useLazyGetStudentsByNameQuery,
    useLazyGetTutorStudentsByNameQuery,
    useLazyGetSettingsQuery,
+   useLazyGetSessionNotesQuery,
    useSubmitSessionMutation,
    useLazyGetUsersByNameQuery,
+   useLazyGetTotalHoursQuery,
    useLazyGetCompletedSessionsQuery,
    useLazyGetSessionsQuery,
    useLazyGetSingleSessionQuery,

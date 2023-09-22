@@ -10,7 +10,8 @@ import { Bubble } from 'react-chartjs-2';
 import { useLazyGetPersonalDetailQuery, useLazyGetUserDetailQuery } from '../../app/services/users';
 import { backgroundColors, iniOptions } from './data';
 import { useSelector } from 'react-redux';
-
+import upArrow from '../../assets/icons/small-chart-arrow -2.svg'
+import downArrow from '../../assets/icons/small-chart-arrow.svg'
 ChartJS.register(LinearScale, PointElement, Tooltip, Legend);
 
 const tempdata = [
@@ -32,7 +33,8 @@ const data1 = {
       },
    ],
 };
-export default function Chart({ setSubjects, subjects, selectedSubject, selectedStudent, currentSubData, setCurrentSubData, selectedConceptIdx }) {
+
+export default function Chart({ setSubjects, YHeader, subjects, selectedSubject, selectedStudent, currentSubData, setCurrentSubData, selectedConceptIdx }) {
 
    const [fetchPersonalDetails, personalDetailsResp] = useLazyGetPersonalDetailQuery()
    const [options, setOptions] = useState(iniOptions)
@@ -48,12 +50,15 @@ export default function Chart({ setSubjects, subjects, selectedSubject, selected
    // const checkIfKeyExists = (concepts) => {
    //    concepts
    // }
-
+   //console.log("first",{ setSubjects, subjects, selectedSubject, selectedStudent, currentSubData, setCurrentSubData, selectedConceptIdx })
    useEffect(() => {
+
       if (persona == 'student') return
       if (selectedStudent?._id === undefined || selectedStudent?._id === null) return
+
       getUserDetail({ id: selectedStudent._id })
          .then(res => {
+            console.log("chart User response", res)
             if (res.error) {
                return
             }
@@ -61,7 +66,7 @@ export default function Chart({ setSubjects, subjects, selectedSubject, selected
             let data = res.data.data.user.chart
             if (!data) return
             let fData = data.filter(item => item.concepts.length > 0)
-         
+
             let filtered = fData
             console.log('filtered', filtered)
             setChartData(filtered)
@@ -147,24 +152,27 @@ export default function Chart({ setSubjects, subjects, selectedSubject, selected
       }
       const curr = chartData.find(item => item.subject === selectedSubject)
       if (curr === undefined) return
-      // console.log('curr', curr)
+      //  console.log('Shycurr', curr)
+      let concepts = []
       setCurrentSubData(curr)
       let currentConceptTotal = {}
       let currentConceptCorrect = {}
+      for (let cid = 0; cid < curr?.concepts?.length; cid++) {
 
-      if(curr.concepts[selectedConceptIdx]?.total){
-         currentConceptTotal = curr.concepts[selectedConceptIdx]?.total
-      }else{
-         currentConceptTotal = {}
+         if (curr.concepts[cid]?.total) {
+            currentConceptTotal = curr.concepts[cid]?.total
+         } else {
+            currentConceptTotal = {}
+         }
+         if (curr.concepts[cid]?.correct) {
+            currentConceptCorrect = curr.concepts[cid]?.correct
+         } else {
+            currentConceptCorrect = {}
+         }
+         concepts = [...concepts, ...Object.keys(currentConceptTotal).map(key => {
+            return key
+         })]
       }
-      if(curr.concepts[selectedConceptIdx]?.correct){
-         currentConceptCorrect = curr.concepts[selectedConceptIdx]?.correct
-      }else{
-         currentConceptCorrect = {}
-      }
-      const concepts = Object.keys(currentConceptTotal).map(key => {
-         return key
-      })
       // console.log('concepts', concepts)
       setCurrentConcepts(concepts)
       setOptions(prev => ({
@@ -184,9 +192,11 @@ export default function Chart({ setSubjects, subjects, selectedSubject, selected
                display: false
             }
          },
+
          scales: {
             ...prev.scales,
             x: {
+
                ...prev.scales.x,
                ticks: {
                   ...prev.scales.x.ticks,
@@ -194,50 +204,77 @@ export default function Chart({ setSubjects, subjects, selectedSubject, selected
                      return index === 0 ? '' : concepts[index - 1]
                   }
                }
-            }
-         },
-      }))
-      const datasets = [{ ...dummy },]
-   
-      if (!curr.concepts[selectedConceptIdx]?.total) return
-      Object.keys(currentConceptTotal).forEach((totalConcept, idx) => {
-         if (Object.keys(currentConceptCorrect).includes(totalConcept)) {
-            let x = (idx + 1) * 5
-            let totalVal = currentConceptTotal[totalConcept]
-            let getValue = currentConceptCorrect[totalConcept]
-            const percent = Math.round(getValue * 100 / totalVal)
-            let radius = totalVal * 2
-            // console.log(totalConcept, percent);
-            if (radius < 15) {
-               radius = 15
-            } else if (radius > 40) {
-               radius = 40
-            }
-            datasets.push({
-               label: '',
-               // data: [{ x, y: percent, r: 20 }],
-               data: [{ x, y: percent, r: radius }],
-               backgroundColor: getColor(idx, concepts.length),
-            })
-         } else {
-            let x = (idx + 1) * 5
-            let totalVal = curr.concepts[selectedConceptIdx].total[totalConcept]
-            let getValue = 0
-            let radius = totalVal * 2
-            const percent = Math.round(getValue * 100 / totalVal)
-            if (radius < 15) {
-               radius = 15
-            } else if (radius > 40) {
-               radius = 40
-            }
-            datasets.push({
-               label: '',
-               data: [{ x, y: percent, r: radius }],
-               backgroundColor: getColor(idx, concepts.length),
-            })
-         }
+            },
+            y: {
+               ...prev.scales.y,
+               title: {
+                  ...prev.scales.y.title,
 
-      })
+                  text: YHeader ? YHeader : prev.scales.y.title.text,
+               }
+            },
+
+         }
+      }))
+      const datasets = []
+
+      for (let cid = 0; cid < curr.concepts?.length; cid++) {
+         let currentConceptTotal = {}
+         let currentConceptCorrect = {}
+         if (!curr.concepts[cid]?.total) return
+         if (curr.concepts[cid]?.total) {
+            currentConceptTotal = curr.concepts[cid]?.total
+         } else {
+            currentConceptTotal = {}
+         }
+         if (curr.concepts[cid]?.correct) {
+            currentConceptCorrect = curr.concepts[cid]?.correct
+         } else {
+            currentConceptCorrect = {}
+         }
+         Object.keys(currentConceptTotal).forEach((totalConcept, idx) => {
+            if (Object.keys(currentConceptCorrect).includes(totalConcept)) {
+               // console.log("currentConceptTotal",currentConceptTotal,currentConceptCorrect,totalConcept)
+               let x = (cid + 1) * 5
+               let totalVal = currentConceptTotal[totalConcept]
+               let getValue = currentConceptCorrect[totalConcept]
+               const percent = Math.round(getValue * 100 / totalVal)
+               //  console.log("vv",getValue,totalVal)
+               let radius = totalVal * 2
+               // console.log(totalConcept, percent);
+               if (radius < 15) {
+                  radius = 15
+               } else if (radius > 40) {
+                  radius = 40
+               }
+               radius = Math.min(radius, percent);
+               datasets.push({
+                  label: '',
+                  // data: [{ x, y: percent, r: 20 }],
+                  data: [{ x, y: percent, r: radius }],
+                  backgroundColor: getColor(cid, concepts.length),
+               })
+            } else {
+               let x = (cid + 1) * 5
+               let totalVal = curr.concepts[cid].total[totalConcept]
+               let getValue = 0
+               let radius = totalVal * 2
+               const percent = Math.round(getValue * 100 / totalVal)
+               if (radius < 15) {
+                  radius = 15
+               } else if (radius > 40) {
+                  radius = 40
+               }
+               radius = Math.min(radius, Math.floor(percent));
+               datasets.push({
+                  label: '',
+                  data: [{ x, y: percent, r: radius }],
+                  backgroundColor: getColor(cid, concepts.length),
+               })
+            }
+
+         })
+      }
       setData({
          datasets: datasets
       })
@@ -270,14 +307,15 @@ export default function Chart({ setSubjects, subjects, selectedSubject, selected
 
    return (
       data !== undefined &&
-      <div className='wrapper' style={{ width: '1000px', overflowX: 'auto' }} >
+      <div className='wrapper w-full min-w-2/3 overflow-x-auto h-[460px] pt-[80px] pl-[30px] relative'  >
 
          <Bubble ref={chartRef}
             options={options} data={data}
-            height={180}
+            height={200}
             width={canvasWidth}
-         /> :
-
+         />
+         <p className='absolute bottom-[18%] right-[43%]'><img src={upArrow} alt="" /></p>
+         <p className='absolute bottom-[39%] right-[93%]'><img src={downArrow} alt="" /></p>
       </div>
    )
 }

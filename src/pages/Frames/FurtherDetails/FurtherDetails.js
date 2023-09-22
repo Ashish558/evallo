@@ -4,8 +4,11 @@ import SecondaryButton from "../../../components/Buttons/SecondaryButton";
 import InputField from "../../../components/InputField/inputField";
 import styles from "../EventModal/style.module.css";
 import style from "./styles.module.css";
+import SCheckbox from "../../../components/CCheckbox/SCheckbox";
+import InputSelectNew from "../../../components/InputSelectNew/InputSelectNew";
 
-export default function FurtherDetails({
+export default function 
+FurtherDetails({
   setFrames,
   setcurrentStep,
   testPreparations,
@@ -55,20 +58,40 @@ export default function FurtherDetails({
   //     }
   //   });
   // }, [services]);
+  const handlePaymentTypeChange = (e) => {
+    setValues({
+      ...values,
+      paymentType: e,
+    });
+  };
+  const handleOthersField = (e, arr, setValue) => {
+    const text = e.target.value;
+    if (!text || text === "") return;
+    const temp = arr.filter((topic) => {
+      return topic.text !== "Others";
+    });
+    e.target.value = "";
 
+    temp.push({ text: text, checked: true });
+    temp.push({ text: "Others", checked: false });
+
+    setValue(temp);
+    console.log(temp);
+  };
   useEffect(() => {
     setcurrentStep(3);
   }, []);
 
   return (
-    <div className="">
-      <div className="mb-5">
+    <div className="border-t border-t-[1px_solid_#EBEBEB] mt-[-23px] pt-8">
+      <div className="mb-5 ">
         <div className="flex items-center mb-6 ">
           <InputField
-            label="No. Of Active Students"
+            label="Number Of Active Students"
             required={true}
             placeholder=""
             parentClassName="w-full max-w-[248px] mr-4"
+            inputContainerClassName=" border border-[#D0D5DD]"
             inputClassName="bg-transparent text-xs"
             type="text"
             value={values.activeStudents}
@@ -80,10 +103,11 @@ export default function FurtherDetails({
             }
           />
           <InputField
-            label="No. Of Tutors"
+            label="Number Of Tutors"
             required={true}
             placeholder=""
             parentClassName="w-full max-w-[248px]"
+            inputContainerClassName=" border border-[#D0D5DD]"
             inputClassName="bg-transparent text-xs"
             type="text"
             value={values.activeTutors}
@@ -95,37 +119,31 @@ export default function FurtherDetails({
             }
           />
         </div>
-
-        <p className="font-medium mb-4 text-sm">
+        <p className="border-t border-t-[1.2px_solid_#26435F4D] mt-[-10px]   pt-4 pb-3 mb-1 text-sm text-[#26435F] tracking-wider font-semibold">
           What services do you provide?
         </p>
+
         <div className="flex flex-col mb-6">
           <div className="">
             <p className="text-sm mb-[7px] text-[#24A3D9] font-bold">
               Test preparation
             </p>
-            <div className="grid grid-cols-3">
+            <div className="grid grid-cols-3 font-medium text-[#26435F] grid-flow-row-dense mr-5">
               {testPreparations?.map((item, idx) => {
                 return (
                   <div key={idx} className="flex items-center mb-3 mr-6">
-                    <div
-                      onClick={() =>
+                    <SCheckbox
+                      checked={item.checked}
+                      className="scale-[0.7]"
+                      onChange={() =>
                         handleCheckboxChange(
                           item.text,
                           testPreparations,
                           setTestPreparations
                         )
                       }
-                      className={`${styles.container} `}
-                    >
-                      <input
-                        checked={item.checked}
-                        type="checkbox"
-                        name="hearAboutUs"
-                        value=""
-                      />
-                      <span class={styles.checkmark}></span>
-                    </div>
+                    />
+
                     <p
                       onClick={() =>
                         handleCheckboxChange(
@@ -141,8 +159,15 @@ export default function FurtherDetails({
                     {item.text === "Others" && item.checked ? (
                       <input
                         autoFocus
-                        className="ml-3 text-[13px] text-[#7E7E7E] outline-[#DCDCDD] border-2 border-[#DCDCDD] rounded-md bg-[#DCDCDD]  w-48"
+                        className="ml-3 text-[13px] text-[#7E7E7E] outline-[#DCDCDD] border-[1.5px] border-[#DCDCDD] rounded-[4px] bg-[#F5F8FA]  w-32"
                         type="text"
+                        onBlur={(e) => {
+                          handleOthersField(
+                            e,
+                            testPreparations,
+                            setTestPreparations
+                          );
+                        }}
                       />
                     ) : (
                       ""
@@ -153,27 +178,21 @@ export default function FurtherDetails({
             </div>
           </div>
           <div className="">
-            <p className="text-sm mt-[30px] mb-[7px] text-[#24A3D9] font-bold">
+            <p className="text-sm mt-[7px] mb-[8px] text-[#24A3D9] font-bold">
               Subject Tutoring
             </p>
-            <div className="grid grid-cols-3">
+            <div className="grid grid-cols-3 font-medium text-[#26435F] grid-flow-row-dense mr-5">
               {tutoring?.map((item, idx) => {
                 return (
                   <div key={idx} className="flex items-center mb-3 mr-6">
-                    <div
-                      onClick={() =>
+                    
+                    <SCheckbox
+                      checked={item.checked}
+                      className="scale-[0.7]"
+                      onChange={() =>
                         handleCheckboxChange(item.text, tutoring, setTutoring)
                       }
-                      className={`${styles.container} `}
-                    >
-                      <input
-                        checked={item.checked}
-                        type="checkbox"
-                        name="hearAboutUs"
-                        value=""
-                      />
-                      <span class={styles.checkmark}></span>
-                    </div>
+                    />
                     <p
                       onClick={() =>
                         handleCheckboxChange(item.text, tutoring, setTutoring)
@@ -185,8 +204,11 @@ export default function FurtherDetails({
                     {item.text === "Others" && item.checked ? (
                       <input
                         autoFocus
-                        className="ml-3 text-[13px] text-[#7E7E7E] outline-[#DCDCDD] border-2 border-[#DCDCDD] rounded-md bg-[#DCDCDD]  w-48"
+                        className="ml-3 text-[13px] text-[#7E7E7E] outline-[#DCDCDD] border-[1.5px] border-[#DCDCDD] rounded-[4px] bg-[#F5F8FA]  w-32"
                         type="text"
+                        onBlur={(e) => {
+                          handleOthersField(e, tutoring, setTutoring);
+                        }}
                       />
                     ) : (
                       ""
@@ -197,27 +219,21 @@ export default function FurtherDetails({
             </div>
           </div>
           <div className="">
-            <p className="text-sm mb-[7px] text-[#24A3D9] font-bold">
+            <p className="text-sm mb-[7px] mt-1 text-[#24A3D9] font-bold">
               Coaching
             </p>
-            <div className="grid grid-cols-3">
+            <div className="grid grid-cols-3 font-medium text-[#26435F] grid-flow-row-dense mr-5">
               {coaching?.map((item, idx) => {
                 return (
                   <div key={idx} className="flex items-center mb-3 mr-6">
-                    <div
-                      className={`${styles.container} `}
-                      onClick={() =>
+                    <SCheckbox
+                      checked={item.checked}
+                      className="scale-[0.7]"
+                      onChange={() =>
                         handleCheckboxChange(item.text, coaching, setCoaching)
                       }
-                    >
-                      <input
-                        checked={item.checked}
-                        type="checkbox"
-                        name="hearAboutUs"
-                        value=""
-                      />
-                      <span class={styles.checkmark}></span>
-                    </div>
+                    />
+             
                     <p
                       onClick={() =>
                         handleCheckboxChange(item.text, coaching, setCoaching)
@@ -229,8 +245,11 @@ export default function FurtherDetails({
                     {item.text === "Others" && item.checked ? (
                       <input
                         autoFocus
-                        className="ml-3 text-[13px] text-[#7E7E7E] outline-[#DCDCDD] border-2 border-[#DCDCDD] rounded-md bg-[#DCDCDD]  w-48"
+                        className="ml-3 text-[13px] text-[#7E7E7E] outline-[#DCDCDD] border-[1.5px] border-[#DCDCDD] rounded-[4px] bg-[#F5F8FA]  w-32"
                         type="text"
+                        onBlur={(e) => {
+                          handleOthersField(e, coaching, setCoaching);
+                        }}
                       />
                     ) : (
                       ""
@@ -241,91 +260,93 @@ export default function FurtherDetails({
             </div>
           </div>
         </div>
-        <p className="border-t-[1.2px] mt-[-10px] text-[#26435F] pt-2 mb-2 text-sm font-medium">
+        <p className="border-t border-t-[1.2px_solid_#26435F4D] mt-[-10px]   pt-4 pb-2 text-sm text-[#26435F] tracking-wider font-semibold">
           Format of instruction
         </p>
-        <div className="grid grid-cols-3 mb-6">
+
+        <div className="grid grid-cols-3 font-medium text-[#26435F] mb-6">
           {instructions?.map((item, idx) => {
             return (
               <div
                 key={idx}
                 className="flex items-center mb-3 mr-6"
-                onClick={() =>
-                  handleCheckboxChange(item.text, instructions, setInstructions)
-                }
+                
               >
-                <div className={`${styles.container} `}>
-                  <input
-                    checked={item.checked}
-                    type="checkbox"
-                    name="hearAboutUs"
-                    value=""
-                  />
-                  <span class={styles.checkmark}></span>
-                </div>
-                <p className="font-medium  text-[13px] opacity-90 leading-5">
+                <SCheckbox
+                      checked={item.checked}
+                      className="scale-[0.7]"
+                      onChange={() =>
+                        handleCheckboxChange(item.text, instructions, setInstructions)
+                      }
+                    />
+               
+                <p onClick={() =>
+                  handleCheckboxChange(item.text, instructions, setInstructions)
+                } className="font-medium  text-[13px] opacity-90 leading-5">
                   {item.text}
                 </p>
               </div>
             );
           })}
         </div>
-
-        <p className="border-t-[1.2px] mt-[-10px] border-gray-300 text-[#26435F] pt-2 text-sm mb-[7px] font-medium">
+        <p className="border-t border-t-[1.2px_solid_#26435F4D] mt-[-10px]    pt-4 pb-2 text-sm text-[#26435F] tracking-wider font-semibold">
           Student Served
         </p>
-        <div className="grid grid-cols-3">
+
+        <div className="grid grid-cols-3 font-medium text-[#26435F]">
           {studentserved?.map((item, idx) => {
             return (
               <div
                 key={idx}
                 className="flex items-center mb-3 mr-6"
-                onClick={() =>
+               
+              >
+               <SCheckbox
+                      checked={item.checked}
+                      className="scale-[0.7]"
+                      onChange={() =>
+                        handleCheckboxChange(
+                          item.text,
+                          studentserved,
+                          setStudentserved
+                        )
+                      }
+                    />
+                <p  onClick={() =>
                   handleCheckboxChange(
                     item.text,
                     studentserved,
                     setStudentserved
                   )
-                }
-              >
-                <div className={`${styles.container} `}>
-                  <input
-                    checked={item.checked}
-                    type="checkbox"
-                    name="studentserved"
-                    value=""
-                  />
-                  <span class={styles.checkmark}></span>
-                </div>
-                <p className="font-medium  text-[13px] opacity-90 leading-5">
+                } className="font-medium  text-[13px] opacity-90 leading-5">
                   {item.text}
                 </p>
               </div>
             );
           })}
         </div>
-        <p className="border-t-[1.2px] text-[#26435F] mt-[0px] border-gray-300 pt-3  text-sm mb-[7px] font-medium">
+
+        <p className="border-t border-t-[1.2px_solid_#26435F4D]  mb-3  pt-4  text-sm text-[#26435F] tracking-wider font-semibold">
           How do you currently process your payments?
         </p>
-        <div className="flex flex-col h-min mt-3 text-[#667085]">
-          <div className={style.changeOption}>
-            <select className="form-control  text-xs pl-2">
-              <option value="0">Options</option>
-              {paymentOptions.map((c, id) => {
-                return (
-                  <>
-                    <option key={id} value={c}>
-                      {c}
-                    </option>
-                  </>
-                );
-              })}
-            </select>
-          </div>
-        </div>
+        <InputSelectNew
+            value={values.paymentType}
+            parentClassName="w-[200px]"
+            optionContainerClassName="text-[13px] "
+            optionsEachClassName="py-[6px]"
+            optionData={paymentOptions}
+            placeholder={""}
+            label={``}
+            labelClassname="text-[#26435F] font-bold  mb-1 text-sm "
+            inputContainerClassName="py-1 h-[44.9px] text-sm border  border-[#D0D5DD] my-0 mt-[-2px] rounded-[5px]"
+            inputClassName="ml-80 "
+          
+            onChange={(e) => handlePaymentTypeChange(e)}
+          />
+      
       </div>
 
-      <div className="flex items-center mt-7 justify-between">
+      <div className="flex items-center mt-8 justify-between">
         <SecondaryButton
           children="Go Back"
           className="text-sm mr-6 bg-white text-[#a3aDC7] border-[1.5px] border-[#D0D5DD] "
@@ -337,7 +358,7 @@ export default function FurtherDetails({
            
           `}
           onClick={() => handleSubmit()}
-        // disabled={disabled}
+          // disabled={disabled}
         />
       </div>
     </div>

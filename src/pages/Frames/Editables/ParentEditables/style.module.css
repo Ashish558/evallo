@@ -16,3 +16,13 @@
    top: 0;
    height: 100%;
 }
+#selected .click{
+   color: white !important;
+   border: 1px solid #26435F80 !important;
+   background:#26435F80 !important;  
+}
+.address{
+   color: #26435F;
+   font-weight: 500;
+ 
+}

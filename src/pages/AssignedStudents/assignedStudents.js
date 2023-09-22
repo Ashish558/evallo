@@ -21,13 +21,13 @@ const testData = ["SAT", "ACT"];
 
 const tempTableHeaders = [
    "Student Name",
-   "Time Zone",
-   "Specialization(s)",
-   "Parent",
-   // "Start Date",
-   "Diagnostic Score",
-   // "Status",
-   "",
+   "Email",
+   "Phone",
+   // "Parent",
+   "Service(s)",
+   "Topic(s)",
+   "Status",
+   "Date Assigned",
 ];
 const initialState = {
    email: '',
@@ -82,17 +82,21 @@ export default function AssignedStudents() {
                   getUserDetail({ id: studentId })
                      .then(res => {
                         console.log('detail res', resp.data.data)
-                        const { _id, firstName, lastName } = res.data.data.user
+                        const { _id, firstName, lastName, email, phone, services, topics, status, assignedDate } = res.data.data.user
                         const { specialization, FirstName, LastName, timeZone } = res.data.data.userdetails
                         studentsData.push({
                            _id,
                            name: `${firstName} ${lastName}`,
-                           timeZone: timeZone ? timeZone : '-',
-                           specialization: specialization ? specialization.join(',') : '-',
+                           email: `${email}`,
+                           phone: `${phone}`,
+                           services: `${services == undefined ? '_' : services}`,
+                           topics: `${topics == undefined ? '_' : topics}`,
+                           status: `${status == undefined ? '_' : status}`,
+                           assignedDate: `${assignedDate == undefined ? '_' : assignedDate}`
                            // specialization: ['we', 'ew'].join(','),
-                           parentName: `${FirstName} ${LastName}`,
-                           score: '-',
-                           status: '-'
+                           // parentName: `${FirstName} ${LastName}`,
+                           // score: '-',
+                           // assignedDate: '_'
                         })
                         if (idx === resp.data.data.user.assiginedStudents.length - 1) cb()
                      })
@@ -125,7 +129,7 @@ export default function AssignedStudents() {
                }
             })
             // console.log('isMatch', isMatch);
-            if(isMatch) return user
+            if (isMatch) return user
          })
       } else {
          tempdata = tempdata.filter(user => user.timeZone !== '')
@@ -176,65 +180,93 @@ export default function AssignedStudents() {
    useEffect(() => {
       setValidData(modalData.email && modalData.firstName && modalData.lastName && modalData.userType);
    }, [modalData, modalData.email.length, modalData.firstName.length, modalData.lastName.length, modalData.phone.length, modalData.userType.length,])
-
+   // console.log(timeZones)
    return (
       <>
          <div className="lg:ml-pageLeft bg-lightWhite min-h-screen">
             <div className="py-14 px-5 pl-8 text-sm">
                <div className="flex justify-between items-center">
-                  <p className={`font-bold text-4xl text-primary-dark`}
-                  // style={{ color: "#25335A" }}
-                  >
-                     Assigned Students
-                  </p>
 
+                  {
+                     persona == "tutor" || <p className={`font-bold text-4xl text-primary-dark`}
+                     // style={{ color: "#25335A" }}
+                     >
+                        Assigned Students
+                     </p>
+                  }
                </div>
+               {
+                  persona == "tutor" ?
+                     <InputField
+                        value={filterData.studentName}
+                        IconRight={SearchIcon}
+                        onChange={e => setFilterData({ ...filterData, studentName: e.target.value })}
+                        optionData={optionData}
+                        placeholder="Search"
+                        iconPadding="pl-3"
+                        inputContainerClassName="border bg-white py-[16px] px-[20px] w-[22.03125vw] rounded-[7.5px]"
+                        parentClassName="w-full mr-4"
+                        type="text"
 
-               <div className="flex align-center mt-8 max-w-[750px]">
-                  <InputField
-                     value={filterData.tutorName}
-                     IconRight={SearchIcon}
-                     onChange={e => setFilterData({ ...filterData, tutorName: e.target.value })}
-                     optionData={optionData}
-                     placeholder="Tutor Name"
-                     inputContainerClassName="border bg-white py-[16px] px-[20px]"
-                     parentClassName="w-full mr-4"
-                     type="text"
-                  />
-                  <InputField
-                     value={filterData.studentName}
-                     IconRight={SearchIcon}
-                     onChange={e => setFilterData({ ...filterData, studentName: e.target.value })}
-                     optionData={optionData}
-                     placeholder="Student Name"
-                     inputContainerClassName="border bg-white py-[16px] px-[20px]"
-                     parentClassName="w-full mr-4"
-                     type="text"
-                  />
-                  <InputSelect
-                     value={filterData.timeZone}
-                     onChange={val => setFilterData({ ...filterData, timeZone: val })}
-                     optionData={timeZones}
-                     inputContainerClassName="py-[16px] px-[20px] border bg-white"
-                     placeholder="Time Zones"
-                     parentClassName="w-full mr-4"
-                     type="select"
-                  />
-                  <InputField
-                     value={filterData.specialization}
-                     IconRight={SearchIcon}
-                     onChange={e => setFilterData({ ...filterData, specialization: e.target.value })}
-                     placeholder="Specialization"
-                     inputContainerClassName="border bg-white py-[16px] px-[20px]"
-                     parentClassName="w-full mr-4"
-                     type="text"
-                  />
-                  {/* <button className='bg-primary py-3.5 w-full text-lg px-[21px] flex justify-center items-center text-white font-semibold rounded-lg'
+                     /> :
+                     <div className="flex align-center mt-8 max-w-[750px]">
+                        <InputField
+                           value={filterData.tutorName}
+                           IconRight={SearchIcon}
+                           onChange={e => setFilterData({ ...filterData, tutorName: e.target.value })}
+                           optionData={optionData}
+                           placeholder="Tutor Name"
+                           inputContainerClassName="border bg-white py-[16px] px-[20px] w-[250px]"
+                           parentClassName="w-full mr-4"
+                           type="text"
+                        />
+                        <InputField
+                           value={filterData.studentName}
+                           IconRight={SearchIcon}
+                           onChange={e => setFilterData({ ...filterData, studentName: e.target.value })}
+                           optionData={optionData}
+                           placeholder="Student Name"
+                           inputContainerClassName="border bg-white py-[16px] px-[20px] w-[250px]"
+                           parentClassName="w-full mr-4"
+                           type="text"
+                        />
+                        <InputSelect
+                           optionData={timeZones}
+                           // onChange={val => setFilterData({ ...filterData, timeZone: val })}
+                           inputContainerClassName="border bg-white px-[20px] py-[16px] h-[39.55px] w-[200px]"
+                           placeholder="Time Zones"
+                           parentClassName="w-full mr-4"
+                           type="select"
+                           value={filterData.timeZone.length > 0 ? filterData.timeZone[0] : ""}
+                           checkbox={{
+                              visible: true,
+                              name: "test",
+                              match: filterData.timeZone,
+                           }}
+                           onChange={(val) =>
+                              setFilterData({
+                                 ...filterData,
+                                 timeZone: filterData.timeZone.includes(val)
+                                    ? filterData.timeZone.filter((item) => item !== val)
+                                    : [...filterData.timeZone, val],
+                              })
+                           }
+                        />
+                        <InputField
+                           value={filterData.specialization}
+                           IconRight={SearchIcon}
+                           onChange={e => setFilterData({ ...filterData, specialization: e.target.value })}
+                           placeholder="Specialization"
+                           inputContainerClassName="border bg-white py-[16px] px-[20px] w-[250px]"
+                           parentClassName="w-full mr-4"
+                           type="text"
+                        />
+                        {/* <button className='bg-primary py-3.5 w-full text-lg px-[21px] flex justify-center items-center text-white font-semibold rounded-lg'
                      onClick={() => setModalActive(true)}>
                      Assign Tutor
                      <img src={AddIcon} className='ml-3' />
                   </button> */}
-                  {/* <InputSelect
+                        {/* <InputSelect
                      value={filterData.date}
                      onChange={val => setFilterData({ ...filterData, date: val })}
                      optionData={optionData}
@@ -243,7 +275,7 @@ export default function AssignedStudents() {
                      parentClassName="w-full mr-4"
                      type="select"
                   /> */}
-                  {/* <InputSelect
+                        {/* <InputSelect
                      value={filterData.status}
                      onChange={val => setFilterData({ ...filterData, status: val })}
                      optionData={optionData}
@@ -252,7 +284,9 @@ export default function AssignedStudents() {
                      parentClassName="w-full mr-4"
                      type="select"
                   /> */}
-               </div>
+                     </div>
+               }
+
                <div className="pt-4 ">
                   <FilterItems items={filterItems} setData={setFilterItems}
                      onRemoveFilter={onRemoveFilter} />

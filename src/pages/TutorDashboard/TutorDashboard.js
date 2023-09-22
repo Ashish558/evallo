@@ -10,6 +10,7 @@ import DashboardCard from '../../components/DashboardCard/DashboardCard';
 import { scheduleData } from './tempData';
 import TutorSchedule from '../../components/TutorSchedule/TutorSchedule';
 import HatIcon from '../../assets/images/hat.svg'
+import download from '../../assets/images/basil_file-download-outline.svg'
 import { useLazyGetSessionsQuery, useLazyGetSingleSessionQuery } from '../../app/services/session';
 import { useSelector } from 'react-redux';
 import Message from '../../components/Message/Message';
@@ -69,7 +70,7 @@ export default function TutorDashboard() {
    const [allAssignedTests, setAllAssignedTests] = useState([])
    const [tutorHours, setTutorHours] = useState(0)
    const navigate = useNavigate()
-
+   const { firstName, lastName } = useSelector((state) => state.user);
    const [sessions, setSessions] = useState([])
    const [isOpen, setIsOpen] = useState(false)
    const { id } = useSelector(state => state.user)
@@ -77,7 +78,7 @@ export default function TutorDashboard() {
    const [tutorRank, setTutorRank] = useState('-')
    // const [awsLink, setAwsLink] = useState('')
    const { awsLink } = useSelector(state => state.user)
-
+   const { organization } = useSelector((state) => state.organization);
    useEffect(() => {
       const url = `/api/session/tutor/${id}`;
       fetchUserSessions(url)
@@ -105,7 +106,7 @@ export default function TutorDashboard() {
          .then(resp => {
             // console.log(resp.data.data.user.assiginedStudents)
             console.log(resp.data.data);
-            let awsLink =resp.data.data.baseLink
+            let awsLink = resp.data.data.baseLink
             const { details } = resp.data.data
             // console.log('tutor details', details);
             if (resp.data.data.user.tutorHours) {
@@ -189,6 +190,12 @@ export default function TutorDashboard() {
                const { createdAt, studentId, dueDate, photo, testId, multiple, timeLimit, isCompleted, isStarted } = item
                // console.log(photo);
                let profile = studentId.photo ? studentId.photo : null
+               let status = 'notStarted'
+               if (isCompleted === true) {
+                  status = 'completed'
+               } else if (isStarted) {
+                  status = 'started'
+               }
                return {
                   studentName: studentId ? `${studentId.firstName} ${studentId.lastName}` : '-',
                   studentId: studentId ? studentId._id : '-',
@@ -197,7 +204,7 @@ export default function TutorDashboard() {
                   testId: testId ? testId._id : null,
                   scores: '-',
                   duration: multiple ? getDuration(multiple) : 'Unlimited',
-                  status: isCompleted === true ? 'completed' : isStarted ? 'started' : 'notStarted',
+                  status: status,
                   createdAt,
                   photo: profile,
                   dueDate: getFormattedDate(dueDate),
@@ -220,148 +227,187 @@ export default function TutorDashboard() {
    // console.log('prof', profileProgress);
 
    return (
-      <div className="lg:ml-pageLeft bg-lightWhite min-h-screen overflow-x-hidden">
-         <div className="py-8 px-5">
+      <div className='bg-[#F5F8FA] mb-[100px]'>
+         <div className="w-[85.05vw] mx-auto">
+            <div className="">
+               <p className="text-[#24A3D9] text-xl mb-[30px] mt-[50px]">
+                  {organization?.company +
+                     "  >  " +
+                     firstName +
+                     "  " +
+                     lastName +
+                     "  >  "}
+                  <span className="font-bold">Dashboard</span>
+               </p>
 
-            <div className='flex items-start'>
-
-               <div className='flex flex-col items-start flex-[7]' >
-                  <div className='px-4 mb-[50px]'>
-                     <p className='text-primary-dark font-semibold text-[21px] mb-8'>Latest Students</p>
-                     <div className={styles.studentImages} >
-                        {
-                           students.length > 0 &&
-                           <OwlCarousel items={5} autoWidth margin={20} >
-                              {students.map(student => {
-                                 return <div className='flex flex-col items-center text-center w-[110px]'>
-                                    <img src={`${student.photo ? `${awsLink}${student.photo}` : '/images/default.jpeg'} `} className='w-[100px]' />
-                                    <p className='text-lg font-semibold mt-4 cursor-pointer'
-                                       onClick={() => navigate(`/profile/student/${student._id}`)} >
-                                       {student.name.split(" ")[0]} <br /> {student.name.split(" ")[1]} </p>
-                                 </div>
-                              })}
-                           </OwlCarousel>
-                        }
-                     </div>
+               {/* 
+               <div className='px-4 w-[521px] mx-auto'>
+                  <div className='flex justify-between items-center px-4'>
+                     <p className='text-[#26435F]  text-[21px] cursor-pointer'
+                        onClick={() => navigate('/profile')}>
+                        Complete your Profile
+                     </p>
+                     <img src={RightIcon} className='cursor-pointer' onClick={() => navigate('/profile')} alt="RightIcon" />
                   </div>
-
-                  <div className='flex w-full pl-6'>
-                     <DashboardCard data={{
-                        title: tutorHours,
-                        subtitle: `${tutorHours > 1 ? 'Hours' : 'Hour'}`
-                     }}
-                        header='Completed'
-                        subHeader='this month'
-                        className='bg-[#7E82F0]' />
-                     {/* <DashboardCard data={{ title: '-', subtitle: 'INR', titleClassName: 'text-[30px]' }}
-                        header='Earned'
-                        subHeader='this month'
-                        className='bg-[#4BBD94]' /> */}
-                  </div>
-
-
-                  <div className='w-full pl-6 mt-10'>
-                     <p className='text-primary-dark font-semibold text-[21px] mb-4'>Today’s Schedule</p>
-                     <div className='px-[29px] py-[31px] bg-white mr-5 rounded-[20px] scrollbar-content scrollbar-vertical max-h-[600px] overflow-auto'>
-                        {sessions.map((item, idx) => {
-                           return <TutorSchedule {...item} setIsOpen={setIsOpen} handleLinkClick={handleLinkClick} />
-                        })}
-                     </div>
-                  </div>
-
-
-               </div>
-               <div className='flex-1 flex-[6] px-4 pl-6 bg-[#D9D9D9]/10 mt-[20px] rounded-[20px] pt-[65px]'>
-
-                  <div className='px-4'>
-                     <div className='flex justify-between items-center px-4 mb-3'>
-                        <p className='text-primary font-semibold text-[21px] cursor-pointer'
-                           onClick={() => navigate('/profile')}>
-                           Complete your Profile
-                        </p>
-                        <img src={RightIcon} className='cursor-pointer' onClick={() => navigate('/profile')} />
-                     </div>
-                     <div className='px-4 mb-[10px] text-lg font-semibold  flex justify-between'>
-                        <p className=''>Profile Status</p>
-                        <p>
-                           {`${profileProgress}%`}
-                        </p>
-                     </div>
+                  <div className='px-4  text-lg font-medium  flex justify-between items-center'>
+                    
                      <ProgressBar num={profileProgress} />
+                     <p className='pl-3'>
+                        {`${profileProgress}%`}
+                     </p>
                   </div>
 
-                  <div className='pl-8 pr-4 mt-8'>
-                     <p className='text-primary font-semibold text-[21px] mb-4'>
-                        Rank
-                     </p>
-                     <div className={`py-[17px] px-[19px] flex flex-1 text-white rounded-20  first:mr-[30px] bg-primary`}>
-                        <div className='self-stretch w-[80px] h-[80px] my-auto text-center bg-black/20 rounded-[15px] flex flex-col justify-center'>
-                           <img src={HatIcon} className='objects-contain' />
-                        </div>
+               </div> */}
 
-                        <div className='px-6 flex flex-1'>
-                           <div className='flex-1'>
-                              <div className='pt-[6px] font-bold text-[27px] flex items-center justify-between'>
-                                 <p>
-                                    Tutor Rank
+               <div className='flex items-start'>
+
+                  <div className='flex flex-col items-start flex-[7]' >
+                     <div className=' mb-[30px] w-[55.52vw]'>
+                        <p className='text-[#26435F] font-semibold text-xl mb-[20px] '>Latest Students</p>
+                        <div className='rounded-[5.333px] bg-[#FFF] shadow-[0px_0px_2px_rgba(0,0,0,0.25)] py-5 px-5'>
+                           <div className={styles.studentImages} >
+                              {
+                                 students.length > 0 &&
+                                 <OwlCarousel items={5} autoWidth margin={20} >
+                                    {students.map(student => {
+                                       return <div className='flex flex-col items-center text-center w-[108px]'>
+                                          <img src={`${student.photo ? `${awsLink}${student.photo}` : '/images/default.jpeg'} `} alt='studentImage' />
+                                          <p className='text-[0.78125vw] text-[#517CA8]  mt-4 cursor-pointer'
+                                             onClick={() => navigate(`/profile/student/${student._id}`)} >
+                                             {student.name.split(" ")[0]} <br /> {student.name.split(" ")[1]} </p>
+                                       </div>
+                                    })}
+                                 </OwlCarousel>
+                              }
+                           </div>
+                        </div>
+                     </div>
+
+                     <div className='flex w-[55.52vw] justify-between'>
+                        <DashboardCard data={{
+                           title: tutorHours,
+                           subtitle: `${tutorHours > 1 ? 'Hours' : 'Hour'}`
+                        }}
+                           header='Completed'
+                           subHeader='This Month'
+                           className='bg-[#FFA28D]' />
+                        <DashboardCard data={{ title: '-', subtitle: 'USD', titleClassName: 'text-[1.41vw]' }}
+                           header='Earned'
+                           subHeader='This Month'
+                           className='bg-[#FFA28D]' />
+
+                        <div className=' flex justify-center items-center w-[16.41vw] bg-[#F4F4F4]  rounded-[5px] shadow-[0px_0px_2px_0px_rgba(0,0,0,0.25)]'>
+                           <div>     <p className='text-[1.41vw] text-center text-[#667085] font-semibold'>Tutor Rank</p>
+                              <p className='text-[#667085] text-center text-[0.9375vw]'>Coming Soon</p></div>
+                        </div>
+                     </div>
+
+
+                     <div className='w-[55.52vw] mt-10'>
+                        <p className='text-primary-dark font-semibold text-[20px] mb-[13px]'>Today’s Schedule</p>
+                        <div className='px-[43px] py-[26px] bg-white  rounded-[5.333px] scrollbar-content scrollbar-vertical max-h-[499px] overflow-auto shadow-[0px_0px_2.6px_0px_rgba(0,0,0,0.25)]'>
+                           {sessions.map((item, idx) => {
+                              return <TutorSchedule {...item} setIsOpen={setIsOpen} handleLinkClick={handleLinkClick} />
+                           })}
+                        </div>
+                     </div>
+
+
+                  </div>
+                  <div >
+
+                     <p className='text-xl text-[#26435F] mb-[20px] font-semibold'>Latest Practice Test</p>
+                     <div className='bg-[#FFFFFF]  rounded-[5px] shadow-[0px_0px_2.6px_0px_rgba(0,0,0,0.25)]'>
+                        <div className=''>
+
+                           {/* <div className={`py-[17px] px-[19px] flex flex-1 text-white rounded-20  first:mr-[30px] bg-primary`}>
+                           <div className='self-stretch w-[80px] h-[80px] my-auto text-center bg-black/20 rounded-[15px] flex flex-col justify-center'>
+                              <img src={HatIcon} className='objects-contain' />
+                           </div>
+
+                           <div className='px-6 flex flex-1'>
+                              <div className='flex-1'>
+                                 <div className='pt-[6px] font-bold text-[27px] flex items-center justify-between'>
+                                    <p>
+                                       Tutor Rank
+                                    </p>
+                                 </div>
+                                 <p className='text-xs font-semibold'>
+                                    <p>
+                                       Total Tutoring Hours: -
+                                    </p>
+                                    <p>
+                                       Avg Session Feedback: -
+                                    </p>
+                                    <p>
+                                       Total Client Referrals: -
+                                    </p>
                                  </p>
                               </div>
-                              <p className='text-xs font-semibold'>
-                                 <p>
-                                    Total Tutoring Hours: -
+                              <div className='flex items-center justify-center px-4 pr-0'>
+                                 <p className='inline-block pr-4 text-[#392976] font-bold text-[30px]'>
+                                    {tutorRank === '-' ? '-' : tutorRank}
                                  </p>
-                                 <p>
-                                    Avg Session Feedback: -
-                                 </p>
-                                 <p>
-                                    Total Client Referrals: -
-                                 </p>
-                              </p>
+                              </div>
                            </div>
-                           <div className='flex items-center justify-center px-4 pr-0'>
-                              <p className='inline-block pr-4 text-[#392976] font-bold text-[30px]'>
-                                 {tutorRank === '-' ? '-' : tutorRank}
-                              </p>
-                           </div>
+
+                        </div> */}
                         </div>
 
-                     </div>
-                  </div>
+                        <div className='w-[27.34vw]'>
+                           {/* <p className='text-primary font-semibold text-[21px] mb-4'>
+                           Latest Practice Test
+                        </p> */}
+                           <div className='pl-[30px] pr-[26px] h-[900px] overflow-auto py-[30px]  bg-white rounded-20'>
+                              {allAssignedTests.map(item => {
 
-                  <div className='px-8 pr-4 mt-8'>
-                     <p className='text-primary font-semibold text-[21px] mb-4'>
-                        Latest Practice Test
-                     </p>
-                     <div className='px-[25px] h-[331px] overflow-auto py-[25px] bg-white rounded-20'>
-                        {allAssignedTests.map(item => {
-                           return (
-                              <div className='flex items-center mb-8' key={item._id} >
-                                 <div>
-                                    <img src={`${item.photo ? `${awsLink}${item.photo}` : '/images/default.jpeg'} `} className='w-[62px] h-[62px] rounded-full' />
-                                 </div>
-                                 <div className='ml-[21px] mr-[8px] flex-1'>
-                                    <p className='font-semibold text-lg mb-1'> {item.testName} </p>
-                                    <div className='text-xs font-semibold flex opacity-50'>
-                                       <p>Due Date</p>
-                                       <p className='ml-3'> {getDate(item.dueDate)} </p>
+                                 return (
+                                    <div className=' mb-[18px]' key={item._id} >
+                                       <div>
+                                          {/* <img src={`${item.photo ? `${awsLink}${item.photo}` : '/images/default.jpeg'} `} className='w-[62px] h-[62px] rounded-full' /> */}
+                                       </div>
+                                       <div className='w-[88%] flex justify-between items-center'>
+                                          <div className='w-3/6'>
+                                             <p className='text-[#24A3D9] text-[1.172vw] font-bold cursor-pointer' onClick={() => navigate(`/assigned-tests/${item.testId}/${item.assignedTestId}/report/${item.studentId}`)} > {item.testName} </p>
+                                             <div className=' text-[#517CA8] flex text-[0.911vw]'>
+                                                <p className='font-semibold'>Due:</p>
+                                                <p className='ml-2'> {getDate(item.dueDate)} </p>
+                                             </div>
+                                          </div>
+                                          <div>
+                                             <img className='cursor-pointer' width="35px" src={download} alt="" />
+                                          </div>
+                                          <div className='text-[0.911vw] font-semibold'>
+                                             {
+                                                item.status = "notStarted" ?
+                                                   <p className='text-[#FFCE84] underline '>
+                                                      Not started
+                                                   </p> :
+                                                   <p className='text-[#32D583] underline'>
+                                                      {item.status?.props?.children === 'completed' ? 'Completed' : 'Started'}
+                                                   </p>
+                                             }
+
+                                          </div>
+                                       </div>
+                                       {/* <button className={`bg-primaryOrange font-semibold text-sm rounded-[6px] px-8 py-3 text-white ${item.status !== 'completed' && item.status !== 'started' ? 'opacity-50 pointer-events-none' : ''}`}
+                                          onClick={() => navigate(`/assigned-tests/${item.testId}/${item.assignedTestId}/report/${item.studentId}`)} >
+                                          View
+                                       </button> */}
+                                       <div className='mt-5 h-[1px] w-[100%] bg-[#D9D9D9]' ></div>
                                     </div>
-                                 </div>
-                                 <button className={`bg-primaryOrange font-semibold text-sm rounded-[6px] px-8 py-3 text-white ${item.status !== 'completed' && item.status !== 'started' ? 'opacity-50 pointer-events-none' : ''}`}
-                                    onClick={() => navigate(`/assigned-tests/${item.testId}/${item.assignedTestId}/report/${item.studentId}`)} >
-                                    View
-                                 </button>
-                              </div>
-                           )
-                        })}
+                                 )
+                              })}
+                           </div>
+                        </div>
                      </div>
+
                   </div>
-
-
                </div>
-            </div>
 
+            </div>
+            <Message text='Session link has been copied to your clipboard' isOpen={isOpen} />
          </div>
-         <Message text='Session link has been copied to your clipboard' isOpen={isOpen} />
       </div>
    )
 }

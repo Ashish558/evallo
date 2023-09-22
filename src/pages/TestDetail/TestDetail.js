@@ -88,7 +88,7 @@ export default function TestDetail() {
       formData.append("pdf", file);
       setPDFFile(file);
       setPdfBtnDisabled(true)
-      axios.post(`${BASE_URL}api/test/addpdf/${id}`, formData,  {headers: getAuthHeader()})
+      axios.post(`${BASE_URL}api/test/addpdf/${id}`, formData, { headers: getAuthHeader() })
          .then((res) => {
             setPdfBtnDisabled(false)
             alert('PDF file uploaded successfully!')
@@ -105,7 +105,9 @@ export default function TestDetail() {
    };
 
    const fetchData = () => {
-      axios.get(`${BASE_URL}api/test/${id}`)
+      axios.get(`${BASE_URL}api/test/${id}`, {
+         headers: getAuthHeader()
+      })
          .then((res) => {
             console.log('test data', res.data.data);
             setAwsLink(res.data.data.baseLink)
@@ -228,7 +230,7 @@ export default function TestDetail() {
                   <div className="">
                      <SecondaryButton
                         className="flex items-center pl-2 pr-5 py-2.5"
-                        onClick={() => navigate("/all-tests")}
+                        onClick={() => navigate(-1)}
                         children={
                            <>
                               <img src={BackIcon} className="mr-2" />
@@ -316,21 +318,19 @@ export default function TestDetail() {
 
                <div className="flex-1 pl-2">
                   <p className="text-2xl text-textPrimaryDark my-7 font-bold"> Questions by Section </p>
-                  <div className="mt-6 flex justify-between items-end">
-                     <div>
-                        {subjects.map((item, idx) => {
-                           return (
-                              <PrimaryButton
-                                 children={item.name}
-                                 className={`py-2.5 px-0 text-xs mr-4 font-semibold w-[120px] ${item.selected
-                                    ? ""
-                                    : "bg-secondaryLight text-textGray"
-                                    }`}
-                                 onClick={() => handleSubjectChange(item._id)}
-                              />
-                           );
-                        })}
-                     </div>
+                  <div className="mt-6 flex flex-wrap items-end">
+                     {subjects.map((item, idx) => {
+                        return (
+                           <PrimaryButton
+                              children={item.name}
+                              className={`py-2.5 px-0 text-xs mr-4 font-semibold w-[120px] ${item.selected
+                                 ? ""
+                                 : "bg-secondaryLight text-textGray"
+                                 }`}
+                              onClick={() => handleSubjectChange(item._id)}
+                           />
+                        );
+                     })}
                   </div>
 
                   <div className="flex justify-between mt-7">

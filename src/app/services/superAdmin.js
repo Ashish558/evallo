@@ -15,11 +15,33 @@ export const superAdminServicesApi = createApi({
         headers: getAuthHeader(),
       }),
     }),
-
+    getAllOrgStatsRange: builder.mutation({
+      query: (body) => ({
+        url: `api/user/superadmin/dashboard/orgstats`,
+        method: "POST",
+        body,
+        headers: getAuthHeader(),
+      }),
+    }),
+    getLogout: builder.query({
+      query: (name) => ({
+        url: `api/user/org/logOut`,
+        method: "GET",
+        headers: getAuthHeader(),
+      }),
+    }),
     getUserStatsByRole: builder.query({
       query: (body) => ({
         url: `api/user/superadmin/dashboard/userstats?role=${body.role}`,
         method: "GET",
+        headers: getAuthHeader(),
+      }),
+    }),
+    getUserStatsByRoleRange :builder.mutation({
+      query: (body) => ({
+        url: `api/user/superadmin/dashboard/userstats?role=${body.role}`,
+        method: "POST",
+        body,
         headers: getAuthHeader(),
       }),
     }),
@@ -30,6 +52,21 @@ export const superAdminServicesApi = createApi({
         headers: getAuthHeader(),
       }),
     }),
+    getFinancialStats: builder.query({
+      query: (name) => ({
+        url: `api/user/superadmin/financialStats`,
+        method: "GET",
+        headers: getAuthHeader(),
+      }),
+    }),
+    getFinancialStatsRange: builder.mutation({
+      query: (body) => ({
+        url: `api/user/superadmin/financialStats`,
+        method: "POST",
+        body,
+        headers: getAuthHeader(),
+      }),
+    }),
     getUserDailyActivity: builder.query({
       query: (name) => ({
         url: `api/user/superAdmin/userDailyActivity`,
@@ -37,7 +74,29 @@ export const superAdminServicesApi = createApi({
         headers: getAuthHeader(),
       }),
     }),
-
+    getUserDailyActivityRange: builder.mutation({
+      query: (body) => ({
+        url: `api/user/superAdmin/userDailyActivity`,
+        method: "POST",
+        body,
+        headers: getAuthHeader(),
+      }),
+    }),
+    getActionLog: builder.query({
+      query: (name) => ({
+        url: `/api/user/superadmin/actionlog`,
+        method: "GET",
+        headers: getAuthHeader(),
+      }),
+    }),
+    getActionLogRange:builder.mutation({
+      query: (body) => ({
+        url: `/api/user/superadmin/actionlog`,
+        method: "POST",
+        body,
+        headers: getAuthHeader(),
+      }),
+    }),
     addUserDemography: builder.mutation({
       query: (body) => ({
         url: `/api/user/superadmin/dashboard/userdemography`,
@@ -54,13 +113,75 @@ export const superAdminServicesApi = createApi({
         headers: getAuthHeader(),
       }),
     }),
+    getLatestOrg: builder.query({
+      query: () => ({
+        url: `/api/user/superadmin/getlastSignUpdetails`,
+        method: "GET",
+        headers: getAuthHeader(),
+      }),
+    }),
+    getLatestOrgRange:builder.mutation({
+      query: (body) => ({
+        url: `/api/user/superadmin/getlastSignUpdetails`,
+        method: "POST",
+        body,
+        headers: getAuthHeader(),
+      }),
+    }),
+    getAllOrg: builder.query({
+      query: () => ({
+        url: `/api/user/superadmin/getAllOrg`,
+        method: "GET",
+        headers: getAuthHeader(),
+      }),
+    }),
+    getSpecificActionLog: builder.mutation({
+      query: (body) => ({
+        url: `/api/user/superadmin/getSpecificActionLog`,
+        method: "POST",
+        body: body,
+        headers: getAuthHeader(),
+      }),
+    }),
+    getTotalHours: builder.mutation({
+      query: (body) => ({
+        url: `api/user/superadmin/totalHours`,
+        method: "POST",
+        body: body,
+        headers: getAuthHeader(),
+      }),
+    }),
+    addManager2: builder.mutation({
+      query: (body) => ({
+        url: `api/user/registerManager`,
+        method: "POST",
+        body: body,
+        headers: getAuthHeader(),
+      }),
+    }),
   }),
 });
 
 export const {
   useGetAllOrgStatsQuery,
+  useGetAllOrgStatsRangeMutation,
   useGetAllTestQuery,
+  useAddManager2Mutation,
   useGetUserStatsByRoleQuery,
+  useGetUserStatsByRoleRangeMutation,
   useGetUserDailyActivityQuery,
+  useGetUserDailyActivityRangeMutation,
   useAddUserDemographyMutation,
+  useGetActionLogQuery,
+  useGetActionLogRangeMutation,
+  useLazyGetAllOrgQuery,
+  useGetTotalHoursMutation,
+  useLazyGetLatestOrgQuery,
+  useGetLatestOrgRangeMutation,
+  useLazyGetLogoutQuery,
+  useGetFinancialStatsQuery,
+  useGetFinancialStatsRangeMutation,
+
+  useGetSpecificActionLogMutation
+  
 } = superAdminServicesApi;
