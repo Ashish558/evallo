@@ -5,6 +5,7 @@ import AddIcon from "../../assets/icons/add.svg";
 import PrimaryButton from "../../components/Buttons/PrimaryButton";
 // import styles from './style.module.css'
 // import { tableData } from './tempData'
+import { useLocation } from 'react-router-dom';
 import Table from "../../components/Table/Table";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
@@ -16,7 +17,10 @@ import Scoring from "./Scoring/Scoring";
 import Modal from "../../components/Modal/Modal";
 import InputField from "../../components/InputField/inputField";
 import InputSelect from "../../components/InputSelect/InputSelect";
-
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
+import './form.css';
+import Delete from '../../assets/images/delete.png'
 const subjects = [
    { text: "English", selected: true },
    { text: "Mathematics", selected: false },
@@ -49,6 +53,8 @@ const initialState = {
    concept: '',
    strategy: '',
    AnswerChoices: '',
+   Passage:'',
+   Answers:[],
 }
 export default function TestDetail() {
    const [testData, setTestData] = useState([]);
@@ -63,6 +69,8 @@ export default function TestDetail() {
    const [pdfBtnDisabled, setPdfBtnDisabled] = useState(false)
    const [pdfModalActive, setPdfModalActive] = useState(false)
    const [editLoading, setEditLoading] = useState(false)
+   const location = useLocation();
+   const testType=location?.state?.testype
 
    useEffect(() => {
       if (modalData.email === '' || modalData.firstName === '' || modalData.lastName === '' || modalData.userType === '') {
@@ -82,34 +90,44 @@ export default function TestDetail() {
    const [questionsTable, setQuestionsTable] = useState([])
    const [subjects, setSubjects] = useState([])
    const [awsLink, setAwsLink] = useState('')
+   const [pdfBase64, setPdfBase64] = useState("");
 
    const handlePDFFile = (file) => {
       const formData = new FormData();
       formData.append("pdf", file);
       setPDFFile(file);
-      setPdfBtnDisabled(true)
-      axios.post(`${BASE_URL}api/test/addpdf/${id}`, formData, { headers: getAuthHeader() })
+      setPdfBtnDisabled(true);
+      const id = window.location.pathname.split("/")[2];
+      axios.post(`${BASE_URL}api/test/addpdf/${id}`, formData, {headers: getAuthHeader()})
          .then((res) => {
-            setPdfBtnDisabled(false)
-            alert('PDF file uploaded successfully!')
+            setPdfBtnDisabled(false);
+            alert('PDF file uploaded successfully!');
             console.log('pdf post resp', res);
-            setPdfModalActive(false)
-            fetchData()
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => {
+               // The base64 content of the PDF file will be available in reader.result
+               const base64Data = reader.result.split(',')[1]; // Remove the data URL prefix
+               console.log("Base64 PDF Content:", `data:application/pdf;base64,${base64Data}`);
+
+               setPdfBase64(base64Data);
+               setPdfModalActive(false);
+               fetchData();
+            }
          }).catch(err => {
-            setPdfBtnDisabled(false)
+            setPdfBtnDisabled(false);
             console.log('pdf err', err.response);
-            alert('Could not upload pdf')
-            setPdfModalActive(false)
-            fetchData()
-         })
+            alert('Could not upload pdf');
+            setPdfModalActive(false);
+            fetchData();
+         });
    };
 
+
    const fetchData = () => {
-      axios.get(`${BASE_URL}api/test/${id}`, {
-         headers: getAuthHeader()
-      })
+      axios.get(`${BASE_URL}api/test/${id}`,{headers: getAuthHeader()})
          .then((res) => {
-            console.log('test data', res.data.data);
+            console.log('test data', res);
             setAwsLink(res.data.data.baseLink)
             setTestData(res.data.data.test);
          });
@@ -125,7 +143,7 @@ export default function TestDetail() {
             setAllQuestions(res.data.data.answer.answer)
          })
    }
-
+    
    useEffect(() => {
       fetchData()
    }, [])
@@ -138,7 +156,7 @@ export default function TestDetail() {
       let idx = subjects.findIndex(item => item.selected === true)
       let tempdata = allQuestions[idx].map(item => {
          // console.log(item);
-         const { QuestionNumber, CorrectAnswer, Concepts, Strategies, QuestionType, AnswerChoices } = item
+         const { QuestionNumber, CorrectAnswer, Concepts, Strategies, QuestionType, AnswerChoices,Passage,Answers } = item
          if (!item.Strategies) {
             return {
                QuestionNumber,
@@ -146,8 +164,8 @@ export default function TestDetail() {
                Concepts: Concepts === undefined ? 'Unavailable' : Concepts,
                Strategies: 'Unavailable',
                QuestionType,
-               AnswerChoices
-            }
+               AnswerChoices,
+               }
          } else {
             return {
                QuestionNumber,
@@ -155,11 +173,12 @@ export default function TestDetail() {
                Concepts: Concepts === undefined ? 'Unavailable' : Concepts,
                Strategies,
                QuestionType,
-               AnswerChoices
+               AnswerChoices,
             }
          }
       })
       setQuestionsTable(tempdata)
+      console.log(questionsTable);
    }, [subjects])
 
    const handleSubjectChange = (id) => {
@@ -173,23 +192,58 @@ export default function TestDetail() {
       setSubjects(tempSubs)
    }
 
-   const handleSubmit = (e) => {
+
+   
+   const handleSubmit = (e) => {    
       e.preventDefault()
       // console.log('modalData', modalData);
       // console.log('questionToEdit', questionToEdit);
-      const selectedSub = subjects.find(sub => sub.selected === true)
-      const body = {
-         subject: selectedSub.name,
-         Qno: questionToEdit.QuestionNumber,
-         update: {
-            CorrectAnswer: modalData.correctAnswer,
-            Concepts: modalData.concept,
-            QuestionType: modalData.questionType,
-            Strategies: modalData.strategy,
-            AnswerChoices: modalData.AnswerChoices,
-         }
-      }
-      console.log('body', body);
+      // const imageBase64Data = {
+      //    questionImageBase64:questionImageBase64,
+      //    optionAImageBase64: optionAImageBase64,
+      //    optionBImageBase64: optionBImageBase64,
+      //    optionCImageBase64: optionCImageBase64,
+      //    optionDImageBase64: optionDImageBase64,
+      // richTextContentBase64: btoa(richTextContent),
+      // };
+       const body = {
+         subject: "new subject",
+         Qno: modalData.QuestionNumber,
+         update:{
+               CorrectAnswer: modalData.correctAnswer,
+               Concepts: modalData.concept,
+               Strategies: modalData.strategy,
+               AnswerChoices: modalData.AnswerChoices,
+               QuestionText: modalData.question,
+               QuestionImage:questionImageBase64,
+               QuestionType: modalData.questionType,
+               Answers:[
+                  {
+                     label: 'A',
+                     content: optionAImageBase64
+                  },
+                  {
+                     label: 'B',
+                     content: optionBImageBase64
+                  },
+                  {
+                     label: 'C',
+                     content: optionCImageBase64
+                  },
+                  {
+                     label: 'D',
+                     content: optionDImageBase64
+                  },
+               ],
+               Passage: modalData.richTextContent,
+            },
+         };
+        
+const jsonString = JSON.stringify(body);
+
+         // Log the JSON data in the console
+         console.log("JSON Form Data:", jsonString);
+      
       setEditLoading(true)
       editQuestion({ id, reqbody: body })
          .then(res => {
@@ -203,8 +257,30 @@ export default function TestDetail() {
 
    }
    const handleEditTestClick = (item) => {
-      // console.log('modalData', modalData);
-      // console.log('item', item);
+         setModalData(prev=>{
+            return{
+               ...prev,
+               richTextContent:allQuestions[0][item.QuestionNumber-1].Passage,
+               question:allQuestions[0][item.QuestionNumber-1].QuestionText
+            }
+         })
+         setQuestionImageBase64(allQuestions[0][item.QuestionNumber-1].QuestionImage)
+      if(allQuestions[0][item.QuestionNumber-1].Answers.size!=0){
+         allQuestions[0][item.QuestionNumber-1].Answers.map((it)=>{
+            if(it.label=='A'){
+               setOptionAImageBase64(it.content)
+            }
+            else if(it.label==='B'){
+               setOptionBImageBase64(it.content)
+            }
+            else if(it.label==='C'){
+               setOptionCImageBase64(it.content)
+            }
+            else if(it.label==='D'){
+               setOptionDImageBase64(it.content)
+            }
+         })
+      }
       setModalData(prev => {
          return {
             ...prev,
@@ -215,12 +291,92 @@ export default function TestDetail() {
             questionType: item.QuestionType,
             AnswerChoices: item.AnswerChoices,
          }
+         
+
       })
       setModalActive(true)
       setQuestionToEdit(item)
    }
-   // console.log('sectionsData', sectionsData);
-   // console.log('questionsTable', questionsTable);
+
+   const [questionContent, setQuestionContent] = useState('');
+   const [optionAContent, setOptionAContent] = useState('');
+   const [optionBContent, setOptionBContent] = useState('');
+   const [optionCContent, setOptionCContent] = useState('');
+   const [optionDContent, setOptionDContent] = useState('');
+
+  
+const [questionImageBase64, setQuestionImageBase64] = useState(""); // Define questionImageBase64 state variable
+const [optionAImageBase64, setOptionAImageBase64] = useState(""); // Define optionAImageBase64 state variable
+const [optionBImageBase64, setOptionBImageBase64] = useState(""); // Define optionBImageBase64 state variable
+const [optionCImageBase64, setOptionCImageBase64] = useState(""); // Define optionCImageBase64 state variable
+const [optionDImageBase64, setOptionDImageBase64] = useState(""); // Define optionDImageBase64 state variable
+const [imageType, setImageType] = useState(""); // Define imageType state variable
+
+
+
+// Add a function to handle image uploads
+const handleImageUpload = (file, imageType) => {
+   if (file) {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+
+      reader.onload = () => {
+       
+         const base64Data = reader.result;
+         console.log(`Base64 ${imageType} Content:`, base64Data);
+
+         
+         switch (imageType) {
+            case "questionImage":
+               setQuestionImageBase64(base64Data);
+               break;
+            case "optionAImage":
+               setOptionAImageBase64(base64Data);
+               break;
+            case "optionBImage":
+               setOptionBImageBase64(base64Data);
+               break;
+            case "optionCImage":
+               setOptionCImageBase64(base64Data);
+               break;
+            case "optionDImage":
+               setOptionDImageBase64(base64Data);
+               break;
+            default:
+               break;
+         }
+      };
+   }
+};
+ 
+ 
+ 
+const handleimage_emppty = (imageType) => {
+   
+         switch (imageType) {
+            case "questionImage":
+               setQuestionImageBase64('');
+               break;
+            case "optionAImage":
+               setOptionAImageBase64('');
+               break;
+            case "optionBImage":
+               setOptionBImageBase64('');
+               break;
+            case "optionCImage":
+               setOptionCImageBase64('');
+               break;
+            case "optionDImage":
+               setOptionDImageBase64('');
+               break;
+            default:
+               break;
+         }
+};
+  
+
+
+const [richTextContent, setRichTextContent] = useState(""); 
 
    return (
       <>
@@ -230,7 +386,7 @@ export default function TestDetail() {
                   <div className="">
                      <SecondaryButton
                         className="flex items-center pl-2 pr-5 py-2.5"
-                        onClick={() => navigate(-1)}
+                        onClick={() => navigate("/all-tests")}
                         children={
                            <>
                               <img src={BackIcon} className="mr-2" />
@@ -243,7 +399,7 @@ export default function TestDetail() {
                         <p className="mt-6 text-textPrimaryDark text-4xl font-bold">
                            {testData.testName}
                         </p>
-                        {
+                        {testType!='DSAT'?
                            Object.keys(sectionsData).length > 1 &&
 
                            <a className="text-[#0671E0] text-xs italic inline-block cursor-pointer"
@@ -252,14 +408,14 @@ export default function TestDetail() {
                            >
                               {sectionsData.test.pdf !== null ? `${sectionsData.test.testName}.pdf` : ''}
                            </a>
-                        }
-                        <PrimaryButton
+                        :null}
+                       {testType!='DSAT'? <PrimaryButton
                            children='Reupload pdf'
 
                            disabled={pdfBtnDisabled}
                            className={`py-3.5 text-sm mt-5 w-[120px] pl-2 pr-2 mr-4 font-medium text-textGra`}
                            onClick={() => setPdfModalActive(true)}
-                        />
+                        />:null}
                         {/* <input ref={PdfRef}
                            id="pdf"
                            type="file"
@@ -318,19 +474,21 @@ export default function TestDetail() {
 
                <div className="flex-1 pl-2">
                   <p className="text-2xl text-textPrimaryDark my-7 font-bold"> Questions by Section </p>
-                  <div className="mt-6 flex flex-wrap items-end">
-                     {subjects.map((item, idx) => {
-                        return (
-                           <PrimaryButton
-                              children={item.name}
-                              className={`py-2.5 px-0 text-xs mr-4 font-semibold w-[120px] ${item.selected
-                                 ? ""
-                                 : "bg-secondaryLight text-textGray"
-                                 }`}
-                              onClick={() => handleSubjectChange(item._id)}
-                           />
-                        );
-                     })}
+                  <div className="mt-6 flex justify-between items-end">
+                     <div>
+                        {subjects.map((item, idx) => {
+                           return (
+                              <PrimaryButton
+                                 children={item.name}
+                                 className={`py-2.5 px-0 text-xs mr-4 font-semibold w-[120px] ${item.selected
+                                    ? ""
+                                    : "bg-secondaryLight text-textGray"
+                                    }`}
+                                 onClick={() => handleSubjectChange(item._id)}
+                              />
+                           );
+                        })}
+                     </div>
                   </div>
 
                   <div className="flex justify-between mt-7">
@@ -375,8 +533,8 @@ export default function TestDetail() {
                }}
                handleClose={() => { setModalActive(false); setModalData(initialState) }}
                body={
-                  <form id='add-user-form' onSubmit={handleSubmit} className='px-[3px] mb-0.5' >
-                     <div className='grid grid-cols-1 md:grid-cols-2  gap-x-2 md:gap-x-3 gap-y-3 gap-y-4 mb-5'>
+                  <form id='add-user-form' onSubmit={handleSubmit} className='px-[3px] mb-0.5 form-scroll-container'>
+                     <div className='grid grid-cols-2 md:grid-cols-2  gap-x-2 md:gap-x-3 gap-y-3 gap-y-4 mb-5'>
                         <div>
                            <InputField label='Question No.'
                               labelClassname='ml-4 mb-0.5'
@@ -446,7 +604,215 @@ export default function TestDetail() {
                               value={modalData.AnswerChoices}
                               onChange={e => setModalData({ ...modalData, AnswerChoices: e.target.value })} />
                         </div>
-                     </div>
+
+                                  </div> 
+                                
+                                
+                {/* My Code */}
+                {/* Left Column for Text Inputs */}
+                <div className="flex mb-2">
+   {/* Left Column for Text Inputs */}
+   {/* <div className="w-1/2 pr-4">
+      <div className="mb-4">
+         <p className="text-lg font-semibold">Question:</p>
+         <input
+            type="text"
+            value={modalData.question}
+            onChange={(e) => setModalData({ ...modalData, question: e.target.value })}
+            className="border rounded p-2 w-full"
+         />
+      </div>
+      <div className='flex items-center mb-2'>
+      <label htmlFor='mcqOptionA' className='ml-2 text-lg'>
+        A)
+        </label>
+      <input
+         type='text'
+         id='mcqOptionA'
+         value={modalData.optionA}
+         onChange={e => setModalData({ ...modalData, optionA: e.target.value })}
+         className='border rounded p-2 ml-2 w-full'
+      />
+   </div>
+   <div className='flex items-center mb-2'>
+      <label htmlFor='mcqOptionA' className='ml-2 text-lg'>
+        B)
+        </label>
+      <input
+         type='text'
+         id='mcqOptionB'
+         value={modalData.optionB}
+         onChange={e => setModalData({ ...modalData, optionB: e.target.value })}
+         className='border rounded p-2 ml-2 w-full'
+      />
+   </div>
+   <div className='flex items-center mb-2'>
+      <label htmlFor='mcqOptionA' className='ml-2 text-lg'>
+        C)
+        </label>
+      <input
+         type='text'
+         id='mcqOptionC'
+         value={modalData.optionC}
+         onChange={e => setModalData({ ...modalData, optionC: e.target.value })}
+         className='border rounded p-2 ml-2 w-full'
+      />
+   </div>
+   <div className='flex items-center mb-2'>
+      <label htmlFor='mcqOptionA' className='ml-2 text-lg'>
+        D)
+        </label>
+      <input
+         type='text'
+         id='mcqOptionD'
+         value={modalData.optionD}
+         onChange={e => setModalData({ ...modalData, optionD: e.target.value })}
+         className='border rounded p-2 ml-2 w-full'
+      />
+   </div>
+
+   </div> */}
+
+   {/* Right Column for Image Upload */}
+   <div className="w-full">
+   <div className="mb-4 pl-[33px]">
+         <p className="text-lg font-semibold">Question:</p>
+         <input
+            type="text"
+            value={modalData.question}
+            onChange={(e) => setModalData({ ...modalData, question: e.target.value })}
+            className="border rounded p-2 w-full"
+         />
+      </div>
+      <div className="mb-4 pl-[33px]">
+         <p className="text-lg font-semibold">Question Image:</p>
+         {questionImageBase64!=''?
+         <div className="flex flex-row gap-6 w-full justify-start items-center overflow-hidden">
+            <div className="flex ">
+               <img src={questionImageBase64} className='rounded max-w-40 max-h-40' alt="base64"/>
+            </div>
+      <div onClick={()=>{handleimage_emppty('questionImage')}}>
+           <img src={Delete} alt='delete' className="w-4 h-4 mx-2 cursor-pointer" />
+         </div>
+      </div>
+      : <input
+      type="file"
+      id="questionImage"
+      accept="image/*"
+      onChange={(e) => handleImageUpload(e.target.files[0], 'questionImage')}
+      className="border rounded p-2 w-full"
+   />}
+      </div>
+      <div className='flex items-center mb-2'>
+      <label htmlFor='optionAImage' className='ml-2 text-lg'>
+         A)
+      </label>
+      {optionAImageBase64!=''?
+      <div className="flex flex-row gap-6 w-full justify-start pl-4 items-center overflow-hidden">
+      <div className="flex ">
+         <img src={optionAImageBase64} className='rounded max-w-40 max-h-40' alt="base64"/>
+      </div>
+<div onClick={()=>{handleimage_emppty('optionAImage')}}>
+     <img src={Delete} alt='delete' className="w-4 h-4 mx-2 cursor-pointer" />
+   </div>
+</div>
+      : <input
+      type='file'
+      id='optionAImage'
+      accept='image/*'
+      onChange={e => handleImageUpload(e.target.files[0], 'optionAImage')}
+      className='border rounded p-2 ml-2 w-full'
+   />}
+   </div>
+
+
+   <div className='flex items-center mb-2'>
+      <label htmlFor='optionBImage' className='ml-2 text-lg'>
+         B)
+      </label>
+      {optionBImageBase64!=''?
+      <div className="flex flex-row gap-6 w-full justify-start pl-4 items-center overflow-hidden">
+      <div className="flex ">
+         <img src={optionBImageBase64} className='rounded max-w-40 max-h-40' alt="base64"/>
+      </div>
+<div onClick={()=>{handleimage_emppty('optionBImage')}}>
+     <img src={Delete} alt='delete' className="w-4 h-4 mx-2 cursor-pointer" />
+   </div>
+</div>
+      : <input
+      type='file'
+      id='optionBImage'
+      accept='image/*'
+      onChange={e => handleImageUpload(e.target.files[0], 'optionBImage')}
+      className='border rounded p-2 ml-2 w-full'
+   />}
+   </div>
+   <div className='flex items-center mb-2'>
+      <label htmlFor='optionCImage' className='ml-2 text-lg'>
+         C)
+      </label>{optionCImageBase64!=''?
+      <div className="flex flex-row gap-6 w-full justify-start pl-4 items-center overflow-hidden">
+      <div className="flex ">
+         <img src={optionCImageBase64} className='rounded max-w-40 max-h-40' alt="base64"/>
+      </div>
+<div onClick={()=>{handleimage_emppty('optionCImage')}}>
+     <img src={Delete} alt='delete' className="w-4 h-4 mx-2 cursor-pointer" />
+   </div>
+</div>
+      : <input
+      type='file'
+      id='optionCImage'
+      accept='image/*'
+      onChange={e => handleImageUpload(e.target.files[0], 'optionCImage')}
+      className='border rounded p-2 ml-2 w-full'
+   />}
+   </div>
+   <div className='flex items-center mb-2'>
+      <label htmlFor='optionDImage' className='ml-2 text-lg'>
+        D)
+      </label>
+      {optionDImageBase64!=''?
+      <div className="flex flex-row gap-6 w-full justify-start pl-4 items-center overflow-hidden">
+      <div className="flex ">
+         <img src={optionDImageBase64} className='rounded max-w-40 max-h-40' alt="base64"/>
+      </div>
+<div onClick={()=>{handleimage_emppty('optionDImage')}}>
+     <img src={Delete} alt='delete' className="w-4 h-4 mx-2 cursor-pointer" />
+   </div>
+</div>
+      : <input
+      type='file'
+      id='optionDImage'
+      accept='image/*'
+      onChange={e => handleImageUpload(e.target.files[0], 'optionDImage')}
+      className='border rounded p-2 ml-2 w-full'
+   />}
+   </div>
+      {/* Add similar code for option A, B, C, and D images */}
+   </div>
+</div>
+
+{/* Rich Text Editor */}
+<div className="mb-2">
+   <p className="text-lg font-semibold mb-2">Passage</p>
+   <ReactQuill
+      value={modalData.richTextContent}
+      onChange={(val) =>{ setModalData({ ...modalData, richTextContent: val })}}
+      modules={{
+         toolbar: [
+            [{ 'header': '1' }, { 'header': '2' }, { 'font': [] }],
+            ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+            [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+            ['link', 'image'],
+            ['clean']
+         ],
+      }}
+   />
+</div>
+
+
+
+
                   </form>
                }
             />
@@ -484,3 +850,4 @@ export default function TestDetail() {
       </>
    );
 }
+

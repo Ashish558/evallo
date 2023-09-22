@@ -1,0 +1,12 @@
+.form-scroll-container {
+    max-height: 500px;
+    overflow-y: auto;
+    padding-right: 15px; 
+    box-sizing: content-box; 
+    transition: max-height 0.3s ease;
+ }
+
+ .rich-text-scroll {
+    /* Adjust the width if needed */
+    width: 100%;
+ }

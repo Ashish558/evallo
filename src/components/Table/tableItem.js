@@ -816,7 +816,7 @@ export default function TableItem({
             <img
               src={EditIcon}
               className="cursor-pointer p-1"
-              onClick={() => navigate(`/all-tests/${item._id}`)}
+              onClick={() =>  navigate(`/all-tests/${item._id}`, { state: { testype: item.testType  } })}
               alt="edit"
             />
             <img

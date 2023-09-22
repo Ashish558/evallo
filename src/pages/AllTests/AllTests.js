@@ -19,7 +19,7 @@ import FilterItems from "../../components/FilterItems/filterItems";
 import { useSelector } from "react-redux";
 
 const optionData = ["option 1", "option 2", "option 3", "option 4", "option 5"];
-const testTypeOptions = ["SAT", "Other"];
+const testTypeOptions = ["DSAT","SAT", "Other"];
 
 const initialState = {
   testName: "",
@@ -407,7 +407,7 @@ const sortBycreateDate = () => {
                 id={styles.uploadButtons}
                 className="mt-7 ml-7 px-0  gap-2 flex justify-between"
               >
-                <div id={styles.pdfUpload}>
+                {modalData.testType!='DSAT'?<div id={styles.pdfUpload}>
                   <label
                     htmlFor="pdf"
                     className={`${
@@ -427,7 +427,7 @@ const sortBycreateDate = () => {
                   <div id={styles.filename}>
                     {pdfFile?.name || pdfFile?.name}
                   </div>
-                </div>
+                </div>:null}
 
                 <div id={styles.csvUpload}>
                   <label
