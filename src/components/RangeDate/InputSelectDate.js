@@ -12,6 +12,7 @@ export default function InputSelect({
   value,
   placeholder,
   label,
+  valueClassName,
   labelClassname,
   optionData,
   inputContainerClassName,
@@ -76,18 +77,22 @@ export default function InputSelect({
               {" "}
             </span>
           ) : (
-            <span className="mr-5 pl-5 text-[15px] !text-[calc(17*0.050vw)] cursor-default whitespace-nowrap">
-              <span >{value}</span>
-
+            <span className={`mr-5 pl-5 text-[15px] !text-[calc(17*0.050vw)] cursor-default whitespace-nowrap `} >
+              <span className={`${valueClassName}`} >{value}</span>
+              <img
+              className="w-[30px] inline-block relative h-[10px] text-lg cursor-pointer  z-[5000]"
+              onClick={handleOption}
+              src={IconRight}
+            />
             </span>
           )}
-  {selected ? (
+  {/* {selected ? (
           IconRight ? (
-            <FontAwesomeIcon
-              className="w-[30px] text-lg cursor-pointer  z-[5000]"
+            <img
+              className="w-[30px] ml-[-100px]relative h-[30px] text-lg cursor-pointer  z-[5000]"
               onClick={handleOption}
-              icon={IconRight}
-            ></FontAwesomeIcon>
+              src={IconRight}
+            />
           ) : (
             <img
               src={UpArrow}
@@ -107,7 +112,8 @@ export default function InputSelect({
             className={`w-[15px]  ${styles.downArrow}`}
             alt="down-arrow"
           />
-        )}
+        )} */}
+     
         </div>
         {selected && (
           <div

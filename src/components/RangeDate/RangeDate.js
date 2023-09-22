@@ -4,12 +4,12 @@ import React from "react";
 import InputSelect from "./InputSelectDate";
 import { calculateDateRange, getModifiedDate } from "./utils";
 import styles from "./rangeDate.module.css";
-
+import downR from "../../assets/YIcons/downR.svg"
 import { useState } from "react";
 import { useEffect } from "react";
 
 
-const RangeDate = ({ handleRangeData ,optionClassName,className,manualHide ,inputContainerClassName}) => {
+const RangeDate = ({ removeUnderline,handleRangeData ,optionClassName,className,manualHide ,inputContainerClassName}) => {
 
   const [startDate, setStartDate] = useState(() => calculateDateRange()[0]);
   const [selectDate, setSelectedDate] = useState({
@@ -83,6 +83,7 @@ const RangeDate = ({ handleRangeData ,optionClassName,className,manualHide ,inpu
 
       <InputSelect
         placeholder="Select"
+        valueClassName={`${removeUnderline?"":"font-medium border-b border-b-[#FFA28D]"} `}
         parentClassName="border-none text-xs text-[#26435F] w-fit relative z-[500] !text-[calc(17*0.050vw)]"
         labelClassname="text-sm !text-[calc(17*0.050vw)]"
         inputContainerClassName={`border-none  !text-[calc(17*0.050vw)] whitespace-nowrap font-semibold text-[#FFA28D] ${inputContainerClassName}  ${styles["text"]}`}
@@ -98,7 +99,7 @@ const RangeDate = ({ handleRangeData ,optionClassName,className,manualHide ,inpu
         optionType={"object"}
         setSelectedDate={setSelectedDate}
         onChange={handleQuickOptions}
-        IconRight={faCaretDown}
+        IconRight={downR}
         DateSelect={
            !manualHide &&
           <div className="flex relative flex-col hover:bg-white items-center pt-2 z-5000 border-b  ">
