@@ -91,16 +91,14 @@ export default function TutorProfile({ isOwn }) {
          text: 'Student Name'
       },
       {
-         id: 2,
-         text: 'Feedback'
-      }, {
-         id: 3,
-         text: 'Comment'
-      },
-      {
          id: 4,
          text: 'Serivce'
       },
+      {
+         id: 2,
+         text: 'Rating'
+      },
+      
       {
          id: 5,
          text: 'Session Date'
@@ -502,7 +500,7 @@ export default function TutorProfile({ isOwn }) {
 
    // console.log('user', user)
    // console.log('To-edit', toEdit)
-   // console.log('userdetail', userDetail.serviceSpecializations)
+ console.log('userdetail', userDetail)
    // console.log('settings', settings.Expertise)
    const { about, education, tagLine, tutorLevel, testPrepRate, otherRate, subjectTutoringRate, address, pincode, paymentInfo, tutorRank, income, paymentStatus, linkedIn, videoLink, city, state, country } = userDetail
    // console.log('userdetail', tutorLevel)
@@ -888,51 +886,104 @@ export default function TutorProfile({ isOwn }) {
                      <ProfileCard className='flex-1 pr-0' hideShadow
                         bgClassName="bg-profilecard"
                         body={
-                           <div  className=' max-h-[500px] custom-scroller scroll-mx-3 '> {settings && settings.interest.length > 0 && userDetail.interest && userDetail.interest.map((id, idx) => {
-                              return (
-                                 settings?.interest?.find(item => item._id === id) ?
-                                    <div className='mt-[7px]  rounded-md shadow-[0px_0px_2px_0px_#00000040] overflow-x-auto  '>
-                                       <div className=' bg-white rounded-5 min-h-[50px]  flex items-center pl-[40px] '>
-                                          <div className='ml-3'>
-                                             <img className='max-w-[40px] max-h-[40px]' src={`${awsLink}${settings?.interest?.find(item => item._id === id).image}`}></img>
-                                          </div>
-                                          <div className=' ml-[35px]'>
-                                             <p className='text-[#517CA8] text-[17.5px]'>{settings?.interest?.find(item => item._id === id).text}</p>
-                                          </div>
-                                       </div>
-                                    </div>
-                                    :
-                                    <></>
-                              )
-                           })}
+                           // //settings && settings.interest.length >= 0 &&
+                           // <div  className=' max-h-[500px] custom-scroller scroll-mx-3 '> { userDetail.interest && userDetail.interest.map((id, idx) => {
+                           //    return (
+                           //       userDetail?.interest?.find(item => item._id === id) ?
+                           //          <div className='mt-[7px]  rounded-md shadow-[0px_0px_2px_0px_#00000040] overflow-x-auto  '>
+                           //             <div className=' bg-white rounded-5 min-h-[50px]  flex items-center pl-[40px] '>
+                           //                <div className='ml-3'>
+                           //                   <img className='max-w-[40px] max-h-[40px]' src={`${awsLink}${userDetail?.interest?.find(item => item._id === id).image}`}></img>
+                           //                </div>
+                           //                <div className=' ml-[35px]'>
+                           //                   <p className='text-[#517CA8] text-[17.5px]'>{userDetail?.interest?.find(item => item._id === id).text}</p>
+                           //                </div>
+                           //             </div>
+                           //          </div>
+                           //          :
+                           //          <></>
+                           //    )
+                           // })}
 
-                              {/* <EditableText editable={editable}
-                                 onClick={() => setToEdit({ ...toEdit, interest: { ...toEdit.interest, active: true } })}
-                                 text='Interests'
-                                 className='text-lg mb-2 ' textClassName="flex-1 text-center text-[21px]" /> */}
-                              {/* <div className='flex flex-col overflow-x-auto scrollbar-content max-h-[500px] scrollbar-vertical'>
-                                 {settings && settings.interest.length > 0 && userDetail.interest && userDetail.interest.map((id, idx) => {
-                                    return (
-                                       settings?.interest?.find(item => item._id === id) ?
-                                          <div key={idx} className='flex flex-col items-center mb-10'>
-                                             <div className='flex h-90 w-90 rounded-full  items-center justify-center mb-3' >
-                                                <img className='max-w-[90px] max-h-[90px]' src={settings?.interest?.find(item => item._id === id).image}
-                                                />
-                                             </div>
-                                             <p className='opacity-70 font-semibold text-lg'>
-                                                {settings?.interest?.find(item => item._id === id).text}
-                                             </p>
-                                          </div>
-                                          :
-                                          <></>
-                                    )
-                                 })}
-                              </div> */}
+                           //    {/* <EditableText editable={editable}
+                           //       onClick={() => setToEdit({ ...toEdit, interest: { ...toEdit.interest, active: true } })}
+                           //       text='Interests'
+                           //       className='text-lg mb-2 ' textClassName="flex-1 text-center text-[21px]" /> */}
+                           //    {/* <div className='flex flex-col overflow-x-auto scrollbar-content max-h-[500px] scrollbar-vertical'>
+                           //       {settings && settings.interest.length > 0 && userDetail.interest && userDetail.interest.map((id, idx) => {
+                           //          return (
+                           //             settings?.interest?.find(item => item._id === id) ?
+                           //                <div key={idx} className='flex flex-col items-center mb-10'>
+                           //                   <div className='flex h-90 w-90 rounded-full  items-center justify-center mb-3' >
+                           //                      <img className='max-w-[90px] max-h-[90px]' src={settings?.interest?.find(item => item._id === id).image}
+                           //                      />
+                           //                   </div>
+                           //                   <p className='opacity-70 font-semibold text-lg'>
+                           //                      {settings?.interest?.find(item => item._id === id).text}
+                           //                   </p>
+                           //                </div>
+                           //                :
+                           //                <></>
+                           //          )
+                           //       })}
+                           //    </div> */}
 
 
 
-                           </div>
-
+                           // </div>
+                           <div className="w-full relative h-full p-1 flex flex-col gap-1  rounded-md items-center overflow-y-auto custom-scroller">
+                           {/* {settings ? (
+                             settings.interest.length > 0 &&
+                             userDetail.interest.map((id, idx) => {
+                               return settings.interest.find((item) => item._id === id) ? (
+                                 <div
+                                   key={idx}
+               
+                                   className="bg-white  p-2 !rounded-md shadow-[0px_0px_2.500001907348633px_0px_#00000040] flex-1 w-full"
+               
+                                 >
+                                   <div className="flex h-90 w-90 rounded-full  items-center justify-center mb-3">
+                                     <img
+                                       className="max-w-[90px] max-h-[90px]"
+                                       src={
+                                         settings.interest.find((item) => item._id === id)
+                                           ? `${awsLink}${
+                                               settings.interest.find(
+                                                 (item) => item._id === id
+                                               ).image
+                                             }`
+                                           : ""
+                                       }
+                                     />
+                                   </div>
+                                   <p className="opacity-70 font-semibold text-lg">
+                                     {settings.interest.find((item) => item._id === id) ? (
+                                       settings.interest.find((item) => item._id === id).text
+                                     ) : (
+                                       <></>
+                                     )}
+                                   </p>
+                                 </div>
+                               ) : (
+                                 <> </>
+                               );
+                             })
+                           ) : (
+                             <></>
+                           )} */}
+                           
+                           {userDetail?.interest?.length > 0 &&
+                             userDetail?.interest.map((it, idx) => {
+                               return it[0]!=='6'&& (
+                                 <div
+                                   key={idx}
+                                   className="bg-white p-2 h-min  text-[#517CA8] text-base-17-5 !rounded-md shadow-[0px_0px_2.500001907348633px_0px_#00000040]  w-full"
+                                 >
+                                   {it}
+                                 </div>
+                               );
+                             })}
+                         </div>
                         } />
                   </div>
                </div>
@@ -1080,7 +1131,7 @@ export default function TutorProfile({ isOwn }) {
                      </BarChart>
                   </div>}
                   {( persona === 'admin') && <div className=" w-[1.25px] h-[630px] bg-[#CBD6E2] "></div>}
-                  {( persona === 'admin') &&<div className='w-[20.9vw]'>
+                  {( persona === 'admin') &&<div className='w-[20.9vw '>
                      <div className='flex items-center'>
                         <div className='text-[#26435F] text-[20px] text-base-20 font-semibold' >Tutor Status</div>
                         {(isOwn === true || persona === 'admin') && <p className='text-[#667085] ml-auto underline cursor-pointer text-[15px] font-semibold' onClick={() => setToEdit({ ...toEdit, tutorLevel: { ...toEdit.tutorLevel, active: true } })}>edit</p>}
@@ -1091,7 +1142,7 @@ export default function TutorProfile({ isOwn }) {
                         bgClassName="bg-white"
                         body={
                            <>
-                              <div className='text-[#517CA8] text-lg p-3 min-h-[50px]'>
+                              <div className='text-[#517CA8] text-lg p-3 min-h-[50px] shadow-[0px_0px_2px_0px_#00000040] rounded-md'>
                                  {userDetail.tutorLevel}
                               </div>
 

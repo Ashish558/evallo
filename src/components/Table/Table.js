@@ -162,7 +162,8 @@ export default function Table(props) {
       </div>
 
       {!hidePagination ? (
-        <div className="flex justify-end items-center">
+        <div className="flex justify-between px-1 items-center">
+          <p className="text-[#517CA8] text-xs">Showing {tableData?.length} of {data?.length}</p>
           <Pagination
             currentPage={currentPage}
             setCurrentPage={setCurrentPage}

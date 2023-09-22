@@ -253,14 +253,13 @@ export default function TableItem({
                 {item.studentName}
               </td>
               <td className="py-4 px-[10px]">
-                {item.rating}
-              </td>
-              <td className="py-4 px-[10px]">
-                {item.comments}
-              </td>
-              <td className="py-4 px-[10px]">
                 {item.service}
               </td>
+              <td className="py-4 px-[10px]">
+                {item.rating}
+              </td>
+              
+              
               <td className="py-4 px-[10px]">
                 {formattedDate}
               </td>
