@@ -1,13 +1,14 @@
 import React from 'react'
 import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEllipsisVertical,faPen,faAngleDown} from '@fortawesome/free-solid-svg-icons';
+import { faEllipsisVertical,faPen,faAngleDown,faCalculator} from '@fortawesome/free-solid-svg-icons';
 
-export default function Navbar({seconds,sectionDetails,cal,setCal}) {
+export default function Navbar({seconds,sectionDetails}) {
     const minutes = Math.floor(seconds / 60);
   const second = seconds % 60;
     const [tog,setTog] =useState(false)
     // const {cal,setCal} = props
+    const [cal,setCal]=u(false)
     let handleDesc= ()=>
     {
           setTog(!tog)
@@ -47,6 +48,7 @@ export default function Navbar({seconds,sectionDetails,cal,setCal}) {
         </div>
         <div  className=' flex pt-8 w-1/3 justify-end text-sm '>
             <div className=' cursor-pointer' onClick={handleCal} >
+            <FontAwesomeIcon icon={faCalculator} className=' absolute top-8 right-48 ' />
                 <h4>Calculator</h4>
             </div>
             <div className=' px-3 '>

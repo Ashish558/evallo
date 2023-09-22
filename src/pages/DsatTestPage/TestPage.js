@@ -31,7 +31,6 @@ export default function TestPage() {
   const [sectionDetails, setSectionDetails] = useState();
   const [instructionpage, setisntructionpage] = useState(true);
   const [cutcheck,setcutcheck] = useState(false);
-  const[cal,setCal] = useState(false)
   const[loader,setloader] = useState(false)  
   const { testid,userid } = useParams();
   const location = useLocation();
@@ -219,7 +218,7 @@ const [pages,setPage]=useState(arr)
 
      />:
      <>
-      <Navbar seconds={seconds} sectionDetails={data[sectionindex]} cal={cal} setCal={setCal} />
+      <Navbar seconds={seconds} sectionDetails={data[sectionindex]}  />
       <Que
       answers={answers}
         markreview={markreview}
