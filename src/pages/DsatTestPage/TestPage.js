@@ -5,13 +5,14 @@ import { useEffect, useState } from "react";
 import Que from "./Questions";
 import axios from "axios";
 import { BASE_URL, getAuthHeader } from "../../app/constants/constants";
-import { useLocation, useParams } from "react-router-dom/dist";
+import { useLocation, useNavigate, useParams } from "react-router-dom/dist";
 import {
   useLazyGetQuestionQuery,
   useSubmitTestMutation,
 } from "../../app/services/test";
 import LoaderPage from "../../components/TestItem/LoaderPage";
 import TestInstructionPage from "../../components/TestItem/TesInstructionPage";
+import SectionLoader from "../StartTest/SectionLoader";
 
 export default function TestPage() {
   const [getQue, GetQueRes] = useLazyGetQuestionQuery();
@@ -34,6 +35,8 @@ export default function TestPage() {
   const[loader,setloader] = useState(false)  
   const { testid,userid } = useParams();
   const location = useLocation();
+    const navigate = useNavigate();
+
   const name = new URLSearchParams(location.search).get("name");
   function MarkAnswer(QuestionNumber, correctAnswer) {
     const updatedanswer = answers.map((q) =>
@@ -171,7 +174,6 @@ export default function TestPage() {
       console.log(res.data);
     });
     console.log(data.length);
-    if(sectionindex<data.length-1)
     setsectionindex(sectionindex + 1);
     setIndex(0)
     if(toggle2)
@@ -205,11 +207,17 @@ arr.fill(false)
 const [pages,setPage]=useState(arr)
   return (
     <div className=" relative ">
-     {loader? <LoaderPage/>
+      
+     {loader&&sectionindex==0? <LoaderPage/>
      :
      instructionpage?
      <TestInstructionPage setisntructionpage={setisntructionpage}/> 
-     :
+     :loader&&sectionindex>0?
+     <SectionLoader 
+     size={data.length}
+      sectionindex={sectionindex}
+
+     />:
      <>
       <Navbar seconds={seconds} sectionDetails={data[sectionindex]} cal={cal} setCal={setCal} />
       <Que

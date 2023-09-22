@@ -1,15 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import "./SectionLoader.css"
-export default function SectionLoader({ onSubmit }) {
+import { useNavigate } from 'react-router-dom';
+export default function SectionLoader({ size,sectionindex }) {
   const [isLoading, setIsLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
+    console.log(size);
     // Simulate submission delay for 3 seconds
-    setTimeout(() => {
-      setIsLoading(false);
-      onSubmit();
-    }, 3000);
-  }, [onSubmit]);
+   if(sectionindex>=size){
+   setTimeout(() => {
+    navigate('/')
+   }, 3000);
+   }
+  }, []);
 
   return (
     <div className="flex flex-col items-center justify-center h-screen">

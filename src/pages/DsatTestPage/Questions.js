@@ -41,7 +41,7 @@ export default function Que(props) {
           {
            op?.map((e,i)=>
                {
-                return  <div className={`flex flex-row w-full cursor-pointer border-[3px] rounded-xl my-2 px-2 py-2  items-center ${answers[index-1].ResponseAnswer==e.label? 'border-blue-400' :null} `}> <span className={`text-gray-600 font-semibold text-sm mr-4 border-[3px] rounded-full px-2 py-1 ml-2 ${answers[index-1].ResponseAnswer==e.label? 'bg-blue-400 text-white' :null}`}>{e.label}</span> <li className='relative flex items-center text-gray-600 border border-black list-none rounded-lg' onClick={()=>{props.MarkAnswer(index,i)}}>
+                return  <div className={`flex flex-row w-full cursor-pointer border-[3px] rounded-xl my-2 px-2 py-2  items-center ${answers[index-1].ResponseAnswer==e.label? 'border-blue-400' :null} `}> <span className={` font-semibold text-sm mr-4 border-[3px] rounded-full px-2 py-1 ml-2  ${answers[index-1].ResponseAnswer==e.label? 'bg-blue-400 text-white' :null}`}>{e.label}</span> <li className='relative flex items-center text-gray-600 border border-black list-none rounded-lg' onClick={()=>{props.MarkAnswer(index,i)}}>
                   { cutanswer[index-1].markcut[i]==1 && cutcheck?
                   <div className='flex w-full h-full bg-gray-300 absolute top-[0] left-[0] opacity-40 justify-center items-center'>
                     <div className='h-[3px] bg-gray-900 absolute w-full'></div>
