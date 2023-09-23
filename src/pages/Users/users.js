@@ -36,14 +36,14 @@ import {
 } from "../../app/services/admin";
 import { useLazyGetSettingsQuery } from "../../app/services/session";
 import PrimaryButton from "../../components/Buttons/PrimaryButton";
-import CountryCode from "../../components/CountryCode/CountryCode";
-import { isPhoneNumber } from "../Signup/utils/util";
+// import CountryCode from "../../components/CountryCode/CountryCode";
+// import { isPhoneNumber } from "../Signup/utils/util";
 import { checkIfExistInNestedArray } from "../../utils/utils";
-import InputSelectNew from "../../components/InputSelectNew/InputSelectNew";
+// import InputSelectNew from "../../components/InputSelectNew/InputSelectNew";
 import InputSearch from "../../components/InputSearch/InputSearch";
 import { useSelector } from "react-redux";
 import axios from "axios";
-import Loader from "../../components/Loader";
+// import Loader from "../../components/Loader";
 import LoaderNew from "../../components/Loader/LoaderNew";
 
 const optionData = ["option 1", "option 2", "option 3", "option 4", "option 5"];

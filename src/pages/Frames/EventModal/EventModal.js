@@ -762,7 +762,7 @@ export default function EventModal({
 
                         <DateAndTimeInput {...dataProps} isEditable={isEditable} />
 
-                        <div className={`flex mb-3 ${isUpdating && !data.recurring ? 'pointer-events-none items-center' : ''} `}>
+                        <div className={`flex mb-3 items-center ${isUpdating && !data.recurring ? 'pointer-events-none ' : ''} `}>
                            <CCheckbox checked={data.recurring} name='recurring' onChange={() =>
                               setData({
                                  ...data,
@@ -847,6 +847,7 @@ export default function EventModal({
                         <div className="mt-4  flex ">
                            <InputField
                               label="Meeting Link"
+                              biggerText={true}
                               labelClassname="ml-3 text-[#26435F] font-medium text-[18.6px]"
                               placeholder="Meeting Link"
                               parentClassName="w-full mr-8"
@@ -865,6 +866,7 @@ export default function EventModal({
                            <InputField
                               parentClassName="w-full ml-2"
                               label="Whiteboard Link"
+                              biggerText={true}
                               placeholder="Whiteboard Link"
                               labelClassname="ml-3 text-[#26435F] font-medium text-[18.6px]"
                               inputContainerClassName="bg-lightWhite border-0  pt-3.5 pb-3.5 h-[53px]"

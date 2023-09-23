@@ -3,6 +3,7 @@ import LeftIcon from "../../../assets/Table/left.svg";
 import RightIcon from "../../../assets/Table/right.svg";
 import dots from "../../../assets/icons/Group 20719.svg";
 export default function Pagination({
+  
   currentPage,
   setCurrentPage,
   totalPages,

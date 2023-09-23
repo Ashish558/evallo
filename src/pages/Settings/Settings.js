@@ -23,7 +23,7 @@ import {
 import { getSessionTagName } from "../../utils/utils";
 import { BASE_URL, getAuthHeader } from "../../app/constants/constants";
 import axios from "axios";
-import DeleteIcon from "../../assets/icons/delete.svg";
+import DeleteIcon from "../../assets/icons/delete (2).svg";
 import PauseIcon from "../../assets/icons/pause.svg";
 import PlayIcon from "../../assets/icons/play.svg";
 import down from "../../assets/icons/down.png"
@@ -35,7 +35,7 @@ import AccOverviewLogo from "../../assets/icons/account overview.svg";
 import AccOverviewLogo2 from "../../assets/icons/account-overview 2.svg";
 import ClientsSignupLogo from "../../assets/icons/Client sign up 1.svg";
 import ClientsSignupLogo2 from "../../assets/icons/Client sign up 2.svg";
-import EditBlueIcon from "../../assets/icons/edit-blue.svg";
+import EditBlueIcon from "../../assets/YIcons/edit2.svg";
 import InputSearch from "../../components/InputSearch/InputSearch";
 import { useSelector, useDispatch } from "react-redux";
 import { useUpdateUserFieldsMutation } from "../../app/services/users";
@@ -102,7 +102,7 @@ export default function Settings() {
   const [saveLoading, setSaveLoading] = useState(false);
   const [fetchS, setFetchS] = useState(false);
   const [newQuestion, setNewQuestion] = useState({
-    type: "String",
+    type: "Paragraph",
     text: "Add",
     values: []
   });
@@ -1010,11 +1010,11 @@ export default function Settings() {
               title="Manage Referral Codes"
               className={styles["bordered-settings-container"]}
               body={
-                <div className="max-h-[360px] overflow-auto scrollbar-content scrollbar-vertical ">
+                <div className="max-h-[330px] overflow-auto custom-scroller p-1 scrollbar-vertical ">
                   {subscriptionCode !== undefined &&
                     subscriptionCode.map((subscription, i) => {
                       return (
-                        <div key={i} className="bg-white shadow-small p-4 ">
+                        <div key={i} className="bg-white shadow-small p-3 shadow-[0px_0px_2.500000476837158px_0px_#00000040] rounded-md">
                           <div className="flex items-center justify-between pr-8 ">
                             <p className="font-medium text-[#24A3D9] mb-4">
                               {subscription.code}
@@ -1023,33 +1023,39 @@ export default function Settings() {
                               </span>
                             </p>
                             <div className="flex items-center gap-x-4">
-                              {subscription.pause === false ? (
-                                <img
-                                  src={PlayIcon}
-                                  className="w-4 cursor-pointer"
-                                  alt="play"
-                                  onClick={() => handlePause(subscription)}
-                                />
+                              {subscription.pause === false || true? (
+                                <ToggleBar
+                                boxClass="!h-[16px]"
+                                   
+                                    toggle={{ value: subscription.pause, key: 'code' }}
+                                    onToggle={() => handlePause(subscription)}
+                                  ></ToggleBar>
                               ) : (
-                                <img
-                                  src={PauseIcon}
-                                  className="w-4 cursor-pointer"
-                                  alt="play"
-                                  onClick={() => handlePause(subscription)}
-                                />
+                                <ToggleBar
+                                boxClass="!h-[16px]"
+                                    circleColor="bg-[rgba(119,221,119,1)]"
+                                    toggle={{ value: 5, key: 'code' }}
+                                    onToggle={() => handlePause(subscription)}
+                                  ></ToggleBar>
+                                // <img
+                                //   src={PauseIcon}
+                                //   className="w-4 cursor-pointer"
+                                //   alt="play"
+                                //   onClick={() => handlePause(subscription)}
+                                // />
                               )}
                               <div
-                                className="w-5 h-5 flex items-center justify-center bg-[#E3E3E3] rounded-full cursor-pointer"
+                                className="w-5 h-5 flex items-center justify-center  rounded-full cursor-pointer"
                                 onClick={() => onEditCode(subscription)}
                               >
                                 <img
-                                  src={EditBlueIcon}
+                                 src={EditBlueIcon}
                                   className="w-4"
                                   alt="edit"
                                 />
                               </div>
                               <div
-                                className="w-5 h-5 flex items-center justify-center bg-[#E3E3E3] rounded-full cursor-pointer"
+                                className="w-5 h-5 flex items-center justify-center  rounded-full cursor-pointer"
                                 onClick={() => onRemoveCode(subscription)}
                               >
                                 <img
@@ -1060,7 +1066,7 @@ export default function Settings() {
                               </div>
                             </div>
                           </div>
-                          <div className="flex items-center flex-wrap [&>*]:mb-[18px] ">
+                          <div className="flex items-center flex-wrap [&>*]:mb-[10px] ">
                             <AddTag
                               openModal={true}
                               onAddTag={(code) => handleAddTest(subscription)}
@@ -1129,20 +1135,20 @@ export default function Settings() {
               className={styles["bordered-settings-container"]}
               body={
                 <div>
-                  <div className="max-h-[360px] overflow-auto scrollbar-content scrollbar-vertical">
+                  <div className="max-h-[340px] overflow-auto custom-scroller p-1 scrollbar-vertical">
                     {servicesAndSpecialization !== undefined &&
                       servicesAndSpecialization.map((service, i) => {
                         return (
                           <div
                             key={i}
-                            className="bg-white shadow-small p-4 mb-3"
+                            className="bg-white shadow-small p-4 mb-3 rounded-md"
                           >
                             <div className="flex items-center justify-between pr-8">
                               <p className="font-medium text-[#24A3D9] mb-4">
                                 {service.service}
                               </p>
                               <div
-                                className="w-5 h-5 flex items-center justify-center bg-[#E3E3E3] rounded-full cursor-pointer"
+                                className="w-5 h-5 flex items-center justify-center  rounded-full cursor-pointer"
                                 onClick={() => onRemoveService(service)}
                               >
                                 <img
@@ -1152,7 +1158,7 @@ export default function Settings() {
                                 />
                               </div>
                             </div>
-                            <div className="flex items-center flex-wrap [&>*]:mb-[18px]">
+                            <div className="flex items-center flex-wrap [&>*]:mb-[10px]">
                               <AddTag
                                 onAddTag={handleAddSpecialization}
                                 keyName={service.service}
@@ -1186,17 +1192,17 @@ export default function Settings() {
               title="Session Tags & Reconciliation"
               className={styles["bordered-settings-container"]}
               body={
-                <div className="max-h-[360px] overflow-auto scrollbar-content scrollbar-vertical">
+                <div className="max-h-[360px] overflow-auto custom-scroller p-1 scrollbar-vertical">
                   {sessionTags !== undefined &&
                     sessionTags.map((service, i) => {
                       return (
-                        <div key={i} className="bg-white shadow-small p-4 mb-3">
+                        <div key={i} className="bg-white shadow-small p-4 mb-3 rounded-md">
                           <div className="flex items-center justify-between pr-8">
                             <p className="font-medium text-[#24A3D9] mb-4">
                               {service.heading}
                             </p>
                             <div
-                              className="w-5 h-5 flex items-center justify-center bg-[#E3E3E3] rounded-full cursor-pointer"
+                              className="w-5 h-5 flex items-center justify-center  rounded-full cursor-pointer"
                               onClick={() => onRemoveSessionTag(service)}
                             >
                               <img
@@ -1206,7 +1212,7 @@ export default function Settings() {
                               />
                             </div>
                           </div>
-                          <div className="flex items-center flex-wrap [&>*]:mb-[18px]">
+                          <div className="flex items-center flex-wrap [&>*]:mb-[10px]">
                             <AddTag
                               onAddTag={handleAddSessionTag}
                               keyName={service.heading}
@@ -1397,7 +1403,7 @@ export default function Settings() {
                             <div>
                               <div
                                 onClick={() => handleImageRemoval(offer)}
-                                className="w-7 h-7 z-5000 -top-2 right-[9px] flex items-center absolute justify-center bg-[#E3E3E3] rounded-full cursor-pointer"
+                                className="w-7 h-7 z-5000 -top-2 right-[9px] flex items-center absolute justify-center  rounded-full cursor-pointer"
                               >
                                 <img
                                   src={DeleteIcon}
