@@ -40,7 +40,8 @@ export default function InputField({
   onMouseEnter,
   defaultValue,
   totalErrors,
-  iconPadding
+  iconPadding,
+  biggerText
 }) {
   const [inputType, setInputType] = useState(type);
   const [showDiv, setShowDiv] = useState(true);
@@ -59,7 +60,7 @@ export default function InputField({
     <div className={`relative  ${parentClassName && parentClassName}`}>
       {label && (
         <label
-          className={`inline-block  font-semibold ${labelClassname} ml-0 `}
+          className={`${biggerText ? "text-lg" : 'text-base-17-5'}  inline-block  font-semibold ${labelClassname} ml-0 `}
         >
           {label}
           {required && (

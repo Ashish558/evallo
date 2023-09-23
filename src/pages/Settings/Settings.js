@@ -102,7 +102,7 @@ export default function Settings() {
   const [saveLoading, setSaveLoading] = useState(false);
   const [fetchS, setFetchS] = useState(false);
   const [newQuestion, setNewQuestion] = useState({
-    type: "String",
+    type: "Paragraph",
     text: "Add",
     values: []
   });
