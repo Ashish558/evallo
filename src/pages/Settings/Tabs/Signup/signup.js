@@ -342,11 +342,16 @@ export default function SignupTab({
                 className={`${styles.customField} grid grid-cols-12 gap-x-12 `}
               >
                 <div className="col-span-8">
-                  <div className="py-3 px-4 border-b border-[#26435f]">
+                  <div className="py-3 px-4 border-b border-[#26435f] bg-[#F5F8FA]">
                     <p>
                       <span>{idx + 1}. </span> {item.name}{" "}
                     </p>
                   </div>
+                  {item.dataType === "Paragraph" && (
+                    <div className="flex flex-col gap-y-3 mt-7 bg-[#F5F8FA]">
+                      <textarea className="bg-[#F5F8FA] p-2 outline-none text-[#507CA8]" name="" id="" cols="30" rows="6">{item?.desc}</textarea>
+                    </div>
+                  )}
                   {item.dataType === "Checkboxes" && (
                     <div className="flex flex-col gap-y-3 mt-7 ">
                       {item.Values?.map((value) => {
@@ -398,6 +403,9 @@ export default function SignupTab({
                         onToggle={togglePermissions}
                       ></ToggleBar>
                     </div>
+                    {
+                      console.log(customFields)
+                    }
                     <div
                       className="flex items-center justify-between cursor-pointer bg-[#F5F8FA] text-[#26435F] font-medium text-sm px-4 py-[13px]"
                       onClick={() => handleDelete(item._id)}
