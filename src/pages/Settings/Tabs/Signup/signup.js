@@ -13,6 +13,7 @@ import plus1 from "../../../../assets/icons/plus1.svg";
 import dropdown from "../../../../assets/icons/dropdown (2).svg";
 import InputFieldDropdown from "../../../../components/InputField/inputFieldDropdown";
 import ToggleBar from "../../../../components/SettingsCard/ToogleBar";
+import AddTag from "../../../../components/Buttons/AddTag";
 export default function SignupTab({
   setAddNewQuestionModalActive,
   fetchS,
@@ -21,9 +22,10 @@ export default function SignupTab({
   const { organization } = useSelector((state) => state.organization);
 
   const [customFields, setCustomFields] = useState();
-
+  const [fetchedPermissions, setThePermission] = useState([]);
   useEffect(() => {
     setCustomFields(organization?.settings?.customFields);
+    setThePermission(customFields)
   }, [organization]);
   useEffect(() => {
     if (fetchS && fetchS.data && fetchS.data.updatedOrg) {
@@ -60,14 +62,32 @@ export default function SignupTab({
     updateAndFetchsettings(body);
   };
   const togglePermissions = (key, value) => {
-    console.log(customFields)
-    // const arr = customFields?.map((per) => {
+    let updatedCustomFields = customFields.filter((item) => item._id == key);
+    updatedCustomFields = updatedCustomFields.map((item) => ({
+      name: item.name,
+      Values: item.Values,
+      dataType: item.dataType,
+      required: !(item.required)
+    }));
+    const body = {
+      customFields: updatedCustomFields,
+    };
+    updateAndFetchsettings(body);
+    // const arr = fetchedPermissions?.map((per) => {
     //   if (per._id === key) {
-    //     return { ...per, choosedValue: !per.choosedValue };
+    //     return { ...per, required: !per.required
+    //     };
     //   }
     //   return { ...per };
     // });
+    // setThePermission(arr)
+
+    // let updatedSetting = {
+    //   permissions: arr,
+    // };
+    // updateAndFetchsettings(updatedSetting);
   }
+
   return (
     <div className="">
       <div className="mb-[40px]">
@@ -121,16 +141,16 @@ export default function SignupTab({
               parentClassName="text-xs  text-[#26435F] mb-2"
             />
             <div className="flex gap-1 items-center">
-            <div className="bg-gray-200 border translate-y-[6px] p-2 rounded-[3.5px] border-gray-200 h-[43px] text-[#667085] text-xs px-3 flex items-center" >+91</div>
-            <InputField
-              placeholder=""
-              parentClassName="text-xs  text-[#26435F] mb-2 "
-              inputContainerClassName="bg-gray-200 border border-gray-200 "
-              inputClassName="bg-gray-200 "
-              label=" Phone"
-              labelClassname={"translate-x-[-46px]"}
-            />
-</div>
+              <div className="bg-gray-200 border translate-y-[6px] p-2 rounded-[3.5px] border-gray-200 h-[43px] text-[#667085] text-xs px-3 flex items-center" >+91</div>
+              <InputField
+                placeholder=""
+                parentClassName="text-xs  text-[#26435F] mb-2 "
+                inputContainerClassName="bg-gray-200 border border-gray-200 "
+                inputClassName="bg-gray-200 "
+                label=" Phone"
+                labelClassname={"translate-x-[-46px]"}
+              />
+            </div>
           </div>
           <div>
             <p className={`mb-5 ${styles.label} text-base-17-5`}>
@@ -249,17 +269,17 @@ export default function SignupTab({
               inputClassName="bg-gray-200"
               parentClassName="text-xs  text-[#26435F] mb-2"
             />
-          <div className="flex gap-1 items-center">
-            <div className="bg-gray-200 border translate-y-[6px] p-2 rounded-[3.5px] border-gray-200 h-[43px] text-[#667085] text-xs px-3 flex items-center" >+91</div>
-            <InputField
-              placeholder=""
-              parentClassName="text-xs  text-[#26435F] mb-2 "
-              inputContainerClassName="bg-gray-200 border border-gray-200 "
-              inputClassName="bg-gray-200 "
-              label=" Student/Parent Phone"
-              labelClassname={"translate-x-[-46px]"}
-            />
-</div>
+            <div className="flex gap-1 items-center">
+              <div className="bg-gray-200 border translate-y-[6px] p-2 rounded-[3.5px] border-gray-200 h-[43px] text-[#667085] text-xs px-3 flex items-center" >+91</div>
+              <InputField
+                placeholder=""
+                parentClassName="text-xs  text-[#26435F] mb-2 "
+                inputContainerClassName="bg-gray-200 border border-gray-200 "
+                inputClassName="bg-gray-200 "
+                label=" Student/Parent Phone"
+                labelClassname={"translate-x-[-46px]"}
+              />
+            </div>
             <InputField
               placeholder=""
               parentClassName="text-xs  text-[#26435F] mb-2"
@@ -301,13 +321,13 @@ export default function SignupTab({
                       <span>{idx + 1}. </span> {item.name}{" "}
                     </p>
                   </div>
-                  {item.dataType === "Dropdown" && (
-                    <div className="flex flex-col gap-y-3 mt-7 mb-7">
+                  {item.dataType === "Checkboxes" && (
+                    <div className="flex flex-col gap-y-3 mt-7 ">
                       {item.Values?.map((value) => {
                         return (
                           <div key={value} className="flex items-center">
                             <img src={CheckboxIcon} alt="checkbox" />
-                            <p className="ml-2 text-[#507CA8]">
+                            <p className="ml-2 text-[#507CA8] !font-normal">
                               {" "}
                               {value ? value : "-"}{" "}
                             </p>
@@ -316,6 +336,18 @@ export default function SignupTab({
                       })}
                     </div>
                   )}
+                  {item.dataType === "Checkboxes" &&
+                    <div className="flex flex-col gap-y-3 mt-3  mb-7">
+                      <div className="flex items-center">
+                        <img src={CheckboxIcon} alt="checkbox" />
+                        <AddTag
+                          className="!text-[#FFA28D] !font-normal bg-transparent"
+                          text="Add option"
+                          onAddTag={'dfhdh'}
+                        />
+                      </div>
+                    </div>
+                  }
                 </div>
 
                 <div className="col-span-4">
@@ -324,17 +356,21 @@ export default function SignupTab({
                       value={item.dataType}
                       labelClassname="hidden"
                       parentClassName="w-[200px] mr-5 my-4 text-base-17-5 "
-                      optionData={["String", "Checkboxes"]}
+                      optionData={["Paragraph", "Checkboxes", "Dropdown"]}
                       inputContainerClassName={`bg-[#F5F8FA] border-0 text-[#26435F] font-medium ${styles["dropdown-container"]} `}
                     />
-                    {/* <ToggleBar
-                      onToggle={togglePermissions}
-                    ></ToggleBar> */}
+                    <div className="flex items-center justify-between cursor-pointer bg-[#F5F8FA] text-[#26435F]  text-sm px-4 py-[13px] my-4">
+                      <p className="!font-normal">Required?</p>
+                      <ToggleBar
+                        toggle={{ value: item.required, key: item._id }}
+                        onToggle={togglePermissions}
+                      ></ToggleBar>
+                    </div>
                     {
                       console.log(customFields)
                     }
                     <div
-                      className="flex items-center justify-between cursor-pointer bg-[#F5F8FA] text-[#26435F] font-medium text-sm px-4 py-2"
+                      className="flex items-center justify-between cursor-pointer bg-[#F5F8FA] text-[#26435F] font-medium text-sm px-4 py-[13px]"
                       onClick={() => handleDelete(item._id)}
                     >
                       Delete
