@@ -87,7 +87,33 @@ export default function SignupTab({
     // };
     // updateAndFetchsettings(updatedSetting);
   }
+  const [inputValue, setInputValue] = useState('');
+  const [addOption, SetAddOption] = useState(false)
+  const handleAddOption = (e) => {
+    console.log(e.target.value)
+    setInputValue(e.target.value)
+  }
+  const handleKeyPress = (event, item) => {
+    if (event.key === 'Enter') {
 
+
+
+      let updatedCustomFields = customFields.filter((it) => it._id == item._id);
+      updatedCustomFields = updatedCustomFields.map((item) => ({
+        name: item.name,
+        Values: [...item.Values, inputValue],
+        dataType: item.dataType,
+      }));
+      const body = {
+        customFields: updatedCustomFields,
+      };
+      updateAndFetchsettings(body);
+      // console.log(event)
+      SetAddOption(false)
+      // console.log('Input value:', inputValue);
+      setInputValue('')
+    }
+  };
   return (
     <div className="">
       <div className="mb-[40px]">
@@ -339,12 +365,18 @@ export default function SignupTab({
                   {item.dataType === "Checkboxes" &&
                     <div className="flex flex-col gap-y-3 mt-3  mb-7">
                       <div className="flex items-center">
-                        <img src={CheckboxIcon} alt="checkbox" />
-                        <AddTag
-                          className="!text-[#FFA28D] !font-normal bg-transparent"
-                          text="Add option"
-                          onAddTag={'dfhdh'}
-                        />
+                        <img className="inline-block" src={CheckboxIcon} alt="checkbox" />
+
+                        {
+                          addOption == true ? <input
+                            autoFocus
+                            className="ml-3 text-[14px] text-[#7E7E7E] outline-[#DCDCDD] border-[1.5px] border-[#DCDCDD] rounded-[4px] bg-[#F5F8FA]  w-32" value={inputValue}
+                            type="text"
+                            onChange={handleAddOption}
+                            onKeyPress={(e) => handleKeyPress(e, item)}
+                          /> :
+                            <p className="!text-[#FFA28D] !font-normal ml-2 underline cursor-pointer" onClick={() => SetAddOption(true)}>Add option</p>
+                        }
                       </div>
                     </div>
                   }
@@ -366,9 +398,6 @@ export default function SignupTab({
                         onToggle={togglePermissions}
                       ></ToggleBar>
                     </div>
-                    {
-                      console.log(customFields)
-                    }
                     <div
                       className="flex items-center justify-between cursor-pointer bg-[#F5F8FA] text-[#26435F] font-medium text-sm px-4 py-[13px]"
                       onClick={() => handleDelete(item._id)}
