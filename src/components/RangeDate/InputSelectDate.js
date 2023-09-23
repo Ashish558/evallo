@@ -32,14 +32,16 @@ export default function InputSelect({
   const selectRef = useRef();
   useOutsideAlerter(selectRef, () => setSelected(false));
   const handleOption = () => {
-    console.log("handleOption")
+   
     setSelected(!selected);
+    
     if (setSelectedDate) setSelectedDate({ sDate: "", eDate: "" });
   };
   useEffect(() => {
     if (!checkbox) setSelected(false);
   }, [value]);
   const handleChange = (optionType, option, idx) => {
+    console.log("handleOption",option)
     onChange(optionType, option, idx);
   };
 
@@ -127,7 +129,7 @@ export default function InputSelect({
                   key={idx}
                   onClick={() => handleChange(optionType, option, idx)}
                 >
-                  <p className={`${optionListClassName} relative !z-[9999999999]`}>
+                  <p className={`${optionListClassName} cursor-pointer relative !z-[9999999999]`}>
                     {optionType === "object" ? option.name : option}
                   </p>
                   {radio && (
