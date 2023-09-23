@@ -1,15 +1,15 @@
 import React from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faArrowDown,
-  faArrowDown19,
-  faArrowDown91,
-  faArrowRightFromBracket,
-  faCaretDown,
-  faDollar,
-  faPlus,
-  faUpload,
-} from "@fortawesome/free-solid-svg-icons";
+// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// import {
+//   faArrowDown,
+//   faArrowDown19,
+//   faArrowDown91,
+//   faArrowRightFromBracket,
+//   faCaretDown,
+//   faDollar,
+//   faPlus,
+//   faUpload,
+// } from "@fortawesome/free-solid-svg-icons";
 import faQuestionCircle from "../../assets/images/Vectorqsn.svg";
 import icon from "../../assets/icons/Evallo Logo.svg";
 import logoutIcon from "../../assets/images/Vectorlogout new.svg";

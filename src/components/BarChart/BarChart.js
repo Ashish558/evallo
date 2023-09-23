@@ -93,8 +93,8 @@ const BarChart = ({ studentFeedbacks }) => {
     }
     return (
         <div>
-            <p className='text-[#26435F] text-xl font-semibold' >Student Feedback Overview</p>
-            <div className='bg-[#FFFFFF] border-[1.458px] rounded-5 shadow-[0px_0px_2.91667px_0px_rgba(0,0,0,0.25)] pt-[28px] pb-[48px]  px-[11.28%]'>
+            <p className='text-[#26435F] text-xl font-semibold text-base-20' >Student Feedback Overview</p>
+            <div className='bg-[#FFFFFF]  rounded-5 shadow-[0px_0px_2.5px_0px_rgba(0,0,0,0.25)] pt-[30px] pb-[48px]  px-[11.28%]'>
                 <div className='flex justify-between mb-[30px] text-[0.9114583333vw]'>
                     <p className='font-light text-[#092327]'> Total Ratings: {count}</p>
                     <div className='flex  items-center'>

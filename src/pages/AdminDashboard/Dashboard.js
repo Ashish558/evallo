@@ -248,7 +248,9 @@ const Dashboard = () => {
             <div className="flex mt-[calc(40*0.050vw)] justify-between items-center ">
               <p className="font-bold  text-[#FFA28D] text-base-20">BUSINESS OVERVIEW </p>
 
-              <RangeDate  handleRangeData={handleRevenue} />
+
+              <RangeDate optionClassName="!w-min"
+              inputContainerClassName="!w-min "  handleRangeData={handleRevenue} />
             </div>
           </div>
         </div>
@@ -417,7 +419,8 @@ const Dashboard = () => {
               <p className="font-bold text-xl  text-base-20 ">USERS OVERVIEW </p>
 
               <div className="flex font-semibold text-[#FFA28D] text-xs">
-                <RangeDate handleRangeData={handleUserStats} />
+                <RangeDate optionClassName="!w-min"
+              inputContainerClassName="!w-min " handleRangeData={handleUserStats} />
               </div>
             </div>
           </div>
@@ -502,11 +505,13 @@ const Dashboard = () => {
             <div className="mt-2 h-[1px] bg-[#00000033]"></div>
           </div>
         </div>
-        <div className="w-[83.33vw] mx-auto mt-[52px] text-[#26435F]">
-          <div className="flex justify-between items-center translate-y-[10px] ">
+        <div className=" relative z-[50000] w-[83.33vw] mx-auto mt-[52px] text-[#26435F]">
+          <div  className=" relative z-[50000] flex justify-between items-center translate-y-[10px] ">
             <p className="font-bold uppercase text-[#FFA28D] text-xl text-base-20">Client Success Overview </p>
 
-            <RangeDate inputContainerClassName="!w-[500px]" optionClassName="!w-[500px]" handleRangeData={handlePopularServices} />
+            <RangeDate optionClassName="!w-min"
+              inputContainerClassName="!w-min "
+               handleRangeData={handlePopularServices} />
           </div>
         </div>
 
@@ -634,11 +639,12 @@ const Dashboard = () => {
             <div className="mt-2 h-[1px] bg-[#00000033]"></div>
           </div>
         </div>
-        <div className="w-[83.33vw] mx-auto  mt-[42px] text-[#FFA28D] ">
-          <div className="flex justify-between items-center  translate-y-[15px] mb-[10px]">
+        <div className=" relative z-[50000] w-[83.33vw] mx-auto  mt-[42px] text-[#FFA28D] ">
+          <div className=" relative z-[50000] flex justify-between items-center  translate-y-[15px] mb-[10px]">
             <p className="font-bold uppercase text-xl text-base-17-5">Tutor Performence Overview </p>
 
-            <RangeDate handleRangeData={handleTutorPerformance} />
+            <RangeDate optionClassName="!w-min"
+              inputContainerClassName="!w-min " handleRangeData={handleTutorPerformance} />
           </div>
         </div>
         

@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import moment from "moment-timezone";
-import momentOg from "moment";
 import "./Transition.css";
 import "./calendar.css";
 import { useParams } from "react-router-dom";
@@ -41,7 +40,6 @@ import {
 } from "../../utils/utils";
 import InputSelect from "../../components/InputSelect/InputSelect";
 // import styles from "./calendar.css";
-import momentTimezonePlugin from "@fullcalendar/moment-timezone";
 import { useLazyGetUserDetailQuery } from "../../app/services/users";
 import { useLazyGetCalenderInsightQuery } from "../../app/services/admin";
 import downBlue from '../../assets/icons/down-blue.svg'

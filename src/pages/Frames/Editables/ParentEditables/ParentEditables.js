@@ -6,20 +6,21 @@ import {
   useUpdateUserDetailsMutation,
   useUpdateUserFieldsMutation,
   usePostTutorDetailsMutation,
+  useAddTutorReviewMutation,
 } from "../../../../app/services/users";
 import InputField from "../../../../components/InputField/inputField";
 import InputSearch from "../../../../components/InputSearch/InputSearch";
 import InputSelect from "../../../../components/InputSelect/InputSelect";
 import Modal from "../../../../components/Modal/Modal";
-import SimpleCalendar from "../../../../components/SimpleCalendar/SimpleCalendar";
-import demoUser from "../../../../assets/icons/demo-user.png";
+// import SimpleCalendar from "../../../../components/SimpleCalendar/SimpleCalendar";
+// import demoUser from "../../../../assets/icons/demo-user.png";
 import Slider from "../../../../components/Slider/Slider";
 import { grades, subjects, timeZones } from "../../../../constants/constants";
 import styles from "./style.module.css";
 import CountryCode from "../../../../components/CountryCode/CountryCode";
 import { useSelector } from "react-redux";
 import { BASE_URL, getAuthHeader } from "../../../../app/constants/constants";
-import ProfileCard from "../../../../components/ProfileCard/ProfileCard";
+// import ProfileCard from "../../../../components/ProfileCard/ProfileCard";
 import axios from "axios";
 import ProfilePhoto from "../../../../components/ProfilePhoto/ProfilePhoto";
 import { useNavigate } from "react-router-dom";
@@ -53,7 +54,8 @@ export default function ParentEditables({
     useUpdateTutorDetailsMutation();
   const [postTutorDetails, postTutorDetailsResp] =
     usePostTutorDetailsMutation();
-  const [updatedService, setUpdatedService] = useState({});
+    const [addReview,addReviewStatus]=useAddTutorReviewMutation()
+      const [updatedService, setUpdatedService] = useState({});
   const [loading, setLoading] = useState(false);
 
   const { organization } = useSelector((state) => state.organization);
@@ -346,6 +348,30 @@ export default function ParentEditables({
     setToEdit(tempToEdit);
     // setToEdit()
   };
+ //console.log("parentEdit",currentField,currentToEdit,organization,userId)
+  const handleAddReview=()=>{
+    let tutorRev=currentToEdit?.tutorReviews
+    tutorRev?.map((tr,id)=>{
+
+    
+    let reqBody=tr
+    reqBody.orgId=organization?._id
+    reqBody.tutorId=userId
+    console.table(id,"review",reqBody)
+    addReview(reqBody).then((res)=>{
+      console.log(id,"newtr tutor review",res)
+    })
+    if(id===tutorRev?.length-1)
+    setCurrentToEdit({
+     active:false,
+     tutorReviews:[],
+     fetchData:[]
+  })
+  })
+
+
+  }
+
 
   useEffect(() => {
     if (student.length > 0) {
@@ -499,6 +525,9 @@ export default function ParentEditables({
         // handleClose()
       });
     } else if (currentField.api === "tutorDetail") {
+      if(reqBody?.tutorReviews){
+        handleAddReview()
+      }
       if (reqBody.tutorLevel) {
         const level = getLevel(reqBody.tutorLevel);
         reqBody.tutorLevel = level;
@@ -1464,8 +1493,8 @@ const navigate= useNavigate()
                     // console.log({organization,currentField,currentToEdit}),
                     //handlePriceChange(e.target.value)
 
-                      [{},{}]?.map((it,id)=>{
-                       return ( <div className="flex flex-col mb-4 bg-[#F6F6F6] p-3 rounded-md">
+                      currentToEdit?.tutorReviews?.map((it,id)=>{
+                       return ( <div key={id} className="flex flex-col mb-4 bg-[#F6F6F6] p-3 rounded-md">
                        
                        <div className="flex gap-5">
                        <InputSelect
@@ -1477,54 +1506,55 @@ const navigate= useNavigate()
                           inputClassName="bg-transparent pl-4 rounded-[4px] font-semibold text-[#517CA8] text-base-20"
                           parentClassName="w-[180px] "
                           type="text"
-                          value={it?.price?it?.price:""}
+                          value={it?.userTag}
                           optionData={["student","parent"]}
                           onChange={(e) =>{
-                            let temp=currentToEdit.tutorServices
-                            temp[id].price=e.target.value
+                            let temp=currentToEdit.tutorReviews;
+                            console.log(temp)
+                            temp[id].userTag=e;
                             setCurrentToEdit({
                               ...currentToEdit,
-                              tutorServices:temp
+                              tutorReviews:[...temp]
                             })
                           } }
                         />
                          <InputSelect
                           labelClassname="text-base-17-5 text-[#26435F]"
                           label="For Service"
-                          placeholder=""
+                          placeholder="Select"
                           inputContainerClassName="text-sm pt-[14px] pb-[14px] px-5 bg-white border-0 shadow-[0px_0px_2.50039005279541px_0px_#00000040]"
                           inputLeftField={<div className="text-[#B3BDC7] font-semibold text-base-20 mr-3">$</div>}
                           inputClassName="bg-transparent pl-4 rounded-[4px] font-semibold text-[#517CA8] text-base-20"
                           parentClassName="w-[180px] "
                           type="text"
-                          value={it?.price?it?.price:""}
+                          value={it?.service}
                           optionData={organization?.settings?.servicesAndSpecialization?.map((it)=>{
                             return it?.service
                           })}
                           onChange={(e) =>{
-                            let temp=currentToEdit.tutorServices
-                            temp[id].price=e.target.value
+                            let temp=currentToEdit.tutorReviews
+                            temp[id].service=e
                             setCurrentToEdit({
                               ...currentToEdit,
-                              tutorServices:temp
+                              tutorReviews:temp
                             })
                           } }
                         />
                          <InputField
-                          labelClassname="text-base-17-5 text-[#26435F] !font-medium"
+                          labelClassname="text-base-17-5 text-[#26435F] !font-medium "
                           label="Review Date"
-                          placeholder=""
+                          placeholder="Select"
                           inputContainerClassName="text-sm pt-2 pb-2 px-5 bg-white border-0 shadow-[0px_0px_2.50039005279541px_0px_#00000040]"
-                          inputClassName="bg-transparent pl-4 rounded-[4px] font-semibold text-[#517CA8] text-base-17-5"
-                          parentClassName="w-[180px] "
+                          inputClassName="bg-transparent pl-4 rounded-[4px] font-normal text-[#333] text-base-17-5 placeholder:text-[#667085]"
+                          parentClassName="w-[180px] -mt-1"
                           type="date"
-                          value={it?.price?it?.price:""}
+                          value={it?.date}
                           onChange={(e) =>{
-                            let temp=currentToEdit?.tutorServices
-                            temp[id].price=e.target.value
+                            let temp=currentToEdit?.tutorReviews
+                            temp[id].date=e.target.value
                             setCurrentToEdit({
                               ...currentToEdit,
-                              tutorServices:temp
+                              tutorReviews:temp
                             })
                           } }
                         />
@@ -1534,12 +1564,19 @@ const navigate= useNavigate()
                           <h5 className="text-base-17-5 text-[#26435F]">Review content</h5>
                       <textarea
                         rows="2"
-                        value={currentToEdit?.paymentInfo}
+                        maxLength={100}
+                        value={it?.content}
+                        placeholder="Add the review received by the tutor in this paragraph text space.
+                        Suggested word limit: 100 words."
                         onChange={(e) =>
-                          setCurrentToEdit({
-                            ...currentToEdit,
-                            paymentInfo: e.target.value,
-                          })
+                          {
+                            let temp=currentToEdit?.tutorReviews
+                            temp[id].content=e.target.value
+                            setCurrentToEdit({
+                              ...currentToEdit,
+                              tutorReviews:temp
+                            })
+                          }
                         }
                         className="!shadow-[0px_0px_2.50039005279541px_0px_#00000040] rounded-md mt-1 block w-full h-[100px] flex-1 resize-none focus:!ring-blue-500 p-2 focus:!border-blue-500 placeholder-[#CBD6E2] text-sm  placeholder:text-xs pt-3.5 pb-3 px-5  bg-white border-0 text-[#667085]"
                       ></textarea>
@@ -1551,7 +1588,21 @@ const navigate= useNavigate()
                      
                     }
                     </div>
-                    <div onClick={()=>navigate("/settings")} className="text-[#24A3D9] cursor-pointer font-semibold text-base-17-5">
+                    <div onClick={()=>{
+                      let temp=currentToEdit.tutorReviews;
+                      temp.push({
+                        tutorId: "",
+                        userTag: "", // "parent"
+                        service: "",
+                        date:"",
+                        content: "",
+                        orgId: "",
+                      },);
+                      setCurrentToEdit({
+                        ...currentToEdit,
+                        tutorReviews:temp
+                      })
+                    }} className="text-[#24A3D9] cursor-pointer font-semibold text-base-17-5">
                     + Add New Review
                     </div>
                     {/* <div className="flex items-center mb-4">
@@ -1577,8 +1628,8 @@ const navigate= useNavigate()
                   </div>
                 )}
                 {currentField.name === "paymentInfo" && (
-                  <div className="flex items-center justify-center">
-                    <div className=" mb-5">
+                  <div className="flex flex-1 w-full items-center justify-center">
+                    <div className="flex-1 mb-5">
                       <textarea
                         rows="3"
                         value={currentToEdit.paymentInfo}
@@ -1588,7 +1639,8 @@ const navigate= useNavigate()
                             paymentInfo: e.target.value,
                           })
                         }
-                        className="mt-1 block w-full h-[180px] flex-1 resize-none focus:!ring-blue-500 p-2 focus:!border-blue-500 placeholder-[#CBD6E2] text-sm  placeholder:text-xs pt-3.5 pb-3 px-5  bg-primary-50 border-0 text-[#667085]"
+                        placeholder="Use this space to add any payment info about the tutor, such as Account Number, Routing Number, Billing Address, Reimbursements, etc."
+                        className="mt-1 rounded-md  block w-full h-[110px] flex-1 resize-none focus:!ring-blue-500 p-2 focus:!border-blue-500 placeholder-[#CBD6E2] text-sm  placeholder:text-xs pt-3.5 pb-3 px-5  bg-primary-50 border-0 text-[#667085]"
                       ></textarea>
                     </div>
 
