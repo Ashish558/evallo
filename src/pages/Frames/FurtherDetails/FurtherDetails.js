@@ -7,26 +7,26 @@ import style from "./styles.module.css";
 import SCheckbox from "../../../components/CCheckbox/SCheckbox";
 import InputSelectNew from "../../../components/InputSelectNew/InputSelectNew";
 
-export default function 
-FurtherDetails({
-  setFrames,
-  setcurrentStep,
-  testPreparations,
-  setTestPreparations,
+export default function
+  FurtherDetails({
+    setFrames,
+    setcurrentStep,
+    testPreparations,
+    setTestPreparations,
 
-  coaching,
-  setCoaching,
-  tutoring,
-  setTutoring,
-  setValues,
-  values,
-  studentserved,
-  setStudentserved,
-  setInstructions,
-  instructions,
-  paymentOptions,
-  setPaymentOptions,
-}) {
+    coaching,
+    setCoaching,
+    tutoring,
+    setTutoring,
+    setValues,
+    values,
+    studentserved,
+    setStudentserved,
+    setInstructions,
+    instructions,
+    paymentOptions,
+    setPaymentOptions,
+  }) {
   const [disabled, setDisabled] = useState(false);
 
   const handleCheckboxChange = (text, arr, setValue) => {
@@ -185,7 +185,7 @@ FurtherDetails({
               {tutoring?.map((item, idx) => {
                 return (
                   <div key={idx} className="flex items-center mb-3 mr-6">
-                    
+
                     <SCheckbox
                       checked={item.checked}
                       className="scale-[0.7]"
@@ -233,7 +233,7 @@ FurtherDetails({
                         handleCheckboxChange(item.text, coaching, setCoaching)
                       }
                     />
-             
+
                     <p
                       onClick={() =>
                         handleCheckboxChange(item.text, coaching, setCoaching)
@@ -270,16 +270,16 @@ FurtherDetails({
               <div
                 key={idx}
                 className="flex items-center mb-3 mr-6"
-                
+
               >
                 <SCheckbox
-                      checked={item.checked}
-                      className="scale-[0.7]"
-                      onChange={() =>
-                        handleCheckboxChange(item.text, instructions, setInstructions)
-                      }
-                    />
-               
+                  checked={item.checked}
+                  className="scale-[0.7]"
+                  onChange={() =>
+                    handleCheckboxChange(item.text, instructions, setInstructions)
+                  }
+                />
+
                 <p onClick={() =>
                   handleCheckboxChange(item.text, instructions, setInstructions)
                 } className="font-medium  text-[13px] opacity-90 leading-5">
@@ -299,20 +299,20 @@ FurtherDetails({
               <div
                 key={idx}
                 className="flex items-center mb-3 mr-6"
-               
+
               >
-               <SCheckbox
-                      checked={item.checked}
-                      className="scale-[0.7]"
-                      onChange={() =>
-                        handleCheckboxChange(
-                          item.text,
-                          studentserved,
-                          setStudentserved
-                        )
-                      }
-                    />
-                <p  onClick={() =>
+                <SCheckbox
+                  checked={item.checked}
+                  className="scale-[0.7]"
+                  onChange={() =>
+                    handleCheckboxChange(
+                      item.text,
+                      studentserved,
+                      setStudentserved
+                    )
+                  }
+                />
+                <p onClick={() =>
                   handleCheckboxChange(
                     item.text,
                     studentserved,
@@ -330,20 +330,20 @@ FurtherDetails({
           How do you currently process your payments?
         </p>
         <InputSelectNew
-            value={values.paymentType}
-            parentClassName="w-[200px]"
-            optionContainerClassName="text-[13px] "
-            optionsEachClassName="py-[6px]"
-            optionData={paymentOptions}
-            placeholder={""}
-            label={``}
-            labelClassname="text-[#26435F] font-bold  mb-1 text-sm "
-            inputContainerClassName="py-1 h-[44.9px] text-sm border  border-[#D0D5DD] my-0 mt-[-2px] rounded-[5px]"
-            inputClassName="ml-80 "
-          
-            onChange={(e) => handlePaymentTypeChange(e)}
-          />
-      
+          value={values.paymentType}
+          parentClassName="w-[200px]"
+          optionContainerClassName="text-[13px] "
+          optionsEachClassName="py-[6px]"
+          optionData={paymentOptions}
+          placeholder={""}
+          label={``}
+          labelClassname="text-[#26435F] font-bold  mb-1 text-sm "
+          inputContainerClassName="py-1 h-[44.9px] text-sm border  border-[#D0D5DD] my-0 mt-[-2px] rounded-[5px]"
+          inputClassName="ml-80 "
+
+          onChange={(e) => handlePaymentTypeChange(e)}
+        />
+
       </div>
 
       <div className="flex items-center mt-8 justify-between">
@@ -358,7 +358,7 @@ FurtherDetails({
            
           `}
           onClick={() => handleSubmit()}
-          // disabled={disabled}
+        // disabled={disabled}
         />
       </div>
     </div>
