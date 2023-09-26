@@ -45,6 +45,7 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 // import Loader from "../../components/Loader";
 import LoaderNew from "../../components/Loader/LoaderNew";
+import SCheckbox from "../../components/CCheckbox/SCheckbox";
 
 const optionData = ["option 1", "option 2", "option 3", "option 4", "option 5"];
 
@@ -150,6 +151,10 @@ export default function Users() {
       text: "Assigned Tutor",
     },
     {
+      id: 7,
+      text: "Service(s)",
+    },
+    {
       id: 1,
       text: "Lead Status",
     },
@@ -157,12 +162,13 @@ export default function Users() {
       id: 6,
       text: "Tutor Status",
     },
-    {
-      id: 7,
-      text: "Service(s)",
-    },
+   
     {
       id: 8,
+      text: "Account Status",
+    },
+    {
+      id: 9,
       text: "Join Date",
     },
    
@@ -259,7 +265,7 @@ export default function Users() {
       const fetchDetails = async () => {
         let tempData = [];
         await res?.data?.data?.user?.map(async (user) => {
-          //console.log("user",user)
+          console.log("user",user)
           let obj = {
             _id: user._id,
             block: user.block,
@@ -273,6 +279,7 @@ export default function Users() {
             assignedTutor: user.assiginedTutors ? user.assiginedTutors : "",
             leadStatus: user?.leadStatus,
             tutorStatus: user?.tutorStatus,
+            accountStatus:user?.userStatus,
             specialization: user?.specialization ? user.specialization : [],
           };
           tempData.push(obj);
@@ -1039,7 +1046,9 @@ export default function Users() {
         </div>
         <div className="flex gap-6 items-center    mt-[23.75px]">
           <div className="ml-6 ">
-            <label className={`  text-[#26435F] font-medium flex items-center`}>
+            <SCheckbox checked={isChecked}
+                onChange={handleCheckboxChange} />
+            {/* <label className={`  text-[#26435F] font-medium flex items-center`}>
               <input
                 type="checkbox"
                 checked={isChecked}
@@ -1050,7 +1059,7 @@ export default function Users() {
                   }`}
               ></span>
               <span className="block text-[17.5px] text-base-17-5">{numberChecked} Selected</span>
-            </label>
+            </label> */}
           </div>
           <InputField value="Lead Status"  IconRight={Dropdown} inputClassName="bg-white border border-white w-[150px]" inputContainerClassName="bg-white " >
             </InputField>
