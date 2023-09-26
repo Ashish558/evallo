@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import * as XLSX from 'xlsx';
 import { CSVLink, CSVDownload } from "react-csv";
+import DeleteIcon2 from "../../assets/YIcons/Vectordel.svg";
 import Table from "../../components/Table/Table";
 import FilterItems from "../../components/FilterItemsNew/filterItems";
 import Modal from "../../components/Modal/Modal";
@@ -1061,16 +1062,27 @@ export default function Users() {
               <span className="block text-[17.5px] text-base-17-5">{numberChecked} Selected</span>
             </label> */}
           </div>
-          <InputField value="Lead Status"  IconRight={Dropdown} inputClassName="bg-white border border-white w-[150px]" inputContainerClassName="bg-white " >
+          <InputField value="Lead Status"  IconRight={Dropdown} inputClassName="bg-white border border-white w-[120px]" inputContainerClassName="bg-white " >
             </InputField>
-            <InputField value="Tutor Status"  IconRight={Dropdown} inputClassName="bg-white border border-white w-[150px]" inputContainerClassName="bg-white " >
+            <InputField value="Tutor Status"  IconRight={Dropdown} inputClassName="bg-white border border-white w-[120px]" inputContainerClassName="bg-white " >
             </InputField>
-            <InputField value="Assigned Status"  IconRight={Dropdown} inputClassName="bg-white border border-white w-[150px]" inputContainerClassName="bg-white " >
+            <InputField value="Assigned Status"  IconRight={Dropdown} inputClassName="bg-white border border-white w-[120px]" inputContainerClassName="bg-white " >
             </InputField>
           <div>
             <button className="bg-[#26435F] text-[15px] px-[25px] py-[10px] rounded-[7.5px] text-white ml-auto text-base-15">
               Save
             </button>
+
+          </div>
+          <div className="flex justify-end flex-1 gap-5">
+            <button className="bg-[#517CA8] text-[15px] px-[25px] py-[10px] rounded-[7.5px] text-white  text-base-15">
+            + Invite Users
+            </button>
+            <button className="bg-[#FF7979] text-[15px] px-[25px] py-[10px] rounded-[7.5px] text-white  text-base-15">
+           <span ><img src={DeleteIcon2} className="inline-block my-auto" alt="delete"/></span> Delete User(s)
+            </button>
+            
+            
           </div>
         </div>
 
