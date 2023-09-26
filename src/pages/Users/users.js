@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import * as XLSX from 'xlsx';
 import { CSVLink, CSVDownload } from "react-csv";
+import DeleteIcon2 from "../../assets/YIcons/Vectordel.svg";
 import Table from "../../components/Table/Table";
 import FilterItems from "../../components/FilterItemsNew/filterItems";
 import Modal from "../../components/Modal/Modal";
@@ -45,6 +46,7 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 // import Loader from "../../components/Loader";
 import LoaderNew from "../../components/Loader/LoaderNew";
+import SCheckbox from "../../components/CCheckbox/SCheckbox";
 
 const optionData = ["option 1", "option 2", "option 3", "option 4", "option 5"];
 
@@ -150,6 +152,10 @@ export default function Users() {
       text: "Assigned Tutor",
     },
     {
+      id: 7,
+      text: "Service(s)",
+    },
+    {
       id: 1,
       text: "Lead Status",
     },
@@ -157,12 +163,13 @@ export default function Users() {
       id: 6,
       text: "Tutor Status",
     },
-    {
-      id: 7,
-      text: "Service(s)",
-    },
+   
     {
       id: 8,
+      text: "Account Status",
+    },
+    {
+      id: 9,
       text: "Join Date",
     },
    
@@ -259,7 +266,7 @@ export default function Users() {
       const fetchDetails = async () => {
         let tempData = [];
         await res?.data?.data?.user?.map(async (user) => {
-          //console.log("user",user)
+          console.log("user",user)
           let obj = {
             _id: user._id,
             block: user.block,
@@ -273,6 +280,7 @@ export default function Users() {
             assignedTutor: user.assiginedTutors ? user.assiginedTutors : "",
             leadStatus: user?.leadStatus,
             tutorStatus: user?.tutorStatus,
+            accountStatus:user?.userStatus,
             specialization: user?.specialization ? user.specialization : [],
           };
           tempData.push(obj);
@@ -1039,7 +1047,9 @@ export default function Users() {
         </div>
         <div className="flex gap-6 items-center    mt-[23.75px]">
           <div className="ml-6 ">
-            <label className={`  text-[#26435F] font-medium flex items-center`}>
+            <SCheckbox checked={isChecked}
+                onChange={handleCheckboxChange} />
+            {/* <label className={`  text-[#26435F] font-medium flex items-center`}>
               <input
                 type="checkbox"
                 checked={isChecked}
@@ -1050,18 +1060,29 @@ export default function Users() {
                   }`}
               ></span>
               <span className="block text-[17.5px] text-base-17-5">{numberChecked} Selected</span>
-            </label>
+            </label> */}
           </div>
-          <InputField value="Lead Status"  IconRight={Dropdown} inputClassName="bg-white border border-white w-[150px]" inputContainerClassName="bg-white " >
+          <InputField value="Lead Status"  IconRight={Dropdown} inputClassName="bg-white border border-white w-[120px]" inputContainerClassName="bg-white " >
             </InputField>
-            <InputField value="Tutor Status"  IconRight={Dropdown} inputClassName="bg-white border border-white w-[150px]" inputContainerClassName="bg-white " >
+            <InputField value="Tutor Status"  IconRight={Dropdown} inputClassName="bg-white border border-white w-[120px]" inputContainerClassName="bg-white " >
             </InputField>
-            <InputField value="Assigned Status"  IconRight={Dropdown} inputClassName="bg-white border border-white w-[150px]" inputContainerClassName="bg-white " >
+            <InputField value="Assigned Status"  IconRight={Dropdown} inputClassName="bg-white border border-white w-[120px]" inputContainerClassName="bg-white " >
             </InputField>
           <div>
             <button className="bg-[#26435F] text-[15px] px-[25px] py-[10px] rounded-[7.5px] text-white ml-auto text-base-15">
               Save
             </button>
+
+          </div>
+          <div className="flex justify-end flex-1 gap-5">
+            <button className="bg-[#517CA8] text-[15px] px-[25px] py-[10px] rounded-[7.5px] text-white  text-base-15">
+            + Invite Users
+            </button>
+            <button className="bg-[#FF7979] text-[15px] px-[25px] py-[10px] rounded-[7.5px] text-white  text-base-15">
+           <span ><img src={DeleteIcon2} className="inline-block my-auto" alt="delete"/></span> Delete User(s)
+            </button>
+            
+            
           </div>
         </div>
 

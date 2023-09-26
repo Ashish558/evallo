@@ -300,19 +300,22 @@ export default function TableItem({
               <div className="flex ">
                 {dataFor === "allUsers" ? (
 
-                  <label
-                    className={`${styles["checkbox-label"]} block text-[#26435F] `}
-                  >
-                    <input
-                      type="checkbox"
-                      checked={isChecked}
-                      onChange={handleCheckboxChange}
-                    />
-                    <span
-                      className={`${styles["custom-checkbox"]} ${isChecked ? "checked" : ""
-                        }`}
-                    ></span>
-                  </label>
+
+                  <SCheckbox checked={isChecked}
+                  onChange={handleCheckboxChange} />
+                  // <label
+                  //   className={`${styles["checkbox-label"]} block text-[#26435F] `}
+                  // >
+                  //   <input
+                  //     type="checkbox"
+                  //     checked={isChecked}
+                  //     onChange={handleCheckboxChange}
+                  //   />
+                  //   <span
+                  //     className={`${styles["custom-checkbox"]} ${isChecked ? "checked" : ""
+                  //       }`}
+                  //   ></span>
+                  // </label>
 
                 ) : (
                   ""
@@ -347,6 +350,14 @@ export default function TableItem({
           </td>
           <td className=" text-[17.5px] px-1  min-w-14 py-4">
             <div className="my-[6px]">
+              {item.specialization?.map((specialization, idx) => {
+                return `${specialization}${idx + 1 === item.specialization.length ? "" : ","
+                  }`;
+              })}
+            </div>
+          </td>
+          <td className=" text-[17.5px] px-1  min-w-14 py-4">
+            <div className="my-[6px]">
               <InputSelect
                 tableDropdown={true}
                 value={leadStatus ? leadStatus : "-"}
@@ -373,13 +384,9 @@ export default function TableItem({
           </td>
 
 
-          <td className=" text-[17.5px] px-1  min-w-14 py-4">
-            <div className="my-[6px]">
-              {item.specialization?.map((specialization, idx) => {
-                return `${specialization}${idx + 1 === item.specialization.length ? "" : ","
-                  }`;
-              })}
-            </div>
+         
+          <td className=" text-[17.5px] px-1  min-w-14 py-4 text-[#507CA8]">
+            <div className="my-[6px] capitalize">{item?.accountStatus}</div>
           </td>
           <td className=" text-[17.5px] px-1  min-w-14 py-4 text-[#507CA8]">
             <div className="my-[6px] capitalize">{getFormatDate(item.createdAt)}</div>
