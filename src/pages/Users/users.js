@@ -35,6 +35,7 @@ import {
   useDeleteUserMutation,
   useUnblockUserMutation,
 } from "../../app/services/admin";
+import ques from "../../assets/YIcons/medical-icon_i-information-us.svg"
 import { useLazyGetSettingsQuery } from "../../app/services/session";
 import PrimaryButton from "../../components/Buttons/PrimaryButton";
 // import CountryCode from "../../components/CountryCode/CountryCode";
@@ -1075,13 +1076,31 @@ export default function Users() {
 
           </div>
           <div className="flex justify-end flex-1 gap-5">
-            <button className="bg-[#517CA8] text-[15px] px-[25px] py-[10px] rounded-[7.5px] text-white  text-base-15">
+            <button className="bg-[#517CA8] text-[15px] font-semibold relative px-[25px] py-[10px] rounded-[7.5px] text-white  text-base-15">
             + Invite Users
+            <span  className="absolute right-[-10px] z-10 top-[-10px]">
+            <div className="group relative">
+            <img src={ques} className="inline-block"/>
+                       <span className="absolute  top-10 left-[-100px] z-20 w-[260px]  scale-0 rounded-lg bg-[rgba(31,41,55,0.9)]  text-[13px] text-white group-hover:scale-100 whitespace-normal py-3 px-3">
+                         <h3 className="text-[#517CA8] text-left text-[16px] py-0 font-semibold mb-1">
+                          Invite Users
+                         </h3>
+                         <span className=" text-left text-base-15 font-medium">
+                         This will allow you to invite the selected users to create an account within your Organization’s database. They will receive a verification email to set a new password and logging into the platform. Note that this is useful if you “Saved” user data instead of inviting them when adding them to the CRM
+                           <br />
+                           <br />
+                           <span className="text-[#FF7979] " >
+                           Please ensure that you have consent from the user before inviting them to create an account.</span>
+                           </span>
+                       </span>
+    
+                     </div>
+             </span>
             </button>
-            <button className="bg-[#FF7979] text-[15px] px-[25px] py-[10px] rounded-[7.5px] text-white  text-base-15">
+            <button className="bg-[#FF7979] text-[15px] flex items-center gap-2 px-[25px] font-semibold py-[10px] rounded-[7.5px] text-white  text-base-15">
            <span ><img src={DeleteIcon2} className="inline-block my-auto" alt="delete"/></span> Delete User(s)
             </button>
-            
+         
             
           </div>
         </div>

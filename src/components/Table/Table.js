@@ -80,7 +80,7 @@ export default function Table(props) {
   return (
     <div className="w-full">
       <div className="overflow-x-auto scrollbar-content custom-scroller-2 p-[2px] scroll-m-1 ">
-        <table className=" customTable   mb-3 text-center w-full whitespace-nowrap">
+        <table className=" customTable mb-3 text-center w-full whitespace-nowrap">
           <thead className="pb-2 whitespace-nowrap">
             <tr className=" whitespace-nowrap">
               {tableHeaders.map((item, idx) => {

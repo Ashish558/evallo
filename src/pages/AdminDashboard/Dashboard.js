@@ -34,6 +34,7 @@ const Dashboard = () => {
   const { firstName, lastName } = useSelector((state) => state.user);
   const { data: userStats } = useGetUserStatsQuery();
 
+  console.log({userStats})
   const [completedRevenue, completedRevenueStatus] = useGetAllRevenueMutation();
   const [leakedRevenue, leakedRevenueStatus] = useGetLeakedRevenueMutation();
   const [impendingRevenue, impendingRevenueStatus] =
@@ -501,11 +502,11 @@ const Dashboard = () => {
           </div>
         </section>
         <div className="flex justify-center">
-          <div className="mt-[40px] w-[78.125vw] mx-auto">
-            <div className="mt-2 h-[1px] bg-[#00000033]"></div>
+            <div className=" w-[78.125vw] !mt-[calc(43*0.050vw)]">
+              <div className=" h-[1px] bg-[#CBD6E2]"></div>
+            </div>
           </div>
-        </div>
-        <div className=" relative z-[50000] w-[83.33vw] mx-auto mt-[52px] text-[#26435F]">
+        <div className=" relative z-[50000] w-[83.33vw] mx-auto mt-[25px] text-[#26435F]">
           <div  className=" relative z-[50000] flex justify-between items-center translate-y-[10px] ">
             <p className="font-bold uppercase text-[#FFA28D] text-xl text-base-20">Client Success Overview </p>
 
@@ -635,11 +636,11 @@ const Dashboard = () => {
           </div>
         </section>
         <div className="flex justify-center">
-          <div className="mt-[51px] w-[78.125vw] mx-auto">
-            <div className="mt-2 h-[1px] bg-[#00000033]"></div>
+            <div className=" w-[78.125vw] !mt-[calc(60*0.050vw)]">
+              <div className=" h-[1px] bg-[#CBD6E2]"></div>
+            </div>
           </div>
-        </div>
-        <div className=" relative z-[50000] w-[83.33vw] mx-auto  mt-[42px] text-[#FFA28D] ">
+        <div className=" relative z-[50000] w-[83.33vw] mx-auto  mt-[13px] text-[#FFA28D] ">
           <div className=" relative z-[50000] flex justify-between items-center  translate-y-[15px] mb-[10px]">
             <p className="font-bold uppercase text-xl text-base-17-5">Tutor Performence Overview </p>
 

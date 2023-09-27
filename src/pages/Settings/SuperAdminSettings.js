@@ -918,6 +918,7 @@ export default function SuperAdminSettings() {
               </div>
               <InputSelect
                 labelClassname="mb-1"
+                 placeholder='Select'
                 IconRight={<img
                   src={down}
                   className={`${down ?`w-[12px] h-[12px] `:`w-[12px] h-[12px]`}   absolute right-5`}

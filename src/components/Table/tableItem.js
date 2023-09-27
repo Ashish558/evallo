@@ -233,9 +233,11 @@ export default function TableItem({
     // Format the date in the desired format
     const options = { year: 'numeric', month: 'short', day: '2-digit' };
     const formattedDate = dateObj.toLocaleDateString('en-US', options);
-
+    let dd=formattedDate
+    let ed=dd.split(" ")
+    let fd= ed[0]+ ". "+ ed[1] + " " + ed[2]
     //console.log(formattedDate); // Output: "August 02, 2023"
-    return formattedDate
+    return fd
   }
   const getPhone = (val) => {
     //console.log(item)
@@ -412,7 +414,7 @@ export default function TableItem({
         </tr>
       )}
       {dataFor === "allUsersSuperAdmin" && (
-        <tr className="odd:bg-white  leading-8">
+        <tr className="odd:bg-white even:!shadow-[0px_0px_3.00000476837158px_0px_#00000040]  leading-8">
           <td className="font-medium text-[17.5px] px-1  min-w-14   text-center">
             <span
               className="inline-block cursor-pointer"

@@ -100,6 +100,7 @@ export const {
   useGetLatestSignUpQuery,
   useGetLatestSignUpRangeMutation,
   useGetUserStatsQuery,
+  
   useGetImpendingRevenueMutation,
   useGetLeakedRevenueMutation,
   useGetAllRevenueMutation,
