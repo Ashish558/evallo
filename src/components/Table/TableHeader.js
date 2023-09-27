@@ -8,7 +8,7 @@ export function TableHeader({ header, dataFor, onClick, setSorted, Icon, headerW
   const [flag, setFlag] = useState(dataFor === "studentTestsReportSmall" || dataFor === "studentTestsReport" ? true : false)
   return dataFor === "assignedTestsStude" || dataFor === "invoice" ? (
     <th
-      className={`px-1 py-[16px]  whitespace-nowrap text-[16px] font-[500] bg-[#7152EB] text-white ${header === "Full Name" || header === "Name" ? "text-left pl-7" : ""
+      className={`px-[6px] py-[16px]  whitespace-nowrap text-[16px] font-[500] bg-[#7152EB] text-white ${header === "Full Name" || header === "Name" ? "text-left pl-7" : ""
         } 
       `}
     >

@@ -133,7 +133,7 @@ const Demography1 = ({ dateRange }) => {
           <div className="overflow-y-auto h-[360px] py-0 relative">
 
 
-            <table className="table-auto border-spacing-y-4 px-1 customTable border-separate w-full whitespace-nowrap">
+            <table className="table-auto !border-spacing-y-[6px] px-1 customTable border-separate w-full whitespace-nowrap">
               <thead className="sticky top-0">
                 <tr>
                   <th className="px-4">State </th>
@@ -145,14 +145,14 @@ const Demography1 = ({ dateRange }) => {
               <tbody >
                 {currentDemographicArea?.map((state, id) => {
                   return (
-                    <tr className={`my-7 overflow-hidden `} key={id}>
-                      <td className={`mb-1 ${id % 2 ? "bg-[#F5F8FA]" : 'bg-white'}`}>
+                    <tr className={`my-8 overflow-hidden `} key={id}>
+                      <td className={`mb-2 ${id % 2 ? "bg-[#F5F8FA]" : 'bg-white'}`}>
                         {state.state_name.charAt(0).toUpperCase() +
                           state.state_name.slice(1)}
                       </td>
-                      <td className={`mb-1 ${id % 2 ? "bg-[#F5F8FA]" : 'bg-white'}`}>{state.no_of_orgs}</td>
-                      <td className={`mb-1 ${id % 2 ? "bg-[#F5F8FA]" : 'bg-white'}`}>{Math.round(state.average_students)}</td>
-                      <td className={` mb-1 ${id % 2 ? "bg-[#F5F8FA]" : 'bg-white'}`}>{Math.round(state.average_tutors)}</td>
+                      <td className={`mb-2 ${id % 2 ? "bg-[#F5F8FA]" : 'bg-white'}`}>{state.no_of_orgs}</td>
+                      <td className={`mb-2 ${id % 2 ? "bg-[#F5F8FA]" : 'bg-white'}`}>{Math.round(state.average_students)}</td>
+                      <td className={` mb-2 ${id % 2 ? "bg-[#F5F8FA]" : 'bg-white'}`}>{Math.round(state.average_tutors)}</td>
                     </tr>
                   );
                 })}
