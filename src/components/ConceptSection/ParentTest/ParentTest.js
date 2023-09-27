@@ -13,6 +13,7 @@ export default function ParentTest({ styles, assignedTestId, testId, testName, s
    const { role: persona } = useSelector(state => state.user)
    const [getTestResponse, getTestResponseResp] = useLazyGetTestResponseQuery()
    const navigate = useNavigate()
+   const { awsLink } = useSelector((state) => state.user);
 
    useEffect(() => {
       if (isCompleted === true) {
@@ -38,8 +39,15 @@ export default function ParentTest({ styles, assignedTestId, testId, testName, s
    }, [])
 
    const handleReportNavigate = () => {
-      // navigate(`/assigned-tests/${testId}/${assignedTestId}/report/${studentId._id}`)
-      window.open(`${pdfLink}`)
+      if(pdfLink){
+         const anchor = document.createElement('a');
+         anchor.href = `${awsLink}${pdfLink}`;
+         anchor.target = '_blank';
+         anchor.download = `${pdfLink}.pdf`; // Replace with the desired file name and extension
+         anchor.click();
+      }else{
+         alert('The PDF file is no longer available.')
+      }
    }
 
    const handleNavigate = () => {
