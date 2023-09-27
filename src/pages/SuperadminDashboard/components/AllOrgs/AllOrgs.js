@@ -12,7 +12,7 @@ import { useEffect } from "react";
 import DateIcon from "../../../../assets/icons/solar_calendar-date-outline.svg"
 import Table from "../../../../components/Table/Table";
 
-import InputSelect from "../../../../components/InputSelect/InputSelect";
+import InputSelect  from "../../../../components/InputSelect/InputSelect";
 import { useLazyGetAllOrgQuery } from "../../../../app/services/superAdmin";
 import LoaderNew from "../../../../components/Loader/LoaderNew";
 import { CSVLink } from "react-csv";
@@ -144,9 +144,9 @@ const AllOrgs = () => {
   }
   return (
     <>
-      <div className="pl-[5.46875vw] pt-7 mb-12">
-        <h4 className="text-[#24A3D9]">All Orgs</h4>
-        <div className="flex items-center justify-between py-5 ">
+      <div className=" pt-7 mb-12">
+        <h4 className="pl-[5.46875vw] text-[#24A3D9]">All Orgs</h4>
+        <div className=" px-[5.46875vw] flex items-center justify-between py-5 ">
           <div className="w-full flex  gap-x-[1.4583333333vw]  items-center">
             <InputField
             inputClassName="!text-[#667085] placeholder:!text-[#667085]"
@@ -163,7 +163,9 @@ const AllOrgs = () => {
               }
               error={error.search}
             />
-            <InputSelect
+            <InputSelect 
+            downArrow22={true}
+
               placeholder="Org type"
               parentClassName="  text-[#667085]"
               value={values.orgType}
@@ -197,7 +199,8 @@ const AllOrgs = () => {
               }
               error={error.joinDate}
             />
-            <InputSelect
+            <InputSelect 
+            downArrow22={true}
               placeholder="Region"
               parentClassName="text-xs text-[#667085]"
               inputContainerClassName="w-[11vw] bg-white border !text-[#667085] !rounded-lg border-[1.33px_solid_#EBEBEB] h-[49px]"
@@ -213,7 +216,8 @@ const AllOrgs = () => {
               }
               error={error.region}
             />
-            <InputSelect
+            <InputSelect 
+            downArrow22={true}
               placeholder="Subscription"
               parentClassName="text-xs text-[#667085]"
               inputContainerClassName="w-[11vw] bg-white border !text-[#667085] !rounded-lg border-[1.33px_solid_#EBEBEB] h-[49px]"
@@ -243,9 +247,9 @@ const AllOrgs = () => {
               error={error.numberOfStudent}
             />
           </div>
-          <div className="w-[400px] flex justify-center  items-center ">
+          <div className="w-[400px] flex justify-end  items-center ">
 
-            <button className="flex rounded-md justify-center gap-2 bg-[#517CA8] h-[51px] w-[8.984375vw] items-center  text-white">
+            <button className="flex rounded-md justify-center gap-2 bg-[#517CA8] h-[49px] w-[8.984375vw] items-center  text-white text-base-17-5">
               {csvLoad ? <LoaderNew /> : ""}
               {!csvLoad && !successFetched ? (
                 <p onClick={handleBulkExport}>Export</p>
@@ -269,12 +273,12 @@ const AllOrgs = () => {
               )}
 
               {!csvLoad && (
-                <img  src={uploadIcon} alt="upload" />
+                <img  src={uploadIcon} className="w-5 h-5" alt="upload" />
               )}
             </button>
           </div>
         </div>
-        <div className="overflow-x-auto scrollbar-content scroll-mt-3 pr-7 mt-2" >
+        <div className="pl-[5.46875vw] overflow-x-auto scrollbar-content scroll-mt-3 pr-7 mt-2" >
           <Table
             noArrow={false}
             data={adminData}

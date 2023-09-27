@@ -10,7 +10,7 @@ import Chart from "./DataChart/Chart";
 import Chart2 from "./DataChart/Chart2";
 import Index from "./FinancialStats/Index1";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
+import faq2 from "../../assets/YIcons/Vectorfinantia.svg"
 import { faQuestionCircle } from "@fortawesome/free-regular-svg-icons";
 
 import Demography from "./Demographies/Demography1";
@@ -323,7 +323,7 @@ function SuperadminDashboard() {
             Financial Stats Chart{" "}
           </p>
           <p className="text-[#26435F] pl-[15px] pt-1">
-            <FontAwesomeIcon icon={faQuestionCircle}></FontAwesomeIcon>
+            <img src={faq2} className="w-[18px] h-[18px] translate-y-[-2px]" alt="faq" />
           </p>
         </div>
         <Chart2 />
