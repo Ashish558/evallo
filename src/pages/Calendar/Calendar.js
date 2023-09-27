@@ -1259,8 +1259,8 @@ setColorMapping(temp);
                     >
                       <div
                         style={{
-                          backgroundColor: colorMapping[item?.tutor._id]+"40",
-                          color: colorMapping[item?.tutor._id],
+                          backgroundColor: colorMapping[item?.tutor?._id]+"40",
+                          color: colorMapping[item?.tutor?._id],
                         }}
                         onClick={() => toggleAccordions(id)}
                         className="transition-shy cursor-pointer bg-[rgba(255,162,141,0.2)] overflow-hidden relative z-50 py-3 px-5 text-[#FFA28D] mx-0 flex justify-between shadow-sm rounded-t-md w-full  "
@@ -1268,7 +1268,7 @@ setColorMapping(temp);
                         {item?.tutor?.firstName + " " + item?.tutor?.lastName}
                         <div
                           style={{
-                            backgroundColor: colorMapping[item?.tutor._id],
+                            backgroundColor: colorMapping[item?.tutor?._id],
                           }}
                           className="flex justify-center items-center text-center py-auto my-auto w-5 h-5 rounded-3xl "
                         >

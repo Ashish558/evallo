@@ -106,7 +106,7 @@ export default function StudentProfile({ isOwn }) {
   const { awsLink } = useSelector((state) => state.user);
 
   const { id } = useSelector((state) => state.user);
-   console.log("user",user)
+  console.log("user", user)
 
   const [selectedScoreIndex, setSelectedScoreIndex] = useState(0);
   const { organization } = useSelector((state) => state.organization);
@@ -491,7 +491,9 @@ const [toEdit, setToEdit] = useState({
   // //console.log('associatedParent', associatedParent)
   // //console.log('isEditable', editable)
   // //console.log(settings)
-
+  const handleCopy = text => {
+    navigator.clipboard.writeText(text);
+  }
   useEffect(() => {
     if (user.assiginedStudents === undefined) return;
     let studentsData = [];
@@ -595,6 +597,7 @@ const [toEdit, setToEdit] = useState({
                               className="inline-block ml-2 !w-4 !h-4 mr-2"
                               src={copy1}
                               alt="copy"
+                              onClick={() => handleCopy(user?.email)}
                             />
                           </span>
                         </p>
@@ -634,6 +637,7 @@ const [toEdit, setToEdit] = useState({
                                   className="inline-block ml-2 !w-4 !h-4 mr-2"
                                   src={copy1}
                                   alt="copy"
+                                  onClick={() => handleCopy(user?.email)}
                                 />
                               </span>
                             </p>
