@@ -1884,6 +1884,7 @@ const navigate= useNavigate()
                               </div>
                               <div className="grid grid-cols-12 gap-3">
                                 <div className="col-span-4">
+
                                   <InputField
                                     labelClassname="hidden"
                                     placeholder=""
@@ -1898,7 +1899,22 @@ const navigate= useNavigate()
                                     }
                                   />
                                 </div>
-
+<div className="col-span-4">
+                                  
+                                  <InputField
+                                    labelClassname="hidden"
+                                    placeholder=""
+                                    inputContainerClassName="text-sm pt-3 pb-3 px-5 bg-primary-50 border-white"
+                                    inputClassName="bg-transparent text-[#667085] text-400"
+                                    value={currentToEdit.phoneCode}
+                                    onChange={(e) =>
+                                      setCurrentToEdit({
+                                        ...currentToEdit,
+                                        phoneCode: e.target.value,
+                                      })
+                                    }
+                                  />
+                                </div>
                                 <div className="col-span-8">
                                   <div>
                                     <p className={styles.address}> </p>

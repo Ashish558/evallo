@@ -161,7 +161,15 @@ export default function StudentProfile({ isOwn }) {
       notes: "",
     },
   });
-
+  async function handleCopyClick(textToCopy) {
+    console.log("copying", textToCopy);
+    try {
+      await navigator.clipboard.writeText(textToCopy);
+    //  alert('Text copied to clipboard');
+    } catch (err) {
+      console.error('Failed to copy text: ', err);
+    }
+  }
   const handleClose = () => {
     setToEdit((prev) => {
       let tempToEdit = {};
@@ -592,7 +600,8 @@ const [toEdit, setToEdit] = useState({
                           {user?.email}
                           <span>
                             <img
-                              className="inline-block ml-2 !w-4 !h-4 mr-2"
+                             onClick={()=>handleCopyClick(user?.email)}
+                              className="inline-block ml-2 !w-4 !h-4 mr-2 cursor-pointer"
                               src={copy1}
                               alt="copy"
                             />
@@ -631,7 +640,8 @@ const [toEdit, setToEdit] = useState({
                               {user?.email}
                               <span>
                                 <img
-                                  className="inline-block ml-2 !w-4 !h-4 mr-2"
+                                 onClick={()=>handleCopyClick(user?.email)}
+                                  className="inline-block ml-2 !w-4 !h-4 mr-2 cursor-pointer"
                                   src={copy1}
                                   alt="copy"
                                 />
@@ -709,7 +719,8 @@ const [toEdit, setToEdit] = useState({
                           {student.email}
                           <span>
                             <img
-                              className="inline-block !w-4 !h-4 mr-2"
+                             onClick={()=>handleCopyClick(student?.email)}
+                              className="inline-block !w-4 !h-4 mr-2 cursor-pointer"
                               src={copy2}
                               alt="copy2"
                             />
