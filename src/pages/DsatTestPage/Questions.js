@@ -6,7 +6,7 @@ import Calculator from './Calculator';
  
 export default function Que(props) {
 
-   const {ques,op,para,answers,index,Setmark,mark,cal,seq,cutanswers,cutanswer,showcutcheck,cutcheck,markreview,markre} = props;
+   const {ques,op,para,answers,index,Setmark,mark,cal,setCal,seq,cutanswers,cutanswer,showcutcheck,cutcheck,markreview,markre} = props;
    const s ={
     height : "58.2vh"
   }

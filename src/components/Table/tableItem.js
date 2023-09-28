@@ -759,7 +759,7 @@ export default function TableItem({
       {dataFor === "testsDetailQuestions" && (
         <tr className="bg-white text-[17.5px]   leading-7 mt-[10px]">
           {MapData(item, dataFor, excludes)}
-          <td className="font-medium px-1 min-w-14 py-4">
+          <td className="font-medium flex justify-center px-1 min-w-14 py-4">
             <img
               src={EditTestIcon}
               className="cursor-pointer"

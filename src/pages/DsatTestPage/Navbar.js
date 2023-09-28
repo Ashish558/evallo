@@ -3,12 +3,11 @@ import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsisVertical,faPen,faAngleDown,faCalculator} from '@fortawesome/free-solid-svg-icons';
 
-export default function Navbar({seconds,sectionDetails}) {
+export default function Navbar({seconds,sectionDetails,cal,setCal}) {
     const minutes = Math.floor(seconds / 60);
   const second = seconds % 60;
     const [tog,setTog] =useState(false)
     // const {cal,setCal} = props
-    const [cal,setCal]=u(false)
     let handleDesc= ()=>
     {
           setTog(!tog)

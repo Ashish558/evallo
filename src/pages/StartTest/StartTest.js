@@ -78,7 +78,7 @@ export default function StartTest() {
       getAssignedTest({ url, params })
          .then(res => {
             if (res.error) return console.log('testerror', res.error);
-            console.log('assigntest', res.data.data);
+            console.log('getassigntest', res.data.data);
             const { testId, createdAt, timeLimit, multiple, dueDate, instruction } = res.data.data.test
             if (multiple === 0) {
                setIsUnlimited(true)
@@ -163,7 +163,7 @@ export default function StartTest() {
             if (res.error) {
                return console.log(res.error);
             }
-            console.log('sections response', res.data.data);
+            console.log('sectionshvhjvjhhjbb  hhb hbkkjjkbj  kjbj  response', res.data.data);
             let duration = 0
 
 

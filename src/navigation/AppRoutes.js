@@ -42,6 +42,7 @@ import StudentSettings from "../pages/Settings/Tabs/AccountOverview/studentSetti
 import TutorSetting from "../pages/Settings/TutorSetting";
 import ContributorSettings from "../pages/Settings/ContributorSettings";
 import TestPage from "../pages/DsatTestPage/TestPage";
+import AnnotatorComponent from "../components/annotate";
 
 
 
@@ -218,7 +219,7 @@ const AppRoutes = () => {
           }
         />
          <Route
-          path="/testpage/:testid/:userid"
+          path="/testpage/:id/:assignedTestId"
           element={
             <RequireAuth isLoggedIn={isLoggedIn}>
              <TestPage/>

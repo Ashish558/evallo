@@ -6,37 +6,57 @@ import Que from "./Questions";
 import axios from "axios";
 import { BASE_URL, getAuthHeader } from "../../app/constants/constants";
 import { useLocation, useNavigate, useParams } from "react-router-dom/dist";
-import {
-  useLazyGetQuestionQuery,
-  useSubmitTestMutation,
-} from "../../app/services/test";
+
 import LoaderPage from "../../components/TestItem/LoaderPage";
 import TestInstructionPage from "../../components/TestItem/TesInstructionPage";
 import SectionLoader from "../StartTest/SectionLoader";
 
+import SecondaryButton from '../../components/Buttons/SecondaryButton'
+
+import BackIcon from '../../assets/assignedTests/back.svg'
+import PrimaryButton from '../../components/Buttons/PrimaryButton'
+import { TestDetail } from '../../components/TestDetail/TestDetail'
+import TestOption from '../../components/TestOption/TestOption'
+import { useAddBackupResponseMutation, useAttendTestMutation, useLazyContinueTestQuery, useLazyGetAssignedTestQuery, useLazyGetQuestionQuery, useLazyGetSectionsQuery, useLazyGetSingleAssignedTestQuery, useLazyGetTestResponseQuery, useLazyGetTimeQuery, useStartTestMutation, useSubmitTestMutation, useUpdateTimeMutation } from '../../app/services/test'
+import BackBtn from '../../components/Buttons/Back'
+import Timer from '../../components/Timer/Timer'
+import { useSelector } from 'react-redux'
+import { getCheckedString, getDuration, getFormattedDate } from '../../utils/utils'
+import Modal from '../../components/Modal/Modal'
 export default function TestPage() {
+//   const [testHeaderDetails, setTestHeaderDetails] = useState({
+//     name: ``,
+//     duration: 0,
+//     dateAssigned: '',
+//     startedOn: '',
+//     completedOn: '',
+//     testName: '',
+//     dueDate: '',
+//     instruction: '',
+//  })
+
   const [getQue, GetQueRes] = useLazyGetQuestionQuery();
   const [info, setInfo] = useState([]);
-  const [opt, setOpt] = useState([]);
   const [background, setbackground] = useState(false);
   const [answers, setAnswers] = useState([]);
   const [sectionindex, setsectionindex] = useState(0);
   const [index, setIndex] = useState(0);
   const [data, setdata] = useState([]);
-  const [submitSection, submitSectionResp] = useSubmitTestMutation();
+  // const [submitSection, submitSectionResp] = useSubmitTestMutation();
   const [toggle2,setToggle2] =useState(false)
   const [seconds, setSeconds] = useState(0);
   const [cutanswer, setcutanswer] = useState([]);
   const [markreview, setmarkreview] = useState([]);
-  const [sectionDetails, setSectionDetails] = useState();
   const [instructionpage, setisntructionpage] = useState(true);
   const [cutcheck,setcutcheck] = useState(false);
   const[loader,setloader] = useState(false)  
-  const { testid,userid } = useParams();
   const location = useLocation();
-    const navigate = useNavigate();
+  const [cal,setCal]=useState(false)
+  
 
-  const name = new URLSearchParams(location.search).get("name");
+//     const navigate = useNavigate();
+
+//   const name = new URLSearchParams(location.search).get("name");
   function MarkAnswer(QuestionNumber, correctAnswer) {
     const updatedanswer = answers.map((q) =>
       q.QuestionNumber === QuestionNumber
@@ -87,40 +107,39 @@ export default function TestPage() {
     markshadow();
    }
 
-  const fetchApi = () => {
-    setloader(true)
-    getQue({ testid,userid }).then((res) => {
-      if (res.error) return console.log("testerror", res.error);
-      console.log(res);
-      setdata(res.data.data.answer.subjects)
-      setSeconds(res.data.data.answer.subjects[sectionindex].timer*60)
-      setSectionDetails(res.data.data.answer.subjects[sectionindex])
-      setInfo(res.data.data.answer.answer[sectionindex]);
-      let dataofque, newData,cutdata;
-      dataofque = res.data.data.answer.answer[sectionindex];
-      newData = dataofque.map((item) => ({
-        QuestionType: item.QuestionType,
-        QuestionNumber: item.QuestionNumber,
-        ResponseAnswer: "",
-        responseTime: "10",
-      }));
-      cutdata = dataofque.map((item) => ({
-        QuestionNumber:item.QuestionNumber,
-        markcut:new Array(4).fill(0)
-      }));
-      let markr=dataofque.map((item) => ({
-        QuestionNumber:item.QuestionNumber,
-        review:false
-      }));
-      setmarkreview(markr)
-      setAnswers(newData);
-      setcutanswer(cutdata)
-      setloader(false)
-    });
-  };
+//   const fetchApi = () => {
+//     setloader(true)
+//     getQue({ testid,assignedTestId }).then((res) => {
+//       if (res.error) return console.log("testerror", res.error);
+//       console.log(res);
+//       setdata(res.data.data.answer.subjects)
+//       setSeconds(res.data.data.answer.subjects[sectionindex].timer*60)
+//       setSectionDetails(res.data.data.answer.subjects[sectionindex])
+//       setInfo(res.data.data.answer.answer[sectionindex]);
+//       let dataofque, newData,cutdata;
+//       dataofque = res.data.data.answer.answer[sectionindex];
+//       newData = dataofque.map((item) => ({
+//         QuestionType: item.QuestionType,
+//         QuestionNumber: item.QuestionNumber,
+//         ResponseAnswer: "",
+//         responseTime: "10",
+//       }));
+//       cutdata = dataofque.map((item) => ({
+//         QuestionNumber:item.QuestionNumber,
+//         markcut:new Array(4).fill(0)
+//       }));
+//       let markr=dataofque.map((item) => ({
+//         QuestionNumber:item.QuestionNumber,
+//         review:false
+//       }));
+//       setmarkreview(markr)
+//       setAnswers(newData);
+//       setcutanswer(cutdata)
+//       setloader(false)
+//     });
+//   };
 
 
-  const size = Object.keys(info).length;
 
   let handle = () => {
     setIndex(index + 1);
@@ -131,54 +150,54 @@ export default function TestPage() {
     setIndex(index - 1);
   };
 
-  useEffect(()=>{
+//   useEffect(()=>{
     
-    setSeconds(data.length>0?data[sectionindex].timer*60:100)
+//     setSeconds(data.length>0?data[sectionindex].timer*60:100)
     
-  },[instructionpage])
+//   },[instructionpage])
 
   function next_section() {
     setsectionindex(sectionindex + 1);
   }
 
   
-  useEffect(() => {
-    if (seconds <= 0) {
-      return handleSubmitSection();
-    }
+//   useEffect(() => {
+//     if (seconds <= 0) {
+//       return handleSubmitSection();
+//     }
 
-    const interval = setInterval(() => {
-      setSeconds(prevSeconds => prevSeconds - 1);
-    }, 1000);
+//     const interval = setInterval(() => {
+//       setSeconds(prevSeconds => prevSeconds - 1);
+//     }, 1000);
 
-    return () => clearInterval(interval);
-  }, [seconds]);
+//     return () => clearInterval(interval);
+//   }, [seconds]);
 
-  const handleSubmitSection = () => {
-    if(sectionindex<data.length){
-    //id of test
-    var submitId = "64fb1f5c68528c79b20b45dd";
-    const response = answers;
-    let body = {
-      submitId,
-      reqbody: {
-        sectionName: data[sectionindex]?.name,
-        response: response,
-      },
-    };
-    submitSection(body).then((res) => {
-      if (res.error) {
-        return console.log(res.error);
-      }
-      console.log(res.data);
-    });
-    console.log(data.length);
-    setsectionindex(sectionindex + 1);
-    setIndex(0)
-    if(toggle2)
-    tog2()
-    }
-  };
+//   const handleSubmitSection = () => {
+//     if(sectionindex<data.length){
+//     //id of test
+//     var submitId = "64fb1f5c68528c79b20b45dd";
+//     const response = answers;
+//     let body = {
+//       submitId,
+//       reqbody: {
+//         sectionName: data[sectionindex]?.name,
+//         response: response,
+//       },
+//     };
+//     submitSection(body).then((res) => {
+//       if (res.error) {
+//         return console.log(res.error);
+//       }
+//       console.log(res.data);
+//     });
+//     console.log(data.length);
+//     setsectionindex(sectionindex + 1);
+//     setIndex(0)
+//     if(toggle2)
+//     tog2()
+//     }
+//   };
 
 
   function  markre(QuestionNumber) {
@@ -193,17 +212,428 @@ export default function TestPage() {
     setmarkreview(updatedanswer);
   }
 
+//   useEffect(() => {
+//     fetchApi();
+//   }, [sectionindex]);
 
-  useEffect(() => {
-    fetchApi();
-    console.log(sectionindex);
-  }, [sectionindex]);
 
-  useEffect(() => {
-console.log(sectionDetails,'asdasdasd');  }, [sectionDetails]);
+
+//new code
+
+const tempsubjects = [
+   { text: 'Trigonometry', selected: true },
+   { text: 'Mathematics', selected: false },
+   { text: 'Reading', selected: false },
+   { text: 'Science', selected: false },
+]
+
+   const navigate = useNavigate()
+   const [tempSubjects, setTempSubjects] = useState(tempsubjects)
+   const [testStarted, setTestStarted] = useState(false)
+
+   const [initialSeconds, setInitialSeconds] = useState(0)
+   const [countDown, setCountDown] = useState(0)
+   const { firstName, lastName } = useSelector(state => state.user)
+   const { dateFormat } = useSelector(state => state.user)
+
+   const [testHeaderDetails, setTestHeaderDetails] = useState({
+      name: `${firstName} ${lastName}`,
+      duration: 0,
+      dateAssigned: '',
+      startedOn: '',
+      completedOn: '',
+      testName: '',
+      dueDate: '',
+      instruction: '',
+   })
+   // console.log(testHeaderDetails);
+   const [isUnlimited, setIsUnlimited] = useState(false)
+   const [sectionDetails, setSectionDetails] = useState({})
+   const [subjects, setSubjects] = useState([])
+   const [activeSection, setActiveSection] = useState({})
+   const [timer, setTimer] = useState(10)
+   const [submitId, setSubmitId] = useState('')
+   const [completedSubjects, setCompletedSubjects] = useState([])
+   const [startBtnLoading, setStartBtnLoading] = useState(false)
+   const [submitBtnLoading, setSubmitBtnLoading] = useState(false)
+
+   const { id, assignedTestId } = useParams()
+
+   const [getSections, getSectionsResp] = useLazyGetSectionsQuery()
+   const [getAssignedTest, getAssignedTestResp] = useLazyGetSingleAssignedTestQuery()
+
+   const [addBackupResponse, addBackupResponseResp] = useAddBackupResponseMutation()
+   const [startTest, startTestResp] = useStartTestMutation()
+   const [submitSection, submitSectionResp] = useSubmitTestMutation()
+   const [continueTest, continueTestResp] = useLazyContinueTestQuery()
+   const [completedSectionIds, setCompletedSectionIds] = useState([])
+   const [popUp, setPopUp] = useState(false)
+   const[answer_check,setanswer_check]=useState();
+   useEffect(() => {
+      let params = {}
+      let url = `/api/test/myassigntest/${assignedTestId}`
+
+      getAssignedTest({ url, params })
+         .then(res => {
+            if (res.error) return console.log('testerror', res.error);
+            console.log('getassigntest', res.data.data);
+            const { testId, createdAt, timeLimit, multiple, dueDate, instruction } = res.data.data.test
+            if (multiple === 0) {
+               setIsUnlimited(true)
+            } else {
+               setIsUnlimited(false)
+            }
+            if (res.data.data.test.testId) {
+               console.log(res.data.data.test.testId);
+               setTestHeaderDetails(prev => ({
+                  ...prev,
+                  testName: testId.testName,
+                  instruction: instruction,
+                  dateAssigned: getFormattedDate(createdAt, dateFormat),
+                  dueDate: getFormattedDate(dueDate, dateFormat),
+               }))
+            }
+            setTestHeaderDetails(prev => ({
+               ...prev,
+               duration: multiple ? getDuration(multiple) : 'Unlimited',
+            }))
+
+         })
+   }, [])
+
+   const handleStartTest = () => {
+      if (!activeSection) return
+      setStartBtnLoading(true)
+      startTest({ id: assignedTestId, reqbody: { sectionName: activeSection.name } })
+         .then(res => {
+            setStartBtnLoading(false)
+            if (res.error) {
+               console.log(res.error)
+               return
+            }
+            console.log('start test', res.data.data)
+            setanswer_check(res.data.data)
+            const { startTime, endTime, sectionName, answer, submitId } = res.data.data
+            setPopUp(false)
+
+            if (endTime === null) {
+               let date = new Date()
+
+               var nextDay = new Date(date);
+               nextDay.setDate(date.getDate() + 1);
+               // console.log(nextDay); //
+
+               let timer = (new Date(nextDay) - new Date()) / 1000
+               setTimer(Math.trunc(timer))
+               setInitialSeconds(Math.trunc(timer))
+            } else {
+               let timer = (new Date(endTime) - new Date()) / 1000
+               setTimer(Math.trunc(timer))
+               setInitialSeconds(Math.trunc(timer))
+            }
+
+            // setInitialSeconds(Math.trunc(timer))
+            setTestStarted(true)
+            setActiveSection({ name: sectionName })
+            setSubmitId(submitId)
+
+            setSubjects(prev => {
+               return prev.map(item => {
+                  if (item.name === sectionName) {
+                     return { ...item, selected: true }
+                  } else {
+                     return { ...item, selected: false }
+                  }
+               })
+            })
+            setAnswers(answer.map(item => ({ ...item, isMarked: false, ResponseAnswer: '', responseTime: 0 })))
+         })
+   }
+   // console.log(id)
+
+   const fetchSections = () => {
+      getSections({ id: id })
+         .then(res => {
+            if (res.error) {
+               return console.log(res.error);
+            }
+            console.log('sectionshvhjvjhhjbb  hhb hbkkjjkbj  kjbj  response', res.data.data);
+            let duration = 0
+
+
+            res.data.data.subjects.subjects.map(item => {
+               duration += item.timer
+            })
+            // console.log('date', new Date(res.data.data.subjects.createdAt));
+            setTestHeaderDetails(prev => ({
+               ...prev,
+               // duration,
+               startedOn: getFormattedDate(new Date(res.data.data.subjects.createdAt), dateFormat)
+            }))
+            setSectionDetails(res.data.data.subjects.subjects)
+            let tempsubs = res.data.data.subjects.subjects.map(item => {
+               return {
+                  ...item,
+                  selected: false
+               }
+            })
+            const promiseState = async state => new Promise(resolve => {
+               resolve(setSubjects(tempsubs))
+            })
+            promiseState()
+               .then(() => {
+                  fetchContinueTest(true, tempsubs)
+               })
+         })
+   }
+   useEffect(() => {
+      if (!id) return
+      fetchSections()
+   }, [id])
+
+
+   const fetchContinueTest = (setResponsesFromStorage, subjectsRec) => {
+      continueTest({ id: assignedTestId })
+         .then(res => {
+            if (res.error) {
+               console.log(res.error)
+               return
+            }
+            console.log('CONTINUE', res.data.data)
+           setanswer_check(res.data.data);
+
+            // console.log('isUnlimited', isUnlimited);
+            // let completedIds = res.data.data.completed.map(item => item._id)
+
+            // let inComplete = subjects.filter(sub => !completedIds.includes(sub._id))
+            // console.log('subjects', subjects)
+            // console.log('subjectsRec', subjectsRec)
+            // console.log('inComplete', inComplete)
+
+            const { startTime, endTime, sectionName, completed, answer, submitId, backupResponse } = res.data.data
+            if (completed !== undefined) {
+               setCompletedSubjects(completed)
+            }
+            if (endTime !== null && endTime || sectionName?.length > 1) {
+               let timer = (new Date(endTime) - new Date()) / 1000
+               setTimer(Math.trunc(timer))
+               setInitialSeconds(Math.trunc(timer))
+
+               // setTestStarted(true)
+               setTestStarted(true)
+               setActiveSection({ name: sectionName })
+               setSubmitId(submitId)
+
+              //  setAnswers(answer.map((item, idx) => {
+              //     if (backupResponse !== undefined && backupResponse.length > 0) {
+              //        return {
+              //           ...item, isMarked: false, responseTime: 0,
+              //           ResponseAnswer: backupResponse[idx].ResponseAnswer
+              //        }
+              //     } else {
+              //        return {
+              //           ...item, isMarked: false, ResponseAnswer: '',
+              //           responseTime: 0
+              //        }
+              //     }
+              //  }))
+
+               if (setResponsesFromStorage === true) {
+                  // let savedAnswers = JSON.parse(localStorage.getItem('answers'))
+                  // let savedAssignedTestId = localStorage.getItem('assignedTestId')
+                  // if (!savedAnswers) return
+                  // if (savedAnswers === null || savedAnswers === undefined) return
+                  // if (savedAnswers.length === 0) return
+                  // if (savedAssignedTestId !== assignedTestId) return
+                  // console.log('savedAnswers', savedAnswers);
+                  // setAnswers(savedAnswers)
+                  // console.log('savedAnswers2', localStorage.getItem('answers'));
+               }
+            } else {
+               setTestStarted(false)
+            }
+            if (completed) {
+               const compIds = completed.map(test => test._id)
+               setCompletedSectionIds(compIds)
+            }
+
+            setSubjects(prev => {
+               return prev.map(item => {
+                  if (item.name === sectionName) {
+                     return { ...item, selected: true }
+                  } else {
+                     return { ...item, selected: false }
+                  }
+               })
+            })
+
+         })
+   }
+
+   useEffect(()=>{
+    console.log(answer_check);
+   if(answer_check?.answer!=null){
+    let dataofque, newData,cutdata;
+    dataofque = answer_check.answer
+    newData = dataofque.map((item) => ({
+      QuestionType: item.QuestionType,
+      QuestionNumber: item.QuestionNumber,
+      ResponseAnswer: "",
+      responseTime: "10",
+    }));
+    cutdata = dataofque.map((item) => ({
+      QuestionNumber:item.QuestionNumber,
+      markcut:new Array(4).fill(0)
+    }));
+    let markr=dataofque.map((item) => ({
+      QuestionNumber:item.QuestionNumber,
+      review:false
+    }));
+    console.log(newData,markr,cutdata);
+    setmarkreview(markr)
+    setAnswers(newData);
+    setcutanswer(cutdata)
+   }
+   else {
+setActiveSection(sectionDetails[answer_check?.completed.length==0?0:answer_check?.completed.length+1])   }
+   },[answer_check])
+  
+useEffect(()=>{
+  console.log('active section',activeSection);
+  handleStartTest()
+},[activeSection])
+   const handleSubjectChange = (item) => {
+      // console.log(item);
+      let tempdata = subjects.map(sub => {
+         if (sub._id === item._id) {
+            return { ...sub, selected: true }
+         } else {
+            return { ...sub, selected: false }
+         }
+      })
+      setSubjects(tempdata)
+   }
+   useEffect(() => {
+      if (subjects.length === 0) return
+      const active = subjects.filter(item => item.selected === true)
+      let completedSubIds = completedSubjects.map(item => item._id)
+      // console.log('completedSubIds', completedSubIds);
+      // console.log('subjects', subjects);
+      if (active.length === 0) {
+         let issetActive = false
+         let temp = subjects.map(sub => {
+            if (issetActive === false) {
+               if (completedSubIds.includes(sub._id)) {
+                  return { ...sub, selected: false }
+               } else {
+                  issetActive = true
+                  return { ...sub, selected: true }
+               }
+            } else {
+               return { ...sub, selected: false }
+            }
+         })
+         setSubjects(temp)
+         // console.log('tempsubjects', temp);
+      }
+      // console.log('active subject', active);
+      // console.log('all subjects', subjects);
+   }, [subjects, completedSubjects])
+
+   useEffect(() => {
+      if (completedSectionIds.length === subjects.length) {
+         if (completedSectionIds.length === 0) return
+         if (subjects.length === 0) return
+         alert('All section test completed')
+         navigate('/all-tests')
+      }
+   }, [completedSectionIds, subjects])
+
+   const handleResponseChange = (id, option) => {
+      // console.log('initialSeconds', initialSeconds);
+      // console.log('countDown', countDown);
+
+      const timeTaken = initialSeconds - countDown
+      setInitialSeconds(countDown)
+      setAnswers(prev => {
+         return prev.map(item => {
+            let time = 0
+            if (item._id === id) {
+               if (item.responseTime) {
+                  time = item.responseTime + timeTaken
+               } else {
+                  time = timeTaken
+               }
+            }
+            if (item._id === id) return { ...item, ResponseAnswer: option, responseTime: time }
+            else return { ...item }
+         })
+      })
+   }
+
+   const handleSubmitSection = () => {
+      // console.log(activeSection);
+      // console.log(answers);
+      const response = answers.map(item => {
+         const { QuestionType, QuestionNumber, ResponseAnswer, responseTime } = item
+         return {
+            QuestionType,
+            QuestionNumber,
+            ResponseAnswer: ResponseAnswer ? ResponseAnswer : '',
+            responseTime: responseTime ? responseTime : 0,
+         }
+      })
+      let body = {
+         submitId,
+         reqbody: {
+            sectionName: activeSection.name,
+            response: response
+         }
+      }
+      console.log(body);
+      // return
+      setSubmitBtnLoading(true)
+      submitSection(body)
+         .then(res => {
+            setSubmitBtnLoading(false)
+            if (res.error) {
+               return console.log(res.error)
+            }
+            console.log(res.data)
+            setTestStarted(false)
+            // localStorage.setItem('answers', null)
+            fetchContinueTest()
+            setActiveSection({})
+         })
+   }
+
+
+  //  useEffect(() => {
+  //     if (!answers) return
+  //     if (answers === null || answers === undefined) return
+  //     if (answers.length === 0) return
+  //     // console.log('setans', answers);
+  //     addBackupResponse({ id: assignedTestId, reqbody: { backupResponse: answers } })
+  //        .then(res => {
+  //           if (res.error) {
+  //              console.log(res.error);
+  //           } else {
+  //              // console.log(res.data);
+  //           }
+  //        })
+  //     // localStorage.setItem('assignedTestId', assignedTestId)
+  //     // localStorage.setItem('answers', JSON.stringify(answers))
+  //  }, [answers])
+
+
+   
+   
+//end code
+const size = Object.keys(answers).length;
 const arr = new Array(size)
 arr.fill(false)
 const [pages,setPage]=useState(arr)
+
   return (
     <div className=" relative ">
       
@@ -218,8 +648,11 @@ const [pages,setPage]=useState(arr)
 
      />:
      <>
-      <Navbar seconds={seconds} sectionDetails={data[sectionindex]}  />
+      <Navbar  cal={cal}
+      setCal={setCal} seconds={seconds} sectionDetails={sectionDetails[answer_check?.completed.length]}  />
       <Que
+      cal={cal}
+      setCal={setCal}
       answers={answers}
         markreview={markreview}
         markre={markre}
@@ -234,11 +667,12 @@ const [pages,setPage]=useState(arr)
         op={info[index] ? info[index].Answers : null}
         para={info[index] ? info[index].Passage : ""}
         Setmark={setPage} 
-        cal={cal}
         mark={pages}
       />
       <Foot
-      name={name}
+      cal={cal}
+      setCal={setCal}
+      name={testHeaderDetails.name}
       markreview={markreview}
       index={index}
       cutcheck={cutcheck}
@@ -250,7 +684,7 @@ const [pages,setPage]=useState(arr)
         next={handle}
         prev={prev}
         set={setIndex ? setIndex : ""}
-        data={info ? info : null}
+        data={answers ? answers : null}
         s={size}
         i={index + 1}
         mark={pages}
