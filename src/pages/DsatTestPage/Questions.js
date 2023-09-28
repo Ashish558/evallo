@@ -28,7 +28,7 @@ export default function Que(props) {
         <div className={`mt-5 ${props.check && 'hidden'} ${!para? 'flex w-1/2 flex-col':'w-1/2'}` }>
           <div className=' flex bg-slate-200  text-center relative'>
             <span className=' bg-black text-white py-1 px-2'>{index}</span>
-            <FontAwesomeIcon onClick={()=>{markre(index)}} icon={faBookmark} className={`cursor-pointer text-transparent border border-black relative top-2 mx-2 ${ markreview.length>0?markreview[index-1].review && 'bg-yellow-400':null}`} />  
+            <FontAwesomeIcon onClick={()=>{markre(index)}} icon={faBookmark} className={`cursor-pointer text-transparent border border-black relative top-2 mx-2 ${ markreview.length>0?markreview[index-1]?.review && 'bg-yellow-400':null}`} />  
             <h3 className=' relative top-1 text-gray-600'>Mark for review</h3>
             
             <div className={`absolute line-through right-2 bottom-[2px] cursor-pointer border border-black px-1 rounded ${cutcheck && 'bg-blue-400'}`} onClick={()=>{showcutcheck()}}>

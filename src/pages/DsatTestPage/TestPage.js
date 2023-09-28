@@ -272,7 +272,7 @@ const tempsubjects = [
    useEffect(() => {
       let params = {}
       let url = `/api/test/myassigntest/${assignedTestId}`
-
+      setloader(true);
       getAssignedTest({ url, params })
          .then(res => {
             if (res.error) return console.log('testerror', res.error);
@@ -304,7 +304,8 @@ const tempsubjects = [
    const handleStartTest = () => {
       if (!activeSection) return
       setStartBtnLoading(true)
-      startTest({ id: assignedTestId, reqbody: { sectionName: activeSection.name } })
+      console.log(sectionDetails[answer_check?.completed.length]?.name)
+      startTest({ id: assignedTestId, reqbody: { sectionName: activeSection.name!=null?activeSection.name:sectionDetails[answer_check?.completed.length]?.name } })
          .then(res => {
             setStartBtnLoading(false)
             if (res.error) {
@@ -312,7 +313,8 @@ const tempsubjects = [
                return
             }
             console.log('start test', res.data.data)
-            setanswer_check(res.data.data)
+            setdata(res.data.data.answer)
+            setInfo(res.data.data.answer)
             const { startTime, endTime, sectionName, answer, submitId } = res.data.data
             setPopUp(false)
 
@@ -401,6 +403,7 @@ const tempsubjects = [
             }
             console.log('CONTINUE', res.data.data)
            setanswer_check(res.data.data);
+           setInfo(res.data.data.answer)
 
             // console.log('isUnlimited', isUnlimited);
             // let completedIds = res.data.data.completed.map(item => item._id)
@@ -421,7 +424,6 @@ const tempsubjects = [
 
                // setTestStarted(true)
                setTestStarted(true)
-               setActiveSection({ name: sectionName })
                setSubmitId(submitId)
 
               //  setAnswers(answer.map((item, idx) => {
@@ -471,10 +473,10 @@ const tempsubjects = [
    }
 
    useEffect(()=>{
-    console.log(answer_check);
-   if(answer_check?.answer!=null){
+    console.log('info',info);
+   if(info!=null){
     let dataofque, newData,cutdata;
-    dataofque = answer_check.answer
+    dataofque = info
     newData = dataofque.map((item) => ({
       QuestionType: item.QuestionType,
       QuestionNumber: item.QuestionNumber,
@@ -493,10 +495,14 @@ const tempsubjects = [
     setmarkreview(markr)
     setAnswers(newData);
     setcutanswer(cutdata)
+    setloader(false);
    }
    else {
-setActiveSection(sectionDetails[answer_check?.completed.length==0?0:answer_check?.completed.length+1])   }
-   },[answer_check])
+    console.log(sectionDetails[answer_check?.completed.length==0?0:answer_check?.completed.length]);
+setActiveSection(sectionDetails[answer_check?.completed.length==0?0:answer_check?.completed.length]) 
+
+}
+   },[info])
   
 useEffect(()=>{
   console.log('active section',activeSection);
@@ -574,6 +580,10 @@ useEffect(()=>{
    const handleSubmitSection = () => {
       // console.log(activeSection);
       // console.log(answers);
+      setloader(true)
+      setToggle2(false)
+      setIndex(0)
+      setsectionindex(answer_check?.completed.length==0?1:answer_check?.completed.length)
       const response = answers.map(item => {
          const { QuestionType, QuestionNumber, ResponseAnswer, responseTime } = item
          return {
@@ -586,11 +596,11 @@ useEffect(()=>{
       let body = {
          submitId,
          reqbody: {
-            sectionName: activeSection.name,
+            sectionName: sectionDetails[answer_check?.completed.length].name,
             response: response
          }
       }
-      console.log(body);
+      console.log('submit test',body);
       // return
       setSubmitBtnLoading(true)
       submitSection(body)
@@ -603,7 +613,6 @@ useEffect(()=>{
             setTestStarted(false)
             // localStorage.setItem('answers', null)
             fetchContinueTest()
-            setActiveSection({})
          })
    }
 
@@ -643,7 +652,7 @@ const [pages,setPage]=useState(arr)
      <TestInstructionPage setisntructionpage={setisntructionpage}/> 
      :loader&&sectionindex>0?
      <SectionLoader 
-     size={data.length}
+     size={sectionDetails.length}
       sectionindex={sectionindex}
 
      />:
