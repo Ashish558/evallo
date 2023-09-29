@@ -2863,7 +2863,7 @@ return ( <div className="flex !text-sm gap-4 ">
                           currentToEdit.actScores[selectedScoreIndex]?.maths
                         }
                         onChange={(e) => {
-                          if(e.target.value<0 || e.target.value>1000){
+                          if(parseInt(e.target.value)<0 || parseInt(e.target.value)>1000){
                             return
                            }
                           let tempScores = [...currentToEdit.actScores];
@@ -2910,7 +2910,7 @@ return ( <div className="flex !text-sm gap-4 ">
                           currentToEdit.actScores[selectedScoreIndex]?.english
                         }
                         onChange={(e) => {
-                          if(e.target.value<0 || e.target.value>1000){
+                          if(parseInt(e.target.value)<0 || parseInt(e.target.value)>1000){
                             return
                            }
                           let tempScores = [...currentToEdit.actScores];
@@ -2957,7 +2957,7 @@ return ( <div className="flex !text-sm gap-4 ">
                           currentToEdit.actScores[selectedScoreIndex]?.reading
                         }
                         onChange={(e) => {
-                          if(e.target.value<0 || e.target.value>1000){
+                          if(parseInt(e.target.value)<0 || parseInt(e.target.value)>1000){
                             return
                            }
                           let tempScores = [...currentToEdit.actScores];
@@ -3004,7 +3004,7 @@ return ( <div className="flex !text-sm gap-4 ">
                           currentToEdit.actScores[selectedScoreIndex]?.science
                         }
                         onChange={(e) => {
-                          if(e.target.value<0 || e.target.value>1000){
+                          if(parseInt(e.target.value)<0 || parseInt(e.target.value)>1000){
                             return
                            }
                           let tempScores = [...currentToEdit.actScores];
