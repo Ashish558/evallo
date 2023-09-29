@@ -698,7 +698,7 @@ export default function AssignedTests() {
                   placeholder="Search Student"
                   inputClassName="text-base-17-5 pl-4 text-[#667085] placeholder:text-base-15"
                   parentClassName="w-[22.03125vw]  py-1"
-                  inputContainerClassName="text-sm  mt-1 shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white   mb-1"
+                  inputContainerClassName="text-base-17-5  mt-1 shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white   mb-1"
                   type="text"
                 />
                 <div className="flex items-center justify-end gap-[20px] mt-[10px]">
@@ -716,7 +716,7 @@ export default function AssignedTests() {
 
           {(persona === "admin" || persona === "tutor") && (
             <>
-              <div className="flex gap-4 justify-between items-center">
+              <div className="flex gap-4 justify-between items-start">
                 {persona === "student" ? (
                   <p className={`font-bold text-4xl text-primary-dark`}>
                     Assigned Tests
@@ -738,7 +738,7 @@ export default function AssignedTests() {
                   inputClassName="pl-4 py-[12px] text-base-17-5 text-md text-[#667085]   placeholder:text-base-17-5 placeholder:text-[#667085] pl-2"
                   parentClassName="w-[20.8333333333vw] text-md"
 
-                  inputContainerClassName=" my-1 shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white  !py-0"
+                  inputContainerClassName=" shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white  !py-0 h-[50px]"
                   type="text"
                 />
 
@@ -752,9 +752,9 @@ export default function AssignedTests() {
                   optionData={testNameOptions}
                   optionListClassName="text-base-17-5 text-[#667085]"
                   inputClassName="text-base-17-5 !py-3"
-                  inputContainerClassName=" my-1 !py-3 shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white  "
+                  inputContainerClassName=" !py-3 shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white  h-[50px]"
                   placeholder="Search Assignment"
-                  parentClassName="w-[23.75vw] text-sm text-[#667085]"
+                  parentClassName="w-[23.75vw] text-base-17-5 text-[#667085] h-[50px]"
                   type="select"
                 />
                 <InputSelect
@@ -764,10 +764,10 @@ export default function AssignedTests() {
                   placeholderClass="text-base-17-5"
                   optionData={["Started", "Not Started", "Completed"]}
                   inputClassName="text-base-17-5 !py-3"
-                  inputContainerClassName=" shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px]  bg-white !py-3"
+                  inputContainerClassName=" shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px]  bg-white !py-3 h-[50px]"
                   optionClassName=""
                   placeholder="Completion"
-                  parentClassName="w-[11.9791666667vw] text-sm text-[#667085]"
+                  parentClassName="w-[11.9791666667vw] text-base-17-5 text-[#667085]"
                   type="select"
                 />
                 {persona === "tutor" ?
@@ -790,9 +790,9 @@ export default function AssignedTests() {
                       setFilterData({ ...filterData, assignedBy: val })
                     }
                     optionListClassName="text-base-17-5 text-[#667085]"
-                    parentClassName="w-[15.625vw] text-sm"
+                    parentClassName="w-[15.625vw] text-base-17-5 "
                     inputClassName="text-base-17-5 py-3"
-                    inputContainerClassName="shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] bg-white"
+                    inputContainerClassName="shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] bg-white h-[50px]"
                     placeholderClass="text-base-17-5"
                     optionData={assignedBys}
                     placeholder="Filter by Tutor"
@@ -826,7 +826,7 @@ export default function AssignedTests() {
                     </label>
                   </div>
 
-                  <div className="gap-x-[5px] px-4 py-[9px] bg-[#FFF] rounded-5 ml-6 flex">
+                  <div className="gap-x-[5px] px-4 py-[9px] bg-[#FFF] rounded-5 ml-6 flex items-center">
                     <p >Delete</p>
                     <p ><img className="w-5 h-5" src={DeleteIcon} alt="" /></p>
                   </div>
@@ -906,7 +906,7 @@ export default function AssignedTests() {
                     parentClassName="w-full mr-4"
                     labelClassname=" !font-medium text-[#26435F] ml-2 mb-0.5 !font-semibold text-[#26435F]"
 
-                    inputContainerClassName="px-5 py-3.5 text-sm bg-primary-50 border-0"
+                    inputContainerClassName="px-5 py-3.5 text-base-17-5 bg-primary-50 border-0"
                     inputClassName="text-base-17-5 bg-transparent "
                     placeholder="Student Name"
                     type="select"
@@ -935,7 +935,7 @@ export default function AssignedTests() {
                     parentClassName="w-full mr-4"
                     labelClassname=" !font-medium text-[#26435F] ml-2 mb-0.5"
 
-                    inputContainerClassName="px-5 py-3.5 text-sm bg-primary-50 border-0"
+                    inputContainerClassName="px-5 py-3.5 text-base-17-5 bg-primary-50 border-0"
                     inputClassName="text-base-17-5 bg-transparent"
                     type="select"
                   />
@@ -952,7 +952,7 @@ export default function AssignedTests() {
                     parentClassName="w-full mr-4 "
                     labelClassname=" !font-medium text-[#26435F] ml-2 mb-0.5 !font-semibold text-[#26435F]"
 
-                    inputContainerClassName="px-5 text-sm py-3.5 bg-primary-50 border-0"
+                    inputContainerClassName="px-5 text-base-17-5 py-3.5 bg-primary-50 border-0"
                     inputClassName="text-base-17-5 bg-transparent"
                     placeholder="Select Duration"
                     type="select"
@@ -974,7 +974,7 @@ export default function AssignedTests() {
                     labelClassname=" !font-medium text-[#26435F] ml-2 mb-0.5 text-[#26435F] font-semibold"
 
                     inputContainerClassName="px-5 py-3.5 bg-primary-50 border-0"
-                    inputClassName="text-base-17-5 bg-transparent text-sm"
+                    inputClassName="text-base-17-5 bg-transparent text-base-17-5"
                     placeholderClass="text-base-17-5"
                     optionData={optionData}
                     placeholder="Date"
@@ -998,7 +998,7 @@ export default function AssignedTests() {
                 labelClassname=" !font-medium text-[#26435F] ml-2 mb-0.5"
                 
                 inputContainerClassName="px-5 py-3.5 bg-primary-50 border-0 mb-5"
-                inputClassName="text-base-17-5 bg-transparent text-sm"
+                inputClassName="text-base-17-5 bg-transparent text-base-17-5"
                 placeholderClass="text-base-17-5"
                 optionData={optionData}
                 placeholder="Instruction"
