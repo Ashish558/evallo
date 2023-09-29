@@ -750,7 +750,7 @@ export default function EventModal({
          <Modal
             classname="max-w-[827px]  mx-auto max-h-[90vh] 2xl:max-h-[700px] overflow-y-hidden"
             handleClose={() => setEventModalActive(false)}
-            title={isEditable == false ? 'Session Details' : isUpdating ? "Update Session" : ` ${persona == "tutor" ? "Session Details" : "Schedule New Session"}`}
+            title={isEditable == false ? 'Session Details' : isUpdating ? "Update Session" : `Schedule New Session`}
             body={
                <div  >
                   <div className="h-[58.61vh] 2xl:max-h-[633px] overflow-y-auto">

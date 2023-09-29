@@ -23,9 +23,10 @@ const iniOptions = {
              color: "#24A3D9",
              display: true,
              text: 'Concepts',
+             fontFamily: 'Lexend',
              font: {
-                weight: 500,
-                size: 14,
+                weight: 600,
+                size: 20,
               },
           },
           ticks: {
@@ -47,9 +48,10 @@ const iniOptions = {
              display: true,
              text: 'Time Taken (second)',
              color: "#24A3D9",
+             fontFamily: 'Lexend',
              font: {
-                weight: 500,
-                size: 14,
+                weight: 600,
+                size: 20,
               },
           },
           ticks: {

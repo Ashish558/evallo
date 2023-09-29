@@ -334,39 +334,41 @@ const CompanyAndBround = () => {
 
             </div>
             <div className="flex justify-between">
-              <InputSelect
-                placeholder="Select"
-                parentClassName="text-xs text-[#26435F] w-[14.3229vw]  pt-1"
-                labelClassname="text-sm font-bold "
-                inputContainerClassName=" shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-white h-[42px] "
-                inputClassName="bg-transparent"
-                label="State / Region "
-                value={values.state}
-                optionData={states}
-                optionType={"object"}
-                onChange={(e) =>
-                  setValues({
-                    ...values,
-                    state: e.name,
-                  })
-                }
-                error={error.state}
-              />
-              <InputField
-                placeholder=""
-                parentClassName="text-xs text-[#26435F] w-[14.3229vw] pt-1"
-                inputContainerClassName=" shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-white"
-                inputClassName="text-base-17-5 bg-transparent "
-                label="City"
-                value={values.city}
-                onChange={(e) =>
-                  setValues({
-                    ...values,
-                    city: e.target.value,
-                  })
-                }
-                error={error.city}
-              />
+              <div className="flex gap-7 items-center">
+                <InputSelect
+                  placeholder="Select"
+                  parentClassName="text-xs text-[#26435F] w-[14.3229vw]  "
+                  labelClassname="text-sm font-bold "
+                  inputContainerClassName=" shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-white h-[42px] "
+                  inputClassName="bg-transparent"
+                  label="State / Region "
+                  value={values.state}
+                  optionData={states}
+                  optionType={"object"}
+                  onChange={(e) =>
+                    setValues({
+                      ...values,
+                      state: e.name,
+                    })
+                  }
+                  error={error.state}
+                />
+                <InputField
+                  placeholder=""
+                  parentClassName="text-xs text-[#26435F] w-[14.3229vw] pt-1"
+                  inputContainerClassName=" shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-white py-2"
+                  inputClassName="text-base-17-5 bg-transparent "
+                  label="City"
+                  value={values.city}
+                  onChange={(e) =>
+                    setValues({
+                      ...values,
+                      city: e.target.value,
+                    })
+                  }
+                  error={error.city}
+                />
+              </div>
               <div className="col-span-3">
                 <InputField
                   placeholder=""
@@ -422,7 +424,7 @@ const CompanyAndBround = () => {
           </div>
         </div>
         {/* <div className="w-full h-[2px] bg-[#CBD6E2]"></div> */}
-       
+
       </div>
     </div>
   );
