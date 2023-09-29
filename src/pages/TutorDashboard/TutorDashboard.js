@@ -371,7 +371,7 @@ export default function TutorDashboard() {
                         </p> */}
                            <div className='pl-[30px] pr-[26px] custom-scroller h-[780px]  overflow-auto pt-[10px]  bg-white rounded-20'>
 
-                              {allAssignedTests?.slice(0, 10)?.map(item => {
+                              {allAssignedTests?.map(item => {
 
                                  return (
                                     <div className=' mb-[15px]' key={item._id} >
@@ -388,7 +388,7 @@ export default function TutorDashboard() {
                                           </div>
                                           <div>
 
-                                             <img className='cursor-pointer' onClick={()=>  window.open(`${awsLink+item.testId}`, '_blank')} width="35px" src={download} alt="" />
+                                             <img className='cursor-pointer' onClick={()=>  window.open(`${awsLink+item.pdf}`, '_blank')} width="35px" src={download} alt="" />
 
                                           </div>
                                           <div className='text-[0.911vw] font-semibold'>

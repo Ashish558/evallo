@@ -723,7 +723,7 @@ const [toEdit, setToEdit] = useState({
     }
   }
   // //console.log(user)
-  //console.log("student",{userDetail,user})
+ console.log("student",{userDetail,user})
   //console.log('associatedParent', associatedParent)
   // //console.log('isEditable', editable)
   // //console.log(settings)
