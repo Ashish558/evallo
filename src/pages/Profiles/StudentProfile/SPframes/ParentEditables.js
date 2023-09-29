@@ -2906,6 +2906,7 @@ return ( <div className="flex !text-sm gap-4 ">
                         inputClassName="bg-transparent pl-4 rounded-[4px]"
                         parentClassName="flex-1 max-w-[140px]"
                         type="number"
+                        pattern={""}
                         value={
                           currentToEdit.actScores[selectedScoreIndex]?.english
                         }
@@ -2957,6 +2958,7 @@ return ( <div className="flex !text-sm gap-4 ">
                           currentToEdit.actScores[selectedScoreIndex]?.reading
                         }
                         onChange={(e) => {
+                         
                           if(parseInt(e.target.value)<0 || parseInt(e.target.value)>1000){
                             return
                            }
