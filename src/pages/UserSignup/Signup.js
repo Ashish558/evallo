@@ -76,7 +76,7 @@ export default function UserSignup() {
     lastName: "",
     email: "",
     phone: "",
-    phoneCode:"",
+    phoneCode: "",
     subscriptionCode: "",
   });
 
@@ -108,7 +108,8 @@ export default function UserSignup() {
   const [getUserDetail, userDetailResp] = useLazyGetTutorDetailsQuery();
   const [count, setCount] = useState(0);
   const [organisation, setOrganisation] = useState({});
-const [fetchOrganisation,fetchOrganisationstatus]= useLazyGetOrganizationQuery()
+  const [fetchOrganisation, fetchOrganisationstatus] =
+    useLazyGetOrganizationQuery();
   const [currentStep, setcurrentStep] = useState(1);
 
   const [getOrgDetails, getOrgDetailsResp] = useGetUserByOrgNameMutation();
@@ -155,9 +156,8 @@ const [fetchOrganisation,fetchOrganisationstatus]= useLazyGetOrganizationQuery()
   ]);
 
   useEffect(() => {
-   
     const name = searchParams.get("orgName");
- 
+
     getOrgDetails({ company: name }).then((res) => {
       if (res.error) {
         console.log(res.error);
@@ -191,7 +191,8 @@ const [fetchOrganisation,fetchOrganisationstatus]= useLazyGetOrganizationQuery()
       }
       console.log("param res", res.data);
       if (res.data?.user) {
-        const { firstName, lastName, phone, email, role,associatedOrg } = res.data.user;
+        const { firstName, lastName, phone, email, role, associatedOrg } =
+          res.data.user;
         setValues((prev) => {
           return {
             ...prev,
@@ -203,19 +204,18 @@ const [fetchOrganisation,fetchOrganisationstatus]= useLazyGetOrganizationQuery()
             role,
           };
         });
-        fetchOrganisation(associatedOrg).then((org)=>{
+        fetchOrganisation(associatedOrg).then((org) => {
           //console.log("organisation details",{org})
           if (org.error) {
             console.log(org.error);
             return;
           }
-    
-         
+
           if (org?.data?.organisation) {
             setOrganisation(org.data.organisation);
             setCustomFields(org.data.organisation?.settings?.customFields);
           }
-        })
+        });
       }
       const { user, userdetails } = res.data.user;
       let user_detail = { ...userdetails };
@@ -226,7 +226,6 @@ const [fetchOrganisation,fetchOrganisationstatus]= useLazyGetOrganizationQuery()
   useEffect(() => {
     setCount(1);
   }, []);
-
 
   useEffect(() => {
     if (sessionStorage.getItem("frames")) {
@@ -277,97 +276,92 @@ const [fetchOrganisation,fetchOrganisationstatus]= useLazyGetOrganizationQuery()
       };
     });
   };
-  const [isValidated,setValidated]=useState({ 
+  const [isValidated, setValidated] = useState({
     firstName: "",
     lastName: "",
     email: "",
-    phoneCode:"",
+    phoneCode: "",
     phone: "",
     subscriptionCode: "",
     company: "",
-    phoneCode:"",
-})
-  const handleNextErrors=(alsoSet)=>{
-    resetErrors()
+    phoneCode: "",
+  });
+  const handleNextErrors = (alsoSet) => {
+    resetErrors();
     const result = validateSignup(values);
-   
+
     if (result.data !== true) {
       setValidated((prev) => {
         return {
           [result.data]: result.message,
         };
-      })
-    }
-    else{
-      setValidated({
-      })
-    }
-    if(alsoSet){
-    let flag=true;
-    Object.keys(isValidated).map((it)=>{
-     if (isValidated[it] && isValidated[it].length>0){
-       flag=false;
-     }
-    })
-    resetErrors()
-    let arr={...isValidated}
-    setError(arr)
-    console.log({isValidated})
-    return flag;
-   }
-  }
-  useEffect(()=>{
-   
-    handleNextErrors()
-  },[values])
-const [emailExistLoad,setEmailExistLoad]=useState(false)
-  const handleClick = async () => {
-    const emailAlreadyExists=async ()=>{
-
-    
-    let checked = false;
-    if (isAddedByAdmin) {
-      setFrames({
-        ...frames,
-        signupActive: false,
-        userDetails: true,
       });
+    } else {
+      setValidated({});
+    }
+    if (alsoSet) {
+      let flag = true;
+      Object.keys(isValidated).map((it) => {
+        if (isValidated[it] && isValidated[it].length > 0) {
+          flag = false;
+        }
+      });
+      resetErrors();
+      let arr = { ...isValidated };
+      setError(arr);
+      console.log({ isValidated });
+      return flag;
+    }
+  };
+  useEffect(() => {
+    handleNextErrors();
+  }, [values]);
+  const [emailExistLoad, setEmailExistLoad] = useState(false);
+  const handleClick = async () => {
+    const emailAlreadyExists = async () => {
+      let checked = false;
+      if (isAddedByAdmin) {
+        setFrames({
+          ...frames,
+          signupActive: false,
+          userDetails: true,
+        });
+        return;
+      }
+      try {
+        let data = {
+          workemail: values.email,
+        };
+        let result = await axios.post(
+          `${process.env.REACT_APP_BASE_URL}api/user/CheckEmail`,
+          data,
+          {
+            headers: {
+              "content-Type": "application/json",
+            },
+          }
+        );
+        console.log(result);
+        if (result) checked = true;
+      } catch (e) {
+        console.error(e.response.data.message);
+        setError({
+          ...error,
+          email: e.response.data.message,
+        });
+      }
+      if (checked === true) {
+        setFrames({
+          ...frames,
+          signupActive: false,
+          userDetails: true,
+        });
+      }
+    };
+    if (!handleNextErrors(true)) {
       return;
     }
-    try {
-      let data = {
-        workemail: values.email,
-      };
-      let result = await axios.post(
-        `${process.env.REACT_APP_BASE_URL}api/user/CheckEmail`,
-        data,
-        {
-          headers: {
-            "content-Type": "application/json",
-          },
-        }
-      );
-      console.log(result);
-      if (result) checked = true;
-    } catch (e) {
-      console.error(e.response.data.message);
-      setError({
-        ...error,
-        email: e.response.data.message,
-      });
-    }
-    if (checked === true) {
-      setFrames({
-        ...frames,
-        signupActive: false,
-        userDetails: true,
-      });
-    }
-  }
-  if(!handleNextErrors(true)){
-    return 
-  }
-  emailAlreadyExists()
+    emailAlreadyExists();
   };
 
   const handleSignup = () => {
@@ -432,39 +426,34 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
             .then((res) => {
               setLoading(false);
               console.log(res);
-              if (res?.error?.data?.message === "Referral code not match."){
-              alert("Referal code is not valid! Enter valid referal code.");
-          return ;
+              if (res?.error?.data?.message === "Referral code not match.") {
+                alert("Referal code is not valid! Enter valid referal code.");
+                return;
               }
               if (res.error) {
                 alert("Something went wrong");
                 return;
               }
-              
-             
-            
+
               alert("Signup successful");
               //navigate("/");
-               if(frames.userDetails && customFields?.length>0){
-               
+              if (frames.userDetails && customFields?.length > 0) {
                 setFrames({
                   ...frames,
                   setPasswordFields: false,
                   userDetails: false,
                   customFields: true,
                 });
-                return 
-            }
-            else {
-            setFrames({
-              ...frames,
-              setPasswordFields: true,
-              userDetails: false,
-              customFields: false,
-            });
-            sessionStorage.clear();
-          }
-             
+                return;
+              } else {
+                setFrames({
+                  ...frames,
+                  setPasswordFields: true,
+                  userDetails: false,
+                  customFields: false,
+                });
+                sessionStorage.clear();
+              }
             })
             .catch((err) => {
               setLoading(false);
@@ -560,7 +549,7 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
               >
                 {frames.signupActive
                   ? ""
-                  : frames.setPasswordFields&& !isAddedByAdmin
+                  : frames.setPasswordFields && !isAddedByAdmin
                   ? "Set Password"
                   : ""}
               </h1>
@@ -568,7 +557,20 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
               {currentStep > 0 && !frames.signupSuccessful && (
                 <NumericSteppers
                   className="mt-3"
-                  fieldNames={customFields?.length>0 && isAddedByAdmin?["Personal info" ,"Student / Parent","Further details","Set password"]:["Personal info" ,"Student / Parent",isAddedByAdmin?"Set password":"Further details",]} 
+                  fieldNames={
+                    customFields?.length > 0 && isAddedByAdmin
+                      ? [
+                          "Personal info",
+                          "Student / Parent",
+                          "Further details",
+                          "Set password",
+                        ]
+                      : [
+                          "Personal info",
+                          "Student / Parent",
+                          isAddedByAdmin ? "Set password" : "Further details",
+                        ]
+                  }
                   totalSteps={
                     customFields?.length === 0
                       ? 2 + isAddedByAdmin
@@ -589,12 +591,19 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
                       labelClassname="mb-1 text-[#26435F] font-bold"
                       label="First Name"
                       value={values.firstName}
-                      onChange={(e) =>
+                      onChange={(e) => {
+                        const alphabeticOnly = e.target.value.replace(
+                          /[^a-zA-Z]/g,
+                          ""
+                        );
+                        e.target.value = alphabeticOnly;
+                        e.target.value=e.target.value.charAt(0).toUpperCase() + e.target.value.slice(1);
+                     
                         setValues({
                           ...values,
                           firstName: e.target.value,
-                        })
-                      }
+                        });
+                      }}
                       totalErrors={error}
                       error={error.firstName}
                     />
@@ -605,12 +614,18 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
                       labelClassname="mb-1 text-[#26435F] font-bold"
                       label="Last Name"
                       value={values.lastName}
-                      onChange={(e) =>
+                      onChange={(e) => {
+                        const alphabeticOnly = e.target.value.replace(
+                          /[^a-zA-Z]/g,
+                          ""
+                        );
+                        e.target.value = alphabeticOnly;
+                        e.target.value=e.target.value.charAt(0).toUpperCase() + e.target.value.slice(1);
                         setValues({
                           ...values,
                           lastName: e.target.value,
-                        })
-                      }
+                        });
+                      }}
                       totalErrors={error}
                       error={error.lastName}
                     />
@@ -636,7 +651,6 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
                       placeholder=""
                       inputContainerClassName="  bg-white h-[40px]  border border-[#D0D5DD]"
                       parentClassName="text-xs w-[300px]"
-                      
                       inputClassName="  bg-transparent text-400 "
                       labelClassname="mb-1 text-[#26435F]  font-bold text-[#26435F]"
                       label="Phone"
@@ -654,7 +668,6 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
                           phone: e.target.value,
                         })
                       }
-                      
                       totalErrors={error}
                       error={error.phone}
                       codeError={error.phoneCode}
@@ -733,42 +746,40 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
                     </div>
                   </div>
                   <div className=" gap-x-2 my-5">
-                    
                     <div className={`flex ${styles.textLight}`}>
-                    <CCheckbox  checked={values.ageChecked}
-                          onChange={handleCheckboxChangeAge}/>
-                     
-                     
+                      <CCheckbox
+                        checked={values.ageChecked}
+                        onChange={handleCheckboxChangeAge}
+                      />
 
-                        <span className="ml-2 text-sm text-[#507CA8]">
-                          I confirm that I am 13 years or older
-                        </span>
-                     
+                      <span className="ml-2 text-sm text-[#507CA8]">
+                        I confirm that I am 13 years or older
+                      </span>
                     </div>
                   </div>
 
                   <div className=" gap-x-2 my-5">
                     <div className={`flex ${styles.textLight}`}>
-                     
-                       <CCheckbox  checked={values.terms}
-                          onChange={handleCheckboxChangeTerms}/>
-                        <p className={` ml-2 text-sm text-[#507CA8]`}>
-                          I have carefully read and agree to the{" "}
-                          <a
-                            href="http://evallo.org/tou"
-                            className="font-semibold text-[#26435F] mr-1"
-                          >
-                            Terms of Use
-                          </a>
-                          and
-                          <a
-                            href="http://evallo.org/privacy-policy"
-                            className=" ml-1 font-semibold text-[#26435F]"
-                          >
-                            Privacy Policy
-                          </a>
-                        </p>
-                     
+                      <CCheckbox
+                        checked={values.terms}
+                        onChange={handleCheckboxChangeTerms}
+                      />
+                      <p className={` ml-2 text-sm text-[#507CA8]`}>
+                        I have carefully read and agree to the{" "}
+                        <a
+                          href="http://evallo.org/tou"
+                          className="font-semibold text-[#26435F] mr-1"
+                        >
+                          Terms of Use
+                        </a>
+                        and
+                        <a
+                          href="http://evallo.org/privacy-policy"
+                          className=" ml-1 font-semibold text-[#26435F]"
+                        >
+                          Privacy Policy
+                        </a>
+                      </p>
                     </div>
                   </div>
                   <div className="flex items-center mt-[30px] justify-between">

@@ -9,7 +9,7 @@ import { useEffect } from "react";
 import { useRef } from "react";
 function ActionLog({ dateRange }) {
   const [actionLogData, fetchStatus] = useGetActionLogRangeMutation();
-
+  const {role:persona} = useSelector((state)=>state.user)
   const [currentElementIndex, setCurrentElementIndex] = useState(0);
   const [extraElement, setExtraElement] = useState(0);
   const [sortedAction, setSortedAction] = useState([]);
@@ -36,6 +36,7 @@ function ActionLog({ dateRange }) {
     ref.current.textContent = headerDate;
   };
   useEffect(() => {
+    if(persona==='manager') return 
     setCurrentElementIndex(0);
     const sorting = (newarr, extra) => {
       let sortedData = [...actionLog];
@@ -80,7 +81,7 @@ function ActionLog({ dateRange }) {
     setSortedAction(newarr);
   }, [actionLog]);
   useEffect(() => {
-    if (dateRange === "" || !dateRange) return;
+    if (dateRange === "" || !dateRange || persona==='manager') return;
     const fetchActivity = () => {
       actionLogData(dateRange).then((res) => {
         console.log("actionlog", { dateRange }, { res: res?.data });
@@ -146,6 +147,11 @@ function ActionLog({ dateRange }) {
               </div>
             </div>
           ))}
+          {
+            persona==="manager"&&<div className="flex-1 h-full h-[390.33px] text-base-25 flex justify-center items-center font-medium text-[#4A556C]">
+              Only Super Admin Can View This.
+            </div>
+          }
         </ul>
       </div>
     </div>

@@ -1138,7 +1138,7 @@ export default function SuperAdminSettings() {
               }
             />
 
-            <SettingsCard
+            {/* <SettingsCard
               title="Session Tags & Reconciliation"
               className={styles["bordered-settings-container"]}
               body={
@@ -1182,11 +1182,11 @@ export default function SuperAdminSettings() {
                             </div>
                           </div>
                           <div className="flex items-center flex-wrap [&>*]:mb-[18px]">
-                            {/* <AddTag
+                             <AddTag
                               onAddTag={handleAddSessionTag}
                               keyName={service.heading}
                               text="Add Items"
-                            /> */}
+                            /> 
                             <FilterItems
                               isString={true}
                               onlyItems={true}
@@ -1208,8 +1208,84 @@ export default function SuperAdminSettings() {
                   />
                 </div>
               }
-            />
+            /> */}
 
+            <SettingsCard
+              titleClassName="text-base-20"
+              title="Session Tags & Reconciliation"
+              className={styles["bordered-settings-container"]}
+              body={
+                <div className="">
+                 <div className="max-h-[360px] p-1  overflow-auto  scrollbar-vertical custom-scroller" >
+                  {sessionTags !== undefined &&
+                    sessionTags.map((service, i) => {
+                      return (
+                        <div key={i} className="bg-white shadow-small p-4 mb-3 rounded-md">
+                          <div className="flex items-center justify-between pr-8">
+                            <p className="font-medium text-[#24A3D9] mb-4">
+                              {service.heading}
+                            </p>
+                            <div className="flex items-center gap-x-4">
+                            <ToggleBar
+                            
+                                 boxClass="!h-[16px]"
+                                circleColor="bg-[rgba(119,221,119,1)]"
+                                toggle={{ value: 5, key: 'code' }}
+                                onToggle={togglePermissions}
+                              ></ToggleBar>
+                              <div
+                                className=" flex items-center justify-center  rounded-full cursor-pointer"
+                                // onClick={() => onEditService(service)}
+                              >
+                                <img
+                                  src={EditBlueIcon}
+                                  className="w-4"
+                                  alt="edit"
+                                />
+                              </div>
+                              <div
+                              className="w-5 h-5 flex items-center justify-center  rounded-full cursor-pointer"
+                              onClick={() => onRemoveSessionTag(service)}
+                            >
+                              <img
+                                src={DeleteIcon}
+                                className="w-4"
+                                alt="delete"
+                              />
+                            </div>
+                            </div>
+                          
+                          </div>
+                          <div className="flex items-center flex-wrap [&>*]:mb-[10px]">
+                            <AddTag
+                              onAddTag={handleAddSessionTag}
+                              keyName={service.heading}
+                              text="Add Items"
+                            />
+                            <FilterItems
+                              isString={true}
+                              onlyItems={true}
+                              keyName={service.heading}
+                              items={service.items}
+                              onRemoveFilter={onRemoveSessionTagItem}
+                              className="pt-1 pb-1 mr-15 text-base-17-5"
+                            />
+                          </div>
+                        </div>
+                      );
+                    })}
+                    </div>
+
+                  <AddTag
+                    children="Add Heading"
+                    className="px-[18px] py-3 mt-5 bg-primary text-white"
+                    text="Add Heading"
+                    hideIcon={false}
+                    onAddTag={onAddSessionTag}
+                  />
+                </div>
+              }
+            />
             <SettingsCard
               title="Edit Announcements"
               toggle={{ value: toggleImage.offer, key: "offer" }}

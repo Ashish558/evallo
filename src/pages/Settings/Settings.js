@@ -755,6 +755,7 @@ export default function Settings() {
   };
 
   const handleTestChange = (item) => {
+    console.log("tsests", item);
     if (updatedSubscriptionData.tests.includes(item._id)) {
       let updated = updatedSubscriptionData.tests.filter(
         (test) => test !== item._id
@@ -1079,6 +1080,7 @@ export default function Settings() {
                               keyName={subscription.code}
                               items={subscription.tests}
                               fetchData={true}
+                              filteredTests={filteredTests}
                               api="test"
                               onRemoveFilter={onRemoveCodeTest}
                               className="pt-1 pb-1 mr-15 text-base-17-5"
@@ -1696,6 +1698,32 @@ export default function Settings() {
                 </div>
                 </div>
                   <div className="mt-3 flex-1">
+                  {/* <InputSearch
+                       label="Select Assignments (optional)"
+                       labelClassname="text-base-20 text-[#26435F] mb-0.5"
+                    placeholder="Select"
+                    placeholderClass="text-base-17-5"
+                    parentClassName=" text-base-17-5 py-0 w-full  mb-10"
+                    inputContainerClassName=" text-base-17-5 bg-[#F3F5F7] border-0 pt-3.5 pb-3.5"
+                    inputClassName="bg-[#F3F5F7]"
+                    type="text"
+                    value={searchedTest}
+                    checkbox={{
+                      visible: true,
+                      name: "test",
+                      match: updatedSubscriptionData.tests,
+                    }}
+                    onChange={(e) => setSearchedTest(e.target.value)}
+                    optionListClassName="text-base-17-5"
+                    optionClassName="text-base-17-5"
+                    optionData={filteredTests}
+                    onOptionClick={(item) => {
+                      handleTestChange(item);
+                      // setStudent(item.value);
+                      // handleStudentsChange(item)
+                      // setCurrentToEdit({ ...currentToEdit, students: [... item._id] });
+                    }}
+                  /> */}
                   <InputField 
                   label="Select Assignments (optional)"
                   labelClassname="text-base-20 text-[#26435F] mb-0.5"
