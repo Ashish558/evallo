@@ -184,7 +184,7 @@ export default function TutorDashboard() {
       fetchTutorAssignedTests(id)
          .then(res => {
             if (res.error) return console.log('tutor assignedtest', res.error)
-            // console.log('tutor assignedtest', res.data)
+            console.log('tutor assignedtest', res.data)
             let data = res.data.data.test.map(item => {
                const { createdAt, studentId, dueDate, photo, testId, multiple, timeLimit, isCompleted, isStarted } = item
                let profile = studentId.photo ? studentId.photo : null
@@ -370,7 +370,9 @@ export default function TutorDashboard() {
                            Latest Practice Test
                         </p> */}
                            <div className='pl-[30px] pr-[26px] custom-scroller h-[780px]  overflow-auto pt-[10px]  bg-white rounded-20'>
+
                               {allAssignedTests?.slice(0, 10)?.map(item => {
+
                                  return (
                                     <div className=' mb-[15px]' key={item._id} >
                                        <div>
@@ -385,7 +387,9 @@ export default function TutorDashboard() {
                                              </div>
                                           </div>
                                           <div>
-                                             <img className='cursor-pointer' width="35px" src={download} onClick={() => handlePdfDownload(item.pdf)} alt="" />
+
+                                             <img className='cursor-pointer' onClick={()=>  window.open(`${awsLink+item.testId}`, '_blank')} width="35px" src={download} alt="" />
+
                                           </div>
                                           <div className='text-[0.911vw] font-semibold'>
                                              {

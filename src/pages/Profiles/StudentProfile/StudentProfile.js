@@ -155,6 +155,16 @@ export default function StudentProfile({ isOwn }) {
   const { id } = useSelector((state) => state.user);
   const [selectedScoreIndex, setSelectedScoreIndex] = useState(0);
   const { organization } = useSelector((state) => state.organization);
+  
+  async function handleCopyClick(textToCopy) {
+    console.log("copying", textToCopy);
+    try {
+      await navigator.clipboard.writeText(textToCopy);
+    //  alert('Text copied to clipboard');
+    } catch (err) {
+      console.error('Failed to copy text: ', err);
+    }
+  }
   const [toEdit, setToEdit] = useState({
     frame0: {
 
@@ -831,7 +841,8 @@ const [toEdit, setToEdit] = useState({
                           {user?.email}
                           <span>
                             <img
-                              className="inline-block ml-2 !w-4 !h-4 mr-2"
+                             onClick={()=>handleCopyClick(user?.email)}
+                              className="inline-block ml-2 !w-4 !h-4 mr-2 cursor-pointer"
                               src={copy1}
                               alt="copy"
                               onClick={()=>handleCopy(user?.email)}
@@ -882,7 +893,8 @@ const [toEdit, setToEdit] = useState({
                           {user?.email}
                           <span>
                             <img
-                              className="inline-block ml-2 !w-4 !h-4 mr-2"
+                             onClick={()=>handleCopyClick(user?.email)}
+                              className="inline-block ml-2 !w-4 !h-4 mr-2 cursor-pointer"
                               src={copy1}
                               alt="copy"
                             />
@@ -954,7 +966,10 @@ const [toEdit, setToEdit] = useState({
                     {/* View Profile */}
                     <span>
                       <img
-                        className="inline-block ml-2 !w-4 !h-4 mr-2"
+                      onClick={()=>handleCopyClick(Object.keys(associatedParent).length > 1
+                        ? `${associatedParent.email}`
+                        : `${userDetail.Email}`)}
+                        className="inline-block ml-2 !w-4 !h-4 mr-2 cursor-pointer"
                         src={copy2}
                         alt="copy"
                         onClick={() => handleCopy(associatedParent.email ? associatedParent.email : userDetail.Email)}
