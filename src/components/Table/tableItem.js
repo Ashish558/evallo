@@ -674,9 +674,9 @@ export default function TableItem({
                     {item.isCompleted === true ? score : "-"}
                   </div>
                 ) :  key === "dueDate" ? (
-                 <span className={` ${new Date(item[key])<new Date()?"text-[#FF7979] font-semibold":""}`}> {item[key]}</span>
+                 <span className={` ${new Date(item[key])<new Date()?"text-[#FF7979] font-semibold":""}`}> {(item[key]).replace(/-/g, '/')}</span>
                 ):(
-                  item[key]
+                  item[key].replace(/-/g, '/')
                 )}
               </td>
             )
