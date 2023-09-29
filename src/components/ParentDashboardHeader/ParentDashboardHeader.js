@@ -42,6 +42,7 @@ const ParentDashboardHeader = ({ selectedStudent, setSelectedStudent }) => {
   useDisableBodyScroll(ledgerVisible);
   useEffect(() => {
     fetchSettings().then((res) => {
+      console.log("images loaded", res);
       setImages(res.data.data.setting.offerImages);
       console.log(res.data.data.setting);
     });
@@ -109,7 +110,7 @@ const ParentDashboardHeader = ({ selectedStudent, setSelectedStudent }) => {
     });
   };
   const openLink = (link) => {
-    window.open(link)
+    window.open(link, '_blank');
   }
   console.log("associatedStudents", associatedStudents);
   console.log("selectedStudent", selectedStudent);

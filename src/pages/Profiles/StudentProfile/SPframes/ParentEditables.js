@@ -438,6 +438,20 @@ const [addLink,addLinkStatus]=useAddLinkStudentMutation()
     //  })
     
     }
+    if (currentToEdit.hasOwnProperty("whiteBoardLinks")) {
+     let ch=false;
+     const urlRegex = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i;
+     currentToEdit?.whiteBoardLinks?.map((link)=>{
+      if(!urlRegex.test(link))
+       ch=true ;
+     })
+     if(ch){
+      
+      alert("Enter valid link!")
+      return
+     }
+   
+    }
     const userDetailSave = (reqBody) => {
       // if (reqBody.satScores) {
       //   if (isNaN(reqBody?.satScores?.maths)) reqBody.satScores.maths = 0;
@@ -2497,6 +2511,9 @@ return ( <div className="flex !text-sm gap-4 ">
                                     ?.verbal
                                 }
                                 onChange={(e) => {
+                                   if(parseInt(e.target.value)<0 || parseInt(e.target.value)>1000){
+                                    return
+                                   }
                                   let tempScores = [...currentToEdit.satScores];
                                   if (tempScores.length <= selectedScoreIndex) {
                                     tempScores.push({
@@ -2537,6 +2554,9 @@ return ( <div className="flex !text-sm gap-4 ">
                                     ?.maths
                                 }
                                 onChange={(e) => {
+                                  if(parseInt(e.target.value)<0 || parseInt(e.target.value)>1000){
+                                    return
+                                   }
                                   let tempScores = [...currentToEdit.satScores];
                                   if (tempScores.length <= selectedScoreIndex) {
                                     tempScores.push({
@@ -2843,6 +2863,9 @@ return ( <div className="flex !text-sm gap-4 ">
                           currentToEdit.actScores[selectedScoreIndex]?.maths
                         }
                         onChange={(e) => {
+                          if(parseInt(e.target.value)<0 || parseInt(e.target.value)>1000){
+                            return
+                           }
                           let tempScores = [...currentToEdit.actScores];
                           if (tempScores.length <= selectedScoreIndex) {
                             tempScores.push({
@@ -2883,10 +2906,14 @@ return ( <div className="flex !text-sm gap-4 ">
                         inputClassName="bg-transparent pl-4 rounded-[4px]"
                         parentClassName="flex-1 max-w-[140px]"
                         type="number"
+                        pattern={""}
                         value={
                           currentToEdit.actScores[selectedScoreIndex]?.english
                         }
                         onChange={(e) => {
+                          if(parseInt(e.target.value)<0 || parseInt(e.target.value)>1000){
+                            return
+                           }
                           let tempScores = [...currentToEdit.actScores];
                           if (tempScores.length <= selectedScoreIndex) {
                             tempScores.push({
@@ -2931,6 +2958,10 @@ return ( <div className="flex !text-sm gap-4 ">
                           currentToEdit.actScores[selectedScoreIndex]?.reading
                         }
                         onChange={(e) => {
+                         
+                          if(parseInt(e.target.value)<0 || parseInt(e.target.value)>1000){
+                            return
+                           }
                           let tempScores = [...currentToEdit.actScores];
                           if (tempScores.length <= selectedScoreIndex) {
                             tempScores.push({
@@ -2975,6 +3006,9 @@ return ( <div className="flex !text-sm gap-4 ">
                           currentToEdit.actScores[selectedScoreIndex]?.science
                         }
                         onChange={(e) => {
+                          if(parseInt(e.target.value)<0 || parseInt(e.target.value)>1000){
+                            return
+                           }
                           let tempScores = [...currentToEdit.actScores];
                           if (tempScores.length <= selectedScoreIndex) {
                             tempScores.push({

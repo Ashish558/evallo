@@ -16,6 +16,7 @@ const SessionFeedback = () => {
          .then(res => {
             console.log('all-assigned-tests', res.data);
             setAwsLink(res.data.data.baseLink)
+            
             let tempAllTests = res.data.data.test.map(test => {
                const { testId, studentId, dueDate, isCompleted, isStarted, createdAt, updatedAt } = test
                if (testId === null) return

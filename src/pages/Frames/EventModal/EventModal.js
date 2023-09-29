@@ -94,6 +94,7 @@ export default function EventModal({
    refetchSessions,
    defaultEventData
 }) {
+  
    const [data, setData] = useState({
       studentName: "",
       tutorName: "",
@@ -170,7 +171,7 @@ export default function EventModal({
    const [services, setServices] = useState([])
    const { id: currentUserId } = useSelector(state => state.user)
    const { organization } = useSelector((state) => state.organization);
-
+   const [tutorId2,setTutorId2]= useState(null)
    const [isSettingsLoaded, setIsSettingsLoaded] = useState(false);
    const getCheckedItems = (strArr, array) => {
       let checkedItems = array.map((item) => {
@@ -247,27 +248,31 @@ export default function EventModal({
          let formattedTime = tConvert(`${hours}:00`)
          let formattedEndTime = tConvert(`${endHours}:00`)
          if (endHours === 24) formattedEndTime = { time: "12:00", timeType: 'AM' }
-
-         setData({
-            ...data,
-            date: defDate,
-            tutorId: tutorId ? tutorId : '',
-            tutorName: tutorName ? tutorName : '',
-            time: {
-               ...data.time,
-               start: {
-                  ...formattedTime
+         
+         setData((prev) => {
+            return {
+               ...prev,
+               date: defDate,
+               tutorId: tutorId ? tutorId : '',
+               tutorName: tutorName ? tutorName : '',
+               time: {
+                  ...data.time,
+                  start: {
+                     ...formattedTime
+                  },
+                  end: {
+                     ...formattedEndTime
+                  }
                },
-               end: {
-                  ...formattedEndTime
-               }
-            },
+         }
+           
          })
+          setTutorId2(tutorId)
          setTutor(tutorName ? tutorName : '')
 
       }
    }, [defaultEventData])
-
+ 
    useEffect(() => {
       if (organization?.settings) {
 
@@ -295,6 +300,7 @@ export default function EventModal({
             `${sessionToUpdate.time.start.time} ${sessionToUpdate.time.start.timeType}`
          );
          // console.log(startTime)
+         console.log("isUpdating")
          let startDate = new Date(sessionToUpdate.date)
          const offset = startDate.getTimezoneOffset() * 60000
          if (offset > 0) {
@@ -657,11 +663,23 @@ export default function EventModal({
             setEventModalActive(false)
          })
    }
+  useEffect(()=>{
+    if(persona==='tutor'){
+      setData((prev)=>{
+         return {
+            ...prev,
+            tutorId:tutorId2,
+            tutorName:tutor
+         }
+      })
 
+    }
+  },[tutorId2])
    useEffect(() => {
       // if (persona === 'tutor') {
       // console.log(data.tutorId);
       if (!data.tutorId) return
+      console.log("tutorDetails", data.tutorId)
       getUserDetail({ id: data.tutorId })
          .then(res => {
             if (res.error) {
@@ -679,17 +697,17 @@ export default function EventModal({
                   tutorServs.push(item.service)
                }
             })
-            console.log('allServicesAndSpec', allServicesAndSpec);
+            console.log('servicesallServicesAndSpec', allServicesAndSpec);
             console.log('services', details.tutorServices, services);
             setServicesAndSpecialization(tutorServs)
          })
       // }
 
    }, [persona, data.tutorId, allServicesAndSpec])
-
+console.log("data",data,tutor)
    useEffect(() => {
       // console.log('all', allServicesAndSpec)
-      console.log('servicesAndSpecialization', servicesAndSpecialization)
+     
       let specs = []
       allServicesAndSpec.map(item => {
          if (item.service === data.service) {
@@ -697,6 +715,7 @@ export default function EventModal({
          }
       })
       console.log('spec', specs)
+      console.log('servicesAndSpecialization', servicesAndSpecialization,specs)
       setSpecializations(specs)
    }, [servicesAndSpecialization, data.service, allServicesAndSpec])
 
@@ -744,13 +763,15 @@ export default function EventModal({
       setData({ ...data, sessionTags: tempSessionTag })
    }
    const dataProps = { data, setData }
-
+ //  console.log({isEditable})
    return (
       <>
          <Modal
             classname="max-w-[827px]  mx-auto max-h-[90vh] 2xl:max-h-[700px] overflow-y-hidden"
             handleClose={() => setEventModalActive(false)}
-            title={isEditable == false ? 'Session Details' : isUpdating ? "Update Session" : `Schedule New Session`}
+
+            title={isEditable === false ? 'Session Details' : isUpdating ? "Update Session" : ` ${persona == "tutor" ? "Session Details" : "Schedule New Session"}`}
+
             body={
                <div  >
                   <div className="h-[58.61vh] 2xl:max-h-[633px] overflow-y-auto">
@@ -785,7 +806,7 @@ export default function EventModal({
                                  // console.log(val)
                                  data.service !== val && setData({ ...data, service: val, specialization: '' })
                               }}
-                              // optionType='object'
+                            
                               optionData={servicesAndSpecialization}
                               inputContainerClassName={`bg-lightWhite pt-3.5 pb-3.5 border-0 font-medium pr-3 text-[#507CA8]
                        `}

@@ -15,6 +15,7 @@ const timeZones = [
 
 export default function DateAndTimeInput({ data, setData, isEditable }) {
 
+   console.log("dateAndTimeInput",data)
 
    return (
       <div className="flex mb-[30px] items-end">

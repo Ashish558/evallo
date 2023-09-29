@@ -17,6 +17,7 @@ import { useLazyGetAllOrgQuery } from "../../../../app/services/superAdmin";
 import LoaderNew from "../../../../components/Loader/LoaderNew";
 import { CSVLink } from "react-csv";
 import { csvHeaderNames, csvHeaders } from "../../../Users/csvUtlis";
+import { useSelector } from "react-redux";
 const AllOrgs = () => {
   const [adminData, setAdminData] = useState([]);
   const [fetchedData, setFetchedData] = useState([]);
@@ -26,14 +27,16 @@ const AllOrgs = () => {
   const [fetchAllOrgQuery, fetchAllOrgQueryStatus] = useLazyGetAllOrgQuery();
   const [csvData, setCsvData] = useState([]);
   const [csvLoad, setCsvLoad] = useState(false);
+  const {organization}= useSelector((state)=>state.organization)
   const [successFetched, setsuccessFetched] = useState(false);
   const handleBulkExport = async () => {
 
     if (adminData?.length > 0) {
       setCsvLoad(true);
       let result = adminData;
-
+      
       if (result) {
+        console.log({result})
         let arr = [];
         result?.forEach((item) => {
           let obj = {};
@@ -47,11 +50,13 @@ const AllOrgs = () => {
           obj.state = item.associatedOrg?.state
           obj.country = item.associatedOrg?.country
           obj.firstName = item.firstName
+          obj.lastName = item.lastName
           obj.email = item.email
           obj.phone = item.phone
           obj.userStatus = item?.userStatus
           obj.tutors = item.associatedOrg?.numberOfTutors
           obj.student = item.associatedOrg?.numberOfActiveStudent
+            obj.parent = item.associatedOrg?.numberOfActiveStudent
           obj.contributor = "contributors"
           arr.push(obj);
         });
@@ -142,6 +147,7 @@ const AllOrgs = () => {
     setForceChange(!forceChange)
 
   }
+  console.log({organization})
   return (
     <>
       <div className=" pt-7 mb-12">
@@ -169,8 +175,11 @@ const AllOrgs = () => {
               placeholder="Org type"
               parentClassName="  text-[#667085]"
               value={values.orgType}
-              inputContainerClassName="w-[11vw] bg-white  border !text-[#667085] !rounded-lg border-[1.33px_solid_#EBEBEB] text-xs h-[49px]"
-              optionClassName=" py-[3px] w-[11vw] text-[#667085] font-normal"
+              optionData={orgType}
+              placeholderClass="!break-words  !text-wrap !whitespace-pre-line "
+              inputContainerClassName="w-[13vw]  break-words bg-white  !text-wrap  border !text-[#667085] !rounded-lg border-[1.33px_solid_#EBEBEB] text-xs h-[49px]"
+              
+              optionClassName=" py-[3px]  text-[#667085] font-normal"
               onChange={(e) =>
                 setValues({
                   ...values,
@@ -219,6 +228,8 @@ const AllOrgs = () => {
             <InputSelect 
             downArrow22={true}
               placeholder="Subscription"
+              optionData={organization?.settings?.subscriptionCode?.map(it=>
+                it?.code)}
               parentClassName="text-xs text-[#667085]"
               inputContainerClassName="w-[11vw] bg-white border !text-[#667085] !rounded-lg border-[1.33px_solid_#EBEBEB] h-[49px]"
               optionClassName="w-[11vw] py-[3px] "
