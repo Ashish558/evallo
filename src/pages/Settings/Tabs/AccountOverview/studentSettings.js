@@ -310,8 +310,8 @@ const StudentSettings = () => {
           )}
         </div>
 
-        <div className="flex  gap-20 mt-16">
-          <div className="flex-1 max-w-[400px]">
+        <div className="flex  gap-x-[100px] mt-16 mb-[163px]">
+          <div className="relative w-[33.54vw]">
 
             <p className=" text-sm text-[#26435F] font-semibold">
               Submit Feedback
@@ -334,12 +334,12 @@ const StudentSettings = () => {
               onClick={() => {
                 handleFeedback(feedBack.support, "feedback")
               }}
-              className="bg-[#517CA8] text-white rounded-lg mt-2 float-right px-4 py-2 mr-[60px]"
+              className="bg-[#517CA8] text-white rounded-lg mt-2 float-right px-4 py-2  absolute bottom-[-14%] right-0"
             >
               Submit
             </button>
           </div>
-          <div className="flex-1 max-w-[400px]">
+          <div className=" relative w-[33.54vw]">
             <p className=" text-sm text-[#26435F] font-semibold ">
               Request Technical Support
             </p>
@@ -362,7 +362,7 @@ const StudentSettings = () => {
               onClick={() => {
                 handleFeedback(feedBack.tech, "")
               }}
-              className="bg-[#517CA8] text-white rounded-lg mt-2 float-right px-4 py-2 "
+              className="bg-[#517CA8] text-white rounded-lg mt-2 float-right px-4 py-2 absolute bottom-[-14%] right-0"
             >
               Submit
             </button>
