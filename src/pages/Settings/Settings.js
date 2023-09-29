@@ -23,7 +23,7 @@ import {
 import { getSessionTagName } from "../../utils/utils";
 import { BASE_URL, getAuthHeader } from "../../app/constants/constants";
 import axios from "axios";
-import DeleteIcon from "../../assets/icons/delete.svg";
+import DeleteIcon from "../../assets/icons/delete (2).svg";
 import PauseIcon from "../../assets/icons/pause.svg";
 import PlayIcon from "../../assets/icons/play.svg";
 import down from "../../assets/icons/down.png"
@@ -35,7 +35,7 @@ import AccOverviewLogo from "../../assets/icons/account overview.svg";
 import AccOverviewLogo2 from "../../assets/icons/account-overview 2.svg";
 import ClientsSignupLogo from "../../assets/icons/Client sign up 1.svg";
 import ClientsSignupLogo2 from "../../assets/icons/Client sign up 2.svg";
-import EditBlueIcon from "../../assets/icons/edit-blue.svg";
+import EditBlueIcon from "../../assets/YIcons/edit2.svg";
 import InputSearch from "../../components/InputSearch/InputSearch";
 import { useSelector, useDispatch } from "react-redux";
 import { useUpdateUserFieldsMutation } from "../../app/services/users";
@@ -102,7 +102,7 @@ export default function Settings() {
   const [saveLoading, setSaveLoading] = useState(false);
   const [fetchS, setFetchS] = useState(false);
   const [newQuestion, setNewQuestion] = useState({
-    type: "String",
+    type: "Paragraph",
     text: "Add",
     values: []
   });
@@ -755,6 +755,7 @@ export default function Settings() {
   };
 
   const handleTestChange = (item) => {
+    console.log("tsests", item);
     if (updatedSubscriptionData.tests.includes(item._id)) {
       let updated = updatedSubscriptionData.tests.filter(
         (test) => test !== item._id
@@ -986,7 +987,7 @@ export default function Settings() {
                 </div>
               }
             />
-
+ <div className="h-[1.25px] bg-[#CBD6E2] my-4"></div>
             <SettingsCard
               titleClassName="text-base-20"
               title="Tutor Status Items"
@@ -1004,17 +1005,17 @@ export default function Settings() {
                 </div>
               }
             />
-
+ <div className="h-[1.25px] bg-[#CBD6E2] mb-8"></div>
             <SettingsCard
               titleClassName="text-base-20"
               title="Manage Referral Codes"
               className={styles["bordered-settings-container"]}
               body={
-                <div className="max-h-[360px] overflow-auto scrollbar-content scrollbar-vertical ">
+                <div className="max-h-[330px] overflow-auto custom-scroller p-1 scrollbar-vertical ">
                   {subscriptionCode !== undefined &&
                     subscriptionCode.map((subscription, i) => {
                       return (
-                        <div key={i} className="bg-white shadow-small p-4 ">
+                        <div key={i} className="bg-white shadow-small p-3 shadow-[0px_0px_2.500000476837158px_0px_#00000040] rounded-md">
                           <div className="flex items-center justify-between pr-8 ">
                             <p className="font-medium text-[#24A3D9] mb-4">
                               {subscription.code}
@@ -1023,33 +1024,39 @@ export default function Settings() {
                               </span>
                             </p>
                             <div className="flex items-center gap-x-4">
-                              {subscription.pause === false ? (
-                                <img
-                                  src={PlayIcon}
-                                  className="w-4 cursor-pointer"
-                                  alt="play"
-                                  onClick={() => handlePause(subscription)}
-                                />
+                              {subscription.pause === false || true? (
+                                <ToggleBar
+                                boxClass="!h-[16px]"
+                                   
+                                    toggle={{ value: subscription.pause, key: 'code' }}
+                                    onToggle={() => handlePause(subscription)}
+                                  ></ToggleBar>
                               ) : (
-                                <img
-                                  src={PauseIcon}
-                                  className="w-4 cursor-pointer"
-                                  alt="play"
-                                  onClick={() => handlePause(subscription)}
-                                />
+                                <ToggleBar
+                                boxClass="!h-[16px]"
+                                    circleColor="bg-[rgba(119,221,119,1)]"
+                                    toggle={{ value: 5, key: 'code' }}
+                                    onToggle={() => handlePause(subscription)}
+                                  ></ToggleBar>
+                                // <img
+                                //   src={PauseIcon}
+                                //   className="w-4 cursor-pointer"
+                                //   alt="play"
+                                //   onClick={() => handlePause(subscription)}
+                                // />
                               )}
                               <div
-                                className="w-5 h-5 flex items-center justify-center bg-[#E3E3E3] rounded-full cursor-pointer"
+                                className="w-5 h-5 flex items-center justify-center  rounded-full cursor-pointer"
                                 onClick={() => onEditCode(subscription)}
                               >
                                 <img
-                                  src={EditBlueIcon}
+                                 src={EditBlueIcon}
                                   className="w-4"
                                   alt="edit"
                                 />
                               </div>
                               <div
-                                className="w-5 h-5 flex items-center justify-center bg-[#E3E3E3] rounded-full cursor-pointer"
+                                className="w-5 h-5 flex items-center justify-center  rounded-full cursor-pointer"
                                 onClick={() => onRemoveCode(subscription)}
                               >
                                 <img
@@ -1060,7 +1067,7 @@ export default function Settings() {
                               </div>
                             </div>
                           </div>
-                          <div className="flex items-center flex-wrap [&>*]:mb-[18px] ">
+                          <div className="flex items-center flex-wrap [&>*]:mb-[10px] ">
                             <AddTag
                               openModal={true}
                               onAddTag={(code) => handleAddTest(subscription)}
@@ -1073,6 +1080,7 @@ export default function Settings() {
                               keyName={subscription.code}
                               items={subscription.tests}
                               fetchData={true}
+                              filteredTests={filteredTests}
                               api="test"
                               onRemoveFilter={onRemoveCodeTest}
                               className="pt-1 pb-1 mr-15 text-base-17-5"
@@ -1129,20 +1137,20 @@ export default function Settings() {
               className={styles["bordered-settings-container"]}
               body={
                 <div>
-                  <div className="max-h-[360px] overflow-auto scrollbar-content scrollbar-vertical">
+                  <div className="max-h-[340px] overflow-auto custom-scroller p-1 scrollbar-vertical">
                     {servicesAndSpecialization !== undefined &&
                       servicesAndSpecialization.map((service, i) => {
                         return (
                           <div
                             key={i}
-                            className="bg-white shadow-small p-4 mb-3"
+                            className="bg-white shadow-small p-4 mb-3 rounded-md"
                           >
                             <div className="flex items-center justify-between pr-8">
                               <p className="font-medium text-[#24A3D9] mb-4">
                                 {service.service}
                               </p>
                               <div
-                                className="w-5 h-5 flex items-center justify-center bg-[#E3E3E3] rounded-full cursor-pointer"
+                                className="w-5 h-5 flex items-center justify-center  rounded-full cursor-pointer"
                                 onClick={() => onRemoveService(service)}
                               >
                                 <img
@@ -1152,7 +1160,7 @@ export default function Settings() {
                                 />
                               </div>
                             </div>
-                            <div className="flex items-center flex-wrap [&>*]:mb-[18px]">
+                            <div className="flex items-center flex-wrap [&>*]:mb-[10px]">
                               <AddTag
                                 onAddTag={handleAddSpecialization}
                                 keyName={service.service}
@@ -1186,17 +1194,17 @@ export default function Settings() {
               title="Session Tags & Reconciliation"
               className={styles["bordered-settings-container"]}
               body={
-                <div className="max-h-[360px] overflow-auto scrollbar-content scrollbar-vertical">
+                <div className="max-h-[360px] overflow-auto custom-scroller p-1 scrollbar-vertical">
                   {sessionTags !== undefined &&
                     sessionTags.map((service, i) => {
                       return (
-                        <div key={i} className="bg-white shadow-small p-4 mb-3">
+                        <div key={i} className="bg-white shadow-small p-4 mb-3 rounded-md">
                           <div className="flex items-center justify-between pr-8">
                             <p className="font-medium text-[#24A3D9] mb-4">
                               {service.heading}
                             </p>
                             <div
-                              className="w-5 h-5 flex items-center justify-center bg-[#E3E3E3] rounded-full cursor-pointer"
+                              className="w-5 h-5 flex items-center justify-center  rounded-full cursor-pointer"
                               onClick={() => onRemoveSessionTag(service)}
                             >
                               <img
@@ -1206,7 +1214,7 @@ export default function Settings() {
                               />
                             </div>
                           </div>
-                          <div className="flex items-center flex-wrap [&>*]:mb-[18px]">
+                          <div className="flex items-center flex-wrap [&>*]:mb-[10px]">
                             <AddTag
                               onAddTag={handleAddSessionTag}
                               keyName={service.heading}
@@ -1397,7 +1405,7 @@ export default function Settings() {
                             <div>
                               <div
                                 onClick={() => handleImageRemoval(offer)}
-                                className="w-7 h-7 z-5000 -top-2 right-[9px] flex items-center absolute justify-center bg-[#E3E3E3] rounded-full cursor-pointer"
+                                className="w-7 h-7 z-5000 -top-2 right-[9px] flex items-center absolute justify-center  rounded-full cursor-pointer"
                               >
                                 <img
                                   src={DeleteIcon}
@@ -1635,10 +1643,10 @@ export default function Settings() {
       )}
       {addCodeModalActive && (
         <Modal
-          classname={"max-w-[700px] mx-auto"}
+          classname={"max-w-[560px] mx-auto"}
           titleClassName="text-base-20 mb-[18px]"
-          title="Add / Edit Subscription Code"
-
+          title="Add / Edit Referral Code"
+         
           cancelBtn={false}
           cancelBtnClassName="w-140 "
           handleClose={() => {
@@ -1647,58 +1655,87 @@ export default function Settings() {
           }}
           body={
             <form id="settings-form" onSubmit={handleCodeSubmit}>
-              <div className="  grid-cols-1 md:grid-cols-2  gap-x-2 md:gap-x-3 gap-y-2 gap-y-4 mb-5">
-                <div className="flex gap-4">
-                  <div>
-                    <InputField
-                      label="Subscription Code"
-                      labelClassname="text-base-20 ml-4 mb-0.5"
-                      placeholder="Sample Code"
-                      inputContainerClassName=" text-base-17-5 px-5 bg-primary-50 border-0"
-                      inputClassName="bg-transparent"
-                      placeholderClass="text-base-17-5"
-                      parentClassName=" text-base-17-5 py-0 w-full mr-4"
-                      type="text"
-                      value={subModalData.code}
-                      isRequired={true}
-                      onChange={(e) =>
-                        setSubModalData({ ...subModalData, code: e.target.value })
-                      }
-                    />
-                  </div>
-                  <div>
-                    <InputField
-                      label="Duration (in weeks)"
-                      labelClassname="text-base-20 ml-4 mb-0.5"
-                      isRequired={true}
-                      placeholder=""
-                      inputContainerClassName=" text-base-17-5 px-5 bg-primary-50 border-0"
-                      inputClassName="bg-transparent"
-                      placeholderClass="text-base-17-5"
-                      parentClassName=" text-base-17-5 py-0 w-full mr-4"
-                      type="text"
-                      value={subModalData.expiry}
-                      onChange={(e) =>
-                        setSubModalData({
-                          ...subModalData,
-                          expiry: e.target.value,
-                        })
-                      }
-                    />
-                  </div>
-                </div>
-                <div className="mt-3">
+               <p className="text-base-17-5 mt-[-10px] text-[#667085]"><span className="font-semibold ">⚠️ Note:</span>  Referral codes can be used by your leads (parents and students) to sign up for accessing Evallo’s portal. You can choose how long you want to provide them this access and what assignments should show up automatically after they sign up with your organization. Read detailed documentation in Evallo’s <span className="text-[#24A3D9]"> knowledge base.</span></p>
+              
+              <div className="  grid-cols-1 md:grid-cols-2  gap-x-2 md:gap-x-3 gap-y-2 gap-y-4 mb-5 mt-3">
+              <div className="flex-1 flex gap-5 ">
+                <div className="flex-1">
                   <InputField
-                    label="Select Assignments (optional)"
-                    placeholder="Select"
-                    inputContainerClassName="bg-primary-50 w-[88%]"
+                    label="Referral Code"
+                    labelClassname="text-base-20 text-[#26435F] mb-0.5"
+                    placeholder="Add a single-word referral code"
+                    inputContainerClassName=" text-base-17-5 !px-3 bg-primary-50 border-0"
                     inputClassName="bg-transparent"
-                    IconLeft={down}
+                    placeholderClass="text-base-17-5"
+                    parentClassName=" text-base-17-5 py-0 w-full mr-4"
+                    type="text"
+                    value={subModalData.code}
+                    isRequired={true}
+                    onChange={(e) =>
+                      setSubModalData({ ...subModalData, code: e.target.value })
+                    }
                   />
                 </div>
-                <div className="flex gap-4 items-center justify-center mt-3">
-                  <button className="rounded-lg bg-[#FFA28D] border-2 border-[#FFA28D] py-2 text-[#FFFFFF] w-[146px]">Save </button>
-                  <button className="rounded-lg bg-transparent border-2 border-[#FFA28D] py-2 text-[#FFA28D]  w-[146px]" onClick={() => setAddCodeModalActive(!addCodeModalActive)}>Cancel </button>
+                <div className="flex-1">
+                  <InputField
+                    label="Duration (in weeks)"
+                    labelClassname="text-base-20 text-[#26435F] mb-0.5"
+                    isRequired={true}
+                    placeholder="Access duration allowed in weeks"
+                    inputContainerClassName=" text-base-17-5 !px-3 bg-primary-50 border-0"
+                    inputClassName="bg-transparent"
+                    placeholderClass="text-base-17-5"
+                    parentClassName=" text-base-17-5 py-0 w-full mr-4"
+                    type="text"
+                    value={subModalData.expiry}
+                    onChange={(e) =>
+                      setSubModalData({
+                        ...subModalData,
+                        expiry: e.target.value,
+                      })
+                    }
+                  />
+                </div>
+                </div>
+                  <div className="mt-3 flex-1">
+                  {/* <InputSearch
+                       label="Select Assignments (optional)"
+                       labelClassname="text-base-20 text-[#26435F] mb-0.5"
+                    placeholder="Select"
+                    placeholderClass="text-base-17-5"
+                    parentClassName=" text-base-17-5 py-0 w-full  mb-10"
+                    inputContainerClassName=" text-base-17-5 bg-[#F3F5F7] border-0 pt-3.5 pb-3.5"
+                    inputClassName="bg-[#F3F5F7]"
+                    type="text"
+                    value={searchedTest}
+                    checkbox={{
+                      visible: true,
+                      name: "test",
+                      match: updatedSubscriptionData.tests,
+                    }}
+                    onChange={(e) => setSearchedTest(e.target.value)}
+                    optionListClassName="text-base-17-5"
+                    optionClassName="text-base-17-5"
+                    optionData={filteredTests}
+                    onOptionClick={(item) => {
+                      handleTestChange(item);
+                      // setStudent(item.value);
+                      // handleStudentsChange(item)
+                      // setCurrentToEdit({ ...currentToEdit, students: [... item._id] });
+                    }}
+                  /> */}
+                  <InputField 
+                  label="Select Assignments (optional)"
+                  labelClassname="text-base-20 text-[#26435F] mb-0.5"
+                  placeholder="Select"
+                  inputContainerClassName="bg-primary-50 w-[100%]"
+                  inputClassName="bg-transparent"
+                  IconLeft ={down}
+                  />
+                  </div>
+                  <div className="flex gap-4 items-center justify-center mt-3">
+                  <button className="rounded-lg bg-[#FFA28D] border-2 border-[#FFA28D] py-[6px] text-[#FFFFFF] w-[146px]">Save </button>
+                <button className="rounded-lg bg-transparent border-2 border-[#FFA28D] py-[6px] text-[#FFA28D]  w-[146px]" onClick={()=>setAddCodeModalActive(!addCodeModalActive)}>Cancel </button>
 
                 </div>
               </div>

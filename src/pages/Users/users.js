@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
+import * as XLSX from 'xlsx';
 import { CSVLink, CSVDownload } from "react-csv";
+import DeleteIcon2 from "../../assets/YIcons/Vectordel.svg";
 import Table from "../../components/Table/Table";
 import FilterItems from "../../components/FilterItemsNew/filterItems";
 import Modal from "../../components/Modal/Modal";
@@ -33,17 +35,19 @@ import {
   useDeleteUserMutation,
   useUnblockUserMutation,
 } from "../../app/services/admin";
+import ques from "../../assets/YIcons/medical-icon_i-information-us.svg"
 import { useLazyGetSettingsQuery } from "../../app/services/session";
 import PrimaryButton from "../../components/Buttons/PrimaryButton";
-import CountryCode from "../../components/CountryCode/CountryCode";
-import { isPhoneNumber } from "../Signup/utils/util";
+// import CountryCode from "../../components/CountryCode/CountryCode";
+// import { isPhoneNumber } from "../Signup/utils/util";
 import { checkIfExistInNestedArray } from "../../utils/utils";
-import InputSelectNew from "../../components/InputSelectNew/InputSelectNew";
+// import InputSelectNew from "../../components/InputSelectNew/InputSelectNew";
 import InputSearch from "../../components/InputSearch/InputSearch";
 import { useSelector } from "react-redux";
 import axios from "axios";
-import Loader from "../../components/Loader";
+// import Loader from "../../components/Loader";
 import LoaderNew from "../../components/Loader/LoaderNew";
+import SCheckbox from "../../components/CCheckbox/SCheckbox";
 
 const optionData = ["option 1", "option 2", "option 3", "option 4", "option 5"];
 
@@ -149,6 +153,10 @@ export default function Users() {
       text: "Assigned Tutor",
     },
     {
+      id: 7,
+      text: "Service(s)",
+    },
+    {
       id: 1,
       text: "Lead Status",
     },
@@ -156,18 +164,16 @@ export default function Users() {
       id: 6,
       text: "Tutor Status",
     },
-    {
-      id: 7,
-      text: "Service(s)",
-    },
+   
     {
       id: 8,
-      text: "Join Date",
+      text: "Account Status",
     },
     {
       id: 9,
-      text: "",
+      text: "Join Date",
     },
+   
   ];
 
   const [assignStudentModalActive, setAssignStudentModalActive] =
@@ -261,7 +267,7 @@ export default function Users() {
       const fetchDetails = async () => {
         let tempData = [];
         await res?.data?.data?.user?.map(async (user) => {
-          //console.log("user",user)
+          console.log("user",user)
           let obj = {
             _id: user._id,
             block: user.block,
@@ -275,6 +281,7 @@ export default function Users() {
             assignedTutor: user.assiginedTutors ? user.assiginedTutors : "",
             leadStatus: user?.leadStatus,
             tutorStatus: user?.tutorStatus,
+            accountStatus:user?.userStatus,
             specialization: user?.specialization ? user.specialization : [],
           };
           tempData.push(obj);
@@ -633,24 +640,60 @@ export default function Users() {
         setCsvLoad(false);
       });
   };
-
+  const [csvLength, setCsvLength]= useState("XX")
   const [students, setStudents] = useState([]);
   const upload = () => {
     setBulkUpload(true);
+  };
+
+  const [rowCount, setRowCount] = useState(null);
+
+  const handleFileUpload = (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+
+    reader.onload = (e) => {
+      const data = new Uint8Array(e.target.result);
+      const workbook = XLSX.read(data, { type: 'array' });
+
+      // Assuming the first sheet in the Excel file
+      const firstSheetName = workbook.SheetNames[0];
+      const worksheet = workbook.Sheets[firstSheetName];
+
+      // Convert the sheet to a CSV string
+      const csv = XLSX.utils.sheet_to_csv(worksheet);
+
+      // Split the CSV string into rows
+      const rows = csv.split('\n').filter((row) => {
+        // Check if the row contains any non-comma characters
+        return row.replace(/,/g, '').trim() !== '';
+      });
+     if(rows && rows?.length>0)
+     rows.length--;
+      setRowCount(rows.length);
+      setCsvLength(rows.length);
+    };
+
+    reader.readAsArrayBuffer(file);
   };
   const saveData = async () => {
     if (xlsFile !== undefined) {
       const formdata = new FormData();
       formdata.append("file", xlsFile);
+   
       await axios
         .post(`${BASE_URL}api/user/bulkUploadUsers`, formdata, {
           headers: getAuthHeader(),
         })
         .then((res) => {
-          //console.log("uploaded")
+          console.log("uploaded",res)
+          setXlsFile(null);
+          setCsvLength("XX")
           alert("File Uploaded");
           //setBulkUpload(false)
-
+         
         })
         .catch((err) => {
 
@@ -670,6 +713,8 @@ export default function Users() {
         })
         .then((res) => {
           setInviteUsers(false);
+          setXlsFile(null);
+          setCsvLength("XX")
           alert("File Uploaded");
           // setXlsFile(undefined);
         })
@@ -788,7 +833,10 @@ export default function Users() {
                               Choose file
                             </label>
                             <input
-                              onChange={(e) => setXlsFile(e.target.files[0])}
+                              onChange={(e) =>{ 
+                                setXlsFile(e.target.files[0]);
+                                handleFileUpload(e)
+                              }}
                               type="file"
                               id="file"
                               accept=".xls,.xlsx"
@@ -800,7 +848,7 @@ export default function Users() {
                         <button
                           data-modal-target="popup-modal"
                           data-modal-toggle="popup-modal"
-                          className="block mr-6 text-white bg-[#FFA28D] hover:bg-[#FFA28D]  font-medium rounded-lg  px-[13.33px] py-[17.33px] text-center dark:bg-[#FFA28D] dark:hover:bg-[#FFA28D] "
+                          className="block mr-6 text-white bg-[#FFA28D] hover:bg-[#FFA28D]  font-medium rounded-lg  px-[13.33px] py-3 text-center dark:bg-[#FFA28D] dark:hover:bg-[#FFA28D] "
                           type="button"
                           onClick={saveData}
                         >
@@ -808,11 +856,14 @@ export default function Users() {
                         </button>
                         <button
                           type="button"
+                          disabled={!xlsFile}
                           onClick={() => {
+                            
                             setInviteUsers(true);
                             setBulkUpload(false);
+                            
                           }}
-                          className="  block text-[#FFA28D] border-[1.33px] border-[#FFA28D] bg-white hover:bg-[#FFA28D] hover:text-white-500 ms-3 font-medium rounded-lg  px-[13.33px] py-[17.33px] text-center dark:bg-white dark:hover:bg-[#FFA28D] hover:text-white"
+                          className="  block text-[#FFA28D] border-[1.33px] border-[#FFA28D] bg-white hover:shadow-md ms-3 font-medium rounded-lg  px-[13.33px] py-3 text-center dark:bg-white "
                         >
                           Save Data and Invite User
                         </button>
@@ -827,7 +878,7 @@ export default function Users() {
               <Modal
                 crossBtn={true}
                 underline={true}
-                title="Are You Sure You Want to Invite XX Users To Join Evallo?"
+                title={`Are You Sure You Want to Invite ${csvLength} Users To Join Evallo?`}
                 classname={"max-w-[781px] mx-auto"}
                 titleClassName={"mb-5 "}
                 handleClose={() => setInviteUsers(false)}
@@ -843,8 +894,8 @@ export default function Users() {
                         organization. If you only want to store their data and
                         do not want to invite them to create an account, please
                         click on “Save Data Only” button.
-                        <br /><span classname="pt-1">If you want to continue inviting the users,
-                          please click on the <span classname="font-normal">“Confirm Email Invitations”</span> button
+                        <br /><span className="pt-1">If you want to continue inviting the users,
+                          please click on the <span className="font-normal">“Confirm Email Invitations”</span> button
                           below.</span>
                       </p>
                     </div>
@@ -863,7 +914,7 @@ export default function Users() {
                       </button>
                       <button
                         type="button"
-                        className="max-w-140 text-[#FFA28D] border-[1.33px] border-[#FFA28D] bg-white hover:bg-[#FFA28D] hover:text-white  font-medium rounded-lg  px-[46px] py-[17.33px] text-center dark:bg-white dark:hover:bg-[#FFA28D]"
+                        className="max-w-140 text-[#FFA28D] border-[1.5px] border-[#FFA28D] bg-white hover:bg-[#FFA28D] hover:text-white  font-medium rounded-lg  px-[46px] py-[17.33px] text-center dark:bg-white dark:hover:bg-[#FFA28D]"
                         onClick={() => setInviteUsers(false)}
                       >
                         Cancel
@@ -997,7 +1048,9 @@ export default function Users() {
         </div>
         <div className="flex gap-6 items-center    mt-[23.75px]">
           <div className="ml-6 ">
-            <label className={`  text-[#26435F] font-medium flex items-center`}>
+            <SCheckbox checked={isChecked}
+                onChange={handleCheckboxChange} />
+            {/* <label className={`  text-[#26435F] font-medium flex items-center`}>
               <input
                 type="checkbox"
                 checked={isChecked}
@@ -1008,18 +1061,47 @@ export default function Users() {
                   }`}
               ></span>
               <span className="block text-[17.5px] text-base-17-5">{numberChecked} Selected</span>
-            </label>
+            </label> */}
           </div>
-          <InputField value="Lead Status"  IconRight={Dropdown} inputClassName="bg-white border border-white w-[150px]" inputContainerClassName="bg-white " >
+          <InputField value="Lead Status"  IconRight={Dropdown} inputClassName="bg-white border border-white w-[120px]" inputContainerClassName="bg-white " >
             </InputField>
-            <InputField value="Tutor Status"  IconRight={Dropdown} inputClassName="bg-white border border-white w-[150px]" inputContainerClassName="bg-white " >
+            <InputField value="Tutor Status"  IconRight={Dropdown} inputClassName="bg-white border border-white w-[120px]" inputContainerClassName="bg-white " >
             </InputField>
-            <InputField value="Assigned Status"  IconRight={Dropdown} inputClassName="bg-white border border-white w-[150px]" inputContainerClassName="bg-white " >
+            <InputField value="Assigned Status"  IconRight={Dropdown} inputClassName="bg-white border border-white w-[120px]" inputContainerClassName="bg-white " >
             </InputField>
           <div>
             <button className="bg-[#26435F] text-[15px] px-[25px] py-[10px] rounded-[7.5px] text-white ml-auto text-base-15">
               Save
             </button>
+
+          </div>
+          <div className="flex justify-end flex-1 gap-5">
+            <button className="bg-[#517CA8] text-[15px] font-semibold relative px-[25px] py-[10px] rounded-[7.5px] text-white  text-base-15">
+            + Invite Users
+            <span  className="absolute right-[-10px] z-10 top-[-10px]">
+            <div className="group relative">
+            <img src={ques} className="inline-block"/>
+                       <span className="absolute  top-10 left-[-100px] z-20 w-[260px]  scale-0 rounded-lg bg-[rgba(31,41,55,0.9)]  text-[13px] text-white group-hover:scale-100 whitespace-normal py-3 px-3">
+                         <h3 className="text-[#517CA8] text-left text-[16px] py-0 font-semibold mb-1">
+                          Invite Users
+                         </h3>
+                         <span className=" text-left text-base-15 font-medium">
+                         This will allow you to invite the selected users to create an account within your Organization’s database. They will receive a verification email to set a new password and logging into the platform. Note that this is useful if you “Saved” user data instead of inviting them when adding them to the CRM
+                           <br />
+                           <br />
+                           <span className="text-[#FF7979] " >
+                           Please ensure that you have consent from the user before inviting them to create an account.</span>
+                           </span>
+                       </span>
+    
+                     </div>
+             </span>
+            </button>
+            <button className="bg-[#FF7979] text-[15px] flex items-center gap-2 px-[25px] font-semibold py-[10px] rounded-[7.5px] text-white  text-base-15">
+           <span ><img src={DeleteIcon2} className="inline-block my-auto" alt="delete"/></span> Delete User(s)
+            </button>
+         
+            
           </div>
         </div>
 
@@ -1053,7 +1135,7 @@ export default function Users() {
             classname={"max-w-[700px] mx-auto rounded-md"}
             title="Add A New User"
             // cancelBtn={true}
-            titleClassName="text-start mb-3 pb-3 border-b border-b-gray-300"
+            titleClassName="text-start mb-3 pb-3 border-b-[1.5px] border-b-[#00000020]"
             // primaryCancel={true}
             // cancelBtnClassName="w-130"
             // primaryBtn={{

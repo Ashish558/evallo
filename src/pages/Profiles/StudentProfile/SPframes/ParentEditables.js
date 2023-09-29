@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState } from "react";
 import { useLazyGetParentsByNameQuery } from "../../../../app/services/admin";
 import { useLazyGetStudentsByNameQuery } from "../../../../app/services/session";
 import ProfilePhoto from "./ProfilePhoto";
+import caution from "../../../../assets/icons/octicon_stop-16.svg";
+
 import {
   useUpdateTutorDetailsMutation,
   useUpdateUserDetailsMutation,
@@ -436,6 +438,20 @@ const [addLink,addLinkStatus]=useAddLinkStudentMutation()
     //  })
     
     }
+    if (currentToEdit.hasOwnProperty("whiteBoardLinks")) {
+     let ch=false;
+     const urlRegex = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i;
+     currentToEdit?.whiteBoardLinks?.map((link)=>{
+      if(!urlRegex.test(link))
+       ch=true ;
+     })
+     if(ch){
+      
+      alert("Enter valid link!")
+      return
+     }
+   
+    }
     const userDetailSave = (reqBody) => {
       // if (reqBody.satScores) {
       //   if (isNaN(reqBody?.satScores?.maths)) reqBody.satScores.maths = 0;
@@ -730,7 +746,7 @@ const [addLink,addLinkStatus]=useAddLinkStudentMutation()
                             label="First Name"
                             labelClassname="text-[#26435F]"
                             placeholder="First Name"
-                            inputContainerClassName="text-xs  bg-primary-50 border-0 !py-3 !px-2 !rounded-[5px]"
+                            inputContainerClassName="text-xs !shadow-[0px_0px_2px_0px_#00000040]  bg-primary-50 border-0 !py-3 !px-2 !rounded-[5px]"
                             inputClassName="bg-transparent text-xs   "
                             parentClassName="flex-1 "
                             type="text"
@@ -747,7 +763,7 @@ const [addLink,addLinkStatus]=useAddLinkStudentMutation()
                             label="School Name"
                             labelClassname="text-[#26435F]"
                             placeholder="School Name"
-                            inputContainerClassName="text-xs  bg-primary-50 border-0 !py-3 !px-2 !rounded-[5px]"
+                            inputContainerClassName="text-xs !shadow-[0px_0px_2px_0px_#00000040] bg-primary-50 border-0 !py-3 !px-2 !rounded-[5px]"
                             inputClassName="bg-transparent text-xs   "
                             parentClassName="flex-1 "
                             type="text"
@@ -764,7 +780,7 @@ const [addLink,addLinkStatus]=useAddLinkStudentMutation()
                             label="Last Name"
                             labelClassname="text-[#26435F]"
                             placeholder="Last Name"
-                            inputContainerClassName="text-xs  bg-primary-50 border-0 !py-3 !px-2 !rounded-[5px]"
+                            inputContainerClassName="text-xs  !shadow-[0px_0px_2px_0px_#00000040] bg-primary-50 border-0 !py-3 !px-2 !rounded-[5px]"
                             inputClassName="bg-transparent text-xs   "
                             parentClassName="flex-1 "
                             type="text"
@@ -779,10 +795,11 @@ const [addLink,addLinkStatus]=useAddLinkStudentMutation()
                         </div>
                         <div className="flex !text-sm gap-4 ">
                           <InputField
+                           IconLeft={caution}
                             label="Email"
                             labelClassname="text-[#26435F]"
                             placeholder="Email Id"
-                            inputContainerClassName="text-xs  bg-primary-50 border-0 !py-3 !px-2 !rounded-[5px]"
+                            inputContainerClassName="text-xs !shadow-[0px_0px_2px_0px_#00000040]  bg-primary-50 border-0 !py-3 !px-1 !rounded-[5px]"
                             inputClassName="bg-transparent !w-[200px] text-xs   "
                             parentClassName="flex-1 "
                             type="text"
@@ -793,13 +810,29 @@ const [addLink,addLinkStatus]=useAddLinkStudentMutation()
                                 email: e.target.value,
                               })
                             }
+                            Tooltip={
+                              <span className="absolute top-10 w-[200px] scale-0 rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100">
+                                <h3 className="text-[#24A3D9] font-semibold mb-1">
+                                  Email Confirmation Sent
+                                </h3>
+                                You need to verify your email if
+                                <ul className="list-disc pl-3 mb-2">
+                                  <li>you created a new account.</li>
+                                  <li>you recently changed your email.</li>
+                                </ul>
+                                We have sent you an email verification link to your current
+                                email address to make sure that it really is you who requested a
+                                change.
+                              </span>
+                            }
                           />
-
+ <div id="number2 ">
                           <InputFieldDropdown
+                          codeClassName="!bg-white !rounded-sm"
                             placeholder=""
                             labelClassname="text-[#26435F]"
-                            inputContainerClassName="!text-xs   bg-primary-50 border-0"
-                            inputClassName="bg-transparent !w-[80px] !text-xs rounded-[4px] "
+                            inputContainerClassName="!text-xs  !border-none  bg-primary-50  !shadow-[0px_0px_2px_0px_#00000040]"
+                            inputClassName="bg-transparent !w-[90px] !text-xs rounded-[4px] "
                             parentClassName="flex-1 "
                             label="Phone"
                             value={currentToEdit.phone}
@@ -817,13 +850,13 @@ const [addLink,addLinkStatus]=useAddLinkStudentMutation()
                               })
                             }
                           />
-
+</div>
                           <InputSelectNew
                             optionData={grades}
                             labelClassname="text-[#26435F] !font-bold"
                             label="Grade"
                             placeholder="Enter your Grade"
-                            inputContainerClassName="text-xs  bg-primary-50 !py-3 border-0 !rounded-[5px]"
+                            inputContainerClassName="text-xs  bg-primary-50 !py-3 border-0 !rounded-[5px] !shadow-[0px_0px_2px_0px_#00000040]"
                             inputClassName="bg-transparent text-xs  "
                             parentClassName="flex-1 "
                             type="text"
@@ -2478,6 +2511,9 @@ return ( <div className="flex !text-sm gap-4 ">
                                     ?.verbal
                                 }
                                 onChange={(e) => {
+                                   if(parseInt(e.target.value)<0 || parseInt(e.target.value)>1000){
+                                    return
+                                   }
                                   let tempScores = [...currentToEdit.satScores];
                                   if (tempScores.length <= selectedScoreIndex) {
                                     tempScores.push({
@@ -2518,6 +2554,9 @@ return ( <div className="flex !text-sm gap-4 ">
                                     ?.maths
                                 }
                                 onChange={(e) => {
+                                  if(parseInt(e.target.value)<0 || parseInt(e.target.value)>1000){
+                                    return
+                                   }
                                   let tempScores = [...currentToEdit.satScores];
                                   if (tempScores.length <= selectedScoreIndex) {
                                     tempScores.push({
@@ -2824,6 +2863,9 @@ return ( <div className="flex !text-sm gap-4 ">
                           currentToEdit.actScores[selectedScoreIndex]?.maths
                         }
                         onChange={(e) => {
+                          if(parseInt(e.target.value)<0 || parseInt(e.target.value)>1000){
+                            return
+                           }
                           let tempScores = [...currentToEdit.actScores];
                           if (tempScores.length <= selectedScoreIndex) {
                             tempScores.push({
@@ -2864,10 +2906,14 @@ return ( <div className="flex !text-sm gap-4 ">
                         inputClassName="bg-transparent pl-4 rounded-[4px]"
                         parentClassName="flex-1 max-w-[140px]"
                         type="number"
+                        pattern={""}
                         value={
                           currentToEdit.actScores[selectedScoreIndex]?.english
                         }
                         onChange={(e) => {
+                          if(parseInt(e.target.value)<0 || parseInt(e.target.value)>1000){
+                            return
+                           }
                           let tempScores = [...currentToEdit.actScores];
                           if (tempScores.length <= selectedScoreIndex) {
                             tempScores.push({
@@ -2912,6 +2958,10 @@ return ( <div className="flex !text-sm gap-4 ">
                           currentToEdit.actScores[selectedScoreIndex]?.reading
                         }
                         onChange={(e) => {
+                         
+                          if(parseInt(e.target.value)<0 || parseInt(e.target.value)>1000){
+                            return
+                           }
                           let tempScores = [...currentToEdit.actScores];
                           if (tempScores.length <= selectedScoreIndex) {
                             tempScores.push({
@@ -2956,6 +3006,9 @@ return ( <div className="flex !text-sm gap-4 ">
                           currentToEdit.actScores[selectedScoreIndex]?.science
                         }
                         onChange={(e) => {
+                          if(parseInt(e.target.value)<0 || parseInt(e.target.value)>1000){
+                            return
+                           }
                           let tempScores = [...currentToEdit.actScores];
                           if (tempScores.length <= selectedScoreIndex) {
                             tempScores.push({

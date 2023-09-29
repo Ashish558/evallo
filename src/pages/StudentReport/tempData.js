@@ -390,9 +390,16 @@ export const accuracyOptions = {
             return val.toFixed(0);
          },
       },
+    
       title: {
-         text: 'No of Correct'
-      }
+         text: 'Number of incorrect attempts',
+         style: {
+          fontSize: '20px', 
+          color: '#24A3D9',
+          fontFamily: 'Lexend',
+          fontWeight:500
+        },
+       },
    },
    xaxis: {
       categories: ['Algebra', 'Adv. Math', 'Geometry', 'Trigonometry', 'Statistics', 'Probability', 'Calculus'],
@@ -404,6 +411,16 @@ export const accuracyOptions = {
             fontSize: '16px'
          }
       },
+      title: {
+         text: 'Concepts',
+         style: {
+          fontSize: '20px', 
+          color: '#24A3D9',
+          fontFamily: 'Lexend',
+          fontWeight:500,
+          marginTop:"500px"
+        },
+       },
    },
    fill: {
       opacity: 1

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, {  useState } from "react";
 import { useDispatch } from "react-redux";
 
 import InputField from "../../components/InputField/inputField";
@@ -9,18 +9,18 @@ import cutEmail from "../../assets/signup/cutEmail.svg"
 import { useLoginUserMutation } from "../../app/services/auth";
 import { updateIsLoggedIn } from "../../app/slices/user";
 
-import Passwordicon from "../../assets/form/password.svg";
-import EmailIcon from "../../assets/form/email.svg";
+// import Passwordicon from "../../assets/form/password.svg";
+// import EmailIcon from "../../assets/form/email.svg";
 import CarouselImg from "../../assets/form/image-1.png";
 import styles from "./Login.module.css";
 import { useNavigate } from "react-router-dom";
-import PrimaryButton from "../../components/Buttons/PrimaryButton";
+// import PrimaryButton from "../../components/Buttons/PrimaryButton";
 import Loader from "../../components/Loader";
 import CCheckbox from "../../components/CCheckbox/CCheckbox";
 import EvalloLogo from "../../assets/icons/evallo_new.svg";
 import cuate from "../../assets/signup/cuate.svg";
-import AdminNavbar from "../AdminDashboard/AdminNavbar";
-import SCheckbox from "../../components/CCheckbox/SCheckbox";
+// import AdminNavbar from "../AdminDashboard/AdminNavbar";
+// import SCheckbox from "../../components/CCheckbox/SCheckbox";
 
 
 export default function Login({ setLoginFormActive }) {

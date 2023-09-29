@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import styles from "./style.module.css";
+import DownArrow2 from "../../assets/YIcons/Vectordrop.svg";
 import DownArrow from "../../assets/icons/down-chevron.svg";
 import UpArrow from "../../assets/icons/chevron-up-solid (1).svg";
 import useOutsideAlerter from "../../hooks/useOutsideAlerter";
@@ -11,6 +12,7 @@ export default function InputSelect({
   parentClassName,
   Icon,
   value,
+  downArrow22,
   placeholder,
   placeholderClass,
   label,
@@ -91,7 +93,7 @@ export default function InputSelect({
             IconRight
           ) : !IconLeft && (
             <img
-            src={customArrow ? customArrow :DownArrow}
+            src={customArrow ? customArrow :downArrow22?DownArrow2:DownArrow}
             className={`${customArrow ?`w-[20px] h-[20px] rotate-180`:`w-[15px] h-[12px]`}   ${styles.downArrow}`}
               alt="down-arrow"
             />
@@ -100,7 +102,7 @@ export default function InputSelect({
           IconRight
         ) : !IconLeft && (
           <img
-            src={customArrow ? customArrow :DownArrow}
+            src={customArrow ? customArrow :downArrow22?DownArrow2:DownArrow}
             className={`${customArrow ?`w-[20px] h-[20px]`:`w-[15px] h-[12px]`}   ${styles.downArrow}`}
             alt="down-arrow"
           />
@@ -112,18 +114,18 @@ export default function InputSelect({
           name={label}
         >
           {value === "" || !value ? (
-            <span className={`text-[#667085] .text-base-17-5 whitespace-nowrap ${tableDropdown ? 'mr-0' : `${customArrow ?'mr-2':'mr-10'}`}  ${placeholderClass} `}>
+            <span className={`text-[#667085] text-base-17-5 whitespace-nowrap ${tableDropdown ? 'mr-0' : 'mr-10'}  ${placeholderClass} `}>
               {" "}
               {placeholder}{" "}
             </span>
           ) : (
-            <span className={`.text-base-17-5 whitespace-nowrap ${tableDropdown ? 'mr-0' : `${customArrow ?'mr-6':'mr-10'}`}  ${placeholderClass} `}>{value}</span>
+            <span className={`mr-10 text-base-17-5 whitespace-nowrap ${tableDropdown ? 'mr-0' : 'mr-10'}  ${placeholderClass} `}>{value}</span>
           )}
         </div>
         {selected && (
           <div
             onClick={handleOption}
-            className={`scrollbar-content  scrollbar-vertical  shadow-lg shadow-[0px_0px_3px_0px_#00000040] ${styles.options} $`}
+            className={` custom-scroller  scrollbar-vertical   shadow-[0px_0px_3px_0px_#00000040] ${styles.options} $`}
           >
             {DateSelect && DateSelect}
             {optionData?.map((option, idx) => {

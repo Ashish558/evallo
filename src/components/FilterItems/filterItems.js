@@ -12,13 +12,23 @@ export default function FilterItems({
   keyName,
   onlyItems,
   sliceText,
+  filteredTests,
   image,
   fetchData,
   api,
   baseLink,
 }) {
-  
-  return onlyItems ? (
+  console.log({items,filteredTests, keyName})
+  const printTestName=(item)=>{
+    let testName=item;
+    filteredTests?.map((test)=>{
+      if(test?._id===item){
+        testName=test?.value
+      }
+    })
+    return testName
+  }
+  return onlyItems && !filteredTests ? (
     items?.map((item, idx) => {
       return (
         <SingleItem
@@ -47,7 +57,7 @@ export default function FilterItems({
             } bg-primaryLight py-1 px-3 rounded-7 group ${styles.filterItem}`}
           >
             <p className="text-lightGray text-[16px] text-base-15">
-              {isString ? item : item.text}
+              {isString ? filteredTests?printTestName(item): item : item.text}
             </p>
             <img
               className={styles.icon}

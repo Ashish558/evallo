@@ -118,11 +118,7 @@ export default function StudentTest({ fromProfile, testtype,setTotaltest }) {
       text: "Due Date",
       onCick: sortByDueDate,
     },
-    {
-      id: 4,
-      text: "Assigned by",
-
-    },
+    
     {
       id: 5,
       text: "Duration",
@@ -162,7 +158,7 @@ export default function StudentTest({ fromProfile, testtype,setTotaltest }) {
           if (testId === null) return;
           console.log("test inside test", test)
           return {
-            assignedBy: assignedBy ? assignedBy.firstName + " " + assignedBy.lastName : "-",
+           // assignedBy: assignedBy ? assignedBy.firstName + " " + assignedBy.lastName : "-",
 
             testName: testId ? testId.testName : "-",
             assignedOn: getFormattedDate(new Date(createdAt), dateFormat),
@@ -246,11 +242,11 @@ export default function StudentTest({ fromProfile, testtype,setTotaltest }) {
           if (testId === null) return;
           console.log("parent", test)
           return {
-            assignedBy: assignedBy ? assignedBy.firstName + " " + assignedBy.lastName : "-",
+           // assignedBy: assignedBy ? assignedBy.firstName + " " + assignedBy.lastName : "-",
             testName: testId ? testId.testName : "-",
-            assignedOn: getFormattedDate(new Date(createdAt)),
+            assignedOn:new Date(createdAt).toLocaleDateString(),
             studentId: studentId ? studentId : "-",
-            dueDate: getFormattedDate(new Date(test.dueDate)),
+            dueDate:new Date(test.dueDate).toLocaleDateString(),
             duration: multiple ? getDuration(multiple) : "Unlimited",
             status:
               isCompleted === true
@@ -312,7 +308,7 @@ export default function StudentTest({ fromProfile, testtype,setTotaltest }) {
       (test) => test.studentId._id === selected._id
     );
     setfilteredTests(tempdata);
-  }, [associatedStudents, allTests]);
+  }, [selectedStudent,associatedStudents, allTests]);
 
   const handleStudentChange = (item) => {
     let tempdata = associatedStudents.map((student) => {
@@ -349,7 +345,7 @@ export default function StudentTest({ fromProfile, testtype,setTotaltest }) {
               className={`${persona === "student" || true ? "flex justify-between items-center" : ""
                 }`}
             >
-              <p className="text-[#24A3D9]  text-xl ">
+              <p className="text-[#24A3D9]  text-xl text-base-22-5">
                 {organization?.company +
                   "  >  " +
                   firstName +

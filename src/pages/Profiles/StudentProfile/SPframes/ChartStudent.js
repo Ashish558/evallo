@@ -23,9 +23,10 @@ const iniOptions = {
              color: "#24A3D9",
              display: true,
              text: 'Concepts',
+             fontFamily: 'Lexend',
              font: {
-                weight: 500,
-                size: 14,
+                weight: 600,
+                size: 20,
               },
           },
           ticks: {
@@ -45,11 +46,12 @@ const iniOptions = {
         
           title: {
              display: true,
-             text: 'Time Taken (sec)',
+             text: 'Time Taken (second)',
              color: "#24A3D9",
+             fontFamily: 'Lexend',
              font: {
-                weight: 500,
-                size: 14,
+                weight: 600,
+                size: 20,
               },
           },
           ticks: {
@@ -102,7 +104,7 @@ const data1 = {
    ],
 };
 
-export default function Chart({ setSubjects, subjects, selectedSubject, selectedStudent, currentSubData, setCurrentSubData, selectedConceptIdx }) {
+export default function Chart({ score,accuracy,setSubjects, subjects, selectedSubject, selectedStudent, currentSubData, setCurrentSubData, selectedConceptIdx }) {
 
   
    const [options, setOptions] = useState(iniOptions)
@@ -174,6 +176,12 @@ export default function Chart({ setSubjects, subjects, selectedSubject, selected
             tooltip: {
                callbacks: {
                   label: function (context, c, d) {
+                     if(score){
+                        return `  ${"Score "} : ${context.parsed.y} `
+                     }
+                     if(accuracy){
+                        return `  ${"Accuracy "} : ${context.parsed.y} %`
+                     }
                      return `  ${"Time "} : ${context.parsed.y/60} minutes`
                   }
                },
@@ -197,6 +205,13 @@ export default function Chart({ setSubjects, subjects, selectedSubject, selected
                      return index === 0 ? '' : concepts[index - 1]
                   }
                }
+            },
+            y:{
+               ...prev.scales.y,
+               title:{
+                  ...prev.scales.y.title,
+                  text:accuracy?"Accuracy (%)":score?"Score":"Time Taken (seconds)"
+               }
             }
          },
       }))
@@ -211,8 +226,8 @@ export default function Chart({ setSubjects, subjects, selectedSubject, selected
            // //console.log("chart Current",curr,getValue,totalVal)
             let radius = Math.round(getValue )        
             // //console.log(totalConcept, percent);
-            if (radius < 15) {
-               radius = 15
+            if (radius < 5) {
+               radius = 5
             } else if (radius > 40) {
                radius = 40
             }
@@ -235,7 +250,7 @@ export default function Chart({ setSubjects, subjects, selectedSubject, selected
    useEffect(() => {
 
    }, [currentSubData])
-   // //console.log('data', data)
+   console.log('data', data)
    // //console.log('currentSubData', currentSubData)
    // //console.log('selectedConceptIdx', selectedConceptIdx)
 
@@ -264,7 +279,7 @@ export default function Chart({ setSubjects, subjects, selectedSubject, selected
             options={options} data={data}
             height={200}
             width={canvasWidth}
-         /> :
+         /> 
 
       </div>
    )

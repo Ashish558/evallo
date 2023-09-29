@@ -94,6 +94,7 @@ export default function EventModal({
    refetchSessions,
    defaultEventData
 }) {
+  
    const [data, setData] = useState({
       studentName: "",
       tutorName: "",
@@ -124,13 +125,13 @@ export default function EventModal({
       studentMood: "",
       homeworkAssigned: "",
       sessionNotes: "",
-      clientNotes:{
-        date:"",
-        note:""
+      clientNotes: {
+         date: "",
+         note: ""
       },
-      internalNotes:{
-         date:"",
-         note:""
+      internalNotes: {
+         date: "",
+         note: ""
       },
       feedbackStars: 0,
       whiteboardLink: '',
@@ -170,7 +171,7 @@ export default function EventModal({
    const [services, setServices] = useState([])
    const { id: currentUserId } = useSelector(state => state.user)
    const { organization } = useSelector((state) => state.organization);
-
+   const [tutorId2,setTutorId2]= useState(null)
    const [isSettingsLoaded, setIsSettingsLoaded] = useState(false);
    const getCheckedItems = (strArr, array) => {
       let checkedItems = array.map((item) => {
@@ -247,27 +248,31 @@ export default function EventModal({
          let formattedTime = tConvert(`${hours}:00`)
          let formattedEndTime = tConvert(`${endHours}:00`)
          if (endHours === 24) formattedEndTime = { time: "12:00", timeType: 'AM' }
-
-         setData({
-            ...data,
-            date: defDate,
-            tutorId: tutorId ? tutorId : '',
-            tutorName: tutorName ? tutorName : '',
-            time: {
-               ...data.time,
-               start: {
-                  ...formattedTime
+         
+         setData((prev) => {
+            return {
+               ...prev,
+               date: defDate,
+               tutorId: tutorId ? tutorId : '',
+               tutorName: tutorName ? tutorName : '',
+               time: {
+                  ...data.time,
+                  start: {
+                     ...formattedTime
+                  },
+                  end: {
+                     ...formattedEndTime
+                  }
                },
-               end: {
-                  ...formattedEndTime
-               }
-            },
+         }
+           
          })
+          setTutorId2(tutorId)
          setTutor(tutorName ? tutorName : '')
 
       }
    }, [defaultEventData])
-
+ 
    useEffect(() => {
       if (organization?.settings) {
 
@@ -295,6 +300,7 @@ export default function EventModal({
             `${sessionToUpdate.time.start.time} ${sessionToUpdate.time.start.timeType}`
          );
          // console.log(startTime)
+         console.log("isUpdating")
          let startDate = new Date(sessionToUpdate.date)
          const offset = startDate.getTimezoneOffset() * 60000
          if (offset > 0) {
@@ -303,7 +309,7 @@ export default function EventModal({
          }
          startDate.setHours(0);
          startDate.setMinutes(0);
-         
+
          setData({
             ...data,
             studentName: sessionToUpdate.studentName,
@@ -321,7 +327,7 @@ export default function EventModal({
             rescheduling: sessionToUpdate.resheduling,
             service: sessionToUpdate.service,
             sessionNotes: sessionToUpdate.sessionNotes,
-           
+
             specialization: sessionToUpdate.specialization,
          });
 
@@ -522,7 +528,7 @@ export default function EventModal({
       let endTime = convertTime12to24(`${end.time} ${end.timeType}`)
       let startT = moment(`2016-06-06T${startTime}:00`)
       let endT = moment(`2016-06-06T${endTime}:00`)
-      
+
       var duration = endT.diff(startT, 'hours')
       reqBody.total_hours = duration
       if (reqBody.timeZone === '') reqBody.timeZone = 'Asia/Kolkata'
@@ -657,11 +663,23 @@ export default function EventModal({
             setEventModalActive(false)
          })
    }
+  useEffect(()=>{
+    if(persona==='tutor'){
+      setData((prev)=>{
+         return {
+            ...prev,
+            tutorId:tutorId2,
+            tutorName:tutor
+         }
+      })
 
+    }
+  },[tutorId2])
    useEffect(() => {
       // if (persona === 'tutor') {
       // console.log(data.tutorId);
       if (!data.tutorId) return
+      console.log("tutorDetails", data.tutorId)
       getUserDetail({ id: data.tutorId })
          .then(res => {
             if (res.error) {
@@ -679,24 +697,25 @@ export default function EventModal({
                   tutorServs.push(item.service)
                }
             })
-             console.log('allServicesAndSpec', allServicesAndSpec);
-             console.log('services',details.tutorServices, services);
+            console.log('servicesallServicesAndSpec', allServicesAndSpec);
+            console.log('services', details.tutorServices, services);
             setServicesAndSpecialization(tutorServs)
          })
       // }
 
    }, [persona, data.tutorId, allServicesAndSpec])
-
+console.log("data",data,tutor)
    useEffect(() => {
       // console.log('all', allServicesAndSpec)
-       console.log('servicesAndSpecialization', servicesAndSpecialization)
+     
       let specs = []
       allServicesAndSpec.map(item => {
          if (item.service === data.service) {
             specs = item.specialization
          }
       })
-       console.log('spec', specs)
+      console.log('spec', specs)
+      console.log('servicesAndSpecialization', servicesAndSpecialization,specs)
       setSpecializations(specs)
    }, [servicesAndSpecialization, data.service, allServicesAndSpec])
 
@@ -744,174 +763,278 @@ export default function EventModal({
       setData({ ...data, sessionTags: tempSessionTag })
    }
    const dataProps = { data, setData }
-
+ //  console.log({isEditable})
    return (
       <>
          <Modal
-            classname="max-w-[750px] md:pl-6 md:pr-6 mx-auto max-h-[90vh] 2xl:max-h-[700px] overflow-y-auto scrollbar-content scrollbar-vertical"
+            classname="max-w-[827px]  mx-auto max-h-[90vh] 2xl:max-h-[700px] overflow-y-hidden"
             handleClose={() => setEventModalActive(false)}
-            title={isEditable == false ? 'Session Details' : isUpdating ? "Update Session" : ` ${persona == "tutor" ? "Session Details" : "Schedule New Session"}`}
+
+            title={isEditable === false ? 'Session Details' : isUpdating ? "Update Session" : ` ${persona == "tutor" ? "Session Details" : "Schedule New Session"}`}
+
             body={
-               <div className="text-sm" >
-                  <SearchNames setStudent={setStudent}
-                     setData={setData} student={student} tutor={tutor} data={data}
-                     setTutor={setTutor}
-                     isEditable={isEditable} />
+               <div  >
+                  <div className="h-[58.61vh] 2xl:max-h-[633px] overflow-y-auto">
+                     <div className="pr-4">
+                        <SearchNames setStudent={setStudent}
+                           setData={setData} student={student} tutor={tutor} data={data}
+                           setTutor={setTutor}
+                           isEditable={isEditable} />
 
-                  <DateAndTimeInput {...dataProps} isEditable={isEditable} />
+                        <DateAndTimeInput {...dataProps} isEditable={isEditable} />
 
-                  <div className={`flex mb-3 ${isUpdating && !data.recurring ? 'pointer-events-none opacity-60' : ''} `}>
-                     <CCheckbox checked={data.recurring} name='recurring' onChange={() =>
-                        setData({
-                           ...data,
-                           recurring: !data.recurring,
-                        })} disabled={!isEditable} />
-                     <p className="font-medium text-[#26435F] text-sm">
-                        Recurring
-                     </p>
-                  </div>
-
-                  <DaysEndDate isEditable={isEditable} days={days} setDays={setDays} {...dataProps} />
-
-
-                  <div className="flex mb-7">
-                     <InputSelect
-                        label="Service"
-                        labelClassname="font-semibold text-base-17-5"
-                        value={data.service}
-                        onChange={(val) => {
-                           // console.log(val)
-                           data.service !== val && setData({ ...data, service: val, specialization: '' })
-                        }}
-                        // optionType='object'
-                        optionData={servicesAndSpecialization}
-                        inputContainerClassName={`bg-lightWhite pt-3.5 pb-3.5 border-0 font-medium pr-3
-                       `}
-                        inputClassName="bg-transparent appearance-none font-medium pt-4 pb-4"
-                        placeholder="Select Service"
-                        parentClassName={`w-full mr-8 max-w-373 self-end 
-                        ${persona === "student" ? "mr-4" : ""} ${persona === "parent" ? " order-2" : ""}
-                        `}
-                        type="select"
-                        disabled={!isEditable}
-                     />
-                     <InputSelect
-                        label="Topic"
-                        labelClassname="font-semibold text-base-17-5"
-                        value={data.specialization}
-                        onChange={(val) => {
-                           // console.log(val)
-                           setData({ ...data, specialization: val })
-                        }}
-                        // optionType='object'
-                        optionData={specializations}
-                        inputContainerClassName={`bg-lightWhite pt-3.5 pb-3.5 border-0 font-medium pr-3
-                       `}
-                        inputClassName="bg-transparent appearance-none font-medium pt-4 pb-4"
-                        placeholder="Topic"
-                        parentClassName={`w-full ml-2 max-w-373 self-end 
-                        ${persona === "student" ? "mr-4" : ""} ${persona === "parent" ? " order-2" : ""}
-                        `}
-                        type="select"
-                        disabled={!isEditable}
-
-                     />
-
-                     {
-                        persona === 'admin' || persona === 'tutor' ?
-                           <></>
-                           // <InputSelect
-                           //    label="Services"
-                           //    labelClassname="ml-3"
-                           //    value={data.specialization}
-                           //    onChange={(val) =>
-                           //       setData({ ...data, specialization: val })
-                           //    }
-                           //    optionData={servicesAndSpecialization.filter(item => item.service)}
-                           //    inputContainerClassName={`bg-lightWhite pt-3.5 pb-3.5 border-0 font-medium pr-3
-                           //   `}
-                           //    inputClassName="bg-transparent appearance-none font-medium pt-4 pb-4"
-                           //    placeholder="Service"
-                           //    parentClassName={`w-full mr-4 max-w-373 self-end`}
-                           //    type="select"
-                           //    disabled={!isEditable}
-                           // />
-                           : <></>
-                     }
-
-                  </div>
-
-
-                  <div className="mt-4  flex ">
-                     <InputField
-                        label="Meeting Link"
-                        labelClassname="ml-3 text-[#26435F] font-medium text-base-17-5"
-                        placeholder="Meeting Link"
-                        parentClassName="w-full mr-8"
-                        inputContainerClassName="bg-lightWhite border-0 pt-3.5 pb-3.5"
-                        inputClassName="bg-transparent"
-                        type="text"
-                        value={data.session}
-                        onChange={(e) =>
-                           setData({
-                              ...data,
-                              session: e.target.value,
-                           })
-                        }
-                        disabled={!isEditable}
-                     />
-                     <InputField
-                        parentClassName="w-full ml-2"
-                        label="Whiteboard Link"
-                        placeholder="Whiteboard Link"
-                        labelClassname="ml-3 text-[#26435F] font-medium text-base-17-5"
-                        inputContainerClassName="bg-lightWhite border-0  pt-3.5 pb-3.5"
-                        inputClassName="bg-transparent appearance-none"
-                        value={data.whiteboardLink}
-                        type="text"
-                        onChange={(e) =>
-                           setData({ ...data, whiteboardLink: e.target.value })
-                        }
-                        disabled={!isEditable}
-                     />
-
-
-                  </div>
-                  {
-                     persona == "parent" &&
-                     <div className="h-[1.3px] mt-[28px] bg-[rgba(0,0,0,0.20)] "></div >
-                  }
-                  {/* SESSIONS */}
-                  <SessionInputs {...dataProps} status={status} isEditable={isEditable} />
-
-
-
-                  {
-                     (persona == "parent" || persona == "student") && <div className="mt-[30px] mb-8">
-                        <p className="font-medium mb-2.5 text-[#26435F] text-base-17-5]">
-                           Session Notes
-                        </p>
-                        <textarea
-                           placeholder="Session Notes"
-                           value={data.sessionNotes}
-                           onChange={(e) =>
+                        <div className={`flex mb-3 items-center ${isUpdating && !data.recurring ? 'pointer-events-none ' : ''} `}>
+                           <CCheckbox checked={data.recurring} name='recurring' onChange={() =>
                               setData({
                                  ...data,
-                                 sessionNotes: e.target.value,
-                              })
+                                 recurring: !data.recurring,
+                              })} disabled={!isEditable} />
+                           <p className="font-medium text-[#26435F] text-[18.6px]">
+                              Recurring
+                           </p>
+                        </div>
+
+                        <DaysEndDate isEditable={isEditable} days={days} setDays={setDays} {...dataProps} />
+
+
+                        <div className="flex mb-7">
+                           <InputSelect
+                              label="Service"
+                              labelClassname="font-semibold text-[18.6px] text-[#26435F]"
+                              value={data.service}
+                              onChange={(val) => {
+                                 // console.log(val)
+                                 data.service !== val && setData({ ...data, service: val, specialization: '' })
+                              }}
+                            
+                              optionData={servicesAndSpecialization}
+                              inputContainerClassName={`bg-lightWhite pt-3.5 pb-3.5 border-0 font-medium pr-3 text-[#507CA8]
+                       `}
+                              inputClassName="bg-transparent appearance-none font-medium pt-4 pb-4 text-[#507CA8]"
+                              placeholder="Select Service"
+                              parentClassName={`w-full mr-8 
+                         ${persona === "parent" ? " order-2" : ""}
+                        `}
+                              type="select"
+                              disabled={!isEditable}
+                           />
+                           <InputSelect
+                              label="Topic"
+                              labelClassname="font-semibold text-[18.6px] text-[#26435F]"
+                              value={data.specialization}
+                              onChange={(val) => {
+                                 // console.log(val)
+                                 setData({ ...data, specialization: val })
+                              }}
+                              // optionType='object'
+                              optionData={specializations}
+                              inputContainerClassName={`bg-lightWhite pt-3.5 pb-3.5 border-0 font-medium pr-3 text-[#507CA8]
+                       `}
+                              inputClassName="bg-transparent appearance-none font-medium pt-4 pb-4 text-[#507CA8]"
+                              placeholder="Topic"
+                              parentClassName={`w-full ml-2
+                        ${persona === "parent" ? " order-2" : ""}
+                        `}
+                              type="select"
+                              disabled={!isEditable}
+
+                           />
+
+                           {
+                              persona === 'admin' || persona === 'tutor' ?
+                                 <></>
+                                 // <InputSelect
+                                 //    label="Services"
+                                 //    labelClassname="ml-3"
+                                 //    value={data.specialization}
+                                 //    onChange={(val) =>
+                                 //       setData({ ...data, specialization: val })
+                                 //    }
+                                 //    optionData={servicesAndSpecialization.filter(item => item.service)}
+                                 //    inputContainerClassName={`bg-lightWhite pt-3.5 pb-3.5 border-0 font-medium pr-3
+                                 //   `}
+                                 //    inputClassName="bg-transparent appearance-none font-medium pt-4 pb-4"
+                                 //    placeholder="Service"
+                                 //    parentClassName={`w-full mr-4 max-w-373 self-end`}
+                                 //    type="select"
+                                 //    disabled={!isEditable}
+                                 // />
+                                 : <></>
                            }
-                           rows={6}
-                           className="bg-white border border-[#D0D5DD] w-full outline-0 px-5 py-4 rounded-[6px]"
-                        ></textarea>
-                        <p className="text-right text-xs text-primary-80">
+
+                        </div>
+
+
+                        <div className="mt-4  flex ">
+                           <InputField
+                              label="Meeting Link"
+                              biggerText={true}
+                              labelClassname="ml-3 text-[#26435F] font-medium text-[18.6px]"
+                              placeholder="Meeting Link"
+                              parentClassName="w-full mr-8"
+                              inputContainerClassName="bg-lightWhite border-0 pt-3.5 pb-3.5 h-[53px]"
+                              inputClassName="bg-transparent text-[16px] text-[#507CA8]"
+                              type="text"
+                              value={data.session}
+                              onChange={(e) =>
+                                 setData({
+                                    ...data,
+                                    session: e.target.value,
+                                 })
+                              }
+                              disabled={!isEditable}
+                           />
+                           <InputField
+                              parentClassName="w-full ml-2"
+                              label="Whiteboard Link"
+                              biggerText={true}
+                              placeholder="Whiteboard Link"
+                              labelClassname="ml-3 text-[#26435F] font-medium text-[18.6px]"
+                              inputContainerClassName="bg-lightWhite border-0  pt-3.5 pb-3.5 h-[53px]"
+                              inputClassName="bg-transparent appearance-none text-[16px] text-[#507CA8]"
+                              value={data.whiteboardLink}
+                              type="text"
+                              onChange={(e) =>
+                                 setData({ ...data, whiteboardLink: e.target.value })
+                              }
+                              disabled={!isEditable}
+                           />
+
+
+                        </div>
+                        {
+                           persona == "parent" &&
+                           <div className="h-[1.3px] mt-[28px] bg-[rgba(0,0,0,0.20)] "></div >
+                        }
+                        <div className="h-[1.33px] w-full bg-[rgba(0,0,0,0.20)] mt-[28px]"></div>
+                        {/* SESSIONS */}
+                        <SessionInputs {...dataProps} status={status} isEditable={isEditable} />
+
+
+
+                        {
+                           (persona == "parent" || persona == "student") && <div className="mt-[30px] mb-8">
+                              <p className="font-medium  text-[#26435F] text-xl">
+                                 Session Notes
+                              </p>
+                              <textarea
+                                 placeholder="Session Notes"
+                                 value={data.sessionNotes}
+                                 onChange={(e) =>
+                                    setData({
+                                       ...data,
+                                       sessionNotes: e.target.value,
+                                    })
+                                 }
+                                 rows={6}
+                                 className="bg-white border border-[#D0D5DD] w-full outline-0 px-[17px] py-[14px] rounded-[6px] text-[#507CA8] text-[18.6px]"
+                              ></textarea>
+                              {/* <p className="text-right text-xs text-primary-80">
                            0/200
-                        </p>
+                        </p> */}
+                           </div>
+                        }
+                        {
+                           persona == "student" &&
+                           <div className="h-[1.33px] bg-[rgba(0,0,0,0.20)]"></div>
+                        }
+                        {persona !== "student" && persona !== "parent" && (
+                           <>
+                              <div className="mt-7 mb-5">
+                                 {
+                                    allSessionTags.map(tag => {
+                                       return <div key={tag._id} >
+                                          <p className="font-medium mb-2.5">
+                                             {tag.heading}
+                                          </p>
+                                          <div className="flex">
+                                             {tag.items.length > 0 &&
+                                                tag.items.map((item, idx) => {
+                                                   const currentUserSession = data.sessionTags.find(dataSessionTag => dataSessionTag._id === tag._id)
+                                                   let checked = false
+                                                   if (currentUserSession?.items.includes(item)) {
+                                                      checked = true
+                                                   }
+                                                   return (
+                                                      <div
+                                                         key={idx}
+                                                         className="flex mb-3 mr-3"
+                                                         onClick={() =>
+                                                            handleSessiontagChange(
+                                                               item,
+                                                               tag._id,
+                                                            )
+                                                         }
+                                                      >
+                                                         <CCheckbox
+                                                            checked={checked}
+                                                            name="topic"
+                                                         />
+                                                         <p className="font-medium text-primary-60 text-sm">
+                                                            {item}
+                                                         </p>
+                                                      </div>
+                                                   );
+                                                })}
+                                          </div>
+                                       </div>;
+                                    })
+                                 }
+                              </div>
+
+                              <div className="mb-8">
+                                 <p className="font-medium mb-2.5 text-[#26435F] text-[18.6px]">
+                                    Session Notes
+                                 </p>
+                                 <textarea
+                                    placeholder="Session Notes"
+                                    value={data.sessionNotes}
+                                    onChange={(e) => {
+                                       let internalNotes2 = { note: "", date: "" }
+                                       if (persona === 'tutor' && e.target.value) {
+                                          internalNotes2 = {
+                                             note: e.target.value,
+                                             date: new Date()
+                                          }
+                                       }
+
+                                       let clientNotes2 = { note: "", date: "" }
+                                       if (persona === 'admin' && e.target.value) {
+                                          clientNotes2 = {
+                                             note: e.target.value,
+                                             date: new Date()
+                                          }
+                                       }
+                                       if (persona === 'tutor')
+                                          setData({
+                                             ...data,
+                                             sessionNotes: e.target.value,
+                                             internalNotes: internalNotes2,
+
+                                          })
+                                       if (persona === 'admin')
+                                          setData({
+                                             ...data,
+                                             sessionNotes: e.target.value,
+                                             clientNotes: clientNotes2,
+
+                                          })
+                                    }
+                                    }
+                                    rows={3}
+                                    className="bg-lightWhite w-full outline-0 px-5 py-4 rounded"
+                                 ></textarea>
+                                 <p className="text-right text-xs text-primary-80">
+                                    0/200
+                                 </p>
+                              </div>
+
+
+                           </>
+                        )}
                      </div>
-                  }
-                  {
-                     persona == "student" &&
-                     <div className="h-[1.33px] bg-[rgba(0,0,0,0.20)]"></div>
-                  }
+                  </div>
+
                   <div>
                      {persona === 'student' ? (
                         <div className="ml-4 mt-5">
@@ -933,101 +1056,8 @@ export default function EventModal({
                            </div>
                         </div>
                      ) : <></>}
-
-                  </div>
-                  {persona !== "student" && persona !== "parent" && (
-                     <>
-                        <div className="mt-7 mb-5">
-                           {
-                              allSessionTags.map(tag => {
-                                 return <div key={tag._id} >
-                                    <p className="font-medium mb-2.5">
-                                       {tag.heading}
-                                    </p>
-                                    <div className="flex">
-                                       {tag.items.length > 0 &&
-                                          tag.items.map((item, idx) => {
-                                             const currentUserSession = data.sessionTags.find(dataSessionTag => dataSessionTag._id === tag._id)
-                                             let checked = false
-                                             if (currentUserSession?.items.includes(item)) {
-                                                checked = true
-                                             }
-                                             return (
-                                                <div
-                                                   key={idx}
-                                                   className="flex mb-3 mr-3"
-                                                   onClick={() =>
-                                                      handleSessiontagChange(
-                                                         item,
-                                                         tag._id,
-                                                      )
-                                                   }
-                                                >
-                                                   <CCheckbox
-                                                      checked={checked}
-                                                      name="topic"
-                                                   />
-                                                   <p className="font-medium text-primary-60 text-sm">
-                                                      {item}
-                                                   </p>
-                                                </div>
-                                             );
-                                          })}
-                                    </div>
-                                 </div>;
-                              })
-                           }
-                        </div>
-
-                        <div className="mb-8">
-                           <p className="font-medium mb-2.5 text-[#26435F] text-base-17-5">
-                              Session Notes
-                           </p>
-                           <textarea
-                              placeholder="Session Notes"
-                              value={data.sessionNotes}
-                              onChange={(e) =>
-                                 {
-                                    let internalNotes2={note:"",date:""}
-                                    if(persona==='tutor'&&e.target.value){
-                                  internalNotes2={
-                                     note:e.target.value,
-                                     date:new Date()
-                                  }
-                               }
-                               
-                               let clientNotes2={note:"",date:""}
-                               if(persona==='admin'&&e.target.value){
-                                  clientNotes2={
-                                     note:e.target.value,
-                                     date:new Date()
-                                  }
-                               }
-                               if(persona==='tutor')
-                                 setData({
-                                    ...data,
-                                    sessionNotes: e.target.value,
-                                    internalNotes:internalNotes2,
-                                   
-                                 })
-                                  if(persona==='admin')
-                                 setData({
-                                    ...data,
-                                    sessionNotes: e.target.value,
-                                    clientNotes:clientNotes2,
-                                   
-                                 })
-                                 }
-                              }
-                              rows={3}
-                              className="bg-lightWhite w-full outline-0 px-5 py-4 rounded"
-                           ></textarea>
-                           <p className="text-right text-xs text-primary-80">
-                              0/200
-                           </p>
-                        </div>
-
-                        <div className="flex justify-center">
+                     {
+                        persona !== "student" && persona !== "parent" && <div className="flex justify-center pt-4">
                            {isUpdating && sessionToUpdate.recurring === true ?
                               <div className="flex flex-1 px-4 justify-between">
                                  <div>
@@ -1094,8 +1124,10 @@ export default function EventModal({
                            /> */}
 
                         </div>
-                     </>
-                  )}
+                     }
+
+                  </div>
+
                </div>
             }
          />

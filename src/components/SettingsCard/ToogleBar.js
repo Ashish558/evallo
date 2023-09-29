@@ -10,39 +10,35 @@ const ToogleBar = ({
     className,
     body,
     toggle,
+    boxClass,
     onToggle,
     circleColor
 }) => {
     return (
         <div
-            className={`rounded-2xl   ${className ? className : ""}
+            className={`rounded-3xl   ${className ? className : ""}
           `}
         >
             <div
-                className={`text-primary-dark font-bold flex justify-between  ${titleClassName ? titleClassName : ""
+                className={`text-primary-dark font-bold flex justify-between   ${titleClassName ? titleClassName : ""
                     }`}
             >
                 <p className="">{title}</p>
                 {toggle !== undefined && (
-                    <div className="flex items-center border-[2px] border-[#26435F] rounded-[9px]">
+                    <div >
                         <div
-                            className={styles.toggleContainer}
+                            className={`flex items-center h-[17px] w-[26px]  border-[2px] px-[2px] border-[#26435F] rounded-[20px] ${toggle.value === false?"justify-start":"justify-end"} ${boxClass}`}
                             onClick={() => onToggle(toggle.key, !toggle.value)}
                         >
-                            <img
-                                src={
-                                    toggle.value === false ? toggleRectIcon : toggleRectIcon 
-                                }
-                                alt="toggle"
-                            />
+                           
                            
                             <div
                                 // src={toggleCircleIcon}
                                 className={`${toggle.value === false
-                                    ? (`${styles.toggleCircle} ${circleColor ? circleColor:'bg-[#4bd657]'} `)
-                                    : (`${styles.toggleCircleActive} ${circleColor ? circleColor:'bg-[#FFA28D]'} `)
-                                    }  w-[13px] h-[13px] rounded-[6px]`}
-                                alt="toggle"
+                                    ? (` ${circleColor ? circleColor:'bg-[#FF7979]'} `)
+                                    : (` ${circleColor ? circleColor:'bg-[#4bd657]'} `)
+                                    }  w-[9px] h-[9px]  rounded-[8px] inline-block`}
+                                
                             />
                         </div>
                     </div>

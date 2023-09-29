@@ -81,7 +81,7 @@ useEffect(()=>{
         </div>
       </div> */}
 
-      <div className="grid grid-cols-4 gap-x-5 gap-y-[13px]">
+      <div className="grid grid-cols-4 gap-x-7 gap-y-[13px]">
         <div className={`text-[#00ADD3] w-[7.6388888889vw] h-[193.33px] ${styles.card} flex flex-col justify-center items-center`}>
           <p className="p-3 bg-[#FFFFFF] rounded"><img src={image} alt="" /></p>
           <p className="text-sm mt-4">Scheduled</p>

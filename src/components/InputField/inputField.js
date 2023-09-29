@@ -11,6 +11,7 @@ export default function InputField({
   Icon,
   IconRight2Click,
   iconSize,
+  pattern,
   refS,
   IconRight2,
   value,
@@ -40,7 +41,8 @@ export default function InputField({
   onMouseEnter,
   defaultValue,
   totalErrors,
-  iconPadding
+  iconPadding,
+  biggerText
 }) {
   const [inputType, setInputType] = useState(type);
   const [showDiv, setShowDiv] = useState(true);
@@ -56,10 +58,10 @@ export default function InputField({
   }, [value])
 
   return (
-    <div className={`relative text-sm ${parentClassName && parentClassName}`}>
+    <div className={`relative  ${parentClassName && parentClassName}`}>
       {label && (
         <label
-          className={`inline-block text-sm font-semibold ${labelClassname} ml-0 text-base-17-5`}
+          className={`${biggerText ? "text-lg" : 'text-base-17-5'}  inline-block  font-semibold ${labelClassname} ml-0 `}
         >
           {label}
           {required && (
@@ -103,7 +105,9 @@ export default function InputField({
 
           type={inputType ? inputType : "text"}
           onChange={(e) => (onChange !== undefined ? onChange(e) : "")}
+          onInput={(e) => (onChange !== undefined ? onChange(e) : "")}
           value={value}
+          
           ref={refS}
           defaultValue={defaultValue}
           required={isRequired ? true : false}

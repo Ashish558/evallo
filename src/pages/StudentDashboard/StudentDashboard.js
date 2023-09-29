@@ -14,6 +14,8 @@ import InputSelectNew from "../../components/InputSelectNew/InputSelectNew";
 import questionMark from "../../assets/images/Vector (6).svg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faQuestionCircle } from "@fortawesome/free-solid-svg-icons";
+import Chart from "../Profiles/StudentProfile/SPframes/ChartStudent";
+import { useChartBubbleStudentMutation, useLazyGetUserDetailQuery } from "../../app/services/users";
 const StudentDashboard = () => {
   const [subjects, setSubjects] = useState([]);
   const [slot, setSlot] = useState("Jun 20, 2022 - Jul 30, 2022 ");
@@ -24,40 +26,59 @@ const StudentDashboard = () => {
   const [currentSubData, setCurrentSubData] = useState({});
   const [dates, setDates] = useState([]);
   const { organization } = useSelector((state) => state.organization);
+  const [accsubjects,setAccSubject]= useState([])
+  const [getBubbleChart,bubbleChartStatus]=useChartBubbleStudentMutation()
   const user = useSelector((state) => state.user);
   const [currentDate, setCurrentDate] = useState("");
-  useEffect(() => {
-    // console.log('currentSubData', currentSubData)
-    if (currentSubData.concepts === undefined) return;
-    //console.log("currentConcept", currentSubData);
+//   const [getUserDetail, userDetailResp] = useLazyGetUserDetailQuery();
+//   const [userDetail, setUserDetail] = useState({});
+//   useEffect(()=>{
+//     console.log("first",user)
+//   getUserDetail({ id: user?._id }).then((res) => {
+//     console.log("details -- ", res.data.data);
+//     // //console.log('tut id', id);
+   
+ 
+   
+   
+//    // setUserDetail(res.data.data.userdetails);
+//   })
+// },[user]);
 
-    let currentConcept = currentSubData.concepts[selectedConceptIdx];
-    if (currentConcept === undefined) return;
-    let month = parseInt(currentConcept.month);
-    let year = parseInt(currentConcept.year);
 
-    let monthName = getMonthName(month);
-    let nextMonthName = getMonthName(month + 1);
-    const currdate = `${1}st ${monthName} ${year} - ${1}st ${nextMonthName} ${year}`;
-    setCurrentDate(currdate);
-  }, [currentSubData, selectedConceptIdx]);
 
-  useEffect(() => {
-    let concepts = currentSubData.concepts;
-    if (concepts === undefined) return;
-    const listData = concepts.map((concept) => {
-      let month = parseInt(concept.month);
-      let year = parseInt(concept.year);
-      let monthName = getMonthName(month);
-      let nextMonthName = getMonthName(month + 1);
-      if (!month && !year) {
-        return "prev";
-      } else {
-        return `${1}st ${monthName} ${year} - ${1}st ${nextMonthName} ${year}`;
-      }
-    });
-    setDates(listData);
-  }, [currentSubData]);
+  // useEffect(() => {
+  //   // console.log('currentSubData', currentSubData)
+  //   if (currentSubData.concepts === undefined) return;
+  //   //console.log("currentConcept", currentSubData);
+
+  //   let currentConcept = currentSubData.concepts[selectedConceptIdx];
+  //   if (currentConcept === undefined) return;
+  //   let month = parseInt(currentConcept.month);
+  //   let year = parseInt(currentConcept.year);
+
+  //   let monthName = getMonthName(month);
+  //   let nextMonthName = getMonthName(month + 1);
+  //   const currdate = `${1}st ${monthName} ${year} - ${1}st ${nextMonthName} ${year}`;
+  //   setCurrentDate(currdate);
+  // }, [currentSubData, selectedConceptIdx]);
+
+  // useEffect(() => {
+  //   let concepts = currentSubData.concepts;
+  //   if (concepts === undefined) return;
+  //   const listData = concepts.map((concept) => {
+  //     let month = parseInt(concept.month);
+  //     let year = parseInt(concept.year);
+  //     let monthName = getMonthName(month);
+  //     let nextMonthName = getMonthName(month + 1);
+  //     if (!month && !year) {
+  //       return "prev";
+  //     } else {
+  //       return `${1}st ${monthName} ${year} - ${1}st ${nextMonthName} ${year}`;
+  //     }
+  //   });
+  //   setDates(listData);
+  // }, [currentSubData]);
 
   useEffect(() => {
     subjects.map((sub) => {
@@ -66,9 +87,66 @@ const StudentDashboard = () => {
       }
     });
   }, [subjects]);
+  useEffect(() => {
+    if (accsubjects[0]?.name) {
+      //setaccsubjects(accsubjects[0]?.name);
+      setSelectedSubject(accsubjects[0]?.name)
+    }
+  }, [accsubjects]);
+  useEffect(() => {
+    accsubjects.map((sub) => {
+      if (sub.selected === true) {
+        setSelectedSubject(sub.name);
+      }
+    });
+  }, [accsubjects]);
+  // console.log('dates', dates)
+  // console.log('selectedSubject', selectedSubject)
+  //console.log({subjects,selectedSubject,selectedConceptIdx})
+  const convertDateToRange = (startDate) => {
+    let startD = startDate.split("-")[0];
 
+    startD = new Date(startD);
+    startD = startD.setDate(startD.getDate() + 1);
+    startD = new Date(startD).toISOString().split("T")[0];
+
+    let endD = startDate.split("-")[1];
+    endD = new Date(endD);
+    endD = endD.setDate(endD.getDate() + 1);
+    endD = new Date(endD).toISOString().split("T")[0];
+    const body = { startDate: startD, endDate: endD };
+
+    return body;
+  };
+  const handleConceptAccuracy=(startDate) => {
+    let body = convertDateToRange(startDate);
+    body.studentId= user?.id ;
+    console.log({startDate})
+    body.chartType= "conceptAccuracy"
+    getBubbleChart(body).then(
+      (res) => {
+        console.log("conceptual res", res);
+        if (res?.data?.chartData) {
+          let temp=[]
+          res?.data?.chartData?.map((it)=>{
+             temp.push({
+              concepts:{
+                [it?.conceptName]:it?.total,
+              },
+              timeTaken:it?.noOfCorrect*5,
+              no_of_correct:it?.noOfCorrect
+              ,name:it?.conceptName
+
+             })
+          })
+          setAccSubject(temp)
+       //   setConceptualChartData(temp)
+        }// setConceptualChartData(res?.data?.chartData);
+      }
+    );
+  }
   const handleSubjectChange = (name) => {
-    let updated = subjects.map((sub) => {
+    let updated = accsubjects.map((sub) => {
       if (sub.name === name) {
         return { ...sub, selected: true };
       } else {
@@ -77,9 +155,6 @@ const StudentDashboard = () => {
     });
     setSubjects(updated);
   };
-  // console.log('dates', dates)
-  // console.log('selectedSubject', selectedSubject)
-  //console.log({subjects,selectedSubject,selectedConceptIdx})
   return (
     <div className={`w-[83.3vw] mx-auto pb-[70px]`} >
       <p className="text-[#24A3D9] mt-[50px]  text-xl">
@@ -127,13 +202,13 @@ const StudentDashboard = () => {
               <InputSelectNew
                 placeholder={""}
                 parentClassName="ml-0  scale-[0.9] items-center flex text-[#FFA28D] text-xs border px-1 py-2 border-[#FFA28D] rounded-full  "
-                inputContainerClassName=" my-0 py-[5px] px-[35px]"
+                inputContainerClassName=" my-0 py-[3px] px-[35px]"
                 placeHolderClass="text-[#FFA28D] "
                 labelClassname="text-sm"
                 inputClassName="bg-transparent"
                 value={selectedSubject}
                 IconDemography={true}
-                optionData={subjects.map((item) => item.name)}
+                optionData={accsubjects.map((item) => item.name)}
 
                 onChange={(e) => handleSubjectChange(e)}
               />
@@ -147,7 +222,7 @@ const StudentDashboard = () => {
               /> */}
 
 
-              <RangeDate className="ml-0  font-normal" manualHide={true} optionClassName="!w-min " inputContainerClassName="!w-min font-normal " handleRangeData={setSelectedConceptIdx} />
+              <RangeDate removeUnderline={true} className="ml-0  font-normal"  optionClassName="!w-min " inputContainerClassName="!w-min font-normal " handleRangeData={handleConceptAccuracy} />
 
             </div>
           </div>
@@ -155,16 +230,18 @@ const StudentDashboard = () => {
             id={styles.chartContainer}
             className="!rounded-md  bg-white w-[54.43vw] flex-1 shadow-[0px_0px_2.500001907348633px_0px_#00000040] custom-scroller "
           >
-            <ChartStudent
-              setSubjects={setSubjects}
-              subjects={subjects}
-              YHeader="Score"
-              selectedSubject={selectedSubject}
-              selectedConceptIdx={selectedConceptIdx}
-              setSelectedConceptIdx={setSelectedConceptIdx}
-              currentSubData={currentSubData}
-              setCurrentSubData={setCurrentSubData}
-            />
+          
+             <Chart
+        
+          score={true}
+            setSubjects={setSubjects}
+            subjects={accsubjects}
+            selectedSubject={selectedSubject}
+            selectedConceptIdx={selectedConceptIdx}
+            setSelectedConceptIdx={setSelectedConceptIdx}
+            currentSubData={currentSubData}
+            setCurrentSubData={setCurrentSubData}
+          />
           </div>
         </div>
 

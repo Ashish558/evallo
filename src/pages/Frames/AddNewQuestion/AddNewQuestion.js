@@ -42,7 +42,7 @@ export default function AddNewQuestion({ newQuestion, setNewQuestion }) {
             inputClassName={'bg-[#f2f2f2]'}
             labelClassname="hidden"
             parentClassName="w-[200px] mr-5"
-            optionData={["String", "Checkboxes"]}
+            optionData={["Paragraph", "Checkboxes"]}
             onChange={(val) =>
               setNewQuestion({
                 ...newQuestion,

@@ -12,6 +12,7 @@ export default function InputSelect({
   value,
   placeholder,
   label,
+  valueClassName,
   labelClassname,
   optionData,
   inputContainerClassName,
@@ -31,14 +32,16 @@ export default function InputSelect({
   const selectRef = useRef();
   useOutsideAlerter(selectRef, () => setSelected(false));
   const handleOption = () => {
-    console.log("handleOption")
+   
     setSelected(!selected);
+    
     if (setSelectedDate) setSelectedDate({ sDate: "", eDate: "" });
   };
   useEffect(() => {
     if (!checkbox) setSelected(false);
   }, [value]);
   const handleChange = (optionType, option, idx) => {
+    console.log("handleOption",option)
     onChange(optionType, option, idx);
   };
 
@@ -70,24 +73,28 @@ export default function InputSelect({
           name={label}
         >
           {value === "" || !value ? (
-            <span className="text-primary-60 mr-5 pl-5 cursor-default  text-[13px]  !text-[calc(15*0.050vw)]  whitespace-nowrap">
+            <span className="text-primary-60 mr-5 pl-5 cursor-default  text-[13px]  !text-[calc(17*0.050vw)]  whitespace-nowrap">
               {" "}
               <span > {placeholder}</span>
               {" "}
             </span>
           ) : (
-            <span className="mr-5 pl-5 text-[15px] !text-[calc(15*0.050vw)] cursor-default whitespace-nowrap">
-              <span >{value}</span>
-
+            <span className={`mr-5 pl-5 text-[15px] !text-[calc(17*0.050vw)] cursor-default whitespace-nowrap `} >
+              <span className={`${valueClassName}`} >{value}</span>
+              <img
+              className="w-[30px] inline-block relative h-[10px] text-lg cursor-pointer  z-[5000]"
+              onClick={handleOption}
+              src={IconRight}
+            />
             </span>
           )}
-  {selected ? (
+  {/* {selected ? (
           IconRight ? (
-            <FontAwesomeIcon
-              className="w-[30px] text-lg cursor-pointer  z-[5000]"
+            <img
+              className="w-[30px] ml-[-100px]relative h-[30px] text-lg cursor-pointer  z-[5000]"
               onClick={handleOption}
-              icon={IconRight}
-            ></FontAwesomeIcon>
+              src={IconRight}
+            />
           ) : (
             <img
               src={UpArrow}
@@ -107,7 +114,8 @@ export default function InputSelect({
             className={`w-[15px]  ${styles.downArrow}`}
             alt="down-arrow"
           />
-        )}
+        )} */}
+     
         </div>
         {selected && (
           <div
@@ -121,7 +129,7 @@ export default function InputSelect({
                   key={idx}
                   onClick={() => handleChange(optionType, option, idx)}
                 >
-                  <p className={`${optionListClassName} relative !z-[9999999999]`}>
+                  <p className={`${optionListClassName} cursor-pointer relative !z-[9999999999]`}>
                     {optionType === "object" ? option.name : option}
                   </p>
                   {radio && (

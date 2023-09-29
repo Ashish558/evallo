@@ -12,6 +12,7 @@ export default function InputFieldDropdown({
   iconSize,
   value,
   placeholder,
+  codeClassName,
   codeColor,
   label,
   labelClassname,
@@ -120,7 +121,8 @@ export default function InputFieldDropdown({
         >
           <div
 
-            className={` flex justify-between cursor-pointer gap-4   items-center rounded-[3px]  bg-[#EAF5FA]  text-[black] focus:outline-none  px-2 text-sm ${codeValue?"  pr-5":"w-[35px] justify-center py-2 pl-3"} text-base-17-5 !text-[#667085]`}
+
+            className={` flex justify-between cursor-pointer gap-2   items-center rounded-[3px]  bg-[#EAF5FA]  text-[black] focus:outline-none  px-2 text-sm ${codeValue?"  pr-3":"w-[30px] justify-between py-2 pl-3"} text-base-17-5 !text-[#667085] ${codeClassName}`}
            
           >
             {codeValue&&<span className=" ">

@@ -11,9 +11,15 @@ const BubbleChart2 = () => {
     left: '10px', // Adjust left position as needed
   };
   return (
-    <div className="bg-[#FFFFFF] flex justify-center items-center border border-gray-200 p-4 mt-[6px] rounded-md relative">
-
-      <div className="flex  max-w-full justify-center w-full">
+    <div className="bg-[#FFFFFF] flex flex-col justify-center items-center border border-gray-200  mt-[6px] rounded-md relative">
+ <div className="flex  gap-[10%] p-5  pl-[100px] w-full flex-1 border-b border-[1.33px_solid_#EBEBEB]">
+        <div className="flex items-center text-[#507CA8] gap-5 !text-[16px]"><span className="bg-[#26435F] inline-block  rounded-full w-3 h-3  "></span> Scheduled</div>
+        <div className="flex items-center text-[#507CA8] gap-5 !text-[16px]"><span className="bg-[#FF7714] inline-block  rounded-full w-3 h-3 text-[#507CA8] "></span> Completed</div>
+        <div className="flex items-center text-[#507CA8] gap-5 !text-[16px]"><span className="bg-[#24FF00] inline-block  rounded-full w-3 h-3 text-[#507CA8] "></span> Missed</div>
+        <div className="flex items-center text-[#507CA8] gap-5 !text-[16px]"><span className="bg-[#26435F] inline-block  rounded-full w-3 h-3 text-[#507CA8] "></span> Cancelled</div>
+      
+      </div>
+      <div className="flex flex-1 max-w-full justify-center p-4 mt-5 w-full">
         <Bubble
           data={bubbleChartData} 
           options={{
@@ -75,7 +81,7 @@ const BubbleChart2 = () => {
 
 
               legend: {
-                display: true,
+                display: false,
                 position: "top",
                 align: "center",
                

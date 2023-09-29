@@ -81,8 +81,8 @@ export default function Table(props) {
 
   return (
     <div className="w-full">
-      <div className="overflow-x-auto scrollbar-content custom-scroller-2  scroll-m-1 ">
-        <table className=" customTable   mb-3 text-center w-full whitespace-nowrap">
+      <div className="overflow-x-auto scrollbar-content custom-scroller-2 p-[2px] scroll-m-1 ">
+        <table className=" customTable mb-3 text-center w-full whitespace-nowrap">
           <thead className="pb-2 whitespace-nowrap">
             <tr className=" whitespace-nowrap">
               {tableHeaders.map((item, idx) => {
@@ -166,7 +166,8 @@ export default function Table(props) {
       </div>
 
       {!hidePagination ? (
-        <div className="flex justify-end items-center">
+        <div className="flex justify-between px-1 items-center">
+          <p className="text-[#517CA8] text-xs">Showing {tableData?.length} of {data?.length}</p>
           <Pagination
             currentPage={currentPage}
             setCurrentPage={setCurrentPage}

@@ -16,10 +16,10 @@ export default function DaysEndDate({ days, setDays, data, setData, isEditable }
    };
 
    return (
-      <div className="flex mb-10 mt-6">
+      <div className="flex my-[30px]">
          <div className="mr-8">
-            <p className="font-medium text-base-17-5  mb-1 text-[#26435F]">
-            Repeat Every Week On
+            <p className="font-medium text-[18.6px]  mb-1 text-[#26435F]">
+               Repeat Every Week On
             </p>
             <div className="flex">
                {days.map((day, idx) => {
@@ -39,7 +39,8 @@ export default function DaysEndDate({ days, setDays, data, setData, isEditable }
          </div>
          <InputField
             label="End Date"
-            labelClassname="ml-3 text-[#26435F] font-medium text-base-17.5"
+            biggerText={true}
+            labelClassname="ml-3 text-[#26435F] font-medium text-[18.6px] "
             parentClassName={`w-full self-end ${!data.recurring ? 'pointer-events-none' : ''}} `}
             type="date"
             inputContainerClassName="bg-lightWhite border-0 font-medium pr-3 pt-3.5 pb-3.5 h-[53px]"

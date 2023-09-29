@@ -114,12 +114,20 @@ export default function UserDetails({
           labelClassname="text-[#26435F] font-bold  mb-1 text-sm"
           value={otherDetails.FirstName}
           
-          onChange={(e) =>
+          onChange={(e) =>{
+            const alphabeticOnly = e.target.value.replace(
+              /[^a-zA-Z]/g,
+              ""
+            );
+            e.target.value = alphabeticOnly;
+            e.target.value=e.target.value.charAt(0).toUpperCase() + e.target.value.slice(1);
+         
             setOtherDetails({
               ...otherDetails,
               FirstName: e.target.value,
             })
           }
+        }
           totalErrors={detailsError} 
           error={detailsError.FirstName}
         />
@@ -130,12 +138,20 @@ export default function UserDetails({
           required={persona === "student" ? true : false}
           labelClassname="text-[#26435F] font-bold  mb-1 text-sm"
           value={otherDetails.LastName}
-          onChange={(e) =>
+          onChange={(e) =>{
+            const alphabeticOnly = e.target.value.replace(
+              /[^a-zA-Z]/g,
+              ""
+            );
+            e.target.value = alphabeticOnly;
+            e.target.value=e.target.value.charAt(0).toUpperCase() + e.target.value.slice(1);
+         
             setOtherDetails({
               ...otherDetails,
               LastName: e.target.value,
             })
           }
+        }
           totalErrors={detailsError} 
           error={detailsError.LastName}
         />

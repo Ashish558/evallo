@@ -9,6 +9,7 @@ import InputField from "../../components/InputField/inputField";
 import Modal from "../../components/Modal/Modal";
 import questionMark from "../../assets/images/Vector (6).svg";
 import ToggleBar from "../../components/SettingsCard/ToogleBar";
+import down from "../../assets/YIcons/Vectordown2.svg"
 import { useLazyGetSettingsQuery } from "../../app/services/session";
 import {
   useGetAllPermissionQuery,
@@ -32,7 +33,7 @@ import org2 from "../../assets/icons/org-default.svg";
 import OrgDefaultLogo2 from "../../assets/icons/org default2.png";
 import OrgDefaultContentLogo2 from "../../assets/icons/org-default-content.svg";
 import OrgDefaultContentLogo from "../../assets/icons/org-default-content (2).svg";
-import EditBlueIcon from "../../assets/icons/edit 15.png";
+import EditBlueIcon from "../../assets/YIcons/edit2.svg";
 import InputSearch from "../../components/InputSearch/InputSearch";
 import { useSelector, useDispatch } from "react-redux";
 import { useUpdateUserFieldsMutation } from "../../app/services/users";
@@ -900,6 +901,11 @@ export default function SuperAdminSettings() {
               <div>
                 <InputSelect
                   labelClassname="mb-1"
+                  IconRight={<img
+                    src={down}
+                    className={`${down ?`w-[12px] h-[12px] `:`w-[12px] h-[12px]`}   absolute right-5`}
+                      alt="down-arrow"
+                    />}
                   inputContainerClassName="shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-[#FFFFFF] w-[20.15625vw]"
                   placeholder='Select'
                   optionData={timeZones}
@@ -911,6 +917,12 @@ export default function SuperAdminSettings() {
               </div>
               <InputSelect
                 labelClassname="mb-1"
+                 placeholder='Select'
+                IconRight={<img
+                  src={down}
+                  className={`${down ?`w-[12px] h-[12px] `:`w-[12px] h-[12px]`}   absolute right-5`}
+                    alt="down-arrow"
+                  />}
                 inputContainerClassName="shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-[#FFFFFF] w-[20.15625vw]"
                 optionData={["dd/mm/yy", "mm/dd/yy", "yy/mm/dd"]}
                 parentClassName=""
@@ -955,16 +967,18 @@ export default function SuperAdminSettings() {
             />
             <div className="h-[1.25px] bg-[#CBD6E2] mt-[21px] mb-[37px]"></div>
             <SettingsCard
-              title="Manage Referral Codes"
-              className={styles["bordered-settings-container"]}
+              title=" Manage Referral Codes"
+              className={`${styles["bordered-settings-container"] }`}
               body={
-                <div className="max-h-[360px] overflow-auto scrollbar-content scrollbar-vertical ">
+                <div className="max-h-[360px] overflow-auto custom-scroller p-1 scrollbar-vertical ">
                   {subscriptionCode !== undefined &&
                     subscriptionCode.map((subscription, i) => {
                       return (
-                        <div key={i} className="bg-white shadow-small p-4 rounded-[5px]">
-                          <div className="flex items-center justify-between pr-8 ">
-                            <p className="font-medium text-[#24A3D9] mb-4">
+                       
+
+                        <div key={i} className="bg-white p-4  items-center rounded-[5px] shadow-[0px_0px_2.500000476837158px_0px_#00000040] ">
+                          <div className="flex items-center justify-between  pr-8 ">
+                            <p className="font-medium text-[#24A3D9] ">
                               {subscription.code}
                               <span className="inline-block ml-4 font-normal text-[#517CA8]">
                                 {subscription.expiry} Weeks
@@ -987,6 +1001,7 @@ export default function SuperAdminSettings() {
                                 />
                               )} */}
                               <ToggleBar
+                              boxClass="!h-[16px]"
                                 circleColor="bg-[rgba(119,221,119,1)]"
                                 toggle={{ value: 5, key: 'code' }}
                                 onToggle={togglePermissions}
@@ -1051,20 +1066,22 @@ export default function SuperAdminSettings() {
               className={styles["bordered-settings-container"]}
               body={
                 <div>
-                  <div className="max-h-[360px] overflow-auto scrollbar-content scrollbar-vertical">
+                  <div className="max-h-[360px] overflow-auto custom-scroller p-1 scrollbar-vertical">
                     {servicesAndSpecialization !== undefined &&
                       servicesAndSpecialization.map((service, i) => {
                         return (
                           <div
                             key={i}
-                            className="bg-white shadow-small p-4 mb-3"
+                            className="bg-white shadow-small rounded-md p-4 mb-3 shadow-[0px_0px_2.500000476837158px_0px_#00000040] "
                           >
                             <div className="flex items-center justify-between pr-8 ">
-                              <p className="font-medium text-[#24A3D9] mb-4">
+                              <p className="font-medium text-[#24A3D9] ">
                                 {service.service}
                               </p>
                             <div className="flex items-center gap-x-4">
                             <ToggleBar
+                            
+                                 boxClass="!h-[16px]"
                                 circleColor="bg-[rgba(119,221,119,1)]"
                                 toggle={{ value: 5, key: 'code' }}
                                 onToggle={togglePermissions}
@@ -1120,21 +1137,23 @@ export default function SuperAdminSettings() {
               }
             />
 
-            <SettingsCard
+            {/* <SettingsCard
               title="Session Tags & Reconciliation"
               className={styles["bordered-settings-container"]}
               body={
-                <div className="max-h-[360px] overflow-auto scrollbar-content scrollbar-vertical">
+                
+                <div className="max-h-[360px] overflow-auto custom-scroller p-1 scrollbar-vertical">
                   {sessionTags !== undefined &&
                     sessionTags.map((service, i) => {
                       return (
-                        <div key={i} className="bg-white shadow-small p-4 mb-3">
+                        <div key={i} className="bg-white rounded-md shadow-small p-4 mb-3 shadow-[0px_0px_2.500000476837158px_0px_#00000040] ">
                           <div className="flex items-center justify-between pr-8">
-                            <p className="font-medium text-[#24A3D9] mb-4">
+                            <p className="font-medium text-[#24A3D9] ">
                               {service.heading}
                             </p>
                             <div className="flex items-center gap-x-4">
                             <ToggleBar
+                            boxClass="!h-[16px]"
                                 circleColor="bg-[rgba(119,221,119,1)]"
                                 toggle={{ value: 5, key: 'code' }}
                                 onToggle={togglePermissions}
@@ -1162,11 +1181,11 @@ export default function SuperAdminSettings() {
                             </div>
                           </div>
                           <div className="flex items-center flex-wrap [&>*]:mb-[18px]">
-                            {/* <AddTag
+                             <AddTag
                               onAddTag={handleAddSessionTag}
                               keyName={service.heading}
                               text="Add Items"
-                            /> */}
+                            /> 
                             <FilterItems
                               isString={true}
                               onlyItems={true}
@@ -1188,8 +1207,84 @@ export default function SuperAdminSettings() {
                   />
                 </div>
               }
-            />
+            /> */}
 
+            <SettingsCard
+              titleClassName="text-base-20"
+              title="Session Tags & Reconciliation"
+              className={styles["bordered-settings-container"]}
+              body={
+                <div className="">
+                 <div className="max-h-[360px] p-1  overflow-auto  scrollbar-vertical custom-scroller" >
+                  {sessionTags !== undefined &&
+                    sessionTags.map((service, i) => {
+                      return (
+                        <div key={i} className="bg-white shadow-small p-4 mb-3 rounded-md">
+                          <div className="flex items-center justify-between pr-8">
+                            <p className="font-medium text-[#24A3D9] mb-4">
+                              {service.heading}
+                            </p>
+                            <div className="flex items-center gap-x-4">
+                            <ToggleBar
+                            
+                                 boxClass="!h-[16px]"
+                                circleColor="bg-[rgba(119,221,119,1)]"
+                                toggle={{ value: 5, key: 'code' }}
+                                onToggle={togglePermissions}
+                              ></ToggleBar>
+                              <div
+                                className=" flex items-center justify-center  rounded-full cursor-pointer"
+                                // onClick={() => onEditService(service)}
+                              >
+                                <img
+                                  src={EditBlueIcon}
+                                  className="w-4"
+                                  alt="edit"
+                                />
+                              </div>
+                              <div
+                              className="w-5 h-5 flex items-center justify-center  rounded-full cursor-pointer"
+                              onClick={() => onRemoveSessionTag(service)}
+                            >
+                              <img
+                                src={DeleteIcon}
+                                className="w-4"
+                                alt="delete"
+                              />
+                            </div>
+                            </div>
+                          
+                          </div>
+                          <div className="flex items-center flex-wrap [&>*]:mb-[10px]">
+                            <AddTag
+                              onAddTag={handleAddSessionTag}
+                              keyName={service.heading}
+                              text="Add Items"
+                            />
+                            <FilterItems
+                              isString={true}
+                              onlyItems={true}
+                              keyName={service.heading}
+                              items={service.items}
+                              onRemoveFilter={onRemoveSessionTagItem}
+                              className="pt-1 pb-1 mr-15 text-base-17-5"
+                            />
+                          </div>
+                        </div>
+                      );
+                    })}
+                    </div>
+
+                  <AddTag
+                    children="Add Heading"
+                    className="px-[18px] py-3 mt-5 bg-primary text-white"
+                    text="Add Heading"
+                    hideIcon={false}
+                    onAddTag={onAddSessionTag}
+                  />
+                </div>
+              }
+            />
             <SettingsCard
               title="Edit Announcements"
               toggle={{ value: toggleImage.offer, key: "offer" }}
