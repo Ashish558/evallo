@@ -11,6 +11,7 @@ export default function InputField({
   Icon,
   IconRight2Click,
   iconSize,
+  pattern,
   refS,
   IconRight2,
   value,
@@ -104,7 +105,9 @@ export default function InputField({
 
           type={inputType ? inputType : "text"}
           onChange={(e) => (onChange !== undefined ? onChange(e) : "")}
+          onInput={(e) => (onChange !== undefined ? onChange(e) : "")}
           value={value}
+          
           ref={refS}
           defaultValue={defaultValue}
           required={isRequired ? true : false}

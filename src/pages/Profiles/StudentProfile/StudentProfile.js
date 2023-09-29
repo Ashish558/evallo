@@ -718,12 +718,12 @@ const [toEdit, setToEdit] = useState({
     navigator.clipboard.writeText(text);
   }
   const handleParentNavigate = () => {
-    if(associatedParent._id){
-      navigate(`/profile/parent/${associatedParent._id}`)
+    if(userDetail?.userId){
+      navigate(`/profile/parent/${userDetail?.userId}`)
     }
   }
   // //console.log(user)
-  //console.log("student",{userDetail,user})
+ console.log("student",{userDetail,user})
   //console.log('associatedParent', associatedParent)
   // //console.log('isEditable', editable)
   // //console.log(settings)
@@ -845,7 +845,7 @@ const [toEdit, setToEdit] = useState({
                               className="inline-block ml-2 !w-4 !h-4 mr-2 cursor-pointer"
                               src={copy1}
                               alt="copy"
-                              onClick={()=>handleCopy(user?.email)}
+                            
                             />
                           </span>
                         </p>
@@ -939,8 +939,8 @@ const [toEdit, setToEdit] = useState({
               <div className="flex flex-col ml-14   font-medium text-[#24A3D9] ">
                 <p
                   onClick={() =>
-                    Object.keys(associatedParent).length > 0 &&
-                    navigate(`/profile/parent/${associatedParent._id}`)
+                    userDetail?._id &&
+                    navigate(`/profile/parent/${userDetail?._id}`)
                   }
                   className="font-semibold cursor-pointer text-[14px]"
                 >
@@ -972,8 +972,7 @@ const [toEdit, setToEdit] = useState({
                         className="inline-block ml-2 !w-4 !h-4 mr-2 cursor-pointer"
                         src={copy2}
                         alt="copy"
-                        onClick={() => handleCopy(associatedParent.email ? associatedParent.email : userDetail.Email)}
-                      />
+                           />
                     </span>
                   </span>
                 </p>}
