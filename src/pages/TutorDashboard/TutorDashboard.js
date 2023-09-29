@@ -76,7 +76,6 @@ export default function TutorDashboard() {
    const { id } = useSelector(state => state.user)
    const [students, setStudents] = useState([])
    const [tutorRank, setTutorRank] = useState('-')
-   // const [awsLink, setAwsLink] = useState('')
    const { awsLink } = useSelector(state => state.user)
    const { organization } = useSelector((state) => state.organization);
    useEffect(() => {
@@ -188,7 +187,6 @@ export default function TutorDashboard() {
             console.log('tutor assignedtest', res.data)
             let data = res.data.data.test.map(item => {
                const { createdAt, studentId, dueDate, photo, testId, multiple, timeLimit, isCompleted, isStarted } = item
-               // console.log(photo);
                let profile = studentId.photo ? studentId.photo : null
                let status = 'notStarted'
                if (isCompleted === true) {
@@ -202,6 +200,7 @@ export default function TutorDashboard() {
                   assignedOn: getFormattedDate(createdAt),
                   testName: testId ? testId.testName : '-',
                   testId: testId ? testId._id : null,
+                  pdf: testId ? item.testId.pdf : null,
                   scores: '-',
                   duration: multiple ? getDuration(multiple) : 'Unlimited',
                   status: status,
@@ -221,6 +220,18 @@ export default function TutorDashboard() {
    useEffect(() => {
       fetchTutorTests()
    }, [])
+
+   const handlePdfDownload = (pdf) => {
+      if(pdf){
+         const anchor = document.createElement('a');
+         anchor.href = `${awsLink}${pdf}`;
+         anchor.target = '_blank';
+         anchor.download = `${pdf}.pdf`; // Replace with the desired file name and extension
+         anchor.click();
+      }else{
+         alert('The PDF file is no longer available.')
+      }
+   }
    // console.log(students);
    // console.log(tutorRank);
    // console.log('allAssignedTests', allAssignedTests);
@@ -359,8 +370,9 @@ export default function TutorDashboard() {
                            Latest Practice Test
                         </p> */}
                            <div className='pl-[30px] pr-[26px] custom-scroller h-[780px]  overflow-auto pt-[10px]  bg-white rounded-20'>
-                              {allAssignedTests?.slice(0,10)?.map(item => {
-                                  console.log({item})
+
+                              {allAssignedTests?.slice(0, 10)?.map(item => {
+
                                  return (
                                     <div className=' mb-[15px]' key={item._id} >
                                        <div>
@@ -375,7 +387,9 @@ export default function TutorDashboard() {
                                              </div>
                                           </div>
                                           <div>
+
                                              <img className='cursor-pointer' onClick={()=>  window.open(`${awsLink+item.testId}`, '_blank')} width="35px" src={download} alt="" />
+
                                           </div>
                                           <div className='text-[0.911vw] font-semibold'>
                                              {
