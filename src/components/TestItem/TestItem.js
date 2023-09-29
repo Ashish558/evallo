@@ -21,6 +21,7 @@ export const TestItem = ({
   isCompleted,
   isStarted,
   awsLink,
+  testype
 }) => {
   const [pageState, setPageState] = useState('loading');
   const [showTestInstruction, setShowTestInstruction] = useState(false);
@@ -44,7 +45,10 @@ export const TestItem = ({
       setIsLoadingPage(false);
       setShowTestInstruction(true);
       // navigate(`/all-tests/${testId}/${assignedTestId}`);
-      navigate(`/all-tests/start-section/${testId}/${assignedTestId}`);
+      testype=='DSAT'?
+        navigate(`/testpage/${testId}/${assignedTestId}`)
+      : navigate(`/all-tests/start-section/${testId}/${assignedTestId}`);
+
     }, 2000); 
   };
   const handleBackClick = () => {

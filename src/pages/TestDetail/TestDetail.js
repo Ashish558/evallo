@@ -73,6 +73,8 @@ export default function TestDetail() {
    const [editLoading, setEditLoading] = useState(false)
    const location = useLocation();
    const [checked, setChecked] = useState(false);
+   const [options, setoptions] = useState(['', '', '', '']);
+   const [subjective_answer,setsubjective_answe]=useState();
    const testType=location?.state?.testype
 
    useEffect(() => {
@@ -209,8 +211,15 @@ export default function TestDetail() {
       //    optionDImageBase64: optionDImageBase64,
       // richTextContentBase64: btoa(richTextContent),
       // };
+      let indx
+      subjects.map((it,i)=>{
+         if(it.selected===true){
+            indx=i; 
+         }
+      })
+      console.log(indx);
        const body = {
-         subject: "new subject",
+         subject: subjects[indx].name,
          Qno: modalData.QuestionNumber,
          update:{
                CorrectAnswer: modalData.correctAnswer,
@@ -220,28 +229,28 @@ export default function TestDetail() {
                QuestionText: modalData.question,
                QuestionImage:questionImageBase64,
                QuestionType: modalData.questionType,
+               AnswerChoices:'a,b,c,d',
                Answers:[
                   {
                      label: 'A',
-                     content: optionAImageBase64
-                  },
+                     text: options[0],
+                     ...(optionAImageBase64 !== undefined && optionAImageBase64 !== null ? { image: optionAImageBase64 } : {})                  },
                   {
                      label: 'B',
-                     content: optionBImageBase64
-                  },
+                     text: options[1],
+                     ...(optionBImageBase64 !== undefined && optionBImageBase64 !== null ? { image: optionBImageBase64 } : {})                  },
                   {
                      label: 'C',
-                     content: optionCImageBase64
-                  },
+                     text: options[2],
+                     ...(optionCImageBase64 !== undefined && optionCImageBase64 !== null ? { image: optionCImageBase64 } : {})                  },
                   {
                      label: 'D',
-                     content: optionDImageBase64
-                  },
+                     text: options[3],
+                     ...(optionDImageBase64 !== undefined && optionDImageBase64 !== null ? { image: optionDImageBase64 } : {})                  },
                ],
                Passage: modalData.richTextContent,
             },
          };
-        
 const jsonString = JSON.stringify(body);
 
          // Log the JSON data in the console
@@ -252,6 +261,11 @@ const jsonString = JSON.stringify(body);
          .then(res => {
             setEditLoading(false)
             setModalData(initialState)
+            setoptions(['','','',''])
+            setOptionAImageBase64('')
+            setOptionBImageBase64('')
+            setOptionCImageBase64('')
+            setOptionDImageBase64('')
             setModalActive(false)
             if (res.error) return console.log('edit err', res.error);
             console.log('edit resp', res.data);
@@ -260,6 +274,10 @@ const jsonString = JSON.stringify(body);
 
    }
    const handleEditTestClick = (item) => {
+      console.log('asdasdasd',subjects);
+      if(allQuestions[0][item.QuestionNumber-1].Passage!=='no'){
+         setChecked(true)
+      }
          setModalData(prev=>{
             return{
                ...prev,
@@ -270,19 +288,29 @@ const jsonString = JSON.stringify(body);
          setQuestionImageBase64(allQuestions[0][item.QuestionNumber-1].QuestionImage)
       if(allQuestions[0][item.QuestionNumber-1].Answers.size!=0){
          allQuestions[0][item.QuestionNumber-1].Answers.map((it)=>{
+            console.log('dafsdfsdfs',it.label);
             if(it.label=='A'){
-               setOptionAImageBase64(it.content)
+               setOptionAImageBase64(it?.image)
             }
-            else if(it.label==='B'){
-               setOptionBImageBase64(it.content)
+            else if(it.label=='B'){
+               setOptionBImageBase64(it?.image)
             }
-            else if(it.label==='C'){
-               setOptionCImageBase64(it.content)
+            else if(it.label=='C'){
+               setOptionCImageBase64(it?.image)
             }
             else if(it.label==='D'){
-               setOptionDImageBase64(it.content)
+               let newArray = [...options];
+               newArray[3] = it.content;
+               setoptions(newArray);
+               setOptionDImageBase64(it?.image)
             }
          })
+         let newArray=[...options]
+         allQuestions[0][item.QuestionNumber-1].Answers.map((it,i)=>{
+               newArray[i]=it.text;      
+         })
+         console.log(newArray,'newatrratlbjasdja');
+         setoptions(newArray)
       }
       setModalData(prev => {
          return {
@@ -351,7 +379,6 @@ const handleImageUpload = (file, imageType) => {
       };
    }
 };
- 
  
  
 const handleimage_emppty = (imageType) => {
@@ -690,7 +717,7 @@ const [richTextContent, setRichTextContent] = useState("");
             onChange={(e) => setModalData({ ...modalData, question: e.target.value })}
             className="border w-3/4 mr-4 ml-3 outline-none border-none bg-[#F6F6F6] rounded p-2"
          />
-          {questionImageBase64!=''?
+          {questionImageBase64!=undefined?
          <div className="flex flex-row w-1/4 justify-start items-center overflow-hidden">
                <img src={questionImageBase64} className='rounded max-w-14 max-h-14 my-2' alt="base64"/>
       <div onClick={()=>{handleimage_emppty('questionImage')}}>
@@ -738,6 +765,10 @@ const [richTextContent, setRichTextContent] = useState("");
 </div>
 <div className="w-full h-1 my-4 bg-[#00000033]">
 </div>
+{  console.log('moasmdoasdnasnfa',modalData)}
+{modalData.questionType=='Grid-in'?
+   null
+:<>
       <div className='flex items-center mb-2'>
       <p className='ml-2 rounded-full border py-1 px-3  mr-2 text-lg'>
          A
@@ -745,15 +776,18 @@ const [richTextContent, setRichTextContent] = useState("");
       <div className="flex flex-row w-full items-center bg-[#F6F6F6] ">
          <input
             type="text"
-            value={modalData.question}
-            onChange={(e) => setModalData({ ...modalData, question: e.target.value })}
-            className="border w-3/4 cursor-pointer mr-4 ml-3 outline-none border-none bg-[#F6F6F6] rounded p-2"
+            value={options[0]}
+            onChange={(e) => {
+               let newArray = [...options];
+               newArray[0] = e.target.value;
+               setoptions(newArray);
+            }}className="border w-3/4 cursor-pointer mr-4 ml-3 outline-none border-none bg-[#F6F6F6] rounded p-2"
          />
-          {optionAImageBase64!=''?
+          {optionAImageBase64!=undefined&&optionAImageBase64!=''?
          <div className="flex flex-row w-1/4 cursor-pointer justify-start items-center overflow-hidden">
                <img src={optionAImageBase64} className='rounded max-w-14 max-h-14 my-2' alt="base64"/>
       <div onClick={()=>{handleimage_emppty('optionAImage')}}>
-           <img src={Delete} alt='delete' className="w-4 cursor-pointer h-4 mx-2 cursor-pointer" />
+           <img src={Delete} alt='delete' className="w-4 h-4 mx-2 cursor-pointer" />
          </div>
       </div>
       :<>
@@ -777,11 +811,14 @@ const [richTextContent, setRichTextContent] = useState("");
       <div className="flex flex-row w-full items-center bg-[#F6F6F6] ">
          <input
             type="text"
-            value={modalData.question}
-            onChange={(e) => setModalData({ ...modalData, question: e.target.value })}
-            className="border w-3/4 cursor-pointer mr-4 ml-3 outline-none border-none bg-[#F6F6F6] rounded p-2"
+            value={options[1]}
+            onChange={(e) => {
+               let newArray = [...options];
+               newArray[1] = e.target.value;
+               setoptions(newArray);
+            }}className="border w-3/4 cursor-pointer mr-4 ml-3 outline-none border-none bg-[#F6F6F6] rounded p-2"
          />
-          {optionBImageBase64!=''?
+          {optionBImageBase64!=undefined&&optionBImageBase64!=''?
          <div className="flex flex-row w-1/4 cursor-pointer justify-start items-center overflow-hidden">
                <img src={optionBImageBase64} className='rounded max-w-14 max-h-14 my-2' alt="base64"/>
       <div onClick={()=>{handleimage_emppty('optionBImage')}}>
@@ -809,11 +846,15 @@ const [richTextContent, setRichTextContent] = useState("");
       <div className="flex flex-row w-full items-center bg-[#F6F6F6] ">
          <input
             type="text"
-            value={modalData.question}
-            onChange={(e) => setModalData({ ...modalData, question: e.target.value })}
+            value={options[2]}
+            onChange={(e) => {
+               let newArray = [...options];
+               newArray[2] = e.target.value;
+               setoptions(newArray);
+            }}
             className="border w-3/4 cursor-pointer mr-4 ml-3 outline-none border-none bg-[#F6F6F6] rounded p-2"
          />
-          {optionCImageBase64!=''?
+          {optionCImageBase64!=undefined&&optionCImageBase64!=''?
          <div className="flex flex-row w-1/4 cursor-pointer justify-start items-center overflow-hidden">
                <img src={optionCImageBase64} className='rounded max-w-14 max-h-14 my-2' alt="base64"/>
       <div onClick={()=>{handleimage_emppty('optionCImage')}}>
@@ -828,12 +869,11 @@ const [richTextContent, setRichTextContent] = useState("");
         type="file" 
         id="optionCImage"
         accept="image/*"
-        onChange={(e) => handleImageUpload(e.target.files[0], 'optionAImage')}  
+        onChange={(e) => handleImageUpload(e.target.files[0], 'optionCImage')}  
       />
       </>}
          </div>
    </div>
-
    <div className='flex items-center mb-2'>
       <p className='ml-2 rounded-full border py-1 px-3  mr-2 text-lg'>
          D
@@ -841,13 +881,17 @@ const [richTextContent, setRichTextContent] = useState("");
       <div className="flex flex-row w-full items-center bg-[#F6F6F6] ">
          <input
             type="text"
-            value={modalData.question}
-            onChange={(e) => setModalData({ ...modalData, question: e.target.value })}
+            value={options[3]}
+            onChange={(e) => {
+               let newArray = [...options];
+               newArray[3] = e.target.value;
+               setoptions(newArray);
+            }}
             className="border w-3/4 cursor-pointer mr-4 ml-3 outline-none border-none bg-[#F6F6F6] rounded p-2"
          />
-          {optionDImageBase64!=''?
+          {optionDImageBase64!=undefined&&optionDImageBase64!=''?
          <div className="flex flex-row w-1/4 cursor-pointer justify-start items-center overflow-hidden">
-               <img src={optionBImageBase64} className='rounded max-w-14 max-h-14 my-2' alt="base64"/>
+               <img src={optionDImageBase64} className='rounded max-w-14 max-h-14 my-2' alt="base64"/>
       <div onClick={()=>{handleimage_emppty('optionDImage')}}>
            <img src={Delete} alt='delete' className="w-4 h-4 mx-2 cursor-pointer" />
          </div>
@@ -865,6 +909,7 @@ const [richTextContent, setRichTextContent] = useState("");
       </>}
          </div>
    </div>
+   </>}
    <div className="w-full h-1 my-4 bg-[#00000033]">
 </div>
       {/* Add similar code for option A, B, C, and D images */}

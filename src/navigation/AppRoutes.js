@@ -43,6 +43,7 @@ import TutorSetting from "../pages/Settings/TutorSetting";
 import ContributorSettings from "../pages/Settings/ContributorSettings";
 import TestPage from "../pages/DsatTestPage/TestPage";
 import AnnotatorComponent from "../components/annotate";
+import Testinstruction_2 from "../components/TestItem/testinstruction_2";
 
 
 

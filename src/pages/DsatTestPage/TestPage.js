@@ -6,13 +6,10 @@ import Que from "./Questions";
 import axios from "axios";
 import { BASE_URL, getAuthHeader } from "../../app/constants/constants";
 import { useLocation, useNavigate, useParams } from "react-router-dom/dist";
-
 import LoaderPage from "../../components/TestItem/LoaderPage";
 import TestInstructionPage from "../../components/TestItem/TesInstructionPage";
 import SectionLoader from "../StartTest/SectionLoader";
-
 import SecondaryButton from '../../components/Buttons/SecondaryButton'
-
 import BackIcon from '../../assets/assignedTests/back.svg'
 import PrimaryButton from '../../components/Buttons/PrimaryButton'
 import { TestDetail } from '../../components/TestDetail/TestDetail'
@@ -23,17 +20,8 @@ import Timer from '../../components/Timer/Timer'
 import { useSelector } from 'react-redux'
 import { getCheckedString, getDuration, getFormattedDate } from '../../utils/utils'
 import Modal from '../../components/Modal/Modal'
+import Testinstruction_2 from "../../components/TestItem/testinstruction_2";
 export default function TestPage() {
-//   const [testHeaderDetails, setTestHeaderDetails] = useState({
-//     name: ``,
-//     duration: 0,
-//     dateAssigned: '',
-//     startedOn: '',
-//     completedOn: '',
-//     testName: '',
-//     dueDate: '',
-//     instruction: '',
-//  })
 
   const [getQue, GetQueRes] = useLazyGetQuestionQuery();
   const [info, setInfo] = useState([]);
@@ -42,22 +30,18 @@ export default function TestPage() {
   const [sectionindex, setsectionindex] = useState(0);
   const [index, setIndex] = useState(0);
   const [data, setdata] = useState([]);
-  // const [submitSection, submitSectionResp] = useSubmitTestMutation();
   const [toggle2,setToggle2] =useState(false)
   const [seconds, setSeconds] = useState(0);
   const [cutanswer, setcutanswer] = useState([]);
   const [markreview, setmarkreview] = useState([]);
   const [instructionpage, setisntructionpage] = useState(true);
   const [cutcheck,setcutcheck] = useState(false);
-  const[loader,setloader] = useState(false)  
+  const[loader,setloader] = useState(true)  
   const location = useLocation();
   const [cal,setCal]=useState(false)
   
-
-//     const navigate = useNavigate();
-
-//   const name = new URLSearchParams(location.search).get("name");
   function MarkAnswer(QuestionNumber, correctAnswer) {
+   console.log(QuestionNumber,correctAnswer);
     const updatedanswer = answers.map((q) =>
       q.QuestionNumber === QuestionNumber
         ? {
@@ -95,6 +79,7 @@ export default function TestPage() {
         : q
     );
     setcutanswer(updateddata);
+    console.log(updateddata);
         }
 
   function markshadow() {
@@ -107,98 +92,13 @@ export default function TestPage() {
     markshadow();
    }
 
-//   const fetchApi = () => {
-//     setloader(true)
-//     getQue({ testid,assignedTestId }).then((res) => {
-//       if (res.error) return console.log("testerror", res.error);
-//       console.log(res);
-//       setdata(res.data.data.answer.subjects)
-//       setSeconds(res.data.data.answer.subjects[sectionindex].timer*60)
-//       setSectionDetails(res.data.data.answer.subjects[sectionindex])
-//       setInfo(res.data.data.answer.answer[sectionindex]);
-//       let dataofque, newData,cutdata;
-//       dataofque = res.data.data.answer.answer[sectionindex];
-//       newData = dataofque.map((item) => ({
-//         QuestionType: item.QuestionType,
-//         QuestionNumber: item.QuestionNumber,
-//         ResponseAnswer: "",
-//         responseTime: "10",
-//       }));
-//       cutdata = dataofque.map((item) => ({
-//         QuestionNumber:item.QuestionNumber,
-//         markcut:new Array(4).fill(0)
-//       }));
-//       let markr=dataofque.map((item) => ({
-//         QuestionNumber:item.QuestionNumber,
-//         review:false
-//       }));
-//       setmarkreview(markr)
-//       setAnswers(newData);
-//       setcutanswer(cutdata)
-//       setloader(false)
-//     });
-//   };
-
-
-
   let handle = () => {
     setIndex(index + 1);
   };
 
-
   let prev = () => {
     setIndex(index - 1);
   };
-
-//   useEffect(()=>{
-    
-//     setSeconds(data.length>0?data[sectionindex].timer*60:100)
-    
-//   },[instructionpage])
-
-  function next_section() {
-    setsectionindex(sectionindex + 1);
-  }
-
-  
-//   useEffect(() => {
-//     if (seconds <= 0) {
-//       return handleSubmitSection();
-//     }
-
-//     const interval = setInterval(() => {
-//       setSeconds(prevSeconds => prevSeconds - 1);
-//     }, 1000);
-
-//     return () => clearInterval(interval);
-//   }, [seconds]);
-
-//   const handleSubmitSection = () => {
-//     if(sectionindex<data.length){
-//     //id of test
-//     var submitId = "64fb1f5c68528c79b20b45dd";
-//     const response = answers;
-//     let body = {
-//       submitId,
-//       reqbody: {
-//         sectionName: data[sectionindex]?.name,
-//         response: response,
-//       },
-//     };
-//     submitSection(body).then((res) => {
-//       if (res.error) {
-//         return console.log(res.error);
-//       }
-//       console.log(res.data);
-//     });
-//     console.log(data.length);
-//     setsectionindex(sectionindex + 1);
-//     setIndex(0)
-//     if(toggle2)
-//     tog2()
-//     }
-//   };
-
 
   function  markre(QuestionNumber) {
     const updatedanswer = markreview.map((q) =>
@@ -211,13 +111,6 @@ export default function TestPage() {
     );
     setmarkreview(updatedanswer);
   }
-
-//   useEffect(() => {
-//     fetchApi();
-//   }, [sectionindex]);
-
-
-
 //new code
 
 const tempsubjects = [
@@ -351,7 +244,6 @@ const tempsubjects = [
             setAnswers(answer.map(item => ({ ...item, isMarked: false, ResponseAnswer: '', responseTime: 0 })))
          })
    }
-   // console.log(id)
 
    const fetchSections = () => {
       getSections({ id: id })
@@ -366,7 +258,7 @@ const tempsubjects = [
             res.data.data.subjects.subjects.map(item => {
                duration += item.timer
             })
-            // console.log('date', new Date(res.data.data.subjects.createdAt));
+            
             setTestHeaderDetails(prev => ({
                ...prev,
                // duration,
@@ -404,15 +296,6 @@ const tempsubjects = [
             console.log('CONTINUE', res.data.data)
            setanswer_check(res.data.data);
            setInfo(res.data.data.answer)
-
-            // console.log('isUnlimited', isUnlimited);
-            // let completedIds = res.data.data.completed.map(item => item._id)
-
-            // let inComplete = subjects.filter(sub => !completedIds.includes(sub._id))
-            // console.log('subjects', subjects)
-            // console.log('subjectsRec', subjectsRec)
-            // console.log('inComplete', inComplete)
-
             const { startTime, endTime, sectionName, completed, answer, submitId, backupResponse } = res.data.data
             if (completed !== undefined) {
                setCompletedSubjects(completed)
@@ -426,30 +309,7 @@ const tempsubjects = [
                setTestStarted(true)
                setSubmitId(submitId)
 
-              //  setAnswers(answer.map((item, idx) => {
-              //     if (backupResponse !== undefined && backupResponse.length > 0) {
-              //        return {
-              //           ...item, isMarked: false, responseTime: 0,
-              //           ResponseAnswer: backupResponse[idx].ResponseAnswer
-              //        }
-              //     } else {
-              //        return {
-              //           ...item, isMarked: false, ResponseAnswer: '',
-              //           responseTime: 0
-              //        }
-              //     }
-              //  }))
-
                if (setResponsesFromStorage === true) {
-                  // let savedAnswers = JSON.parse(localStorage.getItem('answers'))
-                  // let savedAssignedTestId = localStorage.getItem('assignedTestId')
-                  // if (!savedAnswers) return
-                  // if (savedAnswers === null || savedAnswers === undefined) return
-                  // if (savedAnswers.length === 0) return
-                  // if (savedAssignedTestId !== assignedTestId) return
-                  // console.log('savedAnswers', savedAnswers);
-                  // setAnswers(savedAnswers)
-                  // console.log('savedAnswers2', localStorage.getItem('answers'));
                }
             } else {
                setTestStarted(false)
@@ -468,13 +328,12 @@ const tempsubjects = [
                   }
                })
             })
-
          })
    }
 
    useEffect(()=>{
     console.log('info',info);
-   if(info!=null){
+   if(info!=null&&info.length>0){
     let dataofque, newData,cutdata;
     dataofque = info
     newData = dataofque.map((item) => ({
@@ -498,7 +357,6 @@ const tempsubjects = [
     setloader(false);
    }
    else {
-    console.log(sectionDetails[answer_check?.completed.length==0?0:answer_check?.completed.length]);
 setActiveSection(sectionDetails[answer_check?.completed.length==0?0:answer_check?.completed.length]) 
 
 }
@@ -582,6 +440,7 @@ useEffect(()=>{
       // console.log(answers);
       setloader(true)
       setToggle2(false)
+      setbackground(false)
       setIndex(0)
       setsectionindex(answer_check?.completed.length==0?1:answer_check?.completed.length)
       const response = answers.map(item => {
@@ -596,7 +455,7 @@ useEffect(()=>{
       let body = {
          submitId,
          reqbody: {
-            sectionName: sectionDetails[answer_check?.completed.length].name,
+            sectionName: sectionDetails[answer_check?.completed.length]?.name,
             response: response
          }
       }
@@ -617,22 +476,22 @@ useEffect(()=>{
    }
 
 
-  //  useEffect(() => {
-  //     if (!answers) return
-  //     if (answers === null || answers === undefined) return
-  //     if (answers.length === 0) return
-  //     // console.log('setans', answers);
-  //     addBackupResponse({ id: assignedTestId, reqbody: { backupResponse: answers } })
-  //        .then(res => {
-  //           if (res.error) {
-  //              console.log(res.error);
-  //           } else {
-  //              // console.log(res.data);
-  //           }
-  //        })
-  //     // localStorage.setItem('assignedTestId', assignedTestId)
-  //     // localStorage.setItem('answers', JSON.stringify(answers))
-  //  }, [answers])
+   useEffect(() => {
+      if (!answers) return
+      if (answers === null || answers === undefined) return
+      if (answers.length === 0) return
+      // console.log('setans', answers);
+      addBackupResponse({ id: assignedTestId, reqbody: { backupResponse: answers } })
+         .then(res => {
+            if (res.error) {
+               console.log(res.error);
+            } else {
+               // console.log(res.data);
+            }
+         })
+      // localStorage.setItem('assignedTestId', assignedTestId)
+      // localStorage.setItem('answers', JSON.stringify(answers))
+   }, [answers])
 
 
    
@@ -649,7 +508,7 @@ const [pages,setPage]=useState(arr)
      {loader&&sectionindex==0? <LoaderPage/>
      :
      instructionpage?
-     <TestInstructionPage setisntructionpage={setisntructionpage}/> 
+     <Testinstruction_2 testHeaderDetails={testHeaderDetails} activeSection={activeSection} TestDetail={TestDetail} completedSectionIds={completedSectionIds} testStarted={testStarted} subjects={subjects} setisntructionpage={setisntructionpage}/> 
      :loader&&sectionindex>0?
      <SectionLoader 
      size={sectionDetails.length}
@@ -658,9 +517,16 @@ const [pages,setPage]=useState(arr)
      />:
      <>
       <Navbar  cal={cal}
-      setCal={setCal} seconds={seconds} sectionDetails={sectionDetails[answer_check?.completed.length]}  />
+      details={sectionDetails[answer_check?.completed.length]?.description}
+      annotation_check={sectionDetails[answer_check?.completed.length]?.annotation=='yes'?true:false}
+      calculator_check={sectionDetails[answer_check?.completed.length]?.calculator=='yes'?true:false}
+      setCal={setCal} secnd={timer} handleSubmitSection={handleSubmitSection} sectionDetails={sectionDetails[answer_check?.completed.length]}  />
       <Que
+      annotation_check={sectionDetails[answer_check?.completed.length]?.annotation=='yes'?true:false}
+      calculator_check={sectionDetails[answer_check?.completed.length]?.calculator=='yes'?true:false}
+      cross_O_check={sectionDetails[answer_check?.completed.length]?.crossOption=='yes'?true:false}
       cal={cal}
+      setAnswers={setAnswers}
       setCal={setCal}
       answers={answers}
         markreview={markreview}
@@ -679,6 +545,7 @@ const [pages,setPage]=useState(arr)
         mark={pages}
       />
       <Foot
+      answers={answers}
       cal={cal}
       setCal={setCal}
       name={testHeaderDetails.name}
@@ -687,7 +554,6 @@ const [pages,setPage]=useState(arr)
       cutcheck={cutcheck}
       tog2={tog2}
       toggle2={toggle2}
-        next_section={next_section}
         markshadow={markshadow}
         handleSubmitSection={handleSubmitSection}
         next={handle}

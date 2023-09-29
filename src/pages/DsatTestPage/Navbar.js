@@ -3,7 +3,19 @@ import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsisVertical,faPen,faAngleDown,faCalculator} from '@fortawesome/free-solid-svg-icons';
 
-export default function Navbar({seconds,sectionDetails,cal,setCal}) {
+export default function Navbar({secnd,details,handleSubmitSection,calculator_check,annotation_check,sectionDetails,cal,setCal}) {
+const [seconds, setSeconds] = useState(secnd)
+  useEffect(() => {
+    if (seconds <= 0) {
+      return handleSubmitSection();
+    }
+
+    const interval = setInterval(() => {
+      setSeconds(prevSeconds => prevSeconds - 1);
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [seconds]);
     const minutes = Math.floor(seconds / 60);
   const second = seconds % 60;
     const [tog,setTog] =useState(false)
@@ -33,7 +45,7 @@ export default function Navbar({seconds,sectionDetails,cal,setCal}) {
         </div>
         {
         tog?<div style={w}  className=' z-10 text-base absolute bg-white shadow-lg shadow-gray-400  top-20 left-10 p-8'>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis consectetur, recusandae fuga nulla enim blanditiis officia unde perferendis quam accusantium deleniti odit exercitationem fugiat est, id, eveniet reiciendis repellendus accusamus.</p>
+            <p>{details}</p>
         </div>:null
         }
         </div>
@@ -45,19 +57,22 @@ export default function Navbar({seconds,sectionDetails,cal,setCal}) {
                 <button className='border rounded-xl border-black hover:border-1 px-3' >Hide</button>
             </div>
         </div>
-        <div  className=' flex pt-8 w-1/3 justify-end text-sm '>
-            <div className=' cursor-pointer' onClick={handleCal} >
-            <FontAwesomeIcon icon={faCalculator} className=' absolute top-8 right-48 ' />
+        <div  className=' flex w-1/3 justify-end text-sm '>
+        {calculator_check?<div className='flex flex-col h-full items-center justify-center cursor-pointer' onClick={handleCal} >       
+            <FontAwesomeIcon icon={faCalculator} className='' />
                 <h4>Calculator</h4>
             </div>
-            <div className=' px-3 '>
-            <FontAwesomeIcon icon={faPen} className=' absolute top-8  right-28' />  
+            :null}
+            {annotation_check?
+            <div className='flex flex-col items-center h-full justify-center px-3 '>
+            <FontAwesomeIcon icon={faPen} className='' />  
             <h4>Annotate</h4>
             </div>
-            <div className=' '>
-            <FontAwesomeIcon className=' right-16 top-8 absolute' icon={faEllipsisVertical} />
+            :null}
+            {/* <div className='flex flex-col items-center h-full justify-center '>
+            <FontAwesomeIcon className='' icon={faEllipsisVertical} />
             <button>More</button>
-            </div>
+            </div> */}
         </div>
             <FontAwesomeIcon icon="fa-sharp fa-regular fa-circle-ellipsis-vertical" style={{color: "#202122",}} />
       </nav>

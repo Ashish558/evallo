@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {useState} from 'react'
 export default function Foot(props) {
     // const {next,prev  ,ind,s,data ,set} =props  
-    const {next,prev ,mark,name ,i,s,data ,set,handleSubmitSection,tog2,toggle2,markreview} =props  
+    const {next,prev ,mark,name ,i,s,data ,set,answers,handleSubmitSection,tog2,toggle2,markreview} =props  
     const [toggle,setToggle] =useState(false)
     let click =(e)=>
     {
@@ -24,69 +24,65 @@ export default function Foot(props) {
     {toggle2?
     <section className=' bg-white absolute  shadow-md shadow-gray-400 top-[16%]  right-[10%] px-12 pt-2 h-[25rem] w-[80%]'>
     <h3 className=' text-center text-lg py-3 font-semibold'>Section 1 : Reading and Writing Questions    </h3>
-    <FontAwesomeIcon onClick={tog2} icon={faXmark} className=' absolute right-7 top-6' />
      <hr className=' border border-gray-400 border-t-0' />
     <div className=' py-3 flex text-center align-middle justify-evenly'>
-        <div>
-        <FontAwesomeIcon  icon={faLocationDot} className='' />
-        <span>Current</span>
-        </div>
-        <div>
-        <FontAwesomeIcon icon={faSquare} className='' />
-        <span>Unanswered</span>
-        </div>
-        <div>
-        <FontAwesomeIcon icon={faBookmark} className='' />
-        <span>For review</span>  
-        </div>
+            <div>
+            <FontAwesomeIcon icon={faSquare} color='white' className='border-black border rounded mr-2 ' />
+            <span>Unanswered</span>
+            </div>
+            <div>
+            <FontAwesomeIcon icon={faBookmark} color='yellow' className='mr-2' />
+            <span>For review</span>  
+            </div>
     </div>
 <hr className=' border border-gray-400 border-t-0' />
      <div className=' pt-8 flex justify-center'>
         {
-            data.map((e,i)=>
+            data.map((e,ind)=>
             {
-                return <span onClick={click}  className= {`text-blue-700 font-semibold border border-dotted border-black py-2 px-3 mx-2 ${markreview[i].review && 'bg-yellow-400'}`}>{i+1}</span>
+                return <span onClick={click}  className= {`text-black font-semibold border border-dotted border-black py-2 px-3 mx-2 ${ answers[ind].ResponseAnswer!=''?'text-white bg-blue-600':null} ${markreview[ind]?.review && 'bg-yellow-400'}`}>{ind+1}</span>
             })
         }
-        </div> 
-      <div className='flex mt-[10rem] justify-center'>
-        <button className='text-blue-700 font-semibold border border-blue-700 px-6 py-1  rounded-2xl'> Go to review page </button>
-        </div>  
+        </div>
     </section>
     :null}
     <div className=' '>
         {
          toggle?   
-         <section className=' bg-white  absolute  shadow-md shadow-gray-400 bottom-20  right-[31.5rem] px-12 pt-2 h-64'>
+         <section className=' bg-white  absolute  shadow-md shadow-gray-400 bottom-20  right-[30rem] px-12 pt-2 h-64'>
         <h3 className=' text-center text-lg py-3 font-semibold'>Section 1 : Reading and Writing Questions    </h3>
         <FontAwesomeIcon onClick={tog} icon={faXmark} className=' absolute right-7 top-6' />
          <hr className=' border border-gray-400 border-t-0' />
         <div className=' py-3 flex text-center align-middle justify-evenly'>
             <div>
-            <FontAwesomeIcon  icon={faLocationDot} className='' />
+            <FontAwesomeIcon icon={faSquare} color='green' className='border-black rounded mr-2 ' />
             <span>Current</span>
             </div>
             <div>
-            <FontAwesomeIcon icon={faSquare} className=' ' />
+            <FontAwesomeIcon icon={faSquare} color='white' className='border-black border rounded mr-2 ' />
             <span>Unanswered</span>
             </div>
             <div>
-            <FontAwesomeIcon icon={faBookmark} className='text-red-700 ' />
+            <FontAwesomeIcon icon={faBookmark} color='yellow' className='mr-2' />
             <span>For review</span>  
             </div>
         </div>
     <hr className=' border border-gray-400 border-t-0' />
          <div className=' pt-8'>
             {
-                data?.map((e,i)=>
+                data?.map((e,ind)=>
                 {
-                    return <span onClick={click}  className={` relative text-blue-700 font-semibold border border-dotted border-black py-2 px-3 mx-2 ${markreview[i].review && 'bg-yellow-400'}`}>
+                    return <span onClick={click}  className={` relative text-black font-semibold border border-dotted border-black py-2 px-3 mx-2 ${i==ind+1? 'text-white bg-green-600':answers[ind].ResponseAnswer!=''?'text-white bg-blue-600':null} ${markreview[ind].review && 'bg-yellow-400'}`}>
             {mark[i+1]?<FontAwesomeIcon icon={faBookmark} className={` absolute top-0 text-red-700 `} />:null}
-                      {i+1}</span>
+                      {ind+1}</span>
                 })
             }
             </div> 
-          <div className=' left-40 text-blue-700 font-semibold flex justify-center items-center mx-16 px-6 border border-blue-700 mt-8 py-1  rounded-2xl'>
+          <div className=' left-40 text-blue-700 font-semibold flex justify-center items-center mx-16 px-6 border border-blue-700 mt-8 py-1  rounded-2xl' onClick={()=>{
+            tog()
+            tog2();
+
+          }}>
             <button> Go to review page </button>
             </div>  
         </section>:null

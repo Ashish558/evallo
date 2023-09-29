@@ -718,7 +718,7 @@ export default function TableItem({
                       onClick={() =>{
                         const indexx=testtype.findIndex(obj=>obj.testId===item.testId);
                         testtype[indexx].testtype=='DSAT'?
-                        navigate(`/testpage/${item.testId}/${item.assignedTestId}?name=${item.studentId.firstName+' '+item.studentId.lastName}`)
+                        navigate(`/testpage/${item.testId}/${item.assignedTestId}`)
                         :
                         navigate(
                           `/all-tests/start-section/${item.testId}/${item.assignedTestId}`
@@ -734,7 +734,7 @@ export default function TableItem({
                       onClick={() =>{
                         const indexx=testtype.findIndex(obj=>obj.testId===item.testId);
                         testtype[indexx].testtype=='DSAT'?
-                        navigate(`/testpage/${item.testId}/${item.assignedTestId}?name=${item.studentId.firstName+' '+item.studentId.lastName}`)
+                        navigate(`/testpage/${item.testId}/${item.assignedTestId}`)
                         :
                         navigate(
                           `/all-tests/start-section/${item.testId}/${item.assignedTestId}`
