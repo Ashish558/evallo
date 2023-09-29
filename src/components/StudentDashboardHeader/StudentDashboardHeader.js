@@ -134,7 +134,7 @@ const StudentDashboardHeader = () => {
           </div>
         </div>
 
-        <div className="w-[27.52vw] mx-auto h-[250px]">
+        <div className="w-[25vw] mx-auto h-[250px]">
           <p className=" text-xl text-[#26435F] font-semibold">
             Assigned Tutors
           </p>
