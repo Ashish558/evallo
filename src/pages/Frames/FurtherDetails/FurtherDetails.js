@@ -7,26 +7,25 @@ import style from "./styles.module.css";
 import SCheckbox from "../../../components/CCheckbox/SCheckbox";
 import InputSelectNew from "../../../components/InputSelectNew/InputSelectNew";
 
-export default function
-  FurtherDetails({
-    setFrames,
-    setcurrentStep,
-    testPreparations,
-    setTestPreparations,
+export default function FurtherDetails({
+  setFrames,
+  setcurrentStep,
+  testPreparations,
+  setTestPreparations,
 
-    coaching,
-    setCoaching,
-    tutoring,
-    setTutoring,
-    setValues,
-    values,
-    studentserved,
-    setStudentserved,
-    setInstructions,
-    instructions,
-    paymentOptions,
-    setPaymentOptions,
-  }) {
+  coaching,
+  setCoaching,
+  tutoring,
+  setTutoring,
+  setValues,
+  values,
+  studentserved,
+  setStudentserved,
+  setInstructions,
+  instructions,
+  paymentOptions,
+  setPaymentOptions,
+}) {
   const [disabled, setDisabled] = useState(false);
 
   const handleCheckboxChange = (text, arr, setValue) => {
@@ -161,6 +160,15 @@ export default function
                         autoFocus
                         className="ml-3 text-[13px] text-[#7E7E7E] outline-[#DCDCDD] border-[1.5px] border-[#DCDCDD] rounded-[4px] bg-[#F5F8FA]  w-32"
                         type="text"
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter") {
+                            handleOthersField(
+                              e,
+                              testPreparations,
+                              setTestPreparations
+                            );
+                          }
+                        }}
                         onBlur={(e) => {
                           handleOthersField(
                             e,
@@ -185,7 +193,6 @@ export default function
               {tutoring?.map((item, idx) => {
                 return (
                   <div key={idx} className="flex items-center mb-3 mr-6">
-
                     <SCheckbox
                       checked={item.checked}
                       className="scale-[0.7]"
@@ -206,6 +213,11 @@ export default function
                         autoFocus
                         className="ml-3 text-[13px] text-[#7E7E7E] outline-[#DCDCDD] border-[1.5px] border-[#DCDCDD] rounded-[4px] bg-[#F5F8FA]  w-32"
                         type="text"
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter") {
+                            handleOthersField(e, tutoring, setTutoring);
+                          }
+                        }}
                         onBlur={(e) => {
                           handleOthersField(e, tutoring, setTutoring);
                         }}
@@ -247,6 +259,11 @@ export default function
                         autoFocus
                         className="ml-3 text-[13px] text-[#7E7E7E] outline-[#DCDCDD] border-[1.5px] border-[#DCDCDD] rounded-[4px] bg-[#F5F8FA]  w-32"
                         type="text"
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter") {
+                            handleOthersField(e, coaching, setCoaching);
+                          }
+                        }}
                         onBlur={(e) => {
                           handleOthersField(e, coaching, setCoaching);
                         }}
@@ -267,22 +284,29 @@ export default function
         <div className="grid grid-cols-3 font-medium text-[#26435F] mb-6">
           {instructions?.map((item, idx) => {
             return (
-              <div
-                key={idx}
-                className="flex items-center mb-3 mr-6"
-
-              >
+              <div key={idx} className="flex items-center mb-3 mr-6">
                 <SCheckbox
                   checked={item.checked}
                   className="scale-[0.7]"
                   onChange={() =>
-                    handleCheckboxChange(item.text, instructions, setInstructions)
+                    handleCheckboxChange(
+                      item.text,
+                      instructions,
+                      setInstructions
+                    )
                   }
                 />
 
-                <p onClick={() =>
-                  handleCheckboxChange(item.text, instructions, setInstructions)
-                } className="font-medium  text-[13px] opacity-90 leading-5">
+                <p
+                  onClick={() =>
+                    handleCheckboxChange(
+                      item.text,
+                      instructions,
+                      setInstructions
+                    )
+                  }
+                  className="font-medium  text-[13px] opacity-90 leading-5"
+                >
                   {item.text}
                 </p>
               </div>
@@ -296,11 +320,7 @@ export default function
         <div className="grid grid-cols-3 font-medium text-[#26435F]">
           {studentserved?.map((item, idx) => {
             return (
-              <div
-                key={idx}
-                className="flex items-center mb-3 mr-6"
-
-              >
+              <div key={idx} className="flex items-center mb-3 mr-6">
                 <SCheckbox
                   checked={item.checked}
                   className="scale-[0.7]"
@@ -312,13 +332,16 @@ export default function
                     )
                   }
                 />
-                <p onClick={() =>
-                  handleCheckboxChange(
-                    item.text,
-                    studentserved,
-                    setStudentserved
-                  )
-                } className="font-medium  text-[13px] opacity-90 leading-5">
+                <p
+                  onClick={() =>
+                    handleCheckboxChange(
+                      item.text,
+                      studentserved,
+                      setStudentserved
+                    )
+                  }
+                  className="font-medium  text-[13px] opacity-90 leading-5"
+                >
                   {item.text}
                 </p>
               </div>
@@ -340,10 +363,8 @@ export default function
           labelClassname="text-[#26435F] font-bold  mb-1 text-sm "
           inputContainerClassName="py-1 h-[44.9px] text-sm border  border-[#D0D5DD] my-0 mt-[-2px] rounded-[5px]"
           inputClassName="ml-80 "
-
           onChange={(e) => handlePaymentTypeChange(e)}
         />
-
       </div>
 
       <div className="flex items-center mt-8 justify-between">
@@ -358,7 +379,7 @@ export default function
            
           `}
           onClick={() => handleSubmit()}
-        // disabled={disabled}
+          // disabled={disabled}
         />
       </div>
     </div>

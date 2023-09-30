@@ -90,10 +90,41 @@ const Dashboard = () => {
       return arr;
     });
   };
+  const sortByString = (key) => {
+    setUserData((prev) => {
+      let arr = [...prev];
+      arr = arr.sort(function (a, b) {
+        if(plus && plus[key]){
+        if (a[key] < b[key]) {
+          return -1;
+        }
+        if (a[key] > b[key]) {
+          return 1;
+        }
+        return 0;
+      }
+      else {
+        if (a[key] < b[key]) {
+          return 1;
+        }
+        if (a[key] > b[key]) {
+          return -1;
+        }
+        return 0;
+      }
+      });
+      setPlus({
+        ...plus,
+      [key]:!plus[key]
+      })
+      return arr;
+    });
+  };
   const sortByType = () => {
     setUserData((prev) => {
       let arr = [...prev];
       arr = arr.sort(function (a, b) {
+        if(plus && plus["role"]){
         if (a.role < b.role) {
           return -1;
         }
@@ -101,55 +132,88 @@ const Dashboard = () => {
           return 1;
         }
         return 0;
+      }
+      else {
+        if (a.role < b.role) {
+          return 1;
+        }
+        if (a.role > b.role) {
+          return -1;
+        }
+        return 0;
+      }
       });
-
+    
+   
       return arr;
     });
+    setPlus({
+      ...plus,
+      role:!plus?.role
+    })
   };
+  const [plus,setPlus]=useState({})
   const sortByDate = () => {
     setUserData((prev) => {
       let arr = [...prev];
       arr = arr.sort(function (a, b) {
-        return new Date(b.lastSignUp) - new Date(a.lastSignUp);
+        if(plus && !plus["lastSignUp"]){
+          return new Date(b.lastSignUp) - new Date(a.lastSignUp);
+        }
+        return new Date(a.lastSignUp) - new Date(b.lastSignUp);
+
       });
+
+
       return arr;
     });
+    setPlus({
+      ...plus,
+      lastSignUp:!plus?.lastSignUp
+    })
   };
   const latestSignUpHeaders = [
     {
       id: 1,
       text: "Full Name",
       className: "text-left pl-8",
-      onCick: sortByName,
+      onCick: ()=>sortByString("firstName"),
     },
     {
       id: 2,
       text: "User Type",
-      onCick: sortByType,
+      onCick: ()=>sortByString("role"),
     },
     {
       id: 3,
       text: "Email",
+      onCick: ()=>sortByString("email"),
     },
     {
       id: 4,
       text: "Phone",
+      onCick: ()=>sortByString("phone"),
     },
     {
       id: 5,
       text: "Assigned Tutor",
+      onCick: ()=>sortByString("userStatus"),
     },
     {
       id: 6,
       text: "Lead Status",
+      onCick: ()=>sortByString("userStatus"),
+
     },
     {
       id: 7,
       text: "Tutor Status",
+      onCick: ()=>sortByString("assiginedTutors"),
     },
     {
       id: 8,
       text: "Services",
+      onCick: ()=>sortByString("specialization"),
     },
     {
       id: 9,
@@ -157,6 +221,7 @@ const Dashboard = () => {
       onCick: sortByDate,
     },
   ];
+  console.log({userData})
   const convertDateToRange = (startDate) => {
     let startD = startDate.split("-")[0];
 
