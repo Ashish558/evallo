@@ -1,4 +1,3 @@
-
 import React, { useEffect, useRef, useState } from "react";
 import PrimaryButton from "../../components/Buttons/PrimaryButton";
 import EditIcon from "../../assets/icons/edit-white.svg";
@@ -10,7 +9,7 @@ import InputField from "../../components/InputField/inputField";
 import Modal from "../../components/Modal/Modal";
 import questionMark from "../../assets/images/Vector (6).svg";
 import ToggleBar from "../../components/SettingsCard/ToogleBar";
-import down from "../../assets/YIcons/Vectordown2.svg"
+import down from "../../assets/YIcons/Vectordown2.svg";
 import { useLazyGetSettingsQuery } from "../../app/services/session";
 import {
   useGetAllPermissionQuery,
@@ -95,6 +94,7 @@ export default function SuperAdminSettings() {
   const [tagModalActive, setTagModalActive] = useState(false);
   const [addCodeModalActive, setAddCodeModalActive] = useState(false);
   const [subModalData, setSubModalData] = useState(subModalInitialState);
+
   const [addTestModalActive, setAddTestModalActive] = useState(false);
   const [saveLoading, setSaveLoading] = useState(false);
   const [fetchS, setFetchS] = useState(false);
@@ -113,22 +113,24 @@ export default function SuperAdminSettings() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [tabs, setTabs] = useState(initialTabs);
   const [activeTab, setActiveTab] = useState(1);
-  const [selectedSubscriptionData, setSelectedSubscriptionData] = useState({
-    code: "",
-    expiry: "",
-    tests: [],
-  });
   const [adminModalDetails, setAdminModalDetails] = useState({
     firstName: "",
     lastName: "",
     email: "",
     phone: "",
   });
+  const [selectedSubscriptionData, setSelectedSubscriptionData] = useState({
+    code: "",
+    expiry: "",
+    tests: [],
+  });
+
   const [updatedSubscriptionData, setUpdatedSubscriptionData] = useState({
     code: "",
     expiry: "",
     tests: [],
   });
+
   const user = useSelector((state) => state.user);
 
   useEffect(() => {
@@ -173,7 +175,6 @@ export default function SuperAdminSettings() {
   const [fetchedPermissions, setThePermission] = useState([]);
   const dispatch = useDispatch();
 
-
   const handlePermissionOption = (value, key) => {
     let nvalue = value;
     if (!isNaN(Number(value))) {
@@ -186,7 +187,7 @@ export default function SuperAdminSettings() {
       return { ...per };
     });
 
-    setThePermission(arr)
+    setThePermission(arr);
     let updatedSetting = {
       permissions: arr,
     };
@@ -201,8 +202,7 @@ export default function SuperAdminSettings() {
       return { ...per };
     });
 
-
-    setThePermission(arr)
+    setThePermission(arr);
 
     let updatedSetting = {
       permissions: arr,
@@ -370,6 +370,141 @@ export default function SuperAdminSettings() {
       });
   };
 
+  /* new */
+  const [addServiceModalActive, setAddServiceModalActive] = useState(false);
+  const [addSessionModalActive, setAddSessionModalActive] = useState(false);
+  const subModalInitialServiceState = {
+    service: "",
+    specialization: [],
+    editing: false,
+  };
+  const subModalInitialSessionState = {
+    heading: "",
+    items: [],
+    editing: false,
+  };
+
+  const [subModalServiceData, setSubModalServiceData] = useState(
+    subModalInitialServiceState
+  );
+  const [subModalSessionData, setSubModalSessionData] = useState(
+    subModalInitialSessionState
+  );
+  const [selectedSessionData, setSelectedSessionData] = useState({
+    heading: "",
+    items: [],
+    // editing: false,
+  });
+
+  const [updatedSessionData, setUpdatedSessionData] = useState({
+    heading: "",
+    items: [],
+    //editing: false,
+  });
+  const [selectedServiceData, setSelectedServiceData] = useState({
+    service: "",
+    specialization: [],
+    // editing: false,
+  });
+
+  const [updatedServiceData, setUpdatedServiceData] = useState({
+    service: "",
+    specialization: [],
+    // editing: false,
+  });
+
+  useEffect(() => {
+    setUpdatedSessionData(selectedSessionData);
+  }, [selectedSessionData]);
+  useEffect(() => {
+    setUpdatedServiceData(selectedServiceData);
+  }, [selectedServiceData]);
+
+  const onEditService = (code) => {
+    setSubModalServiceData({
+      ...code,
+
+      editing: true,
+    });
+    setSelectedServiceData(code);
+    setAddServiceModalActive(true);
+  };
+  const onEditSession = (code) => {
+    console.log("session", code);
+    setSubModalSessionData({
+      ...code,
+      editing: true,
+    });
+    setSelectedSessionData(code);
+    setAddSessionModalActive(true);
+  };
+  const handleServicePause = (item) => {
+    console.log({ item });
+    let key = item?._id;
+    let tempSettings = { ...settingsData };
+
+    let updated = servicesAndSpecialization.map((serv) => {
+      if (serv._id === key) {
+        return {
+          ...serv,
+          pause: !serv?.pause,
+        };
+      } else {
+        return { ...serv };
+      }
+    });
+    console.log("upper", updated);
+    let updatedSetting = {
+      servicesAndSpecialization: updated,
+    };
+    updateAndFetchsettings(updatedSetting);
+  };
+
+  const handleAddServiceName = (text, key) => {
+    let tempSettings = { ...settingsData };
+
+    let updated = servicesAndSpecialization.map((serv) => {
+      if (serv._id === key) {
+        return {
+          ...serv,
+          service: text,
+        };
+      } else {
+        return { ...serv };
+      }
+    });
+    //console.log("upper",updated)
+    let updatedSetting = {
+      servicesAndSpecialization: updated,
+    };
+    updateAndFetchsettings(updatedSetting);
+    setAddServiceModalActive(false);
+    setSubModalServiceData(subModalInitialServiceState);
+    // console.log('updatedSetting', updatedSetting)
+  };
+  const handleAddSessionName = (text, key) => {
+    let tempSettings = { ...settingsData };
+
+    let updated = sessionTags.map((serv) => {
+      if (serv._id === key) {
+        return {
+          ...serv,
+          heading: text,
+        };
+      } else {
+        return { ...serv };
+      }
+    });
+    //console.log("upper",updated)
+    let updatedSetting = {
+      sessionTags: updated,
+    };
+    updateAndFetchsettings(updatedSetting);
+    setAddSessionModalActive(false);
+    setSubModalSessionData(subModalInitialSessionState);
+    // console.log('updatedSetting', updatedSetting)
+  };
+
   const submitImageModal = (e) => {
     e.preventDefault();
     // console.log(tagText)
@@ -490,6 +625,8 @@ export default function SuperAdminSettings() {
 
     let updated = servicesAndSpecialization.map((serv) => {
       if (serv.service === key) {
+        setSubModalServiceData((prev)=>{return {...prev,specialization:[...prev.specialization,text]}})
+     
         return {
           ...serv,
           specialization: [...serv.specialization, text],
@@ -512,6 +649,7 @@ export default function SuperAdminSettings() {
     let updated = servicesAndSpecialization.map((serv) => {
       if (serv.service === service) {
         let updatedSpec = serv.specialization.filter((spec) => spec !== text);
+        setSubModalServiceData({ ...serv, specialization: updatedSpec })
         return { ...serv, specialization: updatedSpec };
       } else {
         return { ...serv };
@@ -585,7 +723,7 @@ export default function SuperAdminSettings() {
   }, [searchedTest, allTestData]);
 
   const fetchTests = () => {
-    axios.get(`${BASE_URL}api/test`).then((res) => {
+    axios.get(`${BASE_URL}api/test`,{ headers: getAuthHeader() }).then((res) => {
       if (res.data.data.test) {
         let arr = res.data.data.test.map((item) => {
           return {
@@ -598,10 +736,12 @@ export default function SuperAdminSettings() {
       }
     });
   };
+console.log("tests",allTestData,filteredTests)
 
   useEffect(() => {
     fetchTests();
   }, []);
+
   const handleAddTest = (code) => {
     console.log(code);
     setSelectedSubscriptionData(code);
@@ -746,6 +886,7 @@ export default function SuperAdminSettings() {
   };
 
   const onRemoveSessionTag = (itemToRemove) => {
+    
     let updated = settingsData.sessionTags.filter(
       (item) => item._id !== itemToRemove._id
     );
@@ -760,6 +901,8 @@ export default function SuperAdminSettings() {
 
     let updated = sessionTags.map((serv) => {
       if (serv.heading === key) {
+        setSubModalSessionData((prev)=>{return {...prev,items:[...prev.items,text]}})
+     
         return {
           ...serv,
           items: [...serv.items, text],
@@ -797,6 +940,7 @@ export default function SuperAdminSettings() {
     let updated = sessionTags.map((serv) => {
       if (serv.heading === heading) {
         let updatedSpec = serv.items.filter((spec) => spec !== text);
+        setSubModalSessionData({ ...serv, items: updatedSpec})
         return { ...serv, items: updatedSpec };
       } else {
         return { ...serv };
@@ -829,26 +973,28 @@ export default function SuperAdminSettings() {
     };
     updateAndFetchsettings(body);
   };
-  console.log(organization?.company)
+  console.log(organization?.company);
+
   return (
     <>
       <div className=" bg-lightWhite min-h-screen px-24 pt-[30px] pb-[50px]">
         <p className="text-[#24A3D9]  mb-9 ">
-
-          <span className="font-medium text-lg"> {organization?.company +
-
-            "  >  "} Settings</span>
+          <span className="font-medium text-lg">
+            {" "}
+            {organization?.company + "  >  "} Settings
+          </span>
         </p>
         <div className="flex justify-between items-center mb-[45px]">
           <div className={`${styles.tabsContainer} w-full`}>
             {tabs.map((item, idx) => {
               return (
                 <div
-                  className={`${styles.tab} w-[200px] ${activeTab === idx + 1 ? styles.selectedTab : ""
-                    } cursor-pointer`}
+                  className={`${styles.tab} w-[200px] ${
+                    activeTab === idx + 1 ? styles.selectedTab : ""
+                  } cursor-pointer`}
                   onClick={() => changeTab(idx + 1)}
                 >
-                  <div className={` flex justify-center w-full`} >
+                  <div className={` flex justify-center w-full`}>
                     <div>
                       {activeTab === idx + 1 && (
                         <img src={item.Icon} alt="item-logo" />
@@ -857,10 +1003,14 @@ export default function SuperAdminSettings() {
                         <img src={item.Icon2} alt="item-logo" />
                       )}
                     </div>
-                    <p >{item.name} </p>
+                    <p>{item.name} </p>
                   </div>
                   {activeTab === idx + 1 && (
-                    <img src={ActiveTab} className={styles.activeBgIcon} alt="item-background" />
+                    <img
+                      src={ActiveTab}
+                      className={styles.activeBgIcon}
+                      alt="item-background"
+                    />
                   )}
                 </div>
               );
@@ -902,13 +1052,17 @@ export default function SuperAdminSettings() {
               <div>
                 <InputSelect
                   labelClassname="mb-1"
-                  IconRight={<img
-                    src={down}
-                    className={`${down ?`w-[12px] h-[12px] `:`w-[12px] h-[12px]`}   absolute right-5`}
+                  IconRight={
+                    <img
+                      src={down}
+                      className={`${
+                        down ? `w-[12px] h-[12px] ` : `w-[12px] h-[12px]`
+                      }   absolute right-5`}
                       alt="down-arrow"
-                    />}
+                    />
+                  }
                   inputContainerClassName="shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-[#FFFFFF] w-[20.15625vw]"
-                  placeholder='Select'
+                  placeholder="Select"
                   optionData={timeZones}
                   parentClassName=""
                   label="Default Time Zone"
@@ -918,12 +1072,16 @@ export default function SuperAdminSettings() {
               </div>
               <InputSelect
                 labelClassname="mb-1"
-                 placeholder='Select'
-                IconRight={<img
-                  src={down}
-                  className={`${down ?`w-[12px] h-[12px] `:`w-[12px] h-[12px]`}   absolute right-5`}
+                placeholder="Select"
+                IconRight={
+                  <img
+                    src={down}
+                    className={`${
+                      down ? `w-[12px] h-[12px] ` : `w-[12px] h-[12px]`
+                    }   absolute right-5`}
                     alt="down-arrow"
-                  />}
+                  />
+                }
                 inputContainerClassName="shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-[#FFFFFF] w-[20.15625vw]"
                 optionData={["dd/mm/yy", "mm/dd/yy", "yy/mm/dd"]}
                 parentClassName=""
@@ -969,15 +1127,16 @@ export default function SuperAdminSettings() {
             <div className="h-[1.25px] bg-[#CBD6E2] mt-[21px] mb-[37px]"></div>
             <SettingsCard
               title=" Manage Referral Codes"
-              className={`${styles["bordered-settings-container"] }`}
+              className={`${styles["bordered-settings-container"]}`}
               body={
                 <div className="max-h-[360px] overflow-auto custom-scroller p-1 scrollbar-vertical ">
                   {subscriptionCode !== undefined &&
                     subscriptionCode.map((subscription, i) => {
                       return (
-                       
-
-                        <div key={i} className="bg-white p-4  items-center rounded-[5px] shadow-[0px_0px_2.500000476837158px_0px_#00000040] ">
+                        <div
+                          key={i}
+                          className="bg-white p-4 mb-3 items-center rounded-[5px] shadow-[0px_0px_2.500000476837158px_0px_#00000040] "
+                        >
                           <div className="flex items-center justify-between  pr-8 ">
                             <p className="font-medium text-[#24A3D9] ">
                               {subscription.code}
@@ -1002,11 +1161,13 @@ export default function SuperAdminSettings() {
                                 />
                               )} */}
                               <ToggleBar
-                              boxClass="!h-[16px]"
-                                circleColor="bg-[rgba(119,221,119,1)]"
-                                toggle={{ value: 5, key: 'code' }}
-                                onToggle={togglePermissions}
-                              ></ToggleBar>
+                                  boxClass="!h-[16px]"
+                                  toggle={{
+                                    value: !subscription.pause,
+                                    key: "code",
+                                  }}
+                                  onToggle={() => handlePause(subscription)}
+                                ></ToggleBar>
                               <div
                                 className=" flex items-center justify-center  rounded-full cursor-pointer"
                                 onClick={() => onEditCode(subscription)}
@@ -1030,17 +1191,18 @@ export default function SuperAdminSettings() {
                             </div>
                           </div>
                           <div className="flex items-center flex-wrap [&>*]:mb-[18px] ">
-                            {/* <AddTag
+                            <AddTag
                               openModal={true}
                               onAddTag={(code) => handleAddTest(subscription)}
                               keyName={subscription.code}
                               text="Add Tests"
-                            /> */}
+                            />
                             <FilterItems
                               isString={true}
                               onlyItems={true}
                               keyName={subscription.code}
                               items={subscription.tests}
+                              filteredTests={filteredTests}
                               fetchData={true}
                               api="test"
                               onRemoveFilter={onRemoveCodeTest}
@@ -1079,42 +1241,45 @@ export default function SuperAdminSettings() {
                               <p className="font-medium text-[#24A3D9] ">
                                 {service.service}
                               </p>
-                            <div className="flex items-center gap-x-4">
-                            <ToggleBar
-                            
-                                 boxClass="!h-[16px]"
-                                circleColor="bg-[rgba(119,221,119,1)]"
-                                toggle={{ value: 5, key: 'code' }}
-                                onToggle={togglePermissions}
-                              ></ToggleBar>
-                              <div
-                                className=" flex items-center justify-center  rounded-full cursor-pointer"
-                                // onClick={() => onEditService(service)}
-                              >
-                                <img
-                                  src={EditBlueIcon}
-                                  className="w-4"
-                                  alt="edit"
-                                />
+                              <div className="flex items-center gap-x-4">
+                                <ToggleBar
+                                  boxClass="!h-[16px]"
+                                  circleColor="bg-[rgba(119,221,119,1)]"
+                                  t
+                                  toggle={{
+                                    value: !service.pause,
+                                    key: "code",
+                                  }}
+                                  manual={true}
+                                ></ToggleBar>
+                                <div
+                                  className=" flex items-center justify-center  rounded-full cursor-pointer"
+                                  onClick={() => onEditService(service)}
+                                >
+                                  <img
+                                    src={EditBlueIcon}
+                                    className="w-4"
+                                    alt="edit"
+                                  />
+                                </div>
+                                <div
+                                  className=" flex items-center justify-center  rounded-full cursor-pointer"
+                                  onClick={() => onRemoveService(service)}
+                                >
+                                  <img
+                                    src={DeleteIcon}
+                                    className="w-4"
+                                    alt="delete"
+                                  />
+                                </div>
                               </div>
-                              <div
-                                className=" flex items-center justify-center  rounded-full cursor-pointer"
-                                onClick={() => onRemoveService(service)}
-                              >
-                                <img
-                                  src={DeleteIcon}
-                                  className="w-4"
-                                  alt="delete"
-                                />
-                              </div>
-                            </div>
                             </div>
                             <div className="flex items-center flex-wrap [&>*]:mb-[18px]">
-                              {/* <AddTag
+                              <AddTag
                                 onAddTag={handleAddSpecialization}
                                 keyName={service.service}
                                 text="Add Service"
-                              /> */}
+                              />
                               <FilterItems
                                 isString={true}
                                 onlyItems={true}
@@ -1216,65 +1381,69 @@ export default function SuperAdminSettings() {
               className={styles["bordered-settings-container"]}
               body={
                 <div className="">
-                 <div className="max-h-[360px] p-1  overflow-auto  scrollbar-vertical custom-scroller" >
-                  {sessionTags !== undefined &&
-                    sessionTags.map((service, i) => {
-                      return (
-                        <div key={i} className="bg-white shadow-small p-4 mb-3 rounded-md">
-                          <div className="flex items-center justify-between pr-8">
-                            <p className="font-medium text-[#24A3D9] mb-4">
-                              {service.heading}
-                            </p>
-                            <div className="flex items-center gap-x-4">
-                            <ToggleBar
-                            
-                                 boxClass="!h-[16px]"
-                                circleColor="bg-[rgba(119,221,119,1)]"
-                                toggle={{ value: 5, key: 'code' }}
-                                onToggle={togglePermissions}
-                              ></ToggleBar>
-                              <div
-                                className=" flex items-center justify-center  rounded-full cursor-pointer"
-                                // onClick={() => onEditService(service)}
-                              >
-                                <img
-                                  src={EditBlueIcon}
-                                  className="w-4"
-                                  alt="edit"
-                                />
+                  <div className="max-h-[360px] p-1  overflow-auto  scrollbar-vertical custom-scroller">
+                    {sessionTags !== undefined &&
+                      sessionTags.map((service, i) => {
+                        return (
+                          <div
+                            key={i}
+                            className="bg-white shadow-small p-4 mb-3 rounded-md"
+                          >
+                            <div className="flex items-center justify-between pr-8">
+                              <p className="font-medium text-[#24A3D9] mb-4">
+                                {service.heading}
+                              </p>
+                              <div className="flex items-center gap-x-4">
+                                <ToggleBar
+                                  boxClass="!h-[16px]"
+                                  circleColor="bg-[rgba(119,221,119,1)]"
+                                  toggle={{
+                                    value: true,
+                                    key: "code",
+                                  }}
+                                  manual={true}
+                                ></ToggleBar>
+                                <div
+                                  className=" flex items-center justify-center  rounded-full cursor-pointer"
+                                  onClick={() => onEditSession(service)}
+                                >
+                                  <img
+                                    src={EditBlueIcon}
+                                    className="w-4"
+                                    alt="edit"
+                                  />
+                                </div>
+                                <div
+                                  className="w-5 h-5 flex items-center justify-center  rounded-full cursor-pointer"
+                                  onClick={() => onRemoveSessionTag(service)}
+                                >
+                                  <img
+                                    src={DeleteIcon}
+                                    className="w-4"
+                                    alt="delete"
+                                  />
+                                </div>
                               </div>
-                              <div
-                              className="w-5 h-5 flex items-center justify-center  rounded-full cursor-pointer"
-                              onClick={() => onRemoveSessionTag(service)}
-                            >
-                              <img
-                                src={DeleteIcon}
-                                className="w-4"
-                                alt="delete"
+                            </div>
+                            <div className="flex items-center flex-wrap [&>*]:mb-[10px]">
+                              <AddTag
+                                onAddTag={handleAddSessionTag}
+                                keyName={service.heading}
+                                text="Add Items"
+                              />
+                              <FilterItems
+                                isString={true}
+                                onlyItems={true}
+                                keyName={service.heading}
+                                items={service.items}
+                                onRemoveFilter={onRemoveSessionTagItem}
+                                className="pt-1 pb-1 mr-15 text-base-17-5"
                               />
                             </div>
-                            </div>
-                          
                           </div>
-                          <div className="flex items-center flex-wrap [&>*]:mb-[10px]">
-                            <AddTag
-                              onAddTag={handleAddSessionTag}
-                              keyName={service.heading}
-                              text="Add Items"
-                            />
-                            <FilterItems
-                              isString={true}
-                              onlyItems={true}
-                              keyName={service.heading}
-                              items={service.items}
-                              onRemoveFilter={onRemoveSessionTagItem}
-                              className="pt-1 pb-1 mr-15 text-base-17-5"
-                            />
-                          </div>
-                        </div>
-                      );
-                    })}
-                    </div>
+                        );
+                      })}
+                  </div>
 
                   <AddTag
                     children="Add Heading"
@@ -1321,7 +1490,6 @@ export default function SuperAdminSettings() {
                           <div className="pr-4 border-r-[1.25px] border-[#CBD6E2]">
                             {toggleImage.offer && (
                               <div className=" overflow-hidden mb-5">
-
                                 <div className="flex">
                                   <div className="w-[300px] h-[150px]">
                                     <img
@@ -1383,20 +1551,19 @@ export default function SuperAdminSettings() {
               </p>
             </div>
 
-            <div className={`bg-[#FFFFFF] border-[2.5px] px-[82px] border-dotted border-[#CBD6E2] mb-[30px] ${styles.permission}`}>
+            <div
+              className={`bg-[#FFFFFF] border-[2.5px] px-[82px] border-dotted border-[#CBD6E2] mb-[30px] ${styles.permission}`}
+            >
               {fetchedPermissions?.map((item, id) => {
                 return (
                   <>
                     {item.choosedValue === true ||
-                      item.choosedValue === false ? (
+                    item.choosedValue === false ? (
                       <div
                         key={id}
                         className="pt-[34px] pb-[30px] border-b-2 border-[#CBD6E2] text-[#24A3D9] font-medium text-[17.5px] flex items-center justify-between"
                       >
-                        <p>
-
-                          {renderColoredText(item.name)}
-                        </p>
+                        <p>{renderColoredText(item.name)}</p>
 
                         <ToggleBar
                           toggle={{ value: item.choosedValue, key: item._id }}
@@ -1416,21 +1583,27 @@ export default function SuperAdminSettings() {
                             className="border border-gray-300 px-2  rounded-md text-[#26435F] bg-[#E9ECEF]"
                           >
                             <option value={item.choosedValue}>
-                              {`   ${item.permissionActionName ===
+                              {`   ${
+                                item.permissionActionName ===
                                 "notifyParentBefSession"
-                                ? item.choosedValue === 0 ? "OFF" : item.choosedValue + " hours before"
-                                : item.choosedValue
-                                }`}
+                                  ? item.choosedValue === 0
+                                    ? "OFF"
+                                    : item.choosedValue + " hours before"
+                                  : item.choosedValue
+                              }`}
                             </option>
                             {item.values.map((values, i) => {
                               return (
                                 item.choosedValue !== values && (
                                   <option key={i} value={values}>
-                                    {` ${item.permissionActionName ===
+                                    {` ${
+                                      item.permissionActionName ===
                                       "notifyParentBefSession"
-                                      ? values === 0 ? "OFF" : values + " hours before"
-                                      : values
-                                      }`}
+                                        ? values === 0
+                                          ? "OFF"
+                                          : values + " hours before"
+                                        : values
+                                    }`}
                                   </option>
                                 )
                               );
@@ -1548,7 +1721,7 @@ export default function SuperAdminSettings() {
           }
         />
       )}
-      {addCodeModalActive && (
+      {/* {addCodeModalActive && (
         <Modal
           classname={"max-w-[700px] mx-auto"}
           title="Add / Edit Subscription Code"
@@ -1603,6 +1776,310 @@ export default function SuperAdminSettings() {
                       })
                     }
                   />
+                </div>
+              </div>
+            </form>
+          }
+        />
+      )} */}
+      {addCodeModalActive && (
+        <Modal
+          classname={"max-w-[560px] mx-auto"}
+          titleClassName="text-base-20 mb-[18px]"
+          title="Add / Edit Referral Code"
+          cancelBtn={false}
+          cancelBtnClassName="w-140 "
+          handleClose={() => {
+            setAddCodeModalActive(false);
+            setSubModalData(subModalInitialState);
+          }}
+          body={
+            <form
+              id="settings-form"
+              onSubmit={(e) => {
+                handleADdTestSubmit(e);
+                handleCodeSubmit(e);
+              }}
+            >
+              <p className="text-base-17-5 mt-[-10px] text-[#667085]">
+                <span className="font-semibold ">⚠️ Note:</span> Referral codes
+                can be used by your leads (parents and students) to sign up for
+                accessing Evallo’s portal. You can choose how long you want to
+                provide them this access and what assignments should show up
+                automatically after they sign up with your organization. Read
+                detailed documentation in Evallo’s{" "}
+                <span className="text-[#24A3D9]"> knowledge base.</span>
+              </p>
+
+              <div className="  grid-cols-1 md:grid-cols-2  gap-x-2 md:gap-x-3 gap-y-2 gap-y-4 mb-5 mt-3">
+                <div className="flex-1 flex gap-5 ">
+                  <div className="flex-1">
+                    <InputField
+                      label="Referral Code"
+                      labelClassname="text-base-20 text-[#26435F] mb-0.5"
+                      placeholder="Add a single-word referral code"
+                      inputContainerClassName=" text-base-17-5 !px-3 bg-primary-50 border-0"
+                      inputClassName="bg-transparent"
+                      placeholderClass="text-base-17-5"
+                      parentClassName=" text-base-17-5 py-0 w-full mr-4"
+                      type="text"
+                      value={subModalData.code}
+                      isRequired={true}
+                      onChange={(e) =>
+                        setSubModalData({
+                          ...subModalData,
+                          code: e.target.value,
+                        })
+                      }
+                    />
+                  </div>
+                  <div className="flex-1">
+                    <InputField
+                      label="Duration (in weeks)"
+                      labelClassname="text-base-20 text-[#26435F] mb-0.5"
+                      isRequired={true}
+                      placeholder="Access duration allowed in weeks"
+                      inputContainerClassName=" text-base-17-5 !px-3 bg-primary-50 border-0"
+                      inputClassName="bg-transparent"
+                      placeholderClass="text-base-17-5"
+                      parentClassName=" text-base-17-5 py-0 w-full mr-4"
+                      type="text"
+                      value={subModalData.expiry}
+                      onChange={(e) =>
+                        setSubModalData({
+                          ...subModalData,
+                          expiry: e.target.value,
+                        })
+                      }
+                    />
+                  </div>
+                </div>
+                <div className="mt-3 flex-1">
+                  <InputSearch
+                    label="Select Assignments (optional)"
+                    labelClassname="text-base-20 text-[#26435F] mb-0.5"
+                    placeholder="Select"
+                    placeholderClass="text-base-17-5"
+                    parentClassName=" text-base-17-5 py-0 w-full  mb-10"
+                    inputContainerClassName=" text-base-17-5 bg-[#F3F5F7] border-0 pt-3.5 pb-3.5"
+                    inputClassName="bg-[#F3F5F7]"
+                    type="text"
+                    value={searchedTest}
+                    checkbox={{
+                      visible: true,
+                      name: "test",
+                      match: updatedSubscriptionData.tests,
+                    }}
+                    onChange={(e) => setSearchedTest(e.target.value)}
+                    optionListClassName="text-base-17-5"
+                    optionClassName="text-base-17-5"
+                    optionData={filteredTests}
+                    right={<img className="" src={down} />}
+                    onOptionClick={(item) => {
+                      handleTestChange(item);
+                      // setStudent(item.value);
+                      // handleStudentsChange(item)
+                      // setCurrentToEdit({ ...currentToEdit, students: [... item._id] });
+                    }}
+                  />
+                  {/* <InputField
+                  label="Select Assignments (optional)"
+                  labelClassname="text-base-20 text-[#26435F] mb-0.5"
+                  placeholder="Select"
+                  inputContainerClassName="bg-primary-50 w-[100%]"
+                  inputClassName="bg-transparent"
+                  IconLeft ={down}
+                  /> */}
+                </div>
+                <div className="flex gap-4 items-center justify-center mt-3">
+                  <button className="rounded-lg bg-[#FFA28D] border-2 border-[#FFA28D] py-[6px] text-[#FFFFFF] w-[146px]">
+                    Save{" "}
+                  </button>
+                  <button
+                    className="rounded-lg bg-transparent border-2 border-[#FFA28D] py-[6px] text-[#FFA28D]  w-[146px]"
+                    onClick={() => setAddCodeModalActive(!addCodeModalActive)}
+                  >
+                    Cancel{" "}
+                  </button>
+                </div>
+              </div>
+            </form>
+          }
+        />
+      )}
+      {addServiceModalActive && (
+        <Modal
+          classname={"max-w-[560px] mx-auto"}
+          titleClassName="text-base-20 mb-[18px]"
+          title="Add / Edit Services"
+          cancelBtn={false}
+          cancelBtnClassName="w-140 "
+          handleClose={() => {
+            setAddServiceModalActive(false);
+            setSubModalServiceData(subModalInitialServiceState);
+          }}
+          body={
+            <form
+              id="settings-form"
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleAddServiceName(
+                  selectedServiceData?.service,
+                  subModalServiceData?._id
+                );
+              }}
+            >
+              <p className="text-base-17-5 mt-[-10px] text-[#667085]">
+                <span className="font-semibold mr-1">⚠️ Note:</span>
+                Services refer to the core offerings that your business provides
+                in a broad category. Topics are more specific items that you
+                specialize in while providing these services. For example, Test
+                Prep can be a “Service” with “SAT” and “ACT” as two topics under
+                it. Read detailed documentation in Evallo's
+                <span className="text-[#24A3D9]"> knowledge base.</span>
+              </p>
+
+              <div className="  grid-cols-1 md:grid-cols-2  gap-x-2 md:gap-x-3 gap-y-2 gap-y-4 mb-5 mt-3">
+                <div className="flex-1 flex gap-5 ">
+                  <div className="flex-1">
+                    <InputField
+                      label="Service Name"
+                      labelClassname="text-base-20 text-[#26435F] mb-0.5"
+                      placeholder="Add a single-word referral code"
+                      inputContainerClassName=" text-base-17-5 !px-3 bg-primary-50 border-0"
+                      inputClassName="bg-transparent"
+                      placeholderClass="text-base-17-5"
+                      parentClassName=" text-base-17-5 py-0 w-full mr-4"
+                      type="text"
+                      value={selectedServiceData?.service}
+                      isRequired={true}
+                      onChange={(e) =>
+                        setSelectedServiceData({
+                          ...selectedServiceData,
+                          service: e.target.value,
+                        })
+                      }
+                    />
+                  </div>
+                </div>
+                <div className="flex items-center flex-wrap [&>*]:mb-[10px] mt-5">
+                  <AddTag
+                    onAddTag={handleAddSpecialization}
+                    keyName={subModalServiceData.service}
+                    text="Add Item"
+                  />
+                  <FilterItems
+                    isString={true}
+                    onlyItems={true}
+                    keyName={subModalServiceData.service}
+                    items={subModalServiceData.specialization}
+                    onRemoveFilter={onRemoveSpecialization}
+                    className="pt-1 pb-1 mr-15 text-base-17-5"
+                  />
+                </div>
+                <div className="w-full border-[1.33px_solid_#00000033] bg-[#00000033] my-5 h-[1.3px]"></div>
+                <div className="flex gap-4 items-center justify-center mt-3">
+                  <button className="rounded-lg bg-[#FFA28D] border-2 border-[#FFA28D] py-[6px] text-[#FFFFFF] w-[146px]">
+                    Save{" "}
+                  </button>
+                  <button
+                    className="rounded-lg bg-transparent border-2 border-[#FFA28D] py-[6px] text-[#FFA28D]  w-[146px]"
+                    onClick={() =>
+                      setAddServiceModalActive(!addServiceModalActive)
+                    }
+                  >
+                    Cancel{" "}
+                  </button>
+                </div>
+              </div>
+            </form>
+          }
+        />
+      )}
+      {addSessionModalActive && (
+        <Modal
+          classname={"max-w-[560px] mx-auto"}
+          titleClassName="text-base-20 mb-[18px]"
+          title="Add / Edit Sessions"
+          cancelBtn={false}
+          cancelBtnClassName="w-140 "
+          handleClose={() => {
+            setAddSessionModalActive(false);
+            setSubModalSessionData(subModalInitialSessionState);
+          }}
+          body={
+            <form
+              id="settings-form"
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleAddSessionName(
+                  selectedSessionData?.heading,
+                  subModalSessionData?._id
+                );
+              }}
+            >
+              <p className="text-base-17-5 mt-[-10px] text-[#667085]">
+                <span className="font-semibold mr-1 ">⚠️ Note:</span>
+                Session Tags are used for optimizing the time it takes for your
+                tutors to reconcile sessions. These are checkboxes available
+                when reconciling sessions in the Calendar that can be quickly
+                used to add further details about the session, such as the
+                topics covered, homework assigned, student mood, etc. Read
+                detailed documentation in Evallo’s
+                <span className="text-[#24A3D9]"> knowledge base.</span>
+              </p>
+
+              <div className="  grid-cols-1 md:grid-cols-2  gap-x-2 md:gap-x-3 gap-y-2 gap-y-4 mb-5 mt-3">
+                <div className="flex-1 flex gap-5 ">
+                  <div className="flex-1">
+                    <InputField
+                      label="Session Name"
+                      labelClassname="text-base-20 text-[#26435F] mb-0.5"
+                      placeholder="Add a single-word referral code"
+                      inputContainerClassName=" text-base-17-5 !px-3 bg-primary-50 border-0"
+                      inputClassName="bg-transparent"
+                      placeholderClass="text-base-17-5"
+                      parentClassName=" text-base-17-5 py-0 w-full mr-4"
+                      type="text"
+                      value={selectedSessionData?.heading}
+                      isRequired={true}
+                      onChange={(e) =>
+                        setSelectedSessionData({
+                          ...selectedSessionData,
+                          heading: e.target.value,
+                        })
+                      }
+                    />
+                  </div>
+                </div>
+                <div className="flex items-center flex-wrap [&>*]:mb-[10px] mt-5">
+                  <AddTag
+                    onAddTag={handleAddSessionTag}
+                    keyName={subModalSessionData.heading}
+                    text="Add Items"
+                  />
+                  <FilterItems
+                    isString={true}
+                    onlyItems={true}
+                    keyName={subModalSessionData.heading}
+                    items={subModalSessionData.items}
+                    onRemoveFilter={onRemoveSessionTagItem}
+                    className="pt-1 pb-1 mr-15 text-base-17-5"
+                  />
+                </div>
+                <div className="w-full border-[1.33px_solid_#00000033] bg-[#00000033] my-5 h-[1.3px]"></div>
+                <div className="flex gap-4 items-center justify-center mt-3">
+                  <button className="rounded-lg bg-[#FFA28D] border-2 border-[#FFA28D] py-[6px] text-[#FFFFFF] w-[146px]">
+                    Save{" "}
+                  </button>
+                  <button
+                    className="rounded-lg bg-transparent border-2 border-[#FFA28D] py-[6px] text-[#FFA28D]  w-[146px]"
+                    onClick={() =>
+                      setAddSessionModalActive(!addSessionModalActive)
+                    }
+                  >
+                    Cancel{" "}
+                  </button>
                 </div>
               </div>
             </form>
@@ -1667,10 +2144,11 @@ export default function SuperAdminSettings() {
           cancelBtnClassName="w-140 hidden"
           primaryBtn={{
             text: "Save",
-            className: `w-140 ml-0 bg-primaryOrange mt-2 ${tagText.trim().length < 1 || tagImage === null
-              ? "pointer-events-none opacity-60"
-              : ""
-              } `,
+            className: `w-140 ml-0 bg-primaryOrange mt-2 ${
+              tagText.trim().length < 1 || tagImage === null
+                ? "pointer-events-none opacity-60"
+                : ""
+            } `,
             form: "settings-form",
             type: "submit",
             loading: saveLoading,

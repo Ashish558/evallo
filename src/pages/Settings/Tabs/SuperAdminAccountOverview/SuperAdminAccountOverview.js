@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import InputField from "../../../../components/InputField/inputField";
 import PrimaryButton from "../../../../components/Buttons/PrimaryButton";
 import { CheckboxNew } from "../../../../components/Checkbox/CheckboxNew";
-import "../../../Settings/styles.module.css"
+import "../../../Settings/styles.module.css";
 import InputSelect from "../../../../components/InputSelect/InputSelect";
 import { studentServedData, instructionFormat } from "../staticData";
 import logo from "../../../../assets/icons/Frame 31070.svg";
@@ -122,6 +122,10 @@ const AccountOverview = () => {
         updateAccount(reqBody)
           .then((res) => {
             console.log(res);
+            if (res?.data)
+              alert(
+                "Changes saved successfully! Please check your email in case of updating email or password."
+              );
           })
           .catch((err) => {
             console.log(err?.message);
@@ -137,9 +141,9 @@ const AccountOverview = () => {
   return (
     <div>
       <div className="flex flex-col gap-10 ">
-        <div className="flex gap-10 " style={{verticalAlign:'center'}}>
+        <div className="flex gap-10 " style={{ verticalAlign: "center" }}>
           <InputField
-            style={{color:'blue'}}
+            style={{ color: "blue" }}
             placeholder=""
             parentClassName="text-xs text-[#26435F] "
             inputContainerClassName="text-[rgba(102,112,133,1)] bg-white border border-white rounded-5 w-[15.2604166667vw]"
@@ -177,7 +181,6 @@ const AccountOverview = () => {
             inputContainerClassName="text-[rgba(102,112,133,1)] bg-white border border-white rounded-5 w-[21.0416666667vw]"
             inputClassName="bg-transparent border border-white rounded-5"
             label="Email"
-
             value={values.email}
             onChange={(e) => {
               setValues({
@@ -266,7 +269,7 @@ const AccountOverview = () => {
             error={error.newPassword}
           />
           <InputField
-          style={{border:'1px solid white !important'}}
+            style={{ border: "1px solid white !important" }}
             placeholder=""
             parentClassName="text-xs text-[#26435F]"
             inputContainerClassName="text-[rgba(102,112,133,1)] bg-white border border-white rounded-5 w-[15.2604166667vw]"
@@ -280,13 +283,11 @@ const AccountOverview = () => {
               })
             }
             error={error.confirmPassword}
-            
           />
           <div>
             <button
               onClick={handleDataUpdate}
-              className="bg-[#FFA28D]  rounded-md my-3  px-[50px] py-3  mt-5 w-[186.67px]"
-              style={{color:'#EEEEEE'}}
+              className="bg-[#FFA28D]  rounded-md my-3 text-white px-[50px] py-3  mt-5 w-[186.67px]"
             >
               Update
             </button>

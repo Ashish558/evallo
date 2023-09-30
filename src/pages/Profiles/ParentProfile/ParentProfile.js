@@ -681,7 +681,7 @@ const [toEdit, setToEdit] = useState({
             </div>
             <div className="w-[13.80vw]  bg-white rounded-md overflow-hidden !rounded-b-md shadow-[0px_0px_2.500001907348633px_0px_#00000040] relative">
               <div
-                className={`${styles.studentsContainer} min-h-[200px] w-full`}
+                className={`${styles.studentsContainer} min-h-[290px] w-full`}
               >
                 {associatedStudents.map((student, idx) => {
                   return (
@@ -709,7 +709,7 @@ const [toEdit, setToEdit] = useState({
                           />
                         </div>
                       </div>
-                      <div className="flex flex-col mt-[-16px] h-[120px] design:h-[140px] gap-1 justify-center items-center ">
+                      <div className="flex flex-col pt-4   gap-1 justify-center items-center ">
                         <p
                           onClick={() =>
                             navigate(`/profile/student/${student._id}`)
@@ -791,10 +791,7 @@ const [toEdit, setToEdit] = useState({
             toEdit={toEdit}
             setToEdit={setToEdit}
           />
-          <div
-            id="borderDashed"
-            className="border !border-[#CBD6E3] w-[calc(1500*0.0522vw)] mx-auto my-[calc(50*0.0522vw)]"
-          ></div>
+          
           {
             persona === "admin" && <SPFrame1
               user={user}
