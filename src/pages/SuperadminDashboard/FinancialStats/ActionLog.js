@@ -36,7 +36,7 @@ function ActionLog({ dateRange }) {
     ref.current.textContent = headerDate;
   };
   useEffect(() => {
-    if(persona==='manager') return 
+    if(persona==='manager' || !actionLog || !Array.isArray(actionLog)) return 
     setCurrentElementIndex(0);
     const sorting = (newarr, extra) => {
       let sortedData = [...actionLog];

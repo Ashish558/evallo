@@ -430,9 +430,9 @@ export default function TableItem({
             <div className="">{item.email}</div>
           </td>
           <td className="font-medium text-[17.5px] px-1  min-w-14 ">
-            <div className="">
-              {item.lastLogin ? item.lastLogin : "-"}
-            </div>
+           {item?.lastLogin? <div className="">
+            {new Date(item?.lastLogin).toDateString().split(' ')[1] }. {new Date(item?.lastLogin).getDate() }, {new Date(item?.lastLogin).getFullYear()}
+            </div>:"None"}
           </td>
           <td className="font-medium text-[17.5px] px-1  min-w-14 ">
             <div className="">
