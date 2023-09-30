@@ -2517,6 +2517,7 @@ return ( <div className="flex !text-sm gap-4 ">
                                   let tempScores = [...currentToEdit.satScores];
                                   if (tempScores.length <= selectedScoreIndex) {
                                     tempScores.push({
+                                      createdAt: new Date(),
                                       maths: 0,
                                       verbal: 0,
                                       cumulative:0,
@@ -2560,6 +2561,7 @@ return ( <div className="flex !text-sm gap-4 ">
                                   let tempScores = [...currentToEdit.satScores];
                                   if (tempScores.length <= selectedScoreIndex) {
                                     tempScores.push({
+                                      createdAt: new Date(),
                                       maths: 0,
                                       verbal: 0,
                                     });
@@ -2613,7 +2615,7 @@ return ( <div className="flex !text-sm gap-4 ">
                       tempScores.push({
                         maths: null,
                         verbal: null,
-                        created:new Date()
+                        createdAt:new Date()
                       });
                       setCurrentToEdit({
                         ...currentToEdit,
@@ -2869,6 +2871,7 @@ return ( <div className="flex !text-sm gap-4 ">
                           let tempScores = [...currentToEdit.actScores];
                           if (tempScores.length <= selectedScoreIndex) {
                             tempScores.push({
+                              createdAt: new Date(),
                               maths: 0,
                               english: 0,
                               reading: 0,
@@ -2917,6 +2920,7 @@ return ( <div className="flex !text-sm gap-4 ">
                           let tempScores = [...currentToEdit.actScores];
                           if (tempScores.length <= selectedScoreIndex) {
                             tempScores.push({
+                              createdAt: new Date(),
                               maths: 0,
                               english: 0,
                               reading: 0,
@@ -2965,6 +2969,7 @@ return ( <div className="flex !text-sm gap-4 ">
                           let tempScores = [...currentToEdit.actScores];
                           if (tempScores.length <= selectedScoreIndex) {
                             tempScores.push({
+                              createdAt: new Date(),
                               maths: 0,
                               english: 0,
                               reading: 0,
@@ -3012,6 +3017,7 @@ return ( <div className="flex !text-sm gap-4 ">
                           let tempScores = [...currentToEdit.actScores];
                           if (tempScores.length <= selectedScoreIndex) {
                             tempScores.push({
+                              createdAt: new Date(),
                               maths: 0,
                               english: 0,
                               reading: 0,
@@ -3066,7 +3072,7 @@ return ( <div className="flex !text-sm gap-4 ">
                     english: null,
                     reading: null,
                     science: null,
-                    
+                    createdAt: new Date()
                    });
                    setCurrentToEdit({
                      ...currentToEdit,

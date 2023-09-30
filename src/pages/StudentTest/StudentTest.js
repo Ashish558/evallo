@@ -44,7 +44,7 @@ const parentTestInfo = [
   },
 ];
 
-export default function StudentTest({ fromProfile, setTotaltest }) {
+export default function StudentTest({ fromProfile, setTotaltest,studentId }) {
   const [user, setUser] = useState({});
   const [associatedStudents, setAssociatedStudents] = useState([]);
   const [selectedStudent, setSelectedStudent] = useState(null);
@@ -139,8 +139,8 @@ export default function StudentTest({ fromProfile, setTotaltest }) {
   const [tableHeaders, setTableHeaders] = useState(studentTableHeaders);
   const params = useParams()
   useEffect(() => {
-    if (persona === "student") {
-      getTest().then((res) => {
+    if (persona === "student"||true) {
+      getTest(studentId).then((res) => {
         console.log("all-assigned-tests", res.data.data);
         setAwsLink(res.data.data.baseLink);
         let tempAllTests = res.data.data.test.map((test) => {

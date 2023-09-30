@@ -260,17 +260,17 @@ export default function StudentProfile({ isOwn }) {
       active: false,
       satScores: [
         {
-          created: "",
+          createdAt: "",
           verbal: 0,
           maths: 0,
         },
         {
-          created: "",
+          createdAt: "",
           verbal: 0,
           maths: 0,
         },
         {
-          created: "",
+          createdAt: "",
           verbal: 0,
           maths: 0,
         },
@@ -280,21 +280,21 @@ export default function StudentProfile({ isOwn }) {
       active: false,
       actScores: [
         {
-          created: "",
+          createdAt: "",
           english: 0,
           maths: 0,
           reading: 0,
           science: 0,
         },
         {
-          created: "",
+          createdAt: "",
           english: 0,
           maths: 0,
           reading: 0,
           science: 0,
         },
         {
-          created: "",
+          createdAt: "",
           english: 0,
           maths: 0,
           reading: 0,
@@ -1041,7 +1041,7 @@ const [toEdit, setToEdit] = useState({
               Latest Assignmets
             </p>
 
-            <StudentTest isOwn={isOwn} setTotaltest={setTotaltest} fromProfile={true} />
+            <StudentTest isOwn={isOwn} setTotaltest={setTotaltest} studentId={userDetail?.userId} fromProfile={true} />
             <div
 
 
