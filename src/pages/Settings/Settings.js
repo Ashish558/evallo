@@ -299,7 +299,7 @@ export default function Settings() {
   const fetchSettings = () => {
     if (organization.settings) {
       setSettingsData(organization.settings);
-      if (organization?.settings?.permissions?.length > 0)
+      if (organization?.settings?.permissions)
         setThePermission(organization.settings.permissions);
     }
   };
