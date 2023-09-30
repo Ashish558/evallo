@@ -275,6 +275,7 @@ const AdminNavbar = () => {
   }, [persona]);
 
   const handleNavigate = (path) => {
+    console.log("path", path,navData);
     if (path === "/exit") {
       setLogoutModalActive(true);
     } else if (path === "/logo") {
