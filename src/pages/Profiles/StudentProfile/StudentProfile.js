@@ -1041,7 +1041,7 @@ const [toEdit, setToEdit] = useState({
               Latest Assignmets
             </p>
 
-            <StudentTest isOwn={isOwn} setTotaltest={setTotaltest} fromProfile={true} />
+            <StudentTest isOwn={isOwn} setTotaltest={setTotaltest} studentId={userDetail?.userId} fromProfile={true} />
             <div
 
 
