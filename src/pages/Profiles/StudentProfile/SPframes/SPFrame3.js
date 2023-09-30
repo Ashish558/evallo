@@ -189,7 +189,7 @@ setId(userDetail?._id)
   return (
     <div className="flex flex-col gap-5 -mt-5">
       {" "}
-      <h1 className="text-[#26435F] translate-y-4  text-sm font-semibold ">
+      <h1 className="text-[#26435F] translate-y-4  text-sm font-semibold cursor-pointer">
           Score progression
             <span className="inline-block my-auto ml-2 translate-y-1">
               <svg
@@ -241,9 +241,9 @@ setId(userDetail?._id)
       </div>
       <div className=" flex-1 w-full">
         <div className="flex items-center justify-between">
-          <h1 className="text-[#26435F]  text-sm font-semibold ">
+          <h1 className="text-[#26435F]  text-sm font-semibold mb-1">
             Time Management
-            <span className="inline-block my-auto ml-2 translate-y-1">
+            <span className="inline-block my-auto ml-2 translate-y-1 cursor-pointer">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="16"
@@ -307,9 +307,9 @@ setId(userDetail?._id)
       </div>
       <div className=" flex-1 w-full">
         <div className="flex items-center justify-between">
-          <h1 className="text-[#26435F]  text-sm font-semibold ">
+          <h1 className="text-[#26435F]  text-sm font-semibold mb-1">
             Conceptual Accuracy
-            <span className="inline-block my-auto ml-2 translate-y-1">
+            <span className="inline-block my-auto ml-2 translate-y-1 cursor-pointer">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="16"

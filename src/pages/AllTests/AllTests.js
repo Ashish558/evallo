@@ -17,6 +17,7 @@ import { BASE_URL, getAuthHeader } from "../../app/constants/constants";
 import StudentTest from "../StudentTest/StudentTest";
 import FilterItems from "../../components/FilterItems/filterItems";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const optionData = ["option 1", "option 2", "option 3", "option 4", "option 5"];
 const testTypeOptions = ["SAT", "Other"];
@@ -308,7 +309,7 @@ const sortBycreateDate = () => {
       .get(`${BASE_URL}api/test`, { headers })
       .then((res) => setTableData(res.data.data.test));
   };
-
+  const navigate=useNavigate('/')
   useEffect(() => {
     fetchTests();
   }, []);
@@ -317,13 +318,15 @@ const sortBycreateDate = () => {
 
   return (
     <div className="w-[83.6989583333vw] mx-auto bg-lightWhite min-h-screen">
-      <p className="text-[#24A3D9]  !mt-[calc(50*0.052vw)] !mb-[calc(25*0.052vw)] text-base-22-5">
-          {organization?.company +
+      <p className="text-[#24A3D9]  !mt-[calc(50*0.052vw)] !mb-[calc(25*0.052vw)] text-base-20">
+      <span onClick={()=>navigate('/')} className="cursor-pointer"> 
+         {organization?.company +
             "  >  " +
             firstName +
             "  " +
             lastName +
             "  >  "}
+          </span>
           <span className="font-semibold">Content</span>
         </p>
       <div className=" w-full">

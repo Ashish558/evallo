@@ -148,18 +148,18 @@ email: "Email not verified! Please Verify your email and set your password"
             pagination={true}
           />
         </div>
-        <div className="lg:flex lg:items-center bg-white rounded-md py-6 px-5 md:px-[66px] lg:min-w-[500px] ">
+        <div className="lg:flex lg:items-center bg-white rounded-[10px] pt-[40px] pb-6 px-5 md:px-[66px] lg:min-w-[561px] shadow-[5px_5px_87.5px_0px_rgba(166,166,166,0.25)]">
           {loginActive ? (
             <div className="w-full">
               <div className="flex justify-center" >
               <img src={EvalloLogo} alt="logo" className=" h-[29.796px] scale-[.97] " />
               </div>
               <p
-                className={`font-bold text-[16.1px] mt-[40px] lg:text-md mb-1.5 bg-transparen text-[#26435F]  pb-[34px] lg:pt-0 lg:pb-0 `}
+                className={`font-medium text-lg mt-[40px] mb-1 bg-transparent text-[#26435F]  pb-[34px] lg:pt-0 lg:pb-0 `}
               >
                 Login
               </p>
-               <p className={`text-lg text-[19px] font-bold mb-9 ${styles.textGrayed} text-[#667085] `}>
+               <p className={`text-base mb-[50px]  text-[#667085] font-normal`}>
                 Please fill your detail to access your account.
               </p>
               <form
@@ -170,14 +170,14 @@ email: "Email not verified! Please Verify your email and set your password"
               >
                 <InputField
                   right={<img onClick={()=>setEmail("")} className="ml-3 cursor-pointer scale-[0.80]" src={cutEmail} alt="right icon"/>}
-       
+                  biggerText={true}
                   iconSize="medium"
                   placeholder=""
-                  parentClassName="mb-[20px]"
+                  parentClassName="mb-[18px]"
                   label="Email "
-                  labelClassname=" mb-[4px] text-[#26435F]  text-[12px] lg:text-[14px] leading-[18.715px]"
-                  inputClassName="bg-transparent "
-                  inputContainerClassName="  border border-[#D0D5DD] rounded-md h-[47px]"
+                  labelClassname="text-[#26435F] font-medium"
+                  inputClassName="bg-transparent"
+                  inputContainerClassName="border-[0.936px] border-[#D0D5DD]  h-[49px]  rounded-[6px] w-full"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   error={error.email}
@@ -189,11 +189,12 @@ email: "Email not verified! Please Verify your email and set your password"
                   iconSize="medium"
                   parentClassName="mb-[10px]"
                   placeholder=""
+                  biggerText={true}
                   label="Password"
                   type="password"
-                  labelClassname="text-[#26435F] mb-[4px]  text-[12px] lg:text-[14px] leading-[18.715px]"
+                  labelClassname="text-[#26435F] font-medium"
                   inputClassName="bg-transparent "
-                  inputContainerClassName="  border border-[#D0D5DD] rounded-md h-[45px]"
+                  inputContainerClassName="border-[0.936px] border-[#D0D5DD]  h-[49px]  rounded-[6px] w-full"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   error={error.password}
@@ -211,16 +212,16 @@ email: "Email not verified! Please Verify your email and set your password"
                       checked={remember}
                       onChange={() => setRemember(!remember)}
                     />{" "}
-                    <span className="text-[13px] text-[#26435F]  font-semibold">
+                    <span className="text-base text-[#26435F]  font-medium">
                       {" "}
                       Remember me{" "}
                     </span>
                   </div>
                   <p
-                    className=" lg:text-xs inline-block cursor-pointer text-[#24A3D9]  leading-[18.715px]  font-medium ml-auto"
+                    className=" lg:text-base inline-block cursor-pointer text-[#24A3D9]  leading-[18.715px]  font-medium ml-auto"
                     onClick={() => setActiveFrame(setIsPasswordForgot)}
                   >
-                    Forgot Password ?
+                    Forgot Password?
                   </p>
                 </div>
 <div className="flex justify-center">
@@ -232,7 +233,7 @@ email: "Email not verified! Please Verify your email and set your password"
                       ? true
                       : !(emailValidation.test(email) && password.length > 0)
                   }
-                  className={`w-[80%] relative mx-auto  bg-[#FFA28D] disabled:opacity-70 pt-3.5 pb-3.5 lg:pt-[9px] lg:pb-[9px] mt-[50px]   rounded-7 text-white text-lg ${
+                  className={`w-[337px] shadow-[0px_0px_2px_0px_rgba(0,0,0,0.25)] relative mx-auto  bg-[#FFA28D] disabled:opacity-70 pt-3.5 pb-3.5 lg:py-[11px]  mt-[56px]   rounded-5 text-white text-lg font-medium ${
                     loginLoading ? "cursor-wait" : "cursor-pointer"
                   }`}
                   onClick={handleSubmit}
@@ -241,15 +242,15 @@ email: "Email not verified! Please Verify your email and set your password"
                   {loginLoading && <Loader />}
                 </button>
                 </div>
-                <div className="flex justify-center">
+                <div className="flex justify-center mt-[19px] pb-4">
                 <p
-                  className={`cursor-pointer relative text-sm text-[#26435F] font-semibold ml-2 mt-2 inline-block `}
+                  className={`cursor-pointer relative text-base  text-[#26435F]  ml-2  inline-block `}
                   onClick={() => navigate("/signup")}
                 >
                   Don’t have an account?
                 </p>
                 <span
-                  className={`text-[#24A3D9] cursor-pointer relative text-sm font-semibold ml-2 mt-2   inline-block `}
+                  className={`text-[#24A3D9] cursor-pointer relative  font-bold ml-2    inline-block `}
                   onClick={() => navigate("/signup")}
                 >
                   Sign Up
