@@ -117,7 +117,7 @@ const ParentDashboardHeader = ({ selectedStudent, setSelectedStudent }) => {
 
   return (
     <div className="w-full flex-1 mb-5">
-      <p className="text-[#24A3D9] mt-7 mb-3 !my-[calc(50*0.0522vw)] text-xl">
+      <p className="text-[#24A3D9] mt-7 mb-3 !my-[calc(50*0.0522vw)] text-base-20">
         {organization?.company +
           " > " +
           user?.firstName +

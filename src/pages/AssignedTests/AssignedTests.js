@@ -665,13 +665,15 @@ export default function AssignedTests() {
       <div className="w-[83.3333333333vw] mx-auto min-h-screen mb-[40px]">
         <div className="">
           <div className="flex justify-between items-center ">
-            <p className="text-[#24A3D9] text-xl mb-8 mt-[50px]">
+            <p className="text-[#24A3D9] text-base-20 mb-8 mt-[50px]">
+            <span onClick={()=>navigate('/')} className="cursor-pointer"> 
               {organization?.company +
                 "  >  " +
                 firstName +
                 "  " +
                 lastName +
                 "  >  "}
+              </span>
               <span className="font-bold">Assignments</span>
             </p>
             {persona !== "parent" && persona !== "student" && persona !== "tutor" && (
@@ -741,8 +743,24 @@ export default function AssignedTests() {
                   inputContainerClassName=" shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white  !py-0 h-[50px]"
                   type="text"
                 />
+                <InputField
+                  IconRight={SearchIcon}
+                  value={filterData.testName}
+                  onChange={(e) =>
+                    setFilterData({
+                      ...filterData,
+                      testName: e.target.value,
+                    })
+                  }
+                  placeholder="Search Assignment"
+                  inputClassName="pl-4 py-[12px] text-base-17-5 text-md text-[#667085]   placeholder:text-base-17-5 placeholder:text-[#667085] pl-2"
+                  parentClassName="w-[20.8333333333vw] text-md"
 
-                <InputSelect
+                  inputContainerClassName=" shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white  !py-0 h-[50px]"
+                  type="text"
+                />
+
+                {/* <InputSelect
                   IconSearch={SearchIcon}
                   value={filterData.testName}
                   onChange={(val) =>
@@ -756,7 +774,7 @@ export default function AssignedTests() {
                   placeholder="Search Assignment"
                   parentClassName="w-[23.75vw] text-base-17-5 text-[#667085] h-[50px]"
                   type="select"
-                />
+                /> */}
                 <InputSelect
                   value={filterData.status}
                   onChange={(val) => handleStatus(val)}

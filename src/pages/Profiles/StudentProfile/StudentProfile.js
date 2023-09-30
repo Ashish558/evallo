@@ -735,13 +735,15 @@ const [toEdit, setToEdit] = useState({
   return (
     <>
       <div className={`w-[83.3vw] mx-auto pb-[70px]`}>
-        <p className="text-[#24A3D9] my-[calc(50*0.0522vw)] text-xl">
+        <p className="text-[#24A3D9] my-[calc(50*0.0522vw)] text-base-20">
+          <span onClick={()=>navigate('/')} className="cursor-pointer">
           {organization?.company +
             " > " +
             user?.firstName +
             " " +
             user?.lastName +
             " > "}
+          </span>
           <span className="font-semibold">Dashboard</span>
         </p>
         {!isOwn ? (
@@ -1036,8 +1038,8 @@ const [toEdit, setToEdit] = useState({
             toEdit={toEdit}
           />
           <div className="flex-1 mt-10">
-            <p className=" translate-y-[24px] text-sm text-[#26435F] font-semibold">
-              Latest Assignmets
+            <p className="mb-[-45px] text-sm text-[#26435F] font-semibold">
+              Latest Assignments
             </p>
 
             <StudentTest isOwn={isOwn} setTotaltest={setTotaltest} fromProfile={true} />

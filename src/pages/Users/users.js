@@ -730,13 +730,13 @@ export default function Users() {
     <div className="w-[83.6989583333vw] mx-auto  min-h-screen">
       <div className="pb-10  mt-[50px] !mt-[calc(50*0.0522vw)]">
         <div className="flex justify-between items-center mb-3">
-          <p className="text-[#24A3D9] mb-6 text-xl text-base-20">
-            {organization?.company +
+          <p className="text-[#24A3D9] mb-6 text-xl text-base-20 cursor-pointer">
+            <span onClick={()=>navigate('/')}>{organization?.company +
               "  >  " +
               firstName +
               "  " +
               lastName +
-              "  >  "}
+              "  >  "}</span>
             <span className="font-semibold">CRM</span>
           </p>
           <button
@@ -1078,9 +1078,9 @@ export default function Users() {
           <div className="flex justify-end flex-1 gap-5">
             <button className="bg-[#517CA8] text-[15px] font-semibold relative px-[25px] py-[10px] rounded-[7.5px] text-white  text-base-15">
             + Invite Users
-            <span  className="absolute right-[-10px] z-10 top-[-10px]">
+            <span  className="absolute right-[-10px] z-5000 top-[-10px]">
             <div className="group relative">
-            <img src={ques} className="inline-block"/>
+            <img src={ques} className="inline-block" alt="ques"/>
                        <span className="absolute  top-10 left-[-100px] z-20 w-[260px]  scale-0 rounded-lg bg-[rgba(31,41,55,0.9)]  text-[13px] text-white group-hover:scale-100 whitespace-normal py-3 px-3">
                          <h3 className="text-[#517CA8] text-left text-[16px] py-0 font-semibold mb-1">
                           Invite Users

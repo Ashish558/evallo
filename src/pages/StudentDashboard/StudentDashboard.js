@@ -157,7 +157,7 @@ const StudentDashboard = () => {
   };
   return (
     <div className={`w-[83.3vw] mx-auto pb-[70px]`} >
-      <p className="text-[#24A3D9] mt-[50px]  text-xl">
+      <p className="text-[#24A3D9] mt-[50px]  text-base-20">
         {organization?.company +
           " > " +
           user?.firstName +
