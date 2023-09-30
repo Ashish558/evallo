@@ -207,7 +207,7 @@ export default function AllTests() {
   const fetchTests = () => {
     const headers = getAuthHeader();
     axios
-      .get(`${BASE_URL}api/test/superAdmin/getAllTest`, { headers })
+      .get(`${BASE_URL}api/test/${persona}/getAllTest`, { headers })
       .then((res) => {
         console.log('res', res.data.data);
         setTableData(res.data.data)
