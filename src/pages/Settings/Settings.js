@@ -1006,12 +1006,13 @@ export default function Settings() {
     }
   }, [offerImages, settingsData]);
   console.log({ offersNew, offerImages });
+  const [loading2,setLoading2]=useState(false)
   const submitImageModalNew = (file, val, e) => {
     e.preventDefault();
     // //console.log(tagText)
     // //console.log(tagImage)
     // //console.log(selectedImageTag)
-
+  if(loading2) return 
     const formData = new FormData();
 
     let append = "";
@@ -1023,7 +1024,7 @@ export default function Settings() {
     formData.append("buttonText", val?.buttonText);
     console.log({ file, val, link: val?.link });
 
-    if (append === "") return;
+    setLoading2(true)
     setSaveLoading(true);
     axios
       .patch(`${BASE_URL}api/user/Orgsettings/${append}`, formData, {
@@ -1032,6 +1033,7 @@ export default function Settings() {
         maxContentLength: Infinity,
       })
       .then((res) => {
+        setLoading2(false)
         console.log("resp--", res.data.data.updatedSetting.settings);
         dispatch(
           updateOrganizationSettings(res.data.data.updatedSetting.settings)
@@ -1062,6 +1064,7 @@ export default function Settings() {
         setSaveLoading(false);
       })
       .catch((err) => {
+        setLoading2(false)
         console.log("err", err);
         alert("Could not upload image");
         setSaveLoading(false);
@@ -1092,6 +1095,14 @@ export default function Settings() {
     // updateAndFetchsettings(updatedSetting);
   };
 
+
+
+
+
+
+
+
+  
   return (
     <>
       <div className="  min-h-screen w-[83.6989583333vw] mx-auto">
@@ -1622,6 +1633,7 @@ export default function Settings() {
                                 defaultValue={offer.link}
                                 inputClassName={" text-base-17-5 bg-[#F5F8FA]"}
                                 parentClassName={"mb-3 bg-[#F5F8FA]"}
+                                placeholder={"Hyperlink"}
                                 onBlur={(e) =>
                                   handleOfferChange(
                                     offer,
@@ -1635,7 +1647,7 @@ export default function Settings() {
                                 parentClassName={"bg-[#F5F8FA]"}
                                 inputClassName={" text-base-17-5 bg-[#F5F8FA]"}
                                 placeholder={
-                                  "Button (eg. Register, Enroll, View)"
+                                  "Button Text (eg. View, Enroll, etc.)"
                                 }
                                 onBlur={(e) =>
                                   handleOfferChange(
@@ -1697,12 +1709,13 @@ export default function Settings() {
                                       {off?.image?.name}
                                     </span>
                                     <span
-                                      onClick={(e) =>
+                                      onClick={(e) => 
+
                                         submitImageModalNew(off?.image, off, e)
                                       }
-                                      className=" cursor-pointer block text-sm text-white bg-[#517CA8] hover:bg-[#517CA8] items-center justify-center  rounded-[5px]  px-4 py-2 text-center text-base-17-5]"
+                                      className={` cursor-pointer block text-sm text-white bg-[#517CA8] hover:bg-[#517CA8] items-center justify-center  rounded-[5px]  px-4 py-2 text-center text-base-17-5] ${loading2?"!cursor-wait":""}`}
                                     >
-                                      Submit File
+                                    {loading2?"Submitting...":  "Submit File"}
                                     </span>
                                   </div>
                                 )}
