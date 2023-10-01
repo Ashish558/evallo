@@ -62,6 +62,7 @@ export default function OrgDetails({
   const [country, setCountry] = useState([]);
   const [states, setStates] = useState([]);
 
+
   const handleState = (c) => {
     console.log("country", c);
     const state = country.filter((x) => x.name === c);

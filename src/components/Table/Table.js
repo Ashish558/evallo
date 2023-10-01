@@ -26,8 +26,10 @@ export default function Table(props) {
     changePageAfterUpdate,
     loading,
     AdminLatestSignUp,
-    headerWidth
+    headerWidth,
+    testtype
   } = props;
+  console.log(testtype);
   const [dummy, setDummy] = useState([]);
   const [tableData, setTableData] = useState(data);
   const [currentPage, setCurrentPage] = useState(1);
@@ -130,6 +132,8 @@ export default function Table(props) {
                   <React.Fragment key={idx}>
 
                     <TableItem
+                      index={idx}
+                      testtype={testtype}
                       dataFor={dataFor}
                       item={item}
                       key={idx}
