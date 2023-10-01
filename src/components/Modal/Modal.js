@@ -75,7 +75,7 @@ export default function Modal({
                                  onClick={handleClose}
                                  children="Cancel"
 
-                                 className={`py-2 ${cancelBtnClassName} !border-[1px_solid_#FFA28D]`}
+                                 className={`py-2  ${cancelBtnClassName}`}
 
                                  type="button"
                               />
