@@ -274,10 +274,10 @@ console.log({studentMultiple,modalData})
   }
 
   useEffect(() => {
-    if (modalData.name.length >= 0||true) {
+    if (modalData.name.length >= 0) {
       if (persona === "admin") {
         fetchStudents(modalData.name).then((res) => {
-
+           if(res?.data?.data?.students){
           let tempData = res.data.data.students.map((student) => {
             return {
               _id: student._id,
@@ -285,17 +285,20 @@ console.log({studentMultiple,modalData})
             };
           });
           setStudents(tempData);
+        }
         });
       } else {
         fetchTutorStudents(modalData.name).then((res) => {
-
+   if(res?.data?.data?.students){
           let tempData = res.data.data.students.map((student) => {
             return {
               _id: student._id,
               value: `${student.firstName} ${student.lastName}`,
             };
           });
+          
           setStudents(tempData);
+        }
         });
       }
     }
@@ -446,6 +449,7 @@ console.log({studentMultiple,modalData})
       setFilteredTests(sortedArr);
     });
   };
+  
 
   const getTimeLimit = (val) => {
     if (val === "Regular") return 1;
@@ -1231,7 +1235,7 @@ console.log({selectedId})
           }}
         
           handleClose={() => setDeleteBulkModalActive(false)}
-          classname={"max-w-567 mx-auto"}
+          classname={"max-w-[600px]  mx-auto"}
         />
       )}
          {markBulkModalActive && (
@@ -1294,7 +1298,7 @@ console.log({selectedId})
             </>
           }
           handleClose={() => setResendBulkModalActive(false)}
-          classname={"max-w-567 mx-auto"}
+          classname={"max-w-[600px]  mx-auto"}
         />
       )}
     </>

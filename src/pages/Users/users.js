@@ -1050,7 +1050,7 @@ console.log("users",{selectedId,bulkEdits})
             optionListClassName="text-base-17-5 text-[#667085]"
             inputContainerClassName="text-sm  shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white px-[20px] py-[16px]"
             placeholder="User Type"
-            parentClassName="w-[12.8541666667vw] text-[#667085]"
+            parentClassName="w-[12.8541666667vw] relative  relative z-[50]  text-[#667085]"
             type="select"
             value={filterData.userType.length > 0 ? filterData.userType[0] : ""}
             checkbox={{
@@ -1073,7 +1073,7 @@ console.log("users",{selectedId,bulkEdits})
             placeholderClass="text-base-17-5"
             optionData={settings.leadStatus}
             placeholder="Lead Status"
-            parentClassName="w-[12.8541666667vw] border-none text-[#667085]"
+            parentClassName="w-[12.8541666667vw] relative  relative z-[50]  border-none text-[#667085]"
             inputContainerClassName="text-sm  shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white px-[20px] py-[16px]"
             type="select"
             checkbox={{
@@ -1096,7 +1096,7 @@ console.log("users",{selectedId,bulkEdits})
             placeholderClass="text-base-17-5"
             optionData={specializations}
             placeholder="Services"
-            parentClassName="w-[12.8541666667vw] text-[#667085]"
+            parentClassName="w-[12.8541666667vw] relative  relative z-[50]  text-[#667085]"
             type="select"
             inputContainerClassName="text-sm  shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white px-[20px] py-[16px]"
             value={
@@ -1129,7 +1129,7 @@ console.log("users",{selectedId,bulkEdits})
               }
             })}
             placeholder="Tutor"
-            parentClassName="w-[12.8541666667vw] text-[#667085]"
+            parentClassName="w-[12.8541666667vw] relative  relative z-[50]  text-[#667085]"
             type="select"
             inputContainerClassName="text-sm  shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white px-[20px] py-[16px]"
             optionType="object"
@@ -1155,7 +1155,7 @@ console.log("users",{selectedId,bulkEdits})
             onRemoveFilter={onRemoveFilter}
           />
         </div>
-        <div className="flex gap-6 items-center    mt-[23.75px]">
+        <div className="flex gap-6 items-center relative z-[10]   mt-[23.75px]">
           <div className="ml-6 flex gap-3 ">
             <SCheckbox stopM={true}  checked={isChecked} onChange={handleCheckboxChange} />
             <span className="inline-block text-[17.5px] text-base-17-5">{selectedId?.length} Selected</span>
@@ -1174,7 +1174,7 @@ console.log("users",{selectedId,bulkEdits})
           </div>
           <InputSelect
             optionListClassName="text-base-17-5 text-[#667085]"
-            placeholderClass="text-base-17-5"
+            placeholderClass="text-base-17-5 !custom-scroller-2 !w-[125px] overflow-x-auto !text-[#26435F]"
             optionData={organization?.settings?.leadStatus?.map((iyt)=>{
               return {
                 value:iyt,
@@ -1183,10 +1183,11 @@ console.log("users",{selectedId,bulkEdits})
             })}
             hideRight={true}
             placeholder="Lead Status"
-            parentClassName="w-[12.8541666667vw] text-[#667085]"
+            parentClassName="w-[11.5vw] text-[#26435F]"
             type="select"
             IconSearch={Dropdown}
-            inputClassName="bg-white border border-white w-[125px]"
+            inputClassName="bg-white border border-white rounded-[4px] w-[125px]"
+            
             inputContainerClassName="bg-white "
             
             optionType="object"
@@ -1207,7 +1208,7 @@ console.log("users",{selectedId,bulkEdits})
           
           <InputSelect
             optionListClassName="text-base-17-5 text-[#667085]"
-            placeholderClass="text-base-17-5"
+            placeholderClass="text-base-17-5 !custom-scroller-2 !w-[125px] overflow-x-auto !text-[#26435F]"
             optionData={organization?.settings?.tutorStatus?.map((iyt)=>{
               return {
                 value:iyt,
@@ -1215,10 +1216,11 @@ console.log("users",{selectedId,bulkEdits})
               }
             })}
             placeholder="Tutor Status"
-            parentClassName="w-[12.8541666667vw] text-[#667085]"
+            parentClassName="w-[11.5vw] text-[#26435F]"
             type="select"
             IconSearch={Dropdown}
-            inputClassName="bg-white border border-white w-[125px]"
+            inputClassName="bg-white border border-white rounded-[4px] w-[125px]"
+            
             inputContainerClassName="bg-white "
             hideRight={true}
             optionType="object"
@@ -1240,7 +1242,7 @@ console.log("users",{selectedId,bulkEdits})
            <InputSelect
            hideRight={true}
             optionListClassName="text-base-17-5 text-[#667085]"
-            placeholderClass="text-base-17-5"
+            placeholderClass="text-base-17-5 !custom-scroller-2  overflow-x-auto !text-[#26435F]"
             optionData={allTutors?.map((iyt)=>{
               return {
                 ...iyt,
@@ -1248,10 +1250,11 @@ console.log("users",{selectedId,bulkEdits})
               }
             })}
             placeholder="Assigned Tutor"
-            parentClassName="w-[12.8541666667vw] text-[#667085]"
+            parentClassName="w-[11.5vw] text-[#26435F]"
             type="select"
             IconSearch={Dropdown}
-            inputClassName="bg-white border border-white w-[125px]"
+            inputClassName="bg-white border border-white rounded-[4px] w-[125px]"
+            
             inputContainerClassName="bg-white "
             
             optionType="object"
@@ -1471,7 +1474,7 @@ console.log("users",{selectedId,bulkEdits})
             loading: deleteLoading,
           }}
           handleClose={() => setDeleteModalActive(false)}
-          classname={"max-w-567 mx-auto"}
+          classname={"max-w-[600px]  mx-auto"}
         />
       )}
       {assignStudentModalActive && (
@@ -1582,7 +1585,7 @@ console.log("users",{selectedId,bulkEdits})
             </>
           }
           handleClose={() => setDeleteBulkModalActive(false)}
-          classname={"max-w-567 mx-auto"}
+          classname={"max-w-[600px]  mx-auto"}
         />
       )}
         {SaveBulkModalActive && (
@@ -1606,7 +1609,7 @@ console.log("users",{selectedId,bulkEdits})
           }}
           
           handleClose={() => setSaveBulkModalActive(false)}
-          classname={"max-w-567 mx-auto"}
+          classname={"max-w-[600px]  mx-auto"}
         />
       )}
        {InviteBulkModalActive && (
