@@ -119,7 +119,7 @@ export default function InputSelect({
         </div>
         {selected && (
           <div
-            className={`scrollbar-content relative !z-[9999999999] scrollbar-vertical  shadow-md ${styles.options} shadow-[0px_0px_3px_0px_#00000040]`}
+            className={`custom-scroller relative !z-[9999999999] scrollbar-vertical  shadow-md ${styles.options} !shadow-[0px_0px_3px_0px_#00000040]`}
           >
 
             {optionData?.map((option, idx) => {
