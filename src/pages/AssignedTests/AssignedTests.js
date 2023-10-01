@@ -277,7 +277,10 @@ console.log({studentMultiple,modalData})
     if (modalData.name.length >= 0||true) {
       if (persona === "admin") {
         fetchStudents(modalData.name).then((res) => {
-
+          console.log('res', res);
+          if(res.error){
+            return
+          }
           let tempData = res.data.data.students.map((student) => {
             return {
               _id: student._id,
@@ -288,7 +291,9 @@ console.log({studentMultiple,modalData})
         });
       } else {
         fetchTutorStudents(modalData.name).then((res) => {
-
+          if(res.error){
+            return
+          }
           let tempData = res.data.data.students.map((student) => {
             return {
               _id: student._id,
