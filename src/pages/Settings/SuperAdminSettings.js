@@ -10,6 +10,7 @@ import Modal from "../../components/Modal/Modal";
 import questionMark from "../../assets/images/Vector (6).svg";
 import ToggleBar from "../../components/SettingsCard/ToogleBar";
 import down from "../../assets/YIcons/Vectordown2.svg";
+import fileupload from "../../assets/icons/basil_file-upload-outline (2).svg";
 import { useLazyGetSettingsQuery } from "../../app/services/session";
 import {
   useGetAllPermissionQuery,
@@ -166,7 +167,7 @@ export default function SuperAdminSettings() {
     offer: false,
     Expertise: false,
   });
-
+ 
   const imageUploadRef = useRef();
   const [tagImage, setTagImage] = useState(null);
   const [imageName, setImageName] = useState("");
@@ -855,8 +856,10 @@ console.log("tests",allTestData,filteredTests)
       setActiveTab(parseInt(activeTab));
     }
   }, [searchParams.get("tab")]);
-  if (!settingsData) return <></>;
-  if (Object.keys(settingsData).length === 0) return <></>;
+  const [offersNew, setOffersNew] = useState([]);
+
+  
+  
   const {
     classes,
     servicesAndSpecialization,
@@ -869,7 +872,19 @@ console.log("tests",allTestData,filteredTests)
     personality,
     interest,
   } = settingsData;
-
+  useEffect(() => {
+    if (offerImages) {
+      let arr = [];
+      for (let i = 0; i < 4 - offerImages.length; i++) {
+        arr.push({
+          link: "",
+          image: "",
+          buttonText: "",
+        });
+      }
+      setOffersNew([...arr]);
+    }
+  }, [offerImages, settingsData]);
   const handlePause = (item) => {
     let updated = settingsData.subscriptionCode.map((subscription) => {
       if (item._id === subscription._id) {
@@ -918,7 +933,16 @@ console.log("tests",allTestData,filteredTests)
     updateAndFetchsettings(updatedSetting);
     // console.log('updatedSetting', updatedSetting)
   };
-
+  const handleImageRemoval = (offer) => {
+    //console.log(offer);
+    const arr = offerImages.filter((item) => {
+      return item._id !== offer._id;
+    });
+    let updatedSetting = {
+      offerImages: arr,
+    };
+    updateAndFetchsettings(updatedSetting);
+  };
   const handleOfferChange = (offer, key, value) => {
     let updatedField = settingsData.offerImages.map((item) => {
       if (item._id === offer._id) {
@@ -975,6 +999,79 @@ console.log("tests",allTestData,filteredTests)
   };
   console.log(organization?.company);
 
+  console.log({ offersNew, offerImages });
+  const submitImageModalNew = (file, val, e) => {
+    e.preventDefault();
+    // //console.log(tagText)
+    // //console.log(tagImage)
+    // //console.log(selectedImageTag)
+
+    const formData = new FormData();
+
+    let append = "";
+
+    append = "addimage";
+    // formData.append("image", file);
+    formData.append("link", val?.link);
+    formData.append("offer", file);
+    formData.append("buttonText", val?.buttonText);
+    console.log({ file, val, link: val?.link });
+
+    if (append === "") return;
+    setSaveLoading(true);
+    axios
+      .patch(`${BASE_URL}api/user/setting/${append}`, formData, {
+        headers: getAuthHeader(),
+        maxBodyLength: Infinity,
+        maxContentLength: Infinity,
+      })
+      .then((res) => {
+        // console.log("resp--", res.data.data.updatedSetting.settings);
+        // dispatch(
+        //   updateOrganizationSettings(res.data.data.updatedSetting.settings)
+        // );
+        // fetchSettings();
+        // let settingsData2 = res.data.data.updatedSetting.settings;
+        // if (settingsData2?.offerImages) {
+        //   let updatedField = settingsData2.offerImages?.map((it, id) => {
+        //     if (id === settingsData2.offerImages?.length - 1) {
+        //       return { ...it, buttonText: val?.buttonText };
+        //     }
+        //     return { ...it };
+        //   });
+
+        //   let updatedSetting = {
+        //     offerImages: updatedField,
+        //   };
+        //   console.log("updatedSetting", updatedSetting);
+        //   updateAndFetchsettings(updatedSetting);
+        // } else {
+        //   // setTagImage(null);
+        //   // setTagText("");
+        //   // setSelectedImageTag("");
+        //   // setImageName("");
+        //   // setTagModalActive(false);
+        //   fetchSettings();
+        // }
+        fetchSettings();
+        setSaveLoading(false);
+      })
+      .catch((err) => {
+        console.log("err", err);
+        alert("Could not upload image");
+        setSaveLoading(false);
+      });
+  };
+  const handleImageRemoval2 = (offer) => {
+    //console.log(offer);
+    const arr = offerImages.filter((item) => {
+      return item._id !== offer._id;
+    });
+    let updatedSetting = {
+      offerImages: arr,
+    };
+    updateAndFetchsettings(updatedSetting);
+  };
   return (
     <>
       <div className=" bg-lightWhite min-h-screen px-24 pt-[30px] pb-[50px]">
@@ -1138,12 +1235,31 @@ console.log("tests",allTestData,filteredTests)
                           className="bg-white p-4 mb-3 items-center rounded-[5px] shadow-[0px_0px_2.500000476837158px_0px_#00000040] "
                         >
                           <div className="flex items-center justify-between  pr-8 ">
-                            <p className="font-medium text-[#24A3D9] ">
+                            <p className="font-medium text-[#24A3D9] min-w-[170px]">
                               {subscription.code}
-                              <span className="inline-block ml-4 font-normal text-[#517CA8]">
+                              <span className="inline-block ml-4 text-base-17-5 !font-normal text-[#517CA8]">
                                 {subscription.expiry} Weeks
                               </span>
                             </p>
+                            <div className="flex items-center flex-wrap flex-1 ml-16 ">
+                            {/* <AddTag
+                              openModal={true}
+                              onAddTag={(code) => handleAddTest(subscription)}
+                              keyName={subscription.code}
+                              text="Add Tests"
+                            /> */}
+                            <FilterItems
+                              isString={true}
+                              onlyItems={true}
+                              keyName={subscription.code}
+                              items={subscription.tests}
+                              filteredTests={filteredTests}
+                              fetchData={true}
+                              api="test"
+                              onRemoveFilter={onRemoveCodeTest}
+                              className="pt-1 pb-1 mr-15"
+                            />
+                          </div>
                             <div className="flex items-center gap-x-4">
                               {/* {subscription.pause === false ? (
                                 <img
@@ -1190,25 +1306,7 @@ console.log("tests",allTestData,filteredTests)
                               </div>
                             </div>
                           </div>
-                          <div className="flex items-center flex-wrap [&>*]:mb-[18px] ">
-                            <AddTag
-                              openModal={true}
-                              onAddTag={(code) => handleAddTest(subscription)}
-                              keyName={subscription.code}
-                              text="Add Tests"
-                            />
-                            <FilterItems
-                              isString={true}
-                              onlyItems={true}
-                              keyName={subscription.code}
-                              items={subscription.tests}
-                              filteredTests={filteredTests}
-                              fetchData={true}
-                              api="test"
-                              onRemoveFilter={onRemoveCodeTest}
-                              className="pt-1 pb-1 mr-15"
-                            />
-                          </div>
+                         
                         </div>
                       );
                     })}
@@ -1237,10 +1335,25 @@ console.log("tests",allTestData,filteredTests)
                             key={i}
                             className="bg-white shadow-small rounded-md p-4 mb-3 shadow-[0px_0px_2.500000476837158px_0px_#00000040] "
                           >
-                            <div className="flex items-center justify-between pr-8 ">
-                              <p className="font-medium text-[#24A3D9] ">
+                            <div className="flex items-center py-1 justify-between pr-8 ">
+                              <p className="font-medium text-[#24A3D9] min-w-[150px]">
                                 {service.service}
                               </p>
+                              <div className="flex items-center flex-wrap flex-1 ml-16">
+                              {/* <AddTag
+                                onAddTag={handleAddSpecialization}
+                                keyName={service.service}
+                                text="Add Service"
+                              /> */}
+                              <FilterItems
+                                isString={true}
+                                onlyItems={true}
+                                keyName={service.service}
+                                items={service.specialization}
+                                onRemoveFilter={onRemoveSpecialization}
+                                className="pt-1 pb-1 mr-15"
+                              />
+                            </div>
                               <div className="flex items-center gap-x-4">
                                 <ToggleBar
                                   boxClass="!h-[16px]"
@@ -1274,21 +1387,7 @@ console.log("tests",allTestData,filteredTests)
                                 </div>
                               </div>
                             </div>
-                            <div className="flex items-center flex-wrap [&>*]:mb-[18px]">
-                              <AddTag
-                                onAddTag={handleAddSpecialization}
-                                keyName={service.service}
-                                text="Add Service"
-                              />
-                              <FilterItems
-                                isString={true}
-                                onlyItems={true}
-                                keyName={service.service}
-                                items={service.specialization}
-                                onRemoveFilter={onRemoveSpecialization}
-                                className="pt-1 pb-1 mr-15"
-                              />
-                            </div>
+                           
                           </div>
                         );
                       })}
@@ -1389,10 +1488,25 @@ console.log("tests",allTestData,filteredTests)
                             key={i}
                             className="bg-white shadow-small p-4 mb-3 rounded-md"
                           >
-                            <div className="flex items-center justify-between pr-8">
-                              <p className="font-medium text-[#24A3D9] mb-4">
+                            <div className="flex items-center justify-between py-1 pr-8">
+                              <p className="font-medium text-[#24A3D9] min-w-[150px]">
                                 {service.heading}
                               </p>
+                              <div className="flex items-center flex-1 flex-wrap ml-16">
+                              {/* <AddTag
+                                onAddTag={handleAddSessionTag}
+                                keyName={service.heading}
+                                text="Add Items"
+                              /> */}
+                              <FilterItems
+                                isString={true}
+                                onlyItems={true}
+                                keyName={service.heading}
+                                items={service.items}
+                                onRemoveFilter={onRemoveSessionTagItem}
+                                className="pt-1 pb-1 mr-15 text-base-17-5"
+                              />
+                            </div>
                               <div className="flex items-center gap-x-4">
                                 <ToggleBar
                                   boxClass="!h-[16px]"
@@ -1425,21 +1539,7 @@ console.log("tests",allTestData,filteredTests)
                                 </div>
                               </div>
                             </div>
-                            <div className="flex items-center flex-wrap [&>*]:mb-[10px]">
-                              <AddTag
-                                onAddTag={handleAddSessionTag}
-                                keyName={service.heading}
-                                text="Add Items"
-                              />
-                              <FilterItems
-                                isString={true}
-                                onlyItems={true}
-                                keyName={service.heading}
-                                items={service.items}
-                                onRemoveFilter={onRemoveSessionTagItem}
-                                className="pt-1 pb-1 mr-15 text-base-17-5"
-                              />
-                            </div>
+                          
                           </div>
                         );
                       })}
@@ -1455,13 +1555,27 @@ console.log("tests",allTestData,filteredTests)
                 </div>
               }
             />
-            <SettingsCard
+           <SettingsCard
+              titleClassName="text-base-20"
               title="Edit Announcements"
               toggle={{ value: toggleImage.offer, key: "offer" }}
               onToggle={onToggle}
               body={
-                <div>
-                  <div className="flex items-center flex-wrap [&>*]:mb-[10px] bg-white  gap-x-4 p-4 rounded-br-5 rounded-bl-5 mb-3 ">
+                <div className=" bg-white w-full  gap-x-5 p-4 rounded-br-5 rounded-bl-5 !pr-4">
+                  <p className="text-base-17-5 mt-[-5px] text-[#667085] mb-6">
+                    <span className="font-semibold mr-1">⚠️ Note:</span>
+                    Announcements, as the name implies, can be used to announce
+                    important aspects of your business. Displayed on the
+                    top-left corner in Parent and Student Dashboards, these can
+                    be used to highlight your services, offers, referral
+                    incentives, webinars, events, proctored tests, tutorial
+                    videos, and pretty much anything you want your Clients to
+                    see as soon as they log into their Evallo dashboard. You can
+                    add a maximum of 4 Announcements at a time. Read detailed
+                    documentation in Evallo’s
+                    <span className="text-[#24A3D9]"> knowledge base.</span>
+                  </p>
+                  <div className="flex items-center gap-5 pr-3  flex-1 !w-[100%] overflow-x-auto custom-scroller-2    [&>*]:mb-[10px] bg-white  gap-x-5 p-4 rounded-br-5 rounded-bl-5 mb-3 !px-6 py-5 ">
                     {/* <input type='file' ref={inputRef} className='hidden' accept="image/*"
                            onChange={e => onImageChange(e)} /> */}
 
@@ -1482,31 +1596,43 @@ console.log("tests",allTestData,filteredTests)
                     baseLink={awsLink}
                     onRemoveFilter={onRemoveImage}
                     // onRemoveFilter={onRemoveFilter}
-                    className="pt-1 pb-1 mr-15"
+                    className="pt-1 pb-1 mr-15 text-base-17-5"
                   /> */}
+                
                     {offerImages?.map((offer) => {
                       return (
-                        <div key={offer._id}>
-                          <div className="pr-4 border-r-[1.25px] border-[#CBD6E2]">
-                            {toggleImage.offer && (
-                              <div className=" overflow-hidden mb-5">
+                        <div className="flex-1" key={offer._id}>
+                        
+                          <div className="relative">
+                            {toggleImage.offer || true&& (
+                              <div className=" mb-5">
                                 <div className="flex">
                                   <div className="w-[300px] h-[150px]">
                                     <img
-                                      src={`${awsLink}${offer.image}`}
+                                      src={`${awsLink}${offer?.image}`}
                                       alt="offer-image3"
                                       className="w-full h-full object-cover rounded-7"
                                     />
                                   </div>
-                                  {/* <div className="w-[1.25px] h-[150px] bg-[#CBD6E2] ml-4" /> */}
+                                  <div className="w-[1.25px] h-[150px] bg-[#CBD6E2] ml-5" />
                                 </div>
                               </div>
                             )}
                             <div>
+                              <div
+                                onClick={() => handleImageRemoval(offer)}
+                                className="w-7 h-7 z-5000 -top-2 right-[9px] flex items-center absolute justify-center  rounded-full cursor-pointer"
+                              >
+                                <img
+                                  src={DeleteIcon}
+                                  className="w-5"
+                                  alt="delete"
+                                />
+                              </div>
                               <InputField
                                 defaultValue={offer.link}
-                                inputClassName="bg-[#F5F8FA] text-[#667085] text-[17.5px] h-[30px]"
-                                parentClassName="mb-3 bg-[#F5F8FA]"
+                                inputClassName={" text-base-17-5 bg-[#F5F8FA]"}
+                                parentClassName={"mb-3 bg-[#F5F8FA]"}
                                 onBlur={(e) =>
                                   handleOfferChange(
                                     offer,
@@ -1516,9 +1642,9 @@ console.log("tests",allTestData,filteredTests)
                                 }
                               />
                               <InputField
-                                parentClassName="bg-[#F5F8FA]"
-                                inputClassName="bg-[#F5F8FA] text-[#667085] text-[17.5px] h-[30px]"
-                                value={offer.buttonText}
+                                defaultValue={offer.buttonText}
+                                parentClassName={"bg-[#F5F8FA]"}
+                                inputClassName={" text-base-17-5 bg-[#F5F8FA]"}
                                 placeholder={
                                   "Button (eg. Register, Enroll, View)"
                                 }
@@ -1535,12 +1661,129 @@ console.log("tests",allTestData,filteredTests)
                         </div>
                       );
                     })}
+                    {offersNew?.length > 0 &&
+                      offersNew?.map((off, idx) => {
+                        return (
+                          <div className="flex-1 flex gap-2 min-w-[250px] ">
+                            <div className=" relative w-[2px] rounded-md  bg-[#00000030] !h-[300px] mx-4"></div>
+
+                            <div className="w-full flex-1">
+                              <div className="flex w-[100%] bg-[#F5F8FA] rounded-md mb-8 flex-col justify-center items-center">
+                                <div className="mt-[20px] mb-[10px] items-center flex justify-center">
+                                  <img
+                                    src={fileupload}
+                                    alt="fileuploadIcon"
+                                  ></img>
+                                </div>
+
+                                <div className="flex items-center text-center justify-center text-base-15">
+                                  {/* {xlsFile == undefined ? (
+                    <p className=""></p>
+                  ) : (
+                    <p className="block ">{xlsFile.name}</p>
+                  )} */}
+                                </div>
+                                {!off?.image?.name ? (
+                                  <div className="flex justify-center">
+                                    <label
+                                      htmlFor="file2"
+                                      className="block text-sm text-white bg-[#517CA8] hover:bg-[#517CA8] items-center justify-center  rounded-[5px]  px-3 py-2 text-base-17-5 text-center ] "
+                                    >
+                                      Choose File
+                                    </label>
+                                    <input
+                                      onChange={(e) => {
+                                        let arr = offersNew;
+                                        arr[idx].image = e.target.files[0];
+                                        setOffersNew([...arr]);
+                                        // setImageName(e.target.files[0].name);
+                                      }}
+                                      id="file2"
+                                      type="file"
+                                    />
+                                  </div>
+                                ) : (
+                                  <div className="flex justify-center flex-col">
+                                    <span className="text-[#517CA8] text-base-15 mb-1">
+                                      {off?.image?.name}
+                                    </span>
+                                    <span
+                                      onClick={(e) =>
+                                        submitImageModalNew(off?.image, off, e)
+                                      }
+                                      className=" cursor-pointer block text-sm text-white bg-[#517CA8] hover:bg-[#517CA8] items-center justify-center  rounded-[5px]  px-4 py-2 text-center text-base-17-5]"
+                                    >
+                                      Submit File
+                                    </span>
+                                  </div>
+                                )}
+
+                                <label
+                                  htmlFor="file"
+                                  className="block text-xs items-center justify-center  rounded-[5px]  px-4 py-2 font-normal text-center text-[#517CA8] text-base-15"
+                                >
+                                  Less than 1 MB
+                                </label>
+                              </div>
+                              <div>
+                                <div
+                                  //   onClick={() => handleImageRemoval(offer)}
+                                  className="w-7 h-7 z-5000 -top-2 right-[9px] flex items-center absolute justify-center  rounded-full cursor-pointer"
+                                >
+                                  <img
+                                    src={DeleteIcon}
+                                    className="w-5"
+                                    alt="delete"
+                                  />
+                                </div>
+                                {false && (
+                                  <span className="text-[#517CA8] text-base-15 mb-1 !text-center flex justify-center items-center">
+                                    {" "}
+                                    Button text can only be edited after
+                                    uploading image!{" "}
+                                  </span>
+                                )}
+                                <InputField
+                                  //  defaultValue={offer.link}
+                                  inputClassName={
+                                    " text-base-17-5 bg-[#F5F8FA]"
+                                  }
+                                  parentClassName={"mb-3 bg-[#F5F8FA]"}
+                                  placeholder={"This field is required."}
+                                  required={true}
+                                  onChange={(e) => {
+                                    let arr = offersNew;
+                                    arr[idx].link = e.target.value;
+                                    setOffersNew([...arr]);
+                                  }}
+                                />
+                                <InputField
+                                  // defaultValue={offer.buttonText}
+                                  parentClassName={"bg-[#F5F8FA]"}
+                                  inputClassName={
+                                    " text-base-17-5 bg-[#F5F8FA]"
+                                  }
+                                  placeholder={
+                                    "Button (eg. Register, Enroll, View)"
+                                  }
+                                  onChange={(e) => {
+                                    let arr = offersNew;
+                                    arr[idx].buttonText = e.target.value;
+                                    setOffersNew([...arr]);
+                                  }}
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })}
                   </div>
-                  <AddTag
+
+                  {/* <AddTag
                     openModal={true}
                     text="Add Announcement"
                     onAddTag={() => handleTagModal("offer")}
-                  />
+                  /> */}
                 </div>
               }
             />

@@ -36,6 +36,7 @@ import AccOverviewLogo2 from "../../../assets/icons/account-overview 2.svg";
 import ClientsSignupLogo from "../../../assets/icons/Client sign up 1.svg";
 import ClientsSignupLogo2 from "../../../assets/icons/Client sign up 2.svg";
 import EditBlueIcon from "../../../assets/YIcons/edit2.svg";
+import fileupload from "../../../assets/icons/basil_file-upload-outline (2).svg";
 import InputSearch from "../../../components/InputSearch/InputSearch";
 import { useSelector, useDispatch } from "react-redux";
 import { useUpdateUserFieldsMutation } from "../../../app/services/users";
@@ -47,7 +48,8 @@ import { useAddNewQuestionMutation } from "../../../app/services/admin";
 import { updateOrganizationSettings } from "../../../app/slices/organization";
 import InputSelect from "../../../components/InputSelect/InputSelect";
 import { timeZones } from "../../../constants/constants";
-
+import { permissionsStaticData } from "../../Settings/Tabs/staticData";
+import InputFieldDropdown from "../../../components/InputField/inputFieldDropdown";
 
 // import questionMark from '../../../assets/images/question-mark.svg'
 const initialState = {
@@ -103,8 +105,6 @@ export default function Settings({orgData,orgs}) {
     values: [],
   });
 
-  const [organization ,setOrganization] = useState()
- 
   const [searchParams, setSearchParams] = useSearchParams();
   const [tabs, setTabs] = useState(initialTabs);
   const [activeTab, setActiveTab] = useState(1);
@@ -156,7 +156,7 @@ export default function Settings({orgData,orgs}) {
   const [toggleImage, setToggleImage] = useState({
     personality: false,
     interest: false,
-    offer: false,
+    offer: true,
     Expertise: false,
     Answer: false,
     Sessions: false,
@@ -171,11 +171,15 @@ export default function Settings({orgData,orgs}) {
   const dispatch = useDispatch();
 
   const [fetchedPermissions, setThePermission] = useState([]);
- useEffect(()=>{
-   setSettingsData(orgData)
-   setOrganization(orgs)
- },[orgData])
- console.log("orgData",orgData,settingsData)
+  const [organization ,setOrganization] = useState()
+  useEffect(()=>{
+    setSettingsData(orgData)
+    setOrganization(orgs)
+  },[orgData])
+  console.log("orgData",orgData,settingsData)
+
+
+
   const handlePermissionOption = (value, key) => {
     let nvalue = value;
     if (!isNaN(Number(value))) {
@@ -254,7 +258,7 @@ export default function Settings({orgData,orgs}) {
 
   const handleClose = () => setModalActive(false);
   const handleTagModal = (text) => {
-    console.log(text);
+    //console.log(text);
     setTagModalActive(true);
     setSelectedImageTag(text);
   };
@@ -265,7 +269,7 @@ export default function Settings({orgData,orgs}) {
     updateFields({ id: user.id, fields: reqBody }).then((res) => {
       handleClose();
       if (res.error) {
-        return console.log(res.error);
+        return //console.log(res.error);
       }
       const {
         firstName,
@@ -300,17 +304,17 @@ export default function Settings({orgData,orgs}) {
   const fetchSettings = () => {
     if (organization?.settings) {
       setSettingsData(organization.settings);
-      if (organization?.settings?.permissions?.length > 0)
+      if (organization?.settings?.permissions)
         setThePermission(organization.settings.permissions);
     }
   };
-  console.log(organization);
+  //console.log(organization);
   const onRemoveTextImageTag = (item, key, idx) => {
     let updatedField = settingsData[key].filter((item, i) => i !== idx);
     let updatedSetting = {
       [key]: updatedField,
     };
-    // console.log(updatedSetting)
+    // //console.log(updatedSetting)
     updateAndFetchsettings(updatedSetting);
   };
 
@@ -350,28 +354,30 @@ export default function Settings({orgData,orgs}) {
     };
     const body = {
       settings,
+      orgId:orgs?._id
+
     };
-    console.log("body", body);
+    console.log("body", body,orgs,orgData);
 
     setSaveLoading(true);
     updateSetting(body)
       .then((res) => {
-        console.log("updated", res.data.data);
+        //console.log("updated", res.data.data);
         setSaveLoading(false);
         setSettingsData(res.data.data.updatedOrg.settings);
         dispatch(updateOrganizationSettings(res.data.data.updatedOrg.settings));
       })
       .catch((err) => {
         setSaveLoading(false);
-        console.log("err", err);
+        //console.log("err", err);
       });
   };
 
   const submitImageModal = (e) => {
     e.preventDefault();
-    // console.log(tagText)
-    // console.log(tagImage)
-    // console.log(selectedImageTag)
+    // //console.log(tagText)
+    // //console.log(tagImage)
+    // //console.log(selectedImageTag)
 
     const formData = new FormData();
     formData.append("text", tagText);
@@ -391,8 +397,8 @@ export default function Settings({orgData,orgs}) {
       formData.delete("text");
       formData.delete("image");
     }
-
-    // console.log(append)
+    console.log({selectedImageTag,tagText,tagImage})
+    // //console.log(append)
 
     if (append === "") return;
     setSaveLoading(true);
@@ -403,7 +409,7 @@ export default function Settings({orgData,orgs}) {
         maxContentLength: Infinity,
       })
       .then((res) => {
-        // console.log('resp--' ,res.data.data.updatedSetting.settings);
+        // //console.log('resp--' ,res.data.data.updatedSetting.settings);
         dispatch(
           updateOrganizationSettings(res.data.data.updatedSetting.settings)
         );
@@ -416,7 +422,7 @@ export default function Settings({orgData,orgs}) {
         setSaveLoading(false);
       })
       .catch((err) => {
-        console.log("err", err);
+        //console.log("err", err);
         alert("Could not upload image");
         setSaveLoading(false);
       });
@@ -427,37 +433,37 @@ export default function Settings({orgData,orgs}) {
   };
 
   const onImageChange = (e) => {
-    //   console.log(e.target.files[0])
+    //   //console.log(e.target.files[0])
     setImage(e.target.files[0]);
     const formData = new FormData();
     formData.append("offer", e.target.files[0]);
     // updateImage(formData)
     //    .then(res => {
-    //       console.log(res)
+    //       //console.log(res)
     //       setSettingsData(res.data.data.setting)
     //    })
     axios
       .patch(`${BASE_URL}api/user/setting/addimage`, formData)
       .then((res) => {
-        // console.log(res)
+        // //console.log(res)
         setImage(null);
         fetchSettings();
       });
   };
 
   const onRemoveImage = (itemToRemove) => {
-    console.log(itemToRemove);
+    //console.log(itemToRemove);
     let updatedField = settingsData.offerImages.filter(
       (item) => item._id !== itemToRemove._id
     );
     let updatedSetting = {
       offerImages: updatedField,
     };
-    console.log(updatedSetting);
+    //console.log(updatedSetting);
     updateAndFetchsettings(updatedSetting);
   };
   const handleImageRemoval = (offer) => {
-    console.log(offer);
+    //console.log(offer);
     const arr = offerImages.filter((item) => {
       return item._id !== offer._id;
     });
@@ -506,7 +512,7 @@ export default function Settings({orgData,orgs}) {
   }, [organization]);
 
   const onAddService = (val) => {
-    console.log(val);
+    //console.log(val);
     let tempSettings = { ...settingsData };
     let updatedSetting = {
       servicesAndSpecialization: [
@@ -540,7 +546,9 @@ export default function Settings({orgData,orgs}) {
 
     let updated = servicesAndSpecialization.map((serv) => {
       if (serv.service === key) {
-        setSubModalServiceData((prev)=>{return {...prev,specialization:[...prev.specialization,text]}})
+        setSubModalServiceData((prev) => {
+          return { ...prev, specialization: [...prev.specialization, text] };
+        });
         return {
           ...serv,
           specialization: [...serv.specialization, text],
@@ -549,12 +557,12 @@ export default function Settings({orgData,orgs}) {
         return { ...serv };
       }
     });
-    //console.log("upper",updated)
+    ////console.log("upper",updated)
     let updatedSetting = {
       servicesAndSpecialization: updated,
     };
     updateAndFetchsettings(updatedSetting);
-    // console.log('updatedSetting', updatedSetting)
+    // //console.log('updatedSetting', updatedSetting)
   };
 
   const handleAddSessionTag = (text, key) => {
@@ -562,7 +570,9 @@ export default function Settings({orgData,orgs}) {
 
     let updated = sessionTags.map((serv) => {
       if (serv.heading === key) {
-       setSubModalSessionData((prev)=>{return {...prev,items:[...prev.items,text]}})
+        setSubModalSessionData((prev) => {
+          return { ...prev, items: [...prev.items, text] };
+        });
         return {
           ...serv,
           items: [...serv.items, text],
@@ -576,15 +586,15 @@ export default function Settings({orgData,orgs}) {
       sessionTags: updated,
     };
     updateAndFetchsettings(updatedSetting);
-    // console.log('updatedSetting', updatedSetting)
+    // //console.log('updatedSetting', updatedSetting)
   };
   const onRemoveSpecialization = (text, service) => {
-    // console.log(text);
-    // console.log(service);
+    // //console.log(text);
+    // //console.log(service);
     let updated = servicesAndSpecialization.map((serv) => {
       if (serv.service === service) {
         let updatedSpec = serv.specialization.filter((spec) => spec !== text);
-        setSubModalServiceData({ ...serv, specialization: updatedSpec })
+        setSubModalServiceData({ ...serv, specialization: updatedSpec });
         return { ...serv, specialization: updatedSpec };
       } else {
         return { ...serv };
@@ -597,12 +607,12 @@ export default function Settings({orgData,orgs}) {
   };
 
   const onRemoveSessionTagItem = (text, heading) => {
-    // console.log(text);
-    // console.log(service);
+    // //console.log(text);
+    // //console.log(service);
     let updated = sessionTags.map((serv) => {
       if (serv.heading === heading) {
         let updatedSpec = serv.items.filter((spec) => spec !== text);
-        setSubModalSessionData({ ...serv, items: updatedSpec})
+        setSubModalSessionData({ ...serv, items: updatedSpec });
         return { ...serv, items: updatedSpec };
       } else {
         return { ...serv };
@@ -641,7 +651,7 @@ export default function Settings({orgData,orgs}) {
       let updatedSetting = {
         subscriptionCode: updated,
       };
-      // console.log('updatedSetting', updatedSetting);
+      // //console.log('updatedSetting', updatedSetting);
       updateAndFetchsettings(updatedSetting);
       setAddCodeModalActive(false);
       setSubModalData(subModalInitialState);
@@ -657,7 +667,7 @@ export default function Settings({orgData,orgs}) {
       let updatedSetting = {
         subscriptionCode: updated,
       };
-      // console.log('updatedSetting', updatedSetting);
+      // //console.log('updatedSetting', updatedSetting);
       updateAndFetchsettings(updatedSetting);
       setAddCodeModalActive(false);
       setSubModalData(subModalInitialState);
@@ -691,20 +701,20 @@ export default function Settings({orgData,orgs}) {
         }
       });
   };
-  console.log("tests",allTestData,filteredTests)
-  
+  //console.log("tests", allTestData, filteredTests);
+
   useEffect(() => {
     fetchTests();
   }, []);
   const handleAddTest = (code) => {
-    console.log(code);
+    //console.log(code);
     setSelectedSubscriptionData(code);
     setAddTestModalActive(true);
   };
 
   const handleADdTestSubmit = (e) => {
     e.preventDefault();
-    console.log(updatedSubscriptionData);
+    //console.log(updatedSubscriptionData);
     let updated = subscriptionCode.map((sub) => {
       if (sub._id === updatedSubscriptionData._id) {
         return { ...updatedSubscriptionData };
@@ -715,7 +725,7 @@ export default function Settings({orgData,orgs}) {
     let updatedSetting = {
       subscriptionCode: updated,
     };
-    console.log("updatedSetting", updatedSetting);
+    //console.log("updatedSetting", updatedSetting);
     updateAndFetchsettings(updatedSetting);
     setAddTestModalActive(false);
     setSelectedSubscriptionData({
@@ -736,7 +746,7 @@ export default function Settings({orgData,orgs}) {
     let updatedSetting = {
       subscriptionCode: updated,
     };
-    console.log(updatedSetting);
+    //console.log(updatedSetting);
     updateAndFetchsettings(updatedSetting);
   };
   const onRemoveCode = (code) => {
@@ -746,11 +756,11 @@ export default function Settings({orgData,orgs}) {
     let updatedSetting = {
       subscriptionCode: updated,
     };
-    // console.log(updatedSetting);
+    // //console.log(updatedSetting);
     updateAndFetchsettings(updatedSetting);
   };
   const onEditCode = (code) => {
-    console.log("session",code)
+    //console.log("session", code);
     setSubModalData({
       ...code,
       editing: true,
@@ -760,7 +770,7 @@ export default function Settings({orgData,orgs}) {
   };
 
   const handleTestChange = (item) => {
-    console.log("tsests", item);
+    //console.log("tsests", item);
     if (updatedSubscriptionData.tests.includes(item._id)) {
       let updated = updatedSubscriptionData.tests.filter(
         (test) => test !== item._id
@@ -781,7 +791,7 @@ export default function Settings({orgData,orgs}) {
     navigate(`/settings?tab=${num}`);
     setActiveTab(num);
   };
-
+ 
   const submitNewQuestion = (e) => {
     e.preventDefault();
     if (organization?.settings?.customFields?.length === 5)
@@ -795,28 +805,22 @@ export default function Settings({orgData,orgs}) {
     setAddNewQuestionModalActive(false);
     addNewQuestion(body).then((res) => {
       if (res.error) {
-        console.log(res.error);
+        //console.log(res.error);
         return;
       }
       window.location.reload();
-      // console.log("reshi", res);
+      // //console.log("reshi", res);
 
       setFetchS(res);
     });
   };
 
-  useEffect(() => {
-    const activeTab = searchParams.get("tab");
-    if (activeTab) {
-      setActiveTab(parseInt(activeTab));
-    }
-  }, [searchParams.get("tab")]);
 
   // if (Object.keys(settingsData).length === 0) return <></>
   const {
-    classes,
+  
     servicesAndSpecialization,
-    Expertise,
+   
     sessionTags,
     leadStatus,
     tutorStatus,
@@ -837,7 +841,7 @@ export default function Settings({orgData,orgs}) {
     let updatedSetting = {
       subscriptionCode: updated,
     };
-    // console.log(updatedSetting);
+    // //console.log(updatedSetting);
     updateAndFetchsettings(updatedSetting);
   };
 
@@ -848,7 +852,7 @@ export default function Settings({orgData,orgs}) {
     updateAndFetchsettings(body);
   };
   {
-    console.log("searchTests0", searchedTest);
+    //console.log("searchTests0", searchedTest);
   }
 
   /* new */
@@ -902,7 +906,6 @@ export default function Settings({orgData,orgs}) {
   }, [selectedServiceData]);
 
   const onEditService = (code) => {
-
     setSubModalServiceData({
       ...code,
 
@@ -912,7 +915,7 @@ export default function Settings({orgData,orgs}) {
     setAddServiceModalActive(true);
   };
   const onEditSession = (code) => {
-    console.log("session",code)
+    //console.log("session", code);
     setSubModalSessionData({
       ...code,
       editing: true,
@@ -921,25 +924,25 @@ export default function Settings({orgData,orgs}) {
     setAddSessionModalActive(true);
   };
   const handleServicePause = (item) => {
-    console.log({item})
-    let key=item?._id
+    //console.log({ item });
+    let key = item?._id;
     let tempSettings = { ...settingsData };
 
     let updated = servicesAndSpecialization.map((serv) => {
       if (serv._id === key) {
         return {
           ...serv,
-          pause:!serv?.pause,
+          pause: !serv?.pause,
         };
       } else {
         return { ...serv };
       }
     });
-    console.log("upper",updated)
+    //console.log("upper", updated);
     let updatedSetting = {
       servicesAndSpecialization: updated,
     };
-      updateAndFetchsettings(updatedSetting);
+    updateAndFetchsettings(updatedSetting);
   };
 
   const handleAddServiceName = (text, key) => {
@@ -955,14 +958,14 @@ export default function Settings({orgData,orgs}) {
         return { ...serv };
       }
     });
-    //console.log("upper",updated)
+    ////console.log("upper",updated)
     let updatedSetting = {
       servicesAndSpecialization: updated,
     };
     updateAndFetchsettings(updatedSetting);
     setAddServiceModalActive(false);
     setSubModalServiceData(subModalInitialServiceState);
-    // console.log('updatedSetting', updatedSetting)
+    // //console.log('updatedSetting', updatedSetting)
   };
   const handleAddSessionName = (text, key) => {
     let tempSettings = { ...settingsData };
@@ -971,28 +974,205 @@ export default function Settings({orgData,orgs}) {
       if (serv._id === key) {
         return {
           ...serv,
-         heading: text,
+          heading: text,
         };
       } else {
         return { ...serv };
       }
     });
-    //console.log("upper",updated)
+    ////console.log("upper",updated)
     let updatedSetting = {
       sessionTags: updated,
     };
     updateAndFetchsettings(updatedSetting);
     setAddSessionModalActive(false);
     setSubModalSessionData(subModalInitialSessionState);
-    // console.log('updatedSetting', updatedSetting)
+    // //console.log('updatedSetting', updatedSetting)
   };
-  return (
-    <>
-      <div className="    mx-auto">
+
+
+
+
+  const [offersNew,setOffersNew] = useState([]);
+
+
+  useEffect(()=>{
+    if(offerImages ){
+      let arr=[]
+      for(let i=0;i<4-offerImages.length;i++){
+  arr.push({
+    link:"",
+    image:"",
+    buttonText:""
+  })
+      }
+   setOffersNew([...arr])
+    }
+  },[offerImages,settingsData])
+  console.log({offersNew,offerImages})
+  const submitImageModalNew = (file,val,e) => {
+    e.preventDefault();
+    // //console.log(tagText)
+    // //console.log(tagImage)
+    // //console.log(selectedImageTag)
+
+    const formData = new FormData();
+   
+   
+
+    let append = "";
+  
+  
+      append = "addimage";
+     // formData.append("image", file);
+      formData.append("link", val?.link);
+      formData.append("offer", file);
+     formData.append("buttonText", val?.buttonText);
+    console.log({file,val,link:val?.link})
+  
+    if (append === "") return;
+    setSaveLoading(true);
+    axios
+      .patch(`${BASE_URL}api/user/Orgsettings/${append}`, formData, {
+        headers: getAuthHeader(),
+        maxBodyLength: Infinity,
+        maxContentLength: Infinity,
+      })
+      .then((res) => {
+       console.log('resp--' ,res.data.data.updatedSetting.settings);
+        dispatch(
+          updateOrganizationSettings(res.data.data.updatedSetting.settings)
+        );
+        fetchSettings();
+        let settingsData2=res.data.data.updatedSetting.settings
+       if(settingsData2?.offerImages){
+        let updatedField = settingsData2.offerImages?.map((it,id)=>{
+          if(id===settingsData2.offerImages?.length-1){
+            return {...it,buttonText:val?.buttonText}
+          }
+          return {...it}
+        })
+        
+        let updatedSetting = {
+          offerImages: updatedField,
+        };
+        console.log("updatedSetting", updatedSetting);
+       updateAndFetchsettings(updatedSetting);
      
        
+      }
+      else{
+        // setTagImage(null);
+        // setTagText("");
+        // setSelectedImageTag("");
+        // setImageName("");
+        // setTagModalActive(false);
+        fetchSettings();
+      }
+        setSaveLoading(false);
+      })
+      .catch((err) => {
+        console.log("err", err);
+        alert("Could not upload image");
+        setSaveLoading(false);
+      });
+  };
+  const handleImageRemoval2 = (offer) => {
+    //console.log(offer);
+    const arr = offerImages.filter((item) => {
+      return item._id !== offer._id;
+    });
+    let updatedSetting = {
+      offerImages: arr,
+    };
+    updateAndFetchsettings(updatedSetting);
+  };
+  const handleOfferChange2 = (offer, key, value) => {
+    let updatedField = settingsData.offerImages.map((item) => {
+      if (item._id === offer._id) {
+        return { ...item, [key]: value };
+      } else {
+        return item;
+      }
+    });
+    // let updatedSetting = {
+    //   offerImages: updatedField,
+    // };
+    //console.log("updatedSetting", updatedSetting);
+   // updateAndFetchsettings(updatedSetting);
+  };
+
+  return (
+    <>
+      <div className="  h-[400px] overflow-y-auto custom-scroller w-full p-5 mx-auto">
+        
+     
+        <div className=" flex w-full flex-1 items-center mb-[30px]">
+          <div
+            className={`${styles.tabsContainer} gap-7 flex-1 !shadow-[0px_0px_2.5px_0px_rgba(0,0,0,0.25)]`}
+          >
+            {/* {tabs.map((item, idx) => {
+              return (
+                <div
+                  className={`${styles.tab} ${activeTab === idx + 1 ? styles.selectedTab : ""
+                    } cursor-pointer h-full`}
+                  onClick={() => changeTab(idx + 1)}
+                >
+                  <div className={`"h-full  w-full flex justify-center items-center ${activeTab === idx + 1?'':''}`}>
+                    <div>
+                      {activeTab === idx + 1 && (
+                        <img src={item.Icon} className="w-[15px] h-[15px]" alt="item-logo" />
+                      )}
+                      {activeTab === idx + 1 || (
+                        <img src={item.Icon2} className="w-[15px] h-[15px]" alt="item-logo" />
+                      )}
+                    </div>
+                    <p className="flex items-center py-2  w-[calc(191*0.0522vw)] justify-center text-base-17-5  whitespace-nowrap">{item.name} </p>
+                  </div>
+                  {/ {activeTab === idx + 1 && (
+                    <img
+                      src={ActiveTab}
+
+                      className={`${styles.activeBgIcon} lg:top-[10px] `}
+                      alt="item-background"
+                    />
+                  )} }
+                </div>
+              );
+            })} */}
+          </div>
+
+          {/* <div>
+                  <p className='font-bold text-4xl mb-[54px] text-[#25335A]'> Settings </p>
+                  <div className='text-base'>
+                     <div className='flex items-center mb-4'>
+                        <p className='opacity-60  mr-[15px]'> Full Name:</p>
+                        <p className='font-bold'> {user.firstName} {user.lastName} </p>
+                     </div>
+                     <div className='flex items-center mb-4'>
+                        <p className='opacity-60 mr-[23px]'>  Email:</p>
+                        <p className='font-bold'> {user.email} </p>
+                     </div>
+                     <div className='flex items-center mb-4'>
+                        <p className='opacity-60 mr-[15px]'>Phone:</p>
+                        <p className='font-bold'> {user.phone} </p>
+                     </div>
+                  </div>
+               </div> */}
+
+          {/* <PrimaryButton
+                  className='w-[174px] px-4'
+                  onClick={() => setModalActive(true)}
+                  children={
+                     <div className='flex items-center justify-center'>
+                        <p className='mr-3 text-lf font-semibold whitespace-nowrap text-[18px]'>
+                           Edit Details
+                        </p>
+                        <img src={EditIcon} />
+                     </div>} /> */}
+        </div>
         {activeTab === 1 || !activeTab ? (
-          <div className=" px-[10px] w-full overflow-y-auto h-[400px] custom-scroller">
+          <div>
             <div className="flex items-center gap-x-8 mb-4">
               <div>
                 <InputSelect
@@ -1071,24 +1251,41 @@ export default function Settings({orgData,orgs}) {
                           key={i}
                           className="bg-white shadow-small mb-3 p-3 shadow-[0px_0px_2.500000476837158px_0px_#00000040] rounded-md"
                         >
-                          <div className="flex items-center justify-between pr-8 ">
-                            <p className="font-medium text-[#24A3D9] mb-4">
+                          <div className="flex items-center justify-between gap-3 pr-8 py-1">
+                            <p className="font-medium text-[#24A3D9] ">
                               {subscription.code}
-                              <span className="inline-block ml-4 font-normal text-[#517CA8]">
+                              <span className="inline-block ml-6 -mt-1 !font-normal text-base-17-5 text-[#517CA8]">
                                 {subscription.expiry} Weeks
                               </span>
                             </p>
+                            <div className="flex items-center ml-6 flex-1 flex-wrap  ">
+                              {/* <AddTag
+                              openModal={true}
+                              onAddTag={(code) => handleAddTest(subscription)}
+                              keyName={subscription.code}
+                              text="Add Tests"
+                            /> */}
+                              <FilterItems
+                                isString={true}
+                                onlyItems={true}
+                                keyName={subscription.code}
+                                items={subscription.tests}
+                                fetchData={true}
+                                filteredTests={filteredTests}
+                                api="test"
+                                onRemoveFilter={onRemoveCodeTest}
+                                className="pt-1 pb-1 mr-15 text-base-17-5"
+                              />
+                            </div>
                             <div className="flex items-center gap-x-4">
-
-                                <ToggleBar
-                                  boxClass="!h-[16px]"
-                                  toggle={{
-                                    value: !subscription.pause,
-                                    key: "code",
-                                  }}
-                                  onToggle={() => handlePause(subscription)}
-                                ></ToggleBar>
-
+                              <ToggleBar
+                                boxClass="!h-[16px]"
+                                toggle={{
+                                  value: !subscription.pause,
+                                  key: "code",
+                                }}
+                                onToggle={() => handlePause(subscription)}
+                              ></ToggleBar>
 
                               <div
                                 className="w-5 h-5 flex items-center justify-center  rounded-full cursor-pointer"
@@ -1111,25 +1308,6 @@ export default function Settings({orgData,orgs}) {
                                 />
                               </div>
                             </div>
-                          </div>
-                          <div className="flex items-center flex-wrap [&>*]:mb-[10px] ">
-                            <AddTag
-                              openModal={true}
-                              onAddTag={(code) => handleAddTest(subscription)}
-                              keyName={subscription.code}
-                              text="Add Tests"
-                            />
-                            <FilterItems
-                              isString={true}
-                              onlyItems={true}
-                              keyName={subscription.code}
-                              items={subscription.tests}
-                              fetchData={true}
-                              filteredTests={filteredTests}
-                              api="test"
-                              onRemoveFilter={onRemoveCodeTest}
-                              className="pt-1 pb-1 mr-15 text-base-17-5"
-                            />
                           </div>
                         </div>
                       );
@@ -1190,19 +1368,34 @@ export default function Settings({orgData,orgs}) {
                             key={i}
                             className="bg-white shadow-small p-4 mb-3 rounded-md"
                           >
-                            <div className="flex items-center justify-between pr-8">
-                              <p className="font-medium text-[#24A3D9] mb-4">
+                            <div className="flex items-center gap-3 py-1 justify-between pr-8">
+                              <p className="font-medium text-[#24A3D9] min-w-[100px]">
                                 {service.service}
                               </p>
+                              <div className="flex ml-16 flex-1 items-center flex-wrap ">
+                                {/* <AddTag
+                                onAddTag={handleAddSpecialization}
+                                keyName={service.service}
+                                text="Add Item"
+                              /> */}
+                                <FilterItems
+                                  isString={true}
+                                  onlyItems={true}
+                                  keyName={service.service}
+                                  items={service.specialization}
+                                  onRemoveFilter={onRemoveSpecialization}
+                                  className="pt-1 pb-1 mr-15 text-base-17-5"
+                                />
+                              </div>
                               <div className="flex items-center gap-x-4">
-                              <ToggleBar
+                                <ToggleBar
                                   boxClass="!h-[16px]"
                                   toggle={{
                                     value: !service.pause,
                                     key: "code",
                                   }}
                                   manual={true}
-                                 // onToggle={() => handleServicePause(service)}
+                                  // onToggle={() => handleServicePause(service)}
                                 ></ToggleBar>
                                 <div
                                   className="w-5 h-5 flex items-center justify-center  rounded-full cursor-pointer"
@@ -1226,21 +1419,6 @@ export default function Settings({orgData,orgs}) {
                                   />
                                 </div>
                               </div>
-                            </div>
-                            <div className="flex items-center flex-wrap [&>*]:mb-[10px]">
-                              <AddTag
-                                onAddTag={handleAddSpecialization}
-                                keyName={service.service}
-                                text="Add Item"
-                              />
-                              <FilterItems
-                                isString={true}
-                                onlyItems={true}
-                                keyName={service.service}
-                                items={service.specialization}
-                                onRemoveFilter={onRemoveSpecialization}
-                                className="pt-1 pb-1 mr-15 text-base-17-5"
-                              />
                             </div>
                           </div>
                         );
@@ -1269,10 +1447,25 @@ export default function Settings({orgData,orgs}) {
                           key={i}
                           className="bg-white shadow-small p-4 mb-3 rounded-md"
                         >
-                          <div className="flex items-center justify-between pr-8">
-                            <p className="font-medium text-[#24A3D9] mb-4">
+                          <div className="flex items-center  py-1 justify-between pr-8">
+                            <p className="font-medium text-[#24A3D9]  min-w-[100px]">
                               {service.heading}
                             </p>
+                            <div className="flex items-center flex-wrap flex-1 ml-16">
+                              {/* <AddTag
+                              onAddTag={handleAddSessionTag}
+                              keyName={service.heading}
+                              text="Add Items"
+                            /> */}
+                              <FilterItems
+                                isString={true}
+                                onlyItems={true}
+                                keyName={service.heading}
+                                items={service.items}
+                                onRemoveFilter={onRemoveSessionTagItem}
+                                className="pt-1 pb-1 mr-15 text-base-17-5"
+                              />
+                            </div>
                             <div className="flex items-center gap-x-4">
                               <ToggleBar
                                 boxClass="!h-[16px]"
@@ -1286,7 +1479,7 @@ export default function Settings({orgData,orgs}) {
                               ></ToggleBar>
                               <div
                                 className=" flex items-center justify-center  rounded-full cursor-pointer"
-                                 onClick={() => onEditSession(service)}
+                                onClick={() => onEditSession(service)}
                               >
                                 <img
                                   src={EditBlueIcon}
@@ -1306,21 +1499,6 @@ export default function Settings({orgData,orgs}) {
                               </div>
                             </div>
                           </div>
-                          <div className="flex items-center flex-wrap [&>*]:mb-[10px]">
-                            <AddTag
-                              onAddTag={handleAddSessionTag}
-                              keyName={service.heading}
-                              text="Add Items"
-                            />
-                            <FilterItems
-                              isString={true}
-                              onlyItems={true}
-                              keyName={service.heading}
-                              items={service.items}
-                              onRemoveFilter={onRemoveSessionTagItem}
-                              className="pt-1 pb-1 mr-15 text-base-17-5"
-                            />
-                          </div>
                         </div>
                       );
                     })}
@@ -1334,116 +1512,6 @@ export default function Settings({orgData,orgs}) {
                 </div>
               }
             />
-            {/* <SettingsCard
-              titleClassName="text-base-20"
-              title="Session Tags"
-              titleClassName="text-[21px] mb-[15px]"
-              body={
-                <div>
-                  {sessionTags !== undefined &&
-                    Object.keys(sessionTags).map((tag, i) => {
-                      return (
-                        <div key={i}>
-                          <p className="font-bold text-primary-dark mb-[25px]">
-                            {getSessionTagName(Object.keys(sessionTags)[i])}
-                          </p>
-                          <div className="flex items-center flex-wrap [&>*]:mb-[10px]">
-                            <AddTag
-                              onAddTag={handleSessionAddTag}
-                              keyName={Object.keys(sessionTags)[i]}
-                            />
-                            <FilterItems
-                              isString={true}
-                              onlyItems={true}
-                              keyName={Object.keys(sessionTags)[i]}
-                              items={sessionTags[tag]}
-                              onRemoveFilter={onRemoveSessionTag}
-                              className="pt-1 pb-1 mr-15 text-base-17-5"
-                            />
-                          </div>
-                        </div>
-                      );
-                    })}
-                </div>
-              }
-            /> */}
-
-            {/* <SettingsCard
-              titleClassName="text-base-20"
-              title="Personality"
-              toggle={{ value: toggleImage.personality, key: "personality" }}
-              onToggle={onToggle}
-              body={
-                <div className="flex items-center flex-wrap [&>*]:mb-[10px]">
-                  <AddTag
-                    keyName="personality"
-                    openModal={true}
-                    onAddTag={() => handleTagModal("personality")}
-                  />
-                  <FilterItems
-                    isString={false}
-                    onlyItems={true}
-                    image={toggleImage.personality}
-                    items={
-                      personality !== undefined
-                        ? personality.map((item) => item)
-                        : []
-                    }
-                    keyName="personality"
-                    baseLink={awsLink}
-                    onRemoveFilter={onRemoveTextImageTag}
-                    className="pt-1 pb-1 mr-15 text-base-17-5"
-                  />
-                </div>
-              }
-            /> */}
-
-            {/* <SettingsCard
-              titleClassName="text-base-20"
-              title="Interest"
-              toggle={{ value: toggleImage.interest, key: "interest" }}
-              onToggle={onToggle}
-              body={
-                <div className="flex items-center flex-wrap [&>*]:mb-[10px]">
-                  <AddTag
-                    keyName="interest"
-                    openModal={true}
-                    onAddTag={() => handleTagModal("interest")}
-                  />
-                  <FilterItems
-                    isString={false}
-                    onlyItems={true}
-                    image={toggleImage.interest}
-                    items={
-                      interest !== undefined ? interest.map((item) => item) : []
-                    }
-                    keyName="interest"
-                    baseLink={awsLink}
-                    onRemoveFilter={onRemoveTextImageTag}
-                    className="pt-1 pb-1 mr-15 text-base-17-5"
-                  />
-                </div>
-              }
-            /> */}
-
-            {/* <SettingsCard
-              titleClassName="text-base-20"
-              title="Subjects"
-              body={
-                <div className="flex items-center flex-wrap [&>*]:mb-[10px]">
-                  <AddTag onAddTag={handleAddTag} keyName="classes" />
-                  <FilterItems
-                    isString={true}
-                    onlyItems={true}
-                    keyName="classes"
-                    items={classes ? classes : []}
-                    baseLink={awsLink}
-                    onRemoveFilter={onRemoveFilter}
-                    className="pt-1 pb-1 mr-15 text-base-17-5"
-                  />
-                </div>
-              }
-            /> */}
 
             <SettingsCard
               titleClassName="text-base-20"
@@ -1451,8 +1519,21 @@ export default function Settings({orgData,orgs}) {
               toggle={{ value: toggleImage.offer, key: "offer" }}
               onToggle={onToggle}
               body={
-                <div>
-                  <div className="flex items-center flex-wrap [&>*]:mb-[10px] bg-white  gap-x-5 p-4 rounded-br-5 rounded-bl-5 mb-3">
+                <div className=" bg-white   gap-x-5 p-4 rounded-br-5  rounded-bl-5 !pr-4">
+                  <p className="text-base-17-5 mt-[-5px] text-[#667085] mb-6">
+                    <span className="font-semibold mr-1">⚠️ Note:</span>
+                    Announcements, as the name implies, can be used to announce
+                    important aspects of your business. Displayed on the
+                    top-left corner in Parent and Student Dashboards, these can
+                    be used to highlight your services, offers, referral
+                    incentives, webinars, events, proctored tests, tutorial
+                    videos, and pretty much anything you want your Clients to
+                    see as soon as they log into their Evallo dashboard. You can
+                    add a maximum of 4 Announcements at a time. Read detailed
+                    documentation in Evallo’s
+                    <span className="text-[#24A3D9]"> knowledge base.</span>
+                  </p>
+                  <div className="flex items-center  gap-5 pr-3 overflow-x-auto custom-scroller-2 flex-1 !w-[100%]   [&>*]:mb-[10px] bg-white  gap-x-5 p-4 rounded-br-5 rounded-bl-5 mb-3 !px-6 py-5 ">
                     {/* <input type='file' ref={inputRef} className='hidden' accept="image/*"
                            onChange={e => onImageChange(e)} /> */}
 
@@ -1477,7 +1558,7 @@ export default function Settings({orgData,orgs}) {
                   /> */}
                     {offerImages?.map((offer) => {
                       return (
-                        <div key={offer._id}>
+                        <div className="flex-1" key={offer._id}>
                           <div className="relative">
                             {toggleImage.offer && (
                               <div className=" overflow-hidden mb-5">
@@ -1536,12 +1617,111 @@ export default function Settings({orgData,orgs}) {
                         </div>
                       );
                     })}
+                    {offersNew?.length>0 && offersNew?.map((off,idx)=>{
+
+                   return (
+                   <div className="flex-1 flex gap-2 min-w-[250px] ">
+                    <div className=" relative w-[2px] rounded-md  bg-[#00000030] !h-[300px] mx-4"></div>
+                  
+                    <div className="w-full flex-1">
+                      <div className="flex w-[100%] bg-[#F5F8FA] rounded-md mb-8 flex-col justify-center items-center">
+                        <div className="mt-[20px] mb-[10px] items-center flex justify-center">
+                          <img src={fileupload} alt="fileuploadIcon"></img>
+                        </div>
+
+                        <div className="flex items-center text-center justify-center text-base-15">
+                          {/* {xlsFile == undefined ? (
+                    <p className=""></p>
+                  ) : (
+                    <p className="block ">{xlsFile.name}</p>
+                  )} */}
+                  
+                        </div>
+                        {!off?.image?.name ? (
+                          <div className="flex justify-center">
+                            <label
+                              htmlFor="file2"
+                              className="block text-sm text-white bg-[#517CA8] hover:bg-[#517CA8] items-center justify-center  rounded-[5px]  px-3 py-2 text-base-17-5 text-center ] "
+                            >
+                              Choose File
+                            </label>
+                            <input
+                              onChange={(e) => {
+                                let arr=offersNew;
+                                arr[idx].image=e.target.files[0];
+                                 setOffersNew([...arr])
+                               // setImageName(e.target.files[0].name);
+                              }}
+                            id="file2"
+                             type="file"
+                            />
+                          </div>
+                        ) : (
+                          <div className="flex justify-center flex-col">
+                            <span className="text-[#517CA8] text-base-15 mb-1">{off?.image?.name}</span>
+                            <span
+                               onClick={(e) =>  submitImageModalNew(off?.image,off,e)}
+                              className=" cursor-pointer block text-sm text-white bg-[#517CA8] hover:bg-[#517CA8] items-center justify-center  rounded-[5px]  px-4 py-2 text-center text-base-17-5]"
+                            >
+                              
+                              Submit File
+                            </span>
+                          </div>
+                        )}
+
+                        <label
+                          htmlFor="file"
+                          className="block text-xs items-center justify-center  rounded-[5px]  px-4 py-2 font-normal text-center text-[#517CA8] text-base-15"
+                        >
+                          Less than 1 MB
+                        </label>
+                      </div>
+                      <div>
+                        <div
+                          //   onClick={() => handleImageRemoval(offer)}
+                          className="w-7 h-7 z-5000 -top-2 right-[9px] flex items-center absolute justify-center  rounded-full cursor-pointer"
+                        >
+                          <img src={DeleteIcon} className="w-5" alt="delete" />
+                        </div>
+                       {false&& <span  className="text-[#517CA8] text-base-15 mb-1 !text-center flex justify-center items-center"> Button text can only be edited after uploading image! </span >}
+                        <InputField
+                          //  defaultValue={offer.link}
+                          inputClassName={" text-base-17-5 bg-[#F5F8FA]"}
+                          parentClassName={"mb-3 bg-[#F5F8FA]"}
+                          placeholder={"This field is required."}
+                          required={true}
+                          onChange={(e) =>
+                          {
+                            let arr=offersNew;
+                            arr[idx].link=e.target.value;
+                             setOffersNew([...arr])
+                          }
+                          }
+                        />
+                        <InputField
+                          // defaultValue={offer.buttonText}
+                          parentClassName={"bg-[#F5F8FA]"}
+                          inputClassName={" text-base-17-5 bg-[#F5F8FA]"}
+                          placeholder={"Button (eg. Register, Enroll, View)"}
+                          onChange={(e) =>
+                            {
+                              let arr=offersNew;
+                              arr[idx].buttonText=e.target.value;
+                               setOffersNew([...arr])
+                            }
+                          }
+                        />
+                      </div>
+                    </div>
+                    </div>)
+                     })}
                   </div>
-                  <AddTag
+                  
+                  {/* <AddTag
                     openModal={true}
                     text="Add Announcement"
                     onAddTag={() => handleTagModal("offer")}
-                  />
+                  /> */}
                 </div>
               }
             />
@@ -1565,7 +1745,7 @@ export default function Settings({orgData,orgs}) {
                         className="pt-[34px] pb-[30px] border-b-2 border-[#CBD6E2] text-[#24A3D9] font-medium text-[17.5px] flex items-center justify-between text-base-17-5"
                       >
                         <p>{renderColoredText(item.name)}</p>
-                        {console.log(item)}
+                       
                         <ToggleBar
                           toggle={{ value: item.choosedValue, key: item._id }}
                           onToggle={togglePermissions}
@@ -1929,18 +2109,19 @@ export default function Settings({orgData,orgs}) {
                   </button>
                   <button
                     className="rounded-lg bg-transparent border-2 border-[#FFA28D] py-[6px] text-[#FFA28D]  w-[146px]"
-                    onClick={() => setAddServiceModalActive(!addServiceModalActive)}
+                    onClick={() =>
+                      setAddServiceModalActive(!addServiceModalActive)
+                    }
                   >
                     Cancel{" "}
                   </button>
-
                 </div>
               </div>
             </form>
           }
         />
       )}
-        {addSessionModalActive && (
+      {addSessionModalActive && (
         <Modal
           classname={"max-w-[560px] mx-auto"}
           titleClassName="text-base-20 mb-[18px]"
@@ -1964,9 +2145,13 @@ export default function Settings({orgData,orgs}) {
             >
               <p className="text-base-17-5 mt-[-10px] text-[#667085]">
                 <span className="font-semibold mr-1 ">⚠️ Note:</span>
-                Session Tags are used for optimizing the time it takes for your tutors to reconcile sessions. These are checkboxes available when reconciling sessions in the Calendar that can be quickly used to add further details about the session, such as the topics covered, homework assigned, student mood, etc. Read detailed documentation in Evallo’s
+                Session Tags are used for optimizing the time it takes for your
+                tutors to reconcile sessions. These are checkboxes available
+                when reconciling sessions in the Calendar that can be quickly
+                used to add further details about the session, such as the
+                topics covered, homework assigned, student mood, etc. Read
+                detailed documentation in Evallo’s
                 <span className="text-[#24A3D9]"> knowledge base.</span>
-            
               </p>
 
               <div className="  grid-cols-1 md:grid-cols-2  gap-x-2 md:gap-x-3 gap-y-2 gap-y-4 mb-5 mt-3">
@@ -1993,20 +2178,19 @@ export default function Settings({orgData,orgs}) {
                   </div>
                 </div>
                 <div className="flex items-center flex-wrap [&>*]:mb-[10px] mt-5">
-                <AddTag
-                              onAddTag={handleAddSessionTag}
-                              keyName={subModalSessionData.heading}
-                              text="Add Items"
-                            />
-                            <FilterItems
-                              isString={true}
-                              onlyItems={true}
-                              keyName={subModalSessionData.heading}
-                              items={subModalSessionData.items}
-                              onRemoveFilter={onRemoveSessionTagItem}
-                              className="pt-1 pb-1 mr-15 text-base-17-5"
-                            />
-                        
+                  <AddTag
+                    onAddTag={handleAddSessionTag}
+                    keyName={subModalSessionData.heading}
+                    text="Add Items"
+                  />
+                  <FilterItems
+                    isString={true}
+                    onlyItems={true}
+                    keyName={subModalSessionData.heading}
+                    items={subModalSessionData.items}
+                    onRemoveFilter={onRemoveSessionTagItem}
+                    className="pt-1 pb-1 mr-15 text-base-17-5"
+                  />
                 </div>
                 <div className="w-full border-[1.33px_solid_#00000033] bg-[#00000033] my-5 h-[1.3px]"></div>
                 <div className="flex gap-4 items-center justify-center mt-3">
@@ -2015,11 +2199,12 @@ export default function Settings({orgData,orgs}) {
                   </button>
                   <button
                     className="rounded-lg bg-transparent border-2 border-[#FFA28D] py-[6px] text-[#FFA28D]  w-[146px]"
-                    onClick={() => setAddSessionModalActive(!addSessionModalActive)}
+                    onClick={() =>
+                      setAddSessionModalActive(!addSessionModalActive)
+                    }
                   >
                     Cancel{" "}
                   </button>
-
                 </div>
               </div>
             </form>
