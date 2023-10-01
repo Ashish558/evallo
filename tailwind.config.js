@@ -5,8 +5,8 @@ module.exports = {
       extend: {
          screens: {
             '2xl': '1400px',
-            'design':'1920px',
-          },
+            'design': '1920px',
+         },
          spacing: {
             1.2: "5px",
             1.4: "6px",
@@ -117,7 +117,7 @@ module.exports = {
          zIndex: {
             5000: 5000,
          },
-         dropShadow:{
+         dropShadow: {
             'small': '0px 0px 2.4999988079071045px rgba(0, 0, 0, 0.25)'
          },
          boxShadow: {
@@ -131,27 +131,20 @@ module.exports = {
          },
          backgroundImage: {
             'tutor-img': "url('./assets/images/tutor.png')",
-          },
-          gridTemplateColumns: {
+         },
+         gridTemplateColumns: {
             '13': 'repeat(13, minmax(0, 1fr))',
-          },
-          backgroundColor:{
-            'profilecard' : '#F5F8FA'
-          },
-          boxShadowColor:{
-            'customshadow':'0px 0px 2.6666667461395264px 0px rgba(0, 0, 0, 0.1)'
-          },
-          margin:{
-            'pageRight':'2rem'
-          }
-      },
-   },
-
- 
-      theme: {
-        extend: {
-         
-          customPopup: {
+         },
+         backgroundColor: {
+            'profilecard': '#F5F8FA'
+         },
+         boxShadowColor: {
+            'customshadow': '0px 0px 2.6666667461395264px 0px rgba(0, 0, 0, 0.1)'
+         },
+         margin: {
+            'pageRight': '2rem'
+         },
+         customPopup: {
             base: 'fixed inset-0 overflow-hidden',
             content: 'max-w-3xl mx-auto p-4 mt-16 mb-16 relative',
             header: 'bg-blue-500 text-white p-2 rounded-t-lg',
@@ -161,8 +154,8 @@ module.exports = {
             actions: 'flex justify-end mt-2',
             button: 'px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 ml-2',
             cancelButton: 'px-4 py-2 bg-gray-300 text-gray-600 rounded hover:bg-gray-400',
-          },
-        },
+         },
       },
+   },
    plugins: [],
 };
