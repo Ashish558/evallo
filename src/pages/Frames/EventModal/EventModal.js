@@ -783,7 +783,7 @@ console.log("data",data,tutor)
 
                         <DateAndTimeInput {...dataProps} isEditable={isEditable} />
 
-                        <div className={`flex mb-3 items-center ${isUpdating && !data.recurring ? 'pointer-events-none ' : ''} `}>
+                        <div className={`flex mb-3 items-center ${!isEditable? 'pointer-events-none ' : ''} `}>
                            <CCheckbox checked={data.recurring} name='recurring' onChange={() =>
                               setData({
                                  ...data,

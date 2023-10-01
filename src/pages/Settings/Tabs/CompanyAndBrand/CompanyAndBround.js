@@ -172,7 +172,7 @@ const CompanyAndBround = () => {
             parentClassName="text-xs w-[15.3229vw] text-[#26435F]"
             inputContainerClassName=" shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-white"
             inputClassName="text-base-17-5 bg-transparent"
-            labelClassname="text-base-17-5 text-sm font-bold mb-[2px]"
+            labelClassname="mb-1 text-base-17-5 text-sm font-bold mb-[2px]"
             label="Account Type"
             disabled={true}
             value={"Company"}
@@ -183,7 +183,7 @@ const CompanyAndBround = () => {
             parentClassName="text-xs w-[15.3229vw] text-[#26435F] "
             inputContainerClassName=" shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-white mt-[-2px]"
             inputClassName="text-base-17-5 bg-transparent"
-            labelClassname="text-base-17-5 text-sm font-bold mb-1"
+            labelClassname="mb-1 text-base-17-5 text-sm font-bold mb-1"
             label="Company Name"
             value={values.company}
             onChange={(e) =>
@@ -199,7 +199,7 @@ const CompanyAndBround = () => {
             parentClassName="text-xs w-[15.3229vw] text-[#26435F]"
             inputContainerClassName=" shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-white mt-[-2px]"
             inputClassName="text-base-17-5 bg-transparent"
-            labelClassname="text-base-17-5 text-sm font-bold mb-1"
+            labelClassname="mb-1 text-base-17-5 text-sm font-bold mb-1"
             label="Support Email"
             value={values.supportEmail}
             onChange={(e) =>
@@ -215,7 +215,9 @@ const CompanyAndBround = () => {
             parentClassName="text-xs w-[15.3229vw] text-[#26435F] "
             inputContainerClassName=" shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-white mt-[2px]"
             inputClassName="bg-transparent"
+            labelClassname={"mb-1"}
             label="Role / Position"
+            disabled={true}
             value={values.role}
             onChange={(e) =>
               setValues({
@@ -269,7 +271,7 @@ const CompanyAndBround = () => {
                 parentClassName="text-xs text-[#26435F] w-[30.5729vw] "
                 inputContainerClassName=" shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-white  rounded-md"
                 inputClassName="text-base-17-5 bg-transparent "
-                labelClassname="text-base-17-5 text-sm font-bold "
+                labelClassname="mb-1 text-base-17-5 text-sm font-bold "
                 label="Website"
                 value={values.website}
                 onChange={(e) =>
@@ -284,7 +286,7 @@ const CompanyAndBround = () => {
                 placeholder="Select"
                 parentClassName="text-xs text-[#26435F] w-[14.3229vw] "
                 inputContainerClassName=" shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-white h-[42px] "
-                labelClassname="text-sm font-bold"
+                labelClassname="mb-1 text-sm font-bold"
                 inputClassName="bg-transparent"
                 label="Company Type"
                 value={values.companyType}
@@ -304,6 +306,7 @@ const CompanyAndBround = () => {
                 parentClassName="text-xs text-[#26435F] w-[30.5729vw]"
                 inputContainerClassName=" shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-white "
                 inputClassName="bg-transparent"
+                labelClassname={"mb-1"}
                 label="Street Address"
                 value={values.address}
                 onChange={(e) =>
@@ -319,7 +322,7 @@ const CompanyAndBround = () => {
                 placeholder="Select"
                 parentClassName="text-xs text-[#26435F] w-[14.3229vw] "
                 inputContainerClassName=" shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-white h-[38px]  h-[42px]"
-                labelClassname="text-sm font-bold"
+                labelClassname="mb-1 text-sm font-bold"
                 inputClassName="bg-transparent"
                 label="Country"
                 value={values.country}
@@ -338,7 +341,7 @@ const CompanyAndBround = () => {
                 <InputSelect
                   placeholder="Select"
                   parentClassName="text-xs text-[#26435F] w-[14.3229vw]  "
-                  labelClassname="text-sm font-bold "
+                  labelClassname="mb-1 text-sm font-bold "
                   inputContainerClassName=" shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-white h-[42px] "
                   inputClassName="bg-transparent"
                   label="State / Region "
@@ -358,6 +361,7 @@ const CompanyAndBround = () => {
                   parentClassName="text-xs text-[#26435F] w-[14.3229vw] pt-1"
                   inputContainerClassName=" shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-white py-2"
                   inputClassName="text-base-17-5 bg-transparent "
+                  labelClassname={"mb-1"}
                   label="City"
                   value={values.city}
                   onChange={(e) =>
@@ -375,7 +379,7 @@ const CompanyAndBround = () => {
                   parentClassName="text-xs text-[#26435F] w-[14.3229vw] pt-1"
                   inputContainerClassName=" shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-white "
                   inputClassName="text-base-17-5 bg-transparent"
-
+                  labelClassname={"mb-1"}
                   label="Zip Code"
                   value={values.zip}
                   onChange={(e) =>
