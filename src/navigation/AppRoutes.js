@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
@@ -39,6 +40,10 @@ import StudentSettings from "../pages/Settings/Tabs/AccountOverview/studentSetti
 
 // import TutorSetting from "../pages/Settings/TutorSetting";
 import ContributorSettings from "../pages/Settings/ContributorSettings";
+import TestPage from "../pages/DsatTestPage/TestPage";
+import AnnotatorComponent from "../components/annotate";
+import Testinstruction_2 from "../components/TestItem/testinstruction_2";
+
 
 
 
@@ -219,6 +224,14 @@ const AppRoutes = () => {
             </RequireAuth>
           }
         />
+         <Route
+          path="/testpage/:id/:assignedTestId"
+          element={
+            <RequireAuth isLoggedIn={isLoggedIn}>
+             <TestPage/>
+            </RequireAuth>
+          }
+        />
 
         <Route
           path="/settings"
@@ -248,7 +261,12 @@ const AppRoutes = () => {
               <StartTest />
             </RequireAuth>
           }
-        />
+        /><Route
+        path="/ll"
+        element={
+            <AnnotatorComponent />
+        }
+      />
         <Route path="/adminDashboard" element={<Dashboard></Dashboard>}></Route>
         <Route
           path="/adminContent"

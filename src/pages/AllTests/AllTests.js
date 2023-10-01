@@ -20,7 +20,7 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 const optionData = ["option 1", "option 2", "option 3", "option 4", "option 5"];
-const testTypeOptions = ["SAT®", "Other"];
+const testTypeOptions = ["DSAT","SAT", "Other"];
 
 const initialState = {
   testName: "",
@@ -50,6 +50,7 @@ export default function AllTests() {
   const [testForDelete, setTestForDelete] = useState("");
   const [filteredTests, setFilteredTests] = useState([]);
   const [filterItems, setFilterItems] = useState([]);
+  const [testtype2, settesttype2] = useState();
   const [submitBtnDisabled, setSubmitBtnDisabled] = useState(true);
   const [loading, setLoading] = useState(false);
   const [removeQuestionModal, setRemoveQuestionModal] = useState(false);
@@ -310,14 +311,27 @@ export default function AllTests() {
     const headers = getAuthHeader();
     axios
       .get(`${BASE_URL}api/test`, { headers })
-      .then((res) => setTableData(res.data.data.test));
+      .then((res) =>{
+        console.log('asdadasdasdasd',res.data.data.test);
+      let dataofque=res.data.data.test
+      let cutdata = dataofque.map((item) => ({
+        testId:item._id,
+        testtype:item.testType
+      }));
+      console.log(cutdata);
+      settesttype2(cutdata)
+      setTableData(res.data.data.test)});
   };
   const navigate=useNavigate('/')
   useEffect(() => {
     fetchTests();
   }, []);
+  
+  useEffect(()=>{
+    console.log(testtype2);
+  },[testtype2])
 
-  if (persona === "parent" || persona === "student") return <StudentTest />;
+  if (persona === "parent" || persona === "student") return <StudentTest testtype={testtype2}/>;
 
   return (
     <div className="w-[83.6989583333vw] mx-auto bg-lightWhite min-h-screen">
@@ -335,7 +349,6 @@ export default function AllTests() {
         </p>
 
       <div className=" w-full">
-
         <div className="flex justify-between items-center">
           {/* <p
                   className="font-bold text-4xl"
@@ -367,6 +380,7 @@ export default function AllTests() {
 
         <div className="mt-6 w-full">
           <Table
+            testtype={testtype2}
             dataFor="allTests"
             data={filteredTests}
             tableHeaders={tableObjHeaders}
@@ -399,7 +413,7 @@ export default function AllTests() {
                 id={styles.uploadButtons}
                 className="mt-7 ml-7 px-0  gap-2 flex justify-between"
               >
-                <div id={styles.pdfUpload}>
+                {modalData.testType!='DSAT'?<div id={styles.pdfUpload}>
                   <label
                     htmlFor="pdf"
                     className={`${pdfFile !== null ? "bg-[#26435F] " : "bg-[#26435F] "
@@ -418,7 +432,7 @@ export default function AllTests() {
                   <div id={styles.filename}>
                     {pdfFile?.name || pdfFile?.name}
                   </div>
-                </div>
+                </div>:null}
 
                 <div id={styles.csvUpload}>
                   <label
