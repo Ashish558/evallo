@@ -9,6 +9,7 @@ import { useState } from "react";
 import useOutsideAlerter from "../../hooks/useOutsideAlerter";
 import { useRef } from "react";
 
+
 export default function Modal({
    title,
    titleClassName,
@@ -16,6 +17,7 @@ export default function Modal({
    cancelBtn,
    cancelBtnClassName,
    primaryBtn,
+   titleInvite,
    handleClose,
    classname,
    SaveUser,
@@ -54,6 +56,11 @@ export default function Modal({
                ${titleClassName ? titleClassName : "mb-[18px]"}`}
                         >
                            {title}
+                           {titleInvite&&  "Are You Sure You Want to Invite " }
+                           {titleInvite && <span className="text-[#FFA28D]">{titleInvite}</span>}
+                           
+                            {titleInvite&&" Users To Join Evallo?"}
+            
                         </p>
                         {
                            underline ? "" : <div className="h-[1.33px] w-full bg-[rgba(0,0,0,0.20)] mb-[36px]"></div>
@@ -66,7 +73,7 @@ export default function Modal({
                               <SecondaryButton
                                  onClick={handleClose}
                                  children="Cancel"
-                                 className={`py-2 ${cancelBtnClassName}`}
+                                 className={`py-2 ${cancelBtnClassName} !border-[1px_solid_#FFA28D]`}
                                  type="button"
                               />
                            )}
