@@ -356,6 +356,13 @@ export default function StudentReport() {
       setTestData(tempData)
    }, [subjects])
 
+const [startDate,startTime,startFormat]=(testDetails?.startedOn?.split(' '))
+// console.log(startDate,startTime,startFormat)
+   const [assignDate,assignTime,assignFormat]=(testDetails?.assignedOn?.split(' '))
+// console.log(assignDate,assignTime,assignFormat)
+   const [completeDate,completeTime,completeFormat]=(testDetails?.completedOn?.split(' '))
+// console.log(completeDate,completeTime,completeFormat)
+
    //change table data
    useEffect(() => {
       if (Object.keys(selectedSubject).length === 0) return
@@ -738,9 +745,9 @@ export default function StudentReport() {
                </p>
 
 
-             
+          
                  <div className='flex justify-between'>
-               <p className='mt-[31px] text-textPrimaryDark text-xl font-bold'>
+               <p className='mt-[31px] text-textPrimaryDark text-[25px] font-bold'>
                   {testDetails.testName}
                </p>
                {
@@ -758,37 +765,37 @@ export default function StudentReport() {
             </div>
              
                <div className='flex gap-x-20'>
-               <div className='grid grid-cols-2 grid-rows-3 max-w-840 gap-y-4 gap-x-20 mt-6 text-[#517CA8] text-xl'>
+               <div className='grid grid-cols-2 grid-rows-3  gap-y-[17px] gap-x-[50px] mt-6 text-[#517CA8] text-xl'>
                   <div>
-                     <p className='inline-block w-[160px]  font-medium'> Student Name</p>
+                     <p className='inline-block w-[160px]  font-semibold text-[#26435F]'> Student Name</p>
                      <span className='inline-block mr-10'>:</span>
-                     <p className='inline-block  font-light'> {testDetails.name} </p>
+                     <p className='inline-block text-[#26435F]'> {testDetails.name} </p>
                   </div>
                   <div>
-                     <p className='inline-block w-[160px] text-[#517CA8]'> Due on </p>
+                  <p className='inline-block w-[160px] text-[#26435F] text-xl font-semibold'> Due on </p>
                      <span className='inline-block mr-10'>:</span>
-                     <p className='inline-block  font-light text-[17.5px]'> {(testDetails.startedOn).split(" ")[0]} </p>
+                     <p className='inline-block text-xl text-[#26435F]'> {(testDetails.startedOn).split(" ")[0]} </p>
                   </div>
 
                   <div>
-                     <p className='inline-block w-[160px] text-[#517CA8] text-xl font-medium'>  Date Assigned </p>
+                     <p className='inline-block w-[160px] text-[#26435F] text-xl font-semibold'>  Date Assigned </p>
                      <span className='inline-block mr-10'>:</span>
-                     <p className='inline-block  font-light text-[17.5px]'> {testDetails.assignedOn} </p>
+                     <p className='inline-block text-xl text-[#26435F]'> {assignDate} <span className='text-[#24A3D9] font-light text-[17.5px]'>{assignTime} {assignFormat} {organization?.settings?.timeZone}</span></p>
                   </div>
                   <div>
-                     <p className='inline-block w-[160px] text-[#517CA8]'> Completed on </p>
+                  <p className='inline-block w-[160px] text-[#26435F] text-xl font-semibold'> Completed on </p>
                      <span className='inline-block mr-10'>:</span>
-                     <p className='inline-block   font-light text-[17.5px]'> {testDetails.completedOn} </p>
+                     <p className='inline-block text-xl text-[#26435F]'>  {completeDate} <span className='text-[#24A3D9] font-light text-[17.5px]'>{completeTime} {completeFormat} {organization?.settings?.timeZone}</span></p>
                   </div>
                   <div >
-                     <p className='inline-block w-[160px] text-[#517CA8] text-xl font-medium'> Duration </p>
+                  <p className='inline-block w-[160px] text-[#26435F] text-xl font-semibold'> Duration </p>
                      <span className='inline-block mr-10'>:</span>
-                     <p className='inline-block   font-light'> {testDetails.duration} </p>
+                     <p className='inline-block text-xl text-[#26435F]'>   {testDetails.duration} </p>
                   </div>
                   <div>
-                     <p className='inline-block w-[160px] text-[#517CA8]'> Started on </p>
+                  <p className='inline-block w-[160px] text-[#26435F] text-xl font-semibold'> Started on </p>
                      <span className='inline-block mr-10'>:</span>
-                     <p className='inline-block  font-light text-[17.5px]'> {(testDetails.startedOn)} </p>
+                     <p className='inline-block text-xl text-[#26435F]'>   {startDate} <span className='text-[#24A3D9] font-light text-[17.5px]'>{startTime} {startFormat} {organization?.settings?.timeZone}</span></p>
                   </div>
                   
                </div>
