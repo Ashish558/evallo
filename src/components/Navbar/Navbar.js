@@ -422,6 +422,7 @@ const Navbar = () => {
                      You Want To Log Out?
                   </>
                }
+               alignBtn={true}
                titleClassName="leading-9 text-center whitespace-nowrap mb-[22.67px]"
                cancelBtn={true}
                crossBtn={true}
@@ -433,7 +434,7 @@ const Navbar = () => {
                }}
                handleClose={() => setLogoutModalActive(false)}
                body={<div className="mb-6"></div>}
-               classname={"w-[666px] mx-auto !pt-7 !pb-[33px] !rounded-[8px] px-[33.33px]"}
+               classname={"!w-[666px] mx-auto !pt-7 !pb-[33px] !rounded-[8px] px-[33.33px]"}
             />
          )}
       </>

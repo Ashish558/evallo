@@ -26,7 +26,8 @@ export default function Modal({
    cancelBtnStyle,
    underline,
    crossBtn,
-   toEdit
+   toEdit,
+   alignBtn
 }) {
 
    const selectRef = useRef();
@@ -68,7 +69,7 @@ export default function Modal({
                         {body}
 
 
-                        <div className="flex justify-between mx-4">
+                        <div className={`flex ${alignBtn?'justify-center' :'justify-center'} mx-4`}>
                            {cancelBtn && (
                               <SecondaryButton
                                  onClick={handleClose}
@@ -90,7 +91,7 @@ export default function Modal({
                                  onClick={primaryBtn.onClick ? primaryBtn.onClick : null}
                                  form={primaryBtn.form ? primaryBtn.form : null}
                                  type={primaryBtn.type ? primaryBtn.type : "button"}
-                                 className={`${primaryBtn.bgDanger ? 'bg-[#FF5B4F]' : ' bg-primary'} relative disabled:opacity-75 rounded-md font-medium text-white  px-6 ml-9 ${primaryBtn.className ? primaryBtn.className : ""}`}
+                                 className={`${primaryBtn.bgDanger ? 'bg-[#FF5B4F]' : 'bg-[#FF5B4F]'} relative disabled:opacity-75 rounded-md font-medium text-white cursor-pointer px-6 ml-9 ${primaryBtn.className ? primaryBtn.className : ""}`}
                                  disabled={primaryBtn?.loading === true ? true : primaryBtn.disabled}
                                  loading={primaryBtn.loading}
 

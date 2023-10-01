@@ -274,10 +274,13 @@ console.log({studentMultiple,modalData})
   }
 
   useEffect(() => {
-    if (modalData.name.length >= 0||true) {
+    if (modalData.name.length >= 0) {
       if (persona === "admin") {
         fetchStudents(modalData.name).then((res) => {
-
+          console.log('res', res);
+          if(res.error){
+            return
+          }
           let tempData = res.data.data.students.map((student) => {
             return {
               _id: student._id,
@@ -285,18 +288,23 @@ console.log({studentMultiple,modalData})
             };
           });
           setStudents(tempData);
-        });
+        }
+        )
       } else {
         fetchTutorStudents(modalData.name).then((res) => {
-
+          if(res.error){
+            return
+          }
           let tempData = res.data.data.students.map((student) => {
             return {
               _id: student._id,
               value: `${student.firstName} ${student.lastName}`,
             };
           });
+          
           setStudents(tempData);
-        });
+        }
+        )
       }
     }
   }, [modalData.name]);
@@ -446,6 +454,7 @@ console.log({studentMultiple,modalData})
       setFilteredTests(sortedArr);
     });
   };
+  
 
   const getTimeLimit = (val) => {
     if (val === "Regular") return 1;
@@ -992,9 +1001,9 @@ console.log({selectedId})
         <Modal
           title="New Assignment"
           titleClassName=" text-start pb-2"
-          classname={"max-w-[760px] mx-auto"}
+          classname={"max-w-[700px] mx-auto"}
           cancelBtn={true}
-          cancelBtnClassName="max-w-140 bg-[rgba(38,67,95,0.20)] !text-[#26435F]"
+          cancelBtnClassName="max-w-140 !bg-[rgba(38,67,95,0.20)] !text-[#26435F]"
           primaryBtn={{
             text: "Assign",
             className: "max-w-140 pl-8 pr-8 ",
@@ -1006,13 +1015,13 @@ console.log({selectedId})
           handleClose={handleClose}
           body={
             <>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-2 md:gap-x-3 gap-y-4 mb-5">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-2 md:gap-x-3 gap-y-0 mb-5">
                 <div>
                 
                 <InputSearch
                    label="Student Name"
-                    labelClassname="text-base-20 text-[#26435F] mb-0.5"
-                    placeholder="Select"
+                    labelClassname="text-base-20 text-[#26435F] mb-1"
+                    placeholder="Search Student"
                     placeholderClass="text-base-17-5"
                     parentClassName=" text-base-17-5 py-0 w-full  mb-10"
                     inputContainerClassName=" text-base-17-5 bg-[#F3F5F7] border-0 pt-3.5 pb-3.5"
@@ -1089,10 +1098,10 @@ console.log({selectedId})
                         testId: item._id,
                       });
                     }}
-                    label="Test"
-                    placeholder="Type Test Name"
+                    label="Assignment"
+                    placeholder="Select Assignment Name"
                     parentClassName="w-full mr-4"
-                    labelClassname=" !font-medium text-[#26435F] ml-2 mb-0.5"
+                    labelClassname=" !font-medium text-[#26435F] text-base-20 ml-2 mb-0.5 !font-semibold text-[#26435F]"
 
                     inputContainerClassName="px-5 py-3.5 text-base-17-5 bg-primary-50 border-0"
                     inputClassName="text-base-17-5 bg-transparent"
@@ -1101,7 +1110,7 @@ console.log({selectedId})
                 </div>
                 <div>
                   <InputSelect
-                    label="Duration"
+                    label="Time Limit"
                     value={modalData.limit}
                     onChange={(val) =>
                       setModalData({ ...modalData, limit: val })
@@ -1109,7 +1118,7 @@ console.log({selectedId})
                     placeholderClass="text-base-17-5"
                     optionData={timeLimits}
                     parentClassName="w-full mr-4 "
-                    labelClassname=" !font-medium text-[#26435F] ml-2 mb-0.5 !font-semibold text-[#26435F]"
+                    labelClassname=" !font-medium text-[#26435F] text-base-20 ml-2 mb-1 !font-semibold text-[#26435F]"
 
                     inputContainerClassName="px-5 text-base-17-5 py-3.5 bg-primary-50 border-0"
                     inputClassName="text-base-17-5 bg-transparent"
@@ -1121,6 +1130,7 @@ console.log({selectedId})
                   <InputField
                     label="Due Date"
                     iconSize="medium"
+                    labelClassname=" !font-medium text-[#26435F] text-base-20 ml-2 mb-0.5 !font-semibold text-[#26435F]"
 
                     value={modalData.date}
                     onChange={(val) =>
@@ -1130,8 +1140,7 @@ console.log({selectedId})
                       })
                     }
                     parentClassName="w-full mr-4"
-                    labelClassname=" !font-medium text-[#26435F] ml-2 mb-0.5 text-[#26435F] font-semibold"
-
+                    
                     inputContainerClassName="px-5 py-3.5 bg-primary-50 border-0"
                     inputClassName="text-base-17-5 bg-transparent text-base-17-5"
                     placeholderClass="text-base-17-5"
@@ -1221,7 +1230,7 @@ console.log({selectedId})
           titleClassName="mb-5 leading-10"
           cancelBtn={true}
           crossBtn={true}
-          cancelBtnClassName="max-w-140 bg-[#26435F1A]  !text-[#26435F] rounded-md"
+          cancelBtnClassName="max-w-140 !bg-[#26435F1A]  !text-[#26435F] !rounded-md"
           primaryBtn={{
             text: "Delete",
             className: "w-[140px]  pl-4 px-4 !bg-[#FF7979] text-white",
@@ -1231,7 +1240,7 @@ console.log({selectedId})
           }}
         
           handleClose={() => setDeleteBulkModalActive(false)}
-          classname={"max-w-567 mx-auto"}
+          classname={"max-w-[600px]  mx-auto"}
         />
       )}
          {markBulkModalActive && (
@@ -1245,7 +1254,7 @@ console.log({selectedId})
           titleClassName="mb-5 leading-10"
           cancelBtn={true}
           crossBtn={true}
-          cancelBtnClassName="max-w-140 bg-[#26435F1A]  !text-[#26435F] rounded-md"
+          cancelBtnClassName="max-w-140 !bg-[#26435F1A]  !text-[#26435F] rounded-md"
           primaryBtn={{
             text: "Confirm",
             className: "w-[140px]  pl-4 px-4 !bg-[#32D583] text-white",
@@ -1277,7 +1286,7 @@ console.log({selectedId})
           titleClassName="mb-4 leading-10"
           cancelBtn={true}
           crossBtn={true}
-          cancelBtnClassName="max-w-140 bg-[#26435F1A]  !text-[#26435F] rounded-md"
+          cancelBtnClassName="max-w-140 !bg-[#26435F1A]  !text-[#26435F] rounded-md"
           primaryBtn={{
             text: "Resend",
             className: "w-[140px]  pl-4 px-4 !bg-[#FFA28D] text-white",
@@ -1294,7 +1303,7 @@ console.log({selectedId})
             </>
           }
           handleClose={() => setResendBulkModalActive(false)}
-          classname={"max-w-567 mx-auto"}
+          classname={"max-w-[600px]  mx-auto"}
         />
       )}
     </>
