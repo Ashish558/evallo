@@ -350,7 +350,6 @@ export default function UserManagement() {
   useEffect(() => {
     fetchTutors();
   }, []);
-
   const changeUserField = (field, id) => {
     let temp = filteredUsersData.map((item) => {
       // console.log(item[Object.keys(field)[0]]);

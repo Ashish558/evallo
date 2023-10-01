@@ -5,6 +5,9 @@ import AddIcon from "../../assets/icons/add.svg";
 import PrimaryButton from "../../components/Buttons/PrimaryButton";
 // import styles from './style.module.css'
 // import { tableData } from './tempData'
+import pdf from '../.././assets/images/pdf.png'
+import { Switch } from 'antd';
+import { useLocation } from 'react-router-dom';
 import Table from "../../components/Table/Table";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
@@ -16,7 +19,10 @@ import Scoring from "./Scoring/Scoring";
 import Modal from "../../components/Modal/Modal";
 import InputField from "../../components/InputField/inputField";
 import InputSelect from "../../components/InputSelect/InputSelect";
-
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
+import './form.css';
+import Delete from '../../assets/images/delete.png'
 const subjects = [
    { text: "English", selected: true },
    { text: "Mathematics", selected: false },
@@ -34,14 +40,6 @@ const subjects = [
 //    "Time",
 //    "Solution",
 // ];
-const tableHeaders = [
-   "Q No.",
-   "Answer",
-   "Concept",
-   "Strategy",
-   "Choices",
-   "Edit"
-];
 
 const initialState = {
    questionType: '',
@@ -49,6 +47,8 @@ const initialState = {
    concept: '',
    strategy: '',
    AnswerChoices: '',
+   Passage:'',
+   Answers:[],
 }
 export default function TestDetail() {
    const [testData, setTestData] = useState([]);
@@ -63,6 +63,11 @@ export default function TestDetail() {
    const [pdfBtnDisabled, setPdfBtnDisabled] = useState(false)
    const [pdfModalActive, setPdfModalActive] = useState(false)
    const [editLoading, setEditLoading] = useState(false)
+   const location = useLocation();
+   const [checked, setChecked] = useState(false);
+   const [options, setoptions] = useState(['', '', '', '']);
+   const [subjective_answer,setsubjective_answe]=useState();
+   const testType=location?.state?.testype
 
    useEffect(() => {
       if (modalData.email === '' || modalData.firstName === '' || modalData.lastName === '' || modalData.userType === '') {
@@ -82,34 +87,44 @@ export default function TestDetail() {
    const [questionsTable, setQuestionsTable] = useState([])
    const [subjects, setSubjects] = useState([])
    const [awsLink, setAwsLink] = useState('')
+   const [pdfBase64, setPdfBase64] = useState("");
 
    const handlePDFFile = (file) => {
       const formData = new FormData();
       formData.append("pdf", file);
       setPDFFile(file);
-      setPdfBtnDisabled(true)
-      axios.post(`${BASE_URL}api/test/addpdf/${id}`, formData, { headers: getAuthHeader() })
+      setPdfBtnDisabled(true);
+      const id = window.location.pathname.split("/")[2];
+      axios.post(`${BASE_URL}api/test/addpdf/${id}`, formData, {headers: getAuthHeader()})
          .then((res) => {
-            setPdfBtnDisabled(false)
-            alert('PDF file uploaded successfully!')
+            setPdfBtnDisabled(false);
+            alert('PDF file uploaded successfully!');
             console.log('pdf post resp', res);
-            setPdfModalActive(false)
-            fetchData()
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => {
+               // The base64 content of the PDF file will be available in reader.result
+               const base64Data = reader.result.split(',')[1]; // Remove the data URL prefix
+               console.log("Base64 PDF Content:", `data:application/pdf;base64,${base64Data}`);
+
+               setPdfBase64(base64Data);
+               setPdfModalActive(false);
+               fetchData();
+            }
          }).catch(err => {
-            setPdfBtnDisabled(false)
+            setPdfBtnDisabled(false);
             console.log('pdf err', err.response);
-            alert('Could not upload pdf')
-            setPdfModalActive(false)
-            fetchData()
-         })
+            alert('Could not upload pdf');
+            setPdfModalActive(false);
+            fetchData();
+         });
    };
 
+
    const fetchData = () => {
-      axios.get(`${BASE_URL}api/test/${id}`, {
-         headers: getAuthHeader()
-      })
+      axios.get(`${BASE_URL}api/test/${id}`,{headers: getAuthHeader()})
          .then((res) => {
-            console.log('test data', res.data.data);
+            console.log('test data', res);
             setAwsLink(res.data.data.baseLink)
             setTestData(res.data.data.test);
          });
@@ -125,7 +140,7 @@ export default function TestDetail() {
             setAllQuestions(res.data.data.answer.answer)
          })
    }
-
+    
    useEffect(() => {
       fetchData()
    }, [])
@@ -138,7 +153,7 @@ export default function TestDetail() {
       let idx = subjects.findIndex(item => item.selected === true)
       let tempdata = allQuestions[idx].map(item => {
          // console.log(item);
-         const { QuestionNumber, CorrectAnswer, Concepts, Strategies, QuestionType, AnswerChoices } = item
+         const { QuestionNumber, CorrectAnswer, Concepts, Strategies, QuestionType, AnswerChoices,Passage,Answers } = item
          if (!item.Strategies) {
             return {
                QuestionNumber,
@@ -146,8 +161,8 @@ export default function TestDetail() {
                Concepts: Concepts === undefined ? 'Unavailable' : Concepts,
                Strategies: 'Unavailable',
                QuestionType,
-               AnswerChoices
-            }
+               AnswerChoices,
+               }
          } else {
             return {
                QuestionNumber,
@@ -155,11 +170,20 @@ export default function TestDetail() {
                Concepts: Concepts === undefined ? 'Unavailable' : Concepts,
                Strategies,
                QuestionType,
-               AnswerChoices
+               AnswerChoices,
             }
          }
       })
-      setQuestionsTable(tempdata)
+      
+const updatedQuestions = tempdata.map(question => {
+   if (testData.testType==='DSAT') {
+     const { AnswerChoices, ...rest } = question;
+     return rest;
+   }
+   return question;
+ });
+      setQuestionsTable(updatedQuestions)
+      console.log(updatedQuestions);
    }, [subjects])
 
    const handleSubjectChange = (id) => {
@@ -173,28 +197,75 @@ export default function TestDetail() {
       setSubjects(tempSubs)
    }
 
-   const handleSubmit = (e) => {
+
+   
+   const handleSubmit = (e) => {    
       e.preventDefault()
       // console.log('modalData', modalData);
       // console.log('questionToEdit', questionToEdit);
-      const selectedSub = subjects.find(sub => sub.selected === true)
-      const body = {
-         subject: selectedSub.name,
-         Qno: questionToEdit.QuestionNumber,
-         update: {
-            CorrectAnswer: modalData.correctAnswer,
-            Concepts: modalData.concept,
-            QuestionType: modalData.questionType,
-            Strategies: modalData.strategy,
-            AnswerChoices: modalData.AnswerChoices,
+      // const imageBase64Data = {
+      //    questionImageBase64:questionImageBase64,
+      //    optionAImageBase64: optionAImageBase64,
+      //    optionBImageBase64: optionBImageBase64,
+      //    optionCImageBase64: optionCImageBase64,
+      //    optionDImageBase64: optionDImageBase64,
+      // richTextContentBase64: btoa(richTextContent),
+      // };
+      let indx
+      subjects.map((it,i)=>{
+         if(it.selected===true){
+            indx=i; 
          }
-      }
-      console.log('body', body);
+      })
+      console.log(indx);
+       const body = {
+         subject: subjects[indx].name,
+         Qno: modalData.QuestionNumber,
+         update:{
+               CorrectAnswer: modalData.correctAnswer,
+               Concepts: modalData.concept,
+               Strategies: modalData.strategy,
+               AnswerChoices: modalData.AnswerChoices,
+               QuestionText: modalData.question,
+               QuestionImage:questionImageBase64,
+               QuestionType: modalData.questionType,
+               AnswerChoices:'a,b,c,d',
+               Answers:[
+                  {
+                     label: 'A',
+                     text: options[0],
+                     ...(optionAImageBase64 !== undefined && optionAImageBase64 !== null ? { image: optionAImageBase64 } : {})                  },
+                  {
+                     label: 'B',
+                     text: options[1],
+                     ...(optionBImageBase64 !== undefined && optionBImageBase64 !== null ? { image: optionBImageBase64 } : {})                  },
+                  {
+                     label: 'C',
+                     text: options[2],
+                     ...(optionCImageBase64 !== undefined && optionCImageBase64 !== null ? { image: optionCImageBase64 } : {})                  },
+                  {
+                     label: 'D',
+                     text: options[3],
+                     ...(optionDImageBase64 !== undefined && optionDImageBase64 !== null ? { image: optionDImageBase64 } : {})                  },
+               ],
+               Passage: modalData.richTextContent,
+            },
+         };
+const jsonString = JSON.stringify(body);
+
+         // Log the JSON data in the console
+         console.log("JSON Form Data:", jsonString);
+      
       setEditLoading(true)
       editQuestion({ id, reqbody: body })
          .then(res => {
             setEditLoading(false)
             setModalData(initialState)
+            setoptions(['','','',''])
+            setOptionAImageBase64('')
+            setOptionBImageBase64('')
+            setOptionCImageBase64('')
+            setOptionDImageBase64('')
             setModalActive(false)
             if (res.error) return console.log('edit err', res.error);
             console.log('edit resp', res.data);
@@ -203,8 +274,44 @@ export default function TestDetail() {
 
    }
    const handleEditTestClick = (item) => {
-      // console.log('modalData', modalData);
-      // console.log('item', item);
+      console.log('asdasdasd',subjects);
+      if(allQuestions[0][item.QuestionNumber-1].Passage!=='no'){
+         setChecked(true)
+      }
+         setModalData(prev=>{
+            return{
+               ...prev,
+               richTextContent:allQuestions[0][item.QuestionNumber-1].Passage,
+               question:allQuestions[0][item.QuestionNumber-1].QuestionText
+            }
+         })
+         setQuestionImageBase64(allQuestions[0][item.QuestionNumber-1].QuestionImage)
+      if(allQuestions[0][item.QuestionNumber-1].Answers.size!=0){
+         allQuestions[0][item.QuestionNumber-1].Answers.map((it)=>{
+            console.log('dafsdfsdfs',it.label);
+            if(it.label=='A'){
+               setOptionAImageBase64(it?.image)
+            }
+            else if(it.label=='B'){
+               setOptionBImageBase64(it?.image)
+            }
+            else if(it.label=='C'){
+               setOptionCImageBase64(it?.image)
+            }
+            else if(it.label==='D'){
+               let newArray = [...options];
+               newArray[3] = it.content;
+               setoptions(newArray);
+               setOptionDImageBase64(it?.image)
+            }
+         })
+         let newArray=[...options]
+         allQuestions[0][item.QuestionNumber-1].Answers.map((it,i)=>{
+               newArray[i]=it.text;      
+         })
+         console.log(newArray,'newatrratlbjasdja');
+         setoptions(newArray)
+      }
       setModalData(prev => {
          return {
             ...prev,
@@ -215,22 +322,104 @@ export default function TestDetail() {
             questionType: item.QuestionType,
             AnswerChoices: item.AnswerChoices,
          }
+         
+
       })
       setModalActive(true)
       setQuestionToEdit(item)
    }
-   // console.log('sectionsData', sectionsData);
-   // console.log('questionsTable', questionsTable);
+
+   const [questionContent, setQuestionContent] = useState('');
+   const [optionAContent, setOptionAContent] = useState('');
+   const [optionBContent, setOptionBContent] = useState('');
+   const [optionCContent, setOptionCContent] = useState('');
+   const [optionDContent, setOptionDContent] = useState('');
+
+  
+const [questionImageBase64, setQuestionImageBase64] = useState(""); // Define questionImageBase64 state variable
+const [optionAImageBase64, setOptionAImageBase64] = useState(""); // Define optionAImageBase64 state variable
+const [optionBImageBase64, setOptionBImageBase64] = useState(""); // Define optionBImageBase64 state variable
+const [optionCImageBase64, setOptionCImageBase64] = useState(""); // Define optionCImageBase64 state variable
+const [optionDImageBase64, setOptionDImageBase64] = useState(""); // Define optionDImageBase64 state variable
+const [imageType, setImageType] = useState(""); // Define imageType state variable
+
+
+
+// Add a function to handle image uploads
+const handleImageUpload = (file, imageType) => {
+   if (file) {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+
+      reader.onload = () => {
+       
+         const base64Data = reader.result;
+         console.log(`Base64 ${imageType} Content:`, base64Data);
+
+         
+         switch (imageType) {
+            case "questionImage":
+               setQuestionImageBase64(base64Data);
+               break;
+            case "optionAImage":
+               setOptionAImageBase64(base64Data);
+               break;
+            case "optionBImage":
+               setOptionBImageBase64(base64Data);
+               break;
+            case "optionCImage":
+               setOptionCImageBase64(base64Data);
+               break;
+            case "optionDImage":
+               setOptionDImageBase64(base64Data);
+               break;
+            default:
+               break;
+         }
+      };
+   }
+};
+ 
+ 
+const handleimage_emppty = (imageType) => {
+   
+         switch (imageType) {
+            case "questionImage":
+               setQuestionImageBase64('');
+               break;
+            case "optionAImage":
+               setOptionAImageBase64('');
+               break;
+            case "optionBImage":
+               setOptionBImageBase64('');
+               break;
+            case "optionCImage":
+               setOptionCImageBase64('');
+               break;
+            case "optionDImage":
+               setOptionDImageBase64('');
+               break;
+            default:
+               break;
+         }
+};
+const tableHeaders = [
+   "Q No.",
+   "Answer",
+   "Concept",
+   "Strategy",
+   ...(testData.testType!=='DSAT' ? ["Choices"] : []),
+      "Edit"
+]; 
+
+
+const [richTextContent, setRichTextContent] = useState(""); 
 
    return (
       <>
-         <div className="ml-pageLeft bg-lightWhite min-h-screen">
-            <div className="py-14 px-5 flex">
-               <div className="px-0 flex-1 pr-2">
-                  <div className="">
-                     <SecondaryButton
+      <SecondaryButton
                         className="flex items-center pl-2 pr-5 py-2.5"
-                        onClick={() => navigate(-1)}
+                        onClick={() => navigate("/all-tests")}
                         children={
                            <>
                               <img src={BackIcon} className="mr-2" />
@@ -238,50 +427,30 @@ export default function TestDetail() {
                            </>
                         }
                      />
-                     <div className="flex flex-col justify-center mb-7">
-
-                        <p className="mt-6 text-textPrimaryDark text-4xl font-bold">
+         <div className="ml-pageLeft bg-lightWhite min-h-screen">
+            <div className="pb-14 pt-4 px-5 flex flex-col items-center">
+               <div className="px-0 flex flex-row justify-between items-start pr-2 w-full">
+                           <div className="flex mx-2 w-1/4 flex-col justify-start">
+                           <p className="mb-6 text-textPrimaryDark text-4xl font-bold">
                            {testData.testName}
                         </p>
-                        {
-                           Object.keys(sectionsData).length > 1 &&
-
-                           <a className="text-[#0671E0] text-xs italic inline-block cursor-pointer"
-                              href={sectionsData.test.pdf !== null && `${awsLink}${sectionsData.test.pdf}`} target="_blank"
-                           // onClick={() => sectionsData.test.pdf !== null && window.open(sectionsData.test.pdf)} 
-                           >
-                              {sectionsData.test.pdf !== null ? `${sectionsData.test.testName}.pdf` : ''}
-                           </a>
-                        }
-                        <PrimaryButton
-                           children='Reupload pdf'
-
-                           disabled={pdfBtnDisabled}
-                           className={`py-3.5 text-sm mt-5 w-[120px] pl-2 pr-2 mr-4 font-medium text-textGra`}
-                           onClick={() => setPdfModalActive(true)}
-                        />
-                        {/* <input ref={PdfRef}
-                           id="pdf"
-                           type="file"
-                           className="hidden"
-                           accept="application/pdf"
-                           onChange={e => handlePDFFile(e.target.files[0])}
-                        /> */}
-                     </div>
-
+                           
+                           <div className="border w-full py-4 flex rounded shadow-lg justify-center items-center">
                      <AllTestDetail testData={testData} />
-
-                     <div>
-                        <p className="text-2xl text-textPrimaryDark my-7 mb-6 font-bold">
+                        </div>
+                        </div>
+                     <div className=" w-2/4 mx-2 p-2 flex flex-col justify-start items-center self-start">
+                        <p className="text-2xl text-left  text-textPrimaryDark mb-6 font-bold">
                            Sections
                         </p>
 
-                        <div className="grid max-0 gap-y-1 mt-2 mb-10">
-                           <div className="mb-2">
+                        <div className="gap-y-1 mt-2 w-full mx-4 border rounded p-4 shadow-lg mb-10">
+                           <div className="mb-2 flex justify-between">
                               <p className="inline-block w-[170px] font-semibold opacity-60">
                                  {" "}
                                  Section
                               </p>
+                              <div className="flex">
                               <div className="inline-block w-[120px] font-semibold opacity-60">
                                  Time
                               </div>
@@ -289,49 +458,72 @@ export default function TestDetail() {
                                  {" "}
                                  Total Questions
                               </p>
+                              </div>
                            </div>
                            {Object.keys(sectionsData).length > 1 &&
                               sectionsData.answer.subjects?.map((section) => (
-                                 <div className="mb-1">
-                                    <p className="inline-block w-[170px] font-medium">
+                                 <div className="mb-1 flex justify-between">
+                                    <p className="inline-block text-[#24A3D9] w-[170px] font-medium">
                                        {" "}
                                        {section.name}
                                     </p>
-                                    <div className="inline-block w-120 font-medium">
+                                    <div className="flex"> 
+                                    <div className="inline-block text-[#24A3D9] w-[120px] font-medium">
                                        {section.timer} mins
                                     </div>
-                                    <p className="inline-block w-138 font-medium text-center">
+                                    <p className="inline-block text-[#24A3D9] w-[138px] font-medium text-center">
                                        {section.totalQuestion ? section.totalQuestion : '-'}
                                     </p>
+                                    </div>
                                  </div>
                               ))
                            }
                         </div>
 
                      </div>
-                  </div>
+                  {testData.testType!='DSAT'?
+                  <div className="px-6 py-4 flex  mx-2 mt-[4.5rem] w-1/4 justify-center border-gray-600 border-dashed border-[2px] items-center flex-col rounded shadow-lg">
+                           
+                        {
+                           Object.keys(sectionsData).length > 1 &&
+                           <>
+                           <img src={pdf} className="mb-4"/>
+                           <a className="text-[#0671E0] text-xs italic inline-block cursor-pointer"
+                              href={sectionsData.test.pdf !== null && `${awsLink}${sectionsData.test.pdf}`} target="_blank"
+                           // onClick={() => sectionsData.test.pdf !== null && window.open(sectionsData.test.pdf)} 
+                           >
+                              {sectionsData.test.pdf !== null ? `${sectionsData.test.testName}.pdf` : ''}
+                           </a>
+                           </>
+                        }
+                      <PrimaryButton
+                           children='Reupload pdf'
 
-                  <div className="px-3 py-4 bg-white rounded-[30px]">
-                     {Object.keys(sectionsData).length > 1 && <Scoring sectionsData={sectionsData} />}
-                  </div>
+                           disabled={pdfBtnDisabled}
+                           className={`bg-[#517CA8] px-4 py-2 text-sm mt-5 w-[120px] whitespace-nowrap font-medium text-textGra`}
+                           onClick={() => setPdfModalActive(true)}
+                        />
+                  </div>:null}
                </div>
 
-               <div className="flex-1 pl-2">
-                  <p className="text-2xl text-textPrimaryDark my-7 font-bold"> Questions by Section </p>
-                  <div className="mt-6 flex flex-wrap items-end">
-                     {subjects.map((item, idx) => {
-                        return (
-                           <PrimaryButton
-                              children={item.name}
-                              className={`py-2.5 px-0 text-xs mr-4 font-semibold w-[120px] ${item.selected
-                                 ? ""
-                                 : "bg-secondaryLight text-textGray"
-                                 }`}
-                              onClick={() => handleSubjectChange(item._id)}
-                           />
-                        );
-                     })}
+               <div className="flex pl-2 flex-col w-full">
+                  <div className="mt-6 flex justify-between items-end">
+                     <div className="flex flex-row justify-between items-center">
+                        {subjects.map((item, idx) => {
+                           return (
+                              <PrimaryButton
+                                 children={item.name}
+                                 className={`py-2.5 px-0 text-xs mr-4 font-semibold w-[120px] ${item.selected
+                                    ? "text-[#FFA28D]"
+                                    : "bg-secondaryLight text-textGray"
+                                    }`}
+                                 onClick={() => handleSubjectChange(item._id)}
+                              />
+                           );
+                        })}
+                     </div>
                   </div>
+                  <div className="h-[1px] bg-gray-400 w-full"></div>
 
                   <div className="flex justify-between mt-7">
 
@@ -360,13 +552,13 @@ export default function TestDetail() {
          {
             modalActive &&
             <Modal
-               classname={'max-w-[780px] mx-auto'}
+            classname={'max-w-[780px] mx-auto'}
+               cancelBtnClassName='bg-[#FFFFFF] text-[#FFA28D] border border-[#FFA28D] w-140'
                title='Edit Question'
                cancelBtn={true}
-               cancelBtnClassName='w-140'
                primaryBtn={{
-                  text: "Add",
-                  className: 'w-140',
+                  text: "Save",
+                  className: 'w-140 bg-[#FFA28D]',
                   form: 'add-user-form',
                   // onClick: handleSubmit,
                   type: 'submit',
@@ -375,14 +567,15 @@ export default function TestDetail() {
                }}
                handleClose={() => { setModalActive(false); setModalData(initialState) }}
                body={
-                  <form id='add-user-form' onSubmit={handleSubmit} className='px-[3px] mb-0.5' >
-                     <div className='grid grid-cols-1 md:grid-cols-2  gap-x-2 md:gap-x-3 gap-y-3 gap-y-4 mb-5'>
-                        <div>
+                  <form id='add-user-form' onSubmit={handleSubmit} className='px-[3px] mb-0.5 form-scroll-container'>
+                     <div className='flex flex-col w-full'>
+                        <div className="flex flex-row justify-between items-center">
+                        <div className="min-w-[170px] px-1">
                            <InputField label='Question No.'
-                              labelClassname='ml-4 mb-0.5'
+                              labelClassname='ml-4 mb-0.5 input-heading font-medium text-[15px]'
                               isRequired={false}
                               placeholder='Question No.'
-                              inputContainerClassName='text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0'
+                              inputContainerClassName='bg-[#F6F6F6] text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0'
                               inputClassName='bg-transparent'
                               parentClassName='w-full' type='text'
                               value={modalData.QuestionNumber}
@@ -390,11 +583,11 @@ export default function TestDetail() {
                               onChange={e => e.target.value}
                            />
                         </div>
-                        <div>
+                        <div className="min-w-[170px] px-1">
                            <InputSelect label='Question Type'
-                              labelClassname='ml-4 mb-0.5'
+                              labelClassname='ml-4 mb-0.5 input-heading font-semibold text-[15px]'
                               placeholder='Select Question Type'
-                              inputContainerClassName='text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0'
+                              inputContainerClassName='bg-[#F6F6F6] text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0'
                               inputClassName='bg-transparent'
                               parentClassName='w-full' type='text'
                               value={modalData.questionType}
@@ -402,55 +595,339 @@ export default function TestDetail() {
                               isRequired={true}
                               onChange={val => setModalData({ ...modalData, questionType: val })} />
                         </div>
-                        <div>
+                        <div className="min-w-[170px] px-1">
                            <InputField label='Correct Answer'
-                              labelClassname='ml-4 mb-0.5'
+                              labelClassname='ml-4 mb-0.5 input-heading font-medium text-[15px]'
                               isRequired={true}
                               placeholder='Type Correct Answer'
-                              inputContainerClassName='text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0'
+                              inputContainerClassName='bg-[#F6F6F6] text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0'
                               inputClassName='bg-transparent'
                               parentClassName='w-full' type='text'
                               value={modalData.correctAnswer}
                               onChange={e => setModalData({ ...modalData, correctAnswer: e.target.value })} />
                         </div>
-                        <div>
+                        {testData.testType!='DSAT'?<div className="min-w-[170px] px-1">
+                           <InputField label='Answer Choices'
+                              labelClassname='ml-4 mb-0.5 input-heading font-medium text-[15px]'
+                              // isRequired={true}
+                              placeholder='Answer Choices'
+                              inputContainerClassName='bg-[#F6F6F6] text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0'
+                              inputClassName='bg-transparent'
+                              parentClassName='w-full' type='text'
+                              value={modalData.AnswerChoices}
+                              onChange={e => setModalData({ ...modalData, AnswerChoices: e.target.value })} />
+                        </div>:null}
+                        </div>
+                        <div className="flex mt-4 flex-row">
+                        <div className="w-1/2 p-1">
                            <InputField label='Concept'
-                              labelClassname='ml-4 mb-0.5'
+                              labelClassname='ml-4 mb-0.5 input-heading font-medium text-[15px]'
                               isRequired={true}
                               placeholder='Concept'
-                              inputContainerClassName='text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0'
+                              inputContainerClassName='bg-[#F6F6F6] text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0'
                               inputClassName='bg-transparent'
                               parentClassName='w-full' type='text'
                               value={modalData.concept}
                               onChange={e => setModalData({ ...modalData, concept: e.target.value })} />
                         </div>
-                        <div>
+                        <div className="w-1/2 p-1">
                            <InputField label='Strategy'
-                              labelClassname='ml-4 mb-0.5'
+                              labelClassname='ml-4 mb-0.5 input-heading font-medium text-[15px]'
                               // isRequired={true}
                               placeholder='Strategy'
-                              inputContainerClassName='text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0'
+                              inputContainerClassName='bg-[#F6F6F6] text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0'
                               inputClassName='bg-transparent'
                               parentClassName='w-full' type='text'
                               value={modalData.strategy}
                               onChange={e => setModalData({ ...modalData, strategy: e.target.value })} />
                         </div>
-                        <div>
-                           <InputField label='Answer Choices'
-                              labelClassname='ml-4 mb-0.5'
-                              // isRequired={true}
-                              placeholder='Answer Choices'
-                              inputContainerClassName='text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0'
-                              inputClassName='bg-transparent'
-                              parentClassName='w-full' type='text'
-                              value={modalData.AnswerChoices}
-                              onChange={e => setModalData({ ...modalData, AnswerChoices: e.target.value })} />
                         </div>
-                     </div>
+                                  </div> 
+                                  <div className="w-full h-1 my-4 bg-[#00000033]">
+</div>
+                                
+                                
+                {/* My Code */}
+                {/* Left Column for Text Inputs */}
+                <div className="flex mb-2">
+   {/* Left Column for Text Inputs */}
+   {/* <div className="w-1/2 pr-4">
+      <div className="mb-4">
+         <p className="text-lg font-semibold">Question:</p>
+         <input
+            type="text"
+            value={modalData.question}
+            onChange={(e) => setModalData({ ...modalData, question: e.target.value })}
+            className="border rounded p-2 w-full"
+         />
+      </div>
+      <div className='flex items-center mb-2'>
+      <label htmlFor='mcqOptionA' className='ml-2 text-lg'>
+        A)
+        </label>
+      <input
+         type='text'
+         id='mcqOptionA'
+         value={modalData.optionA}
+         onChange={e => setModalData({ ...modalData, optionA: e.target.value })}
+         className='border rounded p-2 ml-2 w-full'
+      />
+   </div>
+   <div className='flex items-center mb-2'>
+      <label htmlFor='mcqOptionA' className='ml-2 text-lg'>
+        B)
+        </label>
+      <input
+         type='text'
+         id='mcqOptionB'
+         value={modalData.optionB}
+         onChange={e => setModalData({ ...modalData, optionB: e.target.value })}
+         className='border rounded p-2 ml-2 w-full'
+      />
+   </div>
+   <div className='flex items-center mb-2'>
+      <label htmlFor='mcqOptionA' className='ml-2 text-lg'>
+        C)
+        </label>
+      <input
+         type='text'
+         id='mcqOptionC'
+         value={modalData.optionC}
+         onChange={e => setModalData({ ...modalData, optionC: e.target.value })}
+         className='border rounded p-2 ml-2 w-full'
+      />
+   </div>
+   <div className='flex items-center mb-2'>
+      <label htmlFor='mcqOptionA' className='ml-2 text-lg'>
+        D)
+        </label>
+      <input
+         type='text'
+         id='mcqOptionD'
+         value={modalData.optionD}
+         onChange={e => setModalData({ ...modalData, optionD: e.target.value })}
+         className='border rounded p-2 ml-2 w-full'
+      />
+   </div>
+
+   </div> */}
+
+   {/* Right Column for Image Upload */}
+   {testData.testType=='DSAT'?
+   <div className="w-full mt-4">
+   <div className="mb-4">
+         <p className="text-[15px] mb-1 font-semibold">Add Question Content:</p>
+         <div className="flex flex-row  items-center bg-[#F6F6F6] ">
+         <input
+            type="text"
+            value={modalData.question}
+            onChange={(e) => setModalData({ ...modalData, question: e.target.value })}
+            className="border w-3/4 mr-4 ml-3 outline-none border-none bg-[#F6F6F6] rounded p-2"
+         />
+          {questionImageBase64!==undefined&&questionImageBase64!==''?
+         <div className="flex flex-row w-1/4 justify-start items-center overflow-hidden">
+               <img src={questionImageBase64} className='rounded max-w-14 max-h-14 my-2' alt="base64"/>
+      <div onClick={()=>{handleimage_emppty('questionImage')}}>
+           <img src={Delete} alt='delete' className="w-4 cursor-pointer h-4 mx-2 cursor-pointer" />
+         </div>
+      </div>
+      :<>
+         <label htmlFor="questionImage" className="w-1/4" >
+        <p className="px-2 py-1 w-fit bg-[#FFA28D] rounded cursor-pointer font-normal text-[15px]">Attach Image</p>
+        </label>
+      <input 
+        type="file" 
+        id="questionImage"
+        accept="image/*"
+        onChange={(e) => handleImageUpload(e.target.files[0], 'questionImage')}  
+      />
+      </>}
+         </div>
+      </div>
+
+      {/* Rich Text Editor */}
+<div className="mb-2 mt-6">
+<div className="flex flex-row">
+<Switch 
+        checked={checked} 
+        onChange={setChecked}
+      />
+   <p className="text-[15px] ml-4 font-normal mb-6">Enable Split Screen / Add Passage</p>
+   
+   </div>
+   {checked?
+   <ReactQuill
+      value={modalData.richTextContent}
+      onChange={(val) =>{ setModalData({ ...modalData, richTextContent: val })}}
+      modules={{
+         toolbar: [
+            [{ 'header': '1' }, { 'header': '2' }, { 'font': [] }],
+            ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+            [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+            ['link', 'image'],
+            ['clean']
+         ],
+      }}
+   />:null}
+</div>
+<div className="w-full h-1 my-4 bg-[#00000033]">
+</div>
+{  console.log('moasmdoasdnasnfa',modalData)}
+{modalData.questionType=='Grid-in'?
+   null
+:<>
+      <div className='flex items-center mb-2'>
+      <p className='ml-2 rounded-full border py-1 px-3  mr-2 text-lg'>
+         A
+      </p>
+      <div className="flex flex-row w-full items-center bg-[#F6F6F6] ">
+         <input
+            type="text"
+            value={options[0]}
+            onChange={(e) => {
+               let newArray = [...options];
+               newArray[0] = e.target.value;
+               setoptions(newArray);
+            }}className="border w-3/4 cursor-pointer mr-4 ml-3 outline-none border-none bg-[#F6F6F6] rounded p-2"
+         />
+          {optionAImageBase64!=undefined&&optionAImageBase64!=''?
+         <div className="flex flex-row w-1/4 cursor-pointer justify-start items-center overflow-hidden">
+               <img src={optionAImageBase64} className='rounded max-w-14 max-h-14 my-2' alt="base64"/>
+      <div onClick={()=>{handleimage_emppty('optionAImage')}}>
+           <img src={Delete} alt='delete' className="w-4 h-4 mx-2 cursor-pointer" />
+         </div>
+      </div>
+      :<>
+         <label htmlFor="optionAImage" className="w-1/4" >
+        <p className="px-2 py-1 w-fit bg-[#FFA28D] rounded font-normal cursor-pointer text-[15px]">Attach Image</p>
+        </label>
+      <input 
+        type="file" 
+        id="optionAImage"
+        accept="image/*"
+        onChange={(e) => handleImageUpload(e.target.files[0], 'optionAImage')}  
+      />
+      </>}
+         </div>
+   </div>
+
+   <div className='flex items-center mb-2'>
+      <p className='ml-2 rounded-full border py-1 px-3  mr-2 text-lg'>
+         B
+      </p>
+      <div className="flex flex-row w-full items-center bg-[#F6F6F6] ">
+         <input
+            type="text"
+            value={options[1]}
+            onChange={(e) => {
+               let newArray = [...options];
+               newArray[1] = e.target.value;
+               setoptions(newArray);
+            }}className="border w-3/4 cursor-pointer mr-4 ml-3 outline-none border-none bg-[#F6F6F6] rounded p-2"
+         />
+          {optionBImageBase64!=undefined&&optionBImageBase64!=''?
+         <div className="flex flex-row w-1/4 cursor-pointer justify-start items-center overflow-hidden">
+               <img src={optionBImageBase64} className='rounded max-w-14 max-h-14 my-2' alt="base64"/>
+      <div onClick={()=>{handleimage_emppty('optionBImage')}}>
+           <img src={Delete} alt='delete' className="w-4 h-4 mx-2 cursor-pointer" />
+         </div>
+      </div>
+      :<>
+         <label htmlFor="optionBImage" className="w-1/4" >
+        <p className="px-2 py-1 w-fit bg-[#FFA28D] rounded font-normal cursor-pointer text-[15px]">Attach Image</p>
+        </label>
+      <input 
+        type="file" 
+        id="optionBImage"
+        accept="image/*"
+        onChange={(e) => handleImageUpload(e.target.files[0], 'optionBImage')}  
+      />
+      </>}
+         </div>
+   </div>
+
+   <div className='flex items-center mb-2'>
+      <p className='ml-2 rounded-full border py-1 px-3  mr-2 text-lg'>
+         C
+      </p>
+      <div className="flex flex-row w-full items-center bg-[#F6F6F6] ">
+         <input
+            type="text"
+            value={options[2]}
+            onChange={(e) => {
+               let newArray = [...options];
+               newArray[2] = e.target.value;
+               setoptions(newArray);
+            }}
+            className="border w-3/4 cursor-pointer mr-4 ml-3 outline-none border-none bg-[#F6F6F6] rounded p-2"
+         />
+          {optionCImageBase64!=undefined&&optionCImageBase64!=''?
+         <div className="flex flex-row w-1/4 cursor-pointer justify-start items-center overflow-hidden">
+               <img src={optionCImageBase64} className='rounded max-w-14 max-h-14 my-2' alt="base64"/>
+      <div onClick={()=>{handleimage_emppty('optionCImage')}}>
+           <img src={Delete} alt='delete' className="w-4 h-4 mx-2 cursor-pointer" />
+         </div>
+      </div>
+      :<>
+         <label htmlFor="optionCImage" className="w-1/4" >
+        <p className="px-2 py-1 w-fit bg-[#FFA28D] rounded font-normal cursor-pointer text-[15px]">Attach Image</p>
+        </label>
+      <input 
+        type="file" 
+        id="optionCImage"
+        accept="image/*"
+        onChange={(e) => handleImageUpload(e.target.files[0], 'optionCImage')}  
+      />
+      </>}
+         </div>
+   </div>
+   <div className='flex items-center mb-2'>
+      <p className='ml-2 rounded-full border py-1 px-3  mr-2 text-lg'>
+         D
+      </p>
+      <div className="flex flex-row w-full items-center bg-[#F6F6F6] ">
+         <input
+            type="text"
+            value={options[3]}
+            onChange={(e) => {
+               let newArray = [...options];
+               newArray[3] = e.target.value;
+               setoptions(newArray);
+            }}
+            className="border w-3/4 cursor-pointer mr-4 ml-3 outline-none border-none bg-[#F6F6F6] rounded p-2"
+         />
+          {optionDImageBase64!=undefined&&optionDImageBase64!=''?
+         <div className="flex flex-row w-1/4 cursor-pointer justify-start items-center overflow-hidden">
+               <img src={optionDImageBase64} className='rounded max-w-14 max-h-14 my-2' alt="base64"/>
+      <div onClick={()=>{handleimage_emppty('optionDImage')}}>
+           <img src={Delete} alt='delete' className="w-4 h-4 mx-2 cursor-pointer" />
+         </div>
+      </div>
+      :<>
+         <label htmlFor="optionDImage" className="w-1/4" >
+        <p className="px-2 py-1 w-fit bg-[#FFA28D] rounded font-normal cursor-pointer text-[15px]">Attach Image</p>
+        </label>
+      <input 
+        type="file" 
+        id="optionDImage"
+        accept="image/*"
+        onChange={(e) => handleImageUpload(e.target.files[0], 'optionDImage')}  
+      />
+      </>}
+         </div>
+   </div>
+   </>}
+   <div className="w-full h-1 my-4 bg-[#00000033]">
+</div>
+      {/* Add similar code for option A, B, C, and D images */}
+   </div>:null}
+</div>
                   </form>
+                  
                }
             />
          }
+         
          {
             pdfModalActive &&
             <Modal
@@ -458,10 +935,10 @@ export default function TestDetail() {
                title='Uploading PDF will replace the current PDF'
                titleClassName='pr-4'
                cancelBtn={true}
-               cancelBtnClassName='w-140'
+               cancelBtnClassName='bg-[#FFFFFF] text-[#FFA28D] border border-[#FFA28D] w-140'
                primaryBtn={{
                   text: "Upload",
-                  className: 'w-140 pl-4 pr-4',
+                  className: 'w-140  bg-[#FFA28D] pl-4 pr-4',
                   form: 'add-user-form',
                   onClick: () => PdfRef.current.click(),
                   type: 'submit',
@@ -481,6 +958,8 @@ export default function TestDetail() {
                }
             />
          }
+               
       </>
    );
 }
+

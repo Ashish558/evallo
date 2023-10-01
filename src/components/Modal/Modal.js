@@ -68,12 +68,14 @@ export default function Modal({
                         {body}
 
 
-                        <div className="flex justify-center">
+                        <div className="flex justify-between mx-4">
                            {cancelBtn && (
                               <SecondaryButton
                                  onClick={handleClose}
                                  children="Cancel"
-                                 className={`py-2 ${cancelBtnClassName} !border-[1px_solid_#FFA28D]`}
+
+                                 className={`py-2  ${cancelBtnClassName}`}
+
                                  type="button"
                               />
                            )}

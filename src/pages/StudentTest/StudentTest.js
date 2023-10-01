@@ -44,7 +44,7 @@ const parentTestInfo = [
   },
 ];
 
-export default function StudentTest({ fromProfile, setTotaltest,studentId }) {
+export default function StudentTest({ fromProfile,testtype, setTotaltest,studentId }) {
   const [user, setUser] = useState({});
   const [associatedStudents, setAssociatedStudents] = useState([]);
   const [selectedStudent, setSelectedStudent] = useState(null);
@@ -440,6 +440,7 @@ export default function StudentTest({ fromProfile, setTotaltest,studentId }) {
           )}
           <div className={`mt-6 ${fromProfile ? '!mt-0' : ''}`}>
             <Table
+              testtype={testtype}
               noArrow={true}
               dataFor="assignedTestsStudents"
               headerObject={true}

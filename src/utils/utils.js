@@ -269,7 +269,35 @@ export const getScoreStr = (testType, score, subjects, totalLength) => {
          cumulative: `C${verbalTotal + MathsTotal}`,
          right: `V${verbalTotal}|M${MathsTotal}`
       }
-   } else {
+   }
+   else if (testType === 'DSAT'){
+      let rTotal = 0
+      let MathsTotal = 0
+      subjects.map(sub => {
+         if (sub.scoreScale === 'Scale1') {
+            let src = score['Scale1'] !== null ? score['Scale1'] : 0
+            rTotal += src
+         }
+         if (sub.scoreScale === 'Scale2') {
+            let src2 = score['Scale2'] !== null ? score['Scale2'] : 0
+            rTotal += src2
+         }
+         if (sub.scoreScale === 'Scale3') {
+              let src3 = score['Scale3'] !== null ? score['Scale3'] : 0
+               MathsTotal += src3            
+         }
+         if(sub.scoreScale === 'Scale4'){
+            let src3 = score['Scale4'] !== null ? score['Scale4'] : 0
+               MathsTotal += src3 
+         }
+      })
+      return {
+         cumulative: ``,
+         right: `R${rTotal}|M${MathsTotal}`
+      }
+   }
+   
+   else {
       let scoreArr = []
       let score1 = 0
       let score2 = 0

@@ -121,39 +121,6 @@ const parentNav = [
   },
 ];
 
-const studentNav = [
-  {
-    icon: Dashboard,
-    activeIcon: Dashboard1,
-    path: "/",
-    tooltip: "Dashboard",
-  },
-  {
-    icon: Profile,
-    activeIcon: Profile1,
-    path: "/profile",
-    tooltip: "Profile",
-  },
-  {
-    icon: Assignment,
-    activeIcon: Assignment1,
-    path: "/all-tests",
-    tooltip: "Assignments",
-  },
-  {
-    icon: Schedule,
-    activeIcon: Schedule1,
-    path: "/calendar",
-    tooltip: "Schedule",
-  },
-  {
-    icon: Settings,
-    activeIcon: Settings1,
-    path: "/settings",
-    excludes: ["parent", "tutor", "admin", "superAdmin"],
-    tooltip: "Settings",
-  },
-];
 const tutorNav = [
   {
     icon: Dashboard,
@@ -235,6 +202,41 @@ const contributorNavdata = [
     activeIcon: Settings1,
     path: "/settings",
     excludes: ["student", "parent", "tutor"],
+    tooltip: "Settings",
+  },
+];
+
+
+const studentNav = [
+  {
+    icon: Dashboard,
+    activeIcon: Dashboard1,
+    path: "/",
+    tooltip: "Dashboard",
+  },
+  {
+    icon: Profile,
+    activeIcon: Profile1,
+    path: "/profile",
+    tooltip: "Profile",
+  },
+  {
+    icon: Assignment,
+    activeIcon: Assignment1,
+    path: "/all-tests",
+    tooltip: "Assignments",
+  },
+  {
+    icon: Schedule,
+    activeIcon: Schedule1,
+    path: "/calendar",
+    tooltip: "Schedule",
+  },
+  {
+    icon: Settings,
+    activeIcon: Settings1,
+    path: "/settings",
+    excludes: ["parent", "tutor", "admin", "superAdmin"],
     tooltip: "Settings",
   },
 ];
