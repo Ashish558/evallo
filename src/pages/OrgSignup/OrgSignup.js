@@ -54,11 +54,12 @@ import SecondaryButton from "../../components/Buttons/SecondaryButton";
 import InputFieldDropdown from "../../components/InputField/inputFieldDropdown";
 import AdminNavbar from "../AdminDashboard/AdminNavbar";
 import SCheckbox from "../../components/CCheckbox/SCheckbox";
+import Subscription from "../Frames/Subscription/Subscription";
 
 export default function OrgSignup() {
   const [frames, setFrames] = useState({
     signupActive: true,
-    orgDetails: false,
+    subscription: false,
     furtherDetails: false,
     requirements: false,
   });
@@ -390,7 +391,7 @@ export default function OrgSignup() {
         setFrames({
           ...frames,
           signupActive: true,
-          orgDetails: false,
+          subscription: false,
           furtherDetails: false,
           requirements: false,
         });
@@ -515,7 +516,7 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
         setFrames({
           ...frames,
           signupActive: false,
-          orgDetails: true,
+          subscription: true,
         });
       }
       if(cc>=2){
@@ -629,14 +630,14 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
           ) : (
             <></>
           )}
-          <div className="flex lg:items-center relative bg-white rounded-md py-4 px-5 md:px-[48px] lg:w-[650px]">
+          <div className={`flex lg:items-center relative bg-white rounded-md py-4 px-5 md:px-[48px] lg:w-[650px]`}>
             <div className="w-full py-4 ">
               {currentStep > 0 && (
                 <NumericSteppers className={"px-2 flex-1"} fieldNames={["Personal info" ,"Subscription","Extensions","Checkout"]} totalSteps={4} currentStep={currentStep}
                 
                 />
               )}
-              {frames.signupActive ? (
+              {frames.signupActive && false ? (
                 <div>
                   {/* <p
                     className={`hidden lg:block mb-[26px] ${styles.textGrayed} `}
@@ -870,13 +871,8 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
                     />
                   </div>
                 </div>
-              ) : frames.orgDetails ? (
-                <OrgDetails
-                  {...props}
-                  setPersona={setPersona}
-                  values={values}
-                  setValues={setValues}
-                />
+              ) : frames.subscription || true ? (
+                <Subscription />
               ) : frames.furtherDetails ? (
                 <FurtherDetails
                   {...props}
