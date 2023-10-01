@@ -684,13 +684,15 @@ console.log({studentMultiple,modalData})
       <div className="w-[83.3333333333vw] mx-auto min-h-screen mb-[40px]">
         <div className="">
           <div className="flex justify-between items-center ">
-            <p className="text-[#24A3D9] text-xl mb-8 mt-[50px]">
+            <p className="text-[#24A3D9] text-base-20 mb-8 mt-[50px]">
+            <span onClick={()=>navigate('/')} className="cursor-pointer"> 
               {organization?.company +
                 "  >  " +
                 firstName +
                 "  " +
                 lastName +
                 "  >  "}
+              </span>
               <span className="font-bold">Assignments</span>
             </p>
             {persona !== "parent" && persona !== "student" && persona !== "tutor" && (

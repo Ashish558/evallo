@@ -52,7 +52,7 @@ const ToogleBar = ({
             {body && body}
         </div>
     );
-   console.log("================================",set)
+   //console.log("================================",set)
 if(manual){
     return (
         <div

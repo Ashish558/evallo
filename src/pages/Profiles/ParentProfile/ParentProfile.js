@@ -493,7 +493,7 @@ const [toEdit, setToEdit] = useState({
     if (userDetail.timeZone === undefined) return;
     dispatch(updateTimeZone({ timeZone: userDetail.timeZone }));
   }, [userDetail.timeZone]);
-
+ 
   // //console.log(user)
   // //console.log(userDetail)
   // //console.log('associatedParent', associatedParent)
@@ -529,14 +529,16 @@ const [toEdit, setToEdit] = useState({
   //console.log({user,userDetail})
   return (
     <>
-      <div className={`w-[83.3vw] mx-auto pb-[70px] relative z-[5000]`}>
-        <p className="text-[#24A3D9] !my-[calc(50*0.0522vw)] text-xl">
+      <div className={`w-[83.3vw] mx-auto pb-[70px]`}>
+        <p className="text-[#24A3D9] !my-[calc(50*0.0522vw)] text-base-20">
+        <span className="cursor-pointer z-5000 relative" onClick={()=>navigate('/')}>
           {organization?.company +
             " > " +
             user?.firstName +
             " " +
             user?.lastName +
             " > "}
+          </span>
           <span className="font-semibold">Dashboard</span>
         </p>
         {!isOwn ? (

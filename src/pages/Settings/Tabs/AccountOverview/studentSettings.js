@@ -20,6 +20,7 @@ import InputFieldDropdown from "../../../../components/InputField/inputFieldDrop
 import { useUpdateEmailMutation } from "../../../../app/services/organization";
 import { useStudentFeedbackMutaion, useStudentFeedbackMutation } from "../../../../app/services/settings";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 const StudentSettings = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [reset, setReset] = useState(false);
@@ -156,6 +157,7 @@ const StudentSettings = () => {
     tech: "",
     support: "",
   })
+  const navigate=useNavigate()
   const handleFeedback = (message, type) => {
     console.log({ message, feedBack })
     const body = {
@@ -176,8 +178,8 @@ const StudentSettings = () => {
     <div className="w-[83.23vw] mx-auto">
       <div className="flex flex-col gap-10   my-12">
         <div className="text-[#24A3D9] font-lexend-deca text-md design:text-xl  font-semibold leading-normal">
-          <span className=" font-medium text-xl">{organization?.company}</span>
-          <span className="font-semibold text-xl">{"  > Settings"}</span>
+          <span onClick={()=>navigate('/')} className=" font-medium text-base-20 cursor-pointer">{organization?.company}</span>
+          <span className="font-semibold text-base-20">{"  > Settings"}</span>
         </div>
         <div className="flex gap-5">
           <InputField
