@@ -289,7 +289,7 @@ console.log({studentMultiple,modalData})
           });
           setStudents(tempData);
         }
-        });
+        )
       } else {
         fetchTutorStudents(modalData.name).then((res) => {
           if(res.error){
@@ -304,7 +304,7 @@ console.log({studentMultiple,modalData})
           
           setStudents(tempData);
         }
-        });
+        )
       }
     }
   }, [modalData.name]);
