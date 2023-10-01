@@ -1738,7 +1738,7 @@ export default function Settings() {
                                     " text-base-17-5 bg-[#F5F8FA]"
                                   }
                                   parentClassName={"mb-3 bg-[#F5F8FA]"}
-                                  placeholder={"This field is required."}
+                                  placeholder={"Hyperlink"}
                                   required={true}
                                   onChange={(e) => {
                                     let arr = offersNew;
@@ -1753,7 +1753,7 @@ export default function Settings() {
                                     " text-base-17-5 bg-[#F5F8FA]"
                                   }
                                   placeholder={
-                                    "Button (eg. Register, Enroll, View)"
+                                    "Button Text (eg. View, Enroll, etc.)"
                                   }
                                   onChange={(e) => {
                                     let arr = offersNew;

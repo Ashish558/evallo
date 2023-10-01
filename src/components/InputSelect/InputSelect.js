@@ -11,6 +11,7 @@ import { useSelector } from "react-redux";
 export default function InputSelect({
   parentClassName,
   Icon,
+  hideRight,
   value,
   downArrow22,
   placeholder,
@@ -91,7 +92,7 @@ export default function InputSelect({
         {selected ? (
           IconRight ? (
             IconRight
-          ) : !IconLeft && (
+          ) : !IconLeft&&!hideRight && (
             <img
             src={customArrow ? customArrow :downArrow22?DownArrow2:DownArrow}
             className={`${customArrow ?`w-[20px] h-[20px] rotate-180`:`w-[15px] h-[12px]`}   ${styles.downArrow}`}
@@ -100,7 +101,7 @@ export default function InputSelect({
           )
         ) : IconRight ? (
           IconRight
-        ) : !IconLeft && (
+        ) : !IconLeft&&!hideRight && (
           <img
             src={customArrow ? customArrow :downArrow22?DownArrow2:DownArrow}
             className={`${customArrow ?`w-[20px] h-[20px]`:`w-[15px] h-[12px]`}   ${styles.downArrow}`}
