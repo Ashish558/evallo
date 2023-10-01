@@ -14,11 +14,18 @@ export default function DaysEndDate({ days, setDays, data, setData, isEditable }
       });
       setDays(tempdays);
    };
-
+const setAll=()=>{
+   if (isEditable === false || !data?.recurring) return
+   let tempdays = days.map(day => {
+      return  { ...day, checked:true }
+         
+   });
+   setDays(tempdays);
+}
    return (
       <div className="flex my-[30px]">
          <div className="mr-8">
-            <p className="font-medium text-[18.6px]  mb-1 text-[#26435F]">
+            <p onClick={setAll} className="font-medium text-[18.6px]  mb-1 text-[#26435F]">
                Repeat Every Week On
             </p>
             <div className="flex">

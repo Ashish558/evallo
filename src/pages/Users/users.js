@@ -222,7 +222,7 @@ export default function Users() {
     let urlParams = `?limit=${maxPageSize}&page=${currentPage}`;
     if (filterData.userType.length > 0) {
       filterData.userType.forEach((item) => {
-        urlParams = urlParams + `&role=${item}`;
+        urlParams = urlParams + `&role=${item?.toLowerCase()}`;
       });
     }
     if (filterData.userStatus.length > 0) {
@@ -255,10 +255,11 @@ export default function Users() {
       urlParams = urlParams + `&search=${filterData.typeName}`;
     }
 
-    //console.log("urlParams", urlParams);
+    console.log("urlParams", urlParams);
     fetchUsers(urlParams).then((res) => {
+      console.log("crm",res)
       if (res?.data?.data) setTotalPages(res?.data?.data?.total_users);
-
+  
       const fetchDetails = async () => {
         let tempData = [];
         await res?.data?.data?.user?.map(async (user) => {
@@ -463,8 +464,22 @@ export default function Users() {
   const [isChecked, setIsChecked] = useState(false);
 
   const handleCheckboxChange = () => {
+    if(!isChecked) {
+      let data=filteredUsersData
+     data=data?.slice(0,maxPageSize)
+
+      setSelectedId([...data])
+    }
+    else {
+      setSelectedId([])
+    }
     setIsChecked(!isChecked);
+
   };
+  useEffect(()=>{
+    setIsChecked(false)
+    setSelectedId([])
+ },[filteredUsersData])
   const handleClose = () => setModalActive(false);
 
   const redirect = (item) => {
@@ -698,7 +713,8 @@ export default function Users() {
         });
     }
   };
-
+const [selectedId,setSelectedId]=useState([])
+console.log("users",{selectedId,filteredUsersData,filterData,maxPageSize})
   return (
     <div className="w-[83.6989583333vw] mx-auto  min-h-screen">
       <div className="pb-10  mt-[50px] !mt-[calc(50*0.0522vw)]">
@@ -923,14 +939,15 @@ export default function Users() {
               name: "test",
               match: filterData.userType,
             }}
-            onChange={(val) =>
+            onChange={(val) =>{
+              console.log({val,filterData})
               setFilterData({
                 ...filterData,
                 userType: filterData.userType.includes(val)
                   ? filterData.userType.filter((item) => item !== val)
                   : [...filterData.userType, val],
               })
-            }
+            }}
           />
           <InputSelect
             optionListClassName="text-base-17-5 text-[#667085]"
@@ -986,7 +1003,12 @@ export default function Users() {
           <InputSelect
             optionListClassName="text-base-17-5 text-[#667085]"
             placeholderClass="text-base-17-5"
-            optionData={allTutors}
+            optionData={allTutors?.map((iyt)=>{
+              return {
+                ...iyt,
+                name:iyt.value,
+              }
+            })}
             placeholder="Tutor"
             parentClassName="w-[12.8541666667vw] text-[#667085]"
             type="select"
@@ -1015,8 +1037,9 @@ export default function Users() {
           />
         </div>
         <div className="flex gap-6 items-center    mt-[23.75px]">
-          <div className="ml-6 ">
-            <SCheckbox checked={isChecked} onChange={handleCheckboxChange} />
+          <div className="ml-6 flex gap-3 ">
+            <SCheckbox stopM={true}  checked={isChecked} onChange={handleCheckboxChange} />
+            <span className="inline-block text-[17.5px] text-base-17-5">{selectedId?.length} Selected</span>
             {/* <label className={`  text-[#26435F] font-medium flex items-center`}>
               <input
                 type="checkbox"
@@ -1027,7 +1050,7 @@ export default function Users() {
                 className={`${styles["custom-checkbox"]} ${isChecked ? "checked" : ""
                   }`}
               ></span>
-              <span className="block text-[17.5px] text-base-17-5">{numberChecked} Selected</span>
+             
             </label> */}
           </div>
           <InputField
@@ -1043,9 +1066,9 @@ export default function Users() {
             inputContainerClassName="bg-white "
           ></InputField>
           <InputField
-            value="Assigned Status"
+            value="Assigned Tutor"
             IconRight={Dropdown}
-            inputClassName="bg-white border border-white w-[120px]"
+            inputClassName="bg-white border border-white w-[125px]"
             inputContainerClassName="bg-white "
           ></InputField>
           <div>
@@ -1053,13 +1076,13 @@ export default function Users() {
               Save
             </button>
           </div>
-          <div className="flex justify-end flex-1 gap-5 relative z-5000">
+          <div className="flex justify-end flex-1 gap-5 relative ">
             <button className="bg-[#517CA8] text-[15px] font-semibold relative px-[25px] py-[10px] rounded-[7.5px] text-white  text-base-15">
               + Invite Users
-              <span className="absolute right-[-10px] z-[500000] top-[-10px]">
+              <span className="absolute right-[-10px] z-[500] top-[-10px]">
                 <div className="group relative">
                   <img src={ques} className="inline-block" />
-                  <span className="absolute  top-14 left-[-100px] z-500 w-[260px]  scale-0 rounded-lg bg-[rgba(31,41,55,0.9)]  text-[13px] text-white group-hover:scale-100 whitespace-normal py-3 px-3">
+                  <span className="absolute  top-14 left-[-100px] z-500 w-[260px]  scale-0 rounded-lg bg-[rgba(31,41,55,0.93)]  text-[13px] text-white group-hover:scale-100 whitespace-normal py-3 px-3">
                     <h3 className="text-[#517CA8] text-left text-[16px] py-0 font-semibold mb-1">
                       Invite Users
                     </h3>
@@ -1097,16 +1120,16 @@ export default function Users() {
         <div className="mt-6">
           <Table
             dataFor="allUsers"
+            selectedId2={selectedId}
+            setSelectedId2={setSelectedId}
             data={filteredUsersData}
             onClick={{ redirect, handleTutorStatus, handleDelete }}
             tableHeaders={tableHeaders}
             headerObject={true}
-            maxPageSize={10}
-            numberChecked={numberChecked}
-            setnumberChecked={setnumberChecked}
+            maxPageSize={maxPageSize}
+           
             isCallingApi={true}
-            isChecked={isChecked}
-            setIsChecked={setIsChecked}
+            
             total_pages={Math.ceil(totalPages / maxPageSize)}
             setMaxPageSize={setMaxPageSize}
             currentPage={currentPage}
