@@ -46,6 +46,8 @@ export default function TableItem({
   fetch,
   checkedHeader,
   extraData,
+  selectedId2,
+  setSelectedId2,
   numberChecked,
   setnumberChecked,
   testtype
@@ -210,18 +212,13 @@ export default function TableItem({
       }
     }
   }, [item]);
-  const [isChecked, setIsChecked] = useState(checkedHeader);
-  const handleCheckboxChange = () => {
-    setIsChecked(!isChecked);
-    let fl = isChecked ? 1 : -1
-    setnumberChecked && setnumberChecked(numberChecked - fl)
-  };
+  const [isChecked, setIsChecked] = useState(false);
+  // const handleCheckboxChange = () => {
+  //   setIsChecked(!isChecked);
+  //   let fl = isChecked ? 1 : -1
+  //   setnumberChecked && setnumberChecked(numberChecked - fl)
+  // };
 
-
-  useEffect(() => {
-    //console.log("item", item)
-    setIsChecked(checkedHeader);
-  }, [checkedHeader])
   const timestamp = item.createdAt;
   const date = new Date(timestamp);
 
@@ -245,6 +242,37 @@ export default function TableItem({
     //console.log(item)
     //console.log(val)
   }
+ 
+  const handleSelect=(item2,key)=>{
+    console.log({item2,selectedId2})
+   if(selectedId2 && setSelectedId2){
+    let temp=selectedId2
+    let bool=temp?.find((itt)=>itt[key]===item2[key])
+    if(bool){
+        temp=temp?.filter((idd)=>{
+          return idd[key]!==item2[key]
+           
+        })
+    }
+    else {
+      temp?.push(item2)
+    }
+    setSelectedId2([...temp])
+   }
+   setIsChecked(!isChecked)
+  }
+
+  useEffect(()=>{
+   if(selectedId2){
+    let temp=selectedId2
+    let key="assignedTestId";
+    if(dataFor==="allUsers")
+    key="_id"
+    let bool=temp?.find((itt)=>itt[key]===item[key])
+    setIsChecked(bool?true:false)
+   }
+  },[selectedId2])
+
   return (
     <>
 
@@ -306,7 +334,8 @@ export default function TableItem({
 
 
                   <SCheckbox checked={isChecked}
-                    onChange={handleCheckboxChange} />
+                  stopM={true}
+                    onChange={()=>handleSelect(item,"_id")} />
                   // <label
                   //   className={`${styles["checkbox-label"]} block text-[#26435F] `}
                   // >
@@ -505,7 +534,8 @@ export default function TableItem({
 
 
                   <SCheckbox checked={isChecked}
-                    onChange={(e) => handleCheckboxChange(e)} />
+                  stopM={true}
+                    onChange={() => handleSelect(item,"assignedTestId")} />
 
 
                 ) : (

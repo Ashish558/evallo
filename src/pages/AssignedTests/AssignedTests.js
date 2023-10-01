@@ -32,6 +32,8 @@ import { useSelector } from "react-redux";
 import { getDuration, getFormattedDate } from "../../utils/utils";
 import FilterItems from "../../components/FilterItems/filterItems";
 import { useNavigate } from "react-router-dom";
+import SCheckbox from "../../components/CCheckbox/SCheckbox";
+import { useCRMBulkdeleteMutation, useCRMBulkmarkcompletedMutation, useCRMBulkresentMutation } from "../../app/services/admin";
 const optionData = ["1", "2", "3", "4", "5"];
 const timeLimits = ["Regular", "1.1x", "1.25x", , "1.5x", "Unlimited"];
 const testData = ["SAT", "ACT"];
@@ -369,6 +371,11 @@ console.log({studentMultiple,modalData})
       let sortedArr = data.sort(function (a, b) {
         return new Date(b.createdAt) - new Date(a.createdAt);
       });
+      if(persona==='admin')
+      setFilterData({studentName: "",
+      testName: "",
+      assignedBy: "",
+      status: "",})
       setAllAssignedTests(sortedArr);
       setFilteredTests(sortedArr);
     });
@@ -430,6 +437,11 @@ console.log({studentMultiple,modalData})
       let sortedArr = data.sort(function (a, b) {
         return new Date(b.createdAt) - new Date(a.createdAt);
       });
+      if(persona==='tutor')
+      setFilterData({studentName: "",
+      testName: "",
+      assignedBy: "",
+      status: "",})
       setAllAssignedTests(sortedArr);
       setFilteredTests(sortedArr);
     });
@@ -658,8 +670,20 @@ console.log({studentMultiple,modalData})
   const [isChecked, setIsChecked] = useState(false);
 
   const handleCheckboxChange = () => {
+    if(!isChecked) {
+      let data=filteredTests
+      data= data?.slice(0,maxPageSize)
+      setSelectedId([...data])
+    }
+    else {
+      setSelectedId([])
+    }
     setIsChecked(!isChecked);
   };
+  useEffect(()=>{
+     setIsChecked(false)
+     setSelectedId([])
+  },[filteredTests])
   
   const [filterOptions, setFilterOptions] = useState(false);
   const handleOptionData=(val)=>{
@@ -678,7 +702,62 @@ console.log({studentMultiple,modalData})
   useEffect(()=>{
   handleOptionData("")
   },[testNameOptions])
+  const [selectedId,setSelectedId]=useState([])
+
+  console.log("tests",{selectedId,filteredTests})
+  const [addDeleteUser,slsdu]=useCRMBulkdeleteMutation()
+  const [addMark,slmr]=useCRMBulkmarkcompletedMutation()
+  const [addResend,slrsn]=useCRMBulkresentMutation()
+  const bulkSelectDelete=()=>{
+    let assignmentIds=selectedId?.map(ii=>ii?.assignedTestId)
+    if(!assignmentIds || assignmentIds?.length===0) return
+    setDeleteSelectLoading(true)
+    addDeleteUser({assignmentIds}).then((res)=>{
+      console.log("successDelete",res,assignmentIds)
+      if(res?.data)
+      alert("Assignments deleted successfully!")
+      setDeleteSelectLoading(false)
+      setDeleteBulkModalActive(false)
+      fetch()
+    })
   
+  }
+console.log({selectedId})
+  const markSelectDelete=()=>{
+    let assignmentIds=selectedId?.map(ii=>ii?.assignedTestId)
+    if(!assignmentIds || assignmentIds?.length===0) return
+    setMarkSelectLoading(true)
+    addMark({assignmentIds}).then((res)=>{
+      console.log("successMark",res,assignmentIds)
+      if(res?.data)
+      alert("Selected Assignments marked completed!")
+      setMarkSelectLoading(false)
+      setMarkBulkModalActive(false)
+      fetch()
+    })
+  
+  }
+  const resendSelectDelete=()=>{
+    let assignmentIds=selectedId?.map(ii=>ii?.assignedTestId)
+    if(!assignmentIds || assignmentIds?.length===0) return
+    setResendSelectLoading(true)
+    addResend({assignmentIds}).then((res)=>{
+      console.log("successResend",res,assignmentIds)
+      if(res?.data)
+      alert("Assignments resent!")
+      setResendSelectLoading(false)
+      setResendBulkModalActive(false)
+      fetch()
+    })
+  
+  }
+  const [deleteBulkModalActive,setDeleteBulkModalActive] =useState(false)
+  const [deleteSelectLoading,setDeleteSelectLoading]=useState(false)
+
+  const [markBulkModalActive,setMarkBulkModalActive] =useState(false)
+  const [markSelectLoading,setMarkSelectLoading]=useState(false)
+  const [resendBulkModalActive,setResendBulkModalActive] =useState(false)
+  const [resendSelectLoading,setResendSelectLoading]=useState(false)
   return (
     <>
       <div className="w-[83.3333333333vw] mx-auto min-h-screen mb-[40px]">
@@ -851,30 +930,33 @@ console.log({studentMultiple,modalData})
 
               <div className="flex items-center  justify-between gap-[20px] mt-[10px]">
                 <div className="flex text-[#26435F] items-center text-[17.5px] text-base-17-5">
-                  <div className="ml-6 ">
-                    <label className={`  text-[#26435F] font-medium flex items-center`}>
-                      <input
-                        type="checkbox"
-                        checked={isChecked}
-                        onChange={handleCheckboxChange}
-                      />
-                      <span
-                        className={`${styles["custom-checkbox"]} ${isChecked ? "checked" : ""
-                          }`}
-                      ></span>
-                      <span className="block font-medium">{numberChecked} Selected</span>
-                    </label>
-                  </div>
+                <div className="ml-6 flex gap-3 ">
 
-                  <div className="gap-x-[5px] px-4 py-[9px] bg-[#FFF] rounded-5 ml-6 flex items-center">
+            <SCheckbox stopM={true} checked={isChecked} onChange={handleCheckboxChange} />
+            <span className="inline-block text-[17.5px] text-base-17-5">{selectedId?.length} Selected</span>
+            {/* <label className={`  text-[#26435F] font-medium flex items-center`}>
+              <input
+                type="checkbox"
+                checked={isChecked}
+                onChange={handleCheckboxChange}
+              />
+              <span
+                className={`${styles["custom-checkbox"]} ${isChecked ? "checked" : ""
+                  }`}
+              ></span>
+             
+            </label> */}
+          </div>
+
+                  <div  onClick={()=>selectedId?.length>0 &&setDeleteBulkModalActive(true)} className="gap-x-[5px] cursor-pointer px-4 py-[9px] bg-[#FFF] rounded-5 ml-6 flex items-center">
                     <p >Delete</p>
                     <p ><img className="w-5 h-5" src={DeleteIcon} alt="" /></p>
                   </div>
-                  <div className="gap-x-[5px] px-4 py-[11px] bg-[#FFF] rounded-5 ml-6 flex">
+                  <div onClick={()=>selectedId?.length>0 &&setResendBulkModalActive(true)}  className="cursor-pointer gap-x-[5px] px-4 py-[11px] bg-[#FFF] rounded-5 ml-6 flex">
                     <p >Resend</p>
                     <img src={ResendIcon} alt="" />
                   </div>
-                  <div className="px-4 py-[11px] bg-[#FFF] rounded-5 ml-6">
+                  <div onClick={()=>selectedId?.length>0 &&setMarkBulkModalActive(true)}  className="px-4 py-[11px] cursor-pointer bg-[#FFF] rounded-5 ml-6">
                     <p>Mark Completed</p>
                   </div>
                 </div>
@@ -890,8 +972,10 @@ console.log({studentMultiple,modalData})
           <div className="mt-3">
             <Table
               noArrow={true}
-              numberChecked={numberChecked}
-              setnumberChecked={setnumberChecked}
+             
+              selectedId2={selectedId}
+              setSelectedId2={setSelectedId}
+             
               onClick={{ handleResend, handleDelete, handleNavigate }}
               dataFor="assignedTests"
               data={filteredTests}
@@ -1090,7 +1174,7 @@ console.log({studentMultiple,modalData})
               you want to resend the email for assignment ?
             </span>
           }
-          titleClassName="mb-12 leading-10"
+          titleClassName="mb-5 leading-10"
           cancelBtn={true}
           cancelBtnClassName="max-w-140"
           primaryBtn={{
@@ -1107,11 +1191,11 @@ console.log({studentMultiple,modalData})
         <Modal
           title={
             <span className="leading-10">
-              Are you sure <br />
+              Are you sure 
               you want to delete the assigned test ?
             </span>
           }
-          titleClassName="mb-12 leading-10"
+          titleClassName="mb-5 leading-10"
           cancelBtn={true}
           cancelBtnClassName="max-w-140"
           primaryBtn={{
@@ -1122,6 +1206,94 @@ console.log({studentMultiple,modalData})
             loading: deleteLoading,
           }}
           handleClose={() => setDeleteModalActive(false)}
+          classname={"max-w-[600px] mx-auto"}
+        />
+      )}
+        {deleteBulkModalActive && (
+        <Modal
+          title={
+            <span className="leading-10">
+              Are you sure 
+              you want to delete Assignments?
+              
+            </span>
+          }
+          titleClassName="mb-5 leading-10"
+          cancelBtn={true}
+          crossBtn={true}
+          cancelBtnClassName="max-w-140 bg-[#26435F1A]  !text-[#26435F] rounded-md"
+          primaryBtn={{
+            text: "Delete",
+            className: "w-[140px]  pl-4 px-4 !bg-[#FF7979] text-white",
+            onClick: () => bulkSelectDelete(),
+            bgDanger: true,
+            loading: deleteSelectLoading,
+          }}
+        
+          handleClose={() => setDeleteBulkModalActive(false)}
+          classname={"max-w-567 mx-auto"}
+        />
+      )}
+         {markBulkModalActive && (
+        <Modal
+          title={
+            <span className="leading-10 whitespace-nowrap">
+             Do you want to mark the Assignments as completed?
+              
+            </span>
+          }
+          titleClassName="mb-5 leading-10"
+          cancelBtn={true}
+          crossBtn={true}
+          cancelBtnClassName="max-w-140 bg-[#26435F1A]  !text-[#26435F] rounded-md"
+          primaryBtn={{
+            text: "Confirm",
+            className: "w-[140px]  pl-4 px-4 !bg-[#32D583] text-white",
+            onClick: () => markSelectDelete(),
+            bgDanger: true,
+            loading: markSelectLoading,
+          }}
+          body={
+            <>
+             <p className="text-base-17-5 mt-[-5px] text-[#667085] mb-6">
+                    <span className="font-semibold mr-1">⚠️ Note:</span>
+                    Once the assignments are marked as “Complete”, the students will not be able to attempt any remaining sections and will be able to access the score report. Read detailed documentation in Evallo’s  <span className="text-[#24A3D9]"> knowledge base.</span>
+                  </p>
+            </>
+          }
+          handleClose={() => setMarkBulkModalActive(false)}
+          classname={"max-w-[600px] mx-auto"}
+        />
+      )}
+      {resendBulkModalActive && (
+        <Modal
+          title={
+            <span className="leading-10 whitespace-nowrap">
+             Do you want to resend the assignments via email?
+              
+            </span>
+          }
+         
+          titleClassName="mb-4 leading-10"
+          cancelBtn={true}
+          crossBtn={true}
+          cancelBtnClassName="max-w-140 bg-[#26435F1A]  !text-[#26435F] rounded-md"
+          primaryBtn={{
+            text: "Resend",
+            className: "w-[140px]  pl-4 px-4 !bg-[#FFA28D] text-white",
+            onClick: () => resendSelectDelete(),
+            bgDanger: true,
+            loading: resendSelectLoading,
+          }}
+          body={
+            <>
+             <p className="text-base-17-5 mt-[-5px] text-[#667085] mb-6">
+                    <span className="font-semibold mr-1">⚠️ Note:</span>
+                    This will NOT create another assignment for the students. Instead, it will resend the email with the PDF file (containing the assignment content) attached to it. Read detailed documentation in Evallo’s  <span className="text-[#24A3D9]"> knowledge base.</span>
+                  </p>
+            </>
+          }
+          handleClose={() => setResendBulkModalActive(false)}
           classname={"max-w-567 mx-auto"}
         />
       )}

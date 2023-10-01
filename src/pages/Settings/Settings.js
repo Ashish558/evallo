@@ -175,9 +175,6 @@ export default function Settings() {
   const dispatch = useDispatch();
 
   const [fetchedPermissions, setThePermission] = useState([]);
-  
-
-
 
   const handlePermissionOption = (value, key) => {
     let nvalue = value;
@@ -268,7 +265,7 @@ export default function Settings() {
     updateFields({ id: user.id, fields: reqBody }).then((res) => {
       handleClose();
       if (res.error) {
-        return //console.log(res.error);
+        return; //console.log(res.error);
       }
       const {
         firstName,
@@ -394,7 +391,7 @@ export default function Settings() {
       formData.delete("text");
       formData.delete("image");
     }
-    console.log({selectedImageTag,tagText,tagImage})
+    console.log({ selectedImageTag, tagText, tagImage });
     // //console.log(append)
 
     if (append === "") return;
@@ -993,46 +990,39 @@ export default function Settings() {
     // //console.log('updatedSetting', updatedSetting)
   };
 
+  const [offersNew, setOffersNew] = useState([]);
 
-
-
-  const [offersNew,setOffersNew] = useState([]);
-
-
-  useEffect(()=>{
-    if(offerImages ){
-      let arr=[]
-      for(let i=0;i<4-offerImages.length;i++){
-  arr.push({
-    link:"",
-    image:"",
-    buttonText:""
-  })
+  useEffect(() => {
+    if (offerImages) {
+      let arr = [];
+      for (let i = 0; i < 4 - offerImages.length; i++) {
+        arr.push({
+          link: "",
+          image: "",
+          buttonText: "",
+        });
       }
-   setOffersNew([...arr])
+      setOffersNew([...arr]);
     }
-  },[offerImages,settingsData])
-  console.log({offersNew,offerImages})
-  const submitImageModalNew = (file,val,e) => {
+  }, [offerImages, settingsData]);
+  console.log({ offersNew, offerImages });
+  const submitImageModalNew = (file, val, e) => {
     e.preventDefault();
     // //console.log(tagText)
     // //console.log(tagImage)
     // //console.log(selectedImageTag)
 
     const formData = new FormData();
-   
-   
 
     let append = "";
-  
-  
-      append = "addimage";
-     // formData.append("image", file);
-      formData.append("link", val?.link);
-      formData.append("offer", file);
-     formData.append("buttonText", val?.buttonText);
-    console.log({file,val,link:val?.link})
-  
+
+    append = "addimage";
+    // formData.append("image", file);
+    formData.append("link", val?.link);
+    formData.append("offer", file);
+    formData.append("buttonText", val?.buttonText);
+    console.log({ file, val, link: val?.link });
+
     if (append === "") return;
     setSaveLoading(true);
     axios
@@ -1042,36 +1032,33 @@ export default function Settings() {
         maxContentLength: Infinity,
       })
       .then((res) => {
-       console.log('resp--' ,res.data.data.updatedSetting.settings);
+        console.log("resp--", res.data.data.updatedSetting.settings);
         dispatch(
           updateOrganizationSettings(res.data.data.updatedSetting.settings)
         );
         fetchSettings();
-        let settingsData2=res.data.data.updatedSetting.settings
-       if(settingsData2?.offerImages){
-        let updatedField = settingsData2.offerImages?.map((it,id)=>{
-          if(id===settingsData2.offerImages?.length-1){
-            return {...it,buttonText:val?.buttonText}
-          }
-          return {...it}
-        })
-        
-        let updatedSetting = {
-          offerImages: updatedField,
-        };
-        console.log("updatedSetting", updatedSetting);
-       updateAndFetchsettings(updatedSetting);
-     
-       
-      }
-      else{
-        // setTagImage(null);
-        // setTagText("");
-        // setSelectedImageTag("");
-        // setImageName("");
-        // setTagModalActive(false);
-        fetchSettings();
-      }
+        let settingsData2 = res.data.data.updatedSetting.settings;
+        if (settingsData2?.offerImages) {
+          let updatedField = settingsData2.offerImages?.map((it, id) => {
+            if (id === settingsData2.offerImages?.length - 1) {
+              return { ...it, buttonText: val?.buttonText };
+            }
+            return { ...it };
+          });
+
+          let updatedSetting = {
+            offerImages: updatedField,
+          };
+          console.log("updatedSetting", updatedSetting);
+          updateAndFetchsettings(updatedSetting);
+        } else {
+          // setTagImage(null);
+          // setTagText("");
+          // setSelectedImageTag("");
+          // setImageName("");
+          // setTagModalActive(false);
+          fetchSettings();
+        }
         setSaveLoading(false);
       })
       .catch((err) => {
@@ -1102,7 +1089,7 @@ export default function Settings() {
     //   offerImages: updatedField,
     // };
     //console.log("updatedSetting", updatedSetting);
-   // updateAndFetchsettings(updatedSetting);
+    // updateAndFetchsettings(updatedSetting);
   };
 
   return (
@@ -1564,7 +1551,7 @@ export default function Settings() {
               toggle={{ value: toggleImage.offer, key: "offer" }}
               onToggle={onToggle}
               body={
-                <div className=" bg-white w-full  gap-x-5 p-4 rounded-br-5 overflow-x-auto custom-scroller-2 rounded-bl-5 !pr-4">
+                <div className=" bg-white w-full  gap-x-5 p-4 rounded-br-5 rounded-bl-5 !pr-4">
                   <p className="text-base-17-5 mt-[-5px] text-[#667085] mb-6">
                     <span className="font-semibold mr-1">⚠️ Note:</span>
                     Announcements, as the name implies, can be used to announce
@@ -1578,7 +1565,7 @@ export default function Settings() {
                     documentation in Evallo’s
                     <span className="text-[#24A3D9]"> knowledge base.</span>
                   </p>
-                  <div className="flex items-center gap-5 pr-3  flex-1 !w-fit   [&>*]:mb-[10px] bg-white  gap-x-5 p-4 rounded-br-5 rounded-bl-5 mb-3 !px-6 py-5 ">
+                  <div className="flex items-center gap-5 pr-3  flex-1 !w-[100%] overflow-x-auto custom-scroller-2    [&>*]:mb-[10px] bg-white  gap-x-5 p-4 rounded-br-5 rounded-bl-5 mb-3 !px-6 py-5 ">
                     {/* <input type='file' ref={inputRef} className='hidden' accept="image/*"
                            onChange={e => onImageChange(e)} /> */}
 
@@ -1601,6 +1588,7 @@ export default function Settings() {
                     // onRemoveFilter={onRemoveFilter}
                     className="pt-1 pb-1 mr-15 text-base-17-5"
                   /> */}
+                  
                     {offerImages?.map((offer) => {
                       return (
                         <div className="flex-1" key={offer._id}>
@@ -1662,106 +1650,124 @@ export default function Settings() {
                         </div>
                       );
                     })}
-                    {offersNew?.length>0 && offersNew?.map((off,idx)=>{
+                    {offersNew?.length > 0 &&
+                      offersNew?.map((off, idx) => {
+                        return (
+                          <div className="flex-1 flex gap-2 min-w-[250px] ">
+                            <div className=" relative w-[2px] rounded-md  bg-[#00000030] !h-[300px] mx-4"></div>
 
-                   return (
-                   <div className="flex-1 flex gap-2 min-w-[250px] ">
-                    <div className=" relative w-[2px] rounded-md  bg-[#00000030] !h-[300px] mx-4"></div>
-                  
-                    <div className="w-full flex-1">
-                      <div className="flex w-[100%] bg-[#F5F8FA] rounded-md mb-8 flex-col justify-center items-center">
-                        <div className="mt-[20px] mb-[10px] items-center flex justify-center">
-                          <img src={fileupload} alt="fileuploadIcon"></img>
-                        </div>
+                            <div className="w-full flex-1">
+                              <div className="flex w-[100%] bg-[#F5F8FA] rounded-md mb-8 flex-col justify-center items-center">
+                                <div className="mt-[20px] mb-[10px] items-center flex justify-center">
+                                  <img
+                                    src={fileupload}
+                                    alt="fileuploadIcon"
+                                  ></img>
+                                </div>
 
-                        <div className="flex items-center text-center justify-center text-base-15">
-                          {/* {xlsFile == undefined ? (
+                                <div className="flex items-center text-center justify-center text-base-15">
+                                  {/* {xlsFile == undefined ? (
                     <p className=""></p>
                   ) : (
                     <p className="block ">{xlsFile.name}</p>
                   )} */}
-                  
-                        </div>
-                        {!off?.image?.name ? (
-                          <div className="flex justify-center">
-                            <label
-                              htmlFor="file2"
-                              className="block text-sm text-white bg-[#517CA8] hover:bg-[#517CA8] items-center justify-center  rounded-[5px]  px-3 py-2 text-base-17-5 text-center ] "
-                            >
-                              Choose File
-                            </label>
-                            <input
-                              onChange={(e) => {
-                                let arr=offersNew;
-                                arr[idx].image=e.target.files[0];
-                                 setOffersNew([...arr])
-                               // setImageName(e.target.files[0].name);
-                              }}
-                            id="file2"
-                             type="file"
-                            />
-                          </div>
-                        ) : (
-                          <div className="flex justify-center flex-col">
-                            <span className="text-[#517CA8] text-base-15 mb-1">{off?.image?.name}</span>
-                            <span
-                               onClick={(e) =>  submitImageModalNew(off?.image,off,e)}
-                              className=" cursor-pointer block text-sm text-white bg-[#517CA8] hover:bg-[#517CA8] items-center justify-center  rounded-[5px]  px-4 py-2 text-center text-base-17-5]"
-                            >
-                              
-                              Submit File
-                            </span>
-                          </div>
-                        )}
+                                </div>
+                                {!off?.image?.name ? (
+                                  <div className="flex justify-center">
+                                    <label
+                                      htmlFor="file2"
+                                      className="block text-sm text-white bg-[#517CA8] hover:bg-[#517CA8] items-center justify-center  rounded-[5px]  px-3 py-2 text-base-17-5 text-center ] "
+                                    >
+                                      Choose File
+                                    </label>
+                                    <input
+                                      onChange={(e) => {
+                                        let arr = offersNew;
+                                        arr[idx].image = e.target.files[0];
+                                        setOffersNew([...arr]);
+                                        // setImageName(e.target.files[0].name);
+                                      }}
+                                      id="file2"
+                                      type="file"
+                                    />
+                                  </div>
+                                ) : (
+                                  <div className="flex justify-center flex-col">
+                                    <span className="text-[#517CA8] text-base-15 mb-1">
+                                      {off?.image?.name}
+                                    </span>
+                                    <span
+                                      onClick={(e) =>
+                                        submitImageModalNew(off?.image, off, e)
+                                      }
+                                      className=" cursor-pointer block text-sm text-white bg-[#517CA8] hover:bg-[#517CA8] items-center justify-center  rounded-[5px]  px-4 py-2 text-center text-base-17-5]"
+                                    >
+                                      Submit File
+                                    </span>
+                                  </div>
+                                )}
 
-                        <label
-                          htmlFor="file"
-                          className="block text-xs items-center justify-center  rounded-[5px]  px-4 py-2 font-normal text-center text-[#517CA8] text-base-15"
-                        >
-                          Less than 1 MB
-                        </label>
-                      </div>
-                      <div>
-                        <div
-                          //   onClick={() => handleImageRemoval(offer)}
-                          className="w-7 h-7 z-5000 -top-2 right-[9px] flex items-center absolute justify-center  rounded-full cursor-pointer"
-                        >
-                          <img src={DeleteIcon} className="w-5" alt="delete" />
-                        </div>
-                       {false&& <span  className="text-[#517CA8] text-base-15 mb-1 !text-center flex justify-center items-center"> Button text can only be edited after uploading image! </span >}
-                        <InputField
-                          //  defaultValue={offer.link}
-                          inputClassName={" text-base-17-5 bg-[#F5F8FA]"}
-                          parentClassName={"mb-3 bg-[#F5F8FA]"}
-                          placeholder={"This field is required."}
-                          required={true}
-                          onChange={(e) =>
-                          {
-                            let arr=offersNew;
-                            arr[idx].link=e.target.value;
-                             setOffersNew([...arr])
-                          }
-                          }
-                        />
-                        <InputField
-                          // defaultValue={offer.buttonText}
-                          parentClassName={"bg-[#F5F8FA]"}
-                          inputClassName={" text-base-17-5 bg-[#F5F8FA]"}
-                          placeholder={"Button (eg. Register, Enroll, View)"}
-                          onChange={(e) =>
-                            {
-                              let arr=offersNew;
-                              arr[idx].buttonText=e.target.value;
-                               setOffersNew([...arr])
-                            }
-                          }
-                        />
-                      </div>
-                    </div>
-                    </div>)
-                     })}
+                                <label
+                                  htmlFor="file"
+                                  className="block text-xs items-center justify-center  rounded-[5px]  px-4 py-2 font-normal text-center text-[#517CA8] text-base-15"
+                                >
+                                  Less than 1 MB
+                                </label>
+                              </div>
+                              <div>
+                                <div
+                                  //   onClick={() => handleImageRemoval(offer)}
+                                  className="w-7 h-7 z-5000 -top-2 right-[9px] flex items-center absolute justify-center  rounded-full cursor-pointer"
+                                >
+                                  <img
+                                    src={DeleteIcon}
+                                    className="w-5"
+                                    alt="delete"
+                                  />
+                                </div>
+                                {false && (
+                                  <span className="text-[#517CA8] text-base-15 mb-1 !text-center flex justify-center items-center">
+                                    {" "}
+                                    Button text can only be edited after
+                                    uploading image!{" "}
+                                  </span>
+                                )}
+                                <InputField
+                                  //  defaultValue={offer.link}
+                                  inputClassName={
+                                    " text-base-17-5 bg-[#F5F8FA]"
+                                  }
+                                  parentClassName={"mb-3 bg-[#F5F8FA]"}
+                                  placeholder={"Hyperlink"}
+                                  required={true}
+                                  onChange={(e) => {
+                                    let arr = offersNew;
+                                    arr[idx].link = e.target.value;
+                                    setOffersNew([...arr]);
+                                  }}
+                                />
+                                <InputField
+                                  // defaultValue={offer.buttonText}
+                                  parentClassName={"bg-[#F5F8FA]"}
+                                  inputClassName={
+                                    " text-base-17-5 bg-[#F5F8FA]"
+                                  }
+                                  placeholder={
+                                    "Button Text (eg. View, Enroll, etc.)"
+                                  }
+                                  onChange={(e) => {
+                                    let arr = offersNew;
+                                    arr[idx].buttonText = e.target.value;
+                                    setOffersNew([...arr]);
+                                  }}
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })}
                   </div>
-                  
+
                   {/* <AddTag
                     openModal={true}
                     text="Add Announcement"
@@ -1790,7 +1796,7 @@ export default function Settings() {
                         className="pt-[34px] pb-[30px] border-b-2 border-[#CBD6E2] text-[#24A3D9] font-medium text-[17.5px] flex items-center justify-between text-base-17-5"
                       >
                         <p>{renderColoredText(item.name)}</p>
-                       
+
                         <ToggleBar
                           toggle={{ value: item.choosedValue, key: item._id }}
                           onToggle={togglePermissions}

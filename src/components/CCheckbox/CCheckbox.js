@@ -4,7 +4,7 @@ import styles from './style.module.css'
 export default function CCheckbox({ checked,className, onChange, name, disabled, value }) {
   
    const handleClick = ()=>{
-      if(disabled === true) return
+      if(disabled === true || !onChange) return
       onChange(value)
    }
 

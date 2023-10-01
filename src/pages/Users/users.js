@@ -32,6 +32,11 @@ import { useNavigate } from "react-router-dom";
 import { roles } from "../../constants/constants";
 import {
   useBlockUserMutation,
+  useCRMBulkChangeAssignedTutorMutation,
+  useCRMBulkChangeLeadStatusMutation,
+  useCRMBulkChangeTutorStatusMutation,
+  useCRMBulkDeleteUserMutation,
+  useCRMBulkInviteUserMutation,
   useDeleteUserMutation,
   useUnblockUserMutation,
 } from "../../app/services/admin";
@@ -222,7 +227,7 @@ export default function Users() {
     let urlParams = `?limit=${maxPageSize}&page=${currentPage}`;
     if (filterData.userType.length > 0) {
       filterData.userType.forEach((item) => {
-        urlParams = urlParams + `&role=${item}`;
+        urlParams = urlParams + `&role=${item?.toLowerCase()}`;
       });
     }
     if (filterData.userStatus.length > 0) {
@@ -255,10 +260,11 @@ export default function Users() {
       urlParams = urlParams + `&search=${filterData.typeName}`;
     }
 
-    //console.log("urlParams", urlParams);
+    console.log("urlParams", urlParams);
     fetchUsers(urlParams).then((res) => {
+      console.log("crm",res)
       if (res?.data?.data) setTotalPages(res?.data?.data?.total_users);
-
+  
       const fetchDetails = async () => {
         let tempData = [];
         await res?.data?.data?.user?.map(async (user) => {
@@ -463,8 +469,22 @@ export default function Users() {
   const [isChecked, setIsChecked] = useState(false);
 
   const handleCheckboxChange = () => {
+    if(!isChecked) {
+      let data=filteredUsersData
+     data=data?.slice(0,maxPageSize)
+
+      setSelectedId([...data])
+    }
+    else {
+      setSelectedId([])
+    }
     setIsChecked(!isChecked);
+
   };
+  useEffect(()=>{
+    setIsChecked(false)
+    setSelectedId([])
+ },[filteredUsersData])
   const handleClose = () => setModalActive(false);
 
   const redirect = (item) => {
@@ -698,7 +718,122 @@ export default function Users() {
         });
     }
   };
+const [selectedId,setSelectedId]=useState([])
+const [addLeadStatus,sls]=useCRMBulkChangeLeadStatusMutation()
+const [addTutorStatus,slst]=useCRMBulkChangeTutorStatusMutation()
+const [addAssignedTutor,slsAt]=useCRMBulkChangeAssignedTutorMutation()
+const [addInviteUser,slsiu]=useCRMBulkInviteUserMutation()
+const [addDeleteUser,slsdu]=useCRMBulkDeleteUserMutation()
+const [bulkEdits,setBulkEdits]=useState({})
+const [checkSave,setChecksave]=useState({ch:0,done:false,count:0})
+const handleSave=()=>{
+  let users=selectedId?.map(ii=>ii?._id)
+  if(!users || users?.length===0) return
+  let b=0;
+ 
+ // setSaveSelectLoading(true)
+  if(bulkEdits?.leadStatus && bulkEdits?.leadStatus?.value){
+    b++
+    setSaveSelectLoading(true)
+  addLeadStatus({leadStatus:bulkEdits.leadStatus.value,users}).then((res)=>{
+    console.log("successleadStatus",res,checkSave)
+    setChecksave((prev)=>{
+      
+      return {...prev,done:true,count:prev?.count+1}
+    })
+    setSaveSelectLoading(false)
+    setSaveBulkModalActive(false)
+  })
+}
+  if(bulkEdits?.tutorStatus && bulkEdits?.tutorStatus?.value){
+    setSaveSelectLoading(true)
+    b++
+  addTutorStatus({tutorStatus:bulkEdits.tutorStatus.value,users}).then((res)=>{
+    console.log("successtutorStatus",res,checkSave)
+   
+    
+    setSaveSelectLoading(false)
+    setSaveBulkModalActive(false)
+    // if(checkSave?.ch &&  checkSave?.count+1===checkSave?.ch){
+    //   alert("Changes Saved Successfully")
+     
+    //   setChecksave({})
+    // }
+    setChecksave((prev)=>{
+      
+      return {...prev,done:true,count:prev?.count+1}
+    })
+  })
+}
+  if(bulkEdits?.assignedTutor && bulkEdits?.assignedTutor?.id){
+    setSaveSelectLoading(true)
+    b++
+  addAssignedTutor({tutorId:bulkEdits.assignedTutor.id,users}).then((res)=>{
+    console.log("successassignedTutor",res,checkSave)
+    setChecksave((prev)=>{
+      
+      return {...prev,done:true,count:prev?.count+1}
+    })
+    setSaveSelectLoading(false)
+    setSaveBulkModalActive(false)
+  })
+}
+setChecksave((prev)=>{
+      
+  return {done:false,count:0,ch:b}
+})
+if(!b){
+  alert("No filter selected!")
+}
 
+
+}
+useEffect(()=>{
+  if(checkSave?.ch>0 && checkSave?.count && checkSave?.ch===checkSave?.count){
+    alert("Changes Saved Successfully!")
+    fetch()
+    setChecksave({})
+    setBulkEdits({})
+  }
+},[checkSave])
+
+console.log({checkSave})
+const bulkSelectInvite=()=>{
+  let users=selectedId?.map(ii=>ii?._id)
+  if(!users || users?.length===0) return
+  setInviteSelectLoading(true)
+  addInviteUser({users}).then((res)=>{
+    console.log("successInvite",res)
+    if(res?.data)
+    alert("User(s) invited successfully!")
+
+    setInviteSelectLoading(false)
+    setInviteBulkModalActive(false)
+    fetch()
+  })
+
+}
+const bulkSelectDelete=()=>{
+  let users=selectedId?.map(ii=>ii?._id)
+  if(!users || users?.length===0) return
+  setDeleteSelectLoading(true)
+  addDeleteUser({users}).then((res)=>{
+    console.log("successDelete",res)
+    if(res?.data)
+    alert("User(s) deleted successfully!")
+    setDeleteSelectLoading(false)
+    setDeleteBulkModalActive(false)
+    fetch()
+  })
+
+}
+const [deleteBulkModalActive,setDeleteBulkModalActive] =useState(false)
+const [deleteSelectLoading,setDeleteSelectLoading]=useState(false)
+const [InviteBulkModalActive,setInviteBulkModalActive] =useState(false)
+const [InviteSelectLoading,setInviteSelectLoading]=useState(false)
+const [SaveBulkModalActive,setSaveBulkModalActive]= useState(false)
+const [saveSelectLoading,setSaveSelectLoading]= useState(false)
+console.log("users",{selectedId,bulkEdits})
   return (
     <div className="w-[83.6989583333vw] mx-auto  min-h-screen">
       <div className="pb-10  mt-[50px] !mt-[calc(50*0.0522vw)]">
@@ -923,14 +1058,15 @@ export default function Users() {
               name: "test",
               match: filterData.userType,
             }}
-            onChange={(val) =>
+            onChange={(val) =>{
+              console.log({val,filterData})
               setFilterData({
                 ...filterData,
                 userType: filterData.userType.includes(val)
                   ? filterData.userType.filter((item) => item !== val)
                   : [...filterData.userType, val],
               })
-            }
+            }}
           />
           <InputSelect
             optionListClassName="text-base-17-5 text-[#667085]"
@@ -986,7 +1122,12 @@ export default function Users() {
           <InputSelect
             optionListClassName="text-base-17-5 text-[#667085]"
             placeholderClass="text-base-17-5"
-            optionData={allTutors}
+            optionData={allTutors?.map((iyt)=>{
+              return {
+                ...iyt,
+                name:iyt.value,
+              }
+            })}
             placeholder="Tutor"
             parentClassName="w-[12.8541666667vw] text-[#667085]"
             type="select"
@@ -1015,8 +1156,9 @@ export default function Users() {
           />
         </div>
         <div className="flex gap-6 items-center    mt-[23.75px]">
-          <div className="ml-6 ">
-            <SCheckbox checked={isChecked} onChange={handleCheckboxChange} />
+          <div className="ml-6 flex gap-3 ">
+            <SCheckbox stopM={true}  checked={isChecked} onChange={handleCheckboxChange} />
+            <span className="inline-block text-[17.5px] text-base-17-5">{selectedId?.length} Selected</span>
             {/* <label className={`  text-[#26435F] font-medium flex items-center`}>
               <input
                 type="checkbox"
@@ -1027,39 +1169,121 @@ export default function Users() {
                 className={`${styles["custom-checkbox"]} ${isChecked ? "checked" : ""
                   }`}
               ></span>
-              <span className="block text-[17.5px] text-base-17-5">{numberChecked} Selected</span>
+             
             </label> */}
           </div>
-          <InputField
-            value="Lead Status"
-            IconRight={Dropdown}
-            inputClassName="bg-white border border-white w-[120px]"
+          <InputSelect
+            optionListClassName="text-base-17-5 text-[#667085]"
+            placeholderClass="text-base-17-5"
+            optionData={organization?.settings?.leadStatus?.map((iyt)=>{
+              return {
+                value:iyt,
+                name:iyt
+              }
+            })}
+            hideRight={true}
+            placeholder="Lead Status"
+            parentClassName="w-[12.8541666667vw] text-[#667085]"
+            type="select"
+            IconSearch={Dropdown}
+            inputClassName="bg-white border border-white w-[125px]"
             inputContainerClassName="bg-white "
-          ></InputField>
-          <InputField
-            value="Tutor Status"
-            IconRight={Dropdown}
-            inputClassName="bg-white border border-white w-[120px]"
+            
+            optionType="object"
+            value={bulkEdits?.leadStatus?.value}
+          
+            onChange={(val) => {
+              let temp=bulkEdits
+              temp={
+                ...temp,
+                leadStatus:{
+                  value:val?.value
+                }
+              
+            }
+              setBulkEdits(temp)
+            }}
+          />
+          
+          <InputSelect
+            optionListClassName="text-base-17-5 text-[#667085]"
+            placeholderClass="text-base-17-5"
+            optionData={organization?.settings?.tutorStatus?.map((iyt)=>{
+              return {
+                value:iyt,
+                name:iyt
+              }
+            })}
+            placeholder="Tutor Status"
+            parentClassName="w-[12.8541666667vw] text-[#667085]"
+            type="select"
+            IconSearch={Dropdown}
+            inputClassName="bg-white border border-white w-[125px]"
             inputContainerClassName="bg-white "
-          ></InputField>
-          <InputField
-            value="Assigned Status"
-            IconRight={Dropdown}
-            inputClassName="bg-white border border-white w-[120px]"
+            hideRight={true}
+            optionType="object"
+            value={bulkEdits?.tutorStatus?.value}
+           
+            onChange={(val) => {
+              let temp=bulkEdits
+              temp={
+                ...temp,
+                tutorStatus:{
+                  value:val?.value
+                }
+              }
+              
+              setBulkEdits(temp)
+            }}
+          />
+         
+           <InputSelect
+           hideRight={true}
+            optionListClassName="text-base-17-5 text-[#667085]"
+            placeholderClass="text-base-17-5"
+            optionData={allTutors?.map((iyt)=>{
+              return {
+                ...iyt,
+                name:iyt.value,
+              }
+            })}
+            placeholder="Assigned Tutor"
+            parentClassName="w-[12.8541666667vw] text-[#667085]"
+            type="select"
+            IconSearch={Dropdown}
+            inputClassName="bg-white border border-white w-[125px]"
             inputContainerClassName="bg-white "
-          ></InputField>
+            
+            optionType="object"
+            value={bulkEdits?.assignedTutor?.value}
+          
+            onChange={(val) => {
+              console.log({val})
+              let temp=bulkEdits
+              temp={
+                ...temp,
+                assignedTutor:{
+                  id:val?._id,
+                  value:val?.value
+                }
+              }
+              
+              setBulkEdits(temp)
+            }}
+          />
+         
           <div>
-            <button className="bg-[#26435F] text-[15px] px-[25px] py-[10px] rounded-[7.5px] text-white ml-auto text-base-15">
+            <button onClick={()=>selectedId?.length>0 && setSaveBulkModalActive(true)} className="bg-[#26435F] text-[15px] px-[25px] py-[10px] rounded-[7.5px] text-white ml-auto text-base-15">
               Save
             </button>
           </div>
-          <div className="flex justify-end flex-1 gap-5 relative z-5000">
-            <button className="bg-[#517CA8] text-[15px] font-semibold relative px-[25px] py-[10px] rounded-[7.5px] text-white  text-base-15">
+          <div className="flex justify-end flex-1 gap-5 relative ">
+            <button onClick={()=>selectedId?.length>0&&setInviteBulkModalActive(true)} className="bg-[#517CA8] text-[15px] font-semibold relative px-[25px] py-[10px] rounded-[7.5px] text-white  text-base-15">
               + Invite Users
-              <span className="absolute right-[-10px] z-[500000] top-[-10px]">
+              <span className="absolute right-[-10px] z-[500] top-[-10px]">
                 <div className="group relative">
                   <img src={ques} className="inline-block" />
-                  <span className="absolute  top-14 left-[-100px] z-500 w-[260px]  scale-0 rounded-lg bg-[rgba(31,41,55,0.9)]  text-[13px] text-white group-hover:scale-100 whitespace-normal py-3 px-3">
+                  <span className="absolute  top-14 left-[-100px] z-500 w-[260px]  scale-0 rounded-lg bg-[rgba(31,41,55,0.93)]  text-[13px] text-white group-hover:scale-100 whitespace-normal py-3 px-3">
                     <h3 className="text-[#517CA8] text-left text-[16px] py-0 font-semibold mb-1">
                       Invite Users
                     </h3>
@@ -1081,7 +1305,7 @@ export default function Users() {
                 </div>
               </span>
             </button>
-            <button className="bg-[#FF7979] text-[15px] flex items-center gap-2 px-[25px] font-semibold py-[10px] rounded-[7.5px] text-white  text-base-15">
+            <button onClick={()=>selectedId?.length>0&&setDeleteBulkModalActive(true)} className="bg-[#FF7979] text-[15px] flex items-center gap-2 px-[25px] font-semibold py-[10px] rounded-[7.5px] text-white  text-base-15">
               <span>
                 <img
                   src={DeleteIcon2}
@@ -1097,16 +1321,16 @@ export default function Users() {
         <div className="mt-6">
           <Table
             dataFor="allUsers"
+            selectedId2={selectedId}
+            setSelectedId2={setSelectedId}
             data={filteredUsersData}
             onClick={{ redirect, handleTutorStatus, handleDelete }}
             tableHeaders={tableHeaders}
             headerObject={true}
-            maxPageSize={10}
-            numberChecked={numberChecked}
-            setnumberChecked={setnumberChecked}
+            maxPageSize={maxPageSize}
+           
             isCallingApi={true}
-            isChecked={isChecked}
-            setIsChecked={setIsChecked}
+            
             total_pages={Math.ceil(totalPages / maxPageSize)}
             setMaxPageSize={setMaxPageSize}
             currentPage={currentPage}
@@ -1236,7 +1460,7 @@ export default function Users() {
               data ?
             </span>
           }
-          titleClassName="mb-12 leading-10"
+          titleClassName="mb-5 leading-10"
           cancelBtn={true}
           cancelBtnClassName="max-w-140"
           primaryBtn={{
@@ -1328,6 +1552,118 @@ export default function Users() {
           }
         />
       )}
+      {deleteBulkModalActive && (
+        <Modal
+          title={
+            <span className="leading-10">
+              Are you sure 
+              you want to delete Selected User(s)
+              
+            </span>
+          }
+          titleClassName="mb-5 leading-10"
+          cancelBtn={true}
+          crossBtn={true}
+          cancelBtnClassName="max-w-140 !bg-transparent !border  !border-[#FFA28D]  text-[#FFA28D]"
+          primaryBtn={{
+            text: "Delete",
+            className: "w-[140px]  pl-4 px-4 !bg-[#FF7979] text-white",
+            onClick: () => bulkSelectDelete(),
+            bgDanger: true,
+            loading: deleteSelectLoading,
+          }}
+          body={
+            <>
+             <p className="text-base-17-5 mt-[-5px] text-[#667085] mb-6">
+                    <span className="font-semibold mr-1">⚠️ Note:</span>
+                    Once the users are deleted from your Organization, you will not be able to recover their data. Read detailed documentation in Evallo’s.
+                    <span className="text-[#24A3D9]"> knowledge base.</span>
+                  </p>
+            </>
+          }
+          handleClose={() => setDeleteBulkModalActive(false)}
+          classname={"max-w-567 mx-auto"}
+        />
+      )}
+        {SaveBulkModalActive && (
+        <Modal
+          title={
+            <span className="leading-10">
+              Are You Sure You Want to Bulk Edit
+              
+            </span>
+          }
+          titleClassName="mb-5 leading-10"
+          cancelBtn={true}
+          crossBtn={true}
+          cancelBtnClassName="max-w-140 !bg-transparent !border  !border-[#FFA28D]  text-[#FFA28D]"
+          primaryBtn={{
+            text: "Save",
+            className: "w-[140px]  pl-4 px-4 !bg-[#FF7979] text-white",
+            onClick: () => handleSave(),
+            bgDanger: true,
+            loading: saveSelectLoading,
+          }}
+          
+          handleClose={() => setSaveBulkModalActive(false)}
+          classname={"max-w-567 mx-auto"}
+        />
+      )}
+       {InviteBulkModalActive && (
+              <Modal
+                crossBtn={true}
+                underline={true}
+                titleInvite={selectedId?.length}
+                  classname={"max-w-[781px] mx-auto"}
+                titleClassName={"mb-5 "}
+                handleClose={() => InviteBulkModalActive(false)}
+                body={
+                  <>
+                    <div className="text-center mb-7">
+                      <p className="text-[#517CA8]  text-lg font-light">
+                        All users that are invited to the platform will receive
+                        an email invitation to create an account within your
+                        organization. If you only want to store their data and
+                        do not want to invite them to create an account, please
+                        click on “Save Data Only” button.
+                        <br />
+                        <span className="pt-1">
+                          If you want to continue inviting the users, please
+                          click on the{" "}
+                          <span className="font-normal">
+                            “Confirm Email Invitations”
+                          </span>{" "}
+                          button below.
+                        </span>
+                      </p>
+                    </div>
+                    <div className="flex justify-center">
+                      <button
+                        data-modal-target="popup-modal"
+                        data-modal-toggle="popup-modal"
+                        className="block text-white  bg-[#FFA28D] hover:bg-[#FFA28D] mr-[40px] font-medium rounded-lg  px-6 py-[17.33px] text-center dark:bg-[#FFA28D] dark:hover:bg-[#FFA28D] "
+                        type="button"
+                        disabled={InviteSelectLoading}
+                        loading={InviteSelectLoading}
+                        onClick={() => {
+                          
+                          bulkSelectInvite();
+                        }}
+                      >
+                       {InviteSelectLoading?"Inviting...": "Yes, Confirm"}
+                      </button>
+                      <button
+                        type="button"
+                        className="max-w-140 text-[#FFA28D] border-[1.5px] border-[#FFA28D] bg-white hover:bg-[#FFA28D] hover:text-white  font-medium rounded-lg  px-[46px] py-[17.33px] text-center dark:bg-white dark:hover:bg-[#FFA28D]"
+                        onClick={() => setInviteBulkModalActive(false)}
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </>
+                }
+              ></Modal>
+            )}
     </div>
   );
 }
