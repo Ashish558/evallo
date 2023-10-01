@@ -77,6 +77,9 @@ export const testServicesApi = createApi({
       getAssignedTest: builder.query({
          query: (id) => ({
             url: `/api/test/assigntest`,
+            params:{
+               studentId:id
+            },
             method: "GET",
             headers: getAuthHeader()
          })

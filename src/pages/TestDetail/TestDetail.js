@@ -40,14 +40,6 @@ const subjects = [
 //    "Time",
 //    "Solution",
 // ];
-const tableHeaders = [
-   "Q No.",
-   "Answer",
-   "Concept",
-   "Strategy",
-   "Choices",
-   "Edit"
-];
 
 const initialState = {
    questionType: '',
@@ -182,8 +174,16 @@ export default function TestDetail() {
             }
          }
       })
-      setQuestionsTable(tempdata)
-      console.log(questionsTable);
+      
+const updatedQuestions = tempdata.map(question => {
+   if (testData.testType==='DSAT') {
+     const { AnswerChoices, ...rest } = question;
+     return rest;
+   }
+   return question;
+ });
+      setQuestionsTable(updatedQuestions)
+      console.log(updatedQuestions);
    }, [subjects])
 
    const handleSubjectChange = (id) => {
@@ -403,7 +403,14 @@ const handleimage_emppty = (imageType) => {
                break;
          }
 };
-  
+const tableHeaders = [
+   "Q No.",
+   "Answer",
+   "Concept",
+   "Strategy",
+   ...(testData.testType!=='DSAT' ? ["Choices"] : []),
+      "Edit"
+]; 
 
 
 const [richTextContent, setRichTextContent] = useState(""); 
@@ -474,7 +481,7 @@ const [richTextContent, setRichTextContent] = useState("");
                         </div>
 
                      </div>
-                  
+                  {testData.testType!='DSAT'?
                   <div className="px-6 py-4 flex  mx-2 mt-[4.5rem] w-1/4 justify-center border-gray-600 border-dashed border-[2px] items-center flex-col rounded shadow-lg">
                            
                         {
@@ -496,7 +503,7 @@ const [richTextContent, setRichTextContent] = useState("");
                            className={`bg-[#517CA8] px-4 py-2 text-sm mt-5 w-[120px] whitespace-nowrap font-medium text-textGra`}
                            onClick={() => setPdfModalActive(true)}
                         />
-                  </div>
+                  </div>:null}
                </div>
 
                <div className="flex pl-2 flex-col w-full">
@@ -717,7 +724,7 @@ const [richTextContent, setRichTextContent] = useState("");
             onChange={(e) => setModalData({ ...modalData, question: e.target.value })}
             className="border w-3/4 mr-4 ml-3 outline-none border-none bg-[#F6F6F6] rounded p-2"
          />
-          {questionImageBase64!=undefined?
+          {questionImageBase64!==undefined&&questionImageBase64!==''?
          <div className="flex flex-row w-1/4 justify-start items-center overflow-hidden">
                <img src={questionImageBase64} className='rounded max-w-14 max-h-14 my-2' alt="base64"/>
       <div onClick={()=>{handleimage_emppty('questionImage')}}>

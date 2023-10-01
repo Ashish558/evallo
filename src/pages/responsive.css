@@ -206,10 +206,10 @@ th *{
   background: rgba(40, 68, 109, 0.6);
 }
 
-.custom-scroller-2::-webkit-scrollbar-track-piece:end {
+/* .custom-scroller-2::-webkit-scrollbar-track-piece:end {
   margin-right: 100px;
 }
 
 .custom-scroller-2::-webkit-scrollbar-track-piece:start {
   margin-left: 100px;
-}
+} */

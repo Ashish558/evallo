@@ -324,7 +324,7 @@ const Navbar = () => {
       if (!isLoggedIn && (activeRoute === '/signup/user' || activeRoute === '/signup' || activeRoute === "/")) {
          let arr = tutorNav;
          if (activeRoute === '/')
-            arr[0].path = "/dashboard"
+            arr[0].path = "/"
          setNavData(arr)
       }
    }, [activeRoute])
@@ -418,21 +418,22 @@ const Navbar = () => {
             <Modal
                title={
                   <>
-                     Are you sure <br />
-                     you want to logout ?
+                     Are You Sure 
+                     You Want To Log Out?
                   </>
                }
-               titleClassName="leading-9 text-center whitespace-nowrap mb-5"
+               titleClassName="leading-9 text-center whitespace-nowrap mb-[22.67px]"
                cancelBtn={true}
-               cancelBtnClassName="py-4"
+               crossBtn={true}
+               cancelBtnClassName="pt-[17px] pb-[18px] w-[146px] text-[#26435F] font-medium text-base !rounded-[8px] bg-[rgba(38,67,95,0.10)]"
                primaryBtn={{
                   text: "Logout",
-                  className: "bg-danger w-[123px] pl-4 pr-4",
+                  className: "text-base bg-[#FF7979] w-[146px] pl-4 pr-4 pt-[17px] pb-[18px] !rounded-[8px] font-medium",
                   onClick: logoutUser,
                }}
                handleClose={() => setLogoutModalActive(false)}
                body={<div className="mb-6"></div>}
-               classname={"max-w-567 mx-auto"}
+               classname={"w-[666px] mx-auto !pt-7 !pb-[33px] !rounded-[8px] px-[33.33px]"}
             />
          )}
       </>

@@ -58,7 +58,13 @@ const AppRoutes = () => {
         <Route path="/" element={isLoggedIn ? <Home /> : <Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/signup/user" element={<UserSignup />} />
-        <Route path="/dashboard" element={<SuperadminDashboard />} />
+        <Route path="/dashboard" element={<RequireAuth isLoggedIn={isLoggedIn}>
+{(persona === "superAdmin" || persona === 'manager') ?
+          <SuperadminDashboard />:<Home />}
+          
+          </RequireAuth>
+          
+          } />
         <Route path="/all-orgs" element={<AllOrgs />} />
         <Route path="/verify-email" element={<EmailVerify />} />
         <Route path="/orgadmin-profile/:id" element={<SuperAdminProfile />} />

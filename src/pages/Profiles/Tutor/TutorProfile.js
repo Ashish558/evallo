@@ -647,13 +647,15 @@ export default function TutorProfile({ isOwn }) {
         {/* <div className="py-8">
                <p className='text-[#24A3D9] text-xl '>Org</p>
             </div> */}
-        <p className="text-[#24A3D9] text-xl mb-8 my-[calc(50*0.0522vw)] text-base-22-5">
-          {organization?.company +
+        <p className="text-[#24A3D9] text-base-20 mb-8 my-[calc(50*0.0522vw)] ">
+         <span onClick={()=>navigate('/')} className="cursor-pointer">
+         {organization?.company +
             "  >  " +
             firstName +
             "  " +
             lastName +
             "  >  "}
+         </span>
           <span className="font-bold">Dashboard</span>
         </p>
         <div className="flex  justify-between">
@@ -877,12 +879,12 @@ export default function TutorProfile({ isOwn }) {
                   bgClassName="bg-profilecard"
                   body={
                     <div className=" max-h-[500px] custom-scroller scroll-mx-3">
-                      {settings &&
+                      {/* {settings &&
                         settings.Expertise?.length > 0 &&
                         userDetail.serviceSpecializations &&
                         userDetail.serviceSpecializations.map((id, idx) => {
                           return settings?.Expertise?.find(
-                            (item) => item._id === id
+                            (item) => item._id === id || true
                           ) ? (
                             <div className="mt-[7px]  rounded-md shadow-[0px_0px_2px_0px_#00000040] overflow-x-auto  ">
                               <div className=" bg-white rounded min-h-[50px]  flex items-center pl-[40px]">
@@ -900,7 +902,7 @@ export default function TutorProfile({ isOwn }) {
                                   <p className="text-[#517CA8] text-[17.5px] text-base-17-5">
                                     {
                                       settings?.Expertise?.find(
-                                        (item) => item._id === id
+                                        (item) => item._id === id 
                                       ).text
                                     }
                                   </p>
@@ -910,7 +912,20 @@ export default function TutorProfile({ isOwn }) {
                           ) : (
                             <></>
                           );
-                        })}
+                        })} */}
+                            {userDetail?.serviceSpecializations?.length > 0 &&
+                      userDetail?.serviceSpecializations?.map((it, idx) => {
+                        return (
+                          it[0] !== "6" && (
+                            <div
+                              key={idx}
+                              className="bg-white p-2 h-min mb-1  text-[#517CA8] text-base-17-5 !rounded-md shadow-[0px_0px_2.500001907348633px_0px_#00000040]  w-full"
+                            >
+                              {it}
+                            </div>
+                          )
+                        );
+                      })}
                       {/* <div className='overflow-x-auto scrollbar-content max-h-[500px] scrollbar-vertical '>
                                                          <div className=' bg-white rounded min-h-[60px] flex items-center '>
                                  <div className='ml-3'>

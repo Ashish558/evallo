@@ -1,6 +1,6 @@
 export function calculateDateRange(startD) {
   var currentDate = new Date(); // Current date
-  var startDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1); // Start of the current month
+  var startDate = new Date(2023, 0, 1); // Start of the current month
   var dateRanges = [];
 
   var rangeStart = new Date(startDate); // Start of the range

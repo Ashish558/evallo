@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import * as XLSX from 'xlsx';
+import * as XLSX from "xlsx";
 import { CSVLink, CSVDownload } from "react-csv";
 import DeleteIcon2 from "../../assets/YIcons/Vectordel.svg";
 import Table from "../../components/Table/Table";
@@ -35,7 +35,7 @@ import {
   useDeleteUserMutation,
   useUnblockUserMutation,
 } from "../../app/services/admin";
-import ques from "../../assets/YIcons/medical-icon_i-information-us.svg"
+import ques from "../../assets/YIcons/medical-icon_i-information-us.svg";
 import { useLazyGetSettingsQuery } from "../../app/services/session";
 import PrimaryButton from "../../components/Buttons/PrimaryButton";
 // import CountryCode from "../../components/CountryCode/CountryCode";
@@ -81,10 +81,10 @@ export default function Users() {
   useEffect(() => {
     setValidData(
       isEmail(modalData.email) &&
-      modalData.firstName &&
-      modalData.lastName &&
-      modalData.userType &&
-      modalData.phone
+        modalData.firstName &&
+        modalData.lastName &&
+        modalData.userType &&
+        modalData.phone
     );
   }, [
     modalData,
@@ -127,7 +127,6 @@ export default function Users() {
       });
       return arr;
     });
-
   };
   const tableHeaders = [
     {
@@ -164,7 +163,7 @@ export default function Users() {
       id: 6,
       text: "Tutor Status",
     },
-   
+
     {
       id: 8,
       text: "Account Status",
@@ -173,7 +172,6 @@ export default function Users() {
       id: 9,
       text: "Join Date",
     },
-   
   ];
 
   const [assignStudentModalActive, setAssignStudentModalActive] =
@@ -218,8 +216,6 @@ export default function Users() {
     setSettings(organization.settings);
   }, [organization]);
 
-
-
   const fetch = () => {
     setUsersData([]);
     setFilteredUsersData([]);
@@ -263,11 +259,10 @@ export default function Users() {
     fetchUsers(urlParams).then((res) => {
       if (res?.data?.data) setTotalPages(res?.data?.data?.total_users);
 
-
       const fetchDetails = async () => {
         let tempData = [];
         await res?.data?.data?.user?.map(async (user) => {
-          console.log("user",user)
+          console.log("user", user);
           let obj = {
             _id: user._id,
             block: user.block,
@@ -276,16 +271,15 @@ export default function Users() {
             email: user.email ? user.email : "-",
             userType: user.role ? user.role : "-",
             phone: user.phone ? user.phone : "-",
-            phoneCode:user.phoneCode ? user.phoneCode :"-",
+            phoneCode: user.phoneCode ? user.phoneCode : "-",
             createdAt: user.createdAt,
             assignedTutor: user.assiginedTutors ? user.assiginedTutors : "",
             leadStatus: user?.leadStatus,
             tutorStatus: user?.tutorStatus,
-            accountStatus:user?.userStatus,
+            accountStatus: user?.userStatus,
             specialization: user?.specialization ? user.specialization : [],
           };
           tempData.push(obj);
-
         });
         setUsersData(tempData);
 
@@ -293,8 +287,6 @@ export default function Users() {
       };
 
       fetchDetails();
-
-
     });
   };
   //console.log("filteredUsers", filteredUsersData);
@@ -302,7 +294,6 @@ export default function Users() {
     let urlParams = `?role=tutor`;
 
     fetchUsers(urlParams).then((res) => {
-
       if (!res?.data?.data?.user) return;
       let data = res.data.data.user.map((item) => {
         const { firstName, lastName } = item;
@@ -320,7 +311,6 @@ export default function Users() {
   }, []);
   const changeUserField = (field, id) => {
     let temp = filteredUsersData.map((item) => {
-
       if (item._id === id) {
         return { ...item, ...field };
       } else {
@@ -341,9 +331,7 @@ export default function Users() {
 
   useEffect(() => {
     fetch();
-
   }, [maxPageSize, currentPage]);
-
 
   useEffect(() => {
     let tempdata = [...usersData];
@@ -360,7 +348,6 @@ export default function Users() {
     } else {
       tempdata = tempdata.filter((user) => user.userType !== "");
     }
-
 
     if (filterData.status.length > 0) {
       tempdata = tempdata.filter((user) =>
@@ -388,14 +375,12 @@ export default function Users() {
       tempdata = tempdata.filter((user) => user.userStatus !== "");
     }
 
-
     if (filterData.typeName !== "") {
       const regex2 = new RegExp(`${filterData.typeName.toLowerCase()}`, "i");
       tempdata = tempdata.filter((user) => user.name.match(regex2));
     } else {
       tempdata = tempdata.filter((user) => user.name !== "");
     }
-
   }, [filterData]);
 
   const removeFilter = (key, text, isArray) => {
@@ -429,7 +414,6 @@ export default function Users() {
   }, [filterData]);
 
   const onRemoveFilter = (item, text, isArray) => {
-
     item.removeFilter(item.type, text, isArray);
   };
 
@@ -484,7 +468,6 @@ export default function Users() {
   const handleClose = () => setModalActive(false);
 
   const redirect = (item) => {
-
     if (roles.includes(item.userType) && item.userType !== "admin") {
       navigate(`/profile/${item.userType}/${item._id}`);
     }
@@ -532,7 +515,7 @@ export default function Users() {
       setDeleteLoading(false);
       setDeleteModalActive(false);
       if (res.error) {
-        return //console.log(res.error);
+        return; //console.log(res.error);
       }
       //console.log(res.data);
       fetch();
@@ -554,16 +537,11 @@ export default function Users() {
       modalData.email.trim() === "" ||
       modalData.firstName.trim() === "" ||
       modalData.lastName.trim() === "" ||
-
       modalData.userType.trim() === ""
     ) {
       setAddUserBtnDisabled(true);
     } else {
-      if (
-
-        !isEmail(modalData.email)
-
-      ) {
+      if (!isEmail(modalData.email)) {
         setAddUserBtnDisabled(true);
       } else {
         setAddUserBtnDisabled(false);
@@ -601,10 +579,8 @@ export default function Users() {
         ...filterData,
         tutor: [...filterData.tutor, item.value],
       });
-
     }
   };
-
 
   const [csvLoad, setCsvLoad] = useState(false);
   const [successFetched, setsuccessFetched] = useState(false);
@@ -640,7 +616,7 @@ export default function Users() {
         setCsvLoad(false);
       });
   };
-  const [csvLength, setCsvLength]= useState("XX")
+  const [csvLength, setCsvLength] = useState("XX");
   const [students, setStudents] = useState([]);
   const upload = () => {
     setBulkUpload(true);
@@ -656,7 +632,7 @@ export default function Users() {
 
     reader.onload = (e) => {
       const data = new Uint8Array(e.target.result);
-      const workbook = XLSX.read(data, { type: 'array' });
+      const workbook = XLSX.read(data, { type: "array" });
 
       // Assuming the first sheet in the Excel file
       const firstSheetName = workbook.SheetNames[0];
@@ -666,12 +642,11 @@ export default function Users() {
       const csv = XLSX.utils.sheet_to_csv(worksheet);
 
       // Split the CSV string into rows
-      const rows = csv.split('\n').filter((row) => {
+      const rows = csv.split("\n").filter((row) => {
         // Check if the row contains any non-comma characters
-        return row.replace(/,/g, '').trim() !== '';
+        return row.replace(/,/g, "").trim() !== "";
       });
-     if(rows && rows?.length>0)
-     rows.length--;
+      if (rows && rows?.length > 0) rows.length--;
       setRowCount(rows.length);
       setCsvLength(rows.length);
     };
@@ -682,22 +657,20 @@ export default function Users() {
     if (xlsFile !== undefined) {
       const formdata = new FormData();
       formdata.append("file", xlsFile);
-   
+
       await axios
         .post(`${BASE_URL}api/user/bulkUploadUsers`, formdata, {
           headers: getAuthHeader(),
         })
         .then((res) => {
-          console.log("uploaded",res)
+          console.log("uploaded", res);
           setXlsFile(null);
-          setCsvLength("XX")
+          setCsvLength("XX");
           alert("File Uploaded");
           //setBulkUpload(false)
-         
         })
         .catch((err) => {
-
-          alert('Error Occured')
+          alert("Error Occured");
           setXlsFile(undefined);
           setBulkUpload(false);
         });
@@ -714,7 +687,7 @@ export default function Users() {
         .then((res) => {
           setInviteUsers(false);
           setXlsFile(null);
-          setCsvLength("XX")
+          setCsvLength("XX");
           alert("File Uploaded");
           // setXlsFile(undefined);
         })
@@ -730,17 +703,17 @@ export default function Users() {
     <div className="w-[83.6989583333vw] mx-auto  min-h-screen">
       <div className="pb-10  mt-[50px] !mt-[calc(50*0.0522vw)]">
         <div className="flex justify-between items-center mb-3">
-          <p className="text-[#24A3D9] mb-6 text-xl text-base-20">
-            {organization?.company +
+          <p className="text-[#24A3D9] mb-6 text-xl text-base-20 cursor-pointer">
+            <span onClick={()=>navigate('/')}>{organization?.company +
               "  >  " +
               firstName +
               "  " +
               lastName +
-              "  >  "}
+              "  >  "}</span>
             <span className="font-semibold">CRM</span>
           </p>
           <button
-            className="bg-[#24A3D9] w-[188px] text-[15px] justify-center flex py-2 px-5 items-center text-white font-semibold rounded-lg text-base-15"
+            className="bg-[#FFA28D]  text-[15px] justify-center flex py-2 px-3 design:px-4 items-center text-white font-semibold rounded-lg text-base-15"
             onClick={() => navigate("/assigned-tutors")}
           >
             Tutor Mapping
@@ -803,19 +776,15 @@ export default function Users() {
                 cancelBtnClassName="max-w-140"
                 titleClassName="flex  items-start mb-[22px]"
                 handleClose={() => setBulkUpload(false)}
-
-
                 body={
                   <>
                     <div className="">
                       <div className="flex justify-center">
                         <div
                           className={`min-h-[161px] min-w-[198px] border-[1.33px]  mb-[26px] border-[#517CA8] rounded-[5px] ${styles.customborder}`}
-
                         >
                           <div className="mt-[18px] mb-[13px] flex justify-center">
-
-                            <img src={fileupload} alt='fileuploadIcon'></img>
+                            <img src={fileupload} alt="fileuploadIcon"></img>
                           </div>
 
                           <div className="flex items-center justify-center">
@@ -833,9 +802,9 @@ export default function Users() {
                               Choose file
                             </label>
                             <input
-                              onChange={(e) =>{ 
+                              onChange={(e) => {
                                 setXlsFile(e.target.files[0]);
-                                handleFileUpload(e)
+                                handleFileUpload(e);
                               }}
                               type="file"
                               id="file"
@@ -858,10 +827,8 @@ export default function Users() {
                           type="button"
                           disabled={!xlsFile}
                           onClick={() => {
-                            
                             setInviteUsers(true);
                             setBulkUpload(false);
-                            
                           }}
                           className="  block text-[#FFA28D] border-[1.33px] border-[#FFA28D] bg-white hover:shadow-md ms-3 font-medium rounded-lg  px-[13.33px] py-3 text-center dark:bg-white "
                         >
@@ -882,11 +849,8 @@ export default function Users() {
                 classname={"max-w-[781px] mx-auto"}
                 titleClassName={"mb-5 "}
                 handleClose={() => setInviteUsers(false)}
-
-
                 body={
                   <>
-
                     <div className="text-center mb-7">
                       <p className="text-[#517CA8]  text-lg font-light">
                         All users that are invited to the platform will receive
@@ -894,9 +858,15 @@ export default function Users() {
                         organization. If you only want to store their data and
                         do not want to invite them to create an account, please
                         click on “Save Data Only” button.
-                        <br /><span className="pt-1">If you want to continue inviting the users,
-                          please click on the <span className="font-normal">“Confirm Email Invitations”</span> button
-                          below.</span>
+                        <br />
+                        <span className="pt-1">
+                          If you want to continue inviting the users, please
+                          click on the{" "}
+                          <span className="font-normal">
+                            “Confirm Email Invitations”
+                          </span>{" "}
+                          button below.
+                        </span>
                       </p>
                     </div>
                     <div className="flex justify-center">
@@ -1035,9 +1005,7 @@ export default function Users() {
           />
         </div>
 
-        <div className="flex justify-between ">
-
-        </div>
+        <div className="flex justify-between "></div>
 
         <div>
           <FilterItems
@@ -1048,8 +1016,7 @@ export default function Users() {
         </div>
         <div className="flex gap-6 items-center    mt-[23.75px]">
           <div className="ml-6 ">
-            <SCheckbox checked={isChecked}
-                onChange={handleCheckboxChange} />
+            <SCheckbox checked={isChecked} onChange={handleCheckboxChange} />
             {/* <label className={`  text-[#26435F] font-medium flex items-center`}>
               <input
                 type="checkbox"
@@ -1063,45 +1030,67 @@ export default function Users() {
               <span className="block text-[17.5px] text-base-17-5">{numberChecked} Selected</span>
             </label> */}
           </div>
-          <InputField value="Lead Status"  IconRight={Dropdown} inputClassName="bg-white border border-white w-[120px]" inputContainerClassName="bg-white " >
-            </InputField>
-            <InputField value="Tutor Status"  IconRight={Dropdown} inputClassName="bg-white border border-white w-[120px]" inputContainerClassName="bg-white " >
-            </InputField>
-            <InputField value="Assigned Status"  IconRight={Dropdown} inputClassName="bg-white border border-white w-[120px]" inputContainerClassName="bg-white " >
-            </InputField>
+          <InputField
+            value="Lead Status"
+            IconRight={Dropdown}
+            inputClassName="bg-white border border-white w-[120px]"
+            inputContainerClassName="bg-white "
+          ></InputField>
+          <InputField
+            value="Tutor Status"
+            IconRight={Dropdown}
+            inputClassName="bg-white border border-white w-[120px]"
+            inputContainerClassName="bg-white "
+          ></InputField>
+          <InputField
+            value="Assigned Status"
+            IconRight={Dropdown}
+            inputClassName="bg-white border border-white w-[120px]"
+            inputContainerClassName="bg-white "
+          ></InputField>
           <div>
             <button className="bg-[#26435F] text-[15px] px-[25px] py-[10px] rounded-[7.5px] text-white ml-auto text-base-15">
               Save
             </button>
-
           </div>
-          <div className="flex justify-end flex-1 gap-5">
+          <div className="flex justify-end flex-1 gap-5 relative z-5000">
             <button className="bg-[#517CA8] text-[15px] font-semibold relative px-[25px] py-[10px] rounded-[7.5px] text-white  text-base-15">
-            + Invite Users
-            <span  className="absolute right-[-10px] z-10 top-[-10px]">
-            <div className="group relative">
-            <img src={ques} className="inline-block"/>
-                       <span className="absolute  top-10 left-[-100px] z-20 w-[260px]  scale-0 rounded-lg bg-[rgba(31,41,55,0.9)]  text-[13px] text-white group-hover:scale-100 whitespace-normal py-3 px-3">
-                         <h3 className="text-[#517CA8] text-left text-[16px] py-0 font-semibold mb-1">
-                          Invite Users
-                         </h3>
-                         <span className=" text-left text-base-15 font-medium">
-                         This will allow you to invite the selected users to create an account within your Organization’s database. They will receive a verification email to set a new password and logging into the platform. Note that this is useful if you “Saved” user data instead of inviting them when adding them to the CRM
-                           <br />
-                           <br />
-                           <span className="text-[#FF7979] " >
-                           Please ensure that you have consent from the user before inviting them to create an account.</span>
-                           </span>
-                       </span>
-    
-                     </div>
-             </span>
+              + Invite Users
+              <span className="absolute right-[-10px] z-[500000] top-[-10px]">
+                <div className="group relative">
+                  <img src={ques} className="inline-block" />
+                  <span className="absolute  top-14 left-[-100px] z-500 w-[260px]  scale-0 rounded-lg bg-[rgba(31,41,55,0.9)]  text-[13px] text-white group-hover:scale-100 whitespace-normal py-3 px-3">
+                    <h3 className="text-[#517CA8] text-left text-[16px] py-0 font-semibold mb-1">
+                      Invite Users
+                    </h3>
+                    <span className=" text-left text-base-15 font-medium">
+                      This will allow you to invite the selected users to create
+                      an account within your Organization’s database. They will
+                      receive a verification email to set a new password and
+                      logging into the platform. Note that this is useful if you
+                      “Saved” user data instead of inviting them when adding
+                      them to the CRM
+                      <br />
+                      <br />
+                      <span className="text-[#FF7979] ">
+                        Please ensure that you have consent from the user before
+                        inviting them to create an account.
+                      </span>
+                    </span>
+                  </span>
+                </div>
+              </span>
             </button>
             <button className="bg-[#FF7979] text-[15px] flex items-center gap-2 px-[25px] font-semibold py-[10px] rounded-[7.5px] text-white  text-base-15">
-           <span ><img src={DeleteIcon2} className="inline-block my-auto" alt="delete"/></span> Delete User(s)
+              <span>
+                <img
+                  src={DeleteIcon2}
+                  className="inline-block my-auto"
+                  alt="delete"
+                />
+              </span>{" "}
+              Delete User(s)
             </button>
-         
-            
           </div>
         </div>
 
@@ -1128,216 +1117,217 @@ export default function Users() {
         </div>
       </div>
 
-      {
-        modalActive && (
-          <Modal
+      {modalActive && (
+        <Modal
           underline="false"
-            classname={"max-w-[700px] mx-auto rounded-md"}
-            title="Add A New User"
-            // cancelBtn={true}
-            titleClassName="text-start mb-3 pb-3 border-b-[1.5px] border-b-[#00000020]"
-            // primaryCancel={true}
-            // cancelBtnClassName="w-130"
-            // primaryBtn={{
-            //   text: "Invite User",
-            //   className:
-            //     "rounded-lg bg-transparent border-2 border-[#FFA28D] py-2 text-[#FFA28D]",
-            //   form: "add-user-form",
-            //   onClick: handleSubmit,
-            //   loading: loading,
-            //   type: "submit",
-            //   disabled: addUserBtnDisabled,
-            // }}
-            handleClose={handleClose}
-            body={
-              <form
-                id="add-user-form"
-                onSubmit={handleSubmit}
-                className="px-[3px] mb-0.5"
-              >
-                <div className="grid grid-cols-1 md:grid-cols-2  gap-x-2 md:gap-x-3 gap-y-3 gap-y-4 mb-5">
-                  <div>
-                    <InputField
-                      label="First Name"
-                      labelClassname="ml-4 mb-0.5 text-[#26435F] font-semibold"
-                      placeholder="First Name"
-                      inputContainerClassName="text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0"
-                      inputClassName="bg-transparent"
-                      parentClassName="w-full"
-                      type="text"
-                      value={modalData.firstName}
-                      isRequired={true}
-                      onChange={(e) =>
-                        setModalData({ ...modalData, firstName: e.target.value })
-                      }
-                    />
-                  </div>
-                  <div>
-                    <InputField
-                      label="Last Name"
-                      labelClassname="ml-4 mb-0.5 text-[#26435F] font-semibold"
-                      isRequired={true}
-                      placeholder="Last Name"
-                      inputContainerClassName="text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0"
-                      inputClassName="bg-transparent"
-                      parentClassName="w-full"
-                      type="text"
-                      value={modalData.lastName}
-                      onChange={(e) =>
-                        setModalData({ ...modalData, lastName: e.target.value })
-                      }
-                    />
-                  </div>
-                  <div>
-                    <InputField
-                      label="Email Addresss "
-                      labelClassname="ml-4 mt-2 mb-0.5 text-[#26435F] font-semibold"
-                      isRequired={true}
-                      placeholder="Email Addresss"
-                      inputContainerClassName="text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0"
-                      inputClassName="bg-transparent"
-                      parentClassName="w-full"
-                      type="text"
-                      value={modalData.email}
-                      onChange={(e) =>
-                        setModalData({ ...modalData, email: e.target.value })
-                      }
-                    />
-                  </div>
-                  <div className="mt-[7px]">
-                    <InputSelect
-                      value={modalData.userType}
-                      onChange={(val) =>
-                        setModalData({ ...modalData, userType: val })
-                      }
-                      isRequired={true}
-                      type="select"
-                      placeholder="Select User Type "
-                      label="User Type"
-                      labelClassname="ml-0  text-[#26435F] font-bold"
-                      placeholderClass="text-base-17-5"
-                      optionData={userTypeOptions}
-                      inputContainerClassName="text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0"
-                      parentClassName="w-full"
-                    />
-                  </div>
+          classname={"max-w-[700px] mx-auto rounded-md"}
+          title="Add A New User"
+          // cancelBtn={true}
+          titleClassName="text-start mb-3 pb-3 border-b-[1.5px] border-b-[#00000020]"
+          // primaryCancel={true}
+          // cancelBtnClassName="w-130"
+          // primaryBtn={{
+          //   text: "Invite User",
+          //   className:
+          //     "rounded-lg bg-transparent border-2 border-[#FFA28D] py-2 text-[#FFA28D]",
+          //   form: "add-user-form",
+          //   onClick: handleSubmit,
+          //   loading: loading,
+          //   type: "submit",
+          //   disabled: addUserBtnDisabled,
+          // }}
+          handleClose={handleClose}
+          body={
+            <form
+              id="add-user-form"
+              onSubmit={handleSubmit}
+              className="px-[3px] mb-0.5"
+            >
+              <div className="grid grid-cols-1 md:grid-cols-2  gap-x-2 md:gap-x-3 gap-y-3 gap-y-4 mb-5">
+                <div>
+                  <InputField
+                    label="First Name"
+                    labelClassname="ml-4 mb-0.5 text-[#26435F] font-semibold"
+                    placeholder="First Name"
+                    inputContainerClassName="text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0"
+                    inputClassName="bg-transparent"
+                    parentClassName="w-full"
+                    type="text"
+                    value={modalData.firstName}
+                    isRequired={true}
+                    onChange={(e) =>
+                      setModalData({ ...modalData, firstName: e.target.value })
+                    }
+                  />
                 </div>
-                <div className='flex items-center justify-center gap-4'>
-                <button className="rounded-lg bg-[#FFA28D] border-2 border-[#FFA28D] py-2 text-[#FFFFFF] w-[146px]">Save User</button>
-                <button className="rounded-lg bg-transparent border-2 border-[#FFA28D] py-2 text-[#FFA28D]  w-[146px]" onClick={handleSubmit} disabled={addUserBtnDisabled}>Invite User</button>
-
+                <div>
+                  <InputField
+                    label="Last Name"
+                    labelClassname="ml-4 mb-0.5 text-[#26435F] font-semibold"
+                    isRequired={true}
+                    placeholder="Last Name"
+                    inputContainerClassName="text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0"
+                    inputClassName="bg-transparent"
+                    parentClassName="w-full"
+                    type="text"
+                    value={modalData.lastName}
+                    onChange={(e) =>
+                      setModalData({ ...modalData, lastName: e.target.value })
+                    }
+                  />
                 </div>
-              </form>
-            }
-          />
-        )
-      }
-      {
-        deleteModalActive && (
-          <Modal
-            title={
-              <span className="leading-10">
-                Are you sure <br />
-                you want to delete user{" "}
-                {`${userToDelete.name} ${userToDelete._id}`} and all associated
-                data ?
-              </span>
-            }
-            titleClassName="mb-12 leading-10"
-            cancelBtn={true}
-            cancelBtnClassName="max-w-140"
-            primaryBtn={{
-              text: "Delete",
-              className: "w-[140px] pl-4 px-4",
-              onClick: () => onDelete(),
-              bgDanger: true,
-              loading: deleteLoading,
-            }}
-            handleClose={() => setDeleteModalActive(false)}
-            classname={"max-w-567 mx-auto"}
-          />
-        )
-      }
-      {
-        assignStudentModalActive && (
-          <Modal
-            title="Assign Tutor"
-            classname={"max-w-[760px] mx-auto"}
-            cancelBtn={true}
-            cancelBtnClassName="max-w-140"
-            primaryBtn={{
-              text: "Assign",
-              className: "max-w-140 pl-8 pr-8",
-              onClick: (e) => handleSubmit(e),
-              disabled: submitBtnDisabled,
-              loading: loading,
-            }}
-            handleClose={handleClose2}
-            body={
-              <>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-2 md:gap-x-3 gap-y-4 mb-5">
-                  <div>
-                    <InputSearch
-                      label="Student Name"
-                      value={modalData.studentName}
-                      onChange={(e) =>
-                        setModalData({
-                          ...modalData,
-                          studentName: e.target.value,
-                        })
-                      }
-                      placeholderClass="text-base-17-5"
-                      optionData={students}
-                      onOptionClick={(item) => {
-                        setModalData({
-                          ...modalData,
-                          studentName: item.value,
-                          studentId: item._id,
-                        });
-                      }}
-                      optionPrefix="s"
-                      parentClassName="w-full mr-4"
-                      labelClassname="ml-2 mb-0.5"
-                      inputContainerClassName="px-5 py-3.5 text-sm bg-primary-50 border-0"
-                      inputClassName="text-base-17-5 bg-transparent"
-                      placeholder="Student Name"
-                      type="select"
-                    />
-                  </div>
-                  <div>
-                    <InputSearch
-                      label="Tutor Name"
-                      value={modalData.tutorName}
-                      onChange={(e) =>
-                        setModalData({
-                          ...modalData,
-                          tutorName: e.target.value,
-                        })
-                      }
-                      placeholderClass="text-base-17-5"
-                      optionData={tutors}
-                      onOptionClick={(item) => {
-                        setModalData({
-                          ...modalData,
-                          tutorName: item.value,
-                          tutorId: item._id,
-                        });
-                      }}
-                      optionPrefix="t"
-                      parentClassName="w-full mr-4"
-                      labelClassname="ml-2 mb-0.5"
-                      inputContainerClassName="px-5 py-3.5 text-sm bg-primary-50 border-0"
-                      inputClassName="text-base-17-5 bg-transparent"
-                      placeholder="Tutor Name"
-                      type="select"
-                    />
-                  </div>
+                <div>
+                  <InputField
+                    label="Email Addresss "
+                    labelClassname="ml-4 mt-2 mb-0.5 text-[#26435F] font-semibold"
+                    isRequired={true}
+                    placeholder="Email Addresss"
+                    inputContainerClassName="text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0"
+                    inputClassName="bg-transparent"
+                    parentClassName="w-full"
+                    type="text"
+                    value={modalData.email}
+                    onChange={(e) =>
+                      setModalData({ ...modalData, email: e.target.value })
+                    }
+                  />
                 </div>
-              </>
-            }
-          />
-        )
-      }
-    </div >
+                <div className="mt-[7px]">
+                  <InputSelect
+                    value={modalData.userType}
+                    onChange={(val) =>
+                      setModalData({ ...modalData, userType: val })
+                    }
+                    isRequired={true}
+                    type="select"
+                    placeholder="Select User Type "
+                    label="User Type"
+                    labelClassname="ml-0  text-[#26435F] font-bold"
+                    placeholderClass="text-base-17-5"
+                    optionData={userTypeOptions}
+                    inputContainerClassName="text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0"
+                    parentClassName="w-full"
+                  />
+                </div>
+              </div>
+              <div className="flex items-center justify-center gap-4">
+                <button className="rounded-lg bg-[#FFA28D] border-2 border-[#FFA28D] py-2 text-[#FFFFFF] w-[146px]">
+                  Save User
+                </button>
+                <button
+                  className="rounded-lg bg-transparent border-2 border-[#FFA28D] py-2 text-[#FFA28D]  w-[146px]"
+                  onClick={handleSubmit}
+                  disabled={addUserBtnDisabled}
+                >
+                  Invite User
+                </button>
+              </div>
+            </form>
+          }
+        />
+      )}
+      {deleteModalActive && (
+        <Modal
+          title={
+            <span className="leading-10">
+              Are you sure <br />
+              you want to delete user{" "}
+              {`${userToDelete.name} ${userToDelete._id}`} and all associated
+              data ?
+            </span>
+          }
+          titleClassName="mb-12 leading-10"
+          cancelBtn={true}
+          cancelBtnClassName="max-w-140"
+          primaryBtn={{
+            text: "Delete",
+            className: "w-[140px] pl-4 px-4",
+            onClick: () => onDelete(),
+            bgDanger: true,
+            loading: deleteLoading,
+          }}
+          handleClose={() => setDeleteModalActive(false)}
+          classname={"max-w-567 mx-auto"}
+        />
+      )}
+      {assignStudentModalActive && (
+        <Modal
+          title="Assign Tutor"
+          classname={"max-w-[760px] mx-auto"}
+          cancelBtn={true}
+          cancelBtnClassName="max-w-140"
+          primaryBtn={{
+            text: "Assign",
+            className: "max-w-140 pl-8 pr-8",
+            onClick: (e) => handleSubmit(e),
+            disabled: submitBtnDisabled,
+            loading: loading,
+          }}
+          handleClose={handleClose2}
+          body={
+            <>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-2 md:gap-x-3 gap-y-4 mb-5">
+                <div>
+                  <InputSearch
+                    label="Student Name"
+                    value={modalData.studentName}
+                    onChange={(e) =>
+                      setModalData({
+                        ...modalData,
+                        studentName: e.target.value,
+                      })
+                    }
+                    placeholderClass="text-base-17-5"
+                    optionData={students}
+                    onOptionClick={(item) => {
+                      setModalData({
+                        ...modalData,
+                        studentName: item.value,
+                        studentId: item._id,
+                      });
+                    }}
+                    optionPrefix="s"
+                    parentClassName="w-full mr-4"
+                    labelClassname="ml-2 mb-0.5"
+                    inputContainerClassName="px-5 py-3.5 text-sm bg-primary-50 border-0"
+                    inputClassName="text-base-17-5 bg-transparent"
+                    placeholder="Student Name"
+                    type="select"
+                  />
+                </div>
+                <div>
+                  <InputSearch
+                    label="Tutor Name"
+                    value={modalData.tutorName}
+                    onChange={(e) =>
+                      setModalData({
+                        ...modalData,
+                        tutorName: e.target.value,
+                      })
+                    }
+                    placeholderClass="text-base-17-5"
+                    optionData={tutors}
+                    onOptionClick={(item) => {
+                      setModalData({
+                        ...modalData,
+                        tutorName: item.value,
+                        tutorId: item._id,
+                      });
+                    }}
+                    optionPrefix="t"
+                    parentClassName="w-full mr-4"
+                    labelClassname="ml-2 mb-0.5"
+                    inputContainerClassName="px-5 py-3.5 text-sm bg-primary-50 border-0"
+                    inputClassName="text-base-17-5 bg-transparent"
+                    placeholder="Tutor Name"
+                    type="select"
+                  />
+                </div>
+              </div>
+            </>
+          }
+        />
+      )}
+    </div>
   );
 }

@@ -539,6 +539,7 @@ const [pages,setPage]=useState(arr)
         cutanswers={cutanswers}
         check={background}
         MarkAnswer={MarkAnswer}
+        quesImg={info[index] ? info[index].QuestionImage : ""}
         ques={info[index] ? info[index].QuestionText : ""}
         index={index + 1}
         op={info[index] ? info[index].Answers : null}

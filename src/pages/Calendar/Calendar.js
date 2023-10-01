@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import moment from "moment-timezone";
 import "./Transition.css";
 import "./calendar.css";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import downIcon from '../../assets/icons/down-pink.svg'
 import upIcon from '../../assets/icons/up-blue.svg'
@@ -1100,16 +1100,19 @@ setColorMapping(temp);
     }));
   };
   //console.log('eventDetails',colorMapping,insightData,userDetail,associatedStudents);
+  const navigate=useNavigate()
   return (
     <>
       <div className="lg:ml-pageLeft calender  min-h-screen" id={persona}>
-        <p className="text-[#24A3D9] text-xl mb-[30px] mt-[50px] pl-[74px]">
-          {organization?.company +
+        <p className="text-[#24A3D9] text-base-20 mb-[30px] mt-[50px] pl-[74px]">
+         <span onClick={()=>navigate('/')} className="cursor-pointer"> 
+         {organization?.company +
             "  >  " +
             firstName +
             "  " +
             lastName +
             "  >  "}
+         </span>
           <span className="font-bold">Schedule</span>
         </p>
         <div className="  pb-2 pl-[74px] calendar flex">

@@ -54,6 +54,7 @@ export default function AssignedTests() {
   const [studentNameOptions, setStudentNameOptions] = useState([]);
   const [allAssignedTests, setAllAssignedTests] = useState([]);
   const [filteredTests, setFilteredTests] = useState([]);
+  const { dateFormat } = useSelector(state => state.user)
 
   const sortByDueDate = () => {
     setAllAssignedTests((prev) => {
@@ -209,7 +210,7 @@ export default function AssignedTests() {
   const [resendLoading, setResendLoading] = useState(false);
   const [deleteLoading, setDeleteLoading] = useState(false);
   const [filterItems, setFilterItems] = useState([]);
-
+  const [studentMultiple, setStudentMultiple] =useState([])
   useEffect(() => {
     setValidData(
       modalData.name &&
@@ -220,14 +221,30 @@ export default function AssignedTests() {
     );
   }, [modalData.name, modalData.limit, modalData.date, modalData.test]);
 
+const handleMultipleStudent=(student) => {
+  console.log({student})
+  let bool= studentMultiple?.find((student1) =>student1?._id===student?._id)
+  if (bool) {
+    let updated = studentMultiple.filter(
+      (test) => test?._id !== student._id
+    );
+    setStudentMultiple(updated);
+  } else {
+    setStudentMultiple((prev) =>{ return [ ...prev,
+      {_id:student?._id,value:student?.value}] })
+  }
+}
+console.log({studentMultiple,modalData})
   useEffect(() => {
-
+//modalData.name.trim() === "" ||
+//modalData.studentId.trim() === ""
     if (
-      modalData.name.trim() === "" ||
+       
+      studentMultiple?.length===0||
       modalData.limit.trim() === "" ||
       modalData.date === "" ||
-      modalData.testId === "" ||
-      modalData.studentId.trim() === ""
+      modalData.testId === "" 
+      
     ) {
       setSubmitBtnDisabled(true);
     } else {
@@ -255,7 +272,7 @@ export default function AssignedTests() {
   }
 
   useEffect(() => {
-    if (modalData.name.length > 0) {
+    if (modalData.name.length >= 0||true) {
       if (persona === "admin") {
         fetchStudents(modalData.name).then((res) => {
 
@@ -283,7 +300,7 @@ export default function AssignedTests() {
   }, [modalData.name]);
 
   useEffect(() => {
-    if (modalData.test.length > 0) {
+    if (modalData.test.length >= 0) {
       fetchTests(modalData.test).then((res) => {
         let tempData = res.data.data.test.map((test) => {
           return {
@@ -297,6 +314,7 @@ export default function AssignedTests() {
     }
   }, [modalData.test]);
 
+  console.log('formatted tests----', dateFormat);
   const fetchAllAssignedTests = () => {
     fetchAssignedTests().then((res) => {
       if (res.error) return console.log(res.error);
@@ -327,7 +345,7 @@ export default function AssignedTests() {
             ? `${studentId.firstName} ${studentId.lastName}`
             : "-",
           studentId: studentId ? studentId._id : "-",
-          assignedOn: getFormattedDate(createdAt),
+          assignedOn: getFormattedDate(createdAt, dateFormat),
           assignedBy: assignedBy
             ? `${assignedBy?.firstName} ${assignedBy?.lastName}`
             : "-",
@@ -336,7 +354,7 @@ export default function AssignedTests() {
           pdfLink: testId ? testId.pdf : null,
           scores: "-",
           duration: multiple ? getDuration(multiple) : "Unlimited",
-          dueDate: getFormattedDate(dueDate),
+          dueDate: getFormattedDate(dueDate, dateFormat),
           status:
             isCompleted === true
               ? "completed"
@@ -464,10 +482,16 @@ export default function AssignedTests() {
   };
 
   const handleAssignTestSubmit = () => {
+    console.log("test assignment")
     setLoading(true);
+    studentMultiple?.map((it)=>{
+
+   
+    
     const body = {
-      studentId: modalData.studentId,
+      studentId: it?._id,
       testId: modalData.testId,
+      name:it?._value,
       dueDate: modalData.date,
       instruction: modalData.instruction,
       timeLimit: getTimeLimit(modalData.limit),
@@ -488,11 +512,12 @@ export default function AssignedTests() {
         return;
       }
       setModalData(initialState);
-      console.log(res.data.data.assign);
-      alert("Test Assigned!");
+      console.log("test assigned",res.data.data.assign);
+      //alert("Test Assigned!");
       setAssignTestModalActive(false);
       fetch();
     });
+  })
   };
 
   useEffect(() => {
@@ -591,32 +616,7 @@ export default function AssignedTests() {
     setTestToDelete(item);
     setDeleteModalActive(true);
   };
-  const testTypes = [
-    {
-      text: "English",
-      selected: true,
-    },
-    {
-      text: "Maths",
-      selected: false,
-    },
-    {
-      text: "Reading",
-      selected: false,
-    },
-    {
-      text: "Science",
-      selected: false,
-    },
-    {
-      text: "History",
-      selected: false,
-    },
-    {
-      text: "Economics",
-      selected: false,
-    },
-  ];
+ 
   const handleCurrentUser = (item) => {
     setCurrentUser({
       name: item.text.toLowerCase(),
@@ -660,18 +660,39 @@ export default function AssignedTests() {
   const handleCheckboxChange = () => {
     setIsChecked(!isChecked);
   };
+  
+  const [filterOptions, setFilterOptions] = useState(false);
+  const handleOptionData=(val)=>{
+   let data=[]
+   
+   testNameOptions?.map((it,id)=>{
+    if(it?.toLowerCase()?.includes(val?.toLowerCase()))
+     data.push( {
+        _id:(id).toString(),
+        value:it
+      })
+    })
+    setFilterOptions(data)
+    return 
+  }
+  useEffect(()=>{
+  handleOptionData("")
+  },[testNameOptions])
+  
   return (
     <>
       <div className="w-[83.3333333333vw] mx-auto min-h-screen mb-[40px]">
         <div className="">
           <div className="flex justify-between items-center ">
-            <p className="text-[#24A3D9] text-xl mb-8 mt-[50px]">
+            <p className="text-[#24A3D9] text-base-20 mb-8 mt-[50px]">
+            <span onClick={()=>navigate('/')} className="cursor-pointer"> 
               {organization?.company +
                 "  >  " +
                 firstName +
                 "  " +
                 lastName +
                 "  >  "}
+              </span>
               <span className="font-bold">Assignments</span>
             </p>
             {persona !== "parent" && persona !== "student" && persona !== "tutor" && (
@@ -736,13 +757,32 @@ export default function AssignedTests() {
                   }
                   placeholder="Search Student"
                   inputClassName="pl-4 py-[12px] text-base-17-5 text-md text-[#667085]   placeholder:text-base-17-5 placeholder:text-[#667085] pl-2"
-                  parentClassName="w-[20.8333333333vw] text-md"
+                  parentClassName="w-[20.8333333333vw]  text-md"
 
                   inputContainerClassName=" shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white  !py-0 h-[50px]"
                   type="text"
                 />
-
-                <InputSelect
+                <InputSearch
+                IconRight={SearchIcon}
+                placeholderClass="text-base-17-5"
+              
+                optionListClassName="text-base-17-5 text-[#667085]"
+                inputClassName="text-base-17-5 !py-3"
+                inputContainerClassName=" !py-3 shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white  h-[50px]"
+                placeholder="Search Assignment"
+                parentClassName="w-[23.75vw] -mt-[18px] text-base-17-5 text-[#667085] h-[50px]"
+                type="select"
+                value={filterData.testName}
+                onChange={(e) => {
+                  setFilterData({ ...filterData, testName: e.target.value })
+                  handleOptionData(e.target.value )
+                }}
+                optionData={filterOptions}
+                onOptionClick={(item) => {
+                  setFilterData({ ...filterData, testName: item?.value })
+                }}
+              />
+                {/* <InputSelect
                   IconSearch={SearchIcon}
                   value={filterData.testName}
                   onChange={(val) =>
@@ -756,7 +796,7 @@ export default function AssignedTests() {
                   placeholder="Search Assignment"
                   parentClassName="w-[23.75vw] text-base-17-5 text-[#667085] h-[50px]"
                   type="select"
-                />
+                /> */}
                 <InputSelect
                   value={filterData.status}
                   onChange={(val) => handleStatus(val)}
@@ -778,7 +818,7 @@ export default function AssignedTests() {
                         onClick={() => setAssignTestModalActive(true)}
                       >
                         New Assignment
-                        <img src={AddIcon} className="ml-3 !w-5 h-5" alt="new test" />
+                        <img src={AddIcon} className="ml-3 !w-3 h-3" alt="new test" />
                       </button>
                     </div>
                   </div>
@@ -884,7 +924,42 @@ export default function AssignedTests() {
             <>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-x-2 md:gap-x-3 gap-y-4 mb-5">
                 <div>
-                  <InputSearch
+                
+                <InputSearch
+                   label="Student Name"
+                    labelClassname="text-base-20 text-[#26435F] mb-0.5"
+                    placeholder="Select"
+                    placeholderClass="text-base-17-5"
+                    parentClassName=" text-base-17-5 py-0 w-full  mb-10"
+                    inputContainerClassName=" text-base-17-5 bg-[#F3F5F7] border-0 pt-3.5 pb-3.5"
+                    inputClassName="bg-[#F3F5F7]"
+                    type="text"
+                    value={modalData.name}
+                    checkbox={{
+                      visible: true,
+                      name: "student",
+                      match: studentMultiple?.map(itt=>itt?._id),
+                    }}
+                    onChange={(e) => setModalData({
+                      ...modalData,
+                      name: e.target.value,
+                    })}
+                    optionListClassName="text-base-17-5"
+                    optionClassName="text-base-17-5"
+                    optionData={students}
+                   // right={<img className="" src={down} />}
+                    onOptionClick={(item) => {
+                     
+                       
+                      
+                      handleMultipleStudent(item)
+                     // handleTestChange(item);
+                      // setStudent(item.value);
+                      // handleStudentsChange(item)
+                      // setCurrentToEdit({ ...currentToEdit, students: [... item._id] });
+                    }}
+                  />
+                  {/* <InputSearch
                     label="Student Name"
                     value={modalData.name}
                     onChange={(val) =>
@@ -910,7 +985,7 @@ export default function AssignedTests() {
                     inputClassName="text-base-17-5 bg-transparent "
                     placeholder="Student Name"
                     type="select"
-                  />
+                  /> */}
                 </div>
                 <div>
                   <InputSearch

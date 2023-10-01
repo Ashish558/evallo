@@ -17,7 +17,7 @@ import { tempTableData, studentsDataTable } from "../AssignedTests/tempData";
 import InputField from "../../components/InputField/inputField";
 import AssignedTestIndicator from "../../components/AssignedTestIndicator/AssignedTestIndicator";
 import InputSelectNew from "../../components/InputSelectNew/InputSelectNew";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const studentTableHeaders2 = [
   "Test Name",
@@ -44,7 +44,7 @@ const parentTestInfo = [
   },
 ];
 
-export default function StudentTest({ fromProfile, testtype,setTotaltest }) {
+export default function StudentTest({ fromProfile,testtype, setTotaltest,studentId }) {
   const [user, setUser] = useState({});
   const [associatedStudents, setAssociatedStudents] = useState([]);
   const [selectedStudent, setSelectedStudent] = useState(null);
@@ -139,8 +139,8 @@ export default function StudentTest({ fromProfile, testtype,setTotaltest }) {
   const [tableHeaders, setTableHeaders] = useState(studentTableHeaders);
   const params = useParams()
   useEffect(() => {
-    if (persona === "student") {
-      getTest().then((res) => {
+    if (persona === "student"||true) {
+      getTest(studentId).then((res) => {
         console.log("all-assigned-tests", res.data.data);
         setAwsLink(res.data.data.baseLink);
         let tempAllTests = res.data.data.test.map((test) => {
@@ -295,6 +295,7 @@ export default function StudentTest({ fromProfile, testtype,setTotaltest }) {
   }, [associatedStudents]);
   console.log({ selectedStudent, associatedStudents })
   console.log({ allTests })
+  const navigate=useNavigate()
   useEffect(() => {
     if (selectedStudent === null) return;
     if (Object.keys(selectedStudent).length === 0) return;
@@ -345,13 +346,15 @@ export default function StudentTest({ fromProfile, testtype,setTotaltest }) {
               className={`${persona === "student" || true ? "flex justify-between items-center" : ""
                 }`}
             >
-              <p className="text-[#24A3D9]  text-xl text-base-22-5">
-                {organization?.company +
+              <p className="text-[#24A3D9]   text-base-20">
+               <span className="cursor-pointer" onClick={()=>navigate('/')}>
+               {organization?.company +
                   "  >  " +
                   firstName +
                   "  " +
                   lastName +
                   "  >  "}
+               </span>
                 <span className="font-semibold">Assignments</span>
               </p>
               <div className="flex justify-end items-center">

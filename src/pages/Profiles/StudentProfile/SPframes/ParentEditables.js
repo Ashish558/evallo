@@ -30,6 +30,7 @@ import InputFieldDropdown from "../../../../components/InputField/inputFieldDrop
 import InputSelectNew from "../../../../components/InputSelectNew/InputSelectNew";
 import useOutsideAlerter from "../../../../hooks/useOutsideAlerter";
 import { Interest, commonSubjects, qualities } from "./staticData";
+import SCheckbox from "../../../../components/CCheckbox/SCheckbox";
 
 // 637b9df1e9beff25e9c2aa83
 export default function ParentEditables({
@@ -46,15 +47,15 @@ export default function ParentEditables({
   const [title, setTitle] = useState("");
   const [currentField, setCurrentField] = useState({});
   const [currentToEdit, setCurrentToEdit] = useState({});
-  const [addNotes,notesStatus]=useAddNotesMutation()
+  const [addNotes, notesStatus] = useAddNotesMutation();
   const [student, setStudent] = useState("");
   const [fetchStudents, studentResponse] = useLazyGetStudentsByNameQuery();
   const [students, setStudents] = useState([]);
-  const [textOpen,setTextOpen]=useState(false)
+  const [textOpen, setTextOpen] = useState(false);
   const [parent, setParent] = useState("");
   const [fetchParents, fetchParentsResp] = useLazyGetParentsByNameQuery();
   const [parents, setParents] = useState([]);
- const {role:persona}=useSelector((state)=>state.user)
+  const { role: persona } = useSelector((state) => state.user);
   const [updateFields, updateFieldsResp] = useUpdateUserFieldsMutation();
   const [updateDetails, updateDetailsResp] = useUpdateUserDetailsMutation();
   const [updateTutorDetails, updateTutorDetailsResp] =
@@ -151,7 +152,7 @@ export default function ParentEditables({
     {
       name: "notes",
       title: "Internal Notes",
-      api: "userDetail",
+      api: "user",
     },
     {
       name: "service",
@@ -285,9 +286,9 @@ export default function ParentEditables({
       api: "tutorDetail",
     },
   ];
- 
-const [addLink,addLinkStatus]=useAddLinkStudentMutation()
-//console.log("parentEditables",currentToEdit)
+
+  const [addLink, addLinkStatus] = useAddLinkStudentMutation();
+  //console.log("parentEditables",currentToEdit)
   const handleProfilePhotoChange = (file) => {
     // //console.log(file)
     let url = "";
@@ -299,7 +300,7 @@ const [addLink,addLinkStatus]=useAddLinkStudentMutation()
       url = `${BASE_URL}api/user/addphoto`;
     }
     axios.patch(url, formData, { headers: getAuthHeader() }).then((res) => {
-    //  //console.log(res);
+      //  //console.log(res);
       fetchDetails();
     });
   };
@@ -322,7 +323,7 @@ const [addLink,addLinkStatus]=useAddLinkStudentMutation()
         setCurrentToEdit(toEdit[key]);
       }
     });
-  // //console.log("currentUser");
+    // //console.log("currentUser");
   }, [toEdit]);
 
   const handleClose = () => {
@@ -331,7 +332,7 @@ const [addLink,addLinkStatus]=useAddLinkStudentMutation()
       return (tempToEdit[key] = { ...toEdit[key], active: false });
     });
     setToEdit(tempToEdit);
-    setTextOpen(false)
+    setTextOpen(false);
     // setToEdit()
   };
 
@@ -381,7 +382,7 @@ const [addLink,addLinkStatus]=useAddLinkStudentMutation()
       tempStudents.push(item._id);
       tempStudentsData.push(item);
     }
-   // //console.log(tempStudentsData);
+    // //console.log(tempStudentsData);
     setCurrentToEdit({
       ...currentToEdit,
       assiginedStudents: tempStudents,
@@ -423,34 +424,38 @@ const [addLink,addLinkStatus]=useAddLinkStudentMutation()
     setLoading(true);
     let reqBody = { ...currentToEdit };
     delete reqBody["active"];
-     //console.log({reqBody,userId});
-     if (currentToEdit.hasOwnProperty("notes")) {
-      let reqBody = {
-      
-        "note":currentToEdit?.notes,
-        "type":"internalNotes", // or it can be 'internalNotes'
-        "date":new Date()
-      };
+    //console.log({reqBody,userId});
+    if (currentToEdit.hasOwnProperty("notes")) {
+      reqBody={
+        internalNotes:[
+          ...currentToEdit.internalNotes,
+          {
+            note: currentToEdit?.notes,
      
-     
-    //  addNotes(reqBody).then((res)=>{
-    //   //console.log("internal",{res})
-    //  })
-    
+        date: new Date(),
+          }
+        ]
+      }
+      // let reqBody = {
+      //   note: currentToEdit?.notes,
+      //   type: "internalNotes", // or it can be 'internalNotes'
+      //   date: new Date(),
+      // };
+
+      //  addNotes(reqBody).then((res)=>{
+      //   console.log("internal",{res})
+      //  })
     }
     if (currentToEdit.hasOwnProperty("whiteBoardLinks")) {
-     let ch=false;
-     const urlRegex = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i;
-     currentToEdit?.whiteBoardLinks?.map((link)=>{
-      if(!urlRegex.test(link))
-       ch=true ;
-     })
-     if(ch){
-      
-      alert("Enter valid link!")
-      return
-     }
-   
+      let ch = false;
+      const urlRegex = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i;
+      currentToEdit?.whiteBoardLinks?.map((link) => {
+        if (!urlRegex.test(link)) ch = true;
+      });
+      if (ch) {
+        alert("Enter valid link!");
+        return;
+      }
     }
     const userDetailSave = (reqBody) => {
       // if (reqBody.satScores) {
@@ -464,7 +469,7 @@ const [addLink,addLinkStatus]=useAddLinkStudentMutation()
       //   if (isNaN(reqBody.actScores.science)) reqBody.actScores.science = 0;
       // }
 
-       //console.log({reqBody,currentToEdit});
+      //console.log({reqBody,currentToEdit});
       // return
       updateDetails({ id: userId, fields: reqBody }).then((res) => {
         //console.log(res);
@@ -547,48 +552,51 @@ const [addLink,addLinkStatus]=useAddLinkStudentMutation()
       }
     }
     let { schoolName, grade } = currentToEdit;
-   let {dropBoxLink,dropLink}= currentToEdit
+    let { dropBoxLink, dropLink } = currentToEdit;
     if (currentToEdit.hasOwnProperty("schoolName")) {
       let reqBody = {
         schoolName: currentToEdit.schoolName,
         grade: currentToEdit?.grade,
       };
-     
-     
+
       userDetailSave(reqBody);
     }
     if (currentToEdit.hasOwnProperty("about")) {
       let reqBody = {
         about: currentToEdit.about,
-       
       };
-     
-     
+
       userDetailSave(reqBody);
     }
-    if (currentToEdit.hasOwnProperty("driveLink") && currentToEdit.driveLink.length>2) {
+    if (
+      currentToEdit.hasOwnProperty("driveLink") &&
+      currentToEdit.driveLink.length > 2
+    ) {
       let reqBody = {
-        type: 'driveLink',
-        link:currentToEdit.driveLink,
-        studentId:userId,
+        type: "driveLink",
+        link: currentToEdit.driveLink,
+        studentId: userId,
       };
       addLink(reqBody).then((res) => {
         //console.log("drive",res);
-        if(res?.data){
-         //console.log("drive link added")
+        if (res?.data) {
+          //console.log("drive link added")
         }
       });
     }
-    if (currentToEdit.hasOwnProperty("dropBoxLink") && currentToEdit.dropBoxLink.length>2) {
+    if (
+      currentToEdit.hasOwnProperty("dropBoxLink") &&
+      currentToEdit.dropBoxLink.length > 2
+    ) {
       let reqBody = {
-        type: 'dropBoxLink',
-        link:currentToEdit.dropBoxLink,
-        studentId:userId,
+        type: "dropBoxLink",
+        link: currentToEdit.dropBoxLink,
+        studentId: userId,
       };
       addLink(reqBody).then((res) => {
         //console.log("drop",res);
-        if(res?.data){
-         //console.log("drop link added")
+        if (res?.data) {
+          //console.log("drop link added")
         }
       });
     }
@@ -662,7 +670,6 @@ const [addLink,addLinkStatus]=useAddLinkStudentMutation()
     // })
   };
   // //console.log(settings);
-  
 
   const [startDate, setStartDate] = useState(new Date());
   ////console.log({ currentField, currentToEdit });
@@ -673,12 +680,11 @@ const [addLink,addLinkStatus]=useAddLinkStudentMutation()
     "personality",
     "subjects",
   ];
-  return  Object.keys(toEdit).map((key) => {
+  return Object.keys(toEdit).map((key) => {
     return (
       toEdit[key].active === true && (
-        
         <Modal
-        fetchDetails={fetchDetails}
+          fetchDetails={fetchDetails}
           key={key}
           classname={
             forCss.includes(currentField.name)
@@ -795,7 +801,7 @@ const [addLink,addLinkStatus]=useAddLinkStudentMutation()
                         </div>
                         <div className="flex !text-sm gap-4 ">
                           <InputField
-                           IconLeft={caution}
+                            IconLeft={caution}
                             label="Email"
                             labelClassname="text-[#26435F]"
                             placeholder="Email Id"
@@ -820,37 +826,37 @@ const [addLink,addLinkStatus]=useAddLinkStudentMutation()
                                   <li>you created a new account.</li>
                                   <li>you recently changed your email.</li>
                                 </ul>
-                                We have sent you an email verification link to your current
-                                email address to make sure that it really is you who requested a
-                                change.
+                                We have sent you an email verification link to
+                                your current email address to make sure that it
+                                really is you who requested a change.
                               </span>
                             }
                           />
- <div id="number2 ">
-                          <InputFieldDropdown
-                          codeClassName="!bg-white !rounded-sm"
-                            placeholder=""
-                            labelClassname="text-[#26435F]"
-                            inputContainerClassName="!text-xs  !border-none  bg-primary-50  !shadow-[0px_0px_2px_0px_#00000040]"
-                            inputClassName="bg-transparent !w-[90px] !text-xs rounded-[4px] "
-                            parentClassName="flex-1 "
-                            label="Phone"
-                            value={currentToEdit.phone}
-                            codeValue={currentToEdit.phoneCode}
-                            handleCodeChange={(e) =>
-                              setCurrentToEdit({
-                                ...currentToEdit,
-                                phoneCode: e.target.value,
-                              })
-                            }
-                            onChange={(e) =>
-                              setCurrentToEdit({
-                                ...currentToEdit,
-                                phone: e.target.value,
-                              })
-                            }
-                          />
-</div>
+                          <div id="number2 ">
+                            <InputFieldDropdown
+                              codeClassName="!bg-white !rounded-sm"
+                              placeholder=""
+                              labelClassname="text-[#26435F]"
+                              inputContainerClassName="!text-xs  !border-none  bg-primary-50  !shadow-[0px_0px_2px_0px_#00000040]"
+                              inputClassName="bg-transparent !w-[90px] !text-xs rounded-[4px] "
+                              parentClassName="flex-1 "
+                              label="Phone"
+                              value={currentToEdit.phone}
+                              codeValue={currentToEdit.phoneCode}
+                              handleCodeChange={(e) =>
+                                setCurrentToEdit({
+                                  ...currentToEdit,
+                                  phoneCode: e.target.value,
+                                })
+                              }
+                              onChange={(e) =>
+                                setCurrentToEdit({
+                                  ...currentToEdit,
+                                  phone: e.target.value,
+                                })
+                              }
+                            />
+                          </div>
                           <InputSelectNew
                             optionData={grades}
                             labelClassname="text-[#26435F] !font-bold"
@@ -982,7 +988,7 @@ const [addLink,addLinkStatus]=useAddLinkStudentMutation()
                         inputClassName="bg-transparent text-xs   "
                         parentClassName="flex-1 "
                         type="text"
-                        disabled={persona==='student'||persona==='parent'}
+                        disabled={persona === "student" || persona === "parent"}
                         value={currentToEdit.dropBoxLink}
                         onChange={(e) =>
                           setCurrentToEdit({
@@ -1001,7 +1007,7 @@ const [addLink,addLinkStatus]=useAddLinkStudentMutation()
                         inputClassName="bg-transparent text-xs   "
                         parentClassName="flex-1 "
                         type="text"
-                        disabled={persona==='student'||persona==='parent'}
+                        disabled={persona === "student" || persona === "parent"}
                         value={currentToEdit.driveLink}
                         onChange={(e) =>
                           setCurrentToEdit({
@@ -1019,15 +1025,16 @@ const [addLink,addLinkStatus]=useAddLinkStudentMutation()
                         inputContainerClassName="text-xs  bg-primary-50 border-0 !py-3 !px-2 !rounded-[5px]"
                         inputClassName="bg-transparent text-xs   "
                         parentClassName="flex-1 "
-                        optionData={organization?.settings?.subscriptionCode?.map((it)=>{
-                          return {
-                            ...it,
-                            value:it?.code
+                        optionData={organization?.settings?.subscriptionCode?.map(
+                          (it) => {
+                            return {
+                              ...it,
+                              value: it?.code,
+                            };
                           }
-                        })}
+                        )}
                         optionType={"object"}
-                        disabled={persona!=="admin"}
-                       
+                        disabled={persona !== "admin"}
                         value={currentToEdit.subscriptionCode}
                         onChange={(e) =>
                           setCurrentToEdit({
@@ -1056,52 +1063,62 @@ const [addLink,addLinkStatus]=useAddLinkStudentMutation()
                     </div>
                   </div>
                 )}
-                  {currentField.name === "whiteBoardLinks" && (
+                {currentField.name === "whiteBoardLinks" && (
                   <div className="flex flex-col gap-5  !w-[350px]">
-                 <div className="max-h-[50vh] flex flex-col gap-5 custom-scroller overflow-y-auto">
+                    <div className="max-h-[50vh] flex flex-col gap-5 custom-scroller overflow-y-auto">
+                      {currentToEdit?.whiteBoardLinks?.map((it, id) => {
+                        return (
+                          <div className="flex !text-sm gap-4 ">
+                            <InputField
+                              label=""
+                              labelClassname="text-[#26435F] hidden"
+                              placeholder="Add whiteboard link"
+                              inputContainerClassName="text-xs  bg-primary-50 border-0 !py-3 !px-2 !rounded-[5px]"
+                              inputClassName="bg-transparent text-xs   "
+                              parentClassName="flex-1 "
+                              type="text"
+                              value={it}
+                              onChange={(e) => {
+                                let temp = [...currentToEdit.whiteBoardLinks];
 
-                   {
-                    currentToEdit?.whiteBoardLinks?.map((it,id)=>{
-return ( <div className="flex !text-sm gap-4 ">
-<InputField
-  label=""
-  labelClassname="text-[#26435F] hidden"
-  placeholder="Add whiteboard link"
-  inputContainerClassName="text-xs  bg-primary-50 border-0 !py-3 !px-2 !rounded-[5px]"
-  inputClassName="bg-transparent text-xs   "
-  parentClassName="flex-1 "
-  type="text"
-  value={it}
-  onChange={(e) =>{
+                                temp[id] = e.target.value;
+                                setCurrentToEdit({
+                                  ...currentToEdit,
+                                  whiteBoardLinks: temp,
+                                });
+                              }}
+                            />
+                          </div>
+                        );
+                      })}
+                    </div>
+                    <p
+                      onClick={() => {
+                        let tempScores = [...currentToEdit.whiteBoardLinks];
 
-    let temp=[...currentToEdit.whiteBoardLinks]
-    
-    temp[id]=e.target.value
-    setCurrentToEdit({
-      ...currentToEdit,
-      whiteBoardLinks:temp
-    })
-  }
-    
-   
-  }
-/>
-</div>)
-                    })
-                   }
-                   </div>
-                   <p onClick={()=>{
-                    let tempScores = [...currentToEdit.whiteBoardLinks];
-                   
-                      tempScores.push("");
-                      setCurrentToEdit({
-                        ...currentToEdit,
-                        whiteBoardLinks: tempScores,
-                      });
-                   }} className="font-bold !text-lg cursor-pointer    text-[#24A3D9]">Add <svg className="inline-block -mt-1" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
-  <path d="M14.4987 9.29037H9.29037V14.4987C9.29037 14.775 9.18062 15.0399 8.98527 15.2353C8.78992 15.4306 8.52497 15.5404 8.2487 15.5404C7.97243 15.5404 7.70748 15.4306 7.51213 15.2353C7.31678 15.0399 7.20703 14.775 7.20703 14.4987V9.29037H1.9987C1.72243 9.29037 1.45748 9.18062 1.26213 8.98527C1.06678 8.78992 0.957031 8.52497 0.957031 8.2487C0.957031 7.97243 1.06678 7.70748 1.26213 7.51213C1.45748 7.31678 1.72243 7.20703 1.9987 7.20703H7.20703V1.9987C7.20703 1.72243 7.31678 1.45748 7.51213 1.26213C7.70748 1.06678 7.97243 0.957031 8.2487 0.957031C8.52497 0.957031 8.78992 1.06678 8.98527 1.26213C9.18062 1.45748 9.29037 1.72243 9.29037 1.9987V7.20703H14.4987C14.775 7.20703 15.0399 7.31678 15.2353 7.51213C15.4306 7.70748 15.5404 7.97243 15.5404 8.2487C15.5404 8.52497 15.4306 8.78992 15.2353 8.98527C15.0399 9.18062 14.775 9.29037 14.4987 9.29037Z" fill="#24A3D9"/>
-</svg></p>
-                   
+                        tempScores.push("");
+                        setCurrentToEdit({
+                          ...currentToEdit,
+                          whiteBoardLinks: tempScores,
+                        });
+                      }}
+                      className="font-bold !text-lg cursor-pointer    text-[#24A3D9]"
+                    >
+                      Add{" "}
+                      <svg
+                        className="inline-block -mt-1"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        viewBox="0 0 16 16"
+                        fill="none"
+                      >
+                        <path
+                          d="M14.4987 9.29037H9.29037V14.4987C9.29037 14.775 9.18062 15.0399 8.98527 15.2353C8.78992 15.4306 8.52497 15.5404 8.2487 15.5404C7.97243 15.5404 7.70748 15.4306 7.51213 15.2353C7.31678 15.0399 7.20703 14.775 7.20703 14.4987V9.29037H1.9987C1.72243 9.29037 1.45748 9.18062 1.26213 8.98527C1.06678 8.78992 0.957031 8.52497 0.957031 8.2487C0.957031 7.97243 1.06678 7.70748 1.26213 7.51213C1.45748 7.31678 1.72243 7.20703 1.9987 7.20703H7.20703V1.9987C7.20703 1.72243 7.31678 1.45748 7.51213 1.26213C7.70748 1.06678 7.97243 0.957031 8.2487 0.957031C8.52497 0.957031 8.78992 1.06678 8.98527 1.26213C9.18062 1.45748 9.29037 1.72243 9.29037 1.9987V7.20703H14.4987C14.775 7.20703 15.0399 7.31678 15.2353 7.51213C15.4306 7.70748 15.5404 7.97243 15.5404 8.2487C15.5404 8.52497 15.4306 8.78992 15.2353 8.98527C15.0399 9.18062 14.775 9.29037 14.4987 9.29037Z"
+                          fill="#24A3D9"
+                        />
+                      </svg>
+                    </p>
                   </div>
                 )}
                 {currentField.name === "associatedStudents" && (
@@ -1326,45 +1343,52 @@ return ( <div className="flex !text-sm gap-4 ">
                     </div>
                   </div>
                 )}
-                   {currentField.name === "notes" && (
+                {currentField.name === "notes" && (
                   <div>
                     <div className="flex items-center mb-5 pt-6 w-[400px] ">
                       {/* <p className='font-medium mr-4 min-w-[60px]'>  </p> */}
                       <div className="border w-full h-full rounded-md">
-                    {textOpen && 
-
-                     <textarea
-                rows="3"
-                value={currentToEdit.notes}
-                        onChange={(e) =>
-                          setCurrentToEdit({
-                            ...currentToEdit,
-                            notes: e.target.value,
-                          })
-                        }
-                        onFocus={()=>setTextOpen(true)}
-                 onBlur={()=>currentToEdit?.notes?.length==0&&setTextOpen(false)}
-                className={`mt-1 block w-full resize-none focus:!ring-blue-500 p-2 focus:!border-blue-500 placeholder-[#CBD6E2] text-sm  placeholder:text-xs h-[300px] `}
-                placeholder=""
-              ></textarea>}
-              {!textOpen &&
-                currentToEdit?.notes?.length===0&&
-                 <div onClick={()=>setTextOpen(true)} className=" text-[#CBD6E2] text-xs flex-1 text-base-17-5 p-3 h-[300px]">
-                 Add notes about the parent. Here are some ideas to get you
-                 started:
-                 <ul className="list-disc px-4 design:px-5">
-                   <li>How did the initial call go?</li>
-                   <li>What is the parent’s budget?</li>
-                   <li>What timeline do they have in mind for tutoring?</li>
-                   <li>Has the student been tutored before?</li>
-                   <li>Do they prefer online or offline tutoring?</li>
-                   <li>Does the student have siblings?</li>
-                 </ul>
-               </div>
-              }
+                        {textOpen && (
+                          <textarea
+                            rows="3"
+                            value={currentToEdit.notes}
+                            onChange={(e) =>
+                              setCurrentToEdit({
+                                ...currentToEdit,
+                                notes: e.target.value,
+                              })
+                            }
+                            onFocus={() => setTextOpen(true)}
+                            onBlur={() =>
+                              currentToEdit?.notes?.length == 0 &&
+                              setTextOpen(false)
+                            }
+                            className={`mt-1 block w-full resize-none focus:!ring-blue-500 p-2 focus:!border-blue-500 placeholder-[#CBD6E2] text-sm  placeholder:text-xs h-[300px] `}
+                            placeholder=""
+                          ></textarea>
+                        )}
+                        {!textOpen && currentToEdit?.notes?.length === 0 && (
+                          <div
+                            onClick={() => setTextOpen(true)}
+                            className=" text-[#CBD6E2] text-xs flex-1 text-base-17-5 p-3 h-[300px]"
+                          >
+                            Add notes about the parent. Here are some ideas to
+                            get you started:
+                            <ul className="list-disc px-4 design:px-5">
+                              <li>How did the initial call go?</li>
+                              <li>What is the parent’s budget?</li>
+                              <li>
+                                What timeline do they have in mind for tutoring?
+                              </li>
+                              <li>Has the student been tutored before?</li>
+                              <li>
+                                Do they prefer online or offline tutoring?
+                              </li>
+                              <li>Does the student have siblings?</li>
+                            </ul>
+                          </div>
+                        )}
                       </div>
-                     
-                     
                     </div>
                   </div>
                 )}
@@ -1418,8 +1442,32 @@ return ( <div className="flex !text-sm gap-4 ">
                   </div>
                 )}
                 {currentField.name === "service" && (
-                  <div>
-                    <div className="flex items-center mb-5 pt-1 pb-5">
+                  <div className="w-[400px] max-h-[50vh] overflow-y-auto custom-scroller">
+                   
+                    <div className="flex flex-col gap-2">
+                      {organization?.settings?.servicesAndSpecialization.map(
+                        (item, id) => {
+                          return (
+                            <div key={id} className="flex gap-5 items-center">
+                              <SCheckbox
+                              stopM={true}
+                                checked={currentToEdit?.service?.includes(
+                                  item?.service
+                                )}
+                                onChange={() =>
+                                  handleServiceChange(item?.service)
+                                }
+                              />
+                              <span className="text-[#26435F]">
+                                {item?.service}
+                              </span>
+                            </div>
+                          );
+                        }
+                      )}
+                    </div>
+
+                    {/* <div className="flex items-center mb-5 pt-1 pb-5">
                       <InputSelect
                         value={
                           currentToEdit.service.length === 0
@@ -1449,51 +1497,50 @@ return ( <div className="flex !text-sm gap-4 ">
                           // setCurrentToEdit({ ...currentToEdit, students: [... item._id] });
                         }}
                       />
-                    </div>
+                    </div> */}
                   </div>
                 )}
                 {currentField.name === "subjects" && (
                   <div>
-                      <div className="flex flex-wrap max-h-[70vh] overflow-y-auto custom-scroller">
-                    {commonSubjects.map((item) => {
-                      return !currentToEdit?.subjects?.includes(item) ? (
-                        <div
-                          id="selected"
-                          className={`px-3 mr-2 m-1 rounded-lg py-1.5 border-[1.33px] border-[#26435F80] text-[#26435F80]  cursor-pointer text-base-17-5`}
-                          onClick={() => {
-                            let intersetArray = [];
+                    <div className="flex flex-wrap max-h-[70vh] overflow-y-auto custom-scroller">
+                      {commonSubjects.map((item) => {
+                        return !currentToEdit?.subjects?.includes(item) ? (
+                          <div
+                            id="selected"
+                            className={`px-3 mr-2 m-1 rounded-lg py-1.5 border-[1.33px] border-[#26435F80] text-[#26435F80]  cursor-pointer text-base-17-5`}
+                            onClick={() => {
+                              let intersetArray = [];
 
-                            if (currentToEdit.subjects) {
-                              intersetArray = currentToEdit.subjects;
+                              if (currentToEdit.subjects) {
+                                intersetArray = currentToEdit.subjects;
+                              }
+
+                              setCurrentToEdit({
+                                ...currentToEdit,
+                                subjects: [...intersetArray, item],
+                              });
+                            }}
+                          >
+                            <p className="font-semibold ">{item}</p>
+                          </div>
+                        ) : (
+                          <div
+                            id="selected"
+                            className={`px-3 mr-2 m-1 text-center rounded-lg text-white py-1.5 border border-primary bg-primary text-base-17-5 cursor-pointer`}
+                            onClick={() =>
+                              setCurrentToEdit({
+                                ...currentToEdit,
+                                subjects: currentToEdit.subjects.filter(
+                                  (id) => id !== item
+                                ),
+                              })
                             }
-                          
-                            setCurrentToEdit({
-                              ...currentToEdit,
-                              subjects: [...intersetArray, item],
-                            });
-                          }}
-                        >
-                          <p className="font-semibold ">{item}</p>
-                        </div>
-                      ) : (
-                        <div
-                        id="selected"
-                          className={`px-3 mr-2 m-1 text-center rounded-lg text-white py-1.5 border border-primary bg-primary text-base-17-5 cursor-pointer`}
-                          onClick={() =>
-                            setCurrentToEdit({
-                              ...currentToEdit,
-                              subjects: currentToEdit.subjects.filter(
-                                (id) => id !== item
-                              ),
-                            })
-                          }
-                        >
-                          <p className="font-medium">{item}</p>
-                        </div>
-                      );
-                    })}
-                  </div>
-                   
+                          >
+                            <p className="font-medium">{item}</p>
+                          </div>
+                        );
+                      })}
+                    </div>
                   </div>
                 )}
                 {currentField.name === "leadStatus" && (
@@ -1553,7 +1600,7 @@ return ( <div className="flex !text-sm gap-4 ">
                     optionData={parents}
                     onOptionClick={(val) => {
                       // setStudent(item.value);
-                  
+
                       setCurrentToEdit({
                         ...currentToEdit,
                         associatedParent: val._id,
@@ -2173,7 +2220,6 @@ return ( <div className="flex !text-sm gap-4 ">
                                         ...currentToEdit,
                                         phone: e.target.value,
                                       });
-                                    
                                     }}
                                   />
                                 </div>
@@ -2281,45 +2327,45 @@ return ( <div className="flex !text-sm gap-4 ">
                   </div>
                 )}
                 {currentField.name === "personality" && (
-                   <div className="flex flex-wrap">
-                   {qualities.map((item) => {
-                     return !currentToEdit?.personality?.includes(item) ? (
-                       <div
-                         id="selected"
-                         className={`px-3 mr-2 m-1 rounded-lg py-1.5 border-[1.33px] border-[#26435F80] text-[#26435F80]  cursor-pointer text-base-17-5`}
-                         onClick={() => {
-                           let intersetArray = [];
+                  <div className="flex flex-wrap">
+                    {qualities.map((item) => {
+                      return !currentToEdit?.personality?.includes(item) ? (
+                        <div
+                          id="selected"
+                          className={`px-3 mr-2 m-1 rounded-lg py-1.5 border-[1.33px] border-[#26435F80] text-[#26435F80]  cursor-pointer text-base-17-5`}
+                          onClick={() => {
+                            let intersetArray = [];
 
-                           if (currentToEdit.personality) {
-                             intersetArray = currentToEdit.personality;
-                           }
-                           //console.log(intersetArray);
-                           setCurrentToEdit({
-                             ...currentToEdit,
-                             personality: [...intersetArray, item],
-                           });
-                         }}
-                       >
-                         <p className="font-semibold ">{item}</p>
-                       </div>
-                     ) : (
-                       <div
-                       id="selected"
-                         className={`px-3 mr-2 m-1 text-center rounded-lg text-white py-1.5 border border-primary bg-primary text-base-17-5 cursor-pointer`}
-                         onClick={() =>
-                           setCurrentToEdit({
-                             ...currentToEdit,
-                             personality: currentToEdit.personality.filter(
-                               (id) => id !== item
-                             ),
-                           })
-                         }
-                       >
-                         <p className="font-medium">{item}</p>
-                       </div>
-                     );
-                   })}
-                 </div>
+                            if (currentToEdit.personality) {
+                              intersetArray = currentToEdit.personality;
+                            }
+                            //console.log(intersetArray);
+                            setCurrentToEdit({
+                              ...currentToEdit,
+                              personality: [...intersetArray, item],
+                            });
+                          }}
+                        >
+                          <p className="font-semibold ">{item}</p>
+                        </div>
+                      ) : (
+                        <div
+                          id="selected"
+                          className={`px-3 mr-2 m-1 text-center rounded-lg text-white py-1.5 border border-primary bg-primary text-base-17-5 cursor-pointer`}
+                          onClick={() =>
+                            setCurrentToEdit({
+                              ...currentToEdit,
+                              personality: currentToEdit.personality.filter(
+                                (id) => id !== item
+                              ),
+                            })
+                          }
+                        >
+                          <p className="font-medium">{item}</p>
+                        </div>
+                      );
+                    })}
+                  </div>
                 )}
                 {currentField.name === "interest" && (
                   <div className="flex flex-wrap">
@@ -2345,7 +2391,7 @@ return ( <div className="flex !text-sm gap-4 ">
                         </div>
                       ) : (
                         <div
-                        id="selected"
+                          id="selected"
                           className={`px-3 mr-2 m-1 text-center rounded-lg text-white py-1.5 border border-primary bg-primary text-base-17-5 cursor-pointer`}
                           onClick={() =>
                             setCurrentToEdit({
@@ -2489,596 +2535,739 @@ return ( <div className="flex !text-sm gap-4 ">
                 )}
                 {currentField.name === "satScores" && (
                   <div className="flex flex-col gap-4">
-                     <div className="max-h-[50vh] overflow-y-auto custom-scroller">
-
-                   
+                    <div className="max-h-[50vh] overflow-y-auto custom-scroller">
                       {currentToEdit?.satScores?.map(
-                        (it,selectedScoreIndex) => {
+                        (it, selectedScoreIndex) => {
                           return (
-                          <div className="flex flex-col ">
-                            <p className="font-bold !text-lg cursor-pointer mb-2  text-[#24A3D9]">SAT {selectedScoreIndex+1}</p>
-                            <div className="flex gap-5">
-                              <InputField
-                                labelClassname="hidden"
-                                placeholder="Verbal Score"
-                                placeholderClassName="text-sm"
-                                inputContainerClassName="text-sm pt-3 text-center pb-3 bg-primary-50 border-0"
-                                inputClassName="bg-transparent text-center rounded-[4px] text-[#517CA8]"
-                                parentClassName="flex-1 text-sm text-center max-w-[150px]"
-                                type="number"
-                                value={
-                                  currentToEdit.satScores[selectedScoreIndex]
-                                    ?.verbal
-                                }
-                                onChange={(e) => {
-                                   if(parseInt(e.target.value)<0 || parseInt(e.target.value)>1000){
-                                    return
-                                   }
-                                  let tempScores = [...currentToEdit.satScores];
-                                  if (tempScores.length <= selectedScoreIndex) {
-                                    tempScores.push({
-                                      maths: 0,
-                                      verbal: 0,
-                                      cumulative:0,
-                                    });
+                            <div className="flex flex-col ">
+                              <p className="font-bold !text-lg cursor-pointer mb-2  text-[#24A3D9]">
+                                SAT {selectedScoreIndex + 1}
+                              </p>
+                              <div className="flex gap-5">
+                                <InputField
+                                  labelClassname="hidden"
+                                  placeholder="Verbal Score"
+                                  placeholderClassName="text-sm"
+                                  inputContainerClassName="text-sm pt-3 text-center pb-3 bg-primary-50 border-0"
+                                  inputClassName="bg-transparent text-center rounded-[4px] text-[#517CA8]"
+                                  parentClassName="flex-1 text-sm text-center max-w-[150px]"
+                                  type="number"
+                                  value={
+                                    currentToEdit.satScores[selectedScoreIndex]
+                                      ?.verbal
                                   }
-                                  tempScores = tempScores.map((item, idx) => {
-                                    if (selectedScoreIndex === idx) {
-                                      let num = checkNumber(
-                                        currentToEdit.satScores[
-                                          selectedScoreIndex
-                                        ]?.verbal,
-                                        parseInt(e.target.value),
-                                        800
-                                      );
-                                      return { ...item, verbal: num };
-                                    } else {
-                                      return { ...item };
+                                  onChange={(e) => {
+                                    if (
+                                      parseInt(e.target.value) < 0 ||
+                                      parseInt(e.target.value) > 1000
+                                    ) {
+                                      return;
                                     }
-                                  });
-                                  setCurrentToEdit({
-                                    ...currentToEdit,
-                                    satScores: tempScores,
-                                  });
-                                }}
-                              />
-                              <InputField
-                                labelClassname="hidden"
-                                placeholder="Math Score"
-                                inputContainerClassName="text-sm pt-3 pb-3 px-5 bg-primary-50 border-0"
-                                inputClassName="bg-transparent pl-4 rounded-[4px] text-[#517CA8]"
-                                parentClassName="flex-1 max-w-[150px]"
-                                type="number"
-                                value={
-                                  currentToEdit.satScores[selectedScoreIndex]
-                                    ?.maths
-                                }
-                                onChange={(e) => {
-                                  if(parseInt(e.target.value)<0 || parseInt(e.target.value)>1000){
-                                    return
-                                   }
-                                  let tempScores = [...currentToEdit.satScores];
-                                  if (tempScores.length <= selectedScoreIndex) {
-                                    tempScores.push({
-                                      maths: 0,
-                                      verbal: 0,
-                                    });
-                                  }
-                                  tempScores = tempScores.map((item, idx) => {
-                                    if (selectedScoreIndex === idx) {
-                                      return {
-                                        ...item,
-                                        maths: checkNumber(
+                                    let tempScores = [
+                                      ...currentToEdit.satScores,
+                                    ];
+                                    if (
+                                      tempScores.length <= selectedScoreIndex
+                                    ) {
+                                      tempScores.push({
+                                        createdAt: new Date(),
+                                        maths: 0,
+                                        verbal: 0,
+                                        cumulative: 0,
+                                      });
+                                    }
+                                    tempScores = tempScores.map((item, idx) => {
+                                      if (selectedScoreIndex === idx) {
+                                        let num = checkNumber(
                                           currentToEdit.satScores[
                                             selectedScoreIndex
-                                          ]?.maths,
+                                          ]?.verbal,
                                           parseInt(e.target.value),
                                           800
-                                        ),
-                                      };
-                                    } else {
-                                      return { ...item };
+                                        );
+                                        return { ...item, verbal: num };
+                                      } else {
+                                        return { ...item };
+                                      }
+                                    });
+                                    setCurrentToEdit({
+                                      ...currentToEdit,
+                                      satScores: tempScores,
+                                    });
+                                  }}
+                                />
+                                <InputField
+                                  labelClassname="hidden"
+                                  placeholder="Math Score"
+                                  inputContainerClassName="text-sm pt-3 pb-3 px-5 bg-primary-50 border-0"
+                                  inputClassName="bg-transparent pl-4 rounded-[4px] text-[#517CA8]"
+                                  parentClassName="flex-1 max-w-[150px]"
+                                  type="number"
+                                  value={
+                                    currentToEdit.satScores[selectedScoreIndex]
+                                      ?.maths
+                                  }
+                                  onChange={(e) => {
+                                    if (
+                                      parseInt(e.target.value) < 0 ||
+                                      parseInt(e.target.value) > 1000
+                                    ) {
+                                      return;
                                     }
-                                  });
-                                  // tempScores[selectedScoreIndex].maths = checkNumber(currentToEdit.satScores.maths, parseInt(e.target.value), 800)
-                                  // //console.log('tempScores', tempScores);
-                                  setCurrentToEdit({
-                                    ...currentToEdit,
-                                    satScores: tempScores,
-                                  });
-                                }}
-                                
-                              />
-                              
-                            <div className="text-md  rounded-[4px] flex items-center  font-semibold  text-center py-auto px-5 bg-primary-50 border-0 !w-[150px] text-[#FFA28D]">
-                              { currentToEdit.satScores[selectedScoreIndex]?.maths +  currentToEdit.satScores[selectedScoreIndex]
-                                    ?.verbal ?currentToEdit.satScores[selectedScoreIndex]?.maths + currentToEdit.satScores[selectedScoreIndex]?.verbal:
-                              <span className="text-sm my-auto font-semibold">
-                                
-                                cumulative
-                                </span>}
+                                    let tempScores = [
+                                      ...currentToEdit.satScores,
+                                    ];
+                                    if (
+                                      tempScores.length <= selectedScoreIndex
+                                    ) {
+                                      tempScores.push({
+                                        createdAt: new Date(),
+                                        maths: 0,
+                                        verbal: 0,
+                                      });
+                                    }
+                                    tempScores = tempScores.map((item, idx) => {
+                                      if (selectedScoreIndex === idx) {
+                                        return {
+                                          ...item,
+                                          maths: checkNumber(
+                                            currentToEdit.satScores[
+                                              selectedScoreIndex
+                                            ]?.maths,
+                                            parseInt(e.target.value),
+                                            800
+                                          ),
+                                        };
+                                      } else {
+                                        return { ...item };
+                                      }
+                                    });
+                                    // tempScores[selectedScoreIndex].maths = checkNumber(currentToEdit.satScores.maths, parseInt(e.target.value), 800)
+                                    // //console.log('tempScores', tempScores);
+                                    setCurrentToEdit({
+                                      ...currentToEdit,
+                                      satScores: tempScores,
+                                    });
+                                  }}
+                                />
+
+                                <div className="text-md  rounded-[4px] flex items-center  font-semibold  text-center py-auto px-5 bg-primary-50 border-0 !w-[150px] text-[#FFA28D]">
+                                  {currentToEdit.satScores[selectedScoreIndex]
+                                    ?.maths +
+                                  currentToEdit.satScores[selectedScoreIndex]
+                                    ?.verbal ? (
+                                    currentToEdit.satScores[selectedScoreIndex]
+                                      ?.maths +
+                                    currentToEdit.satScores[selectedScoreIndex]
+                                      ?.verbal
+                                  ) : (
+                                    <span className="text-sm my-auto font-semibold">
+                                      cumulative
+                                    </span>
+                                  )}
+                                </div>
                               </div>
-                          
+                              <div className="mt-3 border-1  border-t-2 pb-3 border-[1.25px_solid_#00000033] justify-center "></div>
                             </div>
-                            <div className="mt-3 border-1  border-t-2 pb-3 border-[1.25px_solid_#00000033] justify-center "></div>
-           
-                          </div>)
+                          );
                         }
                       )}
-                      </div>
+                    </div>
 
-                   <p onClick={()=>{
-                    let tempScores = [...currentToEdit.satScores];
-                   
-                      tempScores.push({
-                        maths: null,
-                        verbal: null,
-                        created:new Date()
-                      });
-                      setCurrentToEdit({
-                        ...currentToEdit,
-                        satScores: tempScores,
-                      });
-                   }} className="font-bold !text-lg cursor-pointer    text-[#24A3D9]">Add <svg className="inline-block -mt-1" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
-  <path d="M14.4987 9.29037H9.29037V14.4987C9.29037 14.775 9.18062 15.0399 8.98527 15.2353C8.78992 15.4306 8.52497 15.5404 8.2487 15.5404C7.97243 15.5404 7.70748 15.4306 7.51213 15.2353C7.31678 15.0399 7.20703 14.775 7.20703 14.4987V9.29037H1.9987C1.72243 9.29037 1.45748 9.18062 1.26213 8.98527C1.06678 8.78992 0.957031 8.52497 0.957031 8.2487C0.957031 7.97243 1.06678 7.70748 1.26213 7.51213C1.45748 7.31678 1.72243 7.20703 1.9987 7.20703H7.20703V1.9987C7.20703 1.72243 7.31678 1.45748 7.51213 1.26213C7.70748 1.06678 7.97243 0.957031 8.2487 0.957031C8.52497 0.957031 8.78992 1.06678 8.98527 1.26213C9.18062 1.45748 9.29037 1.72243 9.29037 1.9987V7.20703H14.4987C14.775 7.20703 15.0399 7.31678 15.2353 7.51213C15.4306 7.70748 15.5404 7.97243 15.5404 8.2487C15.5404 8.52497 15.4306 8.78992 15.2353 8.98527C15.0399 9.18062 14.775 9.29037 14.4987 9.29037Z" fill="#24A3D9"/>
-</svg></p>
+                    <p
+                      onClick={() => {
+                        let tempScores = [...currentToEdit.satScores];
+
+                        tempScores.push({
+                          maths: null,
+                          verbal: null,
+                          createdAt: new Date(),
+                        });
+                        setCurrentToEdit({
+                          ...currentToEdit,
+                          satScores: tempScores,
+                        });
+                      }}
+                      className="font-bold !text-lg cursor-pointer    text-[#24A3D9]"
+                    >
+                      Add{" "}
+                      <svg
+                        className="inline-block -mt-1"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        viewBox="0 0 16 16"
+                        fill="none"
+                      >
+                        <path
+                          d="M14.4987 9.29037H9.29037V14.4987C9.29037 14.775 9.18062 15.0399 8.98527 15.2353C8.78992 15.4306 8.52497 15.5404 8.2487 15.5404C7.97243 15.5404 7.70748 15.4306 7.51213 15.2353C7.31678 15.0399 7.20703 14.775 7.20703 14.4987V9.29037H1.9987C1.72243 9.29037 1.45748 9.18062 1.26213 8.98527C1.06678 8.78992 0.957031 8.52497 0.957031 8.2487C0.957031 7.97243 1.06678 7.70748 1.26213 7.51213C1.45748 7.31678 1.72243 7.20703 1.9987 7.20703H7.20703V1.9987C7.20703 1.72243 7.31678 1.45748 7.51213 1.26213C7.70748 1.06678 7.97243 0.957031 8.2487 0.957031C8.52497 0.957031 8.78992 1.06678 8.98527 1.26213C9.18062 1.45748 9.29037 1.72243 9.29037 1.9987V7.20703H14.4987C14.775 7.20703 15.0399 7.31678 15.2353 7.51213C15.4306 7.70748 15.5404 7.97243 15.5404 8.2487C15.5404 8.52497 15.4306 8.78992 15.2353 8.98527C15.0399 9.18062 14.775 9.29037 14.4987 9.29037Z"
+                          fill="#24A3D9"
+                        />
+                      </svg>
+                    </p>
                   </div>
                 )}
-                 {currentField.name === "baseLineScore" && (
+                {currentField.name === "baseLineScore" && (
                   <div className="flex flex-col gap-4 mt-[-20px]">
-                     <div className="max-h-[50vh] overflow-y-auto custom-scroller">
+                    <div className="max-h-[50vh] overflow-y-auto custom-scroller">
+                      <div className="flex flex-col ">
+                        <p className="font-bold !text-md cursor-pointer mb-2  text-[#24A3D9]">
+                          SAT Baseline Score
+                        </p>
+                        <div className="flex gap-5">
+                          <InputField
+                            labelClassname="hidden"
+                            placeholder="Verbal Score"
+                            placeholderClassName="text-sm"
+                            inputContainerClassName="text-sm pt-3 text-center pb-3 bg-primary-50 border-0"
+                            inputClassName="bg-transparent text-center rounded-[4px] text-[#517CA8]"
+                            parentClassName="flex-1 text-sm text-center max-w-[150px]"
+                            type="number"
+                            value={
+                              currentToEdit.baseLineScore?.satBaseLineScore
+                                ?.verbal
+                            }
+                            onChange={(e) => {
+                              setCurrentToEdit({
+                                ...currentToEdit,
+                                baseLineScore: {
+                                  ...currentToEdit?.baseLineScore,
+                                  satBaseLineScore: {
+                                    ...currentToEdit.baseLineScore
+                                      ?.satBaseLineScore,
+                                    verbal: e.target.value,
+                                  },
+                                },
+                              });
+                            }}
+                          />
+                          <InputField
+                            labelClassname="hidden"
+                            placeholder="Math Score"
+                            inputContainerClassName="text-sm pt-3 pb-3 px-5 bg-primary-50 border-0"
+                            inputClassName="bg-transparent pl-4 rounded-[4px] text-[#517CA8]"
+                            parentClassName="flex-1 max-w-[150px]"
+                            type="number"
+                            value={
+                              currentToEdit.baseLineScore?.satBaseLineScore
+                                ?.maths
+                            }
+                            onChange={(e) => {
+                              setCurrentToEdit({
+                                ...currentToEdit,
+                                baseLineScore: {
+                                  ...currentToEdit?.baseLineScore,
+                                  satBaseLineScore: {
+                                    ...currentToEdit.baseLineScore
+                                      ?.satBaseLineScore,
+                                    maths: e.target.value,
+                                  },
+                                },
+                              });
+                            }}
+                            // tempScores[selectedScoreIndex].maths = checkNumber(currentToEdit.satScores.maths, parseInt(e.target.value), 800)
+                            // //console.log('tempScores', tempScores);
+                          />
 
-                   
-                    
-                          <div className="flex flex-col ">
-                            <p className="font-bold !text-md cursor-pointer mb-2  text-[#24A3D9]">SAT Baseline Score</p>
-                            <div className="flex gap-5">
+                          <div className="text-md  rounded-[4px] flex items-center  font-semibold  text-center py-auto px-5 bg-primary-50 border-0 !w-[150px] text-[#FFA28D]">
+                            {parseInt(
+                              currentToEdit.baseLineScore?.satBaseLineScore
+                                ?.maths
+                            ) +
+                            parseInt(
+                              currentToEdit.baseLineScore?.satBaseLineScore
+                                ?.verbal
+                            ) ? (
+                              parseInt(
+                                currentToEdit.baseLineScore?.satBaseLineScore
+                                  ?.maths
+                              ) +
+                              parseInt(
+                                currentToEdit.baseLineScore?.satBaseLineScore
+                                  ?.verbal
+                              )
+                            ) : (
+                              <span className="text-sm my-auto font-semibold">
+                                cumulative
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                        <div className="mt-5 border-1  border-t-2 pb-3 border-[1.25px_solid_#00000033] justify-center "></div>
+                      </div>
+                      <div className="flex flex-col ">
+                        <p className="font-bold !text-md cursor-pointer mb-2  text-[#24A3D9]">
+                          ACT Baseline Score
+                        </p>
+                        <div className="flex gap-5 items-center !text-md">
+                          <div className="grid grid-cols-2 gap-3 !text-[#517CA8]">
+                            <div className="flex flex-col items-center mb-4">
                               <InputField
                                 labelClassname="hidden"
-                                placeholder="Verbal Score"
-                                placeholderClassName="text-sm"
-                                inputContainerClassName="text-sm pt-3 text-center pb-3 bg-primary-50 border-0"
-                                inputClassName="bg-transparent text-center rounded-[4px] text-[#517CA8]"
-                                parentClassName="flex-1 text-sm text-center max-w-[150px]"
+                                placeholder="Maths"
+                                inputContainerClassName="text-sm py-1 px-5 bg-primary-50 border-0"
+                                inputClassName="bg-transparent pl-4 rounded-[4px] placeholder:text-sm"
+                                parentClassName="flex-1 !text-sm max-w-[140px]"
                                 type="number"
                                 value={
-                                  currentToEdit.baseLineScore?.satBaseLineScore
-                                    ?.verbal
-                                }
-                                onChange={(e) => {
-                                 
-                                 setCurrentToEdit({
-                                  ...currentToEdit,
-                                  baseLineScore:{
-                                    ...currentToEdit?.baseLineScore,
-                                    satBaseLineScore:{
-                                      ...currentToEdit.baseLineScore?.satBaseLineScore,
-                                      verbal: e.target.value
-                                    }
-                                  }
-                                 })
-                                }}
-                              />
-                              <InputField
-                                labelClassname="hidden"
-                                placeholder="Math Score"
-                                inputContainerClassName="text-sm pt-3 pb-3 px-5 bg-primary-50 border-0"
-                                inputClassName="bg-transparent pl-4 rounded-[4px] text-[#517CA8]"
-                                parentClassName="flex-1 max-w-[150px]"
-                                type="number"
-                               value={
-                                  currentToEdit.baseLineScore?.satBaseLineScore
+                                  currentToEdit.baseLineScore?.actBaseLineScore
                                     ?.maths
                                 }
                                 onChange={(e) => {
-                                 
-                                 setCurrentToEdit({
-                                  ...currentToEdit,
-                                  baseLineScore:{
-                                    ...currentToEdit?.baseLineScore,
-                                    satBaseLineScore:{
-                                      ...currentToEdit.baseLineScore?.satBaseLineScore,
-                                      maths: e.target.value
-                                    }
-                                  }
-                                 })
+                                  setCurrentToEdit({
+                                    ...currentToEdit,
+                                    baseLineScore: {
+                                      ...currentToEdit?.baseLineScore,
+                                      actBaseLineScore: {
+                                        ...currentToEdit.baseLineScore
+                                          ?.actBaseLineScore,
+                                        maths: e.target.value,
+                                      },
+                                    },
+                                  });
                                 }}
-                                  // tempScores[selectedScoreIndex].maths = checkNumber(currentToEdit.satScores.maths, parseInt(e.target.value), 800)
-                                  // //console.log('tempScores', tempScores);
-                                 
-                                
                               />
-                              
-                            <div className="text-md  rounded-[4px] flex items-center  font-semibold  text-center py-auto px-5 bg-primary-50 border-0 !w-[150px] text-[#FFA28D]">
-                              { parseInt(currentToEdit.baseLineScore?.satBaseLineScore?.maths) +  parseInt(currentToEdit.baseLineScore?.satBaseLineScore?.verbal)  ? 
-                                    parseInt(currentToEdit.baseLineScore?.satBaseLineScore?.maths) + parseInt(currentToEdit.baseLineScore?.satBaseLineScore?.verbal):
-                              <span className="text-sm my-auto font-semibold">
-                                
-                                cumulative
-                                </span>}
-                              </div>
-                          
                             </div>
-                            <div className="mt-5 border-1  border-t-2 pb-3 border-[1.25px_solid_#00000033] justify-center "></div>
-           
+                            <div className="flex  flex-col  items-center mb-4">
+                              <InputField
+                                labelClassname="hidden"
+                                placeholder="English"
+                                inputContainerClassName="text-sm py-1 px-5 bg-primary-50 border-0"
+                                inputClassName="bg-transparent pl-4 rounded-[4px]"
+                                parentClassName="flex-1 max-w-[140px]"
+                                type="number"
+                                value={
+                                  currentToEdit.baseLineScore?.actBaseLineScore
+                                    ?.english
+                                }
+                                onChange={(e) => {
+                                  setCurrentToEdit({
+                                    ...currentToEdit,
+                                    baseLineScore: {
+                                      ...currentToEdit?.baseLineScore,
+                                      actBaseLineScore: {
+                                        ...currentToEdit.baseLineScore
+                                          ?.actBaseLineScore,
+                                        english: e.target.value,
+                                      },
+                                    },
+                                  });
+                                }}
+                              />
+                            </div>
+                            <div className="flex  flex-col  items-center mb-4">
+                              <InputField
+                                labelClassname="hidden"
+                                placeholder="Reading"
+                                inputContainerClassName="text-sm py-1 px-5 bg-primary-50 border-0"
+                                inputClassName="bg-transparent pl-4 rounded-[4px]"
+                                parentClassName="flex-1 max-w-[140px]"
+                                type="number"
+                                value={
+                                  currentToEdit.baseLineScore?.actBaseLineScore
+                                    ?.reading
+                                }
+                                onChange={(e) => {
+                                  setCurrentToEdit({
+                                    ...currentToEdit,
+                                    baseLineScore: {
+                                      ...currentToEdit?.baseLineScore,
+                                      actBaseLineScore: {
+                                        ...currentToEdit.baseLineScore
+                                          ?.actBaseLineScore,
+                                        reading: e.target.value,
+                                      },
+                                    },
+                                  });
+                                }}
+                              />
+                            </div>
+                            <div className="flex  flex-col  items-center mb-4">
+                              <InputField
+                                labelClassname="hidden"
+                                placeholder="Science"
+                                inputContainerClassName="text-sm py-1 px-5 bg-primary-50 border-0"
+                                inputClassName="bg-transparent pl-4 rounded-[4px]"
+                                parentClassName="flex-1 max-w-[140px]"
+                                type="number"
+                                value={
+                                  currentToEdit.baseLineScore?.actBaseLineScore
+                                    ?.science
+                                }
+                                onChange={(e) => {
+                                  setCurrentToEdit({
+                                    ...currentToEdit,
+                                    baseLineScore: {
+                                      ...currentToEdit?.baseLineScore,
+                                      actBaseLineScore: {
+                                        ...currentToEdit.baseLineScore
+                                          ?.actBaseLineScore,
+                                        science: e.target.value,
+                                      },
+                                    },
+                                  });
+                                }}
+                              />
+                            </div>
                           </div>
-                          <div className="flex flex-col ">
-                         <p className="font-bold !text-md cursor-pointer mb-2  text-[#24A3D9]">ACT Baseline Score</p>
-                         <div className="flex gap-5 items-center !text-md">
-                         <div className="grid grid-cols-2 gap-3 !text-[#517CA8]">
-                    <div className="flex flex-col items-center mb-4">
-                     
-                      <InputField
-                        labelClassname="hidden"
-                        placeholder="Maths"
-                        inputContainerClassName="text-sm py-1 px-5 bg-primary-50 border-0"
-                        inputClassName="bg-transparent pl-4 rounded-[4px] placeholder:text-sm"
-                        parentClassName="flex-1 !text-sm max-w-[140px]"
-                        type="number"
-                        value={
-                          currentToEdit.baseLineScore?.actBaseLineScore
-                            ?.maths
-                        }
-                        onChange={(e) => {
-                         
-                         setCurrentToEdit({
-                          ...currentToEdit,
-                          baseLineScore:{
-                            ...currentToEdit?.baseLineScore,
-                            actBaseLineScore:{
-                              ...currentToEdit.baseLineScore?.actBaseLineScore,
-                              maths: e.target.value
-                            }
-                          }
-                         })
-                        }}
-                      />
-                    </div>
-                    <div className="flex  flex-col  items-center mb-4">
-                    
-                      <InputField
-                        labelClassname="hidden"
-                        placeholder="English"
-                        inputContainerClassName="text-sm py-1 px-5 bg-primary-50 border-0"
-                        inputClassName="bg-transparent pl-4 rounded-[4px]"
-                        parentClassName="flex-1 max-w-[140px]"
-                        type="number"
-                        value={
-                          currentToEdit.baseLineScore?.actBaseLineScore
-                            ?.english
-                        }
-                        onChange={(e) => {
-                         
-                         setCurrentToEdit({
-                          ...currentToEdit,
-                          baseLineScore:{
-                            ...currentToEdit?.baseLineScore,
-                            actBaseLineScore:{
-                              ...currentToEdit.baseLineScore?.actBaseLineScore,
-                              english: e.target.value
-                            }
-                          }
-                         })
-                        }}
-                      />
-                    </div>
-                    <div className="flex  flex-col  items-center mb-4">
-                   
-                      <InputField
-                        labelClassname="hidden"
-                        placeholder="Reading"
-                        inputContainerClassName="text-sm py-1 px-5 bg-primary-50 border-0"
-                        inputClassName="bg-transparent pl-4 rounded-[4px]"
-                        parentClassName="flex-1 max-w-[140px]"
-                        type="number"
-                        value={
-                          currentToEdit.baseLineScore?.actBaseLineScore
-                            ?.reading
-                        }
-                        onChange={(e) => {
-                         
-                         setCurrentToEdit({
-                          ...currentToEdit,
-                          baseLineScore:{
-                            ...currentToEdit?.baseLineScore,
-                            actBaseLineScore:{
-                              ...currentToEdit.baseLineScore?.actBaseLineScore,
-                              reading: e.target.value
-                            }
-                          }
-                         })
-                        }}
-                      />
-                    </div>
-                    <div className="flex  flex-col  items-center mb-4">
-                     
-                      <InputField
-                        labelClassname="hidden"
-                        placeholder="Science"
-                        inputContainerClassName="text-sm py-1 px-5 bg-primary-50 border-0"
-                        inputClassName="bg-transparent pl-4 rounded-[4px]"
-                        parentClassName="flex-1 max-w-[140px]"
-                        type="number"
-                        value={
-                          currentToEdit.baseLineScore?.actBaseLineScore
-                            ?.science
-                        }
-                        onChange={(e) => {
-                         
-                         setCurrentToEdit({
-                          ...currentToEdit,
-                          baseLineScore:{
-                            ...currentToEdit?.baseLineScore,
-                            actBaseLineScore:{
-                              ...currentToEdit.baseLineScore?.actBaseLineScore,
-                              science: e.target.value
-                            }
-                          }
-                         })
-                        }}
-                      />
-                    </div>
-                  </div>
-                            
-                         <div className="text-md py-2 rounded-[4px] flex items-center  font-semibold  text-center py-auto px-5 bg-primary-50 border-0 !w-[150px] text-[#FFA28D]">
-                           {  parseInt(currentToEdit.baseLineScore?.actBaseLineScore?.maths) +  parseInt(currentToEdit.baseLineScore?.actBaseLineScore?.science) + parseInt(currentToEdit.baseLineScore?.actBaseLineScore?.reading) + parseInt(currentToEdit.baseLineScore?.actBaseLineScore?.english) 
-                                  ?parseInt(currentToEdit.baseLineScore?.actBaseLineScore?.maths) +  parseInt(currentToEdit.baseLineScore?.actBaseLineScore?.science) + parseInt(currentToEdit.baseLineScore?.actBaseLineScore?.reading) + parseInt(currentToEdit.baseLineScore?.actBaseLineScore?.english) :
-                           <span className="text-placeholder:text-sm my-auto text-sm font-semibold">
-                             
-                             cumulative
-                             </span>}
-                           </div>
-                       
-                         </div>
-                         
-                       </div>
+
+                          <div className="text-md py-2 rounded-[4px] flex items-center  font-semibold  text-center py-auto px-5 bg-primary-50 border-0 !w-[150px] text-[#FFA28D]">
+                            {parseInt(
+                              currentToEdit.baseLineScore?.actBaseLineScore
+                                ?.maths
+                            ) +
+                            parseInt(
+                              currentToEdit.baseLineScore?.actBaseLineScore
+                                ?.science
+                            ) +
+                            parseInt(
+                              currentToEdit.baseLineScore?.actBaseLineScore
+                                ?.reading
+                            ) +
+                            parseInt(
+                              currentToEdit.baseLineScore?.actBaseLineScore
+                                ?.english
+                            ) ? (
+                              parseInt(
+                                currentToEdit.baseLineScore?.actBaseLineScore
+                                  ?.maths
+                              ) +
+                              parseInt(
+                                currentToEdit.baseLineScore?.actBaseLineScore
+                                  ?.science
+                              ) +
+                              parseInt(
+                                currentToEdit.baseLineScore?.actBaseLineScore
+                                  ?.reading
+                              ) +
+                              parseInt(
+                                currentToEdit.baseLineScore?.actBaseLineScore
+                                  ?.english
+                              )
+                            ) : (
+                              <span className="text-placeholder:text-sm my-auto text-sm font-semibold">
+                                cumulative
+                              </span>
+                            )}
+                          </div>
+                        </div>
                       </div>
-                     
-                   
+                    </div>
                   </div>
                 )}
                 {currentField.name === "actScores" && (
                   <>
-                  
-                  <div className="flex flex-col gap-4 ">
-                   <div className="max-h-[50vh] overflow-y-auto custom-scroller">
+                    <div className="flex flex-col gap-4 ">
+                      <div className="max-h-[50vh] overflow-y-auto custom-scroller">
+                        {currentToEdit?.actScores?.map(
+                          (it, selectedScoreIndex) => {
+                            return (
+                              <div className="flex flex-col ">
+                                <p className="font-bold !text-lg cursor-pointer mb-2  text-[#24A3D9]">
+                                  ACT {selectedScoreIndex + 1}
+                                </p>
+                                <div className="flex gap-5 items-center !text-md">
+                                  <div className="grid grid-cols-2 gap-3 !text-[#517CA8]">
+                                    <div className="flex flex-col items-center mb-4">
+                                      <InputField
+                                        labelClassname="hidden"
+                                        placeholder="Maths"
+                                        inputContainerClassName="text-sm py-1 px-5 bg-primary-50 border-0"
+                                        inputClassName="bg-transparent pl-4 rounded-[4px] placeholder:text-sm"
+                                        parentClassName="flex-1 !text-sm max-w-[140px]"
+                                        type="number"
+                                        value={
+                                          currentToEdit.actScores[
+                                            selectedScoreIndex
+                                          ]?.maths
+                                        }
+                                        onChange={(e) => {
+                                          if (
+                                            parseInt(e.target.value) < 0 ||
+                                            parseInt(e.target.value) > 1000
+                                          ) {
+                                            return;
+                                          }
+                                          let tempScores = [
+                                            ...currentToEdit.actScores,
+                                          ];
+                                          if (
+                                            tempScores.length <=
+                                            selectedScoreIndex
+                                          ) {
+                                            tempScores.push({
+                                              createdAt: new Date(),
+                                              maths: 0,
+                                              english: 0,
+                                              reading: 0,
+                                              science: 0,
+                                            });
+                                          }
+                                          tempScores = tempScores.map(
+                                            (item, idx) => {
+                                              if (selectedScoreIndex === idx) {
+                                                return {
+                                                  ...item,
+                                                  maths: checkNumber(
+                                                    currentToEdit.actScores[
+                                                      selectedScoreIndex
+                                                    ]?.maths,
+                                                    parseInt(e.target.value),
+                                                    36
+                                                  ),
+                                                };
+                                              } else {
+                                                return { ...item };
+                                              }
+                                            }
+                                          );
+                                          setCurrentToEdit({
+                                            ...currentToEdit,
+                                            actScores: tempScores,
+                                          });
+                                        }}
+                                      />
+                                    </div>
+                                    <div className="flex  flex-col  items-center mb-4">
+                                      <InputField
+                                        labelClassname="hidden"
+                                        placeholder="English"
+                                        inputContainerClassName="text-sm py-1 px-5 bg-primary-50 border-0"
+                                        inputClassName="bg-transparent pl-4 rounded-[4px]"
+                                        parentClassName="flex-1 max-w-[140px]"
+                                        type="number"
+                                        pattern={""}
+                                        value={
+                                          currentToEdit.actScores[
+                                            selectedScoreIndex
+                                          ]?.english
+                                        }
+                                        onChange={(e) => {
+                                          if (
+                                            parseInt(e.target.value) < 0 ||
+                                            parseInt(e.target.value) > 1000
+                                          ) {
+                                            return;
+                                          }
+                                          let tempScores = [
+                                            ...currentToEdit.actScores,
+                                          ];
+                                          if (
+                                            tempScores.length <=
+                                            selectedScoreIndex
+                                          ) {
+                                            tempScores.push({
+                                              createdAt: new Date(),
+                                              maths: 0,
+                                              english: 0,
+                                              reading: 0,
+                                              science: 0,
+                                            });
+                                          }
+                                          tempScores = tempScores.map(
+                                            (item, idx) => {
+                                              if (selectedScoreIndex === idx) {
+                                                return {
+                                                  ...item,
+                                                  english: checkNumber(
+                                                    currentToEdit.actScores[
+                                                      selectedScoreIndex
+                                                    ]?.english,
+                                                    parseInt(e.target.value),
+                                                    36
+                                                  ),
+                                                };
+                                              } else {
+                                                return { ...item };
+                                              }
+                                            }
+                                          );
+                                          setCurrentToEdit({
+                                            ...currentToEdit,
+                                            actScores: tempScores,
+                                          });
+                                        }}
+                                      />
+                                    </div>
+                                    <div className="flex  flex-col  items-center mb-4">
+                                      <InputField
+                                        labelClassname="hidden"
+                                        placeholder="Reading"
+                                        inputContainerClassName="text-sm py-1 px-5 bg-primary-50 border-0"
+                                        inputClassName="bg-transparent pl-4 rounded-[4px]"
+                                        parentClassName="flex-1 max-w-[140px]"
+                                        type="number"
+                                        value={
+                                          currentToEdit.actScores[
+                                            selectedScoreIndex
+                                          ]?.reading
+                                        }
+                                        onChange={(e) => {
+                                          if (
+                                            parseInt(e.target.value) < 0 ||
+                                            parseInt(e.target.value) > 1000
+                                          ) {
+                                            return;
+                                          }
+                                          let tempScores = [
+                                            ...currentToEdit.actScores,
+                                          ];
+                                          if (
+                                            tempScores.length <=
+                                            selectedScoreIndex
+                                          ) {
+                                            tempScores.push({
+                                              createdAt: new Date(),
+                                              maths: 0,
+                                              english: 0,
+                                              reading: 0,
+                                              science: 0,
+                                            });
+                                          }
+                                          tempScores = tempScores.map(
+                                            (item, idx) => {
+                                              if (selectedScoreIndex === idx) {
+                                                return {
+                                                  ...item,
+                                                  reading: checkNumber(
+                                                    currentToEdit.actScores[
+                                                      selectedScoreIndex
+                                                    ]?.reading,
+                                                    parseInt(e.target.value),
+                                                    36
+                                                  ),
+                                                };
+                                              } else {
+                                                return { ...item };
+                                              }
+                                            }
+                                          );
+                                          setCurrentToEdit({
+                                            ...currentToEdit,
+                                            actScores: tempScores,
+                                          });
+                                        }}
+                                      />
+                                    </div>
+                                    <div className="flex  flex-col  items-center mb-4">
+                                      <InputField
+                                        labelClassname="hidden"
+                                        placeholder="Science"
+                                        inputContainerClassName="text-sm py-1 px-5 bg-primary-50 border-0"
+                                        inputClassName="bg-transparent pl-4 rounded-[4px]"
+                                        parentClassName="flex-1 max-w-[140px]"
+                                        type="number"
+                                        value={
+                                          currentToEdit.actScores[
+                                            selectedScoreIndex
+                                          ]?.science
+                                        }
+                                        onChange={(e) => {
+                                          if (
+                                            parseInt(e.target.value) < 0 ||
+                                            parseInt(e.target.value) > 1000
+                                          ) {
+                                            return;
+                                          }
+                                          let tempScores = [
+                                            ...currentToEdit.actScores,
+                                          ];
+                                          if (
+                                            tempScores.length <=
+                                            selectedScoreIndex
+                                          ) {
+                                            tempScores.push({
+                                              createdAt: new Date(),
+                                              maths: 0,
+                                              english: 0,
+                                              reading: 0,
+                                              science: 0,
+                                            });
+                                          }
+                                          tempScores = tempScores.map(
+                                            (item, idx) => {
+                                              if (selectedScoreIndex === idx) {
+                                                return {
+                                                  ...item,
+                                                  science: checkNumber(
+                                                    currentToEdit.actScores[
+                                                      selectedScoreIndex
+                                                    ]?.science,
+                                                    parseInt(e.target.value),
+                                                    36
+                                                  ),
+                                                };
+                                              } else {
+                                                return { ...item };
+                                              }
+                                            }
+                                          );
+                                          setCurrentToEdit({
+                                            ...currentToEdit,
+                                            actScores: tempScores,
+                                          });
+                                        }}
+                                      />
+                                    </div>
+                                  </div>
 
-                   {currentToEdit?.actScores?.map(
-                     (it,selectedScoreIndex) => {
-                       return (
-                       <div className="flex flex-col ">
-                         <p className="font-bold !text-lg cursor-pointer mb-2  text-[#24A3D9]">ACT {selectedScoreIndex+1}</p>
-                         <div className="flex gap-5 items-center !text-md">
-                         <div className="grid grid-cols-2 gap-3 !text-[#517CA8]">
-                    <div className="flex flex-col items-center mb-4">
-                     
-                      <InputField
-                        labelClassname="hidden"
-                        placeholder="Maths"
-                        inputContainerClassName="text-sm py-1 px-5 bg-primary-50 border-0"
-                        inputClassName="bg-transparent pl-4 rounded-[4px] placeholder:text-sm"
-                        parentClassName="flex-1 !text-sm max-w-[140px]"
-                        type="number"
-                        value={
-                          currentToEdit.actScores[selectedScoreIndex]?.maths
-                        }
-                        onChange={(e) => {
-                          if(parseInt(e.target.value)<0 || parseInt(e.target.value)>1000){
-                            return
-                           }
-                          let tempScores = [...currentToEdit.actScores];
-                          if (tempScores.length <= selectedScoreIndex) {
-                            tempScores.push({
-                              maths: 0,
-                              english: 0,
-                              reading: 0,
-                              science: 0,
-                            });
+                                  <div className="text-md py-2 rounded-[4px] flex items-center  font-semibold  text-center py-auto px-5 bg-primary-50 border-0 !w-[150px] text-[#FFA28D]">
+                                    {it?.maths +
+                                    it?.science +
+                                    it?.reading +
+                                    it?.english ? (
+                                      it?.maths +
+                                      it?.science +
+                                      it?.reading +
+                                      it?.english
+                                    ) : (
+                                      <span className="text-placeholder:text-sm my-auto font-semibold">
+                                        cumulative
+                                      </span>
+                                    )}
+                                  </div>
+                                </div>
+                                <div className="mt-3 border-1  border-t-2 pb-3 border-[1.25px_solid_#00000033] justify-center "></div>
+                              </div>
+                            );
                           }
-                          tempScores = tempScores.map((item, idx) => {
-                            if (selectedScoreIndex === idx) {
-                              return {
-                                ...item,
-                                maths: checkNumber(
-                                  currentToEdit.actScores[selectedScoreIndex]
-                                    ?.maths,
-                                  parseInt(e.target.value),
-                                  36
-                                ),
-                              };
-                            } else {
-                              return { ...item };
-                            }
+                        )}
+                      </div>
+                      <p
+                        onClick={() => {
+                          let tempScores = [...currentToEdit.actScores];
+
+                          tempScores.push({
+                            maths: null,
+                            english: null,
+                            reading: null,
+                            science: null,
+                            createdAt: new Date(),
                           });
                           setCurrentToEdit({
                             ...currentToEdit,
                             actScores: tempScores,
                           });
                         }}
-                      />
+                        className="font-bold !text-lg cursor-pointer    text-[#24A3D9]"
+                      >
+                        Add{" "}
+                        <svg
+                          className="inline-block -mt-1"
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="16"
+                          height="16"
+                          viewBox="0 0 16 16"
+                          fill="none"
+                        >
+                          <path
+                            d="M14.4987 9.29037H9.29037V14.4987C9.29037 14.775 9.18062 15.0399 8.98527 15.2353C8.78992 15.4306 8.52497 15.5404 8.2487 15.5404C7.97243 15.5404 7.70748 15.4306 7.51213 15.2353C7.31678 15.0399 7.20703 14.775 7.20703 14.4987V9.29037H1.9987C1.72243 9.29037 1.45748 9.18062 1.26213 8.98527C1.06678 8.78992 0.957031 8.52497 0.957031 8.2487C0.957031 7.97243 1.06678 7.70748 1.26213 7.51213C1.45748 7.31678 1.72243 7.20703 1.9987 7.20703H7.20703V1.9987C7.20703 1.72243 7.31678 1.45748 7.51213 1.26213C7.70748 1.06678 7.97243 0.957031 8.2487 0.957031C8.52497 0.957031 8.78992 1.06678 8.98527 1.26213C9.18062 1.45748 9.29037 1.72243 9.29037 1.9987V7.20703H14.4987C14.775 7.20703 15.0399 7.31678 15.2353 7.51213C15.4306 7.70748 15.5404 7.97243 15.5404 8.2487C15.5404 8.52497 15.4306 8.78992 15.2353 8.98527C15.0399 9.18062 14.775 9.29037 14.4987 9.29037Z"
+                            fill="#24A3D9"
+                          />
+                        </svg>
+                      </p>
                     </div>
-                    <div className="flex  flex-col  items-center mb-4">
-                    
-                      <InputField
-                        labelClassname="hidden"
-                        placeholder="English"
-                        inputContainerClassName="text-sm py-1 px-5 bg-primary-50 border-0"
-                        inputClassName="bg-transparent pl-4 rounded-[4px]"
-                        parentClassName="flex-1 max-w-[140px]"
-                        type="number"
-                        pattern={""}
-                        value={
-                          currentToEdit.actScores[selectedScoreIndex]?.english
-                        }
-                        onChange={(e) => {
-                          if(parseInt(e.target.value)<0 || parseInt(e.target.value)>1000){
-                            return
-                           }
-                          let tempScores = [...currentToEdit.actScores];
-                          if (tempScores.length <= selectedScoreIndex) {
-                            tempScores.push({
-                              maths: 0,
-                              english: 0,
-                              reading: 0,
-                              science: 0,
-                            });
-                          }
-                          tempScores = tempScores.map((item, idx) => {
-                            if (selectedScoreIndex === idx) {
-                              return {
-                                ...item,
-                                english: checkNumber(
-                                  currentToEdit.actScores[selectedScoreIndex]
-                                    ?.english,
-                                  parseInt(e.target.value),
-                                  36
-                                ),
-                              };
-                            } else {
-                              return { ...item };
-                            }
-                          });
-                          setCurrentToEdit({
-                            ...currentToEdit,
-                            actScores: tempScores,
-                          });
-                        }}
-                      />
-                    </div>
-                    <div className="flex  flex-col  items-center mb-4">
-                   
-                      <InputField
-                        labelClassname="hidden"
-                        placeholder="Reading"
-                        inputContainerClassName="text-sm py-1 px-5 bg-primary-50 border-0"
-                        inputClassName="bg-transparent pl-4 rounded-[4px]"
-                        parentClassName="flex-1 max-w-[140px]"
-                        type="number"
-                        value={
-                          currentToEdit.actScores[selectedScoreIndex]?.reading
-                        }
-                        onChange={(e) => {
-                         
-                          if(parseInt(e.target.value)<0 || parseInt(e.target.value)>1000){
-                            return
-                           }
-                          let tempScores = [...currentToEdit.actScores];
-                          if (tempScores.length <= selectedScoreIndex) {
-                            tempScores.push({
-                              maths: 0,
-                              english: 0,
-                              reading: 0,
-                              science: 0,
-                            });
-                          }
-                          tempScores = tempScores.map((item, idx) => {
-                            if (selectedScoreIndex === idx) {
-                              return {
-                                ...item,
-                                reading: checkNumber(
-                                  currentToEdit.actScores[selectedScoreIndex]
-                                    ?.reading,
-                                  parseInt(e.target.value),
-                                  36
-                                ),
-                              };
-                            } else {
-                              return { ...item };
-                            }
-                          });
-                          setCurrentToEdit({
-                            ...currentToEdit,
-                            actScores: tempScores,
-                          });
-                        }}
-                      />
-                    </div>
-                    <div className="flex  flex-col  items-center mb-4">
-                     
-                      <InputField
-                        labelClassname="hidden"
-                        placeholder="Science"
-                        inputContainerClassName="text-sm py-1 px-5 bg-primary-50 border-0"
-                        inputClassName="bg-transparent pl-4 rounded-[4px]"
-                        parentClassName="flex-1 max-w-[140px]"
-                        type="number"
-                        value={
-                          currentToEdit.actScores[selectedScoreIndex]?.science
-                        }
-                        onChange={(e) => {
-                          if(parseInt(e.target.value)<0 || parseInt(e.target.value)>1000){
-                            return
-                           }
-                          let tempScores = [...currentToEdit.actScores];
-                          if (tempScores.length <= selectedScoreIndex) {
-                            tempScores.push({
-                              maths: 0,
-                              english: 0,
-                              reading: 0,
-                              science: 0,
-                            });
-                          }
-                          tempScores = tempScores.map((item, idx) => {
-                            if (selectedScoreIndex === idx) {
-                              return {
-                                ...item,
-                                science: checkNumber(
-                                  currentToEdit.actScores[selectedScoreIndex]
-                                    ?.science,
-                                  parseInt(e.target.value),
-                                  36
-                                ),
-                              };
-                            } else {
-                              return { ...item };
-                            }
-                          });
-                          setCurrentToEdit({
-                            ...currentToEdit,
-                            actScores: tempScores,
-                          });
-                        }}
-                      />
-                    </div>
-                  </div>
-                            
-                         <div className="text-md py-2 rounded-[4px] flex items-center  font-semibold  text-center py-auto px-5 bg-primary-50 border-0 !w-[150px] text-[#FFA28D]">
-                           { it?.maths +  it?.science + it?.reading + it?.english 
-                                  ?it?.maths +  it?.science + it?.reading + it?.english :
-                           <span className="text-placeholder:text-sm my-auto font-semibold">
-                             
-                             cumulative
-                             </span>}
-                           </div>
-                       
-                         </div>
-                         <div className="mt-3 border-1  border-t-2 pb-3 border-[1.25px_solid_#00000033] justify-center "></div>
-        
-                       </div>)
-                     }
-                   )}
-                   </div>
-                <p onClick={()=>{
-                 let tempScores = [...currentToEdit.actScores];
-                
-                   tempScores.push({
-                    maths: null,
-                    english: null,
-                    reading: null,
-                    science: null,
-                    
-                   });
-                   setCurrentToEdit({
-                     ...currentToEdit,
-                     actScores: tempScores,
-                   });
-                }} className="font-bold !text-lg cursor-pointer    text-[#24A3D9]">Add <svg className="inline-block -mt-1" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
-<path d="M14.4987 9.29037H9.29037V14.4987C9.29037 14.775 9.18062 15.0399 8.98527 15.2353C8.78992 15.4306 8.52497 15.5404 8.2487 15.5404C7.97243 15.5404 7.70748 15.4306 7.51213 15.2353C7.31678 15.0399 7.20703 14.775 7.20703 14.4987V9.29037H1.9987C1.72243 9.29037 1.45748 9.18062 1.26213 8.98527C1.06678 8.78992 0.957031 8.52497 0.957031 8.2487C0.957031 7.97243 1.06678 7.70748 1.26213 7.51213C1.45748 7.31678 1.72243 7.20703 1.9987 7.20703H7.20703V1.9987C7.20703 1.72243 7.31678 1.45748 7.51213 1.26213C7.70748 1.06678 7.97243 0.957031 8.2487 0.957031C8.52497 0.957031 8.78992 1.06678 8.98527 1.26213C9.18062 1.45748 9.29037 1.72243 9.29037 1.9987V7.20703H14.4987C14.775 7.20703 15.0399 7.31678 15.2353 7.51213C15.4306 7.70748 15.5404 7.97243 15.5404 8.2487C15.5404 8.52497 15.4306 8.78992 15.2353 8.98527C15.0399 9.18062 14.775 9.29037 14.4987 9.29037Z" fill="#24A3D9"/>
-</svg></p>
-               </div>
-                
                   </>
-                
                 )}
                 {currentField.name === "aboutScore" && (
                   <div>

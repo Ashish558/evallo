@@ -100,6 +100,17 @@ export default function ParentEditables({
     "Comics",
     "Cooking",
   ];
+  const Expertise = [
+   {_id:1,text: "SAT"},
+   {_id:2,text: "ACT"},
+   {_id:3,text: "GRE"},
+   {_id:4,text: "GMAT"},
+   {_id:5,text: "Academic Coaching"},
+   {_id:6,text: "Life Coaching"},
+   {_id:7,text: "Career Counselling"},
+   {_id:8,text: "College Counselling"},
+   {_id:9,text: "Subject Tutoring"},
+  ];
   const data = [
     {
       name: "profileData",
@@ -1951,8 +1962,6 @@ export default function ParentEditables({
                                     placeholder="Mobile"
                                     inputContainerClassName="text-sm pt-3 pb-3 px-5 bg-primary-50 border-white"
                                     inputClassName="bg-transparent text-[#667085] text-400"
-                                  
-                                    
                                     value={currentToEdit.phone}
                                     codeValue={currentToEdit.phoneCode}
                                     handleCodeChange={(e) =>
@@ -1960,7 +1969,6 @@ export default function ParentEditables({
                                         ...currentToEdit,
                                         phoneCode: e.target.value,
                                       })
-                                     
                                     }
                                     onChange={(e) =>
                                       setCurrentToEdit({
@@ -2187,24 +2195,24 @@ export default function ParentEditables({
                 )} */}
                 {currentField.name === "serviceSpecializations" && (
                   <div className="flex flex-wrap">
-                    {settings?.Expertise?.map((item) => {
+                    {Expertise?.map((item) => {
                       return !currentToEdit?.serviceSpecializations?.includes(
-                        item._id
+                        item?.text
                       ) ? (
                         <div
-                          className={`px-3 mr-2 rounded rounded-lg   py-1.5 border-[1.33px] border-[#26435F80] text-[#26435F80]  cursor-pointer`}
+                          className={`px-3 mr-2  !rounded-lg m-1   py-1.5 border-[1.33px] border-[#26435F80] text-[#26435F80]  cursor-pointer`}
                           onClick={() => {
                             let servicesArray = [];
                             if (currentToEdit.serviceSpecializations) {
                               servicesArray =
                                 currentToEdit.serviceSpecializations;
-                            }
+                             }
                             console.log(servicesArray);
                             setCurrentToEdit({
                               ...currentToEdit,
                               serviceSpecializations: [
                                 ...servicesArray,
-                                item._id,
+                                item?.text,
                               ],
                             });
                           }}
@@ -2213,7 +2221,7 @@ export default function ParentEditables({
                         </div>
                       ) : (
                         <div
-                          className={`px-3 mr-2 rounded-md text-white py-1.5 border border-primary bg-primary  font-semibold cursor-pointer`}
+                          className={`px-3 mr-2 rounded-lg text-white py-1.5 border border-primary bg-primary m-1  font-semibold cursor-pointer`}
                           onClick={() =>
                             setCurrentToEdit({
                               ...currentToEdit,

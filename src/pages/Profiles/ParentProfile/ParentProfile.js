@@ -493,7 +493,7 @@ const [toEdit, setToEdit] = useState({
     if (userDetail.timeZone === undefined) return;
     dispatch(updateTimeZone({ timeZone: userDetail.timeZone }));
   }, [userDetail.timeZone]);
-
+ 
   // //console.log(user)
   // //console.log(userDetail)
   // //console.log('associatedParent', associatedParent)
@@ -530,18 +530,20 @@ const [toEdit, setToEdit] = useState({
   return (
     <>
       <div className={`w-[83.3vw] mx-auto pb-[70px]`}>
-        <p className="text-[#24A3D9] !my-[calc(50*0.0522vw)] text-xl">
+        <p className="text-[#24A3D9] !my-[calc(50*0.0522vw)] text-base-20">
+        <span className="cursor-pointer z-5000 relative" onClick={()=>navigate('/')}>
           {organization?.company +
             " > " +
             user?.firstName +
             " " +
             user?.lastName +
             " > "}
+          </span>
           <span className="font-semibold">Dashboard</span>
         </p>
         {!isOwn ? (
           <button
-            className=" bg-[#D9BBFF] px-[14px] mb-10 py-[8px] rounded-[8px] text-[#636363] text-[18px] font-medium top-[1px] left-[22px] gap-[12px] cursor-pointer flex justify-center items-center"
+            className=" bg-[#D9BBFF] px-[14px] mb-10 py-[8px] relative z-[5000] cursor-pointer rounded-[8px] text-[#636363] text-[18px] font-medium top-[1px] left-[0px] gap-[12px] cursor-pointer flex justify-center items-center"
             onClick={() => window.history.back()}
           >
             <img src={LeftIcon} alt="icon" /> Back
@@ -606,7 +608,7 @@ const [toEdit, setToEdit] = useState({
                               className="inline-block ml-2 !w-4 !h-4 mr-2 cursor-pointer"
                               src={copy1}
                               alt="copy"
-                              onClick={() => handleCopy(user?.email)}
+                            
                             />
                           </span>
                         </p>
@@ -647,7 +649,7 @@ const [toEdit, setToEdit] = useState({
                                   className="inline-block ml-2 !w-4 !h-4 mr-2 cursor-pointer"
                                   src={copy1}
                                   alt="copy"
-                                  onClick={() => handleCopy(user?.email)}
+                                 
                                 />
                               </span>
                             </p>

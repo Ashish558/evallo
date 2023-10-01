@@ -29,6 +29,7 @@ import InputSelectNew from "../../../../components/InputSelectNew/InputSelectNew
 import useOutsideAlerter from "../../../../hooks/useOutsideAlerter";
 import { Country } from "country-state-city";
 import { useUpdateUserOrganizationMutation } from "../../../../app/services/organization";
+import SCheckbox from "../../../../components/CCheckbox/SCheckbox";
 // 637b9df1e9beff25e9c2aa83
 export default function ParentEditables({
   userId,
@@ -136,7 +137,7 @@ export default function ParentEditables({
     {
       name: "notes",
       title: "Internal Notes",
-      api: "userDetail",
+      api: "user",
     },
     {
       name: "service",
@@ -468,11 +469,16 @@ export default function ParentEditables({
     }
     
     if (currentToEdit.hasOwnProperty("notes")) {
-      let reqBody = {
-        note: currentToEdit?.notes,
-        type: "internalNotes", // or it can be 'internalNotes'
+      reqBody={
+        internalNotes:[
+          ...currentToEdit.internalNotes,
+          {
+            note: currentToEdit?.notes,
+     
         date: new Date(),
-      };
+          }
+        ]
+      }
 
       //  addNotes(reqBody).then((res)=>{
       //   //console.log("internal",{res})
@@ -1235,39 +1241,64 @@ export default function ParentEditables({
                 )}
 
                 {currentField.name === "service" && (
-                  <div>
-                    <div className="flex items-center mb-5 pt-1 pb-5">
-                      <InputSelect
-                        value={
-                          currentToEdit.service.length === 0
-                            ? ""
-                            : currentToEdit.service[0]
-                        }
-                        checkbox={{
-                          visible: true,
-                          name: "services",
-                          match: currentToEdit.service,
-                        }}
-                        optionData={organization?.settings?.servicesAndSpecialization.map(
-                          (item) => item.service
-                        )}
-                        inputContainerClassName="pt-3 pb-3 border rounded-md bg-[#F6F6F6]"
-                        placeholder="Service"
-                        parentClassName="w-full mr-4"
-                        type="select"
-                        onChange={
-                          (val) => handleServiceChange(val)
-                          // setCurrentToEdit({ ...currentToEdit, service: val })
-                        }
-                        onOptionClick={(item) => {
-                          // setStudent(item.value);
-                          //console.log(item);
-                          // handleStudentsChange(item)
-                          // setCurrentToEdit({ ...currentToEdit, students: [... item._id] });
-                        }}
-                      />
-                    </div>
-                  </div>
+                  <div className="w-[400px] max-h-[50vh] overflow-y-auto custom-scroller">
+                   
+                   <div className="flex flex-col gap-2">
+                     {organization?.settings?.servicesAndSpecialization.map(
+                       (item, id) => {
+                         return (
+                           <div key={id} className="flex gap-5 items-center">
+                             <SCheckbox
+                             stopM={true}
+                               checked={currentToEdit?.service?.includes(
+                                 item?.service
+                               )}
+                               onChange={() =>
+                                 handleServiceChange(item?.service)
+                               }
+                             />
+                             <span className="text-[#26435F]">
+                               {item?.service}
+                             </span>
+                           </div>
+                         );
+                       }
+                     )}
+                   </div>
+                   </div>
+                  // // <div>
+                  // //   <div className="flex items-center mb-5 pt-1 pb-5">
+                  // //     <InputSelect
+                  // //       value={
+                  // //         currentToEdit.service.length === 0
+                  // //           ? ""
+                  // //           : currentToEdit.service[0]
+                  // //       }
+                  // //       checkbox={{
+                  // //         visible: true,
+                  // //         name: "services",
+                  // //         match: currentToEdit.service,
+                  // //       }}
+                  // //       optionData={organization?.settings?.servicesAndSpecialization.map(
+                  // //         (item) => item.service
+                  // //       )}
+                  // //       inputContainerClassName="pt-3 pb-3 border rounded-md bg-[#F6F6F6]"
+                  // //       placeholder="Service"
+                  // //       parentClassName="w-full mr-4"
+                  // //       type="select"
+                  // //       onChange={
+                  // //         (val) => handleServiceChange(val)
+                  // //         // setCurrentToEdit({ ...currentToEdit, service: val })
+                  // //       }
+                  // //       onOptionClick={(item) => {
+                  // //         // setStudent(item.value);
+                  // //         //console.log(item);
+                  // //         // handleStudentsChange(item)
+                  // //         // setCurrentToEdit({ ...currentToEdit, students: [... item._id] });
+                  // //       }}
+                  // //     />
+                  // //   </div>
+                  // // </div>
                 )}
 
                 {currentField.name === "leadStatus" && (

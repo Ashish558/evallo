@@ -6,7 +6,7 @@ import Calculator from './Calculator';
  
 export default function Que(props) {
 
-   const {ques,op,para,setAnswers,answers,index,Setmark,mark,cal,setCal,seq,cutanswers,cutanswer,showcutcheck,cutcheck,markreview,markre,annotation_check,calculator_check,cross_O_check} = props;
+   const {ques,op,para,setAnswers,quesImg,answers,index,Setmark,mark,cal,setCal,seq,cutanswers,cutanswer,showcutcheck,cutcheck,markreview,markre,annotation_check,calculator_check,cross_O_check} = props;
    const s ={
     height : "58.2vh"
   }
@@ -37,7 +37,10 @@ export default function Que(props) {
           </div>
          { console.log(answers)}
          <hr className=' border border-black' />
+         <div className='flex flex-col items-start justify-center'>
         { ques?<h1 className='py-3'>{ques}</h1>:null}
+        {quesImg!='' && quesImg!=='no'?<img  className='max-w-8 max-h-8' src={quesImg}/>:null}
+        </div>
           {answers[index-1].QuestionType=="Grid-in"?
 <div>
   <input placeholder='Enter The Answer' type='number' className='bg-transparent mt-4 border-gray-600 border rounded px-2 py-4' value={answers[index-1].ResponseAnswer} onChange={(e)=>{

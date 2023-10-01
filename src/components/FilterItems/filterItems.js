@@ -18,7 +18,7 @@ export default function FilterItems({
   api,
   baseLink,
 }) {
-  console.log({items,filteredTests, keyName})
+ // console.log({items,filteredTests, keyName})
   const printTestName=(item)=>{
     let testName=item;
     filteredTests?.map((test)=>{
@@ -54,9 +54,9 @@ export default function FilterItems({
             key={idx}
             className={`mr-3 ${
               className ? className : ""
-            } bg-primaryLight py-1 px-3 rounded-7 group ${styles.filterItem}`}
+            } bg-[#26435F1A] py-1 px-3 rounded-7 group ${styles.filterItem}`}
           >
-            <p className="text-lightGray text-[16px] text-base-15">
+            <p className="text-[#26435F] text-[16px] text-base-15">
               {isString ? filteredTests?printTestName(item): item : item.text}
             </p>
             <img

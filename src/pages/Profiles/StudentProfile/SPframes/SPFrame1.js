@@ -48,7 +48,7 @@ const SPFrame1 = ({ userId, settings, userDetail, editable, setToEdit, toEdit ,f
     }
     const formData = new FormData();
     formData.append("file", xlsFile);
-    formData.append("studentId", userDetail?._id);
+    formData.append("studentId", userDetail?.userId);
     addDoc(formData).then((res) => {
     console.log("docc", res);
       if (res?.data) {
