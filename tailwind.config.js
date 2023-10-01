@@ -42,7 +42,7 @@ module.exports = {
             'sy': '0.0505vw'
          },
          colors: {
-            // primary: '',
+            primary: '#FFA28D',
             dark: "#A9A6B6",
             primary: {
                DEFAULT: "#FFA28D",
