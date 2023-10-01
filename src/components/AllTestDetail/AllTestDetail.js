@@ -103,7 +103,7 @@ export default function AllTestDetail({ testData }) {
             <span className="inline-block mr-4">:</span>
             <p className="inline-block w-138 font-semibold ml-7">
                {" "}
-               {testData.testType}
+               {testData.testType}&#174;
             </p>
          </div>
       </div>
