@@ -901,7 +901,7 @@ console.log("users",{selectedId,bulkEdits})
                 </>
               }
               onClick={() => setModalActive(true)}
-              className=" flex items-center text-[15px]  py-[10px] px-3 text-base-15"
+              className=" flex items-center text-[15px] !text-white font-semibold py-[10px] px-3 text-base-15"
             />
 
             {bulkUpload && (
@@ -1037,7 +1037,7 @@ console.log("users",{selectedId,bulkEdits})
             placeholder="Search"
             inputClassName="text-base-17-5 pl-4 text-[#667085]"
             parentClassName="w-[22.03125vw]  py-1"
-            inputContainerClassName="text-sm  mt-1 shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white   mb-1"
+            inputContainerClassName="text-sm  mt-1 shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white   mb-1  !py-[15px]"
             type="text"
             value={filterData.typeName}
             onChange={(e) =>
