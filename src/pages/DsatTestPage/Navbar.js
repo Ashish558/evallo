@@ -4,7 +4,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsisVertical,faPen,faAngleDown,faCalculator} from '@fortawesome/free-solid-svg-icons';
 
 export default function Navbar({secnd,details,handleSubmitSection,calculator_check,annotation_check,sectionDetails,cal,setCal}) {
-const [seconds, setSeconds] = useState(secnd)
+  const [seconds, setSeconds] = useState(secnd)
+  const [hide, sethide] = useState(false)
   useEffect(() => {
     if (seconds <= 0) {
       return handleSubmitSection();
@@ -50,11 +51,11 @@ const [seconds, setSeconds] = useState(secnd)
         }
         </div>
         <div className='flex w-1/3 flex-col justify-center items-center'>
-            <div className='' >
+          {hide?null:  <div className='' >
                 <h4>{minutes<10?'0'+minutes:minutes} :{second<10?'0'+second:second}</h4>
-            </div>
+            </div>}
             <div className=' text-sm pt-2  ' >
-                <button className='border rounded-xl border-black hover:border-1 px-3' >Hide</button>
+                <button className='border rounded-xl border-black hover:border-1 px-3' onClick={()=>sethide(!hide)} >{hide?'Show':'Hide'}</button>
             </div>
         </div>
         <div  className=' flex w-1/3 justify-end text-sm '>

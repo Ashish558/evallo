@@ -4,10 +4,19 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {useState} from 'react'
 export default function Foot(props) {
     // const {next,prev  ,ind,s,data ,set} =props  
-    const {next,prev ,mark,name ,i,s,data ,set,answers,handleSubmitSection,tog2,toggle2,markreview} =props  
+    const {next,prev ,mark,name ,i,s,data,sectionDetails,sectionindex ,set,answers,handleSubmitSection,tog2,toggle2,markreview} =props  
     const [toggle,setToggle] =useState(false)
     let click =(e)=>
     {
+      if(e.target.innerText==1)
+      {
+        set(1)
+      }
+       set(e.target.innerText-1)
+       console.log(e.target.innerText)
+    }
+    let click2 =(e)=>
+    { tog2()
       if(e.target.innerText==1)
       {
         set(1)
@@ -22,8 +31,8 @@ export default function Foot(props) {
     return (
     <>
     {toggle2?
-    <section className=' bg-white absolute  shadow-md shadow-gray-400 top-[16%]  right-[10%] px-12 pt-2 h-[25rem] w-[80%]'>
-    <h3 className=' text-center text-lg py-3 font-semibold'>Section 1 : Reading and Writing Questions    </h3>
+    <section className=' bg-white absolute  shadow-md shadow-gray-400 top-[16%] px-12 pt-2 h-[25rem] w-full'>
+    <h3 className=' text-center text-lg py-3 font-semibold'>Section {' '+sectionindex+' '} :{' '+sectionDetails?.name?sectionDetails.name:'loading...'}   </h3>
      <hr className=' border border-gray-400 border-t-0' />
     <div className=' py-3 flex text-center align-middle justify-evenly'>
             <div>
@@ -40,7 +49,8 @@ export default function Foot(props) {
         {
             data.map((e,ind)=>
             {
-                return <span onClick={click}  className= {`text-black font-semibold border border-dotted border-black py-2 px-3 mx-2 ${ answers[ind].ResponseAnswer!=''?'text-white bg-blue-600':null} ${markreview[ind]?.review && 'bg-yellow-400'}`}>{ind+1}</span>
+                return <span onClick={click2
+                  }  className= {`text-black font-semibold border border-dotted border-black py-2 px-3 mx-2 ${ answers[ind].ResponseAnswer!=''?'text-white bg-blue-600':null} ${markreview[ind]?.review && 'bg-yellow-400'}`}>{ind+1}</span>
             })
         }
         </div>
@@ -48,9 +58,10 @@ export default function Foot(props) {
     :null}
     <div className=' '>
         {
-         toggle?   
-         <section className=' bg-white  absolute  shadow-md shadow-gray-400 bottom-20  right-[30rem] px-12 pt-2 h-64'>
-        <h3 className=' text-center text-lg py-3 font-semibold'>Section 1 : Reading and Writing Questions    </h3>
+         toggle?  
+         <div className='absolute w-full flex bottom-20  justify-center items-center '> 
+         <section className=' bg-white  shadow-md shadow-gray-400 px-12 pt-2 h-64'>
+        <h3 className=' text-center text-lg py-3 font-semibold'>Section  {' '+sectionindex+' '} : {' '+sectionDetails?.name?sectionDetails.name:'loading...'}   </h3>
         <FontAwesomeIcon onClick={tog} icon={faXmark} className=' absolute right-7 top-6' />
          <hr className=' border border-gray-400 border-t-0' />
         <div className=' py-3 flex text-center align-middle justify-evenly'>
@@ -85,7 +96,8 @@ export default function Foot(props) {
           }}>
             <button> Go to review page </button>
             </div>  
-        </section>:null
+        </section>
+        </div>:null
             }
       <footer className='   left-0 right-0 bottom-0 flex justify-between px-12 pt-4 pb-8 border border-black '>
        <div className='flex justify-start items-center w-1/3'>

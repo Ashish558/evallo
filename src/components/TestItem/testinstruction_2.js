@@ -1,13 +1,19 @@
-import React from 'react'
+import React, { useState } from 'react'
 import BackBtn from '../Buttons/Back'
 import PrimaryButton from '../Buttons/PrimaryButton'
 import { TestDetail } from '../TestDetail/TestDetail'
+import Modal from '../Modal/Modal'
 
-const Testinstruction_2 = ({testHeaderDetails,testStarted,subjects,completedSectionIds,activeSection}) => {
-  return (
+const Testinstruction_2 = ({testHeaderDetails,loader,setisntructionpage,testStarted,subjects,completedSectionIds,activeSection}) => {
+ const [popup, setpopup] = useState(false)
+ function closeinstruct(){
+    setpopup(false)
+    setisntructionpage(false)
+ }
+ return (
 <>
-{console.log('testName',testHeaderDetails)}
-<div className='flex-1' >
+{console.log('testName',loader)}
+<div className='flex-1 relative'>
                  <BackBtn to='/all-tests' />
                   <p className='text-primary-dark ml-4 font-bold text-3xl mb-8' >
                      {testHeaderDetails.testName}
@@ -18,7 +24,7 @@ const Testinstruction_2 = ({testHeaderDetails,testStarted,subjects,completedSect
                            <p className='inline-block w-138 font-semibold opacity-60'> Student’s Name</p>
                            <span className='inline-block mr-4'>:</span>
                            <p className='inline-block w-138 font-semibold'>
-                              {testHeaderDetails.name}
+                              {testHeaderDetails?.name}
                            </p>
                         </div>
                         <div>
@@ -71,7 +77,7 @@ const Testinstruction_2 = ({testHeaderDetails,testStarted,subjects,completedSect
                         {subjects.map((item, idx) => {
                            return <PrimaryButton
                               roundedClass='rounded-0'
-                              children={item.name}
+                              children={item?.name}
                               onClick={() =>{console.log('handlesubjectchange');}}
                               className={`pt-2 pb-2 px-0 mr-0 rounded-0 font-semibold w-160
                             ${item.selected ? 'bg-primaryYellow' : ''} disabled:opacity-60`}
@@ -81,19 +87,28 @@ const Testinstruction_2 = ({testHeaderDetails,testStarted,subjects,completedSect
                      </div>
                      
                         <div className='bg-white pt-[60px] pr-8 pl-12 pb-[50px] mt-4'>
-                           <TestDetail name={activeSection.name} desc={activeSection.description}
-                              timer={activeSection.timer} />
+                           <TestDetail name={activeSection?.name} desc={activeSection?.description}
+                              timer={activeSection?.timer} />
 
                            <div className='flex items-center flex-col mt-12'>
                               <p className='text-[#E02B1D] bg-[#FFBE9D] py-2 px-5 rounded-20 mb-[15px]' >
                                  Warning: Once Started, you will not be able to pause the timer.
                               </p>
-                              <PrimaryButton children='Start Section' className='w-[300px] h-[60px] text-[21px]' onClick={() => console.log('hello')} />
+                              <PrimaryButton children='Start Section' className='w-[300px] h-[60px] text-[21px]' onClick={() => {setpopup(true)}} />
                               {/* <PrimaryButton children='Start Section' className='w-[300px] h-[60px] text-[21px]' onClick={handleStartTest} /> */}
                            </div>
                         </div>
-                     
+                        {popup &&<div className='w-1/2 relative flex justify-center items-center h-full'> <Modal
+            classname="w-1/2 mx-auto "
+            title="Are you sure you want to start the section?"
+            titleClassName='mr-4  mb-4'
+            primaryBtn={
+               { text: "Start", className: "bg-black text-white ml-0", onClick: closeinstruct}
+            }
+            handleClose={() => setpopup(false)}
+         /></div>}
                   </div>
+                  
                </div>
 
 </>  )

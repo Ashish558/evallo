@@ -1,50 +1,43 @@
-import React, { useState, useEffect } from 'react';
-import { TextAnnotator } from 'react-text-annotate';
-import { Tooltip as ReactTooltip }  from 'react-tooltip';
-export default function AnnotatorComponent() {
-  const [allAnnotations, setAllAnnotations] = useState(Array(10).fill([]));
-  const questions = Array(10).fill('Sample question for annotation...');
+import React, { useState } from "react";
+import { TextAnnotator } from "react-text-annotate";
+import Tippy from "@tippyjs/react";
+import "tippy.js/dist/tippy.css"; // Import the CSS
 
-  const handleAnnotationChange = (index, newAnnotations) => {
-    const updatedAnnotations = [...allAnnotations];
-    updatedAnnotations[index] = newAnnotations;
-    setAllAnnotations(updatedAnnotations);
+export default function AnnotatorComponent() {
+  const [annotations, setAnnotations] = useState([]);
+
+  const handleAnnotationChange = (newAnnotations) => {
+    setAnnotations(newAnnotations);
   };
 
-  const tooltips = allAnnotations.map((annotations, index) => (
-    <ReactTooltip
-      key={index}
-      id={`tooltip-${index}`}
-      place="top"
-      effect="solid"
-    >
-      This is the hover text
-    </ReactTooltip>
-  ));
+  const getSpan = (span) => {
+    const spanProps = {
+      key: span.key,
+      style: {
+        backgroundColor: "red",
+      },
+    };
+
+    const children = span.content;
+
+    return (
+      <Tippy content="This is the hover text">
+        <mark {...spanProps}>{children}</mark>
+      </Tippy>
+    );
+  };
 
   return (
     <div>
-      {questions.map((question, index) => (
-        <div key={index}>
-          <TextAnnotator
-            content={question}
-            value={allAnnotations[index]}
-            onChange={(newAnnotations) => {
-              if (true) {
-                handleAnnotationChange(index, newAnnotations);
-              }
-            }}
-            getSpan={(span) => ({
-              ...span,
-              color: 'yellow',
-              dataTip: 'This is the hover text',
-              dataFor: `tooltip-${index}`
-            })}
-          />
-        </div>
-      ))}
-
-      {tooltips}
+      <TextAnnotator
+        content="Sample question for annotation...Sample question for annotation...Sample question for annotation...Sample question for annotation...Sample question for annotation...Sample question for annotation...Sample question for annotation...Sample question for annotation...Sample question for annotation...Sample question for annotation...Sample question for annotation...Sample question for annotation...Sample question for annotation...Sample question for annotation...Sample question for annotation...Sample question for annotation...Sample question for annotation...Sample question for annotation...Sample question for annotation...Sample question for annotation..."
+        value={annotations}
+        onChange={handleAnnotationChange}
+        getSpan={getSpan}
+        span={({ children, ...spanProps }) => (
+          <span {...spanProps}>{children}</span>
+        )}
+      />
     </div>
   );
 }

@@ -293,9 +293,12 @@ const tempsubjects = [
                console.log(res.error)
                return
             }
-            console.log('CONTINUE', res.data.data)
+            console.log('CONTINUE ', res.data.data)
            setanswer_check(res.data.data);
            setInfo(res.data.data.answer)
+           if(res.data.data.backupResponse.length>0){
+            setisntructionpage(false)
+           }
             const { startTime, endTime, sectionName, completed, answer, submitId, backupResponse } = res.data.data
             if (completed !== undefined) {
                setCompletedSubjects(completed)
@@ -438,10 +441,11 @@ useEffect(()=>{
    const handleSubmitSection = () => {
       // console.log(activeSection);
       // console.log(answers);
-      setloader(true)
+      setisntructionpage(true)
       setToggle2(false)
       setbackground(false)
       setIndex(0)
+      setloader(true)
       setsectionindex(answer_check?.completed.length==0?1:answer_check?.completed.length)
       const response = answers.map(item => {
          const { QuestionType, QuestionNumber, ResponseAnswer, responseTime } = item
@@ -506,15 +510,13 @@ const [pages,setPage]=useState(arr)
     <div className=" relative ">
       
      {loader&&sectionindex==0? <LoaderPage/>
+     :loader&&sectionindex>0?
+<SectionLoader/>
      :
      instructionpage?
-     <Testinstruction_2 testHeaderDetails={testHeaderDetails} activeSection={activeSection} TestDetail={TestDetail} completedSectionIds={completedSectionIds} testStarted={testStarted} subjects={subjects} setisntructionpage={setisntructionpage}/> 
-     :loader&&sectionindex>0?
-     <SectionLoader 
-     size={sectionDetails.length}
-      sectionindex={sectionindex}
-
-     />:
+     <Testinstruction_2 setisntructionpage={setisntructionpage} loader={loader} testHeaderDetails={testHeaderDetails} activeSection={activeSection} TestDetail={TestDetail} completedSectionIds={completedSectionIds} testStarted={testStarted} subjects={subjects}
+   /> 
+     :
      <>
       <Navbar  cal={cal}
       details={sectionDetails[answer_check?.completed.length]?.description}
@@ -545,10 +547,12 @@ const [pages,setPage]=useState(arr)
         mark={pages}
       />
       <Foot
+      sectionindex={answer_check?.completed.length+1}
+      sectionDetails={sectionDetails[answer_check?.completed.length]}
       answers={answers}
       cal={cal}
       setCal={setCal}
-      name={testHeaderDetails.name}
+      name={testHeaderDetails?.name}
       markreview={markreview}
       index={index}
       cutcheck={cutcheck}

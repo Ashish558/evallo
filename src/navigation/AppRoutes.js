@@ -255,7 +255,12 @@ const AppRoutes = () => {
               <StartTest />
             </RequireAuth>
           }
-        />
+        /><Route
+        path="/ll"
+        element={
+            <AnnotatorComponent />
+        }
+      />
         <Route path="/adminDashboard" element={<Dashboard></Dashboard>}></Route>
         <Route
           path="/adminContent"
