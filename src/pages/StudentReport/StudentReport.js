@@ -724,13 +724,17 @@ export default function StudentReport() {
          <div className='py-14 px-5'>
             <div className='px-0'>
                
-               <p className="text-[#24A3D9] my-3 text-xl">
+               <p className="text-[#24A3D9] my-3 text-base-20">
+                  <span onClick={()=>navigate('/')} className='cursor-pointer'>
                   {organization?.company +
                      "  >  " +
                      firstName +
                      "  " +
-                     lastName +
-                     "  >  Assignments > "}<span className="font-bold">Report</span>
+                     lastName }
+                     </span>
+                     <span onClick={()=>navigate('/assigned-tests')} className='cursor-pointer'>{
+                        "  >  Assignments > "}</span>
+                     <span className="font-bold">Report</span>
                </p>
 
 

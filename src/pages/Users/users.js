@@ -703,13 +703,13 @@ export default function Users() {
     <div className="w-[83.6989583333vw] mx-auto  min-h-screen">
       <div className="pb-10  mt-[50px] !mt-[calc(50*0.0522vw)]">
         <div className="flex justify-between items-center mb-3">
-          <p className="text-[#24A3D9] mb-6 text-xl text-base-20">
-            {organization?.company +
+          <p className="text-[#24A3D9] mb-6 text-xl text-base-20 cursor-pointer">
+            <span onClick={()=>navigate('/')}>{organization?.company +
               "  >  " +
               firstName +
               "  " +
               lastName +
-              "  >  "}
+              "  >  "}</span>
             <span className="font-semibold">CRM</span>
           </p>
           <button

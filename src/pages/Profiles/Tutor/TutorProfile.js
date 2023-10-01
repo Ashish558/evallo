@@ -647,13 +647,15 @@ export default function TutorProfile({ isOwn }) {
         {/* <div className="py-8">
                <p className='text-[#24A3D9] text-xl '>Org</p>
             </div> */}
-        <p className="text-[#24A3D9] text-xl mb-8 my-[calc(50*0.0522vw)] text-base-22-5">
-          {organization?.company +
+        <p className="text-[#24A3D9] text-base-20 mb-8 my-[calc(50*0.0522vw)] ">
+         <span onClick={()=>navigate('/')} className="cursor-pointer">
+         {organization?.company +
             "  >  " +
             firstName +
             "  " +
             lastName +
             "  >  "}
+         </span>
           <span className="font-bold">Dashboard</span>
         </p>
         <div className="flex  justify-between">

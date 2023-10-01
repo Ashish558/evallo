@@ -241,7 +241,7 @@ export default function TutorDashboard() {
       <div className='bg-[#F5F8FA] mb-[100px]'>
          <div className="w-[85.05vw] mx-auto">
             <div className="">
-               <p className="text-[#24A3D9] text-xl mb-[30px] mt-[50px]">
+               <p className="text-[#24A3D9] text-base-20 mb-[30px] mt-[50px]">
                   {organization?.company +
                      "  >  " +
                      firstName +
