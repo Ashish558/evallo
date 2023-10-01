@@ -1560,7 +1560,7 @@ console.log("users",{selectedId,bulkEdits})
           title={
             <span className="leading-10">
               Are you sure 
-              you want to delete Selected User(s)
+              you want to delete Selected User(s)?
               
             </span>
           }
@@ -1592,7 +1592,7 @@ console.log("users",{selectedId,bulkEdits})
         <Modal
           title={
             <span className="leading-10">
-              Are You Sure You Want to Bulk Edit
+              Are You Sure You Want to Bulk Edit?
               
             </span>
           }
