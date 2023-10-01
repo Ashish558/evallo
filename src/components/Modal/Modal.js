@@ -26,7 +26,8 @@ export default function Modal({
    cancelBtnStyle,
    underline,
    crossBtn,
-   toEdit
+   toEdit,
+   alignBtn
 }) {
 
    const selectRef = useRef();
@@ -68,12 +69,14 @@ export default function Modal({
                         {body}
 
 
-                        <div className="flex justify-center">
+                        <div className={`flex ${alignBtn?'justify-center' :'justify-between'} mx-4`}>
                            {cancelBtn && (
                               <SecondaryButton
                                  onClick={handleClose}
                                  children="Cancel"
+
                                  className={`py-2 ${cancelBtnClassName} !border-[1px_solid_#FFA28D]`}
+
                                  type="button"
                               />
                            )}
