@@ -54,6 +54,7 @@ export default function AssignedTests() {
   const [studentNameOptions, setStudentNameOptions] = useState([]);
   const [allAssignedTests, setAllAssignedTests] = useState([]);
   const [filteredTests, setFilteredTests] = useState([]);
+  const { dateFormat } = useSelector(state => state.user)
 
   const sortByDueDate = () => {
     setAllAssignedTests((prev) => {
@@ -313,6 +314,7 @@ console.log({studentMultiple,modalData})
     }
   }, [modalData.test]);
 
+  console.log('formatted tests----', dateFormat);
   const fetchAllAssignedTests = () => {
     fetchAssignedTests().then((res) => {
       if (res.error) return console.log(res.error);
@@ -343,7 +345,7 @@ console.log({studentMultiple,modalData})
             ? `${studentId.firstName} ${studentId.lastName}`
             : "-",
           studentId: studentId ? studentId._id : "-",
-          assignedOn: getFormattedDate(createdAt),
+          assignedOn: getFormattedDate(createdAt, dateFormat),
           assignedBy: assignedBy
             ? `${assignedBy?.firstName} ${assignedBy?.lastName}`
             : "-",
@@ -352,7 +354,7 @@ console.log({studentMultiple,modalData})
           pdfLink: testId ? testId.pdf : null,
           scores: "-",
           duration: multiple ? getDuration(multiple) : "Unlimited",
-          dueDate: getFormattedDate(dueDate),
+          dueDate: getFormattedDate(dueDate, dateFormat),
           status:
             isCompleted === true
               ? "completed"
@@ -614,32 +616,7 @@ console.log({studentMultiple,modalData})
     setTestToDelete(item);
     setDeleteModalActive(true);
   };
-  const testTypes = [
-    {
-      text: "English",
-      selected: true,
-    },
-    {
-      text: "Maths",
-      selected: false,
-    },
-    {
-      text: "Reading",
-      selected: false,
-    },
-    {
-      text: "Science",
-      selected: false,
-    },
-    {
-      text: "History",
-      selected: false,
-    },
-    {
-      text: "Economics",
-      selected: false,
-    },
-  ];
+ 
   const handleCurrentUser = (item) => {
     setCurrentUser({
       name: item.text.toLowerCase(),
