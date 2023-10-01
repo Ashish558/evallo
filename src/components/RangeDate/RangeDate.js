@@ -53,6 +53,30 @@ const RangeDate = ({ removeUnderline,handleRangeData ,optionClassName,className,
         .toISOString()
         .split("T")[0];
     }
+    else if (option.days === 365) {
+      startDate = new Date(now.getFullYear(), 0, 2)
+        .toISOString()
+        .split("T")[0];
+      endDate = new Date()
+        .toISOString()
+        .split("T")[0];
+    }
+    else if (option.days === 700) {
+      startDate = new Date(now.getFullYear()-1, 0, 2)
+        .toISOString()
+        .split("T")[0];
+      endDate = new Date(now.getFullYear(), 0, 1)
+        .toISOString()
+        .split("T")[0];
+    }
+    else if (option.days === 1000) {
+      startDate = new Date(2023, 0, 2)
+        .toISOString()
+        .split("T")[0];
+      endDate = new Date()
+        .toISOString()
+        .split("T")[0];
+    }
     const selectDate = {
       sDate: startDate.toString(),
       eDate: endDate.toString(),
@@ -95,6 +119,9 @@ const RangeDate = ({ removeUnderline,handleRangeData ,optionClassName,className,
           { name: "Last 7 Days", days: 7 },
           { name: "Current Month", days: 30 },
           { name: "Last Month", days: 60 },
+          {name:"Current Year",days: 365 },
+          {name:"Last Year",days: 700},
+          {name:"Life Time",days:1000}
         ]}
         optionType={"object"}
         setSelectedDate={setSelectedDate}
@@ -127,7 +154,7 @@ const RangeDate = ({ removeUnderline,handleRangeData ,optionClassName,className,
               />
             </div>
             <div className="w-full flex justify-center">
-              <p className="ml-[26px]">
+              <p className="ml-[0px]">
                 <button
                   disabled={!selectDate.eDate || !selectDate.sDate}
                   className={`${!selectDate.eDate || !selectDate.sDate ? "opacity-75" : ""
