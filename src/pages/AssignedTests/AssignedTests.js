@@ -32,6 +32,7 @@ import { useSelector } from "react-redux";
 import { getDuration, getFormattedDate } from "../../utils/utils";
 import FilterItems from "../../components/FilterItems/filterItems";
 import { useNavigate } from "react-router-dom";
+import SCheckbox from "../../components/CCheckbox/SCheckbox";
 const optionData = ["1", "2", "3", "4", "5"];
 const timeLimits = ["Regular", "1.1x", "1.25x", , "1.5x", "Unlimited"];
 const testData = ["SAT", "ACT"];
@@ -658,8 +659,20 @@ console.log({studentMultiple,modalData})
   const [isChecked, setIsChecked] = useState(false);
 
   const handleCheckboxChange = () => {
+    if(!isChecked) {
+      let data=filteredTests
+      data= data?.slice(0,maxPageSize)
+      setSelectedId([...data])
+    }
+    else {
+      setSelectedId([])
+    }
     setIsChecked(!isChecked);
   };
+  useEffect(()=>{
+     setIsChecked(false)
+     setSelectedId([])
+  },[filteredTests])
   
   const [filterOptions, setFilterOptions] = useState(false);
   const handleOptionData=(val)=>{
@@ -678,7 +691,10 @@ console.log({studentMultiple,modalData})
   useEffect(()=>{
   handleOptionData("")
   },[testNameOptions])
-  
+  const [selectedId,setSelectedId]=useState([])
+
+  console.log("tests",{selectedId,filteredTests})
+
   return (
     <>
       <div className="w-[83.3333333333vw] mx-auto min-h-screen mb-[40px]">
@@ -851,20 +867,23 @@ console.log({studentMultiple,modalData})
 
               <div className="flex items-center  justify-between gap-[20px] mt-[10px]">
                 <div className="flex text-[#26435F] items-center text-[17.5px] text-base-17-5">
-                  <div className="ml-6 ">
-                    <label className={`  text-[#26435F] font-medium flex items-center`}>
-                      <input
-                        type="checkbox"
-                        checked={isChecked}
-                        onChange={handleCheckboxChange}
-                      />
-                      <span
-                        className={`${styles["custom-checkbox"]} ${isChecked ? "checked" : ""
-                          }`}
-                      ></span>
-                      <span className="block font-medium">{numberChecked} Selected</span>
-                    </label>
-                  </div>
+                <div className="ml-6 flex gap-3 ">
+
+            <SCheckbox stopM={true} checked={isChecked} onChange={handleCheckboxChange} />
+            <span className="inline-block text-[17.5px] text-base-17-5">{selectedId?.length} Selected</span>
+            {/* <label className={`  text-[#26435F] font-medium flex items-center`}>
+              <input
+                type="checkbox"
+                checked={isChecked}
+                onChange={handleCheckboxChange}
+              />
+              <span
+                className={`${styles["custom-checkbox"]} ${isChecked ? "checked" : ""
+                  }`}
+              ></span>
+             
+            </label> */}
+          </div>
 
                   <div className="gap-x-[5px] px-4 py-[9px] bg-[#FFF] rounded-5 ml-6 flex items-center">
                     <p >Delete</p>
@@ -890,8 +909,10 @@ console.log({studentMultiple,modalData})
           <div className="mt-3">
             <Table
               noArrow={true}
-              numberChecked={numberChecked}
-              setnumberChecked={setnumberChecked}
+             
+              selectedId2={selectedId}
+              setSelectedId2={setSelectedId}
+             
               onClick={{ handleResend, handleDelete, handleNavigate }}
               dataFor="assignedTests"
               data={filteredTests}

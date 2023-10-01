@@ -12,6 +12,8 @@ export default function Table(props) {
   const {
     noArrow,
     dataFor,
+    selectedId2,
+    setSelectedId2,
     data,
     tableHeaders,
     maxPageSize,
@@ -120,6 +122,8 @@ export default function Table(props) {
                   <React.Fragment key={idx}>
                     <LatestSignUpTableItem
                       dataFor={dataFor}
+                      selectedId2={selectedId2}
+                      setSelectedId2={setSelectedId2}
                       item={item}
                       key={idx}
                       excludes={excludes}
@@ -131,6 +135,8 @@ export default function Table(props) {
 
                     <TableItem
                       dataFor={dataFor}
+                      selectedId2={selectedId2}
+                      setSelectedId2={setSelectedId2}
                       item={item}
                       key={idx}
                       excludes={excludes}
