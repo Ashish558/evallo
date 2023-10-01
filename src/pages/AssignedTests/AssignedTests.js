@@ -1230,7 +1230,7 @@ console.log({selectedId})
           titleClassName="mb-5 leading-10"
           cancelBtn={true}
           crossBtn={true}
-          cancelBtnClassName="max-w-140 bg-[#26435F1A]  !text-[#26435F] rounded-md"
+          cancelBtnClassName="max-w-140 !bg-[#26435F1A]  !text-[#26435F] !rounded-md"
           primaryBtn={{
             text: "Delete",
             className: "w-[140px]  pl-4 px-4 !bg-[#FF7979] text-white",
@@ -1254,7 +1254,7 @@ console.log({selectedId})
           titleClassName="mb-5 leading-10"
           cancelBtn={true}
           crossBtn={true}
-          cancelBtnClassName="max-w-140 bg-[#26435F1A]  !text-[#26435F] rounded-md"
+          cancelBtnClassName="max-w-140 !bg-[#26435F1A]  !text-[#26435F] rounded-md"
           primaryBtn={{
             text: "Confirm",
             className: "w-[140px]  pl-4 px-4 !bg-[#32D583] text-white",
@@ -1286,7 +1286,7 @@ console.log({selectedId})
           titleClassName="mb-4 leading-10"
           cancelBtn={true}
           crossBtn={true}
-          cancelBtnClassName="max-w-140 bg-[#26435F1A]  !text-[#26435F] rounded-md"
+          cancelBtnClassName="max-w-140 !bg-[#26435F1A]  !text-[#26435F] rounded-md"
           primaryBtn={{
             text: "Resend",
             className: "w-[140px]  pl-4 px-4 !bg-[#FFA28D] text-white",
