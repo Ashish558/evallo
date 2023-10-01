@@ -1,8 +1,11 @@
 import { useState } from "react";
 import SubFrame0 from "../AboutCard/SubFrame0";
-import SubFrame2 from "../AboutCard/SubFrame1";
+import SubFrame1 from "../AboutCard/SubFrame1";
 
-const ProfileRight = ({ userData }) => {
+import SubFrame2 from "../../OrgSettings/SubFrame2";
+import SPFrame3 from "../../OrgSettings/SFrame3";
+
+const ProfileRight = ({ userData,orgs }) => {
   const [subFrame, setSubFrame] = useState(0);
 
   return (
@@ -63,12 +66,13 @@ const ProfileRight = ({ userData }) => {
         {subFrame === 0 ? (
           <SubFrame0 userData={userData} />
         ) : subFrame === 1 ? (
-          <></>
+          <><SubFrame2 orgData={userData?.settings} orgs={orgs}/></>
         ) : subFrame === 2 ? (
-          <SubFrame2 id={userData._id
-          } />
+          <SubFrame1 id={userData._id}  />
         ) : subFrame === 3 ? (
-          <></>
+          <>
+          <SPFrame3 userDetail={userData}/>
+          </>
         ) : (
           <></>
         )}

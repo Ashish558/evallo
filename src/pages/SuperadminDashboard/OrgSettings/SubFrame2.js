@@ -1,59 +1,55 @@
 import React, { useEffect, useRef, useState } from "react";
-import PrimaryButton from "../../components/Buttons/PrimaryButton";
-import EditIcon from "../../assets/icons/edit-white.svg";
-import ActiveTab from "../../assets/icons/active-tab.svg";
-import SettingsCard from "../../components/SettingsCard/SettingsCard";
-import ToggleBar from "../../components/SettingsCard/ToogleBar";
-import AddTag from "../../components/Buttons/AddTag";
-import "./tab.css";
-import FilterItems from "../../components/FilterItems/filterItems";
-import InputField from "../../components/InputField/inputField";
-import Modal from "../../components/Modal/Modal";
-import { useLazyGetSettingsQuery } from "../../app/services/session";
-import questionMark from "../../assets/images/Vector (6).svg";
-import toggleRectIcon from "../../assets/icons/toggle-rect.svg";
-import toggleRectActiveIcon from "../../assets/icons/toggle-rect-active.svg";
-import toggleCircleIcon from "../../assets/icons/toggle-circle.svg";
+import PrimaryButton from "../../../components/Buttons/PrimaryButton";
+import EditIcon from "../../../assets/icons/edit-white.svg";
+import ActiveTab from "../../../assets/icons/active-tab.svg";
+import SettingsCard from "../../../components/SettingsCard/SettingsCard";
+import ToggleBar from "../../../components/SettingsCard/ToogleBar";
+import AddTag from "../../../components/Buttons/AddTag";
+
+import FilterItems from "../../../components/FilterItems/filterItems";
+import InputField from "../../../components/InputField/inputField";
+import Modal from "../../../components/Modal/Modal";
+import { useLazyGetSettingsQuery } from "../../../app/services/session";
+import questionMark from "../../../assets/images/Vector (6).svg";
+import toggleRectIcon from "../../../assets/icons/toggle-rect.svg";
+import toggleRectActiveIcon from "../../../assets/icons/toggle-rect-active.svg";
+import toggleCircleIcon from "../../../assets/icons/toggle-circle.svg";
 import {
   useGetAllPermissionQuery,
   useUpdateOfferImageMutation,
   useUpdateOrgSettingMutation,
   useUpdatePermissionMutation,
-} from "../../app/services/settings";
-import { getSessionTagName } from "../../utils/utils";
-import { BASE_URL, getAuthHeader } from "../../app/constants/constants";
+} from "../../../app/services/settings";
+import { getSessionTagName } from "../../../utils/utils";
+import { BASE_URL, getAuthHeader } from "../../../app/constants/constants";
 import axios from "axios";
-import DeleteIcon from "../../assets/icons/delete (2).svg";
-import PauseIcon from "../../assets/icons/pause.svg";
-import PlayIcon from "../../assets/icons/play.svg";
-import down from "../../assets/icons/down.png";
-import OrgDefaultLogo from "../../assets/icons/org-default 2.svg";
-import OrgDefaultLogo2 from "../../assets/icons/org-default.svg";
-import CAndBLogo from "../../assets/icons/company & brand.svg";
-import CAndBLogo2 from "../../assets/icons/company & brand 2.svg";
-import AccOverviewLogo from "../../assets/icons/account overview.svg";
-import AccOverviewLogo2 from "../../assets/icons/account-overview 2.svg";
-import ClientsSignupLogo from "../../assets/icons/Client sign up 1.svg";
-import ClientsSignupLogo2 from "../../assets/icons/Client sign up 2.svg";
-import EditBlueIcon from "../../assets/YIcons/edit2.svg";
-import InputSearch from "../../components/InputSearch/InputSearch";
+import DeleteIcon from "../../../assets/icons/delete (2).svg";
+import PauseIcon from "../../../assets/icons/pause.svg";
+import PlayIcon from "../../../assets/icons/play.svg";
+import down from "../../../assets/icons/down.png";
+import OrgDefaultLogo from "../../../assets/icons/org-default 2.svg";
+import OrgDefaultLogo2 from "../../../assets/icons/org-default.svg";
+import CAndBLogo from "../../../assets/icons/company & brand.svg";
+import CAndBLogo2 from "../../../assets/icons/company & brand 2.svg";
+import AccOverviewLogo from "../../../assets/icons/account overview.svg";
+import AccOverviewLogo2 from "../../../assets/icons/account-overview 2.svg";
+import ClientsSignupLogo from "../../../assets/icons/Client sign up 1.svg";
+import ClientsSignupLogo2 from "../../../assets/icons/Client sign up 2.svg";
+import EditBlueIcon from "../../../assets/YIcons/edit2.svg";
+import InputSearch from "../../../components/InputSearch/InputSearch";
 import { useSelector, useDispatch } from "react-redux";
-import { useUpdateUserFieldsMutation } from "../../app/services/users";
-import { updateUserDetails } from "../../app/slices/user";
+import { useUpdateUserFieldsMutation } from "../../../app/services/users";
+import { updateUserDetails } from "../../../app/slices/user";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import styles from "./styles.module.css";
-import SignupTab from "./Tabs/Signup/signup";
-import CompanyAndBround from "./Tabs/CompanyAndBrand/CompanyAndBround";
-import AccountOverview from "./Tabs/AccountOverview/AccountOverview";
-import AddNewQuestion from "../Frames/AddNewQuestion/AddNewQuestion";
-import { useAddNewQuestionMutation } from "../../app/services/admin";
-import { updateOrganizationSettings } from "../../app/slices/organization";
-import InputSelect from "../../components/InputSelect/InputSelect";
-import { timeZones } from "../../constants/constants";
-import { permissionsStaticData } from "./Tabs/staticData";
-import InputFieldDropdown from "../../components/InputField/inputFieldDropdown";
 
-// import questionMark from '../../assets/images/question-mark.svg'
+import { useAddNewQuestionMutation } from "../../../app/services/admin";
+import { updateOrganizationSettings } from "../../../app/slices/organization";
+import InputSelect from "../../../components/InputSelect/InputSelect";
+import { timeZones } from "../../../constants/constants";
+
+
+// import questionMark from '../../../assets/images/question-mark.svg'
 const initialState = {
   name: "",
   phone: "",
@@ -92,7 +88,7 @@ const initialTabs = [
     selected: false,
   },
 ];
-export default function Settings() {
+export default function Settings({orgData,orgs}) {
   const [modalActive, setModalActive] = useState(false);
   const { firstName, lastName } = useSelector((state) => state.user);
   const [tagModalActive, setTagModalActive] = useState(false);
@@ -106,8 +102,9 @@ export default function Settings() {
     text: "Add",
     values: [],
   });
-  const { organization } = useSelector((state) => state.organization);
 
+  const [organization ,setOrganization] = useState()
+ 
   const [searchParams, setSearchParams] = useSearchParams();
   const [tabs, setTabs] = useState(initialTabs);
   const [activeTab, setActiveTab] = useState(1);
@@ -174,7 +171,11 @@ export default function Settings() {
   const dispatch = useDispatch();
 
   const [fetchedPermissions, setThePermission] = useState([]);
-
+ useEffect(()=>{
+   setSettingsData(orgData)
+   setOrganization(orgs)
+ },[orgData])
+ console.log("orgData",orgData,settingsData)
   const handlePermissionOption = (value, key) => {
     let nvalue = value;
     if (!isNaN(Number(value))) {
@@ -297,9 +298,9 @@ export default function Settings() {
   };
 
   const fetchSettings = () => {
-    if (organization.settings) {
+    if (organization?.settings) {
       setSettingsData(organization.settings);
-      if (organization?.settings?.permissions)
+      if (organization?.settings?.permissions?.length > 0)
         setThePermission(organization.settings.permissions);
     }
   };
@@ -987,117 +988,11 @@ export default function Settings() {
   };
   return (
     <>
-      <div className="  min-h-screen w-[83.6989583333vw] mx-auto">
-        <p className="text-[#24A3D9]  !my-[calc(50*0.052vw)] text-base-20">
-          <span onClick={()=>navigate('/')} className="cursor-pointer ">
-          {organization?.company + "  >  "}
-          </span>
-          <span className="font-semibold">Settings</span>
-        </p>
-        <div className="shivam-tabs rounded-md">
-          <ul class="tabs group">
-            {tabs.map((item, idx) => {
-              return (
-                <li
-                  className={`" ${activeTab === idx + 1 ? "active" : ""}`}
-                  onClick={() => changeTab(idx + 1)}
-                >
-                  <a
-                    className={`"w-full cursor-pointer flex justify-center items-center ${
-                      activeTab === idx + 1 ? "!text-[#26435F]" : "!text-white"
-                    }`}
-                  >
-                    <span className="pb-1">
-                      {activeTab === idx + 1 && (
-                        <img
-                          src={item.Icon}
-                          className="!w-[15px] !h-[15px] "
-                          alt="item-logo"
-                        />
-                      )}
-                      {activeTab === idx + 1 || (
-                        <img
-                          src={item.Icon2}
-                          className="!w-[15px] !h-[15px]"
-                          alt="item-logo"
-                        />
-                      )}
-                    </span>
-                    <p className="py-2 px-2 pb-3 font-medium  text-base-20  whitespace-nowrap">
-                      {item.name}{" "}
-                    </p>
-                  </a>
-                </li>
-              );
-            })}
-          </ul>
-        </div>
-        <div className=" flex w-full flex-1 items-center mb-[30px]">
-          <div
-            className={`${styles.tabsContainer} gap-7 flex-1 !shadow-[0px_0px_2.5px_0px_rgba(0,0,0,0.25)]`}
-          >
-            {/* {tabs.map((item, idx) => {
-              return (
-                <div
-                  className={`${styles.tab} ${activeTab === idx + 1 ? styles.selectedTab : ""
-                    } cursor-pointer h-full`}
-                  onClick={() => changeTab(idx + 1)}
-                >
-                  <div className={`"h-full  w-full flex justify-center items-center ${activeTab === idx + 1?'':''}`}>
-                    <div>
-                      {activeTab === idx + 1 && (
-                        <img src={item.Icon} className="w-[15px] h-[15px]" alt="item-logo" />
-                      )}
-                      {activeTab === idx + 1 || (
-                        <img src={item.Icon2} className="w-[15px] h-[15px]" alt="item-logo" />
-                      )}
-                    </div>
-                    <p className="flex items-center py-2  w-[calc(191*0.0522vw)] justify-center text-base-17-5  whitespace-nowrap">{item.name} </p>
-                  </div>
-                  {/ {activeTab === idx + 1 && (
-                    <img
-                      src={ActiveTab}
-
-                      className={`${styles.activeBgIcon} lg:top-[10px] `}
-                      alt="item-background"
-                    />
-                  )} }
-                </div>
-              );
-            })} */}
-          </div>
-
-          {/* <div>
-                  <p className='font-bold text-4xl mb-[54px] text-[#25335A]'> Settings </p>
-                  <div className='text-base'>
-                     <div className='flex items-center mb-4'>
-                        <p className='opacity-60  mr-[15px]'> Full Name:</p>
-                        <p className='font-bold'> {user.firstName} {user.lastName} </p>
-                     </div>
-                     <div className='flex items-center mb-4'>
-                        <p className='opacity-60 mr-[23px]'>  Email:</p>
-                        <p className='font-bold'> {user.email} </p>
-                     </div>
-                     <div className='flex items-center mb-4'>
-                        <p className='opacity-60 mr-[15px]'>Phone:</p>
-                        <p className='font-bold'> {user.phone} </p>
-                     </div>
-                  </div>
-               </div> */}
-
-          {/* <PrimaryButton
-                  className='w-[174px] px-4'
-                  onClick={() => setModalActive(true)}
-                  children={
-                     <div className='flex items-center justify-center'>
-                        <p className='mr-3 text-lf font-semibold whitespace-nowrap text-[18px]'>
-                           Edit Details
-                        </p>
-                        <img src={EditIcon} />
-                     </div>} /> */}
-        </div>
+      <div className="    mx-auto">
+     
+       
         {activeTab === 1 || !activeTab ? (
-          <div>
+          <div className=" px-[10px] w-full overflow-y-auto h-[400px] custom-scroller">
             <div className="flex items-center gap-x-8 mb-4">
               <div>
                 <InputSelect
@@ -1728,16 +1623,7 @@ export default function Settings() {
         ) : (
           <></>
         )}
-        {activeTab === 2 && <CompanyAndBround />}
-        {activeTab === 4 && (
-          <SignupTab
-            setAddNewQuestionModalActive={setAddNewQuestionModalActive}
-            fetchS={fetchS}
-            organization={organization}
-            updateAndFetchsettings={updateAndFetchsettings}
-          />
-        )}
-        {activeTab === 3 && <AccountOverview />}
+       
       </div>
       {modalActive && (
         <Modal
@@ -2253,30 +2139,7 @@ export default function Settings() {
           }
         />
       )}
-      {addNewQuestionModalActive && (
-        <Modal
-          classname={"max-w-[700px] mx-auto"}
-          titleClassName="text-base-20 mb-[18px]"
-          title="Add Question"
-          cancelBtn={true}
-          cancelBtnClassName="w-140"
-          primaryBtn={{
-            text: "Add",
-            className: "w-140",
-            form: "add-question-form",
-            type: "submit",
-          }}
-          handleClose={() => setAddNewQuestionModalActive(false)}
-          body={
-            <form id="add-question-form" onSubmit={submitNewQuestion}>
-              <AddNewQuestion
-                setNewQuestion={setNewQuestion}
-                newQuestion={newQuestion}
-              />
-            </form>
-          }
-        />
-      )}
+   
     </>
   );
 }

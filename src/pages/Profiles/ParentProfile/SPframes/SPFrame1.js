@@ -171,7 +171,7 @@ return <></>
                 onClick={() =>
                   setToEdit({
                     ...toEdit,
-                    notes: { ...toEdit.notes, active: true },
+                    notes: { ...toEdit.notes,internalNotes:user?.internalNotes, active: true },
                   })
                 }
                 text="Edit"
@@ -261,7 +261,7 @@ return <></>
                 onClick={() =>
                   setToEdit({
                     ...toEdit,
-                    service: { ...toEdit.service,service:organization?.settings?.servicesAndSpecialization?.map((it)=> it?.service) , active: true },
+                    service: { ...toEdit.service,service:userDetail?.service?.map((it)=> it) , active: true },
                   })
                 }
                 text="Edit"

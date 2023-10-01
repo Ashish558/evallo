@@ -324,7 +324,7 @@ const Navbar = () => {
       if (!isLoggedIn && (activeRoute === '/signup/user' || activeRoute === '/signup' || activeRoute === "/")) {
          let arr = tutorNav;
          if (activeRoute === '/')
-            arr[0].path = "/dashboard"
+            arr[0].path = "/"
          setNavData(arr)
       }
    }, [activeRoute])

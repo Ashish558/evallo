@@ -73,15 +73,17 @@ export default function AssignedStudents() {
    }
 
    useEffect(() => {
+      console.log("rescaniting")
       getUserDetail({ id })
          .then(resp => {
             console.log('res', resp.data.data.user)
             let studentsData = []
-            const fetch = (cb) => {
+            const fetch =  (cb) => {
                resp.data.data.user.assiginedStudents.map((studentId, idx) => {
                   getUserDetail({ id: studentId })
                      .then(res => {
-                        console.log('detail res', resp.data.data)
+                        console.log('detail res', res?.data?.data)
+                        if(res?.data?.data){
                         const { _id, firstName, lastName, email, phone, services, topics, status, assignedDate } = res.data.data.user
                         const { specialization, FirstName, LastName, timeZone } = res.data.data.userdetails
                         studentsData.push({
@@ -98,7 +100,12 @@ export default function AssignedStudents() {
                            // score: '-',
                            // assignedDate: '_'
                         })
-                        if (idx === resp.data.data.user.assiginedStudents.length - 1) cb()
+                     }
+                     //   console.log("rescb",idx,resp.data.data.user.assiginedStudents.length - 1)
+                        if (idx === resp.data.data.user.assiginedStudents.length - 1) {
+                           console.log("rescb: student")
+                           cb()
+                        }
                      })
                })
             }
@@ -107,7 +114,7 @@ export default function AssignedStudents() {
                setFilteredStudents(studentsData)
             })
          })
-   }, [])
+   }, [id])
 
    useEffect(() => {
       let tempdata = [...students]
