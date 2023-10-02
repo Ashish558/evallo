@@ -94,6 +94,7 @@ export default function OrgSignup() {
     activeStudents: "",
     activeTutors: "",
     services: [],
+    subscriptionPlan: "Starter"
   });
 
   const [error, setError] = useState({
@@ -848,7 +849,7 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
                       .
                     </p>
                   </div>
-                  <div className="flex items-center mt-[60px] justify-between">
+                  <div className="flex items-center mt-[60px] justify-end">
                     <SecondaryButton
                       children="Go back"
                       className="text-sm mr-6 bg-white text-[#cad0db] border-[1.7px] border-[#D0D5DD] py-2 "
@@ -872,7 +873,10 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
                   </div>
                 </div>
               ) : frames.subscription || true ? (
-                <Subscription />
+                <Subscription
+                  values={values}
+                  setValues={setValues}
+                />
               ) : frames.furtherDetails ? (
                 <FurtherDetails
                   {...props}
