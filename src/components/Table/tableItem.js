@@ -328,7 +328,7 @@ export default function TableItem({
       {dataFor === "allUsers" && (
         <tr className="odd:bg-white   leading-8">
 
-          <td className=" text-[17.5px] px-1  min-w-14 py-4  text-left">
+          <td className=" text-[17.5px] px-1  min-w-14   text-left">
             <span
               className="inline-block cursor-pointer pl-4"
 
@@ -363,17 +363,17 @@ export default function TableItem({
               </div>
             </span>
           </td>
-          <td className=" text-[17.5px] px-1 min-w-14 py-4 capitalize" >
+          <td className=" text-[17.5px] px-1 min-w-14  capitalize" >
             <div className="my-[6px]">{item.userType}</div>
           </td>
-          <td className=" text-[17.5px] px-1  min-w-14 py-4 ">
+          <td className=" text-[17.5px] px-1  min-w-14  ">
             <div className="my-[6px]">{item.email}</div>
           </td>
 
-          <td className=" text-[17.5px] px-1  min-w-14 py-4 capitalize">
+          <td className=" text-[17.5px] px-1  min-w-14  capitalize">
             <div className="my-[6px]">{item.phoneCode}{item.phone}</div>
           </td>
-          <td className=" text-[17.5px] px-1  min-w-14 py-4 capitalize">
+          <td className=" text-[17.5px] px-1  min-w-14  capitalize">
             <div className="my-[6px]">
               {item.assignedTutor?.length > 0
                 ? item.assignedTutor?.map((id, idx) => {
@@ -385,7 +385,7 @@ export default function TableItem({
                 : "-"}
             </div>
           </td>
-          <td className=" text-[17.5px] px-1  min-w-14 py-4">
+          <td className=" text-[17.5px] px-1  min-w-14 ">
             <div className="my-[6px]">
               {item.specialization?.map((specialization, idx) => {
                 return `${specialization}${idx + 1 === item.specialization.length ? "" : ","
@@ -393,7 +393,7 @@ export default function TableItem({
               })}
             </div>
           </td>
-          <td className=" text-[17.5px] px-1  min-w-14 py-4">
+          <td className=" text-[17.5px] px-1  min-w-14 ">
             <div className="my-[6px]">
               <InputSelect
                 tableDropdown={true}
@@ -408,7 +408,7 @@ export default function TableItem({
               />
             </div>
           </td>
-          <td className=" text-[17.5px] px-1  min-w-14 py-4">
+          <td className=" text-[17.5px] px-1  min-w-14 ">
             <InputSelect
               tableDropdown={true}
               value={tutorStatus ? tutorStatus : "-"}
@@ -422,14 +422,14 @@ export default function TableItem({
 
 
 
-          <td className=" text-[17.5px] px-1  min-w-14 py-4 text-[#507CA8]">
+          <td className=" text-[17.5px] px-1  min-w-14  text-[#507CA8]">
             <div className="my-[6px] capitalize">{item?.accountStatus}</div>
           </td>
-          <td className=" text-[17.5px] px-1  min-w-14 py-4 text-[#507CA8]">
+          <td className=" text-[17.5px] px-1  min-w-14  text-[#507CA8]">
             <div className="my-[6px] capitalize">{getFormatDate(item.createdAt)}</div>
           </td>
 
-          {false && <td className=" px-1 min-w-14 py-4">
+          {false && <td className=" px-1 min-w-14 ">
             {item.userType !== "admin" ? (
               <div className=" flex items-center justify-center">
 
@@ -556,7 +556,7 @@ export default function TableItem({
 
           </td>
           <td className="font-medium px-1  min-w-14 py-4">{item.testName}</td>
-          <td className=" text-[17.5px] px-1  min-w-14 py-4  text-left">
+          <td className=" text-[17.5px] px-1  min-w-14 py-4  text-center">
 
             <span onClick={() => onClick.redirect(item)} className="">
               {new Date(item.assignedOn).toLocaleDateString()}

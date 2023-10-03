@@ -1,12 +1,12 @@
 import React from "react";
 import { useSelector } from "react-redux";
-
+import plusIcon from '../../assets/icons/plus.png'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDown, faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import { faQuestionCircle } from "@fortawesome/free-regular-svg-icons";
 import icon from "../../assets/images/Evallo.png";
 import styles from "./style.module.css";
-
+import userLogo from '../../assets/icons/users.svg'
 import Table from "../../components/Table/Table";
 import ActionLog from "./ActionLog";
 import Table2 from "../SuperadminDashboard/Table/table"
@@ -553,17 +553,20 @@ const Dashboard = () => {
         </section>
 
         <section className="mt-[30px] w-[83.33vw] mx-auto !mt-[calc(30*0.050vw)]">
-          <p className="font-semibold text-[#26435F]  text-xl mb text-base-20">Latest Sign-ups</p>
+          <p className="font-semibold text-[#26435F]  text-xl mb text-base-20">Latest Sign-Ups <span className="font-light">(last 7 Days)</span></p>
 
           <div className="">
             <Table
               data={userData}
               AdminLatestSignUp={true}
               headerObject={true}
-
+              belowBox={true}
+              belowBoxText="Invite Parents or Students"
+              belowBoxIcon={userLogo}
               tableHeaders={latestSignUpHeaders}
               maxPageSize={5}
             />
+
           </div>
         </section>
         <div className="flex justify-center">
@@ -599,6 +602,9 @@ const Dashboard = () => {
                     "Completed Hours",
                     "% of Business",
                   ]}
+                  belowBox={true}
+                  belowBoxText="Add New Services"
+                  belowBoxIcon={plusIcon}
                   maxPageSize={5}
                 />
               </div>
@@ -622,6 +628,9 @@ const Dashboard = () => {
                     "Referrals"
                   ]}
                   maxPageSize={5}
+                  belowBox={true}
+                  belowBoxText="Add Referral Codes"
+                  belowBoxIcon={plusIcon}
                 />
               </div>
             </div>
@@ -717,10 +726,13 @@ const Dashboard = () => {
         <section className="mx-auto  w-[83.33vw]">
 
           <Table
-            headerWidth="w-[150px] whitespace-normal"
+            headerWidth="w-[130px] whitespace-normal"
             data={tutorPerformanceData}
             tableHeaders={tutorTableHeaders}
             maxPageSize={5}
+            belowBox={true}
+            belowBoxText="Invite Tutors"
+            belowBoxIcon={userLogo}
           />
 
 
