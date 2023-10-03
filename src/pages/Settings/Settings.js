@@ -1673,7 +1673,7 @@ export default function Settings() {
                     }}
                     className="px-2 bg-primary flex items-center text-white font-medium text-[17.5px] pl-3 pr-3 pt-1.4 pb-1.5 rounded-7 mr-[15px]  text-base-17-5 "
                   >
-                    <span> Add Session </span>
+                    <span>  Add Heading </span>
                     <img src={AddIcon} className="w-4 ml-1" alt="add" />
                   </button>
                 </div>
