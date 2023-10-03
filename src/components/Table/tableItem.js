@@ -35,6 +35,7 @@ import { getFormattedDate, getScore, getScoreStr } from "../../utils/utils";
 import InputField from "../InputField/inputField";
 import CCheckbox from "../CCheckbox/CCheckbox";
 import SCheckbox from "../CCheckbox/SCheckbox";
+import organization from "../../app/slices/organization";
 
 
 export default function TableItem({
@@ -67,10 +68,10 @@ export default function TableItem({
   const [getTestResponse, getTestResponseResp] = useLazyGetTestResponseQuery();
 
   const { role: persona } = useSelector((state) => state.user);
-
+ const {organization:organization2} = useSelector((state) => state.organization)
   const [userDetail, setUserDetail] = useState({});
   const [leadStatus, setLeadStatus] = useState("");
-
+  const [tutorStatus, setTutorStatus] = useState("");
 
   const [settings, setSettings] = useState({
     leadStatus: [],
@@ -145,13 +146,14 @@ export default function TableItem({
         return //console.log("error updating");
       }
       fetch && fetch(field, item._id);
-      //console.log("update res", res.data);
+      console.log("update res",item?._id,field, res.data);
     });
   };
   const handleChange = (field) => {
 
     if (item.userType === "parent" || item.userType === "student") {
       updateUserDetail({ fields: field, id: item._id }).then((res) => {
+        console.log("lead",{res})
         fetch && fetch(field, item._id);
       });
     } else if (item.userType === "tutor") {
@@ -196,8 +198,9 @@ export default function TableItem({
 
           let status = "-";
           if (resp?.data?.data?.details) {
-            status = resp.data.data.details.leadStatus;
+            status = resp.data.data.details?.leadStatus;
             setLeadStatus(status);
+            setTutorStatus(resp.data.data.details?.tutorStatus)
           }
         });
       } else {
@@ -207,6 +210,7 @@ export default function TableItem({
           if (resp?.data?.data?.userdetails) {
             status = resp.data.data.userdetails.leadStatus;
             setLeadStatus(status);
+            setTutorStatus(resp.data.data.details?.tutorStatus)
           }
         });
       }
@@ -395,7 +399,7 @@ export default function TableItem({
                 tableDropdown={true}
                 value={leadStatus ? leadStatus : "-"}
                 placeholderClass="text-base-17-5"
-                optionData={settings.leadStatus}
+                optionData={organization2?.settings?.leadStatus}
                 inputContainerClassName={`min-w-[100px] pt-0 pb-0 pr-2 pl-0 text-center capitalize `}
                 optionClassName="text-[17.5px]"
                 labelClassname="hidden"
@@ -407,12 +411,12 @@ export default function TableItem({
           <td className=" text-[17.5px] px-1  min-w-14 py-4">
             <InputSelect
               tableDropdown={true}
-              value={item.userStatus ? item.userStatus : "-"}
-              optionData={["active", "blocked", "dormant"]}
+              value={tutorStatus ? tutorStatus : "-"}
+              optionData={organization2?.settings?.tutorStatus}
               inputContainerClassName="min-w-[100px] pt-0 pb-0 pr-2 pl-0 text-center capitalize text-base-17-5"
               optionClassName="text-[17.5px] text-base-17-5"
               labelClassname="hidden"
-              onChange={(val) => handlestatusChange({ userStatus: val })}
+              onChange={(val) => handlestatusChange({ tutorStatus: val })}
             />
           </td>
 

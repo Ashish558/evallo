@@ -25,6 +25,7 @@ import { BASE_URL, getAuthHeader } from "../../app/constants/constants";
 import axios from "axios";
 import DeleteIcon from "../../assets/icons/delete (2).svg";
 import PauseIcon from "../../assets/icons/pause.svg";
+import AddIcon from "../../assets/Settings/add-white.svg";
 import PlayIcon from "../../assets/icons/play.svg";
 import down from "../../assets/icons/down.png";
 import OrgDefaultLogo from "../../assets/icons/org-default 2.svg";
@@ -63,6 +64,7 @@ const initialState = {
 const subModalInitialState = {
   code: "",
   expiry: "",
+  tests:[],
   editing: false,
 };
 
@@ -302,6 +304,7 @@ export default function Settings() {
       setSettingsData(organization.settings);
       if (organization?.settings?.permissions)
         setThePermission(organization.settings.permissions);
+      
     }
   };
   //console.log(organization);
@@ -646,25 +649,23 @@ export default function Settings() {
         subscriptionCode: updated,
       };
       // //console.log('updatedSetting', updatedSetting);
-      updateAndFetchsettings(updatedSetting);
-      setAddCodeModalActive(false);
-      setSubModalData(subModalInitialState);
+      updateAndFetchsettingsNew2(updatedSetting);
+     
     } else {
       let updated = [
         ...subscriptionCode,
         {
           code: subModalData.code,
           expiry: subModalData.expiry,
-          tests: [],
+          tests: subModalData?.tests,
         },
       ];
       let updatedSetting = {
         subscriptionCode: updated,
       };
       // //console.log('updatedSetting', updatedSetting);
-      updateAndFetchsettings(updatedSetting);
-      setAddCodeModalActive(false);
-      setSubModalData(subModalInitialState);
+      updateAndFetchsettingsNew2(updatedSetting);
+     
     }
   };
 
@@ -780,7 +781,7 @@ export default function Settings() {
       }));
     }
   };
-
+ 
   const changeTab = (num) => {
     navigate(`/settings?tab=${num}`);
     setActiveTab(num);
@@ -815,7 +816,81 @@ export default function Settings() {
       setActiveTab(parseInt(activeTab));
     }
   }, [searchParams.get("tab")]);
+   /* new */
 
+   const subModalInitialServiceState = {
+    service: "",
+    specialization: [],
+    editing: false,
+  };
+  const subModalInitialSessionState = {
+    heading: "",
+    items: [],
+    editing: false,
+  };
+
+  const [subModalServiceData, setSubModalServiceData] = useState(
+    subModalInitialServiceState
+  );
+  const [subModalSessionData, setSubModalSessionData] = useState(
+    subModalInitialSessionState
+  );
+  const [addServiceModalActive, setAddServiceModalActive] = useState(false);
+  const [addSessionModalActive, setAddSessionModalActive] = useState(false);
+  const [selectedSessionData, setSelectedSessionData] = useState({
+    heading: "",
+    items: [],
+    // editing: false,
+  });
+
+  const [updatedSessionData, setUpdatedSessionData] = useState({
+    heading: "",
+    items: [],
+    //editing: false,
+  });
+  const [selectedServiceData, setSelectedServiceData] = useState({
+    service: "",
+    specialization: [],
+    // editing: false,
+  });
+
+  const [updatedServiceData, setUpdatedServiceData] = useState({
+    service: "",
+    specialization: [],
+    // editing: false,
+  });
+  const [offersNew, setOffersNew] = useState([]);
+  const [addServices2, setServices2] = useState({
+    service: "",
+    specialization: [],
+  });
+  const [addSession2, setSession2] = useState({ heading: "",
+  items: [],});
+ 
+  const [addOne, setOne] = useState(false);
+  const [loading2, setLoading2] = useState(false);
+  useEffect(() => {
+    if (settingsData && settingsData?.offerImages) {
+      let arr = [];
+      for (let i = 0; i < 4 - settingsData?.offerImages.length; i++) {
+        arr.push({
+          link: "",
+          image: "",
+          buttonText: "",
+        });
+      }
+      setOffersNew([...arr]);
+    }
+  }, [settingsData?.offerImages, settingsData]);
+  useEffect(() => {
+    setUpdatedSessionData(selectedSessionData);
+  }, [selectedSessionData]);
+  useEffect(() => {
+    setUpdatedServiceData(selectedServiceData);
+  }, [selectedServiceData]);
+
+  if (!settingsData) return <></>;
+  if (Object.keys(settingsData).length === 0) return <></>;
   // if (Object.keys(settingsData).length === 0) return <></>
   const {
     classes,
@@ -855,56 +930,7 @@ export default function Settings() {
     //console.log("searchTests0", searchedTest);
   }
 
-  /* new */
-  const [addServiceModalActive, setAddServiceModalActive] = useState(false);
-  const [addSessionModalActive, setAddSessionModalActive] = useState(false);
-  const subModalInitialServiceState = {
-    service: "",
-    specialization: [],
-    editing: false,
-  };
-  const subModalInitialSessionState = {
-    heading: "",
-    items: [],
-    editing: false,
-  };
-
-  const [subModalServiceData, setSubModalServiceData] = useState(
-    subModalInitialServiceState
-  );
-  const [subModalSessionData, setSubModalSessionData] = useState(
-    subModalInitialSessionState
-  );
-  const [selectedSessionData, setSelectedSessionData] = useState({
-    heading: "",
-    items: [],
-    // editing: false,
-  });
-
-  const [updatedSessionData, setUpdatedSessionData] = useState({
-    heading: "",
-    items: [],
-    //editing: false,
-  });
-  const [selectedServiceData, setSelectedServiceData] = useState({
-    service: "",
-    specialization: [],
-    // editing: false,
-  });
-
-  const [updatedServiceData, setUpdatedServiceData] = useState({
-    service: "",
-    specialization: [],
-    // editing: false,
-  });
-
-  useEffect(() => {
-    setUpdatedSessionData(selectedSessionData);
-  }, [selectedSessionData]);
-  useEffect(() => {
-    setUpdatedServiceData(selectedServiceData);
-  }, [selectedServiceData]);
-
+ 
   const onEditService = (code) => {
     setSubModalServiceData({
       ...code,
@@ -990,29 +1016,16 @@ export default function Settings() {
     // //console.log('updatedSetting', updatedSetting)
   };
 
-  const [offersNew, setOffersNew] = useState([]);
-
-  useEffect(() => {
-    if (offerImages) {
-      let arr = [];
-      for (let i = 0; i < 4 - offerImages.length; i++) {
-        arr.push({
-          link: "",
-          image: "",
-          buttonText: "",
-        });
-      }
-      setOffersNew([...arr]);
-    }
-  }, [offerImages, settingsData]);
+ 
   console.log({ offersNew, offerImages });
-  const [loading2,setLoading2]=useState(false)
+
+
   const submitImageModalNew = (file, val, e) => {
     e.preventDefault();
     // //console.log(tagText)
     // //console.log(tagImage)
     // //console.log(selectedImageTag)
-  if(loading2) return 
+    if (loading2) return;
     const formData = new FormData();
 
     let append = "";
@@ -1024,7 +1037,7 @@ export default function Settings() {
     formData.append("buttonText", val?.buttonText);
     console.log({ file, val, link: val?.link });
 
-    setLoading2(true)
+    setLoading2(true);
     setSaveLoading(true);
     axios
       .patch(`${BASE_URL}api/user/Orgsettings/${append}`, formData, {
@@ -1033,7 +1046,7 @@ export default function Settings() {
         maxContentLength: Infinity,
       })
       .then((res) => {
-        setLoading2(false)
+        setLoading2(false);
         console.log("resp--", res.data.data.updatedSetting.settings);
         dispatch(
           updateOrganizationSettings(res.data.data.updatedSetting.settings)
@@ -1064,7 +1077,7 @@ export default function Settings() {
         setSaveLoading(false);
       })
       .catch((err) => {
-        setLoading2(false)
+        setLoading2(false);
         console.log("err", err);
         alert("Could not upload image");
         setSaveLoading(false);
@@ -1096,13 +1109,124 @@ export default function Settings() {
   };
 
 
+  const updateAndFetchsettingsNew2 = (updatedSetting) => {
+    if (!organization || !settingsData || !updatedSetting) return;
+    const settings = {
+      ...settingsData,
+      ...updatedSetting,
+    };
+    const body = {
+      settings,
+    };
+    //console.log("body", body);
 
+    setSaveLoading(true);
+    updateSetting(body)
+      .then((res) => {
+        //console.log("updated", res.data.data);
+        alert("Succesfully Added!")
+        setOne(false)
+        setAddServiceModalActive(false)
+        setAddSessionModalActive(false)
+        setAddCodeModalActive(false)
+        setServices2({ service: "", specialization: [] });
+        setSession2({ heading: "",
+        items: [] });
+        setAddCodeModalActive(false);
+        setSubModalData(subModalInitialState);
+        setSaveLoading(false);
+        setSettingsData(res.data.data.updatedOrg.settings);
+        dispatch(updateOrganizationSettings(res.data.data.updatedOrg.settings));
+      })
+      .catch((err) => {
+        alert("Error Occured!")
+        setSaveLoading(false);
+        //console.log("err", err);
+      });
+  };
+  const handleNewServiceRemove = (e) => {
+    if (addServices2?.specialization) {
+      let temp = addServices2;
+      temp.specialization = temp?.specialization?.filter((it) => it !== e);
+      setServices2({ ...temp });
+    }
+    console.log(e);
+  };
+  const handleAddNewService = (e) => {
+    console.log(addServices2);
+    let tempSettings = { ...settingsData };
+    let updatedSetting = {
+      servicesAndSpecialization: [
+        ...tempSettings["servicesAndSpecialization"],
+        {
+          service: addServices2?.service,
+          specialization: addServices2?.specialization,
+        },
+      ],
+    };
 
+    updateAndFetchsettingsNew2(updatedSetting);
+   //setAddServiceModalActive(false)
+  };
+  const handleAddNewSpecialisation = (e) => {
+    if (addServices2?.specialization) {
+      let temp = addServices2;
+      temp?.specialization?.push(e);
+      setServices2({ ...temp });
+    }
+    console.log(e);
+  };
+  const handleNewSessionRemove = (e) => {
+    if (addSession2?.items) {
+      let temp = addSession2;
+      temp.items = temp?.items?.filter((it) => it !== e);
+      setSession2({ ...temp });
+    }
+    console.log(e);
+  };
+  const handleAddNewSession = (e) => {
+    console.log(addSession2);
+    let tempSettings = { ...settingsData };
+    let updatedSetting = {
+      sessionTags: [
+        ...tempSettings["sessionTags"],
+        {
+          heading: addSession2?.heading,
+          items: addSession2?.items,
+        },
+      ],
+    };
 
-
-
-
-  
+    updateAndFetchsettingsNew2(updatedSetting);
+   //setAddServiceModalActive(false)
+  };
+  const handleAddNewTags = (e) => {
+    if (addSession2?.items) {
+      let temp = addSession2;
+      temp?.items?.push(e);
+      setSession2({ ...temp });
+    }
+    console.log(e);
+  };
+  const handleTestChange2 = (item) => {
+    //console.log("tsests", item);
+    if (subModalData.tests.includes(item._id)) {
+      let updated = subModalData.tests.filter(
+        (test) => test !== item._id
+      );
+      setSubModalData((prev) => ({
+        ...prev,
+        tests: updated,
+      }));
+    } else {
+      setSubModalData((prev) => ({
+        ...prev,
+        tests: [...subModalData.tests, item._id],
+      }));
+    }
+  };
+  console.log({ subModalData,addOne, addServices2, addSession2 });
+ 
   return (
     <>
       <div className="  min-h-screen w-[83.6989583333vw] mx-auto">
@@ -1286,6 +1410,7 @@ export default function Settings() {
               title="Manage Referral Codes"
               className={styles["bordered-settings-container"]}
               body={
+                <div >
                 <div className="max-h-[330px] overflow-auto custom-scroller p-1 scrollbar-vertical ">
                   {subscriptionCode !== undefined &&
                     subscriptionCode.map((subscription, i) => {
@@ -1355,6 +1480,7 @@ export default function Settings() {
                         </div>
                       );
                     })}
+                    </div>
                   <AddTag
                     children="Add New Code"
                     className="px-[18px] py-3 mt-5 bg-primary text-white"
@@ -1366,36 +1492,6 @@ export default function Settings() {
                 </div>
               }
             />
-
-            {/* <SettingsCard
-              titleClassName="text-base-20"
-              title="Expertise"
-              toggle={{ value: toggleImage.Expertise, key: "Expertise" }}
-              onToggle={onToggle}
-              body={
-                <div className="flex items-center flex-wrap [&>*]:mb-[10px]">
-                  <AddTag
-                    keyName="Expertise"
-                    openModal={true}
-                    onAddTag={() => handleTagModal("Expertise")}
-                  />
-                  <FilterItems
-                    isString={false}
-                    onlyItems={true}
-                    image={toggleImage.Expertise}
-                    items={
-                      sessionTags !== undefined
-                        ? Expertise.map((item) => item)
-                        : []
-                    }
-                    keyName="Expertise"
-                    baseLink={awsLink}
-                    onRemoveFilter={onRemoveTextImageTag}
-                    className="pt-1 pb-1 mr-15 text-base-17-5"
-                  />
-                </div>
-              }
-            /> */}
 
             <SettingsCard
               titleClassName="text-base-20"
@@ -1467,12 +1563,27 @@ export default function Settings() {
                         );
                       })}
                   </div>
-                  <AddTag
+                  {/* <AddTag
                     children="Add Service"
                     className="px-[18px] py-3 mt-5 bg-primary text-white"
                     text="Add Service"
-                    onAddTag={onAddService}
-                  />
+                   // onAddTag={onAddService}
+                   onAddTag={()=>{
+                    setOne(true)
+                    setAddServiceModalActive(true);
+
+                   }}
+                  /> */}
+                  <button
+                    onClick={() => {
+                      setOne(true);
+                      setAddServiceModalActive(true);
+                    }}
+                    className="px-2 bg-primary flex items-center text-white font-medium text-[17.5px] pl-3 pr-3 pt-1.4 pb-1.5 rounded-7 mr-[15px]  text-base-17-5 "
+                  >
+                    <span> Add Service </span>
+                    <img src={AddIcon} className="w-4 ml-1" alt="add" />
+                  </button>
                 </div>
               }
             />
@@ -1482,6 +1593,7 @@ export default function Settings() {
               title="Session Tags & Reconciliation"
               className={styles["bordered-settings-container"]}
               body={
+                <div>
                 <div className="max-h-[360px] overflow-auto custom-scroller p-1 scrollbar-vertical">
                   {sessionTags !== undefined &&
                     sessionTags.map((service, i) => {
@@ -1545,13 +1657,25 @@ export default function Settings() {
                         </div>
                       );
                     })}
-                  <AddTag
+
+                     </div>
+                  {/* <AddTag
                     children="Add Heading"
                     className="px-[18px] py-3 mt-5 bg-primary text-white"
                     text="Add Heading"
                     hideIcon={false}
                     onAddTag={onAddSessionTag}
-                  />
+                  /> */}
+                   <button
+                    onClick={() => {
+                      setOne(true);
+                      setAddSessionModalActive(true);
+                    }}
+                    className="px-2 bg-primary flex items-center text-white font-medium text-[17.5px] pl-3 pr-3 pt-1.4 pb-1.5 rounded-7 mr-[15px]  text-base-17-5 "
+                  >
+                    <span> Add Session </span>
+                    <img src={AddIcon} className="w-4 ml-1" alt="add" />
+                  </button>
                 </div>
               }
             />
@@ -1599,7 +1723,7 @@ export default function Settings() {
                     // onRemoveFilter={onRemoveFilter}
                     className="pt-1 pb-1 mr-15 text-base-17-5"
                   /> */}
-                  
+
                     {offerImages?.map((offer) => {
                       return (
                         <div className="flex-1" key={offer._id}>
@@ -1709,13 +1833,16 @@ export default function Settings() {
                                       {off?.image?.name}
                                     </span>
                                     <span
-                                      onClick={(e) => 
-
+                                      onClick={(e) =>
                                         submitImageModalNew(off?.image, off, e)
                                       }
-                                      className={` cursor-pointer block text-sm text-white bg-[#517CA8] hover:bg-[#517CA8] items-center justify-center  rounded-[5px]  px-4 py-2 text-center text-base-17-5] ${loading2?"!cursor-wait":""}`}
+                                      className={` cursor-pointer block text-sm text-white bg-[#517CA8] hover:bg-[#517CA8] items-center justify-center  rounded-[5px]  px-4 py-2 text-center text-base-17-5] ${
+                                        loading2 ? "!cursor-wait" : ""
+                                      }`}
                                     >
-                                    {loading2?"Submitting...":  "Submit File"}
+                                      {loading2
+                                        ? "Submitting..."
+                                        : "Submit File"}
                                     </span>
                                   </div>
                                 )}
@@ -1995,7 +2122,7 @@ export default function Settings() {
             <form
               id="settings-form"
               onSubmit={(e) => {
-                handleADdTestSubmit(e);
+                //handleADdTestSubmit(e);
                 handleCodeSubmit(e);
               }}
             >
@@ -2023,12 +2150,14 @@ export default function Settings() {
                       type="text"
                       value={subModalData.code}
                       isRequired={true}
-                      onChange={(e) =>
+                      onChange={(e) =>{
+                        if(!e.target.value?.includes(" "))
                         setSubModalData({
                           ...subModalData,
                           code: e.target.value,
                         })
                       }
+                    }
                     />
                   </div>
                   <div className="flex-1">
@@ -2042,13 +2171,19 @@ export default function Settings() {
                       placeholderClass="text-base-17-5"
                       parentClassName=" text-base-17-5 py-0 w-full mr-4"
                       type="text"
+                  
                       value={subModalData.expiry}
-                      onChange={(e) =>
+                      onChange={(e) =>{
+                        console.log(e.target.value)
+                        console.log("shivam",e.target,e.target.value)
+                        if(parseInt(e.target.value)<0 || e.target.value<0  )return 
+                        if((/^\d+$/.test(e.target.value) && parseInt(e.target.value)>=0 )|| e.target.value?.length===0  )
                         setSubModalData({
                           ...subModalData,
                           expiry: e.target.value,
                         })
                       }
+                    }
                     />
                   </div>
                 </div>
@@ -2066,7 +2201,7 @@ export default function Settings() {
                     checkbox={{
                       visible: true,
                       name: "test",
-                      match: updatedSubscriptionData.tests,
+                      match: subModalData.tests,
                     }}
                     onChange={(e) => setSearchedTest(e.target.value)}
                     optionListClassName="text-base-17-5"
@@ -2074,7 +2209,7 @@ export default function Settings() {
                     optionData={filteredTests}
                     right={<img className="" src={down} />}
                     onOptionClick={(item) => {
-                      handleTestChange(item);
+                      handleTestChange2(item);
                       // setStudent(item.value);
                       // handleStudentsChange(item)
                       // setCurrentToEdit({ ...currentToEdit, students: [... item._id] });
@@ -2090,7 +2225,7 @@ export default function Settings() {
                   /> */}
                 </div>
                 <div className="flex gap-4 items-center justify-center mt-3">
-                  <button className="rounded-lg bg-[#FFA28D] border-2 border-[#FFA28D] py-[6px] text-[#FFFFFF] w-[146px]">
+                <button disabled={saveLoading} className={`${saveLoading?"cursor-wait":""} rounded-lg bg-[#FFA28D] border-2 border-[#FFA28D] py-[6px] text-[#FFFFFF] w-[146px]`}>
                     Save{" "}
                   </button>
                   <button
@@ -2114,17 +2249,26 @@ export default function Settings() {
           cancelBtnClassName="w-140 "
           handleClose={() => {
             setAddServiceModalActive(false);
-            setSubModalServiceData(subModalInitialServiceState);
+            if (addOne) {
+              setServices2({ service: "", specialization: [] });
+              setOne(false)
+            } else {
+              setSubModalServiceData(subModalInitialServiceState);
+            }
           }}
           body={
             <form
               id="settings-form"
               onSubmit={(e) => {
                 e.preventDefault();
-                handleAddServiceName(
-                  selectedServiceData?.service,
-                  subModalServiceData?._id
-                );
+                if (addOne) {
+                  handleAddNewService();
+                } else {
+                  handleAddServiceName(
+                    selectedServiceData?.service,
+                    subModalServiceData?._id
+                  );
+                }
               }}
             >
               <p className="text-base-17-5 mt-[-10px] text-[#667085]">
@@ -2143,48 +2287,83 @@ export default function Settings() {
                     <InputField
                       label="Service Name"
                       labelClassname="text-base-20 text-[#26435F] mb-0.5"
-                      placeholder="Add a single-word referral code"
+                      placeholder="Add a service you provide (Test Prep, Career Counseling, Evaluations, etc.)"
                       inputContainerClassName=" text-base-17-5 !px-3 bg-primary-50 border-0"
                       inputClassName="bg-transparent"
                       placeholderClass="text-base-17-5"
                       parentClassName=" text-base-17-5 py-0 w-full mr-4"
                       type="text"
-                      value={selectedServiceData?.service}
-                      isRequired={true}
-                      onChange={(e) =>
-                        setSelectedServiceData({
-                          ...selectedServiceData,
-                          service: e.target.value,
-                        })
+                      value={
+                        addOne
+                          ? addServices2?.service
+                          : selectedServiceData?.service
                       }
+                      isRequired={true}
+                      onChange={(e) => {
+                        if (addOne) {
+                          setServices2({
+                            ...addServices2,
+                            service: e.target.value,
+                          });
+                        } else {
+                          setSelectedServiceData({
+                            ...selectedServiceData,
+                            service: e.target.value,
+                          });
+                        }
+                      }}
                     />
                   </div>
                 </div>
                 <div className="flex items-center flex-wrap [&>*]:mb-[10px] mt-5">
                   <AddTag
-                    onAddTag={handleAddSpecialization}
-                    keyName={subModalServiceData.service}
-                    text="Add Item"
+                    onAddTag={
+                      addOne
+                        ? handleAddNewSpecialisation
+                        : handleAddSpecialization
+                    }
+                    keyName={
+                      addOne
+                        ? addServices2?.service
+                        : subModalServiceData.service
+                    }
+                    text="Add Topic"
                   />
                   <FilterItems
                     isString={true}
                     onlyItems={true}
-                    keyName={subModalServiceData.service}
-                    items={subModalServiceData.specialization}
-                    onRemoveFilter={onRemoveSpecialization}
+                    keyName={
+                      addOne
+                        ? addServices2?.service
+                        : subModalServiceData.service
+                    }
+                    items={
+                      addOne
+                        ? addServices2?.specialization
+                        : subModalServiceData.specialization
+                    }
+                    onRemoveFilter={
+                      addOne ? handleNewServiceRemove : onRemoveSpecialization
+                    }
                     className="pt-1 pb-1 mr-15 text-base-17-5"
                   />
                 </div>
                 <div className="w-full border-[1.33px_solid_#00000033] bg-[#00000033] my-5 h-[1.3px]"></div>
                 <div className="flex gap-4 items-center justify-center mt-3">
-                  <button className="rounded-lg bg-[#FFA28D] border-2 border-[#FFA28D] py-[6px] text-[#FFFFFF] w-[146px]">
+                  <button disabled={saveLoading} className={`${saveLoading?"cursor-wait":""} rounded-lg bg-[#FFA28D] border-2 border-[#FFA28D] py-[6px] text-[#FFFFFF] w-[146px]`}>
                     Save{" "}
                   </button>
                   <button
                     className="rounded-lg bg-transparent border-2 border-[#FFA28D] py-[6px] text-[#FFA28D]  w-[146px]"
-                    onClick={() =>
-                      setAddServiceModalActive(!addServiceModalActive)
-                    }
+                    onClick={() => {
+                      setAddServiceModalActive(false);
+                      if (addOne) {
+                        setServices2({ service: "", specialization: [] });
+                        setOne(false)
+                      } else {
+                        setSubModalServiceData(subModalInitialServiceState);
+                      }
+                    }}
                   >
                     Cancel{" "}
                   </button>
@@ -2203,17 +2382,29 @@ export default function Settings() {
           cancelBtnClassName="w-140 "
           handleClose={() => {
             setAddSessionModalActive(false);
-            setSubModalSessionData(subModalInitialSessionState);
-          }}
+                      if (addOne) {
+                        setSession2({ heading: "",
+                        items: [] });
+                        setOne(false)
+                      } else {
+                        setSubModalSessionData(subModalInitialSessionState);
+                      }
+                    }
+          }
           body={
             <form
               id="settings-form"
               onSubmit={(e) => {
                 e.preventDefault();
-                handleAddSessionName(
-                  selectedSessionData?.heading,
-                  subModalSessionData?._id
-                );
+                if (addOne) {
+                 handleAddNewSession()
+                } else {
+                  handleAddSessionName(
+                    selectedSessionData?.heading,
+                    subModalSessionData?._id
+                  );
+                }
+               
               }}
             >
               <p className="text-base-17-5 mt-[-10px] text-[#667085]">
@@ -2233,48 +2424,65 @@ export default function Settings() {
                     <InputField
                       label="Session Name"
                       labelClassname="text-base-20 text-[#26435F] mb-0.5"
-                      placeholder="Add a single-word referral code"
+                      placeholder="Add a heading for session tags (such as “Topics Covered”)"
                       inputContainerClassName=" text-base-17-5 !px-3 bg-primary-50 border-0"
                       inputClassName="bg-transparent"
                       placeholderClass="text-base-17-5"
                       parentClassName=" text-base-17-5 py-0 w-full mr-4"
                       type="text"
-                      value={selectedSessionData?.heading}
+                      value={ addOne ? addSession2?.heading :selectedSessionData?.heading}
                       isRequired={true}
-                      onChange={(e) =>
-                        setSelectedSessionData({
-                          ...selectedSessionData,
-                          heading: e.target.value,
-                        })
+                      onChange={(e) =>{
+                        if (addOne) {
+                          setSession2({
+                            ...addSession2,
+                            heading: e.target.value,
+                          });
+                        } else {
+                          setSelectedSessionData({
+                            ...selectedSessionData,
+                            heading: e.target.value,
+                          })
+                        }
+                      }
+                       
                       }
                     />
                   </div>
                 </div>
                 <div className="flex items-center flex-wrap [&>*]:mb-[10px] mt-5">
                   <AddTag
-                    onAddTag={handleAddSessionTag}
-                    keyName={subModalSessionData.heading}
-                    text="Add Items"
+                    onAddTag={ addOne ? handleAddNewTags :handleAddSessionTag}
+                    keyName={ addOne ? addSession2?.heading :subModalSessionData.heading}
+                    text="Add Tags"
                   />
                   <FilterItems
                     isString={true}
                     onlyItems={true}
-                    keyName={subModalSessionData.heading}
-                    items={subModalSessionData.items}
-                    onRemoveFilter={onRemoveSessionTagItem}
+                    keyName={ addOne ? addSession2?.heading :subModalSessionData.heading}
+                    items={ addOne ? addSession2?.items :subModalSessionData.items}
+                    onRemoveFilter={ addOne ? handleNewSessionRemove :onRemoveSessionTagItem}
                     className="pt-1 pb-1 mr-15 text-base-17-5"
                   />
                 </div>
                 <div className="w-full border-[1.33px_solid_#00000033] bg-[#00000033] my-5 h-[1.3px]"></div>
                 <div className="flex gap-4 items-center justify-center mt-3">
-                  <button className="rounded-lg bg-[#FFA28D] border-2 border-[#FFA28D] py-[6px] text-[#FFFFFF] w-[146px]">
+                <button disabled={saveLoading} className={`${saveLoading?"cursor-wait":""} rounded-lg bg-[#FFA28D] border-2 border-[#FFA28D] py-[6px] text-[#FFFFFF] w-[146px]`}>
                     Save{" "}
                   </button>
                   <button
+                  
                     className="rounded-lg bg-transparent border-2 border-[#FFA28D] py-[6px] text-[#FFA28D]  w-[146px]"
-                    onClick={() =>
-                      setAddSessionModalActive(!addSessionModalActive)
-                    }
+                    onClick={() => {
+                      setAddSessionModalActive(false);
+                      if (addOne) {
+                        setSession2({ heading: "",
+                        items: [] });
+                        setOne(false)
+                      } else {
+                        setSubModalSessionData(subModalInitialSessionState);
+                      }
+                    }}
                   >
                     Cancel{" "}
                   </button>

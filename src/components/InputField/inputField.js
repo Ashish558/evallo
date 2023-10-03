@@ -42,7 +42,8 @@ export default function InputField({
   defaultValue,
   totalErrors,
   iconPadding,
-  biggerText
+  biggerText,
+  
 }) {
   const [inputType, setInputType] = useState(type);
   const [showDiv, setShowDiv] = useState(true);
@@ -107,7 +108,7 @@ export default function InputField({
           onChange={(e) => (onChange !== undefined ? onChange(e) : "")}
           onInput={(e) => (onChange !== undefined ? onChange(e) : "")}
           value={value}
-          
+          pattern={pattern&&pattern}
           ref={refS}
           defaultValue={defaultValue}
           required={isRequired ? true : false}

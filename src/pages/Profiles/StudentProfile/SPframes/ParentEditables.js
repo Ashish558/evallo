@@ -1471,7 +1471,7 @@ export default function ParentEditables({
                       <InputSelect
                         value={
                           currentToEdit.service.length === 0
-                            ? ""
+                            ? ""F
                             : currentToEdit.service[0]
                         }
                         checkbox={{
