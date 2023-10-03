@@ -42,6 +42,7 @@ const ParentDashboardHeader = ({ selectedStudent, setSelectedStudent }) => {
   useDisableBodyScroll(ledgerVisible);
   useEffect(() => {
     fetchSettings().then((res) => {
+      console.log("images loaded", res);
       setImages(res.data.data.setting.offerImages);
       console.log(res.data.data.setting);
     });
@@ -109,14 +110,14 @@ const ParentDashboardHeader = ({ selectedStudent, setSelectedStudent }) => {
     });
   };
   const openLink = (link) => {
-    window.open(link)
+    window.open(link, '_blank');
   }
   console.log("associatedStudents", associatedStudents);
   console.log("selectedStudent", selectedStudent);
 
   return (
     <div className="w-full flex-1 mb-5">
-      <p className="text-[#24A3D9] mt-7 mb-3 !my-[calc(50*0.0522vw)] text-xl">
+      <p className="text-[#24A3D9] mt-7 mb-3 !my-[calc(50*0.0522vw)] text-base-20">
         {organization?.company +
           " > " +
           user?.firstName +

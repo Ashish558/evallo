@@ -56,14 +56,14 @@ const Demography1 = ({ dateRange }) => {
 
   return (
     <div className="bg-[#FFFFFF] flex justify-center items-center border border-gray-200 p-3 mt-[6px] rounded-md relative">
-      <div className="grid grid-cols-2 gap-x-5">
+      <div className="grid grid-cols-2 gap-x-10 mt-14">
         <div className="">
           <div className="absolute top-0 z-10 left-0 pt-[18px] pl-[28px]" >
             <button >
               <InputSelectNew
                 arrowWidth="h-[6px]"
                 placeholder={"User"}
-                parentClassName="ml-0  scale-[0.8] items-center flex text-[#FFA28D] text-xs border-[1.33px] px-1 py-2 border-[#FFA28D] rounded-full  "
+                parentClassName="ml-0  scale-[0.8] items-center flex text-[#FFA28D] text-xs !border-[1.7px] px-1 py-2 border-[#FFA28D] rounded-full  "
                 inputContainerClassName=" bg-white my-0 py-[5px] px-[35px] text-[15px] min-w-[114px] "
                 placeHolderClass="text-[#FFA28D] "
                 labelClassname="text-[15px]"
@@ -84,7 +84,7 @@ const Demography1 = ({ dateRange }) => {
               <InputSelectNew
                 arrowWidth="h-[6px]"
                 placeholder={"Country"}
-                parentClassName="ml-0  scale-[0.8] items-center flex text-[#FFA28D] text-xs border-[1.33px] px-1 py-[9px] border-[#FFA28D] rounded-full  "
+                parentClassName="ml-0  scale-[0.8] items-center flex text-[#FFA28D] text-xs !border-[1.7px] px-1 py-[9px] border-[#FFA28D] rounded-full  "
                 inputContainerClassName=" bg-white py-[4.8px] px-[35px] text-[15px] min-w-[114px]"
                 labelClassname="text-[15px]"
                 inputClassName="bg-transparent "
@@ -113,7 +113,7 @@ const Demography1 = ({ dateRange }) => {
           </div>
         </div>
         <div>
-          <p className="text-[#26435F] text-sm font-semibold mt-4 ">
+          <p className="text-[#26435F]  font-semibold ">
             <span className="shadow-md rounded-md ml-[-20px] mr-2 ">
               <ReactCountryFlag
                 countryCode={countryFlag}
@@ -133,7 +133,7 @@ const Demography1 = ({ dateRange }) => {
           <div className="overflow-y-auto h-[360px] py-0 relative">
 
 
-            <table className="table-auto border-spacing-y-4 px-1 customTable border-separate w-full whitespace-nowrap">
+            <table className="table-auto !border-spacing-y-[6px] px-1 customTable border-separate w-full whitespace-nowrap">
               <thead className="sticky top-0">
                 <tr>
                   <th className="px-4">State </th>
@@ -145,14 +145,14 @@ const Demography1 = ({ dateRange }) => {
               <tbody >
                 {currentDemographicArea?.map((state, id) => {
                   return (
-                    <tr className={`my-7 overflow-hidden `} key={id}>
-                      <td className={`mb-1 ${id % 2 ? "bg-[#F5F8FA]" : 'bg-white'}`}>
+                    <tr className={`my-8 overflow-hidden `} key={id}>
+                      <td className={`mb-2 ${id % 2 ? "bg-[#F5F8FA]" : 'bg-white'}`}>
                         {state.state_name.charAt(0).toUpperCase() +
                           state.state_name.slice(1)}
                       </td>
-                      <td className={`mb-1 ${id % 2 ? "bg-[#F5F8FA]" : 'bg-white'}`}>{state.no_of_orgs}</td>
-                      <td className={`mb-1 ${id % 2 ? "bg-[#F5F8FA]" : 'bg-white'}`}>{Math.round(state.average_students)}</td>
-                      <td className={` mb-1 ${id % 2 ? "bg-[#F5F8FA]" : 'bg-white'}`}>{Math.round(state.average_tutors)}</td>
+                      <td className={`mb-2 ${id % 2 ? "bg-[#F5F8FA]" : 'bg-white'}`}>{state.no_of_orgs}</td>
+                      <td className={`mb-2 ${id % 2 ? "bg-[#F5F8FA]" : 'bg-white'}`}>{Math.round(state.average_students)}</td>
+                      <td className={` mb-2 ${id % 2 ? "bg-[#F5F8FA]" : 'bg-white'}`}>{Math.round(state.average_tutors)}</td>
                     </tr>
                   );
                 })}

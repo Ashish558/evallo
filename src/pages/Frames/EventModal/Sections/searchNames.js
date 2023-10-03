@@ -58,14 +58,14 @@ export default function SearchNames({ setStudent, setData, student, tutor, data,
    }, [student]);
 console.log({students,tutors,data})
    return (
-      <div className="flex mb-4">
+      <div className="flex mb-[30px]">
          <InputSearch
             label="Student Name"
             required="true"
-            labelClassname="font-medium text-base-17-5"
+            labelClassname="font-medium text-lg"
             placeholder="Student Name"
-            parentClassName="w-full mr-[18.48px] text-[#26435F] "
-            inputContainerClassName="bg-lightWhite border-0 pt-3.5 pb-3.5 text-[#507CA8]"
+            parentClassName="w-full mr-[66px] text-[#26435F] "
+            inputContainerClassName="bg-lightWhite border-0 pt-3.5 pb-3.5 text-[#507CA8] h-[53px] text-base"
             inputClassName="bg-transparent text-[#507CA8]"
             type="text"
             optionPrefix='s'
@@ -82,10 +82,10 @@ console.log({students,tutors,data})
          <InputSearch
             label="Tutor Name"
             required="true"
-            labelClassname="font-medium text-base-17-5"
+            labelClassname="font-medium text-lg"
             placeholder="Tutor Name"
             parentClassName="w-full text-[#26435F]"
-            inputContainerClassName="bg-lightWhite border-0 pt-3.5 pb-3.5 text-[#507CA8]"
+            inputContainerClassName="bg-lightWhite border-0 pt-3.5 pb-3.5 text-[#507CA8] h-[53px] text-base"
             inputClassName="bg-transparent text-[#507CA8]"
             type="text"
             optionPrefix='t'

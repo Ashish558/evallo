@@ -21,9 +21,20 @@ const SPFrame1 = ({ userId, settings, userDetail, editable, setToEdit, toEdit ,f
     temp = temp?.filter((item, idd) => idd !== id);
     
       if(update){
-        handleSubmit(temp)
+        handleSubmit(temp,"whiteBoardLinks")
       }
   };
+  const reduceArr2 = (id, update) => {
+   
+    
+    //  ////console.log({toEdit})
+      let temp = [...userDetail?.associatedDocs];
+      temp = temp?.filter((item, idd) => idd !== id);
+      
+        if(update){
+          handleSubmit(temp,"associatedDocs")
+        }
+    };
   const addDocHandler = () => {
     if (!xlsFile || !xlsFile.name) {
       return;
@@ -37,19 +48,19 @@ const SPFrame1 = ({ userId, settings, userDetail, editable, setToEdit, toEdit ,f
     }
     const formData = new FormData();
     formData.append("file", xlsFile);
-    formData.append("studentId", userDetail?._id);
+    formData.append("studentId", userDetail?.userId);
     addDoc(formData).then((res) => {
-      ////console.log("docc", res);
+    console.log("docc", res);
       if (res?.data) {
         alert(res?.data?.message);
         setXlsFile({});
       }
     });
   };
-  const handleSubmit = (e) => {
+  const handleSubmit = (e,type) => {
     //e.preventDefault();
    // setLoading(true);
-    let reqBody = { whiteBoardLinks:e };
+    let reqBody = { [type]:e };
    // delete reqBody["active"];
   //   ////console.log({reqBody,id:userId});
     const userDetailSave = (reqBody) => {
@@ -68,13 +79,13 @@ const SPFrame1 = ({ userId, settings, userDetail, editable, setToEdit, toEdit ,f
    
     
   };
-  //////console.log("frame1", { userDetail, xlsFile });
+  console.log("frame1", { userDetail, xlsFile });
   return (
     <div>
       {" "}
       <div className="flex mt-7 justify-between gap-5">
 
-        <div className="flex-1 h-[270px] gap-2 flex flex-col">
+        <div className="flex-1 w-[300px] h-[270px] gap-2 flex flex-col">
           <div className="flex-1 ">
             <p className=" text-sm text-[#26435F] font-semibold">
               Whiteboard Links
@@ -108,7 +119,7 @@ const SPFrame1 = ({ userId, settings, userDetail, editable, setToEdit, toEdit ,f
                     key={id}
                     className="flex flex-1 text-[#517CA8] w-full text-xs justify-between px-3 py-1"
                   >
-                    <a href={it} target="_blank" >{it}</a>
+                    <a href={it} className="w-[90%] !break-words" target="_blank" >{it}</a>
                     <img
                     onClick={()=>(persona==='tutor'||persona==='admin')&&reduceArr(id,true)}
                       src={BCut}
@@ -127,10 +138,29 @@ const SPFrame1 = ({ userId, settings, userDetail, editable, setToEdit, toEdit ,f
             </p>
             <div
               id={styles.borderDashed}
-              className="w-full relative !border-[1.25px_dashed_#517CA8] h-full !max-h-[150px] flex rounded-md items-center bg-white overflow-hidden "
+              className="w-full relative !border-[1.25px_dashed_#517CA8] h-full  !max-h-[150px] flex rounded-md items-center bg-white "
             >
-              <div className=" flex-1 ">
-                <div className="mt-[10px] mb-[10px] items-center flex justify-center">
+             
+              <div className=" flex-1 !max-h-[140px] overflow-y-auto custom-scroller ">
+              <div className="">
+                {
+                  userDetail?.associatedDocs?.map((it,id)=>{
+                    return <p
+                    key={id}
+                    className="flex flex-1 mt-1 text-[#517CA8] w-full text-xs justify-between px-3 py-1"
+                  >
+                    <a className="w-[70%] break-words" href={it?.public_url} target="_blank" >{it?.key}</a>
+                    <img
+                    onClick={()=>(persona==='tutor'||persona==='admin')&&reduceArr2(id,true)}
+                      src={BCut}
+                      className="text-xs !h-[20px] !w-[20px] inline-block"
+                    
+                    alt="cut"/>
+                  </p>
+                  })
+                }
+              </div>
+                <div className="mt-[20px] mb-[10px] items-center flex justify-center">
                   <img src={fileupload} alt="fileuploadIcon"></img>
                 </div>
 

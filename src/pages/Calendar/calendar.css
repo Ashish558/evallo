@@ -264,7 +264,7 @@ text-transform: uppercase;
 .calender .fc .fc-timegrid-slot-label{
   display: revert !important;
   vertical-align: baseline !important;
-  border: 3px solid rgba(245, 248, 250, 1)!important;
+  border: 1px solid rgba(245, 248, 250, 1)!important;
 }
 .calendar .react-calendar .react-calendar__navigation__arrow.react-calendar__navigation__prev-button, .react-calendar .react-calendar__navigation__arrow.react-calendar__navigation__next-button{
   display: none !important;
@@ -360,3 +360,10 @@ text-transform: uppercase;
 .fc-daygrid-day-frame {
   background-color: white;
 }
+
+.blank-row {
+  height: 60px; 
+  background-color: transparent; 
+}
+
+

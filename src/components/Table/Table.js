@@ -12,6 +12,8 @@ export default function Table(props) {
   const {
     noArrow,
     dataFor,
+    selectedId2,
+    setSelectedId2,
     data,
     tableHeaders,
     maxPageSize,
@@ -26,8 +28,10 @@ export default function Table(props) {
     changePageAfterUpdate,
     loading,
     AdminLatestSignUp,
-    headerWidth
+    headerWidth,
+    testtype
   } = props;
+  console.log(testtype);
   const [dummy, setDummy] = useState([]);
   const [tableData, setTableData] = useState(data);
   const [currentPage, setCurrentPage] = useState(1);
@@ -79,8 +83,8 @@ export default function Table(props) {
 
   return (
     <div className="w-full">
-      <div className="overflow-x-auto scrollbar-content custom-scroller-2  scroll-m-1 ">
-        <table className=" customTable   mb-3 text-center w-full whitespace-nowrap">
+      <div className="overflow-x-auto scrollbar-content custom-scroller-2 p-[2px] scroll-m-1 ">
+        <table className=" customTable mb-3 text-center w-full whitespace-nowrap">
           <thead className="pb-2 whitespace-nowrap">
             <tr className=" whitespace-nowrap">
               {tableHeaders.map((item, idx) => {
@@ -120,6 +124,8 @@ export default function Table(props) {
                   <React.Fragment key={idx}>
                     <LatestSignUpTableItem
                       dataFor={dataFor}
+                      selectedId2={selectedId2}
+                      setSelectedId2={setSelectedId2}
                       item={item}
                       key={idx}
                       excludes={excludes}
@@ -130,7 +136,11 @@ export default function Table(props) {
                   <React.Fragment key={idx}>
 
                     <TableItem
+                      index={idx}
+                      testtype={testtype}
                       dataFor={dataFor}
+                      selectedId2={selectedId2}
+                      setSelectedId2={setSelectedId2}
                       item={item}
                       key={idx}
                       excludes={excludes}
@@ -162,7 +172,8 @@ export default function Table(props) {
       </div>
 
       {!hidePagination ? (
-        <div className="flex justify-end items-center">
+        <div className="flex justify-between px-1 items-center">
+          <p className="text-[#517CA8] text-xs">Showing {tableData?.length} of {data?.length}</p>
           <Pagination
             currentPage={currentPage}
             setCurrentPage={setCurrentPage}

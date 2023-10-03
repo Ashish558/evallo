@@ -33,18 +33,25 @@ import { useSelector } from "react-redux";
 import { useLazyGetTestResponseQuery } from "../../app/services/test";
 import { getFormattedDate, getScore, getScoreStr } from "../../utils/utils";
 import InputField from "../InputField/inputField";
+import CCheckbox from "../CCheckbox/CCheckbox";
+import SCheckbox from "../CCheckbox/SCheckbox";
+import organization from "../../app/slices/organization";
 
 
 export default function TableItem({
   item,
   dataFor,
+  index,
   onClick,
   excludes,
   fetch,
   checkedHeader,
   extraData,
+  selectedId2,
+  setSelectedId2,
   numberChecked,
-  setnumberChecked
+  setnumberChecked,
+  testtype
 }) {
   const [score, setScore] = useState("-");
   const navigate = useNavigate();
@@ -61,10 +68,10 @@ export default function TableItem({
   const [getTestResponse, getTestResponseResp] = useLazyGetTestResponseQuery();
 
   const { role: persona } = useSelector((state) => state.user);
-
+ const {organization:organization2} = useSelector((state) => state.organization)
   const [userDetail, setUserDetail] = useState({});
   const [leadStatus, setLeadStatus] = useState("");
-
+  const [tutorStatus, setTutorStatus] = useState("");
 
   const [settings, setSettings] = useState({
     leadStatus: [],
@@ -139,13 +146,14 @@ export default function TableItem({
         return //console.log("error updating");
       }
       fetch && fetch(field, item._id);
-      //console.log("update res", res.data);
+      console.log("update res",item?._id,field, res.data);
     });
   };
   const handleChange = (field) => {
 
     if (item.userType === "parent" || item.userType === "student") {
       updateUserDetail({ fields: field, id: item._id }).then((res) => {
+        console.log("lead",{res})
         fetch && fetch(field, item._id);
       });
     } else if (item.userType === "tutor") {
@@ -190,8 +198,9 @@ export default function TableItem({
 
           let status = "-";
           if (resp?.data?.data?.details) {
-            status = resp.data.data.details.leadStatus;
+            status = resp.data.data.details?.leadStatus;
             setLeadStatus(status);
+            setTutorStatus(resp.data.data.details?.tutorStatus)
           }
         });
       } else {
@@ -201,23 +210,19 @@ export default function TableItem({
           if (resp?.data?.data?.userdetails) {
             status = resp.data.data.userdetails.leadStatus;
             setLeadStatus(status);
+            setTutorStatus(resp.data.data.details?.tutorStatus)
           }
         });
       }
     }
   }, [item]);
-  const [isChecked, setIsChecked] = useState(checkedHeader);
-  const handleCheckboxChange = () => {
-    setIsChecked(!isChecked);
-    let fl = isChecked ? 1 : -1
-    setnumberChecked(numberChecked - fl)
-  };
+  const [isChecked, setIsChecked] = useState(false);
+  // const handleCheckboxChange = () => {
+  //   setIsChecked(!isChecked);
+  //   let fl = isChecked ? 1 : -1
+  //   setnumberChecked && setnumberChecked(numberChecked - fl)
+  // };
 
-
-  useEffect(() => {
-    //console.log("item", item)
-    setIsChecked(checkedHeader);
-  }, [checkedHeader])
   const timestamp = item.createdAt;
   const date = new Date(timestamp);
 
@@ -231,14 +236,47 @@ export default function TableItem({
     // Format the date in the desired format
     const options = { year: 'numeric', month: 'short', day: '2-digit' };
     const formattedDate = dateObj.toLocaleDateString('en-US', options);
-
+    let dd = formattedDate
+    let ed = dd.split(" ")
+    let fd = ed[0] + ". " + ed[1] + " " + ed[2]
     //console.log(formattedDate); // Output: "August 02, 2023"
-    return formattedDate
+    return fd
   }
   const getPhone = (val) => {
     //console.log(item)
     //console.log(val)
   }
+ 
+  const handleSelect=(item2,key)=>{
+    console.log({item2,selectedId2})
+   if(selectedId2 && setSelectedId2){
+    let temp=selectedId2
+    let bool=temp?.find((itt)=>itt[key]===item2[key])
+    if(bool){
+        temp=temp?.filter((idd)=>{
+          return idd[key]!==item2[key]
+           
+        })
+    }
+    else {
+      temp?.push(item2)
+    }
+    setSelectedId2([...temp])
+   }
+   setIsChecked(!isChecked)
+  }
+
+  useEffect(()=>{
+   if(selectedId2){
+    let temp=selectedId2
+    let key="assignedTestId";
+    if(dataFor==="allUsers")
+    key="_id"
+    let bool=temp?.find((itt)=>itt[key]===item[key])
+    setIsChecked(bool?true:false)
+   }
+  },[selectedId2])
+
   return (
     <>
 
@@ -251,14 +289,13 @@ export default function TableItem({
                 {item.studentName}
               </td>
               <td className="py-4 px-[10px]">
-                {item.rating}
-              </td>
-              <td className="py-4 px-[10px]">
-                {item.comments}
-              </td>
-              <td className="py-4 px-[10px]">
                 {item.service}
               </td>
+              <td className="py-4 px-[10px]">
+                {item.rating}
+              </td>
+
+
               <td className="py-4 px-[10px]">
                 {formattedDate}
               </td>
@@ -276,9 +313,9 @@ export default function TableItem({
               <td className="py-4 px-[10px]">
                 {item.service}
               </td>
-             
+
               <td className="py-4 px-[10px]">
-              <div className="text-[#517CA8] font-semibold text-base-20 mr-[2px] inline-block">$</div>
+                <div className="text-[#517CA8] font-semibold text-base-20 mr-[2px] inline-block">$</div>
                 {item.price}
               </td>
             </tr>
@@ -299,19 +336,23 @@ export default function TableItem({
               <div className="flex ">
                 {dataFor === "allUsers" ? (
 
-                  <label
-                    className={`${styles["checkbox-label"]} block text-[#26435F] `}
-                  >
-                    <input
-                      type="checkbox"
-                      checked={isChecked}
-                      onChange={handleCheckboxChange}
-                    />
-                    <span
-                      className={`${styles["custom-checkbox"]} ${isChecked ? "checked" : ""
-                        }`}
-                    ></span>
-                  </label>
+
+                  <SCheckbox checked={isChecked}
+                  stopM={true}
+                    onChange={()=>handleSelect(item,"_id")} />
+                  // <label
+                  //   className={`${styles["checkbox-label"]} block text-[#26435F] `}
+                  // >
+                  //   <input
+                  //     type="checkbox"
+                  //     checked={isChecked}
+                  //     onChange={handleCheckboxChange}
+                  //   />
+                  //   <span
+                  //     className={`${styles["custom-checkbox"]} ${isChecked ? "checked" : ""
+                  //       }`}
+                  //   ></span>
+                  // </label>
 
                 ) : (
                   ""
@@ -346,11 +387,19 @@ export default function TableItem({
           </td>
           <td className=" text-[17.5px] px-1  min-w-14 py-4">
             <div className="my-[6px]">
+              {item.specialization?.map((specialization, idx) => {
+                return `${specialization}${idx + 1 === item.specialization.length ? "" : ","
+                  }`;
+              })}
+            </div>
+          </td>
+          <td className=" text-[17.5px] px-1  min-w-14 py-4">
+            <div className="my-[6px]">
               <InputSelect
                 tableDropdown={true}
                 value={leadStatus ? leadStatus : "-"}
                 placeholderClass="text-base-17-5"
-                optionData={settings.leadStatus}
+                optionData={organization2?.settings?.leadStatus}
                 inputContainerClassName={`min-w-[100px] pt-0 pb-0 pr-2 pl-0 text-center capitalize `}
                 optionClassName="text-[17.5px]"
                 labelClassname="hidden"
@@ -362,29 +411,25 @@ export default function TableItem({
           <td className=" text-[17.5px] px-1  min-w-14 py-4">
             <InputSelect
               tableDropdown={true}
-              value={item.userStatus ? item.userStatus : "-"}
-              optionData={["active", "blocked", "dormant"]}
-              inputContainerClassName="min-w-[100px] pt-0 pb-0 pr-2 pl-0 text-center capitalize"
-              optionClassName="text-[17.5px]"
+              value={tutorStatus ? tutorStatus : "-"}
+              optionData={organization2?.settings?.tutorStatus}
+              inputContainerClassName="min-w-[100px] pt-0 pb-0 pr-2 pl-0 text-center capitalize text-base-17-5"
+              optionClassName="text-[17.5px] text-base-17-5"
               labelClassname="hidden"
-              onChange={(val) => handlestatusChange({ userStatus: val })}
+              onChange={(val) => handlestatusChange({ tutorStatus: val })}
             />
           </td>
 
 
-          <td className=" text-[17.5px] px-1  min-w-14 py-4">
-            <div className="my-[6px]">
-              {item.specialization?.map((specialization, idx) => {
-                return `${specialization}${idx + 1 === item.specialization.length ? "" : ","
-                  }`;
-              })}
-            </div>
+
+          <td className=" text-[17.5px] px-1  min-w-14 py-4 text-[#507CA8]">
+            <div className="my-[6px] capitalize">{item?.accountStatus}</div>
           </td>
           <td className=" text-[17.5px] px-1  min-w-14 py-4 text-[#507CA8]">
             <div className="my-[6px] capitalize">{getFormatDate(item.createdAt)}</div>
           </td>
 
-          <td className=" px-1 min-w-14 py-4">
+          {false && <td className=" px-1 min-w-14 py-4">
             {item.userType !== "admin" ? (
               <div className=" flex items-center justify-center">
 
@@ -400,10 +445,11 @@ export default function TableItem({
               ""
             )}
           </td>
+          }
         </tr>
       )}
       {dataFor === "allUsersSuperAdmin" && (
-        <tr className="odd:bg-white  leading-8">
+        <tr className="odd:bg-white even:!shadow-[0px_0px_3.00000476837158px_0px_#00000040]  leading-8">
           <td className="font-medium text-[17.5px] px-1  min-w-14   text-center">
             <span
               className="inline-block cursor-pointer"
@@ -419,9 +465,9 @@ export default function TableItem({
             <div className="">{item.email}</div>
           </td>
           <td className="font-medium text-[17.5px] px-1  min-w-14 ">
-            <div className="">
-              {item.lastLogin ? item.lastLogin : "-"}
-            </div>
+           {item?.lastLogin? <div className="">
+            {new Date(item?.lastLogin).toDateString().split(' ')[1] }. {new Date(item?.lastLogin).getDate() }, {new Date(item?.lastLogin).getFullYear()}
+            </div>:"None"}
           </td>
           <td className="font-medium text-[17.5px] px-1  min-w-14 ">
             <div className="">
@@ -482,7 +528,7 @@ export default function TableItem({
       )}
       {dataFor === "assignedTests" && (
         <tr className=" text-[17.5px]  leading-8">
-          <td className=" text-[17.5px] px-1  min-w-14 py-4  text-left">
+          <td className="px-1 font-medium  min-w-14 py-4 text-left">
             <span
               className="inline-block cursor-pointer pl-4"
 
@@ -490,37 +536,33 @@ export default function TableItem({
               <div className="flex ">
                 {dataFor === "assignedTests" ? (
 
-                  <label
-                    className={`${styles["checkbox-label"]} block text-[#26435F] `}
-                  >
-                    <input
-                      type="checkbox"
-                      checked={isChecked}
-                      onChange={handleCheckboxChange}
-                    />
-                    <span
-                      className={`${styles["custom-checkbox"]} ${isChecked ? "checked" : ""
-                        }`}
-                    ></span>
-                  </label>
+
+                  <SCheckbox checked={isChecked}
+                  stopM={true}
+                    onChange={() => handleSelect(item,"assignedTestId")} />
+
 
                 ) : (
                   ""
                 )}
-                <span onClick={() => onClick.redirect(item)} className="">
-                  {item.assignedOn}
-                </span>
+
               </div>
             </span>
-          </td>
-          <td className="px-1 font-medium  min-w-14 py-4 text-left">
             <span className="inline-block cursor-pointer pl-4" onClick={() =>
               onClick.handleNavigate("student", item.studentId)
             }>
               {item.studentName}
             </span>
+
           </td>
           <td className="font-medium px-1  min-w-14 py-4">{item.testName}</td>
+          <td className=" text-[17.5px] px-1  min-w-14 py-4  text-left">
+
+            <span onClick={() => onClick.redirect(item)} className="">
+              {new Date(item.assignedOn).toLocaleDateString()}
+            </span>
+          </td>
+
           <td className="font-medium px-1  min-w-14 py-4">{item.assignedBy
           }</td>
           <td className="font-medium px-1  min-w-14 py-4">
@@ -644,7 +686,7 @@ export default function TableItem({
         </tr>
       )}
       {dataFor === "assignedTestsStudents" && (
-        <tr className="odd:bg-white shadow-sm text-[17.5px] shadow-slate-200   leading-7">
+        <tr className="  text-[17.5px] leading-7">
           {Object.keys(item).map((key, i) =>
             excludes.includes(key) ? (
               <React.Fragment key={i}>
@@ -667,8 +709,10 @@ export default function TableItem({
                   >
                     {item.isCompleted === true ? score : "-"}
                   </div>
+                ) : key === "dueDate" ? (
+                  <span className={` ${new Date(item[key]) < new Date() ? "text-[#FF7979] font-semibold" : ""}`}> {(item[key]).replace(/-/g, '/')}</span>
                 ) : (
-                  item[key]
+                  item[key].replace(/-/g, '/')
                 )}
               </td>
             )
@@ -698,6 +742,7 @@ export default function TableItem({
                 </>
               ) : (
                 <>
+                {console.log(item)}
                   {item.isCompleted ? (
                     <button
                       className="px-2.5 py-1.8 bg-[#38C980] rounded-md flex items-center leading-none bg-primary text-white ml-4"
@@ -712,10 +757,15 @@ export default function TableItem({
                   ) : item.isStarted ? (
                     <button
                       className="px-2.5 py-1.8 bg-[#FFCE84] rounded-md flex items-center leading-none bg-primary text-white ml-4"
-                      onClick={() =>
+                      onClick={() =>{
+                        const indexx=testtype.findIndex(obj=>obj.testId===item.testId);
+                        testtype[indexx].testtype=='DSAT'?
+                        navigate(`/testpage/${item.testId}/${item.assignedTestId}`)
+                        :
                         navigate(
                           `/all-tests/start-section/${item.testId}/${item.assignedTestId}`
                         )
+                      }
                       }
                     >
                       Continue
@@ -723,10 +773,15 @@ export default function TableItem({
                   ) : (
                     <button
                       className="px-2.5 py-1.8 rounded-md bg-[#FF7979] flex items-center leading-none bg-primary text-white ml-4"
-                      onClick={() =>
+                      onClick={() =>{
+                        const indexx=testtype.findIndex(obj=>obj.testId===item.testId);
+                        testtype[indexx].testtype=='DSAT'?
+                        navigate(`/testpage/${item.testId}/${item.assignedTestId}`)
+                        :
                         navigate(
                           `/all-tests/start-section/${item.testId}/${item.assignedTestId}`
                         )
+                      }
                       }
                     >
                       Start
@@ -746,7 +801,7 @@ export default function TableItem({
       {dataFor === "testsDetailQuestions" && (
         <tr className="bg-white text-[17.5px]   leading-7 mt-[10px]">
           {MapData(item, dataFor, excludes)}
-          <td className="font-medium px-1 min-w-14 py-4">
+          <td className="font-medium flex justify-center px-1 min-w-14 py-4">
             <img
               src={EditTestIcon}
               className="cursor-pointer"
@@ -758,7 +813,7 @@ export default function TableItem({
       {dataFor === "allTests" && (
         <tr className="odd:bg-white font-medium text-[17.5px]  lead">
           <td>{item.testName}</td>
-          <td>{item.testType}</td>
+          <td>{item.testType} &#174;</td>
           <td>{item.createdAt.split("T")[0]}</td>
           <td>{item.updatedAt.split("T")[0]}</td>
           <td> {item.no_of_assign ? item.no_of_assign : "-"} </td>
@@ -783,7 +838,7 @@ export default function TableItem({
         </tr>
       )}
       {dataFor === "allTestsSuperAdmin" && (
-        <tr className="odd:bg-white font-medium  lead shadow-sm text-[17.5px] shadow-slate-300">
+        <tr className=" font-medium  lead  text-[17.5px] ">
           <td>{item.testName}</td>
           <td>{item.testType}</td>
           <td>{item.createdAt.split("T")[0]}</td>
@@ -803,7 +858,7 @@ export default function TableItem({
             <img
               src={EditIcon}
               className="cursor-pointer p-1"
-              onClick={() => navigate(`/all-tests/${item._id}`)}
+              onClick={() =>  navigate(`/all-tests/${item._id}`, { state: { testype: item.testType  } })}
               alt="edit"
             />
             <img

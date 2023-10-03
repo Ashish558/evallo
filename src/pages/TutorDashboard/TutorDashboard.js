@@ -76,7 +76,6 @@ export default function TutorDashboard() {
    const { id } = useSelector(state => state.user)
    const [students, setStudents] = useState([])
    const [tutorRank, setTutorRank] = useState('-')
-   // const [awsLink, setAwsLink] = useState('')
    const { awsLink } = useSelector(state => state.user)
    const { organization } = useSelector((state) => state.organization);
    useEffect(() => {
@@ -185,10 +184,9 @@ export default function TutorDashboard() {
       fetchTutorAssignedTests(id)
          .then(res => {
             if (res.error) return console.log('tutor assignedtest', res.error)
-            // console.log('tutor assignedtest', res.data)
+            console.log('tutor assignedtest', res.data)
             let data = res.data.data.test.map(item => {
                const { createdAt, studentId, dueDate, photo, testId, multiple, timeLimit, isCompleted, isStarted } = item
-               // console.log(photo);
                let profile = studentId.photo ? studentId.photo : null
                let status = 'notStarted'
                if (isCompleted === true) {
@@ -202,6 +200,7 @@ export default function TutorDashboard() {
                   assignedOn: getFormattedDate(createdAt),
                   testName: testId ? testId.testName : '-',
                   testId: testId ? testId._id : null,
+                  pdf: testId ? item.testId.pdf : null,
                   scores: '-',
                   duration: multiple ? getDuration(multiple) : 'Unlimited',
                   status: status,
@@ -221,6 +220,18 @@ export default function TutorDashboard() {
    useEffect(() => {
       fetchTutorTests()
    }, [])
+
+   const handlePdfDownload = (pdf) => {
+      if(pdf){
+         const anchor = document.createElement('a');
+         anchor.href = `${awsLink}${pdf}`;
+         anchor.target = '_blank';
+         anchor.download = `${pdf}.pdf`; // Replace with the desired file name and extension
+         anchor.click();
+      }else{
+         alert('The PDF file is no longer available.')
+      }
+   }
    // console.log(students);
    // console.log(tutorRank);
    // console.log('allAssignedTests', allAssignedTests);
@@ -230,7 +241,7 @@ export default function TutorDashboard() {
       <div className='bg-[#F5F8FA] mb-[100px]'>
          <div className="w-[85.05vw] mx-auto">
             <div className="">
-               <p className="text-[#24A3D9] text-xl mb-[30px] mt-[50px]">
+               <p className="text-[#24A3D9] text-base-20 mb-[30px] mt-[50px]">
                   {organization?.company +
                      "  >  " +
                      firstName +
@@ -305,7 +316,7 @@ export default function TutorDashboard() {
 
                      <div className='w-[55.52vw] mt-10'>
                         <p className='text-primary-dark font-semibold text-[20px] mb-[13px]'>Today’s Schedule</p>
-                        <div className='px-[43px] py-[26px] bg-white  rounded-[5.333px] scrollbar-content scrollbar-vertical max-h-[499px] overflow-auto shadow-[0px_0px_2.6px_0px_rgba(0,0,0,0.25)]'>
+                        <div className='px-[43px] py-[26px] bg-white  rounded-[5.333px] scrollbar-content scrollbar-vertical h-[350px] overflow-y-auto shadow-[0px_0px_2.6px_0px_rgba(0,0,0,0.25)]'>
                            {sessions.map((item, idx) => {
                               return <TutorSchedule {...item} setIsOpen={setIsOpen} handleLinkClick={handleLinkClick} />
                            })}
@@ -316,7 +327,7 @@ export default function TutorDashboard() {
                   </div>
                   <div >
 
-                     <p className='text-xl text-[#26435F] mb-[20px] font-semibold'>Latest Practice Test</p>
+                     <p className='text-xl text-[#26435F] mb-[20px] font-semibold'>Last 10 Assignments</p>
                      <div className='bg-[#FFFFFF]  rounded-[5px] shadow-[0px_0px_2.6px_0px_rgba(0,0,0,0.25)]'>
                         <div className=''>
 
@@ -358,11 +369,12 @@ export default function TutorDashboard() {
                            {/* <p className='text-primary font-semibold text-[21px] mb-4'>
                            Latest Practice Test
                         </p> */}
-                           <div className='pl-[30px] pr-[26px] h-[900px] overflow-auto py-[30px]  bg-white rounded-20'>
-                              {allAssignedTests.map(item => {
+                           <div className='pl-[30px] pr-[26px] custom-scroller h-[780px]  overflow-auto pt-[10px]  bg-white rounded-20'>
+
+                              {allAssignedTests?.map(item => {
 
                                  return (
-                                    <div className=' mb-[18px]' key={item._id} >
+                                    <div className=' mb-[15px]' key={item._id} >
                                        <div>
                                           {/* <img src={`${item.photo ? `${awsLink}${item.photo}` : '/images/default.jpeg'} `} className='w-[62px] h-[62px] rounded-full' /> */}
                                        </div>
@@ -375,7 +387,9 @@ export default function TutorDashboard() {
                                              </div>
                                           </div>
                                           <div>
-                                             <img className='cursor-pointer' width="35px" src={download} alt="" />
+
+                                             <img className='cursor-pointer' onClick={()=>  window.open(`${awsLink+item.pdf}`, '_blank')} width="35px" src={download} alt="" />
+
                                           </div>
                                           <div className='text-[0.911vw] font-semibold'>
                                              {

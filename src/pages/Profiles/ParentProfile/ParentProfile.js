@@ -106,7 +106,7 @@ export default function StudentProfile({ isOwn }) {
   const { awsLink } = useSelector((state) => state.user);
 
   const { id } = useSelector((state) => state.user);
-
+  console.log("user", user)
 
   const [selectedScoreIndex, setSelectedScoreIndex] = useState(0);
   const { organization } = useSelector((state) => state.organization);
@@ -161,7 +161,15 @@ export default function StudentProfile({ isOwn }) {
       notes: "",
     },
   });
-
+  async function handleCopyClick(textToCopy) {
+    console.log("copying", textToCopy);
+    try {
+      await navigator.clipboard.writeText(textToCopy);
+    //  alert('Text copied to clipboard');
+    } catch (err) {
+      console.error('Failed to copy text: ', err);
+    }
+  }
   const handleClose = () => {
     setToEdit((prev) => {
       let tempToEdit = {};
@@ -485,13 +493,15 @@ const [toEdit, setToEdit] = useState({
     if (userDetail.timeZone === undefined) return;
     dispatch(updateTimeZone({ timeZone: userDetail.timeZone }));
   }, [userDetail.timeZone]);
-
+ 
   // //console.log(user)
   // //console.log(userDetail)
   // //console.log('associatedParent', associatedParent)
   // //console.log('isEditable', editable)
   // //console.log(settings)
-
+  const handleCopy = text => {
+    navigator.clipboard.writeText(text);
+  }
   useEffect(() => {
     if (user.assiginedStudents === undefined) return;
     let studentsData = [];
@@ -520,18 +530,20 @@ const [toEdit, setToEdit] = useState({
   return (
     <>
       <div className={`w-[83.3vw] mx-auto pb-[70px]`}>
-        <p className="text-[#24A3D9] !my-[calc(50*0.0522vw)] text-xl">
+        <p className="text-[#24A3D9] !my-[calc(50*0.0522vw)] text-base-20">
+        <span className="cursor-pointer z-5000 relative" onClick={()=>navigate('/')}>
           {organization?.company +
             " > " +
             user?.firstName +
             " " +
             user?.lastName +
             " > "}
+          </span>
           <span className="font-semibold">Dashboard</span>
         </p>
         {!isOwn ? (
           <button
-            className=" bg-[#D9BBFF] px-[14px] mb-10 py-[8px] rounded-[8px] text-[#636363] text-[18px] font-medium top-[1px] left-[22px] gap-[12px] cursor-pointer flex justify-center items-center"
+            className=" bg-[#D9BBFF] px-[14px] mb-10 py-[8px] relative z-[5000] cursor-pointer rounded-[8px] text-[#636363] text-[18px] font-medium top-[1px] left-[0px] gap-[12px] cursor-pointer flex justify-center items-center"
             onClick={() => window.history.back()}
           >
             <img src={LeftIcon} alt="icon" /> Back
@@ -592,9 +604,11 @@ const [toEdit, setToEdit] = useState({
                           {user?.email}
                           <span>
                             <img
-                              className="inline-block ml-2 !w-4 !h-4 mr-2"
+                             onClick={()=>handleCopyClick(user?.email)}
+                              className="inline-block ml-2 !w-4 !h-4 mr-2 cursor-pointer"
                               src={copy1}
                               alt="copy"
+                            
                             />
                           </span>
                         </p>
@@ -631,9 +645,11 @@ const [toEdit, setToEdit] = useState({
                               {user?.email}
                               <span>
                                 <img
-                                  className="inline-block ml-2 !w-4 !h-4 mr-2"
+                                 onClick={()=>handleCopyClick(user?.email)}
+                                  className="inline-block ml-2 !w-4 !h-4 mr-2 cursor-pointer"
                                   src={copy1}
                                   alt="copy"
+                                 
                                 />
                               </span>
                             </p>
@@ -667,7 +683,7 @@ const [toEdit, setToEdit] = useState({
             </div>
             <div className="w-[13.80vw]  bg-white rounded-md overflow-hidden !rounded-b-md shadow-[0px_0px_2.500001907348633px_0px_#00000040] relative">
               <div
-                className={`${styles.studentsContainer} min-h-[200px] w-full`}
+                className={`${styles.studentsContainer} min-h-[290px] w-full`}
               >
                 {associatedStudents.map((student, idx) => {
                   return (
@@ -695,7 +711,7 @@ const [toEdit, setToEdit] = useState({
                           />
                         </div>
                       </div>
-                      <div className="flex flex-col mt-[-16px] h-[120px] design:h-[140px] gap-1 justify-center items-center ">
+                      <div className="flex flex-col pt-4   gap-1 justify-center items-center ">
                         <p
                           onClick={() =>
                             navigate(`/profile/student/${student._id}`)
@@ -709,7 +725,8 @@ const [toEdit, setToEdit] = useState({
                           {student.email}
                           <span>
                             <img
-                              className="inline-block !w-4 !h-4 mr-2"
+                             onClick={()=>handleCopyClick(student?.email)}
+                              className="inline-block !w-4 !h-4 mr-2 cursor-pointer"
                               src={copy2}
                               alt="copy2"
                             />
@@ -776,10 +793,7 @@ const [toEdit, setToEdit] = useState({
             toEdit={toEdit}
             setToEdit={setToEdit}
           />
-          <div
-            id="borderDashed"
-            className="border !border-[#CBD6E3] w-[calc(1500*0.0522vw)] mx-auto my-[calc(50*0.0522vw)]"
-          ></div>
+          
           {
             persona === "admin" && <SPFrame1
               user={user}

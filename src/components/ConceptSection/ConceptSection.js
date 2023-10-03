@@ -256,7 +256,8 @@ const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
     setSubjects(updated);
   };
 
-   console.log('tutors', tutors,filteredTutors);
+
+  //  console.log('tutors', tutors,filteredTutors);
 
   return (
     <div

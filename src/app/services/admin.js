@@ -115,10 +115,91 @@ export const adminServicesApi = createApi({
             headers: getAuthHeader()
          })
       }),
+      CRMBulkInviteUser: builder.mutation({
+         query: (body) => ({
+            url: `/api/user/bulkInviteUser`,
+            method: "POST",
+            body: body,
+            headers: getAuthHeader()
+         })
+      }),
+      CRMBulkDeleteUser: builder.mutation({
+         query: (body) => ({
+            url: `/api/user/bulkDeleteUser`,
+            method: "POST",
+            body: body,
+            headers: getAuthHeader()
+         })
+      }),
+      CRMBulkChangeAssignedTutor: builder.mutation({
+         query: (body) => ({
+            url: `/api/user/bulkChangeAssignedTutor`,
+            method: "POST",
+            body: body,
+            headers: getAuthHeader()
+         })
+      }),
+      CRMBulkChangeLeadStatus: builder.mutation({
+         query: (body) => ({
+            url: `/api/user/bulkChangeLeadStatus`,
+            method: "POST",
+            body: body,
+            headers: getAuthHeader()
+         })
+      }),
+      CRMBulkChangeTutorStatus: builder.mutation({
+         query: (body) => ({
+            url: `/api/user/bulkChangeTutorStatus`,
+            method: "POST",
+            body: body,
+            headers: getAuthHeader()
+         })
+      }),
+      CRMBulkdelete: builder.mutation({
+         query: (body) => ({
+            url: `/api/test/bulkdelete`,
+            method: "POST",
+            body: body,
+            headers: getAuthHeader()
+         })
+      }),
+      CRMBulkmarkcompleted: builder.mutation({
+         query: (body) => ({
+            url: `/api/test/bulkmarkcompleted`,
+            method: "POST",
+            body: body,
+            headers: getAuthHeader()
+         })
+      }),
+      CRMBulkresent: builder.mutation({
+         query: (body) => ({
+            url: `/api/test/bulkresent`,
+            method: "POST",
+            body: body,
+            headers: getAuthHeader()
+         })
+      }),
+      CRMEditReview: builder.mutation({
+         query: (body) => ({
+            url: `/api/feedback/tutor/review/edit/:id`,
+            method: "POST",
+            body: body,
+            headers: getAuthHeader()
+         })
+      }),
    }),
 });
 
 export const {
+   useCRMEditReviewMutation,
+   useCRMBulkresentMutation,
+   useCRMBulkmarkcompletedMutation,
+   useCRMBulkdeleteMutation,
+   useCRMBulkChangeTutorStatusMutation,
+   useCRMBulkChangeLeadStatusMutation,
+   useCRMBulkChangeAssignedTutorMutation,
+   useCRMBulkDeleteUserMutation,
+   useCRMBulkInviteUserMutation,
    useAddInvoiceMutation,
    useLazyGetCalenderInsightQuery,
    useLazyGetParentsByNameQuery,

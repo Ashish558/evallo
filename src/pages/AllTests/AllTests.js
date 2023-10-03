@@ -17,9 +17,10 @@ import { BASE_URL, getAuthHeader } from "../../app/constants/constants";
 import StudentTest from "../StudentTest/StudentTest";
 import FilterItems from "../../components/FilterItems/filterItems";
 import { useSelector } from "react-redux";
+import { json, useNavigate } from "react-router-dom";
 
 const optionData = ["option 1", "option 2", "option 3", "option 4", "option 5"];
-const testTypeOptions = ["SAT", "Other"];
+const testTypeOptions = ["DSAT","SAT", "Other"];
 
 const initialState = {
   testName: "",
@@ -49,17 +50,18 @@ export default function AllTests() {
   const [testForDelete, setTestForDelete] = useState("");
   const [filteredTests, setFilteredTests] = useState([]);
   const [filterItems, setFilterItems] = useState([]);
+  const [testtype2, settesttype2] = useState();
   const [submitBtnDisabled, setSubmitBtnDisabled] = useState(true);
   const [loading, setLoading] = useState(false);
   const [removeQuestionModal, setRemoveQuestionModal] = useState(false);
   const [submitTest, submitTestResp] = useAddTestMutation();
   const [submitPdf, submitPdfResp] = useAddPdfMutation();
   const [modalData, setModalData] = useState(initialState);
-  const [sortOrder,setSortOrder]= useState({
-    testName:false,
-    createdAt:false,
-    updatedAt:false,
-    testType:false,
+  const [sortOrder, setSortOrder] = useState({
+    testName: false,
+    createdAt: false,
+    updatedAt: false,
+    testType: false,
   })
 
 
@@ -67,67 +69,67 @@ export default function AllTests() {
     setFilteredTests((prev) => {
       let arr = [...prev];
       arr = arr.sort(function (a, b) {
-        let fl=a[st].localeCompare(b[st])
-        if(sortOrder[st])
-        return fl<=0;
+        let fl = a[st].localeCompare(b[st])
+        if (sortOrder[st])
+          return fl <= 0;
         else
-        return fl>0;
+          return fl > 0;
       });
-      
+
       return arr;
     });
     setSortOrder({
       ...sortOrder,
-      [st]:!sortOrder[st]
+      [st]: !sortOrder[st]
     })
   };
 
-const sortBycreateDate = () => {
-  setFilteredTests((prev) => {
-    let arr = [...prev];
-    arr = arr.sort(function (a, b) {
-      if(sortOrder.createdAt)
-      return new Date(a.createdAt) - new Date(b.createdAt);
+  const sortBycreateDate = () => {
+    setFilteredTests((prev) => {
+      let arr = [...prev];
+      arr = arr.sort(function (a, b) {
+        if (sortOrder.createdAt)
+          return new Date(a.createdAt) - new Date(b.createdAt);
         else
-      return new Date(b.createdAt) - new Date(a.createdAt);
+          return new Date(b.createdAt) - new Date(a.createdAt);
+      });
+      return arr;
     });
-    return arr;
-  });
-  setSortOrder({
-    ...sortOrder,
-    createdAt:!sortOrder.createdAt
-  })
-};
+    setSortOrder({
+      ...sortOrder,
+      createdAt: !sortOrder.createdAt
+    })
+  };
   const sortByAssignedDate = () => {
     setFilteredTests((prev) => {
       let arr = [...prev];
       arr = arr.sort(function (a, b) {
-        if(sortOrder.updatedAt)
-        return new Date(a.updatedAt) - new Date(b.updatedAt);
-          else
-        return new Date(b.updatedAt) - new Date(a.updatedAt);
+        if (sortOrder.updatedAt)
+          return new Date(a.updatedAt) - new Date(b.updatedAt);
+        else
+          return new Date(b.updatedAt) - new Date(a.updatedAt);
       });
       return arr;
     });
     setSortOrder({
       ...sortOrder,
-      updatedAt:!sortOrder.updatedAt
+      updatedAt: !sortOrder.updatedAt
     })
   };
 
   const tableObjHeaders = [
- 
-    
+
+
     {
       id: 1,
       text: "Assignment Name",
       className: "text-left pl-6",
-      onCick:()=> sortByString("testName"),
+      onCick: () => sortByString("testName"),
     },
     {
       id: 2,
       text: "Type",
-      onCick:()=> sortByString("testType"),
+      onCick: () => sortByString("testType"),
     },
     {
       id: 3,
@@ -143,17 +145,17 @@ const sortBycreateDate = () => {
     {
       id: 5,
       text: "Total Assignments",
-      
+
     },
     {
       id: 6,
       text: "",
-      
+
     },
     {
       id: 7,
       text: "",
-      
+
     },
   ];
   useEffect(() => {
@@ -186,7 +188,7 @@ const sortBycreateDate = () => {
   const removeTest = (item) => {
     setRemoveQuestionModal(false);
     // console.log(testForDelete._id);
-    axios.delete(`${BASE_URL}api/test/${testForDelete._id}`, {headers: getAuthHeader() }).then((res) => {
+    axios.delete(`${BASE_URL}api/test/${testForDelete._id}`, { headers: getAuthHeader() }).then((res) => {
       console.log(res);
       fetchTests();
     });
@@ -212,6 +214,9 @@ const sortBycreateDate = () => {
     }
   };
 
+  const getTestType = (type) => {
+    return type === 'SAT®' ? "SAT" : type === 'ACT®' ? "ACT" : type === 'DSAT®' ? "DSAT" : type
+  }
   const handleSubmit = (e) => {
     setLoading(true);
     e.preventDefault();
@@ -219,7 +224,7 @@ const sortBycreateDate = () => {
     // console.log(modalData)
     let body = {
       testName: modalData.testName,
-      testType: modalData.testType,
+      testType: getTestType(modalData.testType),
     };
 
     submitTest(body).then(async (res) => {
@@ -299,35 +304,51 @@ const sortBycreateDate = () => {
   }, [testName]);
 
   // console.log(testName);
-   console.log(tableData);
-   console.log('filteredTests', filteredTests);
+  console.log(tableData);
+  console.log('filteredTests', filteredTests);
 
   const fetchTests = () => {
     const headers = getAuthHeader();
     axios
       .get(`${BASE_URL}api/test`, { headers })
-      .then((res) => setTableData(res.data.data.test));
+      .then((res) =>{
+        console.log('asdadasdasdasd',res.data.data.test);
+      let dataofque=res.data.data.test
+      let cutdata = dataofque.map((item) => ({
+        testId:item._id,
+        testtype:item.testType
+      }));
+      console.log(cutdata);
+      settesttype2(cutdata)
+      setTableData(res.data.data.test)});
   };
-
+  const navigate=useNavigate('/')
   useEffect(() => {
     fetchTests();
   }, []);
   
-  if (persona === "parent" || persona === "student") return <StudentTest />;
+  useEffect(()=>{
+    console.log(testtype2);
+  },[testtype2])
+
+  if (persona === "parent" || persona === "student") return <StudentTest testtype={testtype2}/>;
 
   return (
     <div className="w-[83.6989583333vw] mx-auto bg-lightWhite min-h-screen">
-      <p className="text-[#24A3D9]  !mt-[calc(50*0.052vw)] !mb-[calc(25*0.052vw)]">
-          {organization?.company +
+
+      <p className="text-[#24A3D9]  !mt-[calc(50*0.052vw)] !mb-[calc(25*0.052vw)] text-base-20">
+      <span onClick={()=>navigate('/')} className="cursor-pointer"> 
+         {organization?.company +
             "  >  " +
             firstName +
             "  " +
             lastName +
             "  >  "}
+          </span>
           <span className="font-semibold">Content</span>
         </p>
+
       <div className=" w-full">
-        
         <div className="flex justify-between items-center">
           {/* <p
                   className="font-bold text-4xl"
@@ -340,7 +361,7 @@ const sortBycreateDate = () => {
             IconRight={SearchIcon}
             onChange={(e) => setTestName(e.target.value)}
             optionData={optionData}
-          
+
             placeholder="Search"
             parentClassName="w-290 mr-4"
             inputClassName="placeholder:font-semibold pl-2 text-base-17-5"
@@ -355,10 +376,11 @@ const sortBycreateDate = () => {
             <img src={AddIcon} className="ml-1 " alt="add-icon" />
           </button>
         </div>
-      
+
 
         <div className="mt-6 w-full">
           <Table
+            testtype={testtype2}
             dataFor="allTests"
             data={filteredTests}
             tableHeaders={tableObjHeaders}
@@ -391,12 +413,11 @@ const sortBycreateDate = () => {
                 id={styles.uploadButtons}
                 className="mt-7 ml-7 px-0  gap-2 flex justify-between"
               >
-                <div id={styles.pdfUpload}>
+                {modalData.testType!='DSAT'?<div id={styles.pdfUpload}>
                   <label
                     htmlFor="pdf"
-                    className={`${
-                      pdfFile !== null ? "bg-[#26435F] " : "bg-[#26435F] "
-                    } w-[160px]`}
+                    className={`${pdfFile !== null ? "bg-[#26435F] " : "bg-[#26435F] "
+                      } w-[160px]`}
                   >
                     Upload PDF
                     <img src={upload} alt="Upload" />
@@ -411,16 +432,15 @@ const sortBycreateDate = () => {
                   <div id={styles.filename}>
                     {pdfFile?.name || pdfFile?.name}
                   </div>
-                </div>
+                </div>:null}
 
                 <div id={styles.csvUpload}>
                   <label
                     htmlFor="csv"
-                    className={`${
-                      csvFile !== null && styles.fileUploaded
-                        ? "bg-[#26435F] "
-                        : "bg-[#26435F] "
-                    } w-[200px]`}
+                    className={`${csvFile !== null && styles.fileUploaded
+                      ? "bg-[#26435F] "
+                      : "bg-[#26435F] "
+                      } w-[200px]`}
                   >
                     Upload Metadata
                     <img src={upload} alt="Upload" />
@@ -475,6 +495,7 @@ const sortBycreateDate = () => {
                   inputClassName="bg-transparent"
                   isRequired={true}
                   type="select"
+                  valueSuffix={<span>&#174;</span>}
                   value={modalData.testType}
                   onChange={(val) =>
                     setModalData({

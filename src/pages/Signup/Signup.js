@@ -925,7 +925,6 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
           </div>
         </>
       </div>
-
     </div>
   );
 }

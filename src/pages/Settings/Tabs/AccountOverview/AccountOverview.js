@@ -143,7 +143,7 @@ const AccountOverview = () => {
             placeholder=""
             labelClassname="font-medium text-base"
             parentClassName="text-[#26435F]"
-            inputContainerClassName=" bg-white  border border-white text-[#667085]"
+            inputContainerClassName=" shadow-[0px_0px_2.500000476837158px_0px_#00000040]  bg-white  border border-white text-[#667085]"
             inputClassName=" text-400 py-0 bg-transparent"
             label="First Name"
             value={values.firstName}
@@ -160,7 +160,7 @@ const AccountOverview = () => {
             placeholder=""
             labelClassname="font-medium text-base"
             parentClassName="text-[#26435F]"
-            inputContainerClassName=" bg-white border border-white text-[#667085]"
+            inputContainerClassName=" shadow-[0px_0px_2.500000476837158px_0px_#00000040]  bg-white border border-white text-[#667085]"
             inputClassName=" text-400 py-0 bg-transparent"
             label="Last Name"
             value={values.lastName}
@@ -178,7 +178,7 @@ const AccountOverview = () => {
             placeholder=""
             labelClassname="font-medium text-base"
             parentClassName="text-[#26435F]"
-            inputContainerClassName=" bg-white border border-white text-[#667085]"
+            inputContainerClassName=" !shadow-[0px_0px_2.500000476837158px_0px_#00000040]  bg-white  text-[#667085]"
             inputClassName=" text-400 py-0 bg-transparent w-[calc(377*0.0522vw)]"
             label="Email"
             // IconRight={tooltipIcon}
@@ -212,7 +212,7 @@ const AccountOverview = () => {
               placeholder=""
               labelClassname="font-medium text-base"
               parentClassName="text-[#26435F] "
-              inputContainerClassName="py-3 bg-white border border-white text-[#667085]"
+              inputContainerClassName=" shadow-[0px_0px_2.500000476837158px_0px_#00000040] py-3 bg-white border border-white text-[#667085]"
               inputClassName="  text-400 py-1"
               label="Phone"
               value={values.phone}

@@ -155,6 +155,16 @@ export default function StudentProfile({ isOwn }) {
   const { id } = useSelector((state) => state.user);
   const [selectedScoreIndex, setSelectedScoreIndex] = useState(0);
   const { organization } = useSelector((state) => state.organization);
+  
+  async function handleCopyClick(textToCopy) {
+    console.log("copying", textToCopy);
+    try {
+      await navigator.clipboard.writeText(textToCopy);
+    //  alert('Text copied to clipboard');
+    } catch (err) {
+      console.error('Failed to copy text: ', err);
+    }
+  }
   const [toEdit, setToEdit] = useState({
     frame0: {
 
@@ -250,17 +260,17 @@ export default function StudentProfile({ isOwn }) {
       active: false,
       satScores: [
         {
-          created: "",
+          createdAt: "",
           verbal: 0,
           maths: 0,
         },
         {
-          created: "",
+          createdAt: "",
           verbal: 0,
           maths: 0,
         },
         {
-          created: "",
+          createdAt: "",
           verbal: 0,
           maths: 0,
         },
@@ -270,21 +280,21 @@ export default function StudentProfile({ isOwn }) {
       active: false,
       actScores: [
         {
-          created: "",
+          createdAt: "",
           english: 0,
           maths: 0,
           reading: 0,
           science: 0,
         },
         {
-          created: "",
+          createdAt: "",
           english: 0,
           maths: 0,
           reading: 0,
           science: 0,
         },
         {
-          created: "",
+          createdAt: "",
           english: 0,
           maths: 0,
           reading: 0,
@@ -463,7 +473,7 @@ const [toEdit, setToEdit] = useState({
       userId = params.id;
     }
     getUserDetail({ id: userId }).then((res) => {
-      //console.log("details -- ", res.data.data);
+      console.log("details -- ", res.data.data);
       // //console.log('tut id', id);
       if (res.data.data.user.assiginedTutors) {
         if (res.data.data.user.assiginedTutors?.includes(id)) {
@@ -502,6 +512,7 @@ const [toEdit, setToEdit] = useState({
               : "/images/default.jpeg",
           });
         });
+        setAssociatedParent(res.data.data?.parent)
       setUser(res.data.data.user);
       if (!satScores) satScores = [];
       if (!actScores) actScores = [];
@@ -704,8 +715,16 @@ const [toEdit, setToEdit] = useState({
     dispatch(updateTimeZone({ timeZone: userDetail.timeZone }));
   }, [userDetail.timeZone]);
 
+  const handleCopy = text => {
+    navigator.clipboard.writeText(text);
+  }
+  const handleParentNavigate = () => {
+    if(associatedParent){
+      navigate(`/profile/parent/${associatedParent?._id}`)
+    }
+  }
   // //console.log(user)
-  //console.log("student",{userDetail,user})
+ console.log("student",{userDetail,user})
   //console.log('associatedParent', associatedParent)
   // //console.log('isEditable', editable)
   // //console.log(settings)
@@ -717,18 +736,20 @@ const [toEdit, setToEdit] = useState({
   return (
     <>
       <div className={`w-[83.3vw] mx-auto pb-[70px]`}>
-        <p className="text-[#24A3D9] my-[calc(50*0.0522vw)] text-xl">
+        <p className="text-[#24A3D9] my-[calc(50*0.0522vw)] text-base-20">
+          <span onClick={()=>navigate('/')} className="cursor-pointer">
           {organization?.company +
             " > " +
             user?.firstName +
             " " +
             user?.lastName +
             " > "}
+          </span>
           <span className="font-semibold">Dashboard</span>
         </p>
         {!isOwn ? (
           <button
-            className="my-5 bg-[#D9BBFF] px-[14px] py-[8px] rounded-[8px] text-[#636363] text-[18px] font-medium top-[16px] left-[22px] flex gap-[12px] cursor-pointer flex justify-center items-center"
+            className="my-5 bg-[#D9BBFF] cursor-pointer relative z-[50] px-[14px] py-[8px] rounded-[8px] text-[#636363] text-[18px] font-medium top-[-8px] left-[0px] flex gap-[12px] cursor-pointer flex justify-center items-center"
             onClick={() => window.history.back()}
           >
             <img src={LeftIcon} alt="icon" /> Back
@@ -793,7 +814,7 @@ const [toEdit, setToEdit] = useState({
                   </div>
                 </div>
 
-               {( persona!=='tutor')  && <div className="flex flex-col text-[12px]  font-medium text-white my-auto ">
+                {(persona !== 'tutor') && <div className="flex flex-col text-[12px]  font-medium text-white my-auto ">
                   <ProfileCard
                     className="lg:mt-0 flex-1 !bg-transparent h-min !shadow-none relative"
                     titleClassName="!bg-transparent"
@@ -823,7 +844,60 @@ const [toEdit, setToEdit] = useState({
                           {user?.email}
                           <span>
                             <img
-                              className="inline-block ml-2 !w-4 !h-4 mr-2"
+                             onClick={()=>handleCopyClick(user?.email)}
+                              className="inline-block ml-2 !w-4 !h-4 mr-2 cursor-pointer"
+                              src={copy1}
+                              alt="copy"
+                            
+                            />
+                          </span>
+                        </p>
+                        <p>
+                          <span>
+                            <img
+                              className="inline-block !w-4 !h-4 mr-2"
+                              src={phoneIcon}
+                              alt="phone"
+                            />
+                          </span>
+                          {user?.phone}
+                        </p>
+                      </div>
+                    }
+                  />
+                </div>}
+                {(persona === 'tutor') && organization?.settings?.permissions[2]?.choosedValue && <div className="flex flex-col text-[12px]  font-medium text-white my-auto ">
+                  <ProfileCard
+                    className="lg:mt-0 flex-1 !bg-transparent h-min !shadow-none relative"
+                    titleClassName="!bg-transparent"
+                    title={
+                      <EditableText
+                        editable={editable}
+                        onClick={() =>
+                          setToEdit({
+                            ...toEdit,
+                            contact: { ...toEdit.contact, active: true },
+                          })
+                        }
+                        imgClass="!bg-transparent"
+                        className=" !bg-transparent absolute right-0 top-[50%]"
+                      />
+                    }
+                    body={
+                      <div className="flex h-min !bg-transparent justify-center flex-col  ">
+                        <p>
+                          <span>
+                            <img
+                              className="inline-block !w-4 !h-4 mr-2"
+                              src={emailIcon}
+                              alt="email"
+                            />
+                          </span>
+                          {user?.email}
+                          <span>
+                            <img
+                             onClick={()=>handleCopyClick(user?.email)}
+                              className="inline-block ml-2 !w-4 !h-4 mr-2 cursor-pointer"
                               src={copy1}
                               alt="copy"
                             />
@@ -843,56 +917,6 @@ const [toEdit, setToEdit] = useState({
                     }
                   />
                 </div>}
-                {( persona==='tutor') && organization?.settings?.permissions[2]?.choosedValue && <div className="flex flex-col text-[12px]  font-medium text-white my-auto ">
-                  <ProfileCard
-                    className="lg:mt-0 flex-1 !bg-transparent h-min !shadow-none relative"
-                    titleClassName="!bg-transparent"
-                    title={
-                      <EditableText
-                        editable={editable}
-                        onClick={() =>
-                          setToEdit({
-                            ...toEdit,
-                            contact: { ...toEdit.contact, active: true },
-                          })
-                        }
-                        imgClass="!bg-transparent"
-                        className=" !bg-transparent absolute right-0 top-[50%]"
-                      />
-                    }
-                    body={
-                      <div className="flex h-min !bg-transparent justify-center flex-col  ">
-                        <p>
-                          <span>
-                            <img
-                              className="inline-block !w-4 !h-4 mr-2"
-                              src={emailIcon}
-                              alt="email"
-                            />
-                          </span>
-                          {user?.email}
-                          <span>
-                            <img
-                              className="inline-block ml-2 !w-4 !h-4 mr-2"
-                              src={copy1}
-                              alt="copy"
-                            />
-                          </span>
-                        </p>
-                        <p>
-                          <span>
-                            <img
-                              className="inline-block !w-4 !h-4 mr-2"
-                              src={phoneIcon}
-                            alt="phone"
-                            />
-                          </span>
-                          {user?.phone}
-                        </p>
-                      </div>
-                    }
-                  />
-                </div>}
               </div>
             </div>
           </div>
@@ -904,8 +928,8 @@ const [toEdit, setToEdit] = useState({
               <div className="mt-[-20px]">
                 <ProfilePhoto
                   src={
-                    associatedParent.photo
-                      ? `${awsLink}${associatedParent.photo}`
+                    associatedParent?.photo
+                      ? `${awsLink}${associatedParent?.photo}`
                       : "/images/Rectangle 2347.svg"
                   }
                   imgSizeClass="!w-[50px] !h-[50px] !translate-y-[45px]  border-[2px] border-[#26435F]"
@@ -918,13 +942,13 @@ const [toEdit, setToEdit] = useState({
               <div className="flex flex-col ml-14   font-medium text-[#24A3D9] ">
                 <p
                   onClick={() =>
-                    Object.keys(associatedParent).length > 0 &&
-                    navigate(`/profile/parent/${associatedParent._id}`)
+                    associatedParent &&
+                    navigate(`/profile/parent/${associatedParent?._id}`)
                   }
                   className="font-semibold cursor-pointer text-[14px]"
                 >
-                  {Object.keys(associatedParent).length > 1
-                    ? `${associatedParent.firstName} ${associatedParent.lastName}`
+                  {associatedParent && Object.keys(associatedParent)?.length > 1
+                    ? `${associatedParent?.firstName} ${associatedParent?.lastName}`
                     : `${userDetail.FirstName} ${userDetail.LastName}`}
                   <img
                     src={clickArrowIcon}
@@ -933,22 +957,25 @@ const [toEdit, setToEdit] = useState({
                   />
                 </p>
 
-                {(persona !== "tutor"||(persona==='tutor'&&organization?.settings?.permissions[2]?.choosedValue) )&&  <p className="font-medium text-[12px]">
+                {(persona !== "tutor" || (persona === 'tutor' && organization?.settings?.permissions[2]?.choosedValue)) && <p className="font-medium text-[12px]">
                   <span
                     className="text-xs cursor-pointer font-semibold opacity-60 inline-block mr-1"
-
-                  // navigate(`/profile/parent/${associatedParent._id}`)
+                    onClick={handleParentNavigate}
+                  // 
                   >
-                    {Object.keys(associatedParent).length > 1
-                      ? `${associatedParent.email}`
+                    {associatedParent && Object.keys(associatedParent)?.length > 1
+                      ? `${associatedParent?.email}`
                       : `${userDetail.Email} `}
                     {/* View Profile */}
                     <span>
                       <img
-                        className="inline-block ml-2 !w-4 !h-4 mr-2"
+                      onClick={()=>handleCopyClick(associatedParent && Object.keys(associatedParent).length > 1
+                        ? `${associatedParent?.email}`
+                        : `${userDetail.Email}`)}
+                        className="inline-block ml-2 !w-4 !h-4 mr-2 cursor-pointer"
                         src={copy2}
                         alt="copy"
-                      />
+                           />
                     </span>
                   </span>
                 </p>}
@@ -1012,24 +1039,24 @@ const [toEdit, setToEdit] = useState({
             toEdit={toEdit}
           />
           <div className="flex-1 mt-10">
-            <p className=" translate-y-[24px] text-sm text-[#26435F] font-semibold">
-              Latest Assignmets
+            <p className="mb-[-45px] text-sm text-[#26435F] font-semibold">
+              Latest Assignments
             </p>
 
-            <StudentTest isOwn={isOwn} setTotaltest={setTotaltest} fromProfile={true} />
+            <StudentTest isOwn={isOwn} setTotaltest={setTotaltest} studentId={userDetail?.userId} fromProfile={true} />
             <div
 
-           
-            className="border !border-[#CBD6E2] w-[calc(1500*0.0522vw)] mx-auto mb-[calc(50*0.0522vw)]"
-          ></div>
-           <SPFrame3 isOwn={isOwn} userDetail={userDetail} user={user} />
-           <div
-            id="borderDashed"
-            className="border !border-[#CBD6E3] w-[calc(1500*0.0522vw)] mx-auto my-[calc(50*0.0522vw)]"
-          ></div>
-           {
-            persona === "admin"  &&
-            <SPFrame4 isOwn={isOwn} userDetail={userDetail}        
+
+              className="border !border-[#CBD6E2] w-[calc(1500*0.0522vw)] mx-auto mb-[calc(50*0.0522vw)]"
+            ></div>
+            <SPFrame3 isOwn={isOwn} userDetail={userDetail} user={user} />
+            <div
+              id="borderDashed"
+              className="border !border-[#CBD6E3] w-[calc(1500*0.0522vw)] mx-auto my-[calc(50*0.0522vw)]"
+            ></div>
+            {
+              persona === "admin" &&
+              <SPFrame4 isOwn={isOwn} userDetail={userDetail}
 
                 fetchDetails={fetchDetails}
                 user={user}

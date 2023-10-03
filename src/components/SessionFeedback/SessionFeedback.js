@@ -16,10 +16,12 @@ const SessionFeedback = () => {
          .then(res => {
             console.log('all-assigned-tests', res.data);
             setAwsLink(res.data.data.baseLink)
+            
             let tempAllTests = res.data.data.test.map(test => {
                const { testId, studentId, dueDate, isCompleted, isStarted, createdAt, updatedAt } = test
                if (testId === null) return
                return {
+                  testype: testId ? testId.testType : '-',
                   testName: testId ? testId.testName : '-',
                   assignedOn: getFormattedDate(new Date(createdAt)),
                   studentId: studentId ? studentId : '-',
@@ -47,11 +49,11 @@ const SessionFeedback = () => {
 
    return (
       <div>
-         <h2 className="mt-3 !text-xl !font-bold !text-[#26435F]" >Assigned Tests</h2>
+         <p className="mt-[5px] !text-xl !font-bold !text-[#26435F]" >Assigned Tests</p>
          <div id={styles.sessionFeedbackContainer} className="mt-[10px] shadow-[0px_0px_2.500001907348633px_0px_#00000040] custom-scroller h-[383px] bg-white  py-[21px] !rounded-md">
             <div id={styles.sessionFeedback} className="bg-white px-[10px] custom-scroller !rounded-md h-full overflow-y-auto">
                {/* {/* <TestItem name="name" status="due date" date="june 20, 2022" action="Start" marks="1250/1250" /> */}
-
+{console.log(allTests,'asdavhdvavdyajsvdjas jd as dhas ds h')}
                {allTests.map(test => {
                   return <TestItem key={test._id} {...test} awsLink={awsLink} />
                })}

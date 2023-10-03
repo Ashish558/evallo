@@ -20,6 +20,7 @@ import InputFieldDropdown from "../../../../components/InputField/inputFieldDrop
 import { useUpdateEmailMutation } from "../../../../app/services/organization";
 import { useStudentFeedbackMutaion, useStudentFeedbackMutation } from "../../../../app/services/settings";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 const StudentSettings = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [reset, setReset] = useState(false);
@@ -156,6 +157,7 @@ const StudentSettings = () => {
     tech: "",
     support: "",
   })
+  const navigate=useNavigate()
   const handleFeedback = (message, type) => {
     console.log({ message, feedBack })
     const body = {
@@ -176,8 +178,8 @@ const StudentSettings = () => {
     <div className="w-[83.23vw] mx-auto">
       <div className="flex flex-col gap-10   my-12">
         <div className="text-[#24A3D9] font-lexend-deca text-md design:text-xl  font-semibold leading-normal">
-          <span className=" font-medium text-xl">{organization?.company}</span>
-          <span className="font-semibold text-xl">{"  > Settings"}</span>
+          <span onClick={()=>navigate('/')} className=" font-medium text-base-20 cursor-pointer">{organization?.company}</span>
+          <span className="font-semibold text-base-20">{"  > Settings"}</span>
         </div>
         <div className="flex gap-5">
           <InputField
@@ -310,8 +312,8 @@ const StudentSettings = () => {
           )}
         </div>
 
-        <div className="flex  gap-20 mt-16">
-          <div className="flex-1 max-w-[400px]">
+        <div className="flex  gap-x-[100px] mt-16 mb-[163px]">
+          <div className="relative w-[33.54vw]">
 
             <p className=" text-sm text-[#26435F] font-semibold">
               Submit Feedback
@@ -334,12 +336,12 @@ const StudentSettings = () => {
               onClick={() => {
                 handleFeedback(feedBack.support, "feedback")
               }}
-              className="bg-[#517CA8] text-white rounded-lg mt-2 float-right px-4 py-2 mr-[60px]"
+              className="bg-[#517CA8] text-white rounded-lg mt-2 float-right px-4 py-2  absolute bottom-[-14%] right-0"
             >
               Submit
             </button>
           </div>
-          <div className="flex-1 max-w-[400px]">
+          <div className=" relative w-[33.54vw]">
             <p className=" text-sm text-[#26435F] font-semibold ">
               Request Technical Support
             </p>
@@ -362,7 +364,7 @@ const StudentSettings = () => {
               onClick={() => {
                 handleFeedback(feedBack.tech, "")
               }}
-              className="bg-[#517CA8] text-white rounded-lg mt-2 float-right px-4 py-2 "
+              className="bg-[#517CA8] text-white rounded-lg mt-2 float-right px-4 py-2 absolute bottom-[-14%] right-0"
             >
               Submit
             </button>

@@ -4,6 +4,7 @@ import toggleRectActiveIcon from "../../assets/icons/toggle-rect-active.svg";
 import toggleCircleIcon from "../../assets/icons/toggle-circle.svg";
 import styles from "./style.module.css";
 import QuestionMark from '../../assets/images/question-mark.svg'
+import ToogleBar from "./ToogleBar";
 
 export default function SettingsCard({
   title,
@@ -70,39 +71,35 @@ export default function SettingsCard({
           title == "Edit Announcements" &&
 
           <div>
+            { false&&
             <div className="flex items-center bg-white rounded-tl-5 rounded-tr-5 pt-4">
               <div className="text-[#24A3D9] mr-3 pl-4 text-base-17-5">
                 Show Announcement Images
               </div>
               <div>
+                
                 {toggle !== undefined && (
-                  <div className="flex items-center border-[2px] border-[#26435F] rounded-[9px]">
-                    <div
-                      className={styles.toggleContainer}
+                
+                  <div >
+                  <div
+                      className={`flex items-center h-[17px] w-[26px]  border-[2px] px-[2px] border-[#26435F] rounded-[20px] ${toggle.value === false?"justify-start":"justify-end"} `}
                       onClick={() => onToggle(toggle.key, !toggle.value)}
-                    >
-                      <img
-                        src={
-                          toggle.value === false ? toggleRectIcon : toggleRectIcon
-                        }
-                        alt="toggle"
-                      />
-                      {
-
-                      }
+                  >
+                     
+                     
                       <div
-                        // src={toggleCircleIcon}
-                        className={`${toggle.value === false
-                          ? styles.toggleCircleImages
-                          : styles.toggleCircleImagesActive
-                          }   w-[13px] h-[13px] rounded-[6px]`}
-                        alt="toggle"
+                          // src={toggleCircleIcon}
+                          className={`${toggle.value === false
+                              ? (` ${false ? false:'bg-[#FF7979]'} `)
+                              : (` ${false ? false:'bg-[#4bd657]'} `)
+                              }  w-[9px] h-[9px]  rounded-[8px] inline-block`}
+                          
                       />
-                    </div>
                   </div>
+              </div>
                 )}
               </div>
-            </div>
+            </div>}
             {body && body}
           </div>
         }

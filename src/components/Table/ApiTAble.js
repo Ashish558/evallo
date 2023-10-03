@@ -21,6 +21,8 @@ export default function ApiTable({
   currentPage,
   setCurrentPage,
   fetch,
+  selectedId2,
+  setSelectedId2,
   headerObject,
   extraData,
   isChecked,
@@ -117,6 +119,8 @@ export default function ApiTable({
               <TableItem
                 dataFor={dataFor}
                 item={item}
+                selectedId2={selectedId2}
+                setSelectedId2={setSelectedId2}
                 key={idx}
                 excludes={excludes}
                 onClick={onClick}

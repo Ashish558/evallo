@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import styles from "./style.module.css";
+import DownArrow2 from "../../assets/YIcons/Vectordrop.svg";
 import DownArrow from "../../assets/icons/down-chevron.svg";
 import UpArrow from "../../assets/icons/chevron-up-solid (1).svg";
 import useOutsideAlerter from "../../hooks/useOutsideAlerter";
@@ -10,7 +11,9 @@ import { useSelector } from "react-redux";
 export default function InputSelect({
   parentClassName,
   Icon,
+  hideRight,
   value,
+  downArrow22,
   placeholder,
   placeholderClass,
   label,
@@ -85,22 +88,22 @@ export default function InputSelect({
       >
         {Icon && <img src={Icon} className={`mr-5  w-[28px]}`} alt="icon" />}
         {IconLeft && <img src={IconLeft} className={`mr-5  w-[28px]}`} alt="IconLeft" />}
-        {IconSearch && <img src={IconSearch} className={`mr-5  w-[28px]}`} alt="IconLeft" />}
+        {IconSearch && <img src={IconSearch} className={`mr-2 mt-[3px]  w-[28px]}`} alt="IconLeft" />}
         {selected ? (
           IconRight ? (
             IconRight
-          ) : !IconLeft && (
+          ) : !IconLeft&&!hideRight && (
             <img
-            src={customArrow ? customArrow :DownArrow}
+            src={customArrow ? customArrow :downArrow22?DownArrow2:DownArrow}
             className={`${customArrow ?`w-[20px] h-[20px] rotate-180`:`w-[15px] h-[12px]`}   ${styles.downArrow}`}
               alt="down-arrow"
             />
           )
         ) : IconRight ? (
           IconRight
-        ) : !IconLeft && (
+        ) : !IconLeft&&!hideRight && (
           <img
-            src={customArrow ? customArrow :DownArrow}
+            src={customArrow ? customArrow :downArrow22?DownArrow2:DownArrow}
             className={`${customArrow ?`w-[20px] h-[20px]`:`w-[15px] h-[12px]`}   ${styles.downArrow}`}
             alt="down-arrow"
           />
@@ -112,18 +115,18 @@ export default function InputSelect({
           name={label}
         >
           {value === "" || !value ? (
-            <span className={`text-[#667085] .text-base-17-5 whitespace-nowrap ${tableDropdown ? 'mr-0' : 'mr-10'}  ${placeholderClass} `}>
+            <span className={`text-[#667085] text-base-17-5 whitespace-nowrap ${tableDropdown ? 'mr-0' : 'mr-10'}  ${placeholderClass} `}>
               {" "}
               {placeholder}{" "}
             </span>
           ) : (
-            <span className={`mr-10 .text-base-17-5 whitespace-nowrap ${tableDropdown ? 'mr-0' : 'mr-10'}  ${placeholderClass} `}>{value}</span>
+            <span className={`mr-10 text-base-17-5 whitespace-nowrap ${tableDropdown ? 'mr-0' : 'mr-10'}  ${placeholderClass} `}>{value}</span>
           )}
         </div>
         {selected && (
           <div
             onClick={handleOption}
-            className={`scrollbar-content  scrollbar-vertical  shadow-lg shadow-[0px_0px_3px_0px_#00000040] ${styles.options} $`}
+            className={` custom-scroller  scrollbar-vertical   shadow-[0px_0px_3px_0px_#00000040] ${styles.options} $`}
           >
             {DateSelect && DateSelect}
             {optionData?.map((option, idx) => {

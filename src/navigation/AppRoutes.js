@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
@@ -5,7 +6,7 @@ import Navbar from "../components/Navbar/Navbar";
 import AllTests from "../pages/AllTests/AllTests";
 import AssignedTests from "../pages/AssignedTests/AssignedTests";
 import Calendar from "../pages/Calendar/Calendar";
-import CompletedTest from "../pages/CompletedTest/CompletedTest";
+// import CompletedTest from "../pages/CompletedTest/CompletedTest";
 import Home from "../pages/Home/Home";
 import Login from "../pages/Login/Login";
 import Signup from "../pages/Signup/Signup";
@@ -14,16 +15,15 @@ import TestDetail from "../pages/TestDetail/TestDetail";
 import Users from "../pages/Users/users";
 
 import { RequireAuth } from "./PrivateRoute";
-import ParentDashboard from "./../pages/ParentDashboard/ParentDashboard";
+// import ParentDashboard from "./../pages/ParentDashboard/ParentDashboard";
 import SetPassword from "../pages/Frames/SetPassword/SetPassword";
-import StudentDashboard from "../pages/StudentDashboard/StudentDashboard";
+// import StudentDashboard from "../pages/StudentDashboard/StudentDashboard";
 import Ledger from "../pages/Ledger/Ledger";
 import StartTest from "../pages/StartTest/StartTest";
 import AssignedStudents from "../pages/AssignedStudents/assignedStudents";
 import ParentProfile from "../pages/Profiles/ParentProfile/ParentProfile";
 import TutorProfile from "../pages/Profiles/Tutor/TutorProfile";
 import Invoice from "../pages/Invoice/Invoice";
-import { useEffect } from "react";
 import StudentReport from "../pages/StudentReport/StudentReport";
 import AssignedTutors from "../pages/AssignedTutors/AssignedTutors";
 import SuperadminDashboard from "../pages/SuperadminDashboard/SuperadminDashboard";
@@ -38,8 +38,12 @@ import SuperAdminProfile from "../pages/SuperadminDashboard/components/About/Abo
 import EmailVerify from "../pages/Settings/Tabs/AccountOverview/EmailVerify";
 import StudentSettings from "../pages/Settings/Tabs/AccountOverview/studentSettings";
 
-import TutorSetting from "../pages/Settings/TutorSetting";
+// import TutorSetting from "../pages/Settings/TutorSetting";
 import ContributorSettings from "../pages/Settings/ContributorSettings";
+import TestPage from "../pages/DsatTestPage/TestPage";
+import AnnotatorComponent from "../components/annotate";
+import Testinstruction_2 from "../components/TestItem/testinstruction_2";
+
 
 
 
@@ -54,7 +58,13 @@ const AppRoutes = () => {
         <Route path="/" element={isLoggedIn ? <Home /> : <Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/signup/user" element={<UserSignup />} />
-        <Route path="/dashboard" element={<SuperadminDashboard />} />
+        <Route path="/dashboard" element={<RequireAuth isLoggedIn={isLoggedIn}>
+{(persona === "superAdmin" || persona === 'manager') ?
+          <SuperadminDashboard />:<Home />}
+          
+          </RequireAuth>
+          
+          } />
         <Route path="/all-orgs" element={<AllOrgs />} />
         <Route path="/verify-email" element={<EmailVerify />} />
         <Route path="/orgadmin-profile/:id" element={<SuperAdminProfile />} />
@@ -214,6 +224,14 @@ const AppRoutes = () => {
             </RequireAuth>
           }
         />
+         <Route
+          path="/testpage/:id/:assignedTestId"
+          element={
+            <RequireAuth isLoggedIn={isLoggedIn}>
+             <TestPage/>
+            </RequireAuth>
+          }
+        />
 
         <Route
           path="/settings"
@@ -243,7 +261,12 @@ const AppRoutes = () => {
               <StartTest />
             </RequireAuth>
           }
-        />
+        /><Route
+        path="/ll"
+        element={
+            <AnnotatorComponent />
+        }
+      />
         <Route path="/adminDashboard" element={<Dashboard></Dashboard>}></Route>
         <Route
           path="/adminContent"

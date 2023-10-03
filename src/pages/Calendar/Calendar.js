@@ -1,9 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import moment from "moment-timezone";
-import momentOg from "moment";
 import "./Transition.css";
 import "./calendar.css";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import downIcon from '../../assets/icons/down-pink.svg'
 import upIcon from '../../assets/icons/up-blue.svg'
@@ -41,7 +40,6 @@ import {
 } from "../../utils/utils";
 import InputSelect from "../../components/InputSelect/InputSelect";
 // import styles from "./calendar.css";
-import momentTimezonePlugin from "@fullcalendar/moment-timezone";
 import { useLazyGetUserDetailQuery } from "../../app/services/users";
 import { useLazyGetCalenderInsightQuery } from "../../app/services/admin";
 import downBlue from '../../assets/icons/down-blue.svg'
@@ -89,7 +87,6 @@ export default function Calendar() {
   const { id, timeZone: currentUserTImeZone } = useSelector((state) => state.user
   );
   const time = formatAMPM(new Date());
-
   const exactTime =
     time.slice(0, time.indexOf(":")) +
     time.slice(time.indexOf("p"), time.length);
@@ -260,8 +257,8 @@ export default function Calendar() {
 
         // //////console.log('START DATE', startDate.toDateString());
         // //////console.log('startDate', new Date(startDate.getTime() - userTimezoneOffset + 9 * 3600000))
-        // //////console.log('startUtc', startUtc);
-        // //////console.log('startUtc', startUtc);
+        console.log('startUtc', startUtc);
+        console.log('startUtc', startUtc);
         const dsttz = moment.tz(startDate, session.timeZone).format("zz");
         const dstdate = moment
           .tz(startDate, session.timeZone)
@@ -287,7 +284,7 @@ export default function Calendar() {
           userTimezoneOffset,
           session.timeZone
         );
-
+       console.log("SessionTimings", session, startDate,endDateUtc,strtTime12HFormat)
         let eventObj = {
           id: session._id,
           title: role === "tutor" ? session.studentName : session.tutorName,
@@ -299,7 +296,8 @@ export default function Calendar() {
           studentId: session.studentId,
           sessionStatus: session.sessionStatus,
           tutorId: session.tutorId ? session.tutorId : "-",
-          description: `${strtTime12HFormat} - ${endTime12HFormat}`,
+       
+           description: `${strtTime12HFormat} - ${endTime12HFormat}`,
         };
         return eventObj;
       });
@@ -606,7 +604,7 @@ setColorMapping(temp);
     if (arg.event._def.extendedProps.sessionStatus === "Completed") {
       isCompleted = true;
     }
-    //  ////console.log("event cards details",arg.event._def.extendedProps)
+  // console.log("event cards details",arg.event._def,arg.event._def.extendedProps)
 
     const textclasses = {
       Completed: "!bg-[#38C980] ",
@@ -665,27 +663,32 @@ setColorMapping(temp);
   };
 
   const handleDateClick = (arg) => {
+    
     let date = new Date(arg.date);
     let currentDate = new Date();
-    currentDate.setHours(0, 0, 0, 0);
-    // //////console.log(date - currentDate);
-    // if (date - currentDate < 0) {
-    //    alert('Cant set events on past date')
-    //    return
-    // }
-
+   // currentDate.setHours(0, 0, 0, 0);
+   console.log(date - currentDate);
+    if (!date || date - currentDate <= 0) {
+       alert('Cant set events on past date')
+       return
+    }
+   else {
+   console.log("can see", date,currentDate)
+  
     if (persona === "tutor") {
       setDefaultEventData({
         date: arg.date,
         tutorId: currentUserId,
         tutorName: `${firstName} ${lastName}`,
       });
-    } else {
+    } else  {
       setDefaultEventData({ date: arg.date });
     }
     if (persona === "admin" || persona === "tutor") {
       setEventModalActive(true);
     }
+  }
+  arg.preventDefault()
     // //////console.log(arg)
     // setEvents([...events, {
     //    id: 2,
@@ -830,7 +833,8 @@ setColorMapping(temp);
             updatedDateEnd: endDateUtc,
             sessionStatus: session.sessionStatus,
             studentId: session.studentId,
-            description: `${strtTime12HFormat} - ${endTime12HFormat}`,
+            //description: `${startUtc} - ${endDateUtc}`,
+             description: `${strtTime12HFormat} - ${endTime12HFormat}`,
             // background: getBackground(
             //   res.data.data.user.assiginedStudents.length,
             //   idx
@@ -871,6 +875,7 @@ setColorMapping(temp);
   }, [persona]);
 
   const handleEventClick = (info) => {
+    //alert("Event")
     const session = eventDetails.find(
       (e) => e._id === info.event._def.publicId
     );
@@ -908,13 +913,16 @@ setColorMapping(temp);
   const parseEventDatesToTz = () => {
     setEvents((prev) => {
       return prev.map((item) => {
-        let updatedDate = new Date(item?.updatedDate).toLocaleString("en-US", {
-          timeZone,
-        });
+        let updatedDate = new Date(item?.start).toLocaleString();
         let updatedDateEnd = new Date(item?.updatedDateEnd).toLocaleString(
-          "en-US",
-          { timeZone }
-        );
+          );
+        // let updatedDate = new Date(item?.updatedDate).toLocaleString("en-US", {
+        //   timeZone,
+        // });
+        // let updatedDateEnd = new Date(item?.updatedDateEnd).toLocaleString(
+        //   "en-US",
+        //   { timeZone }
+        // );
         // //////console.log('item', item)
         // //////console.log('updatedDate', updatedDate)
         // //////console.log('DATE UPDATED ==', updatedDate)
@@ -923,12 +931,12 @@ setColorMapping(temp);
         var m = moment.tz(updatedDate, fmt, timeZone);
         m.utc();
         var s = m.format(fmt); // result:
-        // //////console.log('moment', moment(s).tz(timeZone).format(fmt));
+        console.log('moment',item,item?.start,updatedDate,updatedDateEnd);
 
         return {
           ...item,
           start: new Date(updatedDate),
-          // description: `${formatAMPM(startarg)}-${formatAMPM(endarg)}`
+          //description: `${formatAMPM(startarg)}-${formatAMPM(endarg)}`
           description: `${formatAMPM(new Date(updatedDate))}-${formatAMPM(
             new Date(updatedDateEnd)
           )}`,
@@ -1092,16 +1100,19 @@ setColorMapping(temp);
     }));
   };
   //console.log('eventDetails',colorMapping,insightData,userDetail,associatedStudents);
+  const navigate=useNavigate()
   return (
     <>
       <div className="lg:ml-pageLeft calender  min-h-screen" id={persona}>
-        <p className="text-[#24A3D9] text-xl mb-[30px] mt-[50px] pl-[74px]">
-          {organization?.company +
+        <p className="text-[#24A3D9] text-base-20 mb-[30px] mt-[50px] pl-[74px]">
+         <span onClick={()=>navigate('/')} className="cursor-pointer"> 
+         {organization?.company +
             "  >  " +
             firstName +
             "  " +
             lastName +
             "  >  "}
+         </span>
           <span className="font-bold">Schedule</span>
         </p>
         <div className="  pb-2 pl-[74px] calendar flex">
@@ -1262,8 +1273,8 @@ setColorMapping(temp);
                     >
                       <div
                         style={{
-                          backgroundColor: colorMapping[item?.tutor._id]+"40",
-                          color: colorMapping[item?.tutor._id],
+                          backgroundColor: colorMapping[item?.tutor?._id]+"40",
+                          color: colorMapping[item?.tutor?._id],
                         }}
                         onClick={() => toggleAccordions(id)}
                         className="transition-shy cursor-pointer bg-[rgba(255,162,141,0.2)] overflow-hidden relative z-50 py-3 px-5 text-[#FFA28D] mx-0 flex justify-between shadow-sm rounded-t-md w-full  "
@@ -1271,7 +1282,7 @@ setColorMapping(temp);
                         {item?.tutor?.firstName + " " + item?.tutor?.lastName}
                         <div
                           style={{
-                            backgroundColor: colorMapping[item?.tutor._id],
+                            backgroundColor: colorMapping[item?.tutor?._id],
                           }}
                           className="flex justify-center items-center text-center py-auto my-auto w-5 h-5 rounded-3xl "
                         >
@@ -1483,6 +1494,15 @@ setColorMapping(temp);
           </div>
           <div className="flex-1 w-4/5 relative" id="calendarContainer">
             <FullCalendar
+             slotLabelContent={(arg) => {
+              // Insert a blank row (gap) after every time slot
+              return (
+                <>
+                  <div>{arg.text}</div>
+                  <div className="blank-row" />
+                </>
+              );
+            }}
               events={
                 persona === "parent" || persona === "tutor"
                   ? filteredEvents
@@ -1539,6 +1559,9 @@ setColorMapping(temp);
                 center: "",
                 end: "dayGridMonth,timeGridWeek"
               }}
+              datesSet={(arg) => {
+                console.log('datesSet', arg) //starting visible date
+              }}
               titleFormat={{
                 day: '2-digit',
                 month: "short",
@@ -1549,13 +1572,12 @@ setColorMapping(temp);
               // slotMinTime={"06:00:00"}
               // slotMaxTime={"30:00:00"}
               dayHeaderFormat={{
-                day: "numeric",
-                weekday: 'long'
-
+                weekday: 'long',
+                day: "numeric"
               }}
               // dayHeaderContent={getDayHeaders}
               selectable={true}
-              select={handleDateClick}
+              //select={handleDateClick}
               dateClick={handleDateClick}
               // select={handleDateSelect}
               // titleFormat={{
@@ -1591,7 +1613,6 @@ setColorMapping(temp);
                   }}
                   parentClassName=""
                   optionClassName=""
-
                 />
               </span>
               {/* <div class="inline-flex rounded shadow-sm mt-1">

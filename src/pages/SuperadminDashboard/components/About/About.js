@@ -22,7 +22,7 @@ const About = () => {
       });
     }
   }, [userData]);
-  // console.log(userData, orgData);
+   console.log("allorgadmin",userData, orgData);
   return (
     <>
       <div className="px-16 pt-4 mb-12">
@@ -33,7 +33,7 @@ const About = () => {
         </div>
         <div className="flex gap-7">
           <ProfileLeft userData={{ ...userData?.data?.user, ...orgData }} />
-          <ProfileRight userData={{ ...userData?.data?.user, ...orgData }} />
+          <ProfileRight userData={{ ...userData?.data?.user, ...orgData }} orgs={orgData} />
         </div>
       </div>
     </>

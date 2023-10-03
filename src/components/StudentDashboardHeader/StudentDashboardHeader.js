@@ -84,7 +84,7 @@ const StudentDashboardHeader = () => {
             </div>
          </div> */}
 
-      <div className="flex justify-between relative  mb-[92px] mt-[31px] ">
+      <div className="flex justify-between relative  gap-8 mb-[92px] mt-[31px] ">
         <div className="  w-[28.65vw] h-[250px] ">
           <p className="text-xl text-[#26435F] font-semibold">Announcements</p>
 
@@ -134,7 +134,7 @@ const StudentDashboardHeader = () => {
           </div>
         </div>
 
-        <div className="w-[25.52vw] mx-auto h-[250px]">
+        <div className="w-[25vw] mx-auto h-[250px]">
           <p className=" text-xl text-[#26435F] font-semibold">
             Assigned Tutors
           </p>

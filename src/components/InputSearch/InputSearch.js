@@ -34,7 +34,7 @@ export default function InputSearch({
    }
    // console.log('checkbox', checkbox);
    // console.log('value', value);
-   // console.log('optionData', optionData);
+   console.log('optionData', optionData);
    useOutsideAlerter(inputRef, handleClose)
 
    return (
@@ -46,7 +46,7 @@ export default function InputSearch({
             {required && <span className='text-primaryRed inline-block pl-1'>*</span>}
          </label>
          <div
-            className={`py-3 px-6 flex relative items-center rounded-10 ${inputContainerClassName ? inputContainerClassName : ""
+            className={`py-3 px-6 flex relative items-center rounded-5 ${inputContainerClassName ? inputContainerClassName : ""
                }`}
          >
             {Icon && <img src={Icon} className="mr-6" />}
@@ -66,7 +66,7 @@ export default function InputSearch({
             // onBlur={()=> setOptionsVisible(false)}
             />
             {
-               IconRight || (IconSearch ?
+              (IconSearch ?
                   <img src={SeacrchIcon} className="ml-4" alt="SeacrchIcon"/>:'')
                   
                
@@ -85,13 +85,13 @@ export default function InputSearch({
                               {option.value}
                            </p>
                            <p className={`text-sm opacity-60 ${checkbox ? 'mr-auto ml-4' : ''}`}>
-                              {optionPrefix ? `${optionPrefix}${option._id.slice(-5)}` : option._id.slice(-5)}
+                              {option?._id&&optionPrefix ? `${optionPrefix}${option?._id.slice(-5)}` :option?._id&& option?._id.slice(-5)}
                            </p>
                            {
                               checkbox &&
                               <div className="flex mb-3">
                                  <CCheckbox
-                                    checked={checkbox.match.includes(option._id) ? true : false}
+                                    checked={checkbox.match.includes(option?._id) ? true : false}
                                     name='student'
                                  // onChange={() =>
                                  //    setData({
