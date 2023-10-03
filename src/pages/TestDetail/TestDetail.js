@@ -514,7 +514,7 @@ const [richTextContent, setRichTextContent] = useState("");
                               <PrimaryButton
                                  children={item.name}
                                  className={`py-2.5 px-0 text-xs mr-4 font-semibold w-[120px] ${item.selected
-                                    ? "text-[#FFA28D]"
+                                    ? "text-[#FFA28D] bg-white"
                                     : "bg-secondaryLight text-textGray"
                                     }`}
                                  onClick={() => handleSubjectChange(item._id)}
@@ -553,7 +553,7 @@ const [richTextContent, setRichTextContent] = useState("");
             modalActive &&
             <Modal
             classname={'max-w-[780px] mx-auto'}
-               cancelBtnClassName='bg-[#FFFFFF] text-[#FFA28D] border border-[#FFA28D] w-140'
+               cancelBtnClassName='bg-white text-[#FFA28D] border border-[#FFA28D] w-140'
                title='Edit Question'
                cancelBtn={true}
                primaryBtn={{

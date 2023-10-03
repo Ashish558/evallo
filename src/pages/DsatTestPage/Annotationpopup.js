@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
-export default function AnnotationPopup({ selectedText, onCancel }) {
-  const [highlightText, setHighlightText] = useState(selectedText);
-  const [textAreaInput, setTextAreaInput] = useState(selectedText);
-  const [isEditing, setIsEditing] = useState(true);
+export default function AnnotationPopup({sethovert,i,setIsEditing,isEditing, color,underline,setunderline, setcolor,onCancel }) {
+  const [highlightText, setHighlightText] = useState('');
+  const [textAreaInput, setTextAreaInput] = useState('');
   
 
   const handleSave = () => {
-    
+    sethovert(prevAnnotations => {
+      const updatedAnnotations = [...prevAnnotations];
+      updatedAnnotations[i-1].push(highlightText);
+      return updatedAnnotations;})
     console.log(`Saved annotation: ${highlightText}`);
-    setIsEditing(false);
   };
 
   const handleCancel = () => {
@@ -27,11 +28,10 @@ export default function AnnotationPopup({ selectedText, onCancel }) {
   };
 
   return (
-    <div className="popup absolute w-[100%] left-0 right-0 bottom-2 transform translate-y-full transition-transform duration-300">
-      <div className="popup-content bg-white p-4 shadow-lg rounded-lg">
+    <div className="popup absolute w-[100%] left-0 right-0 bottom-2 transform z-10 translate-y-full transition-transform duration-300">
+      {isEditing ?<><div className="popup-content bg-white p-4 shadow-lg rounded-lg">
         <div className="popup-header w-[100%] bg-black text-white p-2 flex justify-between items-center">
           <h2>New Annotation:</h2>
-          <p className='text-center font-bold'> {highlightText}</p>
           <button
             className="text-white hover:text-red-800 focus:outline-none"
             onClick={handleCancel}
@@ -40,32 +40,37 @@ export default function AnnotationPopup({ selectedText, onCancel }) {
           </button>
         </div>
         <div className="popup-body">
-          {isEditing ? (
             <div className="">
               <div className="header-container flex mt-2">
-                <div className="header-item flex">
+                <div className="header-item relative flex items-center">
                   <h2 className="header-text font-bold " >Highlight Color:</h2>
-                  {highlightText && (
-                    <div
-                      className="highlight-circle ml-2"
-                      style={{
-                        background: 'yellow',
-                        display: 'inline-block',
-                        width: '20px',
-                        height: '20px',
-                        borderRadius: '50%',
-                        border:'3px solid'
-                      }}
-                    ></div>
-                  )}
-                </div>
+                  <div 
+    onClick={() => document.getElementById('hiddenColorPicker').click()}
+    style={{
+        width: '25px',
+        height: '25px',
+        borderRadius: '50%',
+        backgroundColor: color,
+        marginLeft:'5px',
+        cursor: 'pointer',
+        border: '1px solid #000', // optional, in case you want a border
+    }}
+></div>
+
+<input 
+    type='color' 
+    id='hiddenColorPicker' 
+    value={color} 
+    style={{ display: 'none' }} 
+    onChange={(e) => setcolor(e.target.value)}
+/>
+
+                   </div>
                 <div className="header-item flex">
-                  <h2 className="header-text font-bold ml-[50px]" >Underline Style:</h2>
-                  {highlightText && (
-                    <span className="underline-symbol font-bold ml-2" style={{ textDecoration: 'underline' }}>
+                  <h2 className="header-text font-bold ml-[50px]" >Underline Style:</h2>         
+                    <p className={`underline-symbol transition-all font-bold ml-2 cursor-pointer px-2 ${underline==='underline'&&' border border-black'}`} style={{ textDecoration: 'underline' }} onClick={()=>setunderline(underline=='none'? 'underline':'none')}>
                       {` U`}
-                    </span>
-                  )}
+                    </p>
                 </div>
               </div>
 
@@ -76,6 +81,7 @@ export default function AnnotationPopup({ selectedText, onCancel }) {
                   setHighlightText(textAreaInput);
                 }}
                 style={{
+                  padding:'10px',
                   marginTop: '10px',
                   width: '50%',
                   height: '150px',
@@ -98,9 +104,9 @@ export default function AnnotationPopup({ selectedText, onCancel }) {
                 </button>
               </div>
             </div>
-          ) : null}
+          
         </div>
-      </div>
+      </div></> : null}
     </div>
   );
 }

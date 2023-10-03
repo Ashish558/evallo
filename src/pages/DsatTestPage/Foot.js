@@ -110,7 +110,7 @@ export default function Foot(props) {
         </div>
         }
        <div className=' flex flex-row justify-end items-center w-1/3 '>
-     { i>1? <button  className=' bg-blue-700 rounded-full py-3 px-6 text-white font-semibold mx-2  ' onClick={toggle2?tog2:prev} >Back</button>:null}
+     { i>1? <button  className=' bg-blue-700 rounded-full py-2 px-6 text-white font-semibold mx-2  ' onClick={toggle2?tog2:prev} >Back</button>:null}
 
        <button className=' bg-blue-700 rounded-full py-2 px-6 text-white font-semibold ' onClick={ i<s?next:!toggle2?tog2:handleSubmitSection} >Next</button>
        </div>
