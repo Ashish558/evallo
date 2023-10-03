@@ -55,12 +55,13 @@ import InputFieldDropdown from "../../components/InputField/inputFieldDropdown";
 import AdminNavbar from "../AdminDashboard/AdminNavbar";
 import SCheckbox from "../../components/CCheckbox/SCheckbox";
 import Subscription from "../Frames/Subscription/Subscription";
+import Extensions from "../Frames/Extensions/Extensions";
 
 export default function OrgSignup() {
   const [frames, setFrames] = useState({
-    signupActive: true,
+    signupActive: false,
     subscription: false,
-    furtherDetails: false,
+    extensions: true,
     requirements: false,
   });
 
@@ -94,7 +95,9 @@ export default function OrgSignup() {
     activeStudents: "",
     activeTutors: "",
     services: [],
-    subscriptionPlan: "Starter"
+    subscriptionPlan: "Starter",
+    extensionsPlans: [],
+    extensionsPricePlan: "",
   });
 
   const [error, setError] = useState({
@@ -273,7 +276,7 @@ export default function OrgSignup() {
   useEffect(() => {
     if (sessionStorage.getItem("frames")) {
       // console.log(sessionStorage.getItem('frames'));
-      setFrames(JSON.parse(sessionStorage.getItem("frames")));
+      // setFrames(JSON.parse(sessionStorage.getItem("frames")));
     }
     if (sessionStorage.getItem("values")) {
       setValues(JSON.parse(sessionStorage.getItem("values")));
@@ -393,7 +396,7 @@ export default function OrgSignup() {
           ...frames,
           signupActive: true,
           subscription: false,
-          furtherDetails: false,
+          extensions: false,
           requirements: false,
         });
       } else {
@@ -407,7 +410,6 @@ export default function OrgSignup() {
               requirements: false,
             });
             setLoading(false);
-
             // alert("Signup successful");
 
             // navigate("/");
@@ -610,6 +612,7 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
     //setcurrentStep(1);
     navigate("/");
   };
+
   return (
     <div className="   pb-6 bg-primary relative" id={styles.signUp}>
       {/* <AdminNavbar></AdminNavbar> */}
@@ -631,14 +634,15 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
           ) : (
             <></>
           )}
-          <div className={`flex lg:items-center relative bg-white rounded-md py-4 px-5 md:px-[48px] lg:w-[650px]`}>
+          <div className={` flex lg:items-center relative bg-white rounded-md py-4 px-5 md:px-[48px] 
+                          ${frames.extensions ? "lg:w-[1200px]" : "lg:w-[650px]"}`}>
             <div className="w-full py-4 ">
               {currentStep > 0 && (
-                <NumericSteppers className={"px-2 flex-1"} fieldNames={["Personal info" ,"Subscription","Extensions","Checkout"]} totalSteps={4} currentStep={currentStep}
+                <NumericSteppers className={"left-2/4 -translate-x-2/4 self-center px-2 flex-1 lg:w-[600px]"} fieldNames={["Personal info" ,"Subscription","Extensions","Checkout"]} totalSteps={4} currentStep={currentStep}
                 
                 />
               )}
-              {frames.signupActive && false ? (
+              {frames.signupActive ? (
                 <div>
                   {/* <p
                     className={`hidden lg:block mb-[26px] ${styles.textGrayed} `}
@@ -872,29 +876,13 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
                     />
                   </div>
                 </div>
-              ) : frames.subscription || true ? (
+              ) : frames.subscription ? (
                 <Subscription
                   values={values}
                   setValues={setValues}
                 />
-              ) : frames.furtherDetails ? (
-                <FurtherDetails
-                  {...props}
-                  testPreparations={testPreparations}
-                  setTestPreparations={setTestPreparations}
-                  coaching={coaching}
-                  setCoaching={setCoaching}
-                  studentserved={studentserved}
-                  setStudentserved={setStudentserved}
-                  paymentOptions={paymentOptions}
-                  setPaymentOptions={setPaymentOptions}
-                  tutoring={tutoring}
-                  setTutoring={setTutoring}
-                  instructions={instructions}
-                  setInstructions={setInstructions}
-                  {...otherDetailsProps}
-                  {...valueProps}
-                />
+              ) : frames.extensions ? (
+                <Extensions />
               ) : frames.requirements ? (
                 <SignupLast
                   {...props}

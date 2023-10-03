@@ -1,0 +1,25 @@
+.selectedContainer {
+    /* border-color: #24A3D9; */
+    border-radius: 5px;
+    border-width: 2px;
+    box-shadow: 0px 0px 4px #24A3D9;
+}
+
+.unSelectedContainer {
+    border-radius: 5px;
+    border-width: 2px;
+    
+}
+
+.selectedRadio {
+    border-color: #24A3D9;
+    border-radius: 50%;
+    border-width: 4px;
+    box-shadow: 0px 0px 10px #24A3D9;
+}
+
+.unSelectedRadio {
+    border-radius: 50%;
+    border-width: 2px;
+    
+}

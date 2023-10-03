@@ -10,7 +10,7 @@ export default function RadioOptionContainer({
 }) {
     return (
         <div
-            className={`flex h-[150px] w-full ${className} ${selected ? styles.selectedContainer : styles.unSelectedContainer}`}
+            className={`flex w-full ${className} ${selected ? styles.selectedContainer : styles.unSelectedContainer}`}
             onClick={onClick}
         >   
             <div 
