@@ -970,7 +970,7 @@ export default function TutorProfile({ isOwn }) {
                 <div className="text-xl text-[#26435F] text-base-20 text-[#26435F] font-semibold mb-1">
                   Tutor Highlight Video
                 </div>
-                {persona === "admin" && (
+               
                   <p
                     className="text-[#667085] ml-auto underline cursor-pointer text-[15px] text-base-15"
                     onClick={() =>
@@ -982,7 +982,7 @@ export default function TutorProfile({ isOwn }) {
                   >
                     edit
                   </p>
-                )}
+    
               </div>
 
               <div className="  pt-10 min-h-[460px]  relative z-10 flex items-end ">
@@ -1206,9 +1206,12 @@ export default function TutorProfile({ isOwn }) {
               />
             </div>
           </div>
-          <div className="mt-[50px] border-4 mx-[40px]  border-t border-[#CBD6E2]-300 justify-center border-dotted"></div>
+        {
+          persona =="admin" &&   <div className="mt-[50px] border-4 mx-[40px]  border-t border-[#CBD6E2]-300 justify-center border-dotted"></div>
+        }
           {/* address row */}
-          <div className="flex justify-between mt-[55px] gap-x-[37px]">
+          {
+            persona =="admin" && <div className="flex justify-between mt-[55px] gap-x-[37px]">
             <div className="w-[60.32vw]">
               <div className="flex items-center mb-1">
                 {(isOwn == true || persona === "admin") && (
@@ -1369,85 +1372,52 @@ export default function TutorProfile({ isOwn }) {
               <></>
             )}
           </div>
-
-          <div className="flex justify-between mt-20 mb-[191px]">
-            {persona === "admin" && (
-              <div className="w-[36.5vw]">
-                <div className="text-xl text-[#26435F] font-semibold mb-[-10px] text-base-20">
-                  Recent Feedback History
-                </div>
-                <div className="flex">
-                  <Table
-                    tableHeaders={tableHeaders1}
-                    // onClick={{ handleDelete, handleNavigate }}
-                    dataFor="tutorFeedback"
-                    data={feedbacks}
-                    // excludes={['assiginedTutor', 'student_id', 'parentFirstName', 'parentLast']}
-                    // tableHeaders={tableHeaders}
-                    headerObject={true}
-                    maxPageSize={9}
-                    noArrow={true}
-                    // loading={tableLoading}
-                  />
-                </div>
-              </div>
-            )}
-            {persona === "admin" && (
-              <div className="w-[19.8vw] ">
-                <BarChart studentFeedbacks={studentFeedbacks}></BarChart>
-              </div>
-            )}
-            {persona === "admin" && (
-              <div className=" w-[1.25px] h-[630px] bg-[#CBD6E2] "></div>
-            )}
-            {persona === "admin" && (
-              <div className="w-[20.9vw] ">
-                <div className="flex items-center">
-                  <div className="text-[#26435F] text-[20px] text-base-20 font-semibold">
-                    Tutor Status
+          }
+{persona === "admin" || <div className="mt-[100px]"></div>}
+{persona === "admin" && (
+                <div className="flex justify-between mt-20 mb-[191px]">
+            
+                <div className="w-[36.5vw]">
+                  <div className="text-xl text-[#26435F] font-semibold mb-[-10px] text-base-20">
+                    Recent Feedback History
                   </div>
-                  {(isOwn === true || persona === "admin") && (
-                    <p
-                      className="text-[#667085] ml-auto underline cursor-pointer text-[15px] font-semibold text-base-15"
-                      onClick={() =>
-                        setToEdit({
-                          ...toEdit,
-                          tutorLevel: { ...toEdit.tutorLevel, active: true },
-                        })
-                      }
-                    >
-                      edit
-                    </p>
-                  )}
+                  <div className="flex">
+                    <Table
+                      tableHeaders={tableHeaders1}
+                      // onClick={{ handleDelete, handleNavigate }}
+                      dataFor="tutorFeedback"
+                      data={feedbacks}
+                      // excludes={['assiginedTutor', 'student_id', 'parentFirstName', 'parentLast']}
+                      // tableHeaders={tableHeaders}
+                      headerObject={true}
+                      maxPageSize={9}
+                      noArrow={true}
+                      // loading={tableLoading}
+                    />
+                  </div>
                 </div>
-                <ProfileCard
-                  hideShadow
-                  className="border border-[#00000010]"
-                  bgClassName="bg-white"
-                  body={
-                    <>
-                      <div className="text-[#517CA8] text-lg p-3 min-h-[50px] shadow-[0px_0px_2px_0px_#00000040] rounded-md text-base-17-5">
-                        {userDetail.tutorLevel}
-                      </div>
-                    </>
-                  }
-                />
-
-                <div className="mt-[33.75px]">
-                  <div className="flex justify-between mb-[-10px]">
-                    <div className=" text-[#26435F] text-xl font-semibold text-base-20">
-                      Service Rates
+            
+              {persona === "admin" && (
+                <div className="w-[19.8vw] ">
+                  <BarChart studentFeedbacks={studentFeedbacks}></BarChart>
+                </div>
+              )}
+              {persona === "admin" && (
+                <div className=" w-[1.25px] h-[630px] bg-[#CBD6E2] "></div>
+              )}
+              {persona === "admin" && (
+                <div className="w-[20.9vw] ">
+                  <div className="flex items-center">
+                    <div className="text-[#26435F] text-[20px] text-base-20 font-semibold">
+                      Tutor Status
                     </div>
-                    {persona === "admin" && (
+                    {(isOwn === true || persona === "admin") && (
                       <p
                         className="text-[#667085] ml-auto underline cursor-pointer text-[15px] font-semibold text-base-15"
                         onClick={() =>
                           setToEdit({
                             ...toEdit,
-                            tutorServices: {
-                              tutorServices: tutorAdminServices,
-                              active: true,
-                            },
+                            tutorLevel: { ...toEdit.tutorLevel, active: true },
                           })
                         }
                       >
@@ -1455,29 +1425,66 @@ export default function TutorProfile({ isOwn }) {
                       </p>
                     )}
                   </div>
-                  <Table
-                    tableHeaders={tableHeaders2}
-                    dataFor="serviceRates"
-                    data={newServices}
-                    maxPageSize={7}
-                    setPrice={(idx, isPresent) =>
-                      setToEdit({
-                        ...toEdit,
-                        tutorServices: {
-                          ...toEdit.tutorServices,
-                          active: true,
-                          selectedIdx: idx,
-                          servicePresent: isPresent,
-                        },
-                      })
+                  <ProfileCard
+                    hideShadow
+                    className="border border-[#00000010]"
+                    bgClassName="bg-white"
+                    body={
+                      <>
+                        <div className="text-[#517CA8] text-lg p-3 min-h-[50px] shadow-[0px_0px_2px_0px_#00000040] rounded-md text-base-17-5">
+                          {userDetail.tutorLevel}
+                        </div>
+                      </>
                     }
-                    headerObject={true}
-                    noArrow={true}
-                  ></Table>
+                  />
+  
+                  <div className="mt-[33.75px]">
+                    <div className="flex justify-between mb-[-10px]">
+                      <div className=" text-[#26435F] text-xl font-semibold text-base-20">
+                        Service Rates
+                      </div>
+                      {persona === "admin" && (
+                        <p
+                          className="text-[#667085] ml-auto underline cursor-pointer text-[15px] font-semibold text-base-15"
+                          onClick={() =>
+                            setToEdit({
+                              ...toEdit,
+                              tutorServices: {
+                                tutorServices: tutorAdminServices,
+                                active: true,
+                              },
+                            })
+                          }
+                        >
+                          edit
+                        </p>
+                      )}
+                    </div>
+                    <Table
+                      tableHeaders={tableHeaders2}
+                      dataFor="serviceRates"
+                      data={newServices}
+                      maxPageSize={7}
+                      setPrice={(idx, isPresent) =>
+                        setToEdit({
+                          ...toEdit,
+                          tutorServices: {
+                            ...toEdit.tutorServices,
+                            active: true,
+                            selectedIdx: idx,
+                            servicePresent: isPresent,
+                          },
+                        })
+                      }
+                      headerObject={true}
+                      noArrow={true}
+                    ></Table>
+                  </div>
                 </div>
-              </div>
+              )}
+            </div>
             )}
-          </div>
+        
 
           {/* <div className='lg:grid mt-12 px-2 grid-cols-12 grid-ros-6 lg:mt-[60px] gap-5 lg:pl-3'>
 
