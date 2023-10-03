@@ -833,6 +833,8 @@ const [InviteBulkModalActive,setInviteBulkModalActive] =useState(false)
 const [InviteSelectLoading,setInviteSelectLoading]=useState(false)
 const [SaveBulkModalActive,setSaveBulkModalActive]= useState(false)
 const [saveSelectLoading,setSaveSelectLoading]= useState(false)
+
+
 console.log("users",{selectedId,bulkEdits})
   return (
     <div className="w-[83.6989583333vw] mx-auto  min-h-screen">
@@ -1560,7 +1562,7 @@ console.log("users",{selectedId,bulkEdits})
           title={
             <span className="leading-10">
               Are you sure 
-              you want to delete Selected User(s)
+              you want to delete Selected User(s)?
               
             </span>
           }
@@ -1592,7 +1594,7 @@ console.log("users",{selectedId,bulkEdits})
         <Modal
           title={
             <span className="leading-10">
-              Are You Sure You Want to Bulk Edit
+              Are You Sure You Want to Bulk Edit?
               
             </span>
           }

@@ -19,7 +19,7 @@ const SubFrame0 = ({ userData }) => {
   })
   },[userData])
   return (
-    <div className="flex flex-col gap-5">
+    <div className="flex flex-col gap-5 ">
       <div className="flex flex-col gap-4 border-b-[1.5px] border-b-gray-300">
         <div className="flex  justify-between  p-2 px-3 text-sm  text-[#517CA8]">
           <div className="">
@@ -70,7 +70,7 @@ const SubFrame0 = ({ userData }) => {
           </div>
         </div>
       </div>
-      <div className="flex gap-3">
+      <div className="flex gap-3 w-full overflow-x-auto custom-scroller-2">
         <div className="flex flex-col p-2 px-3 gap-2">
           <span className=" ">
             <p className="text-xs "># Tutors</p>
@@ -93,8 +93,8 @@ const SubFrame0 = ({ userData }) => {
               placeholder="weekly"
               parentClassName="text-xs p-0 rounded-lg m-0"
               value={""}
-              inputContainerClassName="bg-[#26435F]  p-0 m-0 rounded-lg"
-              optionClassName="w-[50px] text-xs px-0 mr-0 py-[1.5px]"
+              inputContainerClassName="bg-[#26435F]  p-0 !m-0 rounded-lg"
+              optionClassName="w-[50px] text-xs !px-0 !mr-0 !py-[1.5px]"
               //   onChange={(e) =>
               //     setValues({
               //       ...values,

@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import PrimaryButton from "../../components/Buttons/PrimaryButton";
 import EditIcon from "../../assets/icons/edit-white.svg";
+import AddIcon from "../../assets/Settings/add-white.svg";
 import ActiveTab from "../../assets/icons/active-tab.svg";
 import SettingsCard from "../../components/SettingsCard/SettingsCard";
 import AddTag from "../../components/Buttons/AddTag";
@@ -60,6 +61,7 @@ const initialState = {
 const subModalInitialState = {
   code: "",
   expiry: "",
+  tests:[],
   editing: false,
 };
 
@@ -421,6 +423,31 @@ export default function SuperAdminSettings() {
     setUpdatedServiceData(selectedServiceData);
   }, [selectedServiceData]);
 
+
+
+  const [addServices2, setServices2] = useState({
+    service: "",
+    specialization: [],
+  });
+  const [addSession2, setSession2] = useState({ heading: "",
+  items: [],});
+ 
+  const [addOne, setOne] = useState(false);
+  const [loading2, setLoading2] = useState(false);
+  useEffect(() => {
+    if (settingsData && settingsData?.offerImages) {
+      let arr = [];
+      for (let i = 0; i < 4 - settingsData?.offerImages.length; i++) {
+        arr.push({
+          link: "",
+          image: "",
+          buttonText: "",
+        });
+      }
+      setOffersNew([...arr]);
+    }
+  }, [settingsData?.offerImages, settingsData]);
+
   const onEditService = (code) => {
     setSubModalServiceData({
       ...code,
@@ -737,7 +764,7 @@ export default function SuperAdminSettings() {
       }
     });
   };
-console.log("tests",allTestData,filteredTests)
+//console.log("tests",allTestData,filteredTests)
 
   useEffect(() => {
     fetchTests();
@@ -857,7 +884,8 @@ console.log("tests",allTestData,filteredTests)
     }
   }, [searchParams.get("tab")]);
   const [offersNew, setOffersNew] = useState([]);
-
+  if (!settingsData) return <></>;
+  if (Object.keys(settingsData).length === 0) return <></>;
   
   
   const {
@@ -872,19 +900,7 @@ console.log("tests",allTestData,filteredTests)
     personality,
     interest,
   } = settingsData;
-  useEffect(() => {
-    if (offerImages) {
-      let arr = [];
-      for (let i = 0; i < 4 - offerImages.length; i++) {
-        arr.push({
-          link: "",
-          image: "",
-          buttonText: "",
-        });
-      }
-      setOffersNew([...arr]);
-    }
-  }, [offerImages, settingsData]);
+  
   const handlePause = (item) => {
     let updated = settingsData.subscriptionCode.map((subscription) => {
       if (item._id === subscription._id) {
@@ -997,9 +1013,7 @@ console.log("tests",allTestData,filteredTests)
     };
     updateAndFetchsettings(body);
   };
-  console.log(organization?.company);
-
-  console.log({ offersNew, offerImages });
+ 
   const submitImageModalNew = (file, val, e) => {
     e.preventDefault();
     // //console.log(tagText)
@@ -1071,6 +1085,156 @@ console.log("tests",allTestData,filteredTests)
       offerImages: arr,
     };
     updateAndFetchsettings(updatedSetting);
+  };
+
+  const updateAndFetchsettingsNew2 = (updatedSetting) => {
+    if (!organization || !settingsData || !updatedSetting) return;
+    const setting = {
+      ...settingsData,
+      ...updatedSetting,
+    };
+    const body = {
+      setting,
+    };
+    console.log("body set", body);
+    // return;
+    setSaveLoading(true);
+    updateSetting(updatedSetting)
+      .then((res) => {
+        setSaveLoading(false);
+        console.log("res", res);
+        alert("Succesfully Added!")
+        setOne(false)
+        setAddServiceModalActive(false)
+        setAddSessionModalActive(false)
+        setAddCodeModalActive(false)
+        setServices2({ service: "", specialization: [] });
+        setSession2({ heading: "",
+        items: [] });
+        setAddCodeModalActive(false);
+        setSubModalData(subModalInitialState);
+        setSaveLoading(false);
+        setSettingsData(res.data.data.setting);
+        dispatch(updateOrganizationSettings(res.data.data.setting));
+        // console.log('updated', res.data.data.setting.settings);
+      })
+      .catch((err) => {
+        setSaveLoading(false);
+        console.log("err", err);
+      });
+    // const settings = {
+    //   ...settingsData,
+    //   ...updatedSetting,
+    // };
+    // const body = {
+    //   settings,
+    // };
+    // console.log("body", body);
+
+    // setSaveLoading(true);
+    // updateSetting(body)
+    //   .then((res) => {
+    //     console.log("updated", res.data.data);
+    //     alert("Succesfully Added!")
+    //     setOne(false)
+    //     setAddServiceModalActive(false)
+    //     setAddSessionModalActive(false)
+    //     setAddCodeModalActive(false)
+    //     setServices2({ service: "", specialization: [] });
+    //     setSession2({ heading: "",
+    //     items: [] });
+    //     setAddCodeModalActive(false);
+    //     setSubModalData(subModalInitialState);
+    //     setSaveLoading(false);
+    //     setSettingsData(res.data.data.setting);
+    //     dispatch(updateOrganizationSettings(res.data.data.setting));
+    //   })
+    //   .catch((err) => {
+    //     alert("Error Occured!")
+    //     setSaveLoading(false);
+    //     //console.log("err", err);
+    //   });
+  };
+  const handleNewServiceRemove = (e) => {
+    if (addServices2?.specialization) {
+      let temp = addServices2;
+      temp.specialization = temp?.specialization?.filter((it) => it !== e);
+      setServices2({ ...temp });
+    }
+    console.log(e);
+  };
+  const handleAddNewService = (e) => {
+    console.log(addServices2);
+    let tempSettings = { ...settingsData };
+    let updatedSetting = {
+      servicesAndSpecialization: [
+        ...tempSettings["servicesAndSpecialization"],
+        {
+          service: addServices2?.service,
+          specialization: addServices2?.specialization,
+        },
+      ],
+    };
+
+    updateAndFetchsettingsNew2(updatedSetting);
+   //setAddServiceModalActive(false)
+  };
+  const handleAddNewSpecialisation = (e) => {
+    if (addServices2?.specialization) {
+      let temp = addServices2;
+      temp?.specialization?.push(e);
+      setServices2({ ...temp });
+    }
+    console.log(e);
+  };
+  const handleNewSessionRemove = (e) => {
+    if (addSession2?.items) {
+      let temp = addSession2;
+      temp.items = temp?.items?.filter((it) => it !== e);
+      setSession2({ ...temp });
+    }
+    console.log(e);
+  };
+  const handleAddNewSession = (e) => {
+    console.log(addSession2);
+    let tempSettings = { ...settingsData };
+    let updatedSetting = {
+      sessionTags: [
+        ...tempSettings["sessionTags"],
+        {
+          heading: addSession2?.heading,
+          items: addSession2?.items,
+        },
+      ],
+    };
+
+    updateAndFetchsettingsNew2(updatedSetting);
+   //setAddServiceModalActive(false)
+  };
+  const handleAddNewTags = (e) => {
+    if (addSession2?.items) {
+      let temp = addSession2;
+      temp?.items?.push(e);
+      setSession2({ ...temp });
+    }
+    console.log(e);
+  };
+  const handleTestChange2 = (item) => {
+    //console.log("tsests", item);
+    if (subModalData.tests.includes(item._id)) {
+      let updated = subModalData.tests.filter(
+        (test) => test !== item._id
+      );
+      setSubModalData((prev) => ({
+        ...prev,
+        tests: updated,
+      }));
+    } else {
+      setSubModalData((prev) => ({
+        ...prev,
+        tests: [...subModalData.tests, item._id],
+      }));
+    }
   };
   return (
     <>
@@ -1392,12 +1556,22 @@ console.log("tests",allTestData,filteredTests)
                         );
                       })}
                   </div>
-                  <AddTag
+                  {/* <AddTag
                     children="Add Service"
                     className="pl-3 pr-3 pt-1.4 pb-1.5 mt-5 bg-primary text-white"
                     text="Add Service"
                     onAddTag={onAddService}
-                  />
+                  /> */}
+                   <button
+                    onClick={() => {
+                      setOne(true);
+                      setAddServiceModalActive(true);
+                    }}
+                    className="px-2 bg-primary flex items-center text-white font-medium text-[17.5px] pl-3 pr-3 pt-1.4 pb-1.5 rounded-7 mr-[15px]  text-base-17-5 "
+                  >
+                    <span> Add Service </span>
+                    <img src={AddIcon} className="w-4 ml-1" alt="add" />
+                  </button>
                 </div>
               }
             />
@@ -1545,13 +1719,23 @@ console.log("tests",allTestData,filteredTests)
                       })}
                   </div>
 
-                  <AddTag
+                  {/* <AddTag
                     children="Add Heading"
                     className="px-[18px] py-3 mt-5 bg-primary text-white"
                     text="Add Heading"
                     hideIcon={false}
                     onAddTag={onAddSessionTag}
-                  />
+                  /> */}
+                    <button
+                    onClick={() => {
+                      setOne(true);
+                      setAddSessionModalActive(true);
+                    }}
+                    className="px-2 bg-primary flex items-center text-white font-medium text-[17.5px] pl-3 pr-3 pt-1.4 pb-1.5 rounded-7 mr-[15px]  text-base-17-5 "
+                  >
+                    <span> Add Heading </span>
+                    <img src={AddIcon} className="w-4 ml-1" alt="add" />
+                  </button>
                 </div>
               }
             />
@@ -2025,7 +2209,7 @@ console.log("tests",allTestData,filteredTests)
           }
         />
       )} */}
-      {addCodeModalActive && (
+ {addCodeModalActive && (
         <Modal
           classname={"max-w-[560px] mx-auto"}
           titleClassName="text-base-20 mb-[18px]"
@@ -2040,7 +2224,7 @@ console.log("tests",allTestData,filteredTests)
             <form
               id="settings-form"
               onSubmit={(e) => {
-                handleADdTestSubmit(e);
+                //handleADdTestSubmit(e);
                 handleCodeSubmit(e);
               }}
             >
@@ -2068,12 +2252,14 @@ console.log("tests",allTestData,filteredTests)
                       type="text"
                       value={subModalData.code}
                       isRequired={true}
-                      onChange={(e) =>
+                      onChange={(e) =>{
+                        if(!e.target.value?.includes(" "))
                         setSubModalData({
                           ...subModalData,
                           code: e.target.value,
                         })
                       }
+                    }
                     />
                   </div>
                   <div className="flex-1">
@@ -2087,13 +2273,18 @@ console.log("tests",allTestData,filteredTests)
                       placeholderClass="text-base-17-5"
                       parentClassName=" text-base-17-5 py-0 w-full mr-4"
                       type="text"
+                  
                       value={subModalData.expiry}
-                      onChange={(e) =>
+                      onChange={(e) =>{
+                     
+                        if(parseInt(e.target.value)<0 || e.target.value<0  )return 
+                        if((/^\d+$/.test(e.target.value) && parseInt(e.target.value)>=0 )|| e.target.value?.length===0  )
                         setSubModalData({
                           ...subModalData,
                           expiry: e.target.value,
                         })
                       }
+                    }
                     />
                   </div>
                 </div>
@@ -2111,7 +2302,7 @@ console.log("tests",allTestData,filteredTests)
                     checkbox={{
                       visible: true,
                       name: "test",
-                      match: updatedSubscriptionData.tests,
+                      match: subModalData.tests,
                     }}
                     onChange={(e) => setSearchedTest(e.target.value)}
                     optionListClassName="text-base-17-5"
@@ -2119,7 +2310,7 @@ console.log("tests",allTestData,filteredTests)
                     optionData={filteredTests}
                     right={<img className="" src={down} />}
                     onOptionClick={(item) => {
-                      handleTestChange(item);
+                      handleTestChange2(item);
                       // setStudent(item.value);
                       // handleStudentsChange(item)
                       // setCurrentToEdit({ ...currentToEdit, students: [... item._id] });
@@ -2135,7 +2326,7 @@ console.log("tests",allTestData,filteredTests)
                   /> */}
                 </div>
                 <div className="flex gap-4 items-center justify-center mt-3">
-                  <button className="rounded-lg bg-[#FFA28D] border-2 border-[#FFA28D] py-[6px] text-[#FFFFFF] w-[146px]">
+                <button disabled={saveLoading} className={`${saveLoading?"cursor-wait":""} rounded-lg bg-[#FFA28D] border-2 border-[#FFA28D] py-[6px] text-[#FFFFFF] w-[146px]`}>
                     Save{" "}
                   </button>
                   <button
@@ -2159,17 +2350,26 @@ console.log("tests",allTestData,filteredTests)
           cancelBtnClassName="w-140 "
           handleClose={() => {
             setAddServiceModalActive(false);
-            setSubModalServiceData(subModalInitialServiceState);
+            if (addOne) {
+              setServices2({ service: "", specialization: [] });
+              setOne(false)
+            } else {
+              setSubModalServiceData(subModalInitialServiceState);
+            }
           }}
           body={
             <form
               id="settings-form"
               onSubmit={(e) => {
                 e.preventDefault();
-                handleAddServiceName(
-                  selectedServiceData?.service,
-                  subModalServiceData?._id
-                );
+                if (addOne) {
+                  handleAddNewService();
+                } else {
+                  handleAddServiceName(
+                    selectedServiceData?.service,
+                    subModalServiceData?._id
+                  );
+                }
               }}
             >
               <p className="text-base-17-5 mt-[-10px] text-[#667085]">
@@ -2188,48 +2388,83 @@ console.log("tests",allTestData,filteredTests)
                     <InputField
                       label="Service Name"
                       labelClassname="text-base-20 text-[#26435F] mb-0.5"
-                      placeholder="Add a single-word referral code"
+                      placeholder="Add a service you provide (Test Prep, Career Counseling, Evaluations, etc.)"
                       inputContainerClassName=" text-base-17-5 !px-3 bg-primary-50 border-0"
                       inputClassName="bg-transparent"
                       placeholderClass="text-base-17-5"
                       parentClassName=" text-base-17-5 py-0 w-full mr-4"
                       type="text"
-                      value={selectedServiceData?.service}
-                      isRequired={true}
-                      onChange={(e) =>
-                        setSelectedServiceData({
-                          ...selectedServiceData,
-                          service: e.target.value,
-                        })
+                      value={
+                        addOne
+                          ? addServices2?.service
+                          : selectedServiceData?.service
                       }
+                      isRequired={true}
+                      onChange={(e) => {
+                        if (addOne) {
+                          setServices2({
+                            ...addServices2,
+                            service: e.target.value,
+                          });
+                        } else {
+                          setSelectedServiceData({
+                            ...selectedServiceData,
+                            service: e.target.value,
+                          });
+                        }
+                      }}
                     />
                   </div>
                 </div>
                 <div className="flex items-center flex-wrap [&>*]:mb-[10px] mt-5">
                   <AddTag
-                    onAddTag={handleAddSpecialization}
-                    keyName={subModalServiceData.service}
-                    text="Add Item"
+                    onAddTag={
+                      addOne
+                        ? handleAddNewSpecialisation
+                        : handleAddSpecialization
+                    }
+                    keyName={
+                      addOne
+                        ? addServices2?.service
+                        : subModalServiceData.service
+                    }
+                    text="Add Topic"
                   />
                   <FilterItems
                     isString={true}
                     onlyItems={true}
-                    keyName={subModalServiceData.service}
-                    items={subModalServiceData.specialization}
-                    onRemoveFilter={onRemoveSpecialization}
+                    keyName={
+                      addOne
+                        ? addServices2?.service
+                        : subModalServiceData.service
+                    }
+                    items={
+                      addOne
+                        ? addServices2?.specialization
+                        : subModalServiceData.specialization
+                    }
+                    onRemoveFilter={
+                      addOne ? handleNewServiceRemove : onRemoveSpecialization
+                    }
                     className="pt-1 pb-1 mr-15 text-base-17-5"
                   />
                 </div>
                 <div className="w-full border-[1.33px_solid_#00000033] bg-[#00000033] my-5 h-[1.3px]"></div>
                 <div className="flex gap-4 items-center justify-center mt-3">
-                  <button className="rounded-lg bg-[#FFA28D] border-2 border-[#FFA28D] py-[6px] text-[#FFFFFF] w-[146px]">
+                  <button disabled={saveLoading} className={`${saveLoading?"cursor-wait":""} rounded-lg bg-[#FFA28D] border-2 border-[#FFA28D] py-[6px] text-[#FFFFFF] w-[146px]`}>
                     Save{" "}
                   </button>
                   <button
                     className="rounded-lg bg-transparent border-2 border-[#FFA28D] py-[6px] text-[#FFA28D]  w-[146px]"
-                    onClick={() =>
-                      setAddServiceModalActive(!addServiceModalActive)
-                    }
+                    onClick={() => {
+                      setAddServiceModalActive(false);
+                      if (addOne) {
+                        setServices2({ service: "", specialization: [] });
+                        setOne(false)
+                      } else {
+                        setSubModalServiceData(subModalInitialServiceState);
+                      }
+                    }}
                   >
                     Cancel{" "}
                   </button>
@@ -2248,17 +2483,29 @@ console.log("tests",allTestData,filteredTests)
           cancelBtnClassName="w-140 "
           handleClose={() => {
             setAddSessionModalActive(false);
-            setSubModalSessionData(subModalInitialSessionState);
-          }}
+                      if (addOne) {
+                        setSession2({ heading: "",
+                        items: [] });
+                        setOne(false)
+                      } else {
+                        setSubModalSessionData(subModalInitialSessionState);
+                      }
+                    }
+          }
           body={
             <form
               id="settings-form"
               onSubmit={(e) => {
                 e.preventDefault();
-                handleAddSessionName(
-                  selectedSessionData?.heading,
-                  subModalSessionData?._id
-                );
+                if (addOne) {
+                 handleAddNewSession()
+                } else {
+                  handleAddSessionName(
+                    selectedSessionData?.heading,
+                    subModalSessionData?._id
+                  );
+                }
+               
               }}
             >
               <p className="text-base-17-5 mt-[-10px] text-[#667085]">
@@ -2278,48 +2525,65 @@ console.log("tests",allTestData,filteredTests)
                     <InputField
                       label="Session Name"
                       labelClassname="text-base-20 text-[#26435F] mb-0.5"
-                      placeholder="Add a single-word referral code"
+                      placeholder="Add a heading for session tags (such as “Topics Covered”)"
                       inputContainerClassName=" text-base-17-5 !px-3 bg-primary-50 border-0"
                       inputClassName="bg-transparent"
                       placeholderClass="text-base-17-5"
                       parentClassName=" text-base-17-5 py-0 w-full mr-4"
                       type="text"
-                      value={selectedSessionData?.heading}
+                      value={ addOne ? addSession2?.heading :selectedSessionData?.heading}
                       isRequired={true}
-                      onChange={(e) =>
-                        setSelectedSessionData({
-                          ...selectedSessionData,
-                          heading: e.target.value,
-                        })
+                      onChange={(e) =>{
+                        if (addOne) {
+                          setSession2({
+                            ...addSession2,
+                            heading: e.target.value,
+                          });
+                        } else {
+                          setSelectedSessionData({
+                            ...selectedSessionData,
+                            heading: e.target.value,
+                          })
+                        }
+                      }
+                       
                       }
                     />
                   </div>
                 </div>
                 <div className="flex items-center flex-wrap [&>*]:mb-[10px] mt-5">
                   <AddTag
-                    onAddTag={handleAddSessionTag}
-                    keyName={subModalSessionData.heading}
-                    text="Add Items"
+                    onAddTag={ addOne ? handleAddNewTags :handleAddSessionTag}
+                    keyName={ addOne ? addSession2?.heading :subModalSessionData.heading}
+                    text="Add Tags"
                   />
                   <FilterItems
                     isString={true}
                     onlyItems={true}
-                    keyName={subModalSessionData.heading}
-                    items={subModalSessionData.items}
-                    onRemoveFilter={onRemoveSessionTagItem}
+                    keyName={ addOne ? addSession2?.heading :subModalSessionData.heading}
+                    items={ addOne ? addSession2?.items :subModalSessionData.items}
+                    onRemoveFilter={ addOne ? handleNewSessionRemove :onRemoveSessionTagItem}
                     className="pt-1 pb-1 mr-15 text-base-17-5"
                   />
                 </div>
                 <div className="w-full border-[1.33px_solid_#00000033] bg-[#00000033] my-5 h-[1.3px]"></div>
                 <div className="flex gap-4 items-center justify-center mt-3">
-                  <button className="rounded-lg bg-[#FFA28D] border-2 border-[#FFA28D] py-[6px] text-[#FFFFFF] w-[146px]">
+                <button disabled={saveLoading} className={`${saveLoading?"cursor-wait":""} rounded-lg bg-[#FFA28D] border-2 border-[#FFA28D] py-[6px] text-[#FFFFFF] w-[146px]`}>
                     Save{" "}
                   </button>
                   <button
+                  
                     className="rounded-lg bg-transparent border-2 border-[#FFA28D] py-[6px] text-[#FFA28D]  w-[146px]"
-                    onClick={() =>
-                      setAddSessionModalActive(!addSessionModalActive)
-                    }
+                    onClick={() => {
+                      setAddSessionModalActive(false);
+                      if (addOne) {
+                        setSession2({ heading: "",
+                        items: [] });
+                        setOne(false)
+                      } else {
+                        setSubModalSessionData(subModalInitialSessionState);
+                      }
+                    }}
                   >
                     Cancel{" "}
                   </button>
