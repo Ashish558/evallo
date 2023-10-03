@@ -136,7 +136,7 @@ export default function AssignedTests() {
     },
     {
       id: 1,
-      text: "Date Assigned",
+      text: "Assigned On",
       className: "text-left pl-6 no-arrow",
       onCick: sortByAssignedDate,
     },
@@ -785,7 +785,7 @@ console.log({selectedId})
             </p>
             {persona !== "parent" && persona !== "student" && persona !== "tutor" && (
               <button
-                className="bg-[#FFA28D] text-[15px] justify-center flex p-[7px] design:p-[10px] items-center text-white font-bold rounded-[7.5px] text-base-15"
+                className="bg-[#FFA28D] text-[15px] justify-center flex py-[7px] design:p-[10px] px-[13px] items-center text-white font-bold rounded-[7.5px] text-base-15"
                 onClick={() => setAssignTestModalActive(true)}
               >
                 New Assignment
@@ -923,7 +923,7 @@ console.log({selectedId})
                     inputContainerClassName="shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] bg-white h-[50px]"
                     placeholderClass="text-base-17-5"
                     optionData={assignedBys}
-                    placeholder="Filter by Tutor"
+                    placeholder="Tutor"
                     type="text"
                   />
                 }

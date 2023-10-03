@@ -29,7 +29,10 @@ export default function Table(props) {
     loading,
     AdminLatestSignUp,
     headerWidth,
-    testtype
+    testtype,
+    belowBox,
+    belowBoxText,
+    belowBoxIcon
   } = props;
   console.log(testtype);
   const [dummy, setDummy] = useState([]);
@@ -170,7 +173,11 @@ export default function Table(props) {
           </tbody>
         </table>
       </div>
-
+    {
+      belowBox &&  <div className="h-[192px] bg-white mt-[6px] rounded-5 shadow-[0px_0px_2px_0px_rgba(0,0,0,0.25)] flex items-center justify-center">
+        <button className="inline-block rounded-[5.33px] bg-[#FFA28D] text-[#FFF] font-semibold py-[10px] px-[15.5px] text-base">{belowBoxText}<img className="inline-block pl-2" src={belowBoxIcon} alt="" /></button>
+      </div>
+    }
       {!hidePagination ? (
         <div className="flex justify-between px-1 items-center">
           <p className="text-[#517CA8] text-xs">Showing {tableData?.length} of {data?.length}</p>
