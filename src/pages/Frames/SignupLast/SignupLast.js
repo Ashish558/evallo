@@ -67,11 +67,11 @@ export default function SignupLast({
         </div>
       </div>
       <div className="mb-7">
-        <p className="font-semibold mb-2 text-sm text-[#26435F]">
+        <p className="font-semibold tracking-wider mb-2 text-sm text-[#26435F]">
           Select the solutions you are looking for:
         </p>
 
-        <div className="grid grid-cols-2 mb-2">
+        <div className="grid grid-cols-2 mb-2 gap-x-8">
           {solutions?.map((item, idx) => {
             return (
               <div
@@ -87,7 +87,7 @@ export default function SignupLast({
                       className="scale-[0.8]"
                       
                     />
-                <p className="text-[13px] font-medium text-[#26435F] opacity-90 leading-5">
+                <p className="text-[13px] whitespace-nowrap  font-medium text-[#26435F] opacity-90 leading-5">
                   {item.text}
                 </p>
               </div>
@@ -97,7 +97,7 @@ export default function SignupLast({
         <div className='h-[1px] bg-[#EBEBEB] w-5/6 mb-4'>
 
         </div>
-        <p className="font-semibold mb-2 text-sm text-[#26435F]">How did you hear about us?</p>
+        <p className="font-semibold tracking-wider mb-2 text-sm text-[#26435F]">How did you hear about us?</p>
         <div className="grid grid-cols-2 mb-0">
           {hearAboutUs?.map((item, idx) => {
             return (
