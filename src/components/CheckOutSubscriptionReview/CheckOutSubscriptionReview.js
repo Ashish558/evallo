@@ -6,7 +6,18 @@ export default function CheckOutSubscriptionReview({
     className,
     description = [],
     planDisplayName,
+    subscriptionPricePerMonth,
+    freeTrialDays,
+    setFrames,
+    setcurrentStep
 }) {
+
+    const handleChangePlan = () => {
+        setFrames((prev) => {
+            return { ...prev, checkout: false, subscription: true };
+        });
+        setcurrentStep(currentStep => currentStep - 2)
+    }
     return (
         <div className={`flex flex-col pb-[10px] pl-[20px] pr-[30px] pt-[20px] rounded-[5px] shadow-[0px_0px_2px_rgba(0,0,0,0.25)] w-full ${className}`}>
             <div className="flex justify-between">
@@ -24,11 +35,23 @@ export default function CheckOutSubscriptionReview({
                     <SecondaryButton 
                         children={"Change Plan"}
                         className={"bg-white drop-shadow-[0px_0px_1px_rgba(0,0,0,0.25)] px-[15px] py-[2px] text-[#7C98B6]"}
+                        onClick={handleChangePlan}
                     />
 
                     <div className="grow"></div>
-                    <div className="font-semibold text-[#24A3D9]">Free Trial</div>
-                    <div className="font-[200] text-[#24A3D9] text-sm">14 days</div>
+                    <div className="font-semibold text-[#24A3D9]">
+                        {
+                            freeTrialDays !== 0 ? "Free Trial" : `$${subscriptionPricePerMonth} / Month`
+                        }
+                    </div>
+                    <div className="font-[200] text-[#24A3D9] text-sm">
+                        {
+                            freeTrialDays !== 0 ? 
+                            freeTrialDays >= 30 ? 
+                            `${freeTrialDays / 30} Months` : `${freeTrialDays} Days`
+                            : "No Free Trial"
+                        }
+                    </div>
                 </div>
             </div>
 

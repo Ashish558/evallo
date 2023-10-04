@@ -3,7 +3,35 @@ import CheckOutSubscriptionReview from "../../../components/CheckOutSubscription
 import PrimaryButton from "../../../components/Buttons/PrimaryButton";
 import SecondaryButton from "../../../components/Buttons/SecondaryButton";
 
-export default function CheckOut() {
+export default function CheckOut({
+    setFrames,
+    values,
+    subscriptionsInfo = [{
+        planName: "",
+        planDisplayName: "",
+        description: [],
+        freeTrialDays: 0,
+        subscriptionPricePerMonth: 0
+    }],
+    setcurrentStep
+}) {
+
+    const handleSubmit = () => {
+        setFrames((prev) => {
+          return { ...prev, extensions: false, checkout: true };
+        });
+        setcurrentStep(currentStep => currentStep + 1)
+      };
+
+    const handleBack = () => {
+        setFrames((prev) => {
+            return { ...prev, checkout: false, extensions: true };
+        });
+        setcurrentStep(currentStep => currentStep - 1)
+    };
+
+    const chosenSubscriptionPlan = subscriptionsInfo.find(item => item.planName === values.subscriptionPlan);
+
     return (
         <div className="mt-2 mb-3">
             <div>
@@ -21,13 +49,12 @@ export default function CheckOut() {
             <CheckOutSubscriptionReview
                 className={"mt-[5px]"}
                 canAddPromoCode={true}
-                planDisplayName={"Premium"}
-                description={[
-                    "Active Tutors Allowed - 30",
-                    "Active Students Allowed - 1000",
-                    "14 Days Free Trial (CC required)",
-                    "Flat Monthly Subscription After Free Trial Ends - $59/month"
-                ]}
+                planDisplayName={chosenSubscriptionPlan.planDisplayName}
+                description={chosenSubscriptionPlan.description}
+                subscriptionPricePerMonth={chosenSubscriptionPlan.subscriptionPricePerMonth}
+                freeTrialDays={chosenSubscriptionPlan.freeTrialDays}
+                setFrames={setFrames}
+                setcurrentStep={setcurrentStep}
             />
 
             <div className="font-semibold mt-[20px] text-[#FFA28D] text-[16px]">Extensions / Add-Ons</div>
@@ -51,11 +78,12 @@ export default function CheckOut() {
                 <SecondaryButton
                     children="Go back"
                     className="text-sm mr-6 bg-white text-[#cad0db] border-[1.7px] border-[#D0D5DD] py-2 "
+                    onClick={handleBack}
                 />
                 <PrimaryButton
                     className={`w-full flex justify-center  bg-[#FFA28D]  disabled:opacity-60 max-w-[110px]  rounded text-white text-sm font-medium relative py-[9px]`}
-                    
                     children={`Checkout`}
+                    
                 />
             </div>
         </div>

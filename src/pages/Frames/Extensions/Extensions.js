@@ -8,8 +8,26 @@ import SecondaryButton from "../../../components/Buttons/SecondaryButton";
 export default function Extensions({
     values,
     setValues,
+    setFrames,
+    setcurrentStep
 }) {
     const extensionPlansInfo = extensionPlansData;
+
+    const handleSubmit = () => {
+        setFrames((prev) => {
+            return { ...prev, extensions: false, checkout: true };
+        });
+        setcurrentStep(currentStep => currentStep + 1)
+    };
+
+    const handleBack = () => {
+        setFrames((prev) => {
+            return { ...prev, extensions: false, subscription: true };
+        });
+        setcurrentStep(currentStep => currentStep - 1)
+    };
+      
+
     return (
         <div
             className="mt-2 mb-3"
@@ -48,11 +66,13 @@ export default function Extensions({
                 <SecondaryButton
                     children="Go back"
                     className="text-sm mr-6 bg-white text-[#cad0db] border-[1.7px] border-[#D0D5DD] py-2 "
+                    onClick={handleBack}
                 />
                 <PrimaryButton
                     className={`w-full flex justify-center  bg-[#FFA28D]  disabled:opacity-60 max-w-[110px]  rounded text-white text-sm font-medium relative py-[9px]`}
                     
                     children={`Next`}
+                    onClick={handleSubmit}
                 />
             </div>
         </div>

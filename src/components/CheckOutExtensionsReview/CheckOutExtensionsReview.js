@@ -9,11 +9,14 @@ export default function CheckOutExtensionsReview({
         planName: "",
         planDisplayName: "",
         description: [],
-        pricePerMonth: 0,
-        currency: ""
+        subscriptionPricePerMonth: 0,
+        currency: "",
+        freeTrialDays: 0,
     },
     planName,
     planDisplayName,
+    subscriptionPricePerMonth,
+    freeTrialDays
 }) {
     return (
         <div className={`flex flex-col pb-[10px] pl-[20px] pr-[30px] pt-[20px] rounded-[5px] shadow-[0px_0px_2px_rgba(0,0,0,0.25)] w-full ${className}`}>
@@ -40,8 +43,12 @@ export default function CheckOutExtensionsReview({
                     />
 
                     <div className="grow"></div>
-                    <div className="font-semibold text-[#24A3D9]">Free Trial</div>
-                    <div className="font-[200] text-[#24A3D9] text-sm">14 days</div>
+                    <div className="font-semibold text-[#24A3D9]">
+                        Free Trial
+                    </div>
+                    <div className="font-[200] text-[#24A3D9] text-sm">
+                        14 Days
+                    </div>
                 </div>
             </div>
 

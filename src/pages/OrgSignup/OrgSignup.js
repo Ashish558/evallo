@@ -57,6 +57,7 @@ import SCheckbox from "../../components/CCheckbox/SCheckbox";
 import Subscription from "../Frames/Subscription/Subscription";
 import Extensions from "../Frames/Extensions/Extensions";
 import CheckOut from "../Frames/CheckOut/CheckOut";
+import { subScriptionPlanData } from "./DummyData/SubscriptionPlanData";
 
 export default function OrgSignup() {
   const [frames, setFrames] = useState({
@@ -146,7 +147,7 @@ export default function OrgSignup() {
   const [linkedEmailDetails, setLinkedEmailDetails] = useState({});
 
   const [persona, setPersona] = useState("");
-  const [currentStep, setcurrentStep] = useState(1);
+  const [currentStep, setcurrentStep] = useState(frames.signupActive ? 1 : frames.subscription ? 2 : frames.extensions ? 3 : frames.checkout ? 4 : 5);
 
   const [testPreparations, setTestPreparations] =
     useState(testPreparationsData);
@@ -295,7 +296,7 @@ export default function OrgSignup() {
       setNumberPrefix(sessionStorage.getItem("numberPrefix"));
     }
     if (sessionStorage.getItem("currentStep")) {
-      setcurrentStep(sessionStorage.getItem("currentStep"));
+      // setcurrentStep(sessionStorage.getItem("currentStep"));
     }
     if (sessionStorage.getItem("numberPrefix")) {
       setNumberPrefix(sessionStorage.getItem("numberPrefix"));
@@ -881,11 +882,21 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
                 <Subscription
                   values={values}
                   setValues={setValues}
+                  setFrames={setFrames}
+                  setcurrentStep={setcurrentStep}
                 />
               ) : frames.extensions ? (
-                <Extensions />
+                <Extensions
+                  setFrames={setFrames}
+                  setcurrentStep={setcurrentStep}
+                />
               ) : frames.checkout ? (
-                <CheckOut />
+                <CheckOut
+                  setFrames={setFrames}
+                  values={values}
+                  subscriptionsInfo={subScriptionPlanData}
+                  setcurrentStep={setcurrentStep}
+                 />
               ) : frames.signupSuccessful ? (
                 <SignupSuccessful
                   email={values.email}

@@ -23,7 +23,7 @@ export default function SubscriptionPlan({
             selected={selected}
             onClick={onClick}
         >
-            <div className={`flex h-full items-center w-full ${styles.container}`}>
+            <div className={`flex h-full items-center justify-between mb-[20px] ml-[10px] mt-[15px] pr-[30px] w-full ${styles.container}`}>
                 <div
                     className="h-5/6 text-[#26435F] w-[405px]"
                 >
@@ -45,7 +45,7 @@ export default function SubscriptionPlan({
                     </div>
                 </div>
                 <div
-                    className="border-2 h-1/5 rounded-[5px] text-[16px] text-[#7C98B6] w-[105px]"
+                    className="border-2 h-1/5 px-[10px] rounded-[5px] text-[16px] text-[#7C98B6]"
                 >
                     More Details
                 </div>
