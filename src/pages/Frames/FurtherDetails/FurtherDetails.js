@@ -82,12 +82,13 @@ export default function FurtherDetails({
   }, []);
 
   return (
-    <div className="border-t border-t-[1px_solid_#EBEBEB] mt-[-23px] pt-8">
-      <div className="mb-5 ">
+    <div className="!border-t-[1.5px] !border-t-[#EBEBEB] mt-[-23px] pt-8">
+      <div className="mb-4 px-8  ">
         <div className="flex items-center mb-6 ">
           <InputField
             label="Number Of Active Students"
-            required={true}
+            labelClassname={"!text-sm"}
+            biggerText={true}
             placeholder=""
             parentClassName="w-full max-w-[248px] mr-4"
             inputContainerClassName=" border border-[#D0D5DD]"
@@ -103,7 +104,8 @@ export default function FurtherDetails({
           />
           <InputField
             label="Number Of Tutors"
-            required={true}
+            labelClassname={"!text-sm"}
+            biggerText={true}
             placeholder=""
             parentClassName="w-full max-w-[248px]"
             inputContainerClassName=" border border-[#D0D5DD]"
@@ -118,14 +120,14 @@ export default function FurtherDetails({
             }
           />
         </div>
-        <p className="border-t border-t-[1.2px_solid_#26435F4D] mt-[-10px]   pt-4 pb-3 mb-1 text-sm text-[#26435F] tracking-wider font-semibold">
+        <p className="!border-t-[1.4px] !border-t-[#26435F4D] mt-[-10px]   pt-4 pb-3 mb-1 text-sm text-[#26435F] tracking-wider font-semibold">
           What services do you provide?
         </p>
 
         <div className="flex flex-col mb-6">
           <div className="">
-            <p className="text-sm mb-[7px] text-[#24A3D9] font-bold">
-              Test preparation
+            <p className="text-sm mb-[7px] text-[#24A3D9] !font-semibold">
+              Test Preparation
             </p>
             <div className="grid grid-cols-3 font-medium text-[#26435F] grid-flow-row-dense mr-5">
               {testPreparations?.map((item, idx) => {
@@ -158,7 +160,7 @@ export default function FurtherDetails({
                     {item.text === "Others" && item.checked ? (
                       <input
                         autoFocus
-                        className="ml-3 text-[13px] text-[#7E7E7E] outline-[#DCDCDD] border-[1.5px] border-[#DCDCDD] rounded-[4px] bg-[#F5F8FA]  w-32"
+                        className="ml-3 text-[13px] text-[#7E7E7E] outline-[#DCDCDD] border-[1.5px] border-[#DCDCDD] rounded-[4px] !bg-[#F5F8FA]  w-32"
                         type="text"
                         onKeyDown={(e) => {
                           if (e.key === "Enter") {
@@ -186,13 +188,13 @@ export default function FurtherDetails({
             </div>
           </div>
           <div className="">
-            <p className="text-sm mt-[7px] mb-[8px] text-[#24A3D9] font-bold">
+            <p className="text-sm mt-[7px] mb-[8px] text-[#24A3D9] !font-semibold">
               Subject Tutoring
             </p>
             <div className="grid grid-cols-3 font-medium text-[#26435F] grid-flow-row-dense mr-5">
               {tutoring?.map((item, idx) => {
                 return (
-                  <div key={idx} className="flex items-center mb-3 mr-6">
+                  <div key={idx} className="flex items-center mb-3 mr-8">
                     <SCheckbox
                       checked={item.checked}
                       className="scale-[0.7]"
@@ -204,14 +206,14 @@ export default function FurtherDetails({
                       onClick={() =>
                         handleCheckboxChange(item.text, tutoring, setTutoring)
                       }
-                      className="font-medium  text-[13px] opacity-90 leading-5"
+                      className="font-medium whitespace-nowrap  text-[13px] opacity-90 leading-5"
                     >
                       {item.text}
                     </p>
                     {item.text === "Others" && item.checked ? (
                       <input
                         autoFocus
-                        className="ml-3 text-[13px] text-[#7E7E7E] outline-[#DCDCDD] border-[1.5px] border-[#DCDCDD] rounded-[4px] bg-[#F5F8FA]  w-32"
+                        className="ml-3 text-[13px] text-[#7E7E7E] outline-[#DCDCDD] border-[1.5px] border-[#DCDCDD] rounded-[4px] !bg-[#F5F8FA]  w-32"
                         type="text"
                         onKeyDown={(e) => {
                           if (e.key === "Enter") {
@@ -231,13 +233,13 @@ export default function FurtherDetails({
             </div>
           </div>
           <div className="">
-            <p className="text-sm mb-[7px] mt-1 text-[#24A3D9] font-bold">
+            <p className="text-sm mb-[7px] mt-1 text-[#24A3D9] !font-semibold">
               Coaching
             </p>
-            <div className="grid grid-cols-3 font-medium text-[#26435F] grid-flow-row-dense mr-5">
+            <div className="grid grid-cols-3  grid-gap-x-5 font-medium text-[#26435F] grid-flow-row-dense mr-5">
               {coaching?.map((item, idx) => {
                 return (
-                  <div key={idx} className="flex items-center mb-3 mr-6">
+                  <div key={idx} className="flex items-center  mb-3 mr-6">
                     <SCheckbox
                       checked={item.checked}
                       className="scale-[0.7]"
@@ -250,14 +252,14 @@ export default function FurtherDetails({
                       onClick={() =>
                         handleCheckboxChange(item.text, coaching, setCoaching)
                       }
-                      className="font-medium  text-[13px] opacity-90 leading-5"
+                      className="font-medium whitespace-nowrap  text-[13px] opacity-90 leading-5"
                     >
                       {item.text}
                     </p>
                     {item.text === "Others" && item.checked ? (
                       <input
                         autoFocus
-                        className="ml-3 text-[13px] text-[#7E7E7E] outline-[#DCDCDD] border-[1.5px] border-[#DCDCDD] rounded-[4px] bg-[#F5F8FA]  w-32"
+                        className="ml-3 text-[13px] text-[#7E7E7E] outline-[#DCDCDD] border-[1.5px] border-[#DCDCDD] rounded-[4px] !bg-[#F5F8FA]  w-32"
                         type="text"
                         onKeyDown={(e) => {
                           if (e.key === "Enter") {
@@ -277,14 +279,14 @@ export default function FurtherDetails({
             </div>
           </div>
         </div>
-        <p className="border-t border-t-[1.2px_solid_#26435F4D] mt-[-10px]   pt-4 pb-2 text-sm text-[#26435F] tracking-wider font-semibold">
+        <p className="!border-t-[1.4px] !border-t-[#26435F4D] mt-[-10px]   pt-4 pb-2 text-sm text-[#26435F] tracking-wider font-semibold">
           Format of instruction
         </p>
 
-        <div className="grid grid-cols-3 font-medium text-[#26435F] mb-6">
+        <div className="grid grid-cols-2 font-medium text-[#26435F] mb-6">
           {instructions?.map((item, idx) => {
             return (
-              <div key={idx} className="flex items-center mb-3 mr-6">
+              <div key={idx} className="flex items-center mb-3 mr-1">
                 <SCheckbox
                   checked={item.checked}
                   className="scale-[0.7]"
@@ -313,11 +315,11 @@ export default function FurtherDetails({
             );
           })}
         </div>
-        <p className="border-t border-t-[1.2px_solid_#26435F4D] mt-[-10px]    pt-4 pb-2 text-sm text-[#26435F] tracking-wider font-semibold">
+        <p className="!border-t-[1.4px] !border-t-[#26435F4D] mt-[-10px]    pt-4 pb-2 text-sm text-[#26435F] tracking-wider font-semibold">
           Student Served
         </p>
 
-        <div className="grid grid-cols-3 font-medium text-[#26435F]">
+        <div className="grid grid-cols-2 font-medium text-[#26435F]">
           {studentserved?.map((item, idx) => {
             return (
               <div key={idx} className="flex items-center mb-3 mr-6">
@@ -340,7 +342,7 @@ export default function FurtherDetails({
                       setStudentserved
                     )
                   }
-                  className="font-medium  text-[13px] opacity-90 leading-5"
+                  className="font-medium whitespace-nowrap text-[13px] opacity-90 leading-5"
                 >
                   {item.text}
                 </p>
@@ -349,25 +351,27 @@ export default function FurtherDetails({
           })}
         </div>
 
-        <p className="border-t border-t-[1.2px_solid_#26435F4D]  mb-3  pt-4  text-sm text-[#26435F] tracking-wider font-semibold">
+        <p className="!border-t-[1.4px] !border-t-[#26435F4D]   mb-3  pt-4  text-sm text-[#26435F] tracking-wider font-semibold">
           How do you currently process your payments?
         </p>
         <InputSelectNew
           value={values.paymentType}
-          parentClassName="w-[200px]"
+          parentClassName="w-[200px] "
           optionContainerClassName="text-[13px] "
           optionsEachClassName="py-[6px]"
           optionData={paymentOptions}
-          placeholder={""}
+          placeholderClass={"!inline-block !overflow-x-auto custom-scroller-2 !w-[150px] !py-1 !ml-[-10px]"}
+          placeholder={"Options"}
           label={``}
+          
           labelClassname="text-[#26435F] font-bold  mb-1 text-sm "
-          inputContainerClassName="py-1 h-[44.9px] text-sm border  border-[#D0D5DD] my-0 mt-[-2px] rounded-[5px]"
-          inputClassName="ml-80 "
+          inputContainerClassName=" py-1 h-[44.9px] text-sm border  border-[#D0D5DD] my-0 mt-[-2px] rounded-[5px]"
+          inputClassName="ml-80  "
           onChange={(e) => handlePaymentTypeChange(e)}
         />
       </div>
-
-      <div className="flex items-center mt-8 justify-between">
+<div className="!border-b-[1.4px] !border-b-[#26435F4D] w-[80%] mx-auto"></div>
+      <div className="flex  items-center mt-8 justify-between ">
         <SecondaryButton
           children="Go Back"
           className="text-sm mr-6 bg-white text-[#a3aDC7] border-[1.5px] border-[#D0D5DD] "

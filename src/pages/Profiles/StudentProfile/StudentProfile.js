@@ -774,7 +774,7 @@ const [toEdit, setToEdit] = useState({
                   handleChange={handleProfilePhotoChange}
                   editable={false}
                 />
-                <EditableText
+             {(persona!=="tutor"|| (persona==="tutor" && organization?.settings?.permissions[2]?.choosedValue) )&&   <EditableText
                   editable={editable}
                   onClick={() =>
                     setToEdit({
@@ -788,7 +788,7 @@ const [toEdit, setToEdit] = useState({
                   text="Edit Profile"
                   textClassName=" ml-2 text-sm  mx-auto text-center text-[#26435F] text-underline text-base-15 "
                   className="text-sm my-0 flex items-center justify-center text-center !translate-y-9  "
-                />
+                />}
               </div>
               <div className="flex-1 flex justify-between items-center">
                 <div className="ml-4 my-auto">

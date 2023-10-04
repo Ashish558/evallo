@@ -9,6 +9,8 @@ export default function NumericSteppers({
   customFields,
   className,
 }) {
+  console.log({currentStep})
+
   return (
     <div
       className={`lg:mt-6 relative ${
@@ -27,17 +29,17 @@ export default function NumericSteppers({
               className={`w-[36px] relative z-[5000] lg:block  h-[36px] bg-primary border rounded-full  font-medium
              ${
                i + 1 < parseInt(currentStep)
-                 ? "bg-[#FFA28D] before:!bg-[#FFA28D]  text-white "
+                 ? "!bg-[#FFA28D] before:!bg-[#FFA28D]  !text-white "
                  : ""
              } 
              ${
                i + 1 === parseInt(currentStep)
-                 ? " bg-[#24A3D9]  text-white"
+                 ? " !bg-[#24A3D9]  !text-white"
                  : ""
              } 
              ${
                i + 1 > parseInt(currentStep)
-                 ? "   text-white bg-[rgba(156,163,175,0.6)]"
+                 ? "   text-white !bg-[rgba(156,163,175,0.6)]"
                  : ""
              } 
              transition 
@@ -60,7 +62,7 @@ export default function NumericSteppers({
             </button>
 
             <p
-              className={`flex justify-center  before:hidden items-center mt-2 mb-2 text-center text-[16px] font-semibold  
+              className={`flex justify-center !tracking-wider  before:hidden items-center mt-2 mb-2 text-center text-[15px] font-semibold  
             ${i + 1 < parseInt(currentStep) ? "text-[#FFA28D]" : ""} 
              ${i + 1 === parseInt(currentStep) ? " text-[#24A3D9]  " : ""} 
              ${i + 1 > parseInt(currentStep) ? "opacity-60  text-gray-400" : ""}

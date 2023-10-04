@@ -84,14 +84,14 @@ const AppRoutes = () => {
             </RequireAuth>
           }
         />
-        <Route
+        {/* <Route
           path="/assigned-tutors"
           element={
             <RequireAuth isLoggedIn={isLoggedIn}>
               <AssignedTutors />
             </RequireAuth>
           }
-        />
+        /> */}
 
         <Route
           path="/calendar"

@@ -128,8 +128,8 @@ height:100%;
 td {
    font-size: 0.95vw !important;
   font-weight: 550; 
-    padding-top: 15px !important;
-  padding-bottom: 15px !important;
+    /* padding-top: 15px !important;
+  padding-bottom: 15px !important; */
 }
 tr{
   box-shadow: 0px 0px 1.5px 0px #00000040 !important;
@@ -164,7 +164,7 @@ th *{
 }
 
 .custom-scroller::-webkit-scrollbar {
-  width: 5px;
+  width: 6px;
 }
 
 .custom-scroller::-webkit-scrollbar-track {

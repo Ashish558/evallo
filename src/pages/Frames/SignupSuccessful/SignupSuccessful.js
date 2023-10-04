@@ -52,25 +52,25 @@ return
   }, []);
 
   return (
-    <>
+    <div className="">
       <div className="mb-7 hidden lg:block ">
       <div className='h-[1px] bg-[#EBEBEB] mt-[-20px] mx-[6px] w-full mb-[25px]'>
 
 </div>
         <div>
         
-          <div className="text-center text-[#26435F] flex flex-col gap-3 text-md w-fit">
-            <h3 className="font-medium">{successfulSignUpMessage.head}</h3>
-            <h4 className="font-medium">{successfulSignUpMessage.mid}</h4>
-            <h4>{successfulSignUpMessage.last} <span onClick={() => handleSubmit()} className={`text-[#24A3D9] cursor-pointer ${loading?'opacity-70':''}`}>{successfulSignUpMessage.verify}</span></h4>
-            <h2 className="font-semibold">{successfulSignUpMessage.bottom}</h2>
+          <div className="text-center text-[#26435F] flex flex-col gap-3 font-normal text-md w-fit">
+            <p className="!font-light">{successfulSignUpMessage.head}</p>
+            <p className="!font-light">{successfulSignUpMessage.mid}</p>
+            <h4>{successfulSignUpMessage.last} <span onClick={() => handleSubmit()} className={`text-[#24A3D9] underline cursor-pointer ${loading?'opacity-70':''}`}>{successfulSignUpMessage.verify}</span></h4>
+            <h2 className="font-semibold tracking-wider">{successfulSignUpMessage.bottom}</h2>
           </div>
         </div>
 
         <div className="flex items-center mt-16">
           <SecondaryButton
             children="Back to Sign in"
-            className="text-19 py-3  px-6 bg-[#FFA28D] text-gray-50 mx-auto w-[270px]"
+            className="text-19 py-3  px-6 !bg-[#FFA28D] !text-gray-50 mx-auto w-[270px]"
             onClick={handleSuccessfullBack}
             lastLoginDisabled={lastLoginDisabled}
           />
@@ -92,6 +92,6 @@ return
           onClick={() => navigate("/")}
         />
       </div>
-    </>
+    </div>
   );
 }

@@ -1,6 +1,6 @@
 import React from "react";
 import faQuestionCircle from "../../assets/images/Vectorqsn.svg";
-import icon from "../../assets/icons/FIGMA 3.svg";
+import icon from "../../assets/icons/Evallo Logo.svg";
 import logoutIcon from "../../assets/images/Vectorlogout new.svg";
 import Dashboard1 from "../../assets/images/Dashboard 1 new.svg";
 import Dashboard from "../../assets/images/Dashboard 1.svg";
@@ -340,7 +340,7 @@ const Navbar = () => {
                </a>
 
             </div>
-            <div className={`flex  text-[#FFFFFF] font-semibold text-[13px] ${!isLoggedIn && "opacity-[0.3]"}`}>
+            <div className={`flex  text-[#FFFFFF] font-semibold text-[17.3px] ${!isLoggedIn && "opacity-[0.3]"}`}>
                {navData.map((item, idx) => {
                   return (
                      <div
@@ -377,13 +377,13 @@ const Navbar = () => {
                })}
             </div>
             <div className={`flex font-bold ${isLoggedIn ? "" : "opacity-[0.3]"}`}>
-               <div className="flex mr-[24px] text-[#24A3D9] text-xs ">
+               <div className="flex mr-[24px] text-[#24A3D9]  items-center">
                   <p className=" ">Pricing 	</p>
                   <p className="pl-2">
                      &#36;
                   </p>
                </div>
-               <div className="flex mr-[24px] text-[#24A3D9] text-xs">
+               <div className="flex mr-[24px] text-[#24A3D9] items-center">
                   <p className=" ">Help</p>
                   <p>
                      <img
@@ -396,7 +396,7 @@ const Navbar = () => {
                </div>
 
                <div
-                  className="flex text-xs cursor-pointer"
+                  className="flex  cursor-pointer items-center"
                   onClick={() => isLoggedIn && setLogoutModalActive(true)}
                >
                   <div>
