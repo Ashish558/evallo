@@ -667,11 +667,11 @@ export default function Calendar() {
     let currentDate = new Date();
     // currentDate.setHours(0, 0, 0, 0);
     //  console.log(date - currentDate);
-    if (!date || date - currentDate <= 0) {
-      alert('Cant set events on past date')
-      return
-    }
-    else {
+    // if (!date || date - currentDate <= 0) {
+    //   alert('Cant set events on past date')
+    //   return
+    // }
+
       //  console.log("can see", date,currentDate)
 
       if (persona === "tutor") {
@@ -686,7 +686,7 @@ export default function Calendar() {
       if (persona === "admin" || persona === "tutor") {
         setEventModalActive(true);
       }
-    }
+    
     arg.preventDefault()
     // //////console.log(arg)
     // setEvents([...events, {
