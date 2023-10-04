@@ -632,7 +632,7 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
           <div className="flex lg:items-center relative bg-white rounded-md py-4 px-5 md:px-[48px] lg:w-[650px]">
             <div className="w-full py-4 ">
               {currentStep > 0 && (
-                <NumericSteppers className={"px-2 flex-1"} fieldNames={["Personal info" ,"Org details","Further details","Requirements"]} totalSteps={4} currentStep={currentStep}
+                <NumericSteppers className={"px-2 flex-1"} fieldNames={["Personal Info" ,"Org Details","Further Details","Requirements"]} totalSteps={4} currentStep={currentStep}
                 
                 />
               )}
@@ -648,9 +648,11 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
                   >
                     <InputField
                       placeholder=""
-                      parentClassName="text-xs"
-                      label="First Name"
-                      labelClassname="text-[#26435F] font-semibold"
+                      parentClassName="text-md"
+                      label="First name"
+                      
+                      biggerText={true}
+                      labelClassname="!text-sm text-[#26435F] font-semibold"
                       inputContainerClassName=" border border-[#D0D5DD] rounded-md py-[9px] h-[45px] text-md"
                     
                       value={values.firstName}
@@ -665,10 +667,11 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
                     />
                     <InputField
                       placeholder=""
-                      parentClassName="text-xs"
-                      labelClassname="text-[#26435F] font-semibold"
+                      parentClassName="text-md"
+                      biggerText={true}
+                      labelClassname="!text-sm text-[#26435F] font-semibold"
                       inputContainerClassName=" border border-[#D0D5DD] rounded-md py-[9px] h-[45px] text-md"
-                      label="Last Name"
+                      label="Last name"
                       value={values.lastName}
                       onChange={(e) =>
                         setValues({
@@ -685,8 +688,9 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
                     <InputField
                       label="Work Email"
                       placeholder=""
-                      parentClassName="text-xs w-full "
-                      labelClassname="text-[#26435F] font-semibold"
+                      parentClassName="text-md w-full "
+                      biggerText={true}
+                      labelClassname="!text-sm text-[#26435F] font-semibold"
                       inputContainerClassName=" border border-[#D0D5DD] rounded-md py-[9px] h-[45px] text-md"
                       value={values.email}
                       onChange={(e) =>
@@ -701,8 +705,9 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
 
                     <InputFieldDropdown
                       placeholder=""
-                      parentClassName="text-xs w-4/5 ml-8 "
-                      labelClassname="text-[#26435F] font-semibold"
+                      parentClassName="text-md w-4/5 ml-8 "
+                      biggerText={true}
+                      labelClassname="!text-sm text-[#26435F] font-semibold"
                       inputContainerClassName=" border border-[#D0D5DD] rounded-md py-[9px] h-[45px] text-md"
                       label="Phone"
                       value={values.phone}
@@ -728,9 +733,10 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
 
                   <InputField
                     placeholder=""
-                    parentClassName="text-xs mt-5 mb-6 w-full"
-                    label="Name Of Business"
-                    labelClassname="text-[#26435F] font-semibold"
+                    parentClassName="text-md mt-5 mb-6 w-full"
+                    label="Name of Business"
+                    biggerText={true}
+                    labelClassname="!text-sm text-[#26435F] font-semibold"
                     inputContainerClassName=" border border-[#D0D5DD] rounded-md py-[9px] h-[45px] text-md"
                     value={values.company}
                     onChange={(e) =>
@@ -742,11 +748,11 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
                     totalErrors={error}
                     error={error.company}
                   />
-                  <p className="text-[15px]  font-semibold mb-4 text-[#26435F]">
+                  <p className="text-sm  font-semibold mb-4 text-[#26435F]">
                     {" "}
                     Registering as{" "}
                   </p>
-                  <div className="flex items-center text-xs">
+                  <div className="flex items-center justify-start ml-[-3px]  text-xs">
                   <div
                       className="flex mr-6  items-center cursor-pointer"
                       onClick={() =>
@@ -776,7 +782,7 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
                           values.registrationAs === "Individual"
                             ? "text-[#FFA28D] font-semibold "
                             : "text-[#26435F] font-semibold"
-                        } text-[14px] `}
+                        } text-[13px] translaye-y-[-8px] translate-x-[-6px] tracking-wide`}
                       >
                         {" "}
                         Individual{" "}
@@ -810,7 +816,7 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
                           values.registrationAs === "Company"
                             ? "text-[#FFA28D] font-semibold "
                             : "text-[#26435F] font-semibold"
-                        } text-[14px] `}
+                        } text-[13px] translaye-y-[-8px] translate-x-[-6px] tracking-wide`}
                       >
                         {" "}
                         Company{" "}
@@ -832,7 +838,7 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
                      
                     </span>
                   </div>
-                    <p className="text-[15px] text-[#26435F] font-medium  leading-5 ml-1 pl-2">
+                    <p className="text-[15px] text-[#26435F] font-medium  leading-5 ml-1 mr-3 pl-2">
                       Selecting this would confirm that you have carefully read
                       through and agree to our{" "}
                       <span className="text-[#FFA28D] font-semibold">

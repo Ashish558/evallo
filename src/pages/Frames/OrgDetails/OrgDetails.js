@@ -118,9 +118,9 @@ export default function OrgDetails({
             optionContainerClassName="text-[13px] "
             optionsEachClassName="py-[7px]"
             optionData={companyType}
-            placeholder={"Company Type"}
+            placeholder={"Select"}
             label={`Company Type`}
-            labelClassname="text-[#26435F] font-bold  mb-1 text-sm "
+            labelClassname="text-[#26435F] font-bold  mb-1 !text-sm "
             inputContainerClassName="py-1 text-sm h-[44.9px] border  border-[#D0D5DD] my-0 mt-[-2px] rounded-[5px]"
             inputClassName="ml-80"
             required={persona === "student" ? true : false}
@@ -129,7 +129,8 @@ export default function OrgDetails({
 
           <InputField
             label="Website"
-            required={true}
+            labelClassname={"!text-sm"}
+            biggerText={true}
             placeholder=""
             parentClassName="w-full max-w-[full] ml-[50px] "
             inputContainerClassName=" border border-[#D0D5DD] rounded-md py-[9px] h-[44px] text-md"
@@ -147,7 +148,8 @@ export default function OrgDetails({
         <div className="flex items-center mt-5 gap-5">
           <InputField
             label="Address"
-            required={true}
+            labelClassname={"!text-sm"}
+            biggerText={true}
             placeholder=""
             parentClassName="w-full max-w-[350px] "
             inputContainerClassName=" border border-[#D0D5DD] rounded-md py-[9px] h-[44px] text-md"
@@ -167,9 +169,9 @@ export default function OrgDetails({
             optionsEachClassName="py-[5px]"
             optionData={country}
             optionType="object"
-            placeholder={"Country"}
+            placeholder={"Select"}
             label={`Country`}
-            labelClassname="text-[#26435F] font-bold   text-sm "
+            labelClassname="text-[#26435F] font-bold   !text-sm "
             inputContainerClassName="py-1 text-sm h-[44px] border border-[#D0D5DD] my-0 mt-[-3px] rounded-[4.3px]"
             inputClassName="ml-80"
             required={persona === "student" ? true : false}
@@ -209,10 +211,10 @@ export default function OrgDetails({
           optionContainerClassName="text-[13px]   max-h-[180px]"
           optionsEachClassName="py-[5px]"
           optionData={states}
-          placeholder={"State"}
+          placeholder={"Select"}
           optionType="object"
           label={`State`}
-          labelClassname="text-[#26435F] font-bold   text-sm "
+          labelClassname="text-[#26435F] font-bold   !text-sm "
           inputContainerClassName="py-1 text-sm h-[44px] border border-[#D0D5DD] my-0 mt-[-3px] rounded-[4.3px]"
           inputClassName="ml-80"
           required={persona === "student" ? true : false}
@@ -256,7 +258,8 @@ export default function OrgDetails({
           </div> */}
           <InputField
             label="City"
-            required={true}
+            labelClassname={"!text-sm"}
+            biggerText={true}
             placeholder=""
             parentClassName="w-full max-w-[248px]"
             inputContainerClassName=" border border-[#D0D5DD] rounded-md py-[9px] h-[44px] text-md"
@@ -272,7 +275,8 @@ export default function OrgDetails({
           />
           <InputField
             label="Zip Code"
-            required={true}
+            labelClassname={"!text-sm"}
+            biggerText={true}
             placeholder=""
             parentClassName="w-full max-w-[248px] "
             inputContainerClassName=" border border-[#D0D5DD] rounded-md py-[9px] h-[44px] text-md"
