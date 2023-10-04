@@ -1155,11 +1155,8 @@ export default function Calendar() {
             </div>
             {persona === "parent" ? (
               <div className="mt-10 pr-4">
-                {/* <p className="text-primaryDark text-21 font-semibold mb-8 ml-2">
-                  {" "}
-                  Student Name{" "}
-                </p> */}
-                <div className="mt-[30px]">
+      
+                {/* <div className="mt-[30px]">
                   {students.map((student, idx) => {
                     return (
                       <div
@@ -1190,7 +1187,7 @@ export default function Calendar() {
                       </div>
                     );
                   })}
-                </div>
+                </div> */}
               </div>
             ) : persona !== "student" ? (
               <></>
