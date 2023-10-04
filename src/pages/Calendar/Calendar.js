@@ -126,7 +126,7 @@ export default function Calendar() {
     } catch (e) {
       //////console.log(e)
     }
-   
+
   }, [])
   const [names, setNames] = useState([]);
   const [name, setName] = useState("");
@@ -284,7 +284,7 @@ export default function Calendar() {
           userTimezoneOffset,
           session.timeZone
         );
-       console.log("SessionTimings", session, startDate,endDateUtc,strtTime12HFormat)
+        console.log("SessionTimings", session, startDate, endDateUtc, strtTime12HFormat)
         let eventObj = {
           id: session._id,
           title: role === "tutor" ? session.studentName : session.tutorName,
@@ -296,8 +296,8 @@ export default function Calendar() {
           studentId: session.studentId,
           sessionStatus: session.sessionStatus,
           tutorId: session.tutorId ? session.tutorId : "-",
-       
-           description: `${strtTime12HFormat} - ${endTime12HFormat}`,
+
+          description: `${strtTime12HFormat} - ${endTime12HFormat}`,
         };
         return eventObj;
       });
@@ -334,27 +334,28 @@ export default function Calendar() {
     }
   }, [persona, alldetails]);
 
-const [done,setDone]=useState(false)
-  useEffect(()=>{
-  if(persona==="parent" && students&&done){
-////console.log("student",{students})
-let temp={}
-students?.map((it)=>{
-  let n = Object.keys(temp).length;
-  temp = {
-    ...temp,
-    [it?._id]: staticColors[n % staticColors.length],
-  };
-})
+  const [done, setDone] = useState(false)
+  useEffect(() => {
+    if (persona === "parent" && students && done) {
+      ////console.log("student",{students})
+      let temp = {}
+      students?.map((it) => {
+        let n = Object.keys(temp).length;
+        temp = {
+          ...temp,
+          [it?._id]: staticColors[n % staticColors.length],
+        };
+      })
 
-setColorMapping(temp);
-  }
-  },[students,done])
+      setColorMapping(temp);
+    }
+  }, [students, done])
 
   useEffect(() => {
     if (persona == "parent") {
       getUserDetail({ id }).then(async (resp) => {
-        //////console.log("response", resp.data.data);
+        // console.log("response----", resp.data.data);
+        // return
         setStudents([]);
         await resp.data.data.user.assiginedStudents.map((student, idx) => {
           getUserDetail({ id: student }).then((res) => {
@@ -597,14 +598,14 @@ setColorMapping(temp);
   const eventContent = (arg) => {
 
     const description = arg.event._def.extendedProps.description;
-    
+
     let isCompleted = false;
     let isMissed = false;
     let isCancelled = false;
     if (arg.event._def.extendedProps.sessionStatus === "Completed") {
       isCompleted = true;
     }
-  // console.log("event cards details",arg.event._def,arg.event._def.extendedProps)
+    // console.log("event cards details",arg.event._def,arg.event._def.extendedProps)
 
     const textclasses = {
       Completed: "!bg-[#38C980] ",
@@ -614,7 +615,7 @@ setColorMapping(temp);
       Missed: "!bg-[#FFCE84] ",
     };
     let key = insightData.role;
-    if (key === "tutor" || persona === "parent"||persona === "tutor") {
+    if (key === "tutor" || persona === "parent" || persona === "tutor") {
       key = arg.event._def.extendedProps?.studentId;
     } else {
       key = arg.event._def.extendedProps?.tutorId;
@@ -627,13 +628,12 @@ setColorMapping(temp);
     if (arg.event._def.extendedProps.topic) {
       topic = arg.event._def.extendedProps.topic;
     }
-  // console.log({key:arg.event._def.extendedProps})
+    // console.log({key:arg.event._def.extendedProps})
     return (
       <div className="p-0.5 h-full ">
         <div
-          className={`w-full bg-rose-200 h-[5px] rounded-[5px_5px_0px_0px] relative z-[500] ${
-            textclasses[arg.event._def.extendedProps.sessionStatus]
-          }`}
+          className={`w-full bg-rose-200 h-[5px] rounded-[5px_5px_0px_0px] relative z-[500] ${textclasses[arg.event._def.extendedProps.sessionStatus]
+            }`}
         ></div>
         <div
           style={{
@@ -644,9 +644,8 @@ setColorMapping(temp);
           className={` h-full p-1 !border-t-none rounded-b-lg `}
         >
           <p
-            className={`text-[#507CA8] font-semibold text-sm text-base-15 ${
-              isCompleted ? "line-through" : ""
-            } `}
+            className={`text-[#507CA8] font-semibold text-sm text-base-15 ${isCompleted ? "line-through" : ""
+              } `}
           >
             {" "}
             {/* {arg.event._def.title}{" "} */}
@@ -663,32 +662,32 @@ setColorMapping(temp);
   };
 
   const handleDateClick = (arg) => {
-    
+
     let date = new Date(arg.date);
     let currentDate = new Date();
-   // currentDate.setHours(0, 0, 0, 0);
-   console.log(date - currentDate);
+    // currentDate.setHours(0, 0, 0, 0);
+    //  console.log(date - currentDate);
     if (!date || date - currentDate <= 0) {
-       alert('Cant set events on past date')
-       return
+      alert('Cant set events on past date')
+      return
     }
-   else {
-   console.log("can see", date,currentDate)
-  
-    if (persona === "tutor") {
-      setDefaultEventData({
-        date: arg.date,
-        tutorId: currentUserId,
-        tutorName: `${firstName} ${lastName}`,
-      });
-    } else  {
-      setDefaultEventData({ date: arg.date });
+    else {
+      //  console.log("can see", date,currentDate)
+
+      if (persona === "tutor") {
+        setDefaultEventData({
+          date: arg.date,
+          tutorId: currentUserId,
+          tutorName: `${firstName} ${lastName}`,
+        });
+      } else {
+        setDefaultEventData({ date: arg.date });
+      }
+      if (persona === "admin" || persona === "tutor") {
+        setEventModalActive(true);
+      }
     }
-    if (persona === "admin" || persona === "tutor") {
-      setEventModalActive(true);
-    }
-  }
-  arg.preventDefault()
+    arg.preventDefault()
     // //////console.log(arg)
     // setEvents([...events, {
     //    id: 2,
@@ -720,18 +719,37 @@ setColorMapping(temp);
   const handleInsights = (name, role, item) => {
     ////console.log({ name, role,item });
     getCalenderInsight({ name, id: item._id }).then((res) => {
-     console.log("insights", res);
+      console.log("insights response----", res.data.tutorSessionDetails);
       if (res?.data?.tutorSessionDetails) {
         let arr = [];
         if (res?.data?.tutorSessionDetails) {
           arr = res?.data?.tutorSessionDetails;
           // arr = arr?.length >= 0 ? arr : [arr];
         }
-
-        setInsightData({
-          role: role,
-          data: arr,
-        });
+        if (persona === 'parent') {
+          let parentSessionData = res?.data?.tutorSessionDetails.map(sessionItem => {
+            let sessions = []
+            let tutors = []
+            sessionItem.tutorDetails.map(tutorSession => {
+              sessions.push(...tutorSession.sessionDetailsObj)
+              tutors.push(tutorSession.tutor)
+            })
+            return {
+              student: sessionItem.student,
+              sessionDetailsObj: sessions,
+              tutors
+            }
+          })
+          setInsightData({
+            role: role,
+            data: parentSessionData,
+          });
+        } else {
+          setInsightData({
+            role: role,
+            data: arr,
+          });
+        }
       } else
         setInsightData({
           message: `User does'nt have any ${role !== "tutor" ? "tutor" : "parent or student"
@@ -739,12 +757,12 @@ setColorMapping(temp);
         });
     });
   };
-    useEffect(()=>{
-     if(userDetail){
-      handleInsights(userDetail?.firstName +" "+ userDetail?.lastName,persona,{_id:userDetail?.id})
-     }  
-  },[userDetail])
- // ////console.log("user insights",insightData,userDetail)
+  useEffect(() => {
+    if (userDetail) {
+      handleInsights(userDetail?.firstName + " " + userDetail?.lastName, persona, { _id: userDetail?.id })
+    }
+  }, [userDetail])
+  // ////console.log("user insights",insightData,userDetail)
   useEffect(() => {
     //////console.log("role=" + persona)
     if (name.length > 0) {
@@ -834,7 +852,7 @@ setColorMapping(temp);
             sessionStatus: session.sessionStatus,
             studentId: session.studentId,
             //description: `${startUtc} - ${endDateUtc}`,
-             description: `${strtTime12HFormat} - ${endTime12HFormat}`,
+            description: `${strtTime12HFormat} - ${endTime12HFormat}`,
             // background: getBackground(
             //   res.data.data.user.assiginedStudents.length,
             //   idx
@@ -915,7 +933,7 @@ setColorMapping(temp);
       return prev.map((item) => {
         let updatedDate = new Date(item?.start).toLocaleString();
         let updatedDateEnd = new Date(item?.updatedDateEnd).toLocaleString(
-          );
+        );
         // let updatedDate = new Date(item?.updatedDate).toLocaleString("en-US", {
         //   timeZone,
         // });
@@ -931,7 +949,7 @@ setColorMapping(temp);
         var m = moment.tz(updatedDate, fmt, timeZone);
         m.utc();
         var s = m.format(fmt); // result:
-        console.log('moment',item,item?.start,updatedDate,updatedDateEnd);
+        console.log('moment', item, item?.start, updatedDate, updatedDateEnd);
 
         return {
           ...item,
@@ -977,7 +995,7 @@ setColorMapping(temp);
     bg: ["#F6935A33", "#7DE94A33", "#6F7ADE33", "#C97BEE33"],
     text: ["#F6935A", "#7DE94A", "#6F7ADE", "#C97BEE"],
   };
- 
+
   const staticColors = ["#F6935A", "#7DE94A", "#6F7ADE", "#C97BEE", "#FF5733", "#42EADD", "#FFC300", "#9A32CD", "#00BFFF", "#FF1493", "#008000", "#FFD700", "#1E90FF", "#FF4500", "#00FF00", "#8A2BE2", "#FF8C00", "#4169E1", "#FF69B4", "#228B22", "#FFDAB9", "#9932CC", "#FFA07A", "#87CEEB", "#FFB6C1", "#8B008B", "#FF6347", "#00CED1", "#FFA500", "#0000CD", "#DC143C", "#20B2AA", "#FF4500", "#191970", "#FF8C69", "#008080", "#FFA500", "#2E8B57", "#FFD700", "#00008B", "#FFB6C1", "#48D1CC", "#FF69B4", "#8A2BE2", "#FF6347", "#7B68EE", "#FF4500", "#32CD32", "#FFDAB9", "#B22222", "#FF1493", "#00FA9A", "#FFA07A"];
 
   const [colorMapping, setColorMapping] = useState({});
@@ -986,45 +1004,50 @@ setColorMapping(temp);
     let n = Object.keys(colorMapping).length;
     if (colorMapping[val]) return colorMapping[val];
     else {
-      setColorMapping((prev)=>{
+      setColorMapping((prev) => {
         return {
-        ...prev,
-        [val]: staticColors[Object.keys(prev).length % staticColors.length],
-    }});
+          ...prev,
+          [val]: staticColors[Object.keys(prev).length % staticColors.length],
+        }
+      });
     }
-    console.log('map color',colorMapping);
+    console.log('map color', colorMapping);
 
     return staticColors[n % staticColors.length];
   };
   useEffect(() => {
-  
-   console.log("insights color",{insightData})
+
+    //  console.log("insights color",{insightData})
     let temp = {};
     if (insightData && insightData.role === "student") {
       insightData?.data?.map((it) => {
         let n = Object.keys(colorMapping).length;
-        setColorMapping((prev)=>{return {
-          
-          ...prev,
-          [it?.tutor?._id]: staticColors[Object.keys(prev).length % staticColors.length],
-       } });
-      
+        setColorMapping((prev) => {
+          return {
+
+            ...prev,
+            [it?.tutor?._id]: staticColors[Object.keys(prev).length % staticColors.length],
+          }
+        });
+
       });
     }
     if (insightData && insightData.role === "tutor") {
       insightData?.data?.map((it) => {
         let n = Object.keys(colorMapping).length;
-        setColorMapping((prev)=>{return {
-          
-          ...prev,
-          [it?.student?._id]: staticColors[Object.keys(prev).length % staticColors.length],
-      }});
+        setColorMapping((prev) => {
+          return {
+
+            ...prev,
+            [it?.student?._id]: staticColors[Object.keys(prev).length % staticColors.length],
+          }
+        });
       });
     }
-    console.log({temp})
-   // setColorMapping({...temp});
+    // console.log({temp})
+    // setColorMapping({...temp});
   }, [insightData]);
-  console.log("insights color", { insightData, colorMapping });
+  // console.log("insights color", { insightData, colorMapping });
   useEffect(() => {
     if (students.length === 0) return;
     if (events.length === 0) return;
@@ -1099,20 +1122,22 @@ setColorMapping(temp);
       [tutorId]: !prevState[tutorId],
     }));
   };
+
+  console.log('insightData-----', insightData);
   //console.log('eventDetails',colorMapping,insightData,userDetail,associatedStudents);
-  const navigate=useNavigate()
+  const navigate = useNavigate()
   return (
     <>
       <div className="lg:ml-pageLeft calender  min-h-screen" id={persona}>
         <p className="text-[#24A3D9] text-base-20 mb-[30px] mt-[50px] pl-[74px]">
-         <span onClick={()=>navigate('/')} className="cursor-pointer"> 
-         {organization?.company +
-            "  >  " +
-            firstName +
-            "  " +
-            lastName +
-            "  >  "}
-         </span>
+          <span onClick={() => navigate('/')} className="cursor-pointer">
+            {organization?.company +
+              "  >  " +
+              firstName +
+              "  " +
+              lastName +
+              "  >  "}
+          </span>
           <span className="font-bold">Schedule</span>
         </p>
         <div className="  pb-2 pl-[74px] calendar flex">
@@ -1130,11 +1155,8 @@ setColorMapping(temp);
             </div>
             {persona === "parent" ? (
               <div className="mt-10 pr-4">
-                {/* <p className="text-primaryDark text-21 font-semibold mb-8 ml-2">
-                  {" "}
-                  Student Name{" "}
-                </p> */}
-                <div className="mt-[30px]">
+      
+                {/* <div className="mt-[30px]">
                   {students.map((student, idx) => {
                     return (
                       <div
@@ -1144,10 +1166,10 @@ setColorMapping(temp);
                           ? "border border-[#c6c6c6] shadow-md"
                           : "border"
                           } `}
-                          style={{
-                            backgroundColor: colorsTutor.bg[id % 4],
-                            color: colorsTutor.text[id % 4],
-                          }}
+                        style={{
+                          backgroundColor: colorsTutor.bg[id % 4],
+                          color: colorsTutor.text[id % 4],
+                        }}
 
                         onClick={() => handleStudentChange(student)}
                       >
@@ -1165,14 +1187,14 @@ setColorMapping(temp);
                       </div>
                     );
                   })}
-                </div>
+                </div> */}
               </div>
             ) : persona !== "student" ? (
               <></>
             ) : (
               <div>
 
-               {/* { //console.log({alldetails})}
+                {/* { //console.log({alldetails})}
                 {alldetails?.map((item) => (
                   <div className="mt-[48px] mb-2">
                     <div style={{backgroundColor:mapColor(item.tutorId)+"30"}} className="flex justify-between pt-[19px] px-[21px] pb-[14px]  rounded-5 items-center">
@@ -1273,13 +1295,17 @@ setColorMapping(temp);
                     >
                       <div
                         style={{
-                          backgroundColor: colorMapping[item?.tutor?._id]+"40",
+                          backgroundColor: colorMapping[item?.tutor?._id] + "40",
                           color: colorMapping[item?.tutor?._id],
                         }}
                         onClick={() => toggleAccordions(id)}
                         className="transition-shy cursor-pointer bg-[rgba(255,162,141,0.2)] overflow-hidden relative z-50 py-3 px-5 text-[#FFA28D] mx-0 flex justify-between shadow-sm rounded-t-md w-full  "
                       >
-                        {item?.tutor?.firstName + " " + item?.tutor?.lastName}
+                        {item?.tutor ?
+                          item?.tutor?.firstName + " " + item?.tutor?.lastName :
+                          item?.student ?
+                            item?.student?.firstName + "  " + item?.student?.lastName : ''
+                        }
                         <div
                           style={{
                             backgroundColor: colorMapping[item?.tutor?._id],
@@ -1326,7 +1352,11 @@ setColorMapping(temp);
                               : "None"}
                           </p>
                           <p className="text-[16px] text-[#7C98B6]">
-                            {item?.tutor?.firstName + " " + item?.tutor?.lastName}
+                            {item.tutors ?
+                              item.tutors.map((tutor, idx) => {
+                                return `${tutor?.firstName + " " + tutor?.lastName}${idx+1 < item.tutors?.length ? ',' : ''} `
+                              }) :
+                              item?.tutor?.firstName + " " + item?.tutor?.lastName}
                           </p>
                         </div>
                         <div className="text-lg px-5 py-2 text-[#38C980]">
@@ -1374,7 +1404,7 @@ setColorMapping(temp);
                     </div>
                   );
                 })
-                : insightData.message && false &&(
+                : insightData.message && false && (
                   <div className="transition-shy mt-3 cursor-pointer bg-[rgba(255,162,141,0.2)] overflow-hidden relative z-50 py-3 px-5 text-[#FFA28D] mx-0 flex justify-between shadow-sm rounded-t-md w-full  ">
                     {insightData.message}
                   </div>
@@ -1389,9 +1419,9 @@ setColorMapping(temp);
                     >
                       <div
                         style={{
-                          backgroundColor: colorMapping[item?.student._id]+"40",
+                          backgroundColor: colorMapping[item?.student._id] + "40",
                           color: colorMapping[item?.student._id],
-                          
+
                         }}
                         onClick={() => toggleAccordions2(id)}
                         className="transition-shy cursor-pointer  overflow-hidden relative z-50 py-3 px-5  mx-0 flex justify-between shadow-sm rounded-t-md w-full  "
@@ -1442,7 +1472,7 @@ setColorMapping(temp);
                               : "None"}
                           </p>
                           <p className="text-[16px] text-[#7C98B6]">
-                            {persona==="tutor"? userDetail.firstName+" "+ userDetail.lastName :item?.tutor?.firstName?item?.tutor?.firstName + " " + item?.tutor?.lastName:name}
+                            {persona === "tutor" ? userDetail.firstName + " " + userDetail.lastName : item?.tutor?.firstName ? item?.tutor?.firstName + " " + item?.tutor?.lastName : name}
                           </p>
                         </div>
                         <div className="text-lg px-5 py-2 text-[#38C980]">
@@ -1494,15 +1524,15 @@ setColorMapping(temp);
           </div>
           <div className="flex-1 w-4/5 relative" id="calendarContainer">
             <FullCalendar
-             slotLabelContent={(arg) => {
-              // Insert a blank row (gap) after every time slot
-              return (
-                <>
-                  <div>{arg.text}</div>
-                  <div className="blank-row" />
-                </>
-              );
-            }}
+              slotLabelContent={(arg) => {
+                // Insert a blank row (gap) after every time slot
+                return (
+                  <>
+                    <div>{arg.text}</div>
+                    <div className="blank-row" />
+                  </>
+                );
+              }}
               events={
                 persona === "parent" || persona === "tutor"
                   ? filteredEvents
