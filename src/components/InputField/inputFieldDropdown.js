@@ -9,6 +9,7 @@ export default function InputFieldDropdown({
   parentClassName,
   inputContainerClassName,
   Icon,
+  biggerText,
   iconSize,
   value,
   placeholder,
@@ -100,7 +101,7 @@ export default function InputFieldDropdown({
   return (
     <div className={`relative text-sm ${parentClassName && parentClassName} `}>
       {label && (
-        <label className={`inline-block font-semibold text-base-17-5  ${labelClassname} ml-0 `}>
+        <label className={`inline-block font-semibold ${ biggerText?"text-sm":"text-base-17-5"}  ${labelClassname} ml-0 `}>
           {label}
           {required && (
             <span className="text-primaryRed inline-block pl-1">*</span>

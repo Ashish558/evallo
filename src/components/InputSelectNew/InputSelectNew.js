@@ -11,6 +11,8 @@ export default function InputSelectNew({
   iconClass,
   optionsEachClassName,
   value,
+  placeholderClass,
+  
   placeholder,
   label,
   labelClassname,
@@ -86,10 +88,13 @@ export default function InputSelectNew({
             }`}
           name={label}
         >
-          {value === "" ? (
-            <span className={` ${placeHolderClass ? placeHolderClass : "text-primary-60"}`}> {placeholder} </span>
+         {value === "" || !value ? (
+            <span className={`text-[#667085] text-base-17-5 whitespace-nowrap ${false ? 'mr-0' : 'mr-10'}  ${placeholderClass} `}>
+              {" "}
+              {placeholder}{" "}
+            </span>
           ) : (
-            value
+            <span className={`mr-10 text-base-17-5 whitespace-nowrap ${false ? 'mr-0' : 'mr-10'}  ${placeholderClass} `}>{value}</span>
           )}
           {ICON2 && <img src={ICON2} className={`ml-4 inline-block ${iconClass} `} alt="icon" />}
 

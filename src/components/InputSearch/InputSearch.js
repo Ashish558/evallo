@@ -74,7 +74,7 @@ export default function InputSearch({
             {right && right}
 
             {optionsVisible &&
-               <div className={`${styles.options} scrollbar-content scrollbar-vertical shadow-xl rounded-t-none`}>
+               <div className={`${styles.options} custom-scroller scrollbar-vertical shadow-xl rounded-t-none`}>
                   {optionData?.map((option, idx) => {
 
                      return (

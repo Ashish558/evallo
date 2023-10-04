@@ -1789,7 +1789,7 @@ export default function Settings() {
                     {offersNew?.length > 0 &&
                       offersNew?.map((off, idx) => {
                         return (
-                          <div className="flex-1 flex gap-2 min-w-[250px] ">
+                          <div className="flex-1 relative flex gap-2 min-w-[250px] ">
                             <div className=" relative w-[2px] rounded-md  bg-[#00000030] !h-[300px] mx-4"></div>
 
                             <div className="w-full flex-1">
@@ -1859,11 +1859,11 @@ export default function Settings() {
                                   //   onClick={() => handleImageRemoval(offer)}
                                   className="w-7 h-7 z-5000 -top-2 right-[9px] flex items-center absolute justify-center  rounded-full cursor-pointer"
                                 >
-                                  <img
+                                  {/* <img
                                     src={DeleteIcon}
                                     className="w-5"
                                     alt="delete"
-                                  />
+                                  /> */}
                                 </div>
                                 {false && (
                                   <span className="text-[#517CA8] text-base-15 mb-1 !text-center flex justify-center items-center">
