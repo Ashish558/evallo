@@ -56,13 +56,14 @@ import AdminNavbar from "../AdminDashboard/AdminNavbar";
 import SCheckbox from "../../components/CCheckbox/SCheckbox";
 import Subscription from "../Frames/Subscription/Subscription";
 import Extensions from "../Frames/Extensions/Extensions";
+import CheckOut from "../Frames/CheckOut/CheckOut";
 
 export default function OrgSignup() {
   const [frames, setFrames] = useState({
     signupActive: false,
     subscription: false,
-    extensions: true,
-    requirements: false,
+    extensions: false,
+    checkout: true,
   });
 
   const [settings, setSettings] = useState({});
@@ -397,7 +398,7 @@ export default function OrgSignup() {
           signupActive: true,
           subscription: false,
           extensions: false,
-          requirements: false,
+          checkout: false,
         });
       } else {
         setLoading(true);
@@ -407,7 +408,7 @@ export default function OrgSignup() {
             setFrames({
               ...frames,
               signupSuccessful: true,
-              requirements: false,
+              checkout: false,
             });
             setLoading(false);
             // alert("Signup successful");
@@ -635,7 +636,7 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
             <></>
           )}
           <div className={` flex lg:items-center relative bg-white rounded-md py-4 px-5 md:px-[48px] 
-                          ${frames.extensions ? "lg:w-[1200px]" : "lg:w-[650px]"}`}>
+                          ${frames.extensions ? "lg:w-[1200px]" : "lg:w-[800px]"}`}>
             <div className="w-full py-4 ">
               {currentStep > 0 && (
                 <NumericSteppers className={"left-2/4 -translate-x-2/4 self-center px-2 flex-1 lg:w-[600px]"} fieldNames={["Personal info" ,"Subscription","Extensions","Checkout"]} totalSteps={4} currentStep={currentStep}
@@ -883,19 +884,8 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
                 />
               ) : frames.extensions ? (
                 <Extensions />
-              ) : frames.requirements ? (
-                <SignupLast
-                  {...props}
-                  {...otherDetailsProps}
-                  hearAboutUs={hearAboutUs}
-                  rateUs={rateUs}
-                  setRateUs={setRateUs}
-                  setHearAboutUs={setHearAboutUs}
-                  solutions={solutions}
-                  setSolutions={setSolutions}
-                  handleSignup={handleSignup}
-                  loading={loading}
-                />
+              ) : frames.checkout ? (
+                <CheckOut />
               ) : frames.signupSuccessful ? (
                 <SignupSuccessful
                   email={values.email}
