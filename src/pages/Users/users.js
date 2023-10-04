@@ -469,6 +469,7 @@ export default function Users() {
   };
   const [isChecked, setIsChecked] = useState(false);
 
+
   const handleCheckboxChange = () => {
     if(!isChecked) {
       let data=filteredUsersData
@@ -478,6 +479,7 @@ export default function Users() {
     }
     else {
       setSelectedId([])
+      setBulkEdits({})
     }
     setIsChecked(!isChecked);
 
@@ -493,6 +495,8 @@ export default function Users() {
       navigate(`/profile/${item.userType}/${item._id}`);
     }
   };
+
+ 
 
   const handleTutorStatus = (item) => {
     //console.log(item);
@@ -835,6 +839,12 @@ const [InviteBulkModalActive,setInviteBulkModalActive] =useState(false)
 const [InviteSelectLoading,setInviteSelectLoading]=useState(false)
 const [SaveBulkModalActive,setSaveBulkModalActive]= useState(false)
 const [saveSelectLoading,setSaveSelectLoading]= useState(false)
+useEffect(()=>{
+  if(selectedId?.length===0)
+  setBulkEdits({})
+},[selectedId])
+
+const numberKey=Object.keys(bulkEdits)?.length>0
 
 
 console.log("users",{selectedId,bulkEdits})
@@ -1162,7 +1172,7 @@ console.log("users",{selectedId,bulkEdits})
         <div className="flex gap-6 items-center relative z-[10]   mt-[23.75px]">
           <div className="ml-6 flex gap-3 ">
             <SCheckbox stopM={true}  checked={isChecked} onChange={handleCheckboxChange} />
-            <span className="inline-block text-[17.5px] text-base-17-5">{selectedId?.length} Selected</span>
+            <span className="inline-block text-[17.5px] text-base-17-5 min-w-[70px]">{selectedId?.length} Selected</span>
             {/* <label className={`  text-[#26435F] font-medium flex items-center`}>
               <input
                 type="checkbox"
@@ -1280,12 +1290,13 @@ console.log("users",{selectedId,bulkEdits})
           />
          
           <div>
-            <button onClick={()=>selectedId?.length>0 && setSaveBulkModalActive(true)} className="bg-[#26435F] text-[15px] px-[25px] py-[10px] rounded-[7.5px] text-white ml-auto text-base-17-5 h-[43px]">
+            <button disabled={selectedId?.length===0|| !numberKey?true:false} onClick={()=>selectedId?.length>0 && setSaveBulkModalActive(true)} className={`bg-[#26435F] text-[15px] px-[25px] py-[10px] rounded-[7.5px] text-white ml-auto text-base-17-5 h-[43px] ${selectedId?.length===0||!numberKey?"opacity-75":""} `}>
               Save
             </button>
           </div>
           <div className="flex justify-end flex-1 gap-5 relative ">
-            <button onClick={()=>selectedId?.length>0&&setInviteBulkModalActive(true)} className="bg-[#517CA8] text-[15px] font-semibold relative px-[25px] py-[10px] rounded-[7.5px] text-white  text-base-17-5 h-[43px]">
+
+            <button disabled={selectedId?.length===0?true:false} onClick={()=>selectedId?.length>0&&setInviteBulkModalActive(true)} className={`bg-[#517CA8] text-[15px]  font-semibold tracking-wider relative px-[20px] py-[10px] rounded-[7.5px] text-white  text-base-17-5 h-[43px] ${selectedId?.length===0?"opacity-75":""} `}>
               + Invite Users
               <span className="absolute right-[-10px] z-[500] top-[-10px]">
                 <div className="group relative">
@@ -1312,7 +1323,7 @@ console.log("users",{selectedId,bulkEdits})
                 </div>
               </span>
             </button>
-            <button onClick={()=>selectedId?.length>0&&setDeleteBulkModalActive(true)} className="bg-[#FF7979]  flex items-center gap-2 px-[25px] font-semibold py-[10px] rounded-[7.5px] text-white  text-base-17-5">
+            <button disabled={selectedId?.length===0?true:false} onClick={()=>selectedId?.length>0&&setDeleteBulkModalActive(true)} className={`bg-[#FF7979] flex items-center gap-2 px-[20px] tracking-wider font-semibold py-[10px] rounded-[7.5px] text-white  text-base-17-5 ${selectedId?.length===0?"opacity-75":""} `}>
               <span>
                 <img
                   src={DeleteIcon2}
