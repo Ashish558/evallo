@@ -53,6 +53,7 @@ import axios from "axios";
 // import Loader from "../../components/Loader";
 import LoaderNew from "../../components/Loader/LoaderNew";
 import SCheckbox from "../../components/CCheckbox/SCheckbox";
+import AssignedTutors from "../AssignedTutors/AssignedTutors";
 
 const optionData = ["option 1", "option 2", "option 3", "option 4", "option 5"];
 
@@ -827,6 +828,7 @@ const bulkSelectDelete=()=>{
   })
 
 }
+const [assignedTutorOpen,setAssignedTutorOpen]=useState(false)
 const [deleteBulkModalActive,setDeleteBulkModalActive] =useState(false)
 const [deleteSelectLoading,setDeleteSelectLoading]=useState(false)
 const [InviteBulkModalActive,setInviteBulkModalActive] =useState(false)
@@ -851,7 +853,7 @@ console.log("users",{selectedId,bulkEdits})
           </p>
           <button
             className="bg-[#FFA28D]  text-[15px] justify-center flex py-2 px-4 design:px-4 items-center text-white font-semibold rounded-lg text-base-15"
-            onClick={() => navigate("/assigned-tutors")}
+            onClick={() => setAssignedTutorOpen(true)}
           >
             Tutor Mapping
             <img src={PlusIcon} className="ml-3" alt="PlusIcon" />
@@ -1185,7 +1187,7 @@ console.log("users",{selectedId,bulkEdits})
             })}
             hideRight={true}
             placeholder="Lead Status"
-            parentClassName="w-[11.5vw] text-[#26435F]"
+            parentClassName="w-[11vw] text-[#26435F]"
             type="select"
             IconSearch={Dropdown}
             inputClassName="bg-white border border-white rounded-[4px] w-[125px]"
@@ -1218,7 +1220,7 @@ console.log("users",{selectedId,bulkEdits})
               }
             })}
             placeholder="Tutor Status"
-            parentClassName="w-[11.5vw] text-[#26435F]"
+            parentClassName="w-[11vw] text-[#26435F]"
             type="select"
             IconSearch={Dropdown}
             inputClassName="bg-white border border-[rgb(255,255,255)] rounded-[4px] w-[125px]"
@@ -1252,7 +1254,7 @@ console.log("users",{selectedId,bulkEdits})
               }
             })}
             placeholder="Assigned Tutor"
-            parentClassName="w-[11.5vw] text-[#26435F] "
+            parentClassName="w-[11vw] text-[#26435F] "
             type="select"
             IconSearch={Dropdown}
             inputClassName="bg-white border  w-[125px] rounded-[5px] "
@@ -1621,7 +1623,7 @@ console.log("users",{selectedId,bulkEdits})
                 titleInvite={selectedId?.length}
                   classname={"max-w-[781px] mx-auto"}
                 titleClassName={"mb-5 "}
-                handleClose={() => InviteBulkModalActive(false)}
+                handleClose={() => setInviteBulkModalActive(false)}
                 body={
                   <>
                     <div className="text-center mb-7">
@@ -1669,6 +1671,8 @@ console.log("users",{selectedId,bulkEdits})
                 }
               ></Modal>
             )}
+
+            <AssignedTutors assignedTutorOpen={assignedTutorOpen} setAssignedTutorOpen={setAssignedTutorOpen} fetch2={fetch}/>
     </div>
   );
 }

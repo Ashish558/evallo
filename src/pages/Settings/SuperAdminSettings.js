@@ -1914,11 +1914,11 @@ export default function SuperAdminSettings() {
                                   //   onClick={() => handleImageRemoval(offer)}
                                   className="w-7 h-7 z-5000 -top-2 right-[9px] flex items-center absolute justify-center  rounded-full cursor-pointer"
                                 >
-                                  <img
+                                  {/* <img
                                     src={DeleteIcon}
                                     className="w-5"
                                     alt="delete"
-                                  />
+                                  /> */}
                                 </div>
                                 {false && (
                                   <span className="text-[#517CA8] text-base-15 mb-1 !text-center flex justify-center items-center">
