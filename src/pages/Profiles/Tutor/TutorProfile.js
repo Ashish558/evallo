@@ -381,6 +381,7 @@ export default function TutorProfile({ isOwn }) {
     }
     getUserDetail({ id: userId }).then((res) => {
       console.log("response", res.data.data);
+      if(!res?.data?.data)return 
       setAwsLink(res.data.data.baseLink);
       const { firstName, lastName, phone, email, phoneCode } =
         res.data.data.user;

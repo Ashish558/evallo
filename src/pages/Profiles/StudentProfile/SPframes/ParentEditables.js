@@ -325,6 +325,14 @@ export default function ParentEditables({
     });
     // //console.log("currentUser");
   }, [toEdit]);
+  const [hideTooltip,setTooltip]=useState(false)
+  useEffect(()=>{
+    if(user?.isVerified){
+   setTooltip(user?.isVerfied)
+   console.log({vv:user?.isVerfied,hideTooltip})}
+  },[user])
+
+
 
   const handleClose = () => {
     let tempToEdit = {};
@@ -804,7 +812,8 @@ export default function ParentEditables({
                         <div className="flex !text-sm gap-4 ">
                           <InputField
                             IconLeft={caution}
-                            hideTooltip={user?.isVerfied===true?true:false}
+                            hideTooltip={hideTooltip}
+
                             label="Email"
                             labelClassname="text-[#26435F]"
                             placeholder="Email Id"

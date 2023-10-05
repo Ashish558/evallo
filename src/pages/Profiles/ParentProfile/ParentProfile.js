@@ -339,6 +339,7 @@ const [toEdit, setToEdit] = useState({
     }
     getUserDetail({ id: userId }).then((res) => {
       //console.log("details -- ", res.data.data);
+      if(!res?.data?.data)return 
       // //console.log('tut id', id);
       if (res.data.data.user.assiginedTutors) {
         if (res.data.data.user.assiginedTutors?.includes(id)) {
