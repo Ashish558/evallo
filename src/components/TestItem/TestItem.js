@@ -3,7 +3,7 @@ import Stat from './../../assets/icons/stat.svg';
 import Download from './../../assets/icons/download.png';
 import { useSelector } from 'react-redux';
 import { useLazyGetTestResponseQuery } from '../../app/services/test';
-import { getDate, getScore, getScoreStr } from '../../utils/utils';
+import { getDate, getFormattedDate, getScore, getScoreStr } from '../../utils/utils';
 import { useNavigate } from 'react-router-dom';
 import LoaderPage from './LoaderPage';
 import TestInstructionpage from './TesInstructionPage.js';
@@ -31,7 +31,7 @@ export const TestItem = ({
   const { role: persona } = useSelector((state) => state.user);
   const [getTestResponse, getTestResponseResp] = useLazyGetTestResponseQuery();
   const navigate = useNavigate();
-
+  const { dateFormat } = useSelector(state => state.user)
   const handleNavigate = () => {
     setIsLoading(true); 
     setIsLoadingPage(true);
@@ -70,7 +70,7 @@ export const TestItem = ({
         <h2 className='text-[18px] font-medium'>{testName}</h2>
         <div className='flex gap-[12px]'>
           <h5 className='text-xs opacity-60 font-semibold'>Due date:</h5>
-          <h6 className='text-xs opacity-60 font-medium'> {getDate(dueDate)}</h6>
+          <h6 className='text-xs opacity-60 font-medium'>{getFormattedDate(dueDate, dateFormat)}</h6>
         </div>
       </div>
       <div className='flex-1 ml-5'>

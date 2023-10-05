@@ -141,9 +141,9 @@ export default function StudentTest({ fromProfile,testtype, setTotaltest,student
   useEffect(() => {
     if (persona === "student"||true) {
       getTest(studentId).then((res) => {
-        console.log("all-assigned-tests", res.data.data);
+        console.log("all-assigned-tests", res?.data?.data);
         setAwsLink(res.data.data.baseLink);
-        let tempAllTests = res.data.data.test.map((test) => {
+        let tempAllTests = res?.data?.data?.test.map((test) => {
           const {
             testId,
             studentId,

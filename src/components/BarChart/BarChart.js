@@ -114,8 +114,8 @@ const BarChart = ({ studentFeedbacks }) => {
                 <div className='flex justify-between'>
                     {
                         (percentArray).map((p, index) =>
-                            <div key={index} className='w-[13.32%] h-[300px] rounded-[3px] relative border-[1.33px] border-[rgba(217,217,217,1)]'>
-                                <div style={{height:`${p}`}} className={`bg-[#ebc034] w-full absolute bottom-0 rounded-[3px]`}></div>
+                            <div key={index} className='w-[13.32%] h-[300px] rounded-[3px] relative border-[1.33px] border-[rgba(217,217,217,1)] overflow-hidden'>
+                                <div style={{height:`${p}`}} className={`bg-[#ebc034] w-full absolute bottom-0 rounded-[3px] `}></div>
                             </div>
                         )
                     }

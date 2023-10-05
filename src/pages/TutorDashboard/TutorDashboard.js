@@ -61,6 +61,7 @@ const studentsArr = [
 //    },
 // ]
 export default function TutorDashboard() {
+   const { dateFormat } = useSelector(state => state.user)
    const [profileProgress, setProfileProgress] = useState(0);
    const [fetchUserSessions, fetchUserSessionsResponse] =
       useLazyGetSessionsQuery();
@@ -104,7 +105,7 @@ export default function TutorDashboard() {
       getUserDetail({ id })
          .then(resp => {
             // console.log(resp.data.data.user.assiginedStudents)
-            console.log(resp.data.data);
+            console.log(resp.data.data,"tutor");
             let awsLink = resp.data.data.baseLink
             const { details } = resp.data.data
             // console.log('tutor details', details);
@@ -166,7 +167,7 @@ export default function TutorDashboard() {
                })
             }
             fetch(() => {
-               // console.log(studentsData)
+               console.log(students)
                setStudents(studentsData.reverse())
             })
          })
@@ -383,7 +384,7 @@ export default function TutorDashboard() {
                                              <p className='text-[#24A3D9] text-[1.172vw] font-bold cursor-pointer' onClick={() => navigate(`/assigned-tests/${item.testId}/${item.assignedTestId}/report/${item.studentId}`)} > {item.testName} </p>
                                              <div className=' text-[#517CA8] flex text-[0.911vw]'>
                                                 <p className='font-semibold'>Due:</p>
-                                                <p className='ml-2'> {getDate(item.dueDate)} </p>
+                                                <p className='ml-2'>  {getFormattedDate(item.dueDate, dateFormat)}</p>
                                              </div>
                                           </div>
                                           <div>

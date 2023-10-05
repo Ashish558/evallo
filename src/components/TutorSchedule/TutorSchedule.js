@@ -1,9 +1,11 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import calendar from '../../assets/images/uiw_date.png'
+import { useSelector } from 'react-redux'
+import { getFormattedDate } from '../../utils/utils'
 
 export default function TutorSchedule({ service, date, studentName, time, timeZone, session, _id, handleLinkClick, specialization }) {
-
+   const { dateFormat } = useSelector(state => state.user)
    const startTime = time.start
    const endTime = time.end
    let startDate = new Date(date)
@@ -23,7 +25,7 @@ export default function TutorSchedule({ service, date, studentName, time, timeZo
          <div>
             <div className='flex items-center'>
                <div><img width="20px" src={calendar} alt="" /></div>
-               <p className='text-[#517CA8] ml-3 text-[0.911vw]'>{dateStr}</p>
+               <p className='text-[#517CA8] ml-3 text-[0.911vw]'>{getFormattedDate(dateStr, dateFormat)}</p>
             </div>
 
             <p className=' font-bold text-[#517CA8] mt-1 text-[0.911vw]'>

@@ -13,6 +13,7 @@ import InputSelectNew from "../../../../components/InputSelectNew/InputSelectNew
 import { object } from "yup";
 import { useLazyGetSessionNotesQuery } from "../../../../app/services/session";
 import { useEffect } from "react";
+import { getFormattedDate } from "../../../../utils/utils";
 
 let signupData = [
   {
@@ -66,7 +67,7 @@ const SPFrame1 = ({
   
   const {organization}= useSelector((state)=>state.organization)
   const [getSessions,setSessions]=useLazyGetSessionNotesQuery()
-  
+  const { dateFormat } = useSelector(state => state.user)
   const [internal, setInternal] = useState(false);
   const [clientNotes,setClientNotes] = useState([]);
   const [internalNotes,setInternalNotes] = useState([])
@@ -186,7 +187,7 @@ return <></>
                   <>
                      <div key={index} className="flex h-[57px] relative items-center">
                       <p className="text-[#517CA8]  !font-medium text-[14px] mr-4 w-[calc(143*0.050vw)] text-center !text-[calc(17.5*0.050vw)] whitespace-nowrap">
-                        {item?.note&&
+                        {/* {item?.note&&
                           new Date(item.date)
                             .toDateString()
                             .split(" ")[1] +
@@ -197,7 +198,9 @@ return <></>
                             ", " +
                             new Date(item.date)
                               .toDateString()
-                              .split(" ")[3]}
+                              .split(" ")[3]} */}
+                              {item?.note&&
+                          getFormattedDate(item.date, dateFormat)}
                       </p>
                       <div className={` ${styles.actionBorder} items-center`}>
                         <div className={styles.circle}>
