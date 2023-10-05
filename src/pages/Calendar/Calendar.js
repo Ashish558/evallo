@@ -718,6 +718,9 @@ export default function Calendar() {
   const [studentName, setStudentNames] = useState([]);
   const handleInsights = (name, role, item) => {
     getCalenderInsight({ name, id: item._id }).then((res) => {
+      if(res.error){
+        return console.log('insight err', res.error);
+      }
       console.log("insights response----", res.data.tutorSessionDetails);
       if (res?.data?.tutorSessionDetails) {
         let arr = [];
