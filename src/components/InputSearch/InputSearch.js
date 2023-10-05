@@ -34,7 +34,6 @@ export default function InputSearch({
    }
    // console.log('checkbox', checkbox);
    // console.log('value', value);
-   console.log('optionData', optionData);
    useOutsideAlerter(inputRef, handleClose)
 
    return (
