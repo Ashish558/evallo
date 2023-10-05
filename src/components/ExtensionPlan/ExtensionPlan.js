@@ -8,10 +8,25 @@ export default function ExtensionPlan({
     planName = "",
     planDisplayName = "",
     description = [],
+    chosenPackage = "",
     extensionPriceOption = [],
     extensionPriceOptionHeadingLabel = "",
-    extensionPriceOptionHeadingStatement = ""
+    extensionPriceOptionHeadingStatement = "",
+    extensions,
+    setExtensions
 }) {
+
+    const handleRadioButtonClick = (packageName, arr, extensionName, setValue) => {
+        const temp = arr.map((topic) => {
+            if(topic.text !== extensionName) return topic;
+            return {
+                text: topic.text,
+                checked: topic.checked,
+                packageName: packageName
+            }
+        });
+        setValue(temp);
+    };
     return (
         <CheckBoxOptionContainer
         className={`${className}`}
@@ -43,12 +58,13 @@ export default function ExtensionPlan({
                                 extensionPriceOption.map(item => {
                                     return (
                                         <ExtensionRadioOption
-                                            selected={false}
+                                            selected={item.planName === chosenPackage}
                                             planName={item.planName}
                                             planDisplayName={item.planDisplayName}
                                             description={item.description}
                                             pricePerMonth={item.pricePerMonth}
                                             currency={item.currency}
+                                            onChange={() => {handleRadioButtonClick(item.planName, extensions, planName, setExtensions)}}
                                         />
                                     )
                                 })

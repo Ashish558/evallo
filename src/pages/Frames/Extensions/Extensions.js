@@ -6,12 +6,39 @@ import PrimaryButton from "../../../components/Buttons/PrimaryButton";
 import SecondaryButton from "../../../components/Buttons/SecondaryButton";
 
 export default function Extensions({
+    extensions = [
+        {
+            text: "",
+            checked: false,
+            packageName: ""
+        }
+    ],
+    setExtensions,
+    extensionPlansInfo = [
+        {
+            planName: "",
+            planDisplayName: "",
+            description: [],
+            extensionPriceOptionHeadingLabel: "",
+            extensionPriceOptionHeadingStatement: "",
+            extensionPriceOption: []
+        }
+    ],
     values,
     setValues,
     setFrames,
     setcurrentStep
 }) {
-    const extensionPlansInfo = extensionPlansData;
+    // const extensionPlansInfo = extensionPlansData;
+
+    const handleCheckboxChange = (text, arr, setValue) => {
+        const temp = arr.map((topic) => {
+          return topic.text === text
+            ? { ...topic, checked: !topic.checked }
+            : { ...topic };
+        });
+        setValue(temp);
+      };
 
     const handleSubmit = () => {
         setFrames((prev) => {
@@ -43,21 +70,30 @@ export default function Extensions({
             </div>
 
             {
-                extensionPlansInfo.map(item => {
+
+                extensions?.map(item => {
+                    if(!extensionPlansInfo || extensionPlansInfo === undefined || extensionPlansInfo === null) return (<></>)
+                    if(extensionPlansInfo[0].planName === "") return (<></>)
+                    let extension = extensionPlansInfo.find(i => i.planName === item.text)
+                    if(!extension || extension === undefined || extension === null) return (<></>)
                     return (
                         <ExtensionPlan
                             className={"mb-[20px] pb-[20px]"}
-                            selected={true}
-                            planName={item.planName}
-                            planDisplayName={item.planDisplayName}
-                            description={item.description}
-                            extensionPriceOptionHeadingLabel={item.extensionPriceOptionHeadingLabel}
-                            extensionPriceOptionHeadingStatement={item.extensionPriceOptionHeadingStatement}
-                            extensionPriceOption={item.extensionPriceOption}
-                            onChange={() => {}}
+                            selected={item.checked}
+                            planName={extension.planName}
+                            planDisplayName={extension.planDisplayName}
+                            description={extension.description}
+                            chosenPackage={item.packageName}
+                            extensionPriceOptionHeadingLabel={extension.extensionPriceOptionHeadingLabel}
+                            extensionPriceOptionHeadingStatement={extension.extensionPriceOptionHeadingStatement}
+                            extensionPriceOption={extension.extensionPriceOption}
+                            extensions={extensions}
+                            setExtensions={setExtensions}
+                            onChange={() => {handleCheckboxChange(item.text, extensions, setExtensions)}}
                         />
                     )
                 })
+
             }
 
             <div className="border-[1px] mt-[25px] w-full"></div>

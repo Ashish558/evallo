@@ -6,6 +6,23 @@ import SecondaryButton from "../../../components/Buttons/SecondaryButton";
 export default function CheckOut({
     setFrames,
     values,
+    extensions = [
+        {
+            text: "",
+            checked: false,
+            packageName: ""
+        }
+    ],
+    extensionPlansInfo = [
+        {
+            planName: "",
+            planDisplayName: "",
+            description: [],
+            extensionPriceOptionHeadingLabel: "",
+            extensionPriceOptionHeadingStatement: "",
+            extensionPriceOption: []
+        }
+    ],
     subscriptionsInfo = [{
         planName: "",
         planDisplayName: "",
@@ -31,6 +48,13 @@ export default function CheckOut({
     };
 
     const chosenSubscriptionPlan = subscriptionsInfo.find(item => item.planName === values.subscriptionPlan);
+
+    const chosenExtensionPlans = extensionPlansInfo.filter(item => {
+        for(let i = 0; i < extensions.length; i++) {
+            if(extensions[i].text === item.planName && extensions[i].checked) return true;
+        }
+        return false;
+    })
 
     return (
         <div className="mt-2 mb-3">
@@ -59,7 +83,23 @@ export default function CheckOut({
 
             <div className="font-semibold mt-[20px] text-[#FFA28D] text-[16px]">Extensions / Add-Ons</div>
 
-            <CheckOutExtensionsReview
+            {(chosenExtensionPlans === undefined || chosenExtensionPlans === null || chosenExtensionPlans.length === 0) ? (<></>) :
+                chosenExtensionPlans.map(item => {
+                    const chosenPackageName = extensions.find(i => i.text === item.planName).packageName;
+                    const chosenPackage = item.extensionPriceOption.find(pack => pack.planName === chosenPackageName);
+                    return (
+                        <CheckOutExtensionsReview
+                            className={"mt-[25px]"}
+                            planDisplayName={item.planDisplayName}
+                            extensionPriceOption={chosenPackage}
+                            setFrames={setFrames}
+                            setcurrentStep={setcurrentStep}
+                        />
+                    )
+                })
+            }
+
+            {/* <CheckOutExtensionsReview
                 planDisplayName={"Assignments"}
                 extensionPriceOption={{
                     planDisplayName: "1 - 500",
@@ -68,7 +108,7 @@ export default function CheckOut({
                         "Included in Free Trial period based on your selected subscription."
                     ]
                 }}
-            />
+            /> */}
 
             <div className="border-[1px] mt-[25px] w-full"></div>
 

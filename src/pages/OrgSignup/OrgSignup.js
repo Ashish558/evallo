@@ -23,6 +23,7 @@ import {
 } from "../../app/services/auth";
 import {
   apQuestions,
+  extensionsData,
   furtherDetailsData,
   motivesList,
   instructionFormat,
@@ -58,6 +59,7 @@ import Subscription from "../Frames/Subscription/Subscription";
 import Extensions from "../Frames/Extensions/Extensions";
 import CheckOut from "../Frames/CheckOut/CheckOut";
 import { subScriptionPlanData } from "./DummyData/SubscriptionPlanData";
+import { extensionPlansInfo } from "./DummyData/ExtensionPlansInfo";
 
 export default function OrgSignup() {
   const [frames, setFrames] = useState({
@@ -158,6 +160,7 @@ export default function OrgSignup() {
   const [rateUs, setRateUs] = useState(rateUsData);
   const [paymentOptions, setPaymentOptions] = useState(paymentOptionsData);
   const [solutions, setSolutions] = useState(solutionsData);
+  const [extensions, setExtensions] = useState(extensionsData);
 
   const [instructions, setInstructions] = useState(instructionFormat);
 
@@ -887,13 +890,19 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
                 />
               ) : frames.extensions ? (
                 <Extensions
+                  extensions={extensions}
+                  extensionPlansInfo={extensionPlansInfo}
+                  setExtensions={setExtensions}
                   setFrames={setFrames}
                   setcurrentStep={setcurrentStep}
+            
                 />
               ) : frames.checkout ? (
                 <CheckOut
                   setFrames={setFrames}
                   values={values}
+                  extensions={extensions}
+                  extensionPlansInfo={extensionPlansInfo}
                   subscriptionsInfo={subScriptionPlanData}
                   setcurrentStep={setcurrentStep}
                  />

@@ -4,6 +4,7 @@ export default function ExtensionRadioOption({
     className,
     currency = "",
     description = [],
+    onChange = function(c){},
     planName = "",
     planDisplayName = "",
     pricePerMonth = 0,
@@ -13,6 +14,7 @@ export default function ExtensionRadioOption({
         <RadioOptionContainer
             className={`pb-[15px] ${className}`}
             selected={selected}
+            onChange={onChange}
         >
             <div className={`ml-[9px] mt-[15px] ${selected ? "text-[#24A3D9]" : "text-[#26435F]"}`}>
                 <div>{planDisplayName}</div>

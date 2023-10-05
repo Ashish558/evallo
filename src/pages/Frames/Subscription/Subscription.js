@@ -56,7 +56,7 @@ export default function Subscription({
                             ]}
                             pricePerMonth={15}
                             selected={plan.planName === values.subscriptionPlan ? true : false}
-                            onClick={() => {
+                            onChange={() => {
                                 setValues(values => {
                                     return ({
                                         ...values,
@@ -64,6 +64,7 @@ export default function Subscription({
                                     })
                                 })
                             }}
+                            
                         />
                     )
                 })

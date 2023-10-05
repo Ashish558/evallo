@@ -13,6 +13,7 @@ export default function CheckOutSubscriptionReview({
 }) {
 
     const handleChangePlan = () => {
+        if(!setFrames || !setcurrentStep) return;
         setFrames((prev) => {
             return { ...prev, checkout: false, subscription: true };
         });
@@ -24,9 +25,9 @@ export default function CheckOutSubscriptionReview({
                 <div>
                     <div className="font-semibold text-[#26435F] text-[16px]">{planDisplayName}</div>
                     {
-                        description.map(item => {
+                        description.map((item, index) => {
                             return (
-                                <div className="font-[200] text-[#26435F] text-sm">{item}</div>
+                                <div className="font-[200] text-[#26435F] text-sm" key={index} >{item}</div>
                             )
                         })
                     }

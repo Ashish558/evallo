@@ -16,8 +16,19 @@ export default function CheckOutExtensionsReview({
     planName,
     planDisplayName,
     subscriptionPricePerMonth,
-    freeTrialDays
+    freeTrialDays,
+    setFrames,
+    setcurrentStep
 }) {
+
+    const handleChangePlan = () => {
+        if(!setFrames || !setcurrentStep) return;
+        setFrames((prev) => {
+            return { ...prev, checkout: false, extensions: true };
+        });
+        setcurrentStep(currentStep => currentStep - 1)
+    }
+
     return (
         <div className={`flex flex-col pb-[10px] pl-[20px] pr-[30px] pt-[20px] rounded-[5px] shadow-[0px_0px_2px_rgba(0,0,0,0.25)] w-full ${className}`}>
             <div className="flex justify-between">
@@ -26,20 +37,23 @@ export default function CheckOutExtensionsReview({
 
                     <div className="font-semibold text-[#24A3D9] text-[15px]">{extensionPriceOption?.planDisplayName}</div>
 
-                    <ul className="ml-[20px]">
+                    {(extensionPriceOption === undefined || extensionPriceOption === null || extensionPriceOption.planName === "") ? (<></>) :
+                    (<ul className="ml-[20px]">
                         {
-                            extensionPriceOption?.description.map(item => {
+                            extensionPriceOption?.description.map((item, index) => {
                                 return (
-                                    <li className="list-disc text-[#26435F] text-[14px]">{item}</li>
+                                    <li className="list-disc text-[#26435F] text-[14px]" key={index}>{item}</li>
                                 )
                             })
                         }
-                    </ul>
+                    </ul>)
+                    }
                 </div>
                 <div className="flex flex-col items-end">
                     <SecondaryButton 
                         children={"Change Plan"}
                         className={"bg-white drop-shadow-[0px_0px_1px_rgba(0,0,0,0.25)] px-[15px] py-[2px] text-[#7C98B6]"}
+                        onClick={handleChangePlan}
                     />
 
                     <div className="grow"></div>

@@ -6,7 +6,7 @@ export default function SubscriptionPlan({
     className = "",
     currency = "usd",
     description = new Array(4),
-    onClick,
+    onChange = function(c){},
     planName,
     pricePerMonth = 0,
     selected
@@ -21,7 +21,7 @@ export default function SubscriptionPlan({
         <RadioOptionContainer
             className={className}
             selected={selected}
-            onClick={onClick}
+            onChange={onChange}
         >
             <div className={`flex h-full items-center justify-between mb-[20px] ml-[10px] mt-[15px] pr-[30px] w-full ${styles.container}`}>
                 <div
