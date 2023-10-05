@@ -10,7 +10,7 @@ import LatestSignUpTableItem from "./LatestSignUpTableItem";
 import Pagination from "../../pages/SuperadminDashboard/Table/Pagination";
 import { useNavigate } from "react-router-dom";
 export default function Table(props) {
-  const navigate=useNavigate
+  const navigate = useNavigate()
   const {
     noArrow,
     dataFor,
