@@ -563,6 +563,7 @@ const Dashboard = () => {
               belowBox={true}
               belowBoxHeight="h-[192px]"
               belowBoxText="Invite Parents or Students"
+                belowBoxLink="users"
               belowBoxIcon={userLogo}
               tableHeaders={latestSignUpHeaders}
               maxPageSize={5}
@@ -606,6 +607,7 @@ const Dashboard = () => {
                   ]}
                   belowBox={true}
                   belowBoxText="Add New Services"
+                  belowBoxLink="settings"
                   belowBoxIcon={plusIcon}
                   belowBoxHeight="h-[168px]"
                   maxPageSize={5}
@@ -633,6 +635,7 @@ const Dashboard = () => {
                   maxPageSize={5}
                   belowBox={true}
                   belowBoxText="Add Referral Codes"
+                    belowBoxLink="settings"
                   belowBoxIcon={plusIcon}
                   belowBoxHeight="h-[168px]"
                 />
@@ -736,6 +739,7 @@ const Dashboard = () => {
             maxPageSize={5}
             belowBox={true}
             belowBoxText="Invite Tutors"
+            belowBoxLink="users"
             belowBoxIcon={userLogo}
             belowBoxHeight="h-[143px]"
           />

@@ -106,7 +106,7 @@ export default function StudentReport() {
    useEffect(() => {
       if (Object.keys(responseData).length === 0) return
       if (isSet === true) return
-      console.log('response data', responseData);
+      console.log('response data 55', responseData);
       // let sortedSubjects = responseData.subjects.map(sub => sub.name)
       if (responseData.subjects.length === 0) {
          // alert('No sections are submitted')
@@ -116,15 +116,16 @@ export default function StudentReport() {
 
       getAnswers(id)
          .then(res => {
+            console.log("555",res,id)
             if (res.error) return console.log(res.error);
             console.log('ANSWER KEY', res.data.data);
 
             let answerKeyData = { ...res.data.data }
             let score = getScoreStr(responseData.testType, responseData.score, responseData.subjects, answerKeyData.answer.subjects.length)
-            // console.log('score', score);
+           console.log('score', score);
             setDisplayScore(score)
 
-            // console.log('answer key subjects', answerKeyData.answer.subjects);
+          console.log('answer key subjects', answerKeyData.answer.subjects);
             let conceptsPresent = true
             let updatedSubs = answerKeyData.answer.subjects.map(item => {
                if (item.concepts === undefined) {
@@ -289,11 +290,11 @@ export default function StudentReport() {
                   }
                })
 
-               // setDisplayScore({
-               //    cumulative: `C${set1Score + set2Score}`,
-               //    right: `V${set1Score}|M${set2Score}`,
-               //    isSat: true
-               // })
+               setDisplayScore({
+                  cumulative: `C${set1Score + set2Score}`,
+                  right: `V${set1Score}|M${set2Score}`,
+                  isSat: true
+               })
             } else if (res.data.data.response.testType === 'SAT') {
                let scoreArr = []
                let total = 0
@@ -301,11 +302,11 @@ export default function StudentReport() {
                   total += sub.no_of_correct
                   scoreArr.push(sub.no_of_correct)
                })
-               // setDisplayScore({
-               //    cumulative: `C${total / subjects.length}`,
-               //    right: `E${scoreArr[0]} M${scoreArr[1]} R${scoreArr[2]} C${scoreArr[3]}`,
-               //    isSat: false
-               // })
+               setDisplayScore({
+                  cumulative: `C${total / subjects.length}`,
+                  right: `E${scoreArr[0]} M${scoreArr[1]} R${scoreArr[2]} C${scoreArr[3]}`,
+                  isSat: false
+               })
             }
             setTestDetails(prev => {
                return {
@@ -725,7 +726,7 @@ const [startDate,startTime,startFormat]=(testDetails?.startedOn?.split(' '))
    // console.log('responseData', responseData)
    // console.log('answerKey', answerKey)
   
-  
+  console.log({displayScore})
    return (
       <div className='px-[80px] bg-lightWhite min-h-screen'>
          <div className='py-14 px-5'>
@@ -751,7 +752,7 @@ const [startDate,startTime,startFormat]=(testDetails?.startedOn?.split(' '))
                   {testDetails.testName}
                </p>
                {
-               persona =="student"||  <button className={`py-[14px] px-[16px] bg-[#FFA28D] text-white rounded-lg flex items-center shadow-sm `}>
+                 <button className={`py-[14px] px-[16px] bg-[#FFA28D] text-white rounded-lg flex items-center shadow-sm `}>
                <span className='inline-block font-semibold text-[18px]'>
                   {displayScore.cumulative}
                </span>
@@ -800,7 +801,7 @@ const [startDate,startTime,startFormat]=(testDetails?.startedOn?.split(' '))
                   
                </div>
            {
-              persona =="student"&&  <div className='  text-xl mt-6 text-[#517CA8]'>
+              persona ==="student"&&  <div className='  text-xl mt-6 text-[#517CA8]'>
                 <p className='inline-block  font-medium'> Instruction from tutor </p>
                 <span className='inline-block mr-10 my-auto'>:</span>
                 <p className='  !font-light'>{testDetails.instruction} </p>

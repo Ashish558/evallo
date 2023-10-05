@@ -339,6 +339,7 @@ const [toEdit, setToEdit] = useState({
     }
     getUserDetail({ id: userId }).then((res) => {
       //console.log("details -- ", res.data.data);
+      if(!res?.data?.data)return 
       // //console.log('tut id', id);
       if (res.data.data.user.assiginedTutors) {
         if (res.data.data.user.assiginedTutors?.includes(id)) {
@@ -570,7 +571,7 @@ const [toEdit, setToEdit] = useState({
                       handleChange={handleProfilePhotoChange}
                       editable={false}
                     />
-                    <EditableText
+                                 {(persona==="admin"|| isOwn )&&<EditableText
                       editable={editable}
                       onClick={() =>
                         setToEdit({
@@ -585,14 +586,14 @@ const [toEdit, setToEdit] = useState({
                       text="Edit Profile"
                       textClassName=" ml-2 text-[15px]  mx-auto text-center text-[#26435F] text-underline font-semibold"
                       className="text-sm my-0 flex items-center justify-center text-center !translate-y-9  "
-                    />
+                    />}
                   </div>
                   <div className="flex-1 flex justify-between items-center">
                     <div className="ml-4 my-auto">
                       <div className="flex  font-semibold items-center text-[#F3F5F7] text-[30px]">
                         {user.firstName} {user.lastName}
                       </div>
-                      <div className="flex mt-1 text-[17.5px] items-center text-[#F3F5F7]">
+                     {(persona!=="tutor"|| ((persona === 'tutor') && organization?.settings?.permissions && organization?.settings?.permissions[1]?.choosedValue)) &&  <div className="flex mt-1 text-[17.5px] items-center text-[#F3F5F7]">
                         <p>
                           <span>
                             <img
@@ -612,10 +613,10 @@ const [toEdit, setToEdit] = useState({
                             />
                           </span>
                         </p>
-                      </div>
+                      </div>}
                     </div>
 
-                    <div className="flex flex-col   font-medium text-white my-auto ">
+                    {(persona!=="tutor"|| ((persona === 'tutor') && organization?.settings?.permissions && organization?.settings?.permissions[1]?.choosedValue)) &&     <div className="flex flex-col   font-medium text-white my-auto ">
                       <ProfileCard
                         className="lg:mt-0 flex-1 !bg-transparent h-min !shadow-none relative"
                         titleClassName="!bg-transparent"
@@ -666,7 +667,7 @@ const [toEdit, setToEdit] = useState({
                           </div>
                         }
                       />
-                    </div>
+                    </div>}
                   </div>
                 </div>
               </div>
@@ -721,7 +722,7 @@ const [toEdit, setToEdit] = useState({
                           {" "}
                           {student.name}
                         </p>
-                        <p className="  text-[#667085] text-base-15 ml-4">
+                        {(persona!=="tutor"|| (persona==="tutor" && organization?.settings?.permissions && organization?.settings?.permissions[1]?.choosedValue)) &&    <p className="  text-[#667085] text-base-15 ml-4">
                           {student.email}
                           <span>
                             <img
@@ -731,7 +732,7 @@ const [toEdit, setToEdit] = useState({
                               alt="copy2"
                             />
                           </span>
-                        </p>
+                        </p>}
                         <p className="  text-[#517CA8] w-[100px] flex gap-3 text-base-15">
                           {student?.service?.map((it, idx) => {
                             return (
@@ -772,7 +773,7 @@ const [toEdit, setToEdit] = useState({
               </div>
             </div>
           </div>
-          <EditableText
+          {(persona==="admin"|| isOwn) &&   <EditableText
             editable={editable}
             onClick={() =>
               setToEdit({
@@ -786,7 +787,7 @@ const [toEdit, setToEdit] = useState({
             text="edit"
             textClassName="text-[15px] text-[#26435F]  text-underline"
             className="text-sm my-0 flex justify-end translate-y-7  float-right"
-          />
+          />}
           <SPFrame0
             userDetail={userDetail}
             settings={settings}

@@ -9,9 +9,11 @@ export default function InputField({
   parentClassName,
   inputContainerClassName,
   Icon,
+  hideTooltip,
   IconRight2Click,
   iconSize,
   pattern,
+  removeResponsive,
   refS,
   IconRight2,
   value,
@@ -45,6 +47,7 @@ export default function InputField({
   biggerText,
   
 }) {
+  console.log({hideTooltip})
   const [inputType, setInputType] = useState(type);
   const [showDiv, setShowDiv] = useState(true);
   const divRef = useRef();
@@ -65,7 +68,7 @@ export default function InputField({
           className={`${biggerText ? "text-lg" : 'text-base-17-5'}  inline-block  font-semibold ${labelClassname} ml-0 `}
         >
           {label}
-          {required && (
+          {required &&false&& (
             <span className="text-primaryRed inline-block pl-1">*</span>
           )}
         </label>
@@ -87,7 +90,7 @@ export default function InputField({
 
         {prefix && <span className="mr-3">{prefix}</span>}
 
-        {IconRight && (
+        {IconRight && !hideTooltip && (
           <div className="group relative w-fit">
             <img
               src={IconRight}
@@ -101,7 +104,7 @@ export default function InputField({
         )}
         <input
           className={`outline-0 w-full text-[17.5px]  ${iconPadding ? iconPadding : "pl-1"} placeholder:text-base-17-5 ${inputClassName ? inputClassName : ""
-            } ${disabled === true ? "cursor-not-allowed" : ""} text-base-17-5`}
+            } ${disabled === true ? "cursor-not-allowed" : ""} ${removeResponsive?"":"text-base-17-5"} `}
           placeholder={placeholder}
 
           type={inputType ? inputType : "text"}
@@ -120,7 +123,7 @@ export default function InputField({
           onFocus={onFocus}
           onBlur={onBlur}
         />
-        {IconLeft && (
+        {IconLeft && !hideTooltip && (
           <div className="group relative w-fit">
             <img
               src={IconLeft}
