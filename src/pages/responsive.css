@@ -164,7 +164,7 @@ th *{
 }
 
 .custom-scroller::-webkit-scrollbar {
-  width: 5px;
+  width: 6px;
 }
 
 .custom-scroller::-webkit-scrollbar-track {

@@ -61,6 +61,9 @@ export default function Login({ setLoginFormActive }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+   if(
+      loginLoading|| !(emailValidation.test(email) && password.length > 0)
+    ) return 
     setLoginLoading(true);
     const promiseState = async (state) =>
       new Promise((resolve) => {
@@ -140,22 +143,22 @@ email: "Email not verified! Please Verify your email and set your password"
   return (
     <div className={styles.bg}>
       <div className="flex  flex-col items-center md:grid-cols-2  ">
-        <img src={cuate} alt="rocket" className="h-10vh mt-3 mb-4" />
-        <div className="bg-primary hidden lg:block">
+        <img src={cuate} alt="rocket" className="h-10vh mt-3 mb-4 scale-[0.8] mt-[-5px] design:mt-[0px] design:scale-100" />
+        <div className="bg-primary hidden lg:block ">
           <ImageSlider
             className={styles.loginCarousel}
             images={[CarouselImg, CarouselImg]}
             pagination={true}
           />
         </div>
-        <div className="lg:flex lg:items-center bg-white rounded-[10px] pt-[40px] pb-6 px-5 md:px-[66px] lg:min-w-[561px] shadow-[5px_5px_87.5px_0px_rgba(166,166,166,0.25)]">
+        <div className="lg:flex scale-[0.67] design:scale-100 mt-[-120px] design:mt-[0px]   lg:items-center bg-white rounded-[10px] pt-[40px] pb-6 px-5 md:px-[66px] lg:min-w-[561px] shadow-[5px_5px_87.5px_0px_rgba(166,166,166,0.25)]">
           {loginActive ? (
             <div className="w-full">
               <div className="flex justify-center" >
               <img src={EvalloLogo} alt="logo" className=" h-[29.796px] scale-[.97] " />
               </div>
               <p
-                className={`font-medium text-lg mt-[40px] mb-1 bg-transparent text-[#26435F]  pb-[34px] lg:pt-0 lg:pb-0 `}
+                className={`font-semibold text-lg mt-[40px] mb-1 bg-transparent text-[#26435F]  pb-[34px] lg:pt-0 lg:pb-0 `}
               >
                 Login
               </p>
@@ -212,13 +215,13 @@ email: "Email not verified! Please Verify your email and set your password"
                       checked={remember}
                       onChange={() => setRemember(!remember)}
                     />{" "}
-                    <span className="text-base text-[#26435F]  font-medium">
+                    <span className="text-base text-[#26435F]  font-semibold">
                       {" "}
                       Remember me{" "}
                     </span>
                   </div>
                   <p
-                    className=" lg:text-base inline-block cursor-pointer text-[#24A3D9]  leading-[18.715px]  font-medium ml-auto"
+                    className=" lg:text-base inline-block cursor-pointer text-[#24A3D9]  leading-[18.715px]  font-semibold ml-auto"
                     onClick={() => setActiveFrame(setIsPasswordForgot)}
                   >
                     Forgot Password?
@@ -228,11 +231,7 @@ email: "Email not verified! Please Verify your email and set your password"
 
 
                 <button
-                  disabled={
-                    loginLoading === true
-                      ? true
-                      : !(emailValidation.test(email) && password.length > 0)
-                  }
+                
                   className={`w-[337px] shadow-[0px_0px_2px_0px_rgba(0,0,0,0.25)] relative mx-auto  bg-[#FFA28D] disabled:opacity-70 pt-3.5 pb-3.5 lg:py-[11px]  mt-[56px]   rounded-5 text-white text-lg font-medium ${
                     loginLoading ? "cursor-wait" : "cursor-pointer"
                   }`}
