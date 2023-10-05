@@ -717,7 +717,6 @@ export default function Calendar() {
   };
   const [studentName, setStudentNames] = useState([]);
   const handleInsights = (name, role, item) => {
-    ////console.log({ name, role,item });
     getCalenderInsight({ name, id: item._id }).then((res) => {
       console.log("insights response----", res.data.tutorSessionDetails);
       if (res?.data?.tutorSessionDetails) {
@@ -726,7 +725,7 @@ export default function Calendar() {
           arr = res?.data?.tutorSessionDetails;
           // arr = arr?.length >= 0 ? arr : [arr];
         }
-        if (persona === 'parent') {
+        if (role === 'parent') {
           let parentSessionData = res?.data?.tutorSessionDetails.map(sessionItem => {
             let sessions = []
             let tutors = []
