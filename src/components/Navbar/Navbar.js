@@ -14,8 +14,8 @@ import Assignment from "../../assets/images/Vector (3).png";
 import Assignment1 from "../../assets/images/Vector (4).svg";
 import Content from "../../assets/images/content.png";
 import Content2 from "../../assets/images/content-1.svg";
-import Invoice from "../../assets/images/Vector (5).png";
-import Invoice2 from "../../assets/images/invoicing.png";
+import Invoice from "../../assets/images/invoice-logo.svg";
+import Invoice2 from "../../assets/images/invoice-logo-red.svg";
 import Settings from "../../assets/images/Settings 1 new.svg";
 import Settings1 from "../../assets/images/Settings 1.svg";
 import Profile from "../../assets/Navbar/profile.svg";
@@ -340,7 +340,7 @@ const Navbar = () => {
                </a>
 
             </div>
-            <div className={`flex  text-[#FFFFFF] font-semibold text-[17.3px] ${!isLoggedIn && "opacity-[0.3]"}`}>
+            <div className={`flex  text-[#FFFFFF] font-semibold text-base-17-5 ${!isLoggedIn && "opacity-[0.3]"}`}>
                {navData.map((item, idx) => {
                   return (
                      <div
@@ -377,14 +377,14 @@ const Navbar = () => {
                })}
             </div>
             <div className={`flex font-bold ${isLoggedIn ? "" : "opacity-[0.3]"}`}>
-               <div className="flex mr-[24px] text-[#24A3D9]  items-center">
-                  <p className=" ">Pricing 	</p>
+               <div className="flex mr-[24px] text-[#24A3D9] text-base-16  items-center">
+                  <p className=" text-[0.8333vw]">Pricing 	</p>
                   <p className="pl-2">
                      &#36;
                   </p>
                </div>
-               <div className="flex mr-[24px] text-[#24A3D9] items-center">
-                  <p className=" ">Help</p>
+               <div className="flex mr-[24px] text-[#24A3D9] items-center text-base-16 ">
+                  <p className="text-[0.8333vw] ">Help</p>
                   <p>
                      <img
                         className="w-[16px] h-[14px] ml-2"
@@ -396,11 +396,11 @@ const Navbar = () => {
                </div>
 
                <div
-                  className="flex  cursor-pointer items-center"
+                  className="flex  cursor-pointer items-center "
                   onClick={() => isLoggedIn && setLogoutModalActive(true)}
                >
                   <div>
-                     <p className="text-[#24A3D9]">Logout</p>
+                     <p className="text-[#24A3D9] text-[0.8333vw]">Logout</p>
                   </div>
                   <div>
                      <img

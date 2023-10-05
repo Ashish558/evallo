@@ -667,11 +667,11 @@ export default function Calendar() {
     let currentDate = new Date();
     // currentDate.setHours(0, 0, 0, 0);
     //  console.log(date - currentDate);
-    if (!date || date - currentDate <= 0) {
-      alert('Cant set events on past date')
-      return
-    }
-    else {
+    // if (!date || date - currentDate <= 0) {
+    //   alert('Cant set events on past date')
+    //   return
+    // }
+
       //  console.log("can see", date,currentDate)
 
       if (persona === "tutor") {
@@ -686,7 +686,7 @@ export default function Calendar() {
       if (persona === "admin" || persona === "tutor") {
         setEventModalActive(true);
       }
-    }
+    
     arg.preventDefault()
     // //////console.log(arg)
     // setEvents([...events, {
@@ -717,8 +717,10 @@ export default function Calendar() {
   };
   const [studentName, setStudentNames] = useState([]);
   const handleInsights = (name, role, item) => {
-    ////console.log({ name, role,item });
     getCalenderInsight({ name, id: item._id }).then((res) => {
+      if(res.error){
+        return console.log('insight err', res.error);
+      }
       console.log("insights response----", res.data.tutorSessionDetails);
       if (res?.data?.tutorSessionDetails) {
         let arr = [];
@@ -726,7 +728,7 @@ export default function Calendar() {
           arr = res?.data?.tutorSessionDetails;
           // arr = arr?.length >= 0 ? arr : [arr];
         }
-        if (persona === 'parent') {
+        if (role === 'parent') {
           let parentSessionData = res?.data?.tutorSessionDetails.map(sessionItem => {
             let sessions = []
             let tutors = []

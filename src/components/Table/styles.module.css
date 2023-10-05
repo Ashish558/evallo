@@ -63,3 +63,11 @@ input[type="checkbox"]:checked + .custom-checkbox {
 .customPadding{
   padding: 0px;
 }
+
+@media screen and (min-width: 1920px) {
+
+.noOverflow{
+  overflow: hidden;
+}
+
+}

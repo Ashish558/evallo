@@ -70,7 +70,8 @@ const initialState = {
 export default function Users() {
   const [modalActive, setModalActive] = useState(false);
   const navigate = useNavigate();
-  const { organization } = useSelector((state) => state.organization);
+  const { organization,  } = useSelector((state) => state.organization);
+  
   const { firstName, lastName } = useSelector((state) => state.user);
   const [modalData, setModalData] = useState(initialState);
   const [validData, setValidData] = useState(true);
@@ -1161,7 +1162,7 @@ console.log("users",{selectedId,bulkEdits})
             placeholderClass="text-base-17-5"
             optionData={specializations}
             placeholder="Services"
-            parentClassName="w-[12.8541666667vw] relative  relative z-[50]  text-[#667085]"
+            parentClassName="w-[12.8541666667vw] relative  relative z-[50]  text-[#667085] -z-50"
             type="select"
             inputContainerClassName="text-sm  shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white px-[20px] py-[16px]"
             value={
@@ -1194,7 +1195,7 @@ console.log("users",{selectedId,bulkEdits})
               }
             })}
             placeholder="Tutor"
-            parentClassName="w-[12.8541666667vw] relative  relative z-[50]  text-[#667085]"
+            parentClassName="w-[12.8541666667vw] relative  relative z-[50]  text-[#667085] -z-50"
             type="select"
             inputContainerClassName="text-sm  shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white px-[20px] py-[16px]"
             optionType="object"
@@ -1352,20 +1353,20 @@ console.log("users",{selectedId,bulkEdits})
               <span className="absolute right-[-10px] z-[500] top-[-10px]">
                 <div className="group relative">
                   <img src={ques} className="inline-block" alt="ques"/>
-                  <span className="absolute  top-14 left-[-100px] z-500 w-[260px]  scale-0 rounded-lg bg-[rgba(31,41,55,0.93)]  text-[13px] text-white group-hover:scale-100 whitespace-normal py-3 px-3">
-                    <h3 className="text-[#517CA8] text-left text-[16px] py-0 font-semibold mb-1">
+                  <span className="absolute  top-[-220px] left-[-140px] z-5000 w-[336px]  scale-0 rounded-lg bg-[rgba(31,41,55,0.93)]  text-[13px] text-white group-hover:scale-100 whitespace-normal py-[20px] px-[13px]">
+                    <h3 className="text-[#517CA8] text-left text-[0.8333vw] py-0 font-semibold mb-1">
                       Invite Users
                     </h3>
-                    <span className=" text-left text-base-15 font-medium">
+                    <span className=" text-left text-[0.6948vw] font-light">
                       This will allow you to invite the selected users to create
                       an account within your Organization’s database. They will
                       receive a verification email to set a new password and
                       logging into the platform. Note that this is useful if you
                       “Saved” user data instead of inviting them when adding
-                      them to the CRM
+                      them to the CRM.
                       <br />
-                      <br />
-                      <span className="text-[#FF7979] ">
+                     
+                      <span className="text-[#FF7979] font-light text-left">
                         Please ensure that you have consent from the user before
                         inviting them to create an account.
                       </span>

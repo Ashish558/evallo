@@ -141,6 +141,12 @@ export default function AssignedTests() {
       onCick: sortByAssignedDate,
     },
     {
+      id: 7,
+      text: "Due On",
+      className: "text-left pl-6 no-arrow",
+      onCick: sortByDueDate,
+    },
+    {
       id: 4,
       className: "no-arrow",
       text: "Tutor",

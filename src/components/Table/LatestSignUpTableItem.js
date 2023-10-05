@@ -1,6 +1,9 @@
+import { useSelector } from "react-redux";
+import { getFormattedDate } from "../../utils/utils";
 
 
 const LatestSignUpTableItem = ({ item, onClick }) => {
+  const { dateFormat } = useSelector(state => state.user)
   const handleClick = () => {
     onClick.redirect(item);
   };
@@ -40,7 +43,11 @@ const LatestSignUpTableItem = ({ item, onClick }) => {
         </div>
       </td>
       <td className=" text-[17.5px] px-[10px]  min-w-14 py-4">
-        <div >{new Date(item.lastSignUp).toDateString()}</div>
+        <div >
+          {/* {new Date(item.lastSignUp).toDateString()} */}
+        {  getFormattedDate(item.lastSignUp, dateFormat)}
+        
+        </div>
       </td>
     </tr>
   );
