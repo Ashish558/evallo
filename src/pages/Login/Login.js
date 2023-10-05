@@ -178,9 +178,10 @@ email: "Email not verified! Please Verify your email and set your password"
                   placeholder=""
                   parentClassName="mb-[18px]"
                   label="Email "
+                  removeResponsive={true}
                   labelClassname="text-[#26435F] font-medium"
-                  inputClassName="bg-transparent"
-                  inputContainerClassName="border-[0.936px] border-[#D0D5DD]  h-[49px]  rounded-[6px] w-full"
+                  inputClassName="bg-transparent  !text-lg"
+                  inputContainerClassName="border-[0.936px] !text-lg border-[#D0D5DD]  h-[49px]  rounded-[6px] w-full"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   error={error.email}
@@ -193,11 +194,12 @@ email: "Email not verified! Please Verify your email and set your password"
                   parentClassName="mb-[10px]"
                   placeholder=""
                   biggerText={true}
+                  removeResponsive={true}
                   label="Password"
                   type="password"
                   labelClassname="text-[#26435F] font-medium"
                   inputClassName="bg-transparent "
-                  inputContainerClassName="border-[0.936px] border-[#D0D5DD]  h-[49px]  rounded-[6px] w-full"
+                  inputContainerClassName="border-[0.936px] border-[#D0D5DD] !text-lg h-[49px]  rounded-[6px] w-full"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   error={error.password}

@@ -49,6 +49,12 @@ export default function OrgDetails({
   }));
 
   const handleSubmit = () => {
+   if(!handleEmpty(values?.company)||!handleEmpty(values?.companyType)||!handleEmpty(values?.website)||!handleEmpty(values?.address)
+    ||!handleEmpty(values?.country)||!handleEmpty(values?.city)||!handleEmpty(values?.state)||!handleEmpty(values?.zip))
+  {
+    alert("Please Fill All The Fields!")
+    return 
+  }
     setFrames((prev) => {
       console.log(prev);
       return {
@@ -96,10 +102,17 @@ export default function OrgDetails({
       companyType: e,
     });
   };
+  const [checkFields,setCheckFields]=useState()
+  const handleEmpty=(field)=>{
+   if(!field || field?.trim(" ")?.length===0) return false
+
+return true  }
+
   return (
     <div className="mt-2 mb-3">
       <div className="">
         <InputField
+        required={true}
           disabled={true}
           placeholder=""
           right={<img src={lockIcon} alt="lock" />}
@@ -128,6 +141,7 @@ export default function OrgDetails({
           />
 
           <InputField
+          required={true}
             label="Website"
             labelClassname={"!text-sm"}
             biggerText={true}
@@ -147,6 +161,7 @@ export default function OrgDetails({
         </div>
         <div className="flex items-center mt-5 gap-5">
           <InputField
+          required={true}
             label="Address"
             labelClassname={"!text-sm"}
             biggerText={true}
@@ -257,6 +272,7 @@ export default function OrgDetails({
             </div>
           </div> */}
           <InputField
+          required={true}
             label="City"
             labelClassname={"!text-sm"}
             biggerText={true}
@@ -274,6 +290,7 @@ export default function OrgDetails({
             }
           />
           <InputField
+          required={true}
             label="Zip Code"
             labelClassname={"!text-sm"}
             biggerText={true}

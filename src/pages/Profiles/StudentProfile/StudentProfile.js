@@ -473,7 +473,8 @@ const [toEdit, setToEdit] = useState({
       userId = params.id;
     }
     getUserDetail({ id: userId }).then((res) => {
-      console.log("details -- ", res.data.data);
+      console.log("details -- ", res);
+      if(!res?.data?.data)return 
       // //console.log('tut id', id);
       if (res.data.data.user.assiginedTutors) {
         if (res.data.data.user.assiginedTutors?.includes(id)) {
@@ -774,7 +775,7 @@ const [toEdit, setToEdit] = useState({
                   handleChange={handleProfilePhotoChange}
                   editable={false}
                 />
-             {(persona!=="tutor"|| (persona==="tutor" && organization?.settings?.permissions[2]?.choosedValue) )&&   <EditableText
+             {(persona!=="tutor"|| (persona==="tutor" &&organization?.settings?.permissions && organization?.settings?.permissions[1]?.choosedValue) )&&   <EditableText
                   editable={editable}
                   onClick={() =>
                     setToEdit({
@@ -866,7 +867,7 @@ const [toEdit, setToEdit] = useState({
                     }
                   />
                 </div>}
-                {(persona === 'tutor') && organization?.settings?.permissions[2]?.choosedValue && <div className="flex flex-col text-[12px]  font-medium text-white my-auto ">
+                {(persona === 'tutor') &&organization?.settings?.permissions && organization?.settings?.permissions[1]?.choosedValue && <div className="flex flex-col text-[12px]  font-medium text-white my-auto ">
                   <ProfileCard
                     className="lg:mt-0 flex-1 !bg-transparent h-min !shadow-none relative"
                     titleClassName="!bg-transparent"
@@ -957,7 +958,7 @@ const [toEdit, setToEdit] = useState({
                   />
                 </p>
 
-                {(persona !== "tutor" || (persona === 'tutor' && organization?.settings?.permissions[2]?.choosedValue)) && <p className="font-medium text-[12px]">
+                {(persona !== "tutor" || (persona === 'tutor' &&organization?.settings?.permissions && organization?.settings?.permissions[1]?.choosedValue)) && <p className="font-medium text-[12px]">
                   <span
                     className="text-xs cursor-pointer font-semibold opacity-60 inline-block mr-1"
                     onClick={handleParentNavigate}

@@ -141,9 +141,9 @@ export default function StudentTest({ fromProfile,testtype, setTotaltest,student
   useEffect(() => {
     if (persona === "student"||true) {
       getTest(studentId).then((res) => {
-        console.log("all-assigned-tests", res.data.data);
-        setAwsLink(res.data.data.baseLink);
-        let tempAllTests = res.data.data.test.map((test) => {
+        console.log("all-assigned-tests", res?.data?.data);
+        setAwsLink(res?.data?.data?.baseLink);
+        let tempAllTests = res?.data?.data?.test?res?.data?.data?.test?.map((test) => {
           const {
             testId,
             studentId,
@@ -181,7 +181,7 @@ export default function StudentTest({ fromProfile,testtype, setTotaltest,student
             assignedTestId: test._id,
             updatedAt,
           };
-        });
+        }):[];
 
         let sortedArr = tempAllTests.sort(function (a, b) {
           return new Date(b.updatedAt) - new Date(a.updatedAt);

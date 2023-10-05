@@ -1,7 +1,10 @@
 import styles from "./style.module.css";
 import { useGetSpecificActionLogQuery } from "../../app/services/adminDashboard";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { getFormattedDate } from "../../utils/utils";
 export default function ActionLog({ actionLog }) {
+  const { dateFormat } = useSelector(state => state.user)
   const [currentElementIndex, setCurrentElementIndex] = useState(0);
   const [extraElement, setExtraElement] = useState(0);
   const [sortedAction, setSortedAction] = useState([]);
@@ -70,11 +73,12 @@ export default function ActionLog({ actionLog }) {
     
       <div
 
-        className="flex flex-col h-[315px] max-h-[500px]  shadow-[0px_0px_2px_rgba(0,0,0,0.25)]  rounded-5 bg-[#FFFFFF] "
+        className="flex flex-col h-[330px] max-h-[500px]  shadow-[0px_0px_2px_rgba(0,0,0,0.25)]  rounded-5 bg-[#FFFFFF] "
       >
         <div className=" border-b-[1.6px]  border-b-[#CBD6E2] ">
           <p className="uppercase  pl-[29px] pt-[16px] pb-3 text-[#26435F] text-xl !text-[calc(20*0.050vw)]">
-            {headerDate}
+            {/* {headerDate} */}
+            {getFormattedDate(headerDate, dateFormat)}
           </p>
         </div>
         <ul
@@ -99,7 +103,8 @@ export default function ActionLog({ actionLog }) {
                   {item?.topDate && item?.message && (
                     <span className="text-xs ml-5 top-0 text-[#FFA28D] absolute  backdrop-blur-sm ">
                       {" "}
-                      {item?.topDate}
+                      {/* {item?.topDate} */}
+                      {getFormattedDate(item?.topDate, dateFormat)}
                     </span>
                   )}
                 </p>

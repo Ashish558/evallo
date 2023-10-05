@@ -80,7 +80,7 @@ export default function InputSelect({
             </span>
           ) : (
             <span className={`mr-5 pl-5 text-[15px] !text-[calc(17*0.050vw)] cursor-default whitespace-nowrap `} >
-              <span className={`${valueClassName}`} >{value}</span>
+              <span className={`${valueClassName}`}    onClick={handleOption}>{value}</span>
               <img
               className="w-[30px] inline-block relative h-[10px] text-lg cursor-pointer  z-[5000]"
               onClick={handleOption}
@@ -129,7 +129,7 @@ export default function InputSelect({
                   key={idx}
                   onClick={() => handleChange(optionType, option, idx)}
                 >
-                  <p className={`${optionListClassName} cursor-pointer relative !z-[9999999999]`}>
+                  <p className={`${optionListClassName}  cursor-pointer relative !z-[9999999999] `}>
                     {optionType === "object" ? option.name : option}
                   </p>
                   {radio && (
@@ -151,7 +151,7 @@ export default function InputSelect({
               );
             })}
            
-            {DateSelect &&<> <p className="px-[26px] text-center text-[15px] underline underline-offset-4 font-semibold py-[15px] !text-[calc(15*0.050vw)]">Custom</p>
+            {DateSelect &&<> <p className="px-[26px]  underline underline-offset-4 font-semibold py-[15px] !text-[calc(17*0.050vw) ]">Custom</p>
             { DateSelect}
             </>}
           </div>
