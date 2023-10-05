@@ -298,7 +298,7 @@ const Dashboard = () => {
   return (
     <div className={styles.container}>
       <div className=" mt-[28px] bg-#2E2E2E">
-        <div className="mt-[calc(50*0.050vw)] flex justify-center">
+        <div className="mt-[50px] flex justify-center">
           <div className="w-[83.33vw]">
             <p className="text-[#24A3D9]  text-base-20">
               {organization?.company +
@@ -336,11 +336,11 @@ const Dashboard = () => {
                           ></FontAwesomeIcon>
                         </p>
 
-                        <span className="absolute  -top-10 left-10 z-20 w-[333px]  scale-0 rounded-lg bg-[rgba(31,41,55,0.9)]  text-[13px] text-white group-hover:scale-100 whitespace-normal py-5 px-3">
+                        <span className="absolute  -top-10 left-10 z-20 w-[333px]  scale-0 rounded-[13px] bg-[rgba(0,0,0,0.80)] text-white group-hover:scale-100 whitespace-normal py-5 px-3">
                           <h3 className="text-[#22A699] text-[16px] py-1 font-medium mb-1">
                             Completed Revenue
                           </h3>
-                          <span className="font-light">
+                          <span className="font-light text-[13.3px]">
                             This value is calculated by adding up all the revenue
                             generated from sessions that have been marked as
                             “Completed” for the selected date range.
@@ -368,11 +368,11 @@ const Dashboard = () => {
                             icon={faQuestionCircle}
                           ></FontAwesomeIcon>
                         </p>
-                        <span className="absolute  -top-10 left-10 z-20 w-[333px]  scale-0 rounded-lg bg-[rgba(31,41,55,0.9)]  text-[13px] text-white group-hover:scale-100 whitespace-normal py-5 px-3">
+                        <span className="absolute  -top-10 left-10 z-20 w-[333px]  scale-0 rounded-[13px] bg-[rgba(0,0,0,0.80)]  text-white group-hover:scale-100 whitespace-normal py-5 px-3">
                           <h3 className="text-[#FF5175] text-[16px] py-1 font-medium mb-1">
                             Leaked Revenue
                           </h3>
-                          <span className="font-light">
+                          <span className="font-light text-[13px]">
                             This value is calculated by adding up all the revenue
                             lost from sessions that have been marked as “Canceled”
                             or “Partial” for the selected date range.
@@ -393,18 +393,18 @@ const Dashboard = () => {
                   </div>
                   <div className="w-[11.083vw] text-base-17-5">
                     <div className="flex justify-between items-center mb-[6px] text-[#26435F] text-sm">
-                      <p className="   font-medium text-base-17-5">Impending Revenue</p>
+                      <p className="font-medium text-base-17-5">Impending Revenue</p>
                       <div className="group relative">
                         <p>
                           <FontAwesomeIcon
                             icon={faQuestionCircle}
                           ></FontAwesomeIcon>
                         </p>
-                        <span className="absolute  -top-10 left-10 z-20 w-[333px]  scale-0 rounded-lg bg-[rgba(31,41,55,0.9)]  text-[13px] text-white group-hover:scale-100 whitespace-normal py-5 px-3">
+                        <span className="absolute  -top-10 left-10 z-20 w-[333px]  scale-0 rounded-[13px] bg-[rgba(0,0,0,0.80)]  text-white group-hover:scale-100 whitespace-normal py-5 px-3">
                           <h3 className="text-[#7152EB] text-[16px] py-1 font-medium mb-1">
                             Impending Revenue
                           </h3>
-                          <span className="font-light">
+                          <span className="font-light text-[13px] ">
                             This value is calculated by adding up all the revenue
                             lost from sessions that have been marked as
                             “Scheduled” for the selected date range.
@@ -494,7 +494,7 @@ const Dashboard = () => {
           <div className="grid grid-cols-12  w-[83.33vw] gap-x-5 mx-auto">
             <div className="col-span-3 h-full  !whitespace-nowrap">
               <p className=" mb-1 font-semibold text-[#26435F] text-xl text-base-20">User Stats</p>
-              <div className={`${styles.sidebox} min-h-[305px] min-w-[200px]`}>
+              <div className={`${styles.sidebox} min-h-[330px] min-w-[312px]`}>
                 <div className="pl-[38px]  pt-6 rounded ">
                   <p className="text-[#26435F] text-md text-base-20">Active / Total Students</p>
                   <p className="text-md">
@@ -552,7 +552,7 @@ const Dashboard = () => {
           </div>
         </section>
 
-        <section className="mt-[30px] w-[83.33vw] mx-auto !mt-[calc(30*0.050vw)]">
+        <section className="mt-[70px] w-[83.33vw] mx-auto ">
           <p className="font-semibold text-[#26435F]  text-xl mb text-base-20">Latest Sign-Ups <span className="font-light">(last 7 Days)</span></p>
 
           <div className="">
@@ -561,6 +561,7 @@ const Dashboard = () => {
               AdminLatestSignUp={true}
               headerObject={true}
               belowBox={true}
+              belowBoxHeight="h-[192px]"
               belowBoxText="Invite Parents or Students"
               belowBoxIcon={userLogo}
               tableHeaders={latestSignUpHeaders}
@@ -592,6 +593,7 @@ const Dashboard = () => {
               </p>
               <div className=" pr-[1.5625vw] border-r-[1.7px] border-[#CBD6E2] text-base-17-5">
                 <Table
+                noScrollbar={true}
                   data={popularServices}
                   hidePagination={true}
                   tableHeaders={[
@@ -605,6 +607,7 @@ const Dashboard = () => {
                   belowBox={true}
                   belowBoxText="Add New Services"
                   belowBoxIcon={plusIcon}
+                  belowBoxHeight="h-[168px]"
                   maxPageSize={5}
                 />
               </div>
@@ -631,6 +634,7 @@ const Dashboard = () => {
                   belowBox={true}
                   belowBoxText="Add Referral Codes"
                   belowBoxIcon={plusIcon}
+                  belowBoxHeight="h-[168px]"
                 />
               </div>
             </div>
@@ -733,6 +737,7 @@ const Dashboard = () => {
             belowBox={true}
             belowBoxText="Invite Tutors"
             belowBoxIcon={userLogo}
+            belowBoxHeight="h-[143px]"
           />
 
 

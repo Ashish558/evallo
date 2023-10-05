@@ -53,6 +53,7 @@ export default function TableItem({
   setnumberChecked,
   testtype
 }) {
+  const { dateFormat } = useSelector(state => state.user)
   const [score, setScore] = useState("-");
   const navigate = useNavigate();
   const [fetchSettings, settingsResp] = useLazyGetSettingsQuery();
@@ -426,7 +427,7 @@ export default function TableItem({
             <div className="my-[6px] capitalize">{item?.accountStatus}</div>
           </td>
           <td className=" text-[17.5px] px-1  min-w-14  text-[#507CA8]">
-            <div className="my-[6px] capitalize">{getFormatDate(item.createdAt)}</div>
+            <div className="my-[6px] capitalize">{getFormattedDate(item.createdAt, dateFormat)}</div>
           </td>
 
           {false && <td className=" px-1 min-w-14 ">
@@ -559,7 +560,13 @@ export default function TableItem({
           <td className=" text-[17.5px] px-1  min-w-14 py-4  text-center">
 
             <span onClick={() => onClick.redirect(item)} className="">
-              {new Date(item.assignedOn).toLocaleDateString()}
+              {getFormattedDate(item.assignedOn, dateFormat)}
+            </span>
+          </td>
+          <td className=" text-[17.5px] px-1  min-w-14 py-4  text-center">
+
+            <span onClick={() => onClick.redirect(item)} className="">
+              {getFormattedDate(item.dueDate, dateFormat)} 
             </span>
           </td>
 
@@ -814,8 +821,8 @@ export default function TableItem({
         <tr className="odd:bg-white font-medium text-[17.5px]  lead">
           <td>{item.testName}</td>
           <td>{item.testType} &#174;</td>
-          <td>{item.createdAt.split("T")[0]}</td>
-          <td>{item.updatedAt.split("T")[0]}</td>
+          <td> {getFormattedDate(item.createdAt.split("T")[0], dateFormat)}</td>
+          <td>{getFormattedDate(item.updatedAt.split("T")[0], dateFormat)}</td>
           <td> {item.no_of_assign ? item.no_of_assign : "-"} </td>
           <td className="font-medium px-1 py-4 text-right">
             <div className="flex justify-end">

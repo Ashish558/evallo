@@ -7,10 +7,12 @@ import styles from "./rangeDate.module.css";
 import downR from "../../assets/YIcons/downR.svg"
 import { useState } from "react";
 import { useEffect } from "react";
+import { useSelector } from "react-redux";
+import { getFormattedDate } from "../../utils/utils";
 
 
 const RangeDate = ({ removeUnderline,handleRangeData ,optionClassName,className,manualHide ,inputContainerClassName}) => {
-
+  const { dateFormat } = useSelector(state => state.user)
   const [startDate, setStartDate] = useState(() => calculateDateRange()[0]);
   const [selectDate, setSelectedDate] = useState({
     sDate: "",
@@ -100,6 +102,27 @@ const RangeDate = ({ removeUnderline,handleRangeData ,optionClassName,className,
 
   }
   newDateformat += " - " + temp[0] + " " + temp[1] + " " + temp[2] + ", " + temp[3]
+// console.log(temp[0])
+  const parts = newDateformat.split(" - ");
+  const firstPart =  getFormattedDate(parts[1], dateFormat); 
+  const secondPart =  getFormattedDate(parts[0], dateFormat); 
+  const latestDateFormat=secondPart + " - " +firstPart 
+
+
+  
+  const [startFull, endFull] = latestDateFormat.split(" - ");
+  
+ 
+  const [, , endYear] = endFull.split("-");
+  
+  
+  const [startMonth, startDay] = startFull.split("-");
+  
+  
+  const formattedStartDate = `${startMonth}-${startDay}`;
+  const formattedDateRange = `${formattedStartDate} - ${endFull}`;
+  // console.log(formattedDateRange);
+  
 
   return (
     <div className={`flex text-xs  !text-[calc(15*0.050vw)] ${className}`}>
@@ -112,16 +135,17 @@ const RangeDate = ({ removeUnderline,handleRangeData ,optionClassName,className,
         labelClassname="text-sm !text-[calc(17*0.050vw)]"
         inputContainerClassName={`border-none  !text-[calc(17*0.050vw)] whitespace-nowrap font-semibold text-[#FFA28D] ${inputContainerClassName}  ${styles["text"]}`}
         inputClassName={`border-none w-fit bg-transparent font-semibold text-[#FFA28D] !text-[calc(17*0.050vw)]`}
-        value={newDateformat}
+        value={formattedDateRange}
+        optionListClassName="text-[#517CA8] underline underline-offset-2"
         optionClassName={`${optionClassName} relative !text-[calc(17*0.050vw)]`}
         optionData={[
-          { name: "Today", days: 0 },
+          { name: "Lifetime", days:1000 },
           { name: "Last 7 Days", days: 7 },
-          { name: "Current Month", days: 30 },
-          { name: "Last Month", days: 60 },
-          {name:"Current Year",days: 365 },
-          {name:"Last Year",days: 700},
-          {name:"Life Time",days:1000}
+          { name: "Last 30 Days", days: 30 },
+          { name: "This Year", days: 60 },
+          // {name:"Current Year",days: 365 },
+          // {name:"Last Year",days: 700},
+          // {name:"Life Time",days:1000}
         ]}
         optionType={"object"}
         setSelectedDate={setSelectedDate}
@@ -130,35 +154,38 @@ const RangeDate = ({ removeUnderline,handleRangeData ,optionClassName,className,
         DateSelect={
            !manualHide &&
           <div className="flex relative flex-col hover:bg-white items-center pt-2 z-5000 border-b  ">
-            <div className="font-semibold text-black flex w-full justify-around">
+            <div className="text-[9px] text-[#517CA8]  w-full px-[26px]">
               <label htmlFor="sdate">Start Date</label>
-              <label htmlFor="edate">End Date</label>
+              
             </div>
-            <div className="flex p-1 justify-between gap-5 ">
+            <div className="flex flex-col">
               <input
                 type="date"
                 name="sdate"
-                className="rounded-md bg-primary-50 p-1 text-[#FFA28D]"
+                className="rounded-md  p-1 text-[#FFA28D]"
                 value={selectDate.sDate}
                 max={selectDate.eDate}
                 onChange={(e) => handleLocalDate(e.target.value, "sDate")}
               />
+  <div className="text-[9px] text-[#517CA8]  w-full px-[26px] pt-[15px]">
+              <label htmlFor="edate">End Date</label>
+              </div>
               <input
                 type="date"
                 min={selectDate.sDate}
                 name="edate"
-                className="rounded-md bg-primary-50 text-[#FFA28D] p-1 w-[120px]"
+                className="rounded-md  text-[#FFA28D] p-1 w-[120px]"
                 value={selectDate.eDate}
                 placeholder="Start Date"
                 onChange={(e) => handleLocalDate(e.target.value, "eDate")}
               />
             </div>
-            <div className="w-full flex justify-center">
+            <div className="w-full flex px-[26px]">
               <p className="ml-[0px]">
                 <button
                   disabled={!selectDate.eDate || !selectDate.sDate}
-                  className={`${!selectDate.eDate || !selectDate.sDate ? "opacity-75" : ""
-                    } rounded-md bg-[#FFA28D] py-1 px-4 mt-5 mb-[17px]  text-white hover:shadow-sm hover:scale-105`}
+                  className={`${!selectDate.eDate || !selectDate.sDate ? "opacity-75 font-normal" : ""
+                    } rounded-[4px] bg-[#FFA28D] py-1 px-4 mt-5 mb-[17px]  text-white hover:shadow-sm hover:scale-105 font-normal`}
                   onClick={handleStartDate}
                 >
                   Submit
