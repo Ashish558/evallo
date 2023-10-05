@@ -31,8 +31,10 @@ export default function Table(props) {
     headerWidth,
     testtype,
     belowBox,
+    belowBoxHeight,
     belowBoxText,
-    belowBoxIcon
+    belowBoxIcon,
+    noScrollbar
   } = props;
   console.log(testtype);
   const [dummy, setDummy] = useState([]);
@@ -85,8 +87,8 @@ export default function Table(props) {
   if (isCallingApi) return <ApiTable noArrow={noArrow} {...props} />;
 
   return (
-    <div className="w-full">
-      <div className="overflow-x-auto scrollbar-content custom-scroller-2 p-[2px] scroll-m-1 ">
+    <div className="w-full">  
+      <div className={` ${noScrollbar?` lg:overflow-x-auto scrollbar-content custom-scroller-2 scroll-m-1 ${styles.noOverflow}`:'overflow-x-auto scrollbar-content custom-scroller-2 scroll-m-1'}  p-[2px]  `}>
         <table className=" customTable mb-3 text-center w-full whitespace-nowrap">
           <thead className="pb-2 whitespace-nowrap">
             <tr className=" whitespace-nowrap">
@@ -174,7 +176,7 @@ export default function Table(props) {
         </table>
       </div>
     {
-      belowBox &&  <div className="h-[192px] bg-white mt-[6px] rounded-5 shadow-[0px_0px_2px_0px_rgba(0,0,0,0.25)] flex items-center justify-center">
+      belowBox &&  <div className={`${belowBoxHeight} bg-white mt-[6px] rounded-5 shadow-[0px_0px_2px_0px_rgba(0,0,0,0.25)] flex items-center justify-center`}>
         <button className="inline-block rounded-[5.33px] bg-[#FFA28D] text-[#FFF] font-semibold py-[10px] px-[15.5px] text-base">{belowBoxText}<img className="inline-block pl-2" src={belowBoxIcon} alt="" /></button>
       </div>
     }
