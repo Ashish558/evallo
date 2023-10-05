@@ -680,6 +680,7 @@ export default function ParentEditables({
     "personality",
     "subjects",
   ];
+  console.log(user)
   return Object.keys(toEdit).map((key) => {
     return (
       toEdit[key].active === true && (
@@ -728,6 +729,7 @@ export default function ParentEditables({
                 id="editable-form"
                 onSubmit={handleSubmit}
               >
+                {console.log({user})}
                 {/* {currentField.fields && currentField.fields} */}
                 {currentField.name === "frame0" && (
                   <div className="flex flex-col px-2 it">
@@ -802,6 +804,7 @@ export default function ParentEditables({
                         <div className="flex !text-sm gap-4 ">
                           <InputField
                             IconLeft={caution}
+                            hideTooltip={user?.isVerfied===true?true:false}
                             label="Email"
                             labelClassname="text-[#26435F]"
                             placeholder="Email Id"
@@ -816,7 +819,7 @@ export default function ParentEditables({
                                 email: e.target.value,
                               })
                             }
-                            Tooltip={
+                            Tooltip={ !user?.isVerfied&&
                               <span className="absolute top-10 w-[200px] scale-0 rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100">
                                 <h3 className="text-[#24A3D9] font-semibold mb-1">
                                   Email Confirmation Sent

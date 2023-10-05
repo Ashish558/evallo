@@ -956,11 +956,13 @@ console.log({selectedId})
              
             </label> */}
           </div>
-
+          {
+            (persona==="admin"|| (persona==="tutor" && organization?.settings?.permissions && organization?.settings?.permissions[0]?.choosedValue))&&
                   <div  onClick={()=>selectedId?.length>0 &&setDeleteBulkModalActive(true)} className="gap-x-[5px] cursor-pointer px-4 py-[9px] bg-[#FFF] rounded-5 ml-6 flex items-center">
                     <p >Delete</p>
                     <p ><img className="w-5 h-5" src={DeleteIcon} alt="" /></p>
                   </div>
+}
                   <div onClick={()=>selectedId?.length>0 &&setResendBulkModalActive(true)}  className="cursor-pointer gap-x-[5px] px-4 py-[11px] bg-[#FFF] rounded-5 ml-6 flex">
                     <p >Resend</p>
                     <img src={ResendIcon} alt="" />

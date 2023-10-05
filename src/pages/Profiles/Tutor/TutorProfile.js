@@ -971,7 +971,7 @@ export default function TutorProfile({ isOwn }) {
                   Tutor Highlight Video
                 </div>
                
-                  <p
+                {(isOwn == true || persona === "admin") && (  <p
                     className="text-[#667085] ml-auto underline cursor-pointer text-[15px] text-base-15"
                     onClick={() =>
                       setToEdit({
@@ -981,7 +981,7 @@ export default function TutorProfile({ isOwn }) {
                     }
                   >
                     edit
-                  </p>
+                  </p>)}
     
               </div>
 
@@ -1008,7 +1008,7 @@ export default function TutorProfile({ isOwn }) {
               <div className="relative z-[100] flex justify-between text-xl text-[#26435F] font-semibold text-base-20">
                 <span>Reviews</span>
 
-                {persona === "admin" && (
+                {(persona === "admin" || isOwn) && (
                   <p
                     className="text-[#667085] ml-auto underline cursor-pointer text-[15px] font-semibold text-base-15"
                     onClick={() =>

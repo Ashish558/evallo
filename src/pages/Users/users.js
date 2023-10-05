@@ -426,6 +426,53 @@ export default function Users() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log("add save")
+    if (modalData.userType === "") return alert("Fill all the fields");
+    let body = {
+      firstName: modalData.firstName,
+      lastName: modalData.lastName,
+      email: modalData.email,
+      phone: `${numberPrefix}${modalData.phone}`,
+      type:"dont send invite."
+    };
+    setLoading(true);
+    if (modalData.userType === "tutor") {
+      //console.log(body);
+      body.role = modalData.userType.toLowerCase();
+      addUser(body).then((res) => {
+        //console.log(res);
+        setLoading(false);
+        if (res.error) {
+          alert(res.error.data.message);
+          return;
+        }
+        fetch();
+        alert("User Saved Successfully!");
+        setModalData(initialState);
+        handleClose();
+      });
+      return;
+    } else {
+      body.role = modalData.userType.toLowerCase();
+      //console.log(body);
+      addUser(body).then((res) => {
+        setLoading(false);
+        //console.log(res);
+        if (res.error) {
+          alert(res.error.data.message);
+          return;
+        }
+        fetch();
+        alert("Invitation sent!");
+        setModalData(initialState);
+        handleClose();
+      });
+    }
+  };
+  const handleInvite1 = (e) => {
+    
+    e.preventDefault();
+    console.log("add invite")
     if (modalData.userType === "") return alert("Fill all the fields");
     let body = {
       firstName: modalData.firstName,
@@ -433,6 +480,7 @@ export default function Users() {
       email: modalData.email,
       phone: `${numberPrefix}${modalData.phone}`,
     };
+
     setLoading(true);
     if (modalData.userType === "tutor") {
       //console.log(body);
@@ -691,7 +739,8 @@ export default function Users() {
           console.log("uploaded", res);
           setXlsFile(null);
           setCsvLength("XX");
-          alert("File Uploaded");
+          alert("Bulk Users Saved!");
+          setBulkUpload(false);
           //setBulkUpload(false)
         })
         .catch((err) => {
@@ -713,7 +762,8 @@ export default function Users() {
           setInviteUsers(false);
           setXlsFile(null);
           setCsvLength("XX");
-          alert("File Uploaded");
+          setInviteUsers(false);
+          alert("Invite sent to bulk users!");
           // setXlsFile(undefined);
         })
         .catch((err) => {
@@ -994,8 +1044,9 @@ console.log("users",{selectedId,bulkEdits})
               <Modal
                 crossBtn={true}
                 underline={true}
-                title={`Are You Sure You Want to Invite ${csvLength} Users To Join Evallo?`}
-                classname={"max-w-[781px] mx-auto"}
+                titleInvite={csvLength}
+
+                 classname={"max-w-[781px] mx-auto"}
                 titleClassName={"mb-5 "}
                 handleClose={() => setInviteUsers(false)}
                 body={
@@ -1026,7 +1077,7 @@ console.log("users",{selectedId,bulkEdits})
                         type="button"
                         onClick={() => {
                           bulkInvite();
-                          setInviteUsers(false);
+                         
                         }}
                       >
                         Yes, Confirm
@@ -1263,7 +1314,7 @@ console.log("users",{selectedId,bulkEdits})
                 name:iyt.value,
               }
             })}
-            placeholder="Assigned Tutor"
+            placeholder="Assign a Tutor"
             parentClassName="w-[11vw] text-[#26435F] "
             type="select"
             IconSearch={Dropdown}
@@ -1458,7 +1509,7 @@ console.log("users",{selectedId,bulkEdits})
                 </button>
                 <button
                   className="rounded-lg bg-transparent border-2 border-[#FFA28D] py-2 text-[#FFA28D]  w-[146px]"
-                  onClick={handleSubmit}
+                  onClick={(e)=>handleInvite1(e,"invite")}
                   disabled={addUserBtnDisabled}
                 >
                   Invite User

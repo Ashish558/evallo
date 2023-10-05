@@ -363,20 +363,38 @@ export default function ParentEditables({
   //console.log("parentEdit",currentField,currentToEdit,organization,userId)
   const handleAddReview = () => {
     let tutorRev = currentToEdit?.tutorReviews;
+    let bool=0;
+    tutorRev?.map((tr, id) => {
+      if(!tr?.userTag||!tr?.content|| !tr?.date|| !tr?.service||!tr?.userTag?.length===0||!tr?.content?.length===0|| !tr?.date?.length===0|| !tr?.service?.length===0){
+        if(!bool)
+        alert("Please fill all the fields to add review. ")
+     
+        bool=1;
+        return
+      }
+    })
+    if(bool)return
     tutorRev?.map((tr, id) => {
       let reqBody = tr;
       reqBody.orgId = organization?._id;
       reqBody.tutorId = userId;
-      console.table(id, "review", reqBody);
+      //console.table(id, "review", reqBody);
       addReview(reqBody).then((res) => {
         console.log(id, "newtr tutor review", res);
-      });
-      if (id === tutorRev?.length - 1)
+      
+      if (id === tutorRev?.length - 1){
+        console.log("last review")
+        fetchDetails(true, true);
+        setLoading(false)
+        handleClose()
         setCurrentToEdit({
           active: false,
           tutorReviews: [],
           fetchData: [],
         });
+       
+        }
+      });
     });
   };
 
@@ -468,7 +486,10 @@ export default function ParentEditables({
     let reqBody = { ...currentToEdit };
     delete reqBody["active"];
     // console.log(reqBody);
-
+    if (reqBody?.tutorReviews) {
+      handleAddReview();
+      return 
+    }
     if (currentField.name === "profileData") {
       let body = { ...reqBody };
       delete body["firstName"];
@@ -532,9 +553,7 @@ export default function ParentEditables({
         // handleClose()
       });
     } else if (currentField.api === "tutorDetail") {
-      if (reqBody?.tutorReviews) {
-        handleAddReview();
-      }
+     
       if (reqBody.tutorLevel) {
         const level = getLevel(reqBody.tutorLevel);
         reqBody.tutorLevel = level;

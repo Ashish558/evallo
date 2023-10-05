@@ -77,6 +77,11 @@ export default function TableItem({
     leadStatus: [],
   });
 
+useEffect(()=>{
+ if(item.userType === "tutor" )
+ 
+  setTutorStatus(item?.tutorStatus)
+},[item])
   useEffect(() => {
 
     if (dataFor === "assignedTestsStudents") {
@@ -140,7 +145,9 @@ export default function TableItem({
   }, []);
 
   const handlestatusChange = (field) => {
-
+if (item.userType === "parent" || item.userType === "student"){
+  return 
+}
     updateFields({ id: item._id, fields: field }).then((res) => {
       if (res.error) {
         return //console.log("error updating");
@@ -199,7 +206,7 @@ export default function TableItem({
           let status = "-";
           if (resp?.data?.data?.details) {
             status = resp.data.data.details?.leadStatus;
-            setLeadStatus(status);
+           // setLeadStatus(status);
             setTutorStatus(resp.data.data.details?.tutorStatus)
           }
         });
@@ -209,6 +216,7 @@ export default function TableItem({
           let status = "-";
           if (resp?.data?.data?.userdetails) {
             status = resp.data.data.userdetails.leadStatus;
+            if(item.userType === "parent" || item.userType === "student")
             setLeadStatus(status);
             setTutorStatus(resp.data.data.details?.tutorStatus)
           }
@@ -396,6 +404,8 @@ export default function TableItem({
           <td className=" text-[17.5px] px-1  min-w-14 ">
             <div className="my-[6px]">
               <InputSelect
+               disabled={(item?.userType === "parent" || item?.userType === "student")?false:true}
+         
                 tableDropdown={true}
                 value={leadStatus ? leadStatus : "-"}
                 placeholderClass="text-base-17-5"
@@ -410,6 +420,7 @@ export default function TableItem({
           </td>
           <td className=" text-[17.5px] px-1  min-w-14 ">
             <InputSelect
+            disabled={(item?.userType === "parent" || item?.userType === "student")?true:false}
               tableDropdown={true}
               value={tutorStatus ? tutorStatus : "-"}
               optionData={organization2?.settings?.tutorStatus}
