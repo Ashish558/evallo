@@ -26,7 +26,7 @@ const tempsubjects = [
 ]
 
 const tableHeadersParent = [
-   'Q No.', 'Accuracy', 'Concept', 'Strategy', 'Time Taken',
+   'Q No.','Correct Answer','Student Response', 'Accuracy', 'Concept', 'Strategy', 'Time Taken','Marked For Review'
 ]
 const adminTableHeaders = [
    'Q No.', 'Correct Answer', 'Student Response', 'Accuracy', 'Concept', 'Strategy', 'Time Taken', 'Marked For Review'
@@ -122,7 +122,7 @@ export default function StudentReport() {
 
             let answerKeyData = { ...res.data.data }
             let score = getScoreStr(responseData.testType, responseData.score, responseData.subjects, answerKeyData.answer.subjects.length)
-           console.log('score', score);
+           console.log('score55', score);
             setDisplayScore(score)
 
           console.log('answer key subjects', answerKeyData.answer.subjects);
@@ -376,6 +376,16 @@ const [startDate,startTime,startFormat]=(testDetails?.startedOn?.split(' '))
             currentAnswerKeyIndex = idx
          }
       })
+      const CustomImage = () => {
+         return (
+            <div className='w-full flex justify-center'>
+               <img
+                  src={questionMark}
+                  alt="QuestionMark"
+               />
+            </div>
+         );
+      }
 
       if (persona === 'student' || persona === 'parent') {
          let temp = responseData.response[selectedSubject.idx].map((item, index) => {
@@ -392,10 +402,13 @@ const [startDate,startTime,startFormat]=(testDetails?.startedOn?.split(' '))
             if (answerKey[currentAnswerKeyIndex][index])
                return {
                   QuestionNumber,
+                  CorrectAnswer: (organization && organization?.settings && organization?.settings?.permissions && organization?.settings?.permissions[4]?.choosedValue)?answerKey[currentAnswerKeyIndex][index]?.CorrectAnswer:"-",
+                  ResponseAnswer,
                   isCorrect,
                   Concept: concept,
                   Strategy: strategy,
-                  responseTime: responseTime >= 0 ? `${responseTime} sec` : '-'
+                  responseTime: responseTime >= 0 ? `${responseTime} sec` : '-',
+                  review: <CustomImage />
                }
          })
          setTableData(temp)
@@ -429,7 +442,7 @@ const [startDate,startTime,startFormat]=(testDetails?.startedOn?.split(' '))
       }
 
 
-   }, [selectedSubject, answerKey])
+   }, [selectedSubject, answerKey,organization])
 
    //change time taken series data
    useEffect(() => {
@@ -939,7 +952,7 @@ const [startDate,startTime,startFormat]=(testDetails?.startedOn?.split(' '))
                <div className='mt-12'>
                   <Table
                      noArrow={true}
-                     dataFor={persona === 'parent' || persona === 'student' ? 'studentTestsReportSmall' : 'studentTestsReport'}
+                     dataFor={persona === 'parent' || persona === 'student' ? 'studentTestsReport' : 'studentTestsReport'}//studentTestsReportSmall
                      hidePagination={true}
                      data={tableData}
                      tableHeaders={tableHeaders}

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import EyeIcon from "../../assets/form/eye-open.svg";
+import EyeIcon2 from "../../assets/form/eye2.svg";
 import Message from "./Message/Message";
 import { useRef } from "react";
 import { useEffect } from "react";
@@ -137,7 +138,7 @@ export default function InputField({
         )}
         {type === "password" && (
           <img
-            src={EyeIcon}
+            src={inputType === "password"?EyeIcon:EyeIcon2}
             className="ml-4 w-[20px] cursor-pointer"
             alt='eye-active'
             onClick={() =>

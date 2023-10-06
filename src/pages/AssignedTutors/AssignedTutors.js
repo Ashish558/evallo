@@ -350,6 +350,7 @@ const handleAssign = (item) => {
    },[assignedTutorOpen])
    const handleMultipleStudent=(student) => {
       console.log({student})
+      console.log({studentMultiple,modalData})
       let bool= studentMultiple?.find((student1) =>student1?._id===student?._id)
       if (bool) {
         let updated = studentMultiple.filter(
@@ -362,7 +363,7 @@ const handleAssign = (item) => {
       }
     }
 
-    console.log({studentMultiple,modalData})
+   // console.log({studentMultiple,modalData})
    // console.log('allAssignedTests', allAssignedTests);
    return (
       <>
