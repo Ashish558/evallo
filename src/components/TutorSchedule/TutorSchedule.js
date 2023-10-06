@@ -1,9 +1,11 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import calendar from '../../assets/images/uiw_date.png'
+import { useSelector } from 'react-redux'
+import { getFormattedDate } from '../../utils/utils'
 
 export default function TutorSchedule({ service, date, studentName, time, timeZone, session, _id, handleLinkClick, specialization }) {
-
+   const { dateFormat } = useSelector(state => state.user)
    const startTime = time.start
    const endTime = time.end
    let startDate = new Date(date)
@@ -23,7 +25,7 @@ export default function TutorSchedule({ service, date, studentName, time, timeZo
          <div>
             <div className='flex items-center'>
                <div><img width="20px" src={calendar} alt="" /></div>
-               <p className='text-[#517CA8] ml-3 text-[0.911vw]'>{dateStr}</p>
+               <p className='text-[#517CA8] ml-3 text-[0.911vw]'>{getFormattedDate(dateStr, dateFormat)}</p>
             </div>
 
             <p className=' font-bold text-[#517CA8] mt-1 text-[0.911vw]'>
@@ -32,12 +34,12 @@ export default function TutorSchedule({ service, date, studentName, time, timeZo
          </div>
          <div>
             <div>
-               <button className='bg-[#FFA28D] text-[0.78125vw]   rounded-5 px-4 py-[15px] text-white' onClick={() => handleLinkClick(session)}>
+               <button className='bg-[#FFA28D] text-[0.78125vw]   rounded-5 px-4 py-[15px] text-white w-[7.5vw]' onClick={() => handleLinkClick(session)}>
                   Meeting Link
                </button>
             </div>
             <div className='mt-[10px]'>
-               <button className='bg-[#667085] text-[0.78125vw]   rounded-5 px-5 py-[15px]  text-white' onClick={handleEdit}>
+               <button className='bg-[#667085] text-[0.78125vw]   rounded-5 px-5 py-[15px]  text-white w-[7.5vw]' onClick={handleEdit}>
                   Edit Session
                </button>
             </div>

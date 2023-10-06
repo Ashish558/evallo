@@ -57,6 +57,7 @@ import YoutubeEmbed from "./YoutubeEmbed/YoutubeEmbed";
 // import CircleButton from "../../../components/CircleButton/CircleButton";
 import BarChart from "../../../components/BarChart/BarChart";
 import Pagination from "../../SuperadminDashboard/Table/Pagination";
+import { getFormattedDate } from "../../../utils/utils";
 
 export default function TutorProfile({ isOwn }) {
   const { firstName, lastName } = useSelector((state) => state.user);
@@ -79,6 +80,7 @@ export default function TutorProfile({ isOwn }) {
   const { organization } = useSelector((state) => state.organization);
   const [newServices, setNewServices] = useState([]);
   // console.log(feedbacks)
+  const { dateFormat } = useSelector(state => state.user)
   const { id } = useSelector((state) => state.user);
   const [studentFeedbacks, setStudentFeedbacks] = useState([]);
   useEffect(() => {

@@ -77,7 +77,7 @@ export default function ActionLog({ actionLog }) {
       >
         <div className=" border-b-[1.6px]  border-b-[#CBD6E2] ">
           <p className="uppercase  pl-[29px] pt-[16px] pb-3 text-[#26435F] text-xl !text-[calc(20*0.050vw)]">
-            {/* {headerDate} */}
+            
             {getFormattedDate(headerDate, dateFormat)}
           </p>
         </div>
@@ -103,7 +103,7 @@ export default function ActionLog({ actionLog }) {
                   {item?.topDate && item?.message && (
                     <span className="text-xs ml-5 top-0 text-[#FFA28D] absolute  backdrop-blur-sm ">
                       {" "}
-                      {/* {item?.topDate} */}
+                      
                       {getFormattedDate(item?.topDate, dateFormat)}
                     </span>
                   )}
