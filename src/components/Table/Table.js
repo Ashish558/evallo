@@ -8,7 +8,9 @@ import Loader from "../Loader";
 import styles from "./styles.module.css";
 import LatestSignUpTableItem from "./LatestSignUpTableItem";
 import Pagination from "../../pages/SuperadminDashboard/Table/Pagination";
+import { useNavigate } from "react-router-dom";
 export default function Table(props) {
+  const navigate=useNavigate
   const {
     noArrow,
     dataFor,
@@ -30,6 +32,7 @@ export default function Table(props) {
     AdminLatestSignUp,
     headerWidth,
     testtype,
+    belowBoxLink,
     belowBox,
     belowBoxHeight,
     belowBoxText,
@@ -155,7 +158,7 @@ export default function Table(props) {
                 );
               })
             )}
-            {dummy.map((it, iti) => {
+            {!belowBox && dummy.map((it, iti) => {
               return (
                 <tr
                   key={iti}
@@ -176,8 +179,8 @@ export default function Table(props) {
         </table>
       </div>
     {
-      belowBox &&  <div className={`${belowBoxHeight} bg-white mt-[6px] rounded-5 shadow-[0px_0px_2px_0px_rgba(0,0,0,0.25)] flex items-center justify-center`}>
-        <button className="inline-block rounded-[5.33px] bg-[#FFA28D] text-[#FFF] font-semibold py-[10px] px-[15.5px] text-base">{belowBoxText}<img className="inline-block pl-2" src={belowBoxIcon} alt="" /></button>
+      belowBox &&  <div  className={`${belowBoxHeight} bg-white mt-[6px] rounded-5 shadow-[0px_0px_2px_0px_rgba(0,0,0,0.25)] flex items-center justify-center`}>
+        <button onClick={()=>navigate(`/${belowBoxLink}`)} className="inline-block rounded-[5.33px] bg-[#FFA28D] text-[#FFF] font-semibold py-[10px] px-[15.5px] text-base">{belowBoxText}<img className="inline-block pl-2" src={belowBoxIcon} alt="" /></button>
       </div>
     }
       {!hidePagination ? (
@@ -224,3 +227,4 @@ export default function Table(props) {
     </div>
   );
 }
+
