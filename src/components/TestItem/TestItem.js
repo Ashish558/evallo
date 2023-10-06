@@ -76,9 +76,9 @@ export const TestItem = ({
       <div className='flex-1 ml-5'>
         <div className='flex gap-[12px]'>
           <div className='flex items-center'>
-            <div className='w-[24px]'>
+            <div className='w-[24px] mr-3'>
               <img
-                className='cursor-pointer'
+                className='cursor-pointer '
                 src={Download}
                 onClick={() => window.open(`${awsLink}${pdfLink}`)}
                 width='34px'
@@ -98,22 +98,18 @@ export const TestItem = ({
   ) : pageState === 'test' ? (
     <TestPage /> 
   ) : isCompleted === true ? (
-    <div
-      className='cursor-pointer text-sm break-al w-full text-sm font-bold bg-[#CBC0F5]/50 px-2 py-2 text-center text-black rounded-[6px]'
+                      <div className='cursor-pointer     bg-[#38C980] px-2 py-2 text-center text-white rounded-[5px] w-[6.25vw] text-base-17-5'
       onClick={handleReportNavigate}
     >
-      {score}
+      {/* {score} */}Report
     </div>
   ) : isStarted === true ? (
-    <div
-      className='cursor-pointer w-full font-bold bg-[#32D583] px-2 py-2 text-center text-white rounded-[6px]'
+                        <div className='cursor-pointer  bg-[#FFCE84] px-2 py-2 text-center text-white rounded-[5px] w-[6.25vw] text-base-17-5'
       onClick={handleNavigate}
     >
       Continue
     </div>
-  ) : (
-    <div
-      className='cursor-pointer w-full font-bold bg-[#F6A429CC] px-2 py-2 text-center text-white rounded-[6px]'
+  ) : (   <div className='cursor-pointer w-[6.25vw]  bg-[#FF7979] px-2 py-2 text-center text-white rounded-[5px] text-base-17-5'
       onClick={handleNavigate}
     >
       Start

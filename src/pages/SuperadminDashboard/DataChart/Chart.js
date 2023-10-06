@@ -182,8 +182,8 @@ const BubbleChart = ({ dateRange }) => {
         <div className="bg-[rgba(38,67,95,1)] w-[40px] h-[11px] mr-[13px]"></div>
         <p>past 12 days</p>
       </div>
-      <div className="absolute bottom-[9%] left-[50%]"><img src={arrow} alt="" /></div>
-      <div className="absolute top-[40%] left-[3%]"><img src={arrow1} alt="" /></div>
+      <div className="absolute bottom-[9%] left-[49%]"><img src={arrow} alt="" /></div>
+      <div className="absolute top-[45%] left-[3%]"><img src={arrow1} alt="" /></div>
     </div >
   );
 };

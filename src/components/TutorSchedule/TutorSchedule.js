@@ -34,12 +34,12 @@ export default function TutorSchedule({ service, date, studentName, time, timeZo
          </div>
          <div>
             <div>
-               <button className='bg-[#FFA28D] text-[0.78125vw]   rounded-5 px-4 py-[15px] text-white' onClick={() => handleLinkClick(session)}>
+               <button className='bg-[#FFA28D] text-[0.78125vw]   rounded-5 px-4 py-[15px] text-white w-[7.5vw]' onClick={() => handleLinkClick(session)}>
                   Meeting Link
                </button>
             </div>
             <div className='mt-[10px]'>
-               <button className='bg-[#667085] text-[0.78125vw]   rounded-5 px-5 py-[15px]  text-white' onClick={handleEdit}>
+               <button className='bg-[#667085] text-[0.78125vw]   rounded-5 px-5 py-[15px]  text-white w-[7.5vw]' onClick={handleEdit}>
                   Edit Session
                </button>
             </div>

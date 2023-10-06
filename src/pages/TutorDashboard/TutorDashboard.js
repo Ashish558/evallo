@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import StudentImg from '../../assets/images/tutor-student.png'
 import OwlCarousel from 'react-owl-carousel';
 import 'owl.carousel/dist/assets/owl.carousel.css';
@@ -19,7 +19,8 @@ import { useLazyGetFeedbacksQuery } from '../../app/services/dashboard';
 import { useNavigate } from 'react-router-dom';
 import { useLazyGetTutorAssignedTestsQuery } from '../../app/services/test';
 import { getDate, getDuration, getFormattedDate } from '../../utils/utils';
-
+import leftArrow from '../../assets/icons/carousel_left-arrow.svg'
+import rightArrow from '../../assets/icons/carousel_right-arrow.svg'
 const studentsArr = [
    {
       src: StudentImg,
@@ -237,7 +238,29 @@ export default function TutorDashboard() {
    // console.log(tutorRank);
    // console.log('allAssignedTests', allAssignedTests);
    // console.log('prof', profileProgress);
+   const sliderRef = useRef(null);
 
+   const options = {
+     items: 1, 
+     loop: true, 
+     nav: false, 
+     responsiveClass: true,
+     dots: false, 
+   };
+ 
+   const handlePrev = () => {
+ 
+     if (sliderRef.current) {
+       sliderRef.current.prev();
+     }
+   };
+ 
+   const handleNext = () => {
+     
+     if (sliderRef.current) {
+       sliderRef.current.next();
+     }
+   };
    return (
       <div className='bg-[#F5F8FA] mb-[100px]'>
          <div className="w-[85.05vw] mx-auto">
@@ -274,23 +297,36 @@ export default function TutorDashboard() {
                <div className='flex items-start'>
 
                   <div className='flex flex-col items-start flex-[7]' >
-                     <div className=' mb-[30px] w-[55.52vw]'>
+                     <div className=' mb-[30px] relative'>
                         <p className='text-[#26435F] font-semibold text-xl mb-[20px] '>Latest Students</p>
-                        <div className='rounded-[5.333px] bg-[#FFF] shadow-[0px_0px_2px_rgba(0,0,0,0.25)] py-5 px-5'>
+                        <div className='rounded-[5.333px] bg-[#FFF] shadow-[0px_0px_2px_rgba(0,0,0,0.25)] py-5 px-5 w-[55.52vw] flex justify-center'>
                            <div className={styles.studentImages} >
                               {
                                  students.length > 0 &&
-                                 <OwlCarousel items={5} autoWidth margin={20} >
+                                 <OwlCarousel
+                                 ref={sliderRef}
+                                 className="owl-theme"
+                                 {...options}
+                                 items={5} autoWidth margin={10} >
                                     {students.map(student => {
                                        return <div className='flex flex-col items-center text-center w-[108px]'>
                                           <img src={`${student.photo ? `${awsLink}${student.photo}` : '/images/default.jpeg'} `} alt='studentImage' />
-                                          <p className='text-[0.78125vw] text-[#517CA8]  mt-4 cursor-pointer'
+                                          <p className='text-[0.78125vw] text-[#517CA8]  mt-4 cursor-pointer w-full text-center'
                                              onClick={() => navigate(`/profile/student/${student._id}`)} >
-                                             {student.name.split(" ")[0]} <br /> {student.name.split(" ")[1]} </p>
+                                             {/* {student.name.split(" ")[0]} <br /> {student.name.split(" ")[1]}  */}
+                                             {student.name}
+                                             
+                                             </p>
                                        </div>
                                     })}
                                  </OwlCarousel>
+                                 
                               }
+                              
+                           </div>
+                           <div className="custom-navigation">
+                              <button className="prev absolute top-[55%] left-[3%]" onClick={handlePrev}><img src={leftArrow} alt="" /></button>
+                              <button className="next absolute top-[55%] right-[3%]" onClick={handleNext}><img className='!w-full' src={rightArrow} alt="" /></button>
                            </div>
                         </div>
                      </div>
@@ -315,9 +351,9 @@ export default function TutorDashboard() {
                      </div>
 
 
-                     <div className='w-[55.52vw] mt-10'>
+                     <div className='w-[55.312vw] mt-10'>
                         <p className='text-primary-dark font-semibold text-[20px] mb-[13px]'>Today’s Schedule</p>
-                        <div className='px-[43px] py-[26px] bg-white  rounded-[5.333px] scrollbar-content scrollbar-vertical h-[350px] overflow-y-auto shadow-[0px_0px_2.6px_0px_rgba(0,0,0,0.25)]'>
+                        <div className='px-[43px] py-[26px] bg-white  rounded-[5.333px] scrollbar-content scrollbar-vertical h-[530px] overflow-y-auto shadow-[0px_0px_2.6px_0px_rgba(0,0,0,0.25)]'>
                            {sessions.map((item, idx) => {
                               return <TutorSchedule {...item} setIsOpen={setIsOpen} handleLinkClick={handleLinkClick} />
                            })}
@@ -366,13 +402,13 @@ export default function TutorDashboard() {
                         </div> */}
                         </div>
 
-                        <div className='w-[27.34vw]'>
+                        <div className='w-[27.34375vw]'>
                            {/* <p className='text-primary font-semibold text-[21px] mb-4'>
                            Latest Practice Test
                         </p> */}
-                           <div className='pl-[30px] pr-[26px] custom-scroller h-[780px]  overflow-auto pt-[10px]  bg-white rounded-20'>
+                           <div className='pl-[30px] pr-[26px] custom-scroller h-[922px]  overflow-auto pt-[20px]  bg-white rounded-20'>
 
-                              {allAssignedTests?.map(item => {
+                              {allAssignedTests?.slice(-10).map(item => {
 
                                  return (
                                     <div className=' mb-[15px]' key={item._id} >
@@ -383,8 +419,9 @@ export default function TutorDashboard() {
                                           <div className='w-3/6'>
                                              <p className='text-[#24A3D9] text-[1.172vw] font-bold cursor-pointer' onClick={() => navigate(`/assigned-tests/${item.testId}/${item.assignedTestId}/report/${item.studentId}`)} > {item.testName} </p>
                                              <div className=' text-[#517CA8] flex text-[0.911vw]'>
-                                                <p className='font-semibold'>Due:</p>
-                                                <p className='ml-2'>  {getFormattedDate(item.dueDate, dateFormat)}</p>
+                                                <p className=''></p>
+                                                <p className='text-base-17-5'>  {item.studentName}
+                                                </p>
                                              </div>
                                           </div>
                                           <div>

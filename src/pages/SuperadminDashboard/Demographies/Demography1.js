@@ -56,7 +56,7 @@ const Demography1 = ({ dateRange }) => {
 
   return (
     <div className="bg-[#FFFFFF] flex justify-center items-center border border-gray-200 p-3 mt-[6px] rounded-md relative">
-      <div className="grid grid-cols-2 gap-x-10 mt-14">
+      <div className="grid grid-cols-2 gap-x-5 mt-14">
         <div className="">
           <div className="absolute top-0 z-10 left-0 pt-[18px] pl-[28px]" >
             <button >
@@ -130,7 +130,7 @@ const Demography1 = ({ dateRange }) => {
               <img className="ml-2 inline-block" src={downArrow} alt={"downArrow"} />
             </span>
           </p>
-          <div className="overflow-y-auto h-[360px] py-0 relative">
+          <div className=" h-[360px] py-0 relative w-[40.2083vw] overflow-y-auto">
 
 
             <table className="table-auto !border-spacing-y-[6px] px-1 customTable border-separate w-full whitespace-nowrap">
