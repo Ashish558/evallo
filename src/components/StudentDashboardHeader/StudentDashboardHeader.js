@@ -85,11 +85,11 @@ const StudentDashboardHeader = () => {
          </div> */}
 
       <div className="flex justify-between relative  gap-8 mb-[92px] mt-[31px] ">
-        <div className="  w-[28.65vw] h-[250px] ">
-          <p className="text-xl text-[#26435F] font-semibold">Announcements</p>
+        <div className="">
+          <p className="text-base-20 text-[#26435F] font-semibold">Announcements</p>
 
           <div
-            className="w-full relative h-full flex rounded-md items-center  shadow-[0px_0px_2.500001907348633px_0px_#00000040]"
+            className=" relative  flex rounded-md items-center  shadow-[0px_0px_2.500001907348633px_0px_#00000040] w-[28.6458vw]  h-[250px] "
             id={styles.exploreBgDisable}
           >
             <div className={styles.images}>
@@ -134,11 +134,11 @@ const StudentDashboardHeader = () => {
           </div>
         </div>
 
-        <div className="w-[25vw] mx-auto h-[250px]">
-          <p className=" text-xl text-[#26435F] font-semibold">
+        <div className=" mx-auto ">
+          <p className=" text-base-20 text-[#26435F] font-semibold">
             Assigned Tutors
           </p>
-          <div className=".mybox bg-white relative shadow-[0px_0px_2.5px_0px_rgba(0,0,0,0.25)] border-b-4 border-b-[#26435F] h-full rounded-md max-w-[440px]  design:max-w-[460px]">
+          <div className=".mybox bg-white relative shadow-[0px_0px_2.5px_0px_rgba(0,0,0,0.25)] border-b-4 border-b-[#26435F]  rounded-md max-w-[440px]  design:max-w-[460px] w-[25.4167vw] h-[250px]">
             <div id="borderLeft" className="rounded-t-r-md"></div>
             <TutorCarousel />
 
@@ -147,11 +147,11 @@ const StudentDashboardHeader = () => {
           </div>
         </div>
 
-        <div className="w-[25vw] h-[250px]">
-          <p className=" text-xl text-[#26435F] font-semibold ">
+        <div className=" ">
+          <p className=" text-base-20 text-[#26435F] font-semibold ">
             Session Feedback
           </p>
-          <div className="h-full bg-white  rounded-md  shadow-[0px_0px_2.500001907348633px_0px_#00000040]">
+          <div className=" bg-white  rounded-md  shadow-[0px_0px_2.500001907348633px_0px_#00000040] w-[25vw] h-[250px]">
             <div
               className="overflow-y-auto flex-1  p-4  h-[100%] custom-scroller"
               id={styles.tutorList}

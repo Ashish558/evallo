@@ -167,7 +167,7 @@ const RangeDate = ({ removeUnderline,handleRangeData ,optionClassName,className,
                 max={selectDate.eDate}
                 onChange={(e) => handleLocalDate(e.target.value, "sDate")}
               />
-  <div className="text-[9px] text-[#517CA8]  w-full px-[26px] pt-[15px]">
+            <div className="text-[9px] text-[#517CA8]  w-full px-[26px] pt-[15px]">
               <label htmlFor="edate">End Date</label>
               </div>
               <input

@@ -242,13 +242,13 @@ if (item.userType === "parent" || item.userType === "student"){
   const getFormatDate = (inputDate) => {
     const dateObj = new Date(inputDate);
 
-    // Format the date in the desired format
+
     const options = { year: 'numeric', month: 'short', day: '2-digit' };
     const formattedDate = dateObj.toLocaleDateString('en-US', options);
     let dd = formattedDate
     let ed = dd.split(" ")
     let fd = ed[0] + ". " + ed[1] + " " + ed[2]
-    //console.log(formattedDate); // Output: "August 02, 2023"
+    //console.log(formattedDate);
     return fd
   }
   const getPhone = (val) => {
@@ -306,7 +306,7 @@ if (item.userType === "parent" || item.userType === "student"){
 
 
               <td className="py-4 px-[10px]">
-                {formattedDate}
+               {getFormattedDate(formattedDate, dateFormat)}
               </td>
             </tr>
 
@@ -471,14 +471,15 @@ if (item.userType === "parent" || item.userType === "student"){
             </span>
           </td>
           <td className="font-medium text-[17.5px] px-1 min-w-14 ">
-            <div className="">{item.userType}</div>
-          </td>
-          <td className="font-medium text-[17.5px] px-1  min-w-14 ">
             <div className="">{item.email}</div>
           </td>
           <td className="font-medium text-[17.5px] px-1  min-w-14 ">
+            <div className="">{item.userType}</div>
+          </td>
+          <td className="font-medium text-[17.5px] px-1  min-w-14 ">
            {item?.lastLogin? <div className="">
-            {new Date(item?.lastLogin).toDateString().split(' ')[1] }. {new Date(item?.lastLogin).getDate() }, {new Date(item?.lastLogin).getFullYear()}
+           {/* {new Date(item?.lastLogin).toDateString().split(' ')[1] }. {new Date(item?.lastLogin).getDate() }, {new Date(item?.lastLogin).getFullYear()} */}
+            {getFormattedDate(item.lastLogin, dateFormat)}
             </div>:"None"}
           </td>
           <td className="font-medium text-[17.5px] px-1  min-w-14 ">
@@ -533,7 +534,7 @@ if (item.userType === "parent" || item.userType === "student"){
           </td>
           <td className="font-medium text-[17.5px] px-1  min-w-14 py-4">
             <div className="my-[6px]">
-              {item.lastLogin ? item.lastLogin : "-"}
+              {item.lastLogin ? getFormattedDate(item.lastLogin, dateFormat) : "-"}
             </div>
           </td>
         </tr>
@@ -859,8 +860,8 @@ if (item.userType === "parent" || item.userType === "student"){
         <tr className=" font-medium  lead  text-[17.5px] ">
           <td>{item.testName}</td>
           <td>{item.testType}</td>
-          <td>{item.createdAt.split("T")[0]}</td>
-          <td>{item.updatedAt.split("T")[0]}</td>
+          <td>{getFormattedDate(item.createdAt.split("T")[0], dateFormat)}</td>
+          <td>{getFormattedDate(item.updatedAt.split("T")[0], dateFormat)}</td>
           <td> {item.no_of_assign ? item.no_of_assign : "-"} </td>
           <td className="font-medium px-1 py-4 text-right">
             <div className="flex justify-center">

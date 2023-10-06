@@ -57,6 +57,7 @@ import YoutubeEmbed from "./YoutubeEmbed/YoutubeEmbed";
 // import CircleButton from "../../../components/CircleButton/CircleButton";
 import BarChart from "../../../components/BarChart/BarChart";
 import Pagination from "../../SuperadminDashboard/Table/Pagination";
+import { getFormattedDate } from "../../../utils/utils";
 
 export default function TutorProfile({ isOwn }) {
   const { firstName, lastName } = useSelector((state) => state.user);
@@ -79,6 +80,7 @@ export default function TutorProfile({ isOwn }) {
   const { organization } = useSelector((state) => state.organization);
   const [newServices, setNewServices] = useState([]);
   // console.log(feedbacks)
+  const { dateFormat } = useSelector(state => state.user)
   const { id } = useSelector((state) => state.user);
   const [studentFeedbacks, setStudentFeedbacks] = useState([]);
   useEffect(() => {
@@ -1044,7 +1046,8 @@ export default function TutorProfile({ isOwn }) {
                   <>
                   <div>
                     <p className="text-[#24A3D9] text-[15px] text-base-17-5">
-                      {getDateFormat(tutorTotalReviews[currentPage-1]?.customCreatedAt)}
+                      {/* {getDateFormat(tutorTotalReviews[currentPage-1]?.customCreatedAt)} */}
+                      {getFormattedDate((tutorTotalReviews[currentPage-1]?.customCreatedAt), dateFormat)}
                     </p>
                     <div>
                       <p className="text-[#517CA8] mt-4 font-light text-[17.503px] text-base-17-5">

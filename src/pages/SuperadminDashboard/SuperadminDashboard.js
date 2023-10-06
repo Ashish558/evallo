@@ -272,7 +272,7 @@ function SuperadminDashboard() {
                     </div>
                     <div className="w-1/5 flex flex-col items-center pt-[5px] pb-2">
                       <p className={`${styles.statHead} text-xl font-semibold`}>
-                        {currentUser?.avg_session_duration}
+                        {currentUser?.avg_session_duration}<span className="text-xs">min</span>
                       </p>
                       <p className="text-sm text-[#26435F] text-center">
                         Avg. Session duration
@@ -311,7 +311,7 @@ function SuperadminDashboard() {
             noArrow={true}
               data={orgSignUpData}
               tableHeaders={tableHeaders}
-              maxPageSize={5}
+              maxPageSize={6}
             />
           </section>
         </div>

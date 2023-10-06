@@ -1162,9 +1162,9 @@ console.log("users",{selectedId,bulkEdits})
             placeholderClass="text-base-17-5"
             optionData={specializations}
             placeholder="Services"
-            parentClassName="w-[12.8541666667vw] relative  relative z-[50]  text-[#667085] -z-50"
+            parentClassName="w-[12.8541666667vw] relative  relative z-[50]  text-[#667085] -z-5000"
             type="select"
-            inputContainerClassName="text-sm  shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white px-[20px] py-[16px]"
+            inputContainerClassName="text-sm  shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white px-[20px] py-[16px] "
             value={
               filterData.specialization.length > 0
                 ? filterData.specialization[0]
@@ -1195,7 +1195,7 @@ console.log("users",{selectedId,bulkEdits})
               }
             })}
             placeholder="Tutor"
-            parentClassName="w-[12.8541666667vw] relative  relative z-[50]  text-[#667085] -z-50"
+            parentClassName="w-[12.8541666667vw] relative  relative z-[50]  text-[#667085] -z-5000"
             type="select"
             inputContainerClassName="text-sm  shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white px-[20px] py-[16px]"
             optionType="object"
@@ -1321,7 +1321,7 @@ console.log("users",{selectedId,bulkEdits})
             IconSearch={Dropdown}
             inputClassName="bg-white border  w-[125px] rounded-[5px] "
             
-            inputContainerClassName="bg-white shadow-[0px_0px_2px_0px_rgba(0,0,0,0.25)] h-[43px]"
+            inputContainerClassName="bg-white shadow-[0px_0px_2px_0px_rgba(0,0,0,0.25)] h-[43px] "
             
             optionType="object"
             value={bulkEdits?.assignedTutor?.value}
@@ -1353,7 +1353,7 @@ console.log("users",{selectedId,bulkEdits})
               <span className="absolute right-[-10px] z-[500] top-[-10px]">
                 <div className="group relative">
                   <img src={ques} className="inline-block" alt="ques"/>
-                  <span className="absolute  top-[-220px] left-[-140px] z-5000 w-[336px]  scale-0 rounded-lg bg-[rgba(31,41,55,0.93)]  text-[13px] text-white group-hover:scale-100 whitespace-normal py-[20px] px-[13px]">
+                  <span className="absolute  top-[-230px] left-[-140px] z-5000 w-[336px]  scale-0 rounded-[13px] bg-[rgba(0,0,0,0.80)]  text-[13px] text-white group-hover:scale-100 whitespace-normal py-[20px] px-[13px]">
                     <h3 className="text-[#517CA8] text-left text-[0.8333vw] py-0 font-semibold mb-1">
                       Invite Users
                     </h3>
