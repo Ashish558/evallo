@@ -186,7 +186,7 @@ const supAdminNavData = [
    {
       icon: Dashboard,
       activeIcon: Dashboard1,
-      path: "/dashboard",
+      path: "/",
       excludes: ["student", "parent", "tutor"],
       tooltip: "Dashboard",
    },
@@ -331,12 +331,12 @@ const Navbar = () => {
 
    return (
       <>
-         <div className="flex justify-around bg-[#26435F] h-[72px] items-center w-full">
+         <div className="flex justify-around bg-[#26435F] h-[65px] design:h-[70px] items-center w-full">
             <div
-               className={`${persona === "superAdmin" ? "translate-x-[-80px]" : ""}`}
+               className={`${persona === "superAdmin" ? "translate-x-[-30px]" : ""}`}
             >
                <a href="https://app.evallo.org">
-                  <img className="h-[29.796px]" src={icon} alt="evallo_logo" />
+                  <img className="h-[27.4px] design:h-[29.796px]" src={icon} alt="evallo_logo" />
                </a>
 
             </div>

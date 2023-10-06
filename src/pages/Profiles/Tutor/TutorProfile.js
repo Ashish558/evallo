@@ -382,13 +382,14 @@ export default function TutorProfile({ isOwn }) {
       userId = params.id;
     }
     getUserDetail({ id: userId }).then((res) => {
-      console.log("response", res.data.data);
-      if(!res?.data?.data)return 
+      console.log("response",userId, res?.data);
+      if(!res?.data)return 
       setAwsLink(res.data.data.baseLink);
       const { firstName, lastName, phone, email, phoneCode } =
         res.data.data.user;
       setUser(res.data.data.user);
       console.log(user.phone + "phone");
+      if(!res?.data?.data?.details)return 
       let details = res.data.data.details;
       console.log("details", details);
       // const { } = res.data.data.user
@@ -574,7 +575,7 @@ export default function TutorProfile({ isOwn }) {
   // console.log('settings', settings.servicesAndSpecialization);
   if (Object.keys(user).length < 1) return;
   if (Object.keys(settings).length < 1) return;
-  if (Object.keys(userDetail).length < 1) return;
+ // if (Object.keys(userDetail).length < 1) return;
   let tutorLevelIcon = TutorLevelOne;
   let tutorLevelTextColor = "text-[#ff4300]";
   let tutorLevelBg = "#FBDB89";
@@ -1043,11 +1044,12 @@ export default function TutorProfile({ isOwn }) {
                 hideShadow
                 bgClassName="bg-white pl-7 py-3 rounded-[10px]"
                 body={
+
                   <>
+                  {tutorTotalReviews[currentPage-1] ?
                   <div>
                     <p className="text-[#24A3D9] text-[15px] text-base-17-5">
-                      {/* {getDateFormat(tutorTotalReviews[currentPage-1]?.customCreatedAt)} */}
-                      {getFormattedDate((tutorTotalReviews[currentPage-1]?.customCreatedAt), dateFormat)}
+                      {tutorTotalReviews[currentPage-1]?.customCreatedAt?getDateFormat(tutorTotalReviews[currentPage-1]?.customCreatedAt):"None"}
                     </p>
                     <div>
                       <p className="text-[#517CA8] mt-4 font-light text-[17.503px] text-base-17-5">
@@ -1065,7 +1067,9 @@ export default function TutorProfile({ isOwn }) {
                         <button className="rounded-full h-[33px] w-[100px] bg-[#26435F33] text-base-15 text-[#26435F]">{tutorTotalReviews[currentPage-1]?.service[0]}</button>
                       </div>
                     </div>
-                  </div>
+                  </div>:<div className="h-24">
+                    
+                    No Review Given! </div>}
                    
                   </>
                 }
