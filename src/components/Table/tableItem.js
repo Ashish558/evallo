@@ -421,7 +421,7 @@ if (item.userType === "parent" || item.userType === "student"){
           </td>
           <td className=" text-[17.5px] px-1  min-w-14 ">
             <InputSelect
-            disabled={(item?.userType === "parent" || item?.userType === "student")?true:false}
+              disabled={(persona === "parent" || persona === "student")?true:false}
               tableDropdown={true}
               value={tutorStatus ? tutorStatus : "-"}
               optionData={organization2?.settings?.tutorStatus}

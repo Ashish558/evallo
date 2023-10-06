@@ -321,7 +321,7 @@ const Dashboard = () => {
           </div>
         </div>
 
-        <section className="flex justify-center w-[83.33vw] mx-auto ">
+        <section className="flex justify-center w-[83.3333vw] mx-auto ">
           <div className={styles.mainBox}>
             <div className="grid grid-cols-2 px-[1.95vw] ">
               <div className={`${styles.gridBorder} my-auto `}>
