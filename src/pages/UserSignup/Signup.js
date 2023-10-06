@@ -542,7 +542,7 @@ export default function UserSignup() {
           ) : (
             <></>
           )}
-          <div className="flex lg:items-center relative bg-white rounded-md py-6 px-5 md:px-[48px] w-[600px]">
+          <div className="flex lg:items-center relative bg-white rounded-md py-6 px-5 md:px-[48px] w-[41.6667vw] mb-[139px]">
             <div className="w-full py-3">
               <h1
                 className={`hidden lg:block mb-1.5 text-[30px] ${styles.title} `}
@@ -583,11 +583,11 @@ export default function UserSignup() {
 
               {frames.signupActive ? (
                 <div>
-                  <div className={`flex mt-[59px]  gap-8 lg:mt-0 `}>
+                  <div className={`flex mt-[59px]  justify-between lg:mt-0 `}>
                     <InputField
                       placeholder=""
-                      inputContainerClassName="text-base-17-5  bg-white   border border-[#D0D5DD]"
-                      parentClassName="text-base-17-5 w-[250px]"
+                      inputContainerClassName="text-base-17-5  bg-white   border border-[#D0D5DD] h-[53px]"
+                      parentClassName="text-base-17-5 w-[16.9271vw]"
                       labelClassname="mb-1 text-[#26435F] !font-medium"
                       label="First Name"
                       value={values.firstName}
@@ -609,8 +609,8 @@ export default function UserSignup() {
                     />
                     <InputField
                       placeholder=""
-                      inputContainerClassName="text-base-17-5  bg-white   border border-[#D0D5DD]"
-                      parentClassName="text-base-17-5 flex-1"
+                      inputContainerClassName="text-base-17-5  bg-white   border border-[#D0D5DD] h-[53px]"
+                      parentClassName="text-base-17-5 w-[16.9271vw]"
                       labelClassname="mb-1 text-[#26435F] !font-medium"
                       label="Last Name"
                       value={values.lastName}
@@ -630,13 +630,13 @@ export default function UserSignup() {
                       error={error.lastName}
                     />
                   </div>
-                  <div className="flex gap-8 items-center mt-6 mb-6">
+                  <div className="flex  items-center mt-[30px] mb-[29px] justify-between">
                     <InputField
                       labelClassname="mb-1 text-[#26435F] !font-medium"
                       label="Email"
                       placeholder=""
-                      inputContainerClassName="text-base-17-5  bg-white   border border-[#D0D5DD]"
-                      parentClassName="w-[340px] text-base-17-5"
+                      inputContainerClassName="text-base-17-5  bg-white   border border-[#D0D5DD] h-[53px]"
+                      parentClassName=" text-base-17-5 w-[19.5313vw]"
                       value={values.email}
                       onChange={(e) =>
                         setValues({
@@ -649,8 +649,8 @@ export default function UserSignup() {
                     />
                     <InputFieldDropdown
                       placeholder=""
-                      inputContainerClassName="text-base-17-5  bg-white h-[40px]  border border-[#D0D5DD]"
-                      parentClassName="text-base-17-5 w-[300px]"
+                      inputContainerClassName="text-base-17-5  bg-white h-[53px]  border border-[#D0D5DD]"
+                      parentClassName="text-base-17-5 w-[14.3229vw]"
                       inputClassName="  bg-transparent text-400 text-base-17-5"
                       labelClassname="mb-1 text-[#26435F]  !font-medium text-[#26435F]"
                       label="Phone"
@@ -676,7 +676,7 @@ export default function UserSignup() {
 
                   <div className="mt-5">
                     <p
-                      className={`mb-3 text-[#26435F] text-base-17-5  font-semibold`}
+                      className={`mb-[19px] text-[#26435F] text-base-17-5  font-semibold`}
                     >
                       Are you signing up as a Parent or a Student?
                     </p>
@@ -758,7 +758,7 @@ export default function UserSignup() {
                     </div>
                   </div>
 
-                  <div className=" gap-x-2 my-5">
+                  <div className=" gap-x-2 mt-5 mb-[50px]">
                     <div className={`flex ${styles.textLight}`}>
                       <CCheckbox
                         checked={values.terms}
@@ -782,15 +782,15 @@ export default function UserSignup() {
                       </p>
                     </div>
                   </div>
-                  <div className="flex items-center mt-[30px] justify-between">
-                    <SecondaryButton
+                  <div className="flex items-center mt-[30px] justify-end">
+                    {/* <SecondaryButton
                       children="Go Back"
-                      className="text-[0.9719vw] mr-6 bg-white text-[#B3BDC7] border-[1.3px] border-[#D0D5DD] font-medium h-[53px] rounded-5 w-[7.6042vw]"
+                      className="!text-[0.9688vw] mr-6 bg-white text-[#B3BDC7] border-[1.3px] border-[#D0D5DD] font-medium h-[53px] rounded-5 w-[7.6042vw]"
                       onClick={() => navigate("/")}
-                    />
+                    /> */}
 
                     <PrimaryButton
-                      className={`bg-[#FFA28D] text-center items-center justify-center disabled:opacity-60 w-[7.6042vw]   text-[#FFF] text-[0.9719vw]font-medium relative h-[53px] rounded-5 ${
+                      className={`bg-[#FFA28D] text-center items-center justify-center disabled:opacity-60 w-[7.6042vw]   text-[#FFF] !text-[0.9688vw] font-medium relative h-[53px] rounded-5 ${
                         loading
                           ? "cursor-wait opacity-60 pointer-events-none"
                           : "cursor-pointer"

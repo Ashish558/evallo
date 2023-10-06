@@ -130,13 +130,13 @@ export default function CustomFields({
         
           <SecondaryButton
             children="Go Back"
-            className="text-sm mr-6 bg-white text-[#a3aDC7] border-[1.5px] border-[#D0D5DD] "
+          className=" mr-6 bg-white text-[#a3aDC7] border-[1.5px] border-[#D0D5DD] w-[7.6042vw] h-[53px] text-[0.9719vw] font-medium"
             onClick={handleBack}
           />
        
          <PrimaryButton
-        children="Signup"
-        className={`w-full bg-[#FFA28D] text-center items-center justify-center disabled:opacity-60 max-w-[110px]  rounded text-white text-sm font-medium relative `}
+        children="Submit"
+          className={`l bg-[#FFA28D] text-center items-center justify-center disabled:opacity-60 w-[7.6042vw]  rounded text-white text-[0.9719vw] font-medium relative h-[53px]`}
          
         
         onClick={() => handleSignup()}

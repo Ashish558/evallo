@@ -105,10 +105,10 @@ export default function UserDetails({
   // alert(personaText)
   return (
     <div className="w-full">
-      <div className="flex justify-between gap-8">
+      <div className="flex justify-between ">
         <InputField
-          inputContainerClassName="border border-[#D0D5DD] pt-3 pb-3 border text-base-17-5"
-          parentClassName="mb-6  relative flex-1"
+          inputContainerClassName="border border-[#D0D5DD] pt-3 pb-3 border text-base-17-5 h-[53px]"
+          parentClassName="mb-6  relative w-[16.9271vw] "
           required={persona === "student" ? true : false}
           label={`${personaText} First Name`}
           labelClassname="text-[#26435F] !font-medium  mb-1 text-base-17-5"
@@ -128,8 +128,8 @@ export default function UserDetails({
           error={detailsError.FirstName}
         />
         <InputField
-          parentClassName="mb-6 relative flex-1"
-          inputContainerClassName="border border-[#D0D5DD] pt-3 pb-3 border text-base-17-5"
+          parentClassName="mb-6 relative w-[16.9271vw] "
+          inputContainerClassName="border border-[#D0D5DD] pt-3 pb-3 border text-base-17-5 h-[53px]"
           label={`${personaText} Last Name`}
           required={persona === "student" ? true : false}
           labelClassname="text-[#26435F] !font-medium  mb-1 text-base-17-5"
@@ -148,11 +148,11 @@ export default function UserDetails({
           error={detailsError.LastName}
         />
       </div>
-      <div className="flex justify-between gap-6 items-center">
+      <div className="flex justify-between  items-center mb-[30px] mt-1">
         <InputField
-          parentClassName="mb-6 relative flex-1"
+          parentClassName=" relative w-[19.5313vw] "
           label={`${personaText} Email `}
-          inputContainerClassName="border border-[#D0D5DD] pt-3 pb-3 border text-base-17-5"
+          inputContainerClassName="border border-[#D0D5DD] pt-3 pb-3 border text-base-17-5 h-[53px]"
           required={persona === "student" ? true : false}
           labelClassname="text-[#26435F] !font-medium  mb-1 text-base-17-5"
           value={otherDetails.Email}
@@ -163,10 +163,10 @@ export default function UserDetails({
           error={detailsError.Email}
         />
         <InputFieldDropdown
-          parentClassName="mb-6 w-[230px]"
+          parentClassName=" w-[14.3229vw] "
           label={`${personaText} Phone  ${persona !== "parent" ? "" : ""} `}
           labelClassname="text-[#26435F] !font-medium  mb-1 text-base-17-5"
-          inputContainerClassName="border h-[40px] border-[#D0D5DD] pt-3   pb-3 relative border text-base-17-5"
+          inputContainerClassName="border  border-[#D0D5DD] pt-3   pb-3 relative border text-base-17-5 h-[54px]"
           inputClassName=""
           required={persona === "student" ? true : false}
           codeValue={otherDetails.PphoneCode}
@@ -189,7 +189,7 @@ export default function UserDetails({
       <InputField
         parentClassName="mb-6 relative flex-1"
         label={`Student School `}
-        inputContainerClassName="border border-[#D0D5DD] pt-3 pb-3 border text-base-17-5"
+        inputContainerClassName="border border-[#D0D5DD] pt-3 pb-3 border text-base-17-5 h-[50px]"
         labelClassname="text-[#26435F] !font-medium  mb-1 text-base-17-5"
         value={otherDetails.schoolName}
         onChange={(e) =>
@@ -221,7 +221,7 @@ export default function UserDetails({
           label="Referral Code"
           placeholder=""
           parentClassName=" text-xs flex-1"
-          inputContainerClassName="border border-[#D0D5DD] py-1 relative border"
+          inputContainerClassName="border border-[#D0D5DD] py-1 relative border h-[48px]"
           value={otherDetails.referalCode}
           onChange={(e) =>
             setOtherDetails({ ...otherDetails, referalCode: e.target.value })
@@ -243,13 +243,13 @@ export default function UserDetails({
         {!isAddedByAdmin && (
           <SecondaryButton
             children="Go Back"
-            className="text-[0.9719vw] mr-6 bg-white text-[#B3BDC7] border-[1.3px] border-[#D0D5DD] font-medium h-[53px] rounded-5 w-[7.6042vw]"
+            className="!text-[0.9688vw] mr-6 bg-white text-[#B3BDC7] border-[1.3px] border-[#D0D5DD] font-medium h-[53px] rounded-5 w-[7.6042vw]"
             onClick={handleBack}
           />
         )}
         <PrimaryButton
           children="Next"
-          className={` bg-[#FFA28D] text-center items-center justify-center disabled:opacity-60 w-[7.6042vw]   text-[#FFF] text-[0.9719vw]font-medium relative h-[53px] rounded-5`}
+          className={` bg-[#FFA28D] text-center items-center justify-center disabled:opacity-60 w-[7.6042vw]   text-[#FFF] !text-[0.9688vw] font-medium relative h-[53px] rounded-5`}
           onClick={() => handleClick()}
           disabled={disabled}
         />
