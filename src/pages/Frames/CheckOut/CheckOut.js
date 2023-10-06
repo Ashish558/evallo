@@ -2,6 +2,7 @@ import CheckOutExtensionsReview from "../../../components/CheckOutExtensionsRevi
 import CheckOutSubscriptionReview from "../../../components/CheckOutSubscriptionReview/CheckOutSubscriptionReview";
 import PrimaryButton from "../../../components/Buttons/PrimaryButton";
 import SecondaryButton from "../../../components/Buttons/SecondaryButton";
+import { useState } from "react";
 
 export default function CheckOut({
     setFrames,
@@ -47,6 +48,33 @@ export default function CheckOut({
         setcurrentStep(currentStep => currentStep - 1)
     };
 
+    const [promoCodes, SetPromoCodes] = useState([
+        {
+            code: "Promo code 1",
+            discount: 15,
+            price: 10
+        },
+        {
+            code: "Promo code 2",
+            discount: 5,
+            price: 7
+        },
+        {
+            code: "Promo code 3",
+            discount: 50,
+            price: 20
+        },
+    ]);
+    /*
+        promocodes = [
+            {
+                code: "",
+                discount: 0, // in percent
+                price: 0, // amount discounted on selected package
+            }
+        ]
+    */
+
     const chosenSubscriptionPlan = subscriptionsInfo.find(item => item.planName === values.subscriptionPlan);
 
     const chosenExtensionPlans = extensionPlansInfo.filter(item => {
@@ -56,6 +84,20 @@ export default function CheckOut({
         return false;
     })
 
+    let totalMonthlyCost = 0;
+    totalMonthlyCost += chosenSubscriptionPlan.subscriptionPricePerMonth;
+    for(let i = 0; i < chosenExtensionPlans.length; i++) {
+        let item = chosenExtensionPlans[i]
+        if(item.extensionPriceOption === undefined || item.extensionPriceOption === null || item.extensionPriceOption.length === 0) continue;
+        let chosenPackageName = extensions.find(i => i.text === item.planName).packageName;
+        let chosenPackage = item.extensionPriceOption.find(pack => pack.planName === chosenPackageName);
+        totalMonthlyCost += chosenPackage.pricePerMonth
+    }
+
+    for(let i = 0; i < promoCodes.length; i++) {
+        totalMonthlyCost -= promoCodes[i].price
+    }
+    totalMonthlyCost = totalMonthlyCost < 0 ? 0 : totalMonthlyCost
     return (
         <div className="mt-2 mb-3">
             <div>
@@ -111,6 +153,25 @@ export default function CheckOut({
             /> */}
 
             <div className="border-[1px] mt-[25px] w-full"></div>
+
+                {
+                    promoCodes.map(pc => {
+                        return (
+                            <div className="flex justify-between mt-[15px]">
+                                <div>
+                                    <div className="text-[#26435F]">{pc.code}</div>
+                                    <div className="text-[#38C980]">{pc.discount}% Discount</div>
+                                </div>
+                                <div className="font-semibold text-[#38C980]">- ${pc.price}.00 / Month</div>
+                            </div>
+                        )
+                    })
+                }
+
+                <div className="flex justify-between mt-[15px] text-[#26435F]">
+                    <div>Total Payment</div>
+                    <div>${totalMonthlyCost}.00 + Taxes</div>
+                </div>
 
             <div className="border-[1px] mt-[25px] w-full"></div>
 
