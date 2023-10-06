@@ -108,7 +108,7 @@ const BubbleChart = ({ dateRange }) => {
                     size: 18,
                   },
                 },
-                labels: ['', 'Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5','Week 6'],
+               
                 ticks: {
                   color: '#507CA8',
                   font: {
@@ -178,12 +178,12 @@ const BubbleChart = ({ dateRange }) => {
         />
 
       </div>
-      <div className="absolute bottom-[10%] flex items-center font-medium text-lg left-[7%] text-[#26435F]">
+      <div className="absolute bottom-[7%] flex items-center font-medium text-lg left-[7%] text-[#507CA8]">
         <div className="bg-[rgba(38,67,95,1)] w-[40px] h-[11px] mr-[13px]"></div>
         <p>past 12 days</p>
       </div>
-      <div className="absolute bottom-[9%] left-[49%]"><img src={arrow} alt="" /></div>
-      <div className="absolute top-[45%] left-[3%]"><img src={arrow1} alt="" /></div>
+      <div className="absolute bottom-[60px] left-[49%]"><img src={arrow} alt="" /></div>
+      <div className="absolute top-[44.7%] left-[40px] design:top-[47%]"><img className="h-[60px]" src={arrow1} alt="" /></div>
     </div >
   );
 };

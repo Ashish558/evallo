@@ -130,7 +130,7 @@ function ActionLog({ dateRange }) {
                     .slice(0, 2)
                     .join(":") +
                     " " +
-                    new Date(item.createdAt).toLocaleTimeString().split(" ")[1]}
+                    new Date(item.createdAt).toLocaleTimeString().split(" ")[1]?.toLocaleLowerCase()}
                 {item.topDate && item?.message && (
                   <span className="text-xs ml-5 top-0 text-[#FFA28D] absolute backdrop-blur-sm ">
                     {" "}

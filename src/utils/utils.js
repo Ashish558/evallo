@@ -266,8 +266,8 @@ export const getScoreStr = (testType, score, subjects, totalLength) => {
          }
       })
       return {
-         cumulative: `C${verbalTotal + MathsTotal}`,
-         right: `V${verbalTotal}|M${MathsTotal}`
+         cumulative: `C${verbalTotal + MathsTotal} `,
+         right: `V${verbalTotal} M${MathsTotal}`
       }
    }
    else if (testType === 'DSAT'){
@@ -292,8 +292,8 @@ export const getScoreStr = (testType, score, subjects, totalLength) => {
          }
       })
       return {
-         cumulative: ``,
-         right: `R${rTotal}|M${MathsTotal}`
+         cumulative: `C${rTotal+MathsTotal} `,
+         right: `R${rTotal} M${MathsTotal}`
       }
    }
    
@@ -365,8 +365,8 @@ export const getScore = (testType, subjects) => {
       })
 
       return {
-         cumulative: `C${set1Score + set2Score}`,
-         right: `V${set1Score}|M${set2Score}`,
+         cumulative: `C${set1Score + set2Score} `,
+         right: `V${set1Score} M${set2Score}`,
       }
    } else if (testType === 'SAT') {
       let scoreArr = []
@@ -376,7 +376,7 @@ export const getScore = (testType, subjects) => {
          scoreArr.push(sub.no_of_correct)
       })
       return {
-         cumulative: `C${total / subjects.length}`,
+         cumulative: `C${total / subjects.length} `,
          right: `E${scoreArr[0]} M${scoreArr[1]} R${scoreArr[2]} C${scoreArr[3]}`,
 
       }
