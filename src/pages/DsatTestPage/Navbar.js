@@ -8,7 +8,7 @@ export default function Navbar({secnd,showannotate,setshowannotate,details,handl
   const [hide, sethide] = useState(false)
   useEffect(() => {
     if (seconds <= 0) {
-      return handleSubmitSection();
+      return 
     }
 
     const interval = setInterval(() => {
@@ -68,12 +68,6 @@ export default function Navbar({secnd,showannotate,setshowannotate,details,handl
             <div className='flex cursor-pointer flex-col items-center h-full justify-center px-3 ' onClick={()=>setshowannotate(!showannotate)}>
             <FontAwesomeIcon icon={faPen} className='' />  
             <h4>Annotate</h4>
-            {showannotate?
-            <div className='flex z-10 absolute flex-col items-start w-[12.5rem] rounded bottom-[-56px] right-[20px] bg-gray-800 p-2'>
-              <p className='text-white font-normal text-base'>Make a Selection First</p>
-              <p className='text-gray-300 font-normal text-sm'>Select some text and then enter the note</p>
-            </div>
-            :null}
             </div>
             :null}
             {/* <div className='flex flex-col items-center h-full justify-center '>

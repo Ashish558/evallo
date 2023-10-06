@@ -1,15 +1,28 @@
 import React, { useState } from 'react';
-export default function AnnotationPopup({sethovert,i,setIsEditing,isEditing, color,underline,setunderline, setcolor,onCancel }) {
+export default function AnnotationPopup({setAnnotations,index,annotations,sethovert,i,show_ann,setshow_ann,setIsEditing,isEditing, color,underline,setunderline, setcolor,onCancel }) {
   const [highlightText, setHighlightText] = useState('');
   const [textAreaInput, setTextAreaInput] = useState('');
-  
+  const [showannotate,setshowannotate]=useState(false)
 
   const handleSave = () => {
+    if(show_ann){
     sethovert(prevAnnotations => {
       const updatedAnnotations = [...prevAnnotations];
-      updatedAnnotations[i-1].push(highlightText);
+      updatedAnnotations[i-1]=highlightText;
       return updatedAnnotations;})
     console.log(`Saved annotation: ${highlightText}`);
+      const updatedAnnotations = annotations.map(annotation => ({ ...annotation }));
+      const keys = Object?.keys(updatedAnnotations[index-1]);
+      if (updatedAnnotations[index-1] && keys.length) {
+        updatedAnnotations[index-1][keys[keys.length-1]].color = color;
+      }
+      setshowannotate(false)
+      setAnnotations(annotations)
+  }
+  else{
+    setshowannotate(true)
+  }
+    setshow_ann(false)
   };
 
   const handleCancel = () => {
@@ -29,6 +42,12 @@ export default function AnnotationPopup({sethovert,i,setIsEditing,isEditing, col
 
   return (
     <div className="popup absolute w-[100%] left-0 right-0 bottom-2 transform z-10 translate-y-full transition-transform duration-300">
+      {showannotate?
+            <div className='flex z-40 absolute flex-col items-start rounded bottom-[65px] transition-all left-[20px] p-2'>
+              <p className='font-normal text-base text-red-600'>Make a Selection First</p>
+              <p className='text-gray-300 font-normal text-red-600 text-sm'>Select some text and then press the save button</p>
+            </div>
+            :null}
       {isEditing ?<><div className="popup-content bg-white p-4 shadow-lg rounded-lg">
         <div className="popup-header w-[100%] bg-black text-white p-2 flex justify-between items-center">
           <h2>New Annotation:</h2>
@@ -68,7 +87,7 @@ export default function AnnotationPopup({sethovert,i,setIsEditing,isEditing, col
                    </div>
                 <div className="header-item flex">
                   <h2 className="header-text font-bold ml-[50px]" >Underline Style:</h2>         
-                    <p className={`underline-symbol transition-all font-bold ml-2 cursor-pointer px-2 ${underline==='underline'&&' border border-black'}`} style={{ textDecoration: 'underline' }} onClick={()=>setunderline(underline=='none'? 'underline':'none')}>
+                    <p className={`underline-symbol transition-all font-bold ml-2 cursor-pointer px-2 ${underline==='underline'&&' border border-black'}`} style={{ textDecoration: 'underline' }}>
                       {` U`}
                     </p>
                 </div>

@@ -22,9 +22,10 @@ export default function Que(props) {
   }
   const [underline, setunderline] = useState('underline');
   const [show_ann, setshow_ann] = useState(false);
+  const [check, setcheck] = useState(false);
   const [color, setcolor] = useState('yellow');
-    const [annotations, setAnnotations] = useState(Array(siz).fill([]));
-    const [hovert, sethovert] = useState(Array(siz).fill([]));
+    const [annotations, setAnnotations] =  useState(Array(siz).fill(null).map(() => []));
+    const [hovert, sethovert] = useState(Array(siz).fill());
     const handleAnnotationChange = (newAnnotationsForIndex) => {
       if(showannotate){
     setAnnotations(prevAnnotations => {
@@ -46,13 +47,14 @@ export default function Que(props) {
   },[hovert])
 
   useEffect(() => {
+    if(check){
+    setshow_ann(true)
     tippy('mark', {
       content: hovert[index-1],
     });
-    if(show_ann)
-    setshowtextbox(true)
-  else{
-    setshow_ann(true)
+  }
+  else {
+    setcheck(true)
   }
   }, [annotations]);
 
@@ -66,12 +68,12 @@ export default function Que(props) {
     tippy('mark', {
       content: hovert[index-1],
     });
-  }, [color]);
+    }, [color]);
 
   return (
-    <div className={` px-20 relative flex flex-row ${props.check && 'bg-gray-200'} ${!para? 'justify-center' : 'justify-between'} `} style={s}>
-       {showtextbox?
-        <AnnotationPopup setIsEditing={setshowtextbox} isEditing={showtextbox} color={color} i={index} underline={underline} sethovert={sethovert} setunderline={setunderline} setcolor={setcolor} />
+    <div className={` px-20 h-[25rem] relative flex flex-row ${props.check && 'bg-gray-200'} ${!para? 'justify-center' : 'justify-between'} `} style={s}>
+       {showannotate?
+        <AnnotationPopup show_ann={show_ann} index={index} annotations={annotations} setAnnotations={setAnnotations} setshow_ann={setshow_ann} setIsEditing={setshowannotate} isEditing={showannotate} color={color} i={index} underline={underline} sethovert={sethovert} setunderline={setunderline} setcolor={setcolor} />
        :null}
         {
           para?<div className='overflow-y-auto w-1/2 pr-4 pt-5'>
