@@ -107,19 +107,15 @@ export default function UserDetails({
     <div className="w-full">
       <div className="flex justify-between gap-8">
         <InputField
-          inputContainerClassName="border border-[#D0D5DD] pt-3 pb-3 border "
+          inputContainerClassName="border border-[#D0D5DD] pt-3 pb-3 border text-base-17-5"
           parentClassName="mb-6  relative flex-1"
           required={persona === "student" ? true : false}
           label={`${personaText} First Name`}
-          labelClassname="text-[#26435F] font-bold  mb-1 text-sm"
+          labelClassname="text-[#26435F] !font-medium  mb-1 text-base-17-5"
           value={otherDetails.FirstName}
           
           onChange={(e) =>{
-            const alphabeticOnly = e.target.value.replace(
-              /[^a-zA-Z]/g,
-              ""
-            );
-            e.target.value = alphabeticOnly;
+            
             e.target.value=e.target.value.charAt(0).toUpperCase() + e.target.value.slice(1);
          
             setOtherDetails({
@@ -133,17 +129,13 @@ export default function UserDetails({
         />
         <InputField
           parentClassName="mb-6 relative flex-1"
-          inputContainerClassName="border border-[#D0D5DD] pt-3 pb-3 border"
+          inputContainerClassName="border border-[#D0D5DD] pt-3 pb-3 border text-base-17-5"
           label={`${personaText} Last Name`}
           required={persona === "student" ? true : false}
-          labelClassname="text-[#26435F] font-bold  mb-1 text-sm"
+          labelClassname="text-[#26435F] !font-medium  mb-1 text-base-17-5"
           value={otherDetails.LastName}
           onChange={(e) =>{
-            const alphabeticOnly = e.target.value.replace(
-              /[^a-zA-Z]/g,
-              ""
-            );
-            e.target.value = alphabeticOnly;
+     
             e.target.value=e.target.value.charAt(0).toUpperCase() + e.target.value.slice(1);
          
             setOtherDetails({
@@ -160,9 +152,9 @@ export default function UserDetails({
         <InputField
           parentClassName="mb-6 relative flex-1"
           label={`${personaText} Email `}
-          inputContainerClassName="border border-[#D0D5DD] pt-3 pb-3 border"
+          inputContainerClassName="border border-[#D0D5DD] pt-3 pb-3 border text-base-17-5"
           required={persona === "student" ? true : false}
-          labelClassname="text-[#26435F] font-bold  mb-1 text-sm"
+          labelClassname="text-[#26435F] !font-medium  mb-1 text-base-17-5"
           value={otherDetails.Email}
           onChange={(e) =>
             setOtherDetails({ ...otherDetails, Email: e.target.value })
@@ -173,18 +165,21 @@ export default function UserDetails({
         <InputFieldDropdown
           parentClassName="mb-6 w-[230px]"
           label={`${personaText} Phone  ${persona !== "parent" ? "" : ""} `}
-          labelClassname="text-[#26435F] font-bold  mb-1 text-sm"
-          inputContainerClassName="border h-[40px] border-[#D0D5DD] pt-3   pb-3 relative border"
+          labelClassname="text-[#26435F] !font-medium  mb-1 text-base-17-5"
+          inputContainerClassName="border h-[40px] border-[#D0D5DD] pt-3   pb-3 relative border text-base-17-5"
           inputClassName=""
           required={persona === "student" ? true : false}
           codeValue={otherDetails.PphoneCode}
           handleCodeChange={(e) =>
+            
             setOtherDetails({ ...otherDetails, PphoneCode: e.target.value, })
           }
           value={otherDetails.Phone}
-          onChange={(e) =>
-            setOtherDetails({ ...otherDetails, Phone: e.target.value })
-          }
+          onChange={(e) =>{
+            const inputText = e.target.value;
+            const numberOnly = inputText.replace(/\D/g, '')
+            setOtherDetails({ ...otherDetails, Phone: numberOnly })
+          }}
           totalErrors={detailsError} 
           error={detailsError.Phone}
           codeError={detailsError.PphoneCode}
@@ -194,8 +189,8 @@ export default function UserDetails({
       <InputField
         parentClassName="mb-6 relative flex-1"
         label={`Student School `}
-        inputContainerClassName="border border-[#D0D5DD] pt-3 pb-3 border"
-        labelClassname="text-[#26435F] font-bold  mb-1 text-sm"
+        inputContainerClassName="border border-[#D0D5DD] pt-3 pb-3 border text-base-17-5"
+        labelClassname="text-[#26435F] !font-medium  mb-1 text-base-17-5"
         value={otherDetails.schoolName}
         onChange={(e) =>
           setOtherDetails({ ...otherDetails, schoolName: e.target.value })
@@ -208,8 +203,8 @@ export default function UserDetails({
         parentClassName="mb-6 w-[200px]"
         optionData={["5","6","7","8","9","10","11","12"]}
         label={`Student's Grade`}
-        labelClassname="text-[#26435F] font-bold  mb-1 text-sm "
-        inputContainerClassName="border text-sm border-[#D0D5DD] py-1 relative border"
+        labelClassname="text-[#26435F] !font-medium  mb-1 text-base-17-5 font-semibold"
+        inputContainerClassName="border text-base-17-5 border-[#D0D5DD] py-1 relative border"
         inputClassName="ml-80"
         required={persona === "student" ? true : false}
        
@@ -222,7 +217,7 @@ export default function UserDetails({
       />
      
         <InputField
-          labelClassname="mb-1 text-[#26435F] font-bold"
+          labelClassname="mb-1 text-[#26435F] !font-medium"
           label="Referral Code"
           placeholder=""
           parentClassName=" text-xs flex-1"
@@ -238,7 +233,7 @@ export default function UserDetails({
          <CCheckbox  checked={otherDetails.referalCode?.trim()?.length === 0 }
                           onChange={()=>  setOtherDetails({...otherDetails,referalCode:""})}/>
         
-            <span className="ml-2 font-medium text-[#507CA8]">
+          <span className="ml-1  text-[#507CA8] text-base-17-5 pt-1">
               I don't have one
             </span>
         </div>
@@ -248,13 +243,13 @@ export default function UserDetails({
         {!isAddedByAdmin && (
           <SecondaryButton
             children="Go Back"
-            className="text-sm mr-6 bg-white text-[#a3aDC7] border-[1.5px] border-[#D0D5DD] "
+            className="text-[0.9719vw] mr-6 bg-white text-[#B3BDC7] border-[1.3px] border-[#D0D5DD] font-medium h-[53px] rounded-5 w-[7.6042vw]"
             onClick={handleBack}
           />
         )}
         <PrimaryButton
           children="Next"
-          className={`w-full bg-[#FFA28D] text-center items-center justify-center disabled:opacity-60 max-w-[110px]  rounded text-white text-sm font-medium relative `}
+          className={` bg-[#FFA28D] text-center items-center justify-center disabled:opacity-60 w-[7.6042vw]   text-[#FFF] text-[0.9719vw]font-medium relative h-[53px] rounded-5`}
           onClick={() => handleClick()}
           disabled={disabled}
         />

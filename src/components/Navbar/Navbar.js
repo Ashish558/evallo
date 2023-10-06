@@ -2,22 +2,22 @@ import React from "react";
 import faQuestionCircle from "../../assets/images/Vectorqsn.svg";
 import icon from "../../assets/icons/Evallo Logo.svg";
 import logoutIcon from "../../assets/images/Vectorlogout new.svg";
-import Dashboard1 from "../../assets/images/Dashboard 1 new.svg";
-import Dashboard from "../../assets/images/Dashboard 1.svg";
-import UsersIcon from "../../assets/images/Vector (1).png";
+import Dashboard1 from "../../assets/icons/navbar-icons/Dashboard_red.svg";
+import Dashboard from "../../assets/icons/Dashboard_light.svg";
+import UsersIcon from "../../assets/icons/crm_light.svg";
 import StudentIcon from "../../assets/icons/mdi_account-studentstudent.svg";
 import StudentIcon2 from "../../assets/icons/mdi_account-studentstudent2.svg";
-import UsersIcon1 from "../../assets/images/Vector (3).svg";
-import Schedule from "../../assets/images/Vector (2).png";
-import Schedule1 from "../../assets/images/Calendar 1.svg";
-import Assignment from "../../assets/images/Vector (3).png";
-import Assignment1 from "../../assets/images/Vector (4).svg";
-import Content from "../../assets/images/content.png";
-import Content2 from "../../assets/images/content-1.svg";
+import UsersIcon1 from "../../assets/icons/navbar-icons/crm_red.svg";
+import Schedule from "../../assets/icons/Calendar_light.svg";
+import Schedule1 from "../../assets/icons/navbar-icons/calender-red.png";
+import Assignment from "../../assets/icons/Assignments_light.svg";
+import Assignment1 from "../../assets/icons/navbar-icons/Assignments_red.svg";
+import Content from "../../assets/icons/content-logo_light.svg";
+import Content2 from "../../assets/icons/navbar-icons/contents_red.svg";
 import Invoice from "../../assets/images/invoice-logo.svg";
 import Invoice2 from "../../assets/images/invoice-logo-red.svg";
 import Settings from "../../assets/images/Settings 1 new.svg";
-import Settings1 from "../../assets/images/Settings 1.svg";
+import Settings1 from "../../assets/icons/navbar-icons/settings_red.png";
 import Profile from "../../assets/Navbar/profile.svg";
 import Profile1 from "../../assets/images/Vector (5).svg";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -340,7 +340,7 @@ const Navbar = () => {
                </a>
 
             </div>
-            <div className={`flex  text-[#FFFFFF] font-semibold text-base-17-5 ${!isLoggedIn && "opacity-[0.3]"}`}>
+            <div className={`flex  text-[#FFFFFF] font-semibold text-[0.9021vw] ${!isLoggedIn && "opacity-[0.3]"}`}>
                {navData.map((item, idx) => {
                   return (
                      <div

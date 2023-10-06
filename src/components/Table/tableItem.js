@@ -605,9 +605,9 @@ if (item.userType === "parent" || item.userType === "student"){
 
           <td className=" px-1  min-w-14 py-4">
             <button
-              className={`text-[15px] text-base-15 px-2.5 py-1.8 rounded-md flex items-center leading-none  text-white ${item.status !== "completed" && item.status !== "started "
-                ? "bg-[rgba(38,67,95,0.20)] pointer-events-none "
-                : "bg-primary"
+              className={`text-[15px] text-base-15 px-3 h-[31px]  rounded-5 flex items-center leading-none w-[100px] text-center text-white ${item.status == "completed" 
+                ? "bg-[#38C980]  "
+                : `${item.status == "started" ? "bg-[#FFCE84]" :"bg-[rgba(38,67,95,0.20)] pointer-events-none"}`
                 }`}
 
               onClick={() =>

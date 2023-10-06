@@ -586,9 +586,9 @@ export default function UserSignup() {
                   <div className={`flex mt-[59px]  gap-8 lg:mt-0 `}>
                     <InputField
                       placeholder=""
-                      inputContainerClassName="  bg-white   border border-[#D0D5DD]"
-                      parentClassName="text-xs w-[250px]"
-                      labelClassname="mb-1 text-[#26435F] font-bold"
+                      inputContainerClassName="text-base-17-5  bg-white   border border-[#D0D5DD]"
+                      parentClassName="text-base-17-5 w-[250px]"
+                      labelClassname="mb-1 text-[#26435F] !font-medium"
                       label="First Name"
                       value={values.firstName}
                       onChange={(e) => {
@@ -609,9 +609,9 @@ export default function UserSignup() {
                     />
                     <InputField
                       placeholder=""
-                      inputContainerClassName="  bg-white   border border-[#D0D5DD]"
-                      parentClassName="text-xs flex-1"
-                      labelClassname="mb-1 text-[#26435F] font-bold"
+                      inputContainerClassName="text-base-17-5  bg-white   border border-[#D0D5DD]"
+                      parentClassName="text-base-17-5 flex-1"
+                      labelClassname="mb-1 text-[#26435F] !font-medium"
                       label="Last Name"
                       value={values.lastName}
                       onChange={(e) => {
@@ -632,11 +632,11 @@ export default function UserSignup() {
                   </div>
                   <div className="flex gap-8 items-center mt-6 mb-6">
                     <InputField
-                      labelClassname="mb-1 text-[#26435F] font-bold"
+                      labelClassname="mb-1 text-[#26435F] !font-medium"
                       label="Email"
                       placeholder=""
-                      inputContainerClassName="  bg-white   border border-[#D0D5DD]"
-                      parentClassName="w-[340px] text-xs "
+                      inputContainerClassName="text-base-17-5  bg-white   border border-[#D0D5DD]"
+                      parentClassName="w-[340px] text-base-17-5"
                       value={values.email}
                       onChange={(e) =>
                         setValues({
@@ -649,10 +649,10 @@ export default function UserSignup() {
                     />
                     <InputFieldDropdown
                       placeholder=""
-                      inputContainerClassName="  bg-white h-[40px]  border border-[#D0D5DD]"
-                      parentClassName="text-xs w-[300px]"
-                      inputClassName="  bg-transparent text-400 "
-                      labelClassname="mb-1 text-[#26435F]  font-bold text-[#26435F]"
+                      inputContainerClassName="text-base-17-5  bg-white h-[40px]  border border-[#D0D5DD]"
+                      parentClassName="text-base-17-5 w-[300px]"
+                      inputClassName="  bg-transparent text-400 text-base-17-5"
+                      labelClassname="mb-1 text-[#26435F]  !font-medium text-[#26435F]"
                       label="Phone"
                       value={values.phone}
                       codeValue={values.phoneCode}
@@ -676,7 +676,7 @@ export default function UserSignup() {
 
                   <div className="mt-5">
                     <p
-                      className={`mb-3 text-[#26435F] text-[14px]  font-semibold`}
+                      className={`mb-3 text-[#26435F] text-base-17-5  font-semibold`}
                     >
                       Are you signing up as a Parent or a Student?
                     </p>
@@ -708,7 +708,7 @@ export default function UserSignup() {
                             )}{" "}
                           </div>
 
-                          <span className="ml-[10px] text-[#507CA8]">
+                          <span className="ml-[10px] text-[#507CA8] text-base-17-5">
                             Parent / Guardian
                           </span>
                         </div>
@@ -740,7 +740,7 @@ export default function UserSignup() {
                             )}{" "}
                           </div>
 
-                          <span className="ml-2 text-[#507CA8]">Student</span>
+                          <span className="ml-2 text-[#507CA8] text-base-17-5">Student</span>
                         </div>
                       </div>
                     </div>
@@ -752,7 +752,7 @@ export default function UserSignup() {
                         onChange={handleCheckboxChangeAge}
                       />
 
-                      <span className="ml-2 text-sm text-[#507CA8]">
+                      <span className="ml-2 text-base-17-5 text-[#507CA8]">
                         I confirm that I am 13 years or older
                       </span>
                     </div>
@@ -764,18 +764,18 @@ export default function UserSignup() {
                         checked={values.terms}
                         onChange={handleCheckboxChangeTerms}
                       />
-                      <p className={` ml-2 text-sm text-[#507CA8]`}>
+                      <p className={` ml-2 text-base-17-5 text-[#507CA8]`}>
                         I have carefully read and agree to the{" "}
                         <a
                           href="http://evallo.org/tou"
-                          className="font-semibold text-[#26435F] mr-1"
+                          className="font-medium text-[#26435F] mr-1"
                         >
                           Terms of Use
                         </a>
                         and
                         <a
                           href="http://evallo.org/privacy-policy"
-                          className=" ml-1 font-semibold text-[#26435F]"
+                          className=" ml-1 font-medium text-[#26435F]"
                         >
                           Privacy Policy
                         </a>
@@ -785,12 +785,12 @@ export default function UserSignup() {
                   <div className="flex items-center mt-[30px] justify-between">
                     <SecondaryButton
                       children="Go Back"
-                      className="text-sm mr-6 bg-white text-[#a3aDC7] border-[1.5px] border-[#D0D5DD] "
+                      className="text-[0.9719vw] mr-6 bg-white text-[#B3BDC7] border-[1.3px] border-[#D0D5DD] font-medium h-[53px] rounded-5 w-[7.6042vw]"
                       onClick={() => navigate("/")}
                     />
 
                     <PrimaryButton
-                      className={`w-full bg-[#FFA28D] text-center items-center justify-center disabled:opacity-60 max-w-[110px]  rounded text-white text-sm font-medium relative ${
+                      className={`bg-[#FFA28D] text-center items-center justify-center disabled:opacity-60 w-[7.6042vw]   text-[#FFF] text-[0.9719vw]font-medium relative h-[53px] rounded-5 ${
                         loading
                           ? "cursor-wait opacity-60 pointer-events-none"
                           : "cursor-pointer"

@@ -118,7 +118,7 @@ export default function SetPassword({
               
               
               <div className="h-[1px] bg-[#EBEBEB] mx-[0px]  mt-[-16px] w-[110%] mb-[19px]"></div>
-              <p className="mb-8 text-[#26435F] text-center">
+                  <p className="mb-8 text-[#26435F] text-center text-[0.9719vw] font-normal">
                 Congratulations! Your email has been verified. Now,
                 <br /> please set a strong password for your Evallo account.
               </p> </>:
@@ -142,9 +142,9 @@ export default function SetPassword({
                   type="password"
                   placeholder="minimum 8 characters"
                   inputContainerClassName="border border-[0.98px_solid_#D0D5DD]"
-                  inputClassName={"py-[2px]"}
+                inputClassName={"py-[2px] "}
                   label="Set New Password"
-                  labelClassname="ml-2 mb-2"
+                labelClassname="ml-2 mb-2 !font-medium text-[0.9719vw]"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   error={error.password}
@@ -155,9 +155,9 @@ export default function SetPassword({
                   type="password"
                   inputClassName={"py-[2px]"}
                   placeholder="Confirm Password"
-                  inputContainerClassName="border border-[0.98px_solid_#D0D5DD]"
+                  inputContainerClassName="border border-[0.98px_solid_#D0D5DD] "
                   label="Confirm Password"
-                  labelClassname="ml-2 mb-2"
+                labelClassname="ml-2 mb-2 !font-medium text-[0.9719vw]"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   error={error.confirmPassword}
@@ -171,7 +171,7 @@ export default function SetPassword({
                 onClick={handleSubmit}
                 loading={loading}
                 children={"Set New Password"}
-                className="w-[300px] mt-6 py-3"
+              className="w-[17.5521vw] mt-6 py-3 text-[#fff]"
               />
               {/* <button
                         className={`w-full relative bg-primaryDark font-medium disabled:bg-pink pt-3 pb-3 mt-12 rounded-10 text-white text-lg  ${loading ? 'cursor-wait opacity-60' : 'cursor-pointer'}`}

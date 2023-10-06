@@ -31,7 +31,7 @@ export default function Pagination({
         </div>
         {currentPage + 1 <= totalPages ? (
           <div
-            className="p-1 cursor-pointer text-[#B7C2CB]"
+            className="p-1 cursor-pointer text-[#B7C2CB] text-[12.5px]"
             onClick={() => handleClick(currentPage + 1)}
           >
             {currentPage + 1 < 10 ? "0" : ""}
@@ -42,7 +42,7 @@ export default function Pagination({
         )}
         {currentPage + 1 <= totalPages ? (
           <div
-            className="p-1 cursor-pointer mt-2 scale-150 text-[#B7C2CB]"
+            className="p-1 cursor-pointer mt-2  text-[#B7C2CB]"
             onClick={() => handleClick(currentPage + 1)}
           >
             <img src={dots} alt="pagination dots" />
@@ -53,7 +53,7 @@ export default function Pagination({
 
         {currentPage !== totalPages && totalPages !== 0 ? (
           <div
-            className="p-1 cursor-pointer  text-[#B7C2CB]"
+            className="p-1 cursor-pointer  text-[#B7C2CB] text-[12.5px]"
             onClick={() => handleClick(totalPages)}
           >
             {totalPages < 10 ? "0" : ""}
