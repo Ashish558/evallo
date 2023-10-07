@@ -4,7 +4,7 @@ import PrimaryButton from '../Buttons/PrimaryButton'
 import { TestDetail } from '../TestDetail/TestDetail'
 import Modal from '../Modal/Modal'
 
-const Testinstruction_2 = ({testHeaderDetails,loader,setisntructionpage,testStarted,subjects,completedSectionIds,activeSection}) => {
+const Testinstruction_2 = ({testHeaderDetails,desc,timer,loader,setisntructionpage,testStarted,subjects,completedSectionIds,activeSection}) => {
  const [popup, setpopup] = useState(false)
  function closeinstruct(){
     setpopup(false)
@@ -85,10 +85,11 @@ const Testinstruction_2 = ({testHeaderDetails,loader,setisntructionpage,testStar
                            />
                         })}
                      </div>
+
                      
                         <div className='bg-white pt-[60px] pr-8 pl-12 pb-[50px] mt-4'>
-                           <TestDetail name={activeSection?.name} desc={activeSection?.description}
-                              timer={activeSection?.timer} />
+                           <TestDetail name={activeSection?.name} desc={desc}
+                              timer={ timer} />
 
                            <div className='flex items-center flex-col mt-12'>
                               <p className='text-[#E02B1D] bg-[#FFBE9D] py-2 px-5 rounded-20 mb-[15px]' >
@@ -103,7 +104,7 @@ const Testinstruction_2 = ({testHeaderDetails,loader,setisntructionpage,testStar
             title="Are you sure you want to start the section?"
             titleClassName='mr-4  mb-4'
             primaryBtn={
-               { text: "Start", className: "bg-black text-white ml-0", onClick: closeinstruct}
+               { text: "Start", className: "bg-black border ml-0", onClick: closeinstruct}
             }
             handleClose={() => setpopup(false)}
          /></div>}

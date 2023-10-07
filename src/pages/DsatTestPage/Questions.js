@@ -1,12 +1,16 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import {faBookmark} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Calculator from './Calculator';
-
+import { TextAnnotator } from 'react-text-annotate';
+import Tippy from '@tippyjs/react';
+import tippy from 'tippy.js';
+import 'tippy.js/dist/tippy.css'; // Import the CSS
+import AnnotationPopup from './Annotationpopup';
  
 export default function Que(props) {
 
-   const {ques,op,para,setAnswers,quesImg,answers,index,Setmark,mark,cal,setCal,seq,cutanswers,cutanswer,showcutcheck,cutcheck,markreview,markre,annotation_check,calculator_check,cross_O_check} = props;
+   const {ques,op,para,showtextbox,setshowtextbox,showannotate,setshowannotate,setAnswers,quesImg,quesT,answers,siz,index,Setmark,mark,cal,setCal,seq,cutanswers,cutanswer,showcutcheck,cutcheck,markreview,markre,annotation_check,calculator_check,cross_O_check} = props;
    const s ={
     height : "58.2vh"
   }
@@ -16,15 +20,90 @@ export default function Que(props) {
     arr[index] = !arr[index]
     Setmark(arr)
   }
+  const [underline, setunderline] = useState('underline');
+  const [show_ann, setshow_ann] = useState(false);
+  const [check, setcheck] = useState(false);
+  const [color, setcolor] = useState('yellow');
+    const [annotations, setAnnotations] =  useState(Array(siz).fill(null).map(() => []));
+    const [hovert, sethovert] = useState(Array(siz).fill());
+    const handleAnnotationChange = (newAnnotationsForIndex) => {
+      if(showannotate){
+    setAnnotations(prevAnnotations => {
+      const updatedAnnotations = [...prevAnnotations];
+      updatedAnnotations[index-1] = newAnnotationsForIndex;
+      return updatedAnnotations;
+    });
+  }
+  };
+
+  useEffect(()=>{
+    console.log(hovert);
+    console.log(annotations);
+    tippy('mark', {
+      content: hovert[index-1],
+    });
+    setshowtextbox(false)
+    setshowannotate(false)
+  },[hovert])
+
+  useEffect(() => {
+    if(check){
+    setshow_ann(true)
+    tippy('mark', {
+      content: hovert[index-1],
+    });
+  }
+  else {
+    setcheck(true)
+  }
+  }, [annotations]);
+
+  useEffect(() => {
+    tippy('mark', {
+      content: hovert[index-1],
+    });
+  }, [index]);
+
+  useEffect(() => {
+    tippy('mark', {
+      content: hovert[index-1],
+    });
+    }, [color]);
+
   return (
-    <div className={` px-20 overflow-y-scroll flex flex-row ${props.check && 'bg-gray-200'} ${!para? 'justify-center' : 'justify-between'} `} style={s}>
+    <div className={` px-20 h-[25rem] relative flex flex-row ${props.check && 'bg-gray-200'} ${!para? 'justify-center' : 'justify-between'} `} style={s}>
+       {showannotate?
+        <AnnotationPopup show_ann={show_ann} index={index} annotations={annotations} setAnnotations={setAnnotations} setshow_ann={setshow_ann} setIsEditing={setshowannotate} isEditing={showannotate} color={color} i={index} underline={underline} sethovert={sethovert} setunderline={setunderline} setcolor={setcolor} />
+       :null}
         {
-          para?<div className='w-1/2 pr-4 pt-5'>
-           <div dangerouslySetInnerHTML={{__html:para}}/>
-           {/* <img src={image} alt="" /> */}
+          para?<div className='overflow-y-auto w-1/2 pr-4 pt-5'>
+           <TextAnnotator
+            key={color}
+        content={quesT[index-1].text}
+        value={annotations[index-1]}
+        onChange={handleAnnotationChange}
+        getSpan={(span) => ({
+          ...span,
+          color,
+          underline
+        })}
+        span={({ children, ...spanProps }) => {
+          console.log(spanProps) 
+          return(
+          <Tippy content={hovert[index-1]}>
+            <mark
+            style={{ textDecoration:spanProps.underline,backgroundColor: spanProps.color }}
+              {...spanProps}
+>              {children}
+            </mark> 
+          </Tippy>
+          )
+        }}
+      /> 
+         {/* <img src={image} alt="" /> */}
         </div>:null
         }
-        <div className={`mt-5 ${props.check && 'hidden'} ${!para? 'flex w-1/2 flex-col':'w-1/2'}` }>
+        <div className={`mt-5 overflow-y-auto${props.check && 'hidden'} ${!para? 'flex w-1/2 flex-col':'w-1/2'}` }>
           <div className=' flex bg-slate-200  text-center relative'>
             <span className=' bg-black text-white py-1 px-2'>{index}</span>
             <FontAwesomeIcon onClick={()=>{markre(index)}} icon={faBookmark} className={`cursor-pointer text-transparent border border-black relative top-2 mx-2 ${ markreview.length>0?markreview[index-1]?.review && 'bg-yellow-400':null}`} />  
@@ -35,7 +114,6 @@ export default function Que(props) {
             </div>
           :null}
           </div>
-         { console.log(answers)}
          <hr className=' border border-black' />
          <div className='flex flex-col items-start justify-center'>
         { ques?<h1 className='py-3'>{ques}</h1>:null}
