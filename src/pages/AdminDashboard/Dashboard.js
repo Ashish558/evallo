@@ -34,7 +34,7 @@ const Dashboard = () => {
   const { firstName, lastName } = useSelector((state) => state.user);
   const { data: userStats } = useGetUserStatsQuery();
 
-  console.log({userStats})
+  console.log({ userStats })
   const [completedRevenue, completedRevenueStatus] = useGetAllRevenueMutation();
   const [leakedRevenue, leakedRevenueStatus] = useGetLeakedRevenueMutation();
   const [impendingRevenue, impendingRevenueStatus] =
@@ -94,28 +94,28 @@ const Dashboard = () => {
     setUserData((prev) => {
       let arr = [...prev];
       arr = arr.sort(function (a, b) {
-        if(plus && plus[key]){
-        if (a[key] < b[key]) {
-          return -1;
+        if (plus && plus[key]) {
+          if (a[key] < b[key]) {
+            return -1;
+          }
+          if (a[key] > b[key]) {
+            return 1;
+          }
+          return 0;
         }
-        if (a[key] > b[key]) {
-          return 1;
+        else {
+          if (a[key] < b[key]) {
+            return 1;
+          }
+          if (a[key] > b[key]) {
+            return -1;
+          }
+          return 0;
         }
-        return 0;
-      }
-      else {
-        if (a[key] < b[key]) {
-          return 1;
-        }
-        if (a[key] > b[key]) {
-          return -1;
-        }
-        return 0;
-      }
       });
       setPlus({
         ...plus,
-      [key]:!plus[key]
+        [key]: !plus[key]
       })
       return arr;
     });
@@ -124,40 +124,40 @@ const Dashboard = () => {
     setUserData((prev) => {
       let arr = [...prev];
       arr = arr.sort(function (a, b) {
-        if(plus && plus["role"]){
-        if (a.role < b.role) {
-          return -1;
+        if (plus && plus["role"]) {
+          if (a.role < b.role) {
+            return -1;
+          }
+          if (a.role > b.role) {
+            return 1;
+          }
+          return 0;
         }
-        if (a.role > b.role) {
-          return 1;
+        else {
+          if (a.role < b.role) {
+            return 1;
+          }
+          if (a.role > b.role) {
+            return -1;
+          }
+          return 0;
         }
-        return 0;
-      }
-      else {
-        if (a.role < b.role) {
-          return 1;
-        }
-        if (a.role > b.role) {
-          return -1;
-        }
-        return 0;
-      }
       });
-    
-   
+
+
       return arr;
     });
     setPlus({
       ...plus,
-      role:!plus?.role
+      role: !plus?.role
     })
   };
-  const [plus,setPlus]=useState({})
+  const [plus, setPlus] = useState({})
   const sortByDate = () => {
     setUserData((prev) => {
       let arr = [...prev];
       arr = arr.sort(function (a, b) {
-        if(plus && !plus["lastSignUp"]){
+        if (plus && !plus["lastSignUp"]) {
           return new Date(b.lastSignUp) - new Date(a.lastSignUp);
         }
         return new Date(a.lastSignUp) - new Date(b.lastSignUp);
@@ -169,7 +169,7 @@ const Dashboard = () => {
     });
     setPlus({
       ...plus,
-      lastSignUp:!plus?.lastSignUp
+      lastSignUp: !plus?.lastSignUp
     })
   };
   const latestSignUpHeaders = [
@@ -177,43 +177,43 @@ const Dashboard = () => {
       id: 1,
       text: "Full Name",
       className: "text-left pl-8",
-      onCick: ()=>sortByString("firstName"),
+      onCick: () => sortByString("firstName"),
     },
     {
       id: 2,
       text: "User Type",
-      onCick: ()=>sortByString("role"),
+      onCick: () => sortByString("role"),
     },
     {
       id: 3,
       text: "Email",
-      onCick: ()=>sortByString("email"),
+      onCick: () => sortByString("email"),
     },
     {
       id: 4,
       text: "Phone",
-      onCick: ()=>sortByString("phone"),
+      onCick: () => sortByString("phone"),
     },
     {
       id: 5,
       text: "Assigned Tutor",
-      onCick: ()=>sortByString("userStatus"),
+      onCick: () => sortByString("userStatus"),
     },
     {
       id: 6,
       text: "Lead Status",
-      onCick: ()=>sortByString("userStatus"),
+      onCick: () => sortByString("userStatus"),
 
     },
     {
       id: 7,
       text: "Tutor Status",
-      onCick: ()=>sortByString("assiginedTutors"),
+      onCick: () => sortByString("assiginedTutors"),
     },
     {
       id: 8,
       text: "Services",
-      onCick: ()=>sortByString("specialization"),
+      onCick: () => sortByString("specialization"),
     },
     {
       id: 9,
@@ -221,7 +221,7 @@ const Dashboard = () => {
       onCick: sortByDate,
     },
   ];
-  console.log({userData})
+  console.log({ userData })
   const convertDateToRange = (startDate) => {
     let startD = startDate.split("-")[0];
 
@@ -259,7 +259,8 @@ const Dashboard = () => {
 
     fetchPopularServicesData(body)
       .then((res) => {
-        console.log(res?.data);
+        console.log(res?.data?.all_services, "popular-services");
+        setPopularServices(res?.data?.all_services)
       })
       .catch((err) => {
         console.log(err);
@@ -316,7 +317,7 @@ const Dashboard = () => {
 
 
               <RangeDate optionClassName="!w-min"
-              inputContainerClassName="!w-min "  handleRangeData={handleRevenue} />
+                inputContainerClassName="!w-min " handleRangeData={handleRevenue} />
             </div>
           </div>
         </div>
@@ -425,13 +426,13 @@ const Dashboard = () => {
                     </div>
                   </div>
                 </div>
-                
+
               </div>
-             
+
               <div className={` my-auto `}>
-             
+
                 <div className="flex pl-[1.8vw]  my-auto items-center  justify-between whitespace-nowrap">
-                 
+
                   <div className="w-[11.083vw]  text-base-17-5">
                     <div className="mb-[6px]">
                       <p className=" font-medium text-[#26435F80] mb-[5px]">
@@ -486,7 +487,7 @@ const Dashboard = () => {
 
               <div className="flex font-semibold text-[#FFA28D] text-xs">
                 <RangeDate optionClassName="!w-min"
-              inputContainerClassName="!w-min " handleRangeData={handleUserStats} />
+                  inputContainerClassName="!w-min " handleRangeData={handleUserStats} />
               </div>
             </div>
           </div>
@@ -563,7 +564,7 @@ const Dashboard = () => {
               belowBox={true}
               belowBoxHeight="h-[192px]"
               belowBoxText="Invite Parents or Students"
-                belowBoxLink="users"
+              belowBoxLink="users"
               belowBoxIcon={userLogo}
               tableHeaders={latestSignUpHeaders}
               maxPageSize={5}
@@ -572,17 +573,17 @@ const Dashboard = () => {
           </div>
         </section>
         <div className="flex justify-center">
-            <div className=" w-[78.125vw] !mt-[calc(43*0.050vw)]">
-              <div className=" h-[1px] bg-[#CBD6E2]"></div>
-            </div>
+          <div className=" w-[78.125vw] !mt-[calc(43*0.050vw)]">
+            <div className=" h-[1px] bg-[#CBD6E2]"></div>
           </div>
+        </div>
         <div className=" relative z-[50000] w-[83.33vw] mx-auto mt-[25px] text-[#26435F]">
-          <div  className=" relative z-[50000] flex justify-between items-center translate-y-[10px] ">
+          <div className=" relative z-[50000] flex justify-between items-center translate-y-[10px] ">
             <p className="font-bold uppercase text-[#FFA28D] text-xl text-base-20">Client Success Overview </p>
 
             <RangeDate optionClassName="!w-min"
               inputContainerClassName="!w-min "
-               handleRangeData={handlePopularServices} />
+              handleRangeData={handlePopularServices} />
           </div>
         </div>
 
@@ -594,7 +595,8 @@ const Dashboard = () => {
               </p>
               <div className=" pr-[1.5625vw]  text-base-17-5 -mt-3">
                 <Table
-                noScrollbar={true}
+                  dataFor="popularServices"
+                  noScrollbar={true}
                   data={popularServices}
                   hidePagination={true}
                   tableHeaders={[
@@ -614,11 +616,11 @@ const Dashboard = () => {
                 />
               </div>
             </div>
-            <div className="pl-[1.5625vw] border-l-[1.7px] border-[#CBD6E2]">
-              <p className=" translate-y-[10px] font-semibold text-[#26435F] text-[17.5px] text-base-17-5">
+            <div className=" ">
+              <p className="pl-[1.5625vw] translate-y-[10px] font-semibold text-[#26435F] text-[17.5px] text-base-17-5">
                 Star Clients
               </p>
-              <div>
+              <div className="pl-[1.5625vw] border-l-[1.7px] border-[#CBD6E2]">
                 {/* <div
                   className={`h-[85px] flex justify-center items-center text-sm text-[#667085] bg-[#E5E8EA]`}
                 >
@@ -635,7 +637,7 @@ const Dashboard = () => {
                   maxPageSize={5}
                   belowBox={true}
                   belowBoxText="Add Referral Codes"
-                    belowBoxLink="settings"
+                  belowBoxLink="settings"
                   belowBoxIcon={plusIcon}
                   belowBoxHeight="h-[168px]"
                 />
@@ -717,10 +719,10 @@ const Dashboard = () => {
           </div>
         </section>
         <div className="flex justify-center">
-            <div className=" w-[78.125vw] !mt-[calc(60*0.050vw)]">
-              <div className=" h-[1px] bg-[#CBD6E2]"></div>
-            </div>
+          <div className=" w-[78.125vw] !mt-[calc(60*0.050vw)]">
+            <div className=" h-[1px] bg-[#CBD6E2]"></div>
           </div>
+        </div>
         <div className=" relative z-[50000] w-[83.33vw] mx-auto  mt-[13px] text-[#FFA28D] ">
           <div className=" relative z-[50000] flex justify-between items-center  translate-y-[15px] mb-[10px]">
             <p className="font-bold uppercase text-xl text-base-17-5">Tutor Performence Overview </p>
@@ -729,7 +731,7 @@ const Dashboard = () => {
               inputContainerClassName="!w-min " handleRangeData={handleTutorPerformance} />
           </div>
         </div>
-        
+
         <section className="mx-auto  w-[83.33vw]">
 
           <Table
