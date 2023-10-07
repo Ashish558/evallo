@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useLazyGetParentsByNameQuery } from "../../../../app/services/admin";
 import { useLazyGetStudentsByNameQuery } from "../../../../app/services/session";
 import ProfilePhoto from "./ProfilePhoto";
+import down from "../../../../assets/YIcons/Group33.svg";
 import caution from "../../../../assets/icons/octicon_stop-16.svg";
 import {
   useUpdateTutorDetailsMutation,
@@ -39,7 +40,7 @@ export default function ParentEditables({
   toEdit,
   fetchDetails,
   settings,
-  persona,
+ 
   awsLink,
   selectedScoreIndex,
 }) {
@@ -50,7 +51,7 @@ export default function ParentEditables({
   const [student, setStudent] = useState("");
   const [fetchStudents, studentResponse] = useLazyGetStudentsByNameQuery();
   const [students, setStudents] = useState([]);
-
+  const { role: persona } = useSelector((state) => state.user);
   const [parent, setParent] = useState("");
   const [fetchParents, fetchParentsResp] = useLazyGetParentsByNameQuery();
   const [parents, setParents] = useState([]);
@@ -758,7 +759,7 @@ export default function ParentEditables({
               >
                 {/* {currentField.fields && currentField.fields} */}
                 {currentField.name === "frame0" && (
-                  <div className="flex flex-col px-2 it">
+                  <div className="flex flex-col px-2 max-h-[60vh]  ">
                     <div className="flex gap-3 items-center">
                       <div className="flex flex-col gap-5">
                         <div className="flex !text-sm gap-4 ">
@@ -888,6 +889,7 @@ export default function ParentEditables({
                         </div>
                       </div>
                     </div>
+                   
                     <div>
                       <div className="flex-1 mt-5">
                         <p className=" text-sm text-[#26435F] font-semibold">
@@ -895,7 +897,7 @@ export default function ParentEditables({
                         </p>
                         <textarea
                           rows="3"
-                          className="mt-1 block w-full h-[100px] resize-none focus:!ring-blue-500 p-2 focus:!border-blue-500 placeholder-[#CBD6E2] text-sm  placeholder:text-xs border border-[0.917px_solid_#D0D5DD] rounded-[6px]
+                          className="mt-1 block w-full h-[50px] resize-none focus:!ring-blue-500 p-2 focus:!border-blue-500 placeholder-[#CBD6E2] text-sm  placeholder:text-xs border border-[0.917px_solid_#D0D5DD] rounded-[6px]
                 "
                           value={currentToEdit.about}
                           onChange={(e) => {
@@ -907,7 +909,51 @@ export default function ParentEditables({
                           placeholder=""
                         ></textarea>
                       </div>
+                     
+                    
                     </div>
+                    {persona==="admin"?
+                    <div className=" ">
+                      <div id="borderDashed2" className="h-[2px] w-[100%] mt-6 mx-auto my-4"> 
+                        </div>
+                      {/* <p className='font-medium mr-4'> Associated Students </p> */}
+                      {/* <div className="max-w-[250px] mx-auto">
+                        <Slider
+                          images={currentToEdit.studentsData}
+                          awsLink={awsLink}
+                        />
+                      </div> */}
+                     
+                      <InputSearch
+                         right={<img className="w-5 h-4" alt="drop" src={down} />}
+                        labelClassname="text-[#26435F] mb-1 text-sm"
+                        label="Associated Students"
+                        placeholder="Select Associated Students"
+                        parentClassName="w-full  mb-10"
+                       
+                        inputContainerClassName="bg-[#F3F5F7] border-0 pt-3.5 pb-3.5"
+                        inputClassName="bg-[#F3F5F7]"
+                        type="text"
+                        optionPrefix="s"
+                        value={student}
+                        optionClassName="h-[60px] 2xl:h-[100px]  design:h-[200px]"
+                        checkbox={{
+                          visible: true,
+                          name: "name",
+                          match: currentToEdit.assiginedStudents,
+                        }}
+                        onChange={(e) => setStudent(e.target.value)}
+                        optionData={students}
+                        onOptionClick={(item) => {
+                          // setStudent(item.value);
+                          handleStudentsChange(item);
+                          // setCurrentToEdit({ ...currentToEdit, students: [... item._id] });
+                        }}
+                      />
+                    </div>:""}
+                    <div>
+                    
+                  </div>
                   </div>
                 )}
 

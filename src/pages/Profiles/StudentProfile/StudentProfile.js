@@ -172,7 +172,7 @@ export default function StudentProfile({ isOwn }) {
       active: false,
       firstName: "",
       lastName: "",
-
+      associatedParent:"",
       schoolName: [],
       about: '',
       email: "",
@@ -502,19 +502,20 @@ const [toEdit, setToEdit] = useState({
         subscriptionCode,
       } = res.data.data.userdetails;
       associatedParent &&
-        getUserDetail({ id: associatedParent }).then((res) => {
-          const { firstName, lastName, _id } = res.data.data.user;
-        //   setAssociatedParent({
-        //     firstName,
-        //     lastName,
-        //     _id,
-        //     email,
-        //     photo: res.data.data.user.photo
-        //       ? res.data.data.user.photo
-        //       : "/images/default.jpeg",
-        //   });
+        getUserDetail({ id: associatedParent }).then((res2) => {
+          if(res2?.error)return 
+          const { firstName, lastName, _id } = res2.data.data.user;
+          setAssociatedParent({
+            firstName,
+            lastName,
+            _id,
+            email,
+            photo: res2?.data?.data?.user?.photo?.length>0
+              ? res2.data.data.user.photo
+              : "/images/Rectangle 2347.svg",
+          });
          });
-        setAssociatedParent(res?.data?.data?.parent)
+     //   setAssociatedParent(res?.data?.data?.parent)
       setUser(res.data.data.user);
       if (!satScores) satScores = [];
       if (!actScores) actScores = [];
@@ -543,6 +544,7 @@ const [toEdit, setToEdit] = useState({
                   phoneCode: phoneCode === null ? "" : phoneCode,
                   ...prev.frame0.grade,
                   grade,
+                  associatedParent,
                   ...prev.frame0.schoolName,
                   schoolName,
                   about,
