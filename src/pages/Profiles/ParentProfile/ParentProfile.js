@@ -119,6 +119,8 @@ export default function StudentProfile({ isOwn }) {
       about: "",
       email: "",
       phone: "",
+      alternateEmail:"",
+
       phoneCode: "",
     },
     frame1: {
@@ -338,7 +340,7 @@ const [toEdit, setToEdit] = useState({
       userId = params.id;
     }
     getUserDetail({ id: userId }).then((res) => {
-      //console.log("details -- ", res.data.data);
+      console.log("details -- ",userId,res);
       if(!res?.data?.data)return 
       // //console.log('tut id', id);
       if (res.data.data.user.assiginedTutors) {
@@ -361,21 +363,25 @@ const [toEdit, setToEdit] = useState({
         res.data.data.userdetails;
 
       let studentsData = [];
-      if (assiginedStudents === undefined || assiginedStudents.length === 0)
+      if (assiginedStudents === undefined || assiginedStudents?.length === 0)
         setAssociatedStudents([]);
 
       assiginedStudents !== undefined &&
-        assiginedStudents.map((student) => {
+        assiginedStudents.map((student,idx) => {
           getUserDetail({ id: student }).then((res) => {
-            // //console.log({[id]:res})
+           console.log({[id]:res})
             studentsData.push({
               _id: res.data.data.user._id,
               value: `${res.data.data.user.firstName} ${res.data.data.user.lastName}`,
+              name: `${res.data.data.user.firstName} ${res.data.data.user.lastName}`,
               photo: res.data.data.user.photo ? res.data.data.user.photo : null,
               email: res.data.data.user.email ? res.data.data.user.email : null,
               service: res.data.data.userdetails.service ? res.data.data.userdetails.service : [],
             });
+            if(idx===user?.assiginedStudents?.length-1)
+            setAssociatedStudents(studentsData);
           });
+         
         });
 
       let {
@@ -503,26 +509,32 @@ const [toEdit, setToEdit] = useState({
   const handleCopy = text => {
     navigator.clipboard.writeText(text);
   }
-  useEffect(() => {
-    if (user.assiginedStudents === undefined) return;
-    let studentsData = [];
-    user.assiginedStudents.map((student) => {
-      getUserDetail({ id: student }).then((res) => {
-        if (res.error) return;
-        studentsData.push({
-          _id: res.data.data.user._id,
-          name: `${res.data.data.user.firstName} ${res.data.data.user.lastName}`,
-          photo: res.data.data.user.photo ? res.data.data.user.photo : null,
-          email: res.data.data.user.email ? res.data.data.user.email : null,
-          service: res.data.data.userdetails.service ? res.data.data.userdetails.service : [],
-        });
+  // useEffect(() => {
+  //   //Don't need this effect 
+  //   return false;
+  //   if (user.assiginedStudents === undefined) return;
+  //   let studentsData = [];
+  //   user?.assiginedStudents.map((student, id) => {
+  //     getUserDetail({ id: student }).then((res) => {
+  //       console.log("associated  ,,",res)
+  //       if (res.error) return;
+  //       studentsData.push({
+  //         _id: res.data.data.user._id,
+  //         name: `${res.data.data.user.firstName} ${res.data.data.user.lastName}`,
+  //         photo: res.data.data.user.photo ? res.data.data.user.photo : null,
+  //         email: res.data.data.user.email ? res.data.data.user.email : null,
+  //         service: res.data.data.userdetails.service ? res.data.data.userdetails.service : [],
+  //       });
 
-      });
-    });
-    setAssociatedStudents(studentsData);
-    // setAssociatedStudents(studentsData)
-    setActiveIndex(0);
-  }, [user]);
+  //     });
+  //     if(id===user?.assiginedStudents?.length-1)
+
+  //     setAssociatedStudents(studentsData);
+  //   });
+   
+  //   // setAssociatedStudents(studentsData)
+  //   setActiveIndex(0);
+  // }, [user,user?.assiginedStudents]);
 
   useEffect(() => {
     fetchDetails();
@@ -686,7 +698,8 @@ const [toEdit, setToEdit] = useState({
               <div
                 className={`${styles.studentsContainer} min-h-[290px] w-full`}
               >
-                {associatedStudents.map((student, idx) => {
+                {console.log({user,associatedStudents},user?.assiginedStudents)}
+                {associatedStudents?.map((student, idx) => {
                   return (
                     <div
                       key={idx}

@@ -143,7 +143,7 @@ email: "Email not verified! Please Verify your email and set your password"
   return (
     <div className={styles.bg}>
       <div className="flex  flex-col items-center md:grid-cols-2  ">
-        <img src={cuate} alt="rocket" className="h-10vh mt-3 mb-4 scale-[0.8] mt-[-5px] design:mt-[0px] design:scale-100" />
+        <img src={cuate} alt="rocket" className="h-10vh mt-3 mb-7 scale-[0.85] mt-[-5px] design:mt-[0px] design:scale-100" />
         <div className="bg-primary hidden lg:block ">
           <ImageSlider
             className={styles.loginCarousel}
@@ -151,7 +151,7 @@ email: "Email not verified! Please Verify your email and set your password"
             pagination={true}
           />
         </div>
-        <div className="lg:flex scale-[0.67] design:scale-100 mt-[-120px] design:mt-[0px]   lg:items-center bg-white rounded-[10px] pt-[40px] pb-6 px-5 md:px-[66px] lg:min-w-[561px] shadow-[5px_5px_87.5px_0px_rgba(166,166,166,0.25)]">
+        <div className="lg:flex scale-[0.73] design:scale-100 mt-[-100px] design:mt-[0px]   lg:items-center bg-white rounded-[10px] pt-[40px] pb-6 px-5 md:px-[66px] lg:min-w-[561px] shadow-[5px_5px_87.5px_0px_rgba(166,166,166,0.25)]">
           {loginActive ? (
             <div className="w-full">
               <div className="flex justify-center" >
@@ -172,16 +172,17 @@ email: "Email not verified! Please Verify your email and set your password"
                 }`}
               >
                 <InputField
-                  right={<img onClick={()=>setEmail("")} className="ml-3 cursor-pointer scale-[0.80]" src={cutEmail} alt="right icon"/>}
+                  right={email?.length>0?<img onClick={()=>setEmail("")} className="ml-3 cursor-pointer scale-[0.80]" src={cutEmail} alt="right icon"/>:null}
                   biggerText={true}
                   iconSize="medium"
                   placeholder=""
                   parentClassName="mb-[18px]"
                   label="Email "
+
                   removeResponsive={true}
                   labelClassname="text-[#26435F] font-medium"
                   inputClassName="bg-transparent  !text-lg"
-                  inputContainerClassName="border-[0.936px] !text-lg border-[#D0D5DD]  h-[49px]  rounded-[6px] w-full"
+                  inputContainerClassName="hover:border-[#FFA28D] border-[0.936px] !text-lg border-[#D0D5DD]  h-[49px]  rounded-[6px] w-full"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   error={error.email}
@@ -199,7 +200,7 @@ email: "Email not verified! Please Verify your email and set your password"
                   type="password"
                   labelClassname="text-[#26435F] font-medium"
                   inputClassName="bg-transparent "
-                  inputContainerClassName="border-[0.936px] border-[#D0D5DD] !text-lg h-[49px]  rounded-[6px] w-full"
+                  inputContainerClassName="hover:border-[#FFA28D] border-[0.936px] border-[#D0D5DD] !text-lg h-[49px]  rounded-[6px] w-full"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   error={error.password}

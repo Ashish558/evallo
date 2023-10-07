@@ -266,7 +266,7 @@ const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
     >
       <div className=" flex-1 w-[70%] h-full">
         <div className="flex items-center justify-between">
-          <h1 className="text-[#26435F]  text-sm font-semibold ">
+          <h1 className="text-[#26435F]  text-base-20 font-semibold mb-1">
             Conceptual Accuracy 
             <span className="inline-block my-auto ml-2 translate-y-1">
               <svg
@@ -284,8 +284,8 @@ const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
             </span>
           </h1>
 
-          <div className="flex  justify-end absolute top-[51.5%] right-[38%]">
-            
+          <div className="flex  justify-end absolute z-40 top-[51.5%] right-[38%]">
+            {console.log(subjects)}
             <InputSelectNew
               placeholder={""}
               parentClassName="ml-0  scale-[0.8] items-center flex text-[#FFA28D] text-xs border px-1 py-2 border-[#FFA28D] rounded-full  "
@@ -302,7 +302,7 @@ const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
 
             <RangeDate
               className="ml-0"
-              manualHide={true}
+            
               optionClassName="!w-min"
               inputContainerClassName="!w-min"
               handleRangeData={setSelectedConceptIdx}
@@ -328,11 +328,11 @@ const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
       <div className="w-full lg:w-1/3 flex flex-col gap-3 mt-1 h-full">
         <div className="concept" id={styles.studentCarousel}>
           <div >
-          <h1 className="text-[#26435F]  text-sm font-semibold ">
+          <h1 className="text-[#26435F]  text-base-20 font-semibold ">
            Tutor Profile
            
           </h1>
-          <div className="mb-3 bg-[linear-gradient(100deg,#26435F_0.06%,#1C3BDE_99.95%)] flex items-center h-[180px] rounded-md !w-[calc(489*0.0522vw)]">
+            <div className="mb-3 bg-[#26435F] flex items-center h-[180px] rounded-md !w-[calc(489*0.0522vw)]">
 
           
             {filteredTutors.length >0  ? (
@@ -350,20 +350,19 @@ const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
                       className="item flex gap-2 my-auto  h-full"
                     
                     >
-                      <div className="w-[40%] ml-5 flex justify-center flex-col h-full ">
-                      <h3 className="mt-0 mb-1 mt-2.5 text-[#FFA28D] font-semibold max-w-[100px] overflow-x-auto">
+                      <div className="w-[40%] ml-10 flex justify-center flex-col h-full ">
+                      <h3 className="mb-1 mt-2.5 text-[#FFA28D] font-semibold max-w-[130px] overflow-x-auto">
                           {" "}
-                          {`${tutor.firstName} ${tutor.lastName} `}
+                          {`${tutor.firstName}  ${tutor.lastName} `}
                         </h3>
                         {/* <h5 className={`text-white`}>
                           
                           {tutor.tutorLevel && `${tutor.tutorLevel} Belt`}
                         </h5> */}
                         <p className="text-white text-base-17-5 max-w-[100px] overflow-x-auto ">{tutor?.tutorServices[0]?.service?tutor?.tutorServices[0]?.service:tutor?.tutorServices[1]?.service?tutor?.tutorServices[1]?.service:"None"}</p>
-                   
-                        <p className="text-white text-base-15 max-w-[100px] overflow-x-auto mt-1">{tutor?.tagLine}</p>
+                        <p className="text-white text-base-15 max-w-[100px] overflow-x-auto mt-1">{tutor?.tagline}</p>
                         <button
-                       className="p-2 mt-5 !w-fit rounded-lg whitespace-nowrap text-sm px-4 bg-[#FFA28D] text-white text-base-17-5"
+                       className="p-2 mt-7 !w-fit rounded-lg whitespace-nowrap text-sm px-4 bg-[#FFA28D] text-white text-base-17-5"
          
                        onClick={() =>
                         tutor._id && navigate(`/profile/tutor/${tutor._id}`)
@@ -404,7 +403,7 @@ const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
         </div>
 
         <div id={styles.practiceTestContainer}>
-        <h1 className="text-[#26435F]  text-sm font-semibold mb-1">
+          <h1 className="text-[#26435F]  text-base-20 font-semibold mb-1">
            Assignments
             
           </h1>

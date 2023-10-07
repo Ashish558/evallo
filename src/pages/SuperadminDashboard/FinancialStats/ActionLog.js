@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import React, { useState } from "react";
 import { useEffect } from "react";
 import { useRef } from "react";
+import { getFormattedDate } from "../../../utils/utils";
 function ActionLog({ dateRange }) {
   const [actionLogData, fetchStatus] = useGetActionLogRangeMutation();
   const {role:persona} = useSelector((state)=>state.user)
@@ -15,7 +16,7 @@ function ActionLog({ dateRange }) {
   const [sortedAction, setSortedAction] = useState([]);
   const [actionLog, setActionLog] = useState([]);
   const ref = useRef();
-
+  const { dateFormat } = useSelector(state => state.user)
   const handleScroll = (e) => {
    
 
@@ -111,7 +112,7 @@ function ActionLog({ dateRange }) {
             ref={ref}
             className="uppercase  pl-[29px] pt-[16px] pb-3 text-[#26435F]"
           >
-            {headerDate}
+          {getFormattedDate(headerDate, dateFormat)}
           </p>
         </div>
         <ul
@@ -129,11 +130,11 @@ function ActionLog({ dateRange }) {
                     .slice(0, 2)
                     .join(":") +
                     " " +
-                    new Date(item.createdAt).toLocaleTimeString().split(" ")[1]}
+                    new Date(item.createdAt).toLocaleTimeString().split(" ")[1]?.toLocaleLowerCase()}
                 {item.topDate && item?.message && (
                   <span className="text-xs ml-5 top-0 text-[#FFA28D] absolute backdrop-blur-sm ">
                     {" "}
-                    {item?.topDate}
+           {getFormattedDate(item?.topDate, dateFormat)}
                   </span>
                 )}
               </p>

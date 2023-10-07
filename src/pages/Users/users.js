@@ -10,11 +10,11 @@ import InputSelect from "../../components/InputSelect/InputSelect";
 import styles from "./styles.module.css";
 import AddIcon from "../../assets/icons/add.svg";
 import Dropdown from "../../assets/icons/Polygon 2.png";
-import PlusIcon from "../../assets/icons/plus.svg";
+import PlusIcon from "../../assets/icons/add_plus.svg";
 import ExportIcon from "../../assets/icons/export.svg";
 import UploadIcon from "../../assets/icons/upload.svg";
 import XIcon from "../../assets/icons/x.png";
-import SearchIcon from "../../assets/icons/search.svg";
+import SearchIcon from "../../assets/icons/Search_shade.svg";
 import fileupload from "../../assets/icons/basil_file-upload-outline (2).svg";
 import { tableData, userTypesList } from "./tempData";
 import { BASE_URL, getAuthHeader } from "../../app/constants/constants";
@@ -40,7 +40,7 @@ import {
   useDeleteUserMutation,
   useUnblockUserMutation,
 } from "../../app/services/admin";
-import ques from "../../assets/YIcons/medical-icon_i-information-us.svg";
+import ques from "../../assets/icons/tooltip.svg";
 import { useLazyGetSettingsQuery } from "../../app/services/session";
 import PrimaryButton from "../../components/Buttons/PrimaryButton";
 // import CountryCode from "../../components/CountryCode/CountryCode";
@@ -270,7 +270,7 @@ export default function Users() {
       const fetchDetails = async () => {
         let tempData = [];
         await res?.data?.data?.user?.map(async (user) => {
-          console.log("user", user);
+         // console.log("user", user);
           let obj = {
             _id: user._id,
             block: user.block,
@@ -633,7 +633,8 @@ export default function Users() {
     if (!settings.servicesAndSpecialization) return;
     let specs = [];
     settings.servicesAndSpecialization.map((service) => {
-      specs.push(...service.specialization);
+     // specs.push(...service.specialization);
+     specs.push(service.service)
     });
     setSpecializations(specs);
     //console.log("specs", specs);
@@ -660,6 +661,7 @@ export default function Users() {
   const [successFetched, setsuccessFetched] = useState(false);
   const handleBulkExport = async () => {
     setCsvLoad(true);
+    if(selectedId?.length===0){
     getAllUsers()
       .then((res) => {
         let result = res?.data?.data?.user;
@@ -689,6 +691,12 @@ export default function Users() {
       .catch((err) => {
         setCsvLoad(false);
       });
+    }
+    else {
+      setCsvData(selectedId);
+      setsuccessFetched(true);
+      setCsvLoad(false);
+    }
   };
   const [csvLength, setCsvLength] = useState("XX");
   const [students, setStudents] = useState([]);
@@ -853,7 +861,7 @@ useEffect(()=>{
   }
 },[checkSave])
 
-console.log({checkSave})
+//console.log({checkSave})
 const bulkSelectInvite=()=>{
   let users=selectedId?.map(ii=>ii?._id)
   if(!users || users?.length===0) return
@@ -898,7 +906,7 @@ useEffect(()=>{
 const numberKey=Object.keys(bulkEdits)?.length>0
 
 
-console.log("users",{selectedId,bulkEdits})
+//console.log("users",{selectedId,bulkEdits})
   return (
     <div className="w-[83.6989583333vw] mx-auto  min-h-screen">
       <div className="pb-10  mt-[50px] !mt-[calc(50*0.0522vw)]">
@@ -912,13 +920,7 @@ console.log("users",{selectedId,bulkEdits})
               "  >  "}</span>
             <span className="font-semibold">CRM</span>
           </p>
-          <button
-            className="bg-[#FFA28D]  text-[15px] justify-center flex py-2 px-4 design:px-4 items-center text-white font-semibold rounded-lg text-base-15"
-            onClick={() => setAssignedTutorOpen(true)}
-          >
-            Tutor Mapping
-            <img src={PlusIcon} className="ml-3" alt="PlusIcon" />
-          </button>
+          
         </div>
         <div>
           <div className="flex mb-[46px]">
@@ -951,7 +953,7 @@ console.log("users",{selectedId,bulkEdits})
             </button>
             <button
               onClick={upload}
-              className="bg-[#517CA8] text-base-15 w-[158px] text-[15px] justify-center flex  items-center text-white  rounded-lg mr-[25px]"
+              className="bg-[#517CA8] text-base-15 w-[160px] text-[15px] justify-center flex  items-center text-white  rounded-lg mr-[25px]"
             >
               Bulk Upload{" "}
               <img src={UploadIcon} className="ml-3" alt="UploadIcon" />
@@ -966,9 +968,15 @@ console.log("users",{selectedId,bulkEdits})
                 </>
               }
               onClick={() => setModalActive(true)}
-              className=" flex items-center text-[15px] !text-white font-semibold py-[10px] px-3 text-base-15"
+              className=" flex items-center  !text-white font-semibold py-[10px]  text-base-17-5 w-[203px] h-[45px] !px-1"
             />
-
+            <button
+              className="bg-[#FFA28D]  text-base-17-5 justify-center flex py-2 pr-[12px] pl-4 design:px-4 items-center text-white font-semibold rounded-lg text-base-15  ml-auto"
+              onClick={() => setAssignedTutorOpen(true)}
+            >
+              Tutor Mapping
+              <img src={PlusIcon} className="ml-3" alt="PlusIcon" />
+            </button>
             {bulkUpload && (
               <Modal
                 title="Bulk Upload"
@@ -1103,7 +1111,7 @@ console.log("users",{selectedId,bulkEdits})
             placeholder="Search"
             inputClassName="text-base-17-5 pl-4 text-[#667085]"
             parentClassName="w-[22.03125vw]  py-1"
-            inputContainerClassName="text-sm  mt-1 shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white   mb-1  !py-[15px]"
+            inputContainerClassName="text-base-17-5  mt-1 shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white   mb-1  !py-[15px]"
             type="text"
             value={filterData.typeName}
             onChange={(e) =>
@@ -1125,7 +1133,7 @@ console.log("users",{selectedId,bulkEdits})
               match: filterData.userType,
             }}
             onChange={(val) =>{
-              console.log({val,filterData})
+           
               setFilterData({
                 ...filterData,
                 userType: filterData.userType.includes(val)
@@ -1139,7 +1147,7 @@ console.log("users",{selectedId,bulkEdits})
             placeholderClass="text-base-17-5"
             optionData={settings.leadStatus}
             placeholder="Lead Status"
-            parentClassName="w-[12.8541666667vw] relative  relative z-[50]  border-none text-[#667085]"
+            parentClassName="w-[12.8541666667vw] relative  relative  border-none text-[#667085]"
             inputContainerClassName="text-sm  shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white px-[20px] py-[16px]"
             type="select"
             checkbox={{
@@ -1162,9 +1170,9 @@ console.log("users",{selectedId,bulkEdits})
             placeholderClass="text-base-17-5"
             optionData={specializations}
             placeholder="Services"
-            parentClassName="w-[12.8541666667vw] relative  relative z-[50]  text-[#667085] -z-50"
+            parentClassName="w-[12.8541666667vw] relative  relative   text-[#667085] -z-5000"
             type="select"
-            inputContainerClassName="text-sm  shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white px-[20px] py-[16px]"
+            inputContainerClassName="text-sm  shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white px-[20px] py-[16px] "
             value={
               filterData.specialization.length > 0
                 ? filterData.specialization[0]
@@ -1195,7 +1203,7 @@ console.log("users",{selectedId,bulkEdits})
               }
             })}
             placeholder="Tutor"
-            parentClassName="w-[12.8541666667vw] relative  relative z-[50]  text-[#667085] -z-50"
+            parentClassName="w-[12.8541666667vw] relative  relative   text-[#667085] -z-5000"
             type="select"
             inputContainerClassName="text-sm  shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white px-[20px] py-[16px]"
             optionType="object"
@@ -1249,12 +1257,12 @@ console.log("users",{selectedId,bulkEdits})
             })}
             hideRight={true}
             placeholder="Lead Status"
-            parentClassName="w-[11vw] text-[#26435F]"
+            parentClassName="w-[9.1146vw] text-[#26435F]"
             type="select"
             IconSearch={Dropdown}
             inputClassName="bg-white border border-white rounded-[4px] w-[125px]"
             
-            inputContainerClassName="bg-white shadow-[0px_0px_2px_0px_rgba(0,0,0,0.25)] h-[43px]"
+            inputContainerClassName="bg-white shadow-[0px_0px_2px_0px_rgba(0,0,0,0.25)] h-[43px] lg:px-3 2xl:px-4 text-center"
             
             optionType="object"
             value={bulkEdits?.leadStatus?.value}
@@ -1282,12 +1290,12 @@ console.log("users",{selectedId,bulkEdits})
               }
             })}
             placeholder="Tutor Status"
-            parentClassName="w-[11vw] text-[#26435F]"
+            parentClassName="w-[9.1146vw]  text-[#26435F]"
             type="select"
             IconSearch={Dropdown}
             inputClassName="bg-white border border-[rgb(255,255,255)] rounded-[4px] w-[125px]"
             
-            inputContainerClassName="bg-white shadow-[0px_0px_2px_0px_rgba(0,0,0,0.25)] h-[43px]"
+            inputContainerClassName="bg-white shadow-[0px_0px_2px_0px_rgba(0,0,0,0.25)] h-[43px] lg:px-3 2xl:px-4 text-center"
             hideRight={true}
             optionType="object"
             value={bulkEdits?.tutorStatus?.value}
@@ -1315,19 +1323,19 @@ console.log("users",{selectedId,bulkEdits})
                 name:iyt.value,
               }
             })}
-            placeholder="Assign a Tutor"
-            parentClassName="w-[11vw] text-[#26435F] "
+            placeholder="Assigned Tutor"
+            parentClassName="w-[9.1146vw]  text-[#26435F] "
             type="select"
             IconSearch={Dropdown}
             inputClassName="bg-white border  w-[125px] rounded-[5px] "
             
-            inputContainerClassName="bg-white shadow-[0px_0px_2px_0px_rgba(0,0,0,0.25)] h-[43px]"
+            inputContainerClassName="bg-white shadow-[0px_0px_2px_0px_rgba(0,0,0,0.25)] h-[43px] lg:pl-2 2xl:pl-3"
             
             optionType="object"
             value={bulkEdits?.assignedTutor?.value}
           
             onChange={(val) => {
-              console.log({val})
+           
               let temp=bulkEdits
               temp={
                 ...temp,
@@ -1342,18 +1350,18 @@ console.log("users",{selectedId,bulkEdits})
           />
          
           <div>
-            <button disabled={selectedId?.length===0|| !numberKey?true:false} onClick={()=>selectedId?.length>0 && setSaveBulkModalActive(true)} className={`bg-[#26435F] text-[15px] px-[25px] py-[10px] rounded-[7.5px] text-white ml-auto text-base-17-5 h-[43px] ${selectedId?.length===0||!numberKey?"opacity-75":""} `}>
+            <button disabled={selectedId?.length === 0 || !numberKey ? true : false} onClick={() => selectedId?.length > 0 && setSaveBulkModalActive(true)} className={`bg-[#26435F] text-[15px] px-[25px] py-[10px] rounded-[5px] text-white ml-auto text-base-17-5 h-[43px] w-[5.1563vw] ${selectedId?.length===0||!numberKey?"opacity-75":""} `}>
               Save
             </button>
           </div>
           <div className="flex justify-end flex-1 gap-5 relative ">
 
-            <button disabled={selectedId?.length===0?true:false} onClick={()=>selectedId?.length>0&&setInviteBulkModalActive(true)} className={`bg-[#517CA8] text-[15px]  font-semibold tracking-wider relative px-[20px] py-[10px] rounded-[7.5px] text-white  text-base-17-5 h-[43px] ${selectedId?.length===0?"opacity-75":""} `}>
+            <button disabled={selectedId?.length===0?true:false} onClick={()=>selectedId?.length>0&&setInviteBulkModalActive(true)} className={`bg-[#517CA8] opacity-100 text-base-17-5  font-semibold tracking-wider relative px-[20px] py-[10px] rounded-[7.5px] text-white  text-base-17-5 h-[43px] ${selectedId?.length===0?"opacity-75":""} `}>
               + Invite Users
               <span className="absolute right-[-10px] z-[500] top-[-10px]">
                 <div className="group relative">
                   <img src={ques} className="inline-block" alt="ques"/>
-                  <span className="absolute  top-[-220px] left-[-140px] z-5000 w-[336px]  scale-0 rounded-lg bg-[rgba(31,41,55,0.93)]  text-[13px] text-white group-hover:scale-100 whitespace-normal py-[20px] px-[13px]">
+                  <span className="absolute  top-[-230px] left-[-140px] z-5000 w-[336px]  scale-0 rounded-[13px] bg-[rgba(0,0,0,0.80)]  text-[13px] text-white group-hover:scale-100 whitespace-normal py-[20px] px-[13px]">
                     <h3 className="text-[#517CA8] text-left text-[0.8333vw] py-0 font-semibold mb-1">
                       Invite Users
                     </h3>
@@ -1375,7 +1383,7 @@ console.log("users",{selectedId,bulkEdits})
                 </div>
               </span>
             </button>
-            <button disabled={selectedId?.length===0?true:false} onClick={()=>selectedId?.length>0&&setDeleteBulkModalActive(true)} className={`bg-[#FF7979] flex items-center gap-2 px-[20px] tracking-wider font-semibold py-[10px] rounded-[7.5px] text-white  text-base-17-5 ${selectedId?.length===0?"opacity-75":""} `}>
+            <button disabled={selectedId?.length === 0 ? true : false} onClick={() => selectedId?.length > 0 && setDeleteBulkModalActive(true)} className={`bg-[#FF7979] opacity-100 flex items-center gap-2 px-[20px] tracking-wider font-semibold py-[10px] rounded-[5px] text-white  text-base-17-5 ${selectedId?.length===0?"opacity-75":""} `}>
               <span>
                 <img
                   src={DeleteIcon2}
@@ -1437,11 +1445,12 @@ console.log("users",{selectedId,bulkEdits})
               onSubmit={handleSubmit}
               className="px-[3px] mb-0.5"
             >
-              <div className="grid grid-cols-1 md:grid-cols-2  gap-x-2 md:gap-x-3 gap-y-3 gap-y-4 mb-5">
+              <div className="grid grid-cols-1 md:grid-cols-2  gap-x-2 md:gap-x-3  gap-y-4 mb-5">
                 <div>
                   <InputField
                     label="First Name"
-                    labelClassname="ml-4 mb-0.5 text-[#26435F] font-semibold"
+                    biggerText={true}
+                    labelClassname=" mb-0.5 text-[#26435F] !font-medium "
                     placeholder="First Name"
                     inputContainerClassName="text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0"
                     inputClassName="bg-transparent"
@@ -1456,8 +1465,9 @@ console.log("users",{selectedId,bulkEdits})
                 </div>
                 <div>
                   <InputField
+                    biggerText={true}
                     label="Last Name"
-                    labelClassname="ml-4 mb-0.5 text-[#26435F] font-semibold"
+                    labelClassname=" mb-0.5 text-[#26435F] !font-medium !text-lg"
                     isRequired={true}
                     placeholder="Last Name"
                     inputContainerClassName="text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0"
@@ -1472,10 +1482,11 @@ console.log("users",{selectedId,bulkEdits})
                 </div>
                 <div>
                   <InputField
+                    biggerText={true}
                     label="Email Addresss "
-                    labelClassname="ml-4 mt-2 mb-0.5 text-[#26435F] font-semibold"
+                    labelClassname=" mt-2 mb-0.5 text-[#26435F] !font-medium !text-lg"
                     isRequired={true}
-                    placeholder="Email Addresss"
+                    placeholder="Email Address"
                     inputContainerClassName="text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0"
                     inputClassName="bg-transparent"
                     parentClassName="w-full"
@@ -1496,7 +1507,7 @@ console.log("users",{selectedId,bulkEdits})
                     type="select"
                     placeholder="Select User Type "
                     label="User Type"
-                    labelClassname="ml-0  text-[#26435F] font-bold"
+                    labelClassname="ml-0  text-[#26435F] !font-medium !text-lg"
                     placeholderClass="text-base-17-5"
                     optionData={userTypeOptions}
                     inputContainerClassName="text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0"

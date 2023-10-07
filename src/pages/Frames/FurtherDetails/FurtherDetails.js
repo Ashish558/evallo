@@ -66,6 +66,11 @@ export default function FurtherDetails({
   const handleOthersField = (e, arr, setValue) => {
     const text = e.target.value;
     if (!text || text === "") return;
+   let check= /[a-z]/i.test(text) ;
+   if(!check){
+    alert("Enter valid text! " );
+    return
+   }
     const temp = arr.filter((topic) => {
       return topic.text !== "Others";
     });
@@ -160,8 +165,9 @@ export default function FurtherDetails({
                     {item.text === "Others" && item.checked ? (
                       <input
                         autoFocus
-                        className="ml-3 text-[13px] text-[#7E7E7E] outline-[#DCDCDD] border-[1.5px] border-[#DCDCDD] rounded-[4px] !bg-[#F5F8FA]  w-32"
+                        className="ml-3 text-[13px] text-[#7E7E7E] outline-[#DCDCDD] border-[1.5px] border-[#DCDCDD] rounded-[4px] !bg-[#F5F8FA]  min-w-32 max-w-full"
                         type="text"
+                        placeholder="Other Tests"
                         onKeyDown={(e) => {
                           if (e.key === "Enter") {
                             handleOthersField(
@@ -171,13 +177,13 @@ export default function FurtherDetails({
                             );
                           }
                         }}
-                        onBlur={(e) => {
-                          handleOthersField(
-                            e,
-                            testPreparations,
-                            setTestPreparations
-                          );
-                        }}
+                        //onBlur={(e) => {
+                          //handleOthersField(
+                          //  e,
+                          //  testPreparations,
+                         //   setTestPreparations
+                         // );
+                       // }}
                       />
                     ) : (
                       ""
@@ -213,16 +219,17 @@ export default function FurtherDetails({
                     {item.text === "Others" && item.checked ? (
                       <input
                         autoFocus
-                        className="ml-3 text-[13px] text-[#7E7E7E] outline-[#DCDCDD] border-[1.5px] border-[#DCDCDD] rounded-[4px] !bg-[#F5F8FA]  w-32"
+                        className="ml-3 text-[13px] text-[#7E7E7E] outline-[#DCDCDD] border-[1.5px] border-[#DCDCDD] rounded-[4px] !bg-[#F5F8FA]  min-w-32 max-w-full"
                         type="text"
+                        placeholder="Other Subjects"
                         onKeyDown={(e) => {
                           if (e.key === "Enter") {
                             handleOthersField(e, tutoring, setTutoring);
                           }
                         }}
-                        onBlur={(e) => {
-                          handleOthersField(e, tutoring, setTutoring);
-                        }}
+                        //onBlur={(e) => {
+                          //handleOthersField(e, tutoring, setTutoring);
+                        //}}
                       />
                     ) : (
                       ""
@@ -261,14 +268,15 @@ export default function FurtherDetails({
                         autoFocus
                         className="ml-3 text-[13px] text-[#7E7E7E] outline-[#DCDCDD] border-[1.5px] border-[#DCDCDD] rounded-[4px] !bg-[#F5F8FA]  w-32"
                         type="text"
+                        placeholder="Other"
                         onKeyDown={(e) => {
                           if (e.key === "Enter") {
                             handleOthersField(e, coaching, setCoaching);
                           }
                         }}
-                        onBlur={(e) => {
-                          handleOthersField(e, coaching, setCoaching);
-                        }}
+                        //onBlur={(e) => {
+                          //handleOthersField(e, coaching, setCoaching);
+                        //}}
                       />
                     ) : (
                       ""
@@ -379,7 +387,7 @@ export default function FurtherDetails({
         />
         <PrimaryButton
           children="Next"
-          className={` w-full bg-[#FFA28D] disabled:opacity-60 max-w-[110px]   rounded text-white text-sm font-medium relative 
+          className={` w-full bg-[#FFA28D] disabled:opacity-60 max-w-[110px]   rounded !text-white text-sm font-medium relative 
            
           `}
           onClick={() => handleSubmit()}

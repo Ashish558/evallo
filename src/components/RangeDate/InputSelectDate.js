@@ -27,6 +27,8 @@ export default function InputSelect({
   IconRight,
   DateSelect,
   setSelectedDate,
+  optionContainerClassName,
+  optionPadding
 }) {
   const [selected, setSelected] = useState(false);
   const selectRef = useRef();
@@ -119,13 +121,13 @@ export default function InputSelect({
         </div>
         {selected && (
           <div
-            className={`custom-scroller relative !z-[9999999999] scrollbar-vertical  shadow-md ${styles.options} !shadow-[0px_0px_3px_0px_#00000040]`}
+            className={`custom-scroller relative !z-[9999999999] scrollbar-vertical  shadow-md ${optionContainerClassName} ${styles.options} ${styles.options} !shadow-[0px_0px_3px_0px_#00000040]`}
           >
 
             {optionData?.map((option, idx) => {
               return (
                 <div
-                  className="outline-0 border-0 relative !z-[9999999999] py-2 px-[26px] flex items-center justify-start"
+                  className={`outline-0 border-0 relative !z-[9999999999] py-2 px-[26px] flex items-center justify-start ${optionPadding}`}
                   key={idx}
                   onClick={() => handleChange(optionType, option, idx)}
                 >
@@ -151,7 +153,7 @@ export default function InputSelect({
               );
             })}
            
-            {DateSelect &&<> <p className="px-[26px]  underline underline-offset-4 font-semibold py-[15px] !text-[calc(17*0.050vw) ]">Custom</p>
+            {DateSelect &&<> <p className="px-[26px]  underline underline-offset-4 font-semibold py-2 !text-[calc(17*0.050vw) ]">Custom</p>
             { DateSelect}
             </>}
           </div>
