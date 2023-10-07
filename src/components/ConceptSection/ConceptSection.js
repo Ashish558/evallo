@@ -284,8 +284,8 @@ const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
             </span>
           </h1>
 
-          <div className="flex  justify-end absolute top-[51.5%] right-[38%]">
-            
+          <div className="flex  justify-end absolute z-40 top-[51.5%] right-[38%]">
+            {console.log(subjects)}
             <InputSelectNew
               placeholder={""}
               parentClassName="ml-0  scale-[0.8] items-center flex text-[#FFA28D] text-xs border px-1 py-2 border-[#FFA28D] rounded-full  "
@@ -302,7 +302,7 @@ const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
 
             <RangeDate
               className="ml-0"
-              manualHide={true}
+            
               optionClassName="!w-min"
               inputContainerClassName="!w-min"
               handleRangeData={setSelectedConceptIdx}

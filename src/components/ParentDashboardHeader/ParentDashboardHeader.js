@@ -41,11 +41,11 @@ const ParentDashboardHeader = ({ selectedStudent, setSelectedStudent }) => {
 
   useDisableBodyScroll(ledgerVisible);
   useEffect(() => {
-    fetchSettings().then((res) => {
-      console.log("images loaded", res);
-      setImages(res.data.data.setting.offerImages);
-      console.log(res.data.data.setting);
-    });
+    // fetchSettings().then((res) => {
+    //   console.log("images loaded", res);
+    //   setImages(res.data.data.setting.offerImages);
+    //   console.log(res.data.data.setting);
+    // });
     getUserDetail({ id }).then((res) => {
       // console.log('response', res.data.data);
       const baseLink = res.data.data.baseLink;
@@ -79,6 +79,12 @@ const ParentDashboardHeader = ({ selectedStudent, setSelectedStudent }) => {
     });
   }, []);
 
+  useEffect(()=>{
+   if(organization?.settings){
+    console.log({organization})
+    setImages(organization?.settings?.offerImages      )
+   }
+  },[organization])
   useEffect(() => {
     if (user.assiginedStudents === undefined) return;
     const fetch = async () => {
@@ -110,7 +116,9 @@ const ParentDashboardHeader = ({ selectedStudent, setSelectedStudent }) => {
     });
   };
   const openLink = (link) => {
+    console.log({link})
     window.open(link, '_blank');
+    
   }
   console.log("associatedStudents", associatedStudents);
   console.log("selectedStudent", selectedStudent);
