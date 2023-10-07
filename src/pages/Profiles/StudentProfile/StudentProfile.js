@@ -504,16 +504,17 @@ const [toEdit, setToEdit] = useState({
       associatedParent &&
         getUserDetail({ id: associatedParent }).then((res) => {
           const { firstName, lastName, _id } = res.data.data.user;
-          setAssociatedParent({
-            firstName,
-            lastName,
-            _id,
-            photo: res.data.data.user.photo
-              ? res.data.data.user.photo
-              : "/images/default.jpeg",
-          });
-        });
-        setAssociatedParent(res.data.data?.parent)
+        //   setAssociatedParent({
+        //     firstName,
+        //     lastName,
+        //     _id,
+        //     email,
+        //     photo: res.data.data.user.photo
+        //       ? res.data.data.user.photo
+        //       : "/images/default.jpeg",
+        //   });
+         });
+        setAssociatedParent(res?.data?.data?.parent)
       setUser(res.data.data.user);
       if (!satScores) satScores = [];
       if (!actScores) actScores = [];
@@ -948,6 +949,7 @@ const [toEdit, setToEdit] = useState({
                   }
                   className="font-semibold cursor-pointer text-[14px]"
                 >
+                  {console.log({associatedParent})}
                   {associatedParent && Object.keys(associatedParent)?.length > 1
                     ? `${associatedParent?.firstName} ${associatedParent?.lastName}`
                     : `${userDetail.FirstName} ${userDetail.LastName}`}

@@ -326,6 +326,10 @@ const navigate = useNavigate()
    }
 
 const handleAssign = (item) => {
+   if(!modalData?.tutorId || studentMultiple?.length===0){
+      alert("Select students and tutor both for maping.")
+      return
+   }
    setLoading(true)
    let users=studentMultiple?.map(ii=>ii?._id)
    addAssignedTutor2({tutorId:modalData?.tutorId,users}).then((res)=>{
