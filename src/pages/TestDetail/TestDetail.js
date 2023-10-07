@@ -408,6 +408,7 @@ const tableHeaders = [
    "Answer",
    "Concept",
    "Strategy",
+   "QType",
    ...(testData.testType!=='DSAT' ? ["Choices"] : []),
       "Edit"
 ]; 
@@ -418,7 +419,7 @@ const [richTextContent, setRichTextContent] = useState("");
    return (
       <>
       <SecondaryButton
-                        className="flex items-center pl-2 pr-5 py-2.5"
+                        className="flex bg-transparent items-center pl-2 pr-5 py-2.5"
                         onClick={() => navigate("/all-tests")}
                         children={
                            <>
@@ -431,7 +432,7 @@ const [richTextContent, setRichTextContent] = useState("");
             <div className="pb-14 pt-4 px-5 flex flex-col items-center">
                <div className="px-0 flex flex-row justify-between items-start pr-2 w-full">
                            <div className="flex mx-2 w-1/4 flex-col justify-start">
-                           <p className="mb-6 text-textPrimaryDark text-4xl font-bold">
+                           <p className="mb-1 text-textPrimaryDark text-[35px] font-extrabold">
                            {testData.testName}
                         </p>
                            
@@ -439,12 +440,12 @@ const [richTextContent, setRichTextContent] = useState("");
                      <AllTestDetail testData={testData} />
                         </div>
                         </div>
-                     <div className=" w-2/4 mx-2 p-2 flex flex-col justify-start items-center self-start">
-                        <p className="text-2xl text-left  text-textPrimaryDark mb-6 font-bold">
+                     <div className=" w-2/4 mx-2 p-2 flex flex-col justify-start items-start text-left">
+                        <p className="text-[35px] text-textPrimaryDark ml-4 font-extrabold">
                            Sections
                         </p>
 
-                        <div className="gap-y-1 mt-2 w-full mx-4 border rounded p-4 shadow-lg mb-10">
+                        <div className="gap-y-1 w-full mx-4 border rounded p-4 shadow-lg mb-10">
                            <div className="mb-2 flex justify-between">
                               <p className="inline-block w-[170px] font-semibold opacity-60">
                                  {" "}
@@ -460,6 +461,7 @@ const [richTextContent, setRichTextContent] = useState("");
                               </p>
                               </div>
                            </div>
+                           <div className=" h-[158px] overflow-y-auto ">
                            {Object.keys(sectionsData).length > 1 &&
                               sectionsData.answer.subjects?.map((section) => (
                                  <div className="mb-1 flex justify-between">
@@ -478,11 +480,12 @@ const [richTextContent, setRichTextContent] = useState("");
                                  </div>
                               ))
                            }
+                           </div>
                         </div>
 
                      </div>
                   {testData.testType!='DSAT'?
-                  <div className="px-6 py-4 flex  mx-2 mt-[4.5rem] w-1/4 justify-center border-gray-600 border-dashed border-[2px] items-center flex-col rounded shadow-lg">
+                  <div className="px-6 py-[2.5rem] flex  mx-2 mt-[3.8rem] w-1/4 justify-center border-gray-600 border-dashed border-[2px] items-center flex-col rounded shadow-lg">
                            
                         {
                            Object.keys(sectionsData).length > 1 &&
@@ -507,24 +510,25 @@ const [richTextContent, setRichTextContent] = useState("");
                </div>
 
                <div className="flex pl-2 flex-col w-full">
-                  <div className="mt-6 flex justify-between items-end">
-                     <div className="flex flex-row justify-between items-center">
+                  <div className="mt-6 w-fit relative flex justify-between items-end">
+                     <div className="flex flex-row justify-between z-20 items-center">
                         {subjects.map((item, idx) => {
                            return (
                               <PrimaryButton
                                  children={item.name}
-                                 className={`py-2.5 px-0 text-xs mr-4 font-semibold w-[120px] ${item.selected
-                                    ? "text-[#FFA28D] bg-white"
-                                    : "bg-secondaryLight text-textGray"
+                                 className={`py-2.5 px-0 text-xs mr-4 bg-transparent font-semibold w-fit ${item.selected
+                                    ? "text-[#FFA28D] border-b-[#FFA28D] border-b-[2px]"
+                                    : " text-textGray border-b-gray-300 border-b-[2px]"
                                     }`}
+                                    roundedClass='rounded-none'
                                  onClick={() => handleSubjectChange(item._id)}
                               />
                            );
                         })}
-                     </div>
-                  </div>
-                  <div className="h-[1px] bg-gray-400 w-full"></div>
+                     </div> 
+                     <div className="bg-gray-300 absolute bottom-[0px] z-10 h-[2px] w-full"></div>
 
+                  </div>
                   <div className="flex justify-between mt-7">
 
 
@@ -540,7 +544,7 @@ const [richTextContent, setRichTextContent] = useState("");
                      {questionsTable.length > 0 && <Table dataFor='testsDetailQuestions'
                         data={questionsTable}
                         tableHeaders={tableHeaders}
-                        excludes={['_id', 'QuestionType']}
+                        excludes={['_id']}
                         // maxPageSize={10}
                         onClick={{ handleEditTestClick }}
                         hidePagination />}
