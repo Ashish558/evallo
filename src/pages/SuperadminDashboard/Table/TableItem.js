@@ -1,7 +1,10 @@
 import React from "react";
 import LatestSignUpTableItem from "./LatestSignUpTableItem";
+import { useSelector } from "react-redux";
+import { getFormattedDate } from "../../../utils/utils";
 
 export default function TableItem({ item, onClick, AdminLatestSignUp }) {
+  const { dateFormat } = useSelector(state => state.user)
   const handleClick = () => {
     onClick.redirect(item);
   };
@@ -28,7 +31,10 @@ export default function TableItem({ item, onClick, AdminLatestSignUp }) {
         <div>{item.type}</div>
       </td>
       <td className=" text-sm   min-w-14 py-3 pr-3 pl-1">
-        <div>{new Date(item.date).toDateString().split(' ')[1] }. {new Date(item.date).getDate() }, {new Date(item.date).getFullYear()}</div>
+        <div>
+          {/* {new Date(item.date).toDateString().split(' ')[1] }. {new Date(item.date).getDate() }, {new Date(item.date).getFullYear()} */}
+          {getFormattedDate(item.date, dateFormat)}
+        </div>
       </td>
     </tr>
   );

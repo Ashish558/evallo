@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { getDate, getScore, getScoreStr } from '../../../utils/utils'
+import { getDate, getFormattedDate, getScore, getScoreStr } from '../../../utils/utils'
 import downloadImage2 from "../../../assets/icons/download.png";
 import downloadImage from "../../../assets/icons/download2.svg";
 import { useSelector } from 'react-redux';
@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 
 export default function ParentTest({ styles, assignedTestId, testId, testName, studentId, dueDate, isCompleted, isStarted, pdfLink }) {
 
-
+   const { dateFormat } = useSelector(state => state.user)
    const [score, setScore] = useState('-')
    const { role: persona } = useSelector(state => state.user)
    const [getTestResponse, getTestResponseResp] = useLazyGetTestResponseQuery()
@@ -68,7 +68,7 @@ export default function ParentTest({ styles, assignedTestId, testId, testName, s
                >
                   <p className="text-xs font-semibold opacity-50 text-[#517CA8] text-base-15">Due Date: </p>
                   <h3 className="opacity-60 text-xs font-semibold text-[#517CA8] text-base-15">
-                     {getDate(dueDate)}
+                  {getFormattedDate(dueDate, dateFormat)}
                   </h3>
                </div>
             </div>

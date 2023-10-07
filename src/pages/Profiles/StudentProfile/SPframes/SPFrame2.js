@@ -7,6 +7,8 @@ import { useUpdateUserDetailsMutation } from "../../../../app/services/users";
 import act from "../../../../assets/YIcons/Official ACT® scores.svg"
 import sat from "../../../../assets/YIcons/Official SAT® scores.svg"
 import { useLazyGetTotalHoursQuery } from "../../../../app/services/session";
+import { useSelector } from "react-redux";
+import { getFormattedDate } from "../../../../utils/utils";
 const SPFrame2 = ({
   userDetail,
   settings,
@@ -22,7 +24,7 @@ const SPFrame2 = ({
   const [totalHours,setTotalHours]=useState(0)
   const [getHours,getHoursStatus]=useLazyGetTotalHoursQuery()
   const reduceArr = (id,key, update) => {
-   
+  
     
     //  //console.log({toEdit})
     let temp=[]
@@ -42,6 +44,7 @@ if(!toEdit[key] || !toEdit[key][key]) return
       })
     }
   },[userId])
+  const { dateFormat } = useSelector(state => state.user)
   const handleSubmit = (key,e) => {
     //e.preventDefault();
    // setLoading(true);
@@ -90,7 +93,8 @@ if(!toEdit[key] || !toEdit[key][key]) return
             <p className=" text-sm text-[#26435F] font-semibold">
               Join Date
               <span className=" text-[#FFA28D] text-xl block">
-                {new Date(userDetail?.createdAt).toLocaleDateString()}
+                {/* {new Date(userDetail?.createdAt).toLocaleDateString()} */}
+                {getFormattedDate(userDetail?.createdAt, dateFormat)}
               </span>
             </p>
           </div>
@@ -133,17 +137,7 @@ if(!toEdit[key] || !toEdit[key][key]) return
                     alt="dot"
                   />
                   <div className="mx-2 flex flex-col text-xs">
-                    <p className="text-[#517CA8]">{it.createdAt?new Date(it.createdAt)
-                            .toDateString()
-                            .split(" ")[1] +
-                            " " +
-                            new Date(it.createdAt)
-                              .toDateString()
-                              .split(" ")[2] +
-                            ", " +
-                            new Date(it.createdAt)
-                              .toDateString()
-                              .split(" ")[3]:"NA" }</p>
+                    <p className="text-[#517CA8]">{it.createdAt? getFormattedDate(it.createdAt, dateFormat):"NA" }</p>
 
                     <p>
                       <span className="text-[#24A3D9]">
@@ -205,17 +199,7 @@ if(!toEdit[key] || !toEdit[key][key]) return
                     alt="dot"
                   />
                   <div className="mx-2 flex flex-col text-xs">
-                    <p className="text-[#517CA8]">{it.createdAt?new Date(it.createdAt)
-                            .toDateString()
-                            .split(" ")[1] +
-                            " " +
-                            new Date(it.createdAt)
-                              .toDateString()
-                              .split(" ")[2] +
-                            ", " +
-                            new Date(it.createdAt)
-                              .toDateString()
-                              .split(" ")[3]:"NA"}</p>
+                    <p className="text-[#517CA8]">{it.createdAt?getFormattedDate(it.createdAt, dateFormat):"NA"}</p>
 
                     <p>
                       <span className="text-[#24A3D9]">
