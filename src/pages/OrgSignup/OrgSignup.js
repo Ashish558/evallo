@@ -526,6 +526,7 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
           signupActive: false,
           subscription: true,
         });
+        setcurrentStep(currentStep => currentStep + 1)
       }
       if(cc>=2){
         setEmailExistLoad(false)

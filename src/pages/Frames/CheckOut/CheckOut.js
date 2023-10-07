@@ -123,10 +123,12 @@ export default function CheckOut({
                 setcurrentStep={setcurrentStep}
             />
 
-            <div className="font-semibold mt-[20px] text-[#FFA28D] text-[16px]">Extensions / Add-Ons</div>
-
             {(chosenExtensionPlans === undefined || chosenExtensionPlans === null || chosenExtensionPlans.length === 0) ? (<></>) :
-                chosenExtensionPlans.map(item => {
+                
+                (<>
+                <div className="font-semibold mb-[-20px] mt-[20px] text-[#FFA28D] text-[16px]">Extensions / Add-Ons</div>
+                
+                {chosenExtensionPlans.map(item => {
                     const chosenPackageName = extensions.find(i => i.text === item.planName).packageName;
                     const chosenPackage = item.extensionPriceOption.find(pack => pack.planName === chosenPackageName);
                     return (
@@ -138,7 +140,9 @@ export default function CheckOut({
                             setcurrentStep={setcurrentStep}
                         />
                     )
-                })
+                })}
+
+                </>)
             }
 
             {/* <CheckOutExtensionsReview
