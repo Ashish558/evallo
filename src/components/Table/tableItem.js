@@ -69,7 +69,7 @@ export default function TableItem({
   const [getTestResponse, getTestResponseResp] = useLazyGetTestResponseQuery();
 
   const { role: persona } = useSelector((state) => state.user);
- const {organization:organization2} = useSelector((state) => state.organization)
+  const { organization: organization2 } = useSelector((state) => state.organization)
   const [userDetail, setUserDetail] = useState({});
   const [leadStatus, setLeadStatus] = useState("");
   const [tutorStatus, setTutorStatus] = useState("");
@@ -78,11 +78,11 @@ export default function TableItem({
     leadStatus: [],
   });
 
-useEffect(()=>{
- if(item.userType === "tutor" )
- 
-  setTutorStatus(item?.tutorStatus)
-},[item])
+  useEffect(() => {
+    if (item.userType === "tutor")
+
+      setTutorStatus(item?.tutorStatus)
+  }, [item])
   useEffect(() => {
 
     if (dataFor === "assignedTestsStudents") {
@@ -146,22 +146,22 @@ useEffect(()=>{
   }, []);
 
   const handlestatusChange = (field) => {
-if (item.userType === "parent" || item.userType === "student"){
-  return 
-}
+    if (item.userType === "parent" || item.userType === "student") {
+      return
+    }
     updateFields({ id: item._id, fields: field }).then((res) => {
       if (res.error) {
         return //console.log("error updating");
       }
       fetch && fetch(field, item._id);
-      console.log("update res",item?._id,field, res.data);
+      console.log("update res", item?._id, field, res.data);
     });
   };
   const handleChange = (field) => {
 
     if (item.userType === "parent" || item.userType === "student") {
       updateUserDetail({ fields: field, id: item._id }).then((res) => {
-        console.log("lead",{res})
+        console.log("lead", { res })
         fetch && fetch(field, item._id);
       });
     } else if (item.userType === "tutor") {
@@ -207,7 +207,7 @@ if (item.userType === "parent" || item.userType === "student"){
           let status = "-";
           if (resp?.data?.data?.details) {
             status = resp.data.data.details?.leadStatus;
-           // setLeadStatus(status);
+            // setLeadStatus(status);
             setTutorStatus(resp.data.data.details?.tutorStatus)
           }
         });
@@ -217,8 +217,8 @@ if (item.userType === "parent" || item.userType === "student"){
           let status = "-";
           if (resp?.data?.data?.userdetails) {
             status = resp.data.data.userdetails.leadStatus;
-            if(item.userType === "parent" || item.userType === "student")
-            setLeadStatus(status);
+            if (item.userType === "parent" || item.userType === "student")
+              setLeadStatus(status);
             setTutorStatus(resp.data.data.details?.tutorStatus)
           }
         });
@@ -255,36 +255,36 @@ if (item.userType === "parent" || item.userType === "student"){
     //console.log(item)
     //console.log(val)
   }
- 
-  const handleSelect=(item2,key)=>{
-    console.log({item2,selectedId2})
-   if(selectedId2 && setSelectedId2){
-    let temp=selectedId2
-    let bool=temp?.find((itt)=>itt[key]===item2[key])
-    if(bool){
-        temp=temp?.filter((idd)=>{
-          return idd[key]!==item2[key]
-           
+
+  const handleSelect = (item2, key) => {
+    console.log({ item2, selectedId2 })
+    if (selectedId2 && setSelectedId2) {
+      let temp = selectedId2
+      let bool = temp?.find((itt) => itt[key] === item2[key])
+      if (bool) {
+        temp = temp?.filter((idd) => {
+          return idd[key] !== item2[key]
+
         })
+      }
+      else {
+        temp?.push(item2)
+      }
+      setSelectedId2([...temp])
     }
-    else {
-      temp?.push(item2)
-    }
-    setSelectedId2([...temp])
-   }
-   setIsChecked(!isChecked)
+    setIsChecked(!isChecked)
   }
 
-  useEffect(()=>{
-   if(selectedId2){
-    let temp=selectedId2
-    let key="assignedTestId";
-    if(dataFor==="allUsers")
-    key="_id"
-    let bool=temp?.find((itt)=>itt[key]===item[key])
-    setIsChecked(bool?true:false)
-   }
-  },[selectedId2])
+  useEffect(() => {
+    if (selectedId2) {
+      let temp = selectedId2
+      let key = "assignedTestId";
+      if (dataFor === "allUsers")
+        key = "_id"
+      let bool = temp?.find((itt) => itt[key] === item[key])
+      setIsChecked(bool ? true : false)
+    }
+  }, [selectedId2])
 
   return (
     <>
@@ -306,7 +306,7 @@ if (item.userType === "parent" || item.userType === "student"){
 
 
               <td className="py-4 px-[10px]">
-               {getFormattedDate(formattedDate, dateFormat)}
+                {getFormattedDate(formattedDate, dateFormat)}
               </td>
             </tr>
 
@@ -347,8 +347,8 @@ if (item.userType === "parent" || item.userType === "student"){
 
 
                   <SCheckbox checked={isChecked}
-                  stopM={true}
-                    onChange={()=>handleSelect(item,"_id")} />
+                    stopM={true}
+                    onChange={() => handleSelect(item, "_id")} />
                   // <label
                   //   className={`${styles["checkbox-label"]} block text-[#26435F] `}
                   // >
@@ -405,8 +405,8 @@ if (item.userType === "parent" || item.userType === "student"){
           <td className=" text-[17.5px] px-1  min-w-14 ">
             <div className="my-[6px]">
               <InputSelect
-               disabled={(item?.userType === "parent" || item?.userType === "student")?false:true}
-         
+                disabled={(item?.userType === "parent" || item?.userType === "student") ? false : true}
+
                 tableDropdown={true}
                 value={leadStatus ? leadStatus : "-"}
                 placeholderClass="text-base-17-5"
@@ -421,7 +421,7 @@ if (item.userType === "parent" || item.userType === "student"){
           </td>
           <td className=" text-[17.5px] px-1  min-w-14 ">
             <InputSelect
-            disabled={(item?.userType === "parent" || item?.userType === "student")?true:false}
+              disabled={(item?.userType === "parent" || item?.userType === "student") ? false : true}
               tableDropdown={true}
               value={tutorStatus ? tutorStatus : "-"}
               optionData={organization2?.settings?.tutorStatus}
@@ -477,10 +477,10 @@ if (item.userType === "parent" || item.userType === "student"){
             <div className="">{item.userType}</div>
           </td>
           <td className="font-medium text-[17.5px] px-1  min-w-14 ">
-           {item?.lastLogin? <div className="">
-           {/* {new Date(item?.lastLogin).toDateString().split(' ')[1] }. {new Date(item?.lastLogin).getDate() }, {new Date(item?.lastLogin).getFullYear()} */}
-            {getFormattedDate(item.lastLogin, dateFormat)}
-            </div>:"None"}
+            {item?.lastLogin ? <div className="">
+              {/* {new Date(item?.lastLogin).toDateString().split(' ')[1] }. {new Date(item?.lastLogin).getDate() }, {new Date(item?.lastLogin).getFullYear()} */}
+              {getFormattedDate(item.lastLogin, dateFormat)}
+            </div> : "None"}
           </td>
           <td className="font-medium text-[17.5px] px-1  min-w-14 ">
             <div className="">
@@ -551,8 +551,8 @@ if (item.userType === "parent" || item.userType === "student"){
 
 
                   <SCheckbox checked={isChecked}
-                  stopM={true}
-                    onChange={() => handleSelect(item,"assignedTestId")} />
+                    stopM={true}
+                    onChange={() => handleSelect(item, "assignedTestId")} />
 
 
                 ) : (
@@ -578,7 +578,7 @@ if (item.userType === "parent" || item.userType === "student"){
           <td className=" text-[17.5px] px-1  min-w-14 py-4  text-center">
 
             <span onClick={() => onClick.redirect(item)} className="">
-              {getFormattedDate(item.dueDate, dateFormat)} 
+              {getFormattedDate(item.dueDate, dateFormat)}
             </span>
           </td>
 
@@ -605,9 +605,9 @@ if (item.userType === "parent" || item.userType === "student"){
 
           <td className=" px-1  min-w-14 py-4">
             <button
-              className={`text-[15px] text-base-15 px-2.5 py-1.8 rounded-md flex items-center leading-none  text-white ${item.status !== "completed" && item.status !== "started "
-                ? "bg-[rgba(38,67,95,0.20)] pointer-events-none "
-                : "bg-primary"
+              className={`text-[15px] text-base-15 px-3 h-[31px]  rounded-5 flex items-center leading-none w-[100px] text-center text-white ${item.status == "completed"
+                ? "bg-[#38C980]  "
+                : `${item.status == "started" ? "bg-[#FFCE84]" : "bg-[rgba(38,67,95,0.20)] pointer-events-none"}`
                 }`}
 
               onClick={() =>
@@ -761,7 +761,7 @@ if (item.userType === "parent" || item.userType === "student"){
                 </>
               ) : (
                 <>
-                {console.log(item)}
+                  {console.log(item)}
                   {item.isCompleted ? (
                     <button
                       className="px-2.5 py-1.8 bg-[#38C980] rounded-md flex items-center leading-none bg-primary text-white ml-4"
@@ -776,14 +776,14 @@ if (item.userType === "parent" || item.userType === "student"){
                   ) : item.isStarted ? (
                     <button
                       className="px-2.5 py-1.8 bg-[#FFCE84] rounded-md flex items-center leading-none bg-primary text-white ml-4"
-                      onClick={() =>{
-                        const indexx=testtype.findIndex(obj=>obj.testId===item.testId);
-                        testtype[indexx].testtype=='DSAT'?
-                        navigate(`/testpage/${item.testId}/${item.assignedTestId}`)
-                        :
-                        navigate(
-                          `/all-tests/start-section/${item.testId}/${item.assignedTestId}`
-                        )
+                      onClick={() => {
+                        const indexx = testtype.findIndex(obj => obj.testId === item.testId);
+                        testtype[indexx].testtype == 'DSAT' ?
+                          navigate(`/testpage/${item.testId}/${item.assignedTestId}`)
+                          :
+                          navigate(
+                            `/all-tests/start-section/${item.testId}/${item.assignedTestId}`
+                          )
                       }
                       }
                     >
@@ -792,14 +792,14 @@ if (item.userType === "parent" || item.userType === "student"){
                   ) : (
                     <button
                       className="px-2.5 py-1.8 rounded-md bg-[#FF7979] flex items-center leading-none bg-primary text-white ml-4"
-                      onClick={() =>{
-                        const indexx=testtype.findIndex(obj=>obj.testId===item.testId);
-                        testtype[indexx].testtype=='DSAT'?
-                        navigate(`/testpage/${item.testId}/${item.assignedTestId}`)
-                        :
-                        navigate(
-                          `/all-tests/start-section/${item.testId}/${item.assignedTestId}`
-                        )
+                      onClick={() => {
+                        const indexx = testtype.findIndex(obj => obj.testId === item.testId);
+                        testtype[indexx].testtype == 'DSAT' ?
+                          navigate(`/testpage/${item.testId}/${item.assignedTestId}`)
+                          :
+                          navigate(
+                            `/all-tests/start-section/${item.testId}/${item.assignedTestId}`
+                          )
                       }
                       }
                     >
@@ -877,7 +877,7 @@ if (item.userType === "parent" || item.userType === "student"){
             <img
               src={EditIcon}
               className="cursor-pointer p-1"
-              onClick={() =>  navigate(`/all-tests/${item._id}`, { state: { testype: item.testType  } })}
+              onClick={() => navigate(`/all-tests/${item._id}`, { state: { testype: item.testType } })}
               alt="edit"
             />
             <img

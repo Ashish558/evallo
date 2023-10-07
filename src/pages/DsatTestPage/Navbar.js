@@ -3,12 +3,12 @@ import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsisVertical,faPen,faAngleDown,faCalculator} from '@fortawesome/free-solid-svg-icons';
 
-export default function Navbar({secnd,details,handleSubmitSection,calculator_check,annotation_check,sectionDetails,cal,setCal}) {
+export default function Navbar({secnd,showannotate,setshowannotate,details,handleSubmitSection,calculator_check,annotation_check,sectionDetails,cal,setCal}) {
   const [seconds, setSeconds] = useState(secnd)
   const [hide, sethide] = useState(false)
   useEffect(() => {
     if (seconds <= 0) {
-      return handleSubmitSection();
+      return 
     }
 
     const interval = setInterval(() => {
@@ -34,7 +34,7 @@ export default function Navbar({secnd,details,handleSubmitSection,calculator_che
       setCal(!cal)
     }
   return (
-    <div className=''>
+    <div className='relative'>
       <nav className=' border border-black text-xl flex justify-between py-4 px-12 left-0 right-0 navb'>
         <div className='flex w-1/3 flex-col items-start'>
         <div>
@@ -58,14 +58,14 @@ export default function Navbar({secnd,details,handleSubmitSection,calculator_che
                 <button className='border rounded-xl border-black hover:border-1 px-3' onClick={()=>sethide(!hide)} >{hide?'Show':'Hide'}</button>
             </div>
         </div>
-        <div  className=' flex w-1/3 justify-end text-sm '>
+        <div  className=' flex cursor-pointer w-1/3 justify-end text-sm '>
         {calculator_check?<div className='flex flex-col h-full items-center justify-center cursor-pointer' onClick={handleCal} >       
             <FontAwesomeIcon icon={faCalculator} className='' />
                 <h4>Calculator</h4>
             </div>
             :null}
             {annotation_check?
-            <div className='flex flex-col items-center h-full justify-center px-3 '>
+            <div className='flex cursor-pointer flex-col items-center h-full justify-center px-3 ' onClick={()=>setshowannotate(!showannotate)}>
             <FontAwesomeIcon icon={faPen} className='' />  
             <h4>Annotate</h4>
             </div>

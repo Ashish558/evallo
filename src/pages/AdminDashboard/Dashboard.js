@@ -321,7 +321,7 @@ const Dashboard = () => {
           </div>
         </div>
 
-        <section className="flex justify-center w-[83.33vw] mx-auto ">
+        <section className="flex justify-center w-[83.3333vw] mx-auto ">
           <div className={styles.mainBox}>
             <div className="grid grid-cols-2 px-[1.95vw] ">
               <div className={`${styles.gridBorder} my-auto `}>
@@ -491,10 +491,10 @@ const Dashboard = () => {
             </div>
           </div>
 
-          <div className="grid grid-cols-12  w-[83.33vw] gap-x-5 mx-auto">
-            <div className="col-span-3 h-full  !whitespace-nowrap">
+          <div className="flex  w-[83.33vw] gap-x-5 mx-auto">
+            <div className=" h-full  !whitespace-nowrap ">
               <p className=" mb-1 font-semibold text-[#26435F] text-xl text-base-20">User Stats</p>
-              <div className={`${styles.sidebox} min-h-[330px] min-w-[312px]`}>
+              <div className={`${styles.sidebox} h-[330px] w-[16.25vw]`}>
                 <div className="pl-[38px]  pt-6 rounded ">
                   <p className="text-[#26435F] text-md text-base-20">Active / Total Students</p>
                   <p className="text-md">
@@ -543,8 +543,8 @@ const Dashboard = () => {
               </div>
             </div>
 
-            <div className="col-span-9  pl-[17.5px]">
-              <p className="mb-1 font-semibold text-[#26435F] text-xl text-base-20">Action Log</p>
+            <div className="  pl-[17.5px]">
+              <p className="mb-1 font-semibold text-[#26435F] text-xl text-base-20  ">Action Log</p>
               <ActionLog
                 actionLog={filteredActionLog ? filteredActionLog : [""]}
               />
@@ -553,9 +553,9 @@ const Dashboard = () => {
         </section>
 
         <section className="mt-[70px] w-[83.33vw] mx-auto ">
-          <p className="font-semibold text-[#26435F]  text-xl mb text-base-20">Latest Sign-Ups <span className="font-light">(last 7 Days)</span></p>
+          <p className="font-semibold text-[#26435F]  text-base-20">Latest Sign-Ups <span className="font-light">(last 7 Days)</span></p>
 
-          <div className="">
+          <div className="-mt-3">
             <Table
               data={userData}
               AdminLatestSignUp={true}
@@ -589,10 +589,10 @@ const Dashboard = () => {
         <section className="mt-[10px] mx-auto w-[83.33vw]">
           <div className="grid grid-cols-[60.2vw,23vw]">
             <div className="">
-              <p className="font-semibold text-[#26435F] translate-y-[10px] text-[17.5px] mb-2 text-base-17-5">
+              <p className="font-semibold text-[#26435F] mt-3  text-base-17-5">
                 Popular Services
               </p>
-              <div className=" pr-[1.5625vw] border-r-[1.7px] border-[#CBD6E2] text-base-17-5">
+              <div className=" pr-[1.5625vw]  text-base-17-5 -mt-3">
                 <Table
                 noScrollbar={true}
                   data={popularServices}
@@ -614,8 +614,8 @@ const Dashboard = () => {
                 />
               </div>
             </div>
-            <div className="pl-[1.5625vw]">
-              <p className=" mb-[8px] translate-y-[10px] font-semibold text-[#26435F] text-[17.5px] text-base-17-5">
+            <div className="pl-[1.5625vw] border-l-[1.7px] border-[#CBD6E2]">
+              <p className=" translate-y-[10px] font-semibold text-[#26435F] text-[17.5px] text-base-17-5">
                 Star Clients
               </p>
               <div>
@@ -733,7 +733,7 @@ const Dashboard = () => {
         <section className="mx-auto  w-[83.33vw]">
 
           <Table
-            headerWidth="w-[130px] whitespace-normal"
+            headerWidth="w-[110px] whitespace-normal"
             data={tutorPerformanceData}
             tableHeaders={tutorTableHeaders}
             maxPageSize={5}

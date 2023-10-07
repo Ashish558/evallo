@@ -179,7 +179,7 @@ export default function SignupTab({
             </div>
           </div>
           <div>
-            <p className={`mb-5 ${styles.label} text-base-17-5`}>
+            <p className={`mb-5 ${styles.label} text-base-17-5 mt-[42px]`}>
               Are you signing up as a Parent or a Student?
             </p>
             <div className="flex items-center gap-x-6">

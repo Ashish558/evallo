@@ -284,9 +284,9 @@ const CompanyAndBround = () => {
               />
               <InputSelect
                 placeholder="Select"
-                parentClassName="text-xs text-[#26435F] w-[14.3229vw] "
+                parentClassName="text-xs text-[#26435F] w-[14.3229vw] w-[15.3229vw]"
                 inputContainerClassName=" shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-white h-[42px] "
-                labelClassname="mb-1 text-sm font-bold"
+                labelClassname="mb-1 text-sm !font-bold"
                 inputClassName="bg-transparent"
                 label="Company Type"
                 value={values.companyType}
@@ -320,9 +320,9 @@ const CompanyAndBround = () => {
 
               <InputSelect
                 placeholder="Select"
-                parentClassName="text-xs text-[#26435F] w-[14.3229vw] "
+                parentClassName="text-xs text-[#26435F] w-[15.3229vw] "
                 inputContainerClassName=" shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-white h-[38px]  h-[42px]"
-                labelClassname="mb-1 text-sm font-bold"
+                labelClassname="mb-1 text-sm !font-bold"
                 inputClassName="bg-transparent"
                 label="Country"
                 value={values.country}
@@ -376,9 +376,9 @@ const CompanyAndBround = () => {
               <div className="col-span-3">
                 <InputField
                   placeholder=""
-                  parentClassName="text-xs text-[#26435F] w-[14.3229vw] pt-1"
-                  inputContainerClassName=" shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-white "
-                  inputClassName="text-base-17-5 bg-transparent"
+                  parentClassName="text-xs text-[#26435F] w-[14.3229vw] pt-1 w-[15.3229vw]"
+                  inputContainerClassName=" shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-white !font-bold"
+                  inputClassName="text-base-17-5 bg-transparent "
                   labelClassname={"mb-1"}
                   label="Zip Code"
                   value={values.zip}

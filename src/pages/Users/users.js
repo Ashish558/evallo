@@ -10,11 +10,11 @@ import InputSelect from "../../components/InputSelect/InputSelect";
 import styles from "./styles.module.css";
 import AddIcon from "../../assets/icons/add.svg";
 import Dropdown from "../../assets/icons/Polygon 2.png";
-import PlusIcon from "../../assets/icons/plus.svg";
+import PlusIcon from "../../assets/icons/add_plus.svg";
 import ExportIcon from "../../assets/icons/export.svg";
 import UploadIcon from "../../assets/icons/upload.svg";
 import XIcon from "../../assets/icons/x.png";
-import SearchIcon from "../../assets/icons/search.svg";
+import SearchIcon from "../../assets/icons/Search_shade.svg";
 import fileupload from "../../assets/icons/basil_file-upload-outline (2).svg";
 import { tableData, userTypesList } from "./tempData";
 import { BASE_URL, getAuthHeader } from "../../app/constants/constants";
@@ -40,7 +40,7 @@ import {
   useDeleteUserMutation,
   useUnblockUserMutation,
 } from "../../app/services/admin";
-import ques from "../../assets/YIcons/medical-icon_i-information-us.svg";
+import ques from "../../assets/icons/tooltip.svg";
 import { useLazyGetSettingsQuery } from "../../app/services/session";
 import PrimaryButton from "../../components/Buttons/PrimaryButton";
 // import CountryCode from "../../components/CountryCode/CountryCode";
@@ -920,13 +920,7 @@ const numberKey=Object.keys(bulkEdits)?.length>0
               "  >  "}</span>
             <span className="font-semibold">CRM</span>
           </p>
-          <button
-            className="bg-[#FFA28D]  text-[15px] justify-center flex py-2 px-4 design:px-4 items-center text-white font-semibold rounded-lg text-base-15"
-            onClick={() => setAssignedTutorOpen(true)}
-          >
-            Tutor Mapping
-            <img src={PlusIcon} className="ml-3" alt="PlusIcon" />
-          </button>
+          
         </div>
         <div>
           <div className="flex mb-[46px]">
@@ -959,7 +953,7 @@ const numberKey=Object.keys(bulkEdits)?.length>0
             </button>
             <button
               onClick={upload}
-              className="bg-[#517CA8] text-base-15 w-[158px] text-[15px] justify-center flex  items-center text-white  rounded-lg mr-[25px]"
+              className="bg-[#517CA8] text-base-15 w-[160px] text-[15px] justify-center flex  items-center text-white  rounded-lg mr-[25px]"
             >
               Bulk Upload{" "}
               <img src={UploadIcon} className="ml-3" alt="UploadIcon" />
@@ -974,9 +968,15 @@ const numberKey=Object.keys(bulkEdits)?.length>0
                 </>
               }
               onClick={() => setModalActive(true)}
-              className=" flex items-center text-[15px] !text-white font-semibold py-[10px] px-3 text-base-15"
+              className=" flex items-center  !text-white font-semibold py-[10px]  text-base-17-5 w-[203px] h-[45px] !px-1"
             />
-
+            <button
+              className="bg-[#FFA28D]  text-base-17-5 justify-center flex py-2 pr-[12px] pl-4 design:px-4 items-center text-white font-semibold rounded-lg text-base-15  ml-auto"
+              onClick={() => setAssignedTutorOpen(true)}
+            >
+              Tutor Mapping
+              <img src={PlusIcon} className="ml-3" alt="PlusIcon" />
+            </button>
             {bulkUpload && (
               <Modal
                 title="Bulk Upload"
@@ -1111,7 +1111,7 @@ const numberKey=Object.keys(bulkEdits)?.length>0
             placeholder="Search"
             inputClassName="text-base-17-5 pl-4 text-[#667085]"
             parentClassName="w-[22.03125vw]  py-1"
-            inputContainerClassName="text-sm  mt-1 shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white   mb-1  !py-[15px]"
+            inputContainerClassName="text-base-17-5  mt-1 shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white   mb-1  !py-[15px]"
             type="text"
             value={filterData.typeName}
             onChange={(e) =>
@@ -1147,7 +1147,7 @@ const numberKey=Object.keys(bulkEdits)?.length>0
             placeholderClass="text-base-17-5"
             optionData={settings.leadStatus}
             placeholder="Lead Status"
-            parentClassName="w-[12.8541666667vw] relative  relative z-[50]  border-none text-[#667085]"
+            parentClassName="w-[12.8541666667vw] relative  relative  border-none text-[#667085]"
             inputContainerClassName="text-sm  shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white px-[20px] py-[16px]"
             type="select"
             checkbox={{
@@ -1170,7 +1170,7 @@ const numberKey=Object.keys(bulkEdits)?.length>0
             placeholderClass="text-base-17-5"
             optionData={specializations}
             placeholder="Services"
-            parentClassName="w-[12.8541666667vw] relative  relative z-[50]  text-[#667085] -z-5000"
+            parentClassName="w-[12.8541666667vw] relative  relative   text-[#667085] -z-5000"
             type="select"
             inputContainerClassName="text-sm  shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white px-[20px] py-[16px] "
             value={
@@ -1203,7 +1203,7 @@ const numberKey=Object.keys(bulkEdits)?.length>0
               }
             })}
             placeholder="Tutor"
-            parentClassName="w-[12.8541666667vw] relative  relative z-[50]  text-[#667085] -z-5000"
+            parentClassName="w-[12.8541666667vw] relative  relative   text-[#667085] -z-5000"
             type="select"
             inputContainerClassName="text-sm  shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white px-[20px] py-[16px]"
             optionType="object"
@@ -1257,12 +1257,12 @@ const numberKey=Object.keys(bulkEdits)?.length>0
             })}
             hideRight={true}
             placeholder="Lead Status"
-            parentClassName="w-[11vw] text-[#26435F]"
+            parentClassName="w-[9.1146vw] text-[#26435F]"
             type="select"
             IconSearch={Dropdown}
             inputClassName="bg-white border border-white rounded-[4px] w-[125px]"
             
-            inputContainerClassName="bg-white shadow-[0px_0px_2px_0px_rgba(0,0,0,0.25)] h-[43px]"
+            inputContainerClassName="bg-white shadow-[0px_0px_2px_0px_rgba(0,0,0,0.25)] h-[43px] lg:px-3 2xl:px-4 text-center"
             
             optionType="object"
             value={bulkEdits?.leadStatus?.value}
@@ -1290,12 +1290,12 @@ const numberKey=Object.keys(bulkEdits)?.length>0
               }
             })}
             placeholder="Tutor Status"
-            parentClassName="w-[11vw] text-[#26435F]"
+            parentClassName="w-[9.1146vw]  text-[#26435F]"
             type="select"
             IconSearch={Dropdown}
             inputClassName="bg-white border border-[rgb(255,255,255)] rounded-[4px] w-[125px]"
             
-            inputContainerClassName="bg-white shadow-[0px_0px_2px_0px_rgba(0,0,0,0.25)] h-[43px]"
+            inputContainerClassName="bg-white shadow-[0px_0px_2px_0px_rgba(0,0,0,0.25)] h-[43px] lg:px-3 2xl:px-4 text-center"
             hideRight={true}
             optionType="object"
             value={bulkEdits?.tutorStatus?.value}
@@ -1323,13 +1323,13 @@ const numberKey=Object.keys(bulkEdits)?.length>0
                 name:iyt.value,
               }
             })}
-            placeholder="Assign a Tutor"
-            parentClassName="w-[11vw] text-[#26435F] "
+            placeholder="Assigned Tutor"
+            parentClassName="w-[9.1146vw]  text-[#26435F] "
             type="select"
             IconSearch={Dropdown}
             inputClassName="bg-white border  w-[125px] rounded-[5px] "
             
-            inputContainerClassName="bg-white shadow-[0px_0px_2px_0px_rgba(0,0,0,0.25)] h-[43px] "
+            inputContainerClassName="bg-white shadow-[0px_0px_2px_0px_rgba(0,0,0,0.25)] h-[43px] lg:pl-2 2xl:pl-3"
             
             optionType="object"
             value={bulkEdits?.assignedTutor?.value}
@@ -1350,13 +1350,13 @@ const numberKey=Object.keys(bulkEdits)?.length>0
           />
          
           <div>
-            <button disabled={selectedId?.length===0|| !numberKey?true:false} onClick={()=>selectedId?.length>0 && setSaveBulkModalActive(true)} className={`bg-[#26435F] text-[15px] px-[25px] py-[10px] rounded-[7.5px] text-white ml-auto text-base-17-5 h-[43px] ${selectedId?.length===0||!numberKey?"opacity-75":""} `}>
+            <button disabled={selectedId?.length === 0 || !numberKey ? true : false} onClick={() => selectedId?.length > 0 && setSaveBulkModalActive(true)} className={`bg-[#26435F] text-[15px] px-[25px] py-[10px] rounded-[5px] text-white ml-auto text-base-17-5 h-[43px] w-[5.1563vw] ${selectedId?.length===0||!numberKey?"opacity-75":""} `}>
               Save
             </button>
           </div>
           <div className="flex justify-end flex-1 gap-5 relative ">
 
-            <button disabled={selectedId?.length===0?true:false} onClick={()=>selectedId?.length>0&&setInviteBulkModalActive(true)} className={`bg-[#517CA8] text-[15px]  font-semibold tracking-wider relative px-[20px] py-[10px] rounded-[7.5px] text-white  text-base-17-5 h-[43px] ${selectedId?.length===0?"opacity-75":""} `}>
+            <button disabled={selectedId?.length===0?true:false} onClick={()=>selectedId?.length>0&&setInviteBulkModalActive(true)} className={`bg-[#517CA8] opacity-100 text-base-17-5  font-semibold tracking-wider relative px-[20px] py-[10px] rounded-[7.5px] text-white  text-base-17-5 h-[43px] ${selectedId?.length===0?"opacity-75":""} `}>
               + Invite Users
               <span className="absolute right-[-10px] z-[500] top-[-10px]">
                 <div className="group relative">
@@ -1383,7 +1383,7 @@ const numberKey=Object.keys(bulkEdits)?.length>0
                 </div>
               </span>
             </button>
-            <button disabled={selectedId?.length===0?true:false} onClick={()=>selectedId?.length>0&&setDeleteBulkModalActive(true)} className={`bg-[#FF7979] flex items-center gap-2 px-[20px] tracking-wider font-semibold py-[10px] rounded-[7.5px] text-white  text-base-17-5 ${selectedId?.length===0?"opacity-75":""} `}>
+            <button disabled={selectedId?.length === 0 ? true : false} onClick={() => selectedId?.length > 0 && setDeleteBulkModalActive(true)} className={`bg-[#FF7979] opacity-100 flex items-center gap-2 px-[20px] tracking-wider font-semibold py-[10px] rounded-[5px] text-white  text-base-17-5 ${selectedId?.length===0?"opacity-75":""} `}>
               <span>
                 <img
                   src={DeleteIcon2}
@@ -1445,11 +1445,12 @@ const numberKey=Object.keys(bulkEdits)?.length>0
               onSubmit={handleSubmit}
               className="px-[3px] mb-0.5"
             >
-              <div className="grid grid-cols-1 md:grid-cols-2  gap-x-2 md:gap-x-3 gap-y-3 gap-y-4 mb-5">
+              <div className="grid grid-cols-1 md:grid-cols-2  gap-x-2 md:gap-x-3  gap-y-4 mb-5">
                 <div>
                   <InputField
                     label="First Name"
-                    labelClassname="ml-4 mb-0.5 text-[#26435F] font-semibold"
+                    biggerText={true}
+                    labelClassname=" mb-0.5 text-[#26435F] !font-medium "
                     placeholder="First Name"
                     inputContainerClassName="text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0"
                     inputClassName="bg-transparent"
@@ -1464,8 +1465,9 @@ const numberKey=Object.keys(bulkEdits)?.length>0
                 </div>
                 <div>
                   <InputField
+                    biggerText={true}
                     label="Last Name"
-                    labelClassname="ml-4 mb-0.5 text-[#26435F] font-semibold"
+                    labelClassname=" mb-0.5 text-[#26435F] !font-medium !text-lg"
                     isRequired={true}
                     placeholder="Last Name"
                     inputContainerClassName="text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0"
@@ -1480,10 +1482,11 @@ const numberKey=Object.keys(bulkEdits)?.length>0
                 </div>
                 <div>
                   <InputField
+                    biggerText={true}
                     label="Email Addresss "
-                    labelClassname="ml-4 mt-2 mb-0.5 text-[#26435F] font-semibold"
+                    labelClassname=" mt-2 mb-0.5 text-[#26435F] !font-medium !text-lg"
                     isRequired={true}
-                    placeholder="Email Addresss"
+                    placeholder="Email Address"
                     inputContainerClassName="text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0"
                     inputClassName="bg-transparent"
                     parentClassName="w-full"
@@ -1504,7 +1507,7 @@ const numberKey=Object.keys(bulkEdits)?.length>0
                     type="select"
                     placeholder="Select User Type "
                     label="User Type"
-                    labelClassname="ml-0  text-[#26435F] font-bold"
+                    labelClassname="ml-0  text-[#26435F] !font-medium !text-lg"
                     placeholderClass="text-base-17-5"
                     optionData={userTypeOptions}
                     inputContainerClassName="text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0"
