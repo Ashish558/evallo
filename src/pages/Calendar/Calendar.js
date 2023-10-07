@@ -171,6 +171,7 @@ export default function Calendar() {
     // //////console.log(url)
     fetchUserSessions(url).then((res) => {
       if (!res?.data?.data) return;
+      console.log('response---', res.data);
       const tempEvents = res.data.data.session.map((session) => {
         const time = session.time;
         const strtTime12HFormat = `${time.start.time} ${time.start.timeType}`;
@@ -196,7 +197,7 @@ export default function Calendar() {
         let updatedDate = new Date(
           new Date(
             startDate.toLocaleString("en-US", {
-              timeZone: session.timeZone,
+              timeZone: session.timeZone === "AKST" ? "America/Anchorage" : session.timeZone,
             })
           )
         );
@@ -219,7 +220,7 @@ export default function Calendar() {
         setTutors(temparray)
 
         const time = session.time;
-        console.log("admin parent", session);
+        // console.log("admin parent", session);
         const strtTime12HFormat = `${time.start.time} ${time.start.timeType}`;
         const startTime = convertTime12to24(
           `${time.start.time} ${time.start.timeType}`
@@ -257,8 +258,8 @@ export default function Calendar() {
 
         // //////console.log('START DATE', startDate.toDateString());
         // //////console.log('startDate', new Date(startDate.getTime() - userTimezoneOffset + 9 * 3600000))
-        console.log('startUtc', startUtc);
-        console.log('startUtc', startUtc);
+        // console.log('startUtc', startUtc);
+        // console.log('startUtc', startUtc);
         const dsttz = moment.tz(startDate, session.timeZone).format("zz");
         const dstdate = moment
           .tz(startDate, session.timeZone)
@@ -284,7 +285,7 @@ export default function Calendar() {
           userTimezoneOffset,
           session.timeZone
         );
-        console.log("SessionTimings", session, startDate, endDateUtc, strtTime12HFormat)
+        // console.log("SessionTimings", session, startDate, endDateUtc, strtTime12HFormat)
         let eventObj = {
           id: session._id,
           title: role === "tutor" ? session.studentName : session.tutorName,
@@ -687,7 +688,7 @@ export default function Calendar() {
         setEventModalActive(true);
       }
     
-    arg.preventDefault()
+    // arg.preventDefault()
     // //////console.log(arg)
     // setEvents([...events, {
     //    id: 2,
@@ -933,9 +934,11 @@ export default function Calendar() {
   const parseEventDatesToTz = () => {
     setEvents((prev) => {
       return prev.map((item) => {
-        let updatedDate = new Date(item?.start).toLocaleString();
-        let updatedDateEnd = new Date(item?.updatedDateEnd).toLocaleString(
-        );
+        // let updatedDate = new Date(item?.start).toLocaleString();
+        // let updatedDateEnd = new Date(item?.updatedDateEnd).toLocaleString(
+        // );
+        let updatedDate = new Date(item.updatedDate).toLocaleString('en-US', { timeZone })
+        let updatedDateEnd = new Date(item.updatedDateEnd).toLocaleString('en-US', { timeZone })
         // let updatedDate = new Date(item?.updatedDate).toLocaleString("en-US", {
         //   timeZone,
         // });
@@ -947,11 +950,11 @@ export default function Calendar() {
         // //////console.log('updatedDate', updatedDate)
         // //////console.log('DATE UPDATED ==', updatedDate)
         // //////console.log('timeZone', timeZone)
-        let fmt = "DD/MM/YYYY, h:mm:ss a";
-        var m = moment.tz(updatedDate, fmt, timeZone);
-        m.utc();
-        var s = m.format(fmt); // result:
-        console.log('moment', item, item?.start, updatedDate, updatedDateEnd);
+        // let fmt = "DD/MM/YYYY, h:mm:ss a";
+        // var m = moment.tz(updatedDate, fmt, timeZone);
+        // m.utc();
+        // var s = m.format(fmt); // result:
+        // console.log('moment', item, item?.start, updatedDate, updatedDateEnd);
 
         return {
           ...item,
@@ -1125,7 +1128,7 @@ export default function Calendar() {
     }));
   };
 
-  console.log('insightData-----', insightData);
+  console.log('events-----', events);
   //console.log('eventDetails',colorMapping,insightData,userDetail,associatedStudents);
   const navigate = useNavigate()
   return (
@@ -1592,7 +1595,7 @@ export default function Calendar() {
                 end: "dayGridMonth,timeGridWeek"
               }}
               datesSet={(arg) => {
-                console.log('datesSet', arg) //starting visible date
+                // console.log('datesSet', arg) //starting visible date
               }}
               titleFormat={{
                 day: '2-digit',
