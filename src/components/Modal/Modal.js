@@ -97,10 +97,10 @@ export default function Modal({
 
                               >
                                  <div className="flex w-full items-center justify-evenly">
-                                    <p>{primaryBtn.text}</p>
-                                    <p>{
+                                    <p className="text-center">{primaryBtn.text}</p>
+                                    {primaryBtn.icon && <p>{
                                        (primaryBtn.icon && primaryBtn?.loading === false) ? primaryBtn.icon : ''
-                                    }</p>
+                                    }</p>}
                                  </div>
 
                                  {
