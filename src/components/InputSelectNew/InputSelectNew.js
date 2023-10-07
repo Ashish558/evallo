@@ -12,7 +12,7 @@ export default function InputSelectNew({
   optionsEachClassName,
   value,
   placeholderClass,
-  
+  inputClassName,
   placeholder,
   label,
   labelClassname,

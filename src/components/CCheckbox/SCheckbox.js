@@ -11,13 +11,13 @@ const [checkG,setCheckG]=useState(checked)
    }
    
 useEffect(()=>{
-    if(disabled === true || !onChange || stopM) return
+    if(disabled === true || !onChange || true) return
     onChange(checkG)
 },[checkG])
    return (
       <div className={` w-5 h-5 ${styles.container} ${!checked?styles.container2:styles.container} ${!checked?"opacity-40":''} ${className}`}
           onClick={(e)=>{
-            if(!stopM)
+            if(!true)
             setCheckG(!checkG)
          else {
             handleClick(checked)

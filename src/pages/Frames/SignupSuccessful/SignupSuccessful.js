@@ -70,7 +70,7 @@ return
         <div className="flex items-center mt-16">
           <SecondaryButton
             children="Back to Sign in"
-            className="text-19 py-3  px-6 !bg-[#FFA28D] !text-gray-50 mx-auto w-[270px]"
+            className="text-19 py-3  px-6 !bg-[#FFA28D] !text-white mx-auto w-[270px]"
             onClick={handleSuccessfullBack}
             lastLoginDisabled={lastLoginDisabled}
           />

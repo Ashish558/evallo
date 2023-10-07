@@ -118,7 +118,7 @@ return true  }
           right={<img src={lockIcon} alt="lock" />}
           parentClassName=" min-w-[118px] w-full "
           inputContainerClassName=" border border-[#D0D5DD] rounded-md py-[9px] h-[44px] text-md"
-          inputClassName="bg-transparent text-sm font-bold"
+          inputClassName="text-[#26435F] bg-transparent text-sm font-semibold"
           type="text"
           value={values.company}
         />
@@ -222,18 +222,19 @@ return true  }
        
         <div className="flex justify-between items-center mt-[18px] gap-7">
         <InputSelectNew
-          parentClassName="w-[700px] "
+          parentClassName="!w-[700px] "
           optionContainerClassName="text-[13px]   max-h-[180px]"
           optionsEachClassName="py-[5px]"
           optionData={states}
           placeholder={"Select"}
           optionType="object"
+          placeholderClass="!mr-2"
           label={`State`}
           labelClassname="text-[#26435F] font-bold   !text-sm "
-          inputContainerClassName="py-1 text-sm h-[44px] border border-[#D0D5DD] my-0 mt-[-3px] rounded-[4.3px]"
-          inputClassName="ml-80"
+          inputContainerClassName="py-1 text-sm   h-[44px] border border-[#D0D5DD] my-0 mt-[-3px] rounded-[4.3px] "
+          inputClassName="  ml-80"
           required={persona === "student" ? true : false}
-          value={values.state}
+          value={values?.state?.length<20?values.state:values.state?.slice(0,20)+"..."}
           onChange={(e) =>
             setValues({
               ...values,
@@ -296,8 +297,9 @@ return true  }
             biggerText={true}
             placeholder=""
             parentClassName="w-full max-w-[248px] "
-            inputContainerClassName=" border border-[#D0D5DD] rounded-md py-[9px] h-[44px] text-md"
-            inputClassName="bg-transparent text-xs"
+            inputContainerClassName=" border px-[-10px] border-[#D0D5DD]   rounded-md py-[9px] h-[44px] text-md"
+            inputClassName="bg-transparent text-xs custom-scroller-2"
+            placeholderClass="!mx-1 custom-scroller-2"
             type="text"
             value={values.zip}
             onChange={(e) =>
