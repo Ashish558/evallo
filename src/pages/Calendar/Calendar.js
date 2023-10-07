@@ -197,7 +197,7 @@ export default function Calendar() {
         let updatedDate = new Date(
           new Date(
             startDate.toLocaleString("en-US", {
-              timeZone: session.timeZone === "AKST" ? "America/Anchorage" : session.timeZone,
+              timeZone: session.timeZone === "AKST" ? "America/Anchorage" : session.timeZone === 'HST' ? "Pacific/Honolulu" : session.timeZone,
             })
           )
         );
@@ -405,7 +405,8 @@ export default function Calendar() {
                   let updatedDate = new Date(
                     new Date(
                       startDate.toLocaleString("en-US", {
-                        timeZone: session.timeZone,
+                        // timeZone: session.timeZone,
+                        timeZone: session.timeZone === "AKST" ? "America/Anchorage" : session.timeZone === 'HST' ? "Pacific/Honolulu" : session.timeZone,
                       })
                     )
                   );
@@ -673,21 +674,21 @@ export default function Calendar() {
     //   return
     // }
 
-      //  console.log("can see", date,currentDate)
+    //  console.log("can see", date,currentDate)
 
-      if (persona === "tutor") {
-        setDefaultEventData({
-          date: arg.date,
-          tutorId: currentUserId,
-          tutorName: `${firstName} ${lastName}`,
-        });
-      } else {
-        setDefaultEventData({ date: arg.date });
-      }
-      if (persona === "admin" || persona === "tutor") {
-        setEventModalActive(true);
-      }
-    
+    if (persona === "tutor") {
+      setDefaultEventData({
+        date: arg.date,
+        tutorId: currentUserId,
+        tutorName: `${firstName} ${lastName}`,
+      });
+    } else {
+      setDefaultEventData({ date: arg.date });
+    }
+    if (persona === "admin" || persona === "tutor") {
+      setEventModalActive(true);
+    }
+
     // arg.preventDefault()
     // //////console.log(arg)
     // setEvents([...events, {
@@ -719,7 +720,7 @@ export default function Calendar() {
   const [studentName, setStudentNames] = useState([]);
   const handleInsights = (name, role, item) => {
     getCalenderInsight({ name, id: item._id }).then((res) => {
-      if(res.error){
+      if (res.error) {
         return console.log('insight err', res.error);
       }
       console.log("insights response----", res.data.tutorSessionDetails);
@@ -937,6 +938,7 @@ export default function Calendar() {
         // let updatedDate = new Date(item?.start).toLocaleString();
         // let updatedDateEnd = new Date(item?.updatedDateEnd).toLocaleString(
         // );
+        // console.log('tz---', timeZone);
         let updatedDate = new Date(item.updatedDate).toLocaleString('en-US', { timeZone })
         let updatedDateEnd = new Date(item.updatedDateEnd).toLocaleString('en-US', { timeZone })
         // let updatedDate = new Date(item?.updatedDate).toLocaleString("en-US", {
@@ -1160,7 +1162,7 @@ export default function Calendar() {
             </div>
             {persona === "parent" ? (
               <div className="mt-10 pr-4">
-      
+
                 {/* <div className="mt-[30px]">
                   {students.map((student, idx) => {
                     return (
@@ -1359,7 +1361,7 @@ export default function Calendar() {
                           <p className="text-[16px] text-[#7C98B6]">
                             {item.tutors ?
                               item.tutors.map((tutor, idx) => {
-                                return `${tutor?.firstName + " " + tutor?.lastName}${idx+1 < item.tutors?.length ? ',' : ''} `
+                                return `${tutor?.firstName + " " + tutor?.lastName}${idx + 1 < item.tutors?.length ? ',' : ''} `
                               }) :
                               item?.tutor?.firstName + " " + item?.tutor?.lastName}
                           </p>
@@ -1642,7 +1644,7 @@ export default function Calendar() {
                     if (val == 'CST') setTimeZone('US/Central')
                     if (val == 'AKST') setTimeZone('US/Alaska')
                     if (val == 'EST') setTimeZone('US/Eastern')
-                    if (val == 'HST') setTimeZone('US/Hawai')
+                    if (val == 'HST') setTimeZone('Pacific/Honolulu')
                     if (val == 'MST') setTimeZone('US/Mountain')
                     if (val == 'PST') setTimeZone('US/Pacific')
                   }}
