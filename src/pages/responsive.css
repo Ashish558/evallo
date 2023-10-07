@@ -29,6 +29,9 @@
 
 
 */
+#borderDashed2{
+  border: 3.5px dashed #CBD6E3;
+  }
 .owl-stage-outer{
 height:100%;
 }

@@ -22,12 +22,14 @@ import { getCheckedString, getDuration, getFormattedDate } from '../../utils/uti
 import Modal from '../../components/Modal/Modal'
 import Testinstruction_2 from "../../components/TestItem/testinstruction_2";
 export default function TestPage() {
+  const [showannotate, setshowannotate] = useState(false);
 
   const [getQue, GetQueRes] = useLazyGetQuestionQuery();
   const [info, setInfo] = useState([]);
   const [background, setbackground] = useState(false);
   const [answers, setAnswers] = useState([]);
   const [sectionindex, setsectionindex] = useState(0);
+  const [showtextbox,setshowtextbox]=useState(false)
   const [index, setIndex] = useState(0);
   const [data, setdata] = useState([]);
   const [toggle2,setToggle2] =useState(false)
@@ -39,6 +41,7 @@ export default function TestPage() {
   const[loader,setloader] = useState(true)  
   const location = useLocation();
   const [cal,setCal]=useState(false)
+  const [allquestion_Data,setAllQuestions_data]=useState()
   
   function MarkAnswer(QuestionNumber, correctAnswer) {
    console.log(QuestionNumber,correctAnswer);
@@ -229,7 +232,6 @@ const tempsubjects = [
 
             // setInitialSeconds(Math.trunc(timer))
             setTestStarted(true)
-            setActiveSection({ name: sectionName })
             setSubmitId(submitId)
 
             setSubjects(prev => {
@@ -337,7 +339,7 @@ const tempsubjects = [
    useEffect(()=>{
     console.log('info',info);
    if(info!=null&&info.length>0){
-    let dataofque, newData,cutdata;
+    let dataofque, newData,cutdata,question_d;
     dataofque = info
     newData = dataofque.map((item) => ({
       QuestionType: item.QuestionType,
@@ -353,7 +355,11 @@ const tempsubjects = [
       QuestionNumber:item.QuestionNumber,
       review:false
     }));
-    console.log(newData,markr,cutdata);
+    question_d=dataofque.map((item) => ({
+      text:item.Passage,
+    }));
+    console.log(question_d,markr,cutdata);
+    setAllQuestions_data(question_d)
     setmarkreview(markr)
     setAnswers(newData);
     setcutanswer(cutdata)
@@ -445,6 +451,10 @@ useEffect(()=>{
       setToggle2(false)
       setbackground(false)
       setIndex(0)
+      setshowtextbox(true)
+      setshowannotate(false)
+      setCal(false)
+      setshowannotate(false)
       setloader(true)
       setsectionindex(answer_check?.completed.length==0?1:answer_check?.completed.length)
       const response = answers.map(item => {
@@ -514,16 +524,23 @@ const [pages,setPage]=useState(arr)
 <SectionLoader/>
      :
      instructionpage?
-     <Testinstruction_2 setisntructionpage={setisntructionpage} loader={loader} testHeaderDetails={testHeaderDetails} activeSection={activeSection} TestDetail={TestDetail} completedSectionIds={completedSectionIds} testStarted={testStarted} subjects={subjects}
+     <Testinstruction_2 desc={sectionDetails[answer_check?.completed.length]?.description} timer={sectionDetails[answer_check?.completed.length]?.timer} setisntructionpage={setisntructionpage} loader={loader} testHeaderDetails={testHeaderDetails} activeSection={activeSection} TestDetail={TestDetail} completedSectionIds={completedSectionIds} testStarted={testStarted} subjects={subjects}
    /> 
      :
      <>
       <Navbar  cal={cal}
+      showannotate={showannotate}
+      setshowannotate={setshowannotate}
       details={sectionDetails[answer_check?.completed.length]?.description}
       annotation_check={sectionDetails[answer_check?.completed.length]?.annotation=='yes'?true:false}
       calculator_check={sectionDetails[answer_check?.completed.length]?.calculator=='yes'?true:false}
       setCal={setCal} secnd={timer} handleSubmitSection={handleSubmitSection} sectionDetails={sectionDetails[answer_check?.completed.length]}  />
       <Que
+      setshowtextbox={setshowtextbox}
+      showtextbox={showtextbox}
+      showannotate={showannotate}
+      setshowannotate={setshowannotate}
+      quesT={allquestion_Data}
       annotation_check={sectionDetails[answer_check?.completed.length]?.annotation=='yes'?true:false}
       calculator_check={sectionDetails[answer_check?.completed.length]?.calculator=='yes'?true:false}
       cross_O_check={sectionDetails[answer_check?.completed.length]?.crossOption=='yes'?true:false}
@@ -546,7 +563,9 @@ const [pages,setPage]=useState(arr)
         para={info[index] ? info[index].Passage : ""}
         Setmark={setPage} 
         mark={pages}
+        siz={size}
       />
+      {showtextbox?null:
       <Foot
       sectionindex={answer_check?.completed.length+1}
       sectionDetails={sectionDetails[answer_check?.completed.length]}
@@ -569,6 +588,7 @@ const [pages,setPage]=useState(arr)
         i={index + 1}
         mark={pages}
       />
+}
       </>
   }
     </div>

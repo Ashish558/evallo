@@ -94,7 +94,7 @@ export default function EventModal({
    refetchSessions,
    defaultEventData
 }) {
-  
+
    const [data, setData] = useState({
       studentName: "",
       tutorName: "",
@@ -171,7 +171,7 @@ export default function EventModal({
    const [services, setServices] = useState([])
    const { id: currentUserId } = useSelector(state => state.user)
    const { organization } = useSelector((state) => state.organization);
-   const [tutorId2,setTutorId2]= useState(null)
+   const [tutorId2, setTutorId2] = useState(null)
    const [isSettingsLoaded, setIsSettingsLoaded] = useState(false);
    const getCheckedItems = (strArr, array) => {
       let checkedItems = array.map((item) => {
@@ -248,7 +248,7 @@ export default function EventModal({
          let formattedTime = tConvert(`${hours}:00`)
          let formattedEndTime = tConvert(`${endHours}:00`)
          if (endHours === 24) formattedEndTime = { time: "12:00", timeType: 'AM' }
-         
+
          setData((prev) => {
             return {
                ...prev,
@@ -264,15 +264,15 @@ export default function EventModal({
                      ...formattedEndTime
                   }
                },
-         }
-           
+            }
+
          })
-          setTutorId2(tutorId)
+         setTutorId2(tutorId)
          setTutor(tutorName ? tutorName : '')
 
       }
    }, [defaultEventData])
- 
+
    useEffect(() => {
       if (organization?.settings) {
 
@@ -663,18 +663,18 @@ export default function EventModal({
             setEventModalActive(false)
          })
    }
-  useEffect(()=>{
-    if(persona==='tutor'){
-      setData((prev)=>{
-         return {
-            ...prev,
-            tutorId:tutorId2,
-            tutorName:tutor
-         }
-      })
+   useEffect(() => {
+      if (persona === 'tutor') {
+         setData((prev) => {
+            return {
+               ...prev,
+               tutorId: tutorId2,
+               tutorName: tutor
+            }
+         })
 
-    }
-  },[tutorId2])
+      }
+   }, [tutorId2])
    useEffect(() => {
       // if (persona === 'tutor') {
       // console.log(data.tutorId);
@@ -704,10 +704,10 @@ export default function EventModal({
       // }
 
    }, [persona, data.tutorId, allServicesAndSpec])
-console.log("data",data,tutor)
+   console.log("data", data, tutor)
    useEffect(() => {
       // console.log('all', allServicesAndSpec)
-     
+
       let specs = []
       allServicesAndSpec.map(item => {
          if (item.service === data.service) {
@@ -715,7 +715,7 @@ console.log("data",data,tutor)
          }
       })
       console.log('spec', specs)
-      console.log('servicesAndSpecialization', servicesAndSpecialization,specs)
+      console.log('servicesAndSpecialization', servicesAndSpecialization, specs)
       setSpecializations(specs)
    }, [servicesAndSpecialization, data.service, allServicesAndSpec])
 
@@ -763,7 +763,7 @@ console.log("data",data,tutor)
       setData({ ...data, sessionTags: tempSessionTag })
    }
    const dataProps = { data, setData }
- //  console.log({isEditable})
+   //  console.log({isEditable})
    return (
       <>
          <Modal
@@ -774,7 +774,7 @@ console.log("data",data,tutor)
 
             body={
                <div  >
-                  <div className="h-[58.61vh] 2xl:max-h-[633px] overflow-y-auto">
+                  <div className="h-[58.61vh] 2xl:h-[44.60vh] 2xl:max-h-[633px] overflow-y-auto">
                      <div className="pr-4">
                         <SearchNames setStudent={setStudent}
                            setData={setData} student={student} tutor={tutor} data={data}
@@ -783,7 +783,7 @@ console.log("data",data,tutor)
 
                         <DateAndTimeInput {...dataProps} isEditable={isEditable} />
 
-                        <div className={`flex mb-3 items-center ${!isEditable? 'pointer-events-none ' : ''} `}>
+                        <div className={`flex mb-3 items-center ${!isEditable ? 'pointer-events-none ' : ''} `}>
                            <CCheckbox checked={data.recurring} name='recurring' onChange={() =>
                               setData({
                                  ...data,
@@ -806,7 +806,7 @@ console.log("data",data,tutor)
                                  // console.log(val)
                                  data.service !== val && setData({ ...data, service: val, specialization: '' })
                               }}
-                            
+
                               optionData={servicesAndSpecialization}
                               inputContainerClassName={`bg-lightWhite pt-3.5 pb-3.5 border-0 font-medium pr-3 text-[#507CA8]
                        `}
@@ -983,9 +983,11 @@ console.log("data",data,tutor)
                               </div>
 
                               <div className="mb-8">
-                                 <p className="font-medium mb-2.5 text-[#26435F] text-[18.6px]">
-                                    Session Notes
-                                 </p>
+                                 <div>
+                                    <p className="font-medium mb-2.5 text-[#26435F] text-[18.6px]">
+                                       Session Notes
+                                    </p>
+                                 </div>
                                  <textarea
                                     placeholder="Session Notes"
                                     value={data.sessionNotes}
@@ -1074,7 +1076,7 @@ console.log("data",data,tutor)
                                        loading={loading}
                                     />
                                  </div>
-                                 <div>
+                                 <div className="flex items-center">
                                     <PrimaryButton
                                        children="Update Current"
                                        className="text-lg py-3 mr-3 pl-1 pr-1 whitespace-nowrap font-medium px-7 h-[50px] w-[140px] disabled:opacity-60"
