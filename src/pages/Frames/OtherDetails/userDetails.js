@@ -14,6 +14,28 @@ import InputFieldDropdown from "../../../components/InputField/inputFieldDropdow
 import InputSelect from "../../../components/InputSelect/InputSelect";
 import leftDrop from "../../../assets/icons/Polygon 2.svg";
 import CCheckbox from "../../../components/CCheckbox/CCheckbox";
+
+const GradesData = [
+  "Nursery",
+  "Lower Kindergarten",
+  "Upper Kindergarten",
+  "1st",
+  "2nd",
+  "3rd",
+  "4th",
+  "5th",
+  "6th",
+  "7th",
+  "8th",
+  "9th",
+  "10th",
+  "11th",
+  "12th",
+  "College 1st Year",
+  "College 2nd Year",
+  "College 3rd Year",
+  "College 4th Year",
+];
 export default function UserDetails({
   setFrames,
   persona,
@@ -29,10 +51,8 @@ export default function UserDetails({
   isAddedByAdmin,
   customFields,
   values,
-}) 
-{
-
-  console.log({values,otherDetails})
+}) {
+  console.log({ values, otherDetails });
   const [selected, setSelected] = useState(false);
   const [disabled, setDisabled] = useState(false);
 
@@ -113,18 +133,17 @@ export default function UserDetails({
           label={`${personaText} First Name`}
           labelClassname="text-[#26435F] !font-medium  mb-1 text-base-17-5"
           value={otherDetails.FirstName}
-          
-          onChange={(e) =>{
-            
-            e.target.value=e.target.value.charAt(0).toUpperCase() + e.target.value.slice(1);
-         
+
+          onChange={(e) => {
+
+            e.target.value = e.target.value.charAt(0).toUpperCase() + e.target.value.slice(1);
+
             setOtherDetails({
               ...otherDetails,
               FirstName: e.target.value,
-            })
-          }
-        }
-          totalErrors={detailsError} 
+            });
+          }}
+          totalErrors={detailsError}
           error={detailsError.FirstName}
         />
         <InputField
@@ -134,17 +153,16 @@ export default function UserDetails({
           required={persona === "student" ? true : false}
           labelClassname="text-[#26435F] !font-medium  mb-1 text-base-17-5"
           value={otherDetails.LastName}
-          onChange={(e) =>{
-     
-            e.target.value=e.target.value.charAt(0).toUpperCase() + e.target.value.slice(1);
-         
+          onChange={(e) => {
+
+            e.target.value = e.target.value.charAt(0).toUpperCase() + e.target.value.slice(1);
+
             setOtherDetails({
               ...otherDetails,
               LastName: e.target.value,
-            })
-          }
-        }
-          totalErrors={detailsError} 
+            });
+          }}
+          totalErrors={detailsError}
           error={detailsError.LastName}
         />
       </div>
@@ -159,7 +177,7 @@ export default function UserDetails({
           onChange={(e) =>
             setOtherDetails({ ...otherDetails, Email: e.target.value })
           }
-          totalErrors={detailsError} 
+          totalErrors={detailsError}
           error={detailsError.Email}
         />
         <InputFieldDropdown
@@ -171,16 +189,16 @@ export default function UserDetails({
           required={persona === "student" ? true : false}
           codeValue={otherDetails.PphoneCode}
           handleCodeChange={(e) =>
-            
+
             setOtherDetails({ ...otherDetails, PphoneCode: e.target.value, })
           }
           value={otherDetails.Phone}
-          onChange={(e) =>{
+          onChange={(e) => {
             const inputText = e.target.value;
             const numberOnly = inputText.replace(/\D/g, '')
             setOtherDetails({ ...otherDetails, Phone: numberOnly })
           }}
-          totalErrors={detailsError} 
+          totalErrors={detailsError}
           error={detailsError.Phone}
           codeError={detailsError.PphoneCode}
         />
@@ -195,50 +213,47 @@ export default function UserDetails({
         onChange={(e) =>
           setOtherDetails({ ...otherDetails, schoolName: e.target.value })
         }
-        totalErrors={detailsError} 
+        totalErrors={detailsError}
         error={detailsError.schoolName}
       />
       <InputSelect
         IconLeft={leftDrop}
         parentClassName="mb-6 w-[200px]"
-        optionData={["5","6","7","8","9","10","11","12"]}
+        optionData={GradesData}
         label={`Student's Grade`}
         labelClassname="text-[#26435F] !font-medium  mb-1 text-base-17-5 font-semibold"
         inputContainerClassName="border text-base-17-5 border-[#D0D5DD] py-1 relative border"
         inputClassName="ml-80"
         required={persona === "student" ? true : false}
-       
         value={otherDetails.grade}
-        onChange={(e) =>
-          setOtherDetails({ ...otherDetails, grade: e})
-        }
-        totalErrors={detailsError} 
+        onChange={(e) => setOtherDetails({ ...otherDetails, grade: e })}
+        totalErrors={detailsError}
         error={detailsError.grade}
       />
-     
-        <InputField
-          labelClassname="mb-1 text-[#26435F] !font-medium"
-          label="Referral Code"
-          placeholder=""
-          parentClassName=" text-xs flex-1"
-          inputContainerClassName="border border-[#D0D5DD] py-1 relative border h-[48px]"
-          value={otherDetails.referalCode}
-          onChange={(e) =>
-            setOtherDetails({ ...otherDetails, referalCode: e.target.value })
-          }
-        />
 
-        <div className={style.shy}>
-       <div className="flex items-center mt-2">
-         <CCheckbox  checked={otherDetails.referalCode?.trim()?.length === 0 }
-                          onChange={()=>  setOtherDetails({...otherDetails,referalCode:""})}/>
-        
+      <InputField
+        labelClassname="mb-1 text-[#26435F] !font-medium"
+        label="Referral Code"
+        placeholder=""
+        parentClassName=" text-xs flex-1"
+        inputContainerClassName="border border-[#D0D5DD] py-1 relative border h-[48px]"
+        value={otherDetails.referalCode}
+        onChange={(e) =>
+          setOtherDetails({ ...otherDetails, referalCode: e.target.value })
+        }
+      />
+
+      <div className={style.shy}>
+        <div className="flex items-center mt-2">
+          <CCheckbox checked={otherDetails.referalCode?.trim()?.length === 0}
+            onChange={() => setOtherDetails({ ...otherDetails, referalCode: "" })} />
+
           <span className="ml-1  text-[#507CA8] text-base-17-5 pt-1">
-              I don't have one
-            </span>
+            I don't have one
+          </span>
         </div>
-        </div>
-   
+      </div>
+
       <div className="flex justify-between items-center mt-16">
         {!isAddedByAdmin && (
           <SecondaryButton

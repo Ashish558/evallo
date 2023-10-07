@@ -1242,7 +1242,7 @@ export default function SuperAdminSettings() {
         <p className="text-[#24A3D9]  mb-9 ">
           <span className="font-medium text-lg">
             {" "}
-            {organization?.company + "  >  "} Settings
+           Settings
           </span>
         </p>
         <div className="flex justify-between items-center mb-[45px]">

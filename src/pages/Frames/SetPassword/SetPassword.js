@@ -94,86 +94,85 @@ export default function SetPassword({
   return (
     <>
       <div className="min-h-screen flex justify-center overflow-auto pb-[20px]  " id={styles.signUp}>
-      
-          {/* <div className="bg-primary"></div> */}
-          <div className="flex flex-col w-[730px] pb-10 justify-center items-center md:grid-cols-2">
-            <img src={EvalloLogo} alt="logo" className="mb-4 scale-[.93] " />
 
-            <div
-              className={`w-full flex rounded-md flex-col justify-center items-center bg-white py-6 pb-10 ${
-                signup ? "" : "px-[130px]"
+        {/* <div className="bg-primary"></div> */}
+        <div className="flex flex-col w-[730px] pb-10 justify-center items-center md:grid-cols-2">
+          <img src={EvalloLogo} alt="logo" className="mb-4 scale-[.93] " />
+
+          <div
+            className={`w-full flex rounded-md flex-col justify-center items-center bg-white py-6 pb-10 ${signup ? "" : "px-[130px]"
               } `}
-            >
+          >
 
-              {
-                !resetPassword ?
+            {
+              !resetPassword ?
                 <>
-                <div className="bg-[#FFA28D] rounded-full w-10 h-10 p-2 text-center mx-auto text-white">
-                5
-              </div>
-              <p className="font-medium text-[15px] text-center mx-auto py-1 text-[#FFA28D] leading-snug mb-7">
-                Set Password
-              </p>
+                  <div className="bg-[#FFA28D] rounded-full w-10 h-10 p-2 text-center mx-auto text-white">
+                    5
+                  </div>
+                  <p className="font-medium text-[15px] text-center mx-auto py-1 text-[#FFA28D] leading-snug mb-7">
+                    Set Password
+                  </p>
 
-              
-              
-              <div className="h-[1px] bg-[#EBEBEB] mx-[0px]  mt-[-16px] w-[110%] mb-[19px]"></div>
+
+
+                  <div className="h-[1px] bg-[#EBEBEB] mx-[0px]  mt-[-16px] w-[110%] mb-[19px]"></div>
                   <p className="mb-8 text-[#26435F] text-center text-[0.9719vw] font-normal">
-                Congratulations! Your email has been verified. Now,
-                <br /> please set a strong password for your Evallo account.
-              </p> </>:
-              <>
-             
-               <p className="font-medium text-4xl text-center mx-auto py-2 text-[#FFA28D] leading-snug mb-7">
-               Reset Password
-             </p>
-             <div className="h-[1px] bg-[#EBEBEB] mx-[0px]  mt-[-16px] w-[110%] mb-[25px]"></div>
-             <p className="mb-8 text-[#26435F] text-center">
-              
-              Please set a new strong password for your Evallo account.
-            </p>
-             </>
-}
+                    Congratulations! Your email has been verified. Now,
+                    <br /> please set a strong password for your Evallo account.
+                  </p> </> :
+                <>
+
+                  <p className="font-medium text-4xl text-center mx-auto py-2 text-[#FFA28D] leading-snug mb-7">
+                    Reset Password
+                  </p>
+                  <div className="h-[1px] bg-[#EBEBEB] mx-[0px]  mt-[-16px] w-[110%] mb-[25px]"></div>
+                  <p className="mb-8 text-[#26435F] text-center">
+
+                    Please set a new strong password for your Evallo account.
+                  </p>
+                </>
+            }
 
 
-              <div className="flex justify-between gap-10">
-                <InputField
-                  parentClassName="mb-6 relative"
-                  type="password"
-                  placeholder="minimum 8 characters"
+            <div className="flex justify-between gap-10">
+              <InputField
+                parentClassName="mb-6 relative"
+                type="password"
+                placeholder="minimum 8 characters"
                 inputContainerClassName="border border-[0.98px_solid_#D0D5DD] w-[13.8542vw]"
                 inputClassName={"py-[2px] "}
-                  label="Set New Password"
+                label="Set New Password"
                 labelClassname="ml-2 mb-2 !font-medium !text-[0.9719vw]"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  error={error.password}
-                />
-
-                <InputField
-                  parentClassName="mb-2.5 relative"
-                  type="password"
-                  inputClassName={"py-[2px]"}
-                  placeholder="Confirm New Password"
-                inputContainerClassName="border border-[0.98px_solid_#D0D5DD] w-[13.8542vw]"
-                  label="Confirm New Password"
-                labelClassname="ml-2 mb-2 !font-medium !text-[0.9719vw]"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  error={error.confirmPassword}
-                />
-              </div>
-              <div className="flex justify-center items-center my-3 text-[#7C98B6] text-xs">
-                Note: The password should contain a minimum of 8 characters.
-              </div>
-
-              <PrimaryButton
-                onClick={handleSubmit}
-                loading={loading}
-                children={"Set New Password"}
-              className="w-[17.5521vw] mt-6 py-3 text-[#fff]"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                error={error.password}
               />
-              {/* <button
+
+              <InputField
+                parentClassName="mb-2.5 relative"
+                type="password"
+                inputClassName={"py-[2px]"}
+                placeholder="Confirm New Password"
+                inputContainerClassName="border border-[0.98px_solid_#D0D5DD] w-[13.8542vw]"
+                label="Confirm New Password"
+                labelClassname="ml-2 mb-2 !font-medium !text-[0.9719vw]"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                error={error.confirmPassword}
+              />
+            </div>
+            <div className="flex justify-center items-center my-3 text-[#7C98B6] text-xs">
+              Note: The password should contain a minimum of 8 characters.
+            </div>
+
+            <PrimaryButton
+              onClick={handleSubmit}
+              loading={loading}
+              children={"Set New Password"}
+              className="w-[17.5521vw] mt-6 py-3 !text-white"
+            />
+            {/* <button
                         className={`w-full relative bg-primaryDark font-medium disabled:bg-pink pt-3 pb-3 mt-12 rounded-10 text-white text-lg  ${loading ? 'cursor-wait opacity-60' : 'cursor-pointer'}`}
                         onClick={handleSubmit}
                      >
@@ -183,9 +182,9 @@ export default function SetPassword({
                            <Loader />
                         }
                      </button> */}
-            </div>
           </div>
-       
+        </div>
+
       </div>
     </>
   );

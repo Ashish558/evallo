@@ -633,7 +633,8 @@ export default function Users() {
     if (!settings.servicesAndSpecialization) return;
     let specs = [];
     settings.servicesAndSpecialization.map((service) => {
-      specs.push(...service.specialization);
+     // specs.push(...service.specialization);
+     specs.push(service.service)
     });
     setSpecializations(specs);
     //console.log("specs", specs);
@@ -660,6 +661,7 @@ export default function Users() {
   const [successFetched, setsuccessFetched] = useState(false);
   const handleBulkExport = async () => {
     setCsvLoad(true);
+    if(selectedId?.length===0){
     getAllUsers()
       .then((res) => {
         let result = res?.data?.data?.user;
@@ -689,6 +691,12 @@ export default function Users() {
       .catch((err) => {
         setCsvLoad(false);
       });
+    }
+    else {
+      setCsvData(selectedId);
+      setsuccessFetched(true);
+      setCsvLoad(false);
+    }
   };
   const [csvLength, setCsvLength] = useState("XX");
   const [students, setStudents] = useState([]);

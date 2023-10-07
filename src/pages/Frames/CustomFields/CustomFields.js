@@ -77,12 +77,28 @@ export default function CustomFields({
   console.log("customFields", customFields);
   return (
     <div>
-      <div className="w-full flex flex-col gap-y-6 max-w-[300px] mb-4">
+      <div className="w-full flex flex-col gap-y-6 max-w-full mb-4">
         {customFields.map((item) => {
           return (
             <div key={item._id}>
-              {item.dataType === "String" ? (
+              {item.dataType === "Paragraph" ? (
                 <InputField
+                  label={item.name}
+                  required={true}
+
+                  placeholder={item.name}
+                  biggerText={true}
+                  labelClassname={"!text-base-17-5 text-[#26435F] !font-medium"}
+                  parentClassName="w-full"
+                  inputClassName="bg-transparent !text-sm !px-2 !py-3 !ml-[-20px] border rounded-[5px] border-[#D0D5DD]"
+                  type="text"
+                  value={item.value}
+                  onChange={(e) =>
+                    handleParagraphChange(item._id, e.target.value)
+                  }
+                />
+              ) : item.dataType === "Dropdown" ? (
+                <InputSelect
                   label={item.name}
                   required={true}
                   placeholder={item.name}
@@ -92,12 +108,12 @@ export default function CustomFields({
                   type="text"
                   value={item.value}
                   onChange={(e) =>
-                    handleParagraphChange(item._id, e.target.value)
+                    handleParagraphChange(item._id, e)
                   }
                 />
               ) : item.dataType === "Checkboxes" ? (
                 <div>
-                  <p className="text-md text-[#26435F] mb-3 font-semibold"> {item.name} </p>
+                  <p className="!text-base-17-5 text-[#26435F] mb-3 !font-medium"> {item.name} </p>
                   <div className="flex flex-row flex-wrap gap-y-4 gap-x-4">
                     {item.Values?.map((option) => {
                       let checked = false;
@@ -127,23 +143,23 @@ export default function CustomFields({
         })}
       </div>
       <div className="flex justify-between items-center mt-16">
-        
-          <SecondaryButton
-            children="Go Back"
+
+        <SecondaryButton
+          children="Go Back"
           className=" mr-6 bg-white text-[#a3aDC7] border-[1.5px] border-[#D0D5DD] w-[7.6042vw] h-[53px] text-[0.9719vw] font-medium"
-            onClick={handleBack}
-          />
-       
-         <PrimaryButton
-        children="Submit"
+          onClick={handleBack}
+        />
+
+        <PrimaryButton
+          children="Submit"
           className={`l bg-[#FFA28D] text-center items-center justify-center disabled:opacity-60 w-[7.6042vw]  rounded text-white text-[0.9719vw] font-medium relative h-[53px]`}
-         
-        
-        onClick={() => handleSignup()}
-      />
-      
+
+
+          onClick={() => handleSignup()}
+        />
+
       </div>
-     
+
     </div>
   );
 }

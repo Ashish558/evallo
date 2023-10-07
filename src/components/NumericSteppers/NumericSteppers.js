@@ -9,7 +9,7 @@ export default function NumericSteppers({
   customFields,
   className,
 }) {
-  console.log({currentStep})
+  console.log({currentStep,totalSteps})
 
   return (
     <div
@@ -23,7 +23,7 @@ export default function NumericSteppers({
         customFieldsPresents ? (
           ""
         ) : (
-          <div key={i} className="flex flex-col justify-center items-center">
+          <div key={i} className={`flex  flex-col justify-center items-center ${totalSteps===4?"!w-[200px]":""}`}>
             <button
               key={i}
               className={`w-[36px] relative z-[5000] lg:block  h-[36px] bg-primary border rounded-full  font-medium

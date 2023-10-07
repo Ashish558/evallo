@@ -318,6 +318,12 @@ export default function UserSignup() {
   }, [values]);
   const [emailExistLoad, setEmailExistLoad] = useState(false);
   const handleClick = async () => {
+    let f=/[a-z]/i.test(values?.firstName)
+   f=f&& /[a-z]/i.test(values?.lastName)
+    if(!f){
+      alert("Enter a valid name!")
+      return
+    }
     const emailAlreadyExists = async () => {
       let checked = false;
       if (isAddedByAdmin) {
@@ -372,7 +378,7 @@ export default function UserSignup() {
     let updatedCustomfields = customFields?.map((item) => {
       return {
         _id: item._id,
-        dataType: item.dataType,
+        dataType: "String",
         name: item.name,
         Values: item.value,
       };
@@ -592,12 +598,12 @@ export default function UserSignup() {
                       label="First Name"
                       value={values.firstName}
                       onChange={(e) => {
-                        const alphabeticOnly = e.target.value.replace(
-                          /[^a-zA-Z]/g,
-                          ""
-                        );
-                        e.target.value = alphabeticOnly;
-                        e.target.value=e.target.value.charAt(0).toUpperCase() + e.target.value.slice(1);
+                        // const alphabeticOnly = e.target.value.replace(
+                        //   /[^a-zA-Z]/g,
+                        //   ""
+                        // );
+                        // e.target.value = alphabeticOnly;
+                        // e.target.value=e.target.value.charAt(0).toUpperCase() + e.target.value.slice(1);
                      
                         setValues({
                           ...values,
@@ -615,13 +621,14 @@ export default function UserSignup() {
                       label="Last Name"
                       value={values.lastName}
                       onChange={(e) => {
-                        const alphabeticOnly = e.target.value.replace(
-                          /[^a-zA-Z]/g,
-                          ""
-                        );
-                        e.target.value = alphabeticOnly;
-                        e.target.value=e.target.value.charAt(0).toUpperCase() + e.target.value.slice(1);
-                        setValues({
+
+                        // const alphabeticOnly = e.target.value.replace(
+                        //   /[^a-zA-Z]/g,
+                        //   ""
+                        // );
+                        // e.target.value = alphabeticOnly;
+                        // e.target.value=e.target.value.charAt(0).toUpperCase() + e.target.value.slice(1);
+                         setValues({
                           ...values,
                           lastName: e.target.value,
                         });
@@ -654,6 +661,7 @@ export default function UserSignup() {
                       inputClassName="  bg-transparent text-400 text-base-17-5"
                       labelClassname="mb-1 text-[#26435F]  !font-medium text-[#26435F]"
                       label="Phone"
+                      codeClassName="!min-w-[40px] "
                       value={values.phone}
                       codeValue={values.phoneCode}
                       handleCodeChange={(e) =>
