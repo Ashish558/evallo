@@ -196,7 +196,7 @@ export default function Calendar() {
         let updatedDate = new Date(
           new Date(
             startDate.toLocaleString("en-US", {
-              timeZone: session.timeZone,
+              timeZone: session.timeZone === "AKST" ? "America/Anchorage" : session.timeZone,
             })
           )
         );
@@ -687,7 +687,7 @@ export default function Calendar() {
         setEventModalActive(true);
       }
     
-    arg.preventDefault()
+    // arg.preventDefault()
     // //////console.log(arg)
     // setEvents([...events, {
     //    id: 2,
@@ -1125,7 +1125,7 @@ export default function Calendar() {
     }));
   };
 
-  console.log('insightData-----', insightData);
+  // console.log('insightData-----', insightData);
   //console.log('eventDetails',colorMapping,insightData,userDetail,associatedStudents);
   const navigate = useNavigate()
   return (

@@ -774,7 +774,7 @@ console.log("data",data,tutor)
 
             body={
                <div  >
-                  <div className="h-[58.61vh] 2xl:max-h-[633px] overflow-y-auto">
+                  <div className="h-[58.61vh] 2xl:h-[44.60vh] 2xl:max-h-[633px] overflow-y-auto">
                      <div className="pr-4">
                         <SearchNames setStudent={setStudent}
                            setData={setData} student={student} tutor={tutor} data={data}
