@@ -62,10 +62,10 @@ export default function NumericSteppers({
             </button>
 
             <p
-              className={`flex justify-center !tracking-wider  before:hidden items-center mt-2 mb-2 text-center text-[15px] font-semibold  
+                className={`flex justify-center !tracking-wider  before:hidden items-center mt-2 mb-2 text-center text-[0.9688vw] font-medium  
             ${i + 1 < parseInt(currentStep) ? "text-[#FFA28D]" : ""} 
              ${i + 1 === parseInt(currentStep) ? " text-[#24A3D9]  " : ""} 
-             ${i + 1 > parseInt(currentStep) ? "opacity-60  text-gray-400" : ""}
+             ${i + 1 > parseInt(currentStep) ? "opacity-60  text-[#26435F]" : ""}
              ${i + 1 === parseInt(currentStep) ? "text-[#24A3D9]  " : ""} 
              `}
             >

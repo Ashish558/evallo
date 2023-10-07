@@ -77,7 +77,7 @@ export default function CustomFields({
   console.log("customFields", customFields);
   return (
     <div>
-      <div className="w-full flex flex-col gap-y-6 max-w-[300px] mb-4">
+      <div className="w-full flex flex-col gap-y-6 max-w-full mb-4">
         {customFields.map((item) => {
           return (
             <div key={item._id}>
@@ -88,9 +88,9 @@ export default function CustomFields({
 
                   placeholder={item.name}
                   biggerText={true}
-                  labelClassname={"!text-[16px] text-[#26435F] font-semibold"}
+                  labelClassname={"!text-base-17-5 text-[#26435F] !font-medium"}
                   parentClassName="w-full"
-                  inputClassName="bg-transparent !text-sm !p-2 !ml-[-20px] border rounded-[5px] border-[#D0D5DD]"
+                  inputClassName="bg-transparent !text-sm !px-2 !py-3 !ml-[-20px] border rounded-[5px] border-[#D0D5DD]"
                   type="text"
                   value={item.value}
                   onChange={(e) =>
@@ -111,9 +111,9 @@ export default function CustomFields({
                     handleParagraphChange(item._id, e)
                   }
                 />
-              ): item.dataType === "Checkboxes" ? (
+              ) : item.dataType === "Checkboxes" ? (
                 <div>
-                  <p className="text-md text-[#26435F] mb-3 font-semibold"> {item.name} </p>
+                  <p className="!text-base-17-5 text-[#26435F] mb-3 !font-medium"> {item.name} </p>
                   <div className="flex flex-row flex-wrap gap-y-4 gap-x-4">
                     {item.Values?.map((option) => {
                       let checked = false;
@@ -143,23 +143,23 @@ export default function CustomFields({
         })}
       </div>
       <div className="flex justify-between items-center mt-16">
-        
-          <SecondaryButton
-            children="Go Back"
-            className="text-sm mr-6 bg-white text-[#a3aDC7] border-[1.5px] border-[#D0D5DD] "
-            onClick={handleBack}
-          />
-       
-         <PrimaryButton
-        children="Signup"
-        className={`w-full bg-[#FFA28D] text-center items-center justify-center disabled:opacity-60 max-w-[110px]  rounded text-white text-sm font-medium relative `}
-         
-        
-        onClick={() => handleSignup()}
-      />
-      
+
+        <SecondaryButton
+          children="Go Back"
+          className=" mr-6 bg-white text-[#a3aDC7] border-[1.5px] border-[#D0D5DD] w-[7.6042vw] h-[53px] text-[0.9719vw] font-medium"
+          onClick={handleBack}
+        />
+
+        <PrimaryButton
+          children="Submit"
+          className={`l bg-[#FFA28D] text-center items-center justify-center disabled:opacity-60 w-[7.6042vw]  rounded text-white text-[0.9719vw] font-medium relative h-[53px]`}
+
+
+          onClick={() => handleSignup()}
+        />
+
       </div>
-     
+
     </div>
   );
 }

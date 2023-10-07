@@ -1,5 +1,5 @@
 thead tr th .marker::after {
-  content: url("../../assets/images/arrow-down.svg");
+  content: url("../../assets/icons/table_dropdown.svg");
   display: inline-block;
   width: 25px;
   height: 25px;

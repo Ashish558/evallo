@@ -103,7 +103,7 @@ export default function SetPassword({
            
             <div className={`w-full bg-white py-4 ${signup ? "" : "px-5"} `}>
               
-              <p className="mb-8 text-center text-black-900 text-[#26435F]">
+          <p className="mb-8 text-center text-[0.9688vw] text-[#26435F]">
               Congratulations! Your email has been verified. Now,
 please set a strong password for your Evallo account.
               </p>
@@ -117,7 +117,7 @@ please set a strong password for your Evallo account.
                   inputContainerClassName="border border-[0.98px_solid_#D0D5DD]"
                   inputClassName={"py-[2px]"}
                   label="Set New Password"
-                  labelClassname="ml-2 mb-2 text-[#26435F]"
+              labelClassname="  text-[#26435F] text-[0.9688vw] !font-medium"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   error={error.password}
@@ -132,13 +132,13 @@ please set a strong password for your Evallo account.
                   placeholder="Confirm Password"
                   inputContainerClassName="border border-[0.98px_solid_#D0D5DD]"
                   label="Confirm Password"
-                  labelClassname="ml-2 mb-2 text-[#26435F]"
+              labelClassname="  text-[#26435F] text-[0.9688vw] !font-medium"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   error={error.confirmPassword}
                 />
               </div>
-              <div className="flex justify-center items-center  text-[#7C98B6] text-xs">
+          <div className="flex justify-center items-center  text-[#7C98B6] text-[0.8333vw] font-light">
                 Note: The password should contain a minimum of 8 characters.
               </div>
 
@@ -147,7 +147,7 @@ please set a strong password for your Evallo account.
                 onClick={handleSubmit}
                 loading={loading}
                 children={"Set New Password"}
-                className="w-[300px] mx-auto mt-10"
+            className="!w-[17.5521vw] mx-auto mt-[50px] text-base-17-5 h-[50px] text-[#fff] !font-medium"
               />
               {/* <button
                         className={`w-full relative bg-primaryDark font-medium disabled:bg-pink pt-3 pb-3 mt-12 rounded-10 text-white text-lg  ${loading ? 'cursor-wait opacity-60' : 'cursor-pointer'}`}

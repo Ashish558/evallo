@@ -130,14 +130,16 @@ const RangeDate = ({ removeUnderline,handleRangeData ,optionClassName,className,
 
       <InputSelect
         placeholder="Select"
-        valueClassName={`${removeUnderline?"":"font-medium border-b border-b-[#FFA28D]"} `}
+        valueClassName={`${removeUnderline ? "" :"font-normal border-b border-b-[#FFA28D]"} `}
         parentClassName="border-none text-xs text-[#26435F] w-fit relative z-[500] !text-[calc(17*0.050vw)]"
         labelClassname="text-sm !text-[calc(17*0.050vw)]"
-        inputContainerClassName={`border-none  !text-[calc(17*0.050vw)] whitespace-nowrap font-semibold text-[#FFA28D] ${inputContainerClassName}  ${styles["text"]}`}
+        inputContainerClassName={`border-none  !text-[calc(17*0.050vw)] whitespace-nowrap font-normal text-[#FFA28D] ${inputContainerClassName}  ${styles["text"]}`}
         inputClassName={`border-none w-fit bg-transparent font-semibold text-[#FFA28D] !text-[calc(17*0.050vw)]`}
         value={formattedDateRange}
         optionListClassName="text-[#517CA8] underline underline-offset-2"
         optionClassName={`${optionClassName} relative !text-[calc(17*0.050vw)]`}
+        optionContainerClassName="!rounded-5  border-[#FFA28D] border-[1px] py-2"
+        optionPadding="!py-1"
         optionData={[
           { name: "Lifetime", days:1000 },
           { name: "Last 7 Days", days: 7 },
@@ -162,7 +164,7 @@ const RangeDate = ({ removeUnderline,handleRangeData ,optionClassName,className,
               <input
                 type="date"
                 name="sdate"
-                className="rounded-md  p-1 text-[#FFA28D]"
+                  className="rounded-md  p-1 text-[#FFA28D] py-1 px-[26px]"
                 value={selectDate.sDate}
                 max={selectDate.eDate}
                 onChange={(e) => handleLocalDate(e.target.value, "sDate")}
@@ -174,7 +176,7 @@ const RangeDate = ({ removeUnderline,handleRangeData ,optionClassName,className,
                 type="date"
                 min={selectDate.sDate}
                 name="edate"
-                className="rounded-md  text-[#FFA28D] p-1 w-[120px]"
+                  className="rounded-md  text-[#FFA28D] py-1 px-[26px]"
                 value={selectDate.eDate}
                 placeholder="Start Date"
                 onChange={(e) => handleLocalDate(e.target.value, "eDate")}

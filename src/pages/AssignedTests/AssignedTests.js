@@ -858,11 +858,11 @@ console.log({selectedId})
                 />
                 <InputSearch
                 IconRight={SearchIcon}
-                placeholderClass="text-base-17-5"
+                  placeholderClass="text-base-17-5 text-[#667085]"
               
                 optionListClassName="text-base-17-5 text-[#667085]"
-                inputClassName="text-base-17-5 !py-3"
-                inputContainerClassName=" !py-3 shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white  h-[50px]"
+                  inputClassName="text-base-17-5 !py-3 text-[#667085]"
+                  inputContainerClassName=" !py-3 shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white  h-[50px] text-[#667085]"
                 placeholder="Search Assignment"
                 parentClassName="w-[23.75vw] -mt-[18px] text-base-17-5 text-[#667085] h-[50px]"
                 type="select"
@@ -964,16 +964,16 @@ console.log({selectedId})
           </div>
           {
             (persona==="admin"|| (persona==="tutor" && organization?.settings?.permissions && organization?.settings?.permissions[0]?.choosedValue))&&
-                  <div  onClick={()=>selectedId?.length>0 &&setDeleteBulkModalActive(true)} className="gap-x-[5px] cursor-pointer px-4 py-[9px] bg-[#FFF] rounded-5 ml-6 flex items-center">
+                    <div onClick={() => selectedId?.length > 0 && setDeleteBulkModalActive(true)} className="gap-x-[5px] cursor-pointer px-1 w-[5.9375vw] py-[9px] bg-[#FFF] rounded-5 ml-6 flex items-center justify-center text-base-17-5">
                     <p >Delete</p>
                     <p ><img className="w-5 h-5" src={DeleteIcon} alt="" /></p>
                   </div>
 }
-                  <div onClick={()=>selectedId?.length>0 &&setResendBulkModalActive(true)}  className="cursor-pointer gap-x-[5px] px-4 py-[11px] bg-[#FFF] rounded-5 ml-6 flex">
+                  <div onClick={() => selectedId?.length > 0 && setResendBulkModalActive(true)} className="cursor-pointer gap-x-[5px] px-1 py-[11px] bg-[#FFF] rounded-5 ml-6 flex w-[5.9375vw] items-center justify-center text-base-17-5">
                     <p >Resend</p>
                     <img src={ResendIcon} alt="" />
                   </div>
-                  <div onClick={()=>selectedId?.length>0 &&setMarkBulkModalActive(true)}  className="px-4 py-[11px] cursor-pointer bg-[#FFF] rounded-5 ml-6">
+                  <div onClick={() => selectedId?.length > 0 && setMarkBulkModalActive(true)} className="px-1 py-[11px] cursor-pointer bg-[#FFF] rounded-5 ml-6 w-[8.9583vw] text-center">
                     <p>Mark Completed</p>
                   </div>
                 </div>

@@ -42,7 +42,7 @@ export default function Pagination({
         )}
         {currentPage + 1 <= totalPages ? (
           <div
-            className="p-1 cursor-pointer mt-2 scale-150 text-[#B7C2CB] text-[12.5px]"
+            className="p-1 cursor-pointer mt-2  text-[#B7C2CB]"
             onClick={() => handleClick(currentPage + 1)}
           >
             <img src={dots} alt="pagination dots" />

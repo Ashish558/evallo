@@ -64,9 +64,9 @@ export default function FilterItems({
           <div
             key={idx}
             className={`mr-3 ${className ? className : ""
-              } bg-primaryLight py-1 px-3 rounded-7 group ${styles.filterItem}`}
+              } bg-[rgba(38,67,95,0.50)] py-1 px-3 rounded-7 group ${styles.filterItem}`}
           >
-            <p className="text-lightGray text-[16px]">
+              <p className="text-[rgba(255,255,255,1)] text-[15px]">
               {isString ? singleItem : singleItem.text}
             </p>
             <img
