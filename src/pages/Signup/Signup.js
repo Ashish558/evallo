@@ -458,6 +458,12 @@ export default function Signup() {
   }
 const [emailExistLoad,setEmailExistLoad]=useState(false)
   const handleClick = () => {
+   let f=/[a-z]/i.test(values?.firstName)
+   f=f&& /[a-z]/i.test(values?.lastName)
+    if(!f){
+      alert("Enter a valid name!")
+      return
+    }
     const emailAlreadyExists = async () => {
         setEmailExistLoad(true)
         let cc=0;
@@ -629,10 +635,10 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
           ) : (
             <></>
           )}
-          <div className="flex lg:items-center relative bg-white rounded-md py-4 px-5 md:px-[48px] lg:w-[650px]">
+          <div className={`flex lg:items-center relative bg-white rounded-md py-4 px-5 md:px-[48px] lg:w-[650px] ${frames?.signupSuccessful?"lg:!w-[900px]":""}`}>
             <div className="w-full py-4 ">
               {currentStep > 0 && (
-                <NumericSteppers className={"px-2 flex-1"} fieldNames={["Personal Info" ,"Org Details","Further Details","Requirements"]} totalSteps={4} currentStep={currentStep}
+                <NumericSteppers className={"px-2 !w-[545px] !mx-auto flex-1"} fieldNames={["Personal Info" ,"Org Details","Further Details","Requirements"]} totalSteps={4} currentStep={currentStep}
                 
                 />
               )}
@@ -712,7 +718,7 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
                       label="Phone"
                       value={values.phone}
                       codeValue={values.phoneCode}
-                      
+                      codeClassName="!min-w-[36px] "
                       handleCodeChange={(e) =>
                         setValues({
                           ...values,
@@ -829,6 +835,7 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
                     <div className="flex items-center">
                    
                     <SCheckbox checked={isChecked}
+                    stopM={true}
                       uncheckColor={"bg-[#9CA3AF]"}
                       onChange={handleCheckboxChange1}
                     />

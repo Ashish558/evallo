@@ -171,7 +171,7 @@ export default function SetPassword({
                 onClick={handleSubmit}
                 loading={loading}
                 children={"Set New Password"}
-                className="w-[300px] mt-6 py-3"
+                className="w-[300px] !text-white mt-6 py-3"
               />
               {/* <button
                         className={`w-full relative bg-primaryDark font-medium disabled:bg-pink pt-3 pb-3 mt-12 rounded-10 text-white text-lg  ${loading ? 'cursor-wait opacity-60' : 'cursor-pointer'}`}

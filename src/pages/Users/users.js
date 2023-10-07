@@ -633,7 +633,8 @@ export default function Users() {
     if (!settings.servicesAndSpecialization) return;
     let specs = [];
     settings.servicesAndSpecialization.map((service) => {
-      specs.push(...service.specialization);
+     // specs.push(...service.specialization);
+     specs.push(service.service)
     });
     setSpecializations(specs);
     //console.log("specs", specs);
