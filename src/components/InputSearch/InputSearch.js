@@ -20,6 +20,7 @@ export default function InputSearch({
    right,
    required,
    optionData,
+   optionClassName,
    onOptionClick,
    optionPrefix,
    checkbox,
@@ -73,7 +74,7 @@ export default function InputSearch({
             {right && right}
 
             {optionsVisible &&
-               <div className={`${styles.options} custom-scroller scrollbar-vertical shadow-xl rounded-t-none`}>
+               <div className={`${styles.options} custom-scroller scrollbar-vertical shadow-xl rounded-t-none ${optionClassName}`}>
                   {optionData?.map((option, idx) => {
 
                      return (

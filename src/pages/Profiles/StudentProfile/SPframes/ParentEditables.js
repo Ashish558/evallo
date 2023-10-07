@@ -3,7 +3,7 @@ import { useLazyGetParentsByNameQuery } from "../../../../app/services/admin";
 import { useLazyGetStudentsByNameQuery } from "../../../../app/services/session";
 import ProfilePhoto from "./ProfilePhoto";
 import caution from "../../../../assets/icons/octicon_stop-16.svg";
-
+import down from "../../../../assets/YIcons/Group33.svg";
 import {
   useUpdateTutorDetailsMutation,
   useUpdateUserDetailsMutation,
@@ -740,7 +740,7 @@ export default function ParentEditables({
                 {console.log({user})}
                 {/* {currentField.fields && currentField.fields} */}
                 {currentField.name === "frame0" && (
-                  <div className="flex flex-col px-2 it">
+                  <div className="flex flex-col px-2 max-h-[60vh]">
                     <div className="flex gap-3 items-center">
                       <div className="!w-[140px]">
                         <ProfilePhoto
@@ -893,7 +893,7 @@ export default function ParentEditables({
                         </p>
                         <textarea
                           rows="3"
-                          className="mt-1 block w-full h-[100px] resize-none focus:!ring-blue-500 p-2 focus:!border-blue-500 placeholder-[#CBD6E2] text-sm  placeholder:text-xs border border-[0.917px_solid_#D0D5DD] rounded-[6px]
+                          className="mt-1 block w-full h-[60px] resize-none focus:!ring-blue-500 p-2 focus:!border-blue-500 placeholder-[#CBD6E2] text-sm  placeholder:text-xs border border-[0.917px_solid_#D0D5DD] rounded-[6px]
                 "
                           value={currentToEdit.about}
                           onChange={(e) => {
@@ -905,6 +905,40 @@ export default function ParentEditables({
                           placeholder=""
                         ></textarea>
                       </div>
+                      {persona==="admin"&&
+                      <div >
+                         <div id="borderDashed2" className="h-[2px] w-[100%] mt-6 mx-auto my-4"> 
+                        </div>
+                        
+ <InputSearch
+                     right={<img className="w-5 h-4" alt="drop" src={down} />}
+                     labelClassname="text-[#26435F] mb-1 text-sm"
+                     label="Associated Parent"
+                     placeholder="Select Associated Parent"
+                    parentClassName="w-full  mb-10"
+                    inputContainerClassName="bg-[#F3F5F7] border-0 pt-3.5 pb-3.5"
+                    inputClassName="bg-[#F3F5F7]"
+                    type="text"
+                    optionClassName="h-[60px] 2xl:h-[100px]  design:h-[200px]"
+                    optionPrefix="s"
+                    value={parent}
+                    onChange={(e) => setParent(e.target.value)}
+                    optionData={parents}
+                    onOptionClick={(val) => {
+                      console.log({currentToEdit,val})
+                      // setStudent(item.value);
+                      setParent(val?.fname+" "+val?.lname)
+                      setCurrentToEdit({
+                        ...currentToEdit,
+                        associatedParent: val._id,
+                      
+                      });
+                      // setCurrentToEdit({ ...currentToEdit, students: [... item._id] });
+                    }}
+                  />
+                        </div>
+                      
+                      }
                     </div>
                   </div>
                 )}

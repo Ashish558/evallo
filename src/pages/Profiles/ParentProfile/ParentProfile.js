@@ -120,7 +120,8 @@ export default function StudentProfile({ isOwn }) {
       email: "",
       phone: "",
       alternateEmail:"",
-
+      assiginedStudents: [],
+      studentsData: [],
       phoneCode: "",
     },
     frame1: {
@@ -154,6 +155,7 @@ export default function StudentProfile({ isOwn }) {
       active: false,
       leadStatus: "",
     },
+    
     associatedStudents: {
       active: false,
       assiginedStudents: [],
@@ -369,6 +371,7 @@ const [toEdit, setToEdit] = useState({
       assiginedStudents !== undefined &&
         assiginedStudents.map((student,idx) => {
           getUserDetail({ id: student }).then((res) => {
+            if(res?.error)return 
            console.log({[id]:res})
             studentsData.push({
               _id: res.data.data.user._id,
@@ -378,8 +381,8 @@ const [toEdit, setToEdit] = useState({
               email: res.data.data.user.email ? res.data.data.user.email : null,
               service: res.data.data.userdetails.service ? res.data.data.userdetails.service : [],
             });
-            if(idx===user?.assiginedStudents?.length-1)
-            setAssociatedStudents(studentsData);
+           
+            setAssociatedStudents([...studentsData]);
           });
          
         });
@@ -419,6 +422,7 @@ const [toEdit, setToEdit] = useState({
                   ...prev.frame0.schoolName,
                   schoolName,
                   about,
+                //  assiginedStudents:studentsData?.map(student => student?._id)
                 },
                 frame1: {
                   ...prev.frame1,
@@ -463,7 +467,18 @@ const [toEdit, setToEdit] = useState({
   useEffect(() => {
     fetchDetails();
   }, [params.id]);
-
+useEffect(() => {
+  if(associatedStudents?.length>0)
+  setToEdit((prev)=>{
+    return {
+      ...prev,
+      frame0:{
+        ...prev.frame0,
+        assiginedStudents:associatedStudents?.map(it=>it?._id)
+      }
+    }
+  })
+},[associatedStudents])
   useEffect(() => {
     fetchSettings().then((res) => {
       if (res.error) {
