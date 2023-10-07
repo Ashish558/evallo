@@ -81,8 +81,24 @@ export default function CustomFields({
         {customFields.map((item) => {
           return (
             <div key={item._id}>
-              {item.dataType === "String" ? (
+              {item.dataType === "Paragraph" ? (
                 <InputField
+                  label={item.name}
+                  required={true}
+
+                  placeholder={item.name}
+                  biggerText={true}
+                  labelClassname={"!text-[16px] text-[#26435F] font-semibold"}
+                  parentClassName="w-full"
+                  inputClassName="bg-transparent !text-sm !p-2 !ml-[-20px] border rounded-[5px] border-[#D0D5DD]"
+                  type="text"
+                  value={item.value}
+                  onChange={(e) =>
+                    handleParagraphChange(item._id, e.target.value)
+                  }
+                />
+              ) : item.dataType === "Dropdown" ? (
+                <InputSelect
                   label={item.name}
                   required={true}
                   placeholder={item.name}
@@ -92,10 +108,10 @@ export default function CustomFields({
                   type="text"
                   value={item.value}
                   onChange={(e) =>
-                    handleParagraphChange(item._id, e.target.value)
+                    handleParagraphChange(item._id, e)
                   }
                 />
-              ) : item.dataType === "Checkboxes" ? (
+              ): item.dataType === "Checkboxes" ? (
                 <div>
                   <p className="text-md text-[#26435F] mb-3 font-semibold"> {item.name} </p>
                   <div className="flex flex-row flex-wrap gap-y-4 gap-x-4">
