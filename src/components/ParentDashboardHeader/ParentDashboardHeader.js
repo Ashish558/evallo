@@ -217,7 +217,7 @@ const ParentDashboardHeader = ({ selectedStudent, setSelectedStudent }) => {
                   disabled={amountToPay === 0}
                   onClick={handlePay}
                 >
-                  {amountToPay !== 0 ? (
+                  {amountToPay !== 0&&false ? (
                     <>Pay Now: $ {amountToPay}</>
                   ) : (
                     <>Coming Soon</>

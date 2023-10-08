@@ -289,7 +289,7 @@ const CompanyAndBround = () => {
                 labelClassname="mb-1 text-sm !font-bold"
                 inputClassName="bg-transparent"
                 label="Company Type"
-                value={values.companyType}
+                value={values?.companyType?.length<26?values.companyType:values.companyType?.slice(0,25)+"..."}
                 optionData={companyType}
                 onChange={(e) =>
                   setValues({
@@ -345,7 +345,7 @@ const CompanyAndBround = () => {
                   inputContainerClassName=" shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-white h-[42px] "
                   inputClassName="bg-transparent"
                   label="State / Region "
-                  value={values.state}
+                  value={values?.state?.length<20?values.state:values.state?.slice(0,20)+"..."}
                   optionData={states}
                   optionType={"object"}
                   onChange={(e) =>
@@ -377,7 +377,7 @@ const CompanyAndBround = () => {
                 <InputField
                   placeholder=""
                   parentClassName="text-xs text-[#26435F] w-[14.3229vw] pt-1 w-[15.3229vw]"
-                  inputContainerClassName=" shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-white !font-bold"
+                  inputContainerClassName=" shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-white "
                   inputClassName="text-base-17-5 bg-transparent "
                   labelClassname={"mb-1"}
                   label="Zip Code"
