@@ -171,7 +171,7 @@ export default function Calendar() {
     // //////console.log(url)
     fetchUserSessions(url).then((res) => {
       if (!res?.data?.data) return;
-      console.log('response---', res.data);
+      // console.log('response---', res.data);
       const tempEvents = res.data.data.session.map((session) => {
         const time = session.time;
         const strtTime12HFormat = `${time.start.time} ${time.start.timeType}`;
@@ -551,9 +551,9 @@ export default function Calendar() {
     if (timeZone == 'US/Pacific')
       setnewTimeZone('PST')
   }, [timeZone])
+
   const getDayHeaders = (arg) => {
     let text = arg.text.split(" ");
-
     return (
       <div
         className={`p-[10px] rounded-7 ${arg.isToday ? "bg-primary border" : ""
@@ -597,8 +597,8 @@ export default function Calendar() {
     const calendarAPI = calendarRef?.current?.getApi();
     calendarAPI?.next();
   };
-  const eventContent = (arg) => {
 
+  const eventContent = (arg) => {
     const description = arg.event._def.extendedProps.description;
 
     let isCompleted = false;
@@ -607,7 +607,7 @@ export default function Calendar() {
     if (arg.event._def.extendedProps.sessionStatus === "Completed") {
       isCompleted = true;
     }
- console.log("event cards details",arg.event._def,arg.event._def.extendedProps)
+    // console.log("event cards details", arg)
 
     const textclasses = {
       Completed: "!bg-[#38C980] ",
@@ -651,8 +651,11 @@ export default function Calendar() {
               } `}
           >
             {" "}
-            {/* {arg.event._def.title}{" "} */}
-            {service + " - " + topic}
+            {
+
+            }
+            {arg.event._def.title}{" "}
+            {/* {service + " - " + topic} */}
           </p>
           {/* <p className='text-black opacity-60 text-xs'> {arg.timeText} </p> */}
           <p className="text-[#26435F] opacity-60 text-xs text-base-15">
@@ -682,9 +685,10 @@ export default function Calendar() {
         date: arg.date,
         tutorId: currentUserId,
         tutorName: `${firstName} ${lastName}`,
+        timeZone
       });
     } else {
-      setDefaultEventData({ date: arg.date });
+      setDefaultEventData({ date: arg.date, timeZone });
     }
     if (persona === "admin" || persona === "tutor") {
       setEventModalActive(true);
@@ -719,13 +723,14 @@ export default function Calendar() {
     // }])
   };
   const [studentName, setStudentNames] = useState([]);
+
   const handleInsights = (name, role, item) => {
     getCalenderInsight({ name:name, id: item._id }).then((res) => {
       setColorMapping({})
       if (res.error) {
         return console.log('insight err', res.error);
       }
-      console.log("insights response----", res.data.tutorSessionDetails);
+      // console.log("insights response----", res.data.tutorSessionDetails);
       if (res?.data?.tutorSessionDetails) {
         let arr = [];
         if (res?.data?.tutorSessionDetails) {
@@ -763,6 +768,7 @@ export default function Calendar() {
         });
     });
   };
+
   useEffect(() => {
     if (userDetail) {
       handleInsights(userDetail?.firstName + " " + userDetail?.lastName, persona, { _id: userDetail?.id })
@@ -1131,7 +1137,7 @@ export default function Calendar() {
     }));
   };
 
-  console.log('events-----', events);
+  // console.log('events-----', events);
   //console.log('eventDetails',colorMapping,insightData,userDetail,associatedStudents);
   const navigate = useNavigate()
   return (
@@ -1614,7 +1620,7 @@ export default function Calendar() {
                 weekday: 'long',
                 day: "numeric"
               }}
-              // dayHeaderContent={getDayHeaders}
+              dayHeaderContent={getDayHeaders}
               selectable={true}
               //select={handleDateClick}
               dateClick={handleDateClick}
