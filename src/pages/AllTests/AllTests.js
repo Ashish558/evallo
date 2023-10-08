@@ -5,11 +5,11 @@ import Modal from "../../components/Modal/Modal";
 import InputField from "../../components/InputField/inputField";
 
 import AddIcon from "../../assets/icons/plus.svg";
-import SearchIcon from "../../assets/icons/search.svg";
+import SearchIcon from "../../assets/icons/Search_shade.svg";
 import styles from "./style.module.css";
-import check from "../../assets/icons/Group 31477.svg";
+import check from "../../assets/icons/checked 1.svg";
 import data from "./tempData";
-import upload from "./../../assets/icons/upload.png";
+import upload from "./../../assets/icons/upload_icon.svg";
 import Papa from "papaparse";
 import axios from "axios";
 import { useAddPdfMutation, useAddTestMutation } from "../../app/services/test";
@@ -20,7 +20,7 @@ import { useSelector } from "react-redux";
 import { json, useNavigate } from "react-router-dom";
 
 const optionData = ["option 1", "option 2", "option 3", "option 4", "option 5"];
-const testTypeOptions = ["DSAT","SAT", "Other"];
+const testTypeOptions = ["DSAT", "SAT", "Other"];
 
 const initialState = {
   testName: "",
@@ -311,42 +311,43 @@ console.log({testForDelete})
     const headers = getAuthHeader();
     axios
       .get(`${BASE_URL}api/test`, { headers })
-      .then((res) =>{
-        console.log('asdadasdasdasd',res.data.data.test);
-      let dataofque=res.data.data.test
-      let cutdata = dataofque.map((item) => ({
-        testId:item._id,
-        testtype:item.testType
-      }));
-      console.log(cutdata);
-      settesttype2(cutdata)
-      setTableData(res.data.data.test)});
+      .then((res) => {
+        console.log('asdadasdasdasd', res.data.data.test);
+        let dataofque = res.data.data.test
+        let cutdata = dataofque.map((item) => ({
+          testId: item._id,
+          testtype: item.testType
+        }));
+        console.log(cutdata);
+        settesttype2(cutdata)
+        setTableData(res.data.data.test)
+      });
   };
-  const navigate=useNavigate('/')
+  const navigate = useNavigate('/')
   useEffect(() => {
     fetchTests();
   }, []);
-  
-  useEffect(()=>{
-    console.log(testtype2);
-  },[testtype2])
 
-  if (persona === "parent" || persona === "student") return <StudentTest testtype={testtype2}/>;
+  useEffect(() => {
+    console.log(testtype2);
+  }, [testtype2])
+
+  if (persona === "parent" || persona === "student") return <StudentTest testtype={testtype2} />;
 
   return (
     <div className="w-[83.6989583333vw] mx-auto bg-lightWhite min-h-screen">
 
       <p className="text-[#24A3D9]  !mt-[calc(50*0.052vw)] !mb-[calc(25*0.052vw)] text-base-20">
-      <span onClick={()=>navigate('/')} className="cursor-pointer"> 
-         {organization?.company +
+        <span onClick={() => navigate('/')} className="cursor-pointer">
+          {organization?.company +
             "  >  " +
             firstName +
             "  " +
             lastName +
             "  >  "}
-          </span>
-          <span className="font-semibold">Content</span>
-        </p>
+        </span>
+        <span className="font-semibold">Content</span>
+      </p>
 
       <div className=" w-full">
         <div className="flex justify-between items-center">
@@ -364,7 +365,7 @@ console.log({testForDelete})
 
             placeholder="Search"
             parentClassName="w-290 mr-4"
-            inputClassName="placeholder:font-semibold pl-2 text-base-17-5"
+            inputClassName="placeholder:text-[#667085] pl-2 text-base-17-5"
             inputContainerClassName="bg-white border pt-3.5 pb-3.5 !rounded-lg"
             type="select"
           />
@@ -411,13 +412,13 @@ console.log({testForDelete})
             <div id={styles.handleFileUpload}>
               <div
                 id={styles.uploadButtons}
-                className="mt-7 ml-7 px-0  gap-2 flex justify-between"
+                className="mt-7  px-0  gap-5 flex justify-between"
               >
-                {modalData.testType!='DSAT'?<div id={styles.pdfUpload}>
+                {modalData.testType != 'DSAT' ? <div id={styles.pdfUpload}>
                   <label
                     htmlFor="pdf"
                     className={`${pdfFile !== null ? "bg-[#26435F] " : "bg-[#26435F] "
-                      } w-[160px]`}
+                      } w-[8.9vw] text-[0.8333vw] !font-medium`}
                   >
                     Upload PDF
                     <img src={upload} alt="Upload" />
@@ -432,7 +433,7 @@ console.log({testForDelete})
                   <div id={styles.filename}>
                     {pdfFile?.name || pdfFile?.name}
                   </div>
-                </div>:null}
+                </div> : null}
 
                 <div id={styles.csvUpload}>
                   <label
@@ -440,7 +441,7 @@ console.log({testForDelete})
                     className={`${csvFile !== null && styles.fileUploaded
                       ? "bg-[#26435F] "
                       : "bg-[#26435F] "
-                      } w-[200px]`}
+                      } w-[11vw] text-[0.8333vw] !font-medium`}
                   >
                     Upload Metadata
                     <img src={upload} alt="Upload" />
