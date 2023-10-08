@@ -92,7 +92,7 @@ export const permissionsStaticData = [
     name: "Allow multiple Admins? Enabling this will let you invite additional Admins.",
     permissionActionName: "multiAdmins",
     values: [true, false],
-    choosedValue: true,
+    choosedValue: false,
     _id: "64b6d117a74d84f6f1c871de",
   },
   {

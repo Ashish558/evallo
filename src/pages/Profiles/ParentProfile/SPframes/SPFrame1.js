@@ -264,7 +264,7 @@ return <></>
                 onClick={() =>
                   setToEdit({
                     ...toEdit,
-                    service: { ...toEdit.service,service:userDetail?.service?.map((it)=> it) , active: true },
+                    service: { ...toEdit.service,service:userDetail?.service?userDetail?.service?.map((it)=> it):[] , active: true },
                   })
                 }
                 text="Edit"

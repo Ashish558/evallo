@@ -305,6 +305,9 @@ export default function Settings() {
       if (organization?.settings?.permissions)
         setThePermission(organization.settings.permissions);
       
+         
+        
+      
     }
   };
   //console.log(organization);
