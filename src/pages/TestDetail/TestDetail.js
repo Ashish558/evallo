@@ -436,7 +436,7 @@ const [richTextContent, setRichTextContent] = useState("");
                            {testData.testName}
                         </p>
                            
-                           <div className="border w-full py-4 flex rounded shadow-lg justify-center items-center">
+                           <div className="border w-full py-4 flex rounded shadow-sm justify-center items-center">
                      <AllTestDetail testData={testData} />
                         </div>
                         </div>
@@ -445,7 +445,7 @@ const [richTextContent, setRichTextContent] = useState("");
                            Sections
                         </p>
 
-                        <div className="gap-y-1 w-full mx-4 border rounded p-4 shadow-lg mb-10">
+                        <div className="gap-y-1 w-full mx-4 border rounded p-4 shadow-sm mb-10">
                            <div className="mb-2 flex justify-between">
                               <p className="inline-block w-[170px] font-semibold opacity-60">
                                  {" "}
@@ -485,7 +485,7 @@ const [richTextContent, setRichTextContent] = useState("");
 
                      </div>
                   {testData.testType!='DSAT'?
-                  <div className="px-6 py-[2.5rem] flex  mx-2 mt-[3.8rem] w-1/4 justify-center border-gray-600 border-dashed border-[2px] items-center flex-col rounded shadow-lg">
+                  <div className="px-6 py-[2.5rem] flex  mx-2 mt-[3.8rem] w-1/4 justify-center border-gray-600 border-dashed border-[2px] items-center flex-col rounded shadow-sm">
                            
                         {
                            Object.keys(sectionsData).length > 1 &&
@@ -516,9 +516,9 @@ const [richTextContent, setRichTextContent] = useState("");
                            return (
                               <PrimaryButton
                                  children={item.name}
-                                 className={`py-2.5 px-0 text-xs mr-4 bg-transparent font-semibold w-fit ${item.selected
+                                 className={`py-2.5 px-0 text-[17.5px] mr-4 bg-transparent font-normal w-fit ${item.selected
                                     ? "text-[#FFA28D] border-b-[#FFA28D] border-b-[2px]"
-                                    : " text-textGray border-b-gray-300 border-b-[2px]"
+                                    : " text-[#26435F]"
                                     }`}
                                     roundedClass='rounded-none'
                                  onClick={() => handleSubjectChange(item._id)}
@@ -526,7 +526,7 @@ const [richTextContent, setRichTextContent] = useState("");
                            );
                         })}
                      </div> 
-                     <div className="bg-gray-300 absolute bottom-[0px] z-10 h-[2px] w-full"></div>
+                     <div className="bg-gray-300 absolute bottom-[-1px] z-10 h-[1px] w-full"></div>
 
                   </div>
                   <div className="flex justify-between mt-7">
