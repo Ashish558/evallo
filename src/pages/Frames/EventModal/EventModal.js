@@ -137,6 +137,10 @@ export default function EventModal({
       whiteboardLink: '',
       sessionTags: []
    });
+
+   console.log('defaultEventData---', defaultEventData);
+   console.log('isUpdating---', isUpdating);
+   console.log('data---', data);
    const [submitDisabled, setSubmitDisabled] = useState(false)
 
    const [days, setDays] = useState(tempDays);
@@ -228,7 +232,7 @@ export default function EventModal({
    useEffect(() => {
       if (defaultEventData !== null && !isUpdating) {
          // console.log(defaultEventData)
-         const { date, tutorId, tutorName } = defaultEventData
+         const { date, tutorId, tutorName, timeZone } = defaultEventData
          let formattedDate = date?.getDate()
          if (formattedDate < 10) {
             formattedDate = `0${formattedDate}`
@@ -249,6 +253,22 @@ export default function EventModal({
          let formattedEndTime = tConvert(`${endHours}:00`)
          if (endHours === 24) formattedEndTime = { time: "12:00", timeType: 'AM' }
 
+         let tz = ''
+         if(timeZone === 'Asia/Kolkata'){
+            tz = 'IST'
+         }else if(timeZone === 'US/Alaska'){
+            tz = 'AKST'
+         }else if(timeZone === 'US/Central'){
+            tz = 'CST'
+         }else if(timeZone === 'US/Eastern'){
+            tz = 'EST'
+         }else if(timeZone === 'US/Hawaii'){
+            tz = 'HST'
+         }else if(timeZone === 'US/Mountain'){
+            tz = 'MST'
+         }else if(timeZone === 'US/Pacific'){
+            tz = 'PST'
+         }
          setData((prev) => {
             return {
                ...prev,
@@ -264,6 +284,7 @@ export default function EventModal({
                      ...formattedEndTime
                   }
                },
+               timeZone: tz ? tz : ''
             }
 
          })
@@ -271,7 +292,7 @@ export default function EventModal({
          setTutor(tutorName ? tutorName : '')
 
       }
-   }, [defaultEventData])
+   }, [defaultEventData, isUpdating])
 
    useEffect(() => {
       if (organization?.settings) {
@@ -286,7 +307,13 @@ export default function EventModal({
                   items: []
                }
             })
-            setData({ ...data, sessionTags: tempSessionTags })
+            setData((prev) => {
+               return {
+                  ...prev,
+                  sessionTags: tempSessionTags
+               }
+
+            })
             setAllServicesAndSpec(organization.settings.servicesAndSpecialization)
             setServices(organization.settings.Expertise);
             setIsSettingsLoaded(true);
@@ -704,7 +731,7 @@ export default function EventModal({
       // }
 
    }, [persona, data.tutorId, allServicesAndSpec])
-   console.log("data", data, tutor)
+
    useEffect(() => {
       // console.log('all', allServicesAndSpec)
 
@@ -767,14 +794,14 @@ export default function EventModal({
    return (
       <>
          <Modal
-            classname="max-w-[827px]  mx-auto max-h-[90vh] 2xl:max-h-[700px] overflow-y-hidden"
+            classname="max-w-[827px]  mx-auto h-[95vh] max-h-[700px] 2xl:max-h-[700px] overflow-y-auto"
             handleClose={() => setEventModalActive(false)}
-
+            wrapperClassName='flex flex-col h-full'
             title={isEditable === false ? 'Session Details' : isUpdating ? "Update Session" : ` ${persona == "tutor" ? "Session Details" : "Schedule New Session"}`}
 
             body={
-               <div  >
-                  <div className="h-[58.61vh] 2xl:h-[44.60vh] 2xl:max-h-[633px] overflow-y-auto">
+               <>
+                  <div className="overflow-y-auto">
                      <div className="pr-4">
                         <SearchNames setStudent={setStudent}
                            setData={setData} student={student} tutor={tutor} data={data}
@@ -1037,7 +1064,7 @@ export default function EventModal({
                      </div>
                   </div>
 
-                  <div>
+                  <div className={styles['bottom-buttons']} >
                      {persona === 'student' ? (
                         <div className="ml-4 mt-5">
                            <p className="font-medium text-center mb-4 text-[18px] text-[#26435F]">
@@ -1130,7 +1157,7 @@ export default function EventModal({
 
                   </div>
 
-               </div>
+               </>
             }
          />
       </>

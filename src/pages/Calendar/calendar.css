@@ -108,10 +108,11 @@
 .calender #calendarContainer {
   background-color: inherit !important;
   padding: 40px;
+  padding-bottom: 0;
   padding-top: 0;
   border-radius: 20px;
   box-shadow: 0 0 0px rgba(0, 0, 0, 0.2) !important;
-  height: 580px !important;
+  height: calc(100vh - 198px) !important;
   overflow-y: auto !important;
   scroll-behavior: smooth;
 }
@@ -346,8 +347,8 @@ text-transform: uppercase;
   margin-right: 15rem !important;
 }
 .calendar .fc .fc-timegrid-axis-frame {
-  margin-top:12px !important ;
-  margin-left: 19px !important;
+  margin-top: 28px !important ;
+  margin-left: 23px !important;
   content: url('../../assets/YIcons/timeC.svg') !important;
 }
 .calendar .fc .fc-timegrid-slot-label-cushion {
