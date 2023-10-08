@@ -27,7 +27,8 @@ export default function Modal({
    underline,
    crossBtn,
    toEdit,
-   alignBtn
+   alignBtn,
+   wrapperClassName
 }) {
 
    const selectRef = useRef();
@@ -52,7 +53,7 @@ export default function Modal({
                   <div ref={handleClose ? selectRef : null} className={`w-full bg-white p-3 py-5 md:py-[33px] md:px-[33px] rounded-lg relative ${classname ? classname : ""
                      }`}
                   >
-                     <div >
+                     <div className={wrapperClassName ? wrapperClassName : ''} >
                         <p className={`font-semibold text-xl md:text-[21px] text-left text-[#26435F]
                ${titleClassName ? titleClassName : "mb-[18px]"}`}
                         >

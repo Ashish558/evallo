@@ -48,7 +48,6 @@ export default function InputField({
   biggerText,
   
 }) {
-  console.log({hideTooltip})
   const [inputType, setInputType] = useState(type);
   const [showDiv, setShowDiv] = useState(true);
   const divRef = useRef();

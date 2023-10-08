@@ -55,3 +55,12 @@
     -ms-transform: rotate(45deg);
     transform: translateX(-50%) translateY(-50%) rotate(45deg);
 }
+
+.bottom-buttons{
+    /* position: fixed; */
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    background-color: white;
+}
