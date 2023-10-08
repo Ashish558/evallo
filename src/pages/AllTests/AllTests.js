@@ -396,29 +396,29 @@ console.log({testForDelete})
         <Modal
           title="Upload New Material"
           titleClassName="text-start text-sm mb-3"
-          classname={"max-w-[640px] mx-auto"}
+          classname={"max-w-[630px] mx-auto"}
           primaryBtn={{
             text: "Create  ",
             form: "add-test-form",
             onClick: handleSubmit,
             type: "submit",
             className:
-              "!w-[185px] !bg-[#FFA28D] !text-white !rounded-[10px] flex justify-center items-center !px-10  h-[53px] mt-7   ",
+              "!w-[185px] !bg-[#FFA28D] !text-white !rounded-[10px] flex justify-center items-center !px-10  h-[50px] mt-7   ",
             disabled: submitBtnDisabled,
             loading: loading,
-            icon: <img src={check} alt="check" className="ml-1 inline-block" />,
+            icon: <img src={check} alt="check" className="ml-2 inline-block" />,
           }}
           otherBt={
             <div id={styles.handleFileUpload}>
               <div
                 id={styles.uploadButtons}
-                className="mt-7  px-0  gap-5 flex justify-between"
+                className="mt-7   px-0  gap-5 flex justify-between"
               >
                 {modalData.testType != 'DSAT' ? <div id={styles.pdfUpload}>
                   <label
                     htmlFor="pdf"
                     className={`${pdfFile !== null ? "bg-[#26435F] " : "bg-[#26435F] "
-                      } w-[8.9vw] text-[0.8333vw] !font-medium`}
+                      } w-[8.9vw] min-w-[160px] text-sm !font-medium`}
                   >
                     Upload PDF
                     <img src={upload} alt="Upload" />
@@ -441,7 +441,7 @@ console.log({testForDelete})
                     className={`${csvFile !== null && styles.fileUploaded
                       ? "bg-[#26435F] "
                       : "bg-[#26435F] "
-                      } w-[11vw] text-[0.8333vw] !font-medium`}
+                      } w-[11vw] min-w-[185px] text-sm !font-medium`}
                   >
                     Upload Metadata
                     <img src={upload} alt="Upload" />
@@ -466,10 +466,11 @@ console.log({testForDelete})
           handleClose={handleClose}
           body={
             <form onSubmit={handleSubmit} id="add-test-form">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 md:gap-x-6 items-center  gap-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 md:gap-x-6 !items-center  gap-y-4">
                 <InputField
                   label="Assignment Name"
-                  labelClassname="ml-2 mb-1.2 text-[#26435F]"
+                  labelClassname="ml-2 mb-1.2 text-[#26435F] !text-[16px] "
+                  biggerText={true}
                   optionData={optionData}
                   placeholder="Text"
                   parentClassName="w-full mr-4 mt-1"
@@ -488,10 +489,11 @@ console.log({testForDelete})
 
                 <InputSelect
                   label="Type"
-                  labelClassname="ml-2  !font-semibold mb-[8px] !text-[#26435F]"
+                  labelClassname="ml-2   !font-semibold mb-[9px] mt-1 !text-[#26435F]  !text-[16px]"
+                  biggerText={true}
                   optionData={testTypeOptions}
                   placeholder="Select"
-                  inputContainerClassName="pt-3 pb-3 bg-primary-50 h-[48px]"
+                  inputContainerClassName="pt-3 pb-3 bg-primary-50 h-[45px]"
                   parentClassName="w-full mr-4"
                   inputClassName="bg-transparent"
                   isRequired={true}
@@ -520,15 +522,15 @@ console.log({testForDelete})
           titleClassName="leading-9 mb-2"
 
           cancelBtn={true}
-          cancelBtnClassName="py-4 !bg-[#26435F1A] !text-[#26435F] rounded-[5px]"
+          cancelBtnClassName="py-4 !bg-[#26435F1A]  !text-[#26435F] rounded-[5px]"
           primaryBtn={{
             text: "Delete",
-            className: "bg-danger w-[123px] pl-4 pr-4",
+            className: "bg-danger  w-[123px]  pl-4 pr-4",
             onClick: removeTest,
           }}
           handleClose={closeRemoveModal}
           body={<div className="mb-10"></div>}
-          classname={"max-w-[600px] mx-auto"}
+          classname={"max-w-[600px] !mx-auto"}
         />
       )}
     </div>
