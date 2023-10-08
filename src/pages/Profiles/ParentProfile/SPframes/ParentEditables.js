@@ -929,7 +929,7 @@ export default function ParentEditables({
                         labelClassname="text-[#26435F] mb-1 text-sm"
                         label="Associated Students"
                         placeholder="Select Associated Students"
-                        parentClassName="w-full  mb-10"
+                        parentClassName="w-[300px] mb-10"
                        
                         inputContainerClassName="bg-[#F3F5F7] border-0 pt-3.5 pb-3.5"
                         inputClassName="bg-[#F3F5F7]"
