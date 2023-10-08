@@ -307,7 +307,7 @@ export default function StudentProfile({ isOwn }) {
   const handleClose = () => {
     setToEdit((prev) => {
       let tempToEdit = {};
-      Object.keys(prev).map((key) => {
+      Object.keys(prev)?.map((key) => {
         tempToEdit[key] = { ...prev[key], active: false };
       });
       return tempToEdit;
@@ -451,7 +451,7 @@ const [toEdit, setToEdit] = useState({
   const handleClose = () => {
     setToEdit((prev) => {
       let tempToEdit = {};
-      Object.keys(prev).map((key) => {
+      Object.keys(prev)?.map((key) => {
         tempToEdit[key] = { ...prev[key], active: false };
       });
       return tempToEdit;
@@ -672,18 +672,18 @@ const [toEdit, setToEdit] = useState({
 
   const getSatMarks = (idx) => {
     // let scores = [
-    //    userDetail.satScores.verbal,
-    //    userDetail.satScores.maths
+    //    userDetail?.satScores.verbal,
+    //    userDetail?.satScores.maths
     // ]
     // scores =  scores.filter(score => !isNaN(score))
     // //console.log(scores);
     let res = 0;
     if (
-      typeof userDetail.satScores[idx]?.verbal === "number" &&
-      typeof userDetail.satScores[idx]?.maths
+      typeof userDetail?.satScores[idx]?.verbal === "number" &&
+      typeof userDetail?.satScores[idx]?.maths
     ) {
       res =
-        userDetail.satScores[idx]?.verbal + userDetail.satScores[idx]?.maths;
+        userDetail?.satScores[idx]?.verbal + userDetail?.satScores[idx]?.maths;
     }
     if (isNaN(res)) return 0;
     return res;
@@ -691,23 +691,23 @@ const [toEdit, setToEdit] = useState({
 
   const getActMarks = (idx) => {
     // let scores = [
-    //    userDetail.satScores.verbal,
-    //    userDetail.satScores.maths
+    //    userDetail?.satScores.verbal,
+    //    userDetail?.satScores.maths
     // ]
     // scores =  scores.filter(score => !isNaN(score))
     // //console.log(scores);
     let res = 0;
     if (
-      typeof userDetail.actScores[idx]?.maths &&
-      typeof userDetail.actScores[idx]?.english &&
-      typeof userDetail.actScores[idx]?.reading &&
-      typeof userDetail.actScores[idx]?.science
+      typeof userDetail?.actScores[idx]?.maths &&
+      typeof userDetail?.actScores[idx]?.english &&
+      typeof userDetail?.actScores[idx]?.reading &&
+      typeof userDetail?.actScores[idx]?.science
     ) {
       res =
-        (userDetail.actScores[idx]?.english +
-          userDetail.actScores[idx]?.maths +
-          userDetail.actScores[idx]?.reading +
-          userDetail.actScores[idx]?.science) /
+        (userDetail?.actScores[idx]?.english +
+          userDetail?.actScores[idx]?.maths +
+          userDetail?.actScores[idx]?.reading +
+          userDetail?.actScores[idx]?.science) /
         4;
     }
     if (isNaN(res)) return 0;
@@ -715,10 +715,10 @@ const [toEdit, setToEdit] = useState({
   };
 
   useEffect(() => {
-    // //console.log(userDetail.timeZone);
-    if (userDetail.timeZone === undefined) return;
-    dispatch(updateTimeZone({ timeZone: userDetail.timeZone }));
-  }, [userDetail.timeZone]);
+    // //console.log(userDetail?.timeZone);
+    if (userDetail?.timeZone === undefined) return;
+    dispatch(updateTimeZone({ timeZone: userDetail?.timeZone }));
+  }, [userDetail?.timeZone]);
 
   const handleCopy = text => {
     navigator.clipboard.writeText(text);
@@ -735,7 +735,7 @@ const [toEdit, setToEdit] = useState({
   // //console.log(settings)
 
   if (Object.keys(user).length < 1) return;
-  if (Object.keys(userDetail).length < 1) return;
+ // if (Object.keys(userDetail).length < 1) return;
   if (Object.keys(settings).length < 1) return;
 
   return (
@@ -802,19 +802,19 @@ const [toEdit, setToEdit] = useState({
 
                   </div>
                   <div className="flex mt-1 text-xs items-center text-[#F3F5F7]">
-                    {userDetail.schoolName
-                      ? userDetail.schoolName
+                    {userDetail?.schoolName
+                      ? userDetail?.schoolName
                       : "Sample School Name"}
                   </div>
                   <div className="flex text-xs mt-1 items-center text-[#F3F5F7]">
-                    {userDetail.grade ? userDetail.grade : "12th Grade"}
+                    {userDetail?.grade ? userDetail?.grade : "12th Grade"}
 
                     {/* <p className='font-semibold text-[22px] mr-4'>
-                           {userDetail.grade}
+                           {userDetail?.grade}
                         </p> */}
 
                     {/* <p className='font-semibold text-[22px]'>
-                           {userDetail.schoolName}
+                           {userDetail?.schoolName}
                         </p> */}
                   </div>
                 </div>
@@ -1113,7 +1113,7 @@ const [toEdit, setToEdit] = useState({
                   textClassName="text-[21px]"
                 />
                 <p className=" font-medium text-[16px] lg:opacity-60 mb-5">
-                  {userDetail.birthyear ? userDetail.birthyear : "-"}
+                  {userDetail?.birthyear ? userDetail?.birthyear : "-"}
                 </p>
               </div>
               <div className="flex flex-1 flex-col">
@@ -1130,8 +1130,8 @@ const [toEdit, setToEdit] = useState({
                   textClassName="text-[21px]"
                 />
                 <div className="grid grid-cols-2">
-                  {userDetail.subjects
-                    ? userDetail.subjects.map((sub, idx) => {
+                  {userDetail?.subjects
+                    ? userDetail?.subjects?.map((sub, idx) => {
                       return (
                         <p
                           key={idx}
@@ -1168,7 +1168,7 @@ const [toEdit, setToEdit] = useState({
             body={
               <div className="flex mt-5 lg:mt-5">
                 <p className=" font-semibold text-[18px]">
-                  {userDetail.aboutScore ? userDetail.aboutScore : "-"}
+                  {userDetail?.aboutScore ? userDetail?.aboutScore : "-"}
                 </p>
               </div>
             }
@@ -1192,7 +1192,7 @@ const [toEdit, setToEdit] = useState({
                   className="text-lg mb-2"
                 />
                 <p className="mt-1.5 font-medium text-[18px] text-[#00000099] whitespace-nowrap">
-                  {userDetail.timeZone ? userDetail.timeZone : "-"}
+                  {userDetail?.timeZone ? userDetail?.timeZone : "-"}
                 </p>
               </div>
               <div className="mb-6">
@@ -1212,8 +1212,8 @@ const [toEdit, setToEdit] = useState({
                   className="text-lg mb-2"
                 />
                 <p className="mt-1.5 font-medium text-[18px] text-[#00000099] whitespace-nowrap">
-                  {userDetail.subscriptionCode
-                    ? userDetail.subscriptionCode
+                  {userDetail?.subscriptionCode
+                    ? userDetail?.subscriptionCode
                     : "-"}
                 </p>
               </div>
@@ -1236,7 +1236,7 @@ const [toEdit, setToEdit] = useState({
                   />
                 </p>
                 <p className="mt-1.5 font-medium text-[18px] text-[#00000099] whitespace-nowrap">
-                  {userDetail.accomodations ? userDetail.accomodations : "-"}
+                  {userDetail?.accomodations ? userDetail?.accomodations : "-"}
                 </p>
               </div>
             </div>
@@ -1263,8 +1263,8 @@ const [toEdit, setToEdit] = useState({
                 {settings &&
                   settings.personality &&
                   settings.personality.length > 0 &&
-                  userDetail.personality &&
-                  userDetail.personality.map((id, idx) => {
+                  userDetail?.personality &&
+                  userDetail?.personality?.map((id, idx) => {
                     return settings.personality.find(
                       (item) => item._id === id
                     ) ? (
@@ -1320,14 +1320,14 @@ const [toEdit, setToEdit] = useState({
                 >
                   <SubjectSlider
                     score={
-                      userDetail.satScores
+                      userDetail?.satScores
                         ? {
-                          verbal: userDetail.satScores[0]?.verbal,
-                          maths: userDetail.satScores[0]?.maths,
+                          verbal: userDetail?.satScores[0]?.verbal,
+                          maths: userDetail?.satScores[0]?.maths,
                         }
                         : {}
                     }
-                    totalMarks={userDetail.satScores ? getSatMarks(0) : "-"}
+                    totalMarks={userDetail?.satScores ? getSatMarks(0) : "-"}
                     outOf={"1600"}
                     isSat={true}
                     header={
@@ -1354,14 +1354,14 @@ const [toEdit, setToEdit] = useState({
                   />
                   <SubjectSlider
                     score={
-                      userDetail.satScores
+                      userDetail?.satScores
                         ? {
-                          verbal: userDetail.satScores[1]?.verbal,
-                          maths: userDetail.satScores[1]?.maths,
+                          verbal: userDetail?.satScores[1]?.verbal,
+                          maths: userDetail?.satScores[1]?.maths,
                         }
                         : {}
                     }
-                    totalMarks={userDetail.satScores ? getSatMarks(1) : "-"}
+                    totalMarks={userDetail?.satScores ? getSatMarks(1) : "-"}
                     outOf={"1600"}
                     isSat={true}
                     header={
@@ -1386,17 +1386,17 @@ const [toEdit, setToEdit] = useState({
                     subjects={subjects1}
                     title="Composite Score"
                   />
-                  {userDetail.satScores?.length >= 2 && (
+                  {userDetail?.satScores?.length >= 2 && (
                     <SubjectSlider
                       score={
-                        userDetail.satScores
+                        userDetail?.satScores
                           ? {
-                            verbal: userDetail.satScores[2]?.verbal,
-                            maths: userDetail.satScores[2]?.maths,
+                            verbal: userDetail?.satScores[2]?.verbal,
+                            maths: userDetail?.satScores[2]?.maths,
                           }
                           : {}
                       }
-                      totalMarks={userDetail.satScores ? getSatMarks(2) : "-"}
+                      totalMarks={userDetail?.satScores ? getSatMarks(2) : "-"}
                       outOf={"1600"}
                       isSat={true}
                       header={
@@ -1437,16 +1437,16 @@ const [toEdit, setToEdit] = useState({
                   items={1}
                 >
                   <SubjectSlider
-                    totalMarks={userDetail.actScores ? getActMarks(0) : "-"}
+                    totalMarks={userDetail?.actScores ? getActMarks(0) : "-"}
                     outOf={"36"}
                     isAct={true}
                     score={
-                      userDetail.actScores
+                      userDetail?.actScores
                         ? {
-                          reading: userDetail.actScores[0]?.reading,
-                          maths: userDetail.actScores[0]?.maths,
-                          science: userDetail.actScores[0]?.science,
-                          english: userDetail.actScores[0]?.english,
+                          reading: userDetail?.actScores[0]?.reading,
+                          maths: userDetail?.actScores[0]?.maths,
+                          science: userDetail?.actScores[0]?.science,
+                          english: userDetail?.actScores[0]?.english,
                         }
                         : {}
                     }
@@ -1474,16 +1474,16 @@ const [toEdit, setToEdit] = useState({
                   />
 
                   <SubjectSlider
-                    totalMarks={userDetail.actScores ? getActMarks(1) : "-"}
+                    totalMarks={userDetail?.actScores ? getActMarks(1) : "-"}
                     outOf={"36"}
                     isAct={true}
                     score={
-                      userDetail.actScores
+                      userDetail?.actScores
                         ? {
-                          reading: userDetail.actScores[1]?.reading,
-                          maths: userDetail.actScores[1]?.maths,
-                          science: userDetail.actScores[1]?.science,
-                          english: userDetail.actScores[1]?.english,
+                          reading: userDetail?.actScores[1]?.reading,
+                          maths: userDetail?.actScores[1]?.maths,
+                          science: userDetail?.actScores[1]?.science,
+                          english: userDetail?.actScores[1]?.english,
                         }
                         : {}
                     }
@@ -1509,18 +1509,18 @@ const [toEdit, setToEdit] = useState({
                     subjects={subjects2}
                     title="Composite Score"
                   />
-                  {userDetail.actScores?.length >= 2 && (
+                  {userDetail?.actScores?.length >= 2 && (
                     <SubjectSlider
-                      totalMarks={userDetail.actScores ? getActMarks(2) : "-"}
+                      totalMarks={userDetail?.actScores ? getActMarks(2) : "-"}
                       outOf={"36"}
                       isAct={true}
                       score={
-                        userDetail.actScores
+                        userDetail?.actScores
                           ? {
-                            reading: userDetail.actScores[2]?.reading,
-                            maths: userDetail.actScores[2]?.maths,
-                            science: userDetail.actScores[2]?.science,
-                            english: userDetail.actScores[2]?.english,
+                            reading: userDetail?.actScores[2]?.reading,
+                            maths: userDetail?.actScores[2]?.maths,
+                            science: userDetail?.actScores[2]?.science,
+                            english: userDetail?.actScores[2]?.english,
                           }
                           : {}
                       }
@@ -1571,7 +1571,7 @@ const [toEdit, setToEdit] = useState({
               <div className="flex scrollbar-content max-h-[500px]  scrollbar-vertical flex-col overflow-x-auto">
                 {settings &&
                   settings.interest.length > 0 &&
-                  userDetail.interest.map((id, idx) => {
+                  userDetail?.interest?.map((id, idx) => {
                     return settings.interest.find(
                       (item) => item._id === id
                     ) ? (
@@ -1632,13 +1632,13 @@ const [toEdit, setToEdit] = useState({
                       className="lg:text-21 text-left"
                     />
                     <div className="font-medium text-sm mt-2 lg:mt-6 flex flex-wrap lg:opacity-60">
-                      {/* {userDetail.subscribeType ? userDetail.subscribeType : '-'} */}
-                      {userDetail.service
-                        ? userDetail.service.map((service, idx) => {
+                      {/* {userDetail?.subscribeType ? userDetail?.subscribeType : '-'} */}
+                      {userDetail?.service
+                        ? userDetail?.service?.map((service, idx) => {
                           return (
                             <p key={idx} className="opacity-80 mb-1 mr-1">
                               {service}
-                              {idx < userDetail.service.length - 1
+                              {idx < userDetail?.service.length - 1
                                 ? ","
                                 : ""}
                             </p>
@@ -1667,7 +1667,7 @@ const [toEdit, setToEdit] = useState({
                       className="lg:text-21 whitespace-nowrap"
                     />
                     <p className="font-medium text-sm mt-2 lg:mt-6 lg:opacity-60">
-                      {userDetail.notes ? userDetail.notes : "-"}
+                      {userDetail?.notes ? userDetail?.notes : "-"}
                     </p>
                   </div>
                 </div>
@@ -1699,7 +1699,7 @@ const [toEdit, setToEdit] = useState({
                       className="lg:text-21 whitespace-nowrap"
                     />
                     <p className="font-medium text-sm mt-2 lg:mt-6 lg:opacity-60">
-                      {userDetail.leadStatus ? userDetail.leadStatus : "-"}
+                      {userDetail?.leadStatus ? userDetail?.leadStatus : "-"}
                     </p>
                   </div>
                 </div>
@@ -1748,14 +1748,14 @@ const [toEdit, setToEdit] = useState({
                           What service are you seeking?
                         </p>
                         <div>
-                          {userDetail.serviceSeeking.map((service, idx) => {
+                          {userDetail?.serviceSeeking?.map((service, idx) => {
                             return (
                               <p
                                 key={idx}
                                 className="opacity-80 inline-block mr-1"
                               >
                                 {service}
-                                {idx < userDetail.serviceSeeking.length - 1
+                                {idx < userDetail?.serviceSeeking.length - 1
                                   ? ","
                                   : ""}{" "}
                               </p>
@@ -1768,32 +1768,32 @@ const [toEdit, setToEdit] = useState({
                         <p className="font-semibold mb-2">
                           Parent First Name
                         </p>
-                        <p className="opacity-80"> {userDetail.FirstName} </p>
+                        <p className="opacity-80"> {userDetail?.FirstName} </p>
                       </div>
                       <div className="mb-7">
                         <p className="font-semibold mb-2">
                           Parent Last Name{" "}
                         </p>
-                        <p className="opacity-80"> {userDetail.LastName} </p>
+                        <p className="opacity-80"> {userDetail?.LastName} </p>
                       </div>
                       <div className="mb-7">
                         <p className="font-semibold mb-2">Parent Email</p>
-                        <p className="opacity-80"> {userDetail.Email} </p>
+                        <p className="opacity-80"> {userDetail?.Email} </p>
                       </div>
                       <div className="mb-7">
                         <p className="font-semibold mb-2">Parent Phone </p>
-                        <p className="opacity-80"> {userDetail.Phone} </p>
+                        <p className="opacity-80"> {userDetail?.Phone} </p>
                       </div>
                       <div className="mb-7">
                         <p className="font-semibold mb-2">School Name</p>
                         <p className="opacity-80">
                           {" "}
-                          {userDetail.schoolName}{" "}
+                          {userDetail?.schoolName}{" "}
                         </p>
                       </div>
                       <div className="mb-7">
                         <p className="font-semibold mb-2"> Grade</p>
-                        <p className="opacity-80">{userDetail.grade} </p>
+                        <p className="opacity-80">{userDetail?.grade} </p>
                       </div>
 
                       <div className="mb-7 col-span-2">
@@ -1810,14 +1810,14 @@ const [toEdit, setToEdit] = useState({
                           Please select all that apply.
                         </p>
                         <div>
-                          {userDetail.apCourses.map((service, idx) => {
+                          {userDetail?.apCourses?.map((service, idx) => {
                             return (
                               <p
                                 key={idx}
                                 className="opacity-80 inline-block mr-1"
                               >
                                 {service}
-                                {idx < userDetail.apCourses.length - 1
+                                {idx < userDetail?.apCourses.length - 1
                                   ? ","
                                   : ""}{" "}
                               </p>
@@ -1831,11 +1831,11 @@ const [toEdit, setToEdit] = useState({
                         </p>
                         <div>
                           {" "}
-                          {userDetail.motive.map((service, idx) => {
+                          {userDetail?.motive?.map((service, idx) => {
                             return (
                               <p key={idx} className="opacity-80 mb-1">
                                 {service}
-                                {idx < userDetail.motive.length - 1
+                                {idx < userDetail?.motive.length - 1
                                   ? ","
                                   : ""}
                               </p>
@@ -1850,7 +1850,7 @@ const [toEdit, setToEdit] = useState({
                         </p>
                         <p className="opacity-80">
                           {" "}
-                          {userDetail.subscriptionCode}{" "}
+                          {userDetail?.subscriptionCode}{" "}
                         </p>
                       </div>
                       <div className="mb-7 col-span-2">
@@ -1859,14 +1859,14 @@ const [toEdit, setToEdit] = useState({
                         </p>
                         <div>
                           {" "}
-                          {userDetail.hearAboutUs.map((service, idx) => {
+                          {userDetail?.hearAboutUs?.map((service, idx) => {
                             return (
                               <p
                                 key={idx}
                                 className="opacity-80 inline-block mr-1"
                               >
                                 {service}
-                                {idx < userDetail.hearAboutUs.length - 1
+                                {idx < userDetail?.hearAboutUs.length - 1
                                   ? ","
                                   : ""}{" "}
                               </p>

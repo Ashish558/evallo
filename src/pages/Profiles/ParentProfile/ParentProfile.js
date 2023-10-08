@@ -360,7 +360,8 @@ const [toEdit, setToEdit] = useState({
         phoneCode,
       } = res.data.data.user;
 
-      setUser(res.data.data.user);
+      setUser(res.data.data.user);  
+      if(!res?.data?.data?.userdetails)return 
       const { leadStatus, notes, residentialAddress, subscribeType } =
         res.data.data.userdetails;
 
@@ -379,7 +380,7 @@ const [toEdit, setToEdit] = useState({
               name: `${res2.data.data.user.firstName} ${res2.data.data.user.lastName}`,
               photo: res2.data.data.user.photo ? res2.data.data.user.photo : null,
               email: res2.data.data.user.email ? res2.data.data.user.email : null,
-              service: res2.data.data.userdetails.service ? res2.data.data.userdetails.service : [],
+              service: res2.data.data.userdetails?.service ? res2.data.data.userdetails?.service : [],
             });
            
             setAssociatedStudents([...studentsData]);
@@ -511,10 +512,10 @@ useEffect(() => {
   };
 
   useEffect(() => {
-    // //console.log(userDetail.timeZone);
-    if (userDetail.timeZone === undefined) return;
-    dispatch(updateTimeZone({ timeZone: userDetail.timeZone }));
-  }, [userDetail.timeZone]);
+    // //console.log(userDetail?.timeZone);
+    if (userDetail?.timeZone === undefined) return;
+    dispatch(updateTimeZone({ timeZone: userDetail?.timeZone }));
+  }, [userDetail?.timeZone]);
  
   // //console.log(user)
   // //console.log(userDetail)
@@ -538,7 +539,7 @@ useEffect(() => {
   //         name: `${res.data.data.user.firstName} ${res.data.data.user.lastName}`,
   //         photo: res.data.data.user.photo ? res.data.data.user.photo : null,
   //         email: res.data.data.user.email ? res.data.data.user.email : null,
-  //         service: res.data.data.userdetails.service ? res.data.data.userdetails.service : [],
+  //         service: res.data.data.userdetails?.service ? res.data.data.userdetails?.service : [],
   //       });
 
   //     });

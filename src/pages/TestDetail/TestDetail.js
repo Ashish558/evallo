@@ -23,6 +23,7 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import './form.css';
 import Delete from '../../assets/images/delete.png'
+import { useSelector } from "react-redux";
 const subjects = [
    { text: "English", selected: true },
    { text: "Mathematics", selected: false },
@@ -334,8 +335,8 @@ const jsonString = JSON.stringify(body);
    const [optionBContent, setOptionBContent] = useState('');
    const [optionCContent, setOptionCContent] = useState('');
    const [optionDContent, setOptionDContent] = useState('');
-
-  
+  const {organization}= useSelector((state)=>state.organization)
+  const { firstName, lastName } = useSelector((state) => state.user);
 const [questionImageBase64, setQuestionImageBase64] = useState(""); // Define questionImageBase64 state variable
 const [optionAImageBase64, setOptionAImageBase64] = useState(""); // Define optionAImageBase64 state variable
 const [optionBImageBase64, setOptionBImageBase64] = useState(""); // Define optionBImageBase64 state variable
@@ -418,7 +419,7 @@ const [richTextContent, setRichTextContent] = useState("");
 
    return (
       <>
-      <SecondaryButton
+      {/* <SecondaryButton
                         className="flex bg-transparent items-center pl-2 pr-5 py-2.5"
                         onClick={() => navigate("/all-tests")}
                         children={
@@ -427,13 +428,26 @@ const [richTextContent, setRichTextContent] = useState("");
                               <span>Back</span>
                            </>
                         }
-                     />
-         <div className="ml-pageLeft bg-lightWhite min-h-screen">
-            <div className="pb-14 pt-4 px-5 flex flex-col items-center">
+                     /> */}
+         <div className="!mx-[6vw] bg-lightWhite min-h-screen">
+         <p className="text-[#24A3D9]  !mt-[calc(50*0.052vw)] !mb-[calc(25*0.052vw)] text-base-20">
+      <span onClick={()=>navigate('/')} className="cursor-pointer"> 
+         {organization?.company +
+            "  >  " +
+            firstName +
+            "  " +
+            lastName +
+            "  >  "}
+             
+          </span>
+          <span  onClick={()=>navigate('/all-tests')} className=" cursor-pointer">{"Content > "} </span>
+          <span className="font-semibold">Report</span>
+        </p>
+            <div className="pb-14 pt-4  flex flex-col items-center">
                <div className="px-0 flex flex-row justify-between items-start pr-2 w-full">
                            <div className="flex mx-2 w-1/4 flex-col justify-start">
-                           <p className="mb-1 text-textPrimaryDark text-[35px] font-extrabold">
-                           {testData.testName}
+                           <p className="mb-2 text-textPrimaryDark text-[35px] min-h-[50px] font-extrabold">
+                           {testData.testName?testData.testName:""}
                         </p>
                            
                            <div className="border w-full py-4 flex rounded shadow-sm justify-center items-center">
@@ -446,16 +460,16 @@ const [richTextContent, setRichTextContent] = useState("");
                         </p>
 
                         <div className="gap-y-1 w-full mx-4 border rounded p-4 shadow-sm mb-10">
-                           <div className="mb-2 flex justify-between">
-                              <p className="inline-block w-[170px] font-semibold opacity-60">
+                           <div className="mb-2 flex justify-between ">
+                              <p className="inline-block w-[170px] font-semibold opacity-60 text-[#26435F] opacity-100">
                                  {" "}
                                  Section
                               </p>
                               <div className="flex">
-                              <div className="inline-block w-[120px] font-semibold opacity-60">
+                              <div className="inline-block w-[120px] font-semibold opacity-60 text-[#26435F] opacity-100">
                                  Time
                               </div>
-                              <p className="inline-block w-[138px] font-semibold opacity-60 text-center">
+                              <p className="inline-block w-[138px] font-semibold opacity-60 text-[#26435F] opacity-100 text-center">
                                  {" "}
                                  Total Questions
                               </p>
@@ -484,15 +498,16 @@ const [richTextContent, setRichTextContent] = useState("");
                         </div>
 
                      </div>
-                  {testData.testType!='DSAT'?
-                  <div className="px-6 py-[2.5rem] flex  mx-2 mt-[3.8rem] w-1/4 justify-center border-gray-600 border-dashed border-[2px] items-center flex-col rounded shadow-sm">
+                  {testData.testType!=='DSAT'?
+                  <div className="px-6 py-[2.5rem] ml-[50px] flex  mx-2 mt-[3.8rem] w-1/4 justify-center border-[#26435F] border-dashed border-[2px] items-center flex-col rounded shadow-sm">
                            
                         {
                            Object.keys(sectionsData).length > 1 &&
                            <>
-                           <img src={pdf} className="mb-4"/>
-                           <a className="text-[#0671E0] text-xs italic inline-block cursor-pointer"
-                              href={sectionsData.test.pdf !== null && `${awsLink}${sectionsData.test.pdf}`} target="_blank"
+                           <img src={pdf} className="mb-4" alt="pdf"/>
+                           <a className="text-[#24A3D9] text-sm  inline-block underline cursor-pointer"
+                              href={sectionsData.test.pdf !== null && `${awsLink}${sectionsData.test.pdf}`} target="_blank" 
+                               rel="noreferrer" 
                            // onClick={() => sectionsData.test.pdf !== null && window.open(sectionsData.test.pdf)} 
                            >
                               {sectionsData.test.pdf !== null ? `${sectionsData.test.testName}.pdf` : ''}
@@ -503,7 +518,7 @@ const [richTextContent, setRichTextContent] = useState("");
                            children='Reupload pdf'
 
                            disabled={pdfBtnDisabled}
-                           className={`bg-[#517CA8] px-4 py-2 text-sm mt-5 w-[120px] whitespace-nowrap font-medium text-textGra`}
+                           className={`!bg-[#517CA8] px-4 py-2 text-sm mt-5 w-[120px] whitespace-nowrap font-medium !text-white`}
                            onClick={() => setPdfModalActive(true)}
                         />
                   </div>:null}

@@ -133,7 +133,7 @@ const handleLeadStatus=(e)=>{
 useEffect(()=>{
   if(userDetail){
     console.log(userDetail)
-    getSessions(userDetail.userId).then((response)=>{
+    getSessions(userDetail?.userId).then((response)=>{
       console.log("session notes",response)
       response?.data?.sessionNotes?.map((it)=>{
         if(it?.clientNotes?.note)

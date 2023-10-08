@@ -1111,7 +1111,7 @@ export default function EventModal({
                                  </> :
                                  <PrimaryButton
                                     children="Schedule"
-                                    className="text-lg py-3  font-medium px-7 h-[50px] w-[140px] disabled:opacity-60"
+                                    className="text-lg py-3 !text-white font-medium px-7 h-[50px] w-[140px] disabled:opacity-60"
                                     onClick={() => handleSubmit()}
                                     disabled={false}
                                     loading={loading}
