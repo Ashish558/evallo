@@ -229,7 +229,7 @@ const updatedQuestions = tempdata.map(question => {
                QuestionText: modalData.question,
                QuestionImage:questionImageBase64,
                QuestionType: modalData.questionType,
-               AnswerChoices:'a,b,c,d',
+               //AnswerChoices:'a,b,c,d',
                Answers:[
                   {
                      label: 'A',
@@ -606,7 +606,8 @@ const [richTextContent, setRichTextContent] = useState("");
                               value={modalData.correctAnswer}
                               onChange={e => setModalData({ ...modalData, correctAnswer: e.target.value })} />
                         </div>
-                        {testData.testType!='DSAT'?<div className="min-w-[170px] px-1">
+                        {testData.testType!=='DSAT'?<div className="min-w-[170px] px-1">
+                           {console.log("test",{modalData})}
                            <InputField label='Answer Choices'
                               labelClassname='ml-4 mb-0.5 input-heading font-medium text-[15px]'
                               // isRequired={true}

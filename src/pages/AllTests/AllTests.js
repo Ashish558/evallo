@@ -184,7 +184,7 @@ export default function AllTests() {
     setRemoveQuestionModal(true);
     setTestForDelete(item);
   };
-
+console.log({testForDelete})
   const removeTest = (item) => {
     setRemoveQuestionModal(false);
     // console.log(testForDelete._id);
@@ -513,21 +513,21 @@ export default function AllTests() {
         <Modal
           title={
             <>
-              Are you sure <br />
-              you want to remove the test ?
+             Are you sure you want to Delete {testForDelete?.testName?testForDelete?.testName:"Test"}?
             </>
           }
-          titleClassName="leading-9"
+          titleClassName="leading-9 mb-2"
+
           cancelBtn={true}
-          cancelBtnClassName="py-4"
+          cancelBtnClassName="py-4 !bg-[#26435F1A] !text-[#26435F] rounded-[5px]"
           primaryBtn={{
-            text: "Remove",
+            text: "Delete",
             className: "bg-danger w-[123px] pl-4 pr-4",
             onClick: removeTest,
           }}
           handleClose={closeRemoveModal}
           body={<div className="mb-10"></div>}
-          classname={"max-w-567 mx-auto"}
+          classname={"max-w-[600px] mx-auto"}
         />
       )}
     </div>
