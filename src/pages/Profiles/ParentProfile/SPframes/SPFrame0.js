@@ -29,7 +29,7 @@ const SPFrame0 = ({ userDetail, settings, toEdit, setToEdit }) => {
           <span>
             <p className="font-semibold text-[#24A3D9]">Industry</p>
             <p className=" text-[#517CA8]">
-              {userDetail.industry ? userDetail.industry : " "}
+              {userDetail?.industry ? userDetail?.industry : " "}
             </p>
           </span>
         </div>
@@ -44,8 +44,8 @@ const SPFrame0 = ({ userDetail, settings, toEdit, setToEdit }) => {
           <span>
             <p className="font-semibold text-[#24A3D9]">Referral code</p>
             <p className=" text-[#517CA8] ">
-              {userDetail.subscriptionCode
-                ? userDetail.subscriptionCode
+              {userDetail?.subscriptionCode
+                ? userDetail?.subscriptionCode
                 : "None"}
             </p>
           </span>
@@ -61,7 +61,7 @@ const SPFrame0 = ({ userDetail, settings, toEdit, setToEdit }) => {
           <span>
             <p className="font-semibold text-[#24A3D9]">Time Zone</p>
             <p className=" text-[#517CA8] ">
-              {userDetail?.timeZone ? userDetail.timeZone : "-"}
+              {userDetail?.timeZone ? userDetail?.timeZone : "-"}
             </p>
           </span>
         </div>
@@ -77,7 +77,7 @@ const SPFrame0 = ({ userDetail, settings, toEdit, setToEdit }) => {
           <span>
             <p className="font-semibold text-[#24A3D9]">Birth Year</p>
             <p className=" text-[#517CA8] ">
-              {userDetail.birthyear ? userDetail.birthyear : " "}
+              {userDetail?.birthyear ? userDetail?.birthyear : " "}
             </p>
           </span>
         </div>
@@ -92,7 +92,7 @@ const SPFrame0 = ({ userDetail, settings, toEdit, setToEdit }) => {
           <span>
             <p className="font-semibold text-[#24A3D9]">Location</p>
             <p className=" text-[#517CA8] ">
-              {userDetail.accomodations ? userDetail.accomodations : "-"}
+              {userDetail?.accomodations ? userDetail?.accomodations : "-"}
             </p>
           </span>
         </div>

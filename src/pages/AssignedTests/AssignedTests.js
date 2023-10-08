@@ -4,7 +4,7 @@ import Table from "../../components/Table/Table";
 import InputSelect from "../../components/InputSelect/InputSelect";
 
 import AddIcon from "../../assets/icons/add.svg";
-import SearchIcon from "../../assets/icons/search.svg";
+import SearchIcon from "../../assets/icons/Search_shade.svg";
 import ResendIcon from "../../assets/icons/resend.svg";
 import DeleteIcon from "../../assets/icons/ic_outline-delete-black.svg";
 import styles from "./styles.module.css";
@@ -122,7 +122,7 @@ export default function AssignedTests() {
     });
   };
   const tempTableHeaders = [
-  
+
     {
       id: 2,
       text: "Student Name",
@@ -218,7 +218,7 @@ export default function AssignedTests() {
   const [resendLoading, setResendLoading] = useState(false);
   const [deleteLoading, setDeleteLoading] = useState(false);
   const [filterItems, setFilterItems] = useState([]);
-  const [studentMultiple, setStudentMultiple] =useState([])
+  const [studentMultiple, setStudentMultiple] = useState([])
   useEffect(() => {
     setValidData(
       modalData.name &&
@@ -229,30 +229,32 @@ export default function AssignedTests() {
     );
   }, [modalData.name, modalData.limit, modalData.date, modalData.test]);
 
-const handleMultipleStudent=(student) => {
-  console.log({student})
-  let bool= studentMultiple?.find((student1) =>student1?._id===student?._id)
-  if (bool) {
-    let updated = studentMultiple.filter(
-      (test) => test?._id !== student._id
-    );
-    setStudentMultiple(updated);
-  } else {
-    setStudentMultiple((prev) =>{ return [ ...prev,
-      {_id:student?._id,value:student?.value}] })
+  const handleMultipleStudent = (student) => {
+    console.log({ student })
+    let bool = studentMultiple?.find((student1) => student1?._id === student?._id)
+    if (bool) {
+      let updated = studentMultiple.filter(
+        (test) => test?._id !== student._id
+      );
+      setStudentMultiple(updated);
+    } else {
+      setStudentMultiple((prev) => {
+        return [...prev,
+        { _id: student?._id, value: student?.value }]
+      })
+    }
   }
-}
-console.log({studentMultiple,modalData})
+  console.log({ studentMultiple, modalData })
   useEffect(() => {
-//modalData.name.trim() === "" ||
-//modalData.studentId.trim() === ""
+    //modalData.name.trim() === "" ||
+    //modalData.studentId.trim() === ""
     if (
-       
-      studentMultiple?.length===0||
+
+      studentMultiple?.length === 0 ||
       modalData.limit.trim() === "" ||
       modalData.date === "" ||
-      modalData.testId === "" 
-      
+      modalData.testId === ""
+
     ) {
       setSubmitBtnDisabled(true);
     } else {
@@ -284,7 +286,7 @@ console.log({studentMultiple,modalData})
       if (persona === "admin") {
         fetchStudents(modalData.name).then((res) => {
           console.log('res', res);
-          if(res.error){
+          if (res.error) {
             return
           }
           let tempData = res.data.data.students.map((student) => {
@@ -298,7 +300,7 @@ console.log({studentMultiple,modalData})
         )
       } else {
         fetchTutorStudents(modalData.name).then((res) => {
-          if(res.error){
+          if (res.error) {
             return
           }
           let tempData = res.data.data.students.map((student) => {
@@ -307,7 +309,7 @@ console.log({studentMultiple,modalData})
               value: `${student.firstName} ${student.lastName}`,
             };
           });
-          
+
           setStudents(tempData);
         }
         )
@@ -385,11 +387,13 @@ console.log({studentMultiple,modalData})
       let sortedArr = data.sort(function (a, b) {
         return new Date(b.createdAt) - new Date(a.createdAt);
       });
-      if(persona==='admin')
-      setFilterData({studentName: "",
-      testName: "",
-      assignedBy: "",
-      status: "",})
+      if (persona === 'admin')
+        setFilterData({
+          studentName: "",
+          testName: "",
+          assignedBy: "",
+          status: "",
+        })
       setAllAssignedTests(sortedArr);
       setFilteredTests(sortedArr);
     });
@@ -451,16 +455,18 @@ console.log({studentMultiple,modalData})
       let sortedArr = data.sort(function (a, b) {
         return new Date(b.createdAt) - new Date(a.createdAt);
       });
-      if(persona==='tutor')
-      setFilterData({studentName: "",
-      testName: "",
-      assignedBy: "",
-      status: "",})
+      if (persona === 'tutor')
+        setFilterData({
+          studentName: "",
+          testName: "",
+          assignedBy: "",
+          status: "",
+        })
       setAllAssignedTests(sortedArr);
       setFilteredTests(sortedArr);
     });
   };
-  
+
 
   const getTimeLimit = (val) => {
     if (val === "Regular") return 1;
@@ -511,40 +517,40 @@ console.log({studentMultiple,modalData})
   const handleAssignTestSubmit = () => {
     console.log("test assignment")
     setLoading(true);
-    studentMultiple?.map((it)=>{
+    studentMultiple?.map((it) => {
 
-   
-    
-    const body = {
-      studentId: it?._id,
-      testId: modalData.testId,
-      name:it?._value,
-      dueDate: modalData.date,
-      instruction: modalData.instruction,
-      timeLimit: getTimeLimit(modalData.limit),
-    };
-    console.log(body);
 
-    assignTest(body).then((res) => {
-      setLoading(false);
-      if (res.error) {
-        console.log(res.error);
-        if (res.error.data) {
-          if (res.error.data.message) {
-            alert(res.error.data.message);
-            return;
+
+      const body = {
+        studentId: it?._id,
+        testId: modalData.testId,
+        name: it?._value,
+        dueDate: modalData.date,
+        instruction: modalData.instruction,
+        timeLimit: getTimeLimit(modalData.limit),
+      };
+      console.log(body);
+
+      assignTest(body).then((res) => {
+        setLoading(false);
+        if (res.error) {
+          console.log(res.error);
+          if (res.error.data) {
+            if (res.error.data.message) {
+              alert(res.error.data.message);
+              return;
+            }
           }
+          alert("Something went wrong");
+          return;
         }
-        alert("Something went wrong");
-        return;
-      }
-      setModalData(initialState);
-      console.log("test assigned",res.data.data.assign);
-      //alert("Test Assigned!");
-      setAssignTestModalActive(false);
-      fetch();
-    });
-  })
+        setModalData(initialState);
+        console.log("test assigned", res.data.data.assign);
+        //alert("Test Assigned!");
+        setAssignTestModalActive(false);
+        fetch();
+      });
+    })
   };
 
   useEffect(() => {
@@ -643,7 +649,7 @@ console.log({studentMultiple,modalData})
     setTestToDelete(item);
     setDeleteModalActive(true);
   };
- 
+
   const handleCurrentUser = (item) => {
     setCurrentUser({
       name: item.text.toLowerCase(),
@@ -685,9 +691,9 @@ console.log({studentMultiple,modalData})
   const [isChecked, setIsChecked] = useState(false);
 
   const handleCheckboxChange = () => {
-    if(!isChecked) {
-      let data=filteredTests
-      data= data?.slice(0,maxPageSize)
+    if (!isChecked) {
+      let data = filteredTests
+      data = data?.slice(0, maxPageSize)
       setSelectedId([...data])
     }
     else {
@@ -695,97 +701,97 @@ console.log({studentMultiple,modalData})
     }
     setIsChecked(!isChecked);
   };
-  useEffect(()=>{
-     setIsChecked(false)
-     setSelectedId([])
-  },[filteredTests])
-  
+  useEffect(() => {
+    setIsChecked(false)
+    setSelectedId([])
+  }, [filteredTests])
+
   const [filterOptions, setFilterOptions] = useState(false);
-  const handleOptionData=(val)=>{
-   let data=[]
-   
-   testNameOptions?.map((it,id)=>{
-    if(it?.toLowerCase()?.includes(val?.toLowerCase()))
-     data.push( {
-        _id:(id).toString(),
-        value:it
-      })
+  const handleOptionData = (val) => {
+    let data = []
+
+    testNameOptions?.map((it, id) => {
+      if (it?.toLowerCase()?.includes(val?.toLowerCase()))
+        data.push({
+          _id: (id).toString(),
+          value: it
+        })
     })
     setFilterOptions(data)
-    return 
+    return
   }
-  useEffect(()=>{
-  handleOptionData("")
-  },[testNameOptions])
-  const [selectedId,setSelectedId]=useState([])
+  useEffect(() => {
+    handleOptionData("")
+  }, [testNameOptions])
+  const [selectedId, setSelectedId] = useState([])
 
-  console.log("tests",{selectedId,filteredTests})
-  const [addDeleteUser,slsdu]=useCRMBulkdeleteMutation()
-  const [addMark,slmr]=useCRMBulkmarkcompletedMutation()
-  const [addResend,slrsn]=useCRMBulkresentMutation()
-  const bulkSelectDelete=()=>{
-    let assignmentIds=selectedId?.map(ii=>ii?.assignedTestId)
-    if(!assignmentIds || assignmentIds?.length===0) return
+  console.log("tests", { selectedId, filteredTests })
+  const [addDeleteUser, slsdu] = useCRMBulkdeleteMutation()
+  const [addMark, slmr] = useCRMBulkmarkcompletedMutation()
+  const [addResend, slrsn] = useCRMBulkresentMutation()
+  const bulkSelectDelete = () => {
+    let assignmentIds = selectedId?.map(ii => ii?.assignedTestId)
+    if (!assignmentIds || assignmentIds?.length === 0) return
     setDeleteSelectLoading(true)
-    addDeleteUser({assignmentIds}).then((res)=>{
-      console.log("successDelete",res,assignmentIds)
-      if(res?.data)
-      alert("Assignments deleted successfully!")
+    addDeleteUser({ assignmentIds }).then((res) => {
+      console.log("successDelete", res, assignmentIds)
+      if (res?.data)
+        alert("Assignments deleted successfully!")
       setDeleteSelectLoading(false)
       setDeleteBulkModalActive(false)
       fetch()
     })
-  
+
   }
-console.log({selectedId})
-  const markSelectDelete=()=>{
-    let assignmentIds=selectedId?.map(ii=>ii?.assignedTestId)
-    if(!assignmentIds || assignmentIds?.length===0) return
+  console.log({ selectedId })
+  const markSelectDelete = () => {
+    let assignmentIds = selectedId?.map(ii => ii?.assignedTestId)
+    if (!assignmentIds || assignmentIds?.length === 0) return
     setMarkSelectLoading(true)
-    addMark({assignmentIds}).then((res)=>{
-      console.log("successMark",res,assignmentIds)
-      if(res?.data)
-      alert("Selected Assignments marked completed!")
+    addMark({ assignmentIds }).then((res) => {
+      console.log("successMark", res, assignmentIds)
+      if (res?.data)
+        alert("Selected Assignments marked completed!")
       setMarkSelectLoading(false)
       setMarkBulkModalActive(false)
       fetch()
     })
-  
+
   }
-  const resendSelectDelete=()=>{
-    let assignmentIds=selectedId?.map(ii=>ii?.assignedTestId)
-    if(!assignmentIds || assignmentIds?.length===0) return
+  const resendSelectDelete = () => {
+    let assignmentIds = selectedId?.map(ii => ii?.assignedTestId)
+    if (!assignmentIds || assignmentIds?.length === 0) return
     setResendSelectLoading(true)
-    addResend({assignmentIds}).then((res)=>{
-      console.log("successResend",res,assignmentIds)
-      if(res?.data)
-      alert("Assignments resent!")
+    addResend({ assignmentIds }).then((res) => {
+      console.log("successResend", res, assignmentIds)
+      if (res?.data)
+        alert("Assignments resent!")
       setResendSelectLoading(false)
       setResendBulkModalActive(false)
       fetch()
     })
-  
-  }
-  const [deleteBulkModalActive,setDeleteBulkModalActive] =useState(false)
-  const [deleteSelectLoading,setDeleteSelectLoading]=useState(false)
 
-  const [markBulkModalActive,setMarkBulkModalActive] =useState(false)
-  const [markSelectLoading,setMarkSelectLoading]=useState(false)
-  const [resendBulkModalActive,setResendBulkModalActive] =useState(false)
-  const [resendSelectLoading,setResendSelectLoading]=useState(false)
+  }
+  const [deleteBulkModalActive, setDeleteBulkModalActive] = useState(false)
+  const [deleteSelectLoading, setDeleteSelectLoading] = useState(false)
+
+  const [markBulkModalActive, setMarkBulkModalActive] = useState(false)
+  const [markSelectLoading, setMarkSelectLoading] = useState(false)
+  const [resendBulkModalActive, setResendBulkModalActive] = useState(false)
+  const [resendSelectLoading, setResendSelectLoading] = useState(false)
   return (
     <>
       <div className="w-[83.3333333333vw] mx-auto min-h-screen mb-[40px]">
         <div className="">
           <div className="flex justify-between items-center ">
             <p className="text-[#24A3D9] text-base-20 mb-8 mt-[50px]">
-            <span onClick={()=>navigate('/')} className="cursor-pointer"> 
-              {organization?.company +
-                "  >  " +
-                firstName +
-                "  " +
-                lastName +
-                "  >  "}
+              <span onClick={() => navigate('/')} className="cursor-pointer">
+                {organization?.company +
+                  "  >  " +
+                  firstName +
+                  "  " +
+                  lastName +
+                  "  >  "}
               </span>
               <span className="font-bold">Assignments</span>
             </p>
@@ -857,25 +863,25 @@ console.log({selectedId})
                   type="text"
                 />
                 <InputSearch
-                IconRight={SearchIcon}
+                  IconRight={SearchIcon}
                   placeholderClass="text-base-17-5 text-[#667085]"
-              
-                optionListClassName="text-base-17-5 text-[#667085]"
-                  inputClassName="text-base-17-5 !py-3 text-[#667085]"
+
+                  optionListClassName="text-base-17-5 text-[#667085]"
+                  inputClassName="placeholder:text-[#667085] text-base-17-5 !py-3 text-[#667085]"
                   inputContainerClassName=" !py-3 shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white  h-[50px] text-[#667085]"
-                placeholder="Search Assignment"
-                parentClassName="w-[23.75vw] -mt-[18px] text-base-17-5 text-[#667085] h-[50px]"
-                type="select"
-                value={filterData.testName}
-                onChange={(e) => {
-                  setFilterData({ ...filterData, testName: e.target.value })
-                  handleOptionData(e.target.value )
-                }}
-                optionData={filterOptions}
-                onOptionClick={(item) => {
-                  setFilterData({ ...filterData, testName: item?.value })
-                }}
-              />
+                  placeholder="Search Assignment"
+                  parentClassName="w-[23.75vw] -mt-[18px] text-base-17-5 text-[#667085] h-[50px]"
+                  type="select"
+                  value={filterData.testName}
+                  onChange={(e) => {
+                    setFilterData({ ...filterData, testName: e.target.value })
+                    handleOptionData(e.target.value)
+                  }}
+                  optionData={filterOptions}
+                  onOptionClick={(item) => {
+                    setFilterData({ ...filterData, testName: item?.value })
+                  }}
+                />
                 {/* <InputSelect
                   IconSearch={SearchIcon}
                   value={filterData.testName}
@@ -945,11 +951,11 @@ console.log({selectedId})
 
               <div className="flex items-center  justify-between gap-[20px] mt-[10px]">
                 <div className="flex text-[#26435F] items-center text-[17.5px] text-base-17-5">
-                <div className="ml-6 flex gap-3 ">
+                  <div className="ml-6 flex gap-3 ">
 
-            <SCheckbox stopM={true} checked={isChecked} onChange={handleCheckboxChange} />
-            <span className="inline-block text-[17.5px] text-base-17-5">{selectedId?.length} Selected</span>
-            {/* <label className={`  text-[#26435F] font-medium flex items-center`}>
+                    <SCheckbox stopM={true} checked={isChecked} onChange={handleCheckboxChange} />
+                    <span className="inline-block text-[17.5px] text-base-17-5">{selectedId?.length} Selected</span>
+                    {/* <label className={`  text-[#26435F] font-medium flex items-center`}>
               <input
                 type="checkbox"
                 checked={isChecked}
@@ -961,14 +967,14 @@ console.log({selectedId})
               ></span>
              
             </label> */}
-          </div>
-          {
-            (persona==="admin"|| (persona==="tutor" && organization?.settings?.permissions && organization?.settings?.permissions[0]?.choosedValue))&&
-                    <div onClick={() => selectedId?.length > 0 && setDeleteBulkModalActive(true)} className="gap-x-[5px] cursor-pointer px-1 w-[5.9375vw] py-[9px] bg-[#FFF] rounded-5 ml-6 flex items-center justify-center text-base-17-5">
-                    <p >Delete</p>
-                    <p ><img className="w-5 h-5" src={DeleteIcon} alt="" /></p>
                   </div>
-}
+                  {
+                    (persona === "admin" || (persona === "tutor" && organization?.settings?.permissions && organization?.settings?.permissions[0]?.choosedValue)) &&
+                    <div onClick={() => selectedId?.length > 0 && setDeleteBulkModalActive(true)} className="gap-x-[5px] cursor-pointer px-1 w-[5.9375vw] py-[9px] bg-[#FFF] rounded-5 ml-6 flex items-center justify-center text-base-17-5">
+                      <p >Delete</p>
+                      <p ><img className="w-5 h-5" src={DeleteIcon} alt="" /></p>
+                    </div>
+                  }
                   <div onClick={() => selectedId?.length > 0 && setResendBulkModalActive(true)} className="cursor-pointer gap-x-[5px] px-1 py-[11px] bg-[#FFF] rounded-5 ml-6 flex w-[5.9375vw] items-center justify-center text-base-17-5">
                     <p >Resend</p>
                     <img src={ResendIcon} alt="" />
@@ -989,10 +995,10 @@ console.log({selectedId})
           <div className="mt-3">
             <Table
               noArrow={true}
-             
+
               selectedId2={selectedId}
               setSelectedId2={setSelectedId}
-             
+
               onClick={{ handleResend, handleDelete, handleNavigate }}
               dataFor="assignedTests"
               data={filteredTests}
@@ -1014,7 +1020,7 @@ console.log({selectedId})
           cancelBtnClassName="max-w-140 !bg-[rgba(38,67,95,0.20)] !text-[#26435F]"
           primaryBtn={{
             text: "Assign",
-            className: "max-w-140 pl-8 pr-8 ",
+            className: "max-w-140 pl-8 pr-8 !bg-[#FFA28D] !text-white ",
             onClick: () => handleAssignTestSubmit(),
             disabled: submitBtnDisabled,
 
@@ -1023,11 +1029,11 @@ console.log({selectedId})
           handleClose={handleClose}
           body={
             <>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-2 md:gap-x-3 gap-y-0 mb-5">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 md:gap-x-6  gap-y-0 mb-7">
                 <div>
-                
-                <InputSearch
-                   label="Student Name"
+
+                  <InputSearch
+                    label="Student Name"
                     labelClassname="text-base-20 text-[#26435F] mb-1"
                     placeholder="Search Student"
                     placeholderClass="text-base-17-5"
@@ -1039,7 +1045,7 @@ console.log({selectedId})
                     checkbox={{
                       visible: true,
                       name: "student",
-                      match: studentMultiple?.map(itt=>itt?._id),
+                      match: studentMultiple?.map(itt => itt?._id),
                     }}
                     onChange={(e) => setModalData({
                       ...modalData,
@@ -1048,13 +1054,13 @@ console.log({selectedId})
                     optionListClassName="text-base-17-5"
                     optionClassName="text-base-17-5"
                     optionData={students}
-                   // right={<img className="" src={down} />}
+                    // right={<img className="" src={down} />}
                     onOptionClick={(item) => {
-                     
-                       
-                      
+
+
+
                       handleMultipleStudent(item)
-                     // handleTestChange(item);
+                      // handleTestChange(item);
                       // setStudent(item.value);
                       // handleStudentsChange(item)
                       // setCurrentToEdit({ ...currentToEdit, students: [... item._id] });
@@ -1148,7 +1154,7 @@ console.log({selectedId})
                       })
                     }
                     parentClassName="w-full mr-4"
-                    
+
                     inputContainerClassName="px-5 py-3.5 bg-primary-50 border-0"
                     inputClassName="text-base-17-5 bg-transparent text-base-17-5"
                     placeholderClass="text-base-17-5"
@@ -1208,7 +1214,7 @@ console.log({selectedId})
         <Modal
           title={
             <span className="leading-10">
-              Are you sure 
+              Are you sure
               you want to delete the assigned test ?
             </span>
           }
@@ -1226,13 +1232,13 @@ console.log({selectedId})
           classname={"max-w-[600px] mx-auto"}
         />
       )}
-        {deleteBulkModalActive && (
+      {deleteBulkModalActive && (
         <Modal
           title={
             <span className="leading-10">
-              Are you sure 
+              Are you sure
               you want to delete Assignments?
-              
+
             </span>
           }
           titleClassName="mb-5 leading-10"
@@ -1246,17 +1252,17 @@ console.log({selectedId})
             bgDanger: true,
             loading: deleteSelectLoading,
           }}
-        
+
           handleClose={() => setDeleteBulkModalActive(false)}
           classname={"max-w-[600px]  mx-auto"}
         />
       )}
-         {markBulkModalActive && (
+      {markBulkModalActive && (
         <Modal
           title={
             <span className="leading-10 whitespace-nowrap">
-             Do you want to mark the Assignments as completed?
-              
+              Do you want to mark the Assignments as completed?
+
             </span>
           }
           titleClassName="mb-5 leading-10"
@@ -1272,10 +1278,10 @@ console.log({selectedId})
           }}
           body={
             <>
-             <p className="text-base-17-5 mt-[-5px] text-[#667085] mb-6">
-                    <span className="font-semibold mr-1">⚠️ Note:</span>
-                    Once the assignments are marked as “Complete”, the students will not be able to attempt any remaining sections and will be able to access the score report. Read detailed documentation in Evallo’s  <span className="text-[#24A3D9]"> knowledge base.</span>
-                  </p>
+              <p className="text-base-17-5 mt-[-5px] text-[#667085] mb-6">
+                <span className="font-semibold mr-1">⚠️ Note:</span>
+                Once the assignments are marked as “Complete”, the students will not be able to attempt any remaining sections and will be able to access the score report. Read detailed documentation in Evallo’s  <span className="text-[#24A3D9]"> knowledge base.</span>
+              </p>
             </>
           }
           handleClose={() => setMarkBulkModalActive(false)}
@@ -1286,11 +1292,11 @@ console.log({selectedId})
         <Modal
           title={
             <span className="leading-10 whitespace-nowrap">
-             Do you want to resend the assignments via email?
-              
+              Do you want to resend the assignments via email?
+
             </span>
           }
-         
+
           titleClassName="mb-4 leading-10"
           cancelBtn={true}
           crossBtn={true}
@@ -1304,10 +1310,10 @@ console.log({selectedId})
           }}
           body={
             <>
-             <p className="text-base-17-5 mt-[-5px] text-[#667085] mb-6">
-                    <span className="font-semibold mr-1">⚠️ Note:</span>
-                    This will NOT create another assignment for the students. Instead, it will resend the email with the PDF file (containing the assignment content) attached to it. Read detailed documentation in Evallo’s  <span className="text-[#24A3D9]"> knowledge base.</span>
-                  </p>
+              <p className="text-base-17-5 mt-[-5px] text-[#667085] mb-6">
+                <span className="font-semibold mr-1">⚠️ Note:</span>
+                This will NOT create another assignment for the students. Instead, it will resend the email with the PDF file (containing the assignment content) attached to it. Read detailed documentation in Evallo’s  <span className="text-[#24A3D9]"> knowledge base.</span>
+              </p>
             </>
           }
           handleClose={() => setResendBulkModalActive(false)}

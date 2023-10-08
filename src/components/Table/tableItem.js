@@ -315,6 +315,32 @@ export default function TableItem({
 
       }
       {
+        dataFor === "popularServices" && (
+          <>
+            <tr className=" text-[17.5px] font-medium">
+              <td className="py-4 px-[10px]">
+                {item.service}
+              </td>
+              <td className="py-4 px-[10px]">
+                {item.actively_using}
+              </td>
+              <td className="py-4 px-[10px]">
+                {item.total_used}
+              </td>
+              <td className="py-4 px-[10px]">
+                {item.scheduled_hours}
+              </td>
+              <td className="py-4 px-[10px]">
+                {item.completed_hours}
+              </td>
+              <td className="py-4 px-[10px]">
+                {item.percent_of_business}
+              </td>
+            </tr>
+          </>
+        )
+      }
+      {
         dataFor === "serviceRates" && (
           <>
 
@@ -421,7 +447,7 @@ export default function TableItem({
           </td>
           <td className=" text-[17.5px] px-1  min-w-14 ">
             <InputSelect
-              disabled={(item?.userType === "parent" || item?.userType === "student") ? false : true}
+              disabled={(item?.userType === "tutor" ) ? false : true}
               tableDropdown={true}
               value={tutorStatus ? tutorStatus : "-"}
               optionData={organization2?.settings?.tutorStatus}
@@ -540,8 +566,8 @@ export default function TableItem({
         </tr>
       )}
       {dataFor === "assignedTests" && (
-        <tr className=" text-[17.5px]  leading-8">
-          <td className="px-1 font-medium  min-w-14 py-4 text-left">
+        <tr className=" text-[17.5px] ">
+          <td className="px-1 font-medium  min-w-14  text-left flex items-center  pb-[14px] pt-4">
             <span
               className="inline-block cursor-pointer pl-4"
 
@@ -568,23 +594,23 @@ export default function TableItem({
             </span>
 
           </td>
-          <td className="font-medium px-1  min-w-14 py-4">{item.testName}</td>
-          <td className=" text-[17.5px] px-1  min-w-14 py-4  text-center">
+          <td className="font-medium px-1  min-w-14 py-3">{item.testName}</td>
+          <td className=" text-[17.5px] px-1  min-w-14 py-3  text-center">
 
             <span onClick={() => onClick.redirect(item)} className="">
               {getFormattedDate(item.assignedOn, dateFormat)}
             </span>
           </td>
-          <td className=" text-[17.5px] px-1  min-w-14 py-4  text-center">
+          <td className=" text-[17.5px] px-1  min-w-14 py-3  text-center">
 
             <span onClick={() => onClick.redirect(item)} className="">
               {getFormattedDate(item.dueDate, dateFormat)}
             </span>
           </td>
 
-          <td className="font-medium px-1  min-w-14 py-4">{item.assignedBy
+          <td className="font-medium px-1  min-w-14 py-3">{item.assignedBy
           }</td>
-          <td className="font-medium px-1  min-w-14 py-4">
+          <td className="font-medium px-1  min-w-14 py-3">
 
 
             <div className={`flex items-center no-wrap justify-center`}>
@@ -594,16 +620,16 @@ export default function TableItem({
 
 
           </td>
-          <td className="font-medium px-1  min-w-14 py-4">
+          <td className="font-medium px-1  min-w-14 py-3">
             {item.duration === "-" ? "Unlimited" : item.duration}
           </td>
-          <td className="font-medium px-1  min-w-14 py-4">
+          <td className="font-medium px-1  min-w-14 py-3">
             <div className="text-center">
               {item.status === "completed" ? score : "-"}
             </div>
           </td>
 
-          <td className=" px-1  min-w-14 py-4">
+          <td className=" px-1  min-w-14 py-3">
             <button
               className={`text-[15px] text-base-15 px-3 h-[31px]  rounded-5 flex items-center leading-none w-[100px] text-center text-white ${item.status == "completed"
                 ? "bg-[#38C980]  "
@@ -839,20 +865,22 @@ export default function TableItem({
           <td className="font-medium px-1 py-4 text-right">
             <div className="flex justify-end">
               <button
-                className="flex leading-none bg-[#FFA28D] text-white py-1.5 px-5 cursor-pointer rounded"
+                className="flex leading-none bg-[#FFA28D] text-white py-1.5 px-5 cursor-pointer rounded !text-base-15"
                 onClick={() => navigate(`/all-tests/${item._id}`)}
               >
                 View
               </button>
             </div>
           </td>
-          <td className="font-medium px-1 justify-center flex gap-x-2">
+          <td className="font-medium px-1 ">
+          <div className="flex justify-end  flex justify-center items-center">
             <button
-              className="flex leading-none bg-[#26435f4d] text-white py-1.5 px-5 cursor-pointer rounded"
+              className="flex leading-none bg-[#26435f4d] text-white py-1.5 px-5 cursor-pointer rounded !text-base-15"
               onClick={() => onClick.openRemoveTestModal(item)}
             >
               Remove
             </button>
+            </div>
           </td>
         </tr>
       )}
@@ -863,7 +891,7 @@ export default function TableItem({
           <td>{getFormattedDate(item.createdAt.split("T")[0], dateFormat)}</td>
           <td>{getFormattedDate(item.updatedAt.split("T")[0], dateFormat)}</td>
           <td> {item.no_of_assign ? item.no_of_assign : "-"} </td>
-          <td className="font-medium px-1 py-4 text-right">
+          <td className="font-medium px-1 py-3 text-right">
             <div className="flex justify-center">
               <p
                 className="flex leading-none text-[#517CA8] underline py-1.8 px-0 underline-offset-1 cursor-pointer rounded"

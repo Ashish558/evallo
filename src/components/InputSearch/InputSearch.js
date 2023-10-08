@@ -20,6 +20,7 @@ export default function InputSearch({
    right,
    required,
    optionData,
+   optionClassName,
    onOptionClick,
    optionPrefix,
    checkbox,
@@ -50,7 +51,7 @@ export default function InputSearch({
          >
             {Icon && <img src={Icon} className="mr-6" />}
             {
-               IconRight && <img src={SeacrchIcon} className="mr-4" />
+               IconRight && <img src={IconRight} className="mr-4" alt="search" />
             }
             {inputLeftField && inputLeftField}
             <input disabled={disabled}
@@ -65,15 +66,15 @@ export default function InputSearch({
             // onBlur={()=> setOptionsVisible(false)}
             />
             {
-              (IconSearch ?
-                  <img src={SeacrchIcon} className="ml-4" alt="SeacrchIcon"/>:'')
-                  
-               
+               (IconSearch ?
+                  <img src={SeacrchIcon} className="ml-4" alt="SeacrchIcon" /> : '')
+
+
             }
             {right && right}
 
             {optionsVisible &&
-               <div className={`${styles.options} custom-scroller scrollbar-vertical shadow-xl rounded-t-none`}>
+               <div className={`${styles.options} custom-scroller scrollbar-vertical shadow-xl rounded-t-none ${optionClassName}`}>
                   {optionData?.map((option, idx) => {
 
                      return (
@@ -84,7 +85,7 @@ export default function InputSearch({
                               {option.value}
                            </p>
                            <p className={`text-sm opacity-60 ${checkbox ? 'mr-auto ml-4' : ''}`}>
-                              {option?._id&&optionPrefix ? `${optionPrefix}${option?._id.slice(-5)}` :option?._id&& option?._id.slice(-5)}
+                              {option?._id && optionPrefix ? `${optionPrefix}${option?._id.slice(-5)}` : option?._id && option?._id.slice(-5)}
                            </p>
                            {
                               checkbox &&

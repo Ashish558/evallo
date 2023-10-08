@@ -106,7 +106,7 @@ export default function StudentProfile({ isOwn }) {
   const { awsLink } = useSelector((state) => state.user);
 
   const { id } = useSelector((state) => state.user);
-  console.log("user", user)
+  console.log("user parent", user,userDetail)
 
   const [selectedScoreIndex, setSelectedScoreIndex] = useState(0);
   const { organization } = useSelector((state) => state.organization);
@@ -120,7 +120,8 @@ export default function StudentProfile({ isOwn }) {
       email: "",
       phone: "",
       alternateEmail:"",
-
+      assiginedStudents: [],
+      studentsData: [],
       phoneCode: "",
     },
     frame1: {
@@ -154,6 +155,7 @@ export default function StudentProfile({ isOwn }) {
       active: false,
       leadStatus: "",
     },
+    
     associatedStudents: {
       active: false,
       assiginedStudents: [],
@@ -340,7 +342,7 @@ const [toEdit, setToEdit] = useState({
       userId = params.id;
     }
     getUserDetail({ id: userId }).then((res) => {
-      console.log("details -- ",userId,res);
+      console.log("parent details -- ",userId,res);
       if(!res?.data?.data)return 
       // //console.log('tut id', id);
       if (res.data.data.user.assiginedTutors) {
@@ -358,7 +360,8 @@ const [toEdit, setToEdit] = useState({
         phoneCode,
       } = res.data.data.user;
 
-      setUser(res.data.data.user);
+      setUser(res.data.data.user);  
+      if(!res?.data?.data?.userdetails)return 
       const { leadStatus, notes, residentialAddress, subscribeType } =
         res.data.data.userdetails;
 
@@ -368,18 +371,19 @@ const [toEdit, setToEdit] = useState({
 
       assiginedStudents !== undefined &&
         assiginedStudents.map((student,idx) => {
-          getUserDetail({ id: student }).then((res) => {
-           console.log({[id]:res})
+          getUserDetail({ id: student }).then((res2) => {
+            if(res2?.error)return 
+           console.log("student ",{[id]:res2})
             studentsData.push({
-              _id: res.data.data.user._id,
-              value: `${res.data.data.user.firstName} ${res.data.data.user.lastName}`,
-              name: `${res.data.data.user.firstName} ${res.data.data.user.lastName}`,
-              photo: res.data.data.user.photo ? res.data.data.user.photo : null,
-              email: res.data.data.user.email ? res.data.data.user.email : null,
-              service: res.data.data.userdetails.service ? res.data.data.userdetails.service : [],
+              _id: res2.data.data.user._id,
+              value: `${res2.data.data.user.firstName} ${res2.data.data.user.lastName}`,
+              name: `${res2.data.data.user.firstName} ${res2.data.data.user.lastName}`,
+              photo: res2.data.data.user.photo ? res2.data.data.user.photo : null,
+              email: res2.data.data.user.email ? res2.data.data.user.email : null,
+              service: res2.data.data.userdetails?.service ? res2.data.data.userdetails?.service : [],
             });
-            if(idx===user?.assiginedStudents?.length-1)
-            setAssociatedStudents(studentsData);
+           
+            setAssociatedStudents([...studentsData]);
           });
          
         });
@@ -419,6 +423,7 @@ const [toEdit, setToEdit] = useState({
                   ...prev.frame0.schoolName,
                   schoolName,
                   about,
+                //  assiginedStudents:studentsData?.map(student => student?._id)
                 },
                 frame1: {
                   ...prev.frame1,
@@ -463,7 +468,18 @@ const [toEdit, setToEdit] = useState({
   useEffect(() => {
     fetchDetails();
   }, [params.id]);
-
+useEffect(() => {
+  if(associatedStudents?.length>0)
+  setToEdit((prev)=>{
+    return {
+      ...prev,
+      frame0:{
+        ...prev.frame0,
+        assiginedStudents:associatedStudents?.map(it=>it?._id)
+      }
+    }
+  })
+},[associatedStudents])
   useEffect(() => {
     fetchSettings().then((res) => {
       if (res.error) {
@@ -496,10 +512,10 @@ const [toEdit, setToEdit] = useState({
   };
 
   useEffect(() => {
-    // //console.log(userDetail.timeZone);
-    if (userDetail.timeZone === undefined) return;
-    dispatch(updateTimeZone({ timeZone: userDetail.timeZone }));
-  }, [userDetail.timeZone]);
+    // //console.log(userDetail?.timeZone);
+    if (userDetail?.timeZone === undefined) return;
+    dispatch(updateTimeZone({ timeZone: userDetail?.timeZone }));
+  }, [userDetail?.timeZone]);
  
   // //console.log(user)
   // //console.log(userDetail)
@@ -523,7 +539,7 @@ const [toEdit, setToEdit] = useState({
   //         name: `${res.data.data.user.firstName} ${res.data.data.user.lastName}`,
   //         photo: res.data.data.user.photo ? res.data.data.user.photo : null,
   //         email: res.data.data.user.email ? res.data.data.user.email : null,
-  //         service: res.data.data.userdetails.service ? res.data.data.userdetails.service : [],
+  //         service: res.data.data.userdetails?.service ? res.data.data.userdetails?.service : [],
   //       });
 
   //     });
@@ -698,7 +714,7 @@ const [toEdit, setToEdit] = useState({
               <div
                 className={`${styles.studentsContainer} min-h-[290px] w-full`}
               >
-                {console.log({user,associatedStudents},user?.assiginedStudents)}
+              
                 {associatedStudents?.map((student, idx) => {
                   return (
                     <div
