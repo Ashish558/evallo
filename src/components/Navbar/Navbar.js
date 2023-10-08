@@ -418,7 +418,7 @@ const Navbar = () => {
             <Modal
                title={
                   <>
-                     Are You Sure 
+                     Are You Sure
                      You Want To Log Out?
                   </>
                }
@@ -426,15 +426,15 @@ const Navbar = () => {
                titleClassName="leading-9 text-center whitespace-nowrap mb-[22.67px]"
                cancelBtn={true}
                crossBtn={true}
-               cancelBtnClassName="pt-[17px] pb-[18px] w-[146px] text-[#26435F] font-medium text-base !rounded-[8px] bg-[rgba(38,67,95,0.10)]"
+               cancelBtnClassName="!w-[146px] text-[#26435F] font-medium text-base !rounded-[8px] !bg-[rgba(38,67,95,0.10)] !ml-auto !h-[46px]"
                primaryBtn={{
                   text: "Logout",
-                  className: "text-base bg-[#FF7979] w-[146px] pl-4 pr-4 pt-[17px] pb-[18px] !rounded-[8px] font-medium",
+                  className: "text-base bg-[#FF7979] !w-[146px] pl-4 pr-4   !rounded-[8px] font-medium !mr-auto !text-center !bg-[#FF7979] !h-[46px]",
                   onClick: logoutUser,
                }}
                handleClose={() => setLogoutModalActive(false)}
                body={<div className="mb-6"></div>}
-               classname={"!w-[666px] mx-auto !pt-7 !pb-[33px] !rounded-[8px] px-[33.33px]"}
+               classname={"!w-[666px] mx-auto !pt-7 !pb-[33px] !rounded-[8px] px-[33.33px] !text-center"}
             />
          )}
       </>
