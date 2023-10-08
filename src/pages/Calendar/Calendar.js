@@ -607,7 +607,7 @@ export default function Calendar() {
     if (arg.event._def.extendedProps.sessionStatus === "Completed") {
       isCompleted = true;
     }
-    // console.log("event cards details",arg.event._def,arg.event._def.extendedProps)
+ console.log("event cards details",arg.event._def,arg.event._def.extendedProps)
 
     const textclasses = {
       Completed: "!bg-[#38C980] ",
@@ -617,7 +617,8 @@ export default function Calendar() {
       Missed: "!bg-[#FFCE84] ",
     };
     let key = insightData.role;
-    if (key === "tutor" || persona === "parent" || persona === "tutor") {
+
+    if (key === "tutor" || key === "parent"||persona=="parent" || persona === "tutor") {
       key = arg.event._def.extendedProps?.studentId;
     } else {
       key = arg.event._def.extendedProps?.tutorId;
@@ -719,7 +720,8 @@ export default function Calendar() {
   };
   const [studentName, setStudentNames] = useState([]);
   const handleInsights = (name, role, item) => {
-    getCalenderInsight({ name, id: item._id }).then((res) => {
+    getCalenderInsight({ name:name, id: item._id }).then((res) => {
+      setColorMapping({})
       if (res.error) {
         return console.log('insight err', res.error);
       }
@@ -766,7 +768,7 @@ export default function Calendar() {
       handleInsights(userDetail?.firstName + " " + userDetail?.lastName, persona, { _id: userDetail?.id })
     }
   }, [userDetail])
-  // ////console.log("user insights",insightData,userDetail)
+
   useEffect(() => {
     //////console.log("role=" + persona)
     if (name.length > 0) {
@@ -998,15 +1000,10 @@ export default function Calendar() {
     setStudents(tempStudents);
   };
 
-  const colorsTutor = {
-    bg: ["#F6935A33", "#7DE94A33", "#6F7ADE33", "#C97BEE33"],
-    text: ["#F6935A", "#7DE94A", "#6F7ADE", "#C97BEE"],
-  };
-
   const staticColors = ["#F6935A", "#7DE94A", "#6F7ADE", "#C97BEE", "#FF5733", "#42EADD", "#FFC300", "#9A32CD", "#00BFFF", "#FF1493", "#008000", "#FFD700", "#1E90FF", "#FF4500", "#00FF00", "#8A2BE2", "#FF8C00", "#4169E1", "#FF69B4", "#228B22", "#FFDAB9", "#9932CC", "#FFA07A", "#87CEEB", "#FFB6C1", "#8B008B", "#FF6347", "#00CED1", "#FFA500", "#0000CD", "#DC143C", "#20B2AA", "#FF4500", "#191970", "#FF8C69", "#008080", "#FFA500", "#2E8B57", "#FFD700", "#00008B", "#FFB6C1", "#48D1CC", "#FF69B4", "#8A2BE2", "#FF6347", "#7B68EE", "#FF4500", "#32CD32", "#FFDAB9", "#B22222", "#FF1493", "#00FA9A", "#FFA07A"];
 
   const [colorMapping, setColorMapping] = useState({});
-
+  console.log("user insights",insightData,colorMapping,userDetail)
   const mapColor = (val) => {
     let n = Object.keys(colorMapping).length;
     if (colorMapping[val]) return colorMapping[val];
@@ -1023,7 +1020,7 @@ export default function Calendar() {
     return staticColors[n % staticColors.length];
   };
   useEffect(() => {
-
+    setColorMapping({})
     //  console.log("insights color",{insightData})
     let temp = {};
     if (insightData && insightData.role === "student") {
@@ -1039,7 +1036,7 @@ export default function Calendar() {
 
       });
     }
-    if (insightData && insightData.role === "tutor") {
+    if (insightData &&  (insightData.role === "parent"|| insightData.role === "tutor")) {
       insightData?.data?.map((it) => {
         let n = Object.keys(colorMapping).length;
         setColorMapping((prev) => {
@@ -1079,9 +1076,11 @@ export default function Calendar() {
     currentRef.style.transition = "all 1s ease";
     if (currentRef.classList.contains("expanded")) {
       accordionRefs.current.forEach((ar, i) => {
+        if(accordionImgRefs.current && accordionImgRefs.current[i]) {
         ar?.classList.add("expanded");
-        accordionImgRefs.current[i].src = down_triangle;
+        accordionImgRefs.current[i].src = down_triangle;}
       });
+      if(accordionImgRefs.current && accordionImgRefs2.current[id]) 
       accordionImgRefs.current[id].src = up_triangle;
       currentRef.classList.remove("expanded");
     } else {
@@ -1098,9 +1097,11 @@ export default function Calendar() {
     currentRef.style.transition = "all 1s ease";
     if (currentRef.classList.contains("expanded")) {
       accordionRefs.current.forEach((ar, i) => {
+        if(accordionImgRefs2.current && accordionImgRefs2.current[i]) {
         ar?.classList.add("expanded");
-        accordionImgRefs2.current[i].src = down_triangle;
+        accordionImgRefs2.current[i].src = down_triangle;}
       });
+      if(accordionImgRefs2.current &&accordionImgRefs2.current[id])
       accordionImgRefs2.current[id].src = up_triangle;
       currentRef.classList.remove("expanded");
     } else {
@@ -1288,6 +1289,7 @@ export default function Calendar() {
                 onOptionClick={(item) => {
                   setName(item.value);
                   handleInsights(item.value, item.role, item);
+                  setColorMapping({})
                   fetchSessions(item._id, item.role);
                 }}
               />
@@ -1302,8 +1304,8 @@ export default function Calendar() {
                     >
                       <div
                         style={{
-                          backgroundColor: colorMapping[item?.tutor?._id] + "40",
-                          color: colorMapping[item?.tutor?._id],
+                          backgroundColor: insightData?.role === "student"?colorMapping[item?.tutor?._id] + "40":colorMapping[item?.student?._id] + "40",
+                          color: insightData?.role === "student"?colorMapping[item?.tutor?._id]:colorMapping[item?.student?._id] ,
                         }}
                         onClick={() => toggleAccordions(id)}
                         className="transition-shy cursor-pointer bg-[rgba(255,162,141,0.2)] overflow-hidden relative z-50 py-3 px-5 text-[#FFA28D] mx-0 flex justify-between shadow-sm rounded-t-md w-full  "
@@ -1315,7 +1317,7 @@ export default function Calendar() {
                         }
                         <div
                           style={{
-                            backgroundColor: colorMapping[item?.tutor?._id],
+                            backgroundColor: insightData?.role === "student"?colorMapping[item?.tutor?._id]:colorMapping[item?.student?._id] ,
                           }}
                           className="flex justify-center items-center text-center py-auto my-auto w-5 h-5 rounded-3xl "
                         >
@@ -1411,7 +1413,7 @@ export default function Calendar() {
                     </div>
                   );
                 })
-                : insightData.message && false && (
+                : insightData.message  && (
                   <div className="transition-shy mt-3 cursor-pointer bg-[rgba(255,162,141,0.2)] overflow-hidden relative z-50 py-3 px-5 text-[#FFA28D] mx-0 flex justify-between shadow-sm rounded-t-md w-full  ">
                     {insightData.message}
                   </div>

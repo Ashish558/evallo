@@ -325,14 +325,13 @@ export default function ParentEditables({
     });
     // //console.log("currentUser");
   }, [toEdit]);
-  const [hideTooltip,setTooltip]=useState(false)
-  useEffect(()=>{
-    if(user?.isVerified){
-   setTooltip(user?.isVerfied)
-   console.log({vv:user?.isVerfied,hideTooltip})}
-  },[user])
-
-
+  const [hideTooltip, setTooltip] = useState(false);
+  useEffect(() => {
+    if (user?.isVerified) {
+      setTooltip(user?.isVerfied);
+      console.log({ vv: user?.isVerfied, hideTooltip });
+    }
+  }, [user]);
 
   const handleClose = () => {
     let tempToEdit = {};
@@ -434,16 +433,16 @@ export default function ParentEditables({
     delete reqBody["active"];
     //console.log({reqBody,userId});
     if (currentToEdit.hasOwnProperty("notes")) {
-      reqBody={
-        internalNotes:[
+      reqBody = {
+        internalNotes: [
           ...currentToEdit.internalNotes,
           {
             note: currentToEdit?.notes,
-     
-        date: new Date(),
-          }
-        ]
-      }
+
+            date: new Date(),
+          },
+        ],
+      };
       // let reqBody = {
       //   note: currentToEdit?.notes,
       //   type: "internalNotes", // or it can be 'internalNotes'
@@ -688,7 +687,7 @@ export default function ParentEditables({
     "personality",
     "subjects",
   ];
-  console.log(user)
+  console.log(user);
   return Object.keys(toEdit).map((key) => {
     return (
       toEdit[key].active === true && (
@@ -737,7 +736,7 @@ export default function ParentEditables({
                 id="editable-form"
                 onSubmit={handleSubmit}
               >
-                {console.log({user})}
+                {console.log({ user })}
                 {/* {currentField.fields && currentField.fields} */}
                 {currentField.name === "frame0" && (
                   <div className="flex flex-col px-2 max-h-[60vh]">
@@ -813,7 +812,6 @@ export default function ParentEditables({
                           <InputField
                             IconLeft={caution}
                             hideTooltip={hideTooltip}
-
                             label="Email"
                             labelClassname="text-[#26435F]"
                             placeholder="Email Id"
@@ -828,20 +826,22 @@ export default function ParentEditables({
                                 email: e.target.value,
                               })
                             }
-                            Tooltip={ !user?.isVerfied&&
-                              <span className="absolute top-10 w-[200px] scale-0 rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100">
-                                <h3 className="text-[#24A3D9] font-semibold mb-1">
-                                  Email Confirmation Sent
-                                </h3>
-                                You need to verify your email if
-                                <ul className="list-disc pl-3 mb-2">
-                                  <li>you created a new account.</li>
-                                  <li>you recently changed your email.</li>
-                                </ul>
-                                We have sent you an email verification link to
-                                your current email address to make sure that it
-                                really is you who requested a change.
-                              </span>
+                            Tooltip={
+                              !user?.isVerfied && (
+                                <span className="absolute top-10 w-[200px] scale-0 rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100">
+                                  <h3 className="text-[#24A3D9] font-semibold mb-1">
+                                    Email Confirmation Sent
+                                  </h3>
+                                  You need to verify your email if
+                                  <ul className="list-disc pl-3 mb-2">
+                                    <li>you created a new account.</li>
+                                    <li>you recently changed your email.</li>
+                                  </ul>
+                                  We have sent you an email verification link to
+                                  your current email address to make sure that
+                                  it really is you who requested a change.
+                                </span>
+                              )
                             }
                           />
                           <div id="number2 ">
@@ -905,40 +905,42 @@ export default function ParentEditables({
                           placeholder=""
                         ></textarea>
                       </div>
-                      {persona==="admin"&&
-                      <div >
-                         <div id="borderDashed2" className="h-[2px] w-[100%] mt-6 mx-auto my-4"> 
+                      {persona === "admin" && (
+                        <div>
+                          <div
+                            id="borderDashed2"
+                            className="h-[2px] w-[100%] mt-6 mx-auto my-4"
+                          ></div>
+
+                          <InputSearch
+                            right={
+                              <img className="w-5 h-4" alt="drop" src={down} />
+                            }
+                            labelClassname="text-[#26435F] mb-1 text-sm"
+                            label="Associated Parent"
+                            placeholder="Select Associated Parent"
+                            parentClassName="w-[300px]  mb-10"
+                            inputContainerClassName="bg-[#F3F5F7] border-0 pt-3.5 pb-3.5"
+                            inputClassName="bg-[#F3F5F7]"
+                            type="text"
+                            optionClassName="h-[60px] 2xl:h-[100px]  design:h-[200px]"
+                            optionPrefix="s"
+                            value={parent}
+                            onChange={(e) => setParent(e.target.value)}
+                            optionData={parents}
+                            onOptionClick={(val) => {
+                              console.log({ currentToEdit, val });
+                              // setStudent(item.value);
+                              setParent(val?.fname + " " + val?.lname);
+                              setCurrentToEdit({
+                                ...currentToEdit,
+                                associatedParent: val._id,
+                              });
+                              // setCurrentToEdit({ ...currentToEdit, students: [... item._id] });
+                            }}
+                          />
                         </div>
-                        
- <InputSearch
-                     right={<img className="w-5 h-4" alt="drop" src={down} />}
-                     labelClassname="text-[#26435F] mb-1 text-sm"
-                     label="Associated Parent"
-                     placeholder="Select Associated Parent"
-                    parentClassName="w-full  mb-10"
-                    inputContainerClassName="bg-[#F3F5F7] border-0 pt-3.5 pb-3.5"
-                    inputClassName="bg-[#F3F5F7]"
-                    type="text"
-                    optionClassName="h-[60px] 2xl:h-[100px]  design:h-[200px]"
-                    optionPrefix="s"
-                    value={parent}
-                    onChange={(e) => setParent(e.target.value)}
-                    optionData={parents}
-                    onOptionClick={(val) => {
-                      console.log({currentToEdit,val})
-                      // setStudent(item.value);
-                      setParent(val?.fname+" "+val?.lname)
-                      setCurrentToEdit({
-                        ...currentToEdit,
-                        associatedParent: val._id,
-                      
-                      });
-                      // setCurrentToEdit({ ...currentToEdit, students: [... item._id] });
-                    }}
-                  />
-                        </div>
-                      
-                      }
+                      )}
                     </div>
                   </div>
                 )}
@@ -1489,14 +1491,13 @@ export default function ParentEditables({
                 )}
                 {currentField.name === "service" && (
                   <div className="w-[400px] max-h-[50vh] overflow-y-auto custom-scroller">
-                   
                     <div className="flex flex-col gap-2">
                       {organization?.settings?.servicesAndSpecialization.map(
                         (item, id) => {
                           return (
                             <div key={id} className="flex gap-5 items-center">
                               <SCheckbox
-                              stopM={true}
+                                stopM={true}
                                 checked={currentToEdit?.service?.includes(
                                   item?.service
                                 )}
