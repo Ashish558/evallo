@@ -447,7 +447,7 @@ export default function TableItem({
           </td>
           <td className=" text-[17.5px] px-1  min-w-14 ">
             <InputSelect
-              disabled={(item?.userType === "parent" || item?.userType === "student") ? false : true}
+              disabled={(item?.userType === "tutor" ) ? false : true}
               tableDropdown={true}
               value={tutorStatus ? tutorStatus : "-"}
               optionData={organization2?.settings?.tutorStatus}
@@ -872,13 +872,15 @@ export default function TableItem({
               </button>
             </div>
           </td>
-          <td className="font-medium px-1 justify-center flex gap-x-2 pt-4 pb-[15px]">
+          <td className="font-medium px-1 ">
+          <div className="flex justify-end  flex justify-center items-center">
             <button
               className="flex leading-none bg-[#26435f4d] text-white py-1.5 px-5 cursor-pointer rounded !text-base-15"
               onClick={() => onClick.openRemoveTestModal(item)}
             >
               Remove
             </button>
+            </div>
           </td>
         </tr>
       )}

@@ -39,45 +39,45 @@ export default function AllTestDetail({ testData }) {
    return (
       <div className="max-w-840 flex flex-col w-full px-2 gap-y-2 mt-2">
          <div className='flex justify-between items-center'>
-            <p className="inline-block w-138 font-semibold opacity-60">
+            <p className="inline-block w-138 font-medium  text-[#26435F] ">
                {" "}
                Created on
             </p>
-            <p className="inline-block ">:</p>
+            <p className="inline-block mr-7">:</p>
             <p className="inline-block text-[#24A3D9] w-138 font-semibold">
                {testData.createdAt?.split("T")[0]}
             </p>
          </div>
 
          <div className='flex justify-between items-center'>
-            <p className="inline-block w-138 font-semibold opacity-60">
+            <p className="inline-block w-138 font-medium  text-[#26435F] ">
                {" "}
                Created by
             </p>
-            <p className="inline-block ">:</p>
+            <p className="inline-block mr-7">:</p>
             <p className="inline-block text-[#24A3D9]  w-138 font-semibold ">
                {detail.createdBy}
             </p>
          </div>
 
          <div className='flex justify-between items-center'>
-            <p className="inline-block w-138 font-semibold opacity-60">
+            <p className="inline-block w-138 font-medium  text-[#26435F] ">
                {" "}
                Updated on{" "}
             </p>
-            <p className="inline-block ">:</p>
-            <p className="inline-block text-[#24A3D9] w-138 font-semibold ">
+            <p className="inline-block mr-7">:</p>
+            <p className="inline-block text-[#24A3D9] w-138 font-semibold  ">
                {" "}
                {testData.updatedAt?.split("T")[0]}
             </p>
          </div>
 
          <div className='flex justify-between items-center'>
-            <p className="inline-block w-138 font-semibold opacity-60">
+            <p className="inline-block w-138 font-medium text-[#26435F] ">
                {" "}
                Updated By{" "}
             </p>
-            <p className="inline-block ">:</p>
+            <p className="inline-block mr-7">:</p>
             <p className="inline-block text-[#24A3D9] w-138 font-semibold ">
                {" "}
                {testData.updatedAt?.split("T")[0]}
@@ -85,22 +85,22 @@ export default function AllTestDetail({ testData }) {
          </div>
 
          <div className='flex justify-between items-center'>
-            <p className="inline-block w-138 font-semibold opacity-60">
+            <p className="inline-block w-138 font-medium text-[#26435F]">
                {" "}
                Name{" "}
             </p>
-            <p className="inline-block ">:</p>
+            <p className="inline-block mr-7">:</p>
             <p className="inline-block w-138 text-[#24A3D9] font-semibold ">
                {" "}
                {testData.testName}
             </p>
          </div>
          <div className='flex justify-between items-center'>
-            <p className="inline-block w-138 font-semibold opacity-60">
+            <p className="inline-block w-138 font-medium text-[#26435F]">
                {" "}
                Type{" "}
             </p>
-            <p className="inline-block ">:</p>
+            <p className="inline-block mr-7">:</p>
             <p className="inline-block w-138 text-[#24A3D9] font-semibold ">
                {" "}
                {testData.testType}&#174;
