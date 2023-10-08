@@ -1014,7 +1014,7 @@ console.log({selectedId})
           cancelBtnClassName="max-w-140 !bg-[rgba(38,67,95,0.20)] !text-[#26435F]"
           primaryBtn={{
             text: "Assign",
-            className: "max-w-140 pl-8 pr-8 ",
+            className: "max-w-140 pl-8 pr-8 !bg-[#FFA28D] !text-white ",
             onClick: () => handleAssignTestSubmit(),
             disabled: submitBtnDisabled,
 
@@ -1023,7 +1023,7 @@ console.log({selectedId})
           handleClose={handleClose}
           body={
             <>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-2 md:gap-x-3 gap-y-0 mb-5">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 md:gap-x-6  gap-y-0 mb-7">
                 <div>
                 
                 <InputSearch

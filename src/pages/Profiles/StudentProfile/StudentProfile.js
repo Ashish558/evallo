@@ -473,7 +473,7 @@ const [toEdit, setToEdit] = useState({
       userId = params.id;
     }
     getUserDetail({ id: userId }).then((res) => {
-      console.log("details -- ", res);
+      console.log("student details -- ",userId, res);
       if(!res?.data?.data)return 
       // //console.log('tut id', id);
       if (res.data.data.user.assiginedTutors) {
@@ -503,8 +503,9 @@ const [toEdit, setToEdit] = useState({
       } = res.data.data.userdetails;
       associatedParent &&
         getUserDetail({ id: associatedParent }).then((res2) => {
+          console.log("student ",{[id]:res2})
           if(res2?.error)return 
-          const { firstName, lastName, _id } = res2.data.data.user;
+          const { firstName, lastName, _id,email } = res2.data.data.user;
           setAssociatedParent({
             firstName,
             lastName,
@@ -512,7 +513,7 @@ const [toEdit, setToEdit] = useState({
             email,
             photo: res2?.data?.data?.user?.photo?.length>0
               ? res2.data.data.user.photo
-              : "/images/Rectangle 2347.svg",
+              : null,
           });
          });
      //   setAssociatedParent(res?.data?.data?.parent)
@@ -728,7 +729,7 @@ const [toEdit, setToEdit] = useState({
     }
   }
   // //console.log(user)
- console.log("student",{userDetail,user})
+ console.log("user student",{userDetail,user})
   //console.log('associatedParent', associatedParent)
   // //console.log('isEditable', editable)
   // //console.log(settings)
@@ -951,10 +952,10 @@ const [toEdit, setToEdit] = useState({
                   }
                   className="font-semibold cursor-pointer text-[14px]"
                 >
-                  {console.log({associatedParent})}
+                  
                   {associatedParent && Object.keys(associatedParent)?.length > 1
                     ? `${associatedParent?.firstName} ${associatedParent?.lastName}`
-                    : `${userDetail.FirstName} ${userDetail.LastName}`}
+                    : `None`}
                   <img
                     src={clickArrowIcon}
                     className="!ml-2 cursor-pointer !w-3 !h-3 inline-block"
@@ -965,18 +966,18 @@ const [toEdit, setToEdit] = useState({
                 {(persona !== "tutor" || (persona === 'tutor' &&organization?.settings?.permissions && organization?.settings?.permissions[1]?.choosedValue)) && <p className="font-medium text-[12px]">
                   <span
                     className="text-xs cursor-pointer font-semibold opacity-60 inline-block mr-1"
-                    onClick={handleParentNavigate}
+                  
                   // 
                   >
                     {associatedParent && Object.keys(associatedParent)?.length > 1
                       ? `${associatedParent?.email}`
-                      : `${userDetail.Email} `}
+                      : `None `}
                     {/* View Profile */}
                     <span>
                       <img
                       onClick={()=>handleCopyClick(associatedParent && Object.keys(associatedParent).length > 1
                         ? `${associatedParent?.email}`
-                        : `${userDetail.Email}`)}
+                        : `None`)}
                         className="inline-block ml-2 !w-4 !h-4 mr-2 cursor-pointer"
                         src={copy2}
                         alt="copy"

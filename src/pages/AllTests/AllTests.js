@@ -395,17 +395,17 @@ export default function AllTests() {
         <Modal
           title="Upload New Material"
           titleClassName="text-start text-sm mb-3"
-          classname={"max-w-[630px] mx-auto"}
+          classname={"max-w-[640px] mx-auto"}
           primaryBtn={{
-            text: "Create",
+            text: "Create  ",
             form: "add-test-form",
             onClick: handleSubmit,
             type: "submit",
             className:
-              "w-[123px] pl-6 pr-6 py-1 mr-5 my-auto pr-2 flex gap-2 mt-7 h-min disabled:opacity-80",
+              "!w-[185px] !bg-[#FFA28D] !text-white !rounded-[10px] flex justify-center items-center !px-10  h-[53px] mt-7   ",
             disabled: submitBtnDisabled,
             loading: loading,
-            icon: <img src={check} alt="check" className="inline-block" />,
+            icon: <img src={check} alt="check" className="ml-1 inline-block" />,
           }}
           otherBt={
             <div id={styles.handleFileUpload}>
@@ -465,12 +465,12 @@ export default function AllTests() {
           handleClose={handleClose}
           body={
             <form onSubmit={handleSubmit} id="add-test-form">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-2 md:gap-x-3  gap-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 md:gap-x-6 items-center  gap-y-4">
                 <InputField
                   label="Assignment Name"
-                  labelClassname="ml-2 mb-1.2"
+                  labelClassname="ml-2 mb-1.2 text-[#26435F]"
                   optionData={optionData}
-                  placeholder="Type Test Name"
+                  placeholder="Text"
                   parentClassName="w-full mr-4 mt-1"
                   inputContainerClassName="pt-3 pb-3 bg-primary-50"
                   inputClassName="bg-transparent"
@@ -487,10 +487,10 @@ export default function AllTests() {
 
                 <InputSelect
                   label="Type"
-                  labelClassname="ml-2 text-sm font-bold mb-1.2"
+                  labelClassname="ml-2  !font-semibold mb-[8px] !text-[#26435F]"
                   optionData={testTypeOptions}
-                  placeholder="Select Type"
-                  inputContainerClassName="pt-1 pb-3 bg-primary-50"
+                  placeholder="Select"
+                  inputContainerClassName="pt-3 pb-3 bg-primary-50 h-[48px]"
                   parentClassName="w-full mr-4"
                   inputClassName="bg-transparent"
                   isRequired={true}

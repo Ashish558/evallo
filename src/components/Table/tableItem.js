@@ -846,13 +846,15 @@ export default function TableItem({
               </button>
             </div>
           </td>
-          <td className="font-medium px-1 justify-center flex gap-x-2">
+          <td className="font-medium px-1 ">
+          <div className="flex justify-end  flex justify-center items-center">
             <button
               className="flex leading-none bg-[#26435f4d] text-white py-1.5 px-5 cursor-pointer rounded"
               onClick={() => onClick.openRemoveTestModal(item)}
             >
               Remove
             </button>
+            </div>
           </td>
         </tr>
       )}

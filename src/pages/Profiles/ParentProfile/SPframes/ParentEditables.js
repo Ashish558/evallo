@@ -1395,7 +1395,7 @@ export default function ParentEditables({
                   <InputSearch
                     labelClassname="hidden"
                     placeholder="Type Parent Name"
-                    parentClassName="w-full  mb-10"
+                    parentClassName="w-[300px]  mb-10"
                     inputContainerClassName="bg-[#F3F5F7] border-0 pt-3.5 pb-3.5"
                     inputClassName="bg-[#F3F5F7]"
                     type="text"
