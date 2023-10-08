@@ -253,6 +253,22 @@ export default function EventModal({
          let formattedEndTime = tConvert(`${endHours}:00`)
          if (endHours === 24) formattedEndTime = { time: "12:00", timeType: 'AM' }
 
+         let tz = ''
+         if(timeZone === 'Asia/Kolkata'){
+            tz = 'IST'
+         }else if(timeZone === 'US/Alaska'){
+            tz = 'AKST'
+         }else if(timeZone === 'US/Central'){
+            tz = 'CST'
+         }else if(timeZone === 'US/Eastern'){
+            tz = 'EST'
+         }else if(timeZone === 'US/Hawaii'){
+            tz = 'HST'
+         }else if(timeZone === 'US/Mountain'){
+            tz = 'MST'
+         }else if(timeZone === 'US/Pacific'){
+            tz = 'PST'
+         }
          setData((prev) => {
             return {
                ...prev,
@@ -268,6 +284,7 @@ export default function EventModal({
                      ...formattedEndTime
                   }
                },
+               timeZone: tz ? tz : ''
             }
 
          })
@@ -295,7 +312,7 @@ export default function EventModal({
                   ...prev,
                   sessionTags: tempSessionTags
                }
-   
+
             })
             setAllServicesAndSpec(organization.settings.servicesAndSpecialization)
             setServices(organization.settings.Expertise);
@@ -714,7 +731,7 @@ export default function EventModal({
       // }
 
    }, [persona, data.tutorId, allServicesAndSpec])
-   
+
    useEffect(() => {
       // console.log('all', allServicesAndSpec)
 
