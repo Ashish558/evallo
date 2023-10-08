@@ -464,7 +464,7 @@ export default function Users() {
           return;
         }
         fetch();
-        alert("Invitation sent!");
+        alert("User Saved Successfully!");
         setModalData(initialState);
         handleClose();
       });
