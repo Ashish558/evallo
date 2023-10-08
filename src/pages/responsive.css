@@ -29,6 +29,10 @@
 
 
 */
+#highPlace{
+  background-image: url('/public/images/highlight.svg');
+   
+  }
 #borderDashed2{
   border: 3.5px dashed #CBD6E3;
   }

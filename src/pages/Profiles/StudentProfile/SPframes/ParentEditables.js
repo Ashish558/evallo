@@ -1500,7 +1500,8 @@ export default function ParentEditables({
                                 stopM={true}
                                 checked={currentToEdit?.service?.includes(
                                   item?.service
-                                )}
+             
+                                  )}
                                 onChange={() =>
                                   handleServiceChange(item?.service)
                                 }

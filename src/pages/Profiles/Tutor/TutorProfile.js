@@ -13,7 +13,7 @@ import mail from "../../../assets/icons/mdi_email.svg";
 import education from "../../../assets/icons/education.png";
 import experience from "../../../assets/icons/cap.svg";
 import bag from "../../../assets/icons/bag.svg";
-
+import highlight from "../../../assets/YIcons/highlight.svg";
 // import EditIcon from "../../../assets/icons/edit.svg";
 // import MailIcon from "../../../assets/icons/mail.svg";
 // import LinkedIn from "../../../assets/icons/linked-in.svg";
@@ -989,8 +989,42 @@ export default function TutorProfile({ isOwn }) {
     
               </div>
 
-              <div className="  pt-10 min-h-[460px]  relative z-10 flex items-end ">
-                <YoutubeEmbed embedId={videoLink} />
+              <div className=" bg-white pt-10 !min-h-[400px] design:min-h-[460px]  relative z-10 flex items-end ">
+               {videoLink &&<YoutubeEmbed embedId={videoLink} />}
+<div className="!w-full !h-full flex-1 flex justify-center  items-center">  
+<div
+  class="relative ml-5 !w-[90%] my-auto overflow-hidden translate-y-[-15%] !h-[350px]   rounded-lg !bg-fit bg-center bg-no-repeat  text-center"
+  id="highPlace"
+ >
+  <div
+    class="absolute z-50 bottom-0 left-0 right-0 top-0 h-full w-full overflow-hidden bg-fixed"
+   >
+    <div class="flex h-full mx-auto mt-8  max-w-[80%]  items-center justify-center">
+      <div class="text-[#517CA8]">
+        <p class="mb-4 text-md font-semibold text-base-20">Use this space to add a YouTube video highlighting the tutor or your company.</p>
+       
+        <button
+          type="button"
+          class="rounded-md bg-[#FFA28D] p-2 px-4 text-white text-base-17-5"
+          data-te-ripple-init
+          onClick={() =>{
+            if(isOwn === true || persona === "admin") 
+            setToEdit({
+              ...toEdit,
+              videoLink: { ...toEdit.videoLink, active: true },
+            })
+          }}
+          data-te-ripple-color="light">
+
+         + Add Highlight Video
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>             
+           
                 {/* <div className={`${styles.backBtn} mt-10`} >
                      </div> */}
                 {isOwn === true || persona === "admin" ? (
