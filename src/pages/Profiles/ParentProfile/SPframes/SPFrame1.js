@@ -308,7 +308,7 @@ return <></>
           Session Notes
         </p>
         <div className="bg-white flex-1  rounded-md custom-scroller shadow-[0px_0px_2.500001907348633px_0px_#00000040]">
-          <div className="mx-6 p-2 ">
+          <div className="mx-3 p-3 ">
             <button
               onClick={() => {
                 setInternal(false);
