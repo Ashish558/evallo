@@ -60,6 +60,7 @@ import Extensions from "../Frames/Extensions/Extensions";
 import CheckOut from "../Frames/CheckOut/CheckOut";
 import { subScriptionPlanData } from "./DummyData/SubscriptionPlanData";
 import { extensionPlansInfo } from "./DummyData/ExtensionPlansInfo";
+import { useLazyGetSubscriptionsInfoQuery } from "../../app/services/orgSignup";
 
 export default function OrgSignup() {
   const [frames, setFrames] = useState({
@@ -165,6 +166,7 @@ export default function OrgSignup() {
   const [instructions, setInstructions] = useState(instructionFormat);
 
   const [getDetails, getDetailsResp] = useLazyGetUserDetailQuery();
+  const [getSubscriptionsInfo, getSubscriptionsInfoResp] = useLazyGetSubscriptionsInfoQuery();
 
   const fetchSettings = () => {
     getSettings().then((res) => {
@@ -172,8 +174,25 @@ export default function OrgSignup() {
       setSettings(res.data.data.setting);
     });
   };
+
+  const fetchSubscriptionsInfo = () => {
+    getSubscriptionsInfo().then((res) => {
+      console.warn("Subscriptions info");
+      console.warn(res.data)
+      const productList = res.data.data;
+      for(let i = 0; i < productList.length; i++) {
+        // product type
+        console.log(productList[i].product.metadata.type)
+      }
+    }).catch((error) => {
+      console.error("Error while fetching subscriptions info")
+      console.error(error)
+    })
+  }
+
   useEffect(() => {
     fetchSettings();
+    fetchSubscriptionsInfo();
   }, []);
 
   const paramUserId = searchParams.get("userid");
