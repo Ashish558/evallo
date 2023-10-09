@@ -30,6 +30,7 @@ export default function Modal({
    alignBtn,
    wrapperClassName,
    btnClassName,
+   buttonParentClassName
 }) {
 
    const selectRef = useRef();
@@ -56,7 +57,7 @@ export default function Modal({
                   >
                      <div className={wrapperClassName ? wrapperClassName : ''} >
                         <p className={`font-semibold text-xl md:text-[21px] text-left text-[#26435F]
-               ${titleClassName ? titleClassName : "mb-[18px]"}`}
+               ${titleClassName ? titleClassName : "mb-[18px]"} `}
                         >
                            {title}
                            {titleInvite && "Are You Sure You Want to Invite "}
@@ -71,7 +72,7 @@ export default function Modal({
                         {body}
 
 
-                        <div className={`flex justify-center`}>
+                        <div className={`flex ${buttonParentClassName}`}>
                            {cancelBtn && (
                               <SecondaryButton
                                  onClick={handleClose}
@@ -93,12 +94,12 @@ export default function Modal({
                                  onClick={primaryBtn.onClick ? primaryBtn.onClick : null}
                                  form={primaryBtn.form ? primaryBtn.form : null}
                                  type={primaryBtn.type ? primaryBtn.type : "button"}
-                                 className={`!w-[120px] ${primaryBtn.bgDanger ? 'bg-[#FFA28D]' : 'bg-[#FFA28D]'} relative disabled:opacity-75 rounded-lg font-medium text-white cursor-pointer  ml-9 ${primaryBtn.className ? primaryBtn.className : ""}`}
+                                 className={`w-[120px] ${primaryBtn.bgDanger ? 'bg-[#FFA28D]' : 'bg-[#FFA28D]'} relative disabled:opacity-75 rounded-lg font-medium text-white cursor-pointer  ml-9 ${primaryBtn.className ? primaryBtn.className : ""}`}
                                  disabled={primaryBtn?.loading === true ? true : primaryBtn.disabled}
                                  loading={primaryBtn.loading}
 
                               >
-                                 <div className="flex w-full items-center justify-evenly">
+                                 <div className="flex w-full items-center gap-2 justify-center">
                                     <p className="text-center">{primaryBtn.text}</p>
                                     {primaryBtn.icon && <p>{
                                        (primaryBtn.icon && primaryBtn?.loading === false) ? primaryBtn.icon : ''

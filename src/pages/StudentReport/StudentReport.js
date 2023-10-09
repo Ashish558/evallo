@@ -26,7 +26,7 @@ const tempsubjects = [
 ]
 
 const tableHeadersParent = [
-   'Q No.','Correct Answer','Student Response', 'Accuracy', 'Concept', 'Strategy', 'Time Taken','Marked For Review'
+   'Q No.', 'Correct Answer', 'Student Response', 'Accuracy', 'Concept', 'Strategy', 'Time Taken', 'Marked For Review'
 ]
 const adminTableHeaders = [
    'Q No.', 'Correct Answer', 'Student Response', 'Accuracy', 'Concept', 'Strategy', 'Time Taken', 'Marked For Review'
@@ -116,16 +116,16 @@ export default function StudentReport() {
 
       getAnswers(id)
          .then(res => {
-            console.log("555",res,id)
+            console.log("555", res, id)
             if (res.error) return console.log(res.error);
             console.log('ANSWER KEY', res.data.data);
 
             let answerKeyData = { ...res.data.data }
             let score = getScoreStr(responseData.testType, responseData.score, responseData.subjects, answerKeyData.answer.subjects.length)
-           console.log('score55', score);
+            console.log('score55', score);
             setDisplayScore(score)
 
-          console.log('answer key subjects', answerKeyData.answer.subjects);
+            console.log('answer key subjects', answerKeyData.answer.subjects);
             let conceptsPresent = true
             let updatedSubs = answerKeyData.answer.subjects.map(item => {
                if (item.concepts === undefined) {
@@ -357,12 +357,12 @@ export default function StudentReport() {
       setTestData(tempData)
    }, [subjects])
 
-const [startDate,startTime,startFormat]=(testDetails?.startedOn?.split(' '))
-// console.log(startDate,startTime,startFormat)
-   const [assignDate,assignTime,assignFormat]=(testDetails?.assignedOn?.split(' '))
-// console.log(assignDate,assignTime,assignFormat)
-   const [completeDate,completeTime,completeFormat]=(testDetails?.completedOn?.split(' '))
-// console.log(completeDate,completeTime,completeFormat)
+   const [startDate, startTime, startFormat] = (testDetails?.startedOn?.split(' '))
+   // console.log(startDate,startTime,startFormat)
+   const [assignDate, assignTime, assignFormat] = (testDetails?.assignedOn?.split(' '))
+   // console.log(assignDate,assignTime,assignFormat)
+   const [completeDate, completeTime, completeFormat] = (testDetails?.completedOn?.split(' '))
+   // console.log(completeDate,completeTime,completeFormat)
 
    //change table data
    useEffect(() => {
@@ -402,7 +402,7 @@ const [startDate,startTime,startFormat]=(testDetails?.startedOn?.split(' '))
             if (answerKey[currentAnswerKeyIndex][index])
                return {
                   QuestionNumber,
-                  CorrectAnswer: (organization && organization?.settings && organization?.settings?.permissions && organization?.settings?.permissions[4]?.choosedValue)?answerKey[currentAnswerKeyIndex][index]?.CorrectAnswer:"-",
+                  CorrectAnswer: (organization && organization?.settings && organization?.settings?.permissions && organization?.settings?.permissions[4]?.choosedValue) ? answerKey[currentAnswerKeyIndex][index]?.CorrectAnswer : "-",
                   ResponseAnswer,
                   isCorrect,
                   Concept: concept,
@@ -442,7 +442,7 @@ const [startDate,startTime,startFormat]=(testDetails?.startedOn?.split(' '))
       }
 
 
-   }, [selectedSubject, answerKey,organization])
+   }, [selectedSubject, answerKey, organization])
 
    //change time taken series data
    useEffect(() => {
@@ -497,45 +497,45 @@ const [startDate,startTime,startFormat]=(testDetails?.startedOn?.split(' '))
                ...prev.xaxis.group,
                groups
             },
-           
+
             title: {
-              text: 'Question Number',
-              style: {
-               fontSize: '18px', 
-               color: '#24A3D9',
-               fontFamily: 'Lexend',
-               cssClass: 'custom-xaxis-title'
-             },
-            },
-          },
-          
-          chart: {
-            // ... other chart options ...
-        toolbar:{
-         show:false
-        },
-            // Add the custom style to the CSS class
-            events: {
-              updated: function(chartContext, config) {
-                // Apply the custom style to the x-axis title
-                var xaxisTitle = chartContext.el.querySelector('.custom-xaxis-title');
-                if (xaxisTitle) {
-                  xaxisTitle.style.transform = 'translate(0px, 105px)';
-                }
-              },
+               text: 'Question Number',
+               style: {
+                  fontSize: '18px',
+                  color: '#24A3D9',
+                  fontFamily: 'Lexend',
+                  cssClass: 'custom-xaxis-title'
+               },
             },
          },
-         yaxis:{
-              title: {
-               text: 'Time Taken (in sec)', 
+
+         chart: {
+            // ... other chart options ...
+            toolbar: {
+               show: false
+            },
+            // Add the custom style to the CSS class
+            events: {
+               updated: function (chartContext, config) {
+                  // Apply the custom style to the x-axis title
+                  var xaxisTitle = chartContext.el.querySelector('.custom-xaxis-title');
+                  if (xaxisTitle) {
+                     xaxisTitle.style.transform = 'translate(0px, 105px)';
+                  }
+               },
+            },
+         },
+         yaxis: {
+            title: {
+               text: 'Time Taken (in sec)',
                style: {
-                  fontSize: '18px', 
+                  fontSize: '18px',
                   color: '#24A3D9',
                   fontFamily: 'Lexend'
-                },
+               },
             }
-             },
-            
+         },
+
          // tooltip: {
          //    custom: function({series, seriesIndex, dataPointIndex, w}) {
          //      return '<div class="arrow_box">' +
@@ -738,88 +738,88 @@ const [startDate,startTime,startFormat]=(testDetails?.startedOn?.split(' '))
    // console.log('selectedSubject', responseData.response)
    // console.log('responseData', responseData)
    // console.log('answerKey', answerKey)
-  
-  console.log({displayScore})
+
+   console.log({ displayScore })
    return (
       <div className='px-[80px] bg-lightWhite min-h-screen'>
          <div className='py-14 px-5'>
             <div className='px-0'>
-               
+
                <p className="text-[#24A3D9] my-3 text-base-20">
-                  <span onClick={()=>navigate('/')} className='cursor-pointer'>
-                  {organization?.company +
-                     "  >  " +
-                     firstName +
-                     "  " +
-                     lastName }
-                     </span>
-                     <span onClick={()=>navigate('/assigned-tests')} className='cursor-pointer'>{
-                        "  >  Assignments > "}</span>
-                     <span className="font-bold">Report</span>
+                  <span onClick={() => navigate('/')} className='cursor-pointer'>
+                     {organization?.company +
+                        "  >  " +
+                        firstName +
+                        "  " +
+                        lastName}
+                  </span>
+                  <span onClick={() => navigate('/assigned-tests')} className='cursor-pointer'>{
+                     "  >  Assignments > "}</span>
+                  <span className="font-bold">Report</span>
                </p>
 
 
-          
-                 <div className='flex justify-between'>
-               <p className='mt-[31px] text-textPrimaryDark text-[25px] font-bold'>
-                  {testDetails.testName}
-               </p>
-               {
-                 <button className={`py-[14px] px-[16px] bg-[#FFA28D] text-white rounded-lg flex items-center shadow-sm `}>
-               <span className='inline-block font-semibold text-[18px]'>
-                  {displayScore.cumulative}
-               </span>
-               <div className={styles.line}></div>
-               <span className='inline-block  text-[17px]' >
-                  {displayScore.right}
-               </span>
-               </button>
-               }
-              
-            </div>
-             
-               <div className='flex gap-x-20'>
-               <div className='grid grid-cols-2 grid-rows-3  gap-y-[17px] gap-x-[50px] mt-6 text-[#517CA8] text-xl'>
-                  <div>
-                     <p className='inline-block w-[160px]  font-semibold text-[#26435F]'> Student Name</p>
-                     <span className='inline-block mr-10'>:</span>
-                     <p className='inline-block text-[#26435F]'> {testDetails.name} </p>
-                  </div>
-                  <div>
-                  <p className='inline-block w-[160px] text-[#26435F] text-xl font-semibold'> Due on </p>
-                     <span className='inline-block mr-10'>:</span>
-                     <p className='inline-block text-xl text-[#26435F]'> {(testDetails.startedOn).split(" ")[0]} </p>
-                  </div>
 
-                  <div>
-                     <p className='inline-block w-[160px] text-[#26435F] text-xl font-semibold'>  Date Assigned </p>
-                     <span className='inline-block mr-10'>:</span>
-                     <p className='inline-block text-xl text-[#26435F]'> {assignDate} <span className='text-[#24A3D9] font-light text-[17.5px]'>{assignTime} {assignFormat} {organization?.settings?.timeZone}</span></p>
-                  </div>
-                  <div>
-                  <p className='inline-block w-[160px] text-[#26435F] text-xl font-semibold'> Completed on </p>
-                     <span className='inline-block mr-10'>:</span>
-                     <p className='inline-block text-xl text-[#26435F]'>  {completeDate} <span className='text-[#24A3D9] font-light text-[17.5px]'>{completeTime} {completeFormat} {organization?.settings?.timeZone}</span></p>
-                  </div>
-                  <div >
-                  <p className='inline-block w-[160px] text-[#26435F] text-xl font-semibold'> Duration </p>
-                     <span className='inline-block mr-10'>:</span>
-                     <p className='inline-block text-xl text-[#26435F]'>   {testDetails.duration} </p>
-                  </div>
-                  <div>
-                  <p className='inline-block w-[160px] text-[#26435F] text-xl font-semibold'> Started on </p>
-                     <span className='inline-block mr-10'>:</span>
-                     <p className='inline-block text-xl text-[#26435F]'>   {startDate} <span className='text-[#24A3D9] font-light text-[17.5px]'>{startTime} {startFormat} {organization?.settings?.timeZone}</span></p>
-                  </div>
-                  
+               <div className='flex justify-between relative'>
+                  <p className='mt-[31px] text-textPrimaryDark text-[25px] font-bold'>
+                     {testDetails.testName}
+                  </p>
+                  {
+                     <button className={`py-[14px] px-[16px] bg-[#FFA28D] text-white rounded-lg flex items-center shadow-sm h-[75px] absolute top-6 right-0`}>
+                        <span className='inline-block font-semibold text-[18px]'>
+                           {displayScore.cumulative}
+                        </span>
+                        <div className={styles.line}></div>
+                        <span className='inline-block  text-[17px]' >
+                           {displayScore.right}
+                        </span>
+                     </button>
+                  }
+
                </div>
-           {
-              persona ==="student"&&  <div className='  text-xl mt-6 text-[#517CA8]'>
-                <p className='inline-block  font-medium'> Instruction from tutor </p>
-                <span className='inline-block mr-10 my-auto'>:</span>
-                <p className='  !font-light'>{testDetails.instruction} </p>
-             </div>
-           }
+
+               <div className='flex gap-x-20'>
+                  <div className='grid grid-cols-2 grid-rows-3  gap-y-[17px] gap-x-[50px] mt-6 text-[#517CA8] text-base-20'>
+                     <div>
+                        <p className='inline-block w-[160px]  font-semibold text-[#26435F]'> Student Name</p>
+                        <span className='inline-block mr-10'>:</span>
+                        <p className='inline-block text-[#26435F]'> {testDetails.name} </p>
+                     </div>
+                     <div>
+                        <p className='inline-block w-[160px] text-[#26435F] text-base-20 font-semibold'> Due on </p>
+                        <span className='inline-block mr-10'>:</span>
+                        <p className='inline-block text-base-20 text-[#26435F]'> {(testDetails.startedOn).split(" ")[0]} </p>
+                     </div>
+
+                     <div>
+                        <p className='inline-block w-[160px] text-[#26435F] text-base-20 font-semibold'>  Date Assigned </p>
+                        <span className='inline-block mr-10'>:</span>
+                        <p className='inline-block text-base-20 text-[#26435F]'> {assignDate} <span className='text-[#24A3D9] font-light text-[17.5px]'>{assignTime} {assignFormat} {organization?.settings?.timeZone}</span></p>
+                     </div>
+                     <div>
+                        <p className='inline-block w-[160px] text-[#26435F] text-base-20 font-semibold'> Completed on </p>
+                        <span className='inline-block mr-10'>:</span>
+                        <p className='inline-block text-base-20 text-[#26435F]'>  {completeDate} <span className='text-[#24A3D9] font-light text-[17.5px]'>{completeTime} {completeFormat} {organization?.settings?.timeZone}</span></p>
+                     </div>
+                     <div >
+                        <p className='inline-block w-[160px] text-[#26435F] text-base-20 font-semibold'> Duration </p>
+                        <span className='inline-block mr-10'>:</span>
+                        <p className='inline-block text-base-20 text-[#26435F]'>   {testDetails.duration} </p>
+                     </div>
+                     <div>
+                        <p className='inline-block w-[160px] text-[#26435F] text-base-20 font-semibold'> Started on </p>
+                        <span className='inline-block mr-10'>:</span>
+                        <p className='inline-block text-base-20 text-[#26435F]'>   {startDate} <span className='text-[#24A3D9] font-light text-[17.5px]'>{startTime} {startFormat} {organization?.settings?.timeZone}</span></p>
+                     </div>
+
+                  </div>
+                  {
+                     persona === "student" && <div className='  text-base-20 mt-6 text-[#517CA8]'>
+                        <p className='inline-block  font-medium'> Instruction from tutor </p>
+                        <span className='inline-block mr-10 my-auto'>:</span>
+                        <p className='  !font-light'>{testDetails.instruction} </p>
+                     </div>
+                  }
                </div>
                <div className='mt-[53px] flex justify-between items-end'>
                   <div>
@@ -844,7 +844,7 @@ const [startDate,startTime,startFormat]=(testDetails?.startedOn?.split(' '))
                   </p> */}
                   <div className='flex  py-4 px-4 rounded-10 bg-[#FFFFFF] w-[37.76vw]' >
                      <div className='flex  flex-col w-[350px]'>
-                        <p className='font-semibold text-[#26435F] mb-2.2' onClick={getSortedConcepts} >Concepts</p>
+                        <p className='font-semibold text-[#26435F] mb-2.2 text-base-20' onClick={getSortedConcepts} >Concepts</p>
                         {
                            // selectedSubject.no_of_correct === 0 ?
                            //    <>
@@ -858,7 +858,7 @@ const [startDate,startTime,startFormat]=(testDetails?.startedOn?.split(' '))
                               //    </p> : <></>
                               // })
                               sortedConcepts.map((item, idx) => {
-                                 return <p key={idx} className=' text-[#517CA8] mb-2'>
+                                 return <p key={idx} className='text-base-17-5 text-[#517CA8] mb-2'>
                                     {item.name}
                                  </p>
                               })
@@ -867,7 +867,7 @@ const [startDate,startTime,startFormat]=(testDetails?.startedOn?.split(' '))
 
                      </div>
                      <div className='flex flex-col items-center'>
-                        <p className='font-semibold text-[#26435F] mb-2.2'> Incorrect</p>
+                        <p className='font-semibold text-[#26435F] mb-2.2 text-base-20'> Incorrect</p>
                         {
                            // selectedSubject.no_of_correct === 0 ?
                            //    <>
@@ -875,7 +875,7 @@ const [startDate,startTime,startFormat]=(testDetails?.startedOn?.split(' '))
                            //    </> :
                            selectedSubject.concepts ?
                               sortedConcepts.map((item, idx) => {
-                                 return <p key={idx} className='text-[#517CA8] mb-4'>
+                                 return <p key={idx} className='text-base-17-5 text-[#517CA8] mb-4'>
                                     {item.incorrect >= 0 ? item.incorrect : 0}/{item.correct + item.incorrect}
                                  </p>
                               })
@@ -886,29 +886,16 @@ const [startDate,startTime,startFormat]=(testDetails?.startedOn?.split(' '))
 
                   </div>
 
-                  <div className='w-[45.355vw]'>
+                  <div className='w-full'>
                      <div className='flex bg-[#FFFFFF] p-4 rounded-10 ml-[50px]  h-[140px]'>
                         <div className='flex   mr-[50px]'>
-                           <div className='mr-[50px]'> <p className='font-semibold text-[#26435F] mb-2.2'> Section Started</p>
-                              <p className=' mb-2 text-[#517CA8] '> {getDate(responseData.createdAt)} </p>
-                              <p className=' mb-2 text-[#24A3D9] '> 04:25 PM EST</p>
+                           <div className='mr-[50px]'> <p className='font-semibold text-[#26435F] mb-2.2 text-base-20'> Section Started</p>
+                              <p className=' mb-2 text-[#517CA8] text-base-17-5'>   {startDate}</p>
+                              <p className=' mb-2 text-[#24A3D9] text-base-17-5 font-light'>{startTime} {startFormat} {organization?.settings?.timeZone}</p>
                               {/* <p className='font-semibold mb-2 opacity-0'>04:25 PM EST</p> */}</div>
                            <div>
-                              <p className='font-semibold text-[#26435F] mb-2.2 '> Section Time Limit</p>
-                              <p className=' mb-2  text-[#517CA8] '>
-                                 {/* {selectedSubject.timeTaken/1000} */}
-                                 {selectedSubject.timeTaken ?
-                                    // moment.duration(selectedSubject.timeTaken).format('HH:mm')
-                                    sectionDuration ? sectionDuration : ''
-                                    // millisToMinutesAndSeconds(selectedSubject.timeTaken)
-                                    : <></>
-                                 }
-                              </p>
-                           </div>
-                        </div>
-                        <div className='flex  '>
-                           <div className='mr-[38px]'><p className='font-semibold text-[#26435F] mb-2.2'> Section Accuracy</p>
-                              <p className=' mb-2 text-[#517CA8] '>
+                              <p className='font-semibold text-[#26435F] mb-2.2 text-base-20'> Section Accuracy</p>
+                              <p className=' mb-2 text-[#517CA8] text-base-17-5'>
                                  {
                                     Object.keys(responseData).length >= 1 &&
                                     Object.keys(selectedSubject).length >= 1
@@ -918,9 +905,24 @@ const [startDate,startTime,startFormat]=(testDetails?.startedOn?.split(' '))
                                        {responseData.response[selectedSubject.idx].length}
                                     </>
                                  }
-                              </p></div>
-                           <div><p className='font-semibold text-[#26435F] mb-2.2 '> Time Taken </p>
-                              <p className=' mb-2 text-[#517CA8] '>
+                              </p>
+                           </div>
+                        </div>
+                        <div className='flex  '>
+                           <div className='mr-[38px]'>
+                              <p className='font-semibold text-[#26435F] mb-2.2 text-base-20'> Section Duration</p>
+                              <p className=' mb-2  text-[#517CA8] text-base-17-5'>
+                                 {/* {selectedSubject.timeTaken/1000} */}
+                                 {selectedSubject.timeTaken ?
+                                    // moment.duration(selectedSubject.timeTaken).format('HH:mm')
+                                    sectionDuration ? sectionDuration : ''
+                                    // millisToMinutesAndSeconds(selectedSubject.timeTaken)
+                                    : <></>
+                                 }
+                              </p>
+                           </div>
+                           <div><p className='font-semibold text-[#26435F] mb-2.2 text-base-20'> Time Taken </p>
+                              <p className=' mb-2 text-[#517CA8] text-base-17-5'>
                                  {/* {selectedSubject.timeTaken/1000} */}
                                  {selectedSubject.timeTaken ?
                                     // moment.duration(selectedSubject.timeTaken).format('HH:mm')
@@ -933,7 +935,7 @@ const [startDate,startTime,startFormat]=(testDetails?.startedOn?.split(' '))
                      </div>
 
 
-                     <div className='text-lg  text-[#24A3D9] px-4 py-3 ml-[45px] border-[2.5px] border-[#FFA28D] rounded-7 w-[338px] mt-[70px]'><p className='text-center font-semibold'>Section Score: <span className='text-[#517CA8] text-xl pl-1 font-semibold'>
+                     <div className='  text-[#24A3D9] px-4 py-3 ml-[45px] border-[2.5px] border-[#FFA28D] rounded-7 w-[338px] mt-[70px]'><p className='text-center font-semibold text-base-20'>Section Score: <span className='text-[#517CA8] text-[1.30vw] pl-1 font-medium'>
                         {
                            Object.keys(responseData).length >= 1 &&
                            Object.keys(selectedSubject).length >= 1
@@ -965,14 +967,14 @@ const [startDate,startTime,startFormat]=(testDetails?.startedOn?.split(' '))
                      tableHeaders={adminTableHeaders}
                      maxPageSize={10} /> */}
                </div>
-               <p className='text-primary-dark font-bold text-xl   mt-10'>
+               <p className='text-primary-dark font-bold text-base-20   mt-10'>
                   Time Taken
                </p>
                <div className='bg-white mt-1 rounded-5 py-5 px-5 '>
                   {/* <p className='text-primary-dark font-bold text-3xl text-center mb-6 mt-2'>Time Taken</p> */}
                   <BarGraph series={[timeSeries]} options={timeSeriesOptions} height='600px' />
                </div>
-               <p className='text-primary-dark font-bold text-xl   mt-10'>
+               <p className='text-primary-dark font-bold text-base-20   mt-10'>
                   Conceptual Accuracy
                </p>
                <div className='bg-white mt-1 rounded-5 py-5 px-5 '>

@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { useLazyGetUserDetailQuery } from '../../app/services/users';
+import { useSelector } from 'react-redux';
+import { getFormattedDate } from '../../utils/utils';
 
 export default function AllTestDetail({ testData }) {
    const [getUserDetail, userDetailResp] = useLazyGetUserDetailQuery()
-
+   const { dateFormat } = useSelector(state => state.user)
    const [detail, setDetail] = useState({
       createdBy: '-',
       updatedBy: '-',
@@ -45,7 +47,8 @@ export default function AllTestDetail({ testData }) {
             </p>
             <p className="inline-block mr-7">:</p>
             <p className="inline-block text-[#24A3D9] w-138 font-semibold">
-               {testData.createdAt?.split("T")[0]}
+               {/* {testData.createdAt?.split("T")[0]} */}
+               {getFormattedDate(testData.createdAt?.split("T")[0], dateFormat)}
             </p>
          </div>
 
@@ -68,7 +71,8 @@ export default function AllTestDetail({ testData }) {
             <p className="inline-block mr-7">:</p>
             <p className="inline-block text-[#24A3D9] w-138 font-semibold  ">
                {" "}
-               {testData.updatedAt?.split("T")[0]}
+               {/* {testData.updatedAt?.split("T")[0]} */}
+               {getFormattedDate(testData.updatedAt?.split("T")[0], dateFormat)}
             </p>
          </div>
 
@@ -80,7 +84,7 @@ export default function AllTestDetail({ testData }) {
             <p className="inline-block mr-7">:</p>
             <p className="inline-block text-[#24A3D9] w-138 font-semibold ">
                {" "}
-               {testData.updatedAt?.split("T")[0]}
+               {detail.updatedBy}
             </p>
          </div>
 

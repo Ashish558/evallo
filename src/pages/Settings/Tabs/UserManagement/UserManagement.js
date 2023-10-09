@@ -61,7 +61,7 @@ export default function UserManagement() {
   const [filteredUsersData, setFilteredUsersData] = useState([]);
   const [forgotPassword, forgotPasswordResp] = useForgotPasswordMutation();
   const { role } = useSelector((state) => state.user);
-  const [addManager,setManager]=useAddManagerMutation()
+  const [addManager, setManager] = useAddManagerMutation()
   useEffect(() => {
     setValidData(
       isEmail(modalData.email) &&
@@ -194,7 +194,7 @@ export default function UserManagement() {
 
   const [fetchUsers, fetchUsersResp] = useLazyGetAllUsersQuery();
   const [addUser, addUserResp] = useAddUserMutation();
-  const [addManager2,setManager2status]=useAddManager2Mutation()
+  const [addManager2, setManager2status] = useAddManager2Mutation()
   const [signupUser, signupUserResp] = useSignupUserMutation();
   const [deleteUser, deleteUserResp] = useDeleteUserMutation();
 
@@ -378,7 +378,7 @@ export default function UserManagement() {
 
   useEffect(() => {
     let tempdata = [...usersData];
-     console.log('all users data', usersData)
+    console.log('all users data', usersData)
     // console.log('filterData.specialization', filterData.specialization)
     fetch();
     setCurrentPage(1);
@@ -491,7 +491,7 @@ export default function UserManagement() {
       });
       return;
     }
-    else if(modalData.userType==='manager'){
+    else if (modalData.userType === 'manager') {
       addManager2(body).then((res) => {
         setLoading(false);
         console.log(res);
@@ -619,7 +619,7 @@ export default function UserManagement() {
     modalData.phone,
     modalData.userType,
   ]);
-console.log({addUserBtnDisabled})
+  console.log({ addUserBtnDisabled })
   useEffect(() => {
     if (!settings.servicesAndSpecialization) return;
     let specs = [];
@@ -664,7 +664,7 @@ console.log({addUserBtnDisabled})
     }
   });
 
-console.log({modalData})
+  console.log({ modalData })
   return (
     <div className=" bg-lightWhite min-h-screen">
       <div className="py-14 pt-0 ">
@@ -692,13 +692,13 @@ console.log({modalData})
             extraData={allTutors}
           />
         </div>
-        <div onClick={()=>{setModalActive(true) ;setModalData({ ...modalData, userType: 'manager' })}} className="text-[#26435F] -mt-2 cursor-pointer"><img src={AddManager} alt="add manager" /></div>
+        <div onClick={() => { setModalActive(true); setModalData({ ...modalData, userType: 'manager' }) }} className="text-[#26435F] -mt-2 cursor-pointer"><img src={AddManager} alt="add manager" /></div>
       </div>
 
       {
         modalActive && (
           <Modal
-          underline="false"
+            underline="false"
             classname={"max-w-[700px] mx-auto rounded-md"}
             title="Add A Manager"
             // cancelBtn={true}
@@ -757,10 +757,10 @@ console.log({modalData})
                   </div>
                   <div>
                     <InputField
-                      label="Email Addresss "
+                      label="Email Address"
                       labelClassname="ml-4 mt-2 mb-0.5 text-[#26435F] font-semibold"
                       isRequired={true}
-                      placeholder="Email Addresss"
+                      placeholder="Email Address"
                       inputContainerClassName="text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0"
                       inputClassName="bg-transparent"
                       parentClassName="w-full"
@@ -787,12 +787,12 @@ console.log({modalData})
                       }
                     />
                   </div>
-                 
+
                 </div>
                 <div className='flex items-center justify-center gap-4'>
-               
-                <button className="rounded-lg bg-transparent border-2 border-[#FFA28D] py-2 text-[#FFA28D]  w-[146px]" onClick={handleSubmit} disabled={addUserBtnDisabled}>Invite User</button>
-                <button onClick={(e)=>{e.preventDefault();handleClose()}} className="rounded-lg bg-[#FFA28D] border-2 border-[#FFA28D] py-2 text-[#FFFFFF] w-[146px]">Cancel</button>
+
+                  <button className="rounded-lg bg-transparent border-2 border-[#FFA28D] py-2 text-[#FFA28D]  w-[146px]" onClick={handleSubmit} disabled={addUserBtnDisabled}>Invite User</button>
+                  <button onClick={(e) => { e.preventDefault(); handleClose() }} className="rounded-lg bg-[#FFA28D] border-2 border-[#FFA28D] py-2 text-[#FFFFFF] w-[146px]">Cancel</button>
                 </div>
               </form>
             }
