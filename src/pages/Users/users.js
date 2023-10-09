@@ -1516,7 +1516,7 @@ useEffect(()=>{
                   <InputField
                     biggerText={true}
                     label="Email Address"
-                    labelClassname=" mt-2 mb-0.5 text-[#26435F] !font-medium !text-lg"
+                    labelClassname=" mt-2 mb-0.5 text-[#26435F] !font-semibold !text-lg"
                     isRequired={true}
                     placeholder="Email Address"
                     inputContainerClassName="text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0"
