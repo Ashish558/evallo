@@ -188,9 +188,9 @@ const StudentSettings = () => {
         <div className="flex gap-6 design:gap-8 items-center">
           <InputField
             placeholder=""
-            labelClassname=" text-md text-base-20 text-[#26435F] font-semibold"
+            labelClassname="mb-1 text-md text-base-20 text-[#26435F] font-semibold"
             parentClassName="text-[#26435F]"
-            inputContainerClassName=" bg-white  border border-white text-[#667085]"
+            inputContainerClassName="h-[50px] bg-white  border border-white text-[#667085]"
             inputClassName=" text-400 bg-transparent"
             label="First Name"
             value={values.firstName}
@@ -202,9 +202,9 @@ const StudentSettings = () => {
 
           <InputField
             placeholder=""
-            labelClassname=" text-md text-base-20 text-[#26435F] font-semibold"
+            labelClassname="mb-1 text-md text-base-20 text-[#26435F] font-semibold"
             parentClassName="text-[#26435F]"
-            inputContainerClassName=" bg-white border border-white text-[#667085]"
+            inputContainerClassName="h-[50px] bg-white border border-white text-[#667085]"
             inputClassName=" text-400 bg-transparent"
             label="Last Name"
             value={values.lastName}
@@ -220,9 +220,9 @@ const StudentSettings = () => {
           <InputField
             IconLeft={caution}
             placeholder=""
-            labelClassname=" text-md text-base-20 text-[#26435F] font-semibold"
+            labelClassname="mb-1 text-md text-base-20 text-[#26435F] font-semibold"
             parentClassName="text-[#26435F]"
-            inputContainerClassName=" bg-white border  w-[calc(376*0.05050vw)] min-w-[230px] border-white text-[#667085]"
+            inputContainerClassName=" h-[50px] bg-white border  w-[calc(376*0.05050vw)] min-w-[230px] border-white text-[#667085]"
             inputClassName=" text-400 bg-transparent"
             label="Email"
 
@@ -254,9 +254,9 @@ const StudentSettings = () => {
          <div id="number" >
             <InputFieldDropdown
               placeholder=""
-              labelClassname=" text-md text-base-20 text-[#26435F] mb-1 design:mb-2 font-semibold"
+              labelClassname=" text-md text-base-20 text-[#26435F] !mb-2 design:!mb-3 font-semibold"
               parentClassName="text-[#26435F]"
-              inputContainerClassName=" !py-[13px] px-[14px]   flex items-center rounded   bg-white border  min-w-[230px] border-white text-[#667085]  "
+              inputContainerClassName="h-[50px] !py-[14px] px-[14px]   flex items-center rounded   bg-white border  min-w-[230px] border-white text-[#667085]  "
               inputClassName=" outline-0 w-full text-[17.5px]  pl-1 placeholder:text-base-17-5  text-400 bg-transparent  text-base-17-5"
               label="Phone"
               value={values.phone}
