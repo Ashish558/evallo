@@ -273,12 +273,16 @@ export default function ParentEditables({
     displayValue: city.name,
   }));
   useEffect(() => {
-    if (!currentToEdit.country) return;
-    if (country.length === 0) {
-      fetch("countryData.json")
+    if (!currentToEdit.hasOwnProperty('country')) return;
+    console.log("countries usseffect ",currentToEdit)
+
+      fetch("/countryData.json")
         .then((res) => res.json())
-        .then((data) => setCountry(data));
-    }
+        .then((data) => {
+   console.log("countries ",data)
+          setCountry(data)
+        });
+    
     const c = currentToEdit.country;
     if (c) {
       const state = country.filter((x) => x.name === c);
@@ -287,7 +291,7 @@ export default function ParentEditables({
     }
   }, [currentToEdit]);
   const [addLink, addLinkStatus] = useAddLinkStudentMutation();
-  //console.log("parentEditables",currentToEdit)
+  console.log("parentEditables",currentToEdit,country)
   const handleProfilePhotoChange = (file) => {
     // //console.log(file)
     let url = "";
