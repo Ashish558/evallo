@@ -482,8 +482,8 @@ const Dashboard = () => {
             </div>
           </div>
           <div className=" w-[83.33vw]  text-[#FFA28D] mx-auto ">
-            <div className="flex justify-between items-center !mt-[calc(30*0.050vw)] h-min py-0 ">
-              <p className="font-bold text-xl  text-base-20 ">USERS OVERVIEW </p>
+            <div className="flex justify-between items-center !mt-[calc(30*0.050vw)] h-min py-0 mb-3 ">
+              <p className="font-bold  text-base-20 ">USERS OVERVIEW </p>
 
               <div className="flex font-semibold text-[#FFA28D] text-xs">
                 <RangeDate optionClassName="!w-min"
@@ -494,9 +494,9 @@ const Dashboard = () => {
 
           <div className="flex  w-[83.33vw] gap-x-5 mx-auto">
             <div className=" h-full  !whitespace-nowrap ">
-              <p className=" mb-1 font-semibold text-[#26435F] text-xl text-base-20">User Stats</p>
-              <div className={`${styles.sidebox} h-[330px] w-[16.25vw]`}>
-                <div className="pl-[38px]  pt-6 rounded ">
+              <p className=" mb-1 font-semibold text-[#26435F] mb-1 text-base-20">User Stats</p>
+              <div className={`${styles.sidebox} h-[330px] w-[16.25vw] `}>
+                <div className="   rounded ">
                   <p className="text-[#26435F] text-md text-base-20">Active / Total Students</p>
                   <p className="text-md">
                     <span className="font-bold text-[#FFA28D] text-4xl text-base-37-5">
@@ -511,8 +511,8 @@ const Dashboard = () => {
                     </span>
                   </p>
                 </div>
-                <div className={`  pl-[38px] pt-7 rounded `}>
-                  <p className="text-[#26435F] text-md text-base-20">Active / Total Tutors</p>
+                <div className={`   pt-7 rounded `}>
+                  <p className="text-[#26435F] text-md text-base-20">Active / Total Tutor <span className="text-white">###</span></p>
                   <p className="text-md">
                     <span className="font-bold text-[#FFA28D] text-4xl text-base-37-5">
                       {userStats?.tutor.activeUsers.count}
@@ -526,8 +526,8 @@ const Dashboard = () => {
                     </span>
                   </p>
                 </div>
-                <div className={`  pl-[38px] pt-7 rounded pb-6`}>
-                  <p className="text-[#26435F] text-md text-base-20">Active / Total Parents</p>
+                <div className={`   pt-7 rounded`}>
+                  <p className="text-[#26435F] text-md text-base-20">Active / Total Parents<span className="text-white">##</span></p>
                   <p className="text-md">
                     <span className="font-bold text-[#FFA28D] text-4xl text-base-37-5">
                       {userStats?.parent.activeUsers.count}
@@ -545,7 +545,7 @@ const Dashboard = () => {
             </div>
 
             <div className="  pl-[17.5px]">
-              <p className="mb-1 font-semibold text-[#26435F] text-xl text-base-20  ">Action Log</p>
+              <p className="mb-1 font-semibold text-[#26435F] mb-1 text-base-20  ">Action Log</p>
               <ActionLog
                 actionLog={filteredActionLog ? filteredActionLog : [""]}
               />
@@ -554,7 +554,7 @@ const Dashboard = () => {
         </section>
 
         <section className="mt-[70px] w-[83.33vw] mx-auto ">
-          <p className="font-semibold text-[#26435F]  text-base-20">Latest Sign-Ups <span className="font-light">(last 7 Days)</span></p>
+          <p className="font-semibold text-[#26435F]  text-base-20">Latest Sign-Ups <span className="font-light">(Last 7 Days)</span></p>
 
           <div className="-mt-3">
             <Table
@@ -579,7 +579,7 @@ const Dashboard = () => {
         </div>
         <div className=" relative z-[50000] w-[83.33vw] mx-auto mt-[25px] text-[#26435F]">
           <div className=" relative z-[50000] flex justify-between items-center translate-y-[10px] ">
-            <p className="font-bold uppercase text-[#FFA28D] text-xl text-base-20">Client Success Overview </p>
+            <p className="font-bold uppercase text-[#FFA28D] mb-1 text-base-20">Client Success Overview </p>
 
             <RangeDate optionClassName="!w-min"
               inputContainerClassName="!w-min "
@@ -616,11 +616,11 @@ const Dashboard = () => {
                 />
               </div>
             </div>
-            <div className=" ">
+            <div className=" relative">
               <p className="pl-[1.5625vw] translate-y-[10px] font-semibold text-[#26435F] text-[17.5px] text-base-17-5">
                 Star Clients
               </p>
-              <div className="pl-[1.5625vw] border-l-[1.7px] border-[#CBD6E2]">
+              <div className="pl-[1.5625vw]  relative">
                 {/* <div
                   className={`h-[85px] flex justify-center items-center text-sm text-[#667085] bg-[#E5E8EA]`}
                 >
@@ -642,6 +642,7 @@ const Dashboard = () => {
                   belowBoxHeight="h-[168px]"
                 />
               </div>
+              <div class="h-[60.5%] absolute left-0 bg-[#CBD6E2] top-[39%] transform -translate-y-1/2 w-px"></div>
             </div>
           </div>
         </section>
@@ -725,7 +726,7 @@ const Dashboard = () => {
         </div>
         <div className=" relative z-[50000] w-[83.33vw] mx-auto  mt-[13px] text-[#FFA28D] ">
           <div className=" relative z-[50000] flex justify-between items-center  translate-y-[15px] mb-[10px]">
-            <p className="font-bold uppercase text-xl text-base-17-5">Tutor Performence Overview </p>
+            <p className="font-bold uppercase mb-1 text-base-17-5">Tutor Performence Overview </p>
 
             <RangeDate optionClassName="!w-min"
               inputContainerClassName="!w-min " handleRangeData={handleTutorPerformance} />
