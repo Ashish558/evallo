@@ -1305,7 +1305,7 @@ export default function Users() {
               }
             })}
             placeholder="Tutor Status"
-            parentClassName="w-[9.1146vw]  text-[#26435F]"
+            parentClassName="w-[10vw]  text-[#26435F]"
             type="select"
             IconSearch={Dropdown}
             inputClassName="bg-white border border-[rgb(255,255,255)]  w-[125px]"
@@ -1339,10 +1339,10 @@ export default function Users() {
               }
             })}
             placeholder="Assigned Tutor"
-            parentClassName="w-[9.1146vw]  text-[#26435F] "
+            parentClassName="w-[11vw]  text-[#26435F] "
             type="select"
             IconSearch={Dropdown}
-            inputClassName="bg-white border  w-[125px]  "
+            inputClassName="bg-white border  w-[130px]  "
 
             inputContainerClassName="bg-white shadow-[0px_0px_2px_0px_rgba(0,0,0,0.25)] h-[43px] lg:pl-2 2xl:pl-3 rounded-[5px] "
 
