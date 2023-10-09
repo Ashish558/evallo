@@ -331,7 +331,7 @@ const Navbar = () => {
 
    return (
       <>
-         <div className="flex justify-around bg-[#26435F] h-[65px] design:h-[74px] items-center w-full">
+         <div className="flex justify-around bg-[#26435F] h-[65px] design:h-[74px] items-center w-full shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)]">
             <div
                className={`${persona === "superAdmin" ? "translate-x-[-30px]" : ""}`}
             >
