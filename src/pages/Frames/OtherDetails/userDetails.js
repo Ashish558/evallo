@@ -40,11 +40,14 @@ export default function UserDetails({
   setFrames,
   persona,
   setcurrentStep,
+  newLoader,
   otherDetails,
+
   setOtherDetails,
   detailsError,
   handleSignup,
   setDetailsError,
+  
   resetDetailsErrors,
   studentNumberPrefix,
   setStudentNumberPrefix,
@@ -88,7 +91,7 @@ export default function UserDetails({
             [result.data]: result.message,
           };
         });
-      } else if (customFields?.length === 0 || !customFields) {
+      } else if (!customFields || customFields?.length === 0 ) {
         // alert('CustomFields are empty ,please fill those ')
         handleSignup();
       } else if (customFields?.length > 0) {
@@ -263,7 +266,8 @@ export default function UserDetails({
           />
         )}
         <PrimaryButton
-          children="Next"
+        loading={newLoader}
+          children={!customFields||customFields?.length===0?"Submit":"Next"}
           className={` bg-[#FFA28D] text-center items-center justify-center disabled:opacity-60 w-[7.6042vw]   text-[#FFF] !text-[0.9688vw] font-medium relative h-[53px] rounded-5`}
           onClick={() => handleClick()}
           disabled={disabled}

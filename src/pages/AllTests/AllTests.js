@@ -184,7 +184,7 @@ export default function AllTests() {
     setRemoveQuestionModal(true);
     setTestForDelete(item);
   };
-console.log({testForDelete})
+  console.log({ testForDelete })
   const removeTest = (item) => {
     setRemoveQuestionModal(false);
     // console.log(testForDelete._id);
@@ -403,7 +403,7 @@ console.log({testForDelete})
             onClick: handleSubmit,
             type: "submit",
             className:
-              "!w-[185px] !bg-[#FFA28D] !text-white !rounded-[10px] flex justify-center items-center !px-10  h-[50px] mt-7   ",
+              "!ml-5   py-1 mr-auto mt-7  flex gap-2  h-[49px] disabled:opacity-80 flex items-center !text-[0.8333vw] !font-medium  inline-block bg-[#FFA28D]",
             disabled: submitBtnDisabled,
             loading: loading,
             icon: <img src={check} alt="check" className="ml-2 inline-block" />,
@@ -516,7 +516,7 @@ console.log({testForDelete})
         <Modal
           title={
             <>
-             Are you sure you want to Delete {testForDelete?.testName?testForDelete?.testName:"Test"}?
+              Are you sure you want to Delete {testForDelete?.testName ? testForDelete?.testName : "Test"}?
             </>
           }
           titleClassName="leading-9 mb-2"

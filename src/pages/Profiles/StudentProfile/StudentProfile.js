@@ -741,7 +741,7 @@ const [toEdit, setToEdit] = useState({
   return (
     <>
       <div className={`w-[83.3vw] mx-auto pb-[70px]`}>
-        <p className="text-[#24A3D9] my-[calc(50*0.0522vw)] text-base-20">
+        <p className="text-[#24A3D9] my-[calc(50*0.0522vw)] text-base-22-5">
           <span onClick={()=>navigate('/')} className="cursor-pointer">
           {organization?.company +
             " > " +
@@ -763,17 +763,17 @@ const [toEdit, setToEdit] = useState({
           <></>
         )}
         <div className={` rounded-b-md w-full flex flex-col relative `}>
-          <div className=" bg-[#26435F] rounded-t-[4px]  px-5 h-[100px]  w-full  flex  items-center">
+          <div className=" bg-[#26435F] rounded-t-[4px]  px-5 h-[100px] design:!h-[130px] w-full  flex  items-center">
 
-            <div className="flex flex-1 w-full">
-              <div className="h-fit">
+            <div className="flex flex-1 w-full design:!h-[70px]">
+              <div className="h-fit design:!ml-5">
                 <ProfilePhoto
                   src={
                     user.photo
                       ? `${awsLink}${user.photo}`
                       : "/images/Rectangle 2346.svg"
                   }
-                  imgSizeClass="!w-[110px] !h-[110px] !translate-y-8 border-[4px] border-white "
+                  imgSizeClass="!w-[110px] !h-[110px] design:!w-[140px] design:!h-[140px]  !translate-y-[45px]  design:!translate-y-5  border-[4px] border-white "
                   imageClassName="!w-[100px] !h-[100px] border-[4px] border-white "
                   className=""
                   handleChange={handleProfilePhotoChange}
@@ -792,21 +792,21 @@ const [toEdit, setToEdit] = useState({
                   }
                   text="Edit Profile"
                   textClassName=" ml-2 text-sm  mx-auto text-center text-[#26435F] text-underline text-base-15 "
-                  className="text-sm my-0 flex items-center justify-center text-center !translate-y-9  "
+                  className="text-sm my-0 flex items-center justify-center text-center !translate-y-11  "
                 />}
               </div>
-              <div className="flex-1 flex justify-between items-center">
+              <div className="flex-1 flex justify-between  items-center">
                 <div className="ml-4 my-auto">
-                  <div className="flex  items-center text-[#F3F5F7]">
+                  <div className="flex  items-center text-[#F3F5F7] text-base-22-5">
                     {user.firstName} {user.lastName}
 
                   </div>
-                  <div className="flex mt-1 text-xs items-center text-[#F3F5F7]">
+                  <div className="flex mt-1 text-base-17-5 items-center text-[#F3F5F7]">
                     {userDetail?.schoolName
                       ? userDetail?.schoolName
                       : "Sample School Name"}
                   </div>
-                  <div className="flex text-xs mt-1 items-center text-[#F3F5F7]">
+                  <div className="flex text-xs text-base-17-5 mt-1 items-center text-[#F3F5F7]">
                     {userDetail?.grade ? userDetail?.grade : "12th Grade"}
 
                     {/* <p className='font-semibold text-[22px] mr-4'>
@@ -837,7 +837,7 @@ const [toEdit, setToEdit] = useState({
                       />
                     }
                     body={
-                      <div className="flex h-min !bg-transparent justify-center flex-col  ">
+                      <div className="flex h-min !bg-transparent justify-center flex-col text-base-17-5 ">
                         <p>
                           <span>
                             <img
@@ -925,11 +925,11 @@ const [toEdit, setToEdit] = useState({
               </div>
             </div>
           </div>
-          <div className="bg-white !rounded-b-md shadow-[0px_0px_2.500001907348633px_0px_#00000040] flex  h-[100px] justify-between ">
-            <div className="ml-[126px] flex my-auto py-auto w-4/5 text-[12px] px-5  flex-1 h-full  h-[100px] overflow-y-auto custom-scroller pt-5  text-[#517CA8] text-base-17-5 ">
+          <div className="bg-white   !rounded-b-md shadow-[0px_0px_2.500001907348633px_0px_#00000040] flex  h-[100px] design:!h-[130px] justify-between ">
+            <div className="ml-[126px] design:!ml-[175px] flex my-auto py-auto w-4/5 text-[12px] px-5  flex-1 h-full  h-[100px] overflow-y-auto custom-scroller pt-5  text-[#517CA8] text-base-17-5 ">
               {userDetail?.about}
             </div>
-            <div className="w-[250px] ml-6 my-0">
+            <div className="min-w-[250px] ml-6 design:!ml-0  my-0">
               <div className="mt-[-20px]">
                 <ProfilePhoto
                   src={
@@ -944,13 +944,13 @@ const [toEdit, setToEdit] = useState({
                 />
               </div>
 
-              <div className="flex flex-col ml-14   font-medium text-[#24A3D9] ">
+              <div className="flex flex-col ml-14  font-medium text-[#24A3D9] ">
                 <p
                   onClick={() =>
                     associatedParent &&
                     navigate(`/profile/parent/${associatedParent?._id}`)
                   }
-                  className="font-semibold cursor-pointer text-[14px]"
+                  className="font-semibold cursor-pointer text-base-17-5"
                 >
                   
                   {associatedParent && Object.keys(associatedParent)?.length > 1
@@ -965,7 +965,7 @@ const [toEdit, setToEdit] = useState({
 
                 {(persona !== "tutor" || (persona === 'tutor' &&organization?.settings?.permissions && organization?.settings?.permissions[1]?.choosedValue)) && <p className="font-medium text-[12px]">
                   <span
-                    className="text-xs cursor-pointer font-semibold opacity-60 inline-block mr-1"
+                    className="text-base-15 cursor-pointer font-semibold opacity-60 inline-block mr-1 text-[#7C98B6]"
                   
                   // 
                   >
@@ -1044,8 +1044,8 @@ const [toEdit, setToEdit] = useState({
             setToEdit={setToEdit}
             toEdit={toEdit}
           />
-          <div className="flex-1 mt-10">
-            <p className="mb-[-45px] text-sm text-[#26435F] font-semibold">
+          <div className="flex-1 mt-12">
+            <p className="mb-[-40px] text-sm text-[#26435F] font-semibold text-base-20 ">
               Latest Assignments
             </p>
 

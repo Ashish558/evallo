@@ -273,12 +273,16 @@ export default function ParentEditables({
     displayValue: city.name,
   }));
   useEffect(() => {
-    if (!currentToEdit.country) return;
-    if (country.length === 0) {
-      fetch("countryData.json")
+    if (!currentToEdit.hasOwnProperty('country')) return;
+    console.log("countries usseffect ",currentToEdit)
+
+      fetch("/countryData.json")
         .then((res) => res.json())
-        .then((data) => setCountry(data));
-    }
+        .then((data) => {
+   console.log("countries ",data)
+          setCountry(data)
+        });
+    
     const c = currentToEdit.country;
     if (c) {
       const state = country.filter((x) => x.name === c);
@@ -287,7 +291,7 @@ export default function ParentEditables({
     }
   }, [currentToEdit]);
   const [addLink, addLinkStatus] = useAddLinkStudentMutation();
-  //console.log("parentEditables",currentToEdit)
+  console.log("parentEditables",currentToEdit,country)
   const handleProfilePhotoChange = (file) => {
     // //console.log(file)
     let url = "";
@@ -929,7 +933,7 @@ export default function ParentEditables({
                         labelClassname="text-[#26435F] mb-1 text-sm"
                         label="Associated Students"
                         placeholder="Select Associated Students"
-                        parentClassName="w-full  mb-10"
+                        parentClassName="w-[300px] mb-10"
                        
                         inputContainerClassName="bg-[#F3F5F7] border-0 pt-3.5 pb-3.5"
                         inputClassName="bg-[#F3F5F7]"

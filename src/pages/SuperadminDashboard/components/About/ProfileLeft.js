@@ -1,8 +1,31 @@
 import whatsapp from "../../../../assets/icons/ri_whatsapp-fill.svg";
 import linkedin from "../../../../assets/icons/mdi_linkedin.svg";
 import Profile from "../../../../assets/icons/Ellipse 445staticpfp.svg";
+import { useLazyGetAdminPortalTokenQuery } from "../../../../app/services/superAdmin";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 const ProfileLeft = ({ userData }) => {
+const navigate= useNavigate()
+  const [fetchToken,setToken]= useLazyGetAdminPortalTokenQuery()
+  const [loading,setLoading] = useState(false)
+console.log("profile left", {userData})
+  const handlePortalButtonClick=()=>{
+    setLoading(true)
+       fetchToken({id:userData?._id}).then((token)=>{
+        setLoading(false)
+        console.log("token received",token);
+        if(token?.data?.token){
+          const url = `/admin-portal?userId=${userData?._id}&token=${token.data?.token}`;
+          window.open(url, '_blank',"noopener noreferrer");
+        }
+        else {
+          console.log("Error fetching token")
+          alert("Something went wrong, please try again!")
+          return
+        }
+       })
+  }
   return (
     <>
       <div className="flex flex-col gap-3 p-3 min-w-[400px] w-[38%] bg-white shadow-xs rounded-md border border-gray-300">
@@ -50,8 +73,8 @@ const ProfileLeft = ({ userData }) => {
           </span>
         </div>
         <div className="text-center">
-          <button className="bg-[#FFA28D] p-2 px-3 rounded-md text-xs text-white">
-            Admin portal
+          <button disabled={loading} onClick={handlePortalButtonClick} className="bg-[#FFA28D] p-2 px-3 rounded-md text-xs text-white">
+           {loading?"Opening Portal...":"Admin portal"} 
           </button>
         </div>
       </div>

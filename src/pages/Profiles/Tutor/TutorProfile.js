@@ -7,13 +7,15 @@ import styles from "./style.module.css";
 // import TutorImg from "../../../assets/images/tutor.png";
 // import TutorSmallImg from "../../../assets/images/tutor-small.png";
 // import sat from "../../../assets/icons/sat.png";
+import LeftIcon from "../../../assets/profile/left.svg";
+
 import linkedin from "../../../assets/icons/linkedin.svg";
 import call from "../../../assets/icons/ic_baseline-local-phone.svg";
 import mail from "../../../assets/icons/mdi_email.svg";
 import education from "../../../assets/icons/education.png";
 import experience from "../../../assets/icons/cap.svg";
 import bag from "../../../assets/icons/bag.svg";
-
+import highlight from "../../../assets/YIcons/highlight.svg";
 // import EditIcon from "../../../assets/icons/edit.svg";
 // import MailIcon from "../../../assets/icons/mail.svg";
 // import LinkedIn from "../../../assets/icons/linked-in.svg";
@@ -389,8 +391,12 @@ export default function TutorProfile({ isOwn }) {
         res.data.data.user;
       setUser(res.data.data.user);
       console.log(user.phone + "phone");
-      if(!res?.data?.data?.details)return 
-      let details = res.data.data.details;
+    
+      let details = res?.data?.data?.details?res?.data?.data?.details:{};
+      if(Object.keys(details)?.length===0){
+        details=null
+      }
+      
       console.log("details", details);
       // const { } = res.data.data.user
       // const { service } = res.data.data.userdetails
@@ -432,27 +438,27 @@ export default function TutorProfile({ isOwn }) {
                   email: email,
                   phone: phone === null ? "" : phone,
                   phoneCode: phoneCode === null ? "" : phoneCode,
-                  linkedIn: details === null ? "" : details.linkedIn,
+                  linkedIn: details === null ? "" : details?.linkedIn,
                   isPresent: details === null ? false : true,
                 },
                 tagLine: {
                   ...prevToEdit.tagLine,
-                  tagLine: details === null ? "" : details.tagLine,
+                  tagLine: details === null ? "" : details?.tagLine,
                   isPresent: details === null ? false : true,
                 },
                 tutorLevel: {
                   ...prevToEdit.tutorLevel,
-                  tutorLevel: details === null ? "" : details.tutorLevel,
+                  tutorLevel: details === null ? "" : details?.tutorLevel,
                   isPresent: details === null ? false : true,
                 },
                 about: {
                   ...prevToEdit.about,
-                  about: details === null ? "" : details.about,
+                  about: details === null ? "" : details?.about,
                   isPresent: details === null ? false : true,
                 },
                 education: {
                   ...prevToEdit.education,
-                  education: details === null ? "" : details.education,
+                  education: details === null ? "" : details?.education,
                   isPresent: details === null ? false : true,
                 },
                 rates: {
@@ -466,22 +472,22 @@ export default function TutorProfile({ isOwn }) {
                 // },
                 pincode: {
                   ...prevToEdit.pincode,
-                  pincode: details === null ? "" : details.pincode,
+                  pincode: details === null ? "" : details?.pincode,
                   isPresent: details === null ? false : true,
                 },
                 paymentInfo: {
                   ...prevToEdit.paymentInfo,
-                  paymentInfo: details === null ? "" : details.paymentInfo,
+                  paymentInfo: details === null ? "" : details?.paymentInfo,
                   isPresent: details === null ? false : true,
                 },
                 tutorRank: {
                   ...prevToEdit.tutorRank,
-                  tutorRank: details === null ? "" : details.tutorRank,
+                  tutorRank: details === null ? "" : details?.tutorRank,
                   isPresent: details === null ? false : true,
                 },
                 income: {
                   ...prevToEdit.income,
-                  income: details === null ? "" : details.income,
+                  income: details === null ? "" : details?.income,
                   isPresent: details === null ? false : true,
                 },
                 paymentStatus: {
@@ -490,12 +496,12 @@ export default function TutorProfile({ isOwn }) {
                 },
                 interest: {
                   ...prevToEdit.interest,
-                  interest: details !== null ? details.interest : [],
+                  interest: details !== null ? details?.interest : [],
                   isPresent: details === null ? false : true,
                 },
                 tutorServices: {
                   ...prevToEdit.tutorServices,
-                  tutorServices: details !== null ? details.tutorServices : [],
+                  tutorServices: details !== null ? details?.tutorServices : [],
                   isPresent: details === null ? false : true,
                 },
                 //  tutorReviews: {
@@ -506,12 +512,12 @@ export default function TutorProfile({ isOwn }) {
                 serviceSpecializations: {
                   ...prevToEdit.serviceSpecializations,
                   serviceSpecializations:
-                    details !== null ? details.serviceSpecializations : [],
-                  isPresent: details === null ? false : true,
+                    details !== null ? details?.serviceSpecializations : [],
+                  isPresent: details === null|| details?.serviceSpecializations===null? false : true,
                 },
                 videoLink: {
                   ...prevToEdit.videoLink,
-                  videoLink: details !== null ? details.videoLink : [],
+                  videoLink: details !== null ? details?.videoLink : [],
                   isPresent: details === null ? false : true,
                 },
               };
@@ -662,6 +668,16 @@ export default function TutorProfile({ isOwn }) {
          </span>
           <span className="font-bold">Dashboard</span>
         </p>
+        {!isOwn ? (
+          <button
+            className="my-5 bg-[#D9BBFF] cursor-pointer relative z-[50] px-[14px] py-[8px] rounded-[8px] text-[#636363] text-[18px] font-medium top-[-8px] left-[0px] flex gap-[12px] cursor-pointer flex justify-center items-center"
+            onClick={() => window.history.back()}
+          >
+            <img src={LeftIcon} alt="icon" /> Back
+          </button>
+        ) : (
+          <></>
+        )}
         <div className="flex  justify-between">
           <ProfileCard
             hideShadow
@@ -683,7 +699,7 @@ export default function TutorProfile({ isOwn }) {
                   <div className="h-[120px]  rounded-t-md shadow-t-[0px_0px_2px_0px_#00000040] flex relative bg-[#26435F]">
                     <div className="ml-8  pt-1  w-4/6">
                       <div className="flex h-full  items-end">
-                        <div className="mb-[-100px] h-min">
+                        <div className="mb-[-80px] h-min">
                           <ProfilePhoto
                             isTutor={true}
                             imgSizeClass={"!w-[150px] !h-[150px]"}
@@ -989,8 +1005,42 @@ export default function TutorProfile({ isOwn }) {
     
               </div>
 
-              <div className="  pt-10 min-h-[460px]  relative z-10 flex items-end ">
-                <YoutubeEmbed embedId={videoLink} />
+              <div className="pt-10  h-[460px] design:min-h-[460px]  relative z-10 flex items-end ">
+               {videoLink ?<YoutubeEmbed embedId={videoLink} />:
+<div className="!w-full bg-white  mb-10 !h-full flex-1 flex justify-center  items-center">  
+<div
+  class="relative ml-5 !w-[90%] my-auto overflow-hidden translate-y-[-15%] !h-[350px]   rounded-lg !bg-fit bg-center bg-no-repeat  text-center"
+  id="highPlace"
+ >
+  <div
+    class="absolute z-50 bottom-0 left-0 right-0 top-0 h-full w-full overflow-hidden bg-fixed"
+   >
+    <div class="flex h-full mx-auto mt-8  max-w-[80%]  items-center justify-center">
+      <div class="text-[#517CA8]">
+        <p class="mb-4 text-md font-semibold text-base-20">Use this space to add a YouTube video highlighting the tutor or your company.</p>
+       
+        <button
+          type="button"
+          class="rounded-md bg-[#FFA28D] p-2 px-4 text-white text-base-17-5"
+          data-te-ripple-init
+          onClick={() =>{
+            if(isOwn === true || persona === "admin") 
+            setToEdit({
+              ...toEdit,
+              videoLink: { ...toEdit.videoLink, active: true },
+            })
+          }}
+          data-te-ripple-color="light">
+
+         + Add Highlight Video
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>             }
+           
                 {/* <div className={`${styles.backBtn} mt-10`} >
                      </div> */}
                 {isOwn === true || persona === "admin" ? (
@@ -1155,7 +1205,7 @@ export default function TutorProfile({ isOwn }) {
                   //    </div> */}
 
                   // </div>
-                  <div className="w-full relative h-full p-1 flex flex-col gap-1  rounded-md items-center overflow-y-auto custom-scroller">
+                  <div className="w-full relative h-[450px] p-1 flex flex-col gap-1  rounded-md items-center overflow-y-auto custom-scroller">
                     {/* {settings ? (
                              settings.interest.length > 0 &&
                              userDetail.interest.map((id, idx) => {

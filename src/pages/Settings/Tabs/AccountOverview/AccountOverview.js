@@ -10,7 +10,7 @@ import resetSendIcon from "../../../../assets/icons/teenyicons_shield-tick-solid
 import tooltipIcon from "../../../../assets/icons/octicon_stop-16.svg";
 import { useState } from "react";
 import Modal from "../../../../components/Modal/Modal";
-import  './style.css'
+import './style.css'
 import { useForgotPasswordMutation } from "../../../../app/services/auth";
 
 import {
@@ -278,20 +278,32 @@ const AccountOverview = () => {
       </div>
       {modalOpen && (
         <Modal
+          crossBtn={true}
+          classname="!w-[666px] mx-auto"
+          underline={true}
+          titleClassName="m-0"
+          cancelBtn={true}
+          cancelBtnClassName="max-w-140 text-[#FFA28D] border-[1.5px] border-[#FFA28D] bg-white hover:bg-[#FFA28D] hover:text-white  font-medium rounded-lg  px-[10px] py-[17.33px] text-center dark:bg-white dark:hover:bg-[#FFA28D] !w-[146px] h-[46px]"
+          buttonParentClassName="justify-center"
+          primaryBtn={{
+            text: "Okay",
+            className: "pl-4 px-4 !bg-[#FF7979] text-white w-[146px] h-[46px]",
+            onClick: () => showResetConfirmation(),
+            // disabled: submitBtnDisabled,
+            // loading: loading
+          }}
           handleClose={handleClose}
-          classname="w-[500px] mx-auto"
           body={
-            <div className="text-center mt-2">
-              <h1 className="font-semibold ">
-                A Password Reset Link will be sent to you. Please click on it to
-                change your password.
+            <div className="text-center mb-[30px]">
+              <h1 className="text-[21px] text-[#26435F]">
+                A Password Reset Link will be sent to you. Please click on it to change your password.
               </h1>
-              <button
+              {/* <button
                 onClick={showResetConfirmation}
                 className="bg-[#FF7979] mt-3 text-white text-sm p-2 px-4 rounded-md"
               >
                 Okay
-              </button>
+              </button> */}
             </div>
           }
         />

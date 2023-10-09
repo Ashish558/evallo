@@ -5,6 +5,9 @@
 .text-base-17-5 {
   font-size: max(12px, 0.9114vw) !important;
 }
+.text-base-18 {
+  font-size: max(13px, 0.95vw) !important;
+}
 .text-base-20 {
   font-size: max(14px, 1.044vw) !important;
 }
@@ -29,6 +32,10 @@
 
 
 */
+#highPlace{
+  background-image: url('/public/images/highlight.svg');
+   
+  }
 #borderDashed2{
   border: 3.5px dashed #CBD6E3;
   }
