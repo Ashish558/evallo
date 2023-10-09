@@ -2246,13 +2246,13 @@ export default function ParentEditables({
                             setCurrentToEdit({
                               ...currentToEdit,
                               serviceSpecializations:
-                                currentToEdit.serviceSpecializations.filter(
-                                  (id) => id !== item._id
+                                currentToEdit.serviceSpecializations?.filter(
+                                  (id) => id !== item?.text
                                 ),
                             })
                           }
                         >
-                          <p className="font-medium">{item.text}</p>
+                          <p className="font-medium">{item?.text}</p>
                         </div>
                       );
                     })}

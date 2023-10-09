@@ -392,7 +392,7 @@ export default function TutorProfile({ isOwn }) {
       setUser(res.data.data.user);
       console.log(user.phone + "phone");
       if(!res?.data?.data?.details)return 
-      let details = res.data.data.details;
+      let details = res?.data?.data?.details?res?.data?.data?.details:{};
       console.log("details", details);
       // const { } = res.data.data.user
       // const { service } = res.data.data.userdetails
@@ -434,27 +434,27 @@ export default function TutorProfile({ isOwn }) {
                   email: email,
                   phone: phone === null ? "" : phone,
                   phoneCode: phoneCode === null ? "" : phoneCode,
-                  linkedIn: details === null ? "" : details.linkedIn,
+                  linkedIn: details === null ? "" : details?.linkedIn,
                   isPresent: details === null ? false : true,
                 },
                 tagLine: {
                   ...prevToEdit.tagLine,
-                  tagLine: details === null ? "" : details.tagLine,
+                  tagLine: details === null ? "" : details?.tagLine,
                   isPresent: details === null ? false : true,
                 },
                 tutorLevel: {
                   ...prevToEdit.tutorLevel,
-                  tutorLevel: details === null ? "" : details.tutorLevel,
+                  tutorLevel: details === null ? "" : details?.tutorLevel,
                   isPresent: details === null ? false : true,
                 },
                 about: {
                   ...prevToEdit.about,
-                  about: details === null ? "" : details.about,
+                  about: details === null ? "" : details?.about,
                   isPresent: details === null ? false : true,
                 },
                 education: {
                   ...prevToEdit.education,
-                  education: details === null ? "" : details.education,
+                  education: details === null ? "" : details?.education,
                   isPresent: details === null ? false : true,
                 },
                 rates: {
@@ -468,22 +468,22 @@ export default function TutorProfile({ isOwn }) {
                 // },
                 pincode: {
                   ...prevToEdit.pincode,
-                  pincode: details === null ? "" : details.pincode,
+                  pincode: details === null ? "" : details?.pincode,
                   isPresent: details === null ? false : true,
                 },
                 paymentInfo: {
                   ...prevToEdit.paymentInfo,
-                  paymentInfo: details === null ? "" : details.paymentInfo,
+                  paymentInfo: details === null ? "" : details?.paymentInfo,
                   isPresent: details === null ? false : true,
                 },
                 tutorRank: {
                   ...prevToEdit.tutorRank,
-                  tutorRank: details === null ? "" : details.tutorRank,
+                  tutorRank: details === null ? "" : details?.tutorRank,
                   isPresent: details === null ? false : true,
                 },
                 income: {
                   ...prevToEdit.income,
-                  income: details === null ? "" : details.income,
+                  income: details === null ? "" : details?.income,
                   isPresent: details === null ? false : true,
                 },
                 paymentStatus: {
@@ -492,12 +492,12 @@ export default function TutorProfile({ isOwn }) {
                 },
                 interest: {
                   ...prevToEdit.interest,
-                  interest: details !== null ? details.interest : [],
+                  interest: details !== null ? details?.interest : [],
                   isPresent: details === null ? false : true,
                 },
                 tutorServices: {
                   ...prevToEdit.tutorServices,
-                  tutorServices: details !== null ? details.tutorServices : [],
+                  tutorServices: details !== null ? details?.tutorServices : [],
                   isPresent: details === null ? false : true,
                 },
                 //  tutorReviews: {
@@ -508,12 +508,12 @@ export default function TutorProfile({ isOwn }) {
                 serviceSpecializations: {
                   ...prevToEdit.serviceSpecializations,
                   serviceSpecializations:
-                    details !== null ? details.serviceSpecializations : [],
+                    details !== null ? details?.serviceSpecializations : [],
                   isPresent: details === null ? false : true,
                 },
                 videoLink: {
                   ...prevToEdit.videoLink,
-                  videoLink: details !== null ? details.videoLink : [],
+                  videoLink: details !== null ? details?.videoLink : [],
                   isPresent: details === null ? false : true,
                 },
               };

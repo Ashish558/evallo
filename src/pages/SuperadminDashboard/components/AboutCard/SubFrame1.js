@@ -1,38 +1,34 @@
 import React, { useEffect,useState } from "react";
 import styles from "./orgcard.module.css";
 import { useGetSpecificActionLogMutation } from "../../../../app/services/superAdmin";
+import Loader from "../../../../components/Loader";
 const SubFrame2 = ({id}) => {
   const [fetchAction,fetchActionStatus]= useGetSpecificActionLogMutation()
   const [actionLog,setActionLog] = useState([])
   const [currentElementIndex, setCurrentElementIndex] = useState(0);
   const [sortedAction, setSortedAction] = useState([]);
-
+ const [loading,setLoading] = useState(false)
+ 
   useEffect(()=>{
    const fetchFunction=()=>{
+    setLoading(true)
     const body={
       orgId:id
     }
       fetchAction(body).then((res)=>{
-      
+        setLoading(false)
       if(res?.data?.actions){
         setActionLog(res?.data?.actions)
       }
       }).catch((err)=>{
+        setLoading(false)
         console.log(err)
       });
    }
    fetchFunction();
   },[])
  
-  const handleScroll = (e) => {
-    // Get the height of each element row
-
-    const elementHeight = e.target.scrollHeight / actionLog?.length;
-
-    // Calculate the index of the current element at the top of the visible area
-    const index = Math.floor(e.target.scrollTop / elementHeight);
-    setCurrentElementIndex(index);
-  };
+  
   useEffect(() => {
     setCurrentElementIndex(0);
     const sorting = (newarr, extra) => {
@@ -40,6 +36,11 @@ const SubFrame2 = ({id}) => {
       sortedData.sort((a, b) => {
         return a.createdAt - b.createdAt;
       });
+      let date2=new Date();
+
+      date2.setDate(new Date().getDate() - 12);
+   
+      sortedData=sortedData?.filter(a => new Date(a.createdAt) >= new Date(date2))
       let i = 0,
         j = 0;
       let check = 0;
@@ -80,9 +81,9 @@ const SubFrame2 = ({id}) => {
   return (
     <div>
       {" "}
-      <ul className="list-disc overflow-y-scroll -translate-y-3 h-[350px]">
-        <div className="h-[1px] bg-[#CBD6E2]" />
-        {sortedAction?.map((item, index) => (
+      <ul className="list-disc overflow-y-scroll custom-scroller -translate-y-2 h-[350px]">
+        
+        {!loading ? sortedAction?.map((item, index) => (
             // <li key={index} className="flex">
             //   <span className="mr-4 text-gray-500">{item.slice(0, 12)}</span>
             //   <span>{item.slice(12)}</span>
@@ -106,7 +107,8 @@ const SubFrame2 = ({id}) => {
                 </p>
               </div>
             </div>
-          ))}
+          )):loading&&<Loader size={"50px"}/> }
+         
       </ul>
     </div>
   );
