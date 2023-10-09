@@ -331,7 +331,7 @@ const Navbar = () => {
 
    return (
       <>
-         <div className="flex justify-around bg-[#26435F] h-[65px] design:h-[70px] items-center w-full">
+         <div className="flex justify-around bg-[#26435F] h-[65px] design:h-[74px] items-center w-full">
             <div
                className={`${persona === "superAdmin" ? "translate-x-[-30px]" : ""}`}
             >
@@ -345,31 +345,31 @@ const Navbar = () => {
                   return (
                      <div
                         key={idx}
-                        className={`flex items-center mr-6 ${isLoggedIn ? "cursor-pointer" : ' cursor-default'}`}
+                        className={`flex items-center mr-6 design:mr-10  ${isLoggedIn ? "cursor-pointer" : ' cursor-default'}`}
                         onClick={() => isLoggedIn && handleNavigate(item.path)}
                      >
                         {isLoggedIn && item?.path === activeRoute ? (
                            <>
                               <p>
                                  <img
-                                    className="w-[16px] h-[16px]"
-                                    style={{ height: "16px" }}
+                                    className="w-[16px] h-[16px] design:h-[20px] design:w-[20px]"
+                                
                                     src={item.activeIcon}
                                     alt=""
                                  />
                               </p>
-                              <p className="pl-[10px] text-[#FFA28D]"> {item.tooltip} </p>
+                              <p className="pl-[10px] text-[#FFA28D] text-base-20 "> {item.tooltip} </p>
                            </>
                         ) : (
                            <>
                               <p>
                                  <img
-                                    className="w-[16px] h-[16px]"
+                                    className="w-[16px] h-[16px] design:h-[20px] design:w-[20px]"
                                     src={item.icon}
                                     alt=""
                                  />
                               </p>
-                              <p className="pl-[10px]"> {item.tooltip} </p>
+                              <p className="pl-[10px] text-base-20 "> {item.tooltip} </p>
                            </>
                         )}
                      </div>
