@@ -1345,7 +1345,7 @@ export default function Calendar() {
                       >
                         <div className="text-lg px-5 py-2 text-[#26435F]">
                           {" "}
-                          <p className="flex py-1 overflow-x-auto scrollbar-content">
+                          <p className="flex py-1 overflow-x-auto custom-scroller-2">
                             {item?.sessionDetailsObj?.length > 0
                               ? item?.sessionDetailsObj?.map((ser, sid) => {
                                 return (

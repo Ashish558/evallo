@@ -1988,17 +1988,17 @@ export default function SuperAdminSettings() {
                     item.choosedValue === false ? (
                       <div
                         key={id}
-                        className="pt-[34px] pb-[30px] border-b-2 border-[#CBD6E2] text-[#24A3D9] font-medium text-[17.5px] flex items-center justify-between"
+                        className={`${id===3?"!opacity-[0.7]" :""} pt-[34px] pb-[30px] border-b-2 border-[#CBD6E2] text-[#24A3D9] font-medium text-[17.5px] flex items-center justify-between`}
                       >
                         <p>{renderColoredText(item.name)}</p>
 
                         <ToggleBar
                           toggle={{ value: item.choosedValue, key: item._id }}
-                          onToggle={togglePermissions}
+                          onToggle={(e)=>id!==3&&togglePermissions(e)}
                         ></ToggleBar>
                       </div>
                     ) : (
-                      <div className="pt-[34px] pb-[30px] border-b-2 border-[#CBD6E2] text-[#24A3D9] font-medium text-[17.5px] flex justify-between">
+                      <div className={`  pt-[34px] pb-[30px] border-b-2 border-[#CBD6E2] text-[#24A3D9] font-medium text-[17.5px] flex justify-between`}>
                         <p>{renderColoredText(item.name)}</p>
 
                         <p>

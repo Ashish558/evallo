@@ -429,6 +429,12 @@ export default function Users() {
     e.preventDefault();
     console.log("add save")
     if (modalData.userType === "") return alert("Fill all the fields");
+    let f=/[a-z]/i.test(modalData?.firstName)
+    f=f&& /[a-z]/i.test(modalData?.lastName)
+     if(!f){
+       alert("Enter a valid name!")
+       return
+     }
     let body = {
       firstName: modalData.firstName,
       lastName: modalData.lastName,
@@ -470,11 +476,18 @@ export default function Users() {
       });
     }
   };
+  const [loadingInvite,setLoadingInvite]=useState(false)
   const handleInvite1 = (e) => {
 
     e.preventDefault();
     console.log("add invite")
     if (modalData.userType === "") return alert("Fill all the fields");
+    let f=/[a-z]/i.test(modalData?.firstName)
+    f=f&& /[a-z]/i.test(modalData?.lastName)
+     if(!f){
+       alert("Enter a valid name!")
+       return
+     }
     let body = {
       firstName: modalData.firstName,
       lastName: modalData.lastName,
@@ -482,13 +495,13 @@ export default function Users() {
       phone: `${numberPrefix}${modalData.phone}`,
     };
 
-    setLoading(true);
+    setLoadingInvite(true);
     if (modalData.userType === "tutor") {
       //console.log(body);
       body.role = modalData.userType.toLowerCase();
       addUser(body).then((res) => {
         //console.log(res);
-        setLoading(false);
+        setLoadingInvite(false);
         if (res.error) {
           alert(res.error.data.message);
           return;
@@ -503,7 +516,7 @@ export default function Users() {
       body.role = modalData.userType.toLowerCase();
       //console.log(body);
       addUser(body).then((res) => {
-        setLoading(false);
+        setLoadingInvite(false);
         //console.log(res);
         if (res.error) {
           alert(res.error.data.message);
@@ -890,18 +903,19 @@ export default function Users() {
       fetch()
     })
 
-  }
-  const [assignedTutorOpen, setAssignedTutorOpen] = useState(false)
-  const [deleteBulkModalActive, setDeleteBulkModalActive] = useState(false)
-  const [deleteSelectLoading, setDeleteSelectLoading] = useState(false)
-  const [InviteBulkModalActive, setInviteBulkModalActive] = useState(false)
-  const [InviteSelectLoading, setInviteSelectLoading] = useState(false)
-  const [SaveBulkModalActive, setSaveBulkModalActive] = useState(false)
-  const [saveSelectLoading, setSaveSelectLoading] = useState(false)
-  useEffect(() => {
-    if (selectedId?.length === 0)
-      setBulkEdits({})
-  }, [selectedId])
+}
+const [assignedTutorOpen,setAssignedTutorOpen]=useState(false)
+const [deleteBulkModalActive,setDeleteBulkModalActive] =useState(false)
+const [deleteSelectLoading,setDeleteSelectLoading]=useState(false)
+const [InviteBulkModalActive,setInviteBulkModalActive] =useState(false)
+const [InviteSelectLoading,setInviteSelectLoading]=useState(false)
+const [SaveBulkModalActive,setSaveBulkModalActive]= useState(false)
+const [saveSelectLoading,setSaveSelectLoading]= useState(false)
+const [showTooltip,setTooltip]=useState(false)
+useEffect(()=>{
+  if(selectedId?.length===0)
+  setBulkEdits({})
+},[selectedId])
 
   const numberKey = Object.keys(bulkEdits)?.length > 0
 
@@ -1105,8 +1119,9 @@ export default function Users() {
             )}
           </div>
         </div>
-        <div className="flex justify-between items-center gap-7 mb-6">
+        <div className={`flex justify-between items-center gap-7 mb-6 relative ${showTooltip?"z-[1]":"z-[50]"}`}>
           <InputField
+
             IconRight={SearchIcon}
             placeholder="Search"
             inputClassName="text-base-17-5 pl-4 text-[#667085]"
@@ -1354,18 +1369,34 @@ export default function Users() {
               Save
             </button>
           </div>
-          <div className="flex justify-end flex-1 gap-5 relative ">
+          <div className="flex justify-end flex-1 gap-5 design:gap-10 relative z-[50] ">
 
             <button disabled={selectedId?.length === 0 ? true : false} onClick={() => selectedId?.length > 0 && setInviteBulkModalActive(true)} className={`bg-[#517CA8] opacity-100 text-base-17-5  font-semibold tracking-wider relative px-[20px] py-[10px] rounded-[7.5px] text-white  text-base-17-5 h-[43px] ${selectedId?.length === 0 ? "opacity-75" : ""} `}>
               + Invite Users
               <span className="absolute right-[-10px] z-[500] top-[-10px]">
-                <div className="group relative">
-                  <img src={ques} className="inline-block" alt="ques" />
-                  <div className={`z-5000 w-[336px]  rounded-[13px] bg-black group-hover:!bg-opacity-100  text-[13px] text-white  whitespace-normal py-[20px] px-[13px] scale-0 group-hover:scale-100 ${styles.positoining}`}>
-                    <h3 className="text-[#517CA8] text-left text-[0.8333vw] py-0 font-medium mb-1">
+                <div className="group relative z-[500]">
+                  <img src={ques}
+                  
+                  onMouseEnter={(e)=>{
+                     console.log("mouse enter")
+                     e.preventDefault()
+                    setTooltip(true)
+                  
+                  }
+                  }
+                   onMouseOut={(e)=>{
+                    e.preventDefault()
+                    console.log("mouse leave")
+                    setTooltip(false)
+                  
+                  } 
+                   }
+                   className="inline-block w-[30px] h-[20px]" alt="ques"/>
+                  
+                 {showTooltip&&        <span className="absolute top-[-250px]  design:top-[-300px] left-[-140px] z-5000 w-[336px] design:w-[380px]  scale-0 rounded-[13px] bg-[rgba(0,0,0,0.80)]  text-[13px] text-white group-hover:scale-100 whitespace-normal py-[20px] px-[13px]">
+                    <h3 className="text-[#517CA8] text-left text-[0.8333vw] py-0 font-semibold mb-1">
                       Invite Users
-                    </h3>
-                    <span className=" !text-justify text-[0.6948vw] font-light w-full">
+                    </h3>   <span className=" text-left text-[0.6948vw] font-light relative z-40">
                       This will allow you to invite the selected users to create
                       an account within your Organization’s database. They will
                       receive a verification email to set a new password and
@@ -1379,7 +1410,8 @@ export default function Users() {
                         inviting them to create an account.
                       </span>
                     </span>
-                  </div>
+               
+                  </span>}
                 </div>
               </span>
             </button>
@@ -1484,7 +1516,7 @@ export default function Users() {
                   <InputField
                     biggerText={true}
                     label="Email Address"
-                    labelClassname=" mt-2 mb-0.5 text-[#26435F] !font-medium !text-lg"
+                    labelClassname=" mt-2 mb-0.5 text-[#26435F] !font-semibold !text-lg"
                     isRequired={true}
                     placeholder="Email Address"
                     inputContainerClassName="text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0"
@@ -1515,16 +1547,17 @@ export default function Users() {
                   />
                 </div>
               </div>
-              <div className="flex items-center justify-center gap-4">
-                <button className="rounded-lg bg-[#FFA28D] border-2 border-[#FFA28D] py-2 text-[#FFFFFF] w-[146px]">
-                  Save User
+              <div className={`flex items-center justify-center gap-4 ${addUserBtnDisabled?"opacity-80":""}`}>
+                <button disabled={addUserBtnDisabled||loading||loadingInvite} className="rounded-lg bg-[#FFA28D] border-2 border-[#FFA28D] py-2 text-[#FFFFFF] w-[146px]">
+                {loading?"Saving..." : "Save User"}
                 </button>
+
                 <button
                   className="rounded-lg bg-transparent border-2 border-[#FFA28D] py-2 text-[#FFA28D]  w-[146px]"
-                  onClick={(e) => handleInvite1(e, "invite")}
-                  disabled={addUserBtnDisabled}
+                  onClick={(e)=>handleInvite1(e,"invite")}
+                  disabled={addUserBtnDisabled||loading||loadingInvite}
                 >
-                  Invite User
+                    {loadingInvite?"Inviting..." : "Invite User"}
                 </button>
               </div>
             </form>
