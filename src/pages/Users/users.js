@@ -429,12 +429,12 @@ export default function Users() {
     e.preventDefault();
     console.log("add save")
     if (modalData.userType === "") return alert("Fill all the fields");
-    let f=/[a-z]/i.test(modalData?.firstName)
-    f=f&& /[a-z]/i.test(modalData?.lastName)
-     if(!f){
-       alert("Enter a valid name!")
-       return
-     }
+    let f = /[a-z]/i.test(modalData?.firstName)
+    f = f && /[a-z]/i.test(modalData?.lastName)
+    if (!f) {
+      alert("Enter a valid name!")
+      return
+    }
     let body = {
       firstName: modalData.firstName,
       lastName: modalData.lastName,
@@ -476,18 +476,18 @@ export default function Users() {
       });
     }
   };
-  const [loadingInvite,setLoadingInvite]=useState(false)
+  const [loadingInvite, setLoadingInvite] = useState(false)
   const handleInvite1 = (e) => {
 
     e.preventDefault();
     console.log("add invite")
     if (modalData.userType === "") return alert("Fill all the fields");
-    let f=/[a-z]/i.test(modalData?.firstName)
-    f=f&& /[a-z]/i.test(modalData?.lastName)
-     if(!f){
-       alert("Enter a valid name!")
-       return
-     }
+    let f = /[a-z]/i.test(modalData?.firstName)
+    f = f && /[a-z]/i.test(modalData?.lastName)
+    if (!f) {
+      alert("Enter a valid name!")
+      return
+    }
     let body = {
       firstName: modalData.firstName,
       lastName: modalData.lastName,
@@ -903,19 +903,19 @@ export default function Users() {
       fetch()
     })
 
-}
-const [assignedTutorOpen,setAssignedTutorOpen]=useState(false)
-const [deleteBulkModalActive,setDeleteBulkModalActive] =useState(false)
-const [deleteSelectLoading,setDeleteSelectLoading]=useState(false)
-const [InviteBulkModalActive,setInviteBulkModalActive] =useState(false)
-const [InviteSelectLoading,setInviteSelectLoading]=useState(false)
-const [SaveBulkModalActive,setSaveBulkModalActive]= useState(false)
-const [saveSelectLoading,setSaveSelectLoading]= useState(false)
-const [showTooltip,setTooltip]=useState(false)
-useEffect(()=>{
-  if(selectedId?.length===0)
-  setBulkEdits({})
-},[selectedId])
+  }
+  const [assignedTutorOpen, setAssignedTutorOpen] = useState(false)
+  const [deleteBulkModalActive, setDeleteBulkModalActive] = useState(false)
+  const [deleteSelectLoading, setDeleteSelectLoading] = useState(false)
+  const [InviteBulkModalActive, setInviteBulkModalActive] = useState(false)
+  const [InviteSelectLoading, setInviteSelectLoading] = useState(false)
+  const [SaveBulkModalActive, setSaveBulkModalActive] = useState(false)
+  const [saveSelectLoading, setSaveSelectLoading] = useState(false)
+  const [showTooltip, setTooltip] = useState(false)
+  useEffect(() => {
+    if (selectedId?.length === 0)
+      setBulkEdits({})
+  }, [selectedId])
 
   const numberKey = Object.keys(bulkEdits)?.length > 0
 
@@ -1119,7 +1119,7 @@ useEffect(()=>{
             )}
           </div>
         </div>
-        <div className={`flex justify-between items-center gap-7 mb-6 relative ${showTooltip?"z-[1]":"z-[50]"}`}>
+        <div className={`flex justify-between items-center gap-7 mb-6 relative ${showTooltip ? "z-[1]" : "z-[50]"}`}>
           <InputField
 
             IconRight={SearchIcon}
@@ -1331,7 +1331,7 @@ useEffect(()=>{
           <InputSelect
             hideRight={true}
             optionListClassName="text-base-17-5 text-[#667085]"
-            placeholderClass="text-base-17-5 !custom-scroller-2  overflow-x-auto !text-[#26435F] !mr-0"
+            placeholderClass="text-base-17-5 !custom-scroller-2  overflow-x-auto !text-[#26435F] !mr-0 !whitespace-normal"
             optionData={allTutors?.map((iyt) => {
               return {
                 ...iyt,
@@ -1344,7 +1344,7 @@ useEffect(()=>{
             IconSearch={Dropdown}
             inputClassName="bg-white border  w-[125px]  "
 
-            inputContainerClassName="bg-white shadow-[0px_0px_2px_0px_rgba(0,0,0,0.25)] h-[43px] lg:pl-2 2xl:pl-3 rounded-[5px]"
+            inputContainerClassName="bg-white shadow-[0px_0px_2px_0px_rgba(0,0,0,0.25)] h-[43px] lg:pl-2 2xl:pl-3 rounded-[5px] "
 
             optionType="object"
             value={bulkEdits?.assignedTutor?.value}
@@ -1376,24 +1376,24 @@ useEffect(()=>{
               <span className="absolute right-[-10px] z-[500] top-[-10px]">
                 <div className="group relative z-[500]">
                   <img src={ques}
-                  
-                  onMouseEnter={(e)=>{
-                     console.log("mouse enter")
-                     e.preventDefault()
-                    setTooltip(true)
-                  
-                  }
-                  }
-                   onMouseOut={(e)=>{
-                    e.preventDefault()
-                    console.log("mouse leave")
-                    setTooltip(false)
-                  
-                  } 
-                   }
-                   className="inline-block w-[30px] h-[20px]" alt="ques"/>
-                  
-                 {showTooltip&&        <span className="absolute top-[-250px]  design:top-[-300px] left-[-140px] z-5000 w-[336px] design:w-[380px]  scale-0 rounded-[13px] bg-[rgba(0,0,0,0.80)]  text-[13px] text-white group-hover:scale-100 whitespace-normal py-[20px] px-[13px]">
+
+                    onMouseEnter={(e) => {
+                      console.log("mouse enter")
+                      e.preventDefault()
+                      setTooltip(true)
+
+                    }
+                    }
+                    onMouseOut={(e) => {
+                      e.preventDefault()
+                      console.log("mouse leave")
+                      setTooltip(false)
+
+                    }
+                    }
+                    className="inline-block w-[30px] h-[20px]" alt="ques" />
+
+                  {showTooltip && <span className="absolute top-[-250px]  design:top-[-300px] left-[-140px] z-5000 w-[336px] design:w-[380px]  scale-0 rounded-[13px] bg-[rgba(0,0,0,0.80)]  text-[13px] text-white group-hover:scale-100 whitespace-normal py-[20px] px-[13px]">
                     <h3 className="text-[#517CA8] text-left text-[0.8333vw] py-0 font-semibold mb-1">
                       Invite Users
                     </h3>   <span className=" text-left text-[0.6948vw] font-light relative z-40">
@@ -1410,7 +1410,7 @@ useEffect(()=>{
                         inviting them to create an account.
                       </span>
                     </span>
-               
+
                   </span>}
                 </div>
               </span>
@@ -1547,17 +1547,17 @@ useEffect(()=>{
                   />
                 </div>
               </div>
-              <div className={`flex items-center justify-center gap-4 ${addUserBtnDisabled?"opacity-80":""}`}>
-                <button disabled={addUserBtnDisabled||loading||loadingInvite} className="rounded-lg bg-[#FFA28D] border-2 border-[#FFA28D] py-2 text-[#FFFFFF] w-[146px]">
-                {loading?"Saving..." : "Save User"}
+              <div className={`flex items-center justify-center gap-4 ${addUserBtnDisabled ? "opacity-80" : ""}`}>
+                <button disabled={addUserBtnDisabled || loading || loadingInvite} className="rounded-lg bg-[#FFA28D] border-2 border-[#FFA28D] py-2 text-[#FFFFFF] w-[146px]">
+                  {loading ? "Saving..." : "Save User"}
                 </button>
 
                 <button
                   className="rounded-lg bg-transparent border-2 border-[#FFA28D] py-2 text-[#FFA28D]  w-[146px]"
-                  onClick={(e)=>handleInvite1(e,"invite")}
-                  disabled={addUserBtnDisabled||loading||loadingInvite}
+                  onClick={(e) => handleInvite1(e, "invite")}
+                  disabled={addUserBtnDisabled || loading || loadingInvite}
                 >
-                    {loadingInvite?"Inviting..." : "Invite User"}
+                  {loadingInvite ? "Inviting..." : "Invite User"}
                 </button>
               </div>
             </form>
@@ -1744,7 +1744,7 @@ useEffect(()=>{
                   <span className="pt-1">
                     If you want to continue inviting the users, please
                     click on the{" "}
-                    <span className="font-normal">
+                    <span className="!font-normal">
                       “Confirm Email Invitations”
                     </span>{" "}
                     button below.
