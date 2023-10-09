@@ -70,8 +70,8 @@ const initialState = {
 export default function Users() {
   const [modalActive, setModalActive] = useState(false);
   const navigate = useNavigate();
-  const { organization,  } = useSelector((state) => state.organization);
-  
+  const { organization, } = useSelector((state) => state.organization);
+
   const { firstName, lastName } = useSelector((state) => state.user);
   const [modalData, setModalData] = useState(initialState);
   const [validData, setValidData] = useState(true);
@@ -88,10 +88,10 @@ export default function Users() {
   useEffect(() => {
     setValidData(
       isEmail(modalData.email) &&
-        modalData.firstName &&
-        modalData.lastName &&
-        modalData.userType &&
-        modalData.phone
+      modalData.firstName &&
+      modalData.lastName &&
+      modalData.userType &&
+      modalData.phone
     );
   }, [
     modalData,
@@ -264,13 +264,13 @@ export default function Users() {
 
     console.log("urlParams", urlParams);
     fetchUsers(urlParams).then((res) => {
-      console.log("crm",res)
+      console.log("crm", res)
       if (res?.data?.data) setTotalPages(res?.data?.data?.total_users);
-  
+
       const fetchDetails = async () => {
         let tempData = [];
         await res?.data?.data?.user?.map(async (user) => {
-         // console.log("user", user);
+          // console.log("user", user);
           let obj = {
             _id: user._id,
             block: user.block,
@@ -440,7 +440,7 @@ export default function Users() {
       lastName: modalData.lastName,
       email: modalData.email,
       phone: `${numberPrefix}${modalData.phone}`,
-      type:"dont send invite."
+      type: "dont send invite."
     };
     setLoading(true);
     if (modalData.userType === "tutor") {
@@ -478,7 +478,7 @@ export default function Users() {
   };
   const [loadingInvite,setLoadingInvite]=useState(false)
   const handleInvite1 = (e) => {
-    
+
     e.preventDefault();
     console.log("add invite")
     if (modalData.userType === "") return alert("Fill all the fields");
@@ -533,9 +533,9 @@ export default function Users() {
 
 
   const handleCheckboxChange = () => {
-    if(!isChecked) {
-      let data=filteredUsersData
-     data=data?.slice(0,maxPageSize)
+    if (!isChecked) {
+      let data = filteredUsersData
+      data = data?.slice(0, maxPageSize)
 
       setSelectedId([...data])
     }
@@ -546,10 +546,10 @@ export default function Users() {
     setIsChecked(!isChecked);
 
   };
-  useEffect(()=>{
+  useEffect(() => {
     setIsChecked(false)
     setSelectedId([])
- },[filteredUsersData])
+  }, [filteredUsersData])
   const handleClose = () => setModalActive(false);
 
   const redirect = (item) => {
@@ -558,7 +558,7 @@ export default function Users() {
     }
   };
 
- 
+
 
   const handleTutorStatus = (item) => {
     //console.log(item);
@@ -646,8 +646,8 @@ export default function Users() {
     if (!settings.servicesAndSpecialization) return;
     let specs = [];
     settings.servicesAndSpecialization.map((service) => {
-     // specs.push(...service.specialization);
-     specs.push(service.service)
+      // specs.push(...service.specialization);
+      specs.push(service.service)
     });
     setSpecializations(specs);
     //console.log("specs", specs);
@@ -674,36 +674,36 @@ export default function Users() {
   const [successFetched, setsuccessFetched] = useState(false);
   const handleBulkExport = async () => {
     setCsvLoad(true);
-    if(selectedId?.length===0){
-    getAllUsers()
-      .then((res) => {
-        let result = res?.data?.data?.user;
+    if (selectedId?.length === 0) {
+      getAllUsers()
+        .then((res) => {
+          let result = res?.data?.data?.user;
 
-        if (result) {
-          let arr = [];
-          result?.forEach((it) => {
-            let obj = {};
-            obj.name = it.firstName + " " + it.lastName;
-            obj._id = it._id;
-            obj.userType = it.role;
-            obj.block = it.block;
-            obj.createdAt = it.createdAt;
-            obj.specialization = it.specialization;
-            obj.tutorStatus = it.userStatus;
-            obj.leadStatus = "";
-            obj.assignedTutor = it.assiginedTutors;
-            obj.phone = it.phone;
-            obj.email = it.email;
-            arr.push(obj);
-          });
-          setCsvData(arr);
-        }
-        setsuccessFetched(true);
-        setCsvLoad(false);
-      })
-      .catch((err) => {
-        setCsvLoad(false);
-      });
+          if (result) {
+            let arr = [];
+            result?.forEach((it) => {
+              let obj = {};
+              obj.name = it.firstName + " " + it.lastName;
+              obj._id = it._id;
+              obj.userType = it.role;
+              obj.block = it.block;
+              obj.createdAt = it.createdAt;
+              obj.specialization = it.specialization;
+              obj.tutorStatus = it.userStatus;
+              obj.leadStatus = "";
+              obj.assignedTutor = it.assiginedTutors;
+              obj.phone = it.phone;
+              obj.email = it.email;
+              arr.push(obj);
+            });
+            setCsvData(arr);
+          }
+          setsuccessFetched(true);
+          setCsvLoad(false);
+        })
+        .catch((err) => {
+          setCsvLoad(false);
+        });
     }
     else {
       setCsvData(selectedId);
@@ -795,113 +795,113 @@ export default function Users() {
         });
     }
   };
-const [selectedId,setSelectedId]=useState([])
-const [addLeadStatus,sls]=useCRMBulkChangeLeadStatusMutation()
-const [addTutorStatus,slst]=useCRMBulkChangeTutorStatusMutation()
-const [addAssignedTutor,slsAt]=useCRMBulkChangeAssignedTutorMutation()
-const [addInviteUser,slsiu]=useCRMBulkInviteUserMutation()
-const [addDeleteUser,slsdu]=useCRMBulkDeleteUserMutation()
-const [bulkEdits,setBulkEdits]=useState({})
-const [checkSave,setChecksave]=useState({ch:0,done:false,count:0})
-const handleSave=()=>{
-  let users=selectedId?.map(ii=>ii?._id)
-  if(!users || users?.length===0) return
-  let b=0;
- 
- // setSaveSelectLoading(true)
-  if(bulkEdits?.leadStatus && bulkEdits?.leadStatus?.value){
-    b++
-    setSaveSelectLoading(true)
-  addLeadStatus({leadStatus:bulkEdits.leadStatus.value,users}).then((res)=>{
-    console.log("successleadStatus",res,checkSave)
-    setChecksave((prev)=>{
-      
-      return {...prev,done:true,count:prev?.count+1}
-    })
-    setSaveSelectLoading(false)
-    setSaveBulkModalActive(false)
-  })
-}
-  if(bulkEdits?.tutorStatus && bulkEdits?.tutorStatus?.value){
-    setSaveSelectLoading(true)
-    b++
-  addTutorStatus({tutorStatus:bulkEdits.tutorStatus.value,users}).then((res)=>{
-    console.log("successtutorStatus",res,checkSave)
-   
-    
-    setSaveSelectLoading(false)
-    setSaveBulkModalActive(false)
-    // if(checkSave?.ch &&  checkSave?.count+1===checkSave?.ch){
-    //   alert("Changes Saved Successfully")
-     
-    //   setChecksave({})
-    // }
-    setChecksave((prev)=>{
-      
-      return {...prev,done:true,count:prev?.count+1}
-    })
-  })
-}
-  if(bulkEdits?.assignedTutor && bulkEdits?.assignedTutor?.id){
-    setSaveSelectLoading(true)
-    b++
-  addAssignedTutor({tutorId:bulkEdits.assignedTutor.id,users}).then((res)=>{
-    console.log("successassignedTutor",res,checkSave)
-    setChecksave((prev)=>{
-      
-      return {...prev,done:true,count:prev?.count+1}
-    })
-    setSaveSelectLoading(false)
-    setSaveBulkModalActive(false)
-  })
-}
-setChecksave((prev)=>{
-      
-  return {done:false,count:0,ch:b}
-})
-if(!b){
-  alert("No filter selected!")
-}
+  const [selectedId, setSelectedId] = useState([])
+  const [addLeadStatus, sls] = useCRMBulkChangeLeadStatusMutation()
+  const [addTutorStatus, slst] = useCRMBulkChangeTutorStatusMutation()
+  const [addAssignedTutor, slsAt] = useCRMBulkChangeAssignedTutorMutation()
+  const [addInviteUser, slsiu] = useCRMBulkInviteUserMutation()
+  const [addDeleteUser, slsdu] = useCRMBulkDeleteUserMutation()
+  const [bulkEdits, setBulkEdits] = useState({})
+  const [checkSave, setChecksave] = useState({ ch: 0, done: false, count: 0 })
+  const handleSave = () => {
+    let users = selectedId?.map(ii => ii?._id)
+    if (!users || users?.length === 0) return
+    let b = 0;
+
+    // setSaveSelectLoading(true)
+    if (bulkEdits?.leadStatus && bulkEdits?.leadStatus?.value) {
+      b++
+      setSaveSelectLoading(true)
+      addLeadStatus({ leadStatus: bulkEdits.leadStatus.value, users }).then((res) => {
+        console.log("successleadStatus", res, checkSave)
+        setChecksave((prev) => {
+
+          return { ...prev, done: true, count: prev?.count + 1 }
+        })
+        setSaveSelectLoading(false)
+        setSaveBulkModalActive(false)
+      })
+    }
+    if (bulkEdits?.tutorStatus && bulkEdits?.tutorStatus?.value) {
+      setSaveSelectLoading(true)
+      b++
+      addTutorStatus({ tutorStatus: bulkEdits.tutorStatus.value, users }).then((res) => {
+        console.log("successtutorStatus", res, checkSave)
 
 
-}
-useEffect(()=>{
-  if(checkSave?.ch>0 && checkSave?.count && checkSave?.ch===checkSave?.count){
-    alert("Changes Saved Successfully!")
-    fetch()
-    setChecksave({})
-    setBulkEdits({})
+        setSaveSelectLoading(false)
+        setSaveBulkModalActive(false)
+        // if(checkSave?.ch &&  checkSave?.count+1===checkSave?.ch){
+        //   alert("Changes Saved Successfully")
+
+        //   setChecksave({})
+        // }
+        setChecksave((prev) => {
+
+          return { ...prev, done: true, count: prev?.count + 1 }
+        })
+      })
+    }
+    if (bulkEdits?.assignedTutor && bulkEdits?.assignedTutor?.id) {
+      setSaveSelectLoading(true)
+      b++
+      addAssignedTutor({ tutorId: bulkEdits.assignedTutor.id, users }).then((res) => {
+        console.log("successassignedTutor", res, checkSave)
+        setChecksave((prev) => {
+
+          return { ...prev, done: true, count: prev?.count + 1 }
+        })
+        setSaveSelectLoading(false)
+        setSaveBulkModalActive(false)
+      })
+    }
+    setChecksave((prev) => {
+
+      return { done: false, count: 0, ch: b }
+    })
+    if (!b) {
+      alert("No filter selected!")
+    }
+
+
   }
-},[checkSave])
+  useEffect(() => {
+    if (checkSave?.ch > 0 && checkSave?.count && checkSave?.ch === checkSave?.count) {
+      alert("Changes Saved Successfully!")
+      fetch()
+      setChecksave({})
+      setBulkEdits({})
+    }
+  }, [checkSave])
 
-//console.log({checkSave})
-const bulkSelectInvite=()=>{
-  let users=selectedId?.map(ii=>ii?._id)
-  if(!users || users?.length===0) return
-  setInviteSelectLoading(true)
-  addInviteUser({users}).then((res)=>{
-    console.log("successInvite",res)
-    if(res?.data)
-    alert("User(s) invited successfully!")
+  //console.log({checkSave})
+  const bulkSelectInvite = () => {
+    let users = selectedId?.map(ii => ii?._id)
+    if (!users || users?.length === 0) return
+    setInviteSelectLoading(true)
+    addInviteUser({ users }).then((res) => {
+      console.log("successInvite", res)
+      if (res?.data)
+        alert("User(s) invited successfully!")
 
-    setInviteSelectLoading(false)
-    setInviteBulkModalActive(false)
-    fetch()
-  })
+      setInviteSelectLoading(false)
+      setInviteBulkModalActive(false)
+      fetch()
+    })
 
-}
-const bulkSelectDelete=()=>{
-  let users=selectedId?.map(ii=>ii?._id)
-  if(!users || users?.length===0) return
-  setDeleteSelectLoading(true)
-  addDeleteUser({users}).then((res)=>{
-    console.log("successDelete",res)
-    if(res?.data)
-    alert("User(s) deleted successfully!")
-    setDeleteSelectLoading(false)
-    setDeleteBulkModalActive(false)
-    fetch()
-  })
+  }
+  const bulkSelectDelete = () => {
+    let users = selectedId?.map(ii => ii?._id)
+    if (!users || users?.length === 0) return
+    setDeleteSelectLoading(true)
+    addDeleteUser({ users }).then((res) => {
+      console.log("successDelete", res)
+      if (res?.data)
+        alert("User(s) deleted successfully!")
+      setDeleteSelectLoading(false)
+      setDeleteBulkModalActive(false)
+      fetch()
+    })
 
 }
 const [assignedTutorOpen,setAssignedTutorOpen]=useState(false)
@@ -917,16 +917,16 @@ useEffect(()=>{
   setBulkEdits({})
 },[selectedId])
 
-const numberKey=Object.keys(bulkEdits)?.length>0
+  const numberKey = Object.keys(bulkEdits)?.length > 0
 
 
-//console.log("users",{selectedId,bulkEdits})
+  //console.log("users",{selectedId,bulkEdits})
   return (
     <div className="w-[83.6989583333vw] mx-auto  min-h-screen">
       <div className="pb-10  mt-[50px] !mt-[calc(50*0.0522vw)]">
         <div className="flex justify-between items-center mb-3">
           <p className="text-[#24A3D9] mb-6 text-xl text-base-20 cursor-pointer">
-            <span onClick={()=>navigate('/')}>{organization?.company +
+            <span onClick={() => navigate('/')}>{organization?.company +
               "  >  " +
               firstName +
               "  " +
@@ -934,7 +934,7 @@ const numberKey=Object.keys(bulkEdits)?.length>0
               "  >  "}</span>
             <span className="font-semibold">CRM</span>
           </p>
-          
+
         </div>
         <div>
           <div className="flex mb-[46px]">
@@ -1069,7 +1069,7 @@ const numberKey=Object.keys(bulkEdits)?.length>0
                 underline={true}
                 titleInvite={csvLength}
 
-                 classname={"max-w-[781px] mx-auto"}
+                classname={"max-w-[781px] mx-auto"}
                 titleClassName={"mb-5 "}
                 handleClose={() => setInviteUsers(false)}
                 body={
@@ -1100,7 +1100,7 @@ const numberKey=Object.keys(bulkEdits)?.length>0
                         type="button"
                         onClick={() => {
                           bulkInvite();
-                         
+
                         }}
                       >
                         Yes, Confirm
@@ -1147,8 +1147,8 @@ const numberKey=Object.keys(bulkEdits)?.length>0
               name: "test",
               match: filterData.userType,
             }}
-            onChange={(val) =>{
-           
+            onChange={(val) => {
+
               setFilterData({
                 ...filterData,
                 userType: filterData.userType.includes(val)
@@ -1211,10 +1211,10 @@ const numberKey=Object.keys(bulkEdits)?.length>0
           <InputSelect
             optionListClassName="text-base-17-5 text-[#667085]"
             placeholderClass="text-base-17-5"
-            optionData={allTutors?.map((iyt)=>{
+            optionData={allTutors?.map((iyt) => {
               return {
                 ...iyt,
-                name:iyt.value,
+                name: iyt.value,
               }
             })}
             placeholder="Tutor"
@@ -1246,7 +1246,7 @@ const numberKey=Object.keys(bulkEdits)?.length>0
         </div>
         <div className="flex gap-6 items-center relative z-[10]   mt-[23.75px]">
           <div className="ml-6 flex gap-3 ">
-            <SCheckbox stopM={true}  checked={isChecked} onChange={handleCheckboxChange} />
+            <SCheckbox stopM={true} checked={isChecked} onChange={handleCheckboxChange} />
             <span className="inline-block text-[17.5px] text-base-17-5 min-w-[70px]">{selectedId?.length} Selected</span>
             {/* <label className={`  text-[#26435F] font-medium flex items-center`}>
               <input
@@ -1263,11 +1263,11 @@ const numberKey=Object.keys(bulkEdits)?.length>0
           </div>
           <InputSelect
             optionListClassName="text-base-17-5 text-[#667085]"
-            placeholderClass="text-base-17-5 !custom-scroller-2 !w-[125px] overflow-x-auto !text-[#26435F]"
-            optionData={organization?.settings?.leadStatus?.map((iyt)=>{
+            placeholderClass="text-base-17-5 !custom-scroller-2 overflow-x-auto !text-[#26435F] !mr-0"
+            optionData={organization?.settings?.leadStatus?.map((iyt) => {
               return {
-                value:iyt,
-                name:iyt
+                value: iyt,
+                name: iyt
               }
             })}
             hideRight={true}
@@ -1275,103 +1275,103 @@ const numberKey=Object.keys(bulkEdits)?.length>0
             parentClassName="w-[9.1146vw] text-[#26435F]"
             type="select"
             IconSearch={Dropdown}
-            inputClassName="bg-white border border-white rounded-[4px] w-[125px]"
-            
-            inputContainerClassName="bg-white shadow-[0px_0px_2px_0px_rgba(0,0,0,0.25)] h-[43px] lg:px-3 2xl:px-4 text-center"
-            
+            inputClassName="bg-white border border-white  w-[125px]"
+
+            inputContainerClassName="bg-white shadow-[0px_0px_2px_0px_rgba(0,0,0,0.25)] h-[43px] lg:px-3 2xl:px-4 text-center rounded-[5px]"
+
             optionType="object"
             value={bulkEdits?.leadStatus?.value}
-          
+
             onChange={(val) => {
-              let temp=bulkEdits
-              temp={
+              let temp = bulkEdits
+              temp = {
                 ...temp,
-                leadStatus:{
-                  value:val?.value
+                leadStatus: {
+                  value: val?.value
                 }
-              
-            }
+
+              }
               setBulkEdits(temp)
             }}
           />
-          
+
           <InputSelect
             optionListClassName="text-base-17-5 text-[#667085]"
-            placeholderClass="text-base-17-5 !custom-scroller-2 !w-[125px] overflow-x-auto !text-[#26435F]"
-            optionData={organization?.settings?.tutorStatus?.map((iyt)=>{
+            placeholderClass="text-base-17-5 !custom-scroller-2 overflow-x-auto !text-[#26435F] !mr-0"
+            optionData={organization?.settings?.tutorStatus?.map((iyt) => {
               return {
-                value:iyt,
-                name:iyt
+                value: iyt,
+                name: iyt
               }
             })}
             placeholder="Tutor Status"
             parentClassName="w-[9.1146vw]  text-[#26435F]"
             type="select"
             IconSearch={Dropdown}
-            inputClassName="bg-white border border-[rgb(255,255,255)] rounded-[4px] w-[125px]"
-            
-            inputContainerClassName="bg-white shadow-[0px_0px_2px_0px_rgba(0,0,0,0.25)] h-[43px] lg:px-3 2xl:px-4 text-center"
+            inputClassName="bg-white border border-[rgb(255,255,255)]  w-[125px]"
+
+            inputContainerClassName="bg-white shadow-[0px_0px_2px_0px_rgba(0,0,0,0.25)] h-[43px] lg:px-3 2xl:px-4 text-center rounded-[5px]"
             hideRight={true}
             optionType="object"
             value={bulkEdits?.tutorStatus?.value}
-           
+
             onChange={(val) => {
-              let temp=bulkEdits
-              temp={
+              let temp = bulkEdits
+              temp = {
                 ...temp,
-                tutorStatus:{
-                  value:val?.value
+                tutorStatus: {
+                  value: val?.value
                 }
               }
-              
+
               setBulkEdits(temp)
             }}
           />
-         
-           <InputSelect
-           hideRight={true}
+
+          <InputSelect
+            hideRight={true}
             optionListClassName="text-base-17-5 text-[#667085]"
-            placeholderClass="text-base-17-5 !custom-scroller-2  overflow-x-auto !text-[#26435F]"
-            optionData={allTutors?.map((iyt)=>{
+            placeholderClass="text-base-17-5 !custom-scroller-2  overflow-x-auto !text-[#26435F] !mr-0"
+            optionData={allTutors?.map((iyt) => {
               return {
                 ...iyt,
-                name:iyt.value,
+                name: iyt.value,
               }
             })}
             placeholder="Assigned Tutor"
             parentClassName="w-[9.1146vw]  text-[#26435F] "
             type="select"
             IconSearch={Dropdown}
-            inputClassName="bg-white border  w-[125px] rounded-[5px] "
-            
-            inputContainerClassName="bg-white shadow-[0px_0px_2px_0px_rgba(0,0,0,0.25)] h-[43px] lg:pl-2 2xl:pl-3"
-            
+            inputClassName="bg-white border  w-[125px]  "
+
+            inputContainerClassName="bg-white shadow-[0px_0px_2px_0px_rgba(0,0,0,0.25)] h-[43px] lg:pl-2 2xl:pl-3 rounded-[5px]"
+
             optionType="object"
             value={bulkEdits?.assignedTutor?.value}
-          
+
             onChange={(val) => {
-           
-              let temp=bulkEdits
-              temp={
+
+              let temp = bulkEdits
+              temp = {
                 ...temp,
-                assignedTutor:{
-                  id:val?._id,
-                  value:val?.value
+                assignedTutor: {
+                  id: val?._id,
+                  value: val?.value
                 }
               }
-              
+
               setBulkEdits(temp)
             }}
           />
-         
+
           <div>
-            <button disabled={selectedId?.length === 0 || !numberKey ? true : false} onClick={() => selectedId?.length > 0 && setSaveBulkModalActive(true)} className={`bg-[#26435F] text-[15px] px-[25px] py-[10px] rounded-[5px] text-white ml-auto text-base-17-5 h-[43px] w-[5.1563vw] ${selectedId?.length===0||!numberKey?"opacity-75":""} `}>
+            <button disabled={selectedId?.length === 0 || !numberKey ? true : false} onClick={() => selectedId?.length > 0 && setSaveBulkModalActive(true)} className={`bg-[rgba(38,67,95,1)] font-medium text-[15px] px-[10px] py-[10px] rounded-[7.5px] text-white ml-auto  h-[43px] w-[5.1563vw] ${selectedId?.length === 0 || !numberKey ? "opacity-75" : ""} `}>
               Save
             </button>
           </div>
           <div className="flex justify-end flex-1 gap-5 design:gap-10 relative z-[50] ">
 
-            <button disabled={selectedId?.length===0?true:false} onClick={()=>selectedId?.length>0&&setInviteBulkModalActive(true)} className={`bg-[#517CA8] opacity-100 text-base-17-5  font-semibold tracking-wider relative px-[20px] py-[10px] rounded-[7.5px] text-white  text-base-17-5 h-[43px] ${selectedId?.length===0?"opacity-75":""} `}>
+            <button disabled={selectedId?.length === 0 ? true : false} onClick={() => selectedId?.length > 0 && setInviteBulkModalActive(true)} className={`bg-[#517CA8] opacity-100 text-base-17-5  font-semibold tracking-wider relative px-[20px] py-[10px] rounded-[7.5px] text-white  text-base-17-5 h-[43px] ${selectedId?.length === 0 ? "opacity-75" : ""} `}>
               + Invite Users
               <span className="absolute right-[-10px] z-[500] top-[-10px]">
                 <div className="group relative z-[500]">
@@ -1404,7 +1404,7 @@ const numberKey=Object.keys(bulkEdits)?.length>0
                       “Saved” user data instead of inviting them when adding
                       them to the CRM.
                       <br />
-                     
+
                       <span className="text-[#FF7979] font-light text-left">
                         Please ensure that you have consent from the user before
                         inviting them to create an account.
@@ -1415,7 +1415,7 @@ const numberKey=Object.keys(bulkEdits)?.length>0
                 </div>
               </span>
             </button>
-            <button disabled={selectedId?.length === 0 ? true : false} onClick={() => selectedId?.length > 0 && setDeleteBulkModalActive(true)} className={`bg-[#FF7979] opacity-100 flex items-center gap-2 px-[20px] tracking-wider font-semibold py-[10px] rounded-[5px] text-white  text-base-17-5 ${selectedId?.length===0?"opacity-75":""} `}>
+            <button disabled={selectedId?.length === 0 ? true : false} onClick={() => selectedId?.length > 0 && setDeleteBulkModalActive(true)} className={`bg-[#FF7979] opacity-100 flex items-center gap-2 px-[20px] tracking-wider font-semibold py-[10px] rounded-[5px] text-white  text-base-17-5 ${selectedId?.length === 0 ? "opacity-75" : ""} `}>
               <span>
                 <img
                   src={DeleteIcon2}
@@ -1438,9 +1438,9 @@ const numberKey=Object.keys(bulkEdits)?.length>0
             tableHeaders={tableHeaders}
             headerObject={true}
             maxPageSize={10}
-           
+
             isCallingApi={true}
-            
+
             total_pages={Math.ceil(totalPages / maxPageSize)}
             setMaxPageSize={setMaxPageSize}
             currentPage={currentPage}
@@ -1515,8 +1515,8 @@ const numberKey=Object.keys(bulkEdits)?.length>0
                 <div>
                   <InputField
                     biggerText={true}
-                    label="Email Addresss "
-                    labelClassname=" mt-2 mb-0.5 text-[#26435F] !font-semibold !text-lg"
+                    label="Email Address"
+                    labelClassname=" mt-2 mb-0.5 text-[#26435F] !font-medium !text-lg"
                     isRequired={true}
                     placeholder="Email Address"
                     inputContainerClassName="text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0"
@@ -1670,9 +1670,9 @@ const numberKey=Object.keys(bulkEdits)?.length>0
         <Modal
           title={
             <span className="leading-10">
-              Are you sure 
+              Are you sure
               you want to delete Selected User(s)?
-              
+
             </span>
           }
           titleClassName="mb-5 leading-10"
@@ -1688,23 +1688,23 @@ const numberKey=Object.keys(bulkEdits)?.length>0
           }}
           body={
             <>
-             <p className="text-base-17-5 mt-[-5px] text-[#667085] mb-6">
-                    <span className="font-semibold mr-1">⚠️ Note:</span>
-                    Once the users are deleted from your Organization, you will not be able to recover their data. Read detailed documentation in Evallo’s.
-                    <span className="text-[#24A3D9]"> knowledge base.</span>
-                  </p>
+              <p className="text-base-17-5 mt-[-5px] text-[#667085] mb-6">
+                <span className="font-semibold mr-1">⚠️ Note:</span>
+                Once the users are deleted from your Organization, you will not be able to recover their data. Read detailed documentation in Evallo’s.
+                <span className="text-[#24A3D9]"> knowledge base.</span>
+              </p>
             </>
           }
           handleClose={() => setDeleteBulkModalActive(false)}
           classname={"max-w-[600px]  mx-auto"}
         />
       )}
-        {SaveBulkModalActive && (
+      {SaveBulkModalActive && (
         <Modal
           title={
             <span className="leading-10">
               Are You Sure You Want to Bulk Edit?
-              
+
             </span>
           }
           titleClassName="mb-5 leading-10"
@@ -1718,68 +1718,68 @@ const numberKey=Object.keys(bulkEdits)?.length>0
             bgDanger: true,
             loading: saveSelectLoading,
           }}
-          
+
           handleClose={() => setSaveBulkModalActive(false)}
           classname={"max-w-[600px]  mx-auto"}
         />
       )}
-       {InviteBulkModalActive && (
-              <Modal
-                crossBtn={true}
-                underline={true}
-                titleInvite={selectedId?.length}
-                  classname={"max-w-[781px] mx-auto"}
-                titleClassName={"mb-5 "}
-                handleClose={() => setInviteBulkModalActive(false)}
-                body={
-                  <>
-                    <div className="text-center mb-7">
-                      <p className="text-[#517CA8]  text-lg font-light">
-                        All users that are invited to the platform will receive
-                        an email invitation to create an account within your
-                        organization. If you only want to store their data and
-                        do not want to invite them to create an account, please
-                        click on “Save Data Only” button.
-                        <br />
-                        <span className="pt-1">
-                          If you want to continue inviting the users, please
-                          click on the{" "}
-                          <span className="font-normal">
-                            “Confirm Email Invitations”
-                          </span>{" "}
-                          button below.
-                        </span>
-                      </p>
-                    </div>
-                    <div className="flex justify-center">
-                      <button
-                        data-modal-target="popup-modal"
-                        data-modal-toggle="popup-modal"
-                        className="block text-white  bg-[#FFA28D] hover:bg-[#FFA28D] mr-[40px] font-medium rounded-lg  px-6 py-[17.33px] text-center dark:bg-[#FFA28D] dark:hover:bg-[#FFA28D] "
-                        type="button"
-                        disabled={InviteSelectLoading}
-                        loading={InviteSelectLoading}
-                        onClick={() => {
-                          
-                          bulkSelectInvite();
-                        }}
-                      >
-                       {InviteSelectLoading?"Inviting...": "Yes, Confirm"}
-                      </button>
-                      <button
-                        type="button"
-                        className="max-w-140 text-[#FFA28D] border-[1.5px] border-[#FFA28D] bg-white hover:bg-[#FFA28D] hover:text-white  font-medium rounded-lg  px-[46px] py-[17.33px] text-center dark:bg-white dark:hover:bg-[#FFA28D]"
-                        onClick={() => setInviteBulkModalActive(false)}
-                      >
-                        Cancel
-                      </button>
-                    </div>
-                  </>
-                }
-              ></Modal>
-            )}
+      {InviteBulkModalActive && (
+        <Modal
+          crossBtn={true}
+          underline={true}
+          titleInvite={selectedId?.length}
+          classname={"max-w-[781px] mx-auto"}
+          titleClassName={"mb-5 text-center"}
+          handleClose={() => setInviteBulkModalActive(false)}
+          body={
+            <>
+              <div className="text-center mb-7">
+                <p className="text-[#517CA8]  text-lg font-light">
+                  All users that are invited to the platform will receive
+                  an email invitation to create an account within your
+                  organization. If you only want to store their data and
+                  do not want to invite them to create an account, please
+                  click on “Save Data Only” button.
+                  <br />
+                  <span className="pt-1">
+                    If you want to continue inviting the users, please
+                    click on the{" "}
+                    <span className="font-normal">
+                      “Confirm Email Invitations”
+                    </span>{" "}
+                    button below.
+                  </span>
+                </p>
+              </div>
+              <div className="flex justify-center">
+                <button
+                  data-modal-target="popup-modal"
+                  data-modal-toggle="popup-modal"
+                  className="block text-white  bg-[#FFA28D] hover:bg-[#FFA28D] mr-[40px] font-medium rounded-lg  px-6 py-[10] h-[46px] text-center dark:bg-[#FFA28D] dark:hover:bg-[#FFA28D] "
+                  type="button"
+                  disabled={InviteSelectLoading}
+                  loading={InviteSelectLoading}
+                  onClick={() => {
 
-            <AssignedTutors assignedTutorOpen={assignedTutorOpen} setAssignedTutorOpen={setAssignedTutorOpen} fetch2={fetch}/>
+                    bulkSelectInvite();
+                  }}
+                >
+                  {InviteSelectLoading ? "Inviting..." : "Yes, Confirm"}
+                </button>
+                <button
+                  type="button"
+                  className="max-w-140 text-[#FFA28D] border-[1.5px] border-[#FFA28D] bg-white hover:bg-[#FFA28D] hover:text-white  font-medium rounded-lg  px-[46px] py-[10] h-[46px] text-center dark:bg-white dark:hover:bg-[#FFA28D]"
+                  onClick={() => setInviteBulkModalActive(false)}
+                >
+                  Cancel
+                </button>
+              </div>
+            </>
+          }
+        ></Modal>
+      )}
+
+      <AssignedTutors assignedTutorOpen={assignedTutorOpen} setAssignedTutorOpen={setAssignedTutorOpen} fetch2={fetch} />
     </div>
   );
 }

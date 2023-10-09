@@ -338,10 +338,10 @@ const Dashboard = () => {
                         </p>
 
                         <span className="absolute  -top-10 left-10 z-20 w-[333px]  scale-0 rounded-[13px] bg-[rgba(0,0,0,0.80)] text-white group-hover:scale-100 whitespace-normal py-5 px-3">
-                          <h3 className="text-[#22A699] text-[16px] py-1 font-medium mb-1">
+                          <h3 className="text-[#22A699] text-[0.83vw] py-1 font-medium mb-1">
                             Completed Revenue
                           </h3>
-                          <span className="font-light text-[13.3px]">
+                          <span className="font-light text-[0.69vw]">
                             This value is calculated by adding up all the revenue
                             generated from sessions that have been marked as
                             “Completed” for the selected date range.
@@ -370,10 +370,10 @@ const Dashboard = () => {
                           ></FontAwesomeIcon>
                         </p>
                         <span className="absolute  -top-10 left-10 z-20 w-[333px]  scale-0 rounded-[13px] bg-[rgba(0,0,0,0.80)]  text-white group-hover:scale-100 whitespace-normal py-5 px-3">
-                          <h3 className="text-[#FF5175] text-[16px] py-1 font-medium mb-1">
+                          <h3 className="text-[#FF5175] text-[0.83vw] py-1 font-medium mb-1">
                             Leaked Revenue
                           </h3>
-                          <span className="font-light text-[13px]">
+                          <span className="font-light text-[0.69vw]">
                             This value is calculated by adding up all the revenue
                             lost from sessions that have been marked as “Canceled”
                             or “Partial” for the selected date range.
@@ -402,10 +402,10 @@ const Dashboard = () => {
                           ></FontAwesomeIcon>
                         </p>
                         <span className="absolute  -top-10 left-10 z-20 w-[333px]  scale-0 rounded-[13px] bg-[rgba(0,0,0,0.80)]  text-white group-hover:scale-100 whitespace-normal py-5 px-3">
-                          <h3 className="text-[#7152EB] text-[16px] py-1 font-medium mb-1">
+                          <h3 className="text-[#7152EB] text-[0.83vw] py-1 font-medium mb-1">
                             Impending Revenue
                           </h3>
-                          <span className="font-light text-[13px] ">
+                          <span className="font-light text-[0.69vw] ">
                             This value is calculated by adding up all the revenue
                             lost from sessions that have been marked as
                             “Scheduled” for the selected date range.

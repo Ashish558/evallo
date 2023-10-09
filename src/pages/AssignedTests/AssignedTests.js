@@ -1014,6 +1014,7 @@ export default function AssignedTests() {
       {assignTestModalActive && (
         <Modal
           title="New Assignment"
+          buttonParentClassName="justify-center"
           titleClassName=" text-start pb-2"
           classname={"max-w-[700px] mx-auto"}
           cancelBtn={true}
