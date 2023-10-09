@@ -695,7 +695,7 @@ export default function TutorProfile({ isOwn }) {
                   <div className="h-[120px]  rounded-t-md shadow-t-[0px_0px_2px_0px_#00000040] flex relative bg-[#26435F]">
                     <div className="ml-8  pt-1  w-4/6">
                       <div className="flex h-full  items-end">
-                        <div className="mb-[-100px] h-min">
+                        <div className="mb-[-80px] h-min">
                           <ProfilePhoto
                             isTutor={true}
                             imgSizeClass={"!w-[150px] !h-[150px]"}
@@ -1201,7 +1201,7 @@ export default function TutorProfile({ isOwn }) {
                   //    </div> */}
 
                   // </div>
-                  <div className="w-full relative h-full p-1 flex flex-col gap-1  rounded-md items-center overflow-y-auto custom-scroller">
+                  <div className="w-full relative h-[450px] p-1 flex flex-col gap-1  rounded-md items-center overflow-y-auto custom-scroller">
                     {/* {settings ? (
                              settings.interest.length > 0 &&
                              userDetail.interest.map((id, idx) => {
