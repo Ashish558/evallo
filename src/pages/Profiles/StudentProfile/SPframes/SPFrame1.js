@@ -297,7 +297,7 @@ const SPFrame1 = ({ userId, settings, userDetail, editable, setToEdit, toEdit ,f
             />
           </p>
 
-          <div className="w-full relative h-full p-1 flex flex-col gap-2  rounded-md items-center overflow-y-auto custom-scroller">
+          <div className="w-full relative h-full p-1 flex flex-col gap-2 h-min  rounded-md items-center overflow-y-auto custom-scroller">
             {userDetail?.subjects
               ? userDetail?.subjects.map((sub, idx) => {
                   return (
@@ -332,7 +332,7 @@ const SPFrame1 = ({ userId, settings, userDetail, editable, setToEdit, toEdit ,f
             />
           </p>
 
-          <div className="w-full relative h-full p-1 flex flex-col gap-2  rounded-md items-center overflow-y-auto custom-scroller">
+          <div className="w-full relative h-full p-1 flex flex-col gap-2 h-min  rounded-md items-center overflow-y-auto custom-scroller">
             {/* {settings &&
               settings.personality &&
               settings.personality.length > 0 &&

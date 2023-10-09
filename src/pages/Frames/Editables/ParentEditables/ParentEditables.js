@@ -616,7 +616,7 @@ export default function ParentEditables({
   };
 
   // console.log('awsLink', awsLink)
-  // console.log('toedit--', currentToEdit)
+   console.log('toedit--', currentToEdit)
   // console.log('setting', settings.servicesAndSpecialization[currentToEdit.selectedIdx])
   // console.log('field', currentField)
   // console.log('sett', settings)
@@ -2246,13 +2246,13 @@ export default function ParentEditables({
                             setCurrentToEdit({
                               ...currentToEdit,
                               serviceSpecializations:
-                                currentToEdit.serviceSpecializations.filter(
-                                  (id) => id !== item._id
+                                currentToEdit.serviceSpecializations?.filter(
+                                  (id) => id !== item?.text
                                 ),
                             })
                           }
                         >
-                          <p className="font-medium">{item.text}</p>
+                          <p className="font-medium">{item?.text}</p>
                         </div>
                       );
                     })}

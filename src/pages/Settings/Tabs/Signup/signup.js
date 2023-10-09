@@ -441,8 +441,8 @@ export default function SignupTab({
         </div>
 
         <PrimaryButton
-          disabled={customFields?.length >= 5 ? true : false}
-          children={"Add New Question"}
+          disabled={true}//customFields?.length >= 5 ? true : false
+          children={"Add New Question (Coming Soon)"}
           Icon={plus1}
           className="text-base-17-5 text-white"
           onClick={() => setAddNewQuestionModalActive(true)}

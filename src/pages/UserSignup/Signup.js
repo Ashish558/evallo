@@ -168,7 +168,7 @@ export default function UserSignup() {
       if (res.data.organisation.length === 0) return;
       if (res.data.organisation[0]) {
         setOrganisation(res.data.organisation[0]);
-        setCustomFields(res.data.organisation[0]?.settings?.customFields);
+       // setCustomFields(res.data.organisation[0]?.settings?.customFields);
       }
     });
   }, [searchParams.get("orgName")]);
@@ -213,7 +213,7 @@ export default function UserSignup() {
 
           if (org?.data?.organisation) {
             setOrganisation(org.data.organisation);
-            setCustomFields(org.data.organisation?.settings?.customFields);
+           // setCustomFields(org.data.organisation?.settings?.customFields);
           }
         });
       }
@@ -821,12 +821,14 @@ export default function UserSignup() {
                   {...valueProps}
                   customFields={customFields}
                   {...otherDetailsProps}
+                  newLoader={loading}
                   handleSignup={handleSignup}
                 />
               ) : frames.customFields ? (
                 <CustomFields
                   {...props}
                   {...valueProps}
+                  
                   customFields={customFields}
                   setCustomFields={setCustomFields}
                   handleSignup={handleSignup}

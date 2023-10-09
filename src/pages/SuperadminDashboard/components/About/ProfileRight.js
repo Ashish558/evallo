@@ -7,7 +7,46 @@ import SPFrame3 from "../../OrgSettings/SFrame3";
 
 const ProfileRight = ({ userData,orgs }) => {
   const [subFrame, setSubFrame] = useState(0);
+  function getLast12Days() {
+    const today = new Date();
+    const dates = [];
+  
+    for (let i = 11; i < 12; i++) {
+      const date = new Date(today);
+      date.setDate(today.getDate() - i);
+  
+      const day = date.getDate();
+      const month = date.toLocaleString('default', { month: 'long' });
+      const year = date.getFullYear();
+  
+      let dateString = `${day} ${month}`;
+      if (i === 0) {
+        dateString += ` - ${month} ${day}, ${year}`;
+      }
+  
+      dates.push(dateString);
+    }
+    let dt=new Date().toDateString();
+    return dates+dt;
+  }
+  function formatDate(date) {
+    const day = date.getDate();
+    const month = date.toLocaleString('default', { month: 'long' });
+    const year = date.getFullYear();
+   let date2=new Date();
 
+    date2.setDate(date.getDate() - 12);
+   const day2 = date2.getDate();
+      const month2 = date2.toLocaleString('default', { month: 'long' });
+    return `${day2} ${month2} - ${month} ${day}, ${year}`;
+  }
+  
+  const targetDate = new Date(); // Replace with your desired date
+  const formattedDate = formatDate(targetDate);
+  
+  console.log(formattedDate);
+  const last12Days = formattedDate;
+  
   return (
     <>
       <div className="flex flex-col gap-3 p-3 min-w-[740px] w-[62%] bg-white shadow-xs rounded-md border border-gray-300">
@@ -18,7 +57,7 @@ const ProfileRight = ({ userData,orgs }) => {
               className={`px-2 py-1 rounded-sm ${
                 subFrame === 0
                   ? "border-b-[3px]  border-b-[#FFA28D]  text-[#FFA28D] "
-                  : ""
+                  : "text-[#26435F]"
               }`}
             >
               About{" "}
@@ -29,7 +68,7 @@ const ProfileRight = ({ userData,orgs }) => {
               className={`px-2 py-1 rounded-sm ${
                 subFrame === 1
                   ? "border-b-[3px]  border-b-[#FFA28D]  text-[#FFA28D] "
-                  : ""
+                  : "text-[#26435F]"
               }`}
             >
               Org Settings{" "}
@@ -39,7 +78,7 @@ const ProfileRight = ({ userData,orgs }) => {
               className={`px-2 py-1 rounded-sm ${
                 subFrame === 2
                   ? "border-b-[3px]  border-b-[#FFA28D]  text-[#FFA28D] "
-                  : ""
+                  : "text-[#26435F]"
               }`}
             >
               Action Log{" "}
@@ -49,7 +88,7 @@ const ProfileRight = ({ userData,orgs }) => {
               className={`px-2 py-1 rounded-sm ${
                 subFrame === 3
                   ? "border-b-[3px]  border-b-[#FFA28D]  text-[#FFA28D] "
-                  : ""
+                  : "text-[#26435F]"
               }`}
             >
               {" "}
@@ -60,7 +99,7 @@ const ProfileRight = ({ userData,orgs }) => {
             <button className="bg-[#FFA28D] p-1 px-3   rounded-md text-xs text-white">
               {"12 Days"}
             </button>
-            <p className="text-[#FFA28D] text-xs">1 May - May 12, 2023</p>
+            <p className="text-[#FFA28D] text-xs">{last12Days}</p>
           </span>
         </div>
         {subFrame === 0 ? (
