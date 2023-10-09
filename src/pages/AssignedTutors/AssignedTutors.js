@@ -77,7 +77,7 @@ const initialState = {
    tutorId: '',
 }
 
-export default function AssignedTutors({setAssignedTutorOpen,assignedTutorOpen,fetch2}) {
+export default function AssignedTutors({ setAssignedTutorOpen, assignedTutorOpen, fetch2 }) {
 
    const [tableData, setTableData] = useState([])
    const [filteredData, setFilteredData] = useState([])
@@ -96,7 +96,7 @@ export default function AssignedTutors({setAssignedTutorOpen,assignedTutorOpen,f
       setAssignedTutorOpen(false)
       setAssignStudentModalActive(false);
    }
-const navigate = useNavigate()
+   const navigate = useNavigate()
    const [filterData, setFilterData] = useState({
       tutorName: '',
       studentName: '',
@@ -111,11 +111,11 @@ const navigate = useNavigate()
    const [deleteAssignedTutor, deleteAssignedTutorResp] = useDeleteAssignedTutorMutation();
    const [fetchSettings, settingsResp] = useLazyGetSettingsQuery()
    const [settings, setSettings] = useState({})
-   const [studentMultiple, setStudentMultiple] =useState([])
+   const [studentMultiple, setStudentMultiple] = useState([])
    const [students, setStudents] = useState([]);
    const [maxPageSize, setMaxPageSize] = useState(10);
    const [filterItems, setFilterItems] = useState([])
-   const [addAssignedTutor2,slsAt]=useCRMBulkChangeAssignedTutorMutation()
+   const [addAssignedTutor2, slsAt] = useCRMBulkChangeAssignedTutorMutation()
    //fetch names
    useEffect(() => {
       if (modalData.studentName.length > 0) {
@@ -225,7 +225,7 @@ const navigate = useNavigate()
                console.log(res.error);
                return
             }
-            console.log('assignedtutors-' ,res.data);
+            console.log('assignedtutors-', res.data);
             let data = res.data.assignedTutors.map(item => {
                const { assignedTutor, associatedParent, firstName, lastName, specialization, student_id, timeZone, tutorFirstName, tutorLastName, parentFirstName, parentLast } = item
                return {
@@ -325,53 +325,55 @@ const navigate = useNavigate()
       navigate(item)
    }
 
-const handleAssign = (item) => {
-   if(!modalData?.tutorId || studentMultiple?.length===0){
-      alert("Select students and tutor both for maping.")
-      return
+   const handleAssign = (item) => {
+      if (!modalData?.tutorId || studentMultiple?.length === 0) {
+         alert("Select students and tutor both for maping.")
+         return
+      }
+      setLoading(true)
+      let users = studentMultiple?.map(ii => ii?._id)
+      addAssignedTutor2({ tutorId: modalData?.tutorId, users }).then((res) => {
+         console.log("successassignedTutor", res)
+         if (res?.data) {
+            alert("Successfully mapped students to tutor.")
+
+         }
+         fetch2()
+         setLoading(false)
+         fetch()
+         setStudentMultiple([])
+
+         setModalData(initialState)
+         setAssignStudentModalActive(false)
+         setAssignedTutorOpen(false)
+         console.log(res.data);
+      })
    }
-   setLoading(true)
-   let users=studentMultiple?.map(ii=>ii?._id)
-   addAssignedTutor2({tutorId:modalData?.tutorId,users}).then((res)=>{
-      console.log("successassignedTutor",res)
-      if(res?.data){
-         alert("Successfully mapped students to tutor.")
-
-      }
-      fetch2()
-      setLoading(false)
-      fetch()
-      setStudentMultiple([])
-
-            setModalData(initialState)
-            setAssignStudentModalActive(false)
-            setAssignedTutorOpen(false)
-            console.log(res.data);
-    })
-}
-   useEffect(()=>{
-     setAssignStudentModalActive(assignedTutorOpen)
-   },[assignedTutorOpen])
-   const handleMultipleStudent=(student) => {
-      console.log({student})
-      console.log({studentMultiple,modalData})
-      let bool= studentMultiple?.find((student1) =>student1?._id===student?._id)
+   useEffect(() => {
+      setAssignStudentModalActive(assignedTutorOpen)
+   }, [assignedTutorOpen])
+   const handleMultipleStudent = (student) => {
+      console.log({ student })
+      console.log({ studentMultiple, modalData })
+      let bool = studentMultiple?.find((student1) => student1?._id === student?._id)
       if (bool) {
-        let updated = studentMultiple.filter(
-          (test) => test?._id !== student._id
-        );
-        setStudentMultiple(updated);
+         let updated = studentMultiple.filter(
+            (test) => test?._id !== student._id
+         );
+         setStudentMultiple(updated);
       } else {
-        setStudentMultiple((prev) =>{ return [ ...prev,
-          {_id:student?._id,value:student?.value}] })
+         setStudentMultiple((prev) => {
+            return [...prev,
+            { _id: student?._id, value: student?.value }]
+         })
       }
-    }
+   }
 
    // console.log({studentMultiple,modalData})
    // console.log('allAssignedTests', allAssignedTests);
    return (
       <>
-       {/* <button
+         {/* <button
                      className="bg-primaryOrange w-full text-lg justify-center flex pt-4 pb-4 px-5 items-center text-white font-semibold rounded-lg"
                      onClick={() => setAssignStudentModalActive(true)}
                   >
@@ -460,13 +462,13 @@ const handleAssign = (item) => {
          {assignStudentModalActive && (
             <Modal
                title="Map Tutor - Student"
-               classname={"max-w-[760px] mx-auto"}
+               classname={"max-w-[666px] mx-auto"}
                cancelBtn={true}
-            cancelBtnClassName="max-w-140 text-[#FFA28D] border-[1.5px] border-[#FFA28D] bg-white hover:bg-[#FFA28D] hover:text-white  font-medium rounded-lg  px-[46px] py-[17.33px] text-center dark:bg-white dark:hover:bg-[#FFA28D]"
-                    
+               cancelBtnClassName="max-w-140 text-[#FFA28D] border-[1.5px] border-[#FFA28D] bg-white hover:bg-[#FFA28D] hover:text-white  font-medium rounded-lg  px-[10px] py-[17.33px] text-center dark:bg-white dark:hover:bg-[#FFA28D] !w-[146px]"
+               buttonParentClassName="justify-center"
                primaryBtn={{
                   text: "Confirm",
-                  className: "w-[140px]  pl-4 px-4 !bg-[#FFA28D] text-white",
+                  className: "pl-4 px-4 !bg-[#FFA28D] text-white w-[146px]",
                   onClick: () => handleAssign(),
                   disabled: submitBtnDisabled,
                   loading: loading
@@ -475,7 +477,7 @@ const handleAssign = (item) => {
                body={
                   <>
                      <div className="grid grid-cols-1 mt-[-10px] md:grid-cols-2 gap-x-5 md:gap-x-8 gap-y-1 mb-10">
-                         <div>
+                        <div>
                            {/* <InputSearch
                               label="Student Name"
                               value={modalData.studentName}
@@ -502,45 +504,45 @@ const handleAssign = (item) => {
                               type="select"
                            /> */}
                            <InputSearch
-                   label="Student Name"
-                    labelClassname="text-base-20 text-[#26435F] mb-1 tracking-wide"
-                    placeholder="Search Student"
-                    placeholderClass="text-base-17-5"
-                    
-                    inputContainerClassName=" text-base-17-5 bg-[#F3F5F7] border-0 pt-3.5 pb-3.5"
-                    inputClassName="bg-[#F3F5F7]"
-                    type="text"
-                    value={modalData.studentName}
-                    checkbox={{
-                      visible: true,
-                      name: "student",
-                      match: studentMultiple?.map(itt=>itt?._id),
-                    }}
-                    onChange={e =>
-                     setModalData({
-                        ...modalData,
-                        studentName: e.target.value,
-                     })
-                  }
-                  right={<img className="w-5 h-4" alt="drop" src={down} />}
-                    optionListClassName="text-base-17-5"
-                    optionClassName="text-base-17-5"
-                    optionData={students}
-                   // right={<img className="" src={down} />}
-                    onOptionClick={(item) => {
-                     
-                     handleMultipleStudent(item)
-                      
-                    
-                     // handleTestChange(item);
-                      // setStudent(item.value);
-                      // handleStudentsChange(item)
-                      // setCurrentToEdit({ ...currentToEdit, students: [... item._id] });
-                    }}
-                    />
-                        </div> 
+                              label="Student Name"
+                              labelClassname="text-base-20 text-[#26435F] mb-1 tracking-wide"
+                              placeholder="Search Student"
+                              placeholderClass="text-base-17-5"
+
+                              inputContainerClassName=" text-base-17-5 bg-[#F3F5F7] border-0 pt-3.5 pb-3.5"
+                              inputClassName="bg-[#F3F5F7]"
+                              type="text"
+                              value={modalData.studentName}
+                              checkbox={{
+                                 visible: true,
+                                 name: "student",
+                                 match: studentMultiple?.map(itt => itt?._id),
+                              }}
+                              onChange={e =>
+                                 setModalData({
+                                    ...modalData,
+                                    studentName: e.target.value,
+                                 })
+                              }
+                              right={<img className="w-5 h-4" alt="drop" src={down} />}
+                              optionListClassName="text-base-17-5"
+                              optionClassName="text-base-17-5"
+                              optionData={students}
+                              // right={<img className="" src={down} />}
+                              onOptionClick={(item) => {
+
+                                 handleMultipleStudent(item)
+
+
+                                 // handleTestChange(item);
+                                 // setStudent(item.value);
+                                 // handleStudentsChange(item)
+                                 // setCurrentToEdit({ ...currentToEdit, students: [... item._id] });
+                              }}
+                           />
+                        </div>
                         <div>
-                        
+
                            <InputSearch
                               label="Tutor Name"
                               value={modalData.tutorName}

@@ -49,3 +49,19 @@
     padding: 10px !important;
    
   }
+
+  .positoining{
+  position: absolute;
+  top: -237px;
+  left:-140px
+  }
+
+  @media screen and (min-width: 1920px) {
+
+    .positoining{
+   
+      top: -286px;
+      left:-160px
+      }
+
+  }
