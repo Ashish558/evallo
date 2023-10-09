@@ -1491,7 +1491,8 @@ export default function ParentEditables({
                 )}
                 {currentField.name === "service" && (
                   <div className="w-[400px] max-h-[50vh] overflow-y-auto custom-scroller">
-                    <div className="flex flex-col gap-2">
+                    <div className="flex flex-col gap-2">-
+                  {console.log({currentToEdit})}
                       {organization?.settings?.servicesAndSpecialization.map(
                         (item, id) => {
                           return (
@@ -1500,7 +1501,8 @@ export default function ParentEditables({
                                 stopM={true}
                                 checked={currentToEdit?.service?.includes(
                                   item?.service
-                                )}
+             
+                                  )}
                                 onChange={() =>
                                   handleServiceChange(item?.service)
                                 }

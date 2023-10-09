@@ -290,7 +290,7 @@ const CompanyAndBround = () => {
                 inputClassName="text-base-17-5 bg-transparent placeholder:!text-[#B3BDC7] "
                 placeholderClass="!mr-0 !whitespace-normal "
                 label="Company Type"
-                value={values.companyType}
+                value={values?.companyType?.length < 26 ? values.companyType : values.companyType?.slice(0, 25) + "..."}
                 optionData={companyType}
                 onChange={(e) =>
                   setValues({
@@ -348,7 +348,7 @@ const CompanyAndBround = () => {
                   inputClassName="text-base-17-5 bg-transparent placeholder:!text-[#B3BDC7] "
                   placeholderClass="!mr-0 !whitespace-normal "
                   label="State / Region "
-                  value={values.state}
+                  value={values?.state?.length < 20 ? values.state : values.state?.slice(0, 20) + "..."}
                   optionData={states}
                   optionType={"object"}
                   onChange={(e) =>
