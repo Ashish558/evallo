@@ -51,7 +51,7 @@ import AdminPortal from "../pages/SuperadminDashboard/components/About/AdminPort
 const AppRoutes = () => {
   const { isLoggedIn } = useSelector((state) => state.user);
   const { role: persona } = useSelector((state) => state.user);
-
+ 
   return (
     <BrowserRouter>
       <Navbar />

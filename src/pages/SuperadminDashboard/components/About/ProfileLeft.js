@@ -13,7 +13,7 @@ console.log("profile left", {userData})
         console.log("token received",token);
         if(token?.data?.token){
           const url = `/admin-portal?userId=${userData?._id}&token=${token.data?.token}`;
-          window.open(url, '_blank');
+          window.open(url, '_blank',"noopener noreferrer");
         }
         else {
           console.log("Error fetching token")
