@@ -353,12 +353,12 @@ const Navbar = () => {
                               <p>
                                  <img
                                     className="w-[16px] h-[16px] design:h-[20px] design:w-[20px]"
-                                
+
                                     src={item.activeIcon}
                                     alt=""
                                  />
                               </p>
-                              <p className="pl-[10px] text-[#FFA28D] text-base-20 "> {item.tooltip} </p>
+                              <p className="pl-[10px] text-[#FFA28D] text-text-[0.902vw] "> {item.tooltip} </p>
                            </>
                         ) : (
                            <>
@@ -369,7 +369,7 @@ const Navbar = () => {
                                     alt=""
                                  />
                               </p>
-                              <p className="pl-[10px] text-base-20 "> {item.tooltip} </p>
+                              <p className="pl-[10px] text-[0.902vw] "> {item.tooltip} </p>
                            </>
                         )}
                      </div>
