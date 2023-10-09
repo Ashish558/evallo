@@ -284,7 +284,7 @@ const StudentSettings = () => {
               disabled={saving}
               loading={saving}
 
-              className={`bg-[#FFA28D]   mt-5 ml-10 rounded-md px-[50px] py-[14.3px] text-sm text-base-20 text-white  `}
+              className={`bg-[#FFA28D]   mt-7 ml-10 rounded-md px-[50px] py-[14.3px] text-sm text-base-20 text-white  `}
 
             >
               Save
