@@ -153,12 +153,12 @@ const AllOrgs = () => {
       <div className=" pt-7 mb-12">
         <h4 className="pl-[5.46875vw] text-[#24A3D9]">All Orgs</h4>
         <div className=" px-[5.46875vw] flex items-center justify-between py-5 ">
-          <div className="w-full flex  gap-x-[1.4583333333vw]  items-center">
+          <div className="w-[72vw] flex min-w-[860px]  gap-x-[1.4583333333vw]  items-center">
             <InputField
             inputClassName="!text-[#667085] placeholder:!text-[#667085]"
               placeholder="Search"
               parentClassName="!text-[#667085]"
-              inputContainerClassName="w-[11.1115625vw] bg-white  border !text-[#667085] !rounded-lg border-[1.33px_solid_#EBEBEB] h-[48px]"
+              inputContainerClassName="w-[11vw] bg-white  border !text-[#667085] !rounded-lg border-[1.33px_solid_#EBEBEB] h-[48px]"
               Icon={searchIcon}
               value={values.search}
               onChange={(e) =>
@@ -177,7 +177,7 @@ const AllOrgs = () => {
               value={values.orgType}
               optionData={orgType}
               placeholderClass="!break-words  !text-wrap !whitespace-pre-line "
-              inputContainerClassName="w-[13vw]  break-words bg-white  !text-wrap  border !text-[#667085] !rounded-lg border-[1.33px_solid_#EBEBEB] text-xs h-[49px]"
+              inputContainerClassName="w-[11.5vw]  break-words bg-white  !text-wrap  border !text-[#667085] !rounded-lg border-[1.33px_solid_#EBEBEB] text-xs h-[49px]"
               
               optionClassName=" py-[3px]  text-[#667085] font-normal"
               onChange={(e) =>
@@ -258,7 +258,7 @@ const AllOrgs = () => {
               error={error.numberOfStudent}
             />
           </div>
-          <div className="w-[400px] flex justify-end  items-center ">
+          <div className="w-[200px] flex justify-end  items-center ">
 
             <button className="flex rounded-md justify-center gap-2 bg-[#517CA8] h-[49px] w-[8.984375vw] items-center  text-white text-base-17-5">
               {csvLoad ? <LoaderNew /> : ""}

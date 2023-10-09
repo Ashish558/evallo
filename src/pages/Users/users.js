@@ -1119,7 +1119,7 @@ const numberKey=Object.keys(bulkEdits)?.length>0
             )}
           </div>
         </div>
-        <div className={`flex justify-between items-center gap-7 mb-6 relative ${showTooltip?"":"z-[50]"}`}>
+        <div className={`flex justify-between items-center gap-7 mb-6 relative ${showTooltip?"z-[1]":"z-[50]"}`}>
           <InputField
 
             IconRight={SearchIcon}
@@ -1369,25 +1369,31 @@ const numberKey=Object.keys(bulkEdits)?.length>0
               Save
             </button>
           </div>
-          <div className="flex justify-end flex-1 gap-5 relative ">
+          <div className="flex justify-end flex-1 gap-5 design:gap-10 relative z-[50] ">
 
             <button disabled={selectedId?.length===0?true:false} onClick={()=>selectedId?.length>0&&setInviteBulkModalActive(true)} className={`bg-[#517CA8] opacity-100 text-base-17-5  font-semibold tracking-wider relative px-[20px] py-[10px] rounded-[7.5px] text-white  text-base-17-5 h-[43px] ${selectedId?.length===0?"opacity-75":""} `}>
               + Invite Users
               <span className="absolute right-[-10px] z-[500] top-[-10px]">
-                <div className="group relative">
+                <div className="group relative z-[500]">
                   <img src={ques}
                   
-                  onMouseEnter={()=>{
+                  onMouseEnter={(e)=>{
                      console.log("mouse enter")
-                    setTooltip(true)}
+                     e.preventDefault()
+                    setTooltip(true)
+                  
                   }
-                   onMouseOut={()=>{
+                  }
+                   onMouseOut={(e)=>{
+                    e.preventDefault()
                     console.log("mouse leave")
-                    setTooltip(false)} 
+                    setTooltip(false)
+                  
+                  } 
                    }
-                   className="inline-block" alt="ques"/>
-                   {console.log("mouse state",showTooltip)}
-                 {showTooltip&&        <span className="absolute  top-[-230px] left-[-140px] z-5000 w-[336px]  scale-0 rounded-[13px] bg-[rgba(0,0,0,0.80)]  text-[13px] text-white group-hover:scale-100 whitespace-normal py-[20px] px-[13px]">
+                   className="inline-block w-[30px] h-[20px]" alt="ques"/>
+                  
+                 {showTooltip&&        <span className="absolute top-[-250px]  design:top-[-300px] left-[-140px] z-5000 w-[336px] design:w-[380px]  scale-0 rounded-[13px] bg-[rgba(0,0,0,0.80)]  text-[13px] text-white group-hover:scale-100 whitespace-normal py-[20px] px-[13px]">
                     <h3 className="text-[#517CA8] text-left text-[0.8333vw] py-0 font-semibold mb-1">
                       Invite Users
                     </h3>   <span className=" text-left text-[0.6948vw] font-light relative z-40">
