@@ -32,7 +32,7 @@ const About = () => {
           <span className="text-[#24A3D9]">About</span>
         </div>
         <div className="flex gap-7">
-          <ProfileLeft userData={{ ...userData?.data?.user, ...orgData }} />
+          <ProfileLeft userData={{ ...userData?.data?.user, ...orgData }}   userOnly={userData?.data?.user} />
           <ProfileRight userData={{ ...userData?.data?.user, ...orgData }} orgs={orgData} />
         </div>
       </div>

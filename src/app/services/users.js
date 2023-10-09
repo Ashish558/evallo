@@ -66,6 +66,13 @@ export const userServicesApi = createApi({
         headers: getAuthHeader(),
       }),
     }),
+    getAssignedStudentsDetails: builder.query({
+      query: (body) => ({
+        url: `api/user/tutor/getAssignedStudents/${body.id}`,
+        method: "GET",
+        headers: getAuthHeader(),
+      }),
+    }),
     getFeedback: builder.query({
       query: (body) => ({
         url: `api/feedback/rating/allRating?userId=${body.id}`,
@@ -270,6 +277,7 @@ export const {
   useLazyGetPersonalDetailQuery,
   useResentEmailMutation,
   useGetOrganizationQuery,
+  useLazyGetAssignedStudentsDetailsQuery,
   useLazyGetInvoiceQuery,
   useUpdateProfileImageMutation,
   useLazyGetOrganizationQuery,
