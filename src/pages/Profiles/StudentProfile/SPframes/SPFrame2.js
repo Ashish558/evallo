@@ -73,24 +73,24 @@ if(!toEdit[key] || !toEdit[key][key]) return
   return (
     <div>
       {" "}
-      <div className="flex mt-7 justify-between gap-5">
-        <div className="flex-1 h-[200px] design:h-[230px] gap-7 flex flex-col">
+      <div className="flex mt-7 justify-between gap-5 design:gap-10">
+        <div className="flex-1 h-[200px] design:h-[230px] gap-7  flex flex-col">
           <div className="flex-1  flex justify-between">
-            <p className=" text-sm text-[#26435F] font-semibold">
+            <p className=" text-sm text-[#26435F] font-semibold text-base-18">
               Hours Tutored
               <span className=" text-[#FFA28D] text-2xl block">90</span>
             </p>
-            <p className=" text-sm text-[#26435F] font-semibold">
+            <p className=" text-sm text-[#26435F] font-semibold text-base-18">
               No. Of Sessions
               <span className=" text-[#FFA28D] text-2xl block">90</span>
             </p>
           </div>
           <div className="flex-1  flex justify-between">
-            <p className=" text-sm text-[#26435F] font-semibold">
+            <p className=" text-sm text-[#26435F] font-semibold text-base-18">
               # Of Practice Tests
               <span className=" text-[#FFA28D] text-2xl block">{totalTest}</span>
             </p>
-            <p className=" text-sm text-[#26435F] font-semibold">
+            <p className=" text-sm text-[#26435F] font-semibold text-base-18">
               Join Date
               <span className=" text-[#FFA28D] text-xl block">
                 {/* {new Date(userDetail?.createdAt).toLocaleDateString()} */}
@@ -103,7 +103,7 @@ if(!toEdit[key] || !toEdit[key][key]) return
           <p className=" text-sm text-[#26435F] font-semibold">
           <span>
                             <img
-                             className="inline-block ml-2 -mt-1 !w-[150px] !h-5 mr-2"
+                             className="inline-block mb-1 ml-2 -mt-1 !w-[150px] !h-5 design:!w-[180px] design:h-[30px] mr-2"
                            
                               src={sat}
                               alt="copy"
@@ -136,7 +136,7 @@ if(!toEdit[key] || !toEdit[key][key]) return
                     className="inline-block !w-2 !h-2 mt-2"
                     alt="dot"
                   />
-                  <div className="mx-2 flex flex-col text-xs">
+                  <div className="mx-2 flex flex-col text-xs text-base-15">
                     <p className="text-[#517CA8]">{it.createdAt? getFormattedDate(it.createdAt, dateFormat):"NA" }</p>
 
                     <p>
@@ -151,7 +151,7 @@ if(!toEdit[key] || !toEdit[key][key]) return
                   <img
                     onClick={()=>reduceArr(idx,"satScores",true)}
                     src={cancelIcon}
-                    className="absolute right-3 inline-block float-right !w-3 !h-3"
+                    className="absolute right-3 design:!w-5 design:!h-5 inline-block float-right !w-3 !h-3"
                     alt="cancelIcon"
                   />
                 </div>
@@ -164,7 +164,7 @@ if(!toEdit[key] || !toEdit[key][key]) return
           <p className=" text-sm text-[#26435F] font-semibold">
           <span>
                             <img
-                             className="inline-block -mt-1 ml-2 !w-[150px] !h-5 mr-2"
+                             className="inline-block -mt-1 ml-2 !w-[150px] !h-5 mr-2 design:!w-[180px] design:h-[30px] mb-1"
                            
                               src={act}
                               alt="copy"
@@ -198,7 +198,7 @@ if(!toEdit[key] || !toEdit[key][key]) return
                     className="inline-block !w-2 !h-2 mt-2"
                     alt="dot"
                   />
-                  <div className="mx-2 flex flex-col text-xs">
+                  <div className="mx-2 flex flex-col text-xs text-base-15">
                     <p className="text-[#517CA8]">{it.createdAt?getFormattedDate(it.createdAt, dateFormat):"NA"}</p>
 
                     <p>
@@ -214,7 +214,7 @@ if(!toEdit[key] || !toEdit[key][key]) return
                   <img
                    onClick={()=>reduceArr(idx,"actScores",true)}
                     src={cancelIcon}
-                    className="absolute right-3 inline-block float-right !w-3 !h-3"
+                    className="absolute right-3 design:!w-5 design:!h-5 inline-block float-right !w-3 !h-3"
                     alt="cancelIcon"
                   />
                 </div>
@@ -223,7 +223,7 @@ if(!toEdit[key] || !toEdit[key][key]) return
           </div>
         </div>
         <div className="flex-1 h-[200px] design:h-[230px]">
-          <p className=" text-sm text-[#26435F] font-semibold">
+          <p className=" text-sm text-[#26435F] font-semibold text-base-18 mb-1">
             Baseline Scores
             <EditableText
               editable={editable}
@@ -251,7 +251,7 @@ if(!toEdit[key] || !toEdit[key][key]) return
                     className="inline-block !w-2 !h-2 mt-2"
                     alt="dot"
                   />
-                  <div className="mx-2 flex flex-col text-xs">
+                  <div className="mx-2 flex flex-col text-xs text-base-15">
                     <p className="text-[#517CA8]">SAT BaseLine Scores</p>
 
                     <p>
@@ -265,7 +265,7 @@ if(!toEdit[key] || !toEdit[key][key]) return
                   </div>
                   <img
                     src={cancelIcon}
-                    className="absolute right-3 inline-block float-right !w-3 !h-3"
+                    className="absolute right-3 design:!w-5 design:!h-5 inline-block float-right !w-3 !h-3"
                     alt="cancelIcon"
                   />
                 </div>
@@ -275,8 +275,8 @@ if(!toEdit[key] || !toEdit[key][key]) return
                   className="inline-block !w-2 !h-2 mt-2"
                   alt="dot"
                 />
-                <div className="mx-2 flex flex-col text-xs">
-                  <p className="text-[#517CA8]">ACT BaseLine Scores</p>
+                <div className="mx-2 flex flex-col text-xs text-base-15">
+                  <p className="text-[#517CA8] text-base-15">ACT BaseLine Scores</p>
 
                   <p>
                     <span className="text-[#24A3D9]">
@@ -290,7 +290,7 @@ if(!toEdit[key] || !toEdit[key][key]) return
                 </div>
                 <img
                   src={cancelIcon}
-                  className="absolute right-3 inline-block float-right !w-3 !h-3"
+                  className="absolute right-3 design:!w-5 design:!h-5 inline-block float-right !w-3 !h-3"
                   alt="cancelIcon"
                 />
               </div>
