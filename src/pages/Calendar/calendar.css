@@ -30,6 +30,13 @@
   background-color: transparent !important;
 }
 
+.calendar-left-side{
+  position: sticky;
+  top: 0;
+  left: 0;
+  transform: translateX(0);
+}
+
 .calender .calendar-prev-button {
   border: 0 !important;
   outline: 0 !important;
