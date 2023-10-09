@@ -12,7 +12,7 @@ export default function SearchNames({ setStudent, setData, student, tutor, data,
    const [fetchTutorStudents, tutorStudentsResp] = useLazyGetTutorStudentsByNameQuery();
    const [students, setStudents] = useState([]);
    const { role: persona } = useSelector(state => state.user)
-   // console.log(user);
+
 
    useEffect(() => {
       if (tutor.length > 0) {
@@ -56,7 +56,7 @@ export default function SearchNames({ setStudent, setData, student, tutor, data,
          }
       }
    }, [student]);
-console.log({students,tutors,data})
+
    return (
       <div className="flex mb-[30px]">
          <InputSearch

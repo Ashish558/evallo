@@ -184,7 +184,7 @@ export default function AllTests() {
     setRemoveQuestionModal(true);
     setTestForDelete(item);
   };
-
+  console.log({ testForDelete })
   const removeTest = (item) => {
     setRemoveQuestionModal(false);
     // console.log(testForDelete._id);
@@ -395,10 +395,10 @@ export default function AllTests() {
       {modalActive && (
         <Modal
           title="Upload New Material"
-          titleClassName="text-start !text-[1.09375vw]  mb-3 inline-block"
-          classname={"max-w-[34.69vw] max-h-[304px]  mx-auto"}
+          titleClassName="text-start text-sm mb-3"
+          classname={"max-w-[630px] mx-auto"}
           primaryBtn={{
-            text: "Create",
+            text: "Create  ",
             form: "add-test-form",
             onClick: handleSubmit,
             type: "submit",
@@ -406,19 +406,19 @@ export default function AllTests() {
               "!ml-5   py-1 mr-auto mt-7  flex gap-2  h-[49px] disabled:opacity-80 flex items-center !text-[0.8333vw] !font-medium  inline-block bg-[#FFA28D]",
             disabled: submitBtnDisabled,
             loading: loading,
-            icon: <img src={check} alt="check" className="inline-block" />,
+            icon: <img src={check} alt="check" className="ml-2 inline-block" />,
           }}
           otherBt={
             <div id={styles.handleFileUpload}>
               <div
                 id={styles.uploadButtons}
-                className="mt-7  px-0  gap-5 flex justify-between"
+                className="mt-7   px-0  gap-5 flex justify-between"
               >
                 {modalData.testType != 'DSAT' ? <div id={styles.pdfUpload}>
                   <label
                     htmlFor="pdf"
                     className={`${pdfFile !== null ? "bg-[#26435F] " : "bg-[#26435F] "
-                      } w-[8.9vw] text-[0.8333vw] !font-medium`}
+                      } w-[8.9vw] min-w-[160px] text-sm !font-medium`}
                   >
                     Upload PDF
                     <img src={upload} alt="Upload" />
@@ -441,7 +441,7 @@ export default function AllTests() {
                     className={`${csvFile !== null && styles.fileUploaded
                       ? "bg-[#26435F] "
                       : "bg-[#26435F] "
-                      } w-[11vw] text-[0.8333vw] !font-medium`}
+                      } w-[11vw] min-w-[185px] text-sm !font-medium`}
                   >
                     Upload Metadata
                     <img src={upload} alt="Upload" />
@@ -466,14 +466,15 @@ export default function AllTests() {
           handleClose={handleClose}
           body={
             <form onSubmit={handleSubmit} id="add-test-form">
-              <div className="flex justify-between items-center">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 md:gap-x-6 !items-center  gap-y-4">
                 <InputField
                   label="Assignment Name"
-                  labelClassname="mb-1.2 text-[#26435F] !text-[0.96875vw] !font-medium"
+                  labelClassname="ml-2 mb-1.2 text-[#26435F] !text-[16px] "
+                  biggerText={true}
                   optionData={optionData}
-                  placeholder="Test"
-                  parentClassName="w-full mr-4"
-                  inputContainerClassName="pt-3 pb-3 bg-primary-50 h-[53px]"
+                  placeholder="Text"
+                  parentClassName="w-full mr-4 mt-1"
+                  inputContainerClassName="pt-3 pb-3 bg-primary-50"
                   inputClassName="bg-transparent"
                   type="select"
                   isRequired={true}
@@ -488,11 +489,12 @@ export default function AllTests() {
 
                 <InputSelect
                   label="Type"
-                  labelClassname="mb-1.2 text-[#26435F] !text-[0.96875vw] !font-medium"
+                  labelClassname="ml-2   !font-semibold mb-[9px] mt-1 !text-[#26435F]  !text-[16px]"
+                  biggerText={true}
                   optionData={testTypeOptions}
-                  placeholder="Select Type"
-                  inputContainerClassName="pt-1 pb-3 bg-primary-50 h-[53px]"
-                  parentClassName="w-full"
+                  placeholder="Select"
+                  inputContainerClassName="pt-3 pb-3 bg-primary-50 h-[45px]"
+                  parentClassName="w-full mr-4"
                   inputClassName="bg-transparent"
                   isRequired={true}
                   type="select"
@@ -514,21 +516,21 @@ export default function AllTests() {
         <Modal
           title={
             <>
-              Are you sure <br />
-              you want to remove the test ?
+              Are you sure you want to Delete {testForDelete?.testName ? testForDelete?.testName : "Test"}?
             </>
           }
-          titleClassName="leading-9"
+          titleClassName="leading-9 mb-2"
+
           cancelBtn={true}
-          cancelBtnClassName="py-4"
+          cancelBtnClassName="py-4 !bg-[#26435F1A]  !text-[#26435F] rounded-[5px]"
           primaryBtn={{
-            text: "Remove",
-            className: "bg-danger w-[123px] pl-4 pr-4",
+            text: "Delete",
+            className: "bg-danger  w-[123px]  pl-4 pr-4",
             onClick: removeTest,
           }}
           handleClose={closeRemoveModal}
           body={<div className="mb-10"></div>}
-          classname={"max-w-567 mx-auto"}
+          classname={"max-w-[600px] !mx-auto"}
         />
       )}
     </div>

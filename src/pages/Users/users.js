@@ -1445,12 +1445,12 @@ export default function Users() {
               onSubmit={handleSubmit}
               className="px-[3px] mb-0.5"
             >
-              <div className="grid grid-cols-1 md:grid-cols-2  gap-x-2 md:gap-x-3  gap-y-4 mb-5">
+              <div className="grid grid-cols-1 md:grid-cols-2  gap-x-5 md:gap-x-6  gap-y-4 mb-7">
                 <div>
                   <InputField
                     label="First Name"
                     biggerText={true}
-                    labelClassname=" mb-0.5 text-[#26435F] !font-medium "
+                    labelClassname=" mb-0.5 text-[#26435F] !font-semibold "
                     placeholder="First Name"
                     inputContainerClassName="text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0"
                     inputClassName="bg-transparent"
@@ -1467,7 +1467,7 @@ export default function Users() {
                   <InputField
                     biggerText={true}
                     label="Last Name"
-                    labelClassname=" mb-0.5 text-[#26435F] !font-medium !text-lg"
+                    labelClassname=" mb-0.5 text-[#26435F] !font-semibold !text-lg"
                     isRequired={true}
                     placeholder="Last Name"
                     inputContainerClassName="text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0"
@@ -1507,7 +1507,7 @@ export default function Users() {
                     type="select"
                     placeholder="Select User Type "
                     label="User Type"
-                    labelClassname="ml-0  text-[#26435F] !font-medium !text-lg"
+                    labelClassname="ml-0  text-[#26435F] !font-semibold !text-lg"
                     placeholderClass="text-base-17-5"
                     optionData={userTypeOptions}
                     inputContainerClassName="text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0"

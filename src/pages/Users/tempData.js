@@ -171,4 +171,5 @@ export const userTypesList = [
    'Parent',
    'Student',
    'Tutor',
+   "Contributor"
 ]

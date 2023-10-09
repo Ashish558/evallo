@@ -227,7 +227,7 @@ const SPFrame1 = ({ userId, settings, userDetail, editable, setToEdit, toEdit ,f
           <div className="w-full relative h-full p-1 flex flex-col gap-1  rounded-md items-center overflow-y-auto custom-scroller">
             {/* {settings ? (
               settings.interest.length > 0 &&
-              userDetail.interest.map((id, idx) => {
+              userDetail?.interest.map((id, idx) => {
                 return settings.interest.find((item) => item._id === id) ? (
                   <div
                     key={idx}
@@ -299,7 +299,7 @@ const SPFrame1 = ({ userId, settings, userDetail, editable, setToEdit, toEdit ,f
 
           <div className="w-full relative h-full p-1 flex flex-col gap-1  rounded-md items-center overflow-y-auto custom-scroller">
             {userDetail?.subjects
-              ? userDetail.subjects.map((sub, idx) => {
+              ? userDetail?.subjects.map((sub, idx) => {
                   return (
                     <p
                       key={idx}
@@ -336,8 +336,8 @@ const SPFrame1 = ({ userId, settings, userDetail, editable, setToEdit, toEdit ,f
             {/* {settings &&
               settings.personality &&
               settings.personality.length > 0 &&
-              userDetail.personality &&
-              userDetail.personality.map((id, idx) => {
+              userDetail?.personality &&
+              userDetail?.personality.map((id, idx) => {
                 return settings.personality.find((item) => item._id === id) ? (
                   <div
                     key={idx}
