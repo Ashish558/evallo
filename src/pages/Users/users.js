@@ -9,7 +9,7 @@ import InputField from "../../components/InputField/inputField";
 import InputSelect from "../../components/InputSelect/InputSelect";
 import styles from "./styles.module.css";
 import AddIcon from "../../assets/icons/add.svg";
-import Dropdown from "../../assets/icons/Polygon 2.png";
+import Dropdown from "../../assets/icons/custom_dropdown.svg";
 import PlusIcon from "../../assets/icons/add_plus.svg";
 import ExportIcon from "../../assets/icons/export.svg";
 import UploadIcon from "../../assets/icons/upload.svg";
@@ -18,6 +18,7 @@ import SearchIcon from "../../assets/icons/Search_shade.svg";
 import fileupload from "../../assets/icons/basil_file-upload-outline (2).svg";
 import { tableData, userTypesList } from "./tempData";
 import { BASE_URL, getAuthHeader } from "../../app/constants/constants";
+import dropdownIcon from '../../assets/icons/coloured_dropdown.svg'
 import { csvHeaders } from "./csvUtlis";
 import {
   useAddUserMutation,
@@ -1135,6 +1136,8 @@ export default function Users() {
           />
           <InputSelect
             placeholderClass="text-base-17-5"
+            customArrow={dropdownIcon}
+            customArrowClassName={`w-[12px] h-[12px]`}
             optionData={userTypesList}
             optionListClassName="text-base-17-5 text-[#667085]"
             inputContainerClassName="text-sm  shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white px-[20px] py-[16px]"
@@ -1158,6 +1161,8 @@ export default function Users() {
             }}
           />
           <InputSelect
+            customArrow={dropdownIcon}
+            customArrowClassName={`w-[12px] h-[12px]`}
             optionListClassName="text-base-17-5 text-[#667085]"
             placeholderClass="text-base-17-5"
             optionData={settings.leadStatus}
@@ -1181,6 +1186,9 @@ export default function Users() {
             value={filterData.status.length > 0 ? filterData.status[0] : ""}
           />
           <InputSelect
+            hideRight={true}
+            customArrow={dropdownIcon}
+            customArrowClassName={`w-[12px] h-[12px]`}
             optionListClassName="text-base-17-5 text-[#667085]"
             placeholderClass="text-base-17-5"
             optionData={specializations}
@@ -1209,6 +1217,8 @@ export default function Users() {
           />
 
           <InputSelect
+            customArrow={dropdownIcon}
+            customArrowClassName={`w-[12px] h-[12px]`}
             optionListClassName="text-base-17-5 text-[#667085]"
             placeholderClass="text-base-17-5"
             optionData={allTutors?.map((iyt) => {
@@ -1391,9 +1401,9 @@ export default function Users() {
 
                     }
                     }
-                    className="inline-block w-[30px] h-[20px]" alt="ques" />
+                    className="inline-block" alt="ques" />
 
-                  {showTooltip && <span className="absolute top-[-250px]  design:top-[-300px] left-[-140px] z-5000 w-[336px] design:w-[380px]  scale-0 rounded-[13px] bg-[rgba(0,0,0,0.80)]  text-[13px] text-white group-hover:scale-100 whitespace-normal py-[20px] px-[13px]">
+                  {showTooltip && <span className="absolute top-[-237px]  design:top-[-248px]  left-[-140px] z-5000 w-[336px] design:w-[380px]  scale-0 rounded-[13px] bg-[rgba(0,0,0,0.80)]  text-[13px] text-white group-hover:scale-100 whitespace-normal py-[20px] px-[13px]">
                     <h3 className="text-[#517CA8] text-left text-[0.8333vw] py-0 font-semibold mb-1">
                       Invite Users
                     </h3>   <span className=" text-left text-[0.6948vw] font-light relative z-40">

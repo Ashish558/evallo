@@ -795,15 +795,7 @@ export default function AssignedTests() {
               </span>
               <span className="font-bold">Assignments</span>
             </p>
-            {persona !== "parent" && persona !== "student" && persona !== "tutor" && (
-              <button
-                className="bg-[#FFA28D] text-[15px] justify-center flex py-[7px] design:p-[10px] px-[13px] items-center text-white font-bold rounded-[7.5px] text-base-15"
-                onClick={() => setAssignTestModalActive(true)}
-              >
-                New Assignment
-                <img src={AddIcon} className="ml-3" alt="new test" />
-              </button>
-            )}
+
             {persona === "parent" && (
               <div className="flex justify-between whitespace-nowrap items-center gap-6">
                 <InputField
@@ -857,7 +849,7 @@ export default function AssignedTests() {
                   }
                   placeholder="Search Student"
                   inputClassName="pl-4 py-[12px] text-base-17-5 text-md text-[#667085]   placeholder:text-base-17-5 placeholder:text-[#667085] pl-2"
-                  parentClassName="w-[20.8333333333vw]  text-md"
+                  parentClassName="w-[20.83vw]  text-md"
 
                   inputContainerClassName=" shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white  !py-0 h-[50px]"
                   type="text"
@@ -870,7 +862,7 @@ export default function AssignedTests() {
                   inputClassName="placeholder:text-[#667085] text-base-17-5 !py-3 text-[#667085]"
                   inputContainerClassName=" !py-3 shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white  h-[50px] text-[#667085]"
                   placeholder="Search Assignment"
-                  parentClassName="w-[23.75vw] -mt-[18px] text-base-17-5 text-[#667085] h-[50px]"
+                  parentClassName="w-[20.83vw] -mt-[20px] text-base-17-5 text-[#667085] h-[50px]"
                   type="select"
                   value={filterData.testName}
                   onChange={(e) => {
@@ -907,7 +899,7 @@ export default function AssignedTests() {
                   inputContainerClassName=" shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px]  bg-white !py-3 h-[50px]"
                   optionClassName=""
                   placeholder="Completion"
-                  parentClassName="w-[11.9791666667vw] text-base-17-5 text-[#667085]"
+                  parentClassName="w-[11.98vw] text-base-17-5 text-[#667085]"
                   type="select"
                 />
                 {persona === "tutor" ?
@@ -930,7 +922,7 @@ export default function AssignedTests() {
                       setFilterData({ ...filterData, assignedBy: val })
                     }
                     optionListClassName="text-base-17-5 text-[#667085]"
-                    parentClassName="w-[15.625vw] text-base-17-5 "
+                    parentClassName="w-[11.98vw] text-base-17-5 "
                     inputClassName="text-base-17-5 py-3"
                     inputContainerClassName="shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] bg-white h-[50px]"
                     placeholderClass="text-base-17-5"
@@ -939,6 +931,15 @@ export default function AssignedTests() {
                     type="text"
                   />
                 }
+                {persona !== "parent" && persona !== "student" && persona !== "tutor" && (
+                  <button
+                    className="bg-[#FFA28D] text-[15px] justify-center flex py-[7px]  pl-1 items-center text-white font-bold rounded-[7.5px] text-base-15 w-[10.05vw] h-[50px]"
+                    onClick={() => setAssignTestModalActive(true)}
+                  >
+                    New Assignment
+                    <img src={AddIcon} className="ml-3" alt="new test" />
+                  </button>
+                )}
               </div>
 
               <div className="mt-[50px] mb-[23.75px]">

@@ -66,11 +66,11 @@ export default function FurtherDetails({
   const handleOthersField = (e, arr, setValue) => {
     const text = e.target.value;
     if (!text || text === "") return;
-   let check= /[a-z]/i.test(text) ;
-   if(!check){
-    alert("Enter valid text! " );
-    return
-   }
+    let check = /[a-z]/i.test(text);
+    if (!check) {
+      alert("Enter valid text! ");
+      return
+    }
     const temp = arr.filter((topic) => {
       return topic.text !== "Others";
     });
@@ -131,7 +131,7 @@ export default function FurtherDetails({
 
         <div className="flex flex-col mb-6">
           <div className="">
-            <p className="text-sm mb-[7px] text-[#24A3D9] !font-semibold">
+            <p className="text-sm mb-[7px] text-[#24A3D9] !font-medium">
               Test Preparation
             </p>
             <div className="grid grid-cols-3 font-medium text-[#26435F] grid-flow-row-dense mr-5">
@@ -177,13 +177,13 @@ export default function FurtherDetails({
                             );
                           }
                         }}
-                        //onBlur={(e) => {
-                          //handleOthersField(
-                          //  e,
-                          //  testPreparations,
-                         //   setTestPreparations
-                         // );
-                       // }}
+                      //onBlur={(e) => {
+                      //handleOthersField(
+                      //  e,
+                      //  testPreparations,
+                      //   setTestPreparations
+                      // );
+                      // }}
                       />
                     ) : (
                       ""
@@ -194,7 +194,7 @@ export default function FurtherDetails({
             </div>
           </div>
           <div className="">
-            <p className="text-sm mt-[7px] mb-[8px] text-[#24A3D9] !font-semibold">
+            <p className="text-sm mt-[7px] mb-[8px] text-[#24A3D9] !font-medium">
               Subject Tutoring
             </p>
             <div className="grid grid-cols-3 font-medium text-[#26435F] grid-flow-row-dense mr-5">
@@ -227,9 +227,9 @@ export default function FurtherDetails({
                             handleOthersField(e, tutoring, setTutoring);
                           }
                         }}
-                        //onBlur={(e) => {
-                          //handleOthersField(e, tutoring, setTutoring);
-                        //}}
+                      //onBlur={(e) => {
+                      //handleOthersField(e, tutoring, setTutoring);
+                      //}}
                       />
                     ) : (
                       ""
@@ -240,10 +240,10 @@ export default function FurtherDetails({
             </div>
           </div>
           <div className="">
-            <p className="text-sm mb-[7px] mt-1 text-[#24A3D9] !font-semibold">
+            <p className="text-sm mb-[7px] mt-1 text-[#24A3D9] !font-medium">
               Coaching
             </p>
-            <div className="grid grid-cols-3  grid-gap-x-5 font-medium text-[#26435F] grid-flow-row-dense mr-5">
+            <div className="grid grid-cols-3  grid-gap-x-5 font-medium text-[#26435F] grid-flow-row-dense relative">
               {coaching?.map((item, idx) => {
                 return (
                   <div key={idx} className="flex items-center  mb-3 mr-6">
@@ -266,7 +266,7 @@ export default function FurtherDetails({
                     {item.text === "Others" && item.checked ? (
                       <input
                         autoFocus
-                        className="ml-3 text-[13px] text-[#7E7E7E] outline-[#DCDCDD] border-[1.5px] border-[#DCDCDD] rounded-[4px] !bg-[#F5F8FA]  w-32"
+                        className="ml-3 text-[13px] text-[#7E7E7E] outline-[#DCDCDD] border-[1.5px] border-[#DCDCDD] rounded-[4px] !bg-[#F5F8FA]  w-32 absolute bottom-3 "
                         type="text"
                         placeholder="Other"
                         onKeyDown={(e) => {
@@ -274,9 +274,9 @@ export default function FurtherDetails({
                             handleOthersField(e, coaching, setCoaching);
                           }
                         }}
-                        //onBlur={(e) => {
-                          //handleOthersField(e, coaching, setCoaching);
-                        //}}
+                      //onBlur={(e) => {
+                      //handleOthersField(e, coaching, setCoaching);
+                      //}}
                       />
                     ) : (
                       ""
@@ -371,14 +371,14 @@ export default function FurtherDetails({
           placeholderClass={"!inline-block !overflow-x-auto custom-scroller-2 !w-[150px] !py-1 !ml-[-10px]"}
           placeholder={"Options"}
           label={``}
-          
+
           labelClassname="text-[#26435F] font-bold  mb-1 text-sm "
           inputContainerClassName=" py-1 h-[44.9px] text-sm border  border-[#D0D5DD] my-0 mt-[-2px] rounded-[5px]"
           inputClassName="ml-80  "
           onChange={(e) => handlePaymentTypeChange(e)}
         />
       </div>
-<div className="!border-b-[1.4px] !border-b-[#26435F4D] w-[80%] mx-auto"></div>
+      <div className="!border-b-[1.4px] !border-b-[#26435F4D] w-[80%] mx-auto"></div>
       <div className="flex  items-center mt-8 justify-between ">
         <SecondaryButton
           children="Go Back"
@@ -391,7 +391,7 @@ export default function FurtherDetails({
            
           `}
           onClick={() => handleSubmit()}
-          // disabled={disabled}
+        // disabled={disabled}
         />
       </div>
     </div>
