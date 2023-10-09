@@ -43,6 +43,7 @@ import ContributorSettings from "../pages/Settings/ContributorSettings";
 import TestPage from "../pages/DsatTestPage/TestPage";
 import AnnotatorComponent from "../components/annotate";
 import Testinstruction_2 from "../components/TestItem/testinstruction_2";
+import AdminPortal from "../pages/SuperadminDashboard/components/About/AdminPortal";
 
 
 
@@ -57,6 +58,7 @@ const AppRoutes = () => {
       <Routes>
         <Route path="/" element={isLoggedIn ? <Home /> : <Login />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/admin-portal" element={<AdminPortal />} />
         <Route path="/signup/user" element={<UserSignup />} />
         <Route path="/dashboard" element={<RequireAuth isLoggedIn={isLoggedIn}>
 {(persona === "superAdmin" || persona === 'manager') ?

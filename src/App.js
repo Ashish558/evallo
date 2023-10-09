@@ -43,6 +43,7 @@ function App() {
 
     if (sessionStorage.getItem("token")||localStorage.getItem("evalloToken")) {
       fetchPersonalDetails().then((res) => {
+        console.log("personal details",res)
         if (res.error) {
           return;
         }

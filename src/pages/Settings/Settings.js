@@ -1932,6 +1932,7 @@ export default function Settings() {
               {fetchedPermissions?.map((item, id) => {
                 return (
                   <>
+                  
                     {item.choosedValue === true ||
                     item.choosedValue === false ? (
                       <div

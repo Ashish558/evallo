@@ -105,6 +105,14 @@ export const superAdminServicesApi = createApi({
         headers: getAuthHeader(),
       }),
     }),
+    getAdminPortalToken: builder.query({
+      query: (body) => ({
+        url: `/api/user/superadmin/getOrgToken/${body.id}`,
+        method: "GET",
+       
+        headers: getAuthHeader(),
+      }),
+    }),
     editSuperInvoice: builder.mutation({
       query: (body) => ({
         url: `/api/invoice/${body._id}`,
@@ -181,7 +189,7 @@ export const {
   useLazyGetLogoutQuery,
   useGetFinancialStatsQuery,
   useGetFinancialStatsRangeMutation,
-
+useLazyGetAdminPortalTokenQuery,
   useGetSpecificActionLogMutation
   
 } = superAdminServicesApi;
