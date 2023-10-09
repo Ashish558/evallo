@@ -1156,7 +1156,7 @@ export default function Calendar() {
         </p>
         <div className="  pb-2 pl-[74px] calendar flex">
           <div className=" pl-0 pr-0 w-[280px] mr-[10px]">
-            <div className="w-[280px]">
+            <div className="w-[280px] calendar-left-side" >
               <SimpleCalendar
                 events={
                   persona === "parent" || persona === "tutor"
@@ -1540,7 +1540,6 @@ export default function Calendar() {
           <div className="flex-1 w-4/5 relative" id="calendarContainer">
             <FullCalendar
               slotLabelContent={(arg) => {
-                // Insert a blank row (gap) after every time slot
                 return (
                   <>
                     <div>{arg.text}</div>
@@ -1553,6 +1552,7 @@ export default function Calendar() {
                   ? filteredEvents
                   : events
               }
+              height={'100%'}
               // timeZone='UTC'
               // timeZone={timeZone === getLocalTimeZone() ? 'local' : timeZone}
               // timeZone={timeZone === 'IST' ? 'local' : timeZone }
