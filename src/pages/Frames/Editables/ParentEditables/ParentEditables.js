@@ -616,7 +616,7 @@ export default function ParentEditables({
   };
 
   // console.log('awsLink', awsLink)
-  // console.log('toedit--', currentToEdit)
+   console.log('toedit--', currentToEdit)
   // console.log('setting', settings.servicesAndSpecialization[currentToEdit.selectedIdx])
   // console.log('field', currentField)
   // console.log('sett', settings)

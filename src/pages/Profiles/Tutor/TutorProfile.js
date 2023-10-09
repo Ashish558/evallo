@@ -391,8 +391,12 @@ export default function TutorProfile({ isOwn }) {
         res.data.data.user;
       setUser(res.data.data.user);
       console.log(user.phone + "phone");
-      if(!res?.data?.data?.details)return 
+    
       let details = res?.data?.data?.details?res?.data?.data?.details:{};
+      if(Object.keys(details)?.length===0){
+        details=null
+      }
+      
       console.log("details", details);
       // const { } = res.data.data.user
       // const { service } = res.data.data.userdetails
@@ -509,7 +513,7 @@ export default function TutorProfile({ isOwn }) {
                   ...prevToEdit.serviceSpecializations,
                   serviceSpecializations:
                     details !== null ? details?.serviceSpecializations : [],
-                  isPresent: details === null ? false : true,
+                  isPresent: details === null|| details?.serviceSpecializations===null? false : true,
                 },
                 videoLink: {
                   ...prevToEdit.videoLink,
