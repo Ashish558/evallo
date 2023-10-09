@@ -71,7 +71,7 @@ export default function Modal({
                         {body}
 
 
-                        <div className={`flex justify-center`}>
+                        <div className={`flex !justify-center`}>
                            {cancelBtn && (
                               <SecondaryButton
                                  onClick={handleClose}

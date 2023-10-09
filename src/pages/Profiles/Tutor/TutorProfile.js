@@ -7,6 +7,8 @@ import styles from "./style.module.css";
 // import TutorImg from "../../../assets/images/tutor.png";
 // import TutorSmallImg from "../../../assets/images/tutor-small.png";
 // import sat from "../../../assets/icons/sat.png";
+import LeftIcon from "../../../assets/profile/left.svg";
+
 import linkedin from "../../../assets/icons/linkedin.svg";
 import call from "../../../assets/icons/ic_baseline-local-phone.svg";
 import mail from "../../../assets/icons/mdi_email.svg";
@@ -662,6 +664,16 @@ export default function TutorProfile({ isOwn }) {
          </span>
           <span className="font-bold">Dashboard</span>
         </p>
+        {!isOwn ? (
+          <button
+            className="my-5 bg-[#D9BBFF] cursor-pointer relative z-[50] px-[14px] py-[8px] rounded-[8px] text-[#636363] text-[18px] font-medium top-[-8px] left-[0px] flex gap-[12px] cursor-pointer flex justify-center items-center"
+            onClick={() => window.history.back()}
+          >
+            <img src={LeftIcon} alt="icon" /> Back
+          </button>
+        ) : (
+          <></>
+        )}
         <div className="flex  justify-between">
           <ProfileCard
             hideShadow
@@ -989,9 +1001,9 @@ export default function TutorProfile({ isOwn }) {
     
               </div>
 
-              <div className=" bg-white pt-10 !min-h-[400px] design:min-h-[460px]  relative z-10 flex items-end ">
-               {videoLink &&<YoutubeEmbed embedId={videoLink} />}
-<div className="!w-full !h-full flex-1 flex justify-center  items-center">  
+              <div className="pt-10  h-[460px] design:min-h-[460px]  relative z-10 flex items-end ">
+               {videoLink ?<YoutubeEmbed embedId={videoLink} />:
+<div className="!w-full bg-white  mb-10 !h-full flex-1 flex justify-center  items-center">  
 <div
   class="relative ml-5 !w-[90%] my-auto overflow-hidden translate-y-[-15%] !h-[350px]   rounded-lg !bg-fit bg-center bg-no-repeat  text-center"
   id="highPlace"
@@ -1023,7 +1035,7 @@ export default function TutorProfile({ isOwn }) {
   </div>
 </div>
 
-</div>             
+</div>             }
            
                 {/* <div className={`${styles.backBtn} mt-10`} >
                      </div> */}
