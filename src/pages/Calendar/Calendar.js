@@ -1155,8 +1155,8 @@ export default function Calendar() {
           <span className="font-bold">Schedule</span>
         </p>
         <div className="  pb-2 pl-[74px] calendar flex">
-          <div className=" pl-0 pr-0 w-[280px] mr-[10px]">
-            <div className="w-[280px] calendar-left-side" >
+          <div className=" pl-0 pr-0 w-[280px] mr-[10px] calendar-left-side overflow-y-auto">
+            <div className="w-[280px] " >
               <SimpleCalendar
                 events={
                   persona === "parent" || persona === "tutor"
