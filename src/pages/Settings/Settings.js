@@ -1268,7 +1268,7 @@ export default function Settings() {
                         />
                       )}
                     </span>
-                    <p className="py-2 px-2 pb-3 font-medium  text-base-20  whitespace-nowrap">
+                    <p className="py-2 px-2 pb-3 font-medium  text-base-17-5  whitespace-nowrap">
                       {item.name}{" "}
                     </p>
                   </a>
@@ -1931,7 +1931,6 @@ export default function Settings() {
               {fetchedPermissions?.map((item, id) => {
                 return (
                   <>
-                  
                     {item.choosedValue === true ||
                       item.choosedValue === false ? (
                       <div
