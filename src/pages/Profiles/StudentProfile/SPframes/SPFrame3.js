@@ -187,9 +187,9 @@ setId(userDetail?._id)
   };
  console.log("sprame3",{spSubject,subjects,scoreProgression,TimeChartData,ConceptualChartData});
   return (
-    <div className="flex flex-col gap-5 -mt-5">
+    <div className="flex flex-col gap-5 -mt-5 design:gap-10">
       {" "}
-      <h1 className="text-[#26435F] translate-y-4  text-sm font-semibold cursor-pointer">
+      <h1 className="text-[#26435F] translate-y-4  text-sm font-semibold cursor-pointer text-base-20">
           Score progression
             <span className="inline-block my-auto ml-2 translate-y-1">
               <svg
@@ -241,7 +241,7 @@ setId(userDetail?._id)
       </div>
       <div className=" flex-1 w-full">
         <div className="flex items-center justify-between">
-          <h1 className="text-[#26435F]  text-sm font-semibold mb-1">
+          <h1 className="text-[#26435F]  text-sm font-semibold mb-1 text-base-20">
             Time Management
             <span className="inline-block my-auto ml-2 translate-y-1 cursor-pointer">
               <svg
@@ -307,7 +307,7 @@ setId(userDetail?._id)
       </div>
       <div className=" flex-1 w-full">
         <div className="flex items-center justify-between">
-          <h1 className="text-[#26435F]  text-sm font-semibold mb-1">
+          <h1 className="text-[#26435F]  text-sm font-semibold mb-1 text-base-20">
             Conceptual Accuracy
             <span className="inline-block my-auto ml-2 translate-y-1 cursor-pointer">
               <svg

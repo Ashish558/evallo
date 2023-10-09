@@ -83,11 +83,11 @@ const SPFrame1 = ({ userId, settings, userDetail, editable, setToEdit, toEdit ,f
   return (
     <div>
       {" "}
-      <div className="flex mt-7 justify-between gap-5">
+      <div className="flex mt-7 justify-between gap-5 design:mt-10 design:gap-8">
 
-        <div className="flex-1 w-[300px] h-[270px] gap-2 flex flex-col">
-          <div className="flex-1 ">
-            <p className=" text-sm text-[#26435F] font-semibold">
+        <div className="flex-1 w-[300px] h-[280px] design:h-[290px] gap-2 flex flex-col design:gap-4">
+          <div className="flex-1 mb-1 ">
+            <p className="mb-1 text-sm text-[#26435F] font-semibold text-base-17-5 ">
               Whiteboard Links
              {persona!=='student' && persona!=='parent' && 
              <EditableText
@@ -110,7 +110,7 @@ const SPFrame1 = ({ userId, settings, userDetail, editable, setToEdit, toEdit ,f
 
             <div
 
-              className="w-full relative custom-scroller !border-[1.25px_dashed_#517CA8] bg-white h-full max-h-[90px]  flex flex-col rounded-md items-center overflow-y-auto "
+              className="w-full relative custom-scroller !border-[1.25px_dashed_#517CA8] bg-white h-[110px]  flex flex-col rounded-md items-center overflow-y-auto "
               id={styles.borderDashed}
             >
               {userDetail?.whiteBoardLinks?.map((it, id) => {
@@ -119,7 +119,7 @@ const SPFrame1 = ({ userId, settings, userDetail, editable, setToEdit, toEdit ,f
                     key={id}
                     className="flex flex-1 text-[#517CA8] w-full text-xs justify-between px-3 py-1"
                   >
-                    <a href={it} className="w-[90%] !break-words" target="_blank" >{it}</a>
+                    <a href={it} className="w-[90%] !break-words text-base-15" target="_blank" >{it}</a>
                     <img
                     onClick={()=>(persona==='tutor'||persona==='admin')&&reduceArr(id,true)}
                       src={BCut}
@@ -131,9 +131,9 @@ const SPFrame1 = ({ userId, settings, userDetail, editable, setToEdit, toEdit ,f
               })}
             </div>
           </div>
-          <div className="flex-1 mt-2">
+          <div className="flex-1 ">
 
-            <p className=" text-sm text-[#26435F] font-semibold">
+            <p className="mb-1 mt-1 text-sm text-[#26435F] font-semibold text-base-17-5">
               Associated Docs
             </p>
             <div
@@ -149,7 +149,7 @@ const SPFrame1 = ({ userId, settings, userDetail, editable, setToEdit, toEdit ,f
                     key={id}
                     className="flex flex-1 mt-1 text-[#517CA8] w-full text-xs justify-between px-3 py-1"
                   >
-                    <a className="w-[70%] break-words" href={it?.public_url} target="_blank" >{it?.key}</a>
+                    <a className="w-[70%] break-words text-base-15" href={it?.public_url} target="_blank" >{it?.key}</a>
                     <img
                     onClick={()=>(persona==='tutor'||persona==='admin')&&reduceArr2(id,true)}
                       src={BCut}
@@ -207,8 +207,8 @@ const SPFrame1 = ({ userId, settings, userDetail, editable, setToEdit, toEdit ,f
             </div>
           </div>
         </div>
-        <div className="flex-1 h-[260px]">
-          <p className=" text-sm text-[#26435F] font-semibold">
+        <div className="flex-1 h-[300px]  design:h-[305px]">
+          <p className="mb-1 text-sm text-[#26435F] font-semibold text-base-17-5">
             Interests{" "}
             <EditableText
               editable={editable}
@@ -224,7 +224,7 @@ const SPFrame1 = ({ userId, settings, userDetail, editable, setToEdit, toEdit ,f
             />
           </p>
 
-          <div className="w-full relative h-full p-1 flex flex-col gap-1  rounded-md items-center overflow-y-auto custom-scroller">
+          <div className="w-full relative h-full p-1 flex flex-col gap-2  rounded-md items-center overflow-y-auto custom-scroller">
             {/* {settings ? (
               settings.interest.length > 0 &&
               userDetail?.interest.map((id, idx) => {
@@ -280,8 +280,8 @@ const SPFrame1 = ({ userId, settings, userDetail, editable, setToEdit, toEdit ,f
         </div>
 
 
-        <div className="flex-1 h-[260px]">
-          <p className=" text-sm text-[#26435F] font-semibold">
+        <div className="flex-1 h-[300px]  design:h-[305px]">
+          <p className=" mb-1 text-sm text-[#26435F] font-semibold text-base-17-5">
             Subjects{" "}
             <EditableText
               editable={editable}
@@ -297,7 +297,7 @@ const SPFrame1 = ({ userId, settings, userDetail, editable, setToEdit, toEdit ,f
             />
           </p>
 
-          <div className="w-full relative h-full p-1 flex flex-col gap-1  rounded-md items-center overflow-y-auto custom-scroller">
+          <div className="w-full relative h-full p-1 flex flex-col gap-2  rounded-md items-center overflow-y-auto custom-scroller">
             {userDetail?.subjects
               ? userDetail?.subjects.map((sub, idx) => {
                   return (
@@ -315,8 +315,8 @@ const SPFrame1 = ({ userId, settings, userDetail, editable, setToEdit, toEdit ,f
           </div>
         </div>
 
-        <div className="flex-1 h-[260px]">
-          <p className=" text-sm text-[#26435F] font-semibold">
+        <div className="flex-1 h-[300px]  design:h-[305px]">
+          <p className="mb-1 text-sm text-[#26435F] font-semibold text-base-17-5">
             Personality
             <EditableText
               editable={editable}
@@ -332,7 +332,7 @@ const SPFrame1 = ({ userId, settings, userDetail, editable, setToEdit, toEdit ,f
             />
           </p>
 
-          <div className="w-full relative h-full p-1 flex flex-col gap-1  rounded-md items-center overflow-y-auto custom-scroller">
+          <div className="w-full relative h-full p-1 flex flex-col gap-2  rounded-md items-center overflow-y-auto custom-scroller">
             {/* {settings &&
               settings.personality &&
               settings.personality.length > 0 &&

@@ -45,7 +45,7 @@ const SPFrame0 = ({ userDetail, settings, toEdit, setToEdit }) => {
 //  //console.log({ driveLink, dropLink });
   return (
     <div>
-      <div className="bg-white mt-7 px-3 py-2 !rounded-md shadow-[0px_0px_2.500001907348633px_0px_#00000040] flex gap-3 justify-between  text-[#24A3D9]">
+      <div className="bg-white mt-7 px-3 py-2 design:py-4  !rounded-md shadow-[0px_0px_2.500001907348633px_0px_#00000040] flex gap-3 justify-between  text-[#24A3D9]">
         <div className="flex gap-3 text-sm items-center">
           <span>
             <img
@@ -55,7 +55,7 @@ const SPFrame0 = ({ userDetail, settings, toEdit, setToEdit }) => {
             />
           </span>
           <span>
-            <p>Birth Year</p>
+            <p className="text-base-18">Birth Year</p>
             <p className=" font-semibold ">
               {userDetail?.birthyear ? userDetail?.birthyear : " "}
             </p>
@@ -70,7 +70,7 @@ const SPFrame0 = ({ userDetail, settings, toEdit, setToEdit }) => {
             />
           </span>
           <span>
-            <p>Time Zone</p>
+            <p  className="text-base-18">Time Zone</p>
             <p className=" font-semibold ">
               {userDetail?.timeZone ? userDetail?.timeZone : "-"}
             </p>
@@ -85,7 +85,7 @@ const SPFrame0 = ({ userDetail, settings, toEdit, setToEdit }) => {
             />
           </span>
           <span>
-            <p>Referral</p>
+            <p  className="text-base-18">Referral</p>
             <p className=" font-semibold ">
               {userDetail?.subscriptionCode
                 ? userDetail?.subscriptionCode
@@ -102,7 +102,7 @@ const SPFrame0 = ({ userDetail, settings, toEdit, setToEdit }) => {
             />
           </span>
           <span className="flex flex-col">
-            <a href={dropLink} target="_blank" rel="noreferrer">
+            <a  className="text-base-18" href={dropLink} target="_blank" rel="noreferrer">
               Dropbox{" "}
               <img
                 className="ml-1 !w-3 !h-2 inline-block"
@@ -134,7 +134,7 @@ const SPFrame0 = ({ userDetail, settings, toEdit, setToEdit }) => {
             />
           </span>
           <span>
-            <p>Accomodations</p>
+            <p  className="text-base-18">Accomodations</p>
             <p className=" font-semibold ">
               {userDetail?.accomodations ? userDetail?.accomodations : "-"}
             </p>
