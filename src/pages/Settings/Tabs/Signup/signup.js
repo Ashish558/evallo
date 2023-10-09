@@ -62,17 +62,36 @@ export default function SignupTab({
     updateAndFetchsettings(body);
   };
   const togglePermissions = (key, value) => {
-    let updatedCustomFields = customFields.filter((item) => item._id == key);
-    updatedCustomFields = updatedCustomFields.map((item) => ({
-      name: item.name,
-      Values: item.Values,
-      dataType: item.dataType,
-      required: !(item.required)
-    }));
-    const body = {
-      customFields: updatedCustomFields,
-    };
-    updateAndFetchsettings(body);
+    // let updatedCustomFields = customFields.filter((item) => item._id == key);
+    // let notUpdatedCustomFields = customFields.filter((item) => item._id !== key);
+    // console.log(updatedCustomFields)
+    // updatedCustomFields = updatedCustomFields.map((item) => ({
+    //   name: item.name,
+    //   Values: item.Values,
+    //   dataType: item.dataType,
+    //   required: !(item.required)
+    // }));
+    // console.log(updatedCustomFields)
+    // console.log(notUpdatedCustomFields)
+    // const body = {
+    //   customFields: [...updatedCustomFields, ...notUpdatedCustomFields]
+    // };
+    const targetIndex = customFields.findIndex((obj) => obj._id === key);
+    console.log(customFields[targetIndex].required, "dfdfh")
+    if (targetIndex !== -1) {
+      const updatedObject = { ...customFields[targetIndex], required: !customFields[targetIndex].required };
+      console.log(updatedObject, "updatedObject")
+      const newArray = [...customFields];
+      newArray[targetIndex] = updatedObject;
+      console.log(newArray, "new array");
+      const body = {
+        customFields: newArray
+      };
+      updateAndFetchsettings(body);
+    } else {
+      console.log('Object not found with ID:', key);
+    }
+
     // const arr = fetchedPermissions?.map((per) => {
     //   if (per._id === key) {
     //     return { ...per, required: !per.required
@@ -174,7 +193,7 @@ export default function SignupTab({
                 inputContainerClassName="bg-gray-200 border border-gray-200 "
                 inputClassName="bg-gray-200 "
                 label=" Phone"
-                labelClassname={"translate-x-[-46px]"}
+                labelClassname={"translate-x-[-50px]"}
               />
             </div>
           </div>
@@ -299,11 +318,11 @@ export default function SignupTab({
               <div className="bg-gray-200 border translate-y-[6px] p-2 rounded-[3.5px] border-gray-200 h-[43px] text-[#667085] text-xs px-3 flex items-center" >+91</div>
               <InputField
                 placeholder=""
-                parentClassName="text-xs  text-[#26435F] mb-2 "
+                parentClassName="text-xs  text-[#26435F] mb-1.5 "
                 inputContainerClassName="bg-gray-200 border border-gray-200 "
                 inputClassName="bg-gray-200 "
-                label=" Student/Parent Phone"
-                labelClassname={"translate-x-[-46px]"}
+                label=" Student / Parent Phone"
+                labelClassname={"translate-x-[-50px]"}
               />
             </div>
             <InputField
@@ -335,6 +354,7 @@ export default function SignupTab({
           <img className="ml-[100px]" src={que2}></img>
         </span>
         <div className="mb-10">
+          {console.log(customFields)}
           {customFields?.map((item, idx) => {
             return (
               <div
@@ -424,7 +444,7 @@ export default function SignupTab({
           disabled={customFields?.length >= 5 ? true : false}
           children={"Add New Question"}
           Icon={plus1}
-          className="text-base-17-5"
+          className="text-base-17-5 text-white"
           onClick={() => setAddNewQuestionModalActive(true)}
         />
       </div>

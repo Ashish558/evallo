@@ -3,8 +3,8 @@ import { useNavigate } from "react-router-dom";
 import ResendConfirmation from "../../assets/assignedTests/resendConfirmation.svg";
 import UploadIcon from "../../assets/assignedTests/upload.svg";
 import DownloadIcon from "../../assets/icons/download.png";
-import SuccessIcon from "../../assets/assignedTests/success.svg";
-import FailIcon from "../../assets/assignedTests/fail.svg";
+import SuccessIcon from "../../assets/assignedTests/success_green.svg";
+import FailIcon from "../../assets/assignedTests/fail_red.svg";
 import YellowIcon from "../../assets/assignedTests/yellow.svg";
 import LightBlueIcon from "../../assets/icons/Test Statusred.svg";
 import RedIcon from "../../assets/assignedTests/red.svg";
@@ -1019,6 +1019,7 @@ const MapData = (data, dataFor, exclude = [], onClick) => {
           <img
             src={data[key] === true ? SuccessIcon : FailIcon}
             className="flex"
+            alt="resultIcon"
           />
         </div>
       </td>

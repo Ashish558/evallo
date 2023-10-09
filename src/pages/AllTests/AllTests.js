@@ -403,7 +403,7 @@ export default function AllTests() {
             onClick: handleSubmit,
             type: "submit",
             className:
-              "!ml-5   py-1 mr-auto mt-7 pr-2 flex gap-2  h-[49px] disabled:opacity-80 flex items-center !text-[0.8333vw] !font-medium  inline-block",
+              "!ml-5   py-1 mr-auto mt-7  flex gap-2  h-[49px] disabled:opacity-80 flex items-center !text-[0.8333vw] !font-medium  inline-block bg-[#FFA28D]",
             disabled: submitBtnDisabled,
             loading: loading,
             icon: <img src={check} alt="check" className="inline-block" />,
