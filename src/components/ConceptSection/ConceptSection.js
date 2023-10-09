@@ -261,7 +261,7 @@ const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
 
   return (
     <div
-      className="flex flex-row justify-between !gap-[calc(68*0.0522vw)] lg:py-[20px] py-[10px] "
+      className="flex flex-row justify-between !gap-[calc(68*0.0522vw)] lg:py-[20px] py-[10px] mt-8 design:!mt-12"
      
     >
       <div className=" flex-1 w-[70%] h-full">
