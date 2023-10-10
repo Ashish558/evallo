@@ -8,6 +8,7 @@ export default function SubscriptionPlan({
     description = new Array(4),
     onChange = function(c){},
     planName,
+    planDisplayName,
     pricePerMonth = 0,
     selected
 }) {
@@ -30,14 +31,14 @@ export default function SubscriptionPlan({
                     <div 
                         className={`text-[16px]
                         ${selected ? tailwindStyles.selectedPlanName : tailwindStyles.unSelectedPlanName}`}
-                    >{planName}</div>
+                    >{planDisplayName}</div>
                     <div className="font-[100] text-sm">
                         {description[0]}
                     </div>
                     <div className="font-[100] text-sm">
                         {description[1]}
                     </div>
-                    <div className="font-[500] text-sm text-[#24A3D9]">
+                    <div className="font-[600] text-sm text-[#24A3D9]">
                         {description[2]}
                     </div>
                     <div className="font-[100] text-sm">

@@ -8,9 +8,10 @@ export default function Subscription({
     values,
     setValues,
     setFrames,
-    setcurrentStep
+    setcurrentStep,
+    subscriptionPlanInfo = [],
 }) {
-    const subScriptionPlanInfo = subScriptionPlanData
+    // const subscriptionPlanInfo = subScriptionPlanData
 
     const handleSubmit = () => {
         setFrames((prev) => {
@@ -39,7 +40,7 @@ export default function Subscription({
             </div>
 
             {
-                subScriptionPlanInfo.map(plan => {
+                subscriptionPlanInfo?.map(plan => {
                     const freeTrialStatement = plan.freeTrialDays === 0 ? "Free Trial Not Available" :
                                                plan.freeTrialDays >= 30 ?  `${plan.freeTrialDays / 30} Months Free Trial` :
                                                `${plan.freeTrialDays} Days Free Trial`;
@@ -47,14 +48,17 @@ export default function Subscription({
                     return (
                         <SubscriptionPlan
                             className="mb-[15px] mt-[15px]"
+                            key={plan.id}
                             planName={plan.planName}
+                            planDisplayName={plan.planDisplayName}
                             description={[
                                 `Active Tutors Allowed - ${plan.activeTutorsAllowed === Infinity ? "unlimited" : plan.activeTutorsAllowed}`,
                                 `Active Students Allowed - ${plan.activeStudentsAllowed === Infinity ? "unlimited" : plan.activeStudentsAllowed}`,
                                 freeTrialStatement + (plan.ccRequired ? " (CC required)" : " (no CC required)"),
                                 (plan.freeTrialDays === 0 ? "Flat Monthly Subscription - " : "Flat Monthly Subscription After Free Trial Ends - ")     
                             ]}
-                            pricePerMonth={15}
+                            pricePerMonth={plan.pricePerMonth / 100}
+                            currency={plan.currency}
                             selected={plan.planName === values.subscriptionPlan ? true : false}
                             onChange={() => {
                                 setValues(values => {

@@ -65,9 +65,9 @@ import { useLazyGetSubscriptionsInfoQuery } from "../../app/services/orgSignup";
 export default function OrgSignup() {
   const [frames, setFrames] = useState({
     signupActive: false,
-    subscription: false,
+    subscription: true,
     extensions: false,
-    checkout: true,
+    checkout: false,
   });
 
   const [settings, setSettings] = useState({});
@@ -167,6 +167,7 @@ export default function OrgSignup() {
 
   const [getDetails, getDetailsResp] = useLazyGetUserDetailQuery();
   const [getSubscriptionsInfo, getSubscriptionsInfoResp] = useLazyGetSubscriptionsInfoQuery();
+  const [subscriptionPlanInfo, SetSubscriptionPlanInfo] = useState([])
 
   const fetchSettings = () => {
     getSettings().then((res) => {
@@ -182,7 +183,41 @@ export default function OrgSignup() {
       const productList = res.data.data;
       for(let i = 0; i < productList.length; i++) {
         // product type
-        console.log(productList[i].product.metadata.type)
+        let product = productList[i];
+        console.log(product.product.metadata.type)
+        if(product.product.metadata.type !== "default") continue;
+
+        let productInfo = {};
+        productInfo.id = product.id;
+        productInfo.planName = product.product.name;
+        productInfo.planDisplayName = product.product.name;
+        productInfo.freeTrialDays = parseInt(product.product.metadata.free_trial);
+        productInfo.activeTutorsAllowed = product.product.metadata.active_tutors === "unlimited" ? Infinity : parseInt(product.product.metadata.active_tutors);
+        productInfo.activeStudentsAllowed = product.product.metadata.active_students === "unlimited" ? Infinity : parseInt(product.product.metadata.active_students);
+        productInfo.ccRequired = product.product.metadata.cc_required === "yes" ? true : false;
+        productInfo.pricePerMonth = product.unit_amount;
+        productInfo.currency = product.currency;
+
+        SetSubscriptionPlanInfo(plans => {
+          const newPlansList = [];
+
+          let i;
+          for(i = 0; i < plans.length; i++) {
+            if(plans[i].currency < productInfo.currency) {
+              newPlansList.push(plans[i]);
+              continue;
+            }
+            break;
+          }
+
+          newPlansList.push(productInfo);
+          for( ; i < plans.length; i++) {
+            newPlansList.push(plans[i])
+          }
+
+          return newPlansList
+        });
+        //product.unit_amount
       }
     }).catch((error) => {
       console.error("Error while fetching subscriptions info")
@@ -907,6 +942,7 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
                   setValues={setValues}
                   setFrames={setFrames}
                   setcurrentStep={setcurrentStep}
+                  subscriptionPlanInfo={subscriptionPlanInfo}
                 />
               ) : frames.extensions ? (
                 <Extensions
