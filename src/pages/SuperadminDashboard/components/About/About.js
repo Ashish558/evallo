@@ -27,9 +27,9 @@ const About = () => {
     <>
       <div className="px-16 pt-4 mb-12">
         <div className="flex gap-2 text-sm mb-7">
-          <span>All Orgs</span>
+          <span className="text-[#667085]">All Orgs</span>
           <img src={icon} alt="right-arrow" />
-          <span className="text-[#24A3D9]">About</span>
+          <span className="text-[#24A3D9]">{userData?.data?.user?.company}</span>
         </div>
         <div className="flex gap-7">
           <ProfileLeft userData={{ ...userData?.data?.user, ...orgData }}   userOnly={userData?.data?.user} />

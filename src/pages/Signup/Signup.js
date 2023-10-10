@@ -398,15 +398,21 @@ export default function Signup() {
         setLoading(true);
         signupUser(reqBody)
           .then((res) => {
+            setLoading(false);
             console.log(res);
+            if(res?.data){
+            //  alert("Signup successful");
             setFrames({
               ...frames,
               signupSuccessful: true,
               requirements: false,
-            });
-            setLoading(false);
+            });}
+            else {
+              alert("Something went worng, please try again!");
+            }
+          
 
-            // alert("Signup successful");
+          
 
             // navigate("/");
           })

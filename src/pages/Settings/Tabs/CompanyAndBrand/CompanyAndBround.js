@@ -26,6 +26,7 @@ import {
   useUpdateUserOrganizationMutation,
 } from "../../../../app/services/organization";
 import { object } from "prop-types";
+import axios from "axios";
 const CompanyAndBround = () => {
   const { organization } = useSelector((state) => state.organization);
   const userData = useSelector((state) => state.user);
@@ -89,8 +90,15 @@ const CompanyAndBround = () => {
 
   const updateUserAccount = async () => {
     try {
+      
       updateUserOrg(values)
-        .then(() => {
+        .then((res) => {
+          if(res?.data){
+            alert("Updated successfully!")
+          }
+          else if(res?.error) {
+            alert("Updated successfully!")
+          }
           console.log("org updated", values);
         })
         .catch((err) => {
@@ -118,9 +126,44 @@ const CompanyAndBround = () => {
       const currentState = state.map((s) => s.states);
       if (currentState.length > 0) setStates([...currentState[0]]);
     }
-    updateUserAccount();
-  }, [values]);
 
+    
+  }, [values]);
+const handleSave=async ()=>{
+  setError({})
+  if(organization?.company!==values?.company){
+    try {
+      let data = {
+        company: values.company,
+      };
+      
+      //   alert(data.workemail)
+      let result = await axios.post(
+        `${process.env.REACT_APP_BASE_URL}api/user/CheckCompany`,
+        data,
+        {
+          headers: {
+            "content-Type": "application/json",
+          },
+        }
+      );
+      console.log("save",{result})
+      updateUserAccount()
+     
+      
+      
+    } catch (e) {
+     
+      setError({
+        ...error,
+        company: e.response.data.message,
+      });
+    }
+  }
+  else {
+  updateUserAccount();
+  }
+}
   useEffect(() => {
     setValues({ ...organization, ...values });
 
@@ -163,7 +206,7 @@ const CompanyAndBround = () => {
   };
 
   return (
-    <div>
+    <div className="flex justify-between">
       <div className="flex flex-col gap-10  w-[68.9vw] design:w-[68vw]">
         <div className="flex justify-between gap-5 flex-1 w-full items-center">
           <InputField
@@ -177,6 +220,7 @@ const CompanyAndBround = () => {
             disabled={true}
             value={"Company"}
             error={error.accountType}
+            totalErrors={error}
           />
           <InputField
             placeholder="Your business identity"
@@ -433,6 +477,17 @@ const CompanyAndBround = () => {
         {/* <div className="w-full h-[2px] bg-[#CBD6E2]"></div> */}
 
       </div>
+      <div>
+            <PrimaryButton
+              onClick={handleSave}
+              
+
+              className={`bg-[#FFA28D]   mt-[25px] ml-10 rounded-md px-[50px] py-[15px] text-sm text-base-20 text-white  `}
+
+            >
+              Save
+            </PrimaryButton>
+          </div>
     </div>
   );
 };
