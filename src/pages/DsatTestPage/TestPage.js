@@ -384,7 +384,7 @@ const tempsubjects = [
       review:false
     }));
     question_d=dataofque.map((item) => ({
-      text:item.Passage,
+      text:item.Passage==='yes'? item.PassageData:'',
     }));
     console.log(question_d,markr,cutdata);
     setAllQuestions_data(question_d)
@@ -598,7 +598,7 @@ const [pages,setPage]=useState(arr)
         ques={info[index] ? info[index].QuestionText : ""}
         index={index + 1}
         op={info[index] ? info[index].Answers : null}
-        para={info[index] ? info[index].Passage : ""}
+        para={info[index] ? info[index].PassageData : ""}
         Setmark={setPage} 
         mark={pages}
         siz={size}

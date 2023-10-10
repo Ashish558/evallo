@@ -77,7 +77,7 @@ export default function Que(props) {
        :null}
         {
           para?<div className='overflow-y-auto w-1/2 pr-4 pt-5'>
-           <TextAnnotator
+           {/* <TextAnnotator
             key={color}
         content={quesT[index-1].text}
         value={annotations[index-1]}
@@ -99,7 +99,8 @@ export default function Que(props) {
           </Tippy>
           )
         }}
-      /> 
+      />  */}
+      <div dangerouslySetInnerHTML={{__html:quesT[index-1].text}} />
          {/* <img src={image} alt="" /> */}
         </div>:null
         }

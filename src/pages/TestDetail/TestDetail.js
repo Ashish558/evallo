@@ -291,20 +291,26 @@ const jsonString = JSON.stringify(body);
 
    }
    const handleEditTestClick = (item) => {
+      let indx
+      subjects.map((it,i)=>{
+         if(it.selected===true){
+            indx=i; 
+         }
+      })
       console.log('asdasdasd',subjects);
-      if(allQuestions[0][item.QuestionNumber-1].Passage!=='no'){
+      if(allQuestions[indx][item.QuestionNumber-1].Passage!=='no'){
          setChecked(true)
       }
          setModalData(prev=>{
             return{
                ...prev,
-               richTextContent:allQuestions[0][item.QuestionNumber-1]?.PassageData,
-               question:allQuestions[0][item.QuestionNumber-1].QuestionText
+               richTextContent:allQuestions[indx][item.QuestionNumber-1]?.PassageData,
+               question:allQuestions[indx][item.QuestionNumber-1].QuestionText
             }
          })
-         setQuestionImageBase64(allQuestions[0][item.QuestionNumber-1].QuestionImage)
-      if(allQuestions[0][item.QuestionNumber-1].Answers.size!=0){
-         allQuestions[0][item.QuestionNumber-1].Answers.map((it)=>{
+         setQuestionImageBase64(allQuestions[indx][item.QuestionNumber-1].QuestionImage)
+      if(allQuestions[indx][item.QuestionNumber-1].Answers.size!=0){
+         allQuestions[indx][item.QuestionNumber-1].Answers.map((it)=>{
             console.log('dafsdfsdfs',it.label);
             if(it.label=='A'){
                setOptionAImageBase64(it?.image)
@@ -323,7 +329,7 @@ const jsonString = JSON.stringify(body);
             }
          })
          let newArray=[...options]
-         allQuestions[0][item.QuestionNumber-1].Answers.map((it,i)=>{
+         allQuestions[indx][item.QuestionNumber-1].Answers.map((it,i)=>{
                newArray[i]=it.text;      
          })
          console.log(newArray,'newatrratlbjasdja');
