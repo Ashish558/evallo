@@ -4,6 +4,7 @@ import Foot from "./Foot";
 import { useEffect, useState } from "react";
 import Que from "./Questions";
 import axios from "axios";
+import './dsattest.css';
 import { BASE_URL, getAuthHeader } from "../../app/constants/constants";
 import { useLocation, useNavigate, useParams } from "react-router-dom/dist";
 import LoaderPage from "../../components/TestItem/LoaderPage";
@@ -34,6 +35,7 @@ export default function TestPage() {
   const [data, setdata] = useState([]);
   const [toggle2,setToggle2] =useState(false)
   const [seconds, setSeconds] = useState(0);
+  const [starttestindex, setstarttestindex] = useState(0);
   const [cutanswer, setcutanswer] = useState([]);
   const [markreview, setmarkreview] = useState([]);
   const [instructionpage, setisntructionpage] = useState(true);
@@ -200,8 +202,8 @@ const tempsubjects = [
    const handleStartTest = () => {
       if (!activeSection) return
       setStartBtnLoading(true)
-      console.log(sectionDetails[answer_check?.completed.length]?.name)
-      startTest({ id: assignedTestId, reqbody: { sectionName: activeSection.name!=null?activeSection.name:sectionDetails[answer_check?.completed.length]?.name } })
+      console.log(sectionDetails[answer_check?.completed?.length]?.name)
+      startTest({ id: assignedTestId, reqbody: { sectionName: sectionDetails[starttestindex]?.name } })
          .then(res => {
             setStartBtnLoading(false)
             if (res.error) {
@@ -289,6 +291,8 @@ const tempsubjects = [
 
 
    const fetchContinueTest = (setResponsesFromStorage, subjectsRec) => {
+      console.log('asdasdadsasdasd',subjectsRec);
+
       continueTest({ id: assignedTestId })
          .then(res => {
             if (res.error) {
@@ -322,7 +326,31 @@ const tempsubjects = [
             if (completed) {
                const compIds = completed.map(test => test._id)
                setCompletedSectionIds(compIds)
+               console.log(sectionDetails);
+               if(sectionDetails.length>0){
+               const findnewind=sectionDetails?.map((item,i) => ({
+                  id: i,
+                  completed: compIds.includes(item._id)
+              }));
+              const firstIncompleteTest = findnewind.find(test => !test.completed);
+               setstarttestindex(firstIncompleteTest.id);
+               console.log('asdasdadsasdasd',sectionDetails);
             }
+            }
+            if(subjectsRec){
+               if (completed) {
+                  const compIds = completed.map(test => test._id)
+                  setCompletedSectionIds(compIds)
+                  console.log(sectionDetails);
+                 
+                  const findnewind=subjectsRec?.map((item,i) => ({
+                     id: i,
+                     completed: compIds.includes(item._id)
+                 }));
+                 const firstIncompleteTest = findnewind.find(test => !test.completed);
+                  setstarttestindex(firstIncompleteTest.id);
+            }}
+            setloader(false);
 
             setSubjects(prev => {
                return prev.map(item => {
@@ -363,18 +391,19 @@ const tempsubjects = [
     setmarkreview(markr)
     setAnswers(newData);
     setcutanswer(cutdata)
-    setloader(false);
    }
    else {
-setActiveSection(sectionDetails[answer_check?.completed.length==0?0:answer_check?.completed.length]) 
+setActiveSection(sectionDetails[answer_check?.completed?.length==0?0:answer_check?.completed?.length]) 
 
 }
    },[info])
   
 useEffect(()=>{
-  console.log('active section',activeSection);
-  handleStartTest()
-},[activeSection])
+      if(!instructionpage){
+         handleStartTest()
+         console.log('yesssss');
+      }
+   },[instructionpage])
    const handleSubjectChange = (item) => {
       // console.log(item);
       let tempdata = subjects.map(sub => {
@@ -387,12 +416,12 @@ useEffect(()=>{
       setSubjects(tempdata)
    }
    useEffect(() => {
-      if (subjects.length === 0) return
+      if (subjects?.length === 0) return
       const active = subjects.filter(item => item.selected === true)
       let completedSubIds = completedSubjects.map(item => item._id)
       // console.log('completedSubIds', completedSubIds);
       // console.log('subjects', subjects);
-      if (active.length === 0) {
+      if (active?.length === 0) {
          let issetActive = false
          let temp = subjects.map(sub => {
             if (issetActive === false) {
@@ -414,9 +443,9 @@ useEffect(()=>{
    }, [subjects, completedSubjects])
 
    useEffect(() => {
-      if (completedSectionIds.length === subjects.length) {
-         if (completedSectionIds.length === 0) return
-         if (subjects.length === 0) return
+      if (completedSectionIds?.length === subjects?.length) {
+         if (completedSectionIds?.length === 0) return
+         if (subjects?.length === 0) return
          alert('All section test completed')
          navigate('/all-tests')
       }
@@ -456,7 +485,7 @@ useEffect(()=>{
       setCal(false)
       setshowannotate(false)
       setloader(true)
-      setsectionindex(answer_check?.completed.length==0?1:answer_check?.completed.length)
+      setsectionindex(answer_check?.completed?.length==0?1:answer_check?.completed?.length)
       const response = answers.map(item => {
          const { QuestionType, QuestionNumber, ResponseAnswer, responseTime } = item
          return {
@@ -468,8 +497,8 @@ useEffect(()=>{
       })
       let body = {
          submitId,
-         reqbody: {
-            sectionName: sectionDetails[answer_check?.completed.length]?.name,
+         reqbody: { 
+            sectionName: sectionDetails[starttestindex]?.name,
             response: response
          }
       }
@@ -493,7 +522,7 @@ useEffect(()=>{
    useEffect(() => {
       if (!answers) return
       if (answers === null || answers === undefined) return
-      if (answers.length === 0) return
+      if (answers?.length === 0) return
       // console.log('setans', answers);
       addBackupResponse({ id: assignedTestId, reqbody: { backupResponse: answers } })
          .then(res => {
@@ -507,11 +536,18 @@ useEffect(()=>{
       // localStorage.setItem('answers', JSON.stringify(answers))
    }, [answers])
 
-
+useEffect(()=>{
+   if(!instructionpage){
+      handleStartTest()
+   }
+   console.log(instructionpage);
+},[instructionpage])
    
    
 //end code
-const size = Object.keys(answers).length;
+let size=0
+if(answers)
+ size = Object.keys(answers)?.length;
 const arr = new Array(size)
 arr.fill(false)
 const [pages,setPage]=useState(arr)
@@ -524,26 +560,28 @@ const [pages,setPage]=useState(arr)
 <SectionLoader/>
      :
      instructionpage?
-     <Testinstruction_2 desc={sectionDetails[answer_check?.completed.length]?.description} timer={sectionDetails[answer_check?.completed.length]?.timer} setisntructionpage={setisntructionpage} loader={loader} testHeaderDetails={testHeaderDetails} activeSection={activeSection} TestDetail={TestDetail} completedSectionIds={completedSectionIds} testStarted={testStarted} subjects={subjects}
+     <Testinstruction_2 setloader={setloader} starttestindex={starttestindex} setstarttestindex={setstarttestindex} desc={sectionDetails} timer={sectionDetails[starttestindex]?.timer} setisntructionpage={setisntructionpage} loader={loader} testHeaderDetails={testHeaderDetails} activeSection={activeSection} TestDetail={TestDetail} completedSectionIds={completedSectionIds} testStarted={testStarted} subjects={subjects}
    /> 
      :
      <>
+     {info?.length>0 && answers?.length>0&&cutanswer?.length>0&&markreview?.length>0?
       <Navbar  cal={cal}
       showannotate={showannotate}
       setshowannotate={setshowannotate}
-      details={sectionDetails[answer_check?.completed.length]?.description}
-      annotation_check={sectionDetails[answer_check?.completed.length]?.annotation=='yes'?true:false}
-      calculator_check={sectionDetails[answer_check?.completed.length]?.calculator=='yes'?true:false}
-      setCal={setCal} secnd={timer} handleSubmitSection={handleSubmitSection} sectionDetails={sectionDetails[answer_check?.completed.length]}  />
-      <Que
+      details={sectionDetails[starttestindex]?.description}
+      annotation_check={sectionDetails[starttestindex]?.annotation=='yes'?true:false}
+      calculator_check={sectionDetails[starttestindex]?.calculator=='yes'?true:false}
+      setCal={setCal} secnd={timer} handleSubmitSection={handleSubmitSection} sectionDetails={sectionDetails[starttestindex]}  />:null}
+      {info?.length>0 && answers?.length>0&&cutanswer?.length>0&&markreview?.length>0?
+         <Que
       setshowtextbox={setshowtextbox}
       showtextbox={showtextbox}
       showannotate={showannotate}
       setshowannotate={setshowannotate}
       quesT={allquestion_Data}
-      annotation_check={sectionDetails[answer_check?.completed.length]?.annotation=='yes'?true:false}
-      calculator_check={sectionDetails[answer_check?.completed.length]?.calculator=='yes'?true:false}
-      cross_O_check={sectionDetails[answer_check?.completed.length]?.crossOption=='yes'?true:false}
+      annotation_check={sectionDetails[starttestindex]?.annotation=='yes'?true:false}
+      calculator_check={sectionDetails[starttestindex]?.calculator=='yes'?true:false}
+      cross_O_check={sectionDetails[starttestindex]?.crossOption=='yes'?true:false}
       cal={cal}
       setAnswers={setAnswers}
       setCal={setCal}
@@ -565,10 +603,11 @@ const [pages,setPage]=useState(arr)
         mark={pages}
         siz={size}
       />
-      {showtextbox?null:
+      :null}
+      {!showtextbox&&info?.length>0 && answers?.length>0&&cutanswer?.length>0&&markreview?.length>0?
       <Foot
-      sectionindex={answer_check?.completed.length+1}
-      sectionDetails={sectionDetails[answer_check?.completed.length]}
+      sectionindex={answer_check?.completed?.length+1}
+      sectionDetails={sectionDetails[answer_check?.completed?.length]}
       answers={answers}
       cal={cal}
       setCal={setCal}
@@ -587,7 +626,7 @@ const [pages,setPage]=useState(arr)
         s={size}
         i={index + 1}
         mark={pages}
-      />
+      />:null
 }
       </>
   }

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import SecondaryButton from "../../components/Buttons/SecondaryButton";
 import BackIcon from "../../assets/assignedTests/back.svg";
 import AddIcon from "../../assets/icons/add.svg";
@@ -6,7 +6,7 @@ import PrimaryButton from "../../components/Buttons/PrimaryButton";
 // import styles from './style.module.css'
 // import { tableData } from './tempData'
 import pdf from '../.././assets/images/pdf.png'
-import { Switch } from 'antd';
+import Switch from "react-switch";
 import { useLocation } from 'react-router-dom';
 import Table from "../../components/Table/Table";
 import { useNavigate, useParams } from "react-router-dom";
@@ -89,6 +89,8 @@ export default function TestDetail() {
    const [subjects, setSubjects] = useState([])
    const [awsLink, setAwsLink] = useState('')
    const [pdfBase64, setPdfBase64] = useState("");
+   const [extratableitem, setextratableitem] = useState([]);
+   
 
    const handlePDFFile = (file) => {
       const formData = new FormData();
@@ -175,7 +177,7 @@ export default function TestDetail() {
             }
          }
       })
-      
+      // let idx = subjects.findIndex(item => item.selected === true)
 const updatedQuestions = tempdata.map(question => {
    if (testData.testType==='DSAT') {
      const { AnswerChoices, ...rest } = question;
@@ -183,8 +185,21 @@ const updatedQuestions = tempdata.map(question => {
    }
    return question;
  });
+ console.log(allQuestions[idx]);
+ let updatedData
+ if (testData.testType==='DSAT') {
+    updatedData = allQuestions[idx].map(obj => ({
+          ...obj,
+          testType:testData.testType,
+          QImage : obj?.QuestionImage==='no'?'No':'Yes',
+          Passage : obj?.Passage==='no'?'No':'Yes',
+          AImage :obj.Answers.some(it => it?.image !== 'no' && it?.image !== undefined && it?.image !== null) ? 'Yes' : 'No'
+      }))
+   }
+  
+  
+      setextratableitem(updatedData);
       setQuestionsTable(updatedQuestions)
-      console.log(updatedQuestions);
    }, [subjects])
 
    const handleSubjectChange = (id) => {
@@ -226,7 +241,7 @@ const updatedQuestions = tempdata.map(question => {
                CorrectAnswer: modalData.correctAnswer,
                Concepts: modalData.concept,
                Strategies: modalData.strategy,
-               AnswerChoices: modalData.AnswerChoices,
+               AnswerChoices: 'A,B,C,D',
                QuestionText: modalData.question,
                QuestionImage:questionImageBase64,
                QuestionType: modalData.questionType,
@@ -249,13 +264,14 @@ const updatedQuestions = tempdata.map(question => {
                      text: options[3],
                      ...(optionDImageBase64 !== undefined && optionDImageBase64 !== null ? { image: optionDImageBase64 } : {})                  },
                ],
-               Passage: modalData.richTextContent,
+               PassageData: modalData.richTextContent,
+               Passage:checked===true?'yes':'no'
             },
          };
 const jsonString = JSON.stringify(body);
 
          // Log the JSON data in the console
-         console.log("JSON Form Data:", jsonString);
+         console.log("JSON Form Data:", body);
       
       setEditLoading(true)
       editQuestion({ id, reqbody: body })
@@ -282,7 +298,7 @@ const jsonString = JSON.stringify(body);
          setModalData(prev=>{
             return{
                ...prev,
-               richTextContent:allQuestions[0][item.QuestionNumber-1].Passage,
+               richTextContent:allQuestions[0][item.QuestionNumber-1]?.PassageData,
                question:allQuestions[0][item.QuestionNumber-1].QuestionText
             }
          })
@@ -410,6 +426,9 @@ const tableHeaders = [
    "Concept",
    "Strategy",
    "QType",
+   ...(testData.testType!=='DSAT' ? [] : ["Q. Image"]),
+   ...(testData.testType!=='DSAT' ? [] : ["A. Image"]),
+   ...(testData.testType!=='DSAT' ? [] : ["Passage?"]),
    ...(testData.testType!=='DSAT' ? ["Choices"] : []),
       "Edit"
 ]; 
@@ -419,16 +438,6 @@ const [richTextContent, setRichTextContent] = useState("");
 
    return (
       <>
-      {/* <SecondaryButton
-                        className="flex bg-transparent items-center pl-2 pr-5 py-2.5"
-                        onClick={() => navigate("/all-tests")}
-                        children={
-                           <>
-                              <img src={BackIcon} className="mr-2" />
-                              <span>Back</span>
-                           </>
-                        }
-                     /> */}
          <div className="!mx-[6vw] bg-lightWhite min-h-screen">
          <p className="text-[#24A3D9]  !mt-[calc(50*0.052vw)] !mb-[calc(25*0.052vw)] text-base-20">
       <span onClick={()=>navigate('/')} className="cursor-pointer"> 
@@ -441,16 +450,16 @@ const [richTextContent, setRichTextContent] = useState("");
              
           </span>
           <span  onClick={()=>navigate('/all-tests')} className=" cursor-pointer">{"Content > "} </span>
-          <span className="font-semibold">Report</span>
+          <span className="font-semibold">{testData.testName}</span>
         </p>
             <div className="pb-14 pt-4  flex flex-col items-center">
-               <div className="px-0 flex flex-row justify-between items-start pr-2 w-full">
+               <div className="px-0 flex flex-row justify-start items-start pr-2 w-full">
                            <div className="flex mx-2 w-1/4 flex-col justify-start">
                            <p className="mb-2 text-textPrimaryDark text-[35px] min-h-[50px] font-extrabold">
                            {testData.testName?testData.testName:""}
                         </p>
                            
-                           <div className="border w-full py-4 flex rounded shadow-sm justify-center items-center">
+                           <div className="border w-full py-4 flex rounded shadow-lg justify-center items-center">
                      <AllTestDetail testData={testData} />
                         </div>
                         </div>
@@ -459,7 +468,7 @@ const [richTextContent, setRichTextContent] = useState("");
                            Sections
                         </p>
 
-                        <div className="gap-y-1 w-full mx-4 border rounded p-4 shadow-sm mb-10">
+                        <div className="gap-y-1 w-full mx-4 border rounded p-4 shadow-lg mb-10">
                            <div className="mb-2 flex justify-between ">
                               <p className="inline-block w-[170px] font-semibold opacity-60 text-[#26435F] opacity-100">
                                  {" "}
@@ -499,7 +508,7 @@ const [richTextContent, setRichTextContent] = useState("");
 
                      </div>
                   {testData.testType!=='DSAT'?
-                  <div className="px-6 py-[2.5rem] ml-[50px] flex  mx-2 mt-[3.8rem] w-1/4 justify-center border-[#26435F] border-dashed border-[2px] items-center flex-col rounded shadow-sm">
+                  <div className="px-6 py-[2.5rem] ml-[50px] flex  mx-2 mt-[3.8rem] w-1/4 justify-center border-[#26435F] border-dashed border-[2px] items-center flex-col rounded shadow-lg">
                            
                         {
                            Object.keys(sectionsData).length > 1 &&
@@ -555,11 +564,12 @@ const [richTextContent, setRichTextContent] = useState("");
                   /> */}
                   </div>
                   <div className="mt-4">
-
                      {questionsTable.length > 0 && <Table dataFor='testsDetailQuestions'
                         data={questionsTable}
+                        extratableitem={extratableitem}
                         tableHeaders={tableHeaders}
                         excludes={['_id']}
+                        testtype={testData.testType}
                         // maxPageSize={10}
                         onClick={{ handleEditTestClick }}
                         hidePagination />}
@@ -616,10 +626,10 @@ const [richTextContent, setRichTextContent] = useState("");
                         </div>
                         <div className="min-w-[170px] px-1">
                            <InputField label='Correct Answer'
-                              labelClassname='ml-4 mb-0.5 input-heading font-medium text-[15px]'
+                              labelClassname='ml-4  mb-0.5 input-heading font-medium text-[15px]'
                               isRequired={true}
                               placeholder='Type Correct Answer'
-                              inputContainerClassName='bg-[#F6F6F6] text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0'
+                              inputContainerClassName='bg-[#F6F6F6] text-[#38C980] text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0'
                               inputClassName='bg-transparent'
                               parentClassName='w-full' type='text'
                               value={modalData.correctAnswer}
@@ -744,7 +754,7 @@ const [richTextContent, setRichTextContent] = useState("");
             onChange={(e) => setModalData({ ...modalData, question: e.target.value })}
             className="border w-3/4 mr-4 ml-3 outline-none border-none bg-[#F6F6F6] rounded p-2"
          />
-          {questionImageBase64!==undefined&&questionImageBase64!==''?
+          {questionImageBase64!==undefined&&questionImageBase64!=='' && questionImageBase64!='no'?
          <div className="flex flex-row w-1/4 justify-start items-center overflow-hidden">
                <img src={questionImageBase64} className='rounded max-w-14 max-h-14 my-2' alt="base64"/>
       <div onClick={()=>{handleimage_emppty('questionImage')}}>
@@ -768,27 +778,36 @@ const [richTextContent, setRichTextContent] = useState("");
       {/* Rich Text Editor */}
 <div className="mb-2 mt-6">
 <div className="flex flex-row">
-<Switch 
-        checked={checked} 
+<Switch
         onChange={setChecked}
+        checked={checked}
+        handleDiameter={5}
+        offHandleColor="#FF7979"            
+        onHandleColor="#38C980"             
+        height={20}
+        width={40}
+        uncheckedIcon={false}
+        checkedIcon={false}
+        id={checked?'true':null}
       />
    <p className="text-[15px] ml-4 font-normal mb-6">Enable Split Screen / Add Passage</p>
    
    </div>
    {checked?
    <ReactQuill
-      value={modalData.richTextContent}
-      onChange={(val) =>{ setModalData({ ...modalData, richTextContent: val })}}
-      modules={{
-         toolbar: [
-            [{ 'header': '1' }, { 'header': '2' }, { 'font': [] }],
-            ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-            [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-            ['link', 'image'],
-            ['clean']
-         ],
-      }}
-   />:null}
+   value={modalData.richTextContent}
+   onChange={(val) =>{ setModalData({ ...modalData, richTextContent: val })}}
+   modules={{
+      toolbar: [
+         [{ 'header': '1' }, { 'header': '2' }, { 'font': [] }],
+         ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+         [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+         ['link', 'image'],
+         ['clean']
+      ],
+   }}
+/>
+:null}
 </div>
 <div className="w-full h-1 my-4 bg-[#00000033]">
 </div>
@@ -797,7 +816,7 @@ const [richTextContent, setRichTextContent] = useState("");
    null
 :<>
       <div className='flex items-center mb-2'>
-      <p className='ml-2 rounded-full border py-1 px-3  mr-2 text-lg'>
+      <p className={`ml-2 rounded-full border py-1 px-3  mr-2 text-lg ${modalData.correctAnswer==='A'?'bg-[#38C980] text-white':'bg-[#F6F6F6]'}`}>
          A
       </p>
       <div className="flex flex-row w-full items-center bg-[#F6F6F6] ">
@@ -832,7 +851,7 @@ const [richTextContent, setRichTextContent] = useState("");
    </div>
 
    <div className='flex items-center mb-2'>
-      <p className='ml-2 rounded-full border py-1 px-3  mr-2 text-lg'>
+      <p className={`ml-2 rounded-full border py-1 px-3  mr-2 text-lg ${modalData.correctAnswer==='B'?'bg-[#38C980] text-white':'bg-[#F6F6F6]'}`}>
          B
       </p>
       <div className="flex flex-row w-full items-center bg-[#F6F6F6] ">
@@ -867,7 +886,7 @@ const [richTextContent, setRichTextContent] = useState("");
    </div>
 
    <div className='flex items-center mb-2'>
-      <p className='ml-2 rounded-full border py-1 px-3  mr-2 text-lg'>
+      <p className={`ml-2 rounded-full border py-1 px-3  mr-2 text-lg ${modalData.correctAnswer==='C'?'bg-[#38C980] text-white':'bg-[#F6F6F6]'}`}>
          C
       </p>
       <div className="flex flex-row w-full items-center bg-[#F6F6F6] ">
@@ -902,7 +921,7 @@ const [richTextContent, setRichTextContent] = useState("");
          </div>
    </div>
    <div className='flex items-center mb-2'>
-      <p className='ml-2 rounded-full border py-1 px-3  mr-2 text-lg'>
+      <p className={`ml-2 rounded-full border py-1 px-3  mr-2 text-lg ${modalData.correctAnswer==='D'?'bg-[#38C980] text-white':'bg-[#F6F6F6]'}`}>
          D
       </p>
       <div className="flex flex-row w-full items-center bg-[#F6F6F6] ">

@@ -34,12 +34,12 @@ export default function Modal({
 }) {
 
    const selectRef = useRef();
-   // console.log(selectRef)
-   useOutsideAlerter(selectRef, () => {
-      selectRef.current = null;
-      handleClose && handleClose()
+   // // console.log(selectRef)
+   // useOutsideAlerter(selectRef, () => {
+   //    selectRef.current = null;
+   //    handleClose && handleClose()
 
-   });
+   // });
 
    useEffect(() => {
       document.body.style.overflow = "hidden";

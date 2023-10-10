@@ -15,6 +15,8 @@ export default function Table(props) {
     noArrow,
     dataFor,
     selectedId2,
+    testtype,
+    extratableitem,
     setSelectedId2,
     data,
     tableHeaders,
@@ -31,8 +33,7 @@ export default function Table(props) {
     loading,
     AdminLatestSignUp,
     headerWidth,
-    testtype,
-    belowBoxLink,
+     belowBoxLink,
     belowBox,
     belowBoxHeight,
     belowBoxText,
@@ -144,8 +145,9 @@ export default function Table(props) {
                   <React.Fragment key={idx}>
 
                     <TableItem
+                    testtype={testtype}
+                      extratableitem={extratableitem}
                       index={idx}
-                      testtype={testtype}
                       dataFor={dataFor}
                       selectedId2={selectedId2}
                       setSelectedId2={setSelectedId2}
