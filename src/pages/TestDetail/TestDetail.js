@@ -447,8 +447,8 @@ const [richTextContent, setRichTextContent] = useState("");
          <div className="!mx-[6vw] bg-lightWhite min-h-screen">
          <p className="text-[#24A3D9]  !mt-[calc(50*0.052vw)] !mb-[calc(25*0.052vw)] text-base-20">
       <span onClick={()=>navigate('/')} className="cursor-pointer"> 
-         {organization?.company +
-            "  >  " +
+         {
+           
             firstName +
             "  " +
             lastName +
@@ -456,7 +456,7 @@ const [richTextContent, setRichTextContent] = useState("");
              
           </span>
           <span  onClick={()=>navigate('/all-tests')} className=" cursor-pointer">{"Content > "} </span>
-          <span className="font-semibold">{testData.testName}</span>
+          <span className="font-semibold">  {testData.testName?testData.testName:"Report"}</span>
         </p>
             <div className="pb-14 pt-4  flex flex-col items-center">
                <div className="px-0 flex flex-row justify-start items-start pr-2 w-full">

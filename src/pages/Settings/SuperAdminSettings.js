@@ -440,7 +440,7 @@ export default function SuperAdminSettings() {
       for (let i = 0; i < 4 - settingsData?.offerImages.length; i++) {
         arr.push({
           link: "",
-          image: "",
+          image: null,
           buttonText: "",
         });
       }
@@ -561,7 +561,9 @@ export default function SuperAdminSettings() {
     // console.log(append)
 
     if (append === "") return;
+    setLoading2(true);
     setSaveLoading(true);
+    
     axios
       .patch(`${BASE_URL}api/user/setting/${append}`, formData, {
         headers: getAuthHeader(),
@@ -569,6 +571,8 @@ export default function SuperAdminSettings() {
         maxContentLength: Infinity,
       })
       .then((res) => {
+        setLoading2(false);
+        setSaveLoading(false)
         // console.log('resp--' ,res.data.data.updatedSetting.settings);
         setTagImage(null);
         setTagText("");
@@ -580,6 +584,7 @@ export default function SuperAdminSettings() {
       })
       .catch((err) => {
         console.log("err", err);
+           setLoading2(false);
         alert("Could not upload image");
         setSaveLoading(false);
       });
@@ -1014,24 +1019,37 @@ export default function SuperAdminSettings() {
     updateAndFetchsettings(body);
   };
  
-  const submitImageModalNew = (file, val, e) => {
+  const submitImageModalNew = (file2, val, e) => {
     e.preventDefault();
+    const file=file2
+    if(!file) {
+      
+      return
+    }
+   e.target.value = ''
+   let size=file.size/1024;
+   size=size/1024;
+   if(size>1){
+     alert("File size is larger than than 1MB")
+     return 
+   }
     // //console.log(tagText)
     // //console.log(tagImage)
     // //console.log(selectedImageTag)
-
+    console.log({ file, val, link: val?.link });
     const formData = new FormData();
 
     let append = "";
 
     append = "addimage";
     // formData.append("image", file);
-    formData.append("link", val?.link);
+    formData.append("link", val?.link?val?.link:" ");
     formData.append("offer", file);
     formData.append("buttonText", val?.buttonText);
-    console.log({ file, val, link: val?.link });
+   
 
     if (append === "") return;
+    setLoading2(true);
     setSaveLoading(true);
     axios
       .patch(`${BASE_URL}api/user/setting/${append}`, formData, {
@@ -1067,10 +1085,13 @@ export default function SuperAdminSettings() {
         //   // setTagModalActive(false);
         //   fetchSettings();
         // }
-        fetchSettings();
+        setLoading2(false);
         setSaveLoading(false);
+        fetchSettings();
+       
       })
       .catch((err) => {
+        setLoading2(false);
         console.log("err", err);
         alert("Could not upload image");
         setSaveLoading(false);
@@ -1814,8 +1835,10 @@ export default function SuperAdminSettings() {
                                 />
                               </div>
                               <InputField
-                                defaultValue={offer.link}
+                                defaultValue={offer?.link?.trim()}
+
                                 inputClassName={" text-base-17-5 bg-[#F5F8FA]"}
+                                placeholder={"Hyperlink"}
                                 parentClassName={"mb-3 bg-[#F5F8FA]"}
                                 onBlur={(e) =>
                                   handleOfferChange(
@@ -1828,10 +1851,11 @@ export default function SuperAdminSettings() {
                               <InputField
                                 defaultValue={offer.buttonText}
                                 parentClassName={"bg-[#F5F8FA]"}
-                                inputClassName={" text-base-17-5 bg-[#F5F8FA]"}
                                 placeholder={
-                                  "Button (eg. Register, Enroll, View)"
+                                  "Button Text (eg. View, Enroll, etc.)"
                                 }
+                                inputClassName={" text-base-17-5 bg-[#F5F8FA]"}
+                              
                                 onBlur={(e) =>
                                   handleOfferChange(
                                     offer,
@@ -1867,40 +1891,38 @@ export default function SuperAdminSettings() {
                     <p className="block ">{xlsFile.name}</p>
                   )} */}
                                 </div>
-                                {!off?.image?.name ? (
-                                  <div className="flex justify-center">
+                                <div className="flex justify-center">
                                     <label
-                                      htmlFor="file2"
-                                      className="block text-sm text-white bg-[#517CA8] hover:bg-[#517CA8] items-center justify-center  rounded-[5px]  px-3 py-2 text-base-17-5 text-center ] "
+                                      htmlFor={"file2"+idx}
+                                      disabled={loading2}
+                                      className={`block cursor-pointer text-sm text-white bg-[#517CA8] hover:bg-[#517CA8] items-center justify-center  rounded-[5px]  px-3 py-2 text-base-17-5 text-center ${loading2?"cursor-wait":""}`}
                                     >
-                                      Choose File
+                                       {loading2 && off?.image
+
+                                        ? "Submitting..."
+                                        : " Choose File"}
                                     </label>
                                     <input
+                                     accept="image/*"
+                                     disabled={loading2}
+                                       
                                       onChange={(e) => {
+                                        console.log("ee")
                                         let arr = offersNew;
                                         arr[idx].image = e.target.files[0];
-                                        setOffersNew([...arr]);
+                                        setOffersNew((prev)=>(
+                                          [
+                                            ...arr,
+                                          ]
+                                        )
+                                         );
+                                        submitImageModalNew(e.target.files[0], off,e)
                                         // setImageName(e.target.files[0].name);
                                       }}
-                                      id="file2"
+                                      id={"file2"+idx}
                                       type="file"
                                     />
                                   </div>
-                                ) : (
-                                  <div className="flex justify-center flex-col">
-                                    <span className="text-[#517CA8] text-base-15 mb-1">
-                                      {off?.image?.name}
-                                    </span>
-                                    <span
-                                      onClick={(e) =>
-                                        submitImageModalNew(off?.image, off, e)
-                                      }
-                                      className=" cursor-pointer block text-sm text-white bg-[#517CA8] hover:bg-[#517CA8] items-center justify-center  rounded-[5px]  px-4 py-2 text-center text-base-17-5]"
-                                    >
-                                      Submit File
-                                    </span>
-                                  </div>
-                                )}
 
                                 <label
                                   htmlFor="file"
@@ -1933,7 +1955,7 @@ export default function SuperAdminSettings() {
                                     " text-base-17-5 bg-[#F5F8FA]"
                                   }
                                   parentClassName={"mb-3 bg-[#F5F8FA]"}
-                                  placeholder={"This field is required."}
+                                  placeholder={"Hyperlink"}
                                   required={true}
                                   onChange={(e) => {
                                     let arr = offersNew;
@@ -1948,7 +1970,7 @@ export default function SuperAdminSettings() {
                                     " text-base-17-5 bg-[#F5F8FA]"
                                   }
                                   placeholder={
-                                    "Button (eg. Register, Enroll, View)"
+                                    "Button Text (eg. View, Enroll, etc.)"
                                   }
                                   onChange={(e) => {
                                     let arr = offersNew;
@@ -2478,7 +2500,7 @@ export default function SuperAdminSettings() {
         <Modal
           classname={"max-w-[560px] mx-auto"}
           titleClassName="text-base-20 mb-[18px]"
-          title="Add / Edit Sessions"
+          title="Add / Edit Session Tags"
           cancelBtn={false}
           cancelBtnClassName="w-140 "
           handleClose={() => {
@@ -2523,7 +2545,7 @@ export default function SuperAdminSettings() {
                 <div className="flex-1 flex gap-5 ">
                   <div className="flex-1">
                     <InputField
-                      label="Session Name"
+                      label="Session Tag Heading"
                       labelClassname="text-base-20 text-[#26435F] mb-0.5"
                       placeholder="Add a heading for session tags (such as “Topics Covered”)"
                       inputContainerClassName=" text-base-17-5 !px-3 bg-primary-50 border-0"

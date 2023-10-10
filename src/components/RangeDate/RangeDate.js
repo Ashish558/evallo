@@ -97,7 +97,7 @@ const RangeDate = ({ removeUnderline,handleRangeData ,optionClassName,className,
   let newDateformat = temp[0];
   temp = temp[1].split(" ")
   let firsYear = newDateformat.split(" ")
-  if (firsYear[2] === temp[3]) {
+  if (false&&firsYear[2] === temp[3]) {
     newDateformat = firsYear[0] + " " + firsYear[1]
 
   }
@@ -113,13 +113,13 @@ const RangeDate = ({ removeUnderline,handleRangeData ,optionClassName,className,
   const [startFull, endFull] = latestDateFormat.split(" - ");
   
  
-  const [, , endYear] = endFull.split("-");
+  const [, , endYear] = startFull.split("-");
   
   
   const [startMonth, startDay] = startFull.split("-");
   
   
-  const formattedStartDate = `${startMonth}-${startDay}`;
+  const formattedStartDate = `${startMonth}-${startDay} - ${endYear}`;
   const formattedDateRange = `${formattedStartDate} - ${endFull}`;
   // console.log(formattedDateRange);
   
