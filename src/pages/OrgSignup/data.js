@@ -1,8 +1,8 @@
 export const extensionsData = [
   {
-    text: "Assignments",
+    text: "Assignments / Content",
     checked: false,
-    packageName: "Individuals"
+    packageName: "p1"
   },
   {
     text: "Mass_Emailer",

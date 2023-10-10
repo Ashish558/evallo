@@ -1,3 +1,4 @@
+import React from "react";
 import ExtensionPlan from "../../../components/ExtensionPlan/ExtensionPlan";
 import {
     extensionPlansInfo as extensionPlansData
@@ -16,6 +17,7 @@ export default function Extensions({
     setExtensions,
     extensionPlansInfo = [
         {
+            id: "",
             planName: "",
             planDisplayName: "",
             description: [],
@@ -71,13 +73,14 @@ export default function Extensions({
 
             {
 
-                extensions?.map(item => {
-                    if(!extensionPlansInfo || extensionPlansInfo === undefined || extensionPlansInfo === null) return (<></>)
-                    if(extensionPlansInfo[0].planName === "") return (<></>)
+                extensions?.map((item,index) => {
+                    if(!extensionPlansInfo || extensionPlansInfo === undefined || extensionPlansInfo === null) return (<React.Fragment key={index}></React.Fragment>)
+                    if(extensionPlansInfo[0]?.planName === "") return (<React.Fragment key={index}></React.Fragment>)
                     let extension = extensionPlansInfo.find(i => i.planName === item.text)
-                    if(!extension || extension === undefined || extension === null) return (<></>)
+                    if(!extension || extension === undefined || extension === null) return (<React.Fragment key={index}></React.Fragment>)
                     return (
                         <ExtensionPlan
+                            key={extension.id}
                             className={"mb-[20px] pb-[20px]"}
                             selected={item.checked}
                             planName={extension.planName}

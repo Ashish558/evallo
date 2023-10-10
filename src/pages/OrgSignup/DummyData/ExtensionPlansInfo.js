@@ -1,6 +1,6 @@
 export const extensionPlansInfo = [
     {
-        planName: "Assignments",
+        planName: "Assignments / Content",
         planDisplayName: "Assignments / Content",
         description: [
             "Content - create and upload unlimited content, including practice tests, worksheets, and entire workbooks! Or, use curated content by Evallo and its partners.",
@@ -13,7 +13,7 @@ export const extensionPlansInfo = [
         extensionPriceOptionHeadingStatement: " (number of assignments that can be assigned in a month)",
         extensionPriceOption: [
             {
-                planName: "Individuals",
+                planName: "p1",
                 planDisplayName: "1 - 100",
                 description: [
                     "Assign up to 100 tests / assignments per month",
@@ -23,7 +23,7 @@ export const extensionPlansInfo = [
                 currency: "usd"
             },
             {
-                planName: "SMB",
+                planName: "p2",
                 planDisplayName: "1 - 500",
                 description: [
                     "Assign up to 500 tests / assignments per month",
@@ -33,7 +33,7 @@ export const extensionPlansInfo = [
                 currency: "usd"
             },
             {
-                planName: "Premium",
+                planName: "p3",
                 planDisplayName: "1 - 1500",
                 description: [
                     "Assign up to 1500 tests / assignments per month",
@@ -43,7 +43,7 @@ export const extensionPlansInfo = [
                 currency: "usd"
             },
             {
-                planName: "Enterprise",
+                planName: "p4",
                 planDisplayName: "Unlimited",
                 description: [
                     "Assign as many tests / assignments you want!",

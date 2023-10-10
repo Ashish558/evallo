@@ -65,8 +65,8 @@ import { useLazyGetSubscriptionsInfoQuery } from "../../app/services/orgSignup";
 export default function OrgSignup() {
   const [frames, setFrames] = useState({
     signupActive: false,
-    subscription: true,
-    extensions: false,
+    subscription: false,
+    extensions: true,
     checkout: false,
   });
 
@@ -168,6 +168,7 @@ export default function OrgSignup() {
   const [getDetails, getDetailsResp] = useLazyGetUserDetailQuery();
   const [getSubscriptionsInfo, getSubscriptionsInfoResp] = useLazyGetSubscriptionsInfoQuery();
   const [subscriptionPlanInfo, SetSubscriptionPlanInfo] = useState([])
+  const [extensionPlansData, SetExtensionPlansData] = useState([]);
 
   const fetchSettings = () => {
     getSettings().then((res) => {
@@ -181,10 +182,9 @@ export default function OrgSignup() {
       console.warn("Subscriptions info");
       console.warn(res.data)
       const productList = res.data.data;
+      // collecting info for subscriptions
       for(let i = 0; i < productList.length; i++) {
-        // product type
         let product = productList[i];
-        console.log(product.product.metadata.type)
         if(product.product.metadata.type !== "default") continue;
 
         let productInfo = {};
@@ -203,7 +203,7 @@ export default function OrgSignup() {
 
           let i;
           for(i = 0; i < plans.length; i++) {
-            if(plans[i].currency < productInfo.currency) {
+            if(plans[i].pricePerMonth < productInfo.pricePerMonth) {
               newPlansList.push(plans[i]);
               continue;
             }
@@ -218,6 +218,87 @@ export default function OrgSignup() {
           return newPlansList
         });
         //product.unit_amount
+      }
+
+      // collecting info for extensions
+      for(let i = 0; i < productList.length; i++) {
+        let product = productList[i];
+        if(product.product.metadata.type !== "extension") continue;
+        console.log(product)
+
+        SetExtensionPlansData(extList => {
+          let newExtList = [...extList];
+          let productInfo = newExtList.find(item => item.planName === product.product.name);
+          const extInfoFromDummyData = extensionPlansInfo.find(item => item.planName === product.product.name);
+
+          if(productInfo === undefined || productInfo === null) {
+            let productInfo = {};
+            productInfo.id = product.product.id;
+            productInfo.planName = product.product.name;
+            productInfo.planDisplayName = product.product.name;
+            productInfo.description = [...extInfoFromDummyData.description]
+            productInfo.extensionPriceOptionHeadingLabel = ""
+            productInfo.extensionPriceOptionHeadingStatement = ""
+            
+
+            const packInfoFromDummyData = extInfoFromDummyData.extensionPriceOption.find(item => item.planName === product.lookup_key);
+            let packInfo = {}
+            packInfo.id = product.id;
+            packInfo.planName = product.lookup_key;
+            packInfo.planDisplayName = product.nickname;
+            packInfo.description = [...packInfoFromDummyData.description];
+            packInfo.pricePerMonth = product.unit_amount;
+            packInfo.currency = product.currency;
+
+            productInfo.extensionPriceOption = [packInfo]
+            newExtList.push(productInfo);
+            return newExtList;
+          }
+
+          const packInfoFromDummyData = extInfoFromDummyData.extensionPriceOption.find(item => item.planName === product.lookup_key);
+          let packInfo = {}
+          packInfo.planName = product.lookup_key;
+          
+          const extPriceOption = productInfo.extensionPriceOption;
+          // if pack info already exists in the extensions data then don't do anything else
+          if(extPriceOption.findIndex(item => item.planName === packInfo.planName) !== -1) return newExtList;
+
+          packInfo.id = product.id;
+          packInfo.planDisplayName = product.nickname;
+          packInfo.description = [...packInfoFromDummyData.description];
+          packInfo.pricePerMonth = product.unit_amount;
+          packInfo.currency = product.currency;
+
+          const newPacksList = [];
+
+          let i;
+          for(i = 0; i < extPriceOption.length; i++) {
+            if(extPriceOption[i].pricePerMonth < packInfo.pricePerMonth) {
+              newPacksList.push(extPriceOption[i]);
+              continue;
+            }
+            break;
+          }
+
+          newPacksList.push(packInfo);
+          for( ; i < extPriceOption.length; i++) {
+            newPacksList.push(extPriceOption[i])
+          }
+          
+          productInfo.extensionPriceOption = newPacksList;
+          return newExtList;
+        })
+
+        /*
+        let productInfo = {};
+        productInfo.id = product.id;
+        productInfo.planName = product.product.name;
+        productInfo.planDisplayName = product.product.name;
+        productInfo.description = []
+        productInfo.extensionPriceOptionHeadingLabel = ""
+        productInfo.extensionPriceOptionHeadingStatement = ""
+        productInfo.extensionPriceOption = []
+        */
       }
     }).catch((error) => {
       console.error("Error while fetching subscriptions info")
@@ -947,7 +1028,7 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
               ) : frames.extensions ? (
                 <Extensions
                   extensions={extensions}
-                  extensionPlansInfo={extensionPlansInfo}
+                  extensionPlansInfo={extensionPlansData}
                   setExtensions={setExtensions}
                   setFrames={setFrames}
                   setcurrentStep={setcurrentStep}
