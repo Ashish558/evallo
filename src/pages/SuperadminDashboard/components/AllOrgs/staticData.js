@@ -1,17 +1,19 @@
 export const frameHeaderNames = [
   "Org name",
-  "Type",
-  "Address",
-  "City",
-  "State",
-  "Country",
+ 
+  
+
   "A name",
   "Admin  email",
   "A Phone",
+  "Country",
+
+  "Type",
   "Status",
   "# tutors",
   "# students",
-  "# contributors",
+  "Joined On",
+  " ",
 ];
 export const framesDataRow = {
   orgName: "Ipsum",

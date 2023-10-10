@@ -1022,11 +1022,24 @@ export default function Settings() {
   console.log({ offersNew, offerImages });
 
 
-  const submitImageModalNew = (file, val, e) => {
-    e.preventDefault();
+  const submitImageModalNew = (file2, val, e) => {
+    
     // //console.log(tagText)
     // //console.log(tagImage)
     // //console.log(selectedImageTag)
+    e.preventDefault();
+    const file=file2
+    if(!file) {
+      
+      return
+    }
+   e.target.value = ''
+   let size=file.size/1024;
+   size=size/1024;
+   if(size>1){
+     alert("File size is larger than than 1MB")
+     return 
+   }
     if (loading2) return;
     const formData = new FormData();
 
@@ -1048,6 +1061,7 @@ export default function Settings() {
         maxContentLength: Infinity,
       })
       .then((res) => {
+        setSaveLoading(false);
         setLoading2(false);
         console.log("resp--", res.data.data.updatedSetting.settings);
         dispatch(
@@ -1757,7 +1771,7 @@ export default function Settings() {
                                 />
                               </div>
                               <InputField
-                                defaultValue={offer.link}
+                                defaultValue={offer?.link?.trim()}
                                 inputClassName={" text-base-17-5 bg-[#F5F8FA]"}
                                 parentClassName={"mb-3 bg-[#F5F8FA]"}
                                 placeholder={"Hyperlink"}
@@ -1811,43 +1825,39 @@ export default function Settings() {
                     <p className="block ">{xlsFile.name}</p>
                   )} */}
                                 </div>
-                                {!off?.image?.name ? (
+                                
                                   <div className="flex justify-center">
                                     <label
                                       htmlFor="file2"
-                                      className="block text-sm text-white bg-[#517CA8] hover:bg-[#517CA8] items-center justify-center  rounded-[5px]  px-3 py-2 text-base-17-5 text-center ] "
+                                      disabled={loading2}
+                                      className={`block cursor-pointer text-sm text-white bg-[#517CA8] hover:bg-[#517CA8] items-center justify-center  rounded-[5px]  px-3 py-2 text-base-17-5 text-center ${loading2?"cursor-wait":""}`}
                                     >
-                                      Choose File
+                                      {loading2 && off?.image
+
+                                        ? "Submitting..."
+                                        : " Choose File"}
                                     </label>
                                     <input
+                                     accept="image/*"
+
+                                     disabled={loading2}
                                       onChange={(e) => {
                                         let arr = offersNew;
                                         arr[idx].image = e.target.files[0];
-                                        setOffersNew([...arr]);
+                                        setOffersNew((prev)=>(
+                                          [
+                                            ...arr,
+                                          ]
+                                        )
+                                         );
+                                        submitImageModalNew(off?.image, off, e)
                                         // setImageName(e.target.files[0].name);
                                       }}
                                       id="file2"
                                       type="file"
                                     />
                                   </div>
-                                ) : (
-                                  <div className="flex justify-center flex-col">
-                                    <span className="text-[#517CA8] text-base-15 mb-1">
-                                      {off?.image?.name}
-                                    </span>
-                                    <span
-                                      onClick={(e) =>
-                                        submitImageModalNew(off?.image, off, e)
-                                      }
-                                      className={` cursor-pointer block text-sm text-white bg-[#517CA8] hover:bg-[#517CA8] items-center justify-center  rounded-[5px]  px-4 py-2 text-center text-base-17-5] ${loading2 ? "!cursor-wait" : ""
-                                        }`}
-                                    >
-                                      {loading2
-                                        ? "Submitting..."
-                                        : "Submit File"}
-                                    </span>
-                                  </div>
-                                )}
+                               
 
                                 <label
                                   htmlFor="file"

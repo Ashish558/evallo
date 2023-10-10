@@ -75,7 +75,12 @@ const AllOrgs = () => {
     subscription: "",
     numberOfStudent: "",
   });
-  const orgType = [
+  const orgType=[
+    "Individual",
+    "Company",
+    "None"
+  ]
+  const orgType2 = [
     "None",
     "Sole proprietorship",
     "Partnership",
@@ -105,7 +110,11 @@ const AllOrgs = () => {
     }
     fetchAllOrgQuery()
       .then((result) => {
-        setFetchedData(result.data.admins);
+        let data=result?.data?.admins?result?.data?.admins?.map(it=>it):[]
+        console.log({result,data})
+       
+         data=[...data].sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt));
+        setFetchedData(data);
       })
       .catch((e) => {
         console.error(e.response?.data?.message);
@@ -113,6 +122,7 @@ const AllOrgs = () => {
   }, []);
   useEffect(() => {
     let arr = JSON.parse(JSON.stringify(fetchedData));
+    console.log(values,arr)
     arr = arr.filter((it) => {
       let v = [];
       v.push(it?.company?.toLowerCase()?.includes(values.search?.toLowerCase()));
@@ -120,7 +130,7 @@ const AllOrgs = () => {
       v.push(it?.createdAt?.toLowerCase()?.includes(values.joinDate?.toLowerCase()));
 
       v.push(
-        it?.associatedOrg?.companyType?.toLowerCase()?.includes(values.orgType?.toLowerCase())
+        it?.registrationAs?.toLowerCase()?.includes(values.orgType?.toLowerCase())
       );
 
       v.push(
@@ -147,7 +157,7 @@ const AllOrgs = () => {
     setForceChange(!forceChange)
 
   }
-  console.log({organization})
+  console.log({organization,adminData})
   return (
     <>
       <div className=" pt-7 mb-12">
@@ -294,7 +304,7 @@ const AllOrgs = () => {
             noArrow={false}
             data={adminData}
             tableHeaders={frameHeaderNames}
-            maxPageSize={10}
+            maxPageSize={100}
             dataFor="allOrgs"
             excludes={["_id"]}
           />

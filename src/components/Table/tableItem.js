@@ -36,6 +36,8 @@ import InputField from "../InputField/inputField";
 import CCheckbox from "../CCheckbox/CCheckbox";
 import SCheckbox from "../CCheckbox/SCheckbox";
 import organization from "../../app/slices/organization";
+import { useDeleteUserMutation } from "../../app/services/admin";
+import Modal from "../Modal/Modal";
 
 
 export default function TableItem({
@@ -157,6 +159,16 @@ export default function TableItem({
       console.log("update res", item?._id, field, res.data);
     });
   };
+
+  const [deleteAdmin,setDeleteAdmin]=useDeleteUserMutation()
+  const [deleteAdminModalActive,setDeleteAdminModalActive]=useState(false)
+  const [deleteSelectLoading,setDeleteSelectLoading]=useState(false)
+  const handleDeleteAdmin=()=>{
+      
+    deleteAdmin().then((res)=>{
+      console.log(res)
+    })
+  }
   const handleChange = (field) => {
 
     if (item.userType === "parent" || item.userType === "student") {
@@ -939,7 +951,7 @@ export default function TableItem({
       )}
       {dataFor === "allOrgs" && (
         <tr className="odd:bg-white  leading-8">
-          <td className="font-medium text-[17.5px] px-1  min-w-14 py-4  text-left">
+          <td className="font-medium text-[17.5px] px-1  min-w-14 py-4  text-center">
             <span
               className="inline-block cursor-pointer pl-4"
               onClick={() => navigate(`/orgadmin-profile/${item._id}`)}
@@ -949,35 +961,27 @@ export default function TableItem({
                 : item.company}
             </span>
           </td>
-          <td className="font-medium text-[17.5px] px-1 min-w-14 py-4">
-            <div className="my-[6px]">{item.associatedOrg?.companyType}</div>
-          </td>
           <td className="font-medium text-[17.5px] px-1  min-w-14 py-4">
-            <div className="my-[6px]">{item.associatedOrg?.address}</div>
-          </td>
-          <td className="font-medium text-[17.5px] px-1  min-w-14 py-4">
-            <div className="my-[6px]">{item.associatedOrg?.city}</div>
-          </td>
-
-          <td className="font-medium text-[17.5px] px-1  min-w-14 py-4">
-            <div className="my-[6px]">{item.associatedOrg?.state}</div>
-          </td>
-          <td className="font-medium text-[17.5px] px-1  min-w-14 py-4">
-            <div className="my-[6px]">{item.associatedOrg?.country}</div>
-          </td>
-
-          <td className="font-medium text-[17.5px] px-1  min-w-14 py-4">
-            <div className="my-[6px]">{item.firstName}</div>
+            <div className="my-[6px]">{item.firstName + " "+ item?.lastName}</div>
           </td>
 
           <td className="font-medium text-[17.5px] px-1  min-w-14 py-4">
             <div className="my-[6px]">{item.email}</div>
           </td>
-
+          
           <td className="font-medium text-[17.5px] px-1  min-w-14 py-4">
             <div className="my-[6px]">{item.phone}</div>
           </td>
+          <td className="font-medium text-[17.5px] px-1  min-w-14 py-4">
+            <div className="my-[6px]">{item.associatedOrg?.country}</div>
+          </td>
 
+         
+
+         
+          <td className="font-medium text-[17.5px] px-1 min-w-14 py-4">
+            <div className="my-[6px]">{item?.registrationAs}</div>
+          </td>
           <td className="font-medium text-[17.5px] px-1  min-w-14 py-4">
             <div className="my-[6px]">{item?.userStatus}</div>
           </td>
@@ -991,9 +995,38 @@ export default function TableItem({
           </td>
 
           <td className="font-medium text-[17.5px] px-1  min-w-14 py-4">
-            <div className="my-[6px]">contributors</div>
+            <div className="my-[6px]"> {new Date(item.createdAt).toLocaleDateString()}</div>
+          </td>
+          <td className="font-medium text-[17.5px] px-1  min-w-14 py-4">
+            <div className="my-[6px]"><img onClick={()=>setDeleteAdminModalActive(true)} src={DeleteIcon} alt="delete"/> </div>
           </td>
         </tr>
+      )}
+         {deleteAdminModalActive && (
+        <Modal
+          title={
+            <span className="leading-10">
+              Are you sure you want to Delete   {item.associatedOrg?.company
+                ? item.associatedOrg?.company
+                : item.company}
+
+            </span>
+          }
+          titleClassName="mb-5 leading-10"
+          cancelBtn={true}
+          crossBtn={true}
+          cancelBtnClassName="max-w-140 !bg-transparent !border  !border-[#FFA28D]  text-[#FFA28D]"
+          primaryBtn={{
+            text: "Delete",
+            className: "w-[140px]  pl-4 px-4 !bg-[#FF7979] text-white",
+            onClick: () => handleDeleteAdmin(),
+            bgDanger: true,
+            loading: deleteSelectLoading,
+          }}
+         
+          handleClose={() => setDeleteAdminModalActive(false)}
+          classname={"max-w-[600px]  mx-auto"}
+        />
       )}
     </>
   );
