@@ -28,10 +28,11 @@ export default function SignupSuccessful({
         alert("New email verification link sent.")
       console.log("Successfully resent email", res);
       setLoading(false)
-    }).catch((err) => {
+    }).catch((err)=>{
+    alert("Error occured while sending new verification email!")
+      if(err?.data?.message)
+      alert(err?.data?.message)
 
-      if (err?.data?.message)
-        alert(err?.data?.message)
       setLoading(false)
     });
 

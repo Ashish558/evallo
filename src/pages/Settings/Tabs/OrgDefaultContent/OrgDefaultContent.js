@@ -7,8 +7,8 @@ import InputField from "../../../../components/InputField/inputField";
 import AddIcon from "../../../../assets/icons/plus.png";
 import SearchIcon from "../../../../assets/icons/search.svg";
 import styles from "./style.module.css";
-
-import upload from "../../../../assets/icons/upload.png";
+import upload from "../../../../assets/icons/upload_icon.svg";
+import check from "../../../../assets/icons/checked 1.svg";
 import axios from "axios";
 import {
   useAddPdfMutation,
@@ -20,7 +20,7 @@ import FilterItems from "../../../../components/FilterItems/filterItems";
 import { useSelector } from "react-redux";
 
 const optionData = ["option 1", "option 2", "option 3", "option 4", "option 5"];
-const testTypeOptions = ["SAT", "Other"];
+const testTypeOptions = ["DSAT","SAT", "Other"];
 const tableHeaders = [
   "Assignment",
   "Type",
@@ -222,10 +222,10 @@ export default function AllTests() {
 
   return (
     <div className=" bg-lightWhite min-h-screen">
-      <div className="py-14 px-5 pt-0">
+      <div className="py-14  pt-0">
         <div className="flex justify-end items-center">
           <button
-            className="bg-[#FFA28D] py-3.5 px-6 flex items-center text-white  rounded-lg mr-55"
+            className="bg-[#FFA28D] py-3.5 px-6 flex items-center text-white  rounded-lg "
             onClick={() => setModalActive(true)}
           >
             New Test
@@ -258,27 +258,85 @@ export default function AllTests() {
 
       {modalActive && (
         <Modal
-          title="Create a New Test"
+          title="Upload New Material"
           classname={"max-w-[700px] mx-auto"}
-          cancelBtn={true}
+          cancelBtn={false}
           primaryBtn={{
             text: "Create",
             form: "add-test-form",
             onClick: handleSubmit,
             type: "submit",
-            className: "w-[123px] pl-6 pr-6 disabled:opacity-70",
+            className:
+              "!ml-5   py-1 mr-auto mt-7  flex gap-2  h-[49px] disabled:opacity-80 flex items-center !text-[0.8333vw] !font-medium  inline-block bg-[#FFA28D]",
             disabled: submitBtnDisabled,
             loading: loading,
+            icon: <img src={check} alt="check" className="ml-2 inline-block" />,
           }}
           handleClose={handleClose}
+          otherBt={
+            <div id={styles.handleFileUpload}>
+            <div
+              id={styles.uploadButtons}
+              className="mt-7   px-0  gap-5 flex justify-between"
+            >
+              {modalData.testType != 'DSAT' ||true? <div id={styles.pdfUpload}>
+                <label
+                  htmlFor="pdf"
+                  className={`${pdfFile !== null ? "bg-[#26435F] " : "bg-[#26435F] "
+                    } w-[8.9vw] min-w-[160px] text-sm !font-medium`}
+                >
+                  Upload PDF
+                  <img src={upload} alt="Upload" />
+                </label>
+                <div className={styles.error}>{PDFError}</div>
+                <input
+                  id="pdf"
+                  type="file"
+                  accept="application/pdf"
+                  onChange={(e) => handlePDFFile(e.target.files[0])}
+                />
+                <div id={styles.filename}>
+                  {pdfFile?.name || pdfFile?.name}
+                </div>
+              </div> : null}
+
+              <div id={styles.csvUpload}>
+                <label
+                  htmlFor="csv"
+                  className={`${csvFile !== null && styles.fileUploaded
+                    ? "bg-[#26435F] "
+                    : "bg-[#26435F] "
+                    } w-[11vw] min-w-[185px] text-sm !font-medium`}
+                >
+                  Upload Metadata
+                  <img src={upload} alt="Upload" />
+                </label>
+                <div className={styles.error}>{csvError}</div>
+                <input
+                  id="csv"
+                  type="file"
+                  accept=".xls,.xlsx"
+                  // onChange={e => {
+                  onChange={(e) => setCSVFile(e.target.files[0])}
+                />
+                <div id={styles.filename}>{csvFile ? csvFile?.name : ""}</div>
+              </div>
+            </div>
+            {/* 
+                         <div id={styles.filename}>
+                            {pdfFile?.name || csvFile?.name}
+                         </div> */}
+          </div>
+          }
           body={
             <form onSubmit={handleSubmit} id="add-test-form">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-2 md:gap-x-3 gap-y-2 gap-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-2 md:gap-x-3 gap-y-2 gap-y-4 items-center ">
                 <InputField
-                  label="Test Name"
-                  labelClassname="ml-2 mb-1.2"
+                 label="Assignment Name"
+                 labelClassname="ml-2 mb-1.2 text-[#26435F] !text-[16px] "
                   optionData={optionData}
-                  placeholder="Type Test Name"
+                  biggerText={true}
+                  placeholder="Text"
                   parentClassName="w-full mr-4"
                   inputContainerClassName="pt-3 pb-3 bg-primary-50"
                   inputClassName="bg-transparent"
@@ -294,10 +352,11 @@ export default function AllTests() {
                 />
 
                 <InputSelect
-                  label="Test Type"
-                  labelClassname="ml-2 mb-1.2"
+                   label="Type"
+                   labelClassname="ml-2   !font-semibold mb-[9px] mt-1 !text-[#26435F]  !text-[16px]"
+                   biggerText={true}
                   optionData={testTypeOptions}
-                  placeholder="Select Test Type"
+                  placeholder="Select"
                   inputContainerClassName="pt-3 pb-3 bg-primary-50"
                   parentClassName="w-full mr-4"
                   inputClassName="bg-transparent"
@@ -313,58 +372,7 @@ export default function AllTests() {
                 />
               </div>
 
-              <div id={styles.testUploadContainer}>
-                <span id={styles.testUpload}>Upload the Test</span>
-
-                <div id={styles.handleFileUpload}>
-                  <div id={styles.uploadButtons}>
-                    <div id={styles.pdfUpload}>
-                      <label
-                        htmlFor="pdf"
-                        className={pdfFile !== null && styles.fileUploaded}
-                      >
-                        Upload PDF
-                        <img src={upload} alt="Upload" />
-                      </label>
-                      <div className={styles.error}>{PDFError}</div>
-                      <input
-                        id="pdf"
-                        type="file"
-                        accept="application/pdf"
-                        onChange={(e) => handlePDFFile(e.target.files[0])}
-                      />
-                      <div id={styles.filename}>
-                        {pdfFile?.name || pdfFile?.name}
-                      </div>
-                    </div>
-
-                    <div id={styles.csvUpload}>
-                      <label
-                        htmlFor="csv"
-                        className={csvFile !== null && styles.fileUploaded}
-                      >
-                        Upload CSV
-                        <img src={upload} alt="Upload" />
-                      </label>
-                      <div className={styles.error}>{csvError}</div>
-                      <input
-                        id="csv"
-                        type="file"
-                        accept=".xls,.xlsx"
-                        // onChange={e => {
-                        onChange={(e) => setCSVFile(e.target.files[0])}
-                      />
-                      <div id={styles.filename}>
-                        {csvFile ? csvFile?.name : ""}
-                      </div>
-                    </div>
-                  </div>
-                  {/* 
-                           <div id={styles.filename}>
-                              {pdfFile?.name || csvFile?.name}
-                           </div> */}
-                </div>
-              </div>
+             
             </form>
           }
         />
