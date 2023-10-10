@@ -38,6 +38,7 @@ import SCheckbox from "../CCheckbox/SCheckbox";
 import organization from "../../app/slices/organization";
 import { useDeleteUserMutation } from "../../app/services/admin";
 import Modal from "../Modal/Modal";
+import { useDeleteAdminMutation } from "../../app/services/superAdmin";
 
 
 export default function TableItem({
@@ -159,13 +160,22 @@ export default function TableItem({
       console.log("update res", item?._id, field, res.data);
     });
   };
-
-  const [deleteAdmin,setDeleteAdmin]=useDeleteUserMutation()
+  
+  const [deleteAdmin,setDeleteAdmin]=useDeleteAdminMutation()
   const [deleteAdminModalActive,setDeleteAdminModalActive]=useState(false)
   const [deleteSelectLoading,setDeleteSelectLoading]=useState(false)
+  console.log({item})
   const handleDeleteAdmin=()=>{
-      
-    deleteAdmin().then((res)=>{
+    setDeleteSelectLoading(true)
+    deleteAdmin({id:item?.associatedOrg?._id}).then((res)=>{
+      setDeleteSelectLoading(false)
+      if(res?.data){
+        setDeleteAdminModalActive(false)
+        alert("Successfully deleted Admin!")
+      }
+      else if(res?.error){
+        alert("Error deleting Admin!")
+      }
       console.log(res)
     })
   }

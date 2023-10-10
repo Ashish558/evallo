@@ -167,6 +167,14 @@ export const superAdminServicesApi = createApi({
         headers: getAuthHeader(),
       }),
     }),
+    deleteAdmin: builder.mutation({
+      query: (body) => ({
+        url: `api/user/superAdmin/deleteOrg`,
+        method: "DELETE",
+        body,
+        headers: getAuthHeader(),
+      }),
+    }),
   }),
 });
 
@@ -174,6 +182,7 @@ export const {
   useGetAllOrgStatsQuery,
   useGetAllOrgStatsRangeMutation,
   useGetAllTestQuery,
+  useDeleteAdminMutation, 
   useAddManager2Mutation,
   useGetUserStatsByRoleQuery,
   useGetUserStatsByRoleRangeMutation,

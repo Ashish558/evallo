@@ -92,7 +92,13 @@ const CompanyAndBround = () => {
     try {
       
       updateUserOrg(values)
-        .then(() => {
+        .then((res) => {
+          if(res?.data){
+            alert("Updated successfully!")
+          }
+          else if(res?.error) {
+            alert("Updated successfully!")
+          }
           console.log("org updated", values);
         })
         .catch((err) => {
@@ -142,13 +148,8 @@ const handleSave=async ()=>{
         }
       );
       console.log("save",{result})
-      if(result?.data?.message==="Company name not exists"){
-        updateUserAccount()
-      }
-      else {
-        
-        return 
-      }
+      updateUserAccount()
+     
       
       
     } catch (e) {
