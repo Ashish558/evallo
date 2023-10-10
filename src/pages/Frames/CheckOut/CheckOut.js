@@ -27,9 +27,12 @@ export default function CheckOut({
     subscriptionsInfo = [{
         planName: "",
         planDisplayName: "",
-        description: [],
+        activeTutorsAllowed: 0,
+        activeStudentsAllowed: 0,
+        ccRequired: false,
+        currency: "usd",
         freeTrialDays: 0,
-        subscriptionPricePerMonth: 0
+        pricePerMonth: 0
     }],
     setcurrentStep
 }) {
@@ -85,7 +88,7 @@ export default function CheckOut({
     })
 
     let totalMonthlyCost = 0;
-    totalMonthlyCost += chosenSubscriptionPlan.subscriptionPricePerMonth;
+    totalMonthlyCost += chosenSubscriptionPlan.pricePerMonth;
     for(let i = 0; i < chosenExtensionPlans.length; i++) {
         let item = chosenExtensionPlans[i]
         if(item.extensionPriceOption === undefined || item.extensionPriceOption === null || item.extensionPriceOption.length === 0) continue;
@@ -116,8 +119,11 @@ export default function CheckOut({
                 className={"mt-[5px]"}
                 canAddPromoCode={true}
                 planDisplayName={chosenSubscriptionPlan.planDisplayName}
-                description={chosenSubscriptionPlan.description}
-                subscriptionPricePerMonth={chosenSubscriptionPlan.subscriptionPricePerMonth}
+                activeTutorsAllowed={chosenSubscriptionPlan.activeTutorsAllowed}
+                activeStudentsAllowed={chosenSubscriptionPlan.activeStudentsAllowed}
+                ccRequired={chosenSubscriptionPlan.ccRequired}
+                currency={chosenSubscriptionPlan.currency}
+                subscriptionPricePerMonth={chosenSubscriptionPlan.pricePerMonth}
                 freeTrialDays={chosenSubscriptionPlan.freeTrialDays}
                 setFrames={setFrames}
                 setcurrentStep={setcurrentStep}
@@ -136,6 +142,7 @@ export default function CheckOut({
                             className={"mt-[25px]"}
                             planDisplayName={item.planDisplayName}
                             extensionPriceOption={chosenPackage}
+                            subscriptionPricePerMonth={chosenPackage.pricePerMonth}
                             setFrames={setFrames}
                             setcurrentStep={setcurrentStep}
                         />

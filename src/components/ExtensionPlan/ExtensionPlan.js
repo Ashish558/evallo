@@ -15,8 +15,6 @@ export default function ExtensionPlan({
     extensions,
     setExtensions
 }) {
-
-    console.warn(extensionPriceOption)
     const handleRadioButtonClick = (packageName, arr, extensionName, setValue) => {
         const temp = arr.map((topic) => {
             if(topic.text !== extensionName) return topic;
@@ -64,7 +62,7 @@ export default function ExtensionPlan({
                                             planName={item.planName}
                                             planDisplayName={item.planDisplayName}
                                             description={item.description}
-                                            pricePerMonth={item.pricePerMonth / 100}
+                                            pricePerMonth={item.pricePerMonth}
                                             currency={item.currency}
                                             onChange={() => {handleRadioButtonClick(item.planName, extensions, planName, setExtensions)}}
                                         />

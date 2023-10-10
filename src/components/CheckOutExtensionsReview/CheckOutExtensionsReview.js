@@ -15,8 +15,8 @@ export default function CheckOutExtensionsReview({
     },
     planName,
     planDisplayName,
-    subscriptionPricePerMonth,
-    freeTrialDays,
+    subscriptionPricePerMonth = 10,
+    freeTrialDays = 0,
     setFrames,
     setcurrentStep
 }) {
@@ -30,7 +30,7 @@ export default function CheckOutExtensionsReview({
     }
 
     return (
-        <div className={`flex flex-col pb-[10px] pl-[20px] pr-[30px] pt-[20px] rounded-[5px] shadow-[0px_0px_2px_rgba(0,0,0,0.25)] w-full ${className}`}>
+        <div className={`flex flex-col pb-[15px] pl-[20px] pr-[30px] pt-[20px] rounded-[5px] shadow-[0px_0px_2px_rgba(0,0,0,0.25)] w-full ${className}`}>
             <div className="flex justify-between">
                 <div className="w-7/12">
                     <div className="font-semibold text-[#26435F] text-[16px]">{planDisplayName}</div>
@@ -57,12 +57,28 @@ export default function CheckOutExtensionsReview({
                     />
 
                     <div className="grow"></div>
-                    <div className="font-semibold text-[#24A3D9]">
-                        Free Trial
-                    </div>
-                    <div className="font-[200] text-[#24A3D9] text-sm">
-                        14 Days
-                    </div>
+                    {
+                        freeTrialDays === 0 ?
+                        (
+                            <div className="font-semibold text-[#24A3D9]">
+                                ${subscriptionPricePerMonth} / Month
+                            </div>
+                        ) : 
+                        (
+                            <>
+                                <div className="font-semibold text-[#24A3D9]">
+                                    Free Trial
+                                </div>
+                                <div className="font-[200] text-[#24A3D9] text-sm">
+                                    {
+                                        freeTrialDays >= 30 ?  `${freeTrialDays / 30} Months` :
+                                        `${freeTrialDays} Days`
+                                    }
+                                </div>
+                            </>
+                        )
+                    }
+                    
                 </div>
             </div>
 

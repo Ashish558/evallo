@@ -57,7 +57,7 @@ export default function Subscription({
                                 freeTrialStatement + (plan.ccRequired ? " (CC required)" : " (no CC required)"),
                                 (plan.freeTrialDays === 0 ? "Flat Monthly Subscription - " : "Flat Monthly Subscription After Free Trial Ends - ")     
                             ]}
-                            pricePerMonth={plan.pricePerMonth / 100}
+                            pricePerMonth={plan.pricePerMonth}
                             currency={plan.currency}
                             selected={plan.planName === values.subscriptionPlan ? true : false}
                             onChange={() => {

@@ -195,10 +195,13 @@ export default function OrgSignup() {
         productInfo.activeTutorsAllowed = product.product.metadata.active_tutors === "unlimited" ? Infinity : parseInt(product.product.metadata.active_tutors);
         productInfo.activeStudentsAllowed = product.product.metadata.active_students === "unlimited" ? Infinity : parseInt(product.product.metadata.active_students);
         productInfo.ccRequired = product.product.metadata.cc_required === "yes" ? true : false;
-        productInfo.pricePerMonth = product.unit_amount;
+        productInfo.pricePerMonth = product.unit_amount / 100;
         productInfo.currency = product.currency;
 
         SetSubscriptionPlanInfo(plans => {
+          // if product info already exists in the list then don't do anything
+          if(plans.findIndex(item => item.planName === productInfo.planName) !== -1) return plans;
+
           const newPlansList = [];
 
           let i;
@@ -247,7 +250,7 @@ export default function OrgSignup() {
             packInfo.planName = product.lookup_key;
             packInfo.planDisplayName = product.nickname;
             packInfo.description = [...packInfoFromDummyData.description];
-            packInfo.pricePerMonth = product.unit_amount;
+            packInfo.pricePerMonth = product.unit_amount / 100;
             packInfo.currency = product.currency;
 
             productInfo.extensionPriceOption = [packInfo]
@@ -266,7 +269,7 @@ export default function OrgSignup() {
           packInfo.id = product.id;
           packInfo.planDisplayName = product.nickname;
           packInfo.description = [...packInfoFromDummyData.description];
-          packInfo.pricePerMonth = product.unit_amount;
+          packInfo.pricePerMonth = product.unit_amount / 100;
           packInfo.currency = product.currency;
 
           const newPacksList = [];
@@ -1039,8 +1042,8 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
                   setFrames={setFrames}
                   values={values}
                   extensions={extensions}
-                  extensionPlansInfo={extensionPlansInfo}
-                  subscriptionsInfo={subScriptionPlanData}
+                  extensionPlansInfo={extensionPlansData}
+                  subscriptionsInfo={subscriptionPlanInfo}
                   setcurrentStep={setcurrentStep}
                  />
               ) : frames.signupSuccessful ? (

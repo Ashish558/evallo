@@ -6,6 +6,10 @@ export default function CheckOutSubscriptionReview({
     className,
     description = [],
     planDisplayName,
+    activeTutorsAllowed = 0,
+    activeStudentsAllowed = 0,
+    ccRequired = false,
+    currency = "usd",
     subscriptionPricePerMonth,
     freeTrialDays,
     setFrames,
@@ -24,13 +28,33 @@ export default function CheckOutSubscriptionReview({
             <div className="flex justify-between">
                 <div>
                     <div className="font-semibold text-[#26435F] text-[16px]">{planDisplayName}</div>
-                    {
+                    {/* {
                         description.map((item, index) => {
                             return (
                                 <div className="font-[200] text-[#26435F] text-sm" key={index} >{item}</div>
                             )
                         })
+                    } */}
+                    <div className="font-[200] text-[#26435F] text-sm">Active Tutors Allowed - {activeTutorsAllowed === Infinity ? "unlimited" : activeTutorsAllowed}</div>
+                    <div className="font-[200] text-[#26435F] text-sm">Active Students Allowed - {activeStudentsAllowed === Infinity ? "unlimited" : activeStudentsAllowed}</div>
+                    {
+                        (() => {
+                            const freeTrialStatement = freeTrialDays === 0 ? "Free Trial Not Available" :
+                                               freeTrialDays >= 30 ?  `${freeTrialDays / 30} Months Free Trial` :
+                                               `${freeTrialDays} Days Free Trial`;
+                            return (
+                                <div className="font-[600] text-sm text-[#24A3D9]">
+                                    {freeTrialStatement + (ccRequired ? " (CC required)" : " (no CC required)")}
+                                </div>
+                            )
+                        })()
                     }
+                    <div className="font-[200] text-[#26435F] text-sm">
+                        {(freeTrialDays === 0 ? "Flat Monthly Subscription - " : "Flat Monthly Subscription After Free Trial Ends - ")}
+                        <div className="font-[600] inline">
+                            ${subscriptionPricePerMonth}/month
+                        </div>
+                    </div>
                 </div>
                 <div className="flex flex-col items-end">
                     <SecondaryButton 
