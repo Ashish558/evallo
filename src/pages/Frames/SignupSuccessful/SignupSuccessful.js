@@ -17,21 +17,22 @@ export default function SignupSuccessful({
   email
 }) {
   const [resentEmailApi, setResentEmailApi] = useResentEmailMutation();
- const [loading,setLoading]=useState(false)
+  const [loading, setLoading] = useState(false)
   const handleSubmit = () => {
-if(loading)
-return
+    if (loading)
+      return
 
     setLoading(true)
     resentEmailApi({ email }).then((res) => {
-      if(res?.data?.status==='success')
-      alert("New email verification link sent.")
+      if (res?.data?.status === 'success')
+        alert("New email verification link sent.")
       console.log("Successfully resent email", res);
       setLoading(false)
     }).catch((err)=>{
     alert("Error occured while sending new verification email!")
       if(err?.data?.message)
       alert(err?.data?.message)
+
       setLoading(false)
     });
 
@@ -54,15 +55,15 @@ return
   return (
     <div className="">
       <div className="mb-7 hidden lg:block ">
-      <div className='h-[1px] bg-[#EBEBEB] mt-[-20px] mx-[6px] w-full mb-[25px]'>
+        <div className='h-[1px] bg-[#EBEBEB] mt-[-20px] mx-[6px] w-full mb-[25px]'>
 
-</div>
+        </div>
         <div>
-        
+
           <div className="text-center text-[#26435F] flex flex-col gap-3 font-normal text-md w-fit">
             <p className="!font-light">{successfulSignUpMessage.head}</p>
             <p className="!font-light">{successfulSignUpMessage.mid}</p>
-            <h4>{successfulSignUpMessage.last} <span onClick={() => handleSubmit()} className={`text-[#24A3D9] underline cursor-pointer ${loading?'opacity-70':''}`}>{successfulSignUpMessage.verify}</span></h4>
+            <h4>{successfulSignUpMessage.last} <span onClick={() => handleSubmit()} className={`text-[#24A3D9] underline cursor-pointer ${loading ? 'opacity-70' : ''}`}>{successfulSignUpMessage.verify}</span></h4>
             <h2 className="font-semibold tracking-wider">{successfulSignUpMessage.bottom}</h2>
           </div>
         </div>
