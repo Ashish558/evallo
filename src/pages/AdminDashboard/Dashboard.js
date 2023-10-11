@@ -68,7 +68,13 @@ const Dashboard = () => {
     latestSignUp({ startDate: "", endDate: "" }).then((res) => {
       if (!res?.error) {
         console.log("latest", { res })
-        setUserData(res?.data?.data ? res?.data?.data : []);
+        let date2=new Date();
+
+        date2.setDate(new Date().getDate() - 7);
+     
+        let data=res?.data?.data?.filter(a => new Date(a.lastSignUp) >= new Date(date2))
+       // let data=res?.data?.data?.
+        setUserData(data);
       }
     })
 
