@@ -428,7 +428,7 @@ export default function UserSignup() {
         setLoading(true);
         if (isAddedByAdmin) {
           reqBody.userId = values.userId;
-          updateUser(reqBody)
+          signupUser(reqBody)
             .then((res) => {
               setLoading(false);
               console.log(res);
