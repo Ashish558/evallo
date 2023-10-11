@@ -2,9 +2,18 @@ import React from "react";
 import LatestSignUpTableItem from "./LatestSignUpTableItem";
 import { useSelector } from "react-redux";
 import { getFormattedDate } from "../../../utils/utils";
+import { useEffect } from "react";
+import { useState } from "react";
 
 export default function TableItem({ item, onClick, AdminLatestSignUp }) {
-  const { dateFormat } = useSelector(state => state.user)
+  const [ dateFormat,setDateFormat ] = useState("dd/mm/yy")
+      const { organization: organization2 } = useSelector((state) => state.organization)
+      useEffect(()=>{
+        if(organization2&&organization2?.settings&&organization2?.settings?.dateFormat){
+          setDateFormat(organization2?.settings?.dateFormat)
+        }
+      },[organization2])
+      console.log("latest dateF",{dateFormat, organization2})
   const handleClick = () => {
     onClick.redirect(item);
   };
