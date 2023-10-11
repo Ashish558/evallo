@@ -184,7 +184,7 @@ export default function AllTests() {
     setRemoveQuestionModal(true);
     setTestForDelete(item);
   };
-  console.log({ testForDelete })
+ // console.log({ testForDelete })
   const removeTest = (item) => {
     setRemoveQuestionModal(false);
     // console.log(testForDelete._id);
@@ -304,7 +304,7 @@ export default function AllTests() {
   }, [testName]);
 
   // console.log(testName);
-  console.log(tableData);
+  //console.log(tableData);
   console.log('filteredTests', filteredTests);
 
   const fetchTests = () => {
@@ -312,15 +312,47 @@ export default function AllTests() {
     axios
       .get(`${BASE_URL}api/test`, { headers })
       .then((res) => {
-        console.log('asdadasdasdasd', res.data.data.test);
+        console.log('all test content', res.data.data.test);
         let dataofque = res.data.data.test
-        let cutdata = dataofque.map((item) => ({
+        let tempSuper=[]
+        let testAdmin=[]
+        res.data.data.test?.map((it)=>{
+          
+          if(it?.hasOwnProperty("superAdminTestQnId" )&&it?.superAdminTestQnId!==null){
+            tempSuper.push(it)
+          }
+          else {
+         testAdmin.push(it)
+          }
+          
+        })
+        let finalTests= [...testAdmin]
+        tempSuper?.map((itt)=>{
+          let f=true;
+         testAdmin?.map((mit)=>{
+         
+             if(itt?.testName?.trim()===mit?.testName?.trim()){
+                f=false
+             }
+          })
+          if(f){
+           finalTests.push(itt)
+          }
+          else {
+            console.log("all hidden test",itt,tempSuper)
+          }
+         })
+        
+      
+        console.log('all test super  content',finalTests)
+        
+        let cutdata = finalTests.map((item) => ({
           testId: item._id,
           testtype: item.testType
         }));
         console.log(cutdata);
         settesttype2(cutdata)
-        setTableData(res.data.data.test)
+        setTableData(finalTests)
       });
   };
   const navigate = useNavigate('/')
