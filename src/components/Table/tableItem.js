@@ -58,7 +58,8 @@ export default function TableItem({
   setnumberChecked,
   testtype
 }) {
-  const { dateFormat } = useSelector(state => state.user)
+  const [ dateFormat,setDateFormat ] = useState("dd/mm/yy")
+  
   const [score, setScore] = useState("-");
   const navigate = useNavigate();
   const [fetchSettings, settingsResp] = useLazyGetSettingsQuery();
@@ -78,11 +79,17 @@ export default function TableItem({
   const [userDetail, setUserDetail] = useState({});
   const [leadStatus, setLeadStatus] = useState("");
   const [tutorStatus, setTutorStatus] = useState("");
-
+  
   const [settings, setSettings] = useState({
     leadStatus: [],
   });
 
+  useEffect(()=>{
+    if(organization2&&organization2?.settings){
+      setDateFormat(organization2?.settings?.dateFormat)
+    }
+  },[organization2])
+  console.log("item",{dateFormat,organization2})
   useEffect(() => {
     if (item.userType === "tutor")
 
@@ -628,7 +635,7 @@ export default function TableItem({
           </td>
           <td className=" text-[17.5px] px-1  min-w-14 py-3  text-center">
 
-            <span onClick={() => onClick.redirect(item)} className="">
+            <span onClick={() => onClick.redirect(item)} className={`${new Date()>new Date(item?.dueDate)?"text-danger":""}`}>
               {getFormattedDate(item.dueDate, dateFormat)}
             </span>
           </td>
