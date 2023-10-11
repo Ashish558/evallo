@@ -129,9 +129,29 @@ const CompanyAndBround = () => {
 
     
   }, [values]);
+  const checkEmpty=()=>{
+    const fields=["company","country","state","city","address","zip",]
+    let f=true;
+    fields.forEach(key=>{
+      if(f&&(!values[key]||values[key].trim()==="")){
+        f=false;
+        setError((prev)=>({
+          ...prev,
+          [key]: key + " field cannot be empty!",
+        }));
+      return
+      }
+    })
+    return f;
+   
+  }
 const handleSave=async ()=>{
   setError({})
+  console.log("save called")
+  if(!checkEmpty())
+  return
   if(organization?.company!==values?.company){
+    
     try {
       let data = {
         company: values.company,
@@ -192,7 +212,7 @@ const handleSave=async ()=>{
   const handleLogoChange = async (e) => {
     const formData = new FormData();
     const file = e.target.files[0];
-    formData.append("photos", file);
+    formData.append("photos", null);
     formData.append("updatefieldName", "orgBussinessLogo");
 
     updateOrgLogo({ formData: formData, id: organization._id }).then((res) => {
@@ -237,6 +257,7 @@ const handleSave=async ()=>{
               })
             }
             error={error.company}
+            totalErrors={error}
           />
           <InputField
             placeholder="Support email for your clients"
@@ -252,6 +273,7 @@ const handleSave=async ()=>{
                 supportEmail: e.target.value,
               })
             }
+            totalErrors={error}
             error={error.supportEmail}
           />
           <InputField
@@ -374,6 +396,7 @@ const handleSave=async ()=>{
                 value={values.country}
                 optionData={country}
                 optionType={"object"}
+                totalErrors={error}
                 onChange={(e) => {
 
                   handleState(e);
@@ -395,6 +418,7 @@ const handleSave=async ()=>{
                   value={values?.state?.length < 20 ? values.state : values.state?.slice(0, 20) + "..."}
                   optionData={states}
                   optionType={"object"}
+                  totalErrors={error}
                   onChange={(e) =>
                     setValues({
                       ...values,
@@ -410,6 +434,7 @@ const handleSave=async ()=>{
                   labelClassname="text-base-17-5 !font-medium "
                   inputClassName="text-base-17-5 bg-transparent placeholder:!text-[#B3BDC7] "
                   label="City"
+                  totalErrors={error}
                   value={values.city}
                   onChange={(e) =>
                     setValues({
@@ -429,6 +454,7 @@ const handleSave=async ()=>{
                   labelClassname="text-base-17-5 !font-medium "
                   label="Zip Code"
                   value={values.zip}
+                   totalErrors={error}
                   onChange={(e) =>
                     setValues({
                       ...values,

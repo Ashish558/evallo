@@ -363,7 +363,7 @@ export default function AssignedTests() {
             ? `${studentId.firstName} ${studentId.lastName}`
             : "-",
           studentId: studentId ? studentId._id : "-",
-          assignedOn: getFormattedDate(createdAt, dateFormat),
+          assignedOn: createdAt,
           assignedBy: assignedBy
             ? `${assignedBy?.firstName} ${assignedBy?.lastName}`
             : "-",
@@ -372,7 +372,7 @@ export default function AssignedTests() {
           pdfLink: testId ? testId.pdf : null,
           scores: "-",
           duration: multiple ? getDuration(multiple) : "Unlimited",
-          dueDate: getFormattedDate(dueDate, dateFormat),
+          dueDate: dueDate,
           status:
             isCompleted === true
               ? "completed"
@@ -525,7 +525,7 @@ export default function AssignedTests() {
         studentId: it?._id,
         testId: modalData.testId,
         name: it?._value,
-        dueDate: modalData.date,
+        dueDate:new Date( modalData.date),
         instruction: modalData.instruction,
         timeLimit: getTimeLimit(modalData.limit),
       };
