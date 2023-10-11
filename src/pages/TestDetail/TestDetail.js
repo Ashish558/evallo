@@ -20,6 +20,9 @@ import Modal from "../../components/Modal/Modal";
 import InputField from "../../components/InputField/inputField";
 import InputSelect from "../../components/InputSelect/InputSelect";
 import ReactQuill from 'react-quill';
+import { Editor as TinyMCE_Editor } from '@tinymce/tinymce-react';
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import 'react-quill/dist/quill.snow.css';
 import './form.css';
 import Delete from '../../assets/images/delete.png'
@@ -91,6 +94,43 @@ export default function TestDetail() {
    const [pdfBase64, setPdfBase64] = useState("");
    const [extratableitem, setextratableitem] = useState([]);
    
+   function customCKEditorUploadAdaptor(loader) {
+      return {
+         upload: () => {
+            return new Promise((resolve, reject) => {
+               const body = new FormData();
+               loader.file.then((file) => {
+                  body.append("uploadImg", file);
+
+                  const API_URL = "https://noteyard-backend.herokuapp.com"
+                  const UPLOAD_ENDPOINT = "api/blogs/uploadImg";
+
+                  fetch(`${API_URL}/${UPLOAD_ENDPOINT}`, {
+                     method: 'POST',
+                     body: body,
+                   })
+                     .then((response) => response.json())
+                     .then((data) => {
+                       if (data && data.url) {
+                         resolve({ default: `${API_URL}/${data.url}` });
+                       } else {
+                         reject('File upload failed');
+                       }
+                     })
+                     .catch((error) => {
+                       reject(error.message);
+                     });
+               })
+            })
+         }
+      }
+   }
+
+   function ckEditorUploadPlugin(editor) {
+      editor.plugins.get("FileRepository").createUploadAdapter = (loader) => {
+         return customCKEditorUploadAdaptor(loader);
+      }
+   }
 
    const handlePDFFile = (file) => {
       const formData = new FormData();
@@ -800,19 +840,71 @@ const [richTextContent, setRichTextContent] = useState("");
    
    </div>
    {checked?
-   <ReactQuill
-   value={modalData.richTextContent}
-   onChange={(val) =>{ setModalData({ ...modalData, richTextContent: val })}}
-   modules={{
-      toolbar: [
-         [{ 'header': '1' }, { 'header': '2' }, { 'font': [] }],
-         ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-         [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-         ['link', 'image'],
-         ['clean']
-      ],
-   }}
-/>
+//    <ReactQuill
+//    value={modalData.richTextContent}
+//    onChange={(val) =>{ setModalData({ ...modalData, richTextContent: val })}}
+//    modules={{
+//       toolbar: [
+//          [{ 'header': '1' }, { 'header': '2' }, { 'font': [] }],
+//          ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+//          [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+//          ['link', 'image'],
+//          ['clean'],
+//          [{ 'table': 'insert' }],
+//       ],
+//    }}
+// />
+
+   // <TinyMCE_Editor
+   //    apiKey="12yh7bda5rfxepyiegi1fj05vzas12hq8c4zc3q1l89kj0fh"
+   //    // initialValue={modalData.richTextContent}
+   
+   //    init={{
+   //       height: 200,
+   //       menubar: false,
+   //       selector: 'textarea',
+   //       // directionality: 'ltr',
+   //       plugins: [
+   //          'table', 'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
+   //          'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
+   //          'insertdatetime', 'media', 'code', 'help', 'wordcount', 
+   //        ],
+   //        toolbar: 'undo redo | ' +
+   //          'bold italic forecolor | alignleft aligncenter ' +
+   //          'alignright alignjustify | image | table | ' 
+   //          // 'bullist numlist outdent indent | ' +
+   //          // 'removeformat | help',
+   //     }}
+   //    onEditorChange={(content, editor) => {
+   //       setModalData({ ...modalData, richTextContent: content })
+   //    }}
+   // />
+
+      <CKEditor
+         editor={ ClassicEditor }
+         data={modalData.richTextContent}
+         config={{
+            // plugins: [UploadAdapter]
+            extraPlugins: [ckEditorUploadPlugin]
+         }}
+         onReady={ editor => {
+            // You can store the "editor" and use when it is needed.
+            // console.log( 'Editor is ready to use!', editor );
+         } }
+         onChange={ ( event, editor ) => {
+            const data = editor.getData();
+            // console.log( { event, editor, data } );
+            console.log("data")
+            console.log(data)
+            setModalData({ ...modalData, richTextContent: data })
+         } }
+         onBlur={ ( event, editor ) => {
+            // console.log( 'Blur.', editor );
+         } }
+         onFocus={ ( event, editor ) => {
+            // console.log( 'Focus.', editor );
+         } }
+      />
 :null}
 </div>
 <div className="w-full h-1 my-4 bg-[#00000033]">
