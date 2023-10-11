@@ -1,0 +1,4 @@
+::webkit-scrollbar-track {
+    background-color: #EDEDED;
+    border-radius: 10px; /* Optional for rounded corners on the track */
+}
