@@ -24,9 +24,13 @@ return
 
     setLoading(true)
     resentEmailApi({ email }).then((res) => {
-      if(res?.data?.status==='success')
-      alert("New email verification link sent.")
-      console.log("Successfully resent email", res);
+      if(res?.data?.status==='success'){
+      alert("New email verification link sent.")}
+      else {
+        alert("Error occured while sending new verification email!")
+      }
+      console.log(" resent email status", res);
+
       setLoading(false)
     }).catch((err)=>{
     alert("Error occured while sending new verification email!")
