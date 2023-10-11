@@ -166,7 +166,7 @@ export default function TableItem({
   const [deleteAdmin,setDeleteAdmin]=useDeleteAdminMutation()
   const [deleteAdminModalActive,setDeleteAdminModalActive]=useState(false)
   const [deleteSelectLoading,setDeleteSelectLoading]=useState(false)
-  console.log({item})
+ 
   const handleDeleteAdmin=()=>{
     setDeleteSelectLoading(true)
     deleteAdmin({id:item?.associatedOrg?._id}).then((res)=>{
@@ -314,7 +314,6 @@ export default function TableItem({
 
   return (
     <>
-{      console.log(extratableitem)}
       {
         dataFor === "tutorFeedback" && (
           <>
@@ -813,7 +812,7 @@ export default function TableItem({
                 </>
               ) : (
                 <>
-                  {console.log(item)}
+                
                   {item.isCompleted ? (
                     <button
                       className="px-2.5 py-1.8 bg-[#38C980] rounded-md flex items-center leading-none bg-primary text-white ml-4"
@@ -872,7 +871,7 @@ export default function TableItem({
       {dataFor === "testsDetailQuestions" && (
         <tr className="bg-white text-[17.5px]   leading-7 mt-[10px]">
           {MapData(item, dataFor, excludes)}
-          {console.log('dfsdfdgdfgdfg',item)}
+        
           {testtype==='DSAT'?<>
           <td><div className={` ${extratableitem[item.QuestionNumber-1].QImage==='Yes'&& 'bg-[#38C980]'} mx-auto rounded-full w-[20px] h-[20px]`}>{extratableitem[item.QuestionNumber-1].QImage==='No'?'--':null}</div></td>
           <td> <div className={` ${extratableitem[item.QuestionNumber-1].AImage=='Yes'&&'bg-[#FFCE84]'} mx-auto  w-[20px] rounded-full h-[20px] `}>{extratableitem[item.QuestionNumber-1].AImage=='No'?'--':null}</div></td>
