@@ -787,10 +787,12 @@ export default function TableItem({
                     {item.isCompleted === true ? score : "-"}
                   </div>
                 ) : key === "dueDate" ? (
-                  <span className={` ${new Date(item[key]) < new Date() ? "text-[#FF7979] font-semibold" : ""}`}> {(item[key]).replace(/-/g, '/')}</span>
-                ) : (
-                  item[key].replace(/-/g, '/')
-                )}
+                  <span className={` ${new Date(item[key]) < new Date() ? "text-[#FF7979] font-semibold" : ""}`}> {getFormattedDate(item[key],dateFormat)}</span>
+                ) : 
+                  key === "createdAt"?  getFormattedDate(item[key],dateFormat):key === "assignedOn"?  getFormattedDate(item[key],dateFormat):item[key]
+                
+                }
+
               </td>
             )
           )}
