@@ -41,7 +41,6 @@ export default function Table(props) {
     belowBoxIcon,
     noScrollbar
   } = props;
-  console.log(testtype);
   const [dummy, setDummy] = useState([]);
   const [tableData, setTableData] = useState(data);
   const [currentPage, setCurrentPage] = useState(1);
