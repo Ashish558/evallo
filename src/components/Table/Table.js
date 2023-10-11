@@ -24,6 +24,7 @@ export default function Table(props) {
     setMaxPageSize,
     excludes,
     total_pages,
+    handleAllOrgRefetch,
     isCallingApi,
     headerObject,
     extraData,
@@ -148,6 +149,7 @@ export default function Table(props) {
                       testtype={testtype}
                       dataFor={dataFor}
                       selectedId2={selectedId2}
+                      handleAllOrgRefetch={handleAllOrgRefetch}
                       setSelectedId2={setSelectedId2}
                       item={item}
                       key={idx}

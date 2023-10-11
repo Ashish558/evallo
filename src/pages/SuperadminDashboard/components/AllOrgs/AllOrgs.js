@@ -94,6 +94,10 @@ const AllOrgs = () => {
     "Private Limited Company",
     "Public",
   ];
+  const [refetch,setRefetch]=useState(false)
+  const handleRefetch=()=>{
+    setRefetch(!refetch);
+  }
   const [error, setError] = useState({
     search: "",
     joinDate: "",
@@ -108,6 +112,7 @@ const AllOrgs = () => {
         .then((res) => res.json())
         .then((data) => setCountry([{ name: 'None' }, ...data]));
     }
+    setFetchedData([])
     fetchAllOrgQuery()
       .then((result) => {
         let data=result?.data?.admins?result?.data?.admins?.map(it=>it):[]
@@ -119,7 +124,7 @@ const AllOrgs = () => {
       .catch((e) => {
         console.error(e.response?.data?.message);
       });
-  }, []);
+  }, [refetch]);
   useEffect(() => {
     let arr = JSON.parse(JSON.stringify(fetchedData));
     console.log(values,arr)
@@ -305,6 +310,7 @@ const AllOrgs = () => {
             data={adminData}
             tableHeaders={frameHeaderNames}
             maxPageSize={100}
+            handleAllOrgRefetch={handleRefetch}
             dataFor="allOrgs"
             excludes={["_id"]}
           />

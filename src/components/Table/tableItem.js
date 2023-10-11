@@ -45,6 +45,7 @@ export default function TableItem({
   item,
   dataFor,
   index,
+  handleAllOrgRefetch,
   onClick,
   excludes,
   fetch,
@@ -172,6 +173,8 @@ export default function TableItem({
       if(res?.data){
         setDeleteAdminModalActive(false)
         alert("Successfully deleted Admin!")
+        handleAllOrgRefetch()
+        
       }
       else if(res?.error){
         alert("Error deleting Admin!")

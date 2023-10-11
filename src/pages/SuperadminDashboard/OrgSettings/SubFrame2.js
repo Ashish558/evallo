@@ -60,6 +60,7 @@ const initialState = {
 const subModalInitialState = {
   code: "",
   expiry: "",
+  tests:[],
   editing: false,
 };
 
@@ -687,15 +688,21 @@ export default function Settings({orgData,orgs}) {
     axios
       .get(`${BASE_URL}api/test`, { headers: getAuthHeader() })
       .then((res) => {
+        console.log("test",{res,orgs})
         if (res.data.data.test) {
-          let arr = res.data.data.test.map((item) => {
-            return {
+          let arr =[]
+           res.data.data.test.map((item) => {
+            if(item&&item._id&&item.testName&&item?.orgId&&
+              item?.orgId===orgs?._id
+
+)
+            arr.push( {
               _id: item._id,
               value: item.testName,
-            };
+            })
           });
           setAllTestData(arr);
-          setFilteredTests(arr);
+          setFilteredTests(arr.slice(0,100));
         }
       });
   };
@@ -1023,11 +1030,24 @@ export default function Settings({orgData,orgs}) {
   console.log({ offersNew, offerImages });
 
 
-  const submitImageModalNew = (file, val, e) => {
-    e.preventDefault();
+  const submitImageModalNew = (file2, val, e) => {
+    
     // //console.log(tagText)
     // //console.log(tagImage)
     // //console.log(selectedImageTag)
+    e.preventDefault();
+    const file=file2
+    if(!file) {
+      
+      return
+    }
+   e.target.value = ''
+   let size=file.size/1024;
+   size=size/1024;
+   if(size>1){
+     alert("File size is larger than than 1MB")
+     return 
+   }
     if (loading2) return;
     const formData = new FormData();
 
@@ -1049,6 +1069,7 @@ export default function Settings({orgData,orgs}) {
         maxContentLength: Infinity,
       })
       .then((res) => {
+        setSaveLoading(false);
         setLoading2(false);
         console.log("resp--", res.data.data.updatedSetting.settings);
         dispatch(
@@ -1213,8 +1234,8 @@ export default function Settings({orgData,orgs}) {
     console.log(e);
   };
   const handleTestChange2 = (item) => {
-    //console.log("tsests", item);
-    if (subModalData.tests.includes(item._id)) {
+    console.log("tsests", subModalData,item);
+    if (subModalData?.tests?.includes(item._id)) {
       let updated = subModalData.tests.filter(
         (test) => test !== item._id
       );
@@ -1747,10 +1768,10 @@ export default function Settings({orgData,orgs}) {
                         </div>
                       );
                     })}
-                    {offersNew?.length > 0 &&
+  {offersNew?.length > 0 &&
                       offersNew?.map((off, idx) => {
                         return (
-                          <div className="flex-1 flex gap-2 min-w-[250px] ">
+                          <div className="flex-1 relative flex gap-2 min-w-[250px] ">
                             <div className=" relative w-[2px] rounded-md  bg-[#00000030] !h-[300px] mx-4"></div>
 
                             <div className="w-full flex-1">
@@ -1769,44 +1790,39 @@ export default function Settings({orgData,orgs}) {
                     <p className="block ">{xlsFile.name}</p>
                   )} */}
                                 </div>
-                                {!off?.image?.name ? (
+                                
                                   <div className="flex justify-center">
                                     <label
                                       htmlFor="file2"
-                                      className="block text-sm text-white bg-[#517CA8] hover:bg-[#517CA8] items-center justify-center  rounded-[5px]  px-3 py-2 text-base-17-5 text-center ] "
+                                      disabled={loading2}
+                                      className={`block cursor-pointer text-sm text-white bg-[#517CA8] hover:bg-[#517CA8] items-center justify-center  rounded-[5px]  px-3 py-2 text-base-17-5 text-center ${loading2?"cursor-wait":""}`}
                                     >
-                                      Choose File
+                                      {loading2 && off?.image
+
+                                        ? "Submitting..."
+                                        : " Choose File"}
                                     </label>
                                     <input
+                                     accept="image/*"
+
+                                     disabled={loading2}
                                       onChange={(e) => {
                                         let arr = offersNew;
                                         arr[idx].image = e.target.files[0];
-                                        setOffersNew([...arr]);
+                                        setOffersNew((prev)=>(
+                                          [
+                                            ...arr,
+                                          ]
+                                        )
+                                         );
+                                        submitImageModalNew(off?.image, off, e)
                                         // setImageName(e.target.files[0].name);
                                       }}
                                       id="file2"
                                       type="file"
                                     />
                                   </div>
-                                ) : (
-                                  <div className="flex justify-center flex-col">
-                                    <span className="text-[#517CA8] text-base-15 mb-1">
-                                      {off?.image?.name}
-                                    </span>
-                                    <span
-                                      onClick={(e) =>
-                                        submitImageModalNew(off?.image, off, e)
-                                      }
-                                      className={` cursor-pointer block text-sm text-white bg-[#517CA8] hover:bg-[#517CA8] items-center justify-center  rounded-[5px]  px-4 py-2 text-center text-base-17-5] ${
-                                        loading2 ? "!cursor-wait" : ""
-                                      }`}
-                                    >
-                                      {loading2
-                                        ? "Submitting..."
-                                        : "Submit File"}
-                                    </span>
-                                  </div>
-                                )}
+                               
 
                                 <label
                                   htmlFor="file"
@@ -2139,6 +2155,7 @@ export default function Settings({orgData,orgs}) {
                     />
                   </div>
                 </div>
+                {console.log({filteredTests})}
                 <div className="mt-3 flex-1">
                   <InputSearch
                     label="Select Assignments (optional)"
@@ -2153,7 +2170,7 @@ export default function Settings({orgData,orgs}) {
                     checkbox={{
                       visible: true,
                       name: "test",
-                      match: subModalData.tests,
+                      match: subModalData?.tests,
                     }}
                     onChange={(e) => setSearchedTest(e.target.value)}
                     optionListClassName="text-base-17-5"

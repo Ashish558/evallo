@@ -14,6 +14,7 @@ export default function ApiTable({
   maxPageSize,
   onClick,
   hidePagination,
+  handleAllOrgRefetch,
   setMaxPageSize,
   excludes,
   total_pages,
@@ -123,6 +124,7 @@ export default function ApiTable({
                 setSelectedId2={setSelectedId2}
                 key={idx}
                 excludes={excludes}
+                handleAllOrgRefetch={handleAllOrgRefetch}
                 onClick={onClick}
                 numberChecked={numberChecked}
                 setnumberChecked={setnumberChecked}
