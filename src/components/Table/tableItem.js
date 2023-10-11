@@ -162,22 +162,21 @@ export default function TableItem({
       console.log("update res", item?._id, field, res.data);
     });
   };
-  
-  const [deleteAdmin,setDeleteAdmin]=useDeleteAdminMutation()
-  const [deleteAdminModalActive,setDeleteAdminModalActive]=useState(false)
-  const [deleteSelectLoading,setDeleteSelectLoading]=useState(false)
-  console.log({item})
-  const handleDeleteAdmin=()=>{
+
+  const [deleteAdmin, setDeleteAdmin] = useDeleteAdminMutation()
+  const [deleteAdminModalActive, setDeleteAdminModalActive] = useState(false)
+  const [deleteSelectLoading, setDeleteSelectLoading] = useState(false)
+  const handleDeleteAdmin = () => {
     setDeleteSelectLoading(true)
-    deleteAdmin({id:item?.associatedOrg?._id}).then((res)=>{
+    deleteAdmin({ id: item?.associatedOrg?._id }).then((res) => {
       setDeleteSelectLoading(false)
-      if(res?.data){
+      if (res?.data) {
         setDeleteAdminModalActive(false)
         alert("Successfully deleted Admin!")
         handleAllOrgRefetch()
-        
+
       }
-      else if(res?.error){
+      else if (res?.error) {
         alert("Error deleting Admin!")
       }
       console.log(res)
@@ -314,7 +313,6 @@ export default function TableItem({
 
   return (
     <>
-{      console.log(extratableitem)}
       {
         dataFor === "tutorFeedback" && (
           <>
@@ -473,7 +471,7 @@ export default function TableItem({
           </td>
           <td className=" text-[17.5px] px-1  min-w-14 ">
             <InputSelect
-              disabled={(item?.userType === "tutor" ) ? false : true}
+              disabled={(item?.userType === "tutor") ? false : true}
               tableDropdown={true}
               value={tutorStatus ? tutorStatus : "-"}
               optionData={organization2?.settings?.tutorStatus}
@@ -872,18 +870,20 @@ export default function TableItem({
       {dataFor === "testsDetailQuestions" && (
         <tr className="bg-white text-[17.5px]   leading-7 mt-[10px]">
           {MapData(item, dataFor, excludes)}
-          {console.log('dfsdfdgdfgdfg',item)}
-          {testtype==='DSAT'?<>
-          <td><div className={` ${extratableitem[item.QuestionNumber-1].QImage==='Yes'&& 'bg-[#38C980]'} mx-auto rounded-full w-[20px] h-[20px]`}>{extratableitem[item.QuestionNumber-1].QImage==='No'?'--':null}</div></td>
-          <td> <div className={` ${extratableitem[item.QuestionNumber-1].AImage=='Yes'&&'bg-[#FFCE84]'} mx-auto  w-[20px] rounded-full h-[20px] `}>{extratableitem[item.QuestionNumber-1].AImage=='No'?'--':null}</div></td>
-          <td className={` ${extratableitem[item.QuestionNumber-1].Passage=='Yes'? 'text-[#38C980]':'text-[#FF7979]'} text-[17.5px] font-semibold `}>{extratableitem[item.QuestionNumber-1].Passage}</td>
-          </>:null}
+          {testtype === 'DSAT' ? <>
+            <td><div className={` ${extratableitem[item.QuestionNumber - 1].QImage === 'Yes' && 'bg-[#38C980]'} mx-auto rounded-full w-[20px] h-[20px]`}>{extratableitem[item.QuestionNumber - 1].QImage === 'No' ? '--' : null}</div></td>
+            <td> <div className={` ${extratableitem[item.QuestionNumber - 1].AImage == 'Yes' && 'bg-[#FFCE84]'} mx-auto  w-[20px] rounded-full h-[20px] `}>{extratableitem[item.QuestionNumber - 1].AImage == 'No' ? '--' : null}</div></td>
+            <td className={` ${extratableitem[item.QuestionNumber - 1].Passage == 'Yes' ? 'text-[#38C980]' : 'text-[#FF7979]'} text-[17.5px] font-semibold `}>{extratableitem[item.QuestionNumber - 1].Passage}</td>
+          </> : null}
           <td className="font-medium flex justify-center px-1 min-w-14 py-4">
-            <img
-              src={EditTestIcon}
-              className="cursor-pointer"
-              onClick={() => onClick.handleEditTestClick(item)}
-            />
+            {
+              !item.editable ? <></> :
+              <img
+                src={EditTestIcon}
+                className="cursor-pointer"
+                onClick={() => onClick.handleEditTestClick(item)}
+              />
+            }
           </td>
         </tr>
       )}
@@ -905,14 +905,17 @@ export default function TableItem({
             </div>
           </td>
           <td className="font-medium px-1 ">
-          <div className="flex justify-end  flex justify-center items-center">
-            <button
-              className="flex leading-none bg-[#26435f4d] text-white py-1.5 px-5 cursor-pointer rounded !text-base-15"
-              onClick={() => onClick.openRemoveTestModal(item)}
-            >
-              Remove
-            </button>
-            </div>
+            {
+              (!item.addBySuperAdmin && persona !== 'superAdmin') &&
+              <div className="flex justify-end  flex justify-center items-center">
+                <button
+                  className="flex leading-none bg-[#26435f4d] text-white py-1.5 px-5 cursor-pointer rounded !text-base-15"
+                  onClick={() => onClick.openRemoveTestModal(item)}
+                >
+                  Remove
+                </button>
+              </div>
+            }
           </td>
         </tr>
       )}
@@ -982,13 +985,13 @@ export default function TableItem({
             </span>
           </td>
           <td className="font-medium text-[17.5px] px-1  min-w-14 py-4">
-            <div className="my-[6px]">{item.firstName + " "+ item?.lastName}</div>
+            <div className="my-[6px]">{item.firstName + " " + item?.lastName}</div>
           </td>
 
           <td className="font-medium text-[17.5px] px-1  min-w-14 py-4">
             <div className="my-[6px]">{item.email}</div>
           </td>
-          
+
           <td className="font-medium text-[17.5px] px-1  min-w-14 py-4">
             <div className="my-[6px]">{item.phone}</div>
           </td>
@@ -996,9 +999,9 @@ export default function TableItem({
             <div className="my-[6px]">{item.associatedOrg?.country}</div>
           </td>
 
-         
 
-         
+
+
           <td className="font-medium text-[17.5px] px-1 min-w-14 py-4">
             <div className="my-[6px]">{item?.registrationAs}</div>
           </td>
@@ -1018,11 +1021,11 @@ export default function TableItem({
             <div className="my-[6px]"> {new Date(item.createdAt).toLocaleDateString()}</div>
           </td>
           <td className="font-medium text-[17.5px] px-1  min-w-14 py-4">
-            <div className="my-[6px]"><img onClick={()=>setDeleteAdminModalActive(true)} src={DeleteIcon} alt="delete"/> </div>
+            <div className="my-[6px]"><img onClick={() => setDeleteAdminModalActive(true)} src={DeleteIcon} alt="delete" /> </div>
           </td>
         </tr>
       )}
-         {deleteAdminModalActive && (
+      {deleteAdminModalActive && (
         <Modal
           title={
             <span className="leading-10">
@@ -1043,7 +1046,7 @@ export default function TableItem({
             bgDanger: true,
             loading: deleteSelectLoading,
           }}
-         
+
           handleClose={() => setDeleteAdminModalActive(false)}
           classname={"max-w-[600px]  mx-auto"}
         />
