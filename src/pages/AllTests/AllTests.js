@@ -426,6 +426,7 @@ export default function AllTests() {
 
       {modalActive && (
         <Modal
+          crossBtn={true}
           title="Upload New Material"
           titleClassName="text-start text-sm mb-3"
           classname={"max-w-[630px] mx-auto"}

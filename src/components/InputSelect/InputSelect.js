@@ -33,7 +33,8 @@ export default function InputSelect({
   DateSelect,
   IconSearch,
   tableDropdown,
-  customArrow
+  customArrow,
+  customArrowClassName
 }) {
   const [selected, setSelected] = useState(false);
   const selectRef = useRef();
@@ -92,19 +93,19 @@ export default function InputSelect({
         {selected ? (
           IconRight ? (
             IconRight
-          ) : !IconLeft&&!hideRight && (
+          ) : !IconLeft && !hideRight && (
             <img
-            src={customArrow ? customArrow :downArrow22?DownArrow2:DownArrow}
-            className={`${customArrow ?`w-[20px] h-[20px] rotate-180`:`w-[15px] h-[12px]`}   ${styles.downArrow}`}
+              src={customArrow ? customArrow : downArrow22 ? DownArrow2 : DownArrow}
+              className={`${customArrow ? `${customArrowClassName ? customArrowClassName : "w-[20px] h-[20px]"}` : `w-[15px] h-[12px]`}   ${styles.downArrow}`}
               alt="down-arrow"
             />
           )
         ) : IconRight ? (
           IconRight
-        ) : !IconLeft&&!hideRight && (
+        ) : !IconLeft && !hideRight && (
           <img
-            src={customArrow ? customArrow :downArrow22?DownArrow2:DownArrow}
-            className={`${customArrow ?`w-[20px] h-[20px]`:`w-[15px] h-[12px]`}   ${styles.downArrow}`}
+            src={customArrow ? customArrow : downArrow22 ? DownArrow2 : DownArrow}
+            className={`${customArrow ? `${customArrowClassName ? customArrowClassName : "w-[20px] h-[20px]"}` : `w-[15px] h-[12px]`}   ${styles.downArrow}`}
             alt="down-arrow"
           />
         )}

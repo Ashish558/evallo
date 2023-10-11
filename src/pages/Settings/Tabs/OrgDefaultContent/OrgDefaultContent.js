@@ -255,14 +255,13 @@ export default function AllTests() {
           />
         </div>
       </div>
-
       {modalActive && (
         <Modal
           title="Upload New Material"
-          classname={"max-w-[700px] mx-auto"}
-          cancelBtn={false}
+          titleClassName="text-start text-sm mb-3"
+          classname={"max-w-[630px] mx-auto"}
           primaryBtn={{
-            text: "Create",
+            text: "Create  ",
             form: "add-test-form",
             onClick: handleSubmit,
             type: "submit",
@@ -272,6 +271,61 @@ export default function AllTests() {
             loading: loading,
             icon: <img src={check} alt="check" className="ml-2 inline-block" />,
           }}
+          otherBt={
+            <div id={styles.handleFileUpload}>
+              <div
+                id={styles.uploadButtons}
+                className="mt-7   px-0  gap-5 flex justify-between"
+              >
+                {modalData.testType != 'DSAT' ? <div id={styles.pdfUpload}>
+                  <label
+                    htmlFor="pdf"
+                    className={`${pdfFile !== null ? "bg-[#26435F] " : "bg-[#26435F] "
+                      } w-[8.9vw] min-w-[160px] text-sm !font-medium`}
+                  >
+                    Upload PDF
+                    <img src={upload} alt="Upload" />
+                  </label>
+                  <div className={styles.error}>{PDFError}</div>
+                  <input
+                    id="pdf"
+                    type="file"
+                    accept="application/pdf"
+                    onChange={(e) => handlePDFFile(e.target.files[0])}
+                  />
+                  <div id={styles.filename}>
+                    {pdfFile?.name || pdfFile?.name}
+                  </div>
+                </div> : null}
+
+                <div id={styles.csvUpload}>
+                  <label
+                    htmlFor="csv"
+                    className={`${csvFile !== null && styles.fileUploaded
+                      ? "bg-[#26435F] "
+                      : "bg-[#26435F] "
+                      } w-[11vw] min-w-[185px] text-sm !font-medium`}
+                  >
+                    Upload Metadata
+                    <img src={upload} alt="Upload" />
+                  </label>
+                  <div className={styles.error}>{csvError}</div>
+                  <input
+                    id="csv"
+                    type="file"
+                    accept=".xls,.xlsx"
+                    // onChange={e => {
+                    onChange={(e) => setCSVFile(e.target.files[0])}
+                  />
+                  <div id={styles.filename}>{csvFile ? csvFile?.name : ""}</div>
+                </div>
+              </div>
+              {/* 
+                           <div id={styles.filename}>
+                              {pdfFile?.name || csvFile?.name}
+                           </div> */}
+            </div>
+          }
           handleClose={handleClose}
           otherBt={
             <div id={styles.handleFileUpload}>
@@ -279,7 +333,7 @@ export default function AllTests() {
               id={styles.uploadButtons}
               className="mt-7   px-0  gap-5 flex justify-between"
             >
-              {modalData.testType != 'DSAT' ||true? <div id={styles.pdfUpload}>
+              {modalData.testType != 'DSAT'? <div id={styles.pdfUpload}>
                 <label
                   htmlFor="pdf"
                   className={`${pdfFile !== null ? "bg-[#26435F] " : "bg-[#26435F] "
@@ -330,14 +384,14 @@ export default function AllTests() {
           }
           body={
             <form onSubmit={handleSubmit} id="add-test-form">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-2 md:gap-x-3 gap-y-2 gap-y-4 items-center ">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 md:gap-x-6 !items-center  gap-y-4">
                 <InputField
-                 label="Assignment Name"
-                 labelClassname="ml-2 mb-1.2 text-[#26435F] !text-[16px] "
-                  optionData={optionData}
+                  label="Assignment Name"
+                  labelClassname="ml-2 mb-1.2 text-[#26435F] !text-[16px] "
                   biggerText={true}
+                  optionData={optionData}
                   placeholder="Text"
-                  parentClassName="w-full mr-4"
+                  parentClassName="w-full mr-4 mt-1"
                   inputContainerClassName="pt-3 pb-3 bg-primary-50"
                   inputClassName="bg-transparent"
                   type="select"
@@ -352,16 +406,17 @@ export default function AllTests() {
                 />
 
                 <InputSelect
-                   label="Type"
-                   labelClassname="ml-2   !font-semibold mb-[9px] mt-1 !text-[#26435F]  !text-[16px]"
-                   biggerText={true}
+                  label="Type"
+                  labelClassname="ml-2   !font-semibold mb-[9px] mt-1 !text-[#26435F]  !text-[16px]"
+                  biggerText={true}
                   optionData={testTypeOptions}
                   placeholder="Select"
-                  inputContainerClassName="pt-3 pb-3 bg-primary-50"
+                  inputContainerClassName="pt-3 pb-3 bg-primary-50 h-[45px]"
                   parentClassName="w-full mr-4"
                   inputClassName="bg-transparent"
                   isRequired={true}
                   type="select"
+                  valueSuffix={<span>&#174;</span>}
                   value={modalData.testType}
                   onChange={(val) =>
                     setModalData({
@@ -371,8 +426,6 @@ export default function AllTests() {
                   }
                 />
               </div>
-
-             
             </form>
           }
         />

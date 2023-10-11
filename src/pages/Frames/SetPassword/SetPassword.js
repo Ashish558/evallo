@@ -139,7 +139,7 @@ export default function SetPassword({
               <InputField
                 parentClassName="mb-6 relative"
                 type="password"
-                placeholder="minimum 8 characters"
+                placeholder=""
                 inputContainerClassName="border border-[0.98px_solid_#D0D5DD] w-[13.8542vw]"
                 inputClassName={"py-[2px] "}
                 label="Set New Password"
@@ -153,7 +153,7 @@ export default function SetPassword({
                 parentClassName="mb-2.5 relative"
                 type="password"
                 inputClassName={"py-[2px]"}
-                placeholder="Confirm New Password"
+                placeholder=""
                 inputContainerClassName="border border-[0.98px_solid_#D0D5DD] w-[13.8542vw]"
                 label="Confirm New Password"
                 labelClassname="ml-2 mb-2 !font-medium !text-[0.9719vw]"

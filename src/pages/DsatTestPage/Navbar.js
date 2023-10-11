@@ -8,7 +8,7 @@ export default function Navbar({secnd,showannotate,setshowannotate,details,handl
   const [hide, sethide] = useState(false)
   useEffect(() => {
     if (seconds <= 0) {
-      return 
+      return handleSubmitSection();
     }
 
     const interval = setInterval(() => {
