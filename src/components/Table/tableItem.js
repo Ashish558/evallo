@@ -89,7 +89,7 @@ export default function TableItem({
       setDateFormat(organization2?.settings?.dateFormat)
     }
   },[organization2])
-  console.log("item",{dateFormat,organization2})
+  console.log("latest date Form",{dateFormat,organization2})
   useEffect(() => {
     if (item.userType === "tutor")
 

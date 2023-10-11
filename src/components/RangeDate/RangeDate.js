@@ -12,7 +12,15 @@ import { getFormattedDate } from "../../utils/utils";
 
 
 const RangeDate = ({ removeUnderline,handleRangeData ,optionClassName,className,manualHide ,inputContainerClassName}) => {
-  const { dateFormat } = useSelector(state => state.user)
+ 
+  const [ dateFormat,setDateFormat ] = useState("dd/mm/yy")
+  const { organization: organization2 } = useSelector((state) => state.organization)
+  useEffect(()=>{
+    if(organization2&&organization2?.settings){
+      setDateFormat(organization2?.settings?.dateFormat)
+    }
+  },[organization2])
+  console.log("latest",{dateFormat, organization2})
   const [startDate, setStartDate] = useState(() => calculateDateRange()[0]);
   const [selectDate, setSelectedDate] = useState({
     sDate: "",
@@ -119,8 +127,8 @@ const RangeDate = ({ removeUnderline,handleRangeData ,optionClassName,className,
   const [startMonth, startDay] = startFull.split("-");
   
   
-  const formattedStartDate = `${startMonth}-${startDay} - ${endYear}`;
-  const formattedDateRange = `${formattedStartDate} - ${endFull}`;
+  const formattedStartDate = `${startMonth}-${startDay}-${endYear}`;
+  const formattedDateRange = `${formattedStartDate}  -  ${endFull}`;
   // console.log(formattedDateRange);
   
 
