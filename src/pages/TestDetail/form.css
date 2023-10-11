@@ -25,9 +25,22 @@
    background-color: #38C980 !important;
  }
 
-
-.ant-switch-handle{
-   top: 3px !important;
-   height: 14px !important;
-   width: 14px !important;
+.react-switch-handle{
+  top: 2.5px !important;
+  left: -4.5px !important;
+  height: 15px !important;
+  width: 15px !important;
+}
+.react-switch-bg{
+  background-color: white !important;
+  border: 2px solid #26435F !important;
+}
+.tox-statusbar{
+  display: none !important;
+}
+.tox-pop {
+  z-index: 1100 !important; /* Assuming 1050 was the modal's z-index, we use a higher value */
+}
+.tox-menu{
+  z-index: 1000 !important;
 }

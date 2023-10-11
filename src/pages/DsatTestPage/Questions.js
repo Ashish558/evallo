@@ -77,7 +77,7 @@ export default function Que(props) {
        :null}
         {
           para?<div className='overflow-y-auto w-1/2 pr-4 pt-5'>
-           <TextAnnotator
+           {/* <TextAnnotator
             key={color}
         content={quesT[index-1].text}
         value={annotations[index-1]}
@@ -99,11 +99,12 @@ export default function Que(props) {
           </Tippy>
           )
         }}
-      /> 
+      />  */}
+      <div dangerouslySetInnerHTML={{__html:quesT[index-1].text}} />
          {/* <img src={image} alt="" /> */}
         </div>:null
         }
-        <div className={`mt-5 overflow-y-auto${props.check && 'hidden'} ${!para? 'flex w-1/2 flex-col':'w-1/2'}` }>
+        <div className={`mt-5 overflow-y-auto ${props.check && 'hidden'} ${!para? 'flex w-1/2 flex-col':'w-1/2'}` }>
           <div className=' flex bg-slate-200  text-center relative'>
             <span className=' bg-black text-white py-1 px-2'>{index}</span>
             <FontAwesomeIcon onClick={()=>{markre(index)}} icon={faBookmark} className={`cursor-pointer text-transparent border border-black relative top-2 mx-2 ${ markreview.length>0?markreview[index-1]?.review && 'bg-yellow-400':null}`} />  
