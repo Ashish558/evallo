@@ -372,7 +372,7 @@ export default function SuperAdminSettings() {
         console.log("err", err);
       });
   };
-
+  const { role: persona } = useSelector((state) => state.user);
   /* new */
   const [addServiceModalActive, setAddServiceModalActive] = useState(false);
   const [addSessionModalActive, setAddSessionModalActive] = useState(false);
@@ -731,16 +731,15 @@ export default function SuperAdminSettings() {
         {
           code: subModalData.code,
           expiry: subModalData.expiry,
-          tests: [],
+          tests: subModalData?.tests,
         },
       ];
       let updatedSetting = {
         subscriptionCode: updated,
       };
       // console.log('updatedSetting', updatedSetting);
-      updateAndFetchsettings(updatedSetting);
-      setAddCodeModalActive(false);
-      setSubModalData(subModalInitialState);
+      updateAndFetchsettingsNew2(updatedSetting);
+     
     }
   };
 
@@ -756,9 +755,12 @@ export default function SuperAdminSettings() {
   }, [searchedTest, allTestData]);
 
   const fetchTests = () => {
-    axios.get(`${BASE_URL}api/test`,{ headers: getAuthHeader() }).then((res) => {
-      if (res.data.data.test) {
-        let arr = res.data.data.test.map((item) => {
+    try {
+    axios.get(`${BASE_URL}api/test/${persona}/getAllTest`,{ headers: getAuthHeader() }).then((res) => {
+      console.log('res', res.data.data);
+     
+      if (res.data.data) {
+        let arr = res.data.data.map((item) => {
           return {
             _id: item._id,
             value: item.testName,
@@ -767,7 +769,10 @@ export default function SuperAdminSettings() {
         setAllTestData(arr);
         setFilteredTests(arr);
       }
-    });
+    });}
+    catch(err) {
+      console.log("fetching tests error",err)
+    }
   };
 //console.log("tests",allTestData,filteredTests)
 

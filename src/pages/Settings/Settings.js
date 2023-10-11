@@ -1228,7 +1228,7 @@ export default function Settings() {
   };
   const handleTestChange2 = (item) => {
     //console.log("tsests", item);
-    if (subModalData.tests.includes(item._id)) {
+    if (subModalData?.tests?.includes(item._id)) {
       let updated = subModalData.tests.filter(
         (test) => test !== item._id
       );

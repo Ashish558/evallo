@@ -91,7 +91,7 @@ export default function InputSearch({
                               checkbox &&
                               <div className="flex mb-3">
                                  <CCheckbox
-                                    checked={checkbox.match.includes(option?._id) ? true : false}
+                                    checked={option&&option?._id&&checkbox?.match?.includes(option?._id) ? true : false}
                                     name='student'
                                  // onChange={() =>
                                  //    setData({
