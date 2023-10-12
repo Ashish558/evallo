@@ -359,11 +359,9 @@ const StudentSettings = () => {
                   tech: e.target.value
                 })
               }}
-
               className="mt-1 block w-[33.54vw] h-[352px] resize-none focus:!ring-blue-500 p-5 focus:!border-blue-500 placeholder-[#CBD6E2] text-base-18   placeholder:text-base-18  "
               placeholder=" If you require technical support, please submit your request here and our team will help you out accordingly."
             ></textarea>
-
             <button
               onClick={() => {
                 handleFeedback(feedBack.tech, "")
