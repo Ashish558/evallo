@@ -161,9 +161,10 @@ export default function StudentTest({ fromProfile,testtype, setTotaltest,student
            // assignedBy: assignedBy ? assignedBy.firstName + " " + assignedBy.lastName : "-",
 
             testName: testId ? testId.testName : "-",
-            assignedOn: getFormattedDate(new Date(createdAt), dateFormat),
+            assignedOn: new Date(createdAt).toDateString(),
             studentId: studentId ? studentId : "-",
-            dueDate: getFormattedDate(new Date(test.dueDate), dateFormat),
+
+            dueDate: new Date(test.dueDate).toDateString(),
             duration: multiple ? getDuration(multiple) : "Unlimited",
             status:
               isCompleted === true

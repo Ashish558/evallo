@@ -361,7 +361,7 @@ text-transform: uppercase;
 .calendar .fc .fc-timegrid-slot-label-cushion {
   font-weight: 500 !important;
   font-size: 14.6px !important;
-
+  transform: translateY(10px);
 
 }
 

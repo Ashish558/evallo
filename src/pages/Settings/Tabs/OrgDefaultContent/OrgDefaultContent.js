@@ -327,61 +327,7 @@ export default function AllTests() {
             </div>
           }
           handleClose={handleClose}
-          otherBt={
-            <div id={styles.handleFileUpload}>
-            <div
-              id={styles.uploadButtons}
-              className="mt-7   px-0  gap-5 flex justify-between"
-            >
-              {modalData.testType != 'DSAT'? <div id={styles.pdfUpload}>
-                <label
-                  htmlFor="pdf"
-                  className={`${pdfFile !== null ? "bg-[#26435F] " : "bg-[#26435F] "
-                    } w-[8.9vw] min-w-[160px] text-sm !font-medium`}
-                >
-                  Upload PDF
-                  <img src={upload} alt="Upload" />
-                </label>
-                <div className={styles.error}>{PDFError}</div>
-                <input
-                  id="pdf"
-                  type="file"
-                  accept="application/pdf"
-                  onChange={(e) => handlePDFFile(e.target.files[0])}
-                />
-                <div id={styles.filename}>
-                  {pdfFile?.name || pdfFile?.name}
-                </div>
-              </div> : null}
-
-              <div id={styles.csvUpload}>
-                <label
-                  htmlFor="csv"
-                  className={`${csvFile !== null && styles.fileUploaded
-                    ? "bg-[#26435F] "
-                    : "bg-[#26435F] "
-                    } w-[11vw] min-w-[185px] text-sm !font-medium`}
-                >
-                  Upload Metadata
-                  <img src={upload} alt="Upload" />
-                </label>
-                <div className={styles.error}>{csvError}</div>
-                <input
-                  id="csv"
-                  type="file"
-                  accept=".xls,.xlsx"
-                  // onChange={e => {
-                  onChange={(e) => setCSVFile(e.target.files[0])}
-                />
-                <div id={styles.filename}>{csvFile ? csvFile?.name : ""}</div>
-              </div>
-            </div>
-            {/* 
-                         <div id={styles.filename}>
-                            {pdfFile?.name || csvFile?.name}
-                         </div> */}
-          </div>
-          }
+        
           body={
             <form onSubmit={handleSubmit} id="add-test-form">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 md:gap-x-6 !items-center  gap-y-4">
