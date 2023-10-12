@@ -25,7 +25,7 @@ const StudentSettings = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [reset, setReset] = useState(false);
   const [forgotPassword, forgotPasswordResp] = useForgotPasswordMutation();
-  const {firstName, lastName} = useSelector((state)=>state.user);
+  const { firstName, lastName } = useSelector((state) => state.user);
 
   const [error, setError] = useState({
     firstName: "",
@@ -159,7 +159,7 @@ const StudentSettings = () => {
     tech: "",
     support: "",
   })
-  const navigate=useNavigate()
+  const navigate = useNavigate()
   const handleFeedback = (message, type) => {
     console.log({ message, feedBack })
     const body = {
@@ -180,9 +180,9 @@ const StudentSettings = () => {
     <div className="w-[83.23vw] mx-auto">
       <div className="flex flex-col gap-10   my-12">
         <div className="text-[#24A3D9] font-lexend-deca text-md design:text-xl  font-semibold leading-normal">
-          <span onClick={()=>navigate('/')}
-           className=" font-medium text-base-22-5 cursor-pointer">{organization?.company+ ' > '}   {firstName + ' ' + lastName}</span>
-         
+          <span onClick={() => navigate('/')}
+            className=" font-medium text-base-22-5 cursor-pointer">{organization?.company + ' > '}   {firstName + ' ' + lastName}</span>
+
           <span className="font-semibold text-base-22-5">{"  > Settings"}</span>
         </div>
         <div className="flex gap-6 design:gap-8 items-center">
@@ -251,7 +251,7 @@ const StudentSettings = () => {
             }
           />
 
-         <div id="number" >
+          <div id="number" >
             <InputFieldDropdown
               placeholder=""
               labelClassname=" text-md text-base-20 text-[#26435F] !mb-2 design:!mb-3 font-semibold"
@@ -261,7 +261,7 @@ const StudentSettings = () => {
               label="Phone"
               value={values.phone}
               codeColor="bg-white"
-             
+
               codeValue={values.phoneCode}
               handleCodeChange={(e) =>
                 setValues({
@@ -277,7 +277,7 @@ const StudentSettings = () => {
               }
               error={error.phone}
             />
-         </div>
+          </div>
           <div>
             <PrimaryButton
               onClick={handleDataUpdate}
@@ -359,11 +359,9 @@ const StudentSettings = () => {
                   tech: e.target.value
                 })
               }}
-
               className="mt-1 block w-[33.54vw] h-[352px] resize-none focus:!ring-blue-500 p-5 focus:!border-blue-500 placeholder-[#CBD6E2] text-base-18   placeholder:text-base-18  "
               placeholder=" If you require technical support, please submit your request here and our team will help you out accordingly."
             ></textarea>
-
             <button
               onClick={() => {
                 handleFeedback(feedBack.tech, "")
@@ -378,16 +376,18 @@ const StudentSettings = () => {
       {modalOpen && (
         <Modal
           handleClose={handleClose}
-          classname="w-[500px] mx-auto"
+          crossBtn={true}
+          underline={true}
+          classname="!w-[666px] mx-auto"
           body={
-            <div className="text-center mt-2">
-              <h1 className="font-semibold ">
+            <div className="text-center -mt-4 ">
+              <h1 className="font-normal text-[21px] text-[#26435F]">
                 A Password Reset Link will be sent to you. Please click on it to
                 change your password.
               </h1>
               <button
                 onClick={showResetConfirmation}
-                className="bg-[#FF7979] mt-3 text-white text-sm p-2 px-4 rounded-md"
+                className="bg-[#FF7979] mt-[30px] text-white w-[146px] h-[46px] py-2 px-4 rounded-lg font-medium"
               >
                 Okay
               </button>

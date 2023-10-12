@@ -314,7 +314,7 @@ export default function Chart({ setSubjects, YHeader, subjects, selectedSubject,
             height={200}
             width={canvasWidth}
          />
-         <p className='absolute bottom-[18%] right-[43%]'><img src={upArrow} alt="" /></p>
+         <p className='absolute bottom-[16.5%] right-[43%]'><img src={upArrow} alt="" /></p>
          <p className='absolute bottom-[39%] right-[93%]'><img src={downArrow} alt="" /></p>
       </div>
    )

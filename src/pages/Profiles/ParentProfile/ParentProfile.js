@@ -106,7 +106,7 @@ export default function StudentProfile({ isOwn }) {
   const { awsLink } = useSelector((state) => state.user);
 
   const { id } = useSelector((state) => state.user);
-  console.log("user parent", user,userDetail)
+  console.log("user parent", user, userDetail)
 
   const [selectedScoreIndex, setSelectedScoreIndex] = useState(0);
   const { organization } = useSelector((state) => state.organization);
@@ -119,7 +119,7 @@ export default function StudentProfile({ isOwn }) {
       about: "",
       email: "",
       phone: "",
-      alternateEmail:"",
+      alternateEmail: "",
       assiginedStudents: [],
       studentsData: [],
       phoneCode: "",
@@ -155,7 +155,7 @@ export default function StudentProfile({ isOwn }) {
       active: false,
       leadStatus: "",
     },
-    
+
     associatedStudents: {
       active: false,
       assiginedStudents: [],
@@ -169,7 +169,7 @@ export default function StudentProfile({ isOwn }) {
     console.log("copying", textToCopy);
     try {
       await navigator.clipboard.writeText(textToCopy);
-    //  alert('Text copied to clipboard');
+      //  alert('Text copied to clipboard');
     } catch (err) {
       console.error('Failed to copy text: ', err);
     }
@@ -342,8 +342,8 @@ const [toEdit, setToEdit] = useState({
       userId = params.id;
     }
     getUserDetail({ id: userId }).then((res) => {
-      console.log("parent details -- ",userId,res);
-      if(!res?.data?.data)return 
+      console.log("parent details -- ", userId, res);
+      if (!res?.data?.data) return
       // //console.log('tut id', id);
       if (res.data.data.user.assiginedTutors) {
         if (res.data.data.user.assiginedTutors?.includes(id)) {
@@ -360,8 +360,8 @@ const [toEdit, setToEdit] = useState({
         phoneCode,
       } = res.data.data.user;
 
-      setUser(res.data.data.user);  
-      if(!res?.data?.data?.userdetails)return 
+      setUser(res.data.data.user);
+      if (!res?.data?.data?.userdetails) return
       const { leadStatus, notes, residentialAddress, subscribeType } =
         res.data.data.userdetails;
 
@@ -370,10 +370,10 @@ const [toEdit, setToEdit] = useState({
         setAssociatedStudents([]);
 
       assiginedStudents !== undefined &&
-        assiginedStudents.map((student,idx) => {
+        assiginedStudents.map((student, idx) => {
           getUserDetail({ id: student }).then((res2) => {
-            if(res2?.error)return 
-           console.log("student ",{[id]:res2})
+            if (res2?.error) return
+            console.log("student ", { [id]: res2 })
             studentsData.push({
               _id: res2.data.data.user._id,
               value: `${res2.data.data.user.firstName} ${res2.data.data.user.lastName}`,
@@ -382,10 +382,10 @@ const [toEdit, setToEdit] = useState({
               email: res2.data.data.user.email ? res2.data.data.user.email : null,
               service: res2.data.data.userdetails?.service ? res2.data.data.userdetails?.service : [],
             });
-           
+
             setAssociatedStudents([...studentsData]);
           });
-         
+
         });
 
       let {
@@ -423,7 +423,7 @@ const [toEdit, setToEdit] = useState({
                   ...prev.frame0.schoolName,
                   schoolName,
                   about,
-                //  assiginedStudents:studentsData?.map(student => student?._id)
+                  //  assiginedStudents:studentsData?.map(student => student?._id)
                 },
                 frame1: {
                   ...prev.frame1,
@@ -468,18 +468,18 @@ const [toEdit, setToEdit] = useState({
   useEffect(() => {
     fetchDetails();
   }, [params.id]);
-useEffect(() => {
-  if(associatedStudents?.length>0)
-  setToEdit((prev)=>{
-    return {
-      ...prev,
-      frame0:{
-        ...prev.frame0,
-        assiginedStudents:associatedStudents?.map(it=>it?._id)
-      }
-    }
-  })
-},[associatedStudents])
+  useEffect(() => {
+    if (associatedStudents?.length > 0)
+      setToEdit((prev) => {
+        return {
+          ...prev,
+          frame0: {
+            ...prev.frame0,
+            assiginedStudents: associatedStudents?.map(it => it?._id)
+          }
+        }
+      })
+  }, [associatedStudents])
   useEffect(() => {
     fetchSettings().then((res) => {
       if (res.error) {
@@ -516,7 +516,7 @@ useEffect(() => {
     if (userDetail?.timeZone === undefined) return;
     dispatch(updateTimeZone({ timeZone: userDetail?.timeZone }));
   }, [userDetail?.timeZone]);
- 
+
   // //console.log(user)
   // //console.log(userDetail)
   // //console.log('associatedParent', associatedParent)
@@ -547,7 +547,7 @@ useEffect(() => {
 
   //     setAssociatedStudents(studentsData);
   //   });
-   
+
   //   // setAssociatedStudents(studentsData)
   //   setActiveIndex(0);
   // }, [user,user?.assiginedStudents]);
@@ -560,13 +560,13 @@ useEffect(() => {
     <>
       <div className={`w-[83.3vw] mx-auto pb-[70px]`}>
         <p className="text-[#24A3D9] !my-[calc(50*0.0522vw)] text-base-20">
-        <span className="cursor-pointer z-5000 relative" onClick={()=>navigate('/')}>
-          {organization?.company +
-            " > " +
-            user?.firstName +
-            " " +
-            user?.lastName +
-            " > "}
+          <span className="cursor-pointer z-5000 relative" onClick={() => navigate('/')}>
+            {organization?.company +
+              " > " +
+              user?.firstName +
+              " " +
+              user?.lastName +
+              " > "}
           </span>
           <span className="font-semibold">Dashboard</span>
         </p>
@@ -584,7 +584,7 @@ useEffect(() => {
         <div className={` rounded-b-md w-full flex flex-col relative `}>
           <div className="flex gap-7">
             <div className={` rounded-b-md w-[67.71vw] flex flex-col relative `}>
-              <div className=" bg-[#26435F]   px-8 h-[142px] border rounded-tr-5 rounded-tl-5  w-full  flex  items-center ">
+              <div className=" bg-[#26435F]   px-[30px] h-[142px] border rounded-tr-5 rounded-tl-5  w-full  flex  items-center ">
                 <div className="flex flex-1 w-full relative">
                   <div className="h-fit">
                     <ProfilePhoto
@@ -599,7 +599,7 @@ useEffect(() => {
                       handleChange={handleProfilePhotoChange}
                       editable={false}
                     />
-                                 {(persona==="admin"|| isOwn )&&<EditableText
+                    {(persona === "admin" || isOwn) && <EditableText
                       editable={editable}
                       onClick={() =>
                         setToEdit({
@@ -612,16 +612,16 @@ useEffect(() => {
                         })
                       }
                       text="Edit Profile"
-                      textClassName=" ml-2 text-[15px]  mx-auto text-center text-[#26435F] text-underline font-semibold"
+                      textClassName=" ml-2 text-[0.78vw]  mx-auto text-center text-[#26435F] text-underline font-semibold"
                       className="text-sm my-0 flex items-center justify-center text-center !translate-y-9  "
                     />}
                   </div>
                   <div className="flex-1 flex justify-between items-center">
                     <div className="ml-4 my-auto">
-                      <div className="flex  font-semibold items-center text-[#F3F5F7] text-[30px]">
+                      <div className="flex  font-semibold items-center text-[#F3F5F7] text-[1.56vw]">
                         {user.firstName} {user.lastName}
                       </div>
-                     {(persona!=="tutor"|| ((persona === 'tutor') && organization?.settings?.permissions && organization?.settings?.permissions[1]?.choosedValue)) &&  <div className="flex mt-1 text-[17.5px] items-center text-[#F3F5F7]">
+                      {(persona !== "tutor" || ((persona === 'tutor') && organization?.settings?.permissions && organization?.settings?.permissions[1]?.choosedValue)) && <div className="flex mt-1 text-base-17-5 items-center text-[#F3F5F7]">
                         <p>
                           <span>
                             <img
@@ -633,18 +633,18 @@ useEffect(() => {
                           {user?.email}
                           <span>
                             <img
-                             onClick={()=>handleCopyClick(user?.email)}
+                              onClick={() => handleCopyClick(user?.email)}
                               className="inline-block ml-2 !w-4 !h-4 mr-2 cursor-pointer"
                               src={copy1}
                               alt="copy"
-                            
+
                             />
                           </span>
                         </p>
                       </div>}
                     </div>
 
-                    {(persona!=="tutor"|| ((persona === 'tutor') && organization?.settings?.permissions && organization?.settings?.permissions[1]?.choosedValue)) &&     <div className="flex flex-col   font-medium text-white my-auto ">
+                    {(persona !== "tutor" || ((persona === 'tutor') && organization?.settings?.permissions && organization?.settings?.permissions[1]?.choosedValue)) && <div className="flex flex-col   font-medium text-white my-auto ">
                       <ProfileCard
                         className="lg:mt-0 flex-1 !bg-transparent h-min !shadow-none relative"
                         titleClassName="!bg-transparent"
@@ -662,7 +662,7 @@ useEffect(() => {
                           />
                         }
                         body={
-                          <div className="flex h-min !bg-transparent justify-center flex-col  text-[17.5px]">
+                          <div className="flex h-min !bg-transparent justify-center flex-col  text-base-17-5">
                             <p>
                               <span>
                                 <img
@@ -674,11 +674,11 @@ useEffect(() => {
                               {user?.email}
                               <span>
                                 <img
-                                 onClick={()=>handleCopyClick(user?.email)}
+                                  onClick={() => handleCopyClick(user?.email)}
                                   className="inline-block ml-2 !w-4 !h-4 mr-2 cursor-pointer"
                                   src={copy1}
                                   alt="copy"
-                                 
+
                                 />
                               </span>
                             </p>
@@ -701,10 +701,10 @@ useEffect(() => {
               </div>
               <div className="bg-white !rounded-b-md shadow-[0px_0px_2.500001907348633px_0px_#00000040] flex design:h-[170px]  h-[170px] justify-between ">
                 <div className="ml-[220px] py-auto w-[80.33%] text-[12px] px-5    overflow-y-auto pt-3  ">
-                  <p className=" font-semibold text-[#26435F] text-[15px]  ">
+                  <p className=" font-semibold text-[#26435F] text-[0.78vw]">
                     About
                   </p>
-                  <p className=" text-[#517CA8] text-[17.5px] overflow-y-auto">
+                  <p className=" text-[#517CA8] text-base-17-5 overflow-y-auto">
                     {userDetail?.about}
                   </p>
                 </div>
@@ -714,7 +714,7 @@ useEffect(() => {
               <div
                 className={`${styles.studentsContainer} min-h-[290px] w-full`}
               >
-              
+
                 {associatedStudents?.map((student, idx) => {
                   return (
                     <div
@@ -751,11 +751,11 @@ useEffect(() => {
                           {" "}
                           {student.name}
                         </p>
-                        {(persona!=="tutor"|| (persona==="tutor" && organization?.settings?.permissions && organization?.settings?.permissions[1]?.choosedValue)) &&    <p className="  text-[#667085] text-base-15 ml-4">
+                        {(persona !== "tutor" || (persona === "tutor" && organization?.settings?.permissions && organization?.settings?.permissions[1]?.choosedValue)) && <p className="  text-[#667085] text-base-15 ml-4">
                           {student.email}
                           <span>
                             <img
-                             onClick={()=>handleCopyClick(student?.email)}
+                              onClick={() => handleCopyClick(student?.email)}
                               className="inline-block !w-4 !h-4 mr-2 cursor-pointer"
                               src={copy2}
                               alt="copy2"
@@ -802,7 +802,7 @@ useEffect(() => {
               </div>
             </div>
           </div>
-          {(persona==="admin"|| isOwn) &&   <EditableText
+          {(persona === "admin" || isOwn) && <EditableText
             editable={editable}
             onClick={() =>
               setToEdit({
@@ -814,7 +814,7 @@ useEffect(() => {
               })
             }
             text="edit"
-            textClassName="text-[15px] text-[#26435F]  text-underline"
+            textClassName="text-[0.78vw] text-[#26435F]  text-underline"
             className="text-sm my-0 flex justify-end translate-y-7  float-right"
           />}
           <SPFrame0
@@ -823,7 +823,7 @@ useEffect(() => {
             toEdit={toEdit}
             setToEdit={setToEdit}
           />
-          
+
           {
             persona === "admin" && <SPFrame1
               user={user}

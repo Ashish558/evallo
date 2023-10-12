@@ -49,12 +49,11 @@ export default function OrgDetails({
   }));
 
   const handleSubmit = () => {
-   if(!handleEmpty(values?.company)||!handleEmpty(values?.companyType)||!handleEmpty(values?.website)||!handleEmpty(values?.address)
-    ||!handleEmpty(values?.country)||!handleEmpty(values?.city)||!handleEmpty(values?.state)||!handleEmpty(values?.zip))
-  {
-    alert("Please Fill All The Fields!")
-    return 
-  }
+    if (!handleEmpty(values?.company) || !handleEmpty(values?.companyType) || !handleEmpty(values?.website) || !handleEmpty(values?.address)
+      || !handleEmpty(values?.country) || !handleEmpty(values?.city) || !handleEmpty(values?.state) || !handleEmpty(values?.zip)) {
+      alert("Please Fill All The Fields!")
+      return
+    }
     setFrames((prev) => {
       console.log(prev);
       return {
@@ -102,23 +101,24 @@ export default function OrgDetails({
       companyType: e,
     });
   };
-  const [checkFields,setCheckFields]=useState()
-  const handleEmpty=(field)=>{
-   if(!field || field?.trim(" ")?.length===0) return false
+  const [checkFields, setCheckFields] = useState()
+  const handleEmpty = (field) => {
+    if (!field || field?.trim(" ")?.length === 0) return false
 
-return true  }
+    return true
+  }
 
   return (
     <div className="mt-2 mb-3">
       <div className="">
         <InputField
-        required={true}
+          required={true}
           disabled={true}
           placeholder=""
           right={<img src={lockIcon} alt="lock" />}
           parentClassName=" min-w-[118px] w-full "
-          inputContainerClassName=" border border-[#D0D5DD] rounded-md py-[9px] h-[44px] text-md"
-          inputClassName="text-[#26435F] bg-transparent text-sm font-semibold"
+          inputContainerClassName=" border border-[#D0D5DD] rounded-md py-[9px] h-[44px] text-md "
+          inputClassName="!text-[rgba(179,189,199,1)] bg-transparent text-sm font-semibold"
           type="text"
           value={values.company}
         />
@@ -141,7 +141,7 @@ return true  }
           />
 
           <InputField
-          required={true}
+            required={true}
             label="Website"
             labelClassname={"!text-sm"}
             biggerText={true}
@@ -161,7 +161,7 @@ return true  }
         </div>
         <div className="flex items-center mt-5 gap-5">
           <InputField
-          required={true}
+            required={true}
             label="Address"
             labelClassname={"!text-sm"}
             biggerText={true}
@@ -219,29 +219,29 @@ return true  }
             </div>
           </div> */}
         </div>
-       
+
         <div className="flex justify-between items-center mt-[18px] gap-7">
-        <InputSelectNew
-          parentClassName="!w-[700px] "
-          optionContainerClassName="text-[13px]   max-h-[180px]"
-          optionsEachClassName="py-[5px]"
-          optionData={states}
-          placeholder={"Select"}
-          optionType="object"
-          placeholderClass="!mr-2"
-          label={`State`}
-          labelClassname="text-[#26435F] font-bold   !text-sm "
-          inputContainerClassName="py-1 text-sm   h-[44px] border border-[#D0D5DD] my-0 mt-[-3px] rounded-[4.3px] "
-          inputClassName="  ml-80"
-          required={persona === "student" ? true : false}
-          value={values?.state?.length<20?values.state:values.state?.slice(0,20)+"..."}
-          onChange={(e) =>
-            setValues({
-              ...values,
-              state: e.name,
-            })
-          }
-        />
+          <InputSelectNew
+            parentClassName="!w-[700px] "
+            optionContainerClassName="text-[13px]   max-h-[180px]"
+            optionsEachClassName="py-[5px]"
+            optionData={states}
+            placeholder={"Select"}
+            optionType="object"
+            placeholderClass="!mr-2"
+            label={`State`}
+            labelClassname="text-[#26435F] font-bold   !text-sm "
+            inputContainerClassName="py-1 text-sm   h-[44px] border border-[#D0D5DD] my-0 mt-[-3px] rounded-[4.3px] "
+            inputClassName="  ml-80"
+            required={persona === "student" ? true : false}
+            value={values?.state?.length < 20 ? values.state : values.state?.slice(0, 20) + "..."}
+            onChange={(e) =>
+              setValues({
+                ...values,
+                state: e.name,
+              })
+            }
+          />
           {/* <div className={style.changeOption}>
             <div className="flex flex-col h-min mt-[7px]">
               <label className="">State</label>
@@ -273,7 +273,7 @@ return true  }
             </div>
           </div> */}
           <InputField
-          required={true}
+            required={true}
             label="City"
             labelClassname={"!text-sm"}
             biggerText={true}
@@ -291,7 +291,7 @@ return true  }
             }
           />
           <InputField
-          required={true}
+            required={true}
             label="Zip Code"
             labelClassname={"!text-sm"}
             biggerText={true}
