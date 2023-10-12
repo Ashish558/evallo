@@ -54,7 +54,7 @@ const SubFrame0 = ({ userData }) => {
           </div>
         </div>
       </div>
-      <div className="h-[1.33px] bg-gray-300 w-full mt-[35px]"></div>
+      <div className="h-[1.33px] bg-gray-300 w-full mt-[40px]"></div>
       <div className="flex flex-col gap-4  pl-[5%]">
         <div className="flex  justify-between  p-2 px-3 text-base-18  text-[#517CA8]">
           <div className="">
@@ -69,43 +69,37 @@ const SubFrame0 = ({ userData }) => {
           </div>
         </div>
       </div>
-      <div className="h-[1.33px] bg-gray-300 w-full"></div>
-      <div className="flex gap-3 w-full overflow-x-auto custom-scroller-2">
-        <div className="flex flex-col p-2 px-3 gap-2">
+      <div className="h-[1.33px] bg-gray-300 w-full "></div>
+      <div className="flex gap-3 w-full overflow-x-auto custom-scroller-2 mt-[85px] ml-[5%]">
+        <div className="flex flex-col p-2 px-3 gap-2 text-[#26435F]">
           <span className=" ">
-            <p className="text-xs "># Tutors</p>
-            <p className="font-bold">{totalHours?.totalTutor}</p>
+            <p className="text-[0.8333vw]"># Tutors</p>
+            <p className="font-medium text-[1.3542vw]">{totalHours?.totalTutor}</p>
           </span>
           <span className=" ">
-            <p className="text-xs "># Students</p>
-            <p className="font-bold">{totalHours?.totalStudent}</p>
+            <p className="text-[0.8333vw]"># Students</p>
+            <p className="font-medium text-[1.3542vw]">{totalHours?.totalStudent}</p>
           </span>
         </div>
-        <div className="flex gap-2 ">
+        <div className="flex gap-3">
           {aboutCardContents.map((item, idx) => {
             return <AboutCard heading={item.heading} text={totalHours ? totalHours[item.key] : ''} />;
           })}
         </div>
-        <div className="bg-[#26435F] flex-1 flex flex-col rounded-md p-2 text-white ">
+        <div className="bg-[#26435F] w-[15vw] rounded-md py-[26px] px-[3%] text-white ">
           <span className="flex text-xs justify-between">
-            <p className="text-xs w-[50px]">Revenue Generated</p>
-            <InputSelect
+            <p className="text-[0.8333vw] w-[50px] font-medium mb-[22px]">Revenue Generated</p>
+            {/* <InputSelect
               placeholder="weekly"
               parentClassName="text-xs p-0 rounded-lg m-0"
               value={""}
               inputContainerClassName="bg-[#26435F]  p-0 !m-0 rounded-lg"
               optionClassName="w-[50px] text-xs !px-0 !mr-0 !py-[1.5px]"
-            //   onChange={(e) =>
-            //     setValues({
-            //       ...values,
-            //       orgType: e,
-            //     })
-            //   }
-            //   error={error.orgType}
-            />
+          
+            /> */}
           </span>
-          <span className="mt-3 text-center font-semibold text-lg">
-            {totalHours?.totalPrice}
+          <span className="text-[1.5104vw] font-medium">
+            ${totalHours?.totalPrice}
 
           </span>
         </div>
