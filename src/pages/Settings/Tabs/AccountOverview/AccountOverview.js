@@ -12,6 +12,8 @@ import { useState } from "react";
 import Modal from "../../../../components/Modal/Modal";
 import './style.css'
 import { useForgotPasswordMutation } from "../../../../app/services/auth";
+import userPic from '../../../../assets/icons/user_logo.png'
+import camera from '../../../../assets/icons/camera_logo.svg'
 
 import {
   useLazyGetPersonalDetailQuery,
@@ -20,6 +22,7 @@ import {
 import { BASE_URL, getAuthHeader } from "../../../../app/constants/constants";
 import InputFieldDropdown from "../../../../components/InputField/inputFieldDropdown";
 import { useUpdateEmailMutation } from "../../../../app/services/organization";
+import TextArea from "antd/es/input/TextArea";
 const AccountOverview = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [reset, setReset] = useState(false);
@@ -232,29 +235,66 @@ const AccountOverview = () => {
               error={error.phone}
             />
           </div>
-          <div className="flex flex-1 justify-end">
+          <div className="flex justify-start items-end">
             <button
 
               onClick={handleDataUpdate}
-              className="bg-[#FFA28D]  py-3 mt-6 rounded-md px-10  text-sm text-[#EEE] text-base-17-5"
+              className="bg-[#FFA28D]  py-1 h-[48px] rounded-[7.5px] px-2  text-[#EEE] text-base-20 w-[175px] font-semibold mb-[3px]"
             >
               Save
             </button>
           </div>
         </div>
-
-        <div className="flex gap-7 flex-1">
+        <div className="flex gap-x-[30px]">
           <div>
-            <h1 className="my-1 text-[#26435F] font-semibold text-sm text-base-17-5">
-              Send Link
-            </h1>
-            <button
-              onClick={handleClose}
-              className="bg-[#517CA8] text-white rounded-md px-3 py-3 text-sm text-base-17-5 "
-            >
-              Reset Password
-            </button>
+            <div className="flex items-center relative">
+              <p className="text-base-17-5 font-semibold text-[#26435F] mr-5">Profile Picture</p>
+              <p ><img className=" inline-block" src={userPic} alt="" /></p>
+              <p className="absolute right-0 bottom-0"><img src={camera} alt="" /></p>
+            </div>
+            <InputField
+              placeholder="What is your role?"
+              labelClassname="font-semibold text-base"
+              parentClassName="text-[#26435F]"
+              inputContainerClassName="shadow-[0px_0px_2px_0px_rgba(0,0,0,0.25)]  bg-white  border border-white text-[#667085] w-[14.32vw]"
+              inputClassName=" text-400 py-0 bg-transparent text-base"
+              label="Your Role"
+              value={values.role}
+              onChange={(e) =>
+                setValues({
+                  ...values,
+                  role: e.target.value,
+                })
+              }
+              error={error.role}
+            />
           </div>
+          <div className="flex items-end">
+            <div className="flex flex-col w-[35.78vw]">
+              <label className="text-[#26435F] font-semibold text-base-17-5" htmlFor="">Start Bio</label>
+              <textarea
+                placeholder="Write a short bio about yourself, your interests, how your got started with this choice of career, your strengths and weaknesses, your hobbies, your tutoring style, your educational background, etc. Suggested word length: 200 words."
+                rows={7}
+                cols={55}
+                className="!text-base p-3 rounded-5 focus:border-[#D0D5DD] w-full h-40 placeholder:!text-[#B3BDC7] placeholder:!text-base placeholder:!font-normal shadow-[0px_0px_2px_0px_rgba(0,0,0,0.25)]"
+                style={{
+                  border: "1px solid #D0D5DD",
+                  color: "#667085",
+                }}
+              ></textarea>
+            </div>
+            <div className="ml-[38px]">
+              <button
+                onClick={handleClose}
+                className="bg-[#517CA8] text-white rounded-md px-3 py-3 w-[175px]text-base-17-5 font-medium"
+              >
+                Reset Password
+              </button>
+            </div>
+          </div>
+        </div>
+        <div className="flex gap-7 flex-1">
+          {/* 
           <div>
             <h1 className="my-1 text-[#26435F] font-semibold text-sm text-base-17-5">
               2FA Codes / key
@@ -262,7 +302,7 @@ const AccountOverview = () => {
             <button className="bg-[#517CA8] text-white rounded-md px-5 py-3 text-sm text-base-17-5" >
               Download
             </button>
-          </div>
+          </div> */}
 
         </div>
         <div>

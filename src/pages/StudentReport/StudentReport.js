@@ -501,12 +501,11 @@ export default function StudentReport() {
             title: {
                text: 'Question Number',
                style: {
-                  fontSize: '18px',
+                  fontSize: '20px',
                   color: '#24A3D9',
-                  fontFamily: 'Lexend',
-                  cssClass: 'custom-xaxis-title'
+                  fontFamily: 'Lexend'
                },
-            },
+            }
          },
 
          chart: {

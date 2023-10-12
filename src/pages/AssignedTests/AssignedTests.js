@@ -854,26 +854,28 @@ export default function AssignedTests() {
                   inputContainerClassName=" shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white  !py-0 h-[50px]"
                   type="text"
                 />
-                <InputSearch
-                  IconRight={SearchIcon}
-                  placeholderClass="text-base-17-5 text-[#667085]"
+                <div>
+                  <InputSearch
+                    IconRight={SearchIcon}
+                    placeholderClass="text-base-17-5 text-[#667085]"
 
-                  optionListClassName="text-base-17-5 text-[#667085]"
-                  inputClassName="placeholder:text-[#667085] text-base-17-5 !py-3 text-[#667085]"
-                  inputContainerClassName=" !py-3 shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white  h-[50px] text-[#667085]"
-                  placeholder="Search Assignment"
-                  parentClassName="w-[20.83vw] -mt-[20px] text-base-17-5 text-[#667085] h-[50px]"
-                  type="select"
-                  value={filterData.testName}
-                  onChange={(e) => {
-                    setFilterData({ ...filterData, testName: e.target.value })
-                    handleOptionData(e.target.value)
-                  }}
-                  optionData={filterOptions}
-                  onOptionClick={(item) => {
-                    setFilterData({ ...filterData, testName: item?.value })
-                  }}
-                />
+                    optionListClassName="text-base-17-5 text-[#667085]"
+                    inputClassName="placeholder:text-[#667085] text-base-17-5 !py-3 text-[#667085]"
+                    inputContainerClassName=" !py-3 shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white  h-[50px] text-[#667085]"
+                    placeholder="Search Assignment"
+                    parentClassName="w-[20.83vw] -mt-[20px] design:-mt-[26px] text-base-17-5 text-[#667085] h-[50px]"
+                    type="select"
+                    value={filterData.testName}
+                    onChange={(e) => {
+                      setFilterData({ ...filterData, testName: e.target.value })
+                      handleOptionData(e.target.value)
+                    }}
+                    optionData={filterOptions}
+                    onOptionClick={(item) => {
+                      setFilterData({ ...filterData, testName: item?.value })
+                    }}
+                  />
+                </div>
                 {/* <InputSelect
                   IconSearch={SearchIcon}
                   value={filterData.testName}
@@ -952,7 +954,7 @@ export default function AssignedTests() {
 
               <div className="flex items-center  justify-between gap-[20px] mt-[10px]">
                 <div className="flex text-[#26435F] items-center text-[17.5px] text-base-17-5">
-                  <div className="ml-6 flex gap-3 ">
+                  <div className="ml-6 flex gap-3 items-center">
 
                     <SCheckbox stopM={true} checked={isChecked} onChange={handleCheckboxChange} />
                     <span className="inline-block text-[17.5px] text-base-17-5">{selectedId?.length} Selected</span>

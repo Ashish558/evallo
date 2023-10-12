@@ -58,8 +58,8 @@ export default function TableItem({
   setnumberChecked,
   testtype
 }) {
-  const [ dateFormat,setDateFormat ] = useState("dd/mm/yy")
-  
+  const [dateFormat, setDateFormat] = useState("dd/mm/yy")
+
   const [score, setScore] = useState("-");
   const navigate = useNavigate();
   const [fetchSettings, settingsResp] = useLazyGetSettingsQuery();
@@ -79,17 +79,17 @@ export default function TableItem({
   const [userDetail, setUserDetail] = useState({});
   const [leadStatus, setLeadStatus] = useState("");
   const [tutorStatus, setTutorStatus] = useState("");
-  
+
   const [settings, setSettings] = useState({
     leadStatus: [],
   });
 
-  useEffect(()=>{
-    if(organization2&&organization2?.settings){
+  useEffect(() => {
+    if (organization2 && organization2?.settings) {
       setDateFormat(organization2?.settings?.dateFormat)
     }
-  },[organization2])
-  console.log("latest date Form",{dateFormat,organization2})
+  }, [organization2])
+  console.log("latest date Form", { dateFormat, organization2 })
   useEffect(() => {
     if (item.userType === "tutor")
 
@@ -169,12 +169,12 @@ export default function TableItem({
       console.log("update res", item?._id, field, res.data);
     });
   };
-  
-  const [deleteAdmin,setDeleteAdmin]=useDeleteAdminMutation()
-  const [deleteAdminModalActive,setDeleteAdminModalActive]=useState(false)
-  const [deleteSelectLoading,setDeleteSelectLoading]=useState(false)
- 
-  const handleDeleteAdmin=()=>{
+
+  const [deleteAdmin, setDeleteAdmin] = useDeleteAdminMutation()
+  const [deleteAdminModalActive, setDeleteAdminModalActive] = useState(false)
+  const [deleteSelectLoading, setDeleteSelectLoading] = useState(false)
+  console.log({ item })
+  const handleDeleteAdmin = () => {
     setDeleteSelectLoading(true)
     deleteAdmin({ id: item?.associatedOrg?._id }).then((res) => {
       setDeleteSelectLoading(false)
@@ -321,6 +321,7 @@ export default function TableItem({
 
   return (
     <>
+      {console.log(extratableitem)}
       {
         dataFor === "tutorFeedback" && (
           <>
@@ -635,7 +636,7 @@ export default function TableItem({
           </td>
           <td className=" text-[17.5px] px-1  min-w-14 py-3  text-center">
 
-            <span onClick={() => onClick.redirect(item)} className={`${new Date()>new Date(item?.dueDate)?"text-danger":""}`}>
+            <span onClick={() => onClick.redirect(item)} className={`${new Date() > new Date(item?.dueDate) ? "text-danger" : ""}`}>
               {getFormattedDate(item.dueDate, dateFormat)}
             </span>
           </td>
@@ -787,10 +788,10 @@ export default function TableItem({
                     {item.isCompleted === true ? score : "-"}
                   </div>
                 ) : key === "dueDate" ? (
-                  <span className={` ${new Date(item[key]) < new Date() ? "text-[#FF7979] font-semibold" : ""}`}> {getFormattedDate(item[key],dateFormat)}</span>
-                ) : 
-                  key === "createdAt"?  getFormattedDate(item[key],dateFormat):key === "assignedOn"?  getFormattedDate(item[key],dateFormat):item[key]
-                
+                  <span className={` ${new Date(item[key]) < new Date() ? "text-[#FF7979] font-semibold" : ""}`}> {getFormattedDate(item[key], dateFormat)}</span>
+                ) :
+                  key === "createdAt" ? getFormattedDate(item[key], dateFormat) : key === "assignedOn" ? getFormattedDate(item[key], dateFormat) : item[key]
+
                 }
 
               </td>
@@ -798,11 +799,11 @@ export default function TableItem({
           )}
           <td className="font-medium px-1  min-w-14 py-4">
             <div className="flex items-center">
-              <img
-                src={DownloadIcon}
+              {persona == "student" || <img
+                src={DownloadIcon} alt="DownloadIcon"
                 className="w-[30px] cursor-pointer"
                 onClick={() => handlePdfNavigate()}
-              />
+              />}
               {persona === "parent" ? (
                 <>
                   <button
@@ -821,10 +822,10 @@ export default function TableItem({
                 </>
               ) : (
                 <>
-                
+                  {/* {console.log(item)} */}
                   {item.isCompleted ? (
                     <button
-                      className="px-2.5 py-1.8 bg-[#38C980] rounded-md flex items-center leading-none bg-primary text-white ml-4"
+                      className="px-2.5 py-1.8 bg-[#38C980] rounded-5 flex items-center leading-none  text-white ml-4 w-[120px] h-[31px] justify-center"
                       onClick={() =>
                         navigate(
                           `/assigned-tests/${item.testId}/${item.assignedTestId}/report/`
@@ -835,7 +836,7 @@ export default function TableItem({
                     </button>
                   ) : item.isStarted ? (
                     <button
-                      className="px-2.5 py-1.8 bg-[#FFCE84] rounded-md flex items-center leading-none bg-primary text-white ml-4"
+                      className="px-2.5 py-1.8  rounded-5 flex items-center leading-none bg-[#FFCE84] text-white ml-4 w-[120px] h-[31px] justify-center"
                       onClick={() => {
                         const indexx = testtype.findIndex(obj => obj.testId === item.testId);
                         testtype[indexx].testtype == 'DSAT' ?
@@ -851,7 +852,7 @@ export default function TableItem({
                     </button>
                   ) : (
                     <button
-                      className="px-2.5 py-1.8 rounded-md bg-[#FF7979] flex items-center leading-none bg-primary text-white ml-4"
+                      className="px-2.5 py-1.8 rounded-5 bg-[#FF7979] flex items-center leading-none  text-white ml-4 w-[120px] h-[31px] justify-center"
                       onClick={() => {
                         const indexx = testtype.findIndex(obj => obj.testId === item.testId);
                         testtype[indexx].testtype == 'DSAT' ?
@@ -880,20 +881,20 @@ export default function TableItem({
       {dataFor === "testsDetailQuestions" && (
         <tr className="bg-white text-[17.5px]   leading-7 mt-[10px]">
           {MapData(item, dataFor, excludes)}
-        
-          {testtype==='DSAT'?<>
-          <td><div className={` ${extratableitem[item.QuestionNumber-1].QImage==='Yes'&& 'bg-[#38C980]'} mx-auto rounded-full w-[20px] h-[20px]`}>{extratableitem[item.QuestionNumber-1].QImage==='No'?'--':null}</div></td>
-          <td> <div className={` ${extratableitem[item.QuestionNumber-1].AImage=='Yes'&&'bg-[#FFCE84]'} mx-auto  w-[20px] rounded-full h-[20px] `}>{extratableitem[item.QuestionNumber-1].AImage=='No'?'--':null}</div></td>
-          <td className={` ${extratableitem[item.QuestionNumber-1].Passage=='Yes'? 'text-[#38C980]':'text-[#FF7979]'} text-[17.5px] font-semibold `}>{extratableitem[item.QuestionNumber-1].Passage}</td>
-          </>:null}
+          {console.log('dfsdfdgdfgdfg', item)}
+          {testtype === 'DSAT' ? <>
+            <td><div className={` ${extratableitem[item.QuestionNumber - 1].QImage === 'Yes' && 'bg-[#38C980]'} mx-auto rounded-full w-[20px] h-[20px]`}>{extratableitem[item.QuestionNumber - 1].QImage === 'No' ? '--' : null}</div></td>
+            <td> <div className={` ${extratableitem[item.QuestionNumber - 1].AImage == 'Yes' && 'bg-[#FFCE84]'} mx-auto  w-[20px] rounded-full h-[20px] `}>{extratableitem[item.QuestionNumber - 1].AImage == 'No' ? '--' : null}</div></td>
+            <td className={` ${extratableitem[item.QuestionNumber - 1].Passage == 'Yes' ? 'text-[#38C980]' : 'text-[#FF7979]'} text-[17.5px] font-semibold `}>{extratableitem[item.QuestionNumber - 1].Passage}</td>
+          </> : null}
           <td className="font-medium flex justify-center px-1 min-w-14 py-4">
             {
               !item.editable ? <></> :
-              <img
-                src={EditTestIcon}
-                className="cursor-pointer"
-                onClick={() => onClick.handleEditTestClick(item)}
-              />
+                <img
+                  src={EditTestIcon}
+                  className="cursor-pointer"
+                  onClick={() => onClick.handleEditTestClick(item)}
+                />
             }
           </td>
         </tr>

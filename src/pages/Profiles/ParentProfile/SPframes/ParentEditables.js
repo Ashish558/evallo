@@ -40,7 +40,7 @@ export default function ParentEditables({
   toEdit,
   fetchDetails,
   settings,
- 
+
   awsLink,
   selectedScoreIndex,
 }) {
@@ -75,12 +75,12 @@ export default function ParentEditables({
     },
     {
       name: "frame0",
-      title: "Basic Info",
+      title: "Account Details",
       api: "user",
     },
     {
       name: "frame1",
-      title: "Basic Info",
+      title: "Additional Details",
       api: "userDetail",
     },
     {
@@ -274,15 +274,15 @@ export default function ParentEditables({
   }));
   useEffect(() => {
     if (!currentToEdit.hasOwnProperty('country')) return;
-    console.log("countries usseffect ",currentToEdit)
+    console.log("countries usseffect ", currentToEdit)
 
-      fetch("/countryData.json")
-        .then((res) => res.json())
-        .then((data) => {
-   console.log("countries ",data)
-          setCountry(data)
-        });
-    
+    fetch("/countryData.json")
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("countries ", data)
+        setCountry(data)
+      });
+
     const c = currentToEdit.country;
     if (c) {
       const state = country.filter((x) => x.name === c);
@@ -291,7 +291,7 @@ export default function ParentEditables({
     }
   }, [currentToEdit]);
   const [addLink, addLinkStatus] = useAddLinkStudentMutation();
-  console.log("parentEditables",currentToEdit,country)
+  console.log("parentEditables", currentToEdit, country)
   const handleProfilePhotoChange = (file) => {
     // //console.log(file)
     let url = "";
@@ -451,18 +451,18 @@ export default function ParentEditables({
     delete reqBody["active"];
     console.log({ reqBody, userId });
     if (reqBody.hasOwnProperty("firstName")) {
-      console.log("fiestName",reqBody.firstName?.length,{ reqBody, userId });
-      if (reqBody.firstName?.length===0 || reqBody.firstName?.trim()?.length===0) {
+      console.log("fiestName", reqBody.firstName?.length, { reqBody, userId });
+      if (reqBody.firstName?.length === 0 || reqBody.firstName?.trim()?.length === 0) {
         alert("First name can't be empty.");
         return;
       }
     }
-      if (reqBody.hasOwnProperty("lastName")) {
-        if (reqBody.lastName?.length===0 ||reqBody.lastName?.trim()?.length===0) {
-          alert("Last name can't be empty.");
-          return;
-        }
+    if (reqBody.hasOwnProperty("lastName")) {
+      if (reqBody.lastName?.length === 0 || reqBody.lastName?.trim()?.length === 0) {
+        alert("Last name can't be empty.");
+        return;
       }
+    }
     if (reqBody.hasOwnProperty("country")) {
       updateUserAccount(reqBody);
     }
@@ -472,15 +472,15 @@ export default function ParentEditables({
         return;
       }
     }
-    
+
     if (currentToEdit.hasOwnProperty("notes")) {
-      reqBody={
-        internalNotes:[
+      reqBody = {
+        internalNotes: [
           ...currentToEdit.internalNotes,
           {
             note: currentToEdit?.notes,
-     
-        date: new Date(),
+
+            date: new Date(),
           }
         ]
       }
@@ -686,7 +686,7 @@ export default function ParentEditables({
       } else {
         let newserv =
           organization.settings?.servicesAndSpecialization[
-            currentToEdit.selectedIdx
+          currentToEdit.selectedIdx
           ];
         updated.push({ ...newserv, price: value });
         setUpdatedService({ ...newserv, price: value });
@@ -745,8 +745,8 @@ export default function ParentEditables({
                   {currentField.title
                     ? currentField.title
                     : toEdit.tutorServices
-                    ? "Service"
-                    : ""}
+                      ? "Service"
+                      : ""}
                 </div>
                 <button
                   className="w-[100px] bg-[#FFA28D] p-1 rounded text-white  text-base pl-3 pr-3 ml-auto"
@@ -843,7 +843,7 @@ export default function ParentEditables({
                           />
                           <InputField
                             IconLeft={caution}
-                            
+
                             label="Email"
                             labelClassname="text-[#26435F]"
                             placeholder="Email"
@@ -858,7 +858,7 @@ export default function ParentEditables({
                                 email: e.target.value,
                               })
                             }
-                            Tooltip={!user?.isVerfied&&
+                            Tooltip={!user?.isVerfied &&
                               <span className="absolute top-10 w-[200px] scale-0 rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100">
                                 <h3 className="text-[#24A3D9] font-semibold mb-1">
                                   Email Confirmation Sent
@@ -893,7 +893,7 @@ export default function ParentEditables({
                         </div>
                       </div>
                     </div>
-                   
+
                     <div>
                       <div className="flex-1 mt-5">
                         <p className=" text-sm text-[#26435F] font-semibold">
@@ -913,51 +913,51 @@ export default function ParentEditables({
                           placeholder=""
                         ></textarea>
                       </div>
-                     
-                    
+
+
                     </div>
-                    {persona==="admin"?
-                    <div className=" ">
-                      <div id="borderDashed2" className="h-[2px] w-[100%] mt-6 mx-auto my-4"> 
+                    {persona === "admin" ?
+                      <div className=" ">
+                        <div id="borderDashed2" className="h-[2px] w-[100%] mt-6 mx-auto my-4">
                         </div>
-                      {/* <p className='font-medium mr-4'> Associated Students </p> */}
-                      {/* <div className="max-w-[250px] mx-auto">
+                        {/* <p className='font-medium mr-4'> Associated Students </p> */}
+                        {/* <div className="max-w-[250px] mx-auto">
                         <Slider
                           images={currentToEdit.studentsData}
                           awsLink={awsLink}
                         />
                       </div> */}
-                     
-                      <InputSearch
-                         right={<img className="w-5 h-4" alt="drop" src={down} />}
-                        labelClassname="text-[#26435F] mb-1 text-sm"
-                        label="Associated Students"
-                        placeholder="Select Associated Students"
-                        parentClassName="w-[300px] mb-10"
-                       
-                        inputContainerClassName="bg-[#F3F5F7] border-0 pt-3.5 pb-3.5"
-                        inputClassName="bg-[#F3F5F7]"
-                        type="text"
-                        optionPrefix="s"
-                        value={student}
-                        optionClassName="h-[60px] 2xl:h-[100px]  design:h-[200px]"
-                        checkbox={{
-                          visible: true,
-                          name: "name",
-                          match: currentToEdit.assiginedStudents,
-                        }}
-                        onChange={(e) => setStudent(e.target.value)}
-                        optionData={students}
-                        onOptionClick={(item) => {
-                          // setStudent(item.value);
-                          handleStudentsChange(item);
-                          // setCurrentToEdit({ ...currentToEdit, students: [... item._id] });
-                        }}
-                      />
-                    </div>:""}
+
+                        <InputSearch
+                          right={<img className="w-5 h-4" alt="drop" src={down} />}
+                          labelClassname="text-[#26435F] mb-1 text-sm"
+                          label="Associated Students"
+                          placeholder="Select Associated Students"
+                          parentClassName="w-[300px] mb-10"
+
+                          inputContainerClassName="bg-[#F3F5F7] border-0 pt-3.5 pb-3.5"
+                          inputClassName="bg-[#F3F5F7]"
+                          type="text"
+                          optionPrefix="s"
+                          value={student}
+                          optionClassName="h-[60px] 2xl:h-[100px]  design:h-[200px]"
+                          checkbox={{
+                            visible: true,
+                            name: "name",
+                            match: currentToEdit.assiginedStudents,
+                          }}
+                          onChange={(e) => setStudent(e.target.value)}
+                          optionData={students}
+                          onOptionClick={(item) => {
+                            // setStudent(item.value);
+                            handleStudentsChange(item);
+                            // setCurrentToEdit({ ...currentToEdit, students: [... item._id] });
+                          }}
+                        />
+                      </div> : ""}
                     <div>
-                    
-                  </div>
+
+                    </div>
                   </div>
                 )}
 
@@ -1293,30 +1293,30 @@ export default function ParentEditables({
 
                 {currentField.name === "service" && (
                   <div className="w-[400px] max-h-[50vh] overflow-y-auto custom-scroller">
-                   
-                   <div className="flex flex-col gap-2">
-                     {organization?.settings?.servicesAndSpecialization.map(
-                       (item, id) => {
-                         return (
-                           <div key={id} className="flex gap-5 items-center">
-                             <SCheckbox
-                             stopM={true}
-                               checked={currentToEdit?.service?.includes(
-                                 item?.service
-                               )}
-                               onChange={() =>
-                                 handleServiceChange(item?.service)
-                               }
-                             />
-                             <span className="text-[#26435F]">
-                               {item?.service}
-                             </span>
-                           </div>
-                         );
-                       }
-                     )}
-                   </div>
-                   </div>
+
+                    <div className="flex flex-col gap-2">
+                      {organization?.settings?.servicesAndSpecialization.map(
+                        (item, id) => {
+                          return (
+                            <div key={id} className="flex gap-5 items-center">
+                              <SCheckbox
+                                stopM={true}
+                                checked={currentToEdit?.service?.includes(
+                                  item?.service
+                                )}
+                                onChange={() =>
+                                  handleServiceChange(item?.service)
+                                }
+                              />
+                              <span className="text-[#26435F]">
+                                {item?.service}
+                              </span>
+                            </div>
+                          );
+                        }
+                      )}
+                    </div>
+                  </div>
                   // // <div>
                   // //   <div className="flex items-center mb-5 pt-1 pb-5">
                   // //     <InputSelect
@@ -1623,8 +1623,8 @@ export default function ParentEditables({
                       <p className="font-medium mr-4 min-w-[150px]">
                         {currentToEdit.selectedIdx !== undefined
                           ? organization.settings.servicesAndSpecialization[
-                              currentToEdit.selectedIdx
-                            ].service
+                            currentToEdit.selectedIdx
+                          ].service
                           : ""}
                       </p>
                       <InputField

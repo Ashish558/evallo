@@ -97,7 +97,7 @@ export default function FurtherDetails({
             placeholder=""
             parentClassName="w-full max-w-[248px] mr-4"
             inputContainerClassName=" border border-[#D0D5DD]"
-            inputClassName="bg-transparent text-xs"
+            inputClassName="!text-[#667085]  bg-transparent text-xs"
             type="text"
             value={values.activeStudents}
             onChange={(e) =>
@@ -114,7 +114,7 @@ export default function FurtherDetails({
             placeholder=""
             parentClassName="w-full max-w-[248px]"
             inputContainerClassName=" border border-[#D0D5DD]"
-            inputClassName="bg-transparent text-xs"
+            inputClassName="!text-[#667085] bg-transparent text-xs"
             type="text"
             value={values.activeTutors}
             onChange={(e) =>
@@ -137,7 +137,7 @@ export default function FurtherDetails({
             <div className="grid grid-cols-3 font-medium text-[#26435F] grid-flow-row-dense mr-5">
               {testPreparations?.map((item, idx) => {
                 return (
-                  <div key={idx} className="flex items-center mb-3 mr-6">
+                  <div key={idx} className="flex items-center mb-3 mr-6 relative">
                     <SCheckbox
                       checked={item.checked}
                       className="scale-[0.7]"
@@ -165,7 +165,7 @@ export default function FurtherDetails({
                     {item.text === "Others" && item.checked ? (
                       <input
                         autoFocus
-                        className="ml-3 text-[13px] text-[#7E7E7E] outline-[#DCDCDD] border-[1.5px] border-[#DCDCDD] rounded-[4px] !bg-[#F5F8FA]  min-w-32 max-w-full"
+                        className="absolute pl-3 -bottom-8 text-[13px] text-[#7E7E7E] outline-[#DCDCDD] border-[1.5px] border-[#DCDCDD] rounded-[4px] !bg-[#F5F8FA] w-[9.3vw]"
                         type="text"
                         placeholder="Other Tests"
                         onKeyDown={(e) => {
@@ -200,7 +200,7 @@ export default function FurtherDetails({
             <div className="grid grid-cols-3 font-medium text-[#26435F] grid-flow-row-dense mr-5">
               {tutoring?.map((item, idx) => {
                 return (
-                  <div key={idx} className="flex items-center mb-3 mr-8">
+                  <div key={idx} className="flex items-center mb-3 mr-8 ">
                     <SCheckbox
                       checked={item.checked}
                       className="scale-[0.7]"
@@ -212,14 +212,14 @@ export default function FurtherDetails({
                       onClick={() =>
                         handleCheckboxChange(item.text, tutoring, setTutoring)
                       }
-                      className="font-medium whitespace-nowrap  text-[13px] opacity-90 leading-5"
+                      className="font-medium whitespace-nowrap  text-[13px] opacity-90 leading-5 relative"
                     >
                       {item.text}
                     </p>
                     {item.text === "Others" && item.checked ? (
                       <input
                         autoFocus
-                        className="ml-3 text-[13px] text-[#7E7E7E] outline-[#DCDCDD] border-[1.5px] border-[#DCDCDD] rounded-[4px] !bg-[#F5F8FA]  min-w-32 max-w-full"
+                        className="absolute right-[110px] ml-3 pl-3 text-[13px] text-[#7E7E7E] outline-[#DCDCDD] border-[1.5px] border-[#DCDCDD] rounded-[4px] !bg-[#F5F8FA] w-[23vw]"
                         type="text"
                         placeholder="Other Subjects"
                         onKeyDown={(e) => {

@@ -11,16 +11,16 @@ import { useSelector } from "react-redux";
 import { getFormattedDate } from "../../utils/utils";
 
 
-const RangeDate = ({ removeUnderline,handleRangeData ,optionClassName,className,manualHide ,inputContainerClassName}) => {
- 
-  const [ dateFormat,setDateFormat ] = useState("dd/mm/yy")
+const RangeDate = ({ removeUnderline, handleRangeData, optionClassName, className, manualHide, inputContainerClassName }) => {
+
+  const [dateFormat, setDateFormat] = useState("dd/mm/yy")
   const { organization: organization2 } = useSelector((state) => state.organization)
-  useEffect(()=>{
-    if(organization2&&organization2?.settings){
+  useEffect(() => {
+    if (organization2 && organization2?.settings) {
       setDateFormat(organization2?.settings?.dateFormat)
     }
-  },[organization2])
-  console.log("latest",{dateFormat, organization2})
+  }, [organization2])
+  console.log("latest", { dateFormat, organization2 })
   const [startDate, setStartDate] = useState(() => calculateDateRange()[0]);
   const [selectDate, setSelectedDate] = useState({
     sDate: "",
@@ -72,7 +72,7 @@ const RangeDate = ({ removeUnderline,handleRangeData ,optionClassName,className,
         .split("T")[0];
     }
     else if (option.days === 700) {
-      startDate = new Date(now.getFullYear()-1, 0, 2)
+      startDate = new Date(now.getFullYear() - 1, 0, 2)
         .toISOString()
         .split("T")[0];
       endDate = new Date(now.getFullYear(), 0, 1)
@@ -105,32 +105,32 @@ const RangeDate = ({ removeUnderline,handleRangeData ,optionClassName,className,
   let newDateformat = temp[0];
   temp = temp[1].split(" ")
   let firsYear = newDateformat.split(" ")
-  if (false&&firsYear[2] === temp[3]) {
+  if (false && firsYear[2] === temp[3]) {
     newDateformat = firsYear[0] + " " + firsYear[1]
 
   }
   newDateformat += " - " + temp[0] + " " + temp[1] + " " + temp[2] + ", " + temp[3]
-// console.log(temp[0])
+  // console.log(temp[0])
   const parts = newDateformat.split(" - ");
-  const firstPart =  getFormattedDate(parts[1], dateFormat); 
-  const secondPart =  getFormattedDate(parts[0], dateFormat); 
-  const latestDateFormat=secondPart + " - " +firstPart 
+  const firstPart = getFormattedDate(parts[1], dateFormat);
+  const secondPart = getFormattedDate(parts[0], dateFormat);
+  const latestDateFormat = secondPart + " - " + firstPart
 
 
-  
+
   const [startFull, endFull] = latestDateFormat.split(" - ");
-  
- 
+
+
   const [, , endYear] = startFull.split("-");
-  
-  
+
+
   const [startMonth, startDay] = startFull.split("-");
-  
-  
-  const formattedStartDate = `${startMonth}-${startDay}-${endYear}`;
-  const formattedDateRange = `${formattedStartDate}  -  ${endFull}`;
+
+
+  const formattedStartDate = `${startMonth}-${startDay} - ${endYear}`;
+  const formattedDateRange = `${formattedStartDate} - ${endFull}`;
   // console.log(formattedDateRange);
-  
+
 
   return (
     <div className={`flex text-xs  !text-[calc(15*0.050vw)] ${className}`}>
@@ -138,7 +138,7 @@ const RangeDate = ({ removeUnderline,handleRangeData ,optionClassName,className,
 
       <InputSelect
         placeholder="Select"
-        valueClassName={`${removeUnderline ? "" :"font-normal border-b border-b-[#FFA28D]"} `}
+        valueClassName={`${removeUnderline ? "" : "font-normal border-b border-b-[#FFA28D]"} `}
         parentClassName="border-none text-xs text-[#26435F] w-fit relative z-[500] !text-[calc(17*0.050vw)]"
         labelClassname="text-sm !text-[calc(17*0.050vw)]"
         inputContainerClassName={`border-none  !text-[calc(17*0.050vw)] whitespace-nowrap font-normal text-[#FFA28D] ${inputContainerClassName}  ${styles["text"]}`}
@@ -149,7 +149,7 @@ const RangeDate = ({ removeUnderline,handleRangeData ,optionClassName,className,
         optionContainerClassName="!rounded-5  border-[#FFA28D] border-[1px] py-2"
         optionPadding="!py-1"
         optionData={[
-          { name: "Lifetime", days:1000 },
+          { name: "Lifetime", days: 1000 },
           { name: "Last 7 Days", days: 7 },
           { name: "Last 30 Days", days: 30 },
           { name: "This Year", days: 60 },
@@ -162,29 +162,29 @@ const RangeDate = ({ removeUnderline,handleRangeData ,optionClassName,className,
         onChange={handleQuickOptions}
         IconRight={downR}
         DateSelect={
-           !manualHide &&
+          !manualHide &&
           <div className="flex relative flex-col hover:bg-white items-center pt-2 z-5000 border-b  ">
             <div className="text-[9px] text-[#517CA8]  w-full px-[26px]">
               <label htmlFor="sdate">Start Date</label>
-              
+
             </div>
             <div className="flex flex-col">
               <input
                 type="date"
                 name="sdate"
-                  className="rounded-md  p-1 text-[#FFA28D] py-1 px-[26px]"
+                className="rounded-md  p-1 text-[#FFA28D] py-1 px-[26px]"
                 value={selectDate.sDate}
                 max={selectDate.eDate}
                 onChange={(e) => handleLocalDate(e.target.value, "sDate")}
               />
-            <div className="text-[9px] text-[#517CA8]  w-full px-[26px] pt-[15px]">
-              <label htmlFor="edate">End Date</label>
+              <div className="text-[9px] text-[#517CA8]  w-full px-[26px] pt-[15px]">
+                <label htmlFor="edate">End Date</label>
               </div>
               <input
                 type="date"
                 min={selectDate.sDate}
                 name="edate"
-                  className="rounded-md  text-[#FFA28D] py-1 px-[26px]"
+                className="rounded-md  text-[#FFA28D] py-1 px-[26px]"
                 value={selectDate.eDate}
                 placeholder="Start Date"
                 onChange={(e) => handleLocalDate(e.target.value, "eDate")}
@@ -203,7 +203,7 @@ const RangeDate = ({ removeUnderline,handleRangeData ,optionClassName,className,
               </p>
             </div>
           </div>
-        
+
         }
       />
       <p></p>
