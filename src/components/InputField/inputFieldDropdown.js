@@ -97,7 +97,7 @@ export default function InputFieldDropdown({
         setDialCode(data);
       });
   }, []);
-  console.log({ toggleOptions, codeValue });
+
   return (
     <div className={`relative text-sm ${parentClassName && parentClassName} `}>
       {label && (
