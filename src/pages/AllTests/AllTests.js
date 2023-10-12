@@ -20,7 +20,7 @@ import { useSelector } from "react-redux";
 import { json, useNavigate } from "react-router-dom";
 
 const optionData = ["option 1", "option 2", "option 3", "option 4", "option 5"];
-const testTypeOptions = ["DSAT", "SAT", "Other"];
+const testTypeOptions = ["DSAT", "SAT", "ACT"];
 
 const initialState = {
   testName: "",
