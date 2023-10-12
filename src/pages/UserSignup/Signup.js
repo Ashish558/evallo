@@ -28,7 +28,7 @@ import useOutsideAlerter from "../../hooks/useOutsideAlerter";
 import { useLazyGetSettingsQuery } from "../../app/services/session";
 import { validateOtherDetails, validateSignup } from "./utils/util";
 import {
-  useLazyGetTutorDetailsQuery,
+  useLazyGetUserDetailQuery,
   useLazyGetSingleUserQuery,
   useUpdateUserMutation,
   useLazyGetOrganizationQuery,
@@ -105,7 +105,7 @@ export default function UserSignup() {
 
   const [signupUser, signupUserResp] = useSignupMutation();
   const [addUserDetails, addUserDetailsResp] = useAddUserDetailsMutation();
-  const [getUserDetail, userDetailResp] = useLazyGetTutorDetailsQuery();
+  const [getUserDetail, userDetailResp] = useLazyGetUserDetailQuery();
   const [count, setCount] = useState(0);
   const [organisation, setOrganisation] = useState({});
   const [fetchOrganisation, fetchOrganisationstatus] =
@@ -204,6 +204,22 @@ export default function UserSignup() {
             role,
           };
         });
+        getUserDetail({ id: paramUserId }).then((res) => {
+          console.log('res----', res.data.data);
+          if(res.data.data.userdetails){
+            let detail = res.data.data.userdetails
+            setOtherDetails({
+              ...otherDetails,
+              FirstName: detail.FirstName,
+              LastName: detail.LastName,
+              Phone: detail.Phone,
+              Email: detail.Email,
+              grade: detail.grade,
+              schoolName: detail.schoolName,
+              PphoneCode:  detail.phoneCode
+            })
+          }
+        })
         fetchOrganisation(associatedOrg).then((org) => {
           //console.log("organisation details",{org})
           if (org.error) {
@@ -265,7 +281,7 @@ export default function UserSignup() {
       };
     });
   };
-  console.log({ customFields });
+ 
   const resetDetailsErrors = () => {
     setDetailsError((prev) => {
       return {
@@ -316,7 +332,7 @@ export default function UserSignup() {
   useEffect(() => {
     handleNextErrors();
   }, [values]);
-  const [emailExistLoad, setEmailExistLoad] = useState(false);
+
   const handleClick = async () => {
     let f=/[a-z]/i.test(values?.firstName)
    f=f&& /[a-z]/i.test(values?.lastName)
@@ -390,8 +406,10 @@ export default function UserSignup() {
         lastName: values.lastName,
         email: values.email,
         phone: values.phone,
+        phoneCode: values.phoneCode,
         role: values.role.toLowerCase(),
         ...otherDetails,
+        PhoneCode: otherDetails.PphoneCode,
         customFields: updatedCustomfields,
         associatedOrg: organisation._id,
       };

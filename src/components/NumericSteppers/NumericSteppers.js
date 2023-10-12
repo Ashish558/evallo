@@ -9,7 +9,6 @@ export default function NumericSteppers({
   customFields,
   className,
 }) {
-  console.log({currentStep,totalSteps})
 
   return (
     <div
