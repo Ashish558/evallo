@@ -122,6 +122,10 @@ const AccountOverview = () => {
   if(!boo){
     return 
   }
+  if(!isEmail(values?.email)){
+    alert("Enter valid email!")
+    return
+  }
     if(values?.email?.trim()===""||values?.firstName?.trim()===""||values?.lastName?.trim()===""||values?.phone?.trim()===""||values?.phoneCode?.trim()===""){
       alert("Please fill all the fields to update your account!")
       return 
