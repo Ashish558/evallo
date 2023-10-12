@@ -806,19 +806,51 @@ export default function TableItem({
               />}
               {persona === "parent" ? (
                 <>
-                  <button
-                    className={`px-2.5 py-1.8 rounded-md flex items-center leading-none bg-primary text-white ml-4 ${item.isCompleted === false
-                      ? "opacity-50 pointer-events-none"
-                      : ""
-                      }`}
-                    onClick={() =>
-                      navigate(
-                        `/assigned-tests/${item.testId}/${item.assignedTestId}/report/${item.studentId._id}`
-                      )
-                    }
-                  >
-                    View Report
-                  </button>
+                  {/* {console.log(item)} */}
+                  {item.isCompleted ? (
+                    <button
+                      className="px-2.5 py-1.8 bg-[#38C980] rounded-5 flex items-center leading-none  text-white ml-4 w-[120px] h-[31px] justify-center"
+                      onClick={() =>
+                        navigate(
+                          `/assigned-tests/${item.testId}/${item.assignedTestId}/report/`
+                        )
+                      }
+                    >
+                      Report
+                    </button>
+                  ) : item.isStarted ? (
+                    <button
+                      className="px-2.5 py-1.8  rounded-5 flex items-center leading-none bg-[#FFCE84] text-white ml-4 w-[120px] h-[31px] justify-center"
+                      onClick={() => {
+                        const indexx = testtype.findIndex(obj => obj.testId === item.testId);
+                        testtype[indexx].testtype == 'DSAT' ?
+                          navigate(`/testpage/${item.testId}/${item.assignedTestId}`)
+                          :
+                          navigate(
+                            `/all-tests/start-section/${item.testId}/${item.assignedTestId}`
+                          )
+                      }
+                      }
+                    >
+                      Started
+                    </button>
+                  ) : (
+                    <button
+                      className="px-2.5 py-1.8 rounded-5 bg-[#D4D9DF] flex items-center leading-none  text-white ml-4 w-[120px] h-[31px] justify-center"
+                      onClick={() => {
+                        const indexx = testtype.findIndex(obj => obj.testId === item.testId);
+                        testtype[indexx].testtype == 'DSAT' ?
+                          navigate(`/testpage/${item.testId}/${item.assignedTestId}`)
+                          :
+                          navigate(
+                            `/all-tests/start-section/${item.testId}/${item.assignedTestId}`
+                          )
+                      }
+                      }
+                    >
+                      Not Started
+                    </button>
+                  )}
                 </>
               ) : (
                 <>

@@ -38,7 +38,8 @@ export default function InputFieldDropdown({
   totalErrors,
   onFocus,
   onBlur,
-  studentCode
+  studentCode,
+  arrowClassName
 }) {
   const [inputType, setInputType] = useState(type);
 
@@ -133,7 +134,7 @@ export default function InputFieldDropdown({
             </span>}
 
 
-            <img src={toggleOptions ? upArrow : downArrow} className="inline-block " alt="down" />
+            <img src={toggleOptions ? upArrow : downArrow} className={`inline-block   ${arrowClassName ? arrowClassName : "h-3 w-3"}`} alt="down" />
           </div>
 
           <div
