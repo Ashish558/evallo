@@ -904,7 +904,7 @@ export default function TableItem({
           <td>{item.testType} &#174;</td>
           <td> {getFormattedDate(item.createdAt.split("T")[0], dateFormat)}</td>
           <td>{getFormattedDate(item.updatedAt.split("T")[0], dateFormat)}</td>
-          <td> {item.no_of_assign ? item.no_of_assign : "-"} </td>
+          <td> {item.no_of_assign!==null ? item.no_of_assign : "-"} </td>
           <td className="font-medium px-1 py-4 text-right">
             <div className="flex justify-end">
               <button

@@ -74,24 +74,78 @@ const AccountOverview = () => {
       });
   }, []);
 
+   const isEmail=(val)=> {
+    let regEmail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if (!regEmail.test(val)) {
+       return false
+    }else{
+       return true
+    }
+ }
   const handleEmailUpdate = (email) => {
     console.log("Email Updation invoked", email);
-    if (email !== "")
+    if(email?.trim()===""){
+      alert("Email address can't be empty")
+      return
+    }
+    if(!isEmail(email)){
+      alert("Enter valid email!")
+      return
+    }
+    if (email?.trim() !== ""){
+    
+    
       updateEmail({ email }).then((res) => {
+    if(res?.data){
+      alert("Email reset link sent, please verify")
+
+    }
+    else {
+      alert("Error occured while senting email reset link!")
+    }
         console.log("Email Link sent", res);
       });
+    }
   };
+  const [loading,setLoading]=useState(false)
   const handleDataUpdate = () => {
+    const arr=["email","firstName","lastName","phone","phoneCode"]
+    let boo=true;
+    let ff=null
+    arr.forEach((it)=>{
+     if(boo&&(!values[it] || values[it]?.trim()==="")){
+        boo=false
+        alert(it+" can't be empty.")
+        return 
+    }
+  })
+  if(!boo){
+    return 
+  }
+    if(values?.email?.trim()===""||values?.firstName?.trim()===""||values?.lastName?.trim()===""||values?.phone?.trim()===""||values?.phoneCode?.trim()===""){
+      alert("Please fill all the fields to update your account!")
+      return 
+    }
+    setLoading(true);
     const updateUserAccount = async () => {
       try {
         let reqBody = { ...values };
         delete reqBody["_id"];
         delete reqBody["email"];
         updateAccount(reqBody)
+
           .then((res) => {
+            setLoading(false);
+            if(res?.error){
+              alert("Error occured while updating!")
+            }
+            if(res?.data){
+              alert("changes saved!")
+            }
             console.log(res);
           })
           .catch((err) => {
+            setLoading(false);
             console.log(err?.message);
           });
       } catch (e) {
@@ -234,9 +288,9 @@ const AccountOverview = () => {
           </div>
           <div className="flex flex-1 justify-end">
             <button
-
+               disabled={loading}
               onClick={handleDataUpdate}
-              className="bg-[#FFA28D]  py-3 mt-6 rounded-md px-10  text-sm text-[#EEE] text-base-17-5"
+              className={` bg-[#FFA28D]  py-3 mt-6 rounded-md px-10  text-sm text-[#ff] text-base-17-5 ${loading?"cursor-wait":"cursor-pointer"}`}
             >
               Save
             </button>
