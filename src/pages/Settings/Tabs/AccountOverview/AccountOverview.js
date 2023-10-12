@@ -290,7 +290,7 @@ const AccountOverview = () => {
             <button
                disabled={loading}
               onClick={handleDataUpdate}
-              className={` bg-[#FFA28D]  py-3 mt-6 rounded-md px-10  text-sm text-[#ff] text-base-17-5 ${loading?"cursor-wait":"cursor-pointer"}`}
+              className={` bg-[#FFA28D]  py-3 mt-6 rounded-md px-10  text-sm text-[#fff] text-base-17-5 ${loading?"cursor-wait":"cursor-pointer"}`}
             >
               Save
             </button>
