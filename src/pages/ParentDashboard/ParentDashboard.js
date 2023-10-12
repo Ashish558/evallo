@@ -5,7 +5,7 @@ import ParentDashboardHeader from "../../components/ParentDashboardHeader/Parent
 import styles from "./ParentDashboard.module.css";
 
 const ParentDashboard = () => {
-   const [selectedStudent, setSelectedStudent] = useState(null);
+    const [selectedStudent, setSelectedStudent] = useState(null);
 
     return (
         <div

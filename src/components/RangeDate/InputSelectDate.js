@@ -34,16 +34,16 @@ export default function InputSelect({
   const selectRef = useRef();
   useOutsideAlerter(selectRef, () => setSelected(false));
   const handleOption = () => {
-   
+
     setSelected(!selected);
-    
+
     if (setSelectedDate) setSelectedDate({ sDate: "", eDate: "" });
   };
   useEffect(() => {
     if (!checkbox) setSelected(false);
   }, [value]);
   const handleChange = (optionType, option, idx) => {
-    console.log("handleOption",option)
+    console.log("handleOption", option)
     onChange(optionType, option, idx);
   };
 
@@ -67,7 +67,7 @@ export default function InputSelect({
           } `}
       >
         {Icon && <img src={Icon} className={`mr-5  w-[28px]}`} alt="icon" />}
-      
+
 
         <div
           className={`outline-0 w-full text-right cursor-default relative ${optionClassName ? optionClassName : ""
@@ -82,15 +82,15 @@ export default function InputSelect({
             </span>
           ) : (
             <span className={`mr-5 pl-5 text-[15px] !text-[calc(17*0.050vw)] cursor-default whitespace-nowrap `} >
-              <span className={`${valueClassName}`}    onClick={handleOption}>{value}</span>
+              <span className={`${valueClassName}`} onClick={handleOption}>{value}</span>
               <img
-              className="w-[30px] inline-block relative h-[10px] text-lg cursor-pointer  z-[5000]"
-              onClick={handleOption}
-              src={IconRight}
-            />
+                className="w-[30px] inline-block relative h-[10px] text-lg cursor-pointer  z-[5000]"
+                onClick={handleOption}
+                src={IconRight}
+              />
             </span>
           )}
-  {/* {selected ? (
+          {/* {selected ? (
           IconRight ? (
             <img
               className="w-[30px] ml-[-100px]relative h-[30px] text-lg cursor-pointer  z-[5000]"
@@ -117,7 +117,7 @@ export default function InputSelect({
             alt="down-arrow"
           />
         )} */}
-     
+
         </div>
         {selected && (
           <div
@@ -152,9 +152,9 @@ export default function InputSelect({
                 </div>
               );
             })}
-           
-            {DateSelect &&<> <p className="px-[26px]  underline underline-offset-4 font-semibold py-2 !text-[calc(17*0.050vw) ]">Custom</p>
-            { DateSelect}
+
+            {DateSelect && <> <p className="px-[26px]  underline underline-offset-4 font-semibold py-2 !text-[calc(17*0.050vw) ]">Custom</p>
+              {DateSelect}
             </>}
           </div>
         )}
