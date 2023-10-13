@@ -15,9 +15,9 @@ import EditTestIcon from "../../assets/icons/edit-test.svg";
 import TrashIcon from "../../assets/icons/ic_outline-delete.svg";
 import TrashIcon2 from "../../assets/icons/trash-blue.svg";
 import styles from './styles.module.css'
-import AddIcon from "../../assets/icons/plus.svg";
-import EditIcon from "../../assets/icons/test-edit.svg";
-import DeleteIcon from "../../assets/icons/trash-icon.svg";
+import AddIcon from "../../assets/icons/plus_colored.svg";
+import EditIcon from "../../assets/icons/edit_logo.svg";
+import DeleteIcon from "../../assets/icons/delete_logo.svg";
 import DeleteTutorIcon from "../../assets/icons/delete-tutor.svg";
 import InputSelect from "../InputSelect/InputSelect";
 import { useLazyGetSettingsQuery } from "../../app/services/session";
@@ -546,10 +546,10 @@ export default function TableItem({
               <span style={{ textDecoration: 'underline' }}>edit</span>
             </div>
           </td>
-          <td className="font-medium text-[17.5px]  ">
+          <td className="font-medium ">
             <div className="">
               <button
-                className="rounded-[5.33px] bg-[rgba(38,67,95,0.23)] text-[#517CA8] px-[17px] pt-0 pb-2  text-[18.67px]"
+                className="rounded-[5.33px] bg-[rgba(38,67,95,0.23)] text-[#517CA8] px-[17px]  py-1  text-base-18"
                 onClick={() => onClick.handleResetPassword(item.email)}
               >
                 Reset
@@ -980,7 +980,7 @@ export default function TableItem({
               </p>
             </div>
           </td>
-          <td className="font-medium px-1 justify-center flex gap-x-2">
+          <td className="font-medium px-1 justify-center flex gap-x-2 py-3">
             <img
               src={EditIcon}
               className="cursor-pointer p-1"
@@ -996,7 +996,7 @@ export default function TableItem({
           </td>
           <td className=" gap-x-2 ">
             <div className="flex items-center gap-x-2 justify-center pr-3">
-              <button className="px-4 py-1 text-[#517CA8] bg-[#517CA81A] ">
+              <button className="px-1  text-[#517CA8] bg-[rgba(81,124,168,0.1)] w-[66px] h-[26px] rounded-[2.6px]">
                 Beta
               </button>
               <img src={AddIcon} alt="add" className="" />

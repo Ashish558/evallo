@@ -13,6 +13,8 @@ export default function SettingsCard({
   body,
   toggle,
   onToggle,
+  questionMarkMargin,
+  questionMarkIcon
 }) {
   return (
     <div
@@ -27,7 +29,7 @@ export default function SettingsCard({
           <p className="text-[#26435F]">{title}</p>
           <div>
             {
-              title === "Edit Announcements" || <img className="ml-3" src={QuestionMark} alt="" />
+              title === "Edit Announcements" || <img className={`${questionMarkMargin?questionMarkMargin:`ml-3`}`} src={questionMarkIcon?questionMarkIcon:QuestionMark} alt="" />
             }
           </div>
         </div>

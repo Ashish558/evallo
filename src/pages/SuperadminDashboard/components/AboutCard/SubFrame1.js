@@ -94,7 +94,7 @@ const SubFrame2 = ({id}) => {
               {item.topDate && (
                     <span className="text-xs ml-2 top-0 text-[#FFA28D] absolute z-5000 backdrop-blur-sm ">
                       {" "}
-                      {item?.topDate}
+                      {/* {item?.topDate} */}
                     </span>
                   )}
               </p>
