@@ -106,7 +106,7 @@ export default function TutorDashboard() {
       getUserDetail({ id })
          .then(resp => {
             // console.log(resp.data.data.user.assiginedStudents)
-            console.log(resp.data.data,"tutor");
+            console.log(resp.data.data, "tutor");
             let awsLink = resp.data.data.baseLink
             const { details } = resp.data.data
             // console.log('tutor details', details);
@@ -224,13 +224,13 @@ export default function TutorDashboard() {
    }, [])
 
    const handlePdfDownload = (pdf) => {
-      if(pdf){
+      if (pdf) {
          const anchor = document.createElement('a');
          anchor.href = `${awsLink}${pdf}`;
          anchor.target = '_blank';
          anchor.download = `${pdf}.pdf`; // Replace with the desired file name and extension
          anchor.click();
-      }else{
+      } else {
          alert('The PDF file is no longer available.')
       }
    }
@@ -241,25 +241,25 @@ export default function TutorDashboard() {
    const sliderRef = useRef(null);
 
    const options = {
-     items: 1, 
-     loop: true, 
-     nav: false, 
-     responsiveClass: true,
-     dots: false, 
+      items: 1,
+      loop: true,
+      nav: false,
+      responsiveClass: true,
+      dots: false,
    };
- 
+
    const handlePrev = () => {
- 
-     if (sliderRef.current) {
-       sliderRef.current.prev();
-     }
+
+      if (sliderRef.current) {
+         sliderRef.current.prev();
+      }
    };
- 
+
    const handleNext = () => {
-     
-     if (sliderRef.current) {
-       sliderRef.current.next();
-     }
+
+      if (sliderRef.current) {
+         sliderRef.current.next();
+      }
    };
    return (
       <div className='bg-[#F5F8FA] mb-[100px]'>
@@ -304,10 +304,10 @@ export default function TutorDashboard() {
                               {
                                  students.length > 0 &&
                                  <OwlCarousel
-                                 ref={sliderRef}
-                                 className="owl-theme"
-                                 {...options}
-                                 items={5} autoWidth margin={10} >
+                                    ref={sliderRef}
+                                    className="owl-theme"
+                                    {...options}
+                                    items={5} autoWidth margin={10} >
                                     {students.map(student => {
                                        return <div className='flex flex-col items-center text-center w-[108px]'>
                                           <img src={`${student.photo ? `${awsLink}${student.photo}` : '/images/default.jpeg'} `} alt='studentImage' />
@@ -315,14 +315,14 @@ export default function TutorDashboard() {
                                              onClick={() => navigate(`/profile/student/${student._id}`)} >
                                              {/* {student.name.split(" ")[0]} <br /> {student.name.split(" ")[1]}  */}
                                              {student.name}
-                                             
-                                             </p>
+
+                                          </p>
                                        </div>
                                     })}
                                  </OwlCarousel>
-                                 
+
                               }
-                              
+
                            </div>
                            <div className="custom-navigation">
                               <button className="prev absolute top-[55%] left-[3%]" onClick={handlePrev}><img src={leftArrow} alt="" /></button>
@@ -415,29 +415,48 @@ export default function TutorDashboard() {
                                        <div>
                                           {/* <img src={`${item.photo ? `${awsLink}${item.photo}` : '/images/default.jpeg'} `} className='w-[62px] h-[62px] rounded-full' /> */}
                                        </div>
-                                       <div className='w-[88%] flex justify-between items-center'>
-                                          <div className='w-3/6'>
-                                             <p className='text-[#24A3D9] text-[1.172vw] font-bold cursor-pointer' onClick={() => navigate(`/assigned-tests/${item.testId}/${item.assignedTestId}/report/${item.studentId}`)} > {item.testName} </p>
+                                       <div className=' flex justify-between items-center'>
+                                          <div className='w-2/6 '>
+                                             <p className='text-[#24A3D9] text-[1.172vw] font-bold cursor-pointer overflow-hidden text-ellipsis' onClick={() => navigate(`/assigned-tests/${item.testId}/${item.assignedTestId}/report/${item.studentId}`)} > {item.testName} </p>
                                              <div className=' text-[#517CA8] flex text-[0.911vw]'>
                                                 <p className=''></p>
-                                                <p className='text-base-17-5'>  {item.studentName}
+                                                <p className='text-base-17-5 overflow-hidden text-ellipsis'>  {item.studentName}
                                                 </p>
                                              </div>
                                           </div>
                                           <div>
 
-                                             <img className='cursor-pointer' onClick={()=>  window.open(`${awsLink+item.pdf}`, '_blank')} width="35px" src={download} alt="" />
+                                             <img className='cursor-pointer' onClick={() => window.open(`${awsLink + item.pdf}`, '_blank')} width="35px" src={download} alt="" />
 
                                           </div>
-                                          <div className='text-[0.911vw] font-semibold'>
+                                          <div className=' font-medium text-[0.78125vw] text-white'>
                                              {
-                                                item.status = "notStarted" ?
-                                                   <p className='text-[#FFCE84] underline '>
-                                                      Not started
-                                                   </p> :
-                                                   <p className='text-[#32D583] underline'>
-                                                      {item.status?.props?.children === 'completed' ? 'Completed' : 'Started'}
-                                                   </p>
+                                                item?.status === "notStarted" ?
+                                                   <button onClick={() =>
+                                                      navigate(
+                                                         `/assigned-tests/${item.testId}/${item.assignedTestId}/report/`
+                                                      )
+                                                   } className='bg-[#D4D9DF] rounded-5 w-[6.25vw] h-[31px] '>
+                                                      View Report
+                                                   </button> :
+                                                   <>
+                                                      {
+                                                         item?.status === "completed" ?
+                                                            < button onClick={() =>
+                                                               navigate(
+                                                                  `/assigned-tests/${item.testId}/${item.assignedTestId}/report/`
+                                                               )
+                                                            } className='bg-[#38C980] rounded-5 w-[6.25vw] h-[31px]'>
+                                                               View Report
+                                                            </button> : < button onClick={() =>
+                                                               navigate(
+                                                                  `/assigned-tests/${item.testId}/${item.assignedTestId}/report/`
+                                                               )
+                                                            } className='bg-[#FFCE84] rounded-5 w-[6.25vw] h-[31px]'>
+                                                               View Report
+                                                            </button>
+                                                      }
+                                                   </>
                                              }
 
                                           </div>

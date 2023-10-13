@@ -10,7 +10,7 @@ import FilterItems from "../../../components/FilterItems/filterItems";
 import InputField from "../../../components/InputField/inputField";
 import Modal from "../../../components/Modal/Modal";
 import { useLazyGetSettingsQuery } from "../../../app/services/session";
-import questionMark from "../../../assets/images/Vector (6).svg";
+import questionMark from "../../../assets/icons/query-small.svg";
 import toggleRectIcon from "../../../assets/icons/toggle-rect.svg";
 import toggleRectActiveIcon from "../../../assets/icons/toggle-rect-active.svg";
 import toggleCircleIcon from "../../../assets/icons/toggle-circle.svg";
@@ -1254,7 +1254,7 @@ export default function Settings({orgData,orgs}) {
  
   return (
     <>
-      <div className=" h-[400px] p-2 custom-scroller w-[95%] overflow-y-auto mx-auto">
+      <div className=" h-full p-2 custom-scroller w-[95%] overflow-y-auto mx-auto">
       
         <div className=" flex w-full flex-1 items-center mb-[30px]">
           <div
@@ -1324,7 +1324,9 @@ export default function Settings({orgData,orgs}) {
           <div>
             <div className="flex items-center gap-x-8 mb-4">
               <div>
-                <InputSelect
+                <InputSelect 
+                questionMarkMargin='ml-2 pb-1'
+                questionMarkIcon={questionMark}
                   labelClassname="text-base-20 mb-1"
                   inputContainerClassName=" text-base-17-5 shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-[#FFFFFF]"
                   optionListClassName="text-base-17-5"
@@ -1353,6 +1355,8 @@ export default function Settings({orgData,orgs}) {
             <div className="h-[1.25px] bg-[#CBD6E2] mb-4 mt-8"></div>
             <SettingsCard
               titleClassName="text-base-20"
+              questionMarkMargin='ml-2 '
+              questionMarkIcon={questionMark}
               title="Lead Status Items (Parent / Student)"
               body={
                 <div className="flex items-center flex-wrap [&>*]:mb-[10px] bg-white shadow-small p-4 rounded-5">
@@ -1372,6 +1376,8 @@ export default function Settings({orgData,orgs}) {
             <SettingsCard
               titleClassName="text-base-20"
               title="Tutor Status Items"
+              questionMarkMargin='ml-2 '
+              questionMarkIcon={questionMark}
               body={
                 <div className="flex items-center flex-wrap [&>*]:mb-[10px] bg-white shadow-small p-4 rounded-5 text-base-17-5">
                   <AddTag onAddTag={handleAddTag} keyName="tutorStatus" />
@@ -1389,6 +1395,8 @@ export default function Settings({orgData,orgs}) {
             <div className="h-[1.25px] bg-[#CBD6E2] mb-8"></div>
             <SettingsCard
               titleClassName="text-base-20"
+              questionMarkMargin='ml-2 '
+              questionMarkIcon={questionMark}
               title="Manage Referral Codes"
               className={styles["bordered-settings-container"]}
               body={
@@ -1478,6 +1486,8 @@ export default function Settings({orgData,orgs}) {
             <SettingsCard
               titleClassName="text-base-20"
               title="Manage Services & Topics"
+              questionMarkMargin='ml-2 '
+              questionMarkIcon={questionMark}
               className={styles["bordered-settings-container"]}
               body={
                 <div>
@@ -1573,6 +1583,8 @@ export default function Settings({orgData,orgs}) {
             <SettingsCard
               titleClassName="text-base-20"
               title="Session Tags & Reconciliation"
+              questionMarkMargin='ml-2 '
+              questionMarkIcon={questionMark}
               className={styles["bordered-settings-container"]}
               body={
                 <div>

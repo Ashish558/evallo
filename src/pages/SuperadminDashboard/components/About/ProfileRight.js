@@ -49,14 +49,14 @@ const ProfileRight = ({ userData,orgs }) => {
   
   return (
     <>
-      <div className="flex flex-col gap-3 p-3 min-w-[740px] w-[62%] bg-white shadow-xs rounded-md border border-gray-300">
-        <div className="flex rounded-sm justify-between border-b-[1.5px] border-b-gray-300">
-          <span className="flex cursor-pointer gap-5 items-end py-0 relative z-20 translate-y-[2.4px] text-[15px] font-semibold">
+      <div className="flex flex-col gap-3 py-3  w-[58.2291667vw] bg-white shadow-[0px_0px_2.66667px_0px_rgba(0,0,0,0.25)] rounded-5 border border-white h-[686px]">
+        <div className="flex rounded-sm justify-between border-b-[1.5px] border-b-gray-300 w-[55%]">
+          <span className="flex cursor-pointer gap-5 items-end py-0 relative z-20 translate-y-[2.4px] text-base-18 font-medium">
             <button
               onClick={() => setSubFrame(0)}
-              className={`px-2 py-1 rounded-sm ${
+              className={`px-4 py-2 rounded-sm ${
                 subFrame === 0
-                  ? "border-b-[3px]  border-b-[#FFA28D]  text-[#FFA28D] "
+                  ? "border-b-[4px]  border-b-[#FFA28D]  text-[#FFA28D] "
                   : "text-[#26435F]"
               }`}
             >
@@ -65,9 +65,9 @@ const ProfileRight = ({ userData,orgs }) => {
 
             <button
               onClick={() => setSubFrame(1)}
-              className={`px-2 py-1 rounded-sm ${
+              className={`px-4 py-2 rounded-sm ${
                 subFrame === 1
-                  ? "border-b-[3px]  border-b-[#FFA28D]  text-[#FFA28D] "
+                  ? "border-b-[4px]  border-b-[#FFA28D]  text-[#FFA28D] "
                   : "text-[#26435F]"
               }`}
             >
@@ -75,9 +75,9 @@ const ProfileRight = ({ userData,orgs }) => {
             </button>
             <button
               onClick={() => setSubFrame(2)}
-              className={`px-2 py-1 rounded-sm ${
+              className={`px-4 py-2 rounded-sm ${
                 subFrame === 2
-                  ? "border-b-[3px]  border-b-[#FFA28D]  text-[#FFA28D] "
+                  ? "border-b-[4px]  border-b-[#FFA28D]  text-[#FFA28D] "
                   : "text-[#26435F]"
               }`}
             >
@@ -85,9 +85,9 @@ const ProfileRight = ({ userData,orgs }) => {
             </button>
             <button
               onClick={() => setSubFrame(3)}
-              className={`px-2 py-1 rounded-sm ${
+              className={`pl-4 py-2 rounded-sm ${
                 subFrame === 3
-                  ? "border-b-[3px]  border-b-[#FFA28D]  text-[#FFA28D] "
+                  ? "border-b-[4px]  border-b-[#FFA28D]  text-[#FFA28D] "
                   : "text-[#26435F]"
               }`}
             >
@@ -95,12 +95,7 @@ const ProfileRight = ({ userData,orgs }) => {
               Signup Details
             </button>
           </span>
-          <span className="flex flex-col justify-end items-end gap-1">
-            <button className="bg-[#FFA28D] p-1 px-3   rounded-md text-xs text-white">
-              {"12 Days"}
-            </button>
-            <p className="text-[#FFA28D] text-xs">{last12Days}</p>
-          </span>
+          
         </div>
         {subFrame === 0 ? (
           <SubFrame0 userData={userData} />
