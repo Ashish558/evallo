@@ -55,7 +55,6 @@ export default function UserDetails({
   customFields,
   values,
 }) {
-  console.log({ values, otherDetails });
   const [selected, setSelected] = useState(false);
   const [disabled, setDisabled] = useState(false);
 

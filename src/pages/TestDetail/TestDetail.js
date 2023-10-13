@@ -187,10 +187,13 @@ export default function TestDetail() {
       }else{
          editable = true
       }
+      if(persona === 'superAdmin' || persona === 'manager'){
+         editable = true
+      }
       const updatedQuestions = tempdata.map(question => {
          if (testData.testType === 'DSAT') {
             const { AnswerChoices, ...rest } = question;
-            return rest;
+            return {...rest, editable};
          }
          return {...question, editable};
       });
@@ -202,7 +205,8 @@ export default function TestDetail() {
             testType: testData.testType,
             QImage: obj?.QuestionImage === 'no' ? 'No' : 'Yes',
             Passage: obj?.Passage === 'no' ? 'No' : 'Yes',
-            AImage: obj.Answers.some(it => it?.image !== 'no' && it?.image !== undefined && it?.image !== null) ? 'Yes' : 'No'
+            AImage: obj.Answers.some(it => it?.image !== 'no' && it?.image !== undefined && it?.image !== null) ? 'Yes' : 'No',
+            editable
          }))
       }
 
