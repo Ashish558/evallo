@@ -44,28 +44,6 @@ export default function TestPage() {
   const location = useLocation();
   const [cal,setCal]=useState(false)
   const [allquestion_Data,setAllQuestions_data]=useState()
-  
-  function MarkAnswer(QuestionNumber, correctAnswer) {
-   console.log(QuestionNumber,correctAnswer);
-    const updatedanswer = answers.map((q) =>
-      q.QuestionNumber === QuestionNumber
-        ? {
-            ...q,
-            ResponseAnswer:
-              correctAnswer === 0
-                ? "A"
-                : correctAnswer === 1
-                ? "B"
-                : correctAnswer === 2
-                ? "C"
-                : correctAnswer === 3
-                ? "D"
-                : null,
-          }
-        : q
-    );
-    setAnswers(updatedanswer);
-  }
 
     function showcutcheck(){
       setcutcheck(!cutcheck)
@@ -366,6 +344,32 @@ const tempsubjects = [
          })
    }
 
+    
+  function MarkAnswer(QuestionNumber, correctAnswer) {
+   const timeTaken = initialSeconds - countDown
+   setInitialSeconds(countDown)
+   console.log(QuestionNumber,correctAnswer,countDown);
+    const updatedanswer = answers.map((q) =>
+      q.QuestionNumber === QuestionNumber
+        ? {
+            ...q,
+            ResponseAnswer:
+              correctAnswer === 0
+                ? "A"
+                : correctAnswer === 1
+                ? "B"
+                : correctAnswer === 2
+                ? "C"
+                : correctAnswer === 3
+                ? "D"
+                : null,
+                responseTime:q.responseTime>0?q.responseTime+timeTaken:timeTaken,
+          }
+        : q
+    );
+    setAnswers(updatedanswer);
+  }
+
    useEffect(()=>{
     console.log('info',info);
    if(info!=null&&info.length>0){
@@ -375,7 +379,7 @@ const tempsubjects = [
       QuestionType: item.QuestionType,
       QuestionNumber: item.QuestionNumber,
       ResponseAnswer: "",
-      responseTime: "10",
+      responseTime: 0,
     }));
     cutdata = dataofque.map((item) => ({
       QuestionNumber:item.QuestionNumber,
@@ -393,7 +397,7 @@ const tempsubjects = [
          QuestionType: item.QuestionType,
          QuestionNumber: item.QuestionNumber,
          ResponseAnswer: backupresponse[i].ResponseAnswer,
-         responseTime: "10",
+         responseTime: item.responseTime,
        }));
     }
     console.log(question_d,markr,cutdata);
@@ -577,6 +581,7 @@ const [pages,setPage]=useState(arr)
      <>
      {info?.length>0 && answers?.length>0&&cutanswer?.length>0&&markreview?.length>0?
       <Navbar  cal={cal}
+      setCountDown={setCountDown}
       showannotate={showannotate}
       setshowannotate={setshowannotate}
       details={sectionDetails[starttestindex]?.description}
