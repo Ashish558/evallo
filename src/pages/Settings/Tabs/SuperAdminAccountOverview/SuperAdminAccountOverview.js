@@ -145,6 +145,7 @@ const AccountOverview = () => {
           <InputField
             style={{ color: "blue" }}
             placeholder=""
+            labelClassname="mb-1"
             parentClassName="text-xs text-[#26435F] "
             inputContainerClassName="text-[rgba(102,112,133,1)] bg-white border border-white rounded-5 w-[15.2604166667vw]"
             inputClassName="bg-transparent "
@@ -161,6 +162,7 @@ const AccountOverview = () => {
 
           <InputField
             placeholder=""
+            labelClassname="mb-1"
             parentClassName="text-xs text-[#26435F]"
             inputContainerClassName="text-[rgba(102,112,133,1)] bg-white border border-white rounded-5 w-[15.2604166667vw]"
             inputClassName="bg-transparent"
@@ -177,6 +179,7 @@ const AccountOverview = () => {
 
           <InputField
             placeholder=""
+            labelClassname="mb-1"
             parentClassName="text-xs text-[#26435F]"
             inputContainerClassName="text-[rgba(102,112,133,1)] bg-white border border-white rounded-5 w-[21.0416666667vw]"
             inputClassName="bg-transparent border border-white rounded-5"
@@ -208,6 +211,7 @@ const AccountOverview = () => {
 
           <InputFieldDropdown
             placeholder=""
+            labelClassname="mb-1"
             parentClassName="text-xs w-[400px] text-[#26435F] "
             inputContainerClassName="text-[rgba(102,112,133,1)] bg-white border border-white rounded-5 h-[47px] w-[15.26vw]"
             inputClassName="bg-transparent "
@@ -239,6 +243,7 @@ const AccountOverview = () => {
         </div>
         <div className="flex gap-10 flex-1">
           <InputField
+            labelClassname="mb-1"
             placeholder=""
             parentClassName="text-xs text-[#26435F]"
             inputContainerClassName="text-[rgba(102,112,133,1)] bg-white border border-white rounded-5 w-[15.2604166667vw]"
@@ -254,6 +259,7 @@ const AccountOverview = () => {
             error={error.currentPassword}
           />
           <InputField
+            labelClassname="mb-1"
             placeholder=""
             parentClassName="text-xs text-[#26435F]"
             inputContainerClassName="text-[rgba(102,112,133,1)] bg-white border border-white rounded-5 w-[15.2604166667vw]"
@@ -269,6 +275,7 @@ const AccountOverview = () => {
             error={error.newPassword}
           />
           <InputField
+            labelClassname="mb-1"
             style={{ border: "1px solid white !important" }}
             placeholder=""
             parentClassName="text-xs text-[#26435F]"
@@ -287,7 +294,7 @@ const AccountOverview = () => {
           <div>
             <button
               onClick={handleDataUpdate}
-              className="bg-[#FFA28D]  rounded-md my-3 text-white px-[50px] py-3  mt-5 w-[186.67px]"
+              className="bg-[#FFA28D]  rounded-md my-3 text-white px-[50px] py-2.5  mt-5 w-[186.67px]"
             >
               Update
             </button>

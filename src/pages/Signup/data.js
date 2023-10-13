@@ -148,21 +148,22 @@ export const testPreparationsData = [
     checked: false,
   },
   {
-    text: "ISEE/SSAT",
-    checked: false,
-  },
-  {
     text: "GMAT/GRE",
-    checked: false,
-  },
-  {
-    text: "LSAT/MCAT",
     checked: false,
   },
   {
     text: "Others",
     checked: false,
   },
+  {
+    text: "ISEE/SSAT",
+    checked: false,
+  },
+  {
+    text: "LSAT/MCAT",
+    checked: false,
+  },
+
 ];
 
 export const tutoringData = [

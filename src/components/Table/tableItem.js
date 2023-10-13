@@ -15,9 +15,9 @@ import EditTestIcon from "../../assets/icons/edit-test.svg";
 import TrashIcon from "../../assets/icons/ic_outline-delete.svg";
 import TrashIcon2 from "../../assets/icons/trash-blue.svg";
 import styles from './styles.module.css'
-import AddIcon from "../../assets/icons/plus.svg";
-import EditIcon from "../../assets/icons/test-edit.svg";
-import DeleteIcon from "../../assets/icons/trash-icon.svg";
+import AddIcon from "../../assets/icons/plus_colored.svg";
+import EditIcon from "../../assets/icons/edit_logo.svg";
+import DeleteIcon from "../../assets/icons/delete_logo.svg";
 import DeleteTutorIcon from "../../assets/icons/delete-tutor.svg";
 import InputSelect from "../InputSelect/InputSelect";
 import { useLazyGetSettingsQuery } from "../../app/services/session";
@@ -58,7 +58,8 @@ export default function TableItem({
   setnumberChecked,
   testtype
 }) {
-  const { dateFormat } = useSelector(state => state.user)
+  const [dateFormat, setDateFormat] = useState("dd/mm/yy")
+
   const [score, setScore] = useState("-");
   const navigate = useNavigate();
   const [fetchSettings, settingsResp] = useLazyGetSettingsQuery();
@@ -82,6 +83,12 @@ export default function TableItem({
   const [settings, setSettings] = useState({
     leadStatus: [],
   });
+
+  useEffect(() => {
+    if (organization2 && organization2?.settings) {
+      setDateFormat(organization2?.settings?.dateFormat)
+    }
+  }, [organization2])
 
   useEffect(() => {
     if (item.userType === "tutor")
@@ -162,22 +169,22 @@ export default function TableItem({
       console.log("update res", item?._id, field, res.data);
     });
   };
-  
-  const [deleteAdmin,setDeleteAdmin]=useDeleteAdminMutation()
-  const [deleteAdminModalActive,setDeleteAdminModalActive]=useState(false)
-  const [deleteSelectLoading,setDeleteSelectLoading]=useState(false)
-  console.log({item})
-  const handleDeleteAdmin=()=>{
+
+  const [deleteAdmin, setDeleteAdmin] = useDeleteAdminMutation()
+  const [deleteAdminModalActive, setDeleteAdminModalActive] = useState(false)
+  const [deleteSelectLoading, setDeleteSelectLoading] = useState(false)
+  console.log({ item })
+  const handleDeleteAdmin = () => {
     setDeleteSelectLoading(true)
-    deleteAdmin({id:item?.associatedOrg?._id}).then((res)=>{
+    deleteAdmin({ id: item?.associatedOrg?._id }).then((res) => {
       setDeleteSelectLoading(false)
-      if(res?.data){
+      if (res?.data) {
         setDeleteAdminModalActive(false)
         alert("Successfully deleted Admin!")
         handleAllOrgRefetch()
-        
+
       }
-      else if(res?.error){
+      else if (res?.error) {
         alert("Error deleting Admin!")
       }
       console.log(res)
@@ -311,10 +318,10 @@ export default function TableItem({
       setIsChecked(bool ? true : false)
     }
   }, [selectedId2])
+  console.log('item---', item)
 
   return (
     <>
-{      console.log(extratableitem)}
       {
         dataFor === "tutorFeedback" && (
           <>
@@ -473,7 +480,7 @@ export default function TableItem({
           </td>
           <td className=" text-[17.5px] px-1  min-w-14 ">
             <InputSelect
-              disabled={(item?.userType === "tutor" ) ? false : true}
+              disabled={(item?.userType === "tutor") ? false : true}
               tableDropdown={true}
               value={tutorStatus ? tutorStatus : "-"}
               optionData={organization2?.settings?.tutorStatus}
@@ -539,10 +546,10 @@ export default function TableItem({
               <span style={{ textDecoration: 'underline' }}>edit</span>
             </div>
           </td>
-          <td className="font-medium text-[17.5px]  ">
+          <td className="font-medium ">
             <div className="">
               <button
-                className="rounded-[5.33px] bg-[rgba(38,67,95,0.23)] text-[#517CA8] px-[17px] pt-0 pb-2  text-[18.67px]"
+                className="rounded-[5.33px] bg-[rgba(38,67,95,0.23)] text-[#517CA8] px-[17px]  py-1  text-base-18"
                 onClick={() => onClick.handleResetPassword(item.email)}
               >
                 Reset
@@ -629,7 +636,7 @@ export default function TableItem({
           </td>
           <td className=" text-[17.5px] px-1  min-w-14 py-3  text-center">
 
-            <span onClick={() => onClick.redirect(item)} className="">
+            <span onClick={() => onClick.redirect(item)} className={`${new Date() > new Date(item?.dueDate) ? "text-danger" : ""}`}>
               {getFormattedDate(item.dueDate, dateFormat)}
             </span>
           </td>
@@ -781,42 +788,28 @@ export default function TableItem({
                     {item.isCompleted === true ? score : "-"}
                   </div>
                 ) : key === "dueDate" ? (
-                  <span className={` ${new Date(item[key]) < new Date() ? "text-[#FF7979] font-semibold" : ""}`}> {(item[key]).replace(/-/g, '/')}</span>
-                ) : (
-                  item[key].replace(/-/g, '/')
-                )}
+                  <span className={` ${new Date(item[key]) < new Date() ? "text-[#FF7979] font-semibold" : ""}`}> {getFormattedDate(item[key], dateFormat)}</span>
+                ) :
+                  key === "createdAt" ? getFormattedDate(item[key], dateFormat) : key === "assignedOn" ? getFormattedDate(item[key], dateFormat) : item[key]
+
+                }
+
               </td>
             )
           )}
           <td className="font-medium px-1  min-w-14 py-4">
             <div className="flex items-center">
-              <img
-                src={DownloadIcon}
+              {persona == "student" || <img
+                src={DownloadIcon} alt="DownloadIcon"
                 className="w-[30px] cursor-pointer"
                 onClick={() => handlePdfNavigate()}
-              />
+              />}
               {persona === "parent" ? (
                 <>
-                  <button
-                    className={`px-2.5 py-1.8 rounded-md flex items-center leading-none bg-primary text-white ml-4 ${item.isCompleted === false
-                      ? "opacity-50 pointer-events-none"
-                      : ""
-                      }`}
-                    onClick={() =>
-                      navigate(
-                        `/assigned-tests/${item.testId}/${item.assignedTestId}/report/${item.studentId._id}`
-                      )
-                    }
-                  >
-                    View Report
-                  </button>
-                </>
-              ) : (
-                <>
-                  {console.log(item)}
+                  {/* {console.log(item)} */}
                   {item.isCompleted ? (
                     <button
-                      className="px-2.5 py-1.8 bg-[#38C980] rounded-md flex items-center leading-none bg-primary text-white ml-4"
+                      className="px-2.5 py-1.8 bg-[#38C980] rounded-5 flex items-center leading-none  text-white ml-4 w-[120px] h-[31px] justify-center"
                       onClick={() =>
                         navigate(
                           `/assigned-tests/${item.testId}/${item.assignedTestId}/report/`
@@ -827,7 +820,55 @@ export default function TableItem({
                     </button>
                   ) : item.isStarted ? (
                     <button
-                      className="px-2.5 py-1.8 bg-[#FFCE84] rounded-md flex items-center leading-none bg-primary text-white ml-4"
+                      className="px-2.5 py-1.8  rounded-5 flex items-center leading-none bg-[#FFCE84] text-white ml-4 w-[120px] h-[31px] justify-center"
+                      onClick={() => {
+                        const indexx = testtype.findIndex(obj => obj.testId === item.testId);
+                        testtype[indexx].testtype == 'DSAT' ?
+                          navigate(`/testpage/${item.testId}/${item.assignedTestId}`)
+                          :
+                          navigate(
+                            `/all-tests/start-section/${item.testId}/${item.assignedTestId}`
+                          )
+                      }
+                      }
+                    >
+                      Started
+                    </button>
+                  ) : (
+                    <button
+                      className="px-2.5 py-1.8 rounded-5 bg-[#D4D9DF] flex items-center leading-none  text-white ml-4 w-[120px] h-[31px] justify-center"
+                      onClick={() => {
+                        const indexx = testtype.findIndex(obj => obj.testId === item.testId);
+                        testtype[indexx].testtype == 'DSAT' ?
+                          navigate(`/testpage/${item.testId}/${item.assignedTestId}`)
+                          :
+                          navigate(
+                            `/all-tests/start-section/${item.testId}/${item.assignedTestId}`
+                          )
+                      }
+                      }
+                    >
+                      Not Started
+                    </button>
+                  )}
+                </>
+              ) : (
+                <>
+                  {/* {console.log(item)} */}
+                  {item.isCompleted ? (
+                    <button
+                      className="px-2.5 py-1.8 bg-[#38C980] rounded-5 flex items-center leading-none  text-white ml-4 w-[120px] h-[31px] justify-center"
+                      onClick={() =>
+                        navigate(
+                          `/assigned-tests/${item.testId}/${item.assignedTestId}/report/`
+                        )
+                      }
+                    >
+                      Report
+                    </button>
+                  ) : item.isStarted ? (
+                    <button
+                      className="px-2.5 py-1.8  rounded-5 flex items-center leading-none bg-[#FFCE84] text-white ml-4 w-[120px] h-[31px] justify-center"
                       onClick={() => {
                         const indexx = testtype.findIndex(obj => obj.testId === item.testId);
                         testtype[indexx].testtype == 'DSAT' ?
@@ -843,7 +884,7 @@ export default function TableItem({
                     </button>
                   ) : (
                     <button
-                      className="px-2.5 py-1.8 rounded-md bg-[#FF7979] flex items-center leading-none bg-primary text-white ml-4"
+                      className="px-2.5 py-1.8 rounded-5 bg-[#FF7979] flex items-center leading-none  text-white ml-4 w-[120px] h-[31px] justify-center"
                       onClick={() => {
                         const indexx = testtype.findIndex(obj => obj.testId === item.testId);
                         testtype[indexx].testtype == 'DSAT' ?
@@ -872,18 +913,20 @@ export default function TableItem({
       {dataFor === "testsDetailQuestions" && (
         <tr className="bg-white text-[17.5px]   leading-7 mt-[10px]">
           {MapData(item, dataFor, excludes)}
-          {console.log('dfsdfdgdfgdfg',item)}
-          {testtype==='DSAT'?<>
-          <td><div className={` ${extratableitem[item.QuestionNumber-1].QImage==='Yes'&& 'bg-[#38C980]'} mx-auto rounded-full w-[20px] h-[20px]`}>{extratableitem[item.QuestionNumber-1].QImage==='No'?'--':null}</div></td>
-          <td> <div className={` ${extratableitem[item.QuestionNumber-1].AImage=='Yes'&&'bg-[#FFCE84]'} mx-auto  w-[20px] rounded-full h-[20px] `}>{extratableitem[item.QuestionNumber-1].AImage=='No'?'--':null}</div></td>
-          <td className={` ${extratableitem[item.QuestionNumber-1].Passage=='Yes'? 'text-[#38C980]':'text-[#FF7979]'} text-[17.5px] font-semibold `}>{extratableitem[item.QuestionNumber-1].Passage}</td>
-          </>:null}
+          {testtype === 'DSAT' ? <>
+            <td><div className={` ${extratableitem[item.QuestionNumber - 1].QImage === 'Yes' && 'bg-[#38C980]'} mx-auto rounded-full w-[20px] h-[20px]`}>{extratableitem[item.QuestionNumber - 1].QImage === 'No' ? '--' : null}</div></td>
+            <td> <div className={` ${extratableitem[item.QuestionNumber - 1].AImage == 'Yes' && 'bg-[#FFCE84]'} mx-auto  w-[20px] rounded-full h-[20px] `}>{extratableitem[item.QuestionNumber - 1].AImage == 'No' ? '--' : null}</div></td>
+            <td className={` ${extratableitem[item.QuestionNumber - 1].Passage == 'Yes' ? 'text-[#38C980]' : 'text-[#FF7979]'} text-[17.5px] font-semibold `}>{extratableitem[item.QuestionNumber - 1].Passage}</td>
+          </> : null}
           <td className="font-medium flex justify-center px-1 min-w-14 py-4">
-            <img
-              src={EditTestIcon}
-              className="cursor-pointer"
-              onClick={() => onClick.handleEditTestClick(item)}
-            />
+            {
+              !item.editable ? <></> :
+                <img
+                  src={EditTestIcon}
+                  className="cursor-pointer"
+                  onClick={() => onClick.handleEditTestClick(item)}
+                />
+            }
           </td>
         </tr>
       )}
@@ -893,7 +936,7 @@ export default function TableItem({
           <td>{item.testType} &#174;</td>
           <td> {getFormattedDate(item.createdAt.split("T")[0], dateFormat)}</td>
           <td>{getFormattedDate(item.updatedAt.split("T")[0], dateFormat)}</td>
-          <td> {item.no_of_assign ? item.no_of_assign : "-"} </td>
+          <td> {item.no_of_assign!==null ? item.no_of_assign : "-"} </td>
           <td className="font-medium px-1 py-4 text-right">
             <div className="flex justify-end">
               <button
@@ -905,14 +948,17 @@ export default function TableItem({
             </div>
           </td>
           <td className="font-medium px-1 ">
-          <div className="flex justify-end  flex justify-center items-center">
-            <button
-              className="flex leading-none bg-[#26435f4d] text-white py-1.5 px-5 cursor-pointer rounded !text-base-15"
-              onClick={() => onClick.openRemoveTestModal(item)}
-            >
-              Remove
-            </button>
-            </div>
+            {
+              (!item.addBySuperAdmin && persona !== 'superAdmin') &&
+              <div className="flex justify-end  flex justify-center items-center">
+                <button
+                  className="flex leading-none bg-[#26435f4d] text-white py-1.5 px-5 cursor-pointer rounded !text-base-15"
+                  onClick={() => onClick.openRemoveTestModal(item)}
+                >
+                  Remove
+                </button>
+              </div>
+            }
           </td>
         </tr>
       )}
@@ -933,7 +979,7 @@ export default function TableItem({
               </p>
             </div>
           </td>
-          <td className="font-medium px-1 justify-center flex gap-x-2">
+          <td className="font-medium px-1 justify-center flex gap-x-2 py-3">
             <img
               src={EditIcon}
               className="cursor-pointer p-1"
@@ -949,7 +995,7 @@ export default function TableItem({
           </td>
           <td className=" gap-x-2 ">
             <div className="flex items-center gap-x-2 justify-center pr-3">
-              <button className="px-4 py-1 text-[#517CA8] bg-[#517CA81A] ">
+              <button className="px-1  text-[#517CA8] bg-[rgba(81,124,168,0.1)] w-[66px] h-[26px] rounded-[2.6px]">
                 Beta
               </button>
               <img src={AddIcon} alt="add" className="" />
@@ -982,13 +1028,13 @@ export default function TableItem({
             </span>
           </td>
           <td className="font-medium text-[17.5px] px-1  min-w-14 py-4">
-            <div className="my-[6px]">{item.firstName + " "+ item?.lastName}</div>
+            <div className="my-[6px]">{item.firstName + " " + item?.lastName}</div>
           </td>
 
           <td className="font-medium text-[17.5px] px-1  min-w-14 py-4">
             <div className="my-[6px]">{item.email}</div>
           </td>
-          
+
           <td className="font-medium text-[17.5px] px-1  min-w-14 py-4">
             <div className="my-[6px]">{item.phone}</div>
           </td>
@@ -996,9 +1042,9 @@ export default function TableItem({
             <div className="my-[6px]">{item.associatedOrg?.country}</div>
           </td>
 
-         
 
-         
+
+
           <td className="font-medium text-[17.5px] px-1 min-w-14 py-4">
             <div className="my-[6px]">{item?.registrationAs}</div>
           </td>
@@ -1018,11 +1064,11 @@ export default function TableItem({
             <div className="my-[6px]"> {new Date(item.createdAt).toLocaleDateString()}</div>
           </td>
           <td className="font-medium text-[17.5px] px-1  min-w-14 py-4">
-            <div className="my-[6px]"><img onClick={()=>setDeleteAdminModalActive(true)} src={DeleteIcon} alt="delete"/> </div>
+            <div className="my-[6px]"><img onClick={() => setDeleteAdminModalActive(true)} src={DeleteIcon} alt="delete" /> </div>
           </td>
         </tr>
       )}
-         {deleteAdminModalActive && (
+      {deleteAdminModalActive && (
         <Modal
           title={
             <span className="leading-10">
@@ -1043,7 +1089,7 @@ export default function TableItem({
             bgDanger: true,
             loading: deleteSelectLoading,
           }}
-         
+
           handleClose={() => setDeleteAdminModalActive(false)}
           classname={"max-w-[600px]  mx-auto"}
         />

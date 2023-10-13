@@ -230,7 +230,7 @@ function SuperadminDashboard() {
                       >
                         <span className={` ${currentUser?.name === item.text.toLowerCase() ? "text-[#FFA28D]":""}`} >{item.text}</span>
                         {currentUser?.name === item.text.toLowerCase() ? (
-                          <p className="border-b-[4px] relative  rounded-t translate-y-[12px] z-5000 border-b-[#FFA28D]  text-[#FFA28D] "></p>
+                          <p className="border-b-[4px] relative  rounded-t translate-y-[12px]  border-b-[#FFA28D]  text-[#FFA28D] "></p>
                         ) : (
                           ""
                         )}

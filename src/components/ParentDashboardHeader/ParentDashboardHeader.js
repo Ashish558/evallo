@@ -79,12 +79,12 @@ const ParentDashboardHeader = ({ selectedStudent, setSelectedStudent }) => {
     });
   }, []);
 
-  useEffect(()=>{
-   if(organization?.settings){
-    console.log({organization})
-    setImages(organization?.settings?.offerImages      )
-   }
-  },[organization])
+  useEffect(() => {
+    if (organization?.settings) {
+      console.log({ organization })
+      setImages(organization?.settings?.offerImages)
+    }
+  }, [organization])
   useEffect(() => {
     if (user.assiginedStudents === undefined) return;
     const fetch = async () => {
@@ -116,9 +116,9 @@ const ParentDashboardHeader = ({ selectedStudent, setSelectedStudent }) => {
     });
   };
   const openLink = (link) => {
-    console.log({link})
+    console.log({ link })
     window.open(link, '_blank');
-    
+
   }
   console.log("associatedStudents", associatedStudents);
   console.log("selectedStudent", selectedStudent);
@@ -217,7 +217,7 @@ const ParentDashboardHeader = ({ selectedStudent, setSelectedStudent }) => {
                   disabled={amountToPay === 0}
                   onClick={handlePay}
                 >
-                  {amountToPay !== 0&&false ? (
+                  {amountToPay !== 0 && false ? (
                     <>Pay Now: $ {amountToPay}</>
                   ) : (
                     <>Coming Soon</>
@@ -233,7 +233,7 @@ const ParentDashboardHeader = ({ selectedStudent, setSelectedStudent }) => {
             <InputSelectNew
               optionType="object"
               label={"Select Student "}
-              labelClassname="text-[#26435F]  font-semibold text-base-20 -mt-2"
+              labelClassname="text-[#26435F]  font-semibold text-base-20 mb-[5px]"
               iconClass=" translate-y-[0px] ml-3"
               parentClassName=""
               inputContainerClassName="pt-1 pb-1"
@@ -252,7 +252,7 @@ const ParentDashboardHeader = ({ selectedStudent, setSelectedStudent }) => {
             />
 
           </div>
-          <div className=".mybox -mt-[30px] bg-white relative shadow-[0px_0px_2.500001907348633px_0px_#00000040] border-b-4 border-b-[#26435F] h-[215px] rounded-md !w-[25.5208vw]">
+          <div className=".mybox -mt-[30px] bg-white relative shadow-[0px_0px_2.500001907348633px_0px_#00000040] border-b-4 border-b-[#26435F] h-[225px] rounded-md !w-[25.5208vw]">
             <div id="borderLeft" className=""></div>
 
             <div

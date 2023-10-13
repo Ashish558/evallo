@@ -664,7 +664,7 @@ export default function UserManagement() {
     }
   });
 
-  console.log({ modalData })
+  // console.log({ modalData })
   return (
     <div className=" bg-lightWhite min-h-screen">
       <div className="py-14 pt-0 ">
@@ -801,26 +801,26 @@ export default function UserManagement() {
       }
       {deleteModalActive && (
         <Modal
+        crossBtn={true}
+        classname="!w-[666px] mx-auto"
           title={
-            <span className="leading-10">
-              Are you sure <br />
-              you want to delete user{" "}
-              {`${userToDelete.name} ${userToDelete._id}`} and all associated
-              data ?
+            <span className="leading-10 text-[21px] ">
+              Are You Sure You Want To Delete User{" "}
+              {`${userToDelete.name}`} ?
             </span>
           }
-          titleClassName="mb-12 leading-10"
+          titleClassName="mb-12 leading-10 !text-center"
           cancelBtn={true}
-          cancelBtnClassName="max-w-140"
+          cancelBtnClassName="!w-[146px] text-[#26435F] font-medium text-base !rounded-[8px] !bg-[rgba(38,67,95,0.10)] !ml-auto !h-[46px]"
           primaryBtn={{
             text: "Delete",
-            className: "w-[140px] pl-4 px-4",
+            className: "text-base bg-[#FF7979] !w-[146px] pl-4 pr-4   !rounded-[8px] font-medium !mr-auto !text-center !bg-[#FF7979] !h-[46px]",
             onClick: () => onDelete(),
             bgDanger: true,
             loading: deleteLoading,
           }}
           handleClose={() => setDeleteModalActive(false)}
-          classname={"max-w-567 mx-auto"}
+         
         />
       )}
     </div>

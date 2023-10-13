@@ -9,6 +9,7 @@ import sat from "../../../../assets/YIcons/Official SAT® scores.svg"
 import { useLazyGetTotalHoursQuery } from "../../../../app/services/session";
 import { useSelector } from "react-redux";
 import { getFormattedDate } from "../../../../utils/utils";
+
 const SPFrame2 = ({
   userDetail,
   settings,
@@ -20,56 +21,57 @@ const SPFrame2 = ({
   totalTest,
   setSelectedScoreIndex,
 }) => {
+  const { role: persona } = useSelector((state) => state.user);
   const [updateDetails, updateDetailsResp] = useUpdateUserDetailsMutation();
-  const [totalHours,setTotalHours]=useState(0)
-  const [getHours,getHoursStatus]=useLazyGetTotalHoursQuery()
-  const reduceArr = (id,key, update) => {
-  
-    
+  const [totalHours, setTotalHours] = useState(0)
+  const [getHours, getHoursStatus] = useLazyGetTotalHoursQuery()
+  const reduceArr = (id, key, update) => {
+
+
     //  //console.log({toEdit})
-    let temp=[]
-if(!toEdit[key] || !toEdit[key][key]) return 
-       temp = [...toEdit[key][key]];
-      temp = temp?.filter((it, idd) => idd !== id);
-      
-        if(update){
-          handleSubmit(key,temp)
-        }
-    };
-  useEffect(()=>{
-    
-    if(userId){
-      getHours(userId).then((res)=>{
+    let temp = []
+    if (!toEdit[key] || !toEdit[key][key]) return
+    temp = [...toEdit[key][key]];
+    temp = temp?.filter((it, idd) => idd !== id);
+
+    if (update) {
+      handleSubmit(key, temp)
+    }
+  };
+  useEffect(() => {
+
+    if (userId) {
+      getHours(userId).then((res) => {
         //console.log("tutored ",res)
       })
     }
-  },[userId])
+  }, [userId])
   const { dateFormat } = useSelector(state => state.user)
-  const handleSubmit = (key,e) => {
+  const handleSubmit = (key, e) => {
     //e.preventDefault();
-   // setLoading(true);
-    let reqBody = { [key]:e };
-   // delete reqBody["active"];
-   //  //console.log({reqBody,id:userId});
+    // setLoading(true);
+    let reqBody = { [key]: e };
+    // delete reqBody["active"];
+    //  //console.log({reqBody,id:userId});
     const userDetailSave = (reqBody) => {
-    
+
       // //console.log({reqBody,userDetail});
       // return
-      updateDetails({ id:userId, fields: reqBody }).then((res) => {
-      //  //console.log(res);
+      updateDetails({ id: userId, fields: reqBody }).then((res) => {
+        //  //console.log(res);
         //setLoading(false);
         fetchDetails(true, true);
         // handleClose()
       });
     };
-    
-      userDetailSave(reqBody);
-   
-    
+
+    userDetailSave(reqBody);
+
+
   };
   //console.log("frame2", settings, userDetail);
 
- 
+
   return (
     <div>
       {" "}
@@ -101,15 +103,15 @@ if(!toEdit[key] || !toEdit[key][key]) return
         </div>
         <div className="flex-1 h-[200px] design:h-[230px]">
           <p className=" text-sm text-[#26435F] font-semibold">
-          <span>
-                            <img
-                             className="inline-block mb-1 ml-2 -mt-1 !w-[150px] !h-5 design:!w-[180px] design:h-[30px] mr-2"
-                           
-                              src={sat}
-                              alt="copy"
-                            />
-                          </span>
-            <EditableText
+            <span>
+              <img
+                className="inline-block mb-1 ml-2 -mt-1 !w-[150px] !h-5 design:!w-[180px] design:h-[30px] mr-2"
+
+                src={sat}
+                alt="copy"
+              />
+            </span>
+            {persona == "admin" && <EditableText
               editable={editable}
               onClick={() => {
                 setSelectedScoreIndex(2);
@@ -124,7 +126,8 @@ if(!toEdit[key] || !toEdit[key][key]) return
               text="edit"
               textClassName="text-sm text-[#517CA8] text-underline  "
               className="text-sm my-0 flex justify-end   float-right"
-            />
+            />}
+
           </p>
 
           <div className="w-full bg-white relative h-full p-1 flex flex-col gap-1 !rounded-md shadow-[0px_0px_2.500001907348633px_0px_#00000040] rounded-md its-center overflow-y-auto custom-scroller">
@@ -137,7 +140,7 @@ if(!toEdit[key] || !toEdit[key][key]) return
                     alt="dot"
                   />
                   <div className="mx-2 flex flex-col text-xs text-base-15">
-                    <p className="text-[#517CA8]">{it.createdAt? getFormattedDate(it.createdAt, dateFormat):"NA" }</p>
+                    <p className="text-[#517CA8]">{it.createdAt ? getFormattedDate(it.createdAt, dateFormat) : "NA"}</p>
 
                     <p>
                       <span className="text-[#24A3D9]">
@@ -149,7 +152,7 @@ if(!toEdit[key] || !toEdit[key][key]) return
                     </p>
                   </div>
                   <img
-                    onClick={()=>reduceArr(idx,"satScores",true)}
+                    onClick={() => reduceArr(idx, "satScores", true)}
                     src={cancelIcon}
                     className="absolute right-3 design:!w-5 design:!h-5 inline-block float-right !w-3 !h-3"
                     alt="cancelIcon"
@@ -162,16 +165,16 @@ if(!toEdit[key] || !toEdit[key][key]) return
 
         <div className="flex-1 h-[200px] design:h-[230px]">
           <p className=" text-sm text-[#26435F] font-semibold">
-          <span>
-                            <img
-                             className="inline-block -mt-1 ml-2 !w-[150px] !h-5 mr-2 design:!w-[180px] design:h-[30px] mb-1"
-                           
-                              src={act}
-                              alt="copy"
-                            />
-                          </span>
-            
-            <EditableText
+            <span>
+              <img
+                className="inline-block -mt-1 ml-2 !w-[150px] !h-5 mr-2 design:!w-[180px] design:h-[30px] mb-1"
+
+                src={act}
+                alt="copy"
+              />
+            </span>
+
+            {persona == "admin" && <EditableText
               editable={editable}
               onClick={() => {
                 setSelectedScoreIndex(1);
@@ -186,7 +189,7 @@ if(!toEdit[key] || !toEdit[key][key]) return
               text="edit"
               textClassName="text-sm text-[#517CA8] text-underline  "
               className="text-sm my-0 flex justify-end   float-right"
-            />
+            />}
           </p>
 
           <div className="w-full bg-white relative h-full p-1 flex flex-col gap-1 !rounded-md shadow-[0px_0px_2.500001907348633px_0px_#00000040] rounded-md its-center overflow-y-auto custom-scroller">
@@ -199,7 +202,7 @@ if(!toEdit[key] || !toEdit[key][key]) return
                     alt="dot"
                   />
                   <div className="mx-2 flex flex-col text-xs text-base-15">
-                    <p className="text-[#517CA8]">{it.createdAt?getFormattedDate(it.createdAt, dateFormat):"NA"}</p>
+                    <p className="text-[#517CA8]">{it.createdAt ? getFormattedDate(it.createdAt, dateFormat) : "NA"}</p>
 
                     <p>
                       <span className="text-[#24A3D9]">
@@ -212,7 +215,7 @@ if(!toEdit[key] || !toEdit[key][key]) return
                     </p>
                   </div>
                   <img
-                   onClick={()=>reduceArr(idx,"actScores",true)}
+                    onClick={() => reduceArr(idx, "actScores", true)}
                     src={cancelIcon}
                     className="absolute right-3 design:!w-5 design:!h-5 inline-block float-right !w-3 !h-3"
                     alt="cancelIcon"
@@ -225,7 +228,7 @@ if(!toEdit[key] || !toEdit[key][key]) return
         <div className="flex-1 h-[200px] design:h-[230px]">
           <p className=" text-sm text-[#26435F] font-semibold text-base-18 mb-1">
             Baseline Scores
-            <EditableText
+            {persona == "admin" && <EditableText
               editable={editable}
               onClick={() =>
                 setToEdit({
@@ -239,13 +242,13 @@ if(!toEdit[key] || !toEdit[key][key]) return
               text="edit"
               textClassName="text-sm text-[#517CA8] text-underline  "
               className="text-sm my-0 flex justify-end   float-right"
-            />
+            />}
           </p>
 
           <div className="w-full bg-white relative h-full p-1 flex flex-col gap-1 !rounded-md shadow-[0px_0px_2.500001907348633px_0px_#00000040] rounded-md its-center overflow-y-auto custom-scroller">
             {userDetail?.baseLineScore && (
               <>
-                <div  className="beforeDot  p-2  flex-1 flex  w-full">
+                <div className="beforeDot  p-2  flex-1 flex  w-full">
                   <img
                     src={dot}
                     className="inline-block !w-2 !h-2 mt-2"
@@ -255,7 +258,7 @@ if(!toEdit[key] || !toEdit[key][key]) return
                     <p className="text-[#517CA8]">SAT BaseLine Scores</p>
 
                     <p>
-                    <span className="text-[#24A3D9]">
+                      <span className="text-[#24A3D9]">
                         C{userDetail?.baseLineScore?.satBaseLineScore?.maths + userDetail?.baseLineScore?.satBaseLineScore?.verbal}
                       </span>
                       <span className="text-[#517CA8]">
@@ -269,33 +272,33 @@ if(!toEdit[key] || !toEdit[key][key]) return
                     alt="cancelIcon"
                   />
                 </div>
-                <div  className="beforeDot  p-2  flex-1 flex  w-full">
-                <img
-                  src={dot}
-                  className="inline-block !w-2 !h-2 mt-2"
-                  alt="dot"
-                />
-                <div className="mx-2 flex flex-col text-xs text-base-15">
-                  <p className="text-[#517CA8] text-base-15">ACT BaseLine Scores</p>
+                <div className="beforeDot  p-2  flex-1 flex  w-full">
+                  <img
+                    src={dot}
+                    className="inline-block !w-2 !h-2 mt-2"
+                    alt="dot"
+                  />
+                  <div className="mx-2 flex flex-col text-xs text-base-15">
+                    <p className="text-[#517CA8] text-base-15">ACT BaseLine Scores</p>
 
-                  <p>
-                    <span className="text-[#24A3D9]">
-                      C{userDetail.baseLineScore?.actBaseLineScore?.english + userDetail.baseLineScore?.actBaseLineScore?.science + userDetail.baseLineScore?.actBaseLineScore?.maths + userDetail.baseLineScore?.actBaseLineScore?.reading}
-                    </span>
-                    <span className="text-[#517CA8]">
-                      | E{userDetail.baseLineScore?.actBaseLineScore?.english} R{userDetail.baseLineScore?.actBaseLineScore?.reading} M{userDetail.baseLineScore?.actBaseLineScore?.maths} S
-                      {userDetail.baseLineScore?.actBaseLineScore?.science}
-                    </span>
-                  </p>
+                    <p>
+                      <span className="text-[#24A3D9]">
+                        C{userDetail.baseLineScore?.actBaseLineScore?.english + userDetail.baseLineScore?.actBaseLineScore?.science + userDetail.baseLineScore?.actBaseLineScore?.maths + userDetail.baseLineScore?.actBaseLineScore?.reading}
+                      </span>
+                      <span className="text-[#517CA8]">
+                        | E{userDetail.baseLineScore?.actBaseLineScore?.english} R{userDetail.baseLineScore?.actBaseLineScore?.reading} M{userDetail.baseLineScore?.actBaseLineScore?.maths} S
+                        {userDetail.baseLineScore?.actBaseLineScore?.science}
+                      </span>
+                    </p>
+                  </div>
+                  <img
+                    src={cancelIcon}
+                    className="absolute right-3 design:!w-5 design:!h-5 inline-block float-right !w-3 !h-3"
+                    alt="cancelIcon"
+                  />
                 </div>
-                <img
-                  src={cancelIcon}
-                  className="absolute right-3 design:!w-5 design:!h-5 inline-block float-right !w-3 !h-3"
-                  alt="cancelIcon"
-                />
-              </div>
               </>
-              )
+            )
             }
           </div>
         </div>

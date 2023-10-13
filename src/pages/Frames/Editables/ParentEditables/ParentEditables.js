@@ -101,15 +101,15 @@ export default function ParentEditables({
     "Cooking",
   ];
   const Expertise = [
-   {_id:1,text: "SAT"},
-   {_id:2,text: "ACT"},
-   {_id:3,text: "GRE"},
-   {_id:4,text: "GMAT"},
-   {_id:5,text: "Academic Coaching"},
-   {_id:6,text: "Life Coaching"},
-   {_id:7,text: "Career Counselling"},
-   {_id:8,text: "College Counselling"},
-   {_id:9,text: "Subject Tutoring"},
+    { _id: 1, text: "SAT" },
+    { _id: 2, text: "ACT" },
+    { _id: 3, text: "GRE" },
+    { _id: 4, text: "GMAT" },
+    { _id: 5, text: "Academic Coaching" },
+    { _id: 6, text: "Life Coaching" },
+    { _id: 7, text: "Career Counselling" },
+    { _id: 8, text: "College Counselling" },
+    { _id: 9, text: "Subject Tutoring" },
   ];
   const data = [
     {
@@ -364,17 +364,17 @@ export default function ParentEditables({
   //console.log("parentEdit",currentField,currentToEdit,organization,userId)
   const handleAddReview = () => {
     let tutorRev = currentToEdit?.tutorReviews;
-    let bool=0;
+    let bool = 0;
     tutorRev?.map((tr, id) => {
-      if(!tr?.userTag||!tr?.content|| !tr?.date|| !tr?.service||!tr?.userTag?.length===0||!tr?.content?.length===0|| !tr?.date?.length===0|| !tr?.service?.length===0){
-        if(!bool)
-        alert("Please fill all the fields to add review. ")
-     
-        bool=1;
+      if (!tr?.userTag || !tr?.content || !tr?.date || !tr?.service || !tr?.userTag?.length === 0 || !tr?.content?.length === 0 || !tr?.date?.length === 0 || !tr?.service?.length === 0) {
+        if (!bool)
+          alert("Please fill all the fields to add review. ")
+
+        bool = 1;
         return
       }
     })
-    if(bool)return
+    if (bool) return
     tutorRev?.map((tr, id) => {
       let reqBody = tr;
       reqBody.orgId = organization?._id;
@@ -382,18 +382,18 @@ export default function ParentEditables({
       //console.table(id, "review", reqBody);
       addReview(reqBody).then((res) => {
         console.log(id, "newtr tutor review", res);
-      
-      if (id === tutorRev?.length - 1){
-        console.log("last review")
-        fetchDetails(true, true);
-        setLoading(false)
-        handleClose()
-        setCurrentToEdit({
-          active: false,
-          tutorReviews: [],
-          fetchData: [],
-        });
-       
+
+        if (id === tutorRev?.length - 1) {
+          console.log("last review")
+          fetchDetails(true, true);
+          setLoading(false)
+          handleClose()
+          setCurrentToEdit({
+            active: false,
+            tutorReviews: [],
+            fetchData: [],
+          });
+
         }
       });
     });
@@ -489,7 +489,7 @@ export default function ParentEditables({
     // console.log(reqBody);
     if (reqBody?.tutorReviews) {
       handleAddReview();
-      return 
+      return
     }
     if (currentField.name === "profileData") {
       let body = { ...reqBody };
@@ -554,7 +554,7 @@ export default function ParentEditables({
         // handleClose()
       });
     } else if (currentField.api === "tutorDetail") {
-     
+
       if (reqBody.tutorLevel) {
         const level = getLevel(reqBody.tutorLevel);
         reqBody.tutorLevel = level;
@@ -616,7 +616,7 @@ export default function ParentEditables({
   };
 
   // console.log('awsLink', awsLink)
-   console.log('toedit--', currentToEdit)
+  console.log('toedit--', currentToEdit)
   // console.log('setting', settings.servicesAndSpecialization[currentToEdit.selectedIdx])
   // console.log('field', currentField)
   // console.log('sett', settings)
@@ -649,7 +649,7 @@ export default function ParentEditables({
       } else {
         let newserv =
           organization.settings?.servicesAndSpecialization[
-            currentToEdit.selectedIdx
+          currentToEdit.selectedIdx
           ];
         updated.push({ ...newserv, price: value });
         setUpdatedService({ ...newserv, price: value });
@@ -699,8 +699,8 @@ export default function ParentEditables({
                   {currentField.title
                     ? currentField.title
                     : toEdit.tutorServices
-                    ? "Service"
-                    : ""}
+                      ? "Service"
+                      : ""}
                 </div>
                 <button
                   className="w-[100px] bg-[#FFA28D] text-base pt-2 rounded text-white pb-2  pl-3 pr-3 ml-auto"
@@ -2226,7 +2226,7 @@ export default function ParentEditables({
                             if (currentToEdit.serviceSpecializations) {
                               servicesArray =
                                 currentToEdit.serviceSpecializations;
-                             }
+                            }
                             console.log(servicesArray);
                             setCurrentToEdit({
                               ...currentToEdit,

@@ -661,7 +661,7 @@ export default function ParentEditables({
       } else {
         let newserv =
           organization.settings?.servicesAndSpecialization[
-            currentToEdit.selectedIdx
+          currentToEdit.selectedIdx
           ];
         updated.push({ ...newserv, price: value });
         setUpdatedService({ ...newserv, price: value });
@@ -720,8 +720,8 @@ export default function ParentEditables({
                   {currentField.title
                     ? currentField.title
                     : toEdit.tutorServices
-                    ? "Service"
-                    : ""}
+                      ? "Service"
+                      : ""}
                 </div>
                 <button
                   className="w-[100px] bg-[#FFA28D] p-1 rounded text-white  text-base pl-3 pr-3 ml-auto"
@@ -1492,7 +1492,7 @@ export default function ParentEditables({
                 {currentField.name === "service" && (
                   <div className="w-[400px] max-h-[50vh] overflow-y-auto custom-scroller">
                     <div className="flex flex-col gap-2">-
-                  {console.log({currentToEdit})}
+                      {console.log({ currentToEdit })}
                       {organization?.settings?.servicesAndSpecialization.map(
                         (item, id) => {
                           return (
@@ -1501,8 +1501,8 @@ export default function ParentEditables({
                                 stopM={true}
                                 checked={currentToEdit?.service?.includes(
                                   item?.service
-             
-                                  )}
+
+                                )}
                                 onChange={() =>
                                   handleServiceChange(item?.service)
                                 }
@@ -1929,8 +1929,8 @@ export default function ParentEditables({
                       <p className="font-medium mr-4 min-w-[150px]">
                         {currentToEdit.selectedIdx !== undefined
                           ? organization.settings.servicesAndSpecialization[
-                              currentToEdit.selectedIdx
-                            ].service
+                            currentToEdit.selectedIdx
+                          ].service
                           : ""}
                       </p>
                       <InputField
@@ -2703,8 +2703,8 @@ export default function ParentEditables({
                                 <div className="text-md  rounded-[4px] flex items-center  font-semibold  text-center py-auto px-5 bg-primary-50 border-0 !w-[150px] text-[#FFA28D]">
                                   {currentToEdit.satScores[selectedScoreIndex]
                                     ?.maths +
-                                  currentToEdit.satScores[selectedScoreIndex]
-                                    ?.verbal ? (
+                                    currentToEdit.satScores[selectedScoreIndex]
+                                      ?.verbal ? (
                                     currentToEdit.satScores[selectedScoreIndex]
                                       ?.maths +
                                     currentToEdit.satScores[selectedScoreIndex]
@@ -2814,8 +2814,8 @@ export default function ParentEditables({
                                 },
                               });
                             }}
-                            // tempScores[selectedScoreIndex].maths = checkNumber(currentToEdit.satScores.maths, parseInt(e.target.value), 800)
-                            // //console.log('tempScores', tempScores);
+                          // tempScores[selectedScoreIndex].maths = checkNumber(currentToEdit.satScores.maths, parseInt(e.target.value), 800)
+                          // //console.log('tempScores', tempScores);
                           />
 
                           <div className="text-md  rounded-[4px] flex items-center  font-semibold  text-center py-auto px-5 bg-primary-50 border-0 !w-[150px] text-[#FFA28D]">
@@ -2823,10 +2823,10 @@ export default function ParentEditables({
                               currentToEdit.baseLineScore?.satBaseLineScore
                                 ?.maths
                             ) +
-                            parseInt(
-                              currentToEdit.baseLineScore?.satBaseLineScore
-                                ?.verbal
-                            ) ? (
+                              parseInt(
+                                currentToEdit.baseLineScore?.satBaseLineScore
+                                  ?.verbal
+                              ) ? (
                               parseInt(
                                 currentToEdit.baseLineScore?.satBaseLineScore
                                   ?.maths
@@ -2965,18 +2965,18 @@ export default function ParentEditables({
                               currentToEdit.baseLineScore?.actBaseLineScore
                                 ?.maths
                             ) +
-                            parseInt(
-                              currentToEdit.baseLineScore?.actBaseLineScore
-                                ?.science
-                            ) +
-                            parseInt(
-                              currentToEdit.baseLineScore?.actBaseLineScore
-                                ?.reading
-                            ) +
-                            parseInt(
-                              currentToEdit.baseLineScore?.actBaseLineScore
-                                ?.english
-                            ) ? (
+                              parseInt(
+                                currentToEdit.baseLineScore?.actBaseLineScore
+                                  ?.science
+                              ) +
+                              parseInt(
+                                currentToEdit.baseLineScore?.actBaseLineScore
+                                  ?.reading
+                              ) +
+                              parseInt(
+                                currentToEdit.baseLineScore?.actBaseLineScore
+                                  ?.english
+                              ) ? (
                               parseInt(
                                 currentToEdit.baseLineScore?.actBaseLineScore
                                   ?.maths
@@ -3262,9 +3262,9 @@ export default function ParentEditables({
 
                                   <div className="text-md py-2 rounded-[4px] flex items-center  font-semibold  text-center py-auto px-5 bg-primary-50 border-0 !w-[150px] text-[#FFA28D]">
                                     {it?.maths +
-                                    it?.science +
-                                    it?.reading +
-                                    it?.english ? (
+                                      it?.science +
+                                      it?.reading +
+                                      it?.english ? (
                                       it?.maths +
                                       it?.science +
                                       it?.reading +

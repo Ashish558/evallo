@@ -4,7 +4,14 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { getFormattedDate } from "../../utils/utils";
 export default function ActionLog({ actionLog }) {
-  const { dateFormat } = useSelector(state => state.user)
+  const [ dateFormat,setDateFormat ] = useState("dd/mm/yy")
+      const { organization: organization2 } = useSelector((state) => state.organization)
+      useEffect(()=>{
+        if(organization2&&organization2?.settings){
+          setDateFormat(organization2?.settings?.dateFormat)
+        }
+      },[organization2])
+      console.log("latest",{dateFormat, organization2})
   const [currentElementIndex, setCurrentElementIndex] = useState(0);
   const [extraElement, setExtraElement] = useState(0);
   const [sortedAction, setSortedAction] = useState([]);

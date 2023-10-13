@@ -155,12 +155,12 @@ export default function StudentProfile({ isOwn }) {
   const { id } = useSelector((state) => state.user);
   const [selectedScoreIndex, setSelectedScoreIndex] = useState(0);
   const { organization } = useSelector((state) => state.organization);
-  
+
   async function handleCopyClick(textToCopy) {
     console.log("copying", textToCopy);
     try {
       await navigator.clipboard.writeText(textToCopy);
-    //  alert('Text copied to clipboard');
+      //  alert('Text copied to clipboard');
     } catch (err) {
       console.error('Failed to copy text: ', err);
     }
@@ -172,7 +172,7 @@ export default function StudentProfile({ isOwn }) {
       active: false,
       firstName: "",
       lastName: "",
-      associatedParent:"",
+      associatedParent: "",
       schoolName: [],
       about: '',
       email: "",
@@ -473,8 +473,8 @@ const [toEdit, setToEdit] = useState({
       userId = params.id;
     }
     getUserDetail({ id: userId }).then((res) => {
-      console.log("student details -- ",userId, res);
-      if(!res?.data?.data)return 
+      console.log("student details -- ", userId, res);
+      if (!res?.data?.data) return
       // //console.log('tut id', id);
       if (res.data.data.user.assiginedTutors) {
         if (res.data.data.user.assiginedTutors?.includes(id)) {
@@ -503,20 +503,20 @@ const [toEdit, setToEdit] = useState({
       } = res.data.data.userdetails;
       associatedParent &&
         getUserDetail({ id: associatedParent }).then((res2) => {
-          console.log("student ",{[id]:res2})
-          if(res2?.error)return 
-          const { firstName, lastName, _id,email } = res2.data.data.user;
+          console.log("student ", { [id]: res2 })
+          if (res2?.error) return
+          const { firstName, lastName, _id, email } = res2.data.data.user;
           setAssociatedParent({
             firstName,
             lastName,
             _id,
             email,
-            photo: res2?.data?.data?.user?.photo?.length>0
+            photo: res2?.data?.data?.user?.photo?.length > 0
               ? res2.data.data.user.photo
               : null,
           });
-         });
-     //   setAssociatedParent(res?.data?.data?.parent)
+        });
+      //   setAssociatedParent(res?.data?.data?.parent)
       setUser(res.data.data.user);
       if (!satScores) satScores = [];
       if (!actScores) actScores = [];
@@ -724,33 +724,33 @@ const [toEdit, setToEdit] = useState({
     navigator.clipboard.writeText(text);
   }
   const handleParentNavigate = () => {
-    if(associatedParent){
+    if (associatedParent) {
       navigate(`/profile/parent/${associatedParent?._id}`)
     }
   }
   // //console.log(user)
- console.log("user student",{userDetail,user})
+  console.log("user student", { userDetail, user })
   //console.log('associatedParent', associatedParent)
   // //console.log('isEditable', editable)
   // //console.log(settings)
 
   if (Object.keys(user).length < 1) return;
- // if (Object.keys(userDetail).length < 1) return;
+  // if (Object.keys(userDetail).length < 1) return;
   if (Object.keys(settings).length < 1) return;
 
   return (
     <>
       <div className={`w-[83.3vw] mx-auto pb-[70px]`}>
         <p className="text-[#24A3D9] my-[calc(50*0.0522vw)] text-base-22-5">
-          <span onClick={()=>navigate('/')} className="cursor-pointer">
-          {organization?.company +
-            " > " +
-            user?.firstName +
-            " " +
-            user?.lastName +
-            " > "}
+          <span onClick={() => navigate('/')} className="cursor-pointer">
+            {organization?.company +
+              " > " +
+              user?.firstName +
+              " " +
+              user?.lastName +
+              " > "}
           </span>
-          <span className="font-semibold">Dashboard</span>
+          <span className="font-semibold">Profile</span>
         </p>
         {!isOwn ? (
           <button
@@ -779,7 +779,7 @@ const [toEdit, setToEdit] = useState({
                   handleChange={handleProfilePhotoChange}
                   editable={false}
                 />
-             {(persona!=="tutor"|| (persona==="tutor" &&organization?.settings?.permissions && organization?.settings?.permissions[1]?.choosedValue) )&&   <EditableText
+                {(persona !== "tutor" || (persona === "tutor" && organization?.settings?.permissions && organization?.settings?.permissions[1]?.choosedValue)) && <EditableText
                   editable={editable}
                   onClick={() =>
                     setToEdit({
@@ -807,7 +807,7 @@ const [toEdit, setToEdit] = useState({
                       : "Sample School Name"}
                   </div>
                   <div className="flex text-xs text-base-17-5 mt-1 items-center text-[#F3F5F7]">
-                    {userDetail?.grade ? userDetail?.grade : "12th Grade"}
+                    {userDetail?.grade ? userDetail?.grade + `${' '} Grade` : "12th Grade"}
 
                     {/* <p className='font-semibold text-[22px] mr-4'>
                            {userDetail?.grade}
@@ -849,11 +849,11 @@ const [toEdit, setToEdit] = useState({
                           {user?.email}
                           <span>
                             <img
-                             onClick={()=>handleCopyClick(user?.email)}
+                              onClick={() => handleCopyClick(user?.email)}
                               className="inline-block ml-2 !w-4 !h-4 mr-2 cursor-pointer"
                               src={copy1}
                               alt="copy"
-                            
+
                             />
                           </span>
                         </p>
@@ -871,7 +871,7 @@ const [toEdit, setToEdit] = useState({
                     }
                   />
                 </div>}
-                {(persona === 'tutor') &&organization?.settings?.permissions && organization?.settings?.permissions[1]?.choosedValue && <div className="flex flex-col text-[12px]  font-medium text-white my-auto ">
+                {(persona === 'tutor') && organization?.settings?.permissions && organization?.settings?.permissions[1]?.choosedValue && <div className="flex flex-col text-[12px]  font-medium text-white my-auto ">
                   <ProfileCard
                     className="lg:mt-0 flex-1 !bg-transparent h-min !shadow-none relative"
                     titleClassName="!bg-transparent"
@@ -901,7 +901,7 @@ const [toEdit, setToEdit] = useState({
                           {user?.email}
                           <span>
                             <img
-                             onClick={()=>handleCopyClick(user?.email)}
+                              onClick={() => handleCopyClick(user?.email)}
                               className="inline-block ml-2 !w-4 !h-4 mr-2 cursor-pointer"
                               src={copy1}
                               alt="copy"
@@ -952,7 +952,7 @@ const [toEdit, setToEdit] = useState({
                   }
                   className="font-semibold cursor-pointer text-base-17-5"
                 >
-                  
+
                   {associatedParent && Object.keys(associatedParent)?.length > 1
                     ? `${associatedParent?.firstName} ${associatedParent?.lastName}`
                     : `None`}
@@ -963,10 +963,10 @@ const [toEdit, setToEdit] = useState({
                   />
                 </p>
 
-                {(persona !== "tutor" || (persona === 'tutor' &&organization?.settings?.permissions && organization?.settings?.permissions[1]?.choosedValue)) && <p className="font-medium text-[12px]">
+                {(persona !== "tutor" || (persona === 'tutor' && organization?.settings?.permissions && organization?.settings?.permissions[1]?.choosedValue)) && <p className="font-medium text-[12px]">
                   <span
                     className="text-base-15 cursor-pointer font-semibold opacity-60 inline-block mr-1 text-[#7C98B6]"
-                  
+
                   // 
                   >
                     {associatedParent && Object.keys(associatedParent)?.length > 1
@@ -975,13 +975,13 @@ const [toEdit, setToEdit] = useState({
                     {/* View Profile */}
                     <span>
                       <img
-                      onClick={()=>handleCopyClick(associatedParent && Object.keys(associatedParent).length > 1
-                        ? `${associatedParent?.email}`
-                        : `None`)}
+                        onClick={() => handleCopyClick(associatedParent && Object.keys(associatedParent).length > 1
+                          ? `${associatedParent?.email}`
+                          : `None`)}
                         className="inline-block ml-2 !w-4 !h-4 mr-2 cursor-pointer"
                         src={copy2}
                         alt="copy"
-                           />
+                      />
                     </span>
                   </span>
                 </p>}
@@ -1004,7 +1004,7 @@ const [toEdit, setToEdit] = useState({
               />
             </div>
           </div>
-          <EditableText
+          {persona == "admin" && <EditableText
             editable={editable}
             onClick={() =>
               setToEdit({
@@ -1018,7 +1018,7 @@ const [toEdit, setToEdit] = useState({
             text="edit"
             textClassName="text-sm text-[#517CA8] text-underline  "
             className="text-sm my-0 flex justify-end translate-y-7  float-right"
-          />
+          />}
           <SPFrame0 isOwn={isOwn} userDetail={userDetail} settings={settings} toEdit={toEdit} setToEdit={setToEdit} />
 
           <SPFrame1

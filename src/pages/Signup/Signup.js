@@ -400,19 +400,20 @@ export default function Signup() {
           .then((res) => {
             setLoading(false);
             console.log(res);
-            if(res?.data){
-            //  alert("Signup successful");
-            setFrames({
-              ...frames,
-              signupSuccessful: true,
-              requirements: false,
-            });}
+            if (res?.data) {
+              //  alert("Signup successful");
+              setFrames({
+                ...frames,
+                signupSuccessful: true,
+                requirements: false,
+              });
+            }
             else {
               alert("Something went worng, please try again!");
             }
-          
 
-          
+
+
 
             // navigate("/");
           })
@@ -719,6 +720,7 @@ export default function Signup() {
                       placeholder=""
                       parentClassName="text-md w-4/5 ml-8 "
                       biggerText={true}
+                      arrowClassName='w-[10px] h-[5px]'
                       labelClassname="!text-sm text-[#26435F] font-semibold"
                       inputContainerClassName=" border border-[#D0D5DD] rounded-md py-[9px] h-[45px] text-md"
                       label="Phone"
