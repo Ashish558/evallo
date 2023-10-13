@@ -1269,10 +1269,10 @@ export default function TutorProfile({ isOwn }) {
         }
           {/* address row */}
           {
-            persona =="admin" && <div className="flex justify-between mt-[55px] gap-x-[37px]">
+            (isOwn===true || persona ==="admin") && <div className="flex justify-between mt-[55px] gap-x-[37px]">
             <div className="w-[60.32vw]">
               <div className="flex items-center mb-1">
-                {(isOwn == true || persona === "admin") && (
+                {(isOwn === true || persona === "admin") && (
                   <>
                     <div className=" text-[#26435F] text-xl font-semibold text-base-20">
                       Address
