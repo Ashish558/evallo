@@ -227,10 +227,11 @@ const AllOrgs = () => {
             downArrow22={true}
               placeholder="Region"
               parentClassName="text-xs text-[#667085]"
-              inputContainerClassName="w-[11vw] bg-white border !text-[#667085] !rounded-lg border-[1.33px_solid_#EBEBEB] h-[49px]"
+              inputContainerClassName="w-[11vw] bg-white border !text-[#667085] !rounded-lg border-[1.33px_solid_#EBEBEB] h-[49px] "
               optionData={country}
               optionType={"object"}
-              optionClassName="w-[11vw] py-[3px] w-[110px]"
+              optionClassName="w-[11vw] py-[3px] w-[110px] "
+              placeholderClass="!whitespace-normal"
               value={values.region}
               onChange={(e) =>
                 setValues({

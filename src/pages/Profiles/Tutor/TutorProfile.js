@@ -666,7 +666,7 @@ export default function TutorProfile({ isOwn }) {
             lastName +
             "  >  "}
          </span>
-          <span className="font-bold">Dashboard</span>
+          <span className="font-bold">Profile</span>
         </p>
         {!isOwn ? (
           <button

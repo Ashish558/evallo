@@ -908,11 +908,11 @@ export default function AssignedTests() {
                   <div className="w-2/6 flex justify-end">
                     <div>
                       <button
-                        className="bg-[#FFA28D] text-[17.5px] justify-center flex p-[9px] design:p-[11px] items-center text-white font-bold rounded-[6px] text-base-17-5"
+                          className="bg-[#FFA28D] text-[15px] justify-center flex py-[7px]  pl-1 items-center text-white font-bold rounded-[7.5px] text-base-15 w-[10.05vw] h-[50px]"
                         onClick={() => setAssignTestModalActive(true)}
                       >
                         New Assignment
-                        <img src={AddIcon} className="ml-3 !w-3 h-3" alt="new test" />
+                        <img src={AddIcon} className="ml-3" alt="new test" />
                       </button>
                     </div>
                   </div>

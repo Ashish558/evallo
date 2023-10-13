@@ -90,7 +90,7 @@ const Demography1 = ({ dateRange }) => {
                 inputClassName="bg-transparent "
                 value={countryName}
                 optionData={country}
-              
+                optionsEachClassName="text-left"
                 optionContainerClassName={"!min-w-[250px]"}
                
                

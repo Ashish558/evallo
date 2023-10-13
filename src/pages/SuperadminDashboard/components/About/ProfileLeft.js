@@ -28,53 +28,48 @@ console.log("profile left", {userData})
   }
   return (
     <>
-      <div className="flex flex-col gap-3 p-3 min-w-[400px] w-[38%] bg-white shadow-xs rounded-md border border-gray-300">
-        <div className="flex gap-3 items-center">
+      <div className="flex flex-col gap-3   w-[28.5416667vw] bg-white shadow-[0px_0px_2.66667px_0px_rgba(0,0,0,0.25)] rounded-5 border border-[#FFF] h-[686px] relative px-[2.5%] pt-6">
+        <div className="flex gap-3 items-center ">
           <img src={Profile} alt="profile" />
-          <span className="flex flex-col text-sm text-[#517CA8]">
+          <span className="flex flex-col text-[0.971875vw] text-[#517CA8]">
             <span className="flex  ">
-              <p className="mr-6 w-[90px]">First name : </p>
-              <p className="font-semibold"> {userData?.firstName}</p>
+              <p className="mr-6 w-[70%] font-light">First name : </p>
+              <p className="font-medium"> {userData?.firstName}</p>
             </span>
             <span className="flex ">
-              <p className="mr-6 w-[90px]">last name : </p>{" "}
-              <p className="font-semibold"> {userData?.lastName} </p>
+              <p className="mr-6 w-[70%] font-light">last name : </p>{" "}
+              <p className="font-medium"> {userData?.lastName} </p>
             </span>
             <span className="flex ">
-              <p className="mr-6 w-[90px]">Role : </p>
-              <p className="font-semibold"> {userData?.role}</p>
+              <p className="mr-6 w-[70%] font-light">Role : </p>
+              <p className="font-medium"> {userData?.role}</p>
             </span>
           </span>
-          <span className="flex gap-3 items-start">
+          <span className="flex gap-3 items-start absolute top-5 right-7">
             <img src={whatsapp} alt="whatsapp" />
             <img src={linkedin} alt="linkedin" />
           </span>
         </div>
-        <div className="flex bg-[#FBF9FF] rounded-md p-2 px-3 text-sm  text-[#517CA8]">
-          <span className="w-[100px]">Email:</span>
-          <span className="font-semibold">{userData?.email}</span>
+        {console.log(userData)}
+        <div className="flex bg-[#FBF9FF] mt-[37px] rounded-[12px] py-[20px] px-[22px] text-[0.971875vw]  text-[#517CA8] items-center mb-[13px]">
+          <p className="w-[25%] font-light">Email:</p>
+          <p className="font-normal">{userData?.email}</p>
         </div>
-        <div className="flex  bg-[#FBF9FF] rounded-md p-2 px-3 text-sm text-[#517CA8]">
-          <span className="w-[100px]">Phone:</span>
-          <span className="font-semibold">{userData?.phone}</span>
+        <div className="flex bg-[#FBF9FF]  rounded-[12px] py-[20px] px-[22px] text-[0.971875vw]  text-[#517CA8] items-center mb-[13px]">
+          <p className="w-[25%] font-light">Phone:</p>
+          <p className="font-normal">{userData?.phone}</p>
         </div>
-        <div className="flex  bg-[#FBF9FF] rounded-md p-2 px-3 text-sm text-[#517CA8]">
-          <span className="w-[100px]">Location:</span>
-          <span className="font-semibold">
-            {userData?.state}, {userData?.country}
-          </span>
+        <div className="flex bg-[#FBF9FF]  rounded-[12px] py-[20px] px-[22px] text-[0.971875vw]  text-[#517CA8] items-center mb-[13px]">
+          <p className="w-[25%] font-light">Location:</p>
+          <p className="font-normal">{userData?.state}, {userData?.country}</p>
         </div>
-        <div className="flex  bg-[#FBF9FF] rounded-md p-2 px-3 text-sm  text-[#517CA8]">
-          <span className="w-[130px]">Bio:</span>
-          <span className="w-fit break-words font-semibold">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-            ad minim veniam, quis nostrud exercitation ullamco laboris ni
-          </span>
+        <div className="flex bg-[#FBF9FF]  rounded-[12px] py-[20px] px-[22px] text-[0.971875vw]  text-[#517CA8] items-center mb-[13px]">
+          <p className="w-[25%] font-light">Bio:</p>
+          <p className="font-normal w-fit break-words">{userData?.about}</p>
         </div>
-        <div className="text-center">
-          <button disabled={loading} onClick={handlePortalButtonClick} className="bg-[#FFA28D] p-2 px-3 rounded-md text-xs text-white">
-           {loading?"Opening Portal...":"Admin portal"} 
+        <div className="text-center absolute bottom-5 left-1/2 transform -translate-x-1/2">
+          <button disabled={loading} onClick={handlePortalButtonClick} className="bg-[#FFA28D] w-[9.01vw] p-2 px-1 rounded-lg text-base-20 text-white ">
+           {loading?"Opening Portal...":"Admin Portal"} 
           </button>
         </div>
       </div>
