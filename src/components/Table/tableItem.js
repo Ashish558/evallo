@@ -173,7 +173,6 @@ export default function TableItem({
   const [deleteAdmin, setDeleteAdmin] = useDeleteAdminMutation()
   const [deleteAdminModalActive, setDeleteAdminModalActive] = useState(false)
   const [deleteSelectLoading, setDeleteSelectLoading] = useState(false)
-  console.log({ item })
   const handleDeleteAdmin = () => {
     setDeleteSelectLoading(true)
     deleteAdmin({ id: item?.associatedOrg?._id }).then((res) => {
@@ -318,7 +317,6 @@ export default function TableItem({
       setIsChecked(bool ? true : false)
     }
   }, [selectedId2])
-  console.log('item---', item)
 
   return (
     <>
