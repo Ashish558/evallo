@@ -154,6 +154,7 @@ const tempsubjects = [
    const [completedSubjects, setCompletedSubjects] = useState([])
    const [startBtnLoading, setStartBtnLoading] = useState(false)
    const [submitBtnLoading, setSubmitBtnLoading] = useState(false)
+   const [backupresponse, setbackupresponse] = useState([])
 
    const { id, assignedTestId } = useParams()
 
@@ -302,6 +303,7 @@ const tempsubjects = [
             console.log('CONTINUE ', res.data.data)
            setanswer_check(res.data.data);
            setInfo(res.data.data.answer)
+           setbackupresponse(res.data.data.backupResponse)
            if(res.data.data.backupResponse.length>0){
             setisntructionpage(false)
            }
@@ -386,6 +388,14 @@ const tempsubjects = [
     question_d=dataofque.map((item) => ({
       text:item.Passage==='yes'? item.PassageData:'',
     }));
+    if(backupresponse.length>0){
+      newData = dataofque.map((item,i) => ({
+         QuestionType: item.QuestionType,
+         QuestionNumber: item.QuestionNumber,
+         ResponseAnswer: backupresponse[i].ResponseAnswer,
+         responseTime: "10",
+       }));
+    }
     console.log(question_d,markr,cutdata);
     setAllQuestions_data(question_d)
     setmarkreview(markr)
@@ -484,6 +494,7 @@ useEffect(()=>{
       setshowannotate(false)
       setCal(false)
       setshowannotate(false)
+      setbackupresponse([]);
       setloader(true)
       setsectionindex(answer_check?.completed?.length==0?1:answer_check?.completed?.length)
       const response = answers.map(item => {

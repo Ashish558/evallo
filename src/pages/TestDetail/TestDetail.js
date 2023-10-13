@@ -20,10 +20,14 @@ import Modal from "../../components/Modal/Modal";
 import InputField from "../../components/InputField/inputField";
 import InputSelect from "../../components/InputSelect/InputSelect";
 import ReactQuill from 'react-quill';
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import 'react-quill/dist/quill.snow.css';
 import './form.css';
 import Delete from '../../assets/images/delete.png'
 import { useSelector } from "react-redux";
+
 const subjects = [
    { text: "English", selected: true },
    { text: "Mathematics", selected: false },
@@ -91,7 +95,47 @@ export default function TestDetail() {
    const [awsLink, setAwsLink] = useState('')
    const [pdfBase64, setPdfBase64] = useState("");
    const [extratableitem, setextratableitem] = useState([]);
+   
+   function customCKEditorUploadAdaptor(loader) {
+      return {
+         upload: () => {
+            return new Promise((resolve, reject) => {
+               const body = new FormData();
+               loader.file.then((file) => {
+                  console.log("File ");
+                  console.log(file);
 
+                  const reader = new FileReader();
+
+                  // Define an event handler for when the file has been read.
+                  reader.onload = function () {
+                     // The result property contains the Base64-encoded data.
+                     const base64Data = reader.result;
+
+                     // Do something with the Base64 data, e.g., send it to a server.
+                     console.log('Base64 data:');
+                     console.log(base64Data);
+
+                     resolve({default: base64Data})
+                  };
+
+                  // Read the file as a data URL, which results in Base64 encoding.
+                  reader.readAsDataURL(file);
+
+                  // resolve({default: null});
+                  return;
+               })
+            })
+         }
+      }
+   }
+
+   function ckEditorUploadPlugin(editor) {
+      editor.plugins.get("FileRepository").createUploadAdapter = (loader) => {
+         // console.log(loader.file)
+         return customCKEditorUploadAdaptor(loader);
+      }
+   }
 
    const handlePDFFile = (file) => {
       const formData = new FormData();
@@ -816,19 +860,31 @@ export default function TestDetail() {
 
                                  </div>
                                  {checked ?
-                                    <ReactQuill
-                                       value={modalData.richTextContent}
-                                       onChange={(val) => { setModalData({ ...modalData, richTextContent: val }) }}
-                                       modules={{
-                                          toolbar: [
-                                             [{ 'header': '1' }, { 'header': '2' }, { 'font': [] }],
-                                             ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-                                             [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-                                             ['link', 'image'],
-                                             ['clean']
-                                          ],
-                                       }}
-                                    />
+                                    <CKEditor
+                                    editor={ ClassicEditor }
+                                    data={modalData.richTextContent}
+                                    config={{
+                                       // plugins: [UploadAdapter]
+                                       extraPlugins: [ckEditorUploadPlugin]
+                                    }}
+                                    onReady={ editor => {
+                                       // You can store the "editor" and use when it is needed.
+                                       // console.log( 'Editor is ready to use!', editor );
+                                    } }
+                                    onChange={ ( event, editor ) => {
+                                       const data = editor.getData();
+                                       // console.log( { event, editor, data } );
+                                       console.log("data")
+                                       console.log(data)
+                                       setModalData({ ...modalData, richTextContent: data })
+                                    } }
+                                    onBlur={ ( event, editor ) => {
+                                       // console.log( 'Blur.', editor );
+                                    } }
+                                    onFocus={ ( event, editor ) => {
+                                       // console.log( 'Focus.', editor );
+                                    } }
+                                 />
                                     : null}
                               </div>
                               <div className="w-full h-1 my-4 bg-[#00000033]">
