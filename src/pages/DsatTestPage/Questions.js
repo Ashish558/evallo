@@ -76,7 +76,7 @@ export default function Que(props) {
         <AnnotationPopup show_ann={show_ann} index={index} annotations={annotations} setAnnotations={setAnnotations} setshow_ann={setshow_ann} setIsEditing={setshowannotate} isEditing={showannotate} color={color} i={index} underline={underline} sethovert={sethovert} setunderline={setunderline} setcolor={setcolor} />
        :null}
         {
-          para?<div className='overflow-y-auto w-1/2 pr-4 pt-5'>
+          para?<div className='overflow-y-auto w-1/2 mr-4 pt-5'>
            {/* <TextAnnotator
             key={color}
         content={quesT[index-1].text}

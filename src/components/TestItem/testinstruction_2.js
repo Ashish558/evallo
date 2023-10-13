@@ -115,14 +115,14 @@ const Testinstruction_2 = ({setloader,setstarttestindex,starttestindex,testHeade
                         <div className='border shadow-lg border-1 bg-white pt-[60px] pr-8 pl-12 pb-[50px] m-4 relative'>
                         <div className='bg-[#24A3D9] absolute top-4 right-4 rounded px-4 flex items-center flex-col py-2'>
                                  <p className='text-[15px] text-[#FFFFFF] font-medium'>Time</p>
-                                 <p className='text-[25px] text-[#FFFFFF] font-bold'>{desc[starttestindex]?.timer>10?desc[starttestindex]?.timer+':00':'0'+desc[starttestindex]?.timer+":00"}</p>
+                                 <p className='text-[25px] text-[#FFFFFF] font-bold'>{desc[starttestindex]?.timer>=10?desc[starttestindex]?.timer+':00':'0'+desc[starttestindex]?.timer+":00"}</p>
                               </div>
                               <div className='flex flex-col items-start gap-2'>
                                  <p className='text-[#26435F] texxt-[17.5] font-bold mb-4'>Section Instructions:</p>
                                  <p className='text-[#26435F] texxt-[17.5] font-normal'>Timer: {desc[starttestindex]?.timer} minutes</p>
                                  <p className='text-[#26435F] texxt-[17.5] font-normal'>{desc[starttestindex]?.description}</p>
                               </div>
-
+  
                            <div className='flex items-start flex-col mt-16 relative'>
                               <div className='flex flex-row justify-start items-center bg-[#FF696133] py-2 px-5 rounded-20 mb-[15px]'>
                                  <img src={Warning}/>
