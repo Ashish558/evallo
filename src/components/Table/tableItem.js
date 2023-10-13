@@ -399,7 +399,7 @@ export default function TableItem({
               className="inline-block cursor-pointer pl-4"
 
             >
-              <div className="flex ">
+              <div className="flex items-center">
                 {dataFor === "allUsers" ? (
 
 
