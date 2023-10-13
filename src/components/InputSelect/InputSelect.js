@@ -34,7 +34,9 @@ export default function InputSelect({
   IconSearch,
   tableDropdown,
   customArrow,
-  customArrowClassName
+  customArrowClassName,
+  questionMarkIcon,
+  questionMarkMargin
 }) {
   const [selected, setSelected] = useState(false);
   const selectRef = useRef();
@@ -75,7 +77,7 @@ export default function InputSelect({
           )}
           <div>
             {label == "Default Time Zone" && (
-              <img className="ml-3" src={questionMark} alt=""></img>
+              <img className={`${questionMarkMargin?questionMarkMargin:`ml-3`}`} questionMarkIcon src={questionMarkIcon?questionMarkIcon:questionMark} alt=""></img>
             )}
           </div>
         </div>

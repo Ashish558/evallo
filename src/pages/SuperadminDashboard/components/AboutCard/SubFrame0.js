@@ -42,6 +42,7 @@ const SubFrame0 = ({ userData }) => {
               {new Date(userData?.createdAt).getFullYear()}
             </span>
           </div>
+          {console.log(userData)}
           <div className="text-left col-span-2 font-light">
             <span className="pr-3">Services provides:</span>
             <span className="">
