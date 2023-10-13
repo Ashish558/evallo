@@ -340,7 +340,6 @@ export default function AssignedTests() {
     }
   }, [modalData.test]);
 
-  console.log('formatted tests----', dateFormat);
   const fetchAllAssignedTests = () => {
     fetchAssignedTests().then((res) => {
       if (res.error) return console.log(res.error);
@@ -1061,6 +1060,7 @@ export default function AssignedTests() {
                       ...modalData,
                       name: e.target.value,
                     })}
+                    onOptionClose={handleOptionCLose}
                     optionListClassName="text-base-17-5"
                     optionClassName="text-base-17-5"
                     optionData={students}
