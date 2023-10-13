@@ -3,14 +3,14 @@ import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsisVertical,faPen,faAngleDown,faCalculator} from '@fortawesome/free-solid-svg-icons';
 
-export default function Navbar({secnd,showannotate,setshowannotate,details,handleSubmitSection,calculator_check,annotation_check,sectionDetails,cal,setCal}) {
+export default function Navbar({secnd,setCountDown,showannotate,setshowannotate,details,handleSubmitSection,calculator_check,annotation_check,sectionDetails,cal,setCal}) {
   const [seconds, setSeconds] = useState(secnd)
   const [hide, sethide] = useState(false)
   useEffect(() => {
     if (seconds <= 0) {
       return handleSubmitSection();
     }
-
+    setCountDown(seconds);
     const interval = setInterval(() => {
       setSeconds(prevSeconds => prevSeconds - 1);
     }, 1000);
