@@ -576,8 +576,8 @@ export default function ParentEditables({
       userDetailSave(reqBody);
     }
     if (
-      currentToEdit.hasOwnProperty("driveLink") &&
-      currentToEdit.driveLink.length > 2
+      currentToEdit?.hasOwnProperty("driveLink") &&
+      currentToEdit?.driveLink?.length > 2
     ) {
       let reqBody = {
         type: "driveLink",
@@ -592,8 +592,8 @@ export default function ParentEditables({
       });
     }
     if (
-      currentToEdit.hasOwnProperty("dropBoxLink") &&
-      currentToEdit.dropBoxLink.length > 2
+      currentToEdit?.hasOwnProperty("dropBoxLink") &&
+      currentToEdit?.dropBoxLink?.length > 2
     ) {
       let reqBody = {
         type: "dropBoxLink",
