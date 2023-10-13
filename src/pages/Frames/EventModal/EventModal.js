@@ -974,7 +974,7 @@ export default function EventModal({
                                           <p className="font-medium mb-2.5">
                                              {tag.heading}
                                           </p>
-                                          <div className="flex">
+                                          <div className="flex flex-wrap row-gap-2">
                                              {tag.items.length > 0 &&
                                                 tag.items.map((item, idx) => {
                                                    const currentUserSession = data.sessionTags.find(dataSessionTag => dataSessionTag._id === tag._id)
@@ -985,7 +985,7 @@ export default function EventModal({
                                                    return (
                                                       <div
                                                          key={idx}
-                                                         className="flex mb-3 mr-3"
+                                                         className="flex mb-4 mr-3"
                                                          onClick={() =>
                                                             handleSessiontagChange(
                                                                item,
