@@ -181,9 +181,9 @@ export default function UserSignup() {
     console.log("paramUserId", paramUserId);
 
     setIsAddedByAdmin(true);
-    setFrames((prev) => {
-      return { ...prev, signupActive: false, userDetails: true };
-    });
+    // setFrames((prev) => {
+    //   return { ...prev, signupActive: false, userDetails: true };
+    // });
 
     getDetails(paramUserId).then((res) => {
       if (res.error) {
@@ -219,12 +219,12 @@ export default function UserSignup() {
               schoolName: detail.schoolName,
               PphoneCode: detail.phoneCode
             })
-            setFrames({
-              signupActive: false,
-              userDetails: false,
-              customFields: false,
-              setPasswordFields: true,
-            })
+            // setFrames({
+            //   signupActive: false,
+            //   userDetails: false,
+            //   customFields: false,
+            //   setPasswordFields: true,
+            // })
           }
         })
         fetchOrganisation(associatedOrg).then((org) => {
