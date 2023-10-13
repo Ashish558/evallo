@@ -89,7 +89,7 @@ export default function TableItem({
       setDateFormat(organization2?.settings?.dateFormat)
     }
   }, [organization2])
-  console.log("latest date Form", { dateFormat, organization2 })
+
   useEffect(() => {
     if (item.userType === "tutor")
 
@@ -318,10 +318,10 @@ export default function TableItem({
       setIsChecked(bool ? true : false)
     }
   }, [selectedId2])
+  console.log('item---', item)
 
   return (
     <>
-      {console.log(extratableitem)}
       {
         dataFor === "tutorFeedback" && (
           <>
@@ -913,7 +913,6 @@ export default function TableItem({
       {dataFor === "testsDetailQuestions" && (
         <tr className="bg-white text-[17.5px]   leading-7 mt-[10px]">
           {MapData(item, dataFor, excludes)}
-          {console.log('dfsdfdgdfgdfg', item)}
           {testtype === 'DSAT' ? <>
             <td><div className={` ${extratableitem[item.QuestionNumber - 1].QImage === 'Yes' && 'bg-[#38C980]'} mx-auto rounded-full w-[20px] h-[20px]`}>{extratableitem[item.QuestionNumber - 1].QImage === 'No' ? '--' : null}</div></td>
             <td> <div className={` ${extratableitem[item.QuestionNumber - 1].AImage == 'Yes' && 'bg-[#FFCE84]'} mx-auto  w-[20px] rounded-full h-[20px] `}>{extratableitem[item.QuestionNumber - 1].AImage == 'No' ? '--' : null}</div></td>
