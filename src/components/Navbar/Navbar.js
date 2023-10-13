@@ -232,7 +232,7 @@ const managerNavData = [
    {
       icon: Dashboard,
       activeIcon: Dashboard1,
-      path: "/dashboard",
+      path: "/",
       excludes: ["student", "parent", "tutor"],
       tooltip: "Dashboard",
    },
@@ -377,12 +377,12 @@ const Navbar = () => {
                })}
             </div>
             <div className={`flex font-bold ${isLoggedIn ? "" : "opacity-[0.3]"}`}>
-               <div className="flex mr-[24px] text-[#24A3D9] text-base-16  items-center">
+             {persona =="parent"||  <div className="flex mr-[24px] text-[#24A3D9] text-base-16  items-center">
                   <p className=" text-[0.8333vw]">Pricing 	</p>
                   <p className="pl-2">
                      &#36;
                   </p>
-               </div>
+               </div>}
                <div className="flex mr-[24px] text-[#24A3D9] items-center text-base-16 ">
                   <p className="text-[0.8333vw] ">Help</p>
                   <p>

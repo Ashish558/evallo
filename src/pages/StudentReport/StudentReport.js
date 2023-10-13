@@ -498,14 +498,7 @@ export default function StudentReport() {
                groups
             },
 
-            title: {
-               text: 'Question Number',
-               style: {
-                  fontSize: '20px',
-                  color: '#24A3D9',
-                  fontFamily: 'Lexend'
-               },
-            }
+          
          },
 
          chart: {
@@ -524,16 +517,7 @@ export default function StudentReport() {
                },
             },
          },
-         yaxis: {
-            title: {
-               text: 'Time Taken (in sec)',
-               style: {
-                  fontSize: '18px',
-                  color: '#24A3D9',
-                  fontFamily: 'Lexend'
-               },
-            }
-         },
+        
 
          // tooltip: {
          //    custom: function({series, seriesIndex, dataPointIndex, w}) {
@@ -969,9 +953,12 @@ export default function StudentReport() {
                <p className='text-primary-dark font-bold text-base-20   mt-10'>
                   Time Taken
                </p>
-               <div className='bg-white mt-1 rounded-5 py-5 px-5 '>
+               <div className='bg-white mt-1 rounded-5 py-5 px-10 relative'>
                   {/* <p className='text-primary-dark font-bold text-3xl text-center mb-6 mt-2'>Time Taken</p> */}
                   <BarGraph series={[timeSeries]} options={timeSeriesOptions} height='600px' />
+                  <p className='text-[#24A3D9] text-xl font-medium absolute bottom-4 left-1/2 transform -translate-x-1/2'>Question Number</p>
+                  <p className='text-[#24A3D9] text-xl font-medium absolute top-1/2  transform -translate-x-1/2 -translate-y-1/2 -rotate-90 left-9'>Time Taken (Seconds)</p>
+
                </div>
                <p className='text-primary-dark font-bold text-base-20   mt-10'>
                   Conceptual Accuracy
