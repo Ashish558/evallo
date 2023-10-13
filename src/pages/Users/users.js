@@ -1255,7 +1255,7 @@ export default function Users() {
           />
         </div>
         <div className="flex gap-6 items-center relative z-[10]   mt-[23.75px]">
-          <div className="ml-6 flex gap-3 ">
+          <div className="ml-6 flex gap-3 items-center">
             <SCheckbox stopM={true} checked={isChecked} onChange={handleCheckboxChange} />
             <span className="inline-block text-[17.5px] text-base-17-5 min-w-[70px]">{selectedId?.length} Selected</span>
             {/* <label className={`  text-[#26435F] font-medium flex items-center`}>
