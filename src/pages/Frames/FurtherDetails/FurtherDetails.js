@@ -96,7 +96,7 @@ export default function FurtherDetails({
             biggerText={true}
             placeholder=""
             parentClassName="w-full max-w-[248px] mr-4"
-            inputContainerClassName=" border border-[#D0D5DD]"
+            inputContainerClassName=" border border-[#D0D5DD] !text-[#667085]"
             inputClassName="!text-[#667085]  bg-transparent text-xs"
             type="text"
             value={values.activeStudents}
@@ -113,7 +113,7 @@ export default function FurtherDetails({
             biggerText={true}
             placeholder=""
             parentClassName="w-full max-w-[248px]"
-            inputContainerClassName=" border border-[#D0D5DD]"
+            inputContainerClassName=" border border-[#D0D5DD] !text-[#667085]"
             inputClassName="!text-[#667085] bg-transparent text-xs"
             type="text"
             value={values.activeTutors}
@@ -131,7 +131,7 @@ export default function FurtherDetails({
 
         <div className="flex flex-col mb-6">
           <div className="">
-            <p className="text-sm mb-[7px] text-[#24A3D9] !font-medium">
+            <p className="text-sm mb-[7px] text-[#24A3D9] !font-semibold">
               Test Preparation
             </p>
             <div className="grid grid-cols-3 font-medium text-[#26435F] grid-flow-row-dense mr-5">
@@ -194,7 +194,7 @@ export default function FurtherDetails({
             </div>
           </div>
           <div className="">
-            <p className="text-sm mt-[7px] mb-[8px] text-[#24A3D9] !font-medium">
+            <p className="text-sm mt-[7px] mb-[8px] text-[#24A3D9] !font-semibold">
               Subject Tutoring
             </p>
             <div className="grid grid-cols-3 font-medium text-[#26435F] grid-flow-row-dense mr-5">
@@ -240,7 +240,7 @@ export default function FurtherDetails({
             </div>
           </div>
           <div className="">
-            <p className="text-sm mb-[7px] mt-1 text-[#24A3D9] !font-medium">
+            <p className="text-sm mb-[7px] mt-1 text-[#24A3D9] !font-semibold">
               Coaching
             </p>
             <div className="grid grid-cols-3  grid-gap-x-5 font-medium text-[#26435F] grid-flow-row-dense relative">
@@ -266,7 +266,7 @@ export default function FurtherDetails({
                     {item.text === "Others" && item.checked ? (
                       <input
                         autoFocus
-                        className="ml-3 text-[13px] text-[#7E7E7E] outline-[#DCDCDD] border-[1.5px] border-[#DCDCDD] rounded-[4px] !bg-[#F5F8FA]  w-32 absolute bottom-3 "
+                        className="ml-3 text-[13px] text-[#7E7E7E] outline-[#DCDCDD] border-[1.5px] border-[#DCDCDD] rounded-[4px] !bg-[#F5F8FA]  w-32 absolute bottom-3  pl-2"
                         type="text"
                         placeholder="Other"
                         onKeyDown={(e) => {

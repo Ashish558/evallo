@@ -15,7 +15,7 @@ export function TableHeaderNew({ header, checkedHeader, dataFor, Handler, noArro
       className={`px-6 py-[20px] font-medium whitespace-nowrap  text-center  cursor-pointer ${header.className ? header.className : ""
         } ${flag ? styles["no-arrow"] : ''}`}
     >
-      <div className={`flex justify-center ${noArrow ? '' : styles.marker}`}>
+      <div className={`flex justify-center ${noArrow ? '' : `${dataFor=="allTests" ?styles.markerCustom:styles.marker}`}`}>
         {header.text === "Full Name" && dataFor === 'allUsers' ? (
 
 

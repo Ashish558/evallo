@@ -633,6 +633,7 @@ const Dashboard = () => {
                   <p>Coming soon</p>
                 </div> */}
                 <Table
+                headerWidth="!px-2"
                   data={[]}
                   hidePagination={true}
                   tableHeaders={[
