@@ -720,7 +720,7 @@ export default function Signup() {
                       placeholder=""
                       parentClassName="text-md w-4/5 ml-8 "
                       biggerText={true}
-                      arrowClassName='w-[10px] h-[5px]'
+                      arrowClassName='w-[10px] h-[5px] pl-1'
                       labelClassname="!text-sm text-[#26435F] font-semibold"
                       inputContainerClassName=" border border-[#D0D5DD] rounded-md py-[9px] h-[45px] text-md"
                       label="Phone"

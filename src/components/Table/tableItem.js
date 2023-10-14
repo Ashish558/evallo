@@ -401,7 +401,7 @@ export default function TableItem({
               className="inline-block cursor-pointer pl-4"
 
             >
-              <div className="flex ">
+              <div className="flex items-center">
                 {dataFor === "allUsers" ? (
 
 
@@ -631,13 +631,13 @@ export default function TableItem({
           <td className=" text-[17.5px] px-1  min-w-14 py-3  text-center">
 
             <span onClick={() => onClick.redirect(item)} className="">
-              {getFormattedDate(item.assignedOn, dateFormat)}
+              {getFormattedDate(item.assignedOn, dateFormat).replace(/-/g, '/')}
             </span>
           </td>
           <td className=" text-[17.5px] px-1  min-w-14 py-3  text-center">
 
             <span onClick={() => onClick.redirect(item)} className={`${new Date() > new Date(item?.dueDate) ? "text-danger" : ""}`}>
-              {getFormattedDate(item.dueDate, dateFormat)}
+              {getFormattedDate(item.dueDate, dateFormat).replace(/-/g, '/')}
             </span>
           </td>
 
@@ -664,7 +664,7 @@ export default function TableItem({
 
           <td className=" px-1  min-w-14 py-3">
             <button
-              className={`text-[15px] text-base-15 px-3 h-[31px]  rounded-5 flex items-center leading-none w-[100px] text-center text-white ${item.status == "completed"
+              className={`text-[15px] flex justify-center text-base-15 px-1 h-[31px]  rounded-5  items-center leading-none w-[100px] text-center text-white ${item.status == "completed"
                 ? "bg-[#38C980]  "
                 : `${item.status == "started" ? "bg-[#FFCE84]" : "bg-[rgba(38,67,95,0.20)] pointer-events-none"}`
                 }`}
@@ -675,7 +675,7 @@ export default function TableItem({
                 )
               }
             >
-              View Report
+            <span classname="inline-block">  View Report</span>
             </button>
           </td>
           {/* <td className="font-medium px-1 min-w-14 py-4">
