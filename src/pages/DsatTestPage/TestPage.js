@@ -610,8 +610,8 @@ const [pages,setPage]=useState(arr)
         cutanswers={cutanswers}
         check={background}
         MarkAnswer={MarkAnswer}
-        quesImg={info[index]?.QuestionImage.toLowerCase()!=='no'?info[index]?.QuestionImageUrl : ""}
-        answerimagecheck={info[index]?.AnswerImage.toLowerCase()!=='no'?true :false}
+        quesImg={info[index]?.QuestionImage?.toLowerCase()!=='no'?info[index]?.QuestionImageUrl : ""}
+        answerimagecheck={info[index]?.AnswerImage?.toLowerCase()!=='no'?true :false}
         ques={info[index] ? info[index].QuestionText : ""}
         index={index + 1}
         op={info[index] ? info[index].Answers : null}
