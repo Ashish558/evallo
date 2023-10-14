@@ -334,11 +334,18 @@ const AccountOverview = () => {
                 placeholder="Write a short bio about yourself, your interests, how your got started with this choice of career, your strengths and weaknesses, your hobbies, your tutoring style, your educational background, etc. Suggested word length: 200 words."
                 rows={7}
                 cols={55}
-                className="!text-base p-3 rounded-5 focus:border-[#D0D5DD] w-full h-40 placeholder:!text-[#B3BDC7] placeholder:!text-base placeholder:!font-normal shadow-[0px_0px_2px_0px_rgba(0,0,0,0.25)]"
+                className="!text-[0.83333vw] p-3 rounded-5 focus:border-[#D0D5DD] w-full h-40 placeholder:!text-[#B3BDC7] placeholder:!text-[0.83333vw] placeholder:!font-normal shadow-[0px_0px_2px_0px_rgba(0,0,0,0.25)] outline-none"
                 style={{
                   border: "1px solid #D0D5DD",
                   color: "#667085",
                 }}
+                value={values.about}
+                onChange={(e) => {
+                setValues({
+                  ...values,
+                about: e.target.value,
+                })
+              }}
               ></textarea>
             </div>
             <div className="ml-[38px]">

@@ -1255,7 +1255,7 @@ export default function Users() {
           />
         </div>
         <div className="flex gap-6 items-center relative z-[10]   mt-[23.75px]">
-          <div className="ml-6 flex gap-3 ">
+          <div className="ml-6 flex gap-3 items-center">
             <SCheckbox stopM={true} checked={isChecked} onChange={handleCheckboxChange} />
             <span className="inline-block text-[17.5px] text-base-17-5 min-w-[70px]">{selectedId?.length} Selected</span>
             {/* <label className={`  text-[#26435F] font-medium flex items-center`}>
@@ -1742,17 +1742,17 @@ export default function Users() {
           body={
             <>
               <div className="text-center mb-7">
-                <p className="text-[#517CA8]  text-lg font-light">
-                  All users that are invited to the platform will receive
+                <p className="text-[#517CA8]  text-lg">
+                 <span className="!font-light"> All users that are invited to the platform will receive
                   an email invitation to create an account within your
                   organization. If you only want to store their data and
                   do not want to invite them to create an account, please
-                  click on “Save Data Only” button.
+                  click on “Save Data Only” button.</span>
                   <br />
                   <span className="pt-1">
                     If you want to continue inviting the users, please
                     click on the{" "}
-                    <span className="!font-normal">
+                    <span className="!font-medium">
                       “Confirm Email Invitations”
                     </span>{" "}
                     button below.
@@ -1776,7 +1776,7 @@ export default function Users() {
                 </button>
                 <button
                   type="button"
-                  className="max-w-140 text-[#FFA28D] border-[1.5px] border-[#FFA28D] bg-white hover:bg-[#FFA28D] hover:text-white  font-medium rounded-lg  px-[46px] py-[10] h-[46px] text-center dark:bg-white dark:hover:bg-[#FFA28D]"
+                  className="w-[146px] text-[#FFA28D] border-[1.5px] border-[#FFA28D] bg-white hover:bg-[#FFA28D] hover:text-white  font-medium rounded-lg  px-[4px] py-[10] h-[46px] text-center dark:bg-white dark:hover:bg-[#FFA28D]"
                   onClick={() => setInviteBulkModalActive(false)}
                 >
                   Cancel
