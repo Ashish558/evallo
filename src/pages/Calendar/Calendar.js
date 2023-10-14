@@ -1553,7 +1553,7 @@ export default function Calendar() {
                 })}
             </div>
           </div>
-          <div className="flex-1 w-4/5 relative" id="calendarContainer">
+          <div className="flex-1 w-4/5 relative  min-h-[600px]" id="calendarContainer">
             <FullCalendar
               slotLabelContent={(arg) => {
                 return (

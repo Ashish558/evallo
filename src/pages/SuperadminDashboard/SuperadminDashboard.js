@@ -95,6 +95,7 @@ function SuperadminDashboard() {
             let date = new Date(result.data.data[i].createdAt).toDateString();
 
             let temp = {
+              _id:result.data.data[i]?._id,
               date: date,
               name: result.data.data[i].company
                 ? result.data.data[i].company
@@ -312,6 +313,7 @@ function SuperadminDashboard() {
               data={orgSignUpData}
               tableHeaders={tableHeaders}
               maxPageSize={6}
+            
             />
           </section>
         </div>

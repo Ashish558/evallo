@@ -143,7 +143,7 @@ email: "Email not verified! Please Verify your email and set your password"
   return (
     <div className={styles.bg}>
       <div className="flex  flex-col items-center md:grid-cols-2  ">
-        <img src={cuate} alt="rocket" className="h-10vh mt-3 mb-7 scale-[0.85] mt-[-5px] design:mt-[0px] design:scale-100" />
+        <img src={cuate} alt="rocket" className="h-10vh mt-3 mb-7 scale-[0.86] mt-[-5px] design:mt-[0px] design:scale-100" />
         <div className="bg-primary hidden lg:block ">
           <ImageSlider
             className={styles.loginCarousel}
@@ -151,7 +151,7 @@ email: "Email not verified! Please Verify your email and set your password"
             pagination={true}
           />
         </div>
-        <div className="lg:flex scale-[0.73] design:scale-100 mt-[-100px] design:mt-[0px]   lg:items-center bg-white rounded-[10px] pt-[40px] pb-6 px-5 md:px-[66px] lg:min-w-[561px] shadow-[5px_5px_87.5px_0px_rgba(166,166,166,0.25)]">
+        <div className="lg:flex scale-[0.75] design:scale-100 mt-[-100px] design:mt-[0px]   lg:items-center bg-white rounded-[10px] pt-[40px] pb-6 px-5 md:px-[66px] lg:min-w-[561px] shadow-[5px_5px_87.5px_0px_rgba(166,166,166,0.25)]">
           {loginActive ? (
             <div className="w-full">
               <div className="flex justify-center" >
