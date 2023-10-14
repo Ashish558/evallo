@@ -247,14 +247,14 @@ export default function TestDetail() {
          updatedData = allQuestions[idx].map(obj => ({
             ...obj,
             testType: testData.testType,
-            QImage: obj?.QuestionImage === 'no' ? 'No' : 'Yes',
-            Passage: obj?.Passage === 'no' ? 'No' : 'Yes',
-            AImage: obj.Answers.some(it => it?.image !== 'no' && it?.image !== undefined && it?.image !== null) ? 'Yes' : 'No',
+            QImage: obj?.QuestionImage?.toLowerCase() === 'no' ? 'No' : 'Yes',
+            Passage: obj?.Passage?.toLowerCase() === 'no' ? 'No' : 'Yes',
+            AImage: obj.AnswerImage?.toLowerCase() === 'no' ? 'No' : 'Yes',
             editable
          }))
       }
 
-
+      console.log(updatedData,'asdasdasdb asd');
       setextratableitem(updatedData);
       setQuestionsTable(updatedQuestions)
    }, [subjects])
@@ -300,8 +300,10 @@ export default function TestDetail() {
             Strategies: modalData.strategy,
             AnswerChoices: 'A,B,C,D',
             QuestionText: modalData.question,
-            QuestionImage: questionImageBase64,
+            QuestionImageUrl:questionImageBase64,
+            QuestionImage: extratableitem[modalData.QuestionNumber-1].QImage,
             QuestionType: modalData.questionType,
+            AnswerImage:extratableitem[modalData.QuestionNumber-1].AImage,
             //AnswerChoices:'a,b,c,d',
             Answers: [
                {
@@ -369,7 +371,7 @@ export default function TestDetail() {
             question: allQuestions[indx][item.QuestionNumber - 1].QuestionText
          }
       })
-      setQuestionImageBase64(allQuestions[indx][item.QuestionNumber - 1].QuestionImage)
+      setQuestionImageBase64(allQuestions[indx][item.QuestionNumber - 1]?.QuestionImageUrl)
       if (allQuestions[indx][item.QuestionNumber - 1].Answers.size != 0) {
          allQuestions[indx][item.QuestionNumber - 1].Answers.map((it) => {
             console.log('dafsdfsdfs', it.label);
