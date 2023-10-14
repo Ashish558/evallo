@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import SeacrchIcon from '../../assets/icons/search.svg'
 import useOutsideAlerter from "../../hooks/useOutsideAlerter";
 import CCheckbox from "../CCheckbox/CCheckbox";
@@ -25,7 +25,8 @@ export default function InputSearch({
    optionPrefix,
    checkbox,
    disabled,
-   IconSearch
+   IconSearch,
+   onOptionClose
 }) {
 
    const [optionsVisible, setOptionsVisible] = useState(false)
@@ -33,8 +34,12 @@ export default function InputSearch({
    const handleClose = () => {
       setOptionsVisible(false)
    }
-   // console.log('checkbox', checkbox);
-   // console.log('value', value);
+   useEffect(() => {
+      if (optionsVisible === false && onOptionClose) {
+         onOptionClose()
+      }
+   }, [optionsVisible])
+
    useOutsideAlerter(inputRef, handleClose)
 
    return (
@@ -91,7 +96,7 @@ export default function InputSearch({
                               checkbox &&
                               <div className="flex mb-3">
                                  <CCheckbox
-                                    checked={option&&option?._id&&checkbox?.match?.includes(option?._id) ? true : false}
+                                    checked={option && option?._id && checkbox?.match?.includes(option?._id) ? true : false}
                                     name='student'
                                  // onChange={() =>
                                  //    setData({

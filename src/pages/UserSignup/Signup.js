@@ -1,32 +1,18 @@
 import React, { useEffect, useRef, useState } from "react";
 import InputField from "../../components/InputField/inputField";
 import styles from "./signup.module.css";
-
-import OrgDetails from "../Frames/OrgDetails/OrgDetails";
-import SignupLast from "../Frames/SignupLast/SignupLast";
-import FurtherDetails from "../Frames/FurtherDetails/FurtherDetails";
 import axios from "axios";
 import SetPassword from "../Frames/SetPassword/SetPasswordInvited";
 import cuate from "../../assets/signup/cuate.svg";
 import NumericSteppers from "../../components/NumericSteppers/NumericSteppers";
-import CountryCode from "../../components/CountryCode/CountryCode";
 import {
   useAddUserDetailsMutation,
   useSignupMutation,
 } from "../../app/services/auth";
-import {
-  instructionFormat,
-  hearAboutUsData,
-  solutionsData,
-  testPreparationsData,
-  tutoringData,
-  coachingData,
-} from "./data";
-import { getCheckedString } from "../../utils/utils";
-import InputSelect from "../../components/InputSelect/InputSelect";
+
 import useOutsideAlerter from "../../hooks/useOutsideAlerter";
 import { useLazyGetSettingsQuery } from "../../app/services/session";
-import { validateOtherDetails, validateSignup } from "./utils/util";
+import { validateSignup } from "./utils/util";
 import {
   useLazyGetUserDetailQuery,
   useLazyGetSingleUserQuery,
@@ -34,15 +20,11 @@ import {
   useLazyGetOrganizationQuery,
 } from "../../app/services/users";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import Loader from "../../components/Loader";
 import PrimaryButton from "../../components/Buttons/PrimaryButton";
-import RadioUnselected from "../../assets/icons/radio-unselected.svg";
-import RadioSelected from "../../assets/icons/radio-selected.svg";
 import OtherDetails from "../Frames/OtherDetails/userDetails";
 import CustomFields from "../Frames/CustomFields/CustomFields";
 import { useGetUserByOrgNameMutation } from "../../app/services/organization";
 import InputFieldDropdown from "../../components/InputField/inputFieldDropdown";
-import SecondaryButton from "../../components/Buttons/SecondaryButton";
 import CCheckbox from "../../components/CCheckbox/CCheckbox";
 
 export default function UserSignup() {
@@ -57,6 +39,8 @@ export default function UserSignup() {
   const [getSettings, getSettingsResp] = useLazyGetSettingsQuery();
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const [stepOneDisabled, setStepOneDisabled] = useState(false)
+  const [stepTwoDisabled, setStepTwoDisabled] = useState(false)
 
   const [values, setValues] = useState({
     firstName: "",
@@ -181,15 +165,15 @@ export default function UserSignup() {
     console.log("paramUserId", paramUserId);
 
     setIsAddedByAdmin(true);
-    setFrames((prev) => {
-      return { ...prev, signupActive: false, userDetails: true };
-    });
+    // setFrames((prev) => {
+    //   return { ...prev, signupActive: false, userDetails: true };
+    // });
 
     getDetails(paramUserId).then((res) => {
       if (res.error) {
         return console.log(res.error);
       }
-      console.log("param res", res.data);
+      console.log("user res", res.data);
       if (res.data?.user) {
         const { firstName, lastName, phone, email, role, associatedOrg, phoneCode } =
           res.data.user;
@@ -205,8 +189,11 @@ export default function UserSignup() {
             phoneCode
           };
         });
+        if(phone){
+          setStepOneDisabled(true)
+        }
         getUserDetail({ id: paramUserId }).then((res) => {
-          console.log('res----', res.data.data);
+          console.log('detail res----', res.data.data);
           if (res.data.data.userdetails) {
             let detail = res.data.data.userdetails
             setOtherDetails({
@@ -219,12 +206,15 @@ export default function UserSignup() {
               schoolName: detail.schoolName,
               PphoneCode: detail.phoneCode
             })
-            setFrames({
-              signupActive: false,
-              userDetails: false,
-              customFields: false,
-              setPasswordFields: true,
-            })
+            if(phone){
+              setStepTwoDisabled(true)
+            }
+            // setFrames({
+            //   signupActive: false,
+            //   userDetails: false,
+            //   customFields: false,
+            //   setPasswordFields: true,
+            // })
           }
         })
         fetchOrganisation(associatedOrg).then((org) => {
@@ -614,7 +604,7 @@ export default function UserSignup() {
 
               {frames.signupActive ? (
                 <div>
-                  <div className={`flex mt-[59px]  justify-between lg:mt-0 `}>
+                  <div className={`flex mt-[59px] justify-between lg:mt-0 ${stepOneDisabled ? 'pointer-events-none cursor-not-allowed' :''}`}>
                     <InputField
                       placeholder=""
                       inputContainerClassName="text-base-17-5  bg-white   border border-[#D0D5DD] h-[53px]"
@@ -662,7 +652,7 @@ export default function UserSignup() {
                       error={error.lastName}
                     />
                   </div>
-                  <div className="flex  items-center mt-[30px] mb-[29px] justify-between">
+                  <div className={`flex  items-center mt-[30px] mb-[29px] justify-between ${stepOneDisabled ? 'pointer-events-non cursor-not-allowe' :''}`}>
                     <InputField
                       labelClassname="mb-1 text-[#26435F] !font-medium"
                       label="Email"
@@ -713,7 +703,7 @@ export default function UserSignup() {
                     >
                       Are you signing up as a Parent or a Student?
                     </p>
-                    <div className="flex items-center  text-[13.5px] gap-x-6">
+                    <div className={`flex items-center  text-[13.5px] gap-x-6 ${stepOneDisabled ? 'pointer-events-none cursor-not-allowed' :''}`}>
                       <div
                         onClick={() => {
                           setValues((prev) => ({
@@ -731,8 +721,8 @@ export default function UserSignup() {
                           />
                           <div
                             className={`relative inline-block ml-[2px] w-4 h-4   rounded-full border ${values.role === "parent"
-                                ? "border-[#FFA28D]"
-                                : "border-gray-600"
+                              ? "border-[#FFA28D]"
+                              : "border-gray-600"
                               } cursor-pointer`}
                           >
                             {values.role === "parent" && (
@@ -762,8 +752,8 @@ export default function UserSignup() {
                           />
                           <div
                             className={`relative inline-block w-4 h-4 p-1   rounded-full border ${values.role === "student"
-                                ? "border-[#FFA28D]"
-                                : "border-gray-600"
+                              ? "border-[#FFA28D]"
+                              : "border-gray-600"
                               } cursor-pointer`}
                           >
                             {values.role === "student" && (
@@ -822,8 +812,8 @@ export default function UserSignup() {
 
                     <PrimaryButton
                       className={`bg-[#FFA28D] text-center items-center justify-center disabled:opacity-60 w-[7.6042vw]   text-[#FFF] !text-[0.9688vw] font-medium relative h-[53px] rounded-5 ${loading
-                          ? "cursor-wait opacity-60 pointer-events-none"
-                          : "cursor-pointer"
+                        ? "cursor-wait opacity-60 pointer-events-none"
+                        : "cursor-pointer"
                         }`}
                       disabled={
                         values.email.trim().length === 0 ||
@@ -845,6 +835,7 @@ export default function UserSignup() {
                   {...otherDetailsProps}
                   newLoader={loading}
                   handleSignup={handleSignup}
+                  stepTwoDisabled={stepTwoDisabled}
                 />
               ) : frames.customFields ? (
                 <CustomFields
