@@ -143,7 +143,7 @@ export default function SetPassword({
                 inputContainerClassName="border border-[0.98px_solid_#D0D5DD] w-[13.8542vw]"
                 inputClassName={"py-[2px] "}
                 label="Set New Password"
-                labelClassname="ml-2 mb-2 !font-medium !text-[0.9719vw]"
+                labelClassname="ml-2 mb-2 !font-semibold !text-[0.9719vw]"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 error={error.password}
@@ -156,7 +156,7 @@ export default function SetPassword({
                 placeholder=""
                 inputContainerClassName="border border-[0.98px_solid_#D0D5DD] w-[13.8542vw]"
                 label="Confirm New Password"
-                labelClassname="ml-2 mb-2 !font-medium !text-[0.9719vw]"
+                labelClassname="ml-2 mb-2 !font-semibold  !text-[0.9719vw]"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 error={error.confirmPassword}

@@ -5,6 +5,13 @@ thead tr th .marker::after {
   height: 25px;
 }
 
+thead tr th:nth-child(-n+5) .markerCustom::after {
+  content: url("../../assets/icons/table_dropdown.svg");
+  display: inline-block;
+  width: 25px;
+  height: 25px;
+}
+
 .no-arrow div::after{
   content: " ";
   margin-left: 5px;
