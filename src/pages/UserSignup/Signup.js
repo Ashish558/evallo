@@ -173,7 +173,7 @@ export default function UserSignup() {
       if (res.error) {
         return console.log(res.error);
       }
-      console.log("param res", res.data);
+      console.log("user res", res.data);
       if (res.data?.user) {
         const { firstName, lastName, phone, email, role, associatedOrg, phoneCode } =
           res.data.user;
@@ -189,9 +189,11 @@ export default function UserSignup() {
             phoneCode
           };
         });
-        setStepOneDisabled(true)
+        if(phone){
+          setStepOneDisabled(true)
+        }
         getUserDetail({ id: paramUserId }).then((res) => {
-          console.log('res----', res.data.data);
+          console.log('detail res----', res.data.data);
           if (res.data.data.userdetails) {
             let detail = res.data.data.userdetails
             setOtherDetails({
@@ -204,7 +206,9 @@ export default function UserSignup() {
               schoolName: detail.schoolName,
               PphoneCode: detail.phoneCode
             })
-            setStepTwoDisabled(true)
+            if(phone){
+              setStepTwoDisabled(true)
+            }
             // setFrames({
             //   signupActive: false,
             //   userDetails: false,
@@ -648,7 +652,7 @@ export default function UserSignup() {
                       error={error.lastName}
                     />
                   </div>
-                  <div className={`flex  items-center mt-[30px] mb-[29px] justify-between ${stepOneDisabled ? 'pointer-events-none cursor-not-allowed' :''}`}>
+                  <div className={`flex  items-center mt-[30px] mb-[29px] justify-between ${stepOneDisabled ? 'pointer-events-non cursor-not-allowe' :''}`}>
                     <InputField
                       labelClassname="mb-1 text-[#26435F] !font-medium"
                       label="Email"
