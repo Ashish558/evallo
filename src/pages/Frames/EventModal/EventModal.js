@@ -794,14 +794,14 @@ export default function EventModal({
    return (
       <>
          <Modal
-            classname="max-w-[827px]  mx-auto h-[95vh] max-h-[700px] 2xl:max-h-[700px] overflow-y-auto"
+            classname="max-w-[827px]  mx-auto  h-[95vh] max-h-[700px] 2xl:max-h-[700px] overflow-y-auto custom-scroller"
             handleClose={() => setEventModalActive(false)}
             wrapperClassName='flex flex-col h-full'
             title={isEditable === false ? 'Session Details' : isUpdating ? "Update Session" : ` ${persona == "tutor" ? "Session Details" : "Schedule New Session"}`}
 
             body={
                <>
-                  <div className="overflow-y-auto">
+                  <div className="overflow-y-auto custom-scroller">
                      <div className="pr-4">
                         <SearchNames setStudent={setStudent}
                            setData={setData} student={student} tutor={tutor} data={data}
@@ -967,14 +967,14 @@ export default function EventModal({
                         }
                         {persona !== "student" && persona !== "parent" && (
                            <>
-                              <div className="mt-7 mb-5">
+                              <div className="mt-7 mb-5 w-full  ">
                                  {
                                     allSessionTags.map(tag => {
                                        return <div key={tag._id} >
                                           <p className="font-medium mb-2.5">
                                              {tag.heading}
                                           </p>
-                                          <div className="flex">
+                                          <div className="flex !flex-wrap gap-3">
                                              {tag.items.length > 0 &&
                                                 tag.items.map((item, idx) => {
                                                    const currentUserSession = data.sessionTags.find(dataSessionTag => dataSessionTag._id === tag._id)

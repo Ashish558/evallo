@@ -7,7 +7,7 @@ import {
    Legend,
 } from 'chart.js';
 import { Bubble } from 'react-chartjs-2';
-import Arrow from '../../../../assets/icons/Score Arrow.svg'
+
 import { useSelector } from 'react-redux';
 
 const iniOptions = {
@@ -23,10 +23,9 @@ const iniOptions = {
              color: "#24A3D9",
              display: true,
              text: 'Concepts',
-             fontFamily: 'Lexend',
              font: {
-                weight: 600,
-                size: 20,
+                weight: 500,
+                size: 14,
               },
           },
           ticks: {
@@ -48,10 +47,9 @@ const iniOptions = {
              display: true,
              text: 'Time Taken (second)',
              color: "#24A3D9",
-             fontFamily: 'Lexend',
              font: {
-                weight: 600,
-                size: 20,
+                weight: 500,
+                size: 14,
               },
           },
           ticks: {
@@ -105,7 +103,7 @@ const data1 = {
 };
 
 export default function Chart({ score,accuracy,setSubjects, subjects, selectedSubject, selectedStudent, currentSubData, setCurrentSubData, selectedConceptIdx }) {
-console.log(currentSubData,"selectedSubject")
+
   
    const [options, setOptions] = useState(iniOptions)
    const [chartData, setChartData] = useState([])
@@ -124,7 +122,7 @@ console.log(currentSubData,"selectedSubject")
     
      setChartData(subjects)
    },[subjects])
-////console.log("first",{setSubjects,chartData, subjects, selectedSubject, selectedStudent, currentSubData, setCurrentSubData, selectedConceptIdx  })
+console.log("first",{setSubjects,chartData, subjects, selectedSubject, selectedStudent, currentSubData, setCurrentSubData, selectedConceptIdx  })
 
    const getColor = (idx, len) => {
       let index = idx
@@ -211,15 +209,8 @@ console.log(currentSubData,"selectedSubject")
                title:{
                   ...prev.scales.y.title,
                   text:accuracy?"Accuracy (%)":score?"Score":"Time Taken (seconds)"
-               },
-               min: 0,
-               max: 100,
-               ticks: {
-                 // forces step size to be 50 units
-                 stepSize: 20
-               } 
+               }
             }
-            
          },
       }))
       const datasets = []
@@ -280,14 +271,14 @@ console.log(currentSubData,"selectedSubject")
 
    return (
       data !== undefined &&
-      <div className='wrapper w-full min-w-2/3 overflow-x-auto relative'  >
+      <div className='wrapper w-full min-w-2/3 overflow-x-auto'  >
 
          <Bubble ref={chartRef}
             options={options} data={data}
             height={200}
             width={canvasWidth}
          /> 
-<div className='absolute top-[36%] left-[2.5%]'><img src={Arrow} alt="" /></div>
+
       </div>
    )
 }

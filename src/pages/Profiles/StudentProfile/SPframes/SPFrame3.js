@@ -130,7 +130,7 @@ setId(userDetail?._id)
               concepts:{
                 [it?.conceptName]:it?.total,
               },
-              timeTaken:it?.avgTimeTaken*60*60,
+              timeTaken:it?.avgTimeTaken*60,
               no_of_correct:it?.noOfCorrect
               ,name:it?.conceptName
 
@@ -185,7 +185,7 @@ setId(userDetail?._id)
     });
     setSubjects(updated);
   };
- console.log("sprame3",{spSubject,subjects,scoreProgression,TimeChartData,ConceptualChartData});
+ console.log("sprame3",{accsubjects,selectedspSubject,spSubject,subjects,scoreProgression,TimeChartData,ConceptualChartData});
   return (
     <div className="flex flex-col gap-5 -mt-5 design:gap-10">
       {" "}
@@ -210,7 +210,7 @@ setId(userDetail?._id)
         id={styles.chartContainer}
         className="!rounded-md bg-white shadow-[0px_0px_2.500001907348633px_0px_#00000040] custom-scroller "
       >
-         <div className="flex-1 flex justify-end translate-y-4 mr-3">
+         <div className="flex-1 relative z-[6000] flex justify-end translate-y-4 mr-3">
             <InputSelectNew
               placeholder={""}
               parentClassName="ml-0  scale-[0.9] items-center flex text-[#FFA28D] text-xs border px-1 py-2 border-[#FFA28D] rounded-full  "
@@ -263,7 +263,7 @@ setId(userDetail?._id)
           id={styles.chartContainer}
           className="!rounded-md w-full bg-white flex-1 shadow-[0px_0px_2.500001907348633px_0px_#00000040] custom-scroller "
         >
-          <div className="flex-1 flex justify-end translate-y-4 mr-3">
+          <div className="flex-1 relative z-[6000] flex justify-end translate-y-4 mr-3">
             <InputSelectNew
               placeholder={""}
               parentClassName="ml-0  scale-[0.9] items-center flex text-[#FFA28D] text-xs border px-1 py-2 border-[#FFA28D] rounded-full  "
@@ -329,7 +329,7 @@ setId(userDetail?._id)
           id={styles.chartContainer}
           className="!rounded-md w-full bg-white flex-1 shadow-[0px_0px_2.500001907348633px_0px_#00000040] custom-scroller "
         >
-          <div className="flex-1 flex justify-end translate-y-4 mr-3">
+          <div className="flex-1 relative z-[6000] flex justify-end translate-y-4 mr-3">
             <InputSelectNew
               placeholder={""}
               parentClassName="ml-0  scale-[0.9] items-center flex text-[#FFA28D] text-xs border px-1 py-2 border-[#FFA28D] rounded-full  "
