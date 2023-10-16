@@ -80,7 +80,7 @@ export default function ParentEditables({
     },
     {
       name: "frame1",
-      title: "Basic Info",
+      title: "Other Details",
       api: "userDetail",
     },
     {
