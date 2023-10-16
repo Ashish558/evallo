@@ -165,7 +165,7 @@ return <></>
           <div className=" !w-[calc(545*0.0522vw)]">
             <div className="flex justify-between">
               <p className=" text-sm text-[#26435F] font-semibold text-base-20 mb-1 custom-scroller">
-                Internal Notes
+                Admin Notes
               </p>
              {persona==='admin'&& <EditableText
                 editable={editable}

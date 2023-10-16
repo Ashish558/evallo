@@ -1752,7 +1752,7 @@ export default function Users() {
                   <span className="pt-1">
                     If you want to continue inviting the users, please
                     click on the{" "}
-                    <span className="!font-medium">
+                    <span className="!font-semibold">
                       “Confirm Email Invitations”
                     </span>{" "}
                     button below.
