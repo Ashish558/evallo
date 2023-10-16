@@ -242,7 +242,7 @@ export default function TutorDashboard() {
 
    const options = {
       items: 1,
-      loop: true,
+      loop: false,
       nav: false,
       responsiveClass: true,
       dots: false,

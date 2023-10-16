@@ -423,6 +423,7 @@ export default function TutorProfile({ isOwn }) {
                   about: !details ? "" : details?.about,
                   education: !details ? "" : details?.education,
                   experience: !details ? "" : details?.experience,
+                  isPresent: details === null ? false : true,
                 },
                 tutorAddress: {
                   ...prevToEdit.addressData,
@@ -1508,6 +1509,7 @@ export default function TutorProfile({ isOwn }) {
                             setToEdit({
                               ...toEdit,
                               tutorServices: {
+                                ...toEdit.tutorServices,
                                 tutorServices: tutorAdminServices,
                                 active: true,
                               },

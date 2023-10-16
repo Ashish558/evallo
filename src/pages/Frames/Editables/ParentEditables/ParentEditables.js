@@ -315,7 +315,8 @@ export default function ParentEditables({
   ];
 
 
-  // console.log(currentField)
+   console.log("parentTutor",currentToEdit,currentField)
+   
   const handleProfilePhotoChange = (file) => {
     // console.log(file)
     let url = "";
