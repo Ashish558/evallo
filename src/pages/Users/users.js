@@ -1076,7 +1076,7 @@ export default function Users() {
                 body={
                   <>
                     <div className="text-center mb-7">
-                      <p className="text-[#517CA8]  text-lg font-light">
+                      <p className="text-[#517CA8]  text-lg ">
                         All users that are invited to the platform will receive
                         an email invitation to create an account within your
                         organization. If you only want to store their data and
@@ -1086,7 +1086,7 @@ export default function Users() {
                         <span className="pt-1">
                           If you want to continue inviting the users, please
                           click on the{" "}
-                          <span className="font-normal">
+                          <span className="font-semibold">
                             “Confirm Email Invitations”
                           </span>{" "}
                           button below.
@@ -1743,7 +1743,7 @@ export default function Users() {
             <>
               <div className="text-center mb-7">
                 <p className="text-[#517CA8]  text-lg">
-                 <span className="!font-light"> All users that are invited to the platform will receive
+                 <span className=""> All users that are invited to the platform will receive
                   an email invitation to create an account within your
                   organization. If you only want to store their data and
                   do not want to invite them to create an account, please
