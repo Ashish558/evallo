@@ -806,28 +806,27 @@ export default function TableItem({
               />}
               {persona === "parent" ? (
                 <>
-                  {/* {console.log(item)} */}
                   {item.isCompleted ? (
                     <button
                       className="px-2.5 py-1.8 bg-[#38C980] rounded-5 flex items-center leading-none  text-white ml-4 w-[120px] h-[31px] justify-center"
                       onClick={() =>
                         navigate(
-                          `/assigned-tests/${item.testId}/${item.assignedTestId}/report/`
+                          `/assigned-tests/${item.testId}/${item.assignedTestId}/report/${item.studentId._id}`
                         )
                       }
                     >
                       Report
                     </button>
-                  ) : item.isStarted ? (
+                  ) : item.status=="started" ? (
                     <button
                       className="px-2.5 py-1.8  rounded-5 flex items-center leading-none bg-[#FFCE84] text-white ml-4 w-[120px] h-[31px] justify-center"
                       onClick={() => {
                         const indexx = testtype.findIndex(obj => obj.testId === item.testId);
                         testtype[indexx].testtype == 'DSAT' ?
-                          navigate(`/testpage/${item.testId}/${item.assignedTestId}`)
+                        navigate(`/testpage/${item.testId}/${item.assignedTestId}`)
                           :
                           navigate(
-                            `/all-tests/start-section/${item.testId}/${item.assignedTestId}`
+                            `/assigned-tests/${item.testId}/${item.assignedTestId}/report/${item.studentId._id}`
                           )
                       }
                       }
@@ -835,15 +834,15 @@ export default function TableItem({
                       Started
                     </button>
                   ) : (
-                    <button
+                    <button disabled
                       className="px-2.5 py-1.8 rounded-5 bg-[#D4D9DF] flex items-center leading-none  text-white ml-4 w-[120px] h-[31px] justify-center"
                       onClick={() => {
                         const indexx = testtype.findIndex(obj => obj.testId === item.testId);
                         testtype[indexx].testtype == 'DSAT' ?
-                          navigate(`/testpage/${item.testId}/${item.assignedTestId}`)
+                        navigate(`/testpage/${item.testId}/${item.assignedTestId}`)
                           :
                           navigate(
-                            `/all-tests/start-section/${item.testId}/${item.assignedTestId}`
+                            `/assigned-tests/${item.testId}/${item.assignedTestId}/report/${item.studentId._id}`
                           )
                       }
                       }
