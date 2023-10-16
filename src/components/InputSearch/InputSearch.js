@@ -27,7 +27,7 @@ export default function InputSearch({
    disabled,
    IconSearch
 }) {
-
+console.log(value)
    const [optionsVisible, setOptionsVisible] = useState(false)
    const inputRef = useRef()
    const handleClose = () => {
