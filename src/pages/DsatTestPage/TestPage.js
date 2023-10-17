@@ -501,13 +501,14 @@ useEffect(()=>{
       setbackupresponse([]);
       setloader(true)
       setsectionindex(answer_check?.completed?.length==0?1:answer_check?.completed?.length)
-      const response = answers.map(item => {
+      const response = answers.map((item,i) => {
          const { QuestionType, QuestionNumber, ResponseAnswer, responseTime } = item
          return {
             QuestionType,
             QuestionNumber,
             ResponseAnswer: ResponseAnswer ? ResponseAnswer : '',
             responseTime: responseTime ? responseTime : 0,
+            marked:markreview[i].review
          }
       })
       let body = {

@@ -588,7 +588,7 @@ export default function StartTest() {
          </div>
 
          {popUp && <Modal
-            classname="w-1/2 mx-auto"
+            classname="max-w-[880px] mx-auto"
             title="Are you sure you want to start the section?"
             titleClassName='mr-4  mb-4'
             primaryBtn={
