@@ -512,7 +512,7 @@ export default function AssignedTutors({ setAssignedTutorOpen, assignedTutorOpen
                               inputContainerClassName=" text-base-17-5 bg-[#F3F5F7] border-0 pt-3.5 pb-3.5"
                               inputClassName="bg-[#F3F5F7]"
                               type="text"
-                              value={studentMultiple?.map(itt => itt?.value)}
+                              value={modalData?.studentName}
                               checkbox={{
                                  visible: true,
                                  name: "student",
@@ -524,7 +524,7 @@ export default function AssignedTutors({ setAssignedTutorOpen, assignedTutorOpen
                                     studentName: e.target.value,
                                  })
                               }
-                              right={<img className="w-5 h-4" alt="drop" src={down} />}
+                              rightIcon={down} 
                               optionListClassName="text-base-17-5"
                               optionClassName="text-base-17-5"
                               optionData={students}
@@ -560,7 +560,7 @@ export default function AssignedTutors({ setAssignedTutorOpen, assignedTutorOpen
                                     tutorId: item._id
                                  })
                               }}
-                              right={<img className="w-5 h-4" alt="drop" src={down} />}
+                              rightIcon={down} 
                               optionPrefix='t'
                               parentClassName="w-full mr-4"
                               labelClassname="ml-2 mb-1 text-base-20 tracking-wide text-[#26435F]"
