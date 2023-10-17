@@ -313,7 +313,7 @@ export default function OrgDetails({
 
         <div className="flex items-center mt-12 justify-between">
           <SecondaryButton
-            children="Go Back"
+            children="Go back"
             className="text-sm mr-6 bg-white text-[#cad0db] border-[1.5px] border-[#D0D5DD] py-2"
             onClick={handleBack}
           />

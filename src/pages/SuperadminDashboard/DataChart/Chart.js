@@ -196,7 +196,7 @@ const BubbleChart = ({ dateRange }) => {
                   // radius: 20,
                   font: {
                     size: 15,
-                    family: "Lexend Deca",
+                    family: "Lexend",
                   },
                   // pointStyleSize:5,
                   // pointStyleHeight:5,

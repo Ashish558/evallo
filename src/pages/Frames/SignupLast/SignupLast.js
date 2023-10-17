@@ -67,7 +67,7 @@ export default function SignupLast({
         </div>
       </div>
       <div className="mb-7">
-        <p className="font-semibold tracking-wider mb-2 text-[0.97188vw] text-[#26435F]">
+        <p className="font-semibold tracking-wider mb-2 text-[0.96vw] text-[#26435F]">
           Select the solutions you are looking for:
         </p>
 
@@ -99,7 +99,7 @@ export default function SignupLast({
         <div className='h-[1px] bg-[#EBEBEB] w-5/6 mb-4'>
 
         </div>
-        <p className="font-semibold tracking-wider mb-2 text-[0.97188vw] text-[#26435F]">How did you hear about us?</p>
+        <p className="font-semibold tracking-wider mb-2 text-[0.96vw] text-[#26435F]">How did you hear about us?</p>
         <div className="grid grid-cols-2 mb-0 w-3/5">
           {hearAboutUs?.map((item, idx) => {
             return (
@@ -125,13 +125,12 @@ export default function SignupLast({
         <div className='h-[1px] bg-[#EBEBEB] w-5/6 mb-4'>
 
         </div>
-        <p className="font-semibold mb-1 text-[0.97188vw]  text-[#26435F]">
-          On a scale of 1-10 (Bad to Great), how would you rate your sign up
-          experience?
+        <p className="font-semibold mb-1 text-[0.96vw]  text-[#26435F]">
+          On a scale of 1-10 (Bad to Great), how would you rate your sign up experience?
         </p>
         <InputSelectNew
           value={rateUs}
-          parentClassName="w-[150px] my-2 "
+          parentClassName="w-[145px] my-2 "
           optionContainerClassName="text-[14px] "
           optionsEachClassName="py-[7px]"
           optionData={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}
@@ -139,14 +138,14 @@ export default function SignupLast({
           placeholder="Select"
 
           labelClassname="text-[#26435F] font-bold  mb-1 text-sm "
-          inputContainerClassName="py-1 text-sm h-[44.9px] border  border-[#D0D5DD] my-0 mt-[-2px] rounded-[6px]"
+          inputContainerClassName="py-1 text-sm h-[44.9px] border  border-[#D0D5DD] my-0 mt-[-2px] rounded-[6px] !px-[13px]"
           inputClassName="ml-80"
 
           onChange={(e) => setRateUs(e)}
         />
 
         <div>
-          <div className='h-[1px] bg-[#EBEBEB]  mb-5 mt-5'>
+          <div className='h-[1px] bg-[#EBEBEB]  mb-5 mt-5 w-[90%] mx-auto'>
 
           </div>
         </div>
@@ -154,7 +153,7 @@ export default function SignupLast({
 
       <div className="flex items-center mt-5 justify-between">
         <SecondaryButton
-          children="Go Back"
+          children="Go back"
           className="text-sm mr-6 bg-white text-[#a3aDC7] border-[1.5px] border-[#D0D5DD] "
           onClick={handleBack}
         />
