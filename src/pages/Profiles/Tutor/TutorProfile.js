@@ -698,7 +698,7 @@ export default function TutorProfile({ isOwn }) {
         ) : (
           <></>
         )} */}
-        )} */}
+      
         <div className="flex  justify-between">
           <ProfileCard
             hideShadow
