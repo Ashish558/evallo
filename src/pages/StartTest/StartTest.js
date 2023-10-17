@@ -208,6 +208,9 @@ export default function StartTest() {
       //    })
    }, [])
 
+   useEffect(()=>{
+      console.log(answers);
+   },[answers])
    const fetchContinueTest = (setResponsesFromStorage, subjectsRec) => {
       continueTest({ id: assignedTestId })
          .then(res => {
@@ -369,14 +372,16 @@ export default function StartTest() {
       // console.log(activeSection);
       // console.log(answers);
       const response = answers.map(item => {
-         const { QuestionType, QuestionNumber, ResponseAnswer, responseTime } = item
+         const { QuestionType, QuestionNumber, ResponseAnswer, responseTime,isMarked } = item
          return {
             QuestionType,
             QuestionNumber,
             ResponseAnswer: ResponseAnswer ? ResponseAnswer : '',
             responseTime: responseTime ? responseTime : 0,
+            marked:isMarked
          }
       })
+      console.log(response);
       let body = {
          submitId,
          reqbody: {
@@ -588,7 +593,7 @@ export default function StartTest() {
          </div>
 
          {popUp && <Modal
-            classname="w-1/2 mx-auto"
+            classname="max-w-[880px] mx-auto"
             title="Are you sure you want to start the section?"
             titleClassName='mr-4  mb-4'
             primaryBtn={

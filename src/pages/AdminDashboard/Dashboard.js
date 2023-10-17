@@ -70,7 +70,7 @@ const Dashboard = () => {
         console.log("latest", { res })
         let date2=new Date();
 
-        date2.setDate(new Date().getDate() - 7);
+        date2.setDate(new Date().getDate() - 77);
      
         let data=res?.data?.data?.filter(a => new Date(a.lastSignUp) >= new Date(date2))
        // let data=res?.data?.data?.

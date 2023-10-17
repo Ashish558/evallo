@@ -2217,7 +2217,7 @@ export default function Settings() {
                     optionListClassName="text-base-17-5"
                     optionClassName="text-base-17-5"
                     optionData={filteredTests}
-                    right={<img className="" src={down} />}
+                    rightIcon={down}
                     onOptionClick={(item) => {
                       handleTestChange2(item);
                       // setStudent(item.value);
