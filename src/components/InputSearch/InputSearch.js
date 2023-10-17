@@ -8,6 +8,7 @@ export default function InputSearch({
    parentClassName,
    inputContainerClassName,
    Icon,
+   rightIcon,
    value,
    placeholder,
    label,
@@ -38,7 +39,7 @@ export default function InputSearch({
    useOutsideAlerter(inputRef, handleClose)
 
    return (
-      <div className={` ${parentClassName && parentClassName}`} ref={inputRef} >
+      <div className={` ${parentClassName && parentClassName}`}  >
          <label
             className={`inline-block font-semibold ${labelClassname} w-2/3`}
          >
@@ -46,12 +47,13 @@ export default function InputSearch({
             {required && <span className='text-primaryRed inline-block pl-1'>*</span>}
          </label>
          <div
+            ref={inputRef} 
             className={`py-3 px-6 flex relative items-center rounded-5 ${inputContainerClassName ? inputContainerClassName : ""
                }`}
          >
-            {Icon && <img src={Icon} className="mr-6" />}
+            {Icon && <img onClick={()=>setOptionsVisible(!optionsVisible)} className="mr-4 cursor-pointer" src={Icon}  />}
             {
-               IconRight && <img src={IconRight} className="mr-4" alt="search" />
+               IconRight && <img onClick={()=>setOptionsVisible(!optionsVisible)} className="mr-4 cursor-pointer" src={IconRight}  alt="search" />
             }
             {inputLeftField && inputLeftField}
             <input disabled={disabled}
@@ -67,12 +69,12 @@ export default function InputSearch({
             />
             {
                (IconSearch ?
-                  <img src={SeacrchIcon} className="ml-4" alt="SeacrchIcon" /> : '')
+                  <img src={SeacrchIcon} onClick={()=>setOptionsVisible(!optionsVisible)} className="ml-4 cursor-pointer" alt="SeacrchIcon" /> : '')
 
 
             }
             {right && right}
-
+{rightIcon&&<img onClick={()=>setOptionsVisible(!optionsVisible)} className="cursor-pointer z-[50] relative" src={rightIcon} alt="drop"/>}
             {optionsVisible &&
                <div className={`${styles.options} custom-scroller scrollbar-vertical shadow-xl rounded-t-none ${optionClassName}`}>
                   {optionData?.map((option, idx) => {

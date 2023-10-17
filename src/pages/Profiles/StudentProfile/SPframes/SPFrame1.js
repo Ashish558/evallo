@@ -265,7 +265,7 @@ const SPFrame1 = ({ userId, settings, userDetail, editable, setToEdit, toEdit ,f
               <></>
             )} */}
             
-            {userDetail?.interest?.length > 0 &&
+            {userDetail?.interest?.length > 0 ?
               userDetail?.interest.map((it, idx) => {
                 return (
                   <div
@@ -275,7 +275,15 @@ const SPFrame1 = ({ userId, settings, userDetail, editable, setToEdit, toEdit ,f
                     {it}
                   </div>
                 );
-              })}
+              }):
+              <div className="w-full h-full rounded-md bg-white flex justify-center flex-col text-center items-center">
+              <span  onClick={() =>
+                setToEdit({
+                  ...toEdit,
+                  interest: { ...toEdit.interest, active: true },
+                })
+              } className="text-[#517CA8] text-base-17-5 cursor-pointer">What Are Your Interests?</span>
+              </div>}
           </div>
         </div>
 
@@ -311,7 +319,14 @@ const SPFrame1 = ({ userId, settings, userDetail, editable, setToEdit, toEdit ,f
                     </p>
                   );
                 })
-              : <></>}
+              :  <div className="w-full h-full rounded-md bg-white flex justify-center flex-col text-center items-center">
+              <span onClick={() =>
+                setToEdit({
+                  ...toEdit,
+                  subjects: { ...toEdit.subjects, active: true },
+                })
+              } className="text-[#517CA8] text-base-17-5 cursor-pointer">What Subjects Are You Currently Studying?</span>
+              </div>}
           </div>
         </div>
 
@@ -370,7 +385,7 @@ const SPFrame1 = ({ userId, settings, userDetail, editable, setToEdit, toEdit ,f
                   <></>
                 );
               })} */}
-            {userDetail?.personality?.length > 0 &&
+            {userDetail?.personality?.length > 0 ?
               userDetail?.personality.map((it, idx) => {
                 return (
                   <div
@@ -380,7 +395,17 @@ const SPFrame1 = ({ userId, settings, userDetail, editable, setToEdit, toEdit ,f
                     {it}
                   </div>
                 );
-              })}
+              }):
+              <div className="w-full h-full rounded-md bg-white flex justify-center flex-col text-center items-center">
+                <span  onClick={() =>
+                setToEdit({
+                  ...toEdit,
+                  personality: { ...toEdit.personality, active: true },
+                })
+              } className="text-[#517CA8] text-base-17-5 cursor-pointer">How Would You Describe Yourself using a few adjectives?</span>
+                </div>
+              
+              }
           </div>
         </div>
       </div>

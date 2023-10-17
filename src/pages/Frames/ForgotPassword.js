@@ -37,14 +37,14 @@ export default function ForgotPassword({
    }
 
    return (
-      <div className={`w-full ${loading && 'cursor-wait'}`}>
-         <p className="font-bold text-[28px] py-[90px] pb-[34px] lg:text-5xl leading-snug mb-7 px-[49px] lg:px-148 bg-[#7152EB] lg:bg-transparent text-white lg:text-black">
+      <div className={`w-full ${loading && 'cursor-wait'} pb-12 mt-3`}>
+         <p className="font-bold text-[28px] py-[20px] pb-[34px] lg:text-5xl leading-snug mb-7 px-[49px] lg:px-148  lg:bg-transparent   text-[#26435F]">
             Password Reset
          </p>
 
-         <form onSubmit={handleSubmit} className="px-[49px] lg:px-148">
+         <form onSubmit={handleSubmit} className="px-[49px] lg:px-148 text-[#26435F] font-medium">
             <p
-               className="text-normal font-bold mb-90"
+               className="text-normal font-bold mb-[50px]"
                style={{ fontSize: "18px" }}
             >
                Enter your email address that you used for your account. <br />
@@ -55,17 +55,27 @@ export default function ForgotPassword({
                Icon={EmailIcon}
                placeholder="Email address"
                parentClassName="mb-6"
+               biggerText={true}
+               labelClassname="text-[#26435F] font-medium !text-lg mb-1"
                label="Email Address"
-               labelClassname="ml-2 mb-2"
-               inputClassName="bg-transparent"
-               inputContainerClassName='border'
+             
+               iconSize="medium"
+            
+             
+
+               removeResponsive={true}
+               
+               inputClassName="bg-transparent  !text-lg"
+               inputContainerClassName="hover:border-[#FFA28D] border-[0.936px] !text-lg border-[#D0D5DD]  h-[49px]  rounded-[6px] w-full"
+             
+             
                onChange={(e) => setEmail(e.target.value)}
             />
 
             <div className="relative">
                <input
                   disabled={loading === true ? true : !emailValidate.test(email)}
-                  className={`w-full relative bg-primaryDark disabled:bg-pink py-2 lg:py-4 rounded-10 text-white text-21 ${loading ? 'opacity-60 pointer-events-none' : ''} `}
+                  className={`w-full relative bg-primary disabled:bg-primary py-2 lg:py-4 rounded-10 text-white text-21 ${loading ? 'opacity-60 pointer-events-none' : ''} mt-10`}
                   // onClick={() => setActiveFrame(setResetPasswordActive)}
                   // onClick={() => handleSubmit()}
                   type="submit"
@@ -88,7 +98,7 @@ export default function ForgotPassword({
                }
             </p> */}
             <p
-               className={`text-secondary cursor-pointer relative text-xs font-semibold ml-2 mt-2   lg:inline-block hidden`}
+               className={`text-[#24A3D9] cursor-pointer relative text-xs font-semibold ml-2 mt-2   lg:inline-block hidden`}
                onClick={() => setActiveFrame && setActiveFrame(setLoginActive)}
             >
                Go back to login

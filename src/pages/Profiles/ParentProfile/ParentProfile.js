@@ -570,16 +570,16 @@ const [toEdit, setToEdit] = useState({
           </span>
           <span className="font-semibold">Dashboard</span>
         </p>
-        {!isOwn ? (
+        {/* {!isOwn ? (
           <button
-            className=" bg-[#D9BBFF] px-[14px] mb-10 py-[8px] relative z-[5000] cursor-pointer rounded-[8px] text-[#636363] text-[18px] font-medium top-[1px] left-[0px] gap-[12px] cursor-pointer flex justify-center items-center"
+            className="my-5 bg-primary text-white cursor-pointer relative z-[50] px-[14px] py-[8px] rounded-[8px]  text-[18px] font-medium top-[-8px] left-[0px] flex gap-[12px] cursor-pointer flex justify-center items-center"
             onClick={() => window.history.back()}
           >
-            <img src={LeftIcon} alt="icon" /> Back
+            <img className="w-4 h-4" src={LeftIcon} alt="icon" /> Back
           </button>
         ) : (
           <></>
-        )}
+        )} */}
 
         <div className={` rounded-b-md w-full flex flex-col relative `}>
           <div className="flex gap-7">

@@ -754,10 +754,10 @@ const [toEdit, setToEdit] = useState({
         </p>
         {/* {!isOwn ? (
           <button
-            className="my-5 bg-[#D9BBFF] cursor-pointer relative z-[50] px-[14px] py-[8px] rounded-[8px] text-[#636363] text-[18px] font-medium top-[-8px] left-[0px] flex gap-[12px] cursor-pointer flex justify-center items-center"
+            className="my-5 bg-primary text-white cursor-pointer relative z-[50] px-[14px] py-[8px] rounded-[8px]  text-[18px] font-medium top-[-8px] left-[0px] flex gap-[12px] cursor-pointer flex justify-center items-center"
             onClick={() => window.history.back()}
           >
-            <img src={LeftIcon} alt="icon" /> Back
+            <img className="w-4 h-4" src={LeftIcon} alt="icon" /> Back
           </button>
         ) : (
           <></>

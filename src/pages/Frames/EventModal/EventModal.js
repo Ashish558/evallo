@@ -774,6 +774,20 @@ export default function EventModal({
    }, [isUpdating, sessionToUpdate?.time, data?.time, sessionToUpdate?.date, data?.date])
 
    const handleSessiontagChange = (item, tagId) => {
+      console.log("tagssss",data.sessionTags,item,tagId)
+      let check=false;
+      data.sessionTags.map(tag => {
+         if (tag._id === tagId) {
+            check=true;
+         }})
+         console.log("tagss",check)
+         if(!check){
+            let tempSessionTag = data.sessionTags
+            tempSessionTag.push({_id: tagId,items:[item]})
+            setData({ ...data, sessionTags: tempSessionTag })
+            return 
+         }
+       
       const tempSessionTag = data.sessionTags.map(tag => {
          if (tag._id === tagId) {
             let items = [...tag.items]
@@ -788,6 +802,7 @@ export default function EventModal({
          }
       })
       setData({ ...data, sessionTags: tempSessionTag })
+   
    }
    const dataProps = { data, setData }
    //  console.log({isEditable})
