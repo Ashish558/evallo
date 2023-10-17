@@ -10,7 +10,7 @@ export default function AllTestDetail({ testData }) {
       createdBy: '-',
       updatedBy: '-',
    })
-
+   console.log(testData)
    useEffect(() => {
       if (testData.createdBy) {
          getUserDetail({ id: testData.createdBy })

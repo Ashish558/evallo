@@ -760,7 +760,7 @@ export default function StudentReport() {
                   }
 
                </div>
-
+{/* {console.log(testDetails)} */}
                <div className='flex gap-x-20'>
                   <div className='grid grid-cols-2 grid-rows-3  gap-y-[17px] gap-x-[50px] mt-6 text-[#517CA8] text-base-20'>
                      <div>
