@@ -47,7 +47,7 @@ export default function InputField({
   totalErrors,
   iconPadding,
   biggerText,
-
+  min
 }) {
   //console.log({ hideTooltip })
   const [inputType, setInputType] = useState(type);
@@ -132,6 +132,7 @@ export default function InputField({
           onChange={(e) => (onChange !== undefined ? onChange(e) : "")}
           onInput={(e) => (onChange !== undefined ? onChange(e) : "")}
           value={value}
+          min={min}
           pattern={pattern && pattern}
           ref={refS}
           defaultValue={defaultValue}

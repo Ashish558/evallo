@@ -143,7 +143,7 @@ email: "Email not verified! Please Verify your email and set your password"
   return (
     <div className={styles.bg}>
       <div className="flex  flex-col items-center md:grid-cols-2  ">
-        <img src={cuate} alt="rocket" className="h-10vh mt-3 mb-7 scale-[0.86] mt-[-5px] design:mt-[0px] design:scale-100" />
+        <img src={cuate} alt="rocket" className="h-[113.64px] w-[181px] mt-3 mb-7 scale-[0.86] mt-[-5px] design:mt-[0px] design:scale-100" />
         <div className="bg-primary hidden lg:block ">
           <ImageSlider
             className={styles.loginCarousel}

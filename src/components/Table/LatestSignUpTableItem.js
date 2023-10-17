@@ -2,11 +2,14 @@ import { useSelector } from "react-redux";
 import { getFormattedDate } from "../../utils/utils";
 import { useEffect } from "react";
 import { useState } from "react";
+import { useLazyGetTutorDetailsQuery } from "../../app/services/users";
 
 
 const LatestSignUpTableItem = ({ item, onClick }) => {
   const [ dateFormat,setDateFormat ] = useState("dd/mm/yy")
   const { organization: organization2 } = useSelector((state) => state.organization)
+  const [getUserDetail, userDetailResp] = useLazyGetTutorDetailsQuery();
+  const [tutor,setTutor]=useState([])
   useEffect(()=>{
     if(organization2&&organization2?.settings){
       setDateFormat(organization2?.settings?.dateFormat)
@@ -16,6 +19,27 @@ const LatestSignUpTableItem = ({ item, onClick }) => {
   const handleClick = () => {
     onClick.redirect(item);
   };
+  useEffect(()=>{
+    if(!item?.assiginedTutors||item?.assiginedTutors?.length===0)
+    return
+    item?.assiginedTutors?.map((it,idd)=>{
+      let userId=it
+      getUserDetail({ id: userId }).then((res) => {
+        console.log("response",userId, res?.data);
+        if(!res?.data)return 
+        const {firstName,lastName}=res.data.data.user
+         let fullName=firstName+" "+lastName+", "
+        
+        setTutor((prev)=>{
+  
+          if(tutor?.includes(fullName))
+          return [...prev]
+         return   [...prev,fullName]});
+      
+      })
+    })
+    
+  },[item])
   return (
     <tr className=" leading-8 ">
       <td className="  text-[17.5px] px-[10px]  min-w-14 py-4 text-left">
@@ -35,9 +59,9 @@ const LatestSignUpTableItem = ({ item, onClick }) => {
       <td className=" text-[17.5px] px-[10px]  min-w-14 py-4">
         <div >{item.phone}</div>
       </td>
-      <td className=" text-[17.5px] px-[10px]  min-w-14 py-4">
-        <div >
-          {item.assiginedTutors?.length > 0 ? item.assiginedTutors : "NA"}
+      <td className=" text-[17.5px] px-[10px]  py-4">
+        <div className="max-w-[300px] overflow-x-auto custom-scroller-2  min-w-[100px]">
+          {tutor && tutor?.length>0 ?tutor : "NA"}
         </div>
       </td>
       <td className=" text-[17.5px] px-[10px]  min-w-14 py-4">

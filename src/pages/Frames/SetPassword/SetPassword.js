@@ -140,7 +140,7 @@ export default function SetPassword({
                 parentClassName="mb-6 relative"
                 type="password"
                 placeholder=""
-                inputContainerClassName="border border-[0.98px_solid_#D0D5DD] w-[13.8542vw]"
+                inputContainerClassName="border border-[0.98px_solid_#D0D5DD] w-[266px] h-[53px]"
                 inputClassName={"py-[2px] "}
                 label="Set New Password"
                 labelClassname="ml-2 mb-2 !font-semibold !text-[0.9719vw]"
@@ -154,7 +154,7 @@ export default function SetPassword({
                 type="password"
                 inputClassName={"py-[2px]"}
                 placeholder=""
-                inputContainerClassName="border border-[0.98px_solid_#D0D5DD] w-[13.8542vw]"
+                inputContainerClassName="border border-[0.98px_solid_#D0D5DD] w-[266px] h-[53px]"
                 label="Confirm New Password"
                 labelClassname="ml-2 mb-2 !font-semibold  !text-[0.9719vw]"
                 value={confirmPassword}
@@ -170,7 +170,7 @@ export default function SetPassword({
               onClick={handleSubmit}
               loading={loading}
               children={"Set New Password"}
-              className="w-[17.5521vw] mt-6 py-3 !text-white"
+              className="w-[17.5521vw] mt-6 py-3 !text-white !font-semibold"
             />
             {/* <button
                         className={`w-full relative bg-primaryDark font-medium disabled:bg-pink pt-3 pb-3 mt-12 rounded-10 text-white text-lg  ${loading ? 'cursor-wait opacity-60' : 'cursor-pointer'}`}

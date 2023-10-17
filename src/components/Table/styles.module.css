@@ -5,6 +5,14 @@ thead tr th .marker::after {
   height: 25px;
 }
 
+thead tr th .upArrow::after {
+  content: url("../../assets/icons/table_dropdown.svg");
+  display: inline-block;
+  width: 25px;
+  height: 25px;
+  transform: rotate(180deg);
+}
+
 thead tr th:nth-child(-n+5) .markerCustom::after {
   content: url("../../assets/icons/table_dropdown.svg");
   display: inline-block;

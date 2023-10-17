@@ -19,7 +19,7 @@ export default function NavLink({ width, icon: Icon, path, parentClassName, setL
          // dispatch(updateIsLoggedIn(false))
          setLogoutModalActive(true)
       } else if (path === '/logo') {
-         window.open('https://sevensquarelearning.com/')
+         window.open('https://evallo.org/')
       } else {
          if (path === '') return
          navigate(path)

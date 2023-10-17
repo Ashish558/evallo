@@ -304,16 +304,24 @@ const Navbar = () => {
          navigate(path);
       }
    };
-
+const [loading2,setLoading2]=useState(false)
    const logoutUser = () => {
-      logOutApi().then(() => {
+      setLoading2(true);
+      logOutApi().then((res) => {
+         setLoading2(false);
+         if(res?.error){
+            alert("Something went wrong. Please try again")
+            return 
+         }
          console.log("Successfully logged out");
+         setLogoutModalActive(false)
+         sessionStorage.clear();
+         localStorage.clear("evalloToken");
+         navigate("/");
+         dispatch(updateIsLoggedIn(false));
+         window.location.reload();
       });
-      sessionStorage.clear();
-      localStorage.clear("evalloToken");
-      navigate("/");
-      dispatch(updateIsLoggedIn(false));
-      window.location.reload();
+   
    };
    useEffect(() => {
       setActiveRoute(location.pathname);
@@ -331,12 +339,12 @@ const Navbar = () => {
 
    return (
       <>
-         <div className="flex justify-around bg-[#26435F] h-[65px] design:h-[74px] items-center w-full shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)]">
+         <div className="flex justify-around bg-[#26435F] h-[65px] design:h-[72px] items-center w-full shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)]">
             <div
                className={`${persona === "superAdmin" ? "translate-x-[-30px]" : ""}`}
             >
                <a href="https://app.evallo.org">
-                  <img className="h-[27.4px] design:h-[29.796px]" src={icon} alt="evallo_logo" />
+                  <img className="h-[29.8px] design:h-[29.796px]" src={icon} alt="evallo_logo" />
                </a>
 
             </div>
@@ -378,16 +386,16 @@ const Navbar = () => {
             </div>
             <div className={`flex font-bold ${isLoggedIn ? "" : "opacity-[0.3]"}`}>
              {persona =="parent"||  <div className="flex mr-[24px] text-[#24A3D9] text-base-16  items-center">
-                  <p className=" text-[0.8333vw]">Pricing 	</p>
-                  <p className="pl-2">
+                  <p className=" text-[16px]">Pricing 	</p>
+                  <p className="pl-4">
                      &#36;
                   </p>
                </div>}
                <div className="flex mr-[24px] text-[#24A3D9] items-center text-base-16 ">
-                  <p className="text-[0.8333vw] ">Help</p>
+                  <p className="text-[16px] ">Help</p>
                   <p>
                      <img
-                        className="w-[16px] h-[14px] ml-2"
+                        className="w-[16px] h-[14px] ml-4"
                         style={{ height: "14px" }}
                         src={faQuestionCircle}
                         alt=""
@@ -396,15 +404,15 @@ const Navbar = () => {
                </div>
 
                <div
-                  className="flex  cursor-pointer items-center "
+                  className={`flex ${isLoggedIn&& 'cursor-pointer'} items-center `}
                   onClick={() => isLoggedIn && setLogoutModalActive(true)}
                >
                   <div>
-                     <p className="text-[#24A3D9] text-[0.8333vw]">Logout</p>
+                     <p className="text-[#24A3D9] text-[16px]">Logout</p>
                   </div>
                   <div>
                      <img
-                        className="w-[16px] h-[14px] ml-2"
+                        className="w-[16px] h-[14px] ml-4"
                         style={{ height: "14px" }}
                         src={logoutIcon}
                         alt=""
@@ -429,6 +437,7 @@ const Navbar = () => {
                cancelBtnClassName="!w-[146px] text-[#26435F] font-medium text-base !rounded-[8px] !bg-[rgba(38,67,95,0.10)] !ml-auto !h-[46px]"
                primaryBtn={{
                   text: "Logout",
+                  loading:loading2,
                   className: "text-base bg-[#FF7979] !w-[146px] pl-4 pr-4   !rounded-[8px] font-medium !mr-auto !text-center !bg-[#FF7979] !h-[46px]",
                   onClick: logoutUser,
                }}

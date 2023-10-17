@@ -15,7 +15,7 @@ export default function SCheckbox({ stopM, checked, onChange, name, disabled, va
       onChange(checkG)
    }, [checkG])
    return (
-      <div className={`w-[17.5px] h-[17.5px] ${styles.container} ${!checked ? styles.container2 : styles.container} ${!checked ? "opacity-40" : ''} ${className}`}
+      <div className={`w-[22px] h-[22px] ${styles.container} ${!checked ? styles.container2 : styles.container} ${!checked ? "opacity-40" : ''} ${className}`}
          onClick={(e) => {
             if (!true)
                setCheckG(!checkG)

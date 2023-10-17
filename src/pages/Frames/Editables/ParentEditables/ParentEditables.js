@@ -554,7 +554,8 @@ export default function ParentEditables({
         fetchDetails(true, true);
         // handleClose()
       });
-    } else if (currentField.api === "tutorDetail") {
+    } 
+    if (currentField.name==="profileData" || currentField.api === "tutorDetail") {
 
       if (reqBody.tutorLevel) {
         const level = getLevel(reqBody.tutorLevel);

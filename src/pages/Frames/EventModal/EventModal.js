@@ -551,6 +551,18 @@ export default function EventModal({
          reqBody.sessionProductive = ''
       }
       const { start, end } = reqBody.time
+      if(reqBody.time.start.timeType === 'am'){
+         reqBody.time.start.timeType = 'AM'
+      }
+      if(reqBody.time.start.timeType === 'pm'){
+         reqBody.time.start.timeType = 'PM'
+      }
+      if(reqBody.time.end.timeType === 'am'){
+         reqBody.time.end.timeType = 'AM'
+      }
+      if(reqBody.time.end.timeType === 'pm'){
+         reqBody.time.end.timeType = 'PM'
+      }
       let startTime = convertTime12to24(`${start.time} ${start.timeType}`)
       let endTime = convertTime12to24(`${end.time} ${end.timeType}`)
       let startT = moment(`2016-06-06T${startTime}:00`)
@@ -774,6 +786,20 @@ export default function EventModal({
    }, [isUpdating, sessionToUpdate?.time, data?.time, sessionToUpdate?.date, data?.date])
 
    const handleSessiontagChange = (item, tagId) => {
+      console.log("tagssss",data.sessionTags,item,tagId)
+      let check=false;
+      data.sessionTags.map(tag => {
+         if (tag._id === tagId) {
+            check=true;
+         }})
+         console.log("tagss",check)
+         if(!check){
+            let tempSessionTag = data.sessionTags
+            tempSessionTag.push({_id: tagId,items:[item]})
+            setData({ ...data, sessionTags: tempSessionTag })
+            return 
+         }
+       
       const tempSessionTag = data.sessionTags.map(tag => {
          if (tag._id === tagId) {
             let items = [...tag.items]
@@ -788,6 +814,7 @@ export default function EventModal({
          }
       })
       setData({ ...data, sessionTags: tempSessionTag })
+   
    }
    const dataProps = { data, setData }
    //  console.log({isEditable})
@@ -974,9 +1001,7 @@ export default function EventModal({
                                           <p className="font-medium mb-2.5">
                                              {tag.heading}
                                           </p>
-
-                                          <div className="flex flex-wrap row-gap-2">
-
+                                          <div className="flex !flex-wrap gap-3">
                                              {tag.items.length > 0 &&
                                                 tag.items.map((item, idx) => {
                                                    const currentUserSession = data.sessionTags.find(dataSessionTag => dataSessionTag._id === tag._id)

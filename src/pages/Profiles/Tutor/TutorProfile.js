@@ -690,14 +690,15 @@ export default function TutorProfile({ isOwn }) {
         </p>
         {/* {!isOwn ? (
           <button
-            className="my-5 bg-[#D9BBFF] cursor-pointer relative z-[50] px-[14px] py-[8px] rounded-[8px] text-[#636363] text-[18px] font-medium top-[-8px] left-[0px] flex gap-[12px] cursor-pointer flex justify-center items-center"
+            className="my-5 bg-primary text-white cursor-pointer relative z-[50] px-[14px] py-[8px] rounded-[8px]  text-[18px] font-medium top-[-8px] left-[0px] flex gap-[12px] cursor-pointer flex justify-center items-center"
             onClick={() => window.history.back()}
           >
-            <img src={LeftIcon} alt="icon" /> Back
+            <img className="w-4 h-4" src={LeftIcon} alt="icon" /> Back
           </button>
         ) : (
           <></>
         )} */}
+      
         <div className="flex  justify-between">
           <ProfileCard
             hideShadow
@@ -953,19 +954,29 @@ export default function TutorProfile({ isOwn }) {
                             <></>
                           );
                         })} */}
-                      {userDetail?.serviceSpecializations?.length > 0 &&
-                        userDetail?.serviceSpecializations?.map((it, idx) => {
-                          return (
-                            it[0] !== "6" && (
-                              <div
-                                key={idx}
-                                className="bg-white p-2 h-min mb-1  text-[#517CA8] text-base-17-5 !rounded-md shadow-[0px_0px_2.500001907348633px_0px_#00000040]  w-full"
-                              >
-                                {it}
-                              </div>
-                            )
-                          );
-                        })}
+                            {userDetail?.serviceSpecializations?.length > 0 ?
+                      userDetail?.serviceSpecializations?.map((it, idx) => {
+                        return (
+                          it[0] !== "6" && (
+                            <div
+                              key={idx}
+                              className="bg-white p-2 h-min mb-1  text-[#517CA8] text-base-17-5 !rounded-md shadow-[0px_0px_2.500001907348633px_0px_#00000040]  w-full"
+                            >
+                              {it}
+                            </div>
+                          )
+                        );
+                      }):<div className="w-full h-full min-h-[300px] rounded-md bg-white flex justify-center flex-col text-center items-center">
+                     {(isOwn === true || persona === "admin") && (  <span  onClick={() =>
+                        setToEdit({
+                          ...toEdit,
+                          serviceSpecializations: {
+                            ...toEdit.serviceSpecializations,
+                            active: true,
+                          },
+                        })
+                      } className="text-[#517CA8] text-base-17-5 cursor-pointer">Add Expertise</span>)}
+                      </div>}
                       {/* <div className='overflow-x-auto scrollbar-content max-h-[500px] scrollbar-vertical '>
                                                          <div className=' bg-white rounded min-h-[60px] flex items-center '>
                                  <div className='ml-3'>
@@ -1225,7 +1236,7 @@ export default function TutorProfile({ isOwn }) {
                   //    </div> */}
 
                   // </div>
-                  <div className="w-full relative h-[450px] p-1 flex flex-col gap-1  rounded-md items-center overflow-y-auto custom-scroller">
+                  <div className="w-full relative max-h-[500px] p-1 flex flex-col gap-1  rounded-md items-center overflow-y-auto custom-scroller">
                     {/* {settings ? (
                              settings.interest.length > 0 &&
                              userDetail.interest.map((id, idx) => {
@@ -1266,7 +1277,7 @@ export default function TutorProfile({ isOwn }) {
                              <></>
                            )} */}
 
-                    {userDetail?.interest?.length > 0 &&
+                    {userDetail?.interest?.length > 0 ?
                       userDetail?.interest.map((it, idx) => {
                         return (
                           it[0] !== "6" && (
@@ -1278,7 +1289,21 @@ export default function TutorProfile({ isOwn }) {
                             </div>
                           )
                         );
-                      })}
+                      }):<div className="w-full h-full min-h-[300px] rounded-md bg-white flex justify-center flex-col text-center items-center">
+                    
+                    
+                    {(isOwn === true || persona === "admin") && (     <span  onClick={() =>
+                        setToEdit({
+                          ...toEdit,
+                          serviceSpecializations: {
+                            ...toEdit.serviceSpecializations,
+                            active: true,
+                          },
+                        })
+                      } className="text-[#517CA8] text-base-17-5 cursor-pointer">Add Interests</span>
+                    )}
+                     
+                      </div>}
                   </div>
                 }
               />

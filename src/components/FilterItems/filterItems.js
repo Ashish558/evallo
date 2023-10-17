@@ -47,14 +47,14 @@ export default function FilterItems({
       );
     })
   ) : (
-    <div className="flex items-center flex-wrap">
+    <div className="flex items-center flex-wrap ">
       {items?.map((item, idx) => {
         return (
           <div
             key={idx}
             className={`mr-3 ${
               className ? className : ""
-            } bg-[#26435F1A] py-1 px-3 rounded-7 group ${styles.filterItem}`}
+            } bg-[#26435F1A] py-1 px-3 rounded-7 group ${styles.filterItem} m-1`}
           >
             <p className="text-[#26435F] text-[16px] text-base-15">
               {isString ? filteredTests?printTestName(item): item : item.text}
