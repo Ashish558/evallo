@@ -551,6 +551,18 @@ export default function EventModal({
          reqBody.sessionProductive = ''
       }
       const { start, end } = reqBody.time
+      if(reqBody.time.start.timeType === 'am'){
+         reqBody.time.start.timeType = 'AM'
+      }
+      if(reqBody.time.start.timeType === 'pm'){
+         reqBody.time.start.timeType = 'PM'
+      }
+      if(reqBody.time.end.timeType === 'am'){
+         reqBody.time.end.timeType = 'AM'
+      }
+      if(reqBody.time.end.timeType === 'pm'){
+         reqBody.time.end.timeType = 'PM'
+      }
       let startTime = convertTime12to24(`${start.time} ${start.timeType}`)
       let endTime = convertTime12to24(`${end.time} ${end.timeType}`)
       let startT = moment(`2016-06-06T${startTime}:00`)
