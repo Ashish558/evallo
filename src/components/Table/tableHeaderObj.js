@@ -15,7 +15,9 @@ export function TableHeaderNew({ header, checkedHeader, dataFor, Handler, noArro
       className={`px-6 py-[20px] font-medium whitespace-nowrap  text-center  cursor-pointer ${header.className ? header.className : ""
         } ${flag ? styles["no-arrow"] : ''}`}
     >
-      <div className={`flex justify-center ${noArrow ? '' : `${dataFor=="allTests" ?styles.markerCustom:styles.marker}`}`}>
+      <div className={`flex justify-center ${noArrow ? '' : `${dataFor=="allTests"? styles.markerCustom: (header.willDisplayDownArrow || header.willDisplayDownArrow === undefined) ? styles.marker : styles.upArrow}`}`}
+        onClick={() => header.onCick && header.onCick()}
+      >
         {header.text === "Full Name" && dataFor === 'allUsers' ? (
 
 
@@ -38,7 +40,7 @@ export function TableHeaderNew({ header, checkedHeader, dataFor, Handler, noArro
         ) : (
           ""
         )}
-        <span onClick={() => header.onCick && header.onCick()} className="text-center text-[17.5px]">
+        <span className="text-center text-[17.5px]">
           {header.text}
         </span>
       </div>
