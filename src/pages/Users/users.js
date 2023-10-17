@@ -46,7 +46,7 @@ import { useLazyGetSettingsQuery } from "../../app/services/session";
 import PrimaryButton from "../../components/Buttons/PrimaryButton";
 // import CountryCode from "../../components/CountryCode/CountryCode";
 // import { isPhoneNumber } from "../Signup/utils/util";
-import { checkIfExistInNestedArray } from "../../utils/utils";
+import { checkIfExistInNestedArray, getFormattedDateTime } from "../../utils/utils";
 // import InputSelectNew from "../../components/InputSelectNew/InputSelectNew";
 import InputSearch from "../../components/InputSearch/InputSearch";
 import { useSelector } from "react-redux";
@@ -73,6 +73,12 @@ export default function Users() {
   const navigate = useNavigate();
   const { organization, } = useSelector((state) => state.organization);
 
+  const SORT_STATES = {
+    ASCENDING_ORDER: "ASCENDING_ORDER",
+    DESCENDING_ORDER: "DESCENDING_ORDER",
+    UNSORTED: "UNSORTED",
+  }
+
   const { firstName, lastName } = useSelector((state) => state.user);
   const [modalData, setModalData] = useState(initialState);
   const [validData, setValidData] = useState(true);
@@ -81,6 +87,12 @@ export default function Users() {
   const [specializations, setSpecializations] = useState([]);
   const [numberPrefix, setNumberPrefix] = useState("");
   const [usersData, setUsersData] = useState([]);
+  const [usernameSortState, setUsernameSortState] = useState(SORT_STATES.UNSORTED);
+  const [userTypeSortState, setUserTypeSortState] = useState(SORT_STATES.UNSORTED);
+  const [emailSortState, setEmailSortState]       = useState(SORT_STATES.UNSORTED);
+  const [phoneSortState, setPhoneSortState]       = useState(SORT_STATES.UNSORTED);
+  const [accountStatusSortState, setAccountStatusSortState] = useState(SORT_STATES.UNSORTED);
+  const [joinDateSortState, setJoinDateSortState] = useState(SORT_STATES.UNSORTED);
   const [filteredUsersData, setFilteredUsersData] = useState([]);
   const [bulkUpload, setBulkUpload] = useState(false);
   const [xlsFile, setXlsFile] = useState();
@@ -106,54 +118,436 @@ export default function Users() {
   const [settings, setSettings] = useState({
     leadStatus: [],
   });
-  const sortByName = () => {
-    setUsersData((prev) => {
-      let arr = [...prev];
-      arr = arr.sort(function (a, b) {
-        if (a.name < b.name) {
-          return -1;
-        }
-        if (a.name > b.name) {
-          return 1;
-        }
-        return 0;
-      });
-      return arr;
-    });
 
-    setFilteredUsersData((prev) => {
-      let arr = [...prev];
-      //console.log("arr", arr);
-      arr = arr.sort(function (a, b) {
-        if (a.name < b.name) {
-          return -1;
-        }
-        if (a.name > b.name) {
-          return 1;
-        }
-        return 0;
+  const sortByName = () => {
+    console.log("sortByName");
+    if(usernameSortState === SORT_STATES.UNSORTED || usernameSortState === SORT_STATES.DESCENDING_ORDER) {
+      setUsersData((prev) => {
+        let arr = [...prev];
+        arr = arr.sort(function (a, b) {
+          if (a.name < b.name) {
+            return -1;
+          }
+          if (a.name > b.name) {
+            return 1;
+          }
+          return 0;
+        });
+        return arr;
       });
-      return arr;
-    });
+  
+      setFilteredUsersData((prev) => {
+        let arr = [...prev];
+        //console.log("arr", arr);
+        arr = arr.sort(function (a, b) {
+          if (a.name < b.name) {
+            return -1;
+          }
+          if (a.name > b.name) {
+            return 1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setUsernameSortState(SORT_STATES.ASCENDING_ORDER);
+    }
+    else if(usernameSortState === SORT_STATES.ASCENDING_ORDER) {
+      setUsersData((prev) => {
+        let arr = [...prev];
+        arr = arr.sort(function (a, b) {
+          if (a.name < b.name) {
+            return 1;
+          }
+          if (a.name > b.name) {
+            return -1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+  
+      setFilteredUsersData((prev) => {
+        let arr = [...prev];
+        //console.log("arr", arr);
+        arr = arr.sort(function (a, b) {
+          if (a.name < b.name) {
+            return 1;
+          }
+          if (a.name > b.name) {
+            return -1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setUsernameSortState(SORT_STATES.DESCENDING_ORDER);
+    }
   };
+
+  const sortByUserType = () => {
+    if(userTypeSortState === SORT_STATES.UNSORTED || userTypeSortState === SORT_STATES.DESCENDING_ORDER) {
+      setUsersData((prev) => {
+        let arr = [...prev];
+        arr = arr.sort(function (a, b) {
+          if (a.userType < b.userType) {
+            return -1;
+          }
+          if (a.userType > b.userType) {
+            return 1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+  
+      setFilteredUsersData((prev) => {
+        let arr = [...prev];
+        //console.log("arr", arr);
+        arr = arr.sort(function (a, b) {
+          if (a.userType < b.userType) {
+            return -1;
+          }
+          if (a.userType > b.userType) {
+            return 1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setUserTypeSortState(SORT_STATES.ASCENDING_ORDER);
+    }
+    else if(userTypeSortState === SORT_STATES.ASCENDING_ORDER) {
+      setUsersData((prev) => {
+        let arr = [...prev];
+        arr = arr.sort(function (a, b) {
+          if (a.userType < b.userType) {
+            return 1;
+          }
+          if (a.userType > b.userType) {
+            return -1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+  
+      setFilteredUsersData((prev) => {
+        let arr = [...prev];
+        //console.log("arr", arr);
+        arr = arr.sort(function (a, b) {
+          if (a.userType < b.userType) {
+            return 1;
+          }
+          if (a.userType > b.userType) {
+            return -1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setUserTypeSortState(SORT_STATES.DESCENDING_ORDER);
+    }
+  };
+
+  const sortByEmail = () => {
+    if(emailSortState === SORT_STATES.UNSORTED || emailSortState === SORT_STATES.DESCENDING_ORDER) {
+      setUsersData((prev) => {
+        let arr = [...prev];
+        arr = arr.sort(function (a, b) {
+          if (a.email < b.email) {
+            return -1;
+          }
+          if (a.email > b.email) {
+            return 1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+  
+      setFilteredUsersData((prev) => {
+        let arr = [...prev];
+        //console.log("arr", arr);
+        arr = arr.sort(function (a, b) {
+          if (a.email < b.email) {
+            return -1;
+          }
+          if (a.email > b.email) {
+            return 1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setEmailSortState(SORT_STATES.ASCENDING_ORDER);
+    }
+    else if(emailSortState === SORT_STATES.ASCENDING_ORDER) {
+      setUsersData((prev) => {
+        let arr = [...prev];
+        arr = arr.sort(function (a, b) {
+          if (a.email < b.email) {
+            return 1;
+          }
+          if (a.email > b.email) {
+            return -1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+  
+      setFilteredUsersData((prev) => {
+        let arr = [...prev];
+        //console.log("arr", arr);
+        arr = arr.sort(function (a, b) {
+          if (a.email < b.email) {
+            return 1;
+          }
+          if (a.email > b.email) {
+            return -1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setEmailSortState(SORT_STATES.DESCENDING_ORDER);
+    }
+  };
+
+  const sortByPhone = () => {
+    if(phoneSortState === SORT_STATES.UNSORTED || phoneSortState === SORT_STATES.DESCENDING_ORDER) {
+      setUsersData((prev) => {
+        let arr = [...prev];
+        arr = arr.sort(function (a, b) {
+          if (parseInt(a.phone) < parseInt(b.phone)) {
+            return -1;
+          }
+          if (parseInt(a.phone) > parseInt(b.phone)) {
+            return 1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+  
+      setFilteredUsersData((prev) => {
+        let arr = [...prev];
+        //console.log("arr", arr);
+        arr = arr.sort(function (a, b) {
+          if (parseInt(a.phone) < parseInt(a.phone)) {
+            return -1;
+          }
+          if (parseInt(a.phone) > parseInt(a.phone)) {
+            return 1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setPhoneSortState(SORT_STATES.ASCENDING_ORDER);
+    }
+    else if(phoneSortState === SORT_STATES.ASCENDING_ORDER) {
+      setUsersData((prev) => {
+        let arr = [...prev];
+        arr = arr.sort(function (a, b) {
+          if (parseInt(a.phone) < parseInt(a.phone)) {
+            return 1;
+          }
+          if (parseInt(a.phone) > parseInt(a.phone)) {
+            return -1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+  
+      setFilteredUsersData((prev) => {
+        let arr = [...prev];
+        //console.log("arr", arr);
+        arr = arr.sort(function (a, b) {
+          if (parseInt(a.phone) < parseInt(a.phone)) {
+            return 1;
+          }
+          if (parseInt(a.phone) > parseInt(a.phone)) {
+            return -1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setPhoneSortState(SORT_STATES.DESCENDING_ORDER);
+    }
+  };
+
+  const sortByAccountStatus = () => {
+    if(accountStatusSortState === SORT_STATES.UNSORTED || accountStatusSortState === SORT_STATES.DESCENDING_ORDER) {
+      setUsersData((prev) => {
+        let arr = [...prev];
+        arr = arr.sort(function (a, b) {
+          if (a.accountStatus < b.accountStatus) {
+            return -1;
+          }
+          if (a.accountStatus > b.accountStatus) {
+            return 1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+  
+      setFilteredUsersData((prev) => {
+        let arr = [...prev];
+        //console.log("arr", arr);
+        arr = arr.sort(function (a, b) {
+          if (a.accountStatus < b.accountStatus) {
+            return -1;
+          }
+          if (a.accountStatus > b.accountStatus) {
+            return 1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setAccountStatusSortState(SORT_STATES.ASCENDING_ORDER);
+    }
+    else if(accountStatusSortState === SORT_STATES.ASCENDING_ORDER) {
+      setUsersData((prev) => {
+        let arr = [...prev];
+        arr = arr.sort(function (a, b) {
+          if (a.accountStatus < b.accountStatus) {
+            return 1;
+          }
+          if (a.accountStatus > b.accountStatus) {
+            return -1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+  
+      setFilteredUsersData((prev) => {
+        let arr = [...prev];
+        //console.log("arr", arr);
+        arr = arr.sort(function (a, b) {
+          if (a.accountStatus < b.accountStatus) {
+            return 1;
+          }
+          if (a.accountStatus > b.accountStatus) {
+            return -1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setAccountStatusSortState(SORT_STATES.DESCENDING_ORDER);
+    }
+  };
+
+  const sortByJoinDate = () => {
+    if(joinDateSortState === SORT_STATES.UNSORTED || joinDateSortState === SORT_STATES.DESCENDING_ORDER) {
+      setUsersData((prev) => {
+        let arr = [...prev];
+        arr = arr.sort(function (a, b) {
+          if (getFormattedDateTime(a.createdAt) < getFormattedDateTime(b.createdAt)) {
+            return -1;
+          }
+          if (getFormattedDateTime(a.createdAt) > getFormattedDateTime(b.createdAt)) {
+            return 1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+  
+      setFilteredUsersData((prev) => {
+        let arr = [...prev];
+        //console.log("arr", arr);
+        arr = arr.sort(function (a, b) {
+          if (getFormattedDateTime(a.createdAt) < getFormattedDateTime(b.createdAt)) {
+            return -1;
+          }
+          if (getFormattedDateTime(a.createdAt) > getFormattedDateTime(b.createdAt)) {
+            return 1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setJoinDateSortState(SORT_STATES.ASCENDING_ORDER);
+    }
+    else if(joinDateSortState === SORT_STATES.ASCENDING_ORDER) {
+      setUsersData((prev) => {
+        let arr = [...prev];
+        arr = arr.sort(function (a, b) {
+          if (getFormattedDateTime(a.createdAt) < getFormattedDateTime(b.createdAt)) {
+            return 1;
+          }
+          if (a.createdAt > b.createdAt) {
+            return -1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+  
+      setFilteredUsersData((prev) => {
+        let arr = [...prev];
+        //console.log("arr", arr);
+        arr = arr.sort(function (a, b) {
+          if (getFormattedDateTime(a.createdAt) < getFormattedDateTime(b.createdAt)) {
+            return 1;
+          }
+          if (getFormattedDateTime(a.createdAt) > getFormattedDateTime(b.createdAt)) {
+            return -1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setJoinDateSortState(SORT_STATES.DESCENDING_ORDER);
+    }
+  };
+
+
   const tableHeaders = [
     {
       id: 1,
       text: "Full Name",
       className: "text-left pl-6",
-      onCick: sortByName,
+      onCick: sortByName, // I know it should be onClick and not "onCick" but it was already written like this and I don't wanna mess around with the code
+      willDisplayDownArrow: usernameSortState !== SORT_STATES.DESCENDING_ORDER,
     },
     {
       id: 2,
       text: "User Type",
+      onCick: sortByUserType, // I know it should be onClick and not "onCick" but it was already written like this and I don't wanna mess around with the code
+      willDisplayDownArrow: userTypeSortState !== SORT_STATES.DESCENDING_ORDER,
     },
     {
       id: 3,
       text: "Email",
+      onCick: sortByEmail, // I know it should be onClick and not "onCick" but it was already written like this and I don't wanna mess around with the code
+      willDisplayDownArrow: emailSortState !== SORT_STATES.DESCENDING_ORDER,
     },
     {
       id: 4,
       text: "Phone",
+      onCick: sortByPhone,  // I know it should be onClick and not "onCick" but it was already written like this and I don't wanna mess around with the code
+      willDisplayDownArrow: phoneSortState !== SORT_STATES.DESCENDING_ORDER,
     },
     {
       id: 5,
@@ -175,12 +569,18 @@ export default function Users() {
     {
       id: 8,
       text: "Account Status",
+      onCick: sortByAccountStatus, // I know it should be onClick and not "onCick" but it was already written like this and I don't wanna mess around with the code
+      willDisplayDownArrow: accountStatusSortState !== SORT_STATES.DESCENDING_ORDER,
     },
     {
       id: 9,
       text: "Join Date",
+      onCick: sortByJoinDate, // I know it should be onClick and not "onCick" but it was already written like this and I don't wanna mess around with the code
+      willDisplayDownArrow: joinDateSortState !== SORT_STATES.DESCENDING_ORDER,
     },
   ];
+
+  console.log(usersData);
 
   const [assignStudentModalActive, setAssignStudentModalActive] =
     useState(false);
