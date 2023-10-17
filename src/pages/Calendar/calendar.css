@@ -147,11 +147,13 @@
 .calender tr:nth-child(odd) {
   color: #517ca8 !important;
   border-radius: 0 !important;
-  height: 3rem !important;
+  height: auto !important;
 }
-
+.calendar .fc-daygrid-day-top{
+  padding-top: 1rem;
+}
 .calender tr:nth-child(even) {
-  height: 3rem !important;
+  height: auto !important;
 }
 .calender .fc-theme-standard .fc-timeGridWeek-view .fc-scrollgrid{
   border-right: .2px solid white !important;
