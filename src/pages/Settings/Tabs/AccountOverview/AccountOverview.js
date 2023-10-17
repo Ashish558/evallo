@@ -387,12 +387,11 @@ const AccountOverview = () => {
           classname="!w-[666px] mx-auto"
           underline={true}
           titleClassName="m-0"
-          cancelBtn={true}
-          cancelBtnClassName="max-w-140 text-[#FFA28D] border-[1.5px] border-[#FFA28D] bg-white hover:bg-[#FFA28D] hover:text-white  font-medium rounded-lg  px-[10px] py-[17.33px] text-center dark:bg-white dark:hover:bg-[#FFA28D] !w-[146px] h-[46px]"
+         
           buttonParentClassName="justify-center"
           primaryBtn={{
             text: "Okay",
-            className: "pl-4 px-4 !bg-[#FF7979] text-white w-[146px] h-[46px]",
+            className: "pl-4 px-4 !bg-[#FF7979] text-white w-[146px] h-[46px] !ml-0",
             onClick: () => showResetConfirmation(),
             // disabled: submitBtnDisabled,
             // loading: loading

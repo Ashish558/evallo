@@ -5,79 +5,79 @@ import { useSelector } from "react-redux";
 import EditableText from "../../../../components/EditableText/EditableText";
 import fileupload from "../../../../assets/icons/basil_file-upload-outline (2).svg";
 import BCut from "../../../../assets/YIcons/BCut.svg";
-import { commonSubjects,Interest,qualities } from "./staticData";
+import { commonSubjects, Interest, qualities } from "./staticData";
 import { useAddAssociatedDocStudentMutation, useUpdateUserDetailsMutation } from "../../../../app/services/users";
-const SPFrame1 = ({ userId, settings, userDetail, editable, setToEdit, toEdit ,fetchDetails}) => {
+const SPFrame1 = ({ userId, settings, userDetail, editable, setToEdit, toEdit, fetchDetails }) => {
   const [xlsFile, setXlsFile] = useState({});
   const { awsLink } = useSelector((state) => state.user);
   const [addDoc, addDocStatus] = useAddAssociatedDocStudentMutation();
   const [updateDetails, updateDetailsResp] = useUpdateUserDetailsMutation();
-  const {role:persona } = useSelector((state) => state.user);
+  const { role: persona } = useSelector((state) => state.user);
   const reduceArr = (id, update) => {
-   
-    
-  //  ////console.log({toEdit})
+
+
+    //  ////console.log({toEdit})
     let temp = [...toEdit?.whiteBoardLinks?.whiteBoardLinks];
     temp = temp?.filter((item, idd) => idd !== id);
-    
-      if(update){
-        handleSubmit(temp,"whiteBoardLinks")
-      }
+
+    if (update) {
+      handleSubmit(temp, "whiteBoardLinks")
+    }
   };
   const reduceArr2 = (id, update) => {
-   
-    
+
+
     //  ////console.log({toEdit})
-      let temp = [...userDetail?.associatedDocs];
-      temp = temp?.filter((item, idd) => idd !== id);
-      
-        if(update){
-          handleSubmit(temp,"associatedDocs")
-        }
-    };
+    let temp = [...userDetail?.associatedDocs];
+    temp = temp?.filter((item, idd) => idd !== id);
+
+    if (update) {
+      handleSubmit(temp, "associatedDocs")
+    }
+  };
   const addDocHandler = () => {
     if (!xlsFile || !xlsFile.name) {
       return;
     }
     ////console.log("size",xlsFile.size)
-    let size=xlsFile.size/1024;
-    size=size/1024;
-    if(size>1){
+    let size = xlsFile.size / 1024;
+    size = size / 1024;
+    if (size > 1) {
       alert("File is larger than than 1MB")
-      return 
+      return
     }
     const formData = new FormData();
     formData.append("file", xlsFile);
     formData.append("studentId", userDetail?.userId);
     addDoc(formData).then((res) => {
-    console.log("docc", res);
+      console.log("docc", res);
       if (res?.data) {
         alert(res?.data?.message);
         setXlsFile({});
       }
     });
   };
-  const handleSubmit = (e,type) => {
+  const handleSubmit = (e, type) => {
     //e.preventDefault();
-   // setLoading(true);
-    let reqBody = { [type]:e };
-   // delete reqBody["active"];
-  //   ////console.log({reqBody,id:userId});
+    // setLoading(true);
+    let reqBody = { [type]: e };
+    // delete reqBody["active"];
+    //   ////console.log({reqBody,id:userId});
     const userDetailSave = (reqBody) => {
-    
+
       // ////console.log({reqBody,userDetail});
       // return
-      updateDetails({ id:userId, fields: reqBody }).then((res) => {
-       // ////console.log(res);
+      updateDetails({ id: userId, fields: reqBody }).then((res) => {
+        // ////console.log(res);
         //setLoading(false);
         fetchDetails(true, true);
         // handleClose()
       });
     };
-    
-      userDetailSave(reqBody);
-   
-    
+
+    userDetailSave(reqBody);
+
+
   };
   console.log("frame1", { userDetail, xlsFile });
   return (
@@ -87,25 +87,25 @@ const SPFrame1 = ({ userId, settings, userDetail, editable, setToEdit, toEdit ,f
 
         <div className="flex-1 w-[300px] h-[280px] design:h-[290px] gap-2 flex flex-col design:gap-4">
           <div className="flex-1 mb-1 ">
-            <p className="mb-1 text-sm text-[#26435F] font-semibold text-base-17-5 ">
+            <p className="mb-1 text-base-20 text-[#26435F] font-semibold text-base-17-5 ">
               Whiteboard Links
-             {persona!=='student' && persona!=='parent' && 
-             <EditableText
-                editable={editable}
-                onClick={() =>
-                  setToEdit({
-                    ...toEdit,
-                    whiteBoardLinks: {
-                      ...toEdit.whiteBoardLinks,
-                      active: true,
-                    },
-                  })
-                }
-                text="edit"
-                textClassName="text-sm text-[#517CA8] text-underline  "
-                className="text-sm my-0 flex justify-end   float-right"
-              />
-}
+              {persona !== 'student' && persona !== 'parent' &&
+                <EditableText
+                  editable={editable}
+                  onClick={() =>
+                    setToEdit({
+                      ...toEdit,
+                      whiteBoardLinks: {
+                        ...toEdit.whiteBoardLinks,
+                        active: true,
+                      },
+                    })
+                  }
+                  text="edit"
+                  textClassName="text-sm text-[#517CA8] text-underline  "
+                  className="text-sm my-0 flex justify-end   float-right"
+                />
+              }
             </p>
 
             <div
@@ -121,11 +121,11 @@ const SPFrame1 = ({ userId, settings, userDetail, editable, setToEdit, toEdit ,f
                   >
                     <a href={it} className="w-[90%] !break-words text-base-15" target="_blank" >{it}</a>
                     <img
-                    onClick={()=>(persona==='tutor'||persona==='admin')&&reduceArr(id,true)}
+                      onClick={() => (persona === 'tutor' || persona === 'admin') && reduceArr(id, true)}
                       src={BCut}
                       className="text-xs !h-[20px] !w-[20px] inline-block"
-                    
-                    alt="cut"/>
+
+                      alt="cut" />
                   </p>
                 );
               })}
@@ -133,33 +133,33 @@ const SPFrame1 = ({ userId, settings, userDetail, editable, setToEdit, toEdit ,f
           </div>
           <div className="flex-1 ">
 
-            <p className="mb-1 mt-1 text-sm text-[#26435F] font-semibold text-base-17-5">
+            <p className="mb-1 mt-1 text-base-20 text-[#26435F] font-semibold text-base-17-5">
               Associated Docs
             </p>
             <div
               id={styles.borderDashed}
               className="w-full relative !border-[1.25px_dashed_#517CA8] h-full  !max-h-[150px] flex rounded-md items-center bg-white "
             >
-             
+
               <div className=" flex-1 !max-h-[140px] overflow-y-auto custom-scroller ">
-              <div className="">
-                {
-                  userDetail?.associatedDocs?.map((it,id)=>{
-                    return <p
-                    key={id}
-                    className="flex flex-1 mt-1 text-[#517CA8] w-full text-xs justify-between px-3 py-1"
-                  >
-                    <a className="w-[70%] break-words text-base-15" href={it?.public_url} target="_blank" >{it?.key}</a>
-                    <img
-                    onClick={()=>(persona==='tutor'||persona==='admin')&&reduceArr2(id,true)}
-                      src={BCut}
-                      className="text-xs !h-[20px] !w-[20px] inline-block"
-                    
-                    alt="cut"/>
-                  </p>
-                  })
-                }
-              </div>
+                <div className="">
+                  {
+                    userDetail?.associatedDocs?.map((it, id) => {
+                      return <p
+                        key={id}
+                        className="flex flex-1 mt-1 text-[#517CA8] w-full text-xs justify-between px-3 py-1"
+                      >
+                        <a className="w-[70%] break-words text-base-15" href={it?.public_url} target="_blank" >{it?.key}</a>
+                        <img
+                          onClick={() => (persona === 'tutor' || persona === 'admin') && reduceArr2(id, true)}
+                          src={BCut}
+                          className="text-xs !h-[20px] !w-[20px] inline-block"
+
+                          alt="cut" />
+                      </p>
+                    })
+                  }
+                </div>
                 <div className="mt-[20px] mb-[10px] items-center flex justify-center">
                   <img src={fileupload} alt="fileuploadIcon"></img>
                 </div>
@@ -175,7 +175,7 @@ const SPFrame1 = ({ userId, settings, userDetail, editable, setToEdit, toEdit ,f
                   <div className="flex justify-center">
                     <label
                       htmlFor="file"
-                       
+
                       className="block text-sm text-white bg-[#517CA8] hover:bg-[#517CA8] items-center justify-center  rounded-[5px]  px-3 py-2 text-base-17-5 text-center ] "
                     >
                       Choose File
@@ -183,7 +183,7 @@ const SPFrame1 = ({ userId, settings, userDetail, editable, setToEdit, toEdit ,f
                     <input
                       onChange={(e) => setXlsFile(e.target.files[0])}
                       type="file"
-                      disabled={persona==='student'||persona==='parent'}
+                      disabled={persona === 'student' || persona === 'parent'}
                       id="file"
                     ></input>
                   </div>
@@ -208,7 +208,7 @@ const SPFrame1 = ({ userId, settings, userDetail, editable, setToEdit, toEdit ,f
           </div>
         </div>
         <div className="flex-1 h-[300px]  design:h-[305px]">
-          <p className="mb-1 text-sm text-[#26435F] font-semibold text-base-17-5">
+          <p className="mb-1 text-base-20 text-[#26435F] font-semibold text-base-17-5">
             Interests{" "}
             <EditableText
               editable={editable}
@@ -264,7 +264,7 @@ const SPFrame1 = ({ userId, settings, userDetail, editable, setToEdit, toEdit ,f
             ) : (
               <></>
             )} */}
-            
+
             {userDetail?.interest?.length > 0 &&
               userDetail?.interest.map((it, idx) => {
                 return (
@@ -281,7 +281,7 @@ const SPFrame1 = ({ userId, settings, userDetail, editable, setToEdit, toEdit ,f
 
 
         <div className="flex-1 h-[300px]  design:h-[305px]">
-          <p className=" mb-1 text-sm text-[#26435F] font-semibold text-base-17-5">
+          <p className=" mb-1 text-base-20 text-[#26435F] font-semibold text-base-17-5">
             Subjects{" "}
             <EditableText
               editable={editable}
@@ -300,23 +300,23 @@ const SPFrame1 = ({ userId, settings, userDetail, editable, setToEdit, toEdit ,f
           <div className="w-full relative h-full p-1 flex flex-col gap-2   rounded-md items-center overflow-y-auto custom-scroller">
             {userDetail?.subjects
               ? userDetail?.subjects.map((sub, idx) => {
-                  return (
-                    <p
-                      key={idx}
+                return (
+                  <p
+                    key={idx}
 
-                      className="bg-white text-[#517CA8] text-base-17-5 p-2 !rounded-md shadow-[0px_0px_2.500001907348633px_0px_#00000040] flex-1 w-full"
+                    className="bg-white text-[#517CA8] text-base-17-5 p-2 !rounded-md shadow-[0px_0px_2.500001907348633px_0px_#00000040] flex-1 w-full"
 
-                    >
-                      {sub}{" "}
-                    </p>
-                  );
-                })
+                  >
+                    {sub}{" "}
+                  </p>
+                );
+              })
               : <></>}
           </div>
         </div>
 
         <div className="flex-1 h-[300px]  design:h-[305px]">
-          <p className="mb-1 text-sm text-[#26435F] font-semibold text-base-17-5">
+          <p className="mb-1 text-base-20 text-[#26435F] font-semibold text-base-17-5">
             Personality
             <EditableText
               editable={editable}

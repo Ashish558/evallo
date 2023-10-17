@@ -720,9 +720,9 @@ export default function ParentEditables({
           fetchDetails={fetchDetails}
           key={key}
           classname={
-            forCss.includes(currentField.name)
+            `${forCss.includes(currentField.name)
               ? "max-w-[800px] md:pb-5 mx-auto overflow-visible pb-5"
-              : "max-w-fit md:pb-5 mx-auto overflow-visible pb-5"
+              : "max-w-fit md:pb-5 mx-auto overflow-visible pb-5"} !px-[55px]`
           } /*{ ` max-w-[900px] md:pb-5 mx-auto overflow-visible pb-5`}*/
           title=""
           // primaryBtn={{
@@ -740,8 +740,8 @@ export default function ParentEditables({
           handleClose={handleClose}
           body={
             <>
-              <div className="flex  ">
-                <div className="mr-5 text-[#26435F] font-bold text-[17px]">
+              <div className="flex  items-center">
+                <div className="mr-5 text-[#26435F] font-semibold text-[21px]">
                   {currentField.title
                     ? currentField.title
                     : toEdit.tutorServices
@@ -749,7 +749,7 @@ export default function ParentEditables({
                       : ""}
                 </div>
                 <button
-                  className="w-[100px] bg-[#FFA28D] p-1 rounded text-white  text-base pl-3 pr-3 ml-auto"
+                  className="w-[133px] bg-[#FFA28D] py-1  text-white  text-base px-3 ml-auto h-[40px] rounded-lg"
                   onClick={handleSubmit}
                 >
                   Save
@@ -964,14 +964,15 @@ export default function ParentEditables({
                 {currentField.name === "frame1" && (
                   <>
                     <div className="flex flex-col gap-5 !w-[calc(1000*0.0522vw)] min-w-[550px]">
-                      <div className="flex !text-sm gap-4 ">
+                      <div className="flex  justify-between items-center">
                         <InputField
                           label="D.O.B"
-                          labelClassname="text-[#26435F] "
+                          biggerText={true}
+                          labelClassname="text-[#26435F]  !font-medium"
                           placeholder=""
-                          inputContainerClassName="text-xs  bg-[#F6F6F6] border-0 !py-3 !px-2 !rounded-[5px] text-base-17-5"
-                          inputClassName="bg-transparent text-xs text-base-17-5 "
-                          parentClassName="flex-1 "
+                          inputContainerClassName="text-base  bg-[#F6F6F6] border-0 !py-1 !px-3 !rounded-[5px] !w-[10.7292vw] h-[54px]"
+                          inputClassName="bg-transparent text-base  "
+                          parentClassName=""
                           type="date"
                           value={currentToEdit.dob}
                           onChange={(e) =>
@@ -984,12 +985,12 @@ export default function ParentEditables({
                         />
 
                         <InputSelectNew
-                          labelClassname="text-[#26435F] !font-bold text-base-17-5"
+                          labelClassname="text-[#26435F] text-lg !font-medium"
                           label="Time zone"
-                          placeholder="Time Zone"
-                          inputContainerClassName="text-xs min-h-[42px] bg-[#F6F6F6] !py-3 border-0 !rounded-[5px]"
-                          inputClassName="bg-transparent min-h-[42px] text-xs  "
-                          parentClassName="flex-1 "
+                          placeholder="Select"
+                          inputContainerClassName="text-base  bg-[#F6F6F6] border-0 !py-1 !px-3 !rounded-[5px] !w-[18.2291vw] h-[54px]"
+                          inputClassName="bg-transparent  "
+                          parentClassName=""
                           type="text"
                           value={currentToEdit.timeZone}
                           onChange={(val) =>
@@ -1001,15 +1002,18 @@ export default function ParentEditables({
                           optionData={timeZones}
                           radio={true}
                         />
+                        {console.log(currentToEdit)}
+
                         <InputField
-                          labelClassname="text-[#26435F] !font-bold text-base-17-5"
+                          biggerText={true}
+                          labelClassname="text-[#26435F]  !font-medium"
                           label="Industry"
                           placeholder="Industry"
-                          inputContainerClassName="text-xs  bg-[#F6F6F6] !py-3 border-0 !rounded-[5px]"
-                          inputClassName="bg-transparent text-xs  "
-                          parentClassName="flex-1 "
+                          inputContainerClassName="text-base  bg-[#F6F6F6] border-0 !py-1 !px-3 !rounded-[5px] !w-[18.2291vw] h-[54px]"
+                          inputClassName="bg-transparent"
+                          parentClassName=""
                           type="text"
-                          optionData={timeZones}
+
                           value={currentToEdit.industry}
                           onChange={(e) =>
                             setCurrentToEdit({
@@ -1020,14 +1024,14 @@ export default function ParentEditables({
                         />
                       </div>
 
-                      <div className="flex !text-sm gap-4 ">
+                      <div className="flex  justify-between items-center">
                         <InputSelectNew
-                          labelClassname="text-[#26435F] !font-bold text-base-17-5"
+                          labelClassname="text-[#26435F] text-lg !font-medium"
                           label="Country"
                           placeholder="Country"
-                          inputContainerClassName="text-xs min-h-[20px] min-h-[42px] bg-[#F6F6F6] !py-3 border-0 !rounded-[5px]"
-                          inputClassName="bg-transparent min-h-[42px] text-xs  "
-                          parentClassName="flex-1 "
+                          inputContainerClassName="text-base  bg-[#F6F6F6] border-0 !py-1 !px-3 !rounded-[5px] !w-[18.2291vw] h-[54px]"
+                          inputClassName="bg-transparent  "
+                          parentClassName=""
                           type="text"
                           optionData={country}
                           optionType={"object"}
@@ -1043,12 +1047,13 @@ export default function ParentEditables({
                         />
 
                         <InputField
+                          biggerText={true}
                           label="Street adress"
-                          labelClassname="text-[#26435F] text-base-17-5"
-                          placeholder=""
-                          inputContainerClassName="text-xs  bg-[#F6F6F6] border-0 !py-3 !px-2 !rounded-[5px]"
-                          inputClassName="bg-transparent text-xs   "
-                          parentClassName="flex-1 "
+                          labelClassname="text-[#26435F]  !font-medium"
+                          placeholder="Text"
+                          inputContainerClassName="text-base  bg-[#F6F6F6] border-0 !py-1 !px-3 !rounded-[5px] !w-[31.40625vw] h-[54px]"
+                          inputClassName="bg-transparent "
+                          parentClassName=""
                           type="text"
                           value={currentToEdit.address}
                           onChange={(e) =>
@@ -1059,14 +1064,14 @@ export default function ParentEditables({
                           }
                         />
                       </div>
-                      <div className="flex !text-sm gap-4 ">
+                      <div className="flex justify-between items-center ">
                         <InputSelectNew
-                          labelClassname="text-[#26435F] !font-bold text-base-17-5"
+                          labelClassname="text-[#26435F] text-lg !font-medium"
                           label="State"
                           placeholder="State"
-                          inputContainerClassName="text-xs min-h-[42px]  bg-[#F6F6F6] !py-3 border-0 !rounded-[5px]"
-                          inputClassName="bg-transparent min-h-[42px] text-xs  "
-                          parentClassName="flex-1 "
+                          inputContainerClassName="text-base  bg-[#F6F6F6] border-0 !py-1 !px-3 !rounded-[5px] !w-[18.2291vw] h-[54px]"
+                          inputClassName="bg-transparent  "
+                          parentClassName=""
                           type="text"
                           optionData={states}
                           optionType={"object"}
@@ -1080,12 +1085,13 @@ export default function ParentEditables({
                         />
 
                         <InputField
-                          labelClassname="text-[#26435F] !font-bold text-base-17-5"
+                          biggerText={true}
+                          labelClassname="text-[#26435F]  !font-medium"
                           label="City"
                           placeholder="City"
-                          inputContainerClassName="text-xs  bg-[#F6F6F6] !py-3 border-0 !rounded-[5px]"
-                          inputClassName="bg-transparent text-xs  "
-                          parentClassName="flex-1 "
+                          inputContainerClassName="text-base  bg-[#F6F6F6] border-0 !py-1 !px-3 !rounded-[5px] !w-[18.2291vw] h-[54px]"
+                          inputClassName="bg-transparent"
+                          parentClassName=""
                           type="text"
                           optionData={timeZones}
                           value={currentToEdit.city}
@@ -1099,11 +1105,12 @@ export default function ParentEditables({
 
                         <InputField
                           label="Zip"
-                          labelClassname="text-[#26435F] text-base-17-5"
-                          placeholder=""
-                          inputContainerClassName="text-xs  bg-[#F6F6F6] border-0 !py-3 !px-2 !rounded-[5px]"
-                          inputClassName="bg-transparent text-xs   "
-                          parentClassName="flex-1 "
+                          biggerText={true}
+                          labelClassname="text-[#26435F]  !font-medium"
+                          placeholder="Text"
+                          inputContainerClassName="text-base  bg-[#F6F6F6] border-0 !py-1 !px-3 !rounded-[5px] !w-[10.7292vw] h-[54px]"
+                          inputClassName="bg-transparent"
+                          parentClassName=""
                           type="text"
                           value={currentToEdit.pincode}
                           onChange={(e) =>
