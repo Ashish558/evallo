@@ -304,16 +304,24 @@ const Navbar = () => {
          navigate(path);
       }
    };
-
+const [loading2,setLoading2]=useState(false)
    const logoutUser = () => {
-      logOutApi().then(() => {
+      setLoading2(true);
+      logOutApi().then((res) => {
+         setLoading2(false);
+         if(res?.error){
+            alert("Something went wrong. Please try again")
+            return 
+         }
          console.log("Successfully logged out");
+         setLogoutModalActive(false)
+         sessionStorage.clear();
+         localStorage.clear("evalloToken");
+         navigate("/");
+         dispatch(updateIsLoggedIn(false));
+         window.location.reload();
       });
-      sessionStorage.clear();
-      localStorage.clear("evalloToken");
-      navigate("/");
-      dispatch(updateIsLoggedIn(false));
-      window.location.reload();
+   
    };
    useEffect(() => {
       setActiveRoute(location.pathname);
@@ -429,6 +437,7 @@ const Navbar = () => {
                cancelBtnClassName="!w-[146px] text-[#26435F] font-medium text-base !rounded-[8px] !bg-[rgba(38,67,95,0.10)] !ml-auto !h-[46px]"
                primaryBtn={{
                   text: "Logout",
+                  loading:loading2,
                   className: "text-base bg-[#FF7979] !w-[146px] pl-4 pr-4   !rounded-[8px] font-medium !mr-auto !text-center !bg-[#FF7979] !h-[46px]",
                   onClick: logoutUser,
                }}

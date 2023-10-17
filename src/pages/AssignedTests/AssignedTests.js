@@ -1152,7 +1152,7 @@ export default function AssignedTests() {
                     label="Due Date"
                     iconSize="medium"
                     labelClassname=" !font-medium text-[#26435F] text-base-20 ml-2 mb-0.5 !font-semibold text-[#26435F]"
-
+                    min={new Date().toString()}
                     value={modalData.date}
                     onChange={(val) =>
                       setModalData({
@@ -1171,6 +1171,27 @@ export default function AssignedTests() {
                   />
                 </div>
               </div>
+              <div className="relative  mx-1">
+
+            <p className=" text-sm text-[#26435F] font-semibold text-base-20 mb-1">
+            Assignment Instructions <span className="text-[#667085]">(optional)</span> 
+            </p>
+            <textarea
+              rows="2"
+              value={modalData.instruction}
+              onChange={(val) =>
+                setModalData({
+                  ...modalData,
+                  instruction: val.target.value,
+                })
+              }
+              className="mt-2 block  mb-7 resize-none focus:!ring-blue-500 p-5 focus:!border-blue-500 placeholder-[#CBD6E2] text-base-18  placeholder:text-base-18  w-[33.54vw] h-[160px] shadow-small  rounded-[5px]"
+              placeholder="Please add any custom instructions related to the test here. These will be visible to the students before they start a section during the assignment."
+            ></textarea>
+
+
+          
+          </div>
               {/* <InputField
                 label="Instruction From Tutor"
                 type="text"

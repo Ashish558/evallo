@@ -506,7 +506,7 @@ export default function TestDetail() {
    const [richTextContent, setRichTextContent] = useState("");
    return (
       <>
-         <div className="!mx-[6vw] bg-lightWhite min-h-screen">
+         <div className="!mx-[6vw]  min-h-screen">
             <p className="text-[#24A3D9]  !mt-[calc(50*0.052vw)] !mb-[calc(25*0.052vw)] text-base-20">
                <span onClick={() => navigate('/')} className="cursor-pointer">
                   {
