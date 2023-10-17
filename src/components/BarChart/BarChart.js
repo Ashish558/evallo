@@ -106,7 +106,7 @@ const BarChart = ({ studentFeedbacks }) => {
                 <div className='flex justify-between text-center text-[#667085] text-[0.9114583333vw] pb-3'>
                     {
                         (percentArray.reverse()).map(p =>
-                            <div className='w-[13.32%] '>{p}</div>
+                            <div className='w-[13.32%] '>{p == 'Infinity%' ? '0%' : p}</div>
                         )
                     }
 
@@ -115,7 +115,7 @@ const BarChart = ({ studentFeedbacks }) => {
                     {
                         (percentArray).map((p, index) =>
                             <div key={index} className='w-[13.32%] h-[300px] rounded-[3px] relative border-[1.33px] border-[rgba(217,217,217,1)] overflow-hidden'>
-                                <div style={{height:`${p}`}} className={`bg-[#ebc034] w-full absolute bottom-0 rounded-[3px] `}></div>
+                                <div style={{ height: `${p}` }} className={`bg-[#ebc034] w-full absolute bottom-0 rounded-[3px] `}></div>
                             </div>
                         )
                     }
@@ -128,13 +128,13 @@ const BarChart = ({ studentFeedbacks }) => {
                     <div className='w-[13.32%] transform -rotate-45 -translate-x-3'>1 star</div>
                 </div>
                 <div className='mt-[30px] text-[0.9114583333vw]'>
-                    <p className='text-center font-light mb-[11px]'>Top Service: {`{${studentFeedbacks?.data?.highestRatedService?.sessionId?.service}}`}</p>
+                    <p className='text-center font-light mb-[11px]'>Top Service: {`${studentFeedbacks?.data?.highestRatedService?.sessionId?.service}` == "undefined" ? "None" : `${studentFeedbacks?.data?.highestRatedService?.sessionId?.service}`}</p>
                     <div className='flex justify-between mb-[30px] text-[0.9114583333vw]'>
                         <p className='font-light text-[#092327]'> Total Ratings: {count}</p>
                         <div className='flex  items-center'>
                             {element}
-                            <p className='text-[#667085] text-[0.9114583333vw]'> 
-                            {(Math.round(studentFeedbacks?.data?.overallAverageRating * 100) / 100).toFixed(1)}
+                            <p className='text-[#667085] text-[0.9114583333vw]'>
+                                {(Math.round(studentFeedbacks?.data?.overallAverageRating * 100) / 100).toFixed(1)}
                             </p>
                         </div>
                     </div>

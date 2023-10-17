@@ -155,7 +155,7 @@ export default function StudentProfile({ isOwn }) {
   const { id } = useSelector((state) => state.user);
   const [selectedScoreIndex, setSelectedScoreIndex] = useState(0);
   const { organization } = useSelector((state) => state.organization);
-
+  const { firstName, lastName } = useSelector((state) => state.user);
   async function handleCopyClick(textToCopy) {
     console.log("copying", textToCopy);
     try {
@@ -741,16 +741,35 @@ const [toEdit, setToEdit] = useState({
   return (
     <>
       <div className={`w-[83.3vw] mx-auto pb-[70px]`}>
-        <p className="text-[#24A3D9] my-[calc(50*0.0522vw)] text-base-22-5">
-          <span onClick={() => navigate('/')} className="cursor-pointer">
-            {organization?.company +
-              " > " +
-              user?.firstName +
-              " " +
-              user?.lastName +
-              " > "}
-          </span>
-          <span className="font-semibold">Profile</span>
+        <p className="text-[#24A3D9] mt-[50px] mb-[30px] text-base-22-5">
+          {persona === "admin" ?
+            <span >
+              <span className="cursor-pointer" onClick={() => navigate('/')}>
+                {organization?.company +
+                  "  >  " +
+                  firstName +
+                  "  " +
+                  lastName
+                }  </span>
+              <span className="cursor-pointer" onClick={() => navigate('/users')}>{"  >  CRM > "}</span>
+
+              <span className="font-semibold">{
+                user?.firstName +
+                " " +
+                user?.lastName}</span>
+            </span> :
+            <span>
+              <span onClick={() => navigate('/')} className="cursor-pointer">
+                {organization?.company +
+                  " > " +
+                  user?.firstName +
+                  " " +
+                  user?.lastName +
+                  " > "}
+              </span>
+              <span className="font-semibold">Profile</span>
+            </span>
+          }
         </p>
         {/* {!isOwn ? (
           <button
@@ -763,19 +782,19 @@ const [toEdit, setToEdit] = useState({
           <></>
         )} */}
         <div className={` rounded-b-md w-full flex flex-col relative `}>
-          <div className=" bg-[#26435F] rounded-t-[4px]  px-5 h-[100px] design:!h-[130px] w-full  flex  items-center">
+          <div className=" bg-[#26435F] rounded-t-[5px]  px-[52px] h-[142px] design:!h-[142px] w-full  flex  items-center">
 
             <div className="flex flex-1 w-full design:!h-[70px]">
-              <div className="h-fit design:!ml-5">
+              <div className="h-fit design:!ml-5 relative">
                 <ProfilePhoto
                   src={
                     user.photo
                       ? `${awsLink}${user.photo}`
                       : "/images/Rectangle 2346.svg"
                   }
-                  imgSizeClass="!w-[110px] !h-[110px] design:!w-[140px] design:!h-[140px]  !translate-y-[45px]  design:!translate-y-5  border-[4px] border-white "
-                  imageClassName="!w-[100px] !h-[100px] border-[4px] border-white "
-                  className=""
+                  imgSizeClass="!w-[174px] !h-[174px] design:!w-[174px] design:!h-[174px]  !translate-y-[73px]  design:!translate-y-5   "
+                  imageClassName="!w-[174px] !h-[174px] border-[4px] border-white "
+                  className="relative"
                   handleChange={handleProfilePhotoChange}
                   editable={false}
                 />
@@ -791,13 +810,13 @@ const [toEdit, setToEdit] = useState({
                     })
                   }
                   text="Edit Profile"
-                  textClassName=" ml-2 text-sm  mx-auto text-center text-[#26435F] text-underline text-base-15 "
-                  className="text-sm my-0 flex items-center justify-center text-center !translate-y-11  "
+                  textClassName=" ml-2   mx-auto text-center text-[#26435F] text-underline text-base-15 "
+                  className=" my-0 flex items-center justify-center text-center   absolute -bottom-[60%] design:-bottom-[35%] design:left-[23%] left-[26%]"
                 />}
               </div>
               <div className="flex-1 flex justify-between  items-center">
-                <div className="ml-4 my-auto">
-                  <div className="flex  items-center text-[#F3F5F7] text-base-22-5">
+                <div className="ml-4 my-auto design:-translate-y-4">
+                  <div className="flex  items-center font-semibold text-[#F3F5F7] text-[1.5625vw]">
                     {user.firstName} {user.lastName}
 
                   </div>
@@ -806,7 +825,7 @@ const [toEdit, setToEdit] = useState({
                       ? userDetail?.schoolName
                       : "Sample School Name"}
                   </div>
-                  <div className="flex text-xs text-base-17-5 mt-1 items-center text-[#F3F5F7]">
+                  <div className="flex  text-base-17-5 mt-1 items-center text-[#F3F5F7]">
                     {userDetail?.grade ? userDetail?.grade + `${' '} Grade` : "12th Grade"}
 
                     {/* <p className='font-semibold text-[22px] mr-4'>
@@ -925,67 +944,69 @@ const [toEdit, setToEdit] = useState({
               </div>
             </div>
           </div>
-          <div className="bg-white   !rounded-b-md shadow-[0px_0px_2.500001907348633px_0px_#00000040] flex  h-[100px] design:!h-[130px] justify-between ">
-            <div className="ml-[126px] design:!ml-[175px] flex my-auto py-auto w-4/5 text-[12px] px-5  flex-1 h-full  h-[100px] overflow-y-auto custom-scroller pt-5  text-[#517CA8] text-base-17-5 ">
+          <div className="bg-white   !rounded-b-5 shadow-[0px_0px_2.500001907348633px_0px_#00000040] flex  h-[170px] design:!h-[170px] justify-between ">
+
+            <div className="ml-[223px] design:!ml-[248px] flex my-auto py-auto w-4/5 text-[12px] px-5  flex-1 h-full   overflow-y-auto custom-scroller pt-5  text-[#517CA8] text-base-17-5 ">
               {userDetail?.about}
             </div>
-            <div className="min-w-[250px] ml-6 design:!ml-0  my-0">
-              <div className="mt-[-20px]">
+            <div className="min-w-[250px] ml-6 design:!ml-0  my-0 relative">
+              <div className="flex items-center absolute top-[20%] -left-[10%] design:-left-[25%]">
                 <ProfilePhoto
                   src={
                     associatedParent?.photo
                       ? `${awsLink}${associatedParent?.photo}`
                       : "/images/Rectangle 2347.svg"
                   }
-                  imgSizeClass="!w-[50px] !h-[50px] !translate-y-[45px]  border-[2px] border-[#26435F]"
+                  imgSizeClass="!w-[60px] !h-[60px]   border-[2px] border-[#26435F]"
                   imageClassName="!w-[50px] !h-[50px] "
                   className=" "
                   handleChange={handleProfilePhotoChange}
                 />
-              </div>
-
-              <div className="flex flex-col ml-14  font-medium text-[#24A3D9] ">
-                <p
-                  onClick={() =>
-                    associatedParent &&
-                    navigate(`/profile/parent/${associatedParent?._id}`)
-                  }
-                  className="font-semibold cursor-pointer text-base-17-5"
-                >
-
-                  {associatedParent && Object.keys(associatedParent)?.length > 1
-                    ? `${associatedParent?.firstName} ${associatedParent?.lastName}`
-                    : `None`}
-                  <img
-                    src={clickArrowIcon}
-                    className="!ml-2 cursor-pointer !w-3 !h-3 inline-block"
-                    alt="arrow"
-                  />
-                </p>
-
-                {(persona !== "tutor" || (persona === 'tutor' && organization?.settings?.permissions && organization?.settings?.permissions[1]?.choosedValue)) && <p className="font-medium text-[12px]">
-                  <span
-                    className="text-base-15 cursor-pointer font-semibold opacity-60 inline-block mr-1 text-[#7C98B6]"
-
-                  // 
+                <div className="flex flex-col ml-5   text-[#24A3D9] ">
+                  <p
+                    onClick={() =>
+                      associatedParent &&
+                      navigate(`/profile/parent/${associatedParent?._id}`)
+                    }
+                    className=" cursor-pointer text-base-20 "
                   >
+
                     {associatedParent && Object.keys(associatedParent)?.length > 1
-                      ? `${associatedParent?.email}`
-                      : `None `}
-                    {/* View Profile */}
-                    <span>
-                      <img
-                        onClick={() => handleCopyClick(associatedParent && Object.keys(associatedParent).length > 1
-                          ? `${associatedParent?.email}`
-                          : `None`)}
-                        className="inline-block ml-2 !w-4 !h-4 mr-2 cursor-pointer"
-                        src={copy2}
-                        alt="copy"
-                      />
+                      ? `${associatedParent?.firstName} ${associatedParent?.lastName}`
+                      : `None`}
+                    <img
+                      src={clickArrowIcon}
+                      className="!ml-2 cursor-pointer !w-3 !h-3 inline-block"
+                      alt="arrow"
+                    />
+                  </p>
+
+                  {(persona !== "tutor" || (persona === 'tutor' && organization?.settings?.permissions && organization?.settings?.permissions[1]?.choosedValue)) && <p className="font-medium ">
+                    <span
+                      className="text-base-15 cursor-pointer   inline-block mr-1 text-[#7C98B6]"
+
+                    // 
+                    >
+                      {associatedParent && Object.keys(associatedParent)?.length > 1
+                        ? `${associatedParent?.email}`
+                        : `None `}
+                      {/* View Profile */}
+                      <span>
+                        <img
+                          onClick={() => handleCopyClick(associatedParent && Object.keys(associatedParent).length > 1
+                            ? `${associatedParent?.email}`
+                            : `None`)}
+                          className="inline-block ml-2 !w-4 !h-4 mr-2 cursor-pointer"
+                          src={copy2}
+                          alt="copy"
+                        />
+                      </span>
                     </span>
-                  </span>
-                </p>}
+                  </p>}
+                </div>
               </div>
+
+
             </div>
             <div className="flex flex-col items-center mb-3">
               {/* <p className='text-lg text-center text-primary font-semibold mb-5 text-[21px]'>Associated Parent</p> */}

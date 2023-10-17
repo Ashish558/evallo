@@ -64,14 +64,14 @@ const SPFrame1 = ({
   fetchDetails,
 }) => {
   const [xlsFile, setXlsFile] = useState({});
-  
-  const {organization}= useSelector((state)=>state.organization)
-  const [getSessions,setSessions]=useLazyGetSessionNotesQuery()
+
+  const { organization } = useSelector((state) => state.organization)
+  const [getSessions, setSessions] = useLazyGetSessionNotesQuery()
   const { dateFormat } = useSelector(state => state.user)
   const [internal, setInternal] = useState(false);
-  const [clientNotes,setClientNotes] = useState([]);
-  const [internalNotes,setInternalNotes] = useState([])
-  const { awsLink,role:persona } = useSelector((state) => state.user);
+  const [clientNotes, setClientNotes] = useState([]);
+  const [internalNotes, setInternalNotes] = useState([])
+  const { awsLink, role: persona } = useSelector((state) => state.user);
   //const user2 = useSelector((state) => state);
   ////console.log("states",user2)
   const [addDoc, addDocStatus] = useAddAssociatedDocStudentMutation();
@@ -121,42 +121,42 @@ const SPFrame1 = ({
     userDetailSave(reqBody);
   };
   //console.log("organisation",organization)
-const handleLeadStatus=(e)=>{
-  const reqBody={
-    leadStatus:e
-  }
-  updateDetails({ id: userId, fields: reqBody }).then((res)=>{
-    //console.log("leadStatus",e,{res})
-    fetchDetails(true, true);
-  })
-}
-useEffect(()=>{
-  if(userDetail){
-    console.log(userDetail)
-    getSessions(userDetail?.userId).then((response)=>{
-      console.log("session notes",response)
-      response?.data?.sessionNotes?.map((it)=>{
-        if(it?.clientNotes?.note)
-        setClientNotes((prev)=>{
-          return [
-            ...prev,
-            {...it?.clientNotes}
-          ]
-        })
-        if(it?.internalNotes?.note)
-        setInternalNotes((prev)=>{
-          return [
-            ...prev,
-            {...it?.internalNotes}
-          ]
-        })
-      })
+  const handleLeadStatus = (e) => {
+    const reqBody = {
+      leadStatus: e
+    }
+    updateDetails({ id: userId, fields: reqBody }).then((res) => {
+      //console.log("leadStatus",e,{res})
+      fetchDetails(true, true);
     })
   }
-},[userDetail])
+  useEffect(() => {
+    if (userDetail) {
+      console.log(userDetail)
+      getSessions(userDetail?.userId).then((response) => {
+        console.log("session notes", response)
+        response?.data?.sessionNotes?.map((it) => {
+          if (it?.clientNotes?.note)
+            setClientNotes((prev) => {
+              return [
+                ...prev,
+                { ...it?.clientNotes }
+              ]
+            })
+          if (it?.internalNotes?.note)
+            setInternalNotes((prev) => {
+              return [
+                ...prev,
+                { ...it?.internalNotes }
+              ]
+            })
+        })
+      })
+    }
+  }, [userDetail])
 
-if(persona==="student"||persona==="parent")
-return <></>
+  if (persona === "student" || persona === "parent")
+    return <></>
   //console.log("frame1 Stud", { userDetail, user,persona });
   return (
     <div className="flex w-full justify-between mt-[calc(50*0.0522vw)] gap-[5%] ">
@@ -165,14 +165,14 @@ return <></>
           <div className=" !w-[calc(545*0.0522vw)]">
             <div className="flex justify-between">
               <p className=" text-sm text-[#26435F] font-semibold text-base-20 mb-1 custom-scroller">
-              Admin Notes
+                Admin Notes
               </p>
-             {persona==='admin'&& <EditableText
+              {persona === 'admin' && <EditableText
                 editable={editable}
                 onClick={() =>
                   setToEdit({
                     ...toEdit,
-                    notes: { ...toEdit.notes,internalNotes:user?.internalNotes, active: true },
+                    notes: { ...toEdit.notes, internalNotes: user?.internalNotes, active: true },
                   })
                 }
                 text="Edit"
@@ -182,10 +182,10 @@ return <></>
             </div>
 
             <div className="bg-white flex-1 text-base-17-5 p-3 text-[#B5B5B5] h-fit max-h-[200px] overflow-y-auto custom-scroller rounded-md shadow-[0px_0px_2.500001907348633px_0px_#00000040]">
-            {user?.internalNotes?.length>0 ? user?.internalNotes?.map(
+              {user?.internalNotes?.length > 0 ? user?.internalNotes?.map(
                 (item, index) => (
                   <>
-                     <div key={index} className="flex h-[57px] relative items-center">
+                    <div key={index} className="flex h-[57px] relative items-center">
                       <p className="text-[#517CA8]  !font-medium text-[14px] mr-4 w-[calc(143*0.050vw)] text-center !text-[calc(17.5*0.050vw)] whitespace-nowrap">
                         {/* {item?.note&&
                           new Date(item.date)
@@ -199,7 +199,7 @@ return <></>
                             new Date(item.date)
                               .toDateString()
                               .split(" ")[3]} */}
-                              {item?.note&&
+                        {item?.note &&
                           getFormattedDate(item.date, dateFormat)}
                       </p>
                       <div className={` ${styles.actionBorder} items-center`}>
@@ -213,25 +213,25 @@ return <></>
                     </div>
                   </>
                 )
-              ):<> Add notes about the parent. Here are some ideas to get you
-              started:
-              <ul className="list-disc px-4 design:px-5">
-                <li>How did the initial call go?</li>
-                <li>What is the parent’s budget?</li>
-                <li>What timeline do they have in mind for tutoring?</li>
-                <li>Has the student been tutored before?</li>
-                <li>Do they prefer online or offline tutoring?</li>
-                <li>Does the student have siblings?</li>
-              </ul></>}
+              ) : <> Add notes about the parent. Here are some ideas to get you
+                started:
+                <ul className="list-disc px-4 design:px-5">
+                  <li>How did the initial call go?</li>
+                  <li>What is the parent’s budget?</li>
+                  <li>What timeline do they have in mind for tutoring?</li>
+                  <li>Has the student been tutored before?</li>
+                  <li>Do they prefer online or offline tutoring?</li>
+                  <li>Does the student have siblings?</li>
+                </ul></>}
             </div>
           </div>
-         <div className="flex-1 flex flex-col h-fit gap-4">
-         {persona==='admin'&&<div className="flex-1  ">
-            <div className="flex justify-between">
-              <p className=" text-sm text-[#26435F] font-semibold text-base-20 mb-1">
-                Lead Status
-              </p>
-             
+          <div className="flex-1 flex flex-col h-fit gap-4">
+            {persona === 'admin' && <div className="flex-1  ">
+              <div className="flex justify-between">
+                <p className=" text-sm text-[#26435F] font-semibold text-base-20 mb-1">
+                  Lead Status
+                </p>
+
               </div>
               <div className=" flex-1  rounded-md h-full  h-[50px] ">
                 <InputSelectNew
@@ -242,35 +242,35 @@ return <></>
                   labelClassname="text-sm text-base-17-5"
                   inputClassName="bg-transparent"
                   optionContainerClassName="!w-[190px]"
-                 
+
                   ICON2={Drop}
                   value={userDetail?.leadStatus}
-                  disabled={persona!=="admin"}
+                  disabled={persona !== "admin"}
                   optionData={organization?.settings?.leadStatus}
                   onChange={(e) => {
                     handleLeadStatus(e)
-                   
+
                   }}
                 />
               </div>
             </div>}
             <div className="flex-1">
-            <div className="flex justify-between">
-              <p className=" text-sm text-[#26435F] font-semibold text-base-20 mb-1">
-                Services
-              </p>
-             {persona==="admin"&& <EditableText
-                editable={editable}
-                onClick={() =>
-                  setToEdit({
-                    ...toEdit,
-                    service: { ...toEdit.service,service:userDetail?.service?userDetail?.service?.map((it)=> it):[] , active: true },
-                  })
-                }
-                text="Edit"
-                textClassName=" ml-2 text-sm  mx-auto text-center text-[#26435F] text-underline text-base-15 "
-                className="text-sm my-0 flex items-center justify-center text-center   "
-              />}
+              <div className="flex justify-between">
+                <p className=" text-sm text-[#26435F] font-semibold text-base-20 mb-1">
+                  Services
+                </p>
+                {persona === "admin" && <EditableText
+                  editable={editable}
+                  onClick={() =>
+                    setToEdit({
+                      ...toEdit,
+                      service: { ...toEdit.service, service: userDetail?.service ? userDetail?.service?.map((it) => it) : [], active: true },
+                    })
+                  }
+                  text="Edit"
+                  textClassName=" ml-2 text-sm  mx-auto text-center text-[#26435F] text-underline text-base-15 "
+                  className="text-sm my-0 flex items-center justify-center text-center   "
+                />}
               </div>
               <div className="bg-white flex-1 custom-scroller text-[#517CA8] p-2 text-base-17-5 h-[80px] design:h-[120px] overflow-y-auto rounded-md  shadow-[0px_0px_2.500001907348633px_0px_#00000040] flex flex-col gap-1 justify-start">
                 {userDetail?.service?.map((it, id) => {
@@ -280,7 +280,7 @@ return <></>
             </div>
           </div>
         </div>
-        {persona==='admin'&&    <div className="">
+        {persona === 'admin' && <div className="">
           <p className=" text-sm text-[#26435F] font-semibold text-base-20 mb-1">
             Sign up form details
           </p>
@@ -308,16 +308,15 @@ return <></>
           Session Notes
         </p>
         <div className="bg-white flex-1  rounded-md custom-scroller shadow-[0px_0px_2.500001907348633px_0px_#00000040]">
-          <div className="mx-3 p-3 ">
+          <div className="p-5">
             <button
               onClick={() => {
                 setInternal(false);
               }}
-              className={`rounded-[50px] px-2 mr-5 py-1 text-base-15 ${
-                !internal
-                  ? "bg-[#FFA28D] text-white"
-                  : "bg-white text-[#FFA28D] border border-[#FFA28D]"
-              }`}
+              className={`rounded-[50px] px-2 mr-5 py-1 text-base-15 ${!internal
+                ? "bg-[#FFA28D] text-white"
+                : "bg-white text-[#FFA28D] border border-[#FFA28D]"
+                }`}
             >
               Client Notes
             </button>
@@ -325,34 +324,33 @@ return <></>
               onClick={() => {
                 setInternal(true);
               }}
-              className={`rounded-[50px] px-2 py-1 text-base-15 ${
-                internal
-                  ? "bg-[#FFA28D] text-white"
-                  : "bg-white text-[#FFA28D] border border-[#FFA28D]"
-              }`}
+              className={`rounded-[50px] px-2 py-1 text-base-15 ${internal
+                ? "bg-[#FFA28D] text-white"
+                : "bg-white text-[#FFA28D] border border-[#FFA28D]"
+                }`}
             >
               Internal Notes
             </button>
           </div>
           <div className="flex flex-col h-[380px]   bg-[#FFFFFF] ">
             <ul className="list-disc rounded-b-md overflow-y-auto custom-scroller h-full ">
-            {internal && internalNotes?.map(
+              {internal && internalNotes?.map(
                 (item, index) => (
                   <>
                     <div key={index} className="flex h-[57px] pl-5 relative items-center">
                       <p className="text-[#517CA8]  !font-medium text-[14px] mr-4 w-[calc(143*0.050vw)] text-center !text-[calc(17.5*0.050vw)] whitespace-nowrap">
-                        {item?.note&&
+                        {item?.note &&
                           new Date(item.date)
                             .toDateString()
                             .split(" ")[1] +
-                            " " +
-                            new Date(item.date)
-                              .toDateString()
-                              .split(" ")[2] +
-                            ", " +
-                            new Date(item.date)
-                              .toDateString()
-                              .split(" ")[3]}
+                          " " +
+                          new Date(item.date)
+                            .toDateString()
+                            .split(" ")[2] +
+                          ", " +
+                          new Date(item.date)
+                            .toDateString()
+                            .split(" ")[3]}
                       </p>
                       <div className={` ${styles.actionBorder} items-center`}>
                         <div className={styles.circle}>
@@ -366,23 +364,23 @@ return <></>
                   </>
                 )
               )}
-               {!internal && clientNotes?.map(
+              {!internal && clientNotes?.map(
                 (item, index) => (
                   <>
-                     <div key={index} className="flex h-[57px] pl-5 relative items-center">
+                    <div key={index} className="flex h-[57px] pl-5 relative items-center">
                       <p className="text-[#517CA8]  !font-medium text-[14px] mr-4 w-[calc(143*0.050vw)] text-center !text-[calc(17.5*0.050vw)] whitespace-nowrap">
-                        {item?.note&&
+                        {item?.note &&
                           new Date(item.date)
                             .toDateString()
                             .split(" ")[1] +
-                            " " +
-                            new Date(item.date)
-                              .toDateString()
-                              .split(" ")[2] +
-                            ", " +
-                            new Date(item.date)
-                              .toDateString()
-                              .split(" ")[3]}
+                          " " +
+                          new Date(item.date)
+                            .toDateString()
+                            .split(" ")[2] +
+                          ", " +
+                          new Date(item.date)
+                            .toDateString()
+                            .split(" ")[3]}
                       </p>
                       <div className={` ${styles.actionBorder} items-center`}>
                         <div className={styles.circle}>
@@ -400,7 +398,7 @@ return <></>
           </div>
         </div>
       </div>
-     
+
 
     </div>
   );
