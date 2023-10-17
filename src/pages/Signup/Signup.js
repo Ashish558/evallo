@@ -642,7 +642,7 @@ export default function Signup() {
           ) : (
             <></>
           )}
-          <div className={`flex lg:items-center relative bg-white rounded-md py-4 min-w-[640px] max-w-[840px] w-[41.67vw] ${frames?.signupSuccessful ? "!w-[50.83vw] px-[116px] " : "!px-[50px]"}`}>
+          <div className={`flex lg:items-center relative bg-white rounded-md py-4 min-w-[800px] max-w-[840px] w-[41.67vw] ${frames?.signupSuccessful ? "!w-[50.83vw] px-[116px] " : "!px-[50px]"}`}>
             <div className="w-full py-4 ">
               {currentStep > 0 && (
                 <NumericSteppers className={"px-2 !w-[545px] !mx-auto flex-1"} fieldNames={["Personal Info", "Org Details", "Further Details", "Requirements"]} totalSteps={4} currentStep={currentStep}
@@ -851,7 +851,7 @@ export default function Signup() {
 
                       </span>
                     </div>
-                    <p className="text-[15px] text-[#26435F] font-medium  leading-5 ml-1 mr-3 pl-2">
+                    <p className="text-[18.67px] text-[#26435F] font-medium  leading-5 ml-1 mr-3 pl-2">
                       Selecting this would confirm that you have carefully read
                       through and agree to our{" "}
                       <span className="text-[#FFA28D] font-semibold">
@@ -869,11 +869,11 @@ export default function Signup() {
                   <div className="flex items-center mt-[60px] justify-between">
                     <SecondaryButton
                       children="Go back"
-                      className="text-sm mr-6 bg-white text-[#cad0db] border-[1.7px] border-[#D0D5DD] py-2 "
+                      className="text-sm mr-6 w-[146px] h-[53px] bg-white text-[#cad0db] border-[1.7px] border-[#D0D5DD] py-2 "
                       onClick={handleBack}
                     />
                     <PrimaryButton
-                      className={`w-full flex justify-center  bg-[#FFA28D]  disabled:opacity-60 max-w-[110px]  rounded text-white text-sm font-medium relative py-[9px] ${loading
+                      className={`w-full flex -[146px] h-[53px] justify-center  bg-[#FFA28D]  disabled:opacity-60 max-w-[110px]  rounded text-white text-sm font-medium relative py-[9px] ${loading
                         ? "cursor-wait opacity-60 pointer-events-none"
                         : "cursor-pointer"
                         } 

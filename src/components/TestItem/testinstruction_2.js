@@ -135,8 +135,8 @@ const Testinstruction_2 = ({setloader,setstarttestindex,starttestindex,testHeade
                               {/* <PrimaryButton children='Start Section' className='w-[300px] h-[60px] text-[21px]' onClick={handleStartTest} /> */}
                            </div>
                         </div>
-                        {popup &&<div className='w-1/2 relative flex justify-center items-center h-full'> <Modal
-            classname="w-1/2 mx-auto "
+                        {popup &&<div className='max-w-1/2 relative flex justify-center items-center h-full'> <Modal
+            classname="max-w-[880px] mx-auto "
             title="Are you sure you want to start the section?"
             titleClassName='mr-4  mb-4'
             primaryBtn={

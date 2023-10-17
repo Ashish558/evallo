@@ -10,7 +10,7 @@ import AnnotationPopup from './Annotationpopup';
  
 export default function Que(props) {
 
-   const {ques,op,para,showtextbox,answerimagecheck,setshowtextbox,showannotate,setshowannotate,setAnswers,quesImg,quesT,answers,siz,index,Setmark,mark,cal,setCal,seq,cutanswers,cutanswer,showcutcheck,cutcheck,markreview,markre,annotation_check,calculator_check,cross_O_check} = props;
+   const {ques,op,para,initialSeconds,setInitialSeconds,countDown,showtextbox,answerimagecheck,setshowtextbox,showannotate,setshowannotate,setAnswers,quesImg,quesT,answers,siz,index,Setmark,mark,cal,setCal,seq,cutanswers,cutanswer,showcutcheck,cutcheck,markreview,markre,annotation_check,calculator_check,cross_O_check} = props;
    const s ={
     height : "58.2vh"
   }
@@ -107,7 +107,7 @@ export default function Que(props) {
         <div className={`mt-5 overflow-y-auto ${props.check && 'hidden'} ${!para? 'flex w-1/2 flex-col':'w-1/2'}` }>
           <div className=' flex bg-slate-200  text-center relative'>
             <span className=' bg-black text-white py-1 px-2'>{index}</span>
-            <FontAwesomeIcon onClick={()=>{markre(index)}} icon={faBookmark} className={`cursor-pointer text-transparent border border-black relative top-2 mx-2 ${ markreview.length>0?markreview[index-1]?.review && 'bg-yellow-400':null}`} />  
+            <FontAwesomeIcon onClick={()=>{markre(index)}} icon={faBookmark} color={ markreview.length>0?markreview[index-1]?.review && 'yellow':'white'} className={`cursor-pointer relative top-2 mx-2 `} />  
             <h3 className=' relative top-1 text-gray-600'>Mark for review</h3>
             {cross_O_check?
             <div className={`absolute line-through right-2 bottom-[2px] cursor-pointer border border-black px-1 rounded ${cutcheck && 'bg-blue-400'}`} onClick={()=>{showcutcheck()}}>
@@ -124,11 +124,15 @@ export default function Que(props) {
 <div>
   <input placeholder='Enter The Answer' type='number' className='bg-transparent mt-4 border-gray-600 border rounded px-2 py-4' value={answers[index-1].ResponseAnswer} onChange={(e)=>{
     let ans= e.target.value;
+    const timeTaken = initialSeconds - countDown
+   setInitialSeconds(countDown)
+   console.log(timeTaken);
     const updatedanswer = answers.map((q) =>
       q.QuestionNumber === index
         ? {
             ...q,
-            ResponseAnswer:ans
+            ResponseAnswer:ans,
+            responseTime:q.responseTime>0?q.responseTime+timeTaken:timeTaken,
           }
         : q
     );
@@ -141,9 +145,9 @@ export default function Que(props) {
 
            op?.map((e,i)=>
                {
-                return  <div className={`flex flex-row w-full cursor-pointer border-[3px] rounded-xl my-2 px-2 py-2  items-center ${answers[index-1].ResponseAnswer==e.label? 'border-blue-400' :null} `}> <span className={` font-semibold text-sm mr-4 border-[3px] rounded-full px-2 py-1 ml-2  ${answers[index-1].ResponseAnswer==e.label? 'bg-blue-400 text-white' :null}`}>{e.label}</span> <li className='relative flex w-full items-center text-gray-600 list-none rounded-lg' onClick={()=>{props.MarkAnswer(index,i)}}>
+                return  <div className={`flex flex-row w-full cursor-pointer border-[3px] rounded-xl my-2 px-2 items-center ${answers[index-1].ResponseAnswer==e.label? 'border-blue-400' :null} `}> <span className={` font-semibold text-sm mr-4 border-[3px] rounded-full px-2 py-1 ml-2  ${answers[index-1].ResponseAnswer==e.label? 'bg-blue-400 text-white' :null}`}>{e.label}</span> <li className='relative flex w-full items-center text-gray-600 list-none rounded-lg'>
                   <div className='flex justify-between w-full items-center'>
-                <div className='flex flex-wrap justify-start w-[90%] relative items-center'>
+                <div className='flex flex-wrap justify-start w-[90%] py-2 relative items-center'  onClick={()=>{props.MarkAnswer(index,i)}}>
                   <p>{e?.text}</p>
                   {answerimagecheck? <img className='ml-6 max-w-[100px] max-h-[100px]' src={e.image}/>:null}
                   { cutanswer[index-1].markcut[i]==1 && cutcheck?

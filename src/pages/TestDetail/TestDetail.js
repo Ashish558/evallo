@@ -3,7 +3,6 @@ import SecondaryButton from "../../components/Buttons/SecondaryButton";
 import BackIcon from "../../assets/assignedTests/back.svg";
 import AddIcon from "../../assets/icons/add.svg";
 import PrimaryButton from "../../components/Buttons/PrimaryButton";
-import dropdownIcon from '../../assets/icons/Dropdown(3).svg'
 // import styles from './style.module.css'
 // import { tableData } from './tempData'
 import pdf from '../.././assets/images/pdf.png'
@@ -61,8 +60,8 @@ export default function TestDetail() {
    const [sectionsData, setSectionsData] = useState({})
    const [pdfFile, setPDFFile] = useState({});
    const [modalActive, setModalActive] = useState(false)
-   const { role: persona } = useSelector((state) => state.user);
-   const PdfRef = useRef()
+  const { role: persona } = useSelector((state) => state.user);
+  const PdfRef = useRef()
    const [modalData, setModalData] = useState(initialState)
    const navigate = useNavigate();
    const [btnDisabled, setBtnDisabled] = useState(false)
@@ -75,6 +74,7 @@ export default function TestDetail() {
    const [options, setoptions] = useState(['', '', '', '']);
    const [subjective_answer, setsubjective_answe] = useState();
    const testType = location?.state?.testype
+
    useEffect(() => {
       if (modalData.email === '' || modalData.firstName === '' || modalData.lastName === '' || modalData.userType === '') {
          setBtnDisabled(true)
@@ -224,11 +224,11 @@ export default function TestDetail() {
       })
       // let idx = subjects.findIndex(item => item.selected === true)
       let editable = false
-      if (testData.addBySuperAdmin || testData.addByManager) {
-         if (persona === 'superAdmin' || persona === 'manager') {
+      if(testData.addBySuperAdmin || testData.addByManager){
+         if(persona === 'superAdmin' || persona === 'manager'){
             editable = true
          }
-      } else {
+      }else{
          editable = true
       }
       if(persona === 'superAdmin' || persona === 'manager'){
@@ -239,9 +239,9 @@ export default function TestDetail() {
             const { AnswerChoices, ...rest } = question;
             return {...rest, editable};
          }
-         return { ...question, editable };
+         return {...question, editable};
       });
-
+     
       let updatedData
       if (testData.testType === 'DSAT') {
          updatedData = allQuestions[idx].map(obj => ({
@@ -290,7 +290,7 @@ export default function TestDetail() {
             indx = i;
          }
       })
-      console.log(extratableitem);
+      console.log(indx);
       const body = {
          subject: subjects[indx].name,
          Qno: modalData.QuestionNumber,
@@ -301,30 +301,30 @@ export default function TestDetail() {
             AnswerChoices: 'A,B,C,D',
             QuestionText: modalData.question,
             QuestionImageUrl:questionImageBase64,
-            ...(testData.testType==='DSAT'?{QuestionImage: extratableitem[modalData.QuestionNumber-1]?.QImage}:{}),
+            QuestionImage: extratableitem[modalData.QuestionNumber-1].QImage,
             QuestionType: modalData.questionType,
-            ...(testData.testType==='DSAT'?{AnswerImage:extratableitem[modalData.QuestionNumber-1]?.AImage}:{}),
+            AnswerImage:extratableitem[modalData.QuestionNumber-1].AImage,
             //AnswerChoices:'a,b,c,d',
             Answers: [
                {
                   label: 'A',
                   text: options[0],
-                  ...(testData.testType==='DSAT'&&optionAImageBase64 !== undefined && optionAImageBase64 !== null ? { image: optionAImageBase64 } : {})
+                  ...(optionAImageBase64 !== undefined && optionAImageBase64 !== null ? { image: optionAImageBase64 } : {})
                },
                {
                   label: 'B',
                   text: options[1],
-                  ...(testData.testType==='DSAT'&&optionBImageBase64 !== undefined && optionBImageBase64 !== null ? { image: optionBImageBase64 } : {})
+                  ...(optionBImageBase64 !== undefined && optionBImageBase64 !== null ? { image: optionBImageBase64 } : {})
                },
                {
                   label: 'C',
                   text: options[2],
-                  ...(testData.testType==='DSAT'&&optionCImageBase64 !== undefined && optionCImageBase64 !== null ? { image: optionCImageBase64 } : {})
+                  ...(optionCImageBase64 !== undefined && optionCImageBase64 !== null ? { image: optionCImageBase64 } : {})
                },
                {
                   label: 'D',
                   text: options[3],
-                  ...(testData.testType==='DSAT'&&optionDImageBase64 !== undefined && optionDImageBase64 !== null ? { image: optionDImageBase64 } : {})
+                  ...(optionDImageBase64 !== undefined && optionDImageBase64 !== null ? { image: optionDImageBase64 } : {})
                },
             ],
             PassageData: modalData.richTextContent,
@@ -649,13 +649,13 @@ export default function TestDetail() {
          {
             modalActive &&
             <Modal
-               classname={'w-[666px] mx-auto'}
-
-               title='EDIT QUESTION'
-
+               classname={'max-w-[780px] mx-auto'}
+               cancelBtnClassName='bg-white text-[#FFA28D] border border-[#FFA28D] w-140'
+               title='Edit Question'
+               cancelBtn={true}
                primaryBtn={{
                   text: "Save",
-                  className: 'w-[146px] bg-[#FFA28D] rounded-lg h-[46px] !ml-0',
+                  className: 'w-140 bg-[#FFA28D]',
                   form: 'add-user-form',
                   // onClick: handleSubmit,
                   type: 'submit',
@@ -664,90 +664,85 @@ export default function TestDetail() {
                }}
                handleClose={() => { setModalActive(false); setModalData(initialState) }}
                body={
-                  <form id='add-user-form' onSubmit={handleSubmit} className='px-[3px] mb-8 form-scroll-container'>
-                     <div className=''>
-                        <div className="flex  justify-between items-center">
-
-                           <InputField label='Question No.'
-                              biggerText={true}
-                              labelClassname=' mb-0.5  !font-medium  text-[#26435F]'
-                              isRequired={false}
-                              placeholder='Text'
-                              inputContainerClassName='bg-[#F6F6F6] text-base pt-3.5 pb-3.5 px-3  border-0 h-[53px]'
-                              inputClassName='bg-transparent'
-                              parentClassName='!w-[280px]'
-                              type='text'
-                              value={modalData.QuestionNumber}
-                              disabled={true}
-                              onChange={e => e.target.value}
-                           />
-                           <InputSelect label='Question Type'
-                              customArrow={dropdownIcon}
-                              customArrowClassName="w-[29px]"
-                              labelClassname=' mb-0.5  !font-medium !text-lg text-[#26435F]'
-                              placeholder='Select'
-                              inputContainerClassName='bg-[#F6F6F6] text-base pt-3.5 pb-3.5 px-3  border-0 h-[53px]'
-                              inputClassName='bg-transparent'
-                              parentClassName='!w-[280px]'
-                              type='text'
-                              value={modalData.questionType}
-                              optionData={['MCQ', 'Grid-in']}
-                              isRequired={true}
-                              onChange={val => setModalData({ ...modalData, questionType: val })} />
-                        </div>
-                        <div className="flex  justify-between items-center mt-8">
-                           <InputField
-                              biggerText={true}
-                              label='Correct Answer'
-                              labelClassname=' mb-0.5  !font-medium  text-[#26435F]'
-                              isRequired={true}
-                              placeholder='Text'
-                              inputContainerClassName='bg-[#F6F6F6] text-base pt-3.5 pb-3.5 px-3  border-0 h-[53px]'
-                              inputClassName='bg-transparent'
-                              parentClassName='!w-[280px]'
-                              type='text'
-                              value={modalData.correctAnswer}
-                              onChange={e => setModalData({ ...modalData, correctAnswer: e.target.value })} />
-                           <InputField
-                              biggerText={true}
-                              label='Concept'
-                              labelClassname=' mb-0.5  !font-medium  text-[#26435F]'
-                              isRequired={true}
-                              placeholder='Text'
-                              inputContainerClassName='bg-[#F6F6F6] text-base pt-3.5 pb-3.5 px-3  border-0 h-[53px]'
-                              inputClassName='bg-transparent'
-                              parentClassName='!w-[280px]' type='text'
-                              value={modalData.concept}
-                              onChange={e => setModalData({ ...modalData, concept: e.target.value })} />
-
-                        </div>
-                        <div className="flex  justify-between items-center mt-8">
-                           <InputField
-                              biggerText={true}
-                              label='Strategy'
-                              labelClassname=' mb-0.5  !font-medium  text-[#26435F]'
-                              placeholder='Select'
-                              inputContainerClassName='!bg-[#F6F6F6] text-base pt-3.5 pb-3.5 px-3  border-0 h-[53px]'
-                              inputClassName='bg-transparent'
-                              parentClassName='!w-[280px]' type='text'
-                              value={modalData.strategy}
-                              onChange={e => setModalData({ ...modalData, strategy: e.target.value })} />
-                           {testData.testType !== 'DSAT' ? <>
-                              {console.log("test", { modalData })}
-                              <InputField
-                                 biggerText={true}
-                                 label='Answer Choices'
-                                 labelClassname=' mb-0.5  !font-medium  text-[#26435F]'
-                                 placeholder='Enabled if Question Type is MCQ'
-                                 inputContainerClassName='bg-[#F6F6F6] text-base pt-3.5 pb-3.5 px-3  border-0 h-[53px]'
+                  <form id='add-user-form' onSubmit={handleSubmit} className='px-[3px] mb-0.5 form-scroll-container'>
+                     <div className='flex flex-col w-full'>
+                        <div className="flex flex-row justify-between items-center">
+                           <div className="min-w-[170px] px-1">
+                              <InputField label='Question No.'
+                                 labelClassname='ml-4 mb-0.5 input-heading font-medium text-[15px]'
+                                 isRequired={false}
+                                 placeholder='Question No.'
+                                 inputContainerClassName='bg-[#F6F6F6] text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0'
                                  inputClassName='bg-transparent'
-                                 parentClassName='!w-[280px]' type='text'
+                                 parentClassName='w-full' type='text'
+                                 value={modalData.QuestionNumber}
+                                 disabled={true}
+                                 onChange={e => e.target.value}
+                              />
+                           </div> 
+                           <div className="min-w-[170px] px-1">
+                              <InputSelect label='Question Type'
+                                 labelClassname='ml-4 mb-0.5 input-heading font-semibold text-[15px]'
+                                 placeholder='Select Question Type'
+                                 inputContainerClassName='bg-[#F6F6F6] text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0'
+                                 inputClassName='bg-transparent'
+                                 parentClassName='w-full' type='text'
+                                 value={modalData.questionType}
+                                 optionData={['MCQ', 'Grid-in']}
+                                 isRequired={true}
+                                 onChange={val => setModalData({ ...modalData, questionType: val })} />
+                           </div>
+                           <div className="min-w-[170px] px-1">
+                           <div className="relative flex flex-col items-start">
+                              <p className=" ml-4 input-heading mb-0.5 font-medium text-[15px]">Correct Answer</p>
+                                    <select value={modalData.correctAnswer} className='min-w-[160px] outline-none py-[13px] px-2 text-sm font-medium border-0 text-[#38C980]' onChange={(e)=>{setModalData({ ...modalData, correctAnswer: e.target.value });}}>
+                                       <option className="bg-white text-black" value="A"> A</option>
+                                       <option className="bg-white text-black" value="B"> B</option>
+                                       <option className="bg-white text-black" value="C"> C</option>
+                                       <option className="bg-white text-black" value="D"> D</option>
+                                    </select>
+                              </div>
+                                 </div>
+                           {testData.testType !== 'DSAT' ? <div className="min-w-[170px] px-1">
+                              {console.log("test", { modalData })}
+                              <InputField label='Answer Choices'
+                                 labelClassname='ml-4 mb-0.5 input-heading font-medium text-[15px]'
+                                 // isRequired={true}
+                                 placeholder='Answer Choices'
+                                 inputContainerClassName='bg-[#F6F6F6] text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0'
+                                 inputClassName='bg-transparent'
+                                 parentClassName='w-full' type='text'
                                  value={modalData.AnswerChoices}
                                  onChange={e => setModalData({ ...modalData, AnswerChoices: e.target.value })} />
-                           </> : null}
+                           </div> : null}
+                        </div>
+                        <div className="flex mt-4 flex-row">
+                           <div className="w-1/2 p-1">
+                              <InputField label='Concept'
+                                 labelClassname='ml-4 mb-0.5 input-heading font-medium text-[15px]'
+                                 isRequired={true}
+                                 placeholder='Concept'
+                                 inputContainerClassName='bg-[#F6F6F6] text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0'
+                                 inputClassName='bg-transparent'
+                                 parentClassName='w-full' type='text'
+                                 value={modalData.concept}
+                                 onChange={e => setModalData({ ...modalData, concept: e.target.value })} />
+                           </div>
+                           <div className="w-1/2 p-1">
+                              <InputField label='Strategy'
+                                 labelClassname='ml-4 mb-0.5 input-heading font-medium text-[15px]'
+                                 // isRequired={true}
+                                 placeholder='Strategy'
+                                 inputContainerClassName='bg-[#F6F6F6] text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0'
+                                 inputClassName='bg-transparent'
+                                 parentClassName='w-full' type='text'
+                                 value={modalData.strategy}
+                                 onChange={e => setModalData({ ...modalData, strategy: e.target.value })} />
+                           </div>
                         </div>
                      </div>
-
+                     <div className="w-full h-1 my-4 bg-[#00000033]">
+                     </div>
 
 
                      {/* My Code */}

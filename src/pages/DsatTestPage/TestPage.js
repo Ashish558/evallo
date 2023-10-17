@@ -501,13 +501,14 @@ useEffect(()=>{
       setbackupresponse([]);
       setloader(true)
       setsectionindex(answer_check?.completed?.length==0?1:answer_check?.completed?.length)
-      const response = answers.map(item => {
+      const response = answers.map((item,i) => {
          const { QuestionType, QuestionNumber, ResponseAnswer, responseTime } = item
          return {
             QuestionType,
             QuestionNumber,
             ResponseAnswer: ResponseAnswer ? ResponseAnswer : '',
             responseTime: responseTime ? responseTime : 0,
+            marked:markreview[i].review
          }
       })
       let body = {
@@ -590,6 +591,9 @@ const [pages,setPage]=useState(arr)
       setCal={setCal} secnd={timer} handleSubmitSection={handleSubmitSection} sectionDetails={sectionDetails[starttestindex]}  />:null}
       {info?.length>0 && answers?.length>0&&cutanswer?.length>0&&markreview?.length>0?
          <Que
+         initialSeconds={initialSeconds}
+         setInitialSeconds={setInitialSeconds}
+         countDown={countDown}
       setshowtextbox={setshowtextbox}
       showtextbox={showtextbox}
       showannotate={showannotate}
