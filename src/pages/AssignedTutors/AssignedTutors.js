@@ -524,7 +524,7 @@ export default function AssignedTutors({ setAssignedTutorOpen, assignedTutorOpen
                                     studentName: e.target.value,
                                  })
                               }
-                              right={<img className="w-5 h-4" alt="drop" src={down} />}
+                              rightIcon={down} 
                               optionListClassName="text-base-17-5"
                               optionClassName="text-base-17-5"
                               optionData={students}
@@ -560,7 +560,7 @@ export default function AssignedTutors({ setAssignedTutorOpen, assignedTutorOpen
                                     tutorId: item._id
                                  })
                               }}
-                              right={<img className="w-5 h-4" alt="drop" src={down} />}
+                              rightIcon={down} 
                               optionPrefix='t'
                               parentClassName="w-full mr-4"
                               labelClassname="ml-2 mb-1 text-base-20 tracking-wide text-[#26435F]"
