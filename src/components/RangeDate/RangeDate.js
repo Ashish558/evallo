@@ -51,12 +51,17 @@ const RangeDate = ({ removeUnderline, handleRangeData, optionClassName, classNam
         .split("T")[0];
       endDate = now.toISOString().split("T")[0];
     } else if (option.days === 30) {
+      startDate = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000)
+        .toISOString()
+        .split("T")[0];
+      endDate = now.toISOString().split("T")[0];
+    } else if (option.days === 31) {
       startDate = new Date(now.getFullYear(), now.getMonth(), 2)
         .toISOString()
         .split("T")[0];
       endDate = now.toISOString().split("T")[0];
     } else if (option.days === 60) {
-      startDate = new Date(now.getFullYear(), now.getMonth() - 1, 2)
+      startDate = new Date(now.getTime() - 60 * 24 * 60 * 60 * 1000)
         .toISOString()
         .split("T")[0];
       endDate = new Date(now.getFullYear(), now.getMonth(), 1)
@@ -80,7 +85,7 @@ const RangeDate = ({ removeUnderline, handleRangeData, optionClassName, classNam
         .split("T")[0];
     }
     else if (option.days === 1000) {
-      startDate = new Date(2023, 0, 2)
+      startDate = new Date(2022, 0, 2)
         .toISOString()
         .split("T")[0];
       endDate = new Date()
@@ -127,8 +132,8 @@ const RangeDate = ({ removeUnderline, handleRangeData, optionClassName, classNam
   const [startMonth, startDay] = startFull.split("-");
 
 
-  const formattedStartDate = `${startMonth}-${startDay} - ${endYear}`;
-  const formattedDateRange = `${formattedStartDate} - ${endFull}`;
+  const formattedStartDate = `${startMonth}-${startDay}-${endYear}`;
+  const formattedDateRange = `${formattedStartDate}  -  ${endFull}`;
   // console.log(formattedDateRange);
 
 
@@ -152,8 +157,9 @@ const RangeDate = ({ removeUnderline, handleRangeData, optionClassName, classNam
           { name: "Lifetime", days: 1000 },
           { name: "Last 7 Days", days: 7 },
           { name: "Last 30 Days", days: 30 },
-          { name: "This Year", days: 60 },
-          // {name:"Current Year",days: 365 },
+          {name:"Current Month",days: 31 },
+          { name: "This Year", days: 365 },
+          
           // {name:"Last Year",days: 700},
           // {name:"Life Time",days:1000}
         ]}

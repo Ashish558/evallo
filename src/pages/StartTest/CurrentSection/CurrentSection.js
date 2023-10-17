@@ -29,13 +29,13 @@ export default function CurrentSection({ answers, submitSection, submitBtnLoadin
     });
   }, [answers]);
 
-  const handleSubmission = () => {
+  const handleSubmission = () => { 
     setPopUp(true); 
   };
 
   const handleSubmitConfirm = () => {
-   navigate('/section-loader');
-    
+  //  navigate('/section-loader');
+  submitSection();    
   };
 
   return (

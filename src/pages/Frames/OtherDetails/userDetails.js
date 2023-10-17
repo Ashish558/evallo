@@ -49,13 +49,11 @@ export default function UserDetails({
   setDetailsError,
   
   resetDetailsErrors,
-  studentNumberPrefix,
-  setStudentNumberPrefix,
   isAddedByAdmin,
   customFields,
   values,
+  stepTwoDisabled
 }) {
-  console.log({ values, otherDetails });
   const [selected, setSelected] = useState(false);
   const [disabled, setDisabled] = useState(false);
 
@@ -128,7 +126,7 @@ export default function UserDetails({
   // alert(personaText)
   return (
     <div className="w-full">
-      <div className="flex justify-between ">
+      <div className={`flex justify-between ${stepTwoDisabled ? 'pointer-events-none cursor-not-allowed' :''} `}>
         <InputField
           inputContainerClassName="border border-[#D0D5DD] pt-3 pb-3 border text-base-17-5 h-[53px]"
           parentClassName="mb-6  relative w-[16.9271vw] "
@@ -169,7 +167,7 @@ export default function UserDetails({
           error={detailsError.LastName}
         />
       </div>
-      <div className="flex justify-between  items-center mb-[30px] mt-1">
+      <div className={`flex justify-between  items-center mb-[30px] mt-1 ${stepTwoDisabled ? 'pointer-events-none cursor-not-allowed' :''}`}>
         <InputField
           parentClassName=" relative w-[19.5313vw] "
           label={`${personaText} Email `}
@@ -208,7 +206,7 @@ export default function UserDetails({
       </div>
 
       <InputField
-        parentClassName="mb-6 relative flex-1"
+        parentClassName={`mb-6 relative flex-1 ${stepTwoDisabled ? 'pointer-events-none cursor-not-allowed' :''}`}
         label={`Student School `}
         inputContainerClassName="border border-[#D0D5DD] pt-3 pb-3 border text-base-17-5 h-[50px]"
         labelClassname="text-[#26435F] !font-medium  mb-1 text-base-17-5"
@@ -221,7 +219,7 @@ export default function UserDetails({
       />
       <InputSelect
         IconLeft={leftDrop}
-        parentClassName="mb-6 w-[200px]"
+        parentClassName={`mb-6 w-[200px] ${stepTwoDisabled ? 'pointer-events-none cursor-not-allowed' :''}`}
         optionData={GradesData}
         label={`Student's Grade`}
         labelClassname="text-[#26435F] !font-medium  mb-1 text-base-17-5 font-semibold"
@@ -238,7 +236,7 @@ export default function UserDetails({
         labelClassname="mb-1 text-[#26435F] !font-medium"
         label="Referral Code"
         placeholder=""
-        parentClassName=" text-xs flex-1"
+        parentClassName={`text-xs flex-1 ${stepTwoDisabled ? 'pointer-events-none cursor-not-allowed' :''}`}
         inputContainerClassName="border border-[#D0D5DD] py-1 relative border h-[48px]"
         value={otherDetails.referalCode}
         onChange={(e) =>

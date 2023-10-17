@@ -9,6 +9,7 @@ import {
   Title,
   Tooltip,
   Legend,
+  TimeScale
 } from "chart.js";
 import { Line } from "react-chartjs-2";
 ChartJS.register(
@@ -17,6 +18,7 @@ ChartJS.register(
   PointElement,
   LineElement,
   Title,
+  TimeScale,
   Tooltip,
   Legend,
   // {

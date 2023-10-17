@@ -10,7 +10,7 @@ import AnnotationPopup from './Annotationpopup';
  
 export default function Que(props) {
 
-   const {ques,op,para,showtextbox,setshowtextbox,showannotate,setshowannotate,setAnswers,quesImg,quesT,answers,siz,index,Setmark,mark,cal,setCal,seq,cutanswers,cutanswer,showcutcheck,cutcheck,markreview,markre,annotation_check,calculator_check,cross_O_check} = props;
+   const {ques,op,para,showtextbox,answerimagecheck,setshowtextbox,showannotate,setshowannotate,setAnswers,quesImg,quesT,answers,siz,index,Setmark,mark,cal,setCal,seq,cutanswers,cutanswer,showcutcheck,cutcheck,markreview,markre,annotation_check,calculator_check,cross_O_check} = props;
    const s ={
     height : "58.2vh"
   }
@@ -76,7 +76,7 @@ export default function Que(props) {
         <AnnotationPopup show_ann={show_ann} index={index} annotations={annotations} setAnnotations={setAnnotations} setshow_ann={setshow_ann} setIsEditing={setshowannotate} isEditing={showannotate} color={color} i={index} underline={underline} sethovert={sethovert} setunderline={setunderline} setcolor={setcolor} />
        :null}
         {
-          para?<div className='overflow-y-auto w-1/2 pr-4 pt-5'>
+          para?<div className='overflow-y-auto w-1/2 mr-4 pt-5'>
            {/* <TextAnnotator
             key={color}
         content={quesT[index-1].text}
@@ -145,7 +145,7 @@ export default function Que(props) {
                   <div className='flex justify-between w-full items-center'>
                 <div className='flex flex-wrap justify-start w-[90%] relative items-center'>
                   <p>{e?.text}</p>
-                  {e.image!=''||e.image!=undefined? <img className='ml-6 max-w-[100px] max-h-[100px]' src={e.image}/>:null}
+                  {answerimagecheck? <img className='ml-6 max-w-[100px] max-h-[100px]' src={e.image}/>:null}
                   { cutanswer[index-1].markcut[i]==1 && cutcheck?
                   <div className='flex w-full h-full bg-gray-300 absolute top-[0] left-[0] opacity-40 justify-center items-center'>
                     <div className='h-[3px] bg-gray-900 absolute w-full'></div>

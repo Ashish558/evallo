@@ -4,18 +4,21 @@ import { useSelector } from "react-redux";
 import { getFormattedDate } from "../../../utils/utils";
 import { useEffect } from "react";
 import { useState } from "react";
+import { useNavigate } from "react-router";
 
 export default function TableItem({ item, onClick, AdminLatestSignUp }) {
   const [ dateFormat,setDateFormat ] = useState("dd/mm/yy")
+  const navigate=useNavigate()
       const { organization: organization2 } = useSelector((state) => state.organization)
       useEffect(()=>{
         if(organization2&&organization2?.settings&&organization2?.settings?.dateFormat){
           setDateFormat(organization2?.settings?.dateFormat)
         }
       },[organization2])
-      console.log("latest dateF",{dateFormat, organization2})
+      console.log("latest dateF",{dateFormat, organization2,item})
   const handleClick = () => {
-    onClick.redirect(item);
+   // onClick.redirect(item);
+navigate(`orgadmin-profile/${item?._id}`)
   };
   return AdminLatestSignUp ? (
     <LatestSignUpTableItem item={item} onClick={onClick} />

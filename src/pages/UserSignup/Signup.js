@@ -1,48 +1,30 @@
 import React, { useEffect, useRef, useState } from "react";
 import InputField from "../../components/InputField/inputField";
 import styles from "./signup.module.css";
-
-import OrgDetails from "../Frames/OrgDetails/OrgDetails";
-import SignupLast from "../Frames/SignupLast/SignupLast";
-import FurtherDetails from "../Frames/FurtherDetails/FurtherDetails";
 import axios from "axios";
 import SetPassword from "../Frames/SetPassword/SetPasswordInvited";
 import cuate from "../../assets/signup/cuate.svg";
 import NumericSteppers from "../../components/NumericSteppers/NumericSteppers";
-import CountryCode from "../../components/CountryCode/CountryCode";
 import {
   useAddUserDetailsMutation,
   useSignupMutation,
 } from "../../app/services/auth";
-import {
-  instructionFormat,
-  hearAboutUsData,
-  solutionsData,
-  testPreparationsData,
-  tutoringData,
-  coachingData,
-} from "./data";
-import { getCheckedString } from "../../utils/utils";
-import InputSelect from "../../components/InputSelect/InputSelect";
+
 import useOutsideAlerter from "../../hooks/useOutsideAlerter";
 import { useLazyGetSettingsQuery } from "../../app/services/session";
-import { validateOtherDetails, validateSignup } from "./utils/util";
+import { validateSignup } from "./utils/util";
 import {
-  useLazyGetTutorDetailsQuery,
+  useLazyGetUserDetailQuery,
   useLazyGetSingleUserQuery,
   useUpdateUserMutation,
   useLazyGetOrganizationQuery,
 } from "../../app/services/users";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import Loader from "../../components/Loader";
 import PrimaryButton from "../../components/Buttons/PrimaryButton";
-import RadioUnselected from "../../assets/icons/radio-unselected.svg";
-import RadioSelected from "../../assets/icons/radio-selected.svg";
 import OtherDetails from "../Frames/OtherDetails/userDetails";
 import CustomFields from "../Frames/CustomFields/CustomFields";
 import { useGetUserByOrgNameMutation } from "../../app/services/organization";
 import InputFieldDropdown from "../../components/InputField/inputFieldDropdown";
-import SecondaryButton from "../../components/Buttons/SecondaryButton";
 import CCheckbox from "../../components/CCheckbox/CCheckbox";
 
 export default function UserSignup() {
@@ -57,6 +39,8 @@ export default function UserSignup() {
   const [getSettings, getSettingsResp] = useLazyGetSettingsQuery();
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const [stepOneDisabled, setStepOneDisabled] = useState(false)
+  const [stepTwoDisabled, setStepTwoDisabled] = useState(false)
 
   const [values, setValues] = useState({
     firstName: "",
@@ -105,7 +89,7 @@ export default function UserSignup() {
 
   const [signupUser, signupUserResp] = useSignupMutation();
   const [addUserDetails, addUserDetailsResp] = useAddUserDetailsMutation();
-  const [getUserDetail, userDetailResp] = useLazyGetTutorDetailsQuery();
+  const [getUserDetail, userDetailResp] = useLazyGetUserDetailQuery();
   const [count, setCount] = useState(0);
   const [organisation, setOrganisation] = useState({});
   const [fetchOrganisation, fetchOrganisationstatus] =
@@ -168,7 +152,7 @@ export default function UserSignup() {
       if (res.data.organisation.length === 0) return;
       if (res.data.organisation[0]) {
         setOrganisation(res.data.organisation[0]);
-       // setCustomFields(res.data.organisation[0]?.settings?.customFields);
+        // setCustomFields(res.data.organisation[0]?.settings?.customFields);
       }
     });
   }, [searchParams.get("orgName")]);
@@ -181,17 +165,17 @@ export default function UserSignup() {
     console.log("paramUserId", paramUserId);
 
     setIsAddedByAdmin(true);
-    setFrames((prev) => {
-      return { ...prev, signupActive: false, userDetails: true };
-    });
+    // setFrames((prev) => {
+    //   return { ...prev, signupActive: false, userDetails: true };
+    // });
 
     getDetails(paramUserId).then((res) => {
       if (res.error) {
         return console.log(res.error);
       }
-      console.log("param res", res.data);
+      console.log("user res", res.data);
       if (res.data?.user) {
-        const { firstName, lastName, phone, email, role, associatedOrg } =
+        const { firstName, lastName, phone, email, role, associatedOrg, phoneCode } =
           res.data.user;
         setValues((prev) => {
           return {
@@ -202,8 +186,37 @@ export default function UserSignup() {
             phone,
             email,
             role,
+            phoneCode
           };
         });
+        if(phone){
+          setStepOneDisabled(true)
+        }
+        getUserDetail({ id: paramUserId }).then((res) => {
+          console.log('detail res----', res.data.data);
+          if (res.data.data.userdetails) {
+            let detail = res.data.data.userdetails
+            setOtherDetails({
+              ...otherDetails,
+              FirstName: detail.FirstName,
+              LastName: detail.LastName,
+              Phone: detail.Phone,
+              Email: detail.Email,
+              grade: detail.grade,
+              schoolName: detail.schoolName,
+              PphoneCode: detail.phoneCode
+            })
+            if(phone){
+              setStepTwoDisabled(true)
+            }
+            // setFrames({
+            //   signupActive: false,
+            //   userDetails: false,
+            //   customFields: false,
+            //   setPasswordFields: true,
+            // })
+          }
+        })
         fetchOrganisation(associatedOrg).then((org) => {
           //console.log("organisation details",{org})
           if (org.error) {
@@ -213,7 +226,7 @@ export default function UserSignup() {
 
           if (org?.data?.organisation) {
             setOrganisation(org.data.organisation);
-           // setCustomFields(org.data.organisation?.settings?.customFields);
+            // setCustomFields(org.data.organisation?.settings?.customFields);
           }
         });
       }
@@ -265,7 +278,7 @@ export default function UserSignup() {
       };
     });
   };
-  console.log({ customFields });
+
   const resetDetailsErrors = () => {
     setDetailsError((prev) => {
       return {
@@ -316,11 +329,11 @@ export default function UserSignup() {
   useEffect(() => {
     handleNextErrors();
   }, [values]);
-  const [emailExistLoad, setEmailExistLoad] = useState(false);
+
   const handleClick = async () => {
-    let f=/[a-z]/i.test(values?.firstName)
-   f=f&& /[a-z]/i.test(values?.lastName)
-    if(!f){
+    let f = /[a-z]/i.test(values?.firstName)
+    f = f && /[a-z]/i.test(values?.lastName)
+    if (!f) {
       alert("Enter a valid name!")
       return
     }
@@ -390,8 +403,10 @@ export default function UserSignup() {
         lastName: values.lastName,
         email: values.email,
         phone: values.phone,
+        phoneCode: values.phoneCode,
         role: values.role.toLowerCase(),
         ...otherDetails,
+        PhoneCode: otherDetails.PphoneCode,
         customFields: updatedCustomfields,
         associatedOrg: organisation._id,
       };
@@ -539,8 +554,8 @@ export default function UserSignup() {
                 {frames.signupActive
                   ? "Sign Up"
                   : frames.setPasswordFields && !isAddedByAdmin
-                  ? "Set Password"
-                  : "Profile Details"}
+                    ? "Set Password"
+                    : "Profile Details"}
               </h1>
 
               <h6 className="mb-[10px]">Sign up with email address</h6>
@@ -556,8 +571,8 @@ export default function UserSignup() {
                 {frames.signupActive
                   ? ""
                   : frames.setPasswordFields && !isAddedByAdmin
-                  ? "Set Password"
-                  : ""}
+                    ? "Set Password"
+                    : ""}
               </h1>
 
               {currentStep > 0 && !frames.signupSuccessful && (
@@ -566,16 +581,16 @@ export default function UserSignup() {
                   fieldNames={
                     customFields?.length > 0 && isAddedByAdmin
                       ? [
-                          "Personal info",
-                          "Student / Parent",
-                          "Further details",
-                          "Set password",
-                        ]
+                        "Personal info",
+                        "Student / Parent",
+                        "Further details",
+                        "Set password",
+                      ]
                       : [
-                          "Personal info",
-                          "Student / Parent",
-                          isAddedByAdmin ? "Set password" : "Further details",
-                        ]
+                        "Personal info",
+                        "Student / Parent",
+                        isAddedByAdmin ? "Set password" : "Further details",
+                      ]
                   }
                   totalSteps={
                     customFields?.length === 0
@@ -589,7 +604,7 @@ export default function UserSignup() {
 
               {frames.signupActive ? (
                 <div>
-                  <div className={`flex mt-[59px]  justify-between lg:mt-0 `}>
+                  <div className={`flex mt-[59px] justify-between lg:mt-0 ${stepOneDisabled ? 'pointer-events-none cursor-not-allowed' :''}`}>
                     <InputField
                       placeholder=""
                       inputContainerClassName="text-base-17-5  bg-white   border border-[#D0D5DD] h-[53px]"
@@ -604,7 +619,7 @@ export default function UserSignup() {
                         // );
                         // e.target.value = alphabeticOnly;
                         // e.target.value=e.target.value.charAt(0).toUpperCase() + e.target.value.slice(1);
-                     
+
                         setValues({
                           ...values,
                           firstName: e.target.value,
@@ -628,7 +643,7 @@ export default function UserSignup() {
                         // );
                         // e.target.value = alphabeticOnly;
                         // e.target.value=e.target.value.charAt(0).toUpperCase() + e.target.value.slice(1);
-                         setValues({
+                        setValues({
                           ...values,
                           lastName: e.target.value,
                         });
@@ -637,7 +652,7 @@ export default function UserSignup() {
                       error={error.lastName}
                     />
                   </div>
-                  <div className="flex  items-center mt-[30px] mb-[29px] justify-between">
+                  <div className={`flex  items-center mt-[30px] mb-[29px] justify-between ${stepOneDisabled ? 'pointer-events-non cursor-not-allowe' :''}`}>
                     <InputField
                       labelClassname="mb-1 text-[#26435F] !font-medium"
                       label="Email"
@@ -688,7 +703,7 @@ export default function UserSignup() {
                     >
                       Are you signing up as a Parent or a Student?
                     </p>
-                    <div className="flex items-center  text-[13.5px] gap-x-6">
+                    <div className={`flex items-center  text-[13.5px] gap-x-6 ${stepOneDisabled ? 'pointer-events-none cursor-not-allowed' :''}`}>
                       <div
                         onClick={() => {
                           setValues((prev) => ({
@@ -705,11 +720,10 @@ export default function UserSignup() {
                             id="radioOption"
                           />
                           <div
-                            className={`relative inline-block ml-[2px] w-4 h-4   rounded-full border ${
-                              values.role === "parent"
-                                ? "border-[#FFA28D]"
-                                : "border-gray-600"
-                            } cursor-pointer`}
+                            className={`relative inline-block ml-[2px] w-4 h-4   rounded-full border ${values.role === "parent"
+                              ? "border-[#FFA28D]"
+                              : "border-gray-600"
+                              } cursor-pointer`}
                           >
                             {values.role === "parent" && (
                               <div className="absolute inset-0 my-auto mx-auto w-[8px] h-[8px] rounded-full bg-[#FFA28D]" />
@@ -737,11 +751,10 @@ export default function UserSignup() {
                             id="radioOption"
                           />
                           <div
-                            className={`relative inline-block w-4 h-4 p-1   rounded-full border ${
-                              values.role === "student"
-                                ? "border-[#FFA28D]"
-                                : "border-gray-600"
-                            } cursor-pointer`}
+                            className={`relative inline-block w-4 h-4 p-1   rounded-full border ${values.role === "student"
+                              ? "border-[#FFA28D]"
+                              : "border-gray-600"
+                              } cursor-pointer`}
                           >
                             {values.role === "student" && (
                               <div className="absolute inset-0 my-auto mx-auto w-[8px] h-[8px] rounded-full bg-[#FFA28D]" />
@@ -798,15 +811,14 @@ export default function UserSignup() {
                     /> */}
 
                     <PrimaryButton
-                      className={`bg-[#FFA28D] text-center items-center justify-center disabled:opacity-60 w-[7.6042vw]   text-[#FFF] !text-[0.9688vw] font-medium relative h-[53px] rounded-5 ${
-                        loading
-                          ? "cursor-wait opacity-60 pointer-events-none"
-                          : "cursor-pointer"
-                      }`}
+                      className={`bg-[#FFA28D] text-center items-center justify-center disabled:opacity-60 w-[7.6042vw]   text-[#FFF] !text-[0.9688vw] font-medium relative h-[53px] rounded-5 ${loading
+                        ? "cursor-wait opacity-60 pointer-events-none"
+                        : "cursor-pointer"
+                        }`}
                       disabled={
                         values.email.trim().length === 0 ||
-                        !values.terms ||
-                        !values.ageChecked
+                          !values.terms ||
+                          !values.ageChecked
                           ? true
                           : false
                       }
@@ -823,12 +835,13 @@ export default function UserSignup() {
                   {...otherDetailsProps}
                   newLoader={loading}
                   handleSignup={handleSignup}
+                  stepTwoDisabled={stepTwoDisabled}
                 />
               ) : frames.customFields ? (
                 <CustomFields
                   {...props}
                   {...valueProps}
-                  
+
                   customFields={customFields}
                   setCustomFields={setCustomFields}
                   handleSignup={handleSignup}

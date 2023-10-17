@@ -130,9 +130,9 @@ const SPFrame3 = ({ userDetail, isOwn, user }) => {
               concepts: {
                 [it?.conceptName]: it?.total,
               },
-              timeTaken: it?.avgTimeTaken * 60 * 60,
-              no_of_correct: it?.noOfCorrect
-              , name: it?.conceptName
+              timeTaken:it?.avgTimeTaken*60,
+              no_of_correct:it?.noOfCorrect
+              ,name:it?.conceptName
 
             })
           })
@@ -185,7 +185,7 @@ const SPFrame3 = ({ userDetail, isOwn, user }) => {
     });
     setSubjects(updated);
   };
-  console.log("sprame3", { spSubject, subjects, scoreProgression, TimeChartData, ConceptualChartData });
+ console.log("sprame3",{accsubjects,selectedspSubject,spSubject,subjects,scoreProgression,TimeChartData,ConceptualChartData});
   return (
     <div className="flex flex-col gap-5 -mt-5 design:gap-10">
       {" "}
@@ -210,20 +210,20 @@ const SPFrame3 = ({ userDetail, isOwn, user }) => {
         id={styles.chartContainer}
         className="!rounded-md bg-white shadow-[0px_0px_2.500001907348633px_0px_#00000040] custom-scroller py-5 pl-5"
       >
-        <div className="flex-1 flex justify-end translate-y-4 mr-3">
-          <InputSelectNew
-            placeholder={""}
-            parentClassName="ml-0  scale-[0.9] items-center flex text-[#FFA28D] text-xs border px-1 py-2 border-[#FFA28D] rounded-full  "
-            inputContainerClassName=" my-0 py-[5px] px-[40px]"
-            placeHolderClass="text-[#FFA28D] "
-            labelClassname="text-sm"
-            inputClassName="bg-transparent"
-            value={officialTest}
-            IconDemography={true}
-            optionData={["SAT", "ACT"]}
-            onChange={(e) => setOfficial(e)}
-          />
-          {/* <InputSelect
+         <div className="flex-1 relative z-[6000] flex justify-end translate-y-4 mr-3">
+            <InputSelectNew
+              placeholder={""}
+              parentClassName="ml-0  scale-[0.9] items-center flex text-[#FFA28D] text-xs border px-1 py-2 border-[#FFA28D] rounded-full  "
+              inputContainerClassName=" my-0 py-[5px] px-[40px]"
+              placeHolderClass="text-[#FFA28D] "
+              labelClassname="text-sm"
+              inputClassName="bg-transparent"
+              value={officialTest}
+              IconDemography={true}
+              optionData={["SAT","ACT"]}
+              onChange={(e) => setOfficial(e)}
+            />
+            {/* <InputSelect
               value={selectedSubject}
               labelClassname="hidden"
               parentClassName="w-fit mr-5"
@@ -263,7 +263,7 @@ const SPFrame3 = ({ userDetail, isOwn, user }) => {
           id={styles.chartContainer}
           className="!rounded-md w-full bg-white flex-1 shadow-[0px_0px_2.500001907348633px_0px_#00000040] custom-scroller pb-5 pl-4"
         >
-          <div className="flex-1 flex justify-end translate-y-4 mr-3">
+          <div className="flex-1 relative z-[6000] flex justify-end translate-y-4 mr-3">
             <InputSelectNew
               placeholder={""}
               parentClassName="ml-0  scale-[0.9] items-center flex text-[#FFA28D] text-xs border px-1 py-2 border-[#FFA28D] rounded-full  "
@@ -329,7 +329,7 @@ const SPFrame3 = ({ userDetail, isOwn, user }) => {
           id={styles.chartContainer}
           className="!rounded-md w-full bg-white flex-1 shadow-[0px_0px_2.500001907348633px_0px_#00000040] custom-scroller pb-5 pl-4"
         >
-          <div className="flex-1 flex justify-end translate-y-4 mr-3">
+          <div className="flex-1 relative z-[6000] flex justify-end translate-y-4 mr-3">
             <InputSelectNew
               placeholder={""}
               parentClassName="ml-0  scale-[0.9] items-center flex text-[#FFA28D] text-xs border px-1 py-2 border-[#FFA28D] rounded-full  "

@@ -37,6 +37,7 @@ import {
   getFormattedDate,
   getLocalTimeZone,
   getStartDate,
+  getToTimezone,
 } from "../../utils/utils";
 import InputSelect from "../../components/InputSelect/InputSelect";
 // import styles from "./calendar.css";
@@ -61,11 +62,14 @@ const timeZones = [
 const timeZones2 = [
   "IST",
   "AKST",
+  "CST",
   "EST",
   "HST",
   "MST",
   "PST"
 ];
+
+
 export default function Calendar() {
   const calendarRef = useRef(null);
   // //////console.log(calendarRef.current)
@@ -84,8 +88,11 @@ export default function Calendar() {
 
   // //////console.log(sessionToEdit)
   const [associatedStudents, setAssociatedStudents] = useState([]);
-  const { id, timeZone: currentUserTImeZone } = useSelector((state) => state.user
+  const { id ,timeZone:timeZoneUser} = useSelector((state) => state.user
   );
+  
+  const [currentUserTImeZone,setcurrentUserTImeZone]=useState("")
+
   const time = formatAMPM(new Date());
   const exactTime =
     time.slice(0, time.indexOf(":")) +
@@ -164,6 +171,15 @@ export default function Calendar() {
     }
   };
 
+  useEffect(() =>{
+    if(!timeZones?.includes(timeZoneUser)&&organization&&organization.settings&&organization.settings.timeZone)
+    setcurrentUserTImeZone(organization.settings.timeZone)
+  },[organization])
+  useEffect(() =>{
+    if(timeZones?.includes(timeZoneUser))
+    setcurrentUserTImeZone(timeZoneUser)
+  },[timeZoneUser])
+  console.log({currentUserTImeZone,organization,timeZone})
   const fetchSessions = (id, role) => {
     // //////console.log(id)
     setSearchedUser({ id, role });
@@ -1537,7 +1553,7 @@ export default function Calendar() {
                 })}
             </div>
           </div>
-          <div className="flex-1 w-4/5 relative" id="calendarContainer">
+          <div className="flex-1 w-4/5 relative  min-h-[600px]" id="calendarContainer">
             <FullCalendar
               slotLabelContent={(arg) => {
                 return (

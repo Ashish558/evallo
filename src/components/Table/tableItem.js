@@ -89,7 +89,7 @@ export default function TableItem({
       setDateFormat(organization2?.settings?.dateFormat)
     }
   }, [organization2])
-  console.log("latest date Form", { dateFormat, organization2 })
+
   useEffect(() => {
     if (item.userType === "tutor")
 
@@ -173,7 +173,6 @@ export default function TableItem({
   const [deleteAdmin, setDeleteAdmin] = useDeleteAdminMutation()
   const [deleteAdminModalActive, setDeleteAdminModalActive] = useState(false)
   const [deleteSelectLoading, setDeleteSelectLoading] = useState(false)
-  console.log({ item })
   const handleDeleteAdmin = () => {
     setDeleteSelectLoading(true)
     deleteAdmin({ id: item?.associatedOrg?._id }).then((res) => {
@@ -321,7 +320,6 @@ export default function TableItem({
 
   return (
     <>
-      {console.log(extratableitem)}
       {
         dataFor === "tutorFeedback" && (
           <>
@@ -912,12 +910,11 @@ export default function TableItem({
       {dataFor === "testsDetailQuestions" && (
         <tr className="bg-white text-[17.5px]   leading-7 mt-[10px]">
           {MapData(item, dataFor, excludes)}
-          {console.log('dfsdfdgdfgdfg', item)}
           {testtype === 'DSAT' ? <>
-            <td><div className={` ${extratableitem[item.QuestionNumber - 1].QImage === 'Yes' && 'bg-[#38C980]'} mx-auto rounded-full w-[20px] h-[20px]`}>{extratableitem[item.QuestionNumber - 1].QImage === 'No' ? '--' : null}</div></td>
-            <td> <div className={` ${extratableitem[item.QuestionNumber - 1].AImage == 'Yes' && 'bg-[#FFCE84]'} mx-auto  w-[20px] rounded-full h-[20px] `}>{extratableitem[item.QuestionNumber - 1].AImage == 'No' ? '--' : null}</div></td>
-            <td className={` ${extratableitem[item.QuestionNumber - 1].Passage == 'Yes' ? 'text-[#38C980]' : 'text-[#FF7979]'} text-[17.5px] font-semibold `}>{extratableitem[item.QuestionNumber - 1].Passage}</td>
-          </> : null}
+            <td><div className={` ${extratableitem[item?.QuestionNumber - 1]?.QImage === 'Yes' && 'bg-[#38C980]'} mx-auto rounded-full w-[20px] h-[20px]`}>{extratableitem[item.QuestionNumber - 1]?.QImage === 'No' ? '' : null}</div></td>
+            <td> <div className={` ${extratableitem[item?.QuestionNumber - 1]?.AImage == 'Yes' && 'bg-[#FFCE84]'} mx-auto  w-[20px] rounded-full h-[20px] `}>{extratableitem[item.QuestionNumber - 1]?.AImage == 'No' ? '' : null}</div></td>
+            <td className={` ${extratableitem[item?.QuestionNumber - 1]?.Passage == 'Yes' ? 'text-[#38C980]' : 'text-[#FF7979]'} text-[17.5px] font-semibold `}>{extratableitem[item.QuestionNumber - 1]?.Passage}</td>
+          </> : null} 
           <td className="font-medium flex justify-center px-1 min-w-14 py-4">
             {
               !item.editable ? <></> :
@@ -936,7 +933,7 @@ export default function TableItem({
           <td>{item.testType} &#174;</td>
           <td> {getFormattedDate(item.createdAt.split("T")[0], dateFormat)}</td>
           <td>{getFormattedDate(item.updatedAt.split("T")[0], dateFormat)}</td>
-          <td> {item.no_of_assign ? item.no_of_assign : "-"} </td>
+          <td> {item.no_of_assign!==null ? item.no_of_assign : "-"} </td>
           <td className="font-medium px-1 py-4 text-right">
             <div className="flex justify-end">
               <button
