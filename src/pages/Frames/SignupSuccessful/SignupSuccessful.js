@@ -4,6 +4,7 @@ import PrimaryButton from "../../../components/Buttons/PrimaryButton";
 import SecondaryButton from "../../../components/Buttons/SecondaryButton";
 import image from "./../../../assets/signup/image.svg";
 import { useResentEmailMutation } from '../../../app/services/users';
+import styles from './SignupSuccessful.module.css'
 
 export default function SignupSuccessful({
   frames,
@@ -59,16 +60,16 @@ export default function SignupSuccessful({
   return (
     <div className="">
       <div className="mb-7 hidden lg:block ">
-        <div className='h-[1px] bg-[#EBEBEB] mt-[-20px] mx-[6px] w-full mb-[25px]'>
+        <div className='h-[1px] bg-[#EBEBEB] mt-[-20px] mx-[6px] w-full mb-[50px]'>
 
         </div>
         <div>
 
-          <div className="text-center text-[#26435F] flex flex-col gap-3 font-normal text-md w-fit">
-            <p className="!font-light">{successfulSignUpMessage.head}</p>
-            <p className="!font-light">{successfulSignUpMessage.mid}</p>
-            <h4>{successfulSignUpMessage.last} <span onClick={() => handleSubmit()} className={`text-[#24A3D9] underline cursor-pointer ${loading ? 'opacity-70 !font-medium' : ''}`}>{successfulSignUpMessage.verify}</span></h4>
-            <h2 className="!font-normal tracking-wider">{successfulSignUpMessage.bottom}</h2>
+          <div className="text-justify text-[#26435F] flex flex-col gap-3  text-[14px] w-fit design:text-base">
+            <p className="!font-light !text-center">{successfulSignUpMessage.head}</p>
+            <p  className={styles.textAlignLast}>{successfulSignUpMessage.mid}</p>
+            <h4  className={styles.textAlignLast}>{successfulSignUpMessage.last} <span onClick={() => handleSubmit()} className={`text-[#24A3D9] underline cursor-pointer ${loading ? 'opacity-70 !font-medium' : '!font-medium'}`}>{successfulSignUpMessage.verify}</span></h4>
+            <h2 className="!font-medium tracking-wider !text-center text-[#26435F]">{successfulSignUpMessage.bottom}</h2>
           </div>
         </div>
 

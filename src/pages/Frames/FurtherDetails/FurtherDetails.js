@@ -162,7 +162,7 @@ export default function FurtherDetails({
                     >
                       {item.text}
                     </p>
-                    {item.text === "Others" && item.checked ? (
+                    {item.text === "Other Tests" && item.checked ? (
                       <input
                         autoFocus
                         className="absolute pl-3 -bottom-8 text-[13px] text-[#7E7E7E] outline-[#DCDCDD] border-[1.5px] border-[#DCDCDD] rounded-[4px] !bg-[#F5F8FA] w-[9.3vw]"
@@ -216,7 +216,7 @@ export default function FurtherDetails({
                     >
                       {item.text}
                     </p>
-                    {item.text === "Others" && item.checked ? (
+                    {item.text === "Other" && item.checked ? (
                       <input
                         autoFocus
                         className="absolute right-[110px] ml-3 pl-3 text-[13px] text-[#7E7E7E] outline-[#DCDCDD] border-[1.5px] border-[#DCDCDD] rounded-[4px] !bg-[#F5F8FA] w-[23vw]"
@@ -263,7 +263,7 @@ export default function FurtherDetails({
                     >
                       {item.text}
                     </p>
-                    {item.text === "Others" && item.checked ? (
+                    {item.text === "Other" && item.checked ? (
                       <input
                         autoFocus
                         className="ml-3 text-[13px] text-[#7E7E7E] outline-[#DCDCDD] border-[1.5px] border-[#DCDCDD] rounded-[4px] !bg-[#F5F8FA]  w-32 absolute bottom-3  pl-2"
@@ -324,7 +324,7 @@ export default function FurtherDetails({
           })}
         </div>
         <p className="!border-t-[1.4px] !border-t-[#26435F4D] mt-[-10px]    pt-4 pb-2 text-sm text-[#26435F] tracking-wider font-semibold">
-          Student Served
+          Students Served
         </p>
 
         <div className="grid grid-cols-2 font-medium text-[#26435F]">
@@ -368,12 +368,12 @@ export default function FurtherDetails({
           optionContainerClassName="text-[13px] "
           optionsEachClassName="py-[6px]"
           optionData={paymentOptions}
-          placeholderClass={"!inline-block !overflow-x-auto custom-scroller-2 !w-[150px] !py-1 !ml-[-10px]"}
+          placeholderClass={"!inline-block !overflow-x-auto custom-scroller-2 !w-[150px]  !ml-[-10px] mt-1.5"}
           placeholder={"Options"}
           label={``}
 
           labelClassname="text-[#26435F] font-bold  mb-1 text-sm "
-          inputContainerClassName=" py-1 h-[44.9px] text-sm border  border-[#D0D5DD] my-0 mt-[-2px] rounded-[5px]"
+          inputContainerClassName=" h-[44.9px] text-sm border  border-[#D0D5DD] my-0 mt-[-2px] rounded-[5px]"
           inputClassName="ml-80  "
           onChange={(e) => handlePaymentTypeChange(e)}
         />
@@ -381,7 +381,7 @@ export default function FurtherDetails({
       <div className="!border-b-[1.4px] !border-b-[#26435F4D] w-[80%] mx-auto"></div>
       <div className="flex  items-center mt-8 justify-between ">
         <SecondaryButton
-          children="Go Back"
+          children="Go back"
           className="text-sm mr-6 bg-white text-[#a3aDC7] border-[1.5px] border-[#D0D5DD] "
           onClick={handleBack}
         />
