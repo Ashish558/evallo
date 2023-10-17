@@ -2,7 +2,18 @@ import CheckOutExtensionsReview from "../../../components/CheckOutExtensionsRevi
 import CheckOutSubscriptionReview from "../../../components/CheckOutSubscriptionReview/CheckOutSubscriptionReview";
 import PrimaryButton from "../../../components/Buttons/PrimaryButton";
 import SecondaryButton from "../../../components/Buttons/SecondaryButton";
-import { useState } from "react";
+import { 
+    useState,
+    useEffect,
+ } from "react";
+import {
+    Elements,
+    PaymentElement,
+    LinkAuthenticationElement,
+    useStripe,
+    useElements
+} from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
 
 export default function CheckOut({
     setFrames,
@@ -34,8 +45,35 @@ export default function CheckOut({
         freeTrialDays: 0,
         pricePerMonth: 0
     }],
-    setcurrentStep
+    setcurrentStep,
+    clientSecret,
 }) {
+    const secretKey = "sk_test_51O1tgLSFF3kgujFeaEQ6Uh7PkOtF4SgSk5ATR8xxmCgLGIW4lkkDzeLDKMoMfjAwZVQyTDJjBkTCwJiIMGgVqrlQ00b9M9MyKZ"
+    const publishableKey = "pk_test_51O1tgLSFF3kgujFe23VYSyhW5lbx2N3b7cjC1q1Q1alW9lwocUKObR8j4hBdpYx5xzDnFcPsNBbkzDu6hcDmHSP3004Sr0qX5e";
+    const stripePromise = loadStripe(publishableKey);
+    const stripe_From_Req = require("stripe")(secretKey);
+
+    const stripe = useStripe();
+    const elements = useElements();
+
+    // const [clientSecret, SetClientSecret] = useState();
+
+    /*
+    useEffect(async () => {
+        const paymentIntent = await stripe_From_Req.paymentIntents.create({
+          amount: 1,
+          currency: "usd",
+          // In the latest version of the API, specifying the `automatic_payment_methods` parameter is optional because Stripe enables its functionality by default.
+          automatic_payment_methods: {
+            enabled: true,
+          },
+        });
+    
+        console.log(paymentIntent.client_secret)
+    
+        SetClientSecret(paymentIntent.client_secret);
+      }, [])
+      */
 
     const handleSubmit = () => {
         setFrames((prev) => {
@@ -77,6 +115,37 @@ export default function CheckOut({
             }
         ]
     */
+   
+
+    useEffect(() => {
+        if (!stripe) {
+            return;
+        }
+
+        
+
+        if (!clientSecret) {
+            return;
+        }
+
+        stripe.retrievePaymentIntent(clientSecret).then(({ paymentIntent }) => {
+            console.log(paymentIntent)
+            switch (paymentIntent.status) {
+            case "succeeded":
+                console.log("Payment succeeded!");
+                break;
+            case "processing":
+                console.log("Your payment is processing.");
+                break;
+            case "requires_payment_method":
+                console.log("Your payment was not successful, please try again.");
+                break;
+            default:
+                console.log("Something went wrong.");
+                break;
+            }
+        });
+    }, [stripe]);
 
     const chosenSubscriptionPlan = subscriptionsInfo.find(item => item.planName === values.subscriptionPlan);
 
@@ -101,6 +170,19 @@ export default function CheckOut({
         totalMonthlyCost -= promoCodes[i].price
     }
     totalMonthlyCost = totalMonthlyCost < 0 ? 0 : totalMonthlyCost
+
+    const paymentElementOptions = {
+        layout: "tabs"
+    }
+
+    const appearance = {
+        theme: 'stripe',
+      };
+      const options = {
+        clientSecret,
+        appearance,
+      };
+
     return (
         <div className="mt-2 mb-3">
             <div>
@@ -184,7 +266,9 @@ export default function CheckOut({
                     <div>${totalMonthlyCost}.00 + Taxes</div>
                 </div>
 
-            <div className="border-[1px] mt-[25px] w-full"></div>
+            <div className="border-[1px] mb-[40px] mt-[25px] w-full"></div>
+
+            <PaymentElement id="payment-element" options={paymentElementOptions} />
 
             <div className="flex items-center mt-[50px] justify-end">
                 <SecondaryButton

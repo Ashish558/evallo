@@ -62,11 +62,20 @@ import { subScriptionPlanData } from "./DummyData/SubscriptionPlanData";
 import { extensionPlansInfo } from "./DummyData/ExtensionPlansInfo";
 import { useLazyGetSubscriptionsInfoQuery } from "../../app/services/orgSignup";
 
+import {
+  Elements,
+  PaymentElement,
+  LinkAuthenticationElement,
+  useStripe,
+  useElements
+} from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
+
 export default function OrgSignup() {
   const [frames, setFrames] = useState({
     signupActive: false,
-    subscription: false,
-    extensions: true,
+    subscription: true,
+    extensions: false,
     checkout: false,
   });
 
@@ -757,6 +766,36 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
     navigate("/");
   };
 
+  const [clientSecret, SetClientSecret] = useState();
+
+  const secretKey = "sk_test_51O1tgLSFF3kgujFeaEQ6Uh7PkOtF4SgSk5ATR8xxmCgLGIW4lkkDzeLDKMoMfjAwZVQyTDJjBkTCwJiIMGgVqrlQ00b9M9MyKZ"
+  const publishableKey = "pk_test_51O1tgLSFF3kgujFe23VYSyhW5lbx2N3b7cjC1q1Q1alW9lwocUKObR8j4hBdpYx5xzDnFcPsNBbkzDu6hcDmHSP3004Sr0qX5e";
+  const stripePromise = loadStripe(publishableKey);
+  const stripe = require("stripe")(secretKey);
+
+  const appearance = {
+    theme: 'stripe',
+  };
+  const options = {
+    clientSecret: clientSecret,
+    appearance,
+  };
+
+  useEffect(async () => {
+    const paymentIntent = await stripe.paymentIntents.create({
+      amount: 1,
+      currency: "usd",
+      // In the latest version of the API, specifying the `automatic_payment_methods` parameter is optional because Stripe enables its functionality by default.
+      automatic_payment_methods: {
+        enabled: true,
+      },
+    });
+
+    console.log(paymentIntent.client_secret)
+
+    SetClientSecret(paymentIntent.client_secret);
+  }, [])
+
   return (
     <div className="   pb-6 bg-primary relative" id={styles.signUp}>
       {/* <AdminNavbar></AdminNavbar> */}
@@ -1038,6 +1077,11 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
             
                 />
               ) : frames.checkout ? (
+                clientSecret ? 
+                <Elements options={{
+                  clientSecret: clientSecret,
+                  appearance,
+                }} stripe={stripePromise}>
                 <CheckOut
                   setFrames={setFrames}
                   values={values}
@@ -1045,7 +1089,9 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
                   extensionPlansInfo={extensionPlansData}
                   subscriptionsInfo={subscriptionPlanInfo}
                   setcurrentStep={setcurrentStep}
+                  clientSecret={clientSecret}
                  />
+                 </Elements> : (<></>)
               ) : frames.signupSuccessful ? (
                 <SignupSuccessful
                   email={values.email}
