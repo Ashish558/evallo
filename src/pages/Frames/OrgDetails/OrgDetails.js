@@ -9,7 +9,7 @@ import Dropdown from "./Commons/Dropdown";
 import style from "./styles.module.css";
 import InputFieldDropdown from "../../../components/InputField/inputFieldDropdown";
 import InputSelectNew from "../../../components/InputSelectNew/InputSelectNew";
-import lockIcon from "../../../assets/icons/lock.svg"
+import lockIcon from "../../../assets/icons/lock2.svg"
 const grades = [6, 7, 8, 9, 10, 11, 12, "College"];
 const companyType = [
   "Sole proprietorship",
@@ -118,23 +118,26 @@ export default function OrgDetails({
           right={<img src={lockIcon} alt="lock" />}
           parentClassName=" min-w-[118px] w-full "
           inputContainerClassName=" border border-[#D0D5DD] rounded-md py-[9px] h-[44px] text-md "
-          inputClassName="!text-[rgba(179,189,199,1)] bg-transparent text-sm font-semibold"
+          inputClassName="!text-[rgba(179,189,199,1)] bg-transparent text-base-18"
           type="text"
           value={values.company}
         />
 
-        <div className="flex items-center mt-5">
+        <div className="flex items-end mt-5">
           {/* <label>Company Type</label> */}
           <InputSelectNew
             value={values.companyType}
-            parentClassName="w-[500px]"
-            optionContainerClassName="text-[13px] "
+            parentClassName="w-[500px] "
+            optionContainerClassName="text-[13px]"
             optionsEachClassName="py-[7px]"
+            optionClassName="!w-[69%] text-ellipsis overflow-hidden "
             optionData={companyType}
+            customFontSize="text-[0.78125vw]"
             placeholder={"Select"}
             label={`Company Type`}
+            placeholderClass="!mr-0"
             labelClassname="text-[#26435F] font-bold  mb-1 !text-sm "
-            inputContainerClassName="py-1 text-sm h-[44.9px] border  border-[#D0D5DD] my-0 mt-[-2px] rounded-[5px]"
+            inputContainerClassName="py-1 text-sm h-[44.9px] border  border-[#D0D5DD] my-0 mt-[-2px] rounded-[5px] "
             inputClassName="ml-80"
             required={persona === "student" ? true : false}
             onChange={(e) => handleCompanyTypeChange(e)}

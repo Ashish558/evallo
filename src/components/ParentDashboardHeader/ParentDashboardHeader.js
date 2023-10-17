@@ -234,7 +234,7 @@ const ParentDashboardHeader = ({ selectedStudent, setSelectedStudent }) => {
               optionType="object"
               label={"Select Student "}
               labelClassname="text-[#26435F]  font-semibold text-base-20 mb-[5px]"
-              iconClass=" translate-y-[0px] ml-2 mb-[6px]"
+              iconClass=" translate-y-[0px]  mb-1"
               parentClassName=""
               inputContainerClassName="pt-1 pb-1"
               optionData={associatedStudents.map((item) => ({

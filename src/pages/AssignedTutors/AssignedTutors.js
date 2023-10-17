@@ -512,7 +512,7 @@ export default function AssignedTutors({ setAssignedTutorOpen, assignedTutorOpen
                               inputContainerClassName=" text-base-17-5 bg-[#F3F5F7] border-0 pt-3.5 pb-3.5"
                               inputClassName="bg-[#F3F5F7]"
                               type="text"
-                              value={modalData?.studentName}
+                              value={studentMultiple.length==0?modalData?.studentName:studentMultiple?.map(itt => itt?.value)}
                               checkbox={{
                                  visible: true,
                                  name: "student",
