@@ -184,11 +184,11 @@ function SuperadminDashboard() {
         </div>
        
         <div className="flex gap-7 justify-between mt-7 ">
-          <section className="flex flex-col">
+          <section className="flex flex-col min-w-[585px]">
             <div className="w-full whitespace-nowrap">
-              <p className={styles.subheading}> Organizations </p>
+              <p className={`${styles.subheading} `}> Organizations </p>
               <div className={`flex mr-0 ${styles.orgCard}`}>
-                <div className={`  ${orgStyles.container}`}>
+                <div className={`  ${orgStyles.container} min-w-[195px]`}>
                   <p className={orgStyles.heading}> Total # of Orgs</p>
                   <p className={orgStyles.text}>
                     {" "}
@@ -196,15 +196,15 @@ function SuperadminDashboard() {
                   </p>
                 </div>
 
-                <div className={`${orgStyles.container}`}>
+                <div className={`${orgStyles.container} min-w-[119px]`}>
                   <p className={orgStyles.heading}> C:I Ratio</p>
                   <p className={orgStyles.text}> {OrgStats?.ci_ratio} </p>
                 </div>
-                <div className={`${orgStyles.container}`}>
+                <div className={`${orgStyles.container}  min-w-[119px]`}>
                   <p className={orgStyles.heading}> 12 Days</p>
                   <p className={orgStyles.text}> {OrgStats?.days_12} </p>
                 </div>
-                <div className={`${orgStyles.container}`}>
+                <div className={`${orgStyles.container}  min-w-[119px]`}>
                   <p className={orgStyles.heading}> Inactive</p>
                   <p className={orgStyles.text}>{OrgStats?.inactive} </p>
                 </div>
