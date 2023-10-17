@@ -642,7 +642,7 @@ export default function Signup() {
           ) : (
             <></>
           )}
-          <div className={`flex lg:items-center relative bg-white rounded-md py-4 min-w-[640px] max-w-[840px] w-[41.67vw] ${frames?.signupSuccessful ? "!w-[50.83vw] px-[116px] " : "!px-[50px]"}`}>
+          <div className={`flex lg:items-center relative bg-white rounded-md py-4  w-[50.83333vw] ${frames?.signupSuccessful ? "!w-[50.83vw] px-[140px] " : "!px-[50px]"}`}>
             <div className="w-full py-4 ">
               {currentStep > 0 && (
                 <NumericSteppers className={"px-2 !w-[545px] !mx-auto flex-1"} fieldNames={["Personal Info", "Org Details", "Further Details", "Requirements"]} totalSteps={4} currentStep={currentStep}

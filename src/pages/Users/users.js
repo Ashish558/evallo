@@ -1071,7 +1071,7 @@ export default function Users() {
                 titleInvite={csvLength}
 
                 classname={"max-w-[781px] mx-auto"}
-                titleClassName={"mb-5 "}
+                titleClassName={"mb-5 text-center"}
                 handleClose={() => setInviteUsers(false)}
                 body={
                   <>

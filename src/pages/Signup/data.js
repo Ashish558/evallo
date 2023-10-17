@@ -144,23 +144,23 @@ export const solutionsData = [
 
 export const testPreparationsData = [
   {
-    text: "SAT/ACT/NMSQT",
+    text: "SAT / ACT / NMSQT",
     checked: false,
   },
   {
-    text: "GMAT/GRE",
+    text: "GMAT / GRE",
     checked: false,
   },
   {
-    text: "Others",
+    text: "Other Tests",
     checked: false,
   },
   {
-    text: "ISEE/SSAT",
+    text: "ISEE / SSAT",
     checked: false,
   },
   {
-    text: "LSAT/MCAT",
+    text: "LSAT / MCAT",
     checked: false,
   },
 
@@ -228,7 +228,7 @@ export const tutoringData = [
     checked: false,
   },
   {
-    text: "Others",
+    text: "Other",
     checked: false,
   },
 ];
@@ -243,7 +243,7 @@ export const coachingData = [
     checked: false,
   },
   {
-    text: "Others",
+    text: "Other",
     checked: false,
   },
   {
@@ -267,7 +267,7 @@ export const instructionFormat = [
     checked: false,
   },
   {
-    text: "Classroom",
+    text: "Classroom / Group",
     checked: false,
   },
   {
@@ -294,7 +294,7 @@ export const studentServedData = [
     checked: false,
   },
   {
-    text: "Secondary /High School",
+    text: "Secondary / High School",
     checked: false,
   },
   {
