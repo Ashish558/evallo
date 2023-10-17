@@ -734,6 +734,14 @@ export default function TestDetail() {
                               onChange={e => setModalData({ ...modalData, strategy: e.target.value })} />
                            {testData.testType !== 'DSAT' ? <>
                               {console.log("test", { modalData })}
+                              <div className="relative">
+                                    <select value={modalData.AnswerChoices} className='outline-1 w-[280px] border-1 py-1 px-2 font-medium  text-[#26435F]' onChange={(e)=>{setModalData({ ...modalData, AnswerChoices: e.target.value });}}>
+                                       <option className="bg-white" value="A"> A</option>
+                                       <option value="B"> B</option>
+                                       <option value="C"> C</option>
+                                       <option value="D"> D</option>
+                                    </select>
+                              </div>
                               <InputField
                                  biggerText={true}
                                  label='Answer Choices'

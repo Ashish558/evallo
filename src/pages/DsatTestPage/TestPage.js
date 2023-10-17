@@ -590,6 +590,9 @@ const [pages,setPage]=useState(arr)
       setCal={setCal} secnd={timer} handleSubmitSection={handleSubmitSection} sectionDetails={sectionDetails[starttestindex]}  />:null}
       {info?.length>0 && answers?.length>0&&cutanswer?.length>0&&markreview?.length>0?
          <Que
+         initialSeconds={initialSeconds}
+         setInitialSeconds={setInitialSeconds}
+         countDown={countDown}
       setshowtextbox={setshowtextbox}
       showtextbox={showtextbox}
       showannotate={showannotate}
