@@ -244,7 +244,15 @@ export default function AssignedTests() {
       })
     }
   }
-  console.log({ studentMultiple, modalData })
+
+  const handleOptionCLose = () => {
+    if (studentMultiple?.length > 0) {
+      setModalData(prev => {
+        return { ...prev, name: studentMultiple[0].value }
+      })
+    }
+  }
+ 
   useEffect(() => {
     //modalData.name.trim() === "" ||
     //modalData.studentId.trim() === ""
@@ -332,7 +340,6 @@ export default function AssignedTests() {
     }
   }, [modalData.test]);
 
-  console.log('formatted tests----', dateFormat);
   const fetchAllAssignedTests = () => {
     fetchAssignedTests().then((res) => {
       if (res.error) return console.log(res.error);
@@ -525,7 +532,7 @@ export default function AssignedTests() {
         studentId: it?._id,
         testId: modalData.testId,
         name: it?._value,
-        dueDate:new Date( modalData.date),
+        dueDate: new Date(modalData.date),
         instruction: modalData.instruction,
         timeLimit: getTimeLimit(modalData.limit),
       };
@@ -725,7 +732,6 @@ export default function AssignedTests() {
   }, [testNameOptions])
   const [selectedId, setSelectedId] = useState([])
 
-  console.log("tests", { selectedId, filteredTests })
   const [addDeleteUser, slsdu] = useCRMBulkdeleteMutation()
   const [addMark, slmr] = useCRMBulkmarkcompletedMutation()
   const [addResend, slrsn] = useCRMBulkresentMutation()
@@ -743,7 +749,6 @@ export default function AssignedTests() {
     })
 
   }
-  console.log({ selectedId })
   const markSelectDelete = () => {
     let assignmentIds = selectedId?.map(ii => ii?.assignedTestId)
     if (!assignmentIds || assignmentIds?.length === 0) return
@@ -908,7 +913,7 @@ export default function AssignedTests() {
                   <div className="w-2/6 flex justify-end">
                     <div>
                       <button
-                          className="bg-[#FFA28D] text-[15px] justify-center flex py-[7px]  pl-1 items-center text-white font-bold rounded-[7.5px] text-base-15 w-[10.05vw] h-[50px]"
+                        className="bg-[#FFA28D] text-[15px] justify-center flex py-[7px]  pl-1 items-center text-white font-bold rounded-[7.5px] text-base-15 w-[10.05vw] h-[50px]"
                         onClick={() => setAssignTestModalActive(true)}
                       >
                         New Assignment
@@ -1055,14 +1060,12 @@ export default function AssignedTests() {
                       ...modalData,
                       name: e.target.value,
                     })}
+                    onOptionClose={handleOptionCLose}
                     optionListClassName="text-base-17-5"
                     optionClassName="text-base-17-5"
                     optionData={students}
                     // right={<img className="" src={down} />}
                     onOptionClick={(item) => {
-
-
-
                       handleMultipleStudent(item)
                       // handleTestChange(item);
                       // setStudent(item.value);

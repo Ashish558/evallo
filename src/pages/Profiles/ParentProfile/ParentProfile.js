@@ -110,7 +110,7 @@ export default function StudentProfile({ isOwn }) {
 
   const [selectedScoreIndex, setSelectedScoreIndex] = useState(0);
   const { organization } = useSelector((state) => state.organization);
-
+  const { firstName, lastName } = useSelector((state) => state.user);
   const [toEdit, setToEdit] = useState({
     frame0: {
       active: false,
@@ -560,15 +560,33 @@ const [toEdit, setToEdit] = useState({
     <>
       <div className={`w-[83.3vw] mx-auto pb-[70px]`}>
         <p className="text-[#24A3D9] !my-[calc(50*0.0522vw)] text-base-20">
-          <span className="cursor-pointer z-5000 relative" onClick={() => navigate('/')}>
-            {organization?.company +
-              " > " +
-              user?.firstName +
-              " " +
-              user?.lastName +
-              " > "}
-          </span>
-          <span className="font-semibold">Dashboard</span>
+          {persona === "admin" ?
+            <span >
+              <span className="!cursor-pointer" onClick={() => navigate('/')}>
+                {organization?.company +
+                  "  >  " +
+                  firstName +
+                  "  " +
+                  lastName
+                }  </span>
+              <span className="!cursor-pointer" onClick={() => navigate('/users')}>{"  >  CRM > "}</span>
+              <span className="font-semibold">{
+                user?.firstName +
+                " " +
+                user?.lastName}</span>
+            </span> :
+            <span>
+              <span onClick={() => navigate('/')} className="cursor-pointer">
+                {organization?.company +
+                  " > " +
+                  user?.firstName +
+                  " " +
+                  user?.lastName +
+                  " > "}
+              </span>
+              <span className="font-semibold">Profile</span>
+            </span>
+          }
         </p>
         {/* {!isOwn ? (
           <button

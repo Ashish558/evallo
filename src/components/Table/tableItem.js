@@ -173,7 +173,6 @@ export default function TableItem({
   const [deleteAdmin, setDeleteAdmin] = useDeleteAdminMutation()
   const [deleteAdminModalActive, setDeleteAdminModalActive] = useState(false)
   const [deleteSelectLoading, setDeleteSelectLoading] = useState(false)
-  console.log({ item })
   const handleDeleteAdmin = () => {
     setDeleteSelectLoading(true)
     deleteAdmin({ id: item?.associatedOrg?._id }).then((res) => {
@@ -318,7 +317,6 @@ export default function TableItem({
       setIsChecked(bool ? true : false)
     }
   }, [selectedId2])
-  console.log('item---', item)
 
   return (
     <>
@@ -675,7 +673,7 @@ export default function TableItem({
                 )
               }
             >
-            <span classname="inline-block">  View Report</span>
+              <span classname="inline-block">  View Report</span>
             </button>
           </td>
           {/* <td className="font-medium px-1 min-w-14 py-4">
@@ -806,19 +804,18 @@ export default function TableItem({
               />}
               {persona === "parent" ? (
                 <>
-                  {/* {console.log(item)} */}
                   {item.isCompleted ? (
                     <button
                       className="px-2.5 py-1.8 bg-[#38C980] rounded-5 flex items-center leading-none  text-white ml-4 w-[120px] h-[31px] justify-center"
                       onClick={() =>
                         navigate(
-                          `/assigned-tests/${item.testId}/${item.assignedTestId}/report/`
+                          `/assigned-tests/${item.testId}/${item.assignedTestId}/report/${item.studentId._id}`
                         )
                       }
                     >
                       Report
                     </button>
-                  ) : item.isStarted ? (
+                  ) : item.status == "started" ? (
                     <button
                       className="px-2.5 py-1.8  rounded-5 flex items-center leading-none bg-[#FFCE84] text-white ml-4 w-[120px] h-[31px] justify-center"
                       onClick={() => {
@@ -827,7 +824,7 @@ export default function TableItem({
                           navigate(`/testpage/${item.testId}/${item.assignedTestId}`)
                           :
                           navigate(
-                            `/all-tests/start-section/${item.testId}/${item.assignedTestId}`
+                            `/assigned-tests/${item.testId}/${item.assignedTestId}/report/${item.studentId._id}`
                           )
                       }
                       }
@@ -835,7 +832,7 @@ export default function TableItem({
                       Started
                     </button>
                   ) : (
-                    <button
+                    <button disabled
                       className="px-2.5 py-1.8 rounded-5 bg-[#D4D9DF] flex items-center leading-none  text-white ml-4 w-[120px] h-[31px] justify-center"
                       onClick={() => {
                         const indexx = testtype.findIndex(obj => obj.testId === item.testId);
@@ -843,7 +840,7 @@ export default function TableItem({
                           navigate(`/testpage/${item.testId}/${item.assignedTestId}`)
                           :
                           navigate(
-                            `/all-tests/start-section/${item.testId}/${item.assignedTestId}`
+                            `/assigned-tests/${item.testId}/${item.assignedTestId}/report/${item.studentId._id}`
                           )
                       }
                       }
@@ -1061,9 +1058,11 @@ export default function TableItem({
           </td>
 
           <td className="font-medium text-[17.5px] px-1  min-w-14 py-4">
-            <div className="my-[6px]"> {new Date(item.createdAt).toLocaleDateString()}</div>
+            <div className="my-[6px]">{getFormattedDate(item.createdAt, dateFormat)}
+              {/* {new Date(item.createdAt).toLocaleDateString()} */}
+            </div>
           </td>
-          <td className="font-medium text-[17.5px] px-1  min-w-14 py-4">
+          <td className="font-medium text-[17.5px] px-1  min-w-14 py-4 cursor-pointer">
             <div className="my-[6px]"><img onClick={() => setDeleteAdminModalActive(true)} src={DeleteIcon} alt="delete" /> </div>
           </td>
         </tr>
