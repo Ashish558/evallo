@@ -125,7 +125,7 @@ export default function SignupLast({
         <div className='h-[1px] bg-[#EBEBEB] w-5/6 mb-4'>
 
         </div>
-        <p className="font-semibold mb-1 text-[0.96vw]  text-[#26435F]">
+        <p className="font-semibold mb-1 text-[0.91vw]  text-[#26435F]">
           On a scale of 1-10 (Bad to Great), how would you rate your sign up experience?
         </p>
         <InputSelectNew

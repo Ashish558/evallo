@@ -46,6 +46,12 @@
   background-color: #B3BDC7;
   z-index: -99;
 }
+@media (min-width: 1920px) {
+  .line2::before {
+    right: -270px;
+    width:270px;
+  }
+}
 .line2:nth-last-child(1) {
   margin-right: 0;
 }

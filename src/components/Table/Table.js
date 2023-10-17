@@ -39,7 +39,8 @@ export default function Table(props) {
     belowBoxHeight,
     belowBoxText,
     belowBoxIcon,
-    noScrollbar
+    noScrollbar,
+    dummyRowStarClients
   } = props;
   const [dummy, setDummy] = useState([]);
   const [tableData, setTableData] = useState(data);
@@ -177,15 +178,29 @@ export default function Table(props) {
                 </tr>
               );
             })}
+            {/* {console.log(dummyRowStarClients)} */}
+            {dummyRowStarClients && dummyRowStarClients.map((it, index) => {
+              return (
+                <tr
+                  key={index}
+                  className="bg-white leading-8 shadow-[0px_0px_2px_rgba(0,0,0,0.25)] text-[17.5px] "
+                >
+                     <td className="opacity-0 text-[17.5px] px-[10px] min-w-14 py-4 ">{it.service}</td>
+            <td className="opacity-0 text-[17.5px] px-[10px] min-w-14 py-4 ">{it.actively_using}</td>
+            <td className="opacity-0 text-[17.5px] px-[10px] min-w-14 py-4 ">{it.total_used}</td>
+                </tr>
+              );
+            })}
 
           </tbody>
         </table>
-      </div>
-      {
-        belowBox && <div className={`${belowBoxHeight} bg-white mt-[6px] rounded-5 shadow-[0px_0px_2px_0px_rgba(0,0,0,0.25)] flex items-center justify-center`}>
+        {belowBox && 
+         <div className={`${belowBoxHeight} bg-white mt-[6px] rounded-5 shadow-[0px_0px_2px_0px_rgba(0,0,0,0.25)] flex items-center justify-center`}>
           <button onClick={() => navigate(`/${belowBoxLink}`)} className="inline-block rounded-[5.33px] bg-[#FFA28D] text-[#FFF] font-semibold py-[10px] px-[15.5px] text-base">{belowBoxText}<img className="inline-block pl-2" src={belowBoxIcon} alt="" /></button>
-        </div>
-      }
+         </div>
+        }
+      </div>
+      
       {!hidePagination ? (
         <div className="flex justify-between px-1 items-center">
           <p className="text-[#517CA8] text-xs">Showing {tableData?.length} of {data?.length}</p>
