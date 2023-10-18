@@ -577,6 +577,7 @@ export default function UserSignup() {
 
               {currentStep > 0 && !frames.signupSuccessful && (
                 <NumericSteppers
+                NumericStepperfontSize="text-[0.96875vw]"
                   className="mt-3"
                   fieldNames={
                     customFields?.length > 0 && isAddedByAdmin
