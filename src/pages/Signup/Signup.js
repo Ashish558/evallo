@@ -642,7 +642,7 @@ export default function Signup() {
           ) : (
             <></>
           )}
-          <div className={`flex lg:items-center relative bg-white rounded-md py-4  w-[50.83333vw] ${frames?.signupSuccessful ? "!w-[50.83vw] px-[140px] " : "!px-[50px]"}`}>
+          <div className={`flex lg:items-center relative bg-white rounded-md py-4  w-[41.6667vw] ${frames?.signupSuccessful ? "!w-[51.0417vw] px-[115px] " : "!px-[50px]"}`}>
             <div className="w-full py-4 ">
               {currentStep > 0 && (
                 <NumericSteppers className={"px-2 !w-[545px] !mx-auto flex-1"} fieldNames={["Personal Info", "Org Details", "Further Details", "Requirements"]} totalSteps={4} currentStep={currentStep}
@@ -697,7 +697,7 @@ export default function Signup() {
                       error={error.lastName}
                     />
                   </div>
-                  <div className={`flex mt-[20px] justify-between  `}>
+                  <div className={`flex mt-[20px] justify-between  items-end`}>
                     <InputField
                       label="Work Email"
                       placeholder=""
