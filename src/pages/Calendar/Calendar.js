@@ -336,12 +336,14 @@ export default function Calendar() {
   }, [currentUserTImeZone]);
 
   useEffect(() => {
-    if (persona == "admin" || persona === "tutor") {
+   
+    if (persona === "admin" || ( persona === "tutor"&&organization && organization?.settings?.permissions?.length>5&& organization?.settings?.permissions[5]?.choosedValue===true)) {
+      console.log("org tutor",organization)
       setIsEditable(true);
     } else {
       setIsEditable(false);
     }
-  }, []);
+  }, [organization]);
 
   useEffect(() => {
     if (persona == "student") {
@@ -706,7 +708,7 @@ export default function Calendar() {
     } else {
       setDefaultEventData({ date: arg.date, timeZone });
     }
-    if (persona === "admin" || persona === "tutor") {
+    if (persona === "admin" || ( persona === "tutor"&&organization && organization?.settings?.permissions?.length>5&& organization?.settings?.permissions[5]?.choosedValue===true)) {
       setEventModalActive(true);
     }
 
@@ -925,7 +927,7 @@ export default function Calendar() {
     const session = eventDetails.find(
       (e) => e._id === info.event._def.publicId
     );
-    if (persona === "admin" || persona === "tutor") {
+    if (persona === "admin" || ( persona === "tutor"&&organization && organization?.settings?.permissions?.length>5&& organization?.settings?.permissions[5]?.choosedValue===true)) {
       setUpdateEventModalActive(true);
       setSessionToUpdate(session);
     } else {
@@ -1316,7 +1318,7 @@ export default function Calendar() {
                 }}
               />
             )}
-            <div className="max-h-[600px] overflow-y-auto scrollbar-content">
+            <div className="max-h-[400px] overflow-y-auto custom-scroller">
               {insightData?.data?.length > 0 && insightData?.role !== "tutor"
                 ? insightData?.data?.map((item, id) => {
                   return (
