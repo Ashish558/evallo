@@ -330,7 +330,7 @@ const handleSave=async ()=>{
                 <div className="flex flex-col ">
                   <p className="block mx-auto mt-[-25px]">
                     <img src={UploadIcon} alt="logo" /></p>
-                  <p className="text-[#FFFFFF] text-[15px] bg-[#517CA8] rounded-[5px] pt-3 mt-[12.5px] pb-2 px-4 cursor-pointer" onClick={() => inpuRef.current.click()}>{uploading?"Uploading...":"Choose file"}</p>
+                  <p className={`text-[#FFFFFF] text-[15px] bg-[#517CA8] rounded-[5px] pt-3 mt-[12.5px] pb-2 px-4 ${uploading?"cursor-wait":"cursor-pointer"}`} onClick={() => inpuRef.current.click()}>{uploading?"Uploading...":"Choose file"}</p>
                   <p className="text-[#517CA8] text-[12.5px] mt-[12.5px] text-center font-light">Less then 1 MB</p>
                 </div>
                 <input
