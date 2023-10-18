@@ -51,13 +51,13 @@ export default function CurrentSection({ answers, submitSection, submitBtnLoadin
       {isLoading && <SectionLoader />}
       {popUp && (
         <Modal
-          classname="w-1/2 mx-auto"
-          handleClose={() => setPopUp(false)}
+        classname="max-w-[700px] mx-auto"
+        handleClose={() => setPopUp(false)}
           title="Are you sure you want to Submit the Section?"
           primaryBtn={{
             onClick: handleSubmitConfirm,
             text: "Submit",
-            className: "bg-primaryDark",
+            className: "bg-[#FF7979] w-[146.67px] h-[46.67px] ml-0",
             loading: submitBtnLoading,
           }}
         />

@@ -136,11 +136,13 @@ const Testinstruction_2 = ({setloader,setstarttestindex,starttestindex,testHeade
                            </div>
                         </div>
                         {popup &&<div className='max-w-1/2 relative flex justify-center items-center h-full'> <Modal
-            classname="max-w-[880px] mx-auto "
-            title="Are you sure you want to start the section?"
-            titleClassName='mr-4  mb-4'
+             classname="max-w-[700px] mx-auto"
+             title="Note that the time will begin as soon as you start this section. make sure that you have everything set up."
+             titleClassName="mr-4  mb-4"
             primaryBtn={
-               { text: "Start", className: "bg-black border ml-0", onClick: closeinstruct}
+               {  text: "Okay",
+               className: "bg-[#FF7979] w-[146.67px] h-[46.67px] ml-0",
+               onClick: closeinstruct}
             }
             handleClose={() => setpopup(false)}
          /></div>}
