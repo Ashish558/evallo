@@ -282,7 +282,7 @@ const SPFrame1 = ({ userId, settings, userDetail, editable, setToEdit, toEdit, f
                   ...toEdit,
                   interest: { ...toEdit.interest, active: true },
                 })
-              } className="text-[#517CA8] text-base-17-5 cursor-pointer">What Are Your Interests?</span>
+              } className="text-[#517CA8] text-base-17-5 cursor-pointer p-2">What Are Your Interests?</span>
               </div>}
           </div>
         </div>
@@ -306,7 +306,7 @@ const SPFrame1 = ({ userId, settings, userDetail, editable, setToEdit, toEdit, f
           </p>
 
           <div className="w-full relative h-full p-1 flex flex-col gap-2   rounded-md items-center overflow-y-auto custom-scroller">
-            {userDetail?.subjects
+            {userDetail?.subjects && userDetail?.subjects?.length>0
               ? userDetail?.subjects.map((sub, idx) => {
                 return (
                   <p
@@ -325,7 +325,7 @@ const SPFrame1 = ({ userId, settings, userDetail, editable, setToEdit, toEdit, f
                   ...toEdit,
                   subjects: { ...toEdit.subjects, active: true },
                 })
-              } className="text-[#517CA8] text-base-17-5 cursor-pointer">What Subjects Are You Currently Studying?</span>
+              } className="text-[#517CA8] text-base-17-5 cursor-pointer p-2">What Subjects Are You Currently Studying?</span>
               </div>}
           </div>
         </div>
@@ -402,7 +402,7 @@ const SPFrame1 = ({ userId, settings, userDetail, editable, setToEdit, toEdit, f
                   ...toEdit,
                   personality: { ...toEdit.personality, active: true },
                 })
-              } className="text-[#517CA8] text-base-17-5 cursor-pointer">How Would You Describe Yourself using a few adjectives?</span>
+              } className="text-[#517CA8] text-base-17-5 cursor-pointer p-2">How Would You Describe Yourself using a few adjectives?</span>
                 </div>
               
               }

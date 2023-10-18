@@ -43,6 +43,7 @@ import StudentTest from "../../StudentTest/StudentTest";
 import Chart from "../../../components/Chart/Chart";
 import SPFrame3 from "./SPframes/SPFrame3";
 import SPFrame4 from "./SPframes/SPFrame4";
+import AllTests from "../../AllTests/AllTests";
 
 const students = [
   {
@@ -530,6 +531,7 @@ const [toEdit, setToEdit] = useState({
       //    reading: 0,
       //    science: 0
       // }
+      
       const promiseState = async (state) =>
         new Promise((resolve) => {
           resolve(
@@ -1052,7 +1054,7 @@ const [toEdit, setToEdit] = useState({
             setToEdit={setToEdit}
             toEdit={toEdit}
           />
-          <div className="h-[2px] mt-14  bg-[#CBD6E2] w-[95%] mx-auto"></div>
+          <div className="h-[2px] mt-[84px] mb-14   bg-[#CBD6E2] w-[95%] mx-auto"></div>
           <SPFrame2
             isOwn={isOwn}
             userDetail={userDetail}
@@ -1065,12 +1067,12 @@ const [toEdit, setToEdit] = useState({
             setToEdit={setToEdit}
             toEdit={toEdit}
           />
-          <div className="flex-1 mt-12">
+          <div className="flex-1 mt-16">
             <p className="mb-[-40px] text-sm text-[#26435F] font-semibold text-base-20 ">
               Latest Assignments
             </p>
 
-            <StudentTest isOwn={isOwn} setTotaltest={setTotaltest} studentId={userDetail?.userId} fromProfile={true} />
+            <AllTests isOwn={isOwn} setTotaltest={setTotaltest} studentId={userDetail?.userId} fromProfile={true} />
             <div
 
 

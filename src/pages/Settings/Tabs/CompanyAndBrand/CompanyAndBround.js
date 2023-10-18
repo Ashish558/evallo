@@ -208,15 +208,27 @@ const handleSave=async ()=>{
 
     setStudentServed(arr);
   }, [organization]);
-
+    const [uploading,setUploading]=useState(false)
   const handleLogoChange = async (e) => {
     const formData = new FormData();
     const file = e.target.files[0];
-    formData.append("photos", null);
+    if(!file){
+      alert("Enter valid file.")
+      return 
+    }
+    let size = file.size / 1024;
+    size = size / 1024;
+    if (size > 1) {
+      alert("File is larger than than 1MB!")
+      return
+    }
+    formData.append("photos", file);
     formData.append("updatefieldName", "orgBussinessLogo");
-
+  setUploading(true)
     updateOrgLogo({ formData: formData, id: organization._id }).then((res) => {
+      setUploading(false)
       if (res.error) {
+        alert(res.error.message)
         console.log("logo err", res.error);
         return;
       }
@@ -318,14 +330,16 @@ const handleSave=async ()=>{
                 <div className="flex flex-col ">
                   <p className="block mx-auto mt-[-25px]">
                     <img src={UploadIcon} alt="logo" /></p>
-                  <p className="text-[#FFFFFF] text-[15px] bg-[#517CA8] rounded-[5px] pt-3 mt-[12.5px] pb-2 px-4 cursor-pointer" onClick={() => inpuRef.current.click()}>Choose file</p>
+                  <p className="text-[#FFFFFF] text-[15px] bg-[#517CA8] rounded-[5px] pt-3 mt-[12.5px] pb-2 px-4 cursor-pointer" onClick={() => inpuRef.current.click()}>{uploading?"Uploading...":"Choose file"}</p>
                   <p className="text-[#517CA8] text-[12.5px] mt-[12.5px] text-center font-light">Less then 1 MB</p>
                 </div>
                 <input
                   className="hidden"
                   type="file"
                   ref={inpuRef}
-                  onChange={handleLogoChange}
+                  accept="image/*"
+                  disabled={uploading}
+                  onChange={(e)=>handleLogoChange(e)}
                 />
               </div>
             </div>
