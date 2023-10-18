@@ -53,7 +53,7 @@ const SessionFeedback = () => {
          <div id={styles.sessionFeedbackContainer} className="mt-[14px] shadow-[0px_0px_2.500001907348633px_0px_#00000040] custom-scroller h-[383px] bg-white  py-[21px] !rounded-md ">
             <div id={styles.sessionFeedback} className="bg-white px-[10px] custom-scroller !rounded-md h-full overflow-y-auto">
                {/* {/* <TestItem name="name" status="due date" date="june 20, 2022" action="Start" marks="1250/1250" /> */}
-{console.log(allTests,'asdavhdvavdyajsvdjas jd as dhas ds h')}
+
                {allTests.map(test => {
                   return <TestItem key={test._id} {...test} awsLink={awsLink} />
                })}
