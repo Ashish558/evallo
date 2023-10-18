@@ -158,9 +158,7 @@ export default function Calendar() {
     id: "",
     role: "",
   });
-  useEffect(() => {
-    //////console.log("tutos", tutors)
-  }, []);
+
   const refetchSessions = () => {
     // //////console.log(searchedUser);
     if (persona === "tutor") {
@@ -175,11 +173,12 @@ export default function Calendar() {
     if (!timeZones?.includes(timeZoneUser) && organization && organization.settings && organization.settings.timeZone)
       setcurrentUserTImeZone(organization.settings.timeZone)
   }, [organization])
+
   useEffect(() => {
     if (timeZones?.includes(timeZoneUser))
       setcurrentUserTImeZone(timeZoneUser)
   }, [timeZoneUser])
-  console.log({ currentUserTImeZone, organization, timeZone })
+
   const fetchSessions = (id, role) => {
     // //////console.log(id)
     setSearchedUser({ id, role });
@@ -210,6 +209,7 @@ export default function Calendar() {
         // let startDate = new Date(session.date).toUTCString()
         startHours !== NaN && startDate.setHours(startHours);
         startMinutes !== NaN && startDate.setMinutes(startMinutes);
+        console.log('offset----', offset);
         let updatedDate = new Date(
           new Date(
             startDate.toLocaleString("en-US", {
@@ -753,7 +753,7 @@ export default function Calendar() {
     getCalenderInsight({ name: name, id: item._id }).then((res) => {
       setColorMapping({})
       if (res.error) {
-        return console.log('insight err', res.error);
+        // return console.log('insight err', res.error);
       }
       // console.log("insights response----", res.data.tutorSessionDetails);
       if (res?.data?.tutorSessionDetails) {
@@ -1039,7 +1039,7 @@ export default function Calendar() {
   const staticColors = ["#F6935A", "#7DE94A", "#6F7ADE", "#C97BEE", "#FF5733", "#42EADD", "#FFC300", "#9A32CD", "#00BFFF", "#FF1493", "#008000", "#FFD700", "#1E90FF", "#FF4500", "#00FF00", "#8A2BE2", "#FF8C00", "#4169E1", "#FF69B4", "#228B22", "#FFDAB9", "#9932CC", "#FFA07A", "#87CEEB", "#FFB6C1", "#8B008B", "#FF6347", "#00CED1", "#FFA500", "#0000CD", "#DC143C", "#20B2AA", "#FF4500", "#191970", "#FF8C69", "#008080", "#FFA500", "#2E8B57", "#FFD700", "#00008B", "#FFB6C1", "#48D1CC", "#FF69B4", "#8A2BE2", "#FF6347", "#7B68EE", "#FF4500", "#32CD32", "#FFDAB9", "#B22222", "#FF1493", "#00FA9A", "#FFA07A"];
 
   const [colorMapping, setColorMapping] = useState({});
-  console.log("user insights", insightData, colorMapping, userDetail)
+  // console.log("user insights", insightData, colorMapping, userDetail)
   const mapColor = (val) => {
     let n = Object.keys(colorMapping).length;
     if (colorMapping[val]) return colorMapping[val];
@@ -1051,7 +1051,7 @@ export default function Calendar() {
         }
       });
     }
-    console.log('map color', colorMapping);
+    // console.log('map color', colorMapping);
 
     return staticColors[n % staticColors.length];
   };
