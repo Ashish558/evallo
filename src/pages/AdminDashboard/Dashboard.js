@@ -633,7 +633,8 @@ const Dashboard = () => {
                   <p>Coming soon</p>
                 </div> */}
                 <Table
-                headerWidth="!px-2"
+                headerWidth="!px-1.5"
+                dummyRowStarClients={popularServices}
                   data={[]}
                   hidePagination={true}
                   tableHeaders={[
@@ -649,7 +650,7 @@ const Dashboard = () => {
                   belowBoxHeight="h-[168px]"
                 />
               </div>
-              <div class="h-[60.5%] absolute left-0 bg-[#CBD6E2] top-[39%] transform -translate-y-1/2 w-px"></div>
+              <div class="h-[90%] absolute bottom-0 left-0 bg-[#CBD6E2] top-[55%] transform -translate-y-1/2 w-px"></div>
             </div>
           </div>
         </section>
@@ -664,6 +665,7 @@ const Dashboard = () => {
                 <div
                   className={`mt-1  h-[72px] !h-[calc(75*0.050vw)] bg-[rgba(255,162,141,0.2)] ${styles.smallBox}`}
                 >
+          
                   <p className="text-[#FFA28D] h-full w-full justify-center font-bold text-[1.953125vw] flex items-center text-center">
                     {improvementStats?.no_of_referrals}
                   </p>
@@ -698,9 +700,9 @@ const Dashboard = () => {
                 </div>
               </div>
             </div>
-            <div className="flex   mt-2 whitespace-nowrap   text-base-15 justify-between text-[#667085]">
+            <div className="flex items-end whitespace-nowrap   text-base-15 justify-between text-[#667085]">
               <div>
-                <p>Average GRE Improvement</p>
+                <p className="leading-3">Average GRE Improvement</p>
                 <div
                   className={`w-[11.328125vw] mt-2 h-[72px] !h-[calc(75*0.050vw)] ${styles.smallBox2} flex items-center justify-center font-medium`}
                 >

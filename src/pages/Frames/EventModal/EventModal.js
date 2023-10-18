@@ -293,10 +293,13 @@ export default function EventModal({
 
       }
    }, [defaultEventData, isUpdating])
-
+const [stopUpdating,setStopUpdating]=useState(true)
    useEffect(() => {
-      if (organization?.settings) {
 
+      if (organization?.settings) {
+         if( persona === "tutor"&&organization && organization?.settings?.permissions?.length>5&& organization?.settings?.permissions[5]?.choosedValue===false){
+             setStopUpdating(false)
+         }
          if (Object.keys(organization?.settings).length > 0) {
             // console.log('organization', organization.settings);
             let sessionTags = organization.settings.sessionTags;
@@ -833,22 +836,22 @@ export default function EventModal({
                         <SearchNames setStudent={setStudent}
                            setData={setData} student={student} tutor={tutor} data={data}
                            setTutor={setTutor}
-                           isEditable={isEditable} />
+                           isEditable={isEditable&&stopUpdating} />
 
-                        <DateAndTimeInput {...dataProps} isEditable={isEditable} />
+                        <DateAndTimeInput {...dataProps} isEditable={isEditable&&stopUpdating} />
 
                         <div className={`flex mb-3 items-center ${!isEditable ? 'pointer-events-none ' : ''} `}>
                            <CCheckbox checked={data.recurring} name='recurring' onChange={() =>
                               setData({
                                  ...data,
                                  recurring: !data.recurring,
-                              })} disabled={!isEditable} />
+                              })} disabled={!isEditable||!stopUpdating} />
                            <p className="font-medium text-[#26435F] text-[18.6px]">
                               Recurring
                            </p>
                         </div>
 
-                        <DaysEndDate isEditable={isEditable} days={days} setDays={setDays} {...dataProps} />
+                        <DaysEndDate isEditable={isEditable&&stopUpdating} days={days} setDays={setDays} {...dataProps} />
 
 
                         <div className="flex mb-7">
@@ -870,7 +873,7 @@ export default function EventModal({
                          ${persona === "parent" ? " order-2" : ""}
                         `}
                               type="select"
-                              disabled={!isEditable}
+                              disabled={!isEditable||!stopUpdating}
                            />
                            <InputSelect
                               label="Topic"
@@ -890,7 +893,7 @@ export default function EventModal({
                         ${persona === "parent" ? " order-2" : ""}
                         `}
                               type="select"
-                              disabled={!isEditable}
+                              disabled={!isEditable||!stopUpdating}
 
                            />
 
@@ -936,7 +939,7 @@ export default function EventModal({
                                     session: e.target.value,
                                  })
                               }
-                              disabled={!isEditable}
+                              disabled={!isEditable||!stopUpdating}
                            />
                            <InputField
                               parentClassName="w-full ml-2"
@@ -951,7 +954,7 @@ export default function EventModal({
                               onChange={(e) =>
                                  setData({ ...data, whiteboardLink: e.target.value })
                               }
-                              disabled={!isEditable}
+                              disabled={!isEditable||!stopUpdating}
                            />
 
 
@@ -962,7 +965,7 @@ export default function EventModal({
                         }
                         <div className="h-[1.33px] w-full bg-[rgba(0,0,0,0.20)] mt-[28px]"></div>
                         {/* SESSIONS */}
-                        <SessionInputs {...dataProps} status={status} isEditable={isEditable} />
+                        <SessionInputs {...dataProps} status={status} isEditable={isEditable&&stopUpdating} />
 
 
 
@@ -992,7 +995,7 @@ export default function EventModal({
                            persona == "student" &&
                            <div className="h-[1.33px] bg-[rgba(0,0,0,0.20)]"></div>
                         }
-                        {persona !== "student" && persona !== "parent" && (
+                        {persona !== "student" && persona !== "parent"  && (
                            <>
                               <div className="mt-7 mb-5 w-full  ">
                                  {
@@ -1013,11 +1016,13 @@ export default function EventModal({
                                                       <div
                                                          key={idx}
                                                          className="flex mb-4 mr-3"
-                                                         onClick={() =>
+                                                         onClick={() =>{
+                                                            if(stopUpdating)
                                                             handleSessiontagChange(
                                                                item,
                                                                tag._id,
                                                             )
+                                                            }
                                                          }
                                                       >
                                                          <CCheckbox
@@ -1113,20 +1118,23 @@ export default function EventModal({
                         </div>
                      ) : <></>}
                      {
-                        persona !== "student" && persona !== "parent" && <div className="flex justify-center pt-4">
+                        persona !== "student" && persona !== "parent"&&stopUpdating && <div className="flex justify-center pt-4">
                            {isUpdating && sessionToUpdate.recurring === true ?
                               <div className="flex flex-1 px-4 justify-between">
                                  <div>
+                               
                                     <SecondaryButton
                                        children="Delete Current"
-                                       className="text-lg py-3 mr-3 pl-1 pr-1 font-medium px-7 h-[50px] w-[140px] disabled:opacity-60"
+                                       className="text-lg py-3 mr-3 pl-1 pr-1 font-medium px-7 h-[50px] w-[140px] disabled:opacity-60 text-white"
                                        onClick={handleDeleteSession}
+                                     
                                        loading={loading}
                                     />
                                     <SecondaryButton
                                        children="Delete All"
-                                       className="text-lg py-3 mr-3 pl-2 pr-2 font-medium px-7 h-[50px] w-[140px] disabled:opacity-60"
+                                       className="text-lg py-3 mr-3 pl-2 pr-2 font-medium px-7 h-[50px] w-[140px] disabled:opacity-60 text-white"
                                        onClick={handleDeleteAllSession}
+                                     
                                        loading={loading}
                                     />
                                  </div>
@@ -1149,10 +1157,12 @@ export default function EventModal({
                               </div>
                               : isUpdating ?
                                  <>
+                                
                                     <SecondaryButton
                                        children="Delete"
                                        className="text-lg py-3 mr-3 pl-2 pr-2 font-medium px-7 h-[50px] w-[140px] disabled:opacity-60"
                                        onClick={handleDeleteSession}
+                                      
                                        loading={loading}
                                     />
                                     <PrimaryButton

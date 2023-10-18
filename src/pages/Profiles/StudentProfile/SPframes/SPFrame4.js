@@ -160,11 +160,11 @@ const SPFrame1 = ({
   //console.log("frame1 Stud", { userDetail, user,persona });
   return (
     <div className="flex w-full justify-between gap-[5%]">
-      <div className="flex flex-col gap-3 !w-[calc(810*0.0522vw)]">
-        <div className="flex justify-between gap-7">
+      <div className="flex flex-col gap-5 !w-[calc(810*0.0522vw)]">
+        <div className="flex justify-between gap-10">
           <div className=" !w-[calc(545*0.0522vw)]">
             <div className="flex justify-between">
-              <p className=" text-sm text-[#26435F] font-semibold text-base-20 mb-1 custom-scroller">
+              <p className=" text-sm text-[#26435F] font-semibold text-base-20 mb-2 custom-scroller">
                 Admin Notes
               </p>
               {persona === 'admin' && <EditableText
@@ -226,7 +226,7 @@ const SPFrame1 = ({
           <div className="flex-1 flex flex-col h-fit gap-4">
             {(persona === 'admin' || persona === 'tutor') && <div className="flex-1  ">
               <div className="flex justify-between">
-                <p className=" text-sm text-[#26435F] font-semibold text-base-20 mb-1">
+                <p className=" text-sm text-[#26435F] font-semibold text-base-20 mb-2">
                   Lead Status
                 </p>
 
@@ -254,7 +254,7 @@ const SPFrame1 = ({
             </div>}
             <div className="flex-1">
               <div className="flex justify-between">
-                <p className=" text-sm text-[#26435F] font-semibold text-base-20 mb-1">
+                <p className=" text-sm text-[#26435F] font-semibold text-base-20 mb-2">
                   Services
                 </p>
                 {persona === "admin" && <EditableText
@@ -279,7 +279,7 @@ const SPFrame1 = ({
           </div>
         </div>
         {persona === 'admin' && <div className="">
-          <p className=" text-sm text-[#26435F] font-semibold text-base-20 mb-1">
+          <p className=" text-sm text-[#26435F] font-semibold text-base-20 mb-2">
             Sign up form details
           </p>
           <div className="bg-white flex-1 h-[200px] p-3 custom-scroller  overflow-y-auto  flex flex-col rounded-md shadow-[0px_0px_2.500001907348633px_0px_#00000040] custom-scroller">
@@ -302,7 +302,7 @@ const SPFrame1 = ({
         </div>}
       </div>
       <div className="!w-[calc(755*0.0522vw)]">
-        <p className=" text-sm text-[#26435F] font-semibold text-base-20 mb-1">
+        <p className=" text-sm text-[#26435F] font-semibold text-base-20 mb-2">
           Session Notes
         </p>
         <div className="bg-white flex-1  rounded-md custom-scroller shadow-[0px_0px_2.500001907348633px_0px_#00000040]">
