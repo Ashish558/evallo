@@ -45,7 +45,7 @@ export default function CurrentSection({ answers, submitSection, submitBtnLoadin
       <p className='font-semibold mb-1'>Marked for Review: {marked}</p>
       <PrimaryButton
         children="Submit Section"
-        className="mt-auto mb-4 w-[300px] h-[60px] text-[21px]"
+        className="mt-auto mb-4 w-[300px] h-[60px] text-[21px] text-white"
         onClick={handleSubmission}
       />
       {isLoading && <SectionLoader />}
@@ -57,7 +57,7 @@ export default function CurrentSection({ answers, submitSection, submitBtnLoadin
           primaryBtn={{
             onClick: handleSubmitConfirm,
             text: "Submit",
-            className: "bg-[#FF7979] w-[146.67px] h-[46.67px] ml-0",
+            className: "bg-[#FF7979] w-[146.67px] h-[46.67px] ml-0 text-white",
             loading: submitBtnLoading,
           }}
         />

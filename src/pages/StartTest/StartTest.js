@@ -131,7 +131,7 @@ export default function StartTest() {
       setStartBtnLoading(false);
       if (res.error) {
         console.log(res.error);
-        if (res.error.data.message === "user blocked") {
+        if (res?.error?.data?.message === "user blocked") {
           alert("Account temporarily deactivated");
         } else {
           alert("Error starting test");
@@ -677,7 +677,7 @@ export default function StartTest() {
                     </div>
                     <PrimaryButton
                       children="Start Section"
-                      className="w-[300px] h-[60px] text-[21px]"
+                      className="w-[300px] h-[60px] text-[21px] !text-white"
                       onClick={() => setPopUp(true)}
                     />
                     {/* <PrimaryButton children='Start Section' className='w-[300px] h-[60px] text-[21px]' onClick={handleStartTest} /> */}
@@ -687,7 +687,7 @@ export default function StartTest() {
 
               {testStarted && (
                 <div
-                  className="mt-[15px] overflow-auto"
+                  className="mt-[15px] overflow-auto custom-scroller"
                   style={{ maxHeight: "calc(100vh - 240px)" }}
                 >
                   {answers.map((item, idx) => {

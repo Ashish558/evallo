@@ -77,13 +77,13 @@ export const TestItem = ({
         <div className='flex gap-[12px]'>
           <div className='flex items-center'>
             <div className='w-[24px] mr-3'>
-              <img
+             {testype!=="DSAT"&& <img
                 className='cursor-pointer '
                 src={Download}
                 onClick={() => window.open(`${awsLink}${pdfLink}`)}
                 width='34px'
                 alt='download'
-              />
+              />}
             </div>
           </div>
           {

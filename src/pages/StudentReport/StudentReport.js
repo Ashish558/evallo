@@ -389,8 +389,8 @@ export default function StudentReport() {
 
       if (persona === 'student' || persona === 'parent') {
          let temp = responseData.response[selectedSubject.idx].map((item, index) => {
-            // console.log(item);
-            const { QuestionNumber, QuestionType, ResponseAnswer, isCorrect, responseTime, _id } = item
+             console.log("qa",item);
+            const { QuestionNumber, QuestionType, ResponseAnswer, isCorrect, responseTime, _id ,marked            } = item
             let concept = '-'
             let strategy = '-'
             if (answerKey[currentAnswerKeyIndex][index]) {
@@ -408,14 +408,14 @@ export default function StudentReport() {
                   Concept: concept,
                   Strategy: strategy,
                   responseTime: responseTime >= 0 ? `${responseTime} sec` : '-',
-                  review: <CustomImage />
+                  review:marked? <CustomImage />:"No"
                }
          })
          setTableData(temp)
       } else {
          // console.log('answerKey', answerKey[selectedSubject.idx]);
          let temp = responseData.response[selectedSubject.idx].map((item, index) => {
-            const { QuestionNumber, QuestionType, ResponseAnswer, isCorrect, responseTime, _id } = item
+            const { QuestionNumber, QuestionType, ResponseAnswer, isCorrect, responseTime, _id ,marked            } = item
             // console.log(item)
             const CustomImage = () => {
                return (
@@ -435,7 +435,7 @@ export default function StudentReport() {
                Concept: answerKey[currentAnswerKeyIndex][index]?.Concepts ? answerKey[currentAnswerKeyIndex][index]?.Concepts : '-',
                Strategy: answerKey[currentAnswerKeyIndex][index]?.Strategy ? answerKey[currentAnswerKeyIndex][index]?.Strategy : '-',
                responseTime: responseTime >= 0 ? `${responseTime} sec` : '-',
-               review: <CustomImage />
+               review: marked? <CustomImage />:"No"
             }
          })
          setTableData(temp)

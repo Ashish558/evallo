@@ -22,18 +22,18 @@ export default function NumericSteppers({
         customFieldsPresents ? (
           ""
         ) : (
-          <div key={i} className={`flex  flex-col justify-center items-center ${totalSteps===4?"!w-[200px]":""}`}>
+          <div key={i} className={`flex   flex-col justify-center items-center ${totalSteps===4?"!w-[200px]":""}`}>
             <button
               key={i}
-              className={`w-[36px] relative z-[5000] lg:block  h-[36px] bg-primary border rounded-full  font-medium
+              className={`min-w-[36px] w-[calc(40*0.0522vw)] h-[calc(40*0.0522vw)]  relative z-[5000] lg:block  backdrop-blur-lg min-h-[36px] bg-primary border rounded-full  font-medium
              ${
                i + 1 < parseInt(currentStep)
-                 ? "!bg-[#FFA28D] before:!bg-[#FFA28D]  !text-white "
+                 ? i+2===currentStep?"!bg-[#FFA28D] before:!bg-[#24A3D9]  !text-white ":"!bg-[#FFA28D] before:!bg-[#FFA28D]  !text-white "
                  : ""
              } 
              ${
                i + 1 === parseInt(currentStep)
-                 ? " !bg-[#24A3D9]  !text-white"
+                 ? " !bg-[#24A3D9]   !text-white"
                  : ""
              } 
              ${
@@ -44,24 +44,24 @@ export default function NumericSteppers({
              transition 
            
              ${
-               totalSteps === 4 + (customFieldsPresents ? 1 : 0) &&
+              totalSteps === 2 ? styles.line4 : totalSteps === 4 + (customFieldsPresents ? 1 : 0) &&
                i === 3 + (customFieldsPresents ? 1 : 0)
                  ? ""
                  : totalSteps === 3
                  ? styles.line2
                  : styles.line
              } 
-             ${totalSteps === 2 ? styles.line4 : ""}
+            
              ${i + 1 === totalSteps ? styles.line5 : ""}
              `}
 
               // onClick={() => handleClick(i + 1)}
             >
-              <span className="relative z-[999999] text-white">{i + 1}</span>
+              <span className="relative z-[999999] text-white text-base-17-5">{i + 1}</span>
             </button>
 
             <p
-                className={`flex justify-center !tracking-wider  before:hidden items-center mt-2 mb-2 text-center !text-sm font-medium  
+                className={`flex justify-center !tracking-wider  before:hidden items-center mt-2 mb-2 text-center text-base-18 font-medium  
             ${i + 1 < parseInt(currentStep) ? "text-[#FFA28D]" : ""} 
              ${i + 1 === parseInt(currentStep) ? " text-[#24A3D9]  " : ""} 
              ${i + 1 > parseInt(currentStep) ? "opacity-60  text-[#26435F]" : ""}

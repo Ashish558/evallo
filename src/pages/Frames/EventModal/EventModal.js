@@ -701,7 +701,7 @@ export default function EventModal({
       if (!sessionToUpdate) return
       fetchFeedback()
    }, [sessionToUpdate])
-
+   const [deleteAll, SetDeleteAll] = useState(false)
    const handleDeleteSession = () => {
       setLoading(true)
       deleteSession(sessionToUpdate._id)
@@ -807,7 +807,7 @@ export default function EventModal({
          }
       }
    }, [isUpdating, sessionToUpdate?.time, data?.time, sessionToUpdate?.date, data?.date])
-
+   const [deleteBulkModalActive, setDeleteBulkModalActive] = useState(false)
    const handleSessiontagChange = (item, tagId) => {
       console.log("tagssss", data.sessionTags, item, tagId)
       let check = false;
@@ -1147,14 +1147,20 @@ export default function EventModal({
                                     <SecondaryButton
                                        children="Delete Current"
                                        className="text-lg py-3 mr-3 pl-1 pr-1 font-medium px-7 h-[50px] w-[140px] disabled:opacity-60 text-white"
-                                       onClick={handleDeleteSession}
+                                       onClick={() => {
+                                          setDeleteBulkModalActive(true)
+                                          SetDeleteAll(false)
+                                       }}
 
                                        loading={loading}
                                     />
                                     <SecondaryButton
                                        children="Delete All"
                                        className="text-lg py-3 mr-3 pl-2 pr-2 font-medium px-7 h-[50px] w-[140px] disabled:opacity-60 text-white"
-                                       onClick={handleDeleteAllSession}
+                                       onClick={() => {
+                                          setDeleteBulkModalActive(true)
+                                          SetDeleteAll(true)
+                                       }}
 
                                        loading={loading}
                                     />
@@ -1182,7 +1188,10 @@ export default function EventModal({
                                     <SecondaryButton
                                        children="Delete"
                                        className="text-lg py-3 mr-3 pl-2 pr-2 font-medium px-7 h-[50px] w-[140px] disabled:opacity-60"
-                                       onClick={handleDeleteSession}
+                                       onClick={() => {
+                                          setDeleteBulkModalActive(true)
+                                          SetDeleteAll(false)
+                                       }}
 
                                        loading={loading}
                                     />
@@ -1212,7 +1221,37 @@ export default function EventModal({
 
                         </div>
                      }
+                     {deleteBulkModalActive && (
+                        <Modal
+                           title={
+                              <span className="leading-10 text-center">
+                                 Please confirm that you want to delete the session(s).
 
+                              </span>
+                           }
+                           titleClassName="mb-5 leading-10"
+                           cancelBtn={true}
+                           crossBtn={true}
+                           cancelBtnClassName="max-w-140 !bg-transparent !border  !border-[#FFA28D]  text-[#FFA28D]"
+                           primaryBtn={{
+                              text: "Delete",
+                              className: "w-[140px]  pl-4 px-4 !bg-[#FF7979] text-white",
+                              onClick: () => deleteAll ? handleDeleteAllSession() : handleDeleteSession(),
+                              bgDanger: true,
+                              loading: loading,
+                           }}
+                           body={
+                              <>
+                                 <p className="text-base-17-5 mt-[-5px] text-[#667085] mb-10">
+                                    <span className="font-semibold mr-1">⚠️ Note:</span>
+                                    All deleted session data will be lost and you will NOT be able to recover it later. Note that this might also impact the Client's digital wallet accordingly. Read detailed documentation in Evallo’s  <span className="text-[#24A3D9]"> knowledge base.</span>
+                                 </p>
+                              </>
+                           }
+                           handleClose={() => setDeleteBulkModalActive(false)}
+                           classname={"max-w-[700px]  mx-auto"}
+                        />
+                     )}
                   </div>
 
                </>

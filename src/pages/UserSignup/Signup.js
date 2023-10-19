@@ -563,7 +563,7 @@ export default function UserSignup() {
           ) : (
             <></>
           )}
-          <div className="flex lg:items-center relative bg-white rounded-md py-6 px-5 md:px-[48px] w-[41.6667vw] mb-[139px]">
+          <div className="flex lg:items-center relative bg-white rounded-md py-6 px-5 md:px-[48px] w-[41.6667vw] min-w-[600px] max-w-[800px] mb-[139px]">
             <div className="w-full py-3">
               <h1
                 className={`hidden lg:block mb-1.5 text-[30px] ${styles.title} `}
@@ -574,10 +574,10 @@ export default function UserSignup() {
                     ? "Set Password"
                     : ""}
               </h1>
-
+             
               {currentStep > 0 && !frames.signupSuccessful && (
                 <NumericSteppers
-                  className="mt-3"
+                  className="mt-3 !w-[520px] mx-auto design:!w-[550px]"
                   fieldNames={
                     customFields?.length > 0 && isAddedByAdmin
                       ? [
@@ -604,11 +604,11 @@ export default function UserSignup() {
 
               {frames.signupActive ? (
                 <div>
-                  <div className={`flex mt-[59px] justify-between lg:mt-0 ${stepOneDisabled ? 'pointer-events-none cursor-not-allowed' :''}`}>
+                  <div className={`flex mt-[59px] justify-between gap-10 lg:mt-0 ${stepOneDisabled ? 'pointer-events-none cursor-not-allowed' :''}`}>
                     <InputField
                       placeholder=""
                       inputContainerClassName="text-base-17-5  bg-white   border border-[#D0D5DD] h-[53px]"
-                      parentClassName="text-base-17-5 w-[16.9271vw]"
+                      parentClassName="text-base-17-5 w-full "
                       labelClassname="mb-1 text-[#26435F] !font-medium"
                       label="First Name"
                       value={values.firstName}
@@ -631,7 +631,7 @@ export default function UserSignup() {
                     <InputField
                       placeholder=""
                       inputContainerClassName="text-base-17-5  bg-white   border border-[#D0D5DD] h-[53px]"
-                      parentClassName="text-base-17-5 w-[16.9271vw]"
+                      parentClassName="text-base-17-5 w-full "
                       labelClassname="mb-1 text-[#26435F] !font-medium"
                       label="Last Name"
                       value={values.lastName}
@@ -652,13 +652,14 @@ export default function UserSignup() {
                       error={error.lastName}
                     />
                   </div>
-                  <div className={`flex  items-center mt-[30px] mb-[29px] justify-between ${stepOneDisabled ? 'pointer-events-non cursor-not-allowe' :''}`}>
+                  <div className={`flex  items-end mt-[30px] mb-[29px] justify-between gap-10 ${stepOneDisabled ? 'pointer-events-non cursor-not-allowe' :''}`}>
                     <InputField
                       labelClassname="mb-1 text-[#26435F] !font-medium"
                       label="Email"
                       placeholder=""
+                      inputClassName={"h-[52.5px]"}
                       inputContainerClassName="text-base-17-5  bg-white   border border-[#D0D5DD] h-[53px]"
-                      parentClassName=" text-base-17-5 w-[19.5313vw]"
+                      parentClassName=" text-base-17-5  w-full"
                       value={values.email}
                       onChange={(e) =>
                         setValues({
@@ -672,9 +673,9 @@ export default function UserSignup() {
                     <InputFieldDropdown
                       placeholder=""
                       inputContainerClassName="text-base-17-5  bg-white h-[53px]  border border-[#D0D5DD]"
-                      parentClassName="text-base-17-5 w-[14.3229vw]"
-                      inputClassName="  bg-transparent text-400 text-base-17-5"
-                      labelClassname="mb-1 text-[#26435F]  !font-medium text-[#26435F]"
+                      parentClassName="text-base-17-5 w-[85%]"
+                      inputClassName="  bg-transparent text-400 text-base-17-5 h-[52.5px]"
+                      labelClassname="mb-1 text-[#26435F]  !font-medium text-[#26435F] design:mb-2"
                       label="Phone"
                       codeClassName="!min-w-[40px] "
                       value={values.phone}
@@ -703,7 +704,7 @@ export default function UserSignup() {
                     >
                       Are you signing up as a Parent or a Student?
                     </p>
-                    <div className={`flex items-center  text-[13.5px] gap-x-6 ${stepOneDisabled ? 'pointer-events-none cursor-not-allowed' :''}`}>
+                    <div className={`flex items-center  text-[13.5px] gap-x-6 ${stepOneDisabled || paramUserRole? 'pointer-events-none cursor-not-allowed' :''}`}>
                       <div
                         onClick={() => {
                           setValues((prev) => ({
