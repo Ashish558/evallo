@@ -7,12 +7,12 @@
 .line::before {
   content: "";
   position: absolute;
-  right: -100px;
+  right: -140px;
   top: 50%;
   margin-top:-15px;
   transform: translateY(-50%);
-  width:100px;
-  height: 1px;
+  width:140px;
+  height: 1.33px;
   background-color: #B3BDC7;
   z-index: -99;
 }
@@ -37,16 +37,21 @@
 .line2::before {
   content: "";
   position: absolute;
-  right: -180px;
+  right: -170px;
   top: 50%;
   margin-top:-15px;
   transform: translateY(-50%);
-  width:180px;
+  width:170px;
   height: 1px;
   background-color: #B3BDC7;
   z-index: -99;
 }
-
+@media (min-width: 1920px) {
+  .line2::before {
+    right: -250px;
+    width:250px;
+  }
+}
 .line2:nth-last-child(1) {
   margin-right: 0;
 }

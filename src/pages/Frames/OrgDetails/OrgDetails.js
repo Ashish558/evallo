@@ -123,21 +123,21 @@ export default function OrgDetails({
           value={values.company}
         />
 
-        <div className="flex items-end mt-5">
+        <div className="flex items-end mt-[30px]">
           {/* <label>Company Type</label> */}
           <InputSelectNew
             value={values.companyType}
-            parentClassName="w-[500px] "
+            parentClassName="w-[300px] "
             optionContainerClassName="text-[13px]"
             optionsEachClassName="py-[7px]"
-            optionClassName="!w-[69%] text-ellipsis overflow-hidden "
+            optionClassName="!w-[76%] text-ellipsis overflow-hidden "
             optionData={companyType}
-            customFontSize="text-[0.78125vw]"
+            customFontSize="text-[15px]"
             placeholder={"Select"}
             label={`Company Type`}
             placeholderClass="!mr-0"
-            labelClassname="text-[#26435F] font-bold  mb-1 !text-sm "
-            inputContainerClassName="py-1 text-sm h-[44.9px] border  border-[#D0D5DD] my-0 mt-[-2px] rounded-[5px] "
+            labelClassname="text-[#26435F] font-medium  mb-1 !text-[18.6px] "
+            inputContainerClassName="py-1 text-sm h-[53px] border  border-[#D0D5DD] my-0 mt-[-2px] rounded-[5px] "
             inputClassName="ml-80"
             required={persona === "student" ? true : false}
             onChange={(e) => handleCompanyTypeChange(e)}
@@ -146,11 +146,11 @@ export default function OrgDetails({
           <InputField
             required={true}
             label="Website"
-            labelClassname={"!text-sm"}
+            labelClassname="!text-[18.6px]"
             biggerText={true}
             placeholder=""
-            parentClassName="w-full max-w-[full] ml-[50px] "
-            inputContainerClassName=" border border-[#D0D5DD] rounded-md py-[9px] h-[44px] text-md"
+            parentClassName="w-[350px] ml-[50px] "
+            inputContainerClassName=" border border-[#D0D5DD] rounded-md py-[9px] h-[53px] text-md"
             inputClassName="bg-transparent text-xs"
             type="text"
             value={values.website}
@@ -162,15 +162,15 @@ export default function OrgDetails({
             }
           />
         </div>
-        <div className="flex items-center mt-5 gap-5">
+        <div className="flex items-center mt-6 gap-5 justify-between">
           <InputField
             required={true}
             label="Address"
-            labelClassname={"!text-sm"}
+            labelClassname="!text-[18.6px]"
             biggerText={true}
             placeholder=""
             parentClassName="w-full max-w-[350px] "
-            inputContainerClassName=" border border-[#D0D5DD] rounded-md py-[9px] h-[44px] text-md"
+            inputContainerClassName=" border border-[#D0D5DD] rounded-md py-[9px] h-[53px] text-md"
             inputClassName="bg-transparent text-xs"
             type="text"
             value={values.address}
@@ -182,15 +182,15 @@ export default function OrgDetails({
             }
           />
           <InputSelectNew
-            parentClassName="w-[500px]"
+            parentClassName="w-[300px]"
             optionContainerClassName="text-[13px]  max-h-[250px] h-[250px] "
             optionsEachClassName="py-[5px]"
             optionData={country}
             optionType="object"
             placeholder={"Select"}
             label={`Country`}
-            labelClassname="text-[#26435F] font-bold   !text-sm "
-            inputContainerClassName="py-1 text-sm h-[44px] border border-[#D0D5DD] my-0 mt-[-3px] rounded-[4.3px]"
+            labelClassname="text-[#26435F] font-bold   !text-[18.6px] "
+            inputContainerClassName="py-1 text-sm h-[53px] border border-[#D0D5DD] my-0 mt-[-3px] rounded-[4.3px]"
             inputClassName="ml-80"
             required={persona === "student" ? true : false}
             value={values.country}
@@ -223,9 +223,9 @@ export default function OrgDetails({
           </div> */}
         </div>
 
-        <div className="flex justify-between items-center mt-[18px] gap-7">
+        <div className="flex justify-between items-center mt-[30px] ">
           <InputSelectNew
-            parentClassName="!w-[700px] "
+       parentClassName="w-full max-w-[250px]"
             optionContainerClassName="text-[13px]   max-h-[180px]"
             optionsEachClassName="py-[5px]"
             optionData={states}
@@ -233,8 +233,8 @@ export default function OrgDetails({
             optionType="object"
             placeholderClass="!mr-2"
             label={`State`}
-            labelClassname="text-[#26435F] font-bold   !text-sm "
-            inputContainerClassName="py-1 text-sm   h-[44px] border border-[#D0D5DD] my-0 mt-[-3px] rounded-[4.3px] "
+            labelClassname="text-[#26435F] font-bold   !text-[18.6px]"
+            inputContainerClassName="py-1 text-sm   h-[53px] border border-[#D0D5DD] my-0 mt-[-3px] rounded-[4.3px] "
             inputClassName="  ml-80"
             required={persona === "student" ? true : false}
             value={values?.state?.length < 20 ? values.state : values.state?.slice(0, 20) + "..."}
@@ -278,11 +278,11 @@ export default function OrgDetails({
           <InputField
             required={true}
             label="City"
-            labelClassname={"!text-sm"}
+            labelClassname="!text-[18.6px]"
             biggerText={true}
             placeholder=""
-            parentClassName="w-full max-w-[248px]"
-            inputContainerClassName=" border border-[#D0D5DD] rounded-md py-[9px] h-[44px] text-md"
+            parentClassName="w-full max-w-[200px]"
+            inputContainerClassName=" border border-[#D0D5DD] rounded-md py-[9px] h-[53px] text-md"
             inputClassName="bg-transparent text-xs"
             type="text"
             value={values.city}
@@ -296,11 +296,11 @@ export default function OrgDetails({
           <InputField
             required={true}
             label="Zip Code"
-            labelClassname={"!text-sm"}
+            labelClassname="!text-[18.6px]"
             biggerText={true}
             placeholder=""
-            parentClassName="w-full max-w-[248px] "
-            inputContainerClassName=" border px-[-10px] border-[#D0D5DD]   rounded-md py-[9px] h-[44px] text-md"
+            parentClassName="w-full max-w-[150px] "
+            inputContainerClassName=" border px-[-10px] border-[#D0D5DD]   rounded-md py-[9px] h-[53px] text-md"
             inputClassName="bg-transparent text-xs custom-scroller-2"
             placeholderClass="!mx-1 custom-scroller-2"
             type="text"
@@ -314,15 +314,15 @@ export default function OrgDetails({
           />
         </div>
 
-        <div className="flex items-center mt-12 justify-between">
+        <div className="flex items-center mt-[53px] mb-[34px] justify-between">
           <SecondaryButton
             children="Go back"
-            className="text-sm mr-6 bg-white text-[#cad0db] border-[1.5px] border-[#D0D5DD] py-2"
+            className="text-[18.67px]  w-[146px] h-[53px] bg-white text-[#cad0db] border-[1.7px] border-[#D0D5DD] py-2 font-medium"
             onClick={handleBack}
           />
           <PrimaryButton
             children="Next"
-            className={` w-full flex justify-center bg-[#FFA28D] disabled:opacity-70 max-w-[110px] py-[9px] rounded text-white text-sm font-medium relative 
+            className={` flex justify-center bg-[#FFA28D] disabled:opacity-70  py-[2px] rounded text-white text-[18.67px]  w-[146px] h-[53px] font-medium relative 
            
             `}
             onClick={() => handleSubmit()}

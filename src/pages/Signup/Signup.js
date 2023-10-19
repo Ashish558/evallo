@@ -642,10 +642,11 @@ export default function Signup() {
           ) : (
             <></>
           )}
-          <div className={`flex lg:items-center relative bg-white rounded-md py-4  w-[41.6667vw] ${frames?.signupSuccessful ? "!w-[51.0417vw] px-[115px] " : "!px-[50px]"}`}>
-            <div className="w-full py-4 ">
+          <div className={`flex lg:items-center relative bg-white rounded-md py-4   ${frames.requirements ?"!w-[980px] !pl-[76px] !pr-[91px]" : "w-[800px] px-[50px]"} ${frames?.signupSuccessful ? "!w-[980px] !px-[115px] " : ""} `}>
+          
+            <div className="w-full">
               {currentStep > 0 && (
-                <NumericSteppers className={"px-2 !w-[545px] !mx-auto flex-1"} fieldNames={["Personal Info", "Org Details", "Further Details", "Requirements"]} totalSteps={4} currentStep={currentStep}
+                <NumericSteppers  NumericStepperfontSize="text-[18.6px]"className={" !w-[700px] !mx-auto "} fieldNames={["Personal Info", "Org Details", "Further Details", "Requirements"]} totalSteps={4} currentStep={currentStep}
 
                 />
               )}
@@ -665,8 +666,8 @@ export default function Signup() {
                       label="First name"
 
                       biggerText={true}
-                      labelClassname="!text-sm text-[#26435F] font-semibold"
-                      inputContainerClassName=" border border-[#D0D5DD] rounded-md py-[9px] h-[45px] text-md"
+                      labelClassname="!text-[18.67px] text-[#26435F] font-semibold"
+                      inputContainerClassName=" border border-[#D0D5DD] rounded-md py-[9px] h-[53px] text-md"
 
                       value={values.firstName}
                       onChange={(e) =>
@@ -682,8 +683,8 @@ export default function Signup() {
                       placeholder=""
                       parentClassName="text-md"
                       biggerText={true}
-                      labelClassname="!text-sm text-[#26435F] font-semibold"
-                      inputContainerClassName=" border border-[#D0D5DD] rounded-md py-[9px] h-[45px] text-md"
+                      labelClassname="!text-[18.67px] text-[#26435F] font-semibold"
+                      inputContainerClassName=" border border-[#D0D5DD] rounded-md py-[9px] h-[53px] text-md"
                       label="Last name"
                       value={values.lastName}
                       onChange={(e) =>
@@ -697,14 +698,14 @@ export default function Signup() {
                       error={error.lastName}
                     />
                   </div>
-                  <div className={`flex mt-[20px] justify-between  items-end`}>
+                  <div className={`flex mt-[30px] justify-between  items-end`}>
                     <InputField
                       label="Work Email"
                       placeholder=""
                       parentClassName="text-md w-full "
                       biggerText={true}
-                      labelClassname="!text-sm text-[#26435F] font-semibold"
-                      inputContainerClassName=" border border-[#D0D5DD] rounded-md py-[9px] h-[45px] text-md"
+                      labelClassname="!text-[18.67px] text-[#26435F] font-semibold"
+                      inputContainerClassName=" border border-[#D0D5DD] rounded-md py-[9px] h-[53px] text-md"
                       value={values.email}
                       onChange={(e) =>
                         setValues({
@@ -721,8 +722,8 @@ export default function Signup() {
                       parentClassName="text-md w-4/5 ml-8 "
                       biggerText={true}
                       arrowClassName='w-[10px] h-[5px] pl-1'
-                      labelClassname="!text-sm text-[#26435F] font-semibold"
-                      inputContainerClassName=" border border-[#D0D5DD] rounded-md py-[9px] h-[45px] text-md"
+                      labelClassname="!text-[18.67px] text-[#26435F] font-semibold"
+                      inputContainerClassName=" border border-[#D0D5DD] rounded-md py-[9px] h-[53px] text-md"
                       label="Phone"
                       value={values.phone}
                       codeValue={values.phoneCode}
@@ -747,11 +748,11 @@ export default function Signup() {
 
                   <InputField
                     placeholder=""
-                    parentClassName="text-md mt-5 mb-6 w-full"
+                    parentClassName="text-md mt-[30px] mb-[30px] w-full"
                     label="Name of Business"
                     biggerText={true}
-                    labelClassname="!text-sm text-[#26435F] font-semibold"
-                    inputContainerClassName=" border border-[#D0D5DD] rounded-md py-[9px] h-[45px] text-md"
+                    labelClassname="!text-[18.67px] text-[#26435F] font-semibold"
+                    inputContainerClassName=" border border-[#D0D5DD] rounded-md py-[9px] h-[53px] text-md"
                     value={values.company}
                     onChange={(e) =>
                       setValues({
@@ -762,11 +763,11 @@ export default function Signup() {
                     totalErrors={error}
                     error={error.company}
                   />
-                  <p className="text-sm  font-semibold mb-4 text-[#26435F]">
+                  <p className="text-[18.67px]  font-medium mb-4 text-[#26435F]">
                     {" "}
                     Registering as{" "}
                   </p>
-                  <div className="flex items-center justify-start ml-[-3px]  text-xs">
+                  <div className="flex items-center justify-start ml-[-3px]  text-[18.67px]">
                     <div
                       className="flex mr-6  items-center cursor-pointer"
                       onClick={() =>
@@ -793,9 +794,9 @@ export default function Signup() {
 
                       <p
                         className={`${values.registrationAs === "Individual"
-                          ? "text-[#FFA28D] font-semibold "
-                          : "text-[#26435F] font-semibold"
-                          } text-[13px] translaye-y-[-8px] translate-x-[-6px] tracking-wide`}
+                          ? "text-[#FFA28D] font-medium "
+                          : "text-[#26435F] font-medium"
+                          }  translaye-y-[-8px] translate-x-[-6px] tracking-wide text-[18.67px]`}
                       >
                         {" "}
                         Individual{" "}
@@ -826,9 +827,9 @@ export default function Signup() {
                       </div>
                       <p
                         className={`${values.registrationAs === "Company"
-                          ? "text-[#FFA28D] font-semibold "
-                          : "text-[#26435F] font-semibold"
-                          } text-[13px] translaye-y-[-8px] translate-x-[-6px] tracking-wide`}
+                        ? "text-[#FFA28D] font-medium "
+                        : "text-[#26435F] font-medium"
+                          }  translaye-y-[-8px] translate-x-[-6px] tracking-wide text-[18.67px]`}
                       >
                         {" "}
                         Company{" "}
@@ -836,12 +837,13 @@ export default function Signup() {
                     </div>
 
                   </div>
-                  <div className="mt-[25px] flex">
+                  <div className="mt-[40px] flex">
 
                     <div className="flex items-center">
 
                       <SCheckbox checked={isChecked}
                         stopM={true}
+                        className="scale-[1.27]"
                         uncheckColor={"bg-[#9CA3AF]"}
                         onChange={handleCheckboxChange1}
                       />
@@ -866,14 +868,14 @@ export default function Signup() {
                       .
                     </p>
                   </div>
-                  <div className="flex items-center mt-[60px] justify-between">
+                  <div className="flex items-center mt-[60px] mb-[49px] justify-between">
                     <SecondaryButton
                       children="Go back"
-                      className="text-sm mr-6 w-[146px] h-[53px] bg-white text-[#cad0db] border-[1.7px] border-[#D0D5DD] py-2 "
+                      className="text-[18.67px] mr-6 w-[146px] h-[53px] bg-white text-[#cad0db] border-[1.7px] border-[#D0D5DD] py-2 font-medium"
                       onClick={handleBack}
                     />
                     <PrimaryButton
-                      className={`w-full flex -[146px] h-[53px] justify-center  bg-[#FFA28D]  disabled:opacity-60 max-w-[110px]  rounded text-white text-sm font-medium relative py-[9px] ${loading
+                      className={` flex w-[146px] h-[53px] justify-center  bg-[#FFA28D]  disabled:opacity-60   rounded text-white text-[18.67px] font-medium relative py-[2px] ${loading
                         ? "cursor-wait opacity-60 pointer-events-none"
                         : "cursor-pointer"
                         } 
