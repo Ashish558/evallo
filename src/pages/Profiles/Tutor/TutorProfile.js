@@ -1349,7 +1349,7 @@ export default function TutorProfile({ isOwn }) {
                         <div className="flex justify-between px-7 pt-[25px] pb-[24px]">
                           <div className="">
                             <div className="text-[#24A3D9] font-semibold text-[15.002px] text-base-20">
-                              Street Adress
+                              Street Address
                             </div>
                             <div className="text-[#517CA8] font-normal text-[17.503px] text-base-17-5">
                               {userDetail.address}

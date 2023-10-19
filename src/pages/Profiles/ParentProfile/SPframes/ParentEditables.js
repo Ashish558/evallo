@@ -1048,7 +1048,7 @@ export default function ParentEditables({
 
                         <InputField
                           biggerText={true}
-                          label="Street adress"
+                          label="Street address"
                           labelClassname="text-[#26435F]  !font-medium"
                           placeholder="Text"
                           inputContainerClassName="text-base  bg-[#F6F6F6] border-0 !py-1 !px-3 !rounded-[5px] !w-[31.40625vw] h-[54px]"
