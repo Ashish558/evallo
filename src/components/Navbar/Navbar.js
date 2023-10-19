@@ -385,13 +385,13 @@ const [loading2,setLoading2]=useState(false)
                })}
             </div>
             <div className={`flex font-bold ${isLoggedIn ? "" : "opacity-[0.3]"}`}>
-             {persona =="parent"||  <div className="flex mr-[24px] text-[#24A3D9] text-base-16  items-center">
+             {persona =="parent"||  <div className="cursor-pointer flex mr-[24px] text-[#24A3D9] text-base-16  items-center">
                   <p className=" text-[16px]">Pricing 	</p>
                   <p className="pl-4">
                      &#36;
                   </p>
                </div>}
-               <div className="flex mr-[24px] text-[#24A3D9] items-center text-base-16 ">
+               <div className="cursor-pointer flex mr-[24px] text-[#24A3D9] items-center text-base-16 ">
                   <p className="text-[16px] ">Help</p>
                   <p>
                      <img
@@ -404,7 +404,7 @@ const [loading2,setLoading2]=useState(false)
                </div>
 
                <div
-                  className={`flex ${isLoggedIn&& 'cursor-pointer'} items-center `}
+                  className={` flex ${isLoggedIn&& 'cursor-pointer'} items-center `}
                   onClick={() => isLoggedIn && setLogoutModalActive(true)}
                >
                   <div>
