@@ -138,9 +138,9 @@ export default function EventModal({
       sessionTags: []
    });
 
-   console.log('defaultEventData---', defaultEventData);
-   console.log('isUpdating---', isUpdating);
-   console.log('data---', data);
+   // console.log('defaultEventData---', defaultEventData);
+   // console.log('isUpdating---', isUpdating);
+   // console.log('data---', data);
    const [submitDisabled, setSubmitDisabled] = useState(false)
 
    const [days, setDays] = useState(tempDays);
@@ -254,19 +254,19 @@ export default function EventModal({
          if (endHours === 24) formattedEndTime = { time: "12:00", timeType: 'AM' }
 
          let tz = ''
-         if(timeZone === 'Asia/Kolkata'){
+         if (timeZone === 'Asia/Kolkata') {
             tz = 'IST'
-         }else if(timeZone === 'US/Alaska'){
+         } else if (timeZone === 'US/Alaska') {
             tz = 'AKST'
-         }else if(timeZone === 'US/Central'){
+         } else if (timeZone === 'US/Central') {
             tz = 'CST'
-         }else if(timeZone === 'US/Eastern'){
+         } else if (timeZone === 'US/Eastern') {
             tz = 'EST'
-         }else if(timeZone === 'US/Hawaii'){
+         } else if (timeZone === 'US/Hawaii') {
             tz = 'HST'
-         }else if(timeZone === 'US/Mountain'){
+         } else if (timeZone === 'US/Mountain') {
             tz = 'MST'
-         }else if(timeZone === 'US/Pacific'){
+         } else if (timeZone === 'US/Pacific') {
             tz = 'PST'
          }
          setData((prev) => {
@@ -293,12 +293,12 @@ export default function EventModal({
 
       }
    }, [defaultEventData, isUpdating])
-const [stopUpdating,setStopUpdating]=useState(true)
+   const [stopUpdating, setStopUpdating] = useState(true)
    useEffect(() => {
 
       if (organization?.settings) {
-         if( persona === "tutor"&&organization && organization?.settings?.permissions?.length>5&& organization?.settings?.permissions[5]?.choosedValue===false){
-             setStopUpdating(false)
+         if (persona === "tutor" && organization && organization?.settings?.permissions?.length > 5 && organization?.settings?.permissions[5]?.choosedValue === false) {
+            setStopUpdating(false)
          }
          if (Object.keys(organization?.settings).length > 0) {
             // console.log('organization', organization.settings);
@@ -554,16 +554,16 @@ const [stopUpdating,setStopUpdating]=useState(true)
          reqBody.sessionProductive = ''
       }
       const { start, end } = reqBody.time
-      if(reqBody.time.start.timeType === 'am'){
+      if (reqBody.time.start.timeType === 'am') {
          reqBody.time.start.timeType = 'AM'
       }
-      if(reqBody.time.start.timeType === 'pm'){
+      if (reqBody.time.start.timeType === 'pm') {
          reqBody.time.start.timeType = 'PM'
       }
-      if(reqBody.time.end.timeType === 'am'){
+      if (reqBody.time.end.timeType === 'am') {
          reqBody.time.end.timeType = 'AM'
       }
-      if(reqBody.time.end.timeType === 'pm'){
+      if (reqBody.time.end.timeType === 'pm') {
          reqBody.time.end.timeType = 'PM'
       }
       let startTime = convertTime12to24(`${start.time} ${start.timeType}`)
@@ -627,7 +627,27 @@ const [stopUpdating,setStopUpdating]=useState(true)
          reqBody.date = dates
          console.log('dates', dates);
       }
-      // console.log('reqBody', reqBody);
+
+      if (reqBody.timeZone === 'CST') {
+         reqBody.timeZone = "US/Central"
+      }
+      if (reqBody.timeZone === 'IST') {
+         reqBody.timeZone = "Asia/Kolkata"
+      }
+      if (reqBody.timeZone === 'AKST') {
+         reqBody.timeZone = "US/Alaska"
+      }
+      if (reqBody.timeZone === 'HST') {
+         reqBody.timeZone = "US/Hawaii"
+      }
+      if (reqBody.timeZone === 'MST') {
+         reqBody.timeZone = "US/Mountain"
+      }
+      if (reqBody.timeZone === 'PST') {
+         reqBody.timeZone = "US/Pacific"
+      }
+
+      // setLoading(false)
       // return
       if (isUpdating && isUpdatingAll) return updateSession(reqBody, isUpdatingAll, sDate);
       if (isUpdating) return updateSession(reqBody, isUpdatingAll, sDate);
@@ -789,20 +809,21 @@ const [stopUpdating,setStopUpdating]=useState(true)
    }, [isUpdating, sessionToUpdate?.time, data?.time, sessionToUpdate?.date, data?.date])
 
    const handleSessiontagChange = (item, tagId) => {
-      console.log("tagssss",data.sessionTags,item,tagId)
-      let check=false;
+      console.log("tagssss", data.sessionTags, item, tagId)
+      let check = false;
       data.sessionTags.map(tag => {
          if (tag._id === tagId) {
-            check=true;
-         }})
-         console.log("tagss",check)
-         if(!check){
-            let tempSessionTag = data.sessionTags
-            tempSessionTag.push({_id: tagId,items:[item]})
-            setData({ ...data, sessionTags: tempSessionTag })
-            return 
+            check = true;
          }
-       
+      })
+      console.log("tagss", check)
+      if (!check) {
+         let tempSessionTag = data.sessionTags
+         tempSessionTag.push({ _id: tagId, items: [item] })
+         setData({ ...data, sessionTags: tempSessionTag })
+         return
+      }
+
       const tempSessionTag = data.sessionTags.map(tag => {
          if (tag._id === tagId) {
             let items = [...tag.items]
@@ -817,7 +838,7 @@ const [stopUpdating,setStopUpdating]=useState(true)
          }
       })
       setData({ ...data, sessionTags: tempSessionTag })
-   
+
    }
    const dataProps = { data, setData }
    //  console.log({isEditable})
@@ -836,22 +857,22 @@ const [stopUpdating,setStopUpdating]=useState(true)
                         <SearchNames setStudent={setStudent}
                            setData={setData} student={student} tutor={tutor} data={data}
                            setTutor={setTutor}
-                           isEditable={isEditable&&stopUpdating} />
+                           isEditable={isEditable && stopUpdating} />
 
-                        <DateAndTimeInput {...dataProps} isEditable={isEditable&&stopUpdating} />
+                        <DateAndTimeInput {...dataProps} isEditable={isEditable && stopUpdating} />
 
                         <div className={`flex mb-3 items-center ${!isEditable ? 'pointer-events-none ' : ''} `}>
                            <CCheckbox checked={data.recurring} name='recurring' onChange={() =>
                               setData({
                                  ...data,
                                  recurring: !data.recurring,
-                              })} disabled={!isEditable||!stopUpdating} />
+                              })} disabled={!isEditable || !stopUpdating} />
                            <p className="font-medium text-[#26435F] text-[18.6px]">
                               Recurring
                            </p>
                         </div>
 
-                        <DaysEndDate isEditable={isEditable&&stopUpdating} days={days} setDays={setDays} {...dataProps} />
+                        <DaysEndDate isEditable={isEditable && stopUpdating} days={days} setDays={setDays} {...dataProps} />
 
 
                         <div className="flex mb-7">
@@ -873,7 +894,7 @@ const [stopUpdating,setStopUpdating]=useState(true)
                          ${persona === "parent" ? " order-2" : ""}
                         `}
                               type="select"
-                              disabled={!isEditable||!stopUpdating}
+                              disabled={!isEditable || !stopUpdating}
                            />
                            <InputSelect
                               label="Topic"
@@ -893,7 +914,7 @@ const [stopUpdating,setStopUpdating]=useState(true)
                         ${persona === "parent" ? " order-2" : ""}
                         `}
                               type="select"
-                              disabled={!isEditable||!stopUpdating}
+                              disabled={!isEditable || !stopUpdating}
 
                            />
 
@@ -939,7 +960,7 @@ const [stopUpdating,setStopUpdating]=useState(true)
                                     session: e.target.value,
                                  })
                               }
-                              disabled={!isEditable||!stopUpdating}
+                              disabled={!isEditable || !stopUpdating}
                            />
                            <InputField
                               parentClassName="w-full ml-2"
@@ -954,7 +975,7 @@ const [stopUpdating,setStopUpdating]=useState(true)
                               onChange={(e) =>
                                  setData({ ...data, whiteboardLink: e.target.value })
                               }
-                              disabled={!isEditable||!stopUpdating}
+                              disabled={!isEditable || !stopUpdating}
                            />
 
 
@@ -965,7 +986,7 @@ const [stopUpdating,setStopUpdating]=useState(true)
                         }
                         <div className="h-[1.33px] w-full bg-[rgba(0,0,0,0.20)] mt-[28px]"></div>
                         {/* SESSIONS */}
-                        <SessionInputs {...dataProps} status={status} isEditable={isEditable&&stopUpdating} />
+                        <SessionInputs {...dataProps} status={status} isEditable={isEditable && stopUpdating} />
 
 
 
@@ -995,7 +1016,7 @@ const [stopUpdating,setStopUpdating]=useState(true)
                            persona == "student" &&
                            <div className="h-[1.33px] bg-[rgba(0,0,0,0.20)]"></div>
                         }
-                        {persona !== "student" && persona !== "parent"  && (
+                        {persona !== "student" && persona !== "parent" && (
                            <>
                               <div className="mt-7 mb-5 w-full  ">
                                  {
@@ -1016,13 +1037,13 @@ const [stopUpdating,setStopUpdating]=useState(true)
                                                       <div
                                                          key={idx}
                                                          className="flex mb-4 mr-3"
-                                                         onClick={() =>{
-                                                            if(stopUpdating)
-                                                            handleSessiontagChange(
-                                                               item,
-                                                               tag._id,
-                                                            )
-                                                            }
+                                                         onClick={() => {
+                                                            if (stopUpdating)
+                                                               handleSessiontagChange(
+                                                                  item,
+                                                                  tag._id,
+                                                               )
+                                                         }
                                                          }
                                                       >
                                                          <CCheckbox
@@ -1118,23 +1139,23 @@ const [stopUpdating,setStopUpdating]=useState(true)
                         </div>
                      ) : <></>}
                      {
-                        persona !== "student" && persona !== "parent"&&stopUpdating && <div className="flex justify-center pt-4">
+                        persona !== "student" && persona !== "parent" && stopUpdating && <div className="flex justify-center pt-4">
                            {isUpdating && sessionToUpdate.recurring === true ?
                               <div className="flex flex-1 px-4 justify-between">
                                  <div>
-                               
+
                                     <SecondaryButton
                                        children="Delete Current"
                                        className="text-lg py-3 mr-3 pl-1 pr-1 font-medium px-7 h-[50px] w-[140px] disabled:opacity-60 text-white"
                                        onClick={handleDeleteSession}
-                                     
+
                                        loading={loading}
                                     />
                                     <SecondaryButton
                                        children="Delete All"
                                        className="text-lg py-3 mr-3 pl-2 pr-2 font-medium px-7 h-[50px] w-[140px] disabled:opacity-60 text-white"
                                        onClick={handleDeleteAllSession}
-                                     
+
                                        loading={loading}
                                     />
                                  </div>
@@ -1157,12 +1178,12 @@ const [stopUpdating,setStopUpdating]=useState(true)
                               </div>
                               : isUpdating ?
                                  <>
-                                
+
                                     <SecondaryButton
                                        children="Delete"
                                        className="text-lg py-3 mr-3 pl-2 pr-2 font-medium px-7 h-[50px] w-[140px] disabled:opacity-60"
                                        onClick={handleDeleteSession}
-                                      
+
                                        loading={loading}
                                     />
                                     <PrimaryButton

@@ -213,10 +213,11 @@ export default function Calendar() {
         let updatedDate = new Date(
           new Date(
             startDate.toLocaleString("en-US", {
-              timeZone: session.timeZone === "AKST" ? "America/Anchorage" : session.timeZone === 'HST' ? "Pacific/Honolulu" : session.timeZone,
+              timeZone: session.timeZone
             })
           )
         );
+        console.log('session----', session);
         return {
           ...session,
           updatedDate,
