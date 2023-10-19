@@ -37,7 +37,7 @@ const tableHeaders = [
   "",
 ];
 
-export default function AllTests() {
+export default function AllTests({isOwn,setTotaltest,studentId,fromProfile}) {
   const { organization } = useSelector((state) => state.organization);
   const { firstName, lastName } = useSelector((state) => state.user);
   const [tableData, setTableData] = useState([]);
@@ -363,9 +363,11 @@ export default function AllTests() {
   useEffect(() => {
     console.log(testtype2);
   }, [testtype2])
+  if ((persona === "parent" || persona === "student")&&fromProfile) return <StudentTest testtype={testtype2} isOwn={isOwn} setTotaltest={setTotaltest} studentId={studentId} fromProfile={true} />;
 
-  if (persona === "parent" || persona === "student") return <StudentTest testtype={testtype2} />;
+  else if (persona === "parent" || persona === "student") return <StudentTest testtype={testtype2}  />;
 
+ 
   return (
     <div className="w-[83.6989583333vw] mx-auto min-h-screen">
 

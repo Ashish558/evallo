@@ -29,12 +29,12 @@ export default function NumericSteppers({
               className={`w-[40px] relative z-[5000] lg:block  h-[40px] bg-primary border rounded-full  font-medium
              ${
                i + 1 < parseInt(currentStep)
-                 ? "!bg-[#FFA28D] before:!bg-[#FFA28D]  !text-white "
+                 ? i+2===currentStep?"!bg-[#FFA28D] before:!bg-[#24A3D9]  !text-white ":"!bg-[#FFA28D] before:!bg-[#FFA28D]  !text-white "
                  : ""
              } 
              ${
                i + 1 === parseInt(currentStep)
-                 ? " !bg-[#24A3D9]  !text-white"
+                 ? " !bg-[#24A3D9]   !text-white"
                  : ""
              } 
              ${
@@ -45,20 +45,20 @@ export default function NumericSteppers({
              transition 
            
              ${
-               totalSteps === 4 + (customFieldsPresents ? 1 : 0) &&
+              totalSteps === 2 ? styles.line4 : totalSteps === 4 + (customFieldsPresents ? 1 : 0) &&
                i === 3 + (customFieldsPresents ? 1 : 0)
                  ? ""
                  : totalSteps === 3
                  ? styles.line2
                  : styles.line
              } 
-             ${totalSteps === 2 ? styles.line4 : ""}
+            
              ${i + 1 === totalSteps ? styles.line5 : ""}
              `}
 
               // onClick={() => handleClick(i + 1)}
             >
-              <span className="relative z-[999999] text-white">{i + 1}</span>
+              <span className="relative z-[999999] text-white text-base-17-5">{i + 1}</span>
             </button>
 
             <p

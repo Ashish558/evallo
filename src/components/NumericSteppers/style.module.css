@@ -87,13 +87,6 @@
 .line5::before {
   content: none;
   display:none;
-  position: absolute;
-  right: -185px;
-  top: 50%;
-  margin-top:-15px;
-  transform: translateY(-50%);
-  width:185px;
-  height: 1px;
-  background-color: #B3BDC7;
-  z-index: -99;
+
+  
 }
