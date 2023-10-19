@@ -69,7 +69,7 @@ export default function SignupLast({
 
         </div>
       </div>
-      <div className="mb-7 ">
+      <div className="mb-7 mt-1">
         <p className="font-medium tracking-wider mb-[10px] text-[18.6px] text-[#26435F]">
           Select the solutions you are looking for:
         </p>
@@ -128,7 +128,7 @@ export default function SignupLast({
         <div className='h-[1px] bg-[#EBEBEB] w-5/6 mb-5'>
 
         </div>
-        <p className="font-medium mb-1 text-[18.6px]  text-[#26435F]">
+        <p className="font-medium mb-[15px] text-[18.6px]  text-[#26435F]">
           On a scale of 1-10 (Bad to Great), how would you rate your sign up experience?
         </p>
         <InputSelectNew
@@ -154,7 +154,7 @@ export default function SignupLast({
         </div>
       </div>
 
-      <div className="flex items-center mt-2 mb-[45px] justify-between">
+      <div className="flex items-center mt-[32px] mb-[45px] justify-between">
         <SecondaryButton
           children="Go back"
           className="text-[18.67px]  w-[146px] h-[53px] bg-white text-[#cad0db] border-[1.7px] border-[#D0D5DD] py-2 font-medium"
