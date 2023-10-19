@@ -306,7 +306,7 @@ const Dashboard = () => {
     <div className={styles.container}>
       <div className=" mt-[28px] bg-#2E2E2E">
         <div className="mt-[50px] flex justify-center">
-          <div className="w-[83.33vw]">
+          <div className="w-[90vw]">
             <p className="text-[#24A3D9]  text-base-20">
               {organization?.company +
                 "  >  " +
@@ -328,7 +328,7 @@ const Dashboard = () => {
           </div>
         </div>
 
-        <section className="flex justify-center w-[83.3333vw] mx-auto ">
+        <section className="flex justify-center w-[90vw] mx-auto ">
           <div className={styles.mainBox}>
             <div className="grid grid-cols-2 px-[1.95vw] ">
               <div className={`${styles.gridBorder} my-auto `}>
@@ -483,11 +483,11 @@ const Dashboard = () => {
 
         <section>
           <div className="flex justify-center">
-            <div className=" w-[78.125vw] !mt-[calc(50*0.050vw)]">
+            <div className=" w-[85.125vw] !mt-[calc(50*0.050vw)]">
               <div className=" h-[1px] bg-[#CBD6E2]"></div>
             </div>
           </div>
-          <div className=" w-[83.33vw]  text-[#FFA28D] mx-auto ">
+          <div className=" w-[90vw]  text-[#FFA28D] mx-auto ">
             <div className="flex justify-between items-center !mt-[calc(30*0.050vw)] h-min py-0 mb-3 ">
               <p className="font-bold  text-base-20 ">USERS OVERVIEW </p>
 
@@ -498,7 +498,7 @@ const Dashboard = () => {
             </div>
           </div>
 
-          <div className="flex  w-[83.33vw] gap-x-5 mx-auto">
+          <div className="flex  w-[90vw] gap-x-5 mx-auto">
             <div className=" h-full  !whitespace-nowrap ">
               <p className=" mb-1 font-semibold text-[#26435F] mb-1 text-base-20">User Stats</p>
               <div className={`${styles.sidebox} h-[330px] w-[16.25vw] `}>
@@ -553,13 +553,14 @@ const Dashboard = () => {
             <div className="  pl-[17.5px]">
               <p className="mb-1 font-semibold text-[#26435F] mb-1 text-base-20  ">Action Log</p>
               <ActionLog
+                className={"w-[71.1042vw]"}
                 actionLog={filteredActionLog ? filteredActionLog : [""]}
               />
             </div>
           </div>
         </section>
 
-        <section className="mt-[70px] w-[83.33vw] mx-auto ">
+        <section className="mt-[70px] w-[90vw] mx-auto ">
           <p className="font-semibold text-[#26435F]  text-base-20">Latest Sign-Ups <span className="font-light">(Last 7 Days)</span></p>
 
           <div className="-mt-3">
@@ -579,11 +580,11 @@ const Dashboard = () => {
           </div>
         </section>
         <div className="flex justify-center">
-          <div className=" w-[78.125vw] !mt-[calc(43*0.050vw)]">
+          <div className=" w-[85.125vw] !mt-[calc(43*0.050vw)]">
             <div className=" h-[1px] bg-[#CBD6E2]"></div>
           </div>
         </div>
-        <div className=" relative z-[50000] w-[83.33vw] mx-auto mt-[25px] text-[#26435F]">
+        <div className=" relative z-[50000] w-[90vw] mx-auto mt-[25px] text-[#26435F]">
           <div className=" relative z-[50000] flex justify-between items-center translate-y-[10px] ">
             <p className="font-bold uppercase text-[#FFA28D] mb-1 text-base-20">Client Success Overview </p>
 
@@ -593,8 +594,8 @@ const Dashboard = () => {
           </div>
         </div>
 
-        <section className="mt-[10px] mx-auto w-[83.33vw]">
-          <div className="grid grid-cols-[60.2vw,23vw]">
+        <section className="mt-[10px] mx-auto w-[90vw]">
+          <div className="grid grid-cols-[67vw,24vw]">
             <div className="">
               <p className="font-semibold text-[#26435F] mt-3  text-base-17-5">
                 Popular Services
@@ -655,7 +656,7 @@ const Dashboard = () => {
           </div>
         </section>
 
-        <section className="mt-[37px] mx-auto w-[83.33vw]">
+        <section className="mt-[37px] mx-auto w-[90vw]">
           <div className="grid grid-cols-2 gap-x-[5.46875vw]">
             <div className="flex  justify-between gap-x-[1.953125vw]  mt-2 text-sm text-[#26435F]">
               <div>
@@ -729,11 +730,11 @@ const Dashboard = () => {
           </div>
         </section>
         <div className="flex justify-center">
-          <div className=" w-[78.125vw] !mt-[calc(60*0.050vw)]">
+          <div className=" w-[85.125vw] !mt-[calc(60*0.050vw)]">
             <div className=" h-[1px] bg-[#CBD6E2]"></div>
           </div>
         </div>
-        <div className=" relative z-[50000] w-[83.33vw] mx-auto  mt-[13px] text-[#FFA28D] ">
+        <div className=" relative z-[50000] w-[90vw] mx-auto  mt-[13px] text-[#FFA28D] ">
           <div className=" relative z-[50000] flex justify-between items-center  translate-y-[15px] mb-[10px]">
             <p className="font-bold uppercase mb-1 text-base-17-5">Tutor Performence Overview </p>
 
@@ -742,7 +743,7 @@ const Dashboard = () => {
           </div>
         </div>
 
-        <section className="mx-auto  w-[83.33vw]">
+        <section className="mx-auto  w-[90vw]">
 
           <Table
             headerWidth="w-[110px] whitespace-normal"
