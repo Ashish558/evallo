@@ -101,10 +101,10 @@ export default function SetPassword({
       <div className="pb-[10px] w-full" >
         <div className="h-[1px] bg-[#EBEBEB] mx-[0px]  mt-[-16px] mb-[19px]"></div>
 
-        <div className={`w-[85%] mx-auto bg-white py-4 ${signup ? "" : "px-5"} `}>
+        <div className={`w-[89%] mx-auto bg-white py-4 ${signup ? "" : "px-5"} `}>
 
           <p className="mb-8 text-center text-lg text-[#26435F]">
-            Congratulations! Your email has been verified. Now,
+            Congratulations! Your email has been verified. Now,<br/>
             please set a strong password for your Evallo account.
           </p>
 
@@ -115,7 +115,7 @@ export default function SetPassword({
               parentClassName="mb-6 relative"
               type="password"
               placeholder="minimum 8 characters"
-              inputContainerClassName="border border-[0.98px_solid_#D0D5DD]"
+              inputContainerClassName="border border-[0.98px_solid_#D0D5DD] !w-[266px] h-[53px]"
               inputClassName={"py-[2px]"}
               label="Set New Password"
               labelClassname="  text-[#26435F]  !font-medium"
@@ -132,7 +132,7 @@ export default function SetPassword({
               type="password"
               inputClassName={"py-[2px]"}
               placeholder="Confirm New Password"
-              inputContainerClassName="border border-[0.98px_solid_#D0D5DD]"
+              inputContainerClassName="border border-[0.98px_solid_#D0D5DD] !w-[266px] h-[53px]"
               label="Confirm New Password"
               labelClassname="  text-[#26435F]  !font-medium"
               value={confirmPassword}
