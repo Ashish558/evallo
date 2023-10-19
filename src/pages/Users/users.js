@@ -1656,7 +1656,7 @@ export default function Users() {
         </div>
         <div className="flex gap-6 items-center relative z-[10]   mt-[23.75px]">
           <div className="ml-6 flex gap-3 items-center">
-            <SCheckbox stopM={true} checked={isChecked} onChange={handleCheckboxChange} />
+            <SCheckbox stopM={true} checked={isChecked} />
             <span className="inline-block text-[17.5px] text-base-17-5 min-w-[70px]">{selectedId?.length} Selected</span>
             {/* <label className={`  text-[#26435F] font-medium flex items-center`}>
               <input
@@ -1843,6 +1843,8 @@ export default function Users() {
             setSelectedId2={setSelectedId}
             data={filteredUsersData}
             onClick={{ redirect, handleTutorStatus, handleDelete }}
+            isTickBoxInsideTableChecked={isChecked}
+            handleCheckboxChange={handleCheckboxChange}
             tableHeaders={tableHeaders}
             headerObject={true}
             maxPageSize={10}
