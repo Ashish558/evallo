@@ -159,6 +159,7 @@ export default function UserSignup() {
 
   const paramUserId = searchParams.get("userid");
   const paramUserRole = searchParams.get("role");
+  // console.log('stepOneDisabled---', stepOneDisabled);
   useEffect(() => {
     if (!paramUserId) return;
     if (!paramUserRole) return;
@@ -653,7 +654,7 @@ export default function UserSignup() {
                       error={error.lastName}
                     />
                   </div>
-                  <div className={`flex  items-end mt-[30px] mb-[29px] justify-between gap-10 ${stepOneDisabled ? 'pointer-events-non cursor-not-allowe' :''}`}>
+                  <div className={`flex  items-end mt-[30px] mb-[29px] justify-between gap-10 ${stepOneDisabled ? 'pointer-events-none cursor-not-allowed' :''}`}>
                     <InputField
                       labelClassname="mb-1 text-[#26435F] !font-medium"
                       label="Email"
