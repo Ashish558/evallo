@@ -314,7 +314,7 @@ export default function OrgDetails({
           />
         </div>
 
-        <div className="flex items-center mt-[53px] mb-[34px] justify-between">
+        <div className="flex items-center mt-[53px] mb-[23px] justify-between">
           <SecondaryButton
             children="Go back"
             className="text-[18.67px]  w-[146px] h-[53px] bg-white text-[#cad0db] border-[1.7px] border-[#D0D5DD] py-2 font-medium"

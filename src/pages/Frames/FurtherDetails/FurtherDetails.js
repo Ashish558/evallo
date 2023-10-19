@@ -87,8 +87,8 @@ export default function FurtherDetails({
   }, []);
 
   return (
-    <div className="!border-t-[1.5px] !border-t-[#EBEBEB] mt-[-23px] pt-8">
-      <div className="mb-4 px-14">
+    <div className="!border-t-[1.5px] !border-t-[#EBEBEB] mt-[-23px] pt-[35px]">
+      <div className="mb-[20px] px-14">
         <div className="flex items-center mb-6  justify-between">
           <InputField
             label="Number Of Active Students"
@@ -125,12 +125,12 @@ export default function FurtherDetails({
             }
           />
         </div>
-        <p className="!border-t-[1.4px] !border-t-[#26435F4D] mt-[-10px]   pt-4 pb-3 mb-1 text-[18.6px] text-[#26435F] tracking-wider font-medium">
-          <span className="pt-4">What services do you provide?</span>
+        <p className="!border-t-[1.4px] !border-t-[#26435F4D]    pt-4 pb-[15px] text-[18.6px] text-[#26435F] tracking-wider font-medium">
+          <span className="">What services do you provide?</span>
         </p>
 
         <div className="flex flex-col mb-6">
-          <div className="">
+          <div className="mb-[9px]">
             <p className="text-[18.6px] mb-[7px] text-[#24A3D9] !font-medium">
               Test Preparation
             </p>
@@ -193,8 +193,8 @@ export default function FurtherDetails({
               })}
             </div>
           </div>
-          <div className="">
-            <p className="text-[18.6px] mt-[7px] mb-[8px] text-[#24A3D9] !font-medium">
+          <div className="mb-[10px]">
+            <p className="text-[18.6px]  mb-[8px] text-[#24A3D9] !font-medium">
               Subject Tutoring
             </p>
             <div className="grid grid-cols-3 font-medium text-[#26435F] grid-flow-row-dense ">
@@ -242,7 +242,7 @@ export default function FurtherDetails({
             </div>
           </div>
           <div className="">
-            <p className="text-[18.6px] mb-[7px] mt-1 text-[#24A3D9] !font-medium">
+            <p className="text-[18.6px] mb-[7px]  text-[#24A3D9] !font-medium">
               Coaching
             </p>
             <div className="grid grid-cols-3  grid-gap-x-5 font-medium text-[#26435F] grid-flow-row-dense relative">
@@ -289,7 +289,7 @@ export default function FurtherDetails({
             </div>
           </div>
         </div>
-        <p className="!border-t-[1.4px] !border-t-[#26435F4D] mt-[-10px]   pt-4 pb-2 text-[18.6px] text-[#26435F] tracking-wider font-medium">
+        <p className="!border-t-[1.4px] !border-t-[#26435F4D] mt-[-10px]   pt-[20px] pb-2 text-[18.6px] text-[#26435F] tracking-wider font-medium">
           Format of instruction
         </p>
 
@@ -325,11 +325,11 @@ export default function FurtherDetails({
             );
           })}
         </div>
-        <p className="!border-t-[1.4px] !border-t-[#26435F4D] mt-[-10px]    pt-4 pb-2 text-[18.6px] text-[#26435F] tracking-wider font-medium">
+        <p className="!border-t-[1.4px] !border-t-[#26435F4D] mt-[-10px]  pt-[20px] pb-2 text-[18.6px] text-[#26435F] tracking-wider font-medium">
           Students Served
         </p>
 
-        <div className="grid grid-cols-2 font-medium text-[#26435F]">
+        <div className="grid grid-cols-2 font-medium text-[#26435F] mb-2">
           {studentserved?.map((item, idx) => {
             return (
               <div key={idx} className="flex items-center mb-3 mr-6">
@@ -361,7 +361,7 @@ export default function FurtherDetails({
           })}
         </div>
 
-        <p className="!border-t-[1.4px] !border-t-[#26435F4D]   mb-3  pt-4  text-[18.6px] text-[#26435F] tracking-wider font-medium">
+        <p className="!border-t-[1.4px] !border-t-[#26435F4D]   mb-[10px]  pt-[20px]  text-[18.6px] text-[#26435F] tracking-wider font-medium">
           How do you currently process your payments?
         </p>
         <InputSelectNew
@@ -381,7 +381,7 @@ export default function FurtherDetails({
         />
       </div>
       <div className="!border-b-[1.4px] !border-b-[#26435F4D] w-[80%] mx-auto"></div>
-      <div className="flex  items-center mt-8 justify-between mb-[45px] ">
+      <div className="flex  items-center mt-8 justify-between mb-[25px] ">
         <SecondaryButton
           children="Go back"
           className="text-[18.67px]  w-[146px] h-[53px] bg-white text-[#cad0db] border-[1.7px] border-[#D0D5DD] py-2 font-medium"
