@@ -95,7 +95,7 @@ export default function FurtherDetails({
             labelClassname="text-[18.6px]"
             biggerText={true}
             placeholder=""
-            parentClassName="w-full max-w-[266px] "
+            parentClassName="w-[268px] "
             inputContainerClassName=" border border-[#D0D5DD] !text-[#667085] h-[53px] rounded-5"
             inputClassName="!text-[#667085]  bg-transparent !text-[18.6px]"
             type="text"
@@ -112,7 +112,7 @@ export default function FurtherDetails({
             labelClassname="text-[18.6px]"
             biggerText={true}
             placeholder=""
-            parentClassName="w-full max-w-[266px] "
+            parentClassName="w-[268px] "
             inputContainerClassName=" border border-[#D0D5DD] !text-[#667085] h-[53px] rounded-5"
             inputClassName="!text-[#667085] bg-transparent !text-[18.6px]"
             type="text"
@@ -384,12 +384,12 @@ export default function FurtherDetails({
       <div className="flex  items-center mt-8 justify-between mb-[25px] ">
         <SecondaryButton
           children="Go back"
-          className="text-[18.67px]  w-[146px] h-[53px] bg-white text-[#cad0db] border-[1.7px] border-[#D0D5DD] py-2 font-medium"
+          className="text-[18.67px]  !py-[12.5px] font-medium !px-[35px] rounded-5 bg-white text-[#cad0db] border-[1.7px] border-[#D0D5DD] "
           onClick={handleBack}
         />
         <PrimaryButton
           children="Next"
-          className={`text-[18.67px] bg-[#FFA28D] disabled:opacity-60 w-[146px] h-[53px]   rounded !text-white  font-medium relative 
+          className={`text-[18.67px] bg-[#FFA28D] disabled:opacity-60 !py-[12.5px] font-medium !px-[51.5px] rounded-5 !text-white   relative 
            
           `}
           onClick={() => handleSubmit()}
