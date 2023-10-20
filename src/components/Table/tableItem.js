@@ -540,7 +540,7 @@ export default function TableItem({
             </div> : "None"}
           </td>
           <td className="font-medium text-[17.5px] px-1  min-w-14 ">
-            <div className="">
+            <div className="cursor-pointer">
               <span style={{ textDecoration: 'underline' }}>edit</span>
             </div>
           </td>

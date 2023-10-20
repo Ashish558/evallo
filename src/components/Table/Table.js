@@ -14,6 +14,8 @@ export default function Table(props) {
   const {
     noArrow,
     dataFor,
+    isChecked,
+    handleCheckboxChange,
     selectedId2,
     testtype,
     extratableitem,

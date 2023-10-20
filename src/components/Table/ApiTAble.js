@@ -12,6 +12,7 @@ export default function ApiTable({
   data,
   tableHeaders,
   maxPageSize,
+  handleCheckboxChange,
   onClick,
   hidePagination,
   handleAllOrgRefetch,
