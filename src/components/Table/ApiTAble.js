@@ -14,6 +14,8 @@ export default function ApiTable({
   maxPageSize,
   onClick,
   hidePagination,
+  isTickBoxInsideTableChecked,
+  handleCheckboxChange,
   handleAllOrgRefetch,
   setMaxPageSize,
   excludes,
@@ -76,8 +78,11 @@ export default function ApiTable({
     if (hidePagination === true) return;
     
   }, [currentPage, data]);
-  const topcheckedHandler = () => {
-   setIsChecked && setIsChecked(!isChecked);
+  const topcheckedHandler = (c) => {
+    console.log("CLicked")
+    console.log(isTickBoxInsideTableChecked)
+    handleCheckboxChange && handleCheckboxChange(c);
+  //  setIsChecked && setIsChecked(!isChecked);
   };
   const setcheckedHeaderHandler = (isChecked) => {
     setcheckedHeader(isChecked);
@@ -99,7 +104,7 @@ export default function ApiTable({
                 <React.Fragment key={idx}>
                 <TableHeaderNew
                   noArrow={noArrow}
-                  checkedHeader={checkedHeader}
+                  checkedHeader={isTickBoxInsideTableChecked}
                   Handler={topcheckedHandler}
                   header={item}
                   key={idx}
