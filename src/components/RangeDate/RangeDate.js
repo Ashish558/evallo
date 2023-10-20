@@ -143,10 +143,10 @@ const RangeDate = ({ removeUnderline, handleRangeData, optionClassName, classNam
 
       <InputSelect
         placeholder="Select"
-        valueClassName={`${removeUnderline ? "" : "font-normal border-b border-b-[#FFA28D]"} `}
+        valueClassName={`${removeUnderline ? "" : "font-normal border-b border-b-[#FFA28D]"} cursor-pointer`}
         parentClassName="border-none text-xs text-[#26435F] w-fit relative z-[500] !text-[calc(17*0.050vw)]"
         labelClassname="text-sm !text-[calc(17*0.050vw)]"
-        inputContainerClassName={`border-none  !text-[calc(17*0.050vw)] whitespace-nowrap font-normal text-[#FFA28D] ${inputContainerClassName}  ${styles["text"]}`}
+        inputContainerClassName={`border-none  !text-[calc(17*0.050vw)] whitespace-nowrap font-normal text-[#FFA28D] ${inputContainerClassName}  ${styles["text"]} `}
         inputClassName={`placeholder:uppercase border-none w-fit bg-transparent font-semibold text-[#FFA28D] !text-[calc(17*0.050vw)]`}
         value={formattedDateRange}
         optionListClassName="text-[#517CA8] underline underline-offset-2"
@@ -201,7 +201,7 @@ const RangeDate = ({ removeUnderline, handleRangeData, optionClassName, classNam
                 <button
                   disabled={!selectDate.eDate || !selectDate.sDate}
                   className={`${!selectDate.eDate || !selectDate.sDate ? "opacity-75 font-normal" : ""
-                    } rounded-[4px] bg-[#FFA28D] py-1 px-4 mt-5 mb-[17px]  text-white hover:shadow-sm hover:scale-105 font-normal`}
+                    } rounded-[4px] bg-[#FFA28D] py-1 px-4 mt-5 mb-[17px]  text-white hover:shadow-sm hover:scale-105 font-normal cursor-pointer`}
                   onClick={handleStartDate}
                 >
                   Submit
