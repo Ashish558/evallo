@@ -339,7 +339,7 @@ const [loading2,setLoading2]=useState(false)
 
    return (
       <>
-         <div className="flex justify-around bg-[#26435F] h-[65px] design:h-[72px] items-center w-full shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)]">
+         <div className={`flex   bg-[#26435F] h-[72px] items-center w-full shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] ${persona=="superAdmin"?"justify-between px-[5%]":"justify-around"}`}>
             <div
                className={`${persona === "superAdmin" ? "translate-x-[-30px]" : ""}`}
             >
@@ -348,7 +348,7 @@ const [loading2,setLoading2]=useState(false)
                </a>
 
             </div>
-            <div className={`flex  text-[#FFFFFF] font-semibold text-[0.9021vw] ${!isLoggedIn && "opacity-[0.3]"}`}>
+            <div className={`flex  text-[#FFFFFF] font-semibold text-[0.9021vw] ${!isLoggedIn && "opacity-[0.3]"} ${persona=="superAdmin"&&" pl-[8.1%]"}`}>
                {navData.map((item, idx) => {
                   return (
                      <div
@@ -386,16 +386,16 @@ const [loading2,setLoading2]=useState(false)
             </div>
             <div className={`flex font-bold ${isLoggedIn ? "" : "opacity-[0.3]"}`}>
              {persona =="parent"||  <div className="cursor-pointer flex mr-[24px] text-[#24A3D9] text-base-16  items-center">
-                  <p className=" text-[16px]">Pricing 	</p>
-                  <p className="pl-4">
+                  <p className=" text-[0.83vw]">Pricing 	</p>
+                  <p className="pl-2">
                      &#36;
                   </p>
                </div>}
                <div className="cursor-pointer flex mr-[24px] text-[#24A3D9] items-center text-base-16 ">
-                  <p className="text-[16px] ">Help</p>
+                  <p className="text-[0.83vw] ">Help</p>
                   <p>
                      <img
-                        className="w-[16px] h-[14px] ml-4"
+                        className="w-[16px] h-[14px] ml-2"
                         style={{ height: "14px" }}
                         src={faQuestionCircle}
                         alt=""
@@ -408,11 +408,11 @@ const [loading2,setLoading2]=useState(false)
                   onClick={() => isLoggedIn && setLogoutModalActive(true)}
                >
                   <div>
-                     <p className="text-[#24A3D9] text-[16px]">Logout</p>
+                     <p className="text-[#24A3D9] text-[0.83vw]">Logout</p>
                   </div>
                   <div>
                      <img
-                        className="w-[16px] h-[14px] ml-4"
+                        className="w-[16px] h-[14px] ml-2"
                         style={{ height: "14px" }}
                         src={logoutIcon}
                         alt=""

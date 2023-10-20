@@ -12,7 +12,7 @@
     top: calc(100% + 3px);
     
     background-color: white;
-    right:0;
+    right:25px;
     border-radius: 15px;
     max-height: 185px;
     overflow-y: auto;
