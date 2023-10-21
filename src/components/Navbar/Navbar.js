@@ -408,7 +408,7 @@ const [loading2,setLoading2]=useState(false)
                   onClick={() => isLoggedIn && setLogoutModalActive(true)}
                >
                   <div>
-                     <p className="text-[#24A3D9] text-[0.83vw]">Logout</p>
+                     <p className="text-[#24A3D9] text-[0.83vw] !font-semibold">Logout</p>
                   </div>
                   <div>
                      <img
