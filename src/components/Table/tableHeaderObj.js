@@ -6,8 +6,8 @@ import styles from "./styles.module.css";
 import SCheckbox from "../CCheckbox/SCheckbox";
 export function TableHeaderNew({ header, checkedHeader, dataFor, Handler, noArrow }) {
   const [flag, setFlag] = useState(header?.className ? header.className.includes('no-arrow') : false)
-  const handleCheckboxChange = () => {
-    Handler();
+  const handleCheckboxChange = (c) => {
+    Handler(c);
   };
 
   return (
@@ -15,14 +15,16 @@ export function TableHeaderNew({ header, checkedHeader, dataFor, Handler, noArro
       className={`px-6 py-[20px] font-medium whitespace-nowrap  text-center  cursor-pointer ${header.className ? header.className : ""
         } ${flag ? styles["no-arrow"] : ''}`}
     >
-      <div className={`flex justify-center ${noArrow ? '' : `${dataFor=="allTests"? styles.markerCustom: (header.willDisplayDownArrow || header.willDisplayDownArrow === undefined) ? styles.marker : styles.upArrow}`}`}
+      <div className={`flex justify-center items-center ${noArrow ? '' : `${dataFor=="allTests"? styles.markerCustom: (header.willDisplayDownArrow || header.willDisplayDownArrow === undefined) ? styles.marker : styles.upArrow}`}`}
       onClick={() =>header.text === "Full Name" && dataFor === 'allUsers'?null: header.onCick && header.onCick()}
       >
         {header.text === "Full Name" && dataFor === 'allUsers' ? (
 
 
 <SCheckbox   checked={checkedHeader}
-              onChange={handleCheckboxChange} />
+              onChange={handleCheckboxChange} 
+              
+              />
           // <label
           //   className={`${styles["checkbox-label"]} block text-[#26435F] font-medium`}
           // >

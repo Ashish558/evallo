@@ -298,7 +298,7 @@ export default function TestDetail() {
             CorrectAnswer: modalData.correctAnswer,
             Concepts: modalData.concept,
             Strategies: modalData.strategy,
-            AnswerChoices: 'A,B,C,D',
+            AnswerChoices:(testData.testType!=='DSAT'? modalData.AnswerChoices:'A,B,C,D'),
             QuestionText: modalData.question,
             QuestionImageUrl:questionImageBase64,
             ...(testData.testType==='DSAT'?{QuestionImage: extratableitem[modalData.QuestionNumber-1]?.QImage}:{}),

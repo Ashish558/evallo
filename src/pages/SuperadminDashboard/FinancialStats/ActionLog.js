@@ -107,7 +107,7 @@ function ActionLog({ dateRange }) {
     headerDate = temp;
   }
   return (
-    <div className="w-[51.5625vw]">
+    <div className="w-[53.5vw]">
       <h2 className="font-semibold mb-1 text-[#26435F]">Action Log</h2>
 
       <div
@@ -125,7 +125,7 @@ function ActionLog({ dateRange }) {
         <ul
          
           onScroll={handleScroll}
-          className="list-disc max-h-[390.33px] overflow-y-scroll !scroll-my-4  custom-scroller rounded-b-md "
+          className="list-disc max-h-[397px] overflow-y-scroll !scroll-my-4  custom-scroller rounded-b-md "
         >
           {sortedAction?.map((item, index) => (
             <div key={index} className="flex ml-2 h-[57px] pl-5 relative">

@@ -15,6 +15,7 @@ export default function ApiTable({
   handleCheckboxChange,
   onClick,
   hidePagination,
+  isTickBoxInsideTableChecked,
   handleAllOrgRefetch,
   setMaxPageSize,
   excludes,
@@ -78,7 +79,7 @@ export default function ApiTable({
     
   }, [currentPage, data]);
   const topcheckedHandler = () => {
-   setIsChecked && setIsChecked(!isChecked);
+    setIsChecked && setIsChecked(!isChecked);
   };
   const setcheckedHeaderHandler = (isChecked) => {
     setcheckedHeader(isChecked);

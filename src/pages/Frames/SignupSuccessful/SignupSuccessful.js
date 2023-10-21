@@ -59,8 +59,8 @@ export default function SignupSuccessful({
 
   return (
     <div className="">
-      <div className="mb-[44px] hidden lg:block ">
-        <div className='h-[1px] bg-[#EBEBEB] mt-[-20px] mx-[6px] w-full mb-[50px]'>
+      <div className="mb-[47px] hidden lg:block ">
+        <div className='h-[1px] bg-[#EBEBEB] mt-[-20px] mx-[6px] w-full mb-[60px]'>
 
         </div>
         <div>

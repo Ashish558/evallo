@@ -396,16 +396,16 @@ export default function TableItem({
 
           <td className=" text-[17.5px] px-1  min-w-14   text-left">
             <span
-              className="inline-block cursor-pointer pl-4"
+              className="inline-block cursor-pointer pl-4 pt-[6px]"
 
             >
               <div className="flex items-center">
                 {dataFor === "allUsers" ? (
 
 
-                  <SCheckbox checked={isChecked}
-                    stopM={true}
-                    onChange={() => handleSelect(item, "_id")} />
+                 <div className="pt-[3px]"> <SCheckbox checked={isChecked}
+                 stopM={true}
+                 onChange={() => handleSelect(item, "_id")} /></div>
                   // <label
                   //   className={`${styles["checkbox-label"]} block text-[#26435F] `}
                   // >
@@ -423,7 +423,7 @@ export default function TableItem({
                 ) : (
                   ""
                 )}
-                <span onClick={() => onClick.redirect(item)} className="capitalize">
+                <span onClick={() => onClick.redirect(item)} className="capitalize whitespace-nowrap overflow-hidden text-ellipsis w-[100px]">
                   {item.name}
                 </span>
               </div>
@@ -439,8 +439,8 @@ export default function TableItem({
           <td className=" text-[17.5px] px-1  min-w-14  capitalize">
             <div className="my-[6px]">{item.phoneCode}{item.phone}</div>
           </td>
-          <td className=" text-[17.5px] px-1  min-w-14  capitalize">
-            <div className="my-[6px]">
+          <td className=" text-[17.5px] px-1  min-w-14  capitalize flex justify-center">
+            <div className="my-[6px] whitespace-nowrap overflow-hidden text-ellipsis w-[100px] ">
               {item.assignedTutor?.length > 0
                 ? item.assignedTutor?.map((id, idx) => {
                   const name = extraData.find((item) => item._id === id);
