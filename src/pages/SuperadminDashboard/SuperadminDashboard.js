@@ -178,7 +178,7 @@ function SuperadminDashboard() {
     <div className={styles.container}>
       <div className=" mt-[34px] bg-#2E2E2E mx-auto pb-7 w-[88.59vw]">
         <div className="flex justify-between">
-        <p className="text-[#24A3D9] text-[21px]">Dashboard</p>
+        <p className="text-[#24A3D9] text-base-20">Dashboard</p>
       
         <RangeDate super={true} handleRangeData={handleDataRange} />
         </div>
