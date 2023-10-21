@@ -1313,10 +1313,21 @@ export default function Users() {
   const [SaveBulkModalActive, setSaveBulkModalActive] = useState(false)
   const [saveSelectLoading, setSaveSelectLoading] = useState(false)
   const [showTooltip, setTooltip] = useState(false)
+  const [ adminSelectedForDelete,setAdminSelectedForDelete] = useState(false)
   useEffect(() => {
     if (selectedId?.length === 0)
       setBulkEdits({})
+    setAdminSelectedForDelete(false)
+    if(selectedId?.length>0){
+       
+        let check=selectedId?.find((it)=>it?.userType==="admin")
+        setAdminSelectedForDelete(check?true:false)
+        
+    }
   }, [selectedId])
+  console.log("selected ",selectedId,adminSelectedForDelete)
+
+
 
   const numberKey = Object.keys(bulkEdits)?.length > 0
 
@@ -1823,7 +1834,7 @@ export default function Users() {
                 </div>
               </span>
             </button>
-            <button disabled={selectedId?.length === 0 ? true : false} onClick={() => selectedId?.length > 0 && setDeleteBulkModalActive(true)} className={`bg-[#FF7979] opacity-100 flex items-center gap-2 px-[20px] tracking-wider font-semibold py-[10px] rounded-[5px] text-white  text-base-17-5 ${selectedId?.length === 0 ? "opacity-75" : ""} `}>
+            <button disabled={selectedId?.length === 0||adminSelectedForDelete ? true : false} onClick={() => selectedId?.length > 0 && setDeleteBulkModalActive(true)} className={`bg-[#FF7979] opacity-100 flex items-center gap-2 px-[20px] tracking-wider font-semibold py-[10px] rounded-[5px] text-white  text-base-17-5 ${selectedId?.length === 0 ||adminSelectedForDelete? "opacity-75 cursor-not-allowed" : ""} `}>
               <span>
                 <img
                   src={DeleteIcon2}

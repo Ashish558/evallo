@@ -557,7 +557,7 @@ export default function TableItem({
 
 
           <td className=" px-1 min-w-14 py-4">
-            {item.userType !== "admin" ? (
+            {(item.userType !== "admin"&&item.userType !== "superAdmin"&&item.userType !== "superadmin") ? (
               <div className=" flex items-center justify-center">
                 <img
                   src={TrashIcon2}
