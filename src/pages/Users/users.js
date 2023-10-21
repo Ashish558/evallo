@@ -933,7 +933,7 @@ export default function Users() {
   const [isChecked, setIsChecked] = useState(false);
 
 
-  const handleCheckboxChange = () => {
+  const handleCheckboxChange = (e) => {
     if (!isChecked) {
       let data = filteredUsersData
       data = data?.slice(0, maxPageSize)
@@ -1667,7 +1667,7 @@ export default function Users() {
         </div>
         <div className="flex gap-6 items-center relative z-[10]   mt-[23.75px]">
           <div className="ml-6 flex gap-3 items-center">
-            <SCheckbox stopM={true} checked={isChecked} />
+            <SCheckbox stopM={true} checked={selectedId.length>0} />
             <span className="inline-block text-[17.5px] text-base-17-5 min-w-[70px]">{selectedId?.length} Selected</span>
             {/* <label className={`  text-[#26435F] font-medium flex items-center`}>
               <input
@@ -1848,18 +1848,18 @@ export default function Users() {
         </div>
 
         <div className="mt-6">
+          {console.log(tableHeaders)}
           <Table
             dataFor="allUsers"
             selectedId2={selectedId}
             setSelectedId2={setSelectedId}
             data={filteredUsersData}
             onClick={{ redirect, handleTutorStatus, handleDelete }}
-            isTickBoxInsideTableChecked={isChecked}
-            handleCheckboxChange={handleCheckboxChange}
+            setIsChecked={handleCheckboxChange}
             tableHeaders={tableHeaders}
             headerObject={true}
             maxPageSize={10}
-
+            isChecked={isChecked}
             isCallingApi={true}
 
             total_pages={Math.ceil(totalPages / maxPageSize)}

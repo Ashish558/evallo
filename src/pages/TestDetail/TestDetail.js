@@ -290,7 +290,7 @@ export default function TestDetail() {
             indx = i;
          }
       })
-      console.log(indx);
+      console.log(testData.testType);
       const body = {
          subject: subjects[indx].name,
          Qno: modalData.QuestionNumber,
@@ -298,33 +298,33 @@ export default function TestDetail() {
             CorrectAnswer: modalData.correctAnswer,
             Concepts: modalData.concept,
             Strategies: modalData.strategy,
-            AnswerChoices: 'A,B,C,D',
+            AnswerChoices:(testData.testType!=='DSAT'? modalData.AnswerChoices:'A,B,C,D'),
             QuestionText: modalData.question,
             QuestionImageUrl:questionImageBase64,
-            QuestionImage: extratableitem[modalData.QuestionNumber-1].QImage,
+            ...(testData.testType==='DSAT'?{QuestionImage: extratableitem[modalData.QuestionNumber-1]?.QImage}:{}),
             QuestionType: modalData.questionType,
-            AnswerImage:extratableitem[modalData.QuestionNumber-1].AImage,
+            ...(testData.testType==='DSAT'?{AnswerImage:extratableitem[modalData.QuestionNumber-1]?.AImage}:{}),
             //AnswerChoices:'a,b,c,d',
             Answers: [
                {
                   label: 'A',
                   text: options[0],
-                  ...(optionAImageBase64 !== undefined && optionAImageBase64 !== null ? { image: optionAImageBase64 } : {})
+                  ...(testData.testType==='DSAT'&&optionAImageBase64 !== undefined && optionAImageBase64 !== null ? { image: optionAImageBase64 } : {})
                },
                {
                   label: 'B',
                   text: options[1],
-                  ...(optionBImageBase64 !== undefined && optionBImageBase64 !== null ? { image: optionBImageBase64 } : {})
+                  ...(testData.testType==='DSAT'&&optionBImageBase64 !== undefined && optionBImageBase64 !== null ? { image: optionBImageBase64 } : {})
                },
                {
                   label: 'C',
                   text: options[2],
-                  ...(optionCImageBase64 !== undefined && optionCImageBase64 !== null ? { image: optionCImageBase64 } : {})
+                  ...(testData.testType==='DSAT'&&optionCImageBase64 !== undefined && optionCImageBase64 !== null ? { image: optionCImageBase64 } : {})
                },
                {
                   label: 'D',
                   text: options[3],
-                  ...(optionDImageBase64 !== undefined && optionDImageBase64 !== null ? { image: optionDImageBase64 } : {})
+                  ...(testData.testType==='DSAT'&&optionDImageBase64 !== undefined && optionDImageBase64 !== null ? { image: optionDImageBase64 } : {})
                },
             ],
             PassageData: modalData.richTextContent,

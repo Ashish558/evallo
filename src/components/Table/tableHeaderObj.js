@@ -15,8 +15,8 @@ export function TableHeaderNew({ header, checkedHeader, dataFor, Handler, noArro
       className={`px-6 py-[20px] font-medium whitespace-nowrap  text-center  cursor-pointer ${header.className ? header.className : ""
         } ${flag ? styles["no-arrow"] : ''}`}
     >
-      <div className={`flex justify-center ${noArrow ? '' : `${dataFor=="allTests"? styles.markerCustom: (header.willDisplayDownArrow || header.willDisplayDownArrow === undefined) ? styles.marker : styles.upArrow}`}`}
-        onClick={() => { header.onCick && header.onCick()}}
+      <div className={`flex justify-center items-center ${noArrow ? '' : `${dataFor=="allTests"? styles.markerCustom: (header.willDisplayDownArrow || header.willDisplayDownArrow === undefined) ? styles.marker : styles.upArrow}`}`}
+      onClick={() =>header.text === "Full Name" && dataFor === 'allUsers'?null: header.onCick && header.onCick()}
       >
         {header.text === "Full Name" && dataFor === 'allUsers' ? (
 
@@ -42,9 +42,17 @@ export function TableHeaderNew({ header, checkedHeader, dataFor, Handler, noArro
         ) : (
           ""
         )}
-        <span className="text-center text-[17.5px]">
-          {header.text}
-        </span>
+         {header.text === "Full Name" && dataFor === 'allUsers' ?
+          <div onClick={() =>header.onCick && header.onCick()}>
+            <span className="text-center text-[17.5px]">
+                      {header.text}
+                    </span>
+            </div>
+         :
+         <span className="text-center text-[17.5px]">
+         {header.text}
+       </span>
+}
       </div>
     </th>
   );
