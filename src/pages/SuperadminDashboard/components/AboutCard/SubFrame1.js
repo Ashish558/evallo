@@ -78,6 +78,19 @@ const SubFrame2 = ({id}) => {
     setSortedAction(newarr);
   }, [actionLog]);
 
+  function extractDateComponents(dateString) {
+    const date = new Date(dateString);
+
+    const day = date.getDate();
+    
+    const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    const monthName = monthNames[date.getMonth()];  // Using the month number to get the month name
+
+    const year = date.getFullYear();
+
+    return   monthName+". "+day+", "+ year ;
+}
+
   return (
     <div>
       {" "}
@@ -88,9 +101,9 @@ const SubFrame2 = ({id}) => {
             //   <span className="mr-4 text-gray-500">{item.slice(0, 12)}</span>
             //   <span>{item.slice(12)}</span>
             // </li>
-            <div key={index} className="flex ml-2 h-[57px] pl-5 relative">
-              <p className="text-[#4A556C] pt-5 font-medium text-xs mr-6 w-[80px]">
-              {new Date(item.createdAt).toLocaleTimeString()}
+            <div key={index} className="flex ml-2 pl-5 relative">
+              <p className="text-[#4A556C] pt-5 font-medium text-xs mr-6 w-[100px]">
+              {extractDateComponents(item.createdAt)+" "+new Date(item.createdAt).toLocaleTimeString()}
               {item.topDate && (
                     <span className="text-xs ml-2 top-0 text-[#FFA28D] absolute z-5000 backdrop-blur-sm ">
                       {" "}

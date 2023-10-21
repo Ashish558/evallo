@@ -75,7 +75,7 @@ const SPFrame2 = ({
   return (
     <div>
       {" "}
-      <div className="flex mt-7 justify-between gap-5 design:gap-10">
+      <div className="flex mt-0 justify-between gap-5 design:gap-10">
         <div className="flex-1 h-[200px] design:h-[230px] gap-7  flex flex-col">
           <div className="flex-1  flex justify-between">
             <p className=" text-sm text-[#26435F] font-semibold text-base-20">

@@ -1930,9 +1930,24 @@ export default function Settings() {
             />
             <div className="flex items-center pb-2 text-[#26435F] font-medium text-xl text-base-20">
               <p className="pr-2">Set Permissions </p>
+              <div className="group relative">
               <p>
-                <img src={questionMark} alt="" />
+                <img src={questionMark} alt="" onClick={()=>{console.log("set perm tool tip")}} />
               </p>
+
+              <span className="absolute  -top-10 left-10 z-20 w-[333px]  scale-0 rounded-[13px] bg-[rgba(0,0,0,0.80)] text-white group-hover:scale-100 whitespace-normal py-5 px-3">
+                <h3 className="text-[#24A3D9] text-[0.83vw] py-1 font-medium mb-1">
+                  Set Permissions
+                </h3>
+                <span className="font-light leading-[0.5px] text-[0.69vw]">
+                  Here, you can select Viewing, Editing or Deleting 
+                  permissions for various users. Use the toggles 
+                  below to select these permissions for specific 
+                  items related to specific users. By default, we 
+                  have set some these up for you.
+                </span>
+              </span>
+              </div>
             </div>
 
             <div

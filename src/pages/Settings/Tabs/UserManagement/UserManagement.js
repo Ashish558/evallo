@@ -34,7 +34,7 @@ import { isPhoneNumber } from "../../../Signup/utils/util";
 import { checkIfExistInNestedArray } from "../../../../utils/utils";
 import InputSelectNew from "../../../../components/InputSelectNew/InputSelectNew";
 import { useSelector } from "react-redux";
-import { useAddManager2Mutation } from "../../../../app/services/superAdmin";
+import { useAddManager2Mutation, useDeleteManagerMutation } from "../../../../app/services/superAdmin";
 
 const optionData = ["option 1", "option 2", "option 3", "option 4", "option 5"];
 
@@ -564,14 +564,17 @@ export default function UserManagement() {
   };
 
   const handleDelete = (item) => {
-    console.log(item);
+    console.log("delete",item,userToDelete);
+    if(item?.userType==="manager"  ){
     setUserToDelete(item);
     setDeleteModalActive(true);
+    }
   };
-
+const [deleteManager,deleteManagerStatus]=useDeleteManagerMutation()
   const onDelete = () => {
     setDeleteLoading(true);
-    deleteUser(userToDelete._id).then((res) => {
+    deleteManager({id:userToDelete._id}).then((res) => {
+      console.log("deleteManager response: " , res);
       setDeleteLoading(false);
       setDeleteModalActive(false);
       if (res.error) {
@@ -791,7 +794,7 @@ export default function UserManagement() {
                 </div>
                 <div className='flex items-center justify-center gap-4'>
 
-                  <button className="rounded-lg bg-transparent border-2 border-[#FFA28D] py-2 text-[#FFA28D]  w-[146px]" onClick={handleSubmit} disabled={addUserBtnDisabled}>Invite User</button>
+                  <button className="rounded-lg bg-transparent border-2 border-[#FFA28D] py-2 text-[#FFA28D]  w-[146px]" onClick={handleSubmit} disabled={addUserBtnDisabled||loading}>{loading?"Inviting...":"Invite User"}</button>
                   <button onClick={(e) => { e.preventDefault(); handleClose() }} className="rounded-lg bg-[#FFA28D] border-2 border-[#FFA28D] py-2 text-[#FFFFFF] w-[146px]">Cancel</button>
                 </div>
               </form>

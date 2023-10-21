@@ -14,6 +14,7 @@ export default function Table(props) {
   const {
     noArrow,
     dataFor,
+    isChecked,
     selectedId2,
     testtype,
     extratableitem,
@@ -31,6 +32,8 @@ export default function Table(props) {
     headerObject,
     extraData,
     changePageAfterUpdate,
+    isTickBoxInsideTableChecked,
+    handleCheckboxChange,
     loading,
     AdminLatestSignUp,
     headerWidth,

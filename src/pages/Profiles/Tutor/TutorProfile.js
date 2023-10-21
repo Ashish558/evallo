@@ -1049,8 +1049,7 @@ export default function TutorProfile({ isOwn }) {
                         <div class="flex h-full mx-auto mt-8  max-w-[80%]  items-center justify-center">
                           <div class="text-[#517CA8]">
                             <p class="mb-4 text-md font-semibold text-base-20">Use this space to add a YouTube video highlighting the tutor or your company.</p>
-
-                            <button
+                         {persona=="student" ||  <button
                               type="button"
                               class="rounded-md bg-[#FFA28D] p-2 px-4 text-white text-base-17-5"
                               data-te-ripple-init
@@ -1064,7 +1063,7 @@ export default function TutorProfile({ isOwn }) {
                               data-te-ripple-color="light">
 
                               + Add Highlight Video
-                            </button>
+                            </button>}                           
                           </div>
                         </div>
                       </div>
@@ -1349,7 +1348,7 @@ export default function TutorProfile({ isOwn }) {
                         <div className="flex justify-between px-7 pt-[25px] pb-[24px]">
                           <div className="">
                             <div className="text-[#24A3D9] font-semibold text-[15.002px] text-base-20">
-                              Street Adress
+                              Street Address
                             </div>
                             <div className="text-[#517CA8] font-normal text-[17.503px] text-base-17-5">
                               {userDetail.address}

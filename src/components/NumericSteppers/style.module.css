@@ -7,12 +7,12 @@
 .line::before {
   content: "";
   position: absolute;
-  right: -100px;
+  right: -140px;
   top: 50%;
   margin-top:-15px;
   transform: translateY(-50%);
-  width:100px;
-  height: 1px;
+  width:140px;
+  height: 1.33px;
   background-color: #B3BDC7;
   z-index: -99;
 }
@@ -37,20 +37,14 @@
 .line2::before {
   content: "";
   position: absolute;
-  right: -185px;
+  right: -240px;
   top: 50%;
   margin-top:-15px;
   transform: translateY(-50%);
-  width:185px;
+  width:240px;
   height: 1px;
   background-color: #B3BDC7;
   z-index: -99;
-}
-@media (min-width: 1920px) {
-  .line2::before {
-    right: -270px;
-    width:270px;
-  }
 }
 .line2:nth-last-child(1) {
   margin-right: 0;
@@ -87,13 +81,6 @@
 .line5::before {
   content: none;
   display:none;
-  position: absolute;
-  right: -185px;
-  top: 50%;
-  margin-top:-15px;
-  transform: translateY(-50%);
-  width:185px;
-  height: 1px;
-  background-color: #B3BDC7;
-  z-index: -99;
+
+  
 }

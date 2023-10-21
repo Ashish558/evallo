@@ -111,6 +111,7 @@ const BubbleChart = ({ dateRange }) => {
         <Scatter
            data={chartData ? chartData : bubbleChartData}
          // data={chartData}
+         height={460}
           options={{
             responsive: true,
             maintainAspectRatio: false,
@@ -212,14 +213,13 @@ const BubbleChart = ({ dateRange }) => {
               fontSize: 20,
             },
           }}
-          height={500}
         />
       </div>
       <div className="absolute bottom-[7%] flex items-center font-medium text-lg left-[7%] text-[#507CA8]">
         <div className="bg-[rgba(38,67,95,1)] w-[40px] h-[11px] mr-[13px]"></div>
         <p>past {dayDifference?dayDifference+2:dayDifference} days</p>
       </div>
-      <div className="absolute bottom-[60px] left-[49%]">
+      <div className="absolute bottom-[60px] left-[51%]">
         <img src={arrow} alt="" />
       </div>
       <div className="absolute top-[44.7%] left-[40px] design:top-[47%]">

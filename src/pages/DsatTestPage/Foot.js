@@ -124,11 +124,12 @@ export default function Foot(props) {
     {btnloader?
     <div className='max-w-1/2 relative flex justify-center items-center h-full'>
     <Modal
-    classname="max-w-[880px] mx-auto "
-    title="Are you sure you want to Submit the section?"
+             classname="max-w-[700px] mx-auto"
+             title="Are you sure you want to Submit the section?"
     titleClassName='mr-4  mb-4'
     primaryBtn={
-       { text: "Submit", className: "bg-black border ml-0", onClick: handleSubmitSection}
+       { text: "Submit",className: "bg-[#FF7979] w-[146.67px] h-[46.67px] ml-0",
+       onClick: handleSubmitSection}
     }
     handleClose={() => setbtnloader(false)}
  /></div>:null
