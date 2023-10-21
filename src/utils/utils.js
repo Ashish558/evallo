@@ -59,8 +59,13 @@ export const getCheckedString = (arr) => {
 };
 
 export const getFormattedDate = (argDate, format) => {
-  const date = new Date(argDate);
   if (argDate === undefined) return "-";
+  let date = new Date(argDate);
+  const offset = date.getTimezoneOffset() * 60000;
+  if (offset > 0) {
+    // startDate = startDate + offset
+    date = new Date(date.getTime() + offset);
+  }
   let year = date.getFullYear();
   let month = date.getMonth();
   let dateNum = date.getDate();
