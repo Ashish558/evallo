@@ -40,6 +40,7 @@ export default function UserSignup() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const [stepOneDisabled, setStepOneDisabled] = useState(false)
+  const [phoneDisabled, setPhoneDisabled] = useState(false)
   const [stepTwoDisabled, setStepTwoDisabled] = useState(false)
 
   const [values, setValues] = useState({
@@ -190,8 +191,11 @@ export default function UserSignup() {
             phoneCode
           };
         });
-        if(phone){
+        if(email){
           setStepOneDisabled(true)
+        }
+        if(phone){
+          setPhoneDisabled(true)
         }
         getUserDetail({ id: paramUserId }).then((res) => {
           console.log('detail res----', res.data.data);
@@ -654,14 +658,14 @@ export default function UserSignup() {
                       error={error.lastName}
                     />
                   </div>
-                  <div className={`flex  items-end mt-[30px] mb-[29px] justify-between gap-10 ${stepOneDisabled ? 'pointer-events-none cursor-not-allowed' :''}`}>
+                  <div className={`flex  items-end mt-[30px] mb-[29px] justify-between gap-10 `}>
                     <InputField
                       labelClassname="mb-1 text-[#26435F] !font-medium"
                       label="Email"
                       placeholder=""
                       inputClassName={"h-[52.5px]"}
                       inputContainerClassName="text-base-17-5  bg-white   border border-[#D0D5DD] h-[53px]"
-                      parentClassName=" text-base-17-5  w-full"
+                      parentClassName={`text-base-17-5  w-full ${stepOneDisabled ? 'pointer-events-none cursor-not-allowed' :''}`}
                       value={values.email}
                       onChange={(e) =>
                         setValues({
@@ -675,7 +679,7 @@ export default function UserSignup() {
                     <InputFieldDropdown
                       placeholder=""
                       inputContainerClassName="text-base-17-5  bg-white h-[53px]  border border-[#D0D5DD]"
-                      parentClassName="text-base-17-5 w-[85%]"
+                      parentClassName={`text-base-17-5 w-[85%] ${phoneDisabled ? 'pointer-events-none cursor-not-allowed' :''} `}
                       inputClassName="  bg-transparent text-400 text-base-17-5 h-[52.5px]"
                       labelClassname="mb-1 text-[#26435F]  !font-medium text-[#26435F] design:mb-2"
                       label="Phone"
