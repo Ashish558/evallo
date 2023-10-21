@@ -314,15 +314,15 @@ export default function OrgDetails({
           />
         </div>
 
-        <div className="flex items-center mt-[53px] mb-[34px] justify-between">
+        <div className="flex items-center mt-[53px] mb-[23px] justify-between">
           <SecondaryButton
             children="Go back"
-            className="text-[18.67px]  w-[146px] h-[53px] bg-white text-[#cad0db] border-[1.7px] border-[#D0D5DD] py-2 font-medium"
+            className="text-[18.67px] !py-[12.5px] font-medium !px-[35px] bg-white text-[#cad0db] border-[1.7px] border-[#D0D5DD] rounded-5"
             onClick={handleBack}
           />
           <PrimaryButton
             children="Next"
-            className={` flex justify-center bg-[#FFA28D] disabled:opacity-70  py-[2px] rounded text-white text-[18.67px]  w-[146px] h-[53px] font-medium relative 
+            className={` flex justify-center bg-[#FFA28D] disabled:opacity-70    text-white text-[18.67px]  !py-[12.5px]  !px-[51.5px] rounded-5 font-medium relative 
            
             `}
             onClick={() => handleSubmit()}

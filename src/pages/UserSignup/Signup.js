@@ -664,7 +664,7 @@ export default function UserSignup() {
                       label="Email"
                       placeholder=""
                       inputClassName={"h-[52.5px]"}
-                      inputContainerClassName="text-base-17-5  bg-white   border border-[#D0D5DD] h-[53px]"
+                      inputContainerClassName="text-[17.5px]  bg-white   border border-[#D0D5DD] h-[53px] w-full"
                       parentClassName={`text-base-17-5  w-full ${stepOneDisabled ? 'pointer-events-none cursor-not-allowed' :''}`}
                       value={values.email}
                       onChange={(e) =>
@@ -677,11 +677,12 @@ export default function UserSignup() {
                       error={error.email}
                     />
                     <InputFieldDropdown
+                      biggerText={true}
                       placeholder=""
-                      inputContainerClassName="text-base-17-5  bg-white h-[53px]  border border-[#D0D5DD]"
+                      inputClassName=" bg-transparent  text-[17.5px] h-[52.5px]"
+                      inputContainerClassName="text-[17.5px]  bg-white h-[52.5px]  border border-[#D0D5DD] w-full"
                       parentClassName={`text-base-17-5 w-[85%] ${phoneDisabled ? 'pointer-events-none cursor-not-allowed' :''} `}
-                      inputClassName="  bg-transparent text-400 text-base-17-5 h-[52.5px]"
-                      labelClassname="mb-1 text-[#26435F]  !font-medium text-[#26435F] design:mb-2"
+                      labelClassname="mb-1 text-[#26435F]  !font-medium text-[#26435F] "
                       label="Phone"
                       codeClassName="!min-w-[40px] "
                       value={values.phone}

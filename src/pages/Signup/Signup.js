@@ -658,7 +658,7 @@ export default function Signup() {
                     Please fill your detail to create your account.
                   </p> */}
                   <div
-                    className={`flex mt-[59px] justify-between lg:mt-1 ${styles.inputs}`}
+                    className={`flex mt-[37px] justify-between  ${styles.inputs}`}
                   >
                     <InputField
                       placeholder=""
@@ -721,7 +721,8 @@ export default function Signup() {
                       placeholder=""
                       parentClassName="text-md w-4/5 ml-8 "
                       biggerText={true}
-                      arrowClassName='w-[10px] h-[5px] pl-1'
+                      
+                      ArrowFlipVertically={true}
                       labelClassname="!text-[18.67px] text-[#26435F] font-semibold"
                       inputContainerClassName=" border border-[#D0D5DD] rounded-md py-[9px] h-[53px] text-md"
                       label="Phone"
@@ -763,7 +764,7 @@ export default function Signup() {
                     totalErrors={error}
                     error={error.company}
                   />
-                  <p className="text-[18.67px]  font-medium mb-4 text-[#26435F]">
+                  <p className="text-[18.67px]  font-medium mb-[18px] text-[#26435F]">
                     {" "}
                     Registering as{" "}
                   </p>
@@ -868,14 +869,14 @@ export default function Signup() {
                       .
                     </p>
                   </div>
-                  <div className="flex items-center mt-[60px] mb-[49px] justify-between">
+                  <div className="flex items-center mt-[50px] mb-[34px] justify-between">
                     <SecondaryButton
                       children="Go back"
-                      className="text-[18.67px] mr-6 w-[146px] h-[53px] bg-white text-[#cad0db] border-[1.7px] border-[#D0D5DD] py-2 font-medium"
+                      className="text-[18.67px] mr-6 !py-[12.5px] font-medium !px-[35px] bg-white text-[#cad0db] border-[1.7px] border-[#D0D5DD]  !rounded-5"
                       onClick={handleBack}
                     />
                     <PrimaryButton
-                      className={` flex w-[146px] h-[53px] justify-center  bg-[#FFA28D]  disabled:opacity-60   rounded text-white text-[18.67px] font-medium relative py-[2px] ${loading
+                      className={` flex !py-[12.5px] font-medium !px-[51.5px] justify-center  bg-[#FFA28D]  disabled:opacity-60   !rounded-5 text-white text-[18.67px]  ${loading
                         ? "cursor-wait opacity-60 pointer-events-none"
                         : "cursor-pointer"
                         } 

@@ -40,7 +40,7 @@ export default function InputFieldDropdown({
   onBlur,
   studentCode,
   arrowClassName,
-
+  ArrowFlipVertically
 }) {
   const [inputType, setInputType] = useState(type);
 
@@ -103,7 +103,7 @@ export default function InputFieldDropdown({
   return (
     <div className={`relative text-sm ${parentClassName && parentClassName} `}>
       {label && (
-        <label className={`inline-block font-semibold ${biggerText ? "text-sm" : "text-base-17-5"}  ${labelClassname} ml-0 `}>
+        <label className={`inline-block font-semibold ${biggerText ? "text-lg" : "text-base-17-5"}  ${labelClassname} ml-0 `}>
           {label}
           {required && (
             <span className="text-primaryRed inline-block pl-1">*</span>
@@ -135,7 +135,7 @@ export default function InputFieldDropdown({
             </span>}
 
 
-            <img src={toggleOptions ? upArrow : downArrow} className={`inline-block   ${arrowClassName ? arrowClassName : "h-3 w-3"}`} alt="down" />
+            <img src={toggleOptions ? downArrow : downArrow} className={`inline-block ${toggleOptions ? 'transform -scale-y-100' : ''}  ${arrowClassName ? arrowClassName : "h-3 w-3"}`} alt="down" />
           </div>
 
           <div

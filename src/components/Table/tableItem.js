@@ -396,16 +396,16 @@ export default function TableItem({
 
           <td className=" text-[17.5px] px-1  min-w-14   text-left">
             <span
-              className="inline-block cursor-pointer pl-4"
+              className="inline-block cursor-pointer pl-4 pt-[6px]"
 
             >
               <div className="flex items-center">
                 {dataFor === "allUsers" ? (
 
 
-                  <SCheckbox checked={isChecked}
-                    stopM={true}
-                    onChange={() => handleSelect(item, "_id")} />
+                 <div className="pt-[3px]"> <SCheckbox checked={isChecked}
+                 stopM={true}
+                 onChange={() => handleSelect(item, "_id")} /></div>
                   // <label
                   //   className={`${styles["checkbox-label"]} block text-[#26435F] `}
                   // >
@@ -423,7 +423,7 @@ export default function TableItem({
                 ) : (
                   ""
                 )}
-                <span onClick={() => onClick.redirect(item)} className="capitalize">
+                <span onClick={() => onClick.redirect(item)} className="capitalize whitespace-nowrap overflow-hidden text-ellipsis w-[100px]">
                   {item.name}
                 </span>
               </div>
@@ -439,8 +439,8 @@ export default function TableItem({
           <td className=" text-[17.5px] px-1  min-w-14  capitalize">
             <div className="my-[6px]">{item.phoneCode}{item.phone}</div>
           </td>
-          <td className=" text-[17.5px] px-1  min-w-14  capitalize">
-            <div className="my-[6px]">
+          <td className=" text-[17.5px] px-1  min-w-14  capitalize flex justify-center">
+            <div className="my-[6px] whitespace-nowrap overflow-hidden text-ellipsis w-[100px] ">
               {item.assignedTutor?.length > 0
                 ? item.assignedTutor?.map((id, idx) => {
                   const name = extraData.find((item) => item._id === id);
@@ -540,7 +540,7 @@ export default function TableItem({
             </div> : "None"}
           </td>
           <td className="font-medium text-[17.5px] px-1  min-w-14 ">
-            <div className="">
+            <div className="cursor-pointer">
               <span style={{ textDecoration: 'underline' }}>edit</span>
             </div>
           </td>
@@ -557,7 +557,7 @@ export default function TableItem({
 
 
           <td className=" px-1 min-w-14 py-4">
-            {item.userType !== "admin" ? (
+            {(item.userType !== "admin"&&item.userType !== "superAdmin"&&item.userType !== "superadmin") ? (
               <div className=" flex items-center justify-center">
                 <img
                   src={TrashIcon2}
