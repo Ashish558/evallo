@@ -212,7 +212,7 @@ email: "Email not verified! Please Verify your email and set your password"
                   }}
                 />
                 <div className="flex justify-between items-center">
-                  <div className="flex items-center justify-center">
+                  <div className="flex items-center justify-center -ml-[3px]">
                     <CCheckbox
                     className="scale-[0.8]"
                       checked={remember}
@@ -246,17 +246,16 @@ email: "Email not verified! Please Verify your email and set your password"
                 </div>
                 <div className="flex justify-center mt-[19px] pb-4">
                 <p
-                  className={`cursor-pointer relative text-base  text-[#26435F]  ml-2  inline-block `}
-                  onClick={() => navigate("/signup")}
+                  className={`relative text-base  text-[#26435F]  ml-2  inline-block `}
+                  
                 >
-                  Don’t have an account?
-                </p>
-                <span
-                  className={`text-[#24A3D9] cursor-pointer relative  font-bold ml-2    inline-block `}
+                  Don’t have an account? <span
+                  className={`text-[#24A3D9] cursor-pointer relative  font-bold     inline-block `}
                   onClick={() => navigate("/signup")}
-                >
-                  Sign Up
+                >Sign up
                 </span>
+                </p>
+                
                 </div>
               </form>
             </div>

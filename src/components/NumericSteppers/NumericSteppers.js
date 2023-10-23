@@ -29,7 +29,7 @@ export default function NumericSteppers({
               className={`w-[40px] relative z-[5000] lg:block  h-[40px] bg-primary border rounded-full  font-medium
              ${
                i + 1 < parseInt(currentStep)
-                 ? i+2===currentStep?"!bg-[#FFA28D] before:!bg-[#24A3D9]  !text-white ":"!bg-[#FFA28D] before:!bg-[#FFA28D]  !text-white "
+                 ? i+2===currentStep?"!bg-[#FFA28D] before:!bg-[#FFA28D]  !text-white ":"!bg-[#FFA28D] before:!bg-[#FFA28D]  !text-white "
                  : ""
              } 
              ${
@@ -39,7 +39,7 @@ export default function NumericSteppers({
              } 
              ${
                i + 1 > parseInt(currentStep)
-                 ? "   text-white !bg-[rgba(156,163,175,0.6)]"
+                 ? "   text-white !bg-[#26435F] opacity-40"
                  : ""
              } 
              transition 
@@ -65,7 +65,7 @@ export default function NumericSteppers({
                 className={`flex justify-center !tracking-wider  before:hidden items-center mt-2 mb-2 text-center ${NumericStepperfontSize} font-medium  
             ${i + 1 < parseInt(currentStep) ? "text-[#FFA28D]" : ""} 
              ${i + 1 === parseInt(currentStep) ? " text-[#24A3D9]  " : ""} 
-             ${i + 1 > parseInt(currentStep) ? "opacity-60  text-[#26435F]" : ""}
+             ${i + 1 > parseInt(currentStep) ? "opacity-50  text-[#26435F]" : ""}
              ${i + 1 === parseInt(currentStep) ? "text-[#24A3D9]  " : ""} 
              `}
             >

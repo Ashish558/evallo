@@ -39,8 +39,7 @@ export default function InputFieldDropdown({
   onFocus,
   onBlur,
   studentCode,
-  arrowClassName,
-  ArrowFlipVertically
+  arrowClassName
 }) {
   const [inputType, setInputType] = useState(type);
 
