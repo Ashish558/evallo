@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState,useRef } from "react";
 import styles from "./TutorCarousel.module.css";
 import OwlCarousel from "react-owl-carousel";
 import "owl.carousel/dist/assets/owl.carousel.css";
@@ -47,7 +47,25 @@ const TutorCarousel = () => {
       });
     });
   }, []);
+  const handlePrev = () => {
 
+    if (sliderRef.current) {
+       sliderRef.current.prev();
+    }
+ };
+ const sliderRef = useRef(null);
+ const handleNext = () => {
+
+    if (sliderRef.current) {
+       sliderRef.current.next();
+    }
+ };
+  const options = {
+  
+    nav: false,
+    responsiveClass: true,
+    dots: false,
+ };
   return (
 
     <div className="h-full relative items-center  flex py-2 mr-[5%]">
@@ -55,6 +73,8 @@ const TutorCarousel = () => {
       <h2 className="pl-5 pt-4">{""}</h2>
       {tutors.length >= totalTutors ? (
         <OwlCarousel
+        ref={sliderRef}
+        {...options}
           className="owl-theme flex-1 h-full relative z-40  w-full"
           margin={30}
           items={1}
@@ -64,7 +84,7 @@ const TutorCarousel = () => {
           startPosition={currentSlideIndex}
         >
           {tutors.map((tutor, idx) => {
-            return <SingleTutor tutor={tutor} idx={idx} />;
+            return <SingleTutor turorsLength={tutors?.length} handlePrev={handlePrev} handleNext={handleNext} tutor={tutor} idx={idx} />;
           })}
         </OwlCarousel>
       ) : (

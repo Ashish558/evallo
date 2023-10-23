@@ -809,6 +809,7 @@ export default function StudentReport() {
                      {subjects.map((item, idx) => {
                         return <>
                            <PrimaryTab
+                           item={item}
                               children={item.name}
                               onClick={() => handleChange(item)}
                               className={` px-4 mr-7   ${item.selected ? 'border-b-4 rounded border-[#FFA28D] text-[#FFA28D]' : ''}`} />
