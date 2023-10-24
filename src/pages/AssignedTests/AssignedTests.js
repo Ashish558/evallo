@@ -1050,14 +1050,14 @@ export default function AssignedTests() {
           body={
             <>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 md:gap-x-6  gap-y-0 mb-7">
-                <div>
-
+                <div className="mb-10">
+                {console.log(studentMultiple)}
                   <InputSearch
                     label="Student Name"
                     labelClassname="text-base-20 text-[#26435F] mb-1"
                     placeholder="Search Student"
                     placeholderClass="text-base-17-5"
-                    parentClassName=" text-base-17-5 py-0 w-full  mb-10"
+                    parentClassName=" text-base-17-5 py-0 w-full"
                     inputContainerClassName=" text-base-17-5 bg-[#F3F5F7] border-0 pt-3.5 pb-3.5"
                     inputClassName="bg-[#F3F5F7]"
                     type="text"
@@ -1111,6 +1111,23 @@ export default function AssignedTests() {
                     placeholder="Student Name"
                     type="select"
                   /> */}
+                  <div className="flex flex-row items-center">
+                  {
+                    studentMultiple?.length>0?
+                    <>
+                    <p className="font-medium whitespace-nowrap text-base-18 text-[#667085]"> {studentMultiple[0]?.value}</p>
+                    {studentMultiple?.length>1?<>
+                      <p className="font-medium whitespace-nowrap text-base-18 text-[#667085]">, {studentMultiple[1]?.value}</p>
+                      {studentMultiple?.length>2?
+                        <p className="font-medium whitespace-nowrap text-base-18 text-[#667085]">... total {studentMultiple.length} selected</p>
+                        :null}
+                      </>
+                    :null}
+                    </>
+                    :null
+
+                  }
+                  </div>
                 </div>
                 <div>
                   <InputSearch
