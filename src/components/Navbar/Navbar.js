@@ -1,6 +1,7 @@
 import React from "react";
 import faQuestionCircle from "../../assets/images/Vectorqsn.svg";
 import icon from "../../assets/icons/Evallo Logo.svg";
+import evallo_logo from "../../assets/icons/navbar-icons/evallo-logo.svg";
 import logoutIcon from "../../assets/images/Vectorlogout new.svg";
 import Dashboard1 from "../../assets/icons/navbar-icons/Dashboard_red.svg";
 import Dashboard from "../../assets/icons/Dashboard_light.svg";
@@ -28,6 +29,7 @@ import { useEffect } from "react";
 import Modal from "../../components/Modal/Modal";
 import { updateIsLoggedIn } from "../../app/slices/user";
 import { useLazyGetLogoutQuery } from "../../app/services/superAdmin";
+import styles from './navbar.module.css'
 
 const tempnavdata = [
    {
@@ -324,8 +326,14 @@ const [loading2,setLoading2]=useState(false)
    
    };
    useEffect(() => {
-      setActiveRoute(location.pathname);
-
+      if(location.pathname.includes('/all-tests/')){
+         setActiveRoute('/settings');
+      }
+      else if(location.pathname.includes('/orgadmin-profile/')){
+         setActiveRoute('/all-orgs');
+         console.log(activeRoute)
+      }
+    else  setActiveRoute(location.pathname);
    }, [location.pathname]);
    useEffect(() => {
 
@@ -344,7 +352,10 @@ const [loading2,setLoading2]=useState(false)
                className={`${persona === "superAdmin" ? "translate-x-[-30px]" : ""}`}
             >
                <a href="https://app.evallo.org">
-                  <img className="h-[29.8px] design:h-[29.796px]" src={icon} alt="evallo_logo" />
+                  <div className="flex gap-x-[6px] items-center">
+                  <img className="inline-block w-full" src={evallo_logo} alt="evallo_logo" />
+                  <p style={{fontFamily:'Rajdhani,sans-serif'}} className={`text-[43px] text-white font-bold pt-[3px] ${styles.customFont}`}>Evallo</p>
+                  </div>
                </a>
 
             </div>
@@ -387,16 +398,16 @@ const [loading2,setLoading2]=useState(false)
             <div className={`flex font-bold ${isLoggedIn ? "" : "opacity-[0.3]"}`}>
              {persona =="parent"||  <div className="cursor-pointer flex mr-[24px] text-[#24A3D9] text-base-16  items-center">
                   <p className=" text-[0.83vw]">Pricing 	</p>
-                  <p className="pl-2">
-                     &#36;
+                  <p className="pl-2 text-[17px]">
+                   $
                   </p>
                </div>}
                <div className="cursor-pointer flex mr-[24px] text-[#24A3D9] items-center text-base-16 ">
                   <p className="text-[0.83vw] ">Help</p>
                   <p>
                      <img
-                        className="w-[16px] h-[14px] ml-2"
-                        style={{ height: "14px" }}
+                        className=" ml-2"
+                      
                         src={faQuestionCircle}
                         alt=""
                      />
@@ -412,8 +423,8 @@ const [loading2,setLoading2]=useState(false)
                   </div>
                   <div>
                      <img
-                        className="w-[16px] h-[14px] ml-2"
-                        style={{ height: "14px" }}
+                        className=" ml-2"
+            
                         src={logoutIcon}
                         alt=""
                      />
