@@ -88,7 +88,10 @@ export default function SignupLast({
                 <SCheckbox
                   checked={item.checked}
                   className="scale-[1.27]"
-
+                  onChange={() =>
+                    handleCheckboxChange(item.text, solutions, setSolutions)
+                
+                  }
                 />
                 <div className="">
                   <p className="!text-base   font-normal text-[#26435F]  leading-5 mb-1">
@@ -116,7 +119,9 @@ export default function SignupLast({
                 <SCheckbox
                   checked={item.checked}
                   className="scale-[1.27]"
-
+                  onChange={() =>
+                    handleCheckboxChange(item.text, hearAboutUs, setHearAboutUs)
+                  }
                 />
                 <p className="!text-base font-normal text-[#26435F]  leading-5 mb-[3px]">
                   {item.text}
