@@ -349,17 +349,17 @@ const [loading2,setLoading2]=useState(false)
       <>
          <div className={`flex   bg-[#26435F] h-[72px] items-center w-full shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] ${persona=="superAdmin"?"justify-between px-[5%]":"justify-around"}`}>
             <div
-               className={`${persona === "superAdmin" ? "translate-x-[-30px]" : ""}`}
+               className={`${persona === "superAdmin" ? "translate-x-[-2.3vw]" : ""}`}
             >
                <a href="https://app.evallo.org">
                   <div className="flex gap-x-[6px] items-center">
                   <img className="inline-block w-full" src={evallo_logo} alt="evallo_logo" />
-                  <p style={{fontFamily:'Rajdhani,sans-serif'}} className={`text-[43px] text-white font-bold pt-[3px] ${styles.customFont}`}>Evallo</p>
+                  <p  className={`text-[43px] text-white font-bold pt-[3.2px] ${styles.customFont}`}>Evallo</p>
                   </div>
                </a>
 
             </div>
-            <div className={`flex  text-[#FFFFFF] font-semibold text-[0.9021vw] ${!isLoggedIn && "opacity-[0.3]"} ${persona=="superAdmin"&&" pl-[8.1%]"}`}>
+            <div className={`flex  text-[#FFFFFF] font-semibold text-[0.9021vw] ${!isLoggedIn && "opacity-[0.3]"} ${persona === "superAdmin" ? "translate-x-[3.5vw]" : ""}`}>
                {navData.map((item, idx) => {
                   return (
                      <div
@@ -395,7 +395,7 @@ const [loading2,setLoading2]=useState(false)
                   );
                })}
             </div>
-            <div className={`flex font-bold ${isLoggedIn ? "" : "opacity-[0.3]"}`}>
+            <div className={`flex ${persona === "superAdmin" ? "translate-x-[-1vw]" : ""} font-bold ${isLoggedIn ? "" : "opacity-[0.3]"}`}>
              {persona =="parent"||  <div className="cursor-pointer flex mr-[24px] text-[#24A3D9] text-base-16  items-center">
                   <p className=" text-[0.83vw]">Pricing 	</p>
                   <p className="pl-2 text-[17px]">

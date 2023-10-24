@@ -47,7 +47,8 @@ export default function InputField({
   totalErrors,
   iconPadding,
   biggerText,
-  min
+  min,
+  calenderIconClass
 }) {
   //console.log({ hideTooltip })
   const [inputType, setInputType] = useState(type);
@@ -170,7 +171,7 @@ export default function InputField({
           />
         )}
 
-        {IconRight2 && <img onClick={DateIconClick} className="ml-3 cursor-pointer scale-[0.80]" src={IconRight2} alt="right icon" />}
+        {IconRight2 && <img onClick={DateIconClick} className={`ml-3 cursor-pointer scale-[0.80] ${calenderIconClass}`} src={IconRight2} alt="right icon" />}
         {right && right}
       </div>
 
