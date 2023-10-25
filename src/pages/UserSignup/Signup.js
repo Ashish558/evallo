@@ -610,7 +610,7 @@ export default function UserSignup() {
 
               {frames.signupActive ? (
                 <div>
-                  <div className={`flex mt-[59px] justify-between gap-10 lg:mt-0 ${stepOneDisabled ? 'pointer-events-none cursor-not-allowed' :''}`}>
+                  <div className={`flex mt-[59px] justify-between gap-10 lg:mt-0 ${stepOneDisabled ? 'pointer-events-none cursor-not-allowed opacity-70' :''}`}>
                     <InputField
                       placeholder=""
                       inputContainerClassName="text-base-17-5  bg-white   border border-[#D0D5DD] h-[53px]"
@@ -665,7 +665,7 @@ export default function UserSignup() {
                       placeholder=""
                       inputClassName={"h-[52.5px]"}
                       inputContainerClassName="text-[17.5px]  bg-white   border border-[#D0D5DD] h-[53px] w-full"
-                      parentClassName={`text-base-17-5  w-full ${stepOneDisabled ? 'pointer-events-none cursor-not-allowed' :''}`}
+                      parentClassName={`text-base-17-5  w-full ${stepOneDisabled ? 'pointer-events-none cursor-not-allowed opacity-70' :''}`}
                       value={values.email}
                       onChange={(e) =>
                         setValues({
@@ -681,7 +681,7 @@ export default function UserSignup() {
                       placeholder=""
                       inputClassName=" bg-transparent  text-[17.5px] h-[52.5px]"
                       inputContainerClassName="text-[17.5px]  bg-white h-[52.5px]  border border-[#D0D5DD] w-full"
-                      parentClassName={`text-base-17-5 w-[85%] ${phoneDisabled ? 'pointer-events-none cursor-not-allowed' :''} `}
+                      parentClassName={`text-base-17-5 w-[85%] ${phoneDisabled ? 'pointer-events-none cursor-not-allowed opacity-70' :''} `}
                       labelClassname="mb-1 text-[#26435F]  !font-medium text-[#26435F] "
                       label="Phone"
                       codeClassName="!min-w-[40px] "
@@ -711,7 +711,7 @@ export default function UserSignup() {
                     >
                       Are you signing up as a Parent or a Student?
                     </p>
-                    <div className={`flex items-center  text-[13.5px] gap-x-6 ${stepOneDisabled || paramUserRole? 'pointer-events-none cursor-not-allowed' :''}`}>
+                    <div className={`flex items-center  text-[13.5px] gap-x-6 ${stepOneDisabled || paramUserRole? 'pointer-events-none cursor-not-allowed opacity-70' :''}`}>
                       <div
                         onClick={() => {
                           setValues((prev) => ({

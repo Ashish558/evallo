@@ -126,7 +126,7 @@ export default function UserDetails({
   // alert(personaText)
   return (
     <div className="w-full">
-      <div className={`flex justify-between items-start  ${stepTwoDisabled ? 'pointer-events-none cursor-not-allowed' :''} `}>
+      <div className={`flex justify-between items-start  ${stepTwoDisabled ? 'pointer-events-none cursor-not-allowed opacity-70' :''} `}>
         <div className="w-[325px]">
         <InputField
           inputContainerClassName="border border-[#D0D5DD] pt-3 pb-3 border h-[54px]"
@@ -173,7 +173,7 @@ export default function UserDetails({
         />
         </div>
       </div>
-      <div className={`flex justify-between  mb-[30px]  ${stepTwoDisabled ? 'pointer-events-none cursor-not-allowed' :''}`}>
+      <div className={`flex justify-between  mb-[30px]  ${stepTwoDisabled ? 'pointer-events-none cursor-not-allowed opacity-70' :''}`}>
         <div className="w-[375px]">
         <InputField
         biggerText={true}
@@ -219,7 +219,7 @@ export default function UserDetails({
 
       <InputField
         biggerText={true}
-        parentClassName={`mb-[51px] relative w-full ${stepTwoDisabled ? 'pointer-events-none cursor-not-allowed' :''}`}
+        parentClassName={`mb-[51px] relative w-full ${stepTwoDisabled ? 'pointer-events-none cursor-not-allowed opacity-70' :''}`}
         label={`School Name `}
         inputContainerClassName="border border-[#D0D5DD] pt-3 pb-3 border text-[17.5px] h-[52px]"
         labelClassname="text-[#26435F] !font-semibold   mb-1 text-[17.5px]"
@@ -232,7 +232,7 @@ export default function UserDetails({
       />
       <InputSelect
         IconLeft={leftDrop}
-        parentClassName={`mb-[30px]  ${stepTwoDisabled ? 'pointer-events-none cursor-not-allowed' :''}`}
+        parentClassName={`mb-[30px]  ${stepTwoDisabled ? 'pointer-events-none cursor-not-allowed opacity-70' :''}`}
         optionData={GradesData}
         label={`Student's Grade`}
         labelClassname="text-[#26435F] !font-semibold  mb-1 text-[17.5px] "
@@ -250,7 +250,7 @@ export default function UserDetails({
         label="Referral Code"
         placeholder=""
         biggerText={true}
-        parentClassName={`text-[17.5px]  flex-1 ${stepTwoDisabled ? 'pointer-events-none cursor-not-allowed' :''}`}
+        parentClassName={`text-[17.5px]  flex-1 ${stepTwoDisabled ? 'pointer-events-none cursor-not-allowed opacity-70' :''}`}
         inputContainerClassName="border border-[#D0D5DD] py-1 relative border h-[56px]"
         value={otherDetails.referalCode}
         onChange={(e) =>

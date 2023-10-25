@@ -18,6 +18,7 @@ import LoaderNew from "../../../../components/Loader/LoaderNew";
 import { CSVLink } from "react-csv";
 import { csvHeaderNames, csvHeaders } from "../../../Users/csvUtlis";
 import { useSelector } from "react-redux";
+import RangeDate from "../../../../components/RangeDate/RangeDate";
 const AllOrgs = () => {
   const [adminData, setAdminData] = useState([]);
   const [fetchedData, setFetchedData] = useState([]);
@@ -98,6 +99,38 @@ const AllOrgs = () => {
   const handleRefetch=()=>{
     setRefetch(!refetch);
   }
+  const convertDateToRange = (startDate) => {
+    let startD = startDate.split("-")[0];
+
+    startD = new Date(startD);
+    startD = startD.setDate(startD.getDate() + 1);
+    startD = new Date(startD).toISOString().split("T")[0];
+
+    let endD = startDate.split("-")[1];
+    endD = new Date(endD);
+    endD = endD.setDate(endD.getDate() + 1);
+    endD = new Date(endD).toISOString().split("T")[0];
+    const body = { startDate: startD, endDate: endD };
+
+    return body;
+  };
+  const handleDataRange=(startDate)=>{
+    const body = convertDateToRange(startDate);
+    let arr = JSON.parse(JSON.stringify(fetchedData));
+    console.log(values,arr)
+    arr = arr.filter((it) => {
+      
+    
+     if(it?.createdAt && new Date(it?.createdAt) <= new Date(body.endDate) && new Date(it?.createdAt) >= new Date(body.startDate)){
+       return true
+     }
+     else return false
+
+    });
+    console.log({ arr });
+    setAdminData(arr);
+    console.log("range", body)
+  }
   const [error, setError] = useState({
     search: "",
     joinDate: "",
@@ -132,7 +165,7 @@ const AllOrgs = () => {
       let v = [];
       v.push(it?.company?.toLowerCase()?.includes(values.search?.toLowerCase()));
 
-      v.push(it?.createdAt?.toLowerCase()?.includes(values.joinDate?.toLowerCase()));
+      // v.push(it?.createdAt?.toLowerCase()?.includes(values.joinDate?.toLowerCase()));
 
       v.push(
         it?.registrationAs?.toLowerCase()?.includes(values.orgType?.toLowerCase())
@@ -205,14 +238,12 @@ const AllOrgs = () => {
             />
             <InputField
               placeholder="Join Date"
-              IconRight2={inputRef?.current?.type === 'text' ? DateIcon : ''}
-              DateIconClick={handleButtonIcon}
+           
               parentClassName=" "
               refS={inputRef}
-              onBlur={(e) => { (inputRef.current.type = "text"); setForceChange(!forceChange) }}
-              onFocus={(e) => { (inputRef.current.type = "date"); setForceChange(!forceChange) }}
-              inputClassName="text-[0.8333333333vw] !text-[#667085] placeholder:!text-[#667085]"
-              inputContainerClassName="bg-white border !text-[#667085] !rounded-lg border-[1.33px_solid_#EBEBEB] w-[11vw] h-[49px]"
+             
+              inputClassName="text-[0.8333333333vw] !text-[#667085] placeholder:!text-[#667085] hidden"
+              inputContainerClassName="bg-white  border !text-[#667085] !rounded-lg border-[1.33px_solid_#EBEBEB] w-[13vw] h-[49px]"
               value={values.joinDate}
               onChange={(e) =>
                 setValues({
@@ -221,8 +252,14 @@ const AllOrgs = () => {
                   joinDate: e.target.value,
                 })
               }
+              dateBody={
+              <div className="ml-[-30px]">
+              <RangeDate allorg={true} removeUnderline={true} handleRangeData={handleDataRange}/>
+            </div>
+            }
               error={error.joinDate}
             />
+            
             <InputSelect 
             downArrow22={true}
               placeholder="Region"
