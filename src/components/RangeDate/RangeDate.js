@@ -168,7 +168,7 @@ const RangeDate = ({ removeUnderline,allorg, handleRangeData, optionClassName, c
         setSelectedDate={setSelectedDate}
         onChange={handleQuickOptions}
         IconRight={allorg?DateIcon:downR}
-        IconRightClass="w-[50px] h-[20px] ml-[-10px]"
+        IconRightClass={`${allorg?"w-[50px] h-[20px] ml-[-10px]":""}`}
         DateSelect={
           !manualHide &&
           <div className={`flex relative flex-col hover:bg-white items-center pt-2 z-5000 border-b   `}>
