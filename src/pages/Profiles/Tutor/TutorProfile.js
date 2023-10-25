@@ -772,20 +772,20 @@ export default function TutorProfile({ isOwn }) {
                     </div>
                     {(persona === "tutor" || persona === "admin") && (
                       <div className="ml-auto mt-auto pt-[10px] pb-[10px] mr-8">
-                        <div className="flex gap-4 items-center mb-[10px]">
+                        <div className="flex gap-4 items-center mb-[10px] design:mb-0 design:mt-1">
                           <img src={mail} alt="mailLogo"></img>
                           <p className="text-white text-[17.503px] text-base-17-5">
                             {user.email}
                           </p>
                         </div>
-                        <div className="flex gap-4 items-center mb-[10px]">
+                        <div className="flex gap-4 items-center mb-[10px] design:mb-0">
                           <img src={call} alt="callLogo"></img>
                           <p className="text-white text-[17.503px] text-base-17-5">
                             {user.phoneCode}
                             {user.phone}
                           </p>
                         </div>
-                        <div className="flex gap-4 items-center mb-[10px]">
+                        <div className="flex gap-4 items-center mb-[10px] design:mb-0">
                           <img src={linkedin} alt="linkedinLogo"></img>
                           <a
                             className="text-white text-[17.503px] text-base-17-5"
@@ -919,7 +919,7 @@ export default function TutorProfile({ isOwn }) {
                   hideShadow={true}
                   bgClassName="bg-profilecard"
                   body={
-                    <div className=" max-h-[500px] custom-scroller scroll-mx-3">
+                    <div className=" max-h-[500px] custom-scroller scroll-mx- !bg-[#F5F8FA]">
                       {/* {settings &&
                         settings.Expertise?.length > 0 &&
                         userDetail.serviceSpecializations &&
@@ -960,7 +960,7 @@ export default function TutorProfile({ isOwn }) {
                           it[0] !== "6" && (
                             <div
                               key={idx}
-                              className="bg-white p-2 h-min mb-1  text-[#517CA8] text-base-17-5 !rounded-md shadow-[0px_0px_2.500001907348633px_0px_#00000040]  w-full"
+                              className="bg-white px-2 py-[16px] h-min  text-[#517CA8] text-base-17-5 !rounded-5 mb-1 shadow-[0px_0px_2.500001907348633px_0px_#00000040]  w-full"
                             >
                               {it}
                             </div>
@@ -1235,7 +1235,7 @@ export default function TutorProfile({ isOwn }) {
                   //    </div> */}
 
                   // </div>
-                  <div className="w-full relative max-h-[500px] p-1 flex flex-col gap-1  rounded-md items-center overflow-y-auto custom-scroller">
+                  <div className="w-full relative max-h-[500px] p-1 flex flex-col gap-1 !bg-[#F5F8FA]  rounded-md items-center overflow-y-auto custom-scroller">
                     {/* {settings ? (
                              settings.interest.length > 0 &&
                              userDetail.interest.map((id, idx) => {
@@ -1282,7 +1282,7 @@ export default function TutorProfile({ isOwn }) {
                           it[0] !== "6" && (
                             <div
                               key={idx}
-                              className="bg-white p-2 h-min  text-[#517CA8] text-base-17-5 !rounded-md shadow-[0px_0px_2.500001907348633px_0px_#00000040]  w-full"
+                              className="bg-white px-2 py-[16px] h-min  text-[#517CA8] text-base-17-5 !rounded-5 shadow-[0px_0px_2.500001907348633px_0px_#00000040]  w-full"
                             >
                               {it}
                             </div>
@@ -1477,7 +1477,7 @@ export default function TutorProfile({ isOwn }) {
           }
           {persona === "admin" || <div className="mt-[100px]"></div>}
           {persona === "admin" && (
-            <div className="flex justify-between mt-20 mb-[191px]">
+            <div className="flex justify-between mt-20 mb-[96px]">
 
               <div className="w-[36.5vw]">
                 <div className="text-xl text-[#26435F] font-semibold mb-[-10px] text-base-20">

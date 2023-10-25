@@ -325,18 +325,18 @@ export default function TableItem({
           <>
 
             <tr className=" text-[17.5px] font-medium">
-              <td className="py-4 px-[10px]">
+              <td className="pb-[15px] pt-[15px] px-[10px]">
                 {item.studentName}
               </td>
-              <td className="py-4 px-[10px]">
+              <td className="pb-[15px] pt-[15px] px-[10px]">
                 {item.service}
               </td>
-              <td className="py-4 px-[10px]">
+              <td className="pb-[15px] pt-[15px] px-[10px]">
                 {item.rating}
               </td>
 
 
-              <td className="py-4 px-[10px]">
+              <td className="pb-[15px] pt-[15px] px-[10px]">
                 {getFormattedDate(formattedDate, dateFormat)}
               </td>
             </tr>

@@ -181,7 +181,7 @@ const SPFrame1 = ({
               />}
             </div>
 
-            <div className="bg-white flex-1 text-base-17-5 p-3 text-[#B5B5B5] h-fit max-h-[200px] overflow-y-auto custom-scroller rounded-md shadow-[0px_0px_2.500001907348633px_0px_#00000040]">
+            <div className="bg-white flex-1 text-base-17-5 p-3 text-[#B5B5B5] h-fit max-h-[210px] overflow-y-auto custom-scroller rounded-md shadow-[0px_0px_2.500001907348633px_0px_#00000040]">
               {user?.internalNotes?.length > 0 ? user?.internalNotes?.map(
                 (item, index) => (
                   <>
@@ -225,7 +225,7 @@ const SPFrame1 = ({
                 </ul></>}
             </div>
           </div>
-          <div className="flex-1 flex flex-col h-fit gap-4">
+          <div className="flex-1 flex flex-col h-fit gap-[25px]">
             {persona === 'admin' && <div className="flex-1  ">
               <div className="flex justify-between">
                 <p className=" text-sm text-[#26435F] font-semibold text-base-20 mb-1">
@@ -237,12 +237,12 @@ const SPFrame1 = ({
                 <InputSelectNew
                   placeholder={"Lead Status"}
                   parentClassName="ml-0 w-full  items-center flex text-[#517CA8] text-xs  whitespace-nowrap "
-                  inputContainerClassName="bg-white h-[45px] shadow-[0px_0px_2.500001907348633px_0px_#00000040] my-0 py-[5px] px-[35px]"
+                  inputContainerClassName="bg-white h-[55px] shadow-[0px_0px_2.500001907348633px_0px_#00000040] my-0 py-[5px] pl-4 !rounded-5"
                   placeHolderClass="text-[#517CA8] "
                   labelClassname="text-sm text-base-17-5"
                   inputClassName="bg-transparent"
                   optionContainerClassName="!w-[190px]"
-
+                  optionClassName="mt-1"
                   ICON2={Drop}
                   value={userDetail?.leadStatus}
                   disabled={persona !== "admin"}
@@ -272,9 +272,9 @@ const SPFrame1 = ({
                   className="text-sm my-0 flex items-center justify-center text-center   "
                 />}
               </div>
-              <div className="bg-white flex-1 custom-scroller text-[#517CA8] p-2 text-base-17-5 h-[80px] design:h-[120px] overflow-y-auto rounded-md  shadow-[0px_0px_2.500001907348633px_0px_#00000040] flex flex-col gap-1 justify-start">
+              <div className="bg-white flex-1 custom-scroller text-[#517CA8] !p-2 text-base-17-5 h-[107px] overflow-y-auto rounded-md  shadow-[0px_0px_2.500001907348633px_0px_#00000040] flex flex-col gap-1 justify-start">
                 {userDetail?.service?.map((it, id) => {
-                  return <p key={id}>{it}</p>;
+                  return <p className="pl-1 " key={id}>{it}</p>;
                 })}
               </div>
             </div>

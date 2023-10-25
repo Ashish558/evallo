@@ -1,17 +1,17 @@
 export const frameHeaderNames = [
-  "Org name",
+  "Org Name",
  
   
 
-  "A name",
-  "Admin  email",
+  "A Name",
+  "Admin  Email",
   "A Phone",
   "Country",
 
   "Type",
   "Status",
-  "# tutors",
-  "# students",
+  "# Tutors",
+  "# Students",
   "Joined On",
   " ",
 ];

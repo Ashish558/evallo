@@ -14,7 +14,7 @@ export default function NumericSteppers({
   return (
     <div
       className={`lg:mt-6 relative ${
-        currentStep === 5 ? "mb-[30px]" : "mb-[30px]"
+        currentStep === 5 ? "mb-[30px]" : "mb-[30px] mx-5"
       } flex justify-between ${className ? className : ""} `}
     >
       {[...Array(totalSteps)].map((x, i) =>
