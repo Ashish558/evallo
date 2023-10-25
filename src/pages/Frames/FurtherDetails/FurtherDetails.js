@@ -158,7 +158,7 @@ export default function FurtherDetails({
                           setTestPreparations
                         )
                       }
-                      className="font-normal  text-[14px]  leading-5"
+                      className="font-normal  text-[14px]  leading-5 mb-[1px]"
                     >
                       {item.text}
                     </p>
@@ -214,7 +214,7 @@ export default function FurtherDetails({
                       onClick={() =>
                         handleCheckboxChange(item.text, tutoring, setTutoring)
                       }
-                      className="font-normal whitespace-nowrap  text-[14px]  leading-5 relative"
+                      className="font-normal whitespace-nowrap  text-[14px]  leading-5 relative mb-[3px]"
                     >
                       {item.text}
                     </p>
@@ -261,7 +261,7 @@ export default function FurtherDetails({
                       onClick={() =>
                         handleCheckboxChange(item.text, coaching, setCoaching)
                       }
-                      className="!font-normal whitespace-nowrap  text-[14px]  leading-5"
+                      className="!font-normal whitespace-nowrap  text-[14px]  leading-5 mb-[4px]"
                     >
                       {item.text}
                     </p>
@@ -317,7 +317,7 @@ export default function FurtherDetails({
                       setInstructions
                     )
                   }
-                  className="!font-normal  text-[14px]  leading-5"
+                  className="!font-normal  text-base  leading-5 mb-[3px]"
                 >
                   {item.text}
                 </p>
@@ -352,7 +352,7 @@ export default function FurtherDetails({
                       setStudentserved
                     )
                   }
-                  className="!font-normal whitespace-nowrap text-[14px]  leading-5"
+                  className="!font-normal whitespace-nowrap text-base  leading-5 mb-[3px]"
                 >
                   {item.text}
                 </p>

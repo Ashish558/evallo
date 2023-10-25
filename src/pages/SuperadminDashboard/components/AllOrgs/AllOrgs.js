@@ -2,14 +2,14 @@ import React, { useRef } from "react";
 
 import InputField from "../../../../components/InputField/inputField";
 import { useState } from "react";
-import searchIcon from "../../../../assets/icons/search.svg";
+import searchIcon from "../../../../assets/icons/Search_orgs.svg";
 import uploadIcon from "../../../../assets/icons/uil_export.svg";
 import calendar from "../../../../assets/icons/calendar.svg";
 import { frameHeaderNames, framesData } from "./staticData";
 import FramesScreen from "./FramesScreen";
 import arrowDown from "../../../../assets/icons/arrowdown.svg";
 import { useEffect } from "react";
-import DateIcon from "../../../../assets/icons/solar_calendar-date-outline.svg"
+import DateIcon from "../../../../assets/icons/allOrgs_calender_icon.svg"
 import Table from "../../../../components/Table/Table";
 
 import InputSelect  from "../../../../components/InputSelect/InputSelect";
@@ -206,7 +206,7 @@ const AllOrgs = () => {
             inputClassName="!text-[#667085] placeholder:!text-[#667085]"
               placeholder="Search"
               parentClassName="!text-[#667085]"
-              inputContainerClassName="w-[11vw] bg-white  border !text-[#667085] !rounded-lg border-[1.33px_solid_#EBEBEB] h-[48px]"
+              inputContainerClassName="w-[11vw] bg-white  border !text-[#667085] !rounded-lg border-[1.33px_solid_#EBEBEB] !h-[53.3px] !py-1"
               Icon={searchIcon}
               value={values.search}
               onChange={(e) =>
@@ -225,7 +225,7 @@ const AllOrgs = () => {
               value={values.orgType}
               optionData={orgType}
               placeholderClass="!break-words  !text-wrap !whitespace-pre-line "
-              inputContainerClassName="w-[11.5vw]  break-words bg-white  !text-wrap  border !text-[#667085] !rounded-lg border-[1.33px_solid_#EBEBEB] text-xs h-[49px]"
+              inputContainerClassName="w-[11.5vw]  break-words bg-white  !text-wrap  border !text-[#667085] !rounded-lg border-[1.33px_solid_#EBEBEB] text-xs !h-[53.3px]"
               
               optionClassName=" py-[3px]  text-[#667085] font-normal"
               onChange={(e) =>
@@ -264,7 +264,7 @@ const AllOrgs = () => {
             downArrow22={true}
               placeholder="Region"
               parentClassName="text-xs text-[#667085]"
-              inputContainerClassName="w-[11vw] bg-white border !text-[#667085] !rounded-lg border-[1.33px_solid_#EBEBEB] h-[49px] "
+              inputContainerClassName="w-[11vw] bg-white border !text-[#667085] !rounded-lg border-[1.33px_solid_#EBEBEB] !h-[53.3px] "
               optionData={country}
               optionType={"object"}
               optionClassName="w-[11vw] py-[3px] w-[110px] "
@@ -284,7 +284,7 @@ const AllOrgs = () => {
               optionData={organization?.settings?.subscriptionCode?.map(it=>
                 it?.code)}
               parentClassName="text-xs text-[#667085]"
-              inputContainerClassName="w-[11vw] bg-white border !text-[#667085] !rounded-lg border-[1.33px_solid_#EBEBEB] h-[49px]"
+              inputContainerClassName="w-[11vw] bg-white border !text-[#667085] !rounded-lg border-[1.33px_solid_#EBEBEB] !h-[53.3px]"
               optionClassName="w-[11vw] py-[3px] "
               value={values.subscription}
               onChange={(e) =>
@@ -296,9 +296,9 @@ const AllOrgs = () => {
               error={error.subscription}
             />
             <InputField
-              placeholder="# of student"
+              placeholder="# of Students"
               parentClassName="w-full w-[11vw] py-1 text-[#667085]"
-              inputContainerClassName="bg-white border !text-[#667085] !rounded-lg border-[1.33px_solid_#EBEBEB] h-[51px] text-[#667085]"
+              inputContainerClassName="bg-white border !text-[#667085] !rounded-lg border-[1.33px_solid_#EBEBEB] !h-[53.3px] text-[#667085]"
               optionClassName="w-[11vw] py-1"
               inputClassName={"placeholder:!text-[#667085]"}
               value={values.numberOfStudent}
@@ -313,7 +313,7 @@ const AllOrgs = () => {
           </div>
           <div className="w-[200px] flex justify-end  items-center ">
 
-            <button className="flex rounded-md justify-center gap-2 bg-[#517CA8] h-[49px] w-[8.984375vw] items-center  text-white text-base-17-5">
+            <button className="flex rounded-md justify-center gap-2 bg-[#517CA8] !h-[53.3px] w-[8.984375vw] items-center  text-white text-base-17-5">
               {csvLoad ? <LoaderNew /> : ""}
               {!csvLoad && !successFetched ? (
                 <p onClick={handleBulkExport}>Export</p>
@@ -337,7 +337,7 @@ const AllOrgs = () => {
               )}
 
               {!csvLoad && (
-                <img  src={uploadIcon} className="w-5 h-5" alt="upload" />
+                <img  src={uploadIcon} className="w" alt="upload" />
               )}
             </button>
           </div>

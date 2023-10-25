@@ -20,7 +20,8 @@ export default function Table(props) {
     loading,
     noArrow,
     Icon,
-    AdminLatestSignUp
+    AdminLatestSignUp,
+    className
   } = props;
 
   const [dummy, setDummy] = useState([]);
@@ -75,7 +76,7 @@ export default function Table(props) {
           <thead className="bg-[#26435F] whitespace-nowrap">
             <tr className=" whitespace-nowrap">
               {tableHeaders.map((item, idx) => {
-                return <TableHeader noArrow={noArrow} key={idx} Icon={Icon} header={item} dataFor={dataFor} />;
+                return <TableHeader className={className} noArrow={noArrow} key={idx} Icon={Icon} header={item} dataFor={dataFor} />;
               })}
             </tr>
           </thead>
@@ -90,7 +91,7 @@ export default function Table(props) {
               tableData.map((item, idx) => {
                 return (
                   <TableItem
-
+                  className={className}
                     dataFor={dataFor}
                     AdminLatestSignUp={AdminLatestSignUp}
                     item={item}

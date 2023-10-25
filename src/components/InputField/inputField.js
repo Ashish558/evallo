@@ -49,7 +49,8 @@ export default function InputField({
   totalErrors,
   iconPadding,
   biggerText,
-  min
+  min,
+  calenderIconClass
 }) {
   //console.log({ hideTooltip })
   const [inputType, setInputType] = useState(type);
