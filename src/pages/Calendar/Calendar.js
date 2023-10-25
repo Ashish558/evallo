@@ -337,9 +337,9 @@ export default function Calendar() {
   }, [currentUserTImeZone]);
 
   useEffect(() => {
-   
-    if (persona === "admin" || ( persona === "tutor"&&organization && organization?.settings?.permissions?.length>5&& organization?.settings?.permissions[5]?.choosedValue===true)) {
-      console.log("org tutor",organization)
+
+    if (persona === "admin" || (persona === "tutor" && organization && organization?.settings?.permissions?.length > 5 && organization?.settings?.permissions[5]?.choosedValue === true)) {
+      console.log("org tutor", organization)
       setIsEditable(true);
     } else {
       setIsEditable(false);
@@ -699,12 +699,11 @@ export default function Calendar() {
     }
     let date = new Date(arg.date);
     let currentDate = new Date();
-    // currentDate.setHours(0, 0, 0, 0);
-    //  console.log(date - currentDate);
-    // if (!date || date - currentDate <= 0) {
-    //   alert('Cant set events on past date')
-    //   return
-    // }
+    currentDate.setHours(0, 0, 0, 0);
+    if (!date || date - currentDate <= 0) {
+      alert('Cannot schedule events on past date')
+      return
+    }
 
     //  console.log("can see", date,currentDate)
 
@@ -718,7 +717,7 @@ export default function Calendar() {
     } else {
       setDefaultEventData({ date: arg.date, timeZone });
     }
-    if (persona === "admin" || ( persona === "tutor"&&organization && organization?.settings?.permissions?.length>5&& organization?.settings?.permissions[5]?.choosedValue===true)) {
+    if (persona === "admin" || (persona === "tutor" && organization && organization?.settings?.permissions?.length > 5 && organization?.settings?.permissions[5]?.choosedValue === true)) {
       setEventModalActive(true);
     }
 
@@ -942,7 +941,7 @@ export default function Calendar() {
     const session = eventDetails.find(
       (e) => e._id === info.event._def.publicId
     );
-    if (persona === "admin" || ( persona === "tutor"&&organization && organization?.settings?.permissions?.length>5&& organization?.settings?.permissions[5]?.choosedValue===true)) {
+    if (persona === "admin" || (persona === "tutor" && organization && organization?.settings?.permissions?.length > 5 && organization?.settings?.permissions[5]?.choosedValue === true)) {
       setUpdateEventModalActive(true);
       setSessionToUpdate(session);
     } else {
