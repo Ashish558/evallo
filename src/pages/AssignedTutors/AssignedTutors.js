@@ -118,10 +118,14 @@ export default function AssignedTutors({ setAssignedTutorOpen, assignedTutorOpen
    const [addAssignedTutor2, slsAt] = useCRMBulkChangeAssignedTutorMutation()
    //fetch names
    useEffect(() => {
-      if (modalData.studentName.length > 0) {
-         fetchStudents(modalData.studentName).then((res) => {
-            // console.log(res.data.data)
-            let tempData = res.data.data.students.map((tutor) => {
+      console.log("calling names for students")
+      let name2=""
+      if (modalData?.studentName?.length > 0) {
+name2=modalData?.studentName
+      }
+         fetchStudents(name2).then((res) => {
+             console.log("students",res)
+            let tempData = res?.data?.data?.students.map((tutor) => {
                return {
                   _id: tutor._id,
                   value: `${tutor.firstName} ${tutor.lastName}`,
@@ -129,11 +133,11 @@ export default function AssignedTutors({ setAssignedTutorOpen, assignedTutorOpen
             });
             setStudents(tempData);
          });
-      }
+      
    }, [modalData.studentName]);
 
    useEffect(() => {
-      if (modalData.tutorName.length > 0) {
+      if (modalData.tutorName.length >= 0) {
          fetchTutors(modalData.tutorName).then((res) => {
             // console.log(res.data.data.tutor)
             let tempData = res.data.data.tutor.map((tutor) => {

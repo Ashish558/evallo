@@ -9,9 +9,9 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { getFormattedDate } from "../../utils/utils";
+import DateIcon from "../../assets/icons/solar_calendar-date-outline.svg"
 
-
-const RangeDate = ({ removeUnderline, handleRangeData, optionClassName, className, manualHide, inputContainerClassName }) => {
+const RangeDate = ({ removeUnderline,allorg, handleRangeData, optionClassName, className, manualHide, inputContainerClassName }) => {
 
   const [dateFormat, setDateFormat] = useState("dd/mm/yy")
   const { organization: organization2 } = useSelector((state) => state.organization)
@@ -85,18 +85,19 @@ const RangeDate = ({ removeUnderline, handleRangeData, optionClassName, classNam
         .split("T")[0];
     }
     else if (option.days === 1000) {
-      startDate = new Date(2022, 0, 2)
+      startDate = new Date(2000, 0, 2)
         .toISOString()
         .split("T")[0];
       endDate = new Date()
         .toISOString()
         .split("T")[0];
     }
+
     const selectDate = {
       sDate: startDate.toString(),
       eDate: endDate.toString(),
     };
-
+ console.log({selectDate})
     const requiredDate = getModifiedDate(selectDate);
 
     setStartDate(requiredDate);
@@ -143,15 +144,15 @@ const RangeDate = ({ removeUnderline, handleRangeData, optionClassName, classNam
 
       <InputSelect
         placeholder="Select"
-        valueClassName={`${removeUnderline ? "" : "font-normal border-b border-b-[#FFA28D]"} cursor-pointer`}
+        valueClassName={`${removeUnderline ? "" : "font-normal  border-b border-b-[#FFA28D]"} ${allorg?"!text-gray-500 ":"text-[#FFA28D]"} cursor-pointer`}
         parentClassName="border-none text-xs text-[#26435F] w-fit relative z-[500] !text-[calc(17*0.050vw)]"
         labelClassname="text-sm !text-[calc(17*0.050vw)]"
-        inputContainerClassName={`border-none  !text-[calc(17*0.050vw)] whitespace-nowrap font-normal text-[#FFA28D] ${inputContainerClassName}  ${styles["text"]} `}
-        inputClassName={`placeholder:uppercase border-none w-fit bg-transparent font-semibold text-[#FFA28D] !text-[calc(17*0.050vw)]`}
+        inputContainerClassName={`border-none  !text-[calc(17*0.050vw)] whitespace-nowrap font-normal ${allorg?"":"text-[#FFA28D]"} text-[#FFA28D] ${inputContainerClassName}  ${styles["text"]} `}
+        inputClassName={`placeholder:uppercase border-none w-fit bg-transparent font-semibold ${allorg?"":"text-[#FFA28D]"} !text-[calc(17*0.050vw)]`}
         value={formattedDateRange}
         optionListClassName="text-[#517CA8] underline underline-offset-2"
-        optionClassName={`${optionClassName} relative !text-[calc(17*0.050vw)]`}
-        optionContainerClassName="!rounded-5  border-[#FFA28D] border-[1px] py-2"
+        optionClassName={`${optionClassName} relative !text-[calc(17*0.050vw)] `}
+        optionContainerClassName={`${allorg?"translate-x-[30px]":""} !rounded-5  border-[#FFA28D] border-[1px] py-2`}
         optionPadding="!py-1"
         optionData={[
           { name: "Lifetime", days: 1000 },
@@ -166,10 +167,11 @@ const RangeDate = ({ removeUnderline, handleRangeData, optionClassName, classNam
         optionType={"object"}
         setSelectedDate={setSelectedDate}
         onChange={handleQuickOptions}
-        IconRight={downR}
+        IconRight={allorg?DateIcon:downR}
+        IconRightClass={`${allorg?"w-[50px] h-[20px] ml-[-10px]":""}`}
         DateSelect={
           !manualHide &&
-          <div className="flex relative flex-col hover:bg-white items-center pt-2 z-5000 border-b  ">
+          <div className={`flex relative flex-col hover:bg-white items-center pt-2 z-5000 border-b   `}>
             <div className="text-[9px] text-[#517CA8]  w-full px-[26px]">
               <label htmlFor="sdate">Start Date</label>
 
