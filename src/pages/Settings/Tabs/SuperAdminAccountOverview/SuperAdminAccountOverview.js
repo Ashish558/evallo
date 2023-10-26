@@ -115,6 +115,15 @@ const AccountOverview = () => {
   };
   const handleDataUpdate = () => {
     const updateUserAccount = async () => {
+      if(values?.newPassword?.length>0&&values?.newPassword!==values?.confirmPassword){
+        if(!values?.currentPassword||values?.currentPassword?.trim()===""){
+          alert("Enter current password in case you want to reset your password.");
+          return ;
+        }
+        alert("Confirm Password value does not match with new password.")
+        return 
+      }
+     
       try {
         let reqBody = { ...values };
         delete reqBody["_id"];

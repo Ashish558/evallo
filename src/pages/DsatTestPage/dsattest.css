@@ -3,6 +3,7 @@
     border-radius: 10px;
     /* Optional for rounded corners on the track */
 }
+
 .dangerouslySetClass ul {
     list-style-position: inside ;
     list-style-type: disc ;

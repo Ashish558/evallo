@@ -126,15 +126,13 @@ export default function UserDetails({
   // alert(personaText)
   return (
     <div className="w-full">
-      <div className={`flex justify-between items-start  ${stepTwoDisabled ? 'pointer-events-none cursor-not-allowed' :''} `}>
-        <div className="w-[325px]">
+      <div className={`flex justify-between items-center gap-10 ${stepTwoDisabled ? 'pointer-events-none cursor-not-allowed opacity-70' :''} `}>
         <InputField
-          inputContainerClassName="border border-[#D0D5DD] pt-3 pb-3 border h-[54px]"
-          biggerText={true}
-          parentClassName="mb-[30px]  relative w-full "
+          inputContainerClassName="border border-[#D0D5DD] pt-3 pb-3 border text-base-17-5 h-[53px]"
+          parentClassName="mb-6  relative w-full "
           required={persona === "student" ? true : false}
-          label={`${personaText} First name`}
-          labelClassname="text-[#26435F] !font-medium  mb-1 "
+          label={`${personaText} First Name`}
+          labelClassname="text-[#26435F] !font-medium  mb-1 text-base-17-5"
           value={otherDetails.FirstName}
 
           onChange={(e) => {
@@ -149,15 +147,12 @@ export default function UserDetails({
           totalErrors={detailsError}
           error={detailsError.FirstName}
         />
-        </div>
-        <div className="w-[325px]">
         <InputField
-         biggerText={true}
           parentClassName="mb-6 relative w-full "
-          inputContainerClassName="border border-[#D0D5DD] pt-3 pb-3 border  h-[54px]"
-          label={`${personaText} Last name`}
+          inputContainerClassName="border border-[#D0D5DD] pt-3 pb-3 border text-base-17-5 h-[53px]"
+          label={`${personaText} Last Name`}
           required={persona === "student" ? true : false}
-          labelClassname="text-[#26435F] !font-medium  mb-1 "
+          labelClassname="text-[#26435F] !font-medium  mb-1 text-base-17-5"
           value={otherDetails.LastName}
           onChange={(e) => {
 
@@ -171,17 +166,14 @@ export default function UserDetails({
           totalErrors={detailsError}
           error={detailsError.LastName}
         />
-        </div>
       </div>
-      <div className={`flex justify-between  mb-[30px]  ${stepTwoDisabled ? 'pointer-events-none cursor-not-allowed' :''}`}>
-        <div className="w-[375px]">
+      <div className={`flex justify-between gap-10  items-end mb-[30px] mt-1 ${stepTwoDisabled ? 'pointer-events-none cursor-not-allowed opacity-70' :''}`}>
         <InputField
-        biggerText={true}
           parentClassName=" relative w-full "
           label={`${personaText} Email `}
-          inputContainerClassName="border border-[#D0D5DD] pt-3 pb-3 border text-[17.5px] h-[55px]"
+          inputContainerClassName="border border-[#D0D5DD] pt-3 pb-3 border text-base-17-5 h-[53px]"
           required={persona === "student" ? true : false}
-          labelClassname="text-[#26435F] !font-medium  mb-1 text-[17.5px]"
+          labelClassname="text-[#26435F] !font-medium  mb-1 text-base-17-5"
           value={otherDetails.Email}
           onChange={(e) =>
             setOtherDetails({ ...otherDetails, Email: e.target.value })
@@ -189,14 +181,11 @@ export default function UserDetails({
           totalErrors={detailsError}
           error={detailsError.Email}
         />
-        </div>
-        <div className="w-[275px]">
-       <InputFieldDropdown
-          biggerText={true}
-          parentClassName=""
+        <InputFieldDropdown
+          parentClassName=" w-[85%] "
           label={`${personaText} Phone  ${persona !== "parent" ? "" : ""} `}
-          labelClassname="text-[#26435F] !font-medium  mb-1 text-[17.5px]"
-          inputContainerClassName="border  border-[#D0D5DD] pt-3   pb-3 relative border text-[17.5px] h-[54px]"
+          labelClassname="text-[#26435F] !font-medium  mb-1 text-base-17-5"
+          inputContainerClassName="border  border-[#D0D5DD] pt-3   pb-3 relative border text-base-17-5 h-[53px]"
           inputClassName=""
           required={persona === "student" ? true : false}
           codeValue={otherDetails.PphoneCode}
@@ -214,15 +203,13 @@ export default function UserDetails({
           error={detailsError.Phone}
           codeError={detailsError.PphoneCode}
         />
-       </div>
       </div>
 
       <InputField
-        biggerText={true}
-        parentClassName={`mb-[51px] relative w-full ${stepTwoDisabled ? 'pointer-events-none cursor-not-allowed' :''}`}
+        parentClassName={`mb-6 relative flex-1 ${stepTwoDisabled ? 'pointer-events-none cursor-not-allowed opacity-70' :''}`}
         label={`School Name `}
-        inputContainerClassName="border border-[#D0D5DD] pt-3 pb-3 border text-[17.5px] h-[52px]"
-        labelClassname="text-[#26435F] !font-semibold   mb-1 text-[17.5px]"
+        inputContainerClassName="border border-[#D0D5DD] pt-3 pb-3 border text-base-17-5 h-[50px]"
+        labelClassname="text-[#26435F] !font-medium  mb-1 text-base-17-5"
         value={otherDetails.schoolName}
         onChange={(e) =>
           setOtherDetails({ ...otherDetails, schoolName: e.target.value })
@@ -232,11 +219,11 @@ export default function UserDetails({
       />
       <InputSelect
         IconLeft={leftDrop}
-        parentClassName={`mb-[30px]  ${stepTwoDisabled ? 'pointer-events-none cursor-not-allowed' :''}`}
+        parentClassName={`mb-6 w-[200px] ${stepTwoDisabled ? 'pointer-events-none cursor-not-allowed opacity-70' :''}`}
         optionData={GradesData}
         label={`Student's Grade`}
-        labelClassname="text-[#26435F] !font-semibold  mb-1 text-[17.5px] "
-        inputContainerClassName="border text-[17.5px] border-[#D0D5DD] py-1 relative border !h-[49px] !w-[215px]"
+        labelClassname="text-[#26435F] !font-medium  mb-1 text-base-17-5 font-semibold"
+        inputContainerClassName="border text-base-17-5 border-[#D0D5DD] py-1 relative border"
         inputClassName="ml-80"
         required={persona === "student" ? true : false}
         value={otherDetails.grade}
@@ -249,9 +236,8 @@ export default function UserDetails({
         labelClassname="mb-1 text-[#26435F] !font-medium"
         label="Referral Code"
         placeholder=""
-        biggerText={true}
-        parentClassName={`text-[17.5px]  flex-1 ${stepTwoDisabled ? 'pointer-events-none cursor-not-allowed' :''}`}
-        inputContainerClassName="border border-[#D0D5DD] py-1 relative border h-[56px]"
+        parentClassName={`text-xs flex-1 ${stepTwoDisabled ? 'pointer-events-none cursor-not-allowed opacity-70' :''}`}
+        inputContainerClassName="border border-[#D0D5DD] py-1 relative border h-[48px]"
         value={otherDetails.referalCode}
         onChange={(e) =>
           setOtherDetails({ ...otherDetails, referalCode: e.target.value })
@@ -259,30 +245,28 @@ export default function UserDetails({
       />
 
       <div className={style.shy}>
-        <div className="flex items-center">
-         <div className="pt-1">
-         <CCheckbox checked={!otherDetails.referalCode||otherDetails.referalCode?.trim()?.length === 0}
+        <div className="flex items-center mt-2">
+          <CCheckbox checked={!otherDetails.referalCode||otherDetails.referalCode?.trim()?.length === 0}
             onChange={() => setOtherDetails({ ...otherDetails, referalCode: "" })} />
-         </div>
 
-          <span className="ml-1  text-[#507CA8] text-[17.5px] pt-1">
+          <span className="ml-1  text-[#507CA8] text-base-17-5 pt-1">
             I don't have one
           </span>
         </div>
       </div>
 
-      <div className="flex justify-between items-center mt-[50px] mb-[33px]">
+      <div className="flex justify-between items-center mt-16">
         {!isAddedByAdmin && (
           <SecondaryButton
-            children="Go back"
-            className="!py-[12.5px] font-medium !px-[35px] rounded-5 bg-white text-[#B3BDC7] border-[1.3px] border-[#D0D5DD]  h-[53px]  "
+            children="Go Back"
+            className="!text-[0.9688vw] whitespace-nowrap mr-6 bg-white text-[#B3BDC7] border-[1.3px] border-[#D0D5DD] font-medium h-[50px] design:h-[53px] rounded-5 w-[8vw]"
             onClick={handleBack}
           />
         )}
         <PrimaryButton
         loading={newLoader}
           children={!customFields||customFields?.length===0?"Submit":"Next"}
-          className={` bg-[#FFA28D] text-center items-center justify-center disabled:opacity-60    text-[#FFF] !py-[12.5px] font-medium !px-[40.5px]  relative h-[53px] rounded-5`}
+          className={` bg-[#FFA28D] text-center items-center justify-center disabled:opacity-60 w-[7.6042vw]   text-[#FFF] !text-[0.9688vw] font-medium relative h-[50px] design:h-[53px] rounded-5`}
           onClick={() => handleClick()}
           disabled={disabled}
         />

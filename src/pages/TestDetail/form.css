@@ -50,4 +50,5 @@ list-style-position: inside !important;
 }
 .ck-content ol {
 list-style-position: inside !important;
+z-index: 1000 !important;
 }

@@ -10,7 +10,7 @@ import LatestSignUpTableItem from "./LatestSignUpTableItem";
 import Pagination from "../../pages/SuperadminDashboard/Table/Pagination";
 import { useNavigate } from "react-router-dom";
 export default function Table(props) {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const {
     noArrow,
     dataFor,
@@ -37,13 +37,13 @@ export default function Table(props) {
     loading,
     AdminLatestSignUp,
     headerWidth,
-     belowBoxLink,
+    belowBoxLink,
     belowBox,
     belowBoxHeight,
     belowBoxText,
     belowBoxIcon,
     noScrollbar,
-    dummyRowStarClients
+    dummyRowStarClients,
   } = props;
   const [dummy, setDummy] = useState([]);
   const [tableData, setTableData] = useState(data);
@@ -78,10 +78,7 @@ export default function Table(props) {
     }
   }, [data, maxPageSize, data?.length]);
 
-  const sorting = () => {
-
-  };
-
+  const sorting = () => {};
 
   useEffect(() => {
     if (hidePagination === true) return;
@@ -96,14 +93,24 @@ export default function Table(props) {
 
   return (
     <div className="w-full">
-      <div className={` ${noScrollbar ? ` lg:overflow-x-auto scrollbar-content custom-scroller-2 scroll-m-1 ${styles.noOverflow}` : 'overflow-x-auto scrollbar-content custom-scroller-2 scroll-m-1'}  p-[2px]  `}>
-        <table className=" customTable mb-3 text-center w-full whitespace-nowrap">
+      <div
+        className={`  ${
+          noScrollbar
+            ? ` lg:overflow-x-auto scrollbar-content custom-scroller-2 scroll-m-1 ${styles.noOverflow}`
+            : "overflow-x-auto scrollbar-content custom-scroller-2 scroll-m-1"
+        }  p-[2px]  `}
+      >
+        <table className="bg-white customTable mb-3 text-center w-full whitespace-nowrap">
           <thead className="pb-2 whitespace-nowrap">
             <tr className=" whitespace-nowrap">
               {tableHeaders.map((item, idx) => {
                 return headerObject === true ? (
                   <React.Fragment key={idx}>
-                    <TableHeaderNew noArrow={noArrow} header={item} dataFor={dataFor} />
+                    <TableHeaderNew
+                      noArrow={noArrow}
+                      header={item}
+                      dataFor={dataFor}
+                    />
                   </React.Fragment>
                 ) : (
                   <React.Fragment key={idx}>
@@ -132,7 +139,6 @@ export default function Table(props) {
               </div>
             ) : (
               tableData?.map((item, idx) => {
-
                 return AdminLatestSignUp ? (
                   <React.Fragment key={idx}>
                     <LatestSignUpTableItem
@@ -147,9 +153,8 @@ export default function Table(props) {
                   </React.Fragment>
                 ) : (
                   <React.Fragment key={idx}>
-
                     <TableItem
-                    testtype={testtype}
+                      testtype={testtype}
                       extratableitem={extratableitem}
                       index={idx}
                       dataFor={dataFor}
@@ -165,48 +170,68 @@ export default function Table(props) {
                 );
               })
             )}
-            {!belowBox && dummy.map((it, iti) => {
-              return (
-                <tr
-                  key={iti}
-                  className="bg-white leading-8 shadow-[0px_0px_2px_rgba(0,0,0,0.25)] text-[17.5px] "
-                >
-                  {it.map((d, di) => {
-                    return (
-                      <td key={di} className="opacity-0 text-[17.5px] px-[10px] min-w-14 py-4 ">
-                        {d}
-                      </td>
-                    );
-                  })}
-                </tr>
-              );
-            })}
+            {!belowBox &&
+              dummy.map((it, iti) => {
+                return (
+                  <tr
+                    key={iti}
+                    className="bg-white leading-8 shadow-[0px_0px_2px_rgba(0,0,0,0.25)] text-[17.5px] "
+                  >
+                    {it.map((d, di) => {
+                      return (
+                        <td
+                          key={di}
+                          className="opacity-0 text-[17.5px] px-[10px] min-w-14 py-4 "
+                        >
+                          {d}
+                        </td>
+                      );
+                    })}
+                  </tr>
+                );
+              })}
             {/* {console.log(dummyRowStarClients)} */}
-            {dummyRowStarClients && dummyRowStarClients.map((it, index) => {
-              return (
-                <tr
-                  key={index}
-                  className="bg-white leading-8 shadow-[0px_0px_2px_rgba(0,0,0,0.25)] text-[17.5px] "
-                >
-                     <td className="opacity-0 text-[17.5px] px-[10px] min-w-14 py-4 ">{it.service}</td>
-            <td className="opacity-0 text-[17.5px] px-[10px] min-w-14 py-4 ">{it.actively_using}</td>
-            <td className="opacity-0 text-[17.5px] px-[10px] min-w-14 py-4 ">{it.total_used}</td>
-                </tr>
-              );
-            })}
-
+            {dummyRowStarClients &&
+              dummyRowStarClients.map((it, index) => {
+                return (
+                  <tr
+                    key={index}
+                    className="bg-white leading-8 shadow-[0px_0px_2px_rgba(0,0,0,0.25)] text-[17.5px] "
+                  >
+                    <td className="opacity-0 text-[17.5px] px-[10px] min-w-14 py-4 ">
+                      {it.service}
+                    </td>
+                    <td className="opacity-0 text-[17.5px] px-[10px] min-w-14 py-4 ">
+                      {it.actively_using}
+                    </td>
+                    <td className="opacity-0 text-[17.5px] px-[10px] min-w-14 py-4 ">
+                      {it.total_used}
+                    </td>
+                  </tr>
+                );
+              })}
           </tbody>
         </table>
-        {belowBox && 
-         <div className={`${belowBoxHeight} bg-white mt-[6px] rounded-5 shadow-[0px_0px_2px_0px_rgba(0,0,0,0.25)] flex items-center justify-center`}>
-          <button onClick={() => navigate(`/${belowBoxLink}`)} className="inline-block rounded-[5.33px] bg-[#FFA28D] text-[#FFF] font-semibold py-[10px] px-[15.5px] text-base">{belowBoxText}<img className="inline-block pl-2" src={belowBoxIcon} alt="" /></button>
-         </div>
-        }
+       
       </div>
-      
+      {belowBox && (
+          <div
+            className={`${belowBoxHeight} bg-white mt-[6px] rounded-5 shadow-[0px_0px_2px_0px_rgba(0,0,0,0.25)] flex items-center justify-center w-full`}
+          >
+            <button
+              onClick={() => navigate(`/${belowBoxLink}`)}
+              className="inline-block rounded-[5.33px] bg-[#FFA28D] text-[#FFF] font-semibold py-[10px] px-[15.5px] text-base"
+            >
+              {belowBoxText}
+              <img className="inline-block pl-2" src={belowBoxIcon} alt="" />
+            </button>
+          </div>
+        )}
       {!hidePagination ? (
         <div className="flex justify-between px-1 items-center">
-          <p className="text-[#517CA8] text-xs">Showing {tableData?.length} of {data?.length}</p>
+          <p className="text-[#517CA8] text-xs">
+            Showing {tableData?.length} of {data?.length}
+          </p>
           <Pagination
             currentPage={currentPage}
             setCurrentPage={setCurrentPage}
@@ -217,12 +242,12 @@ export default function Table(props) {
         </div>
       ) : (
         <div
-          className={`flex grid-cols- justify-center items-center ${loading ? "mt-7" : ""
-            } `}
+          className={`flex grid-cols- justify-center items-center ${
+            loading ? "mt-7" : ""
+          } `}
         >
           <aside></aside>
           {!hidePagination && (
-
             <ReactPaginate
               className="table-pagination-container flex justify-center mt-5"
               pageClassName={`flex justify-center items-center w-[38.12px] h-[38.12px] border border-primary rounded-full mr-5 cursor-pointer
@@ -242,10 +267,8 @@ export default function Table(props) {
               pageLinkClassName="w-full h-full flex justify-center items-center"
             />
           )}
-
         </div>
       )}
     </div>
   );
 }
-
