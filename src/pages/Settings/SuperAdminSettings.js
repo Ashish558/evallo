@@ -177,6 +177,7 @@ export default function SuperAdminSettings() {
   const [modalData, setModalData] = useState(initialState);
   const [fetchedPermissions, setThePermission] = useState([]);
   const dispatch = useDispatch();
+  const [selectedtest, setselectedtest] = useState([])
 
   const handlePermissionOption = (value, key) => {
     let nvalue = value;
@@ -1246,7 +1247,7 @@ export default function SuperAdminSettings() {
     console.log(e);
   };
   const handleTestChange2 = (item) => {
-    //console.log("tsests", item);
+    console.log("tsests", item);
     if (subModalData.tests.includes(item._id)) {
       let updated = subModalData.tests.filter(
         (test) => test !== item._id
@@ -1255,11 +1256,17 @@ export default function SuperAdminSettings() {
         ...prev,
         tests: updated,
       }));
+      const up=selectedtest.filter(
+        test=>test!=item.value
+      )
+      setselectedtest(up)
     } else {
       setSubModalData((prev) => ({
         ...prev,
         tests: [...subModalData.tests, item._id],
       }));
+     const selecttt=selectedtest;
+     selecttt.push(item.value);
     }
   };
   return (
@@ -2236,6 +2243,8 @@ export default function SuperAdminSettings() {
           }
         />
       )} */}
+        {console.log(subModalData)}
+
  {addCodeModalActive && (
         <Modal
           classname={"max-w-[560px] mx-auto"}
@@ -2246,6 +2255,7 @@ export default function SuperAdminSettings() {
           handleClose={() => {
             setAddCodeModalActive(false);
             setSubModalData(subModalInitialState);
+            setselectedtest([])
           }}
           body={
             <form
@@ -2315,13 +2325,13 @@ export default function SuperAdminSettings() {
                     />
                   </div>
                 </div>
-                <div className="mt-3 flex-1">
+                <div className="mt-3   mb-10 flex-1">
                   <InputSearch
                     label="Select Assignments (optional)"
                     labelClassname="text-base-20 text-[#26435F] mb-0.5"
                     placeholder="Select"
                     placeholderClass="text-base-17-5"
-                    parentClassName=" text-base-17-5 py-0 w-full  mb-10"
+                    parentClassName=" text-base-17-5 py-0 w-full"
                     inputContainerClassName=" text-base-17-5 bg-[#F3F5F7] border-0 pt-3.5 pb-3.5"
                     inputClassName="bg-[#F3F5F7]"
                     type="text"
@@ -2343,6 +2353,29 @@ export default function SuperAdminSettings() {
                       // setCurrentToEdit({ ...currentToEdit, students: [... item._id] });
                     }}
                   />
+                  <div className="flex flex-row items-center">
+                  {
+                    selectedtest?.length>0?
+                    <>
+                    <p className="font-medium whitespace-nowrap text-base-18 text-[#667085]"> {selectedtest[0]}</p>
+                    {selectedtest?.length>1?<>
+                      <p className="font-medium whitespace-nowrap text-base-18 text-[#667085]">, {selectedtest[1]}</p>
+                      {selectedtest?.length>2?
+                      <>
+                        <p className="font-medium whitespace-nowrap text-base-18 text-[#667085]">, {selectedtest[2]}</p>
+                        {selectedtest.length>3?
+                        <>
+                        <p className="font-medium whitespace-nowrap text-base-18 text-[#667085]">... total {selectedtest.length} selected</p>
+                        </>
+                      :null}
+                      </> :null}
+                      </>
+                    :null}
+                    </>
+                    :null
+
+                  }
+                  </div>
                   {/* <InputField
                   label="Select Assignments (optional)"
                   labelClassname="text-base-20 text-[#26435F] mb-0.5"
