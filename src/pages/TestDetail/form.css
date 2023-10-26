@@ -44,10 +44,3 @@ z-index: 1100 !important; /* Assuming 1050 was the modal's z-index, we use a hig
 .tox-menu{
 z-index: 1000 !important;
 }
-.ck-editor ul{
-list-style-type: disc !important;
-list-style-position: inside !important;
-}
-.ck-content ol {
-list-style-position: inside !important;
-}
