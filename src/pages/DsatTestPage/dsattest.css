@@ -1,4 +1,14 @@
 ::webkit-scrollbar-track {
     background-color: #EDEDED;
-    border-radius: 10px; /* Optional for rounded corners on the track */
+    border-radius: 10px;
+    /* Optional for rounded corners on the track */
+}
+.dangerouslySetClass ul {
+    list-style-position: inside ;
+    list-style-type: disc ;
+}
+
+.dangerouslySetClass ol {
+    list-style-type: decimal ;
+    list-style-position: inside ;
 }
