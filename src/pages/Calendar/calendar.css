@@ -104,7 +104,7 @@
   justify-content: center;
 }
 .calender .fc .fc-timegrid-slot {
-  height: 3rem !important;
+  height: 3.75rem !important;
 }
 .calender .fc .fc-timegrid-slot-label {
   display: block;
@@ -272,7 +272,7 @@ text-transform: uppercase;
   position: relative !important;
 }
 .calender .fc .fc-timegrid-slot-label{
-  display: revert !important;
+  /* display: revert !important; */
   vertical-align: baseline !important;
   border: 1px solid rgba(245, 248, 250, 1)!important;
 }
@@ -363,7 +363,7 @@ text-transform: uppercase;
 .calendar .fc .fc-timegrid-slot-label-cushion {
   font-weight: 500 !important;
   font-size: 14.6px !important;
-  transform: translateY(10px);
+  transform: translateY(0px);
 
 }
 
