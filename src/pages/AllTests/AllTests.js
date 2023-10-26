@@ -363,7 +363,8 @@ export default function AllTests({isOwn,setTotaltest,studentId,fromProfile}) {
   useEffect(() => {
     console.log(testtype2);
   }, [testtype2])
-  if ((persona === "parent" || persona === "student")&&fromProfile) return <StudentTest testtype={testtype2} isOwn={isOwn} setTotaltest={setTotaltest} studentId={studentId} fromProfile={true} />;
+  console.log("profile",fromProfile)
+  if (fromProfile) return <StudentTest testtype={testtype2} isOwn={isOwn} setTotaltest={setTotaltest} studentId={studentId} fromProfile={true} />;
 
   else if (persona === "parent" || persona === "student") return <StudentTest testtype={testtype2}  />;
 
