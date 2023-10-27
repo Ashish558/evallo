@@ -100,7 +100,7 @@ export default function Que(props) {
           )
         }}
       />  */}
-      <div dangerouslySetInnerHTML={{__html:quesT[index-1].text}} />
+      <div className='dangerouslySetClass' dangerouslySetInnerHTML={{__html:quesT[index-1].text}} />
          {/* <img src={image} alt="" /> */}
         </div>:null
         }
