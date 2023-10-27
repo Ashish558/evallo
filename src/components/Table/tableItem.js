@@ -962,7 +962,7 @@ export default function TableItem({
       {dataFor === "allTestsSuperAdmin" && (
         <tr className=" font-medium  lead  text-[17.5px] ">
           <td>{item.testName}</td>
-          <td>{item.testType}</td>
+          <td>{item.testType==="Other"?"ACT":item.testType}</td>
           <td>{getFormattedDate(item.createdAt.split("T")[0], dateFormat)}</td>
           <td>{getFormattedDate(item.updatedAt.split("T")[0], dateFormat)}</td>
           <td> {item.no_of_assign ? item.no_of_assign : "-"} </td>

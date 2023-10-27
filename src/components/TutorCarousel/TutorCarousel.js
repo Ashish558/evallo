@@ -71,7 +71,7 @@ const TutorCarousel = () => {
     <div className="h-full relative items-center  flex py-2 mr-[5%]">
 
       <h2 className="pl-5 pt-4">{""}</h2>
-      {tutors.length >= totalTutors ? (
+      {tutors.length >= totalTutors  ? (
         <OwlCarousel
         ref={sliderRef}
         {...options}
@@ -88,7 +88,16 @@ const TutorCarousel = () => {
           })}
         </OwlCarousel>
       ) : (
-        <div className="font-semibold text-center mt-12">No tutors added !</div>
+     
+        <div id="stutoradd" className=" w-full  z-[5000] h-full rounded-md bg-white flex justify-center flex-col text-center items-center">
+        <div className="w-[95%] mx-auto   flex flex-col items-end">
+          
+         <button className="bg-[#FF7979] text-white rounded-md p-2 py-1">
+         No Tutors Assigned
+         </button>
+      
+       </div>
+     </div>
       )}
 
 
