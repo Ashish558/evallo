@@ -179,15 +179,15 @@ function SuperadminDashboard() {
       <div className=" mt-[34px] bg-#2E2E2E mx-auto pb-7 w-[88.59vw]">
         <div className="flex justify-between">
         <p className="text-[#24A3D9] text-base-20">Dashboard</p>
-      
-        <RangeDate super={true} handleRangeData={handleDataRange} />
+       
+        <RangeDate optionClassName="!w-min" inputContainerClassName="!w-min " super={true} handleRangeData={handleDataRange} />
         </div>
        
         <div className="flex  justify-between mt-7 ">
           <section className="w-[30.47vw]">
             <div className="w-full whitespace-nowrap">
               <p className={`${styles.subheading} `}> Organizations </p>
-              <div className={`flex mr-0 ${styles.orgCard}`}>
+              <div className={`flex mr-0 ${styles.orgCard} mt-1.5`}>
                 <div className={`  ${orgStyles.container} w-[10.16vw]`}>
                   <p className={`${orgStyles.heading} !text-[0.97vw]`}> Total # of Orgs</p>
                   <p className={`${orgStyles.text} !text-[1.39vw]`}>
@@ -211,7 +211,7 @@ function SuperadminDashboard() {
               </div>
             </div>
             <div className="">
-              <p className="mt-[20px] mb-[5px] font-semibold text-[#26435F]">
+              <p className="mt-[40px]  font-semibold text-[#26435F]">
                 {" "}
                 User Stats{" "}
               </p>
@@ -220,18 +220,18 @@ function SuperadminDashboard() {
                   style={{
                     boxShadow: "0px 0px 2px rgba(0, 0, 0, 0.25) ",
                   }}
-                  className="flex overflow-hidden rounded-t-md"
+                  className="flex overflow-hidden rounded-t-5"
                 >
                   {userTypes.map((item, id) => {
                     return (
                       <div
                         key={id}
                         onClick={() => handleCurrentUser(item)}
-                        className={`  bg-white border-b-[1.4px] overflow-hidden relative cursor-pointer border-[rgb(10,30,40,0.27)] ${styles.userStat} `}
+                        className={`  bg-white border-b-[1.4px] overflow-hidden relative cursor-pointer border-[rgb(10,30,40,0.27)] ${styles.userStat} h-[54px]`}
                       >
                         <span className={`!text-[0.97vw] ${currentUser?.name === item.text.toLowerCase() ? "text-[#FFA28D]":""} `} >{item.text}</span>
                         {currentUser?.name === item.text.toLowerCase() ? (
-                          <p className="border-b-[4px] relative  rounded-t translate-y-[12px]  border-b-[#FFA28D]  text-[#FFA28D] "></p>
+                          <p className="border-b-[4px] relative  rounded-t translate-y-[11px]  border-b-[#FFA28D]  text-[#FFA28D] "></p>
                         ) : (
                           ""
                         )}
@@ -282,7 +282,7 @@ function SuperadminDashboard() {
                   </div>
 
                   <div
-                    className={`flex items-center  justify-start gap-12 pl-7 pt-1 pb-2 text-[#26435F] bg-[#FFFFFF] mt-4 ${styles.customBorder}`}
+                    className={`flex items-center  justify-start gap-12 pl-7 pt-1 pb-2 h-[80px] text-[#26435F] bg-[#FFFFFF] mt-6 ${styles.customBorder}`}
                   >
                     <div>
                       <p className="font-semibold text-[1.39vw]">
@@ -309,6 +309,7 @@ function SuperadminDashboard() {
               Latest Org Signup{" "}
             </p>
             <Table
+            className="!text-[18.6px] !font-normal"
             noArrow={true}
               data={orgSignUpData}
               tableHeaders={tableHeaders}

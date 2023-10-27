@@ -21,6 +21,7 @@ export default function InputSelect({
   checkbox,
   optionClassName,
   optionType,
+  IconRightClass,
   disabled,
   required,
   optionListClassName,
@@ -83,11 +84,12 @@ export default function InputSelect({
           ) : (
             <span className={`mr-5 pl-5 text-[15px] !text-[calc(17*0.050vw)] cursor-default whitespace-nowrap `} >
               <span className={`${valueClassName}`} onClick={handleOption}>{value}</span>
-              <img
-                className="w-[30px] inline-block relative h-[10px] text-lg cursor-pointer  z-[5000]"
+             {IconRight&& <img
+                className={`w-[30px] inline-block relative h-[10px] text-lg cursor-pointer  z-[5000] ${IconRightClass}`}
                 onClick={handleOption}
+                alt="right"
                 src={IconRight}
-              />
+              />}
             </span>
           )}
           {/* {selected ? (

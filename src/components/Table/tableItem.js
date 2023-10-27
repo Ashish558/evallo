@@ -325,18 +325,18 @@ export default function TableItem({
           <>
 
             <tr className=" text-[17.5px] font-medium">
-              <td className="py-4 px-[10px]">
+              <td className="pb-[15px] pt-[15px] px-[10px]">
                 {item.studentName}
               </td>
-              <td className="py-4 px-[10px]">
+              <td className="pb-[15px] pt-[15px] px-[10px]">
                 {item.service}
               </td>
-              <td className="py-4 px-[10px]">
+              <td className="pb-[15px] pt-[15px] px-[10px]">
                 {item.rating}
               </td>
 
 
-              <td className="py-4 px-[10px]">
+              <td className="pb-[15px] pt-[15px] px-[10px]">
                 {getFormattedDate(formattedDate, dateFormat)}
               </td>
             </tr>
@@ -962,7 +962,7 @@ export default function TableItem({
       {dataFor === "allTestsSuperAdmin" && (
         <tr className=" font-medium  lead  text-[17.5px] ">
           <td>{item.testName}</td>
-          <td>{item.testType}</td>
+          <td>{item.testType==="Other"?"ACT":item.testType}</td>
           <td>{getFormattedDate(item.createdAt.split("T")[0], dateFormat)}</td>
           <td>{getFormattedDate(item.updatedAt.split("T")[0], dateFormat)}</td>
           <td> {item.no_of_assign ? item.no_of_assign : "-"} </td>

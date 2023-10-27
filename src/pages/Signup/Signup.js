@@ -335,7 +335,7 @@ export default function Signup() {
       let reqBody = {
         firstname: values.firstName,
         lastname: values.lastName,
-        workemail: values.email,
+        workemail: values.email?.toLocaleLowerCase(),
         password: values.firstName,
         phone: values.phone,
         company: values.company,
@@ -478,7 +478,7 @@ export default function Signup() {
       try {
 
         let data = {
-          workemail: values.email,
+          workemail: values.email?.toLocaleLowerCase(),
         };
         //   alert(data.workemail)
         let result = await axios.post(
@@ -721,8 +721,7 @@ export default function Signup() {
                       placeholder=""
                       parentClassName="text-md w-4/5 ml-8 "
                       biggerText={true}
-                      
-                      ArrowFlipVertically={true}
+                      arrowClassName="w"
                       labelClassname="!text-[18.67px] text-[#26435F] font-semibold"
                       inputContainerClassName=" border border-[#D0D5DD] rounded-md py-[9px] h-[53px] text-md"
                       label="Phone"

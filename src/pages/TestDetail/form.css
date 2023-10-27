@@ -44,3 +44,10 @@
 .tox-menu{
   z-index: 1000 !important;
 }
+.ck-editor ul{
+  list-style-type: disc !important;
+  list-style-position: inside !important;
+}
+.ck-content ol {
+  list-style-position: inside !important;
+}

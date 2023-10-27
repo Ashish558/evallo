@@ -82,7 +82,7 @@ export default function TutorProfile({ isOwn }) {
   const { organization } = useSelector((state) => state.organization);
   const [newServices, setNewServices] = useState([]);
   // console.log(feedbacks)
-  const { dateFormat } = useSelector(state => state.user)
+  const { dateFormat } = useSelector((state) => state.user);
   const { id } = useSelector((state) => state.user);
   const [studentFeedbacks, setStudentFeedbacks] = useState([]);
   useEffect(() => {
@@ -285,9 +285,9 @@ export default function TutorProfile({ isOwn }) {
     },
   });
   //console.log("userDetail", { userDetail, toEdit });
-  const [tutorTotalReviews, setTutorReviews] = useState([])
+  const [tutorTotalReviews, setTutorReviews] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  console.log("trts", tutorTotalReviews)
+  console.log("trts", tutorTotalReviews);
   useEffect(() => {
     let userId = "";
     if (isOwn) {
@@ -302,12 +302,12 @@ export default function TutorProfile({ isOwn }) {
         return;
       }
       console.log("newtr feedback", data);
-      let tempp = []
+      let tempp = [];
       data?.data?.feedback?.map((tr) => {
         if (tr?.customCreatedAt && tr?.userTag) {
-          tempp.push(tr)
+          tempp.push(tr);
         }
-      })
+      });
       setTutorReviews(tempp);
 
       data.data.feedback.map((feedback) => {
@@ -385,7 +385,7 @@ export default function TutorProfile({ isOwn }) {
     }
     getUserDetail({ id: userId }).then((res) => {
       console.log("response", userId, res?.data);
-      if (!res?.data) return
+      if (!res?.data) return;
       setAwsLink(res.data.data.baseLink);
       const { firstName, lastName, phone, email, phoneCode } =
         res.data.data.user;
@@ -394,7 +394,7 @@ export default function TutorProfile({ isOwn }) {
 
       let details = res?.data?.data?.details ? res?.data?.data?.details : {};
       if (Object.keys(details)?.length === 0) {
-        details = null
+        details = null;
       }
 
       console.log("details", details);
@@ -514,7 +514,10 @@ export default function TutorProfile({ isOwn }) {
                   ...prevToEdit.serviceSpecializations,
                   serviceSpecializations:
                     details !== null ? details?.serviceSpecializations : [],
-                  isPresent: details === null || details?.serviceSpecializations === null ? false : true,
+                  isPresent:
+                    details === null || details?.serviceSpecializations === null
+                      ? false
+                      : true,
                 },
                 videoLink: {
                   ...prevToEdit.videoLink,
@@ -646,8 +649,8 @@ export default function TutorProfile({ isOwn }) {
     let date = new Date(date1);
     const options = { year: "numeric", month: "long", day: "numeric" };
     const formattedDate = date.toLocaleDateString("en-US", options);
-    return formattedDate
-  }
+    return formattedDate;
+  };
   const options = { year: "numeric", month: "long", day: "numeric" };
   const formattedDate = date.toLocaleDateString("en-US", options);
 
@@ -659,23 +662,24 @@ export default function TutorProfile({ isOwn }) {
                <p className='text-[#24A3D9] text-xl '>Org</p>
             </div> */}
         <p className="text-[#24A3D9] text-base-20 mb-8 my-[calc(50*0.0522vw)] ">
-          {persona === "admin" ?
-            <span >
-              <span className="!cursor-pointer" onClick={() => navigate('/')}>
-                {organization?.company +
-                  "  >  " +
-                  firstName +
-                  "  " +
-                  lastName
-                }  </span>
-              <span className="!cursor-pointer" onClick={() => navigate('/users')}>{"  >  CRM > "}</span>
-              <span className="font-semibold">{
-                user?.firstName +
-                " " +
-                user?.lastName}</span>
-            </span> :
+          {persona === "admin" ? (
             <span>
-              <span onClick={() => navigate('/')} className="cursor-pointer">
+              <span className="!cursor-pointer" onClick={() => navigate("/")}>
+                {organization?.company + "  >  " + firstName + "  " + lastName}{" "}
+              </span>
+              <span
+                className="!cursor-pointer"
+                onClick={() => navigate("/users")}
+              >
+                {"  >  CRM > "}
+              </span>
+              <span className="font-semibold">
+                {user?.firstName + " " + user?.lastName}
+              </span>
+            </span>
+          ) : (
+            <span>
+              <span onClick={() => navigate("/")} className="cursor-pointer">
                 {organization?.company +
                   " > " +
                   user?.firstName +
@@ -685,8 +689,7 @@ export default function TutorProfile({ isOwn }) {
               </span>
               <span className="font-semibold">Profile</span>
             </span>
-          }
-
+          )}
         </p>
         {/* {!isOwn ? (
           <button
@@ -698,7 +701,7 @@ export default function TutorProfile({ isOwn }) {
         ) : (
           <></>
         )} */}
-      
+
         <div className="flex  justify-between">
           <ProfileCard
             hideShadow
@@ -772,20 +775,20 @@ export default function TutorProfile({ isOwn }) {
                     </div>
                     {(persona === "tutor" || persona === "admin") && (
                       <div className="ml-auto mt-auto pt-[10px] pb-[10px] mr-8">
-                        <div className="flex gap-4 items-center mb-[10px]">
+                        <div className="flex gap-4 items-center mb-[10px] design:mb-0 design:mt-1">
                           <img src={mail} alt="mailLogo"></img>
                           <p className="text-white text-[17.503px] text-base-17-5">
                             {user.email}
                           </p>
                         </div>
-                        <div className="flex gap-4 items-center mb-[10px]">
+                        <div className="flex gap-4 items-center mb-[10px] design:mb-0">
                           <img src={call} alt="callLogo"></img>
                           <p className="text-white text-[17.503px] text-base-17-5">
                             {user.phoneCode}
                             {user.phone}
                           </p>
                         </div>
-                        <div className="flex gap-4 items-center mb-[10px]">
+                        <div className="flex gap-4 items-center mb-[10px] design:mb-0">
                           <img src={linkedin} alt="linkedinLogo"></img>
                           <a
                             className="text-white text-[17.503px] text-base-17-5"
@@ -874,7 +877,7 @@ export default function TutorProfile({ isOwn }) {
 
         <div className=" lg:pt-0 lg:pr-0 relative mt-[67px]">
           <div className="grid grid-cols-12 gap-x-[46px]">
-            <div className="col-span-3 mt-53 lg:mt-0 flex flex-col ">
+            <div className="col-span-3 mt-53 lg:mt-0 flex flex-col  ">
               {/* {
                         !isOwn &&
                         <div className={` mb-5 px-4 py-4 lg:bg-textGray-30 rounded-2xl`}
@@ -919,7 +922,7 @@ export default function TutorProfile({ isOwn }) {
                   hideShadow={true}
                   bgClassName="bg-profilecard"
                   body={
-                    <div className=" max-h-[500px] custom-scroller scroll-mx-3">
+                    <div className=" h-[660px]  custom-scroller scroll-mx- !bg-[#F5F8FA]">
                       {/* {settings &&
                         settings.Expertise?.length > 0 &&
                         userDetail.serviceSpecializations &&
@@ -954,63 +957,48 @@ export default function TutorProfile({ isOwn }) {
                             <></>
                           );
                         })} */}
-                            {userDetail?.serviceSpecializations?.length > 0 ?
-                      userDetail?.serviceSpecializations?.map((it, idx) => {
-                        return (
-                          it[0] !== "6" && (
-                            <div
-                              key={idx}
-                              className="bg-white p-2 h-min mb-1  text-[#517CA8] text-base-17-5 !rounded-md shadow-[0px_0px_2.500001907348633px_0px_#00000040]  w-full"
-                            >
-                              {it}
-                            </div>
-                          )
-                        );
-                      }):<div className="w-full h-full min-h-[300px] rounded-md bg-white flex justify-center flex-col text-center items-center">
-                     {(isOwn === true || persona === "admin") && (  <span  onClick={() =>
-                        setToEdit({
-                          ...toEdit,
-                          serviceSpecializations: {
-                            ...toEdit.serviceSpecializations,
-                            active: true,
-                          },
-                        })
-                      } className="text-[#517CA8] text-base-17-5 cursor-pointer">Add Expertise</span>)}
-                      </div>}
-                      {/* <div className='overflow-x-auto scrollbar-content max-h-[500px] scrollbar-vertical '>
-                                                         <div className=' bg-white rounded min-h-[60px] flex items-center '>
-                                 <div className='ml-3'>
-                                    <img src={sat}></img>
-                                 </div>
-                                 <div className=' ml-10'>
-                                    <p className='text-[#517CA8] ' style={{fontWeight:'400'}}></p>
-                                 </div>
+                      {userDetail?.serviceSpecializations?.length > 0 ? (
+                        userDetail?.serviceSpecializations?.map((it, idx) => {
+                          return (
+                            it[0] !== "6" && (
+                              <div
+                                key={idx}
+                                className="bg-white px-2 py-[16px] h-min  text-[#517CA8] text-base-17-5 !rounded-5 mb-1 shadow-[0px_0px_2.500001907348633px_0px_#00000040]  w-full"
+                              >
+                                {it}
                               </div>
-                              </div> */}
-
-                      {/* <EditableText editable={editable}
-                                 onClick={() => setToEdit({ ...toEdit, serviceSpecializations: { ...toEdit.serviceSpecializations, active: true } })}
-                                 text='Expertise'
-                                 className='text-lg mb-2' textClassName="flex-1 text-center text-[21px]" /> */}
-                      {/* May Be Useful */}
-                      {/* <div className='flex flex-col row-span-2 overflow-x-auto scrollbar-content max-h-[500px] scrollbar-vertical'>
-                                 {settings && settings.Expertise?.length > 0 && userDetail.serviceSpecializations && userDetail.serviceSpecializations.map((id, idx) => {
-                                    return (
-                                       settings.Expertise?.find(item => item._id === id) ?
-                                          <div key={idx} className='flex flex-col items-center mb-10'>
-                                             <div className='flex h-90 w-90 rounded-full  items-center justify-center mb-3' >
-                                                <img className='max-w-[90px] max-h-[90px]' src={settings.Expertise.find(item => item._id === id).image}
-                                                />
-                                             </div>
-                                             <p className='opacity-70 font-semibold text-lg'>
-                                                {settings.Expertise.find(item => item._id === id).text}
-                                             </p>
-                                          </div>
-                                          :
-                                          <></>
-                                    )
-                                 })}
-                              </div> */}
+                            )
+                          );
+                        })
+                      ) : (
+                        <div id="sexpert" className="w-full h-full min-h-[300px] rounded-md bg-white flex justify-center flex-col text-center items-center">
+                          {isOwn === true || persona === "admin" ? (
+                            <span
+                              onClick={() =>
+                                setToEdit({
+                                  ...toEdit,
+                                  serviceSpecializations: {
+                                    ...toEdit.serviceSpecializations,
+                                    active: true,
+                                  },
+                                })
+                              }
+                              className="text-[#517CA8] rounded-md bg-[#38C980] p-2 px-4 text-white text-base-17-5 text-base-17-5 cursor-pointer"
+                            >
+                              Add Expertise
+                            </span>
+                          ) : (
+                            
+                            <button
+                              type="button"
+                              class="rounded-md bg-[#FF7979] p-2 px-4 text-white text-base-17-5"
+                            >
+                              None Added
+                            </button>
+                         
+                          )}
+                        </div>
+                      )}
                     </div>
                   }
                 />
@@ -1022,54 +1010,70 @@ export default function TutorProfile({ isOwn }) {
                   Tutor Highlight Video
                 </div>
 
-                {(isOwn == true || persona === "admin") && (<p
-                  className="text-[#667085] ml-auto underline cursor-pointer text-[15px] text-base-15"
-                  onClick={() =>
-                    setToEdit({
-                      ...toEdit,
-                      videoLink: { ...toEdit.videoLink, active: true },
-                    })
-                  }
-                >
-                  edit
-                </p>)}
-
+                {(isOwn == true || persona === "admin") && (
+                  <p
+                    className="text-[#667085] ml-auto underline cursor-pointer text-[15px] text-base-15"
+                    onClick={() =>
+                      setToEdit({
+                        ...toEdit,
+                        videoLink: { ...toEdit.videoLink, active: true },
+                      })
+                    }
+                  >
+                    edit
+                  </p>
+                )}
               </div>
 
               <div className="pt-10  h-[460px] design:min-h-[460px]  relative z-10 flex items-end ">
-                {videoLink ? <YoutubeEmbed embedId={videoLink} /> :
+                {videoLink ? (
+                  <YoutubeEmbed embedId={videoLink} />
+                ) : (
                   <div className="!w-full bg-white  mb-10 !h-full flex-1 flex justify-center  items-center">
                     <div
                       class="relative ml-5 !w-[90%] my-auto overflow-hidden translate-y-[-15%] !h-[350px]   rounded-lg !bg-fit bg-center bg-no-repeat  text-center"
                       id="highPlace"
                     >
-                      <div
-                        class="absolute z-50 bottom-0 left-0 right-0 top-0 h-full w-full overflow-hidden bg-fixed"
-                      >
+                      <div class="absolute z-50 bottom-0 left-0 right-0 top-0 h-full w-full overflow-hidden bg-fixed">
                         <div class="flex h-full mx-auto mt-8  max-w-[80%]  items-center justify-center">
                           <div class="text-[#517CA8]">
-                            <p class="mb-4 text-md font-semibold text-base-20">Use this space to add a YouTube video highlighting the tutor or your company.</p>
-                         {persona=="student" ||  <button
-                              type="button"
-                              class="rounded-md bg-[#FFA28D] p-2 px-4 text-white text-base-17-5"
-                              data-te-ripple-init
-                              onClick={() => {
-                                if (isOwn === true || persona === "admin")
-                                  setToEdit({
-                                    ...toEdit,
-                                    videoLink: { ...toEdit.videoLink, active: true },
-                                  })
-                              }}
-                              data-te-ripple-color="light">
-
-                              + Add Highlight Video
-                            </button>}                           
+                            <p class="mb-4 text-md font-semibold text-base-20">
+                              Use this space to add a YouTube video highlighting
+                              the tutor or your company.
+                            </p>
+                            {persona === "admin" || persona === "tutor" ? (
+                              <button
+                                type="button"
+                                class="rounded-md bg-[#38C980] p-2 px-4 text-white text-base-17-5"
+                                data-te-ripple-init
+                                onClick={() => {
+                                  if (isOwn === true || persona === "admin")
+                                    setToEdit({
+                                      ...toEdit,
+                                      videoLink: {
+                                        ...toEdit.videoLink,
+                                        active: true,
+                                      },
+                                    });
+                                }}
+                                data-te-ripple-color="light"
+                              >
+                                + Add Highlight Video
+                              </button>
+                            ) : (
+                              <button
+                                type="button"
+                                class="rounded-md bg-[#FF7979] p-2 px-4 text-white text-base-17-5"
+                              >
+                                None Added
+                              </button>
+                            )}
                           </div>
                         </div>
                       </div>
                     </div>
-
-                  </div>}
+                  </div>
+                )}
 
                 {/* <div className={`${styles.backBtn} mt-10`} >
                      </div> */}
@@ -1124,12 +1128,16 @@ export default function TutorProfile({ isOwn }) {
                 hideShadow
                 bgClassName="bg-white pl-7 py-3 rounded-[10px]"
                 body={
-
                   <>
-                    {tutorTotalReviews[currentPage - 1] ?
+                    {tutorTotalReviews[currentPage - 1] ? (
                       <div>
                         <p className="text-[#24A3D9] text-[15px] text-base-17-5">
-                          {tutorTotalReviews[currentPage - 1]?.customCreatedAt ? getDateFormat(tutorTotalReviews[currentPage - 1]?.customCreatedAt) : "None"}
+                          {tutorTotalReviews[currentPage - 1]?.customCreatedAt
+                            ? getDateFormat(
+                                tutorTotalReviews[currentPage - 1]
+                                  ?.customCreatedAt
+                              )
+                            : "None"}
                         </p>
                         <div>
                           <p className="text-[#517CA8] mt-4 font-light text-[17.503px] text-base-17-5">
@@ -1144,13 +1152,49 @@ export default function TutorProfile({ isOwn }) {
                             </button>
                           </div>
                           <div>
-                            <button className="rounded-full h-[33px] w-[100px] bg-[#26435F33] text-base-15 text-[#26435F]">{tutorTotalReviews[currentPage - 1]?.service[0]}</button>
+                            <button className="rounded-full h-[33px] w-[100px] bg-[#26435F33] text-base-15 text-[#26435F]">
+                              {tutorTotalReviews[currentPage - 1]?.service[0]}
+                            </button>
                           </div>
                         </div>
-                      </div> : <div className="h-24">
-
-                        No Review Given! </div>}
-
+                      </div>
+                    ) : (
+                      <div id="sreview" className="w-full  h-[150px] rounded-md bg-white flex justify-center flex-col text-center items-center">
+                        {isOwn === true || persona === "admin" ? (
+                          <span
+                            onClick={() =>
+                              setToEdit({
+                                ...toEdit,
+                                tutorReviews: {
+                                  ...toEdit.tutorReviews,
+                                  tutorReviews: [
+                                    {
+                                      tutorId: "",
+                                      userTag: "", // "parent"
+                                      service: "",
+                                      date: "",
+                                      content: "",
+                                      orgId: "",
+                                    },
+                                  ],
+                                  active: true,
+                                },
+                              })
+                            }
+                            className="text-[#517CA8] rounded-md bg-[#38C980] p-2 px-4 text-white text-base-17-5 text-base-17-5 cursor-pointer"
+                          >
+                            + Add Tutor Reviews
+                          </span>
+                        ) : (
+                          <button
+                            type="button"
+                            class="rounded-md bg-[#FF7979] p-2 px-4 text-white text-base-17-5"
+                          >
+                            None Added
+                          </button>
+                        )}
+                      </div>
+                    )}
                   </>
                 }
               />
@@ -1158,12 +1202,8 @@ export default function TutorProfile({ isOwn }) {
                 <Pagination
                   currentPage={currentPage}
                   setCurrentPage={setCurrentPage}
-                  totalPages={
-                    Math.ceil(tutorTotalReviews?.length)
-                  }
+                  totalPages={Math.ceil(tutorTotalReviews?.length)}
                 />
-
-
               </div>
             </div>
 
@@ -1235,7 +1275,7 @@ export default function TutorProfile({ isOwn }) {
                   //    </div> */}
 
                   // </div>
-                  <div className="w-full relative max-h-[500px] p-1 flex flex-col gap-1  rounded-md items-center overflow-y-auto custom-scroller">
+                  <div className="w-full relative  h-[660px] p-1 flex flex-col gap-1 !bg-[#F5F8FA]  rounded-md items-center overflow-y-auto custom-scroller">
                     {/* {settings ? (
                              settings.interest.length > 0 &&
                              userDetail.interest.map((id, idx) => {
@@ -1276,44 +1316,54 @@ export default function TutorProfile({ isOwn }) {
                              <></>
                            )} */}
 
-                    {userDetail?.interest?.length > 0 ?
+                    {userDetail?.interest?.length > 0 ? (
                       userDetail?.interest.map((it, idx) => {
                         return (
                           it[0] !== "6" && (
                             <div
                               key={idx}
-                              className="bg-white p-2 h-min  text-[#517CA8] text-base-17-5 !rounded-md shadow-[0px_0px_2.500001907348633px_0px_#00000040]  w-full"
+                              className="bg-white px-2 py-[16px] h-min  text-[#517CA8] text-base-17-5 !rounded-5 shadow-[0px_0px_2.500001907348633px_0px_#00000040]  w-full"
                             >
                               {it}
                             </div>
                           )
                         );
-                      }):<div className="w-full h-full min-h-[300px] rounded-md bg-white flex justify-center flex-col text-center items-center">
-                    
-                    
-                    {(isOwn === true || persona === "admin") && (     <span  onClick={() =>
-                        setToEdit({
-                          ...toEdit,
-                          serviceSpecializations: {
-                            ...toEdit.serviceSpecializations,
-                            active: true,
-                          },
-                        })
-                      } className="text-[#517CA8] text-base-17-5 cursor-pointer">Add Interests</span>
+                      })
+                    ) : (
+                      <div id="sinterest2" className="w-full h-full min-h-[300px] rounded-md bg-white flex justify-center flex-col text-center items-center">
+                        {isOwn === true || persona === "admin" ? (
+                          <span
+                            onClick={() =>
+                              setToEdit({
+                                ...toEdit,
+                                interest: { ...toEdit.interest, active: true },
+                              })
+                            }
+                            className="text-[#517CA8] rounded-md bg-[#38C980] p-2 px-4 text-white text-base-17-5 text-base-17-5 cursor-pointer"
+                          >
+                            Add Interests
+                          </span>
+                        ) : (
+                          <button
+                            type="button"
+                            class="rounded-md bg-[#FF7979] p-2 px-4 text-white text-base-17-5"
+                          >
+                            None Added
+                          </button>
+                        )}
+                      </div>
                     )}
-                     
-                      </div>}
                   </div>
                 }
               />
             </div>
           </div>
-          {
-            persona == "admin" && <div className="mt-[50px] border-4 mx-[40px]  border-t border-[#CBD6E2]-300 justify-center border-dotted"></div>
-          }
+          {persona == "admin" && (
+            <div className="mt-[50px] border-4 mx-[40px]  border-t border-[#CBD6E2]-300 justify-center border-dotted"></div>
+          )}
           {/* address row */}
-          {
-            (isOwn === true || persona === "admin") && <div className="flex justify-between mt-[55px] gap-x-[37px]">
+          {(isOwn === true || persona === "admin") && (
+            <div className="flex justify-between mt-[55px] gap-x-[37px]">
               <div className="w-[60.32vw]">
                 <div className="flex items-center mb-1">
                   {(isOwn === true || persona === "admin") && (
@@ -1444,7 +1494,10 @@ export default function TutorProfile({ isOwn }) {
                         onClick={() =>
                           setToEdit({
                             ...toEdit,
-                            paymentInfo: { ...toEdit.paymentInfo, active: true },
+                            paymentInfo: {
+                              ...toEdit.paymentInfo,
+                              active: true,
+                            },
                           })
                         }
                       >
@@ -1474,11 +1527,10 @@ export default function TutorProfile({ isOwn }) {
                 <></>
               )}
             </div>
-          }
+          )}
           {persona === "admin" || <div className="mt-[100px]"></div>}
           {persona === "admin" && (
-            <div className="flex justify-between mt-20 mb-[191px]">
-
+            <div className="flex justify-between mt-20 mb-[96px] min-h-[630px]">
               <div className="w-[36.5vw]">
                 <div className="text-xl text-[#26435F] font-semibold mb-[-10px] text-base-20">
                   Recent Feedback History
@@ -1494,13 +1546,13 @@ export default function TutorProfile({ isOwn }) {
                     headerObject={true}
                     maxPageSize={9}
                     noArrow={true}
-                  // loading={tableLoading}
+                    // loading={tableLoading}
                   />
                 </div>
               </div>
 
               {persona === "admin" && (
-                <div className="w-[19.8vw] ">
+                <div className="w-[19.8vw] min-h-[630px]">
                   <BarChart studentFeedbacks={studentFeedbacks}></BarChart>
                 </div>
               )}
@@ -1587,7 +1639,6 @@ export default function TutorProfile({ isOwn }) {
               )}
             </div>
           )}
-
 
           {/* <div className='lg:grid mt-12 px-2 grid-cols-12 grid-ros-6 lg:mt-[60px] gap-5 lg:pl-3'>
 

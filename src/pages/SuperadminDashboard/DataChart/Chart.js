@@ -88,7 +88,7 @@ const BubbleChart = ({ dateRange }) => {
   console.log("dailyActivity chart",chartData,minDate,dateRange);
   return (
     <div className="bg-[#FFFFFF] relative flex flex-col justify-center items-center border-[1.3px] border-[#FFF]  mt-[6px] rounded-[5.33px] shadow-[0px_0px_2px_rgba(0,0,0,0.25)]">
-      <div className="flex  gap-[10%] p-5  pl-[100px] w-full flex-1 border-b border-[1.33px_solid_#EBEBEB]">
+      <div className="flex  gap-[3%] p-5  pl-[100px] w-full flex-1 border-b border-[1.33px_solid_#EBEBEB]">
         <div className="flex items-center text-[#507CA8] gap-5 !text-[16px]">
           <span className="bg-[#26435F] inline-block  rounded-full w-3 h-3  "></span>{" "}
           Admin

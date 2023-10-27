@@ -338,6 +338,9 @@ export default function StudentTest({ fromProfile,testtype, setTotaltest,student
       color: "#FFCE84",
     },
   ];
+console.log("profile",fromProfile)
+
+
 
   return (
     <div className="w-[83.23vw] mx-auto">
@@ -443,6 +446,7 @@ export default function StudentTest({ fromProfile,testtype, setTotaltest,student
           <div className={`mt-6 ${fromProfile ? '!mt-0' : ''}`}>
             <Table
               testtype={testtype}
+              fromProfile={fromProfile}
               noArrow={true}
               dataFor="assignedTestsStudents"
               headerObject={true}

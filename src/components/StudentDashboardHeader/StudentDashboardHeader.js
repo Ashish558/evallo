@@ -34,9 +34,9 @@ const StudentDashboardHeader = () => {
   const [getSession, getSessionResp] = useLazyGetSingleSessionQuery();
   const [updateFeedback, updateFeedbackResp] = useUpdateFeedbackMutation();
   const { organization } = useSelector((state) => state.organization);
-  console.log(feedbackSessions)
+  console.log(feedbackSessions);
   // console.log(id);
-
+  const [isFeedback, SetisFeedback] = useState(false);
   const fetchSessions = () => {
     fetchUserSessions(id).then((res) => {
       if (res.error) return console.log(res.error);
@@ -66,8 +66,8 @@ const StudentDashboardHeader = () => {
     setImages(organization?.settings?.offerImages);
   }, [organization?.settings?.offerImages]);
   const openLink = (link) => {
-    window.open(link)
-  }
+    window.open(link);
+  };
   return (
     <>
       {/* <div className="flex h-[250px]" id={styles.StudentDashboardHeader}>
@@ -86,7 +86,9 @@ const StudentDashboardHeader = () => {
 
       <div className="flex justify-between relative  gap-8 mb-[92px] mt-[31px] ">
         <div className="">
-          <p className="text-base-20 text-[#26435F] font-semibold">Announcements</p>
+          <p className="text-base-20 text-[#26435F] font-semibold">
+            Announcements
+          </p>
 
           <div
             className=" relative  flex rounded-md items-center  shadow-[0px_0px_2.500001907348633px_0px_#00000040] w-[28.6458vw]  h-[250px] "
@@ -103,12 +105,18 @@ const StudentDashboardHeader = () => {
                 >
                   {images.map((image, idx) => {
                     return (
-                      <div className={` rounded-md bg-cover	bg-center	 ${styles.img}`}
-                        style={{ backgroundImage: `url(${awsLink}${image.image})` }}
+                      <div
+                        className={` rounded-md bg-cover	bg-center	 ${styles.img}`}
+                        style={{
+                          backgroundImage: `url(${awsLink}${image.image})`,
+                        }}
                       >
                         <p className="absolute top-5 left-4 z-10 font-bold text-base-25 text-white"></p>
 
-                        <button onClick={() => openLink(image.link)} className="bg-[#FFA28D] text-white p-2 text-base-17-5 px-4 rounded-lg absolute left-5 bottom-4">
+                        <button
+                          onClick={() => openLink(image.link)}
+                          className="bg-[#FFA28D] text-white p-2 text-base-17-5 px-4 rounded-lg absolute left-5 bottom-4"
+                        >
                           {image?.buttonText ? image?.buttonText : "Register"}
                         </button>
                       </div>
@@ -156,18 +164,30 @@ const StudentDashboardHeader = () => {
               className="overflow-y-auto flex-1  p-4  h-[100%] custom-scroller"
               id={styles.tutorList}
             >
-              {feedbackSessions.length >= 1 ? (
+             
+              {isFeedback &&
+              feedbackSessions &&
+              feedbackSessions?.length >= 1 ? (
                 feedbackSessions.map((item, idx) => (
                   <TutorItem
+                    SetisFeedback={SetisFeedback}
                     key={idx}
                     {...item}
                     setFeedbackSessions={setFeedbackSessions}
                   />
                 ))
               ) : (
-                <p className="font-medium pt-6">No feedbacks given!</p>
+                <div
+                  id="sfeed"
+                  className=" w-full  z-[5000] h-full rounded-md bg-white flex justify-center flex-col text-center items-center"
+                >
+                  <div className="w-[90%] mx-auto   flex flex-col items-center">
+                    <button className="bg-[#FF7979] text-white rounded-md p-2 py-1">
+                      No Sessions Added
+                    </button>
+                  </div>
+                </div>
               )}
-
             </div>
           </div>
         </div>

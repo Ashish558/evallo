@@ -140,6 +140,8 @@ export default function TestDetail() {
    const handlePDFFile = (file) => {
       const formData = new FormData();
       formData.append("pdf", file);
+    
+      console.log({file},file.name   )
       setPDFFile(file);
       setPdfBtnDisabled(true);
       const id = window.location.pathname.split("/")[2];
@@ -1054,7 +1056,7 @@ export default function TestDetail() {
                title='Uploading PDF will replace the current PDF'
                titleClassName='pr-4'
                cancelBtn={true}
-               cancelBtnClassName='bg-[#FFFFFF] text-[#FFA28D] border border-[#FFA28D] w-140'
+               cancelBtnClassName='!bg-transparent !text-[#FFA28D] border border-[#FFA28D] w-140'
                primaryBtn={{
                   text: "Upload",
                   className: 'w-140  bg-[#FFA28D] pl-4 pr-4',

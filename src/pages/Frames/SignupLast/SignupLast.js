@@ -79,7 +79,7 @@ export default function SignupLast({
             return (
               <div
                 key={idx}
-                className="flex items-start mb-3 "
+                className="flex items-center mb-3 "
                 onClick={() =>
                   handleCheckboxChange(item.text, solutions, setSolutions)
                 }
@@ -88,10 +88,13 @@ export default function SignupLast({
                 <SCheckbox
                   checked={item.checked}
                   className="scale-[1.27]"
-
+                  onChange={() =>
+                    handleCheckboxChange(item.text, solutions, setSolutions)
+                
+                  }
                 />
                 <div className="">
-                  <p className="text-base   font-normal text-[#26435F]  leading-5">
+                  <p className="!text-base   font-normal text-[#26435F]  leading-5 mb-1">
                     {item.text}
                   </p>
                 </div>
@@ -108,7 +111,7 @@ export default function SignupLast({
             return (
               <div
                 key={idx}
-                className="flex items-start mb-5 mr-4"
+                className="flex items-center mb-5 mr-4"
                 onClick={() =>
                   handleCheckboxChange(item.text, hearAboutUs, setHearAboutUs)
                 }
@@ -116,9 +119,11 @@ export default function SignupLast({
                 <SCheckbox
                   checked={item.checked}
                   className="scale-[1.27]"
-
+                  onChange={() =>
+                    handleCheckboxChange(item.text, hearAboutUs, setHearAboutUs)
+                  }
                 />
-                <p className="text-base font-normal text-[#26435F]  leading-5">
+                <p className="!text-base font-normal text-[#26435F]  leading-5 mb-[3px]">
                   {item.text}
                 </p>
               </div>

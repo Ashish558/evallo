@@ -12,6 +12,7 @@ export default function InputField({
   inputContainerClassName,
   Icon,
   hideTooltip,
+  dateBody,
   IconRight2Click,
   iconSize,
   pattern,
@@ -28,6 +29,7 @@ export default function InputField({
   inputLeftField,
   onChange,
   type,
+  IconRight2Class,
   right,
   required,
   isRequired,
@@ -47,7 +49,8 @@ export default function InputField({
   totalErrors,
   iconPadding,
   biggerText,
-  min
+  min,
+  calenderIconClass
 }) {
   //console.log({ hideTooltip })
   const [inputType, setInputType] = useState(type);
@@ -110,7 +113,7 @@ export default function InputField({
         {inputLeftField && inputLeftField}
 
         {prefix && <span className="mr-3">{prefix}</span>}
-
+        {dateBody&&dateBody}
         {IconRight && !hideTooltip && (
           <div className="group relative w-fit">
             <img
@@ -170,7 +173,7 @@ export default function InputField({
           />
         )}
 
-        {IconRight2 && <img onClick={DateIconClick} className="ml-3 cursor-pointer scale-[0.80]" src={IconRight2} alt="right icon" />}
+        {IconRight2 && <img onClick={DateIconClick} className={`ml-3 cursor-pointer scale-[0.80] ${IconRight2Class}`} src={IconRight2} alt="right icon" />}
         {right && right}
       </div>
 
