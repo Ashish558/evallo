@@ -335,7 +335,7 @@ export default function Signup() {
       let reqBody = {
         firstname: values.firstName,
         lastname: values.lastName,
-        workemail: values.email,
+        workemail: values.email?.toLocaleLowerCase(),
         password: values.firstName,
         phone: values.phone,
         company: values.company,
@@ -478,7 +478,7 @@ export default function Signup() {
       try {
 
         let data = {
-          workemail: values.email,
+          workemail: values.email?.toLocaleLowerCase(),
         };
         //   alert(data.workemail)
         let result = await axios.post(

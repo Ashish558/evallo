@@ -446,6 +446,7 @@ console.log("profile",fromProfile)
           <div className={`mt-6 ${fromProfile ? '!mt-0' : ''}`}>
             <Table
               testtype={testtype}
+              fromProfile={fromProfile}
               noArrow={true}
               dataFor="assignedTestsStudents"
               headerObject={true}
