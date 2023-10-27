@@ -700,10 +700,10 @@ export default function Calendar() {
     let date = new Date(arg.date);
     let currentDate = new Date();
     currentDate.setHours(0, 0, 0, 0);
-    if (!date || date - currentDate <= 0) {
-      alert('Cannot schedule events on past date')
-      return
-    }
+    // if (!date || date - currentDate <= 0) {
+    //   alert('Cannot schedule events on past date')
+    //   return
+    // }
 
     //  console.log("can see", date,currentDate)
 
