@@ -230,10 +230,10 @@ const StudentDashboard = () => {
             id={styles.chartContainer}
             className="!rounded-md  bg-white w-[54.43vw] flex-1 shadow-[0px_0px_2.500001907348633px_0px_#00000040] custom-scroller h-[390px]"
           >
-          
+           {accsubjects && accsubjects?.length>0 ?<>
              <Chart
         
-          score={true}
+            score={true}
             setSubjects={setSubjects}
             subjects={accsubjects}
             selectedSubject={selectedSubject}
@@ -241,7 +241,20 @@ const StudentDashboard = () => {
             setSelectedConceptIdx={setSelectedConceptIdx}
             currentSubData={currentSubData}
             setCurrentSubData={setCurrentSubData}
-          />
+          /> </>:
+          <div id="sconcept2" className=" w-full  z-[5000] min-h-[300px] rounded-md bg-white flex justify-center flex-col text-center items-center">
+          <div className="w-[70%] mx-auto   flex flex-col items-start">
+            
+           <button className="bg-[#FF7979] text-white rounded-md p-2 py-1 mb-3">
+             No Assignments Yet
+           </button>
+           <p className=" !whitespace-normal !text-left text-[#517CA8]">
+             This student has not been given any assignments yet. Once an
+             assignment is given, the student will be able to start it and
+             view detailed score reports through this table.
+           </p>
+         </div>
+       </div>}
           </div>
         </div>
 
