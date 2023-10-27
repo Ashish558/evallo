@@ -35,6 +35,7 @@ import {
   formatAMPM,
   getBackground,
   getFormattedDate,
+  getFullTimeZone,
   getLocalTimeZone,
   getStartDate,
   getToTimezone,
@@ -210,14 +211,17 @@ export default function Calendar() {
         startHours !== NaN && startDate.setHours(startHours);
         startMinutes !== NaN && startDate.setMinutes(startMinutes);
         console.log('offset----', offset);
+        let tz = getFullTimeZone(session.timeZone)
+        console.log('tz---', tz);
+       
         let updatedDate = new Date(
           new Date(
             startDate.toLocaleString("en-US", {
-              timeZone: session.timeZone
+              timeZone: tz
             })
           )
         );
-        console.log('session----', session);
+        // console.log('session----', session);
         return {
           ...session,
           updatedDate,

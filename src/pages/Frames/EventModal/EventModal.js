@@ -752,8 +752,8 @@ export default function EventModal({
             // console.log(res.data.data);
             let details = res.data.data.details
             if (details === null) return
-            if (details.tutorServices.length === 0) return alert('Tutor does not have any services')
-            let services = details.tutorServices.map(item => item.service)
+            if (details?.tutorServices?.length === 0) return alert('Tutor does not have any services')
+            let services = details?.tutorServices?.map(item => item.service)
             let tutorServs = []
             allServicesAndSpec.forEach(item => {
                if (services.includes(item.service)) {
