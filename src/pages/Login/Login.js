@@ -60,7 +60,7 @@ export default function Login({ setLoginFormActive }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (loginLoading || !(emailValidation.test(email) && password.length > 0))
+    if (loginLoading || !(emailValidation.test(email.trim()) && password.length > 0))
       return;
     setLoginLoading(true);
     const promiseState = async (state) =>
@@ -68,7 +68,7 @@ export default function Login({ setLoginFormActive }) {
         resolve(resetErrors());
       });
     promiseState().then(() => {
-      loginUser({ email:email?.toLocaleLowerCase(), password }).then((res) => {
+      loginUser({ email:email?.toLocaleLowerCase().trim(), password }).then((res) => {
         setLoginLoading(false);
         if (res.error) {
           console.log("login err", res.error);
