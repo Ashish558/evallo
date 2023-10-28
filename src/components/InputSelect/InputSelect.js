@@ -107,7 +107,7 @@ export default function InputSelect({
         ) : !IconLeft && !hideRight && (
           <img
             src={customArrow ? customArrow : downArrow22 ? DownArrow2 : DownArrow}
-            className={`${customArrow ? `${customArrowClassName ? customArrowClassName : "w-[20px] h-[20px]"}` : `w-[15px] h-[12px]`}   ${styles.downArrow}`}
+            className={`${customArrow ? `${customArrowClassName ? customArrowClassName : "w-[20px] h-[20px]"}` : `w-[15px] h-[12px]`} ${styles.downArrow} `}
             alt="down-arrow"
           />
         )}

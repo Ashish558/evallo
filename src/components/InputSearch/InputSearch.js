@@ -62,7 +62,7 @@ export default function InputSearch({
             }
             {inputLeftField && inputLeftField}
             <input disabled={disabled}
-               className={`outline-0 w-full ${inputClassName ? inputClassName : ""}`}
+               className={`outline-0 w-full ${inputClassName ? inputClassName : ""} ${styles['input']} `}
                placeholder={placeholder}
                value={value}
                type={type ? type : "text"}

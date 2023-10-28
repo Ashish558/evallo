@@ -21,7 +21,7 @@ import Settings from "../../assets/images/Settings 1 new.svg";
 import Settings1 from "../../assets/icons/navbar-icons/settings_red.png";
 import Profile from "../../assets/Navbar/profile.svg";
 import Profile1 from "../../assets/images/Vector (5).svg";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import useWindowDimensions from "../../hooks/useWindowDimensions";
@@ -351,12 +351,12 @@ const [loading2,setLoading2]=useState(false)
             <div
                className={`${persona === "superAdmin" ? "translate-x-[-2.3vw]" : ""}`}
             >
-               <a href="https://app.evallo.org">
+               <Link to="/">
                   <div className="flex gap-x-[6px] items-center">
                   <img className="inline-block w-full" src={evallo_logo} alt="evallo_logo" />
                   <p  className={`text-[43px] text-white font-bold pt-[3.2px] ${styles.customFont}`}>Evallo</p>
                   </div>
-               </a>
+               </Link>
 
             </div>
             <div className={`flex  text-[#FFFFFF] font-semibold text-[0.9021vw] ${!isLoggedIn && "opacity-[0.3]"} ${persona === "superAdmin" ? "translate-x-[3.5vw]" : ""}`}>
