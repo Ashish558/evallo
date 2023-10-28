@@ -98,7 +98,7 @@ export default function InputSelect({
           ) : !IconLeft && !hideRight && (
             <img
               src={customArrow ? customArrow : downArrow22 ? DownArrow2 : DownArrow}
-              className={`${customArrow ? `${customArrowClassName ? customArrowClassName : "w-[20px] h-[20px]"}` : `w-[15px] h-[12px]`}   ${styles.upArrow}`}
+              className={`${customArrow ? `${customArrowClassName ? customArrowClassName : "w-[20px] h-[20px]"}` : `w-[15px] h-[12px]`}   ${styles.downArrow}`}
               alt="down-arrow"
             />
           )
@@ -107,8 +107,8 @@ export default function InputSelect({
         ) : !IconLeft && !hideRight && (
           <img
             src={customArrow ? customArrow : downArrow22 ? DownArrow2 : DownArrow}
-            className={`${customArrow ? `${customArrowClassName ? customArrowClassName : "w-[20px] h-[20px]"}` : `w-[15px] h-[12px]`} ${selected ? styles.upArrow : styles.downArrow} `}
-            alt="down-arrowss"
+            className={`${customArrow ? `${customArrowClassName ? customArrowClassName : "w-[20px] h-[20px]"}` : `w-[15px] h-[12px]`} ${styles.downArrow} `}
+            alt="down-arrow"
           />
         )}
 
