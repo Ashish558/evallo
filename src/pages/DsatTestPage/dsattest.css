@@ -3,12 +3,13 @@
     border-radius: 10px;
     /* Optional for rounded corners on the track */
 }
-ul {
-    list-style-position: inside !important;
-    list-style-type: disc !important;
+
+.dangerouslySetClass ul {
+    list-style-position: inside ;
+    list-style-type: disc ;
 }
 
-ol {
-    list-style-type: decimal !important;
-    list-style-position: inside !important;
+.dangerouslySetClass ol {
+    list-style-type: decimal ;
+    list-style-position: inside ;
 }
