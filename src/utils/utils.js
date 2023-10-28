@@ -460,7 +460,7 @@ export const getFullTimeZone = (timezone) => {
     'MST',
     'PST',
   ]
- 
+
   if (timeZones.includes(timezone)) {
     if (timezone === 'IST') {
       result = 'Asia/Kolkata'
@@ -477,6 +477,12 @@ export const getFullTimeZone = (timezone) => {
     }
   }
   return result
+}
+
+export const checkTest = (persona, item) => {
+  if (persona === 'superAdmin' || persona === 'manager') return true
+  if (item.addBySuperAdmin || item.addByManager) return false
+  return true
 }
 // // timezones
 // function getCurrentLocalDateTime() {
