@@ -1940,7 +1940,7 @@ export default function Users() {
                     labelClassname=" mt-2 mb-0.5 text-[#26435F] !font-semibold !text-lg"
                     isRequired={true}
                     placeholder="Email Address"
-                    inputContainerClassName="text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0 "
+                    inputContainerClassName="text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0 !placeholder:!text-[#B3BDC7]"
                     inputClassName="bg-transparent"
                     parentClassName="w-full"
                     type="text"
@@ -2091,8 +2091,8 @@ export default function Users() {
         <Modal
           title={
             <span className="leading-10">
-              Are you sure
-              you want to delete Selected User(s)?
+              Are You Sure
+              You Want To Delete Selected User(s)
 
             </span>
           }
