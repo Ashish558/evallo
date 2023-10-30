@@ -851,7 +851,6 @@ export default function TableItem({
                 </>
               ) : (
                 <>
-                  {/* {console.log(item)} */}
                   {item.isCompleted ? (
                     <button
                       className="px-2.5 py-1.8 bg-[#38C980] rounded-5 flex items-center leading-none  text-white ml-4 w-[120px] h-[31px] justify-center"
