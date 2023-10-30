@@ -294,8 +294,8 @@ export default function EventModal({
       }
    }, [defaultEventData, isUpdating])
    const [stopUpdating, setStopUpdating] = useState(true)
-   useEffect(() => {
 
+   useEffect(() => {
       if (organization?.settings) {
          if (persona === "tutor" && organization && organization?.settings?.permissions?.length > 5 && organization?.settings?.permissions[5]?.choosedValue === false) {
             setStopUpdating(false)
@@ -330,7 +330,7 @@ export default function EventModal({
             `${sessionToUpdate.time.start.time} ${sessionToUpdate.time.start.timeType}`
          );
          // console.log(startTime)
-         console.log("isUpdating")
+         // console.log("isUpdating")
          let startDate = new Date(sessionToUpdate.date)
          const offset = startDate.getTimezoneOffset() * 60000
          if (offset > 0) {
@@ -357,7 +357,7 @@ export default function EventModal({
             rescheduling: sessionToUpdate.resheduling,
             service: sessionToUpdate.service,
             sessionNotes: sessionToUpdate.sessionNotes,
-
+            sessionTags: sessionToUpdate.sessionTags,
             specialization: sessionToUpdate.specialization,
          });
 
@@ -380,7 +380,7 @@ export default function EventModal({
    }, [sessionToUpdate]);
 
    useEffect(() => {
-      if (isSettingsLoaded && isUpdating) {
+      if (isUpdating) {
          setIsProductive(
             getCheckedItems(
                [sessionToUpdate.sessionProductive],
@@ -395,7 +395,7 @@ export default function EventModal({
             updateCheckedArr(sessionToUpdate.studentMood, studentMoods)
          );
       }
-   }, [sessionToUpdate, isSettingsLoaded]);
+   }, [sessionToUpdate]);
 
    const updateCheckedArr = (strArr, arr, setArr) => {
       return arr.map((item) => {
@@ -737,11 +737,12 @@ export default function EventModal({
 
       }
    }, [tutorId2])
+
    useEffect(() => {
       // if (persona === 'tutor') {
       // console.log(data.tutorId);
       if (!data.tutorId) return
-      console.log("tutorDetails", data.tutorId)
+      // console.log("tutorDetails", data.tutorId)
       getUserDetail({ id: data.tutorId })
          .then(res => {
             if (res.error) {
@@ -751,16 +752,16 @@ export default function EventModal({
             // console.log(res.data.data);
             let details = res.data.data.details
             if (details === null) return
-            if (details.tutorServices.length === 0) return alert('Tutor does not have any services')
-            let services = details.tutorServices.map(item => item.service)
+            if (details?.tutorServices?.length === 0) return alert('Tutor does not have any services')
+            let services = details?.tutorServices?.map(item => item.service)
             let tutorServs = []
             allServicesAndSpec.forEach(item => {
                if (services.includes(item.service)) {
                   tutorServs.push(item.service)
                }
             })
-            console.log('servicesallServicesAndSpec', allServicesAndSpec);
-            console.log('services', details.tutorServices, services);
+            // console.log('servicesallServicesAndSpec', allServicesAndSpec);
+            // console.log('services', details.tutorServices, services);
             setServicesAndSpecialization(tutorServs)
          })
       // }
@@ -776,8 +777,8 @@ export default function EventModal({
             specs = item.specialization
          }
       })
-      console.log('spec', specs)
-      console.log('servicesAndSpecialization', servicesAndSpecialization, specs)
+      // console.log('spec', specs)
+      // console.log('servicesAndSpecialization', servicesAndSpecialization, specs)
       setSpecializations(specs)
    }, [servicesAndSpecialization, data.service, allServicesAndSpec])
 
