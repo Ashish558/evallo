@@ -345,6 +345,7 @@ const AllOrgs = () => {
         <div className="pl-[5.46875vw] overflow-x-auto scrollbar-content scroll-mt-3 pr-7 mt-2" >
           <Table
             noArrow={false}
+            headerWidth="px-6"
             data={adminData}
             tableHeaders={frameHeaderNames}
             maxPageSize={100}

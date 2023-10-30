@@ -18,6 +18,7 @@ import styles from './styles.module.css'
 import AddIcon from "../../assets/icons/plus_colored.svg";
 import EditIcon from "../../assets/icons/edit_logo.svg";
 import DeleteIcon from "../../assets/icons/delete_logo.svg";
+import DeleteIconAllOrgs from "../../assets/icons/blue_delete.svg";
 import DeleteTutorIcon from "../../assets/icons/delete-tutor.svg";
 import InputSelect from "../InputSelect/InputSelect";
 import { useLazyGetSettingsQuery } from "../../app/services/session";
@@ -1014,7 +1015,7 @@ export default function TableItem({
       )}
       {dataFor === "allOrgs" && (
         <tr className="odd:bg-white  leading-8">
-          <td className="font-medium text-[17.5px] px-1  min-w-14 py-4  text-center">
+          <td className="font-medium text-[17.5px] pl-8  min-w-14 py-4  text-left">
             <span
               className="inline-block cursor-pointer pl-4"
               onClick={() => navigate(`/orgadmin-profile/${item._id}`)}
@@ -1024,28 +1025,25 @@ export default function TableItem({
                 : item.company}
             </span>
           </td>
-          <td className="font-medium text-[17.5px] px-1  min-w-14 py-4">
+          <td className="font-medium text-[17.5px] pl-12  min-w-14 py-4  text-left">
             <div className="my-[6px]">{item.firstName + " " + item?.lastName}</div>
           </td>
 
-          <td className="font-medium text-[17.5px] px-1  min-w-14 py-4">
+          <td className="font-medium text-[17.5px] pl-12  min-w-14 py-4  text-left">
             <div className="my-[6px]">{item.email}</div>
           </td>
 
-          <td className="font-medium text-[17.5px] px-1  min-w-14 py-4">
+           <td className="font-medium text-[17.5px] pl-12  min-w-14 py-4  text-left">
             <div className="my-[6px]">{item.phone}</div>
           </td>
-          <td className="font-medium text-[17.5px] px-1  min-w-14 py-4">
+          <td className="font-medium text-[17.5px] pl-12  min-w-14 py-4  text-left">
             <div className="my-[6px]">{item.associatedOrg?.country}</div>
           </td>
 
-
-
-
-          <td className="font-medium text-[17.5px] px-1 min-w-14 py-4">
+          <td className="font-medium text-[17.5px] pl-12  min-w-14 py-4  text-left">
             <div className="my-[6px]">{item?.registrationAs}</div>
           </td>
-          <td className="font-medium text-[17.5px] px-1  min-w-14 py-4">
+          <td className="font-medium text-[17.5px] pl-12  min-w-14 py-4  text-left">
             <div className="my-[6px]">{item?.userStatus}</div>
           </td>
           <td className="font-medium text-[17.5px] px-1  min-w-14 py-4">
@@ -1057,33 +1055,33 @@ export default function TableItem({
             </div>
           </td>
 
-          <td className="font-medium text-[17.5px] px-1  min-w-14 py-4">
+          <td className="font-medium text-[17.5px] pl-12  min-w-14 py-4  text-left">
             <div className="my-[6px]">{getFormattedDate(item.createdAt, dateFormat)}
               {/* {new Date(item.createdAt).toLocaleDateString()} */}
             </div>
           </td>
           <td className="font-medium text-[17.5px] px-1  min-w-14 py-4 cursor-pointer">
-            <div className="my-[6px]"><img onClick={() => setDeleteAdminModalActive(true)} src={DeleteIcon} alt="delete" /> </div>
+            <div className="my-[6px]"><img onClick={() => setDeleteAdminModalActive(true)} src={DeleteIconAllOrgs} alt="delete" /> </div>
           </td>
         </tr>
       )}
       {deleteAdminModalActive && (
         <Modal
           title={
-            <span className="leading-10">
+            <span className="leading-10 text">
               Are you sure you want to Delete   {item.associatedOrg?.company
                 ? item.associatedOrg?.company
                 : item.company}
 
             </span>
           }
-          titleClassName="mb-5 leading-10"
+          titleClassName="mb-5 leading-10 text-center"
           cancelBtn={true}
           crossBtn={true}
-          cancelBtnClassName="max-w-140 !bg-transparent !border  !border-[#FFA28D]  text-[#FFA28D]"
+          cancelBtnClassName="!w-[146px] text-[#26435F] font-medium text-base !rounded-[8px] !bg-[rgba(38,67,95,0.10)]  !h-[46px]"
           primaryBtn={{
             text: "Delete",
-            className: "w-[140px]  pl-4 px-4 !bg-[#FF7979] text-white",
+            className: "!bg-[#FF7979] !w-[146px] pl-4 pr-4 !opacity-100",
             onClick: () => handleDeleteAdmin(),
             bgDanger: true,
             loading: deleteSelectLoading,
