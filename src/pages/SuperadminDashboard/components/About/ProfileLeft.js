@@ -29,19 +29,19 @@ console.log("profile left", {userData})
   return (
     <>
       <div className="flex flex-col gap-3   w-[28.5416667vw] bg-white shadow-[0px_0px_2.66667px_0px_rgba(0,0,0,0.25)] rounded-5 border border-[#FFF] h-[686px] relative px-[2.5%] pt-6">
-        <div className="flex gap-3 items-center ">
+        <div className="flex gap-5 items-center ">
           <img src={Profile} alt="profile" />
-          <span className="flex flex-col text-[0.971875vw] text-[#517CA8]">
+          <span className="flex flex-col text-[0.971875vw] text-[#517CA8] w-[45%]">
             <span className="flex  ">
-              <p className="mr-6 w-[70%] font-light">First name : </p>
+              <p className="mr-1 w-[70%] font-light">First name : </p>
               <p className="font-medium"> {userData?.firstName}</p>
             </span>
             <span className="flex ">
-              <p className="mr-6 w-[70%] font-light">last name : </p>{" "}
+              <p className="mr-1 w-[70%] font-light">last name : </p>{" "}
               <p className="font-medium"> {userData?.lastName} </p>
             </span>
             <span className="flex ">
-              <p className="mr-6 w-[70%] font-light">Role : </p>
+              <p className="mr-12 w-[70%] font-light">Role : </p>
               <p className="font-medium"> {userData?.role}</p>
             </span>
           </span>
