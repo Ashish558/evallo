@@ -138,21 +138,18 @@ const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
   useEffect(() => {
     setTutors([]);
     fetchTutors({ id }).then((res) => {
-       console.log('tutors resp', res.data);
+      console.log("tutors resp", res.data);
       setTotalTutors(res.data.tutors.length);
-      let temp=[]
-      res.data.tutors.map((tutor2,idx) => {
+      let temp = [];
+      res.data.tutors.map((tutor2, idx) => {
         getTutorDetail({ id: tutor2._id }).then((response) => {
           // console.log('tutors response', response.data);
           let details = response.data.data.details;
           if (details === null || details === undefined) {
             details = {};
           }
-         temp = [
-            ...temp,
-            { ...tutor2, ...details, _id: tutor2._id },
-          ];
-          if(idx===res.data.tutors.length-1){
+          temp = [...temp, { ...tutor2, ...details, _id: tutor2._id }];
+          if (idx === res.data.tutors.length - 1) {
             // setTutors((prev) => [
             //   ...prev,
             //   { ...tutor2, ...details, _id: tutor2._id },
@@ -161,8 +158,6 @@ const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
           }
         });
       });
-
-     
     });
   }, []);
 
@@ -256,18 +251,14 @@ const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
     setSubjects(updated);
   };
 
-
   //  console.log('tutors', tutors,filteredTutors);
 
   return (
-    <div
-      className="flex flex-row justify-between !gap-[calc(68*0.0522vw)] lg:py-[20px] py-[10px] mt-8 design:!mt-12"
-     
-    >
+    <div className="flex flex-row justify-between !gap-[calc(68*0.0522vw)] lg:py-[20px] py-[10px] mt-8 design:!mt-12">
       <div className=" flex-1 w-[70%] h-full">
         <div className="flex items-center justify-between">
           <h1 className="text-[#26435F]  text-base-20 font-semibold mb-1">
-            Conceptual Accuracy 
+            Conceptual Accuracy
             <span className="inline-block my-auto ml-2 translate-y-1">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -285,7 +276,6 @@ const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
           </h1>
 
           <div className="flex  justify-end absolute z-40 top-[51.5%] right-[38%]">
-            {console.log(subjects)}
             <InputSelectNew
               placeholder={""}
               parentClassName="ml-0  scale-[0.8] items-center flex text-[#FFA28D] text-xs border px-1 py-2 border-[#FFA28D] rounded-full  "
@@ -298,11 +288,9 @@ const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
               optionData={subjects.map((item) => item.name)}
               onChange={(e) => handleSubjectChange(e)}
             />
-          
 
             <RangeDate
               className="ml-0"
-            
               optionClassName="!w-min"
               inputContainerClassName="!w-min"
               handleRangeData={setSelectedConceptIdx}
@@ -327,93 +315,114 @@ const ConceptSection = ({ selectedStudent, setSelectedStudent }) => {
 
       <div className="w-full lg:w-1/3 flex flex-col gap-3 mt-1 h-full">
         <div className="concept" id={styles.studentCarousel}>
-          <div >
-          <h1 className="text-[#26435F]  text-base-20 font-semibold ">
-           Tutor Profile
-           
-          </h1>
+          <div>
+            <h1 className="text-[#26435F]  text-base-20 font-semibold ">
+              Tutor Profile
+            </h1>
             <div className="mb-3 bg-[#26435F] flex items-center h-[180px] rounded-md !w-[calc(489*0.0522vw)]">
-
-          
-            {filteredTutors.length >0  ? (
-              <OwlCarousel
-                ref={tutorCarouselRef}
-                className="owl-theme h-full"
-                loop
-                margin={8}
-                items={1}
-              >
-                {filteredTutors.map((tutor, idx) => {
-                  return (
-                    <div
-                      key={idx}
-                      className="item flex gap-2 my-auto  h-full"
-                    
-                    >
-                      <div className="w-[40%] ml-10 flex justify-center flex-col h-full ">
-                      <h3 className="mb-1 mt-2.5 text-[#FFA28D] font-semibold max-w-[130px] overflow-x-auto">
-                          {" "}
-                          {`${tutor.firstName}  ${tutor.lastName} `}
-                        </h3>
-                        {/* <h5 className={`text-white`}>
+              {filteredTutors.length > 0 ? (
+                <OwlCarousel
+                  ref={tutorCarouselRef}
+                  className="owl-theme h-full"
+                  loop
+                  margin={8}
+                  items={1}
+                >
+                  {filteredTutors.map((tutor, idx) => {
+                    return (
+                      <div
+                        key={idx}
+                        className="item flex gap-2 my-auto  h-full"
+                      >
+                        <div className="w-[40%] ml-10 flex justify-center flex-col h-full ">
+                          <h3 className="mb-1 mt-2.5 text-[#FFA28D] font-semibold max-w-[130px] overflow-x-auto">
+                            {" "}
+                            {`${tutor.firstName}  ${tutor.lastName} `}
+                          </h3>
+                          {/* <h5 className={`text-white`}>
                           
                           {tutor.tutorLevel && `${tutor.tutorLevel} Belt`}
                         </h5> */}
-                        <p className="text-white text-base-17-5 max-w-[100px] overflow-x-auto ">{tutor?.tutorServices[0]?.service?tutor?.tutorServices[0]?.service:tutor?.tutorServices[1]?.service?tutor?.tutorServices[1]?.service:"None"}</p>
-                        <p className="text-white text-base-15 max-w-[100px] overflow-x-auto mt-1">{tutor?.tagline}</p>
-                        <button
-                       className="p-2 mt-7 !w-fit rounded-lg whitespace-nowrap text-sm px-4 bg-[#FFA28D] text-white text-base-17-5"
-         
-                       onClick={() =>
-                        tutor._id && navigate(`/profile/tutor/${tutor._id}`)
-                      }
-                    >
-                      View Profile
-                   </button>
+                          <p className="text-white text-base-17-5 max-w-[100px] overflow-x-auto ">
+                            {tutor?.tutorServices[0]?.service
+                              ? tutor?.tutorServices[0]?.service
+                              : tutor?.tutorServices[1]?.service
+                              ? tutor?.tutorServices[1]?.service
+                              : "None"}
+                          </p>
+                          <p className="text-white text-base-15 max-w-[100px] overflow-x-auto mt-1">
+                            {tutor?.tagline}
+                          </p>
+                          <button
+                            className="p-2 mt-7 !w-fit rounded-lg whitespace-nowrap text-sm px-4 bg-[#FFA28D] text-white text-base-17-5"
+                            onClick={() =>
+                              tutor._id &&
+                              navigate(`/profile/tutor/${tutor._id}`)
+                            }
+                          >
+                            View Profile
+                          </button>
+                        </div>
+                        <div className="w-[60%] flex items-center h-full flex-1">
+                          <img
+                            src={
+                              tutor.photo
+                                ? `${awsLink}${tutor.photo}`
+                                : "/images/tutorDefault.svg"
+                            }
+                            className="mx-auto object-cover !w-[100px] !h-[100px] rounded-full"
+                            alt="profile-icon"
+                          />
+                        </div>
                       </div>
-                      <div className="w-[60%] flex items-center h-full flex-1">
-                        <img
-                          src={
-                            tutor.photo
-                              ? `${awsLink}${tutor.photo}`
-                              : "/images/tutorDefault.svg"
-                          }
-                          className="mx-auto object-cover !w-[100px] !h-[100px] rounded-full"
-                          alt="profile-icon"
-                        />
-                      </div>
-                    </div>
-                  );
-                })}
-              </OwlCarousel>
-            ) : (
-              <p
-                className="text-white  text-center w-full font-semibold pt-8 not-italic pb-8 text-lg"
-                style={{
-                  fontSize: "18px",
-                  fontStyle: "normal",
-                  fontWeight: "500",
-                }}
-              >
-                No tutors to display
-              </p>
-            )}
-          </div>
+                    );
+                  })}
+                </OwlCarousel>
+              ) : (
+                <div className="item flex gap-2 my-auto  h-full w-full">
+                  <div className="w-[40%] ml-10 flex justify-center flex-col h-full ">
+                    <h3 className="mb-1 mt-2.5 text-[#FFA28D] font-semibold max-w-[130px] overflow-x-auto">
+                      {"No Tutor Assigned "}
+                    </h3>
+                    {/* <h5 className={`text-white`}>
+                          
+                          {tutor.tutorLevel && `${tutor.tutorLevel} Belt`}
+                        </h5> */}
+                  </div>
+                  <div className="w-[60%] flex items-center h-full flex-1">
+                    <img
+                      src={"/images/tutorDefault.svg"}
+                      className="mx-auto object-cover !w-[100px] !h-[100px] rounded-full"
+                      alt="profile-icon"
+                    />
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
         </div>
 
         <div id={styles.practiceTestContainer}>
           <h1 className="text-[#26435F]  text-base-20 font-semibold mb-1">
-           Assignments
-            
+            Assignments
           </h1>
           <div
             id={styles.listedData}
             className=" overflow-y-auto custom-scroller !w-[calc(489*0.0522vw)]"
           >
-            {filteredAssignedTests.map((test) => {
-              return <ParentTest styles={styles} {...test} />;
-            })}
+            {filteredAssignedTests?.length > 0 ? (
+              filteredAssignedTests?.map((test) => {
+                return <ParentTest styles={styles} {...test} />;
+              })
+            ) : (
+              <div id="stest2" className=" w-full  z-[5000] h-full rounded-md bg-white flex justify-center items-center flex-col text-center items-center">
+                <div className="w-[70%] mx-auto   flex flex-col items-center">
+                  <button className="bg-[#FF7979] text-white rounded-md p-2 py-1 mb-3">
+                    No Assignments Yet
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>

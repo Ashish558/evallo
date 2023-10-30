@@ -32,7 +32,7 @@ import {
 } from "../../app/services/users";
 import { useSelector } from "react-redux";
 import { useLazyGetTestResponseQuery } from "../../app/services/test";
-import { getFormattedDate, getScore, getScoreStr } from "../../utils/utils";
+import { checkTest, getFormattedDate, getScore, getScoreStr } from "../../utils/utils";
 import InputField from "../InputField/inputField";
 import CCheckbox from "../CCheckbox/CCheckbox";
 import SCheckbox from "../CCheckbox/SCheckbox";
@@ -852,7 +852,6 @@ export default function TableItem({
                 </>
               ) : (
                 <>
-                  {/* {console.log(item)} */}
                   {item.isCompleted ? (
                     <button
                       className="px-2.5 py-1.8 bg-[#38C980] rounded-5 flex items-center leading-none  text-white ml-4 w-[120px] h-[31px] justify-center"
@@ -931,6 +930,7 @@ export default function TableItem({
       {dataFor === "allTests" && (
         <tr className="odd:bg-white font-medium text-[17.5px]  lead">
           <td>{item.testName}</td>
+          {console.log('itt---', item)}
           <td>{item.testType} &#174;</td>
           <td> {getFormattedDate(item.createdAt.split("T")[0], dateFormat)}</td>
           <td>{getFormattedDate(item.updatedAt.split("T")[0], dateFormat)}</td>
@@ -947,7 +947,7 @@ export default function TableItem({
           </td>
           <td className="font-medium px-1 ">
             {
-              (!item.addBySuperAdmin && persona !== 'superAdmin') &&
+              (checkTest(persona, item)) &&
               <div className="flex justify-end  flex justify-center items-center">
                 <button
                   className="flex leading-none bg-[#26435f4d] text-white py-1.5 px-5 cursor-pointer rounded !text-base-15"
@@ -963,7 +963,7 @@ export default function TableItem({
       {dataFor === "allTestsSuperAdmin" && (
         <tr className=" font-medium  lead  text-[17.5px] ">
           <td>{item.testName}</td>
-          <td>{item.testType}</td>
+          <td>{item.testType==="Other"?"ACT":item.testType}</td>
           <td>{getFormattedDate(item.createdAt.split("T")[0], dateFormat)}</td>
           <td>{getFormattedDate(item.updatedAt.split("T")[0], dateFormat)}</td>
           <td> {item.no_of_assign ? item.no_of_assign : "-"} </td>

@@ -1,11 +1,11 @@
-import React, {  useState } from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 
 import InputField from "../../components/InputField/inputField";
 import ForgotPassword from "../Frames/ForgotPassword";
 import ResetPassword from "../Frames/ResetPassword";
 import ImageSlider from "../../components/ImageSlider/ImageSlider";
-import cutEmail from "../../assets/signup/cutEmail.svg"
+import cutEmail from "../../assets/signup/cutEmail.svg";
 import { useLoginUserMutation } from "../../app/services/auth";
 import { updateIsLoggedIn } from "../../app/slices/user";
 
@@ -22,7 +22,6 @@ import cuate from "../../assets/signup/cuate.svg";
 // import AdminNavbar from "../AdminDashboard/AdminNavbar";
 // import SCheckbox from "../../components/CCheckbox/SCheckbox";
 
-
 export default function Login({ setLoginFormActive }) {
   const emailValidation = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
   const [isPasswordForgot, setIsPasswordForgot] = useState(false);
@@ -34,9 +33,9 @@ export default function Login({ setLoginFormActive }) {
   const [wait, setWait] = useState(false);
   const [remember, setRemember] = useState(false);
   const [error, setError] = useState({
-     password: '',
-     email: ''
-  })
+    password: "",
+    email: "",
+  });
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -61,37 +60,37 @@ export default function Login({ setLoginFormActive }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-   if(
-      loginLoading|| !(emailValidation.test(email) && password.length > 0)
-    ) return 
+    if (loginLoading || !(emailValidation.test(email.trim()) && password.length > 0))
+      return;
     setLoginLoading(true);
     const promiseState = async (state) =>
       new Promise((resolve) => {
         resolve(resetErrors());
       });
     promiseState().then(() => {
-      loginUser({ email, password }).then((res) => {
+      loginUser({ email:email?.toLocaleLowerCase().trim(), password }).then((res) => {
         setLoginLoading(false);
         if (res.error) {
           console.log("login err", res.error);
-          
-          if(res?.error?.data?.message==="Email not found"){
+
+          if (res?.error?.data?.message === "Email not found") {
             setError({
-email:res?.error?.data?.message
-            })
-            return 
+              email: res?.error?.data?.message,
+            });
+            return;
           }
-          if(res?.error?.data?.message==="Wrong password"){
+          if (res?.error?.data?.message === "Wrong password") {
             setError({
-password:res?.error?.data?.message
-            })
-            return 
+              password: res?.error?.data?.message,
+            });
+            return;
           }
-          if(res?.error?.data?.message==="User not verified"){
+          if (res?.error?.data?.message === "User not verified") {
             setError({
-email: "Email not verified! Please Verify your email and set your password"
-            })
-            return 
+              email:
+                "Email not verified! Please Verify your email and set your password",
+            });
+            return;
           }
           if (res.error.status == 500) {
             alert("Login failed");
@@ -127,10 +126,10 @@ email: "Email not verified! Please Verify your email and set your password"
         sessionStorage.setItem("token", res.data.data.token);
         sessionStorage.setItem("role", res.data.data.role);
         sessionStorage.setItem("userId", res.data.data.userId);
-        if(remember){
+        if (remember) {
           localStorage.setItem("evalloToken", res.data.data.token);
           localStorage.setItem("role", res.data.data.role);
-          
+
           localStorage.setItem("userId", res.data.data.userId);
         }
         dispatch(updateIsLoggedIn(true));
@@ -143,7 +142,11 @@ email: "Email not verified! Please Verify your email and set your password"
   return (
     <div className={styles.bg}>
       <div className="flex  flex-col items-center md:grid-cols-2  ">
-        <img src={cuate} alt="rocket" className="h-[113.64px] w-[181px] mt-3 mb-7 scale-[0.86] mt-[-5px] design:mt-[0px] design:scale-100" />
+        <img
+          src={cuate}
+          alt="rocket"
+          className="h-[113.64px] w-[181px] mt-3 mb-7 scale-[0.86] mt-[-5px] design:mt-[0px] design:scale-100"
+        />
         <div className="bg-primary hidden lg:block ">
           <ImageSlider
             className={styles.loginCarousel}
@@ -154,15 +157,19 @@ email: "Email not verified! Please Verify your email and set your password"
         <div className="lg:flex scale-[0.75] design:scale-100 mt-[-100px] design:mt-[0px]   lg:items-center bg-white rounded-[10px] pt-[40px] pb-6 px-5 md:px-[66px] lg:min-w-[561px] shadow-[5px_5px_87.5px_0px_rgba(166,166,166,0.25)]">
           {loginActive ? (
             <div className="w-full">
-              <div className="flex justify-center" >
-              <img src={EvalloLogo} alt="logo" className=" h-[29.796px] scale-[.97] " />
+              <div className="flex justify-center">
+                <img
+                  src={EvalloLogo}
+                  alt="logo"
+                  className=" h-[29.796px] scale-[.97] "
+                />
               </div>
               <p
                 className={`font-semibold text-lg mt-[40px] mb-1 bg-transparent text-[#26435F]  pb-[34px] lg:pt-0 lg:pb-0 `}
               >
                 Login
               </p>
-               <p className={`text-base mb-[50px]  text-[#667085] font-normal`}>
+              <p className={`text-base mb-[50px]  text-[#667085] font-normal`}>
                 Please fill your detail to access your account.
               </p>
               <form
@@ -172,13 +179,21 @@ email: "Email not verified! Please Verify your email and set your password"
                 }`}
               >
                 <InputField
-                  right={email?.length>0?<img onClick={()=>setEmail("")} className="ml-3 cursor-pointer scale-[0.80]" src={cutEmail} alt="right icon"/>:null}
+                  right={
+                    email?.length > 0 ? (
+                      <img
+                        onClick={() => setEmail("")}
+                        className="ml-3 cursor-pointer scale-[0.80]"
+                        src={cutEmail}
+                        alt="right icon"
+                      />
+                    ) : null
+                  }
                   biggerText={true}
                   iconSize="medium"
                   placeholder=""
                   parentClassName="mb-[18px]"
                   label="Email "
-
                   removeResponsive={true}
                   labelClassname="text-[#26435F] font-medium"
                   inputClassName="bg-transparent  !text-lg"
@@ -214,7 +229,7 @@ email: "Email not verified! Please Verify your email and set your password"
                 <div className="flex justify-between items-center">
                   <div className="flex items-center justify-center -ml-[3px]">
                     <CCheckbox
-                    className="scale-[0.8]"
+                      className="scale-[0.8]"
                       checked={remember}
                       onChange={() => setRemember(!remember)}
                     />{" "}
@@ -230,32 +245,29 @@ email: "Email not verified! Please Verify your email and set your password"
                     Forgot Password?
                   </p>
                 </div>
-<div className="flex justify-center">
-
-
-                <button
-                
-                  className={`w-[337px] shadow-[0px_0px_2px_0px_rgba(0,0,0,0.25)] relative mx-auto  bg-[#FFA28D] disabled:opacity-70 pt-3.5 pb-3.5 lg:py-[11px]  mt-[56px]   rounded-5 text-white text-lg font-medium ${
-                    loginLoading ? "cursor-wait" : "cursor-pointer"
-                  }`}
-                  onClick={handleSubmit}
-                >
-                  Sign in
-                  {loginLoading && <Loader />}
-                </button>
+                <div className="flex justify-center">
+                  <button
+                    className={`w-[337px] shadow-[0px_0px_2px_0px_rgba(0,0,0,0.25)] relative mx-auto  bg-[#FFA28D] disabled:opacity-70 pt-3.5 pb-3.5 lg:py-[11px]  mt-[56px]   rounded-5 text-white text-lg font-medium ${
+                      loginLoading ? "cursor-wait" : "cursor-pointer"
+                    }`}
+                    onClick={handleSubmit}
+                  >
+                    Sign in
+                    {loginLoading && <Loader />}
+                  </button>
                 </div>
                 <div className="flex justify-center mt-[19px] pb-4">
-                <p
-                  className={`relative text-base  text-[#26435F]  ml-2  inline-block `}
-                  
-                >
-                  Don’t have an account? <span
-                  className={`text-[#24A3D9] cursor-pointer relative  font-bold     inline-block `}
-                  onClick={() => navigate("/signup")}
-                >Sign up
-                </span>
-                </p>
-                
+                  <p
+                    className={`relative text-base  text-[#26435F]  ml-2  inline-block `}
+                  >
+                    Don’t have an account?{" "}
+                    <span
+                      className={`text-[#24A3D9] cursor-pointer relative  font-bold     inline-block `}
+                      onClick={() => navigate("/signup")}
+                    >
+                      Sign up
+                    </span>
+                  </p>
                 </div>
               </form>
             </div>
@@ -274,7 +286,6 @@ email: "Email not verified! Please Verify your email and set your password"
             ""
           )}
         </div>
-      
       </div>
     </div>
   );
