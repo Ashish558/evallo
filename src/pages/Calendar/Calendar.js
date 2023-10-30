@@ -35,6 +35,7 @@ import {
   formatAMPM,
   getBackground,
   getFormattedDate,
+  getFullTimeZone,
   getLocalTimeZone,
   getStartDate,
   getToTimezone,
@@ -210,14 +211,17 @@ export default function Calendar() {
         startHours !== NaN && startDate.setHours(startHours);
         startMinutes !== NaN && startDate.setMinutes(startMinutes);
         console.log('offset----', offset);
+        let tz = getFullTimeZone(session.timeZone)
+        console.log('tz---', tz);
+       
         let updatedDate = new Date(
           new Date(
             startDate.toLocaleString("en-US", {
-              timeZone: session.timeZone
+              timeZone: tz
             })
           )
         );
-        console.log('session----', session);
+        // console.log('session----', session);
         return {
           ...session,
           updatedDate,
@@ -337,9 +341,9 @@ export default function Calendar() {
   }, [currentUserTImeZone]);
 
   useEffect(() => {
-   
-    if (persona === "admin" || ( persona === "tutor"&&organization && organization?.settings?.permissions?.length>5&& organization?.settings?.permissions[5]?.choosedValue===true)) {
-      console.log("org tutor",organization)
+
+    if (persona === "admin" || (persona === "tutor" && organization && organization?.settings?.permissions?.length > 5 && organization?.settings?.permissions[5]?.choosedValue === true)) {
+      console.log("org tutor", organization)
       setIsEditable(true);
     } else {
       setIsEditable(false);
@@ -699,10 +703,9 @@ export default function Calendar() {
     }
     let date = new Date(arg.date);
     let currentDate = new Date();
-    // currentDate.setHours(0, 0, 0, 0);
-    //  console.log(date - currentDate);
+    currentDate.setHours(0, 0, 0, 0);
     // if (!date || date - currentDate <= 0) {
-    //   alert('Cant set events on past date')
+    //   alert('Cannot schedule events on past date')
     //   return
     // }
 
@@ -718,7 +721,7 @@ export default function Calendar() {
     } else {
       setDefaultEventData({ date: arg.date, timeZone });
     }
-    if (persona === "admin" || ( persona === "tutor"&&organization && organization?.settings?.permissions?.length>5&& organization?.settings?.permissions[5]?.choosedValue===true)) {
+    if (persona === "admin" || (persona === "tutor" && organization && organization?.settings?.permissions?.length > 5 && organization?.settings?.permissions[5]?.choosedValue === true)) {
       setEventModalActive(true);
     }
 
@@ -942,7 +945,7 @@ export default function Calendar() {
     const session = eventDetails.find(
       (e) => e._id === info.event._def.publicId
     );
-    if (persona === "admin" || ( persona === "tutor"&&organization && organization?.settings?.permissions?.length>5&& organization?.settings?.permissions[5]?.choosedValue===true)) {
+    if (persona === "admin" || (persona === "tutor" && organization && organization?.settings?.permissions?.length > 5 && organization?.settings?.permissions[5]?.choosedValue === true)) {
       setUpdateEventModalActive(true);
       setSessionToUpdate(session);
     } else {
