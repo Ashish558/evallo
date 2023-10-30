@@ -433,11 +433,11 @@ export default function TableItem({
           <td className=" text-[17.5px] px-1 min-w-14  capitalize" >
             <div className="my-[6px]">{item.userType}</div>
           </td>
-          <td className=" text-[17.5px] px-1  min-w-14  ">
+          <td className=" text-[17.5px] !pl-6 pr-1  min-w-14  text-left">
             <div className="my-[6px]">{item.email}</div>
           </td>
 
-          <td className=" text-[17.5px] px-1  min-w-14  capitalize">
+       <td className=" text-[17.5px] !pl-6 pr-1  min-w-14  text-left capitalize">
             <div className="my-[6px]">{item.phoneCode}{item.phone}</div>
           </td>
           <td className=" text-[17.5px] px-1  min-w-14  capitalize flex justify-center">
@@ -528,7 +528,7 @@ export default function TableItem({
               {item.name}
             </span>
           </td>
-          <td className="font-medium text-[17.5px] px-1 min-w-14 ">
+          <td className="font-medium text-[17.5px] !pl-6 pr-1 min-w-14 text-left">
             <div className="">{item.email}</div>
           </td>
           <td className="font-medium text-[17.5px] px-1  min-w-14 ">
@@ -962,12 +962,12 @@ export default function TableItem({
       )}
       {dataFor === "allTestsSuperAdmin" && (
         <tr className=" font-medium  lead  text-[17.5px] ">
-          <td>{item.testName}</td>
+          <td className="pl-12  !text-left"><span className="">{item.testName}</span></td>
           <td>{item.testType==="Other"?"ACT":item.testType}</td>
           <td>{getFormattedDate(item.createdAt.split("T")[0], dateFormat)}</td>
           <td>{getFormattedDate(item.updatedAt.split("T")[0], dateFormat)}</td>
           <td> {item.no_of_assign ? item.no_of_assign : "-"} </td>
-          <td className="font-medium px-1 py-3 text-right">
+          <td className="font-medium pl-2 pr-1 py-3 text-right">
             <div className="flex justify-center">
               <p
                 className="flex leading-none text-[#517CA8] underline py-1.8 px-0 underline-offset-1 cursor-pointer rounded"

@@ -81,7 +81,7 @@ const initialTabs = [
   {
     Icon: org2,
     Icon2: org1,
-    name: "Org Default",
+    name: "Org Defaults",
     selected: false,
   },
   {
@@ -2022,7 +2022,7 @@ export default function SuperAdminSettings() {
                     item.choosedValue === false ? (
                       <div
                         key={id}
-                        className={`${id===3?"!opacity-[0.7]" :""} pt-[34px] pb-[30px] border-b-2 border-[#CBD6E2] text-[#24A3D9] font-medium text-[17.5px] flex items-center justify-between`}
+                        className={` pt-[34px] pb-[30px] border-b-2 border-[#CBD6E2] text-[#24A3D9] font-medium text-[17.5px] flex items-center justify-between`}
                       >
                         <p>{renderColoredText(item.name)}</p>
 
@@ -2041,7 +2041,7 @@ export default function SuperAdminSettings() {
                               handlePermissionOption(e.target.value, item._id)
                             }
                             id="option"
-                            className="border border-gray-300 px-2  rounded-md text-[#26435F] bg-[#E9ECEF]"
+                            className="border border-gray-300 px-2 w-[200px]  rounded-md text-[#26435F] bg-[#E9ECEF] py-1"
                           >
                             <option value={item.choosedValue}>
                               {`   ${

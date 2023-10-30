@@ -33,8 +33,8 @@ console.log(dataFor)
       />
     </th>
   ) : (
-    <th
-      className={`${headerWidth ? headerWidth : 'px-6'}  py-[15px] font-medium whitespace-nowrap  ${header === "Full Name" || header === "Name" || header === "Student Name"
+
+    <th className={`${headerWidth ? headerWidth : 'px-6'}  py-[15px] font-medium whitespace-nowrap  ${header === "Full Name" || header === "Name" || header === "Student Name"
         ? "text-left pl-7"
         : ""
         } ${dataFor === "allUsers" ? "text-sm" : "text-sm"} ${flag ? styles["no-arrow"] : ''}

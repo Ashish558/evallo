@@ -1466,7 +1466,7 @@ export default function Users() {
                           }}
                           className="  block text-[#FFA28D] border-[1.33px] border-[#FFA28D] bg-white hover:shadow-md ms-3 font-medium rounded-lg  px-[13.33px] py-3 text-center dark:bg-white "
                         >
-                          Save Data and Invite User
+                          Save Data and Invite Users
                         </button>
                       </div>
                     </div>
@@ -1536,7 +1536,7 @@ export default function Users() {
 
             IconRight={SearchIcon}
             placeholder="Search"
-            inputClassName="text-base-17-5 pl-4 text-[#667085]"
+            inputClassName="text-base-17-5 pl-4 text-[#667085] placeholder:text-[#667085]"
             parentClassName="w-[22.03125vw]  py-1"
             inputContainerClassName="text-base-17-5  mt-1 shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white   mb-1  !py-[15px]"
             type="text"
@@ -1552,7 +1552,7 @@ export default function Users() {
             optionData={userTypesList}
             optionListClassName="text-base-17-5 text-[#667085]"
             inputContainerClassName="text-sm  shadow-[0px_0px_2px_rgba(0,0,0,0.25)] rounded-[7.5px] border-white bg-white px-[20px] py-[16px]"
-            placeholder="User Type"
+            placeholder="User type"
             parentClassName="w-[12.8541666667vw] relative  relative z-[50]  text-[#667085]"
             type="select"
             value={filterData.userType.length > 0 ? filterData.userType[0] : ""}
@@ -1597,7 +1597,6 @@ export default function Users() {
             value={filterData.status.length > 0 ? filterData.status[0] : ""}
           />
           <InputSelect
-            hideRight={true}
             customArrow={dropdownIcon}
             customArrowClassName={`w-[12px] h-[12px]`}
             optionListClassName="text-base-17-5 text-[#667085]"
@@ -1668,7 +1667,7 @@ export default function Users() {
         <div className="flex gap-6 items-center relative z-[10]   mt-[23.75px]">
           <div className="ml-6 flex gap-3 items-center">
             <SCheckbox stopM={true} checked={selectedId.length>0} />
-            <span className="inline-block text-[17.5px] text-base-17-5 min-w-[70px]">{selectedId?.length} Selected</span>
+            <span className="text-[#26435F] inline-block text-[17.5px] text-base-17-5 min-w-[70px]">{selectedId?.length} Selected</span>
             {/* <label className={`  text-[#26435F] font-medium flex items-center`}>
               <input
                 type="checkbox"
@@ -1751,8 +1750,8 @@ export default function Users() {
 
           <InputSelect
             hideRight={true}
-            optionListClassName="text-base-17-5 text-[#667085]"
-            placeholderClass="text-base-17-5 !custom-scroller-2  overflow-x-auto !text-[#26435F] !mr-0 !whitespace-normal"
+            optionListClassName="text-base-17-5 text-[#667085] !font-normal"
+            placeholderClass="text-base-17-5 !custom-scroller-2  overflow-x-auto !text-[#26435F] !mr-0 !whitespace-normal !font-normal"
             optionData={allTutors?.map((iyt) => {
               return {
                 ...iyt,
@@ -1760,12 +1759,12 @@ export default function Users() {
               }
             })}
             placeholder="Assigned Tutor"
-            parentClassName="w-[11vw]  text-[#26435F] "
+            parentClassName="  text-[#26435F] "
             type="select"
             IconSearch={Dropdown}
-            inputClassName="bg-white border  w-[130px]  "
+            inputClassName="bg-white border   !w-[9vw]"
 
-            inputContainerClassName="bg-white shadow-[0px_0px_2px_0px_rgba(0,0,0,0.25)] h-[43px] lg:pl-2 2xl:pl-3 rounded-[5px] "
+            inputContainerClassName="bg-white shadow-[0px_0px_2px_0px_rgba(0,0,0,0.25)] h-[43px] lg:pl-2 2xl:pl-3 rounded-[5px] !font-normal "
 
             optionType="object"
             value={bulkEdits?.assignedTutor?.value}
@@ -1812,7 +1811,8 @@ export default function Users() {
                     }
                     }
                     className="inline-block" alt="ques" />
-                  {showTooltip && <span className="absolute top-[-237px]  design:top-[-248px]  left-[-140px] z-5000 w-[336px] design:w-[380px]  scale-0 rounded-[13px] bg-[rgba(0,0,0,0.80)]  text-[13px] text-white group-hover:scale-100 whitespace-normal py-[20px] px-[13px]">
+                  {showTooltip && 
+                  <span className="absolute top-[-237px]  design:top-[-248px]  left-[-140px] z-5000 w-[336px] design:w-[380px]  scale-0 rounded-[13px] bg-[rgba(0,0,0,0.80)]  text-[13px] text-white group-hover:scale-100 whitespace-normal py-[20px] px-[13px]">
                     <h3 className="text-[#517CA8] text-left text-[0.8333vw] py-0 font-semibold mb-1">
                       Invite Users
                     </h3>   <span className=" text-left text-[0.6948vw] font-light relative z-40">
@@ -1842,7 +1842,7 @@ export default function Users() {
                   alt="delete"
                 />
               </span>{" "}
-              Delete User(s)
+            <span className="pt-[2px]">  Delete User(s)</span>
             </button>
           </div>
         </div>
@@ -1940,7 +1940,7 @@ export default function Users() {
                     labelClassname=" mt-2 mb-0.5 text-[#26435F] !font-semibold !text-lg"
                     isRequired={true}
                     placeholder="Email Address"
-                    inputContainerClassName="text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0"
+                    inputContainerClassName="text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0 "
                     inputClassName="bg-transparent"
                     parentClassName="w-full"
                     type="text"
@@ -1958,12 +1958,12 @@ export default function Users() {
                     }
                     isRequired={true}
                     type="select"
-                    placeholder="Select User Type "
+                    placeholder="Select"
                     label="User Type"
                     labelClassname="ml-0  text-[#26435F] !font-semibold !text-lg"
-                    placeholderClass="text-base-17-5"
+                    placeholderClass="text-base-17-5 !text-[#B3BDC7]"
                     optionData={userTypeOptions}
-                    inputContainerClassName="text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0"
+                    inputContainerClassName="text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0 "
                     parentClassName="w-full"
                   />
                 </div>

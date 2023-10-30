@@ -695,7 +695,7 @@ const [deleteManager,deleteManagerStatus]=useDeleteManagerMutation()
             extraData={allTutors}
           />
         </div>
-        <div onClick={() => { setModalActive(true); setModalData({ ...modalData, userType: 'manager' }) }} className="text-[#26435F] -mt-2 cursor-pointer"><img src={AddManager} alt="add manager" /></div>
+        <div onClick={() => { setModalActive(true); setModalData({ ...modalData, userType: 'manager' }) }} className="text-[#26435F] -mt-5 cursor-pointer"><img src={AddManager} alt="add manager" /></div>
       </div>
 
       {
@@ -705,7 +705,7 @@ const [deleteManager,deleteManagerStatus]=useDeleteManagerMutation()
             classname={"max-w-[700px] mx-auto rounded-md"}
             title="Add A Manager"
             // cancelBtn={true}
-            titleClassName="text-start mb-3 pb-3 border-b border-b-gray-300"
+            titleClassName="text-start mb-3 pb-[22px] border-b border-b-gray-300"
             // primaryCancel={true}
             // cancelBtnClassName="w-130"
             // primaryBtn={{
@@ -729,7 +729,7 @@ const [deleteManager,deleteManagerStatus]=useDeleteManagerMutation()
                   <div>
                     <InputField
                       label="First Name"
-                      labelClassname="ml-4 mb-0.5 text-[#26435F] font-semibold"
+                      labelClassname=" mb-0.5 text-[#26435F] font-semibold"
                       placeholder="First Name"
                       inputContainerClassName="text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0"
                       inputClassName="bg-transparent"
@@ -745,7 +745,7 @@ const [deleteManager,deleteManagerStatus]=useDeleteManagerMutation()
                   <div>
                     <InputField
                       label="Last Name"
-                      labelClassname="ml-4 mb-0.5 text-[#26435F] font-semibold"
+                      labelClassname=" mb-0.5 text-[#26435F] font-semibold"
                       isRequired={true}
                       placeholder="Last Name"
                       inputContainerClassName="text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0"
@@ -761,7 +761,7 @@ const [deleteManager,deleteManagerStatus]=useDeleteManagerMutation()
                   <div>
                     <InputField
                       label="Email Address"
-                      labelClassname="ml-4 mt-2 mb-0.5 text-[#26435F] font-semibold"
+                      labelClassname=" mt-2 mb-0.5 text-[#26435F] font-semibold"
                       isRequired={true}
                       placeholder="Email Address"
                       inputContainerClassName="text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0"
@@ -777,7 +777,7 @@ const [deleteManager,deleteManagerStatus]=useDeleteManagerMutation()
                   <div>
                     <InputField
                       label="Phone "
-                      labelClassname="ml-4 mt-2 mb-0.5 text-[#26435F] font-semibold"
+                      labelClassname=" mt-2 mb-0.5 text-[#26435F] font-semibold"
                       isRequired={true}
                       placeholder="Phone"
                       inputContainerClassName="text-sm pt-3.5 pb-3.5 px-5 bg-primary-50 border-0"
@@ -794,8 +794,8 @@ const [deleteManager,deleteManagerStatus]=useDeleteManagerMutation()
                 </div>
                 <div className='flex items-center justify-center gap-4'>
 
-                  <button className="rounded-lg bg-transparent border-2 border-[#FFA28D] py-2 text-[#FFA28D]  w-[146px]" onClick={handleSubmit} disabled={addUserBtnDisabled||loading}>{loading?"Inviting...":"Invite User"}</button>
-                  <button onClick={(e) => { e.preventDefault(); handleClose() }} className="rounded-lg bg-[#FFA28D] border-2 border-[#FFA28D] py-2 text-[#FFFFFF] w-[146px]">Cancel</button>
+                  <button className="rounded-lg bg-[#FFA28D] border-2 border-[#FFA28D] py-2 text-[#FFFFFF] w-[146px]" onClick={handleSubmit} disabled={addUserBtnDisabled||loading}>{loading?"Inviting...":"Invite"}</button>
+                  <button onClick={(e) => { e.preventDefault(); handleClose() }} className="rounded-lg bg-transparent border-2 border-[#FFA28D] py-2 text-[#FFA28D]  w-[146px]">Cancel</button>
                 </div>
               </form>
             }
@@ -809,10 +809,10 @@ const [deleteManager,deleteManagerStatus]=useDeleteManagerMutation()
           title={
             <span className="leading-10 text-[21px] ">
               Are You Sure You Want To Delete User{" "}
-              {`${userToDelete.name}`} ?
+              {`${userToDelete.name}`} 
             </span>
           }
-          titleClassName="mb-12 leading-10 !text-center"
+          titleClassName="mb-[22px] leading-10 !text-center"
           cancelBtn={true}
           cancelBtnClassName="!w-[146px] text-[#26435F] font-medium text-base !rounded-[8px] !bg-[rgba(38,67,95,0.10)] !ml-auto !h-[46px]"
           primaryBtn={{
