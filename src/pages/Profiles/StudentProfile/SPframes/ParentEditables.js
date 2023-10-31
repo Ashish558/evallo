@@ -4,6 +4,7 @@ import { useLazyGetStudentsByNameQuery } from "../../../../app/services/session"
 import ProfilePhoto from "./ProfilePhoto";
 import caution from "../../../../assets/icons/octicon_stop-16.svg";
 import down from "../../../../assets/YIcons/Group33.svg";
+import sat from "../../../../assets/YIcons/Official SAT® scores.svg";
 import {
   useUpdateTutorDetailsMutation,
   useUpdateUserDetailsMutation,
@@ -172,7 +173,7 @@ export default function ParentEditables({
 
     {
       name: "personality",
-      title: "How Would You Describe Yourself using a few adjectives?",
+      title: "How Would You Describe Yourself Using A Few Adjectives?",
       api: persona === "tutor" ? "tutorDetail" : "userDetail",
     },
     {
@@ -262,12 +263,12 @@ export default function ParentEditables({
     },
     {
       name: "satScores",
-      title: "Official SAT Scores",
+      title: 'Official SAT® Scores',
       api: "userDetail",
     },
     {
       name: "actScores",
-      title: "Official ACT Scoress",
+      title: 'Official ACT® Scores',
       api: "userDetail",
     },
     {
@@ -715,8 +716,8 @@ export default function ParentEditables({
           handleClose={handleClose}
           body={
             <>
-              <div className="flex  ">
-                <div className="mr-5 text-[#26435F] font-bold text-[17px]">
+              <div className="flex  items-center">
+                <div className="mr-5 text-[#26435F] font-semibold text-[17px]">
                   {currentField.title
                     ? currentField.title
                     : toEdit.tutorServices
@@ -724,7 +725,7 @@ export default function ParentEditables({
                       : ""}
                 </div>
                 <button
-                  className="w-[100px] bg-[#FFA28D] p-1 rounded text-white  text-base pl-3 pr-3 ml-auto"
+                  className="w-[125px] bg-[#FFA28D] p-1 rounded-[7.5px] text-white  text-base pl-3 pr-3 ml-auto h-[37.5px]"
                   onClick={handleSubmit}
                 >
                   Save
@@ -1150,7 +1151,7 @@ export default function ParentEditables({
                           whiteBoardLinks: tempScores,
                         });
                       }}
-                      className="font-bold !text-lg cursor-pointer    text-[#24A3D9]"
+                      className="font-semibold !text-lg cursor-pointer    text-[#24A3D9] text-center"
                     >
                       Add{" "}
                       <svg
@@ -2589,17 +2590,17 @@ export default function ParentEditables({
                         (it, selectedScoreIndex) => {
                           return (
                             <div className="flex flex-col ">
-                              <p className="font-bold !text-lg cursor-pointer mb-2  text-[#24A3D9]">
-                                SAT {selectedScoreIndex + 1}
+                              <p className="font-semibold !text-lg cursor-pointer mb-2  text-[#24A3D9]">
+                                SAT&reg; {selectedScoreIndex + 1}
                               </p>
                               <div className="flex gap-5">
                                 <InputField
                                   labelClassname="hidden"
-                                  placeholder="Verbal Score"
+                                  placeholder="Verbal"
                                   placeholderClassName="text-sm"
-                                  inputContainerClassName="text-sm pt-3 text-center pb-3 bg-primary-50 border-0"
+                                  inputContainerClassName="text-sm  text-center py-1 bg-primary-50 border-0 h-[40px] !font-semibold"
                                   inputClassName="bg-transparent text-center rounded-[4px] text-[#517CA8]"
-                                  parentClassName="flex-1 text-sm text-center max-w-[150px]"
+                                  parentClassName="flex-1 text-sm text-center w-[120px]"
                                   type="number"
                                   value={
                                     currentToEdit.satScores[selectedScoreIndex]
@@ -2647,10 +2648,10 @@ export default function ParentEditables({
                                 />
                                 <InputField
                                   labelClassname="hidden"
-                                  placeholder="Math Score"
-                                  inputContainerClassName="text-sm pt-3 pb-3 px-5 bg-primary-50 border-0"
+                                  placeholder="Math"
+                                  inputContainerClassName="text-sm py-1 px-5 bg-primary-50 border-0 h-[40px] !font-semibold"
                                   inputClassName="bg-transparent pl-4 rounded-[4px] text-[#517CA8]"
-                                  parentClassName="flex-1 max-w-[150px]"
+                                  parentClassName="flex-1 w-[120px]"
                                   type="number"
                                   value={
                                     currentToEdit.satScores[selectedScoreIndex]
@@ -2700,7 +2701,7 @@ export default function ParentEditables({
                                   }}
                                 />
 
-                                <div className="text-md  rounded-[4px] flex items-center  font-semibold  text-center py-auto px-5 bg-primary-50 border-0 !w-[150px] text-[#FFA28D]">
+                                <div className="text-md  rounded-[4px] flex items-center  font-semibold  text-center py-auto px-5 bg-primary-50 border-0 !w-[120px] h-[40px] text-[#FFA28D]">
                                   {currentToEdit.satScores[selectedScoreIndex]
                                     ?.maths +
                                     currentToEdit.satScores[selectedScoreIndex]
@@ -2716,7 +2717,26 @@ export default function ParentEditables({
                                   )}
                                 </div>
                               </div>
-                              <div className="mt-3 border-1  border-t-2 pb-3 border-[1.25px_solid_#00000033] justify-center "></div>
+                         <div className="mt-[15px]">
+                         <InputField
+                        label="Test Date"
+                        labelClassname="text-[#26435F]"
+                        placeholder=""
+                        inputContainerClassName="text-xs  bg-primary-50 border-0 !py-3 !px-2 !rounded-[5px]  !h-[50px] w-[206px] text-[#507CA8]"
+                        inputClassName="bg-transparent text-xs   "
+                        parentClassName=""
+                        type="date"
+                        value={currentToEdit.dob}
+                        onChange={(e) =>
+                          setCurrentToEdit({
+                            ...currentToEdit,
+                            dob: e.target.value,
+                            birthyear: e.target.value?.split("-")[0],
+                          })
+                        }
+                      />
+                         </div>
+                              <div className="mt-5 border-1  border-t-2 mb-[30px] border-[1.25px_solid_#00000033] justify-center "></div>
                             </div>
                           );
                         }
@@ -2760,17 +2780,17 @@ export default function ParentEditables({
                   <div className="flex flex-col gap-4 mt-[-20px]">
                     <div className="max-h-[50vh] overflow-y-auto custom-scroller">
                       <div className="flex flex-col ">
-                        <p className="font-bold !text-md cursor-pointer mb-2  text-[#24A3D9]">
+                        <p className="font-semibold !text-md cursor-pointer mb-2  text-[#24A3D9]">
                           SAT Baseline Score
                         </p>
                         <div className="flex gap-5">
                           <InputField
                             labelClassname="hidden"
-                            placeholder="Verbal Score"
+                            placeholder="Verbal"
                             placeholderClassName="text-sm"
-                            inputContainerClassName="text-sm pt-3 text-center pb-3 bg-primary-50 border-0"
+                            inputContainerClassName="text-sm pt-3 text-center pb-3 bg-primary-50 border-0 h-[40px]"
                             inputClassName="bg-transparent text-center rounded-[4px] text-[#517CA8]"
-                            parentClassName="flex-1 text-sm text-center max-w-[150px]"
+                            parentClassName="flex-1 text-sm text-center w-[120px]"
                             type="number"
                             value={
                               currentToEdit.baseLineScore?.satBaseLineScore
@@ -2792,10 +2812,10 @@ export default function ParentEditables({
                           />
                           <InputField
                             labelClassname="hidden"
-                            placeholder="Math Score"
-                            inputContainerClassName="text-sm pt-3 pb-3 px-5 bg-primary-50 border-0"
+                            placeholder="Math"
+                            inputContainerClassName="text-sm pt-3 pb-3 px-5 bg-primary-50 border-0 h-[40px]"
                             inputClassName="bg-transparent pl-4 rounded-[4px] text-[#517CA8]"
-                            parentClassName="flex-1 max-w-[150px]"
+                            parentClassName="flex-1 w-[120px]"
                             type="number"
                             value={
                               currentToEdit.baseLineScore?.satBaseLineScore
@@ -2818,7 +2838,7 @@ export default function ParentEditables({
                           // //console.log('tempScores', tempScores);
                           />
 
-                          <div className="text-md  rounded-[4px] flex items-center  font-semibold  text-center py-auto px-5 bg-primary-50 border-0 !w-[150px] text-[#FFA28D]">
+                          <div className="text-md  rounded-[4px] flex items-center  font-semibold  text-center py-auto px-5 bg-primary-50 border-0 !w-[120px] text-[#FFA28D]h-[40px]">
                             {parseInt(
                               currentToEdit.baseLineScore?.satBaseLineScore
                                 ?.maths
@@ -2845,7 +2865,7 @@ export default function ParentEditables({
                         <div className="mt-5 border-1  border-t-2 pb-3 border-[1.25px_solid_#00000033] justify-center "></div>
                       </div>
                       <div className="flex flex-col ">
-                        <p className="font-bold !text-md cursor-pointer mb-2  text-[#24A3D9]">
+                        <p className="font-semibold !text-md cursor-pointer mb-2  text-[#24A3D9]">
                           ACT Baseline Score
                         </p>
                         <div className="flex gap-5 items-center !text-md">
@@ -2853,37 +2873,10 @@ export default function ParentEditables({
                             <div className="flex flex-col items-center mb-4">
                               <InputField
                                 labelClassname="hidden"
-                                placeholder="Maths"
-                                inputContainerClassName="text-sm py-1 px-5 bg-primary-50 border-0"
-                                inputClassName="bg-transparent pl-4 rounded-[4px] placeholder:text-sm"
-                                parentClassName="flex-1 !text-sm max-w-[140px]"
-                                type="number"
-                                value={
-                                  currentToEdit.baseLineScore?.actBaseLineScore
-                                    ?.maths
-                                }
-                                onChange={(e) => {
-                                  setCurrentToEdit({
-                                    ...currentToEdit,
-                                    baseLineScore: {
-                                      ...currentToEdit?.baseLineScore,
-                                      actBaseLineScore: {
-                                        ...currentToEdit.baseLineScore
-                                          ?.actBaseLineScore,
-                                        maths: e.target.value,
-                                      },
-                                    },
-                                  });
-                                }}
-                              />
-                            </div>
-                            <div className="flex  flex-col  items-center mb-4">
-                              <InputField
-                                labelClassname="hidden"
                                 placeholder="English"
-                                inputContainerClassName="text-sm py-1 px-5 bg-primary-50 border-0"
-                                inputClassName="bg-transparent pl-4 rounded-[4px]"
-                                parentClassName="flex-1 max-w-[140px]"
+                                inputContainerClassName="text-sm py-1 px-5 bg-primary-50 border-0 h-[40px]"
+                                inputClassName="bg-transparent pl-4 rounded-[4px] placeholder:text-sm"
+                                parentClassName="flex-1 !text-sm w-[120px]"
                                 type="number"
                                 value={
                                   currentToEdit.baseLineScore?.actBaseLineScore
@@ -2907,10 +2900,37 @@ export default function ParentEditables({
                             <div className="flex  flex-col  items-center mb-4">
                               <InputField
                                 labelClassname="hidden"
-                                placeholder="Reading"
-                                inputContainerClassName="text-sm py-1 px-5 bg-primary-50 border-0"
+                                placeholder="Math"
+                                inputContainerClassName="text-sm py-1 px-5 bg-primary-50 border-0 h-[40px]"
                                 inputClassName="bg-transparent pl-4 rounded-[4px]"
-                                parentClassName="flex-1 max-w-[140px]"
+                                parentClassName="flex-1 w-[120px]"
+                                type="number"
+                                value={
+                                  currentToEdit.baseLineScore?.actBaseLineScore
+                                    ?.maths
+                                }
+                                onChange={(e) => {
+                                  setCurrentToEdit({
+                                    ...currentToEdit,
+                                    baseLineScore: {
+                                      ...currentToEdit?.baseLineScore,
+                                      actBaseLineScore: {
+                                        ...currentToEdit.baseLineScore
+                                          ?.actBaseLineScore,
+                                        maths: e.target.value,
+                                      },
+                                    },
+                                  });
+                                }}
+                              />
+                            </div>
+                            <div className="flex  flex-col  items-center mb-4">
+                              <InputField
+                                labelClassname="hidden"
+                                placeholder="Reading"
+                                inputContainerClassName="text-sm py-1 px-5 bg-primary-50 border-0 h-[40px]"
+                                inputClassName="bg-transparent pl-4 rounded-[4px]"
+                                parentClassName="flex-1 w-[120px]"
                                 type="number"
                                 value={
                                   currentToEdit.baseLineScore?.actBaseLineScore
@@ -2935,9 +2955,9 @@ export default function ParentEditables({
                               <InputField
                                 labelClassname="hidden"
                                 placeholder="Science"
-                                inputContainerClassName="text-sm py-1 px-5 bg-primary-50 border-0"
+                                inputContainerClassName="text-sm py-1 px-5 bg-primary-50 border-0 h-[40px]"
                                 inputClassName="bg-transparent pl-4 rounded-[4px]"
-                                parentClassName="flex-1 max-w-[140px]"
+                                parentClassName="flex-1 w-[120px]"
                                 type="number"
                                 value={
                                   currentToEdit.baseLineScore?.actBaseLineScore
@@ -2960,7 +2980,7 @@ export default function ParentEditables({
                             </div>
                           </div>
 
-                          <div className="text-md py-2 rounded-[4px] flex items-center  font-semibold  text-center py-auto px-5 bg-primary-50 border-0 !w-[150px] text-[#FFA28D]">
+                          <div className="text-md py-2 rounded-[4px] flex items-center  font-semibold  text-center py-auto px-5 bg-primary-50 border-0 !w-[120px] text-[#FFA28D] h-[40px]">
                             {parseInt(
                               currentToEdit.baseLineScore?.actBaseLineScore
                                 ?.maths
@@ -3012,78 +3032,18 @@ export default function ParentEditables({
                           (it, selectedScoreIndex) => {
                             return (
                               <div className="flex flex-col ">
-                                <p className="font-bold !text-lg cursor-pointer mb-2  text-[#24A3D9]">
-                                  ACT {selectedScoreIndex + 1}
+                                <p className="font-semibold !text-lg cursor-pointer mb-2  text-[#24A3D9]">
+                                  ACT&reg; {selectedScoreIndex + 1}
                                 </p>
                                 <div className="flex gap-5 items-center !text-md">
                                   <div className="grid grid-cols-2 gap-3 !text-[#517CA8]">
                                     <div className="flex flex-col items-center mb-4">
                                       <InputField
                                         labelClassname="hidden"
-                                        placeholder="Maths"
-                                        inputContainerClassName="text-sm py-1 px-5 bg-primary-50 border-0"
-                                        inputClassName="bg-transparent pl-4 rounded-[4px] placeholder:text-sm"
-                                        parentClassName="flex-1 !text-sm max-w-[140px]"
-                                        type="number"
-                                        value={
-                                          currentToEdit.actScores[
-                                            selectedScoreIndex
-                                          ]?.maths
-                                        }
-                                        onChange={(e) => {
-                                          if (
-                                            parseInt(e.target.value) < 0 ||
-                                            parseInt(e.target.value) > 1000
-                                          ) {
-                                            return;
-                                          }
-                                          let tempScores = [
-                                            ...currentToEdit.actScores,
-                                          ];
-                                          if (
-                                            tempScores.length <=
-                                            selectedScoreIndex
-                                          ) {
-                                            tempScores.push({
-                                              createdAt: new Date(),
-                                              maths: 0,
-                                              english: 0,
-                                              reading: 0,
-                                              science: 0,
-                                            });
-                                          }
-                                          tempScores = tempScores.map(
-                                            (item, idx) => {
-                                              if (selectedScoreIndex === idx) {
-                                                return {
-                                                  ...item,
-                                                  maths: checkNumber(
-                                                    currentToEdit.actScores[
-                                                      selectedScoreIndex
-                                                    ]?.maths,
-                                                    parseInt(e.target.value),
-                                                    36
-                                                  ),
-                                                };
-                                              } else {
-                                                return { ...item };
-                                              }
-                                            }
-                                          );
-                                          setCurrentToEdit({
-                                            ...currentToEdit,
-                                            actScores: tempScores,
-                                          });
-                                        }}
-                                      />
-                                    </div>
-                                    <div className="flex  flex-col  items-center mb-4">
-                                      <InputField
-                                        labelClassname="hidden"
                                         placeholder="English"
-                                        inputContainerClassName="text-sm py-1 px-5 bg-primary-50 border-0"
-                                        inputClassName="bg-transparent pl-4 rounded-[4px]"
-                                        parentClassName="flex-1 max-w-[140px]"
+                                        inputContainerClassName="text-sm py-1 px-5 bg-primary-50 border-0 !font-semibold h-[40px]"
+                                        inputClassName="bg-transparent pl-4 rounded-[4px] placeholder:text-sm"
+                                        parentClassName="flex-1 !text-sm w-[120px]"
                                         type="number"
                                         pattern={""}
                                         value={
@@ -3141,10 +3101,70 @@ export default function ParentEditables({
                                     <div className="flex  flex-col  items-center mb-4">
                                       <InputField
                                         labelClassname="hidden"
-                                        placeholder="Reading"
-                                        inputContainerClassName="text-sm py-1 px-5 bg-primary-50 border-0"
+                                        placeholder="Math"
+                                        inputContainerClassName="text-sm py-1 px-5 bg-primary-50 border-0 !font-semibold h-[40px]"
                                         inputClassName="bg-transparent pl-4 rounded-[4px]"
-                                        parentClassName="flex-1 max-w-[140px]"
+                                        parentClassName="flex-1 w-[120px]"
+                                        type="number"
+                                        value={
+                                          currentToEdit.actScores[
+                                            selectedScoreIndex
+                                          ]?.maths
+                                        }
+                                        onChange={(e) => {
+                                          if (
+                                            parseInt(e.target.value) < 0 ||
+                                            parseInt(e.target.value) > 1000
+                                          ) {
+                                            return;
+                                          }
+                                          let tempScores = [
+                                            ...currentToEdit.actScores,
+                                          ];
+                                          if (
+                                            tempScores.length <=
+                                            selectedScoreIndex
+                                          ) {
+                                            tempScores.push({
+                                              createdAt: new Date(),
+                                              maths: 0,
+                                              english: 0,
+                                              reading: 0,
+                                              science: 0,
+                                            });
+                                          }
+                                          tempScores = tempScores.map(
+                                            (item, idx) => {
+                                              if (selectedScoreIndex === idx) {
+                                                return {
+                                                  ...item,
+                                                  maths: checkNumber(
+                                                    currentToEdit.actScores[
+                                                      selectedScoreIndex
+                                                    ]?.maths,
+                                                    parseInt(e.target.value),
+                                                    36
+                                                  ),
+                                                };
+                                              } else {
+                                                return { ...item };
+                                              }
+                                            }
+                                          );
+                                          setCurrentToEdit({
+                                            ...currentToEdit,
+                                            actScores: tempScores,
+                                          });
+                                        }}
+                                      />
+                                    </div>
+                                    <div className="flex  flex-col  items-center mb-4">
+                                      <InputField
+                                        labelClassname="hidden"
+                                        placeholder="Reading"
+                                        inputContainerClassName="text-sm py-1 px-5 bg-primary-50 border-0 !font-semibold h-[40px]"
+                                        inputClassName="bg-transparent pl-4 rounded-[4px]"
+                                        parentClassName="flex-1 w-[120px]"
                                         type="number"
                                         value={
                                           currentToEdit.actScores[
@@ -3202,9 +3222,9 @@ export default function ParentEditables({
                                       <InputField
                                         labelClassname="hidden"
                                         placeholder="Science"
-                                        inputContainerClassName="text-sm py-1 px-5 bg-primary-50 border-0"
+                                        inputContainerClassName="text-sm py-1 px-5 bg-primary-50 border-0 !font-semibold h-[40px]"
                                         inputClassName="bg-transparent pl-4 rounded-[4px]"
-                                        parentClassName="flex-1 max-w-[140px]"
+                                        parentClassName="flex-1 w-[120px]"
                                         type="number"
                                         value={
                                           currentToEdit.actScores[
@@ -3260,7 +3280,7 @@ export default function ParentEditables({
                                     </div>
                                   </div>
 
-                                  <div className="text-md py-2 rounded-[4px] flex items-center  font-semibold  text-center py-auto px-5 bg-primary-50 border-0 !w-[150px] text-[#FFA28D]">
+                                  <div className="text-md py-2 rounded-[4px] flex items-center  font-semibold  text-center py-auto px-2 bg-primary-50 border-0 !w-[120px] text-[#FFA28D] !h-[40px] ">
                                     {it?.maths +
                                       it?.science +
                                       it?.reading +
@@ -3276,7 +3296,25 @@ export default function ParentEditables({
                                     )}
                                   </div>
                                 </div>
-                                <div className="mt-3 border-1  border-t-2 pb-3 border-[1.25px_solid_#00000033] justify-center "></div>
+                                  <InputField
+                        label="Test Date"
+                        labelClassname="text-[#26435F]"
+                        placeholder=""
+                        inputContainerClassName="text-xs  bg-primary-50 border-0 !py-3 !px-2 !rounded-[5px]  !h-[50px] w-[206px] text-[#507CA8]"
+                        inputClassName="bg-transparent text-xs   "
+                        parentClassName=""
+                        type="date"
+                        value={currentToEdit.dob}
+                        onChange={(e) =>
+                          setCurrentToEdit({
+                            ...currentToEdit,
+                            dob: e.target.value,
+                            birthyear: e.target.value?.split("-")[0],
+                          })
+                        }
+                      />
+                                <div className="mt-5 border-1  border-t-2 mb-[30px] border-[1.25px_solid_#00000033] justify-center ">
+                            </div>
                               </div>
                             );
                           }
