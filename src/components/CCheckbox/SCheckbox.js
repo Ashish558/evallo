@@ -15,7 +15,7 @@ export default function SCheckbox({ stopM, checked, onChange, name, disabled, va
       onChange(checkG)
    }, [checkG])
    return (
-      <div className={`w-[22px] h-[22px] ${styles.container} ${!checked ? styles.container2 : styles.container}  ${className}`}
+      <div className={`w-[22px] h-[22px]  ${styles.container} ${!checked ? styles.container2 : styles.container}  ${className}`}
          onClick={(e) => {
             e.stopPropagation()
             if (!true)
@@ -27,7 +27,7 @@ export default function SCheckbox({ stopM, checked, onChange, name, disabled, va
          }}
       >
          <input checked={true} type='checkbox' name={name ? name : 'moods'} value='' readOnly />
-         <span className={`w-[17.5px] h-[17.5px] ${styles.checkmark} ${checkMarkClassName} `}></span>
+         <span className={`w-[17.5px] h-[17.5px] ${styles.checkmark} ${checkMarkClassName} mt-[2px]`}></span>
       </div>
    )
 }

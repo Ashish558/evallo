@@ -75,7 +75,7 @@ const SPFrame3 = ({ userDetail }) => {
 
   console.log("frame1 Stud", { userDetail });
   return (
-    <div className="flex w-full justify-between ml-[5%]">
+    <div className="flex w-full justify-between pl-[5%]">
       
  
           <div className="bg-white  py-3   flex flex-col flex-1 !h-full overflow-y-auto custom-scroller    ">

@@ -3,6 +3,7 @@ thead tr th .marker::after {
   display: inline-block;
   width: 25px;
   height: 25px;
+  cursor: pointer;
 }
 
 thead tr th .upArrow::after {
@@ -18,6 +19,14 @@ thead tr th:nth-child(-n+5) .markerCustom::after {
   display: inline-block;
   width: 25px;
   height: 25px;
+  cursor: pointer;
+}
+thead tr th:nth-child(-n+10) .markerCustomAllOrgs::after {
+  content: url("../../assets/icons/table_dropdown.svg");
+  display: inline-block;
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
 }
 
 .no-arrow div::after{

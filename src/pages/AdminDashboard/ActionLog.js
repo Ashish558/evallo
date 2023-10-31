@@ -115,7 +115,7 @@ export default function ActionLog({ actionLog, className }) {
                   {item?.topDate && item?.message && (
                     <span className="text-xs ml-5 top-0 text-[#FFA28D] absolute  backdrop-blur-sm ">
                       {" "}
-                      {getFormattedDate(item?.topDate, dateFormat)}
+                      {/* {getFormattedDate(item?.topDate, dateFormat)} */}
                     </span>
                   )}
                 </p>
