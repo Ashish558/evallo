@@ -42,7 +42,7 @@ const LatestSignUpTableItem = ({ item, onClick }) => {
   },[item])
   return (
     <tr className=" leading-8 ">
-      <td className="  text-[17.5px] px-[10px]  min-w-14 py-4 text-left">
+      <td className="  text-[17.5px] px-[16px]  min-w-14 py-4 text-left">
         <span
           className="inline-block cursor-pointer pl-4 "
           onClick={handleClick}
@@ -50,32 +50,32 @@ const LatestSignUpTableItem = ({ item, onClick }) => {
           {item.firstName + " " + item.lastName}
         </span>
       </td>
-      <td className=" text-[17.5px] px-[10px] min-w-14 py-4 ">
+      <td className=" text-[17.5px] px-[16px] min-w-14 py-4 ">
         <div >{item.role}</div>
       </td>
-      <td className=" text-[17.5px] px-[10px]  min-w-14 py-4">
+      <td className=" text-[17.5px] pr-[16px] pl-6  min-w-14 py-4 text-left">
         <div >{item.email}</div>
       </td>
-      <td className=" text-[17.5px] px-[10px]  min-w-14 py-4">
+      <td className=" text-[17.5px] px-[16px]  min-w-14 py-4">
         <div >{item.phone}</div>
       </td>
-      <td className=" text-[17.5px] px-[10px]  py-4">
+      <td className=" text-[17.5px] px-[16px]  py-4">
         <div className="max-w-[300px] overflow-x-auto custom-scroller-2  min-w-[100px]">
           {tutor && tutor?.length>0 ?tutor : "NA"}
         </div>
       </td>
-      <td className=" text-[17.5px] px-[10px]  min-w-14 py-4">
+      <td className=" text-[17.5px] px-[16px]  min-w-14 py-4">
         <div >{item.credits}</div>
       </td>
-      <td className=" text-[17.5px] px-[10px]  min-w-14 py-4">
+      <td className=" text-[17.5px] px-[16px]  min-w-14 py-4">
         <div >{item.userStatus}</div>
       </td>
-      <td className=" text-[17.5px] px-[10px]  min-w-14 py-4">
+      <td className=" text-[17.5px] px-[16px]  min-w-14 py-4">
         <div >
           {item?.specialization?.length > 0 ? item.specialization : "NA"}
         </div>
       </td>
-      <td className=" text-[17.5px] px-[10px]  min-w-14 py-4">
+      <td className=" text-[17.5px] px-[16px]  min-w-14 py-4">
         <div >
           {/* {new Date(item.lastSignUp).toDateString()} */}
         {  getFormattedDate(item.lastSignUp, dateFormat)}

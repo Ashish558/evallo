@@ -88,7 +88,7 @@ export default function ActionLog({ actionLog, className }) {
         onScroll={handleScroll}
         className="list-disc rounded-b-md overflow-y-scroll  custom-scroller h-full "
       >
-        {sortedAction?.map((item, index) => {
+        {sortedAction?.reverse().map((item, index) => {
           const date = new Date(item.createdAt);
           const offset = date.getTimezoneOffset() * 60000;
           if (offset > 0) {
@@ -115,7 +115,7 @@ export default function ActionLog({ actionLog, className }) {
                   {item?.topDate && item?.message && (
                     <span className="text-xs ml-5 top-0 text-[#FFA28D] absolute  backdrop-blur-sm ">
                       {" "}
-                      {getFormattedDate(item?.topDate, dateFormat)}
+                      {/* {getFormattedDate(item?.topDate, dateFormat)} */}
                     </span>
                   )}
                 </p>

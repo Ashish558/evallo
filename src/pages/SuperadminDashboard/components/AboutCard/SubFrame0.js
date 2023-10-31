@@ -57,13 +57,13 @@ const SubFrame0 = ({ userData }) => {
       </div>
       <div className="h-[1.33px] bg-gray-300 w-full mt-[40px]"></div>
       <div className="flex flex-col gap-4  pl-[5%]">
-        <div className="flex  justify-between  p-2 px-3 text-base-18  text-[#517CA8]">
+        <div className="flex  justify-between  py-2 pr-3 text-base-18  text-[#517CA8]">
           <div className="">
             <span className=" mr-3 font-light">Subscription:</span>
             <span className="">Taken</span>
           </div>
         </div>
-        <div className="flex gap-10  p-2 px-3 text-base-18  text-[#517CA8]">
+        <div className="flex gap-10  py-2 pr-3 text-base-18  text-[#517CA8]">
           <div className="">
             <span className=" mr-3 font-light">Status:</span>
             <span className="">{userData?.userStatus}</span>
@@ -72,7 +72,7 @@ const SubFrame0 = ({ userData }) => {
       </div>
       <div className="h-[1.33px] bg-gray-300 w-full "></div>
       <div className="flex gap-3 w-full overflow-x-auto custom-scroller-2 mt-[85px] ml-[5%]">
-        <div className="flex flex-col p-2 px-3 gap-2 text-[#26435F]">
+        <div className="flex flex-col py-2 pr-3 gap-2 text-[#26435F]">
           <span className=" ">
             <p className="text-[0.8333vw]"># Tutors</p>
             <p className="font-medium text-[1.3542vw]">{totalHours?.totalTutor}</p>

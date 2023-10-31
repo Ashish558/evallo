@@ -247,6 +247,7 @@ export default function AllTests() {
 
         <div className="mt-6">
           <Table
+      headerWidth="pl-6 pr-1"
             noArrow={true}
             dataFor="allTestsSuperAdmin"
             data={filteredTests}
