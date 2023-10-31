@@ -88,8 +88,8 @@ export default function ActionLog({ actionLog, className }) {
         onScroll={handleScroll}
         className="list-disc rounded-b-md overflow-y-scroll  custom-scroller h-full "
       >
-        {sortedAction?.reverse().map((item, index) => {
-          const date = new Date(item.createdAt);
+        {sortedAction?.map((item, index) => {
+          let date = new Date(item.createdAt);
           const offset = date.getTimezoneOffset() * 60000;
           if (offset > 0) {
             // startDate = startDate + offset
