@@ -433,8 +433,8 @@ export default function TableItem({
           <td className=" text-[17.5px] px-1 min-w-14  capitalize" >
             <div className="my-[6px]">{item.userType}</div>
           </td>
-          <td className=" text-[17.5px] !pl-6 pr-1  min-w-14  text-left">
-            <div className="my-[6px]">{item.email}</div>
+          <td className=" text-[17.5px] px-1  min-w-14  ">
+            <div className="my-[6px]">{item?.email?.toLowerCase()}</div>
           </td>
 
        <td className=" text-[17.5px] !pl-6 pr-1  min-w-14  text-left capitalize">
@@ -1021,8 +1021,8 @@ export default function TableItem({
               onClick={() => navigate(`/orgadmin-profile/${item._id}`)}
             >
               {item.associatedOrg?.company
-                ? item.associatedOrg?.company
-                : item.company}
+                ? item.associatedOrg?.company?.toLowerCase()
+                : item.company?.toLowerCase()}
             </span>
           </td>
           <td className="font-medium text-[17.5px] pl-12  min-w-14 py-4  text-left">

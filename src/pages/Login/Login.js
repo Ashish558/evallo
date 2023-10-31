@@ -68,7 +68,7 @@ export default function Login({ setLoginFormActive }) {
         resolve(resetErrors());
       });
     promiseState().then(() => {
-      loginUser({ email:email?.toLocaleLowerCase().trim(), password }).then((res) => {
+      loginUser({ email:email?.trim(), password }).then((res) => {
         setLoginLoading(false);
         if (res.error) {
           console.log("login err", res.error);
