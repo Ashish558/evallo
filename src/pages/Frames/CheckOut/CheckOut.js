@@ -48,13 +48,13 @@ export default function CheckOut({
     setcurrentStep,
     clientSecret,
 }) {
-    const secretKey = "sk_test_51O1tgLSFF3kgujFeaEQ6Uh7PkOtF4SgSk5ATR8xxmCgLGIW4lkkDzeLDKMoMfjAwZVQyTDJjBkTCwJiIMGgVqrlQ00b9M9MyKZ"
-    const publishableKey = "pk_test_51O1tgLSFF3kgujFe23VYSyhW5lbx2N3b7cjC1q1Q1alW9lwocUKObR8j4hBdpYx5xzDnFcPsNBbkzDu6hcDmHSP3004Sr0qX5e";
-    const stripePromise = loadStripe(publishableKey);
-    const stripe_From_Req = require("stripe")(secretKey);
+    // const secretKey = "sk_test_51O1tgLSFF3kgujFeaEQ6Uh7PkOtF4SgSk5ATR8xxmCgLGIW4lkkDzeLDKMoMfjAwZVQyTDJjBkTCwJiIMGgVqrlQ00b9M9MyKZ"
+    // const publishableKey = "pk_test_51O1tgLSFF3kgujFe23VYSyhW5lbx2N3b7cjC1q1Q1alW9lwocUKObR8j4hBdpYx5xzDnFcPsNBbkzDu6hcDmHSP3004Sr0qX5e";
+    // const stripePromise = loadStripe(publishableKey);
+    // const stripe_From_Req = require("stripe")(secretKey);
 
-    const stripe = useStripe();
-    const elements = useElements();
+    // const stripe = useStripe();
+    // const elements = useElements();
 
     // const [clientSecret, SetClientSecret] = useState();
 
@@ -79,14 +79,14 @@ export default function CheckOut({
         setFrames((prev) => {
           return { ...prev, extensions: false, checkout: true };
         });
-        setcurrentStep(currentStep => currentStep + 1)
+        // setcurrentStep(currentStep => currentStep + 1)
       };
 
     const handleBack = () => {
         setFrames((prev) => {
-            return { ...prev, checkout: false, extensions: true };
+            return { ...prev, checkout: false, payment: true };
         });
-        setcurrentStep(currentStep => currentStep - 1)
+        // setcurrentStep(currentStep => currentStep - 1)
     };
 
     const [promoCodes, SetPromoCodes] = useState([
@@ -117,35 +117,35 @@ export default function CheckOut({
     */
    
 
-    useEffect(() => {
-        if (!stripe) {
-            return;
-        }
+    // useEffect(() => {
+    //     if (!stripe) {
+    //         return;
+    //     }
 
         
 
-        if (!clientSecret) {
-            return;
-        }
+    //     if (!clientSecret) {
+    //         return;
+    //     }
 
-        stripe.retrievePaymentIntent(clientSecret).then(({ paymentIntent }) => {
-            console.log(paymentIntent)
-            switch (paymentIntent.status) {
-            case "succeeded":
-                console.log("Payment succeeded!");
-                break;
-            case "processing":
-                console.log("Your payment is processing.");
-                break;
-            case "requires_payment_method":
-                console.log("Your payment was not successful, please try again.");
-                break;
-            default:
-                console.log("Something went wrong.");
-                break;
-            }
-        });
-    }, [stripe]);
+    //     stripe.retrievePaymentIntent(clientSecret).then(({ paymentIntent }) => {
+    //         console.log(paymentIntent)
+    //         switch (paymentIntent.status) {
+    //         case "succeeded":
+    //             console.log("Payment succeeded!");
+    //             break;
+    //         case "processing":
+    //             console.log("Your payment is processing.");
+    //             break;
+    //         case "requires_payment_method":
+    //             console.log("Your payment was not successful, please try again.");
+    //             break;
+    //         default:
+    //             console.log("Something went wrong.");
+    //             break;
+    //         }
+    //     });
+    // }, [stripe]);
 
     const chosenSubscriptionPlan = subscriptionsInfo.find(item => item.planName === values.subscriptionPlan);
 
@@ -267,8 +267,6 @@ export default function CheckOut({
                 </div>
 
             <div className="border-[1px] mb-[40px] mt-[25px] w-full"></div>
-
-            <PaymentElement id="payment-element" options={paymentElementOptions} />
 
             <div className="flex items-center mt-[50px] justify-end">
                 <SecondaryButton

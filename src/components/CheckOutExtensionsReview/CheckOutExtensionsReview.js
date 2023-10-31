@@ -26,7 +26,7 @@ export default function CheckOutExtensionsReview({
         setFrames((prev) => {
             return { ...prev, checkout: false, extensions: true };
         });
-        setcurrentStep(currentStep => currentStep - 1)
+        // setcurrentStep(currentStep => currentStep - 1)
     }
 
     return (

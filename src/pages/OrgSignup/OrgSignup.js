@@ -70,12 +70,14 @@ import {
   useElements
 } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
+import Payment from "../Frames/Payment/Payment";
 
 export default function OrgSignup() {
   const [frames, setFrames] = useState({
     signupActive: false,
     subscription: true,
     extensions: false,
+    payment: false,
     checkout: false,
   });
 
@@ -178,6 +180,37 @@ export default function OrgSignup() {
   const [getSubscriptionsInfo, getSubscriptionsInfoResp] = useLazyGetSubscriptionsInfoQuery();
   const [subscriptionPlanInfo, SetSubscriptionPlanInfo] = useState([])
   const [extensionPlansData, SetExtensionPlansData] = useState([]);
+
+  function OnFrameChanged() {
+    if(frames.signupActive) {
+      setcurrentStep(1);
+      return;
+    }
+
+    if(frames.subscription) {
+      setcurrentStep(2);
+      return;
+    }
+
+    if(frames.extensions) {
+      setcurrentStep(3);
+      return;
+    }
+
+    if(frames.payment) {
+      setcurrentStep(4);
+      return;
+    }
+
+    if(frames.checkout) {
+      setcurrentStep(5);
+      return;
+    }
+  }
+
+  useEffect(() => {
+    OnFrameChanged();
+  }, [frames])
 
   const fetchSettings = () => {
     getSettings().then((res) => {
@@ -673,7 +706,7 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
           signupActive: false,
           subscription: true,
         });
-        setcurrentStep(currentStep => currentStep + 1)
+        // setcurrentStep(currentStep => currentStep + 1)
       }
       if(cc>=2){
         setEmailExistLoad(false)
@@ -821,7 +854,7 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
                           ${frames.extensions ? "lg:w-[1200px]" : "lg:w-[800px]"}`}>
             <div className="w-full py-4 ">
               {currentStep > 0 && (
-                <NumericSteppers className={"left-2/4 -translate-x-2/4 self-center px-2 flex-1 lg:w-[600px]"} fieldNames={["Personal info" ,"Subscription","Extensions","Checkout"]} totalSteps={4} currentStep={currentStep}
+                <NumericSteppers className={"left-2/4 -translate-x-2/4 self-center px-2 flex-1 lg:w-[600px]"} fieldNames={["Personal info" ,"Subscription","Extensions", "Payment" ,"Checkout"]} totalSteps={5} currentStep={currentStep}
                 
                 />
               )}
@@ -1076,12 +1109,17 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
                   setcurrentStep={setcurrentStep}
             
                 />
+              ) : frames.payment ? (
+                <Payment
+                  setFrames={setFrames}
+                  setcurrentStep={setcurrentStep}
+                />
               ) : frames.checkout ? (
-                clientSecret ? 
-                <Elements options={{
-                  clientSecret: clientSecret,
-                  appearance,
-                }} stripe={stripePromise}>
+                // clientSecret ? 
+                // <Elements options={{
+                //   clientSecret: clientSecret,
+                //   appearance,
+                // }} stripe={stripePromise}>
                 <CheckOut
                   setFrames={setFrames}
                   values={values}
@@ -1091,7 +1129,7 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
                   setcurrentStep={setcurrentStep}
                   clientSecret={clientSecret}
                  />
-                 </Elements> : (<></>)
+                //  </Elements> : (<></>)
               ) : frames.signupSuccessful ? (
                 <SignupSuccessful
                   email={values.email}

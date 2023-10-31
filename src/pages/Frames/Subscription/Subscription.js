@@ -17,14 +17,14 @@ export default function Subscription({
         setFrames((prev) => {
             return { ...prev, subscription: false, extensions: true };
         });
-        setcurrentStep(currentStep => currentStep + 1)
+        // setcurrentStep(currentStep => currentStep + 1)
     };
 
     const handleBack = () => {
         setFrames((prev) => {
             return { ...prev, subscription: false, signupActive: true };
         });
-        setcurrentStep(currentStep => currentStep - 1)
+        // setcurrentStep(currentStep => currentStep - 1)
     };
 
     return (

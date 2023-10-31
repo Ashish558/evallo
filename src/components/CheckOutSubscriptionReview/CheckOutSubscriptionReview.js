@@ -21,7 +21,7 @@ export default function CheckOutSubscriptionReview({
         setFrames((prev) => {
             return { ...prev, checkout: false, subscription: true };
         });
-        setcurrentStep(currentStep => currentStep - 2)
+        // setcurrentStep(currentStep => currentStep - 2)
     }
     return (
         <div className={`flex flex-col pb-[10px] pl-[20px] pr-[30px] pt-[20px] rounded-[5px] shadow-[0px_0px_2px_rgba(0,0,0,0.25)] w-full ${className}`}>

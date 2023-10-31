@@ -44,16 +44,16 @@ export default function Extensions({
 
     const handleSubmit = () => {
         setFrames((prev) => {
-            return { ...prev, extensions: false, checkout: true };
+            return { ...prev, extensions: false, payment: true };
         });
-        setcurrentStep(currentStep => currentStep + 1)
+        // setcurrentStep(currentStep => currentStep + 1)
     };
 
     const handleBack = () => {
         setFrames((prev) => {
             return { ...prev, extensions: false, subscription: true };
         });
-        setcurrentStep(currentStep => currentStep - 1)
+        // setcurrentStep(currentStep => currentStep - 1)
     };
       
 
