@@ -23,6 +23,10 @@
 
 .options > div:hover {
     background-color: rgb(233 233 233 / 86%);
+    color: #FFA28D;
+}
+.options > div:hover > div {
+    color: #FFA28D;
 }
 .input{
     outline: none !important;

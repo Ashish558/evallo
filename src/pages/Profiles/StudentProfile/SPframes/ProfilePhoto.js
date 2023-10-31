@@ -18,7 +18,7 @@ export default function ProfilePhoto({ src, handleChange, editable, isTutor,cust
                   onChange={e => handleChange(e.target.files[0])} />
                <div className={`${styles.cameraIcon} ${isTutor ? styles.tutorCamera : ''}`} 
                onClick={() => inputref.current.click()}>
-                  <img src={CameraIcon} />
+                  <img className='cursor-pointer' src={CameraIcon} alt="CameraIcon"/>
                </div>
             </>
          }

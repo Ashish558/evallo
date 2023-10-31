@@ -812,7 +812,7 @@ const [toEdit, setToEdit] = useState({
                     })
                   }
                   text="Edit Profile"
-                  textClassName=" ml-2   mx-auto text-center text-[#26435F] text-underline text-base-15 "
+                  textClassName=" ml-2   mx-auto text-center text-[#26435F] text-underline text-base-15 font-semibold"
                   className=" my-0 flex items-center justify-center text-center   absolute -bottom-[60%] design:-bottom-[35%] design:left-[23%] left-[26%]"
                 />}
               </div>
@@ -862,7 +862,7 @@ const [toEdit, setToEdit] = useState({
                         <p>
                           <span>
                             <img
-                              className="inline-block !w-4 !h-4 mr-2"
+                              className="inline-block !w-4 !h-4 mr-2 cursor-pointer"
                               src={emailIcon}
                               alt="email"
                             />
@@ -881,7 +881,7 @@ const [toEdit, setToEdit] = useState({
                         <p>
                           <span>
                             <img
-                              className="inline-block !w-4 !h-4 mr-2"
+                              className="inline-block !w-4 !h-4 mr-2 cursor-pointer"
                               src={phoneIcon}
                               alt="phone"
                             />

@@ -739,8 +739,8 @@ export default function ParentEditables({
                 {console.log({ user })}
                 {/* {currentField.fields && currentField.fields} */}
                 {currentField.name === "frame0" && (
-                  <div className="flex flex-col px-2 max-h-[60vh]">
-                    <div className="flex gap-3 items-center">
+                  <div className="flex flex-col px-2 max-h-[60vh] !w-[50.63vw]">
+                    <div className="flex gap-3 items-center justify-between">
                       <div className="!w-[140px]">
                         <ProfilePhoto
                           src={
@@ -755,15 +755,15 @@ export default function ParentEditables({
                           editable={editable}
                         />
                       </div>
-                      <div className="flex flex-col gap-5">
-                        <div className="flex !text-sm gap-4 ">
+                      <div className="flex flex-col gap-5  w-[80%]">
+                        <div className="flex !text-sm gap-4 justify-between">
                           <InputField
-                            label="First Name"
+                            label="First name"
                             labelClassname="text-[#26435F]"
-                            placeholder="First Name"
-                            inputContainerClassName="text-xs !shadow-[0px_0px_2px_0px_#00000040]  bg-primary-50 border-0 !py-3 !px-2 !rounded-[5px]"
+                            placeholder="First name"
+                            inputContainerClassName="text-xs !shadow-[0px_0px_2px_0px_#00000040]  bg-primary-50 border-0 !py-3 !px-2 !rounded-[5px] h-[50px] !w-[10.05208vw]"
                             inputClassName="bg-transparent text-xs   "
-                            parentClassName="flex-1 "
+                            parentClassName=""
                             type="text"
                             value={currentToEdit.firstName}
                             onChange={(e) =>
@@ -775,29 +775,12 @@ export default function ParentEditables({
                           />
 
                           <InputField
-                            label="School Name"
+                            label="Last name"
                             labelClassname="text-[#26435F]"
-                            placeholder="School Name"
-                            inputContainerClassName="text-xs !shadow-[0px_0px_2px_0px_#00000040] bg-primary-50 border-0 !py-3 !px-2 !rounded-[5px]"
+                            placeholder="Last name"
+                            inputContainerClassName="text-xs  !shadow-[0px_0px_2px_0px_#00000040] bg-primary-50 border-0 !py-3 !px-2 !rounded-[5px] h-[50px] !w-[10.05208vw]"
                             inputClassName="bg-transparent text-xs   "
-                            parentClassName="flex-1 "
-                            type="text"
-                            value={currentToEdit.schoolName}
-                            onChange={(e) =>
-                              setCurrentToEdit({
-                                ...currentToEdit,
-                                schoolName: e.target.value,
-                              })
-                            }
-                          />
-
-                          <InputField
-                            label="Last Name"
-                            labelClassname="text-[#26435F]"
-                            placeholder="Last Name"
-                            inputContainerClassName="text-xs  !shadow-[0px_0px_2px_0px_#00000040] bg-primary-50 border-0 !py-3 !px-2 !rounded-[5px]"
-                            inputClassName="bg-transparent text-xs   "
-                            parentClassName="flex-1 "
+                            parentClassName=""
                             type="text"
                             value={currentToEdit.lastName}
                             onChange={(e) =>
@@ -807,17 +790,33 @@ export default function ParentEditables({
                               })
                             }
                           />
+                           <InputField
+                            label="School / College"
+                            labelClassname="text-[#26435F]"
+                            placeholder="School / College"
+                            inputContainerClassName="text-xs !shadow-[0px_0px_2px_0px_#00000040] bg-primary-50 border-0 !py-3 !px-2 !rounded-[5px] h-[50px] w-[14.89583vw]"
+                            inputClassName="bg-transparent text-xs   "
+                            parentClassName=" "
+                            type="text"
+                            value={currentToEdit.schoolName}
+                            onChange={(e) =>
+                              setCurrentToEdit({
+                                ...currentToEdit,
+                                schoolName: e.target.value,
+                              })
+                            }
+                          />
                         </div>
-                        <div className="flex !text-sm gap-4 ">
+                        <div className="flex !text-sm  justify-between">
                           <InputField
                             IconLeft={caution}
                             hideTooltip={hideTooltip}
                             label="Email"
                             labelClassname="text-[#26435F]"
                             placeholder="Email Id"
-                            inputContainerClassName="text-xs !shadow-[0px_0px_2px_0px_#00000040]  bg-primary-50 border-0 !py-3 !px-1 !rounded-[5px]"
+                            inputContainerClassName="text-xs !shadow-[0px_0px_2px_0px_#00000040]  bg-primary-50 border-0 !py-3 !px-1 !rounded-[5px] h-[50px] w-[15.625vw]"
                             inputClassName="bg-transparent !w-[200px] text-xs   "
-                            parentClassName="flex-1 "
+                            parentClassName=""
                             type="text"
                             value={currentToEdit.email}
                             onChange={(e) =>
@@ -847,12 +846,12 @@ export default function ParentEditables({
                           <div id="number2 ">
                             <InputFieldDropdown
                               codeClassName="!bg-white !rounded-sm"
-                              placeholder=""
+                              placeholder="Student's Phone"
                               labelClassname="text-[#26435F]"
-                              inputContainerClassName="!text-xs  !border-none  bg-primary-50  !shadow-[0px_0px_2px_0px_#00000040]"
+                              inputContainerClassName="!text-xs  !border-none  bg-primary-50  !shadow-[0px_0px_2px_0px_#00000040] h-[50px] w-[14.32292vw]"
                               inputClassName="bg-transparent !w-[90px] !text-xs rounded-[4px] "
-                              parentClassName="flex-1 "
-                              label="Phone"
+                              parentClassName=""
+                              label="Student Phone"
                               value={currentToEdit.phone}
                               codeValue={currentToEdit.phoneCode}
                               handleCodeChange={(e) =>
@@ -871,12 +870,12 @@ export default function ParentEditables({
                           </div>
                           <InputSelectNew
                             optionData={grades}
-                            labelClassname="text-[#26435F] !font-bold"
+                            labelClassname={`text-[#26435F] !font-bold ${styles.customFontFamily}`}
                             label="Grade"
-                            placeholder="Enter your Grade"
-                            inputContainerClassName="text-xs  bg-primary-50 !py-3 border-0 !rounded-[5px] !shadow-[0px_0px_2px_0px_#00000040]"
+                            placeholder="Select"  
+                            inputContainerClassName="text-xs  bg-primary-50 !py-3 border-0 !rounded-[5px] !shadow-[0px_0px_2px_0px_#00000040] h-[50px] w-[7.13542vw]"
                             inputClassName="bg-transparent text-xs  "
-                            parentClassName="flex-1 "
+                            parentClassName=""
                             type="text"
                             value={currentToEdit.grade}
                             onChange={(val) =>
@@ -893,7 +892,7 @@ export default function ParentEditables({
                         </p>
                         <textarea
                           rows="3"
-                          className="mt-1 block w-full h-[60px] resize-none focus:!ring-blue-500 p-2 focus:!border-blue-500 placeholder-[#CBD6E2] text-sm  placeholder:text-xs border border-[0.917px_solid_#D0D5DD] rounded-[6px]
+                          className="mt-1 block w-full h-[111px] resize-none focus:!ring-blue-500 p-2 focus:!border-blue-500 placeholder-[#CBD6E2] text-sm  placeholder:text-xs border border-[0.917px_solid_#D0D5DD] rounded-[6px]
                 "
                           value={currentToEdit.about}
                           onChange={(e) => {
@@ -902,24 +901,25 @@ export default function ParentEditables({
                               about: e.target.value,
                             });
                           }}
-                          placeholder=""
+                          placeholder="The student can add their bio in this space. Here are a few ideas to get started:
+                          Likes, dislikes, personality, sports, school activities, preferred majors, target colleges, habits, academic scores, family, favorite movies and TV shows, music taste, learning styles, strengths and weaknesses."
                         ></textarea>
                       </div>
                       {persona === "admin" && (
                         <div>
                           <div
                             id="borderDashed2"
-                            className="h-[2px] w-[100%] mt-6 mx-auto my-4"
+                            className=" w-[80%] mt-6 mx-auto my-4"
                           ></div>
 
                           <InputSearch
                             right={
-                              <img className="w-5 h-4" alt="drop" src={down} />
+                              <img className="w-5 h-4 cursor-pointer" alt="drop" src={down} />
                             }
                             labelClassname="text-[#26435F] mb-1 text-sm"
                             label="Associated Parent"
                             placeholder="Select Associated Parent"
-                            parentClassName="w-[300px]  mb-10"
+                            parentClassName="w-[300px]  mb-10 !whitespace-normal"
                             inputContainerClassName="bg-[#F3F5F7] border-0 pt-3.5 pb-3.5"
                             inputClassName="bg-[#F3F5F7]"
                             type="text"
@@ -991,15 +991,15 @@ export default function ParentEditables({
                   </div>
                 )}
                 {currentField.name === "frame1" && (
-                  <div className="flex flex-col gap-5 !w-[350px]">
-                    <div className="flex !text-sm gap-4 ">
+                  <div className="flex flex-col gap-y-6 !w-[21.97917vw]">
+                    <div className="flex justify-between !text-sm">
                       <InputField
                         label="D.O.B"
                         labelClassname="text-[#26435F]"
                         placeholder=""
-                        inputContainerClassName="text-xs  bg-primary-50 border-0 !py-3 !px-2 !rounded-[5px]"
+                        inputContainerClassName="text-xs  bg-primary-50 border-0 !py-3 !px-2 !rounded-[5px] !w-[10.09896vw] !h-[50px]"
                         inputClassName="bg-transparent text-xs   "
-                        parentClassName="flex-1 "
+                        parentClassName=""
                         type="date"
                         value={currentToEdit.dob}
                         onChange={(e) =>
@@ -1012,12 +1012,12 @@ export default function ParentEditables({
                       />
 
                       <InputSelectNew
-                        labelClassname="text-[#26435F] !font-bold"
+                        labelClassname="text-[#26435F] !font-bold text-base-17-5"
                         label="Time zone"
                         placeholder="Time Zone"
-                        inputContainerClassName="text-xs  bg-primary-50 !py-3 border-0 !rounded-[5px]"
+                        inputContainerClassName="text-xs  bg-primary-50 !py-3 border-0 !rounded-[5px] !w-[10.09896vw] !h-[50px]"
                         inputClassName="bg-transparent text-xs  "
-                        parentClassName="flex-1 "
+                        parentClassName=""
                         type="text"
                         value={currentToEdit.timeZone}
                         onChange={(val) =>
@@ -1029,12 +1029,12 @@ export default function ParentEditables({
                     </div>
                     <div className="flex !text-sm gap-4 ">
                       <InputField
-                        label="DropBox"
+                        label="Dropbox"
                         labelClassname="text-[#26435F]"
                         placeholder="Paste your link here"
-                        inputContainerClassName="text-xs  bg-primary-50 border-0 !py-3 !px-2 !rounded-[5px]"
+                        inputContainerClassName="text-xs  bg-primary-50 border-0 !py-3 !px-2 !rounded-[5px] !h-[50px]"
                         inputClassName="bg-transparent text-xs   "
-                        parentClassName="flex-1 "
+                        parentClassName="flex-1"
                         type="text"
                         disabled={persona === "student" || persona === "parent"}
                         value={currentToEdit.dropBoxLink}
@@ -1051,7 +1051,7 @@ export default function ParentEditables({
                         label="Drive"
                         labelClassname="text-[#26435F]"
                         placeholder="Paste your link here"
-                        inputContainerClassName="text-xs  bg-primary-50 border-0 !py-3 !px-2 !rounded-[5px]"
+                        inputContainerClassName="text-xs  bg-primary-50 border-0 !py-3 !px-2 !rounded-[5px] !h-[50px]"
                         inputClassName="bg-transparent text-xs   "
                         parentClassName="flex-1 "
                         type="text"
@@ -1068,11 +1068,11 @@ export default function ParentEditables({
                     <div className="flex !text-sm gap-4 ">
                       <InputSelectNew
                         label="Referral Code"
-                        labelClassname="text-[#26435F]"
-                        placeholder=""
-                        inputContainerClassName="text-xs  bg-primary-50 border-0 !py-3 !px-2 !rounded-[5px]"
+                        labelClassname="text-[#26435F] text-base-17-5"
+                        placeholder="Select"
+                        inputContainerClassName="text-xs  bg-primary-50 border-0 !py-3 !px-2 !rounded-[5px] !w-[10.09896vw] !h-[50px]"
                         inputClassName="bg-transparent text-xs   "
-                        parentClassName="flex-1 "
+                        parentClassName=""
                         optionData={organization?.settings?.subscriptionCode?.map(
                           (it) => {
                             return {
@@ -1096,9 +1096,9 @@ export default function ParentEditables({
                         label="Accomodations"
                         labelClassname="text-[#26435F]"
                         placeholder=""
-                        inputContainerClassName="text-xs  bg-primary-50 border-0 !py-3 !px-2 !rounded-[5px]"
+                        inputContainerClassName="text-xs  bg-primary-50 border-0 !py-3 !px-2 !rounded-[5px] !w-[10.09896vw] !h-[50px]"
                         inputClassName="bg-transparent text-xs   "
-                        parentClassName="flex-1 "
+                        parentClassName=""
                         type="text"
                         value={currentToEdit.accomodations}
                         onChange={(e) =>

@@ -169,3 +169,7 @@
    top: 30%;
    left: 141%;
 }
+
+.customFontFamily{
+   font-family: "Inter", sans-serif !important;
+}

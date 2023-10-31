@@ -223,7 +223,7 @@ const SPFrame1 = ({
                   <div className="flex justify-center">
                     <label
                       htmlFor="file"
-                      className="block text-sm text-white bg-[#517CA8] hover:bg-[#517CA8] items-center justify-center  rounded-[5px]  px-3 py-2 text-base-17-5 text-center ] "
+                      className="block text-sm text-white bg-[#517CA8] hover:bg-[#517CA8] items-center justify-center  rounded-[5px]  px-3 py-2 text-base-17-5 text-center ] cursor-pointer"
                     >
                       Choose File
                     </label>
