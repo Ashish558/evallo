@@ -85,7 +85,7 @@ export const sessionServicesApi = createApi({
       }),
       getTotalHours: builder.query({
          query: (payload) => ({
-            url: `/api/user/student/getTotalHoursTutored/${payload}`,
+            url: `/api/session/student/getTotalHoursTutored/${payload}`,
             method: "GET",
            
             headers: getAuthHeader()

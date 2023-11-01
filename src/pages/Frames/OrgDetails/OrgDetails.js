@@ -60,7 +60,7 @@ export default function OrgDetails({
       alert("Zip code should conatain digits only!")
    return 
     }
-    if (!alphadigit.test(values?.company) || !alphadigit.test(values?.companyType) || !alphadigit.test(values?.address)
+    if (!alphadigit.test(values?.company) || !alphadigit.test(values?.address)
     || !alphadigit.test(values?.country) || !alphadigit.test(values?.city) || !alphadigit.test(values?.state)) {
     alert("Please fill valid details!")
     return

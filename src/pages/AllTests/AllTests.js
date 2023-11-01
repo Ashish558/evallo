@@ -20,7 +20,7 @@ import { useSelector } from "react-redux";
 import { json, useNavigate } from "react-router-dom";
 
 const optionData = ["option 1", "option 2", "option 3", "option 4", "option 5"];
-const testTypeOptions = ["DSAT", "SAT", "ACT"];
+const testTypeOptions = ["DSAT®", "SAT®", "ACT®","Other"]
 
 const initialState = {
   testName: "",
@@ -215,7 +215,7 @@ export default function AllTests({isOwn,setTotaltest,studentId,fromProfile}) {
   };
 
   const getTestType = (type) => {
-    return type === 'SAT®' ? "SAT" : type === 'ACT®' ? "ACT" : type === 'DSAT®' ? "DSAT" : type
+    return type === 'SAT®' ? "SAT®" : type === 'ACT®' ? "ACT®" : type === 'DSAT®' ? "DSAT®" : type
   }
   const handleSubmit = (e) => {
     setLoading(true);
