@@ -24,8 +24,8 @@ const iniOptions = {
              display: true,
              text: 'Concepts',
              font: {
-                weight: 500,
-                size: 14,
+                weight: 600,
+                size: 20,
               },
           },
           ticks: {
@@ -45,11 +45,11 @@ const iniOptions = {
         
           title: {
              display: true,
-             text: 'Time Taken (second)',
+             text: 'Time Taken (seconds)',
              color: "#24A3D9",
              font: {
-                weight: 500,
-                size: 14,
+                weight: 600,
+                size: 20,
               },
           },
           ticks: {

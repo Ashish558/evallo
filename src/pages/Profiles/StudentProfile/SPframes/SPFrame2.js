@@ -73,23 +73,23 @@ const SPFrame2 = ({
           <div className="flex-1  flex justify-between">
             <p className=" text-sm text-[#26435F] font-semibold text-base-20">
               Hours Tutored
-              <span className=" text-[#FFA28D] text-2xl block">90</span>
+              <span className=" text-[#FFA28D] text-2xl block mt-1">90</span>
             </p>
             <p className=" text-sm text-[#26435F] font-semibold text-base-20">
               No. Of Sessions
-              <span className=" text-[#FFA28D] text-2xl block">90</span>
+              <span className=" text-[#FFA28D] text-2xl block mt-1">90</span>
             </p>
           </div>
           <div className="flex-1  flex justify-between">
             <p className=" text-sm text-[#26435F] font-semibold text-base-20">
-              # Of Practice Tests
-              <span className=" text-[#FFA28D] text-2xl block">
+            No. of Assignments
+              <span className=" text-[#FFA28D] text-2xl block mt-1">
                 {totalTest}
               </span>
             </p>
             <p className=" text-sm text-[#26435F] font-semibold text-base-20 w-[122px] text-left">
               Join Date
-              <span className=" text-[#FFA28D] text-xl block">
+              <span className=" text-[#FFA28D] text-xl block mt-1">
                 {/* {new Date(userDetail?.createdAt).toLocaleDateString()} */}
                 {getFormattedDate(userDetail?.createdAt, dateFormat)}
               </span>

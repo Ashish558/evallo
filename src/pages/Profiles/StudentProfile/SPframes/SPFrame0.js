@@ -49,7 +49,7 @@ const SPFrame0 = ({ userDetail, settings, toEdit, setToEdit }) => {
         <div className="flex gap-3 text-sm items-center">
           <span>
             <img
-              className="ml-2 !w-6 !h-6 inline-block"
+              className="ml-2 w-[37.5px] h-[37.5px] inline-block"
               src={bod}
               alt="arrow down"
             />
@@ -57,14 +57,14 @@ const SPFrame0 = ({ userDetail, settings, toEdit, setToEdit }) => {
           <span className="text-base-17-5">
             <p >Birth Year</p>
             <p className=" font-semibold ">
-              {userDetail?.birthyear ? userDetail?.birthyear : " "}
+              {userDetail?.birthyear ? userDetail?.birthyear : "-"}
             </p>
           </span>
         </div>
         <div className="flex gap-3 text-sm items-center">
           <span>
             <img
-              className="ml-2 !w-6 !h-6 inline-block"
+              className="ml-2 w-[37.5px] h-[37.5px] inline-block"
               src={time}
               alt="arrow down"
             />
@@ -79,7 +79,7 @@ const SPFrame0 = ({ userDetail, settings, toEdit, setToEdit }) => {
         <div className="flex gap-3 text-sm items-center">
           <span>
             <img
-              className="ml-2 !w-6 !h-6 inline-block"
+              className="ml-2 w-[37.5px] h-[37.5px] inline-block"
               src={referral}
               alt="arrow down"
             />
@@ -96,7 +96,7 @@ const SPFrame0 = ({ userDetail, settings, toEdit, setToEdit }) => {
         <div className="flex gap-3 text-sm items-center">
           <span>
             <img
-              className="ml-2 !w-6 !h-6 inline-block"
+              className="ml-2 w-[37.5px] h-[37.5px] inline-block"
               src={dropbox}
               alt="arrow down"
             />
@@ -128,7 +128,7 @@ const SPFrame0 = ({ userDetail, settings, toEdit, setToEdit }) => {
         <div className="flex gap-3 text-base-17-5 items-center">
           <span>
             <img
-              className="ml-2 !w-6 !h-6 inline-block"
+              className="ml-2 w-[37.5px] h-[37.5px] inline-block"
               src={accomodations}
               alt="arrow down"
             />

@@ -1762,9 +1762,9 @@ export default function Users() {
             parentClassName="  text-[#26435F] "
             type="select"
             IconSearch={Dropdown}
-            inputClassName="bg-white border   !w-[9vw]"
+            inputClassName="bg-white border   "
 
-            inputContainerClassName="bg-white shadow-[0px_0px_2px_0px_rgba(0,0,0,0.25)] h-[43px] lg:pl-2 2xl:pl-3 rounded-[5px] !font-normal "
+            inputContainerClassName="bg-white shadow-[0px_0px_2px_0px_rgba(0,0,0,0.25)] h-[43px] lg:pl-2 2xl:pl-3 rounded-[5px] !font-normal !w-[10.2vw]"
 
             optionType="object"
             value={bulkEdits?.assignedTutor?.value}
@@ -2096,23 +2096,23 @@ export default function Users() {
 
             </span>
           }
-          titleClassName="mb-5 leading-10"
+          titleClassName="mb-5 leading-10 !text-[21.33px] font-semibold"
           cancelBtn={true}
           crossBtn={true}
-          cancelBtnClassName="max-w-140 !bg-transparent !border  !border-[#FFA28D]  text-[#FFA28D]"
+          cancelBtnClassName="!w-[146px] text-[#FFA28D] border-[1.5px] border-[#FFA28D] bg-white hover:bg-[#FFA28D] hover:text-white  font-medium rounded-lg  px-[10px] py-[17.33px] text-center dark:bg-white dark:hover:bg-[#FFA28D] "
           primaryBtn={{
             text: "Delete",
-            className: "w-[140px]  pl-4 px-4 !bg-[#FF7979] text-white",
+            className: "!w-[146px]  px-4 !bg-[#FF7979] text-white h-[46px]",
             onClick: () => bulkSelectDelete(),
             bgDanger: true,
             loading: deleteSelectLoading,
           }}
           body={
             <>
-              <p className="text-base-17-5 mt-[-5px] text-[#667085] mb-6">
-                <span className="font-semibold mr-1">⚠️ Note:</span>
-                Once the users are deleted from your Organization, you will not be able to recover their data. Read detailed documentation in Evallo’s.
-                <span className="text-[#24A3D9]"> knowledge base.</span>
+              <p className="text-base -mt-[21px] text-[#667085] mb-6">
+                <span className="font-semibold mr-1">⚠️Note:</span>
+                Once the users are deleted from your Organization, you will not be able to recover their data. Read detailed documentation in Evallo’s{" "}
+                <span className="text-[#24A3D9] underline cursor-pointer">knowledge base.</span>
               </p>
             </>
           }
