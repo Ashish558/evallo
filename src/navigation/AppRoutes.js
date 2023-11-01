@@ -57,7 +57,7 @@ const AppRoutes = () => {
         <Route path="/admin-portal" element={<AdminPortal />} />
         <Route path="/signup/user" element={<UserSignup />} />
         <Route
-          path="/dashboard"
+          path="/"
           element={
             <RequireAuth isLoggedIn={isLoggedIn}>
               {persona === "superAdmin" || persona === "manager" ? (
