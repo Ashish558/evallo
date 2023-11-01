@@ -20,7 +20,7 @@ import FilterItems from "../../../../components/FilterItems/filterItems";
 import { useSelector } from "react-redux";
 
 const optionData = ["option 1", "option 2", "option 3", "option 4", "option 5"];
-const testTypeOptions = ["DSAT","SAT", "ACT"];
+const testTypeOptions = ["DSAT®", "SAT®", "ACT®","Other"];
 const tableHeaders = [
   "Assignment",
   "Type",
@@ -86,15 +86,18 @@ export default function AllTests() {
   const removeTest = (item) => {
     setRemoveQuestionModal(false);
     // console.log(testForDelete._id);
-    axios.delete(`${BASE_URL}api/test/${testForDelete._id}`, {
-      headers: getAuthHeader()
-    }).then((res) => {
-      console.log(res);
-      fetchTests();
-    });
+    axios
+      .delete(`${BASE_URL}api/test/${testForDelete._id}`, {
+        headers: getAuthHeader(),
+      })
+      .then((res) => {
+        console.log(res);
+        fetchTests();
+      });
   };
 
   useEffect(() => {
+    let arr=tableData?.sort((a,b) =>{return new Date(b.createdAt)-new Date(a.createdAt)})
     setFilteredTests(tableData);
   }, [tableData]);
 
@@ -209,8 +212,8 @@ export default function AllTests() {
     axios
       .get(`${BASE_URL}api/test/${persona}/getAllTest`, { headers })
       .then((res) => {
-        console.log('res', res.data.data);
-        setTableData(res.data.data)
+        console.log("res", res.data.data);
+        setTableData(res.data.data);
       });
   };
 
@@ -247,7 +250,7 @@ export default function AllTests() {
 
         <div className="mt-6">
           <Table
-      headerWidth="pl-6 pr-1"
+            headerWidth="pl-6 pr-1"
             noArrow={true}
             dataFor="allTestsSuperAdmin"
             data={filteredTests}
@@ -279,34 +282,38 @@ export default function AllTests() {
                 id={styles.uploadButtons}
                 className="mt-7   px-0  gap-5 flex justify-between"
               >
-                {modalData.testType != 'DSAT' ? <div id={styles.pdfUpload}>
-                  <label
-                    htmlFor="pdf"
-                    className={`${pdfFile !== null ? "bg-[#26435F] " : "bg-[#26435F] "
+                {modalData.testType != "DSAT" ? (
+                  <div id={styles.pdfUpload}>
+                    <label
+                      htmlFor="pdf"
+                      className={`${
+                        pdfFile !== null ? "bg-[#26435F] " : "bg-[#26435F] "
                       } w-[8.9vw] min-w-[160px] text-sm !font-medium`}
-                  >
-                    Upload PDF
-                    <img src={upload} alt="Upload" />
-                  </label>
-                  <div className={styles.error}>{PDFError}</div>
-                  <input
-                    id="pdf"
-                    type="file"
-                    accept="application/pdf"
-                    onChange={(e) => handlePDFFile(e.target.files[0])}
-                  />
-                  <div id={styles.filename}>
-                    {pdfFile?.name || pdfFile?.name}
+                    >
+                      Upload PDF
+                      <img src={upload} alt="Upload" />
+                    </label>
+                    <div className={styles.error}>{PDFError}</div>
+                    <input
+                      id="pdf"
+                      type="file"
+                      accept="application/pdf"
+                      onChange={(e) => handlePDFFile(e.target.files[0])}
+                    />
+                    <div id={styles.filename}>
+                      {pdfFile?.name || pdfFile?.name}
+                    </div>
                   </div>
-                </div> : null}
+                ) : null}
 
                 <div id={styles.csvUpload}>
                   <label
                     htmlFor="csv"
-                    className={`${csvFile !== null && styles.fileUploaded
-                      ? "bg-[#26435F] "
-                      : "bg-[#26435F] "
-                      } w-[11vw] min-w-[185px] text-sm !font-medium`}
+                    className={`${
+                      csvFile !== null && styles.fileUploaded
+                        ? "bg-[#26435F] "
+                        : "bg-[#26435F] "
+                    } w-[11vw] min-w-[185px] text-sm !font-medium`}
                   >
                     Upload Metadata
                     <img src={upload} alt="Upload" />
@@ -329,7 +336,6 @@ export default function AllTests() {
             </div>
           }
           handleClose={handleClose}
-        
           body={
             <form onSubmit={handleSubmit} id="add-test-form">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 md:gap-x-6 !items-center  gap-y-4">

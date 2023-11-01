@@ -39,11 +39,14 @@ const SPFrame2 = ({
   useEffect(() => {
     if (userId) {
       getHours(userId).then((res) => {
-        //console.log("tutored ",res)
+        console.log("tutored hours",res)
+        if(res?.data){
+          setTotalHours(res?.data?.total_hours)
+        }
       });
     }
   }, [userId]);
-  const { dateFormat } = useSelector((state) => state.user);
+  const  dateFormat  = settings?.dateFormat||"dd/mm/yyyy";
   const handleSubmit = (key, e) => {
     //e.preventDefault();
     // setLoading(true);
@@ -63,7 +66,7 @@ const SPFrame2 = ({
 
     userDetailSave(reqBody);
   };
-  //console.log("frame2", settings, userDetail);
+
 
   return (
     <div>
@@ -73,7 +76,7 @@ const SPFrame2 = ({
           <div className="flex-1  flex justify-between">
             <p className=" text-sm text-[#26435F] font-semibold text-base-20">
               Hours Tutored
-              <span className=" text-[#FFA28D] text-2xl block mt-1">90</span>
+              <span className=" text-[#FFA28D] text-2xl block mt-1">{totalHours}</span>
             </p>
             <p className=" text-sm text-[#26435F] font-semibold text-base-20">
               No. Of Sessions
@@ -82,7 +85,7 @@ const SPFrame2 = ({
           </div>
           <div className="flex-1  flex justify-between">
             <p className=" text-sm text-[#26435F] font-semibold text-base-20">
-            No. of Assignments
+              No. of Assignments
               <span className=" text-[#FFA28D] text-2xl block mt-1">
                 {totalTest}
               </span>

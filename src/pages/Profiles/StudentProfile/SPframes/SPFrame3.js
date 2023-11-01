@@ -225,8 +225,7 @@ const SPFrame3 = ({ userDetail, isOwn, user }) => {
         id={styles.chartContainer}
         className="!rounded-md bg-white shadow-[0px_0px_2.500001907348633px_0px_#00000040] custom-scroller py-5 pl-5"
       >
-        {scoreProgression && scoreProgression?.length > 0 ? (
-          <>
+       
             {" "}
             <div className="flex-1 relative z-[6000] flex justify-end translate-y-4 mr-3">
               <InputSelectNew
@@ -250,8 +249,10 @@ const SPFrame3 = ({ userDetail, isOwn, user }) => {
               onChange={(val) => handleSubjectChange(val)}
             /> */}
             </div>
+            {scoreProgression && scoreProgression?.length > 0 ? (
+          
             <LineChart scoreProgression={scoreProgression} />
-          </>
+        
         ) : (
           <div id="ssprogress" className=" w-full   z-[5000] min-h-[300px] rounded-md bg-white flex justify-center flex-col text-center items-center">
             <div className="w-[100%] mx-auto   flex flex-col items-start">
