@@ -85,11 +85,9 @@ export default function OrgDetails({
     const currentState = state[0]?.states;
 
     setStates(currentState);
-    console.log({ state });
   };
 
   useEffect(() => {
-    console.log("ref", { cc: values.country });
     if (values?.country) handleState(values?.country);
   }, [values.country, country]);
 
