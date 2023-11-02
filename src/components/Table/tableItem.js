@@ -167,7 +167,7 @@ export default function TableItem({
         return //console.log("error updating");
       }
       fetch && fetch(field, item._id);
-      console.log("update res", item?._id, field, res.data);
+      // console.log("update res", item?._id, field, res.data);
     });
   };
 
@@ -187,14 +187,14 @@ export default function TableItem({
       else if (res?.error) {
         alert("Error deleting Admin!")
       }
-      console.log(res)
+      // console.log(res)
     })
   }
   const handleChange = (field) => {
 
     if (item.userType === "parent" || item.userType === "student") {
       updateUserDetail({ fields: field, id: item._id }).then((res) => {
-        console.log("lead", { res })
+        // console.log("lead", { res })
         fetch && fetch(field, item._id);
       });
     } else if (item.userType === "tutor") {
