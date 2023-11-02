@@ -732,7 +732,7 @@ const Dashboard = () => {
         </div>
         <div className=" relative z-[50000] w-[90vw] mx-auto  mt-[13px] text-[#FFA28D] ">
           <div className=" relative z-[50000] flex justify-between items-center  translate-y-[15px] mb-[10px]">
-            <p className="font-bold uppercase mb-1 text-base-17-5">Tutor Performence Overview </p>
+            <p className="font-bold uppercase mb-1 text-base-17-5">Tutor Performance Overview </p>
 
             <RangeDate optionClassName="!w-min"
               inputContainerClassName="!w-min " handleRangeData={handleTutorPerformance} />
