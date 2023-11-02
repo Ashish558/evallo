@@ -731,12 +731,14 @@ export default function TableItem({
       )}
       {dataFor === "studentTestsReport" && (
         <tr
+       
           className={`text-[17.5px]   leading-7 ${!item.isCorrect
-            ? "bg-[#e02b1d]/5"
+            ? "!bg-[#FF79791A]"
             : "odd:bg-white  "
             } `}
         >
-          {MapData(item)}
+          
+          {MapData(item,dataFor)}
         </tr>
       )}
       {dataFor === "studentTestsReportSmall" && (
@@ -1045,10 +1047,10 @@ export default function TableItem({
           <td className="font-medium text-[17.5px] pl-12  min-w-14 py-4  text-left">
             <div className="my-[6px]">{item?.userStatus}</div>
           </td>
-          <td className="font-medium text-[17.5px] px-1  min-w-14 py-4">
+          <td className="font-medium text-[17.5px] pl-12  min-w-14 py-4  text-left">
             <div className="my-[6px]">{item.associatedOrg?.numberOfTutors}</div>
           </td>
-          <td className="font-medium text-[17.5px] px-1  min-w-14 py-4">
+          <td className="font-medium text-[17.5px] pl-12  min-w-14 py-4  text-left">
             <div className="my-[6px]">
               {item.associatedOrg?.numberOfActiveStudent}
             </div>
@@ -1111,7 +1113,7 @@ const MapData = (data, dataFor, exclude = [], onClick) => {
       <React.Fragment key={i}>
       </React.Fragment>
     ) : key === "isCorrect" ? (
-      <td key={i} className="font-medium px-1  min-w-14 py-4">
+      <td key={i} className={`font-medium px-1  min-w-14 py-4 ${data[key]?"":"!bg-[#FF79791A]"}`}>
         <div className="flex items-center justify-center">
           <img
             src={data[key] === true ? SuccessIcon : FailIcon}
@@ -1211,8 +1213,9 @@ const MapData = (data, dataFor, exclude = [], onClick) => {
         key={i}
         className={`font-medium px-1 ${data[key] === "Unpaid" && "text-[#E02B1D]"
           } ${data[key] === "Paid" && "text-[#009262]"} ${data[key] === "Cancelled" && "text-[#7C859C]"
-          } min-w-14 py-4`}
+          } min-w-14 py-4  ${dataFor==="studentTestsReport"&&!data["isCorrect"]?"!bg-[#FF79791A]":""}`}
       >
+    
         {data[key]}
       </td>
     )

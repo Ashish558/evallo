@@ -1682,7 +1682,7 @@ export default function SuperAdminSettings() {
             /> */}
 
             <SettingsCard
-              titleClassName="text-base-20"
+              titleClassName="text-base-20 !text-[#26435F]"
               title="Session Tags & Reconciliation"
               className={styles["bordered-settings-container"]}
               body={
@@ -1773,7 +1773,7 @@ export default function SuperAdminSettings() {
               }
             />
            <SettingsCard
-              titleClassName="text-base-20"
+              titleClassName="text-base-20 !text-[#26435F]"
               title="Edit Announcements"
               toggle={{ value: toggleImage.offer, key: "offer" }}
               onToggle={onToggle}
@@ -2006,7 +2006,7 @@ export default function SuperAdminSettings() {
               }
             />
             <div className="flex items-center pb-2 text-[#26435F] font-medium text-xl">
-              <p className="pr-2">Set Permissions </p>
+              <p className="pr-2 !text-[#26435F]">Set Permissions </p>
               <p>
                 <img src={questionMark} alt="" />
               </p>

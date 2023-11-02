@@ -243,7 +243,7 @@ const AllOrgs = () => {
               refS={inputRef}
              
               inputClassName="text-[0.8333333333vw] !text-[#667085] placeholder:!text-[#667085] hidden"
-              inputContainerClassName="bg-white  border !text-[#667085] !rounded-lg border-[1.33px_solid_#EBEBEB] w-[13vw] h-[49px]"
+              inputContainerClassName="bg-white  border !text-[#667085] !rounded-lg border-[1.33px_solid_#EBEBEB] w-[13vw] !h-[53.3px]"
               value={values.joinDate}
               onChange={(e) =>
                 setValues({
