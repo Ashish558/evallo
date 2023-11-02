@@ -37,7 +37,7 @@ console.log("profile left", {userData})
               <p className="font-medium"> {userData?.firstName}</p>
             </span>
             <span className="flex ">
-              <p className="mr-1 w-[70%] font-light">last name : </p>{" "}
+              <p className="mr-1 w-[70%] font-light">Last name : </p>{" "}
               <p className="font-medium"> {userData?.lastName} </p>
             </span>
             <span className="flex ">

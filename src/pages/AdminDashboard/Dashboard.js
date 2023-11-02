@@ -339,7 +339,7 @@ const Dashboard = () => {
                       <p className="   font-medium text-base-17-5">Completed Revenue</p>
                       <div className="group relative">
                         <p>
-                     <img className="w-[18.45px] h-[18.75px]"  src={tooltip} alt="" />
+                     <img className="w-[17.8px] h-[17.8px]"  src={tooltip} alt="" />
                         </p>
 
                         <span className="absolute  -top-10 left-10 z-20 w-[333.3px]  rounded-[13px] bg-[rgba(0,0,0,0.80)] text-white  whitespace-normal py-5 px-3 scale-0 group-hover:scale-100">
@@ -370,7 +370,7 @@ const Dashboard = () => {
                       <p className="font-medium text-base-17-5">Leaked Revenue</p>
                       <div className="group relative">
                       <p>
-                     <img className="w-[18.45px] h-[18.75px]"  src={tooltip} alt="" />
+                     <img className="w-[18.45px] h-[17.8px]"  src={tooltip} alt="" />
                         </p>
                         <span className="absolute  -top-10 left-10 z-20 w-[333.3px]  scale-0 rounded-[13px] bg-[rgba(0,0,0,0.80)]  text-white group-hover:scale-100 whitespace-normal py-5 px-3">
                           <h3 className="text-[#FF5175] text-base font-medium mb-3">
@@ -400,7 +400,7 @@ const Dashboard = () => {
                       <p className="font-medium text-base-17-5">Impending Revenue</p>
                       <div className="group relative">
                       <p>
-                     <img className="w-[18.45px] h-[18.75px]"  src={tooltip} alt="" />
+                     <img className="w-[18.45px] h-[17.8px]"  src={tooltip} alt="" />
                         </p>
                         <span className="absolute  -top-10 left-10 z-20 w-[333.3px]  scale-0 rounded-[13px] bg-[rgba(0,0,0,0.80)]  text-white group-hover:scale-100 whitespace-normal py-5 px-3">
                           <h3 className="text-[#7152EB] text-base font-medium mb-3">
@@ -629,7 +629,7 @@ const Dashboard = () => {
                   <p>Coming soon</p>
                 </div> */}
                 <Table
-                noArrow={false}
+                noArrow={true}
                 headerWidth="!px-1.5"
                 dummyRowStarClients={popularServices}
                   data={[]}
