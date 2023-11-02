@@ -930,7 +930,6 @@ export default function TableItem({
       {dataFor === "allTests" && (
         <tr className="odd:bg-white font-medium text-[17.5px]  lead">
           <td>{item.testName}</td>
-          {console.log('itt---', item)}
           <td>{item.testType}&#174;</td>
           <td> {getFormattedDate(item.createdAt.split("T")[0], dateFormat)}</td>
           <td>{getFormattedDate(item.updatedAt.split("T")[0], dateFormat)}</td>
