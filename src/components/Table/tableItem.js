@@ -931,7 +931,7 @@ export default function TableItem({
         <tr className="odd:bg-white font-medium text-[17.5px]  lead">
           <td>{item.testName}</td>
           {console.log('itt---', item)}
-          <td>{item.testType} &#174;</td>
+          <td>{item.testType}&#174;</td>
           <td> {getFormattedDate(item.createdAt.split("T")[0], dateFormat)}</td>
           <td>{getFormattedDate(item.updatedAt.split("T")[0], dateFormat)}</td>
           <td> {item.no_of_assign!==null ? item.no_of_assign : "-"} </td>
@@ -962,12 +962,12 @@ export default function TableItem({
       )}
       {dataFor === "allTestsSuperAdmin" && (
         <tr className=" font-medium  lead  text-[17.5px] ">
-          <td className="pl-12  !text-left"><span className="">{item.testName}</span></td>
-          <td>{item.testType==="Other"?"ACT":item.testType}</td>
-          <td>{getFormattedDate(item.createdAt.split("T")[0], dateFormat)}</td>
-          <td>{getFormattedDate(item.updatedAt.split("T")[0], dateFormat)}</td>
-          <td> {item.no_of_assign ? item.no_of_assign : "-"} </td>
-          <td className="font-medium pl-2 pr-1 py-3 text-right">
+          <td className="pl-12 !text-left "><span className="">{item.testName}</span></td>
+          <td className=" pl-5 !text-center ">{item.testType==="Other"?"ACT":item.testType}</td>
+          <td className=" pl-5 !text-center ">{getFormattedDate(item.createdAt.split("T")[0], dateFormat)}</td>
+          <td className=" pl-5 !text-center ">{getFormattedDate(item.updatedAt.split("T")[0], dateFormat)}</td>
+          <td className=" pl-5 !text-center "> {item.no_of_assign ? item.no_of_assign : "-"} </td>
+          <td className="font-medium pl-2 pr-1 py-3 pl-5 !text-center">
             <div className="flex justify-center">
               <p
                 className="flex leading-none text-[#517CA8] underline py-1.8 px-0 underline-offset-1 cursor-pointer rounded"
@@ -978,12 +978,12 @@ export default function TableItem({
             </div>
           </td>
           <td className="font-medium px-1 justify-center flex gap-x-2 py-3">
-            <img
+            {/* <img
               src={EditIcon}
               className="cursor-pointer p-1"
               onClick={() => navigate(`/all-tests/${item._id}`, { state: { testype: item.testType } })}
               alt="edit"
-            />
+            /> */}
             <img
               src={DeleteIcon}
               className="cursor-pointer p-1"
