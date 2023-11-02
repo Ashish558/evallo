@@ -631,6 +631,9 @@ export default function EventModal({
       if (reqBody.timeZone === 'CST') {
          reqBody.timeZone = "US/Central"
       }
+      if (reqBody.timeZone === 'EST') {
+         reqBody.timeZone = "US/Eastern"
+      }
       if (reqBody.timeZone === 'IST') {
          reqBody.timeZone = "Asia/Kolkata"
       }
