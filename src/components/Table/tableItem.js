@@ -1048,10 +1048,10 @@ export default function TableItem({
           <td className="font-medium text-[17.5px] pl-12  min-w-14 py-4  text-left">
             <div className="my-[6px]">{item?.userStatus}</div>
           </td>
-          <td className="font-medium text-[17.5px] px-1  min-w-14 py-4">
+          <td className="font-medium text-[17.5px] pl-12  min-w-14 py-4  text-left">
             <div className="my-[6px]">{item.associatedOrg?.numberOfTutors}</div>
           </td>
-          <td className="font-medium text-[17.5px] px-1  min-w-14 py-4">
+          <td className="font-medium text-[17.5px] pl-12  min-w-14 py-4  text-left">
             <div className="my-[6px]">
               {item.associatedOrg?.numberOfActiveStudent}
             </div>
