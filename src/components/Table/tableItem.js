@@ -167,7 +167,7 @@ export default function TableItem({
         return //console.log("error updating");
       }
       fetch && fetch(field, item._id);
-      console.log("update res", item?._id, field, res.data);
+      // console.log("update res", item?._id, field, res.data);
     });
   };
 
@@ -187,14 +187,14 @@ export default function TableItem({
       else if (res?.error) {
         alert("Error deleting Admin!")
       }
-      console.log(res)
+      // console.log(res)
     })
   }
   const handleChange = (field) => {
 
     if (item.userType === "parent" || item.userType === "student") {
       updateUserDetail({ fields: field, id: item._id }).then((res) => {
-        console.log("lead", { res })
+        // console.log("lead", { res })
         fetch && fetch(field, item._id);
       });
     } else if (item.userType === "tutor") {
@@ -934,7 +934,6 @@ export default function TableItem({
       {dataFor === "allTests" && (
         <tr className="odd:bg-white font-medium text-[17.5px]  lead">
           <td>{item.testName}</td>
-          {console.log('itt---', item)}
           <td>{item.testType}&#174;</td>
           <td> {getFormattedDate(item.createdAt.split("T")[0], dateFormat)}</td>
           <td>{getFormattedDate(item.updatedAt.split("T")[0], dateFormat)}</td>
@@ -1050,10 +1049,10 @@ export default function TableItem({
           <td className="font-medium text-[17.5px] pl-12  min-w-14 py-4  text-left">
             <div className="my-[6px]">{item?.userStatus}</div>
           </td>
-          <td className="font-medium text-[17.5px] px-1  min-w-14 py-4">
+          <td className="font-medium text-[17.5px] pl-12  min-w-14 py-4  text-left">
             <div className="my-[6px]">{item.associatedOrg?.numberOfTutors}</div>
           </td>
-          <td className="font-medium text-[17.5px] px-1  min-w-14 py-4">
+          <td className="font-medium text-[17.5px] pl-12  min-w-14 py-4  text-left">
             <div className="my-[6px]">
               {item.associatedOrg?.numberOfActiveStudent}
             </div>
