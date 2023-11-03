@@ -148,9 +148,9 @@ const SPFrame2 = ({
                           : "NA"}
                       </p>
 
-                      <p>
+                      <p className="font-bold">
                         <span className="text-[#24A3D9]">
-                          C{it?.maths + it?.verbal}
+                          C{it?.maths + it?.verbal+" "}
                         </span>
                         <span className="text-[#517CA8]">
                           | M{it?.maths} V{it?.verbal}
@@ -227,9 +227,9 @@ const SPFrame2 = ({
                           : "NA"}
                       </p>
 
-                      <p>
+                      <p className="font-bold">
                         <span className="text-[#24A3D9]">
-                          C{it?.english + it?.science + it?.maths + it?.reading}
+                          C{it?.english + it?.science + it?.maths + it?.reading+" "}
                         </span>
                         <span className="text-[#517CA8]">
                           | E{it?.english} R{it?.reading} M{it?.maths} S
@@ -290,11 +290,11 @@ const SPFrame2 = ({
                   <div className="mx-2 flex flex-col text-xs text-base-15">
                     <p className="text-[#517CA8]">SAT BaseLine Scores</p>
 
-                    <p>
+                    <p  className="font-bold">
                       <span className="text-[#24A3D9]">
                         C
                         {userDetail?.baseLineScore?.satBaseLineScore?.maths +
-                          userDetail?.baseLineScore?.satBaseLineScore?.verbal}
+                          userDetail?.baseLineScore?.satBaseLineScore?.verbal+" "}
                       </span>
                       <span className="text-[#517CA8]">
                         | M{userDetail?.baseLineScore?.satBaseLineScore?.maths}{" "}
@@ -319,13 +319,13 @@ const SPFrame2 = ({
                       ACT BaseLine Scores
                     </p>
 
-                    <p>
+                    <p className="font-bold">
                       <span className="text-[#24A3D9]">
                         C
                         {userDetail.baseLineScore?.actBaseLineScore?.english +
                           userDetail.baseLineScore?.actBaseLineScore?.science +
                           userDetail.baseLineScore?.actBaseLineScore?.maths +
-                          userDetail.baseLineScore?.actBaseLineScore?.reading}
+                          userDetail.baseLineScore?.actBaseLineScore?.reading+" "}
                       </span>
                       <span className="text-[#517CA8]">
                         | E{userDetail.baseLineScore?.actBaseLineScore?.english}{" "}

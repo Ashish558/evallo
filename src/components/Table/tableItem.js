@@ -791,7 +791,9 @@ export default function TableItem({
                 ) : key === "dueDate" ? (
                   <span className={` ${new Date(item[key]) < new Date() ? "text-[#FF7979] font-semibold" : ""}`}> {getFormattedDate(item[key], dateFormat)}</span>
                 ) :
-                  key === "createdAt" ? getFormattedDate(item[key], dateFormat) : key === "assignedOn" ? getFormattedDate(item[key], dateFormat) : item[key]
+                  key === "createdAt" ? getFormattedDate(item[key], dateFormat) : 
+                  key === "assignedOn" ? getFormattedDate(item[key], dateFormat) : 
+                  item[key]
 
                 }
 
