@@ -233,8 +233,6 @@ export default function EventModal({
       }
    }, [data, days])
 
-   console.log('tutorId----', data.tutorId);
-   console.log('studentId----', data.studentId);
    useEffect(() => {
       if (defaultEventData !== null && !isUpdating) {
          // console.log(defaultEventData)
