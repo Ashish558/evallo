@@ -450,7 +450,7 @@ export default function AllTests({isOwn,setTotaltest,studentId,fromProfile}) {
                 id={styles.uploadButtons}
                 className="mt-7   px-0  gap-5 flex justify-between"
               >
-                {modalData.testType != 'DSAT' ? <div id={styles.pdfUpload}>
+                {modalData.testType != 'DSAT®' ? <div id={styles.pdfUpload}>
                   <label
                     htmlFor="pdf"
                     className={`${pdfFile !== null ? "bg-[#26435F] " : "bg-[#26435F] "
