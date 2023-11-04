@@ -119,7 +119,10 @@ export default function StudentTest({ fromProfile,testtype, setTotaltest,student
       text: "Due Date",
       onCick: sortByDueDate,
     },
-    
+    {
+      id: 4,
+      text: "Assigned By",
+    },
     {
       id: 5,
       text: "Duration",
@@ -140,7 +143,7 @@ export default function StudentTest({ fromProfile,testtype, setTotaltest,student
   const [tableHeaders, setTableHeaders] = useState(studentTableHeaders);
   const params = useParams()
   useEffect(() => {
-    if (persona === "student"||true) {
+    if (persona === "student") {
       getTest(studentId).then((res) => {
         console.log("all-assigned-tests", res?.data?.data);
         setAwsLink(res?.data?.data?.baseLink);
@@ -164,8 +167,9 @@ export default function StudentTest({ fromProfile,testtype, setTotaltest,student
             testName: testId ? testId.testName : "-",
             assignedOn: new Date(createdAt).toDateString(),
             studentId: studentId ? studentId : "-",
-
+          
             dueDate: new Date(test.dueDate).toDateString(),
+            assignedBy:assignedBy?.firstName+" "+assignedBy?.lastName,
             duration: multiple ? getDuration(multiple) : "Unlimited",
             status:
               isCompleted === true
@@ -447,7 +451,7 @@ console.log("profile",fromProfile)
             <Table
               testtype={testtype}
               fromProfile={fromProfile}
-              noArrow={true}
+             
               dataFor="assignedTestsStudents"
               headerObject={true}
               data={persona === "parent" ? filteredTests : allTests}

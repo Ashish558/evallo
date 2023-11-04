@@ -225,21 +225,21 @@ const SPFrame1 = ({
           </div>
           <div className="flex-1 flex flex-col h-fit gap-4">
             {(persona === 'admin' || persona === 'tutor') && <div className="flex-1  ">
-              <div className="flex justify-between">
-                <p className=" text-sm text-[#26435F] font-semibold text-base-20 mb-2">
+              <div className="flex justify-between items-center">
+                <p className=" text-sm text-[#26435F] font-semibold text-base-20 mb-1">
                   Lead Status
                 </p>
 
               </div>
-              <div className=" flex-1  rounded-md h-full  h-[50px] ">
+              <div className=" flex-1  rounded-md h-full  h-[60px] ">
                 <InputSelectNew
                   placeholder={"Lead Status"}
                   parentClassName="ml-0 w-full  items-center flex text-[#517CA8] text-xs  whitespace-nowrap "
-                  inputContainerClassName="bg-white h-[45px] shadow-[0px_0px_2.500001907348633px_0px_#00000040] my-0 py-[5px] px-[35px]"
+                  inputContainerClassName="bg-white h-[55px] items-center shadow-[0px_0px_2.500001907348633px_0px_#00000040] my-0 py-[5px] px-[35px]"
                   placeHolderClass="text-[#517CA8] "
                   labelClassname="text-sm text-base-17-5"
                   inputClassName="bg-transparent"
-                  optionContainerClassName="!w-[190px]"
+                  optionContainerClassName="!w-[170px]"
 
                   ICON2={Drop}
                   value={userDetail?.leadStatus}
