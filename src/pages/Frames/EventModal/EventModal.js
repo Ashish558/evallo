@@ -199,7 +199,9 @@ export default function EventModal({
             data.timeZone === '' ||
             data.date === '' ||
             data.session === '' ||
-            data.service === ''
+            data.service === '' ||
+            data.tutorId === '' ||
+            data.studentId === ''
          ) {
             setSubmitDisabled(true)
          } else {
@@ -220,6 +222,8 @@ export default function EventModal({
             data.session === '' ||
             data.service === '' ||
             data.endDate === '' ||
+            data.tutorId === '' ||
+            data.studentId === '' ||
             day.length === 0
          ) {
             setSubmitDisabled(true)
@@ -525,7 +529,9 @@ export default function EventModal({
       // }).catch(err => {
       //    console.log(err)
       // })
-
+      // console.log('s name', data.studentId);
+      // console.log('t name', data.tutorId);
+      // return
 
       if (!isUpdating && data.recurring === true) {
          if (new Date(data.endDate) < new Date()) {
@@ -668,7 +674,7 @@ export default function EventModal({
 
       })
    }
-   // console.log(data);
+   //console.log(data);
    const handleFeedbackSubmit = (rating) => {
       // console.log(rating)
       // console.log(sessionToUpdate)
@@ -1111,7 +1117,7 @@ export default function EventModal({
                                     className="bg-lightWhite w-full outline-0 px-5 py-4 rounded"
                                  ></textarea>
                                  <p className="text-right text-xs text-primary-80">
-                                    0/200
+                                    {data.sessionNotes ? data.sessionNotes.length : '0'}/200
                                  </p>
                               </div>
 
@@ -1211,7 +1217,7 @@ export default function EventModal({
                                     children="Schedule"
                                     className="text-lg py-3 !text-white font-medium px-7 h-[50px] w-[140px] disabled:opacity-60"
                                     onClick={() => handleSubmit()}
-                                    disabled={false}
+                                    disabled={submitDisabled}
                                     loading={loading}
                                  />
                            }
