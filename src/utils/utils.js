@@ -204,11 +204,12 @@ const checkIfDaylight = () => {
     // alert("Daylight saving time!");
   }
 };
-export const getStartDate = (startDate, userTimezoneOffset, timeZone) => {
+export const getStartDate = (startDate, userTimezoneOffset, timeZone, offsetInMilliseconds) => {
   checkIfDaylight();
 
-  const dstdate = moment.tz(startDate, timeZone).format("YYYY-MM-DD HH:mm ZZ");
+  const dstdate = moment.tz(startDate, timeZone).format();
   let offset = moment().utcOffset(dstdate)._offset;
+  return new Date(startDate.getTime() - userTimezoneOffset - offsetInMilliseconds);
 
   if (timeZone === "US/Central") {
     if (offset === -300) {

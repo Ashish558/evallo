@@ -634,27 +634,27 @@ export default function EventModal({
          console.log('dates', dates);
       }
 
-      if (reqBody.timeZone === 'CST') {
-         reqBody.timeZone = "US/Central"
-      }
-      if (reqBody.timeZone === 'EST') {
-         reqBody.timeZone = "US/Eastern"
-      }
-      if (reqBody.timeZone === 'IST') {
-         reqBody.timeZone = "Asia/Kolkata"
-      }
-      if (reqBody.timeZone === 'AKST') {
-         reqBody.timeZone = "US/Alaska"
-      }
-      if (reqBody.timeZone === 'HST') {
-         reqBody.timeZone = "US/Hawaii"
-      }
-      if (reqBody.timeZone === 'MST') {
-         reqBody.timeZone = "US/Mountain"
-      }
-      if (reqBody.timeZone === 'PST') {
-         reqBody.timeZone = "US/Pacific"
-      }
+      // if (reqBody.timeZone === 'CST') {
+      //    reqBody.timeZone = "US/Central"
+      // }
+      // if (reqBody.timeZone === 'EST') {
+      //    reqBody.timeZone = "US/Eastern"
+      // }
+      // if (reqBody.timeZone === 'IST') {
+      //    reqBody.timeZone = "Asia/Kolkata"
+      // }
+      // if (reqBody.timeZone === 'AKST') {
+      //    reqBody.timeZone = "US/Alaska"
+      // }
+      // if (reqBody.timeZone === 'HST') {
+      //    reqBody.timeZone = "US/Hawaii"
+      // }
+      // if (reqBody.timeZone === 'MST') {
+      //    reqBody.timeZone = "US/Mountain"
+      // }
+      // if (reqBody.timeZone === 'PST') {
+      //    reqBody.timeZone = "US/Pacific"
+      // }
 
       // setLoading(false)
       // return
@@ -662,7 +662,7 @@ export default function EventModal({
       if (isUpdating) return updateSession(reqBody, isUpdatingAll, sDate);
 
       submitSession(reqBody).then((res) => {
-         console.log(res)
+         // console.log(res)
          setLoading(false)
          if (res?.error?.data?.message) {
             alert("Error occured while scheduling a session , please try again!")

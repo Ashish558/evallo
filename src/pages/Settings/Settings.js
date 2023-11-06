@@ -51,9 +51,9 @@ import AddNewQuestion from "../Frames/AddNewQuestion/AddNewQuestion";
 import { useAddNewQuestionMutation } from "../../app/services/admin";
 import { updateOrganizationSettings } from "../../app/slices/organization";
 import InputSelect from "../../components/InputSelect/InputSelect";
-import { timeZones } from "../../constants/constants";
 import { permissionsStaticData } from "./Tabs/staticData";
 import InputFieldDropdown from "../../components/InputField/inputFieldDropdown";
+import moment from "moment-timezone";
 
 // import questionMark from '../../assets/images/question-mark.svg'
 const initialState = {
@@ -131,6 +131,7 @@ export default function Settings() {
     tests: [],
   });
   const user = useSelector((state) => state.user);
+  const timeZones = moment.tz.names(); // String[]
 
   useEffect(() => {
     setAdminModalDetails({

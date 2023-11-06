@@ -4,7 +4,7 @@ import InputSelect from "../InputSelect/InputSelect";
 import sort from "./../../assets/icons/sort.webp";
 import styles from "./styles.module.css"
 export function TableHeader({ header, dataFor, onClick, setSorted, Icon, headerWidth, noArrow }) {
-console.log(dataFor)
+
   const [flag, setFlag] = useState(dataFor === "studentTestsReportSmall" || dataFor === "studentTestsReport" ? true : false)
   return dataFor === "assignedTestsStude" || dataFor === "invoice" ? (
     <th
