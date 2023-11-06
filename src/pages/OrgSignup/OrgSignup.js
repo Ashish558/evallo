@@ -220,12 +220,16 @@ export default function OrgSignup() {
   };
 
   useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "https://otpless.com/auth.js";
+    script.id = "otplessIdScript";
+    document.body.appendChild(script);
     window.otpless = (otplessUser) => {
      console.log('otpless',otplessUser);
     };
   }, []);
  
-  
+
   const fetchSubscriptionsInfo = () => {
     getSubscriptionsInfo().then((res) => {
       console.warn("Subscriptions info");
@@ -838,6 +842,11 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
 
   return (
     <div className="   pb-6 bg-primary relative" id={styles.signUp}>
+       <div class="modal-container" id="modalContainer">
+        <div class="modal">
+          <div id="otpless-login-page"></div>
+        </div>
+      </div>
       {/* <AdminNavbar></AdminNavbar> */}
       <div className="flex justify-center flex-col items-center md:grid-cols-2  mb-[100px]">
         <img src={cuate} alt="rocket" className="h-10vh mt-3 mb-4" />
