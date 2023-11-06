@@ -12,6 +12,7 @@ import InputField from "../../../../components/InputField/inputField";
 import InputSearch from "../../../../components/InputSearch/InputSearch";
 import InputSelect from "../../../../components/InputSelect/InputSelect";
 import Modal from "../../../../components/Modal/Modal";
+import { Country } from "country-state-city";
 // import SimpleCalendar from "../../../../components/SimpleCalendar/SimpleCalendar";
 // import demoUser from "../../../../assets/icons/demo-user.png";
 import Slider from "../../../../components/Slider/Slider";
@@ -25,6 +26,7 @@ import axios from "axios";
 import ProfilePhoto from "../../../../components/ProfilePhoto/ProfilePhoto";
 import { useNavigate } from "react-router-dom";
 import InputFieldDropdown from "../../../../components/InputField/inputFieldDropdown";
+import InputSelectNew from "../../../../components/InputSelectNew/InputSelectNew";
 
 // 637b9df1e9beff25e9c2aa83
 export default function ParentEditables({
@@ -676,8 +678,40 @@ export default function ParentEditables({
   };
   // console.log(settings);
   const [startDate, setStartDate] = useState(new Date());
+  const [country, setCountry] = useState([]);
+  const [states, setStates] = useState([]);
+  const handleState = (c) => {
+    if (!c) return;
+    //console.log("country", c);
+    if (typeof c === "object") c = c.name;
+    const state = country.filter((x) => x.name === c);
+    const currentState = state.map((s) => s.states);
 
-  const forCss = ["profileData", "interest", "serviceSpecializations"];
+    setStates([...currentState[0]]);
+  };
+  const countryData = Country.getAllCountries().map((city) => ({
+    value: city.name,
+    displayValue: city.name,
+  }));
+  useEffect(() => {
+    if (!currentToEdit.hasOwnProperty('country')) return;
+    console.log("countries usseffect ", currentToEdit)
+
+    fetch("/countryData.json")
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("countries ", data)
+        setCountry(data)
+      });
+
+    const c = currentToEdit.country;
+    if (c) {
+      const state = country.filter((x) => x.name === c);
+      const currentState = state.map((s) => s.states);
+      if (currentState.length > 0) setStates([...currentState[0]]);
+    }
+  }, [currentToEdit]);
+  const forCss = ["profileData", "interest", "serviceSpecializations","tutorReviews","tutorAddress"];
   return Object.keys(toEdit).map((key) => {
     return (
       toEdit[key].active === true && (
@@ -1259,13 +1293,39 @@ export default function ParentEditables({
                                     onChange={e => setCurrentToEdit({ ...currentToEdit, address: e.target.value })} />
                               </div> */}
                     <div className="grid grid-cols-12 gap-4">
+                    <div className="col-span-6">
+                        <div>
+                          <p className={styles.address}>Country</p>
+                        </div>
+                        <InputSelectNew
+                          labelClassname="text-[#26435F] text-lg !font-medium hidden"
+                          label="Country"
+                          placeholder="Select"
+                          inputContainerClassName="text-base  bg-[#F6F6F6] border-0 !py-1 !px-3 !rounded-[5px] !w-full h-[54px]"
+                          inputClassName="bg-transparent  "
+                          parentClassName=""
+                          type="text"
+                          optionData={country}
+                          optionType={"object"}
+                          value={currentToEdit?.country}
+                          onChange={(e) => {
+                            handleState(e);
+
+                            setCurrentToEdit({
+                              ...currentToEdit,
+                              country: e.name,
+                            });
+                          }}
+                          />
+                    
+                      </div>
                       <div className="col-span-6">
                         <div>
-                          <p className={styles.address}>Street</p>
+                          <p className={styles.address}>Street Address</p>
                         </div>
                         <InputField
                           labelClassname="hidden"
-                          placeholder="Text"
+                          placeholder="Street Address"
                           inputContainerClassName="text-sm pt-3.5 pb-3 px-5 bg-primary-50 border-"
                           inputClassName="bg-transparent rounded-[4px]"
                           parentClassName="flex-1"
@@ -1279,13 +1339,41 @@ export default function ParentEditables({
                           }
                         />
                       </div>
+                     
+                     
+                    </div>
+
+                    <div className="grid grid-cols-12 gap-4 mt-5">
                       <div className="col-span-6">
+                        <div>
+                          <p className={styles.address}>State</p>
+                        </div>
+                        <InputSelectNew
+                          labelClassname="text-[#26435F] text-lg !font-medium hidden"
+                          label="State"
+                          placeholder="Select"
+                          inputContainerClassName="text-base  bg-[#F6F6F6] border-0 !py-1 !px-3 !rounded-[5px] !w-full h-[54px]"
+                          inputClassName="bg-transparent  "
+                          parentClassName=""
+                          type="text"
+                          optionData={states}
+                          optionType={"object"}
+                          onChange={(e) => {
+                            setCurrentToEdit({
+                              ...currentToEdit,
+                              state: e.name,
+                            });
+                          }}
+                          value={currentToEdit.state}
+                        />
+                      </div>
+                      <div className="col-span-3">
                         <div>
                           <p className={styles.address}>City</p>
                         </div>
                         <InputField
                           labelClassname="hidden"
-                          placeholder="City"
+                          placeholder="Select"
                           inputContainerClassName="text-sm pt-3.5 pb-3 px-5 bg-primary-50 border-"
                           inputClassName="bg-transparent rounded-[4px]"
                           parentClassName="flex-1"
@@ -1299,59 +1387,13 @@ export default function ParentEditables({
                           }
                         />
                       </div>
-                    </div>
-
-                    <div className="grid grid-cols-12 gap-4 mt-5">
-                      <div className="col-span-6">
-                        <div>
-                          <p className={styles.address}>State</p>
-                        </div>
-                        <InputField
-                          labelClassname="hidden"
-                          placeholder="Text"
-                          inputContainerClassName="text-sm pt-3.5 pb-3 px-5 bg-primary-50 border-"
-                          inputClassName="bg-transparent rounded-[4px]"
-                          parentClassName="flex-1"
-                          type="text"
-                          value={currentToEdit.state}
-                          onChange={(e) =>
-                            setCurrentToEdit({
-                              ...currentToEdit,
-                              state: e.target.value,
-                            })
-                          }
-                        />
-                      </div>
-                      <div className="col-span-6">
-                        <div>
-                          <p className={styles.address}>Country</p>
-                        </div>
-                        <InputField
-                          labelClassname="hidden"
-                          placeholder="City"
-                          inputContainerClassName="text-sm pt-3.5 pb-3 px-5 bg-primary-50 border-"
-                          inputClassName="bg-transparent rounded-[4px]"
-                          parentClassName="flex-1"
-                          type="text"
-                          value={currentToEdit.country}
-                          onChange={(e) =>
-                            setCurrentToEdit({
-                              ...currentToEdit,
-                              country: e.target.value,
-                            })
-                          }
-                        />
-                      </div>
-                    </div>
-
-                    <div className="grid grid-cols-12 gap-4 mt-5">
-                      <div className="col-span-6">
+                      <div className="col-span-3">
                         <div>
                           <p className={styles.address}>Zip</p>
                         </div>
                         <InputField
                           labelClassname="hidden"
-                          placeholder="Text"
+                          placeholder="zip"
                           inputContainerClassName="text-sm pt-3.5 pb-3 px-5 bg-primary-50 border-"
                           inputClassName="bg-transparent rounded-[4px]"
                           parentClassName="flex-1"
@@ -1366,6 +1408,8 @@ export default function ParentEditables({
                         />
                       </div>
                     </div>
+
+                  
                   </div>
                 )}
                 {currentField.name === "tagLine" && (
@@ -1459,11 +1503,11 @@ export default function ParentEditables({
                 {currentField.name === "tutorServices" && (
                   <div className="">
                     <p className="text-base-15 text-[#667085]">
-                      <span className="font-semibold ">⚠️ Note:</span> The
+                      <span className="font-semibold "><span className="h-3 w-4 text-[10px] pb-1 mb-1 translate-y-[-10px]" >⚠️</span> Note:</span> The
                       hourly rates you set for the tutor here will directly
                       affect automatic invoicing wherever applicable. Read
                       detailed documentation in Evallo’s{" "}
-                      <span className="text-[#24A3D9]"> knowledge base.</span>
+                      <span className="text-[#24A3D9] border-b-[0.6px] border-b-[#24A3D9] cursor-pointer"> knowledge base.</span>
                     </p>
                     <div className="flex gap-5 mt-3">
                       <h2 className="text-base-18 font-bold text-[#26435F] min-w-[290px]">
@@ -1554,13 +1598,14 @@ export default function ParentEditables({
                           return (
                             <div
                               key={id}
+                              style={{ fontFamily: 'Inter'}}
                               className="flex flex-col mb-4 bg-[#F6F6F6] p-3 rounded-md"
                             >
-                              <div className="flex gap-5">
+                              <div style={{ fontFamily: 'Inter'}} className="flex gap-5 justify-between flex-1 items-end">
                                 <InputSelect
-                                  labelClassname="text-base-17-5 text-[#26435F]"
+                                  labelClassname="text-base-17-5 text-[#26435F] mb-1"
                                   label="Review Given By"
-                                  placeholder=""
+                                  placeholder="Select"
                                   inputContainerClassName="text-sm pt-[14px] pb-[14px] px-5 bg-white border-0 shadow-[0px_0px_2.50039005279541px_0px_#00000040]"
                                   inputLeftField={
                                     <div className="text-[#B3BDC7] font-semibold text-base-20 mr-3">
@@ -1568,7 +1613,7 @@ export default function ParentEditables({
                                     </div>
                                   }
                                   inputClassName="bg-transparent pl-4 rounded-[4px] font-semibold text-[#517CA8] text-base-20"
-                                  parentClassName="w-[180px] "
+                                  parentClassName="w-[220px] "
                                   type="text"
                                   value={it?.userTag}
                                   optionData={["student", "parent"]}
@@ -1583,7 +1628,7 @@ export default function ParentEditables({
                                   }}
                                 />
                                 <InputSelect
-                                  labelClassname="text-base-17-5 text-[#26435F]"
+                                  labelClassname="text-base-17-5 text-[#26435F] mb-1"
                                   label="For Service"
                                   placeholder="Select"
                                   inputContainerClassName="text-sm pt-[14px] pb-[14px] px-5 bg-white border-0 shadow-[0px_0px_2.50039005279541px_0px_#00000040]"
@@ -1593,7 +1638,7 @@ export default function ParentEditables({
                                     </div>
                                   }
                                   inputClassName="bg-transparent pl-4 rounded-[4px] font-semibold text-[#517CA8] text-base-20"
-                                  parentClassName="w-[180px] "
+                                  parentClassName="w-[300px] "
                                   type="text"
                                   value={it?.service}
                                   optionData={organization?.settings?.servicesAndSpecialization?.map(
@@ -1611,12 +1656,12 @@ export default function ParentEditables({
                                   }}
                                 />
                                 <InputField
-                                  labelClassname="text-base-17-5 text-[#26435F] !font-medium "
+                                  labelClassname="text-base-17-5 text-[#26435F] !font-medium mb-1"
                                   label="Review Date"
-                                  placeholder="Select"
-                                  inputContainerClassName="text-sm pt-2 pb-2 px-5 bg-white border-0 shadow-[0px_0px_2.50039005279541px_0px_#00000040]"
+                                  placeholder="Review Date"
+                                  inputContainerClassName="text-sm pt-[10px] pb-2 px-5 bg-white border-0 shadow-[0px_0px_2.50039005279541px_0px_#00000040]"
                                   inputClassName="bg-transparent pl-4 rounded-[4px] font-normal text-[#333] text-base-17-5 placeholder:text-[#667085]"
-                                  parentClassName="w-[180px] -mt-1"
+                                  parentClassName="w-[230px] -mt-1"
                                   type="date"
                                   value={it?.date}
                                   onChange={(e) => {
@@ -1631,11 +1676,11 @@ export default function ParentEditables({
                               </div>
 
                               <div className=" my-5">
-                                <h5 className="text-base-17-5 text-[#26435F]">
-                                  Review content
+                                <h5 style={{ fontFamily: 'Inter'}} className="text-base-17-5 text-[#26435F] !font-medium mb-1">
+                                  Review Content
                                 </h5>
                                 <textarea
-                                  rows="2"
+                                  rows="3"
                                   maxLength={100}
                                   value={it?.content}
                                   placeholder="Add the review received by the tutor in this paragraph text space.
@@ -1648,7 +1693,7 @@ export default function ParentEditables({
                                       tutorReviews: temp,
                                     });
                                   }}
-                                  className="!shadow-[0px_0px_2.50039005279541px_0px_#00000040] rounded-md mt-1 block w-full h-[100px] flex-1 resize-none focus:!ring-blue-500 p-2 focus:!border-blue-500 placeholder-[#CBD6E2] text-sm  placeholder:text-xs pt-3.5 pb-3 px-5  bg-white border-0 text-[#667085]"
+                                  className="text-base-16 !shadow-[0px_0px_2.50039005279541px_0px_#00000040] rounded-md mt-1 block w-full h-[120px] flex-1 resize-none focus:!ring-blue-500 p-2 focus:!border-blue-500 placeholder-[#CBD6E2]   placeholder:text-base-16 pt-3.5 pb-3 px-5  bg-white border-0 text-[#667085]"
                                 ></textarea>
                               </div>
                             </div>

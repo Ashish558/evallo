@@ -273,14 +273,14 @@ export default function ParentEditables({
     displayValue: city.name,
   }));
   useEffect(() => {
-    if (!currentToEdit.hasOwnProperty('country')) return;
-    console.log("countries usseffect ", currentToEdit)
+    if (!currentToEdit.hasOwnProperty("country")) return;
+    console.log("countries usseffect ", currentToEdit);
 
     fetch("/countryData.json")
       .then((res) => res.json())
       .then((data) => {
-        console.log("countries ", data)
-        setCountry(data)
+        console.log("countries ", data);
+        setCountry(data);
       });
 
     const c = currentToEdit.country;
@@ -291,7 +291,7 @@ export default function ParentEditables({
     }
   }, [currentToEdit]);
   const [addLink, addLinkStatus] = useAddLinkStudentMutation();
-  console.log("parentEditables", currentToEdit, country)
+  console.log("parentEditables", currentToEdit, country);
   const handleProfilePhotoChange = (file) => {
     // //console.log(file)
     let url = "";
@@ -452,13 +452,19 @@ export default function ParentEditables({
     console.log({ reqBody, userId });
     if (reqBody.hasOwnProperty("firstName")) {
       console.log("fiestName", reqBody.firstName?.length, { reqBody, userId });
-      if (reqBody.firstName?.length === 0 || reqBody.firstName?.trim()?.length === 0) {
+      if (
+        reqBody.firstName?.length === 0 ||
+        reqBody.firstName?.trim()?.length === 0
+      ) {
         alert("First name can't be empty.");
         return;
       }
     }
     if (reqBody.hasOwnProperty("lastName")) {
-      if (reqBody.lastName?.length === 0 || reqBody.lastName?.trim()?.length === 0) {
+      if (
+        reqBody.lastName?.length === 0 ||
+        reqBody.lastName?.trim()?.length === 0
+      ) {
         alert("Last name can't be empty.");
         return;
       }
@@ -481,9 +487,9 @@ export default function ParentEditables({
             note: currentToEdit?.notes,
 
             date: new Date(),
-          }
-        ]
-      }
+          },
+        ],
+      };
 
       //  addNotes(reqBody).then((res)=>{
       //   //console.log("internal",{res})
@@ -686,7 +692,7 @@ export default function ParentEditables({
       } else {
         let newserv =
           organization.settings?.servicesAndSpecialization[
-          currentToEdit.selectedIdx
+            currentToEdit.selectedIdx
           ];
         updated.push({ ...newserv, price: value });
         setUpdatedService({ ...newserv, price: value });
@@ -719,11 +725,11 @@ export default function ParentEditables({
         <Modal
           fetchDetails={fetchDetails}
           key={key}
-          classname={
-            `${forCss.includes(currentField.name)
+          classname={`${
+            forCss.includes(currentField.name)
               ? "max-w-[800px] md:pb-5 mx-auto overflow-visible pb-5"
-              : "max-w-fit md:pb-5 mx-auto overflow-visible pb-5"} !px-[55px]`
-          } /*{ ` max-w-[900px] md:pb-5 mx-auto overflow-visible pb-5`}*/
+              : "max-w-fit md:pb-5 mx-auto overflow-visible pb-5"
+          } !px-[20px]`} /*{ ` max-w-[900px] md:pb-5 mx-auto overflow-visible pb-5`}*/
           title=""
           // primaryBtn={{
           //    text: "Save",
@@ -745,8 +751,8 @@ export default function ParentEditables({
                   {currentField.title
                     ? currentField.title
                     : toEdit.tutorServices
-                      ? "Service"
-                      : ""}
+                    ? "Service"
+                    : ""}
                 </div>
                 <button
                   className="w-[133px] bg-[#FFA28D] py-1  text-white  text-base px-3 ml-auto h-[40px] rounded-lg"
@@ -783,8 +789,8 @@ export default function ParentEditables({
                             />
                           </div>
                           <InputField
-                            label="First Name"
-                            labelClassname="text-[#26435F]"
+                            label="First name"
+                            labelClassname="text-[#26435F] !font-semibold "
                             placeholder="First Name"
                             inputContainerClassName="text-xs !shadow-[0px_0px_2px_0px_#00000040] bg-[#F6F6F6] border-0 !py-3 !px-2 !rounded-[5px]"
                             inputClassName="bg-transparent text-xs   "
@@ -800,8 +806,8 @@ export default function ParentEditables({
                           />
 
                           <InputField
-                            label="Last Name"
-                            labelClassname="text-[#26435F]"
+                            label="Last name"
+                            labelClassname="text-[#26435F] !font-semibold"
                             placeholder="Last Name"
                             inputContainerClassName="text-xs !shadow-[0px_0px_2px_0px_#00000040] bg-[#F6F6F6] border-0 !py-3 !px-2 !rounded-[5px]"
                             inputClassName="bg-transparent text-xs   "
@@ -816,11 +822,11 @@ export default function ParentEditables({
                             }
                           />
                         </div>
-                        <div className="flex !text-sm gap-4 ">
+                        <div className="flex !text-sm gap-4 items-center ">
                           <InputFieldDropdown
                             codeClassName="!bg-white !rounded-sm"
                             placeholder=""
-                            labelClassname="text-[#26435F]"
+                            labelClassname="text-[#26435F] !font-semibold"
                             inputContainerClassName="!text-xs  !border-none !pr-1  bg-primary-50  !shadow-[0px_0px_2px_0px_#00000040]"
                             inputClassName="bg-transparent !w-[120px] !text-xs rounded-[4px]  !pr-1 !mr-0"
                             parentClassName="flex-1 "
@@ -843,9 +849,8 @@ export default function ParentEditables({
                           />
                           <InputField
                             IconLeft={caution}
-
                             label="Email"
-                            labelClassname="text-[#26435F]"
+                            labelClassname="text-[#26435F] font-semibold"
                             placeholder="Email"
                             inputContainerClassName="text-xs !shadow-[0px_0px_2px_0px_#00000040] bg-[#F6F6F6] border-0 !py-3 !px-2 !rounded-[5px]"
                             inputClassName="bg-transparent !w-[200px] text-xs   "
@@ -858,25 +863,27 @@ export default function ParentEditables({
                                 email: e.target.value,
                               })
                             }
-                            Tooltip={!user?.isVerfied &&
-                              <span className="absolute top-10 w-[200px] scale-0 rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100">
-                                <h3 className="text-[#24A3D9] font-semibold mb-1">
-                                  Email Confirmation Sent
-                                </h3>
-                                You need to verify your email if
-                                <ul className="list-disc pl-3 mb-2">
-                                  <li>you created a new account.</li>
-                                  <li>you recently changed your email.</li>
-                                </ul>
-                                We have sent you an email verification link to
-                                your current email address to make sure that it
-                                really is you who requested a change.
-                              </span>
+                            Tooltip={
+                              !user?.isVerfied && (
+                                <span className="absolute top-10 w-[200px] scale-0 rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100">
+                                  <h3 className="text-[#24A3D9] font-semibold mb-1">
+                                    Email Confirmation Sent
+                                  </h3>
+                                  You need to verify your email if
+                                  <ul className="list-disc pl-3 mb-2">
+                                    <li>you created a new account.</li>
+                                    <li>you recently changed your email.</li>
+                                  </ul>
+                                  We have sent you an email verification link to
+                                  your current email address to make sure that
+                                  it really is you who requested a change.
+                                </span>
+                              )
                             }
                           />
                           <InputField
                             label="Alternative Email"
-                            labelClassname="text-[#26435F]"
+                            labelClassname="text-[#26435F] font-semibold"
                             placeholder="Alternative Email"
                             inputContainerClassName="text-xs !shadow-[0px_0px_2px_0px_#00000040] bg-[#F6F6F6] border-0 !py-3 !px-2 !rounded-[5px]"
                             inputClassName="bg-transparent !w-[200px] text-xs   "
@@ -901,8 +908,10 @@ export default function ParentEditables({
                         </p>
                         <textarea
                           rows="3"
-                          className="mt-1 block w-full h-[50px] resize-none focus:!ring-blue-500 p-2 focus:!border-blue-500 placeholder-[#CBD6E2] text-sm  placeholder:text-xs border border-[0.917px_solid_#D0D5DD] rounded-[6px]
+                          className="mt-1 block w-full h-[80px] bg-[#F6F6F6] resize-none focus:!ring-blue-500 p-2 focus:!border-blue-500 placeholder-[#CBD6E2] text-sm  placeholder:text-xs border border-[0.917px_solid_#D0D5DD] rounded-[6px]
                 "
+                          placeholder="The parent can add their bio in this space. Here are a few ideas to get started:
+Likes, dislikes, personality, professional details, hobbies, favorite sports, activities, family details, habits, favorite movies and TV shows, music taste, strengths and weaknesses."
                           value={currentToEdit.about}
                           onChange={(e) => {
                             setCurrentToEdit({
@@ -910,16 +919,16 @@ export default function ParentEditables({
                               about: e.target.value,
                             });
                           }}
-                          placeholder=""
+                        
                         ></textarea>
                       </div>
-
-
                     </div>
-                    {persona === "admin" ?
+                    {persona === "admin" ? (
                       <div className=" ">
-                        <div id="borderDashed2" className="h-[2px] w-[100%] mt-6 mx-auto my-4">
-                        </div>
+                        <div
+                          id="borderDashed2"
+                          className="h-[2px] w-[100%] mt-6 mx-auto my-4"
+                        ></div>
                         {/* <p className='font-medium mr-4'> Associated Students </p> */}
                         {/* <div className="max-w-[250px] mx-auto">
                         <Slider
@@ -929,14 +938,15 @@ export default function ParentEditables({
                       </div> */}
 
                         <InputSearch
-                          right={<img className="w-5 h-4" alt="drop" src={down} />}
+                          right={
+                            <img className="w-5 h-4 cursor-pointer" alt="drop" src={down} />
+                          }
                           labelClassname="text-[#26435F] mb-1 text-sm"
                           label="Associated Students"
                           placeholder="Select Associated Students"
                           parentClassName="w-[300px] mb-10"
-
-                          inputContainerClassName="bg-[#F3F5F7] border-0 pt-3.5 pb-3.5"
-                          inputClassName="bg-[#F3F5F7]"
+                          inputContainerClassName="bg-[#F6F6F6] border-0 pt-3.5 pb-3.5 text-sm hover:cursor-pointer"
+                          inputClassName="bg-[#F6F6F6] text-sm "
                           type="text"
                           optionPrefix="s"
                           value={student}
@@ -954,10 +964,11 @@ export default function ParentEditables({
                             // setCurrentToEdit({ ...currentToEdit, students: [... item._id] });
                           }}
                         />
-                      </div> : ""}
-                    <div>
-
-                    </div>
+                      </div>
+                    ) : (
+                      ""
+                    )}
+                    <div></div>
                   </div>
                 )}
 
@@ -1013,7 +1024,6 @@ export default function ParentEditables({
                           inputClassName="bg-transparent"
                           parentClassName=""
                           type="text"
-
                           value={currentToEdit.industry}
                           onChange={(e) =>
                             setCurrentToEdit({
@@ -1300,7 +1310,6 @@ export default function ParentEditables({
 
                 {currentField.name === "service" && (
                   <div className="w-[400px] max-h-[50vh] overflow-y-auto custom-scroller">
-
                     <div className="flex flex-col gap-2">
                       {organization?.settings?.servicesAndSpecialization.map(
                         (item, id) => {
@@ -1630,8 +1639,8 @@ export default function ParentEditables({
                       <p className="font-medium mr-4 min-w-[150px]">
                         {currentToEdit.selectedIdx !== undefined
                           ? organization.settings.servicesAndSpecialization[
-                            currentToEdit.selectedIdx
-                          ].service
+                              currentToEdit.selectedIdx
+                            ].service
                           : ""}
                       </p>
                       <InputField

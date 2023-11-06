@@ -216,7 +216,7 @@ const BarChart = ({ studentFeedbacks }) => {
   }
   return (
     <div>
-      <p className="text-[#26435F] text-xl font-semibold text-base-20">
+      <p className="text-[#26435F] text-xl font-semibold text-base-20 mb-[2px]">
         Student Feedback Overview
       </p>
       {count && count > 0 ? (
@@ -302,7 +302,7 @@ const BarChart = ({ studentFeedbacks }) => {
       ) : (
         <div
           id="srating"
-          className=" h-[610px] rounded-md bg-white flex justify-center flex-col text-center items-center"
+          className=" h-[613px] rounded-md bg-white flex justify-center flex-col text-center items-center"
         >
           <div className="flex-1 w-full flex flex-col justify-center items-start h-full p-4">
             <button className="bg-[#FF7979] text-white rounded-md p-2 py-1 mb-3">

@@ -60,6 +60,7 @@ import YoutubeEmbed from "./YoutubeEmbed/YoutubeEmbed";
 import BarChart from "../../../components/BarChart/BarChart";
 import Pagination from "../../SuperadminDashboard/Table/Pagination";
 import { getFormattedDate } from "../../../utils/utils";
+import InputSelect from "../../../components/InputSelect/InputSelect";
 
 export default function TutorProfile({ isOwn }) {
   const { firstName, lastName } = useSelector((state) => state.user);
@@ -127,7 +128,7 @@ export default function TutorProfile({ isOwn }) {
     },
     {
       id: 4,
-      text: "Serivce",
+      text: "Service",
     },
     {
       id: 2,
@@ -287,6 +288,7 @@ export default function TutorProfile({ isOwn }) {
   //console.log("userDetail", { userDetail, toEdit });
   const [tutorTotalReviews, setTutorReviews] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [tutorStatus,setTutorStatus] = useState(null);
   console.log("trts", tutorTotalReviews);
   useEffect(() => {
     let userId = "";
@@ -774,21 +776,21 @@ export default function TutorProfile({ isOwn }) {
                       </div>
                     </div>
                     {(persona === "tutor" || persona === "admin") && (
-                      <div className="ml-auto mt-auto pt-[10px] pb-[10px] mr-8">
-                        <div className="flex gap-4 items-center cursor-pointer mb-[10px] design:mb-0 design:mt-1">
+                      <div className="ml-auto mt-auto pt-[8px] pb-[10px] mr-8 flex flex-col gap-2">
+                        <div className="flex gap-4 items-center cursor-pointer  design:mb-0 design:mt-1">
                           <img src={mail} alt="mailLogo"></img>
                           <p className="text-white text-[17.503px] text-base-17-5">
                             {user.email}
                           </p>
                         </div>
-                        <div className="flex gap-4 items-center cursor-pointer mb-[10px] design:mb-0">
+                        <div className="flex gap-4 items-center cursor-pointer  design:mb-0">
                           <img src={call} alt="callLogo"></img>
                           <p className="text-white text-[17.503px] text-base-17-5">
                             {user.phoneCode}
                             {user.phone}
                           </p>
                         </div>
-                        <div className="flex gap-4 items-center cursor-pointer mb-[10px] design:mb-0">
+                        <div className="flex gap-4 items-center cursor-pointer  design:mb-0">
                           <img src={linkedin} alt="linkedinLogo"></img>
                           <a
                             className="text-white text-[17.503px] cursor-pointer text-base-17-5"
@@ -1497,7 +1499,7 @@ export default function TutorProfile({ isOwn }) {
                     </div>
                     {persona === "admin" && (
                       <p
-                        className="text-[#667085] ml-auto underline cursor-pointer font-semibold text-[15px] text-base-15"
+                        className="text-[#667085] relative z-[88] ml-auto underline cursor-pointer font-semibold text-[15px] text-base-15"
                         onClick={() =>
                           setToEdit({
                             ...toEdit,
@@ -1572,32 +1574,23 @@ export default function TutorProfile({ isOwn }) {
                     <div className="text-[#26435F] text-[20px] text-base-20 font-semibold">
                       Tutor Status
                     </div>
-                    {(isOwn === true || persona === "admin") && (
-                      <p
-                        className="text-[#667085] ml-auto underline cursor-pointer text-[15px] font-semibold text-base-15"
-                        onClick={() =>
-                          setToEdit({
-                            ...toEdit,
-                            tutorLevel: { ...toEdit.tutorLevel, active: true },
-                          })
-                        }
-                      >
-                        edit
-                      </p>
-                    )}
+                   
                   </div>
-                  <ProfileCard
-                    hideShadow
-                    className="border border-[#00000010]"
-                    bgClassName="bg-white"
-                    body={
-                      <>
-                        <div className="text-[#517CA8] text-lg p-3 min-h-[50px] shadow-[0px_0px_2px_0px_#00000040] rounded-md text-base-17-5">
-                          {userDetail.tutorLevel}
-                        </div>
-                      </>
-                    }
-                  />
+                  <InputSelect
+                        value={tutorStatus}
+                        onChange={(val) =>
+                          setTutorStatus(
+                          val
+                          )
+                        }
+                        optionData={organization?.settings?.tutorStatus}
+                        radio={true}
+                        inputContainerClassName="pt-3 pb-3 border bg-white"
+                        placeholder="Select"
+                        parentClassName="w-full mr-4"
+                        type="select"
+                      />
+               
 
                   <div className="mt-[33.75px]">
                     <div className="flex justify-between mb-[-10px]">
