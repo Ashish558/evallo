@@ -170,8 +170,8 @@ const StudentDashboard = () => {
       <StudentDashboardHeader />
 
       <div className="flex mt-10 pt-[10px] justify-between">
-        <div className=" flex-1 w-[70%]">
-          <div className="flex items-center justify-between mb-1 w-[54.43vw]">
+        <div className=" flex-1 w-[70%] ">
+          <div className="flex items-center justify-between mb-1 w-[54.43vw] bg-pink-500">
             <h1 className="text-[#26435F]  text-base-20 font-semibold ">
               Concept Chart
               <span className="inline-block my-auto ml-2 translate-y-1">
@@ -228,7 +228,7 @@ const StudentDashboard = () => {
           </div>
           <div
             id={styles.chartContainer}
-            className="!rounded-md  bg-white w-[54.43vw] flex-1 shadow-[0px_0px_2.500001907348633px_0px_#00000040] custom-scroller h-[390px]"
+            className="!rounded-md w-[54.43vw] flex-1 shadow-[0px_0px_2.500001907348633px_0px_#00000040] custom-scroller h-[390px] bg-white"
           >
            {accsubjects && accsubjects?.length>0 ?<>
              <Chart
@@ -243,7 +243,7 @@ const StudentDashboard = () => {
             setCurrentSubData={setCurrentSubData}
           /> </>:
           <div id="sconcept2" className=" w-full  z-[5000] min-h-[300px] rounded-md bg-white flex justify-center flex-col text-center items-center">
-          <div className="w-[70%] mx-auto   flex flex-col items-start">
+          <div className="w-[70%] mx-auto flex flex-col items-start">
             
            <button className="bg-[#FF7979] text-white rounded-md p-2 py-1 mb-3">
              No Assignments Yet
@@ -258,7 +258,7 @@ const StudentDashboard = () => {
           </div>
         </div>
 
-        <div className="w-[25vw]  h-fit">
+        <div className="w-[25vw] min-h-fit">
           <SessionFeedback />
         </div>
       </div>
