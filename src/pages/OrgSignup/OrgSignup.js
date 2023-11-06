@@ -219,6 +219,13 @@ export default function OrgSignup() {
     });
   };
 
+  useEffect(() => {
+    window.otpless = (otplessUser) => {
+     console.log('otpless',otplessUser);
+    };
+  }, []);
+ 
+  
   const fetchSubscriptionsInfo = () => {
     getSubscriptionsInfo().then((res) => {
       console.warn("Subscriptions info");
