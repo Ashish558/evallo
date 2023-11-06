@@ -192,7 +192,7 @@ const StudentSettings = () => {
             parentClassName="text-[#26435F]"
             inputContainerClassName="h-[50px] bg-white  border border-white text-[#667085]"
             inputClassName=" text-400 bg-transparent"
-            label="First Name"
+            label="First name"
             value={values.firstName}
             onChange={(e) =>
               handleFirstName(e)
@@ -206,7 +206,7 @@ const StudentSettings = () => {
             parentClassName="text-[#26435F]"
             inputContainerClassName="h-[50px] bg-white border border-white text-[#667085]"
             inputClassName=" text-400 bg-transparent"
-            label="Last Name"
+            label="Last name"
             value={values.lastName}
             onChange={(e) =>
               setValues({
