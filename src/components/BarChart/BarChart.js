@@ -216,13 +216,16 @@ const BarChart = ({ studentFeedbacks }) => {
   }
   return (
     <div>
-      <p className="text-[#26435F] text-xl font-semibold text-base-20">
+      <p className="text-[#26435F] text-xl font-semibold text-base-20 mb-[2px]">
         Student Feedback Overview
       </p>
       {count && count > 0 ? (
-        <div className="bg-[#FFFFFF]  rounded-5 shadow-[0px_0px_2.5px_0px_rgba(0,0,0,0.25)] pt-[30px] pb-[48px]  px-[11.28%]">
+        <div className="bg-[#FFFFFF]  rounded-5 shadow-[0px_0px_2.5px_0px_rgba(0,0,0,0.25)] pt-[30px] pb-[48px]  px-[10%]">
           <div className="flex justify-between mb-[30px] text-[0.9114583333vw]">
-            <p className="font-light text-[#092327]"> Total Ratings: {count}</p>
+            <p className=" whitespace-nowrap text-[#092327] font-semibold">
+              {" "}
+              Total Ratings: {count}
+            </p>
             <div className="flex  items-center">
               {element}
               <p className="text-[#667085] text-[0.9114583333vw]">
@@ -271,19 +274,19 @@ const BarChart = ({ studentFeedbacks }) => {
             </div>
           </div>
           <div className="mt-[30px] text-[0.9114583333vw]">
-            <p className="text-center font-light mb-[11px]">
+            <p className="text-center  font-semibold mb-[11px]">
               Top Service:{" "}
               {`${studentFeedbacks?.data?.highestRatedService?.sessionId?.service}` ==
               "undefined"
                 ? "None"
                 : `${studentFeedbacks?.data?.highestRatedService?.sessionId?.service}`}
             </p>
-            <div className="flex justify-between mb-[30px] text-[0.9114583333vw]">
-              <p className="font-light text-[#092327]">
+            <div className="flex justify-center mb-[30px] text-[0.9114583333vw]">
+              {/* <p className="font-light text-[#092327]">
                 {" "}
                 Total Ratings: {count}
-              </p>
-              <div className="flex  items-center">
+              </p> */}
+              <div className="flex  justify-center items-center">
                 {element}
                 <p className="text-[#667085] text-[0.9114583333vw]">
                   {(
@@ -297,7 +300,10 @@ const BarChart = ({ studentFeedbacks }) => {
           </div>
         </div>
       ) : (
-        <div id="srating" className=" h-[400px] rounded-md bg-white flex justify-center flex-col text-center items-center">
+        <div
+          id="srating"
+          className=" h-[613px] rounded-md bg-white flex justify-center flex-col text-center items-center"
+        >
           <div className="flex-1 w-full flex flex-col justify-center items-start h-full p-4">
             <button className="bg-[#FF7979] text-white rounded-md p-2 py-1 mb-3">
               No Feedback Received

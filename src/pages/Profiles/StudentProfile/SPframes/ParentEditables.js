@@ -154,12 +154,12 @@ export default function ParentEditables({
     },
     {
       name: "notes",
-      title: "Internal Notes",
+      title: "Admin Notes",
       api: "user",
     },
     {
       name: "service",
-      title: "Service",
+      title: "Services",
       api: "userDetail",
     },
     {
@@ -1396,7 +1396,7 @@ export default function ParentEditables({
                 )}
                 {currentField.name === "notes" && (
                   <div>
-                    <div className="flex items-center mb-5 pt-6 w-[400px] ">
+                    <div className="flex items-center mb-5 pt-0 w-[400px] ">
                       {/* <p className='font-medium mr-4 min-w-[60px]'>  </p> */}
                       <div className="border w-full h-full rounded-md">
                         {textOpen && (
@@ -1414,29 +1414,18 @@ export default function ParentEditables({
                               currentToEdit?.notes?.length == 0 &&
                               setTextOpen(false)
                             }
-                            className={`mt-1 block w-full resize-none focus:!ring-blue-500 p-2 focus:!border-blue-500 placeholder-[#CBD6E2] text-sm  placeholder:text-xs h-[300px] `}
+                            className={`mt-1 block w-full resize-none focus:!ring-blue-500 p-2 focus:!border-blue-500 placeholder-[#CBD6E2] text-sm  placeholder:text-xs h-[150px] `}
                             placeholder=""
                           ></textarea>
                         )}
                         {!textOpen && currentToEdit?.notes?.length === 0 && (
                           <div
                             onClick={() => setTextOpen(true)}
-                            className=" text-[#CBD6E2] text-xs flex-1 text-base-17-5 p-3 h-[300px]"
+                            className=" text-[#CBD6E2] text-xs flex-1 text-base-17-5 p-3 h-[150px] bg-[#F6F6F6]                              "
                           >
-                            Add notes about the parent. Here are some ideas to
-                            get you started:
-                            <ul className="list-disc px-4 design:px-5">
-                              <li>How did the initial call go?</li>
-                              <li>What is the parent’s budget?</li>
-                              <li>
-                                What timeline do they have in mind for tutoring?
-                              </li>
-                              <li>Has the student been tutored before?</li>
-                              <li>
-                                Do they prefer online or offline tutoring?
-                              </li>
-                              <li>Does the student have siblings?</li>
-                            </ul>
+                        Use this space to add notes about the student that are only visible to you as the Org Admin.
+
+Here are some ideas to get you started: personality, preferences, goals, sports, habits, academic scores, activities, family, likes or dislikes, and schedule preferences.
                           </div>
                         )}
                       </div>
@@ -1510,7 +1499,7 @@ export default function ParentEditables({
                                   handleServiceChange(item?.service)
                                 }
                               />
-                              <span className="text-[#26435F]">
+                              <span className="text-[#26435F] pb-1">
                                 {item?.service}
                               </span>
                             </div>
