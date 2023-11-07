@@ -6,6 +6,7 @@ import { useRef } from "react";
 import { useEffect } from "react";
 import useOutsideAlerter from "../../hooks/useOutsideAlerter";
 import questionMark from "../../assets/icons/red_query.svg"
+import styles from './styles.module.css'
 
 export default function InputField({
   parentClassName,
@@ -72,7 +73,7 @@ export default function InputField({
         <label
           className={`${biggerText ? "text-lg" : 'text-base-17-5'}  inline-block  font-semibold ${labelClassname} ml-0 `}
         >
-          <span className="inline-block">{label}</span>
+          <span className="inline-block !cursor-default">{label}</span>
           {
             label === "Support Email" &&
             <div className="group relative">
@@ -128,7 +129,7 @@ export default function InputField({
         )}
         <input
           className={`outline-0 w-full text-[17.5px]  ${iconPadding ? iconPadding : "pl-1"} placeholder:text-base-17-5 ${inputClassName ? inputClassName : ""
-            } ${disabled === true ? "cursor-not-allowed" : ""} ${removeResponsive ? "" : "text-base-17-5"} `}
+            } ${disabled === true ? "cursor-not-allowed" : ""} ${removeResponsive ? "" : "text-base-17-5"} ${styles['input']} `}
           placeholder={placeholder}
 
           type={inputType ? inputType : "text"}

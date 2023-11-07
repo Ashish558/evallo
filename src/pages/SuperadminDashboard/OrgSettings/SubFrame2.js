@@ -47,9 +47,9 @@ import styles from "./styles.module.css";
 import { useAddNewQuestionMutation } from "../../../app/services/admin";
 import { updateOrganizationSettings } from "../../../app/slices/organization";
 import InputSelect from "../../../components/InputSelect/InputSelect";
-import { timeZones } from "../../../constants/constants";
 import { permissionsStaticData } from "../../Settings/Tabs/staticData";
 import InputFieldDropdown from "../../../components/InputField/inputFieldDropdown";
+import moment from "moment-timezone";
 
 // import questionMark from '../../../assets/images/question-mark.svg'
 const initialState = {
@@ -116,6 +116,7 @@ export default function Settings({orgData,orgs}) {
   const [getSettings, getSettingsResp] = useLazyGetSettingsQuery();
   const [updateSetting, updateSettingResp] = useUpdateOrgSettingMutation();
   const { awsLink } = useSelector((state) => state.user);
+  const timeZones = moment.tz.names(); // String[]
 
   const [addNewQuestionModalActive, setAddNewQuestionModalActive] =
     useState(false);

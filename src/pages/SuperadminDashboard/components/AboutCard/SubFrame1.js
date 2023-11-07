@@ -102,8 +102,8 @@ const SubFrame2 = ({id}) => {
             //   <span>{item.slice(12)}</span>
             // </li>
             <div key={index} className="flex ml-2 pl-5 relative">
-              <p className="text-[#4A556C] pt-5 font-medium text-xs mr-6 w-[100px]">
-              {extractDateComponents(item.createdAt)+" "+new Date(item.createdAt).toLocaleTimeString()}
+              <p className="text-[#4A556C] pt-5 font-medium text-xs mr-1 w-[110px]">
+              {extractDateComponents(item.createdAt)}
               {item.topDate && (
                     <span className="text-xs ml-2 top-0 text-[#FFA28D] absolute z-5000 backdrop-blur-sm ">
                       {" "}

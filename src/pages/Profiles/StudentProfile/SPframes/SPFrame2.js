@@ -39,11 +39,14 @@ const SPFrame2 = ({
   useEffect(() => {
     if (userId) {
       getHours(userId).then((res) => {
-        //console.log("tutored ",res)
+        console.log("tutored hours",res)
+        if(res?.data){
+          setTotalHours(res?.data?.total_hours)
+        }
       });
     }
   }, [userId]);
-  const { dateFormat } = useSelector((state) => state.user);
+  const  dateFormat  = settings?.dateFormat||"dd/mm/yyyy";
   const handleSubmit = (key, e) => {
     //e.preventDefault();
     // setLoading(true);
@@ -63,7 +66,7 @@ const SPFrame2 = ({
 
     userDetailSave(reqBody);
   };
-  //console.log("frame2", settings, userDetail);
+
 
   return (
     <div>
@@ -73,23 +76,23 @@ const SPFrame2 = ({
           <div className="flex-1  flex justify-between">
             <p className=" text-sm text-[#26435F] font-semibold text-base-20">
               Hours Tutored
-              <span className=" text-[#FFA28D] text-2xl block">90</span>
+              <span className=" text-[#FFA28D] text-2xl block mt-1">{totalHours}</span>
             </p>
             <p className=" text-sm text-[#26435F] font-semibold text-base-20">
               No. Of Sessions
-              <span className=" text-[#FFA28D] text-2xl block">90</span>
+              <span className=" text-[#FFA28D] text-2xl block mt-1">90</span>
             </p>
           </div>
           <div className="flex-1  flex justify-between">
             <p className=" text-sm text-[#26435F] font-semibold text-base-20">
-              # Of Practice Tests
-              <span className=" text-[#FFA28D] text-2xl block">
+              No. of Assignments
+              <span className=" text-[#FFA28D] text-2xl block mt-1">
                 {totalTest}
               </span>
             </p>
             <p className=" text-sm text-[#26435F] font-semibold text-base-20 w-[122px] text-left">
               Join Date
-              <span className=" text-[#FFA28D] text-xl block">
+              <span className=" text-[#FFA28D] text-xl block mt-1">
                 {/* {new Date(userDetail?.createdAt).toLocaleDateString()} */}
                 {getFormattedDate(userDetail?.createdAt, dateFormat)}
               </span>
@@ -145,9 +148,9 @@ const SPFrame2 = ({
                           : "NA"}
                       </p>
 
-                      <p>
+                      <p className="font-bold">
                         <span className="text-[#24A3D9]">
-                          C{it?.maths + it?.verbal}
+                          C{it?.maths + it?.verbal+" "}
                         </span>
                         <span className="text-[#517CA8]">
                           | M{it?.maths} V{it?.verbal}
@@ -224,9 +227,9 @@ const SPFrame2 = ({
                           : "NA"}
                       </p>
 
-                      <p>
+                      <p className="font-bold">
                         <span className="text-[#24A3D9]">
-                          C{it?.english + it?.science + it?.maths + it?.reading}
+                          C{it?.english + it?.science + it?.maths + it?.reading+" "}
                         </span>
                         <span className="text-[#517CA8]">
                           | E{it?.english} R{it?.reading} M{it?.maths} S
@@ -287,11 +290,11 @@ const SPFrame2 = ({
                   <div className="mx-2 flex flex-col text-xs text-base-15">
                     <p className="text-[#517CA8]">SAT BaseLine Scores</p>
 
-                    <p>
+                    <p  className="font-bold">
                       <span className="text-[#24A3D9]">
                         C
                         {userDetail?.baseLineScore?.satBaseLineScore?.maths +
-                          userDetail?.baseLineScore?.satBaseLineScore?.verbal}
+                          userDetail?.baseLineScore?.satBaseLineScore?.verbal+" "}
                       </span>
                       <span className="text-[#517CA8]">
                         | M{userDetail?.baseLineScore?.satBaseLineScore?.maths}{" "}
@@ -316,13 +319,13 @@ const SPFrame2 = ({
                       ACT BaseLine Scores
                     </p>
 
-                    <p>
+                    <p className="font-bold">
                       <span className="text-[#24A3D9]">
                         C
                         {userDetail.baseLineScore?.actBaseLineScore?.english +
                           userDetail.baseLineScore?.actBaseLineScore?.science +
                           userDetail.baseLineScore?.actBaseLineScore?.maths +
-                          userDetail.baseLineScore?.actBaseLineScore?.reading}
+                          userDetail.baseLineScore?.actBaseLineScore?.reading+" "}
                       </span>
                       <span className="text-[#517CA8]">
                         | E{userDetail.baseLineScore?.actBaseLineScore?.english}{" "}

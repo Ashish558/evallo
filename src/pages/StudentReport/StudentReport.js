@@ -408,7 +408,7 @@ export default function StudentReport() {
                   Concept: concept,
                   Strategy: strategy,
                   responseTime: responseTime >= 0 ? `${responseTime} sec` : '-',
-                  review:marked? <CustomImage />:"No"
+                  review:marked? <CustomImage />:"-"
                }
          })
          setTableData(temp)
@@ -435,7 +435,7 @@ export default function StudentReport() {
                Concept: answerKey[currentAnswerKeyIndex][index]?.Concepts ? answerKey[currentAnswerKeyIndex][index]?.Concepts : '-',
                Strategy: answerKey[currentAnswerKeyIndex][index]?.Strategy ? answerKey[currentAnswerKeyIndex][index]?.Strategy : '-',
                responseTime: responseTime >= 0 ? `${responseTime} sec` : '-',
-               review: marked? <CustomImage />:"No"
+               review: marked? <CustomImage />:"-"
             }
          })
          setTableData(temp)
@@ -724,7 +724,7 @@ export default function StudentReport() {
 
    console.log({ displayScore })
    return (
-      <div className='px-[80px] bg-lightWhite min-h-screen'>
+      <div className='px-[80px]  min-h-screen'>
          <div className='py-14 px-5'>
             <div className='px-0'>
 
@@ -797,7 +797,7 @@ export default function StudentReport() {
 
                   </div>
                   {
-                     persona === "student" && <div className='  text-base-20 mt-6 text-[#517CA8]'>
+                     persona === "student" && <div className='  text-base-20 mt-16 text-[#517CA8]'>
                         <p className='inline-block  font-medium'> Instruction from tutor </p>
                         <span className='inline-block mr-10 my-auto'>:</span>
                         <p className='  !font-light'>{testDetails.instruction} </p>

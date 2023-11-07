@@ -4,9 +4,7 @@
     top: 50%;
     transform: translateY(-50%);
     z-index: 200000;
-    /* width: 15px; */
 }
-
 .options {
     position: absolute;
     top: calc(100% + 3px);
@@ -25,4 +23,11 @@
 
 .options > div:hover {
     background-color: rgb(233 233 233 / 86%);
+    color: #FFA28D;
 }
+.options > div:hover > div {
+    color: #FFA28D;
+}
+.input{
+    outline: none !important;
+ }

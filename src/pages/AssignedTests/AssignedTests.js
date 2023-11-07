@@ -1115,11 +1115,11 @@ export default function AssignedTests() {
                   {
                     studentMultiple?.length>0?
                     <>
-                    <p className="font-medium whitespace-nowrap text-base-18 text-[#667085]"> {studentMultiple[0]?.value}</p>
+                    <p className="font-medium whitespace-nowrap text-base-15 mt-1 text-[#667085]"> {studentMultiple[0]?.value}</p>
                     {studentMultiple?.length>1?<>
-                      <p className="font-medium whitespace-nowrap text-base-18 text-[#667085]">, {studentMultiple[1]?.value}</p>
+                      <p className="font-medium whitespace-nowrap text-base-15 mt-1 text-[#667085]">, {studentMultiple[1]?.value}</p>
                       {studentMultiple?.length>2?
-                        <p className="font-medium whitespace-nowrap text-base-18 text-[#667085]">... total {studentMultiple.length} selected</p>
+                        <p className="font-medium whitespace-nowrap text-base-15 mt-1 text-[#667085]">... total {studentMultiple.length} selected</p>
                         :null}
                       </>
                     :null}

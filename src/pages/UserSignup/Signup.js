@@ -331,8 +331,11 @@ export default function UserSignup() {
   }, [values]);
 
   const handleClick = async () => {
-    let f = /[a-z]/i.test(values?.firstName)
-    f = f && /[a-z]/i.test(values?.lastName)
+    var regex = new RegExp("^[a-zA-Z0-9 ]*[a-zA-Z][a-zA-Z0-9 ]*$");
+    let f =regex.test(values?.firstName)
+    f = f && regex.test(values?.lastName)
+    
+   
     if (!f) {
       alert("Enter a valid name!")
       return

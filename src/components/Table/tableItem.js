@@ -18,6 +18,7 @@ import styles from './styles.module.css'
 import AddIcon from "../../assets/icons/plus_colored.svg";
 import EditIcon from "../../assets/icons/edit_logo.svg";
 import DeleteIcon from "../../assets/icons/delete_logo.svg";
+import DeleteIconAllOrgs from "../../assets/icons/blue_delete.svg";
 import DeleteTutorIcon from "../../assets/icons/delete-tutor.svg";
 import InputSelect from "../InputSelect/InputSelect";
 import { useLazyGetSettingsQuery } from "../../app/services/session";
@@ -31,7 +32,7 @@ import {
 } from "../../app/services/users";
 import { useSelector } from "react-redux";
 import { useLazyGetTestResponseQuery } from "../../app/services/test";
-import { getFormattedDate, getScore, getScoreStr } from "../../utils/utils";
+import { checkTest, getFormattedDate, getScore, getScoreStr } from "../../utils/utils";
 import InputField from "../InputField/inputField";
 import CCheckbox from "../CCheckbox/CCheckbox";
 import SCheckbox from "../CCheckbox/SCheckbox";
@@ -166,7 +167,7 @@ export default function TableItem({
         return //console.log("error updating");
       }
       fetch && fetch(field, item._id);
-      console.log("update res", item?._id, field, res.data);
+      // console.log("update res", item?._id, field, res.data);
     });
   };
 
@@ -186,14 +187,14 @@ export default function TableItem({
       else if (res?.error) {
         alert("Error deleting Admin!")
       }
-      console.log(res)
+      // console.log(res)
     })
   }
   const handleChange = (field) => {
 
     if (item.userType === "parent" || item.userType === "student") {
       updateUserDetail({ fields: field, id: item._id }).then((res) => {
-        console.log("lead", { res })
+        // console.log("lead", { res })
         fetch && fetch(field, item._id);
       });
     } else if (item.userType === "tutor") {
@@ -433,10 +434,10 @@ export default function TableItem({
             <div className="my-[6px]">{item.userType}</div>
           </td>
           <td className=" text-[17.5px] px-1  min-w-14  ">
-            <div className="my-[6px]">{item.email}</div>
+            <div className="my-[6px]">{item?.email?.toLowerCase()}</div>
           </td>
 
-          <td className=" text-[17.5px] px-1  min-w-14  capitalize">
+       <td className=" text-[17.5px] !pl-6 pr-1  min-w-14  text-left capitalize">
             <div className="my-[6px]">{item.phoneCode}{item.phone}</div>
           </td>
           <td className=" text-[17.5px] px-1  min-w-14  capitalize flex justify-center">
@@ -527,7 +528,7 @@ export default function TableItem({
               {item.name}
             </span>
           </td>
-          <td className="font-medium text-[17.5px] px-1 min-w-14 ">
+          <td className="font-medium text-[17.5px] !pl-6 pr-1 min-w-14 text-left">
             <div className="">{item.email}</div>
           </td>
           <td className="font-medium text-[17.5px] px-1  min-w-14 ">
@@ -730,12 +731,14 @@ export default function TableItem({
       )}
       {dataFor === "studentTestsReport" && (
         <tr
+       
           className={`text-[17.5px]   leading-7 ${!item.isCorrect
-            ? "bg-[#e02b1d]/5"
+            ? "!bg-[#FF79791A]"
             : "odd:bg-white  "
             } `}
         >
-          {MapData(item)}
+          
+          {MapData(item,dataFor)}
         </tr>
       )}
       {dataFor === "studentTestsReportSmall" && (
@@ -788,7 +791,9 @@ export default function TableItem({
                 ) : key === "dueDate" ? (
                   <span className={` ${new Date(item[key]) < new Date() ? "text-[#FF7979] font-semibold" : ""}`}> {getFormattedDate(item[key], dateFormat)}</span>
                 ) :
-                  key === "createdAt" ? getFormattedDate(item[key], dateFormat) : key === "assignedOn" ? getFormattedDate(item[key], dateFormat) : item[key]
+                  key === "createdAt" ? getFormattedDate(item[key], dateFormat) : 
+                  key === "assignedOn" ? getFormattedDate(item[key], dateFormat) : 
+                  item[key]
 
                 }
 
@@ -851,7 +856,6 @@ export default function TableItem({
                 </>
               ) : (
                 <>
-                  {/* {console.log(item)} */}
                   {item.isCompleted ? (
                     <button
                       className="px-2.5 py-1.8 bg-[#38C980] rounded-5 flex items-center leading-none  text-white ml-4 w-[120px] h-[31px] justify-center"
@@ -930,7 +934,7 @@ export default function TableItem({
       {dataFor === "allTests" && (
         <tr className="odd:bg-white font-medium text-[17.5px]  lead">
           <td>{item.testName}</td>
-          <td>{item.testType} &#174;</td>
+          <td>{item.testType}&#174;</td>
           <td> {getFormattedDate(item.createdAt.split("T")[0], dateFormat)}</td>
           <td>{getFormattedDate(item.updatedAt.split("T")[0], dateFormat)}</td>
           <td> {item.no_of_assign!==null ? item.no_of_assign : "-"} </td>
@@ -946,7 +950,7 @@ export default function TableItem({
           </td>
           <td className="font-medium px-1 ">
             {
-              (!item.addBySuperAdmin && persona !== 'superAdmin') &&
+              (checkTest(persona, item)) &&
               <div className="flex justify-end  flex justify-center items-center">
                 <button
                   className="flex leading-none bg-[#26435f4d] text-white py-1.5 px-5 cursor-pointer rounded !text-base-15"
@@ -961,12 +965,12 @@ export default function TableItem({
       )}
       {dataFor === "allTestsSuperAdmin" && (
         <tr className=" font-medium  lead  text-[17.5px] ">
-          <td>{item.testName}</td>
-          <td>{item.testType==="Other"?"ACT":item.testType}</td>
-          <td>{getFormattedDate(item.createdAt.split("T")[0], dateFormat)}</td>
-          <td>{getFormattedDate(item.updatedAt.split("T")[0], dateFormat)}</td>
-          <td> {item.no_of_assign ? item.no_of_assign : "-"} </td>
-          <td className="font-medium px-1 py-3 text-right">
+          <td className="pl-12 !text-left "><span className="">{item.testName}</span></td>
+          <td className=" pl-5 !text-center ">{item.testType==="Other"?"ACT":item.testType}</td>
+          <td className=" pl-5 !text-center ">{getFormattedDate(item.createdAt.split("T")[0], dateFormat)}</td>
+          <td className=" pl-5 !text-center ">{getFormattedDate(item.updatedAt.split("T")[0], dateFormat)}</td>
+          <td className=" pl-5 !text-center "> {item.no_of_assign ? item.no_of_assign : "-"} </td>
+          <td className="font-medium pl-2 pr-1 py-3 pl-5 !text-center">
             <div className="flex justify-center">
               <p
                 className="flex leading-none text-[#517CA8] underline py-1.8 px-0 underline-offset-1 cursor-pointer rounded"
@@ -977,12 +981,12 @@ export default function TableItem({
             </div>
           </td>
           <td className="font-medium px-1 justify-center flex gap-x-2 py-3">
-            <img
+            {/* <img
               src={EditIcon}
               className="cursor-pointer p-1"
               onClick={() => navigate(`/all-tests/${item._id}`, { state: { testype: item.testType } })}
               alt="edit"
-            />
+            /> */}
             <img
               src={DeleteIcon}
               className="cursor-pointer p-1"
@@ -1014,76 +1018,73 @@ export default function TableItem({
       )}
       {dataFor === "allOrgs" && (
         <tr className="odd:bg-white  leading-8">
-          <td className="font-medium text-[17.5px] px-1  min-w-14 py-4  text-center">
+          <td className="font-medium text-[17.5px] pl-8  min-w-14 py-4  text-left">
             <span
               className="inline-block cursor-pointer pl-4"
               onClick={() => navigate(`/orgadmin-profile/${item._id}`)}
             >
               {item.associatedOrg?.company
-                ? item.associatedOrg?.company
-                : item.company}
+                ? item.associatedOrg?.company?.toLowerCase()
+                : item.company?.toLowerCase()}
             </span>
           </td>
-          <td className="font-medium text-[17.5px] px-1  min-w-14 py-4">
+          <td className="font-medium text-[17.5px] pl-12  min-w-14 py-4  text-left">
             <div className="my-[6px]">{item.firstName + " " + item?.lastName}</div>
           </td>
 
-          <td className="font-medium text-[17.5px] px-1  min-w-14 py-4">
+          <td className="font-medium text-[17.5px] pl-12  min-w-14 py-4  text-left">
             <div className="my-[6px]">{item.email}</div>
           </td>
 
-          <td className="font-medium text-[17.5px] px-1  min-w-14 py-4">
+           <td className="font-medium text-[17.5px] pl-12  min-w-14 py-4  text-left">
             <div className="my-[6px]">{item.phone}</div>
           </td>
-          <td className="font-medium text-[17.5px] px-1  min-w-14 py-4">
+          <td className="font-medium text-[17.5px] pl-12  min-w-14 py-4  text-left">
             <div className="my-[6px]">{item.associatedOrg?.country}</div>
           </td>
 
-
-
-
-          <td className="font-medium text-[17.5px] px-1 min-w-14 py-4">
+          <td className="font-medium text-[17.5px] pl-12  min-w-14 py-4  text-left">
             <div className="my-[6px]">{item?.registrationAs}</div>
           </td>
-          <td className="font-medium text-[17.5px] px-1  min-w-14 py-4">
+          <td className="font-medium text-[17.5px] pl-12  min-w-14 py-4  text-left">
             <div className="my-[6px]">{item?.userStatus}</div>
           </td>
-          <td className="font-medium text-[17.5px] px-1  min-w-14 py-4">
+          <td className="font-medium text-[17.5px] pl-12  min-w-14 py-4  text-left">
             <div className="my-[6px]">{item.associatedOrg?.numberOfTutors}</div>
           </td>
-          <td className="font-medium text-[17.5px] px-1  min-w-14 py-4">
+          <td className="font-medium text-[17.5px] pl-12  min-w-14 py-4  text-left">
             <div className="my-[6px]">
               {item.associatedOrg?.numberOfActiveStudent}
             </div>
           </td>
 
-          <td className="font-medium text-[17.5px] px-1  min-w-14 py-4">
+          <td className="font-medium text-[17.5px] pl-12  min-w-14 py-4  text-left">
             <div className="my-[6px]">{getFormattedDate(item.createdAt, dateFormat)}
               {/* {new Date(item.createdAt).toLocaleDateString()} */}
             </div>
           </td>
           <td className="font-medium text-[17.5px] px-1  min-w-14 py-4 cursor-pointer">
-            <div className="my-[6px]"><img onClick={() => setDeleteAdminModalActive(true)} src={DeleteIcon} alt="delete" /> </div>
+            <div className="my-[6px]"><img onClick={() => setDeleteAdminModalActive(true)} src={DeleteIconAllOrgs} alt="delete" /> </div>
           </td>
         </tr>
       )}
       {deleteAdminModalActive && (
         <Modal
           title={
-            <span className="leading-10">
+            <span className="leading-10 text">
               Are you sure you want to Delete   {item.associatedOrg?.company
                 ? item.associatedOrg?.company
                 : item.company}
 
             </span>
           }
-          titleClassName="mb-5 leading-10"
+          titleClassName="mb-5 leading-10 text-center"
           cancelBtn={true}
           crossBtn={true}
-          cancelBtnClassName="max-w-140 !bg-transparent !border  !border-[#FFA28D]  text-[#FFA28D]"
+          cancelBtnClassName="!w-[146px] text-[#26435F] font-medium text-base !rounded-[8px] !bg-[rgba(38,67,95,0.10)]  !h-[46px]"
           primaryBtn={{
             text: "Delete",
-            className: "w-[140px]  pl-4 px-4 !bg-[#FF7979] text-white",
+            className: "!bg-[#FF7979] !w-[146px] pl-4 pr-4 !opacity-100",
             onClick: () => handleDeleteAdmin(),
             bgDanger: true,
             loading: deleteSelectLoading,
@@ -1114,7 +1115,7 @@ const MapData = (data, dataFor, exclude = [], onClick) => {
       <React.Fragment key={i}>
       </React.Fragment>
     ) : key === "isCorrect" ? (
-      <td key={i} className="font-medium px-1  min-w-14 py-4">
+      <td key={i} className={`font-medium px-1  min-w-14 py-4 ${data[key]?"":"!bg-[#FF79791A]"}`}>
         <div className="flex items-center justify-center">
           <img
             src={data[key] === true ? SuccessIcon : FailIcon}
@@ -1214,8 +1215,9 @@ const MapData = (data, dataFor, exclude = [], onClick) => {
         key={i}
         className={`font-medium px-1 ${data[key] === "Unpaid" && "text-[#E02B1D]"
           } ${data[key] === "Paid" && "text-[#009262]"} ${data[key] === "Cancelled" && "text-[#7C859C]"
-          } min-w-14 py-4`}
+          } min-w-14 py-4  ${dataFor==="studentTestsReport"&&!data["isCorrect"]?"!bg-[#FF79791A]":""}`}
       >
+    
         {data[key]}
       </td>
     )

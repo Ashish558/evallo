@@ -180,76 +180,93 @@ const SPFrame1 = ({
             >
               <div className=" flex-1 !max-h-[140px] overflow-y-auto custom-scroller ">
                 <div className="">
-                  {userDetail?.associatedDocs?.length > 0
-                    ? userDetail?.associatedDocs?.map((it, id) => {
-                        return (
-                          <p
-                            key={id}
-                            className="flex flex-1 mt-1 text-[#517CA8] w-full text-xs justify-between px-3 py-1"
+                  {userDetail?.associatedDocs?.length > 0 ? (
+                    userDetail?.associatedDocs?.map((it, id) => {
+                      return (
+                        <p
+                          key={id}
+                          className="flex flex-1 mt-1 text-[#517CA8] w-full text-xs justify-between px-3 py-1"
+                        >
+                          <a
+                            className="w-[70%] break-words text-base-15"
+                            href={it?.public_url}
+                            target="_blank"
                           >
-                            <a
-                              className="w-[70%] break-words text-base-15"
-                              href={it?.public_url}
-                              target="_blank"
-                            >
-                              {it?.key}
-                            </a>
-                            <img
-                              onClick={() =>
-                                (persona === "tutor" || persona === "admin") &&
-                                reduceArr2(id, true)
-                              }
-                              src={BCut}
-                              className="text-xs !h-[20px] !w-[20px] inline-block"
-                              alt="cut"
-                            />
-                          </p>
-                        );
-                      })
-                    : null}
-                </div>
-                <div className="mt-[20px] mb-[10px] items-center flex justify-center">
-                  <img src={fileupload} alt="fileuploadIcon"></img>
-                </div>
-
-                <div className="flex items-center text-center justify-center text-base-15">
-                  {xlsFile == undefined ? (
-                    <p className=""></p>
-                  ) : (
-                    <p className="block ">{xlsFile.name}</p>
+                            {it?.key}
+                          </a>
+                          <img
+                            onClick={() =>
+                              (persona === "tutor" || persona === "admin") &&
+                              reduceArr2(id, true)
+                            }
+                            src={BCut}
+                            className="text-xs !h-[20px] !w-[20px] inline-block"
+                            alt="cut"
+                          />
+                        </p>
+                      );
+                    })
+                  ) : (persona==="student" || persona==="parent")&& (
+                    <div className="flex flex-col justify-center items-center h-full">
+                      {(persona === "student" || persona !== "parent") && (
+                        <button className="bg-[#FF7979] text-white rounded-md p-2 py-1">
+                          No Links Added
+                        </button>
+                      )}
+                    </div>
                   )}
+
                 </div>
-                {!xlsFile?.name ? (
-                  <div className="flex justify-center">
+                {persona === "student" || persona === "parent" ? (
+                  <> </>
+                ) : (
+                  <>
+                    <div className="mt-[20px] mb-[10px] items-center flex justify-center">
+                      <img src={fileupload} alt="fileuploadIcon"></img>
+                    </div>
+
+                    <div className="flex items-center text-center justify-center text-base-15">
+                      {xlsFile == undefined ? (
+                        <p className=""></p>
+                      ) : (
+                        <p className="block ">{xlsFile.name}</p>
+                      )}
+                    </div>
+                    {!xlsFile?.name ? (
+                      <div className="flex justify-center">
+                        <label
+                          htmlFor="file"
+                          className="block text-sm text-white bg-[#517CA8] hover:bg-[#517CA8] items-center justify-center  rounded-[5px]  px-3 py-2 text-base-17-5 text-center ] cursor-pointer"
+                        >
+                          Choose file
+                        </label>
+                        <input
+                          onChange={(e) => setXlsFile(e.target.files[0])}
+                          type="file"
+                          disabled={
+                            persona === "student" || persona === "parent"
+                          }
+                          id="file"
+                        ></input>
+                      </div>
+                    ) : (
+                      <div className="flex justify-center">
+                        <span
+                          onClick={addDocHandler}
+                          className=" cursor-pointer block text-sm text-white bg-[#517CA8] hover:bg-[#517CA8] items-center justify-center  rounded-[5px]  px-4 py-2 text-center text-base-17-5]"
+                        >
+                          Submit File
+                        </span>
+                      </div>
+                    )}
                     <label
                       htmlFor="file"
-                      className="block text-sm text-white bg-[#517CA8] hover:bg-[#517CA8] items-center justify-center  rounded-[5px]  px-3 py-2 text-base-17-5 text-center ] "
+                      className="block text-xs items-center justify-center  rounded-[5px]  px-4 py-2 font-normal text-center text-[#517CA8] text-base-15"
                     >
-                      Choose File
+                      Less than 1 MB
                     </label>
-                    <input
-                      onChange={(e) => setXlsFile(e.target.files[0])}
-                      type="file"
-                      disabled={persona === "student" || persona === "parent"}
-                      id="file"
-                    ></input>
-                  </div>
-                ) : (
-                  <div className="flex justify-center">
-                    <span
-                      onClick={addDocHandler}
-                      className=" cursor-pointer block text-sm text-white bg-[#517CA8] hover:bg-[#517CA8] items-center justify-center  rounded-[5px]  px-4 py-2 text-center text-base-17-5]"
-                    >
-                      Submit File
-                    </span>
-                  </div>
+                  </>
                 )}
-                <label
-                  htmlFor="file"
-                  className="block text-xs items-center justify-center  rounded-[5px]  px-4 py-2 font-normal text-center text-[#517CA8] text-base-15"
-                >
-                  Less than 1 MB
-                </label>
               </div>
             </div>
           </div>
@@ -324,7 +341,10 @@ const SPFrame1 = ({
                 );
               })
             ) : (
-              <div id="sinterest" className="w-full h-full rounded-md bg-white flex justify-center flex-col text-center items-center">
+              <div
+                id="sinterest"
+                className="w-full h-full rounded-md bg-white flex justify-center flex-col text-center items-center"
+              >
                 <div className="flex flex-col justify-center items-center h-full">
                   <button className="bg-[#38C980] text-white rounded-md p-2 py-1">
                     Add Interests +
@@ -365,7 +385,10 @@ const SPFrame1 = ({
                 );
               })
             ) : (
-              <div id="ssubject" className="w-full h-full rounded-md bg-white flex justify-center flex-col text-center items-center">
+              <div
+                id="ssubject"
+                className="w-full h-full rounded-md bg-white flex justify-center flex-col text-center items-center"
+              >
                 <div className="flex flex-col justify-center items-center h-full">
                   <button className="bg-[#38C980] text-white rounded-md p-2 py-1">
                     Add Subjects +
@@ -394,7 +417,6 @@ const SPFrame1 = ({
           </p>
 
           <div className="w-full relative h-full p-1 flex flex-col gap-2 rounded-md items-center overflow-y-auto custom-scroller">
-           
             {userDetail?.personality?.length > 0 ? (
               userDetail?.personality.map((it, idx) => {
                 return (
@@ -407,7 +429,10 @@ const SPFrame1 = ({
                 );
               })
             ) : (
-              <div id="spersonal" className="w-full h-full rounded-md bg-white flex justify-center flex-col text-center items-center">
+              <div
+                id="spersonal"
+                className="w-full h-full rounded-md bg-white flex justify-center flex-col text-center items-center"
+              >
                 <div className="flex flex-col justify-center items-center h-full">
                   <button className="bg-[#38C980] text-white rounded-md p-2 py-1">
                     Add Personality +

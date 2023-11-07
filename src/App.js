@@ -25,7 +25,6 @@ function App() {
   const dispatch = useDispatch();
   const [logOutApi, setLogOutApi] = useLazyGetLogoutQuery();
   const { isLoggedIn } = useSelector((state) => state.user);
-
   const getOrganizationDetail = (id) => {
     if (id === undefined) return;
     fetchOrganization(id).then((res) => {

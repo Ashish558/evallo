@@ -124,10 +124,10 @@ export const getSessionTagName = (name) => {
   return name === "topicsCovered"
     ? "Topics Covered"
     : name === "studentMode"
-    ? "Student Mood"
-    : name === "homeworkAssigned"
-    ? "Homework Assigned"
-    : name === "wasProductive" && "Was the Session Productive";
+      ? "Student Mood"
+      : name === "homeworkAssigned"
+        ? "Homework Assigned"
+        : name === "wasProductive" && "Was the Session Productive";
 };
 
 export function getCurrentDate(separator = "-") {
@@ -136,9 +136,8 @@ export function getCurrentDate(separator = "-") {
   let month = newDate.getMonth() + 1;
   let year = newDate.getFullYear();
 
-  return `${year}${separator}${
-    month < 10 ? `0${month}` : `${month}`
-  }${separator}${date}`;
+  return `${year}${separator}${month < 10 ? `0${month}` : `${month}`
+    }${separator}${date}`;
 }
 
 export const getLocalTimeZone = () => {
@@ -207,11 +206,12 @@ const checkIfDaylight = () => {
     // alert("Daylight saving time!");
   }
 };
-export const getStartDate = (startDate, userTimezoneOffset, timeZone) => {
+export const getStartDate = (startDate, userTimezoneOffset, timeZone, offsetInMilliseconds) => {
   checkIfDaylight();
 
-  const dstdate = moment.tz(startDate, timeZone).format("YYYY-MM-DD HH:mm ZZ");
+  const dstdate = moment.tz(startDate, timeZone).format();
   let offset = moment().utcOffset(dstdate)._offset;
+  return new Date(startDate.getTime() - userTimezoneOffset - offsetInMilliseconds);
 
   if (timeZone === "US/Central") {
     if (offset === -300) {
@@ -451,6 +451,42 @@ export const getMonthName = (idx) => {
   return monthNames[idx];
 };
 
+
+
+export const getFullTimeZone = (timezone) => {
+  let result = timezone
+  const timeZones = [
+    'IST',
+    'AKST',
+    'EST',
+    'HST',
+    'MST',
+    'PST',
+  ]
+
+  if (timeZones.includes(timezone)) {
+    if (timezone === 'IST') {
+      result = 'Asia/Kolkata'
+    } else if (timezone === 'AKST') {
+      result = 'US/Alaska'
+    } else if (timezone === 'EST') {
+      result = 'US/Eastern'
+    } else if (timezone === 'HST') {
+      result = 'US/Hawaii'
+    } else if (timezone === 'MST') {
+      result = 'US/Mountain'
+    } else if (timezone === 'PST') {
+      result = 'US/Pacific'
+    }
+  }
+  return result
+}
+
+export const checkTest = (persona, item) => {
+  if (persona === 'superAdmin' || persona === 'manager') return true
+  if (item.addBySuperAdmin || item.addByManager) return false
+  return true
+}
 // // timezones
 // function getCurrentLocalDateTime() {
 //    return moment().format();

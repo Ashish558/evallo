@@ -16,7 +16,7 @@ export default function ProfilePhoto({ src,cameraClass, handleChange, editable, 
             <>
                <input ref={inputref} type="file" name="myImage" className='hidden' accept="image/*"
                   onChange={e => handleChange(e.target.files[0])} />
-               <div className={`${styles.cameraIcon} ${isTutor ? styles.tutorCamera : ''}`} 
+               <div className={`${styles.cameraIcon} ${isTutor ? styles.tutorCamera : ''} cursor-pointer`} 
                onClick={() => inputref.current.click()}>
                   <img className={`${cameraClass}`} src={CameraIcon} />
                </div>

@@ -35,6 +35,7 @@ import {
   formatAMPM,
   getBackground,
   getFormattedDate,
+  getFullTimeZone,
   getLocalTimeZone,
   getStartDate,
   getToTimezone,
@@ -81,7 +82,6 @@ export default function Calendar() {
   const accordionImgRefs = useRef([]);
   const accordionRefs2 = useRef([]);
   const accordionImgRefs2 = useRef([]);
-  // const [timeZones, setTimeZones] = useState(temptimeZones)
   const { id: sessionToEdit } = useParams();
   const [isEdited, setIsEdited] = useState(false);
   const [isEditable, setIsEditable] = useState(false);
@@ -127,9 +127,9 @@ export default function Calendar() {
   useEffect(() => {
     try {
       //////console.log(userDetail)
-      let res = fetchStudents(`${userDetail.id}`).then((res) =>
-        console.log("total tutors", res)
-      );
+      let res = fetchStudents(`${userDetail.id}`).then((res) => {
+
+      });
     } catch (e) {
       //////console.log(e)
     }
@@ -179,6 +179,11 @@ export default function Calendar() {
       setcurrentUserTImeZone(timeZoneUser)
   }, [timeZoneUser])
 
+  // console.log(moment.tz.names())
+  // const regex = /east/i;
+  // const eastStrings = c.filter(str => regex.test(str));
+  // console.log(eastStrings)
+
   const fetchSessions = (id, role) => {
     // //////console.log(id)
     setSearchedUser({ id, role });
@@ -209,15 +214,18 @@ export default function Calendar() {
         // let startDate = new Date(session.date).toUTCString()
         startHours !== NaN && startDate.setHours(startHours);
         startMinutes !== NaN && startDate.setMinutes(startMinutes);
-        console.log('offset----', offset);
+        // console.log('offset----', offset);
+        let tz = getFullTimeZone(session.timeZone)
+        // console.log('tz---', tz);
+
         let updatedDate = new Date(
           new Date(
             startDate.toLocaleString("en-US", {
-              timeZone: session.timeZone
+              timeZone: tz
             })
           )
         );
-        console.log('session----', session);
+        // console.log('session----', session);
         return {
           ...session,
           updatedDate,
@@ -268,19 +276,36 @@ export default function Calendar() {
         startMinutes !== NaN && startDate.setMinutes(startMinutes);
         // //////console.log('START DATE',  startDate);
         var userTimezoneOffset = startDate.getTimezoneOffset() * 60000;
+        const timezone = session.timeZone; // Example: Eastern Time (ET)
+
+        // Get the timezone's offset from UTC in minutes
+        const offsetInMinutes = moment.tz(timezone).utcOffset();
+
+        // Convert the offset to milliseconds
+        const offsetInMilliseconds = offsetInMinutes * 60 * 1000;
+
+        console.log(`Offset from UTC for ${timezone} in milliseconds: ${offsetInMilliseconds}`);
         // //////console.log('userTimezoneOffset', userTimezoneOffset);
-        getStartDate(startDate, userTimezoneOffset, session.timeZone);
-        let up = getStartDate(startDate, userTimezoneOffset, session.timeZone);
+        // getStartDate(startDate, userTimezoneOffset, session.timeZone);
+        let up = getStartDate(startDate, userTimezoneOffset, session.timeZone, offsetInMilliseconds);
+        // console.log('session data---', session.date);
+        // console.log('start date---', startDate);
+        // console.log('updated date---', up);
+        // console.log('timeZone---', session.timeZone);
+        // console.log('startHours---', startHours);
+        // console.log('startMinutes---', startMinutes);
         const startUtc = up.toUTCString();
+        console.log('startUtc---', startUtc);
+
 
         // //////console.log('START DATE', startDate.toDateString());
         // //////console.log('startDate', new Date(startDate.getTime() - userTimezoneOffset + 9 * 3600000))
         // console.log('startUtc', startUtc);
         // console.log('startUtc', startUtc);
-        const dsttz = moment.tz(startDate, session.timeZone).format("zz");
-        const dstdate = moment
-          .tz(startDate, session.timeZone)
-          .format("YYYY-MM-DD HH:mm ZZ");
+        // const dsttz = moment.tz(startDate, session.timeZone).format("zz");
+        // const dstdate = moment
+        //   .tz(startDate, session.timeZone)
+        //   .format("YYYY-MM-DD HH:mm ZZ");
         // const dstdate = moment.tz(startDate, session.timeZone).format(moment.defaultFormat)
 
         // //////console.log('dsttz', dsttz)
@@ -300,7 +325,8 @@ export default function Calendar() {
         const endDateUtc = getStartDate(
           endDate,
           userTimezoneOffset,
-          session.timeZone
+          session.timeZone,
+          offsetInMilliseconds
         );
         // console.log("SessionTimings", session, startDate, endDateUtc, strtTime12HFormat)
         let eventObj = {
@@ -337,9 +363,9 @@ export default function Calendar() {
   }, [currentUserTImeZone]);
 
   useEffect(() => {
-   
-    if (persona === "admin" || ( persona === "tutor"&&organization && organization?.settings?.permissions?.length>5&& organization?.settings?.permissions[5]?.choosedValue===true)) {
-      console.log("org tutor",organization)
+
+    if (persona === "admin" || (persona === "tutor" && organization && organization?.settings?.permissions?.length > 5 && organization?.settings?.permissions[5]?.choosedValue === true)) {
+      // console.log("org tutor", organization)
       setIsEditable(true);
     } else {
       setIsEditable(false);
@@ -464,12 +490,15 @@ export default function Calendar() {
 
                   var userTimezoneOffset =
                     startDate.getTimezoneOffset() * 60000;
+                  const timezone = session.timeZone;
+                  const offsetInMinutes = moment.tz(timezone).utcOffset();
+                  const offsetInMilliseconds = offsetInMinutes * 60 * 1000;
 
-                  getStartDate(startDate, userTimezoneOffset, session.timeZone);
                   let up = getStartDate(
                     startDate,
                     userTimezoneOffset,
-                    session.timeZone
+                    session.timeZone,
+                    offsetInMilliseconds
                   );
                   const startUtc = up.toUTCString();
 
@@ -489,7 +518,8 @@ export default function Calendar() {
                   const endDateUtc = getStartDate(
                     endDate,
                     userTimezoneOffset,
-                    session.timeZone
+                    session.timeZone,
+                    offsetInMilliseconds
                   );
 
                   // //////console.log(resp.data.data.user.assiginedStudents);
@@ -555,20 +585,7 @@ export default function Calendar() {
   }, []);
 
   useEffect(() => {
-    if (timeZone == 'Asia/Kolkata')
-      setnewTimeZone('IST')
-    if (timeZone == 'US/Alaska')
-      setnewTimeZone('AKST')
-    if (timeZone == 'US/Central')
-      setnewTimeZone('CST')
-    if (timeZone == 'US/Eastern')
-      setnewTimeZone('EST')
-    if (timeZone == 'US/Hawaii')
-      setnewTimeZone('HST')
-    if (timeZone == 'US/Mountain')
-      setnewTimeZone('MST')
-    if (timeZone == 'US/Pacific')
-      setnewTimeZone('PST')
+    setnewTimeZone(timeZone)
   }, [timeZone])
 
   const getDayHeaders = (arg) => {
@@ -699,10 +716,9 @@ export default function Calendar() {
     }
     let date = new Date(arg.date);
     let currentDate = new Date();
-    // currentDate.setHours(0, 0, 0, 0);
-    //  console.log(date - currentDate);
+    currentDate.setHours(0, 0, 0, 0);
     // if (!date || date - currentDate <= 0) {
-    //   alert('Cant set events on past date')
+    //   alert('Cannot schedule events on past date')
     //   return
     // }
 
@@ -718,7 +734,7 @@ export default function Calendar() {
     } else {
       setDefaultEventData({ date: arg.date, timeZone });
     }
-    if (persona === "admin" || ( persona === "tutor"&&organization && organization?.settings?.permissions?.length>5&& organization?.settings?.permissions[5]?.choosedValue===true)) {
+    if (persona === "admin" || (persona === "tutor" && organization && organization?.settings?.permissions?.length > 5 && organization?.settings?.permissions[5]?.choosedValue === true)) {
       setEventModalActive(true);
     }
 
@@ -857,11 +873,15 @@ export default function Calendar() {
           startHours !== NaN && startDate.setHours(startHours);
           startMinutes !== NaN && startDate.setMinutes(startMinutes);
           var userTimezoneOffset = startDate.getTimezoneOffset() * 60000;
-          getStartDate(startDate, userTimezoneOffset, session.timeZone);
+          const timezone = session.timeZone;
+          const offsetInMinutes = moment.tz(timezone).utcOffset();
+          const offsetInMilliseconds = offsetInMinutes * 60 * 1000;
+
           let up = getStartDate(
             startDate,
             userTimezoneOffset,
-            session.timeZone
+            session.timeZone,
+            offsetInMilliseconds
           );
           const startUtc = up.toUTCString();
           // //////console.log('START DATE', startDate);
@@ -878,7 +898,8 @@ export default function Calendar() {
           const endDateUtc = getStartDate(
             endDate,
             userTimezoneOffset,
-            session.timeZone
+            session.timeZone,
+            offsetInMilliseconds
           );
           let eventObj = {
             id: session._id,
@@ -942,7 +963,7 @@ export default function Calendar() {
     const session = eventDetails.find(
       (e) => e._id === info.event._def.publicId
     );
-    if (persona === "admin" || ( persona === "tutor"&&organization && organization?.settings?.permissions?.length>5&& organization?.settings?.permissions[5]?.choosedValue===true)) {
+    if (persona === "admin" || (persona === "tutor" && organization && organization?.settings?.permissions?.length > 5 && organization?.settings?.permissions[5]?.choosedValue === true)) {
       setUpdateEventModalActive(true);
       setSessionToUpdate(session);
     } else {
@@ -979,9 +1000,20 @@ export default function Calendar() {
         // let updatedDate = new Date(item?.start).toLocaleString();
         // let updatedDateEnd = new Date(item?.updatedDateEnd).toLocaleString(
         // );
-        // console.log('tz---', timeZone);
-        let updatedDate = new Date(item.updatedDate).toLocaleString('en-US', { timeZone })
-        let updatedDateEnd = new Date(item.updatedDateEnd).toLocaleString('en-US', { timeZone })
+        // let updatedDate = new Date(item.updatedDate).toLocaleString('en-US', { timeZone })
+        const utcDate = moment(item.updatedDate, 'ddd, DD MMM YYYY HH:mm:ss [GMT]').utc().format();
+        const timeZoneOffset = moment.tz(timeZone).utcOffset();
+        const convertedDate = moment.tz(utcDate, timeZone).format()
+        // Convert the updatedDate to UTC
+
+        let updatedDate = moment(item.updatedDate).tz(timeZone).format('YYYY-MM-DD HH:mm:ss');
+        let updatedDateEnd = moment(item.updatedDateEnd).tz(timeZone).format('YYYY-MM-DD HH:mm:ss');
+        // let updatedDateEnd = new Date(item.updatedDateEnd).toLocaleString('en-US', { timeZone })
+
+        // console.log('convertedDate---', moment.tz(item.updatedDate, 'DD/MM/YYYY h:mm a', timeZone));
+        // console.log('timeZone---', timeZone);
+        console.log('convertedDate---', convertedDate);
+        console.log('item date---', item.updatedDate);
         // let updatedDate = new Date(item?.updatedDate).toLocaleString("en-US", {
         //   timeZone,
         // });
@@ -1175,6 +1207,7 @@ export default function Calendar() {
   // console.log(' organization?.settings?.permissions-----', organization?.settings?.permissions);
   // console.log('events-----', events);
   //console.log('eventDetails',colorMapping,insightData,userDetail,associatedStudents);
+  const timeZones = moment.tz.names(); // String[]
   const navigate = useNavigate()
   return (
     <>
@@ -1683,8 +1716,10 @@ export default function Calendar() {
                   //  optionData={['local', 'America/New_York']}
                   // optionData={['Asia/Calcutta', ...moment.tz.zonesForCountry('US')]}
                   // optionData={['Asia/Calcutta', ...moment.tz.zonesForCountry('US')]}
-                  optionData={timeZones2}
+                  optionData={timeZones}
                   onChange={(val) => {
+                    setTimeZone(val)
+                    return
                     if (val == 'IST') setTimeZone('Asia/Kolkata')
                     if (val == 'CST') setTimeZone('US/Central')
                     if (val == 'AKST') setTimeZone('US/Alaska')

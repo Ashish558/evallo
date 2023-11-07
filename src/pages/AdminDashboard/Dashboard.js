@@ -7,6 +7,7 @@ import { faQuestionCircle } from "@fortawesome/free-regular-svg-icons";
 import icon from "../../assets/images/Evallo.png";
 import styles from "./style.module.css";
 import userLogo from '../../assets/icons/users.svg'
+import tooltip from '../../assets/icons/tooltip_dashboard.svg'
 import Table from "../../components/Table/Table";
 import ActionLog from "./ActionLog";
 import Table2 from "../SuperadminDashboard/Table/table"
@@ -338,16 +339,14 @@ const Dashboard = () => {
                       <p className="   font-medium text-base-17-5">Completed Revenue</p>
                       <div className="group relative">
                         <p>
-                          <FontAwesomeIcon
-                            icon={faQuestionCircle}
-                          ></FontAwesomeIcon>
+                     <img className="w-[17.8px] h-[17.8px]"  src={tooltip} alt="" />
                         </p>
 
-                        <span className="absolute  -top-10 left-10 z-20 w-[333px]  scale-0 rounded-[13px] bg-[rgba(0,0,0,0.80)] text-white group-hover:scale-100 whitespace-normal py-5 px-3">
-                          <h3 className="text-[#22A699] text-[0.83vw] py-1 font-medium mb-1">
+                        <span className="absolute  -top-10 left-10 z-20 w-[333.3px]  rounded-[13px] bg-[rgba(0,0,0,0.80)] text-white  whitespace-normal py-5 px-3 scale-0 group-hover:scale-100">
+                          <h3 className="text-[#22A699] text-base mb-3 font-medium ">
                             Completed Revenue
                           </h3>
-                          <span className="font-light text-[0.69vw]">
+                          <span className="font-light text-[13.3px]">
                             This value is calculated by adding up all the revenue
                             generated from sessions that have been marked as
                             “Completed” for the selected date range.
@@ -370,16 +369,14 @@ const Dashboard = () => {
                     <div className="flex justify-between rounded-md items-center mb-[6px] text-[#26435F] text-sm ">
                       <p className="font-medium text-base-17-5">Leaked Revenue</p>
                       <div className="group relative">
-                        <p>
-                          <FontAwesomeIcon
-                            icon={faQuestionCircle}
-                          ></FontAwesomeIcon>
+                      <p>
+                     <img className="w-[18.45px] h-[17.8px]"  src={tooltip} alt="" />
                         </p>
-                        <span className="absolute  -top-10 left-10 z-20 w-[333px]  scale-0 rounded-[13px] bg-[rgba(0,0,0,0.80)]  text-white group-hover:scale-100 whitespace-normal py-5 px-3">
-                          <h3 className="text-[#FF5175] text-[0.83vw] py-1 font-medium mb-1">
+                        <span className="absolute  -top-10 left-10 z-20 w-[333.3px]  scale-0 rounded-[13px] bg-[rgba(0,0,0,0.80)]  text-white group-hover:scale-100 whitespace-normal py-5 px-3">
+                          <h3 className="text-[#FF5175] text-base font-medium mb-3">
                             Leaked Revenue
                           </h3>
-                          <span className="font-light text-[0.69vw]">
+                          <span className="font-light text-[13.3px]">
                             This value is calculated by adding up all the revenue
                             lost from sessions that have been marked as “Canceled”
                             or “Partial” for the selected date range.
@@ -402,16 +399,14 @@ const Dashboard = () => {
                     <div className="flex justify-between items-center mb-[6px] text-[#26435F] text-sm">
                       <p className="font-medium text-base-17-5">Impending Revenue</p>
                       <div className="group relative">
-                        <p>
-                          <FontAwesomeIcon
-                            icon={faQuestionCircle}
-                          ></FontAwesomeIcon>
+                      <p>
+                     <img className="w-[18.45px] h-[17.8px]"  src={tooltip} alt="" />
                         </p>
-                        <span className="absolute  -top-10 left-10 z-20 w-[333px]  scale-0 rounded-[13px] bg-[rgba(0,0,0,0.80)]  text-white group-hover:scale-100 whitespace-normal py-5 px-3">
-                          <h3 className="text-[#7152EB] text-[0.83vw] py-1 font-medium mb-1">
+                        <span className="absolute  -top-10 left-10 z-20 w-[333.3px]  scale-0 rounded-[13px] bg-[rgba(0,0,0,0.80)]  text-white group-hover:scale-100 whitespace-normal py-5 px-3">
+                          <h3 className="text-[#7152EB] text-base font-medium mb-3">
                             Impending Revenue
                           </h3>
-                          <span className="font-light text-[0.69vw] ">
+                          <span className="font-light text-[13.3px] ">
                             This value is calculated by adding up all the revenue
                             lost from sessions that have been marked as
                             “Scheduled” for the selected date range.
@@ -634,6 +629,7 @@ const Dashboard = () => {
                   <p>Coming soon</p>
                 </div> */}
                 <Table
+                noArrow={true}
                 headerWidth="!px-1.5"
                 dummyRowStarClients={popularServices}
                   data={[]}
@@ -736,7 +732,7 @@ const Dashboard = () => {
         </div>
         <div className=" relative z-[50000] w-[90vw] mx-auto  mt-[13px] text-[#FFA28D] ">
           <div className=" relative z-[50000] flex justify-between items-center  translate-y-[15px] mb-[10px]">
-            <p className="font-bold uppercase mb-1 text-base-17-5">Tutor Performence Overview </p>
+            <p className="font-bold uppercase mb-1 text-base-17-5">Tutor Performance Overview </p>
 
             <RangeDate optionClassName="!w-min"
               inputContainerClassName="!w-min " handleRangeData={handleTutorPerformance} />
@@ -746,7 +742,7 @@ const Dashboard = () => {
         <section className="mx-auto  w-[90vw]">
 
           <Table
-            headerWidth="w-[110px] whitespace-normal"
+            headerWidth="w-[150px] whitespace-normal !px-5"
             data={tutorPerformanceData}
             tableHeaders={tutorTableHeaders}
             maxPageSize={5}

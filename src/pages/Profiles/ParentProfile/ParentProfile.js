@@ -559,17 +559,17 @@ const [toEdit, setToEdit] = useState({
   return (
     <>
       <div className={`w-[83.3vw] mx-auto pb-[70px]`}>
-        <p className="text-[#24A3D9] !my-[calc(50*0.0522vw)] text-base-20">
+        <p className="text-[#24A3D9] !my-[calc(50*0.0522vw)] text-base-20 relative z-[55]">
           {persona === "admin" ?
             <span >
-              <span className="!cursor-pointer" onClick={() => navigate('/')}>
+              <span  onClick={() => navigate('/')} className=" cursor-pointer">
                 {organization?.company +
                   "  >  " +
                   firstName +
                   "  " +
                   lastName
                 }  </span>
-              <span className="!cursor-pointer" onClick={() => navigate('/users')}>{"  >  CRM > "}</span>
+              <span onClick={() => navigate('/users')} className="!cursor-pointer" >{"  >  CRM > "}</span>
               <span className="font-semibold">{
                 user?.firstName +
                 " " +

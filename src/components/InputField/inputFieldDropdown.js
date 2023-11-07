@@ -5,6 +5,8 @@ import { useEffect } from "react";
 import useOutsideAlerter from "../../hooks/useOutsideAlerter";
 import downArrow from "../../assets/icons/signup-dropdown.svg";
 import upArrow from "../../assets/icons/upArrow.svg";
+import styles from './styles.module.css'
+
 export default function InputFieldDropdown({
   parentClassName,
   inputContainerClassName,
@@ -175,7 +177,7 @@ export default function InputFieldDropdown({
         {prefix && <span className="mr-3">{prefix}</span>}
         <input
           className={`outline-0 w-full pl-2 text-sm ${inputClassName ? inputClassName : ""
-            } ${disabled === true ? "cursor-not-allowed" : ""} text-base-17-5`}
+            } ${disabled === true ? "cursor-not-allowed" : ""} text-base-17-5 ${styles['input']} `}
           placeholder={placeholder}
           type={inputType ? inputType : "text"}
           onChange={(e) => (onChange !== undefined ? onChange(e) : "")}

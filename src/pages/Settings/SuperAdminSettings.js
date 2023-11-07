@@ -52,6 +52,7 @@ import OrgDefaultContent from "./Tabs/OrgDefaultContent/OrgDefaultContent";
 import { timeZones } from "../../constants/constants";
 import InputSelect from "../../components/InputSelect/InputSelect";
 import ToogleBar from "../../components/SettingsCard/ToogleBar";
+import moment from "moment-timezone";
 
 const initialState = {
   name: "",
@@ -81,7 +82,7 @@ const initialTabs = [
   {
     Icon: org2,
     Icon2: org1,
-    name: "Org Default",
+    name: "Org Defaults",
     selected: false,
   },
   {
@@ -97,6 +98,7 @@ export default function SuperAdminSettings() {
   const [tagModalActive, setTagModalActive] = useState(false);
   const [addCodeModalActive, setAddCodeModalActive] = useState(false);
   const [subModalData, setSubModalData] = useState(subModalInitialState);
+  const timeZones = moment.tz.names(); // String[]
 
   const [addTestModalActive, setAddTestModalActive] = useState(false);
   const [saveLoading, setSaveLoading] = useState(false);
@@ -1682,7 +1684,7 @@ export default function SuperAdminSettings() {
             /> */}
 
             <SettingsCard
-              titleClassName="text-base-20"
+              titleClassName="text-base-20 !text-[#26435F]"
               title="Session Tags & Reconciliation"
               className={styles["bordered-settings-container"]}
               body={
@@ -1773,7 +1775,7 @@ export default function SuperAdminSettings() {
               }
             />
            <SettingsCard
-              titleClassName="text-base-20"
+              titleClassName="text-base-20 !text-[#26435F]"
               title="Edit Announcements"
               toggle={{ value: toggleImage.offer, key: "offer" }}
               onToggle={onToggle}
@@ -2006,7 +2008,7 @@ export default function SuperAdminSettings() {
               }
             />
             <div className="flex items-center pb-2 text-[#26435F] font-medium text-xl">
-              <p className="pr-2">Set Permissions </p>
+              <p className="pr-2 !text-[#26435F]">Set Permissions </p>
               <p>
                 <img src={questionMark} alt="" />
               </p>
@@ -2022,7 +2024,7 @@ export default function SuperAdminSettings() {
                     item.choosedValue === false ? (
                       <div
                         key={id}
-                        className={`${id===3?"!opacity-[0.7]" :""} pt-[34px] pb-[30px] border-b-2 border-[#CBD6E2] text-[#24A3D9] font-medium text-[17.5px] flex items-center justify-between`}
+                        className={` pt-[34px] pb-[30px] border-b-2 border-[#CBD6E2] text-[#24A3D9] font-medium text-[17.5px] flex items-center justify-between`}
                       >
                         <p>{renderColoredText(item.name)}</p>
 
@@ -2041,7 +2043,7 @@ export default function SuperAdminSettings() {
                               handlePermissionOption(e.target.value, item._id)
                             }
                             id="option"
-                            className="border border-gray-300 px-2  rounded-md text-[#26435F] bg-[#E9ECEF]"
+                            className="border border-gray-300 px-2 w-[200px]  rounded-md text-[#26435F] bg-[#E9ECEF] py-1"
                           >
                             <option value={item.choosedValue}>
                               {`   ${

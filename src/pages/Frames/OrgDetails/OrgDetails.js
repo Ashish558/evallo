@@ -50,10 +50,21 @@ export default function OrgDetails({
 
   const handleSubmit = () => {
     if (!handleEmpty(values?.company) || !handleEmpty(values?.companyType) || !handleEmpty(values?.website) || !handleEmpty(values?.address)
-      || !handleEmpty(values?.country) || !handleEmpty(values?.city) || !handleEmpty(values?.state) || !handleEmpty(values?.zip)) {
+      || !handleEmpty(values?.country) || !handleEmpty(values?.city) || (states?.length>0 &&!handleEmpty(values?.state)) || !handleEmpty(values?.zip)) {
       alert("Please Fill All The Fields!")
       return
+    } 
+   let alphadigit= new RegExp("^[a-zA-Z0-9 ]*[a-zA-Z][a-zA-Z0-9 ]*$");
+    var regex = /^\d+$/;
+    if(!regex.test(values?.zip)&&values?.zip?.length>10){
+      alert("Zip code should conatain digits only!")
+   return 
     }
+    if (!alphadigit.test(values?.company) || !alphadigit.test(values?.address)
+    || !alphadigit.test(values?.country) || !alphadigit.test(values?.city) || !alphadigit.test(values?.state)) {
+    alert("Please fill valid details!")
+    return
+  } 
     setFrames((prev) => {
       console.log(prev);
       return {
@@ -74,11 +85,9 @@ export default function OrgDetails({
     const currentState = state[0]?.states;
 
     setStates(currentState);
-    console.log({ state });
   };
 
   useEffect(() => {
-    console.log("ref", { cc: values.country });
     if (values?.country) handleState(values?.country);
   }, [values.country, country]);
 

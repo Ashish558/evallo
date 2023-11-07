@@ -199,7 +199,9 @@ export default function EventModal({
             data.timeZone === '' ||
             data.date === '' ||
             data.session === '' ||
-            data.service === ''
+            data.service === '' ||
+            data.tutorId === '' ||
+            data.studentId === ''
          ) {
             setSubmitDisabled(true)
          } else {
@@ -220,6 +222,8 @@ export default function EventModal({
             data.session === '' ||
             data.service === '' ||
             data.endDate === '' ||
+            data.tutorId === '' ||
+            data.studentId === '' ||
             day.length === 0
          ) {
             setSubmitDisabled(true)
@@ -294,8 +298,8 @@ export default function EventModal({
       }
    }, [defaultEventData, isUpdating])
    const [stopUpdating, setStopUpdating] = useState(true)
-   useEffect(() => {
 
+   useEffect(() => {
       if (organization?.settings) {
          if (persona === "tutor" && organization && organization?.settings?.permissions?.length > 5 && organization?.settings?.permissions[5]?.choosedValue === false) {
             setStopUpdating(false)
@@ -330,7 +334,7 @@ export default function EventModal({
             `${sessionToUpdate.time.start.time} ${sessionToUpdate.time.start.timeType}`
          );
          // console.log(startTime)
-         console.log("isUpdating")
+         // console.log("isUpdating")
          let startDate = new Date(sessionToUpdate.date)
          const offset = startDate.getTimezoneOffset() * 60000
          if (offset > 0) {
@@ -357,7 +361,7 @@ export default function EventModal({
             rescheduling: sessionToUpdate.resheduling,
             service: sessionToUpdate.service,
             sessionNotes: sessionToUpdate.sessionNotes,
-
+            sessionTags: sessionToUpdate.sessionTags,
             specialization: sessionToUpdate.specialization,
          });
 
@@ -380,7 +384,7 @@ export default function EventModal({
    }, [sessionToUpdate]);
 
    useEffect(() => {
-      if (isSettingsLoaded && isUpdating) {
+      if (isUpdating) {
          setIsProductive(
             getCheckedItems(
                [sessionToUpdate.sessionProductive],
@@ -395,7 +399,7 @@ export default function EventModal({
             updateCheckedArr(sessionToUpdate.studentMood, studentMoods)
          );
       }
-   }, [sessionToUpdate, isSettingsLoaded]);
+   }, [sessionToUpdate]);
 
    const updateCheckedArr = (strArr, arr, setArr) => {
       return arr.map((item) => {
@@ -525,7 +529,9 @@ export default function EventModal({
       // }).catch(err => {
       //    console.log(err)
       // })
-
+      // console.log('s name', data.studentId);
+      // console.log('t name', data.tutorId);
+      // return
 
       if (!isUpdating && data.recurring === true) {
          if (new Date(data.endDate) < new Date()) {
@@ -630,24 +636,27 @@ export default function EventModal({
          console.log('dates', dates);
       }
 
-      if (reqBody.timeZone === 'CST') {
-         reqBody.timeZone = "US/Central"
-      }
-      if (reqBody.timeZone === 'IST') {
-         reqBody.timeZone = "Asia/Kolkata"
-      }
-      if (reqBody.timeZone === 'AKST') {
-         reqBody.timeZone = "US/Alaska"
-      }
-      if (reqBody.timeZone === 'HST') {
-         reqBody.timeZone = "US/Hawaii"
-      }
-      if (reqBody.timeZone === 'MST') {
-         reqBody.timeZone = "US/Mountain"
-      }
-      if (reqBody.timeZone === 'PST') {
-         reqBody.timeZone = "US/Pacific"
-      }
+      // if (reqBody.timeZone === 'CST') {
+      //    reqBody.timeZone = "US/Central"
+      // }
+      // if (reqBody.timeZone === 'EST') {
+      //    reqBody.timeZone = "US/Eastern"
+      // }
+      // if (reqBody.timeZone === 'IST') {
+      //    reqBody.timeZone = "Asia/Kolkata"
+      // }
+      // if (reqBody.timeZone === 'AKST') {
+      //    reqBody.timeZone = "US/Alaska"
+      // }
+      // if (reqBody.timeZone === 'HST') {
+      //    reqBody.timeZone = "US/Hawaii"
+      // }
+      // if (reqBody.timeZone === 'MST') {
+      //    reqBody.timeZone = "US/Mountain"
+      // }
+      // if (reqBody.timeZone === 'PST') {
+      //    reqBody.timeZone = "US/Pacific"
+      // }
 
       // setLoading(false)
       // return
@@ -655,7 +664,7 @@ export default function EventModal({
       if (isUpdating) return updateSession(reqBody, isUpdatingAll, sDate);
 
       submitSession(reqBody).then((res) => {
-         console.log(res)
+         // console.log(res)
          setLoading(false)
          if (res?.error?.data?.message) {
             alert("Error occured while scheduling a session , please try again!")
@@ -667,7 +676,7 @@ export default function EventModal({
 
       })
    }
-   // console.log(data);
+   //console.log(data);
    const handleFeedbackSubmit = (rating) => {
       // console.log(rating)
       // console.log(sessionToUpdate)
@@ -739,11 +748,12 @@ export default function EventModal({
 
       }
    }, [tutorId2])
+
    useEffect(() => {
       // if (persona === 'tutor') {
       // console.log(data.tutorId);
       if (!data.tutorId) return
-      console.log("tutorDetails", data.tutorId)
+      // console.log("tutorDetails", data.tutorId)
       getUserDetail({ id: data.tutorId })
          .then(res => {
             if (res.error) {
@@ -753,16 +763,16 @@ export default function EventModal({
             // console.log(res.data.data);
             let details = res.data.data.details
             if (details === null) return
-            if (details.tutorServices.length === 0) return alert('Tutor does not have any services')
-            let services = details.tutorServices.map(item => item.service)
+            if (details?.tutorServices?.length === 0) return alert('Tutor does not have any services')
+            let services = details?.tutorServices?.map(item => item.service)
             let tutorServs = []
             allServicesAndSpec.forEach(item => {
                if (services.includes(item.service)) {
                   tutorServs.push(item.service)
                }
             })
-            console.log('servicesallServicesAndSpec', allServicesAndSpec);
-            console.log('services', details.tutorServices, services);
+            // console.log('servicesallServicesAndSpec', allServicesAndSpec);
+            // console.log('services', details.tutorServices, services);
             setServicesAndSpecialization(tutorServs)
          })
       // }
@@ -778,8 +788,8 @@ export default function EventModal({
             specs = item.specialization
          }
       })
-      console.log('spec', specs)
-      console.log('servicesAndSpecialization', servicesAndSpecialization, specs)
+      // console.log('spec', specs)
+      // console.log('servicesAndSpecialization', servicesAndSpecialization, specs)
       setSpecializations(specs)
    }, [servicesAndSpecialization, data.service, allServicesAndSpec])
 
@@ -1109,7 +1119,7 @@ export default function EventModal({
                                     className="bg-lightWhite w-full outline-0 px-5 py-4 rounded"
                                  ></textarea>
                                  <p className="text-right text-xs text-primary-80">
-                                    0/200
+                                    {data.sessionNotes ? data.sessionNotes.length : '0'}/200
                                  </p>
                               </div>
 
@@ -1209,7 +1219,7 @@ export default function EventModal({
                                     children="Schedule"
                                     className="text-lg py-3 !text-white font-medium px-7 h-[50px] w-[140px] disabled:opacity-60"
                                     onClick={() => handleSubmit()}
-                                    disabled={false}
+                                    disabled={submitDisabled}
                                     loading={loading}
                                  />
                            }

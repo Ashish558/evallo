@@ -206,7 +206,7 @@ const AllOrgs = () => {
             inputClassName="!text-[#667085] placeholder:!text-[#667085]"
               placeholder="Search"
               parentClassName="!text-[#667085]"
-              inputContainerClassName="w-[11vw] bg-white  border !text-[#667085] !rounded-lg border-[1.33px_solid_#EBEBEB] !h-[53.3px] !py-1"
+              inputContainerClassName="w-[11.09vw] bg-white  border !text-[#667085] !rounded-lg border-[1.33px_solid_#EBEBEB] !h-[53.3px] !py-1"
               Icon={searchIcon}
               value={values.search}
               onChange={(e) =>
@@ -225,7 +225,7 @@ const AllOrgs = () => {
               value={values.orgType}
               optionData={orgType}
               placeholderClass="!break-words  !text-wrap !whitespace-pre-line "
-              inputContainerClassName="w-[11.5vw]  break-words bg-white  !text-wrap  border !text-[#667085] !rounded-lg border-[1.33px_solid_#EBEBEB] text-xs !h-[53.3px]"
+              inputContainerClassName="w-[9.6875vw]  break-words bg-white  !text-wrap  border !text-[#667085] !rounded-lg border-[1.33px_solid_#EBEBEB] text-xs !h-[53.3px]"
               
               optionClassName=" py-[3px]  text-[#667085] font-normal"
               onChange={(e) =>
@@ -237,13 +237,13 @@ const AllOrgs = () => {
               error={error.orgType}
             />
             <InputField
-              placeholder="Join Date"
+              placeholder="Join date"
            
               parentClassName=" "
               refS={inputRef}
              
               inputClassName="text-[0.8333333333vw] !text-[#667085] placeholder:!text-[#667085] hidden"
-              inputContainerClassName="bg-white  border !text-[#667085] !rounded-lg border-[1.33px_solid_#EBEBEB] w-[13vw] h-[49px]"
+              inputContainerClassName="bg-white  border !text-[#667085] !rounded-lg border-[1.33px_solid_#EBEBEB] w-[13vw] !h-[53.3px]"
               value={values.joinDate}
               onChange={(e) =>
                 setValues({
@@ -264,10 +264,10 @@ const AllOrgs = () => {
             downArrow22={true}
               placeholder="Region"
               parentClassName="text-xs text-[#667085]"
-              inputContainerClassName="w-[11vw] bg-white border !text-[#667085] !rounded-lg border-[1.33px_solid_#EBEBEB] !h-[53.3px] "
+              inputContainerClassName="w-[9.6875vw] bg-white border !text-[#667085] !rounded-lg border-[1.33px_solid_#EBEBEB] !h-[53.3px] "
               optionData={country}
               optionType={"object"}
-              optionClassName="w-[11vw] py-[3px] w-[110px] "
+              optionClassName="w-[9.6875vw] py-[3px] w-[110px] "
               placeholderClass="!whitespace-normal"
               value={values.region}
               onChange={(e) =>
@@ -284,8 +284,8 @@ const AllOrgs = () => {
               optionData={organization?.settings?.subscriptionCode?.map(it=>
                 it?.code)}
               parentClassName="text-xs text-[#667085]"
-              inputContainerClassName="w-[11vw] bg-white border !text-[#667085] !rounded-lg border-[1.33px_solid_#EBEBEB] !h-[53.3px]"
-              optionClassName="w-[11vw] py-[3px] "
+              inputContainerClassName="w-[9.6875vw] bg-white border !text-[#667085] !rounded-lg border-[1.33px_solid_#EBEBEB] !h-[53.3px]"
+              optionClassName="w-[9.6875vw] py-[3px] "
               value={values.subscription}
               onChange={(e) =>
                 setValues({
@@ -297,9 +297,9 @@ const AllOrgs = () => {
             />
             <InputField
               placeholder="# of Students"
-              parentClassName="w-full w-[11vw] py-1 text-[#667085]"
+              parentClassName="w-full w-[9.6875vw] py-1 text-[#667085]"
               inputContainerClassName="bg-white border !text-[#667085] !rounded-lg border-[1.33px_solid_#EBEBEB] !h-[53.3px] text-[#667085]"
-              optionClassName="w-[11vw] py-1"
+              optionClassName="w-[9.6875vw] py-1"
               inputClassName={"placeholder:!text-[#667085]"}
               value={values.numberOfStudent}
               onChange={(e) =>
@@ -345,6 +345,7 @@ const AllOrgs = () => {
         <div className="pl-[5.46875vw] overflow-x-auto scrollbar-content scroll-mt-3 pr-7 mt-2" >
           <Table
             noArrow={false}
+            headerWidth="pl-6 !pr-0"
             data={adminData}
             tableHeaders={frameHeaderNames}
             maxPageSize={100}
