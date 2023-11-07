@@ -399,7 +399,7 @@ export default function AllTests({isOwn,setTotaltest,studentId,fromProfile}) {
             optionData={optionData}
 
             placeholder="Search"
-            parentClassName="w-290 mr-4"
+            parentClassName="w-[375px] mr-4"
             inputClassName="placeholder:text-[#667085] pl-2 text-base-17-5"
             inputContainerClassName="bg-white border pt-3.5 pb-3.5 !rounded-lg"
             type="select"
@@ -408,8 +408,8 @@ export default function AllTests({isOwn,setTotaltest,studentId,fromProfile}) {
             className="bg-[#FFA28D] py-[10px] px-6 flex items-center text-white  rounded-lg  text-[15px] text-base-15"
             onClick={() => setModalActive(true)}
           >
-            <span className="pt-1"> Add New Material</span>
-            <img src={AddIcon} className="ml-1 " alt="add-icon" />
+            <span className="pt-0 text-base-20"> Add New Material</span>
+            <img src={AddIcon} className="ml-1 h-[20px]" alt="add-icon" />
           </button>
         </div>
 
@@ -432,29 +432,29 @@ export default function AllTests({isOwn,setTotaltest,studentId,fromProfile}) {
           crossBtn={true}
           title="Upload New Material"
           titleClassName="text-start text-sm mb-3"
-          classname={"max-w-[630px] mx-auto"}
+          classname={"max-w-[600px] mx-auto"}
           primaryBtn={{
             text: "Create  ",
             form: "add-test-form",
             onClick: handleSubmit,
             type: "submit",
             className:
-              "!ml-5   py-1 mr-auto mt-7  flex gap-2  h-[49px] disabled:opacity-80 flex items-center !text-[0.8333vw] !font-medium  inline-block bg-[#FFA28D]",
+              "!ml-5 text-sm  py-1 mr-auto mt-7 min-w-[120px]  flex gap-2 px-4  h-[49px] disabled:opacity-80 flex items-center  text-sm !font-medium  inline-block bg-[#FFA28D]",
             disabled: submitBtnDisabled,
             loading: loading,
-            icon: <img src={check} alt="check" className="ml-2 inline-block" />,
+            icon: <img src={check} alt="check" className="ml-2 inline-block mt-[-8px]" />,
           }}
           otherBt={
             <div id={styles.handleFileUpload}>
               <div
                 id={styles.uploadButtons}
-                className="mt-7   px-0  gap-5 flex justify-between"
+                className="mt-7   px-0  gap-5 flex justify-between  "
               >
                 {modalData.testType != 'DSAT®' ? <div id={styles.pdfUpload}>
                   <label
                     htmlFor="pdf"
                     className={`${pdfFile !== null ? "bg-[#26435F] " : "bg-[#26435F] "
-                      } w-[8.9vw] min-w-[160px] text-sm !font-medium`}
+                      } w-[8.9vw] min-w-[160px] text-sm !font-medium text-center pl-5 flex justify-center items-center`}
                   >
                     Upload PDF
                     <img src={upload} alt="Upload" />
@@ -477,7 +477,7 @@ export default function AllTests({isOwn,setTotaltest,studentId,fromProfile}) {
                     className={`${csvFile !== null && styles.fileUploaded
                       ? "bg-[#26435F] "
                       : "bg-[#26435F] "
-                      } w-[11vw] min-w-[185px] text-sm !font-medium`}
+                      } w-[11vw] min-w-[185px] text-sm !font-medium text-center flex justify-center items-center`}
                   >
                     Upload Metadata
                     <img src={upload} alt="Upload" />

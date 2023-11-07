@@ -146,7 +146,7 @@ export default function TableItem({
             responseData.subjects.length
           );
 
-          setScore(`${score.cumulative} ${score.right}`);
+          setScore(`${score.cumulative},${score.right}`);
         });
       }
     }
@@ -657,7 +657,8 @@ export default function TableItem({
           </td>
           <td className="font-medium px-1  min-w-14 py-3">
             <div className="text-center">
-              {item.status === "completed" ? score : "-"}
+              {item.status === "completed" ?<><span className="text-[#24A3D9] font-bold" >{score?.split(",")[0]}</span> <span >{score?.split(",")[1]}</span></>  : "-"}
+              
             </div>
           </td>
 
@@ -933,15 +934,15 @@ export default function TableItem({
       )}
       {dataFor === "allTests" && (
         <tr className="odd:bg-white font-medium text-[17.5px]  lead">
-          <td>{item.testName}</td>
+          <td className="text-left pl-10">{item.testName}</td>
           <td>{item.testType}&#174;</td>
           <td> {getFormattedDate(item.createdAt.split("T")[0], dateFormat)}</td>
           <td>{getFormattedDate(item.updatedAt.split("T")[0], dateFormat)}</td>
           <td> {item.no_of_assign!==null ? item.no_of_assign : "-"} </td>
-          <td className="font-medium px-1 py-4 text-right">
+          <td className="font-medium px-1 py-4 ">
             <div className="flex justify-end">
               <button
-                className="flex leading-none bg-[#FFA28D] text-white py-1.5 px-5 cursor-pointer rounded !text-base-15"
+                className="flex leading-none bg-[#FFA28D] text-white py-1.5 px-9 w-[100px] cursor-pointer rounded !text-base-15 !text-center justify-center"
                 onClick={() => navigate(`/all-tests/${item._id}`)}
               >
                 View
@@ -951,9 +952,9 @@ export default function TableItem({
           <td className="font-medium px-1 ">
             {
               (checkTest(persona, item)) &&
-              <div className="flex justify-end  flex justify-center items-center">
+              <div className="  flex justify-center items-center">
                 <button
-                  className="flex leading-none bg-[#26435f4d] text-white py-1.5 px-5 cursor-pointer rounded !text-base-15"
+                  className="flex leading-none bg-[#26435f4d] text-white py-1.5 px-6  w-[100px] !text-center cursor-pointer rounded !text-base-15 !text-center justify-center"
                   onClick={() => onClick.openRemoveTestModal(item)}
                 >
                   Remove

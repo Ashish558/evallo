@@ -392,7 +392,7 @@ export const accuracyOptions = {
       },
 
       title: {
-         text: 'Number of incorrect attempts',
+         text: 'Number Of Incorrect Attempts',
          style: {
             fontSize: '20px',
             color: '#24A3D9',

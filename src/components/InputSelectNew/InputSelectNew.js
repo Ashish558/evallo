@@ -97,7 +97,7 @@ export default function InputSelectNew({
           ) : (
             <span className={`mr-10 ${customFontSize?customFontSize:'text-base-17-5'} whitespace-nowrap ${false ? 'mr-0' : 'mr-10'}  ${placeholderClass} `}>{value}</span>
           )}
-          {ICON2 && <img src={ICON2} className={`ml-4 inline-block ${iconClass} `} alt="icon" />}
+          {ICON2 && <img src={ICON2} className={`ml-4 inline-block ${iconClass} mt-[-5px] `} alt="icon" />}
 
         </div>
         {selected && (
