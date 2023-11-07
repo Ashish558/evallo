@@ -973,7 +973,7 @@ export default function AssignedTests() {
                   <div className="ml-6 flex gap-3 items-center">
 
                     <SCheckbox stopM={true} checked={isChecked} onChange={handleCheckboxChange} />
-                    <span className="inline-block text-[17.5px] text-base-17-5">{selectedId?.length} Selected</span>
+                    <span className="inline-block text-[17.5px] mt-[-1px] text-base-17-5">{selectedId?.length} Selected</span>
                     {/* <label className={`  text-[#26435F] font-medium flex items-center`}>
               <input
                 type="checkbox"
@@ -1248,9 +1248,8 @@ export default function AssignedTests() {
       {resendModalActive && (
         <Modal
           title={
-            <span className="leading-10">
-              Are you sure <br />
-              you want to resend the email for assignment ?
+            <span className="leading-10  capitalize">
+             Do you want to resend the assignments via email?
             </span>
           }
           titleClassName="mb-5 leading-10"
@@ -1263,20 +1262,20 @@ export default function AssignedTests() {
             loading: resendLoading,
           }}
           handleClose={() => setResendModalActive(false)}
-          classname={"max-w-[610px] mx-auto"}
+          classname={"max-w-[630px] mx-auto"}
         />
       )}
       {deleteModalActive && (
         <Modal
           title={
-            <span className="leading-10">
+            <span className="leading-10 capitalize">
               Are you sure
               you want to delete the assigned test ?
             </span>
           }
           titleClassName="mb-5 leading-10"
           cancelBtn={true}
-          cancelBtnClassName="max-w-140"
+          cancelBtnClassName="w-[140px] px-3"
           primaryBtn={{
             text: "Delete",
             className: "w-[140px] pl-4 px-4",
@@ -1285,22 +1284,20 @@ export default function AssignedTests() {
             loading: deleteLoading,
           }}
           handleClose={() => setDeleteModalActive(false)}
-          classname={"max-w-[600px] mx-auto"}
+          classname={"max-w-[630px] mx-auto"}
         />
       )}
       {deleteBulkModalActive && (
         <Modal
           title={
-            <span className="leading-10">
-              Are you sure
-              you want to delete Assignments?
-
+            <span className="leading-10 capitalize">
+          Are you sure you want to Delete the Assignments?
             </span>
           }
           titleClassName="mb-5 leading-10"
           cancelBtn={true}
           crossBtn={true}
-          cancelBtnClassName="max-w-140 !bg-[#26435F1A]  !text-[#26435F] !rounded-md"
+          cancelBtnClassName="w-[140px] !bg-[#26435F1A] px-3  !text-[#26435F] !rounded-md"
           primaryBtn={{
             text: "Delete",
             className: "w-[140px]  pl-4 px-4 !bg-[#FF7979] text-white",
@@ -1310,21 +1307,21 @@ export default function AssignedTests() {
           }}
 
           handleClose={() => setDeleteBulkModalActive(false)}
-          classname={"max-w-[600px]  mx-auto"}
+          classname={"max-w-[630px]  mx-auto"}
         />
       )}
       {markBulkModalActive && (
         <Modal
           title={
-            <span className="leading-10 whitespace-nowrap">
-              Do you want to mark the Assignments as completed?
+            <span className="leading-10 whitespace-nowrap capitalize">
+           Do you want to mark the Assignments As Completed?
 
             </span>
           }
           titleClassName="mb-5 leading-10"
           cancelBtn={true}
           crossBtn={true}
-          cancelBtnClassName="max-w-140 !bg-[#26435F1A]  !text-[#26435F] rounded-md"
+          cancelBtnClassName="w-[140px] !bg-[#26435F1A] px-4  !text-[#26435F] rounded-md"
           primaryBtn={{
             text: "Confirm",
             className: "w-[140px]  pl-4 px-4 !bg-[#32D583] text-white",
@@ -1335,19 +1332,19 @@ export default function AssignedTests() {
           body={
             <>
               <p className="text-base-17-5 mt-[-5px] text-[#667085] mb-6">
-                <span className="font-semibold mr-1">⚠️ Note:</span>
-                Once the assignments are marked as “Complete”, the students will not be able to attempt any remaining sections and will be able to access the score report. Read detailed documentation in Evallo’s  <span className="text-[#24A3D9]"> knowledge base.</span>
+                <span className="font-semibold mr-1"><div className="!scale-[0.8] mr-[-4px] mt-[-4px] inline-block">⚠️</div> Note:</span>
+                Once the assignments are marked as “Complete”, the students will not be able to attempt any remaining sections and will be able to access the score report. Read detailed documentation in Evallo’s  <span className="text-[#24A3D9]  border-b border-b-[#24A3D9]"> knowledge base.</span>
               </p>
             </>
           }
           handleClose={() => setMarkBulkModalActive(false)}
-          classname={"max-w-[600px] mx-auto"}
+          classname={"max-w-[630px] mx-auto"}
         />
       )}
       {resendBulkModalActive && (
         <Modal
           title={
-            <span className="leading-10 whitespace-nowrap">
+            <span className="leading-10 whitespace-nowrap capitalize">
               Do you want to resend the assignments via email?
 
             </span>
@@ -1368,12 +1365,12 @@ export default function AssignedTests() {
             <>
               <p className="text-base-17-5 mt-[-5px] text-[#667085] mb-6">
                 <span className="font-semibold mr-1">⚠️ Note:</span>
-                This will NOT create another assignment for the students. Instead, it will resend the email with the PDF file (containing the assignment content) attached to it. Read detailed documentation in Evallo’s  <span className="text-[#24A3D9]"> knowledge base.</span>
+                This will NOT create another assignment for the students. Instead, it will resend the email with the PDF file (containing the assignment content) attached to it. Read detailed documentation in Evallo’s  <span className="text-[#24A3D9]  border-b border-b-[#24A3D9]"> knowledge base.</span>
               </p>
             </>
           }
           handleClose={() => setResendBulkModalActive(false)}
-          classname={"max-w-[600px]  mx-auto"}
+          classname={"max-w-[630px]  mx-auto"}
         />
       )}
     </>
