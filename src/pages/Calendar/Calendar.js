@@ -276,8 +276,6 @@ export default function Calendar() {
         startMinutes !== NaN && startDate.setMinutes(startMinutes);
         // //////console.log('START DATE',  startDate);
         var userTimezoneOffset = startDate.getTimezoneOffset() * 60000;
-
-
         const timezone = session.timeZone; // Example: Eastern Time (ET)
 
         // Get the timezone's offset from UTC in minutes
@@ -492,12 +490,15 @@ export default function Calendar() {
 
                   var userTimezoneOffset =
                     startDate.getTimezoneOffset() * 60000;
+                  const timezone = session.timeZone;
+                  const offsetInMinutes = moment.tz(timezone).utcOffset();
+                  const offsetInMilliseconds = offsetInMinutes * 60 * 1000;
 
-                  getStartDate(startDate, userTimezoneOffset, session.timeZone);
                   let up = getStartDate(
                     startDate,
                     userTimezoneOffset,
-                    session.timeZone
+                    session.timeZone,
+                    offsetInMilliseconds
                   );
                   const startUtc = up.toUTCString();
 
@@ -517,7 +518,8 @@ export default function Calendar() {
                   const endDateUtc = getStartDate(
                     endDate,
                     userTimezoneOffset,
-                    session.timeZone
+                    session.timeZone,
+                    offsetInMilliseconds
                   );
 
                   // //////console.log(resp.data.data.user.assiginedStudents);
@@ -871,11 +873,15 @@ export default function Calendar() {
           startHours !== NaN && startDate.setHours(startHours);
           startMinutes !== NaN && startDate.setMinutes(startMinutes);
           var userTimezoneOffset = startDate.getTimezoneOffset() * 60000;
-          getStartDate(startDate, userTimezoneOffset, session.timeZone);
+          const timezone = session.timeZone;
+          const offsetInMinutes = moment.tz(timezone).utcOffset();
+          const offsetInMilliseconds = offsetInMinutes * 60 * 1000;
+
           let up = getStartDate(
             startDate,
             userTimezoneOffset,
-            session.timeZone
+            session.timeZone,
+            offsetInMilliseconds
           );
           const startUtc = up.toUTCString();
           // //////console.log('START DATE', startDate);
@@ -892,7 +898,8 @@ export default function Calendar() {
           const endDateUtc = getStartDate(
             endDate,
             userTimezoneOffset,
-            session.timeZone
+            session.timeZone,
+            offsetInMilliseconds
           );
           let eventObj = {
             id: session._id,
