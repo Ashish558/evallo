@@ -10,18 +10,24 @@ import {
 import {loadStripe} from '@stripe/stripe-js';
 import PrimaryButton from "../../../components/Buttons/PrimaryButton";
 import SecondaryButton from "../../../components/Buttons/SecondaryButton";
+import { useCreateIntentMutation, useFinishSetupMutation } from '../../../app/services/subscription';
+import { BASE_URL } from '../../../app/constants/constants';
 
 const stripePromise = loadStripe('pk_test_51NoBsUSF4WnDe9WBCtTkvFmGCbP7V13FRSIeozP8zfnhFFlSrYRlcQ2j6is9viJUjCrENLlq7uauG5ztDOsLBpdA00QIKLXblk');
 
 function Payment({
     setFrames,
     setcurrentStep,
+    chosenSubscriptionObjectFromAPI,
+    chosenExtentionObjectsFromAPI = [],
 }) {
     const stripe = useStripe();
     const elements = useElements();
 
     const [errorMessage, setErrorMessage] = useState();
     const [loading, setLoading] = useState(false);
+    const [createIntentForPayment , createIntentForPaymentResp] = useCreateIntentMutation();
+    const [finishSetupForPayment , finishSetupForPaymentResp] = useFinishSetupMutation();
 
     const handleError = (error) => {
         setLoading(false);
@@ -49,11 +55,18 @@ function Payment({
         }
 
         // Create the SetupIntent and obtain clientSecret
-        const res = await fetch('http://localhost:3000/api/stripe/create-intent', {
+        const res = await createIntentForPayment(JSON.stringify({ customer_id: 'cus_OteUYhKgkeuICE' }));
+        
+        /* const res = await fetch(`${BASE_URL}api/stripe/create-intent`, {
         method: 'POST',
-        });
+        body: JSON.stringify({ customer_id: 'cus_OteUYhKgkeuICE' })
+        }); */
 
-        const { client_secret: clientSecret } = await res.json();
+        console.log("response from create_intent");
+        console.log(res);
+
+        const { client_secret: clientSecret } = res.data;
+        // const { client_secret: clientSecret } = await res.json();
 
         // Confirm the SetupIntent using the details collected by the Payment Element
         const { setupIntent, error } = await stripe.confirmSetup({
@@ -65,29 +78,41 @@ function Payment({
         },
         });
 
-        if (error) {
-        // This point is only reached if there's an immediate error when
-        // confirming the setup. Show the error to your customer (for example, payment details incomplete)
-        handleError(error);
-        } else {
-        // Your customer is redirected to your `return_url`. For some payment
-        // methods like iDEAL, your customer is redirected to an intermediate
-        // site first to authorize the payment, then redirected to the `return_url`.
-        // console.log('subscribed', res);
-        const post = await fetch(
-            `http://localhost:3000/api/stripe/finish_setup`,
-            {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                setupintent: setupIntent?.id,
-            }),
-            }
-        );
+        console.log("setupIntent");
+        console.log(setupIntent);
 
-        const resp = await post.json();
+        if (error) {
+            // This point is only reached if there's an immediate error when
+            // confirming the setup. Show the error to your customer (for example, payment details incomplete)
+            handleError(error);
+        } else {
+            // Your customer is redirected to your `return_url`. For some payment
+            // methods like iDEAL, your customer is redirected to an intermediate
+            // site first to authorize the payment, then redirected to the `return_url`.
+            // console.log('subscribed', res);
+            const post = await finishSetupForPayment(JSON.stringify({
+                setupintent: setupIntent?.id,
+                subscriptions: [
+                    chosenSubscriptionObjectFromAPI,
+                    [...chosenExtentionObjectsFromAPI]
+                ]
+            }));
+            /* const post = await fetch(
+                `http://localhost:3000/api/stripe/finish_setup`,
+                {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    setupintent: setupIntent?.id,
+                }),
+                }
+            ); */
+
+            const resp = await post.json();
+            console.log("response from finish_setup");
+            console.log(resp);
         }
     };
 
@@ -105,30 +130,31 @@ function Payment({
         // setcurrentStep(currentStep => currentStep + 1)
     };
 
+    const handlePayment = () => {
+
+    };
+
     
     return (
         <div className="mt-2 mb-3">
             <form onSubmit={handleSubmit}>
                 <PaymentElement />
-                <button type="submit" disabled={!stripe || loading}>
-                    Submit
-                </button>
                 {errorMessage && <div>{errorMessage}</div>}
             </form>
 
             <div className="border-[1px] mt-[25px] w-full"></div>
 
             <div className="flex items-center mt-[50px] justify-end">
-                <SecondaryButton
+                {/* <SecondaryButton
                     children="Go back"
                     className="text-sm mr-6 bg-white text-[#cad0db] border-[1.7px] border-[#D0D5DD] py-2 "
                     onClick={handleBack}
-                />
+                /> */}
                 <PrimaryButton
                     className={`w-full flex justify-center  bg-[#FFA28D]  disabled:opacity-60 max-w-[110px]  rounded text-white text-sm font-medium relative py-[9px]`}
                     
-                    children={`Next`}
-                    onClick={handleNext}
+                    children={`Payment`}
+                    onClick={handleSubmit}
                 />
             </div>
         </div>
@@ -138,6 +164,8 @@ function Payment({
 export default function PaymentWrapper({
     setFrames,
     setcurrentStep,
+    chosenSubscriptionObjectFromAPI,
+    chosenExtentionObjectsFromAPI = [],
 }) {
     const options = {
         mode: 'setup',
@@ -150,6 +178,8 @@ export default function PaymentWrapper({
             <Payment 
                 setFrames={setFrames}
                 setcurrentStep={setcurrentStep}
+                chosenSubscriptionObjectFromAPI={chosenSubscriptionObjectFromAPI}
+                chosenExtentionObjectsFromAPI={chosenExtentionObjectsFromAPI}
             />
         </Elements>
     )

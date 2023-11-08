@@ -14,6 +14,9 @@ import {
     useElements
 } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
+import Payment from "../../Frames/Payment/Payment";
+import { BASE_URL } from "../../../app/constants/constants";
+import { useAddSubscriptionsMutation } from "../../../app/services/subscription";
 
 export default function CheckOut({
     setFrames,
@@ -36,6 +39,7 @@ export default function CheckOut({
         }
     ],
     subscriptionsInfo = [{
+        id: "",
         planName: "",
         planDisplayName: "",
         activeTutorsAllowed: 0,
@@ -47,6 +51,7 @@ export default function CheckOut({
     }],
     setcurrentStep,
     clientSecret,
+    subscriptionsInfoFromAPI = [],
 }) {
     // const secretKey = "sk_test_51O1tgLSFF3kgujFeaEQ6Uh7PkOtF4SgSk5ATR8xxmCgLGIW4lkkDzeLDKMoMfjAwZVQyTDJjBkTCwJiIMGgVqrlQ00b9M9MyKZ"
     // const publishableKey = "pk_test_51O1tgLSFF3kgujFe23VYSyhW5lbx2N3b7cjC1q1Q1alW9lwocUKObR8j4hBdpYx5xzDnFcPsNBbkzDu6hcDmHSP3004Sr0qX5e";
@@ -84,7 +89,7 @@ export default function CheckOut({
 
     const handleBack = () => {
         setFrames((prev) => {
-            return { ...prev, checkout: false, payment: true };
+            return { ...prev, checkout: false, extensions: true };
         });
         // setcurrentStep(currentStep => currentStep - 1)
     };
@@ -148,13 +153,29 @@ export default function CheckOut({
     // }, [stripe]);
 
     const chosenSubscriptionPlan = subscriptionsInfo.find(item => item.planName === values.subscriptionPlan);
+    const [chosenSubscriptionObjectFromAPI, SetChosenSubscriptionObjectFromAPI] = useState();
+    const [chosenExtentionObjectsFromAPI, SetChosenExtentionObjectsFromAPI] = useState([]);
+    const [addSubscriptions, addSubscriptionsResp] = useAddSubscriptionsMutation()
+
+    useEffect(() => {
+        SetChosenSubscriptionObjectFromAPI(
+            subscriptionsInfoFromAPI.find(item => item.id === chosenSubscriptionPlan.id)
+        );
+    }, [])
 
     const chosenExtensionPlans = extensionPlansInfo.filter(item => {
+        if(item.planName === "" || item.planName === undefined || item.planName === null) return false;
         for(let i = 0; i < extensions.length; i++) {
             if(extensions[i].text === item.planName && extensions[i].checked) return true;
         }
         return false;
     })
+
+    useEffect(() => {
+        if(!(chosenExtensionPlans === undefined || chosenExtensionPlans === null || chosenExtensionPlans.length === 0)) {
+            SetChosenExtentionObjectsFromAPI(subscriptionsInfoFromAPI[3]);
+        }
+    }, [chosenExtensionPlans])
 
     let totalMonthlyCost = 0;
     totalMonthlyCost += chosenSubscriptionPlan.pricePerMonth;
@@ -181,7 +202,55 @@ export default function CheckOut({
       const options = {
         clientSecret,
         appearance,
-      };
+    };
+
+
+    const handleSub = async () => {
+        console.log(subscriptionsInfoFromAPI);
+
+        let chosenSubscriptionToBeSentThroughAPI = chosenSubscriptionObjectFromAPI;
+
+        let chosenExtensionPlansToBeSentThroughAPI = [];
+        if(!(chosenExtensionPlans === undefined || chosenExtensionPlans === null || chosenExtensionPlans.length === 0)) {
+            chosenExtensionPlansToBeSentThroughAPI.push(subscriptionsInfoFromAPI[3]);
+        }
+
+        console.log(chosenExtensionPlans);
+        console.log(chosenExtensionPlansToBeSentThroughAPI);
+
+        /* const response = await fetch(
+            `${BASE_URL}api/stripe/add_subscriptions`,
+            {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json', // Set the content type to JSON.
+                },
+                body: JSON.stringify({
+                  customer_id: 'cus_OteUYhKgkeuICE',
+                  subcriptions: [
+                    chosenSubscriptionToBeSentThroughAPI,
+                    // [...chosenExtensionPlansToBeSentThroughAPI]
+                  ],
+                }),
+              }
+        ) */
+
+        
+        const response = await addSubscriptions(JSON.stringify(
+                {
+                    customer_id: 'cus_OteUYhKgkeuICE',
+                    subscriptions: [
+                        chosenSubscriptionToBeSentThroughAPI,
+                        // ...chosenExtensionPlansToBeSentThroughAPI
+                    ]
+                })
+        );
+       
+
+        const data = await response.json();
+        console.log('Subscribed');
+        console.log(data);
+    };
 
     return (
         <div className="mt-2 mb-3">
@@ -209,6 +278,7 @@ export default function CheckOut({
                 freeTrialDays={chosenSubscriptionPlan.freeTrialDays}
                 setFrames={setFrames}
                 setcurrentStep={setcurrentStep}
+                chosenSubscriptionObjectFromAPI={chosenSubscriptionObjectFromAPI}
             />
 
             {(chosenExtensionPlans === undefined || chosenExtensionPlans === null || chosenExtensionPlans.length === 0) ? (<></>) :
@@ -222,11 +292,13 @@ export default function CheckOut({
                     return (
                         <CheckOutExtensionsReview
                             className={"mt-[25px]"}
+                            canAddPromoCode={true}
                             planDisplayName={item.planDisplayName}
                             extensionPriceOption={chosenPackage}
                             subscriptionPricePerMonth={chosenPackage.pricePerMonth}
                             setFrames={setFrames}
                             setcurrentStep={setcurrentStep}
+                            chosenExtentionObjectsFromAPI={chosenExtentionObjectsFromAPI}
                         />
                     )
                 })}
@@ -247,7 +319,7 @@ export default function CheckOut({
 
             <div className="border-[1px] mt-[25px] w-full"></div>
 
-                {
+                {/* {
                     promoCodes.map(pc => {
                         return (
                             <div className="flex justify-between mt-[15px]">
@@ -259,7 +331,7 @@ export default function CheckOut({
                             </div>
                         )
                     })
-                }
+                }*/}
 
                 <div className="flex justify-between mt-[15px] text-[#26435F]">
                     <div>Total Payment</div>
@@ -267,6 +339,19 @@ export default function CheckOut({
                 </div>
 
             <div className="border-[1px] mb-[40px] mt-[25px] w-full"></div>
+
+            {
+                chosenSubscriptionPlan.ccRequired ?
+                (
+                    <Payment
+                        setFrames={setFrames}
+                        setcurrentStep={setcurrentStep}
+                        chosenSubscriptionObjectFromAPI={chosenSubscriptionObjectFromAPI}
+                        chosenExtentionObjectsFromAPI={chosenExtentionObjectsFromAPI}
+                    />
+                ) :
+                (<></>)
+            }
 
             <div className="flex items-center mt-[50px] justify-end">
                 <SecondaryButton
@@ -276,7 +361,8 @@ export default function CheckOut({
                 />
                 <PrimaryButton
                     className={`w-full flex justify-center  bg-[#FFA28D]  disabled:opacity-60 max-w-[110px]  rounded text-white text-sm font-medium relative py-[9px]`}
-                    children={`Checkout`}
+                    children={`Subscribe`}
+                    onClick={handleSub}
                     
                 />
             </div>

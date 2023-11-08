@@ -1,5 +1,10 @@
-import PrimaryButton from "../Buttons/PrimaryButton"
-import SecondaryButton from "../Buttons/SecondaryButton"
+import {
+    useState
+} from "react";
+import PrimaryButton from "../Buttons/PrimaryButton";
+import SecondaryButton from "../Buttons/SecondaryButton";
+import InputField from "../../components/InputField/inputField";
+import { BASE_URL } from "../../app/constants/constants";
 
 export default function CheckOutExtensionsReview({
     canAddPromoCode = false,
@@ -18,9 +23,10 @@ export default function CheckOutExtensionsReview({
     subscriptionPricePerMonth = 10,
     freeTrialDays = 0,
     setFrames,
-    setcurrentStep
+    setcurrentStep,
+    chosenExtentionObjectsFromAPI,
 }) {
-
+    const [couponCode, SetcouponCode] = useState("");
     const handleChangePlan = () => {
         if(!setFrames || !setcurrentStep) return;
         setFrames((prev) => {
@@ -83,14 +89,58 @@ export default function CheckOutExtensionsReview({
             </div>
 
             {canAddPromoCode === true ? (<div className="flex h-[40px] items-center mt-[15px]">
-                    <SecondaryButton
+                    {/* <SecondaryButton
                         children={"Add Promo Code"}
                         className={"bg-white drop-shadow-[0px_0px_1px_rgba(0,0,0,0.25)] h-full px-[15px] py-[2px] text-[#B3BDC7]"}
+                    /> */}
+
+                    <InputField
+                      placeholder="Add Promo Code"
+                      parentClassName="text-xs"
+                      label=""
+                      labelClassname="text-[#26435F] font-semibold"
+                      inputContainerClassName=" border border-[#D0D5DD] rounded-md py-[9px] h-[45px] text-md"
+                    
+                      value={couponCode}
+                      onChange={(e) => {
+                        // setValues({
+                        //   ...values,
+                        //   firstName: e.target.value,
+                        // })
+                        SetcouponCode(e.target.value);
+                      }}
+                    //   totalErrors={error}
+                    //   error={error.firstName}
                     />
 
                     <PrimaryButton
                         children={"Apply"}
                         className={"h-5/6 ml-[10px] px-[10px]"}
+                        onClick={async () => {
+                            console.log(couponCode)
+                            console.log({
+                                couponCode: couponCode,
+                                subscriptionPrice: chosenExtentionObjectsFromAPI
+                            })
+                            const response = fetch(
+                                `${BASE_URL}api/stripe/applyCoupon`,
+                                {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json', // Set the content type to JSON.
+                                    },
+                                    body: JSON.stringify(
+                                        {
+                                            couponCode: couponCode,
+                                            subscriptionPrice: chosenExtentionObjectsFromAPI
+                                        }),
+                                }
+                            );
+
+                            const data = await response.json();
+                            console.log('Coupon');
+                            console.log(data);
+                        }}
                     />
             </div>) : (<></>)
             }

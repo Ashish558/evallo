@@ -77,7 +77,7 @@ export default function OrgSignup() {
     signupActive: false,
     subscription: true,
     extensions: false,
-    payment: false,
+    // payment: false,
     checkout: false,
   });
 
@@ -178,8 +178,11 @@ export default function OrgSignup() {
 
   const [getDetails, getDetailsResp] = useLazyGetUserDetailQuery();
   const [getSubscriptionsInfo, getSubscriptionsInfoResp] = useLazyGetSubscriptionsInfoQuery();
+  const [subscriptionsInfoFromAPI, SetSubscriptionsInfoFromAPI] = useState({});
+  // let subscriptionsInfoFromAPI = {};
   const [subscriptionPlanInfo, SetSubscriptionPlanInfo] = useState([])
   const [extensionPlansData, SetExtensionPlansData] = useState([]);
+  const [isOtplessModalActive, SetIsOtplessModalActive] = useState(false);
 
   function OnFrameChanged() {
     if(frames.signupActive) {
@@ -197,13 +200,13 @@ export default function OrgSignup() {
       return;
     }
 
-    if(frames.payment) {
-      setcurrentStep(4);
-      return;
-    }
+    // if(frames.payment) {
+    //   setcurrentStep(4);
+    //   return;
+    // }
 
     if(frames.checkout) {
-      setcurrentStep(5);
+      setcurrentStep(4);
       return;
     }
   }
@@ -234,6 +237,7 @@ export default function OrgSignup() {
     getSubscriptionsInfo().then((res) => {
       console.warn("Subscriptions info");
       console.warn(res.data)
+      // subscriptionsInfoFromAPI = res.data.data;
       const productList = res.data.data;
       // collecting info for subscriptions
       for(let i = 0; i < productList.length; i++) {
@@ -356,6 +360,8 @@ export default function OrgSignup() {
         productInfo.extensionPriceOption = []
         */
       }
+
+      SetSubscriptionsInfoFromAPI(res.data.data);
     }).catch((error) => {
       console.error("Error while fetching subscriptions info")
       console.error(error)
@@ -842,11 +848,25 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
 
   return (
     <div className="   pb-6 bg-primary relative" id={styles.signUp}>
-       <div class="modal-container" id="modalContainer">
-        <div class="modal">
-          <div id="otpless-login-page"></div>
+      <div className={`absolute bg-[#0000007a] flex items-center justify-center h-full w-full z-10`} 
+        style={{
+          display: isOtplessModalActive ? "" : "none"
+        }}
+      >
+        <PrimaryButton
+          className={` absolute top-[0px] right-[0px] w-[200px] flex justify-center  bg-[#FFA28D]  disabled:opacity-60 max-w-[110px]  rounded text-white text-sm font-medium relative py-[9px]`}
+          onClick={() => {
+            SetIsOtplessModalActive(false);
+          }}
+          children={"Close"}
+        />
+        <div class=" modal-container" id="modalContainer">
+          <div class="modal">
+            <div id="otpless-login-page"></div>
+          </div>
         </div>
       </div>
+
       {/* <AdminNavbar></AdminNavbar> */}
       <div className="flex justify-center flex-col items-center md:grid-cols-2  mb-[100px]">
         <img src={cuate} alt="rocket" className="h-10vh mt-3 mb-4" />
@@ -870,7 +890,7 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
                           ${frames.extensions ? "lg:w-[1200px]" : "lg:w-[800px]"}`}>
             <div className="w-full py-4 ">
               {currentStep > 0 && (
-                <NumericSteppers className={"left-2/4 -translate-x-2/4 self-center px-2 flex-1 lg:w-[600px]"} fieldNames={["Personal info" ,"Subscription","Extensions", "Payment" ,"Checkout"]} totalSteps={5} currentStep={currentStep}
+                <NumericSteppers className={"left-2/4 -translate-x-2/4 self-center px-2 flex-1 lg:w-[600px]"} fieldNames={["Personal info" ,"Subscription","Extensions" ,"Subscribe"]} totalSteps={4} currentStep={currentStep}
                 
                 />
               )}
@@ -881,6 +901,15 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
                   >
                     Please fill your detail to create your account.
                   </p> */}
+                  <div>
+                  <SecondaryButton
+                      children="Signup with OTPLess"
+                      className="mb-[40px] text-sm mr-6 bg-white text-[#cad0db] border-[1.7px] border-[#D0D5DD] py-2 "
+                      onClick={() => {
+                        SetIsOtplessModalActive(true);
+                      }}
+                    />
+                  </div>
                   <div
                     className={`flex mt-[59px] justify-between lg:mt-1 ${styles.inputs}`}
                   >
@@ -1125,12 +1154,14 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
                   setcurrentStep={setcurrentStep}
             
                 />
-              ) : frames.payment ? (
-                <Payment
-                  setFrames={setFrames}
-                  setcurrentStep={setcurrentStep}
-                />
-              ) : frames.checkout ? (
+              ) 
+              //   : frames.payment ? (
+              //   <Payment
+              //     setFrames={setFrames}
+              //     setcurrentStep={setcurrentStep}
+              //   />
+              // ) 
+                : frames.checkout ? (
                 // clientSecret ? 
                 // <Elements options={{
                 //   clientSecret: clientSecret,
@@ -1142,6 +1173,7 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
                   extensions={extensions}
                   extensionPlansInfo={extensionPlansData}
                   subscriptionsInfo={subscriptionPlanInfo}
+                  subscriptionsInfoFromAPI={subscriptionsInfoFromAPI}
                   setcurrentStep={setcurrentStep}
                   clientSecret={clientSecret}
                  />
