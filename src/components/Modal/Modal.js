@@ -116,12 +116,12 @@ export default function Modal({
                         </div>
 
                         {
-                           crossBtn ? '' : <button className={styles.cancelBtn}
+                           crossBtn ?  <button className={styles.cancelBtn}
                               style={cancelBtnStyle}
                               onClick={handleClose}
                            >
-                              <img src={primaryCancel ? primaryCancelIcon : primaryCancelIcon} onClick={handleClose} />
-                           </button>
+                              <img src={primaryCancel ? primaryCancelIcon : primaryCancelIcon} onClick={handleClose} alt="close_btn" />
+                           </button> : ""
                         }
                      </div>
                   </div>

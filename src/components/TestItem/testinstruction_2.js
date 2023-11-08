@@ -178,8 +178,8 @@ const Testinstruction_2 = ({
               <p className="text-[#26435F] text-[17.5] font-bold mb-4">
                 Section Instructions:
               </p>
-              <p className="text-[#26435F] text-[17.5] font-normal">
-                Timer: {desc[starttestindex]?.timer} minutes
+              <p className="text-[#26435F] text-[17.5] font-medium">
+                Time: {desc[starttestindex]?.timer} minutes
               </p>
               <p className="text-[#26435F] text-[17.5] font-normal">
                 {desc[starttestindex]?.description}
@@ -210,10 +210,10 @@ const Testinstruction_2 = ({
               <Modal
                 classname="max-w-[700px] mx-auto"
                 title="Note that the time will begin as soon as you start this section. make sure that you have everything set up."
-                titleClassName="mr-4  mb-4"
+                titleClassName="mr-4 mb-4 font-normal"
                 primaryBtn={{
                   text: "Okay",
-                  className: "bg-[#FF7979] w-[146.67px] h-[46.67px] ml-0",
+                  className: "bg-[#FF7979] w-[146.67px] h-[46.67px] ml-0 font-medium",
                   onClick: closeinstruct,
                 }}
                 handleClose={() => setpopup(false)}
