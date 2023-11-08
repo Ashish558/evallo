@@ -137,7 +137,7 @@ export default function ParentEditables({
     },
     {
       name: "notes",
-      title: "Internal Notes",
+      title: "Admin Notes",
       api: "user",
     },
     {
@@ -981,7 +981,7 @@ Likes, dislikes, personality, professional details, hobbies, favorite sports, ac
                           biggerText={true}
                           labelClassname="text-[#26435F]  !font-medium"
                           placeholder=""
-                          inputContainerClassName="text-base  bg-[#F6F6F6] border-0 !py-1 !px-3 !rounded-[5px] !w-[10.7292vw] h-[54px]"
+                          inputContainerClassName="text-base  bg-[#F6F6F6] border-0 !py-1 !px-3 !rounded-[5px] !w-[11vw] h-[54px]"
                           inputClassName="bg-transparent text-base  "
                           parentClassName=""
                           type="date"
@@ -1015,20 +1015,21 @@ Likes, dislikes, personality, professional details, hobbies, favorite sports, ac
                         />
                         {console.log(currentToEdit)}
 
-                        <InputField
+                        <InputSelectNew
                           biggerText={true}
                           labelClassname="text-[#26435F]  !font-medium"
                           label="Industry"
-                          placeholder="Industry"
+                          placeholder="Select"
                           inputContainerClassName="text-base  bg-[#F6F6F6] border-0 !py-1 !px-3 !rounded-[5px] !w-[18.2291vw] h-[54px]"
                           inputClassName="bg-transparent"
                           parentClassName=""
+                          optionData={["IT","Finance","Sales","Marketing","Business","Agriculture"]}
                           type="text"
                           value={currentToEdit.industry}
                           onChange={(e) =>
                             setCurrentToEdit({
                               ...currentToEdit,
-                              industry: e.target.value,
+                              industry: e,
                             })
                           }
                         />
@@ -1038,7 +1039,7 @@ Likes, dislikes, personality, professional details, hobbies, favorite sports, ac
                         <InputSelectNew
                           labelClassname="text-[#26435F] text-lg !font-medium"
                           label="Country"
-                          placeholder="Country"
+                          placeholder="Select"
                           inputContainerClassName="text-base  bg-[#F6F6F6] border-0 !py-1 !px-3 !rounded-[5px] !w-[18.2291vw] h-[54px]"
                           inputClassName="bg-transparent  "
                           parentClassName=""
@@ -1058,7 +1059,7 @@ Likes, dislikes, personality, professional details, hobbies, favorite sports, ac
 
                         <InputField
                           biggerText={true}
-                          label="Street address"
+                          label="Street Address"
                           labelClassname="text-[#26435F]  !font-medium"
                           placeholder="Text"
                           inputContainerClassName="text-base  bg-[#F6F6F6] border-0 !py-1 !px-3 !rounded-[5px] !w-[31.40625vw] h-[54px]"
@@ -1078,7 +1079,7 @@ Likes, dislikes, personality, professional details, hobbies, favorite sports, ac
                         <InputSelectNew
                           labelClassname="text-[#26435F] text-lg !font-medium"
                           label="State"
-                          placeholder="State"
+                          placeholder="Select"
                           inputContainerClassName="text-base  bg-[#F6F6F6] border-0 !py-1 !px-3 !rounded-[5px] !w-[18.2291vw] h-[54px]"
                           inputClassName="bg-transparent  "
                           parentClassName=""
@@ -1098,7 +1099,7 @@ Likes, dislikes, personality, professional details, hobbies, favorite sports, ac
                           biggerText={true}
                           labelClassname="text-[#26435F]  !font-medium"
                           label="City"
-                          placeholder="City"
+                          placeholder="Select"
                           inputContainerClassName="text-base  bg-[#F6F6F6] border-0 !py-1 !px-3 !rounded-[5px] !w-[18.2291vw] h-[54px]"
                           inputClassName="bg-transparent"
                           parentClassName=""
@@ -1131,6 +1132,36 @@ Likes, dislikes, personality, professional details, hobbies, favorite sports, ac
                           }
                         />
                       </div>
+                      {persona==="admin" &&  <div id="borderDashed" className="w-[70%] mx-auto !border-[#CBD6E3]"></div>}
+                    {persona==="admin" && <div className="flex justify-between items-center ">
+                      {console.log({organization})}
+                        <InputSelectNew
+                          labelClassname="text-[#26435F] text-lg !font-medium"
+                          label="Referral Code"
+                          placeholder="Select Referral Code"
+                          inputContainerClassName="text-base  bg-[#F6F6F6] border-0 !py-1 !px-3 !rounded-[5px] !w-[18.2291vw] h-[54px]"
+                          inputClassName="bg-transparent  "
+                          parentClassName=""
+                          type="text"
+                          optionData={organization?.settings?.subscriptionCode?.map((it)=>{
+                            return {
+                              ...it,
+                              name:it.code,
+                              value:it.code
+                            }
+                          })}
+                          optionType={"object"}
+                          onChange={(e) => {
+                            setCurrentToEdit({
+                              ...currentToEdit,
+                              subscriptionCode: e.code,
+                            });
+                          }}
+                          value={currentToEdit.subscriptionCode}
+                        />
+
+                       
+                      </div>}
                     </div>
                   </>
                 )}
@@ -1260,7 +1291,7 @@ Likes, dislikes, personality, professional details, hobbies, favorite sports, ac
                 )}
                 {currentField.name === "notes" && (
                   <div>
-                    <div className="flex items-center mb-5 pt-6 w-[400px]">
+                    <div className="flex items-center mb-5 pt-6 w-[500px]">
                       {/* <p className='font-medium mr-4 min-w-[60px]'>  </p> */}
                       <div className="border w-full h-full rounded-md">
                         {textOpen && (
@@ -1278,28 +1309,27 @@ Likes, dislikes, personality, professional details, hobbies, favorite sports, ac
                               currentToEdit?.notes?.length == 0 &&
                               setTextOpen(false)
                             }
-                            className={`mt-1 block w-full resize-none focus:!ring-blue-500 p-2 focus:!border-blue-500 placeholder-[#CBD6E2] text-sm  placeholder:text-xs h-[300px] `}
+                            className={`mt-1 block w-full resize-none focus:!ring-blue-500 p-2 focus:!border-blue-500 placeholder-[#CBD6E2] text-sm  placeholder:text-xs h-[240px] `}
                             placeholder=""
                           ></textarea>
                         )}
                         {!textOpen && currentToEdit?.notes?.length == 0 && (
                           <div
                             onClick={() => setTextOpen(true)}
-                            className=" text-[#CBD6E2] text-xs flex-1 text-base-17-5 p-3 h-[300px]"
+                            className=" text-[#CBD6E2] text-xs flex-1 text-base-17-5 p-3 h-[240px]"
                           >
-                            Add notes about the parent. Here are some ideas to
-                            get you started:
-                            <ul className="list-disc px-4 design:px-5">
-                              <li>How did the initial call go?</li>
-                              <li>What is the parent’s budget?</li>
-                              <li>
+                          Here, you can add notes about the parent. Here are some ideas to get you started:
+                            <ul className="list-disc px-4 design:px-5 ">
+                              <li className="my-1">How did the initial call go?</li>
+                              <li className="my-1">What is the parent’s budget?</li>
+                              <li className="my-1">
                                 What timeline do they have in mind for tutoring?
                               </li>
-                              <li>Has the student been tutored before?</li>
-                              <li>
+                              <li className="my-1">Has the student been tutored before?</li>
+                              <li className="my-1">
                                 Do they prefer online or offline tutoring?
                               </li>
-                              <li>Does the student have siblings?</li>
+                              <li className="my-1">Does the student have siblings?</li>
                             </ul>
                           </div>
                         )}
@@ -1311,6 +1341,7 @@ Likes, dislikes, personality, professional details, hobbies, favorite sports, ac
                 {currentField.name === "service" && (
                   <div className="w-[400px] max-h-[50vh] overflow-y-auto custom-scroller">
                     <div className="flex flex-col gap-2">
+                      
                       {organization?.settings?.servicesAndSpecialization.map(
                         (item, id) => {
                           return (
