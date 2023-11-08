@@ -222,13 +222,13 @@ const StudentDashboard = () => {
               /> */}
 
 
-              <RangeDate removeUnderline={true} className="ml-0  font-normal"  optionClassName="!w-min " inputContainerClassName="!w-min font-normal " handleRangeData={handleConceptAccuracy} />
+              <RangeDate removeUnderline={true} className="ml-0  font-normal flex justify-center items-center"  optionClassName="!w-min " inputContainerClassName="!w-min font-normal " handleRangeData={handleConceptAccuracy} />
 
             </div>
           </div>
           <div
             id={styles.chartContainer}
-            className="!rounded-md w-[54.43vw] flex-1 shadow-[0px_0px_2.500001907348633px_0px_#00000040] custom-scroller h-[390px] bg-white"
+            className="!rounded-md w-[54.43vw] flex-1 shadow-[0px_0px_2.500001907348633px_0px_#00000040] custom-scroller h-[390px] bg-red-900"
           >
            {accsubjects && accsubjects?.length>0 ?<>
              <Chart
