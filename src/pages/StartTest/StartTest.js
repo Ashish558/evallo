@@ -649,12 +649,12 @@ export default function StartTest() {
                     <p className="text-[15px] text-[#FFFFFF] font-medium">
                       Time
                     </p>
-                    <p className="text-[25px] text-[#FFFFFF] font-bold">
+                    <p className="text-[25px] text-[#FFFFFF] font-normal">
                       {activeSection.timer + ":00"}
                     </p>
                   </div>
                   <div className="flex flex-col items-start gap-2">
-                    <p className="text-[#26435F] texxt-[17.5] font-bold mb-4">
+                    <p className="text-[#26435F] text-[17.5] font-bold mb-4">
                       Section Instructions:
                     </p>
                     <p className="text-[#26435F] texxt-[17.5] font-normal">
@@ -672,7 +672,7 @@ export default function StartTest() {
                         Warning
                       </p>
                       <p className="text-[#FF6961] text-[15px] font-light">
-                        : Once Started, you will not be able to pause the timer.
+                        : Once you started,you won't be able to pause the timer.
                       </p>
                     </div>
                     <PrimaryButton

@@ -159,9 +159,18 @@ const SPFrame1 = ({
     return <></>
   //console.log("frame1 Stud", { userDetail, user,persona });
   return (
+
+    <div className="flex w-full justify-between mt-[calc(50*0.0522vw)] gap-[5%]">
+
+    <div className="flex w-full justify-between mt-[calc(50*0.0522vw)] gap-[5%]">
+
+      <div className="flex flex-col gap-3 !w-[calc(810*0.0522vw)]">
+        <div className="flex justify-between gap-7">
+
     <div className="flex w-full justify-between mt-[calc(50*0.0522vw)] gap-[5%] ">
       <div className="flex flex-col gap-5 !w-[calc(810*0.0522vw)]">
         <div className="flex justify-between gap-8">
+
           <div className=" !w-[calc(545*0.0522vw)]">
             <div className="flex justify-between">
               <p className=" text-sm text-[#26435F] font-semibold text-base-20 mb-1 custom-scroller">
@@ -398,8 +407,7 @@ const SPFrame1 = ({
           </div>
         </div>
       </div>
-
-
+      </div>
     </div>
   );
 };

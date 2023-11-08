@@ -37,7 +37,8 @@ const Testinstruction_2 = ({
   return (
     <>
       {console.log("testName", loader)}
-      <div className="flex-1 relative">
+      <div className="w-screen flex justify-center items-center">
+      <div className="w-[83.3vw] relative">
         <p className="text-[#24A3D9] ml-8 !mt-[calc(50*0.052vw)] !mb-[calc(25*0.052vw)] text-base-20">
           <span onClick={() => navigate("/")} className="cursor-pointer">
             {organization?.company +
@@ -57,17 +58,17 @@ const Testinstruction_2 = ({
           {testHeaderDetails.testName}
         </p>
 
-        <div className="grid grid-cols-3 ml-4 w-full text-sm px-4 gap-y-4 mt-2">
-          <div className=" grid grid-flow-col  grid-rows-3 mr-3 justify-start items-start">
-            <div className="w-full flex mb-3 justify-between">
-              <p className="inline-block w-1/2 mr-4 font-medium  text-[20px] text-[#517CA8] opacity-60">
+        <div className="grid grid-cols-3 ml-4 min-w-full text-sm px-4 gap-y-4 mt-2">
+          <div className="min-w-full grid grid-flow-col grid-rows-3 mr-3 justify-start items-start">
+            <div className="min-w-full flex mb-3 justify-between">
+              <div className="inline-block min-w-32 mr-4 font-medium text-[20px] text-[#517CA8] opacity-60">
                 {" "}
                 Student’s Name
-              </p>
+              </div>
 
-              <p className="inline-block w-1/2 font-light  text-[20px] text-[#517CA8] ">
+              <div className="inline-block min-w-32 font-light  text-[20px] text-[#517CA8]">
                 {testHeaderDetails?.name}
-              </p>
+              </div>
             </div>
             <div className="w-full flex mb-3 justify-between">
               <p className="inline-block w-1/2 mr-4 font-medium  text-[20px] text-[#517CA8] opacity-60">
@@ -128,12 +129,12 @@ const Testinstruction_2 = ({
           </div>
           <div className="w-full flex mb-3 justify-between">
             <div className="flex flex-col">
-              <p className="inline-block w-1/2 mr-4 font-medium  text-[20px] text-[#517CA8] opacity-60">
+              <p className="inline-block w-64 mr-4 font-medium  text-[20px] text-[#517CA8] opacity-60">
                 {" "}
                 Instruction from tutor{" "}
               </p>
 
-              <p className="inline-block w-1/2 font-light  text-[20px] text-[#517CA8]">
+              <p className="inline-block w-full font-light  text-[20px] text-[#517CA8]">
               {testHeaderDetails.instruction
                   ? testHeaderDetails.instruction
                   : "-"}
@@ -174,13 +175,13 @@ const Testinstruction_2 = ({
               </p>
             </div>
             <div className="flex flex-col items-start gap-2">
-              <p className="text-[#26435F] texxt-[17.5] font-bold mb-4">
+              <p className="text-[#26435F] text-[17.5] font-bold mb-4">
                 Section Instructions:
               </p>
-              <p className="text-[#26435F] texxt-[17.5] font-normal">
+              <p className="text-[#26435F] text-[17.5] font-normal">
                 Timer: {desc[starttestindex]?.timer} minutes
               </p>
-              <p className="text-[#26435F] texxt-[17.5] font-normal">
+              <p className="text-[#26435F] text-[17.5] font-normal">
                 {desc[starttestindex]?.description}
               </p>
             </div>
@@ -220,6 +221,7 @@ const Testinstruction_2 = ({
             </div>
           )}
         </div>
+      </div>
       </div>
     </>
   );

@@ -14,27 +14,29 @@ export default function SingleTutor({turorsLength, idx, tutor, handlePrev,handle
     <div key={idx} className="item px-2 h-full  ">
       <div className="flex flex-1 h-full items-center gap-8 my-auto justify-between">
 
-        <div className="w-2/3">
+        <div className="w-2/3 mb-3">
           {/* <h5 className={`${styles.tag}`}>
             {tutor.tutorLevel && `${tutor.tutorLevel} Belt`}
           </h5>
           <p>{tutor?.education}</p> */}
-          <h3 className=" text-[#26435F] text-base-22-5 font-semibold">
+          <h3 className=" text-[#26435F] text-base-22-5 font-semibold  h-16">
             {" "}
             {`${tutor.firstName} ${tutor.lastName}`}{" "}
           </h3>
-          <p className="text-[#517CA8] mt-[25px] text-base-17-5">
+          <div className="w-full flex flex-col flex-1 justify-start items-start">
+          <p className="text-[#517CA8] text-base-17-5">
             {tutor?.tagLine ? tutor?.tagLine : "Test Prep Math Tutoring"}
           </p>
           <p className="text-[#517CA8]  text-base-17-5">
             {tutor?.topic ? tutor?.topic : "No topic"}
           </p>
           <button
-            className="p-2 mt-5 rounded-lg whitespace-nowrap text-sm px-4 bg-[#FFA28D] text-white"
+            className="p-2 mt-2 rounded-lg whitespace-nowrap text-sm px-4 bg-[#FFA28D] text-white"
             onClick={() => tutor._id && navigate(`/profile/tutor/${tutor._id}`)}
           >
             View Profile
           </button>
+          </div>
         </div>
         <div className="  float-right translate-x-[7%] design:translate-x-[0%] h-fit pt-3" >
           <div className="relative ">

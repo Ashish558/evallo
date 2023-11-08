@@ -59,13 +59,13 @@ const SessionFeedback = () => {
   // console.log('all-tests', allTests);
 
   return (
-    <div>
-      <p className="mt-[9px] text-base-20 !font-semibold !text-[#26435F]">
+    <div className="flex flex-col justify-center items-center h-full w-full">
+      <div className="text-base-20 !font-semibold !text-[#26435F] w-full flex flex-grow-1 flex-1 justify-start items-center">
         Assigned Tests
-      </p>
+      </div>
       <div
         id={styles.sessionFeedbackContainer}
-        className="mt-[14px] shadow-[0px_0px_2.500001907348633px_0px_#00000040] custom-scroller h-[383px] bg-white  py-[21px] !rounded-md "
+        className="w-full shadow-[0px_0px_2.500001907348633px_0px_#00000040] custom-scroller h-[390px] bg-white  py-[21px] !rounded-md"
       >
         <div
           id={styles.sessionFeedback}

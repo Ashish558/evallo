@@ -67,7 +67,7 @@ export default function Modal({
 
                         </p>
                         {
-                           underline ? "" : <div className="h-[1.33px] w-full bg-[rgba(0,0,0,0.20)] mb-[36px]"></div>
+                           underline ?  <div className="h-[1.33px] w-full bg-[rgba(0,0,0,0.20)] mb-[36px]"></div> : ""
                         }
                         {body}
 
