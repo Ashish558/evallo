@@ -1250,7 +1250,12 @@ export default function Settings() {
       <div className="  min-h-screen w-[83.6989583333vw] mx-auto">
         <p className="text-[#24A3D9]  !my-[calc(50*0.052vw)] text-base-20">
           <span onClick={() => navigate("/")} className="cursor-pointer ">
-            {organization?.company + "  >  "}
+          {organization?.company +
+            "  >  " +
+            firstName +
+            "  " +
+            lastName +
+            "  >  "}
           </span>
           <span className="font-semibold">Settings</span>
         </p>

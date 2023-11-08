@@ -10,11 +10,13 @@ import LightBlueIcon from "../../assets/icons/Test Statusred.svg";
 import RedIcon from "../../assets/assignedTests/red.svg";
 import GreenIcon from "../../assets/assignedTests/green.svg";
 import GrayIcon from "../../assets/assignedTests/gray.svg";
+import editIcon3 from "../../assets/YIcons/material-symbols_edit-outline.svg";
+
 import RemoveIcon from "../../assets/icons/remove.svg";
 import EditTestIcon from "../../assets/icons/edit-test.svg";
 import TrashIcon from "../../assets/icons/ic_outline-delete.svg";
 import TrashIcon2 from "../../assets/icons/trash-blue.svg";
-import styles from './styles.module.css'
+import styles from "./styles.module.css";
 import AddIcon from "../../assets/icons/plus_colored.svg";
 import EditIcon from "../../assets/icons/edit_logo.svg";
 import DeleteIcon from "../../assets/icons/delete_logo.svg";
@@ -32,7 +34,12 @@ import {
 } from "../../app/services/users";
 import { useSelector } from "react-redux";
 import { useLazyGetTestResponseQuery } from "../../app/services/test";
-import { checkTest, getFormattedDate, getScore, getScoreStr } from "../../utils/utils";
+import {
+  checkTest,
+  getFormattedDate,
+  getScore,
+  getScoreStr,
+} from "../../utils/utils";
 import InputField from "../InputField/inputField";
 import CCheckbox from "../CCheckbox/CCheckbox";
 import SCheckbox from "../CCheckbox/SCheckbox";
@@ -40,7 +47,6 @@ import organization from "../../app/slices/organization";
 import { useDeleteUserMutation } from "../../app/services/admin";
 import Modal from "../Modal/Modal";
 import { useDeleteAdminMutation } from "../../app/services/superAdmin";
-
 
 export default function TableItem({
   item,
@@ -57,9 +63,9 @@ export default function TableItem({
   setSelectedId2,
   numberChecked,
   setnumberChecked,
-  testtype
+  testtype,
 }) {
-  const [dateFormat, setDateFormat] = useState("dd/mm/yy")
+  const [dateFormat, setDateFormat] = useState("dd/mm/yy");
 
   const [score, setScore] = useState("-");
   const navigate = useNavigate();
@@ -76,7 +82,9 @@ export default function TableItem({
   const [getTestResponse, getTestResponseResp] = useLazyGetTestResponseQuery();
 
   const { role: persona } = useSelector((state) => state.user);
-  const { organization: organization2 } = useSelector((state) => state.organization)
+  const { organization: organization2 } = useSelector(
+    (state) => state.organization
+  );
   const [userDetail, setUserDetail] = useState({});
   const [leadStatus, setLeadStatus] = useState("");
   const [tutorStatus, setTutorStatus] = useState("");
@@ -87,23 +95,19 @@ export default function TableItem({
 
   useEffect(() => {
     if (organization2 && organization2?.settings) {
-      setDateFormat(organization2?.settings?.dateFormat)
+      setDateFormat(organization2?.settings?.dateFormat);
     }
-  }, [organization2])
+  }, [organization2]);
 
   useEffect(() => {
-    if (item.userType === "tutor")
-
-      setTutorStatus(item?.tutorStatus)
-  }, [item])
+    if (item.userType === "tutor") setTutorStatus(item?.tutorStatus);
+  }, [item]);
   useEffect(() => {
-
     if (dataFor === "assignedTestsStudents") {
       let params = {};
       let url = `/api/test/getresponse/${item.assignedTestId}`;
       if (persona !== "student") {
         url = `/api/test/admin/getresponse/${item.assignedTestId}`;
-
       }
       if (item.isCompleted === true) {
         getTestResponse({ url, params: params }).then((res) => {
@@ -131,7 +135,6 @@ export default function TableItem({
       let url = `/api/test/admin/getresponse/${item.assignedTestId}`;
       let params = { userId: item.studentId };
       if (item.status === "completed") {
-
         getTestResponse({ url, params: params }).then((res) => {
           if (res.error) {
             //console.log("resp err", res.error);
@@ -160,38 +163,35 @@ export default function TableItem({
 
   const handlestatusChange = (field) => {
     if (item.userType === "parent" || item.userType === "student") {
-      return
+      return;
     }
     updateFields({ id: item._id, fields: field }).then((res) => {
       if (res.error) {
-        return //console.log("error updating");
+        return; //console.log("error updating");
       }
       fetch && fetch(field, item._id);
       // console.log("update res", item?._id, field, res.data);
     });
   };
 
-  const [deleteAdmin, setDeleteAdmin] = useDeleteAdminMutation()
-  const [deleteAdminModalActive, setDeleteAdminModalActive] = useState(false)
-  const [deleteSelectLoading, setDeleteSelectLoading] = useState(false)
+  const [deleteAdmin, setDeleteAdmin] = useDeleteAdminMutation();
+  const [deleteAdminModalActive, setDeleteAdminModalActive] = useState(false);
+  const [deleteSelectLoading, setDeleteSelectLoading] = useState(false);
   const handleDeleteAdmin = () => {
-    setDeleteSelectLoading(true)
+    setDeleteSelectLoading(true);
     deleteAdmin({ id: item?.associatedOrg?._id }).then((res) => {
-      setDeleteSelectLoading(false)
+      setDeleteSelectLoading(false);
       if (res?.data) {
-        setDeleteAdminModalActive(false)
-        alert("Successfully deleted Admin!")
-        handleAllOrgRefetch()
-
-      }
-      else if (res?.error) {
-        alert("Error deleting Admin!")
+        setDeleteAdminModalActive(false);
+        alert("Successfully deleted Admin!");
+        handleAllOrgRefetch();
+      } else if (res?.error) {
+        alert("Error deleting Admin!");
       }
       // console.log(res)
-    })
-  }
+    });
+  };
   const handleChange = (field) => {
-
     if (item.userType === "parent" || item.userType === "student") {
       updateUserDetail({ fields: field, id: item._id }).then((res) => {
         // console.log("lead", { res })
@@ -234,25 +234,22 @@ export default function TableItem({
   useEffect(() => {
     if (dataFor === "allUsers") {
       if (item.role === "tutor") {
-
         getTutorDetail({ id: item._id }).then((resp) => {
-
           let status = "-";
           if (resp?.data?.data?.details) {
             status = resp.data.data.details?.leadStatus;
             // setLeadStatus(status);
-            setTutorStatus(resp.data.data.details?.tutorStatus)
+            setTutorStatus(resp.data.data.details?.tutorStatus);
           }
         });
       } else {
         getUserDetail({ id: item._id }).then((resp) => {
-
           let status = "-";
           if (resp?.data?.data?.userdetails) {
             status = resp.data.data.userdetails.leadStatus;
             if (item.userType === "parent" || item.userType === "student")
               setLeadStatus(status);
-            setTutorStatus(resp.data.data.details?.tutorStatus)
+            setTutorStatus(resp.data.data.details?.tutorStatus);
           }
         });
       }
@@ -268,145 +265,112 @@ export default function TableItem({
   const timestamp = item.createdAt;
   const date = new Date(timestamp);
 
-  const options = { year: 'numeric', month: 'long', day: 'numeric' };
-  const formattedDate = date.toLocaleDateString('en-US', options);
+  const options = { year: "numeric", month: "long", day: "numeric" };
+  const formattedDate = date.toLocaleDateString("en-US", options);
 
   //console.log(dataFor)
   const getFormatDate = (inputDate) => {
     const dateObj = new Date(inputDate);
 
-
-    const options = { year: 'numeric', month: 'short', day: '2-digit' };
-    const formattedDate = dateObj.toLocaleDateString('en-US', options);
-    let dd = formattedDate
-    let ed = dd.split(" ")
-    let fd = ed[0] + ". " + ed[1] + " " + ed[2]
+    const options = { year: "numeric", month: "short", day: "2-digit" };
+    const formattedDate = dateObj.toLocaleDateString("en-US", options);
+    let dd = formattedDate;
+    let ed = dd.split(" ");
+    let fd = ed[0] + ". " + ed[1] + " " + ed[2];
     //console.log(formattedDate);
-    return fd
-  }
+    return fd;
+  };
   const getPhone = (val) => {
     //console.log(item)
     //console.log(val)
-  }
+  };
 
   const handleSelect = (item2, key) => {
-    console.log({ item2, selectedId2 })
+    console.log({ item2, selectedId2 });
     if (selectedId2 && setSelectedId2) {
-      let temp = selectedId2
-      let bool = temp?.find((itt) => itt[key] === item2[key])
+      let temp = selectedId2;
+      let bool = temp?.find((itt) => itt[key] === item2[key]);
       if (bool) {
         temp = temp?.filter((idd) => {
-          return idd[key] !== item2[key]
-
-        })
+          return idd[key] !== item2[key];
+        });
+      } else {
+        temp?.push(item2);
       }
-      else {
-        temp?.push(item2)
-      }
-      setSelectedId2([...temp])
+      setSelectedId2([...temp]);
     }
-    setIsChecked(!isChecked)
-  }
+    setIsChecked(!isChecked);
+  };
 
   useEffect(() => {
     if (selectedId2) {
-      let temp = selectedId2
+      let temp = selectedId2;
       let key = "assignedTestId";
-      if (dataFor === "allUsers")
-        key = "_id"
-      let bool = temp?.find((itt) => itt[key] === item[key])
-      setIsChecked(bool ? true : false)
+      if (dataFor === "allUsers") key = "_id";
+      let bool = temp?.find((itt) => itt[key] === item[key]);
+      setIsChecked(bool ? true : false);
     }
-  }, [selectedId2])
+  }, [selectedId2]);
 
   return (
     <>
-      {
-        dataFor === "tutorFeedback" && (
-          <>
+      {dataFor === "tutorFeedback" && (
+        <>
+          <tr className=" text-[17.5px] font-medium">
+            <td className="pb-[15px] pt-[15px] px-[10px]">
+              {item.studentName}
+            </td>
+            <td className="pb-[15px] pt-[15px] px-[10px]">{item.service}</td>
+            <td className="pb-[15px] pt-[15px] px-[10px]">{item.rating}</td>
 
-            <tr className=" text-[17.5px] font-medium">
-              <td className="pb-[15px] pt-[15px] px-[10px]">
-                {item.studentName}
-              </td>
-              <td className="pb-[15px] pt-[15px] px-[10px]">
-                {item.service}
-              </td>
-              <td className="pb-[15px] pt-[15px] px-[10px]">
-                {item.rating}
-              </td>
+            <td className="pb-[15px] pt-[15px] px-[10px]">
+              {getFormattedDate(formattedDate, dateFormat)}
+            </td>
+          </tr>
+        </>
+      )}
+      {dataFor === "popularServices" && (
+        <>
+          <tr className=" text-[17.5px] font-medium">
+            <td className="py-4 px-[10px]">{item.service}</td>
+            <td className="py-4 px-[10px]">{item.actively_using}</td>
+            <td className="py-4 px-[10px]">{item.total_used}</td>
+            <td className="py-4 px-[10px]">{item.scheduled_hours}</td>
+            <td className="py-4 px-[10px]">{item.completed_hours}</td>
+            <td className="py-4 px-[10px]">{item.percent_of_business}</td>
+          </tr>
+        </>
+      )}
+      {dataFor === "serviceRates" && (
+        <>
+          <tr className=" text-[17.5px] font-medium">
+            <td className="py-4 px-[10px]">{item.service}</td>
 
-
-              <td className="pb-[15px] pt-[15px] px-[10px]">
-                {getFormattedDate(formattedDate, dateFormat)}
-              </td>
-            </tr>
-
-          </>
-        )
-
-      }
-      {
-        dataFor === "popularServices" && (
-          <>
-            <tr className=" text-[17.5px] font-medium">
-              <td className="py-4 px-[10px]">
-                {item.service}
-              </td>
-              <td className="py-4 px-[10px]">
-                {item.actively_using}
-              </td>
-              <td className="py-4 px-[10px]">
-                {item.total_used}
-              </td>
-              <td className="py-4 px-[10px]">
-                {item.scheduled_hours}
-              </td>
-              <td className="py-4 px-[10px]">
-                {item.completed_hours}
-              </td>
-              <td className="py-4 px-[10px]">
-                {item.percent_of_business}
-              </td>
-            </tr>
-          </>
-        )
-      }
-      {
-        dataFor === "serviceRates" && (
-          <>
-
-            <tr className=" text-[17.5px] font-medium">
-              <td className="py-4 px-[10px]">
-                {item.service}
-              </td>
-
-              <td className="py-4 px-[10px]">
-                <div className="text-[#517CA8] font-semibold text-base-20 mr-[2px] inline-block">$</div>
-                {item.price}
-              </td>
-            </tr>
-
-          </>
-        )
-
-      }
+            <td className="py-4 px-[10px]">
+              <div className="text-[#517CA8] font-semibold text-base-20 mr-[2px] inline-block">
+                $
+              </div>
+              {item.price}
+            </td>
+          </tr>
+        </>
+      )}
 
       {dataFor === "allUsers" && (
         <tr className="odd:bg-white   leading-8">
-
           <td className=" text-[17.5px] px-1  min-w-14   text-left">
-            <span
-              className="inline-block cursor-pointer pl-4 pt-[6px]"
-
-            >
+            <span className="inline-block cursor-pointer pl-4 pt-[6px]">
               <div className="flex items-center">
                 {dataFor === "allUsers" ? (
-
-
-                 <div className="pt-[3px]"> <SCheckbox checked={isChecked}
-                 stopM={true}
-                 onChange={() => handleSelect(item, "_id")} /></div>
+                  <div className="pt-[3px]">
+                    {" "}
+                    <SCheckbox
+                      checked={isChecked}
+                      stopM={true}
+                      onChange={() => handleSelect(item, "_id")}
+                    />
+                  </div>
+                ) : (
                   // <label
                   //   className={`${styles["checkbox-label"]} block text-[#26435F] `}
                   // >
@@ -421,50 +385,60 @@ export default function TableItem({
                   //   ></span>
                   // </label>
 
-                ) : (
                   ""
                 )}
-                <span onClick={() => onClick.redirect(item)} className="capitalize whitespace-nowrap overflow-hidden text-ellipsis w-[100px]">
+                <span
+                  onClick={() => onClick.redirect(item)}
+                  className="capitalize whitespace-nowrap overflow-hidden text-ellipsis w-[100px]"
+                >
                   {item.name}
                 </span>
               </div>
             </span>
           </td>
-          <td className=" text-[17.5px] px-1 min-w-14  capitalize" >
+          <td className=" text-[17.5px] px-1 min-w-14  capitalize">
             <div className="my-[6px]">{item.userType}</div>
           </td>
           <td className=" text-[17.5px] px-1  min-w-14  ">
             <div className="my-[6px]">{item?.email?.toLowerCase()}</div>
           </td>
 
-       <td className=" text-[17.5px] !pl-6 pr-1  min-w-14  text-left capitalize">
-            <div className="my-[6px]">{item.phoneCode}{item.phone}</div>
+          <td className=" text-[17.5px] !pl-6 pr-1  min-w-14  text-left capitalize">
+            <div className="my-[6px]">
+              {item.phoneCode}
+              {item.phone}
+            </div>
           </td>
           <td className=" text-[17.5px] px-1  min-w-14  capitalize flex justify-center">
             <div className="my-[6px] whitespace-nowrap overflow-hidden text-ellipsis w-[100px] ">
               {item.assignedTutor?.length > 0
                 ? item.assignedTutor?.map((id, idx) => {
-                  const name = extraData.find((item) => item._id === id);
-                  if (name === undefined) return "l";
-                  return `${name.value} ${idx + 1 < item.assignedTutor.length ? "," : ""
+                    const name = extraData.find((item) => item._id === id);
+                    if (name === undefined) return "l";
+                    return `${name.value} ${
+                      idx + 1 < item.assignedTutor.length ? "," : ""
                     } `;
-                })
+                  })
                 : "-"}
             </div>
           </td>
           <td className=" text-[17.5px] px-1  min-w-14 ">
             <div className="my-[6px]">
               {item.specialization?.map((specialization, idx) => {
-                return `${specialization}${idx + 1 === item.specialization.length ? "" : ","
-                  }`;
+                return `${specialization}${
+                  idx + 1 === item.specialization.length ? "" : ","
+                }`;
               })}
             </div>
           </td>
           <td className=" text-[17.5px] px-1  min-w-14 ">
             <div className="my-[6px]">
               <InputSelect
-                disabled={(item?.userType === "parent" || item?.userType === "student") ? false : true}
-
+                disabled={
+                  item?.userType === "parent" || item?.userType === "student"
+                    ? false
+                    : true
+                }
                 tableDropdown={true}
                 value={leadStatus ? leadStatus : "-"}
                 placeholderClass="text-base-17-5"
@@ -473,13 +447,13 @@ export default function TableItem({
                 optionClassName="text-[17.5px]"
                 labelClassname="hidden"
                 onChange={(val) => handleChange({ leadStatus: val })}
-              // customPadding
+                // customPadding
               />
             </div>
           </td>
           <td className=" text-[17.5px] px-1  min-w-14 ">
             <InputSelect
-              disabled={(item?.userType === "tutor") ? false : true}
+              disabled={item?.userType === "tutor" ? false : true}
               tableDropdown={true}
               value={tutorStatus ? tutorStatus : "-"}
               optionData={organization2?.settings?.tutorStatus}
@@ -490,32 +464,30 @@ export default function TableItem({
             />
           </td>
 
-
-
           <td className=" text-[17.5px] px-1  min-w-14  text-[#507CA8]">
             <div className="my-[6px] capitalize">{item?.accountStatus}</div>
           </td>
           <td className=" text-[17.5px] px-1  min-w-14  text-[#507CA8]">
-            <div className="my-[6px] capitalize">{getFormattedDate(item.createdAt, dateFormat)}</div>
+            <div className="my-[6px] capitalize">
+              {getFormattedDate(item.createdAt, dateFormat)}
+            </div>
           </td>
 
-          {false && <td className=" px-1 min-w-14 ">
-            {item.userType !== "admin" ? (
-              <div className=" flex items-center justify-center">
-
-                <img
-                  src={TrashIcon}
-                  className="cursor-pointer"
-                  onClick={() => onClick.handleDelete(item)}
-                />
-
-
-              </div>
-            ) : (
-              ""
-            )}
-          </td>
-          }
+          {false && (
+            <td className=" px-1 min-w-14 ">
+              {item.userType !== "admin" ? (
+                <div className=" flex items-center justify-center">
+                  <img
+                    src={TrashIcon}
+                    className="cursor-pointer"
+                    onClick={() => onClick.handleDelete(item)}
+                  />
+                </div>
+              ) : (
+                ""
+              )}
+            </td>
+          )}
         </tr>
       )}
       {dataFor === "allUsersSuperAdmin" && (
@@ -535,14 +507,18 @@ export default function TableItem({
             <div className="">{item.userType}</div>
           </td>
           <td className="font-medium text-[17.5px] px-1  min-w-14 ">
-            {item?.lastLogin ? <div className="">
-              {/* {new Date(item?.lastLogin).toDateString().split(' ')[1] }. {new Date(item?.lastLogin).getDate() }, {new Date(item?.lastLogin).getFullYear()} */}
-              {getFormattedDate(item.lastLogin, dateFormat)}
-            </div> : "None"}
+            {item?.lastLogin ? (
+              <div className="">
+                {/* {new Date(item?.lastLogin).toDateString().split(' ')[1] }. {new Date(item?.lastLogin).getDate() }, {new Date(item?.lastLogin).getFullYear()} */}
+                {getFormattedDate(item.lastLogin, dateFormat)}
+              </div>
+            ) : (
+              "None"
+            )}
           </td>
           <td className="font-medium text-[17.5px] px-1  min-w-14 ">
             <div className="cursor-pointer">
-              <span style={{ textDecoration: 'underline' }}>edit</span>
+              <span style={{ textDecoration: "underline" }}>edit</span>
             </div>
           </td>
           <td className="font-medium ">
@@ -556,9 +532,10 @@ export default function TableItem({
             </div>
           </td>
 
-
           <td className=" px-1 min-w-14 py-4">
-            {(item.userType !== "admin"&&item.userType !== "superAdmin"&&item.userType !== "superadmin") ? (
+            {item.userType !== "admin" &&
+            item.userType !== "superAdmin" &&
+            item.userType !== "superadmin" ? (
               <div className=" flex items-center justify-center">
                 <img
                   src={TrashIcon2}
@@ -592,7 +569,9 @@ export default function TableItem({
           </td>
           <td className="font-medium text-[17.5px] px-1  min-w-14 py-4">
             <div className="my-[6px]">
-              {item.lastLogin ? getFormattedDate(item.lastLogin, dateFormat) : "-"}
+              {item.lastLogin
+                ? getFormattedDate(item.lastLogin, dateFormat)
+                : "-"}
             </div>
           </td>
         </tr>
@@ -600,82 +579,85 @@ export default function TableItem({
       {dataFor === "assignedTests" && (
         <tr className=" text-[17.5px] ">
           <td className="px-1 font-medium  min-w-14  text-left flex items-center  pb-[14px] pt-4">
-            <span
-              className="inline-block cursor-pointer pl-4"
-
-            >
+            <span className="inline-block cursor-pointer pl-4">
               <div className="flex ">
                 {dataFor === "assignedTests" ? (
-
-
-                  <SCheckbox checked={isChecked}
+                  <SCheckbox
+                    checked={isChecked}
                     stopM={true}
-                    onChange={() => handleSelect(item, "assignedTestId")} />
-
-
+                    onChange={() => handleSelect(item, "assignedTestId")}
+                  />
                 ) : (
                   ""
                 )}
-
               </div>
             </span>
-            <span className="inline-block cursor-pointer pl-4" onClick={() =>
-              onClick.handleNavigate("student", item.studentId)
-            }>
+            <span
+              className="inline-block cursor-pointer pl-4"
+              onClick={() => onClick.handleNavigate("student", item.studentId)}
+            >
               {item.studentName}
             </span>
-
           </td>
           <td className="font-medium px-1  min-w-14 py-3">{item.testName}</td>
           <td className=" text-[17.5px] px-1  min-w-14 py-3  text-center">
-
             <span onClick={() => onClick.redirect(item)} className="">
-              {getFormattedDate(item.assignedOn, dateFormat).replace(/-/g, '/')}
+              {getFormattedDate(item.assignedOn, dateFormat).replace(/-/g, "/")}
             </span>
           </td>
           <td className=" text-[17.5px] px-1  min-w-14 py-3  text-center">
-
-            <span onClick={() => onClick.redirect(item)} className={`${new Date() > new Date(item?.dueDate) ? "text-danger" : ""}`}>
-              {getFormattedDate(item.dueDate, dateFormat).replace(/-/g, '/')}
+            <span
+              onClick={() => onClick.redirect(item)}
+              className={`${
+                new Date() > new Date(item?.dueDate) ? "text-danger" : ""
+              }`}
+            >
+              {getFormattedDate(item.dueDate, dateFormat).replace(/-/g, "/")}
             </span>
           </td>
 
-          <td className="font-medium px-1  min-w-14 py-3">{item.assignedBy
-          }</td>
+          <td className="font-medium px-1  min-w-14 py-3">{item.assignedBy}</td>
           <td className="font-medium px-1  min-w-14 py-3">
-
-
             <div className={`flex items-center no-wrap justify-center`}>
               {returnStatus(item.status)}
-
             </div>
-
-
           </td>
           <td className="font-medium px-1  min-w-14 py-3">
             {item.duration === "-" ? "Unlimited" : item.duration}
           </td>
           <td className="font-medium px-1  min-w-14 py-3">
             <div className="text-center">
-              {item.status === "completed" ?<><span className="text-[#24A3D9] font-bold" >{score?.split(",")[0]}</span> <span >{score?.split(",")[1]}</span></>  : "-"}
-              
+              {item.status === "completed" ? (
+                <>
+                  <span className="text-[#24A3D9] font-bold">
+                    {score?.split(",")[0]}
+                  </span>{" "}
+                  <span>{score?.split(",")[1]}</span>
+                </>
+              ) : (
+                "-"
+              )}
             </div>
           </td>
 
           <td className=" px-1  min-w-14 py-3">
             <button
-              className={`text-[15px] flex justify-center text-base-15 px-1 h-[31px]  rounded-5  items-center leading-none w-[100px] text-center text-white ${item.status == "completed"
-                ? "bg-[#38C980]  "
-                : `${item.status == "started" ? "bg-[#FFCE84]" : "bg-[rgba(38,67,95,0.20)] pointer-events-none"}`
-                }`}
-
+              className={`text-[15px] flex justify-center text-base-15 px-1 h-[31px]  rounded-5  items-center leading-none w-[100px] text-center text-white ${
+                item.status == "completed"
+                  ? "bg-[#38C980]  "
+                  : `${
+                      item.status == "started"
+                        ? "bg-[#FFCE84]"
+                        : "bg-[rgba(38,67,95,0.20)] pointer-events-none"
+                    }`
+              }`}
               onClick={() =>
                 navigate(
                   `/assigned-tests/${item.testId}/${item.assignedTestId}/report/${item.studentId}`
                 )
               }
             >
-              <span classname="inline-block">  View Report</span>
+              <span classname="inline-block"> View Report</span>
             </button>
           </td>
           {/* <td className="font-medium px-1 min-w-14 py-4">
@@ -727,27 +709,22 @@ export default function TableItem({
       {dataFor === "assignedStudents" && (
         <tr className="odd:bg-white text-[17.5px]  leading-7">
           {MapData(item, "assignedStudents", excludes, onClick)}
-
         </tr>
       )}
       {dataFor === "studentTestsReport" && (
         <tr
-       
-          className={`text-[17.5px]   leading-7 ${!item.isCorrect
-            ? "!bg-[#FF79791A]"
-            : "odd:bg-white  "
-            } `}
+          className={`text-[17.5px]   leading-7 ${
+            !item.isCorrect ? "!bg-[#FF79791A]" : "odd:bg-white  "
+          } `}
         >
-          
-          {MapData(item,dataFor)}
+          {MapData(item, dataFor)}
         </tr>
       )}
       {dataFor === "studentTestsReportSmall" && (
         <tr
-          className={`text-[17.5px]  leading-7 ${!item.isCorrect
-            ? "bg-[#e02b1d]/5"
-            : "odd:bg-white  "
-            } `}
+          className={`text-[17.5px]  leading-7 ${
+            !item.isCorrect ? "bg-[#e02b1d]/5" : "odd:bg-white  "
+          } `}
         >
           {MapData(item)}
         </tr>
@@ -769,8 +746,7 @@ export default function TableItem({
         <tr className="  text-[17.5px] leading-7">
           {Object.keys(item).map((key, i) =>
             excludes.includes(key) ? (
-              <React.Fragment key={i}>
-              </React.Fragment>
+              <React.Fragment key={i}></React.Fragment>
             ) : (
               <td key={i} className="font-medium px-1  min-w-14 py-4">
                 {key === "status" ? (
@@ -790,24 +766,36 @@ export default function TableItem({
                     {item.isCompleted === true ? score : "-"}
                   </div>
                 ) : key === "dueDate" ? (
-                  <span className={` ${new Date(item[key]) < new Date() ? "text-[#FF7979] font-semibold" : ""}`}> {getFormattedDate(item[key], dateFormat)}</span>
-                ) :
-                  key === "createdAt" ? getFormattedDate(item[key], dateFormat) : 
-                  key === "assignedOn" ? getFormattedDate(item[key], dateFormat) : 
+                  <span
+                    className={` ${
+                      new Date(item[key]) < new Date()
+                        ? "text-[#FF7979] font-semibold"
+                        : ""
+                    }`}
+                  >
+                    {" "}
+                    {getFormattedDate(item[key], dateFormat)}
+                  </span>
+                ) : key === "createdAt" ? (
+                  getFormattedDate(item[key], dateFormat)
+                ) : key === "assignedOn" ? (
+                  getFormattedDate(item[key], dateFormat)
+                ) : (
                   item[key]
-
-                }
-
+                )}
               </td>
             )
           )}
           <td className="font-medium px-1  min-w-14 py-4">
             <div className="flex items-center">
-              {persona == "student" || <img
-                src={DownloadIcon} alt="DownloadIcon"
-                className="w-[30px] cursor-pointer"
-                onClick={() => handlePdfNavigate()}
-              />}
+              {persona == "student" || (
+                <img
+                  src={DownloadIcon}
+                  alt="DownloadIcon"
+                  className="w-[30px] cursor-pointer"
+                  onClick={() => handlePdfNavigate()}
+                />
+              )}
               {persona === "parent" ? (
                 <>
                   {item.isCompleted ? (
@@ -825,31 +813,36 @@ export default function TableItem({
                     <button
                       className="px-2.5 py-1.8  rounded-5 flex items-center leading-none bg-[#FFCE84] text-white ml-4 w-[120px] h-[31px] justify-center"
                       onClick={() => {
-                        const indexx = testtype.findIndex(obj => obj.testId === item.testId);
-                        testtype[indexx].testtype == 'DSAT' ?
-                          navigate(`/testpage/${item.testId}/${item.assignedTestId}`)
-                          :
-                          navigate(
-                            `/assigned-tests/${item.testId}/${item.assignedTestId}/report/${item.studentId._id}`
-                          )
-                      }
-                      }
+                        const indexx = testtype.findIndex(
+                          (obj) => obj.testId === item.testId
+                        );
+                        testtype[indexx].testtype == "DSAT"
+                          ? navigate(
+                              `/testpage/${item.testId}/${item.assignedTestId}`
+                            )
+                          : navigate(
+                              `/assigned-tests/${item.testId}/${item.assignedTestId}/report/${item.studentId._id}`
+                            );
+                      }}
                     >
                       Started
                     </button>
                   ) : (
-                    <button disabled
+                    <button
+                      disabled
                       className="px-2.5 py-1.8 rounded-5 bg-[#D4D9DF] flex items-center leading-none  text-white ml-4 w-[120px] h-[31px] justify-center"
                       onClick={() => {
-                        const indexx = testtype.findIndex(obj => obj.testId === item.testId);
-                        testtype[indexx].testtype == 'DSAT' ?
-                          navigate(`/testpage/${item.testId}/${item.assignedTestId}`)
-                          :
-                          navigate(
-                            `/assigned-tests/${item.testId}/${item.assignedTestId}/report/${item.studentId._id}`
-                          )
-                      }
-                      }
+                        const indexx = testtype.findIndex(
+                          (obj) => obj.testId === item.testId
+                        );
+                        testtype[indexx].testtype == "DSAT"
+                          ? navigate(
+                              `/testpage/${item.testId}/${item.assignedTestId}`
+                            )
+                          : navigate(
+                              `/assigned-tests/${item.testId}/${item.assignedTestId}/report/${item.studentId._id}`
+                            );
+                      }}
                     >
                       Not Started
                     </button>
@@ -872,15 +865,17 @@ export default function TableItem({
                     <button
                       className="px-2.5 py-1.8  rounded-5 flex items-center leading-none bg-[#FFCE84] text-white ml-4 w-[120px] h-[31px] justify-center"
                       onClick={() => {
-                        const indexx = testtype.findIndex(obj => obj.testId === item.testId);
-                        testtype[indexx].testtype == 'DSAT' ?
-                          navigate(`/testpage/${item.testId}/${item.assignedTestId}`)
-                          :
-                          navigate(
-                            `/all-tests/start-section/${item.testId}/${item.assignedTestId}`
-                          )
-                      }
-                      }
+                        const indexx = testtype.findIndex(
+                          (obj) => obj.testId === item.testId
+                        );
+                        testtype[indexx].testtype == "DSAT"
+                          ? navigate(
+                              `/testpage/${item.testId}/${item.assignedTestId}`
+                            )
+                          : navigate(
+                              `/all-tests/start-section/${item.testId}/${item.assignedTestId}`
+                            );
+                      }}
                     >
                       Continue
                     </button>
@@ -888,15 +883,17 @@ export default function TableItem({
                     <button
                       className="px-2.5 py-1.8 rounded-5 bg-[#FF7979] flex items-center leading-none  text-white ml-4 w-[120px] h-[31px] justify-center"
                       onClick={() => {
-                        const indexx = testtype.findIndex(obj => obj.testId === item.testId);
-                        testtype[indexx].testtype == 'DSAT' ?
-                          navigate(`/testpage/${item.testId}/${item.assignedTestId}`)
-                          :
-                          navigate(
-                            `/all-tests/start-section/${item.testId}/${item.assignedTestId}`
-                          )
-                      }
-                      }
+                        const indexx = testtype.findIndex(
+                          (obj) => obj.testId === item.testId
+                        );
+                        testtype[indexx].testtype == "DSAT"
+                          ? navigate(
+                              `/testpage/${item.testId}/${item.assignedTestId}`
+                            )
+                          : navigate(
+                              `/all-tests/start-section/${item.testId}/${item.assignedTestId}`
+                            );
+                      }}
                     >
                       Start
                     </button>
@@ -915,20 +912,54 @@ export default function TableItem({
       {dataFor === "testsDetailQuestions" && (
         <tr className="bg-white text-[17.5px]   leading-7 mt-[10px]">
           {MapData(item, dataFor, excludes)}
-          {testtype === 'DSAT' ? <>
-            <td><div className={` ${extratableitem[item?.QuestionNumber - 1]?.QImage === 'Yes' && 'bg-[#38C980]'} mx-auto rounded-full w-[20px] h-[20px]`}>{extratableitem[item.QuestionNumber - 1]?.QImage === 'No' ? '' : null}</div></td>
-            <td> <div className={` ${extratableitem[item?.QuestionNumber - 1]?.AImage == 'Yes' && 'bg-[#FFCE84]'} mx-auto  w-[20px] rounded-full h-[20px] `}>{extratableitem[item.QuestionNumber - 1]?.AImage == 'No' ? '' : null}</div></td>
-            <td className={` ${extratableitem[item?.QuestionNumber - 1]?.Passage == 'Yes' ? 'text-[#38C980]' : 'text-[#FF7979]'} text-[17.5px] font-semibold `}>{extratableitem[item.QuestionNumber - 1]?.Passage}</td>
-          </> : null} 
+          {testtype === "DSAT" ? (
+            <>
+              <td>
+                <div
+                  className={` ${
+                    extratableitem[item?.QuestionNumber - 1]?.QImage ===
+                      "Yes" && "bg-[#38C980]"
+                  } mx-auto rounded-full w-[20px] h-[20px]`}
+                >
+                  {extratableitem[item.QuestionNumber - 1]?.QImage === "No"
+                    ? ""
+                    : null}
+                </div>
+              </td>
+              <td>
+                {" "}
+                <div
+                  className={` ${
+                    extratableitem[item?.QuestionNumber - 1]?.AImage == "Yes" &&
+                    "bg-[#FFCE84]"
+                  } mx-auto  w-[20px] rounded-full h-[20px] `}
+                >
+                  {extratableitem[item.QuestionNumber - 1]?.AImage == "No"
+                    ? ""
+                    : null}
+                </div>
+              </td>
+              <td
+                className={` ${
+                  extratableitem[item?.QuestionNumber - 1]?.Passage == "Yes"
+                    ? "text-[#38C980]"
+                    : "text-[#FF7979]"
+                } text-[17.5px] font-semibold `}
+              >
+                {extratableitem[item.QuestionNumber - 1]?.Passage}
+              </td>
+            </>
+          ) : null}
           <td className="font-medium flex justify-center px-1 min-w-14 py-4">
-            {
-              !item.editable ? <></> :
-                <img
-                  src={EditTestIcon}
-                  className="cursor-pointer"
-                  onClick={() => onClick.handleEditTestClick(item)}
-                />
-            }
+            {!item.editable ? (
+              <></>
+            ) : (
+              <img
+                src={EditTestIcon}
+                className="cursor-pointer"
+                onClick={() => onClick.handleEditTestClick(item)}
+              />
+            )}
           </td>
         </tr>
       )}
@@ -938,7 +969,7 @@ export default function TableItem({
           <td>{item.testType}&#174;</td>
           <td> {getFormattedDate(item.createdAt.split("T")[0], dateFormat)}</td>
           <td>{getFormattedDate(item.updatedAt.split("T")[0], dateFormat)}</td>
-          <td> {item.no_of_assign!==null ? item.no_of_assign : "-"} </td>
+          <td> {item.no_of_assign !== null ? item.no_of_assign : "-"} </td>
           <td className="font-medium px-1 py-4 ">
             <div className="flex justify-end">
               <button
@@ -950,8 +981,7 @@ export default function TableItem({
             </div>
           </td>
           <td className="font-medium px-1 ">
-            {
-              (checkTest(persona, item)) &&
+            {checkTest(persona, item) && (
               <div className="  flex justify-center items-center">
                 <button
                   className="flex leading-none bg-[#26435f4d] text-white py-1.5 px-6  w-[100px] !text-center cursor-pointer rounded !text-base-15 !text-center justify-center"
@@ -960,17 +990,28 @@ export default function TableItem({
                   Remove
                 </button>
               </div>
-            }
+            )}
           </td>
         </tr>
       )}
       {dataFor === "allTestsSuperAdmin" && (
         <tr className=" font-medium  lead  text-[17.5px] ">
-          <td className="pl-12 !text-left "><span className="">{item.testName}</span></td>
-          <td className=" pl-5 !text-center ">{item.testType==="Other"?"ACT":item.testType}</td>
-          <td className=" pl-5 !text-center ">{getFormattedDate(item.createdAt.split("T")[0], dateFormat)}</td>
-          <td className=" pl-5 !text-center ">{getFormattedDate(item.updatedAt.split("T")[0], dateFormat)}</td>
-          <td className=" pl-5 !text-center "> {item.no_of_assign ? item.no_of_assign : "-"} </td>
+          <td className="pl-12 !text-left ">
+            <span className="">{item.testName}</span>
+          </td>
+          <td className=" pl-5 !text-center ">
+            {item.testType === "Other" ? "ACT" : item.testType}
+          </td>
+          <td className=" pl-5 !text-center ">
+            {getFormattedDate(item.createdAt.split("T")[0], dateFormat)}
+          </td>
+          <td className=" pl-5 !text-center ">
+            {getFormattedDate(item.updatedAt.split("T")[0], dateFormat)}
+          </td>
+          <td className=" pl-5 !text-center ">
+            {" "}
+            {item.no_of_assign ? item.no_of_assign : "-"}{" "}
+          </td>
           <td className="font-medium pl-2 pr-1 py-3 pl-5 !text-center">
             <div className="flex justify-center">
               <p
@@ -1030,14 +1071,16 @@ export default function TableItem({
             </span>
           </td>
           <td className="font-medium text-[17.5px] pl-12  min-w-14 py-4  text-left">
-            <div className="my-[6px]">{item.firstName + " " + item?.lastName}</div>
+            <div className="my-[6px]">
+              {item.firstName + " " + item?.lastName}
+            </div>
           </td>
 
           <td className="font-medium text-[17.5px] pl-12  min-w-14 py-4  text-left">
             <div className="my-[6px]">{item.email}</div>
           </td>
 
-           <td className="font-medium text-[17.5px] pl-12  min-w-14 py-4  text-left">
+          <td className="font-medium text-[17.5px] pl-12  min-w-14 py-4  text-left">
             <div className="my-[6px]">{item.phone}</div>
           </td>
           <td className="font-medium text-[17.5px] pl-12  min-w-14 py-4  text-left">
@@ -1060,12 +1103,19 @@ export default function TableItem({
           </td>
 
           <td className="font-medium text-[17.5px] pl-12  min-w-14 py-4  text-left">
-            <div className="my-[6px]">{getFormattedDate(item.createdAt, dateFormat)}
+            <div className="my-[6px]">
+              {getFormattedDate(item.createdAt, dateFormat)}
               {/* {new Date(item.createdAt).toLocaleDateString()} */}
             </div>
           </td>
           <td className="font-medium text-[17.5px] px-1  min-w-14 py-4 cursor-pointer">
-            <div className="my-[6px]"><img onClick={() => setDeleteAdminModalActive(true)} src={DeleteIconAllOrgs} alt="delete" /> </div>
+            <div className="my-[6px]">
+              <img
+                onClick={() => setDeleteAdminModalActive(true)}
+                src={DeleteIconAllOrgs}
+                alt="delete"
+              />{" "}
+            </div>
           </td>
         </tr>
       )}
@@ -1073,10 +1123,10 @@ export default function TableItem({
         <Modal
           title={
             <span className="leading-10 text">
-              Are you sure you want to Delete   {item.associatedOrg?.company
+              Are you sure you want to Delete{" "}
+              {item.associatedOrg?.company
                 ? item.associatedOrg?.company
                 : item.company}
-
             </span>
           }
           titleClassName="mb-5 leading-10 text-center"
@@ -1090,7 +1140,6 @@ export default function TableItem({
             bgDanger: true,
             loading: deleteSelectLoading,
           }}
-
           handleClose={() => setDeleteAdminModalActive(false)}
           classname={"max-w-[600px]  mx-auto"}
         />
@@ -1100,7 +1149,6 @@ export default function TableItem({
 }
 
 const MapData = (data, dataFor, exclude = [], onClick) => {
-
   const [remarkText, setRemarkText] = useState("");
   useEffect(() => {
     if (data.remark) {
@@ -1113,10 +1161,14 @@ const MapData = (data, dataFor, exclude = [], onClick) => {
   const [disabled, setDisabled] = useState(true);
   return Object.keys(data).map((key, i) =>
     exclude.includes(key) ? (
-      <React.Fragment key={i}>
-      </React.Fragment>
+      <React.Fragment key={i}></React.Fragment>
     ) : key === "isCorrect" ? (
-      <td key={i} className={`font-medium px-1  min-w-14 py-4 ${data[key]?"":"!bg-[#FF79791A]"}`}>
+      <td
+        key={i}
+        className={`font-medium px-1  min-w-14 py-4 ${
+          data[key] ? "" : "!bg-[#FF79791A]"
+        }`}
+      >
         <div className="flex items-center justify-center">
           <img
             src={data[key] === true ? SuccessIcon : FailIcon}
@@ -1124,6 +1176,10 @@ const MapData = (data, dataFor, exclude = [], onClick) => {
             alt="resultIcon"
           />
         </div>
+      </td>
+    ) : key === "QuestionNumber" ? (
+      <td key={i} className="font-medium px-1  py-4">
+        <p className={`font-semibold`}>{data[key]<10&&"0"}{data[key]}</p>
       </td>
     ) : dataFor === "invoice" && key === "currentBalance" ? (
       <td key={i} className="font-medium px-1 text-[#009262] py-4">
@@ -1133,8 +1189,9 @@ const MapData = (data, dataFor, exclude = [], onClick) => {
       key === "parent" ? (
       <td key={i} className={`font-medium px-1 `}>
         <p
-          className={`pl-4 ${key === "name" ? "text-center cursor-pointer" : ""
-            } font-semibold`}
+          className={`pl-4 ${
+            key === "name" ? "text-center cursor-pointer" : ""
+          } font-semibold`}
           onClick={() =>
             key === "name" && onClick.handleNavigate("student", data._id)
           }
@@ -1146,7 +1203,8 @@ const MapData = (data, dataFor, exclude = [], onClick) => {
       <td key={i} className="font-medium px-1 text-[#009262] py-4">
         <p className={`font-semibold`}>
           <InputSelect
-            placeholderClass="text-base-17-5" value={data[key] ? data[key] : "-"}
+            placeholderClass="text-base-17-5"
+            value={data[key] ? data[key] : "-"}
             optionData={
               data[key] === "paid"
                 ? ["paid", "cancelled"]
@@ -1181,8 +1239,9 @@ const MapData = (data, dataFor, exclude = [], onClick) => {
                 remark: remarkText,
               });
           }}
-          inputContainerClassName={`bg-white ${disabled ? "border-0" : "border"
-            } pt-1.5 pb-1.5 lg:pt-1.5 lg:pb-1.5 disabled:border-0`}
+          inputContainerClassName={`bg-white ${
+            disabled ? "border-0" : "border"
+          } pt-1.5 pb-1.5 lg:pt-1.5 lg:pb-1.5 disabled:border-0`}
         />
       </td>
     ) : (dataFor === "assignedTutors" && key === "tutorName") ||
@@ -1207,19 +1266,26 @@ const MapData = (data, dataFor, exclude = [], onClick) => {
             onClick.handleNavigate(`/profile/parent/${data.associatedParent}`)
           }
         >
-          {`${data.parentFirstName ? data.parentFirstName : ""} ${data.parentLast ? data.parentLast : ""
-            }`}
+          {`${data.parentFirstName ? data.parentFirstName : ""} ${
+            data.parentLast ? data.parentLast : ""
+          }`}
         </p>
       </td>
     ) : (
       <td
         key={i}
-        className={`font-medium px-1 ${data[key] === "Unpaid" && "text-[#E02B1D]"
-          } ${data[key] === "Paid" && "text-[#009262]"} ${data[key] === "Cancelled" && "text-[#7C859C]"
-          } min-w-14 py-4  ${dataFor==="studentTestsReport"&&!data["isCorrect"]?"!bg-[#FF79791A]":""}`}
+        className={`font-medium px-1 ${
+          data[key] === "Unpaid" && "text-[#E02B1D]"
+        } ${data[key] === "Paid" && "text-[#009262]"} ${
+          data[key] === "Cancelled" && "text-[#7C859C]"
+        } min-w-14 py-4  ${
+          dataFor === "studentTestsReport" && !data["isCorrect"]
+            ? "!bg-[#FF79791A]"
+            : ""
+        } ${dataFor==="testsDetailQuestions"&&"text-left pl-7"}`}
       >
-    
         {data[key]}
+        {dataFor==="testsDetailQuestions"&&key==="Scoring"&&<img className="inline-block translate-x-16" src={editIcon3} alt=""/>}
       </td>
     )
   );

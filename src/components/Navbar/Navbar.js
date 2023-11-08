@@ -327,7 +327,7 @@ const [loading2,setLoading2]=useState(false)
    };
    useEffect(() => {
       if(location.pathname.includes('/all-tests/')){
-         setActiveRoute('/settings');
+         setActiveRoute('/all-tests');
       }
       else if(location.pathname.includes('/orgadmin-profile/')){
          setActiveRoute('/all-orgs');
@@ -344,7 +344,7 @@ const [loading2,setLoading2]=useState(false)
          setNavData(arr)
       }
    }, [activeRoute])
-
+   console.log({navData,activeRoute})
    return (
       <>
          <div className={`flex   bg-[#26435F] h-[72px] items-center w-full shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] ${persona=="superAdmin"?"justify-between px-[5%]":"justify-around"}`}>
