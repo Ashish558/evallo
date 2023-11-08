@@ -52,7 +52,7 @@ export default function Modal({
          {
             <div className={styles.modalContainer}>
                <div className="w-full p-1">
-                  <div ref={handleClose ? selectRef : null} className={`w-full bg-white p-3 py-5 md:py-[33px] md:px-[33px] rounded-lg relative ${classname ? classname : ""
+                  <div ref={handleClose ? selectRef : null} className={`w-full bg-white p-3 py-5 md:py-[27px] md:px-[33px] rounded-lg relative ${classname ? classname : ""
                      }`}
                   >
                      <div className={wrapperClassName ? wrapperClassName : ''} >

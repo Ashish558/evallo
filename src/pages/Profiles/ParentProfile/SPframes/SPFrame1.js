@@ -166,6 +166,11 @@ const SPFrame1 = ({
 
       <div className="flex flex-col gap-3 !w-[calc(810*0.0522vw)]">
         <div className="flex justify-between gap-7">
+
+    <div className="flex w-full justify-between mt-[calc(50*0.0522vw)] gap-[5%] ">
+      <div className="flex flex-col gap-5 !w-[calc(810*0.0522vw)]">
+        <div className="flex justify-between gap-8">
+
           <div className=" !w-[calc(545*0.0522vw)]">
             <div className="flex justify-between">
               <p className=" text-sm text-[#26435F] font-semibold text-base-20 mb-1 custom-scroller">
@@ -237,14 +242,14 @@ const SPFrame1 = ({
                 </p>
 
               </div>
-              <div className=" flex-1  rounded-md h-full  h-[50px] ">
+              <div className=" flex-1  rounded-md h-full  h-[50px] items-center ">
                 <InputSelectNew
                   placeholder={"Lead Status"}
                   parentClassName="ml-0 w-full  items-center flex text-[#517CA8] text-xs  whitespace-nowrap "
-                  inputContainerClassName="bg-white h-[55px] shadow-[0px_0px_2.500001907348633px_0px_#00000040] my-0 py-[5px] pl-4 !rounded-5"
+                  inputContainerClassName="bg-white h-[55px] shadow-[0px_0px_2.500001907348633px_0px_#00000040] my-0 py-[5px] pl-4 !rounded-5 mt-1"
                   placeHolderClass="text-[#517CA8] "
-                  labelClassname="text-sm text-base-17-5"
-                  inputClassName="bg-transparent"
+                  labelClassname="text-sm text-base-17-5 "
+                  inputClassName="bg-transparent "
                   optionContainerClassName="!w-[190px]"
                   optionClassName="mt-1"
                   ICON2={Drop}
@@ -286,9 +291,9 @@ const SPFrame1 = ({
         </div>
         {persona === 'admin' && <div className="">
           <p className=" text-sm text-[#26435F] font-semibold text-base-20 mb-1">
-            Sign up form details
+            Sign Up Form Details
           </p>
-          <div className="bg-white flex-1 h-[200px] p-3 custom-scroller  overflow-y-auto  flex flex-col rounded-md shadow-[0px_0px_2.500001907348633px_0px_#00000040] custom-scroller">
+          <div className="bg-white flex-1 h-[400px] p-3 custom-scroller  overflow-y-auto  flex flex-col rounded-md shadow-[0px_0px_2.500001907348633px_0px_#00000040] custom-scroller">
             {signupData?.map((it, id) => {
               return (
                 <p key={id} className="flex gap-3 my-2 text-base-17-5">
@@ -311,7 +316,7 @@ const SPFrame1 = ({
         <p className=" text-sm text-[#26435F] font-semibold text-base-20 mb-1">
           Session Notes
         </p>
-        <div className="bg-white flex-1  rounded-md custom-scroller shadow-[0px_0px_2.500001907348633px_0px_#00000040]">
+        <div className="bg-white flex-1 h-[660px] rounded-md custom-scroller shadow-[0px_0px_2.500001907348633px_0px_#00000040]">
           <div className="p-5">
             <button
               onClick={() => {
@@ -336,7 +341,7 @@ const SPFrame1 = ({
               Internal Notes
             </button>
           </div>
-          <div className="flex flex-col h-[380px]   bg-[#FFFFFF] ">
+          <div className="flex flex-col h-[580px]   bg-[#FFFFFF] ">
             <ul className="list-disc rounded-b-md overflow-y-auto custom-scroller h-full ">
               {internal && internalNotes?.map(
                 (item, index) => (
