@@ -158,6 +158,12 @@ export default function CheckOut({
     const [addSubscriptions, addSubscriptionsResp] = useAddSubscriptionsMutation()
 
     useEffect(() => {
+        console.log("chosenSubscriptionFromAPI from sessionStorage");
+        console.log(
+            JSON.parse(
+                sessionStorage.getItem("chosenSubscriptionFromAPI")
+            )
+        );
         SetChosenSubscriptionObjectFromAPI(
             subscriptionsInfoFromAPI.find(item => item.id === chosenSubscriptionPlan.id)
         );

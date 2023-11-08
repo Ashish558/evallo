@@ -1144,6 +1144,7 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
                   setFrames={setFrames}
                   setcurrentStep={setcurrentStep}
                   subscriptionPlanInfo={subscriptionPlanInfo}
+                  subscriptionsInfoFromAPI={subscriptionsInfoFromAPI}
                 />
               ) : frames.extensions ? (
                 <Extensions
@@ -1152,7 +1153,7 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
                   setExtensions={setExtensions}
                   setFrames={setFrames}
                   setcurrentStep={setcurrentStep}
-            
+                  subscriptionsInfoFromAPI={subscriptionsInfoFromAPI}
                 />
               ) 
               //   : frames.payment ? (

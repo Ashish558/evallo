@@ -10,6 +10,7 @@ export default function Subscription({
     setFrames,
     setcurrentStep,
     subscriptionPlanInfo = [],
+    subscriptionsInfoFromAPI = [],
 }) {
     // const subscriptionPlanInfo = subScriptionPlanData
 
@@ -67,6 +68,8 @@ export default function Subscription({
                                         subscriptionPlan: plan.planName
                                     })
                                 })
+                                const chosenSubscriptionFromAPI = subscriptionsInfoFromAPI.find(item => item.id === plan.id)
+                                sessionStorage.setItem("chosenSubscriptionFromAPI", JSON.stringify(chosenSubscriptionFromAPI));
                             }}
                             
                         />
