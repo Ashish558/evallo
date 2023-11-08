@@ -522,7 +522,7 @@ const handleSave=async ()=>{
               onClick={handleSave}
               
 
-              className={`bg-[#FFA28D]   mt-[25px] ml-10 rounded-md px-[50px] py-[15px] text-sm text-base-20 text-white  `}
+              className={`bg-[#FFA28D]   mt-[25px] ml-10 rounded-md px-[50px] py-[15px] text-sm text-base-20 text-white w-[175px] `}
 
             >
               Save
