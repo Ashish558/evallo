@@ -55,7 +55,7 @@ function Payment({
         }
 
         // Create the SetupIntent and obtain clientSecret
-        const res = await createIntentForPayment(JSON.stringify({ customer_id: 'cus_OteUYhKgkeuICE' }));
+        const res = await createIntentForPayment({ customer_id: 'cus_OteUYhKgkeuICE' });
         
         /* const res = await fetch(`${BASE_URL}api/stripe/create-intent`, {
         method: 'POST',
@@ -90,13 +90,13 @@ function Payment({
             // methods like iDEAL, your customer is redirected to an intermediate
             // site first to authorize the payment, then redirected to the `return_url`.
             // console.log('subscribed', res);
-            const post = await finishSetupForPayment(JSON.stringify({
+            const post = await finishSetupForPayment({
                 setupintent: setupIntent?.id,
                 subscriptions: [
                     chosenSubscriptionObjectFromAPI,
                     [...chosenExtentionObjectsFromAPI]
                 ]
-            }));
+            });
             /* const post = await fetch(
                 `http://localhost:3000/api/stripe/finish_setup`,
                 {
@@ -110,9 +110,9 @@ function Payment({
                 }
             ); */
 
-            const resp = await post.json();
+            // const resp = await post.json();
             console.log("response from finish_setup");
-            console.log(resp);
+            console.log(post);
         }
     };
 

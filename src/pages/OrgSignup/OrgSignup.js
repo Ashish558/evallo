@@ -178,7 +178,7 @@ export default function OrgSignup() {
 
   const [getDetails, getDetailsResp] = useLazyGetUserDetailQuery();
   const [getSubscriptionsInfo, getSubscriptionsInfoResp] = useLazyGetSubscriptionsInfoQuery();
-  const [subscriptionsInfoFromAPI, SetSubscriptionsInfoFromAPI] = useState({});
+  const [subscriptionsInfoFromAPI, SetSubscriptionsInfoFromAPI] = useState([]);
   // let subscriptionsInfoFromAPI = {};
   const [subscriptionPlanInfo, SetSubscriptionPlanInfo] = useState([])
   const [extensionPlansData, SetExtensionPlansData] = useState([]);
@@ -213,7 +213,41 @@ export default function OrgSignup() {
 
   useEffect(() => {
     OnFrameChanged();
-  }, [frames])
+  }, [frames]);
+
+  function OnExtensionsChanged() {
+    let output = sessionStorage.getItem("chosenExtentionObjectsFromAPI");
+    if(output === '' || output === undefined ) {
+      output = null;
+    }
+    let chosenExtentionObjectsFromAPI = JSON.parse(output);
+    if(chosenExtentionObjectsFromAPI === undefined || chosenExtentionObjectsFromAPI === null) {
+      chosenExtentionObjectsFromAPI = [];
+    }
+
+    for(let i = 0; i < extensions.length; i++) {
+      if(!extensions[i].checked) continue;
+      const ext = extensions[i];
+
+      const chosenExtension = subscriptionsInfoFromAPI.find(item => {
+        return item.product.metadata.type === "extension" && 
+               item.product.name === ext.text && 
+               item.lookup_key === ext.packageName;
+      });
+
+      chosenExtentionObjectsFromAPI = chosenExtentionObjectsFromAPI.filter(item => {
+        return item.product.metadata.type === "extension" && item.product.name !== ext.text;
+      })
+
+      chosenExtentionObjectsFromAPI.push(chosenExtension);
+
+      sessionStorage.setItem("chosenExtentionObjectsFromAPI", JSON.stringify(chosenExtentionObjectsFromAPI));
+    }
+  }
+
+  useEffect(() => {
+    OnExtensionsChanged();
+  }, [extensions]);
 
   const fetchSettings = () => {
     getSettings().then((res) => {

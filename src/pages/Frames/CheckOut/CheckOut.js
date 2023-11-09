@@ -95,7 +95,7 @@ export default function CheckOut({
     };
 
     const [promoCodes, SetPromoCodes] = useState([
-        {
+        /* {
             code: "Promo code 1",
             discount: 15,
             price: 10
@@ -109,7 +109,7 @@ export default function CheckOut({
             code: "Promo code 3",
             discount: 50,
             price: 20
-        },
+        }, */
     ]);
     /*
         promocodes = [
@@ -214,14 +214,28 @@ export default function CheckOut({
     const handleSub = async () => {
         console.log(subscriptionsInfoFromAPI);
 
-        let chosenSubscriptionToBeSentThroughAPI = chosenSubscriptionObjectFromAPI;
+        let subscriptionSessionStorageOutput = sessionStorage.getItem("chosenSubscriptionFromAPI");
+        if(subscriptionSessionStorageOutput === '' || subscriptionSessionStorageOutput === undefined) {
+            subscriptionSessionStorageOutput = null;
+        }
+        let chosenSubscriptionToBeSentThroughAPI = JSON.parse(subscriptionSessionStorageOutput);
 
-        let chosenExtensionPlansToBeSentThroughAPI = [];
-        if(!(chosenExtensionPlans === undefined || chosenExtensionPlans === null || chosenExtensionPlans.length === 0)) {
-            chosenExtensionPlansToBeSentThroughAPI.push(subscriptionsInfoFromAPI[3]);
+        let extentionSessionStorageOutput = sessionStorage.getItem("chosenExtentionObjectsFromAPI");
+        if(extentionSessionStorageOutput === '' || extentionSessionStorageOutput === undefined ) {
+            extentionSessionStorageOutput = null;
         }
 
-        console.log(chosenExtensionPlans);
+        let chosenExtensionPlansToBeSentThroughAPI = JSON.parse(extentionSessionStorageOutput);
+        /* if(!(chosenExtensionPlans === undefined || chosenExtensionPlans === null || chosenExtensionPlans.length === 0)) {
+            chosenExtensionPlansToBeSentThroughAPI.push(subscriptionsInfoFromAPI[3]);
+        } */
+
+        if(chosenExtensionPlansToBeSentThroughAPI === undefined || chosenExtensionPlansToBeSentThroughAPI === null) {
+            chosenExtensionPlansToBeSentThroughAPI = [];
+            sessionStorage.setItem("chosenExtentionObjectsFromAPI", JSON.stringify(chosenExtensionPlansToBeSentThroughAPI));
+        }
+
+        console.log("chosenExtensionPlansToBeSentThroughAPI");
         console.log(chosenExtensionPlansToBeSentThroughAPI);
 
         /* const response = await fetch(
@@ -242,20 +256,20 @@ export default function CheckOut({
         ) */
 
         
-        const response = await addSubscriptions(JSON.stringify(
+        const response = await addSubscriptions(
                 {
                     customer_id: 'cus_OteUYhKgkeuICE',
                     subscriptions: [
                         chosenSubscriptionToBeSentThroughAPI,
-                        // ...chosenExtensionPlansToBeSentThroughAPI
+                        ...chosenExtensionPlansToBeSentThroughAPI
                     ]
-                })
+                }
         );
        
 
-        const data = await response.json();
+        // const data = await response.json();
         console.log('Subscribed');
-        console.log(data);
+        console.log(response);
     };
 
     return (
