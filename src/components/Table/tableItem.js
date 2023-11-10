@@ -727,7 +727,6 @@ export default function TableItem({
       {dataFor === "assignedStudents" && (
         <tr className="odd:bg-white text-[17.5px]  leading-7">
           {MapData(item, "assignedStudents", excludes, onClick)}
-
         </tr>
       )}
       {dataFor === "studentTestsReport" && (

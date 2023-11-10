@@ -27,6 +27,9 @@ import { useLazyGetTutorAssignedTestsQuery } from "../../app/services/test";
 import { getDate, getDuration, getFormattedDate } from "../../utils/utils";
 import leftArrow from "../../assets/icons/carousel_left-arrow.svg";
 import rightArrow from "../../assets/icons/carousel_right-arrow.svg";
+
+import defaultProfile from "../../assets/images/defaultProfile.png";
+
 const studentsArr = [
   {
     src: StudentImg,
@@ -326,12 +329,12 @@ export default function TutorDashboard() {
                 <p className="text-[#26435F] font-semibold text-xl mb-[20px] ">
                   Latest Students
                 </p>
-                <div className="rounded-[5.333px] bg-[#FFF] shadow-[0px_0px_2px_rgba(0,0,0,0.25)] py-5 px-5 w-[55.52vw] flex justify-center">
-                  <div className={styles.studentImages}>
+                <div className="rounded-[5.333px] bg-[#FFF] shadow-[0px_0px_2px_rgba(0,0,0,0.25)] py-5 px-5 w-[55.52vw] h-[163px] flex justify-center items-center overflow-hidden">
+                  <div className={styles.studentImages} style={{position : "relative" , padding : "10px", minWidth : "90%"}}>
                     {students?.length > 0 ? (
                       <OwlCarousel
                         ref={sliderRef}
-                        className="owl-theme"
+                        className="owl-theme min-w-[800px]"
                         {...options}
                         items={5}
                         autoWidth
@@ -339,17 +342,18 @@ export default function TutorDashboard() {
                       >
                         {students.map((student) => {
                           return (
-                            <div className="flex flex-col items-center text-center w-[108px]">
+                            <div className="flex flex-col justify-center items-center text-center w-[145px] bg-white py-2">
                               <img
                                 src={`${
                                   student.photo
                                     ? `${awsLink}${student.photo}`
-                                    : "/images/default.jpeg"
+                                    : defaultProfile
                                 } `}
+                                className="h-[93px] w-[93px]"
                                 alt="studentImage"
                               />
                               <p
-                                className="text-[0.78125vw] text-[#517CA8]  mt-4 cursor-pointer w-full text-center"
+                                className="text-[0.78125vw] text-[#517CA8]  mt-[10px] cursor-pointer w-full text-center"
                                 onClick={() =>
                                   navigate(`/profile/student/${student._id}`)
                                 }
@@ -380,13 +384,13 @@ export default function TutorDashboard() {
                   {students?.length > 0 && (
                     <div className="custom-navigation">
                       <button
-                        className="prev absolute top-[55%] left-[3%]"
+                        className="prev absolute top-[55%] left-[3%] z-10"
                         onClick={handlePrev}
                       >
                         <img src={leftArrow} alt="" />
                       </button>
                       <button
-                        className="next absolute top-[55%] right-[3%]"
+                        className="next absolute top-[55%] right-[3%] z-10"
                         onClick={handleNext}
                       >
                         <img className="!w-full" src={rightArrow} alt="" />
@@ -431,7 +435,7 @@ export default function TutorDashboard() {
               </div>
 
               <div className="w-[55.312vw] mt-10">
-                <p className="text-primary-dark font-semibold text-[20px] mb-[13px]">
+                <p className="text-primary-dark font-semibold text-[20px] mb-[3px]">
                   Today’s Schedule
                 </p>
                 <div className="px-[43px] py-[26px] bg-white  rounded-[5.333px] scrollbar-content scrollbar-vertical h-[530px] overflow-y-auto shadow-[0px_0px_2.6px_0px_rgba(0,0,0,0.25)]">
@@ -508,7 +512,7 @@ export default function TutorDashboard() {
                   {/* <p className='text-primary font-semibold text-[21px] mb-4'>
                            Latest Practice Test
                         </p> */}
-                  <div className="pl-[30px] pr-[26px] custom-scroller h-[922px]  overflow-auto pt-[20px]  bg-white rounded-20">
+                  <div className="pl-[30px] pr-[26px] h-[922px]  overflow-auto pt-[20px]  bg-white rounded-20 removeDefaultScrollStyling">
                     {allAssignedTests?.length > 0? (
                       allAssignedTests?.slice(-10).map((item) => {
                         return (

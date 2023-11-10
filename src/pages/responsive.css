@@ -328,3 +328,9 @@ th * {
 .custom-scroller-2::-webkit-scrollbar-track-piece:start {
   margin-left: 100px;
 } */
+
+
+/*  removing default scrollbar styling  */
+.removeDefaultScrollStyling::-webkit-scrollbar{
+   display:  none;
+}
