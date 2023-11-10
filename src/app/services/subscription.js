@@ -32,6 +32,13 @@ export const subscriptionApi = createApi({
                 headers: getAuthHeader(),
             })
         }),
+        applyCoupon: builder.query({
+            query: (body) => ({
+                url: `api/stripe/applyCoupon?couponName=${body.couponName}&subscriptionPrice=${body.subscriptionPrice}`,
+                method: 'GET',
+                headers: getAuthHeader()
+            })
+        })
     })
 })
 
@@ -39,4 +46,6 @@ export const {
     useAddSubscriptionsMutation,
     useCreateIntentMutation,
     useFinishSetupMutation,
+    useApplyCouponQuery,
+    useLazyApplyCouponQuery,
 } = subscriptionApi;

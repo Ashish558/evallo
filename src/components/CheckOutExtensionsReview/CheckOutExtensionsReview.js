@@ -5,6 +5,7 @@ import PrimaryButton from "../Buttons/PrimaryButton";
 import SecondaryButton from "../Buttons/SecondaryButton";
 import InputField from "../../components/InputField/inputField";
 import { BASE_URL } from "../../app/constants/constants";
+import { useLazyApplyCouponQuery } from "../../app/services/subscription";
 
 export default function CheckOutExtensionsReview({
     canAddPromoCode = false,
@@ -25,14 +26,35 @@ export default function CheckOutExtensionsReview({
     setFrames,
     setcurrentStep,
     chosenExtentionObjectsFromAPI,
+    extensionDiscounts,
+    SetExtensionDiscounts,
 }) {
     const [couponCode, SetcouponCode] = useState("");
+    const [applyCoupon, applyCouponResp] = useLazyApplyCouponQuery();
+
     const handleChangePlan = () => {
         if(!setFrames || !setcurrentStep) return;
         setFrames((prev) => {
             return { ...prev, checkout: false, extensions: true };
         });
         // setcurrentStep(currentStep => currentStep - 1)
+    }
+
+    const OnPressApplyCoupon = async () => {
+        if(couponCode === "") return;
+
+        const response = await applyCoupon({
+            couponName: couponCode,
+            subscriptionPrice: ""
+        });
+
+
+        console.log("apply coupon resonse");
+        console.log(response.data);
+
+        if(response.data && response.data.coupon) {
+            
+        }
     }
 
     return (
@@ -116,31 +138,7 @@ export default function CheckOutExtensionsReview({
                     <PrimaryButton
                         children={"Apply"}
                         className={"h-5/6 ml-[10px] px-[10px]"}
-                        onClick={async () => {
-                            console.log(couponCode)
-                            console.log({
-                                couponCode: couponCode,
-                                subscriptionPrice: chosenExtentionObjectsFromAPI
-                            })
-                            const response = fetch(
-                                `${BASE_URL}api/stripe/applyCoupon`,
-                                {
-                                    method: 'POST',
-                                    headers: {
-                                        'Content-Type': 'application/json', // Set the content type to JSON.
-                                    },
-                                    body: JSON.stringify(
-                                        {
-                                            couponCode: couponCode,
-                                            subscriptionPrice: chosenExtentionObjectsFromAPI
-                                        }),
-                                }
-                            );
-
-                            const data = await response.json();
-                            console.log('Coupon');
-                            console.log(data);
-                        }}
+                        onClick={OnPressApplyCoupon}
                     />
             </div>) : (<></>)
             }

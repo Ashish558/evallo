@@ -235,7 +235,7 @@ export function getDate(arg) {
    const month = date.toLocaleString('default', { month: 'long' });
    return `${month.slice(0, 3)} ${date.getDate()}, ${date.getFullYear()}`
 }
-var formattedNumber = (x) => {
+export var formattedNumber = (x) => {
    return (x * 1).toFixed(2).replace(/[.,]00$/, "");
 }
 
@@ -382,6 +382,12 @@ export const getMonthName = idx => {
    ]
    if (idx > 11) return monthNames[0]
    return monthNames[idx]
+}
+
+export function CurrencyNameToSymbole(currency = "") {
+   if(currency.toLowerCase() === "usd") return "$";
+   if(currency.toLowerCase() === "inr") return "₹";
+   return "";
 }
 
 // // timezones

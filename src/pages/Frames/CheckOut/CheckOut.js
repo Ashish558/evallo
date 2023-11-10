@@ -17,6 +17,7 @@ import { loadStripe } from "@stripe/stripe-js";
 import Payment from "../../Frames/Payment/Payment";
 import { BASE_URL } from "../../../app/constants/constants";
 import { useAddSubscriptionsMutation } from "../../../app/services/subscription";
+import { formattedNumber } from "../../../utils/utils";
 
 export default function CheckOut({
     setFrames,
@@ -30,6 +31,7 @@ export default function CheckOut({
     ],
     extensionPlansInfo = [
         {
+            id: "",
             planName: "",
             planDisplayName: "",
             description: [],
@@ -53,32 +55,6 @@ export default function CheckOut({
     clientSecret,
     subscriptionsInfoFromAPI = [],
 }) {
-    // const secretKey = "sk_test_51O1tgLSFF3kgujFeaEQ6Uh7PkOtF4SgSk5ATR8xxmCgLGIW4lkkDzeLDKMoMfjAwZVQyTDJjBkTCwJiIMGgVqrlQ00b9M9MyKZ"
-    // const publishableKey = "pk_test_51O1tgLSFF3kgujFe23VYSyhW5lbx2N3b7cjC1q1Q1alW9lwocUKObR8j4hBdpYx5xzDnFcPsNBbkzDu6hcDmHSP3004Sr0qX5e";
-    // const stripePromise = loadStripe(publishableKey);
-    // const stripe_From_Req = require("stripe")(secretKey);
-
-    // const stripe = useStripe();
-    // const elements = useElements();
-
-    // const [clientSecret, SetClientSecret] = useState();
-
-    /*
-    useEffect(async () => {
-        const paymentIntent = await stripe_From_Req.paymentIntents.create({
-          amount: 1,
-          currency: "usd",
-          // In the latest version of the API, specifying the `automatic_payment_methods` parameter is optional because Stripe enables its functionality by default.
-          automatic_payment_methods: {
-            enabled: true,
-          },
-        });
-    
-        console.log(paymentIntent.client_secret)
-    
-        SetClientSecret(paymentIntent.client_secret);
-      }, [])
-      */
 
     const handleSubmit = () => {
         setFrames((prev) => {
@@ -94,8 +70,29 @@ export default function CheckOut({
         // setcurrentStep(currentStep => currentStep - 1)
     };
 
-    const [promoCodes, SetPromoCodes] = useState([
+    const [subscriptionDiscount, SetSubscriptionDiscount] = useState({
+        /*
+            apiResonse: null
+            code: "",
+            discountPercent: 0
+        */
+    })
+
+    const [extensionDiscounts, SetExtensionDiscounts] = useState([
+        /*
+        {
+            planName: "",
+            apiResonse: null,
+            code: "",
+            discountPercent: 0
+        }
+        */
+    ])
+
+    const [discountCodes, SetDiscountCodes] = useState([
         /* {
+            
+            apiResponse: null,
             code: "Promo code 1",
             discount: 15,
             price: 10
@@ -111,48 +108,11 @@ export default function CheckOut({
             price: 20
         }, */
     ]);
-    /*
-        promocodes = [
-            {
-                code: "",
-                discount: 0, // in percent
-                price: 0, // amount discounted on selected package
-            }
-        ]
-    */
-   
 
-    // useEffect(() => {
-    //     if (!stripe) {
-    //         return;
-    //     }
-
-        
-
-    //     if (!clientSecret) {
-    //         return;
-    //     }
-
-    //     stripe.retrievePaymentIntent(clientSecret).then(({ paymentIntent }) => {
-    //         console.log(paymentIntent)
-    //         switch (paymentIntent.status) {
-    //         case "succeeded":
-    //             console.log("Payment succeeded!");
-    //             break;
-    //         case "processing":
-    //             console.log("Your payment is processing.");
-    //             break;
-    //         case "requires_payment_method":
-    //             console.log("Your payment was not successful, please try again.");
-    //             break;
-    //         default:
-    //             console.log("Something went wrong.");
-    //             break;
-    //         }
-    //     });
-    // }, [stripe]);
-
-    const chosenSubscriptionPlan = subscriptionsInfo.find(item => item.planName === values.subscriptionPlan);
+    const [chosenSubscriptionPlan, SetChosenSubscriptionPlan] = useState(
+        subscriptionsInfo.find(item => item.planName === values.subscriptionPlan)
+    );
+    // const chosenSubscriptionPlan = subscriptionsInfo.find(item => item.planName === values.subscriptionPlan);
     const [chosenSubscriptionObjectFromAPI, SetChosenSubscriptionObjectFromAPI] = useState();
     const [chosenExtentionObjectsFromAPI, SetChosenExtentionObjectsFromAPI] = useState([]);
     const [addSubscriptions, addSubscriptionsResp] = useAddSubscriptionsMutation()
@@ -167,15 +127,27 @@ export default function CheckOut({
         SetChosenSubscriptionObjectFromAPI(
             subscriptionsInfoFromAPI.find(item => item.id === chosenSubscriptionPlan.id)
         );
-    }, [])
+    }, []);
 
-    const chosenExtensionPlans = extensionPlansInfo.filter(item => {
+    const [chosenExtensionPlans, SetChosenExtensionPlans] = useState(
+        extensionPlansInfo.filter(item => {
+            if(item.planName === "" || item.planName === undefined || item.planName === null) return false;
+            for(let i = 0; i < extensions.length; i++) {
+                if(extensions[i].text === item.planName && extensions[i].checked) return true;
+            }
+            return false;
+        })
+    );
+
+    const [totalMonthlyCost, SetTotalMonthlyCost] = useState(0);
+
+    /* const chosenExtensionPlans = extensionPlansInfo.filter(item => {
         if(item.planName === "" || item.planName === undefined || item.planName === null) return false;
         for(let i = 0; i < extensions.length; i++) {
             if(extensions[i].text === item.planName && extensions[i].checked) return true;
         }
         return false;
-    })
+    }) */
 
     useEffect(() => {
         if(!(chosenExtensionPlans === undefined || chosenExtensionPlans === null || chosenExtensionPlans.length === 0)) {
@@ -183,20 +155,59 @@ export default function CheckOut({
         }
     }, [chosenExtensionPlans])
 
-    let totalMonthlyCost = 0;
-    totalMonthlyCost += chosenSubscriptionPlan.pricePerMonth;
-    for(let i = 0; i < chosenExtensionPlans.length; i++) {
+    useEffect(() => {
+        SetTotalMonthlyCost(totalMonthlyCost => {
+            let newTotalMonthlyCost = 0;
+            if(chosenSubscriptionPlan) {
+                const subDiscount = (
+                subscriptionDiscount === undefined || 
+                subscriptionDiscount === null || 
+                Object.keys(subscriptionDiscount).length === 0 ? 0 : subscriptionDiscount.discountPercent * chosenSubscriptionPlan.pricePerMonth / 100);
+                const subPrice = chosenSubscriptionPlan.pricePerMonth - subDiscount;
+                
+                newTotalMonthlyCost += subPrice;
+            }
+
+            if(chosenExtensionPlans) {
+                for(let i = 0; i < chosenExtensionPlans.length; i++) {
+                    let item = chosenExtensionPlans[i]
+                    if(item.extensionPriceOption === undefined || item.extensionPriceOption === null || item.extensionPriceOption.length === 0) continue;
+                    let chosenPackageName = extensions.find(i => i.text === item.planName).packageName;
+                    let chosenPackage = item.extensionPriceOption.find(pack => pack.planName === chosenPackageName);
+                    let extDiscount = 0;
+                    if(
+                        !(extensionDiscounts === undefined ||
+                        extensionDiscounts === null ||
+                        extensionDiscounts.length === 0) 
+                    ) {
+                        extDiscount = extensionDiscounts.find(j => j.planName === item.planName).discountPercent * chosenPackage.pricePerMonth / 100;
+                    }
+    
+                    const extPrice = chosenPackage.pricePerMonth - extDiscount;
+    
+                    newTotalMonthlyCost += extPrice;
+                }
+            }
+
+            return newTotalMonthlyCost;
+        })
+    },[chosenSubscriptionPlan, chosenExtensionPlans, subscriptionDiscount, extensionDiscounts]);
+
+    /* let totalMonthlyCost = 0;
+    totalMonthlyCost += chosenSubscriptionPlan.pricePerMonth; */
+
+    /* for(let i = 0; i < chosenExtensionPlans.length; i++) {
         let item = chosenExtensionPlans[i]
         if(item.extensionPriceOption === undefined || item.extensionPriceOption === null || item.extensionPriceOption.length === 0) continue;
         let chosenPackageName = extensions.find(i => i.text === item.planName).packageName;
         let chosenPackage = item.extensionPriceOption.find(pack => pack.planName === chosenPackageName);
         totalMonthlyCost += chosenPackage.pricePerMonth
-    }
+    } */
 
-    for(let i = 0; i < promoCodes.length; i++) {
-        totalMonthlyCost -= promoCodes[i].price
+    /* for(let i = 0; i < discountCodes.length; i++) {
+        totalMonthlyCost -= discountCodes[i].price
     }
-    totalMonthlyCost = totalMonthlyCost < 0 ? 0 : totalMonthlyCost
+    totalMonthlyCost = totalMonthlyCost < 0 ? 0 : totalMonthlyCost */
 
     const paymentElementOptions = {
         layout: "tabs"
@@ -299,6 +310,8 @@ export default function CheckOut({
                 setFrames={setFrames}
                 setcurrentStep={setcurrentStep}
                 chosenSubscriptionObjectFromAPI={chosenSubscriptionObjectFromAPI}
+                subscriptionDiscount={subscriptionDiscount}
+                SetSubscriptionDiscount={SetSubscriptionDiscount}
             />
 
             {(chosenExtensionPlans === undefined || chosenExtensionPlans === null || chosenExtensionPlans.length === 0) ? (<></>) :
@@ -319,6 +332,8 @@ export default function CheckOut({
                             setFrames={setFrames}
                             setcurrentStep={setcurrentStep}
                             chosenExtentionObjectsFromAPI={chosenExtentionObjectsFromAPI}
+                            extensionDiscounts={extensionDiscounts}
+                            SetExtensionDiscounts={SetExtensionDiscounts}
                         />
                     )
                 })}
@@ -355,7 +370,7 @@ export default function CheckOut({
 
                 <div className="flex justify-between mt-[15px] text-[#26435F]">
                     <div>Total Payment</div>
-                    <div>${totalMonthlyCost}.00 + Taxes</div>
+                    <div>${formattedNumber(totalMonthlyCost)} + Taxes</div>
                 </div>
 
             <div className="border-[1px] mb-[40px] mt-[25px] w-full"></div>

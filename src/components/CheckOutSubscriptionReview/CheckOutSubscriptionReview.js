@@ -5,6 +5,8 @@ import PrimaryButton from "../Buttons/PrimaryButton"
 import SecondaryButton from "../Buttons/SecondaryButton"
 import InputField from "../../components/InputField/inputField";
 import { BASE_URL } from "../../app/constants/constants";
+import { useApplyCouponQuery, useLazyApplyCouponQuery } from "../../app/services/subscription";
+import { CurrencyNameToSymbole } from "../../utils/utils";
 
 export default function CheckOutSubscriptionReview({
     canAddPromoCode = false,
@@ -19,9 +21,13 @@ export default function CheckOutSubscriptionReview({
     freeTrialDays,
     setFrames,
     setcurrentStep,
-    chosenSubscriptionObjectFromAPI
+    chosenSubscriptionObjectFromAPI,
+    subscriptionDiscount,
+    SetSubscriptionDiscount,
 }) {
     const [couponCode, SetcouponCode] = useState("");
+    const [couponDiscountPercent, SetCouponDiscountPercent] = useState(0);
+    const [applyCoupon, applyCouponResp] = useLazyApplyCouponQuery();
 
     const handleChangePlan = () => {
         if(!setFrames || !setcurrentStep) return;
@@ -29,6 +35,27 @@ export default function CheckOutSubscriptionReview({
             return { ...prev, checkout: false, subscription: true };
         });
         // setcurrentStep(currentStep => currentStep - 2)
+    }
+
+    const OnPressApplyCoupon = async () => {
+        if(couponCode === "") return;
+
+        const response = await applyCoupon({
+            couponName: couponCode,
+            subscriptionPrice: chosenSubscriptionObjectFromAPI.id
+        });
+
+
+        console.log("apply coupon resonse");
+        console.log(response.data);
+        if(response.data && response.data.coupon) {
+            // SetCouponDiscountPercent(response.data.coupon.percent_off);
+            SetSubscriptionDiscount({
+                apiResonse: response.data,
+                code: couponCode,
+                discountPercent: response.data.coupon.percent_off
+            })
+        }
     }
     return (
         <div className={`flex flex-col pb-[10px] pl-[20px] pr-[30px] pt-[20px] rounded-[5px] shadow-[0px_0px_2px_rgba(0,0,0,0.25)] w-full ${className}`}>
@@ -115,32 +142,26 @@ export default function CheckOutSubscriptionReview({
                     <PrimaryButton
                         children={"Apply"}
                         className={"h-5/6 ml-[10px] px-[10px]"}
-                        onClick={async () => {
-                            console.log(couponCode)
-                            console.log({
-                                couponCode: couponCode,
-                                subscriptionPrice: chosenSubscriptionObjectFromAPI
-                            })
-                            const response = fetch(
-                                `${BASE_URL}api/stripe/applyCoupon`,
-                                {
-                                    method: 'POST',
-                                    headers: {
-                                        'Content-Type': 'application/json', // Set the content type to JSON.
-                                    },
-                                    body: JSON.stringify(
-                                        {
-                                            couponCode: couponCode,
-                                            subscriptionPrice: chosenSubscriptionObjectFromAPI
-                                        }),
-                                }
-                            );
-
-                            const data = await response.json();
-                            console.log('Coupon');
-                            console.log(data);
-                        }}
+                        onClick={OnPressApplyCoupon}
                     />
+
+                    <div className="grow" ></div>
+
+                    {
+                        subscriptionDiscount && subscriptionDiscount.discountPercent > 0 ?
+                        (
+                            <div>
+                                <div>
+                                    {subscriptionDiscount.discountPercent}% discount applied
+                                </div>
+                                <div>
+                                    {CurrencyNameToSymbole(currency)}{subscriptionPricePerMonth - subscriptionPricePerMonth * subscriptionDiscount.discountPercent / 100} / Month
+                                </div>
+                            </div>
+                        ) :
+                        (<></>)
+                    }
+                    
             </div>) : (<></>)
             }
         </div>
