@@ -153,7 +153,7 @@ function Payment({
                 <PrimaryButton
                     className={`w-full flex justify-center  bg-[#FFA28D]  disabled:opacity-60 max-w-[110px]  rounded text-white text-sm font-medium relative py-[9px]`}
                     
-                    children={`Payment`}
+                    children={`Add Payment`}
                     onClick={handleSubmit}
                 />
             </div>

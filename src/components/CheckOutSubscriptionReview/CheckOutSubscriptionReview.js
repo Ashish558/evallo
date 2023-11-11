@@ -28,6 +28,7 @@ export default function CheckOutSubscriptionReview({
     const [couponCode, SetcouponCode] = useState("");
     const [couponDiscountPercent, SetCouponDiscountPercent] = useState(0);
     const [applyCoupon, applyCouponResp] = useLazyApplyCouponQuery();
+    const [isCouponApplyProcessOnGoing, SetIsCouponApplyProcessOnGoing] = useState(false);
 
     const handleChangePlan = () => {
         if(!setFrames || !setcurrentStep) return;
@@ -40,12 +41,13 @@ export default function CheckOutSubscriptionReview({
     const OnPressApplyCoupon = async () => {
         if(couponCode === "") return;
 
+        SetIsCouponApplyProcessOnGoing(true);
         const response = await applyCoupon({
             couponName: couponCode,
             subscriptionPrice: chosenSubscriptionObjectFromAPI.id
         });
 
-
+        SetIsCouponApplyProcessOnGoing(false)
         console.log("apply coupon resonse");
         console.log(response.data);
         if(response.data && response.data.coupon) {
@@ -143,6 +145,7 @@ export default function CheckOutSubscriptionReview({
                         children={"Apply"}
                         className={"h-5/6 ml-[10px] px-[10px]"}
                         onClick={OnPressApplyCoupon}
+                        loading={isCouponApplyProcessOnGoing}
                     />
 
                     <div className="grow" ></div>

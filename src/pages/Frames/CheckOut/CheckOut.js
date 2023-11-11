@@ -54,6 +54,9 @@ export default function CheckOut({
     setcurrentStep,
     clientSecret,
     subscriptionsInfoFromAPI = [],
+    handleSignup,
+    isSubscriptionProcessOnGoing,
+    SetIsSubscriptionProcessOnGoing
 }) {
 
     const handleSubmit = () => {
@@ -112,10 +115,9 @@ export default function CheckOut({
     const [chosenSubscriptionPlan, SetChosenSubscriptionPlan] = useState(
         subscriptionsInfo.find(item => item.planName === values.subscriptionPlan)
     );
-    // const chosenSubscriptionPlan = subscriptionsInfo.find(item => item.planName === values.subscriptionPlan);
     const [chosenSubscriptionObjectFromAPI, SetChosenSubscriptionObjectFromAPI] = useState();
     const [chosenExtentionObjectsFromAPI, SetChosenExtentionObjectsFromAPI] = useState([]);
-    const [addSubscriptions, addSubscriptionsResp] = useAddSubscriptionsMutation()
+    const [addSubscriptions, addSubscriptionsResp] = useAddSubscriptionsMutation();
 
     useEffect(() => {
         console.log("chosenSubscriptionFromAPI from sessionStorage");
@@ -141,18 +143,25 @@ export default function CheckOut({
 
     const [totalMonthlyCost, SetTotalMonthlyCost] = useState(0);
 
-    /* const chosenExtensionPlans = extensionPlansInfo.filter(item => {
-        if(item.planName === "" || item.planName === undefined || item.planName === null) return false;
-        for(let i = 0; i < extensions.length; i++) {
-            if(extensions[i].text === item.planName && extensions[i].checked) return true;
-        }
-        return false;
-    }) */
-
     useEffect(() => {
         if(!(chosenExtensionPlans === undefined || chosenExtensionPlans === null || chosenExtensionPlans.length === 0)) {
             SetChosenExtentionObjectsFromAPI(subscriptionsInfoFromAPI[3]);
         }
+
+        let extentionSessionStorageOutput = sessionStorage.getItem("chosenExtentionObjectsFromAPI");
+        if(extentionSessionStorageOutput === '' || extentionSessionStorageOutput === undefined ) {
+            extentionSessionStorageOutput = null;
+        }
+
+        let chosenExtentionObjectsFromAPI = JSON.parse(extentionSessionStorageOutput);
+
+        if(chosenExtentionObjectsFromAPI === undefined || chosenExtentionObjectsFromAPI === null) {
+            chosenExtentionObjectsFromAPI = [];
+            sessionStorage.setItem("chosenExtentionObjectsFromAPI", JSON.stringify(chosenExtentionObjectsFromAPI));
+        }
+
+        SetChosenExtentionObjectsFromAPI(chosenExtentionObjectsFromAPI);
+
     }, [chosenExtensionPlans])
 
     useEffect(() => {
@@ -171,7 +180,7 @@ export default function CheckOut({
             if(chosenExtensionPlans) {
                 for(let i = 0; i < chosenExtensionPlans.length; i++) {
                     let item = chosenExtensionPlans[i]
-                    if(item.extensionPriceOption === undefined || item.extensionPriceOption === null || item.extensionPriceOption.length === 0) continue;
+                    if(Object.keys(item).length === 0 && item.extensionPriceOption === undefined || item.extensionPriceOption === null || item.extensionPriceOption.length === 0) continue;
                     let chosenPackageName = extensions.find(i => i.text === item.planName).packageName;
                     let chosenPackage = item.extensionPriceOption.find(pack => pack.planName === chosenPackageName);
                     let extDiscount = 0;
@@ -180,7 +189,9 @@ export default function CheckOut({
                         extensionDiscounts === null ||
                         extensionDiscounts.length === 0) 
                     ) {
-                        extDiscount = extensionDiscounts.find(j => j.planName === item.planName).discountPercent * chosenPackage.pricePerMonth / 100;
+                        const extDiscountObject = extensionDiscounts.find(j => j.planName === item.planName);
+                        const discountPercent = extDiscountObject && extDiscountObject.discountPercent ? extDiscountObject.discountPercent : 0;
+                        extDiscount = discountPercent * chosenPackage.pricePerMonth / 100;
                     }
     
                     const extPrice = chosenPackage.pricePerMonth - extDiscount;
@@ -192,22 +203,6 @@ export default function CheckOut({
             return newTotalMonthlyCost;
         })
     },[chosenSubscriptionPlan, chosenExtensionPlans, subscriptionDiscount, extensionDiscounts]);
-
-    /* let totalMonthlyCost = 0;
-    totalMonthlyCost += chosenSubscriptionPlan.pricePerMonth; */
-
-    /* for(let i = 0; i < chosenExtensionPlans.length; i++) {
-        let item = chosenExtensionPlans[i]
-        if(item.extensionPriceOption === undefined || item.extensionPriceOption === null || item.extensionPriceOption.length === 0) continue;
-        let chosenPackageName = extensions.find(i => i.text === item.planName).packageName;
-        let chosenPackage = item.extensionPriceOption.find(pack => pack.planName === chosenPackageName);
-        totalMonthlyCost += chosenPackage.pricePerMonth
-    } */
-
-    /* for(let i = 0; i < discountCodes.length; i++) {
-        totalMonthlyCost -= discountCodes[i].price
-    }
-    totalMonthlyCost = totalMonthlyCost < 0 ? 0 : totalMonthlyCost */
 
     const paymentElementOptions = {
         layout: "tabs"
@@ -223,6 +218,7 @@ export default function CheckOut({
 
 
     const handleSub = async () => {
+        SetIsSubscriptionProcessOnGoing(true);
         console.log(subscriptionsInfoFromAPI);
 
         let subscriptionSessionStorageOutput = sessionStorage.getItem("chosenSubscriptionFromAPI");
@@ -237,9 +233,6 @@ export default function CheckOut({
         }
 
         let chosenExtensionPlansToBeSentThroughAPI = JSON.parse(extentionSessionStorageOutput);
-        /* if(!(chosenExtensionPlans === undefined || chosenExtensionPlans === null || chosenExtensionPlans.length === 0)) {
-            chosenExtensionPlansToBeSentThroughAPI.push(subscriptionsInfoFromAPI[3]);
-        } */
 
         if(chosenExtensionPlansToBeSentThroughAPI === undefined || chosenExtensionPlansToBeSentThroughAPI === null) {
             chosenExtensionPlansToBeSentThroughAPI = [];
@@ -248,25 +241,7 @@ export default function CheckOut({
 
         console.log("chosenExtensionPlansToBeSentThroughAPI");
         console.log(chosenExtensionPlansToBeSentThroughAPI);
-
-        /* const response = await fetch(
-            `${BASE_URL}api/stripe/add_subscriptions`,
-            {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json', // Set the content type to JSON.
-                },
-                body: JSON.stringify({
-                  customer_id: 'cus_OteUYhKgkeuICE',
-                  subcriptions: [
-                    chosenSubscriptionToBeSentThroughAPI,
-                    // [...chosenExtensionPlansToBeSentThroughAPI]
-                  ],
-                }),
-              }
-        ) */
-
-        
+    
         const response = await addSubscriptions(
                 {
                     customer_id: 'cus_OteUYhKgkeuICE',
@@ -276,11 +251,13 @@ export default function CheckOut({
                     ]
                 }
         );
-       
 
-        // const data = await response.json();
         console.log('Subscribed');
         console.log(response);
+
+        if(response) {
+            handleSignup();
+        }
     };
 
     return (
@@ -300,13 +277,13 @@ export default function CheckOut({
             <CheckOutSubscriptionReview
                 className={"mt-[5px]"}
                 canAddPromoCode={true}
-                planDisplayName={chosenSubscriptionPlan.planDisplayName}
-                activeTutorsAllowed={chosenSubscriptionPlan.activeTutorsAllowed}
-                activeStudentsAllowed={chosenSubscriptionPlan.activeStudentsAllowed}
-                ccRequired={chosenSubscriptionPlan.ccRequired}
-                currency={chosenSubscriptionPlan.currency}
-                subscriptionPricePerMonth={chosenSubscriptionPlan.pricePerMonth}
-                freeTrialDays={chosenSubscriptionPlan.freeTrialDays}
+                planDisplayName={chosenSubscriptionPlan && chosenSubscriptionPlan.planDisplayName ? chosenSubscriptionPlan.planDisplayName : null}
+                activeTutorsAllowed={chosenSubscriptionPlan && chosenSubscriptionPlan.activeTutorsAllowed ? chosenSubscriptionPlan.activeTutorsAllowed : null}
+                activeStudentsAllowed={chosenSubscriptionPlan && chosenSubscriptionPlan.activeStudentsAllowed ? chosenSubscriptionPlan.activeStudentsAllowed : null}
+                ccRequired={chosenSubscriptionPlan && chosenSubscriptionPlan.ccRequired ? chosenSubscriptionPlan.ccRequired : null}
+                currency={chosenSubscriptionPlan && chosenSubscriptionPlan.currency ? chosenSubscriptionPlan.currency : null}
+                subscriptionPricePerMonth={chosenSubscriptionPlan && chosenSubscriptionPlan.pricePerMonth ? chosenSubscriptionPlan.pricePerMonth : null}
+                freeTrialDays={chosenSubscriptionPlan && chosenSubscriptionPlan.freeTrialDays ? chosenSubscriptionPlan.freeTrialDays : null}
                 setFrames={setFrames}
                 setcurrentStep={setcurrentStep}
                 chosenSubscriptionObjectFromAPI={chosenSubscriptionObjectFromAPI}
@@ -322,17 +299,23 @@ export default function CheckOut({
                 {chosenExtensionPlans.map(item => {
                     const chosenPackageName = extensions.find(i => i.text === item.planName).packageName;
                     const chosenPackage = item.extensionPriceOption.find(pack => pack.planName === chosenPackageName);
+                    const extObjectFromAPI = chosenExtentionObjectsFromAPI.find(i => {
+                        return i.product.name === item.planName && i.lookup_key === chosenPackageName;
+                    })
+
+                    const extDiscount = extensionDiscounts.find(i => i.planName === item.planName);
                     return (
                         <CheckOutExtensionsReview
                             className={"mt-[25px]"}
                             canAddPromoCode={true}
+                            planName={item.planName}
                             planDisplayName={item.planDisplayName}
                             extensionPriceOption={chosenPackage}
                             subscriptionPricePerMonth={chosenPackage.pricePerMonth}
                             setFrames={setFrames}
                             setcurrentStep={setcurrentStep}
-                            chosenExtentionObjectsFromAPI={chosenExtentionObjectsFromAPI}
-                            extensionDiscounts={extensionDiscounts}
+                            chosenExtentionObjectFromAPI={extObjectFromAPI}
+                            extensionDiscount={extDiscount}
                             SetExtensionDiscounts={SetExtensionDiscounts}
                         />
                     )
@@ -341,32 +324,7 @@ export default function CheckOut({
                 </>)
             }
 
-            {/* <CheckOutExtensionsReview
-                planDisplayName={"Assignments"}
-                extensionPriceOption={{
-                    planDisplayName: "1 - 500",
-                    description: [
-                        "Assign up to 500 tests / assignments per month",
-                        "Included in Free Trial period based on your selected subscription."
-                    ]
-                }}
-            /> */}
-
             <div className="border-[1px] mt-[25px] w-full"></div>
-
-                {/* {
-                    promoCodes.map(pc => {
-                        return (
-                            <div className="flex justify-between mt-[15px]">
-                                <div>
-                                    <div className="text-[#26435F]">{pc.code}</div>
-                                    <div className="text-[#38C980]">{pc.discount}% Discount</div>
-                                </div>
-                                <div className="font-semibold text-[#38C980]">- ${pc.price}.00 / Month</div>
-                            </div>
-                        )
-                    })
-                }*/}
 
                 <div className="flex justify-between mt-[15px] text-[#26435F]">
                     <div>Total Payment</div>
@@ -376,7 +334,7 @@ export default function CheckOut({
             <div className="border-[1px] mb-[40px] mt-[25px] w-full"></div>
 
             {
-                chosenSubscriptionPlan.ccRequired ?
+                chosenSubscriptionPlan && chosenSubscriptionPlan.ccRequired ?
                 (
                     <Payment
                         setFrames={setFrames}
@@ -398,7 +356,8 @@ export default function CheckOut({
                     className={`w-full flex justify-center  bg-[#FFA28D]  disabled:opacity-60 max-w-[110px]  rounded text-white text-sm font-medium relative py-[9px]`}
                     children={`Subscribe`}
                     onClick={handleSub}
-                    
+                    loading={isSubscriptionProcessOnGoing}
+                    disabled={isSubscriptionProcessOnGoing}
                 />
             </div>
         </div>

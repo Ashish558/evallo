@@ -6,6 +6,7 @@ import SecondaryButton from "../Buttons/SecondaryButton";
 import InputField from "../../components/InputField/inputField";
 import { BASE_URL } from "../../app/constants/constants";
 import { useLazyApplyCouponQuery } from "../../app/services/subscription";
+import { CurrencyNameToSymbole } from "../../utils/utils";
 
 export default function CheckOutExtensionsReview({
     canAddPromoCode = false,
@@ -25,12 +26,13 @@ export default function CheckOutExtensionsReview({
     freeTrialDays = 0,
     setFrames,
     setcurrentStep,
-    chosenExtentionObjectsFromAPI,
-    extensionDiscounts,
+    chosenExtentionObjectFromAPI,
+    extensionDiscount,
     SetExtensionDiscounts,
 }) {
     const [couponCode, SetcouponCode] = useState("");
     const [applyCoupon, applyCouponResp] = useLazyApplyCouponQuery();
+    const [isCouponApplyProcessOnGoing, SetIsCouponApplyProcessOnGoing] = useState(false);
 
     const handleChangePlan = () => {
         if(!setFrames || !setcurrentStep) return;
@@ -43,17 +45,32 @@ export default function CheckOutExtensionsReview({
     const OnPressApplyCoupon = async () => {
         if(couponCode === "") return;
 
+        SetIsCouponApplyProcessOnGoing(true);
+        console.log("chosenExtentionObjectFromAPI");
+        console.log(chosenExtentionObjectFromAPI);
+
         const response = await applyCoupon({
             couponName: couponCode,
-            subscriptionPrice: ""
+            subscriptionPrice: chosenExtentionObjectFromAPI.id
         });
 
+        SetIsCouponApplyProcessOnGoing(false);
 
         console.log("apply coupon resonse");
         console.log(response.data);
 
         if(response.data && response.data.coupon) {
-            
+            SetExtensionDiscounts(extensionDiscounts => {
+                const newExtensionDiscounts = extensionDiscounts.filter(item => item.planName !== planName);
+                newExtensionDiscounts.push({
+                    planName: planName,
+                    apiResonse: response.data,
+                    code: couponCode,
+                    discountPercent: response.data.coupon.percent_off
+                })
+
+                return newExtensionDiscounts;
+            })
         }
     }
 
@@ -139,7 +156,25 @@ export default function CheckOutExtensionsReview({
                         children={"Apply"}
                         className={"h-5/6 ml-[10px] px-[10px]"}
                         onClick={OnPressApplyCoupon}
+                        loading={isCouponApplyProcessOnGoing}
                     />
+
+                    <div className="grow" ></div>
+
+                    {
+                        extensionDiscount && extensionDiscount.discountPercent > 0 ?
+                        (
+                            <div>
+                                <div>
+                                    {extensionDiscount.discountPercent}% discount applied
+                                </div>
+                                <div>
+                                    {CurrencyNameToSymbole(extensionPriceOption.currency)}{subscriptionPricePerMonth - subscriptionPricePerMonth * extensionDiscount.discountPercent / 100} / Month
+                                </div>
+                            </div>
+                        ) :
+                        (<></>)
+                    }
             </div>) : (<></>)
             }
         </div>

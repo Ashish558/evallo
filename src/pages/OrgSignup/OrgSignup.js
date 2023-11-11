@@ -74,8 +74,8 @@ import Payment from "../Frames/Payment/Payment";
 
 export default function OrgSignup() {
   const [frames, setFrames] = useState({
-    signupActive: false,
-    subscription: true,
+    signupActive: true,
+    subscription: false,
     extensions: false,
     // payment: false,
     checkout: false,
@@ -183,6 +183,7 @@ export default function OrgSignup() {
   const [subscriptionPlanInfo, SetSubscriptionPlanInfo] = useState([])
   const [extensionPlansData, SetExtensionPlansData] = useState([]);
   const [isOtplessModalActive, SetIsOtplessModalActive] = useState(false);
+  const [isSubscriptionProcessOnGoing, SetIsSubscriptionProcessOnGoing] = useState(false);
 
   function OnFrameChanged() {
     if(frames.signupActive) {
@@ -430,27 +431,11 @@ export default function OrgSignup() {
     });
     setPersona(paramUserRole);
     setIsAddedByAdmin(true);
-    // setFrames((prev) => {
-    //    return { ...prev, signupActive: false, userDetails: true };
-    // })
-
-    // getDetails({ id: paramUserId })
-    //    .then(res => {
-    //       if (res.error) {
-    //          return console.log(res.error)
-    //       }
-    //       console.log('param res', res.data);
-    //       const { user, userdetails } = res.data.data
-    //       let user_detail = { ...userdetails }
-    //       console.log('user', user);
-    //       console.log('userdetails', userdetails);
-
-    //    })
   }, [paramUserId, paramUserRole]);
 
   useEffect(() => {
     const paramsUserId = searchParams.get("userId");
-    return;
+    return () => {};
     getDetails({ id: paramsUserId }).then((res) => {
       if (res.error) {
         return console.log(res.error);
@@ -512,7 +497,7 @@ export default function OrgSignup() {
   useEffect(() => {
     if (sessionStorage.getItem("frames")) {
       // console.log(sessionStorage.getItem('frames'));
-      // setFrames(JSON.parse(sessionStorage.getItem("frames")));
+      setFrames(JSON.parse(sessionStorage.getItem("frames")));
     }
     if (sessionStorage.getItem("values")) {
       setValues(JSON.parse(sessionStorage.getItem("values")));
@@ -530,7 +515,7 @@ export default function OrgSignup() {
       setNumberPrefix(sessionStorage.getItem("numberPrefix"));
     }
     if (sessionStorage.getItem("currentStep")) {
-      // setcurrentStep(sessionStorage.getItem("currentStep"));
+      setcurrentStep(sessionStorage.getItem("currentStep"));
     }
     if (sessionStorage.getItem("numberPrefix")) {
       setNumberPrefix(sessionStorage.getItem("numberPrefix"));
@@ -621,6 +606,7 @@ export default function OrgSignup() {
       }
       const result = validateSignup(values);
       console.log("validation",{ result });
+
       if (result.data !== true) {
         setError((prev) => {
           return {
@@ -635,6 +621,7 @@ export default function OrgSignup() {
           extensions: false,
           checkout: false,
         });
+        SetIsSubscriptionProcessOnGoing(false);
       } else {
         setLoading(true);
         signupUser(reqBody)
@@ -653,6 +640,9 @@ export default function OrgSignup() {
           .catch((err) => {
             setLoading(false);
             console.log(err);
+          })
+          .finally(() => {
+            SetIsSubscriptionProcessOnGoing(false);
           });
       }
     });
@@ -865,21 +855,6 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
     appearance,
   };
 
-  useEffect(async () => {
-    const paymentIntent = await stripe.paymentIntents.create({
-      amount: 1,
-      currency: "usd",
-      // In the latest version of the API, specifying the `automatic_payment_methods` parameter is optional because Stripe enables its functionality by default.
-      automatic_payment_methods: {
-        enabled: true,
-      },
-    });
-
-    console.log(paymentIntent.client_secret)
-
-    SetClientSecret(paymentIntent.client_secret);
-  }, [])
-
   return (
     <div className="   pb-6 bg-primary relative" id={styles.signUp}>
       <div className={`absolute bg-[#0000007a] flex items-center justify-center h-full w-full z-10`} 
@@ -935,7 +910,7 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
                   >
                     Please fill your detail to create your account.
                   </p> */}
-                  <div>
+                  {/* <div>
                   <SecondaryButton
                       children="Signup with OTPLess"
                       className="mb-[40px] text-sm mr-6 bg-white text-[#cad0db] border-[1.7px] border-[#D0D5DD] py-2 "
@@ -943,7 +918,7 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
                         SetIsOtplessModalActive(true);
                       }}
                     />
-                  </div>
+                  </div> */}
                   <div
                     className={`flex mt-[59px] justify-between lg:mt-1 ${styles.inputs}`}
                   >
@@ -1209,8 +1184,11 @@ const [emailExistLoad,setEmailExistLoad]=useState(false)
                   extensionPlansInfo={extensionPlansData}
                   subscriptionsInfo={subscriptionPlanInfo}
                   subscriptionsInfoFromAPI={subscriptionsInfoFromAPI}
+                  handleSignup={handleSignup}
                   setcurrentStep={setcurrentStep}
                   clientSecret={clientSecret}
+                  isSubscriptionProcessOnGoing={isSubscriptionProcessOnGoing}
+                  SetIsSubscriptionProcessOnGoing={SetIsSubscriptionProcessOnGoing}
                  />
                 //  </Elements> : (<></>)
               ) : frames.signupSuccessful ? (
