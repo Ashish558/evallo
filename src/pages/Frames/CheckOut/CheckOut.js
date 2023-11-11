@@ -118,6 +118,8 @@ export default function CheckOut({
     const [chosenSubscriptionObjectFromAPI, SetChosenSubscriptionObjectFromAPI] = useState();
     const [chosenExtentionObjectsFromAPI, SetChosenExtentionObjectsFromAPI] = useState([]);
     const [addSubscriptions, addSubscriptionsResp] = useAddSubscriptionsMutation();
+    const [isPaymentSuccessfull, SetIsPaymentSuccessfull] = useState(false);
+    const [isCCRequired, SetIsCCRequired] = useState(false);
 
     useEffect(() => {
         console.log("chosenSubscriptionFromAPI from sessionStorage");
@@ -144,10 +146,6 @@ export default function CheckOut({
     const [totalMonthlyCost, SetTotalMonthlyCost] = useState(0);
 
     useEffect(() => {
-        if(!(chosenExtensionPlans === undefined || chosenExtensionPlans === null || chosenExtensionPlans.length === 0)) {
-            SetChosenExtentionObjectsFromAPI(subscriptionsInfoFromAPI[3]);
-        }
-
         let extentionSessionStorageOutput = sessionStorage.getItem("chosenExtentionObjectsFromAPI");
         if(extentionSessionStorageOutput === '' || extentionSessionStorageOutput === undefined ) {
             extentionSessionStorageOutput = null;
@@ -203,6 +201,10 @@ export default function CheckOut({
             return newTotalMonthlyCost;
         })
     },[chosenSubscriptionPlan, chosenExtensionPlans, subscriptionDiscount, extensionDiscounts]);
+
+    useEffect(() => {
+        SetIsCCRequired(chosenSubscriptionPlan && chosenSubscriptionPlan.ccRequired || chosenExtensionPlans && chosenExtensionPlans.length > 0);
+    }, [chosenSubscriptionPlan, chosenExtensionPlans])
 
     const paymentElementOptions = {
         layout: "tabs"
@@ -276,6 +278,7 @@ export default function CheckOut({
 
             <CheckOutSubscriptionReview
                 className={"mt-[5px]"}
+                canChangePlan={!(isPaymentSuccessfull && isCCRequired)}
                 canAddPromoCode={true}
                 planDisplayName={chosenSubscriptionPlan && chosenSubscriptionPlan.planDisplayName ? chosenSubscriptionPlan.planDisplayName : null}
                 activeTutorsAllowed={chosenSubscriptionPlan && chosenSubscriptionPlan.activeTutorsAllowed ? chosenSubscriptionPlan.activeTutorsAllowed : null}
@@ -307,6 +310,7 @@ export default function CheckOut({
                     return (
                         <CheckOutExtensionsReview
                             className={"mt-[25px]"}
+                            canChangePlan={!(isPaymentSuccessfull && isCCRequired)}
                             canAddPromoCode={true}
                             planName={item.planName}
                             planDisplayName={item.planDisplayName}
@@ -334,13 +338,14 @@ export default function CheckOut({
             <div className="border-[1px] mb-[40px] mt-[25px] w-full"></div>
 
             {
-                chosenSubscriptionPlan && chosenSubscriptionPlan.ccRequired ?
+                isCCRequired ?
                 (
                     <Payment
                         setFrames={setFrames}
                         setcurrentStep={setcurrentStep}
                         chosenSubscriptionObjectFromAPI={chosenSubscriptionObjectFromAPI}
                         chosenExtentionObjectsFromAPI={chosenExtentionObjectsFromAPI}
+                        SetIsPaymentSuccessfull={SetIsPaymentSuccessfull}
                     />
                 ) :
                 (<></>)
@@ -351,13 +356,14 @@ export default function CheckOut({
                     children="Go back"
                     className="text-sm mr-6 bg-white text-[#cad0db] border-[1.7px] border-[#D0D5DD] py-2 "
                     onClick={handleBack}
+                    disabled={isPaymentSuccessfull && isCCRequired}
                 />
                 <PrimaryButton
                     className={`w-full flex justify-center  bg-[#FFA28D]  disabled:opacity-60 max-w-[110px]  rounded text-white text-sm font-medium relative py-[9px]`}
                     children={`Subscribe`}
                     onClick={handleSub}
                     loading={isSubscriptionProcessOnGoing}
-                    disabled={isSubscriptionProcessOnGoing}
+                    disabled={!isPaymentSuccessfull && isCCRequired}
                 />
             </div>
         </div>

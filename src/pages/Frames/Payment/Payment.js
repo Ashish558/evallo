@@ -20,6 +20,7 @@ function Payment({
     setcurrentStep,
     chosenSubscriptionObjectFromAPI,
     chosenExtentionObjectsFromAPI = [],
+    SetIsPaymentSuccessfull,
 }) {
     const stripe = useStripe();
     const elements = useElements();
@@ -28,8 +29,10 @@ function Payment({
     const [loading, setLoading] = useState(false);
     const [createIntentForPayment , createIntentForPaymentResp] = useCreateIntentMutation();
     const [finishSetupForPayment , finishSetupForPaymentResp] = useFinishSetupMutation();
+    const [isPaymentProcessOnGoing, SetIsPaymentProcessOnGoing] = useState(false);
 
     const handleError = (error) => {
+        SetIsPaymentProcessOnGoing(false);
         setLoading(false);
         setErrorMessage(error.message);
     };
@@ -45,12 +48,14 @@ function Payment({
         return;
         }
 
+        SetIsPaymentProcessOnGoing(true);
         setLoading(true);
 
         // Trigger form validation and wallet collection
         const { error: submitError } = await elements.submit();
         if (submitError) {
         handleError(submitError);
+        SetIsPaymentProcessOnGoing(false);
         return;
         }
 
@@ -97,22 +102,14 @@ function Payment({
                     [...chosenExtentionObjectsFromAPI]
                 ]
             });
-            /* const post = await fetch(
-                `http://localhost:3000/api/stripe/finish_setup`,
-                {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    setupintent: setupIntent?.id,
-                }),
-                }
-            ); */
 
-            // const resp = await post.json();
+            SetIsPaymentProcessOnGoing(false);
             console.log("response from finish_setup");
             console.log(post);
+
+            if(post) {
+                SetIsPaymentSuccessfull(true);
+            }
         }
     };
 
@@ -144,17 +141,18 @@ function Payment({
 
             <div className="border-[1px] mt-[25px] w-full"></div>
 
-            <div className="flex items-center mt-[50px] justify-end">
+            <div className="flex items-center mt-[50px] justify-end w-full">
                 {/* <SecondaryButton
                     children="Go back"
                     className="text-sm mr-6 bg-white text-[#cad0db] border-[1.7px] border-[#D0D5DD] py-2 "
                     onClick={handleBack}
                 /> */}
                 <PrimaryButton
-                    className={`w-full flex justify-center  bg-[#FFA28D]  disabled:opacity-60 max-w-[110px]  rounded text-white text-sm font-medium relative py-[9px]`}
+                    className={`w-[200px] flex justify-center  bg-[#FFA28D]  disabled:opacity-60  rounded text-white text-sm font-medium relative py-[9px]`}
                     
                     children={`Add Payment`}
                     onClick={handleSubmit}
+                    loading={isPaymentProcessOnGoing}
                 />
             </div>
         </div>
@@ -166,6 +164,7 @@ export default function PaymentWrapper({
     setcurrentStep,
     chosenSubscriptionObjectFromAPI,
     chosenExtentionObjectsFromAPI = [],
+    SetIsPaymentSuccessfull,
 }) {
     const options = {
         mode: 'setup',
@@ -180,6 +179,7 @@ export default function PaymentWrapper({
                 setcurrentStep={setcurrentStep}
                 chosenSubscriptionObjectFromAPI={chosenSubscriptionObjectFromAPI}
                 chosenExtentionObjectsFromAPI={chosenExtentionObjectsFromAPI}
+                SetIsPaymentSuccessfull={SetIsPaymentSuccessfull}
             />
         </Elements>
     )

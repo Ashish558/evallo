@@ -9,6 +9,7 @@ import { useApplyCouponQuery, useLazyApplyCouponQuery } from "../../app/services
 import { CurrencyNameToSymbole } from "../../utils/utils";
 
 export default function CheckOutSubscriptionReview({
+    canChangePlan,
     canAddPromoCode = false,
     className,
     description = [],
@@ -97,6 +98,7 @@ export default function CheckOutSubscriptionReview({
                         children={"Change Plan"}
                         className={"bg-white drop-shadow-[0px_0px_1px_rgba(0,0,0,0.25)] px-[15px] py-[2px] text-[#7C98B6]"}
                         onClick={handleChangePlan}
+                        disabled={!canChangePlan}
                     />
 
                     <div className="grow"></div>
