@@ -25,11 +25,12 @@ export default function SignupTab({
   const [fetchedPermissions, setThePermission] = useState([]);
   useEffect(() => {
     setCustomFields(organization?.settings?.customFields);
-    setThePermission(customFields)
+    setThePermission(customFields);
   }, [organization]);
   useEffect(() => {
-    if (fetchS && fetchS.data && fetchS.data.updatedOrg) {
-      setCustomFields(fetchS.data.updatedOrg.customFields);
+    if (fetchS && fetchS.data && fetchS?.data?.updatedOrg?.settings) {
+      console.log({ fetchS });
+      setCustomFields(fetchS.data.updatedOrg.settings.customFields);
     }
   }, [fetchS]);
   const [isChecked, setIsChecked] = useState(false);
@@ -61,6 +62,51 @@ export default function SignupTab({
     };
     updateAndFetchsettings(body);
   };
+  const handleCustomFieldType = (id, val) => {
+    console.log({ id, val });
+
+    let updatedCustomFields = customFields?.map((it) => {
+      if (it._id === id) {
+        return {
+          ...it,
+          dataType: val,
+          Values: [],
+        };
+      }
+      return it;
+    });
+
+    updatedCustomFields = updatedCustomFields.map((item) => ({
+      name: item.name,
+      Values: item.Values,
+      dataType: item.dataType,
+    }));
+    const body = {
+      customFields: updatedCustomFields,
+    };
+    updateAndFetchsettings(body);
+  };
+  const handleRequired = (id) => {
+    console.log({ id });
+
+    let updatedCustomFields = customFields?.map((it) => {
+      if (it._id === id) {
+        return {
+          ...it,
+          required: !it?.required,
+        };
+      }
+      return it;
+    });
+
+    // updatedCustomFields = updatedCustomFields.map((item) => ({
+    //   item,
+    // }));
+    const body = {
+      customFields: updatedCustomFields,
+    };
+    updateAndFetchsettings(body);
+  };
   const togglePermissions = (key, value) => {
     // let updatedCustomFields = customFields.filter((item) => item._id == key);
     // let notUpdatedCustomFields = customFields.filter((item) => item._id !== key);
@@ -77,19 +123,22 @@ export default function SignupTab({
     //   customFields: [...updatedCustomFields, ...notUpdatedCustomFields]
     // };
     const targetIndex = customFields.findIndex((obj) => obj._id === key);
-    console.log(customFields[targetIndex].required, "dfdfh")
+    console.log(customFields[targetIndex].required, "dfdfh");
     if (targetIndex !== -1) {
-      const updatedObject = { ...customFields[targetIndex], required: !customFields[targetIndex].required };
-      console.log(updatedObject, "updatedObject")
+      const updatedObject = {
+        ...customFields[targetIndex],
+        required: !customFields[targetIndex].required,
+      };
+      console.log(updatedObject, "updatedObject");
       const newArray = [...customFields];
       newArray[targetIndex] = updatedObject;
       console.log(newArray, "new array");
       const body = {
-        customFields: newArray
+        customFields: newArray,
       };
       updateAndFetchsettings(body);
     } else {
-      console.log('Object not found with ID:', key);
+      console.log("Object not found with ID:", key);
     }
 
     // const arr = fetchedPermissions?.map((per) => {
@@ -105,18 +154,15 @@ export default function SignupTab({
     //   permissions: arr,
     // };
     // updateAndFetchsettings(updatedSetting);
-  }
-  const [inputValue, setInputValue] = useState('');
-  const [addOption, SetAddOption] = useState(false)
+  };
+  const [inputValue, setInputValue] = useState("");
+  const [addOption, SetAddOption] = useState(false);
   const handleAddOption = (e) => {
-    console.log(e.target.value)
-    setInputValue(e.target.value)
-  }
+    console.log(e.target.value);
+    setInputValue(e.target.value);
+  };
   const handleKeyPress = (event, item) => {
-    if (event.key === 'Enter') {
-
-
-
+    if (event.key === "Enter") {
       let updatedCustomFields = customFields.filter((it) => it._id == item._id);
       updatedCustomFields = updatedCustomFields.map((item) => ({
         name: item.name,
@@ -128,29 +174,41 @@ export default function SignupTab({
       };
       updateAndFetchsettings(body);
       // console.log(event)
-      SetAddOption(false)
+      SetAddOption(false);
       // console.log('Input value:', inputValue);
-      setInputValue('')
+      setInputValue("");
     }
   };
+  console.log({ customFields });
   return (
     <div className="">
       <div className="mb-[40px]">
-        <div
-          className="text-base-17-5 flex items-start w-300 text-[#507CA8] mb-4">
-          <p className="mt-[3px]"><img src={que} alt="que"></img></p>
-          <p className="pl-2">Please enter the fields for the sign up form that you want to show your clients. You are allowed to create up to 5 additional custom questions beyond the mandatory fields that we require from parents and students.</p>
+        <div className="text-base-17-5 flex items-start w-300 text-[#507CA8] mb-4">
+          <p className="mt-[3px]">
+            <img src={que} alt="que"></img>
+          </p>
+          <p className="pl-2">
+            Please enter the fields for the sign up form that you want to show
+            your clients. You are allowed to create up to 5 additional custom
+            questions beyond the mandatory fields that we require from parents
+            and students.
+          </p>
         </div>
         <div className="text-base-17-5 flex items-start w-300 text-[#507CA8]">
-          <p className="mt-[3px]"><img width="14px" src={que} alt="que"></img></p>
-          <p className="pl-2">Link to the Sign-up form for Org Name: <a rel="noreferrer"
-            className="underline text-[#26435F]"
-            href={`${process.env.REACT_APP_FE_URL}/signup/user?orgName=${organization.company}`}
-            target={"_blank"}
-          >
-            {" "}
-            {`${process.env.REACT_APP_FE_URL}/signup/user?orgName=${organization.company}`}
-          </a>
+          <p className="mt-[3px]">
+            <img width="14px" src={que} alt="que"></img>
+          </p>
+          <p className="pl-2">
+            Link to the Sign-up form for Org Name:{" "}
+            <a
+              rel="noreferrer"
+              className="underline text-[#26435F]"
+              href={`${process.env.REACT_APP_FE_URL}/signup/user?orgName=${organization.company}`}
+              target={"_blank"}
+            >
+              {" "}
+              {`${process.env.REACT_APP_FE_URL}/signup/user?orgName=${organization.company}`}
+            </a>
           </p>
         </div>
       </div>
@@ -159,9 +217,15 @@ export default function SignupTab({
           <div
             className={`hidden lg:flex mb-[24px] items-center justify-between text-[#26435F] font-semibold text-base-20 text-base-20`}
           >
-            <p className="whitespace-nowrap ">      Page 1: Basic Details (all fields mandatory)</p>
+            <p className="whitespace-nowrap ">
+              {" "}
+              Page 1: Basic Details (all fields mandatory)
+            </p>
 
-            <p className="ml-6"> <img src={que2} alt="que"></img></p>
+            <p className="ml-6">
+              {" "}
+              <img src={que2} alt="que"></img>
+            </p>
           </div>
           <div className={`flex mt-[55px] lg:mt-0 ${styles.inputs}`}>
             <InputField
@@ -186,7 +250,9 @@ export default function SignupTab({
               parentClassName="text-xs  text-[#26435F] mb-2"
             />
             <div className="flex gap-1 items-center">
-              <div className="bg-gray-200 border translate-y-[6px] p-2 rounded-[3.5px] border-gray-200 h-[43px] text-[#667085] text-xs px-3 flex items-center" >+91</div>
+              <div className="bg-gray-200 border translate-y-[6px] p-2 rounded-[3.5px] border-gray-200 h-[43px] text-[#667085] text-xs px-3 flex items-center">
+                +91
+              </div>
               <InputField
                 placeholder=""
                 parentClassName="text-xs  text-[#26435F] mb-2 "
@@ -202,7 +268,10 @@ export default function SignupTab({
               Are you signing up as a Parent or a Student?
             </p>
             <div className="flex items-center gap-x-6">
-              <p onClick={() => setIsChecked(true)} className={styles.textLight}>
+              <p
+                onClick={() => setIsChecked(true)}
+                className={styles.textLight}
+              >
                 <div className={`${styles["checkbox-label"]} block  `}>
                   <input
                     type="radio"
@@ -211,18 +280,24 @@ export default function SignupTab({
                   />
                   <label
                     htmlFor="radioOption"
-                    className={`relative w-4 h-4 mx-1 rounded-full border ${isChecked ? "border-[#FFA28D]" : "border-gray-600"} cursor-pointer`}
-
+                    className={`relative w-4 h-4 mx-1 rounded-full border ${
+                      isChecked ? "border-[#FFA28D]" : "border-gray-600"
+                    } cursor-pointer`}
                   >
                     {isChecked && (
                       <div className="absolute inset-0 my-auto mx-auto w-[9px] h-[9px] rounded-full bg-[#FFA28D]" />
                     )}{" "}
                   </label>
 
-                  <span className="ml-2 text-[#507CA8] text-base-17-5">Parent / Guardian</span>
+                  <span className="ml-2 text-[#507CA8] text-base-17-5">
+                    Parent / Guardian
+                  </span>
                 </div>
               </p>
-              <p onClick={() => setIsChecked(false)} className={styles.textLight}>
+              <p
+                onClick={() => setIsChecked(false)}
+                className={styles.textLight}
+              >
                 <div className={`${styles["checkbox-label"]} block  `}>
                   <input
                     type="radio"
@@ -230,16 +305,18 @@ export default function SignupTab({
                     id="radioOption"
                   />
                   <label
-
-                    className={`relative w-4 h-4  mx-1 rounded-full border ${!isChecked ? "border-[#FFA28D]" : "border-gray-600"} cursor-pointer`}
-
+                    className={`relative w-4 h-4  mx-1 rounded-full border ${
+                      !isChecked ? "border-[#FFA28D]" : "border-gray-600"
+                    } cursor-pointer`}
                   >
                     {!isChecked && (
                       <div className="absolute inset-0 my-auto mx-auto w-[9px] h-[9px] rounded-full bg-[#FFA28D]" />
                     )}{" "}
                   </label>
 
-                  <span className="ml-2 text-[#507CA8] text-base-17-5">Student</span>
+                  <span className="ml-2 text-[#507CA8] text-base-17-5">
+                    Student
+                  </span>
                 </div>
               </p>
             </div>
@@ -253,8 +330,9 @@ export default function SignupTab({
                   onChange={handleCheckboxChangeThree}
                 />
                 <span
-                  className={`${styles["custom-checkbox"]} ${isChecked ? "checked" : ""
-                    }`}
+                  className={`${styles["custom-checkbox"]} ${
+                    isChecked ? "checked" : ""
+                  }`}
                 ></span>
                 <span className="ml-2 text-[#507CA8] text-base-17-5">
                   I confirm that I am 13 years or older
@@ -271,8 +349,9 @@ export default function SignupTab({
                   onChange={handleCheckboxChangeTerms}
                 />
                 <span
-                  className={`${styles["custom-checkbox"]} ${isChecked ? "checked" : ""
-                    }`}
+                  className={`${styles["custom-checkbox"]} ${
+                    isChecked ? "checked" : ""
+                  }`}
                 ></span>
                 <p className={` ml-2 text-[#507CA8] text-base-17-5`}>
                   I have carefully read and agree to the{" "}
@@ -288,11 +367,18 @@ export default function SignupTab({
           <div
             className={`hidden lg:flex mb-[26px] items-center justify-between text-[#26435F] font-semibold text-base-20 pt-5`}
           >
-            <p className=" pl-5 ">Page 2: Associated Student / Parent Details (all fields mandatory)</p>
+            <p className=" pl-5 ">
+              Page 2: Associated Student / Parent Details (all fields mandatory)
+            </p>
 
-            <p className="mr-2"> <img src={que2} alt="que"></img></p>
+            <p className="mr-2">
+              {" "}
+              <img src={que2} alt="que"></img>
+            </p>
           </div>
-          <div className={`flex mt-[59px]  lg:mt-0 ${styles.inputs}  pr-[70px] pl-5 pb-5`}>
+          <div
+            className={`flex mt-[59px]  lg:mt-0 ${styles.inputs}  pr-[70px] pl-5 pb-5`}
+          >
             <InputField
               placeholder=""
               parentClassName="text-xs  text-[#26435F] mb-2"
@@ -315,7 +401,9 @@ export default function SignupTab({
               parentClassName="text-xs  text-[#26435F] mb-2"
             />
             <div className="flex gap-1 items-center">
-              <div className="bg-gray-200 border translate-y-[6px] p-2 rounded-[3.5px] border-gray-200 h-[43px] text-[#667085] text-xs px-3 flex items-center" >+91</div>
+              <div className="bg-gray-200 border translate-y-[6px] p-2 rounded-[3.5px] border-gray-200 h-[43px] text-[#667085] text-xs px-3 flex items-center">
+                +91
+              </div>
               <InputField
                 placeholder=""
                 parentClassName="text-xs  text-[#26435F] mb-1.5 "
@@ -340,7 +428,6 @@ export default function SignupTab({
               inputClassName="bg-gray-200"
               label="Student's Grade"
             />
-
           </div>
         </div>
       </div>
@@ -354,7 +441,6 @@ export default function SignupTab({
           <img className="ml-[100px]" src={que2}></img>
         </span>
         <div className="mb-10">
-          {console.log(customFields)}
           {customFields?.map((item, idx) => {
             return (
               <div
@@ -369,7 +455,15 @@ export default function SignupTab({
                   </div>
                   {item.dataType === "Paragraph" && (
                     <div className="flex flex-col gap-y-3 mt-7 bg-[#F5F8FA]">
-                      <textarea className="bg-[#F5F8FA] p-2 outline-none text-[#507CA8]" name="" id="" cols="30" rows="6">{item?.desc}</textarea>
+                      <textarea
+                        className="bg-[#F5F8FA] p-2 outline-none text-[#507CA8]"
+                        name=""
+                        id=""
+                        cols="30"
+                        rows="6"
+                      >
+                        {item?.desc}
+                      </textarea>
                     </div>
                   )}
                   {item.dataType === "Checkboxes" && (
@@ -387,24 +481,35 @@ export default function SignupTab({
                       })}
                     </div>
                   )}
-                  {item.dataType === "Checkboxes" &&
+                  {item.dataType === "Checkboxes" && (
                     <div className="flex flex-col gap-y-3 mt-3  mb-7">
                       <div className="flex items-center">
-                        <img className="inline-block" src={CheckboxIcon} alt="checkbox" />
+                        <img
+                          className="inline-block"
+                          src={CheckboxIcon}
+                          alt="checkbox"
+                        />
 
-                        {
-                          addOption == true ? <input
+                        {addOption == true ? (
+                          <input
                             autoFocus
-                            className="ml-3 text-[14px] text-[#7E7E7E] outline-[#DCDCDD] border-[1.5px] border-[#DCDCDD] rounded-[4px] bg-[#F5F8FA]  w-32" value={inputValue}
+                            className="ml-3 text-[14px] text-[#7E7E7E] outline-[#DCDCDD] border-[1.5px] border-[#DCDCDD] rounded-[4px] bg-[#F5F8FA]  w-32"
+                            value={inputValue}
                             type="text"
                             onChange={handleAddOption}
                             onKeyPress={(e) => handleKeyPress(e, item)}
-                          /> :
-                            <p className="!text-[#FFA28D] !font-normal ml-2 underline cursor-pointer" onClick={() => SetAddOption(true)}>Add option</p>
-                        }
+                          />
+                        ) : (
+                          <p
+                            className="!text-[#FFA28D] !font-normal ml-2 underline cursor-pointer"
+                            onClick={() => SetAddOption(true)}
+                          >
+                            Add option
+                          </p>
+                        )}
                       </div>
                     </div>
-                  }
+                  )}
                 </div>
 
                 <div className="col-span-4">
@@ -414,18 +519,22 @@ export default function SignupTab({
                       labelClassname="hidden"
                       parentClassName="w-[200px] mr-5 my-4 text-base-17-5 "
                       optionData={["Paragraph", "Checkboxes", "Dropdown"]}
+                      onChange={(e) => handleCustomFieldType(item._id, e)}
                       inputContainerClassName={`bg-[#F5F8FA] border-0 text-[#26435F] font-medium ${styles["dropdown-container"]} `}
                     />
                     <div className="flex items-center justify-between cursor-pointer bg-[#F5F8FA] text-[#26435F]  text-sm px-4 py-[13px] my-4">
                       <p className="!font-normal">Required?</p>
                       <ToggleBar
                         toggle={{ value: item.required, key: item._id }}
-                        onToggle={togglePermissions}
+                        onToggle={() => {
+                          handleRequired(item._id);
+                        }}
                       ></ToggleBar>
                     </div>
-                    {
-                      console.log(customFields)
-                    }
+                  
+
+
+
                     <div
                       className="flex items-center justify-between cursor-pointer bg-[#F5F8FA] text-[#26435F] font-medium text-sm px-4 py-[13px]"
                       onClick={() => handleDelete(item._id)}
@@ -441,8 +550,8 @@ export default function SignupTab({
         </div>
 
         <PrimaryButton
-          disabled={true}//customFields?.length >= 5 ? true : false
-          children={"Add New Question (Coming Soon)"}
+          disabled={customFields?.length >= 5 ? true : false}
+          children={"Add New Question "}
           Icon={plus1}
           className="text-base-17-5 text-white"
           onClick={() => setAddNewQuestionModalActive(true)}

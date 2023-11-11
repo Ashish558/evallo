@@ -1177,8 +1177,9 @@ export default function Users() {
     if (xlsFile !== undefined) {
       const formdata = new FormData();
       formdata.append("file", xlsFile);
+      formdata.append("uploadType", "saveAndInvite");
       await axios
-        .post(`${BASE_URL}api/user/bulkInviteUsers`, formdata, {
+        .post(`${BASE_URL}api/user/bulkUploadUsers`, formdata, {
           headers: getAuthHeader(),
         })
         .then((res) => {

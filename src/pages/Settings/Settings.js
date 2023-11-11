@@ -304,7 +304,6 @@ export default function Settings() {
       setSettingsData(organization.settings);
       if (organization?.settings?.permissions)
         setThePermission(organization.settings.permissions);
-
     }
   };
   //console.log(organization);
@@ -650,7 +649,6 @@ export default function Settings() {
       };
       // //console.log('updatedSetting', updatedSetting);
       updateAndFetchsettingsNew2(updatedSetting);
-
     } else {
       let updated = [
         ...subscriptionCode,
@@ -665,7 +663,6 @@ export default function Settings() {
       };
       // //console.log('updatedSetting', updatedSetting);
       updateAndFetchsettingsNew2(updatedSetting);
-
     }
   };
 
@@ -803,9 +800,10 @@ export default function Settings() {
         //console.log(res.error);
         return;
       }
-      window.location.reload();
+      //  window.location.reload();
       // //console.log("reshi", res);
-
+    
+      fetchSettings();
       setFetchS(res);
     });
   };
@@ -932,7 +930,6 @@ export default function Settings() {
     //console.log("searchTests0", searchedTest);
   }
 
-
   const onEditService = (code) => {
     setSubModalServiceData({
       ...code,
@@ -1018,28 +1015,24 @@ export default function Settings() {
     // //console.log('updatedSetting', updatedSetting)
   };
 
-
   console.log({ offersNew, offerImages });
 
-
   const submitImageModalNew = (file2, val, e) => {
-    
     // //console.log(tagText)
     // //console.log(tagImage)
     // //console.log(selectedImageTag)
     e.preventDefault();
-    const file=file2
-    if(!file) {
-      
-      return
+    const file = file2;
+    if (!file) {
+      return;
     }
-   e.target.value = ''
-   let size=file.size/1024;
-   size=size/1024;
-   if(size>1){
-     alert("File size is larger than than 1MB")
-     return 
-   }
+    e.target.value = "";
+    let size = file.size / 1024;
+    size = size / 1024;
+    if (size > 1) {
+      alert("File size is larger than than 1MB");
+      return;
+    }
     if (loading2) return;
     const formData = new FormData();
 
@@ -1124,7 +1117,6 @@ export default function Settings() {
     // updateAndFetchsettings(updatedSetting);
   };
 
-
   const updateAndFetchsettingsNew2 = (updatedSetting) => {
     if (!organization || !settingsData || !updatedSetting) return;
     const settings = {
@@ -1140,15 +1132,15 @@ export default function Settings() {
     updateSetting(body)
       .then((res) => {
         //console.log("updated", res.data.data);
-        alert("Succesfully Added!")
-        setOne(false)
-        setAddServiceModalActive(false)
-        setAddSessionModalActive(false)
-        setAddCodeModalActive(false)
+        alert("Succesfully Added!");
+        setOne(false);
+        setAddServiceModalActive(false);
+        setAddSessionModalActive(false);
+        setAddCodeModalActive(false);
         setServices2({ service: "", specialization: [] });
         setSession2({
           heading: "",
-          items: []
+          items: [],
         });
         setAddCodeModalActive(false);
         setSubModalData(subModalInitialState);
@@ -1157,7 +1149,7 @@ export default function Settings() {
         dispatch(updateOrganizationSettings(res.data.data.updatedOrg.settings));
       })
       .catch((err) => {
-        alert("Error Occured!")
+        alert("Error Occured!");
         setSaveLoading(false);
         //console.log("err", err);
       });
@@ -1229,9 +1221,7 @@ export default function Settings() {
   const handleTestChange2 = (item) => {
     //console.log("tsests", item);
     if (subModalData?.tests?.includes(item._id)) {
-      let updated = subModalData.tests.filter(
-        (test) => test !== item._id
-      );
+      let updated = subModalData.tests.filter((test) => test !== item._id);
       setSubModalData((prev) => ({
         ...prev,
         tests: updated,
@@ -1250,12 +1240,12 @@ export default function Settings() {
       <div className="  min-h-screen w-[83.6989583333vw] mx-auto">
         <p className="text-[#24A3D9]  !my-[calc(50*0.052vw)] text-base-20">
           <span onClick={() => navigate("/")} className="cursor-pointer ">
-          {organization?.company +
-            "  >  " +
-            firstName +
-            "  " +
-            lastName +
-            "  >  "}
+            {organization?.company +
+              "  >  " +
+              firstName +
+              "  " +
+              lastName +
+              "  >  "}
           </span>
           <span className="font-semibold">Settings</span>
         </p>
@@ -1268,8 +1258,9 @@ export default function Settings() {
                   onClick={() => changeTab(idx + 1)}
                 >
                   <a
-                    className={`"w-full cursor-pointer flex justify-center items-center ${activeTab === idx + 1 ? "!text-[#26435F]" : "!text-white"
-                      }`}
+                    className={`"w-full cursor-pointer flex justify-center items-center ${
+                      activeTab === idx + 1 ? "!text-[#26435F]" : "!text-white"
+                    }`}
                   >
                     <span className="pb-1">
                       {activeTab === idx + 1 && (
@@ -1432,7 +1423,7 @@ export default function Settings() {
               title="Manage Referral Codes"
               className={styles["bordered-settings-container"]}
               body={
-                <div >
+                <div>
                   <div className="max-h-[330px] overflow-auto custom-scroller p-1 scrollbar-vertical ">
                     {subscriptionCode !== undefined &&
                       subscriptionCode.map((subscription, i) => {
@@ -1556,7 +1547,7 @@ export default function Settings() {
                                     key: "code",
                                   }}
                                   manual={true}
-                                // onToggle={() => handleServicePause(service)}
+                                  // onToggle={() => handleServicePause(service)}
                                 ></ToggleBar>
                                 <div
                                   className="w-5 h-5 flex items-center justify-center  rounded-full cursor-pointer"
@@ -1652,7 +1643,7 @@ export default function Settings() {
                                     key: "code",
                                   }}
                                   manual={true}
-                                // onToggle={() => }
+                                  // onToggle={() => }
                                 ></ToggleBar>
                                 <div
                                   className=" flex items-center justify-center  rounded-full cursor-pointer"
@@ -1679,7 +1670,6 @@ export default function Settings() {
                           </div>
                         );
                       })}
-
                   </div>
                   {/* <AddTag
                     children="Add Heading"
@@ -1695,7 +1685,7 @@ export default function Settings() {
                     }}
                     className="px-2 bg-primary flex items-center text-white font-medium text-[17.5px] pl-3 pr-3 pt-1.4 pb-1.5 rounded-7 mr-[15px]  text-base-17-5 "
                   >
-                    <span>  Add Heading </span>
+                    <span> Add Heading </span>
                     <img src={AddIcon} className="w-4 ml-1" alt="add" />
                   </button>
                 </div>
@@ -1830,39 +1820,33 @@ export default function Settings() {
                     <p className="block ">{xlsFile.name}</p>
                   )} */}
                                 </div>
-                                
-                                  <div className="flex justify-center">
-                                    <label
-                                      htmlFor="file2"
-                                      disabled={loading2}
-                                      className={`block cursor-pointer text-sm text-white bg-[#517CA8] hover:bg-[#517CA8] items-center justify-center  rounded-[5px]  px-3 py-2 text-base-17-5 text-center ${loading2?"cursor-wait":""}`}
-                                    >
-                                      {loading2 && off?.image
 
-                                        ? "Submitting..."
-                                        : " Choose File"}
-                                    </label>
-                                    <input
-                                     accept="image/*"
-
-                                     disabled={loading2}
-                                      onChange={(e) => {
-                                        let arr = offersNew;
-                                        arr[idx].image = e.target.files[0];
-                                        setOffersNew((prev)=>(
-                                          [
-                                            ...arr,
-                                          ]
-                                        )
-                                         );
-                                        submitImageModalNew(off?.image, off, e)
-                                        // setImageName(e.target.files[0].name);
-                                      }}
-                                      id="file2"
-                                      type="file"
-                                    />
-                                  </div>
-                               
+                                <div className="flex justify-center">
+                                  <label
+                                    htmlFor="file2"
+                                    disabled={loading2}
+                                    className={`block cursor-pointer text-sm text-white bg-[#517CA8] hover:bg-[#517CA8] items-center justify-center  rounded-[5px]  px-3 py-2 text-base-17-5 text-center ${
+                                      loading2 ? "cursor-wait" : ""
+                                    }`}
+                                  >
+                                    {loading2 && off?.image
+                                      ? "Submitting..."
+                                      : " Choose File"}
+                                  </label>
+                                  <input
+                                    accept="image/*"
+                                    disabled={loading2}
+                                    onChange={(e) => {
+                                      let arr = offersNew;
+                                      arr[idx].image = e.target.files[0];
+                                      setOffersNew((prev) => [...arr]);
+                                      submitImageModalNew(off?.image, off, e);
+                                      // setImageName(e.target.files[0].name);
+                                    }}
+                                    id="file2"
+                                    type="file"
+                                  />
+                                </div>
 
                                 <label
                                   htmlFor="file"
@@ -1936,22 +1920,28 @@ export default function Settings() {
             <div className="flex items-center pb-2 text-[#26435F] font-medium text-xl text-base-20">
               <p className="pr-2">Set Permissions </p>
               <div className="group relative">
-              <p>
-                <img src={questionMark} alt="" onClick={()=>{console.log("set perm tool tip")}} />
-              </p>
+                <p>
+                  <img
+                    src={questionMark}
+                    alt=""
+                    onClick={() => {
+                      console.log("set perm tool tip");
+                    }}
+                  />
+                </p>
 
-              <span className="absolute  -top-10 left-10 z-20 w-[333px]  scale-0 rounded-[13px] bg-[rgba(0,0,0,0.80)] text-white group-hover:scale-100 whitespace-normal py-5 px-3">
-                <h3 className="text-[#24A3D9] text-[0.83vw] py-1 font-medium mb-1">
-                  Set Permissions
-                </h3>
-                <span className="font-light leading-[0.5px] text-[0.69vw]">
-                  Here, you can select Viewing, Editing or Deleting 
-                  permissions for various users. Use the toggles 
-                  below to select these permissions for specific 
-                  items related to specific users. By default, we 
-                  have set some these up for you.
+                <span className="absolute  -top-10 left-10 z-20 w-[333px]  scale-0 rounded-[13px] bg-[rgba(0,0,0,0.80)] text-white group-hover:scale-100 whitespace-normal py-5 px-3">
+                  <h3 className="text-[#24A3D9] text-[0.83vw] py-1 font-medium mb-1">
+                    Set Permissions
+                  </h3>
+                  <span className="font-light leading-[0.5px] text-[0.69vw]">
+                    Here, you can select Viewing, Editing or Deleting
+                    permissions for various users. Use the toggles below to
+                    select these permissions for specific items related to
+                    specific users. By default, we have set some these up for
+                    you.
+                  </span>
                 </span>
-              </span>
               </div>
             </div>
 
@@ -1962,10 +1952,12 @@ export default function Settings() {
                 return (
                   <>
                     {item.choosedValue === true ||
-                      item.choosedValue === false ? (
+                    item.choosedValue === false ? (
                       <div
                         key={id}
-                        className={`${id === 3 ? "!opacity-[0.7]" : ""} pt-[34px] pb-[30px] border-b-2 border-[#CBD6E2] text-[#24A3D9] font-medium text-[17.5px] flex items-center justify-between text-base-17-5`}
+                        className={`${
+                          id === 3 ? "!opacity-[0.7]" : ""
+                        } pt-[34px] pb-[30px] border-b-2 border-[#CBD6E2] text-[#24A3D9] font-medium text-[17.5px] flex items-center justify-between text-base-17-5`}
                       >
                         <p>{renderColoredText(item.name)}</p>
 
@@ -1989,25 +1981,27 @@ export default function Settings() {
                             className="border border-gray-300 px-2  rounded-md text-[#26435F] bg-[#E9ECEF]"
                           >
                             <option value={item.choosedValue}>
-                              {`   ${item.permissionActionName ===
+                              {`   ${
+                                item.permissionActionName ===
                                 "notifyParentBefSession"
-                                ? item.choosedValue === 0
-                                  ? "OFF"
-                                  : item.choosedValue + " hours before"
-                                : item.choosedValue
-                                }`}
+                                  ? item.choosedValue === 0
+                                    ? "OFF"
+                                    : item.choosedValue + " hours before"
+                                  : item.choosedValue
+                              }`}
                             </option>
                             {item.values.map((values, i) => {
                               return (
                                 item.choosedValue !== values && (
                                   <option key={i} value={values}>
-                                    {` ${item.permissionActionName ===
+                                    {` ${
+                                      item.permissionActionName ===
                                       "notifyParentBefSession"
-                                      ? values === 0
-                                        ? "OFF"
-                                        : values + " hours before"
-                                      : values
-                                      }`}
+                                        ? values === 0
+                                          ? "OFF"
+                                          : values + " hours before"
+                                        : values
+                                    }`}
                                   </option>
                                 )
                               );
@@ -2185,9 +2179,8 @@ export default function Settings() {
                           setSubModalData({
                             ...subModalData,
                             code: e.target.value,
-                          })
-                      }
-                      }
+                          });
+                      }}
                     />
                   </div>
                   <div className="flex-1">
@@ -2201,19 +2194,22 @@ export default function Settings() {
                       placeholderClass="text-base-17-5"
                       parentClassName=" text-base-17-5 py-0 w-full mr-4"
                       type="text"
-
                       value={subModalData.expiry}
                       onChange={(e) => {
-                        console.log(e.target.value)
-                        console.log("shivam", e.target, e.target.value)
-                        if (parseInt(e.target.value) < 0 || e.target.value < 0) return
-                        if ((/^\d+$/.test(e.target.value) && parseInt(e.target.value) >= 0) || e.target.value?.length === 0)
+                        console.log(e.target.value);
+                        console.log("shivam", e.target, e.target.value);
+                        if (parseInt(e.target.value) < 0 || e.target.value < 0)
+                          return;
+                        if (
+                          (/^\d+$/.test(e.target.value) &&
+                            parseInt(e.target.value) >= 0) ||
+                          e.target.value?.length === 0
+                        )
                           setSubModalData({
                             ...subModalData,
                             expiry: e.target.value,
-                          })
-                      }
-                      }
+                          });
+                      }}
                     />
                   </div>
                 </div>
@@ -2255,7 +2251,12 @@ export default function Settings() {
                   /> */}
                 </div>
                 <div className="flex gap-4 items-center justify-center mt-3">
-                  <button disabled={saveLoading} className={`${saveLoading ? "cursor-wait" : ""} rounded-lg bg-[#FFA28D] border-2 border-[#FFA28D] py-[6px] text-[#FFFFFF] w-[146px]`}>
+                  <button
+                    disabled={saveLoading}
+                    className={`${
+                      saveLoading ? "cursor-wait" : ""
+                    } rounded-lg bg-[#FFA28D] border-2 border-[#FFA28D] py-[6px] text-[#FFFFFF] w-[146px]`}
+                  >
                     Save{" "}
                   </button>
                   <button
@@ -2281,7 +2282,7 @@ export default function Settings() {
             setAddServiceModalActive(false);
             if (addOne) {
               setServices2({ service: "", specialization: [] });
-              setOne(false)
+              setOne(false);
             } else {
               setSubModalServiceData(subModalInitialServiceState);
             }
@@ -2380,7 +2381,12 @@ export default function Settings() {
                 </div>
                 <div className="w-full border-[1.33px_solid_#00000033] bg-[#00000033] my-5 h-[1.3px]"></div>
                 <div className="flex gap-4 items-center justify-center mt-3">
-                  <button disabled={saveLoading} className={`${saveLoading ? "cursor-wait" : ""} rounded-lg bg-[#FFA28D] border-2 border-[#FFA28D] py-[6px] text-[#FFFFFF] w-[146px]`}>
+                  <button
+                    disabled={saveLoading}
+                    className={`${
+                      saveLoading ? "cursor-wait" : ""
+                    } rounded-lg bg-[#FFA28D] border-2 border-[#FFA28D] py-[6px] text-[#FFFFFF] w-[146px]`}
+                  >
                     Save{" "}
                   </button>
                   <button
@@ -2389,7 +2395,7 @@ export default function Settings() {
                       setAddServiceModalActive(false);
                       if (addOne) {
                         setServices2({ service: "", specialization: [] });
-                        setOne(false)
+                        setOne(false);
                       } else {
                         setSubModalServiceData(subModalInitialServiceState);
                       }
@@ -2415,28 +2421,26 @@ export default function Settings() {
             if (addOne) {
               setSession2({
                 heading: "",
-                items: []
+                items: [],
               });
-              setOne(false)
+              setOne(false);
             } else {
               setSubModalSessionData(subModalInitialSessionState);
             }
-          }
-          }
+          }}
           body={
             <form
               id="settings-form"
               onSubmit={(e) => {
                 e.preventDefault();
                 if (addOne) {
-                  handleAddNewSession()
+                  handleAddNewSession();
                 } else {
                   handleAddSessionName(
                     selectedSessionData?.heading,
                     subModalSessionData?._id
                   );
                 }
-
               }}
             >
               <p className="text-base-17-5 mt-[-10px] text-[#667085]">
@@ -2462,7 +2466,11 @@ export default function Settings() {
                       placeholderClass="text-base-17-5"
                       parentClassName=" text-base-17-5 py-0 w-full mr-4"
                       type="text"
-                      value={addOne ? addSession2?.heading : selectedSessionData?.heading}
+                      value={
+                        addOne
+                          ? addSession2?.heading
+                          : selectedSessionData?.heading
+                      }
                       isRequired={true}
                       onChange={(e) => {
                         if (addOne) {
@@ -2474,45 +2482,59 @@ export default function Settings() {
                           setSelectedSessionData({
                             ...selectedSessionData,
                             heading: e.target.value,
-                          })
+                          });
                         }
-                      }
-
-                      }
+                      }}
                     />
                   </div>
                 </div>
                 <div className="flex items-center flex-wrap [&>*]:mb-[10px] mt-5">
                   <AddTag
                     onAddTag={addOne ? handleAddNewTags : handleAddSessionTag}
-                    keyName={addOne ? addSession2?.heading : subModalSessionData.heading}
+                    keyName={
+                      addOne
+                        ? addSession2?.heading
+                        : subModalSessionData.heading
+                    }
                     text="Add Tags"
                   />
                   <FilterItems
                     isString={true}
                     onlyItems={true}
-                    keyName={addOne ? addSession2?.heading : subModalSessionData.heading}
-                    items={addOne ? addSession2?.items : subModalSessionData.items}
-                    onRemoveFilter={addOne ? handleNewSessionRemove : onRemoveSessionTagItem}
+                    keyName={
+                      addOne
+                        ? addSession2?.heading
+                        : subModalSessionData.heading
+                    }
+                    items={
+                      addOne ? addSession2?.items : subModalSessionData.items
+                    }
+                    onRemoveFilter={
+                      addOne ? handleNewSessionRemove : onRemoveSessionTagItem
+                    }
                     className="pt-1 pb-1 mr-15 text-base-17-5"
                   />
                 </div>
                 <div className="w-full border-[1.33px_solid_#00000033] bg-[#00000033] my-5 h-[1.3px]"></div>
                 <div className="flex gap-4 items-center justify-center mt-3">
-                  <button disabled={saveLoading} className={`${saveLoading ? "cursor-wait" : ""} rounded-lg bg-[#FFA28D] border-2 border-[#FFA28D] py-[6px] text-[#FFFFFF] w-[146px]`}>
+                  <button
+                    disabled={saveLoading}
+                    className={`${
+                      saveLoading ? "cursor-wait" : ""
+                    } rounded-lg bg-[#FFA28D] border-2 border-[#FFA28D] py-[6px] text-[#FFFFFF] w-[146px]`}
+                  >
                     Save{" "}
                   </button>
                   <button
-
                     className="rounded-lg bg-transparent border-2 border-[#FFA28D] py-[6px] text-[#FFA28D]  w-[146px]"
                     onClick={() => {
                       setAddSessionModalActive(false);
                       if (addOne) {
                         setSession2({
                           heading: "",
-                          items: []
+                          items: [],
                         });
-                        setOne(false)
+                        setOne(false);
                       } else {
                         setSubModalSessionData(subModalInitialSessionState);
                       }
@@ -2588,10 +2610,11 @@ export default function Settings() {
           cancelBtnClassName="w-140 hidden"
           primaryBtn={{
             text: "Save",
-            className: `w-140 ml-0 bg-primaryOrange mt-2 ${tagText.trim().length < 1 || tagImage === null
-              ? "pointer-events-none opacity-60"
-              : ""
-              } `,
+            className: `w-140 ml-0 bg-primaryOrange mt-2 ${
+              tagText.trim().length < 1 || tagImage === null
+                ? "pointer-events-none opacity-60"
+                : ""
+            } `,
             form: "settings-form",
             type: "submit",
             loading: saveLoading,
@@ -2640,15 +2663,15 @@ export default function Settings() {
       )}
       {addNewQuestionModalActive && (
         <Modal
-          classname={"max-w-[700px] mx-auto"}
+          classname={"max-w-[650px] mx-auto"}
           titleClassName="text-base-20 mb-[18px]"
           title="Add Question"
           cancelBtn={true}
           buttonParentClassName="justify-center"
-          cancelBtnClassName="w-140"
+          cancelBtnClassName="w-140 bg-transparent  border-2 border-[#26435F] text-[#26435F]"
           primaryBtn={{
             text: "Add",
-            className: "w-140",
+            className: "w-140 ",
             form: "add-question-form",
             type: "submit",
           }}
