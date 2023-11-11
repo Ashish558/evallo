@@ -99,7 +99,7 @@ export default function InputField({
         </label>
       )}
       <div
-        className={`py-[9px] px-[14px] lg:py-[13px] lg:px-[21px] flex items-center rounded  ${inputContainerClassName ? inputContainerClassName : ""
+        className={`py-[13px] px-[21px] flex items-center rounded  ${inputContainerClassName ? inputContainerClassName : ""
           } ${disabled === true ? "cursor-not-allowed" : ""} `}
       >
         {Icon && (
