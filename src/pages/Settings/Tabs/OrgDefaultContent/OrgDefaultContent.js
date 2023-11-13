@@ -257,6 +257,7 @@ export default function AllTests() {
             tableHeaders={tableHeaders}
             maxPageSize={10}
             onClick={{ openRemoveTestModal }}
+            hidePagination={true}
           />
         </div>
       </div>
@@ -282,7 +283,7 @@ export default function AllTests() {
                 id={styles.uploadButtons}
                 className="mt-7   px-0  gap-5 flex justify-between"
               >
-                {modalData.testType != "DSAT" ? (
+                {modalData.testType != "DSAT®" ? (
                   <div id={styles.pdfUpload}>
                     <label
                       htmlFor="pdf"

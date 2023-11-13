@@ -421,7 +421,7 @@ export default function AllTests({isOwn,setTotaltest,studentId,fromProfile}) {
             data={filteredTests}
             tableHeaders={tableObjHeaders}
             headerObject={true}
-            maxPageSize={10}
+            maxPageSize={30}
             onClick={{ openRemoveTestModal }}
           />
         </div>
