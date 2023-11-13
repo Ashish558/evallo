@@ -122,7 +122,7 @@ export default function Que(props) {
         </div>
           {answers[index-1].QuestionType=="Grid-in"?
 <div>
-  <input placeholder='Enter The Answer' type='number' className='bg-transparent mt-4 border-gray-600 border rounded px-2 py-4' value={answers[index-1].ResponseAnswer} onChange={(e)=>{
+  <input placeholder='Enter The Answer' type='text' className='bg-transparent mt-4 border-gray-600 border rounded px-2 py-4' value={answers[index-1].ResponseAnswer} onChange={(e)=>{
     let ans= e.target.value;
     const timeTaken = initialSeconds - countDown
    setInitialSeconds(countDown)

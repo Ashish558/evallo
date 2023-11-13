@@ -138,6 +138,9 @@ export default function TestDetail() {
     };
   }
 
+  useEffect(()=>{
+    window.scrollTo(0, 0);
+  },[])
   function ckEditorUploadPlugin(editor) {
     editor.plugins.get("FileRepository").createUploadAdapter = (loader) => {
       // console.log(loader.file)
@@ -241,7 +244,7 @@ export default function TestDetail() {
           Strategies: "Unavailable",
   
           AnswerChoices,
-          Scoring:20
+          // Scoring:20
         };
       } else {
         return {
@@ -252,7 +255,7 @@ export default function TestDetail() {
           Strategies,
 
           AnswerChoices,
-          Scoring:20
+          // Scoring:20
         };
       }
     });
@@ -544,11 +547,11 @@ export default function TestDetail() {
     "Answer",
     "Concept",
     "Strategy",
-    ...(!testData?.testType?.includes("DSAT")? ["Choices"] : ["Scoring"]),
+    ...(!testData?.testType?.includes("DSAT")? ["Choices"] : []),
     ...(!testData?.testType?.includes("DSAT") ? [] : ["Q. Image"]),
     ...(!testData?.testType?.includes("DSAT") ? [] : ["A. Image"]),
     ...(!testData?.testType?.includes("DSAT") ? [] : ["Passage?"]),
-    ...(!testData?.testType?.includes("DSAT") ? ["Scoring"] : []),
+    // ...(!testData?.testType?.includes("DSAT") ? ["Scoring"] : []),
     "",
   ];
   const [richTextContent, setRichTextContent] = useState("");
