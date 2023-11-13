@@ -465,12 +465,13 @@ export default function Signup() {
   }
   const [emailExistLoad, setEmailExistLoad] = useState(false)
   const handleClick = () => {
-    let f = /[a-z]/i.test(values?.firstName)
-    f = f && /[a-z]/i.test(values?.lastName)
-    if (!f) {
-      alert("Enter a valid name!")
-      return
-    }
+    // let f = /[a-z]/i.test(values?.firstName)
+    // f = f && /[a-z]/i.test(values?.lastName)
+    // f = f && /[a-z]/i.test(values?.company)
+    // if (!f) {
+    //   alert("Enter a valid name!")
+    //   return
+    // }
     const emailAlreadyExists = async () => {
       setEmailExistLoad(true)
       let cc = 0;
@@ -621,6 +622,7 @@ export default function Signup() {
     //setcurrentStep(1);
     navigate("/");
   };
+  let namesValidChars="1234567890abcdefghijklmnopqrstuvwxyz ";
   return (
     <div className="   pb-6 bg-primary relative" id={styles.signUp}>
       {/* <AdminNavbar></AdminNavbar> */}
@@ -668,14 +670,18 @@ export default function Signup() {
                       biggerText={true}
                       labelClassname="!text-[18.67px] text-[#26435F] font-semibold"
                       inputContainerClassName=" border border-[#D0D5DD] rounded-md py-[9px] h-[53px] text-md"
-
+                      pattern="[a-zA-Z0-9]+"
                       value={values.firstName}
-                      onChange={(e) =>
+                      onChange={(e) =>{
+                        const regex = /^[a-zA-Z0-9 ]*$/;
+                        const isValid = regex.test(e.target.value);
+                        if(isValid)
                         setValues({
                           ...values,
                           firstName: e.target.value,
                         })
                       }
+                    }
                       totalErrors={error}
                       error={error.firstName}
                     />
@@ -686,12 +692,17 @@ export default function Signup() {
                       labelClassname="!text-[18.67px] text-[#26435F] font-semibold"
                       inputContainerClassName=" border border-[#D0D5DD] rounded-md py-[9px] h-[53px] text-md"
                       label="Last name"
+                      pattern="[a-zA-Z0-9]+"
                       value={values.lastName}
-                      onChange={(e) =>
+                      onChange={(e) =>{
+                        const regex = /^[a-zA-Z0-9 ]*$/;
+                        const isValid = regex.test(e.target.value);
+                        if(isValid)
                         setValues({
                           ...values,
                           lastName: e.target.value,
                         })
+                      }
                       }
 
                       totalErrors={error}

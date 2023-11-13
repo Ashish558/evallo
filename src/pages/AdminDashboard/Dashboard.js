@@ -1,16 +1,16 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import plusIcon from '../../assets/icons/plus.png'
+import plusIcon from "../../assets/icons/plus.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDown, faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import { faQuestionCircle } from "@fortawesome/free-regular-svg-icons";
 import icon from "../../assets/images/Evallo.png";
 import styles from "./style.module.css";
-import userLogo from '../../assets/icons/users.svg'
-import tooltip from '../../assets/icons/tooltip_dashboard.svg'
+import userLogo from "../../assets/icons/users.svg";
+import tooltip from "../../assets/icons/tooltip_dashboard.svg";
 import Table from "../../components/Table/Table";
 import ActionLog from "./ActionLog";
-import Table2 from "../SuperadminDashboard/Table/table"
+import Table2 from "../SuperadminDashboard/Table/table";
 import {
   useGetAllRevenueMutation,
   useGetImpendingRevenueMutation,
@@ -28,6 +28,7 @@ import { useState } from "react";
 import RangeDate from "../../components/RangeDate/RangeDate";
 import ArrowDown from "../../assets/Dashboard/sort-down.svg";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
   const [latestSignUp, latsestStatus] = useGetLatestSignUpRangeMutation();
@@ -35,13 +36,14 @@ const Dashboard = () => {
   const { firstName, lastName } = useSelector((state) => state.user);
   const { data: userStats } = useGetUserStatsQuery();
 
-  console.log({ userStats })
+  console.log({ userStats });
   const [completedRevenue, completedRevenueStatus] = useGetAllRevenueMutation();
   const [leakedRevenue, leakedRevenueStatus] = useGetLeakedRevenueMutation();
   const [impendingRevenue, impendingRevenueStatus] =
     useGetImpendingRevenueMutation();
   const [cRevenue, setCRevenue] = useState("");
   const [lRevenue, setLRevenue] = useState("");
+  const navigate = useNavigate();
   const [iRevenue, setIRevenue] = useState("");
   const [fetchTutorPerformanceData, fechedTutorPerformanceStatus] =
     useLazyGetTutorPerformanceQuery();
@@ -68,17 +70,18 @@ const Dashboard = () => {
   useEffect(() => {
     latestSignUp({ startDate: "", endDate: "" }).then((res) => {
       if (!res?.error) {
-        console.log("latest", { res })
-        let date2=new Date();
+        console.log("latestres", { res });
+        let date2 = new Date();
 
         date2.setDate(new Date().getDate() - 77);
-     
-        let data=res?.data?.data?.filter(a => new Date(a.lastSignUp) >= new Date(date2))
-       // let data=res?.data?.data?.
+
+        let data = res?.data?.data?.filter(
+          (a) => new Date(a.lastSignUp) >= new Date(date2)
+        );
+        // let data=res?.data?.data?.
         setUserData(data);
       }
-    })
-
+    });
   }, []);
 
   const sortByName = () => {
@@ -109,8 +112,7 @@ const Dashboard = () => {
             return 1;
           }
           return 0;
-        }
-        else {
+        } else {
           if (a[key] < b[key]) {
             return 1;
           }
@@ -122,8 +124,8 @@ const Dashboard = () => {
       });
       setPlus({
         ...plus,
-        [key]: !plus[key]
-      })
+        [key]: !plus[key],
+      });
       return arr;
     });
   };
@@ -139,8 +141,7 @@ const Dashboard = () => {
             return 1;
           }
           return 0;
-        }
-        else {
+        } else {
           if (a.role < b.role) {
             return 1;
           }
@@ -151,15 +152,14 @@ const Dashboard = () => {
         }
       });
 
-
       return arr;
     });
     setPlus({
       ...plus,
-      role: !plus?.role
-    })
+      role: !plus?.role,
+    });
   };
-  const [plus, setPlus] = useState({})
+  const [plus, setPlus] = useState({});
   const sortByDate = () => {
     setUserData((prev) => {
       let arr = [...prev];
@@ -168,16 +168,14 @@ const Dashboard = () => {
           return new Date(b.lastSignUp) - new Date(a.lastSignUp);
         }
         return new Date(a.lastSignUp) - new Date(b.lastSignUp);
-
       });
-
 
       return arr;
     });
     setPlus({
       ...plus,
-      lastSignUp: !plus?.lastSignUp
-    })
+      lastSignUp: !plus?.lastSignUp,
+    });
   };
   const latestSignUpHeaders = [
     {
@@ -210,7 +208,6 @@ const Dashboard = () => {
       id: 6,
       text: "Lead Status",
       onCick: () => sortByString("userStatus"),
-
     },
     {
       id: 7,
@@ -228,7 +225,7 @@ const Dashboard = () => {
       onCick: sortByDate,
     },
   ];
-  console.log({ userData })
+  console.log({ userData });
   const convertDateToRange = (startDate) => {
     let startD = startDate.split("-")[0];
 
@@ -267,7 +264,7 @@ const Dashboard = () => {
     fetchPopularServicesData(body)
       .then((res) => {
         console.log(res?.data?.all_services, "popular-services");
-        setPopularServices(res?.data?.all_services)
+        setPopularServices(res?.data?.all_services);
       })
       .catch((err) => {
         console.log(err);
@@ -292,8 +289,7 @@ const Dashboard = () => {
     fetchFilteredActionLog(body)
       .then((res) => {
         console.log("actionlog", res);
-        if (res?.data?.actions)
-          setFilteredActionLog(res?.data?.actions);
+        if (res?.data?.actions) setFilteredActionLog(res?.data?.actions);
         else {
           setFilteredActionLog([{ createdAt: body.startDate }]);
         }
@@ -302,7 +298,7 @@ const Dashboard = () => {
         console.log(err);
       });
   };
-
+  const redirect = (item) => navigate(`/profile/${item.role}/${item._id}`);
   return (
     <div className={styles.container}>
       <div className=" mt-[28px] bg-#2E2E2E">
@@ -318,13 +314,16 @@ const Dashboard = () => {
               <span className="font-semibold">Dashboard</span>
             </p>
 
-
             <div className="flex mt-[calc(40*0.050vw)] justify-between items-center ">
-              <p className="font-bold  text-[#FFA28D] text-base-20">BUSINESS OVERVIEW </p>
+              <p className="font-bold  text-[#FFA28D] text-base-20">
+                BUSINESS OVERVIEW{" "}
+              </p>
 
-
-              <RangeDate optionClassName="!w-min"
-                inputContainerClassName="!w-min " handleRangeData={handleRevenue} />
+              <RangeDate
+                optionClassName="!w-min"
+                inputContainerClassName="!w-min "
+                handleRangeData={handleRevenue}
+              />
             </div>
           </div>
         </div>
@@ -336,10 +335,16 @@ const Dashboard = () => {
                 <div className="flex pr-[1.8vw] items-center  my-auto justify-between whitespace-nowrap">
                   <div className="w-[11.083vw]  ">
                     <div className="flex justify-between items-center mb-[6px] text-[#26435F] text-sm">
-                      <p className="   font-medium text-base-17-5">Completed Revenue</p>
+                      <p className="   font-medium text-base-17-5">
+                        Completed Revenue
+                      </p>
                       <div className="group relative">
                         <p>
-                     <img className="w-[17.8px] h-[17.8px]"  src={tooltip} alt="" />
+                          <img
+                            className="w-[17.8px] h-[17.8px]"
+                            src={tooltip}
+                            alt=""
+                          />
                         </p>
 
                         <span className="absolute  -top-10 left-10 z-20 w-[333.3px]  rounded-[13px] bg-[rgba(0,0,0,0.80)] text-white  whitespace-normal py-5 px-3 scale-0 group-hover:scale-100">
@@ -347,9 +352,9 @@ const Dashboard = () => {
                             Completed Revenue
                           </h3>
                           <span className="font-light text-[13.3px]">
-                            This value is calculated by adding up all the revenue
-                            generated from sessions that have been marked as
-                            “Completed” for the selected date range.
+                            This value is calculated by adding up all the
+                            revenue generated from sessions that have been
+                            marked as “Completed” for the selected date range.
                             <br /> Note that the revenue is calculated by
                             multiplying a Tutor’s Service Rate by the Session
                             Duration and adding all those values up.
@@ -367,23 +372,30 @@ const Dashboard = () => {
                   </div>
                   <div className="w-[11.083vw] ">
                     <div className="flex justify-between rounded-md items-center mb-[6px] text-[#26435F] text-sm ">
-                      <p className="font-medium text-base-17-5">Leaked Revenue</p>
+                      <p className="font-medium text-base-17-5">
+                        Leaked Revenue
+                      </p>
                       <div className="group relative">
-                      <p>
-                     <img className="w-[18.45px] h-[17.8px]"  src={tooltip} alt="" />
+                        <p>
+                          <img
+                            className="w-[18.45px] h-[17.8px]"
+                            src={tooltip}
+                            alt=""
+                          />
                         </p>
                         <span className="absolute  -top-10 left-10 z-20 w-[333.3px]  scale-0 rounded-[13px] bg-[rgba(0,0,0,0.80)]  text-white group-hover:scale-100 whitespace-normal py-5 px-3">
                           <h3 className="text-[#FF5175] text-base font-medium mb-3">
                             Leaked Revenue
                           </h3>
                           <span className="font-light text-[13.3px]">
-                            This value is calculated by adding up all the revenue
-                            lost from sessions that have been marked as “Canceled”
-                            or “Partial” for the selected date range.
+                            This value is calculated by adding up all the
+                            revenue lost from sessions that have been marked as
+                            “Canceled” or “Partial” for the selected date range.
                             <br />
                             Note that the revenue is calculated by multiplying a
                             Tutor’s Service Rate by the Session Duration and
-                            adding all those values up.</span>
+                            adding all those values up.
+                          </span>
                         </span>
                       </div>
                     </div>
@@ -397,18 +409,24 @@ const Dashboard = () => {
                   </div>
                   <div className="w-[11.083vw] text-base-17-5">
                     <div className="flex justify-between items-center mb-[6px] text-[#26435F] text-sm">
-                      <p className="font-medium text-base-17-5">Impending Revenue</p>
+                      <p className="font-medium text-base-17-5">
+                        Impending Revenue
+                      </p>
                       <div className="group relative">
-                      <p>
-                     <img className="w-[18.45px] h-[17.8px]"  src={tooltip} alt="" />
+                        <p>
+                          <img
+                            className="w-[18.45px] h-[17.8px]"
+                            src={tooltip}
+                            alt=""
+                          />
                         </p>
                         <span className="absolute  -top-10 left-10 z-20 w-[333.3px]  scale-0 rounded-[13px] bg-[rgba(0,0,0,0.80)]  text-white group-hover:scale-100 whitespace-normal py-5 px-3">
                           <h3 className="text-[#7152EB] text-base font-medium mb-3">
                             Impending Revenue
                           </h3>
                           <span className="font-light text-[13.3px] ">
-                            This value is calculated by adding up all the revenue
-                            lost from sessions that have been marked as
+                            This value is calculated by adding up all the
+                            revenue lost from sessions that have been marked as
                             “Scheduled” for the selected date range.
                             <br />
                             Note that the revenue is calculated by multiplying a
@@ -427,13 +445,10 @@ const Dashboard = () => {
                     </div>
                   </div>
                 </div>
-
               </div>
 
               <div className={` my-auto `}>
-
                 <div className="flex pl-[1.8vw]  my-auto items-center  justify-between whitespace-nowrap">
-
                   <div className="w-[11.083vw]  text-base-17-5">
                     <div className="mb-[6px]">
                       <p className=" font-medium text-[#26435F80] mb-[5px]">
@@ -460,7 +475,7 @@ const Dashboard = () => {
                   </div>
                   <div className="w-[11.083vw]  text-base-17-5">
                     <div className="mb-[6px]">
-                      <p className=" font-medium text-[#26435F80] mb-[5px]" >
+                      <p className=" font-medium text-[#26435F80] mb-[5px]">
                         Cancelled Invoices
                       </p>
                     </div>
@@ -487,57 +502,77 @@ const Dashboard = () => {
               <p className="font-bold  text-base-20 ">USERS OVERVIEW </p>
 
               <div className="flex font-semibold text-[#FFA28D] text-xs">
-                <RangeDate optionClassName="!w-min"
-                  inputContainerClassName="!w-min " handleRangeData={handleUserStats} />
+                <RangeDate
+                  optionClassName="!w-min"
+                  inputContainerClassName="!w-min "
+                  handleRangeData={handleUserStats}
+                />
               </div>
             </div>
           </div>
 
           <div className="flex  w-[90vw] gap-x-5 mx-auto">
             <div className=" h-full  !whitespace-nowrap ">
-              <p className=" mb-1 font-semibold text-[#26435F] mb-1 text-base-20">User Stats</p>
+              <p className=" mb-1 font-semibold text-[#26435F] mb-1 text-base-20">
+                User Stats
+              </p>
               <div className={`${styles.sidebox} h-[330px] w-[16.25vw] `}>
                 <div className="   rounded ">
-                  <p className="text-[#26435F] text-md text-base-20">Active / Total Students</p>
+                  <p className="text-[#26435F] text-md text-base-20">
+                    Active / Total Students
+                  </p>
                   <p className="text-md">
                     <span className="font-bold text-[#FFA28D] text-4xl text-base-37-5">
                       {userStats?.student.activeUsers.count}
-                      <span className="font-medium text-base-37-5" > {" / "}</span>
+                      <span className="font-medium text-base-37-5">
+                        {" "}
+                        {" / "}
+                      </span>
                     </span>
                     <span className="text-[#24A3D9] text-[25px] text-base-25">
                       {userStats
                         ? userStats?.student.activeUsers.count +
-                        userStats?.student.inactiveUsers.count
+                          userStats?.student.inactiveUsers.count
                         : "Loading.."}
                     </span>
                   </p>
                 </div>
                 <div className={`   pt-7 rounded `}>
-                  <p className="text-[#26435F] text-md text-base-20">Active / Total Tutor <span className="text-white">###</span></p>
+                  <p className="text-[#26435F] text-md text-base-20">
+                    Active / Total Tutor <span className="text-white">###</span>
+                  </p>
                   <p className="text-md">
                     <span className="font-bold text-[#FFA28D] text-4xl text-base-37-5">
                       {userStats?.tutor.activeUsers.count}
-                      <span className="font-medium text-base-37-5" > {" / "}</span>
+                      <span className="font-medium text-base-37-5">
+                        {" "}
+                        {" / "}
+                      </span>
                     </span>
                     <span className="text-[#24A3D9] text-[25px] text-base-25">
                       {userStats
                         ? userStats?.tutor.activeUsers.count +
-                        userStats?.tutor.inactiveUsers.count
+                          userStats?.tutor.inactiveUsers.count
                         : "Loading..."}
                     </span>
                   </p>
                 </div>
                 <div className={`   pt-7 rounded`}>
-                  <p className="text-[#26435F] text-md text-base-20">Active / Total Parents<span className="text-white">##</span></p>
+                  <p className="text-[#26435F] text-md text-base-20">
+                    Active / Total Parents<span className="text-white">##</span>
+                  </p>
                   <p className="text-md">
                     <span className="font-bold text-[#FFA28D] text-4xl text-base-37-5">
                       {userStats?.parent.activeUsers.count}
-                      <span className="font-medium text-base-37-5" > {" / "}</span>
+                      <span className="font-medium text-base-37-5">
+                        {" "}
+                        {" / "}
+                      </span>
                     </span>
                     <span className="text-[#24A3D9] text-[25px] text-base-25">
                       {userStats
                         ? userStats?.parent.activeUsers.count +
-                        userStats?.parent.inactiveUsers.count
+                          userStats?.parent.inactiveUsers.count
                         : "Loading..."}
                     </span>
                   </p>
@@ -546,7 +581,9 @@ const Dashboard = () => {
             </div>
 
             <div className="  pl-[17.5px]">
-              <p className="mb-1 font-semibold text-[#26435F] mb-1 text-base-20  ">Action Log</p>
+              <p className="mb-1 font-semibold text-[#26435F] mb-1 text-base-20  ">
+                Action Log
+              </p>
               <ActionLog
                 className={"w-[71.1042vw]"}
                 actionLog={filteredActionLog ? filteredActionLog : [""]}
@@ -556,7 +593,9 @@ const Dashboard = () => {
         </section>
 
         <section className="mt-[70px] w-[90vw] mx-auto ">
-          <p className="font-semibold text-[#26435F]  text-base-20">Latest Sign-Ups <span className="font-light">(Last 7 Days)</span></p>
+          <p className="font-semibold text-[#26435F]  text-base-20">
+            Latest Sign-Ups <span className="font-light">(Last 7 Days)</span>
+          </p>
 
           <div className="-mt-3">
             <Table
@@ -564,6 +603,9 @@ const Dashboard = () => {
               AdminLatestSignUp={true}
               headerObject={true}
               belowBox={true}
+              onClick={{
+                redirect,
+              }}
               belowBoxHeight="h-[192px]"
               belowBoxText="Invite Parents or Students"
               belowBoxLink="users"
@@ -571,7 +613,6 @@ const Dashboard = () => {
               tableHeaders={latestSignUpHeaders}
               maxPageSize={5}
             />
-
           </div>
         </section>
         <div className="flex justify-center">
@@ -581,11 +622,15 @@ const Dashboard = () => {
         </div>
         <div className=" relative z-[50000] w-[90vw] mx-auto mt-[25px] text-[#26435F]">
           <div className=" relative z-[50000] flex justify-between items-center translate-y-[10px] ">
-            <p className="font-bold uppercase text-[#FFA28D] mb-1 text-base-20">Client Success Overview </p>
+            <p className="font-bold uppercase text-[#FFA28D] mb-1 text-base-20">
+              Client Success Overview{" "}
+            </p>
 
-            <RangeDate optionClassName="!w-min"
+            <RangeDate
+              optionClassName="!w-min"
               inputContainerClassName="!w-min "
-              handleRangeData={handlePopularServices} />
+              handleRangeData={handlePopularServices}
+            />
           </div>
         </div>
 
@@ -629,16 +674,12 @@ const Dashboard = () => {
                   <p>Coming soon</p>
                 </div> */}
                 <Table
-                noArrow={true}
-                headerWidth="!px-1.5"
-                dummyRowStarClients={popularServices}
+                  noArrow={true}
+                  headerWidth="!px-1.5"
+                  dummyRowStarClients={popularServices}
                   data={[]}
                   hidePagination={true}
-                  tableHeaders={[
-                    "Client Name",
-                    "Code",
-                    "Referrals"
-                  ]}
+                  tableHeaders={["Client Name", "Code", "Referrals"]}
                   maxPageSize={5}
                   belowBox={true}
                   belowBoxText="Add Referral Codes"
@@ -662,7 +703,6 @@ const Dashboard = () => {
                 <div
                   className={`mt-1  h-[72px] !h-[calc(75*0.050vw)] bg-[rgba(255,162,141,0.2)] ${styles.smallBox}`}
                 >
-          
                   <p className="text-[#FFA28D] h-full w-full justify-center font-bold text-[1.953125vw] flex items-center text-center">
                     {improvementStats?.no_of_referrals}
                   </p>
@@ -732,15 +772,19 @@ const Dashboard = () => {
         </div>
         <div className=" relative z-[50000] w-[90vw] mx-auto  mt-[13px] text-[#FFA28D] ">
           <div className=" relative z-[50000] flex justify-between items-center  translate-y-[15px] mb-[10px]">
-            <p className="font-bold uppercase mb-1 text-base-17-5">Tutor Performance Overview </p>
+            <p className="font-bold uppercase mb-1 text-base-17-5">
+              Tutor Performance Overview{" "}
+            </p>
 
-            <RangeDate optionClassName="!w-min"
-              inputContainerClassName="!w-min " handleRangeData={handleTutorPerformance} />
+            <RangeDate
+              optionClassName="!w-min"
+              inputContainerClassName="!w-min "
+              handleRangeData={handleTutorPerformance}
+            />
           </div>
         </div>
 
         <section className="mx-auto  w-[90vw]">
-
           <Table
             headerWidth="w-[150px] whitespace-normal !px-5"
             data={tutorPerformanceData}
@@ -752,7 +796,6 @@ const Dashboard = () => {
             belowBoxIcon={userLogo}
             belowBoxHeight="h-[143px]"
           />
-
 
           <div className="flex justify-center">
             <div className="mt-[36px] mb-[44px] bg-[#CBD6E2] h-[1px] w-[100px]"></div>

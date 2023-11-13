@@ -19,14 +19,14 @@ export function isPhoneNumber(val) {
 export const validateSignup = (values) => {
    const { firstName, lastName, email, phone,company,phoneCode } = values
    
-   if (firstName?.trim() === '') return { data: 'firstName', message: 'Fill First Name' }
-   if (lastName?.trim() === '') return { data: 'lastName', message: 'Fill Last Name' }
+   if (firstName?.trim() === '' || !/[a-z]/i.test(firstName)) return { data: 'firstName', message: 'Fill valid First Name' }
+   if (lastName?.trim() === ''|| !/[a-z]/i.test(lastName)) return { data: 'lastName', message: 'Fill valid Last Name' }
    if (email?.trim() === '') return { data: 'email', message: 'Fill email' }
    if (!isEmail(email)) return { data: 'email', message: 'Please enter valid email' }
    if (phone?.trim() === '') return { data: 'phone', message: 'Fill Phone number' }
    if(!isPhoneNumber(phone))  return { data: 'phone', message: 'Please enter a valid phone number' }
    if (phone?.length < 10 ) return { data: 'phone', message: 'Phone number must be greater than 9 digits' }
-   if (company?.trim() === '') return { data: 'company', message: 'Fill company name' }
+   if (company?.trim() === '' || !/[a-z]/i.test(company)) return { data: 'company', message: 'Fill valid company name' }
    if (phoneCode?.trim() === '') return { data: 'phoneCode', message: 'Fill country code' }
    return { data: true, message: 'none' }
 }

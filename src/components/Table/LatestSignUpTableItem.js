@@ -17,7 +17,7 @@ const LatestSignUpTableItem = ({ item, onClick }) => {
   },[organization2])
   console.log("latest",{dateFormat, organization2})
   const handleClick = () => {
-    onClick.redirect(item);
+    onClick?.redirect(item);
   };
   useEffect(()=>{
     if(!item?.assiginedTutors||item?.assiginedTutors?.length===0)
