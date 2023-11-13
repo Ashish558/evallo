@@ -43,6 +43,7 @@ import StudentTest from "../../StudentTest/StudentTest";
 import Chart from "../../../components/Chart/Chart";
 import SPFrame3 from "./SPframes/SPFrame3";
 import SPFrame4 from "./SPframes/SPFrame4";
+import AllTests from "../../AllTests/AllTests";
 
 const students = [
   {
@@ -155,6 +156,16 @@ export default function StudentProfile({ isOwn }) {
   const { id } = useSelector((state) => state.user);
   const [selectedScoreIndex, setSelectedScoreIndex] = useState(0);
   const { organization } = useSelector((state) => state.organization);
+  const { firstName, lastName } = useSelector((state) => state.user);
+  async function handleCopyClick(textToCopy) {
+    console.log("copying", textToCopy);
+    try {
+      await navigator.clipboard.writeText(textToCopy);
+      //  alert('Text copied to clipboard');
+    } catch (err) {
+      console.error('Failed to copy text: ', err);
+    }
+  }
   const [toEdit, setToEdit] = useState({
     frame0: {
 
@@ -162,7 +173,7 @@ export default function StudentProfile({ isOwn }) {
       active: false,
       firstName: "",
       lastName: "",
-
+      associatedParent: "",
       schoolName: [],
       about: '',
       email: "",
@@ -250,17 +261,17 @@ export default function StudentProfile({ isOwn }) {
       active: false,
       satScores: [
         {
-          created: "",
+          createdAt: "",
           verbal: 0,
           maths: 0,
         },
         {
-          created: "",
+          createdAt: "",
           verbal: 0,
           maths: 0,
         },
         {
-          created: "",
+          createdAt: "",
           verbal: 0,
           maths: 0,
         },
@@ -270,21 +281,21 @@ export default function StudentProfile({ isOwn }) {
       active: false,
       actScores: [
         {
-          created: "",
+          createdAt: "",
           english: 0,
           maths: 0,
           reading: 0,
           science: 0,
         },
         {
-          created: "",
+          createdAt: "",
           english: 0,
           maths: 0,
           reading: 0,
           science: 0,
         },
         {
-          created: "",
+          createdAt: "",
           english: 0,
           maths: 0,
           reading: 0,
@@ -297,7 +308,7 @@ export default function StudentProfile({ isOwn }) {
   const handleClose = () => {
     setToEdit((prev) => {
       let tempToEdit = {};
-      Object.keys(prev).map((key) => {
+      Object.keys(prev)?.map((key) => {
         tempToEdit[key] = { ...prev[key], active: false };
       });
       return tempToEdit;
@@ -441,7 +452,7 @@ const [toEdit, setToEdit] = useState({
   const handleClose = () => {
     setToEdit((prev) => {
       let tempToEdit = {};
-      Object.keys(prev).map((key) => {
+      Object.keys(prev)?.map((key) => {
         tempToEdit[key] = { ...prev[key], active: false };
       });
       return tempToEdit;
@@ -463,7 +474,8 @@ const [toEdit, setToEdit] = useState({
       userId = params.id;
     }
     getUserDetail({ id: userId }).then((res) => {
-      //console.log("details -- ", res.data.data);
+      console.log("student details -- ", userId, res);
+      if (!res?.data?.data) return
       // //console.log('tut id', id);
       if (res.data.data.user.assiginedTutors) {
         if (res.data.data.user.assiginedTutors?.includes(id)) {
@@ -491,17 +503,21 @@ const [toEdit, setToEdit] = useState({
         subscriptionCode,
       } = res.data.data.userdetails;
       associatedParent &&
-        getUserDetail({ id: associatedParent }).then((res) => {
-          const { firstName, lastName, _id } = res.data.data.user;
+        getUserDetail({ id: associatedParent }).then((res2) => {
+          console.log("student ", { [id]: res2 })
+          if (res2?.error) return
+          const { firstName, lastName, _id, email } = res2.data.data.user;
           setAssociatedParent({
             firstName,
             lastName,
             _id,
-            photo: res.data.data.user.photo
-              ? res.data.data.user.photo
-              : "/images/default.jpeg",
+            email,
+            photo: res2?.data?.data?.user?.photo?.length > 0
+              ? res2.data.data.user.photo
+              : null,
           });
         });
+      //   setAssociatedParent(res?.data?.data?.parent)
       setUser(res.data.data.user);
       if (!satScores) satScores = [];
       if (!actScores) actScores = [];
@@ -515,6 +531,7 @@ const [toEdit, setToEdit] = useState({
       //    reading: 0,
       //    science: 0
       // }
+      
       const promiseState = async (state) =>
         new Promise((resolve) => {
           resolve(
@@ -530,6 +547,7 @@ const [toEdit, setToEdit] = useState({
                   phoneCode: phoneCode === null ? "" : phoneCode,
                   ...prev.frame0.grade,
                   grade,
+                  associatedParent,
                   ...prev.frame0.schoolName,
                   schoolName,
                   about,
@@ -656,18 +674,18 @@ const [toEdit, setToEdit] = useState({
 
   const getSatMarks = (idx) => {
     // let scores = [
-    //    userDetail.satScores.verbal,
-    //    userDetail.satScores.maths
+    //    userDetail?.satScores.verbal,
+    //    userDetail?.satScores.maths
     // ]
     // scores =  scores.filter(score => !isNaN(score))
     // //console.log(scores);
     let res = 0;
     if (
-      typeof userDetail.satScores[idx]?.verbal === "number" &&
-      typeof userDetail.satScores[idx]?.maths
+      typeof userDetail?.satScores[idx]?.verbal === "number" &&
+      typeof userDetail?.satScores[idx]?.maths
     ) {
       res =
-        userDetail.satScores[idx]?.verbal + userDetail.satScores[idx]?.maths;
+        userDetail?.satScores[idx]?.verbal + userDetail?.satScores[idx]?.maths;
     }
     if (isNaN(res)) return 0;
     return res;
@@ -675,23 +693,23 @@ const [toEdit, setToEdit] = useState({
 
   const getActMarks = (idx) => {
     // let scores = [
-    //    userDetail.satScores.verbal,
-    //    userDetail.satScores.maths
+    //    userDetail?.satScores.verbal,
+    //    userDetail?.satScores.maths
     // ]
     // scores =  scores.filter(score => !isNaN(score))
     // //console.log(scores);
     let res = 0;
     if (
-      typeof userDetail.actScores[idx]?.maths &&
-      typeof userDetail.actScores[idx]?.english &&
-      typeof userDetail.actScores[idx]?.reading &&
-      typeof userDetail.actScores[idx]?.science
+      typeof userDetail?.actScores[idx]?.maths &&
+      typeof userDetail?.actScores[idx]?.english &&
+      typeof userDetail?.actScores[idx]?.reading &&
+      typeof userDetail?.actScores[idx]?.science
     ) {
       res =
-        (userDetail.actScores[idx]?.english +
-          userDetail.actScores[idx]?.maths +
-          userDetail.actScores[idx]?.reading +
-          userDetail.actScores[idx]?.science) /
+        (userDetail?.actScores[idx]?.english +
+          userDetail?.actScores[idx]?.maths +
+          userDetail?.actScores[idx]?.reading +
+          userDetail?.actScores[idx]?.science) /
         4;
     }
     if (isNaN(res)) return 0;
@@ -699,61 +717,90 @@ const [toEdit, setToEdit] = useState({
   };
 
   useEffect(() => {
-    // //console.log(userDetail.timeZone);
-    if (userDetail.timeZone === undefined) return;
-    dispatch(updateTimeZone({ timeZone: userDetail.timeZone }));
-  }, [userDetail.timeZone]);
+    // //console.log(userDetail?.timeZone);
+    if (userDetail?.timeZone === undefined) return;
+    dispatch(updateTimeZone({ timeZone: userDetail?.timeZone }));
+  }, [userDetail?.timeZone]);
 
+  const handleCopy = text => {
+    navigator.clipboard.writeText(text);
+  }
+  const handleParentNavigate = () => {
+    if (associatedParent) {
+      navigate(`/profile/parent/${associatedParent?._id}`)
+    }
+  }
   // //console.log(user)
-  //console.log("student",{userDetail,user})
+  console.log("user student", { userDetail, user })
   //console.log('associatedParent', associatedParent)
   // //console.log('isEditable', editable)
   // //console.log(settings)
 
   if (Object.keys(user).length < 1) return;
-  if (Object.keys(userDetail).length < 1) return;
+  // if (Object.keys(userDetail).length < 1) return;
   if (Object.keys(settings).length < 1) return;
 
   return (
     <>
       <div className={`w-[83.3vw] mx-auto pb-[70px]`}>
-        <p className="text-[#24A3D9] my-[calc(50*0.0522vw)] text-xl">
-          {organization?.company +
-            " > " +
-            user?.firstName +
-            " " +
-            user?.lastName +
-            " > "}
-          <span className="font-semibold">Dashboard</span>
+        <p className="text-[#24A3D9] mt-[50px] mb-[30px] text-base-22-5">
+          {persona === "admin" ?
+            <span >
+              <span className="cursor-pointer" onClick={() => navigate('/')}>
+                {organization?.company +
+                  "  >  " +
+                  firstName +
+                  "  " +
+                  lastName
+                }  </span>
+              <span className="cursor-pointer" onClick={() => navigate('/users')}>{"  >  CRM > "}</span>
+
+              <span className="font-semibold">{
+                user?.firstName +
+                " " +
+                user?.lastName}</span>
+            </span> :
+            <span>
+              <span onClick={() => navigate('/')} className="cursor-pointer">
+                {organization?.company +
+                  " > " +
+                  user?.firstName +
+                  " " +
+                  user?.lastName +
+                  " > "}
+              </span>
+              <span className="font-semibold">Profile</span>
+            </span>
+          }
         </p>
-        {!isOwn ? (
+        {/* {!isOwn ? (
           <button
-            className="my-5 bg-[#D9BBFF] px-[14px] py-[8px] rounded-[8px] text-[#636363] text-[18px] font-medium top-[16px] left-[22px] flex gap-[12px] cursor-pointer flex justify-center items-center"
+            className="my-5 bg-primary text-white cursor-pointer relative z-[50] px-[14px] py-[8px] rounded-[8px]  text-[18px] font-medium top-[-8px] left-[0px] flex gap-[12px] cursor-pointer flex justify-center items-center"
             onClick={() => window.history.back()}
           >
-            <img src={LeftIcon} alt="icon" /> Back
+            <img className="w-4 h-4" src={LeftIcon} alt="icon" /> Back
           </button>
         ) : (
           <></>
-        )}
+        )} */}
         <div className={` rounded-b-md w-full flex flex-col relative `}>
-          <div className=" bg-[#26435F] rounded-t-[4px]  px-5 h-[100px]  w-full  flex  items-center">
+          <div className=" bg-[#26435F] rounded-t-[5px]  px-[52px] h-[142px] design:!h-[142px] w-full  flex  items-center">
 
-            <div className="flex flex-1 w-full">
-              <div className="h-fit">
+            <div className="flex flex-1 w-full design:!h-[70px]">
+              <div className="h-fit design:!ml-5 relative">
                 <ProfilePhoto
                   src={
                     user.photo
                       ? `${awsLink}${user.photo}`
                       : "/images/Rectangle 2346.svg"
                   }
-                  imgSizeClass="!w-[110px] !h-[110px] !translate-y-8 border-[4px] border-white "
-                  imageClassName="!w-[100px] !h-[100px] border-[4px] border-white "
-                  className=""
+                  imgSizeClass="!w-[174px] !h-[174px] design:!w-[174px] design:!h-[174px]  !translate-y-[73px]  design:!translate-y-5   "
+                  imageClassName="!w-[174px] !h-[174px] border-[4px] border-white "
+                  className="relative"
                   handleChange={handleProfilePhotoChange}
                   editable={false}
                 />
-                <EditableText
+                {(persona !== "tutor" || (persona === "tutor" && organization?.settings?.permissions && organization?.settings?.permissions[1]?.choosedValue)) && <EditableText
                   editable={editable}
                   onClick={() =>
                     setToEdit({
@@ -765,35 +812,87 @@ const [toEdit, setToEdit] = useState({
                     })
                   }
                   text="Edit Profile"
-                  textClassName=" ml-2 text-sm  mx-auto text-center text-[#26435F] text-underline text-base-15 "
-                  className="text-sm my-0 flex items-center justify-center text-center !translate-y-9  "
-                />
+                  textClassName=" ml-2   mx-auto text-center text-[#26435F] text-underline text-base-15 font-semibold"
+                  className=" my-0 flex items-center justify-center text-center   absolute -bottom-[60%] design:-bottom-[35%] design:left-[23%] left-[26%]"
+                />}
               </div>
-              <div className="flex-1 flex justify-between items-center">
-                <div className="ml-4 my-auto">
-                  <div className="flex  items-center text-[#F3F5F7]">
+              <div className="flex-1 flex justify-between  items-center">
+                <div className="ml-4 my-auto design:-translate-y-4">
+                  <div className="flex  items-center font-semibold text-[#F3F5F7] text-[1.5625vw]">
                     {user.firstName} {user.lastName}
 
                   </div>
-                  <div className="flex mt-1 text-xs items-center text-[#F3F5F7]">
-                    {userDetail.schoolName
-                      ? userDetail.schoolName
+                  <div className="flex mt-1 text-base-17-5 items-center text-[#F3F5F7]">
+                    {userDetail?.schoolName
+                      ? userDetail?.schoolName
                       : "Sample School Name"}
                   </div>
-                  <div className="flex text-xs mt-1 items-center text-[#F3F5F7]">
-                    {userDetail.grade ? userDetail.grade : "12th Grade"}
+                  <div className="flex  text-base-17-5 mt-1 items-center text-[#F3F5F7]">
+                    {userDetail?.grade ? userDetail?.grade + `${' '} Grade` : "12th Grade"}
 
                     {/* <p className='font-semibold text-[22px] mr-4'>
-                           {userDetail.grade}
+                           {userDetail?.grade}
                         </p> */}
 
                     {/* <p className='font-semibold text-[22px]'>
-                           {userDetail.schoolName}
+                           {userDetail?.schoolName}
                         </p> */}
                   </div>
                 </div>
 
-               {( persona!=='tutor')  && <div className="flex flex-col text-[12px]  font-medium text-white my-auto ">
+                {(persona !== 'tutor') && <div className="flex flex-col text-[12px]  font-medium text-white my-auto ">
+                  <ProfileCard
+                    className="lg:mt-0 flex-1 !bg-transparent h-min !shadow-none relative"
+                    titleClassName="!bg-transparent"
+                    title={
+                      <EditableText
+                        editable={editable}
+                        onClick={() =>
+                          setToEdit({
+                            ...toEdit,
+                            contact: { ...toEdit.contact, active: true },
+                          })
+                        }
+                        imgClass="!bg-transparent"
+                        className=" !bg-transparent absolute right-0 top-[50%]"
+                      />
+                    }
+                    body={
+                      <div className="flex h-min !bg-transparent justify-center flex-col text-base-17-5 ">
+                        <p>
+                          <span>
+                            <img
+                              className="inline-block !w-4 !h-4 mr-2 cursor-pointer"
+                              src={emailIcon}
+                              alt="email"
+                            />
+                          </span>
+                          {user?.email}
+                          <span>
+                            <img
+                              onClick={() => handleCopyClick(user?.email)}
+                              className="inline-block ml-2 !w-4 !h-4 mr-2 cursor-pointer"
+                              src={copy1}
+                              alt="copy"
+
+                            />
+                          </span>
+                        </p>
+                        <p>
+                          <span>
+                            <img
+                              className="inline-block !w-4 !h-4 mr-2 cursor-pointer"
+                              src={phoneIcon}
+                              alt="phone"
+                            />
+                          </span>
+                          {user?.phone}
+                        </p>
+                      </div>
+                    }
+                  />
+                </div>}
+                {(persona === 'tutor') && organization?.settings?.permissions && organization?.settings?.permissions[1]?.choosedValue && <div className="flex flex-col text-[12px]  font-medium text-white my-auto ">
                   <ProfileCard
                     className="lg:mt-0 flex-1 !bg-transparent h-min !shadow-none relative"
                     titleClassName="!bg-transparent"
@@ -823,7 +922,8 @@ const [toEdit, setToEdit] = useState({
                           {user?.email}
                           <span>
                             <img
-                              className="inline-block ml-2 !w-4 !h-4 mr-2"
+                              onClick={() => handleCopyClick(user?.email)}
+                              className="inline-block ml-2 !w-4 !h-4 mr-2 cursor-pointer"
                               src={copy1}
                               alt="copy"
                             />
@@ -843,116 +943,72 @@ const [toEdit, setToEdit] = useState({
                     }
                   />
                 </div>}
-                {( persona==='tutor') && organization?.settings?.permissions[2]?.choosedValue && <div className="flex flex-col text-[12px]  font-medium text-white my-auto ">
-                  <ProfileCard
-                    className="lg:mt-0 flex-1 !bg-transparent h-min !shadow-none relative"
-                    titleClassName="!bg-transparent"
-                    title={
-                      <EditableText
-                        editable={editable}
-                        onClick={() =>
-                          setToEdit({
-                            ...toEdit,
-                            contact: { ...toEdit.contact, active: true },
-                          })
-                        }
-                        imgClass="!bg-transparent"
-                        className=" !bg-transparent absolute right-0 top-[50%]"
-                      />
-                    }
-                    body={
-                      <div className="flex h-min !bg-transparent justify-center flex-col  ">
-                        <p>
-                          <span>
-                            <img
-                              className="inline-block !w-4 !h-4 mr-2"
-                              src={emailIcon}
-                              alt="email"
-                            />
-                          </span>
-                          {user?.email}
-                          <span>
-                            <img
-                              className="inline-block ml-2 !w-4 !h-4 mr-2"
-                              src={copy1}
-                              alt="copy"
-                            />
-                          </span>
-                        </p>
-                        <p>
-                          <span>
-                            <img
-                              className="inline-block !w-4 !h-4 mr-2"
-                              src={phoneIcon}
-                            alt="phone"
-                            />
-                          </span>
-                          {user?.phone}
-                        </p>
-                      </div>
-                    }
-                  />
-                </div>}
               </div>
             </div>
           </div>
-          <div className="bg-white !rounded-b-md shadow-[0px_0px_2.500001907348633px_0px_#00000040] flex  h-[100px] justify-between ">
-            <div className="ml-[126px] flex my-auto py-auto w-4/5 text-[12px] px-5  flex-1 h-full  h-[100px] overflow-y-auto custom-scroller pt-5  text-[#517CA8] text-base-17-5 ">
+          <div className="bg-white   !rounded-b-5 shadow-[0px_0px_2.500001907348633px_0px_#00000040] flex  h-[170px] design:!h-[170px] justify-between ">
+
+            <div className="ml-[223px] design:!ml-[248px] flex my-auto py-auto w-4/5 text-[12px] px-5  flex-1 h-full   overflow-y-auto custom-scroller pt-5  text-[#517CA8] text-base-17-5 ">
               {userDetail?.about}
             </div>
-            <div className="w-[250px] ml-6 my-0">
-              <div className="mt-[-20px]">
+            <div className="min-w-[250px] ml-6 design:!ml-0  my-0 relative">
+              <div className="flex items-center absolute top-[20%] -left-[10%] design:-left-[25%]">
                 <ProfilePhoto
                   src={
-                    associatedParent.photo
-                      ? `${awsLink}${associatedParent.photo}`
+                    associatedParent?.photo
+                      ? `${awsLink}${associatedParent?.photo}`
                       : "/images/Rectangle 2347.svg"
                   }
-                  imgSizeClass="!w-[50px] !h-[50px] !translate-y-[45px]  border-[2px] border-[#26435F]"
+                  imgSizeClass="!w-[60px] !h-[60px]   border-[2px] border-[#26435F]"
                   imageClassName="!w-[50px] !h-[50px] "
                   className=" "
                   handleChange={handleProfilePhotoChange}
                 />
-              </div>
-
-              <div className="flex flex-col ml-14   font-medium text-[#24A3D9] ">
-                <p
-                  onClick={() =>
-                    Object.keys(associatedParent).length > 0 &&
-                    navigate(`/profile/parent/${associatedParent._id}`)
-                  }
-                  className="font-semibold cursor-pointer text-[14px]"
-                >
-                  {Object.keys(associatedParent).length > 1
-                    ? `${associatedParent.firstName} ${associatedParent.lastName}`
-                    : `${userDetail.FirstName} ${userDetail.LastName}`}
-                  <img
-                    src={clickArrowIcon}
-                    className="!ml-2 cursor-pointer !w-3 !h-3 inline-block"
-                    alt="arrow"
-                  />
-                </p>
-
-                {(persona !== "tutor"||(persona==='tutor'&&organization?.settings?.permissions[2]?.choosedValue) )&&  <p className="font-medium text-[12px]">
-                  <span
-                    className="text-xs cursor-pointer font-semibold opacity-60 inline-block mr-1"
-
-                  // navigate(`/profile/parent/${associatedParent._id}`)
+                <div className="flex flex-col ml-5   text-[#24A3D9] ">
+                  <p
+                    onClick={() =>
+                      associatedParent &&
+                      navigate(`/profile/parent/${associatedParent?._id}`)
+                    }
+                    className=" cursor-pointer text-base-20 "
                   >
-                    {Object.keys(associatedParent).length > 1
-                      ? `${associatedParent.email}`
-                      : `${userDetail.Email} `}
-                    {/* View Profile */}
-                    <span>
-                      <img
-                        className="inline-block ml-2 !w-4 !h-4 mr-2"
-                        src={copy2}
-                        alt="copy"
-                      />
+
+                    {associatedParent && Object.keys(associatedParent)?.length > 1
+                      ? `${associatedParent?.firstName} ${associatedParent?.lastName}`
+                      : `None`}
+                    <img
+                      src={clickArrowIcon}
+                      className="!ml-2 cursor-pointer !w-3 !h-3 inline-block"
+                      alt="arrow"
+                    />
+                  </p>
+
+                  {(persona !== "tutor" || (persona === 'tutor' && organization?.settings?.permissions && organization?.settings?.permissions[1]?.choosedValue)) && <p className="font-medium ">
+                    <span
+                      className="text-base-15 cursor-pointer   inline-block mr-1 text-[#7C98B6]"
+
+                    // 
+                    >
+                      {associatedParent && Object.keys(associatedParent)?.length > 1
+                        ? `${associatedParent?.email}`
+                        : `None `}
+                      {/* View Profile */}
+                      <span>
+                        <img
+                          onClick={() => handleCopyClick(associatedParent && Object.keys(associatedParent).length > 1
+                            ? `${associatedParent?.email}`
+                            : `None`)}
+                          className="inline-block ml-2 !w-4 !h-4 mr-2 cursor-pointer"
+                          src={copy2}
+                          alt="copy"
+                        />
+                      </span>
                     </span>
-                  </span>
-                </p>}
+                  </p>}
+                </div>
               </div>
+
+
             </div>
             <div className="flex flex-col items-center mb-3">
               {/* <p className='text-lg text-center text-primary font-semibold mb-5 text-[21px]'>Associated Parent</p> */}
@@ -971,7 +1027,7 @@ const [toEdit, setToEdit] = useState({
               />
             </div>
           </div>
-          <EditableText
+          {persona == "admin" && <EditableText
             editable={editable}
             onClick={() =>
               setToEdit({
@@ -985,7 +1041,7 @@ const [toEdit, setToEdit] = useState({
             text="edit"
             textClassName="text-sm text-[#517CA8] text-underline  "
             className="text-sm my-0 flex justify-end translate-y-7  float-right"
-          />
+          />}
           <SPFrame0 isOwn={isOwn} userDetail={userDetail} settings={settings} toEdit={toEdit} setToEdit={setToEdit} />
 
           <SPFrame1
@@ -998,7 +1054,7 @@ const [toEdit, setToEdit] = useState({
             setToEdit={setToEdit}
             toEdit={toEdit}
           />
-          <div className="h-[2px] mt-14  bg-[#CBD6E2] w-[95%] mx-auto"></div>
+          <div className="h-[2px] mt-[84px] mb-14   bg-[#CBD6E2] w-[95%] mx-auto"></div>
           <SPFrame2
             isOwn={isOwn}
             userDetail={userDetail}
@@ -1011,25 +1067,25 @@ const [toEdit, setToEdit] = useState({
             setToEdit={setToEdit}
             toEdit={toEdit}
           />
-          <div className="flex-1 mt-10">
-            <p className=" translate-y-[24px] text-sm text-[#26435F] font-semibold">
-              Latest Assignmets
+          <div className="flex-1 mt-16 min-h-[400px]">
+            <p className="mb-[-40px] text-sm text-[#26435F] font-semibold text-base-20 ">
+              Latest Assignments
             </p>
 
-            <StudentTest isOwn={isOwn} setTotaltest={setTotaltest} fromProfile={true} />
+            <AllTests isOwn={isOwn} setTotaltest={setTotaltest} studentId={userDetail?.userId} fromProfile={true} />
             <div
 
-           
-            className="border !border-[#CBD6E2] w-[calc(1500*0.0522vw)] mx-auto mb-[calc(50*0.0522vw)]"
-          ></div>
-           <SPFrame3 isOwn={isOwn} userDetail={userDetail} user={user} />
-           <div
-            id="borderDashed"
-            className="border !border-[#CBD6E3] w-[calc(1500*0.0522vw)] mx-auto my-[calc(50*0.0522vw)]"
-          ></div>
-           {
-            persona === "admin"  &&
-            <SPFrame4 isOwn={isOwn} userDetail={userDetail}        
+
+              className="border !border-[#CBD6E2] w-[calc(1500*0.0522vw)] mx-auto mb-[calc(50*0.0522vw)]"
+            ></div>
+            <SPFrame3 isOwn={isOwn} userDetail={userDetail} user={user} />
+            <div
+              id="borderDashed"
+              className="border !border-[#CBD6E3] w-[calc(1500*0.0522vw)] mx-auto my-[calc(50*0.0522vw)]"
+            ></div>
+            {
+              persona === "admin" &&
+              <SPFrame4 isOwn={isOwn} userDetail={userDetail}
 
                 fetchDetails={fetchDetails}
                 user={user}
@@ -1080,7 +1136,7 @@ const [toEdit, setToEdit] = useState({
                   textClassName="text-[21px]"
                 />
                 <p className=" font-medium text-[16px] lg:opacity-60 mb-5">
-                  {userDetail.birthyear ? userDetail.birthyear : "-"}
+                  {userDetail?.birthyear ? userDetail?.birthyear : "-"}
                 </p>
               </div>
               <div className="flex flex-1 flex-col">
@@ -1097,8 +1153,8 @@ const [toEdit, setToEdit] = useState({
                   textClassName="text-[21px]"
                 />
                 <div className="grid grid-cols-2">
-                  {userDetail.subjects
-                    ? userDetail.subjects.map((sub, idx) => {
+                  {userDetail?.subjects
+                    ? userDetail?.subjects?.map((sub, idx) => {
                       return (
                         <p
                           key={idx}
@@ -1135,7 +1191,7 @@ const [toEdit, setToEdit] = useState({
             body={
               <div className="flex mt-5 lg:mt-5">
                 <p className=" font-semibold text-[18px]">
-                  {userDetail.aboutScore ? userDetail.aboutScore : "-"}
+                  {userDetail?.aboutScore ? userDetail?.aboutScore : "-"}
                 </p>
               </div>
             }
@@ -1159,7 +1215,7 @@ const [toEdit, setToEdit] = useState({
                   className="text-lg mb-2"
                 />
                 <p className="mt-1.5 font-medium text-[18px] text-[#00000099] whitespace-nowrap">
-                  {userDetail.timeZone ? userDetail.timeZone : "-"}
+                  {userDetail?.timeZone ? userDetail?.timeZone : "-"}
                 </p>
               </div>
               <div className="mb-6">
@@ -1179,8 +1235,8 @@ const [toEdit, setToEdit] = useState({
                   className="text-lg mb-2"
                 />
                 <p className="mt-1.5 font-medium text-[18px] text-[#00000099] whitespace-nowrap">
-                  {userDetail.subscriptionCode
-                    ? userDetail.subscriptionCode
+                  {userDetail?.subscriptionCode
+                    ? userDetail?.subscriptionCode
                     : "-"}
                 </p>
               </div>
@@ -1203,7 +1259,7 @@ const [toEdit, setToEdit] = useState({
                   />
                 </p>
                 <p className="mt-1.5 font-medium text-[18px] text-[#00000099] whitespace-nowrap">
-                  {userDetail.accomodations ? userDetail.accomodations : "-"}
+                  {userDetail?.accomodations ? userDetail?.accomodations : "-"}
                 </p>
               </div>
             </div>
@@ -1230,8 +1286,8 @@ const [toEdit, setToEdit] = useState({
                 {settings &&
                   settings.personality &&
                   settings.personality.length > 0 &&
-                  userDetail.personality &&
-                  userDetail.personality.map((id, idx) => {
+                  userDetail?.personality &&
+                  userDetail?.personality?.map((id, idx) => {
                     return settings.personality.find(
                       (item) => item._id === id
                     ) ? (
@@ -1287,14 +1343,14 @@ const [toEdit, setToEdit] = useState({
                 >
                   <SubjectSlider
                     score={
-                      userDetail.satScores
+                      userDetail?.satScores
                         ? {
-                          verbal: userDetail.satScores[0]?.verbal,
-                          maths: userDetail.satScores[0]?.maths,
+                          verbal: userDetail?.satScores[0]?.verbal,
+                          maths: userDetail?.satScores[0]?.maths,
                         }
                         : {}
                     }
-                    totalMarks={userDetail.satScores ? getSatMarks(0) : "-"}
+                    totalMarks={userDetail?.satScores ? getSatMarks(0) : "-"}
                     outOf={"1600"}
                     isSat={true}
                     header={
@@ -1321,14 +1377,14 @@ const [toEdit, setToEdit] = useState({
                   />
                   <SubjectSlider
                     score={
-                      userDetail.satScores
+                      userDetail?.satScores
                         ? {
-                          verbal: userDetail.satScores[1]?.verbal,
-                          maths: userDetail.satScores[1]?.maths,
+                          verbal: userDetail?.satScores[1]?.verbal,
+                          maths: userDetail?.satScores[1]?.maths,
                         }
                         : {}
                     }
-                    totalMarks={userDetail.satScores ? getSatMarks(1) : "-"}
+                    totalMarks={userDetail?.satScores ? getSatMarks(1) : "-"}
                     outOf={"1600"}
                     isSat={true}
                     header={
@@ -1353,17 +1409,17 @@ const [toEdit, setToEdit] = useState({
                     subjects={subjects1}
                     title="Composite Score"
                   />
-                  {userDetail.satScores?.length >= 2 && (
+                  {userDetail?.satScores?.length >= 2 && (
                     <SubjectSlider
                       score={
-                        userDetail.satScores
+                        userDetail?.satScores
                           ? {
-                            verbal: userDetail.satScores[2]?.verbal,
-                            maths: userDetail.satScores[2]?.maths,
+                            verbal: userDetail?.satScores[2]?.verbal,
+                            maths: userDetail?.satScores[2]?.maths,
                           }
                           : {}
                       }
-                      totalMarks={userDetail.satScores ? getSatMarks(2) : "-"}
+                      totalMarks={userDetail?.satScores ? getSatMarks(2) : "-"}
                       outOf={"1600"}
                       isSat={true}
                       header={
@@ -1404,16 +1460,16 @@ const [toEdit, setToEdit] = useState({
                   items={1}
                 >
                   <SubjectSlider
-                    totalMarks={userDetail.actScores ? getActMarks(0) : "-"}
+                    totalMarks={userDetail?.actScores ? getActMarks(0) : "-"}
                     outOf={"36"}
                     isAct={true}
                     score={
-                      userDetail.actScores
+                      userDetail?.actScores
                         ? {
-                          reading: userDetail.actScores[0]?.reading,
-                          maths: userDetail.actScores[0]?.maths,
-                          science: userDetail.actScores[0]?.science,
-                          english: userDetail.actScores[0]?.english,
+                          reading: userDetail?.actScores[0]?.reading,
+                          maths: userDetail?.actScores[0]?.maths,
+                          science: userDetail?.actScores[0]?.science,
+                          english: userDetail?.actScores[0]?.english,
                         }
                         : {}
                     }
@@ -1441,16 +1497,16 @@ const [toEdit, setToEdit] = useState({
                   />
 
                   <SubjectSlider
-                    totalMarks={userDetail.actScores ? getActMarks(1) : "-"}
+                    totalMarks={userDetail?.actScores ? getActMarks(1) : "-"}
                     outOf={"36"}
                     isAct={true}
                     score={
-                      userDetail.actScores
+                      userDetail?.actScores
                         ? {
-                          reading: userDetail.actScores[1]?.reading,
-                          maths: userDetail.actScores[1]?.maths,
-                          science: userDetail.actScores[1]?.science,
-                          english: userDetail.actScores[1]?.english,
+                          reading: userDetail?.actScores[1]?.reading,
+                          maths: userDetail?.actScores[1]?.maths,
+                          science: userDetail?.actScores[1]?.science,
+                          english: userDetail?.actScores[1]?.english,
                         }
                         : {}
                     }
@@ -1476,18 +1532,18 @@ const [toEdit, setToEdit] = useState({
                     subjects={subjects2}
                     title="Composite Score"
                   />
-                  {userDetail.actScores?.length >= 2 && (
+                  {userDetail?.actScores?.length >= 2 && (
                     <SubjectSlider
-                      totalMarks={userDetail.actScores ? getActMarks(2) : "-"}
+                      totalMarks={userDetail?.actScores ? getActMarks(2) : "-"}
                       outOf={"36"}
                       isAct={true}
                       score={
-                        userDetail.actScores
+                        userDetail?.actScores
                           ? {
-                            reading: userDetail.actScores[2]?.reading,
-                            maths: userDetail.actScores[2]?.maths,
-                            science: userDetail.actScores[2]?.science,
-                            english: userDetail.actScores[2]?.english,
+                            reading: userDetail?.actScores[2]?.reading,
+                            maths: userDetail?.actScores[2]?.maths,
+                            science: userDetail?.actScores[2]?.science,
+                            english: userDetail?.actScores[2]?.english,
                           }
                           : {}
                       }
@@ -1538,7 +1594,7 @@ const [toEdit, setToEdit] = useState({
               <div className="flex scrollbar-content max-h-[500px]  scrollbar-vertical flex-col overflow-x-auto">
                 {settings &&
                   settings.interest.length > 0 &&
-                  userDetail.interest.map((id, idx) => {
+                  userDetail?.interest?.map((id, idx) => {
                     return settings.interest.find(
                       (item) => item._id === id
                     ) ? (
@@ -1599,13 +1655,13 @@ const [toEdit, setToEdit] = useState({
                       className="lg:text-21 text-left"
                     />
                     <div className="font-medium text-sm mt-2 lg:mt-6 flex flex-wrap lg:opacity-60">
-                      {/* {userDetail.subscribeType ? userDetail.subscribeType : '-'} */}
-                      {userDetail.service
-                        ? userDetail.service.map((service, idx) => {
+                      {/* {userDetail?.subscribeType ? userDetail?.subscribeType : '-'} */}
+                      {userDetail?.service
+                        ? userDetail?.service?.map((service, idx) => {
                           return (
                             <p key={idx} className="opacity-80 mb-1 mr-1">
                               {service}
-                              {idx < userDetail.service.length - 1
+                              {idx < userDetail?.service.length - 1
                                 ? ","
                                 : ""}
                             </p>
@@ -1634,7 +1690,7 @@ const [toEdit, setToEdit] = useState({
                       className="lg:text-21 whitespace-nowrap"
                     />
                     <p className="font-medium text-sm mt-2 lg:mt-6 lg:opacity-60">
-                      {userDetail.notes ? userDetail.notes : "-"}
+                      {userDetail?.notes ? userDetail?.notes : "-"}
                     </p>
                   </div>
                 </div>
@@ -1666,7 +1722,7 @@ const [toEdit, setToEdit] = useState({
                       className="lg:text-21 whitespace-nowrap"
                     />
                     <p className="font-medium text-sm mt-2 lg:mt-6 lg:opacity-60">
-                      {userDetail.leadStatus ? userDetail.leadStatus : "-"}
+                      {userDetail?.leadStatus ? userDetail?.leadStatus : "-"}
                     </p>
                   </div>
                 </div>
@@ -1715,14 +1771,14 @@ const [toEdit, setToEdit] = useState({
                           What service are you seeking?
                         </p>
                         <div>
-                          {userDetail.serviceSeeking.map((service, idx) => {
+                          {userDetail?.serviceSeeking?.map((service, idx) => {
                             return (
                               <p
                                 key={idx}
                                 className="opacity-80 inline-block mr-1"
                               >
                                 {service}
-                                {idx < userDetail.serviceSeeking.length - 1
+                                {idx < userDetail?.serviceSeeking.length - 1
                                   ? ","
                                   : ""}{" "}
                               </p>
@@ -1735,32 +1791,32 @@ const [toEdit, setToEdit] = useState({
                         <p className="font-semibold mb-2">
                           Parent First Name
                         </p>
-                        <p className="opacity-80"> {userDetail.FirstName} </p>
+                        <p className="opacity-80"> {userDetail?.FirstName} </p>
                       </div>
                       <div className="mb-7">
                         <p className="font-semibold mb-2">
                           Parent Last Name{" "}
                         </p>
-                        <p className="opacity-80"> {userDetail.LastName} </p>
+                        <p className="opacity-80"> {userDetail?.LastName} </p>
                       </div>
                       <div className="mb-7">
                         <p className="font-semibold mb-2">Parent Email</p>
-                        <p className="opacity-80"> {userDetail.Email} </p>
+                        <p className="opacity-80"> {userDetail?.Email} </p>
                       </div>
                       <div className="mb-7">
                         <p className="font-semibold mb-2">Parent Phone </p>
-                        <p className="opacity-80"> {userDetail.Phone} </p>
+                        <p className="opacity-80"> {userDetail?.Phone} </p>
                       </div>
                       <div className="mb-7">
                         <p className="font-semibold mb-2">School Name</p>
                         <p className="opacity-80">
                           {" "}
-                          {userDetail.schoolName}{" "}
+                          {userDetail?.schoolName}{" "}
                         </p>
                       </div>
                       <div className="mb-7">
                         <p className="font-semibold mb-2"> Grade</p>
-                        <p className="opacity-80">{userDetail.grade} </p>
+                        <p className="opacity-80">{userDetail?.grade} </p>
                       </div>
 
                       <div className="mb-7 col-span-2">
@@ -1777,14 +1833,14 @@ const [toEdit, setToEdit] = useState({
                           Please select all that apply.
                         </p>
                         <div>
-                          {userDetail.apCourses.map((service, idx) => {
+                          {userDetail?.apCourses?.map((service, idx) => {
                             return (
                               <p
                                 key={idx}
                                 className="opacity-80 inline-block mr-1"
                               >
                                 {service}
-                                {idx < userDetail.apCourses.length - 1
+                                {idx < userDetail?.apCourses.length - 1
                                   ? ","
                                   : ""}{" "}
                               </p>
@@ -1798,11 +1854,11 @@ const [toEdit, setToEdit] = useState({
                         </p>
                         <div>
                           {" "}
-                          {userDetail.motive.map((service, idx) => {
+                          {userDetail?.motive?.map((service, idx) => {
                             return (
                               <p key={idx} className="opacity-80 mb-1">
                                 {service}
-                                {idx < userDetail.motive.length - 1
+                                {idx < userDetail?.motive.length - 1
                                   ? ","
                                   : ""}
                               </p>
@@ -1817,7 +1873,7 @@ const [toEdit, setToEdit] = useState({
                         </p>
                         <p className="opacity-80">
                           {" "}
-                          {userDetail.subscriptionCode}{" "}
+                          {userDetail?.subscriptionCode}{" "}
                         </p>
                       </div>
                       <div className="mb-7 col-span-2">
@@ -1826,14 +1882,14 @@ const [toEdit, setToEdit] = useState({
                         </p>
                         <div>
                           {" "}
-                          {userDetail.hearAboutUs.map((service, idx) => {
+                          {userDetail?.hearAboutUs?.map((service, idx) => {
                             return (
                               <p
                                 key={idx}
                                 className="opacity-80 inline-block mr-1"
                               >
                                 {service}
-                                {idx < userDetail.hearAboutUs.length - 1
+                                {idx < userDetail?.hearAboutUs.length - 1
                                   ? ","
                                   : ""}{" "}
                               </p>

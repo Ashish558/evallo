@@ -5,14 +5,14 @@ import { useTutorDetails } from "../../hooks/useTutorDetails";
 import styles from "./TutorCarousel.module.css";
 import left from "../../assets/YIcons/VectorleftParent.svg";
 import right from "../../assets/YIcons/VectorrightParent.svg";
-export default function SingleTutor({ idx, tutor }) {
+export default function SingleTutor({turorsLength, idx, tutor, handlePrev,handleNext}) {
   const navigate = useNavigate();
   const { awsLink } = useSelector((state) => state.user);
-  console.log(tutor)
+  console.log(turorsLength,'turorsLength')
   return (
 
     <div key={idx} className="item px-2 h-full  ">
-      <div className="flex flex-1 h-full items-center gap-5 my-auto justify-center">
+      <div className="flex flex-1 h-full items-center gap-8 my-auto justify-between">
 
         <div className="w-2/3">
           {/* <h5 className={`${styles.tag}`}>
@@ -36,7 +36,7 @@ export default function SingleTutor({ idx, tutor }) {
             View Profile
           </button>
         </div>
-        <div className="w-fit h-fit pt-3" >
+        <div className="  float-right translate-x-[7%] design:translate-x-[0%] h-fit pt-3" >
           <div className="relative ">
             <img
               src={
@@ -63,10 +63,12 @@ export default function SingleTutor({ idx, tutor }) {
             </svg>
 
           </div>
-          <span className="flex px-9 pt-2 gap-2">
-            <span><img src={left} className="w-2 h-3 m-0 p-0 " /></span>
-            <span><img src={right} className="w-2 h-3 m-0 p-0 " /></span>
+          {
+            turorsLength>=2 && <span className="flex px-9 pt-2 gap-2">
+            <span><img onClick={handlePrev} src={left} className="w-2 h-3 m-0 p-0 cursor-pointer" alt="left"/></span>
+            <span><img onClick={handleNext} src={right} className="w-2 h-3 m-0 p-0 cursor-pointer" alt="right"/></span>
           </span>
+          }
         </div>
       </div>
     </div>

@@ -73,6 +73,7 @@ export default function AssignedStudents() {
    }
 
    useEffect(() => {
+      console.log("rescaniting")
       getUserDetail({ id })
          .then(resp => {
             console.log('res', resp.data.data.user)
@@ -81,24 +82,30 @@ export default function AssignedStudents() {
                resp.data.data.user.assiginedStudents.map((studentId, idx) => {
                   getUserDetail({ id: studentId })
                      .then(res => {
-                        console.log('detail res', resp.data.data)
-                        const { _id, firstName, lastName, email, phone, services, topics, status, assignedDate } = res.data.data.user
-                        const { specialization, FirstName, LastName, timeZone } = res.data.data.userdetails
-                        studentsData.push({
-                           _id,
-                           name: `${firstName} ${lastName}`,
-                           email: `${email}`,
-                           phone: `${phone}`,
-                           services: `${services == undefined ? '_' : services}`,
-                           topics: `${topics == undefined ? '_' : topics}`,
-                           status: `${status == undefined ? '_' : status}`,
-                           assignedDate: `${assignedDate == undefined ? '_' : assignedDate}`
-                           // specialization: ['we', 'ew'].join(','),
-                           // parentName: `${FirstName} ${LastName}`,
-                           // score: '-',
-                           // assignedDate: '_'
-                        })
-                        if (idx === resp.data.data.user.assiginedStudents.length - 1) cb()
+                        console.log('detail res', res?.data?.data)
+                        if (res?.data?.data) {
+                           const { _id, firstName, lastName, email, phone, services, topics, userStatus, assignedDate } = res.data.data.user
+                           const { specialization, FirstName, LastName, timeZone } = res.data.data.userdetails
+                           studentsData.push({
+                              _id,
+                              name: `${firstName} ${lastName}`,
+                              email: `${email}`,
+                              phone: `${phone}`,
+                              services: `${services == undefined ? '_' : services}`,
+                              topics: `${topics == undefined ? '_' : topics}`,
+                              status: `${userStatus == undefined ? '_' : userStatus}`,
+                              assignedDate: `${assignedDate == undefined ? '_' : assignedDate}`
+                              // specialization: ['we', 'ew'].join(','),
+                              // parentName: `${FirstName} ${LastName}`,
+                              // score: '-',
+                              // assignedDate: '_'
+                           })
+                        }
+                        //   console.log("rescb",idx,resp.data.data.user.assiginedStudents.length - 1)
+                        if (idx === resp.data.data.user.assiginedStudents.length - 1) {
+                           console.log("rescb: student")
+                           cb()
+                        }
                      })
                })
             }
@@ -107,7 +114,7 @@ export default function AssignedStudents() {
                setFilteredStudents(studentsData)
             })
          })
-   }, [])
+   }, [id])
 
    useEffect(() => {
       let tempdata = [...students]
@@ -291,7 +298,7 @@ export default function AssignedStudents() {
                   <FilterItems items={filterItems} setData={setFilterItems}
                      onRemoveFilter={onRemoveFilter} />
                </div>
-
+               {console.log(filteredStudents, "students")}
                <div className="mt-6">
                   <Table
                      onClick={{ handleNavigate }}

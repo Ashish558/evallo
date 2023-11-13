@@ -17,7 +17,7 @@ import { tempTableData, studentsDataTable } from "../AssignedTests/tempData";
 import InputField from "../../components/InputField/inputField";
 import AssignedTestIndicator from "../../components/AssignedTestIndicator/AssignedTestIndicator";
 import InputSelectNew from "../../components/InputSelectNew/InputSelectNew";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const studentTableHeaders2 = [
   "Test Name",
@@ -44,7 +44,8 @@ const parentTestInfo = [
   },
 ];
 
-export default function StudentTest({ fromProfile, setTotaltest }) {
+
+export default function StudentTest({ fromProfile,testtype, setTotaltest,studentId }) {
   const [user, setUser] = useState({});
   const [associatedStudents, setAssociatedStudents] = useState([]);
   const [selectedStudent, setSelectedStudent] = useState(null);
@@ -120,8 +121,7 @@ export default function StudentTest({ fromProfile, setTotaltest }) {
     },
     {
       id: 4,
-      text: "Assigned by",
-
+      text: "Assigned By",
     },
     {
       id: 5,
@@ -144,10 +144,10 @@ export default function StudentTest({ fromProfile, setTotaltest }) {
   const params = useParams()
   useEffect(() => {
     if (persona === "student") {
-      getTest().then((res) => {
-        console.log("all-assigned-tests", res.data.data);
-        setAwsLink(res.data.data.baseLink);
-        let tempAllTests = res.data.data.test.map((test) => {
+      getTest(studentId).then((res) => {
+        console.log("all-assigned-tests", res?.data?.data);
+        setAwsLink(res?.data?.data?.baseLink);
+        let tempAllTests = res?.data?.data?.test?res?.data?.data?.test?.map((test) => {
           const {
             testId,
             studentId,
@@ -162,12 +162,14 @@ export default function StudentTest({ fromProfile, setTotaltest }) {
           if (testId === null) return;
           console.log("test inside test", test)
           return {
-            assignedBy: assignedBy ? assignedBy.firstName + " " + assignedBy.lastName : "-",
+           // assignedBy: assignedBy ? assignedBy.firstName + " " + assignedBy.lastName : "-",
 
             testName: testId ? testId.testName : "-",
-            assignedOn: getFormattedDate(new Date(createdAt), dateFormat),
+            assignedOn: new Date(createdAt).toDateString(),
             studentId: studentId ? studentId : "-",
-            dueDate: getFormattedDate(new Date(test.dueDate), dateFormat),
+          
+            dueDate: new Date(test.dueDate).toDateString(),
+            assignedBy:assignedBy?.firstName+" "+assignedBy?.lastName,
             duration: multiple ? getDuration(multiple) : "Unlimited",
             status:
               isCompleted === true
@@ -185,7 +187,7 @@ export default function StudentTest({ fromProfile, setTotaltest }) {
             assignedTestId: test._id,
             updatedAt,
           };
-        });
+        }):[];
 
         let sortedArr = tempAllTests.sort(function (a, b) {
           return new Date(b.updatedAt) - new Date(a.updatedAt);
@@ -246,11 +248,11 @@ export default function StudentTest({ fromProfile, setTotaltest }) {
           if (testId === null) return;
           console.log("parent", test)
           return {
-            assignedBy: assignedBy ? assignedBy.firstName + " " + assignedBy.lastName : "-",
+           // assignedBy: assignedBy ? assignedBy.firstName + " " + assignedBy.lastName : "-",
             testName: testId ? testId.testName : "-",
-            assignedOn: getFormattedDate(new Date(createdAt)),
+            assignedOn:new Date(createdAt).toLocaleDateString(),
             studentId: studentId ? studentId : "-",
-            dueDate: getFormattedDate(new Date(test.dueDate)),
+            dueDate:new Date(test.dueDate).toLocaleDateString(),
             duration: multiple ? getDuration(multiple) : "Unlimited",
             status:
               isCompleted === true
@@ -299,6 +301,7 @@ export default function StudentTest({ fromProfile, setTotaltest }) {
   }, [associatedStudents]);
   console.log({ selectedStudent, associatedStudents })
   console.log({ allTests })
+  const navigate=useNavigate()
   useEffect(() => {
     if (selectedStudent === null) return;
     if (Object.keys(selectedStudent).length === 0) return;
@@ -312,7 +315,7 @@ export default function StudentTest({ fromProfile, setTotaltest }) {
       (test) => test.studentId._id === selected._id
     );
     setfilteredTests(tempdata);
-  }, [associatedStudents, allTests]);
+  }, [selectedStudent,associatedStudents, allTests]);
 
   const handleStudentChange = (item) => {
     let tempdata = associatedStudents.map((student) => {
@@ -339,6 +342,9 @@ export default function StudentTest({ fromProfile, setTotaltest }) {
       color: "#FFCE84",
     },
   ];
+console.log("profile",fromProfile)
+
+
 
   return (
     <div className="w-[83.23vw] mx-auto">
@@ -349,13 +355,15 @@ export default function StudentTest({ fromProfile, setTotaltest }) {
               className={`${persona === "student" || true ? "flex justify-between items-center" : ""
                 }`}
             >
-              <p className="text-[#24A3D9]  text-xl ">
-                {organization?.company +
+              <p className="text-[#24A3D9]   text-base-20">
+               <span className="cursor-pointer" onClick={()=>navigate('/')}>
+               {organization?.company +
                   "  >  " +
                   firstName +
                   "  " +
                   lastName +
                   "  >  "}
+               </span>
                 <span className="font-semibold">Assignments</span>
               </p>
               <div className="flex justify-end items-center">
@@ -441,7 +449,9 @@ export default function StudentTest({ fromProfile, setTotaltest }) {
           )}
           <div className={`mt-6 ${fromProfile ? '!mt-0' : ''}`}>
             <Table
-              noArrow={true}
+              testtype={testtype}
+              fromProfile={fromProfile}
+             
               dataFor="assignedTestsStudents"
               headerObject={true}
               data={persona === "parent" ? filteredTests : allTests}

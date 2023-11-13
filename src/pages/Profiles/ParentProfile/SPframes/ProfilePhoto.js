@@ -4,7 +4,7 @@ import ProfileImg from '../../../../assets/images/profile.png'
 import CameraIcon from '../../../../assets/profile/camera.svg'
 import { useRef } from 'react'
 
-export default function ProfilePhoto({ src, handleChange, editable, isTutor,customWidth ,imgSizeClass}) {
+export default function ProfilePhoto({ src,cameraClass, handleChange, editable, isTutor,customWidth ,imgSizeClass}) {
 
    const inputref = useRef()
 
@@ -16,9 +16,9 @@ export default function ProfilePhoto({ src, handleChange, editable, isTutor,cust
             <>
                <input ref={inputref} type="file" name="myImage" className='hidden' accept="image/*"
                   onChange={e => handleChange(e.target.files[0])} />
-               <div className={`${styles.cameraIcon} ${isTutor ? styles.tutorCamera : ''}`} 
+               <div className={`${styles.cameraIcon} ${isTutor ? styles.tutorCamera : ''} cursor-pointer`} 
                onClick={() => inputref.current.click()}>
-                  <img src={CameraIcon} />
+                  <img className={`${cameraClass}`} src={CameraIcon} />
                </div>
             </>
          }

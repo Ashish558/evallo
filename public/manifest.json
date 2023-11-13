@@ -1,19 +1,19 @@
 {
-  "short_name": "Seven Square Learning",
-  "name": "Seven Square Learning",
+  "short_name": "Evallo",
+  "name": "Evallo",
   "icons": [
     {
-      "src": "favicon_light.png",
+      "src": "Vector.png",
       "sizes": "64x64 32x32 24x24 16x16",
       "type": "image/x-icon"
     },
     {
-      "src": "icon-192x192.png",
+      "src": "Vector.png",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "icon-512x512.png",
+      "src": "Vector.png",
       "type": "image/png",
       "sizes": "512x512"
     }

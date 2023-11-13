@@ -45,9 +45,9 @@ export default function SetPassword({
       };
     });
   };
-  useEffect(()=>{
-  setcurrentStep(currentStep+1)
-  },[])
+  useEffect(() => {
+    setcurrentStep(currentStep + 1)
+  }, [])
   const handleSubmit = () => {
     const promiseState = async (state) =>
       new Promise((resolve) => {
@@ -99,57 +99,59 @@ export default function SetPassword({
   return (
     <>
       <div className="pb-[10px] w-full" >
-      <div className="h-[1px] bg-[#EBEBEB] mx-[0px]  mt-[-16px] mb-[19px]"></div>
-           
-            <div className={`w-full bg-white py-4 ${signup ? "" : "px-5"} `}>
-              
-              <p className="mb-8 text-center text-black-900 text-[#26435F]">
-              Congratulations! Your email has been verified. Now,
-please set a strong password for your Evallo account.
-              </p>
+        <div className="h-[1px] bg-[#EBEBEB] mx-[0px]  mt-[-16px] mb-[19px]"></div>
 
-              <div className="flex justify-between gap-10 my-2">
-               
- <InputField
-                  parentClassName="mb-6 relative"
-                  type="password"
-                  placeholder="minimum 8 characters"
-                  inputContainerClassName="border border-[0.98px_solid_#D0D5DD]"
-                  inputClassName={"py-[2px]"}
-                  label="Set New Password"
-                  labelClassname="ml-2 mb-2 text-[#26435F]"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  error={error.password}
-                />
-             
-              
+        <div className={`w-[89%] mx-auto bg-white py-4 ${signup ? "" : "px-5"} `}>
 
-                <InputField
-                  parentClassName="mb-2.5 relative"
-                  type="password"
-                  inputClassName={"py-[2px]"}
-                  placeholder="Confirm Password"
-                  inputContainerClassName="border border-[0.98px_solid_#D0D5DD]"
-                  label="Confirm Password"
-                  labelClassname="ml-2 mb-2 text-[#26435F]"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  error={error.confirmPassword}
-                />
-              </div>
-              <div className="flex justify-center items-center  text-[#7C98B6] text-xs">
-                Note: The password should contain a minimum of 8 characters.
-              </div>
+          <p className="mb-8 text-center text-lg text-[#26435F]">
+            Congratulations! Your email has been verified. Now,<br/>
+            please set a strong password for your Evallo account.
+          </p>
+
+          <div className="flex justify-between my-2">
+
+            <InputField
+              biggerText={true}
+              parentClassName="mb-6 relative"
+              type="password"
+              placeholder="minimum 8 characters"
+              inputContainerClassName="border border-[0.98px_solid_#D0D5DD] !w-[266px] h-[53px]"
+              inputClassName={"py-[2px]"}
+              label="Set New Password"
+              labelClassname="  text-[#26435F]  !font-medium"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              error={error.password}
+            />
 
 
-              <PrimaryButton
-                onClick={handleSubmit}
-                loading={loading}
-                children={"Set New Password"}
-                className="w-[300px] mx-auto mt-10"
-              />
-              {/* <button
+
+            <InputField
+              biggerText={true}
+              parentClassName="mb-2.5 relative"
+              type="password"
+              inputClassName={"py-[2px]"}
+              placeholder="Confirm New Password"
+              inputContainerClassName="border border-[0.98px_solid_#D0D5DD] !w-[266px] h-[53px]"
+              label="Confirm New Password"
+              labelClassname="  text-[#26435F]  !font-medium"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              error={error.confirmPassword}
+            />
+          </div>
+          <div className="flex justify-center items-center  text-[#7C98B6] text-base font-light">
+            Note: The password should contain a minimum of 8 characters.
+          </div>
+
+
+          <PrimaryButton
+            onClick={handleSubmit}
+            loading={loading}
+            children={"Set New Password"}
+            className="!w-[337px] mx-auto mt-[50px] text-[17.5px] h-[50px] text-[#fff] !font-medium mb-5"
+          />
+          {/* <button
                         className={`w-full relative bg-primaryDark font-medium disabled:bg-pink pt-3 pb-3 mt-12 rounded-10 text-white text-lg  ${loading ? 'cursor-wait opacity-60' : 'cursor-pointer'}`}
                         onClick={handleSubmit}
                      >
@@ -159,8 +161,8 @@ please set a strong password for your Evallo account.
                            <Loader />
                         }
                      </button> */}
-            </div>
-      
+        </div>
+
       </div>
     </>
   );

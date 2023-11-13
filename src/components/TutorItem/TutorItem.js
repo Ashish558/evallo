@@ -5,8 +5,8 @@ import { useLazyGetSessionFeedbackQuery, useSubmitFeedbackMutation } from '../..
 import { useState } from 'react';
 import { useEffect } from 'react';
 
-const TutorItem = ({ tutorName, rating, service, updatedAt, tutorId, studentId, _id, time }) => {
-   console.log(time)
+const TutorItem = ({ tutorName, rating, service, updatedAt, tutorId, studentId, _id, time ,SetisFeedback}) => {
+   console.log("feedbackSessions",tutorName, rating, service, updatedAt, tutorId, studentId, _id, time)
    const feedbackDate = new Date(updatedAt)
    const month = feedbackDate.toLocaleString('default', { month: 'short' })
    const date = feedbackDate.getDate()
@@ -24,6 +24,8 @@ const TutorItem = ({ tutorName, rating, service, updatedAt, tutorId, studentId, 
       }
       getSessionFeedback(_id)
          .then(res => {
+            console.log("feedbackSessions",res)
+
             setLoading(false)
             if (res.error) {
                setInputFeedback(0)
@@ -31,6 +33,7 @@ const TutorItem = ({ tutorName, rating, service, updatedAt, tutorId, studentId, 
             }
             if (res.data.data.feedback.rating > 0 && isInitial) {
                setDisplayFeedback(false)
+               SetisFeedback(true)
             }
             setInputFeedback(res.data.data.feedback.rating)
          })

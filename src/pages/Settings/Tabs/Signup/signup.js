@@ -12,6 +12,8 @@ import que2 from "../../../../assets/icons/que2.svg";
 import plus1 from "../../../../assets/icons/plus1.svg";
 import dropdown from "../../../../assets/icons/dropdown (2).svg";
 import InputFieldDropdown from "../../../../components/InputField/inputFieldDropdown";
+import ToggleBar from "../../../../components/SettingsCard/ToogleBar";
+import AddTag from "../../../../components/Buttons/AddTag";
 export default function SignupTab({
   setAddNewQuestionModalActive,
   fetchS,
@@ -20,9 +22,10 @@ export default function SignupTab({
   const { organization } = useSelector((state) => state.organization);
 
   const [customFields, setCustomFields] = useState();
-
+  const [fetchedPermissions, setThePermission] = useState([]);
   useEffect(() => {
     setCustomFields(organization?.settings?.customFields);
+    setThePermission(customFields)
   }, [organization]);
   useEffect(() => {
     if (fetchS && fetchS.data && fetchS.data.updatedOrg) {
@@ -58,7 +61,78 @@ export default function SignupTab({
     };
     updateAndFetchsettings(body);
   };
+  const togglePermissions = (key, value) => {
+    // let updatedCustomFields = customFields.filter((item) => item._id == key);
+    // let notUpdatedCustomFields = customFields.filter((item) => item._id !== key);
+    // console.log(updatedCustomFields)
+    // updatedCustomFields = updatedCustomFields.map((item) => ({
+    //   name: item.name,
+    //   Values: item.Values,
+    //   dataType: item.dataType,
+    //   required: !(item.required)
+    // }));
+    // console.log(updatedCustomFields)
+    // console.log(notUpdatedCustomFields)
+    // const body = {
+    //   customFields: [...updatedCustomFields, ...notUpdatedCustomFields]
+    // };
+    const targetIndex = customFields.findIndex((obj) => obj._id === key);
+    console.log(customFields[targetIndex].required, "dfdfh")
+    if (targetIndex !== -1) {
+      const updatedObject = { ...customFields[targetIndex], required: !customFields[targetIndex].required };
+      console.log(updatedObject, "updatedObject")
+      const newArray = [...customFields];
+      newArray[targetIndex] = updatedObject;
+      console.log(newArray, "new array");
+      const body = {
+        customFields: newArray
+      };
+      updateAndFetchsettings(body);
+    } else {
+      console.log('Object not found with ID:', key);
+    }
 
+    // const arr = fetchedPermissions?.map((per) => {
+    //   if (per._id === key) {
+    //     return { ...per, required: !per.required
+    //     };
+    //   }
+    //   return { ...per };
+    // });
+    // setThePermission(arr)
+
+    // let updatedSetting = {
+    //   permissions: arr,
+    // };
+    // updateAndFetchsettings(updatedSetting);
+  }
+  const [inputValue, setInputValue] = useState('');
+  const [addOption, SetAddOption] = useState(false)
+  const handleAddOption = (e) => {
+    console.log(e.target.value)
+    setInputValue(e.target.value)
+  }
+  const handleKeyPress = (event, item) => {
+    if (event.key === 'Enter') {
+
+
+
+      let updatedCustomFields = customFields.filter((it) => it._id == item._id);
+      updatedCustomFields = updatedCustomFields.map((item) => ({
+        name: item.name,
+        Values: [...item.Values, inputValue],
+        dataType: item.dataType,
+      }));
+      const body = {
+        customFields: updatedCustomFields,
+      };
+      updateAndFetchsettings(body);
+      // console.log(event)
+      SetAddOption(false)
+      // console.log('Input value:', inputValue);
+      setInputValue('')
+    }
+  };
   return (
     <div className="">
       <div className="mb-[40px]">
@@ -83,13 +157,13 @@ export default function SignupTab({
       <div className="grid grid-cols-2 gap-x-5">
         <div className={styles.colContainer}>
           <div
-            className={`hidden lg:flex mb-[26px] items-center justify-between text-[#26435F] font-semibold text-base-20 text-base-20`}
+            className={`hidden lg:flex mb-[24px] items-center justify-between text-[#26435F] font-semibold text-base-20 text-base-20`}
           >
-            <p>      Page 1: Basic Details (all fields mandatory)</p>
+            <p className="whitespace-nowrap ">      Page 1: Basic Details (all fields mandatory)</p>
 
-            <p className="ml-40"> <img src={que2} alt="que"></img></p>
+            <p className="ml-6"> <img src={que2} alt="que"></img></p>
           </div>
-          <div className={`flex mt-[59px] lg:mt-0 ${styles.inputs}`}>
+          <div className={`flex mt-[55px] lg:mt-0 ${styles.inputs}`}>
             <InputField
               placeholder=""
               inputContainerClassName="bg-gray-200 border border-gray-200"
@@ -111,16 +185,20 @@ export default function SignupTab({
               placeholder=""
               parentClassName="text-xs  text-[#26435F] mb-2"
             />
-            <InputField
-              placeholder=""
-              inputContainerClassName="bg-gray-200 border border-gray-200 "
-              inputClassName="bg-gray-200"
-              parentClassName="text-xs  text-[#26435F] mb-7"
-              label="Phone"
-            />
+            <div className="flex gap-1 items-center">
+              <div className="bg-gray-200 border translate-y-[6px] p-2 rounded-[3.5px] border-gray-200 h-[43px] text-[#667085] text-xs px-3 flex items-center" >+91</div>
+              <InputField
+                placeholder=""
+                parentClassName="text-xs  text-[#26435F] mb-2 "
+                inputContainerClassName="bg-gray-200 border border-gray-200 "
+                inputClassName="bg-gray-200 "
+                label=" Phone"
+                labelClassname={"translate-x-[-50px]"}
+              />
+            </div>
           </div>
           <div>
-            <p className={`mb-5 ${styles.label} text-base-17-5`}>
+            <p className={`mb-5 ${styles.label} text-base-17-5 mt-[42px]`}>
               Are you signing up as a Parent or a Student?
             </p>
             <div className="flex items-center gap-x-6">
@@ -236,15 +314,17 @@ export default function SignupTab({
               inputClassName="bg-gray-200"
               parentClassName="text-xs  text-[#26435F] mb-2"
             />
-              
+            <div className="flex gap-1 items-center">
+              <div className="bg-gray-200 border translate-y-[6px] p-2 rounded-[3.5px] border-gray-200 h-[43px] text-[#667085] text-xs px-3 flex items-center" >+91</div>
               <InputField
-              placeholder=""
-              parentClassName="text-xs  text-[#26435F] mb-2 "
-              inputContainerClassName="bg-gray-200 border border-gray-200 "
-              inputClassName="bg-gray-200 "
-             label=" Student/Parent Phone"
-            />
-             
+                placeholder=""
+                parentClassName="text-xs  text-[#26435F] mb-1.5 "
+                inputContainerClassName="bg-gray-200 border border-gray-200 "
+                inputClassName="bg-gray-200 "
+                label=" Student / Parent Phone"
+                labelClassname={"translate-x-[-50px]"}
+              />
+            </div>
             <InputField
               placeholder=""
               parentClassName="text-xs  text-[#26435F] mb-2"
@@ -274,6 +354,7 @@ export default function SignupTab({
           <img className="ml-[100px]" src={que2}></img>
         </span>
         <div className="mb-10">
+          {console.log(customFields)}
           {customFields?.map((item, idx) => {
             return (
               <div
@@ -281,18 +362,23 @@ export default function SignupTab({
                 className={`${styles.customField} grid grid-cols-12 gap-x-12 `}
               >
                 <div className="col-span-8">
-                  <div className="py-3 px-4 border-b border-[#26435f]">
+                  <div className="py-3 px-4 border-b border-[#26435f] bg-[#F5F8FA]">
                     <p>
                       <span>{idx + 1}. </span> {item.name}{" "}
                     </p>
                   </div>
-                  {item.dataType === "Dropdown" && (
-                    <div className="flex flex-col gap-y-3 mt-7 mb-7">
+                  {item.dataType === "Paragraph" && (
+                    <div className="flex flex-col gap-y-3 mt-7 bg-[#F5F8FA]">
+                      <textarea className="bg-[#F5F8FA] p-2 outline-none text-[#507CA8]" name="" id="" cols="30" rows="6">{item?.desc}</textarea>
+                    </div>
+                  )}
+                  {item.dataType === "Checkboxes" && (
+                    <div className="flex flex-col gap-y-3 mt-7 ">
                       {item.Values?.map((value) => {
                         return (
                           <div key={value} className="flex items-center">
                             <img src={CheckboxIcon} alt="checkbox" />
-                            <p className="ml-2 text-[#507CA8]">
+                            <p className="ml-2 text-[#507CA8] !font-normal">
                               {" "}
                               {value ? value : "-"}{" "}
                             </p>
@@ -301,6 +387,24 @@ export default function SignupTab({
                       })}
                     </div>
                   )}
+                  {item.dataType === "Checkboxes" &&
+                    <div className="flex flex-col gap-y-3 mt-3  mb-7">
+                      <div className="flex items-center">
+                        <img className="inline-block" src={CheckboxIcon} alt="checkbox" />
+
+                        {
+                          addOption == true ? <input
+                            autoFocus
+                            className="ml-3 text-[14px] text-[#7E7E7E] outline-[#DCDCDD] border-[1.5px] border-[#DCDCDD] rounded-[4px] bg-[#F5F8FA]  w-32" value={inputValue}
+                            type="text"
+                            onChange={handleAddOption}
+                            onKeyPress={(e) => handleKeyPress(e, item)}
+                          /> :
+                            <p className="!text-[#FFA28D] !font-normal ml-2 underline cursor-pointer" onClick={() => SetAddOption(true)}>Add option</p>
+                        }
+                      </div>
+                    </div>
+                  }
                 </div>
 
                 <div className="col-span-4">
@@ -309,11 +413,21 @@ export default function SignupTab({
                       value={item.dataType}
                       labelClassname="hidden"
                       parentClassName="w-[200px] mr-5 my-4 text-base-17-5 "
-                      optionData={["String", "Checkboxes"]}
+                      optionData={["Paragraph", "Checkboxes", "Dropdown"]}
                       inputContainerClassName={`bg-[#F5F8FA] border-0 text-[#26435F] font-medium ${styles["dropdown-container"]} `}
                     />
+                    <div className="flex items-center justify-between cursor-pointer bg-[#F5F8FA] text-[#26435F]  text-sm px-4 py-[13px] my-4">
+                      <p className="!font-normal">Required?</p>
+                      <ToggleBar
+                        toggle={{ value: item.required, key: item._id }}
+                        onToggle={togglePermissions}
+                      ></ToggleBar>
+                    </div>
+                    {
+                      console.log(customFields)
+                    }
                     <div
-                      className="flex items-center justify-between cursor-pointer bg-[#F5F8FA] text-[#26435F] font-medium text-sm px-4 py-2"
+                      className="flex items-center justify-between cursor-pointer bg-[#F5F8FA] text-[#26435F] font-medium text-sm px-4 py-[13px]"
                       onClick={() => handleDelete(item._id)}
                     >
                       Delete
@@ -327,10 +441,10 @@ export default function SignupTab({
         </div>
 
         <PrimaryButton
-          disabled={customFields?.length >= 5 ? true : false}
-          children={"Add New Question"}
+          disabled={true}//customFields?.length >= 5 ? true : false
+          children={"Add New Question (Coming Soon)"}
           Icon={plus1}
-          className="text-base-17-5"
+          className="text-base-17-5 text-white"
           onClick={() => setAddNewQuestionModalActive(true)}
         />
       </div>

@@ -3,26 +3,26 @@
     border-radius: 4px;
     margin-right: 7px;
     border-top: 3px solid #26435F;
-   padding: 13px 15px;
+   padding: 30px 15px;
    text-align: center;
-  
+  height: 160px;
+  width:6.9271vw
 }
 
 .heading {
     font-family: 'Inter';
     color: #26435F;
     margin-bottom: 1rem;
-    font-size: 14px;
+    font-size: 0.8333vw;
     padding-right: 6px;
     width: 70px;
-   
 }
 
 .text {
     font-family: 'Inter';
     font-style: normal;
-    font-weight: 600;
-    font-size: 20px;
+    font-weight: 500;
+    font-size: 1.6667vw;
     line-height: 120%;
     color: #26435F;
 }

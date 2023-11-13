@@ -3,15 +3,19 @@ import EyeIcon from "../../assets/form/eye-open.svg";
 import Message from "./Message/Message";
 import { useEffect } from "react";
 import useOutsideAlerter from "../../hooks/useOutsideAlerter";
-import downArrow from "../../assets/icons/down-chevron.svg";
+import downArrow from "../../assets/icons/signup-dropdown.svg";
 import upArrow from "../../assets/icons/upArrow.svg";
+import styles from './styles.module.css'
+
 export default function InputFieldDropdown({
   parentClassName,
   inputContainerClassName,
   Icon,
+  biggerText,
   iconSize,
   value,
   placeholder,
+  codeClassName,
   codeColor,
   label,
   labelClassname,
@@ -36,7 +40,8 @@ export default function InputFieldDropdown({
   totalErrors,
   onFocus,
   onBlur,
-  studentCode
+  studentCode,
+  arrowClassName
 }) {
   const [inputType, setInputType] = useState(type);
 
@@ -95,11 +100,11 @@ export default function InputFieldDropdown({
         setDialCode(data);
       });
   }, []);
-  console.log({ toggleOptions, codeValue });
+
   return (
     <div className={`relative text-sm ${parentClassName && parentClassName} `}>
       {label && (
-        <label className={`inline-block font-semibold text-base-17-5  ${labelClassname} ml-0 `}>
+        <label className={`inline-block font-semibold ${biggerText ? "text-lg" : "text-base-17-5"}  ${labelClassname} ml-0 `}>
           {label}
           {required && (
             <span className="text-primaryRed inline-block pl-1">*</span>
@@ -111,28 +116,29 @@ export default function InputFieldDropdown({
           } ${disabled === true ? "cursor-not-allowed" : ""} `}
       >
 
-        {studentCode && <input type="text"  onChange={(e)=> handleCodeChange({target:{value:e.target.value}})} value={codeValue} className="!w-[50px] outline-0 text-400 !py-1 text-base-17-5 bg-transparent  pl-2 text-sm"/>}
-       {!studentCode&& <div
-        ref={selectRef} 
+        {studentCode && <input type="text" onChange={(e) => handleCodeChange({ target: { value: e.target.value } })} value={codeValue} className="!w-[50px] outline-0 text-400 !py-1 text-base-17-5 bg-transparent  pl-2 text-sm" />}
+        {!studentCode && <div
+          ref={selectRef}
 
           className="relative flex justify-between gap-3 max-w-[130px]"
           onClick={() => setToggleOptions(!toggleOptions)}
         >
           <div
 
-            className={` flex justify-between cursor-pointer gap-4   items-center rounded-[3px]  bg-[#EAF5FA]  text-[black] focus:outline-none  px-2 text-sm ${codeValue?"  pr-5":"w-[35px] justify-center py-2 pl-3"} text-base-17-5 !text-[#667085]`}
-           
+
+            className={` flex justify-between cursor-pointer gap-2   items-center rounded-[3px]  bg-[#EAF5FA]  text-[black] focus:outline-none  px-2 text-sm ${codeValue ? "  pr-4 h-[28px]" : "w-[50px] pl-[18px] justify-between h-[28px] pr-4"} text-base-17-5 !text-[#667085] ${codeClassName}`}
+
           >
-            {codeValue&&<span className=" ">
-            {codeValue}
-           
+            {codeValue && <span className=" ">
+              {codeValue}
+
 
             </span>}
 
 
-            <img src={toggleOptions ? upArrow : downArrow} className="inline-block w-3 h-3 " alt="down" />
+            <img src={toggleOptions ? downArrow : downArrow} className={`inline-block ${toggleOptions ? 'transform -scale-y-100' : ''}  ${arrowClassName ? arrowClassName : "h-3 w-3"}`} alt="down" />
           </div>
- 
+
           <div
 
             className={`${toggleOptions ? "" : "hidden"
@@ -171,7 +177,7 @@ export default function InputFieldDropdown({
         {prefix && <span className="mr-3">{prefix}</span>}
         <input
           className={`outline-0 w-full pl-2 text-sm ${inputClassName ? inputClassName : ""
-            } ${disabled === true ? "cursor-not-allowed" : ""} text-base-17-5`}
+            } ${disabled === true ? "cursor-not-allowed" : ""} text-base-17-5 ${styles['input']} `}
           placeholder={placeholder}
           type={inputType ? inputType : "text"}
           onChange={(e) => (onChange !== undefined ? onChange(e) : "")}

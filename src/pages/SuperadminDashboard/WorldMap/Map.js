@@ -31,7 +31,7 @@ const Map = ({ markings, countryMarking, countryFlag }) => {
   //const [currentDemographicArea, setCurrentDemographicArea] =useState([])
   //const [fetchDemography, setDemography] = useAddUserDemographyMutation();
   return (
-    <div className="m-auto w-full h-[300px]">
+    <div className="m-auto w-full h-[400px]">
       {(loading === true || locate.length === 0) && (
         <VectorMap
           map={worldMill}

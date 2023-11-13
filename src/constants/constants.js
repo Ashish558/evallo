@@ -14,7 +14,7 @@ export const timeZones = [
 ]
 
 export const subjects = [
-   'American Literature', 'English', 'French', 'Latin', 'Writing / Composition', 'Algebra 1', 'Algebra 2', 'Geometry', 'Trigonometry', 'Statistics', 'Calculus', 'Biology', 'Chemistry', 'Physics', 'Economics', 'Geography',' US Government', 'US History', 'World History', 'Physical Education', 'Music', 'Drama', 'Photography', 'Comp Sci', 'Design', 'Business', 'Law', 'Psychology', 'Accounting'
+   'American Literature', 'English', 'French', 'Latin', 'Writing / Composition', 'Algebra 1', 'Algebra 2', 'Geometry', 'Trigonometry', 'Statistics', 'Calculus', 'Biology', 'Chemistry', 'Physics', 'Economics', 'Geography', ' US Government', 'US History', 'World History', 'Physical Education', 'Music', 'Drama', 'Photography', 'Comp Sci', 'Design', 'Business', 'Law', 'Psychology', 'Accounting'
 ]
 
 export const times = [
@@ -118,4 +118,24 @@ export const times = [
 
 
 
-export const grades = [6, 7, 8, 9, 10, 11, 12, 'College'];
+export const grades = [
+   "Nursery",
+   "Lower Kindergarten",
+   "Upper Kindergarten",
+   "1st",
+   "2nd",
+   "3rd",
+   "4th",
+   "5th",
+   "6th",
+   "7th",
+   "8th",
+   "9th",
+   "10th",
+   "11th",
+   "12th",
+   "College 1st Year",
+   "College 2nd Year",
+   "College 3rd Year",
+   "College 4th Year",
+];

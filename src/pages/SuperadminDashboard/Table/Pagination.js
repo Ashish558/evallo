@@ -3,6 +3,7 @@ import LeftIcon from "../../../assets/Table/left.svg";
 import RightIcon from "../../../assets/Table/right.svg";
 import dots from "../../../assets/icons/Group 20719.svg";
 export default function Pagination({
+  
   currentPage,
   setCurrentPage,
   totalPages,
@@ -21,6 +22,37 @@ export default function Pagination({
         >
           Prev
         </div>
+        {
+          currentPage===totalPages && totalPages>1&&(
+            <div
+            className="p-1 cursor-pointer text-[#B7C2CB] text-[12.5px]"
+            onClick={() => handleClick(1)}
+          >
+            01
+          </div>
+          )
+        }
+        {
+          currentPage===totalPages && totalPages>1&&(
+            <div
+            className="p-1 cursor-pointer mt-2  text-[#B7C2CB]"
+            onClick={() => handleClick(currentPage - 1)}
+          >
+            <img src={dots} alt="pagination dots" />
+          </div>
+          )
+        }
+        {currentPage - 1 >0 ? (
+          <div
+            className="p-1 cursor-pointer text-[#B7C2CB] text-[12.5px]"
+            onClick={() => handleClick(currentPage - 1)}
+          >
+            {currentPage - 1 < 10 ? "0" : ""}
+            {currentPage - 1}
+          </div>
+        ) : (
+          ""
+        )}
         <div
           className="p-1 cursor-pointer  text-[#FFA28D] text-[12.5px]"
           onClick={() => handleClick(currentPage)}
@@ -28,9 +60,9 @@ export default function Pagination({
           {currentPage < 10 ? "0" : ""}
           {currentPage}
         </div>
-        {currentPage + 1 <= totalPages ? (
+        {currentPage + 1 < totalPages ? (
           <div
-            className="p-1 cursor-pointer text-[#B7C2CB]"
+            className="p-1 cursor-pointer text-[#B7C2CB] text-[12.5px]"
             onClick={() => handleClick(currentPage + 1)}
           >
             {currentPage + 1 < 10 ? "0" : ""}
@@ -41,7 +73,7 @@ export default function Pagination({
         )}
         {currentPage + 1 <= totalPages ? (
           <div
-            className="p-1 cursor-pointer mt-2 scale-150 text-[#B7C2CB]"
+            className="p-1 cursor-pointer mt-2  text-[#B7C2CB]"
             onClick={() => handleClick(currentPage + 1)}
           >
             <img src={dots} alt="pagination dots" />
@@ -52,7 +84,7 @@ export default function Pagination({
 
         {currentPage !== totalPages && totalPages !== 0 ? (
           <div
-            className="p-1 cursor-pointer  text-[#B7C2CB]"
+            className="p-1 cursor-pointer  text-[#B7C2CB] text-[12.5px]"
             onClick={() => handleClick(totalPages)}
           >
             {totalPages < 10 ? "0" : ""}

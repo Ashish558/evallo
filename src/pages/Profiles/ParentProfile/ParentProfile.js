@@ -106,11 +106,11 @@ export default function StudentProfile({ isOwn }) {
   const { awsLink } = useSelector((state) => state.user);
 
   const { id } = useSelector((state) => state.user);
-
+  console.log("user parent", user, userDetail)
 
   const [selectedScoreIndex, setSelectedScoreIndex] = useState(0);
   const { organization } = useSelector((state) => state.organization);
-
+  const { firstName, lastName } = useSelector((state) => state.user);
   const [toEdit, setToEdit] = useState({
     frame0: {
       active: false,
@@ -119,6 +119,9 @@ export default function StudentProfile({ isOwn }) {
       about: "",
       email: "",
       phone: "",
+      alternateEmail: "",
+      assiginedStudents: [],
+      studentsData: [],
       phoneCode: "",
     },
     frame1: {
@@ -152,6 +155,7 @@ export default function StudentProfile({ isOwn }) {
       active: false,
       leadStatus: "",
     },
+
     associatedStudents: {
       active: false,
       assiginedStudents: [],
@@ -161,7 +165,15 @@ export default function StudentProfile({ isOwn }) {
       notes: "",
     },
   });
-
+  async function handleCopyClick(textToCopy) {
+    console.log("copying", textToCopy);
+    try {
+      await navigator.clipboard.writeText(textToCopy);
+      //  alert('Text copied to clipboard');
+    } catch (err) {
+      console.error('Failed to copy text: ', err);
+    }
+  }
   const handleClose = () => {
     setToEdit((prev) => {
       let tempToEdit = {};
@@ -330,7 +342,8 @@ const [toEdit, setToEdit] = useState({
       userId = params.id;
     }
     getUserDetail({ id: userId }).then((res) => {
-      //console.log("details -- ", res.data.data);
+      console.log("parent details -- ", userId, res);
+      if (!res?.data?.data) return
       // //console.log('tut id', id);
       if (res.data.data.user.assiginedTutors) {
         if (res.data.data.user.assiginedTutors?.includes(id)) {
@@ -348,25 +361,31 @@ const [toEdit, setToEdit] = useState({
       } = res.data.data.user;
 
       setUser(res.data.data.user);
+      if (!res?.data?.data?.userdetails) return
       const { leadStatus, notes, residentialAddress, subscribeType } =
         res.data.data.userdetails;
 
       let studentsData = [];
-      if (assiginedStudents === undefined || assiginedStudents.length === 0)
+      if (assiginedStudents === undefined || assiginedStudents?.length === 0)
         setAssociatedStudents([]);
 
       assiginedStudents !== undefined &&
-        assiginedStudents.map((student) => {
-          getUserDetail({ id: student }).then((res) => {
-            // //console.log({[id]:res})
+        assiginedStudents.map((student, idx) => {
+          getUserDetail({ id: student }).then((res2) => {
+            if (res2?.error) return
+            console.log("student ", { [id]: res2 })
             studentsData.push({
-              _id: res.data.data.user._id,
-              value: `${res.data.data.user.firstName} ${res.data.data.user.lastName}`,
-              photo: res.data.data.user.photo ? res.data.data.user.photo : null,
-              email: res.data.data.user.email ? res.data.data.user.email : null,
-              service: res.data.data.userdetails.service ? res.data.data.userdetails.service : [],
+              _id: res2.data.data.user._id,
+              value: `${res2.data.data.user.firstName} ${res2.data.data.user.lastName}`,
+              name: `${res2.data.data.user.firstName} ${res2.data.data.user.lastName}`,
+              photo: res2.data.data.user.photo ? res2.data.data.user.photo : null,
+              email: res2.data.data.user.email ? res2.data.data.user.email : null,
+              service: res2.data.data.userdetails?.service ? res2.data.data.userdetails?.service : [],
             });
+
+            setAssociatedStudents([...studentsData]);
           });
+
         });
 
       let {
@@ -404,6 +423,7 @@ const [toEdit, setToEdit] = useState({
                   ...prev.frame0.schoolName,
                   schoolName,
                   about,
+                  //  assiginedStudents:studentsData?.map(student => student?._id)
                 },
                 frame1: {
                   ...prev.frame1,
@@ -448,7 +468,18 @@ const [toEdit, setToEdit] = useState({
   useEffect(() => {
     fetchDetails();
   }, [params.id]);
-
+  useEffect(() => {
+    if (associatedStudents?.length > 0)
+      setToEdit((prev) => {
+        return {
+          ...prev,
+          frame0: {
+            ...prev.frame0,
+            assiginedStudents: associatedStudents?.map(it => it?._id)
+          }
+        }
+      })
+  }, [associatedStudents])
   useEffect(() => {
     fetchSettings().then((res) => {
       if (res.error) {
@@ -481,37 +512,45 @@ const [toEdit, setToEdit] = useState({
   };
 
   useEffect(() => {
-    // //console.log(userDetail.timeZone);
-    if (userDetail.timeZone === undefined) return;
-    dispatch(updateTimeZone({ timeZone: userDetail.timeZone }));
-  }, [userDetail.timeZone]);
+    // //console.log(userDetail?.timeZone);
+    if (userDetail?.timeZone === undefined) return;
+    dispatch(updateTimeZone({ timeZone: userDetail?.timeZone }));
+  }, [userDetail?.timeZone]);
 
   // //console.log(user)
   // //console.log(userDetail)
   // //console.log('associatedParent', associatedParent)
   // //console.log('isEditable', editable)
   // //console.log(settings)
+  const handleCopy = text => {
+    navigator.clipboard.writeText(text);
+  }
+  // useEffect(() => {
+  //   //Don't need this effect 
+  //   return false;
+  //   if (user.assiginedStudents === undefined) return;
+  //   let studentsData = [];
+  //   user?.assiginedStudents.map((student, id) => {
+  //     getUserDetail({ id: student }).then((res) => {
+  //       console.log("associated  ,,",res)
+  //       if (res.error) return;
+  //       studentsData.push({
+  //         _id: res.data.data.user._id,
+  //         name: `${res.data.data.user.firstName} ${res.data.data.user.lastName}`,
+  //         photo: res.data.data.user.photo ? res.data.data.user.photo : null,
+  //         email: res.data.data.user.email ? res.data.data.user.email : null,
+  //         service: res.data.data.userdetails?.service ? res.data.data.userdetails?.service : [],
+  //       });
 
-  useEffect(() => {
-    if (user.assiginedStudents === undefined) return;
-    let studentsData = [];
-    user.assiginedStudents.map((student) => {
-      getUserDetail({ id: student }).then((res) => {
-        if (res.error) return;
-        studentsData.push({
-          _id: res.data.data.user._id,
-          name: `${res.data.data.user.firstName} ${res.data.data.user.lastName}`,
-          photo: res.data.data.user.photo ? res.data.data.user.photo : null,
-          email: res.data.data.user.email ? res.data.data.user.email : null,
-          service: res.data.data.userdetails.service ? res.data.data.userdetails.service : [],
-        });
+  //     });
+  //     if(id===user?.assiginedStudents?.length-1)
 
-      });
-    });
-    setAssociatedStudents(studentsData);
-    // setAssociatedStudents(studentsData)
-    setActiveIndex(0);
-  }, [user]);
+  //     setAssociatedStudents(studentsData);
+  //   });
+
+  //   // setAssociatedStudents(studentsData)
+  //   setActiveIndex(0);
+  // }, [user,user?.assiginedStudents]);
 
   useEffect(() => {
     fetchDetails();
@@ -520,30 +559,50 @@ const [toEdit, setToEdit] = useState({
   return (
     <>
       <div className={`w-[83.3vw] mx-auto pb-[70px]`}>
-        <p className="text-[#24A3D9] !my-[calc(50*0.0522vw)] text-xl">
-          {organization?.company +
-            " > " +
-            user?.firstName +
-            " " +
-            user?.lastName +
-            " > "}
-          <span className="font-semibold">Dashboard</span>
+        <p className="text-[#24A3D9] !my-[calc(50*0.0522vw)] text-base-20 relative z-[55]">
+          {persona === "admin" ?
+            <span >
+              <span  onClick={() => navigate('/')} className=" cursor-pointer">
+                {organization?.company +
+                  "  >  " +
+                  firstName +
+                  "  " +
+                  lastName
+                }  </span>
+              <span onClick={() => navigate('/users')} className="!cursor-pointer" >{"  >  CRM > "}</span>
+              <span className="font-semibold">{
+                user?.firstName +
+                " " +
+                user?.lastName}</span>
+            </span> :
+            <span>
+              <span onClick={() => navigate('/')} className="cursor-pointer">
+                {organization?.company +
+                  " > " +
+                  user?.firstName +
+                  " " +
+                  user?.lastName +
+                  " > "}
+              </span>
+              <span className="font-semibold">Profile</span>
+            </span>
+          }
         </p>
-        {!isOwn ? (
+        {/* {!isOwn ? (
           <button
-            className=" bg-[#D9BBFF] px-[14px] mb-10 py-[8px] rounded-[8px] text-[#636363] text-[18px] font-medium top-[1px] left-[22px] gap-[12px] cursor-pointer flex justify-center items-center"
+            className="my-5 bg-primary text-white cursor-pointer relative z-[50] px-[14px] py-[8px] rounded-[8px]  text-[18px] font-medium top-[-8px] left-[0px] flex gap-[12px] cursor-pointer flex justify-center items-center"
             onClick={() => window.history.back()}
           >
-            <img src={LeftIcon} alt="icon" /> Back
+            <img className="w-4 h-4" src={LeftIcon} alt="icon" /> Back
           </button>
         ) : (
           <></>
-        )}
+        )} */}
 
         <div className={` rounded-b-md w-full flex flex-col relative `}>
           <div className="flex gap-7">
             <div className={` rounded-b-md w-[67.71vw] flex flex-col relative `}>
-              <div className=" bg-[#26435F]   px-8 h-[142px] border rounded-tr-5 rounded-tl-5  w-full  flex  items-center ">
+              <div className=" bg-[#26435F]   px-[30px] h-[142px] border rounded-tr-5 rounded-tl-5  w-full  flex  items-center ">
                 <div className="flex flex-1 w-full relative">
                   <div className="h-fit">
                     <ProfilePhoto
@@ -558,7 +617,7 @@ const [toEdit, setToEdit] = useState({
                       handleChange={handleProfilePhotoChange}
                       editable={false}
                     />
-                    <EditableText
+                    {(persona === "admin" || isOwn) && <EditableText
                       editable={editable}
                       onClick={() =>
                         setToEdit({
@@ -571,16 +630,16 @@ const [toEdit, setToEdit] = useState({
                         })
                       }
                       text="Edit Profile"
-                      textClassName=" ml-2 text-[15px]  mx-auto text-center text-[#26435F] text-underline font-semibold"
+                      textClassName=" ml-2 text-[0.78vw]  mx-auto text-center text-[#26435F] text-underline font-semibold"
                       className="text-sm my-0 flex items-center justify-center text-center !translate-y-9  "
-                    />
+                    />}
                   </div>
                   <div className="flex-1 flex justify-between items-center">
                     <div className="ml-4 my-auto">
-                      <div className="flex  font-semibold items-center text-[#F3F5F7] text-[30px]">
+                      <div className="flex  font-semibold items-center text-[#F3F5F7] text-[1.56vw]">
                         {user.firstName} {user.lastName}
                       </div>
-                      <div className="flex mt-1 text-[17.5px] items-center text-[#F3F5F7]">
+                      {(persona !== "tutor" || ((persona === 'tutor') && organization?.settings?.permissions && organization?.settings?.permissions[1]?.choosedValue)) && <div className="flex mt-1 text-base-17-5 items-center text-[#F3F5F7]">
                         <p>
                           <span>
                             <img
@@ -592,16 +651,18 @@ const [toEdit, setToEdit] = useState({
                           {user?.email}
                           <span>
                             <img
-                              className="inline-block ml-2 !w-4 !h-4 mr-2"
+                              onClick={() => handleCopyClick(user?.email)}
+                              className="inline-block ml-2 !w-4 !h-4 mr-2 cursor-pointer"
                               src={copy1}
                               alt="copy"
+
                             />
                           </span>
                         </p>
-                      </div>
+                      </div>}
                     </div>
 
-                    <div className="flex flex-col   font-medium text-white my-auto ">
+                    {(persona !== "tutor" || ((persona === 'tutor') && organization?.settings?.permissions && organization?.settings?.permissions[1]?.choosedValue)) && <div className="flex flex-col   font-medium text-white my-auto ">
                       <ProfileCard
                         className="lg:mt-0 flex-1 !bg-transparent h-min !shadow-none relative"
                         titleClassName="!bg-transparent"
@@ -619,7 +680,7 @@ const [toEdit, setToEdit] = useState({
                           />
                         }
                         body={
-                          <div className="flex h-min !bg-transparent justify-center flex-col  text-[17.5px]">
+                          <div className="flex h-min !bg-transparent justify-center flex-col  text-base-17-5">
                             <p>
                               <span>
                                 <img
@@ -631,9 +692,11 @@ const [toEdit, setToEdit] = useState({
                               {user?.email}
                               <span>
                                 <img
-                                  className="inline-block ml-2 !w-4 !h-4 mr-2"
+                                  onClick={() => handleCopyClick(user?.email)}
+                                  className="inline-block ml-2 !w-4 !h-4 mr-2 cursor-pointer"
                                   src={copy1}
                                   alt="copy"
+
                                 />
                               </span>
                             </p>
@@ -650,16 +713,16 @@ const [toEdit, setToEdit] = useState({
                           </div>
                         }
                       />
-                    </div>
+                    </div>}
                   </div>
                 </div>
               </div>
               <div className="bg-white !rounded-b-md shadow-[0px_0px_2.500001907348633px_0px_#00000040] flex design:h-[170px]  h-[170px] justify-between ">
                 <div className="ml-[220px] py-auto w-[80.33%] text-[12px] px-5    overflow-y-auto pt-3  ">
-                  <p className=" font-semibold text-[#26435F] text-[15px]  ">
+                  <p className=" font-semibold text-[#26435F] text-[0.78vw]">
                     About
                   </p>
-                  <p className=" text-[#517CA8] text-[17.5px] overflow-y-auto">
+                  <p className=" text-[#517CA8] text-base-17-5 overflow-y-auto">
                     {userDetail?.about}
                   </p>
                 </div>
@@ -667,9 +730,10 @@ const [toEdit, setToEdit] = useState({
             </div>
             <div className="w-[13.80vw]  bg-white rounded-md overflow-hidden !rounded-b-md shadow-[0px_0px_2.500001907348633px_0px_#00000040] relative">
               <div
-                className={`${styles.studentsContainer} min-h-[200px] w-full`}
+                className={`${styles.studentsContainer} min-h-[290px] w-full`}
               >
-                {associatedStudents.map((student, idx) => {
+
+                {associatedStudents?.map((student, idx) => {
                   return (
                     <div
                       key={idx}
@@ -695,7 +759,7 @@ const [toEdit, setToEdit] = useState({
                           />
                         </div>
                       </div>
-                      <div className="flex flex-col mt-[-16px] h-[120px] design:h-[140px] gap-1 justify-center items-center ">
+                      <div className="flex flex-col pt-4   gap-1 justify-center items-center ">
                         <p
                           onClick={() =>
                             navigate(`/profile/student/${student._id}`)
@@ -705,16 +769,17 @@ const [toEdit, setToEdit] = useState({
                           {" "}
                           {student.name}
                         </p>
-                        <p className="  text-[#667085] text-base-15 ml-4">
+                        {(persona !== "tutor" || (persona === "tutor" && organization?.settings?.permissions && organization?.settings?.permissions[1]?.choosedValue)) && <p className="  text-[#667085] text-base-15 ml-4">
                           {student.email}
                           <span>
                             <img
-                              className="inline-block !w-4 !h-4 mr-2"
+                              onClick={() => handleCopyClick(student?.email)}
+                              className="inline-block !w-4 !h-4 mr-2 cursor-pointer"
                               src={copy2}
                               alt="copy2"
                             />
                           </span>
-                        </p>
+                        </p>}
                         <p className="  text-[#517CA8] w-[100px] flex gap-3 text-base-15">
                           {student?.service?.map((it, idx) => {
                             return (
@@ -755,7 +820,7 @@ const [toEdit, setToEdit] = useState({
               </div>
             </div>
           </div>
-          <EditableText
+          {(persona === "admin" || isOwn) && <EditableText
             editable={editable}
             onClick={() =>
               setToEdit({
@@ -767,19 +832,16 @@ const [toEdit, setToEdit] = useState({
               })
             }
             text="edit"
-            textClassName="text-[15px] text-[#26435F]  text-underline"
+            textClassName="text-[0.78vw] text-[#26435F]  text-underline"
             className="text-sm my-0 flex justify-end translate-y-7  float-right"
-          />
+          />}
           <SPFrame0
             userDetail={userDetail}
             settings={settings}
             toEdit={toEdit}
             setToEdit={setToEdit}
           />
-          <div
-            id="borderDashed"
-            className="border !border-[#CBD6E3] w-[calc(1500*0.0522vw)] mx-auto my-[calc(50*0.0522vw)]"
-          ></div>
+
           {
             persona === "admin" && <SPFrame1
               user={user}

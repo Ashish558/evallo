@@ -26,6 +26,7 @@ import {
   useUpdateUserOrganizationMutation,
 } from "../../../../app/services/organization";
 import { object } from "prop-types";
+import axios from "axios";
 const CompanyAndBround = () => {
   const { organization } = useSelector((state) => state.organization);
   const userData = useSelector((state) => state.user);
@@ -89,8 +90,15 @@ const CompanyAndBround = () => {
 
   const updateUserAccount = async () => {
     try {
+      
       updateUserOrg(values)
-        .then(() => {
+        .then((res) => {
+          if(res?.data){
+            alert("Updated successfully!")
+          }
+          else if(res?.error) {
+            alert("Updated successfully!")
+          }
           console.log("org updated", values);
         })
         .catch((err) => {
@@ -118,9 +126,64 @@ const CompanyAndBround = () => {
       const currentState = state.map((s) => s.states);
       if (currentState.length > 0) setStates([...currentState[0]]);
     }
-    updateUserAccount();
-  }, [values]);
 
+    
+  }, [values]);
+  const checkEmpty=()=>{
+    const fields=["company","country","state","city","address","zip",]
+    let f=true;
+    fields.forEach(key=>{
+      if(f&&(!values[key]||values[key].trim()==="")){
+        f=false;
+        setError((prev)=>({
+          ...prev,
+          [key]: key + " field cannot be empty!",
+        }));
+      return
+      }
+    })
+    return f;
+   
+  }
+const handleSave=async ()=>{
+  setError({})
+  console.log("save called")
+  if(!checkEmpty())
+  return
+  if(organization?.company!==values?.company){
+    
+    try {
+      let data = {
+        company: values.company,
+      };
+      
+      //   alert(data.workemail)
+      let result = await axios.post(
+        `${process.env.REACT_APP_BASE_URL}api/user/CheckCompany`,
+        data,
+        {
+          headers: {
+            "content-Type": "application/json",
+          },
+        }
+      );
+      console.log("save",{result})
+      updateUserAccount()
+     
+      
+      
+    } catch (e) {
+     
+      setError({
+        ...error,
+        company: e.response.data.message,
+      });
+    }
+  }
+  else {
+  updateUserAccount();
+  }
+}
   useEffect(() => {
     setValues({ ...organization, ...values });
 
@@ -145,15 +208,27 @@ const CompanyAndBround = () => {
 
     setStudentServed(arr);
   }, [organization]);
-
+    const [uploading,setUploading]=useState(false)
   const handleLogoChange = async (e) => {
     const formData = new FormData();
     const file = e.target.files[0];
+    if(!file){
+      alert("Enter valid file.")
+      return 
+    }
+    let size = file.size / 1024;
+    size = size / 1024;
+    if (size > 1) {
+      alert("File is larger than than 1MB!")
+      return
+    }
     formData.append("photos", file);
     formData.append("updatefieldName", "orgBussinessLogo");
-
+  setUploading(true)
     updateOrgLogo({ formData: formData, id: organization._id }).then((res) => {
+      setUploading(false)
       if (res.error) {
+        alert(res.error.message)
         console.log("logo err", res.error);
         return;
       }
@@ -163,27 +238,28 @@ const CompanyAndBround = () => {
   };
 
   return (
-    <div>
-      <div className="flex flex-col gap-10  w-[68vw]">
-        <div className="flex justify-between">
+    <div className="flex justify-between">
+      <div className="flex flex-col gap-10  w-[68.9vw] design:w-[68vw]">
+        <div className="flex justify-between gap-5 flex-1 w-full items-center">
           <InputField
-            placeholder=""
+            placeholder="Company/Individual"
             IconLeft={lock}
-            parentClassName="text-xs w-[14.3229vw] text-[#26435F]"
-            inputContainerClassName=" bg-white"
-            inputClassName="text-base-17-5 bg-transparent"
-            labelClassname="text-base-17-5 text-sm font-bold mb-1"
+            parentClassName=" w-[16.25vw] text-[#26435F]"
+            inputContainerClassName=" shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-white h-[50px]"
+            inputClassName="text-base-17-5 bg-transparent placeholder:text-[#B3BDC7]"
+            labelClassname=" text-base-17-5 !font-medium "
             label="Account Type"
             disabled={true}
             value={"Company"}
             error={error.accountType}
+            totalErrors={error}
           />
           <InputField
-            placeholder=""
-            parentClassName="text-xs w-[14.3229vw] text-[#26435F] "
-            inputContainerClassName=" bg-white mt-[-2px]"
-            inputClassName="text-base-17-5 bg-transparent"
-            labelClassname="text-base-17-5 text-sm font-bold mb-1"
+            placeholder="Your business identity"
+            parentClassName=" w-[14.27vw] text-[#26435F] "
+            inputContainerClassName=" shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-white  h-[50px]"
+            inputClassName="text-base-17-5 bg-transparent placeholder:text-[#B3BDC7]"
+            labelClassname="mb-[2.5px] text-base-17-5 !font-medium"
             label="Company Name"
             value={values.company}
             onChange={(e) =>
@@ -193,13 +269,14 @@ const CompanyAndBround = () => {
               })
             }
             error={error.company}
+            totalErrors={error}
           />
           <InputField
-            placeholder="Text"
-            parentClassName="text-xs w-[14.3229vw] text-[#26435F]"
-            inputContainerClassName=" bg-white mt-[-2px]"
-            inputClassName="text-base-17-5 bg-transparent"
-            labelClassname="text-base-17-5 text-sm font-bold mb-1"
+            placeholder="Support email for your clients"
+            parentClassName=" w-[14.27vw] text-[#26435F]"
+            inputContainerClassName=" shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-white  h-[50px]"
+            inputClassName="text-base-17-5 bg-transparent placeholder:!text-[#B3BDC7]"
+            labelClassname="mb-[2.5px] text-base-17-5 !font-medium flex justify-between"
             label="Support Email"
             value={values.supportEmail}
             onChange={(e) =>
@@ -208,14 +285,17 @@ const CompanyAndBround = () => {
                 supportEmail: e.target.value,
               })
             }
+            totalErrors={error}
             error={error.supportEmail}
           />
           <InputField
-            placeholder=""
-            parentClassName="text-xs w-[14.3229vw] text-[#26435F] "
-            inputContainerClassName=" bg-white mt-[2px]"
-            inputClassName="bg-transparent"
+            placeholder="What is your title at work?"
+            parentClassName=" w-[14.27vw] text-[#26435F]"
+            inputContainerClassName=" shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-white h-[50px]"
+            inputClassName="bg-transparent placeholder:text-[#B3BDC7] text-base-17-5"
+            labelClassname={" text-base-17-5 !font-medium"}
             label="Role / Position"
+            disabled={true}
             value={values.role}
             onChange={(e) =>
               setValues({
@@ -227,9 +307,9 @@ const CompanyAndBround = () => {
           />
         </div>
 
-        <div className="flex gap-5 flex-1">
+        <div className="flex gap-5 justify-between flex-1">
           <div className="">
-            <label className="inline-block text-[15px] font-semibold undefined ml-0 text-[#26435F] text-base-17-5">
+            <label className="inline-block text-[15px] font-medium undefined ml-0 text-[#26435F] text-base-17-5">
               {" "}
               Business Logo{" "}
             </label>
@@ -250,26 +330,28 @@ const CompanyAndBround = () => {
                 <div className="flex flex-col ">
                   <p className="block mx-auto mt-[-25px]">
                     <img src={UploadIcon} alt="logo" /></p>
-                  <p className="text-[#FFFFFF] text-sm bg-[#517CA8] rounded-[5px] pt-3 mt-5 pb-2 px-4 cursor-pointer" onClick={() => inpuRef.current.click()}>Choose file</p>
-                  <p className="text-[#517CA8] text-xs mt-5 text-center">Less then 1 MB</p>
+                  <p className={`text-[#FFFFFF] text-[15px] bg-[#517CA8] rounded-[5px] pt-3 mt-[12.5px] pb-2 px-4 ${uploading?"cursor-wait":"cursor-pointer"}`} onClick={() => inpuRef.current.click()}>{uploading?"Uploading...":"Choose file"}</p>
+                  <p className="text-[#517CA8] text-[12.5px] mt-[12.5px] text-center font-light">Less then 1 MB</p>
                 </div>
                 <input
                   className="hidden"
                   type="file"
                   ref={inpuRef}
-                  onChange={handleLogoChange}
+                  accept="image/*"
+                  disabled={uploading}
+                  onChange={(e)=>handleLogoChange(e)}
                 />
               </div>
             </div>
           </div>
           <div className="flex flex-col  gap-4 flex-1 py-auto">
-            <div className="flex  items-center justify-between">
+            <div className="flex  items-center justify-between ">
               <InputField
-                placeholder=""
-                parentClassName="text-xs text-[#26435F] w-[30.5729vw] "
-                inputContainerClassName=" bg-white  rounded-md"
-                inputClassName="text-base-17-5 bg-transparent "
-                labelClassname="text-base-17-5 text-sm font-bold "
+                placeholder="https://yourwebsite.com"
+                parentClassName=" text-[#26435F] w-[30.57vw] "
+                inputContainerClassName=" shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-white  rounded-[5px] h-[50px]"
+                inputClassName="text-base-17-5 bg-transparent placeholder:!text-[#B3BDC7]"
+                labelClassname="text-base-17-5 !font-medium "
                 label="Website"
                 value={values.website}
                 onChange={(e) =>
@@ -282,12 +364,13 @@ const CompanyAndBround = () => {
               />
               <InputSelect
                 placeholder="Select"
-                parentClassName="text-xs text-[#26435F] w-[14.3229vw] "
-                inputContainerClassName=" bg-white h-[42px] "
-                labelClassname="text-sm font-bold"
-                inputClassName="bg-transparent"
+                parentClassName="text-[#26435F] w-[14.27vw]"
+                inputContainerClassName=" shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-white h-[50px]"
+                labelClassname="text-base-17-5 !font-medium "
+                inputClassName="text-base-17-5 bg-transparent placeholder:!text-[#B3BDC7] "
+                placeholderClass="!mr-0 !whitespace-normal "
                 label="Company Type"
-                value={values.companyType}
+                value={values?.companyType?.length < 26 ? values.companyType : values.companyType?.slice(0, 25) + "..."}
                 optionData={companyType}
                 onChange={(e) =>
                   setValues({
@@ -298,12 +381,13 @@ const CompanyAndBround = () => {
                 error={error.companyType}
               />
             </div>
-            <div className="flex justify-between">
+            <div className="flex items-center justify-between mt-6">
               <InputField
-                placeholder=""
-                parentClassName="text-xs text-[#26435F] w-[30.5729vw]"
-                inputContainerClassName=" bg-white "
-                inputClassName="bg-transparent"
+                placeholder="Enter your street address"
+                parentClassName=" text-[#26435F] w-[30.57vw] "
+                inputContainerClassName=" shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-white  rounded-[5px] h-[50px]"
+                inputClassName="text-base-17-5 bg-transparent placeholder:!text-[#B3BDC7]"
+                labelClassname="text-base-17-5 !font-medium "
                 label="Street Address"
                 value={values.address}
                 onChange={(e) =>
@@ -317,14 +401,16 @@ const CompanyAndBround = () => {
 
               <InputSelect
                 placeholder="Select"
-                parentClassName="text-xs text-[#26435F] w-[14.3229vw] "
-                inputContainerClassName=" bg-white h-[38px]  h-[42px]"
-                labelClassname="text-sm font-bold"
-                inputClassName="bg-transparent"
+                parentClassName="text-[#26435F] w-[14.27vw]"
+                inputContainerClassName=" shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-white h-[50px]"
+                labelClassname="text-base-17-5 !font-medium "
+                inputClassName="text-base-17-5 bg-transparent placeholder:!text-[#B3BDC7] "
+                placeholderClass="!mr-0 !whitespace-normal "
                 label="Country"
                 value={values.country}
                 optionData={country}
                 optionType={"object"}
+                totalErrors={error}
                 onChange={(e) => {
 
                   handleState(e);
@@ -333,49 +419,56 @@ const CompanyAndBround = () => {
               />
 
             </div>
-            <div className="flex justify-between">
-              <InputSelect
-                placeholder="Select"
-                parentClassName="text-xs text-[#26435F] w-[14.3229vw]  pt-1"
-                labelClassname="text-sm font-bold "
-                inputContainerClassName=" bg-white h-[42px] "
-                inputClassName="bg-transparent"
-                label="State / Region "
-                value={values.state}
-                optionData={states}
-                optionType={"object"}
-                onChange={(e) =>
-                  setValues({
-                    ...values,
-                    state: e.name,
-                  })
-                }
-                error={error.state}
-              />
-              <InputField
-                placeholder=""
-                parentClassName="text-xs text-[#26435F] w-[14.3229vw] pt-1"
-                inputContainerClassName=" bg-white"
-                inputClassName="text-base-17-5 bg-transparent "
-                label="City"
-                value={values.city}
-                onChange={(e) =>
-                  setValues({
-                    ...values,
-                    city: e.target.value,
-                  })
-                }
-                error={error.city}
-              />
+            <div className="flex justify-between mt-6 items-center">
+              <div className="flex gap-7 items-center">
+                <InputSelect
+                  placeholder="Select"
+                  parentClassName="text-[#26435F] w-[14.27vw]"
+                  inputContainerClassName=" shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-white h-[50px]"
+                  labelClassname="text-base-17-5 !font-medium "
+                  inputClassName="text-base-17-5 bg-transparent placeholder:!text-[#B3BDC7] "
+                  placeholderClass="!mr-0 !whitespace-normal "
+                  label="State / Region "
+                  value={values?.state?.length < 20 ? values.state : values.state?.slice(0, 20) + "..."}
+                  optionData={states}
+                  optionType={"object"}
+                  totalErrors={error}
+                  onChange={(e) =>
+                    setValues({
+                      ...values,
+                      state: e.name,
+                    })
+                  }
+                  error={error.state}
+                />
+                <InputField
+                  placeholder="Text"
+                  parentClassName="text-[#26435F] w-[14.27vw]"
+                  inputContainerClassName=" shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-white h-[50px]"
+                  labelClassname="text-base-17-5 !font-medium "
+                  inputClassName="text-base-17-5 bg-transparent placeholder:!text-[#B3BDC7] "
+                  label="City"
+                  totalErrors={error}
+                  value={values.city}
+                  onChange={(e) =>
+                    setValues({
+                      ...values,
+                      city: e.target.value,
+                    })
+                  }
+                  error={error.city}
+                />
+              </div>
               <div className="col-span-3">
                 <InputField
-                  placeholder=""
-                  parentClassName="text-xs text-[#26435F] w-[14.3229vw] pt-1"
-                  inputContainerClassName=" bg-white "
-                  inputClassName="text-base-17-5 bg-transparent"
-
+                  placeholder="Numeric"
+                  parentClassName="text-[#26435F] w-[14.27vw]"
+                  inputContainerClassName=" shadow-[0px_0px_2.500000476837158px_0px_#00000040] bg-white h-[50px]"
+                  inputClassName="text-base-17-5 bg-transparent placeholder:!text-[#B3BDC7] "
+                  labelClassname="text-base-17-5 !font-medium "
                   label="Zip Code"
                   value={values.zip}
+                   totalErrors={error}
                   onChange={(e) =>
                     setValues({
                       ...values,
@@ -389,9 +482,9 @@ const CompanyAndBround = () => {
 
           </div>
         </div>
-        <div className="flex flex-1  gap-11 mt-3  w-[48vw] pb-0">
-          <div className="flex flex-col rounded-sm w-1/3 min-w-[275px] flex-wrap gap-3 bg-white p-3">
-            <h1 className="mt-[-35px]  text-[#26435F] font-semibold text-sm ml-[-10px] mb-1 text-base-17-5 ">
+        <div className="flex flex-1  gap-8 my-3 mb-10 ml-[335px] w-[calc(900*0.0522vw)] min-w-[500px] pb-0">
+          <div className="flex flex-col rounded-md shadow-[0px_0px_2.500000476837158px_0px_#00000040]  w-[calc(275*0.0522vw)] min-w-[170px] flex-wrap gap-3 bg-white p-3">
+            <h1 className="mt-[-35px]  text-[#26435F] font-medium text-base-17-5 ml-[-10px] mb-1 text-base-17-5 ">
               Format Of Instructions
             </h1>
             {instructions.map((item, id) => (
@@ -405,8 +498,8 @@ const CompanyAndBround = () => {
               />
             ))}
           </div>
-          <div className="flex flex-col rounded-sm w-2/3 min-w-[500px] design:min-w-[600px] h-[200px] flex-wrap gap-3 p-3 bg-white">
-            <h1 className="mt-[-35px]  text-[#26435F] font-semibold text-sm ml-[-10px] mb-1 text-base-17-5">
+          <div className="flex flex-col rounded-md shadow-[0px_0px_2.500000476837158px_0px_#00000040] w-[calc(593*0.0522vw)]  min-w-[370px]  h-[200px] flex-wrap gap-3 p-3 bg-white">
+            <h1 className="mt-[-35px]  text-[#26435F] font-medium text-base-17-5 ml-[-10px] mb-1 text-base-17-5">
               Students Served
             </h1>
             {studentServed.map((item, id) => (
@@ -422,13 +515,19 @@ const CompanyAndBround = () => {
           </div>
         </div>
         {/* <div className="w-full h-[2px] bg-[#CBD6E2]"></div> */}
-        <div className="my-4 mb-10 ">
-          <h1 className="mt-[-30px] text-[#26435F] font-semibold text-xl my-1 text-base-17-5">
-            Signup Form Detail
-          </h1>
-          <div className="w-full h-[200px] bg-white"></div>
-        </div>
+
       </div>
+      <div>
+            <PrimaryButton
+              onClick={handleSave}
+              
+
+              className={`bg-[#FFA28D]   mt-[25px] ml-10 rounded-md px-[50px] py-[15px] text-sm text-base-20 text-white  `}
+
+            >
+              Save
+            </PrimaryButton>
+          </div>
     </div>
   );
 };

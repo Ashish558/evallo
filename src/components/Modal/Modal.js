@@ -9,6 +9,7 @@ import { useState } from "react";
 import useOutsideAlerter from "../../hooks/useOutsideAlerter";
 import { useRef } from "react";
 
+
 export default function Modal({
    title,
    titleClassName,
@@ -16,6 +17,7 @@ export default function Modal({
    cancelBtn,
    cancelBtnClassName,
    primaryBtn,
+   titleInvite,
    handleClose,
    classname,
    SaveUser,
@@ -24,7 +26,11 @@ export default function Modal({
    cancelBtnStyle,
    underline,
    crossBtn,
-   toEdit
+   toEdit,
+   alignBtn,
+   wrapperClassName,
+   btnClassName,
+   buttonParentClassName
 }) {
 
    const selectRef = useRef();
@@ -49,24 +55,31 @@ export default function Modal({
                   <div ref={handleClose ? selectRef : null} className={`w-full bg-white p-3 py-5 md:py-[33px] md:px-[33px] rounded-lg relative ${classname ? classname : ""
                      }`}
                   >
-                     <div >
+                     <div className={wrapperClassName ? wrapperClassName : ''} >
                         <p className={`font-semibold text-xl md:text-[21px] text-left text-[#26435F]
-               ${titleClassName ? titleClassName : "mb-[18px]"}`}
+               ${titleClassName ? titleClassName : "mb-[18px]"} `}
                         >
                            {title}
+                           {titleInvite && "Are You Sure You Want to Invite "}
+                           {titleInvite && <span className="text-[#FFA28D]">{titleInvite}</span>}
+
+                           {titleInvite && " Users To Join Evallo?"}
+
                         </p>
                         {
-                           underline ? "" : <div className="h-[1.33px] w-full bg-[rgba(0,0,0,0.20)] mb-[28px]"></div>
+                           underline ? "" : <div className="h-[1.33px] w-full bg-[rgba(0,0,0,0.20)] mb-[36px]"></div>
                         }
                         {body}
 
 
-                        <div className="flex justify-center">
+                        <div className={`flex justify-center ${buttonParentClassName}`}>
                            {cancelBtn && (
                               <SecondaryButton
                                  onClick={handleClose}
                                  children="Cancel"
-                                 className={`py-2 ${cancelBtnClassName}`}
+
+                                 className={`py-2  ${cancelBtnClassName}`}
+
                                  type="button"
                               />
                            )}
@@ -81,14 +94,18 @@ export default function Modal({
                                  onClick={primaryBtn.onClick ? primaryBtn.onClick : null}
                                  form={primaryBtn.form ? primaryBtn.form : null}
                                  type={primaryBtn.type ? primaryBtn.type : "button"}
-                                 className={`${primaryBtn.bgDanger ? 'bg-[#FF5B4F]' : ' bg-primary'} relative disabled:opacity-75 rounded-md font-medium text-white  px-6 ml-9 ${primaryBtn.className ? primaryBtn.className : ""}`}
+                                 className={`w-[120px] ${primaryBtn.bgDanger ? 'bg-[#FFA28D]' : 'bg-[#FFA28D]'} relative disabled:opacity-75 rounded-lg font-medium text-white cursor-pointer  ml-9 ${primaryBtn.className ? primaryBtn.className : ""}`}
                                  disabled={primaryBtn?.loading === true ? true : primaryBtn.disabled}
                                  loading={primaryBtn.loading}
 
                               >
-                                 {primaryBtn.text}  {
-                                    (primaryBtn.icon && primaryBtn?.loading === false) ? primaryBtn.icon : ''
-                                 }
+                                 <div className="flex w-full items-center gap-2 justify-center">
+                                    <p className="text-center">{primaryBtn.text}</p>
+                                    {primaryBtn.icon && <p>{
+                                       (primaryBtn.icon && primaryBtn?.loading === false) ? primaryBtn.icon : ''
+                                    }</p>}
+                                 </div>
+
                                  {
                                     primaryBtn !== undefined && primaryBtn?.loading === true &&
                                     <Loader />
