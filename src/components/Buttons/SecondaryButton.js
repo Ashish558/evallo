@@ -7,13 +7,14 @@ export default function SecondaryButton({
   onClick,
   type,
   loading,
+  disabled,
 }) {
   return (
     <button
       className={`bg-secondaryLight relative rounded-md py-[8px] px-6 ${className} disabled:opacity-70`}
       onClick={onClick}
       type={type ? type : "button"}
-      disabled={loading === true ? true : false}
+      disabled={loading === true ? true : disabled}
     >
       {children}
       {loading && <Loader />}
