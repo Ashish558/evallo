@@ -70,7 +70,7 @@ export default function AllTests() {
   const sortByAssignment = () => {
     // setFilteredTests
     console.log("sortByAssignment");
-    if(assignmentSortState === SORT_STATES.UNSORTED || assignmentSortState === SORT_STATES.DESCENDING_ORDER) {
+    if(assignmentSortState === SORT_STATES.DESCENDING_ORDER) {
       setFilteredTests((prev) => {
         let arr = [...prev];
         arr = arr.sort(function (a, b) {
@@ -87,7 +87,7 @@ export default function AllTests() {
 
       setAssignmentSortState(SORT_STATES.ASCENDING_ORDER);
     }
-    else if(assignmentSortState === SORT_STATES.ASCENDING_ORDER) {
+    else if(assignmentSortState === SORT_STATES.UNSORTED || assignmentSortState === SORT_STATES.ASCENDING_ORDER) {
       setFilteredTests((prev) => {
         let arr = [...prev];
         arr = arr.sort(function (a, b) {
@@ -108,7 +108,7 @@ export default function AllTests() {
 
   const sortByType = () => {
     console.log("sortByType");
-    if(typeSortState === SORT_STATES.UNSORTED || typeSortState === SORT_STATES.DESCENDING_ORDER) {
+    if(typeSortState === SORT_STATES.DESCENDING_ORDER) {
       setFilteredTests((prev) => {
         let arr = [...prev];
         arr = arr.sort(function (a, b) {
@@ -125,7 +125,7 @@ export default function AllTests() {
 
       setTypeSortState(SORT_STATES.ASCENDING_ORDER);
     }
-    else if(typeSortState === SORT_STATES.ASCENDING_ORDER) {
+    else if(typeSortState === SORT_STATES.UNSORTED || typeSortState === SORT_STATES.ASCENDING_ORDER) {
       setFilteredTests((prev) => {
         let arr = [...prev];
         arr = arr.sort(function (a, b) {
@@ -146,7 +146,7 @@ export default function AllTests() {
 
   const sortBycreateDate = () => {
 
-    if(createdOnSortState === SORT_STATES.UNSORTED || createdOnSortState === SORT_STATES.DESCENDING_ORDER) { 
+    if(createdOnSortState === SORT_STATES.DESCENDING_ORDER) { 
       setFilteredTests((prev) => {
         let arr = [...prev];
         //console.log("arr", arr);
@@ -164,7 +164,7 @@ export default function AllTests() {
 
       setCreatedOnSortState(SORT_STATES.ASCENDING_ORDER);
     }
-    else if(createdOnSortState === SORT_STATES.ASCENDING_ORDER) {  
+    else if(createdOnSortState === SORT_STATES.UNSORTED || createdOnSortState === SORT_STATES.ASCENDING_ORDER) {  
       setFilteredTests((prev) => {
         let arr = [...prev];
         //console.log("arr", arr);
@@ -186,7 +186,7 @@ export default function AllTests() {
 
   const sortByLastModified = () => {
 
-    if(lastModifiedSortState === SORT_STATES.UNSORTED || lastModifiedSortState === SORT_STATES.DESCENDING_ORDER) { 
+    if(lastModifiedSortState === SORT_STATES.DESCENDING_ORDER) { 
       setFilteredTests((prev) => {
         let arr = [...prev];
         //console.log("arr", arr);
@@ -204,7 +204,7 @@ export default function AllTests() {
 
       setLastModifiedSortState(SORT_STATES.ASCENDING_ORDER);
     }
-    else if(lastModifiedSortState === SORT_STATES.ASCENDING_ORDER) {  
+    else if(lastModifiedSortState === SORT_STATES.UNSORTED || lastModifiedSortState === SORT_STATES.ASCENDING_ORDER) {  
       setFilteredTests((prev) => {
         let arr = [...prev];
         //console.log("arr", arr);
@@ -229,7 +229,7 @@ export default function AllTests() {
     console.log(filteredTests);
 
     console.log("sortByTotalAssigned");
-    if(totalAssignedSortState === SORT_STATES.UNSORTED || totalAssignedSortState === SORT_STATES.DESCENDING_ORDER) {
+    if(totalAssignedSortState === SORT_STATES.DESCENDING_ORDER) {
       setFilteredTests((prev) => {
         let arr = [...prev];
         arr = arr.sort(function (a, b) {
@@ -246,7 +246,7 @@ export default function AllTests() {
 
       setTotalAssignedSortState(SORT_STATES.ASCENDING_ORDER);
     }
-    else if(totalAssignedSortState === SORT_STATES.ASCENDING_ORDER) {
+    else if(totalAssignedSortState === SORT_STATES.UNSORTED || totalAssignedSortState === SORT_STATES.ASCENDING_ORDER) {
       setFilteredTests((prev) => {
         let arr = [...prev];
         arr = arr.sort(function (a, b) {

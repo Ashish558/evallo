@@ -99,7 +99,7 @@ export default function AllTests({isOwn,setTotaltest,studentId,fromProfile}) {
 
   const sortByAssignmentName = () => {
     console.log("sortByAssignmentName");
-    if(assignmentNameSortState === SORT_STATES.UNSORTED || assignmentNameSortState === SORT_STATES.DESCENDING_ORDER) {
+    if(assignmentNameSortState === SORT_STATES.DESCENDING_ORDER) {
       setFilteredTests((prev) => {
         let arr = [...prev];
         arr = arr.sort(function (a, b) {
@@ -116,7 +116,7 @@ export default function AllTests({isOwn,setTotaltest,studentId,fromProfile}) {
 
       setAssignmentNameSortState(SORT_STATES.ASCENDING_ORDER);
     }
-    else if(assignmentNameSortState === SORT_STATES.ASCENDING_ORDER) {
+    else if(assignmentNameSortState === SORT_STATES.UNSORTED || assignmentNameSortState === SORT_STATES.ASCENDING_ORDER) {
       setFilteredTests((prev) => {
         let arr = [...prev];
         arr = arr.sort(function (a, b) {
@@ -137,7 +137,7 @@ export default function AllTests({isOwn,setTotaltest,studentId,fromProfile}) {
 
   const sortByType = () => {
     console.log("sortByType");
-    if(typeSortState === SORT_STATES.UNSORTED || typeSortState === SORT_STATES.DESCENDING_ORDER) {
+    if(typeSortState === SORT_STATES.DESCENDING_ORDER) {
       setFilteredTests((prev) => {
         let arr = [...prev];
         arr = arr.sort(function (a, b) {
@@ -154,7 +154,7 @@ export default function AllTests({isOwn,setTotaltest,studentId,fromProfile}) {
 
       setTypeSortState(SORT_STATES.ASCENDING_ORDER);
     }
-    else if(typeSortState === SORT_STATES.ASCENDING_ORDER) {
+    else if(typeSortState === SORT_STATES.UNSORTED || typeSortState === SORT_STATES.ASCENDING_ORDER) {
       setFilteredTests((prev) => {
         let arr = [...prev];
         arr = arr.sort(function (a, b) {
@@ -178,7 +178,7 @@ export default function AllTests({isOwn,setTotaltest,studentId,fromProfile}) {
     console.log(filteredTests);
 
     console.log("sortByTotalAssignments");
-    if(totalAssignmentsSortState === SORT_STATES.UNSORTED || totalAssignmentsSortState === SORT_STATES.DESCENDING_ORDER) {
+    if(totalAssignmentsSortState === SORT_STATES.DESCENDING_ORDER) {
       setFilteredTests((prev) => {
         let arr = [...prev];
         arr = arr.sort(function (a, b) {
@@ -195,7 +195,7 @@ export default function AllTests({isOwn,setTotaltest,studentId,fromProfile}) {
 
       setTotalAssignmentsSortState(SORT_STATES.ASCENDING_ORDER);
     }
-    else if(totalAssignmentsSortState === SORT_STATES.ASCENDING_ORDER) {
+    else if(totalAssignmentsSortState === SORT_STATES.UNSORTED || totalAssignmentsSortState === SORT_STATES.ASCENDING_ORDER) {
       setFilteredTests((prev) => {
         let arr = [...prev];
         arr = arr.sort(function (a, b) {
@@ -216,7 +216,7 @@ export default function AllTests({isOwn,setTotaltest,studentId,fromProfile}) {
 
   const sortBycreateDate = () => {
 
-    if(createdOnSortState === SORT_STATES.UNSORTED || createdOnSortState === SORT_STATES.DESCENDING_ORDER) { 
+    if(createdOnSortState === SORT_STATES.DESCENDING_ORDER) { 
       setFilteredTests((prev) => {
         let arr = [...prev];
         //console.log("arr", arr);
@@ -234,7 +234,7 @@ export default function AllTests({isOwn,setTotaltest,studentId,fromProfile}) {
 
       setCreatedOnSortState(SORT_STATES.ASCENDING_ORDER);
     }
-    else if(createdOnSortState === SORT_STATES.ASCENDING_ORDER) {  
+    else if(createdOnSortState === SORT_STATES.UNSORTED || createdOnSortState === SORT_STATES.ASCENDING_ORDER) {  
       setFilteredTests((prev) => {
         let arr = [...prev];
         //console.log("arr", arr);
@@ -271,7 +271,7 @@ export default function AllTests({isOwn,setTotaltest,studentId,fromProfile}) {
 
   const sortByAssignedDate = () => {
 
-    if(lastModifiedSortState === SORT_STATES.UNSORTED || lastModifiedSortState === SORT_STATES.DESCENDING_ORDER) { 
+    if(lastModifiedSortState === SORT_STATES.DESCENDING_ORDER) { 
       setFilteredTests((prev) => {
         let arr = [...prev];
         //console.log("arr", arr);
@@ -289,7 +289,7 @@ export default function AllTests({isOwn,setTotaltest,studentId,fromProfile}) {
 
       setLastModifiedSortState(SORT_STATES.ASCENDING_ORDER);
     }
-    else if(lastModifiedSortState === SORT_STATES.ASCENDING_ORDER) {  
+    else if(lastModifiedSortState === SORT_STATES.UNSORTED || lastModifiedSortState === SORT_STATES.ASCENDING_ORDER) {  
       setFilteredTests((prev) => {
         let arr = [...prev];
         //console.log("arr", arr);
