@@ -800,7 +800,6 @@ export default function TestDetail() {
                   </div>
                   {!testData?.testType?.includes("DSAT") ? (
                     <div className="min-w-[170px] px-1">
-                      {console.log("test", { modalData })}
                       <InputField
                         label="Answer Choices"
                         labelClassname="ml-4 mb-0.5 input-heading font-medium text-[15px]"
@@ -924,7 +923,7 @@ export default function TestDetail() {
    </div> */}
 
                 {/* Right Column for Image Upload */}
-                {testData.testType == "DSAT" ? (
+                {testData.testType?.includes("DSAT")? (
                   <div className="w-full mt-4">
                     <div className="mb-4">
                       <p className="text-[15px] mb-1 font-semibold">
@@ -1037,7 +1036,6 @@ export default function TestDetail() {
                       ) : null}
                     </div>
                     <div className="w-full h-1 my-4 bg-[#00000033]"></div>
-                    {console.log("moasmdoasdnasnfa", modalData)}
                     {modalData.questionType == "Grid-in" ? null : (
                       <>
                         <div className="flex items-center mb-2">
