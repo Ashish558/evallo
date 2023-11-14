@@ -633,14 +633,13 @@ export default function CalendarPage() {
   };
 
   const handlePrevClick = (arg) => {
-    // const calendarAPI = calendarWeekRef?.current?.getApi();
-    // calendarAPI?.prev();
+    const calendarAPI = calendarWeekRef?.current?.getApi();
+    calendarAPI?.prev();
   };
 
   const handleNextClick = (arg) => {
-    // //////console.log(arg)
-    // const calendarAPI = calendarWeekRef?.current?.getApi();
-    // calendarAPI?.next();
+    const calendarAPI = calendarWeekRef?.current?.getApi();
+    calendarAPI?.next();
   };
 
   const eventContent = (arg) => {
@@ -992,7 +991,6 @@ export default function CalendarPage() {
   }, [sessionToEdit, eventDetails]);
 
   useEffect(() => {
-    // //////console.log(calendarWeekRef.current.getApi())
     // calendarWeekRef.current?.getApi().gotoDate(currentDate);
     // calendarWeekRef.current.gotoDate(currentDate)
   }, [currentDate]);

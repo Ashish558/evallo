@@ -48,16 +48,16 @@ export default function Calendar({
          customButtons={{
             prevButton: {
                text: (
-                  <span className="calendar-prevButton-custom">
-                     <img className="pr-2" src={LeftIcon} alt="arrow" />
+                  <span className="calendar-prevButton-custom flex">
+                     <img className="w-9" src={LeftIcon} alt="arrow" />
                   </span>
                ),
                click: handlePrevClick,
             },
             nextButton: {
                text: (
-                  <span className="calendar-nextButton-custom">
-                     <img className="pr-2" src={nextIcon} alt="arrow" />
+                  <span className="calendar-prevButton-custom flex">
+                     <img className="w-9" src={nextIcon} alt="arrow" />
                   </span>
                ),
                click: handleNextClick,
