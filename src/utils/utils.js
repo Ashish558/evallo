@@ -60,7 +60,9 @@ export const getCheckedString = (arr) => {
 
 export const getFormattedDate = (argDate, format) => {
   if (argDate === undefined) return "-";
+
   let date = new Date(argDate);
+
   const offset = date.getTimezoneOffset() * 60000;
   if (offset > 0) {
     // startDate = startDate + offset
@@ -263,9 +265,9 @@ export function getDate(arg) {
   const month = date.toLocaleString("default", { month: "long" });
   return `${month.slice(0, 3)} ${date.getDate()}, ${date.getFullYear()}`;
 }
-var formattedNumber = (x) => {
-  return (x * 1).toFixed(2).replace(/[.,]00$/, "");
-};
+export var formattedNumber = (x) => {
+   return (x * 1).toFixed(2).replace(/[.,]00$/, "");
+}
 
 export const getScoreStr = (testType, score, subjects, totalLength) => {
   // if (!score) return ''
@@ -485,6 +487,13 @@ export const checkTest = (persona, item) => {
   if (item.addBySuperAdmin || item.addByManager) return false
   return true
 }
+
+export function CurrencyNameToSymbole(currency = "") {
+   if(currency.toLowerCase() === "usd") return "$";
+   if(currency.toLowerCase() === "inr") return "₹";
+   return "";
+}
+
 // // timezones
 // function getCurrentLocalDateTime() {
 //    return moment().format();
