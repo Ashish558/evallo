@@ -21,7 +21,7 @@ import { useSelector } from "react-redux";
 
 const optionData = ["option 1", "option 2", "option 3", "option 4", "option 5"];
 const testTypeOptions = ["DSAT®", "SAT®", "ACT®","Other"];
-const tableHeaders = [
+/* const tableHeaders = [
   "Assignment",
   "Type",
   "Created On",
@@ -30,13 +30,19 @@ const tableHeaders = [
   "View",
   "",
   "Available For",
-];
+]; */
 
 const initialState = {
   testName: "",
   dateModified: "",
   testType: "",
 };
+
+const SORT_STATES = {
+  ASCENDING_ORDER: "ASCENDING_ORDER",
+  DESCENDING_ORDER: "DESCENDING_ORDER",
+  UNSORTED: "UNSORTED",
+}
 
 export default function AllTests() {
   const [tableData, setTableData] = useState([]);
@@ -55,6 +61,257 @@ export default function AllTests() {
   const [submitTest, submitTestResp] = useAddTestMutation();
   const [submitPdf, submitPdfResp] = useAddPdfMutation();
   const [modalData, setModalData] = useState(initialState);
+  const [assignmentSortState, setAssignmentSortState] = useState(SORT_STATES.UNSORTED);
+  const [typeSortState, setTypeSortState] = useState(SORT_STATES.UNSORTED);
+  const [createdOnSortState, setCreatedOnSortState] = useState(SORT_STATES.UNSORTED);
+  const [lastModifiedSortState, setLastModifiedSortState] = useState(SORT_STATES.UNSORTED);
+  const [totalAssignedSortState, setTotalAssignedSortState] = useState(SORT_STATES.UNSORTED);
+
+  const sortByAssignment = () => {
+    // setFilteredTests
+    console.log("sortByAssignment");
+    if(assignmentSortState === SORT_STATES.DESCENDING_ORDER) {
+      setFilteredTests((prev) => {
+        let arr = [...prev];
+        arr = arr.sort(function (a, b) {
+          if (a.testName < b.testName) {
+            return -1;
+          }
+          if (a.testName > b.testName) {
+            return 1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setAssignmentSortState(SORT_STATES.ASCENDING_ORDER);
+    }
+    else if(assignmentSortState === SORT_STATES.UNSORTED || assignmentSortState === SORT_STATES.ASCENDING_ORDER) {
+      setFilteredTests((prev) => {
+        let arr = [...prev];
+        arr = arr.sort(function (a, b) {
+          if (a.testName < b.testName) {
+            return 1;
+          }
+          if (a.testName > b.testName) {
+            return -1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setAssignmentSortState(SORT_STATES.DESCENDING_ORDER);
+    }
+  }
+
+  const sortByType = () => {
+    console.log("sortByType");
+    if(typeSortState === SORT_STATES.DESCENDING_ORDER) {
+      setFilteredTests((prev) => {
+        let arr = [...prev];
+        arr = arr.sort(function (a, b) {
+          if (a.testType < b.testType) {
+            return -1;
+          }
+          if (a.testType > b.testType) {
+            return 1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setTypeSortState(SORT_STATES.ASCENDING_ORDER);
+    }
+    else if(typeSortState === SORT_STATES.UNSORTED || typeSortState === SORT_STATES.ASCENDING_ORDER) {
+      setFilteredTests((prev) => {
+        let arr = [...prev];
+        arr = arr.sort(function (a, b) {
+          if (a.testType < b.testType) {
+            return 1;
+          }
+          if (a.testType > b.testType) {
+            return -1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setTypeSortState(SORT_STATES.DESCENDING_ORDER);
+    }
+  }
+
+  const sortBycreateDate = () => {
+
+    if(createdOnSortState === SORT_STATES.DESCENDING_ORDER) { 
+      setFilteredTests((prev) => {
+        let arr = [...prev];
+        //console.log("arr", arr);
+        arr = arr.sort(function (a, b) {
+          if (new Date(a.createdAt) < new Date(b.createdAt)) {
+            return -1;
+          }
+          if (new Date(a.createdAt) > new Date(b.createdAt)) {
+            return 1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setCreatedOnSortState(SORT_STATES.ASCENDING_ORDER);
+    }
+    else if(createdOnSortState === SORT_STATES.UNSORTED || createdOnSortState === SORT_STATES.ASCENDING_ORDER) {  
+      setFilteredTests((prev) => {
+        let arr = [...prev];
+        //console.log("arr", arr);
+        arr = arr.sort(function (a, b) {
+          if (new Date(a.createdAt) < new Date(b.createdAt)) {
+            return 1;
+          }
+          if (new Date(a.createdAt) > new Date(b.createdAt)) {
+            return -1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setCreatedOnSortState(SORT_STATES.DESCENDING_ORDER);
+    }
+  };
+
+  const sortByLastModified = () => {
+
+    if(lastModifiedSortState === SORT_STATES.DESCENDING_ORDER) { 
+      setFilteredTests((prev) => {
+        let arr = [...prev];
+        //console.log("arr", arr);
+        arr = arr.sort(function (a, b) {
+          if (new Date(a.updatedAt) < new Date(b.updatedAt)) {
+            return -1;
+          }
+          if (new Date(a.updatedAt) > new Date(b.updatedAt)) {
+            return 1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setLastModifiedSortState(SORT_STATES.ASCENDING_ORDER);
+    }
+    else if(lastModifiedSortState === SORT_STATES.UNSORTED || lastModifiedSortState === SORT_STATES.ASCENDING_ORDER) {  
+      setFilteredTests((prev) => {
+        let arr = [...prev];
+        //console.log("arr", arr);
+        arr = arr.sort(function (a, b) {
+          if (new Date(a.updatedAt) < new Date(b.updatedAt)) {
+            return 1;
+          }
+          if (new Date(a.updatedAt) > new Date(b.updatedAt)) {
+            return -1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setLastModifiedSortState(SORT_STATES.DESCENDING_ORDER);
+    }
+  };
+
+  const sortByTotalAssigned = () => {
+    console.log("data");
+    console.log(filteredTests);
+
+    console.log("sortByTotalAssigned");
+    if(totalAssignedSortState === SORT_STATES.DESCENDING_ORDER) {
+      setFilteredTests((prev) => {
+        let arr = [...prev];
+        arr = arr.sort(function (a, b) {
+          if (a.no_of_assign < b.no_of_assign) {
+            return -1;
+          }
+          if (a.no_of_assign > b.no_of_assign) {
+            return 1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setTotalAssignedSortState(SORT_STATES.ASCENDING_ORDER);
+    }
+    else if(totalAssignedSortState === SORT_STATES.UNSORTED || totalAssignedSortState === SORT_STATES.ASCENDING_ORDER) {
+      setFilteredTests((prev) => {
+        let arr = [...prev];
+        arr = arr.sort(function (a, b) {
+          if (a.no_of_assign < b.no_of_assign) {
+            return 1;
+          }
+          if (a.no_of_assign > b.no_of_assign) {
+            return -1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setTotalAssignedSortState(SORT_STATES.DESCENDING_ORDER);
+    }
+  }
+
+  const tableHeaders = [
+    {
+      id: 1,
+      text: "Assignment", //testName
+      onCick: sortByAssignment,
+      willDisplayDownArrow: assignmentSortState !== SORT_STATES.DESCENDING_ORDER,
+    },
+    {
+      id: 2,
+      text: "Type", // testType
+      onCick: sortByType,
+      willDisplayDownArrow: typeSortState !== SORT_STATES.DESCENDING_ORDER,
+    },
+    {
+      id: 3,
+      text: "Created On", // createdAt
+      onCick: sortBycreateDate,
+      willDisplayDownArrow: createdOnSortState !== SORT_STATES.DESCENDING_ORDER,
+    },
+    {
+      id: 4,
+      text: "Last Modified", // updatedAt
+      onCick: sortByLastModified,
+      willDisplayDownArrow: lastModifiedSortState !== SORT_STATES.DESCENDING_ORDER,
+    },
+    {
+      id: 5,
+      text: "Total Assigned", // no_of_assign
+      onCick: sortByTotalAssigned,
+      willDisplayDownArrow: totalAssignedSortState !== SORT_STATES.DESCENDING_ORDER,
+    },
+    {
+      id: 6,
+      text: "View",
+      noArrow: true
+    },
+    {
+      id: 7,
+      text: "",
+      noArrow: true
+    },
+    {
+      id: 8,
+      text: "Available For",
+      noArrow: true
+    },
+  ];
 
   useEffect(() => {
     if (
@@ -251,12 +508,14 @@ export default function AllTests() {
         <div className="mt-6">
           <Table
             headerWidth="pl-6 pr-1"
-            noArrow={true}
+            // noArrow={true}
             dataFor="allTestsSuperAdmin"
             data={filteredTests}
             tableHeaders={tableHeaders}
+            headerObject={true}
             maxPageSize={10}
             onClick={{ openRemoveTestModal }}
+            hidePagination={true}
           />
         </div>
       </div>
@@ -282,7 +541,7 @@ export default function AllTests() {
                 id={styles.uploadButtons}
                 className="mt-7   px-0  gap-5 flex justify-between"
               >
-                {modalData.testType != "DSAT" ? (
+                {modalData.testType != "DSAT®" ? (
                   <div id={styles.pdfUpload}>
                     <label
                       htmlFor="pdf"

@@ -912,7 +912,7 @@ export default function TableItem({
       {dataFor === "testsDetailQuestions" && (
         <tr className="bg-white text-[17.5px]   leading-7 mt-[10px]">
           {MapData(item, dataFor, excludes)}
-          {testtype === "DSAT" ? (
+          {testtype === "DSAT"||testtype === "DSAT®" ? (
             <>
               <td>
                 <div
@@ -955,7 +955,7 @@ export default function TableItem({
               <></>
             ) : (
               <img
-                src={EditTestIcon}
+                src={editIcon3}
                 className="cursor-pointer"
                 onClick={() => onClick.handleEditTestClick(item)}
               />
@@ -966,7 +966,7 @@ export default function TableItem({
       {dataFor === "allTests" && (
         <tr className="odd:bg-white font-medium text-[17.5px]  lead">
           <td className="text-left pl-10">{item.testName}</td>
-          <td>{item.testType}&#174;</td>
+          <td>{ item.testType.endsWith('®')?item.testType:item.testType+'®'}</td>
           <td> {getFormattedDate(item.createdAt.split("T")[0], dateFormat)}</td>
           <td>{getFormattedDate(item.updatedAt.split("T")[0], dateFormat)}</td>
           <td> {item.no_of_assign !== null ? item.no_of_assign : "-"} </td>
@@ -1000,7 +1000,7 @@ export default function TableItem({
             <span className="">{item.testName}</span>
           </td>
           <td className=" pl-5 !text-center ">
-            {item.testType === "Other" ? "ACT" : item.testType}
+            {item.testType === "Other" ? "ACT®" : item.testType.endsWith('®')?item.testType:item.testType+'®'}
           </td>
           <td className=" pl-5 !text-center ">
             {getFormattedDate(item.createdAt.split("T")[0], dateFormat)}
@@ -1285,7 +1285,6 @@ const MapData = (data, dataFor, exclude = [], onClick) => {
         } ${dataFor==="testsDetailQuestions"&&"text-left pl-7"}`}
       >
         {data[key]}
-        {dataFor==="testsDetailQuestions"&&key==="Scoring"&&<img className="inline-block translate-x-16" src={editIcon3} alt=""/>}
       </td>
     )
   );

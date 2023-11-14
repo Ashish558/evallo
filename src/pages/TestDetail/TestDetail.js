@@ -138,6 +138,9 @@ export default function TestDetail() {
     };
   }
 
+  useEffect(()=>{
+    window.scrollTo(0, 0);
+  },[])
   function ckEditorUploadPlugin(editor) {
     editor.plugins.get("FileRepository").createUploadAdapter = (loader) => {
       // console.log(loader.file)
@@ -241,7 +244,7 @@ export default function TestDetail() {
           Strategies: "Unavailable",
   
           AnswerChoices,
-          Scoring:20
+          // Scoring:20
         };
       } else {
         return {
@@ -252,7 +255,7 @@ export default function TestDetail() {
           Strategies,
 
           AnswerChoices,
-          Scoring:20
+          // Scoring:20
         };
       }
     });
@@ -269,7 +272,7 @@ export default function TestDetail() {
       editable = true;
     }
     const updatedQuestions = tempdata.map((question) => {
-      if (testData.testType === "DSAT") {
+      if (testData.testType === "DSAT"|| testData.testType === "DSAT®") {
         const { AnswerChoices, ...rest } = question;
         return { ...rest, editable };
       }
@@ -277,7 +280,7 @@ export default function TestDetail() {
     });
 
     let updatedData;
-    if (testData.testType === "DSAT") {
+    if (testData.testType === "DSAT"|| testData.testType === "DSAT®") {
       updatedData = allQuestions[idx].map((obj) => ({
         ...obj,
         testType: testData.testType,
@@ -331,17 +334,17 @@ export default function TestDetail() {
         Concepts: modalData.concept,
         Strategies: modalData.strategy,
         AnswerChoices:
-          testData.testType !== "DSAT" ? modalData.AnswerChoices : "A,B,C,D",
+          !testData?.testType?.includes("DSAT") ? modalData.AnswerChoices : "A,B,C,D",
         QuestionText: modalData.question,
         QuestionImageUrl: questionImageBase64,
-        ...(testData.testType === "DSAT"
+        ...(testData.testType === "DSAT"|| testData.testType === "DSAT®"
           ? {
               QuestionImage:
                 extratableitem[modalData.QuestionNumber - 1]?.QImage,
             }
           : {}),
         QuestionType: modalData.questionType,
-        ...(testData.testType === "DSAT"
+        ...(testData.testType === "DSAT" || testData.testType === "DSAT®"
           ? {
               AnswerImage: extratableitem[modalData.QuestionNumber - 1]?.AImage,
             }
@@ -351,7 +354,7 @@ export default function TestDetail() {
           {
             label: "A",
             text: options[0],
-            ...(testData.testType === "DSAT" &&
+            ...(testData.testType === "DSAT" || testData.testType === "DSAT®"&&
             optionAImageBase64 !== undefined &&
             optionAImageBase64 !== null
               ? { image: optionAImageBase64 }
@@ -360,7 +363,7 @@ export default function TestDetail() {
           {
             label: "B",
             text: options[1],
-            ...(testData.testType === "DSAT" &&
+            ...(testData.testType === "DSAT" || testData.testType === "DSAT®"&&
             optionBImageBase64 !== undefined &&
             optionBImageBase64 !== null
               ? { image: optionBImageBase64 }
@@ -369,7 +372,7 @@ export default function TestDetail() {
           {
             label: "C",
             text: options[2],
-            ...(testData.testType === "DSAT" &&
+            ...(testData.testType === "DSAT" || testData.testType === "DSAT®" &&
             optionCImageBase64 !== undefined &&
             optionCImageBase64 !== null
               ? { image: optionCImageBase64 }
@@ -378,7 +381,7 @@ export default function TestDetail() {
           {
             label: "D",
             text: options[3],
-            ...(testData.testType === "DSAT" &&
+            ...(testData.testType === "DSAT" || testData.testType === "DSAT®" &&
             optionDImageBase64 !== undefined &&
             optionDImageBase64 !== null
               ? { image: optionDImageBase64 }
@@ -537,21 +540,20 @@ export default function TestDetail() {
         break;
     }
   };
+  console.log(testData);
   const tableHeaders = [
     "Q No.",
     "Q type",
     "Answer",
     "Concept",
     "Strategy",
-
-    ...(testData.testType !== "DSAT" ? [] : ["Q. Image"]),
-    ...(testData.testType !== "DSAT" ? [] : ["A. Image"]),
-    ...(testData.testType !== "DSAT" ? [] : ["Passage?"]),
-    ...(testData.testType !== "DSAT" ? ["Choices"] : []),
-    "Scoring",
+    ...(!testData?.testType?.includes("DSAT")? ["Choices"] : []),
+    ...(!testData?.testType?.includes("DSAT") ? [] : ["Q. Image"]),
+    ...(!testData?.testType?.includes("DSAT") ? [] : ["A. Image"]),
+    ...(!testData?.testType?.includes("DSAT") ? [] : ["Passage?"]),
+    // ...(!testData?.testType?.includes("DSAT") ? ["Scoring"] : []),
     "",
   ];
-
   const [richTextContent, setRichTextContent] = useState("");
   return (
     <>
@@ -575,9 +577,8 @@ export default function TestDetail() {
           <div className="px-0 flex flex-row justify-start items-start pr-2 w-full">
             <div className="flex mx-2 w-1/4 flex-col justify-start">
               <p className="mb-2 text-textPrimaryDark text-[35px] min-h-[50px] font-extrabold">
-                {testData.testName ? testData.testName : ""}
+                {testData.testName ? testData.testName.length<12?testData.testName:testData.testName.substring(0,11)+'...' : ""}
               </p>
-
               <div className="border w-full py-4 flex rounded shadow-lg justify-center items-center">
                 <AllTestDetail testData={testData} />
               </div>
@@ -626,7 +627,7 @@ export default function TestDetail() {
                 </div>
               </div>
             </div>
-            {testData.testType !== "DSAT" ? (
+            {!testData?.testType?.includes("DSAT") ? (
               <div className="px-6 py-[2.5rem] ml-[50px] flex  mx-2 mt-[3.8rem] w-1/4 justify-center border-[#26435F] border-dashed border-[2px] items-center flex-col rounded shadow-lg">
                 {Object.keys(sectionsData).length > 1 && (
                   <>
@@ -797,9 +798,8 @@ export default function TestDetail() {
                       </select>
                     </div>
                   </div>
-                  {testData.testType !== "DSAT" ? (
+                  {!testData?.testType?.includes("DSAT") ? (
                     <div className="min-w-[170px] px-1">
-                      {console.log("test", { modalData })}
                       <InputField
                         label="Answer Choices"
                         labelClassname="ml-4 mb-0.5 input-heading font-medium text-[15px]"
@@ -923,7 +923,7 @@ export default function TestDetail() {
    </div> */}
 
                 {/* Right Column for Image Upload */}
-                {testData.testType == "DSAT" ? (
+                {testData.testType?.includes("DSAT")? (
                   <div className="w-full mt-4">
                     <div className="mb-4">
                       <p className="text-[15px] mb-1 font-semibold">
@@ -1036,7 +1036,6 @@ export default function TestDetail() {
                       ) : null}
                     </div>
                     <div className="w-full h-1 my-4 bg-[#00000033]"></div>
-                    {console.log("moasmdoasdnasnfa", modalData)}
                     {modalData.questionType == "Grid-in" ? null : (
                       <>
                         <div className="flex items-center mb-2">
