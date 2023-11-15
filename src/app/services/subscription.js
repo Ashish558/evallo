@@ -1,10 +1,9 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { getAuthHeader } from "../constants/constants";
-
+import { BASE_URL, getAuthHeader } from "../constants/constants";
 export const subscriptionApi = createApi({
     reducerPath: "subscriptionApi",
     baseQuery: fetchBaseQuery({
-        baseUrl: 'https://testbackend.sevensquarelearning.com/'
+        baseUrl: BASE_URL,
     }),
 
     endpoints: (builder) => ({
