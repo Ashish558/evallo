@@ -183,7 +183,7 @@ export default function Login({ setLoginFormActive }) {
                     email?.length > 0 ? (
                       <img
                         onClick={() => setEmail("")}
-                        className="ml-3 cursor-pointer scale-[0.80]"
+                        className="ml-3 cursor-pointer  w-[17.31px] h-[17.31px]"
                         src={cutEmail}
                         alt="right icon"
                       />
@@ -247,8 +247,8 @@ export default function Login({ setLoginFormActive }) {
                 </div>
                 <div className="flex justify-center">
                   <button
-                    className={`w-[337px] shadow-[0px_0px_2px_0px_rgba(0,0,0,0.25)] relative mx-auto  bg-[#FFA28D] disabled:opacity-70 pt-3.5 pb-3.5 lg:py-[11px]  mt-[56px]   rounded-5 text-white text-lg font-medium ${
-                      loginLoading ? "cursor-wait" : "cursor-pointer"
+                    className={`w-[337px] shadow-[0px_0px_2px_0px_rgba(0,0,0,0.25)] relative mx-auto  bg-[#FFA28D] disabled:opacity-60 pt-3.5 pb-3.5 lg:py-[11px]  mt-[56px]   rounded-5 text-white text-lg font-medium ${
+                      loginLoading ? "cursor-wait opacity-60" : "cursor-pointer"
                     }`}
                     onClick={handleSubmit}
                   >
@@ -258,9 +258,9 @@ export default function Login({ setLoginFormActive }) {
                 </div>
                 <div className="flex justify-center mt-[19px] pb-4">
                   <p
-                    className={`relative text-base  text-[#26435F]  ml-2  inline-block `}
+                    className={`relative text-base  text-[#26435F]  ml-2  inline-block  `}
                   >
-                    Don’t have an account?{" "}
+                    <span className="cursor-text">Don’t have an account?{" "}</span>
                     <span
                       className={`text-[#24A3D9] cursor-pointer relative  font-bold     inline-block `}
                       onClick={() => navigate("/signup")}
