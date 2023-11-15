@@ -307,21 +307,6 @@ export default function AllTests({isOwn,setTotaltest,studentId,fromProfile}) {
 
       setLastModifiedSortState(SORT_STATES.DESCENDING_ORDER);
     }
-
-    /* setFilteredTests((prev) => {
-      let arr = [...prev];
-      arr = arr.sort(function (a, b) {
-        if (sortOrder.updatedAt)
-          return new Date(a.updatedAt) - new Date(b.updatedAt);
-        else
-          return new Date(b.updatedAt) - new Date(a.updatedAt);
-      });
-      return arr;
-    });
-    setSortOrder({
-      ...sortOrder,
-      updatedAt: !sortOrder.updatedAt
-    }) */
   };
 
   const tableObjHeaders = [

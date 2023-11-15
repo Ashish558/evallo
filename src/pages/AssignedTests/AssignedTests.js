@@ -76,46 +76,6 @@ export default function AssignedTests() {
   const [scoreSortState, setScoreSortState] = useState(SORT_STATES.UNSORTED);
   const { dateFormat } = useSelector((state) => state.user);
 
-  console.log("Rendered");
-
-  useEffect(() => {
-    console.log("studentNameSortState changed - " +  studentNameSortState);
-  },[studentNameSortState])
-
-  const sortByDueDate = () => {
-    setAllAssignedTests((prev) => {
-      let arr = [...prev];
-      arr = arr.sort(function (a, b) {
-        return new Date(b.dueDate) - new Date(a.dueDate);
-      });
-      return arr;
-    });
-    setFilteredTests((prev) => {
-      let arr = [...prev];
-      arr = arr.sort(function (a, b) {
-        return new Date(b.dueDate) - new Date(a.dueDate);
-      });
-      return arr;
-    });
-  };
-
-  const sortByAssignedDate = () => {
-    setAllAssignedTests((prev) => {
-      let arr = [...prev];
-      arr = arr.sort(function (a, b) {
-        return new Date(b.assignedOn) - new Date(a.assignedOn);
-      });
-      return arr;
-    });
-    setFilteredTests((prev) => {
-      let arr = [...prev];
-      arr = arr.sort(function (a, b) {
-        return new Date(b.assignedOn) - new Date(a.assignedOn);
-      });
-      return arr;
-    });
-  };
-
   const sortByName = () => {
     console.log("allAssignedTests");
     console.log(allAssignedTests);
@@ -150,9 +110,6 @@ export default function AssignedTests() {
   };
 
   const sortByStudentName = () => {
-    // setFilteredTests
-    console.log("sortByStudentName");
-    setStudentNameSortState(SORT_STATES.ASCENDING_ORDER);
     if(studentNameSortState === SORT_STATES.DESCENDING_ORDER) {
 
       setAllAssignedTests((prev) => {
@@ -219,57 +176,550 @@ export default function AssignedTests() {
     }
   }
 
+  const sortByTestName = () => {
+    if(testNameSortState === SORT_STATES.DESCENDING_ORDER) {
+
+      setAllAssignedTests((prev) => {
+        let arr = [...prev];
+        arr = arr.sort(function (a, b) {
+          if (a.testName < b.testName) {
+            return -1;
+          }
+          if (a.testName > b.testName) {
+            return 1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setFilteredTests((prev) => {
+        let arr = [...prev];
+        arr = arr.sort(function (a, b) {
+          if (a.testName < b.testName) {
+            return -1;
+          }
+          if (a.testName > b.testName) {
+            return 1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setTestNameSortState(SORT_STATES.ASCENDING_ORDER);
+    }
+    else if(testNameSortState === SORT_STATES.UNSORTED || testNameSortState === SORT_STATES.ASCENDING_ORDER) {
+
+      setAllAssignedTests((prev) => {
+        let arr = [...prev];
+        arr = arr.sort(function (a, b) {
+          if (a.testName < b.testName) {
+            return 1;
+          }
+          if (a.testName > b.testName) {
+            return -1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+      
+      setFilteredTests((prev) => {
+        let arr = [...prev];
+        arr = arr.sort(function (a, b) {
+          if (a.testName < b.testName) {
+            return 1;
+          }
+          if (a.testName > b.testName) {
+            return -1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setTestNameSortState(SORT_STATES.DESCENDING_ORDER);
+    }
+  }
+
+  const sortByAssignedDate = () => {
+    if(assignedOnSortState === SORT_STATES.DESCENDING_ORDER) { 
+
+      setAllAssignedTests((prev) => {
+        let arr = [...prev];
+        //console.log("arr", arr);
+        arr = arr.sort(function (a, b) {
+          if (new Date(a.assignedOn) < new Date(b.assignedOn)) {
+            return -1;
+          }
+          if (new Date(a.assignedOn) > new Date(b.assignedOn)) {
+            return 1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setFilteredTests((prev) => {
+        let arr = [...prev];
+        //console.log("arr", arr);
+        arr = arr.sort(function (a, b) {
+          if (new Date(a.assignedOn) < new Date(b.assignedOn)) {
+            return -1;
+          }
+          if (new Date(a.assignedOn) > new Date(b.assignedOn)) {
+            return 1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setAssignedOnSortState(SORT_STATES.ASCENDING_ORDER);
+    }
+    else if(assignedOnSortState === SORT_STATES.UNSORTED || assignedOnSortState === SORT_STATES.ASCENDING_ORDER) {  
+
+      setAllAssignedTests((prev) => {
+        let arr = [...prev];
+        //console.log("arr", arr);
+        arr = arr.sort(function (a, b) {
+          if (new Date(a.assignedOn) < new Date(b.assignedOn)) {
+            return 1;
+          }
+          if (new Date(a.assignedOn) > new Date(b.assignedOn)) {
+            return -1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setFilteredTests((prev) => {
+        let arr = [...prev];
+        //console.log("arr", arr);
+        arr = arr.sort(function (a, b) {
+          if (new Date(a.assignedOn) < new Date(b.assignedOn)) {
+            return 1;
+          }
+          if (new Date(a.assignedOn) > new Date(b.assignedOn)) {
+            return -1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setAssignedOnSortState(SORT_STATES.DESCENDING_ORDER);
+    }
+  };
+
+  const sortByDueDate = () => {
+
+    if(dueOnSortState === SORT_STATES.DESCENDING_ORDER) { 
+
+      setAllAssignedTests((prev) => {
+        let arr = [...prev];
+        //console.log("arr", arr);
+        arr = arr.sort(function (a, b) {
+          if (new Date(a.dueDate) < new Date(b.dueDate)) {
+            return -1;
+          }
+          if (new Date(a.dueDate) > new Date(b.dueDate)) {
+            return 1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setFilteredTests((prev) => {
+        let arr = [...prev];
+        //console.log("arr", arr);
+        arr = arr.sort(function (a, b) {
+          if (new Date(a.dueDate) < new Date(b.dueDate)) {
+            return -1;
+          }
+          if (new Date(a.dueDate) > new Date(b.dueDate)) {
+            return 1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setDueOnSortState(SORT_STATES.ASCENDING_ORDER);
+    }
+    else if(dueOnSortState === SORT_STATES.UNSORTED || dueOnSortState === SORT_STATES.ASCENDING_ORDER) {  
+
+      setAllAssignedTests((prev) => {
+        let arr = [...prev];
+        //console.log("arr", arr);
+        arr = arr.sort(function (a, b) {
+          if (new Date(a.dueDate) < new Date(b.dueDate)) {
+            return 1;
+          }
+          if (new Date(a.dueDate) > new Date(b.dueDate)) {
+            return -1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setFilteredTests((prev) => {
+        let arr = [...prev];
+        //console.log("arr", arr);
+        arr = arr.sort(function (a, b) {
+          if (new Date(a.dueDate) < new Date(b.dueDate)) {
+            return 1;
+          }
+          if (new Date(a.dueDate) > new Date(b.dueDate)) {
+            return -1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setDueOnSortState(SORT_STATES.DESCENDING_ORDER);
+    }
+  };
+
+  const sortByAssignedBy = () => {
+    if(assignedBySortState === SORT_STATES.DESCENDING_ORDER) {
+
+      setAllAssignedTests((prev) => {
+        let arr = [...prev];
+        arr = arr.sort(function (a, b) {
+          if (a.assignedBy < b.assignedBy) {
+            return -1;
+          }
+          if (a.assignedBy > b.assignedBy) {
+            return 1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setFilteredTests((prev) => {
+        let arr = [...prev];
+        arr = arr.sort(function (a, b) {
+          if (a.assignedBy < b.assignedBy) {
+            return -1;
+          }
+          if (a.assignedBy > b.assignedBy) {
+            return 1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setAssignedBySortState(SORT_STATES.ASCENDING_ORDER);
+    }
+    else if(assignedBySortState === SORT_STATES.UNSORTED || assignedBySortState === SORT_STATES.ASCENDING_ORDER) {
+
+      setAllAssignedTests((prev) => {
+        let arr = [...prev];
+        arr = arr.sort(function (a, b) {
+          if (a.assignedBy < b.assignedBy) {
+            return 1;
+          }
+          if (a.assignedBy > b.assignedBy) {
+            return -1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+      
+      setFilteredTests((prev) => {
+        let arr = [...prev];
+        arr = arr.sort(function (a, b) {
+          if (a.assignedBy < b.assignedBy) {
+            return 1;
+          }
+          if (a.assignedBy > b.assignedBy) {
+            return -1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setAssignedBySortState(SORT_STATES.DESCENDING_ORDER);
+    }
+  }
+
+  const sortByStatus = () => {
+    if(statusSortState === SORT_STATES.DESCENDING_ORDER) {
+
+      setAllAssignedTests((prev) => {
+        let arr = [...prev];
+        arr = arr.sort(function (a, b) {
+          if (a.status < b.status) {
+            return -1;
+          }
+          if (a.status > b.status) {
+            return 1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setFilteredTests((prev) => {
+        let arr = [...prev];
+        arr = arr.sort(function (a, b) {
+          if (a.status < b.status) {
+            return -1;
+          }
+          if (a.status > b.status) {
+            return 1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setStatusSortState(SORT_STATES.ASCENDING_ORDER);
+    }
+    else if(statusSortState === SORT_STATES.UNSORTED || statusSortState === SORT_STATES.ASCENDING_ORDER) {
+
+      setAllAssignedTests((prev) => {
+        let arr = [...prev];
+        arr = arr.sort(function (a, b) {
+          if (a.status < b.status) {
+            return 1;
+          }
+          if (a.status > b.status) {
+            return -1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+      
+      setFilteredTests((prev) => {
+        let arr = [...prev];
+        arr = arr.sort(function (a, b) {
+          if (a.status < b.status) {
+            return 1;
+          }
+          if (a.status > b.status) {
+            return -1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setStatusSortState(SORT_STATES.DESCENDING_ORDER);
+    }
+  }
+
+  const sortByDuration = () => {
+    if(durationSortState === SORT_STATES.DESCENDING_ORDER) {
+
+      setAllAssignedTests((prev) => {
+        let arr = [...prev];
+        arr = arr.sort(function (a, b) {
+          if (a.duration < b.duration) {
+            return -1;
+          }
+          if (a.duration > b.duration) {
+            return 1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setFilteredTests((prev) => {
+        let arr = [...prev];
+        arr = arr.sort(function (a, b) {
+          if (a.duration < b.duration) {
+            return -1;
+          }
+          if (a.duration > b.duration) {
+            return 1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setDurationSortState(SORT_STATES.ASCENDING_ORDER);
+    }
+    else if(durationSortState === SORT_STATES.UNSORTED || durationSortState === SORT_STATES.ASCENDING_ORDER) {
+
+      setAllAssignedTests((prev) => {
+        let arr = [...prev];
+        arr = arr.sort(function (a, b) {
+          if (a.duration < b.duration) {
+            return 1;
+          }
+          if (a.duration > b.duration) {
+            return -1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+      
+      setFilteredTests((prev) => {
+        let arr = [...prev];
+        arr = arr.sort(function (a, b) {
+          if (a.duration < b.duration) {
+            return 1;
+          }
+          if (a.duration > b.duration) {
+            return -1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setDurationSortState(SORT_STATES.DESCENDING_ORDER);
+    }
+  }
+
+  const sortByScore = () => {
+    if(scoreSortState === SORT_STATES.DESCENDING_ORDER) {
+
+      setAllAssignedTests((prev) => {
+        let arr = [...prev];
+        arr = arr.sort(function (a, b) {
+          if(a.score !== "-") {
+            console.log(a.score);
+          }
+          if (a.scores < b.scores) {
+            return -1;
+          }
+          if (a.scores > b.scores) {
+            return 1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setFilteredTests((prev) => {
+        let arr = [...prev];
+        arr = arr.sort(function (a, b) {
+          if (a.scores < b.scores) {
+            return -1;
+          }
+          if (a.scores > b.scores) {
+            return 1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setScoreSortState(SORT_STATES.ASCENDING_ORDER);
+    }
+    else if(scoreSortState === SORT_STATES.UNSORTED || scoreSortState === SORT_STATES.ASCENDING_ORDER) {
+
+      setAllAssignedTests((prev) => {
+        let arr = [...prev];
+        arr = arr.sort(function (a, b) {
+          if (a.scores < b.scores) {
+            return 1;
+          }
+          if (a.scores > b.scores) {
+            return -1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+      
+      setFilteredTests((prev) => {
+        let arr = [...prev];
+        arr = arr.sort(function (a, b) {
+          if (a.scores < b.scores) {
+            return 1;
+          }
+          if (a.scores > b.scores) {
+            return -1;
+          }
+          return 0;
+        });
+        return arr;
+      });
+
+      setScoreSortState(SORT_STATES.DESCENDING_ORDER);
+    }
+  }
+
   const tempTableHeaders = [
     // setFilteredTests
     {
-      id: 2,
+      id: 1,
       text: "Student Name", // studentName
       // className: "no-arrow",
       onCick: sortByStudentName,
       willDisplayDownArrow: studentNameSortState !== SORT_STATES.DESCENDING_ORDER,
     },
     {
-      id: 3,
-      className: "no-arrow",
+      id: 2,
+      // className: "no-arrow",
       text: "Test Name", // testName
+      onCick: sortByTestName,
+      willDisplayDownArrow: testNameSortState !== SORT_STATES.DESCENDING_ORDER,
     },
     {
-      id: 1,
+      id: 3,
       text: "Assigned On", // createdAt , assignedOn
-      className: "text-left pl-6 no-arrow",
+      // className: "text-left pl-6 no-arrow",
       onCick: sortByAssignedDate,
-    },
-    {
-      id: 7,
-      text: "Due On", // dueDate
-      className: "text-left pl-6 no-arrow",
-      onCick: sortByDueDate,
+      willDisplayDownArrow: assignedOnSortState !== SORT_STATES.DESCENDING_ORDER,
     },
     {
       id: 4,
-      className: "no-arrow",
-      text: "Tutor", // assignedBy
+      text: "Due On", // dueDate
+      // className: "text-left pl-6 no-arrow",
+      onCick: sortByDueDate,
+      willDisplayDownArrow: dueOnSortState !== SORT_STATES.DESCENDING_ORDER,
     },
     {
       id: 5,
-      className: "no-arrow",
+      // className: "no-arrow",
+      text: "Tutor", // assignedBy
+      onCick: sortByAssignedBy,
+      willDisplayDownArrow: assignedBySortState !== SORT_STATES.DESCENDING_ORDER,
+    },
+    {
+      id: 6,
+      // className: "no-arrow",
       text: "Completion", // status
+      onCick: sortByStatus,
+      willDisplayDownArrow: statusSortState !== SORT_STATES.DESCENDING_ORDER,
     },
 
     {
-      id: 6,
-      className: "no-arrow",
+      id: 7,
+      // className: "no-arrow",
       text: "Duration", // duration
+      onCick: sortByDuration,
+      willDisplayDownArrow: durationSortState !== SORT_STATES.DESCENDING_ORDER,
+    },
+    {
+      id: 8,
+      // className: "no-arrow",
+      text: "Score", // scores
+      noArrow: true
     },
     {
       id: 9,
-      className: "no-arrow",
-      text: "Score", // scores
-    },
-    {
-      id: 10,
-      className: "no-arrow",
+      // className: "no-arrow",
       text: "",
+      noArrow: true
     },
   ];
 
@@ -1125,7 +1575,6 @@ export default function AssignedTests() {
           )}
           <div className="mt-3">
             <Table
-              noArrow={false}
               selectedId2={selectedId}
               setSelectedId2={setSelectedId}
               onClick={{ handleResend, handleDelete, handleNavigate }}
@@ -1133,7 +1582,7 @@ export default function AssignedTests() {
               data={filteredTests}
               headerObject={true}
               excludes={["createdAt", "assignedTestId", "pdf"]}
-              tableHeaders={tableHeaders}
+              tableHeaders={tempTableHeaders}
               maxPageSize={maxPageSize}
               setMaxPageSize={setMaxPageSize}
             />
