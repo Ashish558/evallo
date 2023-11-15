@@ -16,7 +16,7 @@ import { Country } from "country-state-city";
 // import SimpleCalendar from "../../../../components/SimpleCalendar/SimpleCalendar";
 // import demoUser from "../../../../assets/icons/demo-user.png";
 import Slider from "../../../../components/Slider/Slider";
-import { grades, subjects, timeZones } from "../../../../constants/constants";
+import { grades, subjects } from "../../../../constants/constants";
 import styles from "./style.module.css";
 import CountryCode from "../../../../components/CountryCode/CountryCode";
 import { useSelector } from "react-redux";
@@ -26,6 +26,7 @@ import axios from "axios";
 import ProfilePhoto from "../../../../components/ProfilePhoto/ProfilePhoto";
 import { useNavigate } from "react-router-dom";
 import InputFieldDropdown from "../../../../components/InputField/inputFieldDropdown";
+import moment from "moment-timezone";
 import InputSelectNew from "../../../../components/InputSelectNew/InputSelectNew";
 
 // 637b9df1e9beff25e9c2aa83
@@ -316,8 +317,6 @@ export default function ParentEditables({
     },
   ];
 
-  console.log("parentTutor", currentToEdit, currentField);
-
   const handleProfilePhotoChange = (file) => {
     // console.log(file)
     let url = "";
@@ -354,6 +353,7 @@ export default function ParentEditables({
     });
     console.log("currentUser");
   }, [toEdit]);
+  const timeZones = moment.tz.names(); // String[]
 
   const handleClose = () => {
     let tempToEdit = {};

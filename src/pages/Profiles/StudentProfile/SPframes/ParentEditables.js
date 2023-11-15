@@ -20,7 +20,7 @@ import Modal from "../../../../components/Modal/Modal";
 import SimpleCalendar from "../../../../components/SimpleCalendar/SimpleCalendar";
 import demoUser from "../../../../assets/icons/demo-user.png";
 import Slider from "../../../../components/Slider/Slider";
-import { grades, subjects, timeZones } from "../../../../constants/constants";
+import { grades, subjects } from "../../../../constants/constants";
 import styles from "./style.module.css";
 import CountryCode from "../../../../components/CountryCode/CountryCode";
 import { useSelector } from "react-redux";
@@ -32,6 +32,7 @@ import InputSelectNew from "../../../../components/InputSelectNew/InputSelectNew
 import useOutsideAlerter from "../../../../hooks/useOutsideAlerter";
 import { Interest, commonSubjects, qualities } from "./staticData";
 import SCheckbox from "../../../../components/CCheckbox/SCheckbox";
+import moment from "moment-timezone";
 
 // 637b9df1e9beff25e9c2aa83
 export default function ParentEditables({
@@ -65,6 +66,7 @@ export default function ParentEditables({
     usePostTutorDetailsMutation();
   const [updatedService, setUpdatedService] = useState({});
   const [loading, setLoading] = useState(false);
+  const timeZones = moment.tz.names(); // String[]
 
   const { organization } = useSelector((state) => state.organization);
 

@@ -13,6 +13,8 @@ import { superAdminServicesApi } from "./services/superAdmin";
 import userReducer from './slices/user'
 import organizationReducer from './slices/organization'
 import { adminDashboardServicesApi } from "./services/adminDashboard";
+import { orgSignupApi } from "./services/orgSignup";
+import { subscriptionApi } from "./services/subscription";
 
 export const store = configureStore({
   reducer: {
@@ -28,6 +30,8 @@ export const store = configureStore({
     [orgServicesApi.reducerPath]: orgServicesApi.reducer,
     [superAdminServicesApi.reducerPath]: superAdminServicesApi.reducer,
     [adminDashboardServicesApi.reducerPath]: adminDashboardServicesApi.reducer,
+    [orgSignupApi.reducerPath]: orgSignupApi.reducer,
+    [subscriptionApi.reducerPath]: subscriptionApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
@@ -41,6 +45,8 @@ export const store = configureStore({
       orgServicesApi.middleware,
       superAdminServicesApi.middleware, 
       adminDashboardServicesApi.middleware,
+      orgSignupApi.middleware,
+      subscriptionApi.middleware,
     ),
 });
 

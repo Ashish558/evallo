@@ -6,13 +6,14 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import downIcon from '../../assets/icons/down-pink.svg'
 import upIcon from '../../assets/icons/up-blue.svg'
-import FullCalendar, { formatDate } from "@fullcalendar/react"; // must go before plugins
-// import { Calendar } from '@fullcalendar/core';
-import { toMoment } from "@fullcalendar/moment";
-import dayGridPlugin from "@fullcalendar/daygrid";
-import timeGridPlugin from "@fullcalendar/timegrid";
+import '@fullcalendar/react/dist/vdom'
+// import FullCalendar from "@fullcalendar/react";
+import { Calendar } from "@fullcalendar/core"; // must go before plugins
 import interactionPlugin from "@fullcalendar/interaction";
+import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridWeek from "@fullcalendar/timegrid";
+import timeGridPlugin from "@fullcalendar/timegrid";
+import multiMonthPlugin from '@fullcalendar/multimonth'
 import LeftIcon from "../../assets/icons/left-arrow.svg";
 import nextIcon from "../../assets/icons/right-arrow.svg";
 import up_triangle from "../../assets/icons/Group 32064up triangle.svg";
@@ -23,7 +24,6 @@ import downArrow from '../../assets/icons/arrow-down-red.svg'
 import SimpleCalendar from "../../components/SimpleCalendar/SimpleCalendar";
 import EventModal from "../Frames/EventModal/EventModal";
 import InputSearch from "../../components/InputSearch/InputSearch";
-// import multiMonthPlugin from '@fullcalendar/multimonth'
 import {
   useLazyGetSessionsQuery,
   useLazyGetTutorStudentsQuery,
@@ -45,6 +45,7 @@ import InputSelect from "../../components/InputSelect/InputSelect";
 import { useLazyGetUserDetailQuery } from "../../app/services/users";
 import { useLazyGetCalenderInsightQuery } from "../../app/services/admin";
 import downBlue from '../../assets/icons/down-blue.svg'
+import FullCalendar from "./FullCalendar";
 const days = ["S", "M", "T", "W", "T", "F", "S"];
 
 const backgrounds = ["#51D294", "#C56DEE", "#6F7ADE", "#7DE94A", "#F6935A"];
@@ -71,9 +72,11 @@ const timeZones2 = [
 ];
 
 
-export default function Calendar() {
-  const calendarRef = useRef(null);
-  // //////console.log(calendarRef.current)
+export default function CalendarPage() {
+  const calendarWeekRef = useRef(null);
+  const calendarMonthRef = useRef(null);
+  const calendarYearlyRef = useRef(null);
+  // //////console.log(calendarWeekRef.current)
   const [events, setEvents] = useState([]);
   const [filteredEvents, setFilteredEvents] = useState([]);
   const { role: persona } = useSelector((state) => state.user);
@@ -82,7 +85,6 @@ export default function Calendar() {
   const accordionImgRefs = useRef([]);
   const accordionRefs2 = useRef([]);
   const accordionImgRefs2 = useRef([]);
-  // const [timeZones, setTimeZones] = useState(temptimeZones)
   const { id: sessionToEdit } = useParams();
   const [isEdited, setIsEdited] = useState(false);
   const [isEditable, setIsEditable] = useState(false);
@@ -128,9 +130,9 @@ export default function Calendar() {
   useEffect(() => {
     try {
       //////console.log(userDetail)
-      let res = fetchStudents(`${userDetail.id}`).then((res) =>
-        console.log("total tutors", res)
-      );
+      let res = fetchStudents(`${userDetail.id}`).then((res) => {
+
+      });
     } catch (e) {
       //////console.log(e)
     }
@@ -159,6 +161,7 @@ export default function Calendar() {
     id: "",
     role: "",
   });
+  const [activeView, setActiveView] = useState('Year')
 
   const refetchSessions = () => {
     // //////console.log(searchedUser);
@@ -179,6 +182,11 @@ export default function Calendar() {
     if (timeZones?.includes(timeZoneUser))
       setcurrentUserTImeZone(timeZoneUser)
   }, [timeZoneUser])
+
+  // console.log(moment.tz.names())
+  // const regex = /east/i;
+  // const eastStrings = c.filter(str => regex.test(str));
+  // console.log(eastStrings)
 
   const fetchSessions = (id, role) => {
     // //////console.log(id)
@@ -210,10 +218,10 @@ export default function Calendar() {
         // let startDate = new Date(session.date).toUTCString()
         startHours !== NaN && startDate.setHours(startHours);
         startMinutes !== NaN && startDate.setMinutes(startMinutes);
-        console.log('offset----', offset);
+        // console.log('offset----', offset);
         let tz = getFullTimeZone(session.timeZone)
-        console.log('tz---', tz);
-       
+        // console.log('tz---', tz);
+
         let updatedDate = new Date(
           new Date(
             startDate.toLocaleString("en-US", {
@@ -272,19 +280,36 @@ export default function Calendar() {
         startMinutes !== NaN && startDate.setMinutes(startMinutes);
         // //////console.log('START DATE',  startDate);
         var userTimezoneOffset = startDate.getTimezoneOffset() * 60000;
+        const timezone = session.timeZone; // Example: Eastern Time (ET)
+
+        // Get the timezone's offset from UTC in minutes
+        const offsetInMinutes = moment.tz(timezone).utcOffset();
+
+        // Convert the offset to milliseconds
+        const offsetInMilliseconds = offsetInMinutes * 60 * 1000;
+
+        console.log(`Offset from UTC for ${timezone} in milliseconds: ${offsetInMilliseconds}`);
         // //////console.log('userTimezoneOffset', userTimezoneOffset);
-        getStartDate(startDate, userTimezoneOffset, session.timeZone);
-        let up = getStartDate(startDate, userTimezoneOffset, session.timeZone);
+        // getStartDate(startDate, userTimezoneOffset, session.timeZone);
+        let up = getStartDate(startDate, userTimezoneOffset, session.timeZone, offsetInMilliseconds);
+        // console.log('session data---', session.date);
+        // console.log('start date---', startDate);
+        // console.log('updated date---', up);
+        // console.log('timeZone---', session.timeZone);
+        // console.log('startHours---', startHours);
+        // console.log('startMinutes---', startMinutes);
         const startUtc = up.toUTCString();
+        console.log('startUtc---', startUtc);
+
 
         // //////console.log('START DATE', startDate.toDateString());
         // //////console.log('startDate', new Date(startDate.getTime() - userTimezoneOffset + 9 * 3600000))
         // console.log('startUtc', startUtc);
         // console.log('startUtc', startUtc);
-        const dsttz = moment.tz(startDate, session.timeZone).format("zz");
-        const dstdate = moment
-          .tz(startDate, session.timeZone)
-          .format("YYYY-MM-DD HH:mm ZZ");
+        // const dsttz = moment.tz(startDate, session.timeZone).format("zz");
+        // const dstdate = moment
+        //   .tz(startDate, session.timeZone)
+        //   .format("YYYY-MM-DD HH:mm ZZ");
         // const dstdate = moment.tz(startDate, session.timeZone).format(moment.defaultFormat)
 
         // //////console.log('dsttz', dsttz)
@@ -304,7 +329,8 @@ export default function Calendar() {
         const endDateUtc = getStartDate(
           endDate,
           userTimezoneOffset,
-          session.timeZone
+          session.timeZone,
+          offsetInMilliseconds
         );
         // console.log("SessionTimings", session, startDate, endDateUtc, strtTime12HFormat)
         let eventObj = {
@@ -343,7 +369,7 @@ export default function Calendar() {
   useEffect(() => {
 
     if (persona === "admin" || (persona === "tutor" && organization && organization?.settings?.permissions?.length > 5 && organization?.settings?.permissions[5]?.choosedValue === true)) {
-      console.log("org tutor", organization)
+      // console.log("org tutor", organization)
       setIsEditable(true);
     } else {
       setIsEditable(false);
@@ -468,12 +494,15 @@ export default function Calendar() {
 
                   var userTimezoneOffset =
                     startDate.getTimezoneOffset() * 60000;
+                  const timezone = session.timeZone;
+                  const offsetInMinutes = moment.tz(timezone).utcOffset();
+                  const offsetInMilliseconds = offsetInMinutes * 60 * 1000;
 
-                  getStartDate(startDate, userTimezoneOffset, session.timeZone);
                   let up = getStartDate(
                     startDate,
                     userTimezoneOffset,
-                    session.timeZone
+                    session.timeZone,
+                    offsetInMilliseconds
                   );
                   const startUtc = up.toUTCString();
 
@@ -493,7 +522,8 @@ export default function Calendar() {
                   const endDateUtc = getStartDate(
                     endDate,
                     userTimezoneOffset,
-                    session.timeZone
+                    session.timeZone,
+                    offsetInMilliseconds
                   );
 
                   // //////console.log(resp.data.data.user.assiginedStudents);
@@ -546,7 +576,7 @@ export default function Calendar() {
   // //////console.log(students)
 
   useEffect(() => {
-    if (calendarRef.current) {
+    if (calendarWeekRef.current) {
       const prevBtn = document.getElementsByClassName(
         "calendar-prevButton-custom"
       )[0].parentElement;
@@ -559,20 +589,7 @@ export default function Calendar() {
   }, []);
 
   useEffect(() => {
-    if (timeZone == 'Asia/Kolkata')
-      setnewTimeZone('IST')
-    if (timeZone == 'US/Alaska')
-      setnewTimeZone('AKST')
-    if (timeZone == 'US/Central')
-      setnewTimeZone('CST')
-    if (timeZone == 'US/Eastern')
-      setnewTimeZone('EST')
-    if (timeZone == 'US/Hawaii')
-      setnewTimeZone('HST')
-    if (timeZone == 'US/Mountain')
-      setnewTimeZone('MST')
-    if (timeZone == 'US/Pacific')
-      setnewTimeZone('PST')
+    setnewTimeZone(timeZone)
   }, [timeZone])
 
   const getDayHeaders = (arg) => {
@@ -616,13 +633,12 @@ export default function Calendar() {
   };
 
   const handlePrevClick = (arg) => {
-    const calendarAPI = calendarRef?.current?.getApi();
+    const calendarAPI = calendarWeekRef?.current?.getApi();
     calendarAPI?.prev();
   };
 
   const handleNextClick = (arg) => {
-    // //////console.log(arg)
-    const calendarAPI = calendarRef?.current?.getApi();
+    const calendarAPI = calendarWeekRef?.current?.getApi();
     calendarAPI?.next();
   };
 
@@ -696,6 +712,7 @@ export default function Calendar() {
   };
 
   const handleDateClick = (arg) => {
+    console.log('click');
     if (organization?.settings?.permissions && persona === 'tutor') {
       if (organization?.settings?.permissions[5].choosedValue === false) {
         return
@@ -860,11 +877,15 @@ export default function Calendar() {
           startHours !== NaN && startDate.setHours(startHours);
           startMinutes !== NaN && startDate.setMinutes(startMinutes);
           var userTimezoneOffset = startDate.getTimezoneOffset() * 60000;
-          getStartDate(startDate, userTimezoneOffset, session.timeZone);
+          const timezone = session.timeZone;
+          const offsetInMinutes = moment.tz(timezone).utcOffset();
+          const offsetInMilliseconds = offsetInMinutes * 60 * 1000;
+
           let up = getStartDate(
             startDate,
             userTimezoneOffset,
-            session.timeZone
+            session.timeZone,
+            offsetInMilliseconds
           );
           const startUtc = up.toUTCString();
           // //////console.log('START DATE', startDate);
@@ -881,7 +902,8 @@ export default function Calendar() {
           const endDateUtc = getStartDate(
             endDate,
             userTimezoneOffset,
-            session.timeZone
+            session.timeZone,
+            offsetInMilliseconds
           );
           let eventObj = {
             id: session._id,
@@ -969,9 +991,8 @@ export default function Calendar() {
   }, [sessionToEdit, eventDetails]);
 
   useEffect(() => {
-    // //////console.log(calendarRef.current.getApi())
-    calendarRef.current.getApi().gotoDate(currentDate);
-    // calendarRef.current.gotoDate(currentDate)
+    // calendarWeekRef.current?.getApi().gotoDate(currentDate);
+    // calendarWeekRef.current.gotoDate(currentDate)
   }, [currentDate]);
 
   moment.tz.setDefault("Etc/UTC");
@@ -982,9 +1003,20 @@ export default function Calendar() {
         // let updatedDate = new Date(item?.start).toLocaleString();
         // let updatedDateEnd = new Date(item?.updatedDateEnd).toLocaleString(
         // );
-        // console.log('tz---', timeZone);
-        let updatedDate = new Date(item.updatedDate).toLocaleString('en-US', { timeZone })
-        let updatedDateEnd = new Date(item.updatedDateEnd).toLocaleString('en-US', { timeZone })
+        // let updatedDate = new Date(item.updatedDate).toLocaleString('en-US', { timeZone })
+        const utcDate = moment(item.updatedDate, 'ddd, DD MMM YYYY HH:mm:ss [GMT]').utc().format();
+        const timeZoneOffset = moment.tz(timeZone).utcOffset();
+        const convertedDate = moment.tz(utcDate, timeZone).format()
+        // Convert the updatedDate to UTC
+
+        let updatedDate = moment(item.updatedDate).tz(timeZone).format('YYYY-MM-DD HH:mm:ss');
+        let updatedDateEnd = moment(item.updatedDateEnd).tz(timeZone).format('YYYY-MM-DD HH:mm:ss');
+        // let updatedDateEnd = new Date(item.updatedDateEnd).toLocaleString('en-US', { timeZone })
+
+        // console.log('convertedDate---', moment.tz(item.updatedDate, 'DD/MM/YYYY h:mm a', timeZone));
+        // console.log('timeZone---', timeZone);
+        console.log('convertedDate---', convertedDate);
+        console.log('item date---', item.updatedDate);
         // let updatedDate = new Date(item?.updatedDate).toLocaleString("en-US", {
         //   timeZone,
         // });
@@ -1021,14 +1053,14 @@ export default function Calendar() {
   // }, []);
 
   useEffect(() => {
-    if (calendarRef.current === null) return;
-    if (calendarRef.current === undefined) return;
+    if (calendarWeekRef.current === null) return;
+    if (calendarWeekRef.current === undefined) return;
     parseEventDatesToTz();
 
     // document.getElementById('calendarContainer').refetchEvents()
-    // calendarRef.refetchEvents()
-    // calendarRef.current.gotoDate('')
-    // calendarRef.current.setOption('timeZone', timeZone)
+    // calendarWeekRef.refetchEvents()
+    // calendarWeekRef.current.gotoDate('')
+    // calendarWeekRef.current.setOption('timeZone', timeZone)
   }, [timeZone, events.length]);
 
   const handleStudentChange = (student) => {
@@ -1175,10 +1207,85 @@ export default function Calendar() {
     }));
   };
 
+  useEffect(() => {
+    if (calendarYearlyRef.current) {
+      const calendar = new Calendar(calendarYearlyRef.current, {
+        plugins: [
+          dayGridPlugin,
+          timeGridWeek,
+          timeGridPlugin,
+          interactionPlugin,
+          multiMonthPlugin,
+        ],
+        initialView: 'multiMonthYear',
+        multiMonthMaxColumns: 3,
+        events:
+          persona === 'parent' || persona === 'tutor'
+            ? filteredEvents
+            : events,
+        dayMaxEventRows: true,
+        stickyHeaderDates: true,
+        stickyHeaderToolbar: true,
+        eventMaxStack: 1,
+        firstDay: 1,
+        slotDuration: '00:60:00',
+        dateClick: handleDateClick,
+        eventClick: (info) => handleEventClick(info),
+        // customButtons: {
+        //   prevButton: {
+        //     text: (
+        //       <span className="calendar-prevButton-custom">
+        //         <img className="pr-2" src={LeftIcon} alt="arrow" />
+        //       </span>
+        //     ),
+        //     click: handlePrevClick,
+        //   },
+        //   nextButton: {
+        //     text: (
+        //       <span className="calendar-nextButton-custom">
+        //         <img className="pr-2" src={nextIcon} alt="arrow" />
+        //       </span>
+        //     ),
+        //     click: handleNextClick,
+        //   },
+        // },
+        // eventContent: eventContent,
+        titleFormat: {
+          day: '2-digit',
+          month: "short",
+          year: "numeric",
+        },
+        headerToolbar: {
+          start: "title prev next",
+          center: "",
+          end: ""
+        }
+
+      });
+
+      calendar.render();
+    }
+  }, [persona, filteredEvents, events, eventContent, handleDateClick]);
+
+  useEffect(() => {
+    if (calendarWeekRef.current) {
+      calendarWeekRef?.current?.render()
+      calendarMonthRef?.current?.render()
+      // if (activeView === 'Month') {
+      //   calendarWeekRef.current.changeView("dayGrid")
+      // } else {
+      //   calendarWeekRef.current.changeView("timeGridWeek")
+      // }
+      // calendarWeekRef.current.render()
+    }
+  }, [activeView])
+  // console.log('activeView-', activeView);
   // console.log(' organization?.settings?.permissions-----', organization?.settings?.permissions);
   // console.log('events-----', events);
   //console.log('eventDetails',colorMapping,insightData,userDetail,associatedStudents);
+  const timeZones = moment.tz.names(); // String[]
   const navigate = useNavigate()
+
   return (
     <>
       <div className="lg:ml-pageLeft calender  min-h-screen" id={persona}>
@@ -1577,127 +1684,68 @@ export default function Calendar() {
             </div>
           </div>
           <div className="flex-1 w-4/5 relative  min-h-[600px]" id="calendarContainer">
-            <FullCalendar
-              slotLabelContent={(arg) => {
-                return (
-                  <>
-                    <div>{arg.text}</div>
-                    <div className="blank-row" />
-                  </>
-                );
-              }}
-              events={
-                persona === "parent" || persona === "tutor"
-                  ? filteredEvents
-                  : events
-              }
-              height={800}
-              // timeZone='UTC'
-              // timeZone={timeZone === getLocalTimeZone() ? 'local' : timeZone}
-              // timeZone={timeZone === 'IST' ? 'local' : timeZone }
-              // businessHours= {{          // for starting calendar from 06:00 am
-              //    startTime: '06:00', // a start time (10am in this example)
-              //    endTime: '05:00', // an end time (6pm in this example)
-              //  }}
-              // slotMinTime='06:00:00'
-              // slotMaxTime='23:00:00'
-              // slotDuration='24:00:00'
-              dayMaxEventRows={true}
-              stickyHeaderDates={true}
-              stickyHeaderToolbar={true}
-              eventClick={(info) => handleEventClick(info)}
-              eventMaxStack={1}
-              ref={calendarRef}
-              plugins={[
-                timeGridPlugin,
-                timeGridWeek,
-                interactionPlugin,
-                dayGridPlugin,
+            {
+              activeView === 'Year' ?
+                <div ref={calendarYearlyRef}></div> :
+                activeView === 'Week' ?
+                  <FullCalendar view='timeGridWeek'
+                    persona={persona}
+                    filteredEvents={filteredEvents}
+                    events={events}
+                    calRef={calendarWeekRef}
+                    handlePrevClick={handlePrevClick}
+                    handleNextClick={handleNextClick}
+                    eventContent={eventContent}
+                    getDayHeaders={getDayHeaders}
+                    handleDateClick={handleDateClick}
+                    handleEventClick={handleEventClick}
+                  />
+                  : activeView === 'Month' ?
+                    <FullCalendar view='dayGridMonth'
+                      persona={persona}
+                      filteredEvents={filteredEvents}
+                      events={events}
+                      calRef={calendarMonthRef}
+                      handlePrevClick={handlePrevClick}
+                      handleNextClick={handleNextClick}
+                      eventContent={eventContent}
+                      getDayHeaders={getDayHeaders}
+                      handleDateClick={handleDateClick}
+                      handleEventClick={handleEventClick}
+                    /> : ''
+            }
 
-                // momentTimezonePlugin
-              ]}
-              firstDay={1}
-              slotDuration={"00:60:00"}
-              customButtons={{
-                prevButton: {
-                  text: (
-                    <span className="calendar-prevButton-custom">
-                      <img className="pr-2" src={LeftIcon} alt="arrow" />
-                    </span>
-                  ),
-                  click: handlePrevClick,
-                },
-                nextButton: {
-                  text: (
-                    <span className="calendar-nextButton-custom">
-                      <img className="pr-2" src={nextIcon} alt="arrow" />
-                    </span>
-                  ),
-                  click: handleNextClick,
-                },
-              }}
-              eventContent={eventContent}
-              initialView="timeGridWeek"
-              allDaySlot={false}
-              headerToolbar={{
-                start: "prevButton title nextButton",
-                center: "",
-                end: "dayGridMonth,timeGridWeek"
-              }}
-              datesSet={(arg) => {
-                // console.log('datesSet', arg) //starting visible date
-              }}
-              titleFormat={{
-                day: '2-digit',
-                month: "short",
-                year: "numeric",
-              }}
-              expandRows={true}
-              contentHeight={"100%"}
-              // slotMinTime={"06:00:00"}
-              // slotMaxTime={"30:00:00"}
-              dayHeaderFormat={{
-                weekday: 'long',
-                day: "numeric"
-              }}
-              dayHeaderContent={getDayHeaders}
-              selectable={true}
-              //select={handleDateClick}
-              dateClick={handleDateClick}
-              // select={handleDateSelect}
-              // titleFormat={{
-              //    month: ''
-              // }}
-              selectOverlap={false}
-              defaultTimedEventDuration="01:00"
-              showNonCurrentDates={false}
-              slotLabelFormat={{ hour: '2-digit', minute: '2-digit', meridiem: 'short' }}
-            />
             <div
-              className="absolute right-[50px] top-0 "
+              className="absolute right-[50px] top-0 flex gap-x-4"
             >
+
               <span id="input">
                 <InputSelect
                   value={
-                    newTimeZone
+                    activeView
                   }
                   inputContainerClassName="text-[15px] text-primaryDark font-bold border"
-                  customArrow={downArrow}
-                  //  optionData={['local', 'America/New_York']}
-                  // optionData={['Asia/Calcutta', ...moment.tz.zonesForCountry('US')]}
-                  // optionData={['Asia/Calcutta', ...moment.tz.zonesForCountry('US')]}
-                  optionData={timeZones2}
+                  optionData={['Year', 'Month', 'Week']}
                   onChange={(val) => {
-                    if (val == 'IST') setTimeZone('Asia/Kolkata')
-                    if (val == 'CST') setTimeZone('US/Central')
-                    if (val == 'AKST') setTimeZone('US/Alaska')
-                    if (val == 'EST') setTimeZone('US/Eastern')
-                    if (val == 'HST') setTimeZone('Pacific/Honolulu')
-                    if (val == 'MST') setTimeZone('US/Mountain')
-                    if (val == 'PST') setTimeZone('US/Pacific')
+                    // setActiveView(val)
+                    if(val !== 'Year'){
+                      setActiveView('')
+                      setTimeout(() => {
+                        setActiveView(val)
+                      }, 300);
+                    }else{
+                      setActiveView(val)
+                    }
                   }}
-                  parentClassName=""
-                  optionClassName=""
+                />
+              </span>
+              <span id="input">
+                <InputSelect
+                  value={newTimeZone}
+                  inputContainerClassName="text-[15px] text-primaryDark font-bold border"
+                  customArrow={downArrow}
+                  optionData={timeZones}
+                  onChange={(val) => setTimeZone(val)}
                 />
               </span>
               {/* <div class="inline-flex rounded shadow-sm mt-1">
